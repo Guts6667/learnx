@@ -2,48 +2,66 @@
   "specId": "PEDAGOGY_SPEC_126",
   "schemaVersion": 1,
   "programSlug": "ingenieur-logiciel-production-sourcelab",
-  "stageSlug": "comprendre-runtime-diagnostiquer",
-  "moduleSlug": "module-comprendre-runtime-diagnostiquer",
+  "stageSlug": "demarrer-verticale-sourcelab",
+  "moduleSlug": "module-api-guidee-contrats",
   "lesson": {
-    "title": "Suivre une requête du navigateur au processus",
-    "slug": "suivre-requete-navigateur-processus",
-    "summary": "Comprendre ce qui existe réellement entre une action utilisateur, une requête HTTP, un processus Node.js et une réponse, afin de ne plus traiter le runtime comme une boîte noire.",
+    "title": "Prendre en main le starter et suivre une requête",
+    "slug": "prendre-en-main-starter-suivre-requete",
+    "summary": "Partir d’un dépôt TypeScript exécutable, suivre une requête Hono et produire une première preuve de diagnostic sans créer l’API depuis une page blanche.",
     "objectives": [
-      "Décrire le trajet d’une requête SourceLab depuis le navigateur jusqu’au processus API.",
-      "Distinguer build, démarrage, exécution et arrêt d’un service Node.js.",
-      "Identifier les informations utiles à un diagnostic avant de modifier le code."
+      "Repérer les responsabilités du serveur Node, de l’application Hono et d’une route.",
+      "Suivre une requête avec un identifiant corrélé jusqu’à sa réponse.",
+      "Utiliser le checkpoint de départ et les commandes de preuve sans masquer un blocage."
     ],
     "prerequisites": [
-      "Maîtriser TypeScript et avoir déjà consommé ou créé une API HTTP."
+      "Maîtriser TypeScript et savoir exécuter des commandes pnpm dans un dépôt existant."
     ],
-    "estimatedMinutes": 150,
+    "estimatedMinutes": 60,
     "position": 1,
     "contentBlocks": [
       {
-        "key": "content-trajet-requete",
-        "type": "definition",
+        "key": "content-prendre-en-main-starter-suivre-requete-1",
+        "type": "objective",
         "position": 1,
         "content": {
-          "text": "Une interaction SourceLab traverse plusieurs frontières : navigateur, résolution du nom, connexion, requête HTTP, route API, logique métier, base ou stockage, puis réponse. Une panne observée dans l’interface ne localise donc pas sa cause. Le premier réflexe d’ingénierie consiste à suivre la requête et à collecter des preuves à chaque frontière.",
-          "sourceKeys": ["mdn-http-overview", "rfc-9110-http-semantics"]
+          "text": "Cette leçon part de checkpoint-00-starter. Le dépôt compile déjà, GET /health/live répond et un test est vert. La brique à produire est checkpoint-01-request-visible : la même API, enrichie d’un request ID et de preuves pour les cas succès, route absente et méthode incorrecte.",
+          "sourceKeys": []
         }
       },
       {
-        "key": "content-processus-runtime",
+        "key": "content-prendre-en-main-starter-suivre-requete-2",
         "type": "definition",
         "position": 2,
         "content": {
-          "text": "Une application Node.js en exécution est un processus doté d’un identifiant, d’un environnement, d’arguments, de flux standard et d’un code de sortie. Le bundle compilé n’est pas le processus : le build produit un artefact, tandis que le runtime charge cet artefact avec une configuration et des ressources disponibles à cet instant.",
-          "sourceKeys": ["node-process"]
+          "text": "Une interaction HTTP comporte une requête, un traitement et une réponse. Le statut et les en-têtes décrivent ce que le serveur a réellement renvoyé ; ils ne prouvent pas à eux seuls où une panne est née. Un request ID stable relie les observations d’une même interaction sans remplacer le diagnostic.",
+          "sourceKeys": ["mdn-http-overview"]
         }
       },
       {
-        "key": "content-diagnostic-avant-correction",
-        "type": "callout",
+        "key": "content-prendre-en-main-starter-suivre-requete-3",
+        "type": "example",
         "position": 3,
         "content": {
-          "text": "Avant de corriger un symptôme, formuler une hypothèse testable : le client n’envoie pas la requête, le nom ne résout pas, le port n’écoute pas, la route refuse le contrat, une dépendance échoue ou la réponse n’est pas interprétée. Une commande ou un log doit réduire l’incertitude ; empiler des changements sans observation la déplace seulement.",
-          "sourceKeys": ["node-process", "rfc-9110-http-semantics"]
+          "text": "Dans le starter, server.ts ouvre le port tandis que app.ts déclare les routes. Une commande curl atteint GET /health/live, Hono choisit le handler puis Node écrit la réponse. Modifier la route ne remplace donc ni le processus, ni sa configuration, ni le client qui appelle le service.",
+          "sourceKeys": ["node-process", "mdn-http-overview"]
+        }
+      },
+      {
+        "key": "content-prendre-en-main-starter-suivre-requete-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Guidage : lancer le test initial, ajouter le middleware d’identification au TODO indiqué, vérifier l’en-tête de réponse, puis capturer les trois commandes curl attendues. En cas de blocage supérieur à quinze minutes, comparer uniquement le fichier concerné au checkpoint solution.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-prendre-en-main-starter-suivre-requete-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Preuve de fin : pnpm test est vert, chaque réponse contient un request ID et le journal associe ce même identifiant au statut renvoyé. Le livrable est réutilisé par toutes les leçons suivantes ; il n’est pas un exercice jetable.",
+          "sourceKeys": []
         }
       }
     ],
@@ -55,17 +73,17 @@
         "author": "Mozilla Developer Network",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
         "citation": "Mozilla Developer Network. (n.d.). An overview of HTTP. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire client-serveur, proxies et flow ; dessiner le trajet d’une requête SourceLab.",
+        "description": "Lire uniquement le schéma client-serveur et relever requête, réponse et intermédiaire.",
         "guidance": {
-          "objective": "Suivre une requête depuis le client jusqu’au service et identifier les points de panne.",
-          "instructions": "Lire client-serveur, proxies et flow ; dessiner le trajet d’une requête SourceLab.",
-          "scope": "Architecture client-serveur, messages, connexions et intermédiaires",
+          "objective": "Soutenir la réalisation guidée de la leçon « Prendre en main le starter et suivre une requête ».",
+          "instructions": "Lire uniquement le schéma client-serveur et relever requête, réponse et intermédiaire.",
+          "scope": "Client, requête, réponse et intermédiaires",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 12,
+        "estimatedMinutes": 8,
         "position": 1
       },
       {
@@ -75,62 +93,42 @@
         "author": "Node.js",
         "url": "https://nodejs.org/api/process.html",
         "citation": "Node.js. (2026). Process — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "description": "Lire uniquement les repères sur identifiant, environnement et code de sortie d’un processus.",
         "guidance": {
-          "objective": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-          "instructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
-          "scope": "process, process.env, exit codes, signals et événements de terminaison",
+          "objective": "Soutenir la réalisation guidée de la leçon « Prendre en main le starter et suivre une requête ».",
+          "instructions": "Lire uniquement les repères sur identifiant, environnement et code de sortie d’un processus.",
+          "scope": "Identifiant du processus, environnement, signaux et code de sortie",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 12,
+        "estimatedMinutes": 6,
         "position": 2
-      },
-      {
-        "key": "rfc-9110-http-semantics",
-        "type": "website",
-        "title": "RFC 9110 — HTTP Semantics",
-        "author": "IETF",
-        "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
-        "citation": "IETF. (2022). RFC 9110 — HTTP Semantics. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire les sections sur méthodes et statuts ; construire une grille distinguant transport, protocole et erreur métier.",
-        "guidance": {
-          "objective": "Diagnostiquer une interaction HTTP à partir de sa méthode, de son statut et de ses métadonnées.",
-          "instructions": "Lire les sections sur méthodes et statuts ; construire une grille distinguant transport, protocole et erreur métier.",
-          "scope": "Sections sur messages, méthodes et codes de statut",
-          "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
-          "alternativeResourceKey": null
-        },
-        "isRequired": true,
-        "estimatedMinutes": 15,
-        "position": 3
       }
     ],
     "concepts": [
       {
-        "title": "Chaîne d’exécution d’une requête",
-        "slug": "chaine-execution-requete",
-        "description": "Une requête traverse des frontières observables ; chaque frontière possède ses propres preuves, erreurs et responsabilités.",
+        "title": "Requête observable",
+        "slug": "requete-observable",
+        "description": "Une requête est diagnostiquée par des observations corrélées aux frontières client, route, processus et réponse.",
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["mdn-http-overview"],
+        "resourceKeys": ["mdn-http-overview", "node-process"],
         "assessment": {
-          "key": "assessment-chaine-execution-requete",
+          "key": "assessment-requete-observable",
           "type": "case_question",
-          "title": "Mini-évaluation — Chaîne d’exécution d’une requête",
+          "title": "Mini-évaluation — Requête observable",
           "questionCount": 3
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-suivre-requete-navigateur-processus",
-        "title": "Cartographier et instrumenter une requête SourceLab",
-        "description": "Créer une petite API Hono avec un endpoint de santé et un endpoint de création de projet. Dessiner le trajet complet d’une requête, ajouter un request ID, puis capturer avec curl les cas succès, route absente, méthode incorrecte et erreur interne simulée. Livrer le diagramme, les commandes et une note expliquant où chaque erreur est détectée.",
+        "key": "exercise-prendre-en-main-starter-suivre-requete",
+        "title": "Rendre la première requête SourceLab observable",
+        "description": "Depuis checkpoint-00-starter, ajouter le request ID dans les fichiers TODO, tester GET /health/live puis capturer succès, route absente et méthode incorrecte. Livrer les sorties et créer checkpoint-01-request-visible.",
         "type": "practice",
         "isRequired": true,
         "weight": 2,
@@ -140,36 +138,36 @@
     ],
     "quizzes": [
       {
-        "key": "quiz-suivre-requete-navigateur-processus",
-        "title": "Quiz — Runtime et trajet HTTP",
-        "description": "Vérifier les acquis essentiels de la leçon « Suivre une requête du navigateur au processus ».",
+        "key": "quiz-prendre-en-main-starter-suivre-requete",
+        "title": "Quiz — Requête observable",
+        "description": "Vérifier les repères de la leçon « Prendre en main le starter et suivre une requête ».",
         "passingScore": 70,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Une requête retourne 405. Quelle hypothèse examiner en premier ?",
-            "explanation": "405 concerne la méthode autorisée par la ressource.",
+            "prompt": "Quelle affirmation distingue correctement app.ts et server.ts ?",
+            "explanation": "Le découpage rend les responsabilités testables séparément.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "La méthode HTTP n’est pas autorisée sur cette route",
+                "label": "app.ts déclare l’application ; server.ts démarre le processus HTTP",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "La base a perdu toutes ses données",
+                "label": "Les deux fichiers sont des images Docker",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le navigateur ne connaît pas le DNS",
+                "label": "app.ts stocke les volumes",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le CSS ne s’est pas chargé",
+                "label": "server.ts remplace les tests",
                 "isCorrect": false,
                 "position": 4
               }
@@ -177,38 +175,9 @@
             "position": 1
           },
           {
-            "type": "single_choice",
-            "prompt": "Pourquoi ajouter un request ID ?",
-            "explanation": "L’identifiant corrèle les événements sans résoudre la panne à lui seul.",
-            "acceptedAnswers": [],
-            "options": [
-              {
-                "label": "Relier les observations client, API et dépendances pour une même requête",
-                "isCorrect": true,
-                "position": 1
-              },
-              {
-                "label": "Chiffrer le corps automatiquement",
-                "isCorrect": false,
-                "position": 2
-              },
-              {
-                "label": "Remplacer les tests",
-                "isCorrect": false,
-                "position": 3
-              },
-              {
-                "label": "Éviter toute erreur 500",
-                "isCorrect": false,
-                "position": 4
-              }
-            ],
-            "position": 2
-          },
-          {
             "type": "true_false",
-            "prompt": "Une erreur visible dans l’interface implique nécessairement une erreur frontend.",
-            "explanation": "Le frontend ne montre que le symptôme final d’une chaîne plus large.",
+            "prompt": "Une réponse 405 signifie automatiquement que PostgreSQL est indisponible.",
+            "explanation": "405 concerne la méthode autorisée pour la ressource.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -222,6 +191,35 @@
                 "position": 2
               }
             ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quand consulter le checkpoint solution ?",
+            "explanation": "Le checkpoint est un filet de sécurité, pas un substitut à la pratique.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Après une première tentative et un blocage borné",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Avant de lire la consigne",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Uniquement après avoir supprimé le dépôt",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Jamais, même si le blocage persiste",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
             "position": 3
           }
         ]
@@ -230,15 +228,15 @@
     "sequence": [
       {
         "kind": "CONTENT",
-        "key": "content-trajet-requete"
+        "key": "content-prendre-en-main-starter-suivre-requete-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-prendre-en-main-starter-suivre-requete-2"
       },
       {
         "kind": "RESOURCE",
         "key": "mdn-http-overview"
-      },
-      {
-        "kind": "CONTENT",
-        "key": "content-processus-runtime"
       },
       {
         "kind": "RESOURCE",
@@ -246,38 +244,42 @@
       },
       {
         "kind": "CONTENT",
-        "key": "content-diagnostic-avant-correction"
+        "key": "content-prendre-en-main-starter-suivre-requete-3"
       },
       {
-        "kind": "RESOURCE",
-        "key": "rfc-9110-http-semantics"
+        "kind": "CONTENT",
+        "key": "content-prendre-en-main-starter-suivre-requete-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-prendre-en-main-starter-suivre-requete-5"
       },
       {
         "kind": "EXERCISE",
-        "key": "exercise-suivre-requete-navigateur-processus"
+        "key": "exercise-prendre-en-main-starter-suivre-requete"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-chaine-execution-requete"
+        "key": "assessment-requete-observable"
       },
       {
         "kind": "QUIZ",
-        "key": "quiz-suivre-requete-navigateur-processus"
+        "key": "quiz-prendre-en-main-starter-suivre-requete"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "status": "draft",
     "language": "fr",
-    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
-    "owner": "Rayan Chambet",
-    "createdAt": "2026-08-18",
+    "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
+    "owner": "LearnX",
+    "createdAt": "2026-08-20",
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
       {
-        "id": "REF-126-01",
+        "id": "REF-126-MDN-HTTP-OVERVIEW",
         "type": "official_documentation",
         "authors": [],
         "organization": "Mozilla Developer Network",
@@ -293,15 +295,15 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       },
       {
-        "id": "REF-126-02",
+        "id": "REF-126-NODE-PROCESS",
         "type": "official_documentation",
         "authors": [],
         "organization": "Node.js",
         "title": "Process — Node.js Documentation",
-        "year": 2026,
+        "year": null,
         "edition": null,
         "publication": "Node.js",
         "doi": null,
@@ -312,154 +314,123 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
-      },
-      {
-        "id": "REF-126-03",
-        "type": "technical_standard",
-        "authors": [],
-        "organization": "IETF",
-        "title": "RFC 9110 — HTTP Semantics",
-        "year": 2022,
-        "edition": null,
-        "publication": "IETF",
-        "doi": null,
-        "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
-        "accessedAt": "2026-08-18",
-        "evidenceLevel": "D",
-        "peerReviewed": false,
-        "language": "en",
-        "license": null,
-        "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [
-          {
-            "referenceId": "REF-126-01",
-            "locator": "Architecture client-serveur, messages, connexions et intermédiaires",
-            "supports": "Soutient le bloc « content-trajet-requete » et ses distinctions techniques."
-          },
-          {
-            "referenceId": "REF-126-03",
-            "locator": "Sections sur messages, méthodes et codes de statut",
-            "supports": "Soutient le bloc « content-trajet-requete » et ses distinctions techniques."
-          }
-        ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
-        "notApplicableReason": null
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
-            "referenceId": "REF-126-02",
-            "locator": "process, process.env, exit codes, signals et événements de terminaison",
-            "supports": "Soutient le bloc « content-processus-runtime » et ses distinctions techniques."
+            "referenceId": "REF-126-MDN-HTTP-OVERVIEW",
+            "locator": "Client, requête, réponse et intermédiaires",
+            "supports": "Repères techniques employés dans le bloc 2."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-126-02",
-            "locator": "process, process.env, exit codes, signals et événements de terminaison",
-            "supports": "Soutient le bloc « content-diagnostic-avant-correction » et ses distinctions techniques."
+            "referenceId": "REF-126-NODE-PROCESS",
+            "locator": "Identifiant du processus, environnement, signaux et code de sortie",
+            "supports": "Repères techniques employés dans le bloc 3."
           },
           {
-            "referenceId": "REF-126-03",
-            "locator": "Sections sur messages, méthodes et codes de statut",
-            "supports": "Soutient le bloc « content-diagnostic-avant-correction » et ses distinctions techniques."
+            "referenceId": "REF-126-MDN-HTTP-OVERVIEW",
+            "locator": "Client, requête, réponse et intermédiaires",
+            "supports": "Repères techniques employés dans le bloc 3."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       }
     ],
     "resourceChecks": [
       {
         "resourceKey": "mdn-http-overview",
-        "referenceIds": ["REF-126-01"],
-        "pedagogicalRationale": "Suivre une requête depuis le client jusqu’au service et identifier les points de panne.",
-        "learnerInstructions": "Lire client-serveur, proxies et flow ; dessiner le trajet d’une requête SourceLab.",
+        "referenceIds": ["REF-126-MDN-HTTP-OVERVIEW"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Prendre en main le starter et suivre une requête ».",
+        "learnerInstructions": "Lire uniquement le schéma client-serveur et relever requête, réponse et intermédiaire.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       },
       {
         "resourceKey": "node-process",
-        "referenceIds": ["REF-126-02"],
-        "pedagogicalRationale": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-        "learnerInstructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "referenceIds": ["REF-126-NODE-PROCESS"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Prendre en main le starter et suivre une requête ».",
+        "learnerInstructions": "Lire uniquement les repères sur identifiant, environnement et code de sortie d’un processus.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
-      },
-      {
-        "resourceKey": "rfc-9110-http-semantics",
-        "referenceIds": ["REF-126-03"],
-        "pedagogicalRationale": "Diagnostiquer une interaction HTTP à partir de sa méthode, de son statut et de ses métadonnées.",
-        "learnerInstructions": "Lire les sections sur méthodes et statuts ; construire une grille distinguant transport, protocole et erreur métier.",
-        "language": "en",
-        "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
-        "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
-        "urlStatus": "ok",
-        "mediaSegment": null,
-        "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "chaine-execution-requete",
-        "assessmentTitle": "Mini-évaluation — Chaîne d’exécution d’une requête",
+        "conceptSlug": "requete-observable",
+        "assessmentTitle": "Mini-évaluation — Requête observable",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quel élément fournit la meilleure première preuve qu’un service écoute réellement ?",
-            "explanation": "Un artefact présent ou compilé ne prouve pas qu’un processus écoute.",
+            "prompt": "Le client reçoit 404 avec un request ID. Quelle preuve examiner en premier ?",
+            "explanation": "Le statut et l’identifiant permettent de repartir de la frontière HTTP observée.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Une connexion réussie sur l’hôte et le port attendus",
+                "label": "La route et la méthode réellement reçues pour ce request ID",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "La présence du dossier dist",
+                "label": "Le contenu futur de PostgreSQL",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le fait que le code compile",
+                "label": "La taille de l’image Docker",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le titre de l’onglet navigateur",
+                "label": "Le workflow de publication",
                 "isCorrect": false,
                 "position": 4
               }
@@ -467,53 +438,48 @@
             "position": 1
           },
           {
-            "type": "multiple_choice",
-            "prompt": "Quelles frontières doivent être distinguées lors du diagnostic ?",
-            "explanation": "La localisation de la panne exige de séparer les frontières techniques.",
+            "type": "single_choice",
+            "prompt": "Quel fichier du starter porte la déclaration des routes ?",
+            "explanation": "Le starter sépare l’application Hono de l’ouverture du port.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Client et requête",
+                "label": "src/api/app.ts",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Réseau et port",
-                "isCorrect": true,
+                "label": "src/api/server.ts uniquement",
+                "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Route et logique métier",
-                "isCorrect": true,
+                "label": "prisma/schema.prisma",
+                "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Dépendances externes",
-                "isCorrect": true,
-                "position": 4
-              },
-              {
-                "label": "Préférence de l’utilisateur pour un thème",
+                "label": "compose.yaml",
                 "isCorrect": false,
-                "position": 5
+                "position": 4
               }
             ],
             "position": 2
           },
           {
             "type": "true_false",
-            "prompt": "Un build réussi prouve que le service démarrera avec sa configuration de production.",
-            "explanation": "Le build ne valide ni variables, ni réseau, ni dépendances disponibles au runtime.",
+            "prompt": "Un request ID corrèle les événements mais ne localise pas la panne à lui seul.",
+            "explanation": "Il rend la chaîne observable ; les autres preuves restent nécessaires.",
             "acceptedAnswers": [],
             "options": [
               {
                 "label": "Vrai",
-                "isCorrect": false,
+                "isCorrect": true,
                 "position": 1
               },
               {
                 "label": "Faux",
-                "isCorrect": true,
+                "isCorrect": false,
                 "position": 2
               }
             ],
@@ -523,26 +489,24 @@
       }
     ],
     "sequenceRationale": {
-      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
       "cycles": [
         {
-          "conceptSlug": "chaine-execution-requete",
+          "conceptSlug": "requete-observable",
           "contentKeys": [
-            "content-trajet-requete",
-            "content-processus-runtime",
-            "content-diagnostic-avant-correction"
+            "content-prendre-en-main-starter-suivre-requete-1",
+            "content-prendre-en-main-starter-suivre-requete-2",
+            "content-prendre-en-main-starter-suivre-requete-3",
+            "content-prendre-en-main-starter-suivre-requete-4",
+            "content-prendre-en-main-starter-suivre-requete-5"
           ],
-          "resourceKeys": [
-            "mdn-http-overview",
-            "node-process",
-            "rfc-9110-http-semantics"
-          ],
+          "resourceKeys": ["mdn-http-overview", "node-process"],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-suivre-requete-navigateur-processus"
+            "key": "exercise-prendre-en-main-starter-suivre-requete"
           },
-          "assessmentKey": "assessment-chaine-execution-requete",
-          "rationale": "La production « Une API minimale, un diagramme de séquence et un kit de diagnostic reproductible. » rend observable la maîtrise avant le quiz de synthèse."
+          "assessmentKey": "assessment-requete-observable",
+          "rationale": "La production « Rendre la première requête SourceLab observable » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
         }
       ]
     },
@@ -555,18 +519,18 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
-        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
-        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
+        "Le starter autoritaire se trouve dans /Users/rayanchambet/Desktop/Workflow/sourcelab au commit 6dd1cda, tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
+        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
       ]
     },
     "changeLog": [
       {
-        "version": "1.0.0",
-        "date": "2026-08-18",
-        "author": "Rayan Chambet",
-        "change": "Création de la leçon « Suivre une requête du navigateur au processus » et de ses évaluations.",
-        "reviewRequired": "editorial_and_subject"
+        "version": "2.0.0",
+        "date": "2026-08-20",
+        "author": "LearnX",
+        "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
+        "reviewRequired": "editorial_technical_links_and_seed"
       }
     ]
   }

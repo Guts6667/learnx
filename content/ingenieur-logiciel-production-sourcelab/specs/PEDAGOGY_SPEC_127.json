@@ -2,46 +2,66 @@
   "specId": "PEDAGOGY_SPEC_127",
   "schemaVersion": 1,
   "programSlug": "ingenieur-logiciel-production-sourcelab",
-  "stageSlug": "comprendre-runtime-diagnostiquer",
-  "moduleSlug": "module-comprendre-runtime-diagnostiquer",
+  "stageSlug": "demarrer-verticale-sourcelab",
+  "moduleSlug": "module-api-guidee-contrats",
   "lesson": {
-    "title": "Valider configuration, réseau et arrêt propre",
-    "slug": "valider-configuration-reseau-arret-propre",
-    "summary": "Rendre un service explicite sur sa configuration, son état de préparation et sa terminaison afin de diagnostiquer les échecs sans dépendre d’un environnement implicite.",
+    "title": "Définir le contrat Project et valider la configuration",
+    "slug": "definir-contrat-project-configuration",
+    "summary": "Ajouter un contrat Zod et une route de création de projet sur le repository mémoire fourni, tout en faisant échouer clairement une configuration invalide.",
     "objectives": [
-      "Valider les variables d’environnement au démarrage et échouer de façon lisible.",
-      "Distinguer liveness, readiness et dépendance disponible.",
-      "Arrêter un serveur sans accepter de nouveau travail ni perdre un traitement en cours."
+      "Valider une configuration avant l’ouverture du port.",
+      "Distinguer payload invalide, erreur métier et erreur serveur.",
+      "Implémenter et tester POST /projects sans dépendre encore de PostgreSQL."
     ],
-    "prerequisites": ["Avoir terminé la cartographie d’une requête SourceLab."],
-    "estimatedMinutes": 160,
+    "prerequisites": [
+      "Avoir produit checkpoint-01-request-visible ou repartir de ce checkpoint."
+    ],
+    "estimatedMinutes": 75,
     "position": 2,
     "contentBlocks": [
       {
-        "key": "content-configuration-contrat",
-        "type": "definition",
+        "key": "content-definir-contrat-project-configuration-1",
+        "type": "objective",
         "position": 1,
         "content": {
-          "text": "Les variables d’environnement arrivent comme du texte et constituent un contrat externe au code. Une configuration absente, mal nommée ou interprétée implicitement peut produire une panne tardive. SourceLab doit parser et valider ce contrat avant d’ouvrir son port, puis exposer une erreur qui nomme la variable sans révéler sa valeur sensible.",
-          "sourceKeys": ["node-environment-variables"]
+          "text": "Le point de départ est checkpoint-01-request-visible. La brique finale, checkpoint-02-project-contract, conserve le request ID et ajoute un contrat CreateProjectInput, une configuration parsée et une route POST /projects branchée sur le repository mémoire déjà fourni.",
+          "sourceKeys": []
         }
       },
       {
-        "key": "content-health-readiness",
+        "key": "content-definir-contrat-project-configuration-2",
         "type": "definition",
         "position": 2,
         "content": {
-          "text": "La liveness répond à « le processus fonctionne-t-il encore ? » ; la readiness répond à « peut-il servir correctement maintenant ? ». Une API peut être vivante mais non prête si PostgreSQL ou le stockage objet est indisponible. Mélanger ces signaux provoque soit du trafic envoyé trop tôt, soit des redémarrages inutiles.",
-          "sourceKeys": ["node-process", "mdn-http-overview"]
+          "text": "Les variables d’environnement sont du texte ou sont absentes. Une configuration valide est construite une fois avant l’écoute du port. Une valeur manquante doit nommer la clé concernée sans journaliser un secret ; une valeur invalide ne doit pas produire une panne tardive dans une route.",
+          "sourceKeys": ["node-environment-variables", "zod-documentation"]
         }
       },
       {
-        "key": "content-arret-propre",
-        "type": "callout",
+        "key": "content-definir-contrat-project-configuration-3",
+        "type": "example",
         "position": 3,
         "content": {
-          "text": "Un arrêt propre cesse d’accepter de nouvelles requêtes, attend ou annule de manière bornée le travail en cours, ferme les connexions puis termine avec un code explicite. Ignorer les signaux peut interrompre un import après le stockage du fichier mais avant l’enregistrement de son état.",
-          "sourceKeys": ["node-process"]
+          "text": "Pour POST /projects, le schéma accepte un title normalisé et rejette une chaîne vide. Hono reçoit la requête, Zod produit soit une valeur typée, soit des erreurs structurées, puis le repository mémoire crée le projet. Le handler ne parse pas une seconde fois et ne transforme pas une erreur de contrat en erreur 500.",
+          "sourceKeys": ["hono-validation", "zod-documentation"]
+        }
+      },
+      {
+        "key": "content-definir-contrat-project-configuration-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Guidage : lire loadConfig déjà présent au tag checkpoint-00-starter, ajouter ses tests de valeur par défaut et de PORT invalide, puis compléter CreateProjectInput et les deux tests de route. Les noms de fichiers, commandes et sorties attendues sont listés dans le contrat du starter.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-definir-contrat-project-configuration-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Preuve de fin : la configuration invalide arrête le processus avant l’écoute ; le payload vide est refusé sans écriture ; le payload valide renvoie un identifiant. La future leçon PostgreSQL remplacera le repository sans changer le contrat HTTP.",
+          "sourceKeys": []
         }
       }
     ],
@@ -53,82 +73,86 @@
         "author": "Node.js",
         "url": "https://nodejs.org/api/environment_variables.html",
         "citation": "Node.js. (2026). Environment Variables — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire process.env et .env files ; noter les types réellement retournés et trois erreurs de configuration possibles.",
+        "description": "Lire les types réellement fournis par process.env et relever pourquoi un parse explicite est requis.",
         "guidance": {
-          "objective": "Comprendre comment la configuration est injectée et pourquoi elle doit être validée au démarrage.",
-          "instructions": "Lire process.env et .env files ; noter les types réellement retournés et trois erreurs de configuration possibles.",
-          "scope": "process.env et spécification des fichiers .env",
+          "objective": "Soutenir la réalisation guidée de la leçon « Définir le contrat Project et valider la configuration ».",
+          "instructions": "Lire les types réellement fournis par process.env et relever pourquoi un parse explicite est requis.",
+          "scope": "process.env et fichiers .env",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 10,
+        "estimatedMinutes": 6,
         "position": 1
       },
       {
-        "key": "node-process",
+        "key": "hono-validation",
         "type": "website",
-        "title": "Process — Node.js Documentation",
-        "author": "Node.js",
-        "url": "https://nodejs.org/api/process.html",
-        "citation": "Node.js. (2026). Process — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "title": "Validation — Hono Documentation",
+        "author": "Hono",
+        "url": "https://hono.dev/docs/guides/validation",
+        "citation": "Hono. (n.d.). Validation — Hono Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le passage sur la validation d’une entrée de route Hono.",
         "guidance": {
-          "objective": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-          "instructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
-          "scope": "process, process.env, exit codes, signals et événements de terminaison",
+          "objective": "Soutenir la réalisation guidée de la leçon « Définir le contrat Project et valider la configuration ».",
+          "instructions": "Lire le passage sur la validation d’une entrée de route Hono.",
+          "scope": "Validation des entrées dans une route Hono",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 12,
+        "estimatedMinutes": 8,
         "position": 2
       },
       {
-        "key": "mdn-http-overview",
+        "key": "zod-documentation",
         "type": "website",
-        "title": "An overview of HTTP",
-        "author": "Mozilla Developer Network",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
-        "citation": "Mozilla Developer Network. (n.d.). An overview of HTTP. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire client-serveur, proxies et flow ; dessiner le trajet d’une requête SourceLab.",
+        "title": "Zod Documentation",
+        "author": "Zod",
+        "url": "https://zod.dev/",
+        "citation": "Zod. (n.d.). Zod Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire safeParse et le format d’erreur ; reproduire l’exemple minimal du starter.",
         "guidance": {
-          "objective": "Suivre une requête depuis le client jusqu’au service et identifier les points de panne.",
-          "instructions": "Lire client-serveur, proxies et flow ; dessiner le trajet d’une requête SourceLab.",
-          "scope": "Architecture client-serveur, messages, connexions et intermédiaires",
+          "objective": "Soutenir la réalisation guidée de la leçon « Définir le contrat Project et valider la configuration ».",
+          "instructions": "Lire safeParse et le format d’erreur ; reproduire l’exemple minimal du starter.",
+          "scope": "Définition de schémas et safeParse",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 12,
+        "estimatedMinutes": 8,
         "position": 3
       }
     ],
     "concepts": [
       {
-        "title": "Contrat de runtime",
-        "slug": "contrat-runtime",
-        "description": "Le service ne doit être considéré prêt que lorsque configuration et dépendances nécessaires sont validées, et il doit terminer selon une séquence contrôlée.",
+        "title": "Contrat API validé",
+        "slug": "contrat-api-valide",
+        "description": "Une entrée externe est validée avant effet et produit une réponse d’erreur stable, sans confondre configuration, contrat et logique métier.",
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["node-environment-variables"],
+        "resourceKeys": [
+          "node-environment-variables",
+          "hono-validation",
+          "zod-documentation"
+        ],
         "assessment": {
-          "key": "assessment-contrat-runtime",
+          "key": "assessment-contrat-api-valide",
           "type": "case_question",
-          "title": "Mini-évaluation — Contrat de runtime",
+          "title": "Mini-évaluation — Contrat API validé",
           "questionCount": 3
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-valider-configuration-reseau-arret-propre",
-        "title": "Construire le bootstrap robuste de l’API",
-        "description": "Créer un schéma Zod de configuration, des endpoints /health/live et /health/ready, puis gérer SIGTERM et SIGINT. Simuler une variable absente, une base indisponible et une requête lente pendant l’arrêt. Documenter les statuts, délais et codes de sortie attendus.",
+        "key": "exercise-definir-contrat-project-configuration",
+        "title": "Créer le premier contrat vertical SourceLab",
+        "description": "Depuis checkpoint-01-request-visible, tester le parse de configuration déjà fourni, puis compléter le schéma CreateProjectInput, POST /projects et les tests succès/invalide sur le repository mémoire guidé. Livrer checkpoint-02-project-contract.",
         "type": "practice",
         "isRequired": true,
         "weight": 2,
@@ -138,36 +162,36 @@
     ],
     "quizzes": [
       {
-        "key": "quiz-valider-configuration-reseau-arret-propre",
-        "title": "Quiz — Configuration et santé",
-        "description": "Vérifier les acquis essentiels de la leçon « Valider configuration, réseau et arrêt propre ».",
+        "key": "quiz-definir-contrat-project-configuration",
+        "title": "Quiz — Contrat API validé",
+        "description": "Vérifier les repères de la leçon « Définir le contrat Project et valider la configuration ».",
         "passingScore": 70,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Une API est vivante mais la base est inaccessible. Quel signal doit échouer ?",
-            "explanation": "Le processus existe mais ne peut pas servir correctement.",
+            "prompt": "Pourquoi utiliser safeParse dans le handler guidé ?",
+            "explanation": "safeParse rend la branche invalide explicite.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Readiness",
+                "label": "Pour séparer explicitement valeur typée et erreurs de validation",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Liveness uniquement",
+                "label": "Pour lancer Docker",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le lint",
+                "label": "Pour créer une migration",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le manifest PWA",
+                "label": "Pour publier une image",
                 "isCorrect": false,
                 "position": 4
               }
@@ -175,38 +199,9 @@
             "position": 1
           },
           {
-            "type": "single_choice",
-            "prompt": "Pourquoi borner le délai d’arrêt ?",
-            "explanation": "Le délai équilibre terminaison propre et disponibilité opérationnelle.",
-            "acceptedAnswers": [],
-            "options": [
-              {
-                "label": "Éviter qu’un processus reste bloqué indéfiniment tout en laissant une fenêtre au travail en cours",
-                "isCorrect": true,
-                "position": 1
-              },
-              {
-                "label": "Accélérer le build",
-                "isCorrect": false,
-                "position": 2
-              },
-              {
-                "label": "Supprimer les logs",
-                "isCorrect": false,
-                "position": 3
-              },
-              {
-                "label": "Garantir zéro erreur",
-                "isCorrect": false,
-                "position": 4
-              }
-            ],
-            "position": 2
-          },
-          {
             "type": "true_false",
-            "prompt": "Une erreur de configuration doit afficher la valeur complète du secret pour faciliter le debug.",
-            "explanation": "Le diagnostic peut nommer la variable sans exposer sa valeur.",
+            "prompt": "Une variable d’environnement absente doit être remplacée silencieusement par une valeur de production.",
+            "explanation": "Le starter échoue rapidement et lisiblement.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -220,6 +215,35 @@
                 "position": 2
               }
             ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle erreur relève du métier plutôt que du schéma ?",
+            "explanation": "Le schéma valide la forme ; le métier raisonne sur l’état du domaine.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un projet demandé n’existe pas",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "title est une chaîne vide",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le JSON est illisible",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "PORT n’est pas un nombre",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
             "position": 3
           }
         ]
@@ -228,59 +252,67 @@
     "sequence": [
       {
         "kind": "CONTENT",
-        "key": "content-configuration-contrat"
+        "key": "content-definir-contrat-project-configuration-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-definir-contrat-project-configuration-2"
       },
       {
         "kind": "RESOURCE",
         "key": "node-environment-variables"
       },
       {
-        "kind": "CONTENT",
-        "key": "content-health-readiness"
+        "kind": "RESOURCE",
+        "key": "hono-validation"
       },
       {
         "kind": "RESOURCE",
-        "key": "node-process"
+        "key": "zod-documentation"
       },
       {
         "kind": "CONTENT",
-        "key": "content-arret-propre"
+        "key": "content-definir-contrat-project-configuration-3"
       },
       {
-        "kind": "RESOURCE",
-        "key": "mdn-http-overview"
+        "kind": "CONTENT",
+        "key": "content-definir-contrat-project-configuration-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-definir-contrat-project-configuration-5"
       },
       {
         "kind": "EXERCISE",
-        "key": "exercise-valider-configuration-reseau-arret-propre"
+        "key": "exercise-definir-contrat-project-configuration"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-contrat-runtime"
+        "key": "assessment-contrat-api-valide"
       },
       {
         "kind": "QUIZ",
-        "key": "quiz-valider-configuration-reseau-arret-propre"
+        "key": "quiz-definir-contrat-project-configuration"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "status": "draft",
     "language": "fr",
-    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
-    "owner": "Rayan Chambet",
-    "createdAt": "2026-08-18",
+    "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
+    "owner": "LearnX",
+    "createdAt": "2026-08-20",
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
       {
-        "id": "REF-127-01",
+        "id": "REF-127-NODE-ENVIRONMENT-VARIABLES",
         "type": "official_documentation",
         "authors": [],
         "organization": "Node.js",
         "title": "Environment Variables — Node.js Documentation",
-        "year": 2026,
+        "year": null,
         "edition": null,
         "publication": "Node.js",
         "doi": null,
@@ -291,168 +323,181 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       },
       {
-        "id": "REF-127-02",
+        "id": "REF-127-HONO-VALIDATION",
         "type": "official_documentation",
         "authors": [],
-        "organization": "Node.js",
-        "title": "Process — Node.js Documentation",
-        "year": 2026,
-        "edition": null,
-        "publication": "Node.js",
-        "doi": null,
-        "url": "https://nodejs.org/api/process.html",
-        "accessedAt": "2026-08-18",
-        "evidenceLevel": "D",
-        "peerReviewed": false,
-        "language": "en",
-        "license": null,
-        "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
-      },
-      {
-        "id": "REF-127-03",
-        "type": "official_documentation",
-        "authors": [],
-        "organization": "Mozilla Developer Network",
-        "title": "An overview of HTTP",
+        "organization": "Hono",
+        "title": "Validation — Hono Documentation",
         "year": null,
         "edition": null,
-        "publication": "Mozilla Developer Network",
+        "publication": "Hono",
         "doi": null,
-        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+        "url": "https://hono.dev/docs/guides/validation",
         "accessedAt": "2026-08-18",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+      },
+      {
+        "id": "REF-127-ZOD-DOCUMENTATION",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Zod",
+        "title": "Zod Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "Zod",
+        "doi": null,
+        "url": "https://zod.dev/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [
-          {
-            "referenceId": "REF-127-01",
-            "locator": "process.env et spécification des fichiers .env",
-            "supports": "Soutient le bloc « content-configuration-contrat » et ses distinctions techniques."
-          }
-        ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
-        "notApplicableReason": null
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
-            "referenceId": "REF-127-02",
-            "locator": "process, process.env, exit codes, signals et événements de terminaison",
-            "supports": "Soutient le bloc « content-health-readiness » et ses distinctions techniques."
+            "referenceId": "REF-127-NODE-ENVIRONMENT-VARIABLES",
+            "locator": "process.env et fichiers .env",
+            "supports": "Repères techniques employés dans le bloc 2."
           },
           {
-            "referenceId": "REF-127-03",
-            "locator": "Architecture client-serveur, messages, connexions et intermédiaires",
-            "supports": "Soutient le bloc « content-health-readiness » et ses distinctions techniques."
+            "referenceId": "REF-127-ZOD-DOCUMENTATION",
+            "locator": "Définition de schémas et safeParse",
+            "supports": "Repères techniques employés dans le bloc 2."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-127-02",
-            "locator": "process, process.env, exit codes, signals et événements de terminaison",
-            "supports": "Soutient le bloc « content-arret-propre » et ses distinctions techniques."
+            "referenceId": "REF-127-HONO-VALIDATION",
+            "locator": "Validation des entrées dans une route Hono",
+            "supports": "Repères techniques employés dans le bloc 3."
+          },
+          {
+            "referenceId": "REF-127-ZOD-DOCUMENTATION",
+            "locator": "Définition de schémas et safeParse",
+            "supports": "Repères techniques employés dans le bloc 3."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       }
     ],
     "resourceChecks": [
       {
         "resourceKey": "node-environment-variables",
-        "referenceIds": ["REF-127-01"],
-        "pedagogicalRationale": "Comprendre comment la configuration est injectée et pourquoi elle doit être validée au démarrage.",
-        "learnerInstructions": "Lire process.env et .env files ; noter les types réellement retournés et trois erreurs de configuration possibles.",
+        "referenceIds": ["REF-127-NODE-ENVIRONMENT-VARIABLES"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Définir le contrat Project et valider la configuration ».",
+        "learnerInstructions": "Lire les types réellement fournis par process.env et relever pourquoi un parse explicite est requis.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       },
       {
-        "resourceKey": "node-process",
-        "referenceIds": ["REF-127-02"],
-        "pedagogicalRationale": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-        "learnerInstructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "resourceKey": "hono-validation",
+        "referenceIds": ["REF-127-HONO-VALIDATION"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Définir le contrat Project et valider la configuration ».",
+        "learnerInstructions": "Lire le passage sur la validation d’une entrée de route Hono.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       },
       {
-        "resourceKey": "mdn-http-overview",
-        "referenceIds": ["REF-127-03"],
-        "pedagogicalRationale": "Suivre une requête depuis le client jusqu’au service et identifier les points de panne.",
-        "learnerInstructions": "Lire client-serveur, proxies et flow ; dessiner le trajet d’une requête SourceLab.",
+        "resourceKey": "zod-documentation",
+        "referenceIds": ["REF-127-ZOD-DOCUMENTATION"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Définir le contrat Project et valider la configuration ».",
+        "learnerInstructions": "Lire safeParse et le format d’erreur ; reproduire l’exemple minimal du starter.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "contrat-runtime",
-        "assessmentTitle": "Mini-évaluation — Contrat de runtime",
+        "conceptSlug": "contrat-api-valide",
+        "assessmentTitle": "Mini-évaluation — Contrat API validé",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quand valider la configuration indispensable ?",
-            "explanation": "Un échec rapide évite un service partiellement configuré.",
+            "prompt": "À quel moment PORT doit-il être validé ?",
+            "explanation": "Une erreur de configuration doit être détectée au démarrage.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Avant d’ouvrir le service au trafic",
+                "label": "Avant que le serveur ouvre son port",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Après la première erreur utilisateur",
+                "label": "Après la première requête",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Seulement dans la CI",
+                "label": "Lors du build Docker seulement",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Lors de la compilation TypeScript uniquement",
+                "label": "Dans PostgreSQL",
                 "isCorrect": false,
                 "position": 4
               }
@@ -460,28 +505,28 @@
             "position": 1
           },
           {
-            "type": "multiple_choice",
-            "prompt": "Quelles informations peuvent appartenir à une readiness check ?",
-            "explanation": "La readiness couvre les dépendances nécessaires au service.",
+            "type": "single_choice",
+            "prompt": "Un title vide est reçu. Quel résultat est attendu ?",
+            "explanation": "La validation précède tout effet.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Connexion à PostgreSQL",
+                "label": "Une erreur de contrat sans création de projet",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Accès au stockage requis",
-                "isCorrect": true,
+                "label": "Un projet sans titre",
+                "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "État d’une migration indispensable",
-                "isCorrect": true,
+                "label": "Une erreur 500 générique",
+                "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Couleur du bouton principal",
+                "label": "Une publication GHCR",
                 "isCorrect": false,
                 "position": 4
               }
@@ -490,8 +535,8 @@
           },
           {
             "type": "true_false",
-            "prompt": "Toutes les valeurs de process.env sont déjà typées en nombres ou booléens.",
-            "explanation": "Les valeurs sont des chaînes et doivent être converties explicitement.",
+            "prompt": "Le passage futur de la mémoire à Prisma doit modifier le contrat HTTP public.",
+            "explanation": "La séparation du repository protège le contrat.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -511,26 +556,28 @@
       }
     ],
     "sequenceRationale": {
-      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
       "cycles": [
         {
-          "conceptSlug": "contrat-runtime",
+          "conceptSlug": "contrat-api-valide",
           "contentKeys": [
-            "content-configuration-contrat",
-            "content-health-readiness",
-            "content-arret-propre"
+            "content-definir-contrat-project-configuration-1",
+            "content-definir-contrat-project-configuration-2",
+            "content-definir-contrat-project-configuration-3",
+            "content-definir-contrat-project-configuration-4",
+            "content-definir-contrat-project-configuration-5"
           ],
           "resourceKeys": [
             "node-environment-variables",
-            "node-process",
-            "mdn-http-overview"
+            "hono-validation",
+            "zod-documentation"
           ],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-valider-configuration-reseau-arret-propre"
+            "key": "exercise-definir-contrat-project-configuration"
           },
-          "assessmentKey": "assessment-contrat-runtime",
-          "rationale": "La production « Un bootstrap TypeScript validé, des healthchecks et une procédure d’arrêt testée. » rend observable la maîtrise avant le quiz de synthèse."
+          "assessmentKey": "assessment-contrat-api-valide",
+          "rationale": "La production « Créer le premier contrat vertical SourceLab » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
         }
       ]
     },
@@ -543,18 +590,18 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
-        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
-        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
+        "Le starter autoritaire se trouve dans /Users/rayanchambet/Desktop/Workflow/sourcelab au commit 6dd1cda, tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
+        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
       ]
     },
     "changeLog": [
       {
-        "version": "1.0.0",
-        "date": "2026-08-18",
-        "author": "Rayan Chambet",
-        "change": "Création de la leçon « Valider configuration, réseau et arrêt propre » et de ses évaluations.",
-        "reviewRequired": "editorial_and_subject"
+        "version": "2.0.0",
+        "date": "2026-08-20",
+        "author": "LearnX",
+        "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
+        "reviewRequired": "editorial_technical_links_and_seed"
       }
     ]
   }

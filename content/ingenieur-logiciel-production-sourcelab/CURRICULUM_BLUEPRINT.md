@@ -1,75 +1,153 @@
-# Blueprint pédagogique — Ingénieur logiciel en production — Construire SourceLab
+# Blueprint pédagogique — SourceLab — Docker, API et socle d’ingestion
 
-## Finalité
+## Statut et finalité
 
-Construire SourceLab V1 comme produit autonome : créer un projet, importer des matériaux, suivre leur traitement, vérifier leur provenance et exporter un Source Pack propre.
+- Version : 2.0.0
+- Statut : `draft`
+- Classification : `CONTENT_ONLY`
+- Volume : 13 h 05, évaluations comprises
+- Dépôt : `/Users/rayanchambet/Desktop/Workflow/sourcelab`
+- Baseline starter : commit `6dd1cda`, tag `checkpoint-00-starter`
 
-SourceLab reste un produit indépendant : aucun exercice n’ajoute de tables, de routes ou de logique IA directement dans le dépôt LearnX. LearnX héberge le parcours ; le code du projet fil rouge vit ailleurs. Les intégrations futures sont des exports JSON ou API authentifiées et versionnées.
+La version 2 remplace intégralement le parcours de 42 jours. Elle vise un
+résultat borné : faire fonctionner localement une verticale SourceLab puis
+livrer une `SourceVersion` traçable au programme RAG suivant.
+
+Le slug et la clé canonique historiques sont conservés pour éviter une
+migration implicite ; le titre visible devient « SourceLab — Docker, API et
+socle d’ingestion ».
 
 ## Public et prérequis
 
-Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.
+Profil de départ retenu : TypeScript 3/3, API Node 2/3, Docker 1/3, Compose 1/3,
+PostgreSQL/Prisma 1/3, tests 0/3 et CI/CD 0/3. L'apprenant sait lire un dépôt
+TypeScript et exécuter des commandes pnpm, mais le parcours n'exige aucune
+autonomie préalable en infrastructure.
 
-## Résultats d’apprentissage
+## Résultats d'apprentissage
 
-1. Suivre et diagnostiquer une requête de bout en bout.
-2. Containeriser une API et un worker TypeScript avec Docker et Compose.
-3. Concevoir des contrats, transactions, jobs idempotents et migrations compatibles.
-4. Tester les frontières réelles et construire une CI reproductible.
-5. Déployer, observer et restaurer un service avec une méthode d’incident.
+1. Suivre une requête dans un starter Hono et valider ses entrées avec Zod.
+2. Construire une image API multi-stage et configurable au runtime.
+3. Orchestrer migration, PostgreSQL et API avec Compose.
+4. Modéliser `Project`, `Source`, `SourceVersion` et `ProcessingJob` avec Prisma.
+5. Traiter une source Markdown avec un worker simple et un checksum SHA-256.
+6. Prouver la verticale par tests d'intégration et smoke.
+7. Valider les changements en CI, publier l'image sur GHCR lors d'un tag et
+   revenir manuellement à un digest antérieur.
 
-## Principes d’authoring
+## Principes d'authoring
 
-- Chaque leçon produit une preuve réutilisable dans SourceLab.
-- Les ressources officielles sont guidées et ne valident jamais seules une notion.
-- Chaque notion obligatoire possède une mini-évaluation et chaque leçon un quiz.
-- Chaque étape possède une évaluation finale pratique.
-- Les contenus techniques distinguent règle stable, choix contextuel et hypothèse à mesurer.
-- Les sources de rédaction et les ressources apprenant sont déclarées séparément dans les sidecars.
-- Les contenus restent `draft` jusqu’aux revues humaines.
+- Le tag `checkpoint-00-starter` précède toute activité productive.
+- Chaque leçon part d'un checkpoint nommé et modifie le même projet fil rouge.
+- Les contenus internes expliquent la procédure ; les documentations externes
+  sont courtes, ciblées et ne remplacent jamais le guidage.
+- Après quinze minutes de blocage, un checkpoint solution peut servir de filet
+  de sécurité sans effacer la première tentative.
+- Chaque leçon produit une preuve réutilisée par la suivante.
+- Les évaluations d'étape réparent ou rejouent une frontière déjà enseignée ;
+  elles n'ajoutent aucune fonctionnalité surprise.
+- Les limites du worker et de la livraison sont affichées comme telles.
 
-## Architecture cible
+## Architecture
 
-### Étape — Comprendre le runtime et diagnostiquer
+### Étape 1 — Prendre en main une verticale TypeScript
 
-- Slug : `comprendre-runtime-diagnostiquer`
-- Durée : 7 jours
+- Slug : `demarrer-verticale-sourcelab`
+- Durée : 2 h 35, évaluation comprise
+- Module : `module-api-guidee-contrats`
 - Leçons :
-  - Suivre une requête du navigateur au processus (`suivre-requete-navigateur-processus`) — livrable : Une API minimale, un diagramme de séquence et un kit de diagnostic reproductible.
-  - Valider configuration, réseau et arrêt propre (`valider-configuration-reseau-arret-propre`) — livrable : Un bootstrap TypeScript validé, des healthchecks et une procédure d’arrêt testée.
-- Évaluation : Évaluation — Diagnostiquer une verticale SourceLab
+  - Prendre en main le starter et suivre une requête
+    (`prendre-en-main-starter-suivre-requete`) — 60 min — livrable :
+    `checkpoint-01-request-visible`.
+  - Définir le contrat Project et valider la configuration
+    (`definir-contrat-project-configuration`) — 75 min — livrable :
+    `checkpoint-02-project-contract`.
+- Évaluation : réparer une configuration et un contrat volontairement
+  dégradés — 20 min.
 
-### Étape — Containeriser un environnement multi-service
+### Étape 2 — Containeriser et persister SourceLab
 
-- Slug : `containeriser-environnement-multiservice`
-- Durée : 10 jours
+- Slug : `containeriser-persister-sourcelab`
+- Durée : 4 h, évaluation comprise
+- Module : `module-docker-compose-postgresql`
 - Leçons :
-  - Construire une image TypeScript reproductible (`construire-image-typescript-reproductible`) — livrable : Une image API multi-stage documentée, inspectée et exécutable sans état local implicite.
-  - Orchestrer API, worker et PostgreSQL avec Compose (`orchestrer-api-worker-postgresql-compose`) — livrable : Un environnement local API-worker-PostgreSQL reproductible, sain et documenté.
-- Évaluation : Évaluation — Exécuter SourceLab localement avec Docker
+  - Construire une image API reproductible
+    (`construire-image-api-reproductible`) — 90 min — livrable :
+    `checkpoint-03-api-container`.
+  - Orchestrer API et PostgreSQL avec Compose
+    (`orchestrer-api-postgresql-compose`) — 120 min — livrable :
+    `checkpoint-04-postgres-project`.
+- Évaluation : reconstruire la stack, prouver la persistance et diagnostiquer
+  le piège `localhost` — 30 min.
 
-### Étape — Intégrer données et traitements asynchrones
+### Étape 3 — Ingérer et livrer le socle RAG
 
-- Slug : `integrer-donnees-traitements`
-- Durée : 12 jours
+- Slug : `ingerer-livrer-socle-rag`
+- Durée : 6 h 30, évaluation comprise
+- Module : `module-sources-worker-livraison`
 - Leçons :
-  - Concevoir les contrats et le modèle du Source Workspace (`concevoir-contrats-modele-source-workspace`) — livrable : Une verticale Project → Source → Status avec contrats Zod, modèle Prisma et tests.
-  - Traiter les imports avec un worker idempotent (`traiter-imports-worker-idempotent`) — livrable : Une file PostgreSQL et un worker concurrents, reprenables et idempotents.
-- Évaluation : Évaluation — Livrer le Source Workspace résilient
+  - Modéliser et mettre en file une source
+    (`modeliser-mettre-en-file-source`) — 120 min — livrable :
+    `checkpoint-05-source-queued`.
+  - Traiter une source avec un worker simple
+    (`traiter-source-worker-simple`) — 130 min — livrable : une
+    `SourceVersion READY` dans `checkpoint-06-rag-ready-local`.
+  - Tester et livrer une image traçable
+    (`tester-livrer-image-tracable`) — 95 min — livrable :
+    `checkpoint-07-continuous-delivery`.
+- Évaluation finale : lancer le parcours complet, vérifier la version en base,
+  exécuter tests et smoke puis défendre publication et rollback — 45 min.
 
-### Étape — Tester, livrer et opérer SourceLab V1
+## État final du dépôt
 
-- Slug : `tester-livrer-operer`
-- Durée : 13 jours
-- Leçons :
-  - Tester migrations et intégrations réelles (`tester-migrations-integrations-reelles`) — livrable : Une matrice de tests complète et une migration répétée sur un environnement jetable.
-  - Construire CI, observabilité, déploiement et réponse à incident (`construire-ci-observabilite-deploiement`) — livrable : SourceLab V1 déployé, observable, testable et accompagné d’un runbook et d’un postmortem.
-- Évaluation : Évaluation finale — Mettre SourceLab V1 en production
+Le checkpoint final contient une API, un worker, Prisma, les migrations,
+Dockerfile, Compose, tests, smoke et workflows GitHub Actions. Le parcours
+nominal expose au moins :
 
+- `GET /health/live` et `GET /health/ready` ;
+- `POST /projects` ;
+- `POST /projects/:projectId/imports` ;
+- `GET /imports/:jobId` ;
+- `GET /sources/:sourceId/versions`.
+
+La source initiale est du texte ou Markdown avec `title`, `origin`,
+`versionLabel`, contenu normalisé et `checksumSha256`.
+
+## Frontière avec le programme RAG
+
+Ce programme s'arrête à :
+
+```text
+SourceVersion READY
++ texte ou Markdown normalisé
++ titre, origine et version
++ checksum SHA-256
+```
+
+Le programme RAG commence après `checkpoint-07-continuous-delivery`, dont la
+brique de données issue de `checkpoint-06-rag-ready-local` est :
+
+```text
+SourceVersion READY
+-> DocumentVersion
+-> Chunk avec offsets et provenance
+-> indexation et retrieval
+```
+
+`Chunk`, embeddings, pgvector, recherche, citations, génération, Program
+Builder et moteur de rubrique n'appartiennent pas à ce programme.
 
 ## Hors périmètre
 
-- Administrer Kubernetes en production.
-- Devenir SRE ou DevOps.
-- Construire une plateforme cloud multi-région.
-- Ajouter des fonctions IA avant que le socle soit fiable.
+- Plusieurs workers concurrents, verrouillage distribué et reprise après crash.
+- Retry automatique et file externe.
+- Fichiers binaires et stockage objet.
+- Déploiement cloud, Kubernetes, SRE et observabilité distribuée.
+- Fonctions IA et décisions de progression LearnX.
+
+## Remplacement de la version 1
+
+Les trois étapes, sept leçons et trois évaluations de cette carte remplacent
+les quatre étapes, huit leçons et quatre évaluations antérieures. Une progression
+existante ne doit pas être remappée silencieusement ; toute reprise de données
+ou logique de progression relève d'une validation technique distincte.

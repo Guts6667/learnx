@@ -2,75 +2,73 @@
   "specId": "PEDAGOGY_SPEC_128",
   "schemaVersion": 1,
   "programSlug": "ingenieur-logiciel-production-sourcelab",
-  "stageSlug": "containeriser-environnement-multiservice",
-  "moduleSlug": "module-containeriser-environnement-multiservice",
+  "stageSlug": "containeriser-persister-sourcelab",
+  "moduleSlug": "module-docker-compose-postgresql",
   "lesson": {
-    "title": "Construire une image TypeScript reproductible",
-    "slug": "construire-image-typescript-reproductible",
-    "summary": "Containeriser l’API SourceLab en comprenant les couches, le contexte de build, la séparation build/runtime et les propriétés opérationnelles de l’image.",
+    "title": "Construire une image API reproductible",
+    "slug": "construire-image-api-reproductible",
+    "summary": "Transformer le checkpoint API en image multi-stage minimale, configurable au runtime et inspectable sans embarquer les sources ou secrets inutiles.",
     "objectives": [
-      "Expliquer la différence entre image, container, couche et registre.",
-      "Écrire un Dockerfile multi-stage ne contenant que le runtime nécessaire.",
-      "Réduire les risques liés au cache, aux secrets et à l’utilisateur root."
+      "Distinguer image, container, couche et configuration runtime.",
+      "Compléter un Dockerfile multi-stage à partir de TODO guidés.",
+      "Vérifier contenu, utilisateur, cache et healthcheck de l’image."
     ],
     "prerequisites": [
-      "Disposer d’une API SourceLab démarrant et s’arrêtant proprement."
+      "Avoir produit checkpoint-02-project-contract ou repartir de ce checkpoint."
     ],
-    "estimatedMinutes": 190,
+    "estimatedMinutes": 90,
     "position": 1,
     "contentBlocks": [
       {
-        "key": "content-image-container",
-        "type": "definition",
+        "key": "content-construire-image-api-reproductible-1",
+        "type": "objective",
         "position": 1,
         "content": {
-          "text": "Une image est un artefact immuable composé de couches ; un container est une exécution de cette image avec sa configuration, son réseau et son système de fichiers écrivable. Recréer un container ne doit donc pas être assimilé à restaurer ses données.",
-          "sourceKeys": ["docker-overview"]
+          "text": "Le point de départ est checkpoint-02-project-contract. La brique checkpoint-03-api-container doit exécuter exactement cette API dans un container, sans changer son contrat ni inclure .env dans l’image.",
+          "sourceKeys": []
         }
       },
       {
-        "key": "content-multistage",
+        "key": "content-construire-image-api-reproductible-2",
         "type": "definition",
         "position": 2,
         "content": {
-          "text": "Un build multi-stage sépare installation, compilation et runtime. Pour SourceLab, le compilateur, les tests et les dépendances de développement restent hors de l’image finale ; seuls le JavaScript produit, les dépendances de production et les fichiers explicitement requis sont copiés.",
+          "text": "Une image est un artefact composé de couches ; un container est une exécution de cette image. Un build multi-stage garde compilation et dépendances de développement dans le stage de build, puis copie uniquement le JavaScript et les dépendances nécessaires dans le stage de runtime.",
+          "sourceKeys": ["docker-multi-stage-builds"]
+        }
+      },
+      {
+        "key": "content-construire-image-api-reproductible-3",
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Le lockfile est copié avant les sources afin que l’installation puisse rester en cache lorsque seul le code change. .dockerignore exclut .git, node_modules, résultats de tests et secrets. Le stage final utilise un utilisateur non-root et reçoit PORT au démarrage, pas pendant le build.",
           "sourceKeys": [
-            "docker-multi-stage-builds",
-            "docker-build-best-practices"
+            "docker-build-best-practices",
+            "docker-multi-stage-builds"
           ]
         }
       },
       {
-        "key": "content-reproductibilite-securite",
+        "key": "content-construire-image-api-reproductible-4",
         "type": "callout",
-        "position": 3,
+        "position": 4,
         "content": {
-          "text": "Une image exploitable utilise une base identifiée, un lockfile, un contexte réduit par .dockerignore, un utilisateur non-root et aucun secret incorporé. Le tag facilite la lecture humaine ; le digest identifie précisément le contenu déployé.",
-          "sourceKeys": ["docker-build-best-practices"]
+          "text": "Guidage : compléter les TODO du Dockerfile, construire deux fois, comparer les étapes réutilisées, inspecter l’utilisateur puis lancer l’image avec PORT. Une fiche indique la commande attendue après chaque modification.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-construire-image-api-reproductible-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Preuve de fin : GET /health/live répond depuis l’hôte, docker history ne révèle aucun secret et le container fonctionne après suppression du dossier node_modules de l’hôte. L’image sera réutilisée sans reconstruction conceptuelle par Compose.",
+          "sourceKeys": []
         }
       }
     ],
     "resources": [
-      {
-        "key": "docker-overview",
-        "type": "website",
-        "title": "Docker overview",
-        "author": "Docker",
-        "url": "https://docs.docker.com/get-started/docker-overview/",
-        "citation": "Docker. (n.d.). Docker overview. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
-        "guidance": {
-          "objective": "Distinguer image, container, registre et runtime.",
-          "instructions": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
-          "scope": "Images, containers, registries et architecture du moteur",
-          "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
-          "alternativeResourceKey": null
-        },
-        "isRequired": true,
-        "estimatedMinutes": 12,
-        "position": 1
-      },
       {
         "key": "docker-multi-stage-builds",
         "type": "website",
@@ -78,18 +76,18 @@
         "author": "Docker",
         "url": "https://docs.docker.com/build/building/multi-stage/",
         "citation": "Docker. (n.d.). Multi-stage builds. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire la page et identifier les fichiers qui doivent ou ne doivent pas atteindre l’image finale.",
+        "description": "Lire l’exemple à deux stages et repérer ce qui est copié dans l’image finale.",
         "guidance": {
-          "objective": "Séparer dépendances, compilation et runtime dans un Dockerfile TypeScript.",
-          "instructions": "Lire la page et identifier les fichiers qui doivent ou ne doivent pas atteindre l’image finale.",
-          "scope": "Stages de build, COPY --from et cible runtime",
+          "objective": "Soutenir la réalisation guidée de la leçon « Construire une image API reproductible ».",
+          "instructions": "Lire l’exemple à deux stages et repérer ce qui est copié dans l’image finale.",
+          "scope": "Séparation des étapes de build et de runtime",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
         "estimatedMinutes": 10,
-        "position": 2
+        "position": 1
       },
       {
         "key": "docker-build-best-practices",
@@ -98,43 +96,46 @@
         "author": "Docker",
         "url": "https://docs.docker.com/build/building/best-practices/",
         "citation": "Docker. (n.d.). Building best practices. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire les recommandations sur images de base, cache, multi-stage et CI ; convertir cinq points en critères de revue.",
+        "description": "Lire uniquement les sections sur contexte, cache, base, utilisateur et secrets.",
         "guidance": {
-          "objective": "Construire une image petite, reproductible et exploitable.",
-          "instructions": "Lire les recommandations sur images de base, cache, multi-stage et CI ; convertir cinq points en critères de revue.",
-          "scope": "Images de base, cache, contexte, sécurité et CI",
+          "objective": "Soutenir la réalisation guidée de la leçon « Construire une image API reproductible ».",
+          "instructions": "Lire uniquement les sections sur contexte, cache, base, utilisateur et secrets.",
+          "scope": "Contexte, cache, base, utilisateur et secrets",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 15,
-        "position": 3
+        "estimatedMinutes": 8,
+        "position": 2
       }
     ],
     "concepts": [
       {
-        "title": "Image de runtime reproductible",
-        "slug": "image-runtime-reproductible",
-        "description": "Une image de production doit pouvoir être reconstruite, inspectée et exécutée avec un contenu minimal, sans dépendre d’un état local caché.",
+        "title": "Image API reproductible",
+        "slug": "image-api-reproductible",
+        "description": "Une image identifiée contient l’artefact nécessaire au runtime, tandis que configuration et données lui sont injectées ou montées séparément.",
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["docker-overview"],
+        "resourceKeys": [
+          "docker-multi-stage-builds",
+          "docker-build-best-practices"
+        ],
         "assessment": {
-          "key": "assessment-image-runtime-reproductible",
+          "key": "assessment-image-api-reproductible",
           "type": "case_question",
-          "title": "Mini-évaluation — Image de runtime reproductible",
+          "title": "Mini-évaluation — Image API reproductible",
           "questionCount": 3
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-construire-image-typescript-reproductible",
-        "title": "Containeriser l’API SourceLab",
-        "description": "Écrire un Dockerfile multi-stage et un .dockerignore. Construire l’image deux fois, expliquer l’usage du cache, inspecter sa taille et son utilisateur, puis exécuter l’API avec une configuration injectée au runtime. Prouver qu’aucun fichier .env, source TypeScript inutile ou secret n’est présent.",
-        "type": "project",
+        "key": "exercise-construire-image-api-reproductible",
+        "title": "Containeriser l’API guidée",
+        "description": "Depuis checkpoint-02-project-contract, compléter Dockerfile et .dockerignore, construire deux fois, inspecter contenu et utilisateur, puis appeler le healthcheck avec une configuration runtime. Livrer checkpoint-03-api-container.",
+        "type": "practice",
         "isRequired": true,
         "weight": 2,
         "position": 1,
@@ -143,36 +144,36 @@
     ],
     "quizzes": [
       {
-        "key": "quiz-construire-image-typescript-reproductible",
-        "title": "Quiz — Images et Dockerfile",
-        "description": "Vérifier les acquis essentiels de la leçon « Construire une image TypeScript reproductible ».",
+        "key": "quiz-construire-image-api-reproductible",
+        "title": "Quiz — Image API reproductible",
+        "description": "Vérifier les repères de la leçon « Construire une image API reproductible ».",
         "passingScore": 70,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "À quoi sert .dockerignore ?",
-            "explanation": "Le contexte est envoyé au builder ; le réduire améliore vitesse et sécurité.",
+            "prompt": "Quelle propriété identifie précisément le contenu d’une image ?",
+            "explanation": "Le digest est lié au contenu.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Exclure du contexte les fichiers inutiles ou sensibles avant le build",
+                "label": "Son digest",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Bloquer le réseau du container",
+                "label": "Le nom du container",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Créer un volume",
+                "label": "Le port publié",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Valider les variables",
+                "label": "Le volume local",
                 "isCorrect": false,
                 "position": 4
               }
@@ -180,38 +181,9 @@
             "position": 1
           },
           {
-            "type": "single_choice",
-            "prompt": "Pourquoi exécuter avec un utilisateur non-root ?",
-            "explanation": "Le principe du moindre privilège s’applique aussi au runtime.",
-            "acceptedAnswers": [],
-            "options": [
-              {
-                "label": "Limiter l’impact d’une compromission ou d’une erreur dans le container",
-                "isCorrect": true,
-                "position": 1
-              },
-              {
-                "label": "Rendre TypeScript plus rapide",
-                "isCorrect": false,
-                "position": 2
-              },
-              {
-                "label": "Éviter les migrations",
-                "isCorrect": false,
-                "position": 3
-              },
-              {
-                "label": "Remplacer TLS",
-                "isCorrect": false,
-                "position": 4
-              }
-            ],
-            "position": 2
-          },
-          {
             "type": "true_false",
-            "prompt": "Un tag mutable garantit à lui seul que staging et production exécutent les mêmes octets.",
-            "explanation": "Un digest ou un artefact immuable fournit une identité plus forte.",
+            "prompt": "Recréer un container restaure automatiquement les données non montées.",
+            "explanation": "Le système de fichiers écrivable du container est éphémère.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -225,6 +197,35 @@
                 "position": 2
               }
             ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel contrôle réduit le risque d’exécution privilégiée ?",
+            "explanation": "Le principe de moindre privilège s’applique au runtime.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Utiliser un utilisateur non-root dans le stage final",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ajouter un deuxième tag",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Exposer tous les ports",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Copier .git",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
             "position": 3
           }
         ]
@@ -233,73 +234,58 @@
     "sequence": [
       {
         "kind": "CONTENT",
-        "key": "content-image-container"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "docker-overview"
+        "key": "content-construire-image-api-reproductible-1"
       },
       {
         "kind": "CONTENT",
-        "key": "content-multistage"
+        "key": "content-construire-image-api-reproductible-2"
       },
       {
         "kind": "RESOURCE",
         "key": "docker-multi-stage-builds"
       },
       {
-        "kind": "CONTENT",
-        "key": "content-reproductibilite-securite"
-      },
-      {
         "kind": "RESOURCE",
         "key": "docker-build-best-practices"
       },
       {
+        "kind": "CONTENT",
+        "key": "content-construire-image-api-reproductible-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-image-api-reproductible-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-image-api-reproductible-5"
+      },
+      {
         "kind": "EXERCISE",
-        "key": "exercise-construire-image-typescript-reproductible"
+        "key": "exercise-construire-image-api-reproductible"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-image-runtime-reproductible"
+        "key": "assessment-image-api-reproductible"
       },
       {
         "kind": "QUIZ",
-        "key": "quiz-construire-image-typescript-reproductible"
+        "key": "quiz-construire-image-api-reproductible"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "status": "draft",
     "language": "fr",
-    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
-    "owner": "Rayan Chambet",
-    "createdAt": "2026-08-18",
+    "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
+    "owner": "LearnX",
+    "createdAt": "2026-08-20",
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
       {
-        "id": "REF-128-01",
-        "type": "official_documentation",
-        "authors": [],
-        "organization": "Docker",
-        "title": "Docker overview",
-        "year": null,
-        "edition": null,
-        "publication": "Docker",
-        "doi": null,
-        "url": "https://docs.docker.com/get-started/docker-overview/",
-        "accessedAt": "2026-08-18",
-        "evidenceLevel": "D",
-        "peerReviewed": false,
-        "language": "en",
-        "license": null,
-        "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
-      },
-      {
-        "id": "REF-128-02",
+        "id": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
         "type": "official_documentation",
         "authors": [],
         "organization": "Docker",
@@ -315,10 +301,10 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       },
       {
-        "id": "REF-128-03",
+        "id": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
         "type": "official_documentation",
         "authors": [],
         "organization": "Docker",
@@ -334,130 +320,123 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [
-          {
-            "referenceId": "REF-128-01",
-            "locator": "Images, containers, registries et architecture du moteur",
-            "supports": "Soutient le bloc « content-image-container » et ses distinctions techniques."
-          }
-        ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
-        "notApplicableReason": null
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
-            "referenceId": "REF-128-02",
-            "locator": "Stages de build, COPY --from et cible runtime",
-            "supports": "Soutient le bloc « content-multistage » et ses distinctions techniques."
-          },
-          {
-            "referenceId": "REF-128-03",
-            "locator": "Images de base, cache, contexte, sécurité et CI",
-            "supports": "Soutient le bloc « content-multistage » et ses distinctions techniques."
+            "referenceId": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
+            "locator": "Séparation des étapes de build et de runtime",
+            "supports": "Repères techniques employés dans le bloc 2."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-128-03",
-            "locator": "Images de base, cache, contexte, sécurité et CI",
-            "supports": "Soutient le bloc « content-reproductibilite-securite » et ses distinctions techniques."
+            "referenceId": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
+            "locator": "Contexte, cache, base, utilisateur et secrets",
+            "supports": "Repères techniques employés dans le bloc 3."
+          },
+          {
+            "referenceId": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
+            "locator": "Séparation des étapes de build et de runtime",
+            "supports": "Repères techniques employés dans le bloc 3."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       }
     ],
     "resourceChecks": [
       {
-        "resourceKey": "docker-overview",
-        "referenceIds": ["REF-128-01"],
-        "pedagogicalRationale": "Distinguer image, container, registre et runtime.",
-        "learnerInstructions": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
-        "language": "en",
-        "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
-        "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
-        "urlStatus": "ok",
-        "mediaSegment": null,
-        "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
-      },
-      {
         "resourceKey": "docker-multi-stage-builds",
-        "referenceIds": ["REF-128-02"],
-        "pedagogicalRationale": "Séparer dépendances, compilation et runtime dans un Dockerfile TypeScript.",
-        "learnerInstructions": "Lire la page et identifier les fichiers qui doivent ou ne doivent pas atteindre l’image finale.",
+        "referenceIds": ["REF-128-DOCKER-MULTI-STAGE-BUILDS"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Construire une image API reproductible ».",
+        "learnerInstructions": "Lire l’exemple à deux stages et repérer ce qui est copié dans l’image finale.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       },
       {
         "resourceKey": "docker-build-best-practices",
-        "referenceIds": ["REF-128-03"],
-        "pedagogicalRationale": "Construire une image petite, reproductible et exploitable.",
-        "learnerInstructions": "Lire les recommandations sur images de base, cache, multi-stage et CI ; convertir cinq points en critères de revue.",
+        "referenceIds": ["REF-128-DOCKER-BUILD-BEST-PRACTICES"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Construire une image API reproductible ».",
+        "learnerInstructions": "Lire uniquement les sections sur contexte, cache, base, utilisateur et secrets.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "image-runtime-reproductible",
-        "assessmentTitle": "Mini-évaluation — Image de runtime reproductible",
+        "conceptSlug": "image-api-reproductible",
+        "assessmentTitle": "Mini-évaluation — Image API reproductible",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quel élément doit rester hors de l’image runtime ?",
-            "explanation": "Le multi-stage retire les outils de construction de la cible finale.",
+            "prompt": "Où doit se trouver TypeScript dans un build multi-stage ?",
+            "explanation": "Le runtime reçoit l’artefact compilé et ses dépendances utiles.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Le compilateur TypeScript utilisé uniquement pendant le build",
+                "label": "Dans le stage de build, sauf besoin explicite au runtime",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Le JavaScript compilé",
+                "label": "Toujours dans l’image finale",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le fichier package nécessaire au runtime",
+                "label": "Dans le volume PostgreSQL",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le code de démarrage",
+                "label": "Dans le request ID",
                 "isCorrect": false,
                 "position": 4
               }
@@ -465,28 +444,28 @@
             "position": 1
           },
           {
-            "type": "multiple_choice",
-            "prompt": "Quels choix améliorent la reproductibilité ?",
-            "explanation": "La reproductibilité réduit les entrées implicites.",
+            "type": "single_choice",
+            "prompt": "Pourquoi copier le lockfile avant les sources ?",
+            "explanation": "L’ordre des couches rend le cache utile et prévisible.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Lockfile figé",
+                "label": "Pour réutiliser la couche d’installation si les dépendances ne changent pas",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Base image identifiée",
-                "isCorrect": true,
+                "label": "Pour stocker les secrets",
+                "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Contexte de build minimal",
-                "isCorrect": true,
+                "label": "Pour remplacer Compose",
+                "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Copier le répertoire personnel complet",
+                "label": "Pour créer les projets",
                 "isCorrect": false,
                 "position": 4
               }
@@ -495,8 +474,8 @@
           },
           {
             "type": "true_false",
-            "prompt": "Un container est une sauvegarde durable des données de l’application.",
-            "explanation": "Le filesystem écrivable du container est remplaçable ; la persistance doit être externe.",
+            "prompt": "Un fichier .env doit être copié dans l’image afin que tous les environnements partagent les mêmes secrets.",
+            "explanation": "La configuration est injectée au runtime.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -516,26 +495,27 @@
       }
     ],
     "sequenceRationale": {
-      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
       "cycles": [
         {
-          "conceptSlug": "image-runtime-reproductible",
+          "conceptSlug": "image-api-reproductible",
           "contentKeys": [
-            "content-image-container",
-            "content-multistage",
-            "content-reproductibilite-securite"
+            "content-construire-image-api-reproductible-1",
+            "content-construire-image-api-reproductible-2",
+            "content-construire-image-api-reproductible-3",
+            "content-construire-image-api-reproductible-4",
+            "content-construire-image-api-reproductible-5"
           ],
           "resourceKeys": [
-            "docker-overview",
             "docker-multi-stage-builds",
             "docker-build-best-practices"
           ],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-construire-image-typescript-reproductible"
+            "key": "exercise-construire-image-api-reproductible"
           },
-          "assessmentKey": "assessment-image-runtime-reproductible",
-          "rationale": "La production « Une image API multi-stage documentée, inspectée et exécutable sans état local implicite. » rend observable la maîtrise avant le quiz de synthèse."
+          "assessmentKey": "assessment-image-api-reproductible",
+          "rationale": "La production « Containeriser l’API guidée » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
         }
       ]
     },
@@ -548,18 +528,18 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
-        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
-        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
+        "Le starter autoritaire se trouve dans /Users/rayanchambet/Desktop/Workflow/sourcelab au commit 6dd1cda, tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
+        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
       ]
     },
     "changeLog": [
       {
-        "version": "1.0.0",
-        "date": "2026-08-18",
-        "author": "Rayan Chambet",
-        "change": "Création de la leçon « Construire une image TypeScript reproductible » et de ses évaluations.",
-        "reviewRequired": "editorial_and_subject"
+        "version": "2.0.0",
+        "date": "2026-08-20",
+        "author": "LearnX",
+        "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
+        "reviewRequired": "editorial_technical_links_and_seed"
       }
     ]
   }
