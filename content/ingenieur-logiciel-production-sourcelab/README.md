@@ -5,6 +5,8 @@
 - Version : 2.0.0
 - Statut : `draft`
 - Classification : `CONTENT_ONLY`
+- Identité runtime : slug et clé canonique
+  `sourcelab-docker-api-socle-ingestion`
 - Projet fil rouge : dépôt SourceLab autonome, séparé de LearnX
 - Starter local : `/Users/rayanchambet/Desktop/Workflow/sourcelab`, commit
   `6dd1cda`, tag `checkpoint-00-starter`
@@ -20,13 +22,21 @@ image Docker, PostgreSQL avec Prisma, une ingestion texte ou Markdown, un worker
 simple, des tests et une image GHCR traçable. Le checkpoint final fournit au
 programme RAG une `SourceVersion` prête à être découpée et indexée.
 
-Cette version remplace le programme historique « Ingénieur logiciel en
-production — Construire SourceLab » sans changer son slug ni sa clé canonique.
+Cette version succède au programme historique « Ingénieur logiciel en
+production — Construire SourceLab » sous une identité runtime distincte. La V1
+conserve son slug, sa clé canonique et tout son historique ; aucune progression
+n’est transférée implicitement vers la V2.
 
 Le parcours part d'un starter fonctionnel. Il ne demande jamais de créer une
 API depuis une page blanche après une lecture générale. Chaque leçon annonce le
 checkpoint de départ, les fichiers à modifier, les commandes de preuve, la
 brique réutilisée ensuite et un checkpoint de récupération.
+
+Les sept tâches productives conservent `resourceKeys: []` conformément au guide
+d’authoring : elles ne sont pas transformées en tâches passives ni dupliquées.
+Les ressources guidées et les blocs procéduraux apparaissent dans la séquence
+avant chaque exercice ou projet ; l’apprenant dispose donc de l’aide sans que la
+lecture soit comptée comme une seconde activité.
 
 ## Résultat observable
 

@@ -171,7 +171,7 @@ describe('seed program selection', () => {
       'platform-apm-entretien-tryhackme',
       'pilotage-projets-ia-iso-42001',
       'psychology-foundations-pilot',
-      'ingenieur-logiciel-production-sourcelab',
+      'sourcelab-docker-api-socle-ingestion',
       'ai-product-engineer-sourcelab',
     ]);
   });
@@ -201,7 +201,7 @@ describe('seed program selection', () => {
   });
 
   it.each([
-    'ingenieur-logiciel-production-sourcelab',
+    'sourcelab-docker-api-socle-ingestion',
     'ai-product-engineer-sourcelab',
   ])('peut isoler le programme SourceLab %s', (slug) => {
     expect(getSelectedSeedSlugs({ LEARNX_SEED_PROGRAM_SLUG: slug })).toEqual([
@@ -503,7 +503,7 @@ describe('sample program seed', () => {
       expectedStageCount: 3,
       expectedTitle: 'SourceLab — Docker, API et socle d’ingestion',
       readSeed: readSourceLabProductionSeed,
-      slug: 'ingenieur-logiciel-production-sourcelab',
+      slug: 'sourcelab-docker-api-socle-ingestion',
       specNumbers: [126, 127, 128, 129, 130, 131, 132],
     },
     {
@@ -537,6 +537,7 @@ describe('sample program seed', () => {
       );
 
       expect(seed.program).toMatchObject({
+        canonicalProgramKey: slug,
         locale: 'fr',
         slug,
         status: 'draft',
@@ -678,6 +679,31 @@ describe('sample program seed', () => {
     );
 
     expect(lessonMinutes + assessmentMinutes).toBe(785);
+  });
+
+  it('guides every productive SourceLab V2 task before the exercise without duplicating resources on the task', async () => {
+    const seed = await readSourceLabProductionSeed();
+    const lessons = seed.program.stages.flatMap((stage) =>
+      stage.modules.flatMap((module) => module.lessons),
+    );
+
+    for (const lesson of lessons) {
+      const [task] = lesson.tasks;
+      const exerciseIndex = lesson.sequence.findIndex(
+        ({ kind, key }) => kind === 'EXERCISE' && key === task.key,
+      );
+      const resourceIndexes = lesson.sequence.flatMap((item, index) =>
+        item.kind === 'RESOURCE' ? [index] : [],
+      );
+
+      expect(task.type).toMatch(/^(practice|project)$/);
+      expect(task.resourceKeys).toEqual([]);
+      expect(exerciseIndex).toBeGreaterThan(-1);
+      expect(resourceIndexes.length).toBeGreaterThanOrEqual(1);
+      expect(resourceIndexes.every((index) => index < exerciseIndex)).toBe(
+        true,
+      );
+    }
   });
 
   it('reads and imports the English psychology pilot as an isolated draft', async () => {
