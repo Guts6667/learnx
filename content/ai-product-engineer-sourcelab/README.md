@@ -2,12 +2,15 @@
 
 ## Statut
 
-- Version : 1.0.0
+- Version : 1.0.1
 - Statut : `draft`
 - Classification : `CONTENT_ONLY`
 - Projet fil rouge : SourceLab, produit autonome dans un dépôt et une base séparés de LearnX
 - Durée indicative : 49 jours
-- Public : Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.
+- Public : développeur TypeScript/Product Engineer ayant terminé
+  `checkpoint-07-continuous-delivery` du programme SourceLab 2.0, ou disposant
+  d’un service local équivalent produisant une `SourceVersion READY` traçable,
+  et souhaitant construire des produits IA fiables sans dépendre de Python.
 
 ## Promesse produit
 

@@ -2,70 +2,88 @@
   "specId": "PEDAGOGY_SPEC_131",
   "schemaVersion": 1,
   "programSlug": "ingenieur-logiciel-production-sourcelab",
-  "stageSlug": "integrer-donnees-traitements",
-  "moduleSlug": "module-integrer-donnees-traitements",
+  "stageSlug": "ingerer-livrer-socle-rag",
+  "moduleSlug": "module-sources-worker-livraison",
   "lesson": {
-    "title": "Traiter les imports avec un worker idempotent",
-    "slug": "traiter-imports-worker-idempotent",
-    "summary": "Exécuter les traitements longs hors requête HTTP, réserver les jobs de manière concurrente et reprendre les erreurs sans produire de doublons.",
+    "title": "Traiter une source avec un worker simple",
+    "slug": "traiter-source-worker-simple",
+    "summary": "Activer un worker pédagogique à un job à la fois, normaliser un texte Markdown, calculer son SHA-256 et publier un statut READY traçable.",
     "objectives": [
-      "Expliquer la livraison au moins une fois et ses conséquences.",
-      "Réserver un job avec verrouillage transactionnel sans double traitement.",
-      "Classer les erreurs en récupérables ou définitives et borner les retries."
+      "Expliquer la frontière entre requête API courte et traitement différé.",
+      "Implémenter les transitions QUEUED, PROCESSING, READY ou FAILED pour un job unique.",
+      "Calculer et vérifier un checksum SHA-256 du contenu normalisé."
     ],
     "prerequisites": [
-      "Avoir défini ProcessingJob et les transitions du Source Workspace."
+      "Avoir produit checkpoint-05-source-queued ou repartir de ce checkpoint."
     ],
-    "estimatedMinutes": 210,
+    "estimatedMinutes": 130,
     "position": 2,
     "contentBlocks": [
       {
-        "key": "content-asynchronisme",
-        "type": "definition",
+        "key": "content-traiter-source-worker-simple-1",
+        "type": "objective",
         "position": 1,
         "content": {
-          "text": "L’API enregistre l’intention et retourne un identifiant de job ; le worker prend ensuite le travail. Ce découplage protège le temps de réponse et permet de contrôler la concurrence, mais il introduit des états intermédiaires que le produit doit rendre visibles.",
-          "sourceKeys": ["postgres-transactions"]
+          "text": "Le point de départ est checkpoint-05-source-queued. La brique checkpoint-06-rag-ready-local active le service worker, traite un seul job à la fois et rend SourceVersion READY. Elle ne promet ni concurrence, ni retry, ni reprise automatique après crash.",
+          "sourceKeys": []
         }
       },
       {
-        "key": "content-reservation-job",
+        "key": "content-traiter-source-worker-simple-2",
         "type": "definition",
         "position": 2,
         "content": {
-          "text": "Une file PostgreSQL simple peut réserver un job dans une transaction avec FOR UPDATE SKIP LOCKED. Le verrou évite que deux workers sélectionnent la même ligne au même moment ; la transaction doit rester courte et enregistrer la prise en charge avant d’effectuer le travail externe.",
-          "sourceKeys": ["postgres-select-locking"]
+          "text": "L’API enregistre rapidement l’intention et renvoie jobId. Le worker interroge ensuite un job QUEUED, le marque PROCESSING, normalise le contenu, calcule son empreinte puis termine. Les statuts rendent cette frontière observable par le produit.",
+          "sourceKeys": ["postgres-transactions", "node-process"]
         }
       },
       {
-        "key": "content-idempotence-retry",
-        "type": "callout",
+        "key": "content-traiter-source-worker-simple-3",
+        "type": "example",
         "position": 3,
         "content": {
-          "text": "Un retry signifie qu’une étape peut être rejouée. Chaque effet doit donc être idempotent ou protégé par une clé stable : stocker un même hash, créer une même version ou publier un même résultat ne doit pas multiplier les données. Les erreurs de timeout peuvent être retentées ; un format interdit doit échouer définitivement.",
-          "sourceKeys": ["postgres-transactions", "postgres-select-locking"]
+          "text": "La normalisation V2 convertit les fins de ligne, retire les espaces terminaux et garantit une fin de fichier unique. createHash(\"sha256\") calcule ensuite le checksum du normalizedContent exact. Relancer le calcul sur la même chaîne doit produire la même empreinte.",
+          "sourceKeys": ["node-crypto"]
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Guidage : compléter la fonction normalizeMarkdown déjà testée, puis processNextJob, la boucle bornée et les routes GET /imports/:jobId et GET /sources/:sourceId/versions. Un cas forcé d’échec doit conserver errorCode sans masquer la version.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Limite explicite : le SELECT naïf n’est pas sûr pour plusieurs workers et un crash en PROCESSING exige une intervention. Ces sujets sont exclus du parcours court. La preuve de fin est checkpoint-06-rag-ready-local avec une SourceVersion READY et un checksum reproductible, pas une file de production.",
+          "sourceKeys": []
         }
       }
     ],
     "resources": [
       {
-        "key": "postgres-select-locking",
+        "key": "node-crypto",
         "type": "website",
-        "title": "SELECT — PostgreSQL Documentation",
-        "author": "PostgreSQL Global Development Group",
-        "url": "https://www.postgresql.org/docs/current/sql-select.html",
-        "citation": "PostgreSQL Global Development Group. (n.d.). SELECT — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
+        "title": "Crypto — Node.js Documentation",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/crypto.html",
+        "citation": "Node.js. (2026). Crypto — Node.js Documentation. Documentation officielle.",
+        "description": "Lire createHash et reproduire le SHA-256 d’une chaîne connue.",
         "guidance": {
-          "objective": "Réserver un job sans que deux workers le traitent simultanément.",
-          "instructions": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
-          "scope": "Clause locking, FOR UPDATE et SKIP LOCKED",
+          "objective": "Soutenir la réalisation guidée de la leçon « Traiter une source avec un worker simple ».",
+          "instructions": "Lire createHash et reproduire le SHA-256 d’une chaîne connue.",
+          "scope": "createHash et empreinte SHA-256",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 15,
+        "estimatedMinutes": 8,
         "position": 1
       },
       {
@@ -75,17 +93,17 @@
         "author": "PostgreSQL Global Development Group",
         "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
         "citation": "PostgreSQL Global Development Group. (n.d.). Transactions — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "description": "Relire seulement COMMIT et ROLLBACK pour borner les transitions du job.",
         "guidance": {
-          "objective": "Protéger la cohérence entre fichier, source, version et job.",
-          "instructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
-          "scope": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+          "objective": "Soutenir la réalisation guidée de la leçon « Traiter une source avec un worker simple ».",
+          "instructions": "Relire seulement COMMIT et ROLLBACK pour borner les transitions du job.",
+          "scope": "BEGIN, COMMIT, ROLLBACK et atomicité",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 12,
+        "estimatedMinutes": 8,
         "position": 2
       },
       {
@@ -95,42 +113,46 @@
         "author": "Node.js",
         "url": "https://nodejs.org/api/process.html",
         "citation": "Node.js. (2026). Process — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "description": "Lire les codes de sortie et signaux utiles à l’arrêt du worker pédagogique.",
         "guidance": {
-          "objective": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-          "instructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
-          "scope": "process, process.env, exit codes, signals et événements de terminaison",
+          "objective": "Soutenir la réalisation guidée de la leçon « Traiter une source avec un worker simple ».",
+          "instructions": "Lire les codes de sortie et signaux utiles à l’arrêt du worker pédagogique.",
+          "scope": "Identifiant du processus, environnement, signaux et code de sortie",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 12,
+        "estimatedMinutes": 6,
         "position": 3
       }
     ],
     "concepts": [
       {
-        "title": "Traitement asynchrone idempotent",
-        "slug": "traitement-asynchrone-idempotent",
-        "description": "Un worker fiable peut reprendre un job au moins une fois sans dupliquer les effets, tout en bornant concurrence, délais et tentatives.",
+        "title": "Traitement de source traçable",
+        "slug": "traitement-source-tracable",
+        "description": "Un worker simple transforme une version par transitions visibles et produit un contenu normalisé ainsi qu’une empreinte reproductible.",
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["postgres-select-locking"],
+        "resourceKeys": [
+          "node-crypto",
+          "postgres-transactions",
+          "node-process"
+        ],
         "assessment": {
-          "key": "assessment-traitement-asynchrone-idempotent",
+          "key": "assessment-traitement-source-tracable",
           "type": "case_question",
-          "title": "Mini-évaluation — Traitement asynchrone idempotent",
+          "title": "Mini-évaluation — Traitement de source traçable",
           "questionCount": 3
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-traiter-imports-worker-idempotent",
-        "title": "Construire la boucle de jobs SourceLab",
-        "description": "Implémenter enqueue, claim, heartbeat optionnel, success et failure. Lancer deux workers concurrents, tuer l’un pendant un import, puis redémarrer. Prouver qu’un seul résultat canonique existe, que le job abandonné redevient récupérable et qu’une erreur définitive n’est pas retentée.",
+        "key": "exercise-traiter-source-worker-simple",
+        "title": "Produire une SourceVersion READY",
+        "description": "Depuis checkpoint-05-source-queued, activer le worker Compose, compléter normalisation, checksum, transitions et routes de consultation. Prouver QUEUED → PROCESSING → READY et un échec contrôlé, puis livrer checkpoint-06-rag-ready-local.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
@@ -140,36 +162,36 @@
     ],
     "quizzes": [
       {
-        "key": "quiz-traiter-imports-worker-idempotent",
-        "title": "Quiz — Worker et idempotence",
-        "description": "Vérifier les acquis essentiels de la leçon « Traiter les imports avec un worker idempotent ».",
+        "key": "quiz-traiter-source-worker-simple",
+        "title": "Quiz — Traitement de source traçable",
+        "description": "Vérifier les repères de la leçon « Traiter une source avec un worker simple ».",
         "passingScore": 70,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Pourquoi garder la transaction de réservation courte ?",
-            "explanation": "Le travail long ne doit pas immobiliser la transaction.",
+            "prompt": "Pourquoi conserver errorCode ?",
+            "explanation": "Le produit doit pouvoir expliquer le statut.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Éviter de conserver un verrou pendant le traitement externe",
+                "label": "Pour rendre un échec classifiable sans exposer une erreur brute",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Supprimer l’historique",
+                "label": "Pour remplacer le checksum",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Rendre le worker synchrone",
+                "label": "Pour nommer le volume",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Éviter les identifiants",
+                "label": "Pour valider Zod",
                 "isCorrect": false,
                 "position": 4
               }
@@ -177,49 +199,49 @@
             "position": 1
           },
           {
-            "type": "single_choice",
-            "prompt": "Une archive est dans un format interdit. Quelle politique ?",
-            "explanation": "Aucune nouvelle tentative ne changera le format fourni.",
+            "type": "true_false",
+            "prompt": "Deux contenus normalisés identiques doivent produire le même SHA-256.",
+            "explanation": "La fonction de hachage est déterministe sur les mêmes octets.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Échec définitif avec raison explicite",
+                "label": "Vrai",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Retry sans limite",
+                "label": "Faux",
                 "isCorrect": false,
                 "position": 2
-              },
-              {
-                "label": "Masquer l’erreur et marquer READY",
-                "isCorrect": false,
-                "position": 3
-              },
-              {
-                "label": "Redémarrer PostgreSQL",
-                "isCorrect": false,
-                "position": 4
               }
             ],
             "position": 2
           },
           {
-            "type": "true_false",
-            "prompt": "Deux exécutions du même job peuvent créer deux versions identiques sans que ce soit un problème.",
-            "explanation": "Le résultat canonique doit être protégé des doublons.",
+            "type": "single_choice",
+            "prompt": "Quelle transition appartient à SourceVersion ?",
+            "explanation": "Les statuts décrivent le traitement du contenu.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "PROCESSING vers READY ou FAILED",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
-                "isCorrect": true,
+                "label": "draft vers published",
+                "isCorrect": false,
                 "position": 2
+              },
+              {
+                "label": "main vers tag Git",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "container vers volume",
+                "isCorrect": false,
+                "position": 4
               }
             ],
             "position": 3
@@ -230,73 +252,81 @@
     "sequence": [
       {
         "kind": "CONTENT",
-        "key": "content-asynchronisme"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "postgres-select-locking"
+        "key": "content-traiter-source-worker-simple-1"
       },
       {
         "kind": "CONTENT",
-        "key": "content-reservation-job"
+        "key": "content-traiter-source-worker-simple-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-crypto"
       },
       {
         "kind": "RESOURCE",
         "key": "postgres-transactions"
       },
       {
-        "kind": "CONTENT",
-        "key": "content-idempotence-retry"
-      },
-      {
         "kind": "RESOURCE",
         "key": "node-process"
       },
       {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-5"
+      },
+      {
         "kind": "EXERCISE",
-        "key": "exercise-traiter-imports-worker-idempotent"
+        "key": "exercise-traiter-source-worker-simple"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-traitement-asynchrone-idempotent"
+        "key": "assessment-traitement-source-tracable"
       },
       {
         "kind": "QUIZ",
-        "key": "quiz-traiter-imports-worker-idempotent"
+        "key": "quiz-traiter-source-worker-simple"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "status": "draft",
     "language": "fr",
-    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
-    "owner": "Rayan Chambet",
-    "createdAt": "2026-08-18",
+    "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
+    "owner": "LearnX",
+    "createdAt": "2026-08-20",
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
       {
-        "id": "REF-131-01",
+        "id": "REF-131-NODE-CRYPTO",
         "type": "official_documentation",
         "authors": [],
-        "organization": "PostgreSQL Global Development Group",
-        "title": "SELECT — PostgreSQL Documentation",
+        "organization": "Node.js",
+        "title": "Crypto — Node.js Documentation",
         "year": null,
         "edition": null,
-        "publication": "PostgreSQL Global Development Group",
+        "publication": "Node.js",
         "doi": null,
-        "url": "https://www.postgresql.org/docs/current/sql-select.html",
-        "accessedAt": "2026-08-18",
+        "url": "https://nodejs.org/api/crypto.html",
+        "accessedAt": null,
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle à ouvrir et contrôler avant publication V2."
       },
       {
-        "id": "REF-131-02",
+        "id": "REF-131-POSTGRES-TRANSACTIONS",
         "type": "official_documentation",
         "authors": [],
         "organization": "PostgreSQL Global Development Group",
@@ -312,15 +342,15 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       },
       {
-        "id": "REF-131-03",
+        "id": "REF-131-NODE-PROCESS",
         "type": "official_documentation",
         "authors": [],
         "organization": "Node.js",
         "title": "Process — Node.js Documentation",
-        "year": 2026,
+        "year": null,
         "edition": null,
         "publication": "Node.js",
         "doi": null,
@@ -331,130 +361,138 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [
-          {
-            "referenceId": "REF-131-02",
-            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
-            "supports": "Soutient le bloc « content-asynchronisme » et ses distinctions techniques."
-          }
-        ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
-        "notApplicableReason": null
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
-            "referenceId": "REF-131-01",
-            "locator": "Clause locking, FOR UPDATE et SKIP LOCKED",
-            "supports": "Soutient le bloc « content-reservation-job » et ses distinctions techniques."
+            "referenceId": "REF-131-POSTGRES-TRANSACTIONS",
+            "locator": "BEGIN, COMMIT, ROLLBACK et atomicité",
+            "supports": "Repères techniques employés dans le bloc 2."
+          },
+          {
+            "referenceId": "REF-131-NODE-PROCESS",
+            "locator": "Identifiant du processus, environnement, signaux et code de sortie",
+            "supports": "Repères techniques employés dans le bloc 2."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-131-02",
-            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
-            "supports": "Soutient le bloc « content-idempotence-retry » et ses distinctions techniques."
-          },
-          {
-            "referenceId": "REF-131-01",
-            "locator": "Clause locking, FOR UPDATE et SKIP LOCKED",
-            "supports": "Soutient le bloc « content-idempotence-retry » et ses distinctions techniques."
+            "referenceId": "REF-131-NODE-CRYPTO",
+            "locator": "createHash et empreinte SHA-256",
+            "supports": "Repères techniques employés dans le bloc 3."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       }
     ],
     "resourceChecks": [
       {
-        "resourceKey": "postgres-select-locking",
-        "referenceIds": ["REF-131-01"],
-        "pedagogicalRationale": "Réserver un job sans que deux workers le traitent simultanément.",
-        "learnerInstructions": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
+        "resourceKey": "node-crypto",
+        "referenceIds": ["REF-131-NODE-CRYPTO"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Traiter une source avec un worker simple ».",
+        "learnerInstructions": "Lire createHash et reproduire le SHA-256 d’une chaîne connue.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": null,
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Contrôle manuel du lien requis avant publication."
       },
       {
         "resourceKey": "postgres-transactions",
-        "referenceIds": ["REF-131-02"],
-        "pedagogicalRationale": "Protéger la cohérence entre fichier, source, version et job.",
-        "learnerInstructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "referenceIds": ["REF-131-POSTGRES-TRANSACTIONS"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Traiter une source avec un worker simple ».",
+        "learnerInstructions": "Relire seulement COMMIT et ROLLBACK pour borner les transitions du job.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       },
       {
         "resourceKey": "node-process",
-        "referenceIds": ["REF-131-03"],
-        "pedagogicalRationale": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-        "learnerInstructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "referenceIds": ["REF-131-NODE-PROCESS"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Traiter une source avec un worker simple ».",
+        "learnerInstructions": "Lire les codes de sortie et signaux utiles à l’arrêt du worker pédagogique.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "traitement-asynchrone-idempotent",
-        "assessmentTitle": "Mini-évaluation — Traitement asynchrone idempotent",
+        "conceptSlug": "traitement-source-tracable",
+        "assessmentTitle": "Mini-évaluation — Traitement de source traçable",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quel problème SKIP LOCKED aide-t-il à éviter ?",
-            "explanation": "Le verrouillage coordonne les consommateurs concurrents.",
+            "prompt": "Sur quelle valeur calculer le checksum ?",
+            "explanation": "L’empreinte identifie le contenu canonique produit par cette version.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Deux workers attendant ou prenant la même ligne disponible",
+                "label": "Le normalizedContent exact",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "La perte du DNS",
+                "label": "Le titre du projet",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le manque de CSS",
+                "label": "Le nom du container",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "La compilation TypeScript",
+                "label": "La réponse HTTP complète",
                 "isCorrect": false,
                 "position": 4
               }
@@ -462,43 +500,38 @@
             "position": 1
           },
           {
-            "type": "multiple_choice",
-            "prompt": "Quels éléments rendent un retry plus sûr ?",
-            "explanation": "La reprise doit être contrôlée et observable.",
+            "type": "single_choice",
+            "prompt": "Que doit faire l’API juste après un import valide ?",
+            "explanation": "Le traitement est délégué au worker.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Clé d’idempotence",
+                "label": "Retourner les identifiants et le statut QUEUED",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Effets transactionnels",
-                "isCorrect": true,
+                "label": "Attendre un embedding",
+                "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Nombre maximal de tentatives",
-                "isCorrect": true,
+                "label": "Publier une image",
+                "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Classification de l’erreur",
-                "isCorrect": true,
-                "position": 4
-              },
-              {
-                "label": "Délai infini sans journal",
+                "label": "Marquer immédiatement READY",
                 "isCorrect": false,
-                "position": 5
+                "position": 4
               }
             ],
             "position": 2
           },
           {
             "type": "true_false",
-            "prompt": "Un endpoint idempotent ne peut jamais retourner une erreur.",
-            "explanation": "L’idempotence concerne l’effet répété, pas l’absence d’échec.",
+            "prompt": "Le worker V2 garantit la sécurité de deux consommateurs concurrents.",
+            "explanation": "Cette garantie est explicitement hors périmètre.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -518,26 +551,28 @@
       }
     ],
     "sequenceRationale": {
-      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
       "cycles": [
         {
-          "conceptSlug": "traitement-asynchrone-idempotent",
+          "conceptSlug": "traitement-source-tracable",
           "contentKeys": [
-            "content-asynchronisme",
-            "content-reservation-job",
-            "content-idempotence-retry"
+            "content-traiter-source-worker-simple-1",
+            "content-traiter-source-worker-simple-2",
+            "content-traiter-source-worker-simple-3",
+            "content-traiter-source-worker-simple-4",
+            "content-traiter-source-worker-simple-5"
           ],
           "resourceKeys": [
-            "postgres-select-locking",
+            "node-crypto",
             "postgres-transactions",
             "node-process"
           ],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-traiter-imports-worker-idempotent"
+            "key": "exercise-traiter-source-worker-simple"
           },
-          "assessmentKey": "assessment-traitement-asynchrone-idempotent",
-          "rationale": "La production « Une file PostgreSQL et un worker concurrents, reprenables et idempotents. » rend observable la maîtrise avant le quiz de synthèse."
+          "assessmentKey": "assessment-traitement-source-tracable",
+          "rationale": "La production « Produire une SourceVersion READY » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
         }
       ]
     },
@@ -550,18 +585,18 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
-        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
-        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
+        "Le starter autoritaire se trouve dans /Users/rayanchambet/Desktop/Workflow/sourcelab au commit 6dd1cda, tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
+        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
       ]
     },
     "changeLog": [
       {
-        "version": "1.0.0",
-        "date": "2026-08-18",
-        "author": "Rayan Chambet",
-        "change": "Création de la leçon « Traiter les imports avec un worker idempotent » et de ses évaluations.",
-        "reviewRequired": "editorial_and_subject"
+        "version": "2.0.0",
+        "date": "2026-08-20",
+        "author": "LearnX",
+        "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
+        "reviewRequired": "editorial_technical_links_and_seed"
       }
     ]
   }

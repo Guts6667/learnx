@@ -100,7 +100,7 @@ humaines linguistique, pédagogique et culturelle/juridique ne sont pas
 approuvées dans le workflow bilingue. Leur publication et leur progression sont
 indépendantes du programme français.
 
-## Ingénieur logiciel en production — Construire SourceLab
+## SourceLab — Docker, API et socle d’ingestion
 
 - Présentation et statut :
   `content/ingenieur-logiciel-production-sourcelab/README.md`
@@ -113,8 +113,11 @@ indépendantes du programme français.
 - Bundle Prisma :
   `seed/ingenieur-logiciel-production-sourcelab-program.json`
 
-Ce parcours construit SourceLab V1 dans un dépôt et une base séparés de LearnX.
-Il reste en brouillon jusqu’aux revues éditoriale, technique et des liens.
+Ce parcours V2 guidé construit en 13 h 05 une stack locale SourceLab dans le
+dépôt séparé `/Users/rayanchambet/Desktop/Workflow/sourcelab`, à partir du tag
+`checkpoint-00-starter`. Il mène à une `SourceVersion READY`, puis à une image
+GHCR traçable, et reste en brouillon jusqu’aux revues éditoriale, technique, du
+starter, du seed et des liens.
 
 ## AI Product Engineer — RAG et évaluation avec SourceLab
 

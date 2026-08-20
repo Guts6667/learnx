@@ -14,7 +14,7 @@
       "Définir des contrats d’entrée, de sortie, de preuve et d’abstention."
     ],
     "prerequisites": [
-      "Avoir livré SourceLab V1 ou disposer d’un service équivalent avec ingestion, jobs et observabilité."
+      "Avoir terminé checkpoint-07-continuous-delivery du programme SourceLab 2.0, ou disposer d’un service local équivalent produisant une SourceVersion READY traçable."
     ],
     "estimatedMinutes": 170,
     "position": 1,
@@ -291,7 +291,7 @@
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "status": "draft",
     "language": "fr",
     "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
@@ -630,6 +630,13 @@
         "date": "2026-08-18",
         "author": "Rayan Chambet",
         "change": "Création de la leçon « Cadrer les usages IA et les contrats de SourceLab » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-21",
+        "author": "Rayan Chambet",
+        "change": "Raccord du prérequis au checkpoint final du programme SourceLab 2.0, sans modification du contenu de la leçon.",
         "reviewRequired": "editorial_and_subject"
       }
     ]

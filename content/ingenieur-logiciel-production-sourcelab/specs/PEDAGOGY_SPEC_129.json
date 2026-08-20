@@ -2,46 +2,70 @@
   "specId": "PEDAGOGY_SPEC_129",
   "schemaVersion": 1,
   "programSlug": "ingenieur-logiciel-production-sourcelab",
-  "stageSlug": "containeriser-environnement-multiservice",
-  "moduleSlug": "module-containeriser-environnement-multiservice",
+  "stageSlug": "containeriser-persister-sourcelab",
+  "moduleSlug": "module-docker-compose-postgresql",
   "lesson": {
-    "title": "Orchestrer API, worker et PostgreSQL avec Compose",
-    "slug": "orchestrer-api-worker-postgresql-compose",
-    "summary": "Créer un environnement local reproductible dans lequel les services démarrent selon leur état réel, communiquent par un réseau explicite et persistent uniquement les données nécessaires.",
+    "title": "Orchestrer API et PostgreSQL avec Compose",
+    "slug": "orchestrer-api-postgresql-compose",
+    "summary": "Ajouter PostgreSQL, Prisma, migration, readiness et persistance à l’image API sans introduire encore le worker.",
     "objectives": [
-      "Définir les responsabilités distinctes de l’API, du worker et de PostgreSQL.",
-      "Configurer réseau, healthchecks, dépendances et volumes dans Compose.",
-      "Diagnostiquer les différences entre port interne, port publié et nom de service."
+      "Relier API et PostgreSQL par le réseau interne Compose.",
+      "Appliquer une migration Prisma avant le démarrage de l’API.",
+      "Prouver readiness, persistance et diagnostic du piège localhost."
     ],
-    "prerequisites": ["Avoir construit l’image de l’API SourceLab."],
-    "estimatedMinutes": 200,
+    "prerequisites": [
+      "Avoir produit checkpoint-03-api-container ou repartir de ce checkpoint."
+    ],
+    "estimatedMinutes": 120,
     "position": 2,
     "contentBlocks": [
       {
-        "key": "content-services-separes",
-        "type": "definition",
+        "key": "content-orchestrer-api-postgresql-compose-1",
+        "type": "objective",
         "position": 1,
         "content": {
-          "text": "L’API accepte et valide les demandes courtes ; le worker exécute les traitements plus longs ; PostgreSQL conserve l’état partagé. Les exécuter dans des services séparés rend visibles leurs contrats, leur concurrence et leurs défaillances au lieu de masquer tout dans un unique processus.",
-          "sourceKeys": ["docker-overview"]
+          "text": "Le point de départ est checkpoint-03-api-container. La brique checkpoint-04-postgres-project remplace le repository mémoire par Prisma sans changer POST /projects, puis démarre migration, base et API avec Compose.",
+          "sourceKeys": []
         }
       },
       {
-        "key": "content-readiness-compose",
+        "key": "content-orchestrer-api-postgresql-compose-2",
         "type": "definition",
         "position": 2,
         "content": {
-          "text": "Compose peut exprimer une dépendance, mais un container « running » n’implique pas que son application est prête. Un healthcheck de PostgreSQL et une condition service_healthy évitent que l’API échoue uniquement parce que la base démarre encore.",
+          "text": "Dans le réseau Compose, api joint PostgreSQL par le nom db et le port interne. localhost désigne le container courant. depends_on ordonne des événements mais la readiness exige un healthcheck réel ; un container démarré n’est pas nécessairement prêt.",
           "sourceKeys": ["docker-compose-startup-order"]
         }
       },
       {
-        "key": "content-persistance-reseau",
-        "type": "callout",
+        "key": "content-orchestrer-api-postgresql-compose-3",
+        "type": "example",
         "position": 3,
         "content": {
-          "text": "Dans le réseau Compose, les services se joignent par leur nom et leur port interne. Le port publié sert à l’hôte. Les données PostgreSQL et les fichiers importés nécessitent une stratégie de volume ou de stockage ; les caches reconstruisibles n’ont pas la même exigence.",
-          "sourceKeys": ["docker-volumes", "docker-compose-startup-order"]
+          "text": "Un service migrate applique les migrations versionnées puis termine avec succès. L’API attend cette réussite et la santé de db. Le volume nommé appartient aux données PostgreSQL : remplacer le container ne l’efface pas, tandis qu’une suppression explicite du volume détruit les données.",
+          "sourceKeys": [
+            "docker-volumes",
+            "prisma-migrate",
+            "docker-compose-startup-order"
+          ]
+        }
+      },
+      {
+        "key": "content-orchestrer-api-postgresql-compose-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Guidage : compléter le modèle Project, générer et relire la migration fournie, brancher PrismaRepository, puis compléter db, migrate et api dans compose.yaml. Un scénario volontairement cassé avec localhost doit être diagnostiqué avant correction.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-orchestrer-api-postgresql-compose-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Preuve de fin : docker compose up --build suffit, /health/ready attend PostgreSQL, POST /projects persiste, puis le même projet reste présent après remplacement du container API. Aucun worker n’est encore prétendu fonctionnel.",
+          "sourceKeys": []
         }
       }
     ],
@@ -53,17 +77,17 @@
         "author": "Docker",
         "url": "https://docs.docker.com/compose/how-tos/startup-order/",
         "citation": "Docker. (n.d.). Control startup order. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire la page puis concevoir l’ordre API, worker et PostgreSQL avec des conditions de readiness.",
+        "description": "Lire l’exemple de dépendance conditionnée par un healthcheck.",
         "guidance": {
-          "objective": "Différencier service démarré, service prêt et dépendance saine.",
-          "instructions": "Lire la page puis concevoir l’ordre API, worker et PostgreSQL avec des conditions de readiness.",
-          "scope": "depends_on, service_healthy, healthcheck et restart",
+          "objective": "Soutenir la réalisation guidée de la leçon « Orchestrer API et PostgreSQL avec Compose ».",
+          "instructions": "Lire l’exemple de dépendance conditionnée par un healthcheck.",
+          "scope": "depends_on, healthchecks et conditions de démarrage",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 10,
+        "estimatedMinutes": 8,
         "position": 1
       },
       {
@@ -73,62 +97,66 @@
         "author": "Docker",
         "url": "https://docs.docker.com/engine/storage/volumes/",
         "citation": "Docker. (n.d.). Volumes. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire persistance et cycle de vie ; classer base, uploads et caches.",
+        "description": "Lire le cycle de vie d’un volume nommé et distinguer remplacement et suppression.",
         "guidance": {
-          "objective": "Choisir quelles données SourceLab doivent survivre au remplacement d’un container.",
-          "instructions": "Lire persistance et cycle de vie ; classer base, uploads et caches.",
-          "scope": "Persistance, montage, sauvegarde et cycle de vie",
+          "objective": "Soutenir la réalisation guidée de la leçon « Orchestrer API et PostgreSQL avec Compose ».",
+          "instructions": "Lire le cycle de vie d’un volume nommé et distinguer remplacement et suppression.",
+          "scope": "Cycle de vie et persistance des volumes",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 10,
+        "estimatedMinutes": 8,
         "position": 2
       },
       {
-        "key": "docker-overview",
+        "key": "prisma-migrate",
         "type": "website",
-        "title": "Docker overview",
-        "author": "Docker",
-        "url": "https://docs.docker.com/get-started/docker-overview/",
-        "citation": "Docker. (n.d.). Docker overview. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
+        "title": "Prisma Migrate",
+        "author": "Prisma",
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate",
+        "citation": "Prisma. (n.d.). Prisma Migrate. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le workflow migration de développement puis application d’une migration existante.",
         "guidance": {
-          "objective": "Distinguer image, container, registre et runtime.",
-          "instructions": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
-          "scope": "Images, containers, registries et architecture du moteur",
+          "objective": "Soutenir la réalisation guidée de la leçon « Orchestrer API et PostgreSQL avec Compose ».",
+          "instructions": "Lire le workflow migration de développement puis application d’une migration existante.",
+          "scope": "Création, revue et application des migrations",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
           "alternativeResourceKey": null
         },
         "isRequired": true,
-        "estimatedMinutes": 12,
+        "estimatedMinutes": 8,
         "position": 3
       }
     ],
     "concepts": [
       {
-        "title": "Environnement multi-service reproductible",
-        "slug": "environnement-multiservice-reproductible",
-        "description": "Un environnement fiable explicite services, dépendances, santé, réseau et persistance plutôt que de dépendre de l’ordre manuel de démarrage.",
+        "title": "Stack Compose persistante",
+        "slug": "stack-compose-persistante",
+        "description": "Une stack locale reproductible sépare service, dépendance, migration et volume tout en rendant son état de préparation observable.",
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["docker-compose-startup-order"],
+        "resourceKeys": [
+          "docker-compose-startup-order",
+          "docker-volumes",
+          "prisma-migrate"
+        ],
         "assessment": {
-          "key": "assessment-environnement-multiservice-reproductible",
+          "key": "assessment-stack-compose-persistante",
           "type": "case_question",
-          "title": "Mini-évaluation — Environnement multi-service reproductible",
+          "title": "Mini-évaluation — Stack Compose persistante",
           "questionCount": 3
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-orchestrer-api-worker-postgresql-compose",
-        "title": "Lancer SourceLab avec une commande",
-        "description": "Créer compose.yaml avec api, worker et PostgreSQL. Ajouter healthchecks, variables, réseau et volume. Démontrer docker compose up --build, la persistance après remplacement du container, l’échec contrôlé lorsque la base est indisponible et le diagnostic d’une URL utilisant localhost au mauvais endroit.",
+        "key": "exercise-orchestrer-api-postgresql-compose",
+        "title": "Rendre Project persistant avec Compose",
+        "description": "Depuis checkpoint-03-api-container, compléter le modèle Project, la migration, PrismaRepository et compose.yaml avec db, migrate et api. Démontrer readiness, piège localhost et persistance après remplacement. Livrer checkpoint-04-postgres-project.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
@@ -138,36 +166,36 @@
     ],
     "quizzes": [
       {
-        "key": "quiz-orchestrer-api-worker-postgresql-compose",
-        "title": "Quiz — Compose et dépendances",
-        "description": "Vérifier les acquis essentiels de la leçon « Orchestrer API, worker et PostgreSQL avec Compose ».",
+        "key": "quiz-orchestrer-api-postgresql-compose",
+        "title": "Quiz — Stack Compose persistante",
+        "description": "Vérifier les repères de la leçon « Orchestrer API et PostgreSQL avec Compose ».",
         "passingScore": 70,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Pourquoi séparer API et worker ?",
-            "explanation": "La séparation clarifie les responsabilités et l’exploitation.",
+            "prompt": "Quel service doit terminer avant le démarrage de l’API ?",
+            "explanation": "La base doit porter le schéma attendu.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Éviter qu’un traitement long bloque le cycle de réponse et gérer la concurrence séparément",
+                "label": "Le service migrate",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Utiliser deux langages obligatoirement",
+                "label": "Le futur worker",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Supprimer la base",
+                "label": "Le navigateur",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Éviter toute file de jobs",
+                "label": "GHCR",
                 "isCorrect": false,
                 "position": 4
               }
@@ -175,38 +203,9 @@
             "position": 1
           },
           {
-            "type": "single_choice",
-            "prompt": "Que prouve le statut running d’un container ?",
-            "explanation": "La santé applicative nécessite un contrôle distinct.",
-            "acceptedAnswers": [],
-            "options": [
-              {
-                "label": "Le processus principal du container est démarré",
-                "isCorrect": true,
-                "position": 1
-              },
-              {
-                "label": "Que toutes ses dépendances sont saines",
-                "isCorrect": false,
-                "position": 2
-              },
-              {
-                "label": "Que les données sont sauvegardées",
-                "isCorrect": false,
-                "position": 3
-              },
-              {
-                "label": "Que les tests E2E passent",
-                "isCorrect": false,
-                "position": 4
-              }
-            ],
-            "position": 2
-          },
-          {
             "type": "true_false",
-            "prompt": "Le port publié est nécessaire pour que deux services du même réseau Compose communiquent.",
-            "explanation": "Ils peuvent utiliser le port interne et le nom de service.",
+            "prompt": "/health/live doit échouer seulement parce que PostgreSQL est temporairement indisponible.",
+            "explanation": "Le processus peut être vivant mais non prêt.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -220,6 +219,35 @@
                 "position": 2
               }
             ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle preuve valide la persistance ?",
+            "explanation": "La preuve doit traverser le remplacement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Relire le projet après remplacement du container",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Voir le container une première fois",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Changer le port",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Rebuilder le frontend",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
             "position": 3
           }
         ]
@@ -228,54 +256,62 @@
     "sequence": [
       {
         "kind": "CONTENT",
-        "key": "content-services-separes"
+        "key": "content-orchestrer-api-postgresql-compose-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-orchestrer-api-postgresql-compose-2"
       },
       {
         "kind": "RESOURCE",
         "key": "docker-compose-startup-order"
       },
       {
-        "kind": "CONTENT",
-        "key": "content-readiness-compose"
-      },
-      {
         "kind": "RESOURCE",
         "key": "docker-volumes"
       },
       {
-        "kind": "CONTENT",
-        "key": "content-persistance-reseau"
+        "kind": "RESOURCE",
+        "key": "prisma-migrate"
       },
       {
-        "kind": "RESOURCE",
-        "key": "docker-overview"
+        "kind": "CONTENT",
+        "key": "content-orchestrer-api-postgresql-compose-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-orchestrer-api-postgresql-compose-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-orchestrer-api-postgresql-compose-5"
       },
       {
         "kind": "EXERCISE",
-        "key": "exercise-orchestrer-api-worker-postgresql-compose"
+        "key": "exercise-orchestrer-api-postgresql-compose"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-environnement-multiservice-reproductible"
+        "key": "assessment-stack-compose-persistante"
       },
       {
         "kind": "QUIZ",
-        "key": "quiz-orchestrer-api-worker-postgresql-compose"
+        "key": "quiz-orchestrer-api-postgresql-compose"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "status": "draft",
     "language": "fr",
-    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
-    "owner": "Rayan Chambet",
-    "createdAt": "2026-08-18",
+    "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
+    "owner": "LearnX",
+    "createdAt": "2026-08-20",
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
       {
-        "id": "REF-129-01",
+        "id": "REF-129-DOCKER-COMPOSE-STARTUP-ORDER",
         "type": "official_documentation",
         "authors": [],
         "organization": "Docker",
@@ -291,10 +327,10 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       },
       {
-        "id": "REF-129-02",
+        "id": "REF-129-DOCKER-VOLUMES",
         "type": "official_documentation",
         "authors": [],
         "organization": "Docker",
@@ -310,130 +346,143 @@
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       },
       {
-        "id": "REF-129-03",
+        "id": "REF-129-PRISMA-MIGRATE",
         "type": "official_documentation",
         "authors": [],
-        "organization": "Docker",
-        "title": "Docker overview",
+        "organization": "Prisma",
+        "title": "Prisma Migrate",
         "year": null,
         "edition": null,
-        "publication": "Docker",
+        "publication": "Prisma",
         "doi": null,
-        "url": "https://docs.docker.com/get-started/docker-overview/",
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate",
         "accessedAt": "2026-08-18",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [
-          {
-            "referenceId": "REF-129-03",
-            "locator": "Images, containers, registries et architecture du moteur",
-            "supports": "Soutient le bloc « content-services-separes » et ses distinctions techniques."
-          }
-        ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
-        "notApplicableReason": null
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
-            "referenceId": "REF-129-01",
-            "locator": "depends_on, service_healthy, healthcheck et restart",
-            "supports": "Soutient le bloc « content-readiness-compose » et ses distinctions techniques."
+            "referenceId": "REF-129-DOCKER-COMPOSE-STARTUP-ORDER",
+            "locator": "depends_on, healthchecks et conditions de démarrage",
+            "supports": "Repères techniques employés dans le bloc 2."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-129-02",
-            "locator": "Persistance, montage, sauvegarde et cycle de vie",
-            "supports": "Soutient le bloc « content-persistance-reseau » et ses distinctions techniques."
+            "referenceId": "REF-129-DOCKER-VOLUMES",
+            "locator": "Cycle de vie et persistance des volumes",
+            "supports": "Repères techniques employés dans le bloc 3."
           },
           {
-            "referenceId": "REF-129-01",
-            "locator": "depends_on, service_healthy, healthcheck et restart",
-            "supports": "Soutient le bloc « content-persistance-reseau » et ses distinctions techniques."
+            "referenceId": "REF-129-PRISMA-MIGRATE",
+            "locator": "Création, revue et application des migrations",
+            "supports": "Repères techniques employés dans le bloc 3."
+          },
+          {
+            "referenceId": "REF-129-DOCKER-COMPOSE-STARTUP-ORDER",
+            "locator": "depends_on, healthchecks et conditions de démarrage",
+            "supports": "Repères techniques employés dans le bloc 3."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
         "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
       }
     ],
     "resourceChecks": [
       {
         "resourceKey": "docker-compose-startup-order",
-        "referenceIds": ["REF-129-01"],
-        "pedagogicalRationale": "Différencier service démarré, service prêt et dépendance saine.",
-        "learnerInstructions": "Lire la page puis concevoir l’ordre API, worker et PostgreSQL avec des conditions de readiness.",
+        "referenceIds": ["REF-129-DOCKER-COMPOSE-STARTUP-ORDER"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Orchestrer API et PostgreSQL avec Compose ».",
+        "learnerInstructions": "Lire l’exemple de dépendance conditionnée par un healthcheck.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       },
       {
         "resourceKey": "docker-volumes",
-        "referenceIds": ["REF-129-02"],
-        "pedagogicalRationale": "Choisir quelles données SourceLab doivent survivre au remplacement d’un container.",
-        "learnerInstructions": "Lire persistance et cycle de vie ; classer base, uploads et caches.",
+        "referenceIds": ["REF-129-DOCKER-VOLUMES"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Orchestrer API et PostgreSQL avec Compose ».",
+        "learnerInstructions": "Lire le cycle de vie d’un volume nommé et distinguer remplacement et suppression.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       },
       {
-        "resourceKey": "docker-overview",
-        "referenceIds": ["REF-129-03"],
-        "pedagogicalRationale": "Distinguer image, container, registre et runtime.",
-        "learnerInstructions": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
+        "resourceKey": "prisma-migrate",
+        "referenceIds": ["REF-129-PRISMA-MIGRATE"],
+        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Orchestrer API et PostgreSQL avec Compose ».",
+        "learnerInstructions": "Lire le workflow migration de développement puis application d’une migration existante.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
         "alternativeResourceKey": null,
         "checkedAt": "2026-08-18",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Recontrôle éditorial V2 requis avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "environnement-multiservice-reproductible",
-        "assessmentTitle": "Mini-évaluation — Environnement multi-service reproductible",
+        "conceptSlug": "stack-compose-persistante",
+        "assessmentTitle": "Mini-évaluation — Stack Compose persistante",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Dans le container API, quel hôte utiliser pour PostgreSQL déclaré comme service db ?",
-            "explanation": "Dans le réseau Compose, le nom du service fournit la résolution.",
+            "prompt": "Depuis le container api, quel hôte désigne PostgreSQL dans ce Compose ?",
+            "explanation": "Le DNS interne Compose utilise le nom de service.",
             "acceptedAnswers": [],
             "options": [
               {
@@ -447,12 +496,12 @@
                 "position": 2
               },
               {
-                "label": "127.0.0.1 du Mac",
+                "label": "host.docker.internal dans tous les cas",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le nom du volume",
+                "label": "le nom du volume",
                 "isCorrect": false,
                 "position": 4
               }
@@ -460,28 +509,28 @@
             "position": 1
           },
           {
-            "type": "multiple_choice",
-            "prompt": "Quelles données doivent généralement persister ?",
-            "explanation": "La persistance concerne les données métier et fichiers nécessaires.",
+            "type": "single_choice",
+            "prompt": "Que prouve service_started ?",
+            "explanation": "La readiness nécessite un contrôle applicatif.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Tables PostgreSQL",
+                "label": "Que le container a été lancé, pas que PostgreSQL accepte déjà les requêtes",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Fichiers sources non reconstituables",
-                "isCorrect": true,
+                "label": "Que la migration a réussi",
+                "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Processus Node.js",
+                "label": "Que les données sont sauvegardées hors site",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Réponse temporaire d’un healthcheck",
+                "label": "Que le worker a fini",
                 "isCorrect": false,
                 "position": 4
               }
@@ -490,18 +539,18 @@
           },
           {
             "type": "true_false",
-            "prompt": "depends_on sans healthcheck garantit qu’une dépendance applicative est prête.",
-            "explanation": "L’ordre de démarrage ne vérifie pas à lui seul la readiness.",
+            "prompt": "Remplacer le container PostgreSQL conserve les données si le volume nommé est maintenu.",
+            "explanation": "Le volume possède un cycle de vie distinct du container.",
             "acceptedAnswers": [],
             "options": [
               {
                 "label": "Vrai",
-                "isCorrect": false,
+                "isCorrect": true,
                 "position": 1
               },
               {
                 "label": "Faux",
-                "isCorrect": true,
+                "isCorrect": false,
                 "position": 2
               }
             ],
@@ -511,26 +560,28 @@
       }
     ],
     "sequenceRationale": {
-      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
       "cycles": [
         {
-          "conceptSlug": "environnement-multiservice-reproductible",
+          "conceptSlug": "stack-compose-persistante",
           "contentKeys": [
-            "content-services-separes",
-            "content-readiness-compose",
-            "content-persistance-reseau"
+            "content-orchestrer-api-postgresql-compose-1",
+            "content-orchestrer-api-postgresql-compose-2",
+            "content-orchestrer-api-postgresql-compose-3",
+            "content-orchestrer-api-postgresql-compose-4",
+            "content-orchestrer-api-postgresql-compose-5"
           ],
           "resourceKeys": [
             "docker-compose-startup-order",
             "docker-volumes",
-            "docker-overview"
+            "prisma-migrate"
           ],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-orchestrer-api-worker-postgresql-compose"
+            "key": "exercise-orchestrer-api-postgresql-compose"
           },
-          "assessmentKey": "assessment-environnement-multiservice-reproductible",
-          "rationale": "La production « Un environnement local API-worker-PostgreSQL reproductible, sain et documenté. » rend observable la maîtrise avant le quiz de synthèse."
+          "assessmentKey": "assessment-stack-compose-persistante",
+          "rationale": "La production « Rendre Project persistant avec Compose » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
         }
       ]
     },
@@ -543,18 +594,18 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
-        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
-        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
+        "Le starter autoritaire se trouve dans /Users/rayanchambet/Desktop/Workflow/sourcelab au commit 6dd1cda, tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
+        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
       ]
     },
     "changeLog": [
       {
-        "version": "1.0.0",
-        "date": "2026-08-18",
-        "author": "Rayan Chambet",
-        "change": "Création de la leçon « Orchestrer API, worker et PostgreSQL avec Compose » et de ses évaluations.",
-        "reviewRequired": "editorial_and_subject"
+        "version": "2.0.0",
+        "date": "2026-08-20",
+        "author": "LearnX",
+        "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
+        "reviewRequired": "editorial_technical_links_and_seed"
       }
     ]
   }

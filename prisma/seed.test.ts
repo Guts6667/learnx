@@ -496,22 +496,40 @@ function createRepository() {
 describe('sample program seed', () => {
   it.each([
     {
-      assessmentNumbers: [27, 28, 29, 30],
+      assessmentNumbers: [27, 28, 29],
       directory: 'ingenieur-logiciel-production-sourcelab',
+      expectedAssessmentCount: 3,
+      expectedLessonCount: 7,
+      expectedStageCount: 3,
+      expectedTitle: 'SourceLab — Docker, API et socle d’ingestion',
       readSeed: readSourceLabProductionSeed,
       slug: 'ingenieur-logiciel-production-sourcelab',
-      specNumbers: [126, 127, 128, 129, 130, 131, 132, 133],
+      specNumbers: [126, 127, 128, 129, 130, 131, 132],
     },
     {
       assessmentNumbers: [31, 32, 33, 34],
       directory: 'ai-product-engineer-sourcelab',
+      expectedAssessmentCount: 4,
+      expectedLessonCount: 8,
+      expectedStageCount: 4,
+      expectedTitle: 'AI Product Engineer — RAG et évaluation avec SourceLab',
       readSeed: readSourceLabAiSeed,
       slug: 'ai-product-engineer-sourcelab',
       specNumbers: [134, 135, 136, 137, 138, 139, 140, 141],
     },
   ])(
     'lit, contrôle et importe le programme SourceLab $slug de façon idempotente',
-    async ({ assessmentNumbers, directory, readSeed, slug, specNumbers }) => {
+    async ({
+      assessmentNumbers,
+      directory,
+      expectedAssessmentCount,
+      expectedLessonCount,
+      expectedStageCount,
+      expectedTitle,
+      readSeed,
+      slug,
+      specNumbers,
+    }) => {
       const seed = await readSeed();
       const context = createRepository();
       const lessons = seed.program.stages.flatMap((stage) =>
@@ -522,10 +540,11 @@ describe('sample program seed', () => {
         locale: 'fr',
         slug,
         status: 'draft',
+        title: expectedTitle,
       });
-      expect(seed.program.stages).toHaveLength(4);
-      expect(lessons).toHaveLength(8);
-      expect(seed.conceptAssessmentBanks).toHaveLength(8);
+      expect(seed.program.stages).toHaveLength(expectedStageCount);
+      expect(lessons).toHaveLength(expectedLessonCount);
+      expect(seed.conceptAssessmentBanks).toHaveLength(expectedLessonCount);
       expect(lessons.every((lesson) => lesson.concepts.length === 1)).toBe(
         true,
       );
@@ -618,13 +637,48 @@ describe('sample program seed', () => {
       );
 
       expect(context.programs).toHaveLength(1);
-      expect(context.stages).toHaveLength(4);
-      expect(context.modules).toHaveLength(4);
-      expect(context.lessons).toHaveLength(8);
-      expect(context.concepts).toHaveLength(8);
-      expect(context.stageAssessments).toHaveLength(4);
+      expect(context.stages).toHaveLength(expectedStageCount);
+      expect(context.modules).toHaveLength(expectedStageCount);
+      expect(context.lessons).toHaveLength(expectedLessonCount);
+      expect(context.concepts).toHaveLength(expectedLessonCount);
+      expect(context.stageAssessments).toHaveLength(expectedAssessmentCount);
     },
   );
+
+  it('keeps the guided SourceLab V2 route within its 13 h 05 ceiling', async () => {
+    const seed = await readSourceLabProductionSeed();
+    const lessonMinutes = seed.program.stages.reduce(
+      (stageTotal, stage) =>
+        stageTotal +
+        stage.modules.reduce(
+          (moduleTotal, module) =>
+            moduleTotal +
+            module.lessons.reduce(
+              (lessonTotal, lesson) =>
+                lessonTotal + (lesson.estimatedMinutes ?? 0),
+              0,
+            ),
+          0,
+        ),
+      0,
+    );
+    const assessmentMinutes = await [27, 28, 29].reduce(
+      async (totalPromise, number) => {
+        const total = await totalPromise;
+        const sidecar = JSON.parse(
+          await readFile(
+            `content/ingenieur-logiciel-production-sourcelab/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_${String(number).padStart(3, '0')}.json`,
+            'utf8',
+          ),
+        ) as { assessment: { estimatedMinutes: number } };
+
+        return total + sidecar.assessment.estimatedMinutes;
+      },
+      Promise.resolve(0),
+    );
+
+    expect(lessonMinutes + assessmentMinutes).toBe(785);
+  });
 
   it('reads and imports the English psychology pilot as an isolated draft', async () => {
     const seed = await readPsychologyFoundationsPilotSeed();

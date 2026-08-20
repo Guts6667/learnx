@@ -1,234 +1,173 @@
 [
   {
-    "lesson": "Suivre une requête du navigateur au processus",
+    "lesson": "Prendre en main le starter et suivre une requête",
     "key": "mdn-http-overview",
     "title": "An overview of HTTP",
     "organization": "Mozilla Developer Network",
     "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
-    "checkedAt": "2026-08-18"
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Suivre une requête du navigateur au processus",
+    "lesson": "Prendre en main le starter et suivre une requête",
     "key": "node-process",
     "title": "Process — Node.js Documentation",
     "organization": "Node.js",
     "url": "https://nodejs.org/api/process.html",
-    "checkedAt": "2026-08-18"
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Suivre une requête du navigateur au processus",
-    "key": "rfc-9110-http-semantics",
-    "title": "RFC 9110 — HTTP Semantics",
-    "organization": "IETF",
-    "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Valider configuration, réseau et arrêt propre",
+    "lesson": "Définir le contrat Project et valider la configuration",
     "key": "node-environment-variables",
     "title": "Environment Variables — Node.js Documentation",
     "organization": "Node.js",
     "url": "https://nodejs.org/api/environment_variables.html",
-    "checkedAt": "2026-08-18"
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Valider configuration, réseau et arrêt propre",
-    "key": "node-process",
-    "title": "Process — Node.js Documentation",
-    "organization": "Node.js",
-    "url": "https://nodejs.org/api/process.html",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Valider configuration, réseau et arrêt propre",
-    "key": "mdn-http-overview",
-    "title": "An overview of HTTP",
-    "organization": "Mozilla Developer Network",
-    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Construire une image TypeScript reproductible",
-    "key": "docker-overview",
-    "title": "Docker overview",
-    "organization": "Docker",
-    "url": "https://docs.docker.com/get-started/docker-overview/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Construire une image TypeScript reproductible",
-    "key": "docker-multi-stage-builds",
-    "title": "Multi-stage builds",
-    "organization": "Docker",
-    "url": "https://docs.docker.com/build/building/multi-stage/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Construire une image TypeScript reproductible",
-    "key": "docker-build-best-practices",
-    "title": "Building best practices",
-    "organization": "Docker",
-    "url": "https://docs.docker.com/build/building/best-practices/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Orchestrer API, worker et PostgreSQL avec Compose",
-    "key": "docker-compose-startup-order",
-    "title": "Control startup order",
-    "organization": "Docker",
-    "url": "https://docs.docker.com/compose/how-tos/startup-order/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Orchestrer API, worker et PostgreSQL avec Compose",
-    "key": "docker-volumes",
-    "title": "Volumes",
-    "organization": "Docker",
-    "url": "https://docs.docker.com/engine/storage/volumes/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Orchestrer API, worker et PostgreSQL avec Compose",
-    "key": "docker-overview",
-    "title": "Docker overview",
-    "organization": "Docker",
-    "url": "https://docs.docker.com/get-started/docker-overview/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Concevoir les contrats et le modèle du Source Workspace",
+    "lesson": "Définir le contrat Project et valider la configuration",
     "key": "hono-validation",
     "title": "Validation — Hono Documentation",
     "organization": "Hono",
     "url": "https://hono.dev/docs/guides/validation",
-    "checkedAt": "2026-08-18"
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Concevoir les contrats et le modèle du Source Workspace",
+    "lesson": "Définir le contrat Project et valider la configuration",
     "key": "zod-documentation",
     "title": "Zod Documentation",
     "organization": "Zod",
     "url": "https://zod.dev/",
-    "checkedAt": "2026-08-18"
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Concevoir les contrats et le modèle du Source Workspace",
-    "key": "postgres-transactions",
-    "title": "Transactions — PostgreSQL Documentation",
-    "organization": "PostgreSQL Global Development Group",
-    "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-    "checkedAt": "2026-08-18"
+    "lesson": "Construire une image API reproductible",
+    "key": "docker-multi-stage-builds",
+    "title": "Multi-stage builds",
+    "organization": "Docker",
+    "url": "https://docs.docker.com/build/building/multi-stage/",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Traiter les imports avec un worker idempotent",
-    "key": "postgres-select-locking",
-    "title": "SELECT — PostgreSQL Documentation",
-    "organization": "PostgreSQL Global Development Group",
-    "url": "https://www.postgresql.org/docs/current/sql-select.html",
-    "checkedAt": "2026-08-18"
+    "lesson": "Construire une image API reproductible",
+    "key": "docker-build-best-practices",
+    "title": "Building best practices",
+    "organization": "Docker",
+    "url": "https://docs.docker.com/build/building/best-practices/",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Traiter les imports avec un worker idempotent",
-    "key": "postgres-transactions",
-    "title": "Transactions — PostgreSQL Documentation",
-    "organization": "PostgreSQL Global Development Group",
-    "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-    "checkedAt": "2026-08-18"
+    "lesson": "Orchestrer API et PostgreSQL avec Compose",
+    "key": "docker-compose-startup-order",
+    "title": "Control startup order",
+    "organization": "Docker",
+    "url": "https://docs.docker.com/compose/how-tos/startup-order/",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Traiter les imports avec un worker idempotent",
-    "key": "node-process",
-    "title": "Process — Node.js Documentation",
-    "organization": "Node.js",
-    "url": "https://nodejs.org/api/process.html",
-    "checkedAt": "2026-08-18"
+    "lesson": "Orchestrer API et PostgreSQL avec Compose",
+    "key": "docker-volumes",
+    "title": "Volumes",
+    "organization": "Docker",
+    "url": "https://docs.docker.com/engine/storage/volumes/",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Tester migrations et intégrations réelles",
-    "key": "vitest-guide",
-    "title": "Vitest Guide",
-    "organization": "Vitest",
-    "url": "https://vitest.dev/guide/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Tester migrations et intégrations réelles",
-    "key": "playwright-intro",
-    "title": "Installation and getting started",
-    "organization": "Playwright",
-    "url": "https://playwright.dev/docs/intro",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Tester migrations et intégrations réelles",
+    "lesson": "Orchestrer API et PostgreSQL avec Compose",
     "key": "prisma-migrate",
     "title": "Prisma Migrate",
     "organization": "Prisma",
     "url": "https://www.prisma.io/docs/orm/prisma-migrate",
-    "checkedAt": "2026-08-18"
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Tester migrations et intégrations réelles",
-    "key": "postgres-explain",
-    "title": "Using EXPLAIN — PostgreSQL Documentation",
+    "lesson": "Modéliser et mettre en file une source",
+    "key": "prisma-relations",
+    "title": "Relations — Prisma ORM",
+    "organization": "Prisma",
+    "url": "https://www.prisma.io/docs/orm/prisma-schema/data-model/relations",
+    "checkedAt": null,
+    "reviewStatus": "recheck_required_for_v2"
+  },
+  {
+    "lesson": "Modéliser et mettre en file une source",
+    "key": "postgres-transactions",
+    "title": "Transactions — PostgreSQL Documentation",
     "organization": "PostgreSQL Global Development Group",
-    "url": "https://www.postgresql.org/docs/current/using-explain.html",
-    "checkedAt": "2026-08-18"
+    "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Tester migrations et intégrations réelles",
+    "lesson": "Traiter une source avec un worker simple",
+    "key": "node-crypto",
+    "title": "Crypto — Node.js Documentation",
+    "organization": "Node.js",
+    "url": "https://nodejs.org/api/crypto.html",
+    "checkedAt": null,
+    "reviewStatus": "recheck_required_for_v2"
+  },
+  {
+    "lesson": "Traiter une source avec un worker simple",
+    "key": "postgres-transactions",
+    "title": "Transactions — PostgreSQL Documentation",
+    "organization": "PostgreSQL Global Development Group",
+    "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
+  },
+  {
+    "lesson": "Traiter une source avec un worker simple",
+    "key": "node-process",
+    "title": "Process — Node.js Documentation",
+    "organization": "Node.js",
+    "url": "https://nodejs.org/api/process.html",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
+  },
+  {
+    "lesson": "Tester et livrer une image traçable",
+    "key": "vitest-guide",
+    "title": "Vitest Guide",
+    "organization": "Vitest",
+    "url": "https://vitest.dev/guide/",
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
+  },
+  {
+    "lesson": "Tester et livrer une image traçable",
     "key": "github-actions-workflows",
     "title": "Workflows and actions reference",
     "organization": "GitHub",
     "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
-    "checkedAt": "2026-08-18"
+    "checkedAt": "2026-08-18",
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Construire CI, observabilité, déploiement et réponse à incident",
-    "key": "github-actions-workflows",
-    "title": "Workflows and actions reference",
+    "lesson": "Tester et livrer une image traçable",
+    "key": "github-publish-docker",
+    "title": "Publishing Docker images",
     "organization": "GitHub",
-    "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
-    "checkedAt": "2026-08-18"
+    "url": "https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images",
+    "checkedAt": null,
+    "reviewStatus": "recheck_required_for_v2"
   },
   {
-    "lesson": "Construire CI, observabilité, déploiement et réponse à incident",
-    "key": "github-deployment-environments",
-    "title": "Deployment environments",
+    "lesson": "Tester et livrer une image traçable",
+    "key": "github-container-registry",
+    "title": "Working with the Container registry",
     "organization": "GitHub",
-    "url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/deployment-environments",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Construire CI, observabilité, déploiement et réponse à incident",
-    "key": "opentelemetry-js",
-    "title": "JavaScript — OpenTelemetry Documentation",
-    "organization": "OpenTelemetry",
-    "url": "https://opentelemetry.io/docs/languages/js/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Construire CI, observabilité, déploiement et réponse à incident",
-    "key": "sre-monitoring",
-    "title": "Monitoring Distributed Systems",
-    "organization": "Google",
-    "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Construire CI, observabilité, déploiement et réponse à incident",
-    "key": "sre-release-engineering",
-    "title": "Release Engineering",
-    "organization": "Google",
-    "url": "https://sre.google/sre-book/release-engineering/",
-    "checkedAt": "2026-08-18"
-  },
-  {
-    "lesson": "Construire CI, observabilité, déploiement et réponse à incident",
-    "key": "sre-incident-response",
-    "title": "Incident Response",
-    "organization": "Google",
-    "url": "https://sre.google/workbook/incident-response/",
-    "checkedAt": "2026-08-18"
+    "url": "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
+    "checkedAt": null,
+    "reviewStatus": "recheck_required_for_v2"
   }
 ]

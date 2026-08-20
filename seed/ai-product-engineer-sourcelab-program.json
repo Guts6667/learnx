@@ -76,7 +76,7 @@
                   "Définir des contrats d’entrée, de sortie, de preuve et d’abstention."
                 ],
                 "prerequisites": [
-                  "Avoir livré SourceLab V1 ou disposer d’un service équivalent avec ingestion, jobs et observabilité."
+                  "Avoir terminé checkpoint-07-continuous-delivery du programme SourceLab 2.0, ou disposer d’un service local équivalent produisant une SourceVersion READY traçable."
                 ],
                 "estimatedMinutes": 170,
                 "position": 1,
