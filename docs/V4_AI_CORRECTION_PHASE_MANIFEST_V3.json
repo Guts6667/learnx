@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-20T13:39:16Z",
+  "updatedAt": "2026-08-20T15:45:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -52,13 +52,13 @@
   "baselines": {
     "runtime": {
       "ref": "origin/dev",
-      "commit": "b38732f9397a3772fc89c058cc17e9b8c3e1698a",
-      "subject": "Merge pull request #12 from codex/v4-009c-sonnet5-panel-prep"
+      "commit": "ead5be42808c485a258386c97b4cb19805f32e13",
+      "subject": "fix(vercel): normalize runtime module extensions"
     },
     "research": {
-      "ref": "origin/codex/v4-009c-sonnet5-bounded-profile",
-      "commit": "48e20b92d514a79ad5b22900c20fa0ece4a9004f",
-      "subject": "test(ai): record bounded Sonnet gate no-go"
+      "ref": "origin/dev",
+      "commit": "ead5be42808c485a258386c97b4cb19805f32e13",
+      "subject": "integrated evidence-assist 3.0.0, autonomous holdout authoring and offline V4-010 fake-flow"
     }
   },
   "deliveryState": {
@@ -66,14 +66,16 @@
     "runtimeCanonical": {
       "status": "DELIVERED_INACTIVE",
       "ref": "origin/dev",
-      "commit": "b38732f9397a3772fc89c058cc17e9b8c3e1698a",
-      "evidenceAssistProtocolIntegrated": false
+      "commit": "ead5be42808c485a258386c97b4cb19805f32e13",
+      "evidenceAssistProtocolIntegrated": true,
+      "offlineFakeFlowIntegrated": true,
+      "deliveryChecks": "CI_AND_VERCEL_DEV_GREEN"
     },
     "offlineCandidate": {
-      "status": "LOCAL_NOT_INTEGRATED",
-      "ref": "codex/v4-evidence-assist-protocol",
-      "commit": "b366ec980fb358df9f748350b1825242148e286c",
-      "scope": "EVIDENCE_ASSIST_PROTOCOL_3_0_0_AND_REASONING_DISABLED_CAPABILITY"
+      "status": "INTEGRATED_IN_RUNTIME_HARD_OFF",
+      "ref": "origin/dev",
+      "commit": "ead5be42808c485a258386c97b4cb19805f32e13",
+      "scope": "EVIDENCE_ASSIST_PROTOCOL_3_0_0_RUNNER_HOLDOUT_AUTHORING_AND_V4_010_OFFLINE_FAKE_FLOW"
     },
     "experimental": {
       "status": "CAPABILITY_ATTESTED_OFFLINE_NO_MODEL_CALL",
@@ -252,8 +254,8 @@
         "semanticAmbiguityPseudoOracleSha256": "f5e8f7fb7c08192c3a7a58dec546c12979c335b9706fa68c3477287ec7f70635",
         "semanticAmbiguityStatus": "HISTORICAL_DEVELOPMENT_PSEUDO_ORACLE_NOT_PROMOTION_AUTHORITY",
         "replacementHoldoutManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json",
-        "replacementHoldoutManifestSha256": "43415021f64e26c5de7a11ecd227c369a9b932ec911481ab84447f96e75f592f",
-        "replacementHoldoutStatus": "CONTENT_NOT_AUTHORED",
+        "replacementHoldoutManifestSha256": "13a30f69d743a77bbde7bf9bd120b49a52a897c80caf5d38cbacda8b36e312da",
+        "replacementHoldoutStatus": "CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL",
         "supersededHoldoutV2": {
           "status": "SUPERSEDED_HISTORICAL_DRAFT",
           "manifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",

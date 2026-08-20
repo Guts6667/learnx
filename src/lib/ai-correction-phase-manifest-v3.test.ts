@@ -25,6 +25,22 @@ const historicalManifestSchema = z
 
 const activeManifestSchema = z
   .object({
+    baselines: z.object({
+      runtime: z.object({
+        commit: z.string().regex(/^[a-f0-9]{40}$/u),
+        ref: z.literal('origin/dev'),
+      }),
+    }),
+    deliveryState: z.object({
+      offlineCandidate: z.object({
+        status: z.literal('INTEGRATED_IN_RUNTIME_HARD_OFF'),
+      }),
+      runtimeCanonical: z.object({
+        evidenceAssistProtocolIntegrated: z.literal(true),
+        offlineFakeFlowIntegrated: z.literal(true),
+        status: z.literal('DELIVERED_INACTIVE'),
+      }),
+    }),
     eligibility: z
       .object({
         activitiesEligibleForLiveCorrection: z.literal(0),
@@ -40,6 +56,7 @@ const activeManifestSchema = z
         replacementManifest: z.string().min(1),
         replacementManifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
         sealed: z.literal(false),
+        status: z.literal('CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL'),
       })
       .passthrough(),
     immutableVerdicts: z.array(z.unknown()),
@@ -175,6 +192,14 @@ describe('active autonomous correction phase manifest', () => {
   });
 
   it('keeps live execution closed while allowing only explicit offline work', () => {
+    expect(active.deliveryState.runtimeCanonical).toMatchObject({
+      evidenceAssistProtocolIntegrated: true,
+      offlineFakeFlowIntegrated: true,
+      status: 'DELIVERED_INACTIVE',
+    });
+    expect(active.deliveryState.offlineCandidate.status).toBe(
+      'INTEGRATED_IN_RUNTIME_HARD_OFF',
+    );
     expect(active.promotionGate.status).toBe('NOT_MET');
     expect(active.eligibility.pipelinePromoted).toBe(false);
     expect(active.eligibility.publishedV4Contracts).toBe(0);

@@ -200,7 +200,8 @@ raws et règles d'arrêt restent immuables et append-only.
   V4-018, la tarification et toute généralisation commerciale.
 - Le holdout actif devient
   `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json`.
-  Il reste non authoré, non scellé et inexécutable. Le manifeste v2 est conservé
+  Ses 24 cas sont authorés et prévalidés hors ligne, mais il reste non qualifié,
+  non scellé et inexécutable. Le manifeste v2 est conservé
   intact avec le statut `SUPERSEDED_HISTORICAL_DRAFT`.
 - Le falsificateur, le holdout, la publication V4-002 et l'activation réelle de
   V4-010 restent fermés. V4-002 et V4-010 avancent hors ligne : authoring,
