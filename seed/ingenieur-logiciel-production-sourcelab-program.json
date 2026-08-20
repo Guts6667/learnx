@@ -1,8 +1,8 @@
 {
   "program": {
     "title": "SourceLab — Docker, API et socle d’ingestion",
-    "slug": "ingenieur-logiciel-production-sourcelab",
-    "canonicalProgramKey": "ingenieur-logiciel-production-sourcelab",
+    "slug": "sourcelab-docker-api-socle-ingestion",
+    "canonicalProgramKey": "sourcelab-docker-api-socle-ingestion",
     "locale": "fr",
     "description": "Parcours guidé de 13 h 05 maximum pour construire une stack SourceLab locale : API Hono/Zod, Docker, Compose, PostgreSQL/Prisma, ingestion Markdown, worker simple, tests, smoke et livraison d’image GHCR traçable. Le checkpoint final prépare le programme RAG sans prétendre couvrir une exploitation cloud complète.",
     "status": "draft",
@@ -2184,7 +2184,7 @@
   },
   "conceptAssessmentBanks": [
     {
-      "programSlug": "ingenieur-logiciel-production-sourcelab",
+      "programSlug": "sourcelab-docker-api-socle-ingestion",
       "stageSlug": "demarrer-verticale-sourcelab",
       "moduleSlug": "module-api-guidee-contrats",
       "lessonSlug": "prendre-en-main-starter-suivre-requete",
@@ -2275,7 +2275,7 @@
       ]
     },
     {
-      "programSlug": "ingenieur-logiciel-production-sourcelab",
+      "programSlug": "sourcelab-docker-api-socle-ingestion",
       "stageSlug": "demarrer-verticale-sourcelab",
       "moduleSlug": "module-api-guidee-contrats",
       "lessonSlug": "definir-contrat-project-configuration",
@@ -2366,7 +2366,7 @@
       ]
     },
     {
-      "programSlug": "ingenieur-logiciel-production-sourcelab",
+      "programSlug": "sourcelab-docker-api-socle-ingestion",
       "stageSlug": "containeriser-persister-sourcelab",
       "moduleSlug": "module-docker-compose-postgresql",
       "lessonSlug": "construire-image-api-reproductible",
@@ -2457,7 +2457,7 @@
       ]
     },
     {
-      "programSlug": "ingenieur-logiciel-production-sourcelab",
+      "programSlug": "sourcelab-docker-api-socle-ingestion",
       "stageSlug": "containeriser-persister-sourcelab",
       "moduleSlug": "module-docker-compose-postgresql",
       "lessonSlug": "orchestrer-api-postgresql-compose",
@@ -2548,7 +2548,7 @@
       ]
     },
     {
-      "programSlug": "ingenieur-logiciel-production-sourcelab",
+      "programSlug": "sourcelab-docker-api-socle-ingestion",
       "stageSlug": "ingerer-livrer-socle-rag",
       "moduleSlug": "module-sources-worker-livraison",
       "lessonSlug": "modeliser-mettre-en-file-source",
@@ -2639,7 +2639,7 @@
       ]
     },
     {
-      "programSlug": "ingenieur-logiciel-production-sourcelab",
+      "programSlug": "sourcelab-docker-api-socle-ingestion",
       "stageSlug": "ingerer-livrer-socle-rag",
       "moduleSlug": "module-sources-worker-livraison",
       "lessonSlug": "traiter-source-worker-simple",
@@ -2730,7 +2730,7 @@
       ]
     },
     {
-      "programSlug": "ingenieur-logiciel-production-sourcelab",
+      "programSlug": "sourcelab-docker-api-socle-ingestion",
       "stageSlug": "ingerer-livrer-socle-rag",
       "moduleSlug": "module-sources-worker-livraison",
       "lessonSlug": "tester-livrer-image-tracable",

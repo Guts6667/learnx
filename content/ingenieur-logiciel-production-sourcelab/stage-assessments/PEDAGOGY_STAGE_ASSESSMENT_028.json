@@ -1,7 +1,7 @@
 {
   "specId": "PEDAGOGY_STAGE_ASSESSMENT_028",
   "schemaVersion": 1,
-  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "programSlug": "sourcelab-docker-api-socle-ingestion",
   "stageSlug": "containeriser-persister-sourcelab",
   "assessment": {
     "seed": {

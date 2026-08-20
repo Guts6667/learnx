@@ -1,7 +1,7 @@
 {
   "specId": "PEDAGOGY_SPEC_132",
   "schemaVersion": 1,
-  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "programSlug": "sourcelab-docker-api-socle-ingestion",
   "stageSlug": "ingerer-livrer-socle-rag",
   "moduleSlug": "module-sources-worker-livraison",
   "lesson": {

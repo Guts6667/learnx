@@ -703,7 +703,7 @@ const seedDefinitions = [
   },
   {
     read: readSourceLabProductionSeed,
-    slug: 'ingenieur-logiciel-production-sourcelab',
+    slug: 'sourcelab-docker-api-socle-ingestion',
   },
   {
     read: readSourceLabAiSeed,

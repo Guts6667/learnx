@@ -1,7 +1,7 @@
 {
   "specId": "PEDAGOGY_SPEC_126",
   "schemaVersion": 1,
-  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "programSlug": "sourcelab-docker-api-socle-ingestion",
   "stageSlug": "demarrer-verticale-sourcelab",
   "moduleSlug": "module-api-guidee-contrats",
   "lesson": {

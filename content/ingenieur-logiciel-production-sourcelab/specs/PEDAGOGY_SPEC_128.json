@@ -1,7 +1,7 @@
 {
   "specId": "PEDAGOGY_SPEC_128",
   "schemaVersion": 1,
-  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "programSlug": "sourcelab-docker-api-socle-ingestion",
   "stageSlug": "containeriser-persister-sourcelab",
   "moduleSlug": "module-docker-compose-postgresql",
   "lesson": {

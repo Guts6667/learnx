@@ -5,6 +5,7 @@
 - Version : 2.0.0
 - Statut : `draft`
 - Classification : `CONTENT_ONLY`
+- Identité runtime : `sourcelab-docker-api-socle-ingestion`
 - Volume : 13 h 05, évaluations comprises
 - Dépôt : `/Users/rayanchambet/Desktop/Workflow/sourcelab`
 - Baseline starter : commit `6dd1cda`, tag `checkpoint-00-starter`
@@ -13,9 +14,10 @@ La version 2 remplace intégralement le parcours de 42 jours. Elle vise un
 résultat borné : faire fonctionner localement une verticale SourceLab puis
 livrer une `SourceVersion` traçable au programme RAG suivant.
 
-Le slug et la clé canonique historiques sont conservés pour éviter une
-migration implicite ; le titre visible devient « SourceLab — Docker, API et
-socle d’ingestion ».
+La V2 reçoit un slug et une clé canonique distincts afin d’éviter toute
+équivalence implicite avec la V1. Le programme historique conserve sa propre
+identité et ses progressions ; le titre visible V2 devient « SourceLab — Docker,
+API et socle d’ingestion ».
 
 ## Public et prérequis
 
@@ -41,6 +43,9 @@ autonomie préalable en infrastructure.
 - Chaque leçon part d'un checkpoint nommé et modifie le même projet fil rouge.
 - Les contenus internes expliquent la procédure ; les documentations externes
   sont courtes, ciblées et ne remplacent jamais le guidage.
+- Les ressources guidées précèdent l’activité productive dans chaque séquence.
+  Les tâches `practice` et `project` gardent `resourceKeys: []` afin de ne pas
+  dupliquer une activité productive sous forme de tâche passive.
 - Après quinze minutes de blocage, un checkpoint solution peut servir de filet
   de sécurité sans effacer la première tentative.
 - Chaque leçon produit une preuve réutilisée par la suivante.
