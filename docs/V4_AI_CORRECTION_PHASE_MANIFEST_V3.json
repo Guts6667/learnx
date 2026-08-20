@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-20T15:45:00Z",
+  "updatedAt": "2026-08-20T16:01:23Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -138,14 +138,22 @@
     }
   ],
   "holdout": {
-    "status": "CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL",
-    "sealed": false,
+    "status": "SEALED_AWAITING_DEVELOPMENT_GO",
+    "sealed": true,
     "executable": false,
     "legacyPlaintextStatus": "COMPROMISED_AND_REMOVED_FROM_ACTIVE_TREE",
     "replacementManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json",
-    "replacementManifestSha256": "13a30f69d743a77bbde7bf9bd120b49a52a897c80caf5d38cbacda8b36e312da",
+    "replacementManifestSha256": "5d115db9c0d50dd92a936cf0848c0ebf2fe901ba289f81181dd970867917a46b",
     "autonomousManifest": "benchmarks/ai-correction/autonomous/manifest.v2.json",
-    "autonomousManifestSha256": "4b1be824052866f2b0622ad38996e12ee0b4ba8155eb37b1fc46b81e18a745b6",
+    "autonomousManifestSha256": "a8a8872ce3cc275bc45780ab9cbc3fc2fb3828592f39dc9f7826f3b6e98786b8",
+    "encryptedArtifact": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.enc.json",
+      "sha256": "3ff902b1f871b427fef23bbeade6d57995871842d313d7fffd4275ae4601ec6a"
+    },
+    "qualificationRecord": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.qualification.json",
+      "sha256": "987e64782c6484767ee5f01d486cdd63449033f55c7d505ec1cf8b931cca9a99"
+    },
     "supersededHistoricalDraft": {
       "status": "SUPERSEDED_HISTORICAL_DRAFT",
       "manifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
@@ -183,7 +191,7 @@
       "allowed": [
         "PRESERVE_FROZEN_CAMPAIGN_AND_GATE_IDENTIFIERS",
         "VALIDATE_FOUR_CASE_AND_10X2_STAGES_OFFLINE",
-        "AUTHOR_VALIDATE_ENCRYPT_AND_SEAL_HOLDOUT_INDEPENDENTLY",
+        "PRESERVE_QUALIFIED_SEALED_HOLDOUT_CLOSED",
         "PREPARE_FINANCE_BUDGET_REQUEST"
       ],
       "forbidden": [
@@ -254,8 +262,8 @@
         "semanticAmbiguityPseudoOracleSha256": "f5e8f7fb7c08192c3a7a58dec546c12979c335b9706fa68c3477287ec7f70635",
         "semanticAmbiguityStatus": "HISTORICAL_DEVELOPMENT_PSEUDO_ORACLE_NOT_PROMOTION_AUTHORITY",
         "replacementHoldoutManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json",
-        "replacementHoldoutManifestSha256": "13a30f69d743a77bbde7bf9bd120b49a52a897c80caf5d38cbacda8b36e312da",
-        "replacementHoldoutStatus": "CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL",
+        "replacementHoldoutManifestSha256": "5d115db9c0d50dd92a936cf0848c0ebf2fe901ba289f81181dd970867917a46b",
+        "replacementHoldoutStatus": "SEALED_AWAITING_DEVELOPMENT_GO",
         "supersededHoldoutV2": {
           "status": "SUPERSEDED_HISTORICAL_DRAFT",
           "manifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
@@ -739,15 +747,15 @@
       "allPromotionThresholdsMetOnDevelopment": true,
       "dispatchAndCostReconciledRate": 1,
       "postResultRetuning": false,
-      "holdoutV3IndependentPreparationRemainsSeparate": true
+      "holdoutV3QualifiedAndSealed": true
     },
-    "effect": "AUTHORIZE_HOLDOUT_PREPARATION_AND_SEALING_ONLY",
+    "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "FINANCE_BUDGET_NOT_ARBITRATED",
+      "OWNER_STAGE_ONE_AUTHORIZATION_PENDING",
       "STAGE_ONE_NOT_EXECUTED",
-      "FULL_DEVELOPMENT_CORPUS_NOT_EXECUTED",
-      "HOLDOUT_V3_EXPLICIT_OWNER_QUALIFICATION_AND_SEAL_AUTHORIZATION_PENDING"
+      "STAGE_TWO_FINANCE_AND_OWNER_AUTHORIZATION_NOT_ELIGIBLE",
+      "FULL_DEVELOPMENT_CORPUS_NOT_EXECUTED"
     ]
   },
   "promotionGate": {
@@ -821,7 +829,7 @@
     "Preserve the frozen campaign identity, four-case manifest, conditional 10x2 manifest and freeze-set hashes byte-identically. Any change creates a new identity and restarts at four cases.",
     "Execute writing-fr-base-mastered, writing-fr-no-choice-negative, writing-fr-evidence-mutation and writing-fr-direct-injection only after a separate owner authorization bound to the Finance-arbitrated cap. Execute the 20 fresh development workflows only after a 4/4 result under exactly the same identity, a distinct Finance arbitration for the conditional 1.258760 USD cap and a new owner authorization; any case, expectation, order, repetition, threshold or selection change creates a new corpus version and restarts at four cases.",
     "Keep the falsifier, active v3 holdout, V4-002 publication and V4-010 live activation closed. Permit V4-002 and V4-010 implementation offline under their explicit hard-off constraints.",
-    "Treat writing-fr-holdout.v2.manifest.json as SUPERSEDED_HISTORICAL_DRAFT without modifying it. Author v3 independently from candidate outputs, validate its autonomous invariants and seal only its ciphertext.",
+    "Treat writing-fr-holdout.v2.manifest.json as SUPERSEDED_HISTORICAL_DRAFT without modifying it. Preserve the independently authored and autonomously qualified v3 ciphertext closed and non-executable until the distinct opening gates are met.",
     "After 4/4 then 20/20 and complete reconciliation, request GO_TO_SEALED_HOLDOUT. This transition keeps pipelinePromoted=false, authorizes preparation and sealing only, and does not open the holdout.",
     "Only a separately authorized one-shot holdout pass under the same identity may produce GO_AUTONOMOUS_FORMATIVE and mutate eligibility.pipelinePromoted from false to true. That gate unlocks V4-002 publication review and V4-010 bounded pilot preparation, never automatic publication, activation, mastery or pricing.",
     "Run the at-least-three-candidate comparison only as a secondary robustness and economic benchmark after exact-pipeline feasibility. It does not block the Sonnet 5 gates or bounded formative pilot, but it blocks V4-018, pricing and commercial generalization.",

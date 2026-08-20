@@ -218,6 +218,54 @@ export const evidenceAssistAutonomousHoldoutPrevalidationRecordSchema = z
   })
   .strict();
 
+export const evidenceAssistAutonomousHoldoutQualificationRecordSchema = z
+  .object({
+    authorization: z
+      .object({
+        decision: z.literal(
+          'AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL',
+        ),
+        scope: z.literal(
+          'QUALIFICATION_AND_SEAL_ONLY_NO_OPEN_NO_EXECUTION_NO_MODEL_CALL',
+        ),
+      })
+      .strict(),
+    candidateOutputsAccessibleDuringAuthoring: z.literal(false),
+    candidateResultsReused: z.literal(0),
+    caseCount: z.literal(24),
+    constructionManifestSha256: sha256Schema,
+    elementCoverageCount: z.number().int().positive(),
+    encryptedArtifactSha256: sha256Schema,
+    familyCounts: z
+      .object({
+        INJECTION_AND_CANARY: z.literal(4),
+        MECHANICAL_ORACLE: z.literal(6),
+        METAMORPHIC: z.literal(8),
+        SYNTHETIC_PSEUDO_ORACLE: z.literal(6),
+      })
+      .strict(),
+    gates: z
+      .object({
+        injectionAndCanary: z.literal(true),
+        mechanicalOracle: z.literal(true),
+        metamorphic: z.literal(true),
+        mutation: z.literal(true),
+      })
+      .strict(),
+    holdoutId: z.literal('writing-fr-evidence-assist-holdout-v3'),
+    holdoutVersion: z.literal('3.0.0'),
+    humanValidationClaimed: z.literal(false),
+    plaintextSha256: sha256Schema,
+    prevalidationRecordSha256: sha256Schema,
+    pseudoOracleQualification: z.literal(
+      'SYNTHETIC_PSEUDO_ORACLE_NOT_FORMAL_TRUTH',
+    ),
+    qualifiedAt: z.iso.datetime(),
+    schemaVersion: z.literal(1),
+    status: z.literal('QUALIFIED_AND_SEALED_AUTONOMOUS'),
+  })
+  .strict();
+
 export type EvidenceAssistAutonomousHoldout = z.infer<
   typeof evidenceAssistAutonomousHoldoutSchema
 >;

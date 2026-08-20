@@ -8,6 +8,7 @@ import { executableRubricAutonomousHoldoutManifestSchema } from './executable-ru
 import {
   evidenceAssistAutonomousHoldoutConstructionSchema,
   evidenceAssistAutonomousHoldoutPrevalidationRecordSchema,
+  evidenceAssistAutonomousHoldoutQualificationRecordSchema,
 } from './evidence-assist-autonomous-holdout.ts';
 
 const manifestPath = resolve(
@@ -29,37 +30,35 @@ function sha256(path: string): string {
 }
 
 describe('autonomous evidence-assist holdout manifest', () => {
-  it('keeps the independently authored holdout prevalidated but unsealed and non-executable', () => {
+  it('keeps the independently authored holdout qualified, sealed and non-executable', () => {
     const manifest =
       executableRubricAutonomousHoldoutManifestSchema.parse(manifestFixture());
     const serialized = JSON.stringify(manifest);
 
-    expect(manifest.status).toBe(
-      'CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL',
-    );
-    expect(manifest.qualification.status).toBe(
-      'PENDING_AUTONOMOUS_QUALIFICATION',
-    );
+    expect(manifest.status).toBe('SEALED_AWAITING_DEVELOPMENT_GO');
+    expect(manifest.qualification.status).toBe('QUALIFIED');
     expect(
       manifest.qualification.candidateOutputsAccessibleDuringAuthoring,
     ).toBe(false);
-    expect(manifest.sealed).toBe(false);
+    expect(manifest.sealed).toBe(true);
     expect(manifest.executable).toBe(false);
     expect(manifest.caseCount).toBe(24);
-    expect(manifest.pendingAuthoring).not.toBeNull();
+    expect(manifest.pendingAuthoring).toBeNull();
+    expect(manifest.qualificationRecord).not.toBeNull();
     expect(
-      sha256(manifest.pendingAuthoring?.constructionManifest.path ?? ''),
-    ).toBe(manifest.pendingAuthoring?.constructionManifest.sha256);
+      sha256(manifest.qualificationRecord?.path ?? ''),
+    ).toBe(manifest.qualificationRecord?.sha256);
     expect(
-      sha256(manifest.pendingAuthoring?.prevalidationRecord.path ?? ''),
-    ).toBe(manifest.pendingAuthoring?.prevalidationRecord.sha256);
+      sha256(manifest.encryptedArtifact.path),
+    ).toBe(manifest.encryptedArtifact.sha256);
     expect(serialized).not.toMatch(/human|reviewer/iu);
   });
 
-  it('rejects sealing without every autonomous proof and ciphertext', () => {
+  it('rejects sealing without every autonomous proof', () => {
     const manifest = manifestFixture();
-    manifest['sealed'] = true;
-    manifest['status'] = 'SEALED_AWAITING_DEVELOPMENT_GO';
+    const qualification = manifest['qualification'] as Record<string, unknown>;
+    const gates = qualification['gates'] as Record<string, unknown>;
+    gates['mutation'] = false;
 
     expect(() =>
       executableRubricAutonomousHoldoutManifestSchema.parse(manifest),
@@ -76,17 +75,7 @@ describe('autonomous evidence-assist holdout manifest', () => {
     ).toThrow();
   });
 
-  it('rejects partial proof while autonomous qualification is pending', () => {
-    const manifest = manifestFixture();
-    const qualification = manifest['qualification'] as Record<string, unknown>;
-    qualification['constructionManifestSha256'] = 'a'.repeat(64);
-
-    expect(() =>
-      executableRubricAutonomousHoldoutManifestSchema.parse(manifest),
-    ).toThrow();
-  });
-
-  it('rejects a pending authoring snapshot that claims encryption or execution', () => {
+  it('rejects execution before the distinct one-shot opening authorization', () => {
     const manifest = manifestFixture();
     manifest['executable'] = true;
 
@@ -95,15 +84,30 @@ describe('autonomous evidence-assist holdout manifest', () => {
     ).toThrow();
   });
 
-  it('binds pending authoring to independently hashed construction and prevalidation records', () => {
+  it('rejects a sealed manifest without its qualification record', () => {
+    const manifest = manifestFixture();
+    manifest['qualificationRecord'] = null;
+
+    expect(() =>
+      executableRubricAutonomousHoldoutManifestSchema.parse(manifest),
+    ).toThrow();
+  });
+
+  it('binds autonomous qualification to construction, prevalidation and ciphertext hashes', () => {
     const manifest =
       executableRubricAutonomousHoldoutManifestSchema.parse(manifestFixture());
-    const pending = manifest.pendingAuthoring;
-    if (!pending) throw new Error('PENDING_AUTHORING_MISSING');
+    const qualificationReference = manifest.qualificationRecord;
+    if (!qualificationReference) {
+      throw new Error('QUALIFICATION_RECORD_MISSING');
+    }
     const construction = evidenceAssistAutonomousHoldoutConstructionSchema.parse(
       JSON.parse(
         readFileSync(
-          resolve(manifestPath, '..', pending.constructionManifest.path),
+          resolve(
+            manifestPath,
+            '..',
+            'writing-fr-holdout.v3.construction.json',
+          ),
           'utf8',
         ),
       ) as unknown,
@@ -112,7 +116,20 @@ describe('autonomous evidence-assist holdout manifest', () => {
       evidenceAssistAutonomousHoldoutPrevalidationRecordSchema.parse(
         JSON.parse(
           readFileSync(
-            resolve(manifestPath, '..', pending.prevalidationRecord.path),
+            resolve(
+              manifestPath,
+              '..',
+              'writing-fr-holdout.v3.prevalidation.json',
+            ),
+            'utf8',
+          ),
+        ) as unknown,
+      );
+    const qualification =
+      evidenceAssistAutonomousHoldoutQualificationRecordSchema.parse(
+        JSON.parse(
+          readFileSync(
+            resolve(manifestPath, '..', qualificationReference.path),
             'utf8',
           ),
         ) as unknown,
@@ -123,9 +140,20 @@ describe('autonomous evidence-assist holdout manifest', () => {
       'PREVALIDATED_NOT_QUALIFIED_NOT_SEALED',
     );
     expect(prevalidation.constructionManifestSha256).toBe(
-      pending.constructionManifest.sha256,
+      qualification.constructionManifestSha256,
     );
-    expect(prevalidation.plaintextSha256).toBe(pending.plaintextSha256);
+    expect(prevalidation.plaintextSha256).toBe(qualification.plaintextSha256);
     expect(prevalidation.humanValidationClaimed).toBe(false);
+    expect(qualification.encryptedArtifactSha256).toBe(
+      manifest.encryptedArtifact.sha256,
+    );
+    expect(qualification.humanValidationClaimed).toBe(false);
+    expect(qualification.authorization.scope).toContain('NO_OPEN');
+    expect(
+      readFileSync(
+        resolve(manifestPath, '..', manifest.encryptedArtifact.path),
+        'utf8',
+      ),
+    ).not.toMatch(/responseText|expectedRelations/u);
   });
 });

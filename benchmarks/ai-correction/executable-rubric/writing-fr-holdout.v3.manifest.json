@@ -1,54 +1,48 @@
 {
-  "schemaVersion": 3,
-  "holdoutId": "writing-fr-evidence-assist-holdout-v3",
-  "holdoutVersion": "3.0.0",
-  "status": "CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL",
-  "language": "fr-FR",
-  "modality": "WRITING",
-  "protocol": {
-    "authorityPath": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
-    "segmentationVersion": "2.0.0"
-  },
-  "minimumCaseCount": 24,
   "caseCount": 24,
-  "qualification": {
-    "status": "PENDING_AUTONOMOUS_QUALIFICATION",
-    "qualifiedAt": null,
-    "constructionManifestSha256": null,
-    "validationRecordSha256": null,
-    "candidateOutputsAccessibleDuringAuthoring": false,
-    "candidateResultsReused": 0,
-    "gates": {
-      "mechanicalOracle": false,
-      "metamorphic": false,
-      "mutation": false,
-      "injectionAndCanary": false
-    }
-  },
   "encryptedArtifact": {
     "algorithm": "AES-256-GCM",
     "path": "writing-fr-holdout.v3.enc.json",
-    "sha256": null
+    "sha256": "3ff902b1f871b427fef23bbeade6d57995871842d313d7fffd4275ae4601ec6a"
   },
-  "pendingAuthoring": {
-    "constructionManifest": {
-      "path": "writing-fr-holdout.v3.construction.json",
-      "sha256": "f3199af3971b1b297f584d00ae1af58dcfb46e47979fa612ccf95bc5d6b0b81e"
-    },
-    "prevalidationRecord": {
-      "path": "writing-fr-holdout.v3.prevalidation.json",
-      "sha256": "c4896350541f9b797fda8690ac3455c0e0f3be57d852accaf52f50a439ba471f"
-    },
-    "plaintextSha256": "d1db9bde71af1d888c6ea7b7467ce2cd3d97b6aebb084f0126c582ddc2a05ddc"
-  },
-  "sealed": false,
   "executable": false,
+  "holdoutId": "writing-fr-evidence-assist-holdout-v3",
+  "holdoutVersion": "3.0.0",
+  "language": "fr-FR",
+  "minimumCaseCount": 24,
+  "modality": "WRITING",
   "openedAt": null,
+  "pendingAuthoring": null,
   "prohibitions": [
     "NO_PLAINTEXT_IN_REPOSITORY",
     "NO_OPEN_BEFORE_FULL_DEVELOPMENT_GO",
     "NO_TUNING_FROM_HOLDOUT",
     "NO_CANDIDATE_OUTPUT_ACCESS_DURING_AUTHORING",
     "NO_EXECUTION_WITHOUT_AUTONOMOUS_QUALIFICATION"
-  ]
+  ],
+  "protocol": {
+    "authorityPath": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+    "segmentationVersion": "2.0.0"
+  },
+  "qualification": {
+    "candidateOutputsAccessibleDuringAuthoring": false,
+    "candidateResultsReused": 0,
+    "constructionManifestSha256": "f3199af3971b1b297f584d00ae1af58dcfb46e47979fa612ccf95bc5d6b0b81e",
+    "gates": {
+      "injectionAndCanary": true,
+      "mechanicalOracle": true,
+      "metamorphic": true,
+      "mutation": true
+    },
+    "qualifiedAt": "2026-08-20T16:01:23.453Z",
+    "status": "QUALIFIED",
+    "validationRecordSha256": "987e64782c6484767ee5f01d486cdd63449033f55c7d505ec1cf8b931cca9a99"
+  },
+  "qualificationRecord": {
+    "path": "writing-fr-holdout.v3.qualification.json",
+    "sha256": "987e64782c6484767ee5f01d486cdd63449033f55c7d505ec1cf8b931cca9a99"
+  },
+  "schemaVersion": 3,
+  "sealed": true,
+  "status": "SEALED_AWAITING_DEVELOPMENT_GO"
 }

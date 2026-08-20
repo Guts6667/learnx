@@ -94,10 +94,11 @@ ou utiliser `humanReviewApproved` comme autorité. Le manifeste canonique de la
 phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json`. Le manifeste sans
 suffixe reste l'autorité historique épinglée par les campagnes closes.
 
-- `GO_TO_SEALED_HOLDOUT` est le gate préalable à la préparation et au scellement
-  après le corpus complet ; il conserve `pipelinePromoted=false` et ne vaut ni
-  ouverture ni promotion. Une autorisation propriétaire distincte permet
-  l'ouverture one-shot. Le gate final de promotion devient
+- Le holdout est qualifié et scellé indépendamment avant les appels candidats.
+  `GO_TO_SEALED_HOLDOUT`, après le corpus complet, conserve
+  `pipelinePromoted=false` et rend seulement éligible une demande d'ouverture
+  one-shot. Une autorisation propriétaire distincte permet cette ouverture. Le
+  gate final de promotion devient
   `GO_AUTONOMOUS_FORMATIVE` après succès du holdout : oracle autonome scellé,
   cas déterministes, métamorphismes, sécurité et citations exactes, variabilité
   bornée et abstention obligatoire.
@@ -190,7 +191,7 @@ raws et règles d'arrêt restent immuables et append-only.
   répétitions fraîches, soit 20 workflows hors des quatre cas. Changer un seul
   de ces paramètres versionne le corpus, ferme la campagne et recommence à 4.
 - Deux décisions sont distinctes : `GO_TO_SEALED_HOLDOUT`, après 4/4 puis 20/20
-  et scellement indépendant du holdout, confirme sa préparation sans l'ouvrir
+  et scellement indépendant déjà réalisé, confirme l'éligibilité sans ouvrir
   ni promouvoir ; une autorisation propriétaire distincte permet l'ouverture
   one-shot. `GO_AUTONOMOUS_FORMATIVE`, après succès one-shot du holdout,
   promeut uniquement le pipeline exact pour le pilote formatif borné.
@@ -200,8 +201,8 @@ raws et règles d'arrêt restent immuables et append-only.
   V4-018, la tarification et toute généralisation commerciale.
 - Le holdout actif devient
   `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json`.
-  Ses 24 cas sont authorés et prévalidés hors ligne, mais il reste non qualifié,
-  non scellé et inexécutable. Le manifeste v2 est conservé
+  Ses 24 cas sont authorés, qualifiés par les gates autonomes et scellés en
+  AES-256-GCM, mais le paquet reste fermé et inexécutable. Le manifeste v2 est conservé
   intact avec le statut `SUPERSEDED_HISTORICAL_DRAFT`.
 - Le falsificateur, le holdout, la publication V4-002 et l'activation réelle de
   V4-010 restent fermés. V4-002 et V4-010 avancent hors ligne : authoring,
@@ -1070,9 +1071,9 @@ Dépendances : V4-001.**
   ne proviennent jamais des relations candidates IA.
 - Le holdout reste scellé jusqu'au GO du corpus complet de développement. Aucun
   `UNCERTAIN` ou `UNUSABLE` n'est présenté ou facturé comme correction complète.
-- `GO_TO_SEALED_HOLDOUT` autorise la préparation et le scellement après les
-  gates de développement ; une autorisation propriétaire distincte ouvre le
-  holdout une seule fois, et seul son succès one-shot permet ensuite
+- `GO_TO_SEALED_HOLDOUT` rend éligible la demande d'ouverture après les gates de
+  développement ; une autorisation propriétaire distincte ouvre le holdout une
+  seule fois, et seul son succès one-shot permet ensuite
   `GO_AUTONOMOUS_FORMATIVE`. Aucun des deux ne peut être remplacé par une revue
   humaine ou un vote de modèles.
 

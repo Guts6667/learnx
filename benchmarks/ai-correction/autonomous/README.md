@@ -10,9 +10,9 @@ aucune validation humaine ni vérité pédagogique universelle.
 - `../executable-rubric/writing-fr-holdout.v2.manifest.json` reste un draft
   historique supersédé qui exigeait encore une revue humaine ;
 - `../executable-rubric/writing-fr-holdout.v3.manifest.json` est le manifeste
-  autonome actif. Ses 24 cas ont été authorés hors dépôt et prévalidés, mais le
-  paquet reste non qualifié, non scellé et inexécutable jusqu'à une autorisation
-  explicite distincte du Propriétaire ;
+  autonome actif. Ses 24 cas ont été authorés hors dépôt, qualifiés par les
+  gates autonomes puis scellés en AES-256-GCM après l'autorisation explicite du
+  Propriétaire. Le paquet reste fermé et inexécutable ;
 - `manifest.v1.json` est conservé comme preuve historique ;
 - `manifest.v2.json` relie la voie autonome active au holdout v3.
 
@@ -48,19 +48,18 @@ Toute modification d'un cas, d'une attente, d'un seuil, du protocole, de la
 rubrique ou du segmenter crée une nouvelle identité. Le holdout ne sert jamais
 au choix du prompt, du modèle ou des seuils.
 
-## Action encore bloquée
+## Scellement effectué, ouverture bloquée
 
-La seule commande v3 exposée valide un plaintext conservé hors dépôt :
+La validation d'un plaintext conservé hors dépôt reste disponible pour les
+contrôles de préparation :
 
 ```bash
 pnpm ai:holdout:v3:validate -- --plaintext=<chemin-absolu-hors-depot>
 ```
 
-Le dépôt n'expose volontairement aucune commande v3 de scellement. Avant d'en
-ajouter ou d'appeler `sealEvidenceAssistAutonomousHoldout`, le Propriétaire doit
-consigner explicitement la décision
-`AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL`, puis fournir une clé AES de
-32 octets via un secret externe au dépôt. Cette décision autorise seulement la
-qualification et le scellement ; elle n'autorise ni l'ouverture, ni l'exécution,
-ni la promotion. L'ouverture one-shot exige encore `GO_TO_SEALED_HOLDOUT` et une
-autorisation séparée.
+Le scellement a été effectué via la commande dédiée et la décision propriétaire
+`AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL`. La clé AES de 32 octets reste
+dans le Trousseau macOS, hors dépôt. Le dépôt contient uniquement le ciphertext,
+le manifeste et le certificat de qualification autonome. Cette décision
+n'autorise ni l'ouverture, ni l'exécution, ni la promotion. L'ouverture one-shot
+exige encore `GO_TO_SEALED_HOLDOUT` et une autorisation séparée.

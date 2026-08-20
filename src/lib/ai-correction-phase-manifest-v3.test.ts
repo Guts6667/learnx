@@ -53,10 +53,18 @@ const activeManifestSchema = z
         autonomousManifest: z.string().min(1),
         autonomousManifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
         executable: z.literal(false),
+        encryptedArtifact: z.object({
+          path: z.string().min(1),
+          sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+        }),
+        qualificationRecord: z.object({
+          path: z.string().min(1),
+          sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+        }),
         replacementManifest: z.string().min(1),
         replacementManifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
-        sealed: z.literal(false),
-        status: z.literal('CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL'),
+        sealed: z.literal(true),
+        status: z.literal('SEALED_AWAITING_DEVELOPMENT_GO'),
       })
       .passthrough(),
     immutableVerdicts: z.array(z.unknown()),
@@ -172,6 +180,12 @@ describe('active autonomous correction phase manifest', () => {
     );
     expect(sha256(read(active.holdout.autonomousManifest))).toBe(
       active.holdout.autonomousManifestSha256,
+    );
+    expect(sha256(read(active.holdout.encryptedArtifact.path))).toBe(
+      active.holdout.encryptedArtifact.sha256,
+    );
+    expect(sha256(read(active.holdout.qualificationRecord.path))).toBe(
+      active.holdout.qualificationRecord.sha256,
     );
     expect(sha256(read(SONNET_5_REASONING_ATTESTATION_PATH))).toBe(
       SONNET_5_REASONING_ATTESTATION_SHA256,

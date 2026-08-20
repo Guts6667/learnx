@@ -46,6 +46,7 @@
     "ai:evidence:screening:validate": "node --import tsx scripts/run-executable-rubric-sonnet5-screening.ts",
     "ai:evidence:smoke": "node --import tsx scripts/run-executable-rubric-gemini-smoke.ts",
     "ai:holdout:seal": "node --import tsx scripts/seal-executable-rubric-holdout.ts",
+    "ai:holdout:v3:seal": "node --import tsx scripts/seal-evidence-assist-autonomous-holdout-v3.ts",
     "ai:holdout:v3:validate": "node --import tsx scripts/validate-evidence-assist-autonomous-holdout-v3.ts"
   },
   "packageManager": "pnpm@10.28.1",

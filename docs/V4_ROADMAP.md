@@ -30,7 +30,7 @@ Dernière consolidation : 20 août 2026.
 | Plan | État au 16 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
 | Runtime canonique | `origin/dev` à `ead5be4` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0 et fake-flow hors ligne intégrés ; CI, fonctions réelles et déploiement dev verts. | Aucun appel modèle, contrat publié, débit réel ou disponibilité utilisateur de la correction. |
-| Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout authoré/prévalidé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni qualification/scellement du holdout, ni disponibilité utilisateur de la correction. |
+| Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
 | Expérimentation | `OFFLINE_CAMPAIGN_FROZEN / FINANCE_GATE4_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL` | Route, identité, gate quatre cas et panel 10 × 2 sont gelés hors ligne ; le plafond du gate quatre cas est arbitré. | Le GO propriétaire du gate quatre cas et l'arbitrage du panel conditionnel sont absents ; aucun pipeline n'est promu. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
 | Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
@@ -76,9 +76,9 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
 2. Le **Propriétaire** décide séparément du GO éphémère sur le plafond Finance
    arbitré de `0,251136 USD` pour les quatre premiers appels. Finance devra
    arbitrer séparément le panel conditionnel seulement après un résultat `4/4`.
-3. Le contenu du holdout v3 reste fermé : sa qualification et son scellement
-   exigent l'autorisation propriétaire exacte documentée, puis son ouverture
-   one-shot demeure un GO ultérieur distinct après les gates de développement.
+3. Le holdout v3 est désormais qualifié et scellé. Il reste fermé et son
+   ouverture one-shot demeure un GO ultérieur distinct après les gates de
+   développement.
 
 V4-002 et V4-010 peuvent avancer en parallèle sous leurs hard-off respectifs.
 Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
@@ -96,10 +96,10 @@ Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
   gelé. Elle exige un artefact d'autorisation éphémère et single-use liant
   l'accord Finance et le GO propriétaire au plafond de `0,251136 USD`. Cette
   autorisation n'est pas déduite d'un accord général sur la roadmap.
-- La qualification et le scellement du holdout v3 constituent une autre action
-  durable. Ils exigent l'autorisation exacte
-  `AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL` et n'autorisent ni son
-  ouverture, ni un appel modèle.
+- La qualification et le scellement du holdout v3 ont consommé l'autorisation
+  exacte `AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL`. Le paquet demeure
+  non exécutable ; cette décision n'autorise ni son ouverture, ni un appel
+  modèle.
 
 ## Chemin critique
 
@@ -182,8 +182,8 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   toute généralisation commerciale.
 - Le manifeste actif de holdout est
   `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json` ;
-  ses 24 cas sont authorés et prévalidés, mais il reste non qualifié, non scellé
-  et inexécutable. Le v2 reste intact comme
+  ses 24 cas sont qualifiés et scellés en AES-256-GCM, mais il reste fermé et
+  inexécutable. Le v2 reste intact comme
   `SUPERSEDED_HISTORICAL_DRAFT`. Le falsificateur, le holdout, la publication
   V4-002 et le live V4-010 restent fermés ; les deux tickets avancent hors ligne.
 
@@ -192,8 +192,8 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
 1. `GO_TO_SEALED_HOLDOUT` ne peut être demandé qu'après `4/4`, puis `20/20`
    sur le corpus de développement complet sous la même identité, tous les
    gates absolus satisfaits et les coûts réconciliés. Il conserve
-   `pipelinePromoted=false` et autorise seulement la préparation et le
-   scellement du holdout v3. Son ouverture one-shot exige une autorisation
+   `pipelinePromoted=false` et rend seulement éligible la demande d'ouverture
+   du holdout v3 déjà scellé. Son ouverture one-shot exige une autorisation
    propriétaire distincte.
 2. `GO_AUTONOMOUS_FORMATIVE` ne peut être rendu qu'après succès one-shot du
    holdout sous cette identité, réconciliation complète et absence de retuning

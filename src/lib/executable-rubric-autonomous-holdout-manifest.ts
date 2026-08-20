@@ -38,6 +38,13 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
     minimumCaseCount: z.literal(24),
     modality: z.literal('WRITING'),
     openedAt: z.iso.datetime().nullable(),
+    qualificationRecord: z
+      .object({
+        path: z.literal('writing-fr-holdout.v3.qualification.json'),
+        sha256: sha256Schema,
+      })
+      .strict()
+      .nullable(),
     pendingAuthoring: z
       .object({
         constructionManifest: z
@@ -92,6 +99,7 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
       manifest.qualification.validationRecordSha256 !== null &&
       Object.values(manifest.qualification.gates).every(Boolean);
     const encryptedArtifactPresent = manifest.encryptedArtifact.sha256 !== null;
+    const qualificationRecordPresent = manifest.qualificationRecord !== null;
 
     if (new Set(manifest.prohibitions).size !== manifest.prohibitions.length) {
       context.addIssue({
@@ -128,6 +136,7 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
       if (
         !qualificationComplete ||
         !encryptedArtifactPresent ||
+        !qualificationRecordPresent ||
         manifest.caseCount < manifest.minimumCaseCount
       ) {
         context.addIssue({
@@ -137,7 +146,11 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
           path: ['sealed'],
         });
       }
-    } else if (qualificationComplete || encryptedArtifactPresent) {
+    } else if (
+      qualificationComplete ||
+      encryptedArtifactPresent ||
+      qualificationRecordPresent
+    ) {
       context.addIssue({
         code: 'custom',
         message:
@@ -152,7 +165,8 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
         manifest.executable ||
         manifest.openedAt !== null ||
         manifest.caseCount !== 0 ||
-        manifest.pendingAuthoring !== null
+        manifest.pendingAuthoring !== null ||
+        manifest.qualificationRecord !== null
       ) {
         context.addIssue({
           code: 'custom',
@@ -169,6 +183,7 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
         manifest.openedAt !== null ||
         manifest.caseCount < manifest.minimumCaseCount ||
         manifest.pendingAuthoring === null ||
+        manifest.qualificationRecord !== null ||
         manifest.qualification.status !==
           'PENDING_AUTONOMOUS_QUALIFICATION'
       ) {
@@ -185,7 +200,8 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
         !manifest.sealed ||
         manifest.executable ||
         manifest.openedAt !== null ||
-        manifest.pendingAuthoring !== null
+        manifest.pendingAuthoring !== null ||
+        manifest.qualificationRecord === null
       ) {
         context.addIssue({
           code: 'custom',
@@ -200,7 +216,8 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
         !manifest.sealed ||
         !manifest.executable ||
         manifest.openedAt === null ||
-        manifest.pendingAuthoring !== null
+        manifest.pendingAuthoring !== null ||
+        manifest.qualificationRecord === null
       ) {
         context.addIssue({
           code: 'custom',
