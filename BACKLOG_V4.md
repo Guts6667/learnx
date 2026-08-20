@@ -2,10 +2,10 @@
 
 ## Statut et autorité
 
-- Version : 1.10.0
+- Version : 1.10.1
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
-- Dernière consolidation : 16 août 2026 — protocole evidence-assist 3.0.0
-  implémenté hors ligne, capacité de désactivation attestée, aucun appel autorisé
+- Dernière consolidation : 20 août 2026 — campagne evidence-assist gelée,
+  runner durci et raccord Emotional Design ; aucun appel autorisé
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -190,8 +190,9 @@ raws et règles d'arrêt restent immuables et append-only.
   répétitions fraîches, soit 20 workflows hors des quatre cas. Changer un seul
   de ces paramètres versionne le corpus, ferme la campagne et recommence à 4.
 - Deux décisions sont distinctes : `GO_TO_SEALED_HOLDOUT`, après 4/4 puis 20/20
-  et scellement indépendant du holdout, autorise son unique ouverture sans
-  promouvoir ; `GO_AUTONOMOUS_FORMATIVE`, après succès one-shot du holdout,
+  et scellement indépendant du holdout, confirme sa préparation sans l'ouvrir
+  ni promouvoir ; une autorisation propriétaire distincte permet l'ouverture
+  one-shot. `GO_AUTONOMOUS_FORMATIVE`, après succès one-shot du holdout,
   promeut uniquement le pipeline exact pour le pilote formatif borné.
 - La comparaison de trois candidats devient une preuve secondaire de robustesse
   et d'économie après faisabilité du pipeline exact. Elle ne bloque pas le gate
@@ -228,9 +229,10 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
    Sonnet borné clos et ne doit jamais être réutilisé.
 4. Exécuter uniquement les quatre cas après ces arbitrages ; n'exécuter le 10 × 2
    que si le gate fait `4/4`, sous exactement la même identité.
-5. Après 20/20, n'autoriser qu'une ouverture du holdout scellé via
-   `GO_TO_SEALED_HOLDOUT`, puis rendre `GO_AUTONOMOUS_FORMATIVE` uniquement si
-   son exécution one-shot réussit sans retuning.
+5. Après 20/20, confirmer la préparation du holdout scellé via
+   `GO_TO_SEALED_HOLDOUT`, demander une autorisation one-shot distincte, puis
+   rendre `GO_AUTONOMOUS_FORMATIVE` uniquement si son exécution réussit sans
+   retuning.
 6. Publier un premier contrat `WRITING/fr-FR` seulement après ce GO, s'il est
    `FULLY_COMPILABLE`, versionné, couvert par ses templates/remédiations et s'il
    prouve que les relations candidates ne sont jamais scorées.
@@ -779,7 +781,8 @@ Lot paiement
 V4-006 + V4-008 → V4-013 → V4-014 → V4-015
 
 Lot annonce V5
-V4-016, indépendant du moteur IA mais postérieur à la clôture V3.5
+V4-016, indépendant du moteur IA ; préparation possible sur le GO technique
+V3.5, rollout après sign-off humain V3.5
 
 Lot acquisition et lancement
 V3.5-006 fournit la landing et la collecte initiale ; V4-016A ajoute les
@@ -790,8 +793,9 @@ V3.5-005 fournit les gabarits ; V4-016B les applique aux surfaces V4-010,
 V4-012, V4-014, V4-016, V4-016A et V4-016G
 
 Lot accueil multi-programmes
-V4-016C après clôture V3.5, indépendant du moteur IA ; son rendu desktop est
-revu par V4-016B
+V4-016C est indépendant du moteur IA ; préparation possible sur le GO technique
+V3.5, clôture et rollout après sign-off humain V3.5 ; son rendu desktop est revu
+par V4-016B
 
 Lot expérience correction et finance
 V3.5-009 + surfaces V4-007/V4-010/V4-011/V4-014 → V4-016G
@@ -2293,8 +2297,17 @@ V4-010, V4-012, V4-014, V4-016, V4-016A et V4-016G.**
 
 ## V4-016C — Accueil et reprise multi-programmes
 
-**Priorité : P1 UX. Dépendances : clôture V3.5 ; V4-016B pour la revue desktop
-finale.**
+**Priorité : P1 UX. Dépendances : GO technique V3.5 ; sign-off humain V3.5
+avant clôture et rollout ; V4-016B pour la revue desktop finale.**
+
+**Références canoniques :**
+
+- `docs/EMOTIONAL_DESIGN_CONTRACT.md` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/emotional-design-renders/`.
+
+Ces références fixent hiérarchie, densité, ton et ordre de l'information, pas
+des pixels ni une modification de la logique de recommandation.
 
 ### Constat
 
@@ -2305,17 +2318,34 @@ finale.**
 - Dans le cas observé, le parcours Psychologie masque de fait les autres
   programmes suivis depuis l'accueil, alors qu'ils restent accessibles dans
   Mes programmes.
+- Le vide d'un nouveau compte est aujourd'hui traité comme un état courant,
+  alors qu'il doit orienter vers un premier choix sans montrer des outils ou
+  des métriques sans contenu.
+- `Mes parcours` et `Découvrir` servent deux intentions différentes : reprendre
+  un engagement existant ou choisir un nouveau parcours.
 
 ### Périmètre
 
 - Conserver une recommandation principale unique, choisie côté serveur selon
   les priorités pédagogiques existantes, sans favoriser un slug ou un programme
   codé en dur.
+- Rendre trois états explicitement distincts :
+  - zéro programme : première arrivée, phrase d'orientation et seul CTA rempli
+    `Choisir mon premier parcours`, sans compteur, recherche ou filtre vide ;
+  - un programme : recommandation et reprise uniques, sans seconde liste qui
+    répète la même destination ;
+  - trois programmes ou plus : recommandation dominante, puis autres parcours
+    actifs en lignes compactes, tous retrouvables sans transformer Aujourd'hui
+    en catalogue.
+- Après le choix du premier parcours, ramener le compte vers la première
+  activité disponible fournie par le serveur ; un chargement ou une erreur ne
+  doit jamais être interprété comme une première arrivée.
 - Faire retourner par l'API Aujourd'hui un résumé borné de chaque programme
   effectivement suivi et accessible au compte : identité, titre, progression,
   dernière activité ou prochaine action canonique et destination de reprise.
-- Afficher sous l'action principale une section `Mes programmes en cours` qui
-  permet de reprendre chacun des programmes suivis en une action.
+- Afficher sous l'action principale une section `Mes programmes en cours` quand
+  au moins une reprise secondaire existe ; chaque programme actif est
+  reprenable en une interaction.
 - Distinguer clairement la recommandation du jour des reprises secondaires :
   une seule action primaire, puis des lignes ou cartes compactes par programme.
 - Ordonner les reprises par activité récente et priorité serveur, avec un ordre
@@ -2325,6 +2355,12 @@ finale.**
 - Garder la liste lisible et bornée ; si le nombre devient élevé, proposer un
   accès explicite à Mes programmes sans tronquer silencieusement l'existence des
   autres parcours.
+- Séparer `Mes parcours`, destiné à la reprise, de `Découvrir`, destiné au choix.
+  Révéler la recherche à la demande et n'afficher des filtres que s'ils réduisent
+  une collection réelle ; ne pas imposer `Découvrir` comme destination par
+  défaut à tous les comptes.
+- Prévoir titres de programme longs, métadonnées secondaires et états
+  chargement/vide/erreur sans masquer l'identité ou la destination de reprise.
 - Traduire les nouveaux libellés FR/EN et conserver calculs de progression,
   recommandations et droits d'accès exclusivement côté serveur.
 
@@ -2335,11 +2371,19 @@ finale.**
   personnalisation IA.
 - Remplacer Mes programmes, afficher les programmes du catalogue non suivis ou
   rendre publics des contenus privés.
+- Ajouter statistiques, gamification, carrousels, recommandation IA ou recherche
+  et filtres permanents pour remplir l'état vide.
 
 ### Critères d'acceptation
 
-- Un compte suivant au moins trois programmes voit les trois sur Aujourd'hui et
-  peut reprendre chacun à sa destination serveur exacte.
+- Sans programme, le compte comprend en cinq secondes qu'il doit choisir son
+  premier parcours ; le seul CTA rempli est `Choisir mon premier parcours` et
+  aucun compteur à zéro, historique, recherche ou filtre n'est rendu.
+- Avec un seul programme, sa recommandation et sa reprise ne sont pas dupliquées
+  dans une section secondaire ; la destination serveur reste exacte.
+- Avec trois programmes, les trois sont identifiables sur Aujourd'hui : le
+  programme recommandé est présent une seule fois comme action dominante et
+  les deux autres sont reprenables en une interaction dans des lignes compactes.
 - La recommandation principale reste unique et identifiable ; elle peut provenir
   de n'importe lequel des programmes accessibles selon les priorités existantes.
 - Chaque progression et destination correspond au bon couple utilisateur +
@@ -2349,15 +2393,27 @@ finale.**
   `Reprendre`; un programme terminé expose un état terminé sans fausse action.
 - L'état vide reste correct lorsque le compte ne suit aucun programme, et un
   programme retiré ou devenu inaccessible disparaît dès invalidation serveur.
-- Le rendu reste utilisable à 320/390 px, sur desktop, à 200 % de texte, au
-  clavier et avec lecteur d'écran.
+- `Mes parcours` et `Découvrir` ont des libellés, états vides et destinations
+  distincts ; ouvrir la recherche est une action explicite, pas l'état initial.
+- Un titre long FR/EN se replie sans ellipses masquant l'identité, sans pousser
+  l'action hors écran et sans augmenter la cardification.
+- Le rendu reste utilisable à 320/390 px, 720 px de reflow, 1440/1920 px, zoom
+  200 %, clavier et lecteur d'écran ; l'état actif, la progression et la
+  destination ne dépendent jamais de la couleur seule.
+- Une seule action remplie domine chaque zone ; bleu Atlas et laiton rare
+  respectent les contrats V3.5, sans vert, cyan électrique ou dashboard de
+  métriques.
 
 ### Tests et risques
 
-- Tests API avec zéro, un et plusieurs programmes, propriété privée,
+- Tests API avec zéro, un, trois et de nombreux programmes, propriété privée,
   inscriptions, retraits, permissions, progression et ordre déterministe.
-- Tests composants et E2E vérifiant trois reprises distinctes, destinations,
-  libellés FR/EN, absence de duplication de l'action principale et responsive.
+- Tests composants et E2E couvrant première arrivée, retour après première
+  inscription, un programme sans duplication, trois programmes, titres longs,
+  chargement, erreur, retraits, destinations et libellés FR/EN.
+- Captures de preuve à 320/390/720/1440/1920 px avec données réalistes, zoom
+  200 %, clavier, lecteur d'écran, reduced motion et forced colors ; la revue
+  utilise les questions de compréhension de `docs/V3_5_QA_MATRIX.md`.
 - Test de requêtes bornées et absence de N+1 avant d'élargir le payload Today.
 - Risque principal : transformer l'accueil en deuxième catalogue. Garder un
   résumé compact et renvoyer les détails complets vers Mes programmes.

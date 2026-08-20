@@ -4,6 +4,7 @@
 
 - Baseline : `dev` après les revues d'écart V3.5-001 à V3.5-007.
 - Références : A1 à A6 de `BACKLOG_V3_5.md`.
+- Contrat de compréhension : `docs/EMOTIONAL_DESIGN_CONTRACT.md`.
 - Automatisation : active ; les résultats exacts sont consignés par la matrice
   de commandes de V3.5-008 puis le rapport de clôture V3.5-009.
 - Revue humaine de marque : **à valider**.
@@ -19,12 +20,43 @@ ne déclare aucun contrôle manuel réussi sans preuve.
 | Landing publique | A3/A5 | 320, 390, 768, 1024, 1440, 1920 | FR/EN, CTA, formulaire, aperçus Programme/Leçon réels, source, absence de preuve IA disponible, axe | `tests/e2e/landing.spec.ts`, captures Playwright attachées | À valider |
 | Shell et primitives | A2 | 320, 390, 768, 1024, 1440, 1920 | cibles 44 px, zoom 200 %, axe | `tests/e2e/ui-primitives.spec.ts` | À valider |
 | Programme et leçon | A1/A3 | 320, 390, 1440, 1920 | accordéon, titres longs, navigation, sommaire, clavier, erreurs | `tests/e2e/home.spec.ts` | À valider |
+| Première arrivée et Aujourd’hui | Emotional Design / V4-016C | 320, 390, 720, 1440 | première inscription, recommandation dominante, trois reprises compactes, absence de faux compteurs | 4 compositions de référence sans débordement ; compréhension à consigner | À valider |
+| Mes parcours et Découvrir | Emotional Design / V4-016C | 320, 390, 720, 1440 | intentions séparées, contenu avant outils, recherche progressive | 4 compositions de référence sans débordement ; compréhension à consigner | À valider |
+| Résultat, clôture et récupération | Emotional Design / V3.5-004/005, V4-016G | 320, 390, 720, 1440 | acquis, priorité, action, score secondaire ; clôture factuelle ; conservation/non-effet/action sûre | 12 compositions de référence sans débordement ; compréhension à consigner | À valider |
 | Exercice et Réviser | A1 | 320, 390, desktop | activité profonde, correction existante, focus et états | `tests/e2e/home.spec.ts` et tests composants | À valider |
 | Notes et Profil | A1/A3 | 320, 390, desktop | Markdown sûr, actions, session et PWA | tests `NotesPage`, `ProfilePage`, `PwaStatus` | À valider |
 | Administration | A1 | 390, 768, 1024, 1440, 1920 | navigation profonde, tiroir, Échap, restitution du focus, axe | `tests/e2e/admin.spec.ts` | À valider |
 | Contacts landing | A4 | 390, 1440, zoom 200 % | default, loading, empty, error, retry, double finalité, axe | `tests/e2e/admin-contacts.spec.ts` | À valider |
 | Icône Atlas | A6 | 29, 32, 40, 60, 180, 192, 512, 1024 | géométrie, couleurs, tailles, manifestes, favicon, Apple touch | `src/server/quality/atlas-icons.test.ts` et `tests/e2e/landing.spec.ts` | À valider |
 | Correction IA | A1 | — | Surface non livrée en V3.5 | Référence réservée à V4 ; aucune fausse UI | Sans objet V3.5 |
+
+## Preuves de compréhension Emotional Design
+
+La référence approuvée couvre sept écrans à quatre largeurs — 320, 390, 720
+pour le reflow équivalent au zoom 200 %, et 1440 — soit 28/28 contrôles de
+composition réussis : aucune vue active multiple, cible produit inférieure à
+44 px, absence de contenu, erreur runtime ou débordement.
+
+Cette preuve est technique. La clôture des tickets associés exige en plus une
+preuve de compréhension consignée sur données réalistes :
+
+| Scénario | Questions auxquelles l’utilisateur doit répondre sans aide | Critère de passage | Preuve à consigner |
+| --- | --- | --- | --- |
+| Première arrivée | Que propose LearnX ? Que dois-je faire maintenant ? | Le CTA `Choisir mon premier parcours` est identifié en cinq secondes ; aucun compteur ou outil vide n’est cité comme prochaine étape | observation et verbatim |
+| Aujourd’hui multi-parcours | Quelle activité est recommandée ? Comment reprendre chacun de mes autres parcours ? | Recommandation dominante distinguée ; trois parcours accessibles en une interaction | destinations suivies et erreurs observées |
+| Mes parcours / Découvrir | Où reprendre ? Où chercher un nouveau parcours ? | Les deux intentions sont distinguées sans ouvrir la recherche par défaut | parcours choisi et justification |
+| Programme | Où suis-je ? Quelle est la prochaine activité ? | Position et prochaine action exactes identifiées en cinq secondes | réponse et destination sélectionnée |
+| Résultat | Qu’est-ce qui est acquis ? Que renforcer ? Que faire ensuite ? | Un acquis et une priorité précèdent le score dans la restitution spontanée | ordre des éléments reformulés |
+| Clôture de leçon | Qu’ai-je réellement terminé ? Que se passe-t-il ensuite ? | Travail accompli et prochaine frontière pédagogique compris sans récompense artificielle | reformulation factuelle |
+| Erreur / récupération | Qu’est-ce qui est conservé ? Qu’est-ce qui n’a pas eu lieu ou n’a pas été débité ? Quelle action est sûre ? | Les trois réponses sont exactes et l’action choisie n’entraîne pas de mutation double | action, compréhension et reprise observées |
+
+Les maquettes interactives et les captures utilisées comme références sont :
+
+- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/emotional-design-renders/`.
+
+Elles fixent hiérarchie, densité, ton et ordre de l’information, pas une copie
+pixel-perfect ni une modification du moteur.
 
 ## Contrôles transversaux automatisés
 
@@ -56,3 +88,20 @@ Pour chaque famille applicable :
 
 Un défaut P0/P1, un contenu masqué, une action inaccessible ou une information
 exprimée uniquement par couleur bloque V3.5-009.
+
+## Checklist courte de clôture sur le `main` courant
+
+Baseline observée le 20 août 2026 : `origin/main` à `b5f5013`. Cette mention
+n’atteste aucun contrôle manuel. Chaque ligne reste `À EXÉCUTER` jusqu’à preuve
+datée sur la version réellement déployée.
+
+| Contrôle | Parcours minimal | Preuve requise | Statut |
+| --- | --- | --- | --- |
+| PWA réelle | Installer, fermer, rouvrir puis mettre à jour sur un téléphone réel ; vérifier que l’ouverture mène à l’application ou à la connexion, jamais à la landing | appareil/OS, URL, date, capture et résultat ; inclure logout/changement de compte et absence de données privées restaurées | À EXÉCUTER |
+| VoiceOver | Sur iOS réel, parcourir connexion, Aujourd’hui, Parcours, Programme, Leçon et une erreur récupérable | ordre de lecture, libellés, focus, annonces de statut et défauts consignés | À EXÉCUTER |
+| Zoom et reflow | À 200 % desktop et avec grande taille de texte mobile, revoir landing, shell privé, Programme/Leçon et Administration Contacts | captures 320/390 et desktop, absence de scroll horizontal global, contenu/action non masqués | À EXÉCUTER |
+| Smoke authentifié | Sur le domaine promu, se connecter puis ouvrir Aujourd’hui, un programme, une leçon, Notes et Administration Contacts ; se déconnecter | compte/rôle de test autorisé, destinations, données visibles, erreurs réseau et résultat daté | À EXÉCUTER |
+
+La clôture officielle exige un sign-off humain unique citant ces quatre preuves.
+Un GO automatisé antérieur, une capture locale ou une composition de référence
+ne peut pas changer ces statuts.

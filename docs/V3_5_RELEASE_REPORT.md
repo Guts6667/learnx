@@ -10,6 +10,9 @@
 
 **Date : 2026-08-10**
 
+**Baseline publique à revalider : `origin/main` `b5f5013` observée le 20 août
+2026**
+
 ## Synthèse
 
 La revue de `BACKLOG_V3_5.md` 0.8.0 est terminée pour V3.5-001 à
@@ -122,6 +125,10 @@ Le ticket V3.5-009 n'a exécuté ni seed ni écriture sur une base partagée.
 
 ## Validation humaine restant à obtenir
 
+La checklist canonique et ses statuts se trouvent dans
+`docs/V3_5_QA_MATRIX.md`, section « Checklist courte de clôture sur le `main`
+courant ». Aucun de ces contrôles n’est réputé réussi par le présent rapport.
+
 - Installer puis rouvrir la PWA sur iOS/Android/desktop, y compris depuis une
   ancienne installation et après mise à jour du service worker.
 - Vérifier logout/changement de compte et absence de données privées restaurées
@@ -148,9 +155,11 @@ Le ticket V3.5-009 n'a exécuté ni seed ni écriture sur une base partagée.
 
 ## Baseline V4
 
-V4 doit partir du commit V3.5 effectivement promu après validation humaine. Il
-ne doit pas supposer disponible une correction assistée tant que son ticket V4
-dédié et son rollout ne sont pas terminés.
+Les travaux V4 hors ligne ou désactivés peuvent consommer le candidat V3.5 en
+GO technique. Leur rollout doit néanmoins partir du commit V3.5 effectivement
+promu et revalidé par la checklist humaine. V4 ne doit pas supposer disponible
+une correction assistée tant que son ticket dédié et son rollout ne sont pas
+terminés.
 
 ## Fichiers locaux volontairement exclus
 

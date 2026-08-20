@@ -9,6 +9,26 @@
 - aucune dépendance à un calendrier académique ;
 - plusieurs programmes accessibles depuis le même compte.
 
+## Raccord Emotional Design Atlas
+
+`docs/EMOTIONAL_DESIGN_CONTRACT.md` complète cette baseline avec la promesse
+de confiance calme et de progression tangible. Les règles métier, droits,
+destinations et calculs serveur restent ceux du ticket actif.
+
+Le ticket V4-016C de `BACKLOG_V4.md` porte l’évolution d’Aujourd’hui et du flow
+Parcours :
+
+- un compte sans inscription reçoit un état de première arrivée avec une seule
+  action dominante, `Choisir mon premier parcours` ;
+- un compte déjà inscrit reçoit une recommandation principale et peut reprendre
+  chacun de ses autres parcours actifs en une interaction ;
+- `Mes parcours` sert à reprendre et `Découvrir` à choisir ; la recherche est
+  progressive et n’apparaît pas dans un faux vide.
+
+La référence validée est directionnelle, jamais pixel-perfect :
+
+`/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html`
+
 ## Navigation mobile
 
 - Aujourd’hui
@@ -28,6 +48,10 @@ Affiche :
 5. progression du programme ;
 6. révisions dues ;
 7. dernière activité.
+
+Cette liste décrit la baseline fonctionnelle. V4-016C distingue explicitement
+la première arrivée sans parcours de l’accueil de retour multi-programmes ;
+`Découvrir` n’est pas une destination universelle par défaut.
 
 ## Programmes
 
