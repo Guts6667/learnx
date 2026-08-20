@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
-import { autonomousFormativeCorpusSchema } from './autonomous-formative-corpus.ts';
+import { autonomousFormativeCorpusSchema } from './autonomous-formative-corpus.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const nullablePositiveNumberSchema = z.number().positive().nullable();

@@ -5,7 +5,7 @@ import {
   buildEvidenceCertificate,
   type CompiledExecutableRubric,
   type ConsolidatedElementEvidence,
-} from './executable-rubric-engine.ts';
+} from './executable-rubric-engine.js';
 
 const stableKeySchema = z
   .string()

@@ -6,8 +6,8 @@ import {
   type ConsolidatedElementEvidence,
   evidencePassSchema,
   validateEvidencePass,
-} from './executable-rubric-engine.ts';
-import { executableRubricSemanticCorpusSchema } from './executable-rubric-semantic-corpus.ts';
+} from './executable-rubric-engine.js';
+import { executableRubricSemanticCorpusSchema } from './executable-rubric-semantic-corpus.js';
 
 const resultSchema = z
   .object({

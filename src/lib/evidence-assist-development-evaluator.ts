@@ -2,9 +2,9 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
-import type { CompiledExecutableRubric } from './executable-rubric-engine.ts';
-import type { SelectedExecutableRubricSemanticCorpus } from './executable-rubric-semantic-selection.ts';
-import type { EvidenceAssistValidationResult } from './evidence-assist-protocol.ts';
+import type { CompiledExecutableRubric } from './executable-rubric-engine.js';
+import type { SelectedExecutableRubricSemanticCorpus } from './executable-rubric-semantic-selection.js';
+import type { EvidenceAssistValidationResult } from './evidence-assist-protocol.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const nonnegativeFiniteSchema = z.number().finite().nonnegative();

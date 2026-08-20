@@ -7,15 +7,15 @@ import {
 
 import { z } from 'zod';
 
-import type { CompiledExecutableRubric } from './executable-rubric-engine.ts';
+import type { CompiledExecutableRubric } from './executable-rubric-engine.js';
 import {
   EVIDENCE_ASSIST_PROTOCOL_VERSION,
   EVIDENCE_ASSIST_VALIDATOR_VERSION,
-} from './evidence-assist-protocol.ts';
+} from './evidence-assist-protocol.js';
 import {
   createResponseSpanManifest,
   RESPONSE_SPAN_SEGMENTATION_VERSION,
-} from './response-span-manifest.ts';
+} from './response-span-manifest.js';
 
 const stableKeySchema = z
   .string()

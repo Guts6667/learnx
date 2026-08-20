@@ -2,14 +2,14 @@ import { createHash, randomBytes } from 'node:crypto';
 
 import { z } from 'zod';
 
-import type { CompiledExecutableRubric } from './executable-rubric-engine.ts';
+import type { CompiledExecutableRubric } from './executable-rubric-engine.js';
 import {
   createResponseSpanManifest,
   RESPONSE_SPAN_SEGMENTATION_VERSION,
   type ResponseSpan,
   type ResponseSpanManifest,
   validateResponseSpanManifest,
-} from './response-span-manifest.ts';
+} from './response-span-manifest.js';
 
 const stableKeySchema = z
   .string()

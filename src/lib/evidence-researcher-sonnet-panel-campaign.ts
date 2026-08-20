@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
-import { compileExecutableRubric } from './executable-rubric-engine.ts';
-import { evidenceResearcherProtocolFingerprint } from './evidence-researcher-protocol.ts';
+import { compileExecutableRubric } from './executable-rubric-engine.js';
+import { evidenceResearcherProtocolFingerprint } from './evidence-researcher-protocol.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const expectedCaseIds = [

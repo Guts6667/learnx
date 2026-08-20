@@ -9,7 +9,7 @@ import {
   evidenceAssistGateMetricsPass,
   evidenceAssistGateMetricsSchema,
   sha256,
-} from './evidence-assist-development-campaign.ts';
+} from './evidence-assist-development-campaign.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 

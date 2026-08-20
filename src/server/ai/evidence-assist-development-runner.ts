@@ -2,24 +2,24 @@ import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 
 import { z } from 'zod';
 
-import type { CorrectionProviderResult } from '../../lib/ai-correction-provider-adapters.ts';
+import type { CorrectionProviderResult } from '../../lib/ai-correction-provider-adapters.js';
 import {
   canonicalJson,
   type EvidenceAssistDevelopmentCampaignManifest,
-} from '../../lib/evidence-assist-development-campaign.ts';
+} from '../../lib/evidence-assist-development-campaign.js';
 import {
   type EvidenceAssistDefectClass,
   type EvidenceAssistDevelopmentAttempt,
   evaluateEvidenceAssistAttempt,
   evidenceAssistStopDecision,
-} from '../../lib/evidence-assist-development-evaluator.ts';
-import type { CompiledExecutableRubric } from '../../lib/executable-rubric-engine.ts';
-import type { SelectedExecutableRubricSemanticCorpus } from '../../lib/executable-rubric-semantic-selection.ts';
+} from '../../lib/evidence-assist-development-evaluator.js';
+import type { CompiledExecutableRubric } from '../../lib/executable-rubric-engine.js';
+import type { SelectedExecutableRubricSemanticCorpus } from '../../lib/executable-rubric-semantic-selection.js';
 import {
   evidenceAssistJsonSchema,
   prepareEvidenceAssistRequest,
   validateEvidenceAssistOutput,
-} from '../../lib/evidence-assist-protocol.ts';
+} from '../../lib/evidence-assist-protocol.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const nonnegativeFiniteSchema = z.number().finite().nonnegative();

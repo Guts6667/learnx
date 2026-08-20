@@ -9,7 +9,7 @@ import {
   type CorrectionContract,
   type CorrectionOutput,
   type Protocol3CorrectionArtifactOutput,
-} from './ai-correction-contracts.ts';
+} from './ai-correction-contracts.js';
 
 const stableKeySchema = z
   .string()

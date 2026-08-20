@@ -5,8 +5,8 @@ import { z } from 'zod';
 import {
   compileExecutableRubric,
   type EvidencePass,
-} from './executable-rubric-engine.ts';
-import { evidenceResearcherProtocolFingerprint } from './evidence-researcher-protocol.ts';
+} from './executable-rubric-engine.js';
+import { evidenceResearcherProtocolFingerprint } from './evidence-researcher-protocol.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const expectedCaseIds = [

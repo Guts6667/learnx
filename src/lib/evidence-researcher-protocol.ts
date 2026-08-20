@@ -8,7 +8,7 @@ import {
   evidenceSpanFor,
   type EvidencePass,
   validateEvidencePass,
-} from './executable-rubric-engine.ts';
+} from './executable-rubric-engine.js';
 
 const stableKeySchema = z
   .string()

@@ -26,8 +26,8 @@ describe('integration runtime module resolution', () => {
   });
 
   it('keeps Vercel server runtime imports resolvable by Node', () => {
-    const roots = ['api', 'src/server'];
-    const unresolvedAliases: string[] = [];
+    const roots = ['api', 'src/lib', 'src/server'];
+    const unresolvedImports: string[] = [];
     const visit = (directory: string): void => {
       for (const entry of readdirSync(directory, { withFileTypes: true })) {
         const filename = path.join(directory, entry.name);
@@ -38,14 +38,18 @@ describe('integration runtime module resolution', () => {
           !entry.name.endsWith('.test.ts')
         ) {
           const source = readFileSync(filename, 'utf8');
-          if (/from ['"]@\//u.test(source) || /import\(['"]@\//u.test(source)) {
-            unresolvedAliases.push(filename);
+          if (
+            /from ['"]@\//u.test(source) ||
+            /import\(['"]@\//u.test(source) ||
+            /(?:from\s+|import\()['"][^'"]+\.ts['"]/u.test(source)
+          ) {
+            unresolvedImports.push(filename);
           }
         }
       }
     };
 
     roots.forEach(visit);
-    expect(unresolvedAliases).toEqual([]);
+    expect(unresolvedImports).toEqual([]);
   });
 });

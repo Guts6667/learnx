@@ -11,7 +11,7 @@ import {
   type CompiledExecutableRubric,
   evidenceSpanFor,
   validateEvidencePass,
-} from './executable-rubric-engine.ts';
+} from './executable-rubric-engine.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const stableKeySchema = z

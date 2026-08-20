@@ -2,24 +2,24 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
-import { calculateEvidenceResearcherCostBound } from './evidence-extraction-campaign.ts';
+import { calculateEvidenceResearcherCostBound } from './evidence-extraction-campaign.js';
 import {
   EVIDENCE_ASSIST_PROTOCOL_VERSION,
   EVIDENCE_ASSIST_VALIDATOR_VERSION,
   evidenceAssistJsonSchema,
   evidenceAssistProtocolFingerprint,
   prepareEvidenceAssistRequest,
-} from './evidence-assist-protocol.ts';
-import { compileExecutableRubric } from './executable-rubric-engine.ts';
-import { validateExecutableRubricSemanticSelection } from './executable-rubric-semantic-selection.ts';
-import { RESPONSE_SPAN_SEGMENTATION_VERSION } from './response-span-manifest.ts';
+} from './evidence-assist-protocol.js';
+import { compileExecutableRubric } from './executable-rubric-engine.js';
+import { validateExecutableRubricSemanticSelection } from './executable-rubric-semantic-selection.js';
+import { RESPONSE_SPAN_SEGMENTATION_VERSION } from './response-span-manifest.js';
 import {
   loadSonnet5ReasoningCapabilities,
   SONNET_5_OPENROUTER_CATALOG_PATH,
   SONNET_5_OPENROUTER_CATALOG_SHA256,
   SONNET_5_REASONING_ATTESTATION_PATH,
   SONNET_5_REASONING_ATTESTATION_SHA256,
-} from './sonnet-5-reasoning-capability-attestation.ts';
+} from './sonnet-5-reasoning-capability-attestation.js';
 
 export const EVIDENCE_ASSIST_CAMPAIGN_SCHEMA_VERSION = 1;
 export const EVIDENCE_ASSIST_CAMPAIGN_RUNNER_VERSION = '1.0.0';

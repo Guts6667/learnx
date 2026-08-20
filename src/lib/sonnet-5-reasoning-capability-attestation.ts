@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
-import type { CorrectionReasoningCapabilities } from './ai-correction-provider-adapters.ts';
+import type { CorrectionReasoningCapabilities } from './ai-correction-provider-adapters.js';
 
 export const SONNET_5_REASONING_ATTESTATION_PATH =
   'benchmarks/ai-correction/executable-rubric/sonnet-5-reasoning-capability-attestation-2026-08-16.json';

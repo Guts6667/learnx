@@ -2,11 +2,11 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
-import type { CompiledExecutableRubric } from './executable-rubric-engine.ts';
+import type { CompiledExecutableRubric } from './executable-rubric-engine.js';
 import {
   type ExecutableRubricSemanticCorpus,
   validateExecutableRubricSemanticCorpus,
-} from './executable-rubric-semantic-corpus.ts';
+} from './executable-rubric-semantic-corpus.js';
 
 const sourcePathSchema = z.enum([
   'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
