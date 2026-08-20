@@ -11,6 +11,7 @@ import { conceptAssessmentsApp } from './concept-assessments/app.js';
 import { creditsApp } from './credits/app.js';
 import { conceptsApp } from './concepts/app.js';
 import { exercisesApp } from './exercises/app.js';
+import { formativeCorrectionsApp } from './formative-corrections/app.js';
 import { moduleRunsApp } from './module-runs/app.js';
 import { notesApp } from './notes/app.js';
 import { curriculumApp } from './programs/app.js';
@@ -56,6 +57,7 @@ export function createApiApp() {
   app.route('/', creditsApp);
   app.route('/', quizzesApp);
   app.route('/', exercisesApp);
+  app.route('/', formativeCorrectionsApp);
   app.route('/', moduleRunsApp);
   app.route('/', stageAssessmentsApp);
   app.route('/', notesApp);

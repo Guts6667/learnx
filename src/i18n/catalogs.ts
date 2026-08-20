@@ -648,6 +648,45 @@ export const frenchMessages = {
   'exercise.submitted': 'Soumis',
   'exercise.submittedAt': 'Envoyé le {date}',
   'exercise.unknownDate': 'date inconnue',
+  'formativeCorrection.title': 'Retour formatif',
+  'formativeCorrection.description':
+    'Une correction assistée fondée sur des critères authorés et des extraits exacts de votre réponse.',
+  'formativeCorrection.assistedLabel': 'Correction assistée',
+  'formativeCorrection.simulationTitle': 'Simulation hors ligne',
+  'formativeCorrection.simulationDescription':
+    'Aucun crédit ne sera réservé ni débité. Cette préparation utilise un fournisseur déterministe local et reste invisible hors de l’environnement de test.',
+  'formativeCorrection.request': 'Demander la correction simulée',
+  'formativeCorrection.retry': 'Réessayer sans débit',
+  'formativeCorrection.revise': 'Reprendre ma réponse',
+  'formativeCorrection.fullResponse': 'Nouvelle version complète',
+  'formativeCorrection.fullResponseHelp':
+    'Resoumettez la réponse entière. Un simple complément n’est jamais fusionné automatiquement avec la version précédente.',
+  'formativeCorrection.submitRevision': 'Soumettre cette nouvelle version',
+  'formativeCorrection.responseExcerpt': 'Extrait de votre réponse',
+  'formativeCorrection.resultScope':
+    'LearnX affiche uniquement les constats reliés à des passages exacts. Aucun niveau, score ou verdict de maîtrise n’est produit.',
+  'formativeCorrection.clarificationDescription':
+    'Les passages disponibles ne suffisent pas à établir un constat prudent. Précisez votre réponse puis soumettez une nouvelle version complète.',
+  'formativeCorrection.savedAt': 'Travail conservé',
+  'formativeCorrection.billing': 'Règlement',
+  'formativeCorrection.noDebit': 'Aucun crédit débité',
+  'formativeCorrection.noProgressionEffect':
+    'Ce retour est strictement formatif et ne modifie ni votre progression ni la validation de l’étape.',
+  'formativeCorrection.unavailableTitle': 'Correction temporairement indisponible',
+  'formativeCorrection.unavailableDescription':
+    'Votre réponse est conservée. Aucun crédit n’a été débité et aucune progression n’a changé. Vous pouvez réessayer en toute sécurité.',
+  'formativeCorrection.loadErrorTitle': 'Retour indisponible',
+  'formativeCorrection.loadErrorDescription':
+    'Votre réponse reste conservée. Reconnectez-vous puis rechargez le retour ; aucune nouvelle correction ne sera lancée automatiquement.',
+  'formativeCorrection.requestError':
+    'La demande n’a pas abouti. Votre réponse est conservée et aucun crédit n’a été débité.',
+  'formativeCorrection.version': 'Version {count}',
+  'formativeCorrection.history': 'Historique — {count} versions',
+  'formativeCorrection.state.FEEDBACK_READY': 'Retour prêt',
+  'formativeCorrection.state.REVISION_REQUIRED': 'Révision conseillée',
+  'formativeCorrection.state.CLARIFICATION_REQUIRED': 'Précision nécessaire',
+  'formativeCorrection.state.TEMPORARILY_UNAVAILABLE':
+    'Temporairement indisponible',
   'exercise.submit': 'Soumettre l’exercice',
   'exercise.unavailable': 'L’exercice est indisponible.',
   'exercise.optional': 'Optionnel',
@@ -1601,6 +1640,45 @@ export const englishMessages = {
   'exercise.submitted': 'Submitted',
   'exercise.submittedAt': 'Submitted on {date}',
   'exercise.unknownDate': 'unknown date',
+  'formativeCorrection.title': 'Formative feedback',
+  'formativeCorrection.description':
+    'Criteria-based assisted feedback grounded in exact excerpts from your response.',
+  'formativeCorrection.assistedLabel': 'Assisted correction',
+  'formativeCorrection.simulationTitle': 'Offline simulation',
+  'formativeCorrection.simulationDescription':
+    'No credits will be reserved or charged. This preparation uses a deterministic local provider and remains hidden outside the test environment.',
+  'formativeCorrection.request': 'Request simulated correction',
+  'formativeCorrection.retry': 'Retry without charge',
+  'formativeCorrection.revise': 'Revise my response',
+  'formativeCorrection.fullResponse': 'Complete new version',
+  'formativeCorrection.fullResponseHelp':
+    'Resubmit the entire response. A short addition is never merged automatically with the previous version.',
+  'formativeCorrection.submitRevision': 'Submit this new version',
+  'formativeCorrection.responseExcerpt': 'Excerpt from your response',
+  'formativeCorrection.resultScope':
+    'LearnX only displays observations tied to exact passages. It produces no level, score, or mastery verdict.',
+  'formativeCorrection.clarificationDescription':
+    'The available passages are not sufficient for a careful observation. Clarify your response, then submit a complete new version.',
+  'formativeCorrection.savedAt': 'Work saved',
+  'formativeCorrection.billing': 'Settlement',
+  'formativeCorrection.noDebit': 'No credits charged',
+  'formativeCorrection.noProgressionEffect':
+    'This feedback is strictly formative and does not change your progress or stage validation.',
+  'formativeCorrection.unavailableTitle': 'Correction temporarily unavailable',
+  'formativeCorrection.unavailableDescription':
+    'Your response is saved. No credits were charged and progress did not change. You can retry safely.',
+  'formativeCorrection.loadErrorTitle': 'Feedback unavailable',
+  'formativeCorrection.loadErrorDescription':
+    'Your response remains saved. Reconnect and reload the feedback; no new correction will start automatically.',
+  'formativeCorrection.requestError':
+    'The request did not complete. Your response is saved and no credits were charged.',
+  'formativeCorrection.version': 'Version {count}',
+  'formativeCorrection.history': 'History — {count} versions',
+  'formativeCorrection.state.FEEDBACK_READY': 'Feedback ready',
+  'formativeCorrection.state.REVISION_REQUIRED': 'Revision suggested',
+  'formativeCorrection.state.CLARIFICATION_REQUIRED': 'Clarification needed',
+  'formativeCorrection.state.TEMPORARILY_UNAVAILABLE':
+    'Temporarily unavailable',
   'exercise.submit': 'Submit exercise',
   'exercise.unavailable': 'The exercise is unavailable.',
   'exercise.optional': 'Optional',
