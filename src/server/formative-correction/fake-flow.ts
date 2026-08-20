@@ -1,17 +1,17 @@
 import { createHash, randomUUID } from 'node:crypto';
 
-import type { CompiledExecutableRubric } from '@/lib/executable-rubric-engine.js';
+import type { CompiledExecutableRubric } from '../../lib/executable-rubric-engine.js';
 import {
   buildFormativeEvidenceCertificate,
   type FormativeEvidenceCertificate,
   type FormativeCorrectionState,
   simulatedCorrectionQuote,
-} from '@/lib/formative-correction.js';
+} from '../../lib/formative-correction.js';
 import type {
   EvidenceAssistOrchestrator,
   EvidenceAssistProviderPort,
-} from '@/server/ai/evidence-assist-orchestrator.js';
-import { createEvidenceAssistOrchestrator } from '@/server/ai/evidence-assist-orchestrator.js';
+} from '../ai/evidence-assist-orchestrator.js';
+import { createEvidenceAssistOrchestrator } from '../ai/evidence-assist-orchestrator.js';
 
 export const V4_010_FAKE_FLOW_VERSION = '1.0.0';
 

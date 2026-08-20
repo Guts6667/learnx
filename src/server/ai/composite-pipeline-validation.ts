@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { CorrectionContract } from '@/lib/ai-correction-contracts';
+import type { CorrectionContract } from '../../lib/ai-correction-contracts.js';
 
 import {
   calculateIndicativeScore,

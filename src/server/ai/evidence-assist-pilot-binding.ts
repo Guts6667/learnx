@@ -7,8 +7,8 @@ import { z } from 'zod';
 import {
   compileExecutableRubric,
   type CompiledExecutableRubric,
-} from '@/lib/executable-rubric-engine.ts';
-import { EVIDENCE_ASSIST_PROTOCOL_VERSION } from '@/lib/evidence-assist-protocol.ts';
+} from '../../lib/executable-rubric-engine.js';
+import { EVIDENCE_ASSIST_PROTOCOL_VERSION } from '../../lib/evidence-assist-protocol.js';
 
 const stableKeySchema = z
   .string()

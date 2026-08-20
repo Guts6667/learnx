@@ -1,6 +1,6 @@
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 
-import type { SupportedLocale } from '@/shared/locale';
+import type { SupportedLocale } from '../../../shared/locale.js';
 
 export type PublicLeadPurpose = 'LAUNCH_UPDATES' | 'EARLY_ADOPTER';
 export type PublicLeadStatus =
