@@ -660,7 +660,7 @@
       "readyForPublication": false,
       "notes": [
         "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
-        "Le starter autoritaire se trouve dans /Users/rayanchambet/Desktop/Workflow/sourcelab au commit 6dd1cda, tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
+        "Le starter autoritaire est publié sur https://github.com/Guts6667/sourcelab au commit 6dd1cda et au tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
         "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
       ]
     },

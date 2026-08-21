@@ -1,13 +1,13 @@
 # Contrat du dépôt starter SourceLab 2.0
 
-## Autorité locale
+## Autorité du starter
 
-- Chemin : `/Users/rayanchambet/Desktop/Workflow/sourcelab`
+- Dépôt : `https://github.com/Guts6667/sourcelab`
 - Commit : `6dd1cda`
-- Tag : `checkpoint-00-starter`
+- Tag : `https://github.com/Guts6667/sourcelab/tree/checkpoint-00-starter`
 
-Le programme dépend de ce commit et de ce tag locaux, pas de la présence d'un
-remote. Ce document n'autorise aucun ajout de code SourceLab dans LearnX.
+Le programme dépend de ce commit et de ce tag publiés. Ce document n'autorise
+aucun ajout de code SourceLab dans LearnX.
 
 ## État initial obligatoire
 
