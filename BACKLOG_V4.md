@@ -2,11 +2,11 @@
 
 ## Statut et autorité
 
-- Version : 1.10.2
+- Version : 1.10.3
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
 - Dernière consolidation : 21 août 2026 — gate evidence-assist clos après deux
-  appels réconciliés ; arbitrage sémantique hors ligne requis avant toute
-  nouvelle identité ou dépense
+  appels réconciliés ; arbitrage `EXPLICITLY_REFUTED` approuvé pour le
+  successeur hors ligne, sans nouvelle identité exécutable ni dépense
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -22,7 +22,12 @@ détaillés sans maintenir un second statut concurrent. La spécification
 autoritaire du moteur de correction est
 `docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. La nouvelle identité de protocole
 de recherche sémantique est régie par
-`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. La spécification composite locale
+`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. Cette identité est désormais close
+et inchangée. Son successeur hors ligne est régi par
+`docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md` et son authoring par
+`docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md`. La carte de domaine
+`docs/LEARNX_DOMAIN_KNOWLEDGE.md` reste le point d'entrée explicatif. La
+spécification composite locale
 reste une baseline historique utile pour les garanties de coût, d'idempotence
 et de réconciliation ; elle n'est plus une autorité active. Les deux références
 Atlas validées pour les crédits et la correction sont :
@@ -1591,6 +1596,14 @@ gold gelé `NOT_DEMONSTRATED`. Le stop `SEMANTIC_DISAGREEMENT` clôt l'identité
 sans replay. Mutation, injection, panel 10 × 2, holdout, publication V4-002 et
 live V4-010 restent fermés.**
 
+**Arbitrage du 21 août 2026 : le successeur ajoute
+`EXPLICITLY_REFUTED` pour une exigence explicitement refusée. Sur un élément
+positif requis, il partage provisoirement l'effet de niveau
+`NOT_DEMONSTRATED`, tout en conservant un certificat et un template distincts.
+`CONTRADICTED` reste séparé. La campagne 3.0.0, ses golds et son verdict ne sont
+pas recalculés. Toute exécution future exige nouvelle identité, nouvel
+arbitrage Finance et nouveau GO propriétaire.**
+
 ### Point de reprise pour le développement
 
 - Livré hors ligne : spécification autoritaire, compilateur, archétype
@@ -1601,6 +1614,9 @@ live V4-010 restent fermés.**
   liés par un freeze set, identité
   `cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805`
   et commande idempotente de régénération/validation sans réseau.
+- Livré hors ligne : décision sémantique successeur, paires minimales exactes
+  absence/refus/contradiction/ambiguïté et funnel d'authoring. Ces artefacts
+  n'étendent aucune autorité live et n'ouvrent aucun budget.
 - La migration P0 dispatch/coût a été répétée sur une branche Neon jetable par
   le run Integration #125 (`31785569786`) ; son rapport est conservé dans
   `docs/V4_EXECUTABLE_RUBRIC_NEON_REHEARSAL_REPORT.md`.

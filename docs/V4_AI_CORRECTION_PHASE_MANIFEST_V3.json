@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-20T17:18:00Z",
+  "updatedAt": "2026-08-21T13:00:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -13,6 +13,15 @@
     "name": "EXECUTABLE_RUBRIC_ENGINE",
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+    "successorSemanticArbitration": {
+      "status": "APPROVED_FOR_OFFLINE_IMPLEMENTATION",
+      "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
+      "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
+      "explicitRefutationStatus": "EXPLICITLY_REFUTED",
+      "mvpLevelEffect": "SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS",
+      "historicalCampaignMutationAllowed": false,
+      "modelCallsAllowed": false
+    },
     "modelAuthority": "CANDIDATE_RELATIONS_ONLY",
     "evidenceUnit": "SERVER_SEGMENTED_RESPONSE_PASSAGES",
     "allowedModelRelations": [
@@ -246,12 +255,18 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "FOUR_CASE_GATE_NO_GO_SEMANTIC_DISAGREEMENT",
+      "status": "SEMANTIC_ARBITRATION_APPROVED_SUCCESSOR_OFFLINE_BUILD_REQUIRED",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
         "Keep models unable to return levels, scores, PASS/FAIL, progression effects or freeform feedback."
       ],
+      "successorOfflineEvidence": {
+        "arbitration": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
+        "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
+        "minimalPairs": "benchmarks/ai-correction/executable-rubric/writing-fr-explicit-refutation-minimal-pairs.v1.json",
+        "status": "OFFLINE_ONLY_NO_MODEL_CALL_NO_BUDGET"
+      },
       "implementedEvidence": {
         "engineCommit": "145d668",
         "rubric": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
@@ -845,7 +860,7 @@
     "Apply the evidence-assist protocol 3.0.0 under its new authority without reusing any historical prompt, protocol identity, result or campaign identifier.",
     "Preserve the route-specific reasoning attestation as an offline capability proof only. The evidence-assist gate consumed its single-use authorization, performed two calls and closed on SEMANTIC_DISAGREEMENT with 0.025622 USD reconciled; never replay this identity.",
     "Preserve the frozen campaign identity, four-case manifest, conditional 10x2 manifest and freeze-set hashes byte-identically. Any change creates a new identity and restarts at four cases.",
-    "Keep the unexecuted mutation and injection cases, the conditional 20-workflow panel and the holdout closed. The failed 4/4 prerequisite forbids stage two. Arbitrate the NOT_DEMONSTRATED versus explicit-negative-evidence boundary offline; any case, expectation, mapping, evaluator, runner, telemetry, order, repetition, threshold or selection change creates a new corpus version and restarts under a newly authorized four-case identity.",
+    "Keep the unexecuted mutation and injection cases, the conditional 20-workflow panel and the holdout closed. The failed 4/4 prerequisite forbids stage two. Apply the approved EXPLICITLY_REFUTED successor semantics only to new offline artifacts; preserve the closed identity byte-identically. Any case, expectation, mapping, evaluator, runner, telemetry, order, repetition, threshold or selection change creates a new corpus version and restarts under a newly authorized four-case identity.",
     "Keep the falsifier, active v3 holdout, V4-002 publication and V4-010 live activation closed. Permit V4-002 and V4-010 implementation offline under their explicit hard-off constraints.",
     "Treat writing-fr-holdout.v2.manifest.json as SUPERSEDED_HISTORICAL_DRAFT without modifying it. Preserve the independently authored and autonomously qualified v3 ciphertext closed and non-executable until the distinct opening gates are met.",
     "Only a future newly identified campaign may request GO_TO_SEALED_HOLDOUT after fresh 4/4 then 20/20 results and complete reconciliation. The current campaign cannot make this transition.",

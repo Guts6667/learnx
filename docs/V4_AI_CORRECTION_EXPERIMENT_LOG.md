@@ -852,3 +852,33 @@ sont pas reconstitués.
 
 Rapport : `docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md`. Artefacts append-only :
 `benchmarks/ai-correction/results/evidence-assist/four_case_gate/2026-08-20T17-00-06Z/`.
+
+### 2026-08-21 — Arbitrage sémantique du refus explicite
+
+Statut : `OFFLINE_SEMANTIC_ARBITRATION_APPROVED / NO_MODEL_CALL /
+NO_BUDGET / HISTORICAL_CAMPAIGN_UNCHANGED`.
+
+Le Propriétaire retient une ontologie successeur qui distingue l'absence de
+preuve d'un refus explicite de satisfaire l'élément. Le nouveau statut
+`EXPLICITLY_REFUTED` représente par exemple « Je ne formule aucune
+recommandation », tandis que `NOT_DEMONSTRATED` représente une réponse qui ne
+donne simplement aucune information sur la recommandation.
+
+Pour le MVP et les éléments positifs requis, ces deux statuts ont le même effet
+sur le niveau : l'exigence n'est pas satisfaite. Ils restent distincts dans le
+certificat et dans les templates afin d'éviter un feedback inexact.
+`CONTRADICTED` demeure réservé à des passages matériellement incompatibles et
+`AMBIGUOUS` aux interprétations susceptibles de changer le résultat.
+
+La décision, le funnel d'authoring et six paires minimales exactes sont
+documentés respectivement dans :
+
+- `docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md` ;
+- `docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md` ;
+- `benchmarks/ai-correction/executable-rubric/writing-fr-explicit-refutation-minimal-pairs.v1.json`.
+
+Cette tranche est strictement hors ligne. Elle ne modifie ni le mapping, ni les
+golds, ni les résultats de la campagne 3.0.0 close. Elle n'autorise aucun appel,
+budget, panel, holdout, contrat publié ou activation V4-010. Une future
+expérience devra geler une nouvelle identité et recevoir de nouveaux GO Finance
+et Propriétaire.

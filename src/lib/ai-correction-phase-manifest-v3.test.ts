@@ -93,9 +93,7 @@ const activeManifestSchema = z
                   manifest: z.literal(EVIDENCE_ASSIST_FOUR_CASE_MANIFEST_PATH),
                   manifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
                   result: z.object({
-                    atomicRelationAgreementRate: z.literal(
-                      0.8888888888888888,
-                    ),
+                    atomicRelationAgreementRate: z.literal(0.8888888888888888),
                     campaignClosed: z.literal(true),
                     completedUsableWorkflows: z.literal(1),
                     dispatchAndCostReconciliationRate: z.literal(1),
@@ -161,6 +159,16 @@ const activeManifestSchema = z
       modelAuthority: z.literal('CANDIDATE_RELATIONS_ONLY'),
       protocolAuthority: z.literal('docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md'),
       semanticLevelAndScoreAuthority: z.literal('NONE'),
+      successorSemanticArbitration: z.object({
+        authority: z.literal('docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md'),
+        explicitRefutationStatus: z.literal('EXPLICITLY_REFUTED'),
+        historicalCampaignMutationAllowed: z.literal(false),
+        modelCallsAllowed: z.literal(false),
+        mvpLevelEffect: z.literal(
+          'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
+        ),
+        status: z.literal('APPROVED_FOR_OFFLINE_IMPLEMENTATION'),
+      }),
     }),
   })
   .passthrough();
@@ -246,5 +254,16 @@ describe('active autonomous correction phase manifest', () => {
         resolve(process.cwd(), active.targetArchitecture.protocolAuthority),
       ),
     ).toBe(true);
+    expect(
+      existsSync(
+        resolve(
+          process.cwd(),
+          active.targetArchitecture.successorSemanticArbitration.authority,
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      active.targetArchitecture.successorSemanticArbitration.modelCallsAllowed,
+    ).toBe(false);
   });
 });

@@ -15,8 +15,9 @@ gate le ferme.
 - `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json` reste l'autorité historique
   épinglée par les campagnes closes.
 - `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` reste l'historique append-only.
-- `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` régit la nouvelle identité de
-  protocole à passages déterministes.
+- `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` régit l'identité historique close
+  du protocole à passages déterministes ;
+  `docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md` régit le successeur hors ligne.
 - Cette roadmap ne transforme jamais une preuve expérimentale en livraison
   produit.
 - En cas d'écart sur le statut courant, cette page tranche pour la lecture
@@ -29,7 +30,7 @@ Dernière consolidation : 21 août 2026.
 
 | Plan | État au 21 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
-| Runtime canonique V4 | `origin/dev` à `ea98188` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne et publication du verdict du gate intégrés. | Aucun contrat publié, débit utilisateur réel ou disponibilité utilisateur de la correction. |
+| Runtime canonique V4 | `origin/dev` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne et publication du verdict du gate intégrés. | Aucun contrat publié, débit utilisateur réel ou disponibilité utilisateur de la correction. |
 | Produit publié | `origin/main` à `f612e53` | SourceLab V2 et le journal public de recherche sont publiés sur la branche de production. | `main` ne contient pas encore la baseline V4 de `dev` ; ces branches ne doivent pas être fusionnées ou réinitialisées en bloc. |
 | Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
 | Expérimentation | `FOUR_CASE_GATE_NO_GO / CAMPAIGN_CLOSED / PANEL_NOT_AUTHORIZED` | Le gate evidence-assist a exécuté deux appels synthétiques, réconciliés à 100 %, puis s'est arrêté sur une divergence sémantique du cas négatif. | Aucun pipeline n'est promu ; mutation, injection, panel 10 × 2 et holdout n'ont pas été exécutés. |
@@ -60,13 +61,15 @@ la correction IA n'est pas encore une fonctionnalité de l'application.
 
 Le chemin critique est désormais très étroit :
 
-1. arbitrer hors ligne la frontière sémantique révélée par le gate clos ;
-2. éprouver une nouvelle identité sur quatre cas, puis 10 × 2, seulement après
+1. intégrer hors ligne l'arbitrage approuvé `EXPLICITLY_REFUTED`, sans modifier
+   la campagne close ;
+2. authorer et compiler un contrat pilote avec le funnel canonique ;
+3. éprouver une nouvelle identité sur quatre cas, puis 10 × 2, seulement après
    nouveaux gates Finance et propriétaire ;
-3. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
-4. remplacer le fake provider du flow apprenant sous feature flag ;
-5. mesurer qualité et coûts réels ;
-6. seulement ensuite activer tarification, paiement et extension.
+4. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
+5. remplacer le fake provider du flow apprenant sous feature flag ;
+6. mesurer qualité et coûts réels ;
+7. seulement ensuite activer tarification, paiement et extension.
 
 État honnête : **0 contrat V4 publié, 0 activité éligible, aucun pipeline promu,
 V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
@@ -77,14 +80,17 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    réconcilie uniquement les commits nécessaires par une branche ou une PR
    dédiée. Aucun pull, merge ou reset global ne doit écraser l'une des deux
    histoires.
-2. **Produit & pédagogie avec Développement** préserve byte-identiques la
-   campagne evidence-assist close, ses deux appels et ses règles gelées, puis
-   arbitre hors ligne la frontière entre absence de preuve et preuve explicite
-   du contraire. Aucun retuning ou replay n'est permis sous cette identité.
-3. Toute évolution de l'ontologie, du mapping, du gold, de l'évaluateur ou de
+2. **Produit & pédagogie avec Développement** applique au successeur hors ligne
+   la décision `EXPLICITLY_REFUTED` : statut distinct de l'absence, même effet
+   de niveau au MVP, template distinct. La campagne close demeure
+   byte-identique et aucun replay n'est permis sous son identité.
+3. Le contrat pilote suit
+   `docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md`; le Propriétaire arbitre
+   l'activité, les critères/templates, puis l'identité gelée.
+4. Toute évolution de l'ontologie, du mapping, du gold, de l'évaluateur ou de
    la télémétrie crée une nouvelle identité et exige un nouveau gate quatre cas,
    un nouvel arbitrage Finance et un nouveau GO propriétaire.
-4. Le holdout v3 est désormais qualifié et scellé. Il reste fermé et son
+5. Le holdout v3 est désormais qualifié et scellé. Il reste fermé et son
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
@@ -105,6 +111,10 @@ Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
 - Le runner est revenu en `HARD_OFF`. La campagne est close en
   `NO_GO_SEMANTIC_DISAGREEMENT` ; mutation et injection n'ont pas été envoyés,
   le panel 10 × 2 n'est pas autorisé et aucun replay n'est permis.
+- Le Propriétaire a arbitré la divergence : le successeur représente le refus
+  explicite par `EXPLICITLY_REFUTED`. Pour le MVP, ce statut a le même effet de
+  niveau que `NOT_DEMONSTRATED`, mais conserve une preuve et un feedback
+  distincts. Cette décision n'altère aucun artefact de la campagne close.
 - La qualification et le scellement du holdout v3 ont consommé l'autorisation
   exacte `AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL`. Le paquet demeure
   non exécutable ; cette décision n'autorise ni son ouverture, ni un appel
@@ -174,10 +184,11 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   `SEMANTIC_DISAGREEMENT`. Le cas négatif oppose le gold
   `NOT_DEMONSTRATED` au signal plausible `EVIDENCE_AGAINST_ELEMENT` sur deux
   éléments. Rapport : `docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md`.
-- Blocage courant : campagne close sans replay. Le panel 10 × 2 reste interdit
-  puisque le gate n'a pas fait `4/4`. Toute modification sémantique ou
-  technique crée une nouvelle identité et recommence à quatre cas après de
-  nouveaux arbitrages.
+- Blocage courant : campagne close sans replay. L'arbitrage sémantique est
+  acquis, mais le contrat successeur, son corpus et son évaluateur doivent être
+  compilés et gelés hors ligne. Le panel 10 × 2 historique reste interdit.
+  Toute nouvelle exécution recommence à quatre cas sous une nouvelle identité,
+  après de nouveaux arbitrages Finance et Propriétaire.
 - Définition bornée : le **corpus de développement complet** est exactement la
   sélection scellée
   `writing-fr-semantic-development-v2@2.0.0`, soit 10 cas synthétiques distincts
@@ -234,6 +245,9 @@ Statut : `ACTIVE_OFFLINE / PUBLICATION_BLOCKED`.
 - Les critères `HOLISTIC` ou non formalisables restent hors MVP autonome.
 - La publication reste interdite tant que le compilateur, les tests de mutation
   et le gate autonome ne passent pas.
+- Le funnel autoritaire d'authoring est
+  `docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md`. Il impose trois arbitrages
+  propriétaires explicites : activité, critères/templates, puis identité gelée.
 
 ### Gate C — premier flow utilisateur
 
