@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Premier benchmark : une bonne moyenne ne suffit pas — LearnX</title>
+    <meta
+      name="description"
+      content="24 cas français, trois répétitions et un constat : de bons scores globaux peuvent masquer injection, formats invalides et décisions instables."
+    />
+    <link
+      rel="canonical"
+      href="https://learnx-eight.vercel.app/research/ai-correction/premiers-benchmarks/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://learnx-eight.vercel.app/research/ai-correction/premiers-benchmarks/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://learnx-eight.vercel.app/research/ai-correction/premiers-benchmarks/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://learnx-eight.vercel.app/research/ai-correction/premiers-benchmarks/"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Premier benchmark : une bonne moyenne ne suffit pas."
+    />
+    <meta
+      property="og:description"
+      content="Pourquoi les moyennes ne suffisent pas à sélectionner un modèle de correction."
+    />
+    <meta
+      property="og:url"
+      content="https://learnx-eight.vercel.app/research/ai-correction/premiers-benchmarks/"
+    />
+    <meta property="article:published_time" content="2026-08-21T00:00:00Z" />
+    <meta property="article:modified_time" content="2026-08-21T00:00:00Z" />
+    <link rel="stylesheet" href="/research/journal.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Premier benchmark : une bonne moyenne ne suffit pas.",
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "inLanguage": "fr",
+        "isPartOf": {
+          "@type": "CreativeWorkSeries",
+          "name": "Recherche LearnX — Correction assistée"
+        }
+      }
+    </script>
+    <script src="/research/article.js" defer></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#article">Aller à l’article</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Navigation utilitaire">
+        <a href="/research/">Recherche</a
+        ><a
+          href="/research/ai-correction/premiers-benchmarks/en.html"
+          lang="en"
+          hreflang="en"
+          >EN</a
+        >
+      </nav>
+    </header>
+    <main>
+      <header class="article-hero shell">
+        <nav class="breadcrumbs" aria-label="Fil d’Ariane">
+          <a href="/research/">Recherche</a><span aria-hidden="true">›</span
+          ><span>Correction assistée · 01</span>
+        </nav>
+        <p class="eyebrow">Résultat · Recherche expérimentale</p>
+        <h1>Premier benchmark : une bonne moyenne ne suffit pas.</h1>
+        <p class="article-deck">
+          Notre première campagne comparait des modèles comme juges. Elle a
+          surtout montré qu’un bon score agrégé peut cacher précisément les
+          erreurs que LearnX ne veut pas publier.
+        </p>
+        <div class="article-meta">
+          <span>Travaux du 12 août 2026</span
+          ><span>Publication rétrospective du 21 août 2026</span
+          ><span>Version 1</span><span>Série : Correction assistée</span>
+        </div>
+      </header>
+      <div class="article-layout shell" id="article">
+        <aside class="article-aside">
+          <h2>Dans cet article</h2>
+          <ol>
+            <li><a href="#en-bref">En bref</a></li>
+            <li><a href="#methode">Méthode</a></li>
+            <li><a href="#resultats">Résultats</a></li>
+            <li><a href="#limites">Limites</a></li>
+            <li><a href="#decision">Décision</a></li>
+          </ol>
+          <div class="share-actions">
+            <button
+              class="share-button"
+              type="button"
+              data-share-article
+              data-canonical-url="https://learnx-eight.vercel.app/research/ai-correction/premiers-benchmarks/"
+              data-copied-label="Lien copié."
+              data-shared-label="Article partagé."
+              data-failed-label="Copie impossible : utilisez l’adresse de cette page."
+            >
+              Partager l’article
+            </button>
+          </div>
+          <p class="share-status" data-share-status aria-live="polite"></p>
+        </aside>
+        <article class="article-body">
+          <section id="en-bref">
+            <h2>En bref</h2>
+            <p>
+              Le corpus réunissait 24 réponses synthétiques en français : quatre
+              familles d’activités, six profils de réponse et trois répétitions
+              par candidat. Aucun modèle n’a été promu. Gemini obtenait de bons
+              résultats globaux mais échouait sur la sûreté d’injection, la
+              validité des sorties et la décision de seconde passe. Terra ne
+              pouvait pas exécuter le contrat structuré testé. Les mesures
+              Sonnet devaient être reprises après un défaut de persistance.
+            </p>
+            <blockquote>
+              La moyenne décrit la campagne. Elle ne protège pas l’apprenant
+              contre un défaut rare mais grave.
+            </blockquote>
+          </section>
+          <section id="methode">
+            <h2>Ce que nous avons mesuré</h2>
+            <p>
+              Chaque réponse était évaluée sur des critères authorés. Le banc
+              séparait l’accord critériel, les citations inventées, les sorties
+              invalides, l’injection, la calibration, la latence, la variabilité
+              et les coûts. Les répétitions mesuraient la stabilité ; elles ne
+              créaient pas 72 situations pédagogiques indépendantes.
+            </p>
+            <div class="article-metrics">
+              <div><strong>24</strong><span>cas sémantiques</span></div>
+              <div><strong>3×</strong><span>répétitions</span></div>
+              <div><strong>0</strong><span>modèle promu</span></div>
+            </div>
+          </section>
+          <section id="resultats">
+            <h2>Le signal trompeur de Gemini</h2>
+            <p>
+              Gemini 3.6 Flash atteignait 90,40 % d’accord critériel, 0 % de
+              citation inventée, 13,89 % d’erreur de calibration et 4,55 % de
+              variabilité. Pourtant, sa sûreté face à l’injection n’était que de
+              50 %, son taux de sortie invalide atteignait 8,33 % et l’accord
+              sur la seconde passe 81,82 %. Ces trois gates suffisaient à fermer
+              la promotion.
+            </p>
+            <p>
+              Ce résultat a changé notre manière de lire les benchmarks : la
+              qualité moyenne ne peut jamais compenser un défaut bloquant de
+              sécurité, de preuve ou de format.
+            </p>
+          </section>
+          <section id="limites">
+            <h2>Ce que cette campagne ne prouve pas</h2>
+            <ul>
+              <li>Le corpus est synthétique et français.</li>
+              <li>
+                Les résultats dépendent du prompt, du schéma, de la route et du
+                modèle épinglés.
+              </li>
+              <li>
+                Un échec technique ne démontre pas une mauvaise qualité
+                pédagogique intrinsèque.
+              </li>
+              <li>
+                Trois répétitions mesurent la stabilité, pas la diversité du
+                monde réel.
+              </li>
+            </ul>
+          </section>
+          <section id="decision">
+            <h2>Décision prise</h2>
+            <p>
+              Nous n’avons sélectionné aucun juge. La suite devait auditer le
+              gold, les critères et les décisions de seconde passe avant de
+              dépenser davantage. Cette décision ouvre le deuxième article : la
+              revue aveugle du protocole lui-même.
+            </p>
+            <div class="article-callout">
+              <strong>Statut de la recherche</strong>
+              <p>
+                Article rétrospectif fondé sur les artefacts conservés. Aucun
+                pipeline promu, aucun effet sur la progression.
+              </p>
+            </div>
+          </section>
+        </article>
+      </div>
+      <footer class="article-footer shell">
+        <nav class="article-navigation" aria-label="Articles de la série">
+          <a href="/research/"
+            ><small>Retour</small><strong>Toutes les publications</strong></a
+          ><a href="/research/ai-correction/revue-aveugle/"
+            ><small>Article suivant</small
+            ><strong>Ce que la revue aveugle a changé</strong></a
+          >
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

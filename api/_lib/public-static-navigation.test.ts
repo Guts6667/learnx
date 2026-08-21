@@ -18,6 +18,12 @@ describe('public static research reports', () => {
     const catchAll = new RegExp(`^${spaRewrite?.source}$`);
     expect(catchAll.test('/research/ai-correction/')).toBe(false);
     expect(catchAll.test('/research/ai-correction/en.html')).toBe(false);
+    expect(
+      catchAll.test('/research/ai-correction/evidence-assist-gate-4/'),
+    ).toBe(false);
+    expect(
+      catchAll.test('/research/ai-correction/evidence-assist-gate-4/en.html'),
+    ).toBe(false);
     expect(catchAll.test('/today')).toBe(true);
     expect(catchAll.test('/program/example')).toBe(true);
   });
@@ -32,6 +38,24 @@ describe('public static research reports', () => {
     expect(
       readFileSync(
         resolve(process.cwd(), 'public/research/ai-correction/en.html'),
+        'utf8',
+      ),
+    ).toContain('<html lang="en">');
+    expect(
+      readFileSync(
+        resolve(
+          process.cwd(),
+          'public/research/ai-correction/evidence-assist-gate-4/index.html',
+        ),
+        'utf8',
+      ),
+    ).toContain('<html lang="fr">');
+    expect(
+      readFileSync(
+        resolve(
+          process.cwd(),
+          'public/research/ai-correction/evidence-assist-gate-4/en.html',
+        ),
         'utf8',
       ),
     ).toContain('<html lang="en">');

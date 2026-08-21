@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Gate 4 : quand un échec révèle une limite de l’oracle — LearnX
+    </title>
+    <meta
+      name="description"
+      content="Deux appels, 16 relations concordantes sur 18 et un arrêt qui oblige à distinguer absence de preuve et réfutation explicite."
+    />
+    <link
+      rel="canonical"
+      href="https://learnx-eight.vercel.app/research/ai-correction/evidence-assist-gate-4/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://learnx-eight.vercel.app/research/ai-correction/evidence-assist-gate-4/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://learnx-eight.vercel.app/research/ai-correction/evidence-assist-gate-4/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://learnx-eight.vercel.app/research/ai-correction/evidence-assist-gate-4/"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Gate 4 : quand un échec révèle une limite de l’oracle."
+    />
+    <meta
+      property="og:description"
+      content="16/18 relations et un NO-GO qui révèle une frontière sémantique incomplète."
+    />
+    <meta
+      property="og:url"
+      content="https://learnx-eight.vercel.app/research/ai-correction/evidence-assist-gate-4/"
+    />
+    <meta property="article:published_time" content="2026-08-21T00:00:00Z" />
+    <meta property="article:modified_time" content="2026-08-21T00:00:00Z" />
+    <link rel="stylesheet" href="/research/journal.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Gate 4 : quand un échec révèle une limite de l’oracle.",
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "inLanguage": "fr"
+      }
+    </script>
+    <script src="/research/article.js" defer></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#article">Aller à l’article</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Navigation utilitaire">
+        <a href="/research/">Recherche</a
+        ><a
+          href="/research/ai-correction/evidence-assist-gate-4/en.html"
+          lang="en"
+          hreflang="en"
+          >EN</a
+        >
+      </nav>
+    </header>
+    <main>
+      <header class="article-hero shell">
+        <nav class="breadcrumbs" aria-label="Fil d’Ariane">
+          <a href="/research/">Recherche</a><span aria-hidden="true">›</span
+          ><span>Correction assistée · 06</span>
+        </nav>
+        <p class="eyebrow">Résultat · Recherche expérimentale</p>
+        <h1>Gate 4 : quand un échec révèle une limite de l’oracle.</h1>
+        <p class="article-deck">
+          Le gate s’est arrêté exactement comme prévu. Pourtant, le désaccord
+          observé ne démontre pas une faute évidente du modèle : il révèle une
+          catégorie manquante dans notre propre vocabulaire de preuve.
+        </p>
+        <div class="article-meta">
+          <span>Expérience du 20 août 2026</span
+          ><span>Publié le 21 août 2026</span><span>Version 1</span
+          ><span>Dernière publication de la série</span>
+        </div>
+      </header>
+      <div class="article-layout shell" id="article">
+        <aside class="article-aside">
+          <h2>Dans cet article</h2>
+          <ol>
+            <li><a href="#gate">Gate gelé</a></li>
+            <li><a href="#resultat">Résultat</a></li>
+            <li><a href="#desaccord">Désaccord</a></li>
+            <li><a href="#limites">Limites</a></li>
+            <li><a href="#suite">Suite</a></li>
+          </ol>
+          <div class="share-actions">
+            <button
+              class="share-button"
+              type="button"
+              data-share-article
+              data-canonical-url="https://learnx-eight.vercel.app/research/ai-correction/evidence-assist-gate-4/"
+              data-copied-label="Lien copié."
+              data-shared-label="Article partagé."
+              data-failed-label="Copie impossible : utilisez l’adresse de cette page."
+            >
+              Partager l’article
+            </button>
+          </div>
+          <p class="share-status" data-share-status aria-live="polite"></p>
+        </aside>
+        <article class="article-body">
+          <section id="gate">
+            <h2>Un gate petit, borné et non rejouable</h2>
+            <p>
+              L’identité
+              <code>learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0</code>
+              autorisait quatre appels maximum vers Sonnet 5 via la route
+              Anthropic, sans retry ni fallback, pour un plafond total de
+              0,251136 USD. L’arrêt au premier défaut était préenregistré.
+              Mutation, injection, panel et holdout restaient fermés.
+            </p>
+          </section>
+          <section id="resultat">
+            <h2>Deux appels avant l’arrêt</h2>
+            <div class="article-metrics">
+              <div><strong>2/4</strong><span>appels effectués</span></div>
+              <div>
+                <strong>16/18</strong><span>relations concordantes</span>
+              </div>
+              <div><strong>0,025622</strong><span>USD réconciliés</span></div>
+            </div>
+            <p>
+              Le cas positif atteint 9/9 relations. Le cas négatif atteint 7/9.
+              Le coût est réconcilié à 100 %, sans retry ni fallback. Le verdict
+              procédural est
+              <strong
+                >NO_GO_SEMANTIC_DISAGREEMENT / CAMPAIGN_CLOSED /
+                NO_REPLAY</strong
+              >.
+            </p>
+          </section>
+          <section id="desaccord">
+            <h2>Le modèle n’a peut-être pas eu tort</h2>
+            <p>
+              La réponse négative disait explicitement « sans choisir » et « Je
+              ne formule aucune recommandation ». Le pseudo-oracle attendait
+              <em>NOT_DEMONSTRATED</em>, donc une abstention ou une omission.
+              Sonnet a relié ces passages à <em>EVIDENCE_AGAINST_ELEMENT</em>.
+            </p>
+            <p>
+              Cette relation est sémantiquement plausible : la réponse ne se
+              contente pas de ne rien démontrer, elle affirme le contraire de
+              l’élément attendu. Le stop reste valide parce que le mapping était
+              gelé, mais l’écart révèle une ontologie incomplète plutôt qu’une
+              erreur pédagogique évidente.
+            </p>
+            <blockquote>
+              Une expérience utile peut échouer tout en montrant que
+              l’instrument de mesure doit être amélioré.
+            </blockquote>
+          </section>
+          <section id="limites">
+            <h2>Ce que nous ne pouvons pas revendiquer</h2>
+            <ul>
+              <li>
+                Le cas injection n’a jamais été envoyé : aucune résistance à
+                l’injection n’est démontrée pour cette identité.
+              </li>
+              <li>Le panel 10×2 et le holdout n’ont pas été ouverts.</li>
+              <li>
+                Le coût total est connu, mais pas le détail entrée, cache,
+                raisonnement et sortie.
+              </li>
+              <li>
+                Deux appels ne suffisent pas à évaluer la qualité générale de
+                Sonnet 5.
+              </li>
+            </ul>
+          </section>
+          <section id="suite">
+            <h2>Prochaine preuve</h2>
+            <p>
+              Avant tout nouvel appel, LearnX doit distinguer
+              <strong>SUPPORTED</strong>, <strong>EXPLICITLY_REFUTED</strong>,
+              <strong>NOT_DEMONSTRATED</strong> et <strong>AMBIGUOUS</strong>.
+              Des paires minimales doivent tester silence, abstention, négation
+              explicite, contradiction interne et preuve positive. Toute
+              modification créera une nouvelle identité et un nouvel article ;
+              celui-ci restera inchangé.
+            </p>
+            <div class="article-callout">
+              <strong>État actuel</strong>
+              <p>
+                0 pipeline promu, 0 contrat public de correction, 0 effet sur la
+                progression. Le gate est clos et ne sera pas réécrit.
+              </p>
+            </div>
+          </section>
+        </article>
+      </div>
+      <footer class="article-footer shell">
+        <nav class="article-navigation" aria-label="Articles de la série">
+          <a href="/research/ai-correction/chercheur-de-preuves/"
+            ><small>Article précédent</small
+            ><strong>Chercher des preuves</strong></a
+          ><a href="/research/ai-correction/"
+            ><small>Dossier de référence</small
+            ><strong>Ouvrir la synthèse historique complète</strong></a
+          >
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>
