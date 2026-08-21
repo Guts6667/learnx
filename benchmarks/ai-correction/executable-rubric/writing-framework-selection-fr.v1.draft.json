@@ -94,8 +94,15 @@
         "scenarioKey": "project-a",
         "referenceFramework": "PICO",
         "acceptedFrameworks": ["PICO", "PECO"],
-        "conditionalRules": {
-          "PECO": "La pratique de rappel doit être explicitement traitée comme exposition ; comparaison et résultat restent fidèles au dossier."
+      "conditionalRules": {
+        "PECO": {
+          "description": "La pratique de rappel doit être explicitement traitée comme exposition ; comparaison et résultat restent fidèles au dossier.",
+          "requiredConditionKeys": [
+            "a-retrieval-treated-as-exposure",
+            "a-comparison-preserved",
+            "a-outcome-preserved"
+          ]
+        }
         },
         "rejectedUnlessReauthored": ["SPIDER", "PCC"]
       },
@@ -103,8 +110,15 @@
         "scenarioKey": "project-b",
         "referenceFramework": "SPIDER",
         "acceptedFrameworks": ["SPIDER", "PCC"],
-        "conditionalRules": {
-          "PCC": "La population adulte, l'expérience de formation et le contexte entièrement distant doivent être explicitement reliés."
+      "conditionalRules": {
+        "PCC": {
+          "description": "La population adulte, l'expérience de formation et le contexte entièrement distant doivent être explicitement reliés.",
+          "requiredConditionKeys": [
+            "b-adult-population-linked",
+            "b-training-experience-linked",
+            "b-remote-context-linked"
+          ]
+        }
         },
         "rejectedUnlessReauthored": ["PICO", "PECO"]
       }

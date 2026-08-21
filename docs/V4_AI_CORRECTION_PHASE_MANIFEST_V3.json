@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T13:00:00Z",
+  "updatedAt": "2026-08-21T14:07:22Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "OFFLINE_IMPLEMENTED_AWAITING_V4-002A",
+      "status": "CONTRACT_COMPILED_OFFLINE_AWAITING_V4-003A",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -178,8 +178,8 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-002A",
-    "currentResponsibleAgent": "AGENT-PEDAGOGIE",
+    "currentTicket": "V4-003A",
+    "currentResponsibleAgent": "AGENT-METHODOLOGIE",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
       "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
@@ -202,22 +202,23 @@
   },
   "offlineWork": {
     "V4-002": {
-      "status": "ACTIVE_OFFLINE_PUBLICATION_BLOCKED",
-      "nextTicket": "V4-002A",
-      "responsibleAgent": "AGENT-PEDAGOGIE",
+      "status": "COMPLETED_OFFLINE_PUBLICATION_BLOCKED",
+      "nextTicket": "V4-003A",
+      "responsibleAgent": "AGENT-DEV-LEARNX",
       "allowed": ["AUTHORING", "COMPILATION", "MUTATION_TESTING"],
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "WAITING_FOR_V4_002C",
+      "status": "ACTIVE_OFFLINE_MECHANICAL_CORPUS",
       "nextTicket": "V4-003A",
       "responsibleAgent": "AGENT-METHODOLOGIE",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
-        "READ_ONLY_METHOD_PREPARATION"
+        "BUILD_MECHANICAL_ORACLE",
+        "RUN_LOCAL_MUTATION_AND_METAMORPHIC_TESTS"
       ],
       "forbidden": [
-        "FREEZE_NEW_IDENTITY_BEFORE_V4_002C",
+        "FREEZE_NEW_IDENTITY_BEFORE_V4_003B",
         "MODEL_CALL",
         "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_COMPARABLE_CANDIDATES",
         "BLOCK_FIRST_SONNET_5_GATE_ON_THREE_CANDIDATE_COMPARISON",
@@ -228,7 +229,7 @@
       "status": "BLOCKED_BY_V4_002_003_NO_MODEL_CALL",
       "nextExecutionTicket": "V4-009C-S2",
       "responsibleAgent": "AGENT-DEV-LEARNX",
-      "blockedBy": ["V4-002A_TO_V4-003D", "FINANCE", "OWNER_GO"],
+      "blockedBy": ["V4-003A_TO_V4-003D", "FINANCE", "OWNER_GO"],
       "allowed": [
         "PRESERVE_FROZEN_CAMPAIGN_AND_GATE_IDENTIFIERS",
         "VALIDATE_FOUR_CASE_AND_10X2_STAGES_OFFLINE",
@@ -287,7 +288,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "SEMANTIC_ARBITRATION_APPROVED_SUCCESSOR_OFFLINE_BUILD_REQUIRED",
+      "status": "SUCCESSOR_COMPILER_V2_DONE_AWAITING_MECHANICAL_CORPUS_AND_AUDIT",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -296,8 +297,13 @@
       "successorOfflineEvidence": {
         "arbitration": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
         "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
+        "approvedContract": "docs/V4_WRITING_FRAMEWORK_SELECTION_CONTRACT_DRAFT.md",
+        "rubric": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.v1.draft.json",
+        "compiler": "src/lib/executable-rubric-engine-v2.ts",
+        "compilerReport": "docs/V4_002C_COMPILER_REPORT.md",
+        "rubricFingerprint": "600fb37a29694ed70c93f6041f879f557792b5120b92cc0ab415466d05383752",
         "minimalPairs": "benchmarks/ai-correction/executable-rubric/writing-fr-explicit-refutation-minimal-pairs.v1.json",
-        "status": "OFFLINE_ONLY_NO_MODEL_CALL_NO_BUDGET"
+        "status": "COMPILED_OFFLINE_NO_MODEL_CALL_NO_BUDGET"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",
@@ -817,10 +823,11 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "OWNER_STAGE_ONE_AUTHORIZATION_PENDING",
-      "STAGE_ONE_NOT_EXECUTED",
-      "STAGE_TWO_FINANCE_AND_OWNER_AUTHORIZATION_NOT_ELIGIBLE",
-      "FULL_DEVELOPMENT_CORPUS_NOT_EXECUTED"
+      "V4-003A_MECHANICAL_CORPUS_NOT_BUILT",
+      "V4-003B_INDEPENDENT_AUDIT_NOT_COMPLETED",
+      "V4-003C_EXPERIMENT_IDENTITY_NOT_FROZEN",
+      "V4-003D_FINANCE_NOT_ARBITRATED",
+      "NEW_STAGE_ONE_NOT_AUTHORIZED_OR_EXECUTED"
     ]
   },
   "promotionGate": {
@@ -884,6 +891,7 @@
     }
   },
   "nextAuthorizedSequence": [
+    "Execute V4-003A offline only: build the mechanical oracle, minimal pairs, locality, monotonicity, metamorphic, Unicode/injection and compiler-mutation cases against the approved v2 contract; perform no model call and do not retune the contract from outcomes.",
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",

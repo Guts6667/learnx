@@ -45,14 +45,14 @@ describe('V4 document routing and assigned execution queue', () => {
       };
     };
 
-    expect(backlog).toContain("V4-002A — Cadrage de l'activité pilote");
+    expect(backlog).toContain('V4-003A — Corpus mécanique successeur');
     expect(roadmap).toContain(
       "Le chemin critique ne possède qu'un ticket actif",
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
-        currentResponsibleAgent: 'AGENT-PEDAGOGIE',
-        currentTicket: 'V4-002A',
+        currentResponsibleAgent: 'AGENT-METHODOLOGIE',
+        currentTicket: 'V4-003A',
         modelCallsAllowed: false,
       }),
     );

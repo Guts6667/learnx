@@ -1,10 +1,10 @@
 # V4-002B — Contrat atomique DRAFT du pilote WRITING
 
-- **Statut** : `APPROVED_INPUT_V4_002C`
+- **Statut** : `COMPILED_INPUT_V4_003A`
 - **Ticket** : `V4-002B`
 - **Contrat** : `v4-writing-framework-selection-fr`
 - **Version de travail** : `1.0.0-draft`
-- **Schéma cible** : `executable-rubric/v2`, à implémenter dans `V4-002C`
+- **Schéma** : `executable-rubric/v2`, compilé hors ligne par `V4-002C`
 - **Langue / modalité / risque** : `fr-FR` / `WRITING` / faible
 - **Éligibilité revendiquée** : aucune avant compilation
 - **Progression, maîtrise et validation** : aucun effet
@@ -104,6 +104,12 @@ Ces variantes ont été validées au gate `Rayan B`. Elles sont figées avant le
 corpus mécanique et ne pourront pas être élargies après lecture des sorties
 d'un modèle sous une identité gelée.
 
+Le compilateur rend ces conditions exécutables. Pour `PECO`, le certificat doit
+porter séparément les preuves de l'exposition, de la comparaison et du résultat.
+Pour `PCC`, il doit porter séparément les preuves de la population adulte, de
+l'expérience de formation et du contexte entièrement distant. Une description
+textuelle seule ne suffit pas à accepter la variante.
+
 ## 5. Les trois critères et leurs niveaux
 
 Chaque élément reste résolu séparément pour les projets A et B et le certificat
@@ -115,7 +121,7 @@ niveau complet.
 | Critère | `insufficient` | `partial` | `mastered` |
 | --- | --- | --- | --- |
 | `framework-decision` | Aucun des quatre éléments de décision n'est démontré | Un à trois éléments de décision sur quatre sont démontrés | Choix et traitement des dimensions sont démontrés pour A et B, soit quatre sur quatre |
-| `dossier-fidelity` | Aucun des quatre faits attendus n'est démontré, ou un conflit matériel non résolu est utilisé comme appui | Un à trois faits distincts et fidèles sur quatre sont démontrés, sans conflit matériel | Deux faits distincts et fidèles pour A et deux pour B, sans conflit matériel |
+| `dossier-fidelity` | Aucun des quatre faits attendus n'est démontré, ou un passage attribué au dossier entre en conflit matériel avec le contexte fiable | Un à trois faits distincts et fidèles sur quatre sont démontrés, sans conflit matériel | Deux faits distincts et fidèles pour A et deux pour B, sans conflit matériel |
 | `choice-rationale` | Aucun lien explicite n'est démontré sur un projet où une propriété est formulée | Le lien est démontré pour un seul des deux projets | Le lien est démontré séparément pour A et B |
 
 Le score indicatif est désactivé. Les niveaux servent uniquement à choisir le
@@ -134,8 +140,8 @@ feedback formatif ; ils n'alimentent ni progression, ni maîtrise, ni
 | `project-a-dossier-fact-2` | `FACT` | `dossier-fidelity` | A | Un second élément fidèle, distinct du premier, est mobilisé. |
 | `project-b-dossier-fact-1` | `FACT` | `dossier-fidelity` | B | Un premier élément fidèle du dossier B est mobilisé. |
 | `project-b-dossier-fact-2` | `FACT` | `dossier-fidelity` | B | Un second élément fidèle, distinct du premier, est mobilisé. |
-| `project-a-choice-rationale` | `JUSTIFICATION` | `choice-rationale` | A | Le choix est relié explicitement aux faits fidèles mobilisés pour A. |
-| `project-b-choice-rationale` | `JUSTIFICATION` | `choice-rationale` | B | Le choix est relié explicitement aux faits fidèles mobilisés pour B. |
+| `project-a-choice-rationale` | `JUSTIFICATION` | `choice-rationale` | A | Le choix est relié explicitement à au moins une propriété formulée pour A ; la vérité de cette propriété reste évaluée uniquement par `dossier-fidelity`. |
+| `project-b-choice-rationale` | `JUSTIFICATION` | `choice-rationale` | B | Le choix est relié explicitement à au moins une propriété formulée pour B ; la vérité de cette propriété reste évaluée uniquement par `dossier-fidelity`. |
 
 ### 6.1 Choix du cadre — A et B
 
@@ -192,10 +198,10 @@ n'est jamais dupliqué artificiellement sur les deux éléments.
 
 ### 6.4 Justification du lien — A et B
 
-- `SUPPORTED` : un ou plusieurs spans exacts explicitent une relation entre le
-  cadre choisi et au moins un fait fidèle déjà certifié ;
-- `NOT_DEMONSTRATED` : des faits fidèles sont disponibles, mais aucun lien avec
-  le choix n'est expliqué ;
+- `SUPPORTED` : au moins deux spans exacts explicitent une relation entre le
+  cadre choisi et au moins une propriété que la réponse attribue au projet ;
+- `NOT_DEMONSTRATED` : une propriété du projet est formulée, mais aucun lien
+  avec le choix n'est expliqué ;
 - `EXPLICITLY_REFUTED` : la réponse indique explicitement qu'elle ne justifie
   pas son choix ;
 - `CONTRADICTED` : le lien comporte un conflit interne ou rend le cadre
@@ -219,12 +225,19 @@ générer un second malus ni un second message sous `choice-rationale`.
 | Choix | 1 à 2 | Le span doit désigner le choix final, pas seulement citer un cadre dans une comparaison. |
 | Dimensions | 1 à 4 | La relation doit pointer vers le choix du même scénario ; aucune connaissance externe exigée. |
 | Faits du dossier | 1 à 3 par slot | Correspondance sémantique avec une proposition fiable ; slots distincts par proposition et occurrence. |
-| Justification | 1 à 6 | La relation référence le choix et un ou deux slots fidèles du même scénario. |
+| Justification | 2 à 6 | La relation référence le choix et au moins une propriété formulée dans le même scénario. |
 | Contradiction | au moins 2, sauf conflit dossier | Les spans incompatibles doivent porter sur le même scénario et la même propriété. |
 
 Les offsets et hashes sont calculés ou vérifiés par LearnX. Un modèle ne peut
 jamais transformer le contexte fiable en preuve apprenant, inventer un élément,
 attribuer un niveau ou produire un feedback libre.
+
+Chaque rôle de relation est lié à un ou plusieurs spans exacts du constat ; une
+simple liste de rôles sans rattachement aux extraits est invalide. Un même span
+peut légitimement soutenir plusieurs rôles lorsque la phrase réalise plusieurs
+fonctions. Les spans diagnostiques d'un conflit ne remplacent pas les spans
+directs exigés pour `SUPPORTED` ou `EXPLICITLY_REFUTED`. Toute ambiguïté doit
+elle aussi être ancrée dans un span exact ou un conflit structuré.
 
 ## 8. Dépendances non punitives et localité
 
@@ -236,7 +249,7 @@ déjà possédée ailleurs.
 | --- | --- | --- |
 | Aucun cadre choisi pour A | `project-a-framework-choice` | Ne pas reprocher aussi les dimensions de A. |
 | Dimensions de A incomplètes | `project-a-dimension-scope` | Ne pas dégrader fidélité ou justification. |
-| Aucune propriété du projet A n'est formulée | groupe `project-a-dossier-fact-*` | Ne pas reprocher aussi l'absence de justification pour A. |
+| Aucune propriété du projet A n'est formulée, y compris en cas de refus explicite de mobiliser le dossier | groupe `project-a-dossier-fact-*` | Ne pas reprocher aussi l'absence de justification pour A. |
 | Un seul fait fidèle pour A | `project-a-dossier-fact-2` | La justification peut être `partial` si elle relie ce fait ; ne pas exiger deux liens pour publier le constat partiel. |
 | Propriété formulée mais fausse pour A | groupe `project-a-dossier-fact-*` | La fidélité échoue ; l'existence d'un lien explicatif reste évaluée indépendamment. |
 | Lien absent avec deux faits présents | `project-a-choice-rationale` | Ne pas retirer les faits déjà certifiés à la fidélité. |
@@ -326,8 +339,10 @@ devra au minimum prendre en charge :
 7. résolutions d'ambiguïté incluant `EXPLICITLY_REFUTED` ;
 8. score indicatif désactivé et progression toujours `NONE`.
 
-La forme JSON machine et le certificat v2 appartiennent à `V4-002C`. Ce DRAFT
-est l'autorité pédagogique de leur comportement, sous réserve de `Rayan B`.
+La forme JSON machine et le certificat v2 sont implémentés hors ligne par
+`V4-002C`. Ce DRAFT reste l'autorité pédagogique de leur comportement ; la
+compilation réussie n'en fait ni un contrat `PUBLISHED`, ni une autorité
+d'expérience.
 
 ## 13. Consultations obligatoires
 

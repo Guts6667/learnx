@@ -26,8 +26,8 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('AGENT-PEDAGOGIE'),
-      currentTicket: z.literal('V4-002A'),
+      currentResponsibleAgent: z.literal('AGENT-METHODOLOGIE'),
+      currentTicket: z.literal('V4-003A'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -87,7 +87,10 @@ const activeManifestSchema = z
     immutableVerdicts: z.array(z.unknown()),
     offlineWork: z.object({
       'V4-002': z.object({
-        status: z.literal('ACTIVE_OFFLINE_PUBLICATION_BLOCKED'),
+        status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
+      }),
+      'V4-003': z.object({
+        status: z.literal('ACTIVE_OFFLINE_MECHANICAL_CORPUS'),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -184,7 +187,7 @@ const activeManifestSchema = z
         mvpLevelEffect: z.literal(
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
-        status: z.literal('OFFLINE_IMPLEMENTED_AWAITING_V4-002A'),
+        status: z.literal('CONTRACT_COMPILED_OFFLINE_AWAITING_V4-003A'),
       }),
     }),
   })
@@ -258,8 +261,8 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'AGENT-PEDAGOGIE',
-      currentTicket: 'V4-002A',
+      currentResponsibleAgent: 'AGENT-METHODOLOGIE',
+      currentTicket: 'V4-003A',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });

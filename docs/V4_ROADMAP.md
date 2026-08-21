@@ -94,10 +94,11 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
-Le chemin critique ne possède qu'un ticket actif : `V4-002C`. `V4-002B` est
-clos par l'arbitrage `Rayan B` du 21 août 2026 : son contrat Markdown et sa
-projection JSON v2 deviennent les entrées approuvées du compilateur, sans être
-publiés. `V4-002A` est clos par l'arbitrage `Rayan A`. V4-010 peut
+Le chemin critique ne possède qu'un ticket actif : `V4-003A`. `V4-002C` est
+clos hors ligne : le schéma, le compilateur, le certificat v2 et leurs tests
+sont disponibles, sans publication ni branchement runtime. `V4-002B` reste
+clos par l'arbitrage `Rayan B` du 21 août 2026 et `V4-002A` par `Rayan A`.
+V4-010 peut
 recevoir de la maintenance de non-régression sous hard-off, mais aucune nouvelle
 capacité ne doit y être développée avant le contrat et le pipeline promu. Aucune
 de ces actions n'autorise un appel modèle ou un utilisateur.
@@ -111,8 +112,9 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | --- | --- | --- | --- |
 | `V4-002A — Cadrage de l'activité pilote` | `AGENT-PEDAGOGIE` | **Clos** : brief, scénarios et consigne validés | `V4-002B` |
 | `V4-002B — Contrat atomique successeur` | `AGENT-PEDAGOGIE` | **Clos** : contrat approuvé par `Rayan B`, non publié | `V4-002C` |
-| `V4-002C — Compilateur v2` | `AGENT-DEV-LEARNX` | **Maintenant** : moteur hors ligne, contrôles statiques et certificat v2 | `V4-003A` |
-| `V4-003A/B — Corpus et audit` | `AGENT-METHODOLOGIE` | Oracle mécanique puis verdict indépendant | `V4-003C` |
+| `V4-002C — Compilateur v2` | `AGENT-DEV-LEARNX` | **Clos hors ligne** : moteur, contrôles statiques, certificat v2 et compatibilité historique validés | `V4-003A` |
+| `V4-003A — Corpus mécanique` | `AGENT-METHODOLOGIE` | **Maintenant** : oracle mécanique, paires minimales et mutations reproductibles | `V4-003B` |
+| `V4-003B — Audit autonome` | `AGENT-METHODOLOGIE` | Audit indépendant sans retuning | `V4-003C` |
 | `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | Identité entièrement empreintée | Arbitrage **Rayan C** |
 | `V4-003D — Budget` | `AGENT-FINANCE` | Enveloppe bornée | GO réseau séparé de Rayan |
 | `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | Verdict et coûts réconciliés | Analyse `V4-003E` |
@@ -307,8 +309,8 @@ jamais à franchir son gate live.
 | Ticket | Statut unique | Niveau de preuve actuel | Reprenable maintenant | Dépendance ou gate de sortie | Responsable de la prochaine action |
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
-| V4-002 | `V4-002C_READY` | `V4-002A` et `V4-002B` validés ; contrat successeur Markdown + JSON v2 approuvé comme entrée, toujours DRAFT ; 0 contrat publié. | Oui : `V4-002C` uniquement. | Compilateur v2, contrôles statiques et gates autonomes. | `AGENT-DEV-LEARNX`. |
-| V4-003 | `EN_ATTENTE_V4-002C` | Baselines historiques closes ; paires minimales sémantiques v2 disponibles. | Non avant le contrat et le compilateur v2. | Corpus mécanique, audit, gel, budget et nouvelle autorisation. | `AGENT-METHODOLOGIE`, puis `AGENT-PROTOCOLE-IA`. |
+| V4-002 | `V4-002C_DONE_OFFLINE` | `V4-002A/B` validés ; compilateur et certificat v2 validés hors ligne ; contrat toujours DRAFT, 0 contrat publié. | Non : ticket clos. | Publication interdite avant corpus, audit et gates ultérieurs. | `AGENT-METHODOLOGIE` reprend via V4-003A. |
+| V4-003 | `V4-003A_READY` | Baselines historiques closes ; contrat v2 compilable et rapport V4-002C disponibles. | Oui : `V4-003A` uniquement, sans modèle. | Corpus mécanique, audit, gel, budget et nouvelle autorisation. | `AGENT-METHODOLOGIE`, puis `AGENT-PROTOCOLE-IA`. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
 | V4-006 | `LIVRÉ_INACTIF` | Ledger et réservation fondés. | Non. | Calibration après pilote. | Développement + Finance. |
