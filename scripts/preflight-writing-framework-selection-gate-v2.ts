@@ -10,10 +10,33 @@ import {
   runWritingFrameworkSelectionGatePreflight,
 } from '../src/server/ai/writing-framework-selection-gate-runner-v2.js';
 
-const dossierPath =
-  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json';
-const financePath =
-  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json';
+function option(name: string): string | undefined {
+  const prefix = `--${name}=`;
+  return process.argv
+    .find((value) => value.startsWith(prefix))
+    ?.slice(prefix.length);
+}
+
+const candidate = option('candidate') ?? 'sonnet-5';
+const paths =
+  candidate === 'gemini-3.6'
+    ? {
+        dossier:
+          'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
+        finance:
+          'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json',
+      }
+    : candidate === 'sonnet-5'
+      ? {
+          dossier:
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
+          finance:
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json',
+        }
+      : null;
+if (!paths) throw new Error(`WRITING_GATE_UNKNOWN_CANDIDATE:${candidate}`);
+const dossierPath = paths.dossier;
+const financePath = paths.finance;
 
 function sha256(value: string): string {
   return createHash('sha256').update(value).digest('hex');
@@ -62,6 +85,7 @@ try {
   console.log(
     JSON.stringify(
       {
+        candidate,
         attempts: run.attempts.map((attempt) => ({
           caseId: attempt.caseId,
           defectClasses: attempt.defectClasses,
@@ -75,11 +99,16 @@ try {
           await readFile(resolve(financePath), 'utf8'),
         ),
         identityFingerprint: packageInput.identityFingerprint,
+        expectedObservedProvider: packageInput.expectedObservedProvider,
+        catalogSnapshotId: packageInput.catalogSnapshotId,
         ledgerEventCount: run.ledger.length,
         maximumObservedMessageUtf8Bytes: Math.max(
           ...run.attempts.map(({ messageUtf8Bytes }) => messageUtf8Bytes),
         ),
         maximumPromptUtf8Bytes: packageInput.maximumPromptUtf8Bytes,
+        requestedRoute: packageInput.requestedRoute,
+        requestProfile: packageInput.requestProfile,
+        wireModelId: packageInput.wireModelId,
         mode: run.mode,
         modelCallsPerformed: run.modelCallsPerformed,
         networkCallsAllowed: run.networkCallsAllowed,

@@ -25,6 +25,10 @@ const dossierPath =
   'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json';
 const financePath =
   'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json';
+const geminiDossierPath =
+  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json';
+const geminiFinancePath =
+  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json';
 
 function read(path: string): string {
   return readFileSync(resolve(root, path), 'utf8');
@@ -46,6 +50,21 @@ function loadPackage(): WritingFrameworkGatePackage {
     dossierPath,
     dossierText,
     financeText: read(financePath),
+  });
+}
+
+function loadGeminiPackage(): WritingFrameworkGatePackage {
+  const dossierText = read(geminiDossierPath);
+  const dossier = JSON.parse(dossierText) as {
+    authorities: Record<string, { path: string }>;
+  };
+  return buildWritingFrameworkGatePackage({
+    authorityTexts: Object.fromEntries(
+      Object.values(dossier.authorities).map(({ path }) => [path, read(path)]),
+    ),
+    dossierPath: geminiDossierPath,
+    dossierText,
+    financeText: read(geminiFinancePath),
   });
 }
 
@@ -80,6 +99,125 @@ class DeterministicLiveProvider implements WritingFrameworkGateLiveProvider {
 }
 
 describe('V4-009C-S2 writing framework gate runner v2', () => {
+  it('parameterizes Gemini 3.6 without inheriting the Sonnet identity or budget', async () => {
+    const packageInput = loadGeminiPackage();
+    const dossier = JSON.parse(read(geminiDossierPath)) as {
+      identityCore: Record<string, unknown>;
+      corpusFingerprint: string;
+      semanticMappingFingerprint: string;
+      runnerContractFingerprint: string;
+      stopPolicyFingerprint: string;
+      telemetryContractFingerprint: string;
+    };
+    const finance = JSON.parse(read(geminiFinancePath)) as {
+      authorizationBoundary: Record<string, unknown>;
+      gateBound: Record<string, unknown>;
+      historicalDraftComparison: Record<string, unknown>;
+    };
+    expect(packageInput).toMatchObject({
+      catalogSnapshotId: 'google/gemini-3.6-flash-20260721',
+      expectedObservedProvider: 'Google',
+      identityFingerprint:
+        'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed',
+      requestedRoute: 'google-vertex/global',
+      wireModelId: 'google/gemini-3.6-flash',
+      requestProfile: {
+        maxOutputTokens: 2500,
+        reasoningEffort: 'MINIMAL',
+        reasoningMandatory: true,
+        reasoningMode: 'EFFORT_ONLY',
+        temperature: null,
+        timeoutMs: 60000,
+        visibleOutputTokenTarget: 1800,
+      },
+    });
+    expect(dossier.identityCore).toMatchObject({
+      catalogSnapshotId: 'google/gemini-3.6-flash-20260721',
+      maxOutputTokens: 2500,
+      reasoning: {
+        effort: 'MINIMAL',
+        mandatory: true,
+        mode: 'EFFORT_ONLY',
+      },
+      temperature: null,
+      visibleOutputTokenTarget: 1800,
+    });
+    expect({
+      corpus: dossier.corpusFingerprint,
+      mapping: dossier.semanticMappingFingerprint,
+      runner: dossier.runnerContractFingerprint,
+      stop: dossier.stopPolicyFingerprint,
+      telemetry: dossier.telemetryContractFingerprint,
+    }).toEqual({
+      corpus:
+        '12f0202d930b9f197532847c0125f5531a2b8d39502c8f1244e6049629828a4b',
+      mapping:
+        '4fbff2b975124bcd336c49e0d2dbfe42ebf3f4adcf9a048ca17c8c4e5a79bb85',
+      runner:
+        '891560b6712afc1f197aea8d016a3309d2d5c7db3ac7e519bda6968d4227eb0b',
+      stop:
+        '3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e',
+      telemetry:
+        'e8e4e16a18e4ad652f3b271847e156aedc66f0c8c934eae9c2291cbf1d519b56',
+    });
+    expect(finance.authorizationBoundary).toMatchObject({
+      financeArbitration: 'NOT_GRANTED',
+      modelCallsAllowed: false,
+      ownerNetworkAuthorization: 'NOT_GRANTED',
+    });
+    expect(finance.gateBound).toMatchObject({
+      maximumProviderAttempts: 4,
+      maximumProviderCostUsd: 0.483366,
+      proposedRoundedProviderCapUsd: 0.5,
+    });
+    expect(finance.historicalDraftComparison).toMatchObject({
+      oldProposedProviderCapUsd: 0.075,
+      reuseAllowed: false,
+    });
+
+    const provider = new FrozenOracleWritingFrameworkGateProvider(packageInput);
+    const run = await runWritingFrameworkSelectionGatePreflight({
+      canaryFactory: deterministicCanary,
+      packageInput,
+      provider,
+      store: new InMemoryWritingFrameworkGateStore(),
+    });
+    expect(run).toMatchObject({
+      forceNoGo: false,
+      mode: 'OFFLINE_FAKE_ONLY',
+      modelCallsPerformed: 0,
+      networkCallsAllowed: false,
+      providerExecutions: 4,
+      stoppedReason: null,
+      usableWorkflows: 4,
+    });
+    expect(
+      run.attempts.every(
+        ({ requestedRoute }) => requestedRoute === 'google-vertex/global',
+      ),
+    ).toBe(true);
+    const artifact = JSON.parse(
+      read(
+        'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-runner-preflight.v1.json',
+      ),
+    ) as Record<string, unknown>;
+    const { preflightFingerprint, ...core } = artifact;
+    const canonicalize = (value: unknown): unknown => {
+      if (Array.isArray(value)) return value.map(canonicalize);
+      if (!value || typeof value !== 'object') return value;
+      return Object.fromEntries(
+        Object.entries(value as Record<string, unknown>)
+          .sort(([left], [right]) => left.localeCompare(right))
+          .map(([key, child]) => [key, canonicalize(child)]),
+      );
+    };
+    expect(preflightFingerprint).toBe(
+      '9d7dee2afcba338d3354b2d2478f42378307d0b281edfe400c8eb4723f87475e',
+    );
+    expect(sha256(JSON.stringify(canonicalize(core)))).toBe(
+      preflightFingerprint,
+    );
+  });
   it('binds the published HARD_OFF preflight artifact', () => {
     const artifact = JSON.parse(
       read(

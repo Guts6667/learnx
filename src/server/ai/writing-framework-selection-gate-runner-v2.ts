@@ -56,11 +56,23 @@ const frozenDossierSchema = z
     corpusFingerprint: sha256Schema,
     identityCore: z
       .object({
-        expectedObservedProvider: z.literal('Anthropic'),
+        catalogSnapshotId: z.string().min(1),
+        expectedObservedProvider: z.string().min(1),
+        maxOutputTokens: z.number().int().positive(),
         oracleFingerprint: sha256Schema,
-        requestedRoute: z.literal('Anthropic'),
+        reasoning: z
+          .object({
+            effort: z.string().min(1).optional(),
+            mandatory: z.boolean().optional(),
+            mode: z.string().min(1),
+          })
+          .passthrough(),
+        requestedRoute: z.string().min(1),
         rubricFingerprint: sha256Schema,
-        wireModelId: z.literal('anthropic/claude-sonnet-5'),
+        temperature: z.number().nullable(),
+        timeoutMs: z.number().int().positive(),
+        visibleOutputTokenTarget: z.number().int().positive().optional(),
+        wireModelId: z.string().min(1),
       })
       .passthrough(),
     identityFingerprint: sha256Schema,
@@ -125,12 +137,12 @@ const financeEnvelopeSchema = z
     gateBound: z.object({
       maximumFallbacks: z.literal(0),
       maximumProviderAttempts: z.literal(4),
-      maximumProviderCostUsd: z.literal(0.708328),
+      maximumProviderCostUsd: z.number().positive(),
       maximumRetriesPerWorkflow: z.literal(0),
       stopOnFirstDefect: z.literal(true),
     }),
     perAttemptBound: z.object({
-      maximumCostUsd: z.literal(0.177082),
+      maximumCostUsd: z.number().positive(),
       maximumPromptUtf8Bytes: z.literal(65_536),
     }),
     reconciliationPolicy: z
@@ -163,14 +175,24 @@ export type WritingFrameworkGateCase = Readonly<{
 export type WritingFrameworkGatePackage = Readonly<{
   cases: readonly WritingFrameworkGateCase[];
   compiled: CompiledExecutableRubricV2;
-  expectedObservedProvider: 'Anthropic';
+  catalogSnapshotId: string;
+  expectedObservedProvider: string;
   finance: FinanceEnvelope;
   identityFingerprint: string;
   maximumPromptUtf8Bytes: 65_536;
-  requestedRoute: 'Anthropic';
+  requestedRoute: string;
+  requestProfile: Readonly<{
+    maxOutputTokens: number;
+    reasoningEffort: string | null;
+    reasoningMandatory: boolean;
+    reasoningMode: string;
+    temperature: number | null;
+    timeoutMs: number;
+    visibleOutputTokenTarget: number;
+  }>;
   taskContext: string;
   taskPrompt: string;
-  wireModelId: 'anthropic/claude-sonnet-5';
+  wireModelId: string;
 }>;
 
 export type WritingGateAttempt = Readonly<{
@@ -190,14 +212,14 @@ export type WritingGateAttempt = Readonly<{
   inputTokens: number;
   latencyMs: number;
   messageUtf8Bytes: number;
-  observedProvider: 'Anthropic' | 'OFFLINE_FAKE' | null;
+  observedProvider: string | null;
   providerRequestId: string | null;
   rawOutputSha256: string | null;
   rawPersistedBeforeValidation: boolean;
   reasoningTokens: number;
   repetition: 1;
   requestContextFingerprint: string;
-  requestedRoute: 'Anthropic';
+  requestedRoute: string;
   status: 'INVALID' | 'VALID';
   validation: EvidenceAssistValidationResultV2 | null;
   visibleOutputTokens: number;
@@ -242,7 +264,7 @@ export type WritingFrameworkGateProviderResult = Readonly<{
   errorCode?: string;
   inputTokens: number;
   latencyMs: number;
-  observedProvider: 'Anthropic' | 'OFFLINE_FAKE' | null;
+  observedProvider: string | null;
   providerRequestId: string | null;
   rawOutput: string;
   reasoningTokens: number;
@@ -433,12 +455,24 @@ export function buildWritingFrameworkGatePackage(input: {
   }
   return Object.freeze({
     cases: materializeCases({ dossier, oracle }),
+    catalogSnapshotId: dossier.identityCore.catalogSnapshotId,
     compiled,
     expectedObservedProvider: dossier.identityCore.expectedObservedProvider,
     finance,
     identityFingerprint: dossier.identityFingerprint,
     maximumPromptUtf8Bytes: finance.perAttemptBound.maximumPromptUtf8Bytes,
     requestedRoute: dossier.identityCore.requestedRoute,
+    requestProfile: Object.freeze({
+      maxOutputTokens: dossier.identityCore.maxOutputTokens,
+      reasoningEffort: dossier.identityCore.reasoning.effort ?? null,
+      reasoningMandatory: dossier.identityCore.reasoning.mandatory ?? false,
+      reasoningMode: dossier.identityCore.reasoning.mode,
+      temperature: dossier.identityCore.temperature,
+      timeoutMs: dossier.identityCore.timeoutMs,
+      visibleOutputTokenTarget:
+        dossier.identityCore.visibleOutputTokenTarget ??
+        dossier.identityCore.maxOutputTokens,
+    }),
     taskContext: compiled.rubric.trustedContext.scenarios
       .map(({ key, text }) => `${key.toLocaleUpperCase()}\n${text}`)
       .join('\n\n'),
@@ -849,6 +883,7 @@ function invalidAttempt(input: {
   idempotencyKey: string;
   messageUtf8Bytes: number;
   requestContextFingerprint: string;
+  requestedRoute: string;
 }): WritingGateAttempt {
   return Object.freeze({
     actualCostUsd: null,
@@ -871,7 +906,7 @@ function invalidAttempt(input: {
     reasoningTokens: 0,
     repetition: 1,
     requestContextFingerprint: input.requestContextFingerprint,
-    requestedRoute: 'Anthropic',
+    requestedRoute: input.requestedRoute,
     status: 'INVALID',
     validation: null,
     visibleOutputTokens: 0,
@@ -990,6 +1025,7 @@ async function runWritingFrameworkSelectionGate(
         idempotencyKey: key,
         messageUtf8Bytes: bytes,
         requestContextFingerprint: prepared.requestContext.contextFingerprint,
+        requestedRoute: input.packageInput.requestedRoute,
       });
       attempts.push(attempt);
       stoppedReason = 'BUDGET';
@@ -1009,6 +1045,7 @@ async function runWritingFrameworkSelectionGate(
           idempotencyKey: key,
           messageUtf8Bytes: bytes,
           requestContextFingerprint: prepared.requestContext.contextFingerprint,
+          requestedRoute: input.packageInput.requestedRoute,
         });
         attempts.push(attempt);
         stoppedReason = budgetDefect;
@@ -1026,6 +1063,7 @@ async function runWritingFrameworkSelectionGate(
         idempotencyKey: key,
         messageUtf8Bytes: bytes,
         requestContextFingerprint: prepared.requestContext.contextFingerprint,
+        requestedRoute: input.packageInput.requestedRoute,
       });
       attempts.push(attempt);
       stoppedReason = 'FINANCE';
@@ -1048,6 +1086,7 @@ async function runWritingFrameworkSelectionGate(
         idempotencyKey: key,
         messageUtf8Bytes: bytes,
         requestContextFingerprint: prepared.requestContext.contextFingerprint,
+        requestedRoute: input.packageInput.requestedRoute,
       });
       await input.store.appendOutcome(attempt);
       attempts.push(attempt);

@@ -236,21 +236,31 @@ const activeManifestSchema = z
           ),
           financeDraft: z.object({
             authorizationEffect: z.literal('NONE'),
-            calculatedMaximumProviderCostUsd: z.literal(0.069018),
-            loadedFxBasisProviderCostUsd: z.literal(0.069018),
-            loadedFxEnvelopeUsdExact: z.literal(0.08999809164),
-            loadedFxEnvelopeUsdRounded: z.literal(0.09),
+            calculatedMaximumProviderCostUsd: z.literal(0.483366),
+            historicalDraftReused: z.literal(false),
+            loadedFxBasisProviderCostUsd: z.literal(0.483366),
+            loadedFxEnvelopeUsdExact: z.literal(0.63029959668),
+            loadedFxEnvelopeUsdRounded: z.literal(0.63),
             loadedFxMultiplier: z.literal(1.30398),
-            maximumCostPerAttemptUsd: z.literal(0.0172545),
+            maximumCostPerAttemptUsd: z.literal(0.1208415),
             maximumProviderAttempts: z.literal(4),
-            proposedProviderCapUsd: z.literal(0.075),
+            proposedProviderCapUsd: z.literal(0.5),
             status: z.literal(
               'DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED',
             ),
           }),
-          identityFingerprint: z.null(),
-          financeEnvelope: z.null(),
-          manifestPath: z.null(),
+          identityFingerprint: z.literal(
+            'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed',
+          ),
+          financeEnvelope: z.literal(
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json',
+          ),
+          manifestPath: z.literal(
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
+          ),
+          preflightArtifact: z.literal(
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-runner-preflight.v1.json',
+          ),
           modelId: z.literal('google/gemini-3.6-flash'),
           networkCallsAllowed: z.literal(false),
           ownerAuthorizationGranted: z.literal(false),
@@ -262,10 +272,10 @@ const activeManifestSchema = z
             temperature: z.literal('OMIT_UNSUPPORTED'),
           }),
           runnerStatus: z.literal(
-            'SONNET_PINNED_RUNNER_REQUIRES_CANDIDATE_PARAMETERIZATION',
+            'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_PREFLIGHT_4_OF_4',
           ),
           routeAttestationStatus: z.literal(
-            'PROPOSED_REATTESTATION_REQUIRED',
+            'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
           ),
         }),
         z.object({
@@ -624,17 +634,20 @@ describe('active autonomous correction phase manifest', () => {
     expect(queue.currentTicket).toBe('V4-003E-Q1');
     expect(gemini36).toMatchObject({
       canonicalCatalogId: 'google/gemini-3.6-flash-20260721',
-      identityFingerprint: null,
-      financeEnvelope: null,
-      manifestPath: null,
+      identityFingerprint:
+        'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed',
+      financeEnvelope:
+        'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json',
+      manifestPath:
+        'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
       modelId: 'google/gemini-3.6-flash',
       networkCallsAllowed: false,
       ownerAuthorizationGranted: false,
       proposedRequestedRoute: 'google-vertex/global',
       rank: 1,
-      runnerStatus:
-        'SONNET_PINNED_RUNNER_REQUIRES_CANDIDATE_PARAMETERIZATION',
-      routeAttestationStatus: 'PROPOSED_REATTESTATION_REQUIRED',
+      runnerStatus: 'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_PREFLIGHT_4_OF_4',
+      routeAttestationStatus:
+        'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
     });
     expect(gemini36.requestCapabilities).toMatchObject({
       reasoning: 'MANDATORY',
@@ -647,8 +660,8 @@ describe('active autonomous correction phase manifest', () => {
     ).toBeCloseTo(gemini36.financeDraft.calculatedMaximumProviderCostUsd, 12);
     expect(gemini36.financeDraft).toMatchObject({
       authorizationEffect: 'NONE',
-      loadedFxBasisProviderCostUsd: 0.069018,
-      proposedProviderCapUsd: 0.075,
+      loadedFxBasisProviderCostUsd: 0.483366,
+      proposedProviderCapUsd: 0.5,
       status: 'DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED',
     });
     expect(

@@ -32,8 +32,8 @@ Dernière consolidation : 21 août 2026.
 ## File design Totem — validée, non lancée
 
 La direction Totem est validée et le backlog est prêt. Elle ne change pas le
-point de reprise IA : `V4-003E-Q1`, dossier Gemini 3.6 hors ligne, est l'unique
-ticket reprenable du chemin critique.
+point de reprise IA : `V4-003E-Q1`, dossier Gemini 3.6 hors ligne, est préparé
+localement ; ses arbitrages identité puis Finance sont les prochains gates.
 La file design attend un GO d'implémentation distinct par lot.
 
 | Ordre | Lot | Statut | Dépendance principale |
@@ -52,8 +52,8 @@ contrat émotionnel Atlas et tous les contrats produit restent actifs.
 
 | Plan | État au 21 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
-| Runtime canonique V4 | `origin/dev@ba845d8` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne et preuve du gate S2 intégrés. | Le rapport V4-003E reste local et non poussé ; aucun contrat publié, débit utilisateur réel ou accès apprenant. |
-| Documentation V4-003E | branche locale `codex/v4-003e-sonnet-semantic-no-go` | Arbitrage, journal append-only et file candidats préparés et validés localement. | Aucun statut `origin/dev`, identité Gemini, Finance ou GO tant que le commit n'est pas intégré. |
+| Runtime canonique V4 | `origin/dev@c8ae231` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne, preuve S2 et analyse V4-003E intégrés. | Aucun contrat publié, débit utilisateur réel ou accès apprenant. |
+| Préparation V4-003E-Q1 | worktree local depuis `origin/dev@c8ae231` | Identité Gemini `ef88a8e3…`, attestations, Finance DRAFT et préflight faux fournisseur `4/4`. | L'identité et Finance ne sont pas approuvées ; aucun GO réseau. |
 | Produit publié | `origin/main` à `f612e53` | SourceLab V2 et le journal public de recherche sont publiés sur la branche de production. | `main` ne contient pas encore la baseline V4 de `dev` ; ces branches ne doivent pas être fusionnées ou réinitialisées en bloc. |
 | Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
 | Expérimentation | `V4-009C-S2_NO_GO / IDENTITY_CLOSED / SUCCESSOR_NOT_FROZEN` | Le dernier gate a exécuté `1/4` appel, coût `0,018828 USD` ACTUAL, puis s'est arrêté sur l'inversion non ambiguë de `project-b-dimension-scope`. | Un appel ne mesure pas la qualité générale ; aucun pipeline n'est promu et les trois autres cas, panel et holdout n'ont pas été exécutés. |
@@ -84,11 +84,10 @@ la correction IA n'est pas encore une fonctionnalité de l'application.
 
 Le chemin critique est désormais très étroit :
 
-1. préparer hors ligne l'identité Gemini 3.6, sans modifier protocole,
-   rubrique, corpus, golds, ordre ni seuils ;
-2. paramétrer le runner S2 spécialisé Sonnet, réattester snapshot, route,
-   profil et tarifs, puis valider le préflight `HARD_OFF` ;
-3. obtenir l'approbation de l'identité exacte, l'arbitrage Finance et un GO
+1. intégrer la préparation locale Q1 sans modifier protocole, rubrique, corpus,
+   golds, ordre ni seuils ;
+2. obtenir l'approbation de l'identité exacte `ef88a8e3…` ;
+3. obtenir l'arbitrage Finance de l'enveloppe DRAFT recalculée et un GO
    réseau single-use distinct ;
 4. éprouver cette identité sur quatre cas, puis 10 × 2 seulement après `4/4` et
    de nouveaux gates ;
@@ -154,7 +153,7 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | `V4-003D — Budget` | `AGENT-FINANCE` | **Clos hors ligne** : plafond fournisseur `0,708328 USD`, réseau interdit | `V4-009C-S2` hors ligne |
 | `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | **Clos NO-GO** : arrêt après `1/4` sur désaccord sémantique, coût `0,018828 USD` ACTUAL, aucun replay | `V4-003E` |
 | `V4-003E — Analyse et documentation` | `AGENT-METHODOLOGIE` | **Préparé localement, non poussé** : verdict borné à l'identité exacte, limites `n = 1`, comparaison honnête et journal append-only | Intégration du commit local, puis `V4-003E-Q1` |
-| `V4-003E-Q1 — Dossier Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Reprenable hors ligne après intégration V4-003E** : candidat 1 confirmé, identité non gelée, runner à paramétrer, route/profil/tarifs à réattester | Approbation identité, Finance, puis GO réseau séparé |
+| `V4-003E-Q1 — Dossier Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Préparé localement sous HARD_OFF** : identité `ef88a8e3…`, route/profil/tarifs réattestés, préflight faux fournisseur `4/4`, réseau interdit | Approbation identité, Finance sur l'enveloppe DRAFT recalculée, puis GO réseau séparé |
 
 Tout agent recevant un ticket plus bas dans cette table doit refuser de le
 démarrer si la sortie et le gate de la ligne précédente ne sont pas présents.

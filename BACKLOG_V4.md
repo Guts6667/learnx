@@ -7,8 +7,9 @@
 - Dernière consolidation : 21 août 2026 — le gate réseau V4-009C-S2 est clos
   en `NO-GO_SEMANTIC_DISAGREEMENT` après le premier appel sur quatre ; coût
   fournisseur `ACTUAL` de `0,018828 USD`, sans retry, fallback ou autre appel.
-  V4-003E documente le verdict ; Gemini 3.6 reste le candidat 1 à préparer hors
-  ligne, sans identité ni budget gelés
+  V4-003E documente le verdict ; V4-003E-Q1 prépare localement Gemini 3.6 sous
+  `HARD_OFF`, avec identité exacte non encore approuvée et enveloppe Finance
+  recalculée mais toujours DRAFT
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -408,7 +409,7 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 
 | Ordre | Ticket | Statut de départ | Responsable | Livrable obligatoire | Gate de sortie |
 | --- | --- | --- | --- | --- | --- |
-| 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `READY_OFFLINE_IDENTITY_PREPARATION` | `AGENT-PROTOCOLE-IA` | Même protocole/rubrique/corpus/golds/ordre/seuils ; nouveaux snapshot, route/provider, profil `MINIMAL`, tarifs, manifeste, empreinte, préflight et proposition Finance | Identité exacte et préflight `HARD_OFF`, puis arbitrages Finance et Rayan distincts ; aucun appel |
+| 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `PREPARED_LOCAL_HARD_OFF` | `AGENT-PROTOCOLE-IA` | Même protocole/rubrique/corpus/golds/ordre/seuils ; identité `ef88a8e3…`, route Google Vertex, profil `MINIMAL`, tarifs hors promotion, préflight `4/4` faux fournisseur | Approbation identité exacte, arbitrage Finance DRAFT recalculé, puis GO réseau single-use distinct ; aucun appel effectué |
 | 11 | `V4-003E-Q2 — Option Gemini 3.7 Flash` | `QUEUED_SECOND_TECHNICAL_OPTION` | `AGENT-PROTOCOLE-IA` | Dossier entièrement nouveau, raisonnement `LOW`, runner paramétré, aucune histoire LearnX ni enveloppe 3.6 réutilisée | Après disposition de Gemini 3.6 et arbitrage ultérieur |
 | 12 | `V4-003E-Q3 — Alternative Mistral Medium 3.5` | `QUEUED_AFTER_GEMINI` | `AGENT-PROTOCOLE-IA` | `mistralai/mistral-medium-3-5`, nouvelle identité et attestations propres, aucun résultat historique réutilisé | Rang 3 fixe ; dossier uniquement après disposition des candidats Gemini et mandat dédié |
 

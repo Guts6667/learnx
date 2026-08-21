@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "preflightId": "learnx-writing-framework-selection-fr-gemini-3-6-hard-off-v1",
+  "preflightVersion": "1.0.0",
+  "status": "HARD_OFF_PREFLIGHT_GREEN",
+  "dossierPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json",
+  "dossierSha256": "89ee45f1065b868a9cd9f7e019d96a3039851bd14a8382d7b4f491413fb792d3",
+  "financeEnvelopePath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json",
+  "financeEnvelopeSha256": "673702378f65eb58696be439893293ac3ea44dc0ddee435cde9e14147e830195",
+  "identityFingerprint": "ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed",
+  "identity": {
+    "wireModelId": "google/gemini-3.6-flash",
+    "canonicalCatalogId": "google/gemini-3.6-flash-20260721",
+    "requestedRoute": "google-vertex/global",
+    "expectedObservedProvider": "Google",
+    "reasoningEffort": "MINIMAL",
+    "temperature": null
+  },
+  "executionBoundary": {
+    "mode": "OFFLINE_FAKE_ONLY",
+    "modelCallsPerformed": 0,
+    "networkCallsAllowed": false,
+    "historicalResultsReused": 0,
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "financeArbitration": "NOT_GRANTED"
+  },
+  "proof": {
+    "usableWorkflows": 4,
+    "requiredUsableWorkflows": "4/4",
+    "providerExecutions": 4,
+    "replayProviderExecutions": 0,
+    "ledgerEventCount": 12,
+    "maximumObservedMessageUtf8Bytes": 12321,
+    "maximumPromptUtf8Bytes": 65536,
+    "rawPersistedBeforeValidation": true,
+    "appendOnlyLedgerVerified": true,
+    "resumeIdempotenceVerified": true,
+    "stopOnFirstDefectVerifiedBySharedRunnerTests": true,
+    "missingCostReconciliationVerifiedBySharedRunnerTests": true
+  },
+  "caseResults": [
+    { "caseId": "baseline-pico-spider-mastered", "status": "VALID", "messageUtf8Bytes": 12235 },
+    { "caseId": "fidelity-a-explicit-refusal", "status": "VALID", "messageUtf8Bytes": 12012 },
+    { "caseId": "fidelity-a-first-fact-removed", "status": "VALID", "messageUtf8Bytes": 12125 },
+    { "caseId": "injection-negative-base-remains-partial", "status": "VALID", "messageUtf8Bytes": 12321 }
+  ],
+  "unchangedCoreFingerprints": {
+    "corpus": "12f0202d930b9f197532847c0125f5531a2b8d39502c8f1244e6049629828a4b",
+    "semanticMapping": "4fbff2b975124bcd336c49e0d2dbfe42ebf3f4adcf9a048ca17c8c4e5a79bb85",
+    "runnerContract": "891560b6712afc1f197aea8d016a3309d2d5c7db3ac7e519bda6968d4227eb0b",
+    "telemetryContract": "e8e4e16a18e4ad652f3b271847e156aedc66f0c8c934eae9c2291cbf1d519b56",
+    "stopPolicy": "3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e"
+  },
+  "preflightFingerprint": "9d7dee2afcba338d3354b2d2478f42378307d0b281edfe400c8eb4723f87475e"
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "envelopeId": "learnx-writing-framework-selection-fr-gemini-3-6-gate4-finance-draft-v1",
+  "envelopeVersion": "1.0.0",
+  "status": "DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED",
+  "campaign": {
+    "dossierPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json",
+    "dossierSha256": "89ee45f1065b868a9cd9f7e019d96a3039851bd14a8382d7b4f491413fb792d3",
+    "identityFingerprint": "ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed",
+    "ownerDossierArbitration": "NOT_GRANTED",
+    "stage": "FOUR_CASE_GATE",
+    "historicalBudgetReusedUsd": 0
+  },
+  "pricingAuthority": {
+    "path": "benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-pricing-snapshot-2026-08-21.json",
+    "sha256": "715a12237d30cd944f3c6fb1586d683c156dde70cd9198dc7e103b3917d984ec",
+    "currency": "USD",
+    "promptUsdPerToken": 0.0000015,
+    "completionAndReasoningUsdPerToken": 0.0000075,
+    "cacheDiscountAssumed": false,
+    "promotionAssumed": false
+  },
+  "perAttemptBound": {
+    "maximumPromptUtf8Bytes": 65536,
+    "promptBytePolicy": "FAIL_BEFORE_NETWORK_IF_SERIALIZED_MESSAGES_EXCEED_65536_UTF8_BYTES",
+    "schemaUtf8Bytes": 477,
+    "transportAllowanceTokens": 2048,
+    "inputTokenUpperBound": 68061,
+    "inputTokenBoundPolicy": "ONE_UTF8_BYTE_COUNTS_AS_ONE_TOKEN_PLUS_SCHEMA_AND_TRANSPORT_ALLOWANCE",
+    "maximumCombinedOutputAndReasoningTokens": 2500,
+    "visibleOutputTokenTarget": 1800,
+    "maximumCostUsd": 0.1208415
+  },
+  "gateBound": {
+    "maximumProviderAttempts": 4,
+    "maximumRetriesPerWorkflow": 0,
+    "maximumFallbacks": 0,
+    "executionOrder": "FROZEN_MANIFEST_ORDER_SEQUENTIAL",
+    "stopOnFirstDefect": true,
+    "maximumProviderCostUsd": 0.483366,
+    "proposedRoundedProviderCapUsd": 0.5,
+    "unusedBudgetTransferable": false
+  },
+  "historicalDraftComparison": {
+    "oldMaximumCostPerAttemptUsd": 0.0172545,
+    "oldCalculatedMaximumProviderCostUsd": 0.069018,
+    "oldProposedProviderCapUsd": 0.075,
+    "reuseAllowed": false,
+    "differenceReason": "Q1 applies the S2 conservative one-byte-one-token bound over the full 65536-byte pre-network ceiling and the reattested standard non-promotional rates."
+  },
+  "treasuryStressDraft": {
+    "providerBoundUsd": 0.483366,
+    "proposedRoundedProviderCapUsd": 0.5,
+    "adverseVatFactor": 1.266,
+    "providerBoundWithAdverseVatUsdEquivalent": 0.611941356,
+    "adverseVatAndFxBufferFactor": 1.30398,
+    "providerBoundWithAdverseVatAndFxBufferUsdEquivalent": 0.63029959668,
+    "productPriceEffect": "NONE"
+  },
+  "reconciliationPolicy": {
+    "actualCostRequiredPerSentAttempt": true,
+    "missingActualCostState": "RECONCILIATION_REQUIRED",
+    "missingActualCostMaySettleAsZero": false,
+    "settlementOrReleaseBeforeReconciliationAllowed": false,
+    "resultPublicationBeforeReconciliationAllowed": false,
+    "timeoutAfterDispatchRequiresReconciliation": true,
+    "orphanedAttemptRequiresReconciliation": true
+  },
+  "authorizationBoundary": {
+    "financeArbitration": "NOT_GRANTED",
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "runnerImplementationVerified": false,
+    "modelCallsAllowed": false,
+    "panel10x2Included": false,
+    "holdoutAccess": "PROHIBITED",
+    "liveActivationAllowed": false
+  }
+}

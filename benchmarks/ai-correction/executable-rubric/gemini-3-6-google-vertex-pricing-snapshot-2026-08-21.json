@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-21T00:00:00Z",
+  "currency": "USD",
+  "modelId": "google/gemini-3.6-flash",
+  "canonicalCatalogId": "google/gemini-3.6-flash-20260721",
+  "providerName": "Google",
+  "routeTag": "google-vertex/global",
+  "pricingBasis": "OFFICIAL_STANDARD_NON_PROMOTIONAL_RATE",
+  "promotionAssumed": false,
+  "cacheDiscountAssumed": false,
+  "inputUsdPerMillionTokens": 1.5,
+  "outputAndReasoningUsdPerMillionTokens": 7.5,
+  "promptUsdPerToken": 0.0000015,
+  "completionAndReasoningUsdPerToken": 0.0000075,
+  "catalogDisplayedPromotionalRateExcluded": {
+    "inputUsdPerMillionTokens": 0.75,
+    "outputAndReasoningUsdPerMillionTokens": 3.75
+  },
+  "financeStatus": "DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED",
+  "networkAuthorizationEffect": "NONE"
+}
