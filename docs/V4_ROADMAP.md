@@ -23,13 +23,14 @@ gate le ferme.
   humaine et le manifeste V3 tranche pour l'automatisation. L'écart doit alors
   être corrigé dans le même ticket documentaire.
 
-Dernière consolidation : 20 août 2026.
+Dernière consolidation : 21 août 2026.
 
 ## Plans d'état à ne pas confondre
 
-| Plan | État au 16 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
+| Plan | État au 21 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
-| Runtime canonique | `origin/dev` à `0469060` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0 et fake-flow hors ligne intégrés ; CI, fonctions réelles et déploiement dev verts. | Aucun contrat publié, débit utilisateur réel ou disponibilité utilisateur de la correction. |
+| Runtime canonique V4 | `origin/dev` à `ea98188` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne et publication du verdict du gate intégrés. | Aucun contrat publié, débit utilisateur réel ou disponibilité utilisateur de la correction. |
+| Produit publié | `origin/main` à `f612e53` | SourceLab V2 et le journal public de recherche sont publiés sur la branche de production. | `main` ne contient pas encore la baseline V4 de `dev` ; ces branches ne doivent pas être fusionnées ou réinitialisées en bloc. |
 | Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
 | Expérimentation | `FOUR_CASE_GATE_NO_GO / CAMPAIGN_CLOSED / PANEL_NOT_AUTHORIZED` | Le gate evidence-assist a exécuté deux appels synthétiques, réconciliés à 100 %, puis s'est arrêté sur une divergence sémantique du cas négatif. | Aucun pipeline n'est promu ; mutation, injection, panel 10 × 2 et holdout n'ont pas été exécutés. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
@@ -59,32 +60,38 @@ la correction IA n'est pas encore une fonctionnalité de l'application.
 
 Le chemin critique est désormais très étroit :
 
-1. éprouver un modèle limité à des relations candidates sur des spans LearnX ;
-2. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
-3. brancher ce moteur au flow apprenant sous feature flag ;
-4. mesurer qualité et coûts réels ;
-5. seulement ensuite activer tarification, paiement et extension.
+1. arbitrer hors ligne la frontière sémantique révélée par le gate clos ;
+2. éprouver une nouvelle identité sur quatre cas, puis 10 × 2, seulement après
+   nouveaux gates Finance et propriétaire ;
+3. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
+4. remplacer le fake provider du flow apprenant sous feature flag ;
+5. mesurer qualité et coûts réels ;
+6. seulement ensuite activer tarification, paiement et extension.
 
 État honnête : **0 contrat V4 publié, 0 activité éligible, aucun pipeline promu,
 V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
 
 ### Prochaines actions sans ambiguïté
 
-1. **Produit & pédagogie avec Développement** préserve byte-identiques la
+1. **Intégration** préserve les avancées distinctes de `main` et `dev`, puis
+   réconcilie uniquement les commits nécessaires par une branche ou une PR
+   dédiée. Aucun pull, merge ou reset global ne doit écraser l'une des deux
+   histoires.
+2. **Produit & pédagogie avec Développement** préserve byte-identiques la
    campagne evidence-assist close, ses deux appels et ses règles gelées, puis
    arbitre hors ligne la frontière entre absence de preuve et preuve explicite
    du contraire. Aucun retuning ou replay n'est permis sous cette identité.
-2. Toute évolution de l'ontologie, du mapping, du gold, de l'évaluateur ou de
+3. Toute évolution de l'ontologie, du mapping, du gold, de l'évaluateur ou de
    la télémétrie crée une nouvelle identité et exige un nouveau gate quatre cas,
    un nouvel arbitrage Finance et un nouveau GO propriétaire.
-3. Le holdout v3 est désormais qualifié et scellé. Il reste fermé et son
+4. Le holdout v3 est désormais qualifié et scellé. Il reste fermé et son
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
 V4-002 et V4-010 peuvent avancer en parallèle sous leurs hard-off respectifs.
 Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
 
-### Point de reprise vérifié le 20 août 2026
+### Point de reprise vérifié le 21 août 2026
 
 - `origin/dev` déploie correctement l'application et les fonctions réelles ;
   qualité, intégration, migrations Neon et seeds sont verts.
@@ -324,6 +331,12 @@ abstention, pas une validation humaine fictive.
   index dérivé. Il ne bloque pas le premier pilote WRITING court.
 - V5 porte la création conversationnelle de formations et la refonte du flow de
   publication. La vue V4 « Créer une formation » reste une annonce seulement.
+- `V5-CATALOG-001` porte la fiche programme enrichie : prérequis, niveau
+  d'entrée, savoirs visés, compétences, outils, visée et niveau de sortie.
+  `V5-CATALOG-002` porte les notes et avis, avec éligibilité, version de
+  programme, taille d'échantillon, modération et anti-abus. Ces deux candidats
+  sont détaillés dans `BACKLOG_V4.md` pour mémoire, mais ne bloquent ni ne
+  modifient le chemin critique V4.
 - V6 porte support/ticketing et passe RGPD approfondie.
 - L'audio, l'image, les fichiers, les domaines santé/réglementés et les critères
   holistiques sont hors premier pilote.
@@ -340,15 +353,18 @@ abstention, pas une validation humaine fictive.
 
 ## Prochaines décisions du propriétaire
 
-Aucune décision de prix produit ou de paiement n'est nécessaire maintenant. La
-capacité route-specific `DISABLED`, l'identité et les deux étages quatre cas puis
-10 × 2 sont gelés hors ligne. La prochaine décision exécutable est d'arbitrer le
-budget R&D maximal proposé de `0,251136 USD` et d'accorder un GO propriétaire
-avant tout appel. Finance arbitre alors uniquement l'enveloppe des quatre cas, puis le
-Propriétaire autorise ou refuse ces appels. Une autorisation distincte du panel
-n'est demandée qu'après un résultat `4/4`, sans changement d'identité. Après
-`20/20`, la décision suivante est `GO_TO_SEALED_HOLDOUT`, jamais une promotion
-ni une autorisation d'ouverture. Le pipeline ne devient promu qu'après une
-autorisation distincte, le holdout one-shot et
-`GO_AUTONOMOUS_FORMATIVE`. La comparaison ≥3 candidats vient ensuite pour
-V4-018 et ne retarde pas ce premier parcours de faisabilité.
+Aucune décision de prix produit ou de paiement n'est nécessaire maintenant. Le
+budget quatre cas de `0,251136 USD` a été autorisé puis consommé partiellement :
+deux appels ont coûté `0,025622 USD` avant l'arrêt obligatoire. L'autorisation
+HMAC est consommée, la campagne est close et aucun budget d'appel n'est ouvert.
+
+La prochaine décision n'est pas financière : Produit & pédagogie et
+Développement doivent arbitrer hors ligne si une négation explicite constitue
+une `EVIDENCE_AGAINST_ELEMENT` valide ou doit rester une absence de preuve dans
+l'ontologie candidate. Si cet arbitrage modifie l'ontologie, le mapping, le
+gold, l'évaluateur ou la télémétrie, il crée une nouvelle identité. Finance
+devra alors fixer une nouvelle enveloppe et le Propriétaire devra autoriser un
+nouveau gate quatre cas. Le panel 10 × 2 et le holdout restent fermés jusque-là.
+Après un futur `4/4`, une autorisation distincte du panel sera nécessaire ;
+après un futur `20/20`, la décision suivante sera `GO_TO_SEALED_HOLDOUT`, jamais
+une promotion ni une autorisation implicite d'ouverture.

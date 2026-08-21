@@ -2,10 +2,11 @@
 
 ## Statut et autorité
 
-- Version : 1.10.1
+- Version : 1.10.2
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
-- Dernière consolidation : 20 août 2026 — campagne evidence-assist gelée,
-  runner durci et raccord Emotional Design ; aucun appel autorisé
+- Dernière consolidation : 21 août 2026 — gate evidence-assist clos après deux
+  appels réconciliés ; arbitrage sémantique hors ligne requis avant toute
+  nouvelle identité ou dépense
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -212,7 +213,7 @@ raws et règles d'arrêt restent immuables et append-only.
 V4 ne doit jamais être anticipée dans un ticket V3 ou V3.5. Un ticket V4
 correspond idéalement à un commit ou une pull request autonome.
 
-## Vue de pilotage au 16 août 2026
+## Vue de pilotage au 21 août 2026
 
 Cette section est la synthèse courte. Les statuts détaillés, dépendances et
 preuves sont maintenus dans `docs/V4_ROADMAP.md`.
@@ -222,9 +223,10 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 1. Conserver le segmenter, le contexte de requête, le raw provider, le schéma
    evidence-assist et l'attestation de capacité sous tests fail-closed. Fait
    hors ligne.
-2. Conserver l'identité immuable
-   `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0` et les deux manifestes
-   quatre cas puis 10 × 2 gelés ensemble. Fait hors ligne, zéro appel.
+2. Conserver l'identité immuable et désormais close
+   `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0`, ses deux appels et
+   les deux manifestes quatre cas puis 10 × 2 gelés ensemble. Aucun replay
+   n'est permis sous cette identité.
 3. Le gate evidence-assist quatre cas a consommé son GO éphémère et s'est
    arrêté après deux appels sur `SEMANTIC_DISAGREEMENT` : coût exact
    `0,025622 USD`, réconciliation `100 %`, cas positif `9/9`, cas négatif
@@ -234,42 +236,49 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
    arbitré et interdit. Arbitrer hors ligne la frontière entre absence de preuve
    et preuve explicite du contraire ; toute modification crée une nouvelle
    identité et recommence par un gate quatre cas nouvellement autorisé.
-5. Après 20/20, confirmer la préparation du holdout scellé via
+5. Si l'arbitrage modifie l'ontologie, le mapping, le gold, l'évaluateur ou la
+   télémétrie, créer une nouvelle identité, la soumettre à un nouvel arbitrage
+   Finance et à un nouveau GO propriétaire, puis recommencer par quatre cas.
+   Aucun budget d'appel n'est actuellement ouvert.
+6. Après un futur `4/4`, exécuter le panel 10 × 2 sous autorisation distincte.
+   Après un futur `20/20`, confirmer la préparation du holdout scellé via
    `GO_TO_SEALED_HOLDOUT`, demander une autorisation one-shot distincte, puis
    rendre `GO_AUTONOMOUS_FORMATIVE` uniquement si son exécution réussit sans
    retuning.
-6. Publier un premier contrat `WRITING/fr-FR` seulement après ce GO, s'il est
+7. Publier un premier contrat `WRITING/fr-FR` seulement après ce GO, s'il est
    `FULLY_COMPILABLE`, versionné, couvert par ses templates/remédiations et s'il
    prouve que les relations candidates ne sont jamais scorées.
 
 ### Ensuite — livrer le premier flow apprenant
 
-7. Brancher V4-010 au runtime : remise textuelle, devis/réservation, recherche
-   de preuves, exécution déterministe de la rubrique, feedback authoré,
-   révision/clarification et libération en cas d'échec technique.
-8. Piloter sous feature flag, sur contenu faible risque, avec crédits offerts et
+8. Conserver le fake-flow V4-010 intégré au runtime de développement et forcé
+   à `OFF` en production ; remplacer son fake provider uniquement par un
+   pipeline et un contrat ayant franchi les gates autonomes.
+9. Piloter sous feature flag, sur contenu faible risque, avec crédits offerts et
    aucun effet sur `ConceptProgress`, `StageProgress` ou `VALIDATED`.
-9. Mesurer qualité publiée, couverture, abstention, coût P50/P90, incidents et
+10. Mesurer qualité publiée, couverture, abstention, coût P50/P90, incidents et
    compréhension UX avant d'activer prix ou paiement.
 
 ### Plus tard — économie, paiement et extension
 
-10. Comparer au moins trois candidats sur des identités reproductibles, puis
+11. Comparer au moins trois candidats sur des identités reproductibles, puis
     calibrer catalogue, dashboard, marges et cohortes sur les coûts réellement
     observés ; les catalogues actuels restent `DRAFT/INACTIVE`.
-11. Ouvrir Revolut, packs et clôture financière seulement après gates qualité,
-   finance et conseil externe.
-12. Maintenir V4-011 fermé tant qu'un contrôle cumulatif déterministe,
+12. Ouvrir Revolut, packs et clôture financière seulement après gates qualité,
+    finance et conseil externe.
+13. Maintenir V4-011 fermé tant qu'un contrôle cumulatif déterministe,
     multi-notions et corrigé serveur ne peut pas prouver la maîtrise.
 
 ### Vérités à ne plus perdre
 
 - 0 contrat V4 est `PUBLISHED` ; 0 activité est éligible au runtime IA.
-- Le moteur de rubrique exécutable existe en recherche/hors ligne ; V4-010
-  n'est pas branché à l'application.
+- Le moteur de rubrique exécutable existe en recherche/hors ligne. Le fake-flow
+  V4-010 est branché au runtime de développement, mais son flag reste forcé à
+  `OFF` en production et il ne valide aucun modèle réel.
 - Le smoke Gemini 1.3 positif et les NO-GO Gemini/Sonnet 5 restent des preuves
-  historiques ; aucun ne promeut un pipeline. Le protocole 3.0.0 n'a encore
-  effectué aucun appel : sa capacité est attestée hors ligne, pas sa qualité.
+  historiques ; aucun ne promeut un pipeline. Le protocole 3.0.0 a effectué
+  deux appels réconciliés avant son arrêt obligatoire sur divergence
+  sémantique ; mutation, injection, panel et holdout n'ont pas été exécutés.
 - Le registre `SourceVersion → Passage → Claim → KnowledgePack →
   RubricElement` est une fondation future. Il sépare grounding externe et preuve
   apprenant ; son absence ne bloque pas le premier pilote court et faible risque.
@@ -2705,6 +2714,92 @@ V4-001 à V4-018A, V4-016A, V4-016B, V4-016C et V4-016G.**
 
 - Matrice desktop/mobile/WebKit, réseau lent, concurrence, reprise et sécurité.
 - Risque : déclarer V4 terminée sur tests locaux sans parcours financier réel.
+
+## Candidats post-V4 — qualité et lisibilité du catalogue
+
+Ces candidats sont consignés pour les prochaines versions. Ils ne font pas
+partie du chemin critique V4, n'autorisent aucune migration et devront être
+repris dans le backlog de la version qui les implémentera. Ils partagent une
+dépendance : l'identité et la version d'un programme doivent rester explicites
+afin qu'une fiche éditoriale ou un avis ne change pas silencieusement de sens.
+
+### V5-CATALOG-001 — Fiche programme, niveau et positionnement
+
+**Objectif :** permettre à un apprenant de comprendre avant inscription si le
+programme lui correspond, ce qu'il doit déjà savoir et ce qu'il pourra en
+retirer.
+
+#### Périmètre candidat
+
+- niveau d'entrée et prérequis, avec distinction entre `REQUIRED` et
+  `RECOMMENDED` ;
+- savoirs visés et résultats d'apprentissage observables ;
+- compétences développées et outils pratiqués, sans confondre exposition,
+  pratique guidée et autonomie attendue ;
+- visée du programme et niveau de sortie attendu, à partir d'un vocabulaire
+  contrôlé : découverte, remise à niveau, complément à un cursus, montée en
+  compétence professionnelle, préparation à un métier ou préparation à une
+  certification ;
+- texte éditorial précis lorsque le vocabulaire contrôlé ne suffit pas ;
+- authoring, versionnage, affichage FR/EN et reprise explicite des programmes
+  existants.
+
+#### Critères à préserver lors du futur cadrage
+
+- La fiche distingue le niveau d'entrée, le niveau visé et la visée du
+  programme ; ces champs ne sont jamais déduits l'un de l'autre.
+- Les prérequis obligatoires sont vérifiables et ne sont pas inventés à partir
+  du titre, de la durée ou du public supposé.
+- Les savoirs, compétences et outils sont reliés aux objectifs et activités du
+  programme ; une simple mention dans un texte ne vaut pas compétence acquise.
+- Aucune équivalence universitaire, reconnaissance professionnelle,
+  certification ou employabilité n'est promise sans preuve et autorité
+  explicites.
+- Une migration ne remplit jamais silencieusement des valeurs fictives pour les
+  programmes existants ; l'absence est visible jusqu'à leur revue éditoriale.
+- Les cartes catalogue restent synthétiques ; la fiche programme porte le
+  détail et demeure accessible sur mobile, au clavier et en FR/EN.
+
+#### Arbitrages différés
+
+- taxonomie exacte des niveaux d'entrée et de sortie ;
+- listes contrôlées de visées, compétences et outils ;
+- règles de filtrage du catalogue à partir de ces métadonnées ;
+- gouvernance éditoriale et preuve requise pour les allégations externes.
+
+### V5-CATALOG-002 — Notes et avis sur les programmes
+
+**Objectif :** ajouter un signal d'expérience apprenant partageable sans le
+présenter comme une preuve de qualité pédagogique ou comme une autorité de
+publication.
+
+#### Décisions requises avant implémentation
+
+- échelle de notation et éventuelle structure d'un avis ;
+- éligibilité : inscrit, activité minimale ou programme terminé ;
+- règle par utilisateur et par version de programme, avec modification et
+  suppression auditables ;
+- seuil minimal d'avis avant affichage d'une moyenne et traitement explicite de
+  l'état « pas encore noté » ;
+- modération, signalement, confidentialité, anti-abus et conservation ;
+- comportement lors d'une nouvelle version substantielle d'un programme.
+
+#### Garde-fous candidats
+
+- Afficher moyenne, distribution et taille de l'échantillon ; ne jamais masquer
+  un faible volume derrière une note précise.
+- Séparer l'avis utilisateur des preuves éditoriales, des résultats
+  d'apprentissage et de la validation pédagogique du programme.
+- Une note ne modifie jamais automatiquement la progression, le contenu, la
+  publication ou le classement sans règle produit versionnée.
+- Les avis restent accessibles, traduisibles et modérables ; aucun dark pattern
+  ne force une note positive.
+
+#### Dépendances
+
+- identité/version du programme stabilisée ;
+- surfaces catalogue et fiche programme ;
+- politique de modération, rétention et données personnelles.
 
 ## Gates externes et paramètres à résoudre avant ouverture commerciale
 
