@@ -94,7 +94,8 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
-Le chemin critique ne possède qu'un ticket actif : `V4-002A`. V4-010 peut
+Le chemin critique ne possède qu'un ticket actif : `V4-002B`. `V4-002A` est
+clos par l'arbitrage `Rayan A` du 21 août 2026. V4-010 peut
 recevoir de la maintenance de non-régression sous hard-off, mais aucune nouvelle
 capacité ne doit y être développée avant le contrat et le pipeline promu. Aucune
 de ces actions n'autorise un appel modèle ou un utilisateur.
@@ -106,8 +107,8 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 
 | Maintenant | Agent | Sortie attendue | Puis |
 | --- | --- | --- | --- |
-| `V4-002A — Cadrage de l'activité pilote` | `AGENT-PEDAGOGIE` | Brief de l'activité WRITING réelle et consigne observable | Arbitrage **Rayan A** |
-| `V4-002B — Contrat atomique successeur` | `AGENT-PEDAGOGIE` | Contrat DRAFT et templates | Arbitrage **Rayan B** |
+| `V4-002A — Cadrage de l'activité pilote` | `AGENT-PEDAGOGIE` | **Clos** : brief, scénarios et consigne validés | `V4-002B` |
+| `V4-002B — Contrat atomique successeur` | `AGENT-PEDAGOGIE` | **Maintenant** : contrat DRAFT et templates | Arbitrage **Rayan B** |
 | `V4-002C — Compilateur v2` | `AGENT-DEV-LEARNX` | Moteur hors ligne et certificat v2 | `V4-003A` |
 | `V4-003A/B — Corpus et audit` | `AGENT-METHODOLOGIE` | Oracle mécanique puis verdict indépendant | `V4-003C` |
 | `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | Identité entièrement empreintée | Arbitrage **Rayan C** |
@@ -304,7 +305,7 @@ jamais à franchir son gate live.
 | Ticket | Statut unique | Niveau de preuve actuel | Reprenable maintenant | Dépendance ou gate de sortie | Responsable de la prochaine action |
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
-| V4-002 | `ACTIF_HORS_LIGNE` | V1 DRAFT pleinement compilable historique ; V2 DRAFT `EVIDENCE_ASSIST_ONLY` ; 0 contrat publié. | Oui : `V4-002A` uniquement. | Brief puis contrat approuvés, compilateur v2 et gates autonomes. | `AGENT-PEDAGOGIE`. |
+| V4-002 | `ACTIF_HORS_LIGNE` | `V4-002A` validé ; V1 DRAFT pleinement compilable historique ; V2 DRAFT `EVIDENCE_ASSIST_ONLY` ; 0 contrat publié. | Oui : `V4-002B` uniquement. | Contrat approuvé, compilateur v2 et gates autonomes. | `AGENT-PEDAGOGIE`. |
 | V4-003 | `EN_ATTENTE_V4-002C` | Baselines historiques closes ; paires minimales sémantiques v2 disponibles. | Non avant le contrat et le compilateur v2. | Corpus mécanique, audit, gel, budget et nouvelle autorisation. | `AGENT-METHODOLOGIE`, puis `AGENT-PROTOCOLE-IA`. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
@@ -314,7 +315,7 @@ jamais à franchir son gate live.
 | V4-008A | `LIVRÉ_INACTIF` | Preuve historique ; juge composite abandonné. | Non. | Aucun travail sur l'ancien pipeline. | Produit & pédagogie. |
 | V4-009 | `LIVRÉ_INACTIF` | Orchestration et réconciliation intégrées/rejouées. | Non hors branchement V4-010. | Pipeline exact promu. | Développement. |
 | V4-009B | `LIVRÉ_INACTIF` | NO-GO historique immuable. | Non. | Ne jamais reprendre l'enveloppe close. | Produit & pédagogie. |
-| V4-009C | `BLOQUÉ_PAR_V4-002_003` | Protocole 3.0.0 clos ; arbitrage sémantique successeur approuvé hors ligne. | Non : aucune nouvelle exécution avant `V4-002A` à `V4-003D`. | Nouvelle identité + Finance + message direct de Rayan → nouveau 4/4. | `AGENT-DEV-LEARNX` uniquement à l'étape `V4-009C-S2`. |
+| V4-009C | `BLOQUÉ_PAR_V4-002_003` | Protocole 3.0.0 clos ; arbitrage sémantique successeur approuvé hors ligne ; `V4-002A` validé. | Non : aucune nouvelle exécution avant `V4-002B` à `V4-003D`. | Nouvelle identité + Finance + message direct de Rayan → nouveau 4/4. | `AGENT-DEV-LEARNX` uniquement à l'étape `V4-009C-S2`. |
 | V4-010 | `ACTIF_HORS_LIGNE` | Fake-flow complet intégré sur `dev`, persistant, testé responsive et maintenu sous hard-off ; 0 flow live. | Oui : réaudit UX/contrats et tests sans réseau/débit. | Pipeline promu + contrat publié + gate de cohorte. | Développement, avec Produit & Direction artistique. |
 | V4-011 | `BLOQUÉ` | Aucun gate de maîtrise cumulatif déterministe. | Non. | V4-010 calibré + contrôle multi-notions serveur livré. | Produit & pédagogie + Développement. |
 | V4-012 | `BLOQUÉ` | Fondations financières sans données de pilote. | Non. | Pilote V4-010 instrumenté. | Finance & Pricing. |
