@@ -2,11 +2,13 @@
 
 ## Statut et autorité
 
-- Version : 1.10.9
+- Version : 1.10.10
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
 - Dernière consolidation : 21 août 2026 — le gate réseau V4-009C-S2 est clos
   en `NO-GO_SEMANTIC_DISAGREEMENT` après le premier appel sur quatre ; coût
-  fournisseur `ACTUAL` de `0,018828 USD`, sans retry, fallback ou autre appel
+  fournisseur `ACTUAL` de `0,018828 USD`, sans retry, fallback ou autre appel.
+  V4-003E documente le verdict ; Gemini 3.6 reste le candidat 1 à préparer hors
+  ligne, sans identité ni budget gelés
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -20,10 +22,10 @@ humain unique de l'état, des tickets reprenables, des prochaines actions et des
 gates ; le présent backlog conserve les périmètres, dépendances et critères
 détaillés sans maintenir un second statut concurrent. La spécification
 autoritaire du moteur de correction est
-`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. La nouvelle identité de protocole
-de recherche sémantique est régie par
-`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. Cette identité est désormais close
-et inchangée. Son successeur hors ligne est régi par
+`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. Le protocole de recherche
+sémantique est régi par `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. Les deux
+identités Sonnet exécutées les 20 et 21 août sont closes, distinctes et
+inchangées. Leur successeur hors ligne est régi par
 `docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md` et son authoring par
 `docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md`. La carte de domaine
 `docs/LEARNX_DOMAIN_KNOWLEDGE.md` reste le point d'entrée explicatif. La
@@ -172,7 +174,8 @@ raws et règles d'arrêt restent immuables et append-only.
   `PASS/FAIL`, progression ou
   feedback libre. Une omission ou une abstention devient `UNRESOLVED`, jamais
   automatiquement `NOT_DEMONSTRATED`.
-- La cible expérimentale reste `anthropic/claude-sonnet-5`, catalogue snapshot
+- La cible expérimentale de cette campagne historique était
+  `anthropic/claude-sonnet-5`, catalogue snapshot
   `anthropic/claude-sonnet-5-20260630`, via `OPENROUTER_CHAT`, route exacte
   `Anthropic` et fallback interdit. Le prompt et le protocole portent la version
   `3.0.0`, le validateur et le segmenter `2.0.0` ; l'empreinte du protocole
@@ -203,8 +206,9 @@ raws et règles d'arrêt restent immuables et append-only.
   one-shot. `GO_AUTONOMOUS_FORMATIVE`, après succès one-shot du holdout,
   promeut uniquement le pipeline exact pour le pilote formatif borné.
 - La comparaison de trois candidats devient une preuve secondaire de robustesse
-  et d'économie après faisabilité du pipeline exact. Elle ne bloque pas le gate
-  Sonnet 5, le 10 × 2, le holdout ou le pilote borné ; elle reste bloquante pour
+  et d'économie après faisabilité du prochain pipeline exact. Elle ne bloque
+  pas le gate quatre cas de ce candidat, le 10 × 2, le holdout ou le pilote
+  borné ; elle reste bloquante pour
   V4-018, la tarification et toute généralisation commerciale.
 - Le holdout actif devient
   `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json`.
@@ -224,28 +228,31 @@ correspond idéalement à un commit ou une pull request autonome.
 Cette section est la synthèse courte. Les statuts détaillés, dépendances et
 preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 
-### Maintenant — fermer la preuve autonome
+### Maintenant — choisir et préparer le successeur hors ligne
 
-1. Conserver le segmenter, le contexte de requête, le raw provider, le schéma
-   evidence-assist et l'attestation de capacité sous tests fail-closed. Fait
-   hors ligne.
-2. Conserver l'identité immuable et désormais close
-   `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0`, ses deux appels et
-   les deux manifestes quatre cas puis 10 × 2 gelés ensemble. Aucun replay
-   n'est permis sous cette identité.
-3. Le gate evidence-assist quatre cas a consommé son GO éphémère et s'est
-   arrêté après deux appels sur `SEMANTIC_DISAGREEMENT` : coût exact
-   `0,025622 USD`, réconciliation `100 %`, cas positif `9/9`, cas négatif
-   `7/9`. Mutation et injection n'ont pas été envoyés. Le plafond historique de
-   `0,21 USD` reste propre au gate Sonnet borné clos.
-4. Fermer cette identité sans replay. Le panel conditionnel 10 × 2 reste non
-   arbitré et interdit. Arbitrer hors ligne la frontière entre absence de preuve
-   et preuve explicite du contraire ; toute modification crée une nouvelle
-   identité et recommence par un gate quatre cas nouvellement autorisé.
-5. Si l'arbitrage modifie l'ontologie, le mapping, le gold, l'évaluateur ou la
-   télémétrie, créer une nouvelle identité, la soumettre à un nouvel arbitrage
-   Finance et à un nouveau GO propriétaire, puis recommencer par quatre cas.
-   Aucun budget d'appel n'est actuellement ouvert.
+1. Conserver byte-identiques les deux campagnes Sonnet closes. Le gate du
+   20 août (`cc4dd0df…`, `2/4`, `0,025622 USD`) révélait une frontière
+   d'ontologie plausible. Le gate framework-selection du 21 août
+   (`cc3b1b52…`, `1/4`, `0,018828 USD`) inverse un exemple positif gelé et
+   constitue le NO-GO sémantique non ambigu documenté par V4-003E. Ils ne sont
+   ni agrégés, ni rejoués, ni retunés.
+2. Préparer hors ligne Gemini 3.6, candidat 1 retenu pour sa meilleure
+   comparabilité historique, sous réattestation de disponibilité. Son model ID est
+   `google/gemini-3.6-flash`, son canonical catalog
+   `google/gemini-3.6-flash-20260721` et sa route proposée
+   `google-vertex/global`. Aucune identité ni enveloppe n'est encore gelée.
+3. Pour ce candidat, conserver strictement le protocole, la rubrique, le
+   corpus, les golds, le mapping, l'ordre et les seuils ; créer de nouveaux
+   snapshot, route/provider, profil, tarifs, manifeste, empreinte, préflight et
+   enveloppe Finance. Le runner S2 spécialisé Sonnet doit être paramétré hors
+   ligne. Aucun résultat historique ne compte dans le nouveau gate.
+4. L'ancien brouillon Finance Gemini 3.6 (`0,0172545 USD` par tentative,
+   `0,069018 USD` calculés pour quatre, plafond proposé `0,075 USD`, chargé + FX
+   `≈ 0,090 USD`) reste invalide jusqu'à réattestation et n'est pas transférable
+   au profil Gemini 3.7. Aucun budget d'appel n'est actuellement ouvert.
+5. Gemini 3.7 reste l'option technique de rang 2, sans histoire LearnX. Mistral
+   Medium 3.5 reste l'alternative de rang 3, après les Gemini. Tous sont hors
+   ligne, sans identité ni budget. Le panel 10 × 2 reste interdit.
 6. Après un futur `4/4`, exécuter le panel 10 × 2 sous autorisation distincte.
    Après un futur `20/20`, confirmer la préparation du holdout scellé via
    `GO_TO_SEALED_HOLDOUT`, demander une autorisation one-shot distincte, puis
@@ -282,9 +289,10 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
   V4-010 est branché au runtime de développement, mais son flag reste forcé à
   `OFF` en production et il ne valide aucun modèle réel.
 - Le smoke Gemini 1.3 positif et les NO-GO Gemini/Sonnet 5 restent des preuves
-  historiques ; aucun ne promeut un pipeline. Le protocole 3.0.0 a effectué
-  deux appels réconciliés avant son arrêt obligatoire sur divergence
-  sémantique ; mutation, injection, panel et holdout n'ont pas été exécutés.
+  historiques ; aucun ne promeut un pipeline. Le gate Sonnet du 20 août
+  (`2/4`) et celui du 21 août (`1/4`) ont des identités et des portées
+  différentes ; leurs trois appels et coûts ne doivent jamais être agrégés.
+  Le dernier gate n'a exécuté ni mutation, ni injection, ni panel, ni holdout.
 - Le registre `SourceVersion → Passage → Claim → KnowledgePack →
   RubricElement` est une fondation future. Il sépare grounding externe et preuve
   apprenant ; son absence ne bloque pas le premier pilote court et faible risque.
@@ -394,7 +402,21 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 | 6 | `V4-003C — Gel de la nouvelle identité` | `DONE_RAYAN_C` | `AGENT-PROTOCOLE-IA` | `AGENT-DEV-LEARNX`, `AGENT-PEDAGOGIE` | Dossier `writing-framework-selection-sonnet-5-freeze.v1.json` entièrement empreinté ; rapport `docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | **Clos le 21 août 2026** : Rayan C approuve le dossier exact, sans appel |
 | 7 | `V4-003D — Enveloppe Finance du gate 4` | `DONE_FINANCE_ARBITRATED` | `AGENT-FINANCE` | `AGENT-PROTOCOLE-IA` | `0,177082 USD`/tentative, quatre appels, plafond `0,708328 USD`, réconciliation fail-closed ; rapport `docs/V4_003D_GATE4_FINANCE_ARBITRATION.md` | **Clos hors ligne** : Finance `ARBITRATED`, réseau toujours interdit |
 | 8 | `V4-009C-S2 — Exécution du nouveau gate 4` | `DONE_NO_GO_SEMANTIC_DISAGREEMENT` | `AGENT-DEV-LEARNX` | `AGENT-PROTOCOLE-IA`, `AGENT-METHODOLOGIE` | Runner v2 raccordé à OpenRouter ; raw, usage, coût et route persistés ; campagne arrêtée après `1/4`, coût `0,018828 USD` ACTUAL ; rapport `docs/V4_009C_S2_NETWORK_GATE_REPORT.md` | **Clos le 21 août 2026** : aucun replay sous la même identité, aucun panel, holdout ou live |
-| 9 | `V4-003E — Analyse et publication du verdict` | `READY_AFTER_V4-009C-S2_NO_GO` | `AGENT-METHODOLOGIE` | `AGENT-RECHERCHE`, `AGENT-FINANCE` | Rapport méthodologique, comparaison historique, limites et entrée append-only | Rayan arbitre l'arrêt ou une nouvelle architecture sous une nouvelle identité ; le panel 10 × 2 reste fermé |
+| 9 | `V4-003E — Analyse et documentation du verdict` | `DONE_LOCAL_PENDING_INTEGRATION` | `AGENT-METHODOLOGIE` | `AGENT-RECHERCHE`, `AGENT-FINANCE` | `docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md`, comparaison historique, limites `n = 1` et entrée append-only | **Lot local non poussé** : identité `cc3b1b52…` close sans replay/retuning ; panel, holdout et live fermés |
+
+#### File successeur hors ligne
+
+| Ordre | Ticket | Statut de départ | Responsable | Livrable obligatoire | Gate de sortie |
+| --- | --- | --- | --- | --- | --- |
+| 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `READY_OFFLINE_IDENTITY_PREPARATION` | `AGENT-PROTOCOLE-IA` | Même protocole/rubrique/corpus/golds/ordre/seuils ; nouveaux snapshot, route/provider, profil `MINIMAL`, tarifs, manifeste, empreinte, préflight et proposition Finance | Identité exacte et préflight `HARD_OFF`, puis arbitrages Finance et Rayan distincts ; aucun appel |
+| 11 | `V4-003E-Q2 — Option Gemini 3.7 Flash` | `QUEUED_SECOND_TECHNICAL_OPTION` | `AGENT-PROTOCOLE-IA` | Dossier entièrement nouveau, raisonnement `LOW`, runner paramétré, aucune histoire LearnX ni enveloppe 3.6 réutilisée | Après disposition de Gemini 3.6 et arbitrage ultérieur |
+| 12 | `V4-003E-Q3 — Alternative Mistral Medium 3.5` | `QUEUED_AFTER_GEMINI` | `AGENT-PROTOCOLE-IA` | `mistralai/mistral-medium-3-5`, nouvelle identité et attestations propres, aucun résultat historique réutilisé | Rang 3 fixe ; dossier uniquement après disposition des candidats Gemini et mandat dédié |
+
+Gemini 3.6 supporte structured outputs, `response_format` et `max_tokens` ; le
+raisonnement est obligatoire avec effort `MINIMAL` disponible et `temperature`
+doit être omise. La route observée, le profil et les tarifs hors promotion
+`1,50/7,50 USD/M` doivent être réattestés. Le runner S2 Sonnet n'est pas
+réutilisable sans paramétrisation. Ces faits ne constituent ni gel ni GO.
 
 #### Tickets conditionnels
 
@@ -1088,14 +1110,14 @@ Dépendances : V4-001.**
   mécanique à oracle exécutable, corpus sémantique synthétique qualifié de
   pseudo-oracle et shadow réel non annoté mesurant seulement stabilité,
   couverture, abstention, coût et dérive.
-- Valider d'abord le contrat et le compilateur successeur sans appel. Le modèle,
-  la route et le profil de la nouvelle identité sont choisis et gelés seulement
-  dans `V4-003C`, après l'audit autonome. La faisabilité recommence ensuite par
-  4/4 puis un corpus de développement 10 × 2 ; aucune identité historique n'est
+- Le contrat, le compilateur et l'audit successeur sont clos. Le prochain modèle,
+  sa route et son profil sont préparés sous `V4-003E-Q1`, puis gelés seulement
+  après attestations et approbation de l'identité exacte. La faisabilité
+  recommence par 4/4 puis un corpus 10 × 2 ; aucune identité historique n'est
   reprise.
 - Comparer ensuite au moins trois candidats sur des identités reproductibles
   pour robustesse, latence et coût complet. Cette phase secondaire ne bloque pas
-  le premier gate Sonnet 5 ; elle bloque V4-018, le prix et la généralisation
+  le gate du prochain candidat exact ; elle bloque V4-018, le prix et la généralisation
   commerciale. Les campagnes historiques sous un autre rôle ne comptent pas.
 - Mesurer médiane, P75, P90, retry, clarification, faux statuts, couverture,
   abstention et variabilité.
@@ -1649,7 +1671,7 @@ Produit/pédagogie l'a approuvé comme cas positif seulement. Il autorise la
 préparation, pas l'exécution, du gate maîtrisé + négatif + injection. Le panel
 reste fermé.**
 
-**État courant au 20 août 2026 : le gate evidence-assist 3.0.0 a exécuté deux
+**État historique au 20 août 2026 : le gate evidence-assist 3.0.0 a exécuté deux
 appels synthétiques sous son autorisation HMAC single-use, sans retry/fallback,
 pour `0,025622 USD` réconciliés à 100 %. Le positif est à `9/9`; le négatif à
 `7/9` car `EVIDENCE_AGAINST_ELEMENT` est plausible mais incompatible avec le
@@ -1665,6 +1687,18 @@ positif requis, il partage provisoirement l'effet de niveau
 pas recalculés. Toute exécution future exige nouvelle identité, nouvel
 arbitrage Finance et nouveau GO propriétaire.**
 
+**État courant au 21 août 2026 après V4-003E : le gate distinct
+framework-selection, identité
+`cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31`,
+s'est arrêté après `1/4` appel sur `SEMANTIC_DISAGREEMENT`, pour
+`0,018828 USD` ACTUAL. Sonnet a inversé la polarité de
+`project-b-dimension-scope`, exemple positif explicitement authoré et gelé
+`SUPPORTED`. Cette identité est close sans replay ni retuning. La prochaine
+action est la préparation hors ligne de Gemini 3.6, candidat 1 confirmé, avec
+réattestation et paramétrisation du runner ; aucun budget, panel, holdout ou
+live n'est ouvert. Rapport :
+`docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md`.**
+
 ### Point de reprise pour le développement
 
 - Livré hors ligne : spécification autoritaire, compilateur, archétype
@@ -1674,7 +1708,13 @@ arbitrage Finance et nouveau GO propriétaire.**
 - Livré hors ligne : runner evidence-assist 3.0 validate-only, deux manifestes
   liés par un freeze set, identité
   `cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805`
-  et commande idempotente de régénération/validation sans réseau.
+  et commande idempotente de régénération/validation sans réseau. Cette preuve
+  du 20 août est historique et distincte du gate suivant.
+- Livré et clos : dossier framework-selection Sonnet
+  `cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31`,
+  runner S2, raw/usage/coût persistés et verdict V4-003E après `1/4`. Le runner
+  est spécialisé Sonnet et doit être paramétré puis revalidé sous `HARD_OFF`
+  avant tout candidat Gemini.
 - Livré hors ligne : décision sémantique successeur, paires minimales exactes
   absence/refus/contradiction/ambiguïté et funnel d'authoring. Ces artefacts
   n'étendent aucune autorité live et n'ouvrent aucun budget.

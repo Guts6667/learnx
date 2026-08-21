@@ -15,6 +15,10 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_DOCUMENT_STATUS.md');
     expect(status).toContain('V4_EVIDENCE_SEMANTIC_ARBITRATION.md');
     expect(status).toContain('V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md');
+    expect(index).toContain('V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md');
+    expect(status).toContain(
+      '| `V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md` | `CURRENT_STATUS` |',
+    );
     expect(index).not.toContain('V4_009B_LIVE_GATE.md');
     expect(index).not.toContain('V4_009C_PREPARATION_REPORT.md');
     expect(index).not.toContain(
@@ -32,10 +36,11 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(read(path).slice(0, 700)).toContain('CLOSED_REQUEST');
   });
 
-  it('routes the closed network gate to offline verdict analysis', () => {
+  it('routes the closed Sonnet gate to Gemini 3.6 offline preparation', () => {
     const index = read('docs/INDEX.md');
     const backlog = read('BACKLOG_V4.md');
     const roadmap = read('docs/V4_ROADMAP.md');
+    const status = read('docs/V4_DOCUMENT_STATUS.md');
     const manifest = JSON.parse(
       read('docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json'),
     ) as {
@@ -43,6 +48,15 @@ describe('V4 document routing and assigned execution queue', () => {
         currentResponsibleAgent: string;
         currentTicket: string;
         modelCallsAllowed: boolean;
+      };
+      offlineCandidateQueue: {
+        currentTicket: string;
+        guards: {
+          modelCallsAllowed: boolean;
+          panelAuthorized: boolean;
+          holdoutAuthorized: boolean;
+          liveActivationAllowed: boolean;
+        };
       };
     };
 
@@ -56,18 +70,36 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_003B_INDEPENDENT_AUDIT_REPORT.md');
     expect(index).toContain('V4_003A_R1_ORACLE_HARDENING_REPORT.md');
     expect(index).toContain('V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md');
-    expect(index).toContain('V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md');
-    expect(index).toContain('V4_003D_GATE4_FINANCE_ARBITRATION.md');
-    expect(index).toContain('V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md');
-    expect(index).toContain('V4_009C_S2_NETWORK_GATE_REPORT.md');
-    expect(roadmap).toContain('| `V4-003E — Analyse et publication` |');
+    expect(status).toContain(
+      '| `V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | `HISTORICAL_EVIDENCE` |',
+    );
+    expect(status).toContain(
+      '| `V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` |',
+    );
+    expect(status).toContain(
+      '| `V4_009C_S2_NETWORK_GATE_REPORT.md` | `HISTORICAL_EVIDENCE` |',
+    );
+    expect(roadmap).toContain('| `V4-003E — Analyse et documentation` |');
+    expect(roadmap).toContain('| `V4-003E-Q1 — Dossier Gemini 3.6` |');
+    expect(backlog).toContain(
+      '`V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `READY_OFFLINE_IDENTITY_PREPARATION`',
+    );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
-        currentResponsibleAgent: 'AGENT-METHODOLOGIE',
-        currentTicket: 'V4-003E',
+        currentResponsibleAgent: 'AGENT-PROTOCOLE-IA',
+        currentTicket: 'V4-003E-Q1',
         modelCallsAllowed: false,
       }),
     );
+    expect(manifest.offlineCandidateQueue).toMatchObject({
+      currentTicket: 'V4-003E-Q1',
+      guards: {
+        holdoutAuthorized: false,
+        liveActivationAllowed: false,
+        modelCallsAllowed: false,
+        panelAuthorized: false,
+      },
+    });
   });
 
   it('routes Totem through one validated design authority without opening implementation', () => {

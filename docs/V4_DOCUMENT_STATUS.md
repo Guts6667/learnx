@@ -1,7 +1,7 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.5`
+- **Version** : `1.0.6`
 - **Date** : 21 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
@@ -33,6 +33,7 @@ chemin de lecture actif.
 | `V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` | `ACTIVE_DESIGN_AUTHORITY` | Direction Totem validée, file V4-016D→H et frontières ; aucune autorisation de code à elle seule. |
 | `V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` | `CURRENT_STATUS` | Miroir machine du chemin IA. |
 | `V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md` | `ACTIVE_AUTHORITY` | Architecture déterministe du moteur. |
+| `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` | `ACTIVE_AUTHORITY` | Core candidate-only inchangé du prochain gate ; les campagnes Sonnet restent historiques. |
 | `V4_EVIDENCE_SEMANTIC_ARBITRATION.md` | `ACTIVE_AUTHORITY` | Sémantique successeur, dont `EXPLICITLY_REFUTED`. |
 | `V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md` | `ACTIVE_AUTHORITY` | Création du premier contrat. |
 | `V4_WRITING_PILOT_BRIEF.md` | `APPROVED_INPUT_V4_002B` | `Rayan A` clos : pilote, scénarios, consigne, objectif et exclusions validés ; aucune autorité d'expérience ou de publication. |
@@ -45,12 +46,14 @@ chemin de lecture actif.
 | `V4_003A_R1_ORACLE_HARDENING_REPORT.md` | `CURRENT_STATUS` | Clôture hors ligne du correctif v2.1 ; ouvre uniquement V4-003B-R1. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json` | `AUDIT_INPUT_V4_003B_R1` | Oracle mécanique successeur de 33 cas ; non gelé, sans autorité live ni modèle. |
 | `V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md` | `CURRENT_STATUS` | Verdict `READY_TO_FREEZE` ; ouvre seulement V4-003C hors ligne, sans réseau ni budget. |
-| `V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | `CURRENT_STATUS` | Dossier exact gelé puis approuvé par Rayan C ; n'autorise aucun appel à lui seul. |
-| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json` | `FROZEN_INPUT_OWNER_APPROVED` | Identité, corpus, mapping, runner, télémétrie et stop-policy liés ; réseau et holdout interdits. |
-| `V4_003D_GATE4_FINANCE_ARBITRATION.md` | `CURRENT_STATUS` | Gate 4 borné à `0,708328 USD` fournisseur ; ouvre seulement l'implémentation hors ligne du runner. |
-| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json` | `FROZEN_FINANCE_INPUT` | Enveloppe gate 4 arbitrée ; autorisation réseau propriétaire absente. |
-| `V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | `CURRENT_STATUS` | Runner v2 et stockage durable prévalidés `HARD_OFF` ; attend le GO réseau propriétaire. |
-| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-runner-preflight.v1.json` | `CURRENT_STATUS` | Preuve machine 4/4 fake, zéro réseau et reprise sans second appel ; aucune preuve modèle. |
+| `V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | `HISTORICAL_EVIDENCE` | Dossier Sonnet exact gelé puis consommé par le gate clos ; aucune reprise ou transposition. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json` | `HISTORICAL_EVIDENCE` | Identité Sonnet close, conservée byte-identique ; réseau, replay et transfert interdits. |
+| `V4_003D_GATE4_FINANCE_ARBITRATION.md` | `HISTORICAL_EVIDENCE` | Enveloppe Sonnet consommée par le gate clos ; ne finance aucun successeur. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json` | `CLOSED_REQUEST` | Enveloppe Sonnet close et non transférable ; aucun reliquat réutilisable. |
+| `V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` | Préflight du runner spécialisé Sonnet ; Gemini exige paramétrisation et nouveau préflight. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-runner-preflight.v1.json` | `HISTORICAL_EVIDENCE` | Preuve machine Sonnet 4/4 fake, conservée sans valeur d'attestation Gemini. |
+| `V4_009C_S2_NETWORK_GATE_REPORT.md` | `HISTORICAL_EVIDENCE` | Preuve canonique du gate Sonnet clos après `1/4` ; aucun replay, panel, holdout ou live. |
+| `V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md` | `CURRENT_STATUS` | Lot local en attente d'intégration : verdict borné, limites `n = 1`, conservation append-only et ordre Gemini 3.6 → Gemini 3.7 → Mistral ; aucune identité ou Finance autorisée. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques
@@ -61,7 +64,7 @@ chemin de lecture actif.
 | Synthèse technique | `V4_AI_MODEL_BENCHMARK_REPORT.md` | Historique comparatif, pas gate de promotion actuel. |
 | Composite Mistral/Sonnet | `V4_008A_ALIGNMENT_REGISTER.md`, `V4_009B_*` | `HISTORICAL_EVIDENCE`, pipeline abandonné. |
 | Gemini/Sonnet chercheur v1 | `V4_009C_*`, `V4_EXECUTABLE_RUBRIC_GEMINI_*`, `V4_EXECUTABLE_RUBRIC_SONNET_5_*` | Campagnes closes ; aucun replay. |
-| Evidence-assist 3.0 | `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`, `V4_EVIDENCE_ASSIST_GATE4_*` | Autorité de la campagne close uniquement. |
+| Evidence-assist 3.0 | `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`, `V4_EVIDENCE_ASSIST_GATE4_*` | La spec reste `ACTIVE_AUTHORITY` du core inchangé ; les rapports et résultats de gates clos sont `HISTORICAL_EVIDENCE`. |
 | Manifeste antérieur | `V4_AI_CORRECTION_PHASE_MANIFEST.json` | Immuable pour préserver les verdicts historiques. |
 
 ## 4. Brouillons remplacés

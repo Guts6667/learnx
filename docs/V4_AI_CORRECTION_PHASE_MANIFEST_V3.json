@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T18:23:03Z",
+  "updatedAt": "2026-08-21T18:55:13Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -66,8 +66,8 @@
     },
     "research": {
       "ref": "origin/dev",
-      "commit": "ead5be42808c485a258386c97b4cb19805f32e13",
-      "subject": "integrated evidence-assist 3.0.0, autonomous holdout authoring and offline V4-010 fake-flow"
+      "commit": "ba845d8b81c24a5c1d3fe448bf4e808920385f42",
+      "subject": "feat(ai): persist V4-009C-S2 network gate result"
     }
   },
   "deliveryState": {
@@ -87,7 +87,7 @@
       "scope": "EVIDENCE_ASSIST_PROTOCOL_3_0_0_RUNNER_HOLDOUT_AUTHORING_AND_V4_010_OFFLINE_FAKE_FLOW"
     },
     "experimental": {
-      "status": "CAPABILITY_ATTESTED_OFFLINE_NO_MODEL_CALL",
+      "status": "V4_009C_S2_NO_GO_SUCCESSOR_NOT_FROZEN",
       "pipelinePromoted": false
     },
     "live": {
@@ -146,6 +146,209 @@
       "reason": "The first call produced 1082 reasoning tokens against an explicit maximum of 1024. The campaign stopped before semantic validation, so this is not a negative pedagogical verdict on Sonnet 5."
     }
   ],
+  "currentCampaignVerdicts": [
+    {
+      "ticket": "V4-003E",
+      "appendOnly": true,
+      "canonicalSource": {
+        "ref": "origin/dev",
+        "commit": "ba845d8b81c24a5c1d3fe448bf4e808920385f42"
+      },
+      "identityFingerprint": "cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31",
+      "identityId": "learnx-writing-framework-selection-fr-sonnet-5-evidence-assist-v1",
+      "modelId": "anthropic/claude-sonnet-5",
+      "catalogSnapshotId": "anthropic/claude-sonnet-5-20260630",
+      "verdict": "NO-GO_SEMANTIC_DISAGREEMENT",
+      "scope": "EXACT_FROZEN_IDENTITY_ONLY",
+      "statisticalScope": {
+        "modelCallsPerformed": 1,
+        "maximumAuthorizedCalls": 4,
+        "unusedCallsNotSent": 3,
+        "completedUsableWorkflows": 0,
+        "gateDecisionValidUnderStopPolicy": true,
+        "statisticalGeneralizationAllowed": false,
+        "precisionVarianceRobustnessOrCostQuantilesEstimable": false
+      },
+      "finding": {
+        "caseId": "baseline-pico-spider-mastered",
+        "elementKey": "project-b-dimension-scope",
+        "spanId": "s0007-8a2f1b2dd94b10fd",
+        "expectedAtomicStatus": "SUPPORTED",
+        "expectedCandidateRelation": "EVIDENCE_FOR_ELEMENT",
+        "observedCandidateRelation": "EVIDENCE_AGAINST_ELEMENT",
+        "oracleAmbiguityDemonstrated": false
+      },
+      "telemetry": {
+        "requestedRoute": "Anthropic",
+        "observedProvider": "Anthropic",
+        "actualCostUsd": 0.018828,
+        "costSource": "ACTUAL",
+        "inputTokens": 5829,
+        "visibleOutputTokens": 717,
+        "reasoningTokens": 0,
+        "latencyMs": 4228
+      },
+      "rawEvidence": {
+        "rawOutputSha256": "fd44138bdf283df114d74eecca8a91e5ec7a9fb57e1c3d261989dd53ddacb70f",
+        "rawJsonFileSha256": "975f45abe9ed5249637c4f86f70504b0186250305784eba0fca5fa7dd2396bb5"
+      },
+      "preservation": {
+        "campaignClosed": true,
+        "replayAllowed": false,
+        "postResultRetuningAllowed": false,
+        "closedIdentityOrBudgetReuseAllowed": false,
+        "panelAuthorized": false,
+        "holdoutAuthorized": false,
+        "liveActivationAllowed": false
+      },
+      "networkGateReport": "docs/V4_009C_S2_NETWORK_GATE_REPORT.md",
+      "arbitrationReport": "docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md",
+      "resultDirectory": "benchmarks/ai-correction/results/writing-framework-selection-sonnet5-v2/2026-08-21T20-24-00-Europe-Paris"
+    }
+  ],
+  "offlineCandidateQueue": {
+    "status": "GEMINI_3_6_NEXT_OFFLINE_IDENTITY_PREPARATION",
+    "currentTicket": "V4-003E-Q1",
+    "authority": "docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md",
+    "commonFrozenCore": {
+      "sourceFreezeDossier": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json",
+      "sourceFreezeDossierSha256": "1cbd9a03170e0f8243edc2fabfe0897c5b6e399422b48373c841729699701d69",
+      "candidateSpecificFieldsExcludedFromReuse": true,
+      "protocol": {
+        "path": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+        "version": "3.0.0",
+        "sha256": "528418460739faf6cd1aa04de71adf4712504b053b8143bff7f5d2c06a318337",
+        "implementationFingerprint": "cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a"
+      },
+      "rubric": {
+        "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.v1.draft.json",
+        "sha256": "d276fbc2a92f75b9aacfdb699988de9917ceae0fec914da59d3e5f9b56f39b06",
+        "compiledFingerprint": "600fb37a29694ed70c93f6041f879f557792b5120b92cc0ab415466d05383752"
+      },
+      "oracle": {
+        "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json",
+        "sha256": "c5beba8ed7576e049c77abf710b352e5494427f7818f06c6f6c0c7fad23044cf",
+        "canonicalFingerprint": "2c35125ea438cf1686ae88b01ecdb28bc304a3c9b9af6d45cff81f37306af3c2"
+      },
+      "corpusFingerprint": "12f0202d930b9f197532847c0125f5531a2b8d39502c8f1244e6049629828a4b",
+      "semanticMappingFingerprint": "4fbff2b975124bcd336c49e0d2dbfe42ebf3f4adcf9a048ca17c8c4e5a79bb85",
+      "sourceRunnerBehavioralContractFingerprint": "891560b6712afc1f197aea8d016a3309d2d5c7db3ac7e519bda6968d4227eb0b",
+      "candidateRunnerImplementationFingerprint": null,
+      "candidateRequestProfileFingerprint": null,
+      "telemetryContractFingerprint": "e8e4e16a18e4ad652f3b271847e156aedc66f0c8c934eae9c2291cbf1d519b56",
+      "stopPolicyFingerprint": "3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e",
+      "gateFourCaseOrder": [
+        "baseline-pico-spider-mastered",
+        "fidelity-a-explicit-refusal",
+        "fidelity-a-first-fact-removed",
+        "injection-negative-base-remains-partial"
+      ],
+      "requiredStageOneResult": "4/4",
+      "conditionalPanelShape": "10x2",
+      "conditionalPanelCaseOrder": [
+        "baseline-pico-spider-mastered",
+        "metamorphic-concise-complete",
+        "fidelity-a-first-fact-removed",
+        "fidelity-a-explicit-refusal",
+        "fidelity-b-explicit-refusal",
+        "conditional-a-peco-accepted",
+        "conditional-b-pcc-accepted",
+        "decision-a-materially-ambiguous",
+        "rationale-a-internal-contradiction",
+        "injection-negative-base-remains-partial"
+      ],
+      "conditionalPanelRepetitionsPerCase": 2,
+      "conditionalPanelFreshLogicalWorkflows": 20,
+      "postResultRetuningAllowed": false,
+      "protocolRevisionCondition": "SAME_ERROR_CLASS_REPRODUCED_BY_MULTIPLE_INDEPENDENT_MODEL_FAMILIES"
+    },
+    "candidates": [
+      {
+        "rank": 1,
+        "candidate": "GEMINI_3_6_FLASH",
+        "status": "NEXT_OFFLINE_CANDIDATE_IDENTITY_NOT_FROZEN",
+        "modelId": "google/gemini-3.6-flash",
+        "canonicalCatalogId": "google/gemini-3.6-flash-20260721",
+        "proposedRequestedRoute": "google-vertex/global",
+        "routeAttestationStatus": "PROPOSED_REATTESTATION_REQUIRED",
+        "requestCapabilities": {
+          "structuredOutputs": true,
+          "responseFormat": true,
+          "maxTokens": true,
+          "temperature": "OMIT_UNSUPPORTED",
+          "reasoning": "MANDATORY",
+          "reasoningEffort": "MINIMAL"
+        },
+        "pricingToReattestUsdPerMillionTokens": {
+          "input": 1.5,
+          "outputAndReasoning": 7.5
+        },
+        "financeDraft": {
+          "status": "DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED",
+          "maximumCostPerAttemptUsd": 0.0172545,
+          "maximumProviderAttempts": 4,
+          "calculatedMaximumProviderCostUsd": 0.069018,
+          "proposedProviderCapUsd": 0.075,
+          "loadedFxBasisProviderCostUsd": 0.069018,
+          "loadedFxMultiplier": 1.30398,
+          "loadedFxEnvelopeUsdExact": 0.08999809164,
+          "loadedFxEnvelopeUsdRounded": 0.09,
+          "authorizationEffect": "NONE"
+        },
+        "runnerStatus": "SONNET_PINNED_RUNNER_REQUIRES_CANDIDATE_PARAMETERIZATION",
+        "manifestPath": null,
+        "identityFingerprint": null,
+        "financeEnvelope": null,
+        "ownerAuthorizationGranted": false,
+        "networkCallsAllowed": false
+      },
+      {
+        "rank": 2,
+        "candidate": "GEMINI_3_7_FLASH_TECHNICAL_OPTION",
+        "status": "QUEUED_SECOND_NO_LEARNX_HISTORY_IDENTITY_NOT_FROZEN",
+        "modelId": "google/gemini-3.7-flash",
+        "canonicalCatalogId": "google/gemini-3.7-flash-20260813",
+        "proposedRequestedRoute": "google-vertex/global",
+        "routeAttestationStatus": "READ_ONLY_OBSERVATION_REATTESTATION_REQUIRED",
+        "proposedRequestProfile": {
+          "reasoning": "MANDATORY",
+          "reasoningEffort": "LOW",
+          "maximumTotalOutputTokens": 8192,
+          "visibleOutputTokenTarget": 4096,
+          "temperature": "OMIT_UNSUPPORTED",
+          "timeoutMs": 60000
+        },
+        "financeStatus": "RECALCULATION_REQUIRED_NO_VALUES_TRANSFERRED_FROM_GEMINI_3_6",
+        "manifestPath": null,
+        "identityFingerprint": null,
+        "financeEnvelope": null,
+        "ownerAuthorizationGranted": false,
+        "networkCallsAllowed": false
+      },
+      {
+        "rank": 3,
+        "candidate": "MISTRAL_MEDIUM_3_5_ALTERNATIVE",
+        "status": "QUEUED_AFTER_GEMINI_OFFLINE_NOT_ATTESTED_NOT_FROZEN",
+        "modelId": "mistralai/mistral-medium-3-5",
+        "queueOrder": "AFTER_GEMINI_3_7",
+        "manifestPath": null,
+        "identityFingerprint": null,
+        "financeEnvelope": null,
+        "ownerAuthorizationGranted": false,
+        "financeStatus": "NOT_PROPOSED",
+        "networkCallsAllowed": false
+      }
+    ],
+    "guards": {
+      "modelCallsAllowed": false,
+      "panelAuthorized": false,
+      "holdoutAuthorized": false,
+      "liveActivationAllowed": false,
+      "closedSonnetIdentityReuseAllowed": false,
+      "closedSonnetBudgetReuseAllowed": false,
+      "crossCandidateResultReuseAllowed": false
+    }
+  },
   "holdout": {
     "status": "SEALED_AWAITING_DEVELOPMENT_GO",
     "sealed": true,
@@ -178,13 +381,12 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-003E",
-    "currentResponsibleAgent": "AGENT-METHODOLOGIE",
+    "currentTicket": "V4-003E-Q1",
+    "currentResponsibleAgent": "AGENT-PROTOCOLE-IA",
     "ownerCheckpoints": [
-      "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
-      "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
-      "RAYAN_C_FROZEN_EXPERIMENT_DOSSIER",
-      "RAYAN_NETWORK_AUTHORIZATION_AFTER_FINANCE"
+      "RAYAN_GEMINI_3_6_EXACT_IDENTITY_APPROVAL_AFTER_OFFLINE_DOSSIER",
+      "RAYAN_NETWORK_AUTHORIZATION_AFTER_FINANCE",
+      "RAYAN_FUTURE_CANDIDATE_DOSSIER_AUTHORIZATIONS"
     ],
     "orderedTickets": [
       "V4-002A",
@@ -197,7 +399,10 @@
       "V4-003C",
       "V4-003D",
       "V4-009C-S2",
-      "V4-003E"
+      "V4-003E",
+      "V4-003E-Q1",
+      "V4-003E-Q2",
+      "V4-003E-Q3"
     ],
     "modelCallsAllowed": false,
     "liveActivationAllowed": false
@@ -211,34 +416,41 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "RUNNER_NETWORK_GATE_NO_GO_SEMANTIC_DISAGREEMENT",
-      "nextTicket": "V4-009C-S2",
-      "responsibleAgent": "RAYAN",
+      "status": "V4_003E_DOCUMENTED_GEMINI_3_6_OFFLINE_PREPARATION",
+      "nextTicket": "V4-003E-Q1",
+      "responsibleAgent": "AGENT-PROTOCOLE-IA",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
         "PRESERVE_SUCCESSOR_RUNNER_PREFLIGHT",
-        "PRESERVE_NETWORK_GATE_NO_GO_ARTIFACTS"
+        "PRESERVE_NETWORK_GATE_NO_GO_ARTIFACTS",
+        "PREPARE_GEMINI_3_6_IDENTITY_OFFLINE",
+        "PARAMETERIZE_RUNNER_AND_VALIDATE_FAKE_PREFLIGHT",
+        "PREPARE_FRESH_ROUTE_PROFILE_PRICING_ATTESTATIONS"
       ],
       "forbidden": [
         "MODEL_CALL_WITHOUT_NEW_IDENTITY_AND_OWNER_AUTHORIZATION",
         "REPLAY_CLOSED_GATE",
         "HOLDOUT_ACCESS",
-        "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_COMPARABLE_CANDIDATES",
-        "BLOCK_FIRST_SONNET_5_GATE_ON_THREE_CANDIDATE_COMPARISON",
+        "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_FRESH_RESULTS",
+        "REUSE_CLOSED_SONNET_IDENTITY_OR_BUDGET",
         "PRODUCT_PRICING_BEFORE_SECONDARY_COMPARISON"
       ]
     },
     "V4-009C": {
       "status": "S2_NO_GO_SEMANTIC_DISAGREEMENT",
-      "nextExecutionTicket": "V4-009C-S2",
-      "responsibleAgent": "RAYAN",
-      "blockedBy": ["NEW_IDENTITY_AND_PRODUCT_OWNER_ARBITRATION"],
+      "nextExecutionTicket": null,
+      "responsibleAgent": "AGENT-PROTOCOLE-IA",
+      "blockedBy": [
+        "GEMINI_3_6_IDENTITY_NOT_FROZEN",
+        "GEMINI_3_6_FINANCE_NOT_ARBITRATED",
+        "GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED"
+      ],
       "allowed": [
         "PRESERVE_FROZEN_CAMPAIGN_AND_GATE_IDENTIFIERS",
         "PRESERVE_HARD_OFF_RUNNER_PREFLIGHT",
         "PRESERVE_NETWORK_GATE_NO_GO_ARTIFACTS",
         "PRESERVE_QUALIFIED_SEALED_HOLDOUT_CLOSED",
-        "PREPARE_FINANCE_BUDGET_REQUEST"
+        "PREPARE_GEMINI_3_6_OFFLINE_DOSSIER_ONLY"
       ],
       "forbidden": [
         "REPLAY_CLOSED_GATE_OR_DISPATCH_WITHOUT_NEW_IDENTITY",
@@ -335,7 +547,7 @@
           "maximumCostPerAttemptUsd": 0.177082,
           "maximumProviderAttempts": 4,
           "maximumProviderCostUsd": 0.708328,
-          "status": "FINANCE_ARBITRATED_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED",
+          "status": "FINANCE_ARBITRATED_OWNER_AUTHORIZATION_CONSUMED_CAMPAIGN_CLOSED_NON_TRANSFERABLE",
           "report": "docs/V4_003D_GATE4_FINANCE_ARBITRATION.md"
         },
         "runnerPreflight": {
@@ -715,6 +927,7 @@
       },
       "nextProtocol": {
         "authority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+        "documentClass": "HISTORICAL_EVIDENCE_CLOSED_CC4DD0DF_IDENTITY",
         "status": "FOUR_CASE_GATE_NO_GO_CLOSED",
         "executionStatus": "TWO_CALLS_STOPPED_NO_REPLAY",
         "identityAssignmentStatus": "ASSIGNED_AND_FROZEN_OFFLINE",
@@ -853,9 +1066,9 @@
             "PRODUCT_PRICING",
             "COMMERCIAL_GENERALIZATION"
           ],
-          "doesNotBlock": [
-            "SONNET_5_STAGE_ONE",
-            "SONNET_5_FULL_DEVELOPMENT_CORPUS",
+        "doesNotBlock": [
+          "NEXT_EXACT_CANDIDATE_STAGE_ONE",
+          "NEXT_EXACT_CANDIDATE_FULL_DEVELOPMENT_CORPUS",
             "GO_TO_SEALED_HOLDOUT",
             "BOUNDED_FORMATIVE_PILOT"
           ],
@@ -890,8 +1103,11 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "V4-009C-S2_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED",
-      "NEW_STAGE_ONE_NOT_AUTHORIZED_OR_EXECUTED"
+      "CLOSED_SONNET_IDENTITY_FAILED_STAGE_ONE",
+      "GEMINI_3_6_IDENTITY_NOT_FROZEN",
+      "GEMINI_3_6_FINANCE_NOT_ARBITRATED",
+      "GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED",
+      "NEW_STAGE_ONE_NOT_EXECUTED"
     ]
   },
   "promotionGate": {
@@ -955,21 +1171,17 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Request a direct owner authorization naming Sonnet 5, the four frozen synthetic cases, four calls maximum and the 0.708328 USD provider cap. The runner preflight is green but the network adapter remains unimplemented and network stays hard-off until that message.",
-    "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
-    "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
-    "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",
-    "Preserve the Gemini panel v2 and Sonnet 5 panel results, ledgers and NO-GO verdicts append-only; never resume either closed envelope.",
-    "Preserve the bounded Sonnet 5 gate, its historical proposed 0.21 USD hard cap and its 0.026104 USD actual cost append-only; never resume, relax or reuse the closed identity or its envelope for evidence-assist.",
-    "Apply the evidence-assist protocol 3.0.0 under its new authority without reusing any historical prompt, protocol identity, result or campaign identifier.",
-    "Preserve the route-specific reasoning attestation as an offline capability proof only. The evidence-assist gate consumed its single-use authorization, performed two calls and closed on SEMANTIC_DISAGREEMENT with 0.025622 USD reconciled; never replay this identity.",
-    "Preserve the frozen campaign identity, four-case manifest, conditional 10x2 manifest and freeze-set hashes byte-identically. Any change creates a new identity and restarts at four cases.",
-    "Keep the unexecuted mutation and injection cases, the conditional 20-workflow panel and the holdout closed. The failed 4/4 prerequisite forbids stage two. Apply the approved EXPLICITLY_REFUTED successor semantics only to new offline artifacts; preserve the closed identity byte-identically. Any case, expectation, mapping, evaluator, runner, telemetry, order, repetition, threshold or selection change creates a new corpus version and restarts under a newly authorized four-case identity.",
-    "Keep the falsifier, active v3 holdout, V4-002 publication and V4-010 live activation closed. Permit V4-002 and V4-010 implementation offline under their explicit hard-off constraints.",
-    "Treat writing-fr-holdout.v2.manifest.json as SUPERSEDED_HISTORICAL_DRAFT without modifying it. Preserve the independently authored and autonomously qualified v3 ciphertext closed and non-executable until the distinct opening gates are met.",
-    "Only a future newly identified campaign may request GO_TO_SEALED_HOLDOUT after fresh 4/4 then 20/20 results and complete reconciliation. The current campaign cannot make this transition.",
-    "Only a separately authorized one-shot holdout pass under the same identity may produce GO_AUTONOMOUS_FORMATIVE and mutate eligibility.pipelinePromoted from false to true. That gate unlocks V4-002 publication review and V4-010 bounded pilot preparation, never automatic publication, activation, mastery or pricing.",
-    "Run the at-least-three-candidate comparison only as a secondary robustness and economic benchmark after exact-pipeline feasibility. It does not block the Sonnet 5 gates or bounded formative pilot, but it blocks V4-018, pricing and commercial generalization.",
+    "Preserve both closed Sonnet campaigns append-only and separately: cc4dd0df performed two calls for 0.025622 USD on an ontology boundary; cc3b1b52 performed one call for 0.018828 USD and closed on a non-ambiguous semantic inversion. Never aggregate, replay, retune or transfer either identity, authorization or budget.",
+    "Prepare V4-003E-Q1 for google/gemini-3.6-flash offline only. Keep protocol 3.0.0, rubric, oracle, corpus, golds, case order, semantic mapping, telemetry and thresholds byte-identical to the framework-selection core.",
+    "Parameterize the Sonnet-pinned runner for the Gemini candidate and pass a fresh fake-provider preflight under HARD_OFF. No network or model call is allowed by this work.",
+    "Create fresh candidate-specific catalog snapshot, requested route, expected then observed provider fields, request and mandatory MINIMAL-reasoning profile, price attestation, manifest and identity fingerprint. Persist requestedRoute separately from observedProvider.",
+    "Treat the 0.0172545 USD per-attempt, 0.069018 USD calculated four-attempt maximum, 0.075 USD proposed provider cap and approximately 0.090 USD loaded-FX envelope as DRAFT_REATTESTATION_REQUIRED with authorization effect NONE.",
+    "After the offline dossier and preflight, require Rayan approval of the exact identity, a distinct Finance arbitration, and then a separate single-use Rayan network authorization before any four-case dispatch.",
+    "Keep Gemini 3.7 as rank 2 with no LearnX history and no transferred Gemini 3.6 envelope. Keep Mistral Medium 3.5 as rank 3 after both Gemini candidates. Each future dossier still requires its own mandate, identity, Finance and owner authorization.",
+    "Keep the conditional 10x2 panel closed until a fresh 4/4 under one newly frozen identity and separate Finance and owner authorization. Keep the sealed holdout closed until fresh 4/4 then 20/20 and its distinct one-shot opening authorization.",
+    "Only a separately authorized one-shot holdout pass under the same identity may produce GO_AUTONOMOUS_FORMATIVE and mutate eligibility.pipelinePromoted from false to true. This never authorizes automatic publication, activation, mastery, pricing or commercial generalization.",
+    "Review the protocol only if multiple independent model families reproduce the same error class. A single failed identity never authorizes post-result corpus, gold, mapping, order or threshold retuning.",
+    "Keep the falsifier, V4-002 publication and V4-010 live activation closed. Offline maintenance remains limited to their explicit hard-off constraints.",
     "Keep V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN until docs/V3_5_RELEASE_REPORT.md is reconciled with effective promotion and real-device/PWA, iPhone/VoiceOver, zoom and post-promotion authenticated smoke evidence; do not present this as resolved."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",

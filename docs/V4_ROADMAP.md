@@ -18,8 +18,8 @@ gate le ferme.
 - `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` est l'autorité du langage
   visuel Totem et de sa file ; son statut `DESIGN_VALIDATED` n'autorise aucun
   code applicatif à lui seul.
-- `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` régit l'identité historique close
-  du protocole à passages déterministes ;
+- `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` reste l'autorité active du core à
+  passages déterministes ; les identités et résultats Sonnet sont historiques ;
   `docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md` régit le successeur hors ligne.
 - Cette roadmap ne transforme jamais une preuve expérimentale en livraison
   produit.
@@ -32,7 +32,8 @@ Dernière consolidation : 21 août 2026.
 ## File design Totem — validée, non lancée
 
 La direction Totem est validée et le backlog est prêt. Elle ne change pas le
-point de reprise IA : `V4-003C` reste l'unique ticket du chemin critique.
+point de reprise IA : `V4-003E-Q1`, dossier Gemini 3.6 hors ligne, est l'unique
+ticket reprenable du chemin critique.
 La file design attend un GO d'implémentation distinct par lot.
 
 | Ordre | Lot | Statut | Dépendance principale |
@@ -51,10 +52,11 @@ contrat émotionnel Atlas et tous les contrats produit restent actifs.
 
 | Plan | État au 21 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
-| Runtime canonique V4 | `origin/dev` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne et publication du verdict du gate intégrés. | Aucun contrat publié, débit utilisateur réel ou disponibilité utilisateur de la correction. |
+| Runtime canonique V4 | `origin/dev@ba845d8` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne et preuve du gate S2 intégrés. | Le rapport V4-003E reste local et non poussé ; aucun contrat publié, débit utilisateur réel ou accès apprenant. |
+| Documentation V4-003E | branche locale `codex/v4-003e-sonnet-semantic-no-go` | Arbitrage, journal append-only et file candidats préparés et validés localement. | Aucun statut `origin/dev`, identité Gemini, Finance ou GO tant que le commit n'est pas intégré. |
 | Produit publié | `origin/main` à `f612e53` | SourceLab V2 et le journal public de recherche sont publiés sur la branche de production. | `main` ne contient pas encore la baseline V4 de `dev` ; ces branches ne doivent pas être fusionnées ou réinitialisées en bloc. |
 | Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
-| Expérimentation | `FOUR_CASE_GATE_NO_GO / CAMPAIGN_CLOSED / PANEL_NOT_AUTHORIZED` | Le gate evidence-assist a exécuté deux appels synthétiques, réconciliés à 100 %, puis s'est arrêté sur une divergence sémantique du cas négatif. | Aucun pipeline n'est promu ; mutation, injection, panel 10 × 2 et holdout n'ont pas été exécutés. |
+| Expérimentation | `V4-009C-S2_NO_GO / IDENTITY_CLOSED / SUCCESSOR_NOT_FROZEN` | Le dernier gate a exécuté `1/4` appel, coût `0,018828 USD` ACTUAL, puis s'est arrêté sur l'inversion non ambiguë de `project-b-dimension-scope`. | Un appel ne mesure pas la qualité générale ; aucun pipeline n'est promu et les trois autres cas, panel et holdout n'ont pas été exécutés. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
 | Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
 
@@ -82,14 +84,17 @@ la correction IA n'est pas encore une fonctionnalité de l'application.
 
 Le chemin critique est désormais très étroit :
 
-1. intégrer hors ligne l'arbitrage approuvé `EXPLICITLY_REFUTED`, sans modifier
-   la campagne close ;
-2. authorer et compiler un contrat pilote avec le funnel canonique ;
-3. éprouver une nouvelle identité sur quatre cas, puis 10 × 2, seulement après
-   nouveaux gates Finance et propriétaire ;
-4. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
-5. remplacer le fake provider du flow apprenant sous feature flag ;
-6. mesurer qualité et coûts réels ;
+1. préparer hors ligne l'identité Gemini 3.6, sans modifier protocole,
+   rubrique, corpus, golds, ordre ni seuils ;
+2. paramétrer le runner S2 spécialisé Sonnet, réattester snapshot, route,
+   profil et tarifs, puis valider le préflight `HARD_OFF` ;
+3. obtenir l'approbation de l'identité exacte, l'arbitrage Finance et un GO
+   réseau single-use distinct ;
+4. éprouver cette identité sur quatre cas, puis 10 × 2 seulement après `4/4` et
+   de nouveaux gates ;
+5. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
+6. remplacer le fake provider du flow apprenant sous feature flag et mesurer
+   qualité/coûts réels ;
 7. seulement ensuite activer tarification, paiement et extension.
 
 État honnête : **0 contrat V4 publié, 0 activité éligible, aucun pipeline promu,
@@ -117,10 +122,11 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
 
 Le gate `V4-009C-S2` est clos en `NO-GO_SEMANTIC_DISAGREEMENT` après le
 premier appel sur quatre. Le coût `ACTUAL` est de `0,018828 USD` ; les trois
-autres appels n'ont pas été envoyés. Le point de reprise est désormais
-`V4-003E`, limité à l'analyse et à la publication du verdict. Aucun replay,
-appel modèle, publication de contrat ni branchement live n'est autorisé sans
-une nouvelle identité et de nouveaux arbitrages Produit, Finance et Rayan.
+autres appels n'ont pas été envoyés. V4-003E a préparé localement le verdict
+append-only ; après intégration de ce lot, le point de reprise devient
+`V4-003E-Q1`, préparation hors ligne de Gemini 3.6. Aucun replay, appel modèle,
+publication de contrat ni branchement live n'est autorisé sans nouvelle
+identité et nouveaux arbitrages Finance et Rayan.
 `V4-002C`
 est clos hors ligne : le schéma, le compilateur, le certificat v2 et leurs tests
 sont disponibles. `V4-002B` reste
@@ -147,7 +153,8 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | **Clos** : dossier exact approuvé par Rayan C | `V4-003D` |
 | `V4-003D — Budget` | `AGENT-FINANCE` | **Clos hors ligne** : plafond fournisseur `0,708328 USD`, réseau interdit | `V4-009C-S2` hors ligne |
 | `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | **Clos NO-GO** : arrêt après `1/4` sur désaccord sémantique, coût `0,018828 USD` ACTUAL, aucun replay | `V4-003E` |
-| `V4-003E — Analyse et publication` | `AGENT-METHODOLOGIE` | Rapport comparatif, limites et journal append-only, sans nouvel appel | Arbitrage Rayan sur arrêt ou nouvelle identité |
+| `V4-003E — Analyse et documentation` | `AGENT-METHODOLOGIE` | **Préparé localement, non poussé** : verdict borné à l'identité exacte, limites `n = 1`, comparaison honnête et journal append-only | Intégration du commit local, puis `V4-003E-Q1` |
+| `V4-003E-Q1 — Dossier Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Reprenable hors ligne après intégration V4-003E** : candidat 1 confirmé, identité non gelée, runner à paramétrer, route/profil/tarifs à réattester | Approbation identité, Finance, puis GO réseau séparé |
 
 Tout agent recevant un ticket plus bas dans cette table doit refuser de le
 démarrer si la sortie et le gate de la ligne précédente ne sont pas présents.
@@ -159,17 +166,17 @@ démarrer si la sortie et le gate de la ligne précédente ne sont pas présents
 - Le fake-flow V4-010 passe les tests de persistance, idempotence, versions,
   permissions, états publics et responsive, mais reste forcé à `OFF` en
   production et ne valide aucun modèle.
-- Le gate evidence-assist a consommé son autorisation HMAC single-use : deux
-  appels sur quatre ont été effectués, sans retry/fallback, pour
-  `0,025622 USD` réconciliés à 100 %. Le cas positif est à `9/9` et le cas
-  négatif à `7/9`, soit `16/18` (`88,8889 %`) au cumul.
-- Le runner est revenu en `HARD_OFF`. La campagne est close en
-  `NO_GO_SEMANTIC_DISAGREEMENT` ; mutation et injection n'ont pas été envoyés,
-  le panel 10 × 2 n'est pas autorisé et aucun replay n'est permis.
-- Le Propriétaire a arbitré la divergence : le successeur représente le refus
-  explicite par `EXPLICITLY_REFUTED`. Pour le MVP, ce statut a le même effet de
-  niveau que `NOT_DEMONSTRATED`, mais conserve une preuve et un feedback
-  distincts. Cette décision n'altère aucun artefact de la campagne close.
+- Le dernier gate, identité `cc3b1b52…`, a consommé son autorisation single-use
+  puis envoyé `1/4` appel, sans retry/fallback, pour `0,018828 USD` ACTUAL. Il
+  s'est arrêté sur l'inversion non ambiguë de `project-b-dimension-scope` ; les
+  trois autres cas n'ont pas été envoyés.
+- Le runner est revenu en `HARD_OFF`. V4-003E clôt cette identité sans replay ni
+  retuning. Le gate du 20 août, identité `cc4dd0df…`, reste une preuve historique
+  distincte (`2/4`, `0,025622 USD`) et n'est pas agrégé au résultat courant.
+- Gemini 3.6 est le candidat 1 à préparer hors ligne. Son identité, sa route
+  observée, son profil, son enveloppe Finance et son GO ne sont pas gelés. Le
+  runner S2 étant spécialisé Sonnet, sa paramétrisation et son fake preflight
+  sont des prérequis.
 - La qualification et le scellement du holdout v3 ont consommé l'autorisation
   exacte `AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL`. Le paquet demeure
   non exécutable ; cette décision n'autorise ni son ouverture, ni un appel
@@ -177,9 +184,29 @@ démarrer si la sortie et le gate de la ligne précédente ne sont pas présents
 
 ## Chemin critique
 
-### Gate A — preuve du chercheur de preuves
+### Gate A — preuve courante et campagnes historiques
 
 Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
+
+**Preuve courante.** Le gate framework-selection Sonnet
+`cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31`
+est clos après `1/4` appel et `0,018828 USD` ACTUAL. Le candidat a renvoyé
+`EVIDENCE_AGAINST_ELEMENT` pour un exemple explicitement positif, attendu
+`EVIDENCE_FOR_ELEMENT`. Ce résultat suffit au NO-GO de l'identité sous la
+stop-policy `4/4`, mais `n = 1` ne permet aucune généralisation statistique.
+V4-003E en prépare localement l'analyse append-only. Panel, holdout et live
+restent fermés.
+
+**Prochaine tranche.** Gemini 3.6 est le candidat 1 à préparer hors ligne avec
+le même protocole, la même rubrique, le même corpus, les mêmes golds, le même
+ordre et les mêmes seuils. Snapshot, route/provider, profil `MINIMAL`, tarifs,
+manifeste, empreinte et enveloppe sont nouveaux. Le runner S2 spécialisé Sonnet
+doit être paramétré et prévalidé sous `HARD_OFF`. La proposition Finance
+`0,075 USD` reste un brouillon à réattester, sans effet d'autorisation.
+
+**Historique non exécutable.** Les éléments ci-dessous expliquent l'évolution
+du pipeline. Ils ne sont ni une file active, ni des résultats combinables avec
+le gate courant.
 
 - Acquis : moteur exécutable hors ligne, contrôles de citations, coûts et
   dispatch réconciliés, protocoles Gemini 1.1/1.2 archivés comme NO-GO
@@ -239,11 +266,10 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   `SEMANTIC_DISAGREEMENT`. Le cas négatif oppose le gold
   `NOT_DEMONSTRATED` au signal plausible `EVIDENCE_AGAINST_ELEMENT` sur deux
   éléments. Rapport : `docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md`.
-- Blocage courant : campagne close sans replay. L'arbitrage sémantique est
-  acquis, mais le contrat successeur, son corpus et son évaluateur doivent être
-  compilés et gelés hors ligne. Le panel 10 × 2 historique reste interdit.
-  Toute nouvelle exécution recommence à quatre cas sous une nouvelle identité,
-  après de nouveaux arbitrages Finance et Propriétaire.
+- Clôture historique : campagne `cc4dd0df…` close sans replay. L'arbitrage
+  sémantique `EXPLICITLY_REFUTED` a depuis été intégré dans le contrat
+  framework-selection. Le panel 10 × 2 de cette ancienne campagne reste
+  interdit et ses résultats ne sont pas réutilisés.
 - Définition bornée : le **corpus de développement complet** est exactement la
   sélection scellée
   `writing-fr-semantic-development-v2@2.0.0`, soit 10 cas synthétiques distincts
@@ -255,7 +281,7 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   répétitions ou de la sélection crée une nouvelle version de corpus, une
   nouvelle identité de campagne et un retour au gate quatre cas.
 - La comparaison d'au moins trois candidats devient une phase secondaire de
-  robustesse et d'économie, après preuve de faisabilité du pipeline Sonnet 5
+  robustesse et d'économie, après preuve de faisabilité du prochain pipeline
   exact. Elle ne bloque ni son premier gate 4/4, ni son corpus 10 × 2, ni son
   holdout autonome borné ; elle bloque la calibration économique V4-018 et
   toute généralisation commerciale.
@@ -340,7 +366,7 @@ jamais à franchir son gate live.
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
 | V4-002 | `V4-002C_DONE_OFFLINE` | `V4-002A/B` validés ; compilateur et certificat v2 validés hors ligne ; contrat toujours DRAFT, 0 contrat publié. | Non : ticket clos. | Publication interdite avant corpus, audit et gates ultérieurs. | `AGENT-METHODOLOGIE` reprend via V4-003A. |
-| V4-003 | `V4-009C-S2_NO_GO_SEMANTIC_DISAGREEMENT` | Gate clos après `1/4` appel ; route et coût réconciliés, vrai désaccord du candidat, aucun replay. | Oui, analyse hors ligne V4-003E seulement. | Rapport méthodologique et arbitrage sur arrêt ou nouvelle identité ; panel et holdout fermés. | `AGENT-METHODOLOGIE`, puis Rayan. |
+| V4-003 | `V4-003E_LOCAL_PENDING_INTEGRATION` | Gate clos après `1/4` appel ; route et coût réconciliés, vrai désaccord du candidat ; rapport et journal validés localement, aucun replay. | Non sur `origin/dev` ; V4-003E-Q1 devient reprenable après intégration. | Dossier Gemini 3.6, runner à paramétrer, attestations fraîches ; panel et holdout fermés. | Intégration, puis `AGENT-PROTOCOLE-IA`. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
 | V4-006 | `LIVRÉ_INACTIF` | Ledger et réservation fondés. | Non. | Calibration après pilote. | Développement + Finance. |
@@ -349,7 +375,7 @@ jamais à franchir son gate live.
 | V4-008A | `LIVRÉ_INACTIF` | Preuve historique ; juge composite abandonné. | Non. | Aucun travail sur l'ancien pipeline. | Produit & pédagogie. |
 | V4-009 | `LIVRÉ_INACTIF` | Orchestration et réconciliation intégrées/rejouées. | Non hors branchement V4-010. | Pipeline exact promu. | Développement. |
 | V4-009B | `LIVRÉ_INACTIF` | NO-GO historique immuable. | Non. | Ne jamais reprendre l'enveloppe close. | Produit & pédagogie. |
-| V4-009C | `S2_NO_GO_SEMANTIC_DISAGREEMENT` | Runner réseau et coûts validés ; gate clos après `1/4` appel sur un vrai désaccord, sans replay. | Non : identité close. | Analyse V4-003E, puis arbitrage explicite avant toute nouvelle identité. | `AGENT-METHODOLOGIE`, puis Rayan. |
+| V4-009C | `S2_NO_GO_SEMANTIC_DISAGREEMENT` | Runner réseau et coûts validés ; gate clos après `1/4` appel sur un vrai désaccord, sans replay. | Non : identité Sonnet close. | Nouvelle identité Gemini après préparation hors ligne, Finance et GO Rayan distincts. | `AGENT-PROTOCOLE-IA`, puis Finance et Rayan. |
 | V4-010 | `ACTIF_HORS_LIGNE` | Fake-flow complet intégré sur `dev`, persistant, testé responsive et maintenu sous hard-off ; 0 flow live. | Oui : réaudit UX/contrats et tests sans réseau/débit. | Pipeline promu + contrat publié + gate de cohorte. | Développement, avec Produit & Direction artistique. |
 | V4-011 | `BLOQUÉ` | Aucun gate de maîtrise cumulatif déterministe. | Non. | V4-010 calibré + contrôle multi-notions serveur livré. | Produit & pédagogie + Développement. |
 | V4-012 | `BLOQUÉ` | Fondations financières sans données de pilote. | Non. | Pilote V4-010 instrumenté. | Finance & Pricing. |
@@ -427,18 +453,19 @@ abstention, pas une validation humaine fictive.
 
 ## Prochaines décisions du propriétaire
 
-Aucune décision de prix produit ou de paiement n'est nécessaire maintenant. Le
-budget quatre cas de `0,251136 USD` a été autorisé puis consommé partiellement :
-deux appels ont coûté `0,025622 USD` avant l'arrêt obligatoire. L'autorisation
-HMAC est consommée, la campagne est close et aucun budget d'appel n'est ouvert.
+Aucune décision de prix produit ou de paiement n'est nécessaire maintenant.
+Les deux enveloppes Sonnet sont closes et non transférables : le gate historique
+du 20 août a coûté `0,025622 USD` pour `2/4`, et le gate courant du 21 août
+`0,018828 USD` pour `1/4`. Aucun budget d'appel n'est ouvert.
 
-La prochaine décision n'est pas financière : Produit & pédagogie et
-Développement doivent arbitrer hors ligne si une négation explicite constitue
-une `EVIDENCE_AGAINST_ELEMENT` valide ou doit rester une absence de preuve dans
-l'ontologie candidate. Si cet arbitrage modifie l'ontologie, le mapping, le
-gold, l'évaluateur ou la télémétrie, il crée une nouvelle identité. Finance
-devra alors fixer une nouvelle enveloppe et le Propriétaire devra autoriser un
-nouveau gate quatre cas. Le panel 10 × 2 et le holdout restent fermés jusque-là.
+Gemini 3.6 est déjà retenu comme candidat 1 pour la préparation hors ligne. La
+proposition `0,075 USD` est seulement un brouillon à réattester ; elle ne vaut
+ni arbitrage Finance, ni GO. Après paramétrisation du runner, attestation fraîche
+du snapshot, de la route, du profil et des tarifs, Rayan devra approuver
+l'identité exacte. Finance arbitrera ensuite l'enveloppe, puis Rayan devra
+donner séparément une autorisation réseau single-use. Gemini 3.7 reste rang 2
+et Mistral Medium 3.5 rang 3 ; chaque dossier futur exigera son propre mandat.
+Le panel 10 × 2 et le holdout restent fermés jusque-là.
 Après un futur `4/4`, une autorisation distincte du panel sera nécessaire ;
 après un futur `20/20`, la décision suivante sera `GO_TO_SEALED_HOLDOUT`, jamais
 une promotion ni une autorisation implicite d'ouverture.

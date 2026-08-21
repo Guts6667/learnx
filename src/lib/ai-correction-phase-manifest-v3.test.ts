@@ -26,8 +26,8 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('AGENT-METHODOLOGIE'),
-      currentTicket: z.literal('V4-003E'),
+      currentResponsibleAgent: z.literal('AGENT-PROTOCOLE-IA'),
+      currentTicket: z.literal('V4-003E-Q1'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -42,15 +42,28 @@ const activeManifestSchema = z
         z.literal('V4-003D'),
         z.literal('V4-009C-S2'),
         z.literal('V4-003E'),
+        z.literal('V4-003E-Q1'),
+        z.literal('V4-003E-Q2'),
+        z.literal('V4-003E-Q3'),
       ]),
     }),
     baselines: z.object({
+      research: z.object({
+        commit: z.literal(
+          'ba845d8b81c24a5c1d3fe448bf4e808920385f42',
+        ),
+        ref: z.literal('origin/dev'),
+      }),
       runtime: z.object({
         commit: z.string().regex(/^[a-f0-9]{40}$/u),
         ref: z.literal('origin/dev'),
       }),
     }),
     deliveryState: z.object({
+      experimental: z.object({
+        pipelinePromoted: z.literal(false),
+        status: z.literal('V4_009C_S2_NO_GO_SUCCESSOR_NOT_FROZEN'),
+      }),
       offlineCandidate: z.object({
         status: z.literal('INTEGRATED_IN_RUNTIME_HARD_OFF'),
       }),
@@ -60,6 +73,67 @@ const activeManifestSchema = z
         status: z.literal('DELIVERED_INACTIVE'),
       }),
     }),
+    currentCampaignVerdicts: z.array(
+      z.union([
+      z.object({
+        appendOnly: z.literal(true),
+        arbitrationReport: z.literal(
+          'docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md',
+        ),
+        canonicalSource: z.object({
+          commit: z.literal(
+            'ba845d8b81c24a5c1d3fe448bf4e808920385f42',
+          ),
+          ref: z.literal('origin/dev'),
+        }),
+        finding: z.object({
+          caseId: z.literal('baseline-pico-spider-mastered'),
+          elementKey: z.literal('project-b-dimension-scope'),
+          expectedAtomicStatus: z.literal('SUPPORTED'),
+          expectedCandidateRelation: z.literal('EVIDENCE_FOR_ELEMENT'),
+          observedCandidateRelation: z.literal('EVIDENCE_AGAINST_ELEMENT'),
+          oracleAmbiguityDemonstrated: z.literal(false),
+          spanId: z.literal('s0007-8a2f1b2dd94b10fd'),
+        }),
+        identityFingerprint: z.literal(
+          'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
+        ),
+        preservation: z.object({
+          campaignClosed: z.literal(true),
+          closedIdentityOrBudgetReuseAllowed: z.literal(false),
+          holdoutAuthorized: z.literal(false),
+          liveActivationAllowed: z.literal(false),
+          panelAuthorized: z.literal(false),
+          postResultRetuningAllowed: z.literal(false),
+          replayAllowed: z.literal(false),
+        }),
+        scope: z.literal('EXACT_FROZEN_IDENTITY_ONLY'),
+        statisticalScope: z.object({
+          completedUsableWorkflows: z.literal(0),
+          gateDecisionValidUnderStopPolicy: z.literal(true),
+          maximumAuthorizedCalls: z.literal(4),
+          modelCallsPerformed: z.literal(1),
+          precisionVarianceRobustnessOrCostQuantilesEstimable:
+            z.literal(false),
+          statisticalGeneralizationAllowed: z.literal(false),
+          unusedCallsNotSent: z.literal(3),
+        }),
+        telemetry: z.object({
+          actualCostUsd: z.literal(0.018828),
+          costSource: z.literal('ACTUAL'),
+          inputTokens: z.literal(5829),
+          latencyMs: z.literal(4228),
+          observedProvider: z.literal('Anthropic'),
+          reasoningTokens: z.literal(0),
+          requestedRoute: z.literal('Anthropic'),
+          visibleOutputTokens: z.literal(717),
+        }),
+        ticket: z.literal('V4-003E'),
+        verdict: z.literal('NO-GO_SEMANTIC_DISAGREEMENT'),
+        }),
+        z.unknown(),
+      ]),
+    ).min(1),
     eligibility: z
       .object({
         activitiesEligibleForLiveCorrection: z.literal(0),
@@ -86,15 +160,177 @@ const activeManifestSchema = z
         status: z.literal('SEALED_AWAITING_DEVELOPMENT_GO'),
       })
       .passthrough(),
+    holdoutAdmissionGate: z.object({
+      currentBlockers: z.tuple([
+        z.literal('CLOSED_SONNET_IDENTITY_FAILED_STAGE_ONE'),
+        z.literal('GEMINI_3_6_IDENTITY_NOT_FROZEN'),
+        z.literal('GEMINI_3_6_FINANCE_NOT_ARBITRATED'),
+        z.literal('GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED'),
+        z.literal('NEW_STAGE_ONE_NOT_EXECUTED'),
+      ]),
+      status: z.literal('NOT_ELIGIBLE'),
+    }),
     immutableVerdicts: z.array(z.unknown()),
+    offlineCandidateQueue: z.object({
+      commonFrozenCore: z.object({
+        candidateSpecificFieldsExcludedFromReuse: z.literal(true),
+        candidateRequestProfileFingerprint: z.null(),
+        candidateRunnerImplementationFingerprint: z.null(),
+        conditionalPanelCaseOrder: z.tuple([
+          z.literal('baseline-pico-spider-mastered'),
+          z.literal('metamorphic-concise-complete'),
+          z.literal('fidelity-a-first-fact-removed'),
+          z.literal('fidelity-a-explicit-refusal'),
+          z.literal('fidelity-b-explicit-refusal'),
+          z.literal('conditional-a-peco-accepted'),
+          z.literal('conditional-b-pcc-accepted'),
+          z.literal('decision-a-materially-ambiguous'),
+          z.literal('rationale-a-internal-contradiction'),
+          z.literal('injection-negative-base-remains-partial'),
+        ]),
+        conditionalPanelFreshLogicalWorkflows: z.literal(20),
+        conditionalPanelRepetitionsPerCase: z.literal(2),
+        conditionalPanelShape: z.literal('10x2'),
+        corpusFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+        gateFourCaseOrder: z.tuple([
+          z.literal('baseline-pico-spider-mastered'),
+          z.literal('fidelity-a-explicit-refusal'),
+          z.literal('fidelity-a-first-fact-removed'),
+          z.literal('injection-negative-base-remains-partial'),
+        ]),
+        oracle: z.object({
+          canonicalFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+          path: z.string().min(1),
+          sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+        }),
+        postResultRetuningAllowed: z.literal(false),
+        protocol: z.object({
+          path: z.literal('docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md'),
+          sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+          version: z.literal('3.0.0'),
+        }),
+        protocolRevisionCondition: z.literal(
+          'SAME_ERROR_CLASS_REPRODUCED_BY_MULTIPLE_INDEPENDENT_MODEL_FAMILIES',
+        ),
+        requiredStageOneResult: z.literal('4/4'),
+        rubric: z.object({
+          compiledFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+          path: z.string().min(1),
+          sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+        }),
+        semanticMappingFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+        sourceFreezeDossier: z.string().min(1),
+        sourceFreezeDossierSha256: z.string().regex(/^[a-f0-9]{64}$/u),
+        sourceRunnerBehavioralContractFingerprint: z
+          .string()
+          .regex(/^[a-f0-9]{64}$/u),
+        stopPolicyFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+        telemetryContractFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+      }),
+      currentTicket: z.literal('V4-003E-Q1'),
+      candidates: z.tuple([
+        z.object({
+          candidate: z.literal('GEMINI_3_6_FLASH'),
+          canonicalCatalogId: z.literal(
+            'google/gemini-3.6-flash-20260721',
+          ),
+          financeDraft: z.object({
+            authorizationEffect: z.literal('NONE'),
+            calculatedMaximumProviderCostUsd: z.literal(0.069018),
+            loadedFxBasisProviderCostUsd: z.literal(0.069018),
+            loadedFxEnvelopeUsdExact: z.literal(0.08999809164),
+            loadedFxEnvelopeUsdRounded: z.literal(0.09),
+            loadedFxMultiplier: z.literal(1.30398),
+            maximumCostPerAttemptUsd: z.literal(0.0172545),
+            maximumProviderAttempts: z.literal(4),
+            proposedProviderCapUsd: z.literal(0.075),
+            status: z.literal(
+              'DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED',
+            ),
+          }),
+          identityFingerprint: z.null(),
+          financeEnvelope: z.null(),
+          manifestPath: z.null(),
+          modelId: z.literal('google/gemini-3.6-flash'),
+          networkCallsAllowed: z.literal(false),
+          ownerAuthorizationGranted: z.literal(false),
+          proposedRequestedRoute: z.literal('google-vertex/global'),
+          rank: z.literal(1),
+          requestCapabilities: z.object({
+            reasoning: z.literal('MANDATORY'),
+            reasoningEffort: z.literal('MINIMAL'),
+            temperature: z.literal('OMIT_UNSUPPORTED'),
+          }),
+          runnerStatus: z.literal(
+            'SONNET_PINNED_RUNNER_REQUIRES_CANDIDATE_PARAMETERIZATION',
+          ),
+          routeAttestationStatus: z.literal(
+            'PROPOSED_REATTESTATION_REQUIRED',
+          ),
+        }),
+        z.object({
+          candidate: z.literal('GEMINI_3_7_FLASH_TECHNICAL_OPTION'),
+          canonicalCatalogId: z.literal(
+            'google/gemini-3.7-flash-20260813',
+          ),
+          financeEnvelope: z.null(),
+          financeStatus: z.literal(
+            'RECALCULATION_REQUIRED_NO_VALUES_TRANSFERRED_FROM_GEMINI_3_6',
+          ),
+          identityFingerprint: z.null(),
+          manifestPath: z.null(),
+          modelId: z.literal('google/gemini-3.7-flash'),
+          networkCallsAllowed: z.literal(false),
+          ownerAuthorizationGranted: z.literal(false),
+          proposedRequestProfile: z.object({
+            maximumTotalOutputTokens: z.literal(8192),
+            reasoning: z.literal('MANDATORY'),
+            reasoningEffort: z.literal('LOW'),
+            temperature: z.literal('OMIT_UNSUPPORTED'),
+            timeoutMs: z.literal(60000),
+            visibleOutputTokenTarget: z.literal(4096),
+          }),
+          proposedRequestedRoute: z.literal('google-vertex/global'),
+          rank: z.literal(2),
+          routeAttestationStatus: z.literal(
+            'READ_ONLY_OBSERVATION_REATTESTATION_REQUIRED',
+          ),
+        }),
+        z.object({
+          candidate: z.literal('MISTRAL_MEDIUM_3_5_ALTERNATIVE'),
+          financeEnvelope: z.null(),
+          identityFingerprint: z.null(),
+          manifestPath: z.null(),
+          modelId: z.literal('mistralai/mistral-medium-3-5'),
+          networkCallsAllowed: z.literal(false),
+          ownerAuthorizationGranted: z.literal(false),
+          queueOrder: z.literal('AFTER_GEMINI_3_7'),
+          rank: z.literal(3),
+        }),
+      ]),
+      guards: z.object({
+        closedSonnetBudgetReuseAllowed: z.literal(false),
+        closedSonnetIdentityReuseAllowed: z.literal(false),
+        crossCandidateResultReuseAllowed: z.literal(false),
+        holdoutAuthorized: z.literal(false),
+        liveActivationAllowed: z.literal(false),
+        modelCallsAllowed: z.literal(false),
+        panelAuthorized: z.literal(false),
+      }),
+      status: z.literal('GEMINI_3_6_NEXT_OFFLINE_IDENTITY_PREPARATION'),
+    }),
     offlineWork: z.object({
       'V4-002': z.object({
         status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
       }),
       'V4-003': z.object({
         status: z.literal(
-          'RUNNER_NETWORK_GATE_NO_GO_SEMANTIC_DISAGREEMENT',
+          'V4_003E_DOCUMENTED_GEMINI_3_6_OFFLINE_PREPARATION',
         ),
+      }),
+      'V4-009C': z.object({
+        nextExecutionTicket: z.null(),
+        status: z.literal('S2_NO_GO_SEMANTIC_DISAGREEMENT'),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -140,7 +376,7 @@ const activeManifestSchema = z
                 ),
                 report: z.literal('docs/V4_003D_GATE4_FINANCE_ARBITRATION.md'),
                 status: z.literal(
-                  'FINANCE_ARBITRATED_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED',
+                  'FINANCE_ARBITRATED_OWNER_AUTHORIZATION_CONSUMED_CAMPAIGN_CLOSED_NON_TRANSFERABLE',
                 ),
               }),
               runnerPreflight: z.object({
@@ -287,6 +523,39 @@ function read(relativePath: string): string {
   return readFileSync(resolve(process.cwd(), relativePath), 'utf8');
 }
 
+const v4003eVerdictSchema = z.object({
+  appendOnly: z.literal(true),
+  arbitrationReport: z.string().min(1),
+  finding: z.object({
+    elementKey: z.literal('project-b-dimension-scope'),
+    expectedAtomicStatus: z.literal('SUPPORTED'),
+    expectedCandidateRelation: z.literal('EVIDENCE_FOR_ELEMENT'),
+    observedCandidateRelation: z.literal('EVIDENCE_AGAINST_ELEMENT'),
+    oracleAmbiguityDemonstrated: z.literal(false),
+  }),
+  identityFingerprint: z.literal(
+    'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
+  ),
+  preservation: z.object({
+    campaignClosed: z.literal(true),
+    closedIdentityOrBudgetReuseAllowed: z.literal(false),
+    holdoutAuthorized: z.literal(false),
+    liveActivationAllowed: z.literal(false),
+    panelAuthorized: z.literal(false),
+    postResultRetuningAllowed: z.literal(false),
+    replayAllowed: z.literal(false),
+  }),
+  scope: z.literal('EXACT_FROZEN_IDENTITY_ONLY'),
+  statisticalScope: z.object({
+    completedUsableWorkflows: z.literal(0),
+    gateDecisionValidUnderStopPolicy: z.literal(true),
+    modelCallsPerformed: z.literal(1),
+    statisticalGeneralizationAllowed: z.literal(false),
+    unusedCallsNotSent: z.literal(3),
+  }),
+  verdict: z.literal('NO-GO_SEMANTIC_DISAGREEMENT'),
+});
+
 describe('active autonomous correction phase manifest', () => {
   const active = activeManifestSchema.parse(
     JSON.parse(read('docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json')) as unknown,
@@ -297,6 +566,138 @@ describe('active autonomous correction phase manifest', () => {
 
   it('preserves every historical immutable verdict byte-for-meaning', () => {
     expect(active.immutableVerdicts).toEqual(historical.immutableVerdicts);
+  });
+
+  it('publishes the exact one-call Sonnet verdict without statistical overclaim', () => {
+    const verdict = v4003eVerdictSchema.parse(
+      active.currentCampaignVerdicts.find((entry) => {
+        const identity = z
+          .object({ identityFingerprint: z.string() })
+          .safeParse(entry);
+        return (
+          identity.success &&
+          identity.data.identityFingerprint ===
+            'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31'
+        );
+      }),
+    );
+
+    expect(verdict).toMatchObject({
+      appendOnly: true,
+      identityFingerprint:
+        'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
+      scope: 'EXACT_FROZEN_IDENTITY_ONLY',
+      verdict: 'NO-GO_SEMANTIC_DISAGREEMENT',
+    });
+    expect(verdict.finding).toMatchObject({
+      elementKey: 'project-b-dimension-scope',
+      expectedAtomicStatus: 'SUPPORTED',
+      expectedCandidateRelation: 'EVIDENCE_FOR_ELEMENT',
+      observedCandidateRelation: 'EVIDENCE_AGAINST_ELEMENT',
+      oracleAmbiguityDemonstrated: false,
+    });
+    expect(verdict.statisticalScope).toMatchObject({
+      completedUsableWorkflows: 0,
+      gateDecisionValidUnderStopPolicy: true,
+      modelCallsPerformed: 1,
+      statisticalGeneralizationAllowed: false,
+      unusedCallsNotSent: 3,
+    });
+    expect(verdict.preservation).toMatchObject({
+      campaignClosed: true,
+      closedIdentityOrBudgetReuseAllowed: false,
+      holdoutAuthorized: false,
+      liveActivationAllowed: false,
+      panelAuthorized: false,
+      postResultRetuningAllowed: false,
+      replayAllowed: false,
+    });
+    expect(existsSync(resolve(process.cwd(), verdict.arbitrationReport))).toBe(
+      true,
+    );
+  });
+
+  it('queues Gemini 3.6 offline with a draft budget and no execution authority', () => {
+    const queue = active.offlineCandidateQueue;
+    const [gemini36, gemini37, mistral] = queue.candidates;
+
+    expect(queue.currentTicket).toBe('V4-003E-Q1');
+    expect(gemini36).toMatchObject({
+      canonicalCatalogId: 'google/gemini-3.6-flash-20260721',
+      identityFingerprint: null,
+      financeEnvelope: null,
+      manifestPath: null,
+      modelId: 'google/gemini-3.6-flash',
+      networkCallsAllowed: false,
+      ownerAuthorizationGranted: false,
+      proposedRequestedRoute: 'google-vertex/global',
+      rank: 1,
+      runnerStatus:
+        'SONNET_PINNED_RUNNER_REQUIRES_CANDIDATE_PARAMETERIZATION',
+      routeAttestationStatus: 'PROPOSED_REATTESTATION_REQUIRED',
+    });
+    expect(gemini36.requestCapabilities).toMatchObject({
+      reasoning: 'MANDATORY',
+      reasoningEffort: 'MINIMAL',
+      temperature: 'OMIT_UNSUPPORTED',
+    });
+    expect(
+      gemini36.financeDraft.maximumCostPerAttemptUsd *
+        gemini36.financeDraft.maximumProviderAttempts,
+    ).toBeCloseTo(gemini36.financeDraft.calculatedMaximumProviderCostUsd, 12);
+    expect(gemini36.financeDraft).toMatchObject({
+      authorizationEffect: 'NONE',
+      loadedFxBasisProviderCostUsd: 0.069018,
+      proposedProviderCapUsd: 0.075,
+      status: 'DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED',
+    });
+    expect(
+      gemini36.financeDraft.loadedFxBasisProviderCostUsd *
+        gemini36.financeDraft.loadedFxMultiplier,
+    ).toBeCloseTo(gemini36.financeDraft.loadedFxEnvelopeUsdExact, 12);
+    expect(
+      Number(gemini36.financeDraft.loadedFxEnvelopeUsdExact.toFixed(2)),
+    ).toBe(gemini36.financeDraft.loadedFxEnvelopeUsdRounded);
+    expect(gemini37).toMatchObject({
+      canonicalCatalogId: 'google/gemini-3.7-flash-20260813',
+      financeEnvelope: null,
+      identityFingerprint: null,
+      manifestPath: null,
+      modelId: 'google/gemini-3.7-flash',
+      networkCallsAllowed: false,
+      ownerAuthorizationGranted: false,
+      proposedRequestedRoute: 'google-vertex/global',
+      rank: 2,
+      routeAttestationStatus:
+        'READ_ONLY_OBSERVATION_REATTESTATION_REQUIRED',
+    });
+    expect(gemini37.proposedRequestProfile).toEqual({
+      maximumTotalOutputTokens: 8192,
+      reasoning: 'MANDATORY',
+      reasoningEffort: 'LOW',
+      temperature: 'OMIT_UNSUPPORTED',
+      timeoutMs: 60000,
+      visibleOutputTokenTarget: 4096,
+    });
+    expect(mistral).toMatchObject({
+      financeEnvelope: null,
+      identityFingerprint: null,
+      manifestPath: null,
+      modelId: 'mistralai/mistral-medium-3-5',
+      networkCallsAllowed: false,
+      ownerAuthorizationGranted: false,
+      queueOrder: 'AFTER_GEMINI_3_7',
+      rank: 3,
+    });
+    expect(queue.guards).toEqual({
+      closedSonnetBudgetReuseAllowed: false,
+      closedSonnetIdentityReuseAllowed: false,
+      crossCandidateResultReuseAllowed: false,
+      holdoutAuthorized: false,
+      liveActivationAllowed: false,
+      modelCallsAllowed: false,
+      panelAuthorized: false,
+    });
   });
 
   it('binds the active protocol, campaigns, holdout and capability attestation by SHA-256', () => {
@@ -336,6 +737,57 @@ describe('active autonomous correction phase manifest', () => {
     );
     expect(sha256(read(active.promotionGate.policy.path))).toBe(
       active.promotionGate.policy.sha256,
+    );
+    const frozenCore = active.offlineCandidateQueue.commonFrozenCore;
+    const sourceFreeze = z
+      .object({
+        corpus: z.object({
+          conditionalPanel10x2: z.object({
+            caseIds: z.array(z.string()),
+            freshLogicalWorkflows: z.number().int(),
+            repetitionsPerCase: z.number().int(),
+          }),
+          gateFour: z.array(z.object({ caseId: z.string() })),
+        }),
+        corpusFingerprint: z.string(),
+        runnerContractFingerprint: z.string(),
+        semanticMappingFingerprint: z.string(),
+        stopPolicyFingerprint: z.string(),
+        telemetryContractFingerprint: z.string(),
+      })
+      .parse(JSON.parse(read(frozenCore.sourceFreezeDossier)) as unknown);
+    expect(sha256(read(frozenCore.sourceFreezeDossier))).toBe(
+      frozenCore.sourceFreezeDossierSha256,
+    );
+    expect(sha256(read(frozenCore.protocol.path))).toBe(
+      frozenCore.protocol.sha256,
+    );
+    expect(sha256(read(frozenCore.rubric.path))).toBe(frozenCore.rubric.sha256);
+    expect(sha256(read(frozenCore.oracle.path))).toBe(frozenCore.oracle.sha256);
+    expect(frozenCore.corpusFingerprint).toBe(sourceFreeze.corpusFingerprint);
+    expect(frozenCore.semanticMappingFingerprint).toBe(
+      sourceFreeze.semanticMappingFingerprint,
+    );
+    expect(frozenCore.sourceRunnerBehavioralContractFingerprint).toBe(
+      sourceFreeze.runnerContractFingerprint,
+    );
+    expect(frozenCore.telemetryContractFingerprint).toBe(
+      sourceFreeze.telemetryContractFingerprint,
+    );
+    expect(frozenCore.stopPolicyFingerprint).toBe(
+      sourceFreeze.stopPolicyFingerprint,
+    );
+    expect(frozenCore.gateFourCaseOrder).toEqual(
+      sourceFreeze.corpus.gateFour.map(({ caseId }) => caseId),
+    );
+    expect(frozenCore.conditionalPanelCaseOrder).toEqual(
+      sourceFreeze.corpus.conditionalPanel10x2.caseIds,
+    );
+    expect(frozenCore.conditionalPanelRepetitionsPerCase).toBe(
+      sourceFreeze.corpus.conditionalPanel10x2.repetitionsPerCase,
+    );
+    expect(frozenCore.conditionalPanelFreshLogicalWorkflows).toBe(
+      sourceFreeze.corpus.conditionalPanel10x2.freshLogicalWorkflows,
     );
     expect(
       existsSync(
@@ -409,10 +861,23 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'AGENT-METHODOLOGIE',
-      currentTicket: 'V4-003E',
+      currentResponsibleAgent: 'AGENT-PROTOCOLE-IA',
+      currentTicket: 'V4-003E-Q1',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
+    });
+    expect(active.deliveryState.experimental).toEqual({
+      pipelinePromoted: false,
+      status: 'V4_009C_S2_NO_GO_SUCCESSOR_NOT_FROZEN',
+    });
+    expect(active.holdoutAdmissionGate.currentBlockers).toContain(
+      'GEMINI_3_6_IDENTITY_NOT_FROZEN',
+    );
+    expect(active.offlineCandidateQueue.guards).toMatchObject({
+      holdoutAuthorized: false,
+      liveActivationAllowed: false,
+      modelCallsAllowed: false,
+      panelAuthorized: false,
     });
     expect(
       active.openBlockers.find(

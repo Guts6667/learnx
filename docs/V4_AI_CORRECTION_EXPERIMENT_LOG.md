@@ -882,3 +882,43 @@ golds, ni les résultats de la campagne 3.0.0 close. Elle n'autorise aucun appel
 budget, panel, holdout, contrat publié ou activation V4-010. Une future
 expérience devra geler une nouvelle identité et recevoir de nouveaux GO Finance
 et Propriétaire.
+
+### 2026-08-21 — V4-003E : Sonnet 5 fermé sur un désaccord non ambigu
+
+Statut : `NO_GO_SEMANTIC_DISAGREEMENT / CAMPAIGN_CLOSED / APPEND_ONLY /
+NO_RETUNING / NO_REPLAY / LOCAL_ENTRY_PENDING_INTEGRATION`.
+
+Sous l'identité exacte
+`cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31`,
+le gate framework-selection a envoyé le premier cas sur quatre puis s'est
+arrêté conformément à sa stop-policy. Le modèle a retourné
+`EVIDENCE_AGAINST_ELEMENT` pour `project-b-dimension-scope`, alors que le gold
+gelé est `SUPPORTED` et attend `EVIDENCE_FOR_ELEMENT`. Le passage affirme que
+toutes les dimensions du projet B sont traitées « sans laisser de dimension
+ouverte » ; cette variante est explicitement recevable dans le contrat et
+l'oracle v2.1. Le défaut est donc sémantique et non ambigu dans la portée des
+autorités gelées.
+
+La sortie était structurée et le raw persisté avant validation. La route
+demandée était `Anthropic` et le fournisseur observé `Anthropic`. Il n'y a eu
+ni retry ni fallback. Le coût `ACTUAL` réconcilié est `0,018828 USD`; l'usage est `5 829` tokens input,
+`717` visibles et `0` reasoning, pour `4 228 ms`. Les trois autres appels n'ont
+pas été envoyés ; mutation, injection, panel 10 × 2 et holdout n'ont donc reçu
+aucune nouvelle preuve.
+
+Ce résultat `n = 1` suffit à fermer l'identité, puisque le gate exige `4/4` et
+arrête au premier défaut. Il ne permet pas d'estimer précision globale,
+variabilité, sécurité injection, coûts P50/P90 ou qualité générale de Sonnet 5.
+Il ne doit pas être agrégé au gate du 20 août sous l'identité `cc4dd0df…`, qui
+avait exécuté deux appels et révélé une frontière d'ontologie plausible entre
+absence et refus explicite. Aucun corpus, gold, mapping, ordre, seuil ou oracle
+n'est retuné après le résultat du 21 août.
+
+La succession reste entièrement hors ligne. L'arbitrage technique final retient
+Gemini 3.6, historiquement comparable, comme candidat 1 à préparer sous
+réattestation. Gemini 3.7 reste l'option technique de rang 2 sans histoire
+LearnX ; Mistral Medium 3.5 est l'alternative de rang 3. Aucun
+plafond, profil, manifeste ou identité n'est gelé. Le panel, le holdout, tout
+contrat publié et le live restent fermés.
+
+Rapport : `docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md`.
