@@ -111,10 +111,10 @@ describe('public research journal', () => {
         expect(html).toContain('data-share-article');
         expect(html).toContain('data-share-status aria-live="polite"');
         expect(html).toContain(
-          `href="https://learnx-eight.vercel.app${translation.canonicalUrl}"`,
+          `href="https://learn-x.app${translation.canonicalUrl}"`,
         );
         expect(html).toContain(
-          `href="https://learnx-eight.vercel.app${translation.alternateLocaleUrl}"`,
+          `href="https://learn-x.app${translation.alternateLocaleUrl}"`,
         );
       }
     }
