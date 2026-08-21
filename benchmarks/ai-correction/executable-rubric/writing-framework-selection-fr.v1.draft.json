@@ -1,0 +1,441 @@
+{
+  "schemaVersion": 2,
+  "rubricKey": "v4-writing-framework-selection-fr",
+  "rubricVersion": "1.0.0-draft",
+  "ruleSetVersion": "1.0.0-draft",
+  "lifecycle": "DRAFT",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "riskLevel": "LOW",
+  "compilationTarget": "FULLY_COMPILABLE",
+  "compilationStatus": "NOT_COMPILED",
+  "progressionAuthority": "NONE",
+  "activityBinding": {
+    "programKey": "fondamentaux-psychologie",
+    "specificationPath": "content/fondamentaux-psychologie/specs/PEDAGOGY_SPEC_067.json",
+    "specificationVersion": "1.1.0",
+    "specificationSha256": "a44e5aff3e65ae0a82633cf1b3921875e991aa0f104bc6dbbc5653f260f07929",
+    "seedSha256": "b4d07f58d7e53d2f12cd206dee17c42484b6b348d54cc2d3a8127c263c571455",
+    "stageKey": "integration-preuves",
+    "moduleKey": "projet-integrateur",
+    "lessonKey": "formuler-question-delimitee",
+    "activityKey": "activity-2",
+    "prompt": {
+      "text": "Répondez séparément pour le projet A et le projet B. Pour chacun :\n\n1. choisissez un cadre parmi PICO, PECO, SPIDER et PCC, puis nommez-le ;\n2. indiquez les dimensions de ce cadre que vous utiliseriez et celles que vous laisseriez ouvertes parce qu'elles ne sont pas pertinentes pour ce projet ;\n3. reprenez ou reformulez fidèlement au moins deux éléments distincts du dossier ;\n4. expliquez explicitement le lien entre ces éléments et votre choix de cadre.\n\nPlusieurs choix de cadre peuvent être recevables s'ils sont cohérents avec le dossier et correctement justifiés. N'inventez aucune information absente des dossiers.",
+      "sha256": "b15e386b7001e84debd891503b0ed4e8557e7ad225cd558cbca22548bb1c84e2"
+    },
+    "publishedProgramVersionId": null,
+    "publishedProgramVersionChecksum": null,
+    "publicationBindingStatus": "PENDING_VERSIONED_PEDAGOGY_CHANGE"
+  },
+  "modelAuthorityPolicy": {
+    "evidenceAuthority": "CANDIDATE_ONLY",
+    "levelAuthority": "NONE",
+    "scoreAuthority": "NONE",
+    "feedbackAuthority": "NONE",
+    "masteryEffect": "NONE",
+    "progressionEffect": "NONE"
+  },
+  "scorePolicy": {
+    "indicativeScoreEnabled": false,
+    "publishExactScoreWhenAmbiguousLevelIsStable": false
+  },
+  "trustedContext": {
+    "scenarios": [
+      {
+        "key": "project-a",
+        "text": "Une équipe universitaire prépare une synthèse d'études menées auprès d'étudiants de première année. Pendant huit semaines, ces études comparent une courte pratique de rappel hebdomadaire à la relecture libre des mêmes contenus. Le résultat principal est la performance à un quiz réalisé deux semaines après la dernière séance. L'équipe cherche à estimer l'effet comparatif des deux pratiques ; elle ne cherche ni à décrire le vécu des étudiants, ni à cartographier tous les usages possibles de la pratique de rappel.",
+        "textSha256": "cceb72e4d8d449ed5e1f9958a36a8f914b2dd7aa5b75a4afd3faa51662e07632",
+        "claims": [
+          { "key": "a-population-first-year", "text": "Les études portent sur des étudiants de première année." },
+          { "key": "a-duration-eight-weeks", "text": "Les pratiques sont comparées pendant huit semaines." },
+          { "key": "a-retrieval-weekly", "text": "L'une des pratiques est un rappel court et hebdomadaire." },
+          { "key": "a-free-rereading", "text": "L'autre pratique est la relecture libre des mêmes contenus." },
+          { "key": "a-delayed-quiz", "text": "Le résultat principal est un quiz deux semaines après la dernière séance." },
+          { "key": "a-comparative-effect", "text": "La synthèse cherche un effet comparatif entre les deux pratiques." },
+          { "key": "a-not-experience", "text": "La synthèse ne cherche pas à décrire le vécu des étudiants." },
+          { "key": "a-not-mapping", "text": "La synthèse ne cherche pas à cartographier tous les usages du rappel." }
+        ]
+      },
+      {
+        "key": "project-b",
+        "text": "Une équipe prépare une synthèse d'études qualitatives fondées sur des entretiens avec des adultes qui suivent une formation entièrement à distance. Elle étudie leurs six premières semaines de formation et s'intéresse à la charge perçue ainsi qu'au sentiment d'appartenance. Aucune intervention n'est imposée et aucun groupe de comparaison n'est requis. L'équipe cherche à comprendre l'expérience rapportée et les situations qui la façonnent ; elle ne cherche pas à mesurer l'efficacité d'un dispositif.",
+        "textSha256": "8ce6e77fd0fa2c569372caad3078fa5c9c97bd76ddaba519856994c49d776ed2",
+        "claims": [
+          { "key": "b-qualitative-interviews", "text": "Les études sont qualitatives et fondées sur des entretiens." },
+          { "key": "b-adults-remote", "text": "Elles portent sur des adultes en formation entièrement à distance." },
+          { "key": "b-first-six-weeks", "text": "Elles étudient les six premières semaines de formation." },
+          { "key": "b-perceived-load", "text": "La charge perçue fait partie des phénomènes étudiés." },
+          { "key": "b-belonging", "text": "Le sentiment d'appartenance fait partie des phénomènes étudiés." },
+          { "key": "b-no-intervention", "text": "Aucune intervention n'est imposée." },
+          { "key": "b-no-comparator", "text": "Aucun groupe de comparaison n'est requis." },
+          { "key": "b-understand-experience", "text": "Le but est de comprendre l'expérience et les situations qui la façonnent." },
+          { "key": "b-not-effectiveness", "text": "Le but n'est pas de mesurer l'efficacité d'un dispositif." }
+        ]
+      }
+    ]
+  },
+  "frameworkPolicy": {
+    "knownFrameworks": ["PICO", "PECO", "SPIDER", "PCC"],
+    "lexicalVariants": {
+      "PICO": ["PICO", "Population Intervention Comparison Outcome", "Population Intervention Comparaison Résultat"],
+      "PECO": ["PECO", "Population Exposure Comparison Outcome", "Population Exposition Comparaison Résultat"],
+      "SPIDER": ["SPIDER", "Sample Phenomenon of Interest Design Evaluation Research type"],
+      "PCC": ["PCC", "Population Concept Context", "Population Concept Contexte"]
+    },
+    "scenarioMappings": [
+      {
+        "scenarioKey": "project-a",
+        "referenceFramework": "PICO",
+        "acceptedFrameworks": ["PICO", "PECO"],
+        "conditionalRules": {
+          "PECO": "La pratique de rappel doit être explicitement traitée comme exposition ; comparaison et résultat restent fidèles au dossier."
+        },
+        "rejectedUnlessReauthored": ["SPIDER", "PCC"]
+      },
+      {
+        "scenarioKey": "project-b",
+        "referenceFramework": "SPIDER",
+        "acceptedFrameworks": ["SPIDER", "PCC"],
+        "conditionalRules": {
+          "PCC": "La population adulte, l'expérience de formation et le contexte entièrement distant doivent être explicitement reliés."
+        },
+        "rejectedUnlessReauthored": ["PICO", "PECO"]
+      }
+    ]
+  },
+  "criteria": [
+    {
+      "key": "framework-decision",
+      "label": "Choix et délimitation du cadre",
+      "description": "La réponse nomme un cadre et traite ses dimensions séparément pour les deux projets.",
+      "elementKeys": [
+        "project-a-framework-choice",
+        "project-a-dimension-scope",
+        "project-b-framework-choice",
+        "project-b-dimension-scope"
+      ],
+      "evaluationOrder": ["mastered", "partial", "insufficient"],
+      "levels": [
+        { "key": "mastered", "when": { "allOfSupported": ["project-a-framework-choice", "project-a-dimension-scope", "project-b-framework-choice", "project-b-dimension-scope"] } },
+        { "key": "partial", "when": { "supportedCount": { "minimum": 1, "maximum": 3 } } },
+        { "key": "insufficient", "when": { "supportedCount": { "minimum": 0, "maximum": 0 } } }
+      ]
+    },
+    {
+      "key": "dossier-fidelity",
+      "label": "Fidélité au dossier",
+      "description": "La réponse mobilise deux propriétés fidèles et distinctes par projet sans conflit matériel.",
+      "elementKeys": [
+        "project-a-dossier-fact-1",
+        "project-a-dossier-fact-2",
+        "project-b-dossier-fact-1",
+        "project-b-dossier-fact-2"
+      ],
+      "evaluationOrder": ["insufficient", "mastered", "partial"],
+      "contextMismatchPolicy": "FORCE_INSUFFICIENT_ONCE_PER_SCENARIO",
+      "levels": [
+        { "key": "insufficient", "when": { "anyOf": [{ "supportedCount": { "minimum": 0, "maximum": 0 } }, { "hasUnresolvedContextMismatch": true }] } },
+        { "key": "mastered", "when": { "allOf": [{ "groupSupportedCount": { "groupKey": "project-a-dossier-facts", "exactly": 2 } }, { "groupSupportedCount": { "groupKey": "project-b-dossier-facts", "exactly": 2 } }, { "hasUnresolvedContextMismatch": false }] } },
+        { "key": "partial", "when": { "allOf": [{ "supportedCount": { "minimum": 1, "maximum": 3 } }, { "hasUnresolvedContextMismatch": false }] } }
+      ]
+    },
+    {
+      "key": "choice-rationale",
+      "label": "Lien entre dossier et choix",
+      "description": "La réponse explique le lien entre les propriétés qu'elle attribue à chaque projet et le cadre retenu.",
+      "elementKeys": ["project-a-choice-rationale", "project-b-choice-rationale"],
+      "whenNoEvaluableElements": "BLOCKED_BY_DEPENDENCY",
+      "evaluationOrder": ["mastered", "partial", "insufficient"],
+      "levels": [
+        { "key": "mastered", "when": { "allOfSupported": ["project-a-choice-rationale", "project-b-choice-rationale"] } },
+        { "key": "partial", "when": { "supportedCount": { "minimum": 1, "maximum": 1 } } },
+        { "key": "insufficient", "when": { "supportedCount": { "minimum": 0, "maximum": 0 }, "ignoreBlockedDependencies": true } }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "key": "project-a-framework-choice",
+      "type": "FACT",
+      "scenarioKey": "project-a",
+      "ownerCriterionKey": "framework-decision",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["dossier-fidelity", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "positiveExamples": ["Pour le projet A, je retiens PICO.", "Je choisis PECO pour le projet A."],
+      "negativeExamples": ["PICO et PECO sont deux cadres possibles."],
+      "acceptableVariants": ["Le nom développé est recevable s'il correspond sans ambiguïté à l'un des quatre cadres authorés."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 2 },
+      "contradictionKinds": ["INTERNAL_CONFLICT"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Pour le projet A, le cadre choisi est explicite.",
+        "notDemonstrated": "Pour le projet A, nommez le cadre que vous retenez.",
+        "explicitlyRefuted": "Pour le projet A, votre réponse indique explicitement qu'aucun cadre n'est choisi ; retenez-en un pour répondre à la consigne.",
+        "contradicted": "Pour le projet A, plusieurs choix finaux incompatibles restent actifs ; conservez un choix ou distinguez leurs conditions.",
+        "ambiguous": "Pour le projet A, le choix peut être compris de plusieurs façons ; nommez celui que vous retenez."
+      },
+      "remediation": { "learnerAction": "Ajouter une phrase autonome qui nomme le cadre retenu pour A.", "completionEvidence": "Un passage exact identifie un seul choix final pour A." }
+    },
+    {
+      "key": "project-a-dimension-scope",
+      "type": "RELATION",
+      "scenarioKey": "project-a",
+      "ownerCriterionKey": "framework-decision",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["dossier-fidelity", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "dependsOn": { "elementKey": "project-a-framework-choice", "whenUnsatisfied": "BLOCKED_BY_DEPENDENCY" },
+      "positiveExamples": ["Pour PICO, j'utilise population, intervention, comparaison et résultat ; je ne laisse aucune dimension ouverte."],
+      "negativeExamples": ["Je choisis PICO."],
+      "acceptableVariants": ["Déclarer qu'aucune dimension n'est laissée ouverte est recevable si toutes sont effectivement traitées."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 4, "relationRoles": ["FRAMEWORK", "DIMENSION_POLICY"] },
+      "contradictionKinds": ["INTERNAL_CONFLICT"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Les dimensions utilisées ou laissées ouvertes sont précisées pour le projet A.",
+        "notDemonstrated": "Indiquez quelles dimensions du cadre choisi vous utilisez et lesquelles vous laissez ouvertes pour le projet A.",
+        "explicitlyRefuted": "Votre réponse refuse explicitement de préciser les dimensions du projet A ; ajoutez cette délimitation.",
+        "contradicted": "Pour le projet A, une même dimension est présentée comme utilisée et ouverte ; clarifiez son statut.",
+        "ambiguous": "Pour le projet A, le traitement d'une dimension reste équivoque ; précisez si vous l'utilisez ou la laissez ouverte."
+      },
+      "remediation": { "learnerAction": "Lister les dimensions du cadre choisi pour A et indiquer le statut de chacune.", "completionEvidence": "Chaque dimension mentionnée est clairement utilisée ou laissée ouverte." }
+    },
+    {
+      "key": "project-b-framework-choice",
+      "type": "FACT",
+      "scenarioKey": "project-b",
+      "ownerCriterionKey": "framework-decision",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["dossier-fidelity", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "positiveExamples": ["Pour le projet B, je retiens SPIDER.", "Je choisis PCC pour le projet B."],
+      "negativeExamples": ["SPIDER et PCC sont deux cadres possibles."],
+      "acceptableVariants": ["Le nom développé est recevable s'il correspond sans ambiguïté à l'un des quatre cadres authorés."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 2 },
+      "contradictionKinds": ["INTERNAL_CONFLICT"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Pour le projet B, le cadre choisi est explicite.",
+        "notDemonstrated": "Pour le projet B, nommez le cadre que vous retenez.",
+        "explicitlyRefuted": "Pour le projet B, votre réponse indique explicitement qu'aucun cadre n'est choisi ; retenez-en un pour répondre à la consigne.",
+        "contradicted": "Pour le projet B, plusieurs choix finaux incompatibles restent actifs ; conservez un choix ou distinguez leurs conditions.",
+        "ambiguous": "Pour le projet B, le choix peut être compris de plusieurs façons ; nommez celui que vous retenez."
+      },
+      "remediation": { "learnerAction": "Ajouter une phrase autonome qui nomme le cadre retenu pour B.", "completionEvidence": "Un passage exact identifie un seul choix final pour B." }
+    },
+    {
+      "key": "project-b-dimension-scope",
+      "type": "RELATION",
+      "scenarioKey": "project-b",
+      "ownerCriterionKey": "framework-decision",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["dossier-fidelity", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "dependsOn": { "elementKey": "project-b-framework-choice", "whenUnsatisfied": "BLOCKED_BY_DEPENDENCY" },
+      "positiveExamples": ["Pour SPIDER, j'utilise l'échantillon, le phénomène, les entretiens, la charge et l'appartenance, ainsi que le type qualitatif ; je ne laisse aucune dimension ouverte."],
+      "negativeExamples": ["Je choisis SPIDER."],
+      "acceptableVariants": ["Déclarer qu'aucune dimension n'est laissée ouverte est recevable si toutes sont effectivement traitées."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 4, "relationRoles": ["FRAMEWORK", "DIMENSION_POLICY"] },
+      "contradictionKinds": ["INTERNAL_CONFLICT"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Les dimensions utilisées ou laissées ouvertes sont précisées pour le projet B.",
+        "notDemonstrated": "Indiquez quelles dimensions du cadre choisi vous utilisez et lesquelles vous laissez ouvertes pour le projet B.",
+        "explicitlyRefuted": "Votre réponse refuse explicitement de préciser les dimensions du projet B ; ajoutez cette délimitation.",
+        "contradicted": "Pour le projet B, une même dimension est présentée comme utilisée et ouverte ; clarifiez son statut.",
+        "ambiguous": "Pour le projet B, le traitement d'une dimension reste équivoque ; précisez si vous l'utilisez ou la laissez ouverte."
+      },
+      "remediation": { "learnerAction": "Lister les dimensions du cadre choisi pour B et indiquer le statut de chacune.", "completionEvidence": "Chaque dimension mentionnée est clairement utilisée ou laissée ouverte." }
+    },
+    {
+      "key": "project-a-dossier-fact-1",
+      "type": "FACT",
+      "scenarioKey": "project-a",
+      "ownerCriterionKey": "dossier-fidelity",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["framework-decision", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "trustedClaimGroup": "project-a-claims",
+      "distinctEvidenceGroup": "project-a-dossier-facts",
+      "positiveExamples": ["Le projet concerne des étudiants de première année."],
+      "negativeExamples": ["Le projet porte sur des lycéens."],
+      "acceptableVariants": ["Toute proposition fiable du projet A peut occuper ce slot ; l'ordre des deux slots n'a aucune signification."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 3, "trustedClaimReferenceRequired": true },
+      "contradictionKinds": ["INTERNAL_CONFLICT", "CONTEXT_MISMATCH"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Un élément du dossier A est repris fidèlement.",
+        "notDemonstrated": "Appuyez votre choix sur un élément précis du dossier A.",
+        "explicitlyRefuted": "Votre réponse indique ne pas s'appuyer sur le dossier A ; ajoutez les éléments demandés.",
+        "contradicted": "Un élément attribué au dossier A entre en conflit avec celui-ci ; corrigez ce passage.",
+        "ambiguous": "Un passage peut modifier le sens du dossier A ; reformulez-le plus précisément."
+      },
+      "remediation": { "learnerAction": "Reprendre ou paraphraser fidèlement une proposition du dossier A.", "completionEvidence": "Le span apprenant est relié à un claim fiable distinct du projet A." }
+    },
+    {
+      "key": "project-a-dossier-fact-2",
+      "type": "FACT",
+      "scenarioKey": "project-a",
+      "ownerCriterionKey": "dossier-fidelity",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["framework-decision", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "trustedClaimGroup": "project-a-claims",
+      "distinctEvidenceGroup": "project-a-dossier-facts",
+      "positiveExamples": ["Le résultat est mesuré par un quiz deux semaines après la dernière séance."],
+      "negativeExamples": ["Le résultat est une mesure immédiate de satisfaction."],
+      "acceptableVariants": ["Toute autre proposition fiable du projet A est recevable si elle est distincte du claim affecté au premier slot."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 3, "trustedClaimReferenceRequired": true },
+      "contradictionKinds": ["INTERNAL_CONFLICT", "CONTEXT_MISMATCH"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Un second élément distinct du dossier A est repris fidèlement.",
+        "notDemonstrated": "Ajoutez un second élément du dossier A, distinct du premier.",
+        "explicitlyRefuted": "GROUP_MESSAGE_ONLY",
+        "contradicted": "GROUP_MESSAGE_ONLY",
+        "ambiguous": "Le second élément peut répéter le premier ; choisissez une autre propriété du dossier A."
+      },
+      "remediation": { "learnerAction": "Ajouter une proposition du dossier A différente de la première.", "completionEvidence": "Le second slot référence un autre claim fiable du projet A." }
+    },
+    {
+      "key": "project-b-dossier-fact-1",
+      "type": "FACT",
+      "scenarioKey": "project-b",
+      "ownerCriterionKey": "dossier-fidelity",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["framework-decision", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "trustedClaimGroup": "project-b-claims",
+      "distinctEvidenceGroup": "project-b-dossier-facts",
+      "positiveExamples": ["Les études sont qualitatives et fondées sur des entretiens."],
+      "negativeExamples": ["Le projet impose une intervention."],
+      "acceptableVariants": ["Toute proposition fiable du projet B peut occuper ce slot ; l'ordre des deux slots n'a aucune signification."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 3, "trustedClaimReferenceRequired": true },
+      "contradictionKinds": ["INTERNAL_CONFLICT", "CONTEXT_MISMATCH"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Un élément du dossier B est repris fidèlement.",
+        "notDemonstrated": "Appuyez votre choix sur un élément précis du dossier B.",
+        "explicitlyRefuted": "Votre réponse indique ne pas s'appuyer sur le dossier B ; ajoutez les éléments demandés.",
+        "contradicted": "Un élément attribué au dossier B entre en conflit avec celui-ci ; corrigez ce passage.",
+        "ambiguous": "Un passage peut modifier le sens du dossier B ; reformulez-le plus précisément."
+      },
+      "remediation": { "learnerAction": "Reprendre ou paraphraser fidèlement une proposition du dossier B.", "completionEvidence": "Le span apprenant est relié à un claim fiable distinct du projet B." }
+    },
+    {
+      "key": "project-b-dossier-fact-2",
+      "type": "FACT",
+      "scenarioKey": "project-b",
+      "ownerCriterionKey": "dossier-fidelity",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["framework-decision", "choice-rationale"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "trustedClaimGroup": "project-b-claims",
+      "distinctEvidenceGroup": "project-b-dossier-facts",
+      "positiveExamples": ["Le but est de comprendre l'expérience, pas de mesurer l'efficacité."],
+      "negativeExamples": ["Le projet compare l'efficacité de deux dispositifs."],
+      "acceptableVariants": ["Toute autre proposition fiable du projet B est recevable si elle est distincte du claim affecté au premier slot."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 1, "maximumSpans": 3, "trustedClaimReferenceRequired": true },
+      "contradictionKinds": ["INTERNAL_CONFLICT", "CONTEXT_MISMATCH"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Un second élément distinct du dossier B est repris fidèlement.",
+        "notDemonstrated": "Ajoutez un second élément du dossier B, distinct du premier.",
+        "explicitlyRefuted": "GROUP_MESSAGE_ONLY",
+        "contradicted": "GROUP_MESSAGE_ONLY",
+        "ambiguous": "Le second élément peut répéter le premier ; choisissez une autre propriété du dossier B."
+      },
+      "remediation": { "learnerAction": "Ajouter une proposition du dossier B différente de la première.", "completionEvidence": "Le second slot référence un autre claim fiable du projet B." }
+    },
+    {
+      "key": "project-a-choice-rationale",
+      "type": "JUSTIFICATION",
+      "scenarioKey": "project-a",
+      "ownerCriterionKey": "choice-rationale",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["framework-decision", "dossier-fidelity"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "dependsOn": { "responsePropertyScenarioKey": "project-a", "whenEmpty": "BLOCKED_BY_DEPENDENCY" },
+      "positiveExamples": ["Comme le projet compare une pratique à une autre et mesure un résultat différé, PICO permet de représenter la comparaison et le résultat."],
+      "negativeExamples": ["Le projet compare deux pratiques. Je choisis PICO."],
+      "acceptableVariants": ["Le lien peut porter sur le cadre global ou sur l'utilité d'une de ses dimensions."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 2, "maximumSpans": 6, "relationRoles": ["FRAMEWORK_CHOICE", "PROJECT_PROPERTY", "FIT_EXPLANATION"], "contextMismatchObjectsAllowed": true },
+      "contradictionKinds": ["INTERNAL_CONFLICT", "FRAMEWORK_MAPPING_MISMATCH"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Le lien entre les propriétés attribuées au projet A et le choix du cadre est explicite.",
+        "notDemonstrated": "Expliquez en quoi les propriétés citées rendent le cadre choisi utile pour le projet A.",
+        "explicitlyRefuted": "Votre réponse indique explicitement qu'elle ne justifie pas le choix du projet A ; ajoutez le lien demandé.",
+        "contradicted": "Pour le projet A, le lien proposé contredit le choix ou la relation authorée ; révisez l'explication.",
+        "ambiguous": "Pour le projet A, le lien entre le dossier et le choix reste équivoque ; formulez une relation directe."
+      },
+      "remediation": { "learnerAction": "Ajouter une phrase reliant une propriété attribuée au projet A à une dimension du cadre choisi.", "completionEvidence": "Une relation explicite relie le choix, une propriété du projet et son utilité." }
+    },
+    {
+      "key": "project-b-choice-rationale",
+      "type": "JUSTIFICATION",
+      "scenarioKey": "project-b",
+      "ownerCriterionKey": "choice-rationale",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["framework-decision", "dossier-fidelity"],
+      "obligation": "REQUIRED",
+      "explicitRefutationEnabled": true,
+      "dependsOn": { "responsePropertyScenarioKey": "project-b", "whenEmpty": "BLOCKED_BY_DEPENDENCY" },
+      "positiveExamples": ["Comme le projet cherche à comprendre une expérience à partir d'entretiens qualitatifs, SPIDER permet de représenter le phénomène, le design et le type de recherche."],
+      "negativeExamples": ["Le projet porte sur des entretiens. Je choisis SPIDER."],
+      "acceptableVariants": ["Le lien peut porter sur le cadre global ou sur l'utilité d'une de ses dimensions."],
+      "evidenceRule": { "exactResponseSpansRequired": true, "minimumSpans": 2, "maximumSpans": 6, "relationRoles": ["FRAMEWORK_CHOICE", "PROJECT_PROPERTY", "FIT_EXPLANATION"], "contextMismatchObjectsAllowed": true },
+      "contradictionKinds": ["INTERNAL_CONFLICT", "FRAMEWORK_MAPPING_MISMATCH"],
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED", "EXPLICITLY_REFUTED"],
+      "templates": {
+        "supported": "Le lien entre les propriétés attribuées au projet B et le choix du cadre est explicite.",
+        "notDemonstrated": "Expliquez en quoi les propriétés citées rendent le cadre choisi utile pour le projet B.",
+        "explicitlyRefuted": "Votre réponse indique explicitement qu'elle ne justifie pas le choix du projet B ; ajoutez le lien demandé.",
+        "contradicted": "Pour le projet B, le lien proposé contredit le choix ou la relation authorée ; révisez l'explication.",
+        "ambiguous": "Pour le projet B, le lien entre le dossier et le choix reste équivoque ; formulez une relation directe."
+      },
+      "remediation": { "learnerAction": "Ajouter une phrase reliant une propriété attribuée au projet B à une dimension du cadre choisi.", "completionEvidence": "Une relation explicite relie le choix, une propriété du projet et son utilité." }
+    }
+  ],
+  "evidenceGroups": [
+    {
+      "key": "project-a-dossier-facts",
+      "elementKeys": ["project-a-dossier-fact-1", "project-a-dossier-fact-2"],
+      "minimumDistinctClaimsForMastered": 2,
+      "canonicalOrder": "TRUSTED_CLAIM_KEY_THEN_RESPONSE_OFFSET",
+      "deduplicateRefusalAndContradictionFeedback": true
+    },
+    {
+      "key": "project-b-dossier-facts",
+      "elementKeys": ["project-b-dossier-fact-1", "project-b-dossier-fact-2"],
+      "minimumDistinctClaimsForMastered": 2,
+      "canonicalOrder": "TRUSTED_CLAIM_KEY_THEN_RESPONSE_OFFSET",
+      "deduplicateRefusalAndContradictionFeedback": true
+    }
+  ],
+  "resolutionPolicy": {
+    "explicitlyRefutedLevelEffect": "SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_ELEMENTS",
+    "ambiguousResolutionMode": "ENUMERATE_ALL",
+    "materialAmbiguityState": "CLARIFICATION_REQUIRED",
+    "dependencyState": "BLOCKED_BY_DEPENDENCY",
+    "feedbackDeduplication": "OWNER_AND_ROOT_CAUSE"
+  },
+  "publicationPolicy": {
+    "contractMayPublishBeforeCompilation": false,
+    "requiresRayanB": true,
+    "requiresVersionedPedagogyChange": true,
+    "requiresPublishedProgramVersionBinding": true,
+    "requiresV4002C": true
+  }
+}

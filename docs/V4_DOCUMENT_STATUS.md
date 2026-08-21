@@ -34,6 +34,8 @@ chemin de lecture actif.
 | `V4_EVIDENCE_SEMANTIC_ARBITRATION.md` | `ACTIVE_AUTHORITY` | Sémantique successeur, dont `EXPLICITLY_REFUTED`. |
 | `V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md` | `ACTIVE_AUTHORITY` | Création du premier contrat. |
 | `V4_WRITING_PILOT_BRIEF.md` | `APPROVED_INPUT_V4_002B` | `Rayan A` clos : pilote, scénarios, consigne, objectif et exclusions validés ; aucune autorité d'expérience ou de publication. |
+| `V4_WRITING_FRAMEWORK_SELECTION_CONTRACT_DRAFT.md` | `DRAFT_WAIT_RAYAN_B` | Contrat pédagogique v2 proposé : 3 critères, 10 éléments, templates et remédiations ; aucune compilation, publication ou expérience avant arbitrage. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.v1.draft.json` | `DRAFT_WAIT_RAYAN_B` | Projection machine v2 du même contrat ; syntaxe et invariants vérifiés, mais schéma/compilateur v2 non encore implémentés. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques
