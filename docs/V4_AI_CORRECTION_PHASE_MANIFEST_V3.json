@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T15:48:00Z",
+  "updatedAt": "2026-08-21T16:20:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "V4-003B_BLOCKED_WITH_FINDINGS_AWAITING_V4-003A-R1",
+      "status": "V4-003A_R1_DONE_AWAITING_V4-003B-R1",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -178,8 +178,8 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-003A-R1",
-    "currentResponsibleAgent": "AGENT-DEV-LEARNX",
+    "currentTicket": "V4-003B-R1",
+    "currentResponsibleAgent": "AGENT-METHODOLOGIE",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
       "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
@@ -211,12 +211,12 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "BLOCKED_WITH_FINDINGS_CORRECTIVE_ORACLE_READY",
-      "nextTicket": "V4-003A-R1",
-      "responsibleAgent": "AGENT-DEV-LEARNX",
+      "status": "CORRECTIVE_ORACLE_V2_1_READY_FOR_INDEPENDENT_AUDIT",
+      "nextTicket": "V4-003B-R1",
+      "responsibleAgent": "AGENT-METHODOLOGIE",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
-        "BUILD_MECHANICAL_ORACLE",
+        "AUDIT_CORRECTIVE_MECHANICAL_ORACLE_READ_ONLY",
         "RUN_LOCAL_MUTATION_AND_METAMORPHIC_TESTS"
       ],
       "forbidden": [
@@ -290,7 +290,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "SUCCESSOR_COMPILER_V2_DONE_AWAITING_MECHANICAL_CORPUS_AND_AUDIT",
+      "status": "CORRECTIVE_MECHANICAL_ORACLE_V2_1_AWAITING_INDEPENDENT_AUDIT",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -313,7 +313,13 @@
         "mechanicalCaseCount": 19,
         "compilerMutationCaseCount": 7,
         "minimalPairs": "benchmarks/ai-correction/executable-rubric/writing-fr-explicit-refutation-minimal-pairs.v1.json",
-        "status": "MECHANICAL_ORACLE_V2_AUDITED_BLOCKED_WITH_FINDINGS_AWAITING_SUCCESSOR"
+        "correctiveMechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json",
+        "correctiveMechanicalOracleValidator": "src/lib/executable-rubric-mechanical-oracle-v2-1.ts",
+        "correctiveMechanicalOracleReport": "docs/V4_003A_R1_ORACLE_HARDENING_REPORT.md",
+        "correctiveMechanicalOracleFingerprint": "2c35125ea438cf1686ae88b01ecdb28bc304a3c9b9af6d45cff81f37306af3c2",
+        "correctiveMechanicalCaseCount": 33,
+        "correctiveDedicatedTestCount": 12,
+        "status": "MECHANICAL_ORACLE_V2_1_READY_FOR_V4_003B_R1"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",
@@ -833,7 +839,6 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "V4-003A_R1_CORRECTIVE_ORACLE_NOT_BUILT",
       "V4-003B_R1_INDEPENDENT_AUDIT_NOT_COMPLETED",
       "V4-003C_EXPERIMENT_IDENTITY_NOT_FROZEN",
       "V4-003D_FINANCE_NOT_ARBITRATED",
@@ -901,7 +906,7 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Execute V4-003A-R1 offline only: create a successor oracle that resolves every P1 in docs/V4_003B_INDEPENDENT_AUDIT_REPORT.md without changing the approved pedagogical contract; preserve the audited V4-003A package byte-identically and perform no model call.",
+    "Execute V4-003B-R1 read-only: independently audit the corrective v2.1 oracle and return READY_TO_FREEZE or BLOCKED_WITH_FINDINGS without retuning, model call or package mutation.",
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",

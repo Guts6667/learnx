@@ -40,6 +40,8 @@ chemin de lecture actif.
 | `V4_003A_MECHANICAL_ORACLE_REPORT.md` | `CURRENT_STATUS` | Preuve de clôture hors ligne : 19 cas mécaniques, 7 mutations et empreinte canonique ; ouvre seulement l'audit V4-003B. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.json` | `AUDIT_INPUT_V4_003B` | Oracle mécanique par construction ; aucune validation humaine, modèle ou live. |
 | `V4_003B_INDEPENDENT_AUDIT_REPORT.md` | `CURRENT_STATUS` | Verdict `BLOCKED_WITH_FINDINGS` ; autorité des corrections V4-003A-R1, sans autoriser modèle, gel ou activation. |
+| `V4_003A_R1_ORACLE_HARDENING_REPORT.md` | `CURRENT_STATUS` | Clôture hors ligne du correctif v2.1 ; ouvre uniquement V4-003B-R1. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json` | `AUDIT_INPUT_V4_003B_R1` | Oracle mécanique successeur de 33 cas ; non gelé, sans autorité live ni modèle. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques

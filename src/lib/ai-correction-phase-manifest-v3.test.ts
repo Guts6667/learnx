@@ -26,8 +26,8 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('AGENT-DEV-LEARNX'),
-      currentTicket: z.literal('V4-003A-R1'),
+      currentResponsibleAgent: z.literal('AGENT-METHODOLOGIE'),
+      currentTicket: z.literal('V4-003B-R1'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -92,7 +92,9 @@ const activeManifestSchema = z
         status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
       }),
       'V4-003': z.object({
-        status: z.literal('BLOCKED_WITH_FINDINGS_CORRECTIVE_ORACLE_READY'),
+        status: z.literal(
+          'CORRECTIVE_ORACLE_V2_1_READY_FOR_INDEPENDENT_AUDIT',
+        ),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -166,8 +168,22 @@ const activeManifestSchema = z
                   independentAuditVerdict: z.literal(
                     'BLOCKED_WITH_FINDINGS',
                   ),
+                  correctiveDedicatedTestCount: z.literal(12),
+                  correctiveMechanicalCaseCount: z.literal(33),
+                  correctiveMechanicalOracle: z.literal(
+                    'benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json',
+                  ),
+                  correctiveMechanicalOracleFingerprint: z.literal(
+                    '2c35125ea438cf1686ae88b01ecdb28bc304a3c9b9af6d45cff81f37306af3c2',
+                  ),
+                  correctiveMechanicalOracleReport: z.literal(
+                    'docs/V4_003A_R1_ORACLE_HARDENING_REPORT.md',
+                  ),
+                  correctiveMechanicalOracleValidator: z.literal(
+                    'src/lib/executable-rubric-mechanical-oracle-v2-1.ts',
+                  ),
                   status: z.literal(
-                    'MECHANICAL_ORACLE_V2_AUDITED_BLOCKED_WITH_FINDINGS_AWAITING_SUCCESSOR',
+                    'MECHANICAL_ORACLE_V2_1_READY_FOR_V4_003B_R1',
                   ),
                 })
                 .optional(),
@@ -214,7 +230,7 @@ const activeManifestSchema = z
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
         status: z.literal(
-          'V4-003B_BLOCKED_WITH_FINDINGS_AWAITING_V4-003A-R1',
+          'V4-003A_R1_DONE_AWAITING_V4-003B-R1',
         ),
       }),
     }),
@@ -277,7 +293,7 @@ describe('active autonomous correction phase manifest', () => {
       existsSync(
         resolve(
           process.cwd(),
-          nextProtocol?.successorOfflineEvidence?.mechanicalOracle ?? '',
+          nextProtocol?.successorOfflineEvidence?.correctiveMechanicalOracle ?? '',
         ),
       ),
     ).toBe(true);
@@ -285,7 +301,8 @@ describe('active autonomous correction phase manifest', () => {
       existsSync(
         resolve(
           process.cwd(),
-          nextProtocol?.successorOfflineEvidence?.mechanicalOracleReport ?? '',
+          nextProtocol?.successorOfflineEvidence
+            ?.correctiveMechanicalOracleReport ?? '',
         ),
       ),
     ).toBe(true);
@@ -305,8 +322,8 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'AGENT-DEV-LEARNX',
-      currentTicket: 'V4-003A-R1',
+      currentResponsibleAgent: 'AGENT-METHODOLOGIE',
+      currentTicket: 'V4-003B-R1',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });
