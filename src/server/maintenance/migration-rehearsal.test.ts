@@ -4,6 +4,7 @@ import {
   assertSafeReplaySchema,
   buildDigestBridgeSql,
   compareMigrationSnapshots,
+  migrationLedgerTable,
   parseMigrationRehearsalArguments,
   type MigrationSnapshot,
   withDatabaseSchema,
@@ -41,6 +42,14 @@ describe('migration rehearsal', () => {
     expect(sql).toContain('"ci_migration_replay_123_1".digest');
     expect(sql).toContain('public.digest(data, algorithm)');
     expect(() => buildDigestBridgeSql('public')).toThrow();
+  });
+
+  it('reads the replay ledger from the disposable schema explicitly', () => {
+    expect(migrationLedgerTable()).toBe('"_prisma_migrations"');
+    expect(migrationLedgerTable('ci_migration_replay_123_1')).toBe(
+      '"ci_migration_replay_123_1"."_prisma_migrations"',
+    );
+    expect(() => migrationLedgerTable('public')).toThrow();
   });
 
   it('accepts only disposable replay schemas', () => {
