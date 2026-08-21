@@ -94,10 +94,10 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
-Le chemin critique ne possède qu'un ticket actif : `V4-002B`. Son contrat
-Markdown et sa projection JSON v2 sont authorés en DRAFT, les consultations
-méthodologie et développement sont reçues, et seul `Rayan B` reste ouvert.
-`V4-002A` est clos par l'arbitrage `Rayan A` du 21 août 2026. V4-010 peut
+Le chemin critique ne possède qu'un ticket actif : `V4-002C`. `V4-002B` est
+clos par l'arbitrage `Rayan B` du 21 août 2026 : son contrat Markdown et sa
+projection JSON v2 deviennent les entrées approuvées du compilateur, sans être
+publiés. `V4-002A` est clos par l'arbitrage `Rayan A`. V4-010 peut
 recevoir de la maintenance de non-régression sous hard-off, mais aucune nouvelle
 capacité ne doit y être développée avant le contrat et le pipeline promu. Aucune
 de ces actions n'autorise un appel modèle ou un utilisateur.
@@ -110,8 +110,8 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | Maintenant | Agent | Sortie attendue | Puis |
 | --- | --- | --- | --- |
 | `V4-002A — Cadrage de l'activité pilote` | `AGENT-PEDAGOGIE` | **Clos** : brief, scénarios et consigne validés | `V4-002B` |
-| `V4-002B — Contrat atomique successeur` | `AGENT-PEDAGOGIE` | **DRAFT prêt** : 3 critères, 10 éléments, règles, templates, remédiations et consultations | Arbitrage **Rayan B** |
-| `V4-002C — Compilateur v2` | `AGENT-DEV-LEARNX` | Moteur hors ligne et certificat v2 | `V4-003A` |
+| `V4-002B — Contrat atomique successeur` | `AGENT-PEDAGOGIE` | **Clos** : contrat approuvé par `Rayan B`, non publié | `V4-002C` |
+| `V4-002C — Compilateur v2` | `AGENT-DEV-LEARNX` | **Maintenant** : moteur hors ligne, contrôles statiques et certificat v2 | `V4-003A` |
 | `V4-003A/B — Corpus et audit` | `AGENT-METHODOLOGIE` | Oracle mécanique puis verdict indépendant | `V4-003C` |
 | `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | Identité entièrement empreintée | Arbitrage **Rayan C** |
 | `V4-003D — Budget` | `AGENT-FINANCE` | Enveloppe bornée | GO réseau séparé de Rayan |
@@ -307,7 +307,7 @@ jamais à franchir son gate live.
 | Ticket | Statut unique | Niveau de preuve actuel | Reprenable maintenant | Dépendance ou gate de sortie | Responsable de la prochaine action |
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
-| V4-002 | `WAIT_RAYAN_B` | `V4-002A` validé ; contrat successeur Markdown + JSON v2 DRAFT authoré ; consultations méthodologie/développement reçues ; 0 contrat publié. | Oui : arbitrage `Rayan B` uniquement. | Contrat approuvé, puis compilateur v2 et gates autonomes. | `RAYAN`, puis `AGENT-DEV-LEARNX`. |
+| V4-002 | `V4-002C_READY` | `V4-002A` et `V4-002B` validés ; contrat successeur Markdown + JSON v2 approuvé comme entrée, toujours DRAFT ; 0 contrat publié. | Oui : `V4-002C` uniquement. | Compilateur v2, contrôles statiques et gates autonomes. | `AGENT-DEV-LEARNX`. |
 | V4-003 | `EN_ATTENTE_V4-002C` | Baselines historiques closes ; paires minimales sémantiques v2 disponibles. | Non avant le contrat et le compilateur v2. | Corpus mécanique, audit, gel, budget et nouvelle autorisation. | `AGENT-METHODOLOGIE`, puis `AGENT-PROTOCOLE-IA`. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |

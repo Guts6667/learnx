@@ -1,6 +1,6 @@
 # V4-002B — Contrat atomique DRAFT du pilote WRITING
 
-- **Statut** : `DRAFT_WAIT_RAYAN_B`
+- **Statut** : `APPROVED_INPUT_V4_002C`
 - **Ticket** : `V4-002B`
 - **Contrat** : `v4-writing-framework-selection-fr`
 - **Version de travail** : `1.0.0-draft`
@@ -100,8 +100,8 @@ faible.
 | A | `PICO` : population, intervention, comparaison et résultat sont présents | `PECO` si la pratique de rappel est explicitement traitée comme exposition et si comparaison/résultat restent fidèles | `SPIDER` ou `PCC` s'ils remplacent l'objectif comparatif par une exploration ou une expérience absente du dossier |
 | B | `SPIDER` : échantillon, phénomène, design, évaluation et type de recherche sont présents | `PCC` si adultes, expérience de formation et contexte entièrement distant sont explicitement reliés | `PICO` ou `PECO` s'ils inventent intervention, exposition, comparaison ou efficacité |
 
-Ces variantes sont proposées au gate `Rayan B`. Elles doivent être figées avant
-le corpus mécanique et ne pourront pas être élargies après lecture des sorties
+Ces variantes ont été validées au gate `Rayan B`. Elles sont figées avant le
+corpus mécanique et ne pourront pas être élargies après lecture des sorties
 d'un modèle sous une identité gelée.
 
 ## 5. Les trois critères et leurs niveaux
@@ -351,9 +351,9 @@ Un désaccord méthodologique reste présenté à Rayan :
 
 Le DRAFT retient la première option. Aucun modèle n'a participé à cet arbitrage.
 
-## 14. Arbitrage `Rayan B`
+## 14. Arbitrage `Rayan B` — clos
 
-Rayan doit arbitrer explicitement :
+Rayan a validé explicitement le 21 août 2026 :
 
 1. les trois critères et l'agrégation sans compensation entre A et B ;
 2. les dix éléments et leurs propriétaires uniques ;
@@ -366,8 +366,10 @@ Rayan doit arbitrer explicitement :
 7. les niveaux, les templates et les actions de remédiation ;
 8. l'absence de score, de `PASS/FAIL` et de tout effet sur la progression.
 
-Avant ce gate, le contrat reste `DRAFT_WAIT_RAYAN_B`. `V4-002C`, le corpus, le
-gel expérimental et tout appel modèle restent fermés.
+Le gate `Rayan B` est clos. Ce document et sa projection JSON deviennent les
+entrées pédagogiques approuvées de `V4-002C`, sans devenir `PUBLISHED` ni
+`FULLY_COMPILABLE`. Le corpus, le gel expérimental et tout appel modèle restent
+fermés.
 
 ## 15. Actions interdites
 
@@ -377,4 +379,5 @@ gel expérimental et tout appel modèle restent fermés.
 - compensation d'un scénario par l'autre ;
 - feedback libre, score modèle ou validation de maîtrise ;
 - appel réseau, panel, holdout, tarification, débit ou activation de V4-010 ;
-- démarrage de `V4-002C` avant `Rayan B`.
+- modification des arbitrages `Rayan B` par `V4-002C` sans nouveau gate
+  pédagogique explicite.

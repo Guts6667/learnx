@@ -10,6 +10,12 @@
   "compilationTarget": "FULLY_COMPILABLE",
   "compilationStatus": "NOT_COMPILED",
   "progressionAuthority": "NONE",
+  "approval": {
+    "gate": "Rayan B",
+    "status": "APPROVED_INPUT_V4_002C",
+    "approvedAt": "2026-08-21",
+    "scope": "Trois critères, dix éléments, faits libres distincts, matrice A=PICO/PECO et B=SPIDER/PCC, EXPLICITLY_REFUTED, niveaux, templates et remédiations, sans score ni progression."
+  },
   "activityBinding": {
     "programKey": "fondamentaux-psychologie",
     "specificationPath": "content/fondamentaux-psychologie/specs/PEDAGOGY_SPEC_067.json",
@@ -433,7 +439,7 @@
   },
   "publicationPolicy": {
     "contractMayPublishBeforeCompilation": false,
-    "requiresRayanB": true,
+    "requiresRayanB": false,
     "requiresVersionedPedagogyChange": true,
     "requiresPublishedProgramVersionBinding": true,
     "requiresV4002C": true
