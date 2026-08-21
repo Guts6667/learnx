@@ -1,7 +1,7 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.2`
+- **Version** : `1.0.3`
 - **Date** : 21 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
@@ -45,6 +45,8 @@ chemin de lecture actif.
 | `V4_003A_R1_ORACLE_HARDENING_REPORT.md` | `CURRENT_STATUS` | Clôture hors ligne du correctif v2.1 ; ouvre uniquement V4-003B-R1. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json` | `AUDIT_INPUT_V4_003B_R1` | Oracle mécanique successeur de 33 cas ; non gelé, sans autorité live ni modèle. |
 | `V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md` | `CURRENT_STATUS` | Verdict `READY_TO_FREEZE` ; ouvre seulement V4-003C hors ligne, sans réseau ni budget. |
+| `V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | `CURRENT_STATUS` | Dossier exact gelé ; attend Rayan C et n'autorise aucun appel ni budget. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json` | `FROZEN_INPUT_AWAITING_OWNER` | Identité, corpus, mapping, runner, télémétrie et stop-policy liés ; réseau et holdout interdits. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques

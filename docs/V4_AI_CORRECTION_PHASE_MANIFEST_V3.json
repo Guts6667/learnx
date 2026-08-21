@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T16:45:00Z",
+  "updatedAt": "2026-08-21T17:04:28Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "V4-003B_R1_READY_TO_FREEZE_AWAITING_V4-003C",
+      "status": "V4-003C_FROZEN_AWAITING_RAYAN_C",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -179,7 +179,7 @@
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
     "currentTicket": "V4-003C",
-    "currentResponsibleAgent": "AGENT-PROTOCOLE-IA",
+    "currentResponsibleAgent": "RAYAN",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
       "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
@@ -211,13 +211,12 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "INDEPENDENT_AUDIT_READY_TO_FREEZE",
+      "status": "EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C",
       "nextTicket": "V4-003C",
-      "responsibleAgent": "AGENT-PROTOCOLE-IA",
+      "responsibleAgent": "RAYAN",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
-        "FREEZE_EXACT_EXPERIMENT_IDENTITY_OFFLINE",
-        "PIN_MODEL_ROUTE_PROFILE_CORPUS_MAPPING_RUNNER_TELEMETRY_AND_STOP_POLICY"
+        "OWNER_ARBITRATION_OF_FROZEN_DOSSIER_ONLY"
       ],
       "forbidden": [
         "MODEL_CALL",
@@ -291,7 +290,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "CORRECTIVE_MECHANICAL_ORACLE_V2_1_AWAITING_INDEPENDENT_AUDIT",
+      "status": "EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -322,7 +321,13 @@
         "correctiveMechanicalOracleFingerprint": "2c35125ea438cf1686ae88b01ecdb28bc304a3c9b9af6d45cff81f37306af3c2",
         "correctiveMechanicalCaseCount": 33,
         "correctiveDedicatedTestCount": 12,
-        "status": "MECHANICAL_ORACLE_V2_1_READY_TO_FREEZE"
+        "frozenExperimentDossier": {
+          "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json",
+          "identityFingerprint": "cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31",
+          "status": "FROZEN_OFFLINE_AWAITING_RAYAN_C",
+          "report": "docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md"
+        },
+        "status": "EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",
@@ -842,7 +847,7 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "V4-003C_EXPERIMENT_IDENTITY_NOT_FROZEN",
+      "V4-003C_RAYAN_C_NOT_GRANTED",
       "V4-003D_FINANCE_NOT_ARBITRATED",
       "NEW_STAGE_ONE_NOT_AUTHORIZED_OR_EXECUTED"
     ]
@@ -908,7 +913,7 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Execute V4-003C offline: freeze and fingerprint the exact model, route, request profile, corpus, mapping, runner, telemetry and stop-policy dossier for Rayan C without model call, budget or holdout access.",
+    "Rayan C arbitrates the exact frozen V4-003C dossier. Approval opens only V4-003D Finance; it does not authorize network, runner execution, panel, holdout or live activation.",
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",

@@ -32,7 +32,7 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(read(path).slice(0, 700)).toContain('CLOSED_REQUEST');
   });
 
-  it('opens only the offline identity freeze after the independent audit', () => {
+  it('routes the frozen identity dossier to Rayan C without opening execution', () => {
     const index = read('docs/INDEX.md');
     const backlog = read('BACKLOG_V4.md');
     const roadmap = read('docs/V4_ROADMAP.md');
@@ -54,12 +54,13 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_003B_INDEPENDENT_AUDIT_REPORT.md');
     expect(index).toContain('V4_003A_R1_ORACLE_HARDENING_REPORT.md');
     expect(index).toContain('V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md');
+    expect(index).toContain('V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md');
     expect(roadmap).toContain(
       "Le chemin critique ne possède qu'un ticket actif",
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
-        currentResponsibleAgent: 'AGENT-PROTOCOLE-IA',
+        currentResponsibleAgent: 'RAYAN',
         currentTicket: 'V4-003C',
         modelCallsAllowed: false,
       }),

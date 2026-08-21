@@ -115,12 +115,12 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
-Le chemin critique ne possède qu'un ticket actif : `V4-003C`. L'audit
-indépendant V4-003B-R1 rend `READY_TO_FREEZE` sur l'oracle v2.1 : 0 finding
-P0/P1, cinq P1 historiques fermés et un P2 non bloquant déclaré. Le paquet et
-les artefacts v2 historiques sont byte-identiques. V4-003C peut uniquement
-figer hors ligne l'identité expérimentale exacte ; aucun appel modèle,
-publication ni branchement runtime n'est autorisé. `V4-002C`
+Le chemin critique ne possède qu'un ticket actif : `V4-003C`. Son dossier est
+désormais gelé hors ligne et attend l'arbitrage **Rayan C**. Il lie Sonnet 5,
+la route Anthropic via OpenRouter, le profil sans raisonnement, quatre cas, le
+panel conditionnel 10 × 2, le mapping successeur, le contrat de runner, la
+télémétrie et la stop-policy. Aucun appel modèle, budget, publication ni
+branchement runtime n'est autorisé. `V4-002C`
 est clos hors ligne : le schéma, le compilateur, le certificat v2 et leurs tests
 sont disponibles. `V4-002B` reste
 clos par l'arbitrage `Rayan B` du 21 août 2026 et `V4-002A` par `Rayan A`.
@@ -143,7 +143,7 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | `V4-003B — Audit autonome` | `AGENT-METHODOLOGIE` | **Clos** : `BLOCKED_WITH_FINDINGS`, rapport indépendant disponible | `V4-003A-R1` |
 | `V4-003A-R1 — Durcissement oracle` | `AGENT-DEV-LEARNX` | **Clos hors ligne** : oracle v2.1, 33 cas, 7 mutations et contrôles fail-closed | `V4-003B-R1` |
 | `V4-003B-R1 — Nouvel audit autonome` | `AGENT-METHODOLOGIE` | **Clos** : `READY_TO_FREEZE`, 0 P0/P1 et P2 non bloquant consigné | `V4-003C` |
-| `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | **Maintenant** : empreinter hors ligne le dossier exact, sans appel | Arbitrage **Rayan C** |
+| `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | **En attente Rayan C** : dossier exact gelé et empreinté, sans appel | Arbitrage **Rayan C** |
 | `V4-003D — Budget` | `AGENT-FINANCE` | Enveloppe bornée | GO réseau séparé de Rayan |
 | `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | Verdict et coûts réconciliés | Analyse `V4-003E` |
 
@@ -338,7 +338,7 @@ jamais à franchir son gate live.
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
 | V4-002 | `V4-002C_DONE_OFFLINE` | `V4-002A/B` validés ; compilateur et certificat v2 validés hors ligne ; contrat toujours DRAFT, 0 contrat publié. | Non : ticket clos. | Publication interdite avant corpus, audit et gates ultérieurs. | `AGENT-METHODOLOGIE` reprend via V4-003A. |
-| V4-003 | `V4-003C_READY_OFFLINE` | V4-003B-R1 rend `READY_TO_FREEZE` : 0 P0/P1, 50/50 tests ciblés verts, artefacts historiques préservés et aucun modèle appelé. | Oui : `V4-003C` uniquement, gel documentaire et technique hors ligne. | Dossier entièrement empreinté puis arbitrage Rayan C ; budget et réseau restent fermés. | `AGENT-PROTOCOLE-IA`. |
+| V4-003 | `V4-003C_AWAITING_RAYAN_C` | Dossier Sonnet 5 successeur gelé : identité, corpus, mapping, runner, télémétrie et stop-policy empreintés ; aucun modèle appelé. | Non avant arbitrage : le dossier est présenté au Propriétaire. | Rayan C approuve le dossier exact ; budget et réseau restent fermés. | `RAYAN`, puis `AGENT-FINANCE` via V4-003D. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
 | V4-006 | `LIVRÉ_INACTIF` | Ledger et réservation fondés. | Non. | Calibration après pilote. | Développement + Finance. |

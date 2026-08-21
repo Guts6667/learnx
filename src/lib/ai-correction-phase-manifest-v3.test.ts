@@ -26,7 +26,7 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('AGENT-PROTOCOLE-IA'),
+      currentResponsibleAgent: z.literal('RAYAN'),
       currentTicket: z.literal('V4-003C'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
@@ -92,7 +92,7 @@ const activeManifestSchema = z
         status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
       }),
       'V4-003': z.object({
-        status: z.literal('INDEPENDENT_AUDIT_READY_TO_FREEZE'),
+        status: z.literal('EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C'),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -102,6 +102,36 @@ const activeManifestSchema = z
       z
         .object({
           key: z.string(),
+          successorOfflineEvidence: z
+            .object({
+              correctiveIndependentAuditReport: z.literal(
+                'docs/V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md',
+              ),
+              correctiveIndependentAuditVerdict:
+                z.literal('READY_TO_FREEZE'),
+              correctiveMechanicalOracle: z.literal(
+                'benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json',
+              ),
+              correctiveMechanicalOracleReport: z.literal(
+                'docs/V4_003A_R1_ORACLE_HARDENING_REPORT.md',
+              ),
+              frozenExperimentDossier: z.object({
+                identityFingerprint: z.literal(
+                  'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
+                ),
+                path: z.literal(
+                  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
+                ),
+                report: z.literal(
+                  'docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md',
+                ),
+                status: z.literal('FROZEN_OFFLINE_AWAITING_RAYAN_C'),
+              }),
+              status: z.literal(
+                'EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C',
+              ),
+            })
+            .optional(),
           nextProtocol: z
             .object({
               campaignFreezeSet: z.object({
@@ -185,8 +215,20 @@ const activeManifestSchema = z
                   ),
                   correctiveIndependentAuditVerdict:
                     z.literal('READY_TO_FREEZE'),
+                  frozenExperimentDossier: z.object({
+                    identityFingerprint: z.literal(
+                      'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
+                    ),
+                    path: z.literal(
+                      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
+                    ),
+                    report: z.literal(
+                      'docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md',
+                    ),
+                    status: z.literal('FROZEN_OFFLINE_AWAITING_RAYAN_C'),
+                  }),
                   status: z.literal(
-                    'MECHANICAL_ORACLE_V2_1_READY_TO_FREEZE',
+                    'EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C',
                   ),
                 })
                 .optional(),
@@ -232,7 +274,7 @@ const activeManifestSchema = z
         mvpLevelEffect: z.literal(
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
-        status: z.literal('V4-003B_R1_READY_TO_FREEZE_AWAITING_V4-003C'),
+        status: z.literal('V4-003C_FROZEN_AWAITING_RAYAN_C'),
       }),
     }),
   })
@@ -278,6 +320,7 @@ describe('active autonomous correction phase manifest', () => {
       SONNET_5_REASONING_ATTESTATION_SHA256,
     );
     const nextProtocol = promotionBlocker?.nextProtocol;
+    const successor = promotionBlocker?.successorOfflineEvidence;
     expect(sha256(read(EVIDENCE_ASSIST_FREEZE_SET_MANIFEST_PATH))).toBe(
       nextProtocol?.campaignFreezeSet.manifestSha256,
     );
@@ -294,7 +337,7 @@ describe('active autonomous correction phase manifest', () => {
       existsSync(
         resolve(
           process.cwd(),
-          nextProtocol?.successorOfflineEvidence?.correctiveMechanicalOracle ?? '',
+          successor?.correctiveMechanicalOracle ?? '',
         ),
       ),
     ).toBe(true);
@@ -302,8 +345,7 @@ describe('active autonomous correction phase manifest', () => {
       existsSync(
         resolve(
           process.cwd(),
-          nextProtocol?.successorOfflineEvidence
-            ?.correctiveMechanicalOracleReport ?? '',
+          successor?.correctiveMechanicalOracleReport ?? '',
         ),
       ),
     ).toBe(true);
@@ -311,9 +353,18 @@ describe('active autonomous correction phase manifest', () => {
       existsSync(
         resolve(
           process.cwd(),
-          nextProtocol?.successorOfflineEvidence
-            ?.correctiveIndependentAuditReport ?? '',
+          successor?.correctiveIndependentAuditReport ?? '',
         ),
+      ),
+    ).toBe(true);
+    expect(
+      existsSync(
+        resolve(process.cwd(), successor?.frozenExperimentDossier.path ?? ''),
+      ),
+    ).toBe(true);
+    expect(
+      existsSync(
+        resolve(process.cwd(), successor?.frozenExperimentDossier.report ?? ''),
       ),
     ).toBe(true);
   });
@@ -332,7 +383,7 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'AGENT-PROTOCOLE-IA',
+      currentResponsibleAgent: 'RAYAN',
       currentTicket: 'V4-003C',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
