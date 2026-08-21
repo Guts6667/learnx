@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research — LearnX</title>
+    <meta
+      name="description"
+      content="LearnX's public journal of research hypotheses, protocols, results, limitations and decisions."
+    />
+    <link rel="canonical" href="/research/en.html" />
+    <link rel="alternate" hreflang="fr" href="/research/" />
+    <link rel="alternate" hreflang="en" href="/research/en.html" />
+    <link rel="alternate" hreflang="x-default" href="/research/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Research — LearnX" />
+    <meta
+      property="og:description"
+      content="LearnX's public journal of research hypotheses, protocols, results, limitations and decisions."
+    />
+    <link rel="stylesheet" href="/research/journal.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#publications">Skip to publications</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Utility navigation">
+        <a href="/">Product</a>
+        <a href="/login">Sign in</a>
+        <a href="/research/" lang="fr" hreflang="fr">FR</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero shell" aria-labelledby="research-title">
+        <p class="eyebrow">Public journal</p>
+        <h1 id="research-title">Research</h1>
+        <p class="lead">
+          LearnX publishes its hypotheses, protocols, results, limitations and
+          decisions here. Every article remains accessible when later research
+          expands or supersedes it.
+        </p>
+        <p class="method-note">
+          <strong>Editorial commitment.</strong> A dated publication is never
+          silently rewritten. Any substantial change creates a new version;
+          every correction is recorded as an erratum.
+        </p>
+      </section>
+      <section class="controls shell" aria-labelledby="filter-title">
+        <fieldset class="filters">
+          <legend id="filter-title">Filter the timeline</legend>
+          <button
+            class="filter"
+            type="button"
+            data-filter="all"
+            aria-pressed="true"
+          >
+            All
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="exploration"
+            aria-pressed="false"
+          >
+            Explorations
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="protocol"
+            aria-pressed="false"
+          >
+            Protocols
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="result"
+            aria-pressed="false"
+          >
+            Results
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="decision"
+            aria-pressed="false"
+          >
+            Decisions
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="erratum"
+            aria-pressed="false"
+          >
+            Errata
+          </button>
+        </fieldset>
+      </section>
+      <section
+        class="journal shell"
+        id="publications"
+        aria-labelledby="timeline-title"
+      >
+        <div class="year">
+          <h2 id="timeline-title">2026</h2>
+          <div class="timeline">
+            <article class="publication" data-publication-type="exploration">
+              <time datetime="2026-08-12">12 August 2026</time>
+              <div>
+                <div class="meta">
+                  <span>Exploration</span><span>v1</span
+                  ><span>Experimental research</span><span>EN · FR</span>
+                </div>
+                <h3>
+                  Building useful assessment without manufacturing certainty.
+                </h3>
+                <p>
+                  A documented account of model trials, their limitations, and
+                  the move towards an engine where AI only researches evidence.
+                </p>
+                <a
+                  class="publication-link"
+                  href="/research/ai-correction/en.html"
+                  >Read the publication</a
+                >
+              </div>
+            </article>
+          </div>
+        </div>
+        <p class="empty" role="status" hidden>
+          No publication matches this filter.
+          <button class="filter" type="button" data-filter="all">
+            Clear filter
+          </button>
+        </p>
+      </section>
+    </main>
+    <footer class="site-footer shell">
+      <span>© 2026 LearnX</span>
+      <nav aria-label="Footer">
+        <a href="/research/en.html">Research</a><a href="/">Product</a
+        ><a href="/login">Sign in</a>
+      </nav>
+    </footer>
+    <script>
+      const publications = [
+        ...document.querySelectorAll('[data-publication-type]'),
+      ];
+      const buttons = [...document.querySelectorAll('[data-filter]')];
+      const empty = document.querySelector('.empty');
+      for (const button of buttons)
+        button.addEventListener('click', () => {
+          const filter = button.dataset.filter;
+          for (const control of buttons)
+            control.setAttribute(
+              'aria-pressed',
+              String(
+                control === button ||
+                  (filter === 'all' && control.dataset.filter === 'all'),
+              ),
+            );
+          let visible = 0;
+          for (const publication of publications) {
+            const show =
+              filter === 'all' ||
+              publication.dataset.publicationType === filter;
+            publication.hidden = !show;
+            if (show) visible += 1;
+          }
+          empty.hidden = visible > 0;
+        });
+    </script>
+  </body>
+</html>

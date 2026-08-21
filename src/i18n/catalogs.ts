@@ -60,7 +60,8 @@ export const frenchMessages = {
     'Comment LearnX évalue ses corrections assistées par IA',
   'landing.research.description':
     'Nous documentons nos essais, leurs limites et les critères nécessaires avant toute mise en production. Ce rapport intermédiaire repose sur des cas synthétiques ; aucun pipeline n’est encore retenu.',
-  'landing.research.action': 'Lire le rapport de recherche',
+  'landing.research.action': 'Explorer le journal de recherche',
+  'landing.footer.research': 'Recherche',
   'landing.early.eyebrow': 'Accès anticipé',
   'landing.early.title': 'Participer aux premiers retours terrain',
   'landing.early.description':
@@ -264,8 +265,7 @@ export const frenchMessages = {
   'curriculum.programRestart.title': 'Recommencer ce programme',
   'curriculum.programRestart.description':
     'La progression courante repartira du début. Les notes, tentatives et soumissions resteront conservées.',
-  'curriculum.programRestart.confirmTitle':
-    'Confirmer la reprise du programme',
+  'curriculum.programRestart.confirmTitle': 'Confirmer la reprise du programme',
   'curriculum.programRestart.resetSummary':
     'Seront remis à zéro : {stages} étapes, {modules} modules, {lessons} leçons, {tasks} tâches, {resources} ressources, {concepts} notions, {quizzes} quiz réussis et {exercises} exercices.',
   'curriculum.programRestart.preservedSummary':
@@ -951,11 +951,11 @@ export const englishMessages = {
   'landing.roadmap.description':
     'AI-assisted corrections are planned for V4 and guided journey creation for V5. They are not available yet.',
   'landing.research.eyebrow': 'Research & transparency',
-  'landing.research.title':
-    'How LearnX evaluates its AI-assisted assessments',
+  'landing.research.title': 'How LearnX evaluates its AI-assisted assessments',
   'landing.research.description':
     'We document our trials, their limitations and the criteria required before production. This interim report is based on synthetic cases; no pipeline has been selected yet.',
-  'landing.research.action': 'Read the research report',
+  'landing.research.action': 'Explore the research journal',
+  'landing.footer.research': 'Research',
   'landing.early.eyebrow': 'Early access',
   'landing.early.title': 'Help shape the first real-world uses',
   'landing.early.description':

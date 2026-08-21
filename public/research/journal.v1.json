@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "publications": [
+    {
+      "id": "ai-correction-2026-08-12-v1",
+      "series": "ai-correction",
+      "type": "exploration",
+      "experimental": true,
+      "publishedAt": "2026-08-12T00:00:00Z",
+      "updatedAt": "2026-08-20T00:00:00Z",
+      "version": 1,
+      "supersedes": null,
+      "supersededBy": null,
+      "translations": {
+        "fr": {
+          "title": "Construire une correction utile, sans fabriquer de certitude.",
+          "description": "État documenté des essais de modèles, de leurs limites et du passage vers un moteur où l’IA recherche uniquement des preuves.",
+          "canonicalUrl": "/research/ai-correction/",
+          "alternateLocaleUrl": "/research/ai-correction/en.html"
+        },
+        "en": {
+          "title": "Building useful assessment without manufacturing certainty.",
+          "description": "A documented account of model trials, their limitations, and the move towards an engine where AI only researches evidence.",
+          "canonicalUrl": "/research/ai-correction/en.html",
+          "alternateLocaleUrl": "/research/ai-correction/"
+        }
+      },
+      "errata": []
+    }
+  ]
+}

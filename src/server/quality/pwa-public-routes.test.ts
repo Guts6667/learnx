@@ -36,9 +36,7 @@ describe('public PWA route freshness', () => {
     expect(navigationPolicy).toContain(
       '/^\\/(?:login|request-access|verify-email|activate|interest)(?:\\/|$)/',
     );
-    expect(navigationPolicy).toContain(
-      '/^\\/research\\/ai-correction(?:\\/|$)/',
-    );
+    expect(navigationPolicy).toContain('/^\\/research(?:\\/|$)/');
     expect(cacheCleanup).toContain("'learnx-pedagogy-v1'");
     expect(cacheCleanup).toContain("'learnx-public-shell-v0'");
   });

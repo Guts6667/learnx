@@ -16,13 +16,16 @@ afterEach(() => {
 
 describe('LandingPage', () => {
   it('opens the learner application instead of the landing page in standalone mode', async () => {
-    vi.stubGlobal('matchMedia', vi.fn().mockImplementation(
-      (query) =>
-        ({
-          matches: query === '(display-mode: standalone)',
-          media: query,
-        }) as MediaQueryList,
-    ));
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn().mockImplementation(
+        (query) =>
+          ({
+            matches: query === '(display-mode: standalone)',
+            media: query,
+          }) as MediaQueryList,
+      ),
+    );
 
     const { container } = render(
       <I18nProvider locale="fr">
@@ -66,19 +69,20 @@ describe('LandingPage', () => {
     expect(
       screen.getByRole('heading', { name: 'Formuler un objectif de sprint' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/The Scrum Guide 2020/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/The Scrum Guide 2020/)).toBeInTheDocument();
     expect(
       screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
     ).toBeInTheDocument();
     const researchLink = screen.getByRole('link', {
-      name: 'Lire le rapport de recherche',
+      name: 'Explorer le journal de recherche',
     });
-    expect(researchLink).toHaveAttribute('href', '/research/ai-correction/');
-    expect(researchLink).toHaveAttribute('target', '_blank');
-    expect(researchLink).toHaveAttribute('rel', 'noopener');
+    expect(researchLink).toHaveAttribute('href', '/research/');
+    expect(researchLink).not.toHaveAttribute('target');
     expect(researchLink).toHaveClass('ui-action--md');
+    expect(screen.getByRole('link', { name: 'Recherche' })).toHaveAttribute(
+      'href',
+      '/research/',
+    );
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
   });
 
@@ -103,14 +107,14 @@ describe('LandingPage', () => {
       screen.queryByText(/Piloter|Cadrer|Formuler|objectif unique/),
     ).not.toBeInTheDocument();
     const researchLink = screen.getByRole('link', {
-      name: 'Read the research report',
+      name: 'Explore the research journal',
     });
-    expect(researchLink).toHaveAttribute(
+    expect(researchLink).toHaveAttribute('href', '/research/en.html');
+    expect(researchLink).not.toHaveAttribute('target');
+    expect(screen.getByRole('link', { name: 'Research' })).toHaveAttribute(
       'href',
-      '/research/ai-correction/en.html',
+      '/research/en.html',
     );
-    expect(researchLink).toHaveAttribute('target', '_blank');
-    expect(researchLink).toHaveAttribute('rel', 'noopener');
   });
 
   it('submits updates without creating an access request', async () => {
