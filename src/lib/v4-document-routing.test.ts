@@ -64,4 +64,33 @@ describe('V4 document routing and assigned execution queue', () => {
       }),
     );
   });
+
+  it('routes Totem through one validated design authority without opening implementation', () => {
+    const index = read('docs/INDEX.md');
+    const backlog = read('BACKLOG_V4.md');
+    const roadmap = read('docs/V4_ROADMAP.md');
+    const status = read('docs/V4_DOCUMENT_STATUS.md');
+    const totem = read('docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md');
+
+    expect(index).toContain('V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md');
+    expect(status).toContain('ACTIVE_DESIGN_AUTHORITY');
+    expect(totem).toContain('DESIGN_VALIDATED');
+    expect(totem).toContain('NOT_STARTED_NOT_AUTHORIZED_BY_THIS_DOCUMENT');
+    expect(totem).toContain('320, 390, 720, 1440 et 1920');
+    expect(totem).toContain('Aucun prix, capacité, allocation');
+
+    for (const ticket of [
+      'V4-016D',
+      'V4-016E',
+      'V4-016F',
+      'V4-016H',
+      'V4-016I',
+    ]) {
+      expect(backlog).toContain(`## ${ticket}`);
+      expect(roadmap).toContain(ticket);
+    }
+
+    expect(roadmap).toContain('V4-003B-R1');
+    expect(roadmap).toContain('DESIGN_VALIDATED_WAIT_GO');
+  });
 });

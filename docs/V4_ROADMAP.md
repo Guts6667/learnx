@@ -15,6 +15,9 @@ gate le ferme.
 - `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json` reste l'autorité historique
   épinglée par les campagnes closes.
 - `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` reste l'historique append-only.
+- `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` est l'autorité du langage
+  visuel Totem et de sa file ; son statut `DESIGN_VALIDATED` n'autorise aucun
+  code applicatif à lui seul.
 - `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` régit l'identité historique close
   du protocole à passages déterministes ;
   `docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md` régit le successeur hors ligne.
@@ -25,6 +28,24 @@ gate le ferme.
   être corrigé dans le même ticket documentaire.
 
 Dernière consolidation : 21 août 2026.
+
+## File design Totem — validée, non lancée
+
+La direction Totem est validée et le backlog est prêt. Elle ne change pas le
+point de reprise IA : `V4-003B-R1` reste l'unique ticket du chemin critique.
+La file design attend un GO d'implémentation distinct par lot.
+
+| Ordre | Lot | Statut | Dépendance principale |
+| --- | --- | --- | --- |
+| 1 | V4-016D Fondations | `DESIGN_VALIDATED_WAIT_GO` | Réaudit baseline |
+| 2 | V4-016E Primitives | `DESIGN_VALIDATED_WAIT_GO` | V4-016D |
+| 3–7 | V4-016C/F/A/I/B Surfaces | `DESIGN_VALIDATED_WAIT_GO` | V4-016D/E et contrats de chaque surface |
+| 8 | V4-016G Correction/finance | `DESIGN_VALIDATED_CONTRACTS_PENDING` | V4-007/010/012/014 |
+| 9 | V4-016 Annonce V5 | `DESIGN_VALIDATED_WAIT_GO` | V4-016D/E et promesse validée |
+| 10 | V4-016H QA/rollout | `WAIT_PREVIOUS_LOTS` | Tous les lots activés |
+
+Totem supersède Atlas pour palette, typographie et nouveaux composants. Le
+contrat émotionnel Atlas et tous les contrats produit restent actifs.
 
 ## Plans d'état à ne pas confondre
 
@@ -333,11 +354,16 @@ jamais à franchir son gate live.
 | V4-013 | `BLOQUÉ` | Sandbox marchand non activé. | Non. | Qualité prouvée + validations externes. | Développement + conseil externe. |
 | V4-014 | `BLOQUÉ` | Aucun SKU ni checkout actif. | Non. | V4-013 + prix V4-018 validés. | Développement + Finance. |
 | V4-015 | `BLOQUÉ` | Aucune clôture financière live. | Non. | V4-012 + V4-014 + règles externes. | Finance & Pricing. |
-| V4-016 | `ACTIF_HORS_LIGNE` | Baseline d'annonce à réauditer. | Oui : audit de promesse uniquement. | Pas de clôture release tant que le gate externe V3.5 reste ouvert. | Produit & pédagogie. |
-| V4-016A | `ACTIF_HORS_LIGNE` | Landing V3.5 disponible, aucune promesse IA/prix activable. | Oui : audit de contenu sans publier de capacité. | V4-010 live, prix V4-018 et gate externe V3.5. | Direction artistique + Produit + Finance. |
-| V4-016B | `BLOQUÉ` | Nouvelles surfaces V4 non stabilisées. | Non. | V4-010/012/014/016A/016G stabilisés. | Direction artistique. |
-| V4-016C | `ACTIF_HORS_LIGNE` | Besoin multi-programmes documenté, runtime à réauditer. | Oui : réaudit API/UX sans effet IA. | Revue desktop V4-016B et gate release externe pour la clôture. | Produit & pédagogie + Développement. |
-| V4-016G | `BLOQUÉ` | Direction Atlas validée, contrats runtime absents. | Non hors spécification. | V4-007/010/011/014 disponibles. | Direction artistique. |
+| V4-016 | `DESIGN_VALIDATED_WAIT_GO` | Annonce V5 Totem validée ; aucune capacité V5 disponible. | Non hors audit de promesse. | V4-016D/E, promesse V5 et GO d'implémentation. | Produit & pédagogie. |
+| V4-016A | `DESIGN_VALIDATED_WAIT_GO` | Landing/compte Totem validés ; aucune promesse IA/prix activable. | Non hors audit de contenu. | V4-016D/E, contrats publics et GO d'implémentation. | Direction artistique + Produit + Finance. |
+| V4-016B | `DESIGN_VALIDATED_WAIT_GO` | Shell desktop/admin Totem validé. | Non. | V4-016D/E, contrats admin et GO d'implémentation. | Direction artistique. |
+| V4-016C | `DESIGN_VALIDATED_WAIT_GO` | Produit principal Totem validé ; runtime multi-programmes à réauditer. | Non hors réaudit. | V4-016D/E et GO d'implémentation. | Produit & pédagogie + Développement. |
+| V4-016D | `DESIGN_VALIDATED_WAIT_GO` | Fondations Totem validées, non codées. | Non. | Réaudit baseline et GO d'implémentation. | Direction artistique + Développement. |
+| V4-016E | `DESIGN_VALIDATED_WAIT_GO` | Catalogue de primitives défini, non codé. | Non. | V4-016D et GO d'implémentation. | Direction artistique + Développement. |
+| V4-016F | `DESIGN_VALIDATED_WAIT_GO` | Flow d'apprentissage Totem validé, non codé. | Non. | V4-016D/E, contrats pédagogiques et GO. | Produit & pédagogie + Direction artistique. |
+| V4-016G | `DESIGN_VALIDATED_CONTRACTS_PENDING` | Surfaces Totem validées, contrats runtime absents. | Non. | V4-007/010/011/014 et V4-016D/E disponibles. | Direction artistique. |
+| V4-016H | `WAIT_PREVIOUS_TOTEM_LOTS` | Matrice QA définie. | Non. | Lots Totem effectivement implémentés. | Développement + Direction artistique. |
+| V4-016I | `DESIGN_VALIDATED_WAIT_GO` | Recherche et surfaces publiques Totem validées. | Non. | V4-016D/E, contenu réel et GO d'implémentation. | Direction artistique + Recherche. |
 | V4-017 | `BLOQUÉ` | Fondations sécurité présentes, audit final non clos. | Non comme ticket complet. | V4-013 + pipeline/pilote bornés. | Développement. |
 | V4-018 | `BLOQUÉ` | Aucun coût de correction produit promu. | Non. | V4-003/010/012/014/017 ; comparaison secondaire ≥3 candidats. | Finance & Pricing. |
 | V4-018A | `BLOQUÉ` | Cohortes non ouvertes. | Non. | V4-018 + budgets approuvés. | Finance & Pricing. |
@@ -394,7 +420,7 @@ abstention, pas une validation humaine fictive.
 | Rubrique, oracles, gates et verdict expérimental | Produit & pédagogie | Développement, Finance pour tout appel |
 | Code, migrations, runner, idempotence et sécurité | Développement | Produit & pédagogie avant clôture |
 | Budget R&D, coût, plafonds et activation économique | Finance & Pricing | Propriétaire |
-| États et écrans Atlas | Direction artistique | Produit & pédagogie, Finance si montants |
+| États et écrans Totem | Direction artistique | Produit & pédagogie, Finance si montants |
 | Appel facturable, paiement et release | Propriétaire | Tous les avis exigés par le ticket |
 
 ## Prochaines décisions du propriétaire

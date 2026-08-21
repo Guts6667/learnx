@@ -2,7 +2,7 @@
 
 ## Statut et autorité
 
-- Version : 1.10.3
+- Version : 1.10.4
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
 - Dernière consolidation : 21 août 2026 — gate evidence-assist clos après deux
   appels réconciliés ; arbitrage `EXPLICITLY_REFUTED` approuvé pour le
@@ -13,7 +13,7 @@
   post-promotion ne sont pas attestés comme achevés.
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
-  Atlas sans vert validée le 10 août 2026
+  **Totem modernisé** validée le 21 août 2026
 
 La vue de pilotage courante est `docs/V4_ROADMAP.md`. Elle constitue le registre
 humain unique de l'état, des tickets reprenables, des prochaines actions et des
@@ -27,13 +27,12 @@ et inchangée. Son successeur hors ligne est régi par
 `docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md` et son authoring par
 `docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md`. La carte de domaine
 `docs/LEARNX_DOMAIN_KNOWLEDGE.md` reste le point d'entrée explicatif. La
-spécification composite locale
-reste une baseline historique utile pour les garanties de coût, d'idempotence
-et de réconciliation ; elle n'est plus une autorité active. Les deux références
-Atlas validées pour les crédits et la correction sont :
-
-- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
-- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html`.
+spécification composite locale reste une baseline historique utile pour les
+garanties de coût, d'idempotence et de réconciliation ; elle n'est plus une
+autorité active. Le langage visuel et le découpage d'implémentation sont régis
+par `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md`. Les références Atlas du
+10 août restent historiques pour les décisions comportementales ; elles ne
+dirigent plus palette, typographie ou nouveaux composants.
 
 Ce document fixe le périmètre détaillé de V4. Le travail V4 hors ligne est
 autorisé et a démarré sur la baseline technique V3.5. Cette autorisation ne
@@ -302,7 +301,7 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 - **Développement** : architecture technique, schéma, API, sécurité,
   implémentation, migrations, tests et déploiement. Il est le seul responsable
   de l'écriture du code applicatif.
-- **Direction artistique** : spécifications et revues Atlas des nouvelles
+- **Direction artistique** : spécifications et revues Totem des nouvelles
   surfaces. Elle ne modifie ni règles métier, ni prix, ni code.
 - **Finance & Pricing** : coûts, crédits, devis, marges, packs, réconciliation et
   scénarios économiques. Elle ne modifie ni code, ni critères pédagogiques.
@@ -340,7 +339,12 @@ Propriétaire conserve le dernier arbitrage pour toute contradiction.
 | V4-016A | Direction artistique | Développement | Produit & pédagogie, Finance & Pricing | Propriétaire |
 | V4-016B | Direction artistique | Développement | Produit & pédagogie | Propriétaire |
 | V4-016C | Produit & pédagogie | Développement | Direction artistique | Propriétaire |
+| V4-016D | Direction artistique | Développement | Produit & pédagogie | Propriétaire |
+| V4-016E | Direction artistique | Développement | Produit & pédagogie, Développement | Propriétaire |
+| V4-016F | Produit & pédagogie | Développement | Direction artistique | Propriétaire |
 | V4-016G | Direction artistique | Développement | Produit & pédagogie, Finance & Pricing | Propriétaire |
+| V4-016H | Développement | Développement | Direction artistique, Produit & pédagogie | Propriétaire |
+| V4-016I | Direction artistique | Développement | Produit & pédagogie, Recherche | Propriétaire |
 | V4-017 | Développement | Développement | Produit & pédagogie, Finance & Pricing | Propriétaire |
 | V4-018 | Finance & Pricing | Développement | Produit & pédagogie | Propriétaire |
 | V4-018A | Finance & Pricing | Développement | Produit & pédagogie | Propriétaire |
@@ -373,7 +377,7 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 | `AGENT-PROTOCOLE-IA` | Identité expérimentale, route, profil, manifests, stop-policy et dossier reproductible. Aucun dispatch. |
 | `AGENT-FINANCE` | Borne de coût, plafond, réconciliation et décision d'enveloppe. Aucun choix pédagogique. |
 | `AGENT-RECHERCHE` | Journal append-only, article public après verdict stabilisé et limites méthodologiques. Aucun résultat inventé. |
-| `AGENT-DA` | Restitution Atlas et compréhension utilisateur après stabilisation des états. Aucune règle métier. |
+| `AGENT-DA` | Langage visuel Totem et compréhension utilisateur après stabilisation des états. Aucune règle métier. |
 | `RAYAN` | Arbitrages propriétaire, autorisations d'appel, holdout, publication et activation. |
 
 #### Tickets immédiats
@@ -400,7 +404,7 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 | `V4-003F — Article public de recherche` | `AGENT-RECHERCHE` | Verdict stabilisé et artefacts réconciliés | Nouvel article FR/EN immuable ; jamais réécriture silencieuse de l'ancien |
 | `V4-009C-S4 — Holdout one-shot` | `AGENT-DEV-LEARNX` | `GO_TO_SEALED_HOLDOUT` + autorisation one-shot Rayan | `GO_AUTONOMOUS_FORMATIVE` ou NO-GO définitif de l'identité |
 | `V4-010A — Branchement du pipeline promu` | `AGENT-DEV-LEARNX` | `GO_AUTONOMOUS_FORMATIVE`, contrat `PUBLISHED`, activité éligible | Pilote fermé derrière feature flag, sans effet progression |
-| `V4-010B — Revue Atlas du pilote` | `AGENT-DA` | États et contrats runtime stabilisés | QA compréhension/accessibilité ; aucune modification des règles |
+| `V4-010B — Revue Totem du pilote` | `AGENT-DA` | États et contrats runtime stabilisés | QA compréhension/accessibilité ; aucune modification des règles |
 
 #### Handoffs obligatoires
 
@@ -453,7 +457,7 @@ silencieusement l'historique.
 | --- | --- |
 | V4-007 | Finance & Pricing : unité de crédit, actions facturables, coût prudent, marge de sécurité, arrondis, plafonds, version/date d'effet et règle anti-vente à perte. Produit & pédagogie : libellés apprenant, différence entre modes, vérification ciblée automatique, nouvelle analyse volontaire et contenu du devis. Aucun prix actif sans mesures et arbitrage du Propriétaire. |
 | V4-008 | Finance & Pricing : allocation offerte, renouvellement, report, limites et ordre de consommation. Produit & pédagogie : compréhension des deux soldes, alertes et demande d'augmentation sans promesse trompeuse. |
-| V4-008A | Produit & pédagogie : identité, déclenchement, consolidation et états du pipeline composite. Finance & Pricing : coût, plafond et retries absorbés du workflow. Direction artistique : conformité du contrat aux surfaces Atlas validées. Aucun appel facturable avant gel de l'identité. |
+| V4-008A | Produit & pédagogie : identité, déclenchement, consolidation et états du pipeline composite. Finance & Pricing : coût, plafond et retries absorbés du workflow. Direction artistique : conformité du contrat aux surfaces Totem validées. Aucun appel facturable avant gel de l'identité. |
 | V4-009 | Finance & Pricing : réservation, règlement, libération, retries absorbés et réconciliation. Produit & pédagogie : consentement, absence de débit surprise et historique compréhensible. |
 | V4-009B | Produit & pédagogie : protocole préenregistré, oracle autonome scellé, métamorphismes et verdict `GO_AUTONOMOUS_FORMATIVE`. Finance & Pricing : budget maximal, coût complet par correction utilisable et règle d'arrêt. Développement : répétition Neon, instrumentation et identité technique reproductible. Aucun `24×3` ni holdout sans GO du mini-panel. |
 | V4-009C | Produit & pédagogie : pipeline evidence-assist exact, quatre cas, corpus complet 10 × 2, holdout autonome et abstention. Finance & Pricing : plafonds R&D distincts et coût par correction utilisable. Développement : enveloppe de sécurité déterministe, manifeste et traçabilité append-only. Le Propriétaire rend séparément `GO_TO_SEALED_HOLDOUT` puis `GO_AUTONOMOUS_FORMATIVE` ; aucun appel facturable sans GO d'enveloppe. |
@@ -521,27 +525,32 @@ auteur → contrôles → réviseur, la détection des parcours existants, l'ana
 des compétences manquantes, la composition de contenus réutilisés et la
 publication de contenu généré appartiennent à V5.
 
-## Responsabilités transférées à V3.5
+## Amendement design validé — file Totem modernisé
 
-La création de `BACKLOG_V3_5.md` retire de V4 les fondations qui doivent être
-visibles et stabilisées avant l'IA et le billing :
+La baseline V3.5 reste la réalité technique à migrer. La décision propriétaire
+du 21 août 2026 autorise cependant la **planification** d'un langage visuel
+Totem transversal sous les tickets V4-016D à V4-016I. Cette transmission ne
+constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
+`docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md`.
 
-| Ancien cadrage V4 | Source de vérité | Rôle restant en V4 |
-| --- | --- | --- |
-| V4-016D marque et tokens | V3.5-001 | Aucun ; V4 consomme les tokens validés |
-| V4-016E primitives | V3.5-002 | Aucun ; V4 réutilise les primitives |
-| Shells/navigation | V3.5-003 | V4 réutilise les shells sans navigation IA/finance parallèle |
-| V4-016F apprentissage mobile | V3.5-004 | Revue des seules nouvelles surfaces V4 |
-| V4-016B desktop global | V3.5-005 | V4-016B adapte correction, admin et paiement |
-| V4-016A landing initiale | V3.5-006 | V4-016A ajoute capacités et offres validées |
-| Contacts landing | V3.5-007 | Aucun CRM V4 ; cette vue reste le suivi simple |
-| Icône application | V3.5-006B | Aucun redesign V4 ; manifestes et variantes sont réutilisés |
-| V4-016H QA/design system | V3.5-008 et V3.5-009 | V4-019 contrôle l'intégration finale |
+| Ticket | Objet | Statut | Dépendances de démarrage |
+| --- | --- | --- | --- |
+| V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | Réaudit code et stratégie de migration |
+| V4-016E | Primitives et états communs accessibles | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D |
+| V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E |
+| V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
+| V4-016A | Landing, compte, vérification e-mail et première direction | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesses approuvées |
+| V4-016I | Recherche publique, articles partageables, programme public et graphiques | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contenu public réel |
+| V4-016B | Shell desktop et administration responsive | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats admin |
+| V4-016G | Correction, crédits et paiement | `DESIGN_VALIDATED_CONTRACTS_PENDING` | V4-007/010/012/014 stabilisés et V4-016D/E |
+| V4-016 | Annonce de création V5 | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesse V5 validée |
+| V4-016H | QA, adoption progressive et rollback | `WAIT_PREVIOUS_TOTEM_LOTS` | Lots Totem réellement implémentés |
 
-Les identifiants V4-016D, V4-016E, V4-016F et V4-016H restent volontairement
-inutilisés dans V4 après ce transfert. Ils ne doivent pas être recréés.
+Les tickets V4-016D/E/F/H ne sont donc plus des labels réservés. Ils ne
+réouvrent pas silencieusement V3.5 : ils portent la migration Totem explicitement
+validée. Aucun autre ticket ne doit créer des tokens ou composants concurrents.
 
-## Références Atlas héritées de V3.5
+## Références Atlas héritées de V3.5 — historiques
 
 - **A1 — Pack principal** :
   `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-screen-pack.html` ;
@@ -556,9 +565,10 @@ inutilisés dans V4 après ce transfert. Ils ne doivent pas être recréés.
 - **A6 — Icône Atlas papier** :
   `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-icon-paper-option.html`.
 
-Ces références fixent Atlas sans vert. V4 consomme les tokens, primitives,
-shells et règles de QA clôturés en V3.5 sans rouvrir la palette, les fontes ou
-la grammaire visuelle.
+Ces références prouvent la baseline Atlas et restent utiles pour les décisions
+de comportement et les régressions. Pour toute nouvelle implémentation, Totem
+supersède leur palette, leurs fontes et leur grammaire de composants. Le contrat
+`docs/EMOTIONAL_DESIGN_CONTRACT.md` reste actif.
 
 ## Invariants produit, pédagogie et finance
 
@@ -853,28 +863,20 @@ V4-004 + V4-006 → V4-017
 Lot paiement
 V4-006 + V4-008 → V4-013 → V4-014 → V4-015
 
-Lot annonce V5
-V4-016, indépendant du moteur IA ; préparation possible sur le GO technique
-V3.5, rollout après sign-off humain V3.5
+Lot fondations Totem
+V4-016D → V4-016E
 
-Lot acquisition et lancement
-V3.5-006 fournit la landing et la collecte initiale ; V4-016A ajoute les
-capacités IA et les tiers après V4-018, puis ouvre l'achat après V4-014
+Lots de surfaces Totem après GO distinct
+V4-016D/E → V4-016C + V4-016F + V4-016A + V4-016I + V4-016B
+V4-016D/E + V4-007/V4-010/V4-011/V4-014 → V4-016G
+V4-016D/E + promesse V5 validée → V4-016
 
-Lot polish desktop
-V3.5-005 fournit les gabarits ; V4-016B les applique aux surfaces V4-010,
-V4-012, V4-014, V4-016, V4-016A et V4-016G
-
-Lot accueil multi-programmes
-V4-016C est indépendant du moteur IA ; préparation possible sur le GO technique
-V3.5, clôture et rollout après sign-off humain V3.5 ; son rendu desktop est revu
-par V4-016B
-
-Lot expérience correction et finance
-V3.5-009 + surfaces V4-007/V4-010/V4-011/V4-014 → V4-016G
+Lot QA et rollout Totem
+V4-016/A/B/C/D/E/F/G/I effectivement implémentés → V4-016H
 
 Lot sortie
-V4-001…V4-017 + V4-016A + V4-016B + V4-016C + V4-016G
+V4-001…V4-017 + V4-016A + V4-016B + V4-016C + V4-016D + V4-016E
++ V4-016F + V4-016G + V4-016H + V4-016I
 → V4-018 → V4-019
 ```
 
@@ -882,12 +884,12 @@ V4-001…V4-017 + V4-016A + V4-016B + V4-016C + V4-016G
 
 - **V4A — correction pilote sans paiement réel** : V4-001 à V4-010, y compris
   le correctif V4-008A, la preuve V4-009B et le gate V4-009C, V4-012,
-  V4-016, V4-016C, V4-016G pour les surfaces disponibles et V4-017 au niveau
+  V4-016, V4-016C, V4-016D/E/F/G pour les surfaces disponibles et V4-017 au niveau
   requis. Elle livre corrections d'exercices textuels, allocations gratuites,
   ledger, administration et mesure des coûts. Les évaluations d'étape et les
   achats restent désactivés.
 - **V4B — évaluations, commerce et clôture** : V4-011, V4-013 à V4-015,
-  compléments V4-016A/B/G, V4-018 et V4-019. Elle n'ouvre les évaluations
+  compléments V4-016A/B/G/H/I, V4-018 et V4-019. Elle n'ouvre les évaluations
   d'étape qu'après livraison du gate déterministe de maîtrise, et les packs et
   paiements seulement après validation économique, fiscale,
   juridique, sécurité et exploitation.
@@ -908,12 +910,10 @@ Tickets principaux : V4-001 à V4-008A et V4-017 au niveau requis par le pilote.
 - Les utilisateurs ne voient encore aucune promesse de correction payante.
 - La vue V4-016 peut être livrée dès ce jalon : c'est le premier changement
   visible, mais elle demeure strictement informative.
-- La landing, la liste d'attente, les primitives et les gabarits V3.5 sont la
-  baseline ; V4-016A n'affiche encore aucun prix ou achat non validé.
-- V4-016B peut préparer l'intégration desktop des nouvelles surfaces dès que
-  leurs contrats sont stables.
-- L'accueil multi-programmes V4-016C peut être livré indépendamment de l'IA :
-  chaque programme suivi redevient visible et reprenable depuis Aujourd'hui.
+- La landing et les gabarits V3.5 restent la baseline jusqu'à un GO distinct de
+  V4-016D/E ; V4-016A n'affiche encore aucun prix ou achat non validé.
+- Après V4-016D/E, V4-016B peut intégrer les surfaces dont les contrats sont
+  stables, et V4-016C peut migrer indépendamment de l'IA.
 
 ### Jalon B — Première correction utilisable
 
@@ -1423,8 +1423,8 @@ de route épinglée et de réconciliation restent réutilisées.**
   devis unique, les appels inclus, les retries absorbés, le règlement et les
   dimensions de coût à mesurer sans activer de prix.
 - **Direction artistique — consultation obligatoire** : confirmer que les
-  états et données du contrat suffisent aux deux références Atlas validées,
-  sans créer de nouvelle règle métier.
+  états et données du contrat suffisent à la direction Totem active ; les
+  références Atlas restent historiques, sans créer de nouvelle règle métier.
 - **Propriétaire — arbitrage** : autoriser explicitement l'identité et le budget
   avant tout nouveau benchmark facturable. La construction et les tests hors
   ligne peuvent précéder ce GO.
@@ -1944,8 +1944,8 @@ avancer ; tout réseau/débit/live dépend du GO V4-009C et d'un contrat publié
 - Aucun état, score, certificat ou événement de correction ne modifie
   `ConceptProgress`, `StageProgress` ou `StageAssessmentSubmission.VALIDATED`.
 - Clavier, lecteur d'écran, 320/390 px, zoom 200 % et erreurs réseau sont couverts.
-- Les états et actions respectent les références Atlas validées aux largeurs
-  320/390, 1440/1920 px, au zoom 200 %, avec focus visible, contrastes WCAG et
+- Les états et actions respectent la direction Totem aux largeurs
+  320/390/720/1440/1920 px, au zoom 200 %, avec focus visible, contrastes et
   reduced motion. Aucun état ne dépend de la couleur seule.
 - Une actualisation ne relance ni l'appel ni le débit.
 
@@ -2171,8 +2171,8 @@ réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
 
 **Priorité : P2 produit. Dépendances : V3.5-009 et compte Membre actif.**
 
-**Références : A3, vue `Création de formations`, et A2, vues `Navigation` et
-`Actions`.**
+**Références : `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` et la vue
+`learnx-totem-v4-final-surfaces.html`.**
 
 ### Périmètre
 
@@ -2209,10 +2209,10 @@ réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
 - La page est traduite selon le socle i18n V3 et accessible sur mobile/desktop.
 - La fonctionnalité est nommée « bientôt disponible », jamais « indisponible à
   cause d'une erreur ».
-- La vue emploie les tokens Atlas, une seule action bleue dominante, aucun
+- La vue emploie les tokens Totem, une seule action cobalt dominante, aucun
   contrôle factice, aucune grande tuile active, aucun gradient IA et aucun
   motif cartographique suggérant qu'une génération a commencé.
-- À 320/390, 1024, 1440 et 1920 px et au zoom 200 %, le texte ne déborde pas,
+- À 320/390/720/1440/1920 px et au zoom 200 %, le texte ne déborde pas,
   les cibles font ≥ 44 × 44 px et le retour vers Parcours reste accessible au
   clavier avec focus visible.
 
@@ -2233,16 +2233,15 @@ réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
 V4-010 pour présenter une correction réelle, V4-007/V4-018 pour les prix
 publiés et V4-014 avant tout achat réel.**
 
-**Références : A5 pour la landing et ses preuves produit ; A3, vue `Landing
-détaillée` ; A2, vues `Fondations`, `Actions` et `Formulaires`.**
+**Références : `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` et
+`learnx-totem-landing-account-components.html`.**
 
 ### Périmètre
 
-- Étendre la landing V3.5 sans reconstruire son architecture, sa marque, ses
-  formulaires publics ou sa séparation avec l'application/PWA.
-- Conserver Atlas sans vert : papier chaud, bleu ardoise pour marque et CTA,
-  laiton éditorial rare, Manrope + Source Serif 4 et cartographie liée au
-  parcours plutôt qu'à l'IA ou au paiement.
+- Étendre la landing V3.5 en migrant progressivement sa présentation vers Totem,
+  sans modifier sa séparation avec l'application/PWA ni ses contrats publics.
+- Appliquer DM Sans et la palette Totem après V4-016D/E ; préserver la hiérarchie
+  produit et ne jamais associer la signature corail à l'IA ou au paiement.
 - Présenter les corrections IA désormais disponibles avec leur périmètre réel :
   productions libres compatibles, rubrique authorée, coût connu avant action,
   retour assisté et possibilité de réessai.
@@ -2283,7 +2282,7 @@ détaillée` ; A2, vues `Fondations`, `Actions` et `Formulaires`.**
 - La différence entre correction déterministe, retour assisté par IA et future
   création de formation est compréhensible sans ouvrir l'application.
 - Les aperçus Programme, Leçon et Correction affichent des contenus cohérents,
-  vérifiables et représentatifs des composants Atlas livrés ; aucun faux texte,
+  vérifiables et représentatifs des composants Totem livrés ; aucun faux texte,
   témoignage, compteur, progression ou contrôle ne sert de preuve.
 - Une seule action remplie domine chaque zone commerciale ; l'achat reste
   distinct de la liste d'attente, de la candidature et de la connexion.
@@ -2325,16 +2324,16 @@ détaillée` ; A2, vues `Fondations`, `Actions` et `Formulaires`.**
 **Priorité : P1 polish. Dépendances : V3.5-005 et V3.5-009 ; revue finale après
 V4-010, V4-012, V4-014, V4-016, V4-016A et V4-016G.**
 
-**Références : A1, vues `Correction IA` et `Administration` ; A3, vues
-`Leçon desktop`, `Crédits et paiement` et `Création de formations` ; A2, vue
-`Navigation`.**
+**Références : `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md`,
+`learnx-totem-product-surfaces.html`, `learnx-totem-entry-admin-surfaces.html`
+et `learnx-totem-v4-final-surfaces.html`.**
 
 ### Périmètre
 
 - Appliquer les gabarits `lecture`, `travail` et `administration` de V3.5
   aux nouvelles vues V4 : devis, correction, historique, solde/crédits,
   dashboard coûts, checkout et annonce V5.
-- Utiliser les vues Correction IA et Administration du screen pack Atlas comme
+- Utiliser les vues Correction IA et Administration du pack Totem comme
   références de direction pour hiérarchie, densité et surfaces, sans en faire
   des contrats pixel-perfect.
 - Choisir le gabarit selon la tâche et documenter toute exception ; ne pas
@@ -2343,14 +2342,14 @@ V4-010, V4-012, V4-014, V4-016, V4-016A et V4-016G.**
   sans afficher simultanément des étapes pédagogiques qui restent séquentielles.
 - Adapter tableaux, filtres, alertes, limites et coûts admin à une densité
   maîtrisée, avec actions groupées sûres et tiroirs correctement dimensionnés.
-- Conserver routes, permissions, tokens, primitives, navigation et règles
-  d'accessibilité issus de V3.5.
+- Conserver routes, permissions et règles d'accessibilité issus de V3.5 ; les
+  tokens et primitives migrent uniquement via V4-016D/E.
 - Vérifier que les nouvelles surfaces restent cohérentes sur mobile sans
   reproduire le gabarit desktop dans une largeur réduite.
 
 ### Hors périmètre
 
-- Refaire les écrans V3 déjà validés par V3.5, redéfinir tokens/primitives ou
+- Refaire les écrans V3 hors lots Totem, redéfinir localement tokens/primitives ou
   modifier les règles de correction, prix, paiement, progression ou accès.
 - Dashboard décoratif, carte étirée, sidebar vide, cockpit technique ou
   esthétique fintech/IA générique.
@@ -2358,8 +2357,8 @@ V4-010, V4-012, V4-014, V4-016, V4-016A et V4-016G.**
 ### Critères d'acceptation
 
 - Chaque nouvelle surface V4 utilise un gabarit V3.5 ou justifie son exception.
-- Chaque surface conserve la base encre/navy/ardoise, l'action bleue et le
-  laiton rare sans réintroduire de vert ni créer une esthétique fintech.
+- Chaque surface conserve l'ardoise, l'action cobalt, le fond/papier et le corail
+  rare Totem sans réintroduire de vert ni créer une esthétique fintech.
 - À 1024/1440/1920 px, aucune vue n'est une PWA mobile étirée et aucune longueur
   de ligne pédagogique ne dépasse la mesure validée.
 - À zoom 200 %, aucun chevauchement ni scroll horizontal global.
@@ -2394,6 +2393,8 @@ avant clôture et rollout ; V4-016B pour la revue desktop finale.**
 **Références canoniques :**
 
 - `docs/EMOTIONAL_DESIGN_CONTRACT.md` ;
+- `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-totem-product-surfaces.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/emotional-design-renders/`.
 
@@ -2491,8 +2492,8 @@ des pixels ni une modification de la logique de recommandation.
 - Le rendu reste utilisable à 320/390 px, 720 px de reflow, 1440/1920 px, zoom
   200 %, clavier et lecteur d'écran ; l'état actif, la progression et la
   destination ne dépendent jamais de la couleur seule.
-- Une seule action remplie domine chaque zone ; bleu Atlas et laiton rare
-  respectent les contrats V3.5, sans vert, cyan électrique ou dashboard de
+- Une seule action remplie domine chaque zone ; cobalt et corail rare Totem
+  respectent le contrat émotionnel, sans vert, cyan électrique ou dashboard de
   métriques.
 
 ### Tests et risques
@@ -2517,6 +2518,64 @@ des pixels ni une modification de la logique de recommandation.
 
 ---
 
+## V4-016D — Fondations visuelles Totem
+
+**Priorité : P1 design. Statut : `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`.
+Dépendance : réaudit de la baseline V3.5 avant code.**
+
+### Périmètre et critères
+
+- Formaliser DM Sans, les couleurs `#17233B`, `#3B5BD6`, `#E7EDFF`,
+  `#CC6B57`, `#F4F6FB`, `#FFFFFF`, les espacements et les tokens sémantiques.
+- Intégrer le logo et l'icône validés sans altérer leur géométrie en dehors des
+  variantes fournies.
+- Fournir une stratégie de migration progressive et un rollback sans supprimer
+  les tokens Atlas encore consommés par une surface non migrée.
+- Interdire vert, gradient IA, gamification et couleur comme seul signal.
+- Prouver contrastes, focus, zoom 200 %, reduced motion et rendu
+  320/390/720/1440/1920 avant clôture.
+
+---
+
+## V4-016E — Primitives et états Totem
+
+**Priorité : P1 design system. Statut :
+`DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`. Dépendance : V4-016D.**
+
+### Périmètre et critères
+
+- Formaliser shell desktop, topbar/navigation basse mobile, nav/footer publics,
+  boutons, champs, tags libellés, surface à angle corail, progression, cartes,
+  notices, tables, formulaires et états vide/chargement/erreur/sûr.
+- Chaque composant documente variantes, contenu autorisé, focus, nom accessible,
+  clavier, reduced motion et reflow.
+- Les consentements distincts ne sont jamais fusionnés visuellement ; les
+  tableaux admin deviennent des surfaces mobiles sans perte d'information.
+- Aucun composant n'embarque prix, score, preuve ou règle métier de démonstration.
+
+---
+
+## V4-016F — Apprentissage, évaluations et révision Totem
+
+**Priorité : P1 expérience pédagogique. Statut :
+`DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`. Dépendances : V4-016D/E et contrats
+pédagogiques/runtime existants.**
+
+### Périmètre et critères
+
+- Migrer leçon, exercice, quiz, résultat, révision, ressources et correction
+  formative vers les primitives Totem sans modifier progression ou validation.
+- Distinguer remise, feedback et maîtrise ; une correction assistée ne produit
+  aucun PASS/FAIL académique et n'écrit aucune progression.
+- Nommer les preuves issues du devoir « Extrait de votre réponse » et séparer
+  toute source externe sous « Références mobilisées ».
+- Les états incertains ou indisponibles sont textuels, actionnables et jamais
+  signalés par la couleur seule ; aucun score exact n'est inventé.
+- Couvrir textes longs FR/EN, clavier, lecteur d'écran, zoom 200 % et les cinq
+  largeurs de référence.
+
+---
+
 ## V4-016G — Présentation des corrections IA, crédits et paiement
 
 **Priorité : P1 confiance. Dépendances : V3.5-009 et contrats des V4-007,
@@ -2524,6 +2583,8 @@ V4-010, V4-011 et V4-014 disponibles.**
 
 **Références canoniques complémentaires :**
 
+- `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-totem-v4-final-surfaces.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html` ;
 - `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`.
@@ -2532,9 +2593,8 @@ V4-010, V4-011 et V4-014 disponibles.**
 
 - Définir une grammaire de confiance commune aux surfaces de correction et de
   finance, sans modifier leurs règles serveur ni leurs contrats métier.
-- Appliquer Atlas sans vert et la vue Correction IA validée : surfaces mates,
-  bleu pour action/progression/positif, laiton seulement éditorial, Manrope pour
-  l'interface et Source Serif 4 pour les titres ou synthèses définis.
+- Appliquer Totem : DM Sans, surfaces papier sur fond clair, ardoise, action
+  cobalt, brume et corail rare ; aucun vert, gradient IA ou esthétique fintech.
 - Distinguer explicitement : résultat déterministe, retour assisté par IA,
   critères/rubrique authorés, preuves utilisées, état de révision ou
   clarification, versions de soumission et possibilité de réessai.
@@ -2599,9 +2659,9 @@ V4-010, V4-011 et V4-014 disponibles.**
   unité, autorité et prochaine action explicites.
 - Les valeurs utilisent exclusivement les contrats serveur et catalogues
   publiés ; le ticket n'invente aucun montant, pack, expiration ou capacité.
-- Les rayons restent 4/7/12 px, les espaces 4/8/12/16/24/32/48 px ; aucune
-  carte imbriquée au-delà d'un niveau, CTA concurrent, cyan électrique, vert,
-  ombre décorative ou grosse tuile active.
+- Rayons, espacements et densités proviennent exclusivement des tokens
+  V4-016D/E ; aucune carte imbriquée au-delà d'un niveau, CTA concurrent, cyan
+  électrique, vert, ombre décorative ou grosse tuile active.
 
 ### Tests et risques
 
@@ -2616,6 +2676,46 @@ V4-010, V4-011 et V4-014 disponibles.**
 
 - Aucun changement métier attendu. Les vues consomment uniquement les contrats
   versionnés ; rollback par surface correction, crédits ou paiement.
+
+---
+
+## V4-016H — QA, adoption et retrait visuel Atlas
+
+**Priorité : P1 release design. Statut : `WAIT_PREVIOUS_TOTEM_LOTS`.
+Dépendance : lots Totem effectivement implémentés.**
+
+### Périmètre et critères
+
+- Consolider la matrice 320/390/720/1440/1920, zoom 200 %, clavier/focus,
+  contraste, lecteur d'écran, reduced motion, forced colors et FR/EN.
+- Vérifier les parcours critiques et tous les états vide, chargement, erreur,
+  indisponible et sûr avec données contractuelles.
+- Retirer un token ou composant Atlas uniquement après migration de tous ses
+  consommateurs ; conserver un rollback isolable par famille de surfaces.
+- Bloquer le rollout si une information ou une action dépend uniquement de la
+  couleur, si une valeur de maquette est codée en dur ou si un contrat produit
+  est contourné.
+
+---
+
+## V4-016I — Recherche et surfaces publiques Totem
+
+**Priorité : P1 communication et transparence. Statut :
+`DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`. Dépendances : V4-016D/E et contenu
+public réel.**
+
+### Périmètre et critères
+
+- Migrer l'index de recherche en journal chronologique d'articles cliquables et
+  chaque article en page partageable avec URL stable, métadonnées et langue.
+- Migrer la fiche programme publique, les ressources, graphiques factuels,
+  navigation et footer publics sans fusionner recherche interne et publication.
+- Un graphique rend accessible sa valeur et sa méthode sans dépendre de la
+  couleur ; aucune donnée, preuve ou citation n'est inventée.
+- Les anciens liens publics conservent une redirection sûre ou une page réelle,
+  jamais une route authentifiée 404.
+- Couvrir partage direct, titre long, absence d'article, FR/EN et la matrice
+  responsive/accessibilité Totem.
 
 ---
 

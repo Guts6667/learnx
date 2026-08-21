@@ -1,7 +1,7 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.0`
+- **Version** : `1.0.1`
 - **Date** : 21 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
@@ -13,6 +13,7 @@ Un document V4 appartient à une seule classe :
 | Classe | Usage autorisé |
 | --- | --- |
 | `ACTIVE_AUTHORITY` | Dirige le prochain travail dans son périmètre. |
+| `ACTIVE_DESIGN_AUTHORITY` | Dirige le langage visuel et ses critères ; n'autorise pas le code sans ticket activé. |
 | `CURRENT_STATUS` | Décrit l'état réel, sans créer de politique. |
 | `HISTORICAL_EVIDENCE` | Prouve une campagne ou une décision passée ; ne peut pas être exécuté. |
 | `SUPERSEDED_DRAFT` | Explique une origine, mais ne peut authoriser aucun travail. |
@@ -29,6 +30,7 @@ chemin de lecture actif.
 | `LEARNX_DOMAIN_KNOWLEDGE.md` | `ACTIVE_AUTHORITY` | Vocabulaire, objets et frontières du domaine. |
 | `V4_ROADMAP.md` | `CURRENT_STATUS` | Registre humain unique de progression. |
 | `../BACKLOG_V4.md` | `ACTIVE_AUTHORITY` | Périmètres, critères et tickets. |
+| `V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` | `ACTIVE_DESIGN_AUTHORITY` | Direction Totem validée, file V4-016D→H et frontières ; aucune autorisation de code à elle seule. |
 | `V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` | `CURRENT_STATUS` | Miroir machine du chemin IA. |
 | `V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md` | `ACTIVE_AUTHORITY` | Architecture déterministe du moteur. |
 | `V4_EVIDENCE_SEMANTIC_ARBITRATION.md` | `ACTIVE_AUTHORITY` | Sémantique successeur, dont `EXPLICITLY_REFUTED`. |
