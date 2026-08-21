@@ -5,7 +5,7 @@
     "canonicalProgramKey": "sourcelab-docker-api-socle-ingestion",
     "locale": "fr",
     "description": "Parcours guidé de 13 h 05 maximum pour construire une stack SourceLab locale : API Hono/Zod, Docker, Compose, PostgreSQL/Prisma, ingestion Markdown, worker simple, tests, smoke et livraison d’image GHCR traçable. Le checkpoint final prépare le programme RAG sans prétendre couvrir une exploitation cloud complète.",
-    "status": "draft",
+    "status": "active",
     "position": 6,
     "estimatedDurationDays": 7,
     "stages": [

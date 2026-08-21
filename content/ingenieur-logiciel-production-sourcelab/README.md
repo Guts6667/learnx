@@ -3,7 +3,7 @@
 ## Statut
 
 - Version : 2.0.0
-- Statut : `draft`
+- Statut runtime : `active`, publication publique autorisée le 21 août 2026
 - Classification : `CONTENT_ONLY`
 - Identité runtime : slug et clé canonique
   `sourcelab-docker-api-socle-ingestion`
@@ -67,12 +67,14 @@ s'arrête à la publication GHCR ; aucune infrastructure absente n'est simulée.
 - `stage-assessments/` : trois évaluations pratiques non redondantes ;
 - `SOURCE_MANIFEST.json` : inventaire et état de recontrôle des ressources ;
 - `../../seed/ingenieur-logiciel-production-sourcelab-program.json` : bundle
-  Prisma en brouillon.
+  Prisma actif.
 
-## Porte de publication
+## Publication et traçabilité éditoriale
 
-Le programme reste `draft` et `readyForPublication: false` tant que les
-checkpoints postérieurs au starter et les revues éditoriale, technique,
-pédagogique, des liens et de compatibilité seed ne sont pas approuvés. Les
-anciennes leçons de la version 1 ne sont pas déclarées équivalentes aux nouveaux
-checkpoints.
+Le programme est actif et public dans LearnX depuis le 21 août 2026, après
+validation explicite du propriétaire et répétition isolée du seed, de la
+publication complète et de la visibilité. Les statuts de revue conservés dans
+les sidecars restent des traces éditoriales historiques : ils ne sont pas
+requalifiés rétroactivement et ne simulent aucun reviewer. Les anciennes leçons
+de la version 1 ne sont pas déclarées équivalentes aux nouveaux checkpoints ;
+la V1 reste privée et ses progressions demeurent intactes.

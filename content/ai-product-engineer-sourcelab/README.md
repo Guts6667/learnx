@@ -3,7 +3,7 @@
 ## Statut
 
 - Version : 1.0.1
-- Statut : `draft`
+- Statut runtime : `active`, publication publique autorisée le 21 août 2026
 - Classification : `CONTENT_ONLY`
 - Projet fil rouge : SourceLab, produit autonome dans un dépôt et une base séparés de LearnX
 - Durée indicative : 49 jours
@@ -38,8 +38,14 @@ Ajouter à SourceLab deux usages bornés : créer des programmes LearnX à parti
 - `specs/` : une spécification complète par leçon ;
 - `stage-assessments/` : une évaluation finale par étape ;
 - `SOURCE_MANIFEST.json` : inventaire des ressources et date de contrôle ;
-- `../../seed/ai-product-engineer-sourcelab-program.json` : bundle d’import Prisma en brouillon.
+- `../../seed/ai-product-engineer-sourcelab-program.json` : bundle d’import
+  Prisma actif.
 
-## Porte de publication
+## Publication et traçabilité éditoriale
 
-Le programme ne peut pas être publié tant que les revues `pedagogicalAlignment`, `seedCompatibility`, `linksAndMedia` et les revues techniques humaines ne sont pas approuvées. Les documentations évolutives sont contrôlées au 18 août 2026 et doivent être revérifiées avant publication.
+Le programme est actif et public dans LearnX depuis le 21 août 2026, après
+validation explicite du propriétaire et répétition isolée de sa publication.
+Les statuts de revue conservés dans les sidecars restent des traces éditoriales
+historiques : ils ne sont pas requalifiés rétroactivement et ne simulent aucun
+reviewer. Les documentations évolutives ont été contrôlées au 18 août 2026 et
+doivent être revérifiées avant toute révision substantielle du parcours.
