@@ -48,14 +48,16 @@ describe('V4 document routing and assigned execution queue', () => {
 
     expect(backlog).toContain('V4-003A — Corpus mécanique successeur');
     expect(backlog).toContain('V4-003B — Audit autonome indépendant');
+    expect(backlog).toContain("V4-003A-R1 — Durcissement de l'oracle mécanique");
     expect(index).toContain('V4_003A_MECHANICAL_ORACLE_REPORT.md');
+    expect(index).toContain('V4_003B_INDEPENDENT_AUDIT_REPORT.md');
     expect(roadmap).toContain(
       "Le chemin critique ne possède qu'un ticket actif",
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
-        currentResponsibleAgent: 'AGENT-METHODOLOGIE',
-        currentTicket: 'V4-003B',
+        currentResponsibleAgent: 'AGENT-DEV-LEARNX',
+        currentTicket: 'V4-003A-R1',
         modelCallsAllowed: false,
       }),
     );

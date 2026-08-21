@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T15:34:00Z",
+  "updatedAt": "2026-08-21T15:48:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "MECHANICAL_ORACLE_V2_DONE_AWAITING_V4-003B",
+      "status": "V4-003B_BLOCKED_WITH_FINDINGS_AWAITING_V4-003A-R1",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -178,8 +178,8 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-003B",
-    "currentResponsibleAgent": "AGENT-METHODOLOGIE",
+    "currentTicket": "V4-003A-R1",
+    "currentResponsibleAgent": "AGENT-DEV-LEARNX",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
       "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
@@ -192,6 +192,8 @@
       "V4-002C",
       "V4-003A",
       "V4-003B",
+      "V4-003A-R1",
+      "V4-003B-R1",
       "V4-003C",
       "V4-003D",
       "V4-009C-S2",
@@ -209,9 +211,9 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "ACTIVE_OFFLINE_INDEPENDENT_AUDIT",
-      "nextTicket": "V4-003B",
-      "responsibleAgent": "AGENT-METHODOLOGIE",
+      "status": "BLOCKED_WITH_FINDINGS_CORRECTIVE_ORACLE_READY",
+      "nextTicket": "V4-003A-R1",
+      "responsibleAgent": "AGENT-DEV-LEARNX",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
         "BUILD_MECHANICAL_ORACLE",
@@ -305,11 +307,13 @@
         "mechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.json",
         "mechanicalOracleValidator": "src/lib/executable-rubric-mechanical-oracle-v2.ts",
         "mechanicalOracleReport": "docs/V4_003A_MECHANICAL_ORACLE_REPORT.md",
+        "independentAuditReport": "docs/V4_003B_INDEPENDENT_AUDIT_REPORT.md",
+        "independentAuditVerdict": "BLOCKED_WITH_FINDINGS",
         "mechanicalOracleFingerprint": "7bbea4ae4d024eed8dc91f0847c8f2021b28fd35e40fe7933b02af4568cf1297",
         "mechanicalCaseCount": 19,
         "compilerMutationCaseCount": 7,
         "minimalPairs": "benchmarks/ai-correction/executable-rubric/writing-fr-explicit-refutation-minimal-pairs.v1.json",
-        "status": "MECHANICAL_ORACLE_V2_DONE_NO_MODEL_CALL_NO_BUDGET_AWAITING_AUDIT"
+        "status": "MECHANICAL_ORACLE_V2_AUDITED_BLOCKED_WITH_FINDINGS_AWAITING_SUCCESSOR"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",
@@ -829,7 +833,8 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "V4-003B_INDEPENDENT_AUDIT_NOT_COMPLETED",
+      "V4-003A_R1_CORRECTIVE_ORACLE_NOT_BUILT",
+      "V4-003B_R1_INDEPENDENT_AUDIT_NOT_COMPLETED",
       "V4-003C_EXPERIMENT_IDENTITY_NOT_FROZEN",
       "V4-003D_FINANCE_NOT_ARBITRATED",
       "NEW_STAGE_ONE_NOT_AUTHORIZED_OR_EXECUTED"
@@ -896,7 +901,7 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Execute V4-003B offline only: independently audit the frozen V4-003A mechanical oracle and report READY_TO_FREEZE or BLOCKED_WITH_FINDINGS without changing the contract, corpus, golds, thresholds or evaluator; perform no model call.",
+    "Execute V4-003A-R1 offline only: create a successor oracle that resolves every P1 in docs/V4_003B_INDEPENDENT_AUDIT_REPORT.md without changing the approved pedagogical contract; preserve the audited V4-003A package byte-identically and perform no model call.",
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",

@@ -26,8 +26,8 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('AGENT-METHODOLOGIE'),
-      currentTicket: z.literal('V4-003B'),
+      currentResponsibleAgent: z.literal('AGENT-DEV-LEARNX'),
+      currentTicket: z.literal('V4-003A-R1'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -36,6 +36,8 @@ const activeManifestSchema = z
         z.literal('V4-002C'),
         z.literal('V4-003A'),
         z.literal('V4-003B'),
+        z.literal('V4-003A-R1'),
+        z.literal('V4-003B-R1'),
         z.literal('V4-003C'),
         z.literal('V4-003D'),
         z.literal('V4-009C-S2'),
@@ -90,7 +92,7 @@ const activeManifestSchema = z
         status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
       }),
       'V4-003': z.object({
-        status: z.literal('ACTIVE_OFFLINE_INDEPENDENT_AUDIT'),
+        status: z.literal('BLOCKED_WITH_FINDINGS_CORRECTIVE_ORACLE_READY'),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -158,8 +160,14 @@ const activeManifestSchema = z
                   mechanicalOracleReport: z.literal(
                     'docs/V4_003A_MECHANICAL_ORACLE_REPORT.md',
                   ),
+                  independentAuditReport: z.literal(
+                    'docs/V4_003B_INDEPENDENT_AUDIT_REPORT.md',
+                  ),
+                  independentAuditVerdict: z.literal(
+                    'BLOCKED_WITH_FINDINGS',
+                  ),
                   status: z.literal(
-                    'MECHANICAL_ORACLE_V2_DONE_NO_MODEL_CALL_NO_BUDGET_AWAITING_AUDIT',
+                    'MECHANICAL_ORACLE_V2_AUDITED_BLOCKED_WITH_FINDINGS_AWAITING_SUCCESSOR',
                   ),
                 })
                 .optional(),
@@ -205,7 +213,9 @@ const activeManifestSchema = z
         mvpLevelEffect: z.literal(
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
-        status: z.literal('MECHANICAL_ORACLE_V2_DONE_AWAITING_V4-003B'),
+        status: z.literal(
+          'V4-003B_BLOCKED_WITH_FINDINGS_AWAITING_V4-003A-R1',
+        ),
       }),
     }),
   })
@@ -295,8 +305,8 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'AGENT-METHODOLOGIE',
-      currentTicket: 'V4-003B',
+      currentResponsibleAgent: 'AGENT-DEV-LEARNX',
+      currentTicket: 'V4-003A-R1',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });

@@ -39,6 +39,7 @@ chemin de lecture actif.
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.v1.draft.json` | `COMPILED_INPUT_V4_003A` | Projection machine v2 compilée hors ligne ; elle reste `DRAFT`, non liée à une version publiée et sans autorité d'expérience. |
 | `V4_003A_MECHANICAL_ORACLE_REPORT.md` | `CURRENT_STATUS` | Preuve de clôture hors ligne : 19 cas mécaniques, 7 mutations et empreinte canonique ; ouvre seulement l'audit V4-003B. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.json` | `AUDIT_INPUT_V4_003B` | Oracle mécanique par construction ; aucune validation humaine, modèle ou live. |
+| `V4_003B_INDEPENDENT_AUDIT_REPORT.md` | `CURRENT_STATUS` | Verdict `BLOCKED_WITH_FINDINGS` ; autorité des corrections V4-003A-R1, sans autoriser modèle, gel ou activation. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques
