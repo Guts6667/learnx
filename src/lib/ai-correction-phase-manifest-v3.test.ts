@@ -26,7 +26,7 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('AGENT-DEV-LEARNX'),
+      currentResponsibleAgent: z.literal('RAYAN'),
       currentTicket: z.literal('V4-009C-S2'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
@@ -93,7 +93,7 @@ const activeManifestSchema = z
       }),
       'V4-003': z.object({
         status: z.literal(
-          'FINANCE_ARBITRATED_RUNNER_IMPLEMENTATION_READY_OFFLINE',
+          'RUNNER_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_AUTHORIZATION',
         ),
       }),
       'V4-010': z.object({
@@ -109,8 +109,7 @@ const activeManifestSchema = z
               correctiveIndependentAuditReport: z.literal(
                 'docs/V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md',
               ),
-              correctiveIndependentAuditVerdict:
-                z.literal('READY_TO_FREEZE'),
+              correctiveIndependentAuditVerdict: z.literal('READY_TO_FREEZE'),
               correctiveMechanicalOracle: z.literal(
                 'benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json',
               ),
@@ -139,15 +138,31 @@ const activeManifestSchema = z
                 path: z.literal(
                   'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json',
                 ),
-                report: z.literal(
-                  'docs/V4_003D_GATE4_FINANCE_ARBITRATION.md',
-                ),
+                report: z.literal('docs/V4_003D_GATE4_FINANCE_ARBITRATION.md'),
                 status: z.literal(
                   'FINANCE_ARBITRATED_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED',
                 ),
               }),
+              runnerPreflight: z.object({
+                fingerprint: z.literal(
+                  'ca81bfec01494d31356d6a3efde9bb7581c1a1ff601013f1c8c6df63ee582f16',
+                ),
+                maximumAllowedMessageUtf8Bytes: z.literal(65536),
+                maximumObservedMessageUtf8Bytes: z.literal(12321),
+                modelCallsPerformed: z.literal(0),
+                networkCallsAllowed: z.literal(false),
+                path: z.literal(
+                  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-runner-preflight.v1.json',
+                ),
+                replayProviderExecutions: z.literal(0),
+                report: z.literal(
+                  'docs/V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md',
+                ),
+                status: z.literal('HARD_OFF_PREFLIGHT_GREEN'),
+                usableWorkflows: z.literal(4),
+              }),
               status: z.literal(
-                'GATE4_FINANCE_ARBITRATED_RUNNER_IMPLEMENTATION_READY_OFFLINE',
+                'GATE4_RUNNER_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_GO',
               ),
             })
             .optional(),
@@ -239,7 +254,7 @@ const activeManifestSchema = z
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
         status: z.literal(
-          'V4-003D_FINANCE_ARBITRATED_AWAITING_RUNNER_AND_NETWORK_GO',
+          'V4-009C-S2_HARD_OFF_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_GO',
         ),
       }),
     }),
@@ -301,10 +316,7 @@ describe('active autonomous correction phase manifest', () => {
     );
     expect(
       existsSync(
-        resolve(
-          process.cwd(),
-          successor?.correctiveMechanicalOracle ?? '',
-        ),
+        resolve(process.cwd(), successor?.correctiveMechanicalOracle ?? ''),
       ),
     ).toBe(true);
     expect(
@@ -341,6 +353,14 @@ describe('active autonomous correction phase manifest', () => {
         resolve(process.cwd(), successor?.financeEnvelope.report ?? ''),
       ),
     ).toBe(true);
+    expect(
+      existsSync(resolve(process.cwd(), successor?.runnerPreflight.path ?? '')),
+    ).toBe(true);
+    expect(
+      existsSync(
+        resolve(process.cwd(), successor?.runnerPreflight.report ?? ''),
+      ),
+    ).toBe(true);
   });
 
   it('keeps live execution closed while allowing only explicit offline work', () => {
@@ -357,7 +377,7 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'AGENT-DEV-LEARNX',
+      currentResponsibleAgent: 'RAYAN',
       currentTicket: 'V4-009C-S2',
       liveActivationAllowed: false,
       modelCallsAllowed: false,

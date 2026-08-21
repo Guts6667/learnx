@@ -115,13 +115,12 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
-Le chemin critique ne possède qu'un ticket actif : `V4-009C-S2`, uniquement
-pour son implémentation hors ligne. Rayan C a approuvé le dossier V4-003C et
-Finance a borné le gate à `0,177082 USD` par tentative, quatre tentatives et
-`0,708328 USD` fournisseur au total. Le runner v2 doit maintenant être adapté,
-testé avec un faux provider et rendu `HARD_OFF`. Aucun appel modèle,
-publication ni branchement live n'est autorisé sans un nouveau message direct
-de Rayan. `V4-002C`
+Le chemin critique ne possède qu'un ticket actif : `V4-009C-S2`, désormais au
+checkpoint propriétaire. Le runner v2, le stockage durable et le faux
+fournisseur passent le préflight `HARD_OFF` sur 4/4 cas ; une reprise après
+redémarrage effectue zéro nouvel appel. Aucun appel modèle, publication ni
+branchement live n'est autorisé sans un nouveau message direct de Rayan
+reprenant le modèle, les quatre cas et le plafond `0,708328 USD`. `V4-002C`
 est clos hors ligne : le schéma, le compilateur, le certificat v2 et leurs tests
 sont disponibles. `V4-002B` reste
 clos par l'arbitrage `Rayan B` du 21 août 2026 et `V4-002A` par `Rayan A`.
@@ -146,7 +145,7 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | `V4-003B-R1 — Nouvel audit autonome` | `AGENT-METHODOLOGIE` | **Clos** : `READY_TO_FREEZE`, 0 P0/P1 et P2 non bloquant consigné | `V4-003C` |
 | `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | **Clos** : dossier exact approuvé par Rayan C | `V4-003D` |
 | `V4-003D — Budget` | `AGENT-FINANCE` | **Clos hors ligne** : plafond fournisseur `0,708328 USD`, réseau interdit | `V4-009C-S2` hors ligne |
-| `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | **Maintenant** : adapter et valider le runner v2 sous `HARD_OFF` | GO réseau séparé de Rayan, puis verdict |
+| `V4-009C-S2 — Gate 4` | `RAYAN`, puis `AGENT-DEV-LEARNX` | **Préflight clos** : runner v2 `HARD_OFF`, 4/4 fake et reprise idempotente | GO réseau séparé de Rayan, puis raccord et verdict |
 
 Tout agent recevant un ticket plus bas dans cette table doit refuser de le
 démarrer si la sortie et le gate de la ligne précédente ne sont pas présents.
@@ -339,7 +338,7 @@ jamais à franchir son gate live.
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
 | V4-002 | `V4-002C_DONE_OFFLINE` | `V4-002A/B` validés ; compilateur et certificat v2 validés hors ligne ; contrat toujours DRAFT, 0 contrat publié. | Non : ticket clos. | Publication interdite avant corpus, audit et gates ultérieurs. | `AGENT-METHODOLOGIE` reprend via V4-003A. |
-| V4-003 | `V4-003D_FINANCE_ARBITRATED` | Rayan C approuve l'identité gelée ; Finance borne quatre appels à `0,708328 USD` fournisseur maximum, sans réutilisation historique. | Oui : `V4-009C-S2` uniquement, implémentation et préflight hors ligne. | Runner v2 conforme et `HARD_OFF`, puis autorisation réseau distincte de Rayan. | `AGENT-DEV-LEARNX`. |
+| V4-003 | `V4-009C-S2_PREFLIGHT_GREEN` | Rayan C et Finance sont clos ; runner v2 prévalidé `HARD_OFF` sur 4/4 cas, stockage durable et reprise sans second appel. | Non avant le message direct de Rayan. | Autorisation réseau exacte, puis gate réel quatre cas avec arrêt au premier défaut. | `RAYAN`, puis `AGENT-DEV-LEARNX`. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
 | V4-006 | `LIVRÉ_INACTIF` | Ledger et réservation fondés. | Non. | Calibration après pilote. | Développement + Finance. |
@@ -348,7 +347,7 @@ jamais à franchir son gate live.
 | V4-008A | `LIVRÉ_INACTIF` | Preuve historique ; juge composite abandonné. | Non. | Aucun travail sur l'ancien pipeline. | Produit & pédagogie. |
 | V4-009 | `LIVRÉ_INACTIF` | Orchestration et réconciliation intégrées/rejouées. | Non hors branchement V4-010. | Pipeline exact promu. | Développement. |
 | V4-009B | `LIVRÉ_INACTIF` | NO-GO historique immuable. | Non. | Ne jamais reprendre l'enveloppe close. | Produit & pédagogie. |
-| V4-009C | `S2_READY_OFFLINE_NETWORK_BLOCKED` | Protocole 3.0.0 clos ; contrat v2.1 audité, identité Sonnet 5 approuvée et enveloppe Finance gelée. | Oui, uniquement pour adapter et prévalider le runner v2 hors ligne. | Préflight `HARD_OFF` conforme, puis autorisation réseau distincte de Rayan avant le nouveau 4/4. | `AGENT-DEV-LEARNX` à l'étape `V4-009C-S2`. |
+| V4-009C | `S2_PREFLIGHT_GREEN_NETWORK_BLOCKED` | Contrat v2.1 audité, identité et budget gelés ; préflight runner `HARD_OFF` vert, 4/4 fake, 0 replay après reprise. | Non avant autorisation propriétaire. | Message direct de Rayan, puis raccord réseau et nouveau 4/4. | `RAYAN`, puis `AGENT-DEV-LEARNX`. |
 | V4-010 | `ACTIF_HORS_LIGNE` | Fake-flow complet intégré sur `dev`, persistant, testé responsive et maintenu sous hard-off ; 0 flow live. | Oui : réaudit UX/contrats et tests sans réseau/débit. | Pipeline promu + contrat publié + gate de cohorte. | Développement, avec Produit & Direction artistique. |
 | V4-011 | `BLOQUÉ` | Aucun gate de maîtrise cumulatif déterministe. | Non. | V4-010 calibré + contrôle multi-notions serveur livré. | Produit & pédagogie + Développement. |
 | V4-012 | `BLOQUÉ` | Fondations financières sans données de pilote. | Non. | Pilote V4-010 instrumenté. | Finance & Pricing. |

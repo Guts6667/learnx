@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "preflightId": "learnx-writing-framework-selection-fr-sonnet-5-runner-v2-hard-off",
+  "preflightVersion": "1.0.0",
+  "performedAt": "2026-08-21T17:55:00Z",
+  "status": "HARD_OFF_PREFLIGHT_GREEN",
+  "identityFingerprint": "cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31",
+  "authorities": {
+    "dossier": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json",
+      "sha256": "1cbd9a03170e0f8243edc2fabfe0897c5b6e399422b48373c841729699701d69"
+    },
+    "financeEnvelope": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json",
+      "sha256": "ad998debc488acd4f0d77dfb1b36e7ceac2acb430e02c4df52826daeb180ba33"
+    }
+  },
+  "executionBoundary": {
+    "mode": "OFFLINE_FAKE_ONLY",
+    "networkCallsAllowed": false,
+    "modelCallsPerformed": 0,
+    "holdoutAccess": "PROHIBITED",
+    "liveActivationAllowed": false
+  },
+  "results": {
+    "usableWorkflows": 4,
+    "expectedWorkflows": 4,
+    "offlineProviderExecutions": 4,
+    "replayProviderExecutions": 0,
+    "ledgerEventCount": 12,
+    "maximumObservedMessageUtf8Bytes": 12321,
+    "maximumAllowedMessageUtf8Bytes": 65536,
+    "cases": [
+      {
+        "caseId": "baseline-pico-spider-mastered",
+        "messageUtf8Bytes": 12235,
+        "status": "VALID"
+      },
+      {
+        "caseId": "fidelity-a-explicit-refusal",
+        "messageUtf8Bytes": 12012,
+        "status": "VALID"
+      },
+      {
+        "caseId": "fidelity-a-first-fact-removed",
+        "messageUtf8Bytes": 12125,
+        "status": "VALID"
+      },
+      {
+        "caseId": "injection-negative-base-remains-partial",
+        "messageUtf8Bytes": 12321,
+        "status": "VALID"
+      }
+    ]
+  },
+  "provenControls": {
+    "authorityBytesRehashed": true,
+    "candidateViewOmitsLevelsScoresTemplatesAndProgression": true,
+    "callIntentBeforeProvider": true,
+    "rawPersistedBeforeValidation": true,
+    "appendOnlyHashChainedLedger": true,
+    "durableRestartDoesNotCallProviderAgain": true,
+    "oversizedMessagesFailBeforeProvider": true,
+    "missingCostRequiresReconciliation": true,
+    "canaryLeakStopsOnSafety": true,
+    "sequentialOnly": true,
+    "maximumRetriesPerWorkflow": 0,
+    "fallbackAllowed": false
+  },
+  "remainingGate": {
+    "runnerNetworkAdapterImplemented": false,
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "providerRouteObserved": false,
+    "actualCostsReconciled": false,
+    "panel10x2Authorized": false,
+    "holdoutAuthorized": false
+  },
+  "preflightFingerprint": "ca81bfec01494d31356d6a3efde9bb7581c1a1ff601013f1c8c6df63ee582f16"
+}

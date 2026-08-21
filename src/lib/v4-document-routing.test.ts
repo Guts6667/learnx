@@ -48,7 +48,9 @@ describe('V4 document routing and assigned execution queue', () => {
 
     expect(backlog).toContain('V4-003A — Corpus mécanique successeur');
     expect(backlog).toContain('V4-003B — Audit autonome indépendant');
-    expect(backlog).toContain("V4-003A-R1 — Durcissement de l'oracle mécanique");
+    expect(backlog).toContain(
+      "V4-003A-R1 — Durcissement de l'oracle mécanique",
+    );
     expect(backlog).toContain('V4-003B-R1 — Nouvel audit autonome indépendant');
     expect(index).toContain('V4_003A_MECHANICAL_ORACLE_REPORT.md');
     expect(index).toContain('V4_003B_INDEPENDENT_AUDIT_REPORT.md');
@@ -56,12 +58,13 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md');
     expect(index).toContain('V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md');
     expect(index).toContain('V4_003D_GATE4_FINANCE_ARBITRATION.md');
+    expect(index).toContain('V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md');
     expect(roadmap).toContain(
       "Le chemin critique ne possède qu'un ticket actif",
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
-        currentResponsibleAgent: 'AGENT-DEV-LEARNX',
+        currentResponsibleAgent: 'RAYAN',
         currentTicket: 'V4-009C-S2',
         modelCallsAllowed: false,
       }),

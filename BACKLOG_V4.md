@@ -2,11 +2,11 @@
 
 ## Statut et autorité
 
-- Version : 1.10.7
+- Version : 1.10.8
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
-- Dernière consolidation : 21 août 2026 — Rayan C approuve le dossier exact et
-  V4-003D arbitre le gate 4 à `0,708328 USD` fournisseur maximum ; seul
-  V4-009C-S2 peut reprendre hors ligne pour implémenter et prévalider le runner
+- Dernière consolidation : 21 août 2026 — le runner v2 de V4-009C-S2 passe son
+  préflight `HARD_OFF` sur 4/4 cas avec faux fournisseur et reprise idempotente ;
+  le réseau attend une autorisation distincte de Rayan
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -393,7 +393,7 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 | 5.2 | `V4-003B-R1 — Nouvel audit autonome indépendant` | `DONE_READY_TO_FREEZE` | `AGENT-METHODOLOGIE` | `AGENT-DEV-LEARNX` | Rapport `docs/V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md` ; 0 P0/P1, P2 non bloquant déclaré | **Clos le 21 août 2026** : `READY_TO_FREEZE`, sans retuning ni appel modèle |
 | 6 | `V4-003C — Gel de la nouvelle identité` | `DONE_RAYAN_C` | `AGENT-PROTOCOLE-IA` | `AGENT-DEV-LEARNX`, `AGENT-PEDAGOGIE` | Dossier `writing-framework-selection-sonnet-5-freeze.v1.json` entièrement empreinté ; rapport `docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | **Clos le 21 août 2026** : Rayan C approuve le dossier exact, sans appel |
 | 7 | `V4-003D — Enveloppe Finance du gate 4` | `DONE_FINANCE_ARBITRATED` | `AGENT-FINANCE` | `AGENT-PROTOCOLE-IA` | `0,177082 USD`/tentative, quatre appels, plafond `0,708328 USD`, réconciliation fail-closed ; rapport `docs/V4_003D_GATE4_FINANCE_ARBITRATION.md` | **Clos hors ligne** : Finance `ARBITRATED`, réseau toujours interdit |
-| 8 | `V4-009C-S2 — Exécution du nouveau gate 4` | `READY_OFFLINE_IMPLEMENTATION_NETWORK_BLOCKED` | `AGENT-DEV-LEARNX` | `AGENT-PROTOCOLE-IA`, `AGENT-METHODOLOGIE` | Adapter d'abord le runner v2 et produire un préflight `HARD_OFF` ; ensuite seulement 4 workflows maximum, raw/usage/coûts persistés, zéro replay | Implémentation hors ligne conforme, puis autorisation réseau distincte de Rayan ; après exécution `4/4 GO` ou campagne close `NO-GO` |
+| 8 | `V4-009C-S2 — Exécution du nouveau gate 4` | `HARD_OFF_PREFLIGHT_GREEN_WAIT_OWNER_NETWORK_GO` | `RAYAN`, puis `AGENT-DEV-LEARNX` | `AGENT-PROTOCOLE-IA`, `AGENT-METHODOLOGIE` | Runner v2, stockage durable, faux fournisseur et préflight 4/4 livrés ; rapport `docs/V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | Autorisation réseau distincte de Rayan ; ensuite seulement raccord OpenRouter, 4 workflows maximum, raw/usage/coûts persistés, puis `4/4 GO` ou campagne close `NO-GO` |
 | 9 | `V4-003E — Analyse et publication du verdict` | `WAIT_V4-009C-S2` | `AGENT-METHODOLOGIE` | `AGENT-RECHERCHE`, `AGENT-FINANCE` | Rapport méthodologique, comparaison historique, limites et entrée append-only | Rayan décide arrêt ou panel 10 × 2 |
 
 #### Tickets conditionnels

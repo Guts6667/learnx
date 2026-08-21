@@ -1,7 +1,7 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.4`
+- **Version** : `1.0.5`
 - **Date** : 21 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
@@ -49,6 +49,8 @@ chemin de lecture actif.
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json` | `FROZEN_INPUT_OWNER_APPROVED` | Identité, corpus, mapping, runner, télémétrie et stop-policy liés ; réseau et holdout interdits. |
 | `V4_003D_GATE4_FINANCE_ARBITRATION.md` | `CURRENT_STATUS` | Gate 4 borné à `0,708328 USD` fournisseur ; ouvre seulement l'implémentation hors ligne du runner. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json` | `FROZEN_FINANCE_INPUT` | Enveloppe gate 4 arbitrée ; autorisation réseau propriétaire absente. |
+| `V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | `CURRENT_STATUS` | Runner v2 et stockage durable prévalidés `HARD_OFF` ; attend le GO réseau propriétaire. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-runner-preflight.v1.json` | `CURRENT_STATUS` | Preuve machine 4/4 fake, zéro réseau et reprise sans second appel ; aucune preuve modèle. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques
