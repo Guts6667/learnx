@@ -26,8 +26,8 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('RAYAN'),
-      currentTicket: z.literal('V4-003C'),
+      currentResponsibleAgent: z.literal('AGENT-DEV-LEARNX'),
+      currentTicket: z.literal('V4-009C-S2'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -92,7 +92,9 @@ const activeManifestSchema = z
         status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
       }),
       'V4-003': z.object({
-        status: z.literal('EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C'),
+        status: z.literal(
+          'FINANCE_ARBITRATED_RUNNER_IMPLEMENTATION_READY_OFFLINE',
+        ),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -125,10 +127,27 @@ const activeManifestSchema = z
                 report: z.literal(
                   'docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md',
                 ),
-                status: z.literal('FROZEN_OFFLINE_AWAITING_RAYAN_C'),
+                status: z.literal('FROZEN_OFFLINE_OWNER_APPROVED'),
+              }),
+              financeEnvelope: z.object({
+                fingerprint: z.literal(
+                  '256431012e251498ae021c2bf14f6e11f8373e8baf4117a0bcc7f8436a88e765',
+                ),
+                maximumCostPerAttemptUsd: z.literal(0.177082),
+                maximumProviderAttempts: z.literal(4),
+                maximumProviderCostUsd: z.literal(0.708328),
+                path: z.literal(
+                  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json',
+                ),
+                report: z.literal(
+                  'docs/V4_003D_GATE4_FINANCE_ARBITRATION.md',
+                ),
+                status: z.literal(
+                  'FINANCE_ARBITRATED_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED',
+                ),
               }),
               status: z.literal(
-                'EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C',
+                'GATE4_FINANCE_ARBITRATED_RUNNER_IMPLEMENTATION_READY_OFFLINE',
               ),
             })
             .optional(),
@@ -177,61 +196,6 @@ const activeManifestSchema = z
                   SONNET_5_REASONING_ATTESTATION_SHA256,
                 ),
               }),
-              successorOfflineEvidence: z
-                .object({
-                  compilerMutationCaseCount: z.literal(7),
-                  mechanicalCaseCount: z.literal(19),
-                  mechanicalOracle: z.literal(
-                    'benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.json',
-                  ),
-                  mechanicalOracleFingerprint: z.literal(
-                    '7bbea4ae4d024eed8dc91f0847c8f2021b28fd35e40fe7933b02af4568cf1297',
-                  ),
-                  mechanicalOracleReport: z.literal(
-                    'docs/V4_003A_MECHANICAL_ORACLE_REPORT.md',
-                  ),
-                  independentAuditReport: z.literal(
-                    'docs/V4_003B_INDEPENDENT_AUDIT_REPORT.md',
-                  ),
-                  independentAuditVerdict: z.literal(
-                    'BLOCKED_WITH_FINDINGS',
-                  ),
-                  correctiveDedicatedTestCount: z.literal(12),
-                  correctiveMechanicalCaseCount: z.literal(33),
-                  correctiveMechanicalOracle: z.literal(
-                    'benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json',
-                  ),
-                  correctiveMechanicalOracleFingerprint: z.literal(
-                    '2c35125ea438cf1686ae88b01ecdb28bc304a3c9b9af6d45cff81f37306af3c2',
-                  ),
-                  correctiveMechanicalOracleReport: z.literal(
-                    'docs/V4_003A_R1_ORACLE_HARDENING_REPORT.md',
-                  ),
-                  correctiveMechanicalOracleValidator: z.literal(
-                    'src/lib/executable-rubric-mechanical-oracle-v2-1.ts',
-                  ),
-                  correctiveIndependentAuditReport: z.literal(
-                    'docs/V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md',
-                  ),
-                  correctiveIndependentAuditVerdict:
-                    z.literal('READY_TO_FREEZE'),
-                  frozenExperimentDossier: z.object({
-                    identityFingerprint: z.literal(
-                      'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
-                    ),
-                    path: z.literal(
-                      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
-                    ),
-                    report: z.literal(
-                      'docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md',
-                    ),
-                    status: z.literal('FROZEN_OFFLINE_AWAITING_RAYAN_C'),
-                  }),
-                  status: z.literal(
-                    'EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C',
-                  ),
-                })
-                .optional(),
               status: z.literal('FOUR_CASE_GATE_NO_GO_CLOSED'),
             })
             .optional(),
@@ -274,7 +238,9 @@ const activeManifestSchema = z
         mvpLevelEffect: z.literal(
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
-        status: z.literal('V4-003C_FROZEN_AWAITING_RAYAN_C'),
+        status: z.literal(
+          'V4-003D_FINANCE_ARBITRATED_AWAITING_RUNNER_AND_NETWORK_GO',
+        ),
       }),
     }),
   })
@@ -367,6 +333,14 @@ describe('active autonomous correction phase manifest', () => {
         resolve(process.cwd(), successor?.frozenExperimentDossier.report ?? ''),
       ),
     ).toBe(true);
+    expect(
+      existsSync(resolve(process.cwd(), successor?.financeEnvelope.path ?? '')),
+    ).toBe(true);
+    expect(
+      existsSync(
+        resolve(process.cwd(), successor?.financeEnvelope.report ?? ''),
+      ),
+    ).toBe(true);
   });
 
   it('keeps live execution closed while allowing only explicit offline work', () => {
@@ -383,8 +357,8 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'RAYAN',
-      currentTicket: 'V4-003C',
+      currentResponsibleAgent: 'AGENT-DEV-LEARNX',
+      currentTicket: 'V4-009C-S2',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });

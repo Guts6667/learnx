@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T17:04:28Z",
+  "updatedAt": "2026-08-21T17:23:18Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "V4-003C_FROZEN_AWAITING_RAYAN_C",
+      "status": "V4-003D_FINANCE_ARBITRATED_AWAITING_RUNNER_AND_NETWORK_GO",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -178,8 +178,8 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-003C",
-    "currentResponsibleAgent": "RAYAN",
+    "currentTicket": "V4-009C-S2",
+    "currentResponsibleAgent": "AGENT-DEV-LEARNX",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
       "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
@@ -211,16 +211,18 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C",
-      "nextTicket": "V4-003C",
-      "responsibleAgent": "RAYAN",
+      "status": "FINANCE_ARBITRATED_RUNNER_IMPLEMENTATION_READY_OFFLINE",
+      "nextTicket": "V4-009C-S2",
+      "responsibleAgent": "AGENT-DEV-LEARNX",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
-        "OWNER_ARBITRATION_OF_FROZEN_DOSSIER_ONLY"
+        "IMPLEMENT_SUCCESSOR_RUNNER_OFFLINE",
+        "FAKE_PROVIDER_PREFLIGHT",
+        "VERIFY_65536_UTF8_BYTE_BOUND_BEFORE_NETWORK"
       ],
       "forbidden": [
         "MODEL_CALL",
-        "FINANCE_BUDGET_BEFORE_RAYAN_C",
+        "NETWORK_BEFORE_DIRECT_OWNER_AUTHORIZATION",
         "HOLDOUT_ACCESS",
         "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_COMPARABLE_CANDIDATES",
         "BLOCK_FIRST_SONNET_5_GATE_ON_THREE_CANDIDATE_COMPARISON",
@@ -290,7 +292,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C",
+      "status": "GATE4_FINANCE_ARBITRATED_RUNNER_IMPLEMENTATION_READY_OFFLINE",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -324,10 +326,19 @@
         "frozenExperimentDossier": {
           "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json",
           "identityFingerprint": "cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31",
-          "status": "FROZEN_OFFLINE_AWAITING_RAYAN_C",
+          "status": "FROZEN_OFFLINE_OWNER_APPROVED",
           "report": "docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md"
         },
-        "status": "EXPERIMENT_DOSSIER_FROZEN_AWAITING_RAYAN_C"
+        "financeEnvelope": {
+          "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json",
+          "fingerprint": "256431012e251498ae021c2bf14f6e11f8373e8baf4117a0bcc7f8436a88e765",
+          "maximumCostPerAttemptUsd": 0.177082,
+          "maximumProviderAttempts": 4,
+          "maximumProviderCostUsd": 0.708328,
+          "status": "FINANCE_ARBITRATED_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED",
+          "report": "docs/V4_003D_GATE4_FINANCE_ARBITRATION.md"
+        },
+        "status": "GATE4_FINANCE_ARBITRATED_RUNNER_IMPLEMENTATION_READY_OFFLINE"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",
@@ -847,8 +858,8 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "V4-003C_RAYAN_C_NOT_GRANTED",
-      "V4-003D_FINANCE_NOT_ARBITRATED",
+      "V4-009C-S2_RUNNER_IMPLEMENTATION_NOT_VERIFIED",
+      "V4-009C-S2_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED",
       "NEW_STAGE_ONE_NOT_AUTHORIZED_OR_EXECUTED"
     ]
   },
@@ -913,7 +924,8 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Rayan C arbitrates the exact frozen V4-003C dossier. Approval opens only V4-003D Finance; it does not authorize network, runner execution, panel, holdout or live activation.",
+    "Implement and validate V4-009C-S2 offline against the frozen dossier and Finance envelope: executable-rubric/v2 adapter, fake provider, 65536-byte pre-dispatch bound, idempotence, raw persistence and fail-closed reconciliation. Keep network hard-off.",
+    "After the offline runner preflight is green, request a direct owner authorization naming Sonnet 5, the four frozen synthetic cases, four calls maximum and the 0.708328 USD provider cap. Do not dispatch before that message.",
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",

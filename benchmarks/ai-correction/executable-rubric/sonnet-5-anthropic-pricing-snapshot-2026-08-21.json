@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "source": "https://openrouter.ai/api/v1/models/anthropic/claude-sonnet-5/endpoints",
+  "observedAt": "2026-08-21T17:23:18Z",
+  "modelId": "anthropic/claude-sonnet-5",
+  "modelSnapshot": "anthropic/claude-sonnet-5-20260630",
+  "providerName": "Anthropic",
+  "routeTag": "anthropic",
+  "status": 0,
+  "pricing": {
+    "promptUsdPerToken": 0.000002,
+    "completionUsdPerToken": 0.00001,
+    "inputCacheReadUsdPerToken": 0.0000002,
+    "inputCacheWriteUsdPerToken": 0.0000025,
+    "inputCacheWriteOneHourUsdPerToken": 0.000004,
+    "discount": 0
+  },
+  "contextLength": 1000000,
+  "maxCompletionTokens": 128000,
+  "supportedParameters": [
+    "max_tokens",
+    "stop",
+    "reasoning",
+    "include_reasoning",
+    "tools",
+    "tool_choice",
+    "structured_outputs",
+    "response_format",
+    "verbosity",
+    "reasoning_effort"
+  ],
+  "automaticRoutingAllowed": false,
+  "fallbackAllowed": false,
+  "cacheAssumedForBudget": false,
+  "promotionAssumedForBudget": false,
+  "networkEffect": "PUBLIC_CATALOG_READ_ONLY_NO_MODEL_CALL"
+}

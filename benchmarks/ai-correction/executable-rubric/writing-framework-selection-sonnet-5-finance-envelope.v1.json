@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "envelopeId": "learnx-writing-framework-selection-fr-sonnet-5-gate4-finance-v1",
+  "envelopeVersion": "1.0.0",
+  "status": "FINANCE_ARBITRATED_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED",
+  "arbitratedAt": "2026-08-21T17:23:18Z",
+  "campaign": {
+    "dossierPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json",
+    "dossierSha256": "1cbd9a03170e0f8243edc2fabfe0897c5b6e399422b48373c841729699701d69",
+    "identityFingerprint": "cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31",
+    "ownerDossierArbitration": "GRANTED_RAYAN_C_2026_08_21",
+    "stage": "FOUR_CASE_GATE",
+    "historicalBudgetReusedUsd": 0
+  },
+  "pricingAuthority": {
+    "path": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-pricing-snapshot-2026-08-21.json",
+    "sha256": "a64b7b65671f4ec9c96dcacc7457d8d3e6090c114396f7b6f99c6e11fc35190c",
+    "currency": "USD",
+    "promptUsdPerToken": 0.000002,
+    "completionUsdPerToken": 0.00001,
+    "cacheDiscountAssumed": false,
+    "promotionAssumed": false
+  },
+  "perAttemptBound": {
+    "maximumPromptUtf8Bytes": 65536,
+    "promptBytePolicy": "FAIL_BEFORE_NETWORK_IF_SERIALIZED_MESSAGES_EXCEED_65536_UTF8_BYTES",
+    "schemaUtf8Bytes": 477,
+    "transportAllowanceTokens": 2048,
+    "inputTokenUpperBound": 68061,
+    "inputTokenBoundPolicy": "ONE_UTF8_BYTE_COUNTS_AS_ONE_TOKEN_PLUS_SCHEMA_AND_TRANSPORT_ALLOWANCE",
+    "maximumVisibleOutputTokens": 4096,
+    "maximumCostUsd": 0.177082
+  },
+  "gateBound": {
+    "maximumProviderAttempts": 4,
+    "maximumRetriesPerWorkflow": 0,
+    "maximumFallbacks": 0,
+    "executionOrder": "FROZEN_MANIFEST_ORDER_SEQUENTIAL",
+    "stopOnFirstDefect": true,
+    "maximumProviderCostUsd": 0.708328,
+    "unusedBudgetTransferable": false
+  },
+  "treasuryStress": {
+    "providerCapUsd": 0.708328,
+    "openRouterTopUpFactor": 1.055,
+    "providerCapWithTopUpUsdEquivalent": 0.74728604,
+    "adverseVatFactorIncludingTopUp": 1.266,
+    "providerCapWithAdverseVatUsdEquivalent": 0.896743248,
+    "adverseVatAndFxBufferFactor": 1.30398,
+    "providerCapWithAdverseVatAndFxBufferUsdEquivalent": 0.923645545,
+    "eurConversionApplied": false,
+    "productPriceEffect": "NONE"
+  },
+  "reconciliationPolicy": {
+    "actualCostRequiredPerSentAttempt": true,
+    "missingActualCostState": "RECONCILIATION_REQUIRED",
+    "missingActualCostMaySettleAsZero": false,
+    "settlementOrReleaseBeforeReconciliationAllowed": false,
+    "resultPublicationBeforeReconciliationAllowed": false,
+    "timeoutAfterDispatchRequiresReconciliation": true,
+    "orphanedAttemptRequiresReconciliation": true
+  },
+  "authorizationBoundary": {
+    "financeArbitration": "GRANTED_FOR_GATE4_ONLY",
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "runnerImplementationVerified": false,
+    "modelCallsAllowed": false,
+    "panel10x2Included": false,
+    "holdoutAccess": "PROHIBITED",
+    "liveActivationAllowed": false
+  },
+  "envelopeFingerprint": "256431012e251498ae021c2bf14f6e11f8373e8baf4117a0bcc7f8436a88e765"
+}
