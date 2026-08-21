@@ -26,8 +26,8 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('AGENT-METHODOLOGIE'),
-      currentTicket: z.literal('V4-003B-R1'),
+      currentResponsibleAgent: z.literal('AGENT-PROTOCOLE-IA'),
+      currentTicket: z.literal('V4-003C'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -92,9 +92,7 @@ const activeManifestSchema = z
         status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
       }),
       'V4-003': z.object({
-        status: z.literal(
-          'CORRECTIVE_ORACLE_V2_1_READY_FOR_INDEPENDENT_AUDIT',
-        ),
+        status: z.literal('INDEPENDENT_AUDIT_READY_TO_FREEZE'),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -182,8 +180,13 @@ const activeManifestSchema = z
                   correctiveMechanicalOracleValidator: z.literal(
                     'src/lib/executable-rubric-mechanical-oracle-v2-1.ts',
                   ),
+                  correctiveIndependentAuditReport: z.literal(
+                    'docs/V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md',
+                  ),
+                  correctiveIndependentAuditVerdict:
+                    z.literal('READY_TO_FREEZE'),
                   status: z.literal(
-                    'MECHANICAL_ORACLE_V2_1_READY_FOR_V4_003B_R1',
+                    'MECHANICAL_ORACLE_V2_1_READY_TO_FREEZE',
                   ),
                 })
                 .optional(),
@@ -229,9 +232,7 @@ const activeManifestSchema = z
         mvpLevelEffect: z.literal(
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
-        status: z.literal(
-          'V4-003A_R1_DONE_AWAITING_V4-003B-R1',
-        ),
+        status: z.literal('V4-003B_R1_READY_TO_FREEZE_AWAITING_V4-003C'),
       }),
     }),
   })
@@ -306,6 +307,15 @@ describe('active autonomous correction phase manifest', () => {
         ),
       ),
     ).toBe(true);
+    expect(
+      existsSync(
+        resolve(
+          process.cwd(),
+          nextProtocol?.successorOfflineEvidence
+            ?.correctiveIndependentAuditReport ?? '',
+        ),
+      ),
+    ).toBe(true);
   });
 
   it('keeps live execution closed while allowing only explicit offline work', () => {
@@ -322,8 +332,8 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'AGENT-METHODOLOGIE',
-      currentTicket: 'V4-003B-R1',
+      currentResponsibleAgent: 'AGENT-PROTOCOLE-IA',
+      currentTicket: 'V4-003C',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });

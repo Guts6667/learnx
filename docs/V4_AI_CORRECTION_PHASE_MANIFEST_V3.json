@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T16:20:00Z",
+  "updatedAt": "2026-08-21T16:45:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "V4-003A_R1_DONE_AWAITING_V4-003B-R1",
+      "status": "V4-003B_R1_READY_TO_FREEZE_AWAITING_V4-003C",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -178,8 +178,8 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-003B-R1",
-    "currentResponsibleAgent": "AGENT-METHODOLOGIE",
+    "currentTicket": "V4-003C",
+    "currentResponsibleAgent": "AGENT-PROTOCOLE-IA",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
       "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
@@ -211,17 +211,18 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "CORRECTIVE_ORACLE_V2_1_READY_FOR_INDEPENDENT_AUDIT",
-      "nextTicket": "V4-003B-R1",
-      "responsibleAgent": "AGENT-METHODOLOGIE",
+      "status": "INDEPENDENT_AUDIT_READY_TO_FREEZE",
+      "nextTicket": "V4-003C",
+      "responsibleAgent": "AGENT-PROTOCOLE-IA",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
-        "AUDIT_CORRECTIVE_MECHANICAL_ORACLE_READ_ONLY",
-        "RUN_LOCAL_MUTATION_AND_METAMORPHIC_TESTS"
+        "FREEZE_EXACT_EXPERIMENT_IDENTITY_OFFLINE",
+        "PIN_MODEL_ROUTE_PROFILE_CORPUS_MAPPING_RUNNER_TELEMETRY_AND_STOP_POLICY"
       ],
       "forbidden": [
-        "FREEZE_NEW_IDENTITY_BEFORE_V4_003B",
         "MODEL_CALL",
+        "FINANCE_BUDGET_BEFORE_RAYAN_C",
+        "HOLDOUT_ACCESS",
         "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_COMPARABLE_CANDIDATES",
         "BLOCK_FIRST_SONNET_5_GATE_ON_THREE_CANDIDATE_COMPARISON",
         "PRODUCT_PRICING_BEFORE_SECONDARY_COMPARISON"
@@ -316,10 +317,12 @@
         "correctiveMechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json",
         "correctiveMechanicalOracleValidator": "src/lib/executable-rubric-mechanical-oracle-v2-1.ts",
         "correctiveMechanicalOracleReport": "docs/V4_003A_R1_ORACLE_HARDENING_REPORT.md",
+        "correctiveIndependentAuditReport": "docs/V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md",
+        "correctiveIndependentAuditVerdict": "READY_TO_FREEZE",
         "correctiveMechanicalOracleFingerprint": "2c35125ea438cf1686ae88b01ecdb28bc304a3c9b9af6d45cff81f37306af3c2",
         "correctiveMechanicalCaseCount": 33,
         "correctiveDedicatedTestCount": 12,
-        "status": "MECHANICAL_ORACLE_V2_1_READY_FOR_V4_003B_R1"
+        "status": "MECHANICAL_ORACLE_V2_1_READY_TO_FREEZE"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",
@@ -839,7 +842,6 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "V4-003B_R1_INDEPENDENT_AUDIT_NOT_COMPLETED",
       "V4-003C_EXPERIMENT_IDENTITY_NOT_FROZEN",
       "V4-003D_FINANCE_NOT_ARBITRATED",
       "NEW_STAGE_ONE_NOT_AUTHORIZED_OR_EXECUTED"
@@ -906,7 +908,7 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Execute V4-003B-R1 read-only: independently audit the corrective v2.1 oracle and return READY_TO_FREEZE or BLOCKED_WITH_FINDINGS without retuning, model call or package mutation.",
+    "Execute V4-003C offline: freeze and fingerprint the exact model, route, request profile, corpus, mapping, runner, telemetry and stop-policy dossier for Rayan C without model call, budget or holdout access.",
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",

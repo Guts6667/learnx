@@ -2,11 +2,11 @@
 
 ## Statut et autorité
 
-- Version : 1.10.4
+- Version : 1.10.5
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
-- Dernière consolidation : 21 août 2026 — gate evidence-assist clos après deux
-  appels réconciliés ; arbitrage `EXPLICITLY_REFUTED` approuvé pour le
-  successeur hors ligne, sans nouvelle identité exécutable ni dépense
+- Dernière consolidation : 21 août 2026 — V4-003B-R1 rend
+  `READY_TO_FREEZE` sur l'oracle v2.1 ; V4-003C devient le seul ticket
+  ouvrable, hors ligne et sans nouvelle dépense
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -390,8 +390,8 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 | 4 | `V4-003A — Corpus mécanique successeur` | `DONE_OFFLINE` | `AGENT-METHODOLOGIE` | `AGENT-PEDAGOGIE` | 19 cas : paires minimales, localité, monotonie, métamorphismes, injections et 7 mutations ; rapport `docs/V4_003A_MECHANICAL_ORACLE_REPORT.md` | **Clos le 21 août 2026** : oracle mécanique complet, reproductible et relu ; aucun appel ni activation |
 | 5 | `V4-003B — Audit autonome indépendant` | `BLOCKED_WITH_FINDINGS` | `AGENT-METHODOLOGIE` | `AGENT-DEV-LEARNX` | Rapport `docs/V4_003B_INDEPENDENT_AUDIT_REPORT.md`, sans modification du paquet audité | **Clos le 21 août 2026** : aucun P0, mais injection non discriminante, désaccord non exercé, symétrie et fail-closed insuffisants |
 | 5.1 | `V4-003A-R1 — Durcissement de l'oracle mécanique` | `DONE_OFFLINE` | `AGENT-DEV-LEARNX` | `AGENT-METHODOLOGIE`, `AGENT-PEDAGOGIE` | Version v2.1 : 33 cas, injection discriminante, passes distinctes, conditions PECO/PCC négatives, symétrie B, canonicalisation et contrôles fail-closed ; rapport `docs/V4_003A_R1_ORACLE_HARDENING_REPORT.md` | **Clos le 21 août 2026** : tous les P1 du rapport V4-003B couverts, sans changement du contrat ni appel modèle |
-| 5.2 | `V4-003B-R1 — Nouvel audit autonome indépendant` | `READY_NOW` | `AGENT-METHODOLOGIE` | `AGENT-DEV-LEARNX` | Audit indépendant du paquet v2.1 sans retuning ni modification | `READY_TO_FREEZE` ou `BLOCKED_WITH_FINDINGS` |
-| 6 | `V4-003C — Gel de la nouvelle identité` | `WAIT_V4-003B-R1_GO` | `AGENT-PROTOCOLE-IA` | `AGENT-DEV-LEARNX`, `AGENT-PEDAGOGIE` | Modèle/route/profil, corpus, mapping, runner, télémétrie et stop-policy empreintés | **Rayan C** valide le dossier exact, sans appel |
+| 5.2 | `V4-003B-R1 — Nouvel audit autonome indépendant` | `DONE_READY_TO_FREEZE` | `AGENT-METHODOLOGIE` | `AGENT-DEV-LEARNX` | Rapport `docs/V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md` ; 0 P0/P1, P2 non bloquant déclaré | **Clos le 21 août 2026** : `READY_TO_FREEZE`, sans retuning ni appel modèle |
+| 6 | `V4-003C — Gel de la nouvelle identité` | `READY_NOW_OFFLINE` | `AGENT-PROTOCOLE-IA` | `AGENT-DEV-LEARNX`, `AGENT-PEDAGOGIE` | Modèle/route/profil, corpus, mapping, runner, télémétrie et stop-policy empreintés | **Rayan C** valide le dossier exact, sans appel |
 | 7 | `V4-003D — Enveloppe Finance du gate 4` | `WAIT_V4-003C` | `AGENT-FINANCE` | `AGENT-PROTOCOLE-IA` | Coût maximal par tentative, plafond total, nombre d'appels, politique coût absent | Finance `ARBITRATED`, puis autorisation réseau séparée de Rayan |
 | 8 | `V4-009C-S2 — Exécution du nouveau gate 4` | `WAIT_FINANCE_AND_OWNER_GO` | `AGENT-DEV-LEARNX` | `AGENT-PROTOCOLE-IA`, `AGENT-METHODOLOGIE` | 4 workflows maximum, raw/usage/coûts persistés, verdict append-only, zéro replay | `4/4 GO` ou campagne close `NO-GO` |
 | 9 | `V4-003E — Analyse et publication du verdict` | `WAIT_V4-009C-S2` | `AGENT-METHODOLOGIE` | `AGENT-RECHERCHE`, `AGENT-FINANCE` | Rapport méthodologique, comparaison historique, limites et entrée append-only | Rayan décide arrêt ou panel 10 × 2 |

@@ -32,7 +32,7 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(read(path).slice(0, 700)).toContain('CLOSED_REQUEST');
   });
 
-  it('assigns one current ticket and keeps calls disabled', () => {
+  it('opens only the offline identity freeze after the independent audit', () => {
     const index = read('docs/INDEX.md');
     const backlog = read('BACKLOG_V4.md');
     const roadmap = read('docs/V4_ROADMAP.md');
@@ -53,13 +53,14 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_003A_MECHANICAL_ORACLE_REPORT.md');
     expect(index).toContain('V4_003B_INDEPENDENT_AUDIT_REPORT.md');
     expect(index).toContain('V4_003A_R1_ORACLE_HARDENING_REPORT.md');
+    expect(index).toContain('V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md');
     expect(roadmap).toContain(
       "Le chemin critique ne possède qu'un ticket actif",
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
-        currentResponsibleAgent: 'AGENT-METHODOLOGIE',
-        currentTicket: 'V4-003B-R1',
+        currentResponsibleAgent: 'AGENT-PROTOCOLE-IA',
+        currentTicket: 'V4-003C',
         modelCallsAllowed: false,
       }),
     );
