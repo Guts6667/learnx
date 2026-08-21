@@ -27,7 +27,7 @@ const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
       currentResponsibleAgent: z.literal('AGENT-METHODOLOGIE'),
-      currentTicket: z.literal('V4-003A'),
+      currentTicket: z.literal('V4-003B'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -90,7 +90,7 @@ const activeManifestSchema = z
         status: z.literal('COMPLETED_OFFLINE_PUBLICATION_BLOCKED'),
       }),
       'V4-003': z.object({
-        status: z.literal('ACTIVE_OFFLINE_MECHANICAL_CORPUS'),
+        status: z.literal('ACTIVE_OFFLINE_INDEPENDENT_AUDIT'),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -145,6 +145,24 @@ const activeManifestSchema = z
                   SONNET_5_REASONING_ATTESTATION_SHA256,
                 ),
               }),
+              successorOfflineEvidence: z
+                .object({
+                  compilerMutationCaseCount: z.literal(7),
+                  mechanicalCaseCount: z.literal(19),
+                  mechanicalOracle: z.literal(
+                    'benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.json',
+                  ),
+                  mechanicalOracleFingerprint: z.literal(
+                    '7bbea4ae4d024eed8dc91f0847c8f2021b28fd35e40fe7933b02af4568cf1297',
+                  ),
+                  mechanicalOracleReport: z.literal(
+                    'docs/V4_003A_MECHANICAL_ORACLE_REPORT.md',
+                  ),
+                  status: z.literal(
+                    'MECHANICAL_ORACLE_V2_DONE_NO_MODEL_CALL_NO_BUDGET_AWAITING_AUDIT',
+                  ),
+                })
+                .optional(),
               status: z.literal('FOUR_CASE_GATE_NO_GO_CLOSED'),
             })
             .optional(),
@@ -187,7 +205,7 @@ const activeManifestSchema = z
         mvpLevelEffect: z.literal(
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
-        status: z.literal('CONTRACT_COMPILED_OFFLINE_AWAITING_V4-003A'),
+        status: z.literal('MECHANICAL_ORACLE_V2_DONE_AWAITING_V4-003B'),
       }),
     }),
   })
@@ -245,6 +263,22 @@ describe('active autonomous correction phase manifest', () => {
     expect(sha256(read(active.promotionGate.policy.path))).toBe(
       active.promotionGate.policy.sha256,
     );
+    expect(
+      existsSync(
+        resolve(
+          process.cwd(),
+          nextProtocol?.successorOfflineEvidence?.mechanicalOracle ?? '',
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      existsSync(
+        resolve(
+          process.cwd(),
+          nextProtocol?.successorOfflineEvidence?.mechanicalOracleReport ?? '',
+        ),
+      ),
+    ).toBe(true);
   });
 
   it('keeps live execution closed while allowing only explicit offline work', () => {
@@ -262,7 +296,7 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
       currentResponsibleAgent: 'AGENT-METHODOLOGIE',
-      currentTicket: 'V4-003A',
+      currentTicket: 'V4-003B',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });

@@ -94,9 +94,11 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
-Le chemin critique ne possède qu'un ticket actif : `V4-003A`. `V4-002C` est
-clos hors ligne : le schéma, le compilateur, le certificat v2 et leurs tests
-sont disponibles, sans publication ni branchement runtime. `V4-002B` reste
+Le chemin critique ne possède qu'un ticket actif : `V4-003B`. `V4-003A` est
+clos hors ligne : 19 cas mécaniques et 7 mutations du compilateur sont
+reproductibles, sans appel modèle, publication ni branchement runtime. `V4-002C`
+est clos hors ligne : le schéma, le compilateur, le certificat v2 et leurs tests
+sont disponibles. `V4-002B` reste
 clos par l'arbitrage `Rayan B` du 21 août 2026 et `V4-002A` par `Rayan A`.
 V4-010 peut
 recevoir de la maintenance de non-régression sous hard-off, mais aucune nouvelle
@@ -113,8 +115,8 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | `V4-002A — Cadrage de l'activité pilote` | `AGENT-PEDAGOGIE` | **Clos** : brief, scénarios et consigne validés | `V4-002B` |
 | `V4-002B — Contrat atomique successeur` | `AGENT-PEDAGOGIE` | **Clos** : contrat approuvé par `Rayan B`, non publié | `V4-002C` |
 | `V4-002C — Compilateur v2` | `AGENT-DEV-LEARNX` | **Clos hors ligne** : moteur, contrôles statiques, certificat v2 et compatibilité historique validés | `V4-003A` |
-| `V4-003A — Corpus mécanique` | `AGENT-METHODOLOGIE` | **Maintenant** : oracle mécanique, paires minimales et mutations reproductibles | `V4-003B` |
-| `V4-003B — Audit autonome` | `AGENT-METHODOLOGIE` | Audit indépendant sans retuning | `V4-003C` |
+| `V4-003A — Corpus mécanique` | `AGENT-METHODOLOGIE` | **Clos hors ligne** : 19 cas, 7 mutations et empreinte canonique reproductibles | `V4-003B` |
+| `V4-003B — Audit autonome` | `AGENT-METHODOLOGIE` | **Maintenant** : audit indépendant sans retuning | `V4-003C` |
 | `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | Identité entièrement empreintée | Arbitrage **Rayan C** |
 | `V4-003D — Budget` | `AGENT-FINANCE` | Enveloppe bornée | GO réseau séparé de Rayan |
 | `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | Verdict et coûts réconciliés | Analyse `V4-003E` |
@@ -310,7 +312,7 @@ jamais à franchir son gate live.
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
 | V4-002 | `V4-002C_DONE_OFFLINE` | `V4-002A/B` validés ; compilateur et certificat v2 validés hors ligne ; contrat toujours DRAFT, 0 contrat publié. | Non : ticket clos. | Publication interdite avant corpus, audit et gates ultérieurs. | `AGENT-METHODOLOGIE` reprend via V4-003A. |
-| V4-003 | `V4-003A_READY` | Baselines historiques closes ; contrat v2 compilable et rapport V4-002C disponibles. | Oui : `V4-003A` uniquement, sans modèle. | Corpus mécanique, audit, gel, budget et nouvelle autorisation. | `AGENT-METHODOLOGIE`, puis `AGENT-PROTOCOLE-IA`. |
+| V4-003 | `V4-003B_READY` | Contrat v2 compilable ; oracle V4-003A clos avec 19 cas, 7 mutations et rapport reproductible. | Oui : `V4-003B` uniquement, sans modèle ni retuning. | Audit indépendant, gel, budget et nouvelle autorisation. | `AGENT-METHODOLOGIE`, puis `AGENT-PROTOCOLE-IA`. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
 | V4-006 | `LIVRÉ_INACTIF` | Ledger et réservation fondés. | Non. | Calibration après pilote. | Développement + Finance. |

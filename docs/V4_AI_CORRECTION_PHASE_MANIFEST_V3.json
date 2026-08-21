@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T14:07:22Z",
+  "updatedAt": "2026-08-21T15:34:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "CONTRACT_COMPILED_OFFLINE_AWAITING_V4-003A",
+      "status": "MECHANICAL_ORACLE_V2_DONE_AWAITING_V4-003B",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -178,7 +178,7 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-003A",
+    "currentTicket": "V4-003B",
     "currentResponsibleAgent": "AGENT-METHODOLOGIE",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
@@ -209,8 +209,8 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "ACTIVE_OFFLINE_MECHANICAL_CORPUS",
-      "nextTicket": "V4-003A",
+      "status": "ACTIVE_OFFLINE_INDEPENDENT_AUDIT",
+      "nextTicket": "V4-003B",
       "responsibleAgent": "AGENT-METHODOLOGIE",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
@@ -302,8 +302,14 @@
         "compiler": "src/lib/executable-rubric-engine-v2.ts",
         "compilerReport": "docs/V4_002C_COMPILER_REPORT.md",
         "rubricFingerprint": "600fb37a29694ed70c93f6041f879f557792b5120b92cc0ab415466d05383752",
+        "mechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.json",
+        "mechanicalOracleValidator": "src/lib/executable-rubric-mechanical-oracle-v2.ts",
+        "mechanicalOracleReport": "docs/V4_003A_MECHANICAL_ORACLE_REPORT.md",
+        "mechanicalOracleFingerprint": "7bbea4ae4d024eed8dc91f0847c8f2021b28fd35e40fe7933b02af4568cf1297",
+        "mechanicalCaseCount": 19,
+        "compilerMutationCaseCount": 7,
         "minimalPairs": "benchmarks/ai-correction/executable-rubric/writing-fr-explicit-refutation-minimal-pairs.v1.json",
-        "status": "COMPILED_OFFLINE_NO_MODEL_CALL_NO_BUDGET"
+        "status": "MECHANICAL_ORACLE_V2_DONE_NO_MODEL_CALL_NO_BUDGET_AWAITING_AUDIT"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",
@@ -823,7 +829,6 @@
     "effect": "MAKE_SEPARATE_ONE_SHOT_OPENING_AUTHORIZATION_ELIGIBLE_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "V4-003A_MECHANICAL_CORPUS_NOT_BUILT",
       "V4-003B_INDEPENDENT_AUDIT_NOT_COMPLETED",
       "V4-003C_EXPERIMENT_IDENTITY_NOT_FROZEN",
       "V4-003D_FINANCE_NOT_ARBITRATED",
@@ -891,7 +896,7 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Execute V4-003A offline only: build the mechanical oracle, minimal pairs, locality, monotonicity, metamorphic, Unicode/injection and compiler-mutation cases against the approved v2 contract; perform no model call and do not retune the contract from outcomes.",
+    "Execute V4-003B offline only: independently audit the frozen V4-003A mechanical oracle and report READY_TO_FREEZE or BLOCKED_WITH_FINDINGS without changing the contract, corpus, golds, thresholds or evaluator; perform no model call.",
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",

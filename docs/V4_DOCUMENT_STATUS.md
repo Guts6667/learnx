@@ -37,6 +37,8 @@ chemin de lecture actif.
 | `V4_WRITING_FRAMEWORK_SELECTION_CONTRACT_DRAFT.md` | `COMPILED_INPUT_V4_003A` | `Rayan B` clos : contrat approuvé et compilable hors ligne par V4-002C ; toujours non publié et sans autorité d'expérience. |
 | `V4_002C_COMPILER_REPORT.md` | `CURRENT_STATUS` | Preuve de clôture hors ligne : schéma/compilateur, certificat v2, compatibilité historique, consultations, tests et limites. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.v1.draft.json` | `COMPILED_INPUT_V4_003A` | Projection machine v2 compilée hors ligne ; elle reste `DRAFT`, non liée à une version publiée et sans autorité d'expérience. |
+| `V4_003A_MECHANICAL_ORACLE_REPORT.md` | `CURRENT_STATUS` | Preuve de clôture hors ligne : 19 cas mécaniques, 7 mutations et empreinte canonique ; ouvre seulement l'audit V4-003B. |
+| `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.json` | `AUDIT_INPUT_V4_003B` | Oracle mécanique par construction ; aucune validation humaine, modèle ou live. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques
