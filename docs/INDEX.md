@@ -19,6 +19,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |
 | Évaluations | `ASSESSMENT_SPEC.md` | Schéma, logique serveur et tests |
 | Revue scientifique | `SCIENTIFIC_REVIEW_SPEC.md` | Vision optionnelle non persistée tant qu'aucun ticket ne l'autorise |
+| Journal public de recherche | `RESEARCH_JOURNAL_SPEC.md` | Contrat éditorial, versioning et accès public FR/EN |
 | Contenu pédagogique | `EDITORIAL_GUIDELINES.md`, `PEDAGOGY_AUTHORING_GUIDE.md`, `PEDAGOGY_CHANGE_POLICY.md` et le blueprint du programme | Les quatre documents ensemble |
 | Workflow bilingue | `content/i18n/GLOSSARY_FR_EN.json` et `PEDAGOGY_AUTHORING_GUIDE.md` §11 | Manifeste de traduction et workflow serveur |
 | Audit sécurité et exploitation V3 | `docs/V3_AUDIT_REPORT.md` | Rapport de preuve V3-028 ; corrections dans V3-029 à V3-031 |

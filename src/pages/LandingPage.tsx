@@ -301,13 +301,7 @@ export function LandingPage({ path }: { path?: string }) {
             <p>{t('landing.research.description')}</p>
             <a
               class="ui-action ui-action--secondary ui-action--md"
-              href={
-                locale === 'en'
-                  ? '/research/ai-correction/en.html'
-                  : '/research/ai-correction/'
-              }
-              rel="noopener"
-              target="_blank"
+              href={locale === 'en' ? '/research/en.html' : '/research/'}
             >
               {t('landing.research.action')}
             </a>
@@ -330,7 +324,12 @@ export function LandingPage({ path }: { path?: string }) {
       </main>
       <footer class="landing-footer">
         <span>© 2026 LearnX</span>
-        <a href="/login">{t('landing.login')}</a>
+        <div>
+          <a href={locale === 'en' ? '/research/en.html' : '/research/'}>
+            {t('landing.footer.research')}
+          </a>
+          <a href="/login">{t('landing.login')}</a>
+        </div>
       </footer>
     </div>
   );
