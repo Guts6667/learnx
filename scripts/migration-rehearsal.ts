@@ -91,6 +91,12 @@ export function buildDigestBridgeSql(schema: string): string {
           AS 'SELECT public.digest(data, algorithm)'`;
 }
 
+export function migrationLedgerTable(schema?: string): string {
+  if (!schema) return '"_prisma_migrations"';
+  assertSafeReplaySchema(schema);
+  return `${quoteIdentifier(schema)}."_prisma_migrations"`;
+}
+
 export function compareMigrationSnapshots(
   before: MigrationSnapshot,
   after: MigrationSnapshot,
@@ -152,10 +158,11 @@ async function localMigrationChecksums(): Promise<Record<string, string>> {
 
 async function appliedMigrationChecksums(
   client: RawClient,
+  schema?: string,
 ): Promise<Record<string, string>> {
   const rows = await client.$queryRawUnsafe<MigrationRow[]>(
     `SELECT migration_name, checksum, finished_at, rolled_back_at
-     FROM "_prisma_migrations"
+     FROM ${migrationLedgerTable(schema)}
      ORDER BY migration_name`,
   );
   const checksums: Record<string, string> = {};
@@ -329,7 +336,7 @@ async function replayAllMigrations(schema: string): Promise<void> {
     }
 
     replayClient = await createClient(replayDatabaseUrl);
-    const applied = await appliedMigrationChecksums(replayClient);
+    const applied = await appliedMigrationChecksums(replayClient, schema);
     const local = await localMigrationChecksums();
     const missing = Object.entries(local).filter(
       ([migrationName, checksum]) => applied[migrationName] !== checksum,
