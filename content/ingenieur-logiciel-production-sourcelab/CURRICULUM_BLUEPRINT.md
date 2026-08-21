@@ -3,7 +3,7 @@
 ## Statut et finalité
 
 - Version : 2.0.0
-- Statut : `draft`
+- Statut runtime : `active`, publication publique autorisée le 21 août 2026
 - Classification : `CONTENT_ONLY`
 - Identité runtime : `sourcelab-docker-api-socle-ingestion`
 - Volume : 13 h 05, évaluations comprises

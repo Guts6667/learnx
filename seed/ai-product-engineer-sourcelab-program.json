@@ -5,7 +5,7 @@
     "canonicalProgramKey": "ai-product-engineer-sourcelab",
     "locale": "fr",
     "description": "Parcours TypeScript consacré à l’ingestion documentaire, aux embeddings, à pgvector, au retrieval hybride, au RAG sourcé, aux évaluations, à la sécurité et à l’observabilité. Il transforme SourceLab V1 en Program Builder et moteur de rubrique exécutable utiles à LearnX, tout en conservant SourceLab dans un dépôt et une base séparés.",
-    "status": "draft",
+    "status": "active",
     "position": 7,
     "estimatedDurationDays": 49,
     "stages": [

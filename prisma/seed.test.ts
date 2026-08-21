@@ -540,7 +540,7 @@ describe('sample program seed', () => {
         canonicalProgramKey: slug,
         locale: 'fr',
         slug,
-        status: 'draft',
+        status: 'active',
         title: expectedTitle,
       });
       expect(seed.program.stages).toHaveLength(expectedStageCount);

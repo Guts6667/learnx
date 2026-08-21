@@ -30,7 +30,8 @@ obligatoire ; le programme RAG ne suppose aucune fonctionnalité au-delà.
 - Chaque étape possède une évaluation finale pratique.
 - Les contenus techniques distinguent règle stable, choix contextuel et hypothèse à mesurer.
 - Les sources de rédaction et les ressources apprenant sont déclarées séparément dans les sidecars.
-- Les contenus restent `draft` jusqu’aux revues humaines.
+- Le runtime est actif et public depuis le 21 août 2026 ; les statuts de revue
+  historiques des sidecars restent inchangés et ne simulent aucun reviewer.
 
 ## Architecture cible
 

@@ -117,11 +117,12 @@ indépendantes du programme français.
 Ce parcours V2 guidé construit en 13 h 05 une stack locale SourceLab dans le
 [dépôt public SourceLab](https://github.com/Guts6667/sourcelab), à partir du
 [tag `checkpoint-00-starter`](https://github.com/Guts6667/sourcelab/tree/checkpoint-00-starter).
-Il mène à une `SourceVersion READY`, puis à une image
-GHCR traçable, et reste en brouillon jusqu’aux revues éditoriale, technique, du
-starter, du seed et des liens. Son identité runtime distincte est
-`sourcelab-docker-api-socle-ingestion` ; l’ancien programme conserve son
-identité historique et ne doit jamais recevoir cette progression.
+Il mène à une `SourceVersion READY`, puis à une image GHCR traçable. Sa version
+runtime est active et publique depuis le 21 août 2026 ; les traces de revue des
+sidecars restent historiques et ne simulent aucun reviewer. Son identité
+runtime distincte est `sourcelab-docker-api-socle-ingestion` ; l’ancien
+programme conserve son identité historique, reste privé et ne doit jamais
+recevoir cette progression.
 
 - Plan de remplacement V1 → V2, actuellement `HARD_OFF` :
   `docs/SOURCELAB_V2_REPLACEMENT_PLAN.md`
@@ -138,8 +139,9 @@ identité historique et ne doit jamais recevoir cette progression.
 
 Ce parcours ajoute corpus, retrieval, RAG, Program Builder et moteur de rubrique
 exécutable au projet SourceLab autonome. Les modèles recherchent ou contestent
-des preuves ; LearnX conserve les calculs déterministes. Le programme reste en
-brouillon jusqu’aux revues éditoriale, technique et des liens.
+des preuves ; LearnX conserve les calculs déterministes. Sa version runtime est
+active et publique depuis le 21 août 2026 ; les statuts de revue historiques
+des sidecars restent inchangés et ne simulent aucun reviewer.
 
 ## Archives
 
