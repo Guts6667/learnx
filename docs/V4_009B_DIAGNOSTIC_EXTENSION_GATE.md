@@ -1,8 +1,12 @@
 # V4-009B — Gate de l’extension diagnostique
 
+> **CLOSED_REQUEST — NE PAS EXÉCUTER.** La demande `OWNER_GO_REQUIRED` ci-dessous
+> est annulée par l'abandon du pipeline composite. Elle n'attend plus aucune
+> autorisation et ne doit pas être transmise au Propriétaire.
+
 Date : 2026-08-13
 
-Statut : `OWNER_GO_REQUIRED`
+Statut historique : `CANCELLED_SUPERSEDED_NO_EXECUTION`
 
 Cette extension est diagnostique et non promotionnelle. Le `NO-GO` du
 mini-panel `learnx-fr-text-mistral-sonnet-targeted-v1@1.0.0` reste immuable.

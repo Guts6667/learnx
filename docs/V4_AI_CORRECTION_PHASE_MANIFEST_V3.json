@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "APPROVED_FOR_OFFLINE_IMPLEMENTATION",
+      "status": "OFFLINE_IMPLEMENTED_AWAITING_V4-002A",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -176,27 +176,59 @@
     "activitiesEligibleForLiveCorrection": 0,
     "pipelinePromoted": false
   },
+  "activeExecutionQueue": {
+    "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
+    "currentTicket": "V4-002A",
+    "currentResponsibleAgent": "AGENT-PEDAGOGIE",
+    "ownerCheckpoints": [
+      "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
+      "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
+      "RAYAN_C_FROZEN_EXPERIMENT_DOSSIER",
+      "RAYAN_NETWORK_AUTHORIZATION_AFTER_FINANCE"
+    ],
+    "orderedTickets": [
+      "V4-002A",
+      "V4-002B",
+      "V4-002C",
+      "V4-003A",
+      "V4-003B",
+      "V4-003C",
+      "V4-003D",
+      "V4-009C-S2",
+      "V4-003E"
+    ],
+    "modelCallsAllowed": false,
+    "liveActivationAllowed": false
+  },
   "offlineWork": {
     "V4-002": {
       "status": "ACTIVE_OFFLINE_PUBLICATION_BLOCKED",
+      "nextTicket": "V4-002A",
+      "responsibleAgent": "AGENT-PEDAGOGIE",
       "allowed": ["AUTHORING", "COMPILATION", "MUTATION_TESTING"],
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "ACTIVE_OFFLINE",
+      "status": "WAITING_FOR_V4_002C",
+      "nextTicket": "V4-003A",
+      "responsibleAgent": "AGENT-METHODOLOGIE",
       "allowed": [
-        "FREEZE_REPRODUCIBLE_IDENTITIES",
-        "FREEZE_BOUNDED_DEVELOPMENT_CORPUS",
-        "DEFINE_THRESHOLDS_AND_REPORTING"
+        "PRESERVE_HISTORICAL_CAMPAIGNS",
+        "READ_ONLY_METHOD_PREPARATION"
       ],
       "forbidden": [
+        "FREEZE_NEW_IDENTITY_BEFORE_V4_002C",
+        "MODEL_CALL",
         "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_COMPARABLE_CANDIDATES",
         "BLOCK_FIRST_SONNET_5_GATE_ON_THREE_CANDIDATE_COMPARISON",
         "PRODUCT_PRICING_BEFORE_SECONDARY_COMPARISON"
       ]
     },
     "V4-009C": {
-      "status": "ACTIVE_OFFLINE_NO_MODEL_CALL",
+      "status": "BLOCKED_BY_V4_002_003_NO_MODEL_CALL",
+      "nextExecutionTicket": "V4-009C-S2",
+      "responsibleAgent": "AGENT-DEV-LEARNX",
+      "blockedBy": ["V4-002A_TO_V4-003D", "FINANCE", "OWNER_GO"],
       "allowed": [
         "PRESERVE_FROZEN_CAMPAIGN_AND_GATE_IDENTIFIERS",
         "VALIDATE_FOUR_CASE_AND_10X2_STAGES_OFFLINE",

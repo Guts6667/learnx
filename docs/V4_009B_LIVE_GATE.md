@@ -1,6 +1,10 @@
 # V4-009B — Demande de GO du mini-panel
 
-Statut : `OWNER_GO_REQUIRED`
+> **CLOSED_REQUEST — AUTORISATION CONSOMMÉE, CAMPAGNE NO-GO.** Cette demande ne
+> doit pas être réutilisée. Le verdict autoritaire est
+> `docs/V4_009B_MINI_PANEL_RESULT.md`.
+
+Statut historique : `CLOSED_NO_GO_NO_REPLAY`
 Date : 2026-08-13
 
 Cette demande ne constitue pas une activation produit. Le catalogue, le

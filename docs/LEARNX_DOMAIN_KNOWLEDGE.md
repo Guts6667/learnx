@@ -168,10 +168,11 @@ qu'un chercheur de preuves respecte ce contrat.
 
 ## 11. Prochain chemin critique
 
-1. Approuver et tester hors ligne l'ontologie sémantique successeur.
-2. Authorer un seul contrat `WRITING/fr-FR` avec le funnel canonique.
-3. Compiler le contrat et passer les paires minimales/métamorphismes.
-4. Geler une nouvelle identité expérimentale.
+1. Exécuter `V4-002A` : cadrer l'activité et la consigne pilote.
+2. Obtenir l'arbitrage Propriétaire A, puis authorer le contrat atomique
+   `V4-002B`.
+3. Livrer le compilateur v2 et passer les paires minimales/métamorphismes.
+4. Auditer puis geler une nouvelle identité expérimentale.
 5. Obtenir séparément les GO Finance et Propriétaire pour quatre appels.
 6. Si le gate réussit, exécuter le corpus de développement, puis demander
    l'ouverture one-shot du holdout.

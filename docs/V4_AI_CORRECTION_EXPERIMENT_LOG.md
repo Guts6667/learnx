@@ -1,9 +1,9 @@
 # V4 — Journal des expérimentations de correction IA
 
 - **Statut** : journal append-only de recherche et de décision
-- **Date de consolidation** : 13 août 2026
+- **Date de consolidation** : 21 août 2026
 - **Périmètre** : correction formative des productions textuelles en français
-- **Autorité produit** : `BACKLOG_V4.md`, V4-003 puis V4-009B/V4-009C
+- **Autorité produit** : `BACKLOG_V4.md`, `docs/V4_ROADMAP.md` et manifeste V3
 
 Ce document conserve les hypothèses, méthodes, résultats et décisions même
 lorsqu'une piste échoue. Une campagne publiée n'est jamais réécrite pour la

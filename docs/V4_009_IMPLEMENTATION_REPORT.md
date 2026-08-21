@@ -1,5 +1,9 @@
 # V4-009 — Rapport d’implémentation
 
+> **FONDATION TECHNIQUE RÉUTILISABLE, ARCHITECTURE PRODUIT HISTORIQUE.** La saga,
+> l'idempotence et la réconciliation restent valides. Les rôles de correction
+> composite décrits ci-dessous ne définissent plus le pipeline produit.
+
 ## Contrat livré
 
 V4-009 introduit une orchestration composite persistante et reprenable reliant un

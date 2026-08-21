@@ -1,5 +1,8 @@
 # V4-009B — Audit hors ligne
 
+> **HISTORICAL_EVIDENCE.** Cet audit décrit une baseline et un pipeline clos. Il
+> ne constitue plus une checklist de reprise.
+
 ## Baseline
 
 - Base Git : `origin/dev` au commit `8d663db`.

@@ -1,6 +1,10 @@
 # V4-009C — Préparation du panel Gemini evidence researcher 10×2
 
-- **Statut** : `OFFLINE_READY / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED`
+> **CLOSED_REQUEST — PANEL EXÉCUTÉ ET CLOS.** Le statut de préparation ci-dessous
+> ne vaut plus demande d'autorisation. La campagne s'est arrêtée sur une
+> citation non exacte et ne peut pas être reprise.
+
+- **Statut historique final** : `NO_GO_EXACT_QUOTE_FAILURE / NO_REPLAY`
 - **Date** : 15 août 2026
 - **Portée** : préenregistrement et validations hors ligne
 - **Appels modèle** : aucun

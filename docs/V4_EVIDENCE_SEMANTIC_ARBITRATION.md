@@ -1,6 +1,6 @@
 # Arbitrage V4 — absence, refus explicite et contradiction
 
-- **Statut** : `APPROVED_FOR_OFFLINE_IMPLEMENTATION`
+- **Statut** : `OFFLINE_IMPLEMENTED_AWAITING_V4-002A`
 - **Version** : `1.0.0`
 - **Décision propriétaire** : Rayan Chambet
 - **Date** : 21 août 2026

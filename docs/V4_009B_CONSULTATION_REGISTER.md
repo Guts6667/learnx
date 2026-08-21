@@ -1,7 +1,11 @@
 # V4-009B — Registre de consultation
 
+> **HISTORICAL_EVIDENCE — CAMPAGNE CLOSE.** Les arbitrages de ce registre
+> s'appliquent uniquement au composite `learnx-fr-text-mistral-sonnet-targeted-v1`.
+> Aucun travail ne doit reprendre depuis ce document.
+
 Date d'ouverture : 2026-08-13
-Statut global : `DIAGNOSTIC_EXTENSION_OWNER_GO_REQUIRED`
+Statut historique final : `COMPOSITE_NO_GO_CLOSED_NO_REPLAY`
 
 ## Produit & pédagogie
 

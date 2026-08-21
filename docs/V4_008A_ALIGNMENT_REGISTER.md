@@ -1,5 +1,10 @@
 # V4-008A — Registre de consultation et d’alignement composite
 
+> **HISTORICAL_EVIDENCE — PIPELINE ABANDONNÉ.** Ce registre conserve
+> l'alignement du composite Mistral/Sonnet. Il ne peut plus autoriser un appel,
+> une implémentation ou une activation. La direction active est le moteur de
+> rubrique exécutable référencé par `docs/V4_ROADMAP.md`.
+
 **Statut :** consultations reçues et arbitrées pour une implémentation hors
 ligne ; activation, prix et appels modèle bloqués.
 

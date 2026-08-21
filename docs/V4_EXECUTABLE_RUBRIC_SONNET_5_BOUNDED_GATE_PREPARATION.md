@@ -1,7 +1,11 @@
 # V4-009C — préparation du gate Sonnet 5 à raisonnement borné
 
+> **CLOSED_REQUEST — CAMPAGNE EXÉCUTÉE ET NO-GO.** Le résultat autoritaire est
+> `docs/V4_EXECUTABLE_RUBRIC_SONNET_5_BOUNDED_GATE_RESULT.md`. Aucun plafond ou
+> GO décrit ici n'est réutilisable.
+
 Date : 16 août 2026
-Statut : `OFFLINE_READY / PRODUCT_NOT_ARBITRATED / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`
+Statut historique final : `NO_GO_TECHNICAL_REQUEST_PROFILE / NO_REPLAY`
 
 ## Objet
 

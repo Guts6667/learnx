@@ -1,7 +1,12 @@
 # V4-009C — Rapport de préparation hors ligne
 
+> **CLOSED_REQUEST — CAMPAGNE EXÉCUTÉE PUIS CLOSE.** Le statut
+> `READY_FOR_EXPLICIT_OWNER_GO` ci-dessous décrit l'état pré-run historique. Le
+> résultat autoritaire est `docs/V4_009C_MINI_PANEL_RESULT.md` ; aucun reliquat
+> d'autorisation ou de budget n'est réutilisable.
+
 Date : 2026-08-13
-Verdict : `READY_FOR_EXPLICIT_OWNER_GO`
+Verdict historique pré-run : `SUPERSEDED_BY_NO_GO_TECHNICAL_PANEL_INCOMPLETE`
 
 ## Campagne gelée
 

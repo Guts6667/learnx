@@ -1,10 +1,16 @@
 # Arbitrage Finance — gate evidence-assist quatre cas
 
+> **CLOSED_REQUEST — AUTORISATION CONSOMMÉE.** Le run a exécuté deux appels pour
+> `0,025622 USD`, puis la campagne a fermé sans replay. Le plafond restant n'est
+> pas transférable. Voir `docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md`.
+
 Date : 20 août 2026
 
 Baseline qualifiée : `251c6f7fd26361ffc57504dc06f3fb0d4ed91882`
 
-Statut : `FINANCE_ARBITRATED / OWNER_AUTHORIZATION_NOT_GRANTED / NO_MODEL_CALL`
+Statut historique pré-run : `FINANCE_ARBITRATED / OWNER_AUTHORIZATION_NOT_GRANTED / NO_MODEL_CALL`
+
+Statut final : `AUTHORIZATION_CONSUMED / FINANCE_RECONCILED / CAMPAIGN_CLOSED`
 
 ## Décision bornée
 

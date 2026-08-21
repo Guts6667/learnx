@@ -130,9 +130,11 @@ cherche plus un modèle chargé de noter. La spécification canonique devient
 - Les modèles ont uniquement les rôles de chercheur de preuves et, dans une
   expérience séparée, de falsificateur indépendant. Ils ne produisent ni
   niveau final, ni score, ni `PASS/FAIL`, ni feedback libre.
-- Une rubrique atomique, compilée et versionnée détermine les niveaux. Les
-  éléments `SUPPORTED`, `CONTRADICTED`, `NOT_DEMONSTRATED` et `AMBIGUOUS` sont
-  rattachés à des spans exacts de la réponse.
+- Une rubrique atomique, compilée et versionnée détermine les niveaux. Le
+  successeur authoré distingue `SUPPORTED`, `CONTRADICTED`,
+  `NOT_DEMONSTRATED`, `EXPLICITLY_REFUTED` et `AMBIGUOUS`. Les statuts prouvés
+  sont rattachés à des spans exacts de la réponse ; l'absence simple conserve
+  zéro span.
 - Cette phrase décrit uniquement le canal mécanique historique/exécutable. Sous
   evidence-assist 3.0.0, une relation IA candidate ne peut produire aucun de
   ces statuts atomiques ni alimenter une règle de niveau. Seuls des constats
@@ -317,17 +319,17 @@ Propriétaire conserve le dernier arbitrage pour toute contradiction.
 | Ticket | Pilote | Implémentation | Consultation obligatoire | Validation finale |
 | --- | --- | --- | --- | --- |
 | V4-001 | Développement | Développement | Produit & pédagogie, Finance & Pricing | Propriétaire |
-| V4-002 | Produit & pédagogie | Développement | Développement | Propriétaire |
-| V4-003 | Produit & pédagogie | Développement | Finance & Pricing | Propriétaire |
+| V4-002 | `AGENT-PEDAGOGIE` | `AGENT-DEV-LEARNX` à partir de V4-002C | `AGENT-METHODOLOGIE` | Rayan A puis B |
+| V4-003 | `AGENT-METHODOLOGIE` | `AGENT-DEV-LEARNX` pour les runners | `AGENT-PROTOCOLE-IA`, puis `AGENT-FINANCE` | Rayan C puis GO réseau distinct |
 | V4-004 | Développement | Développement | Produit & pédagogie | Propriétaire |
 | V4-005 | Développement | Développement | Produit & pédagogie | Propriétaire |
 | V4-006 | Développement | Développement | Finance & Pricing | Propriétaire |
 | V4-007 | Finance & Pricing | Développement | Produit & pédagogie | Propriétaire |
 | V4-008 | Développement | Développement | Finance & Pricing, Produit & pédagogie | Propriétaire |
-| V4-008A | Produit & pédagogie | Développement | Finance & Pricing, Direction artistique | Propriétaire |
+| V4-008A | Historique clos | Aucune | Aucune | Aucun nouveau GO |
 | V4-009 | Développement | Développement | Finance & Pricing, Produit & pédagogie | Propriétaire |
-| V4-009B | Produit & pédagogie | Développement | Finance & Pricing, Développement | Propriétaire |
-| V4-009C | Produit & pédagogie | Développement | Finance & Pricing, Développement | Propriétaire |
+| V4-009B | Historique clos | Aucune | Aucune | Aucun replay |
+| V4-009C | `AGENT-DEV-LEARNX` pour chaque exécution autorisée | `AGENT-DEV-LEARNX` | `AGENT-PROTOCOLE-IA`, `AGENT-METHODOLOGIE`, `AGENT-FINANCE` | Message direct de Rayan après gates |
 | V4-010 | Développement | Développement | Produit & pédagogie, Direction artistique | Propriétaire |
 | V4-011 | Produit & pédagogie | Développement | Finance & Pricing, Direction artistique | Propriétaire |
 | V4-012 | Finance & Pricing | Développement | Produit & pédagogie | Propriétaire |
@@ -356,6 +358,56 @@ Propriétaire conserve le dernier arbitrage pour toute contradiction.
    arbitrage produit/propriétaire et transmission à Développement.
 5. Aucun ticket nécessitant un conseil externe ne peut ouvrir la fonctionnalité
    concernée sur la seule base d'une auto-évaluation interne.
+
+### File P0 assignée — moteur de correction formative
+
+Les codes ci-dessous désignent des **rôles d'agent stables**, pas le nom
+temporaire d'un chat. Un seul agent est responsable de chaque ticket. Un autre
+agent peut être consulté, mais ne modifie pas le même lot simultanément.
+
+| Code | Rôle et frontière |
+| --- | --- |
+| `AGENT-PEDAGOGIE` | Consigne, objectifs, critères, éléments, templates et remédiations. Aucun code applicatif ni budget. |
+| `AGENT-DEV-LEARNX` | Schémas, compilateur, runtime, tests, idempotence et exécution autorisée. N'invente aucune règle pédagogique. |
+| `AGENT-METHODOLOGIE` | Oracles mécaniques, métamorphismes, mutation testing et audit indépendant. Ne retune ni contrat ni modèle. |
+| `AGENT-PROTOCOLE-IA` | Identité expérimentale, route, profil, manifests, stop-policy et dossier reproductible. Aucun dispatch. |
+| `AGENT-FINANCE` | Borne de coût, plafond, réconciliation et décision d'enveloppe. Aucun choix pédagogique. |
+| `AGENT-RECHERCHE` | Journal append-only, article public après verdict stabilisé et limites méthodologiques. Aucun résultat inventé. |
+| `AGENT-DA` | Restitution Atlas et compréhension utilisateur après stabilisation des états. Aucune règle métier. |
+| `RAYAN` | Arbitrages propriétaire, autorisations d'appel, holdout, publication et activation. |
+
+#### Tickets immédiats
+
+| Ordre | Ticket | Statut de départ | Agent responsable | Consultés | Livrable obligatoire | Gate de sortie |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | `V4-002A — Cadrage de l'activité pilote` | `READY_NOW` | `AGENT-PEDAGOGIE` | `AGENT-DEV-LEARNX` | `docs/V4_WRITING_PILOT_BRIEF.md` : activité réelle, consigne, objectif observable, exclusions et risque | **Rayan A** valide l'activité et la consigne |
+| 2 | `V4-002B — Contrat atomique successeur` | `WAIT_RAYAN_A` | `AGENT-PEDAGOGIE` | `AGENT-METHODOLOGIE`, `AGENT-DEV-LEARNX` | Contrat `DRAFT`, éléments/propriétaires, règles, `EXPLICITLY_REFUTED`, templates et remédiations | **Rayan B** valide critères, propriété des lacunes et feedback |
+| 3 | `V4-002C — Compilateur sémantique v2` | `WAIT_V4-002B` | `AGENT-DEV-LEARNX` | `AGENT-PEDAGOGIE` | Schéma/compilateur hors ligne, certificat v2, compatibilité historique et tests unitaires | Tous les contrôles statiques passent ; aucune publication |
+| 4 | `V4-003A — Corpus mécanique successeur` | `WAIT_V4-002C` | `AGENT-METHODOLOGIE` | `AGENT-PEDAGOGIE` | Paires minimales, localité, monotonie, métamorphismes, injections et mutations | Oracle mécanique complet et reproductible |
+| 5 | `V4-003B — Audit autonome indépendant` | `WAIT_V4-003A` | `AGENT-METHODOLOGIE` | `AGENT-DEV-LEARNX` | Rapport défauts/gaps sans modifier contrat, golds ou seuils | `READY_TO_FREEZE` ou `BLOCKED_WITH_FINDINGS` |
+| 6 | `V4-003C — Gel de la nouvelle identité` | `WAIT_V4-003B_GO` | `AGENT-PROTOCOLE-IA` | `AGENT-DEV-LEARNX`, `AGENT-PEDAGOGIE` | Modèle/route/profil, corpus, mapping, runner, télémétrie et stop-policy empreintés | **Rayan C** valide le dossier exact, sans appel |
+| 7 | `V4-003D — Enveloppe Finance du gate 4` | `WAIT_V4-003C` | `AGENT-FINANCE` | `AGENT-PROTOCOLE-IA` | Coût maximal par tentative, plafond total, nombre d'appels, politique coût absent | Finance `ARBITRATED`, puis autorisation réseau séparée de Rayan |
+| 8 | `V4-009C-S2 — Exécution du nouveau gate 4` | `WAIT_FINANCE_AND_OWNER_GO` | `AGENT-DEV-LEARNX` | `AGENT-PROTOCOLE-IA`, `AGENT-METHODOLOGIE` | 4 workflows maximum, raw/usage/coûts persistés, verdict append-only, zéro replay | `4/4 GO` ou campagne close `NO-GO` |
+| 9 | `V4-003E — Analyse et publication du verdict` | `WAIT_V4-009C-S2` | `AGENT-METHODOLOGIE` | `AGENT-RECHERCHE`, `AGENT-FINANCE` | Rapport méthodologique, comparaison historique, limites et entrée append-only | Rayan décide arrêt ou panel 10 × 2 |
+
+#### Tickets conditionnels
+
+| Ticket | Agent responsable | Condition d'ouverture | Résultat autorisé |
+| --- | --- | --- | --- |
+| `V4-009C-S3 — Corpus complet 10 × 2` | `AGENT-DEV-LEARNX` | Gate 4 réussi, budget Finance distinct et nouveau GO Rayan | `GO_TO_SEALED_HOLDOUT` éligible ou campagne close |
+| `V4-003F — Article public de recherche` | `AGENT-RECHERCHE` | Verdict stabilisé et artefacts réconciliés | Nouvel article FR/EN immuable ; jamais réécriture silencieuse de l'ancien |
+| `V4-009C-S4 — Holdout one-shot` | `AGENT-DEV-LEARNX` | `GO_TO_SEALED_HOLDOUT` + autorisation one-shot Rayan | `GO_AUTONOMOUS_FORMATIVE` ou NO-GO définitif de l'identité |
+| `V4-010A — Branchement du pipeline promu` | `AGENT-DEV-LEARNX` | `GO_AUTONOMOUS_FORMATIVE`, contrat `PUBLISHED`, activité éligible | Pilote fermé derrière feature flag, sans effet progression |
+| `V4-010B — Revue Atlas du pilote` | `AGENT-DA` | États et contrats runtime stabilisés | QA compréhension/accessibilité ; aucune modification des règles |
+
+#### Handoffs obligatoires
+
+Chaque agent termine par un paquet de reprise contenant : commit/baseline,
+fichiers modifiés, validations exactes, limites, décision attendue et liste des
+actions explicitement interdites. Le ticket suivant ne démarre pas sur un
+simple résumé conversationnel. `AGENT-DEV-LEARNX` reste le seul agent autorisé
+à exécuter un appel facturable, et uniquement après Finance et message direct
+de Rayan portant modèle, données, nombre d'appels et plafond.
 
 ### Gates de consultation et preuves obligatoires
 
@@ -962,6 +1014,11 @@ Dépendances : V4-001.**
 - Inclure objectifs, critères, poids, niveaux de performance, éléments attendus,
   variantes acceptables, erreurs fréquentes, sources autorisées, exemples
   étalonnés, seuil, règles de preuve, propriété des pénalités et clarification.
+- Authorer explicitement la différence entre absence, refus explicite,
+  contradiction et ambiguïté suivant
+  `docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md`. Pour le MVP, le refus explicite
+  d'un élément positif requis partage l'effet de niveau de l'absence, mais pas
+  son certificat ni son template.
 - Définir une vue candidate distincte du contrat : proposition de l'élément,
   variantes, contre-exemples, règle candidate de un à quatre spans et aucune
   donnée de points, poids, niveau ou score. Le modèle retourne uniquement
@@ -1029,9 +1086,11 @@ Dépendances : V4-001.**
   mécanique à oracle exécutable, corpus sémantique synthétique qualifié de
   pseudo-oracle et shadow réel non annoté mesurant seulement stabilité,
   couverture, abstention, coût et dérive.
-- Valider d'abord la faisabilité du pipeline exact Sonnet 5 sous evidence-assist
-  3.0.0 : 4/4 puis corpus de développement complet 10 × 2. Cette preuve mono-
-  candidat peut progresser jusqu'au holdout et au pilote formatif borné.
+- Valider d'abord le contrat et le compilateur successeur sans appel. Le modèle,
+  la route et le profil de la nouvelle identité sont choisis et gelés seulement
+  dans `V4-003C`, après l'audit autonome. La faisabilité recommence ensuite par
+  4/4 puis un corpus de développement 10 × 2 ; aucune identité historique n'est
+  reprise.
 - Comparer ensuite au moins trois candidats sur des identités reproductibles
   pour robustesse, latence et coût complet. Cette phase secondaire ne bloque pas
   le premier gate Sonnet 5 ; elle bloque V4-018, le prix et la généralisation
@@ -1550,7 +1609,7 @@ l'activation de V4-010.**
 
 ---
 
-## V4-009C — Moteur de rubrique exécutable et recherche de preuves Gemini
+## V4-009C — Moteur de rubrique exécutable et validation du chercheur de preuves
 
 Mise à jour du 16 août 2026 : le panel Gemini v2 est figé en NO-GO après une
 citation non exacte. Le screening Sonnet 5 termine 3/3 `VALID`, mais son panel

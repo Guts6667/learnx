@@ -187,6 +187,6 @@ retuning opportuniste ou replay sous la même empreinte.
 | Risque | faible |
 | Contrat publié | non |
 | Contrat de travail | `writing-go-no-go-recommendation-fr.v2`, DRAFT, `EVIDENCE_ASSIST_ONLY` |
-| Objectif de la prochaine tranche | authorer et compiler une sous-grille réellement déterministe |
+| Objectif de la prochaine tranche | `V4-002A` : choisir l'activité réelle, sa consigne et son objectif observable |
 | Appels modèle autorisés | 0 |
 | Effet progression | aucun |

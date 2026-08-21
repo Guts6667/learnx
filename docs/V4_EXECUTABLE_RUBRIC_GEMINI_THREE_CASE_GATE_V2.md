@@ -1,6 +1,10 @@
 # V4-009C — Préparation du gate Gemini trois cas v2
 
-- **Statut** : `OFFLINE_READY / PRODUCT_APPROVED / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED`
+> **HISTORICAL_EVIDENCE — AUTORISATION CONSOMMÉE.** Le gate v2 a terminé valide
+> et n'autorise aujourd'hui aucun nouvel appel ; la suite historique a été le
+> panel v2, désormais clos.
+
+- **Statut historique final** : `EXECUTED_VALID / AUTHORIZATION_CONSUMED`
 - **Date** : 15 août 2026
 - **Portée** : fixture synthétique et manifeste hors ligne uniquement
 - **Appels modèle** : aucun

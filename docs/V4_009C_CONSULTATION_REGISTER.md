@@ -1,5 +1,8 @@
 # V4-009C — Registre de consultation
 
+> **HISTORICAL_EVIDENCE — IDENTITÉ CLOSE.** Conserver pour la traçabilité ; ne
+> pas reprendre ses prompts, gates ou autorisations comme direction active.
+
 Date : 2026-08-13
 Statut global : `MINI_PANEL_NO_GO_TECHNICAL`
 
