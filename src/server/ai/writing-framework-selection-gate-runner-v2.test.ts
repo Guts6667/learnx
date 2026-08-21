@@ -12,8 +12,12 @@ import {
   FileWritingFrameworkGateStore,
   FrozenOracleWritingFrameworkGateProvider,
   InMemoryWritingFrameworkGateStore,
+  runWritingFrameworkSelectionGateLive,
   runWritingFrameworkSelectionGatePreflight,
+  type WritingFrameworkGateLiveProvider,
   type WritingFrameworkGatePackage,
+  type WritingFrameworkGateProviderRequest,
+  type WritingFrameworkGateProviderResult,
 } from './writing-framework-selection-gate-runner-v2.ts';
 
 const root = process.cwd();
@@ -47,6 +51,32 @@ function loadPackage(): WritingFrameworkGatePackage {
 
 function deterministicCanary(caseId: string): string {
   return `lx-canary-${sha256(caseId).slice(0, 32)}`;
+}
+
+class DeterministicLiveProvider implements WritingFrameworkGateLiveProvider {
+  public readonly kind = 'OPENROUTER_LIVE' as const;
+  public executions = 0;
+
+  public constructor(
+    private readonly packageInput: WritingFrameworkGatePackage,
+    private readonly actualCostUsd: number | null = 0.01,
+  ) {}
+
+  public async execute(
+    request: WritingFrameworkGateProviderRequest,
+  ): Promise<WritingFrameworkGateProviderResult> {
+    this.executions += 1;
+    const offline = await new FrozenOracleWritingFrameworkGateProvider(
+      this.packageInput,
+    ).execute(request);
+    return {
+      ...offline,
+      actualCostUsd: this.actualCostUsd,
+      costSource: this.actualCostUsd === null ? 'UNKNOWN' : 'ACTUAL',
+      observedProvider: 'Anthropic' as const,
+      providerRequestId: `live-test:${request.idempotencyKey}`,
+    };
+  }
 }
 
 describe('V4-009C-S2 writing framework gate runner v2', () => {
@@ -387,5 +417,55 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
         financeText: read(financePath),
       }),
     ).toThrow(`WRITING_GATE_AUTHORITY_MISMATCH:${firstPath}`);
+  });
+
+  it('runs the live path sequentially with actual costs and durable outcomes', async () => {
+    const packageInput = loadPackage();
+    const provider = new DeterministicLiveProvider(packageInput);
+    const store = new InMemoryWritingFrameworkGateStore();
+    const run = await runWritingFrameworkSelectionGateLive({
+      canaryFactory: deterministicCanary,
+      packageInput,
+      provider,
+      store,
+    });
+    expect(run).toMatchObject({
+      forceNoGo: false,
+      mode: 'OPENROUTER_LIVE',
+      modelCallsPerformed: 4,
+      networkCallsAllowed: true,
+      stoppedReason: null,
+      usableWorkflows: 4,
+    });
+    expect(provider.executions).toBe(4);
+    expect(run.attempts).toHaveLength(4);
+    expect(
+      run.attempts.every(
+        ({ costSource, financialState, observedProvider, status }) =>
+          costSource === 'ACTUAL' &&
+          financialState === 'RECONCILED' &&
+          observedProvider === 'Anthropic' &&
+          status === 'VALID',
+      ),
+    ).toBe(true);
+  });
+
+  it('stops the live path after one response with missing cost', async () => {
+    const packageInput = loadPackage();
+    const provider = new DeterministicLiveProvider(packageInput, null);
+    const run = await runWritingFrameworkSelectionGateLive({
+      canaryFactory: deterministicCanary,
+      packageInput,
+      provider,
+      store: new InMemoryWritingFrameworkGateStore(),
+    });
+    expect(provider.executions).toBe(1);
+    expect(run.stoppedReason).toBe('FINANCE');
+    expect(run.attempts).toHaveLength(1);
+    expect(run.attempts[0]).toMatchObject({
+      actualCostUsd: null,
+      financialState: 'RECONCILIATION_REQUIRED',
+      status: 'INVALID',
+    });
   });
 });

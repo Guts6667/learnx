@@ -44,6 +44,7 @@
     "ai:evidence:assist:prepare": "node --import tsx scripts/prepare-evidence-assist-development-campaign.ts",
     "ai:evidence:assist:authorize:gate4": "node --import tsx scripts/create-evidence-assist-gate4-authorization.ts",
     "ai:evidence:assist:v2:preflight": "node --import tsx scripts/preflight-writing-framework-selection-gate-v2.ts",
+    "ai:evidence:assist:v2:gate": "node --import tsx scripts/run-writing-framework-selection-gate-v2.ts",
     "ai:evidence:assist:validate": "node --import tsx scripts/run-evidence-assist-development-campaign.ts",
     "ai:evidence:screening:validate": "node --import tsx scripts/run-executable-rubric-sonnet5-screening.ts",
     "ai:evidence:smoke": "node --import tsx scripts/run-executable-rubric-gemini-smoke.ts",

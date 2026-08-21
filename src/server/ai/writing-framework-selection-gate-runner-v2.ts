@@ -178,15 +178,19 @@ export type WritingGateAttempt = Readonly<{
   cacheReadTokens: number;
   cacheWriteTokens: number;
   caseId: string;
-  costSource: 'OFFLINE_FAKE' | 'UNKNOWN';
+  costSource: 'ACTUAL' | 'OFFLINE_FAKE' | 'UNKNOWN';
   defectClasses: readonly WritingGateDefect[];
   dispatchState: 'CONFIRMED' | 'ORPHANED' | 'PENDING';
-  financialState: 'OFFLINE_NOT_APPLICABLE' | 'RECONCILIATION_REQUIRED';
+  errorCode: string | null;
+  financialState:
+    | 'OFFLINE_NOT_APPLICABLE'
+    | 'RECONCILED'
+    | 'RECONCILIATION_REQUIRED';
   idempotencyKey: string;
   inputTokens: number;
   latencyMs: number;
   messageUtf8Bytes: number;
-  observedProvider: 'OFFLINE_FAKE' | null;
+  observedProvider: 'Anthropic' | 'OFFLINE_FAKE' | null;
   providerRequestId: string | null;
   rawOutputSha256: string | null;
   rawPersistedBeforeValidation: boolean;
@@ -234,10 +238,11 @@ export type WritingFrameworkGateProviderResult = Readonly<{
   actualCostUsd: number | null;
   cacheReadTokens: number;
   cacheWriteTokens: number;
-  costSource: 'OFFLINE_FAKE' | 'UNKNOWN';
+  costSource: 'ACTUAL' | 'OFFLINE_FAKE' | 'UNKNOWN';
+  errorCode?: string;
   inputTokens: number;
   latencyMs: number;
-  observedProvider: 'OFFLINE_FAKE';
+  observedProvider: 'Anthropic' | 'OFFLINE_FAKE' | null;
   providerRequestId: string | null;
   rawOutput: string;
   reasoningTokens: number;
@@ -251,13 +256,20 @@ export interface WritingFrameworkGateOfflineProvider {
   ): Promise<WritingFrameworkGateProviderResult>;
 }
 
+export interface WritingFrameworkGateLiveProvider {
+  readonly kind: 'OPENROUTER_LIVE';
+  execute(
+    request: WritingFrameworkGateProviderRequest,
+  ): Promise<WritingFrameworkGateProviderResult>;
+}
+
 export type WritingFrameworkGateRun = Readonly<{
   attempts: readonly WritingGateAttempt[];
   forceNoGo: boolean;
   ledger: readonly WritingGateLedgerEvent[];
-  mode: 'OFFLINE_FAKE_ONLY';
-  modelCallsPerformed: 0;
-  networkCallsAllowed: false;
+  mode: 'OFFLINE_FAKE_ONLY' | 'OPENROUTER_LIVE';
+  modelCallsPerformed: number;
+  networkCallsAllowed: boolean;
   providerExecutions: number;
   stoppedReason: WritingGateDefect | null;
   usableWorkflows: number;
@@ -846,6 +858,7 @@ function invalidAttempt(input: {
     costSource: 'UNKNOWN',
     defectClasses: [...input.defects],
     dispatchState: input.dispatchState ?? 'ORPHANED',
+    errorCode: null,
     financialState: input.financialState ?? 'RECONCILIATION_REQUIRED',
     idempotencyKey: input.idempotencyKey,
     inputTokens: 0,
@@ -865,15 +878,84 @@ function invalidAttempt(input: {
   });
 }
 
-export async function runWritingFrameworkSelectionGatePreflight(input: {
+type GateRunInput = Readonly<{
   canaryFactory?: (caseId: string) => string;
   packageInput: WritingFrameworkGatePackage;
-  provider: WritingFrameworkGateOfflineProvider;
+  provider: WritingFrameworkGateLiveProvider | WritingFrameworkGateOfflineProvider;
   store: WritingFrameworkGateStore;
-}): Promise<WritingFrameworkGateRun> {
-  if (input.provider.kind !== 'OFFLINE_FAKE') {
-    throw new Error('WRITING_GATE_OFFLINE_FAKE_PROVIDER_REQUIRED');
+}>;
+
+function liveBudgetDefect(input: {
+  attempts: readonly WritingGateAttempt[];
+  packageInput: WritingFrameworkGatePackage;
+}): WritingGateDefect | null {
+  const completedProviderAttempts = input.attempts.filter(
+    ({ dispatchState }) => dispatchState !== 'PENDING',
+  ).length;
+  if (
+    completedProviderAttempts >=
+    input.packageInput.finance.gateBound.maximumProviderAttempts
+  ) {
+    return 'BUDGET';
   }
+  const reconciledCost = input.attempts.reduce(
+    (total, attempt) => total + (attempt.actualCostUsd ?? 0),
+    0,
+  );
+  return reconciledCost +
+    input.packageInput.finance.perAttemptBound.maximumCostUsd >
+    input.packageInput.finance.gateBound.maximumProviderCostUsd +
+      Number.EPSILON
+    ? 'BUDGET'
+    : null;
+}
+
+function providerDefects(input: {
+  packageInput: WritingFrameworkGatePackage;
+  priorAttempts: readonly WritingGateAttempt[];
+  providerResult: WritingFrameworkGateProviderResult;
+}): WritingGateDefect[] {
+  const defects: WritingGateDefect[] = [];
+  if (input.providerResult.errorCode) {
+    defects.push(
+      input.providerResult.errorCode.startsWith('PROVIDER_')
+        ? 'FINANCE'
+        : 'MODEL_OUTPUT_INVALID',
+    );
+  }
+  if (
+    input.providerResult.observedProvider !==
+    input.packageInput.expectedObservedProvider
+  ) {
+    defects.push('IDENTITY');
+  }
+  if (
+    input.providerResult.actualCostUsd === null ||
+    input.providerResult.costSource !== 'ACTUAL'
+  ) {
+    defects.push('FINANCE');
+  } else {
+    const totalCost =
+      input.priorAttempts.reduce(
+        (total, attempt) => total + (attempt.actualCostUsd ?? 0),
+        0,
+      ) + input.providerResult.actualCostUsd;
+    if (
+      input.providerResult.actualCostUsd >
+        input.packageInput.finance.perAttemptBound.maximumCostUsd ||
+      totalCost >
+        input.packageInput.finance.gateBound.maximumProviderCostUsd
+    ) {
+      defects.push('BUDGET');
+    }
+  }
+  return defects;
+}
+
+async function runWritingFrameworkSelectionGate(
+  input: GateRunInput,
+): Promise<WritingFrameworkGateRun> {
+  const live = input.provider.kind === 'OPENROUTER_LIVE';
   const attempts: WritingGateAttempt[] = [];
   let providerExecutions = 0;
   let stoppedReason: WritingGateDefect | null = null;
@@ -904,7 +986,7 @@ export async function runWritingFrameworkSelectionGatePreflight(input: {
         caseId: caseItem.caseId,
         defects: ['BUDGET'],
         dispatchState: 'PENDING',
-        financialState: 'OFFLINE_NOT_APPLICABLE',
+        financialState: live ? 'RECONCILED' : 'OFFLINE_NOT_APPLICABLE',
         idempotencyKey: key,
         messageUtf8Bytes: bytes,
         requestContextFingerprint: prepared.requestContext.contextFingerprint,
@@ -912,6 +994,26 @@ export async function runWritingFrameworkSelectionGatePreflight(input: {
       attempts.push(attempt);
       stoppedReason = 'BUDGET';
       break;
+    }
+    if (live) {
+      const budgetDefect = liveBudgetDefect({
+        attempts,
+        packageInput: input.packageInput,
+      });
+      if (budgetDefect) {
+        const attempt = invalidAttempt({
+          caseId: caseItem.caseId,
+          defects: [budgetDefect],
+          dispatchState: 'PENDING',
+          financialState: 'RECONCILED',
+          idempotencyKey: key,
+          messageUtf8Bytes: bytes,
+          requestContextFingerprint: prepared.requestContext.contextFingerprint,
+        });
+        attempts.push(attempt);
+        stoppedReason = budgetDefect;
+        break;
+      }
     }
     const intent = await input.store.appendCallIntent({
       caseId: caseItem.caseId,
@@ -966,7 +1068,7 @@ export async function runWritingFrameworkSelectionGatePreflight(input: {
     let validation: EvidenceAssistValidationResultV2 | null = null;
     const defects: WritingGateDefect[] = [];
     if (!rawPersisted) defects.push('TRACEABILITY');
-    if (rawPersisted) {
+    if (rawPersisted && !providerResult.errorCode) {
       try {
         validation = validateEvidenceAssistOutputV2({
           compiled: input.packageInput.compiled,
@@ -990,21 +1092,40 @@ export async function runWritingFrameworkSelectionGatePreflight(input: {
         );
       }
     }
-    const costReconciled =
-      providerResult.actualCostUsd !== null &&
-      providerResult.costSource === 'OFFLINE_FAKE';
-    if (!costReconciled) defects.push('FINANCE');
+    const costReconciled = live
+      ? providerResult.actualCostUsd !== null &&
+        providerResult.costSource === 'ACTUAL'
+      : providerResult.actualCostUsd !== null &&
+        providerResult.costSource === 'OFFLINE_FAKE';
+    if (live) {
+      defects.push(
+        ...providerDefects({
+          packageInput: input.packageInput,
+          priorAttempts: attempts,
+          providerResult,
+        }),
+      );
+    } else if (!costReconciled) {
+      defects.push('FINANCE');
+    }
     const uniqueDefects = [...new Set(defects)];
     const attempt: WritingGateAttempt = Object.freeze({
       actualCostUsd: providerResult.actualCostUsd,
       cacheReadTokens: providerResult.cacheReadTokens,
       cacheWriteTokens: providerResult.cacheWriteTokens,
       caseId: caseItem.caseId,
-      costSource: costReconciled ? 'OFFLINE_FAKE' : 'UNKNOWN',
+      costSource: costReconciled
+        ? live
+          ? 'ACTUAL'
+          : 'OFFLINE_FAKE'
+        : 'UNKNOWN',
       defectClasses: uniqueDefects,
       dispatchState: 'CONFIRMED',
+      errorCode: providerResult.errorCode ?? null,
       financialState: costReconciled
-        ? 'OFFLINE_NOT_APPLICABLE'
+        ? live
+          ? 'RECONCILED'
+          : 'OFFLINE_NOT_APPLICABLE'
         : 'RECONCILIATION_REQUIRED',
       idempotencyKey: key,
       inputTokens: providerResult.inputTokens,
@@ -1031,11 +1152,35 @@ export async function runWritingFrameworkSelectionGatePreflight(input: {
     attempts,
     forceNoGo: stoppedReason !== null,
     ledger: input.store.ledger(),
-    mode: 'OFFLINE_FAKE_ONLY' as const,
-    modelCallsPerformed: 0 as const,
-    networkCallsAllowed: false as const,
+    mode: live ? ('OPENROUTER_LIVE' as const) : ('OFFLINE_FAKE_ONLY' as const),
+    modelCallsPerformed: live ? providerExecutions : 0,
+    networkCallsAllowed: live,
     providerExecutions,
     stoppedReason,
     usableWorkflows: attempts.filter(({ status }) => status === 'VALID').length,
   });
+}
+
+export async function runWritingFrameworkSelectionGatePreflight(input: {
+  canaryFactory?: (caseId: string) => string;
+  packageInput: WritingFrameworkGatePackage;
+  provider: WritingFrameworkGateOfflineProvider;
+  store: WritingFrameworkGateStore;
+}): Promise<WritingFrameworkGateRun> {
+  if (input.provider.kind !== 'OFFLINE_FAKE') {
+    throw new Error('WRITING_GATE_OFFLINE_FAKE_PROVIDER_REQUIRED');
+  }
+  return runWritingFrameworkSelectionGate(input);
+}
+
+export async function runWritingFrameworkSelectionGateLive(input: {
+  canaryFactory?: (caseId: string) => string;
+  packageInput: WritingFrameworkGatePackage;
+  provider: WritingFrameworkGateLiveProvider;
+  store: WritingFrameworkGateStore;
+}): Promise<WritingFrameworkGateRun> {
+  if (input.provider.kind !== 'OPENROUTER_LIVE') {
+    throw new Error('WRITING_GATE_OPENROUTER_LIVE_PROVIDER_REQUIRED');
+  }
+  return runWritingFrameworkSelectionGate(input);
 }

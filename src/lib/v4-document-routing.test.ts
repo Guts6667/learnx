@@ -32,7 +32,7 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(read(path).slice(0, 700)).toContain('CLOSED_REQUEST');
   });
 
-  it('routes only the offline runner implementation after Finance', () => {
+  it('routes the closed network gate to offline verdict analysis', () => {
     const index = read('docs/INDEX.md');
     const backlog = read('BACKLOG_V4.md');
     const roadmap = read('docs/V4_ROADMAP.md');
@@ -59,13 +59,12 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md');
     expect(index).toContain('V4_003D_GATE4_FINANCE_ARBITRATION.md');
     expect(index).toContain('V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md');
-    expect(roadmap).toContain(
-      "Le chemin critique ne possède qu'un ticket actif",
-    );
+    expect(index).toContain('V4_009C_S2_NETWORK_GATE_REPORT.md');
+    expect(roadmap).toContain('| `V4-003E — Analyse et publication` |');
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
-        currentResponsibleAgent: 'RAYAN',
-        currentTicket: 'V4-009C-S2',
+        currentResponsibleAgent: 'AGENT-METHODOLOGIE',
+        currentTicket: 'V4-003E',
         modelCallsAllowed: false,
       }),
     );

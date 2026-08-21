@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T17:55:00Z",
+  "updatedAt": "2026-08-21T18:23:03Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -14,7 +14,7 @@
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
     "successorSemanticArbitration": {
-      "status": "V4-009C-S2_HARD_OFF_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_GO",
+      "status": "V4-009C-S2_NO_GO_SEMANTIC_DISAGREEMENT",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
       "authoringFunnel": "docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md",
       "explicitRefutationStatus": "EXPLICITLY_REFUTED",
@@ -178,8 +178,8 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-009C-S2",
-    "currentResponsibleAgent": "RAYAN",
+    "currentTicket": "V4-003E",
+    "currentResponsibleAgent": "AGENT-METHODOLOGIE",
     "ownerCheckpoints": [
       "RAYAN_A_PILOT_ACTIVITY_AND_PROMPT",
       "RAYAN_B_CRITERIA_PENALTY_OWNERSHIP_AND_TEMPLATES",
@@ -211,17 +211,17 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "RUNNER_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_AUTHORIZATION",
+      "status": "RUNNER_NETWORK_GATE_NO_GO_SEMANTIC_DISAGREEMENT",
       "nextTicket": "V4-009C-S2",
       "responsibleAgent": "RAYAN",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
         "PRESERVE_SUCCESSOR_RUNNER_PREFLIGHT",
-        "REQUEST_DIRECT_OWNER_NETWORK_AUTHORIZATION"
+        "PRESERVE_NETWORK_GATE_NO_GO_ARTIFACTS"
       ],
       "forbidden": [
-        "MODEL_CALL",
-        "NETWORK_BEFORE_DIRECT_OWNER_AUTHORIZATION",
+        "MODEL_CALL_WITHOUT_NEW_IDENTITY_AND_OWNER_AUTHORIZATION",
+        "REPLAY_CLOSED_GATE",
         "HOLDOUT_ACCESS",
         "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_COMPARABLE_CANDIDATES",
         "BLOCK_FIRST_SONNET_5_GATE_ON_THREE_CANDIDATE_COMPARISON",
@@ -229,19 +229,19 @@
       ]
     },
     "V4-009C": {
-      "status": "S2_PREFLIGHT_GREEN_NETWORK_BLOCKED",
+      "status": "S2_NO_GO_SEMANTIC_DISAGREEMENT",
       "nextExecutionTicket": "V4-009C-S2",
       "responsibleAgent": "RAYAN",
-      "blockedBy": ["OWNER_GO"],
+      "blockedBy": ["NEW_IDENTITY_AND_PRODUCT_OWNER_ARBITRATION"],
       "allowed": [
         "PRESERVE_FROZEN_CAMPAIGN_AND_GATE_IDENTIFIERS",
         "PRESERVE_HARD_OFF_RUNNER_PREFLIGHT",
-        "REQUEST_DIRECT_OWNER_NETWORK_AUTHORIZATION",
+        "PRESERVE_NETWORK_GATE_NO_GO_ARTIFACTS",
         "PRESERVE_QUALIFIED_SEALED_HOLDOUT_CLOSED",
         "PREPARE_FINANCE_BUDGET_REQUEST"
       ],
       "forbidden": [
-        "NETWORK_DISPATCH_BEFORE_FINANCE_AND_OWNER_GO",
+        "REPLAY_CLOSED_GATE_OR_DISPATCH_WITHOUT_NEW_IDENTITY",
         "HOLDOUT_OPEN_BEFORE_SEPARATE_ONE_SHOT_OWNER_AUTHORIZATION",
         "PIPELINE_PROMOTION_BEFORE_GO_AUTONOMOUS_FORMATIVE"
       ]
@@ -292,7 +292,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "GATE4_RUNNER_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_GO",
+      "status": "GATE4_NETWORK_NO_GO_SEMANTIC_DISAGREEMENT",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -350,7 +350,27 @@
           "maximumObservedMessageUtf8Bytes": 12321,
           "maximumAllowedMessageUtf8Bytes": 65536
         },
-        "status": "GATE4_RUNNER_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_GO"
+        "networkGateResult": {
+          "status": "NO-GO_SEMANTIC_DISAGREEMENT",
+          "report": "docs/V4_009C_S2_NETWORK_GATE_REPORT.md",
+          "resultDirectory": "benchmarks/ai-correction/results/writing-framework-selection-sonnet5-v2/2026-08-21T20-24-00-Europe-Paris",
+          "summarySha256": "c843a7429a3674614f8de56b6bd4541513f40c23e051b479d6daa78a7f3eacef",
+          "ledgerSha256": "d9d8436a5d9288de95e5444aa355d8e4bf6c159831441850f525e5bac6b22a45",
+          "ledgerFinalRecordHash": "95e26c61926cf06d7bb5e98d659fb90206843d71162cf778529e2f90fea598e0",
+          "modelCallsPerformed": 1,
+          "maximumAuthorizedCalls": 4,
+          "unusedCallsNotSent": 3,
+          "completedUsableWorkflows": 0,
+          "stoppedReason": "SEMANTIC_DISAGREEMENT",
+          "actualCostUsd": 0.018828,
+          "costSource": "ACTUAL",
+          "requestedRoute": "Anthropic",
+          "observedProvider": "Anthropic",
+          "retryCount": 0,
+          "fallbackCount": 0,
+          "replayAllowed": false
+        },
+        "status": "GATE4_NETWORK_NO_GO_SEMANTIC_DISAGREEMENT"
       },
       "implementedEvidence": {
         "engineCommit": "145d668",

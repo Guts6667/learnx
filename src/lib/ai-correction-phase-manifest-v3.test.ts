@@ -26,8 +26,8 @@ const historicalManifestSchema = z
 const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
-      currentResponsibleAgent: z.literal('RAYAN'),
-      currentTicket: z.literal('V4-009C-S2'),
+      currentResponsibleAgent: z.literal('AGENT-METHODOLOGIE'),
+      currentTicket: z.literal('V4-003E'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -93,7 +93,7 @@ const activeManifestSchema = z
       }),
       'V4-003': z.object({
         status: z.literal(
-          'RUNNER_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_AUTHORIZATION',
+          'RUNNER_NETWORK_GATE_NO_GO_SEMANTIC_DISAGREEMENT',
         ),
       }),
       'V4-010': z.object({
@@ -161,8 +161,30 @@ const activeManifestSchema = z
                 status: z.literal('HARD_OFF_PREFLIGHT_GREEN'),
                 usableWorkflows: z.literal(4),
               }),
+              networkGateResult: z.object({
+                actualCostUsd: z.literal(0.018828),
+                completedUsableWorkflows: z.literal(0),
+                costSource: z.literal('ACTUAL'),
+                fallbackCount: z.literal(0),
+                ledgerFinalRecordHash: z.string().regex(/^[a-f0-9]{64}$/u),
+                ledgerSha256: z.string().regex(/^[a-f0-9]{64}$/u),
+                maximumAuthorizedCalls: z.literal(4),
+                modelCallsPerformed: z.literal(1),
+                observedProvider: z.literal('Anthropic'),
+                replayAllowed: z.literal(false),
+                report: z.literal('docs/V4_009C_S2_NETWORK_GATE_REPORT.md'),
+                resultDirectory: z.literal(
+                  'benchmarks/ai-correction/results/writing-framework-selection-sonnet5-v2/2026-08-21T20-24-00-Europe-Paris',
+                ),
+                requestedRoute: z.literal('Anthropic'),
+                retryCount: z.literal(0),
+                status: z.literal('NO-GO_SEMANTIC_DISAGREEMENT'),
+                stoppedReason: z.literal('SEMANTIC_DISAGREEMENT'),
+                summarySha256: z.string().regex(/^[a-f0-9]{64}$/u),
+                unusedCallsNotSent: z.literal(3),
+              }),
               status: z.literal(
-                'GATE4_RUNNER_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_GO',
+                'GATE4_NETWORK_NO_GO_SEMANTIC_DISAGREEMENT',
               ),
             })
             .optional(),
@@ -254,7 +276,7 @@ const activeManifestSchema = z
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
         status: z.literal(
-          'V4-009C-S2_HARD_OFF_PREFLIGHT_GREEN_AWAITING_OWNER_NETWORK_GO',
+          'V4-009C-S2_NO_GO_SEMANTIC_DISAGREEMENT',
         ),
       }),
     }),
@@ -302,6 +324,7 @@ describe('active autonomous correction phase manifest', () => {
     );
     const nextProtocol = promotionBlocker?.nextProtocol;
     const successor = promotionBlocker?.successorOfflineEvidence;
+    const networkGate = successor?.networkGateResult;
     expect(sha256(read(EVIDENCE_ASSIST_FREEZE_SET_MANIFEST_PATH))).toBe(
       nextProtocol?.campaignFreezeSet.manifestSha256,
     );
@@ -319,6 +342,15 @@ describe('active autonomous correction phase manifest', () => {
         resolve(process.cwd(), successor?.correctiveMechanicalOracle ?? ''),
       ),
     ).toBe(true);
+    expect(
+      sha256(read(`${networkGate?.resultDirectory ?? ''}/summary.json`)),
+    ).toBe(networkGate?.summarySha256);
+    expect(
+      sha256(read(`${networkGate?.resultDirectory ?? ''}/ledger.jsonl`)),
+    ).toBe(networkGate?.ledgerSha256);
+    expect(existsSync(resolve(process.cwd(), networkGate?.report ?? ''))).toBe(
+      true,
+    );
     expect(
       existsSync(
         resolve(
@@ -377,8 +409,8 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.publishedV4Contracts).toBe(0);
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
-      currentResponsibleAgent: 'RAYAN',
-      currentTicket: 'V4-009C-S2',
+      currentResponsibleAgent: 'AGENT-METHODOLOGIE',
+      currentTicket: 'V4-003E',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });

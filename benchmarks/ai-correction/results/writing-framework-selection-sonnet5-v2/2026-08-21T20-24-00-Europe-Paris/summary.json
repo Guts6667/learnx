@@ -1,0 +1,253 @@
+{
+  "attempts": [
+    {
+      "actualCostUsd": 0.018828,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 0,
+      "caseId": "baseline-pico-spider-mastered",
+      "costSource": "ACTUAL",
+      "defectClasses": [
+        "SEMANTIC_DISAGREEMENT"
+      ],
+      "dispatchState": "CONFIRMED",
+      "errorCode": null,
+      "financialState": "RECONCILED",
+      "idempotencyKey": "b285597044e121148f7fb4ee14d1feab102d2b6dae238b0c7c5a9bda5b2915d7",
+      "inputTokens": 5829,
+      "latencyMs": 4228,
+      "messageUtf8Bytes": 12235,
+      "observedProvider": "Anthropic",
+      "providerRequestId": "gen-1787336575-aDS4BzkqrNJqmwEzAHQP",
+      "rawOutputSha256": "fd44138bdf283df114d74eecca8a91e5ec7a9fb57e1c3d261989dd53ddacb70f",
+      "rawPersistedBeforeValidation": true,
+      "reasoningTokens": 0,
+      "repetition": 1,
+      "requestContextFingerprint": "484eb9fb15c4937d02683b9387e2d4c19e01162487b19315b8106d98b88f9b50",
+      "requestedRoute": "Anthropic",
+      "status": "INVALID",
+      "validation": {
+        "abstainedElementKeys": [],
+        "candidateFindings": [
+          {
+            "candidateOnly": true,
+            "elementKey": "project-a-framework-choice",
+            "evidenceSpans": [
+              {
+                "end": 27,
+                "sha256": "a2d39b3519690be02216f804a02bcec405de0273df3872786b00cfd276ec05b6",
+                "spanId": "s0001-55072b7d6bca0b6a",
+                "start": 0,
+                "text": "Projet A : je retiens PICO."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0001-55072b7d6bca0b6a"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-a-dimension-scope",
+            "evidenceSpans": [
+              {
+                "end": 133,
+                "sha256": "9dbd5b44f8b9dcf8aa8d5fb218aede383a664f269d0fc5d381682fdabec8852b",
+                "spanId": "s0002-a16022e6ce8ef692",
+                "start": 28,
+                "text": "Pour A, je mobilise population, intervention, comparaison et résultat, sans laisser de dimension ouverte."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0002-a16022e6ce8ef692"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-b-framework-choice",
+            "evidenceSpans": [
+              {
+                "end": 371,
+                "sha256": "73aec9f0af3c92e5508c43aef4e7e8ff9e5172eb7a2bdc552d6fc87a641e149e",
+                "spanId": "s0006-96d7bc5ce70c2e08",
+                "start": 342,
+                "text": "Projet B : je retiens SPIDER."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0006-96d7bc5ce70c2e08"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-b-dimension-scope",
+            "evidenceSpans": [
+              {
+                "end": 491,
+                "sha256": "fee553f656ffb4adb0da450afeb72604f7c98ed1efe18b3062387d94fa32988a",
+                "spanId": "s0007-8a2f1b2dd94b10fd",
+                "start": 372,
+                "text": "Pour B, je mobilise échantillon, phénomène, design, évaluation et type de recherche, sans laisser de dimension ouverte."
+              }
+            ],
+            "relation": "EVIDENCE_AGAINST_ELEMENT",
+            "spanIds": [
+              "s0007-8a2f1b2dd94b10fd"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-a-dossier-fact-1",
+            "evidenceSpans": [
+              {
+                "end": 187,
+                "sha256": "25bda0d72f43c437fa25097c6c348c27f425e3c29860da8c88deb6ae881e444f",
+                "spanId": "s0003-53c6d617c46d1d1f",
+                "start": 134,
+                "text": "Le projet A concerne des étudiants de première année."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0003-53c6d617c46d1d1f"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-a-dossier-fact-2",
+            "evidenceSpans": [
+              {
+                "end": 256,
+                "sha256": "1d7ae5d300bf088c1e6b15123f18caa455726b6a9a9a4c7e87adad87b680d853",
+                "spanId": "s0004-85f969fb3fdb715e",
+                "start": 188,
+                "text": "Le projet A compare deux pratiques et recherche un effet comparatif."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0004-85f969fb3fdb715e"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-b-dossier-fact-1",
+            "evidenceSpans": [
+              {
+                "end": 542,
+                "sha256": "af3d520f8c2f1a0942b02763a00d3e2f5fee4deee80fd9b9c53601021cb2256b",
+                "spanId": "s0008-3a7ba6e9eab141e1",
+                "start": 492,
+                "text": "Le projet B repose sur des entretiens qualitatifs."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0008-3a7ba6e9eab141e1"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-b-dossier-fact-2",
+            "evidenceSpans": [
+              {
+                "end": 599,
+                "sha256": "0b92f46a735d3205c61c26f805a210d5f18dd8b8bc2d846d86f339ef792a9ec3",
+                "spanId": "s0009-c51b4f0acebecbcc",
+                "start": 543,
+                "text": "Le projet B cherche à comprendre l'expérience rapportée."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0009-c51b4f0acebecbcc"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-a-choice-rationale",
+            "evidenceSpans": [
+              {
+                "end": 341,
+                "sha256": "ff39d670549797f7c5bfa4b03ed170625cd208d2d092338f2ea1c9f5ff4b1bb9",
+                "spanId": "s0005-88ff1b3600a15262",
+                "start": 257,
+                "text": "La comparaison des pratiques et le résultat attendu rendent PICO adapté au projet A."
+              },
+              {
+                "end": 256,
+                "sha256": "1d7ae5d300bf088c1e6b15123f18caa455726b6a9a9a4c7e87adad87b680d853",
+                "spanId": "s0004-85f969fb3fdb715e",
+                "start": 188,
+                "text": "Le projet A compare deux pratiques et recherche un effet comparatif."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0005-88ff1b3600a15262",
+              "s0004-85f969fb3fdb715e"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "project-b-choice-rationale",
+            "evidenceSpans": [
+              {
+                "end": 676,
+                "sha256": "39130f592c4a7e7a6119398dd5b392fd5529624adc58a3f44b99173414eae372",
+                "spanId": "s0010-67220a8c2446f202",
+                "start": 600,
+                "text": "Les entretiens et l'expérience recherchée rendent SPIDER adapté au projet B."
+              },
+              {
+                "end": 599,
+                "sha256": "0b92f46a735d3205c61c26f805a210d5f18dd8b8bc2d846d86f339ef792a9ec3",
+                "spanId": "s0009-c51b4f0acebecbcc",
+                "start": 543,
+                "text": "Le projet B cherche à comprendre l'expérience rapportée."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0010-67220a8c2446f202",
+              "s0009-c51b4f0acebecbcc"
+            ]
+          }
+        ],
+        "candidateOnly": true,
+        "level": null,
+        "levelAuthority": "NONE",
+        "masteryEffect": "NONE",
+        "pipelineFingerprint": "e631598851d4a25f877f433e11d3806c0d509f670d454fd496129cd8c3f18b43",
+        "progressionEffect": "NONE",
+        "protocolFingerprint": "cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a",
+        "rawModelOutputSha256": "fd44138bdf283df114d74eecca8a91e5ec7a9fb57e1c3d261989dd53ddacb70f",
+        "rejectedFindings": [],
+        "requestContextFingerprint": "484eb9fb15c4937d02683b9387e2d4c19e01162487b19315b8106d98b88f9b50",
+        "score": null,
+        "scoreAuthority": "NONE",
+        "semanticAuthority": "CANDIDATE_ONLY",
+        "spanManifestSha256": "99a5e539ac3a7a89f87cd9d7f4f418416357bcea2fa4882167ab32541417a1ac",
+        "unresolvedElementKeys": []
+      },
+      "visibleOutputTokens": 717
+    }
+  ],
+  "completedAt": "2026-08-21T18:23:03.267Z",
+  "dossierSha256": "1cbd9a03170e0f8243edc2fabfe0897c5b6e399422b48373c841729699701d69",
+  "financeEnvelopeSha256": "ad998debc488acd4f0d77dfb1b36e7ceac2acb430e02c4df52826daeb180ba33",
+  "forceNoGo": true,
+  "gatePassed": false,
+  "identityFingerprint": "cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31",
+  "ledgerFinalRecordHash": "95e26c61926cf06d7bb5e98d659fb90206843d71162cf778529e2f90fea598e0",
+  "maximumProviderCostUsd": 0.708328,
+  "mode": "OPENROUTER_LIVE",
+  "modelCallsPerformed": 1,
+  "modelId": "anthropic/claude-sonnet-5",
+  "outputDirectory": "/private/tmp/learnx-v4-009c-s2-live/benchmarks/ai-correction/results/writing-framework-selection-sonnet5-v2/2026-08-21T20-24-00-Europe-Paris",
+  "requestedRoute": "Anthropic",
+  "stoppedReason": "SEMANTIC_DISAGREEMENT",
+  "totalActualCostUsd": 0.018828,
+  "usableWorkflows": 0
+}
