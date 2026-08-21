@@ -2,10 +2,187 @@
   "schemaVersion": 1,
   "publications": [
     {
+      "id": "ai-correction-evidence-assist-gate-4-2026-08-21-v1",
+      "series": "ai-correction",
+      "sequence": 6,
+      "type": "result",
+      "topics": ["evidence-assist", "ontology", "sonnet-5"],
+      "experimental": true,
+      "researchAt": "2026-08-20T00:00:00Z",
+      "publishedAt": "2026-08-21T00:00:00Z",
+      "updatedAt": "2026-08-21T00:00:00Z",
+      "version": 1,
+      "supersedes": null,
+      "supersededBy": null,
+      "translations": {
+        "fr": {
+          "title": "Gate 4 : quand un échec révèle une limite de l’oracle.",
+          "description": "Deux appels, 16 relations concordantes sur 18 et un arrêt qui oblige à distinguer absence de preuve et réfutation explicite.",
+          "canonicalUrl": "/research/ai-correction/evidence-assist-gate-4/",
+          "alternateLocaleUrl": "/research/ai-correction/evidence-assist-gate-4/en.html"
+        },
+        "en": {
+          "title": "Gate 4: when a failure reveals an oracle limitation.",
+          "description": "Two calls, 16 agreements out of 18 relations, and a stop that requires distinguishing missing evidence from explicit refutation.",
+          "canonicalUrl": "/research/ai-correction/evidence-assist-gate-4/en.html",
+          "alternateLocaleUrl": "/research/ai-correction/evidence-assist-gate-4/"
+        }
+      },
+      "errata": []
+    },
+    {
+      "id": "ai-correction-evidence-researcher-2026-08-21-v1",
+      "series": "ai-correction",
+      "sequence": 5,
+      "type": "protocol",
+      "topics": ["evidence", "gemini", "sonnet-5"],
+      "experimental": true,
+      "researchAt": "2026-08-16T00:00:00Z",
+      "publishedAt": "2026-08-21T00:00:00Z",
+      "updatedAt": "2026-08-21T00:00:00Z",
+      "version": 1,
+      "supersedes": null,
+      "supersededBy": "ai-correction-evidence-assist-gate-4-2026-08-21-v1",
+      "translations": {
+        "fr": {
+          "title": "Chercher des preuves plutôt que produire un verdict.",
+          "description": "Comment les citations libres ont été remplacées par des passages contrôlés et des relations candidates sans score ni progression.",
+          "canonicalUrl": "/research/ai-correction/chercheur-de-preuves/",
+          "alternateLocaleUrl": "/research/ai-correction/chercheur-de-preuves/en.html"
+        },
+        "en": {
+          "title": "Researching evidence instead of producing a verdict.",
+          "description": "How free-form quotations were replaced by controlled passages and candidate relations with no score or progression effect.",
+          "canonicalUrl": "/research/ai-correction/chercheur-de-preuves/en.html",
+          "alternateLocaleUrl": "/research/ai-correction/chercheur-de-preuves/"
+        }
+      },
+      "errata": []
+    },
+    {
+      "id": "ai-correction-executable-rubric-2026-08-21-v1",
+      "series": "ai-correction",
+      "sequence": 4,
+      "type": "decision",
+      "topics": ["rubric", "deterministic-rules", "abstention"],
+      "experimental": true,
+      "researchAt": "2026-08-14T00:00:00Z",
+      "publishedAt": "2026-08-21T00:00:00Z",
+      "updatedAt": "2026-08-21T00:00:00Z",
+      "version": 1,
+      "supersedes": null,
+      "supersededBy": null,
+      "translations": {
+        "fr": {
+          "title": "Pourquoi LearnX ne demande plus au modèle de noter.",
+          "description": "La décision de transférer niveaux, score indicatif et feedback à un moteur de rubrique déterministe capable de s’abstenir.",
+          "canonicalUrl": "/research/ai-correction/moteur-rubrique-executable/",
+          "alternateLocaleUrl": "/research/ai-correction/moteur-rubrique-executable/en.html"
+        },
+        "en": {
+          "title": "Why LearnX no longer asks the model to grade.",
+          "description": "The decision to move levels, indicative scores and feedback into a deterministic rubric engine that can abstain.",
+          "canonicalUrl": "/research/ai-correction/moteur-rubrique-executable/en.html",
+          "alternateLocaleUrl": "/research/ai-correction/moteur-rubrique-executable/"
+        }
+      },
+      "errata": []
+    },
+    {
+      "id": "ai-correction-composite-pipeline-2026-08-21-v1",
+      "series": "ai-correction",
+      "sequence": 3,
+      "type": "exploration",
+      "topics": ["mistral", "sonnet", "composite-pipeline"],
+      "experimental": true,
+      "researchAt": "2026-08-13T00:00:00Z",
+      "publishedAt": "2026-08-21T00:00:00Z",
+      "updatedAt": "2026-08-21T00:00:00Z",
+      "version": 1,
+      "supersedes": null,
+      "supersededBy": null,
+      "translations": {
+        "fr": {
+          "title": "Deux modèles valent-ils mieux qu’un ?",
+          "description": "La simulation Mistral–Sonnet élimine les faux PASS observés, mais crée des refus et des cas incertains qui empêchent toute promotion.",
+          "canonicalUrl": "/research/ai-correction/pipeline-composite/",
+          "alternateLocaleUrl": "/research/ai-correction/pipeline-composite/en.html"
+        },
+        "en": {
+          "title": "Are two models better than one?",
+          "description": "The Mistral–Sonnet simulation removes observed false passes but creates rejections and uncertain cases that block promotion.",
+          "canonicalUrl": "/research/ai-correction/pipeline-composite/en.html",
+          "alternateLocaleUrl": "/research/ai-correction/pipeline-composite/"
+        }
+      },
+      "errata": []
+    },
+    {
+      "id": "ai-correction-blind-review-2026-08-21-v1",
+      "series": "ai-correction",
+      "sequence": 2,
+      "type": "protocol",
+      "topics": ["blind-review", "gold", "second-pass"],
+      "experimental": true,
+      "researchAt": "2026-08-12T12:00:00Z",
+      "publishedAt": "2026-08-21T00:00:00Z",
+      "updatedAt": "2026-08-21T00:00:00Z",
+      "version": 1,
+      "supersedes": null,
+      "supersededBy": null,
+      "translations": {
+        "fr": {
+          "title": "Ce que la revue aveugle a changé dans notre protocole.",
+          "description": "Les audits ont révélé des frontières contestables, des doubles pénalisations et une confusion entre hésitation de l’apprenant et incertitude du correcteur.",
+          "canonicalUrl": "/research/ai-correction/revue-aveugle/",
+          "alternateLocaleUrl": "/research/ai-correction/revue-aveugle/en.html"
+        },
+        "en": {
+          "title": "What blind review changed in our protocol.",
+          "description": "Audits exposed debatable boundaries, double penalties and confusion between learner hesitation and evaluator uncertainty.",
+          "canonicalUrl": "/research/ai-correction/revue-aveugle/en.html",
+          "alternateLocaleUrl": "/research/ai-correction/revue-aveugle/"
+        }
+      },
+      "errata": []
+    },
+    {
+      "id": "ai-correction-first-benchmarks-2026-08-21-v1",
+      "series": "ai-correction",
+      "sequence": 1,
+      "type": "result",
+      "topics": ["benchmark", "gemini", "sonnet", "terra"],
+      "experimental": true,
+      "researchAt": "2026-08-12T00:00:00Z",
+      "publishedAt": "2026-08-21T00:00:00Z",
+      "updatedAt": "2026-08-21T00:00:00Z",
+      "version": 1,
+      "supersedes": null,
+      "supersededBy": null,
+      "translations": {
+        "fr": {
+          "title": "Premier benchmark : une bonne moyenne ne suffit pas.",
+          "description": "24 cas français, trois répétitions et un constat : de bons scores globaux peuvent masquer injection, formats invalides et décisions instables.",
+          "canonicalUrl": "/research/ai-correction/premiers-benchmarks/",
+          "alternateLocaleUrl": "/research/ai-correction/premiers-benchmarks/en.html"
+        },
+        "en": {
+          "title": "First benchmark: a good average is not enough.",
+          "description": "Twenty-four French cases, three repetitions, and one finding: strong averages can hide injection, invalid output and unstable decisions.",
+          "canonicalUrl": "/research/ai-correction/premiers-benchmarks/en.html",
+          "alternateLocaleUrl": "/research/ai-correction/premiers-benchmarks/"
+        }
+      },
+      "errata": []
+    },
+    {
       "id": "ai-correction-2026-08-12-v1",
       "series": "ai-correction",
+      "sequence": 0,
       "type": "exploration",
+      "topics": ["synthesis", "archive"],
       "experimental": true,
+      "researchAt": "2026-08-12T00:00:00Z",
       "publishedAt": "2026-08-12T00:00:00Z",
       "updatedAt": "2026-08-20T00:00:00Z",
       "version": 1,
@@ -13,14 +190,14 @@
       "supersededBy": null,
       "translations": {
         "fr": {
-          "title": "Construire une correction utile, sans fabriquer de certitude.",
-          "description": "État documenté des essais de modèles, de leurs limites et du passage vers un moteur où l’IA recherche uniquement des preuves.",
+          "title": "Dossier de synthèse — Construire une correction utile, sans fabriquer de certitude.",
+          "description": "Le rapport historique complet des essais de modèles, de leurs limites et du passage vers un moteur où l’IA recherche uniquement des preuves.",
           "canonicalUrl": "/research/ai-correction/",
           "alternateLocaleUrl": "/research/ai-correction/en.html"
         },
         "en": {
-          "title": "Building useful assessment without manufacturing certainty.",
-          "description": "A documented account of model trials, their limitations, and the move towards an engine where AI only researches evidence.",
+          "title": "Synthesis report — Building useful assessment without manufacturing certainty.",
+          "description": "The complete historical report on model trials, their limitations, and the move towards an engine where AI only researches evidence.",
           "canonicalUrl": "/research/ai-correction/en.html",
           "alternateLocaleUrl": "/research/ai-correction/"
         }

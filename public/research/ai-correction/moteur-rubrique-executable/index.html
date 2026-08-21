@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pourquoi LearnX ne demande plus au modèle de noter — LearnX</title>
+    <meta
+      name="description"
+      content="La décision de transférer niveaux, score indicatif et feedback à un moteur de rubrique déterministe capable de s’abstenir."
+    />
+    <link
+      rel="canonical"
+      href="https://learnx-eight.vercel.app/research/ai-correction/moteur-rubrique-executable/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://learnx-eight.vercel.app/research/ai-correction/moteur-rubrique-executable/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://learnx-eight.vercel.app/research/ai-correction/moteur-rubrique-executable/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://learnx-eight.vercel.app/research/ai-correction/moteur-rubrique-executable/"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Pourquoi LearnX ne demande plus au modèle de noter."
+    />
+    <meta
+      property="og:description"
+      content="Du LLM juge au moteur de rubrique exécutable."
+    />
+    <meta
+      property="og:url"
+      content="https://learnx-eight.vercel.app/research/ai-correction/moteur-rubrique-executable/"
+    />
+    <meta property="article:published_time" content="2026-08-21T00:00:00Z" />
+    <meta property="article:modified_time" content="2026-08-21T00:00:00Z" />
+    <link rel="stylesheet" href="/research/journal.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Pourquoi LearnX ne demande plus au modèle de noter.",
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "inLanguage": "fr"
+      }
+    </script>
+    <script src="/research/article.js" defer></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#article">Aller à l’article</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Navigation utilitaire">
+        <a href="/research/">Recherche</a
+        ><a
+          href="/research/ai-correction/moteur-rubrique-executable/en.html"
+          lang="en"
+          hreflang="en"
+          >EN</a
+        >
+      </nav>
+    </header>
+    <main>
+      <header class="article-hero shell">
+        <nav class="breadcrumbs" aria-label="Fil d’Ariane">
+          <a href="/research/">Recherche</a><span aria-hidden="true">›</span
+          ><span>Correction assistée · 04</span>
+        </nav>
+        <p class="eyebrow">Décision · Recherche expérimentale</p>
+        <h1>Pourquoi LearnX ne demande plus au modèle de noter.</h1>
+        <p class="article-deck">
+          Les faux PASS, faux FAIL et doubles pénalisations ont un point commun
+          : le modèle interprétait librement la grille. Nous avons décidé de
+          retirer cette autorité aux modèles.
+        </p>
+        <div class="article-meta">
+          <span>Décision du 14 août 2026</span
+          ><span>Publication rétrospective du 21 août 2026</span
+          ><span>Version 1</span>
+        </div>
+      </header>
+      <div class="article-layout shell" id="article">
+        <aside class="article-aside">
+          <h2>Dans cet article</h2>
+          <ol>
+            <li><a href="#constat">Constat</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#incertitude">Incertitude</a></li>
+            <li><a href="#eligibilite">Éligibilité</a></li>
+            <li><a href="#limites">Limites</a></li>
+          </ol>
+          <div class="share-actions">
+            <button
+              class="share-button"
+              type="button"
+              data-share-article
+              data-canonical-url="https://learnx-eight.vercel.app/research/ai-correction/moteur-rubrique-executable/"
+              data-copied-label="Lien copié."
+              data-shared-label="Article partagé."
+              data-failed-label="Copie impossible : utilisez l’adresse de cette page."
+            >
+              Partager l’article
+            </button>
+          </div>
+          <p class="share-status" data-share-status aria-live="polite"></p>
+        </aside>
+        <article class="article-body">
+          <section id="constat">
+            <h2>Le modèle jugeait trop de choses à la fois</h2>
+            <p>
+              Dans les premiers protocoles, un modèle choisissait des niveaux,
+              expliquait ses choix, proposait des citations, évaluait sa
+              confiance et décidait d’une seconde passe. Même avec un schéma
+              strict, une faiblesse pouvait contaminer plusieurs critères et une
+              exigence non écrite pouvait apparaître dans le feedback.
+            </p>
+            <blockquote>
+              La cible n’est plus “trouver le meilleur juge”, mais réduire ce
+              que le modèle est autorisé à décider.
+            </blockquote>
+          </section>
+          <section id="architecture">
+            <h2>La rubrique devient exécutable</h2>
+            <p>
+              Chaque critère est décomposé en éléments atomiques avec une clé
+              stable, un propriétaire, des règles de preuve, des variantes
+              acceptables, des contradictions et une remédiation authorée. Le
+              compilateur vérifie qu’un niveau est atteignable, qu’une preuve
+              ajoutée ne peut pas réduire le résultat et qu’une lacune ne peut
+              pas être pénalisée deux fois.
+            </p>
+            <p>
+              Le modèle cherche ou conteste des preuves. LearnX valide ces
+              preuves, applique la table de niveaux et rend un feedback issu de
+              templates. Aucun modèle ne produit directement niveau final,
+              score, PASS/FAIL, progression ou texte libre publié.
+            </p>
+          </section>
+          <section id="incertitude">
+            <h2>L’abstention devient une fonction du produit</h2>
+            <p>
+              Un élément peut être démontré, explicitement réfuté, non démontré
+              ou ambigu. LearnX calcule toutes les résolutions possibles d’une
+              ambiguïté. Si elles mènent au même niveau, le feedback peut être
+              publié. Si elles changent le niveau, aucun score exact n’est
+              affiché et une clarification ciblée est demandée.
+            </p>
+          </section>
+          <section id="eligibilite">
+            <h2>Toutes les activités ne sont pas éligibles</h2>
+            <ul>
+              <li>
+                <strong>Entièrement compilable :</strong> niveaux et score
+                indicatif peuvent être calculés.
+              </li>
+              <li>
+                <strong>Partiellement compilable :</strong> feedback local sans
+                score global.
+              </li>
+              <li>
+                <strong>Non supportée de façon autonome :</strong> aucune
+                correction IA publique.
+              </li>
+            </ul>
+            <p>
+              Présence d’un choix, d’une cible, d’un indicateur ou d’une
+              justification sont de bons candidats. Originalité, profondeur
+              réflexive ou pertinence professionnelle holistique ne doivent pas
+              être forcées dans un contrat mécanique.
+            </p>
+          </section>
+          <section id="limites">
+            <h2>Ce que LearnX promet — et ne promet pas</h2>
+            <p>
+              Le moteur peut évaluer la conformité d’une réponse à une grille
+              suffisamment formalisée. Il ne démontre pas une maîtrise complète
+              lorsque la grille ne couvre qu’une partie de la compétence. Le
+              feedback reste strictement formatif et n’écrit jamais la
+              progression.
+            </p>
+            <div class="article-callout">
+              <strong>Promesse retenue</strong>
+              <p>
+                « Feedback formatif autonome, critériel et appuyé sur les
+                preuves présentes dans la réponse de l’apprenant. »
+              </p>
+            </div>
+          </section>
+        </article>
+      </div>
+      <footer class="article-footer shell">
+        <nav class="article-navigation" aria-label="Articles de la série">
+          <a href="/research/ai-correction/pipeline-composite/"
+            ><small>Article précédent</small
+            ><strong>Deux modèles valent-ils mieux qu’un ?</strong></a
+          ><a href="/research/ai-correction/chercheur-de-preuves/"
+            ><small>Article suivant</small
+            ><strong
+              >Chercher des preuves plutôt que produire un verdict</strong
+            ></a
+          >
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

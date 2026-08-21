@@ -57,7 +57,14 @@ de la chronologie. Chaque article reste un document autonome et indexable.
 
 ## État d’implémentation
 
-Le journal v1 référence une publication historique datée du 12 août 2026,
-mise à jour le 20 août 2026. Toute publication suivante doit ajouter une entrée
-au manifeste et une nouvelle URL ; elle ne doit pas modifier silencieusement
-les conclusions historiques.
+Le journal v1 expose six articles chronologiques autonomes sur la correction
+assistée, plus le rapport historique de synthèse daté du 12 août 2026 et mis à
+jour le 20 août 2026. Les articles rétrospectifs distinguent explicitement la
+date des travaux de leur date de publication du 21 août 2026.
+
+Chaque article possède une URL FR/EN, des métadonnées de partage, une navigation
+précédent/suivant et une action de partage native avec fallback presse-papiers.
+L’index met la dernière publication en avant puis liste toute la chronologie.
+
+Toute publication suivante doit ajouter une entrée au manifeste et une nouvelle
+URL ; elle ne doit pas modifier silencieusement les conclusions historiques.
