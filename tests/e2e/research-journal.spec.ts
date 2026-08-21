@@ -9,6 +9,34 @@ const viewports = [
   { height: 1000, width: 1440 },
 ] as const;
 
+test('la landing ouvre le journal statique sans passer par la 404 applicative', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'desktop-chromium',
+    'La navigation document est vérifiée une fois.',
+  );
+
+  await page.goto('/');
+  await page
+    .getByRole('link', { name: 'Explorer le journal de recherche' })
+    .click();
+  await expect(page).toHaveURL(/\/research\/index\.html$/);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Recherche' }),
+  ).toBeVisible();
+
+  await page.goto('/');
+  await page.getByRole('button', { name: 'EN', exact: true }).click();
+  await page
+    .getByRole('link', { name: 'Explore the research journal' })
+    .click();
+  await expect(page).toHaveURL(/\/research\/en\.html$/);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Research' }),
+  ).toBeVisible();
+});
+
 test('journal de recherche chronologique, bilingue et responsive', async ({
   page,
 }, testInfo) => {

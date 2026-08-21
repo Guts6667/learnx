@@ -76,13 +76,15 @@ describe('LandingPage', () => {
     const researchLink = screen.getByRole('link', {
       name: 'Explorer le journal de recherche',
     });
-    expect(researchLink).toHaveAttribute('href', '/research/');
+    expect(researchLink).toHaveAttribute('href', '/research/index.html');
+    expect(researchLink).toHaveAttribute('data-native');
     expect(researchLink).not.toHaveAttribute('target');
     expect(researchLink).toHaveClass('ui-action--md');
-    expect(screen.getByRole('link', { name: 'Recherche' })).toHaveAttribute(
-      'href',
-      '/research/',
-    );
+    const researchFooterLink = screen.getByRole('link', {
+      name: 'Recherche',
+    });
+    expect(researchFooterLink).toHaveAttribute('href', '/research/index.html');
+    expect(researchFooterLink).toHaveAttribute('data-native');
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
   });
 
@@ -110,11 +112,11 @@ describe('LandingPage', () => {
       name: 'Explore the research journal',
     });
     expect(researchLink).toHaveAttribute('href', '/research/en.html');
+    expect(researchLink).toHaveAttribute('data-native');
     expect(researchLink).not.toHaveAttribute('target');
-    expect(screen.getByRole('link', { name: 'Research' })).toHaveAttribute(
-      'href',
-      '/research/en.html',
-    );
+    const researchFooterLink = screen.getByRole('link', { name: 'Research' });
+    expect(researchFooterLink).toHaveAttribute('href', '/research/en.html');
+    expect(researchFooterLink).toHaveAttribute('data-native');
   });
 
   it('submits updates without creating an access request', async () => {

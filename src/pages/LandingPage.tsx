@@ -301,7 +301,10 @@ export function LandingPage({ path }: { path?: string }) {
             <p>{t('landing.research.description')}</p>
             <a
               class="ui-action ui-action--secondary ui-action--md"
-              href={locale === 'en' ? '/research/en.html' : '/research/'}
+              data-native
+              href={
+                locale === 'en' ? '/research/en.html' : '/research/index.html'
+              }
             >
               {t('landing.research.action')}
             </a>
@@ -325,7 +328,12 @@ export function LandingPage({ path }: { path?: string }) {
       <footer class="landing-footer">
         <span>© 2026 LearnX</span>
         <div>
-          <a href={locale === 'en' ? '/research/en.html' : '/research/'}>
+          <a
+            data-native
+            href={
+              locale === 'en' ? '/research/en.html' : '/research/index.html'
+            }
+          >
             {t('landing.footer.research')}
           </a>
           <a href="/login">{t('landing.login')}</a>
