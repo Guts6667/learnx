@@ -8,8 +8,8 @@
 - Identité runtime : slug et clé canonique
   `sourcelab-docker-api-socle-ingestion`
 - Projet fil rouge : dépôt SourceLab autonome, séparé de LearnX
-- Starter local : `/Users/rayanchambet/Desktop/Workflow/sourcelab`, commit
-  `6dd1cda`, tag `checkpoint-00-starter`
+- Starter public : `https://github.com/Guts6667/sourcelab`, commit `6dd1cda`,
+  tag `https://github.com/Guts6667/sourcelab/tree/checkpoint-00-starter`
 - Durée totale : 13 h 05, évaluations comprises
 - Rythme indicatif : 7 séances sans contrainte calendaire
 - Public : développeur TypeScript autonome côté frontend, débutant en Docker,

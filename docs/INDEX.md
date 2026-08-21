@@ -115,8 +115,9 @@ indépendantes du programme français.
   `seed/ingenieur-logiciel-production-sourcelab-program.json`
 
 Ce parcours V2 guidé construit en 13 h 05 une stack locale SourceLab dans le
-dépôt séparé `/Users/rayanchambet/Desktop/Workflow/sourcelab`, à partir du tag
-`checkpoint-00-starter`. Il mène à une `SourceVersion READY`, puis à une image
+[dépôt public SourceLab](https://github.com/Guts6667/sourcelab), à partir du
+[tag `checkpoint-00-starter`](https://github.com/Guts6667/sourcelab/tree/checkpoint-00-starter).
+Il mène à une `SourceVersion READY`, puis à une image
 GHCR traçable, et reste en brouillon jusqu’aux revues éditoriale, technique, du
 starter, du seed et des liens. Son identité runtime distincte est
 `sourcelab-docker-api-socle-ingestion` ; l’ancien programme conserve son

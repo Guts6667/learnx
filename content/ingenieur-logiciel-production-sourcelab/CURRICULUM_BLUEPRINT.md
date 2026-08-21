@@ -7,8 +7,9 @@
 - Classification : `CONTENT_ONLY`
 - Identité runtime : `sourcelab-docker-api-socle-ingestion`
 - Volume : 13 h 05, évaluations comprises
-- Dépôt : `/Users/rayanchambet/Desktop/Workflow/sourcelab`
-- Baseline starter : commit `6dd1cda`, tag `checkpoint-00-starter`
+- Dépôt : `https://github.com/Guts6667/sourcelab`
+- Baseline starter : commit `6dd1cda`, tag
+  `https://github.com/Guts6667/sourcelab/tree/checkpoint-00-starter`
 
 La version 2 remplace intégralement le parcours de 42 jours. Elle vise un
 résultat borné : faire fonctionner localement une verticale SourceLab puis
