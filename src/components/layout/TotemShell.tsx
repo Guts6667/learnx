@@ -10,9 +10,11 @@ interface TotemAppShellProps extends Omit<
   bottomNavigation?: ComponentChildren;
   children: ComponentChildren;
   class?: string;
-  pageHeader: ComponentChildren;
+  contentId?: string;
+  contentTabIndex?: number;
+  pageHeader?: ComponentChildren;
   rail?: ComponentChildren;
-  sidebar: ComponentChildren;
+  sidebar?: ComponentChildren;
   topbar: ComponentChildren;
 }
 
@@ -21,6 +23,8 @@ export function TotemAppShell({
   bottomNavigation,
   children,
   class: className,
+  contentId,
+  contentTabIndex,
   pageHeader,
   rail,
   sidebar,
@@ -28,12 +32,32 @@ export function TotemAppShell({
   ...props
 }: TotemAppShellProps) {
   return (
-    <TotemTheme class={classNames('totem-app-shell', className)} {...props}>
-      <aside class="totem-app-shell__sidebar">{sidebar}</aside>
+    <TotemTheme
+      class={classNames(
+        'totem-app-shell',
+        !rail && 'totem-app-shell--without-rail',
+        !sidebar && 'totem-app-shell--without-sidebar',
+        className,
+      )}
+      {...props}
+    >
+      {sidebar ? <aside class="totem-app-shell__sidebar">{sidebar}</aside> : null}
       <header class="totem-app-shell__topbar">{topbar}</header>
       <main class="totem-app-shell__main">
-        <div class="totem-app-shell__page-head">{pageHeader}</div>
-        <div class="totem-app-shell__content">{children}</div>
+        {pageHeader ? (
+          <div class="totem-app-shell__page-head">{pageHeader}</div>
+        ) : null}
+        <div
+          class={classNames(
+            'totem-app-shell__content',
+            Boolean(pageHeader) &&
+              'totem-app-shell__content--after-page-head',
+          )}
+          id={contentId}
+          tabindex={contentTabIndex}
+        >
+          {children}
+        </div>
       </main>
       {rail ? <aside class="totem-app-shell__rail">{rail}</aside> : null}
       {bottomNavigation ? (

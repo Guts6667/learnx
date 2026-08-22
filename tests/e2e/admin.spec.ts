@@ -78,7 +78,7 @@ test('navigation admin profonde et tiroir accessibles sur mobile et desktop', as
 }) => {
   await installAdminApi(page);
   const path = `/admin/program/${programId}/stage/${stageId}/module/${moduleId}`;
-  await page.setViewportSize({ height: 844, width: 390 });
+  await page.setViewportSize({ height: 720, width: 320 });
   await page.goto(path);
 
   await expect(
@@ -103,8 +103,8 @@ test('navigation admin profonde et tiroir accessibles sur mobile et desktop', as
   await expect(trigger).toBeFocused();
 
   for (const viewport of [
-    { height: 900, width: 768 },
-    { height: 900, width: 1024 },
+    { height: 844, width: 390 },
+    { height: 900, width: 720 },
     { height: 1000, width: 1440 },
     { height: 1080, width: 1920 },
   ]) {
@@ -114,6 +114,7 @@ test('navigation admin profonde et tiroir accessibles sur mobile et desktop', as
       page.getByRole('heading', { level: 1, name: 'Module administrable' }),
     ).toBeVisible();
     await expect(page.locator('.page-layout--admin')).toBeVisible();
+    await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -121,7 +122,7 @@ test('navigation admin profonde et tiroir accessibles sur mobile et desktop', as
     ).toBe(true);
   }
 
-  await page.setViewportSize({ height: 900, width: 1024 });
+  await page.setViewportSize({ height: 900, width: 720 });
   await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
   expect(
     await page.evaluate(
