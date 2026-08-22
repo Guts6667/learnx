@@ -136,7 +136,7 @@ export function ReviewsPage() {
   return (
     <section
       aria-labelledby="reviews-title"
-      class="page-layout page-layout--work page-shell"
+      class="totem-reviews-page page-layout page-layout--work page-shell"
     >
       <PageHeader
         description={t('reviews.description')}

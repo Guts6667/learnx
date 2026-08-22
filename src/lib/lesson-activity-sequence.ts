@@ -1,3 +1,5 @@
+import { findFirstMarkdownHeading } from './markdown-heading.js';
+
 export type LessonActivityKind =
   | 'CONTENT'
   | 'RESOURCE'
@@ -43,7 +45,9 @@ interface ConceptActivity extends PositionedActivity {
 
 export interface LessonSequenceInput {
   concepts: ConceptActivity[];
-  contentBlocks: Array<PositionedActivity & { type: string }>;
+  contentBlocks: Array<
+    PositionedActivity & { content?: unknown; type: string }
+  >;
   exercises: PositionedActivity[];
   isPublished: boolean;
   lessonSlug: string;
@@ -83,6 +87,17 @@ function byPosition<T extends PositionedActivity>(items: T[]): T[] {
     (left, right) =>
       left.position - right.position || left.id.localeCompare(right.id),
   );
+}
+
+function readMarkdownContent(value: unknown): string {
+  if (typeof value === 'string') return value;
+  if (Array.isArray(value)) {
+    return value.map(readMarkdownContent).filter(Boolean).join('\n');
+  }
+  if (!value || typeof value !== 'object') return '';
+
+  const record = value as Record<string, unknown>;
+  return readMarkdownContent(record.text ?? record.content ?? record.markdown);
 }
 
 export function activityKey(kind: LessonActivityKind, id: string): string {
@@ -162,7 +177,10 @@ export function buildLessonActivitySequence(
       kind: 'CONTENT',
       required: true,
       status: status(input.isPublished, progress?.lessonStatus === 'COMPLETED'),
-      title: block.title ?? `Contenu ${block.position}`,
+      title:
+        block.title ??
+        findFirstMarkdownHeading(readMarkdownContent(block.content)) ??
+        `Contenu ${block.position}`,
     }),
   );
   const resources = byPosition(input.resources).map((resource) =>

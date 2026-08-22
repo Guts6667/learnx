@@ -42,7 +42,7 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
   return (
     <section
       aria-labelledby="access-request-title"
-      class="page-shell mx-auto max-w-xl"
+      class="page-shell totem-auth-page mx-auto max-w-xl"
     >
       <PageHeader
         description={t('auth.access.description')}

@@ -601,11 +601,11 @@ constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
 | V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `INTEGRATED_ON_DEV` | Intégré sur `origin/dev` dans la pile terminant à `7f602ca2` |
 | V4-016E | Primitives et états communs accessibles | `INTEGRATED_ON_DEV` | Intégré sur `origin/dev` dans la pile terminant à `7f602ca2` |
 | V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `DONE_ON_DEV` | QA verte et intégration sur `origin/dev` au commit `7f602ca2` |
-| V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
-| V4-016A | Landing, compte, vérification e-mail et première direction | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesses approuvées |
-| V4-016I | Recherche publique, articles partageables, programme public et graphiques | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contenu public réel |
+| V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `INTEGRATED_ON_DEV` | Totem et renderer enrichi code/images/tableaux intégrés ; QA automatisée verte, matrice V4-016H ouverte |
+| V4-016A | Landing, compte, vérification e-mail et première direction | `PARTIAL_ON_DEV_LANDING_AUTH_DONE` | Landing, connexion, demande d’accès, vérification et activation Totem intégrées ; première direction reste ouverte |
+| V4-016I | Recherche publique, articles partageables, programme public et graphiques | `PARTIAL_ON_DEV_JOURNAL_DONE` | Journal FR/EN et articles intégrés ; fiche programme/ressources publiques restent ouvertes |
 | V4-016B | Shell desktop et administration responsive | `INTEGRATED_ON_DEV` | Shell et administration existante intégrés ; correction/paiement restent dépendants de leurs contrats |
-| V4-016G | Correction, crédits et paiement | `DESIGN_VALIDATED_CONTRACTS_PENDING` | V4-007/010/012/014 stabilisés et V4-016D/E |
+| V4-016G | Correction, crédits et paiement | `PARTIAL_ON_DEV_CREDITS_ONLY` | Mes crédits intégré sans changement de contrat ; devis, paiement et correction restent dépendants des contrats |
 | V4-016 | Annonce de création V5 | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesse V5 validée |
 | V4-016H | QA, adoption progressive et rollback | `WAIT_PREVIOUS_TOTEM_LOTS` | Lots Totem réellement implémentés |
 
@@ -2353,6 +2353,14 @@ publiés et V4-014 avant tout achat réel.**
 **Références : `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` et
 `learnx-totem-landing-account-components.html`.**
 
+**État intégré au 23 août 2026 : `PARTIAL_ON_DEV_LANDING_AUTH_DONE`.** Le hero, la
+navigation publique, les preuves produit, la recherche, les formulaires et le
+footer utilisent Totem, sans activer correction ni prix. Connexion, demande
+d’accès, vérification d’e-mail et activation/création du mot de passe utilisent
+également le shell d’entrée Totem, sans modifier leurs contrats. La première
+direction et les enrichissements commerciaux dépendants de V4-007/010/014/018
+restent ouverts ; le ticket n'est pas clôturé.
+
 ### Périmètre
 
 - Étendre la landing V3.5 en migrant progressivement sa présentation vers Totem,
@@ -2536,8 +2544,9 @@ ni les données de démonstration ni la logique de recommandation.
 - Le comportement multi-programmes, la première arrivée et la séparation
   `Mes parcours` / `Découvrir` étaient déjà présents dans la baseline et restent
   inchangés côté serveur.
-- Totem est activé uniquement sur Aujourd'hui, Parcours/Programme, Notes et
-  Profil. Les leçons, quiz, Réviser et crédits restent dans leurs lots V4-016F/G.
+- Totem est activé sur Aujourd'hui, Parcours/Programme, Notes, Profil ainsi que,
+  dans le lot local en cours, les leçons, exercices, quiz, évaluations, Réviser
+  et Mes crédits. Ce lot n'est pas encore intégré à `origin/dev`.
 - Aujourd'hui emploie une composition desktop à deux colonnes : action
   prioritaire sur surface signature à gauche et reprises secondaires compactes
   dans un rail à droite. À 720 px et moins, le rail se place après l'action
@@ -2736,8 +2745,19 @@ Dépendance levée : baseline V3.5 réauditée ; revue propriétaire avant push.
 ## V4-016F — Apprentissage, évaluations et révision Totem
 
 **Priorité : P1 expérience pédagogique. Statut :
-`DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`. Dépendances : V4-016D/E et contrats
+`INTEGRATED_ON_DEV`. Dépendances : V4-016D/E et contrats
 pédagogiques/runtime existants.**
+
+### État local au 23 août 2026
+
+- La frontière Totem couvre les routes de leçon, exercice, quiz, évaluation et
+  Réviser ; aucun calcul de progression ni contenu pédagogique n'est modifié.
+- Les en-têtes, surfaces de lecture, activités, navigation pédagogique, états
+  et ressources utilisent les tokens V4-016D/E.
+- Le renderer sécurisé de `main` est raccordé : code balisé et inline, images et
+  diagrammes locaux, tableaux accessibles et titres Markdown hiérarchisés.
+- Lint, typecheck, build et la suite complète sont verts ; la matrice visuelle
+  complète V4-016H reste ouverte pour le rollout final.
 
 ### Périmètre et critères
 
@@ -2758,6 +2778,11 @@ pédagogiques/runtime existants.**
 
 **Priorité : P1 confiance. Dépendances : V3.5-009 et contrats des V4-007,
 V4-010, V4-011 et V4-014 disponibles.**
+
+**État intégré : `PARTIAL_ON_DEV_CREDITS_ONLY`.** La page apprenant « Mes crédits »
+consomme toujours le ledger existant et a reçu la présentation Totem. Aucun
+prix, pack, expiration, règle de consommation, devis ou paiement n'est ajouté ;
+le reste de V4-016G demeure bloqué par ses contrats.
 
 **Références canoniques complémentaires :**
 
@@ -2879,8 +2904,18 @@ Dépendance : lots Totem effectivement implémentés.**
 ## V4-016I — Recherche et surfaces publiques Totem
 
 **Priorité : P1 communication et transparence. Statut :
-`DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`. Dépendances : V4-016D/E et contenu
+`PARTIAL_ON_DEV_JOURNAL_DONE`. Dépendances : V4-016D/E et contenu
 public réel.**
+
+### État local au 23 août 2026
+
+- Un index chronologique FR/EN dessert quatre articles partageables et le
+  dossier technique continu, avec URLs `.html` explicites pour éviter le 404 du
+  routeur applicatif.
+- Les graphiques exposent leurs valeurs et leur méthode dans le texte/ARIA ; les
+  chiffres proviennent des campagnes déjà consignées.
+- La fiche programme publique et le catalogue public de ressources restent hors
+  de ce lot : V4-016I demeure partiel.
 
 ### Périmètre et critères
 

@@ -47,7 +47,7 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
   return (
     <section
       aria-labelledby="email-verification-title"
-      class="page-shell mx-auto max-w-xl"
+      class="page-shell totem-auth-page mx-auto max-w-xl"
     >
       <PageHeader
         description={t('auth.verify.description')}

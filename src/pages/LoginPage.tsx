@@ -64,7 +64,10 @@ export function LoginPage({ path }: LoginPageProps) {
   }
 
   return (
-    <section aria-labelledby="login-title" class="page-shell mx-auto max-w-xl">
+    <section
+      aria-labelledby="login-title"
+      class="page-shell totem-auth-page mx-auto max-w-xl"
+    >
       <PageHeader
         description={t('auth.login.description')}
         eyebrow={t('auth.login.eyebrow')}

@@ -40,7 +40,7 @@ function lessonResponse(
         {
           content: {
             sourceKeys: ['article-reference', 'unsafe-reference'],
-            text: 'Le contenu pédagogique.',
+            text: '# Repère pédagogique\n\nLe contenu pédagogique.',
           },
           id: 'block-1',
           key: 'content-1',
@@ -310,6 +310,9 @@ describe('LessonPage', () => {
       await screen.findByRole('heading', { level: 1, name: 'Démarrer' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Le contenu pédagogique.')).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('heading', { name: 'Repère pédagogique' }),
+    ).toHaveLength(1);
     expect(screen.getByText('Sources de ce contenu')).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: 'Ouvrir la source' }),
@@ -501,10 +504,7 @@ describe('LessonPage', () => {
     expect(
       screen.getAllByRole('link', { name: 'Leçon suivante' }),
     ).toHaveLength(1);
-    expect(nextLessonLink).toHaveClass(
-      'ui-action',
-      'ui-action--primary',
-    );
+    expect(nextLessonLink).toHaveClass('ui-action', 'ui-action--primary');
   });
 
   it('revient au programme et à la bonne étape après la dernière leçon', async () => {

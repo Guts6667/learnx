@@ -96,6 +96,52 @@ describe('lesson activity sequence', () => {
     expect(sequence.next?.id).toBe('task-1');
   });
 
+  it('nomme un contenu depuis son premier titre Markdown', () => {
+    const input = fixture();
+    input.contentBlocks[0].content = {
+      text: [
+        'Une introduction avant le titre.',
+        '',
+        '```text',
+        '## Ceci est du code',
+        '```',
+        '',
+        '## Suivre une `requête` **HTTP** ##',
+        '',
+        'Le détail de la séquence.',
+      ].join('\n'),
+    };
+
+    const sequence = buildLessonActivitySequence(input);
+
+    expect(sequence.activities[0].title).toBe('Suivre une requête HTTP');
+  });
+
+  it('préfère le titre explicite puis conserve le fallback existant', () => {
+    const input = fixture();
+    input.contentBlocks = [
+      {
+        content: { text: '## Titre Markdown' },
+        id: 'block-titled',
+        position: 1,
+        title: 'Titre éditorial',
+        type: 'RICH_TEXT',
+      },
+      {
+        content: { text: 'Un paragraphe sans titre.' },
+        id: 'block-fallback',
+        position: 2,
+        type: 'RICH_TEXT',
+      },
+    ];
+
+    const contentTitles = buildLessonActivitySequence(input)
+      .activities.filter((activity) => activity.kind === 'CONTENT')
+      .map((activity) => activity.title);
+
+    expect(contentTitles).toEqual(['Titre éditorial', 'Contenu 2']);
+  });
+
   it('reprend après l’activité identifiée dans l’URL', () => {
     const input = fixture();
     if (!input.progress) throw new Error('Missing progress fixture.');

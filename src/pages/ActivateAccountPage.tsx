@@ -61,7 +61,7 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
   return (
     <section
       aria-labelledby="activation-title"
-      class="page-shell mx-auto max-w-xl"
+      class="page-shell totem-auth-page mx-auto max-w-xl"
     >
       <PageHeader
         description={t('auth.activate.description')}

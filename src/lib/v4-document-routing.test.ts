@@ -332,9 +332,8 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md');
     expect(status).toContain('ACTIVE_DESIGN_AUTHORITY');
     expect(totem).toContain('DESIGN_VALIDATED');
-    expect(totem).toContain('V4_016D_QA_GREEN_PENDING_PUSH');
-    expect(totem).toContain('Les autres lots');
-    expect(totem).toContain('restent soumis à leur propre autorisation');
+    expect(totem).toContain('Les fondations Totem sont intégrées sur `origin/dev`');
+    expect(totem).toContain('Les lots restent soumis à une autorisation explicite');
     expect(totem).toContain('320, 390, 720, 1440 et 1920');
     expect(totem).toContain('Aucun prix, capacité, allocation');
 

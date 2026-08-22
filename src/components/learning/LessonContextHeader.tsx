@@ -58,7 +58,7 @@ export function LessonContextHeader({
   const { t } = useI18n();
 
   return (
-    <header class="space-y-4">
+    <header class="totem-learning-header space-y-4">
       {activityTitle ? (
         <a
           class="ui-link inline-flex min-h-11 max-w-full min-w-0 items-center break-words rounded-lg text-sm font-medium"
@@ -67,7 +67,7 @@ export function LessonContextHeader({
           {t('learning.lessonWithTitle', { title: lesson.title })}
         </a>
       ) : null}
-      <div class="flex flex-wrap items-start justify-between gap-3">
+      <div class="totem-learning-header__title flex flex-wrap items-start justify-between gap-3">
         <div class="min-w-0 max-w-full flex-1">
           <p class="page-eyebrow break-words">
             {activityTitle
@@ -85,7 +85,7 @@ export function LessonContextHeader({
           <Badge tone="warning">{t('common.draft')}</Badge>
         )}
       </div>
-      <div class="ui-text-muted text-sm">
+      <div class="totem-learning-header__meta ui-text-muted text-sm">
         {lesson.estimatedMinutes === null ? null : (
           <span>{t('common.minutes', { count: lesson.estimatedMinutes })}</span>
         )}

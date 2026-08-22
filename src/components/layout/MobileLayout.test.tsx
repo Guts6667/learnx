@@ -207,16 +207,16 @@ describe('navigation accessible', () => {
     '/program/parcours-test/lesson/lecon-test/quiz',
     '/reviews',
     '/credits',
-  ])('conserve Atlas hors du lot produit sur %s', (currentPath) => {
+  ])('active Totem sur la surface pédagogique ou crédits %s', (currentPath) => {
     renderWithLocale(
       <MobileLayout currentPath={currentPath}>
-        <h1>Surface hors lot</h1>
+        <h1>Surface Totem</h1>
       </MobileLayout>,
     );
 
     expect(
       document.querySelector('[data-visual-system="totem"]'),
-    ).not.toBeInTheDocument();
+    ).toHaveClass('totem-product-surface');
   });
 
   it.each(['/login', '/request-access', '/verify-email', '/activate'])(
@@ -235,6 +235,9 @@ describe('navigation accessible', () => {
         'href',
         '/',
       );
+      expect(
+        document.querySelector('[data-visual-system="totem"]'),
+      ).toHaveClass('totem-auth-surface');
     },
   );
 

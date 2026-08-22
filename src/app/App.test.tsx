@@ -42,7 +42,7 @@ describe('App', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: 'Un parcours, pas une bibliothèque.',
+        name: 'Votre chemin vers la connaissance.',
       }),
     ).toBeInTheDocument();
     expect(

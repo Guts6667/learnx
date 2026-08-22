@@ -408,15 +408,15 @@ jamais à franchir son gate live.
 | V4-014 | `BLOQUÉ` | Aucun SKU ni checkout actif. | Non. | V4-013 + prix V4-018 validés. | Développement + Finance. |
 | V4-015 | `BLOQUÉ` | Aucune clôture financière live. | Non. | V4-012 + V4-014 + règles externes. | Finance & Pricing. |
 | V4-016 | `DESIGN_VALIDATED_WAIT_GO` | Annonce V5 Totem validée ; aucune capacité V5 disponible. | Non hors audit de promesse. | V4-016D/E, promesse V5 et GO d'implémentation. | Produit & pédagogie. |
-| V4-016A | `DESIGN_VALIDATED_WAIT_GO` | Landing/compte Totem validés ; aucune promesse IA/prix activable. | Non hors audit de contenu. | V4-016D/E, contrats publics et GO d'implémentation. | Direction artistique + Produit + Finance. |
+| V4-016A | `PARTIAL_ON_DEV_LANDING_AUTH_DONE` | Landing et parcours d’entrée Totem intégrés ; première direction reste ouverte. | Oui pour les surfaces intégrées. | Première direction séparée. | Direction artistique + Produit + Finance. |
 | V4-016B | `SHELL_ADMIN_EXISTANT_QA_GREEN_LOCAL` | Shell desktop/mobile et routes admin existantes migrés ; matrice responsive/accessibilité verte. | Partiellement, sans surface correction/paiement. | Contrats stabilisés des surfaces correction, historique, checkout et paiement. | Direction artistique + Développement. |
 | V4-016C | `PRODUCT_SURFACES_QA_GREEN_LOCAL` | Runtime multi-programmes préservé ; Aujourd'hui, Parcours/Programme, Notes et Profil migrés vers Totem. | Oui localement, sans rollout. | Validation propriétaire du rendu puis intégration ordonnée D→E→urgent→B→C. | Produit & pédagogie + Développement. |
 | V4-016D | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Fondations Totem implémentées dans un commit isolé ; aucune bascule globale. | Oui hors intégration. | Revue propriétaire puis push sur `dev`. | Direction artistique + Développement. |
 | V4-016E | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Primitives, états, shells et catalogue local implémentés ; QA automatisée verte. | Oui hors intégration. | Intégrer V4-016D puis V4-016E sur `dev`. | Direction artistique + Développement. |
-| V4-016F | `DESIGN_VALIDATED_WAIT_GO` | Flow d'apprentissage Totem validé, non codé. | Non. | V4-016D/E, contrats pédagogiques et GO. | Produit & pédagogie + Direction artistique. |
-| V4-016G | `DESIGN_VALIDATED_CONTRACTS_PENDING` | Surfaces Totem validées, contrats runtime absents. | Non. | V4-007/010/011/014 et V4-016D/E disponibles. | Direction artistique. |
+| V4-016F | `INTEGRATED_ON_DEV` | Leçon, exercice, quiz, évaluation et Réviser migrés ; renderer code/images/tableaux raccordé. | Oui sur `dev`, sans rollout public. | Matrice V4-016H. | Produit & pédagogie + Direction artistique. |
+| V4-016G | `PARTIAL_ON_DEV_CREDITS_ONLY` | Mes crédits intégré ; correction, devis et paiement restent bloqués. | Oui pour Mes crédits uniquement. | Contrats V4-007/010/011/014. | Direction artistique. |
 | V4-016H | `WAIT_PREVIOUS_TOTEM_LOTS` | Matrice QA définie. | Non. | Lots Totem effectivement implémentés. | Développement + Direction artistique. |
-| V4-016I | `DESIGN_VALIDATED_WAIT_GO` | Recherche et surfaces publiques Totem validées. | Non. | V4-016D/E, contenu réel et GO d'implémentation. | Direction artistique + Recherche. |
+| V4-016I | `PARTIAL_ON_DEV_JOURNAL_DONE` | Journal FR/EN et articles partageables intégrés ; programme/ressources publics restent ouverts. | Oui pour le journal. | Compléter surfaces publiques. | Direction artistique + Recherche. |
 | V4-017 | `BLOQUÉ` | Fondations sécurité présentes, audit final non clos. | Non comme ticket complet. | V4-013 + pipeline/pilote bornés. | Développement. |
 | V4-018 | `BLOQUÉ` | Aucun coût de correction produit promu. | Non. | V4-003/010/012/014/017 ; comparaison secondaire ≥3 candidats. | Finance & Pricing. |
 | V4-018A | `BLOQUÉ` | Cohortes non ouvertes. | Non. | V4-018 + budgets approuvés. | Finance & Pricing. |

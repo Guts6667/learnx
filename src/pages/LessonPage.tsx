@@ -80,9 +80,11 @@ function getSafeExternalUrl(url: string | null): string | null {
 }
 
 function ContentActivity({
+  activityTitle,
   block,
   resourcesByKey,
 }: {
+  activityTitle: string;
   block: LessonContentBlock;
   resourcesByKey: Map<string, LessonResource>;
 }) {
@@ -94,11 +96,15 @@ function ContentActivity({
     .filter((resource): resource is LessonResource => Boolean(resource));
 
   return (
-    <Section class="space-y-4">
+    <Section class="totem-learning-content-block space-y-4">
       <p class="text-sm font-semibold text-[var(--color-accent-text)]">
         {t(contentBlockLabelKeys[block.type])}
       </p>
-      <SafeMarkdown content={getText(block.content)} />
+      <SafeMarkdown
+        content={getText(block.content)}
+        headingStartLevel={3}
+        omitFirstHeadingWhenEqual={activityTitle}
+      />
       {sources.length === 0 ? null : (
         <details class="border-t border-[var(--color-border)] pt-3">
           <summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-[var(--color-text-muted)]">
@@ -480,7 +486,7 @@ function LessonWorkspace({
 
   return (
     <article
-      class="page-layout page-layout--reading space-y-6"
+      class="totem-learning-page page-layout page-layout--reading space-y-6"
       aria-labelledby="lesson-title"
     >
       <LessonContextHeader
@@ -497,9 +503,12 @@ function LessonWorkspace({
           </p>
         </Card>
       )}
-      <p class="ui-reading-copy">{lesson.summary}</p>
-      <div class="grid gap-6">
-        <section class="space-y-4" aria-labelledby="current-activity-title">
+      <p class="totem-learning-summary ui-reading-copy">{lesson.summary}</p>
+      <div class="totem-learning-layout grid gap-6">
+        <section
+          class="totem-learning-activity space-y-4"
+          aria-labelledby="current-activity-title"
+        >
           {current ? (
             <div
               data-activity-key={activityKey(current.kind, current.id)}
@@ -517,7 +526,11 @@ function LessonWorkspace({
             </div>
           ) : null}
           {block ? (
-            <ContentActivity block={block} resourcesByKey={resourcesByKey} />
+            <ContentActivity
+              activityTitle={current?.title ?? ''}
+              block={block}
+              resourcesByKey={resourcesByKey}
+            />
           ) : null}
           {task ? (
             <TaskActivity

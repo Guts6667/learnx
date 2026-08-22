@@ -43,17 +43,36 @@ function usesTotemProductSurface(currentPath: string): boolean {
   if (
     currentPath === '/today' ||
     currentPath === '/program' ||
+    currentPath === '/reviews' ||
+    currentPath === '/credits' ||
     currentPath === '/profile' ||
     currentPath.startsWith('/notes')
   ) {
     return true;
   }
 
-  if (!currentPath.startsWith('/program/')) return false;
+  return currentPath.startsWith('/program/');
+}
 
-  return !['/lesson/', '/assessment', '/exercise/', '/quiz'].some((segment) =>
-    currentPath.includes(segment),
-  );
+function totemSurfaceClass(currentPath: string): string {
+  if (currentPath === '/reviews') {
+    return 'totem-product-surface totem-learning-surface totem-reviews-surface';
+  }
+
+  if (currentPath === '/credits') {
+    return 'totem-product-surface totem-credits-surface';
+  }
+
+  if (
+    currentPath.startsWith('/program/') &&
+    ['/lesson/', '/assessment', '/exercise/', '/quiz'].some((segment) =>
+      currentPath.includes(segment),
+    )
+  ) {
+    return 'totem-product-surface totem-learning-surface';
+  }
+
+  return 'totem-product-surface';
 }
 
 function SessionNavigation({ currentPath }: { currentPath: string }) {
@@ -176,6 +195,41 @@ export function MobileLayout({
     );
   }
 
+  if (authenticationPaths.has(currentPath)) {
+    return (
+      <PwaProvider>
+        <TotemTheme class="totem-auth-surface">
+          <a
+            class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
+            href="#main-content"
+            onClick={focusMainContent}
+          >
+            {t('navigation.skipToContent')}
+          </a>
+          <div class="totem-auth-layout">
+            <aside class="totem-auth-brand">
+              <a class="totem-auth-brand__lockup" href="/">
+                <span aria-hidden="true" class="totem-auth-brand__mark">
+                  LX
+                </span>
+                <span>{t('app.name')}</span>
+              </a>
+              <div class="totem-auth-brand__copy">
+                <p class="page-eyebrow">{t('auth.shell.eyebrow')}</p>
+                <h2>{t('auth.shell.title')}</h2>
+                <p>{t('auth.shell.description')}</p>
+              </div>
+            </aside>
+            <main class="totem-auth-main" id="main-content" tabindex={-1}>
+              <PwaStatus />
+              <div class="totem-auth-content">{children}</div>
+            </main>
+          </div>
+        </TotemTheme>
+      </PwaProvider>
+    );
+  }
+
   const privateLayout = (
     <div class="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">
         <a
@@ -236,7 +290,7 @@ export function MobileLayout({
   return (
     <PwaProvider>
       {usesTotemProductSurface(currentPath) ? (
-        <TotemTheme class="totem-product-surface">
+        <TotemTheme class={totemSurfaceClass(currentPath)}>
           {privateLayout}
         </TotemTheme>
       ) : (
