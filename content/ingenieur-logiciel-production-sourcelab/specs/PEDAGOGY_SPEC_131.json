@@ -246,7 +246,7 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1,
+        "position": 2,
         "resourceKeys": []
       },
       {
@@ -256,7 +256,7 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2,
+        "position": 3,
         "resourceKeys": []
       },
       {
@@ -266,7 +266,7 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 3,
+        "position": 4,
         "resourceKeys": []
       },
       {
@@ -276,7 +276,7 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 4,
+        "position": 1,
         "resourceKeys": []
       }
     ],

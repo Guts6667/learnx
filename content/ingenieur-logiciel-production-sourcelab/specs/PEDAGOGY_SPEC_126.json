@@ -242,7 +242,7 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1,
+        "position": 2,
         "resourceKeys": []
       },
       {
@@ -252,17 +252,17 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2,
+        "position": 3,
         "resourceKeys": []
       },
       {
-        "key": "project-request-visible",
+        "key": "exercise-prendre-en-main-starter-suivre-requete",
         "title": "Rendre la requête corrélable de bout en bout",
         "description": "Ajouter le middleware, étendre les tests, capturer les trois cas avec leur ligne de journal, exécuter pnpm check et livrer checkpoint-01-request-visible avec un fichier de preuves interprétées.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3,
+        "position": 1,
         "resourceKeys": []
       }
     ],
@@ -462,7 +462,7 @@
       },
       {
         "kind": "EXERCISE",
-        "key": "project-request-visible"
+        "key": "exercise-prendre-en-main-starter-suivre-requete"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
@@ -1158,7 +1158,7 @@
           "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
-            "key": "project-request-visible"
+            "key": "exercise-prendre-en-main-starter-suivre-requete"
           },
           "assessmentKey": "assessment-correlation-request-id",
           "rationale": "Le code commenté et les erreurs fréquentes préparent le projet cumulatif, qui produit le checkpoint réutilisé ensuite."

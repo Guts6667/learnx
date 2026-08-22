@@ -251,7 +251,7 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1,
+        "position": 2,
         "resourceKeys": []
       },
       {
@@ -261,17 +261,17 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2,
+        "position": 3,
         "resourceKeys": []
       },
       {
-        "key": "project-project-contract",
+        "key": "exercise-definir-contrat-project-configuration",
         "title": "Livrer la verticale Project en mémoire",
         "description": "Injecter le repository mémoire, implémenter POST /projects, couvrir les quatre scénarios guidés, conserver le request ID, exécuter pnpm check et livrer checkpoint-02-project-contract avec ses preuves interprétées.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3,
+        "position": 1,
         "resourceKeys": []
       }
     ],
@@ -471,7 +471,7 @@
       },
       {
         "kind": "EXERCISE",
-        "key": "project-project-contract"
+        "key": "exercise-definir-contrat-project-configuration"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
@@ -1177,7 +1177,7 @@
           "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
-            "key": "project-project-contract"
+            "key": "exercise-definir-contrat-project-configuration"
           },
           "assessmentKey": "assessment-frontiere-repository-remplacable",
           "rationale": "Le repository commenté, les sorties et les erreurs fréquentes conduisent au checkpoint cumulatif."

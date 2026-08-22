@@ -209,7 +209,7 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1,
+        "position": 2,
         "resourceKeys": []
       },
       {
@@ -219,17 +219,17 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2,
+        "position": 3,
         "resourceKeys": []
       },
       {
-        "key": "project-api-container",
+        "key": "exercise-construire-image-api-reproductible",
         "title": "Prouver l’image API au runtime",
         "description": "Lancer l’image avec un port injecté, vérifier réponse et request ID, inspecter utilisateur et healthcheck, prouver l’absence des fichiers exclus, documenter la limite du tag de base et livrer checkpoint-03-api-container.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3,
+        "position": 1,
         "resourceKeys": []
       }
     ],
@@ -429,7 +429,7 @@
       },
       {
         "kind": "EXERCISE",
-        "key": "project-api-container"
+        "key": "exercise-construire-image-api-reproductible"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
@@ -1057,7 +1057,7 @@
           "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
-            "key": "project-api-container"
+            "key": "exercise-construire-image-api-reproductible"
           },
           "assessmentKey": "assessment-runtime-minimal-configurable",
           "rationale": "Les commandes et leurs limites préparent une preuve intégrée du comportement, de la configuration et du contenu final."

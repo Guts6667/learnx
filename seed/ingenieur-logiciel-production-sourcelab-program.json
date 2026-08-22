@@ -295,7 +295,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 1,
+                    "position": 2,
                     "resourceKeys": []
                   },
                   {
@@ -305,17 +305,17 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 2,
+                    "position": 3,
                     "resourceKeys": []
                   },
                   {
-                    "key": "project-request-visible",
+                    "key": "exercise-prendre-en-main-starter-suivre-requete",
                     "title": "Rendre la requête corrélable de bout en bout",
                     "description": "Ajouter le middleware, étendre les tests, capturer les trois cas avec leur ligne de journal, exécuter pnpm check et livrer checkpoint-01-request-visible avec un fichier de preuves interprétées.",
                     "type": "project",
                     "isRequired": true,
                     "weight": 2,
-                    "position": 3,
+                    "position": 1,
                     "resourceKeys": []
                   }
                 ],
@@ -515,7 +515,7 @@
                   },
                   {
                     "kind": "EXERCISE",
-                    "key": "project-request-visible"
+                    "key": "exercise-prendre-en-main-starter-suivre-requete"
                   },
                   {
                     "kind": "CONCEPT_ASSESSMENT",
@@ -774,7 +774,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 1,
+                    "position": 2,
                     "resourceKeys": []
                   },
                   {
@@ -784,17 +784,17 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 2,
+                    "position": 3,
                     "resourceKeys": []
                   },
                   {
-                    "key": "project-project-contract",
+                    "key": "exercise-definir-contrat-project-configuration",
                     "title": "Livrer la verticale Project en mémoire",
                     "description": "Injecter le repository mémoire, implémenter POST /projects, couvrir les quatre scénarios guidés, conserver le request ID, exécuter pnpm check et livrer checkpoint-02-project-contract avec ses preuves interprétées.",
                     "type": "project",
                     "isRequired": true,
                     "weight": 2,
-                    "position": 3,
+                    "position": 1,
                     "resourceKeys": []
                   }
                 ],
@@ -994,7 +994,7 @@
                   },
                   {
                     "kind": "EXERCISE",
-                    "key": "project-project-contract"
+                    "key": "exercise-definir-contrat-project-configuration"
                   },
                   {
                     "kind": "CONCEPT_ASSESSMENT",
@@ -1260,7 +1260,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 1,
+                    "position": 2,
                     "resourceKeys": []
                   },
                   {
@@ -1270,17 +1270,17 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 2,
+                    "position": 3,
                     "resourceKeys": []
                   },
                   {
-                    "key": "project-api-container",
+                    "key": "exercise-construire-image-api-reproductible",
                     "title": "Prouver l’image API au runtime",
                     "description": "Lancer l’image avec un port injecté, vérifier réponse et request ID, inspecter utilisateur et healthcheck, prouver l’absence des fichiers exclus, documenter la limite du tag de base et livrer checkpoint-03-api-container.",
                     "type": "project",
                     "isRequired": true,
                     "weight": 2,
-                    "position": 3,
+                    "position": 1,
                     "resourceKeys": []
                   }
                 ],
@@ -1480,7 +1480,7 @@
                   },
                   {
                     "kind": "EXERCISE",
-                    "key": "project-api-container"
+                    "key": "exercise-construire-image-api-reproductible"
                   },
                   {
                     "kind": "CONCEPT_ASSESSMENT",
@@ -1813,7 +1813,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 1,
+                    "position": 2,
                     "resourceKeys": []
                   },
                   {
@@ -1823,7 +1823,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 2,
+                    "position": 3,
                     "resourceKeys": []
                   },
                   {
@@ -1833,7 +1833,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 3,
+                    "position": 4,
                     "resourceKeys": []
                   },
                   {
@@ -1843,7 +1843,7 @@
                     "type": "project",
                     "isRequired": true,
                     "weight": 2,
-                    "position": 4,
+                    "position": 1,
                     "resourceKeys": []
                   }
                 ],
@@ -2379,7 +2379,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 1,
+                    "position": 2,
                     "resourceKeys": []
                   },
                   {
@@ -2389,7 +2389,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 2,
+                    "position": 3,
                     "resourceKeys": []
                   },
                   {
@@ -2399,7 +2399,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 3,
+                    "position": 4,
                     "resourceKeys": []
                   },
                   {
@@ -2409,7 +2409,7 @@
                     "type": "project",
                     "isRequired": true,
                     "weight": 2,
-                    "position": 4,
+                    "position": 1,
                     "resourceKeys": []
                   }
                 ],
@@ -2866,7 +2866,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 1,
+                    "position": 2,
                     "resourceKeys": []
                   },
                   {
@@ -2876,7 +2876,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 2,
+                    "position": 3,
                     "resourceKeys": []
                   },
                   {
@@ -2886,7 +2886,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 3,
+                    "position": 4,
                     "resourceKeys": []
                   },
                   {
@@ -2896,7 +2896,7 @@
                     "type": "project",
                     "isRequired": true,
                     "weight": 2,
-                    "position": 4,
+                    "position": 1,
                     "resourceKeys": []
                   }
                 ],
@@ -3409,7 +3409,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 1,
+                    "position": 2,
                     "resourceKeys": []
                   },
                   {
@@ -3419,7 +3419,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 2,
+                    "position": 3,
                     "resourceKeys": []
                   },
                   {
@@ -3429,7 +3429,7 @@
                     "type": "practice",
                     "isRequired": true,
                     "weight": 1,
-                    "position": 3,
+                    "position": 4,
                     "resourceKeys": []
                   },
                   {
@@ -3439,7 +3439,7 @@
                     "type": "project",
                     "isRequired": true,
                     "weight": 2,
-                    "position": 4,
+                    "position": 1,
                     "resourceKeys": []
                   }
                 ],
