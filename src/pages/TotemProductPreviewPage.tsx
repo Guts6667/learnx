@@ -1,11 +1,10 @@
 import type { RoutableProps } from 'preact-router';
 
 import { PrimaryResumeCard } from '@/components/product/PrimaryResumeCard';
+import { ProductPageHeader } from '@/components/product/ProductPageHeader';
+import { ProductRail } from '@/components/product/ProductRail';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
-import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { PageHeader } from '@/components/ui/PageHeader';
-import { Section } from '@/components/ui/Section';
 import { TotemTheme } from '@/components/ui/TotemTheme';
 
 export function TotemProductPreviewPage(props: RoutableProps) {
@@ -28,51 +27,91 @@ export function TotemProductPreviewPage(props: RoutableProps) {
           tabindex={-1}
         >
           <section class="page-layout page-layout--work page-shell">
-            <PageHeader
+            <ProductPageHeader
+              description="Une priorité claire, sans masquer les autres parcours en cours."
               eyebrow="Aujourd’hui"
               id="totem-product-preview-title"
+              summary={{
+                description:
+                  'Votre dernière activité reste la première action proposée.',
+                eyebrow: 'Aujourd’hui',
+                facts: [
+                  { label: 'Parcours en cours', value: 3 },
+                  { label: 'Révisions dues', value: 2 },
+                ],
+                title: 'Reprendre avant d’explorer',
+              }}
               title="Une prochaine action claire"
             />
-            <PrimaryResumeCard
-              actionHref="#main-content"
-              actionLabel="Continuer"
-              eyebrow="SourceLab — Docker, API et socle d’ingestion · Continuer la leçon"
-              metadata={['25 min', 'Observabilité locale']}
-              progress={{ label: 'Progression du programme', value: 34 }}
-              supportingText="Votre travail et vos notes sont enregistrés."
-              title="Observer la santé d’un service local"
-            />
-            <Section
-              description="Retrouvez vos autres engagements sans transformer Aujourd’hui en catalogue."
-              title="Mes programmes en cours"
-            >
-              <ul class="ui-list">
+            <div class="totem-product-layout">
+              <div class="totem-product-main">
+                <PrimaryResumeCard
+                  actionHref="#main-content"
+                  actionLabel="Continuer"
+                  eyebrow="SourceLab — Docker, API et socle d’ingestion · Continuer la leçon"
+                  metadata={['25 min', 'Observabilité locale']}
+                  progress={{ label: 'Progression du programme', value: 34 }}
+                  supportingText="Votre travail et vos notes sont enregistrés."
+                  title="Observer la santé d’un service local"
+                />
+                <dl class="totem-product-inline-facts">
+                  <div>
+                    <dd>2</dd>
+                    <dt>révisions à faire</dt>
+                  </div>
+                  <div>
+                    <dd>3</dd>
+                    <dt>parcours en cours</dt>
+                  </div>
+                </dl>
+              </div>
+              <ProductRail
+                action={
+                  <NavigationAction href="#main-content" variant="secondary">
+                    Voir tous les parcours
+                  </NavigationAction>
+                }
+                description="Reprenez un autre parcours exactement où vous l’avez laissé."
+                eyebrow="Vos autres parcours"
+                id="totem-product-preview-other-programs"
+                title="Continuer ailleurs"
+              >
+                <ul class="totem-product-rows">
                 <li>
-                  <ListRow
-                    aside={
-                      <NavigationAction href="#main-content" variant="ghost">
-                        Reprendre
-                      </NavigationAction>
-                    }
-                  >
-                    <h3 class="font-semibold">Pilotage de projets IA</h3>
-                    <p class="ui-text-muted mt-1 text-sm">En cours · 18 %</p>
-                  </ListRow>
+                  <article class="totem-product-row">
+                    <div class="totem-product-row__content">
+                      <h3>Pilotage de projets IA</h3>
+                      <p class="ui-text-muted mt-1 text-sm">En cours · 18 %</p>
+                    </div>
+                    <NavigationAction
+                      class="totem-product-row__action"
+                      href="#main-content"
+                      variant="ghost"
+                    >
+                      Reprendre
+                    </NavigationAction>
+                  </article>
                 </li>
                 <li>
-                  <ListRow
-                    aside={
-                      <NavigationAction href="#main-content" variant="ghost">
-                        Commencer
-                      </NavigationAction>
-                    }
-                  >
-                    <h3 class="font-semibold">Fondamentaux de la psychologie</h3>
-                    <p class="ui-text-muted mt-1 text-sm">Pas encore commencé</p>
-                  </ListRow>
+                  <article class="totem-product-row">
+                    <div class="totem-product-row__content">
+                      <h3>Fondamentaux de la psychologie</h3>
+                      <p class="ui-text-muted mt-1 text-sm">
+                        Pas encore commencé
+                      </p>
+                    </div>
+                    <NavigationAction
+                      class="totem-product-row__action"
+                      href="#main-content"
+                      variant="ghost"
+                    >
+                      Commencer
+                    </NavigationAction>
+                  </article>
                 </li>
-              </ul>
-            </Section>
+                </ul>
+              </ProductRail>
+            </div>
           </section>
         </main>
         <BottomNavigation currentPath="/today" />

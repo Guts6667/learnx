@@ -1,10 +1,11 @@
 import { route } from 'preact-router';
 import { useState } from 'preact/hooks';
 
+import { ProductPageHeader } from '@/components/product/ProductPageHeader';
+import { ProductRail } from '@/components/product/ProductRail';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { Section } from '@/components/ui/Section';
 import {
   useLocaleMutation,
@@ -57,91 +58,112 @@ export function ProfilePage() {
       aria-labelledby="profile-title"
       class="page-layout page-layout--work page-shell"
     >
-      <PageHeader
+      <ProductPageHeader
+        description={t('profile.description')}
         eyebrow={t('profile.eyebrow')}
         id="profile-title"
+        summary={{
+          description: t('profile.summary.description', {
+            language:
+              locale === 'fr'
+                ? t('profile.languageFrench')
+                : t('profile.languageEnglish'),
+          }),
+          eyebrow: t('profile.summary.eyebrow'),
+          title: user.email,
+        }}
         title={user.displayName}
       />
-      <Card class="max-w-2xl p-0">
-        <Section class="px-5 sm:px-6">
-          <div class="min-w-0">
-            <p class="ui-text-muted text-sm">{t('profile.email')}</p>
-            <p class="ui-text mt-1 break-all text-base">{user.email}</p>
-          </div>
-        </Section>
-        <Section class="px-5 sm:px-6">
-          <label
-            class="ui-text block text-sm font-semibold"
-            for="profile-locale"
-          >
-            {t('profile.language')}
-          </label>
-          <p
-            class="ui-text-muted mt-1 text-sm leading-6"
-            id="profile-locale-description"
-          >
-            {t('profile.languageDescription')}
-          </p>
-          <select
-            aria-describedby="profile-locale-description"
-            class="ui-field__control mt-3"
-            disabled={localeMutation.isPending}
-            id="profile-locale"
-            onInput={handleLocaleChange}
-            value={locale}
-          >
-            <option value="fr">{t('profile.languageFrench')}</option>
-            <option value="en">{t('profile.languageEnglish')}</option>
-          </select>
-          {localeMutation.error ? (
-            <p class="ui-text-danger mt-2 text-sm" role="alert">
-              {t('profile.languageError')}
-            </p>
-          ) : savedLocale === locale ? (
-            <p class="ui-text-success mt-2 text-sm" role="status">
-              {t('profile.languageSaved')}
-            </p>
-          ) : null}
-        </Section>
-        <Section
-          aria-labelledby="profile-actions-title"
-          class="space-y-3 px-5 sm:px-6"
-        >
-          <h2
-            class="ui-text-muted text-sm font-semibold"
-            id="profile-actions-title"
-          >
-            {t('profile.actions')}
-          </h2>
-          <div class="flex w-full min-w-0 flex-col gap-3">
-            <NavigationAction
-              class="w-full min-w-0 text-center"
-              href="/credits"
-              variant="secondary"
+      <div class="totem-product-layout">
+        <Card class="totem-profile-settings p-0">
+          <Section class="px-5 sm:px-6">
+            <div class="min-w-0">
+              <h2 class="font-medium">{t('profile.email')}</h2>
+              <p class="ui-text-muted mt-2 break-all text-sm">{user.email}</p>
+            </div>
+          </Section>
+          <Section class="px-5 sm:px-6">
+            <label
+              class="ui-text block text-sm font-semibold"
+              for="profile-locale"
             >
-              {t('profile.openCredits')}
-            </NavigationAction>
-            {user.role === 'ADMIN' ? (
-              <NavigationAction
-                class="w-full min-w-0 text-center"
-                href="/admin"
-                variant="secondary"
-              >
-                {t('profile.openAdmin')}
-              </NavigationAction>
+              {t('profile.language')}
+            </label>
+            <p
+              class="ui-text-muted mt-1 text-sm leading-6"
+              id="profile-locale-description"
+            >
+              {t('profile.languageDescription')}
+            </p>
+            <select
+              aria-describedby="profile-locale-description"
+              class="ui-field__control mt-3"
+              disabled={localeMutation.isPending}
+              id="profile-locale"
+              onInput={handleLocaleChange}
+              value={locale}
+            >
+              <option value="fr">{t('profile.languageFrench')}</option>
+              <option value="en">{t('profile.languageEnglish')}</option>
+            </select>
+            {localeMutation.error ? (
+              <p class="ui-text-danger mt-2 text-sm" role="alert">
+                {t('profile.languageError')}
+              </p>
+            ) : savedLocale === locale ? (
+              <p class="ui-text-success mt-2 text-sm" role="status">
+                {t('profile.languageSaved')}
+              </p>
             ) : null}
+          </Section>
+          <Section
+            aria-labelledby="profile-actions-title"
+            class="space-y-3 px-5 sm:px-6"
+          >
+            <h2 class="font-medium" id="profile-actions-title">
+              {t('profile.actions')}
+            </h2>
             <Button
-              class="w-full min-w-0"
               isLoading={logoutMutation.isPending}
               onClick={handleLogout}
               variant="ghost"
             >
               {t('profile.logout')}
             </Button>
-          </div>
-        </Section>
-      </Card>
-      <PwaInstallSettings />
+          </Section>
+        </Card>
+        <ProductRail
+          eyebrow={t('profile.application.eyebrow')}
+          id="profile-application-title"
+          title={t('profile.application.title')}
+        >
+          <PwaInstallSettings />
+          <ul class="totem-product-rows">
+            <li class="totem-product-row">
+              <span>{t('profile.openCredits')}</span>
+              <NavigationAction
+                aria-label={t('profile.openCredits')}
+                href="/credits"
+                variant="ghost"
+              >
+                {t('common.open')}
+              </NavigationAction>
+            </li>
+            {user.role === 'ADMIN' ? (
+              <li class="totem-product-row">
+                <span>{t('profile.openAdmin')}</span>
+                <NavigationAction
+                  aria-label={t('profile.openAdmin')}
+                  href="/admin"
+                  variant="ghost"
+                >
+                  {t('common.open')}
+                </NavigationAction>
+              </li>
+            ) : null}
+          </ul>
+        </ProductRail>
+      </div>
     </section>
   );
 }

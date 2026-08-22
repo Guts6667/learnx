@@ -4,7 +4,7 @@
 
 - **Classe** : `ACTIVE_DESIGN_AUTHORITY`
 - **Décision propriétaire** : `DESIGN_VALIDATED`
-- **Implémentation applicative** : `V4_016D_QA_GREEN_PENDING_PUSH`
+- **Implémentation applicative** : `V4_016C_QA_GREEN_READY_FOR_DEV`
 - **Date** : 21 août 2026
 - **Portée** : langage visuel, composants et découpage des surfaces LearnX
 
@@ -13,8 +13,10 @@ implémentables. Il n'autorise aucun changement de code, aucune publication et
 aucune activation de fonctionnalité. Chaque ticket exige un GO d'implémentation
 distinct après réaudit du code et des contrats serveur concernés.
 
-Le GO explicite du 22 août 2026 couvre uniquement `V4-016D`. Les autres lots
-restent soumis à leur propre autorisation.
+Les lots restent soumis à une autorisation explicite. Au 23 août 2026,
+V4-016D/E, V4-016B et V4-016C ont reçu leur GO d'implémentation ; V4-016C a
+également reçu l'autorisation propriétaire de commit et d'intégration sur
+`origin/dev`.
 
 ## 0. État d'implémentation de V4-016D
 
@@ -109,7 +111,9 @@ V4-016D et V4-016E sont implémentés et validés dans deux commits locaux
 ordonnés, en attente d'intégration propriétaire. Une première tranche V4-016B
 couvre aussi le shell et les routes admin déjà disponibles ; les surfaces
 correction/paiement restent bloquées sur leurs contrats. V4-016C migre les
-surfaces produit autorisées sans changer le runtime multi-programmes. Les autres
+surfaces produit autorisées sans changer le runtime multi-programmes. Sa
+composition de reprise est protégée par une assertion responsive : rail compact
+à droite sur desktop, empilement après la priorité sur mobile. Les autres
 lots restent `DESIGN_VALIDATED_IMPLEMENTATION_WAIT_GO`. Cette file est parallèle
 au chemin critique IA et ne le remplace pas.
 

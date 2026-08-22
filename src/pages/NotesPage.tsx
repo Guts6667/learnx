@@ -2,14 +2,13 @@ import { route } from 'preact-router';
 import { useEffect, useRef, useState } from 'preact/hooks';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { ProductPageHeader } from '@/components/product/ProductPageHeader';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
@@ -50,8 +49,8 @@ function NoteCard({ note }: { note: NoteDetail }) {
   const { locale, t } = useI18n();
   return (
     <li>
-      <ListRow class="items-stretch">
-        <div class="space-y-3">
+      <article class="totem-product-row totem-note-row">
+        <div class="totem-product-row__content space-y-2">
           <div class="flex items-start justify-between gap-3">
             <h2 class="font-semibold">{note.title}</h2>
             {note.lesson ? (
@@ -76,15 +75,15 @@ function NoteCard({ note }: { note: NoteDetail }) {
               date: formatUpdatedAt(note.updatedAt, locale),
             })}
           </p>
-          <NavigationAction
-            class="w-full sm:w-auto"
-            href={`/notes/${encodeURIComponent(note.id)}`}
-            variant="secondary"
-          >
-            {t('notes.edit')}
-          </NavigationAction>
         </div>
-      </ListRow>
+        <NavigationAction
+          class="totem-product-row__action"
+          href={`/notes/${encodeURIComponent(note.id)}`}
+          variant="ghost"
+        >
+          {t('notes.edit')}
+        </NavigationAction>
+      </article>
     </li>
   );
 }
@@ -116,14 +115,38 @@ export function NotesPage() {
       aria-labelledby="notes-title"
       class="page-layout page-layout--work page-shell"
     >
-      <PageHeader
+      <ProductPageHeader
         description={t('notes.description')}
         eyebrow={t('notes.eyebrow')}
         id="notes-title"
+        summary={
+          query.data
+            ? {
+                description: t('notes.summary.description'),
+                eyebrow: t('notes.summary.eyebrow'),
+                facts: [
+                  {
+                    label: t('notes.summary.linked'),
+                    value: query.data.notes.filter((note) => note.lesson).length,
+                  },
+                  {
+                    label: t('notes.summary.personal'),
+                    value: query.data.notes.filter((note) => !note.lesson).length,
+                  },
+                ],
+                title:
+                  query.data.notes.length === 1
+                    ? t('notes.summary.one')
+                    : t('notes.summary.count', {
+                        count: query.data.notes.length,
+                      }),
+              }
+            : undefined
+        }
         title={t('notes.title')}
       />
 
-      <div class="grid items-end gap-4 md:grid-cols-[minmax(0,1fr)_auto]">
+      <div class="totem-notes-tools">
         <TextField
           label={t('notes.search')}
           onInput={(event) => setSearch(event.currentTarget.value)}
@@ -162,11 +185,33 @@ export function NotesPage() {
       ) : null}
       {query.data?.notes.length ? (
         <div class="space-y-4">
-          <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {query.data.notes.map((note) => (
-              <NoteCard key={note.id} note={note} />
-            ))}
-          </ul>
+          <div class="totem-notes-workspace">
+            <ul class="totem-product-rows">
+              {query.data.notes.map((note) => (
+                <NoteCard key={note.id} note={note} />
+              ))}
+            </ul>
+            <article class="totem-note-preview">
+              <p class="totem-kicker">
+                {query.data.notes[0]?.lesson
+                  ? t('notes.linkedLesson')
+                  : t('notes.personal')}
+              </p>
+              <h2>{query.data.notes[0]?.title}</h2>
+              <p>
+                {getExcerpt(
+                  query.data.notes[0]?.markdown ?? '',
+                  t('notes.emptyExcerpt'),
+                )}
+              </p>
+              <NavigationAction
+                href={`/notes/${encodeURIComponent(query.data.notes[0]?.id ?? '')}`}
+                variant="secondary"
+              >
+                {t('notes.edit')}
+              </NavigationAction>
+            </article>
+          </div>
           {query.hasMore ? (
             <Button
               isLoading={query.isLoadingMore}

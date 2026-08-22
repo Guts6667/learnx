@@ -1,11 +1,11 @@
 import { PrimaryResumeCard } from '@/components/product/PrimaryResumeCard';
+import { ProductPageHeader } from '@/components/product/ProductPageHeader';
+import { ProductRail } from '@/components/product/ProductRail';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -60,9 +60,29 @@ export function TodayPage() {
       aria-labelledby="today-title"
       class="page-layout page-layout--work page-shell"
     >
-      <PageHeader
+      <ProductPageHeader
+        description={t('today.description')}
         eyebrow={t('today.eyebrow')}
         id="today-title"
+        summary={
+          query.data?.program
+            ? {
+                description: t('today.summary.description'),
+                eyebrow: t('today.summary.eyebrow'),
+                facts: [
+                  {
+                    label: t('today.summary.programs'),
+                    value: query.data.programCount,
+                  },
+                  {
+                    label: t('today.summary.reviews'),
+                    value: query.data.reviewsDue,
+                  },
+                ],
+                title: t('today.summary.title'),
+              }
+            : undefined
+        }
         title={t('today.title')}
       />
 
@@ -120,9 +140,10 @@ function TodayContent({
   );
 
   return (
-    <div class="space-y-8">
-      {data.action && primaryProgram ? (
-        <PrimaryResumeCard
+    <div class="totem-product-layout">
+      <div class="totem-product-main">
+        {data.action && primaryProgram ? (
+          <PrimaryResumeCard
           actionHref={data.action.href}
           actionLabel={t('common.continue')}
           eyebrow={
@@ -159,37 +180,51 @@ function TodayContent({
               {t('today.reviewsDueCount', { count: data.reviewsDue })}
             </p>
           ) : null}
-        </PrimaryResumeCard>
-      ) : primaryProgram ? (
-        <Section title={primaryProgram.title}>
-          <div class="space-y-4">
-            <p class="ui-text-muted leading-7">
-              {t('today.upToDate.description')}
-            </p>
-            {primaryProgram.percent > 0 ? (
-              <ProgressBar
-                label={t('today.progressLabel')}
-                value={primaryProgram.percent}
-              />
-            ) : null}
-            {primaryProgram.status === 'COMPLETED' ? (
-              <Badge tone="info">{t('today.program.completed')}</Badge>
-            ) : null}
+          </PrimaryResumeCard>
+        ) : primaryProgram ? (
+          <Section title={primaryProgram.title}>
+            <div class="space-y-4">
+              <p class="ui-text-muted leading-7">
+                {t('today.upToDate.description')}
+              </p>
+              {primaryProgram.percent > 0 ? (
+                <ProgressBar
+                  label={t('today.progressLabel')}
+                  value={primaryProgram.percent}
+                />
+              ) : null}
+              {primaryProgram.status === 'COMPLETED' ? (
+                <Badge tone="info">{t('today.program.completed')}</Badge>
+              ) : null}
+            </div>
+          </Section>
+        ) : null}
+
+        <dl class="totem-product-inline-facts">
+          <div>
+            <dd>{data.reviewsDue}</dd>
+            <dt>{t('today.summary.reviews')}</dt>
           </div>
-        </Section>
-      ) : null}
+          <div>
+            <dd>{data.programCount}</dd>
+            <dt>{t('today.summary.programs')}</dt>
+          </div>
+        </dl>
+      </div>
 
       {visibleSecondaryPrograms.length > 0 ? (
-        <Section
+        <ProductRail
           action={
-            <NavigationAction href="/program" variant="ghost">
+            <NavigationAction href="/program" variant="secondary">
               {t('today.viewMyPrograms')}
             </NavigationAction>
           }
           description={t('today.activePrograms.description')}
+          eyebrow={t('today.otherPrograms.eyebrow')}
+          id="today-other-programs-title"
           title={t('today.activePrograms.title')}
         >
-          <ul class="ui-list" role="list">
+          <ul class="totem-product-rows" role="list">
             {visibleSecondaryPrograms.map((program) => (
               <li key={program.id}>
                 <ProgramResumeRow program={program} />
@@ -201,7 +236,7 @@ function TodayContent({
               {t('today.morePrograms', { count: hiddenProgramCount })}
             </p>
           ) : null}
-        </Section>
+        </ProductRail>
       ) : null}
     </div>
   );
@@ -221,22 +256,8 @@ function ProgramResumeRow({ program }: { program: TodayProgram }) {
       : t('today.resumeProgram');
 
   return (
-    <ListRow
-      aside={
-        program.status !== 'COMPLETED' && program.resumeHref ? (
-          <NavigationAction
-            aria-label={`${actionLabel} — ${program.title}`}
-            href={program.resumeHref}
-            variant="ghost"
-          >
-            {actionLabel}
-          </NavigationAction>
-        ) : (
-          <Badge tone="info">{t('today.program.completed')}</Badge>
-        )
-      }
-    >
-      <div class="space-y-1">
+    <article class="totem-product-row">
+      <div class="totem-product-row__content">
         <h3 class="font-semibold [overflow-wrap:anywhere]">{program.title}</h3>
         <p class="ui-text-muted text-sm">
           {t(statusKey)}
@@ -255,6 +276,18 @@ function ProgramResumeRow({ program }: { program: TodayProgram }) {
           </p>
         ) : null}
       </div>
-    </ListRow>
+      {program.status !== 'COMPLETED' && program.resumeHref ? (
+        <NavigationAction
+          aria-label={`${actionLabel} — ${program.title}`}
+          class="totem-product-row__action"
+          href={program.resumeHref}
+          variant="ghost"
+        >
+          {actionLabel}
+        </NavigationAction>
+      ) : (
+        <Badge tone="info">{t('today.program.completed')}</Badge>
+      )}
+    </article>
   );
 }

@@ -53,7 +53,7 @@ describe('NotesPage', () => {
       </AppProviders>,
     );
 
-    expect(await screen.findByText('Ma note')).toBeInTheDocument();
+    expect(await screen.findAllByText('Ma note')).toHaveLength(2);
     fireEvent.input(screen.getByLabelText('Rechercher dans les notes'), {
       target: { value: 'attention' },
     });
@@ -64,7 +64,7 @@ describe('NotesPage', () => {
       '/api/notes?search=attention',
       expect.anything(),
     );
-    expect(await screen.findByText('Attention sélective')).toBeInTheDocument();
+    expect(await screen.findAllByText('Attention sélective')).toHaveLength(2);
   });
 
   it('crée une note personnelle depuis la liste', async () => {
@@ -117,8 +117,8 @@ describe('NotesPage', () => {
     );
 
     expect(
-      await screen.findByText('Titre Élément important Documentation'),
-    ).toBeInTheDocument();
+      await screen.findAllByText('Titre Élément important Documentation'),
+    ).toHaveLength(2);
     expect(screen.queryByText(/# Titre/)).not.toBeInTheDocument();
   });
 });

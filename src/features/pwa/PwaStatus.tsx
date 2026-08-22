@@ -196,7 +196,7 @@ export function PwaInstallSettings() {
         <h2 class="text-lg font-semibold" id="application-settings-title">
           {t('pwa.application')}
         </h2>
-        <p class="mt-2 text-sm leading-6 text-slate-300">
+        <p class="ui-text-muted mt-2 text-sm leading-6">
           {t('pwa.description')}
         </p>
       </div>
@@ -210,7 +210,7 @@ export function PwaInstallSettings() {
         </Button>
       ) : showIosHelp ? (
         <div class="space-y-3">
-          <p class="text-sm leading-6 text-slate-300">
+          <p class="ui-text-muted text-sm leading-6">
             {t('pwa.iosHelp')}
           </p>
           <Button onClick={dismissIosHelp} variant="ghost">
@@ -218,7 +218,7 @@ export function PwaInstallSettings() {
           </Button>
         </div>
       ) : (
-        <p class="text-sm text-slate-400">
+        <p class="ui-text-muted text-sm">
           {t('pwa.unavailable')}
         </p>
       )}

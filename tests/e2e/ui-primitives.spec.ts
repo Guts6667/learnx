@@ -188,6 +188,18 @@ test('la surface produit Totem reste lisible aux largeurs de référence', async
     );
     await expect(resumeCard).toHaveClass(/ui-card--signature/);
     await expect(resumeCard).not.toHaveClass(/ui-card--accent/);
+
+    const resumeBox = await resumeCard.boundingBox();
+    const railBox = await page.locator('.totem-product-rail').boundingBox();
+    if (!resumeBox || !railBox) {
+      throw new Error('La composition produit Totem est incomplète.');
+    }
+    if (viewport.width >= 1024) {
+      expect(railBox.x).toBeGreaterThan(resumeBox.x + resumeBox.width);
+      expect(railBox.width).toBeLessThanOrEqual(360);
+    } else {
+      expect(railBox.y).toBeGreaterThan(resumeBox.y + resumeBox.height);
+    }
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,

@@ -600,7 +600,7 @@ constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
 | --- | --- | --- | --- |
 | V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration sur `dev` |
 | V4-016E | Primitives et états communs accessibles | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration après V4-016D |
-| V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `PRODUCT_SURFACES_QA_GREEN_LOCAL` | V4-016D/E intégrés localement ; rollout propriétaire requis |
+| V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `PRODUCT_SURFACES_QA_GREEN_READY_FOR_DEV` | V4-016D/E intégrés localement ; intégration propriétaire sur `dev` autorisée |
 | V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
 | V4-016A | Landing, compte, vérification e-mail et première direction | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesses approuvées |
 | V4-016I | Recherche publique, articles partageables, programme public et graphiques | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contenu public réel |
@@ -2538,9 +2538,20 @@ ni les données de démonstration ni la logique de recommandation.
   inchangés côté serveur.
 - Totem est activé uniquement sur Aujourd'hui, Parcours/Programme, Notes et
   Profil. Les leçons, quiz, Réviser et crédits restent dans leurs lots V4-016F/G.
+- Aujourd'hui emploie une composition desktop à deux colonnes : action
+  prioritaire sur surface signature à gauche et reprises secondaires compactes
+  dans un rail à droite. À 720 px et moins, le rail se place après l'action
+  principale sans cardification ni espace artificiel.
+- Parcours/Programme, Notes et Profil partagent désormais le même page-head,
+  les mêmes résumés factuels et les mêmes lignes compactes, sans donnée de
+  démonstration ni calcul client ajouté.
 - Les parcours produit couverts passent les tests 320/390/720/1440/1920,
   zoom 200 %, clavier, reduced motion et accessibilité sans modifier les droits,
   recommandations ou calculs de progression.
+- Preuves locales : 1 221 tests unitaires, 15 scénarios Playwright produit et
+  primitives, lint, typecheck et build verts. Le test visuel bloque notamment
+  toute régression replaçant le rail secondaire en bloc pleine largeur sur
+  desktop.
 
 ### Constat
 

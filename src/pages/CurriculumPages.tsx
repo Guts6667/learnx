@@ -2,13 +2,13 @@ import { route } from 'preact-router';
 import { useRef, useState } from 'preact/hooks';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { ProductPageHeader } from '@/components/product/ProductPageHeader';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StageAssessmentCard } from '@/features/stage-assessments/StageAssessmentCard';
@@ -879,10 +879,33 @@ export function ProgramsPage() {
       aria-labelledby="programs-title"
       class="page-layout page-layout--work page-shell space-y-6"
     >
-      <PageHeader
+      <ProductPageHeader
         description={t('programs.description')}
         eyebrow={t('programs.eyebrow')}
         id="programs-title"
+        summary={{
+          description:
+            activeView === 'enrolled'
+              ? t('programs.summary.mineDescription')
+              : t('programs.summary.catalogDescription'),
+          eyebrow:
+            activeView === 'enrolled'
+              ? t('programs.mine')
+              : t('programs.explore'),
+          facts: [
+            {
+              label: t('programs.summary.visible'),
+              value:
+                activeView === 'enrolled'
+                  ? ownedPrograms.length + enrolledPrograms.length
+                  : catalog.data.items.length,
+            },
+          ],
+          title:
+            activeView === 'enrolled'
+              ? t('programs.summary.mineTitle')
+              : t('programs.summary.catalogTitle'),
+        }}
         title={t('programs.title')}
       />
       <div
@@ -1211,19 +1234,26 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
       aria-labelledby="program-title"
       class="page-layout page-layout--work page-shell"
     >
-      <div class="min-w-0">
-        <p class="page-eyebrow">{t('curriculum.program')}</p>
-        <div class="mt-3 flex min-w-0 flex-wrap items-center gap-3">
-          <h1
-            id="program-title"
-            class="min-w-0 break-words text-3xl font-bold tracking-tight"
-          >
-            {program.title}
-          </h1>
-          {program.status === 'DRAFT' ? <DraftBadge /> : null}
-        </div>
-        <p class="page-description mt-3 break-words">{program.description}</p>
-      </div>
+      <ProductPageHeader
+        description={program.description}
+        eyebrow={t('curriculum.program')}
+        id="program-title"
+        summary={{
+          description: t('programs.summary.programDescription'),
+          eyebrow: t('programs.summary.progressEyebrow'),
+          facts: [
+            {
+              label: t('programs.summary.stages'),
+              value: program.stages.length,
+            },
+          ],
+          title: t('common.percent', {
+            count: Math.round(program.timeline?.actualPercent ?? 0),
+          }),
+        }}
+        title={program.title}
+      />
+      {program.status === 'DRAFT' ? <DraftBadge /> : null}
       <ProgressBar
         label={t('curriculum.programProgress', {
           count: Math.round(program.timeline?.actualPercent ?? 0),

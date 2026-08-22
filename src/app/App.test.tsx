@@ -510,7 +510,7 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
-  it('empile les actions du profil administrateur sans concurrence tactile', async () => {
+  it('sépare les actions du compte et les accès administrateur', async () => {
     window.history.pushState({}, '', '/profile');
     const user = {
       id: 'admin-1',
@@ -526,7 +526,8 @@ describe('App', () => {
 
     render(<App />);
 
-    const email = await screen.findByText(user.email);
+    const emails = await screen.findAllByText(user.email);
+    const email = emails.find((element) => element.classList.contains('break-all'));
     const actions = screen.getByRole('heading', { level: 2, name: 'Actions' });
     const adminLink = screen.getByRole('link', {
       name: 'Ouvrir l’administration',
@@ -538,16 +539,11 @@ describe('App', () => {
 
     expect(email).toHaveClass('break-all');
     expect(adminLink).toHaveAttribute('href', '/admin');
-    expect(adminLink).toHaveClass('ui-action--md', 'w-full');
+    expect(adminLink).toHaveClass('ui-action--md');
     expect(adminLink).not.toHaveClass('underline');
-    expect(logout).toHaveClass('ui-action--md', 'w-full');
-    expect(actions.compareDocumentPosition(adminLink)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
-    expect(adminLink.compareDocumentPosition(logout)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
-    expect(adminLink.parentElement).toHaveClass('flex-col');
+    expect(logout).toHaveClass('ui-action--md');
+    expect(actions.closest('.totem-profile-settings')).toContainElement(logout);
+    expect(adminLink.closest('.totem-product-rail')).toBeInTheDocument();
   });
 
   it('enregistre la langue du compte et met à jour le document immédiatement', async () => {
@@ -612,7 +608,7 @@ describe('App', () => {
 
     render(<App />);
 
-    expect(await screen.findByText('creator@example.test')).toBeInTheDocument();
+    expect(await screen.findAllByText('creator@example.test')).toHaveLength(2);
     expect(
       screen.queryByRole('link', { name: 'Ouvrir l’administration' }),
     ).not.toBeInTheDocument();

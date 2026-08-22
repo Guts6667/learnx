@@ -1764,6 +1764,206 @@ body {
   max-width: 68ch;
 }
 
+.totem-product-page-head {
+  display: grid;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--totem-color-border);
+}
+
+.totem-product-page-head__intro {
+  min-width: 0;
+}
+
+.totem-product-page-head .page-title {
+  margin-top: 0.6rem;
+}
+
+.totem-product-page-head .page-description {
+  margin-top: 0.65rem;
+}
+
+.totem-product-page-summary {
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  border-left: 3px solid var(--totem-color-accent);
+  padding-left: 1.4rem;
+}
+
+.totem-product-page-summary > strong {
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.totem-product-page-summary > p:not(.totem-kicker) {
+  color: var(--totem-color-text-muted);
+  line-height: 1.45;
+}
+
+.totem-product-page-summary__facts {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+}
+
+.totem-product-page-summary__facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: var(--totem-color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.totem-product-page-summary__facts dd {
+  color: var(--totem-color-text);
+  font-weight: 500;
+}
+
+.totem-product-layout {
+  display: grid;
+  gap: 1.8rem;
+  margin-top: 1.7rem;
+}
+
+.totem-product-main {
+  min-width: 0;
+}
+
+.totem-product-inline-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.35rem;
+  padding-block: 1rem;
+  border-block: 1px solid var(--totem-color-border);
+}
+
+.totem-product-inline-facts dd {
+  color: var(--totem-color-text);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.totem-product-inline-facts dt {
+  color: var(--totem-color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.totem-product-rail {
+  min-width: 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--totem-color-border);
+}
+
+.totem-product-rail__title {
+  margin-top: 0.45rem;
+  color: var(--totem-color-text);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.totem-product-rail__description {
+  margin-top: 0.45rem;
+  color: var(--totem-color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.totem-product-rail__content,
+.totem-product-rail__action {
+  margin-top: 0.8rem;
+}
+
+.totem-product-rail__action .ui-action {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.totem-product-rows {
+  border-top: 1px solid var(--totem-color-border);
+}
+
+.totem-product-row {
+  min-height: 4.375rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--totem-color-border);
+  padding-block: 0.85rem;
+}
+
+.totem-product-row__content {
+  min-width: 0;
+}
+
+.totem-product-row__content h3 {
+  color: var(--totem-color-text);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.totem-product-row__action {
+  min-width: auto;
+  padding-inline: 0.5rem;
+  color: var(--totem-color-accent-text);
+}
+
+.totem-notes-tools {
+  display: grid;
+  align-items: end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.totem-notes-workspace {
+  display: grid;
+  gap: 2rem;
+}
+
+.totem-note-row {
+  align-items: start;
+}
+
+.totem-note-preview {
+  display: none;
+  min-width: 0;
+  border: 1px solid var(--totem-color-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: var(--totem-color-surface);
+}
+
+.totem-note-preview h2 {
+  margin-top: 0.55rem;
+  color: var(--totem-color-text);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.totem-note-preview > p:not(.totem-kicker) {
+  margin-top: 0.75rem;
+  color: var(--totem-color-text-muted);
+  line-height: 1.6;
+}
+
+.totem-note-preview .ui-action {
+  margin-top: 1.25rem;
+}
+
+.totem-profile-settings {
+  align-self: start;
+}
+
+.totem-product-rail .ui-card {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .totem-product-surface .ui-card,
 .totem-product-surface .ui-list-row,
 .totem-product-surface .ui-section {
@@ -1851,6 +2051,41 @@ body {
 }
 
 @media (min-width: 64rem) {
+  .totem-product-page-head {
+    grid-template-columns: minmax(0, 47.5rem) minmax(18rem, 20rem);
+    justify-content: space-between;
+    gap: 3rem;
+    align-items: end;
+  }
+
+  .totem-product-layout {
+    grid-template-columns: minmax(0, 47.5rem) minmax(18rem, 20rem);
+    justify-content: space-between;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2.5rem;
+  }
+
+  .totem-product-rail {
+    position: sticky;
+    top: 6.75rem;
+    padding: 0.15rem 0 0.15rem 1.4rem;
+    border-top: 0;
+    border-left: 1px solid var(--totem-color-border);
+  }
+
+  .totem-notes-tools {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .totem-notes-workspace {
+    grid-template-columns: minmax(18rem, 22.5rem) minmax(0, 1fr);
+  }
+
+  .totem-note-preview {
+    display: block;
+  }
+
   .totem-resume-card__action {
     max-width: 22.5rem;
   }
