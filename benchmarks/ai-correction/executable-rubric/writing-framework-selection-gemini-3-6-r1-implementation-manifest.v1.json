@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "manifestId": "learnx-writing-framework-selection-gemini-3-6-r1-public-implementation-v1",
+  "manifestVersion": "1.0.0",
+  "status": "PUBLIC_CODE_BASELINE_FROZEN_HARD_OFF",
+  "hashPolicy": "SHA256_EXACT_FILE_BYTES_AT_PUBLIC_COMMIT",
+  "canonicalization": "LEARNX_CANONICAL_JSON_V2_RECURSIVE_SORT_ARRAY_ORDER_PRESERVED",
+  "publicCode": {
+    "commitObjectFormat": "sha1",
+    "commitSha": "07d5d80978ac1346a78a46e41e6a589439fa564d",
+    "subject": "feat(ai): prepare Gemini 3.6 R1 offline gate",
+    "treeSha": "b437ad2ef6741c8b57571d1dd0afa7c25c604d43"
+  },
+  "runtimeFiles": [
+    {
+      "path": "src/lib/ai-correction-provider-adapters.ts",
+      "sha256": "22fc3205cbe998d79b9e7a466f94a991ceef1c6a6ff53d2fc818c4bdcd8ac8b1"
+    },
+    {
+      "path": "src/lib/evidence-assist-protocol.ts",
+      "sha256": "ba9f3c3bc099e28f98f7149efa628d183a9b8cdea361b3a0f0c0541d56a2e720"
+    },
+    {
+      "path": "src/lib/evidence-assist-protocol-v2-adapter.ts",
+      "sha256": "d4bd66501d2d2805e128293f7f0e262e5b18c26d796cf8f29a1b83d79f1c43ba"
+    },
+    {
+      "path": "src/lib/response-span-manifest.ts",
+      "sha256": "7c0a470d25182711c91cac07e0ec467084a7b185bcec736a50cd78dbb44b809d"
+    },
+    {
+      "path": "src/lib/executable-rubric-engine-v2.ts",
+      "sha256": "c2cb3ecec8fc8f844b5882e587011d0d8b6888d3d3ae0a07d1b57d1e662f3e17"
+    },
+    {
+      "path": "src/lib/executable-rubric-mechanical-oracle-v2-1.ts",
+      "sha256": "523cb178adbd535daee9f4b23f553abb4c5386ac66c2363382a9f0c7f411b314"
+    },
+    {
+      "path": "src/lib/writing-framework-selection-implementation-manifest.ts",
+      "sha256": "c3778be10060a6dbae21c55d0cd7bf80ec5c5d23cbb0e5359c4d06a48f28730d"
+    },
+    {
+      "path": "src/server/ai/writing-framework-selection-gate-runner-v2.ts",
+      "sha256": "22b20d0fcf5dab94acce6e8085af62cb903789a1bfc1e935c6a533500b3778c7"
+    },
+    {
+      "path": "src/server/ai/writing-framework-selection-openrouter-provider.ts",
+      "sha256": "f471e54b3e11f3af157d2edcce8f782456e7a0e0cf998bb16900f6be7a8a4d76"
+    }
+  ],
+  "verificationTools": [
+    {
+      "path": "scripts/run-writing-framework-selection-gate-v2.ts",
+      "sha256": "7370412635a473a6f1357e7117dfe42bab3ba4d0a2c332e6c101ea8beee74ebf"
+    },
+    {
+      "path": "scripts/preflight-writing-framework-selection-gate-v2.ts",
+      "sha256": "2cb4772d6d335cb42eff53679fd33c1b039e75e6990b0222b65517e7050c456b"
+    },
+    {
+      "path": "src/server/ai/gemini-3-6-transport-differential.ts",
+      "sha256": "0b3a0d1ef3a7e5f05593f1c9e81c1ff18df8eae8fb3da1770d185adfe586ca44"
+    },
+    {
+      "path": "scripts/validate-gemini-3-6-transport-differential.ts",
+      "sha256": "f51ec560a7b5a0be3aa4c0c559cde382cdb1e006b8efeb232a8c9238ed947139"
+    },
+    {
+      "path": "scripts/prepare-writing-framework-selection-gemini-3-6-r1-freeze.ts",
+      "sha256": "2dc0729ebe0bf11e3b4541fc7b4861c9187ec7360674512686f755f264ed13a4"
+    }
+  ],
+  "testFiles": [
+    {
+      "path": "src/lib/ai-correction-provider-adapters.test.ts",
+      "sha256": "e6f7d0b072e645b36685d781104bbad23c18cd265a5589a3376c52df69e9a184"
+    },
+    {
+      "path": "src/lib/evidence-assist-protocol.test.ts",
+      "sha256": "ab0db4b6a4f657405977986db5a2e0bee0c29627871658173fa2f4964c11f0c4"
+    },
+    {
+      "path": "src/lib/ai-correction-benchmark.test.ts",
+      "sha256": "a77763615a8a36b400000fb0408ab5b4ff481efa2ab6d2db1d06212b6a791164"
+    },
+    {
+      "path": "src/lib/writing-framework-selection-implementation-manifest.test.ts",
+      "sha256": "e2b6ce32c83278de9355a60ea9b6b40295d32dc14d9ab1077f4fd87d8aa3608d"
+    },
+    {
+      "path": "src/server/ai/gemini-3-6-transport-differential.test.ts",
+      "sha256": "dfa63897664420dbfada8319e998086205947fb36d43c5a91622f2eaa27cdcc2"
+    },
+    {
+      "path": "src/server/ai/writing-framework-selection-gate-runner-v2.test.ts",
+      "sha256": "c5b55a3e04e29f553d8db2b909b52bf304929de71fe018fb03277fd84dd4a709"
+    },
+    {
+      "path": "src/server/ai/writing-framework-selection-openrouter-provider.test.ts",
+      "sha256": "f933abde534892ae2c5c87db2229a5b61e97faf3f2469df7291246de8b438acf"
+    }
+  ],
+  "persistenceFiles": [
+    {
+      "path": "prisma/schema.prisma",
+      "sha256": "319dfc2f74287898f20e4823e16fe6755b4926bc80372a6672ccd623150b6a0d"
+    },
+    {
+      "path": "prisma/migrations/20260822120000_add_ai_correction_attempt_request_audit/migration.sql",
+      "sha256": "ec079c99abd7d13ac02bec6f8f7c6eeee971a779181bccb7f940da29706494c0"
+    },
+    {
+      "path": "prisma/ai-correction-attempt-request-audit-schema.test.ts",
+      "sha256": "bb88453e156d180467e5696a8aac46f7e7f98a38c08c5ca9a526e3b89a6417ff"
+    }
+  ],
+  "dependencyFiles": {
+    "lockfile": {
+      "path": "pnpm-lock.yaml",
+      "sha256": "e0924c3b2655a48f31e8c963684f82567c66712c64f9a3278abd92bff864e8e2"
+    },
+    "package": {
+      "path": "package.json",
+      "sha256": "955adc5e21e5fc0ead9747354b2f98b7d57d961d56190006e5401b40a3556587"
+    },
+    "typescript": {
+      "path": "tsconfig.json",
+      "sha256": "377b68c22cb08171ce902ca90f9cc4f30871f7e7ba06708154310a1350a0ff91"
+    }
+  },
+  "executionBoundary": {
+    "modelCallsAllowed": false,
+    "networkAuthorizationEffect": "NONE",
+    "financeArbitrationEffect": "NONE",
+    "ownerGoEffect": "NONE"
+  },
+  "scopePolicy": {
+    "candidateRunnerImplementationScope": "PUBLIC_CODE_RUNTIME_PERSISTENCE_VERIFICATION_AND_DEPENDENCIES",
+    "candidateRunnerImplementationFingerprint": "4e5e196c40fbf85be94d2ecc167b5751207eda568e4d19bf0d28578029946f6e",
+    "postFreezeCliMayAuthorizeNetwork": false,
+    "postFreezeCliPath": "scripts/run-writing-framework-selection-gate-v2.ts",
+    "postFreezeCliRole": "FROZEN_FAIL_CLOSED_CONTROL_PLANE",
+    "verificationToolsAreRunnerRuntime": false
+  },
+  "runtimeFilesFingerprint": "6ecfc66481350d1f5eda56a826da51a6d77042c9f808ae2749ab1145c987642d",
+  "verificationToolsFingerprint": "9b750def7eafebad75606bab007a90ec7ed899f1012aa2887079eec2af9dff66",
+  "testFilesFingerprint": "26c0aa75c901832b0834a76d78440ac5911643bba97f2d5ac7724fb10cfaf6d1",
+  "persistenceFilesFingerprint": "99a9c73ad73d09360229f658cf1705116505aa9bd67897d91b7788613b592d6c",
+  "dependencyFilesFingerprint": "1026def90e343f2eb1178d41270977e37463e1df2ad3284e1978183034ad5233",
+  "sourceBaseline": {
+    "commitSha": "07d5d80978ac1346a78a46e41e6a589439fa564d",
+    "ref": "codex/ai-correction-unblock-audit"
+  },
+  "candidateRunnerImplementationFingerprint": "4e5e196c40fbf85be94d2ecc167b5751207eda568e4d19bf0d28578029946f6e",
+  "manifestFingerprint": "18765b23a8f385af36694df9fe3db7e712780ddf245c681d1c3ee4ff98c2b5e2"
+}

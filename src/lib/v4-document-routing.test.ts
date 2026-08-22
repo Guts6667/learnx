@@ -126,6 +126,12 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(status).toContain(
       '| `V4_009C_S2_NETWORK_GATE_REPORT.md` | `HISTORICAL_EVIDENCE` |',
     );
+    expect(status).toContain(
+      '| `V4_003E_Q1_R1_GEMINI_3_6_OFFLINE_REMEDIATION.md` | `CURRENT_STATUS` |',
+    );
+    expect(status).toContain(
+      '| `V4_003E_Q1_R1_PUBLICATION_SECURITY_REVIEW.md` | `CURRENT_STATUS` |',
+    );
     expect(roadmap).toContain('| `V4-003E — Analyse et documentation` |');
     expect(roadmap).toContain('| `V4-003E-Q1 — Dossier Gemini 3.6` |');
     expect(roadmap).toContain('| `V4-003E-Q1-R1 — Remédiation Gemini 3.6` |');
@@ -133,7 +139,7 @@ describe('V4 document routing and assigned execution queue', () => {
       '`V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `DONE_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED`',
     );
     expect(backlog).toContain(
-      '`V4-003E-Q1-R1 — Remédiation hors ligne Gemini 3.6` | `ACTIVE_OFFLINE_REMEDIATION_NEW_IDENTITY_REQUIRED`',
+      '`V4-003E-Q1-R1 — Remédiation hors ligne Gemini 3.6` | `FROZEN_HARD_OFF_AWAITING_FINANCE_AND_OWNER_GO`',
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({
@@ -154,13 +160,14 @@ describe('V4 document routing and assigned execution queue', () => {
         financeArbitrationRequired: true,
         mode: 'OFFLINE_ONLY',
         modelCallsAllowed: false,
-        newIdentityFingerprint: null,
+        newIdentityFingerprint:
+          '00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0',
         newIdentityRequired: true,
         newOwnerSingleUseAuthorizationRequired: true,
         transportRemediation: {
           candidateCause: 'PATTERN_KEYWORD_HYPOTHESIS_NOT_PROVEN',
           networkOrModelCallsPerformed: 0,
-          status: 'IMPLEMENTED_AND_TESTED_OFFLINE_NEW_IDENTITY_NOT_FROZEN',
+          status: 'IMPLEMENTED_AND_TESTED_OFFLINE_NEW_IDENTITY_FROZEN_HARD_OFF',
           wireDialect: 'evidence-assist-wire/3.0.1',
         },
       },
@@ -227,12 +234,9 @@ describe('V4 document routing and assigned execution queue', () => {
     for (const source of [backlog, roadmap, index, funnel]) {
       expect(source).toContain('V4-003E-Q1-R1');
     }
-    expect(index).toContain(
-      'V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md',
-    );
-    expect(backlog).toContain(
-      'V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md',
-    );
+    expect(index).toContain('V4_003E_Q1_R1_GEMINI_3_6_OFFLINE_REMEDIATION.md');
+    expect(index).toContain('V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md');
+    expect(backlog).toContain('V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md');
     expect(roadmap).toContain(
       'gemini-3-6-google-vertex-attestation-2026-08-22.json',
     );
@@ -278,9 +282,9 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(manifestText).toContain('evidence-assist-wire/3.0.1');
     expect(manifestText).toContain('PATTERN_KEYWORD_HYPOTHESIS_NOT_PROVEN');
     expect(manifestText.match(/"currentTicket":/g)).toHaveLength(2);
-    expect(manifestText.match(/"currentTicket": "V4-003E-Q1-R1"/g)).toHaveLength(
-      2,
-    );
+    expect(
+      manifestText.match(/"currentTicket": "V4-003E-Q1-R1"/g),
+    ).toHaveLength(2);
 
     for (const staleStatus of [
       'V4-003E_LOCAL_PENDING_INTEGRATION',
@@ -314,7 +318,7 @@ describe('V4 document routing and assigned execution queue', () => {
 
     expect(funnel).not.toContain('writing-go-no-go-recommendation-fr.v2');
     expect(funnel).not.toContain(
-      '`V4-002A` : choisir l\'activité réelle, sa consigne et son objectif observable',
+      "`V4-002A` : choisir l'activité réelle, sa consigne et son objectif observable",
     );
   });
 

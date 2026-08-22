@@ -12,10 +12,11 @@
   n'a été envoyé ; le coût réel et l'identifiant fournisseur sont absents, donc
   la réserve `0,1208415 USD` reste en `RECONCILIATION_REQUIRED`
 - Point de reprise unique : `V4-003E-Q1-R1`, remédiation strictement hors
-  ligne de Gemini 3.6. Elle commence par la réconciliation de Q1 et le
-  diagnostic borné du payload, puis exige une nouvelle identité, de nouvelles
-  attestations, un nouvel arbitrage Finance et un nouveau GO propriétaire
-  avant tout appel. Q1 et son autorisation consommée ne sont pas rejouables.
+  ligne de Gemini 3.6. L'identité `00cd27d8…` est gelée sur le commit public
+  `07d5d809…`; le wire `3.0.1` et le fake preflight `4/4` sont verts, sans
+  réseau ni modèle. Aucun arbitrage Finance ni GO propriétaire R1 n'existe :
+  tout appel reste bloqué. Q1 et son autorisation consommée ne sont pas
+  rejouables.
   La procédure Finance append-only est
   `docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md` : l'Activity du jour UTC
   courant était indisponible, la reprise commence le 23 août et tout write-off
@@ -435,7 +436,7 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 | Ordre | Ticket | Statut de départ | Responsable | Livrable obligatoire | Gate de sortie |
 | --- | --- | --- | --- | --- | --- |
 | 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `DONE_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED` | `AGENT-PROTOCOLE-IA` | Identité `ef88a8e3…` exécutée une fois : HTTP 400, raw/ledger persistés, `0/1` utilisable, coût réel inconnu et réserve `0,1208415 USD` maintenue ; procédure `docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md` | **Identité close** : autorisation consommée ; aucun replay, aucune promotion et aucun verdict pédagogique |
-| 11 | `V4-003E-Q1-R1 — Remédiation hors ligne Gemini 3.6` | `ACTIVE_OFFLINE_REMEDIATION_NEW_IDENTITY_REQUIRED` | `AGENT-PROTOCOLE-IA` | Réconciliation de la tentative Q1, diagnostic borné de l'HTTP 400 sans cause inventée, proposition de payload corrigé sous nouvelle identité, runner et fake preflight `HARD_OFF`, attestations fraîches | Hors ligne uniquement ; un futur gate exige réconciliation close, nouvelle identité gelée, nouvel arbitrage Finance et nouveau GO propriétaire single-use |
+| 11 | `V4-003E-Q1-R1 — Remédiation hors ligne Gemini 3.6` | `FROZEN_HARD_OFF_AWAITING_FINANCE_AND_OWNER_GO` | `AGENT-PROTOCOLE-IA` | Identité `00cd27d8…` gelée sur `07d5d809…`, wire `3.0.1`, contrôle-plan fail-closed, différentiel hors ligne et fake preflight `4/4` | Réconcilier Q1 ; puis seulement un arbitrage Finance R1 séparé et un nouveau GO propriétaire single-use peuvent ouvrir le canari réseau |
 | 12 | `V4-003E-Q2 — Option Gemini 3.7 Flash` | `QUEUED_SECOND_TECHNICAL_OPTION` | `AGENT-PROTOCOLE-IA` | Dossier entièrement nouveau, raisonnement `LOW`, runner paramétré, aucune histoire LearnX ni enveloppe 3.6 réutilisée | Après disposition de `V4-003E-Q1-R1` et arbitrage ultérieur |
 | 13 | `V4-003E-Q3 — Alternative Mistral Medium 3.5` | `QUEUED_AFTER_GEMINI` | `AGENT-PROTOCOLE-IA` | `mistralai/mistral-medium-3-5`, nouvelle identité et attestations propres, aucun résultat historique réutilisé | Rang 3 fixe ; dossier uniquement après disposition des candidats Gemini et mandat dédié |
 
@@ -454,8 +455,9 @@ LearnX, omet `pattern` sur le wire Gemini et bloque récursivement tout mot-clé
 non attesté. Le runner persiste un manifeste assaini et ses empreintes avant
 `CALL_INTENT`, active les métadonnées OpenRouter expurgées et sépare
 `generationId` de `providerRequestId`. Zéro appel réseau a été exécuté ;
-`pattern` reste une hypothèse et aucune nouvelle identité, Finance ou GO n'est
-créée par ce correctif.
+`pattern` reste une hypothèse. La nouvelle identité R1 `00cd27d8…` est gelée
+sur `07d5d809…`; aucun arbitrage Finance ni GO réseau n'est créé par ce
+correctif.
 
 #### Tickets conditionnels
 
@@ -1151,11 +1153,11 @@ Dépendances : V4-001.**
   pseudo-oracle et shadow réel non annoté mesurant seulement stabilité,
   couverture, abstention, coût et dérive.
 - Le contrat, le compilateur et l'audit successeur sont clos. Q1 Gemini 3.6 est
-  aussi clos en NO-GO technique après un HTTP 400. `V4-003E-Q1-R1` réconcilie
-  cette tentative et prépare hors ligne seulement une remédiation sous une
-  nouvelle identité. La faisabilité ne pourra recommencer par 4/4 puis un corpus
-  10 × 2 qu'après attestations, Finance et nouveau GO ; aucune identité ou
-  autorisation historique n'est reprise.
+  aussi clos en NO-GO technique après un HTTP 400. `V4-003E-Q1-R1` a gelé hors
+  ligne l'identité `00cd27d8…` et validé le runner fake `4/4`. La faisabilité ne
+  pourra recommencer par le gate réseau puis un corpus 10 × 2 qu'après
+  réconciliation Q1, Finance et nouveau GO ; aucune identité ou autorisation
+  historique n'est reprise.
 - Comparer ensuite au moins trois candidats sur des identités reproductibles
   pour robustesse, latence et coût complet. Cette phase secondaire ne bloque pas
   le gate du prochain candidat exact ; elle bloque V4-018, le prix et la généralisation
@@ -1766,7 +1768,8 @@ exactement `1/4` appel. Son autorisation single-use est consommée ; aucun retry
 ni fallback n'a eu lieu, le coût réel demeure inconnu et aucun verdict
 pédagogique ou pipeline promu n'en résulte. Le point de reprise unique est
 `V4-003E-Q1-R1`, remédiation hors ligne sous nouvelle identité ; aucun appel ne
-peut précéder un nouveau gel, Finance et un nouveau GO propriétaire.**
+peut précéder la réconciliation Q1, Finance R1 et un nouveau GO propriétaire.
+L'identité `00cd27d8…` est déjà gelée sous `HARD_OFF`.**
 
 ### Point de reprise pour le développement
 
@@ -1786,8 +1789,9 @@ peut précéder un nouveau gel, Finance et un nouveau GO propriétaire.**
   avant tout candidat Gemini.
 - Livré et clos : gate Q1 Gemini 3.6 `ef88a8e3…`, arrêt `1/4` sur HTTP
   400 fournisseur, autorisation consommée, coût en réconciliation et aucun
-  workflow utilisable. `V4-003E-Q1-R1` peut uniquement diagnostiquer et préparer
-  hors ligne une nouvelle identité ; il ne possède aucune autorité réseau.
+  workflow utilisable. `V4-003E-Q1-R1` a gelé hors ligne `00cd27d8…`, produit
+  le différentiel et passé le fake preflight `4/4` ; il ne possède aucune
+  autorité réseau.
 - Livré hors ligne : décision sémantique successeur, paires minimales exactes
   absence/refus/contradiction/ambiguïté et funnel d'authoring. Ces artefacts
   n'étendent aucune autorité live et n'ouvrent aucun budget.

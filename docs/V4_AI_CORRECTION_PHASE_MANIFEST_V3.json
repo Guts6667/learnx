@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-22T08:09:01Z",
+  "updatedAt": "2026-08-22T10:08:29Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -208,7 +208,7 @@
     }
   ],
   "offlineCandidateQueue": {
-    "status": "GEMINI_3_6_Q1_R1_ACTIVE_OFFLINE_REMEDIATION_NEW_IDENTITY_REQUIRED",
+    "status": "GEMINI_3_6_Q1_R1_FROZEN_HARD_OFF_AWAITING_FINANCE_AND_OWNER_GO",
     "currentTicket": "V4-003E-Q1-R1",
     "authority": "docs/V4_ROADMAP.md",
     "closedGateTicket": "V4-003E-Q1",
@@ -221,14 +221,14 @@
         "DIAGNOSE_PROVIDER_HTTP_400_WITHOUT_ASSERTING_UNPROVEN_CAUSE"
       ],
       "newIdentityRequired": true,
-      "newIdentityFingerprint": null,
+      "newIdentityFingerprint": "00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0",
       "localFakePreflightRequired": true,
       "freshRouteProfilePricingAttestationsRequired": true,
       "financeArbitrationRequired": true,
       "newOwnerSingleUseAuthorizationRequired": true,
       "modelCallsAllowed": false,
       "transportRemediation": {
-        "status": "IMPLEMENTED_AND_TESTED_OFFLINE_NEW_IDENTITY_NOT_FROZEN",
+        "status": "IMPLEMENTED_AND_TESTED_OFFLINE_NEW_IDENTITY_FROZEN_HARD_OFF",
         "wireDialect": "evidence-assist-wire/3.0.1",
         "candidateCause": "PATTERN_KEYWORD_HYPOTHESIS_NOT_PROVEN",
         "wirePatternOmitted": true,
@@ -240,9 +240,51 @@
         "conservativeWriteOffNeverAutomatic": true,
         "networkOrModelCallsPerformed": 0
       },
+      "r1FreezePreparation": {
+        "status": "FROZEN_ON_PUBLIC_CODE_COMMIT_A_HARD_OFF",
+        "publicBaselineCommit": "07d5d80978ac1346a78a46e41e6a589439fa564d",
+        "report": {
+          "path": "docs/V4_003E_Q1_R1_GEMINI_3_6_OFFLINE_REMEDIATION.md",
+          "sha256": "6222cc31bb0912afcec088f01d16a4504e0f0331e92d2d077a08c2c5e0653195"
+        },
+        "implementationManifest": {
+          "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-implementation-manifest.v1.json",
+          "sha256": "32a1c2678d94f001c41fbc71b866469b1e35a52b74f8e7a32975d34a875665da",
+          "manifestFingerprint": "18765b23a8f385af36694df9fe3db7e712780ddf245c681d1c3ee4ff98c2b5e2"
+        },
+        "dossier": {
+          "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-freeze.v1.json",
+          "sha256": "d60c108c6ce12784c985b235aa691fa852cfa653e4fbbd12da536d1acb347207",
+          "identityFingerprint": "00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0"
+        },
+        "financeDraft": {
+          "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-finance-envelope.draft.v1.json",
+          "sha256": "a71db002f64e192a663221088fa305ba46e1dbff9f1f20e4ea94062146cbcc69",
+          "status": "DRAFT_NOT_ARBITRATED_NETWORK_NOT_AUTHORIZED",
+          "maximumCostPerCallUsd": 0.06039225,
+          "calculatedMaximumFourCallsUsd": 0.241569,
+          "hardProviderCapUsd": 0.5
+        },
+        "fakePreflight": {
+          "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-runner-preflight.v1.json",
+          "sha256": "007d0e9b1b888449118524c6d2aa472b150f899bc5320144e53347cf17dd7ad2",
+          "preflightFingerprint": "4672b01fc8828e45d32ad35101303f10e53de3c8214d3ea3645bd05b8b6c6c7b",
+          "transportDifferentialFingerprint": "e75bcad45b871775862f1d00b748407fa991fdbb905dea687c1ed6b39a021232",
+          "usableWorkflows": "4/4",
+          "fakeProviderExecutions": 4,
+          "replayProviderExecutions": 0,
+          "modelCallsPerformed": 0,
+          "networkCallsPerformed": 0
+        },
+        "exactRebaselineTool": "scripts/prepare-writing-framework-selection-gemini-3-6-r1-freeze.ts",
+        "finalizationRule": "FROZEN_NO_NETWORK_AUTHORIZATION_FINANCE_AND_OWNER_GO_REQUIRED",
+        "financeArbitrationGranted": false,
+        "ownerNetworkAuthorizationGranted": false,
+        "modelCallsAllowed": false
+      },
       "costReconciliationAuthority": {
         "path": "docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md",
-        "sha256": "7504462777640c21f2f2dba7cc8bab2472f2bc69fa96dc6365f7e4edefeb04d8",
+        "sha256": "54c8c5fdbd230e4296114ff4c6d6c94e53d7bbfaeec0815b32592c6945fee54c",
         "status": "RECONCILIATION_REQUIRED",
         "sameDayActivityLookup": "UNAVAILABLE_CURRENT_UTC_DAY",
         "retryFromUtcDate": "2026-08-23",
@@ -501,7 +543,7 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "V4_003E_Q1_R1_ACTIVE_OFFLINE_REMEDIATION_NEW_IDENTITY_REQUIRED",
+      "status": "V4_003E_Q1_R1_FROZEN_HARD_OFF_AWAITING_FINANCE_AND_OWNER_GO",
       "nextTicket": "V4-003E-Q1-R1",
       "responsibleAgent": "AGENT-PROTOCOLE-IA",
       "allowed": [
@@ -1262,9 +1304,9 @@
   "nextAuthorizedSequence": [
     "Preserve both closed Sonnet campaigns append-only and separately: cc4dd0df performed two calls for 0.025622 USD on an ontology boundary; cc3b1b52 performed one call for 0.018828 USD and closed on a non-ambiguous semantic inversion. Never aggregate, replay, retune or transfer either identity, authorization or budget.",
     "Preserve Q1 Gemini 3.6 append-only under ef88a8e3: exactly one of four calls returned provider HTTP 400, three calls were not sent, zero workflows were usable, the single-use authorization is consumed and the 0.1208415 USD reserved cost remains RECONCILIATION_REQUIRED. Never treat unknown cost as zero, replay Q1 or infer a pedagogical verdict.",
-    "Execute V4-003E-Q1-R1 offline only: reconcile Q1 first, then diagnose the rejected payload without asserting an unproven cause. Preserve protocol 3.0.0, rubric, oracle, corpus, golds, order, semantic mapping, telemetry and thresholds unless a separately governed protocol revision is opened.",
-    "Any payload, profile, runner or attestation correction creates a new Gemini 3.6 identity with a new fingerprint, fresh route/profile/pricing attestations and a local fake transport preflight under HARD_OFF. The Q1 identity, Finance envelope and consumed authorization are not transferable.",
-    "Before any future four-case dispatch, freeze the new identity, complete a new Finance arbitration and obtain a new explicit single-use Rayan network authorization. Until all three are present, modelCallsAllowed remains false.",
+    "Preserve V4-003E-Q1-R1 identity 00cd27d8 frozen on public code commit 07d5d809 under HARD_OFF. Its offline differential and fake preflight 4/4 isolate the payload variable but do not prove that pattern caused Q1 HTTP 400. Preserve protocol 3.0.0, rubric, oracle, corpus, golds, order, semantic mapping, telemetry and thresholds unless a separately governed protocol revision is opened.",
+    "The R1 payload, profile, wire dialect, runner implementation and public attestations are frozen under a new Gemini 3.6 identity. The Q1 identity, Finance envelope, reserved cost and consumed authorization remain historical and non-transferable.",
+    "Before any future four-case dispatch, reconcile Q1, complete a new R1 Finance arbitration and obtain a new explicit single-use Rayan network authorization bound to identity 00cd27d8. Until both new authorities exist, modelCallsAllowed remains false.",
     "Keep the historical 0.075 USD proposal superseded and the closed Q1 approved bounds historical only. Recalculate and arbitrate the remediated identity rather than transferring the old envelope.",
     "Keep Gemini 3.7 as rank 2 with no LearnX history and no transferred Gemini 3.6 envelope. Keep Mistral Medium 3.5 as rank 3 after both Gemini candidates. Each future dossier still requires its own mandate, identity, Finance and owner authorization.",
     "Keep the conditional 10x2 panel closed until a fresh 4/4 under one newly frozen identity and separate Finance and owner authorization. Keep the sealed holdout closed until fresh 4/4 then 20/20 and its distinct one-shot opening authorization.",
