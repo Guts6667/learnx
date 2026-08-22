@@ -1,8 +1,8 @@
 # Spécification V4 — moteur de rubrique exécutable
 
 - **Statut** : `APPROVED_FOR_IMPLEMENTATION`
-- **Version** : `1.0.0`
-- **Date d'arbitrage** : 14 août 2026
+- **Version** : `1.1.0`
+- **Date de réconciliation** : 22 août 2026
 - **Portée initiale** : `WRITING`, `fr-FR`, risque faible
 - **Autorité pédagogique** : règles LearnX versionnées
 - **Autorité de progression** : aucune
@@ -10,6 +10,12 @@
 Cette spécification remplace, pour les nouvelles expériences V4, l'approche où
 un modèle attribue librement des niveaux. Les campagnes précédentes restent des
 preuves historiques ; elles ne sont ni effacées, ni requalifiées.
+
+Pour toute interface sémantique, `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`
+est l'autorité canonique la plus récente. Il supersède l'ancien composite,
+l'attribution de statuts par le modèle et la seconde passe automatique. La
+présente spécification reste autoritaire pour le compilateur, les constats
+mécaniques authorés et leurs calculs serveur.
 
 La promesse publique reste :
 
@@ -26,17 +32,17 @@ Le pipeline cible est :
 ```text
 rubrique versionnée
   -> compilation et contrôles statiques
-  -> recherche de preuves dans la réponse
-  -> falsification indépendante
-  -> certificat de preuve
-  -> résolution robuste des ambiguïtés
-  -> règles déterministes de niveau
+  -> constats mécaniques par règles serveur pures
+  -> segmentation déterministe de la réponse
+  -> relations sémantiques candidates optionnelles
+  -> validation et certificat evidence-assist
   -> feedback authoré par templates
 ```
 
-Les modèles ne retournent ni niveau final, ni score, ni `PASS/FAIL`, ni faiblesse
-libre. Ils proposent et contestent des preuves atomiques. LearnX valide les
-spans, applique les règles de propriété et calcule le résultat.
+Les modèles ne retournent ni statut atomique, ni niveau final, ni score, ni
+`PASS/FAIL`, ni faiblesse libre. Ils proposent uniquement des relations
+candidates vers des passages présegmentés par LearnX. Ces relations ne sont
+jamais consommées par un calcul de statut, niveau, score, maîtrise ou progression.
 
 ## 2. Rubrique atomique
 
@@ -69,36 +75,41 @@ dépend ne peut pas être déclaré `FULLY_COMPILABLE`.
 
 ## 3. Statuts atomiques
 
-Le moteur reconnaît quatre statuts :
+Les règles mécaniques serveur reconnaissent cinq statuts atomiques :
 
 - `SUPPORTED` : l'élément est démontré par une preuve exacte et valide ;
 - `CONTRADICTED` : une contradiction explicite est prouvée ;
 - `NOT_DEMONSTRATED` : cette réponse ne démontre pas suffisamment l'élément ;
+- `EXPLICITLY_REFUTED` : la réponse refuse explicitement l'élément attendu ;
 - `AMBIGUOUS` : plusieurs interprétations plausibles subsistent.
 
 `NOT_DEMONSTRATED` ne constitue jamais une affirmation sur la maîtrise réelle
-de l'apprenant. La confiance numérique d'un modèle est conservée à des fins de
-diagnostic, sans autorité de décision.
+de l'apprenant. Pour le MVP, `EXPLICITLY_REFUTED` conserve un certificat et un
+template distincts mais le même effet de niveau que `NOT_DEMONSTRATED` sur un
+élément positif requis. Une relation candidate, y compris
+`EVIDENCE_AGAINST_ELEMENT`, n'établit jamais seule aucun de ces cinq statuts.
 
-## 4. Recherche et falsification
+## 4. Interface sémantique canonique
 
-Le chercheur de preuves reçoit le contrat publié, le contexte fiable, la
-consigne et la réponse non fiable. Il retourne uniquement :
+LearnX segmente d'abord la réponse et fournit des identifiants de passages
+opaques. Le modèle reçoit une vue candidate sans points, poids, niveaux ou
+templates de décision. Il retourne uniquement :
 
 - `elementKey` ;
-- statut proposé ;
-- spans exacts `start`, `end`, `sha256` dans `responseText` ;
-- contradictions ou ambiguïtés structurées ;
-- confiance diagnostique.
+- `relation`, parmi `EVIDENCE_FOR_ELEMENT`, `EVIDENCE_AGAINST_ELEMENT` et
+  `ABSTAIN` ;
+- `spanIds`, limités aux identifiants fournis par LearnX.
 
-Le falsificateur reçoit les mêmes éléments et les preuves proposées. Il cherche
-une interprétation alternative, une contradiction, une preuve oubliée ou une
-preuve insuffisante. Il ne voit aucun niveau ou score proposé et ne débat pas
-avec le chercheur.
+Le modèle ne retourne ni citation libre, ni offset, ni hash, ni confiance, ni
+contradiction libre, ni exigence nouvelle. LearnX résout les `spanIds`, recalcule
+offsets et hashes et rejette tout identifiant inconnu. Omission et `ABSTAIN`
+deviennent `UNRESOLVED`, jamais `NOT_DEMONSTRATED`.
 
-Il n'existe ni vote, ni moyenne, ni troisième modèle arbitre. Une même famille
-de modèle peut regrouper plusieurs éléments dans un appel structuré ; cela ne
-change pas le rôle de l'appel.
+Le chercheur primaire, le composite et la seconde passe automatique décrits
+dans les baselines antérieures sont `SUPERSEDED_HISTORICAL`. Il n'existe aucun
+vote ou arbitre actif. Un futur falsificateur serait une campagne distincte,
+avec identité et budget propres, et seulement après un gain mesuré ; il est
+actuellement fermé.
 
 ## 5. Contrôles déterministes et certificat
 
@@ -107,7 +118,7 @@ Avant toute restitution, LearnX contrôle :
 - les offsets et le hash du texte exact ;
 - l'absence de preuve hors réponse ;
 - les frontières de l'injection et les canaris ;
-- les clés et statuts autorisés ;
+- les clés, relations et identifiants de passages autorisés ;
 - la propriété et les règles de partage ;
 - l'absence d'exigence inconnue et de double pénalisation ;
 - la couverture de tous les éléments ;
@@ -116,7 +127,7 @@ Avant toute restitution, LearnX contrôle :
 Une citation n'a pas besoin d'être unique dans le texte. Son couple d'offsets et
 son hash désigne l'occurrence exacte.
 
-Chaque résultat publiable possède un certificat reconstructible :
+Chaque constat mécanique publiable possède un certificat reconstructible :
 
 - identité et version de la rubrique ;
 - empreinte du pipeline ;
@@ -126,12 +137,18 @@ Chaque résultat publiable possède un certificat reconstructible :
 - niveau calculé et ensemble des niveaux possibles par critère ;
 - état pédagogique calculé.
 
+Le certificat evidence-assist reste séparé. Il porte l'identité de protocole,
+les relations candidates, les `spanIds` résolus et leurs empreintes, avec
+`level: null`, `indicativeScore: null`, `scoreAuthority: NONE`,
+`masteryEffect: NONE` et `progressionEffect: NONE`.
+
 Le feedback est dérivé du certificat. Au MVP, il utilise uniquement les
 templates authorés ; aucune reformulation libre par modèle n'est publiée.
 
 ## 6. Résolution de l'incertitude
 
-Le moteur évalue toutes les résolutions authorisées d'un élément `AMBIGUOUS`.
+Pour les seuls constats mécaniques, le moteur évalue toutes les résolutions
+authorisées d'un élément `AMBIGUOUS`.
 
 - Si toutes les résolutions conduisent au même niveau, l'ambiguïté est sans
   effet matériel et le résultat peut être publié.
@@ -170,6 +187,7 @@ Le compilateur refuse au minimum :
 - élément exclusif avec plusieurs propriétaires ;
 - pénalité applicable à plusieurs critères sans partage explicite ;
 - `AMBIGUOUS` assimilé silencieusement à `NOT_DEMONSTRATED` ;
+- `EXPLICITLY_REFUTED` assimilé silencieusement à `CONTRADICTED` ;
 - critère `HOLISTIC` prétendument pleinement compilable ;
 - seuil annoncé impossible à atteindre.
 
@@ -224,8 +242,10 @@ obligatoires. Un circuit breaker global ne les remplace pas.
 - une famille `WRITING` en français ;
 - trois critères et six à dix éléments ;
 - un contrat `FULLY_COMPILABLE` ;
-- Gemini testé comme chercheur de preuves ;
-- un falsificateur d'une autre famille seulement si son gain est mesuré ;
+- un candidat testé comme chercheur de relations evidence-assist sous une
+  identité gelée et autorisée ;
+- aucun falsificateur actif ; une campagne séparée d'une autre famille devient
+  éligible seulement si son gain est mesuré ;
 - score entièrement déterministe et feedback par templates ;
 - une clarification maximale ;
 - feature flag, crédits offerts, aucun effet sur la progression ;

@@ -59,7 +59,9 @@ describe('evidence researcher protocol', () => {
     expect(serializedSchema).not.toMatch(/level|score|pass|fail|feedback/iu);
     expect(serializedSchema).not.toMatch(/"start"|"end"/u);
     expect(serializedSchema).toContain('evidenceQuotes');
-    expect(evidenceResearcherProtocolFingerprint()).toMatch(/^[a-f0-9]{64}$/u);
+    expect(evidenceResearcherProtocolFingerprint()).toBe(
+      '494dc302dc6de4785937ee27da3050042ba6585d87577be81cd705b03afbc5fc',
+    );
   });
 
   it('resolves an exact unique ASCII quote into a server-owned span and hash', () => {

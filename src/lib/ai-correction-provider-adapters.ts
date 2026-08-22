@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 import { z } from 'zod';
 
 import type { CorrectionBenchmarkConfiguration } from './ai-correction-benchmark.js';
@@ -15,10 +17,28 @@ export type CorrectionProviderUsage = {
   visibleOutputTokens: number;
 };
 
+export type OpenRouterMetadata = Readonly<{
+  attempt?: number;
+  attempts?: ReadonlyArray<
+    Readonly<{ model?: string; provider?: string; status?: number | string }>
+  >;
+  endpoints?: ReadonlyArray<
+    Readonly<{ model?: string; provider?: string; selected?: boolean }>
+  >;
+  is_byok?: boolean;
+  region?: string | null;
+  requested?: string;
+  strategy?: string;
+  summary?: string;
+}>;
+
 export type CorrectionProviderResult = {
+  clientRequestId?: string;
+  generationId?: string;
   latencyMs: number;
   modelSnapshot: string;
   observedProvider: string;
+  openRouterMetadata?: OpenRouterMetadata;
   output: unknown;
   providerRequestId?: string;
   /** Exact assistant payload used to derive `output`; bounded only after hashing. */
@@ -58,6 +78,7 @@ export type CorrectionReasoningSelection = {
 
 export type CorrectionProviderRequest = {
   apiKey: string;
+  expectedTransportManifestSha256?: string;
   idempotencyKey?: string;
   jsonSchema: Record<string, unknown>;
   messages: CorrectionProviderMessage[];
@@ -84,9 +105,12 @@ type ModelOutputCode =
   | 'MODEL_OUTPUT_TRUNCATED';
 
 type ProviderFailureMetadata = {
+  clientRequestId?: string;
+  generationId?: string;
   latencyMs?: number;
   modelSnapshot?: string;
   observedProvider?: string;
+  openRouterMetadata?: OpenRouterMetadata;
   providerRequestId?: string;
   providerRoute?: string;
   requestedRoute?: string;
@@ -96,9 +120,12 @@ type ProviderFailureMetadata = {
 };
 
 export class CorrectionProviderError extends Error {
+  readonly clientRequestId?: string;
+  readonly generationId?: string;
   readonly latencyMs?: number;
   readonly modelSnapshot?: string;
   readonly observedProvider?: string;
+  readonly openRouterMetadata?: OpenRouterMetadata;
   readonly providerRequestId?: string;
   readonly providerRoute?: string;
   readonly rawModelOutput?: string;
@@ -111,9 +138,12 @@ export class CorrectionProviderError extends Error {
   ) {
     super(code);
     this.name = 'CorrectionProviderError';
+    this.clientRequestId = metadata.clientRequestId;
+    this.generationId = metadata.generationId;
     this.latencyMs = metadata.latencyMs;
     this.modelSnapshot = metadata.modelSnapshot;
     this.observedProvider = metadata.observedProvider;
+    this.openRouterMetadata = metadata.openRouterMetadata;
     this.providerRequestId = metadata.providerRequestId;
     this.providerRoute = metadata.providerRoute;
     this.rawModelOutput = metadata.rawModelOutput;
@@ -123,9 +153,12 @@ export class CorrectionProviderError extends Error {
 }
 
 export class CorrectionModelOutputError extends Error {
+  readonly clientRequestId?: string;
+  readonly generationId?: string;
   readonly latencyMs?: number;
   readonly modelSnapshot?: string;
   readonly observedProvider?: string;
+  readonly openRouterMetadata?: OpenRouterMetadata;
   readonly providerRequestId?: string;
   readonly providerRoute?: string;
   readonly requestedRoute?: string;
@@ -135,9 +168,12 @@ export class CorrectionModelOutputError extends Error {
   constructor(code: ModelOutputCode, metadata: ProviderFailureMetadata = {}) {
     super(code);
     this.name = 'CorrectionModelOutputError';
+    this.clientRequestId = metadata.clientRequestId;
+    this.generationId = metadata.generationId;
     this.latencyMs = metadata.latencyMs;
     this.modelSnapshot = metadata.modelSnapshot;
     this.observedProvider = metadata.observedProvider;
+    this.openRouterMetadata = metadata.openRouterMetadata;
     this.providerRequestId = metadata.providerRequestId;
     this.providerRoute = metadata.providerRoute;
     this.requestedRoute = metadata.requestedRoute;
@@ -340,6 +376,104 @@ export function buildOpenRouterRequestBody(
   };
 }
 
+export type OpenRouterTransportManifest = Readonly<{
+  bodySha256: string;
+  persistedSafeHeaderNames: readonly string[];
+  manifestSha256: string;
+  messagesSha256: string;
+  method: 'POST';
+  modelId: string;
+  profileSha256: string;
+  requestedRoute: string;
+  schemaVersion: 1;
+  schemaSha256: string;
+  timeoutMs: number;
+  url: 'https://openrouter.ai/api/v1/chat/completions';
+}>;
+
+function canonicalize(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (typeof value !== 'object' || value === null) return value;
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, child]) => [key, canonicalize(child)]),
+  );
+}
+
+function canonicalSha256(value: unknown): string {
+  return createHash('sha256')
+    .update(JSON.stringify(canonicalize(value)))
+    .digest('hex');
+}
+
+function deepFreeze<T>(value: T): Readonly<T> {
+  if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+    Object.values(value as Record<string, unknown>).forEach(deepFreeze);
+    Object.freeze(value);
+  }
+  return value;
+}
+
+export function buildOpenRouterTransportManifest(
+  request: Omit<CorrectionProviderRequest, 'apiKey'>,
+): OpenRouterTransportManifest {
+  const body = buildOpenRouterRequestBody(request);
+  const core = deepFreeze({
+    bodySha256: canonicalSha256(body),
+    persistedSafeHeaderNames: Object.keys(
+      openRouterSafeHeaders(request),
+    ).sort(),
+    messagesSha256: canonicalSha256(request.messages),
+    method: 'POST' as const,
+    modelId: request.modelId,
+    profileSha256: canonicalSha256({
+      profile: request.profile,
+      reasoning: request.reasoning,
+    }),
+    requestedRoute: requestedRouteFor('OPENROUTER_CHAT', request),
+    schemaSha256: canonicalSha256(request.jsonSchema),
+    schemaVersion: 1 as const,
+    timeoutMs: request.profile.timeoutMs,
+    url: 'https://openrouter.ai/api/v1/chat/completions' as const,
+  });
+  return deepFreeze({
+    ...core,
+    manifestSha256: canonicalSha256(core),
+  }) as OpenRouterTransportManifest;
+}
+
+function openRouterSafeHeaders(
+  request: Omit<CorrectionProviderRequest, 'apiKey'>,
+): Record<string, string> {
+  return {
+    'Content-Type': 'application/json',
+    'HTTP-Referer': 'https://learn-x.app',
+    ...(request.idempotencyKey
+      ? {
+          'Idempotency-Key': request.idempotencyKey,
+          'X-Request-ID': request.idempotencyKey,
+        }
+      : {}),
+    'X-OpenRouter-Metadata': 'enabled',
+    'X-Title': 'LearnX correction benchmark',
+  };
+}
+
+function buildOpenRouterTransportRequest(
+  request: Omit<CorrectionProviderRequest, 'apiKey'>,
+): Readonly<{
+  body: Record<string, unknown>;
+  headers: Record<string, string>;
+  manifest: OpenRouterTransportManifest;
+}> {
+  return {
+    body: buildOpenRouterRequestBody(request),
+    headers: openRouterSafeHeaders(request),
+    manifest: buildOpenRouterTransportManifest(request),
+  };
+}
+
 export function buildOpenAiResponsesRequestBody(
   request: Omit<CorrectionProviderRequest, 'apiKey'>,
 ): Record<string, unknown> {
@@ -399,6 +533,203 @@ export function buildAnthropicMessagesRequestBody(
   };
 }
 
+const openRouterMetadataSchema = z
+  .object({
+    attempt: z.number().int().nonnegative().optional().catch(undefined),
+    attempts: z
+      .array(
+        z
+          .object({
+            model: z.string().optional(),
+            provider: z.string().trim().min(1).optional(),
+            status: z
+              .union([z.number().int(), z.string().trim().min(1)])
+              .optional(),
+          })
+          .passthrough(),
+      )
+      .optional()
+      .catch(undefined),
+    endpoints: z
+      .union([
+        z.array(
+          z
+            .object({
+              model: z.string().optional(),
+              provider: z.string().trim().min(1).optional(),
+              selected: z.boolean().optional(),
+            })
+            .passthrough(),
+        ),
+        z
+          .object({
+            available: z.array(
+              z
+                .object({
+                  model: z.string().optional(),
+                  provider: z.string().trim().min(1).optional(),
+                  selected: z.boolean().optional(),
+                })
+                .passthrough(),
+            ),
+          })
+          .passthrough(),
+      ])
+      .optional()
+      .catch(undefined),
+    is_byok: z.boolean().optional().catch(undefined),
+    region: z.string().nullable().optional().catch(undefined),
+    requested: z.string().optional().catch(undefined),
+    strategy: z.string().optional().catch(undefined),
+    summary: z.string().optional().catch(undefined),
+  })
+  .passthrough();
+
+const openRouterErrorEnvelopeSchema = z
+  .object({
+    error: z
+      .object({
+        metadata: z
+          .object({ provider_name: z.string().trim().min(1).optional() })
+          .passthrough()
+          .optional(),
+      })
+      .passthrough()
+      .optional(),
+    id: z.string().trim().min(1).optional(),
+    openrouter_metadata: z.unknown().optional(),
+  })
+  .passthrough();
+
+function sanitizeOpenRouterMetadata(
+  value: unknown,
+): OpenRouterMetadata | undefined {
+  const parsed = openRouterMetadataSchema.safeParse(value);
+  if (!parsed.success) return undefined;
+  const metadata = parsed.data;
+  const endpoints = Array.isArray(metadata.endpoints)
+    ? metadata.endpoints
+    : metadata.endpoints?.available;
+  return {
+    ...(metadata.attempt === undefined ? {} : { attempt: metadata.attempt }),
+    ...(metadata.attempts === undefined
+      ? {}
+      : {
+          attempts: metadata.attempts.map(({ model, provider, status }) => ({
+            ...(model === undefined ? {} : { model }),
+            ...(provider === undefined ? {} : { provider }),
+            ...(status === undefined ? {} : { status }),
+          })),
+        }),
+    ...(endpoints === undefined
+      ? {}
+      : {
+          endpoints: endpoints.map(({ model, provider, selected }) => ({
+            ...(model === undefined ? {} : { model }),
+            ...(provider === undefined ? {} : { provider }),
+            ...(selected === undefined ? {} : { selected }),
+          })),
+        }),
+    ...(metadata.is_byok === undefined ? {} : { is_byok: metadata.is_byok }),
+    ...(metadata.region === undefined ? {} : { region: metadata.region }),
+    ...(metadata.requested === undefined
+      ? {}
+      : { requested: metadata.requested }),
+    ...(metadata.strategy === undefined ? {} : { strategy: metadata.strategy }),
+    ...(metadata.summary === undefined ? {} : { summary: metadata.summary }),
+  };
+}
+
+function observedProviderFromOpenRouterMetadata(
+  metadata: OpenRouterMetadata | undefined,
+): string | undefined {
+  const selected = metadata?.endpoints?.find(
+    (endpoint) => endpoint.selected,
+  )?.provider;
+  if (selected) return selected;
+  return metadata?.attempts?.at(-1)?.provider;
+}
+
+type ProviderIdentifierCompatibility =
+  'DISTINCT_GENERATION_ID' | 'LEGACY_GENERATION_AS_REQUEST_ID';
+
+function responseIdentifiers(input: {
+  clientRequestId?: string;
+  compatibility: ProviderIdentifierCompatibility;
+  payload?: unknown;
+  response: Response;
+}): Pick<
+  ProviderFailureMetadata,
+  'clientRequestId' | 'generationId' | 'providerRequestId'
+> {
+  const payloadId =
+    input.payload &&
+    typeof input.payload === 'object' &&
+    'id' in input.payload &&
+    typeof input.payload.id === 'string' &&
+    input.payload.id.trim()
+      ? input.payload.id
+      : undefined;
+  const generationId =
+    input.response.headers.get('x-generation-id') ?? payloadId ?? undefined;
+  const requestIdHeader = input.response.headers.get('request-id') ?? undefined;
+  const xRequestIdHeader =
+    input.response.headers.get('x-request-id') ?? undefined;
+  const xRequestIdIsReflected =
+    input.clientRequestId !== undefined &&
+    xRequestIdHeader === input.clientRequestId;
+  const distinctProviderRequestId =
+    requestIdHeader ?? (xRequestIdIsReflected ? undefined : xRequestIdHeader);
+  const providerRequestId =
+    input.compatibility === 'LEGACY_GENERATION_AS_REQUEST_ID'
+      ? (generationId ?? requestIdHeader ?? xRequestIdHeader)
+      : distinctProviderRequestId;
+  return {
+    ...(input.clientRequestId
+      ? { clientRequestId: input.clientRequestId }
+      : {}),
+    ...(generationId ? { generationId } : {}),
+    ...(providerRequestId ? { providerRequestId } : {}),
+  };
+}
+
+function openRouterFailureMetadata(input: {
+  clientRequestId?: string;
+  compatibility: ProviderIdentifierCompatibility;
+  payload: unknown;
+  response: Response;
+}): Pick<
+  ProviderFailureMetadata,
+  | 'clientRequestId'
+  | 'generationId'
+  | 'observedProvider'
+  | 'openRouterMetadata'
+  | 'providerRequestId'
+  | 'providerRoute'
+> {
+  const parsed = openRouterErrorEnvelopeSchema.safeParse(input.payload);
+  const openRouterMetadata = parsed.success
+    ? sanitizeOpenRouterMetadata(parsed.data.openrouter_metadata)
+    : undefined;
+  const observedProvider = parsed.success
+    ? (parsed.data.error?.metadata?.provider_name ??
+      observedProviderFromOpenRouterMetadata(openRouterMetadata))
+    : undefined;
+  const identifiers = responseIdentifiers({
+    clientRequestId: input.clientRequestId,
+    compatibility: input.compatibility,
+    payload: input.payload,
+    response: input.response,
+  });
+  return {
+    ...(observedProvider
+      ? { observedProvider, providerRoute: observedProvider }
+      : {}),
+    ...(openRouterMetadata ? { openRouterMetadata } : {}),
+    ...identifiers,
+  };
+}
+
 const openRouterResponseSchema = z
   .object({
     choices: z
@@ -413,6 +744,7 @@ const openRouterResponseSchema = z
       .min(1),
     id: z.string().optional(),
     model: z.string().optional(),
+    openrouter_metadata: z.unknown().optional(),
     provider: z.string().optional(),
     usage: z
       .object({
@@ -493,11 +825,13 @@ async function executeJsonRequest(input: {
   apiKey: string;
   bearerAuthorization?: boolean;
   body: Record<string, unknown>;
+  clientRequestId?: string;
   failureMetadata?: Pick<
     ProviderFailureMetadata,
-    'observedProvider' | 'providerRoute' | 'requestedRoute'
+    'clientRequestId' | 'observedProvider' | 'providerRoute' | 'requestedRoute'
   >;
   headers?: Record<string, string>;
+  identifierCompatibility: ProviderIdentifierCompatibility;
   profile: CorrectionProviderRequest['profile'];
   url: string;
 }): Promise<JsonResponse> {
@@ -529,7 +863,13 @@ async function executeJsonRequest(input: {
       errorName === 'TimeoutError' || errorName === 'AbortError'
         ? 'PROVIDER_TIMEOUT'
         : 'PROVIDER_NETWORK_ERROR',
-      { ...input.failureMetadata, latencyMs },
+      {
+        ...input.failureMetadata,
+        ...(input.clientRequestId
+          ? { clientRequestId: input.clientRequestId }
+          : {}),
+        latencyMs,
+      },
     );
   }
   const latencyMs = Math.round(performance.now() - startedAt);
@@ -538,36 +878,38 @@ async function executeJsonRequest(input: {
   try {
     payload = JSON.parse(rawPayload) as unknown;
   } catch {
+    const identifiers = responseIdentifiers({
+      clientRequestId: input.clientRequestId,
+      compatibility: input.identifierCompatibility,
+      response,
+    });
     if (!response.ok) {
       throw new CorrectionProviderError('PROVIDER_HTTP_ERROR', {
         ...input.failureMetadata,
+        ...identifiers,
         latencyMs,
-        providerRequestId:
-          response.headers.get('request-id') ??
-          response.headers.get('x-request-id') ??
-          undefined,
         rawModelOutput: rawPayload,
         status: response.status,
       });
     }
     throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
       ...input.failureMetadata,
+      ...identifiers,
       latencyMs,
-      providerRequestId:
-        response.headers.get('request-id') ??
-        response.headers.get('x-request-id') ??
-        undefined,
       rawModelOutput: rawPayload,
     });
   }
   if (!response.ok) {
+    const providerMetadata = openRouterFailureMetadata({
+      clientRequestId: input.clientRequestId,
+      compatibility: input.identifierCompatibility,
+      payload,
+      response,
+    });
     throw new CorrectionProviderError('PROVIDER_HTTP_ERROR', {
       ...input.failureMetadata,
+      ...providerMetadata,
       latencyMs,
-      providerRequestId:
-        response.headers.get('request-id') ??
-        response.headers.get('x-request-id') ??
-        undefined,
       rawModelOutput: rawPayload,
       status: response.status,
     });
@@ -607,29 +949,40 @@ const openRouterAdapter: CorrectionProviderAdapter = {
   kind: 'OPENROUTER_CHAT',
   async execute(request) {
     const requestedRoute = request.profile.routeProviders?.[0] ?? 'OpenRouter';
+    const identifierCompatibility: ProviderIdentifierCompatibility =
+      request.expectedTransportManifestSha256 === undefined
+        ? 'LEGACY_GENERATION_AS_REQUEST_ID'
+        : 'DISTINCT_GENERATION_ID';
+    const transport = buildOpenRouterTransportRequest(request);
+    if (
+      request.expectedTransportManifestSha256 !== undefined &&
+      request.expectedTransportManifestSha256 !==
+        transport.manifest.manifestSha256
+    ) {
+      throw new Error('PROVIDER_TRANSPORT_MANIFEST_MISMATCH');
+    }
     const result = await executeJsonRequest({
       apiKey: request.apiKey,
-      body: buildOpenRouterRequestBody(request),
+      body: transport.body,
+      clientRequestId: request.idempotencyKey,
       failureMetadata: {
         providerRoute: 'OpenRouter',
         requestedRoute,
       },
       profile: request.profile,
-      url: 'https://openrouter.ai/api/v1/chat/completions',
-      headers: {
-        'HTTP-Referer': 'https://learn-x.app',
-        ...(request.idempotencyKey
-          ? {
-              'Idempotency-Key': request.idempotencyKey,
-              'X-Request-ID': request.idempotencyKey,
-            }
-          : {}),
-        'X-Title': 'LearnX correction benchmark',
-      },
+      url: transport.manifest.url,
+      headers: transport.headers,
+      identifierCompatibility,
     });
     const envelope = openRouterResponseSchema.safeParse(result.payload);
     if (!envelope.success) {
       throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
+        ...responseIdentifiers({
+          clientRequestId: request.idempotencyKey,
+          compatibility: identifierCompatibility,
+          payload: result.payload,
+          response: result.response,
+        }),
         latencyMs: result.latencyMs,
         providerRoute: 'OpenRouter',
         rawModelOutput: result.rawPayload,
@@ -638,13 +991,24 @@ const openRouterAdapter: CorrectionProviderAdapter = {
     }
     const parsed = envelope.data;
     const usage = openRouterUsage(parsed.usage);
-    const observedProvider = parsed.provider ?? 'OpenRouter';
+    const openRouterMetadata = sanitizeOpenRouterMetadata(
+      parsed.openrouter_metadata,
+    );
+    const observedProvider =
+      parsed.provider ??
+      observedProviderFromOpenRouterMetadata(openRouterMetadata) ??
+      'OpenRouter';
     const metadata = {
+      ...responseIdentifiers({
+        clientRequestId: request.idempotencyKey,
+        compatibility: identifierCompatibility,
+        payload: result.payload,
+        response: result.response,
+      }),
       latencyMs: result.latencyMs,
       modelSnapshot: parsed.model ?? request.modelId,
       observedProvider,
-      providerRequestId:
-        parsed.id ?? result.response.headers.get('x-request-id') ?? undefined,
+      ...(openRouterMetadata ? { openRouterMetadata } : {}),
       providerRoute: observedProvider,
       requestedRoute,
       usage,
@@ -677,17 +1041,25 @@ const openAiAdapter: CorrectionProviderAdapter = {
     const result = await executeJsonRequest({
       apiKey: request.apiKey,
       body: buildOpenAiResponsesRequestBody(request),
+      clientRequestId: request.idempotencyKey,
       failureMetadata: {
         observedProvider: 'OpenAI',
         providerRoute: 'OpenAI',
         requestedRoute: 'OpenAI',
       },
+      identifierCompatibility: 'LEGACY_GENERATION_AS_REQUEST_ID',
       profile: request.profile,
       url: 'https://api.openai.com/v1/responses',
     });
     const envelope = openAiResponseSchema.safeParse(result.payload);
     if (!envelope.success) {
       throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
+        ...responseIdentifiers({
+          clientRequestId: request.idempotencyKey,
+          compatibility: 'LEGACY_GENERATION_AS_REQUEST_ID',
+          payload: result.payload,
+          response: result.response,
+        }),
         latencyMs: result.latencyMs,
         observedProvider: 'OpenAI',
         providerRoute: 'OpenAI',
@@ -708,10 +1080,15 @@ const openAiAdapter: CorrectionProviderAdapter = {
       ),
     };
     const metadata = {
+      ...responseIdentifiers({
+        clientRequestId: request.idempotencyKey,
+        compatibility: 'LEGACY_GENERATION_AS_REQUEST_ID',
+        payload: result.payload,
+        response: result.response,
+      }),
       latencyMs: result.latencyMs,
       modelSnapshot: parsed.model,
       observedProvider: 'OpenAI',
-      providerRequestId: parsed.id,
       providerRoute: 'OpenAI',
       requestedRoute: 'OpenAI',
       usage,
@@ -754,6 +1131,7 @@ const anthropicAdapter: CorrectionProviderAdapter = {
       apiKey: request.apiKey,
       bearerAuthorization: false,
       body: buildAnthropicMessagesRequestBody(request),
+      clientRequestId: request.idempotencyKey,
       failureMetadata: {
         observedProvider: 'Anthropic',
         providerRoute: 'Anthropic',
@@ -763,12 +1141,19 @@ const anthropicAdapter: CorrectionProviderAdapter = {
         'anthropic-version': '2023-06-01',
         'x-api-key': request.apiKey,
       },
+      identifierCompatibility: 'LEGACY_GENERATION_AS_REQUEST_ID',
       profile: request.profile,
       url: 'https://api.anthropic.com/v1/messages',
     });
     const envelope = anthropicResponseSchema.safeParse(result.payload);
     if (!envelope.success) {
       throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
+        ...responseIdentifiers({
+          clientRequestId: request.idempotencyKey,
+          compatibility: 'LEGACY_GENERATION_AS_REQUEST_ID',
+          payload: result.payload,
+          response: result.response,
+        }),
         latencyMs: result.latencyMs,
         observedProvider: 'Anthropic',
         providerRoute: 'Anthropic',
@@ -784,10 +1169,15 @@ const anthropicAdapter: CorrectionProviderAdapter = {
       visibleOutputTokens: parsed.usage.output_tokens,
     };
     const metadata = {
+      ...responseIdentifiers({
+        clientRequestId: request.idempotencyKey,
+        compatibility: 'LEGACY_GENERATION_AS_REQUEST_ID',
+        payload: result.payload,
+        response: result.response,
+      }),
       latencyMs: result.latencyMs,
       modelSnapshot: parsed.model,
       observedProvider: 'Anthropic',
-      providerRequestId: parsed.id,
       providerRoute: 'Anthropic',
       requestedRoute: 'Anthropic',
       usage,

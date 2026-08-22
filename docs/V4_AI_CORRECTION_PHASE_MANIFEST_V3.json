@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-21T19:52:00Z",
+  "updatedAt": "2026-08-22T08:09:01Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -13,6 +13,7 @@
     "name": "EXECUTABLE_RUBRIC_ENGINE",
     "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "protocolAuthority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+    "semanticProtocolStatus": "EVIDENCE_ASSIST_3_0_CANONICAL_COMPOSITE_AND_SECOND_PASS_SUPERSEDED",
     "successorSemanticArbitration": {
       "status": "V4-009C-S2_NO_GO_SEMANTIC_DISAGREEMENT",
       "authority": "docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md",
@@ -207,9 +208,62 @@
     }
   ],
   "offlineCandidateQueue": {
-      "status": "GEMINI_3_6_GATE_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED",
-    "currentTicket": "V4-003E-Q1",
-    "authority": "docs/V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md",
+    "status": "GEMINI_3_6_Q1_R1_ACTIVE_OFFLINE_REMEDIATION_NEW_IDENTITY_REQUIRED",
+    "currentTicket": "V4-003E-Q1-R1",
+    "authority": "docs/V4_ROADMAP.md",
+    "closedGateTicket": "V4-003E-Q1",
+    "closedGateAuthority": "docs/V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md",
+    "remediation": {
+      "mode": "OFFLINE_ONLY",
+      "candidate": "GEMINI_3_6_FLASH",
+      "requiredFirst": [
+        "RECONCILE_Q1_UNRESOLVED_RESERVED_COST",
+        "DIAGNOSE_PROVIDER_HTTP_400_WITHOUT_ASSERTING_UNPROVEN_CAUSE"
+      ],
+      "newIdentityRequired": true,
+      "newIdentityFingerprint": null,
+      "localFakePreflightRequired": true,
+      "freshRouteProfilePricingAttestationsRequired": true,
+      "financeArbitrationRequired": true,
+      "newOwnerSingleUseAuthorizationRequired": true,
+      "modelCallsAllowed": false,
+      "transportRemediation": {
+        "status": "IMPLEMENTED_AND_TESTED_OFFLINE_NEW_IDENTITY_NOT_FROZEN",
+        "wireDialect": "evidence-assist-wire/3.0.1",
+        "candidateCause": "PATTERN_KEYWORD_HYPOTHESIS_NOT_PROVEN",
+        "wirePatternOmitted": true,
+        "localSpanIdPatternValidationRetained": true,
+        "recursiveGeminiKeywordPreflight": true,
+        "metadataHeaderEnabled": true,
+        "requestManifestBeforeCallIntent": true,
+        "generationAndProviderRequestIdsSeparated": true,
+        "conservativeWriteOffNeverAutomatic": true,
+        "networkOrModelCallsPerformed": 0
+      },
+      "costReconciliationAuthority": {
+        "path": "docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md",
+        "sha256": "7504462777640c21f2f2dba7cc8bab2472f2bc69fa96dc6365f7e4edefeb04d8",
+        "status": "RECONCILIATION_REQUIRED",
+        "sameDayActivityLookup": "UNAVAILABLE_CURRENT_UTC_DAY",
+        "retryFromUtcDate": "2026-08-23",
+        "conservativeWriteOffRequiresSeparateFinanceAuthorization": true
+      },
+      "informativePublicReattestation": {
+        "path": "benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json",
+        "sha256": "6dce664f5e5fb364bdae19c66f4e9147f47a00787154284e597ec813ec31cd19",
+        "status": "REATTESTED_OFFLINE_NETWORK_GO_NOT_GRANTED",
+        "mode": "PUBLIC_CATALOG_AND_DOCUMENTATION_READ_ONLY_NO_INFERENCE",
+        "modelCallsPerformed": 0,
+        "newIdentityEffect": "NONE",
+        "financeArbitrationEffect": "NONE",
+        "networkAuthorizationEffect": "NONE",
+        "observedInformativePricingUsdPerMillionTokens": {
+          "input": 0.75,
+          "outputAndReasoning": 3.75
+        },
+        "pricingAuthorityEffect": "NONE_REQUIRES_FRESH_FINANCE_ARBITRATION"
+      }
+    },
     "commonFrozenCore": {
       "sourceFreezeDossier": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json",
       "sourceFreezeDossierSha256": "1cbd9a03170e0f8243edc2fabfe0897c5b6e399422b48373c841729699701d69",
@@ -279,12 +333,12 @@
           "reasoning": "MANDATORY",
           "reasoningEffort": "MINIMAL"
         },
-        "pricingToReattestUsdPerMillionTokens": {
+        "historicalQ1PricingBoundUsdPerMillionTokens": {
           "input": 1.5,
           "outputAndReasoning": 7.5
         },
         "financeApproval": {
-          "status": "APPROVED_NETWORK_NOT_AUTHORIZED",
+          "status": "APPROVAL_AND_NETWORK_AUTHORIZATION_CONSUMED_GATE_CLOSED_RECONCILIATION_REQUIRED",
           "maximumCostPerAttemptUsd": 0.1208415,
           "maximumProviderAttempts": 4,
           "calculatedMaximumProviderCostUsd": 0.483366,
@@ -296,7 +350,7 @@
           "approvedCapTreasuryReserveUsd": 0.65199,
           "approvedCapTreasuryReserveDisplayUsd": 0.652,
           "historicalDraftReused": false,
-          "authorizationEffect": "NO_NETWORK_GO"
+          "authorizationEffect": "HISTORICAL_APPROVAL_CONSUMED_NO_REPLAY"
         },
         "runnerStatus": "NETWORK_GATE_STOPPED_AFTER_1_OF_4_NO_RETRY_OR_FALLBACK",
         "manifestPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json",
@@ -322,6 +376,12 @@
           "unresolvedReservedCostUsd": 0.1208415,
           "financialState": "RECONCILIATION_REQUIRED",
           "verificationFingerprint": "1192bb02f40d4c5ac159be91738b7696e3c615049f7e428b6618a07d6e2b00b4"
+        },
+        "costReconciliation": {
+          "status": "RECONCILIATION_REQUIRED",
+          "authority": "docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md",
+          "retryFromUtcDate": "2026-08-23",
+          "writeOffAutomatic": false
         },
         "networkCallsAllowed": false
       },
@@ -404,13 +464,13 @@
   },
   "activeExecutionQueue": {
     "authority": "BACKLOG_V4.md#file-p0-assignée--moteur-de-correction-formative",
-    "currentTicket": "V4-003E-Q1",
+    "currentTicket": "V4-003E-Q1-R1",
     "currentResponsibleAgent": "AGENT-PROTOCOLE-IA",
     "ownerCheckpoints": [
-      "RAYAN_GEMINI_3_6_EXACT_IDENTITY_APPROVED",
-      "RAYAN_GEMINI_3_6_FINANCE_APPROVED",
-      "RAYAN_NETWORK_AUTHORIZATION_AFTER_FINANCE",
-      "RAYAN_FUTURE_CANDIDATE_DOSSIER_AUTHORIZATIONS"
+      "Q1_EXACT_IDENTITY_FINANCE_AND_NETWORK_AUTHORIZATION_HISTORICAL_CONSUMED",
+      "RAYAN_APPROVES_FUTURE_NEW_GEMINI_3_6_IDENTITY_AFTER_OFFLINE_REMEDIATION",
+      "RAYAN_APPROVES_FUTURE_FINANCE_ARBITRATION",
+      "RAYAN_GRANTS_NEW_SINGLE_USE_NETWORK_AUTHORIZATION_AFTER_FINANCE"
     ],
     "orderedTickets": [
       "V4-002A",
@@ -425,6 +485,7 @@
       "V4-009C-S2",
       "V4-003E",
       "V4-003E-Q1",
+      "V4-003E-Q1-R1",
       "V4-003E-Q2",
       "V4-003E-Q3"
     ],
@@ -440,19 +501,22 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED",
-      "nextTicket": "V4-003E-Q1",
+      "status": "V4_003E_Q1_R1_ACTIVE_OFFLINE_REMEDIATION_NEW_IDENTITY_REQUIRED",
+      "nextTicket": "V4-003E-Q1-R1",
       "responsibleAgent": "AGENT-PROTOCOLE-IA",
       "allowed": [
         "PRESERVE_HISTORICAL_CAMPAIGNS",
         "PRESERVE_SUCCESSOR_RUNNER_PREFLIGHT",
         "PRESERVE_NETWORK_GATE_NO_GO_ARTIFACTS",
-        "PREPARE_GEMINI_3_6_IDENTITY_OFFLINE",
-        "PARAMETERIZE_RUNNER_AND_VALIDATE_FAKE_PREFLIGHT",
-        "PREPARE_FRESH_ROUTE_PROFILE_PRICING_ATTESTATIONS"
+        "RECONCILE_Q1_UNRESOLVED_RESERVED_COST",
+        "DIAGNOSE_Q1_HTTP_400_OFFLINE_WITHOUT_UNPROVEN_CAUSE",
+        "PREPARE_NEW_GEMINI_3_6_IDENTITY_OFFLINE",
+        "PARAMETERIZE_NEW_IDENTITY_RUNNER_AND_VALIDATE_FAKE_PREFLIGHT",
+        "PREPARE_FRESH_ROUTE_PROFILE_PRICING_ATTESTATIONS_FOR_NEW_IDENTITY"
       ],
       "forbidden": [
         "MODEL_CALL_WITHOUT_NEW_IDENTITY_AND_OWNER_AUTHORIZATION",
+        "REUSE_Q1_IDENTITY_AUTHORIZATION_OR_FINANCE_ENVELOPE",
         "REPLAY_CLOSED_GATE",
         "HOLDOUT_ACCESS",
         "COUNT_HISTORICAL_DIFFERENT_ROLE_CAMPAIGNS_AS_FRESH_RESULTS",
@@ -461,8 +525,8 @@
       ]
     },
     "V4-009C": {
-      "status": "S2_NO_GO_SEMANTIC_DISAGREEMENT",
-      "nextExecutionTicket": null,
+      "status": "Q1_NO_GO_TECHNICAL_R1_OFFLINE_REMEDIATION",
+      "nextExecutionTicket": "V4-003E-Q1-R1",
       "responsibleAgent": "AGENT-PROTOCOLE-IA",
       "blockedBy": [
         "GEMINI_3_6_GATE_NO_GO_TECHNICAL",
@@ -474,7 +538,8 @@
         "PRESERVE_HARD_OFF_RUNNER_PREFLIGHT",
         "PRESERVE_NETWORK_GATE_NO_GO_ARTIFACTS",
         "PRESERVE_QUALIFIED_SEALED_HOLDOUT_CLOSED",
-        "PREPARE_GEMINI_3_6_OFFLINE_DOSSIER_ONLY"
+        "RECONCILE_AND_DIAGNOSE_Q1_OFFLINE_ONLY",
+        "PREPARE_NEW_GEMINI_3_6_IDENTITY_AND_FAKE_PREFLIGHT_OFFLINE_ONLY"
       ],
       "forbidden": [
         "REPLAY_CLOSED_GATE_OR_DISPATCH_WITHOUT_NEW_IDENTITY",
@@ -528,7 +593,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "GATE4_NETWORK_NO_GO_SEMANTIC_DISAGREEMENT",
+      "status": "Q1_NO_GO_TECHNICAL_R1_OFFLINE_REMEDIATION_NO_PIPELINE_PROMOTED",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -1130,6 +1195,7 @@
       "CLOSED_SONNET_IDENTITY_FAILED_STAGE_ONE",
       "GEMINI_3_6_GATE_NO_GO_TECHNICAL",
       "GEMINI_3_6_COST_RECONCILIATION_REQUIRED",
+      "GEMINI_3_6_NEW_REMEDIATED_IDENTITY_NOT_FROZEN_OR_AUTHORIZED",
       "NEW_STAGE_ONE_NOT_EXECUTED"
     ]
   },
@@ -1195,11 +1261,11 @@
   },
   "nextAuthorizedSequence": [
     "Preserve both closed Sonnet campaigns append-only and separately: cc4dd0df performed two calls for 0.025622 USD on an ontology boundary; cc3b1b52 performed one call for 0.018828 USD and closed on a non-ambiguous semantic inversion. Never aggregate, replay, retune or transfer either identity, authorization or budget.",
-    "Preserve protocol 3.0.0, rubric, oracle, corpus, golds, case order, semantic mapping, telemetry and thresholds byte-identical to the framework-selection core for the approved Gemini 3.6 identity.",
-    "Preserve the Gemini transport simulated preflight under HARD_OFF. No network or model call is allowed by identity or Finance approval alone.",
-    "Keep the candidate-specific catalog snapshot, requested route, expected provider, mandatory MINIMAL-reasoning profile, price attestation, manifest and identity fingerprint frozen. Persist requestedRoute separately from observedProvider.",
-    "Preserve the historical 0.075 USD proposal as superseded. The approved envelope is 0.1208415 USD per attempt, 0.483366 USD calculated, 0.50 USD provider cap, 0.63029959668 USD loaded calculated bound and 0.65199 USD treasury reserve on the approved cap, displayed as 0.652 USD.",
-    "Require a separate single-use Rayan network authorization before any four-case dispatch; identity and Finance approval do not grant network execution.",
+    "Preserve Q1 Gemini 3.6 append-only under ef88a8e3: exactly one of four calls returned provider HTTP 400, three calls were not sent, zero workflows were usable, the single-use authorization is consumed and the 0.1208415 USD reserved cost remains RECONCILIATION_REQUIRED. Never treat unknown cost as zero, replay Q1 or infer a pedagogical verdict.",
+    "Execute V4-003E-Q1-R1 offline only: reconcile Q1 first, then diagnose the rejected payload without asserting an unproven cause. Preserve protocol 3.0.0, rubric, oracle, corpus, golds, order, semantic mapping, telemetry and thresholds unless a separately governed protocol revision is opened.",
+    "Any payload, profile, runner or attestation correction creates a new Gemini 3.6 identity with a new fingerprint, fresh route/profile/pricing attestations and a local fake transport preflight under HARD_OFF. The Q1 identity, Finance envelope and consumed authorization are not transferable.",
+    "Before any future four-case dispatch, freeze the new identity, complete a new Finance arbitration and obtain a new explicit single-use Rayan network authorization. Until all three are present, modelCallsAllowed remains false.",
+    "Keep the historical 0.075 USD proposal superseded and the closed Q1 approved bounds historical only. Recalculate and arbitrate the remediated identity rather than transferring the old envelope.",
     "Keep Gemini 3.7 as rank 2 with no LearnX history and no transferred Gemini 3.6 envelope. Keep Mistral Medium 3.5 as rank 3 after both Gemini candidates. Each future dossier still requires its own mandate, identity, Finance and owner authorization.",
     "Keep the conditional 10x2 panel closed until a fresh 4/4 under one newly frozen identity and separate Finance and owner authorization. Keep the sealed holdout closed until fresh 4/4 then 20/20 and its distinct one-shot opening authorization.",
     "Only a separately authorized one-shot holdout pass under the same identity may produce GO_AUTONOMOUS_FORMATIVE and mutate eligibility.pipelinePromoted from false to true. This never authorizes automatic publication, activation, mastery, pricing or commercial generalization.",

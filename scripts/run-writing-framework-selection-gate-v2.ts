@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 
 import {
   buildWritingFrameworkGatePackage,
+  createWritingGateLiveAuthorizationProof,
   FileWritingFrameworkGateStore,
   runWritingFrameworkSelectionGateLive,
 } from '../src/server/ai/writing-framework-selection-gate-runner-v2.js';
@@ -97,10 +98,7 @@ async function loadNetworkAuthorization(input: {
   const text = await readFile(resolve(requestedPath), 'utf8');
   const authorization = JSON.parse(text) as NetworkAuthorization;
   const { authorizationFingerprint, ...core } = authorization;
-  if (
-    authorizationFingerprint !==
-    sha256(JSON.stringify(canonicalize(core)))
-  ) {
+  if (authorizationFingerprint !== sha256(JSON.stringify(canonicalize(core)))) {
     throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_FINGERPRINT_MISMATCH');
   }
   if (
@@ -119,8 +117,10 @@ async function loadNetworkAuthorization(input: {
       packageInput.expectedObservedProvider ||
     authorization.sourceBindings.dossierPath !== candidate.dossierPath ||
     authorization.sourceBindings.dossierSha256 !== sha256(dossierText) ||
-    authorization.sourceBindings.financeEnvelopePath !== candidate.financePath ||
-    authorization.sourceBindings.financeEnvelopeSha256 !== sha256(financeText) ||
+    authorization.sourceBindings.financeEnvelopePath !==
+      candidate.financePath ||
+    authorization.sourceBindings.financeEnvelopeSha256 !==
+      sha256(financeText) ||
     authorization.sourceBindings.transportPreflightSha256 !==
       sha256(
         await readFile(
@@ -246,9 +246,16 @@ const outputDirectory = resolve(
 );
 await mkdir(outputDirectory, { recursive: true });
 const store = await FileWritingFrameworkGateStore.open(outputDirectory);
+const authorizationProof = createWritingGateLiveAuthorizationProof({
+  authorizationFingerprint: authorization.authorizationFingerprint,
+  identityFingerprint: authorization.identity.identityFingerprint,
+  outputDirectory,
+  runId,
+});
 const provider = new OpenRouterWritingFrameworkGateProvider(
   apiKey,
   packageInput,
+  { authorizationProof },
 );
 const run = await runWritingFrameworkSelectionGateLive({
   canaryFactory: (caseId) =>
@@ -288,8 +295,7 @@ const summary = {
     run.attempts.every(({ status }) => status === 'VALID'),
   identityFingerprint: packageInput.identityFingerprint,
   ledgerFinalRecordHash: run.ledger.at(-1)?.recordHash ?? null,
-  maximumProviderCostUsd:
-    packageInput.finance.gateBound.maximumProviderCostUsd,
+  maximumProviderCostUsd: packageInput.finance.gateBound.maximumProviderCostUsd,
   mode: run.mode,
   modelCallsPerformed: run.modelCallsPerformed,
   modelId: packageInput.wireModelId,

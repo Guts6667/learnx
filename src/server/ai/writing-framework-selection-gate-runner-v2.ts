@@ -5,6 +5,14 @@ import { dirname, resolve } from 'node:path';
 import { z } from 'zod';
 
 import {
+  EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT,
+  EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT_VERSION,
+  EVIDENCE_ASSIST_PROTOCOL_VERSION,
+  evidenceAssistGeminiWireJsonSchema,
+  evidenceAssistGeminiWireSchemaFingerprint,
+} from '../../lib/evidence-assist-protocol.js';
+import type { OpenRouterMetadata } from '../../lib/ai-correction-provider-adapters.js';
+import {
   canonicalJsonV2,
   evidenceAssistJsonSchema,
   prepareEvidenceAssistRequestV2,
@@ -23,6 +31,8 @@ import {
 } from '../../lib/executable-rubric-mechanical-oracle-v2-1.js';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
+const CLOSED_GEMINI_Q1_IDENTITY =
+  'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed';
 const defectSchema = z.enum([
   'BUDGET',
   'FINANCE',
@@ -195,24 +205,44 @@ export type WritingFrameworkGatePackage = Readonly<{
   wireModelId: string;
 }>;
 
+export type WritingGateFinancialState =
+  | 'CONSERVATIVE_WRITE_OFF'
+  | 'OFFLINE_NOT_APPLICABLE'
+  | 'RECONCILED'
+  | 'RECONCILIATION_REQUIRED';
+
+export type WritingGateCostSource =
+  'ACTUAL' | 'CONSERVATIVE_WRITE_OFF' | 'OFFLINE_FAKE' | 'UNKNOWN';
+
+type WritingGateLiveAuthorizationProofCore = Readonly<{
+  authorizationFingerprint: string;
+  identityFingerprint: string;
+  outputDirectory: string;
+  runId: string;
+  schemaVersion: 1;
+}>;
+
+export type WritingGateLiveAuthorizationProof =
+  WritingGateLiveAuthorizationProofCore & Readonly<{ proofSha256: string }>;
+
 export type WritingGateAttempt = Readonly<{
   actualCostUsd: number | null;
   cacheReadTokens: number;
   cacheWriteTokens: number;
   caseId: string;
-  costSource: 'ACTUAL' | 'OFFLINE_FAKE' | 'UNKNOWN';
+  clientRequestId: string;
+  costSource: WritingGateCostSource;
   defectClasses: readonly WritingGateDefect[];
   dispatchState: 'CONFIRMED' | 'ORPHANED' | 'PENDING';
   errorCode: string | null;
-  financialState:
-    | 'OFFLINE_NOT_APPLICABLE'
-    | 'RECONCILED'
-    | 'RECONCILIATION_REQUIRED';
+  financialState: WritingGateFinancialState;
+  generationId: string | null;
   idempotencyKey: string;
   inputTokens: number;
   latencyMs: number;
   messageUtf8Bytes: number;
   observedProvider: string | null;
+  openRouterMetadata: OpenRouterMetadata | null;
   providerRequestId: string | null;
   rawOutputSha256: string | null;
   rawPersistedBeforeValidation: boolean;
@@ -226,17 +256,52 @@ export type WritingGateAttempt = Readonly<{
 }>;
 
 export type WritingGateLedgerEvent = Readonly<{
+  authorizationFingerprint?: string;
+  authorizationProofSha256?: string;
   caseId: string;
-  event: 'CALL_INTENT' | 'CALL_OUTCOME' | 'RAW_RECEIVED';
+  event:
+    | 'CALL_INTENT'
+    | 'CALL_OUTCOME'
+    | 'LIVE_AUTHORIZATION_CONSUMED'
+    | 'RAW_RECEIVED'
+    | 'REQUEST_MANIFEST';
   idempotencyKey: string;
   previousHash: string | null;
+  rawOutputSha256?: string;
   recordHash: string;
+  requestManifestSha256?: string;
 }>;
 
+export type WritingGateWireDialect =
+  typeof EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT | 'EVIDENCE_ASSIST_LOCAL_3_0_0';
+
+type WritingGateRequestManifestCore = Readonly<{
+  caseId: string;
+  idempotencyKey: string;
+  identityFingerprint: string;
+  requestContextFingerprint: string;
+  schemaVersion: 1;
+  transportManifest: Readonly<Record<string, unknown>>;
+  transportManifestSha256: string;
+  wireDialect: WritingGateWireDialect;
+  wireDialectVersion: string;
+  wireSchemaSha256: string;
+}>;
+
+export type WritingGateRequestManifest = WritingGateRequestManifestCore &
+  Readonly<{ manifestSha256: string }>;
+
 export interface WritingFrameworkGateStore {
+  consumeLiveAuthorization(
+    proof: WritingGateLiveAuthorizationProof,
+  ): Promise<'CREATED' | 'EXISTS'>;
+  appendRequestManifest(
+    manifest: WritingGateRequestManifest,
+  ): Promise<'CREATED' | 'EXISTS'>;
   appendCallIntent(input: {
     caseId: string;
     idempotencyKey: string;
+    requestManifestSha256: string;
   }): Promise<'CREATED' | 'EXISTS'>;
   appendOutcome(attempt: WritingGateAttempt): Promise<void>;
   appendRaw(input: {
@@ -248,7 +313,7 @@ export interface WritingFrameworkGateStore {
   ledger(): readonly WritingGateLedgerEvent[];
 }
 
-export type WritingFrameworkGateProviderRequest = Readonly<{
+export type WritingFrameworkGateProviderRequestCore = Readonly<{
   caseId: string;
   idempotencyKey: string;
   jsonSchema: Readonly<Record<string, unknown>>;
@@ -256,15 +321,22 @@ export type WritingFrameworkGateProviderRequest = Readonly<{
   requestContext: EvidenceAssistRequestContextV2;
 }>;
 
+export type WritingFrameworkGateProviderRequest =
+  WritingFrameworkGateProviderRequestCore &
+    Readonly<{ requestManifest: WritingGateRequestManifest }>;
+
 export type WritingFrameworkGateProviderResult = Readonly<{
   actualCostUsd: number | null;
   cacheReadTokens: number;
   cacheWriteTokens: number;
-  costSource: 'ACTUAL' | 'OFFLINE_FAKE' | 'UNKNOWN';
+  clientRequestId: string | null;
+  costSource: WritingGateCostSource;
   errorCode?: string;
+  generationId: string | null;
   inputTokens: number;
   latencyMs: number;
   observedProvider: string | null;
+  openRouterMetadata: OpenRouterMetadata | null;
   providerRequestId: string | null;
   rawOutput: string;
   reasoningTokens: number;
@@ -273,13 +345,21 @@ export type WritingFrameworkGateProviderResult = Readonly<{
 
 export interface WritingFrameworkGateOfflineProvider {
   readonly kind: 'OFFLINE_FAKE';
+  prepare(
+    request: WritingFrameworkGateProviderRequestCore,
+  ): WritingGateRequestManifest;
   execute(
     request: WritingFrameworkGateProviderRequest,
   ): Promise<WritingFrameworkGateProviderResult>;
 }
 
 export interface WritingFrameworkGateLiveProvider {
+  readonly authorizationProof: WritingGateLiveAuthorizationProof;
   readonly kind: 'OPENROUTER_LIVE';
+  readonly authorizedIdentityFingerprint: string;
+  prepare(
+    request: WritingFrameworkGateProviderRequestCore,
+  ): WritingGateRequestManifest;
   execute(
     request: WritingFrameworkGateProviderRequest,
   ): Promise<WritingFrameworkGateProviderResult>;
@@ -303,6 +383,189 @@ function sha256(value: string): string {
 
 function fingerprint(value: unknown): string {
   return sha256(canonicalJsonV2(value));
+}
+
+export function createWritingGateLiveAuthorizationProof(input: {
+  authorizationFingerprint: string;
+  identityFingerprint: string;
+  outputDirectory: string;
+  runId: string;
+}): WritingGateLiveAuthorizationProof {
+  if (
+    !sha256Schema.safeParse(input.authorizationFingerprint).success ||
+    !sha256Schema.safeParse(input.identityFingerprint).success ||
+    input.outputDirectory.trim().length === 0 ||
+    input.runId.trim().length === 0
+  ) {
+    throw new Error('WRITING_GATE_LIVE_AUTHORIZATION_PROOF_INVALID');
+  }
+  const core: WritingGateLiveAuthorizationProofCore = Object.freeze({
+    authorizationFingerprint: input.authorizationFingerprint,
+    identityFingerprint: input.identityFingerprint,
+    outputDirectory: resolve(input.outputDirectory),
+    runId: input.runId,
+    schemaVersion: 1,
+  });
+  return Object.freeze({ ...core, proofSha256: fingerprint(core) });
+}
+
+export function assertWritingGateLiveAuthorizationProof(
+  proof: WritingGateLiveAuthorizationProof,
+): void {
+  const { proofSha256, ...core } = proof;
+  if (
+    core.schemaVersion !== 1 ||
+    !sha256Schema.safeParse(core.authorizationFingerprint).success ||
+    !sha256Schema.safeParse(core.identityFingerprint).success ||
+    core.outputDirectory.trim().length === 0 ||
+    resolve(core.outputDirectory) !== core.outputDirectory ||
+    core.runId.trim().length === 0 ||
+    !sha256Schema.safeParse(proofSha256).success ||
+    fingerprint(core) !== proofSha256
+  ) {
+    throw new Error('WRITING_GATE_LIVE_AUTHORIZATION_PROOF_INVALID');
+  }
+}
+
+function assertSanitizedTransportManifest(
+  value: Readonly<Record<string, unknown>>,
+): void {
+  const forbiddenKeys = new Set([
+    'accesstoken',
+    'authorization',
+    'body',
+    'content',
+    'cookie',
+    'headers',
+    'apikey',
+    'messages',
+    'password',
+    'profile',
+    'prompt',
+    'rawoutput',
+    'rawresponse',
+    'refreshtoken',
+    'requestbody',
+    'secret',
+    'submission',
+  ]);
+  const normalizeKey = (key: string): string =>
+    key.toLocaleLowerCase().replaceAll(/[-_\s]/gu, '');
+  const visit = (current: unknown): void => {
+    if (typeof current === 'string' && /(?:^|\s)bearer\s+\S+/iu.test(current)) {
+      throw new Error('WRITING_GATE_REQUEST_MANIFEST_BEARER_VALUE');
+    }
+    if (Array.isArray(current)) {
+      current.forEach(visit);
+      return;
+    }
+    if (typeof current !== 'object' || current === null) return;
+    for (const [key, child] of Object.entries(
+      current as Record<string, unknown>,
+    )) {
+      if (forbiddenKeys.has(normalizeKey(key))) {
+        throw new Error('WRITING_GATE_REQUEST_MANIFEST_SENSITIVE_FIELD');
+      }
+      visit(child);
+    }
+  };
+  visit(value);
+  const headerNames = value.persistedSafeHeaderNames;
+  if (
+    Array.isArray(headerNames) &&
+    headerNames.some(
+      (name) =>
+        typeof name === 'string' &&
+        ['authorization', 'cookie', 'xapikey'].includes(normalizeKey(name)),
+    )
+  ) {
+    throw new Error('WRITING_GATE_REQUEST_MANIFEST_SECRET_HEADER');
+  }
+}
+
+export function createWritingGateRequestManifest(input: {
+  caseId: string;
+  idempotencyKey: string;
+  identityFingerprint: string;
+  requestContextFingerprint: string;
+  transportManifest: Readonly<Record<string, unknown>> & {
+    manifestSha256: string;
+  };
+  wireDialect: WritingGateWireDialect;
+  wireDialectVersion: string;
+  wireSchemaSha256: string;
+}): WritingGateRequestManifest {
+  assertSanitizedTransportManifest(input.transportManifest);
+  const { manifestSha256: transportManifestSha256, ...transportCore } =
+    input.transportManifest;
+  if (fingerprint(transportCore) !== transportManifestSha256) {
+    throw new Error('WRITING_GATE_TRANSPORT_MANIFEST_HASH_MISMATCH');
+  }
+  const core: WritingGateRequestManifestCore = {
+    caseId: input.caseId,
+    idempotencyKey: input.idempotencyKey,
+    identityFingerprint: input.identityFingerprint,
+    requestContextFingerprint: input.requestContextFingerprint,
+    schemaVersion: 1,
+    transportManifest: structuredClone(input.transportManifest),
+    transportManifestSha256,
+    wireDialect: input.wireDialect,
+    wireDialectVersion: input.wireDialectVersion,
+    wireSchemaSha256: input.wireSchemaSha256,
+  };
+  return Object.freeze({
+    ...core,
+    manifestSha256: fingerprint(core),
+  });
+}
+
+function assertRequestManifestIntegrity(
+  manifest: WritingGateRequestManifest,
+): void {
+  const { manifestSha256, ...core } = manifest;
+  if (fingerprint(core) !== manifestSha256) {
+    throw new Error('WRITING_GATE_REQUEST_MANIFEST_HASH_MISMATCH');
+  }
+  assertSanitizedTransportManifest(manifest.transportManifest);
+  const transportHash = manifest.transportManifest.manifestSha256;
+  if (typeof transportHash !== 'string') {
+    throw new Error('WRITING_GATE_TRANSPORT_MANIFEST_HASH_MISSING');
+  }
+  const transportCore: Record<string, unknown> = {
+    ...manifest.transportManifest,
+  };
+  delete transportCore.manifestSha256;
+  if (
+    transportHash !== manifest.transportManifestSha256 ||
+    fingerprint(transportCore) !== transportHash
+  ) {
+    throw new Error('WRITING_GATE_TRANSPORT_MANIFEST_HASH_MISMATCH');
+  }
+}
+
+function writingGateWireContract(
+  packageInput: WritingFrameworkGatePackage,
+): Readonly<{
+  dialect: WritingGateWireDialect;
+  dialectVersion: string;
+  jsonSchema: Readonly<Record<string, unknown>>;
+  schemaSha256: string;
+}> {
+  if (packageInput.wireModelId.startsWith('google/gemini-')) {
+    return Object.freeze({
+      dialect: EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT,
+      dialectVersion: EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT_VERSION,
+      jsonSchema: evidenceAssistGeminiWireJsonSchema(),
+      schemaSha256: evidenceAssistGeminiWireSchemaFingerprint(),
+    });
+  }
+  const jsonSchema = evidenceAssistJsonSchema();
+  return Object.freeze({
+    dialect: 'EVIDENCE_ASSIST_LOCAL_3_0_0',
+    dialectVersion: EVIDENCE_ASSIST_PROTOCOL_VERSION,
+    jsonSchema,
+    schemaSha256: fingerprint(jsonSchema),
+  });
 }
 
 function required<T>(value: T | undefined, code: string): T {
@@ -482,10 +745,14 @@ export function buildWritingFrameworkGatePackage(input: {
 }
 
 function ledgerRecord(input: {
+  authorizationFingerprint?: string;
+  authorizationProofSha256?: string;
   caseId: string;
   event: WritingGateLedgerEvent['event'];
   idempotencyKey: string;
   previousHash: string | null;
+  rawOutputSha256?: string;
+  requestManifestSha256?: string;
 }): WritingGateLedgerEvent {
   return Object.freeze({
     ...input,
@@ -494,14 +761,73 @@ function ledgerRecord(input: {
 }
 
 export class InMemoryWritingFrameworkGateStore implements WritingFrameworkGateStore {
+  private authorizationProof: WritingGateLiveAuthorizationProof | null = null;
   private readonly events: WritingGateLedgerEvent[] = [];
+  private readonly manifests = new Map<string, WritingGateRequestManifest>();
   private readonly outcomes = new Map<string, WritingGateAttempt>();
   private readonly raw = new Set<string>();
+
+  public async consumeLiveAuthorization(
+    proof: WritingGateLiveAuthorizationProof,
+  ): Promise<'CREATED' | 'EXISTS'> {
+    assertWritingGateLiveAuthorizationProof(proof);
+    if (this.authorizationProof) {
+      if (this.authorizationProof.proofSha256 !== proof.proofSha256) {
+        throw new Error('WRITING_GATE_LIVE_AUTHORIZATION_CONFLICT');
+      }
+      const recorded = this.events.some(
+        (event) =>
+          event.event === 'LIVE_AUTHORIZATION_CONSUMED' &&
+          event.authorizationProofSha256 === proof.proofSha256,
+      );
+      if (!recorded) {
+        throw new Error('WRITING_GATE_LIVE_AUTHORIZATION_LEDGER_MISSING');
+      }
+      return 'EXISTS';
+    }
+    this.authorizationProof = structuredClone(proof);
+    this.append('LIVE_AUTHORIZATION_CONSUMED', {
+      authorizationFingerprint: proof.authorizationFingerprint,
+      authorizationProofSha256: proof.proofSha256,
+      caseId: '__authorization__',
+      idempotencyKey: proof.authorizationFingerprint,
+    });
+    return 'CREATED';
+  }
+
+  public async appendRequestManifest(
+    manifest: WritingGateRequestManifest,
+  ): Promise<'CREATED' | 'EXISTS'> {
+    assertRequestManifestIntegrity(manifest);
+    const existing = this.manifests.get(manifest.idempotencyKey);
+    if (existing) {
+      if (existing.manifestSha256 !== manifest.manifestSha256) {
+        throw new Error('WRITING_GATE_REQUEST_MANIFEST_CONFLICT');
+      }
+      return 'EXISTS';
+    }
+    this.manifests.set(manifest.idempotencyKey, structuredClone(manifest));
+    this.append('REQUEST_MANIFEST', {
+      caseId: manifest.caseId,
+      idempotencyKey: manifest.idempotencyKey,
+      requestManifestSha256: manifest.manifestSha256,
+    });
+    return 'CREATED';
+  }
 
   public async appendCallIntent(input: {
     caseId: string;
     idempotencyKey: string;
+    requestManifestSha256: string;
   }): Promise<'CREATED' | 'EXISTS'> {
+    const manifest = this.manifests.get(input.idempotencyKey);
+    if (
+      !manifest ||
+      manifest.caseId !== input.caseId ||
+      manifest.manifestSha256 !== input.requestManifestSha256
+    ) {
+      throw new Error('WRITING_GATE_REQUEST_MANIFEST_REQUIRED');
+    }
     if (
       this.events.some(
         (event) =>
@@ -520,7 +846,10 @@ export class InMemoryWritingFrameworkGateStore implements WritingFrameworkGateSt
       throw new Error('WRITING_GATE_OUTCOME_ALREADY_EXISTS');
     }
     this.outcomes.set(attempt.idempotencyKey, structuredClone(attempt));
-    this.append('CALL_OUTCOME', attempt);
+    this.append('CALL_OUTCOME', {
+      caseId: attempt.caseId,
+      idempotencyKey: attempt.idempotencyKey,
+    });
   }
 
   public async appendRaw(input: {
@@ -532,7 +861,11 @@ export class InMemoryWritingFrameworkGateStore implements WritingFrameworkGateSt
       throw new Error('WRITING_GATE_RAW_ALREADY_EXISTS');
     }
     this.raw.add(input.idempotencyKey);
-    this.append('RAW_RECEIVED', input);
+    this.append('RAW_RECEIVED', {
+      caseId: input.caseId,
+      idempotencyKey: input.idempotencyKey,
+      rawOutputSha256: sha256(input.rawOutput),
+    });
   }
 
   public async findOutcome(
@@ -547,7 +880,14 @@ export class InMemoryWritingFrameworkGateStore implements WritingFrameworkGateSt
 
   private append(
     event: WritingGateLedgerEvent['event'],
-    input: { caseId: string; idempotencyKey: string },
+    input: {
+      authorizationFingerprint?: string;
+      authorizationProofSha256?: string;
+      caseId: string;
+      idempotencyKey: string;
+      rawOutputSha256?: string;
+      requestManifestSha256?: string;
+    },
   ): void {
     this.events.push(
       ledgerRecord({
@@ -564,6 +904,23 @@ type StoredAttemptEnvelope = Readonly<{
   attemptSha256: string;
   schemaVersion: 1;
 }>;
+
+type StoredRawEnvelope = Readonly<{
+  caseId: string;
+  idempotencyKey: string;
+  rawOutput: string;
+  rawOutputSha256: string;
+  schemaVersion: 1;
+}>;
+
+type StoredLiveAuthorizationEnvelopeCore = Readonly<{
+  consumedAt: string;
+  proof: WritingGateLiveAuthorizationProof;
+  schemaVersion: 1;
+}>;
+
+type StoredLiveAuthorizationEnvelope = StoredLiveAuthorizationEnvelopeCore &
+  Readonly<{ envelopeSha256: string }>;
 
 function isAlreadyExists(error: unknown): boolean {
   return error instanceof Error && 'code' in error && error.code === 'EEXIST';
@@ -617,10 +974,95 @@ export class FileWritingFrameworkGateStore implements WritingFrameworkGateStore 
     return new FileWritingFrameworkGateStore(absolute, events);
   }
 
+  public async consumeLiveAuthorization(
+    proof: WritingGateLiveAuthorizationProof,
+  ): Promise<'CREATED' | 'EXISTS'> {
+    assertWritingGateLiveAuthorizationProof(proof);
+    if (resolve(proof.outputDirectory) !== this.directory) {
+      throw new Error('WRITING_GATE_AUTHORIZED_OUTPUT_DIRECTORY_MISMATCH');
+    }
+    const path = resolve(this.directory, 'authorization-consumption.json');
+    const core: StoredLiveAuthorizationEnvelopeCore = {
+      consumedAt: new Date().toISOString(),
+      proof,
+      schemaVersion: 1,
+    };
+    const envelope: StoredLiveAuthorizationEnvelope = {
+      ...core,
+      envelopeSha256: fingerprint(core),
+    };
+    try {
+      await this.writeExclusive(path, envelope);
+    } catch (error) {
+      if (!isAlreadyExists(error)) throw error;
+      const existing = await this.readLiveAuthorizationEnvelope(path);
+      if (existing.proof.proofSha256 !== proof.proofSha256) {
+        throw new Error('WRITING_GATE_LIVE_AUTHORIZATION_CONFLICT', {
+          cause: error,
+        });
+      }
+      if (!this.hasLiveAuthorizationLedgerRecord(proof)) {
+        throw new Error('WRITING_GATE_LIVE_AUTHORIZATION_LEDGER_MISSING', {
+          cause: error,
+        });
+      }
+      return 'EXISTS';
+    }
+    await this.appendLedger('LIVE_AUTHORIZATION_CONSUMED', {
+      authorizationFingerprint: proof.authorizationFingerprint,
+      authorizationProofSha256: proof.proofSha256,
+      caseId: '__authorization__',
+      idempotencyKey: proof.authorizationFingerprint,
+    });
+    return 'CREATED';
+  }
+
+  public async appendRequestManifest(
+    manifest: WritingGateRequestManifest,
+  ): Promise<'CREATED' | 'EXISTS'> {
+    assertRequestManifestIntegrity(manifest);
+    const path = this.recordPath('requests', manifest.idempotencyKey);
+    try {
+      await this.writeExclusive(path, manifest);
+    } catch (error) {
+      if (!isAlreadyExists(error)) throw error;
+      const existing = await this.readRequestManifest(manifest.idempotencyKey);
+      if (
+        existing.caseId !== manifest.caseId ||
+        existing.manifestSha256 !== manifest.manifestSha256
+      ) {
+        throw new Error('WRITING_GATE_REQUEST_MANIFEST_CONFLICT', {
+          cause: error,
+        });
+      }
+      if (!this.hasRequestManifestLedgerRecord(existing)) {
+        throw new Error('WRITING_GATE_REQUEST_MANIFEST_LEDGER_MISSING', {
+          cause: error,
+        });
+      }
+      return 'EXISTS';
+    }
+    await this.appendLedger('REQUEST_MANIFEST', {
+      caseId: manifest.caseId,
+      idempotencyKey: manifest.idempotencyKey,
+      requestManifestSha256: manifest.manifestSha256,
+    });
+    return 'CREATED';
+  }
+
   public async appendCallIntent(input: {
     caseId: string;
     idempotencyKey: string;
+    requestManifestSha256: string;
   }): Promise<'CREATED' | 'EXISTS'> {
+    const manifest = await this.readRequestManifest(input.idempotencyKey);
+    if (
+      manifest.caseId !== input.caseId ||
+      manifest.manifestSha256 !== input.requestManifestSha256 ||
+      !this.hasRequestManifestLedgerRecord(manifest)
+    ) {
+      throw new Error('WRITING_GATE_REQUEST_MANIFEST_REQUIRED');
+    }
     const path = this.recordPath('intents', input.idempotencyKey);
     try {
       await this.writeExclusive(path, {
@@ -646,7 +1088,10 @@ export class FileWritingFrameworkGateStore implements WritingFrameworkGateStore 
       this.recordPath('outcomes', attempt.idempotencyKey),
       envelope,
     );
-    await this.appendLedger('CALL_OUTCOME', attempt);
+    await this.appendLedger('CALL_OUTCOME', {
+      caseId: attempt.caseId,
+      idempotencyKey: attempt.idempotencyKey,
+    });
   }
 
   public async appendRaw(input: {
@@ -654,12 +1099,17 @@ export class FileWritingFrameworkGateStore implements WritingFrameworkGateStore 
     idempotencyKey: string;
     rawOutput: string;
   }): Promise<void> {
+    const rawOutputSha256 = sha256(input.rawOutput);
     await this.writeExclusive(this.recordPath('raw', input.idempotencyKey), {
       ...input,
-      rawOutputSha256: sha256(input.rawOutput),
+      rawOutputSha256,
       schemaVersion: 1,
+    } satisfies StoredRawEnvelope);
+    await this.appendLedger('RAW_RECEIVED', {
+      caseId: input.caseId,
+      idempotencyKey: input.idempotencyKey,
+      rawOutputSha256,
     });
-    await this.appendLedger('RAW_RECEIVED', input);
   }
 
   public async findOutcome(
@@ -684,15 +1134,24 @@ export class FileWritingFrameworkGateStore implements WritingFrameworkGateStore 
       if (!hasOutcomeLedgerRecord) {
         throw new Error('WRITING_GATE_OUTCOME_LEDGER_MISSING');
       }
-      if (
-        envelope.attempt.rawPersistedBeforeValidation &&
-        !this.events.some(
+      if (envelope.attempt.rawPersistedBeforeValidation) {
+        const rawEnvelope = await this.readRawEnvelope(idempotencyKey);
+        const rawLedgerRecord = this.events.find(
           (event) =>
             event.event === 'RAW_RECEIVED' &&
             event.idempotencyKey === idempotencyKey,
-        )
-      ) {
-        throw new Error('WRITING_GATE_RAW_LEDGER_MISSING');
+        );
+        if (!rawLedgerRecord) {
+          throw new Error('WRITING_GATE_RAW_LEDGER_MISSING');
+        }
+        if (
+          rawEnvelope.caseId !== envelope.attempt.caseId ||
+          rawEnvelope.rawOutputSha256 !== envelope.attempt.rawOutputSha256 ||
+          (rawLedgerRecord.rawOutputSha256 !== undefined &&
+            rawLedgerRecord.rawOutputSha256 !== rawEnvelope.rawOutputSha256)
+        ) {
+          throw new Error('WRITING_GATE_RAW_INTEGRITY_MISMATCH');
+        }
       }
       return structuredClone(envelope.attempt);
     } catch (error) {
@@ -713,7 +1172,14 @@ export class FileWritingFrameworkGateStore implements WritingFrameworkGateStore 
 
   private async appendLedger(
     event: WritingGateLedgerEvent['event'],
-    input: { caseId: string; idempotencyKey: string },
+    input: {
+      authorizationFingerprint?: string;
+      authorizationProofSha256?: string;
+      caseId: string;
+      idempotencyKey: string;
+      rawOutputSha256?: string;
+      requestManifestSha256?: string;
+    },
   ): Promise<void> {
     const record = ledgerRecord({
       ...input,
@@ -729,13 +1195,83 @@ export class FileWritingFrameworkGateStore implements WritingFrameworkGateStore 
   }
 
   private recordPath(
-    kind: 'intents' | 'outcomes' | 'raw',
+    kind: 'intents' | 'outcomes' | 'raw' | 'requests',
     key: string,
   ): string {
     if (!/^[a-f0-9]{64}$/u.test(key)) {
       throw new Error('WRITING_GATE_IDEMPOTENCY_KEY_INVALID');
     }
     return resolve(this.directory, kind, `${key}.json`);
+  }
+
+  private async readRequestManifest(
+    idempotencyKey: string,
+  ): Promise<WritingGateRequestManifest> {
+    const manifest = JSON.parse(
+      await readFile(this.recordPath('requests', idempotencyKey), 'utf8'),
+    ) as WritingGateRequestManifest;
+    if (manifest.idempotencyKey !== idempotencyKey) {
+      throw new Error('WRITING_GATE_REQUEST_MANIFEST_IDENTITY_MISMATCH');
+    }
+    assertRequestManifestIntegrity(manifest);
+    return manifest;
+  }
+
+  private hasRequestManifestLedgerRecord(
+    manifest: WritingGateRequestManifest,
+  ): boolean {
+    return this.events.some(
+      (event) =>
+        event.event === 'REQUEST_MANIFEST' &&
+        event.idempotencyKey === manifest.idempotencyKey &&
+        event.requestManifestSha256 === manifest.manifestSha256,
+    );
+  }
+
+  private hasLiveAuthorizationLedgerRecord(
+    proof: WritingGateLiveAuthorizationProof,
+  ): boolean {
+    return this.events.some(
+      (event) =>
+        event.event === 'LIVE_AUTHORIZATION_CONSUMED' &&
+        event.authorizationFingerprint === proof.authorizationFingerprint &&
+        event.authorizationProofSha256 === proof.proofSha256,
+    );
+  }
+
+  private async readLiveAuthorizationEnvelope(
+    path: string,
+  ): Promise<StoredLiveAuthorizationEnvelope> {
+    const envelope = JSON.parse(
+      await readFile(path, 'utf8'),
+    ) as StoredLiveAuthorizationEnvelope;
+    const { envelopeSha256, ...core } = envelope;
+    assertWritingGateLiveAuthorizationProof(envelope.proof);
+    if (
+      envelope.schemaVersion !== 1 ||
+      !sha256Schema.safeParse(envelopeSha256).success ||
+      fingerprint(core) !== envelopeSha256
+    ) {
+      throw new Error('WRITING_GATE_LIVE_AUTHORIZATION_INTEGRITY_MISMATCH');
+    }
+    return envelope;
+  }
+
+  private async readRawEnvelope(
+    idempotencyKey: string,
+  ): Promise<StoredRawEnvelope> {
+    const envelope = JSON.parse(
+      await readFile(this.recordPath('raw', idempotencyKey), 'utf8'),
+    ) as StoredRawEnvelope;
+    if (
+      envelope.schemaVersion !== 1 ||
+      envelope.idempotencyKey !== idempotencyKey ||
+      !sha256Schema.safeParse(envelope.rawOutputSha256).success ||
+      sha256(envelope.rawOutput) !== envelope.rawOutputSha256
+    ) {
+      throw new Error('WRITING_GATE_RAW_INTEGRITY_MISMATCH');
+    }
+    return envelope;
   }
 
   private async writeExclusive(path: string, value: unknown): Promise<void> {
@@ -781,9 +1317,54 @@ export class FrozenOracleWritingFrameworkGateProvider implements WritingFramewor
     }> = {},
   ) {}
 
+  public prepare(
+    request: WritingFrameworkGateProviderRequestCore,
+  ): WritingGateRequestManifest {
+    const wire = writingGateWireContract(this.packageInput);
+    if (fingerprint(request.jsonSchema) !== wire.schemaSha256) {
+      throw new Error('WRITING_GATE_WIRE_SCHEMA_MISMATCH');
+    }
+    const transportCore = {
+      bodySha256: fingerprint({
+        jsonSchema: request.jsonSchema,
+        messages: request.messages,
+      }),
+      persistedSafeHeaderNames: [] as string[],
+      messagesSha256: fingerprint(request.messages),
+      method: 'OFFLINE_FAKE',
+      modelId: 'deterministic-frozen-oracle',
+      profileSha256: fingerprint({ mode: 'OFFLINE_FAKE_ONLY' }),
+      requestedRoute: 'OFFLINE_FAKE',
+      schemaSha256: wire.schemaSha256,
+      schemaVersion: 1,
+      timeoutMs: 0,
+      url: 'offline://learnx/frozen-oracle',
+    };
+    return createWritingGateRequestManifest({
+      caseId: request.caseId,
+      idempotencyKey: request.idempotencyKey,
+      identityFingerprint: this.packageInput.identityFingerprint,
+      requestContextFingerprint: request.requestContext.contextFingerprint,
+      transportManifest: {
+        ...transportCore,
+        manifestSha256: fingerprint(transportCore),
+      },
+      wireDialect: wire.dialect,
+      wireDialectVersion: wire.dialectVersion,
+      wireSchemaSha256: wire.schemaSha256,
+    });
+  }
+
   public async execute(
     request: WritingFrameworkGateProviderRequest,
   ): Promise<WritingFrameworkGateProviderResult> {
+    const { requestManifest, ...requestCore } = request;
+    if (
+      this.prepare(requestCore).manifestSha256 !==
+      requestManifest.manifestSha256
+    ) {
+      throw new Error('WRITING_GATE_REQUEST_MANIFEST_MISMATCH');
+    }
     this.executions += 1;
     const caseItem = required(
       this.packageInput.cases.find(({ caseId }) => caseId === request.caseId),
@@ -799,10 +1380,13 @@ export class FrozenOracleWritingFrameworkGateProvider implements WritingFramewor
       actualCostUsd,
       cacheReadTokens: 0,
       cacheWriteTokens: 0,
+      clientRequestId: request.idempotencyKey,
       costSource: actualCostUsd === null ? 'UNKNOWN' : 'OFFLINE_FAKE',
+      generationId: null,
       inputTokens: 0,
       latencyMs: 0,
       observedProvider: 'OFFLINE_FAKE',
+      openRouterMetadata: null,
       providerRequestId: `offline-fake:${request.idempotencyKey}`,
       rawOutput,
       reasoningTokens: 0,
@@ -890,16 +1474,19 @@ function invalidAttempt(input: {
     cacheReadTokens: 0,
     cacheWriteTokens: 0,
     caseId: input.caseId,
+    clientRequestId: input.idempotencyKey,
     costSource: 'UNKNOWN',
     defectClasses: [...input.defects],
     dispatchState: input.dispatchState ?? 'ORPHANED',
     errorCode: null,
     financialState: input.financialState ?? 'RECONCILIATION_REQUIRED',
+    generationId: null,
     idempotencyKey: input.idempotencyKey,
     inputTokens: 0,
     latencyMs: 0,
     messageUtf8Bytes: input.messageUtf8Bytes,
     observedProvider: null,
+    openRouterMetadata: null,
     providerRequestId: null,
     rawOutputSha256: null,
     rawPersistedBeforeValidation: false,
@@ -916,7 +1503,8 @@ function invalidAttempt(input: {
 type GateRunInput = Readonly<{
   canaryFactory?: (caseId: string) => string;
   packageInput: WritingFrameworkGatePackage;
-  provider: WritingFrameworkGateLiveProvider | WritingFrameworkGateOfflineProvider;
+  provider:
+    WritingFrameworkGateLiveProvider | WritingFrameworkGateOfflineProvider;
   store: WritingFrameworkGateStore;
 }>;
 
@@ -939,19 +1527,25 @@ function liveBudgetDefect(input: {
   );
   return reconciledCost +
     input.packageInput.finance.perAttemptBound.maximumCostUsd >
-    input.packageInput.finance.gateBound.maximumProviderCostUsd +
-      Number.EPSILON
+    input.packageInput.finance.gateBound.maximumProviderCostUsd + Number.EPSILON
     ? 'BUDGET'
     : null;
 }
 
 function providerDefects(input: {
+  expectedClientRequestId: string;
   packageInput: WritingFrameworkGatePackage;
   priorAttempts: readonly WritingGateAttempt[];
   providerResult: WritingFrameworkGateProviderResult;
 }): WritingGateDefect[] {
   const defects: WritingGateDefect[] = [];
-  if (input.providerResult.providerRequestId === null) {
+  if (input.providerResult.clientRequestId !== input.expectedClientRequestId) {
+    defects.push('TRACEABILITY');
+  }
+  if (
+    input.providerResult.providerRequestId === null &&
+    input.providerResult.generationId === null
+  ) {
     defects.push('TRACEABILITY');
   }
   if (input.providerResult.errorCode) {
@@ -981,8 +1575,7 @@ function providerDefects(input: {
     if (
       input.providerResult.actualCostUsd >
         input.packageInput.finance.perAttemptBound.maximumCostUsd ||
-      totalCost >
-        input.packageInput.finance.gateBound.maximumProviderCostUsd
+      totalCost > input.packageInput.finance.gateBound.maximumProviderCostUsd
     ) {
       defects.push('BUDGET');
     }
@@ -994,6 +1587,25 @@ async function runWritingFrameworkSelectionGate(
   input: GateRunInput,
 ): Promise<WritingFrameworkGateRun> {
   const live = input.provider.kind === 'OPENROUTER_LIVE';
+  if (input.provider.kind === 'OPENROUTER_LIVE') {
+    if (input.packageInput.identityFingerprint === CLOSED_GEMINI_Q1_IDENTITY) {
+      throw new Error('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
+    }
+    assertWritingGateLiveAuthorizationProof(input.provider.authorizationProof);
+    if (
+      input.provider.authorizedIdentityFingerprint !==
+        input.packageInput.identityFingerprint ||
+      input.provider.authorizationProof.identityFingerprint !==
+        input.packageInput.identityFingerprint ||
+      input.provider.authorizationProof.identityFingerprint !==
+        input.provider.authorizedIdentityFingerprint
+    ) {
+      throw new Error('WRITING_GATE_NEW_IDENTITY_AUTHORIZATION_REQUIRED');
+    }
+    await input.store.consumeLiveAuthorization(
+      input.provider.authorizationProof,
+    );
+  }
   const attempts: WritingGateAttempt[] = [];
   let providerExecutions = 0;
   let stoppedReason: WritingGateDefect | null = null;
@@ -1055,9 +1667,34 @@ async function runWritingFrameworkSelectionGate(
         break;
       }
     }
+    const wire = writingGateWireContract(input.packageInput);
+    const providerRequestCore: WritingFrameworkGateProviderRequestCore = {
+      caseId: caseItem.caseId,
+      idempotencyKey: key,
+      jsonSchema: wire.jsonSchema,
+      messages: prepared.messages,
+      requestContext: prepared.requestContext,
+    };
+    const requestManifest = input.provider.prepare(providerRequestCore);
+    if (
+      requestManifest.caseId !== caseItem.caseId ||
+      requestManifest.idempotencyKey !== key ||
+      requestManifest.identityFingerprint !==
+        input.packageInput.identityFingerprint ||
+      requestManifest.requestContextFingerprint !==
+        prepared.requestContext.contextFingerprint ||
+      requestManifest.wireDialect !== wire.dialect ||
+      requestManifest.wireDialectVersion !== wire.dialectVersion ||
+      requestManifest.wireSchemaSha256 !== wire.schemaSha256
+    ) {
+      throw new Error('WRITING_GATE_REQUEST_MANIFEST_IDENTITY_MISMATCH');
+    }
+    assertRequestManifestIntegrity(requestManifest);
+    await input.store.appendRequestManifest(requestManifest);
     const intent = await input.store.appendCallIntent({
       caseId: caseItem.caseId,
       idempotencyKey: key,
+      requestManifestSha256: requestManifest.manifestSha256,
     });
     if (intent === 'EXISTS') {
       const attempt = invalidAttempt({
@@ -1076,11 +1713,8 @@ async function runWritingFrameworkSelectionGate(
     try {
       providerExecutions += 1;
       providerResult = await input.provider.execute({
-        caseId: caseItem.caseId,
-        idempotencyKey: key,
-        jsonSchema: evidenceAssistJsonSchema(),
-        messages: prepared.messages,
-        requestContext: prepared.requestContext,
+        ...providerRequestCore,
+        requestManifest,
       });
     } catch {
       const attempt = invalidAttempt({
@@ -1142,6 +1776,7 @@ async function runWritingFrameworkSelectionGate(
     if (live) {
       defects.push(
         ...providerDefects({
+          expectedClientRequestId: key,
           packageInput: input.packageInput,
           priorAttempts: attempts,
           providerResult,
@@ -1156,6 +1791,7 @@ async function runWritingFrameworkSelectionGate(
       cacheReadTokens: providerResult.cacheReadTokens,
       cacheWriteTokens: providerResult.cacheWriteTokens,
       caseId: caseItem.caseId,
+      clientRequestId: providerResult.clientRequestId ?? key,
       costSource: costReconciled
         ? live
           ? 'ACTUAL'
@@ -1173,11 +1809,13 @@ async function runWritingFrameworkSelectionGate(
           ? 'RECONCILED'
           : 'OFFLINE_NOT_APPLICABLE'
         : 'RECONCILIATION_REQUIRED',
+      generationId: providerResult.generationId,
       idempotencyKey: key,
       inputTokens: providerResult.inputTokens,
       latencyMs: providerResult.latencyMs,
       messageUtf8Bytes: bytes,
       observedProvider: providerResult.observedProvider,
+      openRouterMetadata: providerResult.openRouterMetadata,
       providerRequestId: providerResult.providerRequestId,
       rawOutputSha256,
       rawPersistedBeforeValidation: rawPersisted,

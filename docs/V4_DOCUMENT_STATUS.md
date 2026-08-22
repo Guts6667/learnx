@@ -1,8 +1,8 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.6`
-- **Date** : 21 août 2026
+- **Version** : `1.0.7`
+- **Date** : 22 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
 
@@ -53,11 +53,13 @@ chemin de lecture actif.
 | `V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` | Préflight du runner spécialisé Sonnet, conservé sans valeur d'attestation Gemini. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-runner-preflight.v1.json` | `HISTORICAL_EVIDENCE` | Preuve machine Sonnet 4/4 fake, conservée sans valeur d'attestation Gemini. |
 | `V4_009C_S2_NETWORK_GATE_REPORT.md` | `HISTORICAL_EVIDENCE` | Preuve canonique du gate Sonnet clos après `1/4` ; aucun replay, panel, holdout ou live. |
-| `V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md` | `CURRENT_STATUS` | Verdict Sonnet borné, limites `n = 1`, conservation append-only et ordre Gemini 3.6 → Gemini 3.7 → Mistral. |
+| `V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md` | `HISTORICAL_EVIDENCE` | Verdict Sonnet borné et clos, conservé append-only ; il ne concurrence pas la remédiation Gemini courante. |
 | `V4_003E_Q1_GEMINI_3_6_OFFLINE_DOSSIER.md` | `HISTORICAL_EVIDENCE` | Préparation hors ligne Gemini 3.6 avant consommation du gate réseau. |
 | `V4_003E_Q1_GEMINI_3_6_NETWORK_TRANSPORT_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` | Transport Gemini simulé vert avant le gate réseau désormais clos. |
 | `V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_AUTHORIZATION.md` | `HISTORICAL_EVIDENCE` | Autorisation single-use consommée par le gate clos ; aucune réutilisation. |
 | `V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md` | `CURRENT_STATUS` | Gate clos après `1/4` sur HTTP 400 ; coût/identifiant absents, réconciliation requise, aucun verdict pédagogique. |
+| `V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md` | `CURRENT_STATUS` | Procédure de réconciliation du coût Q1 ; coût réel inconnu, nouvelle lecture Activity à partir du 23 août UTC et écriture conservatrice interdite sans arbitrage Finance séparé. |
+| `../benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json` | `CURRENT_STATUS` | Réattestation publique informative, sans inférence, identité, Finance ni GO réseau. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques

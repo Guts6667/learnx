@@ -350,6 +350,13 @@ enum AiCorrectionAttemptStatus {
   @@map("ai_correction_attempt_status")
 }
 
+enum AiCorrectionCostSource {
+  ACTUAL                 @map("actual")
+  CONSERVATIVE_WRITE_OFF @map("conservative_write_off")
+
+  @@map("ai_correction_cost_source")
+}
+
 enum CreditCurrency {
   LEARNX_CREDIT @map("learnx_credit")
 
@@ -1256,6 +1263,7 @@ model AiCorrectionAttempt {
   completionTokens       Int?                       @map("completion_tokens")
   totalTokens            Int?                       @map("total_tokens")
   costUsd                Decimal?                   @map("cost_usd") @db.Decimal(18, 8)
+  costSource             AiCorrectionCostSource?    @map("cost_source")
   latencyMs              Int?                       @map("latency_ms")
   completedAt            DateTime?                  @map("completed_at")
   createdAt              DateTime                   @default(now()) @map("created_at")
@@ -1266,6 +1274,10 @@ model AiCorrectionAttempt {
   providerRequestId      String?                    @map("provider_request_id")
   modelSnapshot          String?                    @map("model_snapshot")
   reasoningTokens        Int?                       @map("reasoning_tokens")
+  requestManifest        Json?                      @map("request_manifest_json")
+  requestBodySha256      String?                    @map("request_body_sha256") @db.Char(64)
+  wireSchemaSha256       String?                    @map("wire_schema_sha256") @db.Char(64)
+  routerMetadata         Json?                      @map("router_metadata_json")
   providerIdempotencyKey String?                    @unique @map("provider_idempotency_key")
   dispatchStatus         AiProviderDispatchStatus?  @map("dispatch_status")
   costConfirmedAt        DateTime?                  @map("cost_confirmed_at")

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "publicationStatus": "PUBLIC_REDACTED_DERIVATIVE",
+  "caseId": "baseline-pico-spider-mastered",
+  "idempotencyKey": "0ca736578435d63d1ac08f98077cd3d77b62cdfc65b5ee2d116b5a7bd01f3243",
+  "sourceEvidence": {
+    "originalRawFileSha256": "54874f005c3f83e088859f11c58223aa8310077708187c39175e65cf7839edaa",
+    "originalRawOutputSha256": "77939a87611cd6a5ca7c648fcfd6a28195fb8bd49d6cee6371584dbe02f49166",
+    "privateAppendOnlyOriginalPublished": false
+  },
+  "redaction": {
+    "removedFields": ["user_id"],
+    "reason": "OPENROUTER_ACCOUNT_IDENTIFIER"
+  },
+  "rawOutput": {
+    "error": {
+      "message": "Provider returned error",
+      "code": 400,
+      "metadata": {
+        "raw": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+        "provider_name": "Google",
+        "is_byok": false,
+        "provider_error_code": "400"
+      }
+    }
+  }
+}

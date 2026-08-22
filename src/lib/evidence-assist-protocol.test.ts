@@ -5,8 +5,13 @@ import { describe, expect, it } from 'vitest';
 
 import { compileExecutableRubric } from './executable-rubric-engine.ts';
 import {
+  assertGeminiWireJsonSchema,
   buildEvidenceAssistCandidateRubricView,
+  EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT,
+  EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT_VERSION,
   evidenceAssistFindingSchema,
+  evidenceAssistGeminiWireJsonSchema,
+  evidenceAssistGeminiWireSchemaFingerprint,
   evidenceAssistJsonSchema,
   evidenceAssistProtocolFingerprint,
   type EvidenceAssistRequestContext,
@@ -61,6 +66,43 @@ function validate(input: {
 }
 
 describe('evidence assist protocol', () => {
+  it('keeps local span validation while emitting the restricted Gemini 3.0.1 wire dialect', () => {
+    const localSchema = JSON.stringify(evidenceAssistJsonSchema());
+    const wireSchema = evidenceAssistGeminiWireJsonSchema();
+    const serializedWireSchema = JSON.stringify(wireSchema);
+
+    expect(EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT).toBe('GEMINI_WIRE_3_0_1');
+    expect(EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT_VERSION).toBe(
+      'evidence-assist-wire/3.0.1',
+    );
+    expect(localSchema).toContain('"pattern"');
+    expect(serializedWireSchema).not.toContain('"pattern"');
+    expect(serializedWireSchema).not.toMatch(
+      /"\$(?:anchor|defs|id|ref)"|"oneOf"|"anyOf"/u,
+    );
+    expect(evidenceAssistGeminiWireSchemaFingerprint()).toMatch(
+      /^[a-f0-9]{64}$/u,
+    );
+    expect(() => assertGeminiWireJsonSchema(wireSchema)).not.toThrow();
+    expect(() =>
+      assertGeminiWireJsonSchema({
+        properties: {
+          nested: { pattern: '^forbidden$', type: 'string' },
+        },
+        type: 'object',
+      }),
+    ).toThrow(
+      'GEMINI_WIRE_SCHEMA_KEYWORD_UNSUPPORTED:$.properties.nested.pattern',
+    );
+    expect(() =>
+      evidenceAssistFindingSchema.parse({
+        elementKey: 'explicit-recommendation',
+        relation: 'EVIDENCE_FOR_ELEMENT',
+        spanIds: ['s0001-not-a-local-span'],
+      }),
+    ).toThrow();
+  });
+
   it('exposes a candidate-only rubric view without scoring authority', () => {
     const view = buildEvidenceAssistCandidateRubricView(compiled);
     const serialized = JSON.stringify(view);
