@@ -75,7 +75,7 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   await page.setViewportSize({ height: 844, width: 390 });
   await page.getByRole('button', { name: 'EN', exact: true }).click();
   await expect(
-    page.getByRole('heading', { level: 1, name: 'A journey, not a library.' }),
+    page.getByRole('heading', { level: 1, name: 'Your Path to knowledge' }),
   ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Leading a team project' }).first(),

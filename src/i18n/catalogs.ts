@@ -1025,7 +1025,7 @@ export const englishMessages = {
   'landing.language': 'Language',
   'landing.login': 'Sign in',
   'landing.eyebrow': 'Learn with direction',
-  'landing.title': 'A journey, not a library.',
+  'landing.title': 'Your Path to knowledge',
   'landing.lead':
     'LearnX connects learning, practice and validation in a clear path you can resume without losing context.',
   'landing.cta.early': 'Apply as an early adopter',
