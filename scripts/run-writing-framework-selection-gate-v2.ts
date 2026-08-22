@@ -3,6 +3,10 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
 import {
+  verifyWritingFrameworkImplementationManifest,
+  type WritingFrameworkImplementationManifest,
+} from '../src/lib/writing-framework-selection-implementation-manifest.js';
+import {
   buildWritingFrameworkGatePackage,
   createWritingGateLiveAuthorizationProof,
   FileWritingFrameworkGateStore,
@@ -10,25 +14,68 @@ import {
 } from '../src/server/ai/writing-framework-selection-gate-runner-v2.js';
 import { OpenRouterWritingFrameworkGateProvider } from '../src/server/ai/writing-framework-selection-openrouter-provider.js';
 
-const candidates = {
+type CandidateExecutionState =
+  | 'CLOSED_NO_REPLAY'
+  | 'DERIVED_FROM_GOVERNED_ARTIFACTS'
+  | 'NETWORK_AUTHORIZATION_NOT_GRANTED';
+
+type CandidateConfiguration = Readonly<{
+  authorizationPath: string | null;
+  dossierPath: string;
+  executionState: CandidateExecutionState;
+  financeArbitrationPath: string | null;
+  financeDraftPath: string;
+  implementationManifestPath: string | null;
+  outputSlug: string;
+  ownerGoPrefix: string | null;
+  preflightPath: string | null;
+}>;
+
+const candidates: Readonly<Record<string, CandidateConfiguration>> = {
   'gemini-3.6': {
-    authorizationPath:
-      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-network-authorization.v1.json',
+    authorizationPath: null,
     dossierPath:
       'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
-    financePath:
+    executionState: 'CLOSED_NO_REPLAY',
+    financeArbitrationPath: null,
+    financeDraftPath:
       'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json',
+    implementationManifestPath: null,
     outputSlug: 'writing-framework-selection-gemini36-v2',
+    ownerGoPrefix: null,
+    preflightPath: null,
+  },
+  'gemini-3.6-r1': {
+    authorizationPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-network-authorization.v1.json',
+    dossierPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-freeze.v1.json',
+    executionState: 'DERIVED_FROM_GOVERNED_ARTIFACTS',
+    financeArbitrationPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-finance-arbitration.v1.json',
+    financeDraftPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-finance-envelope.draft.v1.json',
+    implementationManifestPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-implementation-manifest.v1.json',
+    outputSlug: 'writing-framework-selection-gemini36-r1-v2',
+    ownerGoPrefix: 'GO_V4_003E_Q1_R1_GEMINI36_',
+    preflightPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-runner-preflight.v1.json',
   },
   'sonnet-5': {
     authorizationPath: null,
     dossierPath:
       'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
-    financePath:
+    executionState: 'NETWORK_AUTHORIZATION_NOT_GRANTED',
+    financeArbitrationPath: null,
+    financeDraftPath:
       'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json',
+    implementationManifestPath: null,
     outputSlug: 'writing-framework-selection-sonnet5-v2',
+    ownerGoPrefix: null,
+    preflightPath: null,
   },
-} as const;
+};
 
 function option(name: string): string | undefined {
   const prefix = `--${name}=`;
@@ -79,33 +126,198 @@ type NetworkAuthorization = Readonly<{
   sourceBindings: {
     dossierPath: string;
     dossierSha256: string;
-    financeEnvelopePath: string;
-    financeEnvelopeSha256: string;
+    financeArbitrationPath: string;
+    financeArbitrationSha256: string;
+    financeDraftPath: string;
+    financeDraftSha256: string;
+    implementationManifestPath: string;
+    implementationManifestSha256: string;
     transportPreflightPath: string;
     transportPreflightSha256: string;
   };
   status: string;
 }>;
 
-async function loadNetworkAuthorization(input: {
-  expectedPath: string | null;
-  ownerGo: string;
-}): Promise<NetworkAuthorization> {
-  const requestedPath = option('network-authorization');
-  if (!input.expectedPath || requestedPath !== input.expectedPath) {
+type FinanceArbitration = Readonly<{
+  arbitrationFingerprint: string;
+  authorizationBoundary: {
+    financeArbitration: 'GRANTED_FOR_R1_GATE4_ONLY';
+    modelCallsAllowed: false;
+    ownerNetworkAuthorization: 'NOT_GRANTED';
+  };
+  campaign: {
+    dossierPath: string;
+    dossierSha256: string;
+    identityFingerprint: string;
+  };
+  draftBinding: {
+    path: string;
+    sha256: string;
+  };
+  gateBound: {
+    maximumFallbacks: 0;
+    maximumProviderAttempts: 4;
+    maximumProviderCostUsd: number;
+    maximumRetriesPerWorkflow: 0;
+  };
+  status: 'IDENTITY_AND_FINANCE_APPROVED_NETWORK_NOT_AUTHORIZED';
+}>;
+
+function parseRecord(value: string): Record<string, unknown> {
+  const parsed: unknown = JSON.parse(value);
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error('WRITING_GATE_GOVERNED_ARTIFACT_INVALID');
+  }
+  return parsed as Record<string, unknown>;
+}
+
+async function readGovernedArtifact(path: string): Promise<string> {
+  try {
+    return await readFile(resolve(path), 'utf8');
+  } catch {
     throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
   }
-  const text = await readFile(resolve(requestedPath), 'utf8');
-  const authorization = JSON.parse(text) as NetworkAuthorization;
+}
+
+function validateFinanceArbitration(input: {
+  arbitrationText: string;
+  draftPath: string;
+  draftText: string;
+}): FinanceArbitration {
+  const arbitrationValue = parseRecord(input.arbitrationText);
+  const arbitration = arbitrationValue as unknown as FinanceArbitration;
+  const { arbitrationFingerprint, ...core } = arbitrationValue;
+  const draftBinding = arbitration.draftBinding;
+  const boundary = arbitration.authorizationBoundary;
+  const gateBound = arbitration.gateBound;
+  if (
+    typeof arbitrationFingerprint !== 'string' ||
+    arbitrationFingerprint !== sha256(JSON.stringify(canonicalize(core))) ||
+    arbitration.status !==
+      'IDENTITY_AND_FINANCE_APPROVED_NETWORK_NOT_AUTHORIZED' ||
+    !draftBinding ||
+    draftBinding.path !== input.draftPath ||
+    draftBinding.sha256 !== sha256(input.draftText) ||
+    !boundary ||
+    boundary.financeArbitration !== 'GRANTED_FOR_R1_GATE4_ONLY' ||
+    boundary.modelCallsAllowed !== false ||
+    boundary.ownerNetworkAuthorization !== 'NOT_GRANTED' ||
+    !gateBound ||
+    gateBound.maximumProviderAttempts !== 4 ||
+    gateBound.maximumRetriesPerWorkflow !== 0 ||
+    gateBound.maximumFallbacks !== 0 ||
+    gateBound.maximumProviderCostUsd !== 0.5
+  ) {
+    throw new Error('WRITING_GATE_FINANCE_ARBITRATION_NOT_GRANTED');
+  }
+  return arbitration;
+}
+
+function assertFinanceArbitrationCampaign(input: {
+  arbitration: FinanceArbitration;
+  dossierPath: string;
+  dossierText: string;
+  identityFingerprint: string;
+}): void {
+  const campaign = input.arbitration.campaign;
+  if (
+    !campaign ||
+    campaign.dossierPath !== input.dossierPath ||
+    campaign.dossierSha256 !== sha256(input.dossierText) ||
+    campaign.identityFingerprint !== input.identityFingerprint
+  ) {
+    throw new Error('WRITING_GATE_FINANCE_ARBITRATION_IDENTITY_MISMATCH');
+  }
+}
+
+type GovernedExecutionArtifacts = Readonly<{
+  authorizationText: string;
+  financeArbitration: FinanceArbitration;
+  financeArbitrationText: string;
+  financeDraftText: string;
+  implementationManifest: WritingFrameworkImplementationManifest;
+  implementationManifestText: string;
+  preflightText: string;
+}>;
+
+async function loadGovernedExecutionArtifacts(
+  configuration: CandidateConfiguration,
+): Promise<GovernedExecutionArtifacts> {
+  const {
+    authorizationPath,
+    financeArbitrationPath,
+    financeDraftPath,
+    implementationManifestPath,
+    preflightPath,
+  } = configuration;
+  if (
+    configuration.executionState !== 'DERIVED_FROM_GOVERNED_ARTIFACTS' ||
+    !authorizationPath ||
+    !financeArbitrationPath ||
+    !implementationManifestPath ||
+    !preflightPath ||
+    option('network-authorization') !== authorizationPath
+  ) {
+    throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
+  }
+  const [
+    authorizationText,
+    financeDraftText,
+    financeArbitrationText,
+    implementationManifestText,
+    preflightText,
+  ] = await Promise.all([
+    readGovernedArtifact(authorizationPath),
+    readGovernedArtifact(financeDraftPath),
+    readGovernedArtifact(financeArbitrationPath),
+    readGovernedArtifact(implementationManifestPath),
+    readGovernedArtifact(preflightPath),
+  ]);
+  const financeArbitration = validateFinanceArbitration({
+    arbitrationText: financeArbitrationText,
+    draftPath: financeDraftPath,
+    draftText: financeDraftText,
+  });
+  const implementationManifest =
+    await verifyWritingFrameworkImplementationManifest({
+      manifestValue: JSON.parse(implementationManifestText) as unknown,
+      root: process.cwd(),
+    });
+  return {
+    authorizationText,
+    financeArbitration,
+    financeArbitrationText,
+    financeDraftText,
+    implementationManifest,
+    implementationManifestText,
+    preflightText,
+  };
+}
+
+async function loadNetworkAuthorization(input: {
+  authorizationText: string;
+  expectedBaseline: string;
+  expectedPath: string;
+  financeArbitrationText: string;
+  financeDraftText: string;
+  implementationManifestText: string;
+  ownerGo: string;
+  preflightText: string;
+}): Promise<NetworkAuthorization> {
+  const requestedPath = option('network-authorization');
+  if (requestedPath !== input.expectedPath) {
+    throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
+  }
+  const authorization = JSON.parse(
+    input.authorizationText,
+  ) as NetworkAuthorization;
   const { authorizationFingerprint, ...core } = authorization;
   if (authorizationFingerprint !== sha256(JSON.stringify(canonicalize(core)))) {
     throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_FINGERPRINT_MISMATCH');
   }
   if (
     authorization.status !== 'GRANTED_SINGLE_USE_UNCONSUMED' ||
-    authorization.baseline.ref !== 'origin/dev' ||
-    authorization.baseline.commit !==
-      'f6607b9c086cffce1f81ac9a8c2fc36194fe5a25' ||
+    authorization.baseline.commit !== input.expectedBaseline ||
     authorization.ownerGoToken !== input.ownerGo ||
     authorization.identity.identityFingerprint !==
       packageInput.identityFingerprint ||
@@ -117,17 +329,22 @@ async function loadNetworkAuthorization(input: {
       packageInput.expectedObservedProvider ||
     authorization.sourceBindings.dossierPath !== candidate.dossierPath ||
     authorization.sourceBindings.dossierSha256 !== sha256(dossierText) ||
-    authorization.sourceBindings.financeEnvelopePath !==
-      candidate.financePath ||
-    authorization.sourceBindings.financeEnvelopeSha256 !==
-      sha256(financeText) ||
+    authorization.sourceBindings.financeDraftPath !==
+      candidate.financeDraftPath ||
+    authorization.sourceBindings.financeDraftSha256 !==
+      sha256(input.financeDraftText) ||
+    authorization.sourceBindings.financeArbitrationPath !==
+      candidate.financeArbitrationPath ||
+    authorization.sourceBindings.financeArbitrationSha256 !==
+      sha256(input.financeArbitrationText) ||
+    authorization.sourceBindings.implementationManifestPath !==
+      candidate.implementationManifestPath ||
+    authorization.sourceBindings.implementationManifestSha256 !==
+      sha256(input.implementationManifestText) ||
+    authorization.sourceBindings.transportPreflightPath !==
+      candidate.preflightPath ||
     authorization.sourceBindings.transportPreflightSha256 !==
-      sha256(
-        await readFile(
-          resolve(authorization.sourceBindings.transportPreflightPath),
-          'utf8',
-        ),
-      ) ||
+      sha256(input.preflightText) ||
     authorization.executionBoundary.stage !== 'FOUR_CASE_GATE' ||
     authorization.executionBoundary.maximumProviderAttempts !==
       packageInput.finance.gateBound.maximumProviderAttempts ||
@@ -150,10 +367,23 @@ const candidateName = option('candidate');
 if (!candidateName) {
   throw new Error('WRITING_GATE_CANDIDATE_REQUIRED');
 }
-if (!(candidateName in candidates)) {
+const candidate = candidates[candidateName];
+if (!candidate) {
   throw new Error(`WRITING_GATE_CANDIDATE_UNSUPPORTED:${candidateName}`);
 }
-const candidate = candidates[candidateName as keyof typeof candidates];
+const executeRequested = process.argv.includes('--execute');
+if (executeRequested && candidate.executionState === 'CLOSED_NO_REPLAY') {
+  throw new Error('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
+}
+if (
+  executeRequested &&
+  candidate.executionState !== 'DERIVED_FROM_GOVERNED_ARTIFACTS'
+) {
+  throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
+}
+const governedExecution = executeRequested
+  ? await loadGovernedExecutionArtifacts(candidate)
+  : null;
 
 async function writeJsonExclusive(path: string, value: unknown): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
@@ -166,6 +396,7 @@ async function writeJsonExclusive(path: string, value: unknown): Promise<void> {
 const dossierText = await readFile(resolve(candidate.dossierPath), 'utf8');
 const dossier = JSON.parse(dossierText) as {
   authorities: Record<string, { path: string }>;
+  identityCore?: { publicCodeCommitSha?: string };
 };
 const authorityTexts = Object.fromEntries(
   await Promise.all(
@@ -175,34 +406,46 @@ const authorityTexts = Object.fromEntries(
     ]),
   ),
 );
-const financeText = await readFile(resolve(candidate.financePath), 'utf8');
+const financeDraftText =
+  governedExecution?.financeDraftText ??
+  (await readFile(resolve(candidate.financeDraftPath), 'utf8'));
+const financeText = financeDraftText;
 const packageInput = buildWritingFrameworkGatePackage({
   authorityTexts,
   dossierPath: candidate.dossierPath,
   dossierText,
   financeText,
 });
-const ownerGo =
-  candidateName === 'gemini-3.6'
-    ? `GO_V4_003E_Q1_GEMINI36_${packageInput.identityFingerprint
-        .slice(0, 16)
-        .toUpperCase()}`
-    : `GO_V4_009C_S2_SONNET5_${packageInput.identityFingerprint
-        .slice(0, 16)
-        .toUpperCase()}`;
-
-if (!process.argv.includes('--execute')) {
+if (
+  governedExecution &&
+  dossier.identityCore?.publicCodeCommitSha !==
+    governedExecution.implementationManifest.publicCode.commitSha
+) {
+  throw new Error('WRITING_GATE_PUBLIC_CODE_BASELINE_MISMATCH');
+}
+if (governedExecution) {
+  assertFinanceArbitrationCampaign({
+    arbitration: governedExecution.financeArbitration,
+    dossierPath: candidate.dossierPath,
+    dossierText,
+    identityFingerprint: packageInput.identityFingerprint,
+  });
+}
+if (!executeRequested) {
   console.log(
     JSON.stringify(
       {
         authorization: {
-          exactToken: ownerGo,
+          exactToken: null,
           modelCallsAllowed:
             packageInput.finance.authorizationBoundary.modelCallsAllowed,
           ownerNetworkAuthorization:
             packageInput.finance.authorizationBoundary
               .ownerNetworkAuthorization,
-          status: 'NETWORK_GO_NOT_GRANTED',
+          status:
+            candidate.executionState === 'DERIVED_FROM_GOVERNED_ARTIFACTS'
+              ? 'NETWORK_AUTHORIZATION_NOT_GRANTED'
+              : candidate.executionState,
         },
         candidate: candidateName,
         cases: packageInput.cases.map(({ caseId }) => caseId),
@@ -222,12 +465,30 @@ if (!process.argv.includes('--execute')) {
   process.exit(0);
 }
 
-if (option('owner-go') !== ownerGo) {
-  throw new Error(`OWNER_GO_REQUIRED_USE_EXACT_TOKEN_${ownerGo}`);
+if (
+  candidate.authorizationPath === null ||
+  candidate.financeArbitrationPath === null ||
+  candidate.implementationManifestPath === null ||
+  candidate.ownerGoPrefix === null ||
+  candidate.preflightPath === null ||
+  governedExecution === null
+) {
+  throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
+}
+const ownerGo = option('owner-go');
+if (!ownerGo || !ownerGo.startsWith(candidate.ownerGoPrefix)) {
+  throw new Error('WRITING_GATE_OWNER_GO_NOT_GRANTED');
 }
 const authorization = await loadNetworkAuthorization({
+  authorizationText: governedExecution.authorizationText,
+  expectedBaseline:
+    governedExecution.implementationManifest.publicCode.commitSha,
   expectedPath: candidate.authorizationPath,
+  financeArbitrationText: governedExecution.financeArbitrationText,
+  financeDraftText: governedExecution.financeDraftText,
+  implementationManifestText: governedExecution.implementationManifestText,
   ownerGo,
+  preflightText: governedExecution.preflightText,
 });
 const runId = authorization.executionBoundary.runId;
 if (option('run-id') && option('run-id') !== runId) {

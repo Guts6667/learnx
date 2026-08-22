@@ -159,7 +159,7 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
   });
 
-  it('rejects the inherited Sonnet GO namespace before key lookup or network', () => {
+  it('rejects the closed Q1 identity before GO, key lookup or network', () => {
     const result = spawnSync(
       process.execPath,
       [
@@ -178,13 +178,11 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     );
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain(
-      'OWNER_GO_REQUIRED_USE_EXACT_TOKEN_GO_V4_003E_Q1_GEMINI36_EF88A8E3B1BFD57D',
-    );
+    expect(result.stderr).toContain('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
     expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
   });
 
-  it('requires the additive single-use authorization before key lookup or network', () => {
+  it('does not accept the former Q1 GO without its authorization', () => {
     const result = spawnSync(
       process.execPath,
       [
@@ -203,13 +201,11 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     );
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain(
-      'WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED',
-    );
+    expect(result.stderr).toContain('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
     expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
   });
 
-  it('reaches the absent-key boundary after the former exact authorization', () => {
+  it('does not accept the former exact Q1 authorization', () => {
     const result = spawnSync(
       process.execPath,
       [
@@ -229,10 +225,8 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     );
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain('OPENROUTER_API_KEY_REQUIRED');
-    expect(result.stderr).not.toContain(
-      'WRITING_GATE_NETWORK_AUTHORIZATION_IDENTITY_MISMATCH',
-    );
+    expect(result.stderr).toContain('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
+    expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
   });
 
   it('keeps the approved Q1 envelope and historical source bindings immutable', () => {

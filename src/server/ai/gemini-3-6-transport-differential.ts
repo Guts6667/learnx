@@ -37,7 +37,7 @@ import {
   writingFrameworkGateReasoningCapabilities,
 } from './writing-framework-selection-openrouter-provider.js';
 
-export const GEMINI_3_6_TRANSPORT_DIFFERENTIAL_PATHS = Object.freeze({
+const GEMINI_3_6_ACCEPTED_TRANSPORT_DIFFERENTIAL_PATHS = Object.freeze({
   acceptedCampaign:
     'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.json',
   acceptedCorpus:
@@ -46,11 +46,41 @@ export const GEMINI_3_6_TRANSPORT_DIFFERENTIAL_PATHS = Object.freeze({
     'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.result.json',
   acceptedRubric:
     'benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json',
+});
+
+export const GEMINI_3_6_TRANSPORT_DIFFERENTIAL_PATHS = Object.freeze({
+  ...GEMINI_3_6_ACCEPTED_TRANSPORT_DIFFERENTIAL_PATHS,
   correctedDossier:
     'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
   correctedFinance:
     'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json',
+  correctedImplementationManifest: null,
 });
+
+export const GEMINI_3_6_R1_TRANSPORT_DIFFERENTIAL_PATHS = Object.freeze({
+  ...GEMINI_3_6_ACCEPTED_TRANSPORT_DIFFERENTIAL_PATHS,
+  correctedDossier:
+    'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-freeze.v1.json',
+  correctedFinance:
+    'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-finance-envelope.draft.v1.json',
+  correctedImplementationManifest:
+    'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-implementation-manifest.v1.json',
+});
+
+export type Gemini36TransportDifferentialCandidate =
+  'gemini-3.6' | 'gemini-3.6-r1';
+
+export function gemini36TransportDifferentialPaths(
+  candidate: Gemini36TransportDifferentialCandidate,
+) {
+  if (candidate === 'gemini-3.6') {
+    return GEMINI_3_6_TRANSPORT_DIFFERENTIAL_PATHS;
+  }
+  if (candidate === 'gemini-3.6-r1') {
+    return GEMINI_3_6_R1_TRANSPORT_DIFFERENTIAL_PATHS;
+  }
+  throw new Error(`GEMINI_DIFFERENTIAL_UNKNOWN_CANDIDATE:${String(candidate)}`);
+}
 
 export const GEMINI_3_6_ACCEPTED_SMOKE_SHA256 = Object.freeze({
   campaign: '8694b09458a572687c9846292424bfa694b790a94076271739036553fc370087',
@@ -62,6 +92,7 @@ export type Gemini36TransportDifferentialInput = Readonly<{
   acceptedCorpusText: string;
   acceptedResultText: string;
   acceptedRubricText: string;
+  candidate?: Gemini36TransportDifferentialCandidate;
   correctedAuthorityTexts: Readonly<Record<string, string>>;
   correctedDossierText: string;
   correctedFinanceText: string;
@@ -85,6 +116,42 @@ const acceptedResultSchema = z
     productVerdict: z.literal('APPROVED_POSITIVE_SMOKE_ONLY'),
     providerAttemptsExecuted: z.literal(1),
     status: z.literal('APPROVED_POSITIVE_SMOKE_ONLY'),
+  })
+  .passthrough();
+
+const r1DossierSourceSchema = z
+  .object({
+    authorities: z.record(
+      z.string(),
+      z.object({
+        path: z.string().min(1),
+        sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+      }),
+    ),
+    implementationBinding: z.object({
+      manifestFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+      manifestPath: z.string().min(1),
+      manifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
+      publicCodeCommitSha: z.string().regex(/^[a-f0-9]{40}$/u),
+    }),
+  })
+  .passthrough();
+
+const implementationManifestSourceSchema = z
+  .object({
+    executionBoundary: z
+      .object({
+        modelCallsAllowed: z.literal(false),
+        networkAuthorizationEffect: z.literal('NONE'),
+      })
+      .passthrough(),
+    manifestFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+    publicCode: z
+      .object({
+        commitObjectFormat: z.literal('sha1'),
+        commitSha: z.string().regex(/^[a-f0-9]{40}$/u),
+      })
+      .passthrough(),
   })
   .passthrough();
 
@@ -238,6 +305,53 @@ function invariant(
   });
 }
 
+function correctedImplementationSource(input: {
+  authorityTexts: Readonly<Record<string, string>>;
+  candidate: Gemini36TransportDifferentialCandidate;
+  dossierText: string;
+  implementationManifestPath: string | null;
+}) {
+  if (input.candidate === 'gemini-3.6') return null;
+  if (input.implementationManifestPath === null) {
+    throw new Error('GEMINI_DIFFERENTIAL_R1_IMPLEMENTATION_SOURCE_MISSING');
+  }
+  const dossier = r1DossierSourceSchema.parse(
+    JSON.parse(input.dossierText) as unknown,
+  );
+  const authority = dossier.authorities.implementationManifest;
+  const manifestText = input.authorityTexts[input.implementationManifestPath];
+  if (
+    !authority ||
+    authority.path !== input.implementationManifestPath ||
+    dossier.implementationBinding.manifestPath !==
+      input.implementationManifestPath ||
+    manifestText === undefined
+  ) {
+    throw new Error('GEMINI_DIFFERENTIAL_R1_IMPLEMENTATION_SOURCE_MISSING');
+  }
+  const manifest = implementationManifestSourceSchema.parse(
+    JSON.parse(manifestText) as unknown,
+  );
+  const { manifestFingerprint, ...manifestCore } = manifest;
+  const manifestSha256 = sha256(manifestText);
+  if (
+    authority.sha256 !== manifestSha256 ||
+    dossier.implementationBinding.manifestSha256 !== manifestSha256 ||
+    dossier.implementationBinding.manifestFingerprint !== manifestFingerprint ||
+    dossier.implementationBinding.publicCodeCommitSha !==
+      manifest.publicCode.commitSha ||
+    sha256(canonicalJsonV2(manifestCore)) !== manifestFingerprint
+  ) {
+    throw new Error('GEMINI_DIFFERENTIAL_R1_IMPLEMENTATION_SOURCE_MISMATCH');
+  }
+  return Object.freeze({
+    manifestFingerprint,
+    path: input.implementationManifestPath,
+    publicCodeCommitSha: manifest.publicCode.commitSha,
+    sha256: manifestSha256,
+  });
+}
+
 function acceptedTransport(input: {
   campaign: EvidenceExtractionCampaign;
   corpusText: string;
@@ -313,6 +427,8 @@ function correctedTransport(packageInput: WritingFrameworkGatePackage): {
 export function buildGemini36TransportDifferential(
   input: Gemini36TransportDifferentialInput,
 ) {
+  const candidate = input.candidate ?? 'gemini-3.6';
+  const paths = gemini36TransportDifferentialPaths(candidate);
   const campaign = evidenceExtractionCampaignSchema.parse(
     JSON.parse(input.acceptedCampaignText) as unknown,
   );
@@ -339,9 +455,15 @@ export function buildGemini36TransportDifferential(
 
   const packageInput = buildWritingFrameworkGatePackage({
     authorityTexts: input.correctedAuthorityTexts,
-    dossierPath: GEMINI_3_6_TRANSPORT_DIFFERENTIAL_PATHS.correctedDossier,
+    dossierPath: paths.correctedDossier,
     dossierText: input.correctedDossierText,
     financeText: input.correctedFinanceText,
+  });
+  const implementationSource = correctedImplementationSource({
+    authorityTexts: input.correctedAuthorityTexts,
+    candidate,
+    dossierText: input.correctedDossierText,
+    implementationManifestPath: paths.correctedImplementationManifest,
   });
   const accepted = acceptedTransport({
     campaign,
@@ -460,6 +582,41 @@ export function buildGemini36TransportDifferential(
   const expectedDifferencesObserved = expectedDifferences.every(
     ({ expected, observed }) => expected && observed,
   );
+  const correctedReference =
+    candidate === 'gemini-3.6'
+      ? Object.freeze({
+          financeModelCallsAllowed:
+            packageInput.finance.authorizationBoundary.modelCallsAllowed,
+          historicalClosedIdentityFingerprint: packageInput.identityFingerprint,
+          transportManifestSha256: correctedManifest.manifestSha256,
+        })
+      : Object.freeze({
+          financeModelCallsAllowed:
+            packageInput.finance.authorizationBoundary.modelCallsAllowed,
+          identityFingerprint: packageInput.identityFingerprint,
+          identityState: 'R1_FROZEN_HARD_OFF' as const,
+          transportManifestSha256: correctedManifest.manifestSha256,
+        });
+  const correctedSources = {
+    correctedAuthoritySetSha256: sha256(
+      canonicalJsonV2(
+        Object.entries(input.correctedAuthorityTexts)
+          .sort(([left], [right]) => left.localeCompare(right))
+          .map(([path, text]) => ({ path, sha256: sha256(text) })),
+      ),
+    ),
+    correctedDossier: {
+      path: paths.correctedDossier,
+      sha256: sha256(input.correctedDossierText),
+    },
+    correctedFinance: {
+      path: paths.correctedFinance,
+      sha256: sha256(input.correctedFinanceText),
+    },
+    ...(implementationSource
+      ? { correctedImplementationManifest: implementationSource }
+      : {}),
+  };
   const core = Object.freeze({
     acceptedReference: {
       campaignId: campaign.campaignId,
@@ -484,6 +641,7 @@ export function buildGemini36TransportDifferential(
       'buildOpenRouterRequestBody',
       'buildOpenRouterTransportManifest',
     ],
+    ...(candidate === 'gemini-3.6-r1' ? { candidate } : {}),
     comparatorId: 'learnx-gemini-3-6-transport-differential-v1',
     comparisonExecution: {
       mode: 'VALIDATE_ONLY',
@@ -491,12 +649,7 @@ export function buildGemini36TransportDifferential(
       networkCallsPerformed: 0,
       writesPerformed: 0,
     },
-    correctedReference: {
-      financeModelCallsAllowed:
-        packageInput.finance.authorizationBoundary.modelCallsAllowed,
-      historicalClosedIdentityFingerprint: packageInput.identityFingerprint,
-      transportManifestSha256: correctedManifest.manifestSha256,
-    },
+    correctedReference,
     expectedDifferences,
     invariants,
     schemaVersion: 1,
@@ -510,21 +663,7 @@ export function buildGemini36TransportDifferential(
         sha256: resultSha256,
       },
       acceptedTransportManifestSha256: acceptedManifest.manifestSha256,
-      correctedAuthoritySetSha256: sha256(
-        canonicalJsonV2(
-          Object.entries(input.correctedAuthorityTexts)
-            .sort(([left], [right]) => left.localeCompare(right))
-            .map(([path, text]) => ({ path, sha256: sha256(text) })),
-        ),
-      ),
-      correctedDossier: {
-        path: GEMINI_3_6_TRANSPORT_DIFFERENTIAL_PATHS.correctedDossier,
-        sha256: sha256(input.correctedDossierText),
-      },
-      correctedFinance: {
-        path: GEMINI_3_6_TRANSPORT_DIFFERENTIAL_PATHS.correctedFinance,
-        sha256: sha256(input.correctedFinanceText),
-      },
+      ...correctedSources,
     },
     status:
       invariantMatch && expectedDifferencesObserved
@@ -553,6 +692,11 @@ export function assertGemini36TransportDifferential(
     ) ||
     report.comparisonExecution.networkCallsPerformed !== 0 ||
     report.comparisonExecution.modelCallsPerformed !== 0 ||
+    report.comparisonExecution.writesPerformed !== 0 ||
+    report.correctedReference.financeModelCallsAllowed ||
+    ('candidate' in report &&
+      report.candidate === 'gemini-3.6-r1' &&
+      !('correctedImplementationManifest' in report.sources)) ||
     report.authorityEffects.identityCreated ||
     report.authorityEffects.financeArbitrationCreated ||
     report.authorityEffects.networkGoGranted ||
