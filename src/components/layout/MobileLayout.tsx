@@ -12,6 +12,7 @@ import { TotemAppShell } from '@/components/layout/TotemShell';
 import { useSessionQuery } from '@/features/auth/session';
 import { PwaProvider, PwaStatus } from '@/features/pwa/PwaStatus';
 import { useI18n } from '@/i18n';
+import { TotemTheme } from '@/components/ui/TotemTheme';
 
 interface MobileLayoutProps {
   canGoBack?: boolean;
@@ -38,6 +39,23 @@ const authenticationPaths = new Set([
   '/verify-email',
   '/activate',
 ]);
+
+function usesTotemProductSurface(currentPath: string): boolean {
+  if (
+    currentPath === '/today' ||
+    currentPath === '/program' ||
+    currentPath === '/profile' ||
+    currentPath.startsWith('/notes')
+  ) {
+    return true;
+  }
+
+  if (!currentPath.startsWith('/program/')) return false;
+
+  return !['/lesson/', '/assessment', '/exercise/', '/quiz'].some((segment) =>
+    currentPath.includes(segment),
+  );
+}
 
 function SessionNavigation({ currentPath }: { currentPath: string }) {
   const sessionQuery = useSessionQuery();
@@ -94,7 +112,8 @@ export function MobileLayout({
     currentPath === '/interest' ||
     (import.meta.env.DEV &&
       (currentPath === '/design/totem-primitives' ||
-        currentPath === '/design/totem-admin'));
+        currentPath === '/design/totem-admin' ||
+        currentPath === '/design/totem-product'));
 
   if (isStandalonePublicPage) {
     return <PwaProvider>{children}</PwaProvider>;
@@ -158,9 +177,8 @@ export function MobileLayout({
     );
   }
 
-  return (
-    <PwaProvider>
-      <div class="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">
+  const privateLayout = (
+    <div class="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">
         <a
           class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
           href="#main-content"
@@ -213,7 +231,18 @@ export function MobileLayout({
           </main>
         </BackNavigationProvider>
         <PrivateNavigation currentPath={currentPath} />
-      </div>
+    </div>
+  );
+
+  return (
+    <PwaProvider>
+      {usesTotemProductSurface(currentPath) ? (
+        <TotemTheme class="totem-product-surface">
+          {privateLayout}
+        </TotemTheme>
+      ) : (
+        privateLayout
+      )}
     </PwaProvider>
   );
 }
