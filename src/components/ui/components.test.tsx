@@ -4,18 +4,23 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
+import { ConsentGroup } from '@/components/ui/ConsentGroup';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { ListRow } from '@/components/ui/ListRow';
 import { Metadata } from '@/components/ui/Metadata';
+import { Notice } from '@/components/ui/Notice';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
+import { ResponsiveTable } from '@/components/ui/ResponsiveTable';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
+import { StatePanel } from '@/components/ui/StatePanel';
 import { Section } from '@/components/ui/Section';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
+import { TotemTheme } from '@/components/ui/TotemTheme';
 
 describe('design system minimal', () => {
   it('affiche les primitives de contenu et de progression', () => {
@@ -163,5 +168,123 @@ describe('design system minimal', () => {
     expect(
       screen.getByRole('status', { name: 'Chargement de la page' }),
     ).toBeInTheDocument();
+  });
+
+  it('active Totem dans une frontière locale et expose les variantes visuelles', () => {
+    render(
+      <TotemTheme>
+        <Button variant="editorial">Lire la publication</Button>
+        <Card tone="signature">Prochaine étape</Card>
+      </TotemTheme>,
+    );
+
+    expect(screen.getByText('Lire la publication')).toHaveClass(
+      'ui-action--editorial',
+    );
+    expect(screen.getByText('Prochaine étape')).toHaveClass(
+      'ui-card--signature',
+    );
+    expect(
+      screen.getByText('Prochaine étape').closest('.totem-theme'),
+    ).toHaveAttribute('data-visual-system', 'totem');
+  });
+
+  it('annonce chaque notice par un libellé et une sémantique explicites', () => {
+    render(
+      <>
+        <Notice title="Action enregistrée" tone="safe">
+          La modification est conservée.
+        </Notice>
+        <Notice title="Échec de l’action" tone="danger">
+          Aucune modification n’a été enregistrée.
+        </Notice>
+      </>,
+    );
+
+    expect(
+      screen.getByRole('status', { name: 'Action enregistrée' }),
+    ).toHaveTextContent('conservée');
+    expect(
+      screen.getByRole('alert', { name: 'Échec de l’action' }),
+    ).toHaveTextContent('Aucune modification');
+  });
+
+  it('formalise les états chargement, vide, erreur et sûr sans couleur seule', () => {
+    render(
+      <>
+        <StatePanel status="loading" title="Chargement">
+          Patientez.
+        </StatePanel>
+        <StatePanel status="empty" title="Aucun résultat">
+          Modifiez les filtres.
+        </StatePanel>
+        <StatePanel status="error" title="Erreur de chargement">
+          Réessayez.
+        </StatePanel>
+        <StatePanel status="safe" title="Enregistré">
+          Aucune autre action requise.
+        </StatePanel>
+      </>,
+    );
+
+    expect(screen.getByRole('status', { name: 'Chargement' })).toHaveAttribute(
+      'aria-busy',
+      'true',
+    );
+    expect(screen.getByRole('status', { name: 'Aucun résultat' })).toHaveClass(
+      'ui-state-panel--empty',
+    );
+    expect(
+      screen.getByRole('alert', { name: 'Erreur de chargement' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('status', { name: 'Enregistré' }),
+    ).toHaveTextContent('Aucune autre action');
+  });
+
+  it('garde les consentements indépendants dans un fieldset nommé', () => {
+    render(
+      <ConsentGroup legend="Préférences">
+        <Checkbox label="Informations de lancement" />
+        <Checkbox label="Programme early adopter" />
+      </ConsentGroup>,
+    );
+
+    expect(
+      screen.getByRole('group', { name: 'Préférences' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('checkbox', { name: 'Informations de lancement' }),
+    ).not.toBeChecked();
+    expect(
+      screen.getByRole('checkbox', { name: 'Programme early adopter' }),
+    ).not.toBeChecked();
+  });
+
+  it('fournit une table desktop et des enregistrements mobiles équivalents', () => {
+    render(
+      <ResponsiveTable
+        caption="Ressources"
+        columns={[
+          { key: 'name', label: 'Nom' },
+          { key: 'status', label: 'État' },
+        ]}
+        rows={[
+          {
+            cells: { name: 'Guide', status: 'Disponible' },
+            key: 'guide',
+          },
+        ]}
+      />,
+    );
+
+    expect(
+      screen.getByRole('table', { name: 'Ressources' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('list', { name: 'Ressources' }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('Guide')).toHaveLength(2);
+    expect(screen.getAllByText('Disponible')).toHaveLength(2);
   });
 });

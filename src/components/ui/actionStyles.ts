@@ -1,10 +1,12 @@
 import { classNames } from '@/components/ui/classNames';
 
 export type ActionSize = 'sm' | 'md' | 'lg';
-export type ActionVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+export type ActionVariant =
+  'primary' | 'secondary' | 'editorial' | 'ghost' | 'danger';
 
 const variantClasses: Record<ActionVariant, string> = {
   danger: 'ui-action--danger',
+  editorial: 'ui-action--editorial',
   ghost: 'ui-action--ghost',
   primary: 'ui-action--primary',
   secondary: 'ui-action--secondary',
