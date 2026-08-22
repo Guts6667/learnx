@@ -152,6 +152,57 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
   });
 
+  it('requires the additive single-use authorization before key lookup or network', () => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        '--import',
+        'tsx',
+        'scripts/run-writing-framework-selection-gate-v2.ts',
+        '--candidate=gemini-3.6',
+        '--execute',
+        '--owner-go=GO_V4_003E_Q1_GEMINI36_EF88A8E3B1BFD57D',
+      ],
+      {
+        cwd: root,
+        encoding: 'utf8',
+        env: { PATH: process.env.PATH ?? '' },
+      },
+    );
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain(
+      'WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED',
+    );
+    expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
+  });
+
+  it('accepts the exact authorization and then stops at the absent key', () => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        '--import',
+        'tsx',
+        'scripts/run-writing-framework-selection-gate-v2.ts',
+        '--candidate=gemini-3.6',
+        '--execute',
+        '--owner-go=GO_V4_003E_Q1_GEMINI36_EF88A8E3B1BFD57D',
+        '--network-authorization=benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-network-authorization.v1.json',
+      ],
+      {
+        cwd: root,
+        encoding: 'utf8',
+        env: { PATH: process.env.PATH ?? '' },
+      },
+    );
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain('OPENROUTER_API_KEY_REQUIRED');
+    expect(result.stderr).not.toContain(
+      'WRITING_GATE_NETWORK_AUTHORIZATION_IDENTITY_MISMATCH',
+    );
+  });
+
   it('binds the approved envelope and simulated transport proof', () => {
     const finance = JSON.parse(read(financePath)) as Record<string, unknown>;
     expect(finance).toMatchObject({

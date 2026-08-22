@@ -11,6 +11,8 @@ import { OpenRouterWritingFrameworkGateProvider } from '../src/server/ai/writing
 
 const candidates = {
   'gemini-3.6': {
+    authorizationPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-network-authorization.v1.json',
     dossierPath:
       'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
     financePath:
@@ -18,6 +20,7 @@ const candidates = {
     outputSlug: 'writing-framework-selection-gemini36-v2',
   },
   'sonnet-5': {
+    authorizationPath: null,
     dossierPath:
       'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
     financePath:
@@ -35,6 +38,112 @@ function option(name: string): string | undefined {
 
 function sha256(value: string): string {
   return createHash('sha256').update(value).digest('hex');
+}
+
+function canonicalize(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, child]) => [key, canonicalize(child)]),
+  );
+}
+
+type NetworkAuthorization = Readonly<{
+  authorizationFingerprint: string;
+  baseline: { commit: string; ref: string };
+  executionBoundary: {
+    holdoutAllowed: boolean;
+    maximumFallbacks: number;
+    maximumProviderAttempts: number;
+    maximumProviderCostUsd: number;
+    maximumRetriesPerWorkflow: number;
+    outputDirectory: string;
+    panel10x2Allowed: boolean;
+    runId: string;
+    sequentialOnly: boolean;
+    stage: string;
+    stopOnFirstDefect: boolean;
+    v4_010ActivationAllowed: boolean;
+  };
+  identity: {
+    catalogSnapshotId: string;
+    expectedObservedProvider: string;
+    identityFingerprint: string;
+    modelId: string;
+    requestedRoute: string;
+  };
+  ownerGoToken: string;
+  sourceBindings: {
+    dossierPath: string;
+    dossierSha256: string;
+    financeEnvelopePath: string;
+    financeEnvelopeSha256: string;
+    transportPreflightPath: string;
+    transportPreflightSha256: string;
+  };
+  status: string;
+}>;
+
+async function loadNetworkAuthorization(input: {
+  expectedPath: string | null;
+  ownerGo: string;
+}): Promise<NetworkAuthorization> {
+  const requestedPath = option('network-authorization');
+  if (!input.expectedPath || requestedPath !== input.expectedPath) {
+    throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
+  }
+  const text = await readFile(resolve(requestedPath), 'utf8');
+  const authorization = JSON.parse(text) as NetworkAuthorization;
+  const { authorizationFingerprint, ...core } = authorization;
+  if (
+    authorizationFingerprint !==
+    sha256(JSON.stringify(canonicalize(core)))
+  ) {
+    throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_FINGERPRINT_MISMATCH');
+  }
+  if (
+    authorization.status !== 'GRANTED_SINGLE_USE_UNCONSUMED' ||
+    authorization.baseline.ref !== 'origin/dev' ||
+    authorization.baseline.commit !==
+      'f6607b9c086cffce1f81ac9a8c2fc36194fe5a25' ||
+    authorization.ownerGoToken !== input.ownerGo ||
+    authorization.identity.identityFingerprint !==
+      packageInput.identityFingerprint ||
+    authorization.identity.modelId !== packageInput.wireModelId ||
+    authorization.identity.catalogSnapshotId !==
+      packageInput.catalogSnapshotId ||
+    authorization.identity.requestedRoute !== packageInput.requestedRoute ||
+    authorization.identity.expectedObservedProvider !==
+      packageInput.expectedObservedProvider ||
+    authorization.sourceBindings.dossierPath !== candidate.dossierPath ||
+    authorization.sourceBindings.dossierSha256 !== sha256(dossierText) ||
+    authorization.sourceBindings.financeEnvelopePath !== candidate.financePath ||
+    authorization.sourceBindings.financeEnvelopeSha256 !== sha256(financeText) ||
+    authorization.sourceBindings.transportPreflightSha256 !==
+      sha256(
+        await readFile(
+          resolve(authorization.sourceBindings.transportPreflightPath),
+          'utf8',
+        ),
+      ) ||
+    authorization.executionBoundary.stage !== 'FOUR_CASE_GATE' ||
+    authorization.executionBoundary.maximumProviderAttempts !==
+      packageInput.finance.gateBound.maximumProviderAttempts ||
+    authorization.executionBoundary.maximumProviderCostUsd !==
+      packageInput.finance.gateBound.maximumProviderCostUsd ||
+    authorization.executionBoundary.maximumRetriesPerWorkflow !== 0 ||
+    authorization.executionBoundary.maximumFallbacks !== 0 ||
+    !authorization.executionBoundary.sequentialOnly ||
+    !authorization.executionBoundary.stopOnFirstDefect ||
+    authorization.executionBoundary.panel10x2Allowed ||
+    authorization.executionBoundary.holdoutAllowed ||
+    authorization.executionBoundary.v4_010ActivationAllowed
+  ) {
+    throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_IDENTITY_MISMATCH');
+  }
+  return authorization;
 }
 
 const candidateName = option('candidate');
@@ -116,22 +225,24 @@ if (!process.argv.includes('--execute')) {
 if (option('owner-go') !== ownerGo) {
   throw new Error(`OWNER_GO_REQUIRED_USE_EXACT_TOKEN_${ownerGo}`);
 }
+const authorization = await loadNetworkAuthorization({
+  expectedPath: candidate.authorizationPath,
+  ownerGo,
+});
+const runId = authorization.executionBoundary.runId;
+if (option('run-id') && option('run-id') !== runId) {
+  throw new Error('WRITING_GATE_AUTHORIZED_RUN_ID_MISMATCH');
+}
 if (
-  !packageInput.finance.authorizationBoundary.modelCallsAllowed ||
-  String(
-    packageInput.finance.authorizationBoundary.ownerNetworkAuthorization,
-  ) !== 'GRANTED'
+  option('output-dir') &&
+  option('output-dir') !== authorization.executionBoundary.outputDirectory
 ) {
-  throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
+  throw new Error('WRITING_GATE_AUTHORIZED_OUTPUT_DIRECTORY_MISMATCH');
 }
 const apiKey = process.env.OPENROUTER_API_KEY?.trim();
 if (!apiKey) throw new Error('OPENROUTER_API_KEY_REQUIRED');
-
-const runId =
-  option('run-id') ?? new Date().toISOString().replaceAll(/[:.]/gu, '-');
 const outputDirectory = resolve(
-  option('output-dir') ??
-    `benchmarks/ai-correction/results/${candidate.outputSlug}/${runId}`,
+  authorization.executionBoundary.outputDirectory,
 );
 await mkdir(outputDirectory, { recursive: true });
 const store = await FileWritingFrameworkGateStore.open(outputDirectory);
@@ -152,6 +263,7 @@ const totalActualCostUsd = run.attempts.reduce(
 );
 const summary = {
   attempts: run.attempts,
+  authorizationFingerprint: authorization.authorizationFingerprint,
   completedAt: new Date().toISOString(),
   dossierSha256: sha256(dossierText),
   financeEnvelopeSha256: sha256(financeText),
