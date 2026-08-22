@@ -1772,22 +1772,75 @@ body {
 }
 
 .totem-product-surface .ui-card--accent {
-  position: relative;
-  overflow: hidden;
   border-color: var(--color-action);
   background: var(--color-action-soft);
 }
 
-.totem-product-surface .ui-card--accent::before {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 2.75rem;
-  height: 2.75rem;
-  background: var(--color-direction);
-  clip-path: polygon(100% 0, 100% 100%, 0 0);
-  content: '';
-  pointer-events: none;
+.totem-product-surface .totem-resume-card {
+  display: grid;
+  gap: 1.1rem;
+  border-color: var(--totem-color-border);
+  background: var(--totem-color-surface);
+  box-shadow: 0 8px 24px rgb(23 35 59 / 4%);
+}
+
+.totem-product-surface .totem-resume-card::after {
+  top: -1rem;
+  right: -0.875rem;
+  width: 3.875rem;
+  height: 3.875rem;
+  border-radius: 50% 45% 1.125rem 50%;
+  background: var(--totem-color-coral);
+}
+
+.totem-kicker {
+  color: var(--totem-color-accent-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.totem-resume-card__body {
+  display: grid;
+  gap: 0.55rem;
+  padding-right: 2.5rem;
+}
+
+.totem-resume-card__title {
+  max-width: 20ch;
+  color: var(--totem-color-text);
+  font-size: clamp(1.35rem, 2.5vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.16;
+}
+
+.totem-resume-card__copy {
+  max-width: 58ch;
+  color: var(--totem-color-text-muted);
+  line-height: 1.5;
+}
+
+.totem-resume-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  color: var(--totem-color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.totem-resume-card__meta li + li::before {
+  margin-right: 1rem;
+  color: var(--totem-color-border);
+  content: '·';
+}
+
+.totem-resume-card__action {
+  width: 100%;
+  justify-content: space-between;
+  border-radius: 0.8125rem;
 }
 
 .totem-product-surface .page-title {
@@ -1798,6 +1851,10 @@ body {
 }
 
 @media (min-width: 64rem) {
+  .totem-resume-card__action {
+    max-width: 22.5rem;
+  }
+
   .totem-product-surface .ui-main-navigation__link[aria-current='page'] {
     box-shadow: inset 3px 0 0 var(--color-action);
   }

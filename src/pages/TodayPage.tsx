@@ -1,6 +1,6 @@
+import { PrimaryResumeCard } from '@/components/product/PrimaryResumeCard';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { ListRow } from '@/components/ui/ListRow';
@@ -122,50 +122,44 @@ function TodayContent({
   return (
     <div class="space-y-8">
       {data.action && primaryProgram ? (
-        <Card class="space-y-5" tone="accent">
-          <div class="space-y-2">
-            <Badge tone="info">{t(actionLabelKeys[data.action.kind])}</Badge>
-            <p class="ui-text-muted text-sm font-medium [overflow-wrap:anywhere]">
-              {primaryProgram.title}
-            </p>
-            <h2 class="text-xl font-semibold [overflow-wrap:anywhere]">
-              {data.action.title}
-            </h2>
-            {data.action.stageTitle ? (
-              <p class="ui-text-muted text-sm leading-6 [overflow-wrap:anywhere]">
-                {data.action.stageTitle}
-                {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
-                {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
-              </p>
-            ) : null}
-            {data.action.estimatedMinutes ? (
-              <p class="ui-text-muted text-sm">
-                {t('today.duration', { count: data.action.estimatedMinutes })}
-              </p>
-            ) : null}
-          </div>
-
-          {primaryProgram.percent > 0 ? (
-            <ProgressBar
-              label={t('today.progressLabel')}
-              value={primaryProgram.percent}
-            />
-          ) : null}
-
+        <PrimaryResumeCard
+          actionHref={data.action.href}
+          actionLabel={t('common.continue')}
+          eyebrow={
+            <>
+              <span>{primaryProgram.title}</span>
+              <span aria-hidden="true"> · </span>
+              <span>{t(actionLabelKeys[data.action.kind])}</span>
+            </>
+          }
+          metadata={[
+            [
+              data.action.stageTitle,
+              data.action.moduleTitle,
+              data.action.lessonTitle,
+            ]
+              .filter(Boolean)
+              .join(' · '),
+            data.action.estimatedMinutes
+              ? t('today.duration', { count: data.action.estimatedMinutes })
+              : '',
+          ].filter(Boolean)}
+          progress={
+            primaryProgram.percent > 0
+              ? {
+                  label: t('today.progressLabel'),
+                  value: primaryProgram.percent,
+                }
+              : undefined
+          }
+          title={data.action.title}
+        >
           {data.reviewsDue > 0 ? (
             <p class="ui-text-muted text-sm">
               {t('today.reviewsDueCount', { count: data.reviewsDue })}
             </p>
           ) : null}
-
-          <NavigationAction
-            class="w-full sm:w-auto"
-            href={data.action.href}
-            size="lg"
-          >
-            {t('common.continue')}
-          </NavigationAction>
-        </Card>
+        </PrimaryResumeCard>
       ) : primaryProgram ? (
         <Section title={primaryProgram.title}>
           <div class="space-y-4">

@@ -68,9 +68,12 @@ personnification de l'IA et couleur utilisée comme seul signal. L'IA reste une
    artificielle.
 3. Le présent document devient l'autorité du langage visuel Totem et de son
    découpage d'implémentation.
-4. Les maquettes validées donnent la composition et la hiérarchie attendues,
-   sans être pixel-perfect et sans rendre leurs données de démonstration
-   contractuelles.
+4. Les maquettes validées constituent le contrat visuel ferme de Totem :
+   palette, typographie, composition, densité, hiérarchie, géométrie distinctive
+   et usage des composants doivent être reproduits fidèlement. Une adaptation
+   responsive ou technique est permise seulement si elle conserve ce langage
+   et est documentée ; les données de démonstration ne deviennent jamais des
+   données métier contractuelles.
 5. Les références Atlas du 10 août 2026 deviennent des références historiques
    de comportement et de décisions produit. Elles ne dirigent plus les choix de
    police, de palette ou de composants pour un nouveau développement.
@@ -189,3 +192,9 @@ Un ticket Totem n'est terminé que si :
 7. le diff visuel et le rollback sont documentés ;
 8. Direction artistique et propriétaire ont rendu les validations exigées par
    le ticket.
+
+Une implémentation n'est pas conforme si elle remplace une primitive montrée
+dans la référence par un variant générique de couleur proche. Par exemple, la
+prochaine action d'Aujourd'hui utilise obligatoirement la surface signature
+papier avec angle corail ; une carte cobalt pâle bordée de bleu n'est pas une
+interprétation acceptable de cette primitive.

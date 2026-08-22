@@ -1,12 +1,10 @@
 import type { RoutableProps } from 'preact-router';
 
+import { PrimaryResumeCard } from '@/components/product/PrimaryResumeCard';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
-import { Badge } from '@/components/ui/Badge';
-import { Card } from '@/components/ui/Card';
 import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Section } from '@/components/ui/Section';
 import { TotemTheme } from '@/components/ui/TotemTheme';
 
@@ -35,22 +33,15 @@ export function TotemProductPreviewPage(props: RoutableProps) {
               id="totem-product-preview-title"
               title="Une prochaine action claire"
             />
-            <Card class="space-y-5" tone="accent">
-              <div class="space-y-2">
-                <Badge tone="info">Continuer la leçon</Badge>
-                <p class="ui-text-muted text-sm font-medium">
-                  SourceLab — Docker, API et socle d’ingestion
-                </p>
-                <h2 class="text-xl font-semibold">
-                  Observer la santé d’un service local
-                </h2>
-                <p class="ui-text-muted text-sm">25 min</p>
-              </div>
-              <ProgressBar label="Progression du programme" value={34} />
-              <NavigationAction href="#main-content" size="lg">
-                Continuer
-              </NavigationAction>
-            </Card>
+            <PrimaryResumeCard
+              actionHref="#main-content"
+              actionLabel="Continuer"
+              eyebrow="SourceLab — Docker, API et socle d’ingestion · Continuer la leçon"
+              metadata={['25 min', 'Observabilité locale']}
+              progress={{ label: 'Progression du programme', value: 34 }}
+              supportingText="Votre travail et vos notes sont enregistrés."
+              title="Observer la santé d’un service local"
+            />
             <Section
               description="Retrouvez vos autres engagements sans transformer Aujourd’hui en catalogue."
               title="Mes programmes en cours"

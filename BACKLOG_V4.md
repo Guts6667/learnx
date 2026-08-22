@@ -2526,8 +2526,10 @@ avant clôture et rollout ; V4-016B pour la revue desktop finale.**
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/emotional-design-renders/`.
 
-Ces références fixent hiérarchie, densité, ton et ordre de l'information, pas
-des pixels ni une modification de la logique de recommandation.
+Ces références constituent le langage visuel ferme validé : palette,
+typographie, composition, densité, hiérarchie, géométrie distinctive et usage
+des primitives doivent être reproduits fidèlement. Elles ne modifient toutefois
+ni les données de démonstration ni la logique de recommandation.
 
 ### État d'implémentation au 23 août 2026
 

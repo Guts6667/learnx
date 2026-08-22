@@ -110,6 +110,11 @@ describe('TodayPage', () => {
     const primaryActions = screen.getAllByRole('link', { name: 'Continuer' });
     expect(primaryActions).toHaveLength(1);
     expect(primaryActions[0]).toHaveClass('ui-action--primary');
+    const resumeCard = primaryActions[0]?.closest(
+      '[data-totem-component="primary-resume"]',
+    );
+    expect(resumeCard).toHaveClass('ui-card--signature');
+    expect(resumeCard).not.toHaveClass('ui-card--accent');
     expect(
       screen.queryByRole('heading', { name: 'Mes parcours en cours' }),
     ).not.toBeInTheDocument();

@@ -183,6 +183,11 @@ test('la surface produit Totem reste lisible aux largeurs de référence', async
       page.getByRole('heading', { name: 'Une prochaine action claire' }),
     ).toBeVisible();
     await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
+    const resumeCard = page.locator(
+      '[data-totem-component="primary-resume"]',
+    );
+    await expect(resumeCard).toHaveClass(/ui-card--signature/);
+    await expect(resumeCard).not.toHaveClass(/ui-card--accent/);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -191,6 +196,33 @@ test('la surface produit Totem reste lisible aux largeurs de référence', async
   }
 
   await page.setViewportSize({ height: 900, width: 720 });
+  await page.goto('/design/totem-product');
+  const visualContract = await page
+    .locator('[data-totem-component="primary-resume"]')
+    .evaluate((element) => {
+      const card = getComputedStyle(element);
+      const signature = getComputedStyle(element, '::after');
+      const actionElement = element.querySelector(
+        '.totem-resume-card__action',
+      );
+      if (!(actionElement instanceof HTMLElement)) {
+        throw new Error('Totem primary resume action is missing.');
+      }
+      const action = getComputedStyle(actionElement);
+
+      return {
+        actionBackground: action.backgroundColor,
+        background: card.backgroundColor,
+        border: card.borderColor,
+        signatureBackground: signature.backgroundColor,
+      };
+    });
+  expect(visualContract).toEqual({
+    actionBackground: 'rgb(59, 91, 214)',
+    background: 'rgb(255, 255, 255)',
+    border: 'rgb(214, 222, 235)',
+    signatureBackground: 'rgb(204, 107, 87)',
+  });
   await page.evaluate(() => {
     document.documentElement.style.fontSize = '200%';
   });
