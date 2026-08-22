@@ -7,34 +7,42 @@
   "lesson": {
     "title": "Construire une image API reproductible",
     "slug": "construire-image-api-reproductible",
-    "summary": "Transformer le checkpoint API en image multi-stage minimale, configurable au runtime et inspectable sans embarquer les sources ou secrets inutiles.",
+    "summary": "Construire une image multi-stage compréhensible, exploiter le cache sans le confondre avec la reproductibilité, puis prouver que l’API fonctionne avec une configuration runtime et un utilisateur non-root.",
     "objectives": [
-      "Distinguer image, container, couche et configuration runtime.",
-      "Compléter un Dockerfile multi-stage à partir de TODO guidés.",
-      "Vérifier contenu, utilisateur, cache et healthcheck de l’image."
+      "Distinguer image, container, couche et contexte de build à partir du projet SourceLab.",
+      "Écrire un Dockerfile multi-stage qui compile avec le lockfile puis limite le stage final au runtime.",
+      "Construire, exécuter et inspecter l’image pour vérifier port, santé, utilisateur et absence de fichiers sensibles."
     ],
     "prerequisites": [
-      "Avoir produit checkpoint-02-project-contract ou repartir de ce checkpoint."
+      "Avoir produit checkpoint-02-project-contract ou repartir de ce checkpoint.",
+      "Disposer d’un moteur Docker fonctionnel."
     ],
-    "estimatedMinutes": 90,
+    "estimatedMinutes": 95,
     "position": 1,
     "contentBlocks": [
       {
         "key": "content-construire-image-api-reproductible-1",
-        "type": "objective",
+        "type": "definition",
         "position": 1,
         "content": {
-          "text": "Le point de départ est checkpoint-02-project-contract. La brique checkpoint-03-api-container doit exécuter exactement cette API dans un container, sans changer son contrat ni inclure .env dans l’image.",
-          "sourceKeys": []
+          "text": "## Quatre objets à ne pas confondre\n\nLe checkpoint `checkpoint-02-project-contract` fonctionne sur votre machine avec Node et `pnpm`. La containerisation doit transformer ces mêmes sources en un artefact exécutable sans modifier le contrat HTTP.\n\n- une **image** est un artefact en lecture seule composé de couches et identifié par un ID de contenu ;\n- un **container** est une exécution de cette image, avec un processus et une fine couche écrivable propre ;\n- une **couche** correspond au résultat réutilisable d’une instruction de build ;\n- le **contexte de build** est l’ensemble des fichiers que la commande `docker build ... .` rend accessibles au builder ;\n- un **stage** est une étape nommée d’un Dockerfile multi-stage ; seuls les fichiers explicitement copiés vers le dernier stage entrent dans l’image finale.\n\nL’image ne doit contenir ni `.env`, ni sources TypeScript, ni outils de test. La configuration `PORT` est fournie à l’exécution du container. Le résultat attendu est `checkpoint-03-api-container`.\n\n![Construction multi-stage de l’image SourceLab](/learning/sourcelab/docker-multistage.svg)\n\nDescription textuelle du diagramme : à gauche, le contexte filtré par `.dockerignore` alimente le stage `deps`, qui installe les dépendances à partir de `package.json` et du lockfile. Le stage `build` hérite de ces dépendances, compile `src` vers `dist` puis retire les dépendances de développement. À droite, le stage `runtime` ne copie que `package.json`, `node_modules` de production et `dist`. Une flèche séparée injecte `PORT` au démarrage du container ; `.env`, `src` et les outils de test sont barrés à la frontière du stage final.\n\n**À retenir —** le build produit une image minimale et reproductible ; la configuration reste une donnée de runtime.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "docker-multi-stage-builds",
+            "docker-build-best-practices"
+          ]
         }
       },
       {
         "key": "content-construire-image-api-reproductible-2",
-        "type": "definition",
+        "type": "rich_text",
         "position": 2,
         "content": {
-          "text": "Une image est un artefact composé de couches ; un container est une exécution de cette image. Un build multi-stage garde compilation et dépendances de développement dans le stage de build, puis copie uniquement le JavaScript et les dépendances nécessaires dans le stage de runtime.",
-          "sourceKeys": ["docker-multi-stage-builds"]
+          "text": "## Réduire le contexte et raisonner sur le cache\n\nCréez d’abord `.dockerignore` :\n\n```dockerignore\n.git\nnode_modules\ndist\ncoverage\n.env\n.env.*\n```\n\nCe fichier agit avant les instructions `COPY` : les éléments exclus ne sont pas envoyés au builder. Il réduit le temps de transfert, évite que le `node_modules` de l’hôte contamine une image Linux et ferme une voie évidente d’inclusion de secrets.\n\nL’ordre des copies détermine l’utilité du cache :\n\n```dockerfile\nCOPY package.json pnpm-lock.yaml ./\nRUN pnpm install --frozen-lockfile\n\nCOPY tsconfig.json tsconfig.build.json ./\nCOPY src ./src\n```\n\nSi seul `src/api/app.ts` change, les fichiers de dépendances restent identiques : la couche `pnpm install` peut être réutilisée. Si `pnpm-lock.yaml` change, l’installation doit être rejouée.\n\nLe cache est une optimisation, pas une preuve de reproductibilité. `--frozen-lockfile` empêche une résolution silencieuse différente des dépendances JavaScript. En revanche, le tag `node:22-bookworm-slim` peut pointer vers une nouvelle image de base. Une livraison plus stricte épingle aussi cette base par digest après vérification, par exemple `node:22-bookworm-slim@sha256:<digest vérifié>` ; ne remplacez jamais ce marqueur par un digest inventé.\n\nErreur fréquente : commencer par `COPY . .`. Le moindre changement de README ou de source invalide alors toutes les instructions suivantes, y compris l’installation des dépendances.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "docker-build-best-practices"
+          ]
         }
       },
       {
@@ -42,20 +50,25 @@
         "type": "example",
         "position": 3,
         "content": {
-          "text": "Le lockfile est copié avant les sources afin que l’installation puisse rester en cache lorsque seul le code change. .dockerignore exclut .git, node_modules, résultats de tests et secrets. Le stage final utilise un utilisateur non-root et reçoit PORT au démarrage, pas pendant le build.",
+          "text": "## Construire dans un stage, exécuter dans un autre\n\nLe starter épingle Node `>=22`, pnpm `10.28.1` et compile vers `dist` avec `pnpm build`. Ce Dockerfile respecte ces choix :\n\n```dockerfile\nFROM node:22-bookworm-slim AS deps\n\nWORKDIR /app\n\n# Active le gestionnaire fourni avec Node ; packageManager épingle pnpm.\nRUN corepack enable\n\n# Ce stage ne change que si les dépendances changent.\nCOPY package.json pnpm-lock.yaml ./\nRUN pnpm install --frozen-lockfile\n\nFROM deps AS build\n\n# Les sources arrivent après l’installation pour préserver son cache.\nCOPY tsconfig.json tsconfig.build.json ./\nCOPY src ./src\nRUN pnpm build\n\n# Le stage final n’a besoin que des dépendances de production.\nRUN pnpm prune --prod\n\nFROM node:22-bookworm-slim AS runtime\n\nENV NODE_ENV=production\nWORKDIR /app\n\n# --chown rend explicite la propriété des fichiers copiés.\nCOPY --from=build --chown=node:node /app/package.json ./package.json\nCOPY --from=build --chown=node:node /app/node_modules ./node_modules\nCOPY --from=build --chown=node:node /app/dist ./dist\n\n# Le processus applicatif ne s’exécute pas avec l’utilisateur root.\nUSER node\n\n# Métadonnée du port par défaut ; EXPOSE ne publie aucun port.\nEXPOSE 3000\n\n# Le check utilise le PORT réellement injecté au container.\nHEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 CMD node -e \"fetch('http://127.0.0.1:'+(process.env.PORT??'3000')+'/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\"\n\nCMD [\"node\", \"dist/api/server.js\"]\n```\n\nLe stage `deps` installe TypeScript, Vitest et ESLint ; le stage `build` en hérite pour compiler. Leurs couches ne sont pas parentes du stage `runtime`, qui reçoit uniquement les artefacts explicitement copiés. `pnpm prune --prod` est exécuté après la compilation, lorsque les dépendances de développement ont fini leur travail.\n\nCette image reste volontairement centrée sur l’API actuelle. Les migrations Prisma et Compose seront traitées ensuite ; les ajouter ici brouillerait la frontière pédagogique.",
           "sourceKeys": [
-            "docker-build-best-practices",
-            "docker-multi-stage-builds"
+            "sourcelab-starter-6dd1cda",
+            "docker-multi-stage-builds",
+            "docker-build-best-practices"
           ]
         }
       },
       {
         "key": "content-construire-image-api-reproductible-4",
-        "type": "callout",
+        "type": "rich_text",
         "position": 4,
         "content": {
-          "text": "Guidage : compléter les TODO du Dockerfile, construire deux fois, comparer les étapes réutilisées, inspecter l’utilisateur puis lancer l’image avec PORT. Une fiche indique la commande attendue après chaque modification.",
-          "sourceKeys": []
+          "text": "## Construire, exécuter, inspecter, interpréter\n\nConstruisez une première fois :\n\n```bash\ndocker build --progress=plain -t sourcelab-api:checkpoint-03 .\n```\n\nRelancez exactement la même commande. Une sortie BuildKit représentative contient :\n\n```text\n# ... [build] COPY package.json pnpm-lock.yaml ./\n# ... [build] RUN pnpm install --frozen-lockfile\n# ... CACHED\n```\n\nLe numéro des étapes varie selon Docker. La preuve recherchée est `CACHED` sur l’installation lorsque ni `package.json` ni le lockfile n’ont changé. Modifiez ensuite un commentaire dans `src/api/app.ts` : l’installation doit rester en cache, tandis que `COPY src` et `pnpm build` sont rejoués.\n\nLancez l’image avec un port runtime différent du port par défaut :\n\n```bash\ndocker run --rm -d --name sourcelab-api -e PORT=4100 -p 3100:4100 sourcelab-api:checkpoint-03\n```\n\nIci, `3100` est le port de l’hôte et `4100` celui du container. `EXPOSE 3000` n’empêche pas ce choix : il documente un défaut, mais `-p` réalise la publication.\n\n```bash\ncurl -i http://localhost:3100/health/live\n```\n\nSortie attendue :\n\n```http\nHTTP/1.1 200 OK\ncontent-type: application/json; charset=UTF-8\n\n{\"service\":\"sourcelab-api\",\"status\":\"ok\"}\n```\n\nInspectez ensuite les propriétés, au lieu de les déduire du succès HTTP :\n\n```bash\ndocker image inspect --format '{{.Config.User}}' sourcelab-api:checkpoint-03\n```\n\n```text\nnode\n```\n\n```bash\ndocker run --rm sourcelab-api:checkpoint-03 sh -lc 'test ! -e /app/.env && test ! -d /app/src'\n```\n\nCette dernière commande ne produit rien lorsqu’elle réussit ; son code de sortie `0` prouve seulement que ces deux chemins sont absents du filesystem final. Complétez la vérification par `docker history --no-trunc sourcelab-api:checkpoint-03` et par la revue du Dockerfile : aucune commande unique ne peut prouver à elle seule qu’aucun secret n’a jamais été exposé.\n\nEnfin, attendez le healthcheck puis observez-le :\n\n```bash\ndocker inspect --format '{{.State.Health.Status}}' sourcelab-api\n```\n\n```text\nhealthy\n```\n\nErreurs fréquentes : inverser les deux ports de `-p`, croire que `EXPOSE` publie le port, copier `.env`, exécuter le stage final en root, garder toutes les dépendances de développement, ou conclure qu’un cache réutilisé garantit une image identique sur toutes les machines.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "docker-multi-stage-builds",
+            "docker-build-best-practices"
+          ]
         }
       },
       {
@@ -63,31 +76,51 @@
         "type": "callout",
         "position": 5,
         "content": {
-          "text": "Preuve de fin : GET /health/live répond depuis l’hôte, docker history ne révèle aucun secret et le container fonctionne après suppression du dossier node_modules de l’hôte. L’image sera réutilisée sans reconstruction conceptuelle par Compose.",
+          "text": "## Projet intégrateur — checkpoint-03-api-container\n\nPartez de `checkpoint-02-project-contract` et ne modifiez pas le contrat HTTP.\n\n1. Créez `.dockerignore` et justifiez chaque famille exclue.\n2. Écrivez le Dockerfile multi-stage puis construisez l’image deux fois.\n3. Modifiez seulement un fichier sous `src` et notez les étapes rejouées ou mises en cache.\n4. Lancez le container avec `PORT=4100` et `3100:4100`.\n5. Prouvez le `200`, le request ID, l’utilisateur `node`, l’état `healthy` et l’absence de `/app/.env` et `/app/src`.\n6. Relevez l’ID local de l’image avec `docker image inspect --format '{{.Id}}' sourcelab-api:checkpoint-03`.\n7. Arrêtez le container, exécutez `pnpm check` sur le dépôt puis créez `checkpoint-03-api-container`.\n\nLe compte rendu doit distinguer quatre preuves : contenu construit, comportement au runtime, configuration injectée et propriétés inspectées. Signalez aussi la limite restante : tant que l’image de base n’est pas épinglée par un digest vérifié, le tag seul ne garantit pas une reconstruction bit à bit identique dans le temps.",
           "sourceKeys": []
         }
       }
     ],
     "resources": [
       {
+        "key": "sourcelab-starter-6dd1cda",
+        "type": "tool",
+        "title": "SourceLab — checkpoint-00-starter au commit 6dd1cda",
+        "author": "Projet SourceLab",
+        "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "citation": "Projet SourceLab. (2026). SourceLab, commit 6dd1cda3aba94187cc5871e8c8208f892bb5bb2f. GitHub.",
+        "description": "Référence exacte des scripts, versions Node/pnpm et sorties de build sur lesquelles repose le Dockerfile.",
+        "guidance": {
+          "objective": "Vérifier les entrées réelles du build SourceLab.",
+          "instructions": "Comparer seulement package.json, pnpm-lock.yaml, tsconfig.build.json et src/api/server.ts.",
+          "scope": "Scripts, versions et artefact dist du starter",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Code public en texte ; extraits et synthèse inclus dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 5,
+        "position": 1
+      },
+      {
         "key": "docker-multi-stage-builds",
         "type": "website",
         "title": "Multi-stage builds",
         "author": "Docker",
         "url": "https://docs.docker.com/build/building/multi-stage/",
-        "citation": "Docker. (n.d.). Multi-stage builds. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire l’exemple à deux stages et repérer ce qui est copié dans l’image finale.",
+        "citation": "Docker. (n.d.). Multi-stage builds. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur FROM AS et COPY --from après l’étude du Dockerfile commenté.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Construire une image API reproductible ».",
-          "instructions": "Lire l’exemple à deux stages et repérer ce qui est copié dans l’image finale.",
-          "scope": "Séparation des étapes de build et de runtime",
+          "objective": "Relier les deux stages SourceLab aux primitives officielles de Docker.",
+          "instructions": "Lire uniquement Use multi-stage builds et Name your build stages.",
+          "scope": "Séparation build/runtime et COPY --from",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; diagramme et code commenté présents dans la leçon.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 10,
-        "position": 1
+        "isRequired": false,
+        "estimatedMinutes": 7,
+        "position": 2
       },
       {
         "key": "docker-build-best-practices",
@@ -95,85 +128,143 @@
         "title": "Building best practices",
         "author": "Docker",
         "url": "https://docs.docker.com/build/building/best-practices/",
-        "citation": "Docker. (n.d.). Building best practices. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire uniquement les sections sur contexte, cache, base, utilisateur et secrets.",
+        "citation": "Docker. (n.d.). Building best practices. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur contexte, cache, utilisateur et épinglage de l’image de base.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Construire une image API reproductible ».",
-          "instructions": "Lire uniquement les sections sur contexte, cache, base, utilisateur et secrets.",
-          "scope": "Contexte, cache, base, utilisateur et secrets",
+          "objective": "Vérifier les choix de cache, de contexte et de moindre privilège du checkpoint.",
+          "instructions": "Lire seulement Exclude with .dockerignore, Leverage build cache, Pin base image versions et User.",
+          "scope": "Contexte, cache, digest de base et utilisateur",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; les règles indispensables sont synthétisées en français.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
+        "isRequired": false,
         "estimatedMinutes": 8,
-        "position": 2
+        "position": 3
       }
     ],
     "concepts": [
       {
-        "title": "Image API reproductible",
-        "slug": "image-api-reproductible",
-        "description": "Une image identifiée contient l’artefact nécessaire au runtime, tandis que configuration et données lui sont injectées ou montées séparément.",
+        "title": "Image, container et contexte de build",
+        "slug": "image-container-contexte-build",
+        "description": "L’image est l’artefact construit depuis un contexte filtré ; le container est une exécution configurable de cet artefact et ne doit pas dépendre du node_modules de l’hôte.",
         "position": 1,
         "isRequired": true,
-        "masteryThreshold": 70,
+        "masteryThreshold": 75,
         "resourceKeys": [
+          "sourcelab-starter-6dd1cda",
+          "docker-build-best-practices"
+        ],
+        "assessment": {
+          "key": "assessment-image-container-contexte-build",
+          "type": "case_question",
+          "title": "Mini-évaluation — Image, container et contexte de build",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Build multi-stage et cache maîtrisé",
+        "slug": "build-multistage-cache",
+        "description": "Le stage de build compile avec le lockfile ; le stage final copie seulement l’artefact et les dépendances de production, tandis que l’ordre des couches préserve le cache utile.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 75,
+        "resourceKeys": [
+          "sourcelab-starter-6dd1cda",
           "docker-multi-stage-builds",
           "docker-build-best-practices"
         ],
         "assessment": {
-          "key": "assessment-image-api-reproductible",
+          "key": "assessment-build-multistage-cache",
           "type": "case_question",
-          "title": "Mini-évaluation — Image API reproductible",
-          "questionCount": 3
+          "title": "Mini-évaluation — Build multi-stage et cache maîtrisé",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Runtime minimal et configurable",
+        "slug": "runtime-minimal-configurable",
+        "description": "Le container reçoit PORT au démarrage, exécute le JavaScript compilé comme utilisateur non-root et expose des preuves distinctes de santé, de contenu et de configuration.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 75,
+        "resourceKeys": [
+          "sourcelab-starter-6dd1cda",
+          "docker-multi-stage-builds",
+          "docker-build-best-practices"
+        ],
+        "assessment": {
+          "key": "assessment-runtime-minimal-configurable",
+          "type": "case_question",
+          "title": "Mini-évaluation — Runtime minimal et configurable",
+          "questionCount": 4
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-construire-image-api-reproductible",
-        "title": "Containeriser l’API guidée",
-        "description": "Depuis checkpoint-02-project-contract, compléter Dockerfile et .dockerignore, construire deux fois, inspecter contenu et utilisateur, puis appeler le healthcheck avec une configuration runtime. Livrer checkpoint-03-api-container.",
+        "key": "exercise-predire-contexte-couches",
+        "title": "Prédire le contenu et l’invalidation des couches",
+        "description": "Avant le build, classer les fichiers inclus ou exclus par .dockerignore, puis prédire quelles étapes seront invalidées par un changement de src/api/app.ts et par un changement du lockfile.",
         "type": "practice",
         "isRequired": true,
-        "weight": 2,
+        "weight": 1,
         "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-construire-comparer-cache",
+        "title": "Construire deux fois et expliquer le cache",
+        "description": "Écrire le Dockerfile multi-stage, construire deux fois avec --progress=plain, modifier seulement une source puis annoter trois lignes de sortie pour distinguer cache utile, compilation rejouée et contenu du stage final.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "project-api-container",
+        "title": "Prouver l’image API au runtime",
+        "description": "Lancer l’image avec un port injecté, vérifier réponse et request ID, inspecter utilisateur et healthcheck, prouver l’absence des fichiers exclus, documenter la limite du tag de base et livrer checkpoint-03-api-container.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
         "resourceKeys": []
       }
     ],
     "quizzes": [
       {
         "key": "quiz-construire-image-api-reproductible",
-        "title": "Quiz — Image API reproductible",
-        "description": "Vérifier les repères de la leçon « Construire une image API reproductible ».",
-        "passingScore": 70,
+        "title": "Quiz — Construire et prouver l’image",
+        "description": "Analyser des scénarios de build et de runtime où plusieurs explications semblent plausibles.",
+        "passingScore": 75,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quelle propriété identifie précisément le contenu d’une image ?",
-            "explanation": "Le digest est lié au contenu.",
+            "prompt": "Après une modification uniquement dans src/api/app.ts, pnpm install est rejoué. Quel défaut d’ordre est le plus probable ?",
+            "explanation": "Copier toutes les sources avant l’installation lie la couche de dépendances à chaque changement de code.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Son digest",
+                "label": "COPY . . précède RUN pnpm install",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Le nom du container",
+                "label": "Le lockfile est copié avant src",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le port publié",
+                "label": "Le stage final utilise USER node",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le volume local",
+                "label": "PORT est injecté avec -e",
                 "isCorrect": false,
                 "position": 4
               }
@@ -181,52 +272,120 @@
             "position": 1
           },
           {
-            "type": "true_false",
-            "prompt": "Recréer un container restaure automatiquement les données non montées.",
-            "explanation": "Le système de fichiers écrivable du container est éphémère.",
+            "type": "multiple_choice",
+            "prompt": "Quels contrôles portent sur des propriétés différentes de l’image ou du container ?",
+            "explanation": "Le statut HTTP, l’utilisateur configuré et l’absence de fichiers sont trois observations complémentaires.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "curl vérifie le comportement HTTP",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "docker image inspect vérifie l’utilisateur configuré",
                 "isCorrect": true,
                 "position": 2
+              },
+              {
+                "label": "test ! -e /app/.env vérifie le filesystem final",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Un seul 200 prouve automatiquement les trois propriétés",
+                "isCorrect": false,
+                "position": 4
               }
             ],
             "position": 2
           },
           {
             "type": "single_choice",
-            "prompt": "Quel contrôle réduit le risque d’exécution privilégiée ?",
-            "explanation": "Le principe de moindre privilège s’applique au runtime.",
+            "prompt": "Le container écoute PORT=4100. Quelle publication rend l’API accessible sur localhost:3100 ?",
+            "explanation": "La syntaxe est port_hôte:port_container.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Utiliser un utilisateur non-root dans le stage final",
+                "label": "-p 3100:4100",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Ajouter un deuxième tag",
+                "label": "-p 4100:3100",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Exposer tous les ports",
+                "label": "EXPOSE 3100 sans -p",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Copier .git",
+                "label": "-e PORT=3100 sans publication",
                 "isCorrect": false,
                 "position": 4
               }
             ],
             "position": 3
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Deux builds faits à plusieurs semaines d’intervalle utilisent le même lockfile et le tag node:22-bookworm-slim. Pourquoi les images peuvent-elles différer ?",
+            "explanation": "Le lockfile fixe les dépendances du projet, mais le tag de base reste mutable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le tag de l’image de base peut avoir changé ; un digest vérifié borne ce risque",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un lockfile modifie aléatoirement toutes les sources",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "USER node choisit un OS différent à chaque lancement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "EXPOSE reconstruit l’image au démarrage",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Le healthcheck /health/live est healthy. Quelle affirmation reste injustifiée ?",
+            "explanation": "La route live ne traverse pas encore PostgreSQL ; elle prouve la vie du processus API, pas la readiness de ses dépendances.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "PostgreSQL accepte les requêtes de l’API",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le processus répond sur son port interne",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le handler live renvoie un statut réussi",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La commande du healthcheck peut atteindre l’API locale au container",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
           }
         ]
       }
@@ -241,16 +400,24 @@
         "key": "content-construire-image-api-reproductible-2"
       },
       {
-        "kind": "RESOURCE",
-        "key": "docker-multi-stage-builds"
+        "kind": "EXERCISE",
+        "key": "exercise-predire-contexte-couches"
       },
       {
-        "kind": "RESOURCE",
-        "key": "docker-build-best-practices"
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-image-container-contexte-build"
       },
       {
         "kind": "CONTENT",
         "key": "content-construire-image-api-reproductible-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-comparer-cache"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-build-multistage-cache"
       },
       {
         "kind": "CONTENT",
@@ -262,11 +429,11 @@
       },
       {
         "kind": "EXERCISE",
-        "key": "exercise-construire-image-api-reproductible"
+        "key": "project-api-container"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-image-api-reproductible"
+        "key": "assessment-runtime-minimal-configurable"
       },
       {
         "kind": "QUIZ",
@@ -275,7 +442,7 @@
     ]
   },
   "editorial": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "language": "fr",
     "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
@@ -284,6 +451,25 @@
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
+      {
+        "id": "REF-128-STARTER",
+        "type": "source_code",
+        "authors": [],
+        "organization": "Projet SourceLab",
+        "title": "SourceLab — checkpoint-00-starter",
+        "year": 2026,
+        "edition": "commit 6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
       {
         "id": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
         "type": "official_documentation",
@@ -295,13 +481,13 @@
         "publication": "Docker",
         "doi": null,
         "url": "https://docs.docker.com/build/building/multi-stage/",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "id": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
@@ -314,208 +500,567 @@
         "publication": "Docker",
         "doi": null,
         "url": "https://docs.docker.com/build/building/best-practices/",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-STARTER",
+            "locator": "package.json, scripts build/start et arborescence src",
+            "supports": "Entrées et artefact du projet à containeriser."
+          },
+          {
+            "referenceId": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
+            "locator": "Use multi-stage builds et COPY --from",
+            "supports": "Définition des stages et sélection du contenu final."
+          },
+          {
+            "referenceId": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
+            "locator": "Build context, .dockerignore et User",
+            "supports": "Contexte filtré et moindre privilège."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Code primaire et documentation Docker officielle convergente.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
-            "referenceId": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
-            "locator": "Séparation des étapes de build et de runtime",
-            "supports": "Repères techniques employés dans le bloc 2."
+            "referenceId": "REF-128-STARTER",
+            "locator": "package.json et pnpm-lock.yaml",
+            "supports": "Fichiers de dépendances et version pnpm du starter."
+          },
+          {
+            "referenceId": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
+            "locator": "Exclude with .dockerignore, Leverage build cache et Pin base image versions",
+            "supports": "Filtrage, ordre des couches, limite du cache et épinglage par digest."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidenceRationale": "Les règles sont directement documentées et appliquées aux fichiers réels du starter.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
-            "locator": "Contexte, cache, base, utilisateur et secrets",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "referenceId": "REF-128-STARTER",
+            "locator": "package.json, tsconfig.build.json et src/api/server.ts",
+            "supports": "Versions, commande de build, chemin dist/api/server.js et PORT runtime."
           },
           {
             "referenceId": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
-            "locator": "Séparation des étapes de build et de runtime",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "locator": "Name your build stages et COPY --from",
+            "supports": "Construction du Dockerfile multi-stage."
+          },
+          {
+            "referenceId": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
+            "locator": "Use multi-stage builds et User",
+            "supports": "Réduction du stage final et utilisateur non-root."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidenceRationale": "Dockerfile original construit à partir des scripts épinglés et des primitives officielles.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 4,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-STARTER",
+            "locator": "README.md, src/config.ts et src/api/app.ts",
+            "supports": "Commande de santé, valeur PORT et réponse JSON attendue."
+          },
+          {
+            "referenceId": "REF-128-DOCKER-MULTI-STAGE-BUILDS",
+            "locator": "Stop at a specific build stage et final stage behavior",
+            "supports": "Interprétation du contenu de l’image finale."
+          },
+          {
+            "referenceId": "REF-128-DOCKER-BUILD-BEST-PRACTICES",
+            "locator": "Build cache, User et build secrets",
+            "supports": "Interprétation des inspections et limites de preuve."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Commandes Docker standard appliquées à l’image proposée ; sorties variables explicitement qualifiées.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 5,
         "referenceLinks": [],
         "confidence": null,
         "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "notApplicableReason": "Consigne originale de projet, critères de preuve et rappel d’une limite déjà sourcée."
       }
     ],
     "resourceChecks": [
       {
-        "resourceKey": "docker-multi-stage-builds",
-        "referenceIds": ["REF-128-DOCKER-MULTI-STAGE-BUILDS"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Construire une image API reproductible ».",
-        "learnerInstructions": "Lire l’exemple à deux stages et repérer ce qui est copié dans l’image finale.",
+        "resourceKey": "sourcelab-starter-6dd1cda",
+        "referenceIds": ["REF-128-STARTER"],
+        "pedagogicalRationale": "Fournit la preuve primaire des scripts et versions après la synthèse interne.",
+        "learnerInstructions": "Comparer uniquement les quatre fichiers indiqués.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "Code public en texte ; extraits nécessaires inclus.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "docker-multi-stage-builds",
+        "referenceIds": ["REF-128-DOCKER-MULTI-STAGE-BUILDS"],
+        "pedagogicalRationale": "Permet d’approfondir la primitive multi-stage déjà expliquée et visualisée.",
+        "learnerInstructions": "Lire uniquement les deux sections indiquées après l’exercice.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML en anglais ; diagramme décrit et Dockerfile commenté en français.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "docker-build-best-practices",
         "referenceIds": ["REF-128-DOCKER-BUILD-BEST-PRACTICES"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Construire une image API reproductible ».",
-        "learnerInstructions": "Lire uniquement les sections sur contexte, cache, base, utilisateur et secrets.",
+        "pedagogicalRationale": "Consolide les décisions de contexte, cache, digest et utilisateur du checkpoint.",
+        "learnerInstructions": "Relire seulement les sections citées et rattacher chacune à une ligne du Dockerfile.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML en anglais ; synthèse française complète incluse.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "image-api-reproductible",
-        "assessmentTitle": "Mini-évaluation — Image API reproductible",
+        "conceptSlug": "image-container-contexte-build",
+        "assessmentTitle": "Mini-évaluation — Image, container et contexte de build",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Où doit se trouver TypeScript dans un build multi-stage ?",
-            "explanation": "Le runtime reçoit l’artefact compilé et ses dépendances utiles.",
+            "prompt": "Le node_modules macOS de l’hôte apparaît dans le contexte de build Linux. Quel contrôle manque ?",
+            "explanation": ".dockerignore doit exclure node_modules avant l’envoi du contexte.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Dans le stage de build, sauf besoin explicite au runtime",
+                "label": "Ajouter node_modules à .dockerignore",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Toujours dans l’image finale",
+                "label": "Ajouter EXPOSE 3000",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Dans le volume PostgreSQL",
+                "label": "Changer le statut de /health/live",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Dans le request ID",
+                "label": "Renommer le container",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
           },
           {
             "type": "single_choice",
-            "prompt": "Pourquoi copier le lockfile avant les sources ?",
-            "explanation": "L’ordre des couches rend le cache utile et prévisible.",
+            "prompt": "Quelle affirmation distingue correctement image et container ?",
+            "explanation": "L’image est l’artefact ; le container est une exécution avec son processus et sa couche écrivable.",
             "acceptedAnswers": [],
+            "position": 2,
             "options": [
               {
-                "label": "Pour réutiliser la couche d’installation si les dépendances ne changent pas",
+                "label": "Plusieurs containers peuvent être lancés depuis la même image",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Pour stocker les secrets",
+                "label": "Le container est le lockfile du projet",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Pour remplacer Compose",
+                "label": "L’image reçoit PORT seulement après avoir commencé à s’exécuter",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Pour créer les projets",
+                "label": "Une image est supprimée dès qu’un container s’arrête",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 2
+            ]
           },
           {
-            "type": "true_false",
-            "prompt": "Un fichier .env doit être copié dans l’image afin que tous les environnements partagent les mêmes secrets.",
-            "explanation": "La configuration est injectée au runtime.",
+            "type": "multiple_choice",
+            "prompt": "Quels fichiers doivent être absents du contexte SourceLab décrit ?",
+            "explanation": "Ils sont produits localement, inutiles au build ou potentiellement sensibles.",
             "acceptedAnswers": [],
+            "position": 3,
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": ".env",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "node_modules",
                 "isCorrect": true,
                 "position": 2
+              },
+              {
+                "label": ".git",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "pnpm-lock.yaml",
+                "isCorrect": false,
+                "position": 4
               }
-            ],
-            "position": 3
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que fait réellement EXPOSE 3000 dans ce Dockerfile ?",
+            "explanation": "EXPOSE documente le port attendu ; la publication hôte nécessite -p ou Compose.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Il ajoute une métadonnée, sans publier le port sur l’hôte",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Il force l’application à ignorer PORT",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il crée automatiquement -p 3000:3000",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Il valide le payload Project",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "build-multistage-cache",
+        "assessmentTitle": "Mini-évaluation — Build multi-stage et cache maîtrisé",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi copier package.json et pnpm-lock.yaml avant src ?",
+            "explanation": "La couche d’installation reste réutilisable tant que les dépendances ne changent pas.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Pour découpler le cache des dépendances des changements de source",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour injecter PORT pendant le build",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour publier automatiquement le port",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour stocker le request ID dans le lockfile",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que reçoit explicitement le stage runtime proposé ?",
+            "explanation": "Seuls les chemins copiés depuis build deviennent membres du dernier stage.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "dist",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "node_modules après prune --prod",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "package.json",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "src et les tests TypeScript",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi exécuter pnpm prune --prod après pnpm build ?",
+            "explanation": "La compilation utilise les dépendances de développement ; elles peuvent être retirées une fois dist produit.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Pour conserver les outils de build pendant la compilation puis les exclure du runtime",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour supprimer les dépendances nécessaires avant de compiler",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour charger .env dans l’image finale",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour transformer EXPOSE en publication",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une deuxième construction affiche CACHED partout. Quelle conclusion reste trop forte ?",
+            "explanation": "Le cache local prouve une réutilisation d’étapes dans ce contexte, pas une identité universelle et durable.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Toute machine reconstruira éternellement le même contenu avec un tag de base mutable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les entrées locales n’ont pas changé pour ce builder",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La couche d’installation a pu être réutilisée",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Aucune étape mise en cache n’a été réexécutée localement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "runtime-minimal-configurable",
+        "assessmentTitle": "Mini-évaluation — Runtime minimal et configurable",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "PORT=4100 est injecté et le client appelle localhost:3100. Quelle option relie correctement les deux ?",
+            "explanation": "Le port interne doit correspondre à PORT et le port gauche est celui de l’hôte.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "-p 3100:4100",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "-p 4100:3100",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "EXPOSE 3100 uniquement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "-e PORT=3100 sans -p",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves sont nécessaires pour défendre le runtime minimal proposé ?",
+            "explanation": "Le comportement, l’identité d’exécution et le contenu final sont des dimensions distinctes.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "GET /health/live renvoie 200",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Config.User vaut node",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "/app/.env et /app/src sont absents",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le nom du container contient le mot secure",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi le healthcheck utilise-t-il process.env.PORT ?",
+            "explanation": "Le check doit viser le port réellement écouté après injection runtime.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Pour rester aligné avec la configuration effective du processus",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour modifier le Dockerfile après le démarrage",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour publier automatiquement le port hôte",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour charger les sources TypeScript absentes",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Le test d’absence de /app/.env sort avec le code 0. Que prouve-t-il exactement ?",
+            "explanation": "Il porte sur le filesystem final observé, pas sur tout l’historique possible d’un secret.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Ce chemin est absent du filesystem final inspecté",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Aucun secret n’a jamais existé dans aucune couche ou sortie de build",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le port 3100 est publié",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La base PostgreSQL est prête",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
           }
         ]
       }
     ],
     "sequenceRationale": {
-      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
+      "strategy": "Trois cycles : modéliser image/container/contexte, construire et observer le cache, puis exécuter et inspecter l’artefact dans un projet cumulatif. Les documentations Docker restent facultatives et hors séquence, car le contenu interne fournit d’abord les explications, le diagramme, le Dockerfile et les sorties.",
       "cycles": [
         {
-          "conceptSlug": "image-api-reproductible",
+          "conceptSlug": "image-container-contexte-build",
           "contentKeys": [
             "content-construire-image-api-reproductible-1",
-            "content-construire-image-api-reproductible-2",
-            "content-construire-image-api-reproductible-3",
+            "content-construire-image-api-reproductible-2"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-predire-contexte-couches"
+          },
+          "assessmentKey": "assessment-image-container-contexte-build",
+          "rationale": "Le vocabulaire et le diagramme sont appliqués à une prédiction de contexte et d’invalidation avant toute construction."
+        },
+        {
+          "conceptSlug": "build-multistage-cache",
+          "contentKeys": ["content-construire-image-api-reproductible-3"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-comparer-cache"
+          },
+          "assessmentKey": "assessment-build-multistage-cache",
+          "rationale": "Le Dockerfile commenté est exécuté puis son cache est interprété, plutôt que mémorisé abstraitement."
+        },
+        {
+          "conceptSlug": "runtime-minimal-configurable",
+          "contentKeys": [
             "content-construire-image-api-reproductible-4",
             "content-construire-image-api-reproductible-5"
           ],
-          "resourceKeys": [
-            "docker-multi-stage-builds",
-            "docker-build-best-practices"
-          ],
+          "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-construire-image-api-reproductible"
+            "key": "project-api-container"
           },
-          "assessmentKey": "assessment-image-api-reproductible",
-          "rationale": "La production « Containeriser l’API guidée » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
+          "assessmentKey": "assessment-runtime-minimal-configurable",
+          "rationale": "Les commandes et leurs limites préparent une preuve intégrée du comportement, de la configuration et du contenu final."
         }
       ]
     },
@@ -528,9 +1073,11 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
-        "Le starter autoritaire est publié sur https://github.com/Guts6667/sourcelab au commit 6dd1cda et au tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
-        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
+        "Refonte pédagogique prioritaire : notions définies, diagramme décrit, Dockerfile commenté, sorties interprétées et trois activités alignées.",
+        "Le Dockerfile est une proposition compatible avec les scripts et versions du commit 6dd1cda ; il doit être exécuté dans le dépôt SourceLab avant publication.",
+        "Le digest de l’image de base n’est volontairement pas inventé ; son épinglage demande une vérification technique séparée.",
+        "SVG créé ; rendu et accessibilité automatisés vérifiés. Les liens, commandes Docker et compatibilité seed restent à revoir avant publication.",
+        "Le checkpoint-03-api-container reste à produire dans le dépôt SourceLab."
       ]
     },
     "changeLog": [
@@ -540,6 +1087,13 @@
         "author": "LearnX",
         "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
         "reviewRequired": "editorial_technical_links_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Refonte pédagogique complète : modèle image/container, diagramme accessible, Dockerfile multi-stage commenté, cache et runtime interprétés, micro-activités et évaluations appliquées.",
+        "reviewRequired": "editorial_technical_links_media_and_seed"
       }
     ]
   }

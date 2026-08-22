@@ -10,20 +10,30 @@
       "isRequired": true,
       "passingScore": 70
     },
-    "description": "Exécuter le parcours complet local puis démontrer la livraison d’une image immuable et son rollback manuel.",
+    "description": "Exécuter la verticale locale complète puis démontrer, avec des preuves déterministes, l’atomicité de l’import, le traitement, la livraison d’une image immuable et son rollback manuel.",
     "instructions": [
-      "Depuis checkpoint-07-continuous-delivery, lancer docker compose up --build, créer un projet, importer une source Markdown, suivre son job, vérifier la SourceVersion READY dans PostgreSQL, exécuter tests et smoke, puis expliquer la publication GHCR sur tag et le retour à un digest antérieur."
+      "1. Depuis le checkpoint final vérifié, démarrer la stack propre et conserver les états de santé des services.",
+      "2. Créer un projet puis importer le document fourni ; relever les identifiants de Source, SourceVersion et ProcessingJob.",
+      "3. Suivre les transitions jusqu’à READY, vérifier en SQL les valeurs attendues et recalculer localement le SHA-256 du contenu normalisé.",
+      "4. Forcer l’échec prévu par le scénario, puis prouver FAILED et errorCode sans ligne orpheline.",
+      "5. Exécuter la suite d’intégration et le smoke ; conserver les statuts de sortie.",
+      "6. Relier le tag, le SHA du commit et le digest GHCR dans le journal de livraison, sélectionner un digest antérieur, relancer localement et rejouer le smoke."
     ],
-    "case": "Cas fil rouge SourceLab V2 : la source « Architecture du corpus » possède une origine, une version et un contenu Markdown fournis. Aucun embedding, chunk ou service cloud n’est demandé.",
-    "estimatedMinutes": 45,
-    "submissionFormat": "Dépôt au checkpoint-07-continuous-delivery, transcript du smoke, requête SQL de preuve et journal de livraison/rollback d’une page maximum.",
+    "case": "Cas fil rouge SourceLab V2.1 : la source « Architecture du corpus » possède une origine, une version, un contenu Markdown et un hash attendu fournis. Un second import déclenche une erreur contrôlée. Aucun embedding, chunk ni service cloud n’est demandé.",
+    "estimatedMinutes": 60,
+    "submissionFormat": "Dépôt au checkpoint final, transcript des tests et du smoke, requêtes SQL, recalcul du hash et journal d’une page reliant tag, SHA, digest et rollback.",
     "conceptSlugs": [
-      "requete-observable",
-      "contrat-api-valide",
-      "image-api-reproductible",
-      "stack-compose-persistante",
+      "responsabilites-modele-source",
+      "transaction-courte-import",
+      "contrat-import-borne",
       "import-source-transactionnel",
+      "frontiere-api-worker",
+      "machine-etats-worker-bornee",
+      "normalisation-checksum-sha256",
       "traitement-source-tracable",
+      "strategie-tests-frontieres",
+      "ci-permissions-minimales",
+      "publication-rollback-digest",
       "livraison-image-tracable"
     ],
     "rubric": [
@@ -71,7 +81,7 @@
     "remediation": "Rejouer uniquement la frontière en échec depuis le dernier checkpoint vert, sans contourner la validation, puis fournir la preuve corrigée."
   },
   "editorial": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "createdAt": "2026-08-20",
     "referenceIds": [],
@@ -80,7 +90,8 @@
       "subjectReviewer": null,
       "readyForPublication": false,
       "notes": [
-        "Évaluation pratique courte et non redondante ; revue technique du starter requise avant publication."
+        "Publication bloquée tant que le checkpoint final, le scénario d’échec et les preuves GHCR ne sont pas vérifiés.",
+        "La durée de 60 minutes inclut le cas READY, le cas FAILED, le hash, le smoke et le journal de rollback."
       ]
     },
     "changeLog": [
@@ -90,6 +101,13 @@
         "author": "LearnX",
         "change": "Remplacement de l’évaluation V1 par une preuve cumulative bornée.",
         "reviewRequired": "editorial_technical_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Évaluation finale portée à 60 minutes avec preuves explicites d’atomicité, transitions, checksum, CI, digest et rollback.",
+        "reviewRequired": "editorial_technical_starter_and_seed"
       }
     ]
   }
