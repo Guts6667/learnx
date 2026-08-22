@@ -501,7 +501,7 @@ describe('sample program seed', () => {
       expectedAssessmentCount: 3,
       expectedLessonCount: 7,
       expectedStageCount: 3,
-      expectedStatus: 'draft',
+      expectedStatus: 'active',
       expectedTitle: 'SourceLab — Docker, API et socle d’ingestion',
       readSeed: readSourceLabProductionSeed,
       slug: 'sourcelab-docker-api-socle-ingestion',
@@ -737,7 +737,7 @@ describe('sample program seed', () => {
     const expectedConceptAndTaskCounts = [3, 3, 3, 4, 4, 4, 4];
     const diagramPaths = new Set<string>();
 
-    expect(seed.program.status).toBe('draft');
+    expect(seed.program.status).toBe('active');
     expect(lessons.map(({ estimatedMinutes }) => estimatedMinutes)).toEqual(
       expectedMinutes,
     );

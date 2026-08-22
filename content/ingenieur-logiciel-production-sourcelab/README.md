@@ -2,8 +2,8 @@
 
 ## Statut
 
-- Version éditoriale : 2.1.0 en reconstruction
-- Statut runtime : `draft`
+- Version éditoriale : 2.1.0 publiée sur décision du propriétaire
+- Statut runtime : `active`
 - Priorité : P0, demandée par le propriétaire le 22 août 2026
 - Classification : `TECH_VALIDATION`
 - Identité runtime : `sourcelab-docker-api-socle-ingestion`
@@ -12,9 +12,10 @@
 - Durée cible : 14 h 20, évaluations comprises
 - Rythme indicatif : sept séances, sans contrainte calendaire
 
-Les nouvelles inscriptions restent suspendues pendant la reconstruction. Le
-bundle est volontairement en `draft` : le contenu enrichi peut être relu et
-testé sans être présenté comme un parcours autonome déjà validé.
+Le parcours est ouvert avec son contenu 2.1 après validation explicite du
+propriétaire. Cette publication ne fabrique pas une revue indépendante : les
+sidecars conservent leur état éditorial et le pilote apprenant reste suivi
+comme amélioration prioritaire.
 
 ## Promesse pédagogique
 
@@ -80,12 +81,12 @@ checkpoints d’évaluation sont publiés dans le dépôt SourceLab. La PR Sourc
 PostgreSQL, intégration API/worker et smoke. Le README du starter documente les
 micro-actions, la comparaison d’une solution et la récupération sans perte.
 
-Cette gate technique est levée. Le programme reste toutefois en `draft` tant
-que les revues humaines, l’alignement final specs/seed et le pilote L1 puis
-L3/L4 ne sont pas renseignés ; la disponibilité du code ne vaut pas validation
-pédagogique générale.
+Cette gate technique est levée. L’alignement specs/seed est couvert par les
+tests de publication. La revue indépendante et le pilote L1 puis L3/L4 restent
+à renseigner ; la décision de publication du propriétaire ne vaut pas
+validation pédagogique générale.
 
-## Gates avant republication
+## Gates de publication et suivi
 
 ### P0 — obligatoires
 
@@ -94,10 +95,11 @@ pédagogique générale.
 - Contenu : synthèse interne suffisante, extraits exacts, au moins six
   diagrammes utiles, commandes et sorties testées, une intention par
   micro-activité.
-- Cohérence : sidecars, bundle seed, durées, checkpoints et statut runtime
-  alignés ; revues éditoriale et technique explicitement renseignées.
+- Cohérence runtime : bundle seed, durées, checkpoints et statut `active`
+  alignés. Les sidecars, revues éditoriale et technique restent volontairement
+  inchangés et ouverts ; l’autorisation propriétaire est consignée séparément.
 
-### P1 — avant réouverture générale
+### P1 — suivi après publication propriétaire
 
 - Pilote : un apprenant réalise L1 puis L3/L4 sans assistance ; temps,
   blocages et recours aux solutions sont observés.
@@ -119,4 +121,4 @@ s’arrête à la publication GHCR ; aucune infrastructure absente n’est simul
 - `stage-assessments/` : trois évaluations pratiques ;
 - `SOURCE_MANIFEST.json` : inventaire des sources vérifiées ;
 - `../../seed/ingenieur-logiciel-production-sourcelab-program.json` : bundle
-  Prisma en `draft`.
+  Prisma `active`.

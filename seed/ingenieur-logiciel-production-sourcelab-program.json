@@ -4,8 +4,8 @@
     "slug": "sourcelab-docker-api-socle-ingestion",
     "canonicalProgramKey": "sourcelab-docker-api-socle-ingestion",
     "locale": "fr",
-    "description": "Parcours guidé de 14 h 20 pour comprendre puis construire une stack SourceLab locale : requêtes Hono, contrats Zod, Docker, Compose, PostgreSQL/Prisma, ingestion Markdown, worker, tests et image GHCR traçable. Version 2.1 en reconstruction, réservée à la revue jusqu’à validation du starter et des preuves.",
-    "status": "draft",
+    "description": "Parcours guidé de 14 h 20 pour comprendre puis construire une stack SourceLab locale : requêtes Hono, contrats Zod, Docker, Compose, PostgreSQL/Prisma, ingestion Markdown, worker, tests et image GHCR traçable. Version 2.1 publiée sur décision du propriétaire ; la revue indépendante et le pilote apprenant restent suivis séparément.",
+    "status": "active",
     "position": 6,
     "estimatedDurationDays": 7,
     "stages": [

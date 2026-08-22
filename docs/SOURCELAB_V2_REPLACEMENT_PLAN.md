@@ -4,12 +4,14 @@
 
 - Mode : `HARD_OFF`
 - Portée : `TECH_VALIDATION`
-- Écriture en base : impossible dans l’état actuel
+- Bascule automatique V1 → V2 en base : impossible dans l’état actuel
 - Programme historique : `ingenieur-logiciel-production-sourcelab`
 - Nouveau programme : `sourcelab-docker-api-socle-ingestion`
-- Statut éditorial actuel : reconstruction prioritaire, runtime `DRAFT`
+- Statut runtime V2.1 : `ACTIVE` et public sur décision du propriétaire
 
-Le programme V2 est une nouvelle identité runtime. Aucun identifiant de
+Le mode `HARD_OFF` concerne uniquement l’archivage de V1 et la bascule de ses
+inscriptions ; il n’empêche pas la publication autonome de V2.1. Le programme
+V2 est une nouvelle identité runtime. Aucun identifiant de
 programme, d’étape, de module, de leçon ou de progression V1 n’est réutilisé
 pour lui attribuer une équivalence.
 
