@@ -1727,6 +1727,86 @@ body {
   gap: 1rem;
 }
 
+.totem-product-surface {
+  min-height: 100dvh;
+  background: var(--color-canvas);
+}
+
+.totem-product-surface .app-safe-header {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.totem-product-surface .app-main-navigation {
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+}
+
+.totem-product-surface .ui-main-navigation__link {
+  color: var(--color-text-muted);
+}
+
+.totem-product-surface .ui-main-navigation__link[aria-current='page'] {
+  color: var(--color-text);
+  background: var(--color-action-soft);
+  box-shadow: inset 0 3px 0 var(--color-action);
+}
+
+.totem-product-surface .page-layout--work {
+  max-width: 76rem;
+}
+
+.totem-product-surface .page-header {
+  max-width: 68ch;
+}
+
+.totem-product-surface .ui-card,
+.totem-product-surface .ui-list-row,
+.totem-product-surface .ui-section {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.totem-product-surface .ui-card--accent {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--color-action);
+  background: var(--color-action-soft);
+}
+
+.totem-product-surface .ui-card--accent::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--color-direction);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+  content: '';
+  pointer-events: none;
+}
+
+.totem-product-surface .page-title {
+  max-width: 18ch;
+  font-family: var(--font-interface);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+
+@media (min-width: 64rem) {
+  .totem-product-surface .ui-main-navigation__link[aria-current='page'] {
+    box-shadow: inset 3px 0 0 var(--color-action);
+  }
+
+  .totem-product-surface .app-safe-header {
+    min-height: 5rem;
+  }
+}
+
 .totem-admin-surface .admin-collection > li + li {
   border-top: 0;
 }

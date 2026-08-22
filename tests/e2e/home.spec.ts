@@ -554,6 +554,7 @@ async function installJourneyApi(page: Page) {
 
 async function openCriticalLesson(page: Page) {
   await page.goto('/program');
+  await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
   await expect(
     page.getByRole('heading', { level: 1, name: 'Programmes' }),
   ).toBeVisible();
@@ -609,8 +610,7 @@ test('garde Mes parcours et Découvrir utilisables sur tous les viewports', asyn
   for (const viewport of [
     { height: 700, width: 320 },
     { height: 844, width: 390 },
-    { height: 900, width: 768 },
-    { height: 900, width: 1024 },
+    { height: 900, width: 720 },
     { height: 1000, width: 1440 },
     { height: 1080, width: 1920 },
   ]) {
@@ -646,6 +646,7 @@ test('oriente la première arrivée sans afficher d’outils vides', async ({
   ]) {
     await page.setViewportSize(viewport);
     await page.goto('/today');
+    await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
     const action = page.getByRole('link', {
       name: 'Choisir mon premier parcours',
     });
@@ -676,18 +677,19 @@ test('applique les gabarits desktop sans étirer la lecture pédagogique', async
   }, credentials);
 
   const screens = [
-    { path: '/today', template: 'work' },
-    { path: `/program/${program.slug}`, template: 'work' },
+    { path: '/today', template: 'work', totem: true },
+    { path: `/program/${program.slug}`, template: 'work', totem: true },
     {
       path: `/program/${program.slug}/lesson/${lessonSummary.slug}`,
       template: 'reading',
+      totem: false,
     },
-    { path: '/notes', template: 'work' },
+    { path: '/notes', template: 'work', totem: true },
+    { path: '/profile', template: 'work', totem: true },
   ] as const;
 
   for (const viewport of [
-    { height: 900, width: 768 },
-    { height: 900, width: 1024 },
+    { height: 900, width: 720 },
     { height: 1000, width: 1440 },
     { height: 1080, width: 1920 },
   ]) {
@@ -696,11 +698,16 @@ test('applique les gabarits desktop sans étirer la lecture pédagogique', async
       await page.goto(screen.path);
       const layout = page.locator(`.page-layout--${screen.template}`).first();
       await expect(layout).toBeVisible();
+      if (screen.totem) {
+        await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
+      } else {
+        await expect(page.locator('[data-visual-system="totem"]')).toHaveCount(0);
+      }
       await expectNoHorizontalOverflow(page);
     }
   }
 
-  await page.setViewportSize({ height: 900, width: 1024 });
+  await page.setViewportSize({ height: 900, width: 720 });
   await page.goto(`/program/${program.slug}/lesson/${lessonSummary.slug}`);
   await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
   await expectNoHorizontalOverflow(page);

@@ -187,6 +187,38 @@ describe('navigation accessible', () => {
     );
   });
 
+  it.each(['/today', '/program', '/program/parcours-test', '/notes', '/profile'])(
+    'active Totem uniquement sur la surface produit %s',
+    (currentPath) => {
+      renderWithLocale(
+        <MobileLayout currentPath={currentPath}>
+          <h1>Surface produit</h1>
+        </MobileLayout>,
+      );
+
+      expect(
+        document.querySelector('[data-visual-system="totem"]'),
+      ).toHaveClass('totem-product-surface');
+    },
+  );
+
+  it.each([
+    '/program/parcours-test/lesson/lecon-test',
+    '/program/parcours-test/lesson/lecon-test/quiz',
+    '/reviews',
+    '/credits',
+  ])('conserve Atlas hors du lot produit sur %s', (currentPath) => {
+    renderWithLocale(
+      <MobileLayout currentPath={currentPath}>
+        <h1>Surface hors lot</h1>
+      </MobileLayout>,
+    );
+
+    expect(
+      document.querySelector('[data-visual-system="totem"]'),
+    ).not.toBeInTheDocument();
+  });
+
   it.each(['/login', '/request-access', '/verify-email', '/activate'])(
     "n'affiche aucune navigation privée dans le shell d'authentification %s",
     (currentPath) => {

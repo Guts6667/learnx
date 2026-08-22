@@ -600,7 +600,7 @@ constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
 | --- | --- | --- | --- |
 | V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration sur `dev` |
 | V4-016E | Primitives et états communs accessibles | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration après V4-016D |
-| V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E |
+| V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `PRODUCT_SURFACES_QA_GREEN_LOCAL` | V4-016D/E intégrés localement ; rollout propriétaire requis |
 | V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
 | V4-016A | Landing, compte, vérification e-mail et première direction | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesses approuvées |
 | V4-016I | Recherche publique, articles partageables, programme public et graphiques | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contenu public réel |
@@ -2528,6 +2528,17 @@ avant clôture et rollout ; V4-016B pour la revue desktop finale.**
 
 Ces références fixent hiérarchie, densité, ton et ordre de l'information, pas
 des pixels ni une modification de la logique de recommandation.
+
+### État d'implémentation au 23 août 2026
+
+- Le comportement multi-programmes, la première arrivée et la séparation
+  `Mes parcours` / `Découvrir` étaient déjà présents dans la baseline et restent
+  inchangés côté serveur.
+- Totem est activé uniquement sur Aujourd'hui, Parcours/Programme, Notes et
+  Profil. Les leçons, quiz, Réviser et crédits restent dans leurs lots V4-016F/G.
+- Les parcours produit couverts passent les tests 320/390/720/1440/1920,
+  zoom 200 %, clavier, reduced motion et accessibilité sans modifier les droits,
+  recommandations ou calculs de progression.
 
 ### Constat
 
