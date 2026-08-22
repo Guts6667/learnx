@@ -80,9 +80,11 @@ function getSafeExternalUrl(url: string | null): string | null {
 }
 
 function ContentActivity({
+  activityTitle,
   block,
   resourcesByKey,
 }: {
+  activityTitle: string;
   block: LessonContentBlock;
   resourcesByKey: Map<string, LessonResource>;
 }) {
@@ -98,7 +100,11 @@ function ContentActivity({
       <p class="text-sm font-semibold text-[var(--color-accent-text)]">
         {t(contentBlockLabelKeys[block.type])}
       </p>
-      <SafeMarkdown content={getText(block.content)} />
+      <SafeMarkdown
+        content={getText(block.content)}
+        headingStartLevel={3}
+        omitFirstHeadingWhenEqual={activityTitle}
+      />
       {sources.length === 0 ? null : (
         <details class="border-t border-[var(--color-border)] pt-3">
           <summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-[var(--color-text-muted)]">
@@ -517,7 +523,11 @@ function LessonWorkspace({
             </div>
           ) : null}
           {block ? (
-            <ContentActivity block={block} resourcesByKey={resourcesByKey} />
+            <ContentActivity
+              activityTitle={current?.title ?? ''}
+              block={block}
+              resourcesByKey={resourcesByKey}
+            />
           ) : null}
           {task ? (
             <TaskActivity
