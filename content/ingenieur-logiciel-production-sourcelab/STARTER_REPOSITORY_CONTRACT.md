@@ -5,38 +5,41 @@
 - Dépôt : `https://github.com/Guts6667/sourcelab`
 - Baseline vérifiée : commit `6dd1cda`
 - Tag publié : `checkpoint-00-starter`
-- Audit : 22 août 2026
+- Dernière vérification : 22 août 2026
+- PR de reconstruction : `Guts6667/sourcelab#1`
+- Merge `main` vérifié : `47243bb`
 
 LearnX n’héberge pas le code SourceLab. Le contenu pédagogique doit donc
 distinguer trois états : ce qui existe dans la baseline, ce que l’apprenant va
 créer, et ce qui doit être publié comme solution avant réouverture du parcours.
 
-À la date de l’audit, la baseline contient notamment `src/api/app.ts`,
-`src/api/server.ts`, `src/config.ts`, `src/worker/main.ts`, un squelette Prisma
-et `tests/health.test.ts`. Elle ne contient pas les TODO guidés, le repository
-mémoire, les modèles finaux, Dockerfile, Compose, workflows ni tags solution
-01–07 promis par la version précédente du programme.
+La baseline `checkpoint-00-starter` reste volontairement minimale. La PR
+SourceLab #1 construit ensuite chaque brique dans un commit distinct, documente
+les micro-actions dans `docs/LEARNING_TASKS.md` et publie les solutions sans
+modifier rétroactivement le point de départ.
 
 ## Disponibilité des checkpoints
 
-| Checkpoint | État vérifié au 22 août 2026 | Condition attendue |
+| Checkpoint | Commit vérifié | Preuve principale |
 | --- | --- | --- |
 | `checkpoint-00-starter` | publié au commit `6dd1cda` | API et test de santé exécutables |
-| `checkpoint-01-request-visible` | absent | request ID dans réponse et logs |
-| `checkpoint-02-project-contract` | absent | configuration parsée, contrat Zod et repository mémoire |
-| `checkpoint-03-api-container` | absent | image multi-stage, non-root, sans secret |
-| `checkpoint-04-postgres-project` | absent | Compose, migration, readiness et Project persistant |
-| `checkpoint-05-source-queued` | absent | SourceVersion et ProcessingJob créés atomiquement |
-| `checkpoint-06-rag-ready-local` | absent | worker, contenu normalisé, checksum et SourceVersion READY |
-| `checkpoint-07-continuous-delivery` | absent | CI verte, image SHA et publication GHCR sur tag |
+| `checkpoint-01-request-visible` | `de911b9` | request ID dans réponse et logs |
+| `checkpoint-02-project-contract` | `5ed5a7a` | configuration parsée, contrat Zod et repository mémoire |
+| `checkpoint-03-api-container` | `3aa8e58` | image multi-stage et runtime non-root |
+| `checkpoint-04-postgres-project` | `d1e6a49` | Compose, migration, readiness et Project persistant |
+| `checkpoint-05-source-queued` | `377be70` | SourceVersion et ProcessingJob créés atomiquement |
+| `checkpoint-06-rag-ready-local` | `ef254e9` | worker, contenu normalisé, checksum et SourceVersion READY |
+| `checkpoint-07-continuous-delivery` | `3bde07e` | intégration, smoke, CI et release GHCR |
 
-Les checkpoints dégradés des trois évaluations sont également absents. Cette
-table est une gate de publication, pas une invitation à consulter des tags
-inexistants.
+Les trois checkpoints d’évaluation sont publiés séparément :
+`assessment-01-broken-config-contract` (`be9f316`),
+`assessment-02-broken-compose-network` (`5d34418`) et
+`assessment-03-final-rag-ready` (`9257bf4`). Leurs défauts sont intentionnels et
+ne doivent pas être fusionnés dans `main`.
 
-## P0 — contrat de reconstruction du starter
+## P0 starter — réalisé
 
-Avant toute nouvelle inscription, le dépôt doit fournir :
+La reconstruction publiée fournit :
 
 1. des TODO bornés qui correspondent exactement aux micro-actions des sept
    leçons ;
@@ -47,6 +50,13 @@ Avant toute nouvelle inscription, le dépôt doit fournir :
 4. un commit et un tag vérifiés pour chaque checkpoint ;
 5. un scan attestant l’absence de secret et de donnée personnelle ;
 6. un README avec commandes, sorties attendues et procédure de récupération.
+
+Les six points sont présents. La CI de la PR puis celle du merge `main` ont
+validé installation verrouillée, génération Prisma, lint, typecheck, tests,
+build, image runtime, migrations PostgreSQL, intégration API/worker, smoke et
+teardown. Un scan de motifs de secrets et la revue du contexte Docker n’ont
+détecté aucun secret ; les identifiants PostgreSQL committés sont explicitement
+locaux et non sensibles.
 
 Un checkpoint solution sert de filet de sécurité après une première tentative.
 Il ne doit pas être requis pour comprendre la leçon et ne remplace jamais les
@@ -109,7 +119,8 @@ pour :
 
 ## Gate de cohérence
 
-Une revue technique doit comparer chaque extrait et commande des sept specs au
-checkpoint correspondant. Toute divergence de chemin, dépendance, sortie,
-statut HTTP ou valeur de hash bloque la republication et exige une mise à jour
-conjointe du starter, de la spec et du bundle seed.
+La reconstruction technique est disponible et testée. La republication reste
+conditionnée à la revue humaine des extraits et commandes, à l’alignement du
+bundle seed, puis au pilote L1 et L3/L4. Toute divergence de chemin, dépendance,
+sortie, statut HTTP ou valeur de hash exige une mise à jour conjointe du
+starter, de la spec et du bundle seed.
