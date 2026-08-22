@@ -598,13 +598,13 @@ constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
 
 | Ticket | Objet | Statut | Dépendances de démarrage |
 | --- | --- | --- | --- |
-| V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration sur `dev` |
-| V4-016E | Primitives et états communs accessibles | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration après V4-016D |
-| V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `PRODUCT_SURFACES_QA_GREEN_READY_FOR_DEV` | V4-016D/E intégrés localement ; intégration propriétaire sur `dev` autorisée |
+| V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `INTEGRATED_ON_DEV` | Intégré sur `origin/dev` dans la pile terminant à `7f602ca2` |
+| V4-016E | Primitives et états communs accessibles | `INTEGRATED_ON_DEV` | Intégré sur `origin/dev` dans la pile terminant à `7f602ca2` |
+| V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `DONE_ON_DEV` | QA verte et intégration sur `origin/dev` au commit `7f602ca2` |
 | V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
 | V4-016A | Landing, compte, vérification e-mail et première direction | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesses approuvées |
 | V4-016I | Recherche publique, articles partageables, programme public et graphiques | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contenu public réel |
-| V4-016B | Shell desktop et administration responsive | `SHELL_ADMIN_EXISTANT_QA_GREEN_LOCAL` | V4-016D/E intégrés localement ; correction/paiement restent dépendants de leurs contrats |
+| V4-016B | Shell desktop et administration responsive | `INTEGRATED_ON_DEV` | Shell et administration existante intégrés ; correction/paiement restent dépendants de leurs contrats |
 | V4-016G | Correction, crédits et paiement | `DESIGN_VALIDATED_CONTRACTS_PENDING` | V4-007/010/012/014 stabilisés et V4-016D/E |
 | V4-016 | Annonce de création V5 | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesse V5 validée |
 | V4-016H | QA, adoption progressive et rollback | `WAIT_PREVIOUS_TOTEM_LOTS` | Lots Totem réellement implémentés |

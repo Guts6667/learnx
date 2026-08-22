@@ -4,7 +4,7 @@
 
 - **Classe** : `ACTIVE_DESIGN_AUTHORITY`
 - **Décision propriétaire** : `DESIGN_VALIDATED`
-- **Implémentation applicative** : `V4_016C_QA_GREEN_READY_FOR_DEV`
+- **Implémentation applicative** : `V4_016C_DONE_ON_DEV`
 - **Date** : 21 août 2026
 - **Portée** : langage visuel, composants et découpage des surfaces LearnX
 
@@ -20,7 +20,8 @@ V4-016D/E, V4-016B et V4-016C ont reçu leur GO d'implémentation ; V4-016C a
 
 ## 0. État d'implémentation de V4-016D
 
-Les fondations Totem sont préparées dans un worktree isolé, sans publication :
+Les fondations Totem sont intégrées sur `origin/dev` dans la pile terminant au
+commit `7f602ca2` :
 
 - palette sémantique Totem et régime clair exposés sous des tokens dédiés ;
 - aliases Atlas applicatifs conservés pour permettre la migration écran par
@@ -107,13 +108,14 @@ un contrat pour reproduire une maquette.
 
 ## 5. File ordonnée d'implémentation
 
-V4-016D et V4-016E sont implémentés et validés dans deux commits locaux
-ordonnés, en attente d'intégration propriétaire. Une première tranche V4-016B
+V4-016D et V4-016E sont implémentés et intégrés dans deux commits ordonnés.
+Une première tranche V4-016B
 couvre aussi le shell et les routes admin déjà disponibles ; les surfaces
 correction/paiement restent bloquées sur leurs contrats. V4-016C migre les
 surfaces produit autorisées sans changer le runtime multi-programmes. Sa
 composition de reprise est protégée par une assertion responsive : rail compact
-à droite sur desktop, empilement après la priorité sur mobile. Les autres
+à droite sur desktop, empilement après la priorité sur mobile. Le lot est intégré
+sur `origin/dev` au commit `7f602ca2`. Les autres
 lots restent `DESIGN_VALIDATED_IMPLEMENTATION_WAIT_GO`. Cette file est parallèle
 au chemin critique IA et ne le remplace pas.
 
