@@ -74,19 +74,23 @@ attendus.
 
 ## État réel du starter
 
-Au 22 août 2026, seul `checkpoint-00-starter` est publié et vérifié. Les tags
-solution `checkpoint-01` à `checkpoint-07`, les TODO guidés et les checkpoints
-d’évaluation dégradés ne sont pas disponibles dans le dépôt public. Les leçons
-décrivent la progression cible, mais leur publication reste bloquée tant que le
-contrat du starter n’est pas satisfait. Aucun texte ne doit inviter un
-apprenant à consulter un checkpoint absent.
+Au 22 août 2026, `checkpoint-00-starter`, les sept tags solution et les trois
+checkpoints d’évaluation sont publiés dans le dépôt SourceLab. La PR SourceLab
+#1 et son merge `47243bb` ont passé deux fois la CI complète : image, migrations,
+PostgreSQL, intégration API/worker et smoke. Le README du starter documente les
+micro-actions, la comparaison d’une solution et la récupération sans perte.
+
+Cette gate technique est levée. Le programme reste toutefois en `draft` tant
+que les revues humaines, l’alignement final specs/seed et le pilote L1 puis
+L3/L4 ne sont pas renseignés ; la disponibilité du code ne vaut pas validation
+pédagogique générale.
 
 ## Gates avant republication
 
 ### P0 — obligatoires
 
-- Starter : TODO réels, solutions 01–07, checkpoints d’évaluation dégradés,
-  tags et commits vérifiés, aucun secret.
+- Starter : **réalisé** — TODO réels, solutions 01–07, checkpoints d’évaluation
+  dégradés, tags et commits vérifiés, aucun secret détecté.
 - Contenu : synthèse interne suffisante, extraits exacts, au moins six
   diagrammes utiles, commandes et sorties testées, une intention par
   micro-activité.
