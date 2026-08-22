@@ -63,7 +63,7 @@ const activeManifestSchema = z
       experimental: z.object({
         pipelinePromoted: z.literal(false),
         status: z.literal(
-          'V4_009C_S2_NO_GO_GEMINI_3_6_NETWORK_GO_PENDING',
+          'V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED',
         ),
       }),
       offlineCandidate: z.object({
@@ -165,7 +165,8 @@ const activeManifestSchema = z
     holdoutAdmissionGate: z.object({
       currentBlockers: z.tuple([
         z.literal('CLOSED_SONNET_IDENTITY_FAILED_STAGE_ONE'),
-        z.literal('GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED'),
+        z.literal('GEMINI_3_6_GATE_NO_GO_TECHNICAL'),
+        z.literal('GEMINI_3_6_COST_RECONCILIATION_REQUIRED'),
         z.literal('NEW_STAGE_ONE_NOT_EXECUTED'),
       ]),
       status: z.literal('NOT_ELIGIBLE'),
@@ -264,7 +265,8 @@ const activeManifestSchema = z
           ),
           modelId: z.literal('google/gemini-3.6-flash'),
           networkCallsAllowed: z.literal(false),
-          ownerAuthorizationGranted: z.literal(false),
+          ownerAuthorizationConsumed: z.literal(true),
+          ownerAuthorizationGranted: z.literal(true),
           ownerIdentityApprovalGranted: z.literal(true),
           proposedRequestedRoute: z.literal('google-vertex/global'),
           rank: z.literal(1),
@@ -274,7 +276,7 @@ const activeManifestSchema = z
             temperature: z.literal('OMIT_UNSUPPORTED'),
           }),
           runnerStatus: z.literal(
-            'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_AND_SIMULATED_TRANSPORT_GREEN',
+            'NETWORK_GATE_STOPPED_AFTER_1_OF_4_NO_RETRY_OR_FALLBACK',
           ),
           routeAttestationStatus: z.literal(
             'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
@@ -285,6 +287,22 @@ const activeManifestSchema = z
           transportPreflightFingerprint: z.literal(
             '317966c06fed11a96a004932e60a8540a3bafb01cc7eceb629c878dada71a079',
           ),
+          networkAuthorization: z.string().min(1),
+          networkAuthorizationFingerprint: z.literal(
+            'a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906',
+          ),
+          networkGateResult: z.object({
+            actualCostUsd: z.null(),
+            financialState: z.literal('RECONCILIATION_REQUIRED'),
+            modelCallsPerformed: z.literal(1),
+            status: z.literal('NO-GO_TECHNICAL_PROVIDER_HTTP_400'),
+            unresolvedReservedCostUsd: z.literal(0.1208415),
+            unusedAuthorizedCallsNotSent: z.literal(3),
+            usableWorkflows: z.literal(0),
+            verificationFingerprint: z.literal(
+              '1192bb02f40d4c5ac159be91738b7696e3c615049f7e428b6618a07d6e2b00b4',
+            ),
+          }),
         }),
         z.object({
           candidate: z.literal('GEMINI_3_7_FLASH_TECHNICAL_OPTION'),
@@ -336,7 +354,7 @@ const activeManifestSchema = z
         panelAuthorized: z.literal(false),
       }),
       status: z.literal(
-        'GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING',
+        'GEMINI_3_6_GATE_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED',
       ),
     }),
     offlineWork: z.object({
@@ -345,7 +363,7 @@ const activeManifestSchema = z
       }),
       'V4-003': z.object({
         status: z.literal(
-          'V4_003E_GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING',
+          'V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED',
         ),
       }),
       'V4-009C': z.object({
@@ -637,7 +655,7 @@ describe('active autonomous correction phase manifest', () => {
     );
   });
 
-  it('records the approved Gemini 3.6 identity and envelope without execution authority', () => {
+  it('records the closed Gemini 3.6 technical gate and unresolved cost', () => {
     const queue = active.offlineCandidateQueue;
     const [gemini36, gemini37, mistral] = queue.candidates;
 
@@ -652,13 +670,14 @@ describe('active autonomous correction phase manifest', () => {
         'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
       modelId: 'google/gemini-3.6-flash',
       networkCallsAllowed: false,
-      ownerAuthorizationGranted: false,
+      ownerAuthorizationGranted: true,
+      ownerAuthorizationConsumed: true,
       ownerIdentityApprovalGranted: true,
       financeArbitrationGranted: true,
       proposedRequestedRoute: 'google-vertex/global',
       rank: 1,
       runnerStatus:
-        'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_AND_SIMULATED_TRANSPORT_GREEN',
+        'NETWORK_GATE_STOPPED_AFTER_1_OF_4_NO_RETRY_OR_FALLBACK',
       routeAttestationStatus:
         'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
     });
@@ -666,6 +685,15 @@ describe('active autonomous correction phase manifest', () => {
       reasoning: 'MANDATORY',
       reasoningEffort: 'MINIMAL',
       temperature: 'OMIT_UNSUPPORTED',
+    });
+    expect(gemini36.networkGateResult).toMatchObject({
+      actualCostUsd: null,
+      financialState: 'RECONCILIATION_REQUIRED',
+      modelCallsPerformed: 1,
+      status: 'NO-GO_TECHNICAL_PROVIDER_HTTP_400',
+      unresolvedReservedCostUsd: 0.1208415,
+      unusedAuthorizedCallsNotSent: 3,
+      usableWorkflows: 0,
     });
     expect(
       gemini36.financeApproval.maximumCostPerAttemptUsd *
@@ -898,10 +926,11 @@ describe('active autonomous correction phase manifest', () => {
     });
     expect(active.deliveryState.experimental).toEqual({
       pipelinePromoted: false,
-      status: 'V4_009C_S2_NO_GO_GEMINI_3_6_NETWORK_GO_PENDING',
+      status:
+        'V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED',
     });
     expect(active.holdoutAdmissionGate.currentBlockers).toContain(
-      'GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED',
+      'GEMINI_3_6_COST_RECONCILIATION_REQUIRED',
     );
     expect(active.offlineCandidateQueue.guards).toMatchObject({
       holdoutAuthorized: false,

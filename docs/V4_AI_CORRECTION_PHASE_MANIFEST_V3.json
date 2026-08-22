@@ -87,7 +87,7 @@
       "scope": "EVIDENCE_ASSIST_PROTOCOL_3_0_0_RUNNER_HOLDOUT_AUTHORING_AND_V4_010_OFFLINE_FAKE_FLOW"
     },
     "experimental": {
-      "status": "V4_009C_S2_NO_GO_GEMINI_3_6_NETWORK_GO_PENDING",
+      "status": "V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED",
       "pipelinePromoted": false
     },
     "live": {
@@ -207,9 +207,9 @@
     }
   ],
   "offlineCandidateQueue": {
-      "status": "GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING",
+      "status": "GEMINI_3_6_GATE_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED",
     "currentTicket": "V4-003E-Q1",
-    "authority": "docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md",
+    "authority": "docs/V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md",
     "commonFrozenCore": {
       "sourceFreezeDossier": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json",
       "sourceFreezeDossierSha256": "1cbd9a03170e0f8243edc2fabfe0897c5b6e399422b48373c841729699701d69",
@@ -266,7 +266,7 @@
       {
         "rank": 1,
         "candidate": "GEMINI_3_6_FLASH",
-        "status": "IDENTITY_AND_FINANCE_APPROVED_SIMULATED_TRANSPORT_GREEN_NETWORK_GO_PENDING",
+        "status": "GATE_CLOSED_NO_GO_TECHNICAL_PROVIDER_HTTP_400_RECONCILIATION_REQUIRED",
         "modelId": "google/gemini-3.6-flash",
         "canonicalCatalogId": "google/gemini-3.6-flash-20260721",
         "proposedRequestedRoute": "google-vertex/global",
@@ -298,7 +298,7 @@
           "historicalDraftReused": false,
           "authorizationEffect": "NO_NETWORK_GO"
         },
-        "runnerStatus": "PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_AND_SIMULATED_TRANSPORT_GREEN",
+        "runnerStatus": "NETWORK_GATE_STOPPED_AFTER_1_OF_4_NO_RETRY_OR_FALLBACK",
         "manifestPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json",
         "identityFingerprint": "ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed",
         "financeEnvelope": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json",
@@ -307,7 +307,22 @@
         "transportPreflightFingerprint": "317966c06fed11a96a004932e60a8540a3bafb01cc7eceb629c878dada71a079",
         "ownerIdentityApprovalGranted": true,
         "financeArbitrationGranted": true,
-        "ownerAuthorizationGranted": false,
+        "ownerAuthorizationGranted": true,
+        "ownerAuthorizationConsumed": true,
+        "networkAuthorization": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-network-authorization.v1.json",
+        "networkAuthorizationFingerprint": "a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906",
+        "networkGateResult": {
+          "status": "NO-GO_TECHNICAL_PROVIDER_HTTP_400",
+          "resultDirectory": "benchmarks/ai-correction/results/writing-framework-selection-gemini36-v2/2026-08-22T07-02-55Z-owner-go",
+          "report": "docs/V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md",
+          "modelCallsPerformed": 1,
+          "unusedAuthorizedCallsNotSent": 3,
+          "usableWorkflows": 0,
+          "actualCostUsd": null,
+          "unresolvedReservedCostUsd": 0.1208415,
+          "financialState": "RECONCILIATION_REQUIRED",
+          "verificationFingerprint": "1192bb02f40d4c5ac159be91738b7696e3c615049f7e428b6618a07d6e2b00b4"
+        },
         "networkCallsAllowed": false
       },
       {
@@ -425,7 +440,7 @@
       "forbidden": ["PUBLISH_AS_LIVE_ELIGIBLE", "MODEL_CALL", "HOLDOUT_ACCESS"]
     },
     "V4-003": {
-      "status": "V4_003E_GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING",
+      "status": "V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED",
       "nextTicket": "V4-003E-Q1",
       "responsibleAgent": "AGENT-PROTOCOLE-IA",
       "allowed": [
@@ -450,7 +465,9 @@
       "nextExecutionTicket": null,
       "responsibleAgent": "AGENT-PROTOCOLE-IA",
       "blockedBy": [
-        "GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED"
+        "GEMINI_3_6_GATE_NO_GO_TECHNICAL",
+        "GEMINI_3_6_COST_RECONCILIATION_REQUIRED",
+        "NEW_IDENTITY_AND_OWNER_AUTHORIZATION_REQUIRED_FOR_ANY_FUTURE_CALL"
       ],
       "allowed": [
         "PRESERVE_FROZEN_CAMPAIGN_AND_GATE_IDENTIFIERS",
@@ -1111,7 +1128,8 @@
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
       "CLOSED_SONNET_IDENTITY_FAILED_STAGE_ONE",
-      "GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED",
+      "GEMINI_3_6_GATE_NO_GO_TECHNICAL",
+      "GEMINI_3_6_COST_RECONCILIATION_REQUIRED",
       "NEW_STAGE_ONE_NOT_EXECUTED"
     ]
   },

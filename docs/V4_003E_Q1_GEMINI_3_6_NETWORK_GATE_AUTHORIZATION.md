@@ -29,3 +29,10 @@ même autorisation.
 L'autorisation ne modifie pas l'enveloppe Finance ni les dossiers historiques.
 Le résultat et la consommation effective sont consignés séparément après
 l'arrêt ou le succès du gate.
+
+## Consommation
+
+L'autorisation a été consommée le 22 août 2026 par un seul appel. Le gate s'est
+arrêté sur `PROVIDER_HTTP_400 / RECONCILIATION_REQUIRED` et les trois appels
+restants n'ont pas été envoyés. Elle n'est plus réutilisable. Voir
+`V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md`.

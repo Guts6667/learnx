@@ -922,3 +922,40 @@ plafond, profil, manifeste ou identité n'est gelé. Le panel, le holdout, tout
 contrat publié et le live restent fermés.
 
 Rapport : `docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md`.
+
+### 2026-08-22 — Gate Gemini 3.6 arrêté sur HTTP 400 fournisseur
+
+Statut : `NO_GO_TECHNICAL_PROVIDER_HTTP_400 /
+RECONCILIATION_REQUIRED / AUTHORIZATION_CONSUMED / NO_REPLAY`.
+
+Sous l'identité exacte
+`ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed`,
+le gate Gemini 3.6 a envoyé le premier cas sur quatre puis s'est arrêté. Le
+modèle demandé était `google/gemini-3.6-flash`, avec snapshot attesté
+`google/gemini-3.6-flash-20260721`, route épinglée
+`google-vertex/global`, provider attendu Google, raisonnement `MINIMAL`, sans
+temperature, retry ni fallback.
+
+Le fournisseur a retourné HTTP 400 avec le statut Google `INVALID_ARGUMENT` et
+le message générique « Request contains an invalid argument. ». Aucun argument
+précis n'est identifié par le raw : aucune cause plus fine n'est affirmée. Le
+cas `baseline-pico-spider-mastered` n'a produit aucune sortie utilisable ; les
+trois autres appels n'ont pas été envoyés. Ce résultat est un NO-GO technique
+de cette identité de transport, pas un verdict pédagogique sur Gemini.
+
+Le runner a persisté `CALL_INTENT`, le raw avant validation et
+`CALL_OUTCOME`. La réponse ne contient ni identifiant fournisseur, ni usage, ni
+coût `ACTUAL`. Le coût réel est donc inconnu et ne doit jamais être lu comme
+zéro ; la réserve `0,1208415 USD` reste en `RECONCILIATION_REQUIRED`. Un
+addendum append-only corrige l'interprétation du résumé initial, et le lanceur
+produira désormais `null` pour un coût agrégé non réconcilié.
+
+L'autorisation single-use
+`a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906`
+est consommée et ne peut être rejouée. Toute correction du payload ou du profil
+crée une nouvelle identité et exige de nouveaux arbitrages. Panel `10 × 2`,
+holdout, contrat publié et V4-010 live restent fermés.
+
+Rapport : `docs/V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md`. Artefacts
+append-only :
+`benchmarks/ai-correction/results/writing-framework-selection-gemini36-v2/2026-08-22T07-02-55Z-owner-go/`.

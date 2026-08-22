@@ -54,8 +54,10 @@ chemin de lecture actif.
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-runner-preflight.v1.json` | `HISTORICAL_EVIDENCE` | Preuve machine Sonnet 4/4 fake, conservée sans valeur d'attestation Gemini. |
 | `V4_009C_S2_NETWORK_GATE_REPORT.md` | `HISTORICAL_EVIDENCE` | Preuve canonique du gate Sonnet clos après `1/4` ; aucun replay, panel, holdout ou live. |
 | `V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md` | `CURRENT_STATUS` | Verdict Sonnet borné, limites `n = 1`, conservation append-only et ordre Gemini 3.6 → Gemini 3.7 → Mistral. |
-| `V4_003E_Q1_GEMINI_3_6_OFFLINE_DOSSIER.md` | `CURRENT_STATUS` | Dossier Gemini 3.6 ; identité et enveloppe désormais approuvées, sans GO réseau. |
-| `V4_003E_Q1_GEMINI_3_6_NETWORK_TRANSPORT_PREFLIGHT.md` | `CURRENT_STATUS` | Transport Gemini simulé vert ; 0 appel réseau, 0 appel modèle, GO réseau toujours absent. |
+| `V4_003E_Q1_GEMINI_3_6_OFFLINE_DOSSIER.md` | `HISTORICAL_EVIDENCE` | Préparation hors ligne Gemini 3.6 avant consommation du gate réseau. |
+| `V4_003E_Q1_GEMINI_3_6_NETWORK_TRANSPORT_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` | Transport Gemini simulé vert avant le gate réseau désormais clos. |
+| `V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_AUTHORIZATION.md` | `HISTORICAL_EVIDENCE` | Autorisation single-use consommée par le gate clos ; aucune réutilisation. |
+| `V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md` | `CURRENT_STATUS` | Gate clos après `1/4` sur HTTP 400 ; coût/identifiant absents, réconciliation requise, aucun verdict pédagogique. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques

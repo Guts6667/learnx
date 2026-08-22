@@ -36,7 +36,7 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(read(path).slice(0, 700)).toContain('CLOSED_REQUEST');
   });
 
-  it('routes the closed Sonnet gate to the approved Gemini transport preflight', () => {
+  it('routes the closed Gemini gate to reconciliation without execution authority', () => {
     const index = read('docs/INDEX.md');
     const backlog = read('BACKLOG_V4.md');
     const roadmap = read('docs/V4_ROADMAP.md');
@@ -85,7 +85,7 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(roadmap).toContain('| `V4-003E — Analyse et documentation` |');
     expect(roadmap).toContain('| `V4-003E-Q1 — Dossier Gemini 3.6` |');
     expect(backlog).toContain(
-      '`V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `APPROVED_IDENTITY_FINANCE_SIMULATED_TRANSPORT_GREEN`',
+      '`V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `DONE_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED`',
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({

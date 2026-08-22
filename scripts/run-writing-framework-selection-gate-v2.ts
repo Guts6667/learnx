@@ -257,14 +257,28 @@ const run = await runWritingFrameworkSelectionGateLive({
   provider,
   store,
 });
-const totalActualCostUsd = run.attempts.reduce(
-  (total, attempt) => total + (attempt.actualCostUsd ?? 0),
+const costsFullyReconciled = run.attempts.every(
+  ({ actualCostUsd, costSource }) =>
+    actualCostUsd !== null && costSource === 'ACTUAL',
+);
+const totalActualCostUsd = costsFullyReconciled
+  ? run.attempts.reduce(
+      (total, attempt) => total + (attempt.actualCostUsd ?? 0),
+      0,
+    )
+  : null;
+const unresolvedReservedCostUsd = run.attempts.reduce(
+  (total, attempt) =>
+    attempt.actualCostUsd === null
+      ? total + packageInput.finance.perAttemptBound.maximumCostUsd
+      : total,
   0,
 );
 const summary = {
   attempts: run.attempts,
   authorizationFingerprint: authorization.authorizationFingerprint,
   completedAt: new Date().toISOString(),
+  costsFullyReconciled,
   dossierSha256: sha256(dossierText),
   financeEnvelopeSha256: sha256(financeText),
   forceNoGo: run.forceNoGo,
@@ -283,6 +297,7 @@ const summary = {
   requestedRoute: packageInput.requestedRoute,
   stoppedReason: run.stoppedReason,
   totalActualCostUsd,
+  unresolvedReservedCostUsd,
   usableWorkflows: run.usableWorkflows,
 };
 await writeJsonExclusive(resolve(outputDirectory, 'summary.json'), summary);
