@@ -7,7 +7,7 @@
   "lesson": {
     "title": "Modéliser et mettre en file une source",
     "slug": "modeliser-mettre-en-file-source",
-    "summary": "Étendre la verticale avec Source, SourceVersion et ProcessingJob afin d’enregistrer atomiquement une source Markdown et un traitement QUEUED.",
+    "summary": "Distinguer source, version et job, puis enregistrer atomiquement une source Markdown et son traitement QUEUED sans anticiper le RAG.",
     "objectives": [
       "Séparer identité d’une source, version de contenu et intention de traitement.",
       "Créer SourceVersion et ProcessingJob dans une transaction courte.",
@@ -24,16 +24,16 @@
         "type": "objective",
         "position": 1,
         "content": {
-          "text": "Le point de départ est checkpoint-04-postgres-project. La brique checkpoint-05-source-queued ajoute une source texte ou Markdown traçable et un job QUEUED, sans calculer encore checksum, chunks ou embeddings.",
+          "text": "## Point de départ et limite de la leçon\n\n`checkpoint-04-postgres-project` sait créer et conserver un projet. Cette leçon ajoute une demande d’import de texte ou Markdown. Elle s’arrête volontairement quand une `SourceVersion` et un `ProcessingJob` existent tous deux au statut `QUEUED`. Aucun checksum, contenu normalisé, chunk ou embedding n’est encore produit. Le livrable `checkpoint-05-source-queued` doit montrer non seulement les lignes créées, mais aussi l’absence d’état partiel quand une écriture échoue.",
           "sourceKeys": []
         }
       },
       {
         "key": "content-modeliser-mettre-en-file-source-2",
-        "type": "definition",
+        "type": "rich_text",
         "position": 2,
         "content": {
-          "text": "Project regroupe le travail ; Source porte l’identité éditoriale title et origin ; SourceVersion immobilise versionLabel, mediaType et rawContent ; ProcessingJob porte l’intention de traiter cette version. Séparer ces responsabilités permet plusieurs versions sans dupliquer l’identité de la source.",
+          "text": "## 1. Quatre objets, quatre responsabilités\n\nUn **Project** regroupe le travail d’un utilisateur. Une **Source** porte l’identité éditoriale relativement stable : un `title` et une `origin`. Une **SourceVersion** immobilise un état précis du matériau avec `versionLabel`, `mediaType` et `rawContent`. Un **ProcessingJob** représente l’intention de traiter cette version et porte son propre statut et son éventuel `errorCode`.\n\nCette séparation évite trois confusions. Modifier le titre d’une source ne crée pas automatiquement une nouvelle version de contenu. Réimporter une édition différente ne duplique pas le projet. Enfin, un échec de traitement décrit le job ; il n’efface ni l’identité de la source ni le contenu brut déjà reçu. Dans cette version du parcours, une source appartient à un projet, une source possède plusieurs versions et chaque version peut être reliée à ses jobs.",
           "sourceKeys": ["prisma-relations"]
         }
       },
@@ -42,17 +42,17 @@
         "type": "example",
         "position": 3,
         "content": {
-          "text": "POST /projects/:projectId/imports valide title, origin, versionLabel et markdownText. Dans une transaction, le serveur retrouve ou crée Source, crée SourceVersion au statut QUEUED puis ProcessingJob au même statut. Une erreur annule l’ensemble ; aucune version orpheline ne doit rester.",
-          "sourceKeys": ["postgres-transactions", "prisma-relations"]
+          "text": "## Extrait Prisma court et commenté\n\n```prisma\nmodel Project {\n  id        String   @id @default(cuid())\n  title     String\n  createdAt DateTime @default(now())\n  sources   Source[]\n}\n\nmodel Source {\n  id        String          @id @default(cuid())\n  projectId String\n  project   Project         @relation(fields: [projectId], references: [id])\n  title     String\n  origin    String\n  versions  SourceVersion[]\n\n  @@unique([projectId, origin])\n}\n\nmodel SourceVersion {\n  id                String          @id @default(cuid())\n  sourceId          String\n  source            Source          @relation(fields: [sourceId], references: [id])\n  versionLabel      String\n  mediaType         String\n  rawContent        String\n  normalizedContent String?\n  checksumSha256    String?\n  status            String          @default(\"QUEUED\")\n  processingJobs    ProcessingJob[]\n}\n\nmodel ProcessingJob {\n  id              String        @id @default(cuid())\n  sourceVersionId String\n  sourceVersion   SourceVersion @relation(fields: [sourceVersionId], references: [id])\n  status          String        @default(\"QUEUED\")\n  errorCode       String?\n}\n```\n\nLes champs de relation relient les objets ; les clés étrangères matérialisent ces liens en base. `normalizedContent` et `checksumSha256` sont optionnels parce que le checkpoint d’import crée d’abord une version `QUEUED`; le worker de la leçon suivante les remplira ensemble. `@@unique([projectId, origin])` exprime ici la règle de l’exercice : une origine n’est enregistrée qu’une fois dans un projet. Avant de conserver cette contrainte, vérifiez qu’elle correspond bien au produit attendu.",
+          "sourceKeys": ["prisma-relations"]
         }
       },
       {
         "key": "content-modeliser-mettre-en-file-source-4",
-        "type": "callout",
+        "type": "embed",
         "position": 4,
         "content": {
-          "text": "Guidage : compléter l’ERD fourni, les relations Prisma et la migration, puis le schéma Zod et le handler. Trois tests imposés couvrent projet absent, payload invalide et succès transactionnel.",
-          "sourceKeys": []
+          "text": "## Schéma : identité, version et traitement\n\nLisez l’ERD comme une réponse à la question « qui possède durablement cette donnée ? ».\n\n![ERD du socle d’ingestion SourceLab](/learning/sourcelab/sourcelab-erd.svg)\n\n**Description textuelle —** `Project` possède plusieurs `Source`. Chaque `Source` possède plusieurs `SourceVersion`. Chaque `SourceVersion` conserve un contenu brut et peut posséder plusieurs `ProcessingJob`. La flèche vers le job signifie « cette intention traite cette version » ; elle ne signifie pas que le job contient le document. Les champs normalisés et le checksum sont absents ou nuls à ce checkpoint.\n\n**À retenir —** `Source` porte l’identité, `SourceVersion` porte un état du contenu et `ProcessingJob` porte une tentative de traitement.",
+          "sourceKeys": ["prisma-relations"]
         }
       },
       {
@@ -60,7 +60,65 @@
         "type": "callout",
         "position": 5,
         "content": {
-          "text": "Preuve de fin : la réponse expose jobId et sourceVersionId ; PostgreSQL contient title, origin, versionLabel et rawContent ; normalizedContent et checksumSha256 restent nuls. Cette limite est volontaire et sera levée par le worker.",
+          "text": "## Micro-action : attribuer chaque donnée à son propriétaire\n\nClassez les six informations suivantes avant de coder : `title`, `origin`, `versionLabel`, `rawContent`, `status` et `errorCode`. Pour chacune, indiquez le modèle propriétaire et une phrase de justification. Le contrôle déterministe consiste à comparer votre tableau à l’ERD : aucune information ne doit être dupliquée uniquement pour éviter une relation. Si vous hésitez entre `SourceVersion.status` et `ProcessingJob.status`, explicitez le point de vue : état courant du contenu d’un côté, état de l’exécution de l’autre.",
+          "sourceKeys": ["prisma-relations"]
+        }
+      },
+      {
+        "key": "content-modeliser-mettre-en-file-source-6",
+        "type": "rich_text",
+        "position": 6,
+        "content": {
+          "text": "## 2. Une transaction protège une intention métier\n\nUne **transaction** regroupe plusieurs écritures entre un début et une fin. Si toutes réussissent, la transaction est validée ; si l’une échoue, les écritures du groupe sont annulées. Ici, l’intention métier est : « enregistrer une version et créer le job qui la traitera ». Une version sans job resterait bloquée ; un job sans version ne saurait pas quoi traiter.\n\nLa transaction doit rester courte. Elle peut retrouver ou créer `Source`, créer `SourceVersion`, puis créer `ProcessingJob`. Elle ne doit pas attendre un appel réseau, normaliser un long document ni calculer un embedding. Ces travaux appartiennent au worker après le commit. La validation Zod et la vérification de l’existence du projet se font avant ou au début de cette frontière afin de ne pas ouvrir une transaction pour un payload manifestement invalide.",
+          "sourceKeys": ["postgres-transactions", "prisma-transactions"]
+        }
+      },
+      {
+        "key": "content-modeliser-mettre-en-file-source-7",
+        "type": "example",
+        "position": 7,
+        "content": {
+          "text": "## Extrait TypeScript : créer version et job ensemble\n\nLe point d’injection `createJob` n’existe que pour contrôler précisément le rollback. Sa valeur par défaut appelle Prisma en production.\n\n```ts\nimport type { Prisma } from '../generated/prisma/client.js';\n\nclass ProjectNotFoundError extends Error {\n  readonly code = 'PROJECT_NOT_FOUND';\n}\n\ntype CreateJob = (\n  tx: Prisma.TransactionClient,\n  sourceVersionId: string,\n) => Promise<{ id: string }>;\n\nconst createProcessingJob: CreateJob = (tx, sourceVersionId) =>\n  tx.processingJob.create({\n    data: { sourceVersionId, status: 'QUEUED' },\n  });\n\nexport async function queueImport(\n  projectId: string,\n  input: ImportSourceInput,\n  createJob: CreateJob = createProcessingJob,\n) {\n  return prisma.$transaction(async (tx) => {\n    const project = await tx.project.findUnique({ where: { id: projectId } });\n    if (!project) throw new ProjectNotFoundError(projectId);\n\n    const source = await tx.source.upsert({\n      where: { projectId_origin: { projectId, origin: input.origin } },\n      update: { title: input.title },\n      create: { projectId, title: input.title, origin: input.origin },\n    });\n\n    const sourceVersion = await tx.sourceVersion.create({\n      data: {\n        sourceId: source.id,\n        versionLabel: input.versionLabel,\n        mediaType: 'text/markdown',\n        rawContent: input.markdownText,\n        status: 'QUEUED',\n      },\n    });\n\n    const job = await createJob(tx, sourceVersion.id);\n\n    return {\n      sourceId: source.id,\n      sourceVersionId: sourceVersion.id,\n      jobId: job.id,\n      status: 'QUEUED' as const,\n    };\n  });\n}\n```\n\nLa lecture d’existence et toutes les écritures utilisent `tx`. Si le projet manque, ou si `createJob` échoue après la création de la version, la transaction entière est annulée. Aucun traitement externe n’est lancé tant qu’elle est ouverte.",
+          "sourceKeys": [
+            "prisma-relations",
+            "postgres-transactions",
+            "prisma-transactions"
+          ]
+        }
+      },
+      {
+        "key": "content-modeliser-mettre-en-file-source-8",
+        "type": "example",
+        "position": 8,
+        "content": {
+          "text": "## 3. Contrat HTTP et commandes de preuve\n\nLe schéma valide l’enveloppe sans normaliser le document à la place du worker :\n\n```ts\nimport { z } from 'zod';\n\nexport const ImportSourceInputSchema = z.object({\n  title: z.string().trim().min(1),\n  origin: z.string().trim().min(1),\n  versionLabel: z.string().trim().min(1),\n  // Ne pas trim() : les octets bruts seront normalisés par le worker.\n  markdownText: z.string().min(1),\n});\n```\n\nLa route réutilise la lecture JSON défensive de la leçon 2 et injecte `queueSource` dans `createApp` pour tester une erreur serveur sans casser PostgreSQL :\n\n```ts\ntype QueueSource = typeof queueImport;\n\nexport function createApp(\n  projectRepository: ProjectRepository,\n  readinessProbe: ReadinessProbe,\n  queueSource: QueueSource = queueImport,\n) {\n  const app = new Hono<AppEnvironment>();\n\n  app.post('/projects/:projectId/imports', async (context) => {\n    let body: unknown;\n    try {\n      body = await context.req.json();\n    } catch {\n      return context.json({ error: { code: 'INVALID_JSON' } }, 400);\n    }\n\n    const parsed = ImportSourceInputSchema.safeParse(body);\n    if (!parsed.success) {\n      return context.json({ error: { code: 'VALIDATION_ERROR' } }, 400);\n    }\n\n    const queued = await queueSource(\n      context.req.param('projectId'),\n      parsed.data,\n    );\n    return context.json({ data: queued }, 201);\n  });\n\n  app.onError((error, context) => {\n    const requestId = context.get('requestId');\n    if (error instanceof ProjectNotFoundError) {\n      return context.json({ error: { code: error.code } }, 404);\n    }\n\n    console.error(\n      JSON.stringify({ event: 'request_failed', requestId, error: error.message }),\n    );\n    return context.json({ error: { code: 'INTERNAL_ERROR' } }, 500);\n  });\n\n  return app;\n}\n```\n\nLe middleware de request ID de la leçon 1 ajoute le même `x-request-id` à ces réponses. Un projet absent devient `404 PROJECT_NOT_FOUND`; une panne inattendue devient `500 INTERNAL_ERROR`, avec le request ID dans le log et sans exposer le détail Prisma au client.\n\nAvec un `$PROJECT_ID` existant :\n\n```bash\ncurl -i -X POST http://localhost:3000/projects/$PROJECT_ID/imports \\\n  -H 'content-type: application/json' \\\n  -d '{\n    \"title\": \"Architecture du corpus\",\n    \"origin\": \"internal://architecture.md\",\n    \"versionLabel\": \"v1\",\n    \"markdownText\": \"# Architecture\\n\\nVersion initiale.\"\n  }'\n```\n\nSortie représentative :\n\n```http\nHTTP/1.1 201 Created\ncontent-type: application/json; charset=UTF-8\n\n{\"data\":{\"sourceId\":\"<cuid>\",\"sourceVersionId\":\"<cuid>\",\"jobId\":\"<cuid>\",\"status\":\"QUEUED\"}}\n```\n\nLes trois identifiants varient ; leur présence, le statut et la forme du corps sont contrôlables.\n\nLa preuve en base ne doit pas être laissée à inventer. Réutilisez le `sourceId` de la réponse et demandez à PostgreSQL la chaîne de relations exacte :\n\n```bash\ndocker compose exec -T db psql -U sourcelab -d sourcelab \\\n  -P pager=off -P \"null=<NULL>\" -x -c \"\nSELECT\n  s.id AS \\\"sourceId\\\",\n  s.title,\n  s.origin,\n  sv.id AS \\\"sourceVersionId\\\",\n  sv.\\\"versionLabel\\\",\n  sv.\\\"mediaType\\\",\n  sv.\\\"rawContent\\\",\n  sv.status AS \\\"versionStatus\\\",\n  sv.\\\"normalizedContent\\\",\n  sv.\\\"checksumSha256\\\",\n  pj.id AS \\\"jobId\\\",\n  pj.status AS \\\"jobStatus\\\"\nFROM \\\"Source\\\" AS s\nJOIN \\\"SourceVersion\\\" AS sv ON sv.\\\"sourceId\\\" = s.id\nJOIN \\\"ProcessingJob\\\" AS pj ON pj.\\\"sourceVersionId\\\" = sv.id\nWHERE s.id = '$SOURCE_ID';\n\"\n```\n\nSortie représentative abrégée :\n\n```text\n-[ RECORD 1 ]-----+---------------------------------\nsourceId           | <même sourceId que la réponse>\ntitle              | Architecture du corpus\norigin             | internal://architecture.md\nsourceVersionId    | <même sourceVersionId>\nversionLabel       | v1\nmediaType          | text/markdown\nrawContent         | # Architecture                 +\n                   |                                 +\n                   | Version initiale.\nversionStatus      | QUEUED\nnormalizedContent  | <NULL>\nchecksumSha256     | <NULL>\njobId              | <même jobId>\njobStatus          | QUEUED\n```\n\nLes trois égalités d’identifiants prouvent que le `JOIN` suit la même intention d’import, pas trois lignes sans rapport. Les deux statuts `QUEUED` et les deux champs produits `NULL` prouvent que l’API a seulement enregistré le brut ; la normalisation appartient encore au worker. `sourceId` servira aux routes de suivi de la leçon suivante. Une requête avec `markdownText` vide est refusée avant écriture ; un `projectId` inconnu produit l’erreur métier prévue. En base, `rawContent` est présent, tandis que `normalizedContent` et `checksumSha256` restent nuls. Cette absence matérialise la frontière avec le worker, pas une panne.",
+          "sourceKeys": [
+            "prisma-relations",
+            "postgres-transactions",
+            "zod-documentation",
+            "prisma-transactions"
+          ]
+        }
+      },
+      {
+        "key": "content-modeliser-mettre-en-file-source-9",
+        "type": "callout",
+        "position": 9,
+        "content": {
+          "text": "## Erreurs fréquentes et micro-action de contrat\n\n- Mettre `rawContent` sur `Source` empêche de représenter plusieurs versions.\n- Créer le job après la transaction autorise une version orpheline si la seconde écriture échoue.\n- Calculer un faux checksum dans l’API masque le fait que le worker n’a pas encore normalisé le texte.\n- Garder une transaction ouverte pendant un traitement externe augmente le temps de verrouillage sans protéger une intention locale supplémentaire.\n- Transformer toute erreur Prisma en `PROJECT_NOT_FOUND` masque une panne serveur.\n\nLe rollback se force avec la dépendance prévue, pas avec un arrêt aléatoire de PostgreSQL :\n\n```ts\nconst failJobCreation: CreateJob = async () => {\n  throw new Error('forced job creation failure');\n};\n\nconst failingInput = {\n  ...input,\n  origin: 'internal://forced-rollback-proof.md',\n};\nconst beforeCounts = await Promise.all([\n  prisma.source.count(),\n  prisma.sourceVersion.count(),\n  prisma.processingJob.count(),\n]);\n\nawait expect(\n  queueImport(projectId, failingInput, failJobCreation),\n).rejects.toThrow('forced job creation failure');\n\nconst afterCounts = await Promise.all([\n  prisma.source.count(),\n  prisma.sourceVersion.count(),\n  prisma.processingJob.count(),\n]);\nexpect(afterCounts).toEqual(beforeCounts);\n```\n\nÉcrivez quatre tests : payload invalide, projet absent, succès et création du job forcée en échec. Pour le succès, vérifiez les trois identifiants et les deux statuts `QUEUED`. Pour le projet absent, exigez `404`, `PROJECT_NOT_FOUND` et un `x-request-id`. Injectez aussi dans `createApp` une fonction `queueSource` qui lève une erreur générique : exigez `500 INTERNAL_ERROR` et le même request ID dans le log. Le dernier test utilise une origine inédite, puis compare ensemble les nombres de sources, versions et jobs avant/après. Il prouve ainsi que la création de la source est elle aussi annulée : aucune ligne orpheline n’est masquée par un simple contrôle HTTP.",
+          "sourceKeys": [
+            "prisma-relations",
+            "postgres-transactions",
+            "prisma-transactions"
+          ]
+        }
+      },
+      {
+        "key": "content-modeliser-mettre-en-file-source-10",
+        "type": "callout",
+        "position": 10,
+        "content": {
+          "text": "## Projet intégrateur : livrer `checkpoint-05-source-queued`\n\nAssemblez migration, schéma Zod, route et transaction. Le contrôle de fin doit être rejouable : migration appliquée, tests verts, requête valide créée, requête invalide sans écriture, projet absent sans version orpheline, puis lecture SQL montrant `Source`, `SourceVersion` et `ProcessingJob` reliés. Conservez `title`, `origin`, `versionLabel`, `mediaType` et `rawContent`; laissez explicitement les champs produits plus tard à `null`. Le checkpoint ne revendique ni worker actif, ni retry, ni RAG.",
           "sourceKeys": []
         }
       }
@@ -72,18 +130,18 @@
         "title": "Relations — Prisma ORM",
         "author": "Prisma",
         "url": "https://www.prisma.io/docs/orm/prisma-schema/data-model/relations",
-        "citation": "Prisma. (n.d.). Relations — Prisma ORM. Documentation officielle.",
-        "description": "Lire relations un-à-plusieurs et contrainte unique, puis dessiner Project, Source et SourceVersion.",
+        "citation": "Prisma. (n.d.). Relations — Prisma ORM. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : vérifier la syntaxe des relations un-à-plusieurs et des champs de relation après avoir étudié l’ERD SourceLab.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Modéliser et mettre en file une source ».",
-          "instructions": "Lire relations un-à-plusieurs et contrainte unique, puis dessiner Project, Source et SourceVersion.",
-          "scope": "Relations, champs de relation et clés étrangères",
+          "objective": "Vérifier la traduction de l’ERD en relations Prisma.",
+          "instructions": "Consulter uniquement les sections sur les relations un-à-plusieurs, les champs de relation et les clés étrangères.",
+          "scope": "One-to-many relations, relation fields et relation scalar fields",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; le modèle et sa description française sont intégrés à la leçon.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 10,
+        "isRequired": false,
+        "estimatedMinutes": 8,
         "position": 1
       },
       {
@@ -92,135 +150,293 @@
         "title": "Transactions — PostgreSQL Documentation",
         "author": "PostgreSQL Global Development Group",
         "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-        "citation": "PostgreSQL Global Development Group. (n.d.). Transactions — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire BEGIN, COMMIT et ROLLBACK ; identifier les écritures qui forment une seule intention d’import.",
+        "citation": "PostgreSQL Global Development Group. (n.d.). Transactions — PostgreSQL Documentation. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Après la synthèse interne, lire le court tutoriel `BEGIN`/`COMMIT`/`ROLLBACK` et relier ces trois issues à l’import SourceLab.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Modéliser et mettre en file une source ».",
-          "instructions": "Lire BEGIN, COMMIT et ROLLBACK ; identifier les écritures qui forment une seule intention d’import.",
+          "objective": "Vérifier la propriété tout-ou-rien appliquée à SourceVersion et ProcessingJob.",
+          "instructions": "Lire du début du tutoriel jusqu’à l’exemple `ROLLBACK`, puis expliquer ce qui disparaît si la création du job échoue.",
           "scope": "BEGIN, COMMIT, ROLLBACK et atomicité",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; synthèse française et exemple Prisma fournis avant la lecture.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 10,
+        "isRequired": false,
+        "estimatedMinutes": 7,
         "position": 2
+      },
+      {
+        "key": "zod-documentation",
+        "type": "website",
+        "title": "Zod — Basic usage",
+        "author": "Zod",
+        "url": "https://zod.dev/basics",
+        "citation": "Zod. (n.d.). Basic usage. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur la définition et la validation d’un schéma après l’exemple SourceLab.",
+        "guidance": {
+          "objective": "Relier le contrat d’import aux primitives officielles de Zod.",
+          "instructions": "Relire uniquement les sections defining a schema et parsing data après avoir exécuté les tests locaux.",
+          "scope": "Schema et safeParse",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Documentation HTML en anglais ; schéma commenté et explication complète en français dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 6,
+        "position": 3
+      },
+      {
+        "key": "prisma-transactions",
+        "type": "website",
+        "title": "Transactions and batch queries",
+        "author": "Prisma",
+        "url": "https://www.prisma.io/docs/orm/prisma-client/queries/transactions",
+        "citation": "Prisma. (n.d.). Transactions and batch queries. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : vérifier le client transactionnel, le rollback et la recommandation de garder les transactions interactives courtes.",
+        "guidance": {
+          "objective": "Vérifier l’atomicité de la création Source, SourceVersion et ProcessingJob.",
+          "instructions": "Lire seulement les sections sur les transactions interactives, le client tx et leurs limites.",
+          "scope": "Interactive transactions, rollback et durée de transaction",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Documentation HTML en anglais ; code et interprétation complets en français dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 7,
+        "position": 4
       }
     ],
     "concepts": [
       {
+        "title": "Responsabilités du modèle de source",
+        "slug": "responsabilites-modele-source",
+        "description": "Project, Source, SourceVersion et ProcessingJob portent des identités et des états distincts reliés par des relations explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["prisma-relations"],
+        "assessment": {
+          "key": "assessment-responsabilites-modele-source",
+          "type": "case_question",
+          "title": "Mini-évaluation — Responsabilités du modèle",
+          "questionCount": 2
+        }
+      },
+      {
+        "title": "Transaction courte d’import",
+        "slug": "transaction-courte-import",
+        "description": "La création de la version et du job forme une seule intention atomique, sans inclure de traitement externe long.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["postgres-transactions"],
+        "assessment": {
+          "key": "assessment-transaction-courte-import",
+          "type": "case_question",
+          "title": "Mini-évaluation — Transaction d’import",
+          "questionCount": 2
+        }
+      },
+      {
+        "title": "Contrat d’import borné",
+        "slug": "contrat-import-borne",
+        "description": "L’API valide et conserve les données brutes nécessaires, retourne des identifiants de suivi et n’invente aucun résultat du worker ou du RAG.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "prisma-relations",
+          "postgres-transactions",
+          "zod-documentation"
+        ],
+        "assessment": {
+          "key": "assessment-contrat-import-borne",
+          "type": "case_question",
+          "title": "Mini-évaluation — Contrat d’import borné",
+          "questionCount": 2
+        }
+      },
+      {
         "title": "Import de source transactionnel",
         "slug": "import-source-transactionnel",
-        "description": "Une demande d’import crée de façon atomique la version de source et le job qui la traitera, ou ne crée aucun état partiel.",
-        "position": 1,
+        "description": "Une demande valide crée ensemble une version traçable et son job QUEUED, ou ne crée aucun état partiel.",
+        "position": 4,
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["prisma-relations", "postgres-transactions"],
         "assessment": {
           "key": "assessment-import-source-transactionnel",
-          "type": "case_question",
+          "type": "practice",
           "title": "Mini-évaluation — Import de source transactionnel",
-          "questionCount": 3
+          "questionCount": 2
         }
       }
     ],
     "tasks": [
       {
+        "key": "exercise-attribuer-responsabilites-source",
+        "title": "Attribuer les données aux bons modèles",
+        "description": "Compléter un tableau `donnée → modèle propriétaire → justification` pour title, origin, versionLabel, rawContent, status et errorCode, puis corriger toute duplication non justifiée à partir de l’ERD.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-delimiter-transaction-import",
+        "title": "Délimiter la transaction d’import",
+        "description": "Annoter l’extrait d’import en marquant les écritures atomiques et les travaux à laisser au worker, puis provoquer l’échec de création du job et prouver qu’aucune version orpheline ne subsiste.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-verifier-contrat-import",
+        "title": "Vérifier le contrat sans anticiper le worker",
+        "description": "Exécuter les cas payload invalide, projet absent et succès ; livrer statuts et corps, puis vérifier que rawContent est présent tandis que normalizedContent et checksumSha256 restent nuls.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "resourceKeys": []
+      },
+      {
         "key": "exercise-modeliser-mettre-en-file-source",
         "title": "Enregistrer une source et son job",
-        "description": "Depuis checkpoint-04-postgres-project, ajouter Source, SourceVersion et ProcessingJob, migrer, implémenter POST /projects/:projectId/imports et tester invalidité, projet absent et succès atomique. Livrer checkpoint-05-source-queued.",
+        "description": "Depuis checkpoint-04-postgres-project, ajouter les modèles, la migration, le schéma d’entrée, la route et la transaction. Livrer checkpoint-05-source-queued avec tests verts, trois identifiants reliés et absence prouvée d’état partiel.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 1,
+        "position": 4,
         "resourceKeys": []
       }
     ],
     "quizzes": [
       {
         "key": "quiz-modeliser-mettre-en-file-source",
-        "title": "Quiz — Import de source transactionnel",
-        "description": "Vérifier les repères de la leçon « Modéliser et mettre en file une source ».",
-        "passingScore": 70,
-        "isRequired": true,
+        "title": "Quiz — Modèle et import transactionnel",
+        "description": "Analyser des choix de modèle, de transaction et de contrat à partir de scénarios SourceLab.",
         "position": 1,
+        "isRequired": true,
+        "passingScore": 70,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quel objet conserve l’origine éditoriale stable ?",
-            "explanation": "Source porte l’identité et l’origine.",
+            "prompt": "Une même source reçoit une édition `v2` avec un contenu différent. Où stocker ce nouvel état ?",
+            "explanation": "Source porte l’identité ; SourceVersion immobilise chaque état de contenu.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Source",
+                "label": "Dans une nouvelle SourceVersion reliée à la Source existante.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "ProcessingJob",
+                "label": "En écrasant Project.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le container",
+                "label": "Uniquement dans ProcessingJob.errorCode.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le workflow CI",
+                "label": "Dans un futur Chunk déjà indexé.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
           },
           {
-            "type": "true_false",
-            "prompt": "Une transaction longue doit rester ouverte pendant un futur appel externe d’embedding.",
-            "explanation": "La transaction doit rester courte ; le programme RAG traitera les appels séparément.",
+            "type": "multiple_choice",
+            "prompt": "La création du job échoue après celle de SourceVersion. Quelles observations prouvent un rollback correct ?",
+            "explanation": "Les deux écritures appartiennent à la même transaction ; aucune version ni job nouveau ne doit rester.",
             "acceptedAnswers": [],
+            "position": 2,
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "Aucune nouvelle SourceVersion n’est visible.",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "Aucun ProcessingJob nouveau n’est visible.",
                 "isCorrect": true,
                 "position": 2
+              },
+              {
+                "label": "Un checksum inventé remplace le job.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La route répond succès malgré l’échec.",
+                "isCorrect": false,
+                "position": 4
               }
-            ],
-            "position": 2
+            ]
           },
           {
             "type": "single_choice",
-            "prompt": "Quel statut initial est attendu après l’import ?",
-            "explanation": "Le worker n’a pas encore traité la version.",
+            "prompt": "Quel corps de réponse respecte le mieux la frontière de cette leçon ?",
+            "explanation": "L’API retourne le suivi QUEUED sans prétendre avoir normalisé ou indexé le document.",
             "acceptedAnswers": [],
+            "position": 3,
             "options": [
               {
-                "label": "QUEUED",
+                "label": "`{ sourceId, sourceVersionId, jobId, status: \"QUEUED\" }`",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "READY",
+                "label": "`{ embeddings, chunks, answer }`",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "SUCCEEDED pour tous les objets",
+                "label": "`{ checksumSha256: \"à calculer plus tard mais inventé\" }`",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "PUBLISHED",
+                "label": "Un corps vide sans identifiant de suivi.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 3
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles opérations doivent rester hors de la transaction courte d’import ?",
+            "explanation": "Les traitements longs ou externes sont différés ; la transaction protège seulement les écritures atomiques locales.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Créer SourceVersion.",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Créer ProcessingJob.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Appeler un fournisseur d’embeddings.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Traiter un document long.",
+                "isCorrect": true,
+                "position": 4
+              }
+            ]
           }
         ]
       }
@@ -235,14 +451,6 @@
         "key": "content-modeliser-mettre-en-file-source-2"
       },
       {
-        "kind": "RESOURCE",
-        "key": "prisma-relations"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "postgres-transactions"
-      },
-      {
         "kind": "CONTENT",
         "key": "content-modeliser-mettre-en-file-source-3"
       },
@@ -253,6 +461,50 @@
       {
         "kind": "CONTENT",
         "key": "content-modeliser-mettre-en-file-source-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-attribuer-responsabilites-source"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-responsabilites-modele-source"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-mettre-en-file-source-6"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-mettre-en-file-source-7"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-delimiter-transaction-import"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-transaction-courte-import"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-mettre-en-file-source-8"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-mettre-en-file-source-9"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-verifier-contrat-import"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-contrat-import-borne"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-mettre-en-file-source-10"
       },
       {
         "kind": "EXERCISE",
@@ -269,7 +521,7 @@
     ]
   },
   "editorial": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "language": "fr",
     "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
@@ -289,13 +541,13 @@
         "publication": "Prisma",
         "doi": null,
         "url": "https://www.prisma.io/docs/orm/prisma-schema/data-model/relations",
-        "accessedAt": null,
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle à ouvrir et contrôler avant publication V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "id": "REF-130-POSTGRES-TRANSACTIONS",
@@ -308,13 +560,51 @@
         "publication": "PostgreSQL Global Development Group",
         "doi": null,
         "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-130-ZOD-DOCUMENTATION",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Zod",
+        "title": "Basic usage",
+        "year": null,
+        "edition": null,
+        "publication": "Zod",
+        "doi": null,
+        "url": "https://zod.dev/basics",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-130-PRISMA-TRANSACTIONS",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Prisma",
+        "title": "Transactions and batch queries",
+        "year": null,
+        "edition": null,
+        "publication": "Prisma",
+        "doi": null,
+        "url": "https://www.prisma.io/docs/orm/prisma-client/queries/transactions",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "contentBlockSources": [
@@ -323,176 +613,490 @@
         "referenceLinks": [],
         "confidence": null,
         "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "notApplicableReason": "Présentation originale du checkpoint et des limites du travail à produire."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
             "referenceId": "REF-130-PRISMA-RELATIONS",
-            "locator": "Relations, champs de relation et clés étrangères",
-            "supports": "Repères techniques employés dans le bloc 2."
+            "locator": "Relations, relation fields et one-to-many relations",
+            "supports": "Séparation et cardinalités des modèles du socle d’ingestion."
           }
         ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidence": "moderate",
+        "confidenceRationale": "Modèle original conforme aux mécanismes Prisma ; lien encore à recontrôler.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-130-POSTGRES-TRANSACTIONS",
-            "locator": "BEGIN, COMMIT, ROLLBACK et atomicité",
-            "supports": "Repères techniques employés dans le bloc 3."
-          },
-          {
             "referenceId": "REF-130-PRISMA-RELATIONS",
-            "locator": "Relations, champs de relation et clés étrangères",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "locator": "One-to-many relations, relation scalar fields et indexes",
+            "supports": "Syntaxe des relations et clés étrangères de l’extrait Prisma."
           }
         ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidence": "moderate",
+        "confidenceRationale": "Extrait exécutable original à vérifier avec la version Prisma du checkpoint.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 4,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-PRISMA-RELATIONS",
+            "locator": "One-to-many relations",
+            "supports": "Cardinalités représentées dans l’ERD."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Diagramme original fondé sur le modèle relationnel décrit ; rendu et modèle final à revoir.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-PRISMA-RELATIONS",
+            "locator": "Relation fields et relation scalar fields",
+            "supports": "Attribution des responsabilités et absence de duplication non justifiée."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Application pédagogique originale d’une relation Prisma à SourceLab.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-POSTGRES-TRANSACTIONS",
+            "locator": "Tutoriel, de BEGIN à ROLLBACK",
+            "supports": "Propriété tout-ou-rien et délimitation de la transaction."
+          },
+          {
+            "referenceId": "REF-130-PRISMA-TRANSACTIONS",
+            "locator": "Interactive transactions, transaction client et rollback",
+            "supports": "Usage du callback tx, rollback de l’ensemble et transaction gardée courte."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation PostgreSQL officielle directement applicable à l’intention atomique.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 7,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-PRISMA-RELATIONS",
+            "locator": "Nested reads/writes et relation fields",
+            "supports": "Relations utilisées par les écritures Prisma."
+          },
+          {
+            "referenceId": "REF-130-POSTGRES-TRANSACTIONS",
+            "locator": "BEGIN, COMMIT et ROLLBACK",
+            "supports": "Atomicité de la séquence d’écritures."
+          },
+          {
+            "referenceId": "REF-130-PRISMA-TRANSACTIONS",
+            "locator": "Interactive transactions, transaction client et rollback",
+            "supports": "Usage du callback tx, rollback de l’ensemble et transaction gardée courte."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Code original cohérent avec les concepts ; exécution sur checkpoint et API Prisma à revoir.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 8,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-PRISMA-RELATIONS",
+            "locator": "Relations et modèle de données",
+            "supports": "Lecture des objets créés et de leurs champs propriétaires."
+          },
+          {
+            "referenceId": "REF-130-POSTGRES-TRANSACTIONS",
+            "locator": "Atomicité de la transaction",
+            "supports": "Interprétation de la réponse après commit."
+          },
+          {
+            "referenceId": "REF-130-ZOD-DOCUMENTATION",
+            "locator": "Defining a schema et parsing data",
+            "supports": "Syntaxe et rôle du schéma de validation de l’import."
+          },
+          {
+            "referenceId": "REF-130-PRISMA-TRANSACTIONS",
+            "locator": "Interactive transactions, transaction client et rollback",
+            "supports": "Usage du callback tx, rollback de l’ensemble et transaction gardée courte."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Commande et sortie sont spécifiques au contrat SourceLab et doivent être rejouées avant publication.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 9,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-PRISMA-RELATIONS",
+            "locator": "One-to-many relations",
+            "supports": "Erreurs de propriété et de duplication."
+          },
+          {
+            "referenceId": "REF-130-POSTGRES-TRANSACTIONS",
+            "locator": "ROLLBACK",
+            "supports": "Absence d’état partiel en cas d’échec."
+          },
+          {
+            "referenceId": "REF-130-PRISMA-TRANSACTIONS",
+            "locator": "Interactive transactions, transaction client et rollback",
+            "supports": "Usage du callback tx, rollback de l’ensemble et transaction gardée courte."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les erreurs et contrôles suivent directement les invariants enseignés.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 10,
         "referenceLinks": [],
         "confidence": null,
         "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "notApplicableReason": "Consigne originale du projet intégrateur sans nouvelle affirmation externe."
       }
     ],
     "resourceChecks": [
       {
         "resourceKey": "prisma-relations",
         "referenceIds": ["REF-130-PRISMA-RELATIONS"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Modéliser et mettre en file une source ».",
-        "learnerInstructions": "Lire relations un-à-plusieurs et contrainte unique, puis dessiner Project, Source et SourceVersion.",
+        "pedagogicalRationale": "Approfondissement facultatif de l’ERD et de l’extrait déjà expliqués en français.",
+        "learnerInstructions": "Vérifier uniquement relations un-à-plusieurs, champs de relation et clés étrangères.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML officiel ; aucune lecture externe requise pour suivre le modèle guidé.",
         "alternativeResourceKey": null,
-        "checkedAt": null,
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Contrôle manuel du lien requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "postgres-transactions",
         "referenceIds": ["REF-130-POSTGRES-TRANSACTIONS"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Modéliser et mettre en file une source ».",
-        "learnerInstructions": "Lire BEGIN, COMMIT et ROLLBACK ; identifier les écritures qui forment une seule intention d’import.",
+        "pedagogicalRationale": "Approfondissement facultatif et borné du vocabulaire transactionnel après la synthèse et le code.",
+        "learnerInstructions": "Relier BEGIN, COMMIT et ROLLBACK aux trois issues de l’import SourceLab.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML officiel ; explication française et exemple TypeScript précèdent la lecture.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "zod-documentation",
+        "referenceIds": ["REF-130-ZOD-DOCUMENTATION"],
+        "pedagogicalRationale": "Approfondissement facultatif des primitives déjà appliquées dans le schéma commenté.",
+        "learnerInstructions": "Relire la définition et la validation d’un schéma uniquement après les tests locaux.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML officiel en anglais ; exemple complet et expliqué en français dans la leçon.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "prisma-transactions",
+        "referenceIds": ["REF-130-PRISMA-TRANSACTIONS"],
+        "pedagogicalRationale": "Approfondissement facultatif de la transaction interactive déjà synthétisée et testée.",
+        "learnerInstructions": "Comparer le callback tx de la leçon à l’exemple officiel et repérer la recommandation de durée courte.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML officiel en anglais ; aucune lecture externe nécessaire pour réussir les contrôles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "assessmentBanks": [
+      {
+        "conceptSlug": "responsabilites-modele-source",
+        "assessmentTitle": "Mini-évaluation — Responsabilités du modèle",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel modèle doit porter `rawContent` pour conserver plusieurs éditions d’une même source ?",
+            "explanation": "Le contenu brut appartient à un état versionné, pas à l’identité stable de Source.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "SourceVersion",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Project",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Source uniquement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "ProcessingJob.errorCode",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles relations correspondent à l’ERD enseigné ?",
+            "explanation": "Le projet regroupe les sources ; une source possède ses versions ; un job traite une version.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Project 1 → n Source",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Source 1 → n SourceVersion",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "SourceVersion 1 → n ProcessingJob",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "ProcessingJob contient directement plusieurs Project",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "transaction-courte-import",
+        "assessmentTitle": "Mini-évaluation — Transaction d’import",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles écritures appartiennent à l’intention atomique d’import ?",
+            "explanation": "La version et son job doivent exister ensemble ; la source peut être retrouvée ou créée dans la même transaction.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Retrouver ou créer Source.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Créer SourceVersion.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Créer ProcessingJob.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Appeler un service d’embeddings.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "La création de ProcessingJob échoue. Quel état est acceptable après rollback ?",
+            "explanation": "Une transaction atomique ne laisse pas la SourceVersion nouvellement créée sans job.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Ni nouvelle SourceVersion ni nouveau ProcessingJob.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une SourceVersion orpheline au statut QUEUED.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un job sans sourceVersionId.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une SourceVersion READY sans contenu normalisé.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "contrat-import-borne",
+        "assessmentTitle": "Mini-évaluation — Contrat d’import borné",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations doivent être validées dans la demande d’import de cette leçon ?",
+            "explanation": "Le contrat reçoit l’identité, la version et le Markdown brut nécessaires à l’enregistrement.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "title",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "origin",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "versionLabel",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "markdownText",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "embedding déjà calculé",
+                "isCorrect": false,
+                "position": 5
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Après un import réussi, pourquoi `checksumSha256` reste-t-il nul ?",
+            "explanation": "Le checksum doit porter sur le contenu normalisé que le worker produira dans la leçon suivante.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le worker n’a pas encore normalisé le contenu.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "PostgreSQL ne peut pas stocker de chaîne hexadécimale.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La transaction a nécessairement échoué.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le projet n’a aucun identifiant.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
       {
         "conceptSlug": "import-source-transactionnel",
         "assessmentTitle": "Mini-évaluation — Import de source transactionnel",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Où conserver versionLabel et rawContent ?",
-            "explanation": "Ces champs décrivent un état précis du contenu.",
+            "prompt": "Un test vérifie seulement que la route renvoie 201. Quelle preuve manque pour valider l’atomicité ?",
+            "explanation": "Le statut HTTP ne prouve pas l’absence d’état partiel en cas d’échec interne.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Sur SourceVersion",
+                "label": "Forcer l’échec du job et vérifier qu’aucune version orpheline ne reste.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Sur Project",
+                "label": "Changer la couleur de la réponse.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Dans le request ID",
+                "label": "Publier l’image sur GHCR.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Dans le tag Docker",
+                "label": "Calculer des embeddings dans le handler.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
           },
           {
-            "type": "single_choice",
-            "prompt": "Pourquoi créer SourceVersion et ProcessingJob dans une transaction ?",
-            "explanation": "Les écritures représentent une même intention.",
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves définissent `checkpoint-05-source-queued` ?",
+            "explanation": "Le checkpoint couvre modèle, contrat et atomicité, tout en laissant le traitement futur explicite.",
             "acceptedAnswers": [],
+            "position": 2,
             "options": [
               {
-                "label": "Pour éviter une version sans job ou un job sans version",
+                "label": "SourceVersion et ProcessingJob sont reliés et QUEUED.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Pour calculer un embedding",
-                "isCorrect": false,
+                "label": "rawContent est conservé.",
+                "isCorrect": true,
                 "position": 2
               },
               {
-                "label": "Pour publier GHCR",
-                "isCorrect": false,
+                "label": "Un échec ne laisse pas de version orpheline.",
+                "isCorrect": true,
                 "position": 3
               },
               {
-                "label": "Pour remplacer les tests",
+                "label": "Les chunks et embeddings sont déjà disponibles.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 2
-          },
-          {
-            "type": "true_false",
-            "prompt": "Le checksum doit déjà être inventé par l’API avant que le worker traite le contenu.",
-            "explanation": "Le contrat laisse explicitement ces champs nuls avant traitement.",
-            "acceptedAnswers": [],
-            "options": [
-              {
-                "label": "Vrai",
-                "isCorrect": false,
-                "position": 1
-              },
-              {
-                "label": "Faux",
-                "isCorrect": true,
-                "position": 2
-              }
-            ],
-            "position": 3
+            ]
           }
         ]
       }
     ],
     "sequenceRationale": {
-      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
+      "strategy": "Quatre cycles : responsabilités du modèle, atomicité, contrat borné puis projet intégré. Les documentations officielles restent facultatives et hors séquence.",
       "cycles": [
         {
-          "conceptSlug": "import-source-transactionnel",
+          "conceptSlug": "responsabilites-modele-source",
           "contentKeys": [
             "content-modeliser-mettre-en-file-source-1",
             "content-modeliser-mettre-en-file-source-2",
@@ -500,13 +1104,52 @@
             "content-modeliser-mettre-en-file-source-4",
             "content-modeliser-mettre-en-file-source-5"
           ],
-          "resourceKeys": ["prisma-relations", "postgres-transactions"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-attribuer-responsabilites-source"
+          },
+          "assessmentKey": "assessment-responsabilites-modele-source",
+          "rationale": "Le vocabulaire, le schéma, le code et l’ERD précèdent une action unique de classement."
+        },
+        {
+          "conceptSlug": "transaction-courte-import",
+          "contentKeys": [
+            "content-modeliser-mettre-en-file-source-6",
+            "content-modeliser-mettre-en-file-source-7"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-delimiter-transaction-import"
+          },
+          "assessmentKey": "assessment-transaction-courte-import",
+          "rationale": "La propriété atomique est expliquée et codée avant le test d’échec déterministe ; la documentation reste un approfondissement hors séquence."
+        },
+        {
+          "conceptSlug": "contrat-import-borne",
+          "contentKeys": [
+            "content-modeliser-mettre-en-file-source-8",
+            "content-modeliser-mettre-en-file-source-9"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-verifier-contrat-import"
+          },
+          "assessmentKey": "assessment-contrat-import-borne",
+          "rationale": "La commande et la sortie attendue rendent la frontière API/worker observable avant validation."
+        },
+        {
+          "conceptSlug": "import-source-transactionnel",
+          "contentKeys": ["content-modeliser-mettre-en-file-source-10"],
+          "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
             "key": "exercise-modeliser-mettre-en-file-source"
           },
           "assessmentKey": "assessment-import-source-transactionnel",
-          "rationale": "La production « Enregistrer une source et son job » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
+          "rationale": "Le projet assemble modèle, contrat et transaction sans ajouter de traitement RAG."
         }
       ]
     },
@@ -519,9 +1162,10 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
-        "Le starter autoritaire est publié sur https://github.com/Guts6667/sourcelab au commit 6dd1cda et au tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
-        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
+        "Version 2.1.0 refondue pour expliquer le modèle, la transaction et la frontière API/worker avant les ressources.",
+        "SVG créé ; rendu et accessibilité vérifiés. Le schéma Prisma, la transaction et les sorties restent à revoir sur le checkpoint réel.",
+        "checkpoint-05 et ses scénarios d’échec doivent exister avant publication.",
+        "Revue technique, seed, liens et médias obligatoire avant publication."
       ]
     },
     "changeLog": [
@@ -531,6 +1175,13 @@
         "author": "LearnX",
         "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
         "reviewRequired": "editorial_technical_links_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Refonte pédagogique avec synthèse française, ERD accessible, code annoté, micro-actions, erreurs fréquentes et quatre notions évaluées.",
+        "reviewRequired": "editorial_technical_links_media_and_seed"
       }
     ]
   }

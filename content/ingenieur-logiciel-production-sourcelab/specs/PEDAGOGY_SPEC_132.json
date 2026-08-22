@@ -7,7 +7,7 @@
   "lesson": {
     "title": "Tester et livrer une image traçable",
     "slug": "tester-livrer-image-tracable",
-    "summary": "Prouver le parcours local, automatiser les contrôles sur GitHub Actions, tagger l’image par SHA et publier sur GHCR uniquement lors d’un tag de version.",
+    "summary": "Associer chaque niveau de test à un risque, exécuter une CI à droits minimaux et publier sur GHCR un artefact identifiable et réversible par digest.",
     "objectives": [
       "Distinguer test ciblé, intégration et smoke du parcours nominal.",
       "Construire une CI minimale avec permissions explicites et artefact immuable.",
@@ -16,7 +16,7 @@
     "prerequisites": [
       "Avoir produit checkpoint-06-rag-ready-local avec un worker simple et une SourceVersion READY."
     ],
-    "estimatedMinutes": 95,
+    "estimatedMinutes": 120,
     "position": 3,
     "contentBlocks": [
       {
@@ -24,17 +24,17 @@
         "type": "objective",
         "position": 1,
         "content": {
-          "text": "Cette leçon part de checkpoint-06-rag-ready-local et termine checkpoint-07-continuous-delivery. Elle ajoute tests, smoke et workflows au dépôt SourceLab externe. LearnX ne contient pas ce dépôt : le contrat du starter décrit les fichiers et tags attendus afin que leur création reste séparée.",
+          "text": "## Point de départ et frontière de livraison\n\n`checkpoint-06-rag-ready-local` fournit la verticale locale : migration, base, API, worker et `SourceVersion READY`. Cette leçon ajoute les preuves qui empêchent de publier à l’aveugle. `checkpoint-07-continuous-delivery` contient un test d’intégration, un smoke, `ci.yml` et `release.yml`. La CI valide les changements ; la release publie une image GHCR uniquement pour un tag `v*`. Le parcours ne déploie aucun cloud absent. Le rollback consiste à sélectionner un digest antérieur, relancer localement l’image et rejouer le smoke.",
           "sourceKeys": []
         }
       },
       {
         "key": "content-tester-livrer-image-tracable-2",
-        "type": "definition",
+        "type": "rich_text",
         "position": 2,
         "content": {
-          "text": "Un test ciblé vérifie une règle, un test d’intégration traverse API, worker et PostgreSQL, et un smoke confirme rapidement qu’une image assemblée rend le service nominal. La CI exécute ces preuves sur pull request ; elle ne publie rien lors d’un changement non versionné.",
-          "sourceKeys": ["vitest-guide", "github-actions-workflows"]
+          "text": "## 1. Un test répond à un risque précis\n\nUn **test ciblé** isole une règle : normalisation Markdown, transition autorisée ou validation Zod. Un **test d’intégration** traverse plusieurs composants réels, ici l’API, le worker et PostgreSQL. Un **smoke test** est un parcours court exécuté contre l’application assemblée pour vérifier qu’elle est utilisable après démarrage.\n\nCes niveaux ne se remplacent pas. Un test ciblé localise rapidement une régression de normalisation mais ne prouve pas la transaction PostgreSQL. Un test d’intégration couvre cette frontière mais coûte plus cher à préparer. Le smoke confirme le chemin nominal de l’artefact, pas tous les cas d’erreur. Pour chaque test, écrivez d’abord le risque, l’état initial, l’action et la preuve attendue. « Ajouter des tests » n’est pas un objectif observable.",
+          "sourceKeys": ["vitest-guide"]
         }
       },
       {
@@ -42,21 +42,21 @@
         "type": "example",
         "position": 3,
         "content": {
-          "text": "Le workflow de livraison s’active uniquement sur un tag v*. Il utilise GITHUB_TOKEN avec contents:read et packages:write, construit l’image puis publie un tag de version et un tag égal au SHA du commit. Le digest retourné devient l’identité de rollback ; latest n’est pas une preuve suffisante.",
-          "sourceKeys": [
-            "github-publish-docker",
-            "github-container-registry",
-            "github-actions-workflows"
-          ]
+          "text": "## Extraits réels : intégration et smoke n’observent pas la même chose\n\nSéparez la suite rapide du test qui exige Compose dans `package.json` :\n\n```json\n{\n  \"scripts\": {\n    \"test\": \"vitest run --exclude 'tests/integration/**'\",\n    \"test:integration\": \"vitest run tests/integration\"\n  }\n}\n```\n\nLe helper du test d’intégration exécute le worker Compose une fois ; il ne le remplace pas par un mock :\n\n```ts\nimport { execFile } from 'node:child_process';\nimport { promisify } from 'node:util';\n\nconst execFileAsync = promisify(execFile);\nconst apiUrl = process.env.SOURCELAB_URL ?? 'http://localhost:3000';\n\nasync function runOneWorkerIteration(): Promise<void> {\n  await execFileAsync('docker', ['compose', 'run', '--rm', 'worker']);\n}\n\nit('importe une source jusqu’à READY', async () => {\n  const project = await createProject(apiUrl, 'Corpus test');\n  const queued = await importMarkdown(apiUrl, project.id, '# Preuve');\n\n  await runOneWorkerIteration();\n\n  const job = await getImport(apiUrl, queued.jobId);\n  const versions = await getSourceVersions(apiUrl, queued.sourceId);\n  const version = versions.find(\n    (candidate) => candidate.id === queued.sourceVersionId,\n  );\n  if (!version) throw new Error('source version missing from API response');\n\n  expect(job.status).toBe('READY');\n  expect(job.sourceVersionId).toBe(queued.sourceVersionId);\n  expect(version.status).toBe('READY');\n  expect(version.normalizedContent).toBe('# Preuve\\n');\n  expect(version.checksumSha256).toBe(\n    '943cceaa88e443aaf84bcd7ba8e474d23d4f3658b71c25b32a10c7fbba1a3eea',\n  );\n});\n```\n\nLe smoke attend la readiness avec une boucle bornée : une API saine mais encore en démarrage ne produit pas un faux négatif, et une API bloquée finit bien en erreur.\n\n```bash\n#!/usr/bin/env bash\nset -euo pipefail\nbase_url=\"${SOURCELAB_URL:-http://localhost:3000}\"\n\nfor attempt in {1..30}; do\n  if curl --fail --silent --show-error --output /dev/null \\\n    \"$base_url/health/ready\"; then\n    echo \"smoke: ready after ${attempt} attempt(s)\"\n    exit 0\n  fi\n  sleep 1\ndone\n\necho \"smoke: readiness unavailable after 30 attempts\" >&2\nexit 1\n```\n\nLe test d’intégration suit les identifiants retournés par l’API, traverse le vrai worker et PostgreSQL, puis compare le texte normalisé et un SHA-256 connu octet par octet. Il ne valide donc pas n’importe quelle version ni simplement « 64 caractères ». Le smoke ne vérifie que la route de readiness. La limite de 30 essais rend son attente explicite et empêche une boucle infinie.\n\nLe fichier peut rester non exécutable dans Git : toutes les commandes et les deux workflows l’appellent explicitement avec `bash scripts/smoke.sh`. Ce choix évite qu’un checkout CI échoue avec `Permission denied`.",
+          "sourceKeys": ["vitest-guide", "github-actions-workflows"]
         }
       },
       {
         "key": "content-tester-livrer-image-tracable-4",
-        "type": "callout",
+        "type": "embed",
         "position": 4,
         "content": {
-          "text": "Guidage : compléter le test d’intégration, le script smoke, ci.yml et release.yml. Le dépôt starter fournit des TODO pour les événements, permissions et tags. Aucune clé GHCR longue durée ne doit être ajoutée au dépôt.",
-          "sourceKeys": []
+          "text": "## Schéma : du changement au rollback\n\nSuivez les flèches en demandant à chaque étape quelle preuve autorise la suivante.\n\n![Pipeline de livraison SourceLab](/learning/sourcelab/delivery-pipeline.svg)\n\n**Description textuelle —** Une pull request déclenche la CI : installation verrouillée, lint, typecheck, tests, build et construction de l’image sans publication. Un tag `v*` déclenche la release : authentification GHCR, construction du même commit, publication avec tag de version et tag SHA, puis conservation du digest. Le rollback part d’un digest antérieur, relance Compose avec cette identité exacte et se termine seulement après un smoke vert. Aucune branche du schéma ne mène vers un déploiement cloud.\n\n**À retenir —** la CI prouve le commit, le digest identifie l’image exacte et le smoke valide le retour effectivement relancé.",
+          "sourceKeys": [
+            "github-actions-workflows",
+            "github-publish-docker",
+            "github-container-registry"
+          ]
         }
       },
       {
@@ -64,8 +64,62 @@
         "type": "callout",
         "position": 5,
         "content": {
-          "text": "Le CD s’arrête volontairement à la publication GHCR : aucune cible cloud n’est inventée. Le rollback manuel consiste à renseigner un digest antérieur dans SOURCELAB_IMAGE, exécuter docker compose pull puis up -d, et rejouer le smoke. Cette procédure est testée localement.",
-          "sourceKeys": []
+          "text": "## Micro-action : construire la matrice risque → preuve\n\nComplétez quatre lignes : normalisation, transaction d’import, parcours `READY` et santé de l’image. Pour chacune, choisissez test ciblé, intégration ou smoke et justifiez le niveau en une phrase. Le contrôle déterministe refuse deux erreurs : utiliser un mock PostgreSQL pour prétendre tester une transaction réelle, ou utiliser uniquement un E2E pour une fonction pure. Exécutez ensuite un test de chaque niveau et conservez commande, code de sortie et artefact de diagnostic éventuel.",
+          "sourceKeys": ["vitest-guide"]
+        }
+      },
+      {
+        "key": "content-tester-livrer-image-tracable-6",
+        "type": "rich_text",
+        "position": 6,
+        "content": {
+          "text": "## 2. La CI transforme un commit en preuves, pas en release\n\nUn **workflow** GitHub Actions décrit des événements, des jobs et des étapes. La CI s’exécute sur pull request et push ; elle installe exactement le lockfile, puis lance les contrôles du dépôt. Ses permissions restent minimales : `contents: read` suffit pour lire le code. Elle peut construire l’image afin de détecter un Dockerfile cassé, mais ne doit pas publier un package pour chaque branche.\n\nUne preuve est attribuable si elle porte le SHA du commit et conserve les rapports utiles. Si lint ou tests échouent, le job s’arrête et aucun artefact de release n’est produit. Le cache accélère l’installation ; il ne remplace ni le lockfile ni les contrôles. La cohérence attendue est simple : le commit qui reçoit le tag de version doit avoir passé les mêmes contrôles que la pull request.",
+          "sourceKeys": ["github-actions-workflows"]
+        }
+      },
+      {
+        "key": "content-tester-livrer-image-tracable-7",
+        "type": "example",
+        "position": 7,
+        "content": {
+          "text": "## Extrait annoté : une CI sans droit de publication\n\nLe checkout frais ne contient pas le client Prisma généré. La CI le produit avec la même URL factice non secrète que le Dockerfile, puis démarre la stack réelle avant la suite d’intégration :\n\n```yaml\nname: ci\non:\n  pull_request:\n  push:\n    branches: [main]\n\npermissions:\n  contents: read\n\njobs:\n  verify:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: pnpm/action-setup@v4\n        with:\n          version: 10.28.1\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n          cache: pnpm\n      - run: pnpm install --frozen-lockfile\n      - name: Generate Prisma client\n        run: pnpm exec prisma generate\n        env:\n          DATABASE_URL: postgresql://generate-only:generate-only@localhost:5432/sourcelab\n      - run: pnpm lint\n      - run: pnpm typecheck\n      - run: pnpm test\n      - run: pnpm build\n      - run: docker build --target runtime --tag sourcelab:${{ github.sha }} .\n      - name: Start real integration stack\n        run: docker compose up --build -d --wait api\n      - name: Integration test\n        run: pnpm test:integration\n        env:\n          SOURCELAB_URL: http://localhost:3000\n      - name: Smoke assembled API\n        run: bash scripts/smoke.sh\n        env:\n          SOURCELAB_URL: http://localhost:3000\n      - name: Integration diagnostics\n        if: failure()\n        run: docker compose ps -a && docker compose logs --no-color\n      - name: Stop integration stack\n        if: always()\n        run: docker compose down -v\n```\n\nLe workflow lit le dépôt mais ne possède pas `packages: write`. `pnpm test` reste la suite sans infrastructure ; `test:integration` ne démarre qu’après `docker compose up --wait`. Le teardown s’exécute même en cas d’échec, tandis que les diagnostics sont capturés avant la suppression. L’image locale porte le SHA mais n’est pas poussée.",
+          "sourceKeys": ["github-actions-workflows"]
+        }
+      },
+      {
+        "key": "content-tester-livrer-image-tracable-8",
+        "type": "example",
+        "position": 8,
+        "content": {
+          "text": "## 3. Tag, SHA et digest : trois identités différentes\n\nUn tag Git `v2.1.0` déclenche la release. Le workflow rejoue les mêmes contrôles sur ce commit, puis produit un tag d’image lisible et un tag égal au SHA. Ces tags pointent vers une image, mais un tag de registre peut être déplacé. Le **digest** `sha256:…` identifie le contenu exact et constitue la référence de rollback.\n\n```yaml\nname: release\non:\n  push:\n    tags: ['v*']\n\npermissions:\n  contents: read\n  packages: write\n\njobs:\n  publish:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: pnpm/action-setup@v4\n        with:\n          version: 10.28.1\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n          cache: pnpm\n      - run: pnpm install --frozen-lockfile\n      - name: Generate Prisma client\n        run: pnpm exec prisma generate\n        env:\n          DATABASE_URL: postgresql://generate-only:generate-only@localhost:5432/sourcelab\n      - run: pnpm lint && pnpm typecheck && pnpm test && pnpm build\n      - run: docker compose up --build -d --wait api\n      - run: pnpm test:integration\n        env:\n          SOURCELAB_URL: http://localhost:3000\n      - run: bash scripts/smoke.sh\n        env:\n          SOURCELAB_URL: http://localhost:3000\n      - name: Integration diagnostics\n        if: failure()\n        run: docker compose ps -a && docker compose logs --no-color\n      - name: Stop integration stack\n        if: always()\n        run: docker compose down -v\n      - uses: docker/setup-buildx-action@v3\n      - uses: docker/login-action@v3\n        with:\n          registry: ghcr.io\n          username: ${{ github.actor }}\n          password: ${{ secrets.GITHUB_TOKEN }}\n      - id: meta\n        uses: docker/metadata-action@v5\n        with:\n          images: ghcr.io/${{ github.repository }}\n          tags: |\n            type=ref,event=tag\n            type=raw,value=${{ github.sha }}\n      - uses: docker/build-push-action@v6\n        with:\n          context: .\n          target: runtime\n          push: true\n          tags: ${{ steps.meta.outputs.tags }}\n          labels: ${{ steps.meta.outputs.labels }}\n```\n\nLe login et le push viennent seulement après génération, contrôles unitaires, stack réelle, intégration et smoke. Les deux constructions désignent explicitement la cible `runtime` : la cible `migrate`, qui conserve la CLI Prisma, ne doit pas devenir l’image publiée. `${{ github.repository }}` désigne le dépôt qui exécute le workflow — donc le fork de l’apprenant — et `docker/metadata-action` normalise ce nom d’image en minuscules avant publication. `GITHUB_TOKEN` évite une clé longue durée ; `packages: write` reste borné à la release.",
+          "sourceKeys": ["github-publish-docker", "github-container-registry"]
+        }
+      },
+      {
+        "key": "content-tester-livrer-image-tracable-9",
+        "type": "example",
+        "position": 9,
+        "content": {
+          "text": "## Commandes de publication, sortie et rollback\n\nAjoutez un override qui exige une identité d’image explicite :\n\n```yaml\n# compose.release.yaml\nservices:\n  api:\n    image: ${SOURCELAB_IMAGE:?SOURCELAB_IMAGE est requise}\n```\n\nNe recopiez pas le namespace du dépôt SourceLab d’origine. Avant tout tag, effectuez un **préflight** depuis la racine de votre fork :\n\n```bash\ncommand -v gh\ncommand -v jq\ncommand -v docker\ngh auth status\n\nexport ORIGIN_URL=\"$(git remote get-url origin)\"\nexport REPOSITORY=\"$(gh repo view --json nameWithOwner --jq '.nameWithOwner')\"\nprintf 'origin=%s\\nrepository=%s\\n' \"$ORIGIN_URL\" \"$REPOSITORY\"\nprintf '%s\\n' \"$ORIGIN_URL\" | grep -Fqi \"$REPOSITORY\"\n\ntest -z \"$(git status --porcelain)\"\ntest \"$(git branch --show-current)\" = 'main'\ngit push -u origin main\n```\n\nLes trois `command -v` doivent retourner un chemin, `gh auth status` doit annoncer un compte connecté à GitHub et `origin` doit contenir le même `owner/repository` que la ligne `repository`. Le statut Git doit être vide et la branche `main`. Si `origin` désigne encore `Guts6667/sourcelab` ou un autre dépôt, arrêtez-vous : corrigez-le vers votre fork, puis rejouez le préflight. Ne créez jamais un tag sur un dépôt dont vous n’avez pas vérifié l’identité.\n\nLes workflows ne s’exécutent pas par défaut dans un dépôt forké. Sur **la page GitHub du fork**, ouvrez l’onglet **Actions** puis choisissez **I understand my workflows, go ahead and enable them**. Si le dépôt affiche une politique plus restrictive, ouvrez **Settings → Actions → General** et autorisez les actions utilisées par les deux workflows ; une politique d’organisation peut nécessiter l’intervention d’un administrateur.\n\nContrôlez ensuite l’état distant avant de dériver le nom GHCR :\n\n```bash\nexport ACTIONS_ENABLED=\"$(gh api \"repos/$REPOSITORY/actions/permissions\" \\\n  --jq '.enabled')\"\nprintf 'actionsEnabled=%s\\n' \"$ACTIONS_ENABLED\"\ntest \"$ACTIONS_ENABLED\" = 'true'\ngh workflow view release.yml\n\nexport GHCR_REPOSITORY=\"$(printf '%s' \"$REPOSITORY\" | \\\n  tr '[:upper:]' '[:lower:]')\"\nexport GHCR_IMAGE=\"ghcr.io/$GHCR_REPOSITORY\"\nprintf '%s\\n' \"$GHCR_IMAGE\"\n```\n\nSortie attendue pour un fork appartenant à `alice` : `actionsEnabled=true`, un workflow `release.yml` trouvé sans erreur, puis `ghcr.io/alice/sourcelab`. Si la future boucle expire alors que ce contrôle n’était pas vert, la cause est le préflight absent — pas un problème de digest.\n\nLe premier package d’un fork n’a, par définition, aucun digest antérieur. Avant l’inspection locale, vérifiez sa visibilité dans les réglages GitHub Packages. Un package public autorise le pull anonyme. Pour un package privé, créez un jeton personnel classique limité au minimum à `read:packages`, puis authentifiez Docker sans écrire le secret dans la commande ni dans le dépôt :\n\n```bash\nprintf 'Jeton GHCR (read:packages) : ' >&2\nIFS= read -r -s CR_PAT\nprintf '\\n' >&2\nprintf '%s' \"$CR_PAT\" | docker login ghcr.io \\\n  -u \"$(gh api user --jq .login)\" --password-stdin\nunset CR_PAT\n```\n\nLa sortie attendue est `Login Succeeded`. Ne placez ni le jeton ni cette saisie dans une capture ou le journal de livraison. Créez ensuite une baseline de rollback avec un tag candidat, attendez **le run lié à ce tag précis**, puis capturez le digest renvoyé par le registre :\n\n```bash\nwait_for_release_run() {\n  local tag=\"$1\"\n  local run_id=\"\"\n\n  for attempt in {1..30}; do\n    run_id=\"$(gh run list --workflow release.yml --branch \"$tag\" \\\n      --limit 1 --json databaseId --jq '.[0].databaseId // empty')\"\n    if [ -n \"$run_id\" ]; then\n      gh run watch --exit-status \"$run_id\"\n      return\n    fi\n    sleep 2\n  done\n\n  printf 'release run introuvable pour %s après 60 s\\n' \"$tag\" >&2\n  return 1\n}\n\ngit tag v2.1.0-rc.1\ngit push origin v2.1.0-rc.1\nwait_for_release_run v2.1.0-rc.1\n\nexport PREVIOUS_DIGEST=\"$(\n  docker buildx imagetools inspect \"$GHCR_IMAGE:v2.1.0-rc.1\" \\\n    --format '{{json .Manifest}}' | jq -r '.digest'\n)\"\nprintf '%s\\n' \"$PREVIOUS_DIGEST\" | grep -Eq '^sha256:[0-9a-f]{64}$'\n```\n\nSortie utile :\n\n```text\nsha256:<64 caractères hexadécimaux réels>\n```\n\nAprès un nouveau commit réellement contrôlé, publiez la version suivante et relevez son digest sans écraser `PREVIOUS_DIGEST` :\n\n```bash\ngit tag v2.1.0\ngit push origin v2.1.0\nwait_for_release_run v2.1.0\ndocker buildx imagetools inspect \"$GHCR_IMAGE:v2.1.0\"\n```\n\nPour vérifier le retour local vers la baseline réellement publiée :\n\n```bash\nexport SOURCELAB_IMAGE=\"$GHCR_IMAGE@$PREVIOUS_DIGEST\"\ndocker compose -f compose.yaml -f compose.release.yaml pull api\ndocker compose -f compose.yaml -f compose.release.yaml up -d --wait api\nSOURCELAB_URL=http://localhost:3000 bash scripts/smoke.sh\n```\n\nLa boucle attend au plus 60 secondes l’identifiant du run attaché au tag demandé, puis `gh run watch --exit-status` bloque jusqu’à son résultat : elle ne peut ni sélectionner silencieusement un ancien run, ni transmettre `null`. Le test `grep` bloque ensuite un digest vide ou factice avant le pull. Le journal conserve, pour chaque publication, le dépôt du fork, le tag, le SHA du commit et le digest. Un rollback n’est pas « changer `latest` » : l’override Compose relance le manifeste exact de la baseline, attend la santé de `api`, puis le smoke borné confirme l’état restauré. Si aucun deuxième commit publiable n’existe, écrivez « rollback non encore applicable » : n’inventez jamais `DIGEST_PRECEDENT`.",
+          "sourceKeys": [
+            "github-publish-docker",
+            "github-container-registry",
+            "github-fork-workflows"
+          ]
+        }
+      },
+      {
+        "key": "content-tester-livrer-image-tracable-10",
+        "type": "callout",
+        "position": 10,
+        "content": {
+          "text": "## Erreurs fréquentes et projet intégrateur\n\n- Publier depuis chaque pull request mélange validation et livraison.\n- Accorder `packages: write` à toute la CI élargit inutilement les droits.\n- Reconstruire un autre commit pour la release casse la traçabilité.\n- Conserver seulement `latest` empêche un retour précis.\n- Inspecter le namespace SourceLab d’origine au lieu de celui du fork produit une preuve étrangère.\n- Écrire `DIGEST_PRECEDENT` sans avoir publié de baseline transforme le rollback en fiction.\n- Oublier la visibilité ou l’authentification locale d’un package privé fait confondre un refus GHCR avec une image absente.\n- Annoncer un rollback sans relancer le smoke confond action et preuve.\n- Lancer l’intégration sans PostgreSQL réel transforme son nom en promesse non tenue.\n- Exécuter le smoke une seule fois juste après `up -d` crée une course de démarrage.\n- Inventer un déploiement cloud masque la frontière réelle du parcours.\n\nLe projet final complète intégration, smoke, CI et release, publie d’abord un tag candidat qui fournit la baseline, publie un commit suivant avec son propre tag, conserve les deux couples SHA/digest, puis rejoue localement le digest antérieur. Les contrôles exigent les sorties de chaque job, le transcript du smoke, les permissions effectives et un journal court publication/rollback. Livrez `checkpoint-07-continuous-delivery` uniquement lorsque toutes ces preuves sont reliées au même dépôt.",
+          "sourceKeys": [
+            "vitest-guide",
+            "github-actions-workflows",
+            "github-publish-docker",
+            "github-container-registry"
+          ]
         }
       }
     ],
@@ -76,18 +130,18 @@
         "title": "Vitest Guide",
         "author": "Vitest",
         "url": "https://vitest.dev/guide/",
-        "citation": "Vitest. (n.d.). Vitest Guide. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire exécution et assertions ; associer chaque test au risque qu’il couvre.",
+        "citation": "Vitest. (n.d.). Vitest Guide. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : vérifier exécution, assertions et filtrage des tests après avoir construit la matrice de risques.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Tester et livrer une image traçable ».",
-          "instructions": "Lire exécution et assertions ; associer chaque test au risque qu’il couvre.",
-          "scope": "Tests, assertions, configuration et exécution",
+          "objective": "Approfondir le runner sans remplacer la stratégie de test expliquée.",
+          "instructions": "Consulter uniquement les sections sur l’exécution, les assertions et le filtrage d’un fichier de test.",
+          "scope": "Running tests, assertions et filtering tests",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; exemples et critères français sont intégrés à la leçon.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 7,
+        "isRequired": false,
+        "estimatedMinutes": 5,
         "position": 1
       },
       {
@@ -96,18 +150,18 @@
         "title": "Workflows and actions reference",
         "author": "GitHub",
         "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
-        "citation": "GitHub. (n.d.). Workflows and actions reference. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire événements, jobs et permissions puis identifier les droits minimaux.",
+        "citation": "GitHub. (n.d.). Workflows and actions reference. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : vérifier événements, jobs, étapes et permissions après lecture du workflow annoté.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Tester et livrer une image traçable ».",
-          "instructions": "Lire événements, jobs et permissions puis identifier les droits minimaux.",
-          "scope": "Événements, jobs, permissions et artefacts",
+          "objective": "Approfondir la syntaxe du workflow CI sans lire toute la référence.",
+          "instructions": "Consulter uniquement les entrées `on`, `jobs`, `steps` et `permissions` utilisées dans l’extrait.",
+          "scope": "Workflow syntax, events, jobs, steps et permissions",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; workflow complet et commentaire français fournis.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 8,
+        "isRequired": false,
+        "estimatedMinutes": 6,
         "position": 2
       },
       {
@@ -116,18 +170,18 @@
         "title": "Publishing Docker images",
         "author": "GitHub",
         "url": "https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images",
-        "citation": "GitHub. (n.d.). Publishing Docker images. Documentation officielle.",
-        "description": "Lire l’exemple officiel de build, login et push d’une image.",
+        "citation": "GitHub. (n.d.). Publishing Docker images. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Après la synthèse et le YAML annoté, vérifier l’exemple officiel de connexion et publication avec `GITHUB_TOKEN`.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Tester et livrer une image traçable ».",
-          "instructions": "Lire l’exemple officiel de build, login et push d’une image.",
-          "scope": "Publication d’une image avec GitHub Actions et registre de containers",
+          "objective": "Vérifier les actions et permissions minimales du workflow de release.",
+          "instructions": "Lire uniquement l’exemple GHCR avec login et build/push, puis comparer les permissions à l’extrait SourceLab.",
+          "scope": "Publish images to GitHub Packages, login-action et build-push-action",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; synthèse, code et interprétation précèdent cette vérification.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 8,
+        "isRequired": false,
+        "estimatedMinutes": 6,
         "position": 3
       },
       {
@@ -136,27 +190,92 @@
         "title": "Working with the Container registry",
         "author": "GitHub",
         "url": "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
-        "citation": "GitHub. (n.d.). Working with the Container registry. Documentation officielle.",
-        "description": "Lire tags, digests et extraction d’une version antérieure pour préparer le rollback manuel.",
+        "citation": "GitHub. (n.d.). Working with the Container registry. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : vérifier tags, digests et extraction d’une image précise pour le rollback.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Tester et livrer une image traçable ».",
-          "instructions": "Lire tags, digests et extraction d’une version antérieure pour préparer le rollback manuel.",
-          "scope": "Noms, tags, digests, authentification et extraction d’images GHCR",
+          "objective": "Approfondir l’identité immuable et l’extraction par digest.",
+          "instructions": "Consulter uniquement les sections sur nommage, pull et digest d’une image GHCR.",
+          "scope": "Pull by name, tag and digest",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; commande de rollback et interprétation sont intégrées.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 6,
+        "isRequired": false,
+        "estimatedMinutes": 5,
         "position": 4
+      },
+      {
+        "key": "github-fork-workflows",
+        "type": "website",
+        "title": "Workflow events in forked repositories",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflows-in-forked-repositories",
+        "citation": "GitHub. (n.d.). Events that trigger workflows — Workflows in forked repositories. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : vérifier la règle d’activation des workflows dans un fork après le préflight interne.",
+        "guidance": {
+          "objective": "Comprendre pourquoi aucun run ne naît dans un fork dont Actions n’a pas été activé.",
+          "instructions": "Lire uniquement la section « Workflows in forked repositories » après avoir exécuté le préflight SourceLab.",
+          "scope": "Activation de GitHub Actions dans un dépôt forké",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Documentation HTML en anglais ; procédure et diagnostic complets fournis en français avant la ressource.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 3,
+        "position": 5
       }
     ],
     "concepts": [
       {
+        "title": "Stratégie de tests par frontière",
+        "slug": "strategie-tests-frontieres",
+        "description": "Chaque niveau de test est choisi d’après le risque et la frontière réelle qu’il doit prouver.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["vitest-guide"],
+        "assessment": {
+          "key": "assessment-strategie-tests-frontieres",
+          "type": "case_question",
+          "title": "Mini-évaluation — Stratégie de tests",
+          "questionCount": 2
+        }
+      },
+      {
+        "title": "CI à permissions minimales",
+        "slug": "ci-permissions-minimales",
+        "description": "La CI associe le commit à des contrôles reproductibles sans posséder le droit de publier un package.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["github-actions-workflows"],
+        "assessment": {
+          "key": "assessment-ci-permissions-minimales",
+          "type": "case_question",
+          "title": "Mini-évaluation — CI minimale",
+          "questionCount": 2
+        }
+      },
+      {
+        "title": "Publication et rollback par digest",
+        "slug": "publication-rollback-digest",
+        "description": "La release déclenchée par tag publie une image reliée au commit et conserve son digest pour un retour vérifiable.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["github-publish-docker", "github-container-registry"],
+        "assessment": {
+          "key": "assessment-publication-rollback-digest",
+          "type": "case_question",
+          "title": "Mini-évaluation — Publication et rollback",
+          "questionCount": 2
+        }
+      },
+      {
         "title": "Livraison d’image traçable",
         "slug": "livraison-image-tracable",
-        "description": "La CI produit des preuves sur chaque changement et la livraison publie un artefact lié au commit, récupérable par digest sans prétendre déployer une infrastructure absente.",
-        "position": 1,
+        "description": "Une image est livrable lorsque tests, workflow, SHA, digest et smoke de rollback constituent une chaîne de preuves cohérente.",
+        "position": 4,
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": [
@@ -167,109 +286,178 @@
         ],
         "assessment": {
           "key": "assessment-livraison-image-tracable",
-          "type": "case_question",
+          "type": "practice",
           "title": "Mini-évaluation — Livraison d’image traçable",
-          "questionCount": 3
+          "questionCount": 2
         }
       }
     ],
     "tasks": [
       {
+        "key": "exercise-construire-matrice-tests",
+        "title": "Construire la matrice risque → test",
+        "description": "Associer normalisation, transaction, parcours READY et santé de l’image à un niveau de test, exécuter un exemple de chaque niveau et livrer commande, code de sortie et preuve observée.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-auditer-workflow-ci",
+        "title": "Auditer la CI et ses permissions",
+        "description": "Compléter `ci.yml`, vérifier installation verrouillée et contrôles, puis prouver que le workflow possède `contents: read` sans `packages: write` et ne publie aucune image.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-prouver-publication-rollback",
+        "title": "Prouver publication et rollback par digest",
+        "description": "Déclencher une release de test autorisée par tag, relever tag version, SHA et digest, puis relancer localement un digest antérieur et fournir le smoke vert après retour.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "resourceKeys": []
+      },
+      {
         "key": "exercise-tester-livrer-image-tracable",
         "title": "Automatiser la preuve et la livraison SourceLab",
-        "description": "Depuis checkpoint-06-rag-ready-local, compléter le test d’intégration, le smoke, la CI de pull request et la publication GHCR sur tag v*. Démontrer un tag SHA immuable et un retour local à un digest précédent, puis livrer checkpoint-07-continuous-delivery.",
+        "description": "Depuis checkpoint-06-rag-ready-local, compléter intégration, smoke, CI et release GHCR. Livrer checkpoint-07-continuous-delivery avec journal commit/tag/SHA/digest, permissions minimales et rollback local validé par smoke.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 1,
+        "position": 4,
         "resourceKeys": []
       }
     ],
     "quizzes": [
       {
         "key": "quiz-tester-livrer-image-tracable",
-        "title": "Quiz — Livraison d’image traçable",
-        "description": "Vérifier les repères de la leçon « Tester et livrer une image traçable ».",
-        "passingScore": 70,
-        "isRequired": true,
+        "title": "Quiz — Tests, CI et artefact traçable",
+        "description": "Interpréter une matrice de tests, des permissions et un journal de publication/rollback.",
         "position": 1,
+        "isRequired": true,
+        "passingScore": 70,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quelle permission permet la publication GHCR avec GITHUB_TOKEN ?",
-            "explanation": "La permission packages est explicitement accordée au job de livraison.",
+            "prompt": "Quel test prouve le mieux que la transaction, le worker et PostgreSQL produisent une SourceVersion READY ?",
+            "explanation": "Cette preuve traverse plusieurs composants réels et relève du test d’intégration.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "packages: write",
+                "label": "Un test d’intégration API-worker-PostgreSQL.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "issues: write",
+                "label": "Un test ciblé de trimEnd isolé.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "actions: admin",
+                "label": "Un lint du YAML.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "id-token: write obligatoire ici",
+                "label": "La présence d’un tag latest.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
           },
           {
-            "type": "true_false",
-            "prompt": "Un test smoke remplace tous les tests d’intégration.",
-            "explanation": "Le smoke est rapide et borné ; il ne couvre pas tous les risques.",
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés sont attendues du workflow CI de pull request ?",
+            "explanation": "La CI valide le commit avec des droits de lecture et ne publie pas de package.",
             "acceptedAnswers": [],
+            "position": 2,
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "Installation avec lockfile.",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "Lint, types, tests, build et construction de l’image.",
                 "isCorrect": true,
                 "position": 2
+              },
+              {
+                "label": "Permission `contents: read`.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Publication GHCR sur chaque pull request.",
+                "isCorrect": false,
+                "position": 4
               }
-            ],
-            "position": 2
+            ]
           },
           {
             "type": "single_choice",
-            "prompt": "Que faire après avoir sélectionné un digest antérieur ?",
-            "explanation": "Le retour doit être prouvé par un contrôle fonctionnel.",
+            "prompt": "Le journal contient `v2.1.0` et le SHA Git, mais aucun digest. Quelle capacité n’est pas prouvée ?",
+            "explanation": "Le digest identifie le contenu exact à sélectionner pour un rollback précis.",
             "acceptedAnswers": [],
+            "position": 3,
             "options": [
               {
-                "label": "Relancer la stack puis exécuter le smoke",
+                "label": "Le retour à l’image exacte précédemment publiée.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Supprimer les migrations",
+                "label": "La lecture du code source.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Réécrire le checksum",
+                "label": "La validation Zod du titre.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Marquer toutes les sources READY",
+                "label": "La création du volume PostgreSQL.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 3
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles étapes rendent un rollback manuel validé ?",
+            "explanation": "Il faut sélectionner l’identité immuable, relancer le service puis vérifier le parcours court.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Choisir le digest antérieur.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Relancer Compose avec cette image.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Rejouer le smoke et conserver sa sortie.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Changer seulement le tag `latest` sans contrôle.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
           }
         ]
       }
@@ -284,22 +472,6 @@
         "key": "content-tester-livrer-image-tracable-2"
       },
       {
-        "kind": "RESOURCE",
-        "key": "vitest-guide"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "github-actions-workflows"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "github-publish-docker"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "github-container-registry"
-      },
-      {
         "kind": "CONTENT",
         "key": "content-tester-livrer-image-tracable-3"
       },
@@ -310,6 +482,50 @@
       {
         "kind": "CONTENT",
         "key": "content-tester-livrer-image-tracable-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-matrice-tests"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-strategie-tests-frontieres"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-livrer-image-tracable-6"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-livrer-image-tracable-7"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-auditer-workflow-ci"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-ci-permissions-minimales"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-livrer-image-tracable-8"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-livrer-image-tracable-9"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-prouver-publication-rollback"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-publication-rollback-digest"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-livrer-image-tracable-10"
       },
       {
         "kind": "EXERCISE",
@@ -326,7 +542,7 @@
     ]
   },
   "editorial": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "language": "fr",
     "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
@@ -346,13 +562,13 @@
         "publication": "Vitest",
         "doi": null,
         "url": "https://vitest.dev/guide/",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "id": "REF-132-GITHUB-ACTIONS-WORKFLOWS",
@@ -365,13 +581,13 @@
         "publication": "GitHub",
         "doi": null,
         "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "id": "REF-132-GITHUB-PUBLISH-DOCKER",
@@ -384,13 +600,13 @@
         "publication": "GitHub",
         "doi": null,
         "url": "https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images",
-        "accessedAt": null,
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle à ouvrir et contrôler avant publication V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "id": "REF-132-GITHUB-CONTAINER-REGISTRY",
@@ -403,13 +619,51 @@
         "publication": "GitHub",
         "doi": null,
         "url": "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
-        "accessedAt": null,
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle à ouvrir et contrôler avant publication V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-132-DOCKER-METADATA-ACTION",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Docker",
+        "title": "Docker Metadata action",
+        "year": null,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://github.com/docker/metadata-action",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-132-GITHUB-FORK-WORKFLOWS",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "GitHub",
+        "title": "Events that trigger workflows — Workflows in forked repositories",
+        "year": null,
+        "edition": null,
+        "publication": "GitHub Docs",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflows-in-forked-repositories",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; activation du fork à vérifier pendant le pilote."
       }
     ],
     "contentBlockSources": [
@@ -418,216 +672,516 @@
         "referenceLinks": [],
         "confidence": null,
         "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "notApplicableReason": "Description originale du checkpoint et de la frontière de livraison."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
             "referenceId": "REF-132-VITEST-GUIDE",
-            "locator": "Tests, assertions, configuration et exécution",
-            "supports": "Repères techniques employés dans le bloc 2."
-          },
-          {
-            "referenceId": "REF-132-GITHUB-ACTIONS-WORKFLOWS",
-            "locator": "Événements, jobs, permissions et artefacts",
-            "supports": "Repères techniques employés dans le bloc 2."
+            "locator": "Running tests, assertions et test filtering",
+            "supports": "Repères utilisés pour distinguer test ciblé et exécution de la suite."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidenceRationale": "Synthèse pédagogique originale appuyée sur le runner officiel et les frontières du projet.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-132-GITHUB-PUBLISH-DOCKER",
-            "locator": "Publication d’une image avec GitHub Actions et registre de containers",
-            "supports": "Repères techniques employés dans le bloc 3."
-          },
-          {
-            "referenceId": "REF-132-GITHUB-CONTAINER-REGISTRY",
-            "locator": "Noms, tags, digests, authentification et extraction d’images GHCR",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "referenceId": "REF-132-VITEST-GUIDE",
+            "locator": "Test API, assertions et async tests",
+            "supports": "Structure du test d’intégration Vitest."
           },
           {
             "referenceId": "REF-132-GITHUB-ACTIONS-WORKFLOWS",
-            "locator": "Événements, jobs, permissions et artefacts",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "locator": "Shell steps et exit codes",
+            "supports": "Exécution du smoke comme étape déterministe."
           }
         ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidence": "moderate",
+        "confidenceRationale": "Extraits originaux à adapter aux helpers et endpoints réels du checkpoint.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 4,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-GITHUB-ACTIONS-WORKFLOWS",
+            "locator": "Workflow events, jobs et permissions",
+            "supports": "Branche CI du diagramme."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-PUBLISH-DOCKER",
+            "locator": "Publish Docker images",
+            "supports": "Branche publication GHCR."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-CONTAINER-REGISTRY",
+            "locator": "Pull by digest",
+            "supports": "Branche rollback par digest."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Diagramme original synthétisant les trois documentations ; rendu et workflow à revoir.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 5,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-VITEST-GUIDE",
+            "locator": "Running tests et assertions",
+            "supports": "Contrôle déterministe des exemples de test."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Activité originale appliquant les niveaux expliqués à des risques explicites.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-GITHUB-ACTIONS-WORKFLOWS",
+            "locator": "Events, jobs, steps, permissions et artifacts",
+            "supports": "Vocabulaire et responsabilité de la CI."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle directement appliquée au workflow borné.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 7,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-GITHUB-ACTIONS-WORKFLOWS",
+            "locator": "Workflow syntax for events, permissions, jobs and steps",
+            "supports": "Syntaxe du workflow CI annoté."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Extrait original cohérent avec la référence ; versions d’actions et exécution à contrôler.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 8,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-GITHUB-PUBLISH-DOCKER",
+            "locator": "Publishing images to GitHub Packages",
+            "supports": "Login, permissions et build/push de la release."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-CONTAINER-REGISTRY",
+            "locator": "About the Container registry, tags and digests",
+            "supports": "Distinction tag/SHA/digest."
+          },
+          {
+            "referenceId": "REF-132-DOCKER-METADATA-ACTION",
+            "locator": "Image name sanitization et tag types",
+            "supports": "Normalisation du nom GHCR en minuscules et génération des tags de version et SHA."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Workflow original à contrôler contre le dépôt et les versions d’actions.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 9,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-GITHUB-PUBLISH-DOCKER",
+            "locator": "Trigger and published image",
+            "supports": "Publication sur tag et inspection de l’image."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-CONTAINER-REGISTRY",
+            "locator": "Pulling container images et digest",
+            "supports": "Sélection immuable pour le rollback."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-FORK-WORKFLOWS",
+            "locator": "Workflows in forked repositories",
+            "supports": "Activation préalable de GitHub Actions dans le fork et diagnostic d’une absence de run."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Commandes spécifiques au projet et valeurs de sortie à exécuter avant publication.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 10,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-VITEST-GUIDE",
+            "locator": "Running tests",
+            "supports": "Exigence de preuves de tests."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-ACTIONS-WORKFLOWS",
+            "locator": "Permissions and events",
+            "supports": "Erreurs de droits et de déclenchement."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-PUBLISH-DOCKER",
+            "locator": "Publish workflow",
+            "supports": "Séparation validation/publication."
+          },
+          {
+            "referenceId": "REF-132-GITHUB-CONTAINER-REGISTRY",
+            "locator": "Tags and digests",
+            "supports": "Erreur d’usage de `latest` et rollback précis."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse des erreurs directement liée aux mécanismes expliqués.",
+        "notApplicableReason": null
       }
     ],
     "resourceChecks": [
       {
         "resourceKey": "vitest-guide",
         "referenceIds": ["REF-132-VITEST-GUIDE"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Tester et livrer une image traçable ».",
-        "learnerInstructions": "Lire exécution et assertions ; associer chaque test au risque qu’il couvre.",
+        "pedagogicalRationale": "Approfondissement facultatif du runner après construction de la stratégie de preuve.",
+        "learnerInstructions": "Consulter exécution, assertions et filtrage uniquement si nécessaire.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML officiel ; exemples français inclus et aucune lecture requise pour l’activité.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "github-actions-workflows",
         "referenceIds": ["REF-132-GITHUB-ACTIONS-WORKFLOWS"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Tester et livrer une image traçable ».",
-        "learnerInstructions": "Lire événements, jobs et permissions puis identifier les droits minimaux.",
+        "pedagogicalRationale": "Approfondissement facultatif de la syntaxe CI déjà annotée.",
+        "learnerInstructions": "Consulter seulement les clés visibles dans l’extrait `ci.yml`.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML officiel ; workflow et explication française intégrés.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "github-publish-docker",
         "referenceIds": ["REF-132-GITHUB-PUBLISH-DOCKER"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Tester et livrer une image traçable ».",
-        "learnerInstructions": "Lire l’exemple officiel de build, login et push d’une image.",
+        "pedagogicalRationale": "Approfondissement facultatif des actions et permissions de publication après le YAML interne.",
+        "learnerInstructions": "Comparer login, build/push et permissions à l’extrait SourceLab.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML officiel ; synthèse française, diagramme et code précèdent la lecture.",
         "alternativeResourceKey": null,
-        "checkedAt": null,
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Contrôle manuel du lien requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "github-container-registry",
         "referenceIds": ["REF-132-GITHUB-CONTAINER-REGISTRY"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Tester et livrer une image traçable ».",
-        "learnerInstructions": "Lire tags, digests et extraction d’une version antérieure pour préparer le rollback manuel.",
+        "pedagogicalRationale": "Approfondissement facultatif de l’extraction et du rollback par digest.",
+        "learnerInstructions": "Consulter seulement nommage, pull et digest d’une image GHCR.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML officiel ; commandes et interprétation sont intégrées en français.",
         "alternativeResourceKey": null,
-        "checkedAt": null,
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Contrôle manuel du lien requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "github-fork-workflows",
+        "referenceIds": ["REF-132-GITHUB-FORK-WORKFLOWS"],
+        "pedagogicalRationale": "Approfondissement facultatif de la règle de sécurité GitHub après le préflight interne.",
+        "learnerInstructions": "Lire uniquement la section sur les workflows des dépôts forkés.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML officiel ; procédure, commandes et sorties attendues sont déjà synthétisées en français.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; pilote du fork encore requis."
       }
     ],
     "assessmentBanks": [
+      {
+        "conceptSlug": "strategie-tests-frontieres",
+        "assessmentTitle": "Mini-évaluation — Stratégie de tests",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel niveau teste le plus directement la fonction pure `normalizeMarkdown` avec plusieurs fins de ligne ?",
+            "explanation": "Une fonction pure se vérifie rapidement par un test ciblé.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Test ciblé.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Smoke de l’image publiée uniquement.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Rollback GHCR.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Inspection du volume.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles frontières exigent ici un test d’intégration réel ?",
+            "explanation": "Transactions et parcours API-worker-base dépendent de plusieurs composants réels.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Rollback d’une transaction PostgreSQL.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Parcours import jusqu’à READY.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Trim d’une chaîne isolée.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Titre Markdown d’un document.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "ci-permissions-minimales",
+        "assessmentTitle": "Mini-évaluation — CI minimale",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle permission explicite suffit au workflow CI qui lit le dépôt et ne publie rien ?",
+            "explanation": "La CI a besoin de lire le contenu, pas d’écrire des packages.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "`contents: read`",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "`packages: write`",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "`contents: write`",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Aucune permission, même pour checkout.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés rendent la CI attribuable au commit ?",
+            "explanation": "Le SHA identifie le changement et les sorties donnent les preuves de ses contrôles.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Construire l’image avec `${{ github.sha }}`.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Conserver rapports ou traces utiles en cas d’échec.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Installer avec le lockfile.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Publier toujours sous `latest` sans SHA.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "publication-rollback-digest",
+        "assessmentTitle": "Mini-évaluation — Publication et rollback",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel événement doit déclencher la publication GHCR dans ce parcours ?",
+            "explanation": "La release est réservée aux tags de version `v*`.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un push d’un tag Git correspondant à `v*`.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Chaque frappe dans l’éditeur.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Chaque pull request ouverte.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Chaque lecture de la documentation.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi le digest est-il préféré au tag `latest` pour le rollback ?",
+            "explanation": "Le digest identifie le contenu exact, tandis qu’un tag peut être déplacé.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Il identifie immuablement le contenu de l’image.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Il remplace le smoke test.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il chiffre tous les secrets.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Il recrée les migrations supprimées.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
       {
         "conceptSlug": "livraison-image-tracable",
         "assessmentTitle": "Mini-évaluation — Livraison d’image traçable",
         "questions": [
           {
-            "type": "single_choice",
-            "prompt": "Quand l’image GHCR doit-elle être publiée ?",
-            "explanation": "La CI de changement valide ; la livraison versionnée publie.",
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent partager une provenance cohérente dans le journal de livraison ?",
+            "explanation": "Tag Git, SHA, image et digest doivent identifier le même artefact publié.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Uniquement lors d’un tag de version autorisé",
+                "label": "Tag de version.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "À chaque frappe locale",
+                "label": "SHA du commit.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Digest de l’image.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Un secret GHCR copié en clair.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "L’image précédente est relancée par digest, mais aucun smoke n’est exécuté. Quel verdict est justifié ?",
+            "explanation": "L’action de retour a eu lieu, mais la restauration fonctionnelle n’est pas prouvée.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Rollback tenté, restauration non validée.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rollback entièrement validé.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "À chaque requête HTTP",
+                "label": "CI inutile.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Avant les tests",
+                "label": "Digest invalide par définition.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
-          },
-          {
-            "type": "single_choice",
-            "prompt": "Quel identifiant utiliser pour un rollback précis ?",
-            "explanation": "Le digest désigne un contenu immuable.",
-            "acceptedAnswers": [],
-            "options": [
-              {
-                "label": "Le digest de l’image antérieure",
-                "isCorrect": true,
-                "position": 1
-              },
-              {
-                "label": "latest",
-                "isCorrect": false,
-                "position": 2
-              },
-              {
-                "label": "Le nom du container courant",
-                "isCorrect": false,
-                "position": 3
-              },
-              {
-                "label": "Le port publié",
-                "isCorrect": false,
-                "position": 4
-              }
-            ],
-            "position": 2
-          },
-          {
-            "type": "true_false",
-            "prompt": "Ce parcours déploie automatiquement SourceLab vers un environnement cloud.",
-            "explanation": "Le CD est borné à GHCR faute de cible de déploiement autorisée.",
-            "acceptedAnswers": [],
-            "options": [
-              {
-                "label": "Vrai",
-                "isCorrect": false,
-                "position": 1
-              },
-              {
-                "label": "Faux",
-                "isCorrect": true,
-                "position": 2
-              }
-            ],
-            "position": 3
+            ]
           }
         ]
       }
     ],
     "sequenceRationale": {
-      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
+      "strategy": "Quatre cycles : stratégie de tests, CI minimale, publication/rollback, puis intégration. Les documentations officielles restent facultatives et hors séquence.",
       "cycles": [
         {
-          "conceptSlug": "livraison-image-tracable",
+          "conceptSlug": "strategie-tests-frontieres",
           "contentKeys": [
             "content-tester-livrer-image-tracable-1",
             "content-tester-livrer-image-tracable-2",
@@ -635,18 +1189,52 @@
             "content-tester-livrer-image-tracable-4",
             "content-tester-livrer-image-tracable-5"
           ],
-          "resourceKeys": [
-            "vitest-guide",
-            "github-actions-workflows",
-            "github-publish-docker",
-            "github-container-registry"
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-matrice-tests"
+          },
+          "assessmentKey": "assessment-strategie-tests-frontieres",
+          "rationale": "Le vocabulaire, les extraits et le diagramme précèdent le classement de quatre risques concrets."
+        },
+        {
+          "conceptSlug": "ci-permissions-minimales",
+          "contentKeys": [
+            "content-tester-livrer-image-tracable-6",
+            "content-tester-livrer-image-tracable-7"
           ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-auditer-workflow-ci"
+          },
+          "assessmentKey": "assessment-ci-permissions-minimales",
+          "rationale": "La CI annotée est auditée sur une seule intention : valider sans publier."
+        },
+        {
+          "conceptSlug": "publication-rollback-digest",
+          "contentKeys": [
+            "content-tester-livrer-image-tracable-8",
+            "content-tester-livrer-image-tracable-9"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-prouver-publication-rollback"
+          },
+          "assessmentKey": "assessment-publication-rollback-digest",
+          "rationale": "Le YAML, les identités et les commandes sont expliqués avant la vérification officielle et la répétition par digest."
+        },
+        {
+          "conceptSlug": "livraison-image-tracable",
+          "contentKeys": ["content-tester-livrer-image-tracable-10"],
+          "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
             "key": "exercise-tester-livrer-image-tracable"
           },
           "assessmentKey": "assessment-livraison-image-tracable",
-          "rationale": "La production « Automatiser la preuve et la livraison SourceLab » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
+          "rationale": "Le projet final rassemble les preuves sans simuler un déploiement cloud."
         }
       ]
     },
@@ -659,9 +1247,10 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
-        "Le starter autoritaire est publié sur https://github.com/Guts6667/sourcelab au commit 6dd1cda et au tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
-        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
+        "Version 2.1.0 refondue pour expliquer niveaux de test, CI, publication et rollback avant les ressources.",
+        "SVG créé ; rendu et accessibilité vérifiés. Les workflows, versions d’actions et sorties GHCR restent à contrôler sur le dépôt réel.",
+        "checkpoint-07, le smoke et un scénario de rollback par digest doivent exister avant publication.",
+        "Revue technique, seed, liens et médias obligatoire avant publication."
       ]
     },
     "changeLog": [
@@ -671,6 +1260,13 @@
         "author": "LearnX",
         "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
         "reviewRequired": "editorial_technical_links_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Refonte pédagogique avec synthèse française, pipeline accessible, code annoté, micro-actions et évaluations par notions distinctes.",
+        "reviewRequired": "editorial_technical_links_media_and_seed"
       }
     ]
   }

@@ -10,14 +10,26 @@
       "isRequired": true,
       "passingScore": 70
     },
-    "description": "Reconstruire API et PostgreSQL depuis un état propre puis prouver readiness et persistance.",
+    "description": "Reconstruire API et PostgreSQL depuis un état propre, diagnostiquer une adresse réseau erronée, puis prouver runtime non-root, readiness et persistance.",
     "instructions": [
-      "Construire la stack, créer un projet, remplacer le container API, relire le projet puis diagnostiquer une DATABASE_URL utilisant localhost depuis le container."
+      "1. Construire l’image et relever l’utilisateur runtime ainsi que l’absence du fichier .env dans son système de fichiers.",
+      "2. Lancer le checkpoint dégradé sans corriger DATABASE_URL ; conserver l’erreur de connexion et identifier depuis quel container elle est émise.",
+      "3. Remplacer uniquement l’hôte localhost par le nom de service Compose attendu, puis attendre une readiness réellement verte.",
+      "4. Créer un projet, relever son identifiant, remplacer le container API sans supprimer le volume, puis relire ce même projet.",
+      "5. Fournir les commandes exactes, les sorties utiles et une phrase d’interprétation par contrôle."
     ],
-    "case": "Cas synthétique SourceLab : l’image est disponible, mais le fichier Compose d’évaluation contient une URL de base erronée. Le volume nommé doit être conservé.",
-    "estimatedMinutes": 30,
-    "submissionFormat": "Compose corrigé, quatre commandes de preuve et note de diagnostic de quinze lignes maximum.",
-    "conceptSlugs": ["image-api-reproductible", "stack-compose-persistante"],
+    "case": "Checkpoint d’évaluation à publier dans le starter : Compose contient une DATABASE_URL qui utilise localhost depuis le container API. Le volume nommé est valide et doit être conservé.",
+    "estimatedMinutes": 35,
+    "submissionFormat": "Compose corrigé, cinq commandes de preuve, sorties annotées et note de diagnostic de quinze lignes maximum.",
+    "conceptSlugs": [
+      "image-container-contexte-build",
+      "build-multistage-cache",
+      "runtime-minimal-configurable",
+      "adressage-reseau-compose",
+      "ordre-demarrage-observable",
+      "persistance-volume-migration",
+      "stack-compose-persistante"
+    ],
     "rubric": [
       {
         "criterion": "Image reproductible",
@@ -47,7 +59,7 @@
     "remediation": "Reprendre le scénario défaillant, conserver les sorties initiales et montrer la différence après correction."
   },
   "editorial": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "createdAt": "2026-08-20",
     "referenceIds": [],
@@ -56,7 +68,8 @@
       "subjectReviewer": null,
       "readyForPublication": false,
       "notes": [
-        "Évaluation pratique courte et non redondante ; revue technique du starter requise avant publication."
+        "Publication bloquée tant que le checkpoint dégradé correspondant n’existe pas dans le starter.",
+        "Les critères sont validés par inspect, état de santé, identifiant relu et sortie réseau ; l’explication seule ne suffit pas."
       ]
     },
     "changeLog": [
@@ -66,6 +79,13 @@
         "author": "LearnX",
         "change": "Remplacement de l’évaluation V1 par une preuve cumulative bornée.",
         "reviewRequired": "editorial_technical_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Durée portée à 35 minutes et critères rendus vérifiables par inspection, santé et persistance.",
+        "reviewRequired": "editorial_technical_starter_and_seed"
       }
     ]
   }

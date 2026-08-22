@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 650" role="img" aria-labelledby="delivery-title delivery-desc">
+  <title id="delivery-title">Chaîne de preuve entre changement, CI, publication et rollback</title>
+  <desc id="delivery-desc">Une pull request déclenche la CI avec lint, typecheck, tests, build et construction Docker. Un tag de version déclenche séparément la publication GHCR. L’image publiée est reliée au tag, au SHA de commit et à un digest immuable. Le rollback sélectionne un digest antérieur, relance localement puis exige un smoke vert.</desc>
+  <defs>
+    <marker id="delivery-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#466b82"/></marker>
+    <style>
+      .title{font:700 26px system-ui,sans-serif;fill:#121c24}.eyebrow{font:700 12px ui-monospace,monospace;letter-spacing:1.4px;fill:#3f6176}.label{font:700 17px system-ui,sans-serif;fill:#121c24}.body{font:14px system-ui,sans-serif;fill:#58676d}.code{font:13px ui-monospace,monospace;fill:#121c24}.smallCode{font:11px ui-monospace,monospace;fill:#121c24}.card{fill:#fffdf8;stroke:#60747e;stroke-width:2}.gate{fill:#d9e4e8;stroke:#466b82;stroke-width:3}.immutable{fill:#fff8f0;stroke:#7f683e;stroke-width:2}.line{fill:none;stroke:#466b82;stroke-width:3;marker-end:url(#delivery-arrow)}.return{fill:none;stroke:#7f683e;stroke-width:3;stroke-dasharray:8 6;marker-end:url(#delivery-arrow)}
+    </style>
+  </defs>
+  <rect width="960" height="650" rx="24" fill="#f1eee6"/>
+  <text x="48" y="46" class="eyebrow">L7 · TESTS, CI ET LIVRAISON</text>
+  <text x="48" y="80" class="title">Chaque flèche exige une preuve avant de continuer</text>
+
+  <rect x="48" y="132" width="164" height="116" rx="16" class="card"/>
+  <text x="68" y="166" class="label">Changement</text>
+  <text x="68" y="196" class="code">branche + PR</text>
+  <text x="68" y="222" class="body">diff relu</text>
+
+  <rect x="264" y="112" width="240" height="156" rx="18" class="gate"/>
+  <text x="286" y="146" class="eyebrow">CI · PR ET PUSH</text>
+  <text x="286" y="178" class="code">lint · typecheck · tests</text>
+  <text x="286" y="204" class="code">build · docker build</text>
+  <text x="286" y="236" class="body">un échec bloque la suite</text>
+
+  <rect x="556" y="132" width="156" height="116" rx="16" class="card"/>
+  <text x="576" y="166" class="label">Tag version</text>
+  <text x="576" y="196" class="code">v2.1.0</text>
+  <text x="576" y="222" class="body">déclenche la release</text>
+
+  <rect x="764" y="112" width="148" height="156" rx="18" class="gate"/>
+  <text x="784" y="146" class="eyebrow">RELEASE</text>
+  <text x="784" y="178" class="code">contents: read</text>
+  <text x="784" y="204" class="code">packages: write</text>
+  <text x="784" y="236" class="body">push vers GHCR</text>
+
+  <path d="M212 190H258" class="line"/>
+  <path d="M504 190H550" class="line"/>
+  <path d="M712 190H758" class="line"/>
+
+  <rect x="556" y="338" width="356" height="142" rx="18" class="immutable"/>
+  <text x="578" y="374" class="eyebrow" style="fill:#7f683e">IDENTITÉ DE L’IMAGE PUBLIÉE</text>
+  <text x="578" y="410" class="smallCode">tag     ghcr.io/guts6667/sourcelab:v2.1.0</text>
+  <text x="578" y="438" class="smallCode">SHA     ghcr.io/guts6667/sourcelab:a1b2c3d</text>
+  <text x="578" y="466" class="smallCode">digest  ghcr.io/guts6667/sourcelab@sha256:9f…</text>
+  <path d="M838 268V332" class="line"/>
+
+  <rect x="48" y="338" width="408" height="142" rx="18" class="card"/>
+  <text x="70" y="374" class="eyebrow">MATRICE RISQUE → TEST</text>
+  <text x="70" y="408" class="code">normalisation     test ciblé</text>
+  <text x="70" y="436" class="code">API + PostgreSQL  intégration</text>
+  <text x="70" y="464" class="code">image démarrée    smoke HTTP</text>
+
+  <rect x="264" y="514" width="440" height="100" rx="16" class="gate"/>
+  <text x="286" y="542" class="label">Rollback vérifié</text>
+  <text x="286" y="568" class="code">ghcr.io/guts6667/sourcelab@sha256:ancien</text>
+  <text x="286" y="594" class="body">relancer Compose → smoke vert → consigner le digest</text>
+  <path d="M734 480V564H710" class="return"/>
+
+  <text x="48" y="636" class="body">Un tag est un nom ; le digest identifie le contenu exact.</text>
+</svg>

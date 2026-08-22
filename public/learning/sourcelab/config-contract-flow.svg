@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" role="img" aria-labelledby="config-title config-desc">
+  <title id="config-title">Deux validations à deux moments différents</title>
+  <desc id="config-desc">La première voie montre process.env lu et parsé par loadConfig avant que le serveur démarre. La seconde montre le corps JSON d’une requête validé par Zod dans le handler avant d’appeler le repository. Une erreur de configuration arrête le processus ; une erreur de contrat renvoie 400 sans écrire.</desc>
+  <defs>
+    <marker id="config-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#466b82"/></marker>
+    <marker id="config-error-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#944f49"/></marker>
+    <style>
+      .title{font:700 26px system-ui,sans-serif;fill:#121c24}.eyebrow{font:700 12px ui-monospace,monospace;letter-spacing:1.4px;fill:#3f6176}.lane{font:700 18px system-ui,sans-serif;fill:#121c24}.label{font:700 16px system-ui,sans-serif;fill:#121c24}.body{font:14px system-ui,sans-serif;fill:#58676d}.code{font:13px ui-monospace,monospace;fill:#121c24}.card{fill:#fffdf8;stroke:#60747e;stroke-width:2}.check{fill:#d9e4e8;stroke:#466b82;stroke-width:2}.error{fill:#fff8f6;stroke:#944f49;stroke-width:2}.line{fill:none;stroke:#466b82;stroke-width:3;marker-end:url(#config-arrow)}.errorLine{fill:none;stroke:#944f49;stroke-width:2;stroke-dasharray:7 6;marker-end:url(#config-error-arrow)}
+    </style>
+  </defs>
+  <rect width="960" height="580" rx="24" fill="#f1eee6"/>
+  <text x="48" y="46" class="eyebrow">L2 · CONFIGURATION ET CONTRAT</text>
+  <text x="48" y="80" class="title">Même mot « validation », frontières différentes</text>
+
+  <text x="48" y="130" class="lane">1 · Au démarrage du processus</text>
+  <rect x="48" y="152" width="180" height="100" rx="14" class="card"/>
+  <text x="68" y="184" class="label">process.env</text>
+  <text x="68" y="211" class="code">PORT="3000"</text>
+  <text x="68" y="234" class="body">chaîne ou absent</text>
+  <rect x="292" y="152" width="222" height="100" rx="14" class="check"/>
+  <text x="312" y="184" class="label">loadConfig()</text>
+  <text x="312" y="211" class="code">parse + bornes</text>
+  <text x="312" y="234" class="body">une seule fois, avant serve()</text>
+  <rect x="578" y="152" width="156" height="100" rx="14" class="card"/>
+  <text x="598" y="184" class="label">server.ts</text>
+  <text x="598" y="211" class="code">serve({ port })</text>
+  <text x="598" y="234" class="body">démarre l’écoute</text>
+  <rect x="774" y="152" width="138" height="100" rx="14" class="error"/>
+  <text x="794" y="184" class="label" style="fill:#944f49">Échec</text>
+  <text x="794" y="211" class="code">exit ≠ 0</text>
+  <text x="794" y="234" class="body">aucun serveur</text>
+  <path d="M228 202H286" class="line"/>
+  <path d="M514 202H572" class="line"/>
+  <path d="M404 252V278H842V258" class="errorLine"/>
+  <text x="522" y="273" class="body" style="fill:#944f49">PORT invalide</text>
+
+  <line x1="48" y1="304" x2="912" y2="304" stroke="#c8cdca" stroke-width="2"/>
+  <text x="48" y="346" class="lane">2 · À chaque requête POST /projects</text>
+  <rect x="48" y="370" width="176" height="104" rx="14" class="card"/>
+  <text x="68" y="402" class="label">Corps JSON</text>
+  <text x="68" y="429" class="code">{ "title": "..." }</text>
+  <text x="68" y="452" class="body">donnée non fiable</text>
+  <rect x="274" y="370" width="194" height="104" rx="14" class="check"/>
+  <text x="294" y="402" class="label">Décoder + valider</text>
+  <text x="294" y="429" class="code">req.json() · safeParse</text>
+  <text x="294" y="452" class="body">syntaxe puis contrat</text>
+  <rect x="518" y="370" width="166" height="104" rx="14" class="card"/>
+  <text x="538" y="402" class="label">Handler</text>
+  <text x="538" y="429" class="code">app.post(...)</text>
+  <text x="538" y="452" class="body">orchestre la réponse</text>
+  <rect x="734" y="370" width="178" height="104" rx="14" class="card"/>
+  <text x="754" y="402" class="label">Repository</text>
+  <text x="754" y="429" class="code">repository.create</text>
+  <text x="754" y="452" class="body">écrit si valide</text>
+  <path d="M224 422H268" class="line"/>
+  <path d="M468 422H512" class="line"/>
+  <path d="M684 422H728" class="line"/>
+
+  <rect x="274" y="506" width="410" height="48" rx="12" class="error"/>
+  <text x="294" y="536" class="code" style="fill:#944f49">JSON ou title invalide → HTTP 400 → aucun create</text>
+  <path d="M371 474V500" class="errorLine"/>
+</svg>

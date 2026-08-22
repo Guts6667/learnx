@@ -7,34 +7,38 @@
   "lesson": {
     "title": "Prendre en main le starter et suivre une requête",
     "slug": "prendre-en-main-starter-suivre-requete",
-    "summary": "Partir d’un dépôt TypeScript exécutable, suivre une requête Hono et produire une première preuve de diagnostic sans créer l’API depuis une page blanche.",
+    "summary": "Comprendre la séparation entre le processus Node et l’application Hono, interpréter les preuves HTTP du starter puis rendre chaque requête corrélable par un identifiant.",
     "objectives": [
-      "Repérer les responsabilités du serveur Node, de l’application Hono et d’une route.",
-      "Suivre une requête avec un identifiant corrélé jusqu’à sa réponse.",
-      "Utiliser le checkpoint de départ et les commandes de preuve sans masquer un blocage."
+      "Expliquer le trajet d’une requête entre curl, le serveur Node, Hono, une route et son handler.",
+      "Distinguer une absence de connexion, une route non trouvée et une réponse produite par le handler.",
+      "Ajouter et tester un request ID cohérent entre réponse et journal sans masquer la cause d’une erreur."
     ],
     "prerequisites": [
       "Maîtriser TypeScript et savoir exécuter des commandes pnpm dans un dépôt existant."
     ],
-    "estimatedMinutes": 60,
+    "estimatedMinutes": 70,
     "position": 1,
     "contentBlocks": [
       {
         "key": "content-prendre-en-main-starter-suivre-requete-1",
-        "type": "objective",
+        "type": "definition",
         "position": 1,
         "content": {
-          "text": "Cette leçon part de checkpoint-00-starter. Le dépôt compile déjà, GET /health/live répond et un test est vert. La brique à produire est checkpoint-01-request-visible : la même API, enrichie d’un request ID et de preuves pour les cas succès, route absente et méthode incorrecte.",
-          "sourceKeys": []
+          "text": "## Point de départ et vocabulaire\n\nVous partez du commit `6dd1cda` du tag `checkpoint-00-starter`. Ce dépôt n’est pas une page blanche : `pnpm dev` démarre déjà une API et `pnpm test` vérifie `GET /health/live`.\n\nAvant de modifier le code, distinguons les rôles :\n\n- un **processus Node** est l’instance en cours d’exécution de `node` ou `tsx` ;\n- `@hono/node-server` est l’**adaptateur HTTP** qui ouvre un port Node et transmet les requêtes à l’application ;\n- **Hono** est le framework HTTP qui associe une méthode et un chemin à une fonction ;\n- une **route** est ce couple, par exemple `GET + /health/live` ;\n- un **handler** est la fonction exécutée lorsque la route correspond ;\n- `curl` est ici le **client HTTP** : il envoie une requête et affiche la réponse.\n\nLe checkpoint attendu, `checkpoint-01-request-visible`, conserve cette architecture. Il ajoute seulement une preuve transversale : un request ID présent dans la réponse et dans le journal de la même interaction.",
+          "sourceKeys": ["sourcelab-starter-6dd1cda", "hono-nodejs"]
         }
       },
       {
         "key": "content-prendre-en-main-starter-suivre-requete-2",
-        "type": "definition",
+        "type": "rich_text",
         "position": 2,
         "content": {
-          "text": "Une interaction HTTP comporte une requête, un traitement et une réponse. Le statut et les en-têtes décrivent ce que le serveur a réellement renvoyé ; ils ne prouvent pas à eux seuls où une panne est née. Un request ID stable relie les observations d’une même interaction sans remplacer le diagnostic.",
-          "sourceKeys": ["mdn-http-overview"]
+          "text": "## Deux fichiers, deux responsabilités\n\nVoici le code réel du starter, avec seulement des commentaires pédagogiques ajoutés.\n\n`src/api/app.ts` décrit le comportement HTTP :\n\n```ts\nimport { Hono } from 'hono';\n\n// Crée le routeur ; aucun port réseau n’est encore ouvert.\nexport const app = new Hono();\n\n// Associe précisément GET + /health/live à ce handler.\napp.get('/health/live', (context) =>\n  context.json({\n    service: 'sourcelab-api',\n    status: 'ok',\n  }),\n);\n```\n\n`src/api/server.ts` démarre l’adaptateur Node :\n\n```ts\nimport { serve } from '@hono/node-server';\n\nimport { app } from './app.js';\nimport { loadConfig } from '../config.js';\n\n// Valide la configuration avant l’ouverture du port.\nconst config = loadConfig();\n\nconst server = serve({\n  // Chaque Request reçue par Node est transmise à Hono.\n  fetch: app.fetch,\n  port: config.PORT,\n});\n```\n\nCette séparation rend deux tests possibles. `app.request('/health/live')` appelle directement l’application Hono en mémoire : il teste le routage sans ouvrir de socket. `curl http://localhost:3000/health/live` traverse réellement le port ouvert par Node.\n\n![Cycle d’une requête SourceLab](/learning/sourcelab/request-lifecycle.svg)\n\nDescription textuelle du diagramme : de gauche à droite, `curl` envoie `GET /health/live` au port ouvert par le processus Node ; `@hono/node-server` transmet la requête à `app.fetch` ; Hono cherche le couple méthode-chemin ; le handler construit une `Response` JSON qui revient au client. Une branche séparée montre que `app.request` entre directement dans Hono et ne teste donc pas le réseau.\n\n**À retenir —** `server.ts` ouvre le port, `app.ts` décide de la réponse et `app.request` contourne volontairement le réseau pour tester le routage.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "hono-nodejs",
+            "mdn-http-overview"
+          ]
         }
       },
       {
@@ -42,17 +46,25 @@
         "type": "example",
         "position": 3,
         "content": {
-          "text": "Dans le starter, server.ts ouvre le port tandis que app.ts déclare les routes. Une commande curl atteint GET /health/live, Hono choisit le handler puis Node écrit la réponse. Modifier la route ne remplace donc ni le processus, ni sa configuration, ni le client qui appelle le service.",
-          "sourceKeys": ["node-process", "mdn-http-overview"]
+          "text": "## Lire une sortie avant de diagnostiquer\n\nDémarrez le starter dans un terminal :\n\n```bash\npnpm dev\n```\n\nPuis interrogez-le dans un second terminal :\n\n```bash\ncurl -i http://localhost:3000/health/live\n```\n\nSortie utile, abrégée :\n\n```http\nHTTP/1.1 200 OK\ncontent-type: application/json; charset=UTF-8\n\n{\"service\":\"sourcelab-api\",\"status\":\"ok\"}\n```\n\nLe `200` prouve que la connexion a atteint Node, que Hono a trouvé la route et que le handler a construit sa réponse. Il ne prouve pas encore qu’une base de données ou un worker fonctionne : cette route n’en appelle aucun.\n\nComparez avec deux requêtes qui ne correspondent à aucune route du starter :\n\n```bash\ncurl -i http://localhost:3000/absente\ncurl -i -X POST http://localhost:3000/health/live\n```\n\nAvec Hono `4.13.0` tel qu’épinglé dans ce commit, les deux réponses sont par défaut :\n\n```http\nHTTP/1.1 404 Not Found\ncontent-type: text/plain; charset=UTF-8\n\n404 Not Found\n```\n\nLe second cas mérite attention : le starter ne déclare que `GET /health/live`. Hono ne fabrique pas ici un `405 Method Not Allowed` ; sans traitement explicite de cette méthode, aucun handler ne correspond et la réponse par défaut est `404`.\n\nRepères de diagnostic :\n\n- **`curl: Failed to connect`** : rien n’a répondu sur ce port ; vérifiez d’abord le processus, le port et l’URL.\n- **`404`** : Node et Hono ont répondu ; vérifiez ensuite la méthode et le chemin réellement reçus.\n- **`200` avec le JSON attendu** : le handler de santé s’est exécuté ; ne concluez que sur les dépendances qu’il appelle réellement.\n- **`500`** : une réponse serveur a été produite ; cherchez la ligne de journal portant le même request ID.\n\nErreur fréquente : modifier `app.ts` puis chercher une panne de port dans la route. Une route ne démarre ni le processus ni le socket ; cette responsabilité reste dans `server.ts`.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "hono-nodejs",
+            "mdn-http-overview"
+          ]
         }
       },
       {
         "key": "content-prendre-en-main-starter-suivre-requete-4",
-        "type": "callout",
+        "type": "rich_text",
         "position": 4,
         "content": {
-          "text": "Guidage : lancer le test initial, ajouter le middleware d’identification au TODO indiqué, vérifier l’en-tête de réponse, puis capturer les trois commandes curl attendues. En cas de blocage supérieur à quinze minutes, comparer uniquement le fichier concerné au checkpoint solution.",
-          "sourceKeys": []
+          "text": "## Corréler réponse et journal avec un request ID\n\nUn **request ID** est un identifiant associé à une interaction HTTP. Il sert de clé de rapprochement : le client donne l’identifiant vu dans la réponse, puis le développeur retrouve la ligne de journal correspondante. Cet identifiant n’explique pas la panne à lui seul.\n\nAjoutez ce middleware avant la déclaration de `GET /health/live` dans `src/api/app.ts` :\n\n```ts\nimport { randomUUID } from 'node:crypto';\nimport { Hono } from 'hono';\n\nexport type AppEnvironment = {\n  Variables: { requestId: string };\n};\n\nexport const app = new Hono<AppEnvironment>();\n\napp.use('*', async (context, next) => {\n  // Le serveur génère un identifiant neuf pour cette requête.\n  const requestId = randomUUID();\n\n  // Les handlers et le mapper d’erreurs relisent exactement cette valeur typée.\n  context.set('requestId', requestId);\n\n  // Le handler suivant produit d’abord sa réponse.\n  await next();\n\n  // Le même identifiant est rendu visible au client.\n  context.header('X-Request-Id', context.get('requestId'));\n\n  // Une ligne structurée relie méthode, chemin et statut.\n  console.info(\n    JSON.stringify({\n      requestId: context.get('requestId'),\n      method: context.req.method,\n      path: context.req.path,\n      status: context.res.status,\n    }),\n  );\n});\n```\n\n`AppEnvironment` déclare la variable de contexte une fois : TypeScript refuse ensuite un nom mal orthographié. `context.set` précède `next` afin qu’un handler ou `app.onError` puisse relire l’identifiant ; le header et le journal relisent eux aussi cette valeur unique. Le middleware doit être enregistré avant les routes qu’il observe. Après l’ajout, une réponse peut contenir :\n\n```http\nHTTP/1.1 200 OK\nx-request-id: 7c6f46fa-2d8b-4a59-91cd-c6a14cb1fb96\ncontent-type: application/json; charset=UTF-8\n\n{\"service\":\"sourcelab-api\",\"status\":\"ok\"}\n```\n\nEt le journal de la même interaction :\n\n```json\n{\"requestId\":\"7c6f46fa-2d8b-4a59-91cd-c6a14cb1fb96\",\"method\":\"GET\",\"path\":\"/health/live\",\"status\":200}\n```\n\nLa valeur exacte change à chaque requête ; c’est l’égalité entre l’en-tête et la ligne de journal qui constitue la preuve. Étendez aussi le test existant :\n\n```ts\nimport { vi } from 'vitest';\n\nconst info = vi.spyOn(console, 'info').mockImplementation(() => undefined);\nconst response = await app.request('/health/live');\n\nexpect(response.status).toBe(200);\nconst headerRequestId = response.headers.get('x-request-id');\nexpect(headerRequestId).toMatch(\n  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,\n);\n\nconst logEntry = JSON.parse(String(info.mock.calls.at(-1)?.[0])) as {\n  requestId: string;\n};\nexpect(logEntry.requestId).toBe(headerRequestId);\ninfo.mockRestore();\n```\n\nErreurs fréquentes : générer un ID différent dans le header et dans le log ; ne journaliser que les succès ; croire que `app.request` prouve l’ouverture du port ; ou tester une valeur UUID fixe alors qu’elle doit varier.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "hono-middleware",
+            "node-randomuuid"
+          ]
         }
       },
       {
@@ -60,114 +72,232 @@
         "type": "callout",
         "position": 5,
         "content": {
-          "text": "Preuve de fin : pnpm test est vert, chaque réponse contient un request ID et le journal associe ce même identifiant au statut renvoyé. Le livrable est réutilisé par toutes les leçons suivantes ; il n’est pas un exercice jetable.",
+          "text": "## Projet intégrateur — checkpoint-01-request-visible\n\nTravaillez sur une branche issue de `checkpoint-00-starter` et conservez le test de santé initial.\n\n1. Placez le middleware avant les routes.\n2. Vérifiez que le test en mémoire contrôle le statut, le corps et la forme du request ID.\n3. Avec `curl -i`, capturez un succès, une route absente et une mauvaise méthode.\n4. Pour chaque capture, associez la ligne de journal portant exactement le même identifiant.\n5. Exécutez `pnpm check` et conservez la sortie.\n6. Créez votre checkpoint local `checkpoint-01-request-visible`.\n\nLe livrable est un court fichier de preuve contenant les commandes, leurs sorties abrégées et une phrase d’interprétation par cas. Après quinze minutes de blocage, consignez le fichier, la commande et l’observation précise qui vous arrêtent ; le checkpoint solution ne sera proposé qu’après sa publication et sa vérification. N’écrasez pas votre première tentative. Le projet est réussi si une autre personne peut partir d’un request ID et retrouver sans ambiguïté méthode, chemin et statut.",
           "sourceKeys": []
         }
       }
     ],
     "resources": [
       {
+        "key": "sourcelab-starter-6dd1cda",
+        "type": "tool",
+        "title": "SourceLab — checkpoint-00-starter au commit 6dd1cda",
+        "author": "Projet SourceLab",
+        "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "citation": "Projet SourceLab. (2026). SourceLab, commit 6dd1cda3aba94187cc5871e8c8208f892bb5bb2f. GitHub.",
+        "description": "Référence exacte du code montré dans la leçon ; consulter seulement app.ts, server.ts, config.ts et health.test.ts en cas de comparaison.",
+        "guidance": {
+          "objective": "Vérifier l’état initial réel du projet fil rouge.",
+          "instructions": "Ouvrir uniquement les quatre fichiers cités et comparer les responsabilités, sans chercher une solution future.",
+          "scope": "src/api/app.ts, src/api/server.ts, src/config.ts et tests/health.test.ts",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Code texte public sur GitHub ; la synthèse et les extraits utiles sont inclus dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 5,
+        "position": 1
+      },
+      {
+        "key": "hono-nodejs",
+        "type": "website",
+        "title": "Getting Started — Node.js",
+        "author": "Hono",
+        "url": "https://hono.dev/docs/getting-started/nodejs",
+        "citation": "Hono. (n.d.). Getting Started — Node.js. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur le lien entre l’adaptateur Node et app.fetch après avoir étudié les extraits internes.",
+        "guidance": {
+          "objective": "Relier l’explication interne à l’API officielle de l’adaptateur Node.",
+          "instructions": "Après la leçon, repérer serve, fetch et le port dans l’exemple Node.js.",
+          "scope": "Exemple de démarrage sur Node.js",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Documentation HTML en anglais ; les éléments nécessaires sont synthétisés en français dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 5,
+        "position": 2
+      },
+      {
+        "key": "hono-middleware",
+        "type": "website",
+        "title": "Middleware",
+        "author": "Hono",
+        "url": "https://hono.dev/docs/guides/middleware",
+        "citation": "Hono. (n.d.). Middleware. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur l’ordre d’exécution avant et après next().",
+        "guidance": {
+          "objective": "Vérifier le modèle d’exécution d’un middleware Hono.",
+          "instructions": "Lire uniquement l’exemple avec await next() et expliquer ce qui s’exécute avant puis après le handler.",
+          "scope": "Execution order",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Documentation HTML en anglais ; un exemple commenté équivalent est fourni dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 6,
+        "position": 3
+      },
+      {
         "key": "mdn-http-overview",
         "type": "website",
         "title": "An overview of HTTP",
         "author": "Mozilla Developer Network",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
-        "citation": "Mozilla Developer Network. (n.d.). An overview of HTTP. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire uniquement le schéma client-serveur et relever requête, réponse et intermédiaire.",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+        "citation": "Mozilla Developer Network. (n.d.). An overview of HTTP. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur le modèle client-requête-réponse après la synthèse française.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Prendre en main le starter et suivre une requête ».",
-          "instructions": "Lire uniquement le schéma client-serveur et relever requête, réponse et intermédiaire.",
+          "objective": "Consolider le vocabulaire HTTP utilisé dans le diagnostic.",
+          "instructions": "Relire seulement les parties client, requête et réponse, puis les rapprocher du diagramme SourceLab.",
           "scope": "Client, requête, réponse et intermédiaires",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML ; les concepts indispensables sont déjà expliqués en français.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 8,
-        "position": 1
+        "isRequired": false,
+        "estimatedMinutes": 6,
+        "position": 4
       },
       {
-        "key": "node-process",
+        "key": "node-randomuuid",
         "type": "website",
-        "title": "Process — Node.js Documentation",
+        "title": "Crypto — crypto.randomUUID()",
         "author": "Node.js",
-        "url": "https://nodejs.org/api/process.html",
-        "citation": "Node.js. (2026). Process — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire uniquement les repères sur identifiant, environnement et code de sortie d’un processus.",
+        "url": "https://nodejs.org/api/crypto.html#cryptorandomuuidoptions",
+        "citation": "Node.js. (2026). Crypto — crypto.randomUUID(). Documentation officielle, consultée le 22 août 2026.",
+        "description": "Référence facultative sur la génération d’UUID avec l’API standard de Node.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Prendre en main le starter et suivre une requête ».",
-          "instructions": "Lire uniquement les repères sur identifiant, environnement et code de sortie d’un processus.",
-          "scope": "Identifiant du processus, environnement, signaux et code de sortie",
+          "objective": "Identifier l’API standard utilisée pour générer le request ID.",
+          "instructions": "Consulter uniquement l’entrée crypto.randomUUID().",
+          "scope": "crypto.randomUUID(options)",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; l’usage nécessaire est montré dans le code commenté.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 6,
-        "position": 2
+        "isRequired": false,
+        "estimatedMinutes": 3,
+        "position": 5
       }
     ],
     "concepts": [
       {
-        "title": "Requête observable",
-        "slug": "requete-observable",
-        "description": "Une requête est diagnostiquée par des observations corrélées aux frontières client, route, processus et réponse.",
+        "title": "Frontières d’exécution HTTP",
+        "slug": "frontieres-execution-http",
+        "description": "Le client, le port Node, l’adaptateur, l’application Hono, la route et le handler sont des frontières distinctes dont les preuves ne sont pas interchangeables.",
         "position": 1,
         "isRequired": true,
-        "masteryThreshold": 70,
-        "resourceKeys": ["mdn-http-overview", "node-process"],
+        "masteryThreshold": 75,
+        "resourceKeys": ["sourcelab-starter-6dd1cda", "hono-nodejs"],
         "assessment": {
-          "key": "assessment-requete-observable",
+          "key": "assessment-frontieres-execution-http",
           "type": "case_question",
-          "title": "Mini-évaluation — Requête observable",
-          "questionCount": 3
+          "title": "Mini-évaluation — Frontières d’exécution HTTP",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Routage et preuves HTTP",
+        "slug": "routage-preuves-http",
+        "description": "Une sortie curl permet d’identifier la frontière atteinte sans attribuer automatiquement la cause à une dépendance qui n’a pas été appelée.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 75,
+        "resourceKeys": [
+          "sourcelab-starter-6dd1cda",
+          "mdn-http-overview",
+          "hono-nodejs"
+        ],
+        "assessment": {
+          "key": "assessment-routage-preuves-http",
+          "type": "case_question",
+          "title": "Mini-évaluation — Routage et preuves HTTP",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Corrélation par request ID",
+        "slug": "correlation-request-id",
+        "description": "Un identifiant unique partagé par réponse et journal relie les observations d’une requête, mais doit être combiné avec méthode, chemin et statut pour diagnostiquer.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 75,
+        "resourceKeys": [
+          "sourcelab-starter-6dd1cda",
+          "hono-middleware",
+          "node-randomuuid"
+        ],
+        "assessment": {
+          "key": "assessment-correlation-request-id",
+          "type": "case_question",
+          "title": "Mini-évaluation — Corrélation par request ID",
+          "questionCount": 4
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-prendre-en-main-starter-suivre-requete",
-        "title": "Rendre la première requête SourceLab observable",
-        "description": "Depuis checkpoint-00-starter, ajouter le request ID dans les fichiers TODO, tester GET /health/live puis capturer succès, route absente et méthode incorrecte. Livrer les sorties et créer checkpoint-01-request-visible.",
+        "key": "exercise-cartographier-trajet-requete",
+        "title": "Cartographier les frontières du starter",
+        "description": "Sans modifier le code, compléter un tableau fichier ou commande → responsabilité → preuve. Expliquer notamment pourquoi app.request teste Hono sans prouver que le port Node est ouvert.",
         "type": "practice",
         "isRequired": true,
-        "weight": 2,
+        "weight": 1,
         "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-predire-observer-http",
+        "title": "Prédire puis observer trois réponses",
+        "description": "Avant chaque curl, prédire connexion, handler et statut pour GET /health/live, GET /absente et POST /health/live ; exécuter ensuite les commandes et corriger les prédictions avec une justification.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "project-request-visible",
+        "title": "Rendre la requête corrélable de bout en bout",
+        "description": "Ajouter le middleware, étendre les tests, capturer les trois cas avec leur ligne de journal, exécuter pnpm check et livrer checkpoint-01-request-visible avec un fichier de preuves interprétées.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
         "resourceKeys": []
       }
     ],
     "quizzes": [
       {
         "key": "quiz-prendre-en-main-starter-suivre-requete",
-        "title": "Quiz — Requête observable",
-        "description": "Vérifier les repères de la leçon « Prendre en main le starter et suivre une requête ».",
-        "passingScore": 70,
+        "title": "Quiz — Suivre une requête sans sauter de frontière",
+        "description": "Analyser des observations réalistes du starter et choisir la conclusion la mieux étayée.",
+        "passingScore": 75,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quelle affirmation distingue correctement app.ts et server.ts ?",
-            "explanation": "Le découpage rend les responsabilités testables séparément.",
+            "prompt": "Le test app.request('/health/live') passe, mais curl localhost:3000 échoue avec « Failed to connect ». Quelle conclusion est la mieux étayée ?",
+            "explanation": "Le test en mémoire prouve le routage Hono ; l’échec réseau oriente vers le processus ou le port.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "app.ts déclare l’application ; server.ts démarre le processus HTTP",
+                "label": "La route fonctionne en mémoire, mais il faut vérifier que server.ts tourne et écoute le bon port",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Les deux fichiers sont des images Docker",
+                "label": "Le handler Hono renvoie forcément 500",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "app.ts stocke les volumes",
+                "label": "La route GET doit être remplacée par POST",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "server.ts remplace les tests",
+                "label": "Le JSON de santé prouve que PostgreSQL est indisponible",
                 "isCorrect": false,
                 "position": 4
               }
@@ -175,52 +305,120 @@
             "position": 1
           },
           {
-            "type": "true_false",
-            "prompt": "Une réponse 405 signifie automatiquement que PostgreSQL est indisponible.",
-            "explanation": "405 concerne la méthode autorisée pour la ressource.",
+            "type": "single_choice",
+            "prompt": "Après ajout du middleware, POST /health/live renvoie 404 avec un request ID. Que démontre l’ensemble de ces preuves ?",
+            "explanation": "Le middleware et Hono ont traité la requête, mais aucun handler ne correspond au couple méthode-chemin.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "La requête a atteint Hono, le middleware s’est exécuté et aucun handler POST ne correspond",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
-                "isCorrect": true,
+                "label": "Le processus Node n’a jamais reçu la requête",
+                "isCorrect": false,
                 "position": 2
+              },
+              {
+                "label": "Le handler GET a nécessairement levé une exception",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Hono a automatiquement produit un 405",
+                "isCorrect": false,
+                "position": 4
               }
             ],
             "position": 2
           },
           {
-            "type": "single_choice",
-            "prompt": "Quand consulter le checkpoint solution ?",
-            "explanation": "Le checkpoint est un filet de sécurité, pas un substitut à la pratique.",
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves faut-il rapprocher pour démontrer la corrélation d’une interaction ?",
+            "explanation": "L’égalité du request ID relie les observations ; méthode, chemin et statut donnent le contexte diagnostique.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Après une première tentative et un blocage borné",
+                "label": "Le X-Request-Id de la réponse",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Avant de lire la consigne",
-                "isCorrect": false,
+                "label": "La ligne de journal portant le même requestId",
+                "isCorrect": true,
                 "position": 2
               },
               {
-                "label": "Uniquement après avoir supprimé le dépôt",
-                "isCorrect": false,
+                "label": "La méthode, le chemin et le statut de cette ligne",
+                "isCorrect": true,
                 "position": 3
               },
               {
-                "label": "Jamais, même si le blocage persiste",
+                "label": "Un identifiant choisi dans une requête différente",
                 "isCorrect": false,
                 "position": 4
               }
             ],
             "position": 3
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une réponse 200 de /health/live permet-elle d’affirmer que le futur worker fonctionne ?",
+            "explanation": "Une preuve ne couvre que les dépendances réellement traversées par le handler.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Non, car cette route ne traverse pas encore le worker",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Oui, tout statut 200 valide automatiquement toute l’architecture",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Oui, parce que Hono démarre toujours le worker",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Non, parce qu’un statut 200 signifie route absente",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Le header contient l’ID A et la ligne de journal contient l’ID B. Quel correctif traite directement le défaut de preuve ?",
+            "explanation": "L’identifiant doit être créé une seule fois par requête puis réutilisé.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Générer l’identifiant une seule fois dans le middleware et réutiliser cette variable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Supprimer le statut du journal",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Changer /health/live en /health/ready",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Relancer curl jusqu’à obtenir deux UUID identiques par hasard",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
           }
         ]
       }
@@ -235,16 +433,24 @@
         "key": "content-prendre-en-main-starter-suivre-requete-2"
       },
       {
-        "kind": "RESOURCE",
-        "key": "mdn-http-overview"
+        "kind": "EXERCISE",
+        "key": "exercise-cartographier-trajet-requete"
       },
       {
-        "kind": "RESOURCE",
-        "key": "node-process"
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-frontieres-execution-http"
       },
       {
         "kind": "CONTENT",
         "key": "content-prendre-en-main-starter-suivre-requete-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-predire-observer-http"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-routage-preuves-http"
       },
       {
         "kind": "CONTENT",
@@ -256,11 +462,11 @@
       },
       {
         "kind": "EXERCISE",
-        "key": "exercise-prendre-en-main-starter-suivre-requete"
+        "key": "project-request-visible"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-requete-observable"
+        "key": "assessment-correlation-request-id"
       },
       {
         "kind": "QUIZ",
@@ -269,7 +475,7 @@
     ]
   },
   "editorial": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "language": "fr",
     "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
@@ -278,6 +484,63 @@
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
+      {
+        "id": "REF-126-STARTER",
+        "type": "source_code",
+        "authors": [],
+        "organization": "Projet SourceLab",
+        "title": "SourceLab — checkpoint-00-starter",
+        "year": 2026,
+        "edition": "commit 6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-126-HONO-NODE",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Hono",
+        "title": "Getting Started — Node.js",
+        "year": null,
+        "edition": null,
+        "publication": "Hono",
+        "doi": null,
+        "url": "https://hono.dev/docs/getting-started/nodejs",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-126-HONO-MIDDLEWARE",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Hono",
+        "title": "Middleware",
+        "year": null,
+        "edition": null,
+        "publication": "Hono",
+        "doi": null,
+        "url": "https://hono.dev/docs/guides/middleware",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
       {
         "id": "REF-126-MDN-HTTP-OVERVIEW",
         "type": "official_documentation",
@@ -288,225 +551,617 @@
         "edition": null,
         "publication": "Mozilla Developer Network",
         "doi": null,
-        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
-        "accessedAt": "2026-08-18",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
-        "id": "REF-126-NODE-PROCESS",
+        "id": "REF-126-NODE-RANDOMUUID",
         "type": "official_documentation",
         "authors": [],
         "organization": "Node.js",
-        "title": "Process — Node.js Documentation",
-        "year": null,
+        "title": "Crypto — crypto.randomUUID()",
+        "year": 2026,
         "edition": null,
         "publication": "Node.js",
         "doi": null,
-        "url": "https://nodejs.org/api/process.html",
-        "accessedAt": "2026-08-18",
+        "url": "https://nodejs.org/api/crypto.html#cryptorandomuuidoptions",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-126-STARTER",
+            "locator": "README.md, package.json, src/api/app.ts et src/api/server.ts",
+            "supports": "État initial, versions et répartition des fichiers du starter."
+          },
+          {
+            "referenceId": "REF-126-HONO-NODE",
+            "locator": "exemple Node.js avec serve et app.fetch",
+            "supports": "Rôle de Hono et de l’adaptateur Node."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Code primaire au commit exact et documentation officielle convergente.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
+            "referenceId": "REF-126-STARTER",
+            "locator": "src/api/app.ts, lignes intégrales ; src/api/server.ts, initialisation de serve",
+            "supports": "Extraits réels et séparation app/server."
+          },
+          {
+            "referenceId": "REF-126-HONO-NODE",
+            "locator": "serve({ fetch: app.fetch, port })",
+            "supports": "Connexion entre l’application Hono et Node."
+          },
+          {
             "referenceId": "REF-126-MDN-HTTP-OVERVIEW",
-            "locator": "Client, requête, réponse et intermédiaires",
-            "supports": "Repères techniques employés dans le bloc 2."
+            "locator": "Client, requests and responses",
+            "supports": "Trajet client-requête-réponse du diagramme."
           }
         ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidence": "very_high",
+        "confidenceRationale": "Extraits contrôlés au commit fixé et documentation primaire.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-126-NODE-PROCESS",
-            "locator": "Identifiant du processus, environnement, signaux et code de sortie",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "referenceId": "REF-126-STARTER",
+            "locator": "package.json, hono 4.13.0 ; src/api/app.ts ; README.md, commandes de démarrage",
+            "supports": "Commandes, route unique et comportement du starter."
+          },
+          {
+            "referenceId": "REF-126-HONO-NODE",
+            "locator": "démarrage et requête de l’application Node.js",
+            "supports": "Interprétation du trajet réseau."
           },
           {
             "referenceId": "REF-126-MDN-HTTP-OVERVIEW",
-            "locator": "Client, requête, réponse et intermédiaires",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "locator": "HTTP messages and status-bearing responses",
+            "supports": "Lecture de la réponse HTTP."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidenceRationale": "Le comportement décrit est borné au starter et à sa version Hono épinglée ; les sorties variables sont signalées comme abrégées.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 4,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-126-STARTER",
+            "locator": "src/api/app.ts et tests/health.test.ts",
+            "supports": "Points d’insertion et style du test existant."
+          },
+          {
+            "referenceId": "REF-126-HONO-MIDDLEWARE",
+            "locator": "Execution order et exemple await next()",
+            "supports": "Ordre du middleware autour du handler."
+          },
+          {
+            "referenceId": "REF-126-NODE-RANDOMUUID",
+            "locator": "crypto.randomUUID(options)",
+            "supports": "Génération de l’identifiant."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Adaptation pédagogique minimale fondée sur les API officielles et le code exact du starter.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 5,
         "referenceLinks": [],
         "confidence": null,
         "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "notApplicableReason": "Consigne originale de projet et critères de production, sans nouvelle affirmation externe."
       }
     ],
     "resourceChecks": [
       {
-        "resourceKey": "mdn-http-overview",
-        "referenceIds": ["REF-126-MDN-HTTP-OVERVIEW"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Prendre en main le starter et suivre une requête ».",
-        "learnerInstructions": "Lire uniquement le schéma client-serveur et relever requête, réponse et intermédiaire.",
+        "resourceKey": "sourcelab-starter-6dd1cda",
+        "referenceIds": ["REF-126-STARTER"],
+        "pedagogicalRationale": "Donne accès à la preuve primaire après que la leçon a fourni le modèle mental et les extraits nécessaires.",
+        "learnerInstructions": "Comparer uniquement les quatre fichiers cités avec les extraits de la leçon.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "Code public en texte ; extraits et description du diagramme présents dans la leçon.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
-        "resourceKey": "node-process",
-        "referenceIds": ["REF-126-NODE-PROCESS"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Prendre en main le starter et suivre une requête ».",
-        "learnerInstructions": "Lire uniquement les repères sur identifiant, environnement et code de sortie d’un processus.",
+        "resourceKey": "hono-nodejs",
+        "referenceIds": ["REF-126-HONO-NODE"],
+        "pedagogicalRationale": "Permet de vérifier la syntaxe officielle après la synthèse interne.",
+        "learnerInstructions": "Repérer serve, app.fetch et port dans l’exemple Node.js.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML en anglais ; synthèse française incluse.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "hono-middleware",
+        "referenceIds": ["REF-126-HONO-MIDDLEWARE"],
+        "pedagogicalRationale": "Consolide l’ordre d’exécution du middleware déjà démontré.",
+        "learnerInstructions": "Lire seulement l’exemple avant/après next().",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML en anglais ; code équivalent commenté dans la leçon.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "mdn-http-overview",
+        "referenceIds": ["REF-126-MDN-HTTP-OVERVIEW"],
+        "pedagogicalRationale": "Consolide le vocabulaire HTTP sans remplacer l’explication appliquée à SourceLab.",
+        "learnerInstructions": "Rapprocher le modèle client-requête-réponse du diagramme SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML ; synthèse française incluse.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "node-randomuuid",
+        "referenceIds": ["REF-126-NODE-RANDOMUUID"],
+        "pedagogicalRationale": "Documente précisément l’API standard employée dans l’exemple.",
+        "learnerInstructions": "Consulter uniquement la signature de crypto.randomUUID().",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML en anglais ; usage complet déjà montré.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "requete-observable",
-        "assessmentTitle": "Mini-évaluation — Requête observable",
+        "conceptSlug": "frontieres-execution-http",
+        "assessmentTitle": "Mini-évaluation — Frontières d’exécution HTTP",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Le client reçoit 404 avec un request ID. Quelle preuve examiner en premier ?",
-            "explanation": "Le statut et l’identifiant permettent de repartir de la frontière HTTP observée.",
+            "prompt": "app.request('/health/live') renvoie 200 alors qu’aucun processus n’écoute le port 3000. Pourquoi est-ce possible ?",
+            "explanation": "app.request traverse directement le routeur en mémoire sans passer par le socket Node.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "La route et la méthode réellement reçues pour ce request ID",
+                "label": "Il appelle app.fetch en mémoire et ne teste pas le réseau",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Le contenu futur de PostgreSQL",
+                "label": "Il démarre automatiquement server.ts",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "La taille de l’image Docker",
+                "label": "Il remplace curl par PostgreSQL",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Le workflow de publication",
+                "label": "Il lit une réponse mise en cache par Docker",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
           },
           {
             "type": "single_choice",
-            "prompt": "Quel fichier du starter porte la déclaration des routes ?",
-            "explanation": "Le starter sépare l’application Hono de l’ouverture du port.",
+            "prompt": "Quelle modification change le port d’écoute sans changer les routes ?",
+            "explanation": "Le port appartient à la configuration transmise à serve ; les routes restent dans app.ts.",
             "acceptedAnswers": [],
+            "position": 2,
             "options": [
               {
-                "label": "src/api/app.ts",
+                "label": "Changer PORT fourni à loadConfig avant serve",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "src/api/server.ts uniquement",
+                "label": "Renommer le handler health",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "prisma/schema.prisma",
+                "label": "Changer le corps JSON seulement",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "compose.yaml",
+                "label": "Ajouter une assertion dans health.test.ts",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 2
+            ]
           },
           {
-            "type": "true_false",
-            "prompt": "Un request ID corrèle les événements mais ne localise pas la panne à lui seul.",
-            "explanation": "Il rend la chaîne observable ; les autres preuves restent nécessaires.",
+            "type": "single_choice",
+            "prompt": "curl signale « Failed to connect ». Quelle frontière n’est pas encore prouvée ?",
+            "explanation": "Aucune réponse n’a été obtenue sur le port demandé.",
             "acceptedAnswers": [],
+            "position": 3,
             "options": [
               {
-                "label": "Vrai",
+                "label": "Le socket d’écoute du processus Node",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "Le corps JSON construit par le handler",
                 "isCorrect": false,
                 "position": 2
+              },
+              {
+                "label": "La correspondance d’une route Hono observée sur le réseau",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le statut renvoyé par une route",
+                "isCorrect": false,
+                "position": 4
               }
-            ],
-            "position": 3
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles affirmations décrivent correctement le starter ?",
+            "explanation": "app.ts définit le routeur et server.ts relie son fetch au serveur Node.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "app.ts peut être testé sans ouvrir un port",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "server.ts appelle loadConfig avant serve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "context.json démarre le processus Node",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "curl appelle directement app.request dans le même processus",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "routage-preuves-http",
+        "assessmentTitle": "Mini-évaluation — Routage et preuves HTTP",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "GET /absente renvoie 404. Quel diagnostic est le plus précis ?",
+            "explanation": "Une réponse Hono prouve que le réseau et le processus ont répondu ; la route demandée ne correspond pas.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "La requête a atteint l’application, mais aucune route GET /absente ne correspond",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le port est nécessairement fermé",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le handler /health/live a renvoyé son JSON",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "PostgreSQL a rejeté la connexion",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Avec le starter inchangé, quel statut faut-il prédire pour POST /health/live ?",
+            "explanation": "Hono 4.13 ne trouve aucun handler correspondant et renvoie ici sa réponse 404 par défaut.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "404",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "200",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "201",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "405 automatiquement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Une réponse 200 de /health/live prouve directement quelles étapes ?",
+            "explanation": "Elle couvre les frontières réellement traversées, pas les composants absents du handler.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Hono a trouvé le handler GET /health/live",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le handler a construit une réponse JSON",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le futur worker a terminé un job",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une migration PostgreSQL a été appliquée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi utiliser curl -i pendant ce diagnostic ?",
+            "explanation": "L’option -i expose le statut et les en-têtes en plus du corps.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Pour observer statut, headers et corps de la même réponse",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour modifier automatiquement app.ts",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour lancer Vitest dans le container",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour générer un UUID dans PostgreSQL",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "correlation-request-id",
+        "assessmentTitle": "Mini-évaluation — Corrélation par request ID",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel invariant démontre que la réponse et le journal décrivent la même requête ?",
+            "explanation": "Le même identifiant doit être propagé dans les deux observations.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le header X-Request-Id est égal au requestId de la ligne de journal",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les deux UUID sont valides mais différents",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Les deux requêtes ont été envoyées le même jour",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le corps contient le nom du service",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi placer le journal après await next() dans cet exemple ?",
+            "explanation": "Le statut final est disponible une fois que le handler suivant a produit la réponse.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Pour journaliser context.res.status après le handler",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour empêcher toutes les routes de s’exécuter",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour ouvrir le port après chaque requête",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour transformer automatiquement un 404 en 405",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles assertions sont adaptées à un request ID généré par le serveur ?",
+            "explanation": "Le test vérifie la présence et la forme tout en laissant la valeur varier.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Le header existe",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La valeur respecte le format UUID attendu",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La valeur est toujours un UUID fixé dans le test",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Deux requêtes successives doivent partager le même ID",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Le request ID est présent mais le journal n’indique ni méthode ni chemin. Quelle limite subsiste ?",
+            "explanation": "La corrélation existe, mais le contexte manque pour comprendre quelle frontière de routage a été observée.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "On retrouve l’interaction sans pouvoir caractériser correctement la requête",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le port ne peut plus être ouvert",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le UUID devient automatiquement invalide",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Hono transforme la réponse en connexion PostgreSQL",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
           }
         ]
       }
     ],
     "sequenceRationale": {
-      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
+      "strategy": "Trois micro-séquences : définir et visualiser les frontières, prédire puis interpréter les sorties HTTP, enfin implémenter la corrélation. Les documentations restent facultatives et hors séquence car la compétence visée est le diagnostic du starter, pas la lecture autonome de pages de référence.",
       "cycles": [
         {
-          "conceptSlug": "requete-observable",
+          "conceptSlug": "frontieres-execution-http",
           "contentKeys": [
             "content-prendre-en-main-starter-suivre-requete-1",
-            "content-prendre-en-main-starter-suivre-requete-2",
-            "content-prendre-en-main-starter-suivre-requete-3",
+            "content-prendre-en-main-starter-suivre-requete-2"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-cartographier-trajet-requete"
+          },
+          "assessmentKey": "assessment-frontieres-execution-http",
+          "rationale": "Le vocabulaire et le diagramme précèdent une cartographie active des responsabilités."
+        },
+        {
+          "conceptSlug": "routage-preuves-http",
+          "contentKeys": ["content-prendre-en-main-starter-suivre-requete-3"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-predire-observer-http"
+          },
+          "assessmentKey": "assessment-routage-preuves-http",
+          "rationale": "La prédiction avant curl oblige à interpréter chaque preuve au lieu de recopier une commande."
+        },
+        {
+          "conceptSlug": "correlation-request-id",
+          "contentKeys": [
             "content-prendre-en-main-starter-suivre-requete-4",
             "content-prendre-en-main-starter-suivre-requete-5"
           ],
-          "resourceKeys": ["mdn-http-overview", "node-process"],
+          "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-prendre-en-main-starter-suivre-requete"
+            "key": "project-request-visible"
           },
-          "assessmentKey": "assessment-requete-observable",
-          "rationale": "La production « Rendre la première requête SourceLab observable » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
+          "assessmentKey": "assessment-correlation-request-id",
+          "rationale": "Le code commenté et les erreurs fréquentes préparent le projet cumulatif, qui produit le checkpoint réutilisé ensuite."
         }
       ]
     },
@@ -519,9 +1174,10 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
-        "Le starter autoritaire est publié sur https://github.com/Guts6667/sourcelab au commit 6dd1cda et au tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
-        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
+        "Refonte pédagogique prioritaire : synthèse française, code réel du starter, diagramme décrit, micro-actions et évaluations appliquées.",
+        "Le starter autoritaire a été contrôlé au commit 6dd1cda ; il expose GET /health/live et Hono 4.13.0 renvoie 404 par défaut pour une méthode non déclarée.",
+        "SVG créé ; rendu, accessibilité et compatibilité Markdown/code/média vérifiés automatiquement, avec revue humaine finale encore requise avant publication.",
+        "Les checkpoints 01 à 07 restent à produire dans le dépôt SourceLab."
       ]
     },
     "changeLog": [
@@ -531,6 +1187,13 @@
         "author": "LearnX",
         "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
         "reviewRequired": "editorial_technical_links_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Refonte pédagogique complète : modèle mental HTTP, extraits exacts du starter, diagramme accessible, commandes interprétées, trois micro-activités et évaluations non triviales.",
+        "reviewRequired": "editorial_technical_links_media_and_seed"
       }
     ]
   }

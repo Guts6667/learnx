@@ -7,6 +7,7 @@
 - Écriture en base : impossible dans l’état actuel
 - Programme historique : `ingenieur-logiciel-production-sourcelab`
 - Nouveau programme : `sourcelab-docker-api-socle-ingestion`
+- Statut éditorial actuel : reconstruction prioritaire, runtime `DRAFT`
 
 Le programme V2 est une nouvelle identité runtime. Aucun identifiant de
 programme, d’étape, de module, de leçon ou de progression V1 n’est réutilisé
@@ -38,14 +39,18 @@ si un blocker reste ouvert.
 
 1. V1 et V2 existent avec deux UUID distincts.
 2. Leurs slugs et clés canoniques correspondent exactement au contrat.
-3. V2 comporte exactement 3 étapes, 3 modules, 7 leçons et 7 notions
-   obligatoires.
+3. V2 comporte exactement 3 étapes, 3 modules et 7 leçons ; chaque notion
+   obligatoire annoncée par les leçons possède sa propre évaluation.
 4. Chaque étape possède une évaluation finale obligatoire.
 5. Chaque notion obligatoire possède une évaluation obligatoire.
 6. Toutes les étapes, modules et leçons V2 sont publiés.
 7. V2 est `ACTIVE`, encore `PRIVATE` et possède un `publishedVersionId` créé par
    le workflow officiel.
 8. Les compteurs historiques V1 sont consignés avant toute mutation.
+9. Les TODO et checkpoints SourceLab 01–07, ainsi que les trois checkpoints
+   d’évaluation dégradés, sont publiés et vérifiés.
+10. Le contenu, le bundle seed et les figures accessibles ont passé les gates
+    P0/P1 définies dans le blueprint V2.1.
 
 ## Actions futures autorisées par le plan
 

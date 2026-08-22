@@ -114,15 +114,16 @@ indépendantes du programme français.
 - Bundle Prisma :
   `seed/ingenieur-logiciel-production-sourcelab-program.json`
 
-Ce parcours V2 guidé construit en 13 h 05 une stack locale SourceLab dans le
+Ce parcours V2.1 en reconstruction vise 14 h 20 pour construire une stack
+locale SourceLab dans le
 [dépôt public SourceLab](https://github.com/Guts6667/sourcelab), à partir du
 [tag `checkpoint-00-starter`](https://github.com/Guts6667/sourcelab/tree/checkpoint-00-starter).
 Il mène à une `SourceVersion READY`, puis à une image GHCR traçable. Sa version
-runtime est active et publique depuis le 21 août 2026 ; les traces de revue des
-sidecars restent historiques et ne simulent aucun reviewer. Son identité
-runtime distincte est `sourcelab-docker-api-socle-ingestion` ; l’ancien
-programme conserve son identité historique, reste privé et ne doit jamais
-recevoir cette progression.
+runtime est repassée en `draft` le 22 août 2026 : les nouvelles inscriptions
+restent suspendues jusqu’à alignement du starter, des sept leçons, du seed et
+des revues humaines. Son identité runtime distincte est
+`sourcelab-docker-api-socle-ingestion` ; l’ancien programme conserve son
+identité historique, reste privé et ne doit jamais recevoir cette progression.
 
 - Plan de remplacement V1 → V2, actuellement `HARD_OFF` :
   `docs/SOURCELAB_V2_REPLACEMENT_PLAN.md`

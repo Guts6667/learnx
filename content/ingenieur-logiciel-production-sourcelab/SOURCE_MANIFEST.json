@@ -1,21 +1,57 @@
 [
   {
     "lesson": "Prendre en main le starter et suivre une requête",
-    "key": "mdn-http-overview",
-    "title": "An overview of HTTP",
-    "organization": "Mozilla Developer Network",
-    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "key": "sourcelab-starter-6dd1cda",
+    "title": "SourceLab — checkpoint-00-starter au commit 6dd1cda",
+    "organization": "GitHub",
+    "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Prendre en main le starter et suivre une requête",
-    "key": "node-process",
-    "title": "Process — Node.js Documentation",
+    "key": "hono-nodejs",
+    "title": "Getting Started — Node.js",
+    "organization": "Hono",
+    "url": "https://hono.dev/docs/getting-started/nodejs",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Prendre en main le starter et suivre une requête",
+    "key": "hono-middleware",
+    "title": "Middleware",
+    "organization": "Hono",
+    "url": "https://hono.dev/docs/guides/middleware",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Prendre en main le starter et suivre une requête",
+    "key": "mdn-http-overview",
+    "title": "An overview of HTTP",
+    "organization": "Mozilla Developer Network",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Prendre en main le starter et suivre une requête",
+    "key": "node-randomuuid",
+    "title": "Crypto — crypto.randomUUID()",
     "organization": "Node.js",
-    "url": "https://nodejs.org/api/process.html",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "url": "https://nodejs.org/api/crypto.html#cryptorandomuuidoptions",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Définir le contrat Project et valider la configuration",
+    "key": "sourcelab-starter-6dd1cda",
+    "title": "SourceLab — checkpoint-00-starter au commit 6dd1cda",
+    "organization": "GitHub",
+    "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Définir le contrat Project et valider la configuration",
@@ -23,8 +59,17 @@
     "title": "Environment Variables — Node.js Documentation",
     "organization": "Node.js",
     "url": "https://nodejs.org/api/environment_variables.html",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Définir le contrat Project et valider la configuration",
+    "key": "zod-documentation",
+    "title": "Zod — Basic usage",
+    "organization": "Zod",
+    "url": "https://zod.dev/basics",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Définir le contrat Project et valider la configuration",
@@ -32,17 +77,26 @@
     "title": "Validation — Hono Documentation",
     "organization": "Hono",
     "url": "https://hono.dev/docs/guides/validation",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Définir le contrat Project et valider la configuration",
-    "key": "zod-documentation",
-    "title": "Zod Documentation",
-    "organization": "Zod",
-    "url": "https://zod.dev/",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "key": "node-randomuuid",
+    "title": "Crypto — crypto.randomUUID()",
+    "organization": "Node.js",
+    "url": "https://nodejs.org/api/crypto.html#cryptorandomuuidoptions",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Construire une image API reproductible",
+    "key": "sourcelab-starter-6dd1cda",
+    "title": "SourceLab — checkpoint-00-starter au commit 6dd1cda",
+    "organization": "GitHub",
+    "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Construire une image API reproductible",
@@ -50,8 +104,8 @@
     "title": "Multi-stage builds",
     "organization": "Docker",
     "url": "https://docs.docker.com/build/building/multi-stage/",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Construire une image API reproductible",
@@ -59,8 +113,8 @@
     "title": "Building best practices",
     "organization": "Docker",
     "url": "https://docs.docker.com/build/building/best-practices/",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Orchestrer API et PostgreSQL avec Compose",
@@ -68,8 +122,8 @@
     "title": "Control startup order",
     "organization": "Docker",
     "url": "https://docs.docker.com/compose/how-tos/startup-order/",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Orchestrer API et PostgreSQL avec Compose",
@@ -77,8 +131,8 @@
     "title": "Volumes",
     "organization": "Docker",
     "url": "https://docs.docker.com/engine/storage/volumes/",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Orchestrer API et PostgreSQL avec Compose",
@@ -86,8 +140,26 @@
     "title": "Prisma Migrate",
     "organization": "Prisma",
     "url": "https://www.prisma.io/docs/orm/prisma-migrate",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Orchestrer API et PostgreSQL avec Compose",
+    "key": "prisma-postgresql-quickstart",
+    "title": "Quickstart: Prisma ORM with PostgreSQL",
+    "organization": "Prisma",
+    "url": "https://www.prisma.io/docs/prisma-orm/quickstart/postgresql",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Orchestrer API et PostgreSQL avec Compose",
+    "key": "docker-compose-networking",
+    "title": "Networking in Compose",
+    "organization": "Docker",
+    "url": "https://docs.docker.com/compose/how-tos/networking/",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Modéliser et mettre en file une source",
@@ -95,8 +167,8 @@
     "title": "Relations — Prisma ORM",
     "organization": "Prisma",
     "url": "https://www.prisma.io/docs/orm/prisma-schema/data-model/relations",
-    "checkedAt": null,
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Modéliser et mettre en file une source",
@@ -104,8 +176,26 @@
     "title": "Transactions — PostgreSQL Documentation",
     "organization": "PostgreSQL Global Development Group",
     "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Modéliser et mettre en file une source",
+    "key": "zod-documentation",
+    "title": "Zod — Basic usage",
+    "organization": "Zod",
+    "url": "https://zod.dev/basics",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Modéliser et mettre en file une source",
+    "key": "prisma-transactions",
+    "title": "Transactions and batch queries",
+    "organization": "Prisma",
+    "url": "https://www.prisma.io/docs/orm/prisma-client/queries/transactions",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Traiter une source avec un worker simple",
@@ -113,8 +203,8 @@
     "title": "Crypto — Node.js Documentation",
     "organization": "Node.js",
     "url": "https://nodejs.org/api/crypto.html",
-    "checkedAt": null,
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Traiter une source avec un worker simple",
@@ -122,8 +212,8 @@
     "title": "Transactions — PostgreSQL Documentation",
     "organization": "PostgreSQL Global Development Group",
     "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Traiter une source avec un worker simple",
@@ -131,8 +221,8 @@
     "title": "Process — Node.js Documentation",
     "organization": "Node.js",
     "url": "https://nodejs.org/api/process.html",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Tester et livrer une image traçable",
@@ -140,8 +230,8 @@
     "title": "Vitest Guide",
     "organization": "Vitest",
     "url": "https://vitest.dev/guide/",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Tester et livrer une image traçable",
@@ -149,8 +239,8 @@
     "title": "Workflows and actions reference",
     "organization": "GitHub",
     "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
-    "checkedAt": "2026-08-18",
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Tester et livrer une image traçable",
@@ -158,8 +248,8 @@
     "title": "Publishing Docker images",
     "organization": "GitHub",
     "url": "https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images",
-    "checkedAt": null,
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   },
   {
     "lesson": "Tester et livrer une image traçable",
@@ -167,7 +257,16 @@
     "title": "Working with the Container registry",
     "organization": "GitHub",
     "url": "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
-    "checkedAt": null,
-    "reviewStatus": "recheck_required_for_v2"
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
+  },
+  {
+    "lesson": "Tester et livrer une image traçable",
+    "key": "github-fork-workflows",
+    "title": "Workflow events in forked repositories",
+    "organization": "GitHub",
+    "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflows-in-forked-repositories",
+    "checkedAt": "2026-08-22",
+    "reviewStatus": "verified_for_v2_1"
   }
 ]

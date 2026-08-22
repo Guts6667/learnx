@@ -2,113 +2,197 @@
 
 ## Statut et finalité
 
-- Version : 2.0.0
-- Statut runtime : `active`, publication publique autorisée le 21 août 2026
-- Classification : `CONTENT_ONLY`
+- Version : 2.1.0
+- Statut runtime : `draft`, nouvelles inscriptions suspendues
+- Priorité : reconstruction P0 décidée le 22 août 2026
+- Classification : `TECH_VALIDATION`
 - Identité runtime : `sourcelab-docker-api-socle-ingestion`
-- Volume : 13 h 05, évaluations comprises
+- Volume cible : 14 h 20, évaluations comprises
 - Dépôt : `https://github.com/Guts6667/sourcelab`
-- Baseline starter : commit `6dd1cda`, tag
-  `https://github.com/Guts6667/sourcelab/tree/checkpoint-00-starter`
+- Baseline vérifiée : commit `6dd1cda`, tag `checkpoint-00-starter`
 
-La version 2 remplace intégralement le parcours de 42 jours. Elle vise un
-résultat borné : faire fonctionner localement une verticale SourceLab puis
-livrer une `SourceVersion` traçable au programme RAG suivant.
-
-La V2 reçoit un slug et une clé canonique distincts afin d’éviter toute
-équivalence implicite avec la V1. Le programme historique conserve sa propre
-identité et ses progressions ; le titre visible V2 devient « SourceLab — Docker,
-API et socle d’ingestion ».
+Le périmètre de sept leçons reste cohérent. La reconstruction ne cherche pas à
+allonger artificiellement le parcours : elle rend explicites les modèles
+mentaux, relie le code aux commandes et demande une preuve observable après
+chaque action. Le résultat borné reste une verticale locale qui produit une
+`SourceVersion READY` traçable pour le programme RAG suivant.
 
 ## Public et prérequis
 
-Profil de départ retenu : TypeScript 3/3, API Node 2/3, Docker 1/3, Compose 1/3,
-PostgreSQL/Prisma 1/3, tests 0/3 et CI/CD 0/3. L'apprenant sait lire un dépôt
-TypeScript et exécuter des commandes pnpm, mais le parcours n'exige aucune
-autonomie préalable en infrastructure.
+L’apprenant maîtrise TypeScript et sait utiliser un terminal, Git et pnpm. Il
+peut être débutant en Hono, Docker, Compose, PostgreSQL/Prisma, tests
+d’intégration et CI/CD. Le contenu définit donc le vocabulaire avant de
+l’utiliser et ne délègue jamais une notion nouvelle à une documentation
+externe.
 
-## Résultats d'apprentissage
+## Résultats d’apprentissage
 
-1. Suivre une requête dans un starter Hono et valider ses entrées avec Zod.
-2. Construire une image API multi-stage et configurable au runtime.
-3. Orchestrer migration, PostgreSQL et API avec Compose.
-4. Modéliser `Project`, `Source`, `SourceVersion` et `ProcessingJob` avec Prisma.
-5. Traiter une source Markdown avec un worker simple et un checksum SHA-256.
-6. Prouver la verticale par tests d'intégration et smoke.
-7. Valider les changements en CI, publier l'image sur GHCR lors d'un tag et
-   revenir manuellement à un digest antérieur.
+1. Retracer une requête entre client, processus Node, application Hono et
+   handler, puis diagnostiquer 200, 404 et méthode non prise en charge.
+2. Charger et valider une configuration au démarrage, puis appliquer un contrat
+   Zod à `POST /projects` sans confondre validation, métier et stockage.
+3. Expliquer image, container, couche et digest, puis construire une image
+   multi-stage non-root, sans secret et configurable au runtime.
+4. Orchestrer migration, PostgreSQL et API avec Compose, distinguer liveness et
+   readiness, et prouver la persistance.
+5. Modéliser `Project`, `Source`, `SourceVersion` et `ProcessingJob`, puis créer
+   un import `QUEUED` atomique.
+6. Normaliser une source, calculer son SHA-256 et rendre visibles les
+   transitions `QUEUED -> PROCESSING -> READY|FAILED`.
+7. Choisir un test selon un risque, automatiser CI et publication GHCR, puis
+   identifier et vérifier un rollback par digest.
 
-## Principes d'authoring
+## Patron obligatoire d’une micro-séquence
 
-- Le tag `checkpoint-00-starter` précède toute activité productive.
-- Chaque leçon part d'un checkpoint nommé et modifie le même projet fil rouge.
-- Les contenus internes expliquent la procédure ; les documentations externes
-  sont courtes, ciblées et ne remplacent jamais le guidage.
-- Les ressources guidées précèdent l’activité productive dans chaque séquence.
-  Les tâches `practice` et `project` gardent `resourceKeys: []` afin de ne pas
-  dupliquer une activité productive sous forme de tâche passive.
-- Après quinze minutes de blocage, un checkpoint solution peut servir de filet
-  de sécurité sans effacer la première tentative.
-- Chaque leçon produit une preuve réutilisée par la suivante.
-- Les évaluations d'étape réparent ou rejouent une frontière déjà enseignée ;
-  elles n'ajoutent aucune fonctionnalité surprise.
-- Les limites du worker et de la livraison sont affichées comme telles.
+Chaque leçon contient trois à six micro-séquences. Selon le besoin, une même
+séquence peut associer plusieurs des éléments ci-dessous, mais aucun élément ne
+peut être remplacé par « lire la documentation » :
+
+1. vocabulaire expliqué en langage simple ;
+2. schéma ou diagramme utile au raisonnement ;
+3. extrait court, exact et commenté du starter ou du fichier à produire ;
+4. commande exacte et contexte d’exécution ;
+5. sortie attendue, stable ou motif vérifiable ;
+6. interprétation : ce que la sortie prouve et ce qu’elle ne prouve pas ;
+7. une micro-action productive ;
+8. un contrôle déterministe ;
+9. ressource externe proposée seulement après la synthèse interne.
+
+Les explications libres soutiennent l’apprentissage, mais la validation d’une
+compétence repose sur un statut, un test, un fichier, une requête SQL, un hash
+ou une autre preuve rejouable.
+
+La direction visuelle « Totem technique » considère le code comme la preuve et
+le diagramme comme un révélateur de relations. Une liste courte reste
+préférable lorsqu’elle suffit ; une figure est justifiée pour une branche, une
+cardinalité, un changement de responsabilité ou une évolution temporelle.
+Chaque figure reçoit une phrase d’intention avant, une conclusion « À retenir »
+après et un résumé textuel équivalent.
 
 ## Architecture
 
-### Étape 1 — Prendre en main une verticale TypeScript
+### Étape 1 — Prendre en main une verticale TypeScript — 2 h 55
 
-- Slug : `demarrer-verticale-sourcelab`
-- Durée : 2 h 35, évaluation comprise
-- Module : `module-api-guidee-contrats`
-- Leçons :
-  - Prendre en main le starter et suivre une requête
-    (`prendre-en-main-starter-suivre-requete`) — 60 min — livrable :
-    `checkpoint-01-request-visible`.
-  - Définir le contrat Project et valider la configuration
-    (`definir-contrat-project-configuration`) — 75 min — livrable :
-    `checkpoint-02-project-contract`.
-- Évaluation : réparer une configuration et un contrat volontairement
-  dégradés — 20 min.
+Module : `module-api-guidee-contrats`.
 
-### Étape 2 — Containeriser et persister SourceLab
+#### L1 — Starter et requête — 70 min
 
-- Slug : `containeriser-persister-sourcelab`
-- Durée : 4 h, évaluation comprise
-- Module : `module-docker-compose-postgresql`
-- Leçons :
-  - Construire une image API reproductible
-    (`construire-image-api-reproductible`) — 90 min — livrable :
-    `checkpoint-03-api-container`.
-  - Orchestrer API et PostgreSQL avec Compose
-    (`orchestrer-api-postgresql-compose`) — 120 min — livrable :
-    `checkpoint-04-postgres-project`.
-- Évaluation : reconstruire la stack, prouver la persistance et diagnostiquer
-  le piège `localhost` — 30 min.
+Slug : `prendre-en-main-starter-suivre-requete`.
 
-### Étape 3 — Ingérer et livrer le socle RAG
+- Carte du dépôt : rôle des dossiers et fichiers réellement présents.
+- Processus Node et application Hono : différence entre démarrer l’écoute et
+  déclarer les routes.
+- Cycle HTTP : client, méthode, chemin, middleware, handler, réponse.
+- Extraits commentés de `src/api/app.ts` et `src/api/server.ts`.
+- Baseline exécutée puis middleware de request ID ajouté.
+- Trois `curl` interprétés : succès, route absente et méthode non prise en
+  charge. Le starter Hono actuel renvoie 404 sur `POST /health/live` ; le
+  contenu ne doit pas promettre 405 sans handler explicite.
+- Contrôle : statut, en-tête, log et request ID corrélés.
 
-- Slug : `ingerer-livrer-socle-rag`
-- Durée : 6 h 30, évaluation comprise
-- Module : `module-sources-worker-livraison`
-- Leçons :
-  - Modéliser et mettre en file une source
-    (`modeliser-mettre-en-file-source`) — 120 min — livrable :
-    `checkpoint-05-source-queued`.
-  - Traiter une source avec un worker simple
-    (`traiter-source-worker-simple`) — 130 min — livrable : une
-    `SourceVersion READY` dans `checkpoint-06-rag-ready-local`.
-  - Tester et livrer une image traçable
-    (`tester-livrer-image-tracable`) — 95 min — livrable :
-    `checkpoint-07-continuous-delivery`.
-- Évaluation finale : lancer le parcours complet, vérifier la version en base,
-  exécuter tests et smoke puis défendre publication et rollback — 45 min.
+#### L2 — Configuration et contrat `Project` — 85 min
 
-## État final du dépôt
+Slug : `definir-contrat-project-configuration`.
 
-Le checkpoint final contient une API, un worker, Prisma, les migrations,
-Dockerfile, Compose, tests, smoke et workflows GitHub Actions. Le parcours
-nominal expose au moins :
+- Tableau des erreurs : configuration, contrat HTTP, métier et serveur.
+- `process.env` fournit des chaînes ; `loadConfig` parse et échoue au
+  démarrage, avant le premier handler.
+- Tests séparés pour `PORT` valide, absent et invalide.
+- Schéma Zod et `safeParse` : données acceptées, erreurs structurées et absence
+  de mutation.
+- Handler `POST /projects` et repository mémoire : responsabilités distinctes.
+- Contrôles succès/invalide et preuve qu’un `title` vide ne crée rien.
+
+#### Évaluation d’étape — 20 min
+
+Réparer séparément un `PORT` invalide puis un `title` vide, sans reconstruire
+l’API. Les preuves attendues sont tests, statuts, log et request ID.
+
+### Étape 2 — Containeriser et persister SourceLab — 4 h 10
+
+Module : `module-docker-compose-postgresql`.
+
+#### L3 — Image Docker — 95 min
+
+Slug : `construire-image-api-reproductible`.
+
+- Image, container, couche, tag et digest.
+- Séparation build/runtime dans un Dockerfile multi-stage annoté.
+- Contexte de build, `.dockerignore` et secret absent de l’image.
+- Deux builds comparés pour expliquer le cache.
+- Inspection de l’utilisateur et de l’historique ; runtime non-root.
+- `PORT` injecté à l’exécution et healthcheck contrôlé par `curl`.
+- Contrôle : l’image démarre sans dépendre des `node_modules` de l’hôte.
+
+#### L4 — Compose et PostgreSQL — 120 min
+
+Slug : `orchestrer-api-postgresql-compose`.
+
+- Topologie service/container/réseau/volume et résolution du nom `db`.
+- Expérience guidée : casser puis corriger une URL utilisant `localhost`.
+- Liveness, readiness et ordre de démarrage distingués.
+- Schéma Prisma, migration et service de migration explicites.
+- Repository PostgreSQL substitué au repository mémoire sans changer le
+  contrat HTTP.
+- Contrôle : stack propre, API ready, projet persistant après remplacement du
+  container.
+
+#### Évaluation d’étape — 35 min
+
+Reconstruire la stack depuis un état propre, prouver runtime non-root,
+readiness et persistance, puis diagnostiquer `localhost` avec une preuve réseau.
+
+### Étape 3 — Ingérer et livrer le socle RAG — 7 h 15
+
+Module : `module-sources-worker-livraison`.
+
+#### L5 — Source, version et job — 120 min
+
+Slug : `modeliser-mettre-en-file-source`.
+
+- Responsabilités et cardinalités de `Project`, `Source`, `SourceVersion` et
+  `ProcessingJob` dans un ERD.
+- Exemples et contre-exemples : une nouvelle version ne duplique pas la source.
+- Relations Prisma et migration expliquées avant exécution.
+- Contrat Zod de l’import puis transaction qui crée version et job `QUEUED`.
+- Échec forcé : aucune ligne orpheline ne doit subsister.
+- Contrôle SQL sur cardinalités, statut et données exactes.
+
+#### L6 — Worker simple — 135 min
+
+Slug : `traiter-source-worker-simple`.
+
+- Différence entre requête courte et traitement différé.
+- Machine d’états API/worker avec responsabilités et limites de concurrence explicites.
+- Normalisation testée puis SHA-256 comparé à une valeur connue.
+- `processNextJob` traite un seul job et persiste chaque transition.
+- Routes de suivi : cas nominal `READY`, puis échec forcé `FAILED` avec
+  `errorCode` visible.
+- Intégration Compose et limites explicites : pas de concurrence sûre, retry ni
+  reprise après crash.
+
+#### L7 — Tests, CI et livraison — 120 min
+
+Slug : `tester-livrer-image-tracable`.
+
+- Matrice risque -> preuve : test ciblé, intégration ou smoke.
+- Test d’intégration de la verticale et script smoke reproductible.
+- `ci.yml` commenté : installation verrouillée, qualité, tests, build et image.
+- `release.yml` commenté : déclenchement sur tag, permissions minimales,
+  version et SHA.
+- Publication GHCR, relevé du digest puis rollback local sur ce digest.
+- Contrôle : smoke vert avant publication et après rollback.
+
+#### Évaluation finale — 60 min
+
+Rejouer la verticale complète, vérifier l’atomicité, les transitions, le
+checksum, les données SQL, les tests et le smoke, puis produire un journal de
+livraison contenant tag, SHA, digest et preuve de rollback.
+
+## État final visé du dépôt
+
+Le checkpoint final doit contenir API, worker, Prisma, migrations, Dockerfile,
+Compose, tests, smoke et workflows GitHub Actions. Le parcours nominal expose :
 
 - `GET /health/live` et `GET /health/ready` ;
 - `POST /projects` ;
@@ -121,7 +205,7 @@ La source initiale est du texte ou Markdown avec `title`, `origin`,
 
 ## Frontière avec le programme RAG
 
-Ce programme s'arrête à :
+Ce programme s’arrête à :
 
 ```text
 SourceVersion READY
@@ -130,30 +214,14 @@ SourceVersion READY
 + checksum SHA-256
 ```
 
-Le programme RAG commence après `checkpoint-07-continuous-delivery`, dont la
-brique de données issue de `checkpoint-06-rag-ready-local` est :
+Le programme RAG commence par le découpage, la provenance des chunks,
+l’indexation et le retrieval. Embeddings, pgvector, citations et génération ne
+sont jamais requis ici.
 
-```text
-SourceVersion READY
--> DocumentVersion
--> Chunk avec offsets et provenance
--> indexation et retrieval
-```
+## Conditions de republication
 
-`Chunk`, embeddings, pgvector, recherche, citations, génération, Program
-Builder et moteur de rubrique n'appartiennent pas à ce programme.
-
-## Hors périmètre
-
-- Plusieurs workers concurrents, verrouillage distribué et reprise après crash.
-- Retry automatique et file externe.
-- Fichiers binaires et stockage objet.
-- Déploiement cloud, Kubernetes, SRE et observabilité distribuée.
-- Fonctions IA et décisions de progression LearnX.
-
-## Remplacement de la version 1
-
-Les trois étapes, sept leçons et trois évaluations de cette carte remplacent
-les quatre étapes, huit leçons et quatre évaluations antérieures. Une progression
-existante ne doit pas être remappée silencieusement ; toute reprise de données
-ou logique de progression relève d'une validation technique distincte.
+Le statut ne pourra repasser à `active` qu’après : publication et vérification
+des TODO/checkpoints du starter, exactitude des extraits, disponibilité d’au
+moins six figures accessibles, test des commandes et sorties, alignement
+specs/seed/évaluations, revues humaines renseignées, pilote L1 puis L3/L4 et
+tests de parcours sur desktop et mobile.

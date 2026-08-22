@@ -7,52 +7,69 @@
   "lesson": {
     "title": "Définir le contrat Project et valider la configuration",
     "slug": "definir-contrat-project-configuration",
-    "summary": "Ajouter un contrat Zod et une route de création de projet sur le repository mémoire fourni, tout en faisant échouer clairement une configuration invalide.",
+    "summary": "Faire échouer tôt une configuration invalide, distinguer JSON et contrat métier, puis créer une route Project testable derrière un repository mémoire remplaçable.",
     "objectives": [
-      "Valider une configuration avant l’ouverture du port.",
-      "Distinguer payload invalide, erreur métier et erreur serveur.",
-      "Implémenter et tester POST /projects sans dépendre encore de PostgreSQL."
+      "Transformer process.env en une configuration typée avant l’ouverture du port.",
+      "Valider le JSON de POST /projects avec Zod et produire des erreurs HTTP stables avant tout effet.",
+      "Séparer le contrat HTTP du repository mémoire afin de préparer le passage ultérieur à Prisma."
     ],
     "prerequisites": [
       "Avoir produit checkpoint-01-request-visible ou repartir de ce checkpoint."
     ],
-    "estimatedMinutes": 75,
+    "estimatedMinutes": 85,
     "position": 2,
     "contentBlocks": [
       {
         "key": "content-definir-contrat-project-configuration-1",
-        "type": "objective",
+        "type": "definition",
         "position": 1,
         "content": {
-          "text": "Le point de départ est checkpoint-01-request-visible. La brique finale, checkpoint-02-project-contract, conserve le request ID et ajoute un contrat CreateProjectInput, une configuration parsée et une route POST /projects branchée sur le repository mémoire déjà fourni.",
-          "sourceKeys": []
+          "text": "## Deux frontières d’entrée, deux validations\n\nSourceLab reçoit des données externes à deux moments différents :\n\n- au **démarrage**, `process.env` fournit des chaînes ou des valeurs absentes ;\n- pendant l’exécution, une requête fournit un corps JSON dont la forme n’est pas encore fiable.\n\nUn **schéma Zod** décrit la forme acceptée et transforme une entrée inconnue en valeur typée ou en liste d’erreurs. Une **configuration parsée** est la valeur validée utilisée par le processus ; elle ne doit pas être relue et reconvertie dans chaque route. Un **contrat API** fixe ce que le client peut envoyer et ce que le serveur répond. Un **repository** isole l’accès aux données derrière une interface ; dans ce checkpoint, il stocke les projets en mémoire.\n\nLe commit `6dd1cda` fournit déjà `loadConfig`, mais il ne contient ni contrat `Project`, ni route `POST /projects`, ni repository mémoire. `src/contracts/README.md` annonce précisément que ces schémas seront ajoutés au checkpoint 02. La leçon les fait donc créer au lieu de prétendre qu’ils existent.\n\n![Flux de validation de la configuration et du contrat Project](/learning/sourcelab/config-contract-flow.svg)\n\nDescription textuelle du diagramme : une branche « démarrage » va de `process.env` vers `loadConfig`, puis vers `serve` seulement si le parse réussit. Une branche « requête » va du corps brut vers le parse JSON, puis vers le schéma `CreateProjectInput`, le repository et enfin la réponse `201`. Les erreurs de syntaxe et de contrat quittent le flux avant le repository.\n\n**À retenir —** la configuration est validée avant le démarrage ; le corps HTTP est validé avant tout effet dans le repository.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "node-environment-variables",
+            "zod-documentation"
+          ]
         }
       },
       {
         "key": "content-definir-contrat-project-configuration-2",
-        "type": "definition",
+        "type": "rich_text",
         "position": 2,
         "content": {
-          "text": "Les variables d’environnement sont du texte ou sont absentes. Une configuration valide est construite une fois avant l’écoute du port. Une valeur manquante doit nommer la clé concernée sans journaliser un secret ; une valeur invalide ne doit pas produire une panne tardive dans une route.",
-          "sourceKeys": ["node-environment-variables", "zod-documentation"]
+          "text": "## Valider la configuration avant d’écouter\n\nLe starter contient déjà ce code dans `src/config.ts` :\n\n```ts\nimport { z } from 'zod';\n\nconst environmentSchema = z.object({\n  // process.env fournit une chaîne ; coerce la convertit en nombre.\n  PORT: z.coerce.number().int().min(1).max(65_535).default(3000),\n});\n\nexport type AppConfig = z.infer<typeof environmentSchema>;\n\nexport function loadConfig(\n  environment: NodeJS.ProcessEnv = process.env,\n): AppConfig {\n  // parse renvoie AppConfig ou lève une ZodError immédiatement.\n  return environmentSchema.parse(environment);\n}\n```\n\nPuis `server.ts` appelle `loadConfig()` avant `serve(...)`. Une valeur invalide arrête donc le processus avant la ligne « listening ».\n\nAjoutez un test focalisé :\n\n```ts\nimport { describe, expect, it } from 'vitest';\n\nimport { loadConfig } from '../src/config.js';\n\ndescribe('loadConfig', () => {\n  it('utilise 3000 quand PORT est absent', () => {\n    expect(loadConfig({})).toEqual({ PORT: 3000 });\n  });\n\n  it('refuse un port hors de la plage TCP', () => {\n    expect(() => loadConfig({ PORT: '70000' })).toThrow();\n  });\n});\n```\n\nObservez ensuite le démarrage réel :\n\n```bash\nPORT=4100 pnpm dev\n```\n\nLigne applicative attendue :\n\n```text\nSourceLab API listening on http://localhost:4100\n```\n\nAvec une valeur invalide :\n\n```bash\nPORT=70000 pnpm exec tsx src/api/server.ts\n```\n\nSortie abrégée :\n\n```text\nZodError: [\n  { \"path\": [\"PORT\"], \"message\": \"...less than or equal to 65535...\" }\n]\n```\n\nL’invariant important n’est pas le libellé exact de Zod : la commande sort en erreur et aucune ligne `SourceLab API listening` n’apparaît.\n\nAttention : `.env.example` documente les variables, mais le starter n’importe pas `dotenv/config` et n’utilise pas `node --env-file`. Copier ce fichier vers `.env` ne charge donc pas magiquement ses valeurs. Les commandes ci-dessus injectent `PORT` explicitement ; Docker et Compose le feront au runtime dans les leçons suivantes.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "node-environment-variables",
+            "zod-documentation"
+          ]
         }
       },
       {
         "key": "content-definir-contrat-project-configuration-3",
-        "type": "example",
+        "type": "rich_text",
         "position": 3,
         "content": {
-          "text": "Pour POST /projects, le schéma accepte un title normalisé et rejette une chaîne vide. Hono reçoit la requête, Zod produit soit une valeur typée, soit des erreurs structurées, puis le repository mémoire crée le projet. Le handler ne parse pas une seconde fois et ne transforme pas une erreur de contrat en erreur 500.",
-          "sourceKeys": ["hono-validation", "zod-documentation"]
+          "text": "## Passer d’un corps inconnu à CreateProjectInput\n\nCréez `src/contracts/project.ts` :\n\n```ts\nimport { z } from 'zod';\n\nexport const CreateProjectInputSchema = z.object({\n  // trim() s’exécute avant min(1) : \"   \" devient donc invalide.\n  title: z\n    .string()\n    .trim()\n    .min(1, 'title est requis')\n    .max(120, 'title dépasse 120 caractères'),\n});\n\n// Le type TypeScript est dérivé du schéma : une seule source de vérité.\nexport type CreateProjectInput = z.infer<\n  typeof CreateProjectInputSchema\n>;\n```\n\nLe corps entrant est d’abord `unknown`. Deux erreurs différentes doivent rester distinguables :\n\n1. `context.req.json()` échoue si le texte n’est pas un JSON valide ;\n2. `safeParse(body)` échoue si le JSON est valide mais ne respecte pas le contrat.\n\nExtrait à ajouter dans l’application du checkpoint 01 :\n\n```ts\napp.post('/projects', async (context) => {\n  let body: unknown;\n\n  try {\n    body = await context.req.json();\n  } catch {\n    return context.json(\n      {\n        error: {\n          code: 'INVALID_JSON',\n          message: 'Le corps doit être un JSON valide.',\n        },\n      },\n      400,\n    );\n  }\n\n  const parsed = CreateProjectInputSchema.safeParse(body);\n\n  if (!parsed.success) {\n    return context.json(\n      {\n        error: {\n          code: 'VALIDATION_ERROR',\n          message: 'Le projet ne respecte pas le contrat.',\n          issues: parsed.error.issues.map((issue) => ({\n            path: issue.path.join('.'),\n            message: issue.message,\n          })),\n        },\n      },\n      400,\n    );\n  }\n\n  // À partir d’ici, parsed.data est un CreateProjectInput typé.\n  const project = await projectRepository.create(parsed.data);\n\n  return context.json({ data: project }, 201);\n});\n```\n\n`safeParse` rend les deux branches explicites et évite qu’une erreur d’entrée devienne une réponse `500`. Le repository n’est appelé qu’après validation ; un test doit le prouver.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "zod-documentation",
+            "hono-validation"
+          ]
         }
       },
       {
         "key": "content-definir-contrat-project-configuration-4",
-        "type": "callout",
+        "type": "example",
         "position": 4,
         "content": {
-          "text": "Guidage : lire loadConfig déjà présent au tag checkpoint-00-starter, ajouter ses tests de valeur par défaut et de PORT invalide, puis compléter CreateProjectInput et les deux tests de route. Les noms de fichiers, commandes et sorties attendues sont listés dans le contrat du starter.",
-          "sourceKeys": []
+          "text": "## Isoler le stockage derrière un repository\n\nUn repository mémoire suffit à ce checkpoint, mais il doit déjà exposer la frontière que Prisma remplacera.\n\n```ts\nimport { randomUUID } from 'node:crypto';\n\nimport type { CreateProjectInput } from '../contracts/project.js';\n\nexport type Project = {\n  id: string;\n  title: string;\n};\n\nexport interface ProjectRepository {\n  create(input: CreateProjectInput): Promise<Project>;\n}\n\nexport class InMemoryProjectRepository\n  implements ProjectRepository\n{\n  private readonly projects = new Map<string, Project>();\n\n  async create(input: CreateProjectInput): Promise<Project> {\n    const project = {\n      id: randomUUID(),\n      title: input.title,\n    };\n\n    this.projects.set(project.id, project);\n    return project;\n  }\n}\n```\n\nInjectez le repository dans une fonction `createApp(repository)`, puis conservez `export const app = createApp(new InMemoryProjectRepository())` pour ne pas casser le test de santé existant. Chaque test de route peut alors créer son propre repository et éviter qu’un projet d’un test fuite dans le suivant.\n\nAprès implémentation :\n\n```bash\ncurl -i -X POST http://localhost:3000/projects -H 'content-type: application/json' --data '{\"title\":\" Corpus SourceLab \"}'\n```\n\nSortie représentative :\n\n```http\nHTTP/1.1 201 Created\ncontent-type: application/json; charset=UTF-8\n\n{\"data\":{\"id\":\"<uuid>\",\"title\":\"Corpus SourceLab\"}}\n```\n\nLe titre prouve que la normalisation `trim()` est appliquée. L’UUID varie.\n\nPour une chaîne vide après normalisation :\n\n```bash\ncurl -i -X POST http://localhost:3000/projects -H 'content-type: application/json' --data '{\"title\":\"   \"}'\n```\n\nLa réponse doit être `400`, porter `VALIDATION_ERROR` et ne créer aucun projet. Un JSON tronqué doit aussi produire `400`, mais avec `INVALID_JSON`.\n\nErreurs fréquentes :\n\n- utiliser `Number(process.env.PORT)` sans vérifier plage, entier et absence ;\n- croire que `.env` est chargé alors qu’aucun chargeur n’est configuré ;\n- appeler `.parse()` sans capturer l’erreur dans une route, puis exposer un `500` ;\n- appeler le repository avant de vérifier le contrat ;\n- renvoyer directement toute la `ZodError`, ce qui lie le client à un format de bibliothèque ;\n- partager une instance mémoire entre tests et rendre leurs résultats dépendants de l’ordre.",
+          "sourceKeys": [
+            "sourcelab-starter-6dd1cda",
+            "zod-documentation",
+            "hono-validation",
+            "node-randomuuid"
+          ]
         }
       },
       {
@@ -60,31 +77,71 @@
         "type": "callout",
         "position": 5,
         "content": {
-          "text": "Preuve de fin : la configuration invalide arrête le processus avant l’écoute ; le payload vide est refusé sans écriture ; le payload valide renvoie un identifiant. La future leçon PostgreSQL remplacera le repository sans changer le contrat HTTP.",
+          "text": "## Projet intégrateur — checkpoint-02-project-contract\n\nPartez de `checkpoint-01-request-visible` et préservez le middleware de corrélation.\n\n1. Ajoutez les tests de `loadConfig` pour valeur par défaut, valeur valide et deux valeurs invalides.\n2. Créez `CreateProjectInputSchema`, le type dérivé et le repository mémoire.\n3. Refactorez l’application avec une injection de repository sans supprimer `export const app`.\n4. Testez au minimum JSON invalide, titre vide, titre normalisé et création réussie.\n5. Vérifiez qu’aucune création n’a lieu dans les branches `400`.\n6. Capturez les trois commandes HTTP et leur request ID.\n7. Exécutez `pnpm check`, puis créez `checkpoint-02-project-contract`.\n\nLe fichier de preuve doit expliquer où s’arrête chaque erreur : avant le port pour la configuration, avant le schéma pour un JSON illisible, avant le repository pour un contrat invalide, après le repository pour une création réussie. Le futur repository Prisma pourra remplacer l’implémentation mémoire sans changer ces statuts ni ces enveloppes.",
           "sourceKeys": []
         }
       }
     ],
     "resources": [
       {
+        "key": "sourcelab-starter-6dd1cda",
+        "type": "tool",
+        "title": "SourceLab — checkpoint-00-starter au commit 6dd1cda",
+        "author": "Projet SourceLab",
+        "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "citation": "Projet SourceLab. (2026). SourceLab, commit 6dd1cda3aba94187cc5871e8c8208f892bb5bb2f. GitHub.",
+        "description": "Référence exacte de config.ts, server.ts, app.ts et du README de contrats cités dans la leçon.",
+        "guidance": {
+          "objective": "Vérifier ce qui existe réellement avant le checkpoint 02.",
+          "instructions": "Comparer uniquement src/config.ts, src/api/server.ts, src/api/app.ts et src/contracts/README.md.",
+          "scope": "Fichiers de configuration, API et contrats du commit 6dd1cda",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Code texte public ; tous les extraits nécessaires sont inclus dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 5,
+        "position": 1
+      },
+      {
         "key": "node-environment-variables",
         "type": "website",
         "title": "Environment Variables — Node.js Documentation",
         "author": "Node.js",
         "url": "https://nodejs.org/api/environment_variables.html",
-        "citation": "Node.js. (2026). Environment Variables — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire les types réellement fournis par process.env et relever pourquoi un parse explicite est requis.",
+        "citation": "Node.js. (2026). Environment Variables — Node.js Documentation. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur process.env et les fichiers .env, à consulter après la démonstration interne.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Définir le contrat Project et valider la configuration ».",
-          "instructions": "Lire les types réellement fournis par process.env et relever pourquoi un parse explicite est requis.",
+          "objective": "Vérifier le type et le mode de chargement des variables d’environnement.",
+          "instructions": "Lire uniquement process.env et les options de chargement des fichiers .env.",
           "scope": "process.env et fichiers .env",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; synthèse française et cas SourceLab fournis.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
+        "isRequired": false,
         "estimatedMinutes": 6,
-        "position": 1
+        "position": 2
+      },
+      {
+        "key": "zod-documentation",
+        "type": "website",
+        "title": "Zod — Basic usage",
+        "author": "Zod",
+        "url": "https://zod.dev/basics",
+        "citation": "Zod. (n.d.). Basic usage. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur parse, safeParse et l’inférence de type après les exemples appliqués.",
+        "guidance": {
+          "objective": "Relier le contrat SourceLab aux primitives officielles de Zod.",
+          "instructions": "Relire uniquement defining a schema, parsing data et handling errors.",
+          "scope": "Schema, parse, safeParse et z.infer",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Documentation HTML en anglais ; code commenté équivalent dans la leçon.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 7,
+        "position": 3
       },
       {
         "key": "hono-validation",
@@ -92,106 +149,164 @@
         "title": "Validation — Hono Documentation",
         "author": "Hono",
         "url": "https://hono.dev/docs/guides/validation",
-        "citation": "Hono. (n.d.). Validation — Hono Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire le passage sur la validation d’une entrée de route Hono.",
+        "citation": "Hono. (n.d.). Validation — Hono Documentation. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif sur la place de la validation dans une route Hono.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Définir le contrat Project et valider la configuration ».",
-          "instructions": "Lire le passage sur la validation d’une entrée de route Hono.",
+          "objective": "Comparer la validation manuelle du checkpoint avec les possibilités documentées par Hono.",
+          "instructions": "Lire après l’exercice et repérer à quel moment l’entrée devient fiable.",
           "scope": "Validation des entrées dans une route Hono",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; aucune dépendance supplémentaire n’est exigée dans le checkpoint.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 8,
-        "position": 2
+        "isRequired": false,
+        "estimatedMinutes": 6,
+        "position": 4
       },
       {
-        "key": "zod-documentation",
+        "key": "node-randomuuid",
         "type": "website",
-        "title": "Zod Documentation",
-        "author": "Zod",
-        "url": "https://zod.dev/",
-        "citation": "Zod. (n.d.). Zod Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire safeParse et le format d’erreur ; reproduire l’exemple minimal du starter.",
+        "title": "Crypto — crypto.randomUUID()",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/crypto.html#cryptorandomuuidoptions",
+        "citation": "Node.js. (2026). Crypto — crypto.randomUUID(). Documentation officielle, consultée le 22 août 2026.",
+        "description": "Référence facultative pour l’identifiant du repository mémoire.",
         "guidance": {
-          "objective": "Soutenir la réalisation guidée de la leçon « Définir le contrat Project et valider la configuration ».",
-          "instructions": "Lire safeParse et le format d’erreur ; reproduire l’exemple minimal du starter.",
-          "scope": "Définition de schémas et safeParse",
+          "objective": "Identifier l’API standard utilisée pour créer l’identifiant Project.",
+          "instructions": "Consulter uniquement l’entrée crypto.randomUUID().",
+          "scope": "crypto.randomUUID(options)",
           "urlStatus": "ok",
-          "accessibilityNotes": "Documentation HTML officielle ; lecture limitée à la section indiquée.",
+          "accessibilityNotes": "Documentation HTML en anglais ; l’appel est déjà montré.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 8,
-        "position": 3
+        "isRequired": false,
+        "estimatedMinutes": 3,
+        "position": 5
       }
     ],
     "concepts": [
       {
-        "title": "Contrat API validé",
-        "slug": "contrat-api-valide",
-        "description": "Une entrée externe est validée avant effet et produit une réponse d’erreur stable, sans confondre configuration, contrat et logique métier.",
+        "title": "Configuration validée au démarrage",
+        "slug": "configuration-validee-demarrage",
+        "description": "Les valeurs textuelles de l’environnement sont parsées une fois avant serve, avec des valeurs par défaut explicites et un échec immédiat si elles sont hors contrat.",
         "position": 1,
         "isRequired": true,
-        "masteryThreshold": 70,
+        "masteryThreshold": 75,
         "resourceKeys": [
+          "sourcelab-starter-6dd1cda",
           "node-environment-variables",
-          "hono-validation",
           "zod-documentation"
         ],
         "assessment": {
-          "key": "assessment-contrat-api-valide",
+          "key": "assessment-configuration-validee-demarrage",
           "type": "case_question",
-          "title": "Mini-évaluation — Contrat API validé",
-          "questionCount": 3
+          "title": "Mini-évaluation — Configuration validée au démarrage",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Entrée HTTP validée avant effet",
+        "slug": "entree-http-validee-avant-effet",
+        "description": "Le parse JSON et le schéma métier sont deux étapes distinctes ; toutes deux précèdent l’appel au repository et produisent une erreur client stable.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 75,
+        "resourceKeys": [
+          "zod-documentation",
+          "hono-validation",
+          "sourcelab-starter-6dd1cda"
+        ],
+        "assessment": {
+          "key": "assessment-entree-http-validee-avant-effet",
+          "type": "case_question",
+          "title": "Mini-évaluation — Entrée HTTP validée avant effet",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Frontière repository remplaçable",
+        "slug": "frontiere-repository-remplacable",
+        "description": "Le handler dépend d’une interface de création de projet ; l’implémentation mémoire peut être remplacée par Prisma sans modifier le contrat HTTP observé.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 75,
+        "resourceKeys": [
+          "sourcelab-starter-6dd1cda",
+          "hono-validation",
+          "node-randomuuid"
+        ],
+        "assessment": {
+          "key": "assessment-frontiere-repository-remplacable",
+          "type": "case_question",
+          "title": "Mini-évaluation — Frontière repository remplaçable",
+          "questionCount": 4
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-definir-contrat-project-configuration",
-        "title": "Créer le premier contrat vertical SourceLab",
-        "description": "Depuis checkpoint-01-request-visible, tester le parse de configuration déjà fourni, puis compléter le schéma CreateProjectInput, POST /projects et les tests succès/invalide sur le repository mémoire guidé. Livrer checkpoint-02-project-contract.",
+        "key": "exercise-prouver-configuration",
+        "title": "Faire échouer la configuration au bon moment",
+        "description": "Ajouter les tests de PORT absent, valide, non numérique et hors plage ; exécuter ensuite un démarrage valide et un démarrage invalide, puis expliquer pourquoi le second n’ouvre aucun port.",
         "type": "practice",
         "isRequired": true,
-        "weight": 2,
+        "weight": 1,
         "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-classer-entrees-invalides",
+        "title": "Classer JSON illisible et contrat invalide",
+        "description": "Écrire le schéma et deux tests qui distinguent un JSON tronqué d’un title vide ; utiliser un repository espion pour prouver qu’aucune branche invalide ne déclenche create().",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "project-project-contract",
+        "title": "Livrer la verticale Project en mémoire",
+        "description": "Injecter le repository mémoire, implémenter POST /projects, couvrir les quatre scénarios guidés, conserver le request ID, exécuter pnpm check et livrer checkpoint-02-project-contract avec ses preuves interprétées.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
         "resourceKeys": []
       }
     ],
     "quizzes": [
       {
         "key": "quiz-definir-contrat-project-configuration",
-        "title": "Quiz — Contrat API validé",
-        "description": "Vérifier les repères de la leçon « Définir le contrat Project et valider la configuration ».",
-        "passingScore": 70,
+        "title": "Quiz — Configuration et contrat sans effet silencieux",
+        "description": "Résoudre des cas qui obligent à localiser la validation et à préserver le contrat.",
+        "passingScore": 75,
         "isRequired": true,
         "position": 1,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Pourquoi utiliser safeParse dans le handler guidé ?",
-            "explanation": "safeParse rend la branche invalide explicite.",
+            "prompt": "PORT=70000 provoque une ZodError avant la ligne « listening ». Quelle propriété de conception est démontrée ?",
+            "explanation": "La configuration invalide est rejetée à la frontière de démarrage avant l’ouverture du service.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Pour séparer explicitement valeur typée et erreurs de validation",
+                "label": "L’échec est précoce et précède serve()",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Pour lancer Docker",
+                "label": "La première route convertira plus tard le port",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Pour créer une migration",
+                "label": "Le repository a refusé un Project",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Pour publier une image",
+                "label": "Le client a reçu une erreur métier",
                 "isCorrect": false,
                 "position": 4
               }
@@ -199,52 +314,120 @@
             "position": 1
           },
           {
-            "type": "true_false",
-            "prompt": "Une variable d’environnement absente doit être remplacée silencieusement par une valeur de production.",
-            "explanation": "Le starter échoue rapidement et lisiblement.",
+            "type": "single_choice",
+            "prompt": "Le client envoie le texte {\"title\": sans fermeture. Quelle branche doit répondre ?",
+            "explanation": "La syntaxe JSON échoue avant que Zod puisse examiner un objet.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "INVALID_JSON, avant safeParse et avant le repository",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
-                "isCorrect": true,
+                "label": "VALIDATION_ERROR après création du projet",
+                "isCorrect": false,
                 "position": 2
+              },
+              {
+                "label": "201 avec un titre vide",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Erreur de PORT au démarrage",
+                "isCorrect": false,
+                "position": 4
               }
             ],
             "position": 2
           },
           {
-            "type": "single_choice",
-            "prompt": "Quelle erreur relève du métier plutôt que du schéma ?",
-            "explanation": "Le schéma valide la forme ; le métier raisonne sur l’état du domaine.",
+            "type": "multiple_choice",
+            "prompt": "Le payload {\"title\":\"   \"} est reçu. Quelles observations sont attendues ?",
+            "explanation": "trim transforme la valeur en chaîne vide ; min(1) la rejette avant tout effet.",
             "acceptedAnswers": [],
             "options": [
               {
-                "label": "Un projet demandé n’existe pas",
+                "label": "Réponse 400 VALIDATION_ERROR",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "title est une chaîne vide",
-                "isCorrect": false,
+                "label": "projectRepository.create n’est pas appelé",
+                "isCorrect": true,
                 "position": 2
               },
               {
-                "label": "Le JSON est illisible",
+                "label": "Le titre stocké vaut une chaîne vide",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "PORT n’est pas un nombre",
+                "label": "Le processus doit s’arrêter comme pour un PORT invalide",
                 "isCorrect": false,
                 "position": 4
               }
             ],
             "position": 3
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Vous remplacez le repository mémoire par Prisma à la leçon suivante. Quel test protège le mieux la frontière publique ?",
+            "explanation": "Le test HTTP vérifie que la substitution de stockage ne change pas le contrat visible.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le même POST valide renvoie 201 et la même enveloppe data",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le nom de la classe contient Prisma",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le handler importe directement le client Prisma",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le UUID devient une constante partagée entre tests",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi créer une nouvelle instance du repository mémoire par test ?",
+            "explanation": "L’isolation évite qu’un état mutable rende le résultat dépendant de l’ordre d’exécution.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Pour empêcher les projets d’un test de fuir dans un autre",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour charger automatiquement .env",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour transformer une erreur 400 en 500",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour changer le port après chaque assertion",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
           }
         ]
       }
@@ -259,20 +442,24 @@
         "key": "content-definir-contrat-project-configuration-2"
       },
       {
-        "kind": "RESOURCE",
-        "key": "node-environment-variables"
+        "kind": "EXERCISE",
+        "key": "exercise-prouver-configuration"
       },
       {
-        "kind": "RESOURCE",
-        "key": "hono-validation"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "zod-documentation"
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-configuration-validee-demarrage"
       },
       {
         "kind": "CONTENT",
         "key": "content-definir-contrat-project-configuration-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-classer-entrees-invalides"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-entree-http-validee-avant-effet"
       },
       {
         "kind": "CONTENT",
@@ -284,11 +471,11 @@
       },
       {
         "kind": "EXERCISE",
-        "key": "exercise-definir-contrat-project-configuration"
+        "key": "project-project-contract"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-contrat-api-valide"
+        "key": "assessment-frontiere-repository-remplacable"
       },
       {
         "kind": "QUIZ",
@@ -297,7 +484,7 @@
     ]
   },
   "editorial": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "language": "fr",
     "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
@@ -307,23 +494,61 @@
     "nextReviewAt": null,
     "references": [
       {
-        "id": "REF-127-NODE-ENVIRONMENT-VARIABLES",
-        "type": "official_documentation",
+        "id": "REF-127-STARTER",
+        "type": "source_code",
         "authors": [],
-        "organization": "Node.js",
-        "title": "Environment Variables — Node.js Documentation",
-        "year": null,
-        "edition": null,
-        "publication": "Node.js",
+        "organization": "Projet SourceLab",
+        "title": "SourceLab — checkpoint-00-starter",
+        "year": 2026,
+        "edition": "commit 6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "publication": "GitHub",
         "doi": null,
-        "url": "https://nodejs.org/api/environment_variables.html",
-        "accessedAt": "2026-08-18",
+        "url": "https://github.com/Guts6667/sourcelab/tree/6dd1cda3aba94187cc5871e8c8208f892bb5bb2f",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-127-NODE-ENVIRONMENT-VARIABLES",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Node.js",
+        "title": "Environment Variables — Node.js Documentation",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/environment_variables.html",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "id": "REF-127-ZOD-DOCUMENTATION",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Zod",
+        "title": "Basic usage",
+        "year": null,
+        "edition": null,
+        "publication": "Zod",
+        "doi": null,
+        "url": "https://zod.dev/basics",
+        "accessedAt": "2026-08-22",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "id": "REF-127-HONO-VALIDATION",
@@ -336,248 +561,626 @@
         "publication": "Hono",
         "doi": null,
         "url": "https://hono.dev/docs/guides/validation",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
-        "id": "REF-127-ZOD-DOCUMENTATION",
+        "id": "REF-127-NODE-RANDOMUUID",
         "type": "official_documentation",
         "authors": [],
-        "organization": "Zod",
-        "title": "Zod Documentation",
-        "year": null,
+        "organization": "Node.js",
+        "title": "Crypto — crypto.randomUUID()",
+        "year": 2026,
         "edition": null,
-        "publication": "Zod",
+        "publication": "Node.js",
         "doi": null,
-        "url": "https://zod.dev/",
-        "accessedAt": "2026-08-18",
+        "url": "https://nodejs.org/api/crypto.html#cryptorandomuuidoptions",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle contrôlée lors de la création V1 ; nouvelle revue des liens requise pour V2."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-127-STARTER",
+            "locator": "src/config.ts, src/api/server.ts et src/contracts/README.md",
+            "supports": "État initial réel et absence de repository mémoire."
+          },
+          {
+            "referenceId": "REF-127-NODE-ENVIRONMENT-VARIABLES",
+            "locator": "process.env",
+            "supports": "Nature textuelle ou absente des entrées de configuration."
+          },
+          {
+            "referenceId": "REF-127-ZOD-DOCUMENTATION",
+            "locator": "Defining a schema and parsing data",
+            "supports": "Rôle du schéma et du parse."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Code primaire exact et documentations officielles convergentes.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
+            "referenceId": "REF-127-STARTER",
+            "locator": "src/config.ts intégral, src/api/server.ts avant serve, .env.example et package.json",
+            "supports": "Code, ordre de démarrage et absence de chargeur .env dans le chemin exécuté."
+          },
+          {
             "referenceId": "REF-127-NODE-ENVIRONMENT-VARIABLES",
-            "locator": "process.env et fichiers .env",
-            "supports": "Repères techniques employés dans le bloc 2."
+            "locator": "process.env et .env files",
+            "supports": "Entrées d’environnement et mécanismes de chargement explicites."
           },
           {
             "referenceId": "REF-127-ZOD-DOCUMENTATION",
-            "locator": "Définition de schémas et safeParse",
-            "supports": "Repères techniques employés dans le bloc 2."
+            "locator": "parse and error handling",
+            "supports": "Échec du parse de configuration."
           }
         ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidence": "very_high",
+        "confidenceRationale": "Le comportement est directement vérifiable dans le commit fixé.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-127-HONO-VALIDATION",
-            "locator": "Validation des entrées dans une route Hono",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "referenceId": "REF-127-STARTER",
+            "locator": "package.json, zod 4.4.3 et hono 4.13.0 ; src/contracts/README.md",
+            "supports": "Versions et emplacement du contrat à créer."
           },
           {
             "referenceId": "REF-127-ZOD-DOCUMENTATION",
-            "locator": "Définition de schémas et safeParse",
-            "supports": "Repères techniques employés dans le bloc 3."
+            "locator": "safeParse, error handling and z.infer",
+            "supports": "Validation sans exception et type dérivé."
+          },
+          {
+            "referenceId": "REF-127-HONO-VALIDATION",
+            "locator": "Validation des entrées de requête",
+            "supports": "Position de la validation avant le handler métier."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle du composant concerné ; la mise en œuvre reste bornée au starter décrit.",
+        "confidenceRationale": "Exemple original compatible avec les versions épinglées et fondé sur les API officielles.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 4,
-        "referenceLinks": [],
-        "confidence": null,
-        "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "referenceLinks": [
+          {
+            "referenceId": "REF-127-STARTER",
+            "locator": "src/api/app.ts et tests/health.test.ts",
+            "supports": "Compatibilité avec l’export app et le style de test existants."
+          },
+          {
+            "referenceId": "REF-127-ZOD-DOCUMENTATION",
+            "locator": "Transforms and validation errors",
+            "supports": "Normalisation du titre et erreur structurée."
+          },
+          {
+            "referenceId": "REF-127-HONO-VALIDATION",
+            "locator": "Validation flow",
+            "supports": "Séparation validation et traitement."
+          },
+          {
+            "referenceId": "REF-127-NODE-RANDOMUUID",
+            "locator": "crypto.randomUUID(options)",
+            "supports": "Création de l’identifiant de l’exemple mémoire."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Implémentation pédagogique proposée, bornée au checkpoint et utilisant les API officielles.",
+        "notApplicableReason": null
       },
       {
         "contentBlockPosition": 5,
         "referenceLinks": [],
         "confidence": null,
         "confidenceRationale": null,
-        "notApplicableReason": "Consigne et description originales du checkpoint SourceLab, sans affirmation externe supplémentaire."
+        "notApplicableReason": "Consigne originale de projet et critères de preuve."
       }
     ],
     "resourceChecks": [
       {
-        "resourceKey": "node-environment-variables",
-        "referenceIds": ["REF-127-NODE-ENVIRONMENT-VARIABLES"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Définir le contrat Project et valider la configuration ».",
-        "learnerInstructions": "Lire les types réellement fournis par process.env et relever pourquoi un parse explicite est requis.",
+        "resourceKey": "sourcelab-starter-6dd1cda",
+        "referenceIds": ["REF-127-STARTER"],
+        "pedagogicalRationale": "Permet de vérifier l’état initial après la synthèse, notamment l’absence du repository annoncé à tort dans la version précédente.",
+        "learnerInstructions": "Comparer uniquement les quatre fichiers indiqués.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "Code public en texte ; extraits nécessaires intégrés.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
-        "resourceKey": "hono-validation",
-        "referenceIds": ["REF-127-HONO-VALIDATION"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Définir le contrat Project et valider la configuration ».",
-        "learnerInstructions": "Lire le passage sur la validation d’une entrée de route Hono.",
+        "resourceKey": "node-environment-variables",
+        "referenceIds": ["REF-127-NODE-ENVIRONMENT-VARIABLES"],
+        "pedagogicalRationale": "Approfondit la frontière d’environnement déjà expliquée et testée.",
+        "learnerInstructions": "Lire uniquement process.env et le chargement des fichiers .env.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML en anglais ; synthèse française incluse.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "zod-documentation",
         "referenceIds": ["REF-127-ZOD-DOCUMENTATION"],
-        "pedagogicalRationale": "Lecture officielle ciblée avant la réalisation guidée de « Définir le contrat Project et valider la configuration ».",
-        "learnerInstructions": "Lire safeParse et le format d’erreur ; reproduire l’exemple minimal du starter.",
+        "pedagogicalRationale": "Relie les exemples SourceLab aux primitives officielles sans déléguer l’explication.",
+        "learnerInstructions": "Relire schema, parse, safeParse et z.infer après les micro-actions.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Documentation HTML officielle ; alternative intégrée dans les blocs guidés du parcours.",
+        "accessibilityNotes": "HTML en anglais ; exemples commentés en français.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Recontrôle éditorial V2 requis avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "hono-validation",
+        "referenceIds": ["REF-127-HONO-VALIDATION"],
+        "pedagogicalRationale": "Situe la validation dans le cycle Hono après que le cas manuel a été compris.",
+        "learnerInstructions": "Comparer la place de la validation à celle du code de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML en anglais ; aucune extension Hono supplémentaire n’est requise.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
+      },
+      {
+        "resourceKey": "node-randomuuid",
+        "referenceIds": ["REF-127-NODE-RANDOMUUID"],
+        "pedagogicalRationale": "Documente l’unique API Node ajoutée par le repository mémoire.",
+        "learnerInstructions": "Consulter seulement la signature randomUUID.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML en anglais ; usage montré dans le code.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-22",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "contrat-api-valide",
-        "assessmentTitle": "Mini-évaluation — Contrat API validé",
+        "conceptSlug": "configuration-validee-demarrage",
+        "assessmentTitle": "Mini-évaluation — Configuration validée au démarrage",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "À quel moment PORT doit-il être validé ?",
-            "explanation": "Une erreur de configuration doit être détectée au démarrage.",
+            "prompt": "Pourquoi appeler loadConfig avant serve ?",
+            "explanation": "Une configuration invalide doit empêcher l’ouverture du service plutôt que provoquer une panne tardive.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Avant que le serveur ouvre son port",
+                "label": "Pour refuser les valeurs invalides avant d’ouvrir le port",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Après la première requête",
+                "label": "Pour valider chaque payload Project",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Lors du build Docker seulement",
+                "label": "Pour stocker les projets dans process.env",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Dans PostgreSQL",
+                "label": "Pour transformer une 404 en 201",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
           },
           {
             "type": "single_choice",
-            "prompt": "Un title vide est reçu. Quel résultat est attendu ?",
-            "explanation": "La validation précède tout effet.",
+            "prompt": "loadConfig({ PORT: '4100' }) renvoie quelle forme ?",
+            "explanation": "z.coerce.number convertit la chaîne avant les contraintes d’entier et de plage.",
             "acceptedAnswers": [],
+            "position": 2,
             "options": [
               {
-                "label": "Une erreur de contrat sans création de projet",
+                "label": "{ PORT: 4100 } avec un nombre",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Un projet sans titre",
+                "label": "{ PORT: '4100' } inchangé",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Une erreur 500 générique",
+                "label": "Une erreur car process.env interdit toute conversion",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Une publication GHCR",
+                "label": "Un Project avec l’identifiant 4100",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 2
+            ]
           },
           {
-            "type": "true_false",
-            "prompt": "Le passage futur de la mémoire à Prisma doit modifier le contrat HTTP public.",
-            "explanation": "La séparation du repository protège le contrat.",
+            "type": "multiple_choice",
+            "prompt": "PORT=70000 est fourni. Quelles preuves sont attendues ?",
+            "explanation": "La borne max rejette la valeur pendant le parse et serve n’est pas appelé.",
             "acceptedAnswers": [],
+            "position": 3,
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "Une erreur de validation mentionnant PORT",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "Aucune ligne applicative annonçant l’écoute",
                 "isCorrect": true,
                 "position": 2
+              },
+              {
+                "label": "Une réponse HTTP 400 envoyée au client",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un Project est créé avant l’arrêt",
+                "isCorrect": false,
+                "position": 4
               }
-            ],
-            "position": 3
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi .env.example ne suffit-il pas à charger PORT dans ce starter ?",
+            "explanation": "Le fichier documente la valeur mais aucun chargeur n’est utilisé dans le chemin de démarrage.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Aucun import dotenv/config ni option --env-file n’est configuré",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Zod interdit tous les fichiers .env",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Hono ne peut lire aucune variable d’environnement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le fichier doit être copié dans PostgreSQL",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "entree-http-validee-avant-effet",
+        "assessmentTitle": "Mini-évaluation — Entrée HTTP validée avant effet",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi capturer context.req.json() séparément de safeParse ?",
+            "explanation": "Un texte JSON invalide et un objet hors contrat sont deux échecs différents.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Pour distinguer INVALID_JSON de VALIDATION_ERROR",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour ouvrir deux ports différents",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour appeler deux fois le repository",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour contourner le schéma Zod",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel est le type fiable utilisé après un safeParse réussi ?",
+            "explanation": "La branche success expose parsed.data conforme au type dérivé du schéma.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "CreateProjectInput via parsed.data",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toujours unknown",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "NodeJS.ProcessEnv",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "ZodError",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Le titre contient seulement trois espaces. Quelles étapes s’appliquent ?",
+            "explanation": "Le transform trim précède la contrainte min(1), puis la branche invalide retourne avant l’effet.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "trim produit une chaîne vide",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "min(1) échoue",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le repository n’est pas appelé",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "La route renvoie 201",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel test prouve le mieux « avant tout effet » ?",
+            "explanation": "Le statut seul ne prouve pas l’absence d’écriture ; un espion du repository complète la preuve.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Vérifier 400 et que repository.create n’a pas été appelé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Vérifier seulement que le corps contient le mot error",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Vérifier que pnpm dev affiche une ligne",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Vérifier qu’un autre test a créé un projet",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "frontiere-repository-remplacable",
+        "assessmentTitle": "Mini-évaluation — Frontière repository remplaçable",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle dépendance le handler doit-il connaître pour préparer le remplacement par Prisma ?",
+            "explanation": "Le handler dépend du contrat du repository, pas de son stockage concret.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "L’interface ProjectRepository",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La Map privée de l’implémentation mémoire",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le futur nom du container PostgreSQL",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le fichier pnpm-lock seulement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent rester stables lors du passage mémoire → Prisma ?",
+            "explanation": "La frontière HTTP enseignée ne dépend pas du moteur de stockage.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le payload CreateProjectInput",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le statut 201 du cas réussi",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "L’enveloppe { data: project }",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "L’usage interne d’une Map",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi injecter un repository différent dans chaque test ?",
+            "explanation": "Chaque scénario obtient un état propre et reproductible.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Pour isoler l’état mutable des scénarios",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour changer automatiquement le schéma HTTP",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour désactiver Zod",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour partager les projets entre tous les tests",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Le repository lève une erreur inattendue après une entrée valide. À quelle famille appartient-elle ?",
+            "explanation": "Le contrat d’entrée est passé ; l’échec est interne et ne doit pas être maquillé en validation client.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Erreur serveur interne, à journaliser avec le request ID",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "INVALID_JSON",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Valeur PORT par défaut",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Titre vide avant safeParse",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
           }
         ]
       }
     ],
     "sequenceRationale": {
-      "strategy": "Point de départ explicite, modèle mental ciblé, documentation officielle courte, exemple guidé, checkpoint cumulatif, mini-évaluation puis quiz de synthèse.",
+      "strategy": "Trois cycles : configurer le processus, valider l’entrée HTTP, puis isoler le stockage et intégrer la verticale. Les ressources officielles restent facultatives et hors séquence : l’explication française, le code et les preuves précèdent tout approfondissement documentaire.",
       "cycles": [
         {
-          "conceptSlug": "contrat-api-valide",
+          "conceptSlug": "configuration-validee-demarrage",
           "contentKeys": [
             "content-definir-contrat-project-configuration-1",
-            "content-definir-contrat-project-configuration-2",
-            "content-definir-contrat-project-configuration-3",
+            "content-definir-contrat-project-configuration-2"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-prouver-configuration"
+          },
+          "assessmentKey": "assessment-configuration-validee-demarrage",
+          "rationale": "Le vocabulaire, le schéma du flux et le code réel préparent un test focalisé du démarrage."
+        },
+        {
+          "conceptSlug": "entree-http-validee-avant-effet",
+          "contentKeys": ["content-definir-contrat-project-configuration-3"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-classer-entrees-invalides"
+          },
+          "assessmentKey": "assessment-entree-http-validee-avant-effet",
+          "rationale": "La distinction syntaxe/contrat est mise en pratique avec un espion avant d’être évaluée."
+        },
+        {
+          "conceptSlug": "frontiere-repository-remplacable",
+          "contentKeys": [
             "content-definir-contrat-project-configuration-4",
             "content-definir-contrat-project-configuration-5"
           ],
-          "resourceKeys": [
-            "node-environment-variables",
-            "hono-validation",
-            "zod-documentation"
-          ],
+          "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-definir-contrat-project-configuration"
+            "key": "project-project-contract"
           },
-          "assessmentKey": "assessment-contrat-api-valide",
-          "rationale": "La production « Créer le premier contrat vertical SourceLab » modifie le même dépôt SourceLab et fournit une preuve réutilisée par le checkpoint suivant."
+          "assessmentKey": "assessment-frontiere-repository-remplacable",
+          "rationale": "Le repository commenté, les sorties et les erreurs fréquentes conduisent au checkpoint cumulatif."
         }
       ]
     },
@@ -590,9 +1193,10 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Version 2.0 remplaçant entièrement le parcours de 42 jours ; aucune équivalence silencieuse avec les anciennes leçons.",
-        "Le starter autoritaire est publié sur https://github.com/Guts6667/sourcelab au commit 6dd1cda et au tag checkpoint-00-starter ; les checkpoints suivants restent à produire.",
-        "Revue technique des commandes, versions, workflows et liens obligatoire avant publication."
+        "Refonte pédagogique prioritaire : validation expliquée avant documentation, code commenté, sorties interprétées et trois activités alignées.",
+        "Le commit 6dd1cda a été contrôlé : loadConfig existe, mais le contrat Project et le repository mémoire doivent être créés.",
+        "SVG créé ; rendu et accessibilité automatisés vérifiés. Les liens, commandes et compatibilité seed restent à revoir avant publication.",
+        "Le checkpoint-02-project-contract reste à produire dans le dépôt SourceLab."
       ]
     },
     "changeLog": [
@@ -602,6 +1206,13 @@
         "author": "LearnX",
         "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
         "reviewRequired": "editorial_technical_links_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Refonte pédagogique complète : configuration réelle du starter, correction de l’absence de repository, contrat Zod commenté, diagramme accessible, micro-activités et évaluations appliquées.",
+        "reviewRequired": "editorial_technical_links_media_and_seed"
       }
     ]
   }

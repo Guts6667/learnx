@@ -501,6 +501,7 @@ describe('sample program seed', () => {
       expectedAssessmentCount: 3,
       expectedLessonCount: 7,
       expectedStageCount: 3,
+      expectedStatus: 'draft',
       expectedTitle: 'SourceLab — Docker, API et socle d’ingestion',
       readSeed: readSourceLabProductionSeed,
       slug: 'sourcelab-docker-api-socle-ingestion',
@@ -512,6 +513,7 @@ describe('sample program seed', () => {
       expectedAssessmentCount: 4,
       expectedLessonCount: 8,
       expectedStageCount: 4,
+      expectedStatus: 'active',
       expectedTitle: 'AI Product Engineer — RAG et évaluation avec SourceLab',
       readSeed: readSourceLabAiSeed,
       slug: 'ai-product-engineer-sourcelab',
@@ -525,6 +527,7 @@ describe('sample program seed', () => {
       expectedAssessmentCount,
       expectedLessonCount,
       expectedStageCount,
+      expectedStatus,
       expectedTitle,
       readSeed,
       slug,
@@ -540,17 +543,15 @@ describe('sample program seed', () => {
         canonicalProgramKey: slug,
         locale: 'fr',
         slug,
-        status: 'active',
+        status: expectedStatus,
         title: expectedTitle,
       });
       expect(seed.program.stages).toHaveLength(expectedStageCount);
       expect(lessons).toHaveLength(expectedLessonCount);
       expect(seed.conceptAssessmentBanks).toHaveLength(expectedLessonCount);
-      expect(lessons.every((lesson) => lesson.concepts.length === 1)).toBe(
-        true,
-      );
-      expect(lessons.every((lesson) => lesson.tasks.length === 1)).toBe(true);
-      expect(lessons.every((lesson) => lesson.quizzes.length === 1)).toBe(true);
+      expect(lessons.every((lesson) => lesson.concepts.length >= 1)).toBe(true);
+      expect(lessons.every((lesson) => lesson.tasks.length >= 1)).toBe(true);
+      expect(lessons.every((lesson) => lesson.quizzes.length >= 1)).toBe(true);
 
       for (const number of specNumbers) {
         const sidecar = JSON.parse(
@@ -641,12 +642,14 @@ describe('sample program seed', () => {
       expect(context.stages).toHaveLength(expectedStageCount);
       expect(context.modules).toHaveLength(expectedStageCount);
       expect(context.lessons).toHaveLength(expectedLessonCount);
-      expect(context.concepts).toHaveLength(expectedLessonCount);
+      expect(context.concepts).toHaveLength(
+        lessons.reduce((total, lesson) => total + lesson.concepts.length, 0),
+      );
       expect(context.stageAssessments).toHaveLength(expectedAssessmentCount);
     },
   );
 
-  it('keeps the guided SourceLab V2 route within its 13 h 05 ceiling', async () => {
+  it('keeps the reconstructed SourceLab V2.1 route at its 14 h 20 target', async () => {
     const seed = await readSourceLabProductionSeed();
     const lessonMinutes = seed.program.stages.reduce(
       (stageTotal, stage) =>
@@ -678,32 +681,206 @@ describe('sample program seed', () => {
       Promise.resolve(0),
     );
 
-    expect(lessonMinutes + assessmentMinutes).toBe(785);
+    expect(lessonMinutes + assessmentMinutes).toBe(860);
   });
 
-  it('guides every productive SourceLab V2 task before the exercise without duplicating resources on the task', async () => {
+  it('keeps the SourceLab assessment case, duration and handoff visible at runtime', async () => {
+    const seed = await readSourceLabProductionSeed();
+    const assessmentSidecars = await Promise.all(
+      [27, 28, 29].map(
+        async (number) =>
+          JSON.parse(
+            await readFile(
+              `content/ingenieur-logiciel-production-sourcelab/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_${String(number).padStart(3, '0')}.json`,
+              'utf8',
+            ),
+          ) as {
+            stageSlug: string;
+            assessment: {
+              case: string;
+              estimatedMinutes: number;
+              instructions: string[];
+              remediation: string;
+              submissionFormat: string;
+            };
+          },
+      ),
+    );
+
+    for (const sidecar of assessmentSidecars) {
+      const assessment = seed.program.stages.find(
+        ({ slug }) => slug === sidecar.stageSlug,
+      )?.assessment;
+
+      expect(assessment?.instructions).toContain(
+        `${sidecar.assessment.estimatedMinutes} minutes`,
+      );
+      expect(assessment?.instructions).toContain(sidecar.assessment.case);
+      expect(assessment?.instructions).toContain(
+        sidecar.assessment.submissionFormat,
+      );
+      expect(assessment?.instructions).toContain(
+        sidecar.assessment.remediation,
+      );
+      for (const instruction of sidecar.assessment.instructions) {
+        expect(assessment?.instructions).toContain(instruction);
+      }
+    }
+  });
+
+  it('keeps SourceLab V2.1 self-contained, visual and deterministically assessable', async () => {
     const seed = await readSourceLabProductionSeed();
     const lessons = seed.program.stages.flatMap((stage) =>
       stage.modules.flatMap((module) => module.lessons),
     );
+    const expectedMinutes = [70, 85, 95, 120, 120, 135, 120];
+    const expectedConceptAndTaskCounts = [3, 3, 3, 4, 4, 4, 4];
+    const diagramPaths = new Set<string>();
 
-    for (const lesson of lessons) {
-      const [task] = lesson.tasks;
-      const exerciseIndex = lesson.sequence.findIndex(
-        ({ kind, key }) => kind === 'EXERCISE' && key === task.key,
-      );
-      const resourceIndexes = lesson.sequence.flatMap((item, index) =>
-        item.kind === 'RESOURCE' ? [index] : [],
+    expect(seed.program.status).toBe('draft');
+    expect(lessons.map(({ estimatedMinutes }) => estimatedMinutes)).toEqual(
+      expectedMinutes,
+    );
+
+    for (const [lessonIndex, lesson] of lessons.entries()) {
+      const internalText = lesson.contentBlocks
+        .map(({ content }) => content.text)
+        .join('\n');
+      const wordCount = internalText.trim().split(/\s+/u).length;
+      const diagrams = Array.from(
+        internalText.matchAll(
+          /!\[[^\]]+\]\((\/learning\/sourcelab\/[^)\s]+\.svg)\)/gu,
+        ),
+        (match) => match[1],
       );
 
-      expect(task.type).toMatch(/^(practice|project)$/);
-      expect(task.resourceKeys).toEqual([]);
-      expect(exerciseIndex).toBeGreaterThan(-1);
-      expect(resourceIndexes.length).toBeGreaterThanOrEqual(1);
-      expect(resourceIndexes.every((index) => index < exerciseIndex)).toBe(
+      expect(wordCount).toBeGreaterThanOrEqual(700);
+      expect((internalText.match(/```/gu) ?? []).length).toBeGreaterThanOrEqual(
+        4,
+      );
+      expect(diagrams.length).toBeGreaterThanOrEqual(1);
+      expect(lesson.resources.every(({ isRequired }) => !isRequired)).toBe(
         true,
       );
+      expect(lesson.sequence.every(({ kind }) => kind !== 'RESOURCE')).toBe(
+        true,
+      );
+      expect(lesson.concepts).toHaveLength(
+        expectedConceptAndTaskCounts[lessonIndex],
+      );
+      expect(lesson.tasks).toHaveLength(
+        expectedConceptAndTaskCounts[lessonIndex],
+      );
+      expect(lesson.quizzes).toHaveLength(1);
+      expect(lesson.quizzes[0].questions.length).toBeGreaterThanOrEqual(4);
+
+      for (const diagramPath of diagrams) {
+        diagramPaths.add(diagramPath);
+        expect(await readFile(`public${diagramPath}`, 'utf8')).toContain(
+          '<svg',
+        );
+      }
+
+      for (const task of lesson.tasks) {
+        const exerciseIndex = lesson.sequence.findIndex(
+          ({ kind, key }) => kind === 'EXERCISE' && key === task.key,
+        );
+
+        expect(task.type).toMatch(/^(practice|project)$/);
+        expect(task.resourceKeys).toEqual([]);
+        expect(exerciseIndex).toBeGreaterThan(0);
+        expect(lesson.sequence[exerciseIndex - 1]?.kind).toBe('CONTENT');
+        expect(lesson.sequence[exerciseIndex + 1]?.kind).toBe(
+          'CONCEPT_ASSESSMENT',
+        );
+      }
     }
+
+    expect(diagramPaths.size).toBeGreaterThanOrEqual(7);
+    expect(
+      seed.conceptAssessmentBanks.flatMap(
+        ({ assessmentBanks }) => assessmentBanks,
+      ),
+    ).toHaveLength(
+      expectedConceptAndTaskCounts.reduce((sum, count) => sum + count),
+    );
+    expect(
+      seed.conceptAssessmentBanks
+        .flatMap(({ assessmentBanks }) => assessmentBanks)
+        .every(({ questions }) => questions.length >= 2),
+    ).toBe(true);
+  });
+
+  it('keeps the verified SourceLab source manifest aligned with optional lesson resources', async () => {
+    const sidecars = await Promise.all(
+      [126, 127, 128, 129, 130, 131, 132].map(async (number) =>
+        JSON.parse(
+          await readFile(
+            `content/ingenieur-logiciel-production-sourcelab/specs/PEDAGOGY_SPEC_${number}.json`,
+            'utf8',
+          ),
+        ),
+      ),
+    );
+    const manifest = JSON.parse(
+      await readFile(
+        'content/ingenieur-logiciel-production-sourcelab/SOURCE_MANIFEST.json',
+        'utf8',
+      ),
+    ) as Array<{
+      checkedAt: string;
+      key: string;
+      lesson: string;
+      reviewStatus: string;
+      title: string;
+      url: string;
+    }>;
+    const expectedResources = sidecars.flatMap(({ lesson }) =>
+      lesson.resources.map(
+        ({
+          isRequired,
+          key,
+          title,
+          url,
+        }: {
+          isRequired: boolean;
+          key: string;
+          title: string;
+          url: string;
+        }) => ({
+          isRequired,
+          key,
+          lesson: lesson.title as string,
+          title,
+          url,
+        }),
+      ),
+    );
+
+    expect(
+      manifest.map(({ key, lesson, title, url }) => ({
+        key,
+        lesson,
+        title,
+        url,
+      })),
+    ).toEqual(
+      expectedResources.map(({ key, lesson, title, url }) => ({
+        key,
+        lesson,
+        title,
+        url,
+      })),
+    );
+    expect(expectedResources.every(({ isRequired }) => !isRequired)).toBe(true);
+    expect(manifest.every(({ checkedAt }) => checkedAt === '2026-08-22')).toBe(
+      true,
+    );
+    expect(
+      manifest.every(
+        ({ reviewStatus }) => reviewStatus === 'verified_for_v2_1',
+      ),
+    ).toBe(true);
   });
 
   it('reads and imports the English psychology pilot as an isolated draft', async () => {

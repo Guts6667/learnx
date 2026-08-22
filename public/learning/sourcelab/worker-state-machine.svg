@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby="worker-title worker-desc">
+  <title id="worker-title">Machine d’états du worker SourceLab</title>
+  <desc id="worker-desc">Un import crée un job et une SourceVersion QUEUED. Le worker les sélectionne puis les passe à PROCESSING sans prétendre fournir une réservation sûre avec plusieurs consommateurs. Après normalisation et calcul du checksum, les deux terminent soit en READY avec un contenu normalisé et un hash, soit en FAILED avec un errorCode sur le job. READY et FAILED sont terminaux dans ce worker simple.</desc>
+  <defs>
+    <marker id="worker-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#466b82"/></marker>
+    <marker id="worker-error-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#944f49"/></marker>
+    <style>
+      .title{font:700 26px system-ui,sans-serif;fill:#121c24}.eyebrow{font:700 12px ui-monospace,monospace;letter-spacing:1.4px;fill:#3f6176}.state{font:700 19px ui-monospace,monospace;fill:#121c24}.label{font:700 16px system-ui,sans-serif;fill:#121c24}.body{font:14px system-ui,sans-serif;fill:#58676d}.code{font:13px ui-monospace,monospace;fill:#121c24}.card{fill:#fffdf8;stroke:#60747e;stroke-width:2}.active{fill:#d9e4e8;stroke:#466b82;stroke-width:3}.failure{fill:#fff8f6;stroke:#944f49;stroke-width:3}.line{fill:none;stroke:#466b82;stroke-width:3;marker-end:url(#worker-arrow)}.errorLine{fill:none;stroke:#944f49;stroke-width:3;marker-end:url(#worker-error-arrow)}
+    </style>
+  </defs>
+  <rect width="960" height="600" rx="24" fill="#f1eee6"/>
+  <text x="48" y="46" class="eyebrow">L6 · TRAITEMENT DIFFÉRÉ</text>
+  <text x="48" y="80" class="title">Une transition est une écriture observable, pas une intention</text>
+
+  <rect x="48" y="150" width="188" height="128" rx="64" class="card"/>
+  <text x="97" y="195" class="state">QUEUED</text>
+  <text x="79" y="225" class="body">job créé avec la version</text>
+  <text x="84" y="248" class="code">deux statuts QUEUED</text>
+
+  <rect x="354" y="130" width="252" height="168" rx="84" class="active"/>
+  <text x="411" y="181" class="state">PROCESSING</text>
+  <text x="395" y="214" class="body">normaliser le contenu</text>
+  <text x="395" y="239" class="body">calculer SHA-256</text>
+  <text x="395" y="264" class="code">deux statuts PROCESSING</text>
+
+  <rect x="724" y="98" width="188" height="128" rx="64" class="active"/>
+  <text x="781" y="143" class="state">READY</text>
+  <text x="751" y="173" class="body">job + version READY</text>
+  <text x="751" y="196" class="code">contenu + checksum</text>
+
+  <rect x="724" y="306" width="188" height="128" rx="64" class="failure"/>
+  <text x="773" y="351" class="state" style="fill:#944f49">FAILED</text>
+  <text x="747" y="381" class="body">job + version FAILED</text>
+  <text x="751" y="404" class="code">job.errorCode = "..."</text>
+
+  <path d="M236 214H348" class="line"/>
+  <text x="292" y="185" class="code" text-anchor="middle">select + update</text>
+  <path d="M606 194C662 194 670 162 718 162" class="line"/>
+  <text x="627" y="154" class="code">succès</text>
+  <path d="M606 244C662 244 670 370 718 370" class="errorLine"/>
+  <text x="626" y="303" class="code" style="fill:#944f49">exception</text>
+
+  <rect x="48" y="342" width="558" height="168" rx="18" class="card"/>
+  <text x="70" y="378" class="eyebrow">PREUVES À CHAQUE FRONTIÈRE</text>
+  <text x="70" y="414" class="code">QUEUED      job.status = version.status</text>
+  <text x="70" y="442" class="code">PROCESSING  job.status = version.status</text>
+  <text x="70" y="470" class="code">READY       hash(normalizedContent) = checksum</text>
+  <text x="70" y="498" class="code">FAILED      errorCode non vide, brut conservé</text>
+
+  <rect x="650" y="478" width="262" height="100" rx="16" fill="#fffdf8" stroke="#7f683e" stroke-width="2"/>
+  <text x="672" y="511" class="eyebrow" style="fill:#7f683e">LIMITES EXPLICITES</text>
+  <text x="672" y="539" class="body">1 job · pas de retry · pas de</text>
+  <text x="672" y="559" class="body">concurrence sûre ni reprise crash</text>
+
+  <text x="48" y="566" class="body">READY et FAILED sont terminaux : aucune transition ne les relie.</text>
+</svg>
