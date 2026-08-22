@@ -164,6 +164,29 @@ describe('navigation accessible', () => {
     expect(document.getElementById('main-content')).not.toHaveClass('max-w-xl');
   });
 
+  it('isole les routes admin dans le shell Totem sans dupliquer la navigation produit', () => {
+    renderWithLocale(
+      <MobileLayout currentPath="/admin/accounts">
+        <h1>Comptes</h1>
+      </MobileLayout>,
+    );
+
+    expect(document.querySelector('[data-visual-system="totem"]')).toHaveClass(
+      'totem-admin-surface',
+    );
+    expect(document.getElementById('main-content')).toHaveTextContent('Comptes');
+    expect(
+      screen.getAllByRole('navigation', {
+        name: 'Navigation de l’administration',
+      }),
+    ).toHaveLength(2);
+    expect(screen.queryByRole('link', { name: 'Accueil' })).not.toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: 'Comptes' })[0]).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+  });
+
   it.each(['/login', '/request-access', '/verify-email', '/activate'])(
     "n'affiche aucune navigation privée dans le shell d'authentification %s",
     (currentPath) => {

@@ -604,7 +604,7 @@ constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
 | V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
 | V4-016A | Landing, compte, vérification e-mail et première direction | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesses approuvées |
 | V4-016I | Recherche publique, articles partageables, programme public et graphiques | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contenu public réel |
-| V4-016B | Shell desktop et administration responsive | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats admin |
+| V4-016B | Shell desktop et administration responsive | `SHELL_ADMIN_EXISTANT_QA_GREEN_LOCAL` | V4-016D/E intégrés localement ; correction/paiement restent dépendants de leurs contrats |
 | V4-016G | Correction, crédits et paiement | `DESIGN_VALIDATED_CONTRACTS_PENDING` | V4-007/010/012/014 stabilisés et V4-016D/E |
 | V4-016 | Annonce de création V5 | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesse V5 validée |
 | V4-016H | QA, adoption progressive et rollback | `WAIT_PREVIOUS_TOTEM_LOTS` | Lots Totem réellement implémentés |
@@ -2444,6 +2444,17 @@ V4-010, V4-012, V4-014, V4-016, V4-016A et V4-016G.**
 **Références : `docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md`,
 `learnx-totem-product-surfaces.html`, `learnx-totem-entry-admin-surfaces.html`
 et `learnx-totem-v4-final-surfaces.html`.**
+
+### État d'implémentation au 22 août 2026
+
+- Le shell Totem et les routes d'administration existantes sont migrés dans un
+  commit local isolé : navigation desktop/mobile, topbar, formulaires, listes,
+  tiroirs et états existants, sans modification des permissions ni du serveur.
+- La matrice 320/390/720/1440/1920, zoom 200 %, clavier et accessibilité est
+  verte sur les parcours admin couverts.
+- Le ticket reste partiel : correction, historique, checkout et surfaces de
+  paiement attendent toujours leurs contrats V4 stabilisés et ne sont ni
+  inventés ni déclarés terminés par cette tranche.
 
 ### Périmètre
 

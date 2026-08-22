@@ -87,7 +87,7 @@ async function installContactsApi(page: Page, initialState: ContactState) {
   });
 }
 
-test('contacts Atlas restent complets à 390 px et sur desktop', async ({
+test('contacts Totem restent complets à 390 px et sur desktop', async ({
   page,
 }) => {
   await installContactsApi(page, 'default');

@@ -32,6 +32,7 @@ import { ActivateAccountPage } from '@/pages/ActivateAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { PublicInterestPage } from '@/pages/PublicInterestPage';
 import { TotemPrimitivesPage } from '@/pages/TotemPrimitivesPage';
+import { TotemAdminPreviewPage } from '@/pages/TotemAdminPreviewPage';
 
 interface RouteParams {
   assessmentId?: string;
@@ -286,6 +287,9 @@ export function AppRoutes() {
         <PublicInterestPage path="/interest" />
         {import.meta.env.DEV ? (
           <TotemPrimitivesPage path="/design/totem-primitives" />
+        ) : null}
+        {import.meta.env.DEV ? (
+          <TotemAdminPreviewPage path="/design/totem-admin" />
         ) : null}
         <ProtectedRoute path="/today">
           <TodayPage />

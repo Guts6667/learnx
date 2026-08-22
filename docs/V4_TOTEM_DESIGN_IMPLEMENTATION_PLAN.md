@@ -103,7 +103,9 @@ un contrat pour reproduire une maquette.
 ## 5. File ordonnée d'implémentation
 
 V4-016D et V4-016E sont implémentés et validés dans deux commits locaux
-ordonnés, en attente d'intégration propriétaire. Les lots suivants restent
+ordonnés, en attente d'intégration propriétaire. Une première tranche V4-016B
+couvre aussi le shell et les routes admin déjà disponibles ; les surfaces
+correction/paiement restent bloquées sur leurs contrats. Les autres lots restent
 `DESIGN_VALIDATED_IMPLEMENTATION_WAIT_GO`. Cette file est parallèle au chemin
 critique IA et ne le remplace pas.
 
