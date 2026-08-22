@@ -322,7 +322,7 @@ describe('V4 document routing and assigned execution queue', () => {
     );
   });
 
-  it('routes Totem through one validated design authority without opening implementation', () => {
+  it('routes Totem through one authority and records the bounded V4-016D implementation', () => {
     const index = read('docs/INDEX.md');
     const backlog = read('BACKLOG_V4.md');
     const roadmap = read('docs/V4_ROADMAP.md');
@@ -332,7 +332,9 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md');
     expect(status).toContain('ACTIVE_DESIGN_AUTHORITY');
     expect(totem).toContain('DESIGN_VALIDATED');
-    expect(totem).toContain('NOT_STARTED_NOT_AUTHORIZED_BY_THIS_DOCUMENT');
+    expect(totem).toContain('V4_016D_QA_GREEN_PENDING_PUSH');
+    expect(totem).toContain('Les autres lots');
+    expect(totem).toContain('restent soumis à leur propre autorisation');
     expect(totem).toContain('320, 390, 720, 1440 et 1920');
     expect(totem).toContain('Aucun prix, capacité, allocation');
 

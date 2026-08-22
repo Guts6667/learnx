@@ -598,7 +598,7 @@ constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
 
 | Ticket | Objet | Statut | Dépendances de démarrage |
 | --- | --- | --- | --- |
-| V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | Réaudit code et stratégie de migration |
+| V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration sur `dev` |
 | V4-016E | Primitives et états communs accessibles | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D |
 | V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E |
 | V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
@@ -2637,8 +2637,8 @@ des pixels ni une modification de la logique de recommandation.
 
 ## V4-016D — Fondations visuelles Totem
 
-**Priorité : P1 design. Statut : `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`.
-Dépendance : réaudit de la baseline V3.5 avant code.**
+**Priorité : P1 design. Statut : `IMPLEMENTED_QA_GREEN_PENDING_PUSH`.
+Dépendance levée : baseline V3.5 réauditée ; revue propriétaire avant push.**
 
 ### Périmètre et critères
 
@@ -2651,6 +2651,18 @@ Dépendance : réaudit de la baseline V3.5 avant code.**
 - Interdire vert, gradient IA, gamification et couleur comme seul signal.
 - Prouver contrastes, focus, zoom 200 %, reduced motion et rendu
   320/390/720/1440/1920 avant clôture.
+
+### État au 22 août 2026
+
+- Tokens dédiés, régime clair disponible, DM Sans locale, logo Totem et
+  manifests PWA raccordés ; aucune bascule visuelle globale des écrans Atlas.
+- Aliases existants conservés : aucun écran n'a dû adopter une API visuelle
+  concurrente et le rollback restaure un seul commit.
+- `package.json` et `pnpm-lock.yaml` restent inchangés pour ne pas invalider
+  l'identité expérimentale IA qui en fige les empreintes.
+- Contrôles verts : lint, typecheck, build, 1 204 tests unitaires, tests
+  Playwright landing/primitives sur la matrice responsive existante.
+- Aucun contrat métier, écran V4-016E+, prix, score ou progression modifié.
 
 ---
 

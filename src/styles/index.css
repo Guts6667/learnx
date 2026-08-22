@@ -33,6 +33,23 @@
   src: url('@fontsource/source-serif-4/files/source-serif-4-latin-500-normal.woff2')
     format('woff2');
 }
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/dm-sans/dm-sans-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('/fonts/dm-sans/dm-sans-latin-500-normal.woff2') format('woff2');
+}
+
 @import 'tailwindcss';
 
 @theme {
@@ -42,6 +59,7 @@
 }
 
 :root {
+  /* Baseline Atlas conservée jusqu'à la migration explicite de chaque surface. */
   --color-canvas: #121c24;
   --color-surface: #1a2933;
   --color-surface-raised: #304650;
@@ -66,6 +84,24 @@
   --color-ivory: #f8f5ee;
   --color-blue-soft: #d9e4e8;
   --color-brass: #bea169;
+
+  /* V4-016D : fondations Totem disponibles pour une adoption écran par écran. */
+  --totem-color-canvas: #f4f6fb;
+  --totem-color-surface: #ffffff;
+  --totem-color-surface-subtle: #e7edff;
+  --totem-color-text: #17233b;
+  --totem-color-text-muted: #647087;
+  --totem-color-border: #d6deeb;
+  --totem-color-control-border: #8491a8;
+  --totem-color-accent: #3b5bd6;
+  --totem-color-accent-text: #314fbe;
+  --totem-color-action-hover: #304db8;
+  --totem-color-on-action: #ffffff;
+  --totem-color-coral: #cc6b57;
+  --totem-color-coral-soft: #f9eae6;
+  --totem-color-danger: #9b3e32;
+  --totem-color-overlay: rgb(23 35 59 / 58%);
+  --totem-font-interface: 'DM Sans', Inter, ui-sans-serif, system-ui, sans-serif;
   --font-interface: var(--font-sans);
   --font-editorial: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --space-1: 0.25rem;

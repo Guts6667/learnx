@@ -35,4 +35,4 @@ try {
   await browser.close();
 }
 
-console.log('Exported Atlas icons from public/learnx-icon.svg.');
+console.log('Exported Totem icons from public/learnx-icon.svg.');

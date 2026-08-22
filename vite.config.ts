@@ -14,19 +14,19 @@ export default defineConfig({
     VitePWA({
       injectRegister: null,
       manifest: {
-        background_color: '#121c24',
+        background_color: '#f4f6fb',
         categories: ['education', 'productivity'],
         description:
           'Votre environnement personnel pour apprendre, pratiquer et réviser.',
         display: 'standalone',
         icons: [
           {
-            src: '/learnx-icon-192.png?v=atlas-1',
+            src: '/learnx-icon-192.png?v=totem-1',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/learnx-icon-512.png?v=atlas-1',
+            src: '/learnx-icon-512.png?v=totem-1',
             sizes: '512x512',
             type: 'image/png',
           },
@@ -37,7 +37,7 @@ export default defineConfig({
         scope: '/',
         short_name: 'LearnX',
         start_url: '/today',
-        theme_color: '#121c24',
+        theme_color: '#17233b',
       },
       registerType: 'autoUpdate',
       workbox: {

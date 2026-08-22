@@ -4,7 +4,7 @@
 
 - **Classe** : `ACTIVE_DESIGN_AUTHORITY`
 - **Décision propriétaire** : `DESIGN_VALIDATED`
-- **Implémentation applicative** : `NOT_STARTED_NOT_AUTHORIZED_BY_THIS_DOCUMENT`
+- **Implémentation applicative** : `V4_016D_QA_GREEN_PENDING_PUSH`
 - **Date** : 21 août 2026
 - **Portée** : langage visuel, composants et découpage des surfaces LearnX
 
@@ -12,6 +12,33 @@ Ce document transforme la direction artistique validée par Rayan en tickets
 implémentables. Il n'autorise aucun changement de code, aucune publication et
 aucune activation de fonctionnalité. Chaque ticket exige un GO d'implémentation
 distinct après réaudit du code et des contrats serveur concernés.
+
+Le GO explicite du 22 août 2026 couvre uniquement `V4-016D`. Les autres lots
+restent soumis à leur propre autorisation.
+
+## 0. État d'implémentation de V4-016D
+
+Les fondations Totem sont préparées dans un worktree isolé, sans publication :
+
+- palette sémantique Totem et régime clair exposés sous des tokens dédiés ;
+- aliases Atlas applicatifs conservés pour permettre la migration écran par
+  écran sans bascule visuelle globale ;
+- DM Sans 400/500 livrée comme asset local avec sa licence ;
+- monogramme inchangé géométriquement, variantes nuit/papier et exports PWA
+  régénérés ;
+- cache-buster des icônes passé de `atlas-1` à `totem-1` ;
+- contrôles de contrastes, police, géométrie et manifests adaptés à Totem.
+
+La police est volontairement embarquée sans modifier `package.json` ni
+`pnpm-lock.yaml`. Ces deux fichiers appartiennent à une identité expérimentale
+IA gelée ; les modifier aurait invalidé sa preuve. Le retrait ultérieur des
+dépendances Atlas inutilisées est reporté au retrait final V4-016H, après
+clôture de cette identité.
+
+Preuves locales au 22 août 2026 : lint, typecheck, build, 1 204 tests unitaires
+et les scénarios Playwright landing/primitives aux largeurs de référence sont
+verts. Aucun contrat serveur, prix, score, progression ou donnée métier n'a été
+modifié.
 
 ## 1. Direction validée
 
@@ -75,8 +102,9 @@ un contrat pour reproduire une maquette.
 
 ## 5. File ordonnée d'implémentation
 
-Tous les tickets ci-dessous sont `DESIGN_VALIDATED_IMPLEMENTATION_WAIT_GO`.
-Cette file est parallèle au chemin critique IA V4-003B-R1 et ne le remplace pas.
+Tous les tickets ci-dessous sauf V4-016D restent
+`DESIGN_VALIDATED_IMPLEMENTATION_WAIT_GO`. Cette file est parallèle au chemin
+critique IA V4-003B-R1 et ne le remplace pas.
 
 | Ordre | Ticket | Pilote | Dépendances | Livrable |
 | --- | --- | --- | --- | --- |

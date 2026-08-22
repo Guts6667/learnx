@@ -16,7 +16,7 @@ function pngDimensions(buffer: Buffer) {
   };
 }
 
-describe('Atlas application icons', () => {
+describe('Totem application icons', () => {
   it('preserves the canonical geometry and exact color roles', async () => {
     const main = await readFile('public/learnx-icon.svg', 'utf8');
     const dark = await readFile('public/learnx-icon-dark.svg', 'utf8');
@@ -27,10 +27,10 @@ describe('Atlas application icons', () => {
       expect(svg).toContain(`d="${geometry.x}"`);
     }
     expect(new Set(main.match(/#[0-9A-F]{6}/g))).toEqual(
-      new Set(['#F1EEE6', '#121C24', '#557F9A']),
+      new Set(['#FFFAF0', '#17233B', '#3558C9']),
     );
     expect(new Set(dark.match(/#[0-9A-F]{6}/g))).toEqual(
-      new Set(['#121C24', '#F8F5EE', '#557F9A']),
+      new Set(['#17233B', '#FFFAF0', '#89A7FF']),
     );
   });
 
@@ -39,7 +39,7 @@ describe('Atlas application icons', () => {
     expect(pngDimensions(buffer)).toEqual({ height: size, width: size });
   });
 
-  it('connects manifests and HTML to documented Atlas exports', async () => {
+  it('connects manifests and HTML to documented Totem exports', async () => {
     const html = await readFile('index.html', 'utf8');
     const englishManifest = await readFile(
       'public/manifest-en.webmanifest',
@@ -47,11 +47,11 @@ describe('Atlas application icons', () => {
     );
     const vite = await readFile('vite.config.ts', 'utf8');
 
-    expect(html).toContain('/learnx-icon-dark.svg?v=atlas-1');
-    expect(html).toContain('/learnx-icon-180.png?v=atlas-1');
+    expect(html).toContain('/learnx-icon-dark.svg?v=totem-1');
+    expect(html).toContain('/learnx-icon-180.png?v=totem-1');
     for (const source of [englishManifest, vite]) {
-      expect(source).toContain('/learnx-icon-192.png?v=atlas-1');
-      expect(source).toContain('/learnx-icon-512.png?v=atlas-1');
+      expect(source).toContain('/learnx-icon-192.png?v=totem-1');
+      expect(source).toContain('/learnx-icon-512.png?v=totem-1');
       expect(source).not.toContain('pwa-maskable-512x512.png');
     }
   });
