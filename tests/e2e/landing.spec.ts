@@ -97,8 +97,8 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   }
   const html = await page.request.get('/');
   const source = await html.text();
-  expect(source).toContain('/learnx-icon-dark.svg?v=atlas-1');
-  expect(source).toContain('/learnx-icon-180.png?v=atlas-1');
+  expect(source).toContain('/learnx-icon-dark.svg?v=totem-1');
+  expect(source).toContain('/learnx-icon-180.png?v=totem-1');
   await expect(
     page.getByRole('link', { name: 'Sign in' }).first(),
   ).toHaveAttribute('href', '/login');

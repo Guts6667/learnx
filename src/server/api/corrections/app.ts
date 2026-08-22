@@ -60,7 +60,8 @@ async function createDefaultOrchestration(): Promise<
   const ledger = new PrismaCreditLedger(prisma);
   const credits: CreditSettlementPort = {
     async reserve(input) {
-      const result = await ledger.reserve(input);
+      const priorityLotIds = await ledger.offeredLotIds(input.userId);
+      const result = await ledger.reserve({ ...input, priorityLotIds });
       if (!result.reservation) {
         throw new Error('CREDIT_RESERVATION_MISSING');
       }

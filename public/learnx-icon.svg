@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
-  <title id="title">LearnX</title>
-  <rect width="512" height="512" fill="#F1EEE6" />
-  <path d="M132 112h64v224h140v64H132z" fill="#121C24" />
-  <path d="m264 176 44 62 44-62h76l-82 108 88 116h-78l-48-68-48 68h-78l88-116-82-108z" fill="#557F9A" />
+  <title id="title">LearnX — Totem papier</title>
+  <rect width="512" height="512" fill="#FFFAF0" />
+  <path d="M132 112h64v224h140v64H132z" fill="#17233B" />
+  <path d="m264 176 44 62 44-62h76l-82 108 88 116h-78l-48-68-48 68h-78l88-116-82-108z" fill="#3558C9" />
 </svg>

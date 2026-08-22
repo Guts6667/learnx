@@ -140,6 +140,30 @@ export class PrismaCreditLedger {
     private readonly clock: () => Date = () => new Date(),
   ) {}
 
+  /**
+   * V4 pilot corrections can only consume offered allocations. The caller
+   * still supplies the resulting order to `reserve`, so purchased lots can
+   * never be selected implicitly by the correction runtime.
+   */
+  public async offeredLotIds(userId: string): Promise<string[]> {
+    const now = this.clock();
+    const lots = await this.prisma.creditLot.findMany({
+      where: {
+        account: { userId },
+        provenance: CreditProvenance.FREE_ALLOCATION,
+        OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+      },
+      include: { ledgerEntries: { select: { amount: true } } },
+      orderBy: [{ expiresAt: 'asc' }, { createdAt: 'asc' }, { id: 'asc' }],
+    });
+
+    return lots.flatMap((lot) =>
+      lot.ledgerEntries.reduce((total, entry) => total + entry.amount, 0n) > 0n
+        ? [lot.id]
+        : [],
+    );
+  }
+
   private async transaction<T>(
     operation: (transaction: Transaction) => Promise<T>,
   ): Promise<T> {

@@ -6,7 +6,7 @@ const stylesheet = readFileSync(
   'utf8',
 );
 const brandContract = readFileSync(
-  resolve(process.cwd(), 'docs/V3_5_BRAND_DIRECTION.md'),
+  resolve(process.cwd(), 'docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md'),
   'utf8',
 );
 
@@ -49,37 +49,20 @@ function contrast(first: string, second: string): number {
   );
 }
 
-describe('Atlas visual foundations', () => {
-  it('exposes the exact A2 palette without the retired green tokens', () => {
+describe('Totem visual foundations', () => {
+  it('exposes the approved Totem palette alongside the migration aliases', () => {
     const palette = [
-      '#121c24',
-      '#1a2933',
-      '#243641',
-      '#304650',
-      '#557f9a',
-      '#89acbe',
-      '#d9e4e8',
-      '#bea169',
-      '#f1eee6',
-      '#e2ddd3',
-      '#f8f5ee',
-      '#b8c4c9',
-      '#c4766c',
+      '#17233b',
+      '#3b5bd6',
+      '#e7edff',
+      '#cc6b57',
+      '#f4f6fb',
+      '#ffffff',
     ];
 
     for (const color of palette) {
       expect(stylesheet.toLowerCase()).toContain(color);
-    }
-
-    for (const retiredColor of [
-      '#111a1b',
-      '#1a2626',
-      '#80b5a8',
-      '#9bc9bd',
-      '#365f56',
-    ]) {
-      expect(stylesheet.toLowerCase()).not.toContain(retiredColor);
-      expect(brandContract.toLowerCase()).not.toContain(retiredColor);
+      expect(brandContract.toLowerCase()).toContain(color);
     }
 
     const source = collectSourceFiles(resolve(process.cwd(), 'src'))
@@ -90,11 +73,12 @@ describe('Atlas visual foundations', () => {
     );
   });
 
-  it('loads both Atlas typefaces locally and exposes the exact geometry scale', () => {
+  it('loads DM Sans locally while retaining Atlas fonts during migration', () => {
+    expect(stylesheet).toContain('dm-sans-latin-400-normal.woff2');
+    expect(stylesheet).toContain('dm-sans-latin-500-normal.woff2');
     expect(stylesheet).toContain('manrope-latin-400-normal.woff2');
-    expect(stylesheet).toContain('manrope-latin-500-normal.woff2');
     expect(stylesheet).toContain('source-serif-4-latin-400-normal.woff2');
-    expect(stylesheet).toContain('source-serif-4-latin-500-normal.woff2');
+    expect(stylesheet).toContain('--totem-font-interface:');
     expect(stylesheet).toContain('--space-1: 0.25rem');
     expect(stylesheet).toContain('--space-12: 3rem');
     expect(stylesheet).toContain('--radius-directional: 0.25rem');
@@ -116,12 +100,12 @@ describe('Atlas visual foundations', () => {
   });
 
   it('keeps text and interactive boundaries above their WCAG thresholds', () => {
-    expect(contrast('#f8f5ee', '#121c24')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#b8c4c9', '#121c24')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#f8f5ee', '#4c748c')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#89acbe', '#121c24')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#466b82', '#f1eee6')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#60747e', '#121c24')).toBeGreaterThanOrEqual(3);
+    expect(contrast('#17233b', '#f4f6fb')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#647087', '#ffffff')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#ffffff', '#3b5bd6')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#314fbe', '#ffffff')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#8491a8', '#ffffff')).toBeGreaterThanOrEqual(3);
+    expect(contrast('#9b3e32', '#ffffff')).toBeGreaterThanOrEqual(4.5);
     expect(stylesheet).toMatch(
       /\.ui-action--danger \{[\s\S]*?color: color-mix\([\s\S]*?var\(--color-danger\) 90%[\s\S]*?var\(--color-ivory\) 10%/,
     );
