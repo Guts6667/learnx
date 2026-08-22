@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-22T07:09:35Z",
+  "status": "RECONCILIATION_REQUIRED",
+  "authorizationFingerprint": "a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906",
+  "attempt": {
+    "caseId": "baseline-pico-spider-mastered",
+    "idempotencyKey": "0ca736578435d63d1ac08f98077cd3d77b62cdfc65b5ee2d116b5a7bd01f3243",
+    "providerRequestId": null,
+    "actualCostUsd": null,
+    "costSource": "UNKNOWN",
+    "errorCode": "PROVIDER_HTTP_400"
+  },
+  "finance": {
+    "actualCostUsd": null,
+    "unresolvedReservedCostUsd": 0.1208415,
+    "maximumProviderCostUsd": 0.5,
+    "mayBeInterpretedAsZero": false,
+    "furtherCallsAllowed": false
+  },
+  "originalSummary": {
+    "path": "summary.json",
+    "sha256": "a28fa6011ca2c3b70714a3cb8fc3ff609d0cee6d313ee2f34b644141de26662a",
+    "incorrectZeroCostInterpretationForbidden": true,
+    "correction": "The persisted totalActualCostUsd value 0 is an implementation aggregation artifact. Because the attempt cost is absent, the campaign cost is unknown and the full per-attempt bound remains reserved until reconciliation."
+  },
+  "network": {
+    "modelCallsPerformed": 1,
+    "unusedAuthorizedCallsNotSent": 3,
+    "retryOrFallbackCalls": 0,
+    "additionalCallsAfterDefect": 0
+  }
+}

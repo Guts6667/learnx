@@ -2,8 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   buildAnthropicMessagesRequestBody,
+  buildOpenRouterTransportManifest,
   buildOpenRouterRequestBody,
   CorrectionModelOutputError,
+  CorrectionProviderError,
   getCorrectionProviderAdapter,
   type CorrectionProviderRequest,
   type CorrectionReasoningCapabilities,
@@ -74,6 +76,264 @@ function request(
 }
 
 describe('provider reasoning abstraction', () => {
+  it('builds a canonical OpenRouter manifest without persisting prompts or credentials', () => {
+    const transportRequest = {
+      ...request('OPENROUTER_CHAT'),
+      idempotencyKey: 'a'.repeat(64),
+      messages: [
+        { content: 'SYSTEM_PROMPT_NEVER_PERSIST', role: 'system' as const },
+        { content: 'USER_PROMPT_NEVER_PERSIST', role: 'user' as const },
+      ],
+    };
+    const manifest = buildOpenRouterTransportManifest(transportRequest);
+    const serialized = JSON.stringify(manifest);
+
+    expect(manifest).toMatchObject({
+      persistedSafeHeaderNames: expect.arrayContaining([
+        'Content-Type',
+        'X-OpenRouter-Metadata',
+      ]),
+      method: 'POST',
+      modelId: sonnetModelId,
+      requestedRoute: 'Anthropic',
+      schemaVersion: 1,
+      timeoutMs: 60_000,
+      url: 'https://openrouter.ai/api/v1/chat/completions',
+    });
+    expect(manifest.manifestSha256).toMatch(/^[a-f0-9]{64}$/u);
+    expect(manifest.bodySha256).toMatch(/^[a-f0-9]{64}$/u);
+    expect(manifest.messagesSha256).toMatch(/^[a-f0-9]{64}$/u);
+    expect(manifest.schemaSha256).toMatch(/^[a-f0-9]{64}$/u);
+    expect(manifest.profileSha256).toMatch(/^[a-f0-9]{64}$/u);
+    expect(buildOpenRouterTransportManifest(transportRequest)).toEqual(
+      manifest,
+    );
+    expect(manifest.persistedSafeHeaderNames).not.toContain('Authorization');
+    expect(manifest).not.toHaveProperty('headerNames');
+    expect(serialized).not.toMatch(
+      /SYSTEM_PROMPT_NEVER_PERSIST|USER_PROMPT_NEVER_PERSIST|test-key/u,
+    );
+    expect(serialized).not.toMatch(
+      /"(?:apiKey|authorization|body|headers|messages|profile|prompt)"/iu,
+    );
+  });
+
+  it('enables OpenRouter metadata and exposes only its allowlisted fields', async () => {
+    const fetchMock = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              finish_reason: 'stop',
+              message: { content: JSON.stringify({ findings: [] }) },
+            },
+          ],
+          id: 'payload-generation-id',
+          model: sonnetModelId,
+          openrouter_metadata: {
+            attempt: 1,
+            attempts: [
+              {
+                model: sonnetModelId,
+                provider: 'Anthropic',
+                secret: 'DROP_ME',
+                status: 200,
+              },
+            ],
+            endpoints: [
+              {
+                internal: 'DROP_ME',
+                model: sonnetModelId,
+                provider: 'Anthropic',
+                selected: true,
+              },
+            ],
+            is_byok: false,
+            pipeline: { api_key: 'DROP_ME' },
+            region: 'global',
+            requested: 'Anthropic',
+            strategy: 'exact',
+            summary: 'selected',
+          },
+          usage: {
+            completion_tokens: 3,
+            cost: 0.01,
+            prompt_tokens: 2,
+          },
+        }),
+        {
+          headers: {
+            'Request-Id': 'provider-request-id',
+            'X-Generation-Id': 'header-generation-id',
+            'X-Request-Id': 'client-request-id',
+          },
+          status: 200,
+        },
+      ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const correctionRequest = {
+      ...request('OPENROUTER_CHAT'),
+      idempotencyKey: 'client-request-id',
+    };
+    const transportManifest =
+      buildOpenRouterTransportManifest(correctionRequest);
+
+    const result = await getCorrectionProviderAdapter(
+      'OPENROUTER_CHAT',
+    ).execute({
+      ...correctionRequest,
+      apiKey: 'test-key',
+      expectedTransportManifestSha256: transportManifest.manifestSha256,
+    });
+    const [, init] = fetchMock.mock.calls[0] ?? [];
+
+    expect(new Headers(init?.headers).get('X-OpenRouter-Metadata')).toBe(
+      'enabled',
+    );
+    expect(result.generationId).toBe('header-generation-id');
+    expect(result.clientRequestId).toBe('client-request-id');
+    expect(result.providerRequestId).toBe('provider-request-id');
+    expect(result.observedProvider).toBe('Anthropic');
+    expect(result.openRouterMetadata).toEqual({
+      attempt: 1,
+      attempts: [{ model: sonnetModelId, provider: 'Anthropic', status: 200 }],
+      endpoints: [
+        { model: sonnetModelId, provider: 'Anthropic', selected: true },
+      ],
+      is_byok: false,
+      region: 'global',
+      requested: 'Anthropic',
+      strategy: 'exact',
+      summary: 'selected',
+    });
+    expect(JSON.stringify(result.openRouterMetadata)).not.toMatch(
+      /DROP_ME|pipeline|secret|api_key/u,
+    );
+  });
+
+  it('parses OpenRouter failure provenance and X-Generation-Id without leaking passthrough metadata', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            error: {
+              message: 'route failed',
+              metadata: {
+                provider_name: 'Google',
+                secret: 'DROP_ME',
+              },
+            },
+            id: 'payload-error-id',
+            openrouter_metadata: {
+              attempts: [
+                {
+                  model: 'google/gemini-3.6-flash',
+                  provider: 'Google',
+                  status: 429,
+                },
+              ],
+              pipeline: { secret: 'DROP_ME' },
+              requested: 'google-vertex/global',
+            },
+          }),
+          {
+            headers: {
+              'X-Generation-Id': 'header-error-id',
+              'X-Request-Id': 'provider-error-request-id',
+            },
+            status: 429,
+          },
+        ),
+      ),
+    );
+    const correctionRequest = {
+      ...request('OPENROUTER_CHAT'),
+      idempotencyKey: 'client-error-request-id',
+    };
+    const transportManifest =
+      buildOpenRouterTransportManifest(correctionRequest);
+
+    try {
+      await getCorrectionProviderAdapter('OPENROUTER_CHAT').execute({
+        ...correctionRequest,
+        apiKey: 'test-key',
+        expectedTransportManifestSha256: transportManifest.manifestSha256,
+      });
+      throw new Error('EXPECTED_PROVIDER_HTTP_ERROR');
+    } catch (error) {
+      expect(error).toBeInstanceOf(CorrectionProviderError);
+      const providerError = error as CorrectionProviderError;
+      expect(providerError.clientRequestId).toBe('client-error-request-id');
+      expect(providerError.message).toBe('PROVIDER_HTTP_ERROR');
+      expect(providerError.generationId).toBe('header-error-id');
+      expect(providerError.observedProvider).toBe('Google');
+      expect(providerError.providerRequestId).toBe('provider-error-request-id');
+      expect(providerError.openRouterMetadata).toEqual({
+        attempts: [
+          {
+            model: 'google/gemini-3.6-flash',
+            provider: 'Google',
+            status: 429,
+          },
+        ],
+        requested: 'google-vertex/global',
+      });
+      expect(JSON.stringify(providerError.openRouterMetadata)).not.toMatch(
+        /DROP_ME|pipeline|secret/u,
+      );
+    }
+  });
+
+  it('classifies a reflected X-Request-ID as client-owned on the manifest-bound path', async () => {
+    const clientRequestId = 'client-reflected-request-id';
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            choices: [
+              {
+                finish_reason: 'stop',
+                message: { content: JSON.stringify({ findings: [] }) },
+              },
+            ],
+            id: 'generation-reflected-test',
+            model: sonnetModelId,
+            provider: 'Anthropic',
+            usage: {
+              completion_tokens: 3,
+              cost: 0.01,
+              prompt_tokens: 2,
+            },
+          }),
+          { headers: { 'X-Request-ID': clientRequestId }, status: 200 },
+        ),
+      ),
+    );
+    const correctionRequest = {
+      ...request('OPENROUTER_CHAT'),
+      idempotencyKey: clientRequestId,
+    };
+    const transportManifest =
+      buildOpenRouterTransportManifest(correctionRequest);
+
+    const result = await getCorrectionProviderAdapter(
+      'OPENROUTER_CHAT',
+    ).execute({
+      ...correctionRequest,
+      apiKey: 'test-key',
+      expectedTransportManifestSha256: transportManifest.manifestSha256,
+    });
+
+    expect(result).toMatchObject({
+      clientRequestId,
+      generationId: 'generation-reflected-test',
+    });
+    expect(result.providerRequestId).toBeUndefined();
+  });
+
   it('preserves historical OFF profiles as omission instead of reinterpreting them', () => {
     expect(
       buildOpenRouterRequestBody(request('OPENROUTER_CHAT')),

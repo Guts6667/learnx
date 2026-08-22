@@ -25,15 +25,26 @@ const paths =
           'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
         finance:
           'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json',
+        implementationManifest: null,
       }
-    : candidate === 'sonnet-5'
+    : candidate === 'gemini-3.6-r1'
       ? {
           dossier:
-            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-freeze.v1.json',
           finance:
-            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json',
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-finance-envelope.draft.v1.json',
+          implementationManifest:
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-implementation-manifest.v1.json',
         }
-      : null;
+      : candidate === 'sonnet-5'
+        ? {
+            dossier:
+              'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
+            finance:
+              'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json',
+            implementationManifest: null,
+          }
+        : null;
 if (!paths) throw new Error(`WRITING_GATE_UNKNOWN_CANDIDATE:${candidate}`);
 const dossierPath = paths.dossier;
 const financePath = paths.finance;
@@ -44,7 +55,13 @@ function sha256(value: string): string {
 
 const dossierText = await readFile(resolve(dossierPath), 'utf8');
 const dossier = JSON.parse(dossierText) as {
-  authorities: Record<string, { path: string }>;
+  authorities: Record<string, { path: string; sha256: string }>;
+  implementationBinding?: {
+    manifestFingerprint: string;
+    manifestPath: string;
+    manifestSha256: string;
+    publicCodeCommitSha: string;
+  };
 };
 const authorityTexts = Object.fromEntries(
   await Promise.all(
@@ -54,6 +71,34 @@ const authorityTexts = Object.fromEntries(
     ]),
   ),
 );
+const implementationManifestText = paths.implementationManifest
+  ? await readFile(resolve(paths.implementationManifest), 'utf8')
+  : null;
+const implementationManifest = implementationManifestText
+  ? (JSON.parse(implementationManifestText) as {
+      manifestFingerprint: string;
+      publicCode: { commitSha: string };
+    })
+  : null;
+if (paths.implementationManifest) {
+  const authority = dossier.authorities.implementationManifest;
+  const binding = dossier.implementationBinding;
+  if (
+    !authority ||
+    !binding ||
+    authority.path !== paths.implementationManifest ||
+    binding.manifestPath !== paths.implementationManifest ||
+    implementationManifestText === null ||
+    implementationManifest === null ||
+    authority.sha256 !== sha256(implementationManifestText) ||
+    binding.manifestSha256 !== sha256(implementationManifestText) ||
+    binding.manifestFingerprint !==
+      implementationManifest.manifestFingerprint ||
+    binding.publicCodeCommitSha !== implementationManifest.publicCode.commitSha
+  ) {
+    throw new Error('WRITING_GATE_IMPLEMENTATION_MANIFEST_MISMATCH');
+  }
+}
 const packageInput = buildWritingFrameworkGatePackage({
   authorityTexts,
   dossierPath,
@@ -82,6 +127,24 @@ try {
     provider: replayProvider,
     store: reopened,
   });
+  const preflightGreen =
+    run.mode === 'OFFLINE_FAKE_ONLY' &&
+    run.usableWorkflows === 4 &&
+    run.attempts.length === 4 &&
+    run.providerExecutions === 4 &&
+    run.modelCallsPerformed === 0 &&
+    !run.networkCallsAllowed &&
+    !run.forceNoGo &&
+    replay.mode === 'OFFLINE_FAKE_ONLY' &&
+    replay.usableWorkflows === 4 &&
+    replay.attempts.length === 4 &&
+    replay.providerExecutions === 0 &&
+    replay.modelCallsPerformed === 0 &&
+    !replay.networkCallsAllowed &&
+    !replay.forceNoGo;
+  if (!preflightGreen) {
+    throw new Error('WRITING_GATE_HARD_OFF_PREFLIGHT_FAILED');
+  }
   console.log(
     JSON.stringify(
       {
@@ -98,6 +161,23 @@ try {
         financeEnvelopeSha256: sha256(
           await readFile(resolve(financePath), 'utf8'),
         ),
+        ...(paths.implementationManifest
+          ? {
+              implementationManifest: {
+                manifestFingerprint:
+                  implementationManifest?.manifestFingerprint,
+                path: paths.implementationManifest,
+                publicCodeCommitSha:
+                  implementationManifest?.publicCode.commitSha,
+                sha256:
+                  implementationManifestText === null
+                    ? null
+                    : sha256(implementationManifestText),
+              },
+              replayModelCallsPerformed: replay.modelCallsPerformed,
+              replayNetworkCallsAllowed: replay.networkCallsAllowed,
+            }
+          : {}),
         identityFingerprint: packageInput.identityFingerprint,
         expectedObservedProvider: packageInput.expectedObservedProvider,
         catalogSnapshotId: packageInput.catalogSnapshotId,
@@ -114,12 +194,7 @@ try {
         networkCallsAllowed: run.networkCallsAllowed,
         providerExecutions: run.providerExecutions,
         replayProviderExecutions: replay.providerExecutions,
-        status:
-          run.usableWorkflows === 4 &&
-          !run.forceNoGo &&
-          replay.providerExecutions === 0
-            ? 'HARD_OFF_PREFLIGHT_GREEN'
-            : 'HARD_OFF_PREFLIGHT_FAILED',
+        status: 'HARD_OFF_PREFLIGHT_GREEN',
         usableWorkflows: run.usableWorkflows,
       },
       null,

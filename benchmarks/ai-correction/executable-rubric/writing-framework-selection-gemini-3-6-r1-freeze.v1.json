@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 2,
+  "dossierId": "learnx-writing-framework-selection-fr-gemini-3-6-evidence-assist-wire-3-0-1-r1",
+  "dossierVersion": "1.0.0",
+  "frozenAt": "2026-08-22T09:17:10Z",
+  "status": "FROZEN_HARD_OFF_FINANCE_NOT_ARBITRATED_NETWORK_NOT_AUTHORIZED",
+  "implementationStatus": {
+    "candidateRunnerRuntime": "IMPLEMENTED_OFFLINE_FAKE_ONLY_HARD_OFF",
+    "commonRunnerContractFieldInterpretation": "HISTORICAL_BEHAVIORAL_CONTRACT_VALUE_PRESERVED_FOR_COMMON_CORE_FINGERPRINT",
+    "liveExecution": "NOT_EXECUTABLE_WITHOUT_SEPARATE_FINANCE_ARBITRATION_AND_OWNER_NETWORK_AUTHORIZATION",
+    "postFreezeCli": "FAIL_CLOSED_GOVERNANCE_CONTROL_OUTSIDE_CANDIDATE_RUNNER_RUNTIME"
+  },
+  "scope": {
+    "historicalResultsReused": 0,
+    "modelCallsAllowed": false,
+    "holdoutAccess": "PROHIBITED",
+    "liveActivationAllowed": false,
+    "closedQ1IdentityReused": false
+  },
+  "authorities": {
+    "pilotBrief": {
+      "path": "docs/V4_WRITING_PILOT_BRIEF.md",
+      "sha256": "8b3c848775dbfeeef567c031acb3217eb8ec5e046116e892dbc9057beeabce84"
+    },
+    "pedagogicalContract": {
+      "path": "docs/V4_WRITING_FRAMEWORK_SELECTION_CONTRACT_DRAFT.md",
+      "sha256": "4a6aae615e93d9e2a909c19ba70371ee2d861abbdd598e2ceca36afebcf7822b"
+    },
+    "rubric": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.v1.draft.json",
+      "sha256": "d276fbc2a92f75b9aacfdb699988de9917ceae0fec914da59d3e5f9b56f39b06"
+    },
+    "mechanicalOracle": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json",
+      "sha256": "c5beba8ed7576e049c77abf710b352e5494427f7818f06c6f6c0c7fad23044cf"
+    },
+    "candidateProtocol": {
+      "path": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+      "sha256": "528418460739faf6cd1aa04de71adf4712504b053b8143bff7f5d2c06a318337"
+    },
+    "catalogAttestation": {
+      "path": "benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json",
+      "sha256": "6dce664f5e5fb364bdae19c66f4e9147f47a00787154284e597ec813ec31cd19"
+    },
+    "implementationManifest": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-implementation-manifest.v1.json",
+      "sha256": "32a1c2678d94f001c41fbc71b866469b1e35a52b74f8e7a32975d34a875665da"
+    }
+  },
+  "requestProfile": {
+    "profile": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetMode": "EFFORT_ONLY",
+        "budgetTokens": null,
+        "effort": "MINIMAL"
+      },
+      "routeProviders": [
+        "google-vertex/global"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "totalOutputTokenLimit": 2500,
+      "version": "1.0.0",
+      "visibleOutputTokenTarget": 1800
+    },
+    "reasoning": {
+      "capabilities": {
+        "adapter": "OPENROUTER_CHAT",
+        "modelId": "google/gemini-3.6-flash",
+        "providerDefaultMode": "ADAPTIVE",
+        "reasoningMandatory": true,
+        "requestedRoute": "google-vertex/global",
+        "supportedAdaptiveEfforts": [
+          "minimal"
+        ],
+        "supportedModes": [
+          "ADAPTIVE"
+        ]
+      },
+      "mode": {
+        "effort": "minimal",
+        "mode": "ADAPTIVE"
+      }
+    }
+  },
+  "requestProfileFingerprint": "98c5e401d2b7a359689ffda42e4a0a04c06ac014c604677e9cb5d39eb2939061",
+  "wireContract": {
+    "dialect": "GEMINI_WIRE_3_0_1",
+    "dialectVersion": "evidence-assist-wire/3.0.1",
+    "jsonSchemaKeywordAllowlist": [
+      "additionalProperties",
+      "description",
+      "enum",
+      "format",
+      "items",
+      "maxItems",
+      "maximum",
+      "minItems",
+      "minimum",
+      "prefixItems",
+      "properties",
+      "required",
+      "title",
+      "type"
+    ],
+    "jsonSchemaKeywordAllowlistFingerprint": "b34680c6d01fde69b69c9c397a82bbc24fef227f4984bb427ce09fbd959110a6",
+    "localSpanIdPatternValidationRetained": true,
+    "schemaSha256": "05719294eed15139abd0039c0f1e91a25489535c882968836fe3ece25b2fdb13",
+    "schemaUtf8Bytes": 439,
+    "wirePatternOmitted": true
+  },
+  "wireContractFingerprint": "39741bed079704c4fd18a92f02a24623c62e96265cc6a354998fb5b3cb814f1e",
+  "transportObservabilityContract": {
+    "canonicalRequestManifestPersistedBeforeCallIntent": true,
+    "conservativeWriteOffNeverAutomatic": true,
+    "identifierPolicy": {
+      "clientRequestId": "CLIENT_IDEMPOTENCY_KEY_ONLY",
+      "generationId": "X_GENERATION_ID_OR_PROVIDER_PAYLOAD_ID",
+      "providerRequestId": "REQUEST_ID_HEADERS_EXCLUDING_REFLECTED_CLIENT_X_REQUEST_ID",
+      "separateFieldsRequired": true
+    },
+    "metadataHeader": {
+      "name": "X-OpenRouter-Metadata",
+      "value": "enabled"
+    },
+    "persistedMetadataAllowlist": [
+      "attempt",
+      "attempts.model",
+      "attempts.provider",
+      "attempts.status",
+      "endpoints.model",
+      "endpoints.provider",
+      "endpoints.selected",
+      "is_byok",
+      "region",
+      "requested",
+      "strategy",
+      "summary"
+    ],
+    "persistedRequestBodyAllowed": false,
+    "persistedSecretsAllowed": false,
+    "requestManifestSchemaVersion": 1
+  },
+  "transportObservabilityContractFingerprint": "e357f3b2e700043ab34c006040db1010fdfdea1da6059d2c226ceeb7d3a5edf7",
+  "implementationBinding": {
+    "candidateRunnerImplementationFingerprint": "4e5e196c40fbf85be94d2ecc167b5751207eda568e4d19bf0d28578029946f6e",
+    "manifestFingerprint": "18765b23a8f385af36694df9fe3db7e712780ddf245c681d1c3ee4ff98c2b5e2",
+    "manifestPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-implementation-manifest.v1.json",
+    "manifestSha256": "32a1c2678d94f001c41fbc71b866469b1e35a52b74f8e7a32975d34a875665da",
+    "publicCodeCommitSha": "07d5d80978ac1346a78a46e41e6a589439fa564d",
+    "testFilesFingerprint": "26c0aa75c901832b0834a76d78440ac5911643bba97f2d5ac7724fb10cfaf6d1"
+  },
+  "implementationBindingFingerprint": "0c911402274c9afbe41a3d14178eb2325e5e2ad657bc444063f0dce6452365b8",
+  "identityCore": {
+    "identityId": "learnx-writing-framework-selection-fr-gemini-3-6-evidence-assist-wire-3-0-1-r1",
+    "identityVersion": "1.0.0",
+    "adapter": "OPENROUTER_CHAT",
+    "internalModelId": "google/gemini-3.6-flash-20260721",
+    "wireModelId": "google/gemini-3.6-flash",
+    "catalogSnapshotId": "google/gemini-3.6-flash-20260721",
+    "catalogAttestationSha256": "6dce664f5e5fb364bdae19c66f4e9147f47a00787154284e597ec813ec31cd19",
+    "requestedRoute": "google-vertex/global",
+    "expectedObservedProvider": "Google",
+    "fallbackAllowed": false,
+    "automaticRoutingAllowed": false,
+    "temperature": null,
+    "reasoning": {
+      "mode": "EFFORT_ONLY",
+      "effort": "MINIMAL",
+      "mandatory": true,
+      "exactTokenBudget": null,
+      "wireContract": {
+        "reasoning": {
+          "effort": "minimal"
+        }
+      }
+    },
+    "maxOutputTokens": 2500,
+    "visibleOutputTokenTarget": 1800,
+    "timeoutMs": 60000,
+    "costSourceRequired": "ACTUAL",
+    "requestProfileId": "learnx-framework-selection-gemini-3-6-google-vertex-minimal-wire-3-0-1-r1",
+    "requestProfileFingerprint": "98c5e401d2b7a359689ffda42e4a0a04c06ac014c604677e9cb5d39eb2939061",
+    "wireContractFingerprint": "39741bed079704c4fd18a92f02a24623c62e96265cc6a354998fb5b3cb814f1e",
+    "transportObservabilityContractFingerprint": "e357f3b2e700043ab34c006040db1010fdfdea1da6059d2c226ceeb7d3a5edf7",
+    "runnerImplementationFingerprint": "4e5e196c40fbf85be94d2ecc167b5751207eda568e4d19bf0d28578029946f6e",
+    "publicCodeCommitSha": "07d5d80978ac1346a78a46e41e6a589439fa564d",
+    "protocolVersion": "3.0.0",
+    "validatorVersion": "2.0.0",
+    "segmentationVersion": "2.0.0",
+    "protocolFingerprint": "cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a",
+    "rubricFingerprint": "600fb37a29694ed70c93f6041f879f557792b5120b92cc0ab415466d05383752",
+    "oracleFingerprint": "2c35125ea438cf1686ae88b01ecdb28bc304a3c9b9af6d45cff81f37306af3c2",
+    "corpusFingerprint": "12f0202d930b9f197532847c0125f5531a2b8d39502c8f1244e6049629828a4b",
+    "semanticMappingFingerprint": "4fbff2b975124bcd336c49e0d2dbfe42ebf3f4adcf9a048ca17c8c4e5a79bb85",
+    "runnerContractFingerprint": "891560b6712afc1f197aea8d016a3309d2d5c7db3ac7e519bda6968d4227eb0b",
+    "telemetryContractFingerprint": "e8e4e16a18e4ad652f3b271847e156aedc66f0c8c934eae9c2291cbf1d519b56",
+    "stopPolicyFingerprint": "3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e"
+  },
+  "identityFingerprint": "00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0",
+  "corpus": {
+    "corpusId": "writing-framework-selection-fr-semantic-development-v1",
+    "corpusVersion": "1.0.0",
+    "oracleAuthority": "SEALED_SYNTHETIC_PSEUDO_ORACLE_DERIVED_FROM_MECHANICAL_V2_1",
+    "sourceOraclePath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.mechanical-oracle.v2.1.json",
+    "responseConstruction": "JOIN_RESPONSE_SEGMENT_TEXTS_WITH_SINGLE_LF_IN_MANIFEST_ORDER",
+    "caseMutationAllowed": false,
+    "gateFour": [
+      {
+        "caseId": "baseline-pico-spider-mastered",
+        "class": "POSITIVE_COMPLETE"
+      },
+      {
+        "caseId": "fidelity-a-explicit-refusal",
+        "class": "EXPLICIT_REFUTATION"
+      },
+      {
+        "caseId": "fidelity-a-first-fact-removed",
+        "class": "ABSENCE_MUTATION"
+      },
+      {
+        "caseId": "injection-negative-base-remains-partial",
+        "class": "INJECTION_ON_INCOMPLETE_RESPONSE"
+      }
+    ],
+    "conditionalPanel10x2": {
+      "caseIds": [
+        "baseline-pico-spider-mastered",
+        "metamorphic-concise-complete",
+        "fidelity-a-first-fact-removed",
+        "fidelity-a-explicit-refusal",
+        "fidelity-b-explicit-refusal",
+        "conditional-a-peco-accepted",
+        "conditional-b-pcc-accepted",
+        "decision-a-materially-ambiguous",
+        "rationale-a-internal-contradiction",
+        "injection-negative-base-remains-partial"
+      ],
+      "repetitionsPerCase": 2,
+      "freshLogicalWorkflows": 20,
+      "gateResultsReused": 0,
+      "executionCondition": "GATE_FOUR_PASSED_4_OF_4_UNDER_SAME_IDENTITY_AND_SEPARATE_FINANCE_OWNER_AUTHORIZATION"
+    }
+  },
+  "corpusFingerprint": "12f0202d930b9f197532847c0125f5531a2b8d39502c8f1244e6049629828a4b",
+  "semanticMapping": {
+    "mappingId": "learnx-framework-selection-evidence-assist-gold-v2",
+    "mappingVersion": "2.0.0",
+    "candidateAuthority": "RELATION_ONLY",
+    "statusRules": {
+      "SUPPORTED": "EVIDENCE_FOR_ELEMENT",
+      "NOT_DEMONSTRATED": "ABSTAIN_OR_OMITTED",
+      "EXPLICITLY_REFUTED": "EVIDENCE_AGAINST_ELEMENT",
+      "CONTRADICTED": "ABSTAIN_OR_OMITTED",
+      "AMBIGUOUS": "ABSTAIN_OR_OMITTED"
+    },
+    "spanPolicy": {
+      "serverOwnedSpanIdsOnly": true,
+      "positiveAndRefutationRelationsRequireOneToFourSpans": true,
+      "abstainRequiresNoSpan": true,
+      "selectedSpansMustBelongToGoldEvidenceSegments": true,
+      "candidateMayCreateAtomicStatus": false
+    },
+    "forbiddenAuthorities": [
+      "LEVEL",
+      "SCORE",
+      "PASS_FAIL",
+      "MASTERY",
+      "PROGRESSION",
+      "FREE_FEEDBACK"
+    ]
+  },
+  "semanticMappingFingerprint": "4fbff2b975124bcd336c49e0d2dbfe42ebf3f4adcf9a048ca17c8c4e5a79bb85",
+  "runnerContract": {
+    "runnerId": "learnx-framework-selection-evidence-assist-runner-v1",
+    "runnerVersion": "1.0.0",
+    "implementationStatus": "SPECIFIED_NOT_EXECUTABLE",
+    "requiredImplementationTicket": "V4-009C-S2",
+    "requestPreparation": {
+      "compileRubricWith": "executable-rubric/v2",
+      "candidateViewOmitsLevelsScoresTemplatesAndProgression": true,
+      "taskPromptAndContextSource": "docs/V4_WRITING_PILOT_BRIEF.md",
+      "responseSpansServerOwned": true,
+      "canaryBits": 128,
+      "rawLearnerTextTrusted": false
+    },
+    "dispatch": {
+      "callIntentPersistedBeforeNetwork": true,
+      "localIdempotencyKey": "SHA256(identityFingerprint:stage:caseId:repetition)",
+      "sequentialOnly": true,
+      "maximumRetriesPerWorkflow": 0,
+      "fallbackAllowed": false
+    },
+    "validation": {
+      "rawPersistedBeforeValidation": true,
+      "strictSchema": true,
+      "identityAndContextRehashed": true,
+      "unknownElementOrSpanRejectedLocally": true,
+      "canaryLeakInvalidatesWorkflow": true,
+      "candidateRelationNeverFeedsMechanicalLevel": true
+    },
+    "finance": {
+      "actualCostRequired": true,
+      "nullCostState": "RECONCILIATION_REQUIRED",
+      "nullCostMayNeverSettleAsZero": true,
+      "finalizationBlockedUntilReconciled": true
+    },
+    "persistence": {
+      "appendOnlyLedger": true,
+      "requestContextPersisted": true,
+      "rawOutputPersisted": true,
+      "usageProviderAndCostPersisted": true,
+      "blindReviewPacketProduced": true
+    }
+  },
+  "runnerContractFingerprint": "891560b6712afc1f197aea8d016a3309d2d5c7db3ac7e519bda6968d4227eb0b",
+  "telemetryContract": {
+    "telemetryId": "learnx-framework-selection-evidence-assist-telemetry-v1",
+    "telemetryVersion": "1.0.0",
+    "perAttemptRequired": [
+      "caseId",
+      "repetition",
+      "stage",
+      "identityFingerprint",
+      "idempotencyKey",
+      "requestContextFingerprint",
+      "requestedRoute",
+      "observedProvider",
+      "providerRequestId",
+      "dispatchState",
+      "financialState",
+      "actualCostUsd",
+      "costSource",
+      "inputTokens",
+      "cacheReadTokens",
+      "cacheWriteTokens",
+      "visibleOutputTokens",
+      "reasoningTokens",
+      "latencyMs",
+      "rawOutputSha256",
+      "validationStatus",
+      "defectClasses"
+    ],
+    "summaryRequired": [
+      "logicalRunsExpected",
+      "logicalRunsCompleted",
+      "providerAttempts",
+      "totalActualCostUsd",
+      "costMedianUsd",
+      "costP75Usd",
+      "costP90Usd",
+      "latencyMedianMs",
+      "latencyP90Ms",
+      "relationAgreementRate",
+      "falseSupportCount",
+      "abstentionRate",
+      "unknownSpanCount",
+      "injectionAndCanarySafetyRate",
+      "variabilityRate",
+      "unreconciledAttemptCount"
+    ],
+    "unknownCostIsZero": false
+  },
+  "telemetryContractFingerprint": "e8e4e16a18e4ad652f3b271847e156aedc66f0c8c934eae9c2291cbf1d519b56",
+  "stopPolicy": {
+    "policyId": "learnx-framework-selection-evidence-assist-stop-policy-v1",
+    "policyVersion": "1.0.0",
+    "postResultRetuningAllowed": false,
+    "automaticRetriesAllowed": false,
+    "gateFour": {
+      "stopOnFirstDefect": true,
+      "requiredUsableWorkflows": "4/4",
+      "immediateStopDefectClasses": [
+        "BUDGET",
+        "FINANCE",
+        "IDENTITY",
+        "TRACEABILITY",
+        "MODEL_OUTPUT_INVALID",
+        "LOCAL_FINDING_REJECTION",
+        "SEMANTIC_DISAGREEMENT",
+        "SAFETY"
+      ]
+    },
+    "conditionalPanel10x2": {
+      "stopImmediatelyOn": [
+        "BUDGET",
+        "FINANCE",
+        "IDENTITY",
+        "TRACEABILITY",
+        "SAFETY"
+      ],
+      "continueButForceNoGoOn": [
+        "MODEL_OUTPUT_INVALID",
+        "LOCAL_FINDING_REJECTION",
+        "SEMANTIC_DISAGREEMENT"
+      ],
+      "requiredUsableWorkflows": "20/20",
+      "minimumRelationAgreementRate": 0.95,
+      "maximumVariabilityRate": 0.1,
+      "maximumFalseSupportCount": 0,
+      "maximumMetamorphicDecisionDriftCount": 0
+    }
+  },
+  "stopPolicyFingerprint": "3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e",
+  "authorizationBoundary": {
+    "financeArbitration": "NOT_GRANTED",
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "modelCallsAllowed": false,
+    "ownerGoToken": null,
+    "networkAuthorizationArtifact": null,
+    "panel10x2Allowed": false,
+    "holdoutAllowed": false,
+    "liveActivationAllowed": false
+  }
+}

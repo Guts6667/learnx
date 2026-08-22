@@ -2,14 +2,25 @@
 
 ## Statut et autorité
 
-- Version : 1.10.10
+- Version : 1.10.12
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
 - Dernière consolidation : 22 août 2026 — le gate réseau V4-009C-S2 est clos
   en `NO-GO_SEMANTIC_DISAGREEMENT` après le premier appel sur quatre ; coût
   fournisseur `ACTUAL` de `0,018828 USD`, sans retry, fallback ou autre appel.
-  V4-003E documente le verdict ; V4-003E-Q1 prépare localement Gemini 3.6 sous
-  `HARD_OFF`, avec identité et enveloppe approuvées, transport simulé vert et
-  aucun GO réseau
+  V4-003E documente le verdict ; le gate Gemini 3.6 V4-003E-Q1 est clos après
+  `1/4` appel sur HTTP 400 fournisseur. Aucun retry, fallback ou autre appel
+  n'a été envoyé ; le coût réel et l'identifiant fournisseur sont absents, donc
+  la réserve `0,1208415 USD` reste en `RECONCILIATION_REQUIRED`
+- Point de reprise unique : `V4-003E-Q1-R1`, remédiation strictement hors
+  ligne de Gemini 3.6. L'identité `00cd27d8…` est gelée sur le commit public
+  `07d5d809…`; le wire `3.0.1` et le fake preflight `4/4` sont verts, sans
+  réseau ni modèle. Aucun arbitrage Finance ni GO propriétaire R1 n'existe :
+  tout appel reste bloqué. Q1 et son autorisation consommée ne sont pas
+  rejouables.
+  La procédure Finance append-only est
+  `docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md` : l'Activity du jour UTC
+  courant était indisponible, la reprise commence le 23 août et tout write-off
+  conservateur exige une autorisation Finance distincte.
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -49,14 +60,16 @@ de périmètre exige désormais un amendement explicite, versionné et approuvé
 les paramètres de calibration et gates externes listés en fin de document ne
 rouvrent pas le scope.
 
-### Amendement historique — notation formative et pipeline composite expérimental
+### Amendement `SUPERSEDED_HISTORICAL` — pipeline composite expérimental
 
 Le 12 août 2026, le Propriétaire a validé l'exploration d'une
 correction formative à deux modèles. Cet amendement remplace les anciennes
 contraintes incompatibles de modèle unique, de verdict binaire faisant autorité
 et de seconde passe nécessairement exécutée par le même modèle. La direction
-exécutable validée le 14 août ci-dessous remplace ses choix d'architecture pour
-les nouvelles implémentations ; cette section conserve la décision historique.
+exécutable validée le 14 août, puis le protocole evidence-assist 3.0 du 16 août,
+remplacent ses choix d'architecture pour les nouvelles implémentations. Cette
+section conserve uniquement la décision historique : ses impératifs, son
+primaire, son composite et sa seconde passe ne sont pas exécutables.
 
 - L'expérience apprenant n'affiche plus un verdict académique binaire
   « validé/rejeté » pour les productions libres. Elle présente des niveaux par
@@ -224,7 +237,7 @@ raws et règles d'arrêt restent immuables et append-only.
 V4 ne doit jamais être anticipée dans un ticket V3 ou V3.5. Un ticket V4
 correspond idéalement à un commit ou une pull request autonome.
 
-## Vue de pilotage au 21 août 2026
+## Vue de pilotage au 22 août 2026
 
 Cette section est la synthèse courte. Les statuts détaillés, dépendances et
 preuves sont maintenus dans `docs/V4_ROADMAP.md`.
@@ -238,12 +251,14 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
    constitue le NO-GO sémantique non ambigu documenté par V4-003E. Ils ne sont
    ni agrégés, ni rejoués, ni retunés.
 2. Gemini 3.6, candidat 1 retenu pour sa meilleure
-   comparabilité historique, sous réattestation de disponibilité. Son model ID est
+   comparabilité historique, a été exécuté sous l'identité gelée. Son model ID est
    `google/gemini-3.6-flash`, son canonical catalog
    `google/gemini-3.6-flash-20260721` et sa route proposée
    `google-vertex/global`. L'identité `ef88a8e3…`, le plafond fournisseur
-   single-use `0,50 USD` et la réserve prudente `0,652 USD` sont approuvés.
-   Le raccord simulé est vert, mais aucun GO réseau n'est accordé.
+   single-use `0,50 USD` et la réserve prudente `0,652 USD` ont été approuvés.
+   Le GO single-use a été consommé : le premier appel a reçu HTTP 400, sans
+   coût ni identifiant fournisseur, puis le runner a arrêté les trois appels
+   restants. Ce résultat est un NO-GO technique, pas un verdict pédagogique.
 3. Pour ce candidat, conserver strictement le protocole, la rubrique, le
    corpus, les golds, le mapping, l'ordre et les seuils ; créer de nouveaux
    snapshot, route/provider, profil, tarifs, manifeste, empreinte, préflight et
@@ -255,11 +270,17 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
    `≈ 0,090 USD`) reste invalide jusqu'à réattestation et n'est pas transférable
    au profil Gemini 3.7. L'enveloppe additive approuvée pour cette identité
    conserve `0,1208415 USD` par tentative, `0,483366 USD` calculés, un plafond
-   fournisseur `0,50 USD` et une réserve `0,652 USD`. Elle n'ouvre aucun appel.
+   fournisseur `0,50 USD` et une réserve `0,652 USD`. L'autorisation
+   correspondante est consommée et ne peut être réutilisée ; `0,1208415 USD`
+   reste réservé jusqu'à réconciliation du premier appel.
 5. Gemini 3.7 reste l'option technique de rang 2, sans histoire LearnX. Mistral
    Medium 3.5 reste l'alternative de rang 3, après les Gemini. Tous sont hors
    ligne, sans identité ni budget. Le panel 10 × 2 reste interdit.
-6. Après un futur `4/4`, exécuter le panel 10 × 2 sous autorisation distincte.
+6. Toute reprise de Gemini 3.6 exige d'abord un diagnostic hors ligne de
+   l'argument refusé, la réconciliation du coût et une nouvelle identité,
+   même si le diagnostic ne conduisait finalement à aucun autre changement du
+   payload. Après un futur `4/4`, exécuter le panel 10 × 2 sous
+   autorisation distincte.
    Après un futur `20/20`, confirmer la préparation du holdout scellé via
    `GO_TO_SEALED_HOLDOUT`, demander une autorisation one-shot distincte, puis
    rendre `GO_AUTONOMOUS_FORMATIVE` uniquement si son exécution réussit sans
@@ -408,22 +429,35 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 | 6 | `V4-003C — Gel de la nouvelle identité` | `DONE_RAYAN_C` | `AGENT-PROTOCOLE-IA` | `AGENT-DEV-LEARNX`, `AGENT-PEDAGOGIE` | Dossier `writing-framework-selection-sonnet-5-freeze.v1.json` entièrement empreinté ; rapport `docs/V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | **Clos le 21 août 2026** : Rayan C approuve le dossier exact, sans appel |
 | 7 | `V4-003D — Enveloppe Finance du gate 4` | `DONE_FINANCE_ARBITRATED` | `AGENT-FINANCE` | `AGENT-PROTOCOLE-IA` | `0,177082 USD`/tentative, quatre appels, plafond `0,708328 USD`, réconciliation fail-closed ; rapport `docs/V4_003D_GATE4_FINANCE_ARBITRATION.md` | **Clos hors ligne** : Finance `ARBITRATED`, réseau toujours interdit |
 | 8 | `V4-009C-S2 — Exécution du nouveau gate 4` | `DONE_NO_GO_SEMANTIC_DISAGREEMENT` | `AGENT-DEV-LEARNX` | `AGENT-PROTOCOLE-IA`, `AGENT-METHODOLOGIE` | Runner v2 raccordé à OpenRouter ; raw, usage, coût et route persistés ; campagne arrêtée après `1/4`, coût `0,018828 USD` ACTUAL ; rapport `docs/V4_009C_S2_NETWORK_GATE_REPORT.md` | **Clos le 21 août 2026** : aucun replay sous la même identité, aucun panel, holdout ou live |
-| 9 | `V4-003E — Analyse et documentation du verdict` | `DONE_LOCAL_PENDING_INTEGRATION` | `AGENT-METHODOLOGIE` | `AGENT-RECHERCHE`, `AGENT-FINANCE` | `docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md`, comparaison historique, limites `n = 1` et entrée append-only | **Lot local non poussé** : identité `cc3b1b52…` close sans replay/retuning ; panel, holdout et live fermés |
+| 9 | `V4-003E — Analyse et documentation du verdict` | `DONE_INTEGRATED_CLOSED` | `AGENT-METHODOLOGIE` | `AGENT-RECHERCHE`, `AGENT-FINANCE` | `docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md`, comparaison historique, limites `n = 1` et entrée append-only | **Clos et intégré** : identité `cc3b1b52…` close sans replay/retuning ; panel, holdout et live fermés |
 
 #### File successeur hors ligne
 
 | Ordre | Ticket | Statut de départ | Responsable | Livrable obligatoire | Gate de sortie |
 | --- | --- | --- | --- | --- | --- |
-| 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `APPROVED_IDENTITY_FINANCE_SIMULATED_TRANSPORT_GREEN` | `AGENT-PROTOCOLE-IA` | Même protocole/rubrique/corpus/golds/ordre/seuils ; identité `ef88a8e3…`, route Google Vertex, profil `MINIMAL`, plafond `0,50 USD`, réserve `0,652 USD`, préflights faux fournisseur et transport simulé | GO réseau single-use distinct encore requis ; aucun appel effectué |
-| 11 | `V4-003E-Q2 — Option Gemini 3.7 Flash` | `QUEUED_SECOND_TECHNICAL_OPTION` | `AGENT-PROTOCOLE-IA` | Dossier entièrement nouveau, raisonnement `LOW`, runner paramétré, aucune histoire LearnX ni enveloppe 3.6 réutilisée | Après disposition de Gemini 3.6 et arbitrage ultérieur |
-| 12 | `V4-003E-Q3 — Alternative Mistral Medium 3.5` | `QUEUED_AFTER_GEMINI` | `AGENT-PROTOCOLE-IA` | `mistralai/mistral-medium-3-5`, nouvelle identité et attestations propres, aucun résultat historique réutilisé | Rang 3 fixe ; dossier uniquement après disposition des candidats Gemini et mandat dédié |
+| 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `DONE_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED` | `AGENT-PROTOCOLE-IA` | Identité `ef88a8e3…` exécutée une fois : HTTP 400, raw/ledger persistés, `0/1` utilisable, coût réel inconnu et réserve `0,1208415 USD` maintenue ; procédure `docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md` | **Identité close** : autorisation consommée ; aucun replay, aucune promotion et aucun verdict pédagogique |
+| 11 | `V4-003E-Q1-R1 — Remédiation hors ligne Gemini 3.6` | `FROZEN_HARD_OFF_AWAITING_FINANCE_AND_OWNER_GO` | `AGENT-PROTOCOLE-IA` | Identité `00cd27d8…` gelée sur `07d5d809…`, wire `3.0.1`, contrôle-plan fail-closed, différentiel hors ligne et fake preflight `4/4` | Réconcilier Q1 ; puis seulement un arbitrage Finance R1 séparé et un nouveau GO propriétaire single-use peuvent ouvrir le canari réseau |
+| 12 | `V4-003E-Q2 — Option Gemini 3.7 Flash` | `QUEUED_SECOND_TECHNICAL_OPTION` | `AGENT-PROTOCOLE-IA` | Dossier entièrement nouveau, raisonnement `LOW`, runner paramétré, aucune histoire LearnX ni enveloppe 3.6 réutilisée | Après disposition de `V4-003E-Q1-R1` et arbitrage ultérieur |
+| 13 | `V4-003E-Q3 — Alternative Mistral Medium 3.5` | `QUEUED_AFTER_GEMINI` | `AGENT-PROTOCOLE-IA` | `mistralai/mistral-medium-3-5`, nouvelle identité et attestations propres, aucun résultat historique réutilisé | Rang 3 fixe ; dossier uniquement après disposition des candidats Gemini et mandat dédié |
 
 Gemini 3.6 supporte structured outputs, `response_format` et `max_tokens` ; le
 raisonnement est obligatoire avec effort `MINIMAL` disponible et `temperature`
-doit être omise. La route observée, le profil et les tarifs hors promotion
-`1,50/7,50 USD/M` ont été réattestés. Le runner S2 est paramétré et son
-transport Gemini est testé uniquement avec des doubles locaux. Ces faits ne
-constituent aucun GO réseau.
+doit être omise. La route, le profil et les bornes tarifaires de Q1 appartiennent
+à son identité historique close et ne valent pas attestation ou enveloppe pour
+R1. Le runner S2 est paramétré et son transport Gemini avait été testé avec des
+doubles locaux avant le gate. Le gate réel s'est arrêté au premier appel sur
+HTTP 400 ; cette autorisation est consommée et ne constitue aucun droit de
+replay. Toute future borne tarifaire doit être fraîchement arbitrée par Finance.
+
+Avancement hors ligne de Q1-R1 : le dialecte transport
+`evidence-assist-wire/3.0.1` conserve la regex des `spanIds` dans Zod côté
+LearnX, omet `pattern` sur le wire Gemini et bloque récursivement tout mot-clé
+non attesté. Le runner persiste un manifeste assaini et ses empreintes avant
+`CALL_INTENT`, active les métadonnées OpenRouter expurgées et sépare
+`generationId` de `providerRequestId`. Zéro appel réseau a été exécuté ;
+`pattern` reste une hypothèse. La nouvelle identité R1 `00cd27d8…` est gelée
+sur `07d5d809…`; aucun arbitrage Finance ni GO réseau n'est créé par ce
+correctif.
 
 #### Tickets conditionnels
 
@@ -486,9 +520,9 @@ silencieusement l'historique.
 | --- | --- |
 | V4-007 | Finance & Pricing : unité de crédit, actions facturables, coût prudent, marge de sécurité, arrondis, plafonds, version/date d'effet et règle anti-vente à perte. Produit & pédagogie : libellés apprenant, différence entre modes, vérification ciblée automatique, nouvelle analyse volontaire et contenu du devis. Aucun prix actif sans mesures et arbitrage du Propriétaire. |
 | V4-008 | Finance & Pricing : allocation offerte, renouvellement, report, limites et ordre de consommation. Produit & pédagogie : compréhension des deux soldes, alertes et demande d'augmentation sans promesse trompeuse. |
-| V4-008A | Produit & pédagogie : identité, déclenchement, consolidation et états du pipeline composite. Finance & Pricing : coût, plafond et retries absorbés du workflow. Direction artistique : conformité du contrat aux surfaces Totem validées. Aucun appel facturable avant gel de l'identité. |
+| V4-008A | `SUPERSEDED_HISTORICAL` : consultations de la fondation composite close, sans livrable ou appel à reprendre. Seules ses garanties génériques de coût, idempotence et réconciliation peuvent être réutilisées par evidence-assist. |
 | V4-009 | Finance & Pricing : réservation, règlement, libération, retries absorbés et réconciliation. Produit & pédagogie : consentement, absence de débit surprise et historique compréhensible. |
-| V4-009B | Produit & pédagogie : protocole préenregistré, oracle autonome scellé, métamorphismes et verdict `GO_AUTONOMOUS_FORMATIVE`. Finance & Pricing : budget maximal, coût complet par correction utilisable et règle d'arrêt. Développement : répétition Neon, instrumentation et identité technique reproductible. Aucun `24×3` ni holdout sans GO du mini-panel. |
+| V4-009B | `SUPERSEDED_HISTORICAL` : gate composite clos, mini-panel et `24×3` non reprenables. Le protocole evidence-assist V4-009C porte seul les futurs gates `4/4`, `10 × 2` et holdout. |
 | V4-009C | Produit & pédagogie : pipeline evidence-assist exact, quatre cas, corpus complet 10 × 2, holdout autonome et abstention. Finance & Pricing : plafonds R&D distincts et coût par correction utilisable. Développement : enveloppe de sécurité déterministe, manifeste et traçabilité append-only. Le Propriétaire rend séparément `GO_TO_SEALED_HOLDOUT` puis `GO_AUTONOMOUS_FORMATIVE` ; aucun appel facturable sans GO d'enveloppe. |
 | V4-010 | Produit & pédagogie : flow complet de preuve, feedback, révision et clarification ciblée. Direction artistique : quatre états du moteur exécutable et hiérarchie mobile/desktop avant validation visuelle. |
 | V4-011 | Produit & pédagogie : séparation remise/feedback/maîtrise, formats éligibles, contrat cumulatif déterministe et absence de revue humaine. Finance & Pricing : coût/devis des nouvelles versions de soumission. Direction artistique : comparaison des versions, révision et clarification. Ticket fermé tant que le gate déterministe n'est pas livré. |
@@ -719,8 +753,9 @@ supersède leur palette, leurs fontes et leur grammaire de composants. Le contra
   nouvelle analyse facturable.
 - Les campagnes Terra, Sonnet, Gemini Flash, Mistral, Opus et autres candidats
   documentés sont des preuves de sélection, jamais des choix implicites de
-  production. V4-003 évalue désormais aussi une architecture composite
-  explicite, avec correcteur primaire et vérificateur ciblé épinglés.
+  production. L'ancienne évaluation composite avec correcteur primaire et
+  vérificateur ciblé est `SUPERSEDED_HISTORICAL`; V4-003 évalue uniquement le
+  rôle evidence-assist canonique sous une identité gelée.
 - La piste composite Mistral + Sonnet est une baseline historique `NO_GO`. La
   cible utilise d'abord Gemini comme chercheur de preuves ; LearnX calcule les
   niveaux et le feedback. Un falsificateur d'une autre famille n'est ajouté que
@@ -1117,11 +1152,12 @@ Dépendances : V4-001.**
   mécanique à oracle exécutable, corpus sémantique synthétique qualifié de
   pseudo-oracle et shadow réel non annoté mesurant seulement stabilité,
   couverture, abstention, coût et dérive.
-- Le contrat, le compilateur et l'audit successeur sont clos. Le prochain modèle,
-  sa route et son profil sont préparés sous `V4-003E-Q1`, puis gelés seulement
-  après attestations et approbation de l'identité exacte. La faisabilité
-  recommence par 4/4 puis un corpus 10 × 2 ; aucune identité historique n'est
-  reprise.
+- Le contrat, le compilateur et l'audit successeur sont clos. Q1 Gemini 3.6 est
+  aussi clos en NO-GO technique après un HTTP 400. `V4-003E-Q1-R1` a gelé hors
+  ligne l'identité `00cd27d8…` et validé le runner fake `4/4`. La faisabilité ne
+  pourra recommencer par le gate réseau puis un corpus 10 × 2 qu'après
+  réconciliation Q1, Finance et nouveau GO ; aucune identité ou autorisation
+  historique n'est reprise.
 - Comparer ensuite au moins trois candidats sur des identités reproductibles
   pour robustesse, latence et coût complet. Cette phase secondaire ne bloque pas
   le gate du prochain candidat exact ; elle bloque V4-018, le prix et la généralisation
@@ -1330,9 +1366,9 @@ Dépendances : V4-001.**
   renforcée et futures catégories réservées sans les activer. À ce stade,
   `DETAILED` et `REINFORCED` restent des possibilités de catalogue, pas des
   offres approuvées ; `REINFORCED` exige un gain supplémentaire benchmarké.
-- Distinguer dans le devis : correction primaire avec vérification ciblée
-  potentielle incluse dans le plafond, et nouvelle analyse volontaire comme action
-  séparée avec son propre devis.
+- Distinguer dans le devis : un appel evidence-assist candidate-only inclus
+  dans le plafond, sans seconde passe automatique, et une nouvelle analyse
+  volontaire comme action séparée avec son propre devis.
 - Calculer prix estimé, plafond, plancher, coefficient de sécurité, modèle et
   expiration du devis à partir de données mesurées.
 - Segmenter les plafonds P90 par type d'action et classe de taille d'entrée ; un
@@ -1357,16 +1393,16 @@ Dépendances : V4-001.**
 - Un devis expiré ou incompatible doit être recalculé.
 - Les prix historiques restent attachés aux opérations historiques.
 - Un changement de modèle ou de prompt invalide les métriques concernées.
-- Le coût interne agrège tous les appels du workflow. Le règlement utilisateur
-  agrège uniquement le primaire et le vérificateur ciblé d'un résultat
+- Le coût interne agrège tous les appels réellement dispatchés du workflow. Le
+  règlement utilisateur n'inclut que l'appel evidence-assist d'un résultat
   utilisable ; les retries techniques et incidents restent à la charge de
   LearnX et demeurent visibles dans les mesures internes.
 - Le devis apprenant expose dans cet ordre : action et portée, estimation,
-  maximum réservé dominant, inclusion éventuelle de la vérification ciblée
-  automatique, règle de libération du reliquat et expiration locale.
-- La vérification ciblée automatique n'est ni une action ni un consentement
-  séparé ; son coût prudent est inclus dans le maximum initial. Une nouvelle analyse
-  volontaire utilise `RECONSIDERATION`, un nouveau devis et une confirmation.
+  maximum réservé dominant, appel evidence-assist inclus, absence de seconde
+  passe automatique, règle de libération du reliquat et expiration locale.
+- Une nouvelle analyse volontaire utilise `RECONSIDERATION`, un nouveau devis
+  et une confirmation ; elle crée une nouvelle opération indépendante et ne
+  devient jamais une seconde passe implicite de la correction précédente.
 - Il n'existe aucune action de « réparation gratuite ». Une erreur technique ou
   un résultat inutilisable libère la réservation ; une nouvelle analyse
   volontaire est une nouvelle action facturable.
@@ -1432,7 +1468,7 @@ Dépendances : V4-001.**
 
 ---
 
-## V4-008A — Alignement composite des fondations déjà livrées
+## V4-008A — Preuve historique de l'alignement composite livré
 
 **Priorité : P0 corrective. Dépendances : V4-003 à V4-008 ; commence après
 V4-008 et bloque V4-009.**
@@ -1442,7 +1478,10 @@ V4-009C, ses choix `primaire juge + vérificateur` et ses états pédagogiques n
 sont plus la cible produit. Les garanties financières, d'idempotence, de retry,
 de route épinglée et de réconciliation restent réutilisées.**
 
-### Gate de consultation avant code
+### Consultations historiques de livraison
+
+Cette section n'ouvre aucune nouvelle consultation, identité ou dépense. Elle
+documente les contrôles appliqués au lot désormais remplacé.
 
 - **Produit & pédagogie — pilote** : appliquer l'autorité courante
   `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` et vérifier que modèle, serveur et
@@ -1459,6 +1498,10 @@ de route épinglée et de réconciliation restent réutilisées.**
   ligne peuvent précéder ce GO.
 
 ### Périmètre historique livré
+
+Les verbes de cette liste décrivent le lot alors livré. Ils sont archivés et ne
+constituent aucune instruction de reprise ; seul le protocole evidence-assist
+canonique peut ouvrir un nouveau travail.
 
 - Réauditer les livraisons V4-003, V4-004, V4-005 et V4-007 contre leurs
   contrats historiques, puis documenter les écarts avec l'autorité
@@ -1480,12 +1523,12 @@ de route épinglée et de réconciliation restent réutilisées.**
 - Préparer le benchmark composite sous une identité neuve ; ne lancer aucun
   appel facturable sans le GO explicite du Propriétaire.
 
-### Hors périmètre
+### Hors périmètre historique
 
 - Interface apprenant finale, prix actifs, paiement, promotion implicite d'un
   modèle, ouverture du holdout avant gate de développement.
 
-### Critères d'acceptation
+### Critères d'acceptation historiques
 
 - Le registre d'écarts nomme chaque incompatibilité livrée et sa résolution.
 - Les campagnes mono-modèle historiques restent lisibles et non comparables à
@@ -1503,7 +1546,7 @@ de route épinglée et de réconciliation restent réutilisées.**
 - L'ensemble reste désactivé en production tant que benchmark, consultations et
   GO du Propriétaire ne sont pas réunis.
 
-### Tests et risques
+### Tests et risques historiques
 
 - Tests unitaires des autorités, transitions, déclencheurs, désaccords,
   idempotence, retries, preuves et absence d'effet sur la progression.
@@ -1518,23 +1561,32 @@ de route épinglée et de réconciliation restent réutilisées.**
 
 **Priorité : P0. Dépendances : V4-005, V4-007, V4-008 et V4-008A.**
 
+**Statut : fondation livrée inactive. Le raccord fournisseur réel ci-dessous
+reste conditionné à `GO_AUTONOMOUS_FORMATIVE`, à un contrat publié, à une
+activité éligible et à une cohorte fermée.**
+
 ### Périmètre
 
-- Orchestrer devis accepté, réservation, correction, validation structurée,
-  règlement final, libération de différence et historique.
-- Exécuter le correcteur primaire puis, lorsque la règle versionnée le demande,
-  le vérificateur ciblé dans la réservation initiale sans nouvelle confirmation.
-  Régler uniquement le coût réellement consommé et libérer la différence.
+- Conserver les routes publiques typées de correction formative existantes ;
+  ne pas créer une API concurrente.
+- Orchestrer dans cet ordre : éligibilité et cohorte, devis accepté, réservation,
+  persistance de `CALL_INTENT` et du manifeste assaini, appel evidence-assist,
+  persistance du brut append-only, validation serveur, certificat et feedback
+  déterministes, règlement du coût réel puis libération du reliquat.
+- Exécuter un seul rôle evidence-assist candidate-only. Aucun primaire juge,
+  vérificateur ciblé, vote, fallback ou seconde passe automatique n'appartient
+  au pipeline canonique.
 - Définir la politique de retry et l'absorption du coût en cas d'échec sans
   résultat utilisable.
 - Protéger contre double clic, rechargement, reprise réseau et requête concurrente.
 - Gérer insuffisance de crédit, devis expiré, kill switch et budget fournisseur.
 - Réconcilier le coût OpenRouter avec l'opération LearnX.
-- Régler à partir de la somme des coûts réels OpenRouter de tous les appels du
-  workflow facturables, sans reconstruire le coût final depuis les tokens. Les
-  retries techniques restent mesurés séparément et absorbés par LearnX.
-- Réserver au plafond prudent du workflow composite, jamais à son coût moyen.
-  Le devis utilisateur reste unique et n'expose ni noms de modèles ni vote.
+- Régler à partir du coût réel OpenRouter réconcilié de l'appel dispatché, sans
+  reconstruire le coût final depuis les tokens. Toute tentative techniquement
+  consommée est réconciliée même si sa sortie est inutilisable ; les retries
+  techniques restent mesurés séparément et absorbés par LearnX.
+- Réserver au plafond prudent de l'opération evidence-assist, jamais à son coût
+  moyen. Le devis utilisateur reste unique et n'expose ni modèle ni fournisseur.
 
 ### Hors périmètre
 
@@ -1545,13 +1597,14 @@ de route épinglée et de réconciliation restent réutilisées.**
 - Aucun appel fournisseur ne part sans réservation valide, sauf outil admin de
   benchmark explicitement séparé et plafonné.
 - Un succès ne peut régler qu'une réservation ; un échec libère les crédits.
-- Le devis, la réservation et le règlement forment une seule opération visible,
-  même lorsque la vérification ciblée est appelée.
+- Le devis, la réservation et le règlement forment une seule opération visible.
 - La différence entre plafond et prix final revient immédiatement au bon solde.
 - Le débit final est borné au plafond accepté. Tout dépassement fournisseur est
   absorbé par LearnX, audité et déclenche une alerte ou le kill switch prévu.
 - Un coût orphelin déclenche une alerte et une réconciliation, jamais un débit
   silencieux de l'utilisateur.
+- Le brut est persisté avant toute validation et aucune relation modèle ne peut
+  modifier score, maîtrise ou progression.
 - Après correction, le résumé plafond accepté / montant réglé / montant libéré
   reste disponible ; sa ventilation par origine est consultable séparément.
 
@@ -1562,12 +1615,16 @@ de route épinglée et de réconciliation restent réutilisées.**
 
 ---
 
-## V4-009B — Validation intégrée et progressive du pipeline composite
+## V4-009B — Preuve historique du gate composite remplacé
 
-**Priorité : P0 gate. Dépendances : V4-003, V4-008A et V4-009. Bloque
-l'activation de V4-010.**
+**Statut : `SUPERSEDED_HISTORICAL`. Ce ticket ne bloque plus V4-010 et aucune
+commande, identité, enveloppe, campagne ou règle qu'il décrit ne peut être
+reprise. V4-009C et le protocole evidence-assist portent seuls les gates actifs.**
 
-### Périmètre
+### Périmètre historique exécuté
+
+Les verbes ci-dessous décrivent le protocole alors envisagé ; ils ne sont pas
+des instructions actuelles.
 
 - Répéter les migrations et les scénarios de V4-009 sur une branche Neon
   jetable : devis, réservation, primaire, vérificateur éventuel, consolidation,
@@ -1594,7 +1651,7 @@ l'activation de V4-010.**
   pas être recombinées comme preuve de promotion lorsque leurs prompts,
   protocoles ou identités diffèrent.
 
-### Hors périmètre
+### Hors périmètre historique
 
 - Activation publique de la correction ou branchement de V4-010 sur des appels
   réels.
@@ -1604,7 +1661,7 @@ l'activation de V4-010.**
 - Benchmark exhaustif de nouveaux modèles sans hypothèse ni budget préenregistré.
 - Décision tarifaire, packs ou parité définitive des crédits.
 
-### Critères d'acceptation
+### Critères d'acceptation historiques
 
 - La répétition Neon est documentée et réussit sans toucher à la base partagée ;
   les migrations, le règlement et la libération sont rejouables et idempotents.
@@ -1629,7 +1686,7 @@ l'activation de V4-010.**
   des fixtures simulées tant que le GO intégré n'est pas donné. Aucun utilisateur
   ne peut déclencher un appel réel avant validation de V4-009B.
 
-### Tests et risques
+### Tests et risques historiques
 
 - Tests unitaires des règles de déclenchement et consolidation ; intégration avec
   providers simulés ; répétition Neon ; mini-panel facturable plafonné puis gate
@@ -1694,17 +1751,25 @@ positif requis, il partage provisoirement l'effet de niveau
 pas recalculés. Toute exécution future exige nouvelle identité, nouvel
 arbitrage Finance et nouveau GO propriétaire.**
 
-**État courant au 21 août 2026 après V4-003E : le gate distinct
+**État historique au 21 août 2026 après V4-003E : le gate distinct
 framework-selection, identité
 `cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31`,
 s'est arrêté après `1/4` appel sur `SEMANTIC_DISAGREEMENT`, pour
 `0,018828 USD` ACTUAL. Sonnet a inversé la polarité de
 `project-b-dimension-scope`, exemple positif explicitement authoré et gelé
-`SUPPORTED`. Cette identité est close sans replay ni retuning. La prochaine
-action est la préparation hors ligne de Gemini 3.6, candidat 1 confirmé, avec
-réattestation et paramétrisation du runner ; aucun budget, panel, holdout ou
-live n'est ouvert. Rapport :
+`SUPPORTED`. Cette identité est close sans replay ni retuning. Elle a conduit à
+la préparation historique de Gemini 3.6 ; aucun budget, panel, holdout ou live
+n'a alors été ouvert. Rapport :
 `docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md`.**
+
+**État courant au 22 août 2026 : Q1 Gemini 3.6, identité `ef88a8e3…`, est
+clos en `NO-GO_TECHNICAL_PROVIDER_HTTP_400 / RECONCILIATION_REQUIRED` après
+exactement `1/4` appel. Son autorisation single-use est consommée ; aucun retry
+ni fallback n'a eu lieu, le coût réel demeure inconnu et aucun verdict
+pédagogique ou pipeline promu n'en résulte. Le point de reprise unique est
+`V4-003E-Q1-R1`, remédiation hors ligne sous nouvelle identité ; aucun appel ne
+peut précéder la réconciliation Q1, Finance R1 et un nouveau GO propriétaire.
+L'identité `00cd27d8…` est déjà gelée sous `HARD_OFF`.**
 
 ### Point de reprise pour le développement
 
@@ -1722,6 +1787,11 @@ live n'est ouvert. Rapport :
   runner S2, raw/usage/coût persistés et verdict V4-003E après `1/4`. Le runner
   est spécialisé Sonnet et doit être paramétré puis revalidé sous `HARD_OFF`
   avant tout candidat Gemini.
+- Livré et clos : gate Q1 Gemini 3.6 `ef88a8e3…`, arrêt `1/4` sur HTTP
+  400 fournisseur, autorisation consommée, coût en réconciliation et aucun
+  workflow utilisable. `V4-003E-Q1-R1` a gelé hors ligne `00cd27d8…`, produit
+  le différentiel et passé le fake preflight `4/4` ; il ne possède aucune
+  autorité réseau.
 - Livré hors ligne : décision sémantique successeur, paires minimales exactes
   absence/refus/contradiction/ambiguïté et funnel d'authoring. Ces artefacts
   n'étendent aucune autorité live et n'ouvrent aucun budget.

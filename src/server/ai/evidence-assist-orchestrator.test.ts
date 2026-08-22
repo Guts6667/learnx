@@ -68,6 +68,24 @@ describe('evidence assist product orchestrator', () => {
       enabled: false,
       mode: 'HARD_OFF',
     });
+    expect(compiled.rubric.lifecycle).toBe('DRAFT');
+  });
+
+  it('rejects a live provider shape even when the offline-only gate is enabled', async () => {
+    const execute = vi.fn(async () => ({ rawModelOutput: raw([]) }));
+    const liveProvider = {
+      execute,
+      kind: 'OPENROUTER',
+    } as unknown as EvidenceAssistProviderPort;
+    const orchestrator = createEvidenceAssistOrchestrator({
+      gate: enabledGate,
+      provider: liveProvider,
+    });
+
+    await expect(orchestrator.run(baseInput)).rejects.toSatisfy(
+      expectCode('OFFLINE_FAKE_PROVIDER_REQUIRED'),
+    );
+    expect(execute).not.toHaveBeenCalled();
   });
 
   it('executes a fake provider with server spans and publishes candidate-only partial evidence', async () => {

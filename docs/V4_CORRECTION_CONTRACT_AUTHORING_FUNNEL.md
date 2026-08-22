@@ -1,13 +1,19 @@
 # Funnel d'authoring — contrat de correction V4
 
 - **Statut** : `APPROVED_FOR_OFFLINE_USE`
-- **Version** : `1.0.0`
+- **Version** : `1.1.0`
 - **Portée** : premier contrat `WRITING/fr-FR`, texte, faible risque
 - **Autorité** : Produit et pédagogie, avec approbations explicites du
   Propriétaire
 
 Ce funnel transforme une activité existante en contrat de feedback autonome.
 Il ne crée pas un programme complet et ne remplace pas le futur funnel V5.
+
+Le protocole sémantique canonique est
+`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` : le modèle propose uniquement des
+relations candidates sur des `spanIds` fournis par LearnX. Il ne retourne ni
+statut atomique, ni score, ni niveau. L'ancien composite et sa seconde passe
+automatique sont supersédés et ne constituent pas une étape de ce funnel.
 
 ## 1. Gate d'éligibilité de l'activité
 
@@ -186,7 +192,7 @@ retuning opportuniste ou replay sous la même empreinte.
 | Langue | `fr-FR` |
 | Risque | faible |
 | Contrat publié | non |
-| Contrat de travail | `writing-go-no-go-recommendation-fr.v2`, DRAFT, `EVIDENCE_ASSIST_ONLY` |
-| Objectif de la prochaine tranche | `V4-002A` : choisir l'activité réelle, sa consigne et son objectif observable |
+| Contrat de travail | `v4-writing-framework-selection-fr@1.0.0-draft`, DRAFT, `EVIDENCE_ASSIST_ONLY` |
+| Objectif de la prochaine tranche | `V4-003E-Q1-R1` : réconcilier Q1 et préparer hors ligne une remédiation Gemini 3.6 sous nouvelle identité ; le contrat reste inchangé et non publié |
 | Appels modèle autorisés | 0 |
 | Effet progression | aucun |

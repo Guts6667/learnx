@@ -32,9 +32,10 @@ Dernière consolidation : 22 août 2026.
 ## File design Totem — validée, non lancée
 
 La direction Totem est validée et le backlog est prêt. Elle ne change pas le
-point de reprise IA : `V4-003E-Q1`, dossier Gemini 3.6 hors ligne, dispose d'une
-identité et d'une enveloppe approuvées ainsi que d'un transport simulé vert. Le
-GO réseau distinct reste le prochain gate.
+point de reprise IA : le gate Gemini 3.6 `V4-003E-Q1` est clos après `1/4`
+appel sur HTTP 400 fournisseur. Son autorisation single-use est consommée ; le
+coût réel reste inconnu et la réserve `0,1208415 USD` doit être réconciliée
+avant toute nouvelle décision.
 La file design attend un GO d'implémentation distinct par lot.
 
 | Ordre | Lot | Statut | Dépendance principale |
@@ -51,13 +52,13 @@ contrat émotionnel Atlas et tous les contrats produit restent actifs.
 
 ## Plans d'état à ne pas confondre
 
-| Plan | État au 21 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
+| Plan | État au 22 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
-| Runtime canonique V4 | `origin/dev@c8ae231` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne, preuve S2 et analyse V4-003E intégrés. | Aucun contrat publié, débit utilisateur réel ou accès apprenant. |
-| Préparation V4-003E-Q1 | worktree local depuis `origin/dev@df368cd` | Identité Gemini `ef88a8e3…` approuvée, plafond `0,50 USD`, réserve `0,652 USD`, préflight faux fournisseur `4/4` et transport simulé vert. | Aucun GO réseau ; aucun appel modèle. |
+| Baseline Git auditée | `origin/dev@f6607b9` au démarrage du worktree `codex/ai-correction-unblock` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne, preuve S2, analyse V4-003E et préflight Q1 intégrés avant reprise des deux commits Q1 locaux. | Le lot de déblocage et les deux commits Q1 repris restent à relire et intégrer séparément ; aucun contrat publié, débit utilisateur réel ou accès apprenant. |
+| Gate V4-003E-Q1 | worktree isolé depuis `origin/dev@f6607b9` | Autorisation Gemini `ef88a8e3…` consommée ; `1/4` appel envoyé, HTTP 400, raw et ledger vérifiés, aucun retry/fallback. | `0/1` utilisable ; coût et identifiant fournisseur absents, `RECONCILIATION_REQUIRED`; aucun verdict pédagogique. |
 | Produit publié | `origin/main` à `f612e53` | SourceLab V2 et le journal public de recherche sont publiés sur la branche de production. | `main` ne contient pas encore la baseline V4 de `dev` ; ces branches ne doivent pas être fusionnées ou réinitialisées en bloc. |
 | Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
-| Expérimentation | `V4-009C-S2_NO_GO / IDENTITY_CLOSED / GEMINI_NETWORK_GO_PENDING` | Le dernier gate Sonnet a exécuté `1/4` appel puis s'est arrêté ; le successeur Gemini a une identité et une enveloppe approuvées ainsi qu'un transport simulé vert. | Aucun appel Gemini, aucune promotion ; panel et holdout fermés. |
+| Expérimentation | `GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED` | Le gate Gemini a envoyé exactement `1/4` appel puis s'est arrêté sur HTTP 400 ; les trois autres appels n'ont pas été envoyés. | Aucun jugement pédagogique, aucune promotion ; coût non réconcilié, panel et holdout fermés. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
 | Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
 
@@ -85,12 +86,14 @@ la correction IA n'est pas encore une fonctionnalité de l'application.
 
 Le chemin critique est désormais très étroit :
 
-1. intégrer la préparation locale Q1 sans modifier protocole, rubrique, corpus,
-   golds, ordre ni seuils ;
-2. obtenir un GO réseau single-use distinct pour l'identité et l'enveloppe déjà
-   approuvées ;
-3. éprouver cette identité sur quatre cas, puis 10 × 2 seulement après `4/4` et
-   de nouveaux gates ;
+1. préserver le gate Q1 et ses artefacts append-only sans réinterpréter le coût
+   inconnu comme zéro ;
+2. réconcilier le coût fournisseur et diagnostiquer hors ligne l'argument refusé
+   sans attribuer de cause non prouvée ; la procédure append-only est
+   `docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md`, avec nouvelle tentative
+   Activity à partir du 23 août UTC ;
+3. si une correction de payload est proposée, créer une nouvelle identité et
+   obtenir de nouveaux arbitrages avant tout appel ; le panel 10 × 2 reste fermé ;
 4. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
 5. remplacer le fake provider du flow apprenant sous feature flag et mesurer
    qualité/coûts réels ;
@@ -105,10 +108,10 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    réconcilie uniquement les commits nécessaires par une branche ou une PR
    dédiée. Aucun pull, merge ou reset global ne doit écraser l'une des deux
    histoires.
-2. **Produit & pédagogie avec Développement** applique au successeur hors ligne
-   la décision `EXPLICITLY_REFUTED` : statut distinct de l'absence, même effet
-   de niveau au MVP, template distinct. La campagne close demeure
-   byte-identique et aucun replay n'est permis sous son identité.
+2. **Produit & pédagogie avec Développement** conserve
+   `EXPLICITLY_REFUTED` comme statut canonique distinct de l'absence, avec le
+   même effet de niveau au MVP et un template distinct. La campagne close
+   demeure byte-identique et aucun replay n'est permis sous son identité.
 3. Le contrat pilote suit
    `docs/V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md`; le Propriétaire arbitre
    l'activité, les critères/templates, puis l'identité gelée.
@@ -119,13 +122,15 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
 
-Le gate `V4-009C-S2` est clos en `NO-GO_SEMANTIC_DISAGREEMENT` après le
-premier appel sur quatre. Le coût `ACTUAL` est de `0,018828 USD` ; les trois
-autres appels n'ont pas été envoyés. V4-003E a préparé localement le verdict
-append-only ; après intégration de ce lot, le point de reprise devient
-`V4-003E-Q1`, préparation hors ligne de Gemini 3.6. Aucun replay, appel modèle,
-publication de contrat ni branchement live n'est autorisé sans nouvelle
-identité et nouveaux arbitrages Finance et Rayan.
+Le gate `V4-009C-S2` et son analyse V4-003E sont clos et intégrés. Le gate
+successeur `V4-003E-Q1`, identité Gemini 3.6 `ef88a8e3…`, est lui aussi clos :
+exactement `1/4` appel a reçu un HTTP 400 fournisseur, sans retry ni fallback.
+Son autorisation est consommée, son coût est en `RECONCILIATION_REQUIRED`, et
+il n'a produit aucun workflow utilisable ni verdict pédagogique. Le point de
+reprise unique est `V4-003E-Q1-R1`, remédiation Gemini 3.6 hors ligne sous une
+nouvelle identité. R1 `00cd27d8…` est désormais gelée et validée en fake-only.
+Aucun replay, appel modèle, publication de contrat ni branchement live n'est
+autorisé avant réconciliation Q1, nouvel arbitrage Finance et nouveau GO Rayan.
 `V4-002C`
 est clos hors ligne : le schéma, le compilateur, le certificat v2 et leurs tests
 sont disponibles. `V4-002B` reste
@@ -152,13 +157,14 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | `V4-003C — Gel expérimental` | `AGENT-PROTOCOLE-IA` | **Clos** : dossier exact approuvé par Rayan C | `V4-003D` |
 | `V4-003D — Budget` | `AGENT-FINANCE` | **Clos hors ligne** : plafond fournisseur `0,708328 USD`, réseau interdit | `V4-009C-S2` hors ligne |
 | `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | **Clos NO-GO** : arrêt après `1/4` sur désaccord sémantique, coût `0,018828 USD` ACTUAL, aucun replay | `V4-003E` |
-| `V4-003E — Analyse et documentation` | `AGENT-METHODOLOGIE` | **Préparé localement, non poussé** : verdict borné à l'identité exacte, limites `n = 1`, comparaison honnête et journal append-only | Intégration du commit local, puis `V4-003E-Q1` |
-| `V4-003E-Q1 — Dossier Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Préparé localement sous HARD_OFF** : identité `ef88a8e3…` et enveloppe approuvées, route/profil/tarifs réattestés, préflight faux fournisseur `4/4` et transport simulé vert | GO réseau séparé ; aucun appel autorisé par les approbations déjà reçues |
+| `V4-003E — Analyse et documentation` | `AGENT-METHODOLOGIE` | **Clos et intégré** : verdict borné à l'identité exacte, limites `n = 1`, comparaison honnête et journal append-only | `V4-003E-Q1` historique |
+| `V4-003E-Q1 — Dossier Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Clos NO-GO technique** : autorisation consommée après `1/4` appel HTTP 400 ; raw/ledger vérifiés, aucun retry/fallback, coût inconnu, aucun pipeline promu | Identité close ; aucun replay |
+| `V4-003E-Q1-R1 — Remédiation Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Gel hors ligne terminé** : identité `00cd27d8…` liée au commit `07d5d809…`, wire `3.0.1`, différentiel conforme et fake preflight `4/4` sous `HARD_OFF` | Réconcilier Q1 ; puis nouvel arbitrage Finance et nouveau GO Rayan avant un canari réseau, jamais par simple présence de clé |
 
 Tout agent recevant un ticket plus bas dans cette table doit refuser de le
 démarrer si la sortie et le gate de la ligne précédente ne sont pas présents.
 
-### Point de reprise vérifié le 21 août 2026
+### Point de reprise vérifié le 22 août 2026
 
 - `origin/dev` déploie correctement l'application et les fonctions réelles ;
   qualité, intégration, migrations Neon et seeds sont verts.
@@ -172,10 +178,12 @@ démarrer si la sortie et le gate de la ligne précédente ne sont pas présents
 - Le runner est revenu en `HARD_OFF`. V4-003E clôt cette identité sans replay ni
   retuning. Le gate du 20 août, identité `cc4dd0df…`, reste une preuve historique
   distincte (`2/4`, `0,025622 USD`) et n'est pas agrégé au résultat courant.
-- Gemini 3.6 est le candidat 1 à préparer hors ligne. Son identité, sa route
-  observée, son profil, son enveloppe Finance et son GO ne sont pas gelés. Le
-  runner S2 étant spécialisé Sonnet, sa paramétrisation et son fake preflight
-  sont des prérequis.
+- Le gate Q1 Gemini 3.6 `ef88a8e3…` est clos après `1/4` appel HTTP 400.
+  L'autorisation single-use est consommée, le coût reste à réconcilier et
+  aucune cause précise ne peut être affirmée depuis le message fournisseur
+  générique. `V4-003E-Q1-R1` a isolé hors ligne le payload corrigé sous
+  l'identité `00cd27d8…`, avec différentiel et fake preflight sous `HARD_OFF`.
+  `pattern` reste une hypothèse ; Finance et GO propres restent absents.
 - La qualification et le scellement du holdout v3 ont consommé l'autorisation
   exacte `AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL`. Le paquet demeure
   non exécutable ; cette décision n'autorise ni son ouverture, ni un appel
@@ -187,21 +195,39 @@ démarrer si la sortie et le gate de la ligne précédente ne sont pas présents
 
 Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
 
-**Preuve courante.** Le gate framework-selection Sonnet
-`cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31`
-est clos après `1/4` appel et `0,018828 USD` ACTUAL. Le candidat a renvoyé
-`EVIDENCE_AGAINST_ELEMENT` pour un exemple explicitement positif, attendu
-`EVIDENCE_FOR_ELEMENT`. Ce résultat suffit au NO-GO de l'identité sous la
-stop-policy `4/4`, mais `n = 1` ne permet aucune généralisation statistique.
-V4-003E en prépare localement l'analyse append-only. Panel, holdout et live
-restent fermés.
+**Preuve courante.** Le gate Gemini 3.6 Q1
+`ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed`
+est clos en `NO-GO_TECHNICAL_PROVIDER_HTTP_400` après exactement `1/4` appel.
+Le fournisseur a renvoyé `INVALID_ARGUMENT` avec un message générique ; les
+trois autres appels n'ont pas été envoyés. Aucun usage, identifiant fournisseur,
+coût réel ou verdict pédagogique n'est disponible. L'autorisation single-use
+est consommée, la réserve `0,1208415 USD` reste ouverte et aucun pipeline n'est
+promu. Panel, holdout et live restent fermés.
 
-**Prochaine tranche.** Gemini 3.6 est le candidat 1 à préparer hors ligne avec
-le même protocole, la même rubrique, le même corpus, les mêmes golds, le même
-ordre et les mêmes seuils. Snapshot, route/provider, profil `MINIMAL`, tarifs,
-manifeste, empreinte et enveloppe sont nouveaux. Le runner S2 spécialisé Sonnet
-doit être paramétré et prévalidé sous `HARD_OFF`. La proposition Finance
-`0,075 USD` reste un brouillon à réattester, sans effet d'autorisation.
+**État R1 et prochaine décision.** Le transport
+`evidence-assist-wire/3.0.1` est maintenant implémenté et
+testé hors ligne : `pattern` reste dans le validateur Zod LearnX mais est omis
+du schéma Gemini, dont les mots-clés sont contrôlés récursivement ; manifeste et
+empreintes précèdent `CALL_INTENT`, les métadonnées routeur sont expurgées et
+`generationId` reste distinct de `providerRequestId`. Cela isole l'hypothèse
+`pattern` sans la prouver et n'a produit aucun appel réseau. Cette correction
+crée nécessairement une nouvelle identité Gemini 3.6. L'identité
+`00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0`
+est gelée sur les octets du commit public
+`07d5d80978ac1346a78a46e41e6a589439fa564d`. Le différentiel conserve les dix
+invariants transport du smoke accepté et observe uniquement les trois écarts
+attendus. Le runner passe un fake preflight `4/4` avec quatre exécutions fake,
+zéro replay fournisseur et zéro appel réseau/modèle. Un futur gate 4 cas exige
+la réconciliation Q1, son propre arbitrage Finance et une nouvelle autorisation
+Rayan single-use. Le dossier Q1, son enveloppe et son GO consommé ne sont pas
+transférables.
+
+La réattestation publique hors ligne
+`benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json`
+documente seulement la route, les capacités et les prix observables au 22 août,
+avec zéro inférence et zéro appel modèle. Elle n'est ni une nouvelle identité,
+ni un arbitrage Finance, ni un GO réseau ; ses prix ne remplacent pas une
+nouvelle enveloppe arbitrée.
 
 **Historique non exécutable.** Les éléments ci-dessous expliquent l'évolution
 du pipeline. Ils ne sont ni une file active, ni des résultats combinables avec
@@ -365,7 +391,7 @@ jamais à franchir son gate live.
 | --- | --- | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
 | V4-002 | `V4-002C_DONE_OFFLINE` | `V4-002A/B` validés ; compilateur et certificat v2 validés hors ligne ; contrat toujours DRAFT, 0 contrat publié. | Non : ticket clos. | Publication interdite avant corpus, audit et gates ultérieurs. | `AGENT-METHODOLOGIE` reprend via V4-003A. |
-| V4-003 | `V4-003E_LOCAL_PENDING_INTEGRATION` | Gate clos après `1/4` appel ; route et coût réconciliés, vrai désaccord du candidat ; rapport et journal validés localement, aucun replay. | Non sur `origin/dev` ; V4-003E-Q1 devient reprenable après intégration. | Dossier Gemini 3.6, runner à paramétrer, attestations fraîches ; panel et holdout fermés. | Intégration, puis `AGENT-PROTOCOLE-IA`. |
+| V4-003 | `V4_003E_Q1_R1_FROZEN_HARD_OFF` | Q1 Gemini 3.6 clos après `1/4` appel HTTP 400 ; R1 `00cd27d8…` est gelée et passe `4/4` en fake-only, sans réseau ni modèle. | Oui, réconciliation Q1 et préparation d'arbitrage seulement. | Finance R1 séparée et nouveau GO avant le canari ; aucun appel couvert par ce statut. | Finance puis Rayan, après réconciliation. |
 | V4-004 | `LIVRÉ_INACTIF` | Adaptateurs et extension evidence-assist 3.0.0 intégrés dans le runtime canonique. | Non. | Activation par V4-009C/V4-010 seulement. | Développement. |
 | V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
 | V4-006 | `LIVRÉ_INACTIF` | Ledger et réservation fondés. | Non. | Calibration après pilote. | Développement + Finance. |
@@ -374,7 +400,7 @@ jamais à franchir son gate live.
 | V4-008A | `LIVRÉ_INACTIF` | Preuve historique ; juge composite abandonné. | Non. | Aucun travail sur l'ancien pipeline. | Produit & pédagogie. |
 | V4-009 | `LIVRÉ_INACTIF` | Orchestration et réconciliation intégrées/rejouées. | Non hors branchement V4-010. | Pipeline exact promu. | Développement. |
 | V4-009B | `LIVRÉ_INACTIF` | NO-GO historique immuable. | Non. | Ne jamais reprendre l'enveloppe close. | Produit & pédagogie. |
-| V4-009C | `S2_NO_GO_SEMANTIC_DISAGREEMENT` | Runner réseau et coûts validés ; gate clos après `1/4` appel sur un vrai désaccord, sans replay. | Non : identité Sonnet close. | Nouvelle identité Gemini après préparation hors ligne, Finance et GO Rayan distincts. | `AGENT-PROTOCOLE-IA`, puis Finance et Rayan. |
+| V4-009C | `Q1_NO_GO_TECHNICAL_R1_FROZEN_HARD_OFF` | Gate Sonnet clos historiquement ; Q1 Gemini 3.6 clos après HTTP 400 ; R1 `00cd27d8…` gelée et fake preflight `4/4`, sans réseau. | Oui pour réconcilier Q1 et préparer l'arbitrage ; non pour exécuter. | Finance R1 et GO Rayan distincts après réconciliation ; le gel existe déjà. | Finance puis Rayan. |
 | V4-010 | `ACTIF_HORS_LIGNE` | Fake-flow complet intégré sur `dev`, persistant, testé responsive et maintenu sous hard-off ; 0 flow live. | Oui : réaudit UX/contrats et tests sans réseau/débit. | Pipeline promu + contrat publié + gate de cohorte. | Développement, avec Produit & Direction artistique. |
 | V4-011 | `BLOQUÉ` | Aucun gate de maîtrise cumulatif déterministe. | Non. | V4-010 calibré + contrôle multi-notions serveur livré. | Produit & pédagogie + Développement. |
 | V4-012 | `BLOQUÉ` | Fondations financières sans données de pilote. | Non. | Pilote V4-010 instrumenté. | Finance & Pricing. |
@@ -457,12 +483,13 @@ Les deux enveloppes Sonnet sont closes et non transférables : le gate historiqu
 du 20 août a coûté `0,025622 USD` pour `2/4`, et le gate courant du 21 août
 `0,018828 USD` pour `1/4`. Aucun budget d'appel n'est ouvert.
 
-Gemini 3.6 est le candidat 1. Son identité, son plafond fournisseur single-use
-`0,50 USD` et sa réserve prudente `0,652 USD` sont approuvés ; son raccord
-simulé est vert. Ces approbations ne valent pas GO réseau. Rayan devra donner
-séparément une autorisation réseau single-use. Gemini 3.7 reste rang 2
+Gemini 3.6 était le candidat 1. Son autorisation single-use a été consommée au
+premier appel, arrêté sur HTTP 400 avant sortie, usage, identifiant ou coût
+réconcilié. Les trois autres appels n'ont pas été envoyés. Il faut maintenant
+réconcilier la réserve `0,1208415 USD` et diagnostiquer le payload hors ligne ;
+aucun replay n'est autorisé. Gemini 3.7 reste rang 2
 et Mistral Medium 3.5 rang 3 ; chaque dossier futur exigera son propre mandat.
-Le panel 10 × 2 et le holdout restent fermés jusque-là.
-Après un futur `4/4`, une autorisation distincte du panel sera nécessaire ;
+Le panel 10 × 2 et le holdout restent fermés. Après un futur `4/4` sous une
+identité autorisée, une autorisation distincte du panel sera nécessaire ;
 après un futur `20/20`, la décision suivante sera `GO_TO_SEALED_HOLDOUT`, jamais
 une promotion ni une autorisation implicite d'ouverture.

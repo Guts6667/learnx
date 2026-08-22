@@ -16,6 +16,16 @@
 > désormais seulement des relations candidates sur des spans LearnX ; elles ne
 > peuvent alimenter score, niveau, maîtrise ou progression.
 
+> **Réconciliation du 22 août 2026.** Le protocole evidence-assist 3.0 est
+> l'unique autorité sémantique active. `EXPLICITLY_REFUTED` est un statut
+> atomique canonique du successeur, décidé par les règles LearnX et jamais par
+> une relation modèle seule. L'ancien pipeline composite, son modèle primaire et
+> sa seconde passe sont `SUPERSEDED_HISTORICAL` : ils ne décrivent aucun chemin
+> exécutable ou financement courant. Le gate Q1 Gemini 3.6 est clos en NO-GO
+> technique après un HTTP 400 ; son autorisation est consommée, son coût reste
+> à réconcilier et aucun pipeline n'est promu. Toute remédiation est hors ligne
+> sous une nouvelle identité et exige ensuite Finance et un nouveau GO.
+
 ## 1. Contexte
 
 LearnX corrige aujourd'hui de manière déterministe les quiz et les
@@ -143,8 +153,10 @@ remplacement futur.
 
 Le contrat publié est immuable. Il porte les critères, poids, niveaux,
 attendus, variantes acceptables, erreurs fréquentes, seuil, sources autorisées
-et règles de seconde passe. Le serveur recalcule toujours le score depuis la
-sortie structurée validée.
+et règles mécaniques. Le serveur calcule le score uniquement depuis des
+constats mécaniques authorés et indépendants. La sortie evidence-assist ne porte
+que `elementKey`, relation candidate et `spanIds`; elle ne peut alimenter ce
+calcul.
 
 ### 4.3 Comptabilité d'usage
 
@@ -193,8 +205,9 @@ Navigateur authentifié
                  └─ Orchestrateur de correction
                       ├─ snapshot du contrat et de la soumission
                       ├─ adaptateur OpenRouter côté serveur
-                      ├─ validation de la sortie structurée
-                      ├─ recalcul serveur du score
+                      ├─ brut append-only puis validation de la sortie
+                      ├─ résolution serveur des relations candidates
+                      ├─ certificat et feedback déterministes
                       └─ règlement ou libération des crédits
 
 Revolut Merchant
@@ -208,7 +221,8 @@ Revolut Merchant
 | Identité, capacité et accès | Session et politique serveur LearnX |
 | Éligibilité IA | Contrat publié + allowlist serveur |
 | Critères, poids et seuil | Contrat pédagogique authoré |
-| Score | Recalcul serveur depuis une sortie structurée validée |
+| Relations IA | Candidates seulement ; aucun statut, score, maîtrise ou progression |
+| Score | Règles mécaniques authorées côté serveur, indépendantes des relations IA |
 | Progression | Moteur de progression LearnX |
 | Devis et plafond | Catalogue de prix serveur versionné |
 | Solde et débit | Ledger LearnX |
@@ -226,7 +240,7 @@ Chaque opération utilise des identités stables distinctes :
 - soumission et reprise de module existantes ;
 - version du contrat ;
 - correction logique ;
-- tentative ou passe de correction ;
+- tentative fournisseur du rôle candidate-only courant ;
 - devis ;
 - réservation ;
 - entrée de ledger ;
@@ -239,27 +253,24 @@ conflit, pas une nouvelle opération.
 
 ## 6. États et transitions
 
-### 6.1 Correction
+### 6.1 Correction formative evidence-assist
 
 ```text
 NOT_REQUESTED
   → RESERVED
   → PROCESSING
       → COMPLETED
-      → AI_REVIEW_REQUIRED
+      → RECONCILIATION_REQUIRED
       → RETRY_PENDING
       → FAILED_RELEASED
-
-COMPLETED | AI_REVIEW_REQUIRED
-  → AI_RECONSIDERATION_RESERVED
-  → AI_RECONSIDERING
-      → RECONSIDERED
-      → RETRY_SUBMISSION_AVAILABLE
 ```
 
-Une seconde correction crée un résultat versionné. Elle ne remplace pas le
-premier en base. Lorsqu'elle est valide, elle devient la décision courante pour
-score et progression. Une seule contestation est autorisée par soumission.
+`CALL_INTENT` et le manifeste assaini sont persistés avant dispatch ; le brut
+est persisté avant validation. Une nouvelle analyse volontaire crée une
+opération versionnée indépendante. Elle ne remplace pas le premier résultat et
+n'a aucun effet sur score, maîtrise ou progression. Les anciens états
+`AI_REVIEW_*` et le chemin composite sont conservés seulement pour compatibilité
+historique ; ils ne sont pas activables dans le pipeline evidence-assist.
 
 ### 6.2 Réservation
 
@@ -270,8 +281,8 @@ CREATED → REJECTED
                     → EXPIRED_RELEASED
 ```
 
-Une réservation porte un plafond. Le règlement agrège tous les appels
-utilisables du workflow et libère immédiatement la différence. Sans résultat
+Une réservation porte un plafond. Le règlement réconcilie le coût réel de toute
+tentative dispatchée et libère immédiatement la différence. Sans résultat
 utilisable, tout le montant utilisateur est libéré même si LearnX a supporté un
 coût fournisseur.
 
@@ -294,9 +305,10 @@ conservés pour réconciliation.
 ### 7.1 LearnX
 
 LearnX conserve les données métier nécessaires à l'historique : soumission,
-snapshot du contrat, versions de prompt et modèle, résultat structuré, score
-recalculé, confiance, coûts, réservations et références de ledger. Les prompts
-et réponses brutes ne sont pas placés dans `AuditEvent.metadata`.
+snapshot du contrat, versions de prompt et modèle, relations candidates,
+certificat déterministe, coûts, réservations et références de ledger. Ni score
+proposé ni confiance de modèle ne font partie du contrat evidence-assist. Les
+prompts et réponses brutes ne sont pas placés dans `AuditEvent.metadata`.
 
 Les journaux techniques contiennent des identifiants internes, statuts,
 latences, tailles, modèles, fournisseurs et coûts, jamais :
@@ -343,7 +355,8 @@ Avant confirmation d'une correction, l'interface doit indiquer :
 - les tiers concernés et la politique de rétention validée ;
 - le prix estimé, le plafond, la provenance des crédits et la règle de
   libération ;
-- la possibilité d'une seconde passe automatique incluse dans le plafond ;
+- la portée exacte d'un appel evidence-assist et l'absence de seconde passe
+  automatique dans le pipeline actif ;
 - la voie de contestation et ses éventuels crédits propres.
 
 ## 8. Menaces et contrôles
@@ -360,7 +373,7 @@ Avant confirmation d'une correction, l'interface doit indiquer :
 | Coût sans réservation | Interdiction d'appel hors réservation, sauf benchmark admin séparé et plafonné |
 | Coût fournisseur orphelin | Corrélation génération/opération, alerte et réconciliation, jamais débit silencieux |
 | Dépassement de budget | Plafonds utilisateur/action/période/global, kill switch, alerte solde fournisseur |
-| Manipulation du score par le modèle | Critères authorés et recalcul serveur ; transitions allowlistées |
+| Manipulation du score par le modèle | Relations candidates exclues du calcul ; règles mécaniques authorées et transitions allowlistées |
 | Replay webhook | Signature, horodatage, identifiant événement unique, ordre persistant et fulfillment idempotent |
 | Fausse attribution après redirect | Page navigateur informative ; webhook seul autoritaire |
 | IDOR sur correction ou solde | Requêtes filtrées par utilisateur et politique d'accès programme |
@@ -412,7 +425,8 @@ Aucun schéma, secret, SDK, appel fournisseur, crédit ou paiement n'est ajouté
 
 - activer les exercices textuels calibrés avec allocation offerte ;
 - conserver paiement et évaluations d'étape désactivés ;
-- surveiller qualité, coût, retries, secondes passes et réservations orphelines.
+- surveiller qualité, coût, retries, abstentions, sorties inutilisables et
+  réservations orphelines.
 
 ### Phase 4 — V4B
 
@@ -447,7 +461,8 @@ Les métriques minimales sont :
 - prix estimé, plafond, coût final et montant libéré ;
 - réservations expirées ou orphelines ;
 - écart entre ledger reconstruit et projection ;
-- taux de seconde passe, contestation et résultat incertain ;
+- taux d'abstention, relations non résolues, contestation et résultat
+  techniquement indisponible ;
 - marge projetée et solde fournisseur ;
 - replays et échecs de webhooks.
 
@@ -466,7 +481,8 @@ des fonds réservés.
 
 Les paramètres suivants ne sont pas décidés par cet ADR :
 
-- modèles primaire et de seconde passe, choisis par V4-003 ;
+- candidat evidence-assist et éventuel futur falsificateur en campagne
+  séparée, choisis par V4-003 après gain mesuré ; aucun composite n'est actif ;
 - schéma exact du contrat, livré par V4-002 ;
 - coefficients, P90, prix et packs publiables, calibrés par V4-003/V4-007/V4-018 ;
 - politique exacte de rétention LearnX/OpenRouter/fournisseur ;

@@ -6,9 +6,16 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { buildEvidenceAssistCandidateRubricViewV2 } from '../../lib/evidence-assist-protocol-v2-adapter.ts';
 import {
+  buildEvidenceAssistCandidateRubricViewV2,
+  evidenceAssistJsonSchema,
+  prepareEvidenceAssistRequestV2,
+} from '../../lib/evidence-assist-protocol-v2-adapter.ts';
+import {
+  assertWritingGateLiveAuthorizationProof,
   buildWritingFrameworkGatePackage,
+  createWritingGateLiveAuthorizationProof,
+  createWritingGateRequestManifest,
   FileWritingFrameworkGateStore,
   FrozenOracleWritingFrameworkGateProvider,
   InMemoryWritingFrameworkGateStore,
@@ -16,8 +23,12 @@ import {
   runWritingFrameworkSelectionGatePreflight,
   type WritingFrameworkGateLiveProvider,
   type WritingFrameworkGatePackage,
+  type WritingFrameworkGateProviderRequestCore,
   type WritingFrameworkGateProviderRequest,
   type WritingFrameworkGateProviderResult,
+  type WritingGateCostSource,
+  type WritingGateFinancialState,
+  type WritingGateLiveAuthorizationProof,
 } from './writing-framework-selection-gate-runner-v2.ts';
 
 const root = process.cwd();
@@ -85,12 +96,36 @@ function loadApprovedGeminiPackage(): WritingFrameworkGatePackage {
   });
 }
 
+function loadAuthorizedGeminiTestPackage(): WritingFrameworkGatePackage {
+  return {
+    ...loadApprovedGeminiPackage(),
+    identityFingerprint: 'c'.repeat(64),
+  };
+}
+
 function deterministicCanary(caseId: string): string {
   return `lx-canary-${sha256(caseId).slice(0, 32)}`;
 }
 
+function testLiveAuthorizationProof(
+  packageInput: WritingFrameworkGatePackage,
+  outputDirectory = resolve(
+    tmpdir(),
+    `learnx-writing-gate-${packageInput.identityFingerprint.slice(0, 12)}`,
+  ),
+): WritingGateLiveAuthorizationProof {
+  return createWritingGateLiveAuthorizationProof({
+    authorizationFingerprint: 'a'.repeat(64),
+    identityFingerprint: packageInput.identityFingerprint,
+    outputDirectory,
+    runId: `test-run-${packageInput.identityFingerprint.slice(0, 12)}`,
+  });
+}
+
 class DeterministicLiveProvider implements WritingFrameworkGateLiveProvider {
+  public readonly authorizationProof: WritingGateLiveAuthorizationProof;
   public readonly kind = 'OPENROUTER_LIVE' as const;
+  public readonly authorizedIdentityFingerprint: string;
   public executions = 0;
 
   public constructor(
@@ -98,11 +133,25 @@ class DeterministicLiveProvider implements WritingFrameworkGateLiveProvider {
     private readonly overrides: Readonly<{
       actualCostUsd?: number | null;
       errorCode?: string;
+      generationId?: string | null;
       observedProvider?: string | null;
+      openRouterMetadata?: WritingFrameworkGateProviderResult['openRouterMetadata'];
       providerRequestId?: string | null;
       rawOutput?: string;
     }> = {},
-  ) {}
+    authorizationProof = testLiveAuthorizationProof(packageInput),
+  ) {
+    this.authorizationProof = authorizationProof;
+    this.authorizedIdentityFingerprint = authorizationProof.identityFingerprint;
+  }
+
+  public prepare(
+    request: WritingFrameworkGateProviderRequestCore,
+  ): ReturnType<WritingFrameworkGateLiveProvider['prepare']> {
+    return new FrozenOracleWritingFrameworkGateProvider(
+      this.packageInput,
+    ).prepare(request);
+  }
 
   public async execute(
     request: WritingFrameworkGateProviderRequest,
@@ -116,12 +165,17 @@ class DeterministicLiveProvider implements WritingFrameworkGateLiveProvider {
       actualCostUsd: Object.hasOwn(this.overrides, 'actualCostUsd')
         ? (this.overrides.actualCostUsd ?? null)
         : 0.01,
-      costSource:
-        this.overrides.actualCostUsd === null ? 'UNKNOWN' : 'ACTUAL',
+      costSource: this.overrides.actualCostUsd === null ? 'UNKNOWN' : 'ACTUAL',
       errorCode: this.overrides.errorCode,
+      generationId: Object.hasOwn(this.overrides, 'generationId')
+        ? (this.overrides.generationId ?? null)
+        : offline.generationId,
       observedProvider: Object.hasOwn(this.overrides, 'observedProvider')
         ? (this.overrides.observedProvider ?? null)
         : this.packageInput.expectedObservedProvider,
+      openRouterMetadata: Object.hasOwn(this.overrides, 'openRouterMetadata')
+        ? (this.overrides.openRouterMetadata ?? null)
+        : offline.openRouterMetadata,
       providerRequestId: Object.hasOwn(this.overrides, 'providerRequestId')
         ? (this.overrides.providerRequestId ?? null)
         : `live-test:${request.idempotencyKey}`,
@@ -131,6 +185,84 @@ class DeterministicLiveProvider implements WritingFrameworkGateLiveProvider {
 }
 
 describe('V4-009C-S2 writing framework gate runner v2', () => {
+  it('binds the live authorization proof to authorization, run and output directory', () => {
+    const packageInput = loadAuthorizedGeminiTestPackage();
+    const outputDirectory = resolve(
+      tmpdir(),
+      'learnx-writing-gate-proof-binding',
+    );
+    const proof = createWritingGateLiveAuthorizationProof({
+      authorizationFingerprint: 'a'.repeat(64),
+      identityFingerprint: packageInput.identityFingerprint,
+      outputDirectory,
+      runId: 'bound-run',
+    });
+    const otherRun = createWritingGateLiveAuthorizationProof({
+      authorizationFingerprint: 'a'.repeat(64),
+      identityFingerprint: packageInput.identityFingerprint,
+      outputDirectory,
+      runId: 'other-run',
+    });
+    const otherDirectory = createWritingGateLiveAuthorizationProof({
+      authorizationFingerprint: 'a'.repeat(64),
+      identityFingerprint: packageInput.identityFingerprint,
+      outputDirectory: resolve(outputDirectory, 'other'),
+      runId: 'bound-run',
+    });
+
+    expect(proof.proofSha256).not.toBe(otherRun.proofSha256);
+    expect(proof.proofSha256).not.toBe(otherDirectory.proofSha256);
+    expect(() =>
+      assertWritingGateLiveAuthorizationProof({
+        ...proof,
+        authorizationFingerprint: 'b'.repeat(64),
+      }),
+    ).toThrow('WRITING_GATE_LIVE_AUTHORIZATION_PROOF_INVALID');
+  });
+
+  it('rejects normalized nested secrets and Bearer values in request manifests', () => {
+    const base = {
+      caseId: 'case-sensitive-manifest',
+      idempotencyKey: 'd'.repeat(64),
+      identityFingerprint: 'e'.repeat(64),
+      requestContextFingerprint: 'f'.repeat(64),
+      wireDialect: 'EVIDENCE_ASSIST_LOCAL_3_0_0' as const,
+      wireDialectVersion: '3.0.0',
+      wireSchemaSha256: 'a'.repeat(64),
+    };
+
+    expect(() =>
+      createWritingGateRequestManifest({
+        ...base,
+        transportManifest: {
+          manifestSha256: 'b'.repeat(64),
+          nested: { request_body: 'must never persist' },
+        },
+      }),
+    ).toThrow('WRITING_GATE_REQUEST_MANIFEST_SENSITIVE_FIELD');
+    expect(() =>
+      createWritingGateRequestManifest({
+        ...base,
+        transportManifest: {
+          manifestSha256: 'b'.repeat(64),
+          nested: { note: 'Bearer private-token' },
+        },
+      }),
+    ).toThrow('WRITING_GATE_REQUEST_MANIFEST_BEARER_VALUE');
+  });
+
+  it('keeps conservative write-off explicit and never aliases unknown reconciliation', () => {
+    const costSource: WritingGateCostSource = 'CONSERVATIVE_WRITE_OFF';
+    const financialState: WritingGateFinancialState = 'CONSERVATIVE_WRITE_OFF';
+
+    expect({ costSource, financialState }).toEqual({
+      costSource: 'CONSERVATIVE_WRITE_OFF',
+      financialState: 'CONSERVATIVE_WRITE_OFF',
+    });
+    expect(costSource).not.toBe('UNKNOWN');
+    expect(financialState).not.toBe('RECONCILIATION_REQUIRED');
+  });
+
   it('parameterizes Gemini 3.6 without inheriting the Sonnet identity or budget', async () => {
     const packageInput = loadGeminiPackage();
     const dossier = JSON.parse(read(geminiDossierPath)) as {
@@ -187,8 +319,7 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
         '4fbff2b975124bcd336c49e0d2dbfe42ebf3f4adcf9a048ca17c8c4e5a79bb85',
       runner:
         '891560b6712afc1f197aea8d016a3309d2d5c7db3ac7e519bda6968d4227eb0b',
-      stop:
-        '3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e',
+      stop: '3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e',
       telemetry:
         'e8e4e16a18e4ad652f3b271847e156aedc66f0c8c934eae9c2291cbf1d519b56',
     });
@@ -346,15 +477,19 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
       ),
     ).toBe(true);
     expect(run.ledger.map(({ event }) => event)).toEqual([
+      'REQUEST_MANIFEST',
       'CALL_INTENT',
       'RAW_RECEIVED',
       'CALL_OUTCOME',
+      'REQUEST_MANIFEST',
       'CALL_INTENT',
       'RAW_RECEIVED',
       'CALL_OUTCOME',
+      'REQUEST_MANIFEST',
       'CALL_INTENT',
       'RAW_RECEIVED',
       'CALL_OUTCOME',
+      'REQUEST_MANIFEST',
       'CALL_INTENT',
       'RAW_RECEIVED',
       'CALL_OUTCOME',
@@ -390,7 +525,7 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     expect(replay.usableWorkflows).toBe(4);
     expect(replay.providerExecutions).toBe(0);
     expect(replayProvider.executions).toBe(0);
-    expect(replay.ledger).toHaveLength(12);
+    expect(replay.ledger).toHaveLength(16);
   });
 
   it('persists the ledger and reuses outcomes after reopening durable storage', async () => {
@@ -422,12 +557,36 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
       });
       expect(replay.usableWorkflows).toBe(4);
       expect(replayProvider.executions).toBe(0);
-      expect(replay.ledger).toHaveLength(12);
+      expect(replay.ledger).toHaveLength(16);
       expect(
         (await readFile(resolve(directory, 'ledger.jsonl'), 'utf8'))
           .trim()
           .split('\n'),
-      ).toHaveLength(12);
+      ).toHaveLength(16);
+      const firstCase = packageInput.cases[0];
+      if (!firstCase) throw new Error('TEST_GATE_CASE_MISSING');
+      const firstKey = sha256(
+        `${packageInput.identityFingerprint}:FOUR_CASE_GATE:${firstCase.caseId}:1`,
+      );
+      const persistedManifest = await readFile(
+        resolve(directory, 'requests', `${firstKey}.json`),
+        'utf8',
+      );
+      expect(persistedManifest).not.toContain(packageInput.taskPrompt);
+      expect(persistedManifest).not.toContain(packageInput.taskContext);
+      expect(persistedManifest).not.toContain(firstCase.responseText);
+      expect(persistedManifest).not.toMatch(
+        /"(?:apiKey|authorization|body|headers|messages|profile|prompt)"/iu,
+      );
+      expect(JSON.parse(persistedManifest)).toMatchObject({
+        manifestSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+        transportManifest: {
+          bodySha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+          messagesSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+          profileSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+          schemaSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+        },
+      });
     } finally {
       await rm(directory, { force: true, recursive: true });
     }
@@ -450,7 +609,7 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
       const records = (await readFile(ledgerPath, 'utf8')).trim().split('\n');
       await writeFile(
         ledgerPath,
-        `${records.slice(0, 2).join('\n')}\n`,
+        `${records.slice(0, 3).join('\n')}\n`,
         'utf8',
       );
       const reopened = await FileWritingFrameworkGateStore.open(directory);
@@ -525,8 +684,30 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     const key = sha256(
       `${packageInput.identityFingerprint}:FOUR_CASE_GATE:${firstCaseId}:1`,
     );
-    await store.appendCallIntent({ caseId: firstCaseId, idempotencyKey: key });
     const provider = new FrozenOracleWritingFrameworkGateProvider(packageInput);
+    const caseItem = packageInput.cases[0];
+    if (!caseItem) throw new Error('TEST_GATE_CASE_MISSING');
+    const prepared = prepareEvidenceAssistRequestV2({
+      canaryFactory: () => deterministicCanary(firstCaseId),
+      compiled: packageInput.compiled,
+      responseText: caseItem.responseText,
+      taskContext: packageInput.taskContext,
+      taskPrompt: packageInput.taskPrompt,
+    });
+    const requestCore: WritingFrameworkGateProviderRequestCore = {
+      caseId: firstCaseId,
+      idempotencyKey: key,
+      jsonSchema: evidenceAssistJsonSchema(),
+      messages: prepared.messages,
+      requestContext: prepared.requestContext,
+    };
+    const manifest = provider.prepare(requestCore);
+    await store.appendRequestManifest(manifest);
+    await store.appendCallIntent({
+      caseId: firstCaseId,
+      idempotencyKey: key,
+      requestManifestSha256: manifest.manifestSha256,
+    });
     const run = await runWritingFrameworkSelectionGatePreflight({
       canaryFactory: deterministicCanary,
       packageInput,
@@ -562,10 +743,22 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     expect(run.stoppedReason).toBe('SAFETY');
     expect(run.attempts[0]?.rawPersistedBeforeValidation).toBe(true);
     expect(run.ledger.map(({ event }) => event)).toEqual([
+      'REQUEST_MANIFEST',
       'CALL_INTENT',
       'RAW_RECEIVED',
       'CALL_OUTCOME',
     ]);
+    expect(run.ledger.find(({ event }) => event === 'RAW_RECEIVED')).toEqual(
+      expect.objectContaining({
+        rawOutputSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
+      }),
+    );
+    expect(
+      Object.hasOwn(
+        run.ledger.find(({ event }) => event === 'RAW_RECEIVED') ?? {},
+        'rawOutput',
+      ),
+    ).toBe(false);
   });
 
   it('fails closed when one bound authority byte changes', () => {
@@ -620,6 +813,110 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     ).toBe(true);
   });
 
+  it('consumes a bound live authorization once and keeps raw outside the durable ledger', async () => {
+    const directory = await mkdtemp(
+      resolve(tmpdir(), 'learnx-writing-gate-live-authorization-'),
+    );
+    try {
+      const packageInput = loadPackage();
+      const proof = testLiveAuthorizationProof(packageInput, directory);
+      const firstProvider = new DeterministicLiveProvider(
+        packageInput,
+        {},
+        proof,
+      );
+      const store = await FileWritingFrameworkGateStore.open(directory);
+      const first = await runWritingFrameworkSelectionGateLive({
+        canaryFactory: deterministicCanary,
+        packageInput,
+        provider: firstProvider,
+        store,
+      });
+
+      expect(firstProvider.executions).toBe(4);
+      expect(first.ledger[0]).toMatchObject({
+        authorizationFingerprint: proof.authorizationFingerprint,
+        authorizationProofSha256: proof.proofSha256,
+        event: 'LIVE_AUTHORIZATION_CONSUMED',
+      });
+      const ledgerText = await readFile(
+        resolve(directory, 'ledger.jsonl'),
+        'utf8',
+      );
+      expect(ledgerText).not.toContain('"rawOutput"');
+      expect(
+        ledgerText
+          .trim()
+          .split('\n')
+          .map((line) => JSON.parse(line) as { event: string })
+          .filter(({ event }) => event === 'LIVE_AUTHORIZATION_CONSUMED'),
+      ).toHaveLength(1);
+
+      const firstCase = packageInput.cases[0];
+      if (!firstCase) throw new Error('TEST_GATE_CASE_MISSING');
+      const firstKey = sha256(
+        `${packageInput.identityFingerprint}:FOUR_CASE_GATE:${firstCase.caseId}:1`,
+      );
+      const rawEnvelope = JSON.parse(
+        await readFile(resolve(directory, 'raw', `${firstKey}.json`), 'utf8'),
+      ) as { rawOutput: string; rawOutputSha256: string };
+      expect(rawEnvelope.rawOutput).not.toHaveLength(0);
+      expect(rawEnvelope.rawOutputSha256).toBe(sha256(rawEnvelope.rawOutput));
+
+      const reopened = await FileWritingFrameworkGateStore.open(directory);
+      const replayProvider = new DeterministicLiveProvider(
+        packageInput,
+        {},
+        proof,
+      );
+      const replay = await runWritingFrameworkSelectionGateLive({
+        canaryFactory: deterministicCanary,
+        packageInput,
+        provider: replayProvider,
+        store: reopened,
+      });
+      expect(replayProvider.executions).toBe(0);
+      expect(replay.usableWorkflows).toBe(4);
+      expect(
+        replay.ledger.filter(
+          ({ event }) => event === 'LIVE_AUTHORIZATION_CONSUMED',
+        ),
+      ).toHaveLength(1);
+    } finally {
+      await rm(directory, { force: true, recursive: true });
+    }
+  });
+
+  it('rejects an authorization bound to another output directory before dispatch', async () => {
+    const directory = await mkdtemp(
+      resolve(tmpdir(), 'learnx-writing-gate-live-proof-mismatch-'),
+    );
+    try {
+      const packageInput = loadPackage();
+      const provider = new DeterministicLiveProvider(
+        packageInput,
+        {},
+        testLiveAuthorizationProof(
+          packageInput,
+          resolve(directory, 'different-output'),
+        ),
+      );
+      const store = await FileWritingFrameworkGateStore.open(directory);
+      await expect(
+        runWritingFrameworkSelectionGateLive({
+          canaryFactory: deterministicCanary,
+          packageInput,
+          provider,
+          store,
+        }),
+      ).rejects.toThrow('WRITING_GATE_AUTHORIZED_OUTPUT_DIRECTORY_MISMATCH');
+      expect(provider.executions).toBe(0);
+      expect(store.ledger()).toHaveLength(0);
+    } finally {
+      await rm(directory, { force: true, recursive: true });
+    }
+  });
+
   it('stops the live path after one response with missing cost', async () => {
     const packageInput = loadPackage();
     const provider = new DeterministicLiveProvider(packageInput, {
@@ -642,9 +939,20 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
   });
 
   it('runs the approved Gemini package sequentially within the single-use cap', async () => {
-    const packageInput = loadApprovedGeminiPackage();
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const provider = new DeterministicLiveProvider(packageInput, {
       actualCostUsd: 0.1,
+      generationId: 'generation-live-test',
+      openRouterMetadata: {
+        endpoints: [
+          {
+            model: 'google/gemini-3.6-flash',
+            provider: 'Google',
+            selected: true,
+          },
+        ],
+        requested: 'google-vertex/global',
+      },
     });
     const run = await runWritingFrameworkSelectionGateLive({
       canaryFactory: deterministicCanary,
@@ -662,8 +970,15 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     expect(provider.executions).toBe(4);
     expect(
       run.attempts.every(
-        ({ observedProvider, requestedRoute }) =>
+        ({
+          generationId,
+          observedProvider,
+          openRouterMetadata,
+          requestedRoute,
+        }) =>
+          generationId === 'generation-live-test' &&
           observedProvider === 'Google' &&
+          openRouterMetadata?.requested === 'google-vertex/global' &&
           requestedRoute === 'google-vertex/global',
       ),
     ).toBe(true);
@@ -675,16 +990,45 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     ).toBeCloseTo(0.4, 10);
   });
 
-  it('persists CALL_INTENT before invoking the simulated live provider', async () => {
+  it('rejects replay of the consumed Gemini Q1 identity before dispatch', async () => {
     const packageInput = loadApprovedGeminiPackage();
+    const provider = new DeterministicLiveProvider(packageInput);
+    const store = new InMemoryWritingFrameworkGateStore();
+
+    await expect(
+      runWritingFrameworkSelectionGateLive({
+        canaryFactory: deterministicCanary,
+        packageInput,
+        provider,
+        store,
+      }),
+    ).rejects.toThrow('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
+    expect(provider.executions).toBe(0);
+    expect(store.ledger()).toHaveLength(0);
+  });
+
+  it('persists the request manifest and CALL_INTENT before provider dispatch', async () => {
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const store = new InMemoryWritingFrameworkGateStore();
     const delegate = new DeterministicLiveProvider(packageInput);
     let observedIntentBeforeExecution = false;
+    let observedAuthorizationBeforeExecution = false;
     const provider: WritingFrameworkGateLiveProvider = {
+      authorizationProof: delegate.authorizationProof,
+      authorizedIdentityFingerprint: packageInput.identityFingerprint,
       kind: 'OPENROUTER_LIVE',
+      prepare(request) {
+        return delegate.prepare(request);
+      },
       async execute(request) {
+        const ledger = store.ledger();
+        observedAuthorizationBeforeExecution =
+          ledger[0]?.event === 'LIVE_AUTHORIZATION_CONSUMED';
         observedIntentBeforeExecution =
-          store.ledger().at(-1)?.event === 'CALL_INTENT';
+          ledger.at(-1)?.event === 'CALL_INTENT' &&
+          ledger.at(-2)?.event === 'REQUEST_MANIFEST' &&
+          ledger.at(-1)?.requestManifestSha256 ===
+            request.requestManifest.manifestSha256;
         return delegate.execute(request);
       },
     };
@@ -696,12 +1040,13 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
       store,
     });
 
+    expect(observedAuthorizationBeforeExecution).toBe(true);
     expect(observedIntentBeforeExecution).toBe(true);
     expect(run.usableWorkflows).toBe(4);
   });
 
   it('requires reconciliation when Gemini returns no actual cost', async () => {
-    const packageInput = loadApprovedGeminiPackage();
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const provider = new DeterministicLiveProvider(packageInput, {
       actualCostUsd: null,
     });
@@ -721,9 +1066,10 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     });
   });
 
-  it('fails traceability when Gemini returns no provider request id', async () => {
-    const packageInput = loadApprovedGeminiPackage();
+  it('fails traceability when Gemini returns neither generation nor request id', async () => {
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const provider = new DeterministicLiveProvider(packageInput, {
+      generationId: null,
       providerRequestId: null,
     });
     const run = await runWritingFrameworkSelectionGateLive({
@@ -742,8 +1088,33 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
     });
   });
 
+  it('persists a generation id independently when request id is absent', async () => {
+    const packageInput = loadAuthorizedGeminiTestPackage();
+    const provider = new DeterministicLiveProvider(packageInput, {
+      generationId: 'generation-only-id',
+      providerRequestId: null,
+    });
+    const run = await runWritingFrameworkSelectionGateLive({
+      canaryFactory: deterministicCanary,
+      packageInput,
+      provider,
+      store: new InMemoryWritingFrameworkGateStore(),
+    });
+
+    expect(run.forceNoGo).toBe(false);
+    expect(run.attempts).toHaveLength(4);
+    expect(
+      run.attempts.every(
+        ({ generationId, providerRequestId, status }) =>
+          generationId === 'generation-only-id' &&
+          providerRequestId === null &&
+          status === 'VALID',
+      ),
+    ).toBe(true);
+  });
+
   it('marks a simulated post-dispatch timeout orphaned and stops', async () => {
-    const packageInput = loadApprovedGeminiPackage();
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const provider = new DeterministicLiveProvider(packageInput, {
       actualCostUsd: null,
       errorCode: 'PROVIDER_TIMEOUT',
@@ -767,6 +1138,8 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
       rawPersistedBeforeValidation: true,
     });
     expect(run.ledger.map(({ event }) => event)).toEqual([
+      'LIVE_AUTHORIZATION_CONSUMED',
+      'REQUEST_MANIFEST',
       'CALL_INTENT',
       'RAW_RECEIVED',
       'CALL_OUTCOME',
@@ -774,7 +1147,7 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
   });
 
   it('stops after one response whose actual cost exceeds the per-attempt bound', async () => {
-    const packageInput = loadApprovedGeminiPackage();
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const provider = new DeterministicLiveProvider(packageInput, {
       actualCostUsd: 0.120_842,
     });
@@ -790,7 +1163,7 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
   });
 
   it('prevents the next call when its worst-case bound would exceed the cap', async () => {
-    const approved = loadApprovedGeminiPackage();
+    const approved = loadAuthorizedGeminiTestPackage();
     const packageInput = {
       ...approved,
       finance: {
@@ -820,7 +1193,7 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
   });
 
   it('stops on the first semantic defect after persisting raw', async () => {
-    const packageInput = loadApprovedGeminiPackage();
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const provider = new DeterministicLiveProvider(packageInput, {
       rawOutput: JSON.stringify({ findings: [] }),
     });
@@ -837,7 +1210,7 @@ describe('V4-009C-S2 writing framework gate runner v2', () => {
   });
 
   it('resumes the completed Gemini gate without a second provider call', async () => {
-    const packageInput = loadApprovedGeminiPackage();
+    const packageInput = loadAuthorizedGeminiTestPackage();
     const store = new InMemoryWritingFrameworkGateStore();
     const firstProvider = new DeterministicLiveProvider(packageInput);
     await runWritingFrameworkSelectionGateLive({

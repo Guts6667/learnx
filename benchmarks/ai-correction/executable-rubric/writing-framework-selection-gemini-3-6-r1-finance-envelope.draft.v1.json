@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 2,
+  "envelopeId": "learnx-writing-framework-selection-fr-gemini-3-6-r1-gate4-finance-draft-v1",
+  "envelopeVersion": "1.0.0",
+  "status": "DRAFT_NOT_ARBITRATED_NETWORK_NOT_AUTHORIZED",
+  "preparedAt": "2026-08-22T09:17:10Z",
+  "campaign": {
+    "dossierPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-freeze.v1.json",
+    "dossierSha256": "d60c108c6ce12784c985b235aa691fa852cfa653e4fbbd12da536d1acb347207",
+    "identityFingerprint": "00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0",
+    "ownerDossierArbitration": "NOT_GRANTED",
+    "stage": "FOUR_CASE_GATE",
+    "historicalBudgetReusedUsd": 0,
+    "closedQ1BudgetReused": false
+  },
+  "pricingAuthority": {
+    "path": "benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json",
+    "sha256": "6dce664f5e5fb364bdae19c66f4e9147f47a00787154284e597ec813ec31cd19",
+    "status": "INFORMATIVE_PUBLIC_REATTESTATION_REQUIRES_FINANCE_ARBITRATION",
+    "currency": "USD",
+    "inputUsdPerMillionTokens": 0.75,
+    "outputAndReasoningUsdPerMillionTokens": 3.75,
+    "promptUsdPerToken": 7.5e-7,
+    "completionAndReasoningUsdPerToken": 0.00000375,
+    "cacheDiscountAssumed": false,
+    "promotionAssumed": false
+  },
+  "perAttemptBound": {
+    "maximumPromptUtf8Bytes": 65536,
+    "promptBytePolicy": "FAIL_BEFORE_NETWORK_IF_SERIALIZED_MESSAGES_EXCEED_65536_UTF8_BYTES",
+    "schemaUtf8Bytes": 439,
+    "schemaSha256": "05719294eed15139abd0039c0f1e91a25489535c882968836fe3ece25b2fdb13",
+    "transportAllowanceTokens": 2048,
+    "inputTokenUpperBound": 68023,
+    "inputTokenBoundPolicy": "ONE_UTF8_BYTE_COUNTS_AS_ONE_TOKEN_PLUS_SCHEMA_AND_TRANSPORT_ALLOWANCE",
+    "maximumCombinedOutputAndReasoningTokens": 2500,
+    "visibleOutputTokenTarget": 1800,
+    "maximumInputCostUsd": 0.05101725,
+    "maximumOutputAndReasoningCostUsd": 0.009375,
+    "maximumCostUsd": 0.06039225
+  },
+  "gateBound": {
+    "maximumProviderAttempts": 4,
+    "maximumRetriesPerWorkflow": 0,
+    "maximumFallbacks": 0,
+    "executionOrder": "FROZEN_MANIFEST_ORDER_SEQUENTIAL",
+    "stopOnFirstDefect": true,
+    "calculatedMaximumProviderCostUsd": 0.241569,
+    "maximumProviderCostUsd": 0.5,
+    "hardCapPolicy": "FAIL_BEFORE_DISPATCH_IF_ACTUAL_PLUS_UNRECONCILED_RESERVES_PLUS_NEXT_ATTEMPT_BOUND_EXCEEDS_0_50_USD",
+    "unusedBudgetTransferable": false
+  },
+  "treasuryStressDraft": {
+    "calculatedProviderBoundUsd": 0.241569,
+    "adverseVatAndFxBufferFactor": 1.30398,
+    "calculatedBoundLoadedAndFxUsd": 0.31500114462,
+    "hardProviderCapUsd": 0.5,
+    "hardCapTreasuryReserveUsd": 0.65199,
+    "hardCapTreasuryReserveDisplayUsd": 0.652,
+    "financeEffect": "NONE_UNTIL_SEPARATE_ARBITRATION",
+    "productPriceEffect": "NONE"
+  },
+  "reconciliationPolicy": {
+    "actualCostRequiredPerSentAttempt": true,
+    "missingActualCostState": "RECONCILIATION_REQUIRED",
+    "missingActualCostMaySettleAsZero": false,
+    "conservativeWriteOffMayBeAutomatic": false,
+    "conservativeWriteOffRequiresSeparateFinanceAuthorization": true,
+    "settlementOrReleaseBeforeReconciliationAllowed": false,
+    "resultPublicationBeforeReconciliationAllowed": false,
+    "timeoutAfterDispatchRequiresReconciliation": true,
+    "orphanedAttemptRequiresReconciliation": true
+  },
+  "authorizationBoundary": {
+    "financeArbitration": "NOT_GRANTED",
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "runnerImplementationVerified": false,
+    "modelCallsAllowed": false,
+    "ownerGoToken": null,
+    "networkAuthorizationArtifact": null,
+    "panel10x2Included": false,
+    "holdoutAccess": "PROHIBITED",
+    "liveActivationAllowed": false
+  },
+  "envelopeFingerprint": "54cce9dce3fd4b21b3326af79ad3b2c8e69ab2b38a4ee6137f23c96b3a790116"
+}

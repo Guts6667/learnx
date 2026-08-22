@@ -21,9 +21,33 @@ const strongCanarySchema = z.string().regex(/^lx-canary-[a-f0-9]{32}$/u);
 
 export const EVIDENCE_ASSIST_PROTOCOL_VERSION = '3.0.0';
 export const EVIDENCE_ASSIST_VALIDATOR_VERSION = '2.0.0';
+export const EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT = 'GEMINI_WIRE_3_0_1';
+export const EVIDENCE_ASSIST_GEMINI_WIRE_DIALECT_VERSION =
+  'evidence-assist-wire/3.0.1';
 export const MAX_CANDIDATE_SPAN_IDS = 4;
 export const MAX_EVIDENCE_ASSIST_FINDINGS = 64;
 export const MAX_RAW_MODEL_OUTPUT_CHARACTERS = 20_000;
+
+export const GEMINI_WIRE_JSON_SCHEMA_KEYWORDS = Object.freeze([
+  'additionalProperties',
+  'description',
+  'enum',
+  'format',
+  'items',
+  'maxItems',
+  'maximum',
+  'minItems',
+  'minimum',
+  'prefixItems',
+  'properties',
+  'required',
+  'title',
+  'type',
+] as const);
+
+const geminiWireJsonSchemaKeywords = new Set<string>(
+  GEMINI_WIRE_JSON_SCHEMA_KEYWORDS,
+);
 
 export const CANDIDATE_EVIDENCE_RULE = Object.freeze({
   maximumSpanIds: MAX_CANDIDATE_SPAN_IDS,
@@ -196,6 +220,54 @@ function deepFreeze<T>(value: T): Readonly<T> {
   return value;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function assertGeminiWireSchemaNode(value: unknown, path: string): void {
+  if (!isRecord(value)) {
+    throw new Error(`GEMINI_WIRE_SCHEMA_NODE_INVALID:${path}`);
+  }
+  for (const [keyword, child] of Object.entries(value)) {
+    if (!geminiWireJsonSchemaKeywords.has(keyword)) {
+      throw new Error(
+        `GEMINI_WIRE_SCHEMA_KEYWORD_UNSUPPORTED:${path}.${keyword}`,
+      );
+    }
+    if (keyword === 'properties') {
+      if (!isRecord(child)) {
+        throw new Error(`GEMINI_WIRE_SCHEMA_MAP_INVALID:${path}.${keyword}`);
+      }
+      for (const [name, schema] of Object.entries(child)) {
+        assertGeminiWireSchemaNode(schema, `${path}.${keyword}.${name}`);
+      }
+      continue;
+    }
+    if (keyword === 'items') {
+      assertGeminiWireSchemaNode(child, `${path}.items`);
+      continue;
+    }
+    if (keyword === 'additionalProperties' && isRecord(child)) {
+      assertGeminiWireSchemaNode(child, `${path}.additionalProperties`);
+      continue;
+    }
+    if (keyword === 'prefixItems') {
+      if (!Array.isArray(child)) {
+        throw new Error(`GEMINI_WIRE_SCHEMA_ARRAY_INVALID:${path}.${keyword}`);
+      }
+      child.forEach((schema, index) => {
+        assertGeminiWireSchemaNode(schema, `${path}.${keyword}[${index}]`);
+      });
+    }
+  }
+}
+
+export function assertGeminiWireJsonSchema(
+  schema: unknown,
+): asserts schema is Record<string, unknown> {
+  assertGeminiWireSchemaNode(schema, '$');
+}
+
 export function generateEvidenceAssistCanary(): string {
   return `lx-canary-${randomBytes(16).toString('hex')}`;
 }
@@ -235,7 +307,9 @@ export function buildEvidenceAssistCandidateRubricView(
   });
 }
 
-export function evidenceAssistJsonSchema(): Record<string, unknown> {
+function evidenceAssistJsonSchemaCore(input: {
+  includeLocalSpanPattern: boolean;
+}): Record<string, unknown> {
   return {
     additionalProperties: false,
     properties: {
@@ -254,7 +328,9 @@ export function evidenceAssistJsonSchema(): Record<string, unknown> {
             },
             spanIds: {
               items: {
-                pattern: '^s[0-9]{4,}-[a-f0-9]{16}$',
+                ...(input.includeLocalSpanPattern
+                  ? { pattern: '^s[0-9]{4,}-[a-f0-9]{16}$' }
+                  : {}),
                 type: 'string',
               },
               maxItems: MAX_CANDIDATE_SPAN_IDS,
@@ -271,6 +347,24 @@ export function evidenceAssistJsonSchema(): Record<string, unknown> {
     required: ['findings'],
     type: 'object',
   };
+}
+
+export function evidenceAssistJsonSchema(): Record<string, unknown> {
+  return evidenceAssistJsonSchemaCore({ includeLocalSpanPattern: true });
+}
+
+export function evidenceAssistGeminiWireJsonSchema(): Readonly<
+  Record<string, unknown>
+> {
+  const schema = evidenceAssistJsonSchemaCore({
+    includeLocalSpanPattern: false,
+  });
+  assertGeminiWireJsonSchema(schema);
+  return deepFreeze(schema);
+}
+
+export function evidenceAssistGeminiWireSchemaFingerprint(): string {
+  return sha256(canonicalJson(evidenceAssistGeminiWireJsonSchema()));
 }
 
 export function evidenceAssistProtocolFingerprint(): string {

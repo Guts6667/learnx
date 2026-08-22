@@ -5,14 +5,15 @@ import { resolve } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  evidenceAssistJsonSchema,
-  prepareEvidenceAssistRequestV2,
-} from '../../lib/evidence-assist-protocol-v2-adapter.ts';
+import { prepareEvidenceAssistRequestV2 } from '../../lib/evidence-assist-protocol-v2-adapter.ts';
+import { evidenceAssistGeminiWireJsonSchema } from '../../lib/evidence-assist-protocol.ts';
 import {
   buildWritingFrameworkGatePackage,
+  createWritingGateLiveAuthorizationProof,
+  type WritingGateLiveAuthorizationProof,
   type WritingFrameworkGatePackage,
   type WritingFrameworkGateProviderRequest,
+  type WritingFrameworkGateProviderRequestCore,
 } from './writing-framework-selection-gate-runner-v2.ts';
 import {
   OpenRouterWritingFrameworkGateProvider,
@@ -25,6 +26,7 @@ const dossierPath =
   'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json';
 const financePath =
   'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json';
+const authorizedTestIdentity = 'b'.repeat(64);
 
 function read(path: string): string {
   return readFileSync(resolve(root, path), 'utf8');
@@ -61,6 +63,7 @@ function loadPackage(): WritingFrameworkGatePackage {
 
 function providerRequest(
   packageInput: WritingFrameworkGatePackage,
+  provider: OpenRouterWritingFrameworkGateProvider,
 ): WritingFrameworkGateProviderRequest {
   const caseItem = packageInput.cases[0];
   if (!caseItem) throw new Error('TEST_GATE_CASE_MISSING');
@@ -71,19 +74,48 @@ function providerRequest(
     taskContext: packageInput.taskContext,
     taskPrompt: packageInput.taskPrompt,
   });
-  return {
+  const core: WritingFrameworkGateProviderRequestCore = {
     caseId: caseItem.caseId,
     idempotencyKey: 'a'.repeat(64),
-    jsonSchema: evidenceAssistJsonSchema(),
+    jsonSchema: evidenceAssistGeminiWireJsonSchema(),
     messages: prepared.messages,
     requestContext: prepared.requestContext,
   };
+  return { ...core, requestManifest: provider.prepare(core) };
 }
 
-function openRouterResponse(input: {
-  cost?: number;
-  id?: string;
-}): Response {
+function authorizedTestPackage(): WritingFrameworkGatePackage {
+  return {
+    ...loadPackage(),
+    identityFingerprint: authorizedTestIdentity,
+  };
+}
+
+function testAuthorizationProof(
+  packageInput: WritingFrameworkGatePackage,
+): WritingGateLiveAuthorizationProof {
+  return createWritingGateLiveAuthorizationProof({
+    authorizationFingerprint: 'c'.repeat(64),
+    identityFingerprint: packageInput.identityFingerprint,
+    outputDirectory: resolve(
+      root,
+      'benchmarks/ai-correction/results/test-live-authorization',
+    ),
+    runId: 'test-live-authorization',
+  });
+}
+
+function liveTestProvider(
+  packageInput: WritingFrameworkGatePackage,
+): OpenRouterWritingFrameworkGateProvider {
+  return new OpenRouterWritingFrameworkGateProvider(
+    'test-key-never-sent',
+    packageInput,
+    { authorizationProof: testAuthorizationProof(packageInput) },
+  );
+}
+
+function openRouterResponse(input: { cost?: number; id?: string }): Response {
   return new Response(
     JSON.stringify({
       choices: [
@@ -127,7 +159,7 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
   });
 
-  it('rejects the inherited Sonnet GO namespace before key lookup or network', () => {
+  it('rejects the closed Q1 identity before GO, key lookup or network', () => {
     const result = spawnSync(
       process.execPath,
       [
@@ -146,13 +178,58 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     );
 
     expect(result.status).not.toBe(0);
-    expect(result.stderr).toContain(
-      'OWNER_GO_REQUIRED_USE_EXACT_TOKEN_GO_V4_003E_Q1_GEMINI36_EF88A8E3B1BFD57D',
-    );
+    expect(result.stderr).toContain('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
     expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
   });
 
-  it('binds the approved envelope and simulated transport proof', () => {
+  it('does not accept the former Q1 GO without its authorization', () => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        '--import',
+        'tsx',
+        'scripts/run-writing-framework-selection-gate-v2.ts',
+        '--candidate=gemini-3.6',
+        '--execute',
+        '--owner-go=GO_V4_003E_Q1_GEMINI36_EF88A8E3B1BFD57D',
+      ],
+      {
+        cwd: root,
+        encoding: 'utf8',
+        env: { PATH: process.env.PATH ?? '' },
+      },
+    );
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
+    expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
+  });
+
+  it('does not accept the former exact Q1 authorization', () => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        '--import',
+        'tsx',
+        'scripts/run-writing-framework-selection-gate-v2.ts',
+        '--candidate=gemini-3.6',
+        '--execute',
+        '--owner-go=GO_V4_003E_Q1_GEMINI36_EF88A8E3B1BFD57D',
+        '--network-authorization=benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-network-authorization.v1.json',
+      ],
+      {
+        cwd: root,
+        encoding: 'utf8',
+        env: { PATH: process.env.PATH ?? '' },
+      },
+    );
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
+    expect(result.stderr).not.toContain('OPENROUTER_API_KEY_REQUIRED');
+  });
+
+  it('keeps the approved Q1 envelope and historical source bindings immutable', () => {
     const finance = JSON.parse(read(financePath)) as Record<string, unknown>;
     expect(finance).toMatchObject({
       authorizationBoundary: {
@@ -193,9 +270,28 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
       string,
       { path: string; sha256: string }
     >;
-    for (const { path, sha256: expectedSha } of Object.values(bindings)) {
-      expect(sha256(read(path))).toBe(expectedSha);
-    }
+    expect(bindings).toEqual({
+      dossier: {
+        path: dossierPath,
+        sha256:
+          '89ee45f1065b868a9cd9f7e019d96a3039851bd14a8382d7b4f491413fb792d3',
+      },
+      financeEnvelope: {
+        path: financePath,
+        sha256:
+          '76fbbd343df60fe0bb9dc70d52e992ef8142fcca29b4f8e1e8bd21087f94e922',
+      },
+      provider: {
+        path: 'src/server/ai/writing-framework-selection-openrouter-provider.ts',
+        sha256:
+          '04e45501552055f8b79a4ed628fe8c66c583e08a6440d5f0993202f9afc219d5',
+      },
+      runner: {
+        path: 'src/server/ai/writing-framework-selection-gate-runner-v2.ts',
+        sha256:
+          'e3d60264090b0c2117e528570bc0ecf523119d32ae2d26b1ce4e6bdc3aed2f9d',
+      },
+    });
   });
 
   it('derives the exact payload from the approved frozen dossier', async () => {
@@ -203,13 +299,11 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
       .fn<typeof fetch>()
       .mockResolvedValue(openRouterResponse({ cost: 0.01, id: 'gen-test-1' }));
     vi.stubGlobal('fetch', fetchMock);
-    const packageInput = loadPackage();
-    const provider = new OpenRouterWritingFrameworkGateProvider(
-      'test-key-never-sent',
-      packageInput,
-    );
+    const packageInput = authorizedTestPackage();
+    const provider = liveTestProvider(packageInput);
+    const request = providerRequest(packageInput, provider);
 
-    const result = await provider.execute(providerRequest(packageInput));
+    const result = await provider.execute(request);
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0] ?? [];
@@ -230,13 +324,26 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
       },
     });
     expect(body).not.toHaveProperty('temperature');
+    expect(JSON.stringify(body)).not.toContain('"pattern"');
     expect(JSON.stringify(body)).not.toMatch(/sonnet|anthropic/iu);
     expect(init?.signal).toBeInstanceOf(AbortSignal);
+    expect(new Headers(init?.headers).get('X-OpenRouter-Metadata')).toBe(
+      'enabled',
+    );
+    const serializedManifest = JSON.stringify(request.requestManifest);
+    expect(serializedManifest).not.toContain(packageInput.taskPrompt);
+    expect(serializedManifest).not.toContain(packageInput.taskContext);
+    expect(serializedManifest).not.toContain('test-key-never-sent');
+    expect(serializedManifest).not.toMatch(
+      /"(?:apiKey|authorization|body|headers|messages|profile|prompt)"/iu,
+    );
     expect(result).toMatchObject({
       actualCostUsd: 0.01,
+      clientRequestId: 'a'.repeat(64),
       costSource: 'ACTUAL',
+      generationId: 'gen-test-1',
       observedProvider: 'Google',
-      providerRequestId: 'gen-test-1',
+      providerRequestId: null,
       reasoningTokens: 20,
       visibleOutputTokens: 60,
     });
@@ -281,9 +388,26 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
           },
         }),
     ).toThrow('WRITING_GATE_OPENROUTER_IDENTITY_MISMATCH');
-    expect(read('src/server/ai/writing-framework-selection-openrouter-provider.ts')).not.toMatch(
-      /sonnet|anthropic/iu,
-    );
+    expect(
+      read('src/server/ai/writing-framework-selection-openrouter-provider.ts'),
+    ).not.toMatch(/sonnet|anthropic/iu);
+  });
+
+  it('requires a fresh injected live identity and refuses Q1 replay', () => {
+    const closedPackage = loadPackage();
+    expect(
+      () =>
+        new OpenRouterWritingFrameworkGateProvider('test-key', closedPackage, {
+          authorizationProof: testAuthorizationProof(closedPackage),
+        }),
+    ).toThrow('WRITING_GATE_IDENTITY_CLOSED_NO_REPLAY');
+
+    const freshPackage = authorizedTestPackage();
+    expect(
+      () =>
+        new OpenRouterWritingFrameworkGateProvider('test-key', freshPackage),
+    ).toThrow('WRITING_GATE_NEW_IDENTITY_AUTHORIZATION_REQUIRED');
+    expect(() => liveTestProvider(freshPackage)).not.toThrow();
   });
 
   it('preserves missing cost and request id as null instead of inventing them', async () => {
@@ -291,15 +415,16 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
       .fn<typeof fetch>()
       .mockResolvedValue(openRouterResponse({}));
     vi.stubGlobal('fetch', fetchMock);
-    const packageInput = loadPackage();
-    const result = await new OpenRouterWritingFrameworkGateProvider(
-      'test-key-never-sent',
-      packageInput,
-    ).execute(providerRequest(packageInput));
+    const packageInput = authorizedTestPackage();
+    const provider = liveTestProvider(packageInput);
+    const result = await provider.execute(
+      providerRequest(packageInput, provider),
+    );
 
     expect(result).toMatchObject({
       actualCostUsd: null,
       costSource: 'UNKNOWN',
+      generationId: null,
       observedProvider: 'Google',
       providerRequestId: null,
     });
@@ -309,17 +434,18 @@ describe('Gemini 3.6 writing framework OpenRouter transport', () => {
     const timeout = new DOMException('simulated timeout', 'TimeoutError');
     const fetchMock = vi.fn<typeof fetch>().mockRejectedValue(timeout);
     vi.stubGlobal('fetch', fetchMock);
-    const packageInput = loadPackage();
-    const result = await new OpenRouterWritingFrameworkGateProvider(
-      'test-key-never-sent',
-      packageInput,
-    ).execute(providerRequest(packageInput));
+    const packageInput = authorizedTestPackage();
+    const provider = liveTestProvider(packageInput);
+    const result = await provider.execute(
+      providerRequest(packageInput, provider),
+    );
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(result).toMatchObject({
       actualCostUsd: null,
       costSource: 'UNKNOWN',
       errorCode: 'PROVIDER_TIMEOUT',
+      generationId: null,
       providerRequestId: null,
     });
   });

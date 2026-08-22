@@ -27,7 +27,7 @@ const activeManifestSchema = z
   .object({
     activeExecutionQueue: z.object({
       currentResponsibleAgent: z.literal('AGENT-PROTOCOLE-IA'),
-      currentTicket: z.literal('V4-003E-Q1'),
+      currentTicket: z.literal('V4-003E-Q1-R1'),
       liveActivationAllowed: z.literal(false),
       modelCallsAllowed: z.literal(false),
       orderedTickets: z.tuple([
@@ -43,15 +43,14 @@ const activeManifestSchema = z
         z.literal('V4-009C-S2'),
         z.literal('V4-003E'),
         z.literal('V4-003E-Q1'),
+        z.literal('V4-003E-Q1-R1'),
         z.literal('V4-003E-Q2'),
         z.literal('V4-003E-Q3'),
       ]),
     }),
     baselines: z.object({
       research: z.object({
-        commit: z.literal(
-          'ba845d8b81c24a5c1d3fe448bf4e808920385f42',
-        ),
+        commit: z.literal('ba845d8b81c24a5c1d3fe448bf4e808920385f42'),
         ref: z.literal('origin/dev'),
       }),
       runtime: z.object({
@@ -63,7 +62,7 @@ const activeManifestSchema = z
       experimental: z.object({
         pipelinePromoted: z.literal(false),
         status: z.literal(
-          'V4_009C_S2_NO_GO_GEMINI_3_6_NETWORK_GO_PENDING',
+          'V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED',
         ),
       }),
       offlineCandidate: z.object({
@@ -75,67 +74,67 @@ const activeManifestSchema = z
         status: z.literal('DELIVERED_INACTIVE'),
       }),
     }),
-    currentCampaignVerdicts: z.array(
-      z.union([
-      z.object({
-        appendOnly: z.literal(true),
-        arbitrationReport: z.literal(
-          'docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md',
-        ),
-        canonicalSource: z.object({
-          commit: z.literal(
-            'ba845d8b81c24a5c1d3fe448bf4e808920385f42',
-          ),
-          ref: z.literal('origin/dev'),
-        }),
-        finding: z.object({
-          caseId: z.literal('baseline-pico-spider-mastered'),
-          elementKey: z.literal('project-b-dimension-scope'),
-          expectedAtomicStatus: z.literal('SUPPORTED'),
-          expectedCandidateRelation: z.literal('EVIDENCE_FOR_ELEMENT'),
-          observedCandidateRelation: z.literal('EVIDENCE_AGAINST_ELEMENT'),
-          oracleAmbiguityDemonstrated: z.literal(false),
-          spanId: z.literal('s0007-8a2f1b2dd94b10fd'),
-        }),
-        identityFingerprint: z.literal(
-          'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
-        ),
-        preservation: z.object({
-          campaignClosed: z.literal(true),
-          closedIdentityOrBudgetReuseAllowed: z.literal(false),
-          holdoutAuthorized: z.literal(false),
-          liveActivationAllowed: z.literal(false),
-          panelAuthorized: z.literal(false),
-          postResultRetuningAllowed: z.literal(false),
-          replayAllowed: z.literal(false),
-        }),
-        scope: z.literal('EXACT_FROZEN_IDENTITY_ONLY'),
-        statisticalScope: z.object({
-          completedUsableWorkflows: z.literal(0),
-          gateDecisionValidUnderStopPolicy: z.literal(true),
-          maximumAuthorizedCalls: z.literal(4),
-          modelCallsPerformed: z.literal(1),
-          precisionVarianceRobustnessOrCostQuantilesEstimable:
-            z.literal(false),
-          statisticalGeneralizationAllowed: z.literal(false),
-          unusedCallsNotSent: z.literal(3),
-        }),
-        telemetry: z.object({
-          actualCostUsd: z.literal(0.018828),
-          costSource: z.literal('ACTUAL'),
-          inputTokens: z.literal(5829),
-          latencyMs: z.literal(4228),
-          observedProvider: z.literal('Anthropic'),
-          reasoningTokens: z.literal(0),
-          requestedRoute: z.literal('Anthropic'),
-          visibleOutputTokens: z.literal(717),
-        }),
-        ticket: z.literal('V4-003E'),
-        verdict: z.literal('NO-GO_SEMANTIC_DISAGREEMENT'),
-        }),
-        z.unknown(),
-      ]),
-    ).min(1),
+    currentCampaignVerdicts: z
+      .array(
+        z.union([
+          z.object({
+            appendOnly: z.literal(true),
+            arbitrationReport: z.literal(
+              'docs/V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md',
+            ),
+            canonicalSource: z.object({
+              commit: z.literal('ba845d8b81c24a5c1d3fe448bf4e808920385f42'),
+              ref: z.literal('origin/dev'),
+            }),
+            finding: z.object({
+              caseId: z.literal('baseline-pico-spider-mastered'),
+              elementKey: z.literal('project-b-dimension-scope'),
+              expectedAtomicStatus: z.literal('SUPPORTED'),
+              expectedCandidateRelation: z.literal('EVIDENCE_FOR_ELEMENT'),
+              observedCandidateRelation: z.literal('EVIDENCE_AGAINST_ELEMENT'),
+              oracleAmbiguityDemonstrated: z.literal(false),
+              spanId: z.literal('s0007-8a2f1b2dd94b10fd'),
+            }),
+            identityFingerprint: z.literal(
+              'cc3b1b52bc0f94198faab362905617a3143169e952a53c38eb37f1571eda5d31',
+            ),
+            preservation: z.object({
+              campaignClosed: z.literal(true),
+              closedIdentityOrBudgetReuseAllowed: z.literal(false),
+              holdoutAuthorized: z.literal(false),
+              liveActivationAllowed: z.literal(false),
+              panelAuthorized: z.literal(false),
+              postResultRetuningAllowed: z.literal(false),
+              replayAllowed: z.literal(false),
+            }),
+            scope: z.literal('EXACT_FROZEN_IDENTITY_ONLY'),
+            statisticalScope: z.object({
+              completedUsableWorkflows: z.literal(0),
+              gateDecisionValidUnderStopPolicy: z.literal(true),
+              maximumAuthorizedCalls: z.literal(4),
+              modelCallsPerformed: z.literal(1),
+              precisionVarianceRobustnessOrCostQuantilesEstimable:
+                z.literal(false),
+              statisticalGeneralizationAllowed: z.literal(false),
+              unusedCallsNotSent: z.literal(3),
+            }),
+            telemetry: z.object({
+              actualCostUsd: z.literal(0.018828),
+              costSource: z.literal('ACTUAL'),
+              inputTokens: z.literal(5829),
+              latencyMs: z.literal(4228),
+              observedProvider: z.literal('Anthropic'),
+              reasoningTokens: z.literal(0),
+              requestedRoute: z.literal('Anthropic'),
+              visibleOutputTokens: z.literal(717),
+            }),
+            ticket: z.literal('V4-003E'),
+            verdict: z.literal('NO-GO_SEMANTIC_DISAGREEMENT'),
+          }),
+          z.unknown(),
+        ]),
+      )
+      .min(1),
     eligibility: z
       .object({
         activitiesEligibleForLiveCorrection: z.literal(0),
@@ -165,7 +164,11 @@ const activeManifestSchema = z
     holdoutAdmissionGate: z.object({
       currentBlockers: z.tuple([
         z.literal('CLOSED_SONNET_IDENTITY_FAILED_STAGE_ONE'),
-        z.literal('GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED'),
+        z.literal('GEMINI_3_6_GATE_NO_GO_TECHNICAL'),
+        z.literal('GEMINI_3_6_COST_RECONCILIATION_REQUIRED'),
+        z.literal(
+          'GEMINI_3_6_NEW_REMEDIATED_IDENTITY_NOT_FROZEN_OR_AUTHORIZED',
+        ),
         z.literal('NEW_STAGE_ONE_NOT_EXECUTED'),
       ]),
       status: z.literal('NOT_ELIGIBLE'),
@@ -227,17 +230,129 @@ const activeManifestSchema = z
         stopPolicyFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
         telemetryContractFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
       }),
-      currentTicket: z.literal('V4-003E-Q1'),
+      closedGateTicket: z.literal('V4-003E-Q1'),
+      currentTicket: z.literal('V4-003E-Q1-R1'),
+      remediation: z.object({
+        costReconciliationAuthority: z.object({
+          conservativeWriteOffRequiresSeparateFinanceAuthorization:
+            z.literal(true),
+          path: z.literal('docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md'),
+          retryFromUtcDate: z.literal('2026-08-23'),
+          sameDayActivityLookup: z.literal('UNAVAILABLE_CURRENT_UTC_DAY'),
+          sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+          status: z.literal('RECONCILIATION_REQUIRED'),
+        }),
+        financeArbitrationRequired: z.literal(true),
+        informativePublicReattestation: z.object({
+          financeArbitrationEffect: z.literal('NONE'),
+          mode: z.literal(
+            'PUBLIC_CATALOG_AND_DOCUMENTATION_READ_ONLY_NO_INFERENCE',
+          ),
+          modelCallsPerformed: z.literal(0),
+          networkAuthorizationEffect: z.literal('NONE'),
+          newIdentityEffect: z.literal('NONE'),
+          observedInformativePricingUsdPerMillionTokens: z.object({
+            input: z.literal(0.75),
+            outputAndReasoning: z.literal(3.75),
+          }),
+          path: z.literal(
+            'benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json',
+          ),
+          sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+          status: z.literal('REATTESTED_OFFLINE_NETWORK_GO_NOT_GRANTED'),
+          pricingAuthorityEffect: z.literal(
+            'NONE_REQUIRES_FRESH_FINANCE_ARBITRATION',
+          ),
+        }),
+        localFakePreflightRequired: z.literal(true),
+        mode: z.literal('OFFLINE_ONLY'),
+        modelCallsAllowed: z.literal(false),
+        r1FreezePreparation: z.object({
+          dossier: z.object({
+            identityFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+            path: z.string().min(1),
+            sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+          }),
+          exactRebaselineTool: z.literal(
+            'scripts/prepare-writing-framework-selection-gemini-3-6-r1-freeze.ts',
+          ),
+          fakePreflight: z.object({
+            fakeProviderExecutions: z.literal(4),
+            modelCallsPerformed: z.literal(0),
+            networkCallsPerformed: z.literal(0),
+            path: z.string().min(1),
+            preflightFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+            replayProviderExecutions: z.literal(0),
+            sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+            transportDifferentialFingerprint: z
+              .string()
+              .regex(/^[a-f0-9]{64}$/u),
+            usableWorkflows: z.literal('4/4'),
+          }),
+          financeArbitrationGranted: z.literal(false),
+          financeDraft: z.object({
+            calculatedMaximumFourCallsUsd: z.literal(0.241569),
+            hardProviderCapUsd: z.literal(0.5),
+            maximumCostPerCallUsd: z.literal(0.06039225),
+            path: z.string().min(1),
+            sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+            status: z.literal('DRAFT_NOT_ARBITRATED_NETWORK_NOT_AUTHORIZED'),
+          }),
+          implementationManifest: z.object({
+            manifestFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+            path: z.string().min(1),
+            sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+          }),
+          modelCallsAllowed: z.literal(false),
+          ownerNetworkAuthorizationGranted: z.literal(false),
+          publicBaselineCommit: z.literal(
+            '07d5d80978ac1346a78a46e41e6a589439fa564d',
+          ),
+          report: z.object({
+            path: z.literal(
+              'docs/V4_003E_Q1_R1_GEMINI_3_6_OFFLINE_REMEDIATION.md',
+            ),
+            sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+          }),
+          status: z.literal('FROZEN_ON_PUBLIC_CODE_COMMIT_A_HARD_OFF'),
+        }),
+        transportRemediation: z.object({
+          candidateCause: z.literal('PATTERN_KEYWORD_HYPOTHESIS_NOT_PROVEN'),
+          conservativeWriteOffNeverAutomatic: z.literal(true),
+          generationAndProviderRequestIdsSeparated: z.literal(true),
+          localSpanIdPatternValidationRetained: z.literal(true),
+          metadataHeaderEnabled: z.literal(true),
+          networkOrModelCallsPerformed: z.literal(0),
+          recursiveGeminiKeywordPreflight: z.literal(true),
+          requestManifestBeforeCallIntent: z.literal(true),
+          status: z.literal(
+            'IMPLEMENTED_AND_TESTED_OFFLINE_NEW_IDENTITY_FROZEN_HARD_OFF',
+          ),
+          wireDialect: z.literal('evidence-assist-wire/3.0.1'),
+          wirePatternOmitted: z.literal(true),
+        }),
+        newIdentityFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
+        newIdentityRequired: z.literal(true),
+        newOwnerSingleUseAuthorizationRequired: z.literal(true),
+      }),
       candidates: z.tuple([
         z.object({
           candidate: z.literal('GEMINI_3_6_FLASH'),
-          canonicalCatalogId: z.literal(
-            'google/gemini-3.6-flash-20260721',
-          ),
+          canonicalCatalogId: z.literal('google/gemini-3.6-flash-20260721'),
+          costReconciliation: z.object({
+            authority: z.literal(
+              'docs/V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md',
+            ),
+            retryFromUtcDate: z.literal('2026-08-23'),
+            status: z.literal('RECONCILIATION_REQUIRED'),
+            writeOffAutomatic: z.literal(false),
+          }),
           financeApproval: z.object({
             approvedCapTreasuryReserveDisplayUsd: z.literal(0.652),
             approvedCapTreasuryReserveUsd: z.literal(0.65199),
-            authorizationEffect: z.literal('NO_NETWORK_GO'),
+            authorizationEffect: z.literal(
+              'HISTORICAL_APPROVAL_CONSUMED_NO_REPLAY',
+            ),
             calculatedMaximumProviderCostUsd: z.literal(0.483366),
             historicalDraftReused: z.literal(false),
             loadedFxBasisProviderCostUsd: z.literal(0.483366),
@@ -247,7 +362,9 @@ const activeManifestSchema = z
             maximumCostPerAttemptUsd: z.literal(0.1208415),
             maximumProviderAttempts: z.literal(4),
             approvedProviderCapUsd: z.literal(0.5),
-            status: z.literal('APPROVED_NETWORK_NOT_AUTHORIZED'),
+            status: z.literal(
+              'APPROVAL_AND_NETWORK_AUTHORIZATION_CONSUMED_GATE_CLOSED_RECONCILIATION_REQUIRED',
+            ),
           }),
           financeArbitrationGranted: z.literal(true),
           identityFingerprint: z.literal(
@@ -264,7 +381,8 @@ const activeManifestSchema = z
           ),
           modelId: z.literal('google/gemini-3.6-flash'),
           networkCallsAllowed: z.literal(false),
-          ownerAuthorizationGranted: z.literal(false),
+          ownerAuthorizationConsumed: z.literal(true),
+          ownerAuthorizationGranted: z.literal(true),
           ownerIdentityApprovalGranted: z.literal(true),
           proposedRequestedRoute: z.literal('google-vertex/global'),
           rank: z.literal(1),
@@ -274,7 +392,7 @@ const activeManifestSchema = z
             temperature: z.literal('OMIT_UNSUPPORTED'),
           }),
           runnerStatus: z.literal(
-            'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_AND_SIMULATED_TRANSPORT_GREEN',
+            'NETWORK_GATE_STOPPED_AFTER_1_OF_4_NO_RETRY_OR_FALLBACK',
           ),
           routeAttestationStatus: z.literal(
             'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
@@ -285,12 +403,26 @@ const activeManifestSchema = z
           transportPreflightFingerprint: z.literal(
             '317966c06fed11a96a004932e60a8540a3bafb01cc7eceb629c878dada71a079',
           ),
+          networkAuthorization: z.string().min(1),
+          networkAuthorizationFingerprint: z.literal(
+            'a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906',
+          ),
+          networkGateResult: z.object({
+            actualCostUsd: z.null(),
+            financialState: z.literal('RECONCILIATION_REQUIRED'),
+            modelCallsPerformed: z.literal(1),
+            status: z.literal('NO-GO_TECHNICAL_PROVIDER_HTTP_400'),
+            unresolvedReservedCostUsd: z.literal(0.1208415),
+            unusedAuthorizedCallsNotSent: z.literal(3),
+            usableWorkflows: z.literal(0),
+            verificationFingerprint: z.literal(
+              '1192bb02f40d4c5ac159be91738b7696e3c615049f7e428b6618a07d6e2b00b4',
+            ),
+          }),
         }),
         z.object({
           candidate: z.literal('GEMINI_3_7_FLASH_TECHNICAL_OPTION'),
-          canonicalCatalogId: z.literal(
-            'google/gemini-3.7-flash-20260813',
-          ),
+          canonicalCatalogId: z.literal('google/gemini-3.7-flash-20260813'),
           financeEnvelope: z.null(),
           financeStatus: z.literal(
             'RECALCULATION_REQUIRED_NO_VALUES_TRANSFERRED_FROM_GEMINI_3_6',
@@ -336,7 +468,7 @@ const activeManifestSchema = z
         panelAuthorized: z.literal(false),
       }),
       status: z.literal(
-        'GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING',
+        'GEMINI_3_6_Q1_R1_FROZEN_HARD_OFF_AWAITING_FINANCE_AND_OWNER_GO',
       ),
     }),
     offlineWork: z.object({
@@ -345,12 +477,12 @@ const activeManifestSchema = z
       }),
       'V4-003': z.object({
         status: z.literal(
-          'V4_003E_GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING',
+          'V4_003E_Q1_R1_FROZEN_HARD_OFF_AWAITING_FINANCE_AND_OWNER_GO',
         ),
       }),
       'V4-009C': z.object({
-        nextExecutionTicket: z.null(),
-        status: z.literal('S2_NO_GO_SEMANTIC_DISAGREEMENT'),
+        nextExecutionTicket: z.literal('V4-003E-Q1-R1'),
+        status: z.literal('Q1_NO_GO_TECHNICAL_R1_OFFLINE_REMEDIATION'),
       }),
       'V4-010': z.object({
         status: z.literal('ACTIVE_OFFLINE_LIVE_BLOCKED'),
@@ -439,9 +571,7 @@ const activeManifestSchema = z
                 summarySha256: z.string().regex(/^[a-f0-9]{64}$/u),
                 unusedCallsNotSent: z.literal(3),
               }),
-              status: z.literal(
-                'GATE4_NETWORK_NO_GO_SEMANTIC_DISAGREEMENT',
-              ),
+              status: z.literal('GATE4_NETWORK_NO_GO_SEMANTIC_DISAGREEMENT'),
             })
             .optional(),
           nextProtocol: z
@@ -522,6 +652,9 @@ const activeManifestSchema = z
     targetArchitecture: z.object({
       modelAuthority: z.literal('CANDIDATE_RELATIONS_ONLY'),
       protocolAuthority: z.literal('docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md'),
+      semanticProtocolStatus: z.literal(
+        'EVIDENCE_ASSIST_3_0_CANONICAL_COMPOSITE_AND_SECOND_PASS_SUPERSEDED',
+      ),
       semanticLevelAndScoreAuthority: z.literal('NONE'),
       successorSemanticArbitration: z.object({
         authority: z.literal('docs/V4_EVIDENCE_SEMANTIC_ARBITRATION.md'),
@@ -531,9 +664,7 @@ const activeManifestSchema = z
         mvpLevelEffect: z.literal(
           'SAME_AS_NOT_DEMONSTRATED_FOR_POSITIVE_REQUIRED_ELEMENTS',
         ),
-        status: z.literal(
-          'V4-009C-S2_NO_GO_SEMANTIC_DISAGREEMENT',
-        ),
+        status: z.literal('V4-009C-S2_NO_GO_SEMANTIC_DISAGREEMENT'),
       }),
     }),
   })
@@ -637,13 +768,92 @@ describe('active autonomous correction phase manifest', () => {
     );
   });
 
-  it('records the approved Gemini 3.6 identity and envelope without execution authority', () => {
+  it('records the closed Gemini 3.6 technical gate and unresolved cost', () => {
     const queue = active.offlineCandidateQueue;
     const [gemini36, gemini37, mistral] = queue.candidates;
 
-    expect(queue.currentTicket).toBe('V4-003E-Q1');
+    expect(queue.currentTicket).toBe('V4-003E-Q1-R1');
+    expect(queue.closedGateTicket).toBe('V4-003E-Q1');
+    expect(queue.remediation).toMatchObject({
+      costReconciliationAuthority: {
+        conservativeWriteOffRequiresSeparateFinanceAuthorization: true,
+        retryFromUtcDate: '2026-08-23',
+        sameDayActivityLookup: 'UNAVAILABLE_CURRENT_UTC_DAY',
+        status: 'RECONCILIATION_REQUIRED',
+      },
+      financeArbitrationRequired: true,
+      informativePublicReattestation: {
+        financeArbitrationEffect: 'NONE',
+        modelCallsPerformed: 0,
+        networkAuthorizationEffect: 'NONE',
+        newIdentityEffect: 'NONE',
+        observedInformativePricingUsdPerMillionTokens: {
+          input: 0.75,
+          outputAndReasoning: 3.75,
+        },
+        pricingAuthorityEffect: 'NONE_REQUIRES_FRESH_FINANCE_ARBITRATION',
+        status: 'REATTESTED_OFFLINE_NETWORK_GO_NOT_GRANTED',
+      },
+      localFakePreflightRequired: true,
+      mode: 'OFFLINE_ONLY',
+      modelCallsAllowed: false,
+      transportRemediation: {
+        candidateCause: 'PATTERN_KEYWORD_HYPOTHESIS_NOT_PROVEN',
+        conservativeWriteOffNeverAutomatic: true,
+        generationAndProviderRequestIdsSeparated: true,
+        localSpanIdPatternValidationRetained: true,
+        metadataHeaderEnabled: true,
+        networkOrModelCallsPerformed: 0,
+        recursiveGeminiKeywordPreflight: true,
+        requestManifestBeforeCallIntent: true,
+        status: 'IMPLEMENTED_AND_TESTED_OFFLINE_NEW_IDENTITY_FROZEN_HARD_OFF',
+        wireDialect: 'evidence-assist-wire/3.0.1',
+        wirePatternOmitted: true,
+      },
+      newIdentityFingerprint:
+        '00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0',
+      newIdentityRequired: true,
+      newOwnerSingleUseAuthorizationRequired: true,
+    });
+    expect(queue.remediation.r1FreezePreparation).toMatchObject({
+      fakePreflight: {
+        fakeProviderExecutions: 4,
+        modelCallsPerformed: 0,
+        networkCallsPerformed: 0,
+        replayProviderExecutions: 0,
+        usableWorkflows: '4/4',
+      },
+      financeArbitrationGranted: false,
+      financeDraft: {
+        calculatedMaximumFourCallsUsd: 0.241569,
+        hardProviderCapUsd: 0.5,
+        maximumCostPerCallUsd: 0.06039225,
+      },
+      modelCallsAllowed: false,
+      ownerNetworkAuthorizationGranted: false,
+    });
+    for (const source of [
+      queue.remediation.r1FreezePreparation.implementationManifest,
+      queue.remediation.r1FreezePreparation.dossier,
+      queue.remediation.r1FreezePreparation.financeDraft,
+      queue.remediation.r1FreezePreparation.fakePreflight,
+      queue.remediation.r1FreezePreparation.report,
+    ]) {
+      expect(sha256(read(source.path))).toBe(source.sha256);
+    }
+    expect(
+      sha256(read(queue.remediation.costReconciliationAuthority.path)),
+    ).toBe(queue.remediation.costReconciliationAuthority.sha256);
+    expect(
+      sha256(read(queue.remediation.informativePublicReattestation.path)),
+    ).toBe(queue.remediation.informativePublicReattestation.sha256);
     expect(gemini36).toMatchObject({
       canonicalCatalogId: 'google/gemini-3.6-flash-20260721',
+      costReconciliation: {
+        retryFromUtcDate: '2026-08-23',
+        status: 'RECONCILIATION_REQUIRED',
+        writeOffAutomatic: false,
+      },
       identityFingerprint:
         'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed',
       financeEnvelope:
@@ -652,13 +862,13 @@ describe('active autonomous correction phase manifest', () => {
         'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
       modelId: 'google/gemini-3.6-flash',
       networkCallsAllowed: false,
-      ownerAuthorizationGranted: false,
+      ownerAuthorizationGranted: true,
+      ownerAuthorizationConsumed: true,
       ownerIdentityApprovalGranted: true,
       financeArbitrationGranted: true,
       proposedRequestedRoute: 'google-vertex/global',
       rank: 1,
-      runnerStatus:
-        'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_AND_SIMULATED_TRANSPORT_GREEN',
+      runnerStatus: 'NETWORK_GATE_STOPPED_AFTER_1_OF_4_NO_RETRY_OR_FALLBACK',
       routeAttestationStatus:
         'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
     });
@@ -666,6 +876,15 @@ describe('active autonomous correction phase manifest', () => {
       reasoning: 'MANDATORY',
       reasoningEffort: 'MINIMAL',
       temperature: 'OMIT_UNSUPPORTED',
+    });
+    expect(gemini36.networkGateResult).toMatchObject({
+      actualCostUsd: null,
+      financialState: 'RECONCILIATION_REQUIRED',
+      modelCallsPerformed: 1,
+      status: 'NO-GO_TECHNICAL_PROVIDER_HTTP_400',
+      unresolvedReservedCostUsd: 0.1208415,
+      unusedAuthorizedCallsNotSent: 3,
+      usableWorkflows: 0,
     });
     expect(
       gemini36.financeApproval.maximumCostPerAttemptUsd *
@@ -677,9 +896,10 @@ describe('active autonomous correction phase manifest', () => {
     expect(gemini36.financeApproval).toMatchObject({
       approvedCapTreasuryReserveDisplayUsd: 0.652,
       approvedProviderCapUsd: 0.5,
-      authorizationEffect: 'NO_NETWORK_GO',
+      authorizationEffect: 'HISTORICAL_APPROVAL_CONSUMED_NO_REPLAY',
       loadedFxBasisProviderCostUsd: 0.483366,
-      status: 'APPROVED_NETWORK_NOT_AUTHORIZED',
+      status:
+        'APPROVAL_AND_NETWORK_AUTHORIZATION_CONSUMED_GATE_CLOSED_RECONCILIATION_REQUIRED',
     });
     expect(
       gemini36.financeApproval.loadedFxBasisProviderCostUsd *
@@ -698,8 +918,7 @@ describe('active autonomous correction phase manifest', () => {
       ownerAuthorizationGranted: false,
       proposedRequestedRoute: 'google-vertex/global',
       rank: 2,
-      routeAttestationStatus:
-        'READ_ONLY_OBSERVATION_REATTESTATION_REQUIRED',
+      routeAttestationStatus: 'READ_ONLY_OBSERVATION_REATTESTATION_REQUIRED',
     });
     expect(gemini37.proposedRequestProfile).toEqual({
       maximumTotalOutputTokens: 8192,
@@ -892,16 +1111,16 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.eligibility.activitiesEligibleForLiveCorrection).toBe(0);
     expect(active.activeExecutionQueue).toMatchObject({
       currentResponsibleAgent: 'AGENT-PROTOCOLE-IA',
-      currentTicket: 'V4-003E-Q1',
+      currentTicket: 'V4-003E-Q1-R1',
       liveActivationAllowed: false,
       modelCallsAllowed: false,
     });
     expect(active.deliveryState.experimental).toEqual({
       pipelinePromoted: false,
-      status: 'V4_009C_S2_NO_GO_GEMINI_3_6_NETWORK_GO_PENDING',
+      status: 'V4_003E_Q1_GEMINI_3_6_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED',
     });
     expect(active.holdoutAdmissionGate.currentBlockers).toContain(
-      'GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED',
+      'GEMINI_3_6_COST_RECONCILIATION_REQUIRED',
     );
     expect(active.offlineCandidateQueue.guards).toMatchObject({
       holdoutAuthorized: false,

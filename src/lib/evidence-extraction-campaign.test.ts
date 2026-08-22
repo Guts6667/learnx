@@ -301,6 +301,19 @@ describe('Gemini evidence researcher campaign', () => {
     );
   });
 
+  it('keeps the frozen spec proof unchanged and rejects an unregistered spec drift', () => {
+    const input = loadInputs();
+    const campaign = validateEvidenceExtractionCampaign(input);
+
+    expect(campaign.authority.specSha256).toBe(
+      '2c5d8aa1dde3e83a3562bb86da19ab4b75024a890cb46ce88ee40e22cc51ffa7',
+    );
+    input.specText = `${input.specText}\n`;
+    expect(() => validateEvidenceExtractionCampaign(input)).toThrow(
+      'EVIDENCE_CAMPAIGN_AUTHORITY_DIGEST_MISMATCH',
+    );
+  });
+
   it('bounds the smoke below its hard cap without using historical averages', () => {
     const bound = calculateEvidenceResearcherCostBound({
       completionUsdPerToken: 0.000_003_75,

@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
+import { classifyEvidenceResearcherSpecAuthority } from './evidence-researcher-authority-compatibility.js';
 import { compileExecutableRubric } from './executable-rubric-engine.js';
 import { evidenceResearcherProtocolFingerprint } from './evidence-researcher-protocol.js';
 
@@ -209,7 +210,11 @@ export function validateEvidenceResearcherScreeningCampaign(input: {
     .passthrough()
     .parse(JSON.parse(input.catalogAttestationText) as unknown);
   if (
-    campaign.authority.specSha256 !== sha256(input.specText) ||
+    classifyEvidenceResearcherSpecAuthority({
+      declaredPromptFingerprint: campaign.researcher.promptFingerprint,
+      declaredSpecSha256: campaign.authority.specSha256,
+      suppliedSpecText: input.specText,
+    }) === 'MISMATCH' ||
     campaign.authority.catalogAttestationSha256 !==
       sha256(input.catalogAttestationText) ||
     campaign.authority.rubricFileSha256 !== sha256(input.rubricFileText) ||
