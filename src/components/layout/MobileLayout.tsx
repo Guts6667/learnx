@@ -86,7 +86,12 @@ export function MobileLayout({
     route('/today');
   }
 
-  if (currentPath === '/' || currentPath === '/interest') {
+  const isStandalonePublicPage =
+    currentPath === '/' ||
+    currentPath === '/interest' ||
+    (import.meta.env.DEV && currentPath === '/design/totem-primitives');
+
+  if (isStandalonePublicPage) {
     return <PwaProvider>{children}</PwaProvider>;
   }
 

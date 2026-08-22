@@ -31,6 +31,7 @@ import { CreditsPage } from '@/pages/CreditsPage';
 import { ActivateAccountPage } from '@/pages/ActivateAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { PublicInterestPage } from '@/pages/PublicInterestPage';
+import { TotemPrimitivesPage } from '@/pages/TotemPrimitivesPage';
 
 interface RouteParams {
   assessmentId?: string;
@@ -283,6 +284,9 @@ export function AppRoutes() {
       <Router onChange={handleRouteChange}>
         <LandingPage path="/" />
         <PublicInterestPage path="/interest" />
+        {import.meta.env.DEV ? (
+          <TotemPrimitivesPage path="/design/totem-primitives" />
+        ) : null}
         <ProtectedRoute path="/today">
           <TodayPage />
         </ProtectedRoute>

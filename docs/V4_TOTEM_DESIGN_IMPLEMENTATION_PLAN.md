@@ -102,9 +102,10 @@ un contrat pour reproduire une maquette.
 
 ## 5. File ordonnée d'implémentation
 
-Tous les tickets ci-dessous sauf V4-016D restent
+V4-016D et V4-016E sont implémentés et validés dans deux commits locaux
+ordonnés, en attente d'intégration propriétaire. Les lots suivants restent
 `DESIGN_VALIDATED_IMPLEMENTATION_WAIT_GO`. Cette file est parallèle au chemin
-critique IA V4-003B-R1 et ne le remplace pas.
+critique IA et ne le remplace pas.
 
 | Ordre | Ticket | Pilote | Dépendances | Livrable |
 | --- | --- | --- | --- | --- |

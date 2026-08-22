@@ -599,7 +599,7 @@ constitue pas un GO de code. Les tickets sont détaillés et ordonnés dans
 | Ticket | Objet | Statut | Dépendances de démarrage |
 | --- | --- | --- | --- |
 | V4-016D | Fondations Totem : DM Sans, tokens sémantiques, logo et icône | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration sur `dev` |
-| V4-016E | Primitives et états communs accessibles | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D |
+| V4-016E | Primitives et états communs accessibles | `IMPLEMENTED_QA_GREEN_PENDING_PUSH` | Revue propriétaire puis intégration après V4-016D |
 | V4-016C | Produit principal : Aujourd'hui, Parcours, Programme, Recherche, Notes, Profil | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E |
 | V4-016F | Leçon, exercice, quiz, correction, révision et ressources | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et contrats pédagogiques existants |
 | V4-016A | Landing, compte, vérification e-mail et première direction | `DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO` | V4-016D/E et promesses approuvées |
@@ -2669,7 +2669,7 @@ Dépendance levée : baseline V3.5 réauditée ; revue propriétaire avant push.
 ## V4-016E — Primitives et états Totem
 
 **Priorité : P1 design system. Statut :
-`DESIGN_VALIDATED_WAIT_IMPLEMENTATION_GO`. Dépendance : V4-016D.**
+`IMPLEMENTED_QA_GREEN_PENDING_PUSH`. Dépendance : V4-016D implémenté localement.**
 
 ### Périmètre et critères
 
@@ -2681,6 +2681,20 @@ Dépendance levée : baseline V3.5 réauditée ; revue propriétaire avant push.
 - Les consentements distincts ne sont jamais fusionnés visuellement ; les
   tableaux admin deviennent des surfaces mobiles sans perte d'information.
 - Aucun composant n'embarque prix, score, preuve ou règle métier de démonstration.
+
+### État au 22 août 2026
+
+- Frontière `TotemTheme` additive : aucune surface Atlas non migrée n'est
+  modifiée et le rollback reste borné au lot.
+- Shells app/public, action éditoriale, surface signature, notices, états
+  explicites, consentements distincts et table responsive sont disponibles.
+- Le catalogue `/design/totem-primitives` reste strictement limité au serveur
+  de développement et n'embarque aucune donnée produit réelle.
+- Contrôles verts : lint, typecheck, build, 1 211 tests unitaires et deux tests
+  Playwright couvrant 320/390/720/1440/1920, zoom 200 %, clavier, reduced motion,
+  absence de débordement et audit WCAG sérieux/critique.
+- Documentation : `docs/V4_TOTEM_PRIMITIVES.md` ; aucune surface V4-016C/F/A/I/B/G
+  n'est migrée par ce ticket.
 
 ---
 

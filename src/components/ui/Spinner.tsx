@@ -5,6 +5,7 @@ type SpinnerSize = 'sm' | 'md' | 'lg';
 
 interface SpinnerProps {
   class?: string;
+  isDecorative?: boolean;
   label?: string;
   size?: SpinnerSize;
 }
@@ -17,6 +18,7 @@ const sizeClasses: Record<SpinnerSize, string> = {
 
 export function Spinner({
   class: className,
+  isDecorative = false,
   label,
   size = 'md',
 }: SpinnerProps) {
@@ -24,15 +26,16 @@ export function Spinner({
   const accessibleLabel = label ?? t('common.loading');
   return (
     <span
-      aria-label={accessibleLabel}
+      aria-hidden={isDecorative || undefined}
+      aria-label={isDecorative ? undefined : accessibleLabel}
       class={classNames(
         'inline-block animate-spin rounded-full border-current border-r-transparent',
         sizeClasses[size],
         className,
       )}
-      role="status"
+      role={isDecorative ? undefined : 'status'}
     >
-      <span class="sr-only">{accessibleLabel}</span>
+      {isDecorative ? null : <span class="sr-only">{accessibleLabel}</span>}
     </span>
   );
 }
