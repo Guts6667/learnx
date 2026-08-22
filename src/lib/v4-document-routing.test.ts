@@ -36,7 +36,7 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(read(path).slice(0, 700)).toContain('CLOSED_REQUEST');
   });
 
-  it('routes the closed Sonnet gate to Gemini 3.6 offline preparation', () => {
+  it('routes the closed Sonnet gate to the approved Gemini transport preflight', () => {
     const index = read('docs/INDEX.md');
     const backlog = read('BACKLOG_V4.md');
     const roadmap = read('docs/V4_ROADMAP.md');
@@ -70,6 +70,9 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(index).toContain('V4_003B_INDEPENDENT_AUDIT_REPORT.md');
     expect(index).toContain('V4_003A_R1_ORACLE_HARDENING_REPORT.md');
     expect(index).toContain('V4_003B_R1_INDEPENDENT_AUDIT_REPORT.md');
+    expect(index).toContain(
+      'V4_003E_Q1_GEMINI_3_6_NETWORK_TRANSPORT_PREFLIGHT.md',
+    );
     expect(status).toContain(
       '| `V4_003C_EXPERIMENT_IDENTITY_FREEZE_REPORT.md` | `HISTORICAL_EVIDENCE` |',
     );
@@ -82,7 +85,7 @@ describe('V4 document routing and assigned execution queue', () => {
     expect(roadmap).toContain('| `V4-003E — Analyse et documentation` |');
     expect(roadmap).toContain('| `V4-003E-Q1 — Dossier Gemini 3.6` |');
     expect(backlog).toContain(
-      '`V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `READY_OFFLINE_IDENTITY_PREPARATION`',
+      '`V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `APPROVED_IDENTITY_FINANCE_SIMULATED_TRANSPORT_GREEN`',
     );
     expect(manifest.activeExecutionQueue).toEqual(
       expect.objectContaining({

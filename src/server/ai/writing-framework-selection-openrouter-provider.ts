@@ -2,8 +2,10 @@ import {
   CorrectionModelOutputError,
   CorrectionProviderError,
   getCorrectionProviderAdapter,
+  type CorrectionProviderAdapter,
   type CorrectionProviderRequest,
   type CorrectionReasoningCapabilities,
+  type CorrectionReasoningMode,
 } from '../../lib/ai-correction-provider-adapters.js';
 import type {
   WritingFrameworkGateLiveProvider,
@@ -12,29 +14,95 @@ import type {
   WritingFrameworkGateProviderResult,
 } from './writing-framework-selection-gate-runner-v2.js';
 
-const REQUEST_PROFILE = Object.freeze({
-  adapter: 'OPENROUTER_CHAT' as const,
-  reasoning: {
-    budgetMode: 'OFF' as const,
-    budgetTokens: null,
-    effort: 'OFF' as const,
-  },
-  routeProviders: ['Anthropic'] as [string],
-  temperature: null,
-  timeoutMs: 60_000,
-  totalOutputTokenLimit: 4_096,
-  version: '1.0.0',
-  visibleOutputTokenTarget: 4_096,
-}) satisfies CorrectionProviderRequest['profile'];
+const APPROVED_GEMINI_IDENTITY =
+  'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed';
 
-const REASONING_CAPABILITIES = Object.freeze({
-  adapter: 'OPENROUTER_CHAT' as const,
-  modelId: 'anthropic/claude-sonnet-5',
-  providerDefaultMode: 'ADAPTIVE' as const,
-  reasoningMandatory: false,
-  requestedRoute: 'Anthropic',
-  supportedModes: ['DISABLED'] as const,
-}) satisfies CorrectionReasoningCapabilities;
+type OpenRouterGateProviderOptions = Readonly<{
+  adapter?: CorrectionProviderAdapter;
+}>;
+
+function adaptiveEffort(
+  value: string | null,
+): Extract<CorrectionReasoningMode, { mode: 'ADAPTIVE' }>['effort'] {
+  const normalized = value?.toLocaleLowerCase();
+  if (
+    normalized === 'high' ||
+    normalized === 'low' ||
+    normalized === 'max' ||
+    normalized === 'medium' ||
+    normalized === 'minimal'
+  ) {
+    return normalized;
+  }
+  throw new Error('WRITING_GATE_REASONING_EFFORT_INVALID');
+}
+
+function assertGeminiIdentity(
+  packageInput: WritingFrameworkGatePackage,
+): void {
+  const profile = packageInput.requestProfile;
+  if (
+    packageInput.identityFingerprint !== APPROVED_GEMINI_IDENTITY ||
+    packageInput.wireModelId !== 'google/gemini-3.6-flash' ||
+    packageInput.catalogSnapshotId !==
+      'google/gemini-3.6-flash-20260721' ||
+    packageInput.requestedRoute !== 'google-vertex/global' ||
+    packageInput.expectedObservedProvider !== 'Google' ||
+    profile.reasoningMode !== 'EFFORT_ONLY' ||
+    profile.reasoningMandatory !== true ||
+    profile.reasoningEffort !== 'MINIMAL' ||
+    profile.temperature !== null ||
+    profile.maxOutputTokens !== 2_500 ||
+    profile.visibleOutputTokenTarget !== 1_800 ||
+    profile.timeoutMs !== 60_000
+  ) {
+    throw new Error('WRITING_GATE_OPENROUTER_IDENTITY_MISMATCH');
+  }
+}
+
+function omittedTemperature(value: number | null): null {
+  if (value !== null) {
+    throw new Error('WRITING_GATE_TEMPERATURE_MUST_BE_OMITTED');
+  }
+  return null;
+}
+
+export function writingFrameworkGateOpenRouterRequestProfile(
+  packageInput: WritingFrameworkGatePackage,
+): CorrectionProviderRequest['profile'] {
+  assertGeminiIdentity(packageInput);
+  return Object.freeze({
+    adapter: 'OPENROUTER_CHAT' as const,
+    reasoning: {
+      budgetMode: 'EFFORT_ONLY' as const,
+      budgetTokens: null,
+      effort: 'MINIMAL' as const,
+    },
+    routeProviders: [packageInput.requestedRoute],
+    temperature: omittedTemperature(packageInput.requestProfile.temperature),
+    timeoutMs: packageInput.requestProfile.timeoutMs,
+    totalOutputTokenLimit: packageInput.requestProfile.maxOutputTokens,
+    version: '1.0.0',
+    visibleOutputTokenTarget:
+      packageInput.requestProfile.visibleOutputTokenTarget,
+  });
+}
+
+export function writingFrameworkGateReasoningCapabilities(
+  packageInput: WritingFrameworkGatePackage,
+): CorrectionReasoningCapabilities {
+  assertGeminiIdentity(packageInput);
+  const effort = adaptiveEffort(packageInput.requestProfile.reasoningEffort);
+  return Object.freeze({
+    adapter: 'OPENROUTER_CHAT' as const,
+    modelId: packageInput.wireModelId,
+    providerDefaultMode: 'ADAPTIVE' as const,
+    reasoningMandatory: true,
+    requestedRoute: packageInput.requestedRoute,
+    supportedAdaptiveEfforts: [effort],
+    supportedModes: ['ADAPTIVE'] as const,
+  });
+}
 
 function errorResult(
   error: CorrectionModelOutputError | CorrectionProviderError,
@@ -57,8 +125,7 @@ function errorResult(
         : error.message,
     inputTokens: usage?.inputTokens ?? 0,
     latencyMs: error.latencyMs ?? 0,
-    observedProvider:
-      error.observedProvider === 'Anthropic' ? 'Anthropic' : null,
+    observedProvider: error.observedProvider ?? null,
     providerRequestId: error.providerRequestId ?? null,
     rawOutput: error.rawModelOutput ?? '',
     reasoningTokens: usage?.reasoningTokens ?? 0,
@@ -70,36 +137,46 @@ export class OpenRouterWritingFrameworkGateProvider
   implements WritingFrameworkGateLiveProvider
 {
   public readonly kind = 'OPENROUTER_LIVE' as const;
+  private readonly adapter: CorrectionProviderAdapter;
+  private readonly capabilities: CorrectionReasoningCapabilities;
+  private readonly profile: CorrectionProviderRequest['profile'];
 
   public constructor(
     private readonly apiKey: string,
     private readonly packageInput: WritingFrameworkGatePackage,
+    options: OpenRouterGateProviderOptions = {},
   ) {
     if (!apiKey.trim()) throw new Error('OPENROUTER_API_KEY_REQUIRED');
-    if (
-      packageInput.wireModelId !== REASONING_CAPABILITIES.modelId ||
-      packageInput.requestedRoute !== REASONING_CAPABILITIES.requestedRoute ||
-      packageInput.expectedObservedProvider !== 'Anthropic'
-    ) {
-      throw new Error('WRITING_GATE_OPENROUTER_IDENTITY_MISMATCH');
+    assertGeminiIdentity(packageInput);
+    this.adapter =
+      options.adapter ?? getCorrectionProviderAdapter('OPENROUTER_CHAT');
+    if (this.adapter.kind !== 'OPENROUTER_CHAT') {
+      throw new Error('WRITING_GATE_OPENROUTER_ADAPTER_REQUIRED');
     }
+    this.profile = writingFrameworkGateOpenRouterRequestProfile(packageInput);
+    this.capabilities =
+      writingFrameworkGateReasoningCapabilities(packageInput);
   }
 
   public async execute(
     request: WritingFrameworkGateProviderRequest,
   ): Promise<WritingFrameworkGateProviderResult> {
-    const adapter = getCorrectionProviderAdapter('OPENROUTER_CHAT');
     try {
-      const result = await adapter.execute({
+      const result = await this.adapter.execute({
         apiKey: this.apiKey,
         idempotencyKey: request.idempotencyKey,
         jsonSchema: { ...request.jsonSchema },
         messages: [...request.messages],
         modelId: this.packageInput.wireModelId,
-        profile: REQUEST_PROFILE,
+        profile: this.profile,
         reasoning: {
-          capabilities: REASONING_CAPABILITIES,
-          mode: { mode: 'DISABLED' },
+          capabilities: this.capabilities,
+          mode: {
+            effort: adaptiveEffort(
+              this.packageInput.requestProfile.reasoningEffort,
+            ),
+            mode: 'ADAPTIVE',
+          },
         },
       });
       return Object.freeze({
@@ -113,8 +190,7 @@ export class OpenRouterWritingFrameworkGateProvider
             : 'UNKNOWN',
         inputTokens: result.usage.inputTokens,
         latencyMs: result.latencyMs,
-        observedProvider:
-          result.observedProvider === 'Anthropic' ? 'Anthropic' : null,
+        observedProvider: result.observedProvider,
         providerRequestId: result.providerRequestId ?? null,
         rawOutput: result.rawModelOutput,
         reasoningTokens: result.usage.reasoningTokens,
@@ -130,8 +206,4 @@ export class OpenRouterWritingFrameworkGateProvider
       throw error;
     }
   }
-}
-
-export function writingFrameworkGateOpenRouterRequestProfile(): CorrectionProviderRequest['profile'] {
-  return structuredClone(REQUEST_PROFILE);
 }

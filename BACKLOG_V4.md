@@ -4,12 +4,12 @@
 
 - Version : 1.10.10
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
-- Dernière consolidation : 21 août 2026 — le gate réseau V4-009C-S2 est clos
+- Dernière consolidation : 22 août 2026 — le gate réseau V4-009C-S2 est clos
   en `NO-GO_SEMANTIC_DISAGREEMENT` après le premier appel sur quatre ; coût
   fournisseur `ACTUAL` de `0,018828 USD`, sans retry, fallback ou autre appel.
   V4-003E documente le verdict ; V4-003E-Q1 prépare localement Gemini 3.6 sous
-  `HARD_OFF`, avec identité exacte non encore approuvée et enveloppe Finance
-  recalculée mais toujours DRAFT
+  `HARD_OFF`, avec identité et enveloppe approuvées, transport simulé vert et
+  aucun GO réseau
 - Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
   `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
   promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
@@ -237,20 +237,25 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
    (`cc3b1b52…`, `1/4`, `0,018828 USD`) inverse un exemple positif gelé et
    constitue le NO-GO sémantique non ambigu documenté par V4-003E. Ils ne sont
    ni agrégés, ni rejoués, ni retunés.
-2. Préparer hors ligne Gemini 3.6, candidat 1 retenu pour sa meilleure
+2. Gemini 3.6, candidat 1 retenu pour sa meilleure
    comparabilité historique, sous réattestation de disponibilité. Son model ID est
    `google/gemini-3.6-flash`, son canonical catalog
    `google/gemini-3.6-flash-20260721` et sa route proposée
-   `google-vertex/global`. Aucune identité ni enveloppe n'est encore gelée.
+   `google-vertex/global`. L'identité `ef88a8e3…`, le plafond fournisseur
+   single-use `0,50 USD` et la réserve prudente `0,652 USD` sont approuvés.
+   Le raccord simulé est vert, mais aucun GO réseau n'est accordé.
 3. Pour ce candidat, conserver strictement le protocole, la rubrique, le
    corpus, les golds, le mapping, l'ordre et les seuils ; créer de nouveaux
    snapshot, route/provider, profil, tarifs, manifeste, empreinte, préflight et
-   enveloppe Finance. Le runner S2 spécialisé Sonnet doit être paramétré hors
-   ligne. Aucun résultat historique ne compte dans le nouveau gate.
+   enveloppe Finance. Le runner S2 est maintenant paramétré et testé hors ligne
+   avec des doubles locaux. Aucun résultat historique ne compte dans le nouveau
+   gate.
 4. L'ancien brouillon Finance Gemini 3.6 (`0,0172545 USD` par tentative,
    `0,069018 USD` calculés pour quatre, plafond proposé `0,075 USD`, chargé + FX
    `≈ 0,090 USD`) reste invalide jusqu'à réattestation et n'est pas transférable
-   au profil Gemini 3.7. Aucun budget d'appel n'est actuellement ouvert.
+   au profil Gemini 3.7. L'enveloppe additive approuvée pour cette identité
+   conserve `0,1208415 USD` par tentative, `0,483366 USD` calculés, un plafond
+   fournisseur `0,50 USD` et une réserve `0,652 USD`. Elle n'ouvre aucun appel.
 5. Gemini 3.7 reste l'option technique de rang 2, sans histoire LearnX. Mistral
    Medium 3.5 reste l'alternative de rang 3, après les Gemini. Tous sont hors
    ligne, sans identité ni budget. Le panel 10 × 2 reste interdit.
@@ -409,15 +414,16 @@ agent peut être consulté, mais ne modifie pas le même lot simultanément.
 
 | Ordre | Ticket | Statut de départ | Responsable | Livrable obligatoire | Gate de sortie |
 | --- | --- | --- | --- | --- | --- |
-| 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `PREPARED_LOCAL_HARD_OFF` | `AGENT-PROTOCOLE-IA` | Même protocole/rubrique/corpus/golds/ordre/seuils ; identité `ef88a8e3…`, route Google Vertex, profil `MINIMAL`, tarifs hors promotion, préflight `4/4` faux fournisseur | Approbation identité exacte, arbitrage Finance DRAFT recalculé, puis GO réseau single-use distinct ; aucun appel effectué |
+| 10 | `V4-003E-Q1 — Dossier Gemini 3.6 Flash` | `APPROVED_IDENTITY_FINANCE_SIMULATED_TRANSPORT_GREEN` | `AGENT-PROTOCOLE-IA` | Même protocole/rubrique/corpus/golds/ordre/seuils ; identité `ef88a8e3…`, route Google Vertex, profil `MINIMAL`, plafond `0,50 USD`, réserve `0,652 USD`, préflights faux fournisseur et transport simulé | GO réseau single-use distinct encore requis ; aucun appel effectué |
 | 11 | `V4-003E-Q2 — Option Gemini 3.7 Flash` | `QUEUED_SECOND_TECHNICAL_OPTION` | `AGENT-PROTOCOLE-IA` | Dossier entièrement nouveau, raisonnement `LOW`, runner paramétré, aucune histoire LearnX ni enveloppe 3.6 réutilisée | Après disposition de Gemini 3.6 et arbitrage ultérieur |
 | 12 | `V4-003E-Q3 — Alternative Mistral Medium 3.5` | `QUEUED_AFTER_GEMINI` | `AGENT-PROTOCOLE-IA` | `mistralai/mistral-medium-3-5`, nouvelle identité et attestations propres, aucun résultat historique réutilisé | Rang 3 fixe ; dossier uniquement après disposition des candidats Gemini et mandat dédié |
 
 Gemini 3.6 supporte structured outputs, `response_format` et `max_tokens` ; le
 raisonnement est obligatoire avec effort `MINIMAL` disponible et `temperature`
 doit être omise. La route observée, le profil et les tarifs hors promotion
-`1,50/7,50 USD/M` doivent être réattestés. Le runner S2 Sonnet n'est pas
-réutilisable sans paramétrisation. Ces faits ne constituent ni gel ni GO.
+`1,50/7,50 USD/M` ont été réattestés. Le runner S2 est paramétré et son
+transport Gemini est testé uniquement avec des doubles locaux. Ces faits ne
+constituent aucun GO réseau.
 
 #### Tickets conditionnels
 

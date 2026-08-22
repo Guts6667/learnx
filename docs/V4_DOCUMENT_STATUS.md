@@ -50,10 +50,12 @@ chemin de lecture actif.
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json` | `HISTORICAL_EVIDENCE` | Identité Sonnet close, conservée byte-identique ; réseau, replay et transfert interdits. |
 | `V4_003D_GATE4_FINANCE_ARBITRATION.md` | `HISTORICAL_EVIDENCE` | Enveloppe Sonnet consommée par le gate clos ; ne finance aucun successeur. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json` | `CLOSED_REQUEST` | Enveloppe Sonnet close et non transférable ; aucun reliquat réutilisable. |
-| `V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` | Préflight du runner spécialisé Sonnet ; Gemini exige paramétrisation et nouveau préflight. |
+| `V4_009C_S2_OFFLINE_RUNNER_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` | Préflight du runner spécialisé Sonnet, conservé sans valeur d'attestation Gemini. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-runner-preflight.v1.json` | `HISTORICAL_EVIDENCE` | Preuve machine Sonnet 4/4 fake, conservée sans valeur d'attestation Gemini. |
 | `V4_009C_S2_NETWORK_GATE_REPORT.md` | `HISTORICAL_EVIDENCE` | Preuve canonique du gate Sonnet clos après `1/4` ; aucun replay, panel, holdout ou live. |
-| `V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md` | `CURRENT_STATUS` | Lot local en attente d'intégration : verdict borné, limites `n = 1`, conservation append-only et ordre Gemini 3.6 → Gemini 3.7 → Mistral ; aucune identité ou Finance autorisée. |
+| `V4_003E_SONNET_5_SEMANTIC_NO_GO_REPORT.md` | `CURRENT_STATUS` | Verdict Sonnet borné, limites `n = 1`, conservation append-only et ordre Gemini 3.6 → Gemini 3.7 → Mistral. |
+| `V4_003E_Q1_GEMINI_3_6_OFFLINE_DOSSIER.md` | `CURRENT_STATUS` | Dossier Gemini 3.6 ; identité et enveloppe désormais approuvées, sans GO réseau. |
+| `V4_003E_Q1_GEMINI_3_6_NETWORK_TRANSPORT_PREFLIGHT.md` | `CURRENT_STATUS` | Transport Gemini simulé vert ; 0 appel réseau, 0 appel modèle, GO réseau toujours absent. |
 | `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
 
 ## 3. Preuves historiques

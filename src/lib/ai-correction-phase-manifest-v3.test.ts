@@ -62,7 +62,9 @@ const activeManifestSchema = z
     deliveryState: z.object({
       experimental: z.object({
         pipelinePromoted: z.literal(false),
-        status: z.literal('V4_009C_S2_NO_GO_SUCCESSOR_NOT_FROZEN'),
+        status: z.literal(
+          'V4_009C_S2_NO_GO_GEMINI_3_6_NETWORK_GO_PENDING',
+        ),
       }),
       offlineCandidate: z.object({
         status: z.literal('INTEGRATED_IN_RUNTIME_HARD_OFF'),
@@ -163,8 +165,6 @@ const activeManifestSchema = z
     holdoutAdmissionGate: z.object({
       currentBlockers: z.tuple([
         z.literal('CLOSED_SONNET_IDENTITY_FAILED_STAGE_ONE'),
-        z.literal('GEMINI_3_6_IDENTITY_NOT_FROZEN'),
-        z.literal('GEMINI_3_6_FINANCE_NOT_ARBITRATED'),
         z.literal('GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED'),
         z.literal('NEW_STAGE_ONE_NOT_EXECUTED'),
       ]),
@@ -234,8 +234,10 @@ const activeManifestSchema = z
           canonicalCatalogId: z.literal(
             'google/gemini-3.6-flash-20260721',
           ),
-          financeDraft: z.object({
-            authorizationEffect: z.literal('NONE'),
+          financeApproval: z.object({
+            approvedCapTreasuryReserveDisplayUsd: z.literal(0.652),
+            approvedCapTreasuryReserveUsd: z.literal(0.65199),
+            authorizationEffect: z.literal('NO_NETWORK_GO'),
             calculatedMaximumProviderCostUsd: z.literal(0.483366),
             historicalDraftReused: z.literal(false),
             loadedFxBasisProviderCostUsd: z.literal(0.483366),
@@ -244,16 +246,15 @@ const activeManifestSchema = z
             loadedFxMultiplier: z.literal(1.30398),
             maximumCostPerAttemptUsd: z.literal(0.1208415),
             maximumProviderAttempts: z.literal(4),
-            proposedProviderCapUsd: z.literal(0.5),
-            status: z.literal(
-              'DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED',
-            ),
+            approvedProviderCapUsd: z.literal(0.5),
+            status: z.literal('APPROVED_NETWORK_NOT_AUTHORIZED'),
           }),
+          financeArbitrationGranted: z.literal(true),
           identityFingerprint: z.literal(
             'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed',
           ),
           financeEnvelope: z.literal(
-            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json',
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json',
           ),
           manifestPath: z.literal(
             'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
@@ -264,6 +265,7 @@ const activeManifestSchema = z
           modelId: z.literal('google/gemini-3.6-flash'),
           networkCallsAllowed: z.literal(false),
           ownerAuthorizationGranted: z.literal(false),
+          ownerIdentityApprovalGranted: z.literal(true),
           proposedRequestedRoute: z.literal('google-vertex/global'),
           rank: z.literal(1),
           requestCapabilities: z.object({
@@ -272,10 +274,16 @@ const activeManifestSchema = z
             temperature: z.literal('OMIT_UNSUPPORTED'),
           }),
           runnerStatus: z.literal(
-            'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_PREFLIGHT_4_OF_4',
+            'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_AND_SIMULATED_TRANSPORT_GREEN',
           ),
           routeAttestationStatus: z.literal(
             'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
+          ),
+          transportPreflightArtifact: z.literal(
+            'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-network-transport-preflight.v1.json',
+          ),
+          transportPreflightFingerprint: z.literal(
+            '317966c06fed11a96a004932e60a8540a3bafb01cc7eceb629c878dada71a079',
           ),
         }),
         z.object({
@@ -327,7 +335,9 @@ const activeManifestSchema = z
         modelCallsAllowed: z.literal(false),
         panelAuthorized: z.literal(false),
       }),
-      status: z.literal('GEMINI_3_6_NEXT_OFFLINE_IDENTITY_PREPARATION'),
+      status: z.literal(
+        'GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING',
+      ),
     }),
     offlineWork: z.object({
       'V4-002': z.object({
@@ -335,7 +345,7 @@ const activeManifestSchema = z
       }),
       'V4-003': z.object({
         status: z.literal(
-          'V4_003E_DOCUMENTED_GEMINI_3_6_OFFLINE_PREPARATION',
+          'V4_003E_GEMINI_3_6_APPROVED_TRANSPORT_SIMULATED_NETWORK_GO_PENDING',
         ),
       }),
       'V4-009C': z.object({
@@ -627,7 +637,7 @@ describe('active autonomous correction phase manifest', () => {
     );
   });
 
-  it('queues Gemini 3.6 offline with a draft budget and no execution authority', () => {
+  it('records the approved Gemini 3.6 identity and envelope without execution authority', () => {
     const queue = active.offlineCandidateQueue;
     const [gemini36, gemini37, mistral] = queue.candidates;
 
@@ -637,15 +647,18 @@ describe('active autonomous correction phase manifest', () => {
       identityFingerprint:
         'ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed',
       financeEnvelope:
-        'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.draft.v1.json',
+        'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json',
       manifestPath:
         'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
       modelId: 'google/gemini-3.6-flash',
       networkCallsAllowed: false,
       ownerAuthorizationGranted: false,
+      ownerIdentityApprovalGranted: true,
+      financeArbitrationGranted: true,
       proposedRequestedRoute: 'google-vertex/global',
       rank: 1,
-      runnerStatus: 'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_PREFLIGHT_4_OF_4',
+      runnerStatus:
+        'PARAMETERIZED_HARD_OFF_FAKE_PROVIDER_AND_SIMULATED_TRANSPORT_GREEN',
       routeAttestationStatus:
         'READ_ONLY_REATTESTED_2026_08_21_NO_NETWORK_AUTHORIZATION',
     });
@@ -655,22 +668,26 @@ describe('active autonomous correction phase manifest', () => {
       temperature: 'OMIT_UNSUPPORTED',
     });
     expect(
-      gemini36.financeDraft.maximumCostPerAttemptUsd *
-        gemini36.financeDraft.maximumProviderAttempts,
-    ).toBeCloseTo(gemini36.financeDraft.calculatedMaximumProviderCostUsd, 12);
-    expect(gemini36.financeDraft).toMatchObject({
-      authorizationEffect: 'NONE',
+      gemini36.financeApproval.maximumCostPerAttemptUsd *
+        gemini36.financeApproval.maximumProviderAttempts,
+    ).toBeCloseTo(
+      gemini36.financeApproval.calculatedMaximumProviderCostUsd,
+      12,
+    );
+    expect(gemini36.financeApproval).toMatchObject({
+      approvedCapTreasuryReserveDisplayUsd: 0.652,
+      approvedProviderCapUsd: 0.5,
+      authorizationEffect: 'NO_NETWORK_GO',
       loadedFxBasisProviderCostUsd: 0.483366,
-      proposedProviderCapUsd: 0.5,
-      status: 'DRAFT_REATTESTATION_REQUIRED_NOT_ARBITRATED_NOT_AUTHORIZED',
+      status: 'APPROVED_NETWORK_NOT_AUTHORIZED',
     });
     expect(
-      gemini36.financeDraft.loadedFxBasisProviderCostUsd *
-        gemini36.financeDraft.loadedFxMultiplier,
-    ).toBeCloseTo(gemini36.financeDraft.loadedFxEnvelopeUsdExact, 12);
+      gemini36.financeApproval.loadedFxBasisProviderCostUsd *
+        gemini36.financeApproval.loadedFxMultiplier,
+    ).toBeCloseTo(gemini36.financeApproval.loadedFxEnvelopeUsdExact, 12);
     expect(
-      Number(gemini36.financeDraft.loadedFxEnvelopeUsdExact.toFixed(2)),
-    ).toBe(gemini36.financeDraft.loadedFxEnvelopeUsdRounded);
+      Number(gemini36.financeApproval.loadedFxEnvelopeUsdExact.toFixed(2)),
+    ).toBe(gemini36.financeApproval.loadedFxEnvelopeUsdRounded);
     expect(gemini37).toMatchObject({
       canonicalCatalogId: 'google/gemini-3.7-flash-20260813',
       financeEnvelope: null,
@@ -881,10 +898,10 @@ describe('active autonomous correction phase manifest', () => {
     });
     expect(active.deliveryState.experimental).toEqual({
       pipelinePromoted: false,
-      status: 'V4_009C_S2_NO_GO_SUCCESSOR_NOT_FROZEN',
+      status: 'V4_009C_S2_NO_GO_GEMINI_3_6_NETWORK_GO_PENDING',
     });
     expect(active.holdoutAdmissionGate.currentBlockers).toContain(
-      'GEMINI_3_6_IDENTITY_NOT_FROZEN',
+      'GEMINI_3_6_OWNER_NETWORK_AUTHORIZATION_NOT_GRANTED',
     );
     expect(active.offlineCandidateQueue.guards).toMatchObject({
       holdoutAuthorized: false,

@@ -951,6 +951,9 @@ function providerDefects(input: {
   providerResult: WritingFrameworkGateProviderResult;
 }): WritingGateDefect[] {
   const defects: WritingGateDefect[] = [];
+  if (input.providerResult.providerRequestId === null) {
+    defects.push('TRACEABILITY');
+  }
   if (input.providerResult.errorCode) {
     defects.push(
       input.providerResult.errorCode.startsWith('PROVIDER_')
@@ -1159,7 +1162,11 @@ async function runWritingFrameworkSelectionGate(
           : 'OFFLINE_FAKE'
         : 'UNKNOWN',
       defectClasses: uniqueDefects,
-      dispatchState: 'CONFIRMED',
+      dispatchState:
+        providerResult.errorCode === 'PROVIDER_TIMEOUT' ||
+        providerResult.errorCode === 'PROVIDER_NETWORK_ERROR'
+          ? 'ORPHANED'
+          : 'CONFIRMED',
       errorCode: providerResult.errorCode ?? null,
       financialState: costReconciled
         ? live

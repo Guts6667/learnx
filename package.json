@@ -46,6 +46,7 @@
     "ai:evidence:assist:v2:preflight": "node --import tsx scripts/preflight-writing-framework-selection-gate-v2.ts",
     "ai:evidence:assist:v2:preflight:gemini36": "node --import tsx scripts/preflight-writing-framework-selection-gate-v2.ts --candidate=gemini-3.6",
     "ai:evidence:assist:v2:gate": "node --import tsx scripts/run-writing-framework-selection-gate-v2.ts",
+    "ai:evidence:assist:v2:gate:gemini36": "node --import tsx scripts/run-writing-framework-selection-gate-v2.ts --candidate=gemini-3.6",
     "ai:evidence:assist:validate": "node --import tsx scripts/run-evidence-assist-development-campaign.ts",
     "ai:evidence:screening:validate": "node --import tsx scripts/run-executable-rubric-sonnet5-screening.ts",
     "ai:evidence:smoke": "node --import tsx scripts/run-executable-rubric-gemini-smoke.ts",

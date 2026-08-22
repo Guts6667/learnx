@@ -9,10 +9,22 @@ import {
 } from '../src/server/ai/writing-framework-selection-gate-runner-v2.js';
 import { OpenRouterWritingFrameworkGateProvider } from '../src/server/ai/writing-framework-selection-openrouter-provider.js';
 
-const DOSSIER_PATH =
-  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json';
-const FINANCE_PATH =
-  'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json';
+const candidates = {
+  'gemini-3.6': {
+    dossierPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json',
+    financePath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json',
+    outputSlug: 'writing-framework-selection-gemini36-v2',
+  },
+  'sonnet-5': {
+    dossierPath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-freeze.v1.json',
+    financePath:
+      'benchmarks/ai-correction/executable-rubric/writing-framework-selection-sonnet-5-finance-envelope.v1.json',
+    outputSlug: 'writing-framework-selection-sonnet5-v2',
+  },
+} as const;
 
 function option(name: string): string | undefined {
   const prefix = `--${name}=`;
@@ -25,6 +37,15 @@ function sha256(value: string): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+const candidateName = option('candidate');
+if (!candidateName) {
+  throw new Error('WRITING_GATE_CANDIDATE_REQUIRED');
+}
+if (!(candidateName in candidates)) {
+  throw new Error(`WRITING_GATE_CANDIDATE_UNSUPPORTED:${candidateName}`);
+}
+const candidate = candidates[candidateName as keyof typeof candidates];
+
 async function writeJsonExclusive(path: string, value: unknown): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, {
@@ -33,7 +54,7 @@ async function writeJsonExclusive(path: string, value: unknown): Promise<void> {
   });
 }
 
-const dossierText = await readFile(resolve(DOSSIER_PATH), 'utf8');
+const dossierText = await readFile(resolve(candidate.dossierPath), 'utf8');
 const dossier = JSON.parse(dossierText) as {
   authorities: Record<string, { path: string }>;
 };
@@ -45,16 +66,21 @@ const authorityTexts = Object.fromEntries(
     ]),
   ),
 );
-const financeText = await readFile(resolve(FINANCE_PATH), 'utf8');
+const financeText = await readFile(resolve(candidate.financePath), 'utf8');
 const packageInput = buildWritingFrameworkGatePackage({
   authorityTexts,
-  dossierPath: DOSSIER_PATH,
+  dossierPath: candidate.dossierPath,
   dossierText,
   financeText,
 });
-const ownerGo = `GO_V4_009C_S2_${packageInput.identityFingerprint
-  .slice(0, 16)
-  .toUpperCase()}`;
+const ownerGo =
+  candidateName === 'gemini-3.6'
+    ? `GO_V4_003E_Q1_GEMINI36_${packageInput.identityFingerprint
+        .slice(0, 16)
+        .toUpperCase()}`
+    : `GO_V4_009C_S2_SONNET5_${packageInput.identityFingerprint
+        .slice(0, 16)
+        .toUpperCase()}`;
 
 if (!process.argv.includes('--execute')) {
   console.log(
@@ -62,8 +88,14 @@ if (!process.argv.includes('--execute')) {
       {
         authorization: {
           exactToken: ownerGo,
-          status: 'OWNER_GO_REQUIRED',
+          modelCallsAllowed:
+            packageInput.finance.authorizationBoundary.modelCallsAllowed,
+          ownerNetworkAuthorization:
+            packageInput.finance.authorizationBoundary
+              .ownerNetworkAuthorization,
+          status: 'NETWORK_GO_NOT_GRANTED',
         },
+        candidate: candidateName,
         cases: packageInput.cases.map(({ caseId }) => caseId),
         identityFingerprint: packageInput.identityFingerprint,
         maximumProviderAttempts:
@@ -84,6 +116,14 @@ if (!process.argv.includes('--execute')) {
 if (option('owner-go') !== ownerGo) {
   throw new Error(`OWNER_GO_REQUIRED_USE_EXACT_TOKEN_${ownerGo}`);
 }
+if (
+  !packageInput.finance.authorizationBoundary.modelCallsAllowed ||
+  String(
+    packageInput.finance.authorizationBoundary.ownerNetworkAuthorization,
+  ) !== 'GRANTED'
+) {
+  throw new Error('WRITING_GATE_NETWORK_AUTHORIZATION_NOT_GRANTED');
+}
 const apiKey = process.env.OPENROUTER_API_KEY?.trim();
 if (!apiKey) throw new Error('OPENROUTER_API_KEY_REQUIRED');
 
@@ -91,7 +131,7 @@ const runId =
   option('run-id') ?? new Date().toISOString().replaceAll(/[:.]/gu, '-');
 const outputDirectory = resolve(
   option('output-dir') ??
-    `benchmarks/ai-correction/results/writing-framework-selection-sonnet5-v2/${runId}`,
+    `benchmarks/ai-correction/results/${candidate.outputSlug}/${runId}`,
 );
 await mkdir(outputDirectory, { recursive: true });
 const store = await FileWritingFrameworkGateStore.open(outputDirectory);

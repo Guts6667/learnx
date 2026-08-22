@@ -27,13 +27,14 @@ gate le ferme.
   humaine et le manifeste V3 tranche pour l'automatisation. L'écart doit alors
   être corrigé dans le même ticket documentaire.
 
-Dernière consolidation : 21 août 2026.
+Dernière consolidation : 22 août 2026.
 
 ## File design Totem — validée, non lancée
 
 La direction Totem est validée et le backlog est prêt. Elle ne change pas le
-point de reprise IA : `V4-003E-Q1`, dossier Gemini 3.6 hors ligne, est préparé
-localement ; ses arbitrages identité puis Finance sont les prochains gates.
+point de reprise IA : `V4-003E-Q1`, dossier Gemini 3.6 hors ligne, dispose d'une
+identité et d'une enveloppe approuvées ainsi que d'un transport simulé vert. Le
+GO réseau distinct reste le prochain gate.
 La file design attend un GO d'implémentation distinct par lot.
 
 | Ordre | Lot | Statut | Dépendance principale |
@@ -53,10 +54,10 @@ contrat émotionnel Atlas et tous les contrats produit restent actifs.
 | Plan | État au 21 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
 | Runtime canonique V4 | `origin/dev@c8ae231` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0, fake-flow hors ligne, preuve S2 et analyse V4-003E intégrés. | Aucun contrat publié, débit utilisateur réel ou accès apprenant. |
-| Préparation V4-003E-Q1 | worktree local depuis `origin/dev@c8ae231` | Identité Gemini `ef88a8e3…`, attestations, Finance DRAFT et préflight faux fournisseur `4/4`. | L'identité et Finance ne sont pas approuvées ; aucun GO réseau. |
+| Préparation V4-003E-Q1 | worktree local depuis `origin/dev@df368cd` | Identité Gemini `ef88a8e3…` approuvée, plafond `0,50 USD`, réserve `0,652 USD`, préflight faux fournisseur `4/4` et transport simulé vert. | Aucun GO réseau ; aucun appel modèle. |
 | Produit publié | `origin/main` à `f612e53` | SourceLab V2 et le journal public de recherche sont publiés sur la branche de production. | `main` ne contient pas encore la baseline V4 de `dev` ; ces branches ne doivent pas être fusionnées ou réinitialisées en bloc. |
 | Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
-| Expérimentation | `V4-009C-S2_NO_GO / IDENTITY_CLOSED / SUCCESSOR_NOT_FROZEN` | Le dernier gate a exécuté `1/4` appel, coût `0,018828 USD` ACTUAL, puis s'est arrêté sur l'inversion non ambiguë de `project-b-dimension-scope`. | Un appel ne mesure pas la qualité générale ; aucun pipeline n'est promu et les trois autres cas, panel et holdout n'ont pas été exécutés. |
+| Expérimentation | `V4-009C-S2_NO_GO / IDENTITY_CLOSED / GEMINI_NETWORK_GO_PENDING` | Le dernier gate Sonnet a exécuté `1/4` appel puis s'est arrêté ; le successeur Gemini a une identité et une enveloppe approuvées ainsi qu'un transport simulé vert. | Aucun appel Gemini, aucune promotion ; panel et holdout fermés. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
 | Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
 
@@ -86,15 +87,14 @@ Le chemin critique est désormais très étroit :
 
 1. intégrer la préparation locale Q1 sans modifier protocole, rubrique, corpus,
    golds, ordre ni seuils ;
-2. obtenir l'approbation de l'identité exacte `ef88a8e3…` ;
-3. obtenir l'arbitrage Finance de l'enveloppe DRAFT recalculée et un GO
-   réseau single-use distinct ;
-4. éprouver cette identité sur quatre cas, puis 10 × 2 seulement après `4/4` et
+2. obtenir un GO réseau single-use distinct pour l'identité et l'enveloppe déjà
+   approuvées ;
+3. éprouver cette identité sur quatre cas, puis 10 × 2 seulement après `4/4` et
    de nouveaux gates ;
-5. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
-6. remplacer le fake provider du flow apprenant sous feature flag et mesurer
+4. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
+5. remplacer le fake provider du flow apprenant sous feature flag et mesurer
    qualité/coûts réels ;
-7. seulement ensuite activer tarification, paiement et extension.
+6. seulement ensuite activer tarification, paiement et extension.
 
 État honnête : **0 contrat V4 publié, 0 activité éligible, aucun pipeline promu,
 V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
@@ -153,7 +153,7 @@ La file détaillée et ses frontières sont dans `BACKLOG_V4.md`, section
 | `V4-003D — Budget` | `AGENT-FINANCE` | **Clos hors ligne** : plafond fournisseur `0,708328 USD`, réseau interdit | `V4-009C-S2` hors ligne |
 | `V4-009C-S2 — Gate 4` | `AGENT-DEV-LEARNX` | **Clos NO-GO** : arrêt après `1/4` sur désaccord sémantique, coût `0,018828 USD` ACTUAL, aucun replay | `V4-003E` |
 | `V4-003E — Analyse et documentation` | `AGENT-METHODOLOGIE` | **Préparé localement, non poussé** : verdict borné à l'identité exacte, limites `n = 1`, comparaison honnête et journal append-only | Intégration du commit local, puis `V4-003E-Q1` |
-| `V4-003E-Q1 — Dossier Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Préparé localement sous HARD_OFF** : identité `ef88a8e3…`, route/profil/tarifs réattestés, préflight faux fournisseur `4/4`, réseau interdit | Approbation identité, Finance sur l'enveloppe DRAFT recalculée, puis GO réseau séparé |
+| `V4-003E-Q1 — Dossier Gemini 3.6` | `AGENT-PROTOCOLE-IA` | **Préparé localement sous HARD_OFF** : identité `ef88a8e3…` et enveloppe approuvées, route/profil/tarifs réattestés, préflight faux fournisseur `4/4` et transport simulé vert | GO réseau séparé ; aucun appel autorisé par les approbations déjà reçues |
 
 Tout agent recevant un ticket plus bas dans cette table doit refuser de le
 démarrer si la sortie et le gate de la ligne précédente ne sont pas présents.
@@ -457,12 +457,10 @@ Les deux enveloppes Sonnet sont closes et non transférables : le gate historiqu
 du 20 août a coûté `0,025622 USD` pour `2/4`, et le gate courant du 21 août
 `0,018828 USD` pour `1/4`. Aucun budget d'appel n'est ouvert.
 
-Gemini 3.6 est déjà retenu comme candidat 1 pour la préparation hors ligne. La
-proposition `0,075 USD` est seulement un brouillon à réattester ; elle ne vaut
-ni arbitrage Finance, ni GO. Après paramétrisation du runner, attestation fraîche
-du snapshot, de la route, du profil et des tarifs, Rayan devra approuver
-l'identité exacte. Finance arbitrera ensuite l'enveloppe, puis Rayan devra
-donner séparément une autorisation réseau single-use. Gemini 3.7 reste rang 2
+Gemini 3.6 est le candidat 1. Son identité, son plafond fournisseur single-use
+`0,50 USD` et sa réserve prudente `0,652 USD` sont approuvés ; son raccord
+simulé est vert. Ces approbations ne valent pas GO réseau. Rayan devra donner
+séparément une autorisation réseau single-use. Gemini 3.7 reste rang 2
 et Mistral Medium 3.5 rang 3 ; chaque dossier futur exigera son propre mandat.
 Le panel 10 × 2 et le holdout restent fermés jusque-là.
 Après un futur `4/4`, une autorisation distincte du panel sera nécessaire ;

@@ -1,7 +1,13 @@
 # V4-003E-Q1 — dossier Gemini 3.6 hors ligne
 
-Statut : `HARD_OFF_PREFLIGHT_GREEN / IDENTITY_PREPARED_NOT_APPROVED /
-FINANCE_DRAFT_NOT_ARBITRATED / NETWORK_FORBIDDEN`.
+Statut initial : `HARD_OFF_PREFLIGHT_GREEN / IDENTITY_PREPARED /
+FINANCE_DRAFT / NETWORK_FORBIDDEN`.
+
+Mise à jour du 22 août 2026 : l'identité exacte, le plafond fournisseur
+single-use `0,50 USD` et la réserve prudente affichée `0,652 USD` sont
+`APPROVED`. Le raccord transport simulé est vert. Le GO réseau reste
+`NOT_GRANTED` et aucun appel réel n'est autorisé. Voir
+`V4_003E_Q1_GEMINI_3_6_NETWORK_TRANSPORT_PREFLIGHT.md`.
 
 Baseline : `origin/dev@c8ae231c94e961e44461ef678d9a1c0924cc5f4c`.
 Cette préparation n'a effectué aucun appel modèle et ne réutilise aucun résultat,
@@ -72,14 +78,11 @@ L'artefact de preuve porte l'empreinte
 Les empreintes corpus, mapping, runner, télémétrie et politique d'arrêt sont
 strictement identiques au core Sonnet clos.
 
-## Arbitrages encore requis
+## Arbitrage restant
 
-Avant tout réseau, Rayan doit successivement :
-
-1. approuver l'identité exacte `ef88a8e…` et le profil proposé ;
-2. obtenir l'arbitrage Finance sur les tarifs réattestés et le plafond DRAFT ;
-3. autoriser séparément une exécution single-use, quatre appels maximum, aucun
-   retry ni fallback, séquentielle et arrêt au premier défaut.
+L'identité et l'enveloppe sont désormais approuvées. Avant tout réseau, Rayan
+doit encore autoriser séparément une exécution single-use, quatre appels
+maximum, aucun retry ni fallback, séquentielle et arrêt au premier défaut.
 
 Cette préparation n'ouvre ni panel `10 × 2`, ni holdout, ni publication de
 contrat, ni V4-010 live.
