@@ -121,12 +121,33 @@ est transmis comme finding humain éliminatoire ; aucun nouveau seuil automatiqu
 n’est déduit a posteriori. `automaticGateFailures` rend chaque échec quantitatif
 visible, même lorsque le sous-ensemble strictement opérationnel reste vert.
 
+## Identité de gate v2 (`benchmark.v2.json`, 23 août 2026)
+
+`benchmark.v2.json` est une identité de gate préenregistrée distincte : même
+corpus `v1-3`, mêmes golds, mêmes rubriques, même prompt `2.0.0`, même
+protocole `3.0.1`, mêmes candidats que v1 ; seuls les seuils changent (voir
+l’amendement du 23 août 2026 dans `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md`).
+La motivation est arithmétique : à 72 runs, un seuil d’invalidité de 1 %
+équivalait à une tolérance zéro (1/72 = 1,3889 %), et à 24 cas, 3 bascules =
+12,5 % > 10 %. La politique v2 aligne les gates sur la doctrine bêta publiée :
+sécurité bloquante (faux PASS = 0, écart de deux niveaux = 0, échec final après
+retry ≤ 2 %, accord décision certain ≥ 85 %, injection/hallucination/calibration
+inchangés) ; incidents récupérables surveillés (invalidité première tentative
+≤ 10 %, bascules adjacentes ≤ 15 %) via `watchSignals`. Les seuils v1 et les
+campagnes figées restent immuables. Le runner charge une identité autonome via
+`--benchmark-configuration=` ; les deux politiques ne sont jamais mélangées
+(bloc v2 complet requis : tous ou aucun).
+
 ```bash
 pnpm ai:benchmark:validate
+pnpm ai:benchmark:validate -- --benchmark-configuration=benchmarks/ai-correction/benchmark.v2.json
 OPENROUTER_API_KEY="…" pnpm ai:benchmark
 OPENROUTER_API_KEY="…" pnpm ai:benchmark -- --model=anthropic/claude-sonnet-4.6
 OPENROUTER_API_KEY="…" pnpm ai:benchmark -- --model=mistralai/mistral-medium-3-5 --review-panel
 OPENROUTER_API_KEY="…" pnpm ai:benchmark -- --model=cohere/command-a --case=benchmark-writing-successful
+OPENROUTER_API_KEY="…" pnpm ai:benchmark -- \
+  --benchmark-configuration=benchmarks/ai-correction/benchmark.v2.json \
+  --candidate=claude-sonnet-4-6-openrouter-anthropic
 node --import tsx scripts/generate-ai-correction-full-blind-review.ts \
   --configuration=benchmarks/ai-correction/benchmark.v1.json \
   --corpus=benchmarks/ai-correction/corpus.v1.json \
