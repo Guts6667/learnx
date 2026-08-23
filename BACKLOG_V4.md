@@ -838,6 +838,28 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   n'est pas une correction opérationnelle d'un exercice utilisateur.
 - Risque : suradapter le prompt à un corpus trop petit.
 
+### État au 23 août 2026 — gate de développement franchi (identité v2-2)
+
+Amendement de statut (détails et décisions dans
+`docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` §6 et
+`docs/V4_AI_MODEL_BENCHMARK_REPORT.md`, amendement du 23 août) :
+
+- politique de gate v2 préenregistrée (`benchmarks/ai-correction/benchmark.v2*.json`) :
+  sécurité bloquante (faux PASS = 0, écart deux niveaux = 0, échec final ≤ 2 %,
+  accord décision certain ≥ 85 %), incidents récupérables surveillés ;
+- l'identité `learnx-french-text-correction-v2-2` (Sonnet 4.6, route Anthropic
+  épinglée, prompt 2.1.0, protocole 3.0.1, retries bornés 2) passe tous les
+  gates automatiques et la revue aveugle déléguée (APPROVED, moyenne 91,
+  digest SHA-256 lié aux tentatives) ; `promotionEligible = true` ;
+- le résumé revu (`results/2026-08-23T20-10-38-564Z.attempts.json.reviewed-summary.json`)
+  sert de baseline de régression pour `benchmarkRegressed` ;
+- restent avant production : GO explicite du Propriétaire pour l'ouverture
+  unique du holdout scellé, pilote sur productions réelles anonymisées, puis
+  V4-009 (finance) et V4-010 (UX correction). Aucune tarification active ;
+- toute modification de composant (modèle, prompt, protocole, seuils, retries)
+  crée une nouvelle identité préenregistrée ; les identités v1 et v2/v2-1/v2-2
+  figées ne sont jamais réécrites.
+
 ---
 
 ## V4-004 — Adaptateur OpenRouter central et sortie structurée
