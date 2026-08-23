@@ -457,3 +457,59 @@ Suite autorisée après validation hors ligne du protocole 3.0 :
 Toute seconde passe automatique utilisera le même modèle éventuellement promu ;
 aucune combinaison multi-modèle n'est autorisée par V4. Le holdout reste fermé
 jusqu'à une instruction ultérieure explicite.
+
+## Amendement du 23 août 2026 — politique de gate v2 et campagnes associées
+
+Cet amendement ajoute les résultats du 23 août sans réécrire les verdicts
+historiques ci-dessus. Le journal détaillé des décisions est
+`docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` §6 ; la configuration préenregistrée
+est `benchmarks/ai-correction/benchmark.v2.json` puis `benchmark.v2_1.json` et
+`benchmark.v2_2.json`.
+
+### Motivation
+
+Les seuils v1 pré-enregistrés (invalidité 1 %, variabilité 10 %) étaient
+mathématiquement incompatibles avec un corpus de 24×3 : 1 run sur 72 =
+1,3889 % et 3 cas sur 24 = 12,5 %. Quatre campagnes avaient échoué sur ces
+compteurs ou sur la pénalité du comportement sûr (faux FAIL formatifs routés
+en seconde passe), jamais sur les gates de sécurité proprement dits. La
+politique v2 aligne les gates sur la doctrine bêta publiée : sécurité
+bloquante (faux PASS = 0, écart de deux niveaux = 0, échec final après retry
+≤ 2 %, accord décision certain ≥ 85 %), incidents récupérables surveillés
+(invalidité première tentative ≤ 10 %, bascules adjacentes ≤ 15 %, rejets de
+preuve en tentative non finale). Les identités et seuils v1 restent figés.
+
+### Campagnes du 23 août 2026 (Sonnet 4.6, route Anthropic, protocole 3.0.1, corpus v1-3)
+
+| Identité | Prompt / retries | Sorties | Coût réel | Verdict |
+| --- | --- | --- | ---: | --- |
+| v2 (`benchmark.v2.json`) | 2.0.0 / 1 retry | 76 tentatives, 71 VALID, 5 INVALID | 1,307073 USD | **NO-GO** : 2/72 runs finalement inutilisables (2,78 % > 2 %), tous deux `benchmark-writing-partial` avec `NO_RELEVANT_EVIDENCE` accompagné de citations |
+| v2-1 (`benchmark.v2_1.json`) | 2.1.0 / 1 retry | smoke sans retry | 0,019747 USD | remédiation prompt unique, transversale ; le smoke sur le cas défaillant reproduit le défaut (stochastique connu) |
+| v2-2 (`benchmark.v2_2.json`) | 2.1.0 / 2 retries | 73 tentatives, 72 VALID, 1 INVALID récupéré | 1,300632 USD | **tous les gates automatiques passent** après correction de mesure §6.6 |
+
+Résultats v2-2 détaillés : accord critériel 89,35 %, accord décisionnel 93,06 %,
+accord décision certain 92,96 %, faux PASS 0, faux FAIL 5 (formatifs, routés en
+seconde passe), écarts de deux niveaux 0, invalidité première tentative 1,39 %
+(≤ 10 % surveillé), runs finalement inutilisables 0, sécurité injection 100 %,
+hallucination présentée 0 %, variabilité 8,33 % (≤ 15 % surveillé), calibration
+17,95 %, P90 2 123 ms, coût 1,300632 USD. Signal surveillé unique :
+`FIRST_ATTEMPT_EVIDENCE_REJECTED` (une tentative initiale a cité un fait du
+`taskContext` hors production ; rejetée par le vérificateur déterministe,
+jamais présentable, retry valide).
+
+### Correction de mesure (§6.6 du journal)
+
+`evidenceHallucinationRate` sous politique v2 mesure désormais les sorties
+finales présentables (tolérance zéro conservée : 1/72 y échouerait), tandis
+que les rejets de preuve en tentative non finale alimentent le signal surveillé
+`FIRST_ATTEMPT_EVIDENCE_REJECTED` et l'invalidité première tentative. La
+sémantique v1 (toute tentative) est inchangée pour les identités v1.
+
+### État de la promotion
+
+Sous l'identité `learnx-french-text-correction-v2-2`, Sonnet 4.6 (route
+Anthropic épinglée, température omise, prompt 2.1.0, protocole 3.0.1) satisfait
+l'ensemble des gates automatiques. Restent requis avant promotion finale :
+revue humaine aveugle APPROVED liée par digest, puis — sur GO explicite du
+Propriétaire — ouverture unique du holdout scellé et pilote sur productions
+réelles anonymisées. Aucune tarification n'est activée avant ces étapes.
