@@ -329,7 +329,24 @@ async function executeJsonRequest(input: {
     );
   }
   const latencyMs = Math.round(performance.now() - startedAt);
-  const rawPayload = await response.text();
+  let rawPayload: string;
+  try {
+    rawPayload = await response.text();
+  } catch (error) {
+    // The transport signal can abort body reading after headers arrived;
+    // it must surface as a provider timeout, never an uncaught DOMException.
+    const errorName =
+      typeof error === 'object' &&
+      error !== null &&
+      'name' in error &&
+      typeof error.name === 'string'
+        ? error.name
+        : undefined;
+    if (errorName === 'TimeoutError' || errorName === 'AbortError') {
+      throw new CorrectionProviderError('PROVIDER_TIMEOUT', { latencyMs });
+    }
+    throw error;
+  }
   let payload: unknown;
   try {
     payload = JSON.parse(rawPayload) as unknown;
