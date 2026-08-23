@@ -211,9 +211,9 @@
         <h1>Construire une correction utile, sans fabriquer de certitude.</h1>
         <p class="lead">État documenté des essais de modèles, des limites rencontrées et du passage vers une notation formative vérifiée par un pipeline composite.</p>
         <div class="status-line">
-          <span><strong>Statut</strong> Exploration — aucun pipeline promu</span>
+          <span><strong>Statut</strong> Gate de développement franchi — identité v2-2, holdout scellé</span>
           <span><strong>Données</strong> 24 cas synthétiques français × 3 répétitions</span>
-          <span><strong>Mise à jour</strong> 12 août 2026</span>
+          <span><strong>Mise à jour</strong> 23 août 2026</span>
           <a class="language-link" href="en.html" lang="en" hreflang="en">English version</a>
         </div>
       </div>
@@ -228,6 +228,7 @@
         <a href="#candidats">Candidats</a>
         <a href="#pipeline">Pipeline exploré</a>
         <a href="#gates">Critères</a>
+        <a href="#miseajour">Mise à jour</a>
         <a href="#suite">Suite</a>
       </div>
     </nav>
@@ -440,6 +441,50 @@
         </div>
       </section>
 
+      <section id="miseajour">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-number">08 bis · Mise à jour du 23 août 2026</span>
+            <div>
+              <h2>Le bloqueur n’était pas le modèle : c’était l’arithmétique des seuils.</h2>
+              <p>Quatre campagnes avaient échoué sans qu’aucun défaut de sécurité ne soit jamais observé sur les finalistes. En relisant les gates, l’explication est devenue évidente : appliqués à 72 runs, des seuils pensés en pourcentages continuaux se comportaient en tolérance zéro.</p>
+            </div>
+          </div>
+          <div class="decision">
+            <blockquote>Un seuil de 1 % sur 72 essais interdit un seul échec : 1 ÷ 72 = 1,39 %.</blockquote>
+            <aside>
+              <strong>Le constat</strong>
+              Trois cas instables sur 24 dépassent aussi la limite de variabilité (12,5 % &gt; 10 %). Les modèles échouaient contre des règles qu’aucun modèle ne pouvait satisfaire, pas contre la pédagogie.
+            </aside>
+          </div>
+          <div class="table-scroll" style="margin-top:52px">
+            <table class="matrix">
+              <caption class="sr-only">Ce que la politique de gates v2 bloque et ce qu’elle surveille</caption>
+              <thead><tr><th>Bloquant (sécurité)</th><th>Seuil</th><th>Surveillé (qualité)</th><th>Cible</th></tr></thead>
+              <tbody>
+                <tr><td>Faux positif (réussite inventée)</td><td>0</td><td>Invalidité à la première tentative</td><td>≤ 10 %</td></tr>
+                <tr><td>Écart de deux niveaux sur un critère</td><td>0</td><td>Bascule d’un niveau entre répétitions</td><td>≤ 15 %</td></tr>
+                <tr><td>Échec final après retry</td><td>≤ 2 %</td><td>Rejet de preuve en tentative réparée</td><td>signal</td></tr>
+                <tr><td>Preuve inventée présentée</td><td>0</td><td>Faux négatif formatif (routé en relecture)</td><td>calibration</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note"><strong>Ce qui ne change pas.</strong> Injections, citations inventées, calcul serveur des scores et remboursement intégral en cas d’échec restent des exigences absolues. Un incident récupéré par retry n’est jamais affiché à l’apprenant ni débité : il devient un indicateur surveillé, pas un verdict.</p>
+          <div class="timeline" aria-label="Campagnes du 23 août" style="margin-top:52px">
+            <time datetime="2026-08-23">v2</time><article><h3>Seuils corrigés, première campagne</h3><p>Tous les gates passent sauf un : 2 runs sur 72 restent inutilisables après retry (2,78 % &gt; 2 %). Les deux viennent du même cas, où le modèle annonce « aucune preuve pertinente »… en citant quand même.</p></time>
+            <time datetime="2026-08-23">v2-1</time><article><h3>Une remédiation de prompt, honnête</h3><p>Une consigne transversale rend la règle explicite. Le défaut, stochastique, résiste sur ce cas : le réflexe « toujours citer » du modèle est plus fort que la consigne. Deuxième essai de prompt refusé — ce serait du réglage de cas.</p></time>
+            <time datetime="2026-08-23">v2-2</time><article><h3>Réparation opérationnelle</h3><p>La doctrine distingue l’incident récupéré de l’échec visible : trois tentatives bornées par cellule au lieu de deux, coût absorbé par LearnX. Résultat : 0 run inutilisable, et une correction de mesure — l’hallucination comptée désormais sur ce qui est réellement présenté à l’apprenant.</p></time>
+            <time datetime="2026-08-23">Revue</time><article><h3>Relecture aveugle indépendante : approuvée</h3><p>46 corrections évaluées sans connaître le modèle, les notes attendues ni les catégories. Moyenne 91/100, preuves 95/100, aucun constat éliminatoire, toutes les tentatives d’injection ignorées comme données.</p></time>
+          </div>
+          <div class="metrics" aria-label="Chiffres clés v2-2" style="margin-top:52px">
+            <div class="metric"><b>0</b><span>faux positif, preuve inventée présentée, run final inutilisable</span></div>
+            <div class="metric"><b>89,4 %</b><span>accord critériel avec les étalons</span></div>
+            <div class="metric"><b>100 %</b><span>sécurité sur les tentatives d’injection</span></div>
+            <div class="metric"><b>1,30 $</b><span>coût réel de la campagne complète de 72 corrections</span></div>
+          </div>
+          <p class="note"><strong>Où nous en sommes.</strong> L’identité « v2-2 » — Claude Sonnet 4.6 via la route Anthropic, prompt 2.1.0, protocole 3.0.1, retries bornés — est la première à franchir tous les gates automatiques et la relecture aveugle sur le corpus de développement. Elle n’est pas encore en production : le holdout scellé doit être ouvert une seule fois, puis un pilote sur de vraies productions doit confirmer la généralisation. Aucune tarification n’est active.</p>
+        </div>
+      </section>
       <section id="suite">
         <div class="wrap">
           <div class="section-head">
@@ -459,7 +504,7 @@
     </main>
 
     <footer>
-      <div class="wrap">LearnX · Rapport de recherche intermédiaire V4-003 · Corpus synthétique uniquement · Aucun modèle ni pipeline promu au 12 août 2026.</div>
+      <div class="wrap">LearnX · Rapport de recherche intermédiaire V4-003 · Corpus synthétique uniquement · Gate de développement franchi par l’identité v2-2 le 23 août 2026 ; holdout scellé et pilote réel restants.</div>
     </footer>
   </div>
 </body>

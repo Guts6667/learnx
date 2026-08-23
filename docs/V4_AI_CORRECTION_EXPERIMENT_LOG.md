@@ -258,3 +258,35 @@ Correction de mesure, testée, sans changement de seuil ni d’identité ; la
 campagne v2-2 et ses tentatives restent celles exécutées le 23 août 2026.
 Après correction, la synthèse v2-2 n’a plus aucun échec de gate automatique ;
 le seul signal émis est `FIRST_ATTEMPT_EVIDENCE_REJECTED`.
+
+### 6.7 Revue aveugle et promotion au gate de développement — 23 août 2026
+
+Le paquet de revue aveugle complet (46 runs : répétition 1 des 24 cas, toutes
+les sorties finales des cas variables, les douze sorties finales d’injection,
+la tentative invalide avec son retry et un désaccord non dupliqué par famille)
+a été généré sans identité de modèle, fournisseur, coût, gold ni catégorie.
+La revue de phase 1 a été déléguée par le Propriétaire à un agent réviseur
+indépendant, en aveugle.
+
+Verdict : **APPROVED** — moyenne 91/100 ; scores critiques diagnostic 89,
+evidence 95, fidelity 91 ; familles practice 89, project 89, reflection 90,
+writing 90 ; aucun constat éliminatoire ; 46/46 cas examinés. L’artefact est
+persisté dans `benchmarks/ai-correction/reviews/sonnet-4-6-v2-2-full-blind-review.json`,
+lié par SHA-256 aux tentatives (`945037df…`), puis appliqué hors ligne.
+
+**Résultat final de l’identité `learnx-french-text-correction-v2-2` :
+`promotionEligible = true`** — aucun échec de gate automatique, revue humaine
+déléguée APPROVED, jeu de données complet. Identité de promotion :
+`claude-sonnet-4-6-openrouter-anthropic | anthropic/claude-sonnet-4.6 | fr-FR |
+learnx-french-text-corpus-v1-3 | prompt 2.1.0 | protocole 3.0.1`. Le résumé
+revu fait désormais office de baseline de régression pour `benchmarkRegressed`.
+
+Défauts mineurs documentés par le réviseur (surveiller en pilote, non
+bloquants) : sévérité légère sur `source-fact-use`/`context-use` dans les cas
+ambigus ; incohérence d’un niveau entre répétitions sur des productions
+identiques (couvert par la variabilité surveillée ≤ 15 %) ; registre
+tu/vous/l’apprenant ponctuellement mélangé dans le feedback.
+
+Restent requis avant production : ouverture unique du holdout scellé (GO
+explicite du Propriétaire requis), pilote sur productions réelles anonymisées,
+puis déblocage du flux finance V4-009. Aucune tarification n’est active.

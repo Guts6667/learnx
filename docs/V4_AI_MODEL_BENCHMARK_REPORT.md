@@ -507,9 +507,17 @@ sémantique v1 (toute tentative) est inchangée pour les identités v1.
 
 ### État de la promotion
 
-Sous l'identité `learnx-french-text-correction-v2-2`, Sonnet 4.6 (route
-Anthropic épinglée, température omise, prompt 2.1.0, protocole 3.0.1) satisfait
-l'ensemble des gates automatiques. Restent requis avant promotion finale :
-revue humaine aveugle APPROVED liée par digest, puis — sur GO explicite du
-Propriétaire — ouverture unique du holdout scellé et pilote sur productions
-réelles anonymisées. Aucune tarification n'est activée avant ces étapes.
+**L'identité `learnx-french-text-correction-v2-2` est la première à franchir
+l'ensemble de la chaîne de promotion sur le corpus de développement.** Revue
+aveugle complète (46 runs, agent réviseur indépendant délégué par le
+Propriétaire) : **APPROVED**, moyenne 91/100, scores critiques 89/95/91,
+familles 89/89/90/90, aucun constat éliminatoire ; artefact lié par SHA-256
+(`benchmarks/ai-correction/reviews/sonnet-4-6-v2-2-full-blind-review.json`).
+Après application : aucun échec de gate automatique, `promotionEligible = true`.
+
+Identité de promotion : `claude-sonnet-4-6-openrouter-anthropic` (route
+Anthropic épinglée, température omise), `fr-FR`, corpus `v1-3`, prompt
+`2.1.0`, protocole `3.0.1`, retries bornés 2. Le résumé revu sert de baseline
+de régression. Restent requis avant production : ouverture unique du holdout
+scellé (GO explicite du Propriétaire), pilote sur productions réelles
+anonymisées, puis flux finance V4-009. Aucune tarification n'est activée.
