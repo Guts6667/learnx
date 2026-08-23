@@ -1630,16 +1630,20 @@ export function summarizeCorrectionBenchmark(input: {
         // Gate policy v2 measures the documented invariant: fabricated evidence
         // presented to the learner. Rejected attempts are never presented;
         // they already count as first-attempt invalidity incidents and are
-        // surfaced here as a raw-propensity watch signal instead.
+        // surfaced here as a raw-propensity watch signal instead. A terminal
+        // INVALID final is an unusable run (never shown, fully refunded) and
+        // is counted by eventualUnusableRunRate, not here.
         const nonFinalAttempts = run.attempts.filter(
           (attempt) => attempt !== run.finalAttempt,
         );
         if (nonFinalAttempts.some(attemptRejectedEvidence)) {
           firstAttemptEvidenceRejectionRuns += 1;
         }
-        hallucinationCount += attemptRejectedEvidence(run.finalAttempt)
-          ? 1
-          : 0;
+        hallucinationCount +=
+          run.finalAttempt.status === 'VALID' &&
+          attemptRejectedEvidence(run.finalAttempt)
+            ? 1
+            : 0;
       } else {
         hallucinationCount += run.attempts.some(attemptRejectedEvidence)
           ? 1

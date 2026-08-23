@@ -853,9 +853,18 @@ Amendement de statut (détails et décisions dans
   digest SHA-256 lié aux tentatives) ; `promotionEligible = true` ;
 - le résumé revu (`results/2026-08-23T20-10-38-564Z.attempts.json.reviewed-summary.json`)
   sert de baseline de régression pour `benchmarkRegressed` ;
-- restent avant production : GO explicite du Propriétaire pour l'ouverture
-  unique du holdout scellé, pilote sur productions réelles anonymisées, puis
-  V4-009 (finance) et V4-010 (UX correction). Aucune tarification active ;
+- **holdout scellé ouvert une fois le 23 août (identité
+  `learnx-french-text-correction-holdout-v2-2`, 1,750782 USD) : NO-GO
+  production** — 4/72 runs inutilisables (5,56 % > 2 %), tous par citations
+  non exactes sur deux cas denses ; la qualité pédagogique, la sûreté et
+  l'absence de fuite d'injection généralisent (92,16 % d'accord sur cas
+  inconnus, 0 faux PASS) ; le corpus holdout est consommé, aucun retuning ;
+- prochaine étape possible : nouvelle identité préenregistrée remédiant la
+  fidélité de citation (équivalence bornée de casse initiale à correspondance
+  unique, ou boucle de réparation renvoyant le motif de rejet au modèle),
+  nouvelle campagne de développement, puis **nouveau** corpus holdout scellé
+  rédigé et approuvé avant exécution ; V4-009 (finance) et V4-010 (UX)
+  restent bloqués jusqu'à une promotion production ;
 - toute modification de composant (modèle, prompt, protocole, seuils, retries)
   crée une nouvelle identité préenregistrée ; les identités v1 et v2/v2-1/v2-2
   figées ne sont jamais réécrites.

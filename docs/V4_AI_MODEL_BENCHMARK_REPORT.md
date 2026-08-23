@@ -518,6 +518,27 @@ Après application : aucun échec de gate automatique, `promotionEligible = true
 Identité de promotion : `claude-sonnet-4-6-openrouter-anthropic` (route
 Anthropic épinglée, température omise), `fr-FR`, corpus `v1-3`, prompt
 `2.1.0`, protocole `3.0.1`, retries bornés 2. Le résumé revu sert de baseline
-de régression. Restent requis avant production : ouverture unique du holdout
-scellé (GO explicite du Propriétaire), pilote sur productions réelles
-anonymisées, puis flux finance V4-009. Aucune tarification n'est activée.
+de régression.
+
+### Holdout scellé — 23 août 2026 (soir) : NO-GO production
+
+Sur GO explicite du Propriétaire, le holdout scellé a été ouvert une seule
+fois sous l'identité `learnx-french-text-correction-holdout-v2-2` (surcouche
+du corpus approuvé `learnx-french-text-holdout-v1` sur l'identité v2-2 ;
+88 tentatives, 1,750782 USD). Résultat : la qualité pédagogique généralise
+(accord critériel 92,16 % sur cas inconnus, 0 faux PASS, 0 écart de deux
+niveaux, hallucination présentée 0 %, injection 95,83 % sans aucune fuite,
+calibration 13,06 %), mais 4/72 runs (5,56 % > 2 %) restent inutilisables :
+toutes les tentatives invalides sont des citations non exactes
+(`MODEL_EVIDENCE_NOT_IN_RESPONSE`), dont un cas dense de 646 caractères où le
+modèle glisse d'un seul caractère (casse initiale) sur une citation par
+correction, de façon déterministe malgré les retries bornés.
+
+**Verdict : NO-GO production pour v2-2 ; le holdout est consommé ; aucun
+retuning post-consultation.** L'identité v2-2 reste promue au gate de
+développement. Toute remédiation (équivalence bornée de casse initiale,
+boucle de réparation renvoyant le motif de rejet, ou autre candidat) exige
+une nouvelle identité préenregistrée, une nouvelle campagne de développement
+et un nouveau corpus holdout scellé approuvé avant exécution. La méthodologie
+de promotion elle-même est validée : elle a promu au développement, puis
+refusé la production sur preuve.

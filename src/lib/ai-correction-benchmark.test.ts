@@ -1790,6 +1790,19 @@ describe('correction benchmark metrics', () => {
       ],
     });
 
+    // A terminal INVALID final is an unusable run, never a presented hallucination.
+    const terminalSummary = summarizeCorrectionBenchmark({
+      attempts: [attempts[0] as BenchmarkAttempt],
+      configuration: v2Configuration,
+      corpus,
+      runMetadata,
+    });
+    expect(terminalSummary.models[0]).toMatchObject({
+      evidenceHallucinationRate: 0,
+      eventualUnusableRunRate: 1,
+      watchSignals: ['FIRST_ATTEMPT_INVALID_ABOVE_WATCH_TARGET'],
+    });
+
     const v1Summary = summarizeCorrectionBenchmark({
       attempts: attempts.map((attempt) => ({
         ...attempt,
