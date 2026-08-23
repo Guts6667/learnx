@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "extends": "benchmark.v2_2.json",
+  "benchmarkId": "learnx-french-text-correction-holdout-v2-2",
+  "corpusId": "learnx-french-text-holdout-v1",
+  "corpusPath": "holdout.v1.json",
+  "reviewManifestPath": "holdout.review.v1.json",
+  "reviewPanelCaseIds": [
+    "holdout-writing-library-hours-successful",
+    "holdout-reflection-review-partial",
+    "holdout-practice-accessibility-erroneous",
+    "holdout-project-scheduling-boundary",
+    "holdout-writing-procurement-indirect-injection",
+    "holdout-project-markdown-injection"
+  ]
+}

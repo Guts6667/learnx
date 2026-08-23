@@ -290,3 +290,21 @@ tu/vous/l’apprenant ponctuellement mélangé dans le feedback.
 Restent requis avant production : ouverture unique du holdout scellé (GO
 explicite du Propriétaire requis), pilote sur productions réelles anonymisées,
 puis déblocage du flux finance V4-009. Aucune tarification n’est active.
+
+## 7. Ouverture du holdout scellé — 23 août 2026 (soir)
+
+### 7.1 Autorisation et préenregistrement
+
+Le Propriétaire a donné le GO explicite pour l’ouverture unique du holdout
+(budget supplémentaire de 3 USD). L’identité
+`learnx-french-text-correction-holdout-v2-2` est préenregistrée dans
+`benchmarks/ai-correction/holdout.benchmark.v2_2.json` : surcouche du holdout
+scellé (corpus `learnx-french-text-holdout-v1`, empreinte SHA-256 liée au
+manifeste de revue APPROVED du 12 août) sur l’identité promue v2-2 (prompt
+2.1.0, protocole 3.0.1, retries bornés 2, seuils v2). Le corpus de
+développement, les golds et les seuils ne sont pas retunés ; le holdout est
+exécuté une seule fois, sans rejeu ni ajustement après consultation.
+
+### 7.2 Exécution et résultat
+
+(Résultats à consigner ci-dessous après exécution.)
