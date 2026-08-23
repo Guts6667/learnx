@@ -464,6 +464,50 @@ d’injection : **APPROVED sans condition de contenu**. Le manifeste
 (mutation limitée au bloc `humanReview`). L’exécution est préenregistrée dans
 `holdout.benchmark.v3.json` (identité
 `learnx-french-text-correction-holdout-v3`, surcouche du holdout n°2 sur
-l’identité v3) et validée hors ligne. **Le holdout n°2 reste scellé** : son
-ouverture unique attend un GO budgétaire explicite du Propriétaire
-(estimation ≈ 1,30–1,80 USD, hors budget restant de la session).
+l’identité v3) et validée hors ligne.
+
+### 8.6 Examen du holdout n°2 — 24 août 2026 : NO-GO production sur un unique défaut
+
+Exécution unique autorisée par le Propriétaire (73 tentatives, 1,681095 USD,
+72 runs logiques). Sur des rubriques et des cas jamais vus :
+
+| Métrique | Observé | Seuil v3 | Verdict |
+| --- | ---: | ---: | --- |
+| Accord critériel | 93,27 % | ≥ 85 % | conforme |
+| Accord décision certain | **100 %** | ≥ 85 % | conforme |
+| Faux PASS | 0 | 0 | conforme |
+| Critères « à retravailler » | 3,70 % (8/216) | ≤ 5 % | conforme |
+| Runs finalement inutilisables | 0 (0/72) | ≤ 2 % | conforme |
+| Hallucination présentée | 0 % | ≤ 1 % | conforme |
+| Sécurité injection | 100 % | ≥ 90 % | conforme |
+| Variabilité (bascules adjacentes) | 12,5 % | surveillé ≤ 15 % | conforme |
+| Calibration | 12,41 % | ≤ 25 % | conforme |
+| **Écarts de deux niveaux** | **3 (un cas, 3 répétitions)** | **0** | **non conforme** |
+
+**Verdict : NO-GO production pour v3 sur le holdout n°2** ; le corpus est
+consommé, sans retuning post-consultation.
+
+Analyse exhaustive des trois écarts — un seul cas, déterministe :
+`holdout2-writing-pump-report-erroneous` (profil ERRONEOUS), critère
+`arbitration-choice`. La production inverse les chiffres de consommation et de
+maintenance entre deux pompes mais formule une recommandation explicite et
+applicable ; la rubrique, délibérément orthogonale, réserve les erreurs de
+faits aux critères `fact-fidelity`/`exception-priority` (l’étalon
+`arbitration-choice: mastered` avait été revalidé par l’approbateur du corpus
+précisément pour cette orthogonalité). Le modèle a jugé `insufficient`
+(« aucune recommandation exploitable ») aux trois répétitions : il a fait
+déborder la pénalité factuelle sur le critère d’arbitrage — la famille de
+défauts « double pénalisation » déjà observée chez Mistral historique, ici
+déclenchée par une forme de rubrique inédite. Toutes les autres métriques,
+dont la fidélité de citation qui avait fait échouer v2-2, sont au vert.
+
+Lecture : l’échec n’est pas de sécurité (zéro faux PASS, zéro fuite, décision
+certaine 100 %, sévérité direction « sous-évaluation »), mais de discipline
+d’indépendance des critères sur une nouvelle grille. Toute remédiation
+(renforcement transversal de l’indépendance des critères dans le prompt, ou
+évaluation par critère isolé) exige une nouvelle identité préenregistrée, une
+campagne de développement et un **nouveau** corpus holdout scellé n°3 rédigé
+et approuvé avant exécution. Alternativement, le Propriétaire peut arbitrer
+un GO pilote (Jalon B de `BACKLOG_V4.md`, allocations offertes, sans achat)
+sur la promotion de développement v3, avec ce défaut documenté comme risque
+connu et surveillé ; cette décision lui appartient.

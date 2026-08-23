@@ -879,11 +879,18 @@ Amendement de statut (détails et décisions dans
   lié). Règle 10 amendée : devis débité en intégralité, aucun remboursement ni
   compensation, consentement préalable explicite, devis partiel possible pour
   la resoumission des critères « à retravailler » ;
-- **nouveau holdout scellé n°2** (`holdout.v2.json`) : rédigé, approuvé par
-  revue indépendante (72 étalons revalidés), scellé par manifeste SHA-256 ;
-  exécution unique préenregistrée dans `holdout.benchmark.v3.json` — **attend
-  un GO budgétaire explicite du Propriétaire** (≈ 1,30–1,80 USD). C'est le
-  seul examen restant avant promotion production v3 ;
+- **holdout n°2 exécuté une fois le 24 août (1,681095 USD) : NO-GO
+  production sur un unique défaut** — 3 écarts de deux niveaux sur un seul cas
+  ERRONEOUS déterministe (double pénalisation : les erreurs de faits
+  débordent sur le critère d'arbitrage orthogonal) ; toutes les autres
+  métriques au vert sur grilles inédites (93,27 % d'accord, décision certaine
+  100 %, 0 faux PASS, 0 run inutilisable, « à retravailler » 3,70 % ≤ 5 %).
+  Le corpus n°2 est consommé ;
+- **décision ouverte pour le Propriétaire** : (a) remédier l'indépendance des
+  critères (nouvelle identité + campagne dev ~1,30 USD + nouveau holdout n°3
+  rédigé et approuvé avant exécution), ou (b) GO pilote Jalon B sur la
+  promotion de développement v3 (allocations offertes, défaut documenté et
+  surveillé), ou les deux en parallèle ;
 - toute modification de composant (modèle, prompt, protocole, seuils, retries)
   crée une nouvelle identité préenregistrée ; les identités v1 et v2/v2-1/v2-2
   figées ne sont jamais réécrites.

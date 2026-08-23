@@ -564,11 +564,17 @@ aveugle déléguée : APPROVED (moyenne 91, aucun constat éliminatoire, les 3
 livraisons partielles jugées honnêtes). **v3 est promue au gate de
 développement.**
 
-Un nouveau corpus holdout scellé n°2 (`learnx-french-text-holdout-v2`,
-4 contrats inédits, 24 cas denses dont 8 injections) a été rédigé et
-**approuvé par revue indépendante** (72 étalons revalidés un à un, calculs
-refaits) ; son manifeste lie les empreintes SHA-256 du scellement. Son
-exécution unique est préenregistrée (`holdout.benchmark.v3.json`, identité
-`learnx-french-text-correction-holdout-v3`) et **attend le GO budgétaire du
-Propriétaire** (≈ 1,30–1,80 USD). La promotion production v3 se joue
-entièrement sur cet examen final.
+L'examen final scellé n°2 (`learnx-french-text-holdout-v2`, contrats et cas
+inédits, exécution unique autorisée le 24 août : 73 tentatives, 1,681095 USD)
+donne **NO-GO production sur un unique défaut** : 3 écarts de deux niveaux
+(≤ 0 requis) sur un seul cas ERRONEOUS déterministe — le modèle fait déborder
+la pénalité des erreurs de faits sur le critère d'arbitrage, dont la rubrique
+est délibérément orthogonale aux faits. Toutes les autres métriques sont au
+vert sur des grilles jamais vues : accord critériel 93,27 %, accord décision
+certain 100 %, 0 faux PASS, 0 run inutilisable, 8/216 critères « à
+retravailler » (3,70 % ≤ 5 %), injection 100 %, hallucination présentée 0 %,
+calibration 12,41 %, P90 2,4 s. Le corpus n°2 est consommé. La promotion
+production exige une nouvelle identité remédiant l'indépendance des critères,
+une campagne de développement et un nouveau holdout scellé n°3 — ou un GO
+pilote arbitré par le Propriétaire sur la promotion de développement v3
+(défaut documenté, direction « sévérité », aucun faux PASS).
