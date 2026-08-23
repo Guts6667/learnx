@@ -1612,16 +1612,39 @@ export function summarizeCorrectionBenchmark(input: {
       }
     });
 
+    const gatePolicyV2 = getBenchmarkGatePolicyV2Thresholds(
+      configuration.thresholds,
+    );
+    let firstAttemptEvidenceRejectionRuns = 0;
     for (const run of modelRuns) {
       const benchmarkCase = casesById.get(run.finalAttempt.caseId);
-      const rejectedEvidence = run.attempts.some(
-        (attempt) =>
-          attempt.errorCode?.startsWith('MODEL_EVIDENCE_') === true ||
-          (attempt.output !== undefined &&
-            benchmarkCase !== undefined &&
-            hasHallucinatedEvidence(attempt.output, benchmarkCase.responseText)),
-      );
-      hallucinationCount += rejectedEvidence ? 1 : 0;
+      const attemptRejectedEvidence = (attempt: BenchmarkAttempt): boolean =>
+        attempt.errorCode?.startsWith('MODEL_EVIDENCE_') === true ||
+        (attempt.output !== undefined &&
+          benchmarkCase !== undefined &&
+          hasHallucinatedEvidence(
+            attempt.output,
+            benchmarkCase.responseText,
+          ));
+      if (gatePolicyV2) {
+        // Gate policy v2 measures the documented invariant: fabricated evidence
+        // presented to the learner. Rejected attempts are never presented;
+        // they already count as first-attempt invalidity incidents and are
+        // surfaced here as a raw-propensity watch signal instead.
+        const nonFinalAttempts = run.attempts.filter(
+          (attempt) => attempt !== run.finalAttempt,
+        );
+        if (nonFinalAttempts.some(attemptRejectedEvidence)) {
+          firstAttemptEvidenceRejectionRuns += 1;
+        }
+        hallucinationCount += attemptRejectedEvidence(run.finalAttempt)
+          ? 1
+          : 0;
+      } else {
+        hallucinationCount += run.attempts.some(attemptRejectedEvidence)
+          ? 1
+          : 0;
+      }
     }
 
     const ordinalLevelKeys = [
@@ -1768,9 +1791,6 @@ export function summarizeCorrectionBenchmark(input: {
       (total, attempt) => total + calculateCost(attempt, candidate),
       0,
     );
-    const gatePolicyV2 = getBenchmarkGatePolicyV2Thresholds(
-      configuration.thresholds,
-    );
     const pedagogicallyEligible =
       datasetComplete &&
       humanReviewApproved &&
@@ -1872,6 +1892,9 @@ export function summarizeCorrectionBenchmark(input: {
             : null,
           partialMetrics.variabilityRate > gatePolicyV2.variabilityWatchMaximum
             ? 'ADJACENT_VARIABILITY_ABOVE_WATCH_TARGET'
+            : null,
+          firstAttemptEvidenceRejectionRuns > 0
+            ? 'FIRST_ATTEMPT_EVIDENCE_REJECTED'
             : null,
         ].filter((signal): signal is string => signal !== null)
       : [];

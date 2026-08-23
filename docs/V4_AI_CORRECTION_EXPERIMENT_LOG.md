@@ -227,3 +227,34 @@ bornées par cellule au lieu de deux. Le coût des retries supplémentaires est
 absorbé par LearnX, jamais débité ; `firstAttemptInvalidRate` continue de
 mesurer l’incident brut sans plafond ; seul le taux final ≤ 2 % reste bloquant.
 Aucun seuil pédagogique ne change.
+
+### 6.6 Amendement du 23 août 2026 (b) — mesure de l’hallucination présentée
+
+La campagne v2-2 (76 tentatives, 1,300632 USD, 72 runs logiques, un run avec
+première tentative rejetée puis retry valide) a échoué un unique gate :
+`evidenceHallucinationRate` = 1/72 = 1,3889 % > 1 %. L’incident est
+`benchmark-practice-ambiguous`, répétition 1, tentative 1 :
+`MODEL_EVIDENCE_NOT_IN_RESPONSE` — le modèle cite un fait du `taskContext`
+comme s’il figurait dans la production. Le vérificateur déterministe a rejeté
+cette tentative ; elle n’a jamais été présentable ni débitée ; le retry borné
+a produit une sortie valide dont les citations sont exactes.
+
+Le gate publié protège l’invariant « aucune preuve inventée **présentée** à
+l’apprenant ». La computation v1 comptait toute tentative rejetée du run —
+y compris donc des sorties que le moteur interdit structurellement de
+présenter — et comptait ainsi un même incident dans deux métriques bloquantes
+(`firstAttemptInvalidRate` et `evidenceHallucinationRate`). Sous politique v2,
+la mesure est alignée sur l’invariant :
+
+- `evidenceHallucinationRate` mesure les sorties **finales** (présentables) ;
+  1/72 y échouerait toujours (0 % observé) — la tolérance zéro est conservée
+  là où le risque existe ;
+- les rejets de preuve en tentative non finale alimentent le signal surveillé
+  `FIRST_ATTEMPT_EVIDENCE_REJECTED` (propension brute, visible, non bloquant)
+  et restent comptés dans `firstAttemptInvalidRate` ;
+- la sémantique v1 (toute tentative) est inchangée pour les identités v1.
+
+Correction de mesure, testée, sans changement de seuil ni d’identité ; la
+campagne v2-2 et ses tentatives restent celles exécutées le 23 août 2026.
+Après correction, la synthèse v2-2 n’a plus aucun échec de gate automatique ;
+le seul signal émis est `FIRST_ATTEMPT_EVIDENCE_REJECTED`.

@@ -1725,6 +1725,124 @@ describe('correction benchmark metrics', () => {
     ).toBe(false);
   });
 
+  it('measures presented hallucination under gate policy v2 and keeps rejected attempts as watch signals', () => {
+    const corpus = loadCorpus();
+    const v1Configuration = loadConfiguration();
+    const v2Configuration = loadV2Configuration();
+    const benchmarkCase = corpus.cases[0];
+    const v2Candidate = v2Configuration.candidates.find(
+      (candidate) =>
+        candidate.candidateId === v1Configuration.candidates[0]?.candidateId,
+    );
+    if (!benchmarkCase || !v2Candidate) {
+      throw new Error('Expected benchmark fixtures.');
+    }
+    const cleanOutput = buildOutput({
+      benchmarkCase,
+      quote: benchmarkCase.responseText.slice(0, 20),
+    });
+    const hallucinatedOutput = buildOutput({
+      benchmarkCase,
+      quote: 'citation absente de la production du modele',
+    });
+    const attempts: BenchmarkAttempt[] = [
+      {
+        ...attemptIdentity(v2Configuration),
+        attempt: 1,
+        candidateId: v2Candidate.candidateId,
+        caseId: benchmarkCase.caseId,
+        errorCode: 'MODEL_EVIDENCE_NOT_IN_RESPONSE',
+        latencyMs: 100,
+        modelId: v2Candidate.modelId,
+        output: hallucinatedOutput,
+        repetition: 1,
+        status: 'INVALID',
+      },
+      {
+        ...attemptIdentity(v2Configuration),
+        attempt: 2,
+        candidateId: v2Candidate.candidateId,
+        caseId: benchmarkCase.caseId,
+        latencyMs: 120,
+        modelId: v2Candidate.modelId,
+        output: cleanOutput,
+        repetition: 1,
+        status: 'VALID',
+      },
+    ];
+    const runMetadata = pendingRunMetadata({
+      candidateIds: [v2Candidate.candidateId],
+      caseIds: [benchmarkCase.caseId],
+    });
+
+    const v2Summary = summarizeCorrectionBenchmark({
+      attempts,
+      configuration: v2Configuration,
+      corpus,
+      runMetadata,
+    });
+    expect(v2Summary.models[0]).toMatchObject({
+      evidenceHallucinationRate: 0,
+      firstAttemptInvalidRate: 1,
+      watchSignals: [
+        'FIRST_ATTEMPT_INVALID_ABOVE_WATCH_TARGET',
+        'FIRST_ATTEMPT_EVIDENCE_REJECTED',
+      ],
+    });
+
+    const v1Summary = summarizeCorrectionBenchmark({
+      attempts: attempts.map((attempt) => ({
+        ...attempt,
+        requestProfileSnapshot:
+          v1Configuration.candidates[0]?.requestProfile ??
+          attempt.requestProfileSnapshot,
+      })),
+      configuration: v1Configuration,
+      corpus,
+      runMetadata,
+    });
+    expect(v1Summary.models[0]).toMatchObject({
+      evidenceHallucinationRate: 1,
+      watchSignals: [],
+    });
+  });
+
+  it('still blocks presented hallucinated evidence under gate policy v2', () => {
+    const corpus = loadCorpus();
+    const v2Configuration = loadV2Configuration();
+    const benchmarkCase = corpus.cases[0];
+    const candidate = v2Configuration.candidates[0];
+    if (!benchmarkCase || !candidate) {
+      throw new Error('Expected benchmark fixtures.');
+    }
+    const summary = summarizeCorrectionBenchmark({
+      attempts: [{
+        ...attemptIdentity(v2Configuration),
+        attempt: 1,
+        candidateId: candidate.candidateId,
+        caseId: benchmarkCase.caseId,
+        latencyMs: 100,
+        modelId: candidate.modelId,
+        output: buildOutput({
+          benchmarkCase,
+          quote: 'citation absente de la production du modele',
+        }),
+        repetition: 1,
+        status: 'VALID',
+      }],
+      configuration: v2Configuration,
+      corpus,
+      runMetadata: pendingRunMetadata({
+        candidateIds: [candidate.candidateId],
+        caseIds: [benchmarkCase.caseId],
+      }),
+    });
+    expect(summary.models[0]?.evidenceHallucinationRate).toBe(1);
+    expect(summary.models[0]?.automaticGateFailures).toContain(
+      'EVIDENCE_HALLUCINATION_ABOVE_MAXIMUM',
+    );
+  });
+
   it('applies gate policy v2: safety blocks, recoverable incidents are watched', () => {
     const configuration = loadV2Configuration();
     // Sonnet 4.6 protocol 3.0.1 observed profile: recoverable first-attempt
