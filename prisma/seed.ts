@@ -395,6 +395,7 @@ export interface SeedProgramRepository {
     moduleId: string;
     title: string;
     slug: string;
+    canonicalKey?: string;
     summary: string;
     objectives: Prisma.InputJsonValue;
     prerequisites: Prisma.InputJsonValue;
@@ -414,6 +415,7 @@ export interface SeedProgramRepository {
     stageId: string;
     title: string;
     slug: string;
+    canonicalKey?: string;
     description: string;
     position: number;
   }): Promise<{ id: string }>;
@@ -444,6 +446,7 @@ export interface SeedProgramRepository {
     ownerId: string;
     title: string;
     slug: string;
+    canonicalProgramKey?: string;
     description: string;
     status: ProgramStatus;
     position: number;
@@ -453,6 +456,7 @@ export interface SeedProgramRepository {
     programId: string;
     title: string;
     slug: string;
+    canonicalKey?: string;
     description: string;
     position: number;
     estimatedDurationDays?: number;

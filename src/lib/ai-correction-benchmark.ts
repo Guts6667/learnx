@@ -261,6 +261,15 @@ const benchmarkCandidateSchema = z
   })
   .strict();
 
+const benchmarkGatePolicyV2ThresholdKeys = [
+  'decisionAgreementCertainMinimum',
+  'eventualUnusableRunRateMaximum',
+  'falsePassCountMaximum',
+  'firstAttemptInvalidWatchMaximum',
+  'twoLevelOrdinalGapCountMaximum',
+  'variabilityWatchMaximum',
+] as const;
+
 const benchmarkThresholdsSchema = z
   .object({
     criterionAgreementMinimum: z.number().min(0).max(1),
@@ -272,8 +281,78 @@ const benchmarkThresholdsSchema = z
     p90LatencyMsMaximum: z.number().int().positive(),
     transportErrorMaximum: z.number().min(0).max(1),
     variabilityMaximum: z.number().min(0).max(1),
+    decisionAgreementCertainMinimum: z.number().min(0).max(1).optional(),
+    eventualUnusableRunRateMaximum: z.number().min(0).max(1).optional(),
+    falsePassCountMaximum: z.number().int().min(0).optional(),
+    firstAttemptInvalidWatchMaximum: z.number().min(0).max(1).optional(),
+    twoLevelOrdinalGapCountMaximum: z.number().int().min(0).optional(),
+    variabilityWatchMaximum: z.number().min(0).max(1).optional(),
   })
-  .strict();
+  .strict()
+  .superRefine((thresholds, context) => {
+    const present = benchmarkGatePolicyV2ThresholdKeys.filter(
+      (key) => thresholds[key] !== undefined,
+    );
+    if (present.length === 0 || present.length === benchmarkGatePolicyV2ThresholdKeys.length) {
+      return;
+    }
+    for (const key of benchmarkGatePolicyV2ThresholdKeys) {
+      if (thresholds[key] === undefined) {
+        context.addIssue({
+          code: 'custom',
+          message:
+            'Gate policy v2 thresholds must be declared together (all or none).',
+          path: [key],
+        });
+      }
+    }
+  });
+
+export type BenchmarkGatePolicyV2Thresholds = {
+  decisionAgreementCertainMinimum: number;
+  eventualUnusableRunRateMaximum: number;
+  falsePassCountMaximum: number;
+  firstAttemptInvalidWatchMaximum: number;
+  twoLevelOrdinalGapCountMaximum: number;
+  variabilityWatchMaximum: number;
+};
+
+export function getBenchmarkGatePolicyV2Thresholds(
+  thresholds: CorrectionBenchmarkConfiguration['thresholds'],
+): BenchmarkGatePolicyV2Thresholds | undefined {
+  const present = benchmarkGatePolicyV2ThresholdKeys.filter(
+    (key) => thresholds[key] !== undefined,
+  );
+  if (present.length === 0) {
+    return undefined;
+  }
+  const {
+    decisionAgreementCertainMinimum,
+    eventualUnusableRunRateMaximum,
+    falsePassCountMaximum,
+    firstAttemptInvalidWatchMaximum,
+    twoLevelOrdinalGapCountMaximum,
+    variabilityWatchMaximum,
+  } = thresholds;
+  if (
+    decisionAgreementCertainMinimum === undefined ||
+    eventualUnusableRunRateMaximum === undefined ||
+    falsePassCountMaximum === undefined ||
+    firstAttemptInvalidWatchMaximum === undefined ||
+    twoLevelOrdinalGapCountMaximum === undefined ||
+    variabilityWatchMaximum === undefined
+  ) {
+    throw new Error('BENCHMARK_GATE_POLICY_V2_THRESHOLDS_INCOMPLETE');
+  }
+  return {
+    decisionAgreementCertainMinimum,
+    eventualUnusableRunRateMaximum,
+    falsePassCountMaximum,
+    firstAttemptInvalidWatchMaximum,
+    twoLevelOrdinalGapCountMaximum,
+    variabilityWatchMaximum,
+  };
+}
 
 const benchmarkRegressionLimitsSchema = z
   .object({
@@ -664,7 +743,10 @@ export type ModelBenchmarkMetrics = {
   retryRate: number;
   secondPassRate: number;
   transportErrorRate: number;
+  twoLevelOrdinalGapCount: number;
+  decisionAgreementExcludingSecondPass: number;
   variabilityRate: number;
+  watchSignals: string[];
 };
 
 export type BenchmarkSummary = {
@@ -1407,6 +1489,8 @@ export function summarizeCorrectionBenchmark(input: {
     let confidenceError = 0;
     let decisionCount = 0;
     let decisionMatches = 0;
+    let certainDecisionCount = 0;
+    let certainDecisionMatches = 0;
     let falseFailCount = 0;
     let falsePassCount = 0;
     let goldFailCount = 0;
@@ -1503,6 +1587,10 @@ export function summarizeCorrectionBenchmark(input: {
       const actualPass = actualScore >= contract.passingScore;
       decisionCount += 1;
       decisionMatches += expectedPass === actualPass ? 1 : 0;
+      if (!attempt.output.secondPass.required) {
+        certainDecisionCount += 1;
+        certainDecisionMatches += expectedPass === actualPass ? 1 : 0;
+      }
       falsePassCount += !expectedPass && actualPass ? 1 : 0;
       falseFailCount += expectedPass && !actualPass ? 1 : 0;
       goldPassCount += expectedPass ? 1 : 0;
@@ -1662,6 +1750,13 @@ export function summarizeCorrectionBenchmark(input: {
         modelRuns.length === 0
           ? 0
           : runsWithTransportError.length / modelRuns.length,
+      twoLevelOrdinalGapCount: eliminatoryHumanReviewFindings.filter(
+        (finding) => finding.kind === 'TWO_LEVEL_ORDINAL_GAP',
+      ).length,
+      decisionAgreementExcludingSecondPass:
+        certainDecisionCount === 0
+          ? 0
+          : certainDecisionMatches / certainDecisionCount,
       variabilityRate:
         signaturesByCase.size === 0 ? 0 : variableCases / signaturesByCase.size,
     };
@@ -1672,6 +1767,9 @@ export function summarizeCorrectionBenchmark(input: {
     const estimatedCostUsd = modelAttempts.reduce(
       (total, attempt) => total + calculateCost(attempt, candidate),
       0,
+    );
+    const gatePolicyV2 = getBenchmarkGatePolicyV2Thresholds(
+      configuration.thresholds,
     );
     const pedagogicallyEligible =
       datasetComplete &&
@@ -1684,15 +1782,25 @@ export function summarizeCorrectionBenchmark(input: {
         configuration.thresholds.injectionSafetyMinimum &&
       partialMetrics.meanCalibrationError <=
         configuration.thresholds.meanCalibrationErrorMaximum &&
-      partialMetrics.variabilityRate <= configuration.thresholds.variabilityMaximum;
+      (gatePolicyV2
+        ? partialMetrics.falsePassCount <= gatePolicyV2.falsePassCountMaximum &&
+          partialMetrics.twoLevelOrdinalGapCount <=
+            gatePolicyV2.twoLevelOrdinalGapCountMaximum &&
+          partialMetrics.decisionAgreementExcludingSecondPass >=
+            gatePolicyV2.decisionAgreementCertainMinimum
+        : partialMetrics.variabilityRate <=
+          configuration.thresholds.variabilityMaximum);
     const operationallyDeployable =
       datasetComplete &&
-      partialMetrics.firstAttemptInvalidRate <=
-        configuration.thresholds.invalidOutputMaximum &&
-      partialMetrics.eventualUnusableRunRate <=
-        configuration.thresholds.invalidOutputMaximum &&
+      (gatePolicyV2
+        ? partialMetrics.eventualUnusableRunRate <=
+          gatePolicyV2.eventualUnusableRunRateMaximum
+        : partialMetrics.firstAttemptInvalidRate <=
+            configuration.thresholds.invalidOutputMaximum &&
+          partialMetrics.eventualUnusableRunRate <=
+            configuration.thresholds.invalidOutputMaximum) &&
       partialMetrics.transportErrorRate <=
-        configuration.thresholds.transportErrorMaximum &&
+      configuration.thresholds.transportErrorMaximum &&
       latencyP90 <= configuration.thresholds.p90LatencyMsMaximum &&
       estimatedCostUsd <= configuration.thresholds.fullRunCostUsdMaximum;
     const automaticGateFailures = [
@@ -1713,17 +1821,37 @@ export function summarizeCorrectionBenchmark(input: {
       configuration.thresholds.meanCalibrationErrorMaximum
         ? 'CALIBRATION_ERROR_ABOVE_MAXIMUM'
         : null,
-      partialMetrics.variabilityRate > configuration.thresholds.variabilityMaximum
-        ? 'VARIABILITY_EXCEEDS_MAXIMUM'
-        : null,
-      partialMetrics.firstAttemptInvalidRate >
-      configuration.thresholds.invalidOutputMaximum
-        ? 'FIRST_ATTEMPT_INVALID_ABOVE_MAXIMUM'
-        : null,
-      partialMetrics.eventualUnusableRunRate >
-      configuration.thresholds.invalidOutputMaximum
-        ? 'EVENTUAL_UNUSABLE_ABOVE_MAXIMUM'
-        : null,
+      ...(gatePolicyV2
+        ? [
+            partialMetrics.falsePassCount > gatePolicyV2.falsePassCountMaximum
+              ? 'FALSE_PASS_FOUND'
+              : null,
+            partialMetrics.twoLevelOrdinalGapCount >
+            gatePolicyV2.twoLevelOrdinalGapCountMaximum
+              ? 'TWO_LEVEL_ORDINAL_GAP_FOUND'
+              : null,
+            partialMetrics.decisionAgreementExcludingSecondPass <
+            gatePolicyV2.decisionAgreementCertainMinimum
+              ? 'DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM'
+              : null,
+            partialMetrics.eventualUnusableRunRate >
+            gatePolicyV2.eventualUnusableRunRateMaximum
+              ? 'EVENTUAL_UNUSABLE_ABOVE_MAXIMUM'
+              : null,
+          ]
+        : [
+            partialMetrics.variabilityRate > configuration.thresholds.variabilityMaximum
+              ? 'VARIABILITY_EXCEEDS_MAXIMUM'
+              : null,
+            partialMetrics.firstAttemptInvalidRate >
+            configuration.thresholds.invalidOutputMaximum
+              ? 'FIRST_ATTEMPT_INVALID_ABOVE_MAXIMUM'
+              : null,
+            partialMetrics.eventualUnusableRunRate >
+            configuration.thresholds.invalidOutputMaximum
+              ? 'EVENTUAL_UNUSABLE_ABOVE_MAXIMUM'
+              : null,
+          ]),
       partialMetrics.transportErrorRate >
       configuration.thresholds.transportErrorMaximum
         ? 'TRANSPORT_ERROR_ABOVE_MAXIMUM'
@@ -1735,6 +1863,18 @@ export function summarizeCorrectionBenchmark(input: {
         ? 'FULL_RUN_COST_ABOVE_MAXIMUM'
         : null,
     ].filter((failure): failure is string => failure !== null);
+
+    const watchSignals = gatePolicyV2
+      ? [
+          partialMetrics.firstAttemptInvalidRate >
+          gatePolicyV2.firstAttemptInvalidWatchMaximum
+            ? 'FIRST_ATTEMPT_INVALID_ABOVE_WATCH_TARGET'
+            : null,
+          partialMetrics.variabilityRate > gatePolicyV2.variabilityWatchMaximum
+            ? 'ADJACENT_VARIABILITY_ABOVE_WATCH_TARGET'
+            : null,
+        ].filter((signal): signal is string => signal !== null)
+      : [];
 
     return {
       automaticGateFailures,
@@ -1773,6 +1913,7 @@ export function summarizeCorrectionBenchmark(input: {
           : validAttempts.filter(
               (attempt) => attempt.output.secondPass.required,
             ).length / validAttempts.length,
+      watchSignals,
     };
   });
 
@@ -1807,7 +1948,7 @@ export function modelMeetsPromotionThresholds(
   metrics: ModelBenchmarkMetrics,
   thresholds: CorrectionBenchmarkConfiguration['thresholds'],
 ): boolean {
-  return (
+  const sharedGates =
     metrics.datasetComplete &&
     metrics.humanReviewApproved &&
     metrics.pedagogicallyEligible &&
@@ -1818,11 +1959,26 @@ export function modelMeetsPromotionThresholds(
       thresholds.evidenceHallucinationMaximum &&
     metrics.estimatedCostUsd <= thresholds.fullRunCostUsdMaximum &&
     metrics.injectionSafetyRate >= thresholds.injectionSafetyMinimum &&
-    metrics.firstAttemptInvalidRate <= thresholds.invalidOutputMaximum &&
-    metrics.eventualUnusableRunRate <= thresholds.invalidOutputMaximum &&
     metrics.meanCalibrationError <= thresholds.meanCalibrationErrorMaximum &&
     metrics.p90LatencyMs <= thresholds.p90LatencyMsMaximum &&
-    metrics.transportErrorRate <= thresholds.transportErrorMaximum &&
+    metrics.transportErrorRate <= thresholds.transportErrorMaximum;
+  const gatePolicyV2 = getBenchmarkGatePolicyV2Thresholds(thresholds);
+  if (gatePolicyV2) {
+    return (
+      sharedGates &&
+      metrics.falsePassCount <= gatePolicyV2.falsePassCountMaximum &&
+      metrics.twoLevelOrdinalGapCount <=
+        gatePolicyV2.twoLevelOrdinalGapCountMaximum &&
+      metrics.decisionAgreementExcludingSecondPass >=
+        gatePolicyV2.decisionAgreementCertainMinimum &&
+      metrics.eventualUnusableRunRate <=
+        gatePolicyV2.eventualUnusableRunRateMaximum
+    );
+  }
+  return (
+    sharedGates &&
+    metrics.firstAttemptInvalidRate <= thresholds.invalidOutputMaximum &&
+    metrics.eventualUnusableRunRate <= thresholds.invalidOutputMaximum &&
     metrics.variabilityRate <= thresholds.variabilityMaximum
   );
 }

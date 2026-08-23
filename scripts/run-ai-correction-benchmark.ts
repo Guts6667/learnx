@@ -72,6 +72,28 @@ async function loadBenchmarkInputs(): Promise<{
   const configurationArgument = process.argv.find((argument) =>
     argument.startsWith('--configuration='),
   );
+  const standaloneConfigurationArgument = process.argv.find((argument) =>
+    argument.startsWith('--benchmark-configuration='),
+  );
+  if (configurationArgument && standaloneConfigurationArgument) {
+    throw new Error('BENCHMARK_CONFIGURATION_ARGUMENT_AMBIGUOUS');
+  }
+  if (standaloneConfigurationArgument) {
+    const standalonePath = path.resolve(
+      standaloneConfigurationArgument.slice(
+        '--benchmark-configuration='.length,
+      ),
+    );
+    const standaloneDirectory = path.dirname(standalonePath);
+    return {
+      configuration: parseCorrectionBenchmarkConfiguration(
+        await readJson(standalonePath),
+      ),
+      corpus: parseCorrectionBenchmarkCorpus(
+        await readJson(path.join(standaloneDirectory, 'corpus.v1.json')),
+      ),
+    };
+  }
   if (!configurationArgument) {
     return {
       configuration: parseCorrectionBenchmarkConfiguration(

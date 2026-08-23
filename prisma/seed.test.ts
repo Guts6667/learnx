@@ -6,8 +6,6 @@ import {
   getSelectedSeedSlugs,
   readOfficineExpressSeed,
   readPlatformApmInterviewSeed,
-  readSourceLabAiSeed,
-  readSourceLabProductionSeed,
   readSampleProgram,
   readSampleSeed,
   seedSampleProgram,

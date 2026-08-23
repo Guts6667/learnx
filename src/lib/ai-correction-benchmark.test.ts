@@ -26,6 +26,7 @@ import {
   type BenchmarkAttempt,
   type CorrectionBenchmarkConfiguration,
   type CorrectionBenchmarkCorpus,
+  type ModelBenchmarkMetrics,
 } from '@/lib/ai-correction-benchmark';
 import type { CorrectionOutput } from '@/lib/ai-correction-contracts';
 import {
@@ -58,6 +59,54 @@ function loadConfiguration(): CorrectionBenchmarkConfiguration {
   return parseCorrectionBenchmarkConfiguration(
     readJson('benchmarks/ai-correction/benchmark.v1.json'),
   );
+}
+
+function loadV2Configuration(): CorrectionBenchmarkConfiguration {
+  return parseCorrectionBenchmarkConfiguration(
+    readJson('benchmarks/ai-correction/benchmark.v2.json'),
+  );
+}
+
+function buildPassingMetrics(
+  configuration: CorrectionBenchmarkConfiguration,
+): ModelBenchmarkMetrics {
+  return {
+    automaticGateFailures: [],
+    byFamily: {},
+    candidateId: configuration.candidates[0]?.candidateId ?? '',
+    criterionAgreement: 0.9,
+    decisionAgreement: 1,
+    evidenceHallucinationRate: 0,
+    eliminatoryHumanReviewFindings: [],
+    estimatedCostUsd: 0.01,
+    injectionSafetyRate: 1,
+    eventualUnusableRunRate: 0,
+    firstAttemptInvalidRate: 0,
+    falseFailCount: 0,
+    falseFailRate: 0,
+    falsePassCount: 0,
+    falsePassRate: 0,
+    meanCalibrationError: 0.1,
+    meanOrdinalDistance: 0,
+    medianLatencyMs: 1000,
+    modelId: configuration.candidates[0]?.modelId ?? '',
+    p75LatencyMs: 1500,
+    p90LatencyMs: 2000,
+    promotionIdentity: 'model|fr-FR|corpus|prompt',
+    retryRate: 0,
+    secondPassRate: 0.1,
+    transportErrorRate: 0,
+    twoLevelOrdinalGapCount: 0,
+    decisionAgreementExcludingSecondPass: 1,
+    variabilityRate: 0,
+    watchSignals: [],
+    datasetComplete: true,
+    humanReviewApproved: true,
+    operationallyDeployable: true,
+    ordinalConfusionMatrix: {},
+    pedagogicallyEligible: true,
+    promotionEligible: true,
+  };
 }
 
 function buildOutput(input: {
@@ -1645,40 +1694,7 @@ describe('correction benchmark metrics', () => {
 
   it('requires every declared promotion threshold', () => {
     const configuration = loadConfiguration();
-    const passing = {
-      automaticGateFailures: [],
-      byFamily: {},
-      candidateId: configuration.candidates[0]?.candidateId ?? '',
-      criterionAgreement: 0.9,
-      decisionAgreement: 1,
-      evidenceHallucinationRate: 0,
-      eliminatoryHumanReviewFindings: [],
-      estimatedCostUsd: 0.01,
-      injectionSafetyRate: 1,
-      eventualUnusableRunRate: 0,
-      firstAttemptInvalidRate: 0,
-      falseFailCount: 0,
-      falseFailRate: 0,
-      falsePassCount: 0,
-      falsePassRate: 0,
-      meanCalibrationError: 0.1,
-      meanOrdinalDistance: 0,
-      medianLatencyMs: 1000,
-      modelId: configuration.candidates[0]?.modelId ?? '',
-      p75LatencyMs: 1500,
-      p90LatencyMs: 2000,
-      promotionIdentity: 'model|fr-FR|corpus|prompt',
-      retryRate: 0,
-      secondPassRate: 0.1,
-      transportErrorRate: 0,
-      variabilityRate: 0,
-      datasetComplete: true,
-      humanReviewApproved: true,
-      operationallyDeployable: true,
-      ordinalConfusionMatrix: {},
-      pedagogicallyEligible: true,
-      promotionEligible: true,
-    };
+    const passing = buildPassingMetrics(configuration);
 
     expect(
       modelMeetsPromotionThresholds(passing, configuration.thresholds),
@@ -1689,6 +1705,82 @@ describe('correction benchmark metrics', () => {
         configuration.thresholds,
       ),
     ).toBe(false);
+  });
+
+  it('keeps v1 gate semantics strict on first-attempt invalidity and raw variability', () => {
+    const configuration = loadConfiguration();
+    const passing = buildPassingMetrics(configuration);
+
+    expect(
+      modelMeetsPromotionThresholds(
+        { ...passing, firstAttemptInvalidRate: 0.0139 },
+        configuration.thresholds,
+      ),
+    ).toBe(false);
+    expect(
+      modelMeetsPromotionThresholds(
+        { ...passing, variabilityRate: 0.125 },
+        configuration.thresholds,
+      ),
+    ).toBe(false);
+  });
+
+  it('applies gate policy v2: safety blocks, recoverable incidents are watched', () => {
+    const configuration = loadV2Configuration();
+    // Sonnet 4.6 protocol 3.0.1 observed profile: recoverable first-attempt
+    // invalidity (4/72), one eventually unusable run (1/72), adjacent-level
+    // variability on 3/24 ambiguous cases, zero false pass, zero two-level gap.
+    const sonnetLike = {
+      ...buildPassingMetrics(configuration),
+      firstAttemptInvalidRate: 4 / 72,
+      eventualUnusableRunRate: 1 / 72,
+      variabilityRate: 0.125,
+      decisionAgreementExcludingSecondPass: 0.9,
+      criterionAgreement: 0.87793,
+    };
+
+    expect(
+      modelMeetsPromotionThresholds(sonnetLike, configuration.thresholds),
+    ).toBe(true);
+
+    expect(
+      modelMeetsPromotionThresholds(
+        { ...sonnetLike, falsePassCount: 1 },
+        configuration.thresholds,
+      ),
+    ).toBe(false);
+    expect(
+      modelMeetsPromotionThresholds(
+        { ...sonnetLike, twoLevelOrdinalGapCount: 1 },
+        configuration.thresholds,
+      ),
+    ).toBe(false);
+    expect(
+      modelMeetsPromotionThresholds(
+        { ...sonnetLike, decisionAgreementExcludingSecondPass: 0.84 },
+        configuration.thresholds,
+      ),
+    ).toBe(false);
+    expect(
+      modelMeetsPromotionThresholds(
+        { ...sonnetLike, eventualUnusableRunRate: 3 / 72 },
+        configuration.thresholds,
+      ),
+    ).toBe(false);
+  });
+
+  it('rejects partially declared gate policy v2 thresholds', () => {
+    const configuration = loadConfiguration();
+    const partial = {
+      ...configuration,
+      thresholds: {
+        ...configuration.thresholds,
+        falsePassCountMaximum: 0,
+      },
+    };
+    expect(() =>
+      parseCorrectionBenchmarkConfiguration(partial),
+    ).toThrowError(/Gate policy v2 thresholds must be declared together/);
   });
 
   it('never promotes smoke, panel, incomplete or unreviewed datasets', () => {
@@ -2015,38 +2107,10 @@ describe('correction benchmark metrics', () => {
   it('detects a regression against the last promoted baseline', () => {
     const configuration = loadConfiguration();
     const baseline = {
-      automaticGateFailures: [],
-      byFamily: {},
-      candidateId: configuration.candidates[0]?.candidateId ?? '',
-      criterionAgreement: 0.9,
-      decisionAgreement: 1,
-      evidenceHallucinationRate: 0,
-      eliminatoryHumanReviewFindings: [],
+      ...buildPassingMetrics(configuration),
       estimatedCostUsd: 1,
-      injectionSafetyRate: 1,
-      eventualUnusableRunRate: 0,
-      firstAttemptInvalidRate: 0,
-      falseFailCount: 0,
-      falseFailRate: 0,
-      falsePassCount: 0,
-      falsePassRate: 0,
-      meanCalibrationError: 0.1,
-      meanOrdinalDistance: 0,
-      medianLatencyMs: 1000,
-      modelId: configuration.candidates[0]?.modelId ?? '',
       p75LatencyMs: 1200,
       p90LatencyMs: 1500,
-      promotionIdentity: 'model|fr-FR|corpus|prompt',
-      retryRate: 0,
-      secondPassRate: 0.1,
-      transportErrorRate: 0,
-      variabilityRate: 0,
-      datasetComplete: true,
-      humanReviewApproved: true,
-      operationallyDeployable: true,
-      ordinalConfusionMatrix: {},
-      pedagogicallyEligible: true,
-      promotionEligible: true,
     };
 
     expect(
