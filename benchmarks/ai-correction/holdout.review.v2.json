@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "learnx-french-text-holdout-v2",
+  "reviewer": "Independent pedagogical review agent — delegated by Rayan Chambet (blind corpus approval)",
+  "reviewedAt": "2026-08-23T23:59:00Z",
+  "status": "APPROVED",
+  "reviewedContentSha256": "9bcc49b7152888acc59295516d4b8228c4d78783ed32fc56e8d2d10a8e988879",
+  "artifactSha256AfterReviewMetadata": "2a74db971138b62b2d059c299876a16c40375d4bd4c1f247f86f62564fefb571",
+  "metadataOnlyMutation": {
+    "path": "humanReview",
+    "value": {
+      "status": "APPROVED",
+      "reviewer": "Independent pedagogical review agent — delegated by Rayan Chambet (blind corpus approval)",
+      "reviewedAt": "2026-08-23T23:59:00Z"
+    }
+  }
+}

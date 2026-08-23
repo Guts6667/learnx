@@ -421,3 +421,49 @@ dans l’accord critériel pour leurs critères livrés.
 2. revue aveugle déléguée indépendante du paquet full ;
 3. si GO : rédaction et approbation d’un **nouveau** corpus holdout scellé
    (l’ancien est consommé), puis exécution unique sous identité dédiée.
+
+### 8.4 Campagne v3 du 23 août 2026 (nuit) — GO développement
+
+Exécution 24×3 (75 tentatives après un crash transport repris par resume,
+aucune cellule rejouée), coût réel 1,268637 USD :
+
+| Métrique | Observé | Seuil v3 | Verdict |
+| --- | ---: | ---: | --- |
+| Accord critériel | 90,14 % | ≥ 85 % | conforme |
+| Accord décision certain | 92,75 % | ≥ 85 % | conforme |
+| Faux PASS | 0 | 0 | conforme |
+| Écarts de deux niveaux | 0 | 0 | conforme |
+| **Taux de critères « à retravailler »** | **1,39 % (3/216)** | **≤ 5 %** | conforme |
+| Runs finalement inutilisables | 0 (0/72) | ≤ 2 % | conforme |
+| Hallucination présentée | 0 % | ≤ 1 % | conforme |
+| Sécurité injection | 100 % | ≥ 90 % | conforme |
+| Variabilité (bascules adjacentes) | 8,33 % | surveillé ≤ 15 % | conforme |
+| Calibration | 16,89 % | ≤ 25 % | conforme |
+| P90 | 1 900 ms | ≤ 20 000 ms | conforme |
+
+Trois livraisons partielles (une tentative initiale transport timeout absorbée
+par resume). Revue aveugle déléguée (44 runs, 12 injections, 3 livraisons
+partielles explicitement évaluées) : **APPROVED**, moyenne 91, diagnostics 92,
+preuves 93, fidélité 88, familles 90-93, aucun constat éliminatoire ; artefact
+lié par SHA-256 (`reviews/sonnet-4-6-v3-full-blind-review.json`). Après
+application : aucun échec de gate, `promotionEligible = true` —
+**l’identité v3 est promue au gate de développement** (identité :
+Sonnet 4.6 route Anthropic, prompt 2.1.0, protocole 3.0.1, retries 2,
+livraison PARTIAL_CRITERION).
+
+### 8.5 Nouveau holdout scellé n°2 — approuvé, jamais exécuté
+
+Le corpus `learnx-french-text-holdout-v2` (`holdout.v2.json`) a été rédigé de
+zéro (4 contrats inédits `holdout2-*`, 24 cas : 4 SUCCESSFUL, 4 PARTIAL,
+4 ERRONEOUS, 4 AMBIGUOUS, 8 PROMPT_INJECTION ; productions denses, 22/24 entre
+450 et 800 caractères, bande couvrant le point faible connu). La revue
+d’approbation indépendante a revalidé les 72 étalons critère par critère,
+refait les calculs de chaque dossier et vérifié les 8 constructions
+d’injection : **APPROVED sans condition de contenu**. Le manifeste
+`holdout.review.v2.json` lie les empreintes SHA-256 avant/après scellement
+(mutation limitée au bloc `humanReview`). L’exécution est préenregistrée dans
+`holdout.benchmark.v3.json` (identité
+`learnx-french-text-correction-holdout-v3`, surcouche du holdout n°2 sur
+l’identité v3) et validée hors ligne. **Le holdout n°2 reste scellé** : son
+ouverture unique attend un GO budgétaire explicite du Propriétaire
+(estimation ≈ 1,30–1,80 USD, hors budget restant de la session).

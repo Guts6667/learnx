@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "attemptsSha256": "9d9fb80c9b8a3de87231d18fed8574ca28a4d57f4fc3a4d1b5719a55ed9e649c",
+  "benchmarkId": "learnx-french-text-correction-v3",
+  "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+  "corpusId": "learnx-french-text-corpus-v1-3",
+  "criticalScores": {
+    "diagnosis": 92,
+    "evidence": 93,
+    "fidelity": 88
+  },
+  "eliminatoryFindings": [],
+  "familyScores": {
+    "practice": 90,
+    "project": 92,
+    "reflection": 93,
+    "writing": 92
+  },
+  "language": "fr-FR",
+  "meanScore": 91,
+  "promptVersion": "2.1.0",
+  "requestProfileSnapshot": {
+    "adapter": "OPENROUTER_CHAT",
+    "reasoning": {
+      "budgetTokens": null,
+      "budgetMode": "OFF",
+      "effort": "OFF"
+    },
+    "totalOutputTokenLimit": 1500,
+    "visibleOutputTokenTarget": 1500,
+    "routeProviders": [
+      "Anthropic"
+    ],
+    "temperature": null,
+    "timeoutMs": 60000,
+    "version": "2.0.0"
+  },
+  "requestProtocolVersion": "3.0.1",
+  "reviewedAt": "2026-08-23T22:20:08.782170+00:00",
+  "reviewer": "Independent pedagogical review agent — delegated by Rayan Chambet (blind phase 1, partial-delivery contract)",
+  "status": "APPROVED"
+}

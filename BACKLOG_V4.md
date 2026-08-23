@@ -872,12 +872,18 @@ Amendement de statut (détails et décisions dans
   non exactes sur deux cas denses ; la qualité pédagogique, la sûreté et
   l'absence de fuite d'injection généralisent (92,16 % d'accord sur cas
   inconnus, 0 faux PASS) ; le corpus holdout est consommé, aucun retuning ;
-- prochaine étape possible : nouvelle identité préenregistrée remédiant la
-  fidélité de citation (équivalence bornée de casse initiale à correspondance
-  unique, ou boucle de réparation renvoyant le motif de rejet au modèle),
-  nouvelle campagne de développement, puis **nouveau** corpus holdout scellé
-  rédigé et approuvé avant exécution ; V4-009 (finance) et V4-010 (UX)
-  restent bloqués jusqu'à une promotion production ;
+- **identité v3 (contrat de livraison partielle, doctrine « prix plein sans
+  compensation » du 23 août soir) : promue au gate de développement** —
+  campagne 24×3 sans aucun échec de gate (3/216 critères « à retravailler »,
+  0 run inutilisable, 1,268637 USD), revue aveugle APPROVED (91/100, digest
+  lié). Règle 10 amendée : devis débité en intégralité, aucun remboursement ni
+  compensation, consentement préalable explicite, devis partiel possible pour
+  la resoumission des critères « à retravailler » ;
+- **nouveau holdout scellé n°2** (`holdout.v2.json`) : rédigé, approuvé par
+  revue indépendante (72 étalons revalidés), scellé par manifeste SHA-256 ;
+  exécution unique préenregistrée dans `holdout.benchmark.v3.json` — **attend
+  un GO budgétaire explicite du Propriétaire** (≈ 1,30–1,80 USD). C'est le
+  seul examen restant avant promotion production v3 ;
 - toute modification de composant (modèle, prompt, protocole, seuils, retries)
   crée une nouvelle identité préenregistrée ; les identités v1 et v2/v2-1/v2-2
   figées ne sont jamais réécrites.

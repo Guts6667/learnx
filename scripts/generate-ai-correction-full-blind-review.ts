@@ -231,7 +231,18 @@ export function selectFullBlindReviewRuns(input: {
     ) {
       select(key, `GOLD_DISAGREEMENT:${contract.target.activityType}`);
     }
-    if (benchmarkCase && contract && attempt.output) {
+    if ((attempt.unsureCriteria?.length ?? 0) > 0) {
+      select(key, 'UNSURE_CRITERIA_DELIVERY');
+    }
+    if (
+      benchmarkCase &&
+      contract &&
+      attempt.output &&
+      // Partial deliveries (unsure criteria) support no complete verdict:
+      // score-based selections are skipped for them; they are always included
+      // in the blind package via the unsure-part sampling instead.
+      (attempt.unsureCriteria?.length ?? 0) === 0
+    ) {
       const expectedPass =
         weightedScore({ contract, levels: benchmarkCase.expectedCriteria }) >=
         contract.passingScore;

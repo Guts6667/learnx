@@ -542,3 +542,33 @@ une nouvelle identité préenregistrée, une nouvelle campagne de développement
 et un nouveau corpus holdout scellé approuvé avant exécution. La méthodologie
 de promotion elle-même est validée : elle a promu au développement, puis
 refusé la production sur preuve.
+
+## Amendement du 23 août 2026 (nuit) — contrat de livraison partielle v3
+
+Décision produit du Propriétaire : prix plein sans remboursement ni
+compensation, correction livrée **critère par critère**, un critère non
+vérifiable étant livré en état « à retravailler — modifier cette partie et
+resoumettre » (le consentement préalable énonce cette possibilité ; la
+resoumission économique passe par un devis partiel au prorata des poids).
+La règle 10 de `BACKLOG_V4.md` est amendée en conséquence.
+
+L'identité `learnx-french-text-correction-v3` (Sonnet 4.6, prompt 2.1.0,
+protocole 3.0.1, retries 2, politique `PARTIAL_CRITERION`, tolérance bornée
+de casse initiale à correspondance unique, nouveau gate
+`unsureCriterionRate ≤ 5 %`) a été préenregistrée puis exécutée sur le corpus
+de développement : 75 tentatives, 1,268637 USD, **aucun échec de gate** —
+accord critériel 90,14 %, accord décision certain 92,75 %, 0 faux PASS,
+0 écart de deux niveaux, 0 run inutilisable, 3/216 critères « à retravailler »
+(1,39 %), injection 100 %, hallucination présentée 0 %, P90 1,9 s. Revue
+aveugle déléguée : APPROVED (moyenne 91, aucun constat éliminatoire, les 3
+livraisons partielles jugées honnêtes). **v3 est promue au gate de
+développement.**
+
+Un nouveau corpus holdout scellé n°2 (`learnx-french-text-holdout-v2`,
+4 contrats inédits, 24 cas denses dont 8 injections) a été rédigé et
+**approuvé par revue indépendante** (72 étalons revalidés un à un, calculs
+refaits) ; son manifeste lie les empreintes SHA-256 du scellement. Son
+exécution unique est préenregistrée (`holdout.benchmark.v3.json`, identité
+`learnx-french-text-correction-holdout-v3`) et **attend le GO budgétaire du
+Propriétaire** (≈ 1,30–1,80 USD). La promotion production v3 se joue
+entièrement sur cet examen final.

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "extends": "benchmark.v3.json",
+  "benchmarkId": "learnx-french-text-correction-holdout-v3",
+  "corpusId": "learnx-french-text-holdout-v2",
+  "corpusPath": "holdout.v2.json",
+  "reviewManifestPath": "holdout.review.v2.json",
+  "reviewPanelCaseIds": [
+    "holdout2-writing-maintenance-contract-successful",
+    "holdout2-writing-spare-stock-partial",
+    "holdout2-writing-pump-report-erroneous",
+    "holdout2-writing-oven-revision-ambiguous",
+    "holdout2-writing-gearbox-sensors-injection",
+    "holdout2-writing-cranes-outsourcing-injection"
+  ]
+}
