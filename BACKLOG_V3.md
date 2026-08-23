@@ -2,13 +2,14 @@
 
 ## Statut et autorité
 
-- Version : 1.2.0
+- Version : 1.3.2
 - Statut : **plan V3 validé — implémentation ticket par ticket**
 - Baseline réauditée : `ba3c352` (`main`, `dev` et `staging` alignées)
-- Date : 6 août 2026
+- Date : 9 août 2026
 - Source de cadrage : décisions produit validées après clôture V2, audit UX et
   pédagogique de Claude, puis arbitrages du responsable produit
-- Dernier ticket finalisé : `V3-019`
+- Dernier ticket finalisé : `V3-021A` (`86df06b`)
+- Prochain correctif produit : `V3-021B`
 
 Ce backlog remplace le brouillon V3 antérieur. Il ordonne la transformation de
 LearnX en plateforme multi-utilisateur sans transformer V3 en vague de
@@ -132,7 +133,7 @@ V3-001 → V3-009 → V3-010 → V3-011 → V3-012 → V3-013 → V3-014 → V3-
 
 Lot flow pédagogique
 V3-016 (gate produit) → V3-017 → V3-018
-V3-016 → V3-019 → V3-020 → V3-021 → V3-022
+V3-016 → V3-019 → V3-020 → V3-021 → V3-021A → V3-021B → V3-022 → V3-022A
 
 Lot bilingue
 V3-023 → V3-024 → V3-025 → V3-026 → V3-027
@@ -653,7 +654,7 @@ V3-022. Aucune migration ni modification applicative.**
 ### Périmètre
 
 - Finaliser `LEARNING_FLOW_V3_SPEC.md` comme source d'autorité sur orientation,
-  timeline, séquence authorée, ressources, sources, notes, navigation, reprise,
+  accordéon, séquence authorée, ressources, sources, notes, navigation, reprise,
   évaluations, remédiation, progression, mobile et accessibilité.
 - Résoudre chaque décision ouverte sans inventer de placement de contenu.
 
@@ -753,8 +754,9 @@ revue humaine requise avant toute publication.**
 
 **Priorité : P1. Dépendances : V3-014, V3-016 et agrégation serveur du module.**
 
-**Statut : finalisé — timeline compacte, préférence serveur par compte/programme
-et agrégation de progression des modules livrées.**
+**Statut : finalisé — première variante timeline compacte, préférence serveur
+par compte/programme et agrégation de progression des modules livrées. Le rendu
+visuel est corrigé séparément par V3-021A sans rouvrir ces fondations.**
 
 ### Périmètre
 
@@ -787,9 +789,184 @@ et agrégation de progression des modules livrées.**
 - Préférence serveur minimale par compte et programme, séparée de la
   progression ; rollback vers liste V2 sans effacer cette préférence.
 
+## V3-021A — Correctif UI de la vue Programme après V3-019
+
+Ce correctif est documenté à côté de V3-019 pour rendre sa filiation explicite,
+mais son ordre de livraison est postérieur à V3-021 et antérieur à V3-022.
+
+**Priorité : P0 correctif. Dépendances : V3-019 et V3-021. À livrer avant
+V3-022.**
+
+**Statut : direction produit validée — accordéon plat sans timeline, sans
+`Card` imbriquée et sans progression dupliquée.**
+
+### Intention
+
+La première version de V3-019 a réduit la longueur de la page, mais la timeline
+et les cartes Module imbriquées recréent une hiérarchie visuelle lourde. La vue
+Programme doit permettre de comprendre les étapes et d'entrer directement dans
+une leçon, sans recopier les vues Étape et Module.
+
+### Périmètre
+
+- Supprimer l'axe vertical, les points numérotés séparés et les connecteurs. Le
+  numéro fait partie du titre de la carte Étape (`1. Titre`).
+- Conserver une seule étape ouverte et la préférence serveur déjà livrée. Le
+  bouton d'accordéon ne navigue pas et ne modifie aucune progression.
+- Conserver une seule surface bordée par étape. L'état développé ne contient
+  aucune seconde `Card`, aucun fond de sous-carte et aucun CTA pleine largeur.
+- Afficher une seule barre de progression sur la page : celle du programme.
+  Les autres niveaux n'affichent ici que leur statut textuel avec icône ; aucune
+  barre Étape ou Module et aucun pourcentage redondant.
+- Dans l'étape ouverte, afficher les modules comme de simples intertitres
+  typographiques lorsqu'il y en a plusieurs. Avec un seul module, masquer
+  visuellement cet intertitre et conserver son contexte dans le nom accessible
+  de la liste.
+- Sous chaque intertitre, afficher les leçons comme des lignes séparées par un
+  filet : titre, durée, statut avec icône/libellé, puis chevron ou verrou. Aucun
+  résumé long, nombre d'activités, fond, bordure, barre ou bouton par leçon.
+- La ligne entière est le lien : `IN_PROGRESS` ouvre la leçon et laisse sa
+  reprise serveur cibler l'activité exacte ; `AVAILABLE` ouvre son début ;
+  `COMPLETED` ouvre la relecture ; `LOCKED` affiche le verrou et n'imite pas un
+  lien actif.
+- Sortir l'invite d'installation PWA du flux pédagogique. Conserver les alertes
+  critiques hors ligne et mise à jour ; déplacer `Installer` et l'aide iOS dans
+  une section `Application` de Profil. Mémoriser la fermeture de l'aide par
+  appareil afin qu'elle ne réapparaisse pas au rechargement.
+- Appliquer les mappings de statut, contrastes, focus, tailles tactiles et
+  `reduced-motion` déjà exigés par UI-4 et MA-2/MA-3.
+
+### Hors périmètre
+
+- Nouvelle formule de progression, migration Prisma ou nouveau contrat API.
+- Refonte des pages Étape, Module ou Leçon, du menu inférieur ou du contenu
+  pédagogique.
+- Nouvelle persistance serveur : `expandedStageId` existe déjà ; le masquage de
+  l'aide d'installation est une préférence locale à l'appareil.
+
+### Critères d'acceptation
+
+- À 390 × 844, le titre et la progression du programme sont visibles sans
+  scroll, y compris sur iOS non installé ; aucune carte d'installation ne les
+  précède.
+- Une seule barre de progression et une seule surface bordée par étape sont
+  visibles. Aucun axe, point de timeline, `Card` Module ou `Card` Leçon.
+- Une seule étape est ouverte. Son état restauré est identique après
+  rechargement et sur un autre appareil du même compte.
+- Une étape repliée contient seulement numéro, titre, durée, statut et chevron.
+- Les leçons sont atteignables en un clic depuis l'étape ouverte ; les quatre
+  états `AVAILABLE`, `IN_PROGRESS`, `COMPLETED`, `LOCKED` ont un comportement et
+  un rendu non ambigus, jamais portés par la couleur seule.
+- Mobile 320/390 px, texte à 200 %, clavier, lecteur d'écran et
+  `prefers-reduced-motion` restent utilisables sans débordement ni perte de
+  contexte.
+- Fermer l'aide iOS la maintient masquée après rechargement sur le même appareil.
+
+### Notes techniques non prescriptives
+
+- La réponse Programme contient déjà `stages[].modules[].lessons[]` : ne pas
+  ajouter un endpoint ou une migration pour construire les lignes.
+- Réutiliser la préférence `expandedStageId` et les routes profondes existantes.
+- Séparer dans `PwaStatus` les états critiques des invitations d'installation ;
+  les premiers restent globaux, les secondes deviennent secondaires dans Profil.
+
+### Tests et risques
+
+- Tests composant des états replié/déplié, absence de surfaces imbriquées,
+  statut des quatre types de leçons et destination de chaque ligne.
+- Tests de préférence multi-utilisateur existants conservés ; ajouter
+  rechargement, navigation clavier et nom accessible avec un ou plusieurs
+  modules.
+- Test PWA iOS : visibilité du titre, fermeture persistée et action accessible
+  depuis Profil. Tests visuels 390 × 844 et desktop.
+- Risque principal : masquer la hiérarchie Module. Le contexte accessible et
+  les intertitres obligatoires lorsqu'il existe plusieurs modules préviennent
+  cette perte sans recréer des cartes.
+
+### Migration et rollback
+
+- Aucune migration. Rollback vers le rendu V3-019 sans supprimer la préférence
+  serveur d'étape ouverte ni les progressions.
+
+## V3-021B — Respiration mobile et accordéon réellement refermable
+
+Ce correctif visuel succède à V3-021A. Il doit être réalisé après l'intégration
+du parcours Platform APM afin que la passe soit vérifiée avec un programme court
+et le programme Psychologie plus long.
+
+**Priorité : P0 correctif. Dépendance : V3-021A. À livrer avant V3-022.**
+
+**Statut : besoin produit validé — reformulation technique à faire avant code.**
+
+### Intention
+
+La hiérarchie plate est correcte, mais le rendu mobile actuel comprime le titre,
+la durée, le statut et le chevron sur une même ligne. La carte ouverte est aussi
+trop haute et ne peut pas être refermée. La vue doit rester dense en information,
+mais respirante, scannable et réversible.
+
+### Périmètre
+
+- Un clic sur l'en-tête d'une étape ouverte la referme. L'état local peut donc
+  n'avoir aucune étape ouverte ; fermer une carte ne modifie ni progression ni
+  préférence serveur de dernière étape consultée.
+- Le même bouton ouvre une étape repliée, ferme l'éventuelle autre étape et
+  mémorise alors cette nouvelle dernière étape ouverte sur le serveur.
+- Retirer la description longue de l'étape du panneau développé : elle appartient
+  à la page Étape, pas au sommaire compact du programme.
+- Sur mobile, chaque ligne de leçon réserve une première ligne au titre et une
+  seconde aux métadonnées (`durée`, `statut`). Le chevron ou verrou conserve une
+  colonne stable à droite sans réduire le titre à quelques mots par ligne.
+- Augmenter modérément les espacements verticaux, les filets et les zones tactiles
+  sans recréer de cartes imbriquées ni rallonger artificiellement la page.
+- Traiter l'en-tête complet de l'étape comme le contrôle d'accordéon ; le chevron
+  n'est qu'un indicateur visuel synchronisé avec `aria-expanded`.
+- Conserver l'affichage desktop compact : la mise en page peut tenir sur une
+  ligne lorsqu'il existe réellement assez d'espace.
+
+### Hors périmètre
+
+- Modification de la progression, de l'ordre pédagogique ou des routes.
+- Nouvelle carte Module/Leçon, description de leçon, barre supplémentaire ou
+  nouvelle migration Prisma.
+- Refonte générale des tokens visuels de l'application.
+
+### Critères d'acceptation
+
+- À 390 px, les titres `Définir la psychologie`, `Les grands domaines` et
+  `Les métiers et l'éthique` disposent de la largeur utile de la carte et ne sont
+  pas comprimés par la durée et le badge sur la même ligne.
+- Une étape ouverte se referme au clic, au clavier avec Entrée/Espace et annonce
+  correctement `aria-expanded=false` ; toutes les étapes peuvent être repliées.
+- Après fermeture locale puis rechargement ou changement d'appareil, la dernière
+  étape effectivement ouverte reste la préférence serveur restaurée.
+- Une seule étape peut être ouverte à la fois ; ouvrir une nouvelle étape ferme
+  l'ancienne et persiste la nouvelle préférence.
+- Aucun résumé long d'étape, fond de sous-carte ou contrôle redondant n'apparaît
+  dans le panneau développé.
+- Les rendus 320/390 px, desktop, texte à 200 %, clavier et lecteur d'écran ne
+  présentent ni chevauchement, ni troncature fonctionnelle, ni cible tactile
+  inférieure à 44 × 44 px.
+
+### Tests et risques
+
+- Tests composant : ouvrir, changer d'étape, fermer la dernière, absence de
+  sauvegarde serveur à la fermeture et restauration après rechargement.
+- Tests visuels ciblés à 320 et 390 px avec titres longs, tous les statuts et un
+  programme à un ou plusieurs modules.
+- Risque : confondre état temporaire fermé et préférence persistée. Les deux états
+  restent explicitement séparés ; seule l'ouverture d'une étape est persistée.
+
+### Migration et rollback
+
+- Aucune migration. Rollback vers V3-021A sans toucher à la préférence serveur.
+
 ## V3-020 — Ressources guidées et sources au point d'usage
 
 **Priorité : P1. Dépendances : V3-016 à V3-018.**
+
+**Statut : finalisé — commit `6edb1fb`, guidage des ressources et gate serveur
+livrés.**
 
 ### Périmètre
 
@@ -830,6 +1007,9 @@ et agrégation de progression des modules livrées.**
 
 **Priorité : P1. Dépendances : V3-016, V3-017 et V3-020.**
 
+**Statut : finalisé — commit `08f96d8`, navigation en flux et transition
+terminale livrées.**
+
 ### Périmètre
 
 - Ordre normal : activité, ressources/sources, note, Sommaire, puis
@@ -860,7 +1040,7 @@ et agrégation de progression des modules livrées.**
 
 ## V3-022 — Prise de note identifiable et panneau contextuel
 
-**Priorité : P1. Dépendances : V3-016, V3-017 et V3-021.**
+**Priorité : P1. Dépendances : V3-016, V3-017, V3-021 et V3-021A.**
 
 ### Périmètre
 
@@ -887,6 +1067,186 @@ et agrégation de progression des modules livrées.**
 
 - Réutiliser Note ; une petite migration additive est acceptée uniquement pour
   la liaison facultative à l'identité stable d'activité.
+
+## V3-022A — Passe visuelle transversale sobre, légère et respirante
+
+Ce ticket clôt la refonte du parcours central avant d'étendre l'interface avec
+l'i18n. Il ne remplace pas V3-021B : ce dernier corrige immédiatement la vue
+Programme ; V3-022A harmonise ensuite l'ensemble des écrans principaux.
+
+**Priorité : P0 polish. Dépendances : V3-021B et V3-022. À livrer avant
+V3-023.**
+
+**Statut : direction visuelle validée — inventaire écran par écran et
+reformulation technique requis avant code.**
+
+### Intention
+
+LearnX doit paraître calme, lisible et cohérente. La hiérarchie vient d'abord de
+la typographie, de l'espace et des séparateurs ; les fonds, bordures, badges et
+couleurs restent secondaires. Une information ne devient pas une carte ou un
+bouton simplement pour être visible.
+
+### Périmètre
+
+- Inventorier les écrans réellement utilisés : authentification, Accueil,
+  Explorer/Mes programmes, Programme, Étape, Module, Leçon et activités, Notes,
+  Profil et administration. Relever densité, doublons, styles divergents et
+  actions peu identifiables avant toute modification.
+- Définir puis appliquer une échelle réduite et partagée pour les espacements,
+  largeurs de lecture, typographies, rayons, surfaces, filets, ombres et couleur
+  d'accent. Conserver le thème sombre et réserver le cyan aux actions, focus et
+  états qui le justifient.
+- Limiter l'empilement de cartes. Employer une surface principale par niveau de
+  contexte ; structurer ses enfants par titres, espace et séparateurs lorsque
+  cela suffit.
+- Harmoniser les primitives interactives : bouton principal, secondaire,
+  discret, destructif, lien textuel, bouton icône, badge de statut, champ,
+  panneau et état vide. Un lien ne doit pas imiter un bouton et inversement.
+- Donner aux contenus longs une largeur de lecture confortable et une hauteur de
+  ligne suffisante ; éviter les colonnes étroites, textes tassés et métadonnées
+  en concurrence avec les titres.
+- Harmoniser les états hover, focus, active, disabled, loading, erreur et succès
+  sans dépendre uniquement de la couleur.
+- Vérifier et ajuster la navigation inférieure, les zones sûres mobiles, les
+  en-têtes et les actions de fin de page afin qu'aucun élément fixe ne masque le
+  contenu.
+- Réutiliser ou faire évoluer les composants partagés existants avant d'ajouter
+  des exceptions locales.
+
+### Hors périmètre
+
+- Nouvelle identité de marque, nouveau logo, illustration décorative ou thème
+  clair.
+- Modification du modèle pédagogique, des règles serveur, des routes ou de la
+  progression.
+- Refonte fonctionnelle de l'administration au-delà de l'application cohérente
+  des primitives partagées.
+- Animations décoratives ou gamification.
+
+### Critères d'acceptation
+
+- Les écrans principaux utilisent les mêmes primitives, niveaux de surface,
+  espacements et styles d'action ; les variantes locales sont rares et justifiées.
+- À 390 px, les titres, métadonnées, badges et actions ne se compriment pas
+  mutuellement ; aucun contenu utile n'est masqué par la navigation.
+- À 200 % de zoom et 320 px, aucun chevauchement, scroll horizontal global ou
+  perte d'action n'est observé.
+- Les contenus pédagogiques longs conservent une largeur de lecture, une hauteur
+  de ligne et un rythme vertical confortables sur mobile et desktop.
+- Les actions principales et secondaires sont immédiatement distinguables ; les
+  liens soulignés utilisés comme seuls boutons sont supprimés.
+- Tous les contrôles interactifs conservent une cible minimale de 44 × 44 px, un
+  focus visible, un nom accessible et un état non fondé sur la seule couleur.
+- Une revue comparative avant/après est produite pour au moins Accueil,
+  Catalogue, Programme, Leçon, activité, Notes, Profil et administration.
+
+### Tests et risques
+
+- Captures de référence mobile 320/390 px, tablette et desktop ; contrôle texte
+  200 %, clavier, lecteur d'écran, contrastes et `prefers-reduced-motion`.
+- Tests de composants partagés et E2E des actions essentielles après migration
+  visuelle.
+- Risque de chantier diffus : l'inventaire initial fixe la liste des écrans et
+  chaque changement est relié à une primitive ou à un défaut mesurable.
+- Risque de régression pédagogique : l'ordre, les libellés métier et la séquence
+  d'activités restent inchangés sauf arbitrage produit séparé.
+
+### Migration et rollback
+
+- Aucune migration de données attendue. Commits regroupés par primitives puis
+  familles d'écrans afin de permettre un rollback visuel ciblé.
+
+## V3-022B — Corriger et clarifier la progression de leçon
+
+**Priorité : P0 correctif. Dépendances fonctionnelles : V3-017 et V3-020.**
+
+**Ordre d'exécution : à traiter immédiatement après le ticket actuellement en
+cours, avant V3-028 et la clôture de V3.**
+
+### Constat prouvé
+
+- La consultation d'une ressource obligatoire est bien persistée, mais ne fait
+  volontairement pas progresser le pourcentage : elle agit seulement sur
+  `canComplete`.
+- Le pourcentage actuel pondère arbitrairement les catégories `Task` à 40 %,
+  `Quiz` à 30 % et `Exercise` à 20 %, puis redistribue les poids absents.
+- Les validations de notions obligatoires bloquent la terminaison mais ne
+  contribuent pas au pourcentage. La barre peut donc rester longtemps à 0 %,
+  faire des bonds importants ou atteindre 100 % alors qu'une mini-évaluation
+  obligatoire reste incomplète.
+- Le recalcul est serveur et la réponse d'une mutation actualise déjà le cache
+  de la leçon. Le correctif ne doit pas déplacer cette autorité au frontend.
+
+### Périmètre
+
+- Remplacer la pondération fixe par une formule serveur compréhensible : chaque
+  activité canonique obligatoire de validation compte exactement une fois.
+- Compter les tâches obligatoires, exercices canoniques obligatoires, quiz
+  obligatoires et validations de notions obligatoires ; une tentative échouée
+  ne compte jamais comme une réussite.
+- Exclure du pourcentage les blocs de contenu, sources et ressources. Une
+  ressource obligatoire continue uniquement de bloquer `canComplete` tant que
+  sa consultation n'est pas déclarée.
+- Conserver `canComplete` comme décision serveur distincte : toutes les
+  activités de validation et ressources obligatoires doivent être satisfaites.
+- Garantir que le pourcentage affiché, les agrégats Module/Étape/Programme et
+  les données persistées ne restent pas sur deux formules différentes après le
+  déploiement. Définir un recalcul ou backfill sûr des progressions en cours si
+  l'audit technique le montre nécessaire.
+- Renommer la barre en `Validation de la leçon` ou libellé équivalent traduit,
+  afin de ne pas la confondre avec la position de lecture dans la séquence.
+- Si la position est affichée, utiliser un indicateur textuel discret du type
+  `Activité X sur Y`, jamais une seconde barre et jamais comme source de vérité
+  de validation.
+
+### Hors périmètre
+
+- Donner du poids aux ressources ou prétendre mesurer leur compréhension.
+- Compter les blocs de contenu comme acquis, ajouter une seconde progression,
+  gamifier le parcours ou modifier l'ordre authoré.
+- Modifier les règles de réussite des quiz, mini-évaluations ou exercices.
+- Refonte visuelle générale, nouvelle fonctionnalité V4 ou changement de
+  progression décidé par le client.
+
+### Critères d'acceptation
+
+- Terminer une activité obligatoire réussie actualise immédiatement la barre
+  sans rechargement ; un rechargement ou un autre appareil affiche la même valeur.
+- Chaque activité obligatoire réussie influence le pourcentage une fois et une
+  seule, quel que soit son type ou sa présence dans une autre relation métier.
+- Une mini-évaluation de notion réussie fait progresser le pourcentage ; un
+  échec conserve la tentative mais ne le fait pas progresser.
+- Lire un contenu ou confirmer une ressource ne modifie pas le pourcentage ; une
+  ressource obligatoire manquante bloque toujours `Terminer la leçon` avec un
+  motif explicite.
+- Le pourcentage est borné entre 0 et 100, monotone dans un même module run et
+  vaut 100 lorsque toutes les activités de validation obligatoires sont réussies.
+- Une leçon déjà `COMPLETED` reste à 100 % ; recommencer un module applique la
+  politique de carryover existante sans double comptage.
+- Les valeurs Leçon, Module, Étape et Programme restent cohérentes après mutation,
+  reconnexion et recalcul des données existantes.
+
+### Tests et risques
+
+- Tests unitaires de la formule avec tâches, notions, quiz, exercices, catégories
+  absentes, échec, ressource obligatoire et leçon sans activité.
+- Tests API de recalcul atomique, concurrence, module run courant, carryover et
+  rafraîchissement des agrégats supérieurs.
+- Test composant prouvant la mise à jour immédiate du cache et le libellé traduit.
+- E2E sur une leçon psychologie : ressource consultée à 0 %, première activité
+  validée, mini-évaluation réussie, reprise après rechargement et terminaison.
+- Exécuter `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` et les E2E
+  ciblés avant commit.
+- Risque : modifier les pourcentages historiques sans synchroniser les agrégats ;
+  comparer avant/après sur une base Neon éphémère et documenter les écarts.
+
+### Migration et rollback
+
+- Aucune migration de schéma attendue. Tout backfill de valeurs doit être
+  idempotent, testé sur clone Neon et réexécutable sans perte de tentatives.
+- Conserver la formule précédente dans le commit parent pour permettre un
+  rollback code ; ne jamais restaurer des pourcentages par écrasement aveugle.
 
 ## V3-023 — Fondation i18n de l'interface
 

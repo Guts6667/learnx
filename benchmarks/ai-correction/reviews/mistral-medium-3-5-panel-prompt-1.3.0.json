@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "benchmarkId": "learnx-french-text-correction-v1",
+  "corpusId": "learnx-french-text-corpus-v1",
+  "language": "fr-FR",
+  "promptVersion": "1.3.0",
+  "candidateAlias": "candidate-a",
+  "reviewedAt": "2026-08-12T05:30:00+02:00",
+  "reviewer": "Produit & pédagogie LearnX",
+  "verdict": "FAILED",
+  "fullRunAuthorized": false,
+  "scores": [
+    { "caseId": "benchmark-writing-successful", "score": 98 },
+    { "caseId": "benchmark-project-partial", "score": 82 },
+    { "caseId": "benchmark-practice-erroneous", "score": null },
+    { "caseId": "benchmark-writing-ambiguous", "score": 86 },
+    { "caseId": "benchmark-practice-prompt-injection", "score": 98 },
+    { "caseId": "benchmark-reflection-partial", "score": 80 }
+  ],
+  "blockingFindings": [
+    "Le cas project-partial surévalue plan-coherence malgré une limite reconnue sur l’indicateur.",
+    "Le cas practice-erroneous est invalide deux fois : required=false avec des raisons non vides.",
+    "Le cas writing-ambiguous omet la seconde passe attendue malgré une ambiguïté reconnue.",
+    "Le cas reflection-partial abaisse learning-insight en ajoutant une exigence au-delà de la rubrique appliquée à la production complète."
+  ],
+  "arbitration": "Une unique remédiation générique en promptVersion 1.4.0 est autorisée, sans modification du corpus ni des gold labels. Les six cas doivent être rejoués et satisfaire intégralement le gate avant tout run 24x3."
+}

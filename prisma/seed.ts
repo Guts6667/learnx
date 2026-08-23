@@ -1607,10 +1607,12 @@ export function createSeedProgramRepository(
 
       return client.lesson.upsert({
         where: { moduleId_slug: { moduleId, slug } },
-        create: { moduleId, slug, ...data },
+        // Ensure canonicalKey exists for create (default to slug)
+        create: { moduleId, slug, ...data, canonicalKey: data.canonicalKey ?? slug },
         update: data,
       });
     },
+
     async upsertExercise(input) {
       const { lessonId, position, ...data } = input;
 
@@ -1625,19 +1627,23 @@ export function createSeedProgramRepository(
 
       return client.module.upsert({
         where: { stageId_slug: { stageId, slug } },
-        create: { stageId, slug, ...data },
+        // Ensure canonicalKey exists for create (default to slug)
+        create: { stageId, slug, ...data, canonicalKey: data.canonicalKey ?? slug },
         update: data,
       });
     },
+
     async upsertProgram(input) {
       const { ownerId, slug, ...data } = input;
 
       return client.program.upsert({
         where: { ownerId_slug: { ownerId, slug } },
-        create: { ownerId, slug, ...data },
+        // Ensure canonicalProgramKey is present for create (use slug as default)
+        create: { ownerId, slug, ...data, canonicalProgramKey: data.canonicalProgramKey ?? slug },
         update: data,
       });
     },
+
     async upsertResource(input) {
       const { key, lessonId, ...data } = input;
 
@@ -1661,10 +1667,12 @@ export function createSeedProgramRepository(
 
       return client.stage.upsert({
         where: { programId_slug: { programId, slug } },
-        create: { programId, slug, ...data },
+        // Ensure canonicalKey exists for create (default to slug)
+        create: { programId, slug, ...data, canonicalKey: data.canonicalKey ?? slug },
         update: data,
       });
     },
+
     async upsertStageAssessment(input) {
       const { stageId, position, ...data } = input;
 

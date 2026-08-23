@@ -442,7 +442,9 @@ V3.5-002 à V3.5-007.**
 stabilisés.**
 
 **Références : A1 — Programme, Exercice, Réviser, Profil mobile ; A3 — Notes
-mobile ; A2 — `Apprentissage & confiance`.**
+mobile ; A2 — `Apprentissage & confiance` ;
+`docs/EMOTIONAL_DESIGN_CONTRACT.md` et la référence interactive
+`/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html`.**
 
 ### Périmètre
 
@@ -470,6 +472,15 @@ mobile ; A2 — `Apprentissage & confiance`.**
   consignes, contrôles, métadonnées et réponses.
 - Définir pour chaque écran pertinent : contenu nominal, chargement, vide,
   erreur récupérable, action désactivée et mutation en cours sans saut de layout.
+- Distinguer l’état de première arrivée sans parcours d’un vide courant : une
+  phrase d’orientation, un seul CTA `Choisir mon premier parcours`, aucun
+  compteur, recherche ou filtre vide. V4-016C porte le routage et les données.
+- Séparer `Mes parcours`, destiné à la reprise, de `Découvrir`, destiné au choix,
+  avec recherche révélée à la demande et contenu utile avant les filtres.
+- À une frontière pédagogique réelle, afficher une clôture factuelle : notions
+  travaillées, activités validées, notes prises, position et prochaine étape.
+- Toute erreur ou indisponibilité explicite ce qui est conservé, ce qui n’a pas
+  eu lieu, l’éventuel non-débit et l’action sûre, sans mutation en double.
 
 ### Hors périmètre
 
@@ -494,6 +505,9 @@ mobile ; A2 — `Apprentissage & confiance`.**
   plus 12 px et aucun écran n'empile plus d'un niveau de cartes.
 - Un groupe visuel ne comporte qu'un CTA bleu dominant ; aucun cyan électrique,
   vert, CTA laiton, grosse tuile active ou ombre décorative n'est présent.
+- Les tests de compréhension définis dans `docs/V3_5_QA_MATRIX.md` sont
+  consignés pour première arrivée, Parcours, clôture et récupération ; les
+  captures seules ne valent pas preuve de compréhension.
 
 ### Tests et risques
 
@@ -514,7 +528,9 @@ mobile ; A2 — `Apprentissage & confiance`.**
 **Priorité : P1. Dépendances : V3.5-002, V3.5-003 et shell V3 stabilisé.**
 
 **Références : A1 — Programme et Administration desktop ; A3 — Leçon desktop ;
-A2 — navigation, apprentissage et liste administrative.**
+A2 — navigation, apprentissage et liste administrative ;
+`docs/EMOTIONAL_DESIGN_CONTRACT.md` et les captures
+`/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/emotional-design-renders/`.**
 
 ### Périmètre
 
@@ -542,6 +558,9 @@ A2 — navigation, apprentissage et liste administrative.**
   si elle était actuelle.
 - Préserver ordre pédagogique et largeur de lecture ; le desktop n'affiche pas
   simultanément ce qui doit rester séquentiel.
+- Adapter première arrivée, Aujourd’hui multi-parcours, Mes parcours/Découvrir,
+  résultat, clôture et récupération aux gabarits desktop sans les transformer
+  en dashboards ni dupliquer les actions de la version mobile.
 
 ### Hors périmètre
 
@@ -564,6 +583,8 @@ A2 — navigation, apprentissage et liste administrative.**
   électrique, vert ou CTA laiton ; un seul CTA bleu dominant par zone.
 - Default/hover/focus/disabled/loading/error respectent A2 et restent
   compréhensibles au clavier, au lecteur d'écran et sans couleur.
+- Les preuves de compréhension Emotional Design sont revues à 1440 px et au
+  reflow zoom 200 %, avec la même hiérarchie sémantique qu’à 390 px.
 
 ### Tests et risques
 

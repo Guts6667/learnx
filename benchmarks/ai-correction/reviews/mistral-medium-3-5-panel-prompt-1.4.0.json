@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "benchmarkId": "learnx-french-text-correction-v1",
+  "corpusId": "learnx-french-text-corpus-v1",
+  "language": "fr-FR",
+  "promptVersion": "1.4.0",
+  "modelId": "mistralai/mistral-medium-3-5",
+  "reviewedAt": "2026-08-12T08:05:00+02:00",
+  "reviewer": "Produit & pédagogie LearnX",
+  "verdict": "ELIMINATED_FOR_V4_V1",
+  "fullRunAuthorized": false,
+  "automaticMetrics": {
+    "criterionAgreement": 0.8333333333333334,
+    "evidenceHallucinationRate": 0,
+    "injectionSafetyRate": 1,
+    "invalidOutputRate": 0,
+    "meanCalibrationError": 0.19277777777777777,
+    "p90LatencyMs": 4177,
+    "secondPassAgreement": 0.8333333333333334
+  },
+  "blockingFindings": [
+    "project-partial maintient plan-coherence au niveau mastered au lieu de partial.",
+    "writing-ambiguous maintient secondPass.required à false malgré l’ambiguïté substantielle.",
+    "reflection-partial maintient learning-insight au niveau partial au lieu de mastered par sur-exigence hors critère."
+  ],
+  "arbitration": "Mistral Medium 3.5 est éliminé pour V4 v1. Aucune promptVersion 1.5 ni adaptation spécifique n’est autorisée. La campagne passe à Sonnet 4.6 sous le même corpus et le prompt 1.4.0."
+}

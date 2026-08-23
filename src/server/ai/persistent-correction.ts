@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import {
   correctionContractSchema,
   correctionOutputSchema,
+  deriveCorrectionSecondPassDecision,
   getCorrectionContractRuntimeEligibility,
   validateCorrectionOutputForContract,
   type CorrectionContract,
@@ -169,9 +170,11 @@ export function calculateServerCorrectionResult(input: {
     output.overallConfidence,
     ...output.criteria.map((criterion) => criterion.confidence),
   );
-  const reviewRequired =
-    output.secondPass.required ||
-    confidence < input.contract.secondPass.confidenceThreshold;
+  const secondPass = deriveCorrectionSecondPassDecision({
+    contract: input.contract,
+    evaluations: [output],
+  });
+  const reviewRequired = secondPass.required;
 
   if (reviewRequired) {
     return {

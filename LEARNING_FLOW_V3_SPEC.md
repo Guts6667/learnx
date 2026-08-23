@@ -48,19 +48,41 @@ existantes.
 
 ### 2.2 Depuis Parcours
 
-- La vue Programme présente une timeline verticale d'étapes numérotées.
+- La vue Programme présente un accordéon plat d'étapes numérotées, sans axe,
+  point ni connecteur de timeline.
 - Une seule étape est développée à la fois.
 - À la première visite, l'étape ouverte est la première non terminée ; l'étape 1
   n'est choisie que lorsqu'aucune progression n'existe.
 - Aux visites suivantes, la dernière étape développée est restaurée pour ce
   compte et ce programme depuis une préférence serveur. Cette préférence UI
   reste distincte de la progression.
-- Une étape repliée affiche uniquement : numéro, titre, durée,
-  progression/statut compact et chevron. Elle n'affiche jamais le nombre
-  d'activités ni les descriptions détaillées.
-- Une étape développée affiche un résumé court, ses modules sous forme compacte
-  et un CTA principal `Commencer` ou `Reprendre`.
-- Ouvrir/replier une étape ne navigue pas ; le CTA reste une action distincte.
+- Une seule barre de progression est visible sur cette page : la progression
+  globale du programme. Les étapes, modules et leçons utilisent des statuts
+  textuels compacts ; ils ne répètent pas de barre de progression.
+- Une étape repliée affiche uniquement : numéro dans le titre, titre, durée,
+  statut compact et chevron. Elle n'affiche jamais le nombre d'activités, un
+  pourcentage redondant ni une description détaillée.
+- Une étape développée reste l'unique surface bordée. Elle n'imbrique aucune
+  autre `Card`. Les modules servent seulement d'intertitres typographiques
+  lorsqu'il y en a plusieurs ; avec un seul module, les leçons sont affichées
+  directement. Chaque leçon est une ligne séparée par un filet, avec titre,
+  durée, statut accompagné d'un libellé et chevron ou verrou.
+- Une ligne de leçon disponible ou en cours ouvre directement la leçon, dont la
+  reprise serveur conserve l'activité exacte. Une ligne verrouillée n'est pas
+  présentée comme un lien actif.
+- Ouvrir/replier une étape ne navigue pas ; sélectionner une ligne de leçon est
+  une action distincte.
+- Une étape ouverte peut être refermée, jusqu'à obtenir un accordéon entièrement
+  replié. Cette fermeture est un état local temporaire et n'efface pas la dernière
+  étape ouverte mémorisée côté serveur ; seule l'ouverture d'une autre étape
+  remplace cette préférence.
+- Sur mobile, le titre d'une leçon dispose de sa propre ligne ; durée et statut
+  sont regroupés en dessous, tandis que le chevron ou verrou occupe une colonne
+  stable à droite. La description longue d'une étape n'est pas répétée dans cet
+  accordéon compact.
+- L'invite d'installation PWA n'interrompt jamais cette vue et ne précède pas le
+  titre du programme. L'action d'installation et l'aide iOS appartiennent à la
+  vue Profil ; leur masquage est mémorisé par appareil.
 
 ### 2.3 Module
 
@@ -383,7 +405,9 @@ Chaque évolution reste livrée et réversible dans son ticket dédié :
 | --- | --- |
 | `V3-017` | identité stable, séquence inter-types, backfill V2 exact et source de vérité serveur |
 | `V3-018` | ordre du programme psychologie fourni et validé par le responsable pédagogique |
-| `V3-019` | timeline Programme, préférence d'étape ouverte et agrégation Module serveur |
+| `V3-019` | accordéon Programme initial, préférence d'étape ouverte et agrégation Module serveur |
+| `V3-021A` | correction visuelle post-V3-019 : accordéon plat, lignes de leçons et invite PWA secondaire |
+| `V3-021B` | respiration mobile, titres non comprimés et fermeture complète de l'accordéon |
 | `V3-020` | ressources guidées dans la séquence et sources bibliographiques au point d'usage |
 | `V3-021` | navigation non flottante, sommaire, terminal unique et deep links stables |
 | `V3-022` | prise de note secondaire, liaison obligatoire à la leçon et liaison facultative à l'activité |

@@ -14,7 +14,6 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Architecture générale | `TECHNICAL_ARCHITECTURE.md` | Code et schéma priment en cas d'écart |
 | Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma` | `prisma/schema.prisma` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
-| Correction IA, crédits et frontières de confiance V4 | `ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md` | ADR V4-001 ; les gates externes restent bloquants |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |
@@ -100,6 +99,37 @@ Les deux premiers lots anglais restent des brouillons privés tant que les revue
 humaines linguistique, pédagogique et culturelle/juridique ne sont pas
 approuvées dans le workflow bilingue. Leur publication et leur progression sont
 indépendantes du programme français.
+
+## Ingénieur logiciel en production — Construire SourceLab
+
+- Présentation et statut :
+  `content/ingenieur-logiciel-production-sourcelab/README.md`
+- Blueprint :
+  `content/ingenieur-logiciel-production-sourcelab/CURRICULUM_BLUEPRINT.md`
+- Spécifications :
+  `content/ingenieur-logiciel-production-sourcelab/specs/`
+- Évaluations d’étape :
+  `content/ingenieur-logiciel-production-sourcelab/stage-assessments/`
+- Bundle Prisma :
+  `seed/ingenieur-logiciel-production-sourcelab-program.json`
+
+Ce parcours construit SourceLab V1 dans un dépôt et une base séparés de LearnX.
+Il reste en brouillon jusqu’aux revues éditoriale, technique et des liens.
+
+## AI Product Engineer — RAG et évaluation avec SourceLab
+
+- Présentation et statut : `content/ai-product-engineer-sourcelab/README.md`
+- Blueprint :
+  `content/ai-product-engineer-sourcelab/CURRICULUM_BLUEPRINT.md`
+- Spécifications : `content/ai-product-engineer-sourcelab/specs/`
+- Évaluations d’étape :
+  `content/ai-product-engineer-sourcelab/stage-assessments/`
+- Bundle Prisma : `seed/ai-product-engineer-sourcelab-program.json`
+
+Ce parcours ajoute corpus, retrieval, RAG, Program Builder et moteur de rubrique
+exécutable au projet SourceLab autonome. Les modèles recherchent ou contestent
+des preuves ; LearnX conserve les calculs déterministes. Le programme reste en
+brouillon jusqu’aux revues éditoriale, technique et des liens.
 
 ## Archives
 

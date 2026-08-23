@@ -11,6 +11,11 @@ Construire LearnX comme une plateforme générique et modulaire de parcours d’
   explicite ou recherche historique ciblée.
 - Pour un ticket V3, lire uniquement `BACKLOG_V3.md`, l'ADR ou la spécification
   citée par le ticket, puis les fichiers de code concernés.
+- Pour un ticket V3.5, lire uniquement `BACKLOG_V3_5.md`, le matériel de design
+  ou l'ADR cité, puis les fichiers concernés. V3.5 ne commence qu'après clôture
+  officielle de V3.
+- Pour un ticket V4, lire uniquement `BACKLOG_V4.md`, l'ADR ou la spécification
+  citée, puis les fichiers concernés. V4 consomme la baseline V3.5 clôturée.
 - Pour une modification pédagogique, appliquer la liste dédiée ci-dessous ; ne
   pas charger toutes les spécifications pédagogiques du programme.
 

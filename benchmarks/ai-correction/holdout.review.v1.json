@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "learnx-french-text-holdout-v1",
+  "reviewer": "Codex pedagogical supervisor — delegated by Rayan Chambet",
+  "reviewedAt": "2026-08-12T10:20:52Z",
+  "status": "APPROVED",
+  "reviewedContentSha256": "a28f086cba0bb173d096cbb2a5a8b276a89b3a4635b81b831e8ceb2702d7df8f",
+  "artifactSha256AfterReviewMetadata": "a3d018044c6e10c2d599672a9aafc7afb1acfa663231127c57f0c0d069781cf9",
+  "metadataOnlyMutation": {
+    "path": "humanReview",
+    "value": {
+      "status": "APPROVED",
+      "reviewer": "Codex pedagogical supervisor — delegated by Rayan Chambet",
+      "reviewedAt": "2026-08-12T10:20:52Z"
+    }
+  }
+}
