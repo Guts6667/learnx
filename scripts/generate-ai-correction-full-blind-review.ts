@@ -371,6 +371,7 @@ async function main(): Promise<void> {
         evidenceMatches: attempt.evidenceMatches,
         output: attempt.output,
         status: attempt.status,
+        unsureCriteria: attempt.unsureCriteria,
       })),
     };
   });

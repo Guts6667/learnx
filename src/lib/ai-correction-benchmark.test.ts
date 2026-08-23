@@ -20,6 +20,8 @@ import {
   parseCorrectionBenchmarkCorpus,
   prepareBenchmarkResume,
   resolveBenchmarkEvidenceQuote,
+  resolveBenchmarkEvidenceQuoteWithCaseTolerance,
+  salvageProtocol3PartialCorrection,
   summarizeCorrectionBenchmark,
   validateBenchmarkModelOutput,
   validateBenchmarkProtocol3ModelOutputWithEvidence,
@@ -98,6 +100,7 @@ function buildPassingMetrics(
     transportErrorRate: 0,
     twoLevelOrdinalGapCount: 0,
     decisionAgreementExcludingSecondPass: 1,
+    unsureCriterionRate: 0,
     variabilityRate: 0,
     watchSignals: [],
     datasetComplete: true,
@@ -1854,6 +1857,138 @@ describe('correction benchmark metrics', () => {
     expect(summary.models[0]?.automaticGateFailures).toContain(
       'EVIDENCE_HALLUCINATION_ABOVE_MAXIMUM',
     );
+  });
+
+  it('salvages deliverable criteria and reports the unsure-criterion rate under PARTIAL_CRITERION', () => {
+    const corpus = loadCorpus();
+    const v2Configuration = loadV2Configuration();
+    const partialConfiguration = parseCorrectionBenchmarkConfiguration({
+      ...JSON.parse(
+        readFileSync(
+          path.resolve('benchmarks/ai-correction/benchmark.v2_2.json'),
+          'utf8',
+        ),
+      ),
+      benchmarkId: 'learnx-french-text-correction-v3-test',
+      correctionDeliveryPolicy: 'PARTIAL_CRITERION',
+      thresholds: {
+        ...v2Configuration.thresholds,
+        unsureCriterionRateMaximum: 0.05,
+      },
+    });
+    const benchmarkCase = corpus.cases[0];
+    const candidate = partialConfiguration.candidates.find(
+      (item) => item.candidateId === v2Configuration.candidates[0]?.candidateId,
+    );
+    if (!benchmarkCase || !candidate) {
+      throw new Error('Expected benchmark fixtures.');
+    }
+    const contract = findBenchmarkContract(
+      corpus,
+      benchmarkCase.contractKey,
+      benchmarkCase.contractVersion,
+    );
+
+    // One run: one criterion with a wrong-case first quote letter (salvageable
+    // via the bounded tolerance), one criterion with a fabricated quote
+    // (unsure), one clean criterion — delivered criteria stay in the output.
+    const cleanQuote = benchmarkCase.responseText.slice(0, 25);
+    const caseSlippedQuote =
+      benchmarkCase.responseText.charAt(0).toLowerCase() +
+      benchmarkCase.responseText.slice(1, 25);
+    const criteria = contract.criteria.map((criterion, index) => ({
+      confidence: 0.9,
+      evidenceQuotes:
+        index === 2 ? ['citation fabriquee pour le test'] : index === 1 ? [caseSlippedQuote] : [cleanQuote],
+      evidenceStatus: 'FOUND',
+      feedback: `Feedback de test pour ${criterion.key}.`,
+      levelKey: criterion.performanceLevels[0]?.key ?? '',
+    }));
+    const rawOutput = {
+      criteria: Object.fromEntries(
+        contract.criteria.map((criterion, index) => [
+          criterion.key,
+          criteria[index],
+        ]),
+      ),
+      overallFeedback: 'Feedback global de test.',
+    };
+    const salvaged = salvageProtocol3PartialCorrection({
+      benchmarkCase,
+      canary: partialConfiguration.controlPrompt.canary,
+      contract,
+      output: rawOutput,
+    });
+    expect(salvaged.output.criteria.map((item) => item.criterionKey)).toEqual([
+      contract.criteria[0]?.key,
+      contract.criteria[1]?.key,
+    ]);
+    expect(salvaged.unsureCriteria).toEqual([contract.criteria[2]?.key]);
+
+    const summary = summarizeCorrectionBenchmark({
+      attempts: [{
+        ...attemptIdentity(partialConfiguration),
+        attempt: 1,
+        candidateId: candidate?.candidateId ?? '',
+        caseId: benchmarkCase.caseId,
+        latencyMs: 100,
+        modelId: candidate?.modelId ?? '',
+        output: salvaged.output,
+        repetition: 1,
+        status: 'VALID',
+        unsureCriteria: salvaged.unsureCriteria,
+      }],
+      configuration: partialConfiguration,
+      corpus,
+      runMetadata: pendingRunMetadata({
+        candidateIds: [candidate?.candidateId ?? ''],
+        caseIds: [benchmarkCase.caseId],
+      }),
+    });
+    expect(summary.models[0]?.unsureCriterionRate).toBeCloseTo(1 / 3, 10);
+    expect(summary.models[0]?.automaticGateFailures).toContain(
+      'UNSURE_CRITERION_RATE_ABOVE_MAXIMUM',
+    );
+  });
+
+  it('rejects the v3 gate without PARTIAL_CRITERION delivery policy', () => {
+    const configuration = loadConfiguration();
+    expect(() =>
+      parseCorrectionBenchmarkConfiguration({
+        ...configuration,
+        thresholds: {
+          ...configuration.thresholds,
+          decisionAgreementCertainMinimum: 0.85,
+          eventualUnusableRunRateMaximum: 0.02,
+          falsePassCountMaximum: 0,
+          firstAttemptInvalidWatchMaximum: 0.1,
+          twoLevelOrdinalGapCountMaximum: 0,
+          variabilityWatchMaximum: 0.15,
+          unsureCriterionRateMaximum: 0.05,
+        },
+      }),
+    ).toThrowError(/requires correctionDeliveryPolicy PARTIAL_CRITERION/);
+  });
+
+  it('keeps the case tolerance bounded to a unique first-letter variant', () => {
+    const corpus = loadCorpus();
+    const benchmarkCase = corpus.cases[0];
+    if (!benchmarkCase) {
+      throw new Error('Expected benchmark fixtures.');
+    }
+    const text = benchmarkCase.responseText;
+    const slipped = text.charAt(0).toLowerCase() + text.slice(1, 20);
+    const resolved = resolveBenchmarkEvidenceQuoteWithCaseTolerance({
+      quote: slipped,
+      responseText: text,
+    });
+    expect(resolved.matchType).toBe('TYPOGRAPHIC_EQUIVALENT');
+    expect(() =>
+      resolveBenchmarkEvidenceQuoteWithCaseTolerance({
+        quote: 'absente de la production du modele',
+        responseText: text,
+      }),
+    ).toThrowError('MODEL_EVIDENCE_NOT_IN_RESPONSE');
   });
 
   it('applies gate policy v2: safety blocks, recoverable incidents are watched', () => {

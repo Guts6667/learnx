@@ -311,8 +311,21 @@ la grammaire visuelle.
    mini-évaluations, y compris une réponse courte comparée à une liste de
    réponses acceptées. Une production libre évaluée par rubrique relève en
    revanche de la correction IA V4.
-10. Une erreur sans résultat utilisable rend intégralement les crédits réservés
-    à l'utilisateur ; LearnX absorbe l'éventuel coût fournisseur.
+10. **Doctrine de livraison partielle (décision du Propriétaire, 23 août 2026,
+    remplaçant la règle historique de remboursement intégral).** La correction
+    est livrée critère par critère. Un critère dont les preuves ne peuvent pas
+    être vérifiées avec exactitude est livré en état « à retravailler :
+    analyse non fiable — modifier cette partie et resoumettre ». Le devis
+    accepté avant paiement est débité en intégralité, quel que soit le nombre
+    de critères livrés ; il n'existe aucun remboursement, compensation,
+    relance gratuite ni crédit de service. Le devis doit l'énoncer
+    explicitement avant le consentement (des critères peuvent revenir en état
+    « à retravailler » sans compensation). Pour que la resoumission reste
+    économique, l'analyse suivante d'une même production peut être un devis
+    partiel portant sur les seuls critères « à retravailler », au prorata de
+    leurs poids — une action nouvelle et facturée, jamais une compensation.
+    LearnX n'endosse aucune responsabilité financière envers l'apprenant pour
+    un incident modèle, au-delà de l'information honnête de l'état livré.
 11. Le ledger est immuable, idempotent, lié à l'utilisateur et ne permet jamais
     un solde négatif ni une double attribution.
 12. L'allocation offerte et les crédits achetés restent séparés jusque dans la

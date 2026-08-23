@@ -16,6 +16,7 @@ import {
   parseCorrectionBenchmarkConfiguration,
   parseCorrectionBenchmarkCorpus,
   prepareBenchmarkResume,
+  salvageProtocol3PartialCorrection,
   summarizeCorrectionBenchmark,
   validateBenchmarkProtocol3ModelOutputWithEvidence,
   type BenchmarkAttempt,
@@ -421,6 +422,46 @@ async function runBenchmark(input: {
                 output: result.output,
               });
             } catch (error) {
+              if (
+                input.configuration.correctionDeliveryPolicy ===
+                'PARTIAL_CRITERION'
+              ) {
+                try {
+                  const salvaged = salvageProtocol3PartialCorrection({
+                    benchmarkCase,
+                    canary: input.configuration.controlPrompt.canary,
+                    contract,
+                    output: result.output,
+                  });
+                  attempts.push(
+                    benchmarkAttemptSchema.parse({
+                      attempt: attemptNumber,
+                      candidateId: candidate.candidateId,
+                      caseId: benchmarkCase.caseId,
+                      evidenceMatches: salvaged.evidenceMatches,
+                      latencyMs: result.latencyMs,
+                      modelId: candidate.modelId,
+                      modelSnapshot: result.modelSnapshot,
+                      output: salvaged.output,
+                      provider: candidate.provider,
+                      providerRequestId: result.providerRequestId,
+                      providerRoute: result.providerRoute,
+                      rawModelOutput: serializeRawModelOutput(result.output),
+                      requestProfileSnapshot: candidate.requestProfile,
+                      requestProtocolVersion:
+                        input.configuration.requestProtocolVersion,
+                      repetition,
+                      status: 'VALID',
+                      unsureCriteria: salvaged.unsureCriteria,
+                      usage: result.usage,
+                    }),
+                  );
+                  await input.onProgress?.(attempts);
+                  break;
+                } catch {
+                  // salvage impossible (no deliverable criterion): fall through
+                }
+              }
               let structuredOutput;
               try {
                 structuredOutput = canonicalizeProtocol3CorrectionOutput({

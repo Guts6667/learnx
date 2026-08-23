@@ -4,6 +4,7 @@ import {
   canonicalizeProtocol3CorrectionOutput,
   correctionContractSchema,
   correctionOutputSchema,
+  deriveCorrectionSecondPassDecision,
   protocol3CorrectionArtifactOutputSchema,
   validateCorrectionOutputForContract,
   type CorrectionContract,
@@ -287,6 +288,7 @@ const benchmarkThresholdsSchema = z
     firstAttemptInvalidWatchMaximum: z.number().min(0).max(1).optional(),
     twoLevelOrdinalGapCountMaximum: z.number().int().min(0).optional(),
     variabilityWatchMaximum: z.number().min(0).max(1).optional(),
+    unsureCriterionRateMaximum: z.number().min(0).max(1).optional(),
   })
   .strict()
   .superRefine((thresholds, context) => {
@@ -305,6 +307,17 @@ const benchmarkThresholdsSchema = z
           path: [key],
         });
       }
+    }
+    if (
+      thresholds.unsureCriterionRateMaximum !== undefined &&
+      present.length === 0
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'The v3 unsure-criterion gate requires the gate policy v2 threshold block.',
+        path: ['unsureCriterionRateMaximum'],
+      });
     }
   });
 
@@ -371,6 +384,7 @@ export const correctionBenchmarkConfigurationSchema = z
     catalogObservedAt: z.iso.datetime({ offset: true }),
     controlPrompt: controlPromptSchema,
     corpusId: stableKeySchema,
+    correctionDeliveryPolicy: z.enum(['WHOLE', 'PARTIAL_CRITERION']).optional(),
     language: languageTagSchema,
     maxRetries: z.number().int().min(0).max(3),
     promptVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
@@ -383,6 +397,28 @@ export const correctionBenchmarkConfigurationSchema = z
   })
   .strict()
   .superRefine((configuration, context) => {
+    if (
+      configuration.thresholds.unsureCriterionRateMaximum !== undefined &&
+      configuration.correctionDeliveryPolicy !== 'PARTIAL_CRITERION'
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'The unsure-criterion gate requires correctionDeliveryPolicy PARTIAL_CRITERION.',
+        path: ['thresholds', 'unsureCriterionRateMaximum'],
+      });
+    }
+    if (
+      configuration.correctionDeliveryPolicy === 'PARTIAL_CRITERION' &&
+      configuration.thresholds.unsureCriterionRateMaximum === undefined
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'A PARTIAL_CRITERION identity must declare unsureCriterionRateMaximum.',
+        path: ['correctionDeliveryPolicy'],
+      });
+    }
     if (
       configuration.controlPrompt.language !== configuration.language ||
       configuration.controlPrompt.version !== configuration.promptVersion
@@ -648,6 +684,7 @@ export const benchmarkAttemptSchema = z
     requestProfileSnapshot: benchmarkCandidateSchema.shape.requestProfile,
     requestProtocolVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
     status: z.enum(['VALID', 'INVALID', 'ERROR']),
+    unsureCriteria: z.array(stableKeySchema).optional(),
     usage: benchmarkUsageSchema.optional(),
   })
   .strict()
@@ -745,6 +782,7 @@ export type ModelBenchmarkMetrics = {
   transportErrorRate: number;
   twoLevelOrdinalGapCount: number;
   decisionAgreementExcludingSecondPass: number;
+  unsureCriterionRate: number;
   variabilityRate: number;
   watchSignals: string[];
 };
@@ -1142,6 +1180,223 @@ export function resolveBenchmarkModelEvidence(input: {
   return {
     evidenceMatches,
     output: { ...input.output, criteria },
+  };
+}
+
+/**
+ * Bounded delivery tolerance (gate policy v3): when a quote fails only because
+ * of its first-letter case, retry the resolver with the swapped-case variant.
+ * The resolver's unique-match rule still applies to the variant, so an
+ * ambiguous or absent quote remains rejected. Used only by the
+ * PARTIAL_CRITERION delivery policy — never by strict v1/v2 identities.
+ */
+export function resolveBenchmarkEvidenceQuoteWithCaseTolerance(input: {
+  quote: string;
+  responseText: string;
+}): ResolvedTextEvidence {
+  try {
+    return resolveBenchmarkEvidenceQuote(input);
+  } catch (error) {
+    if (
+      !(error instanceof Error) ||
+      error.message !== 'MODEL_EVIDENCE_NOT_IN_RESPONSE' ||
+      input.quote.length === 0
+    ) {
+      throw error;
+    }
+    const first = input.quote.charAt(0);
+    if (!/[a-zA-ZÀ-ÿ]/.test(first)) {
+      throw error;
+    }
+    const swapped =
+      first === first.toLowerCase()
+        ? first.toUpperCase() + input.quote.slice(1)
+        : first.toLowerCase() + input.quote.slice(1);
+    try {
+      const resolved = resolveBenchmarkEvidenceQuote({
+        quote: swapped,
+        responseText: input.responseText,
+      });
+      return {
+        matchType: resolved.matchType === 'EXACT' ? 'TYPOGRAPHIC_EQUIVALENT' : resolved.matchType,
+        resolvedQuote: resolved.resolvedQuote,
+      };
+    } catch {
+      throw error;
+    }
+  }
+}
+
+/**
+ * Gate policy v3 salvage: recover the criteria whose evidence verifies from a
+ * model output that failed whole-output validation. Structural envelope
+ * errors, unknown levels, evidence-coherence violations and security leaks
+ * mark individual criteria as UNSURE instead of discarding the correction.
+ * Security is never relaxed: an injection-case criterion is delivered only if
+ * its quotes and feedback contain no forbidden fragment, no canary and no
+ * quote resolving in the attack segment.
+ */
+export function salvageProtocol3PartialCorrection(input: {
+  benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+  canary?: string;
+  contract: CorrectionContract;
+  output: unknown;
+}): {
+  evidenceMatches: EvidenceMatch[];
+  output: Protocol3CorrectionArtifactOutput;
+  unsureCriteria: string[];
+} {
+  const raw = input.output;
+  if (raw === null || typeof raw !== 'object') {
+    throw new Error('PROTOCOL_3_PARTIAL_SALVAGE_IMPOSSIBLE');
+  }
+  const rawCriteria = (raw as { criteria?: unknown }).criteria;
+  if (rawCriteria === null || typeof rawCriteria !== 'object') {
+    throw new Error('PROTOCOL_3_PARTIAL_SALVAGE_IMPOSSIBLE');
+  }
+  const rawOverallFeedback = (raw as { overallFeedback?: unknown })
+    .overallFeedback;
+  if (typeof rawOverallFeedback !== 'string') {
+    throw new Error('PROTOCOL_3_PARTIAL_SALVAGE_IMPOSSIBLE');
+  }
+
+  const security = input.benchmarkCase.injectionSecurity;
+  const forbidden = [
+    ...(input.canary ? [input.canary] : []),
+    ...(security?.forbiddenOutputFragments ?? []),
+  ];
+  const evidenceMatches: EvidenceMatch[] = [];
+  const delivered: Protocol3CorrectionArtifactOutput['criteria'] = [];
+  const unsureCriteria: string[] = [];
+
+  for (const criterion of input.contract.criteria) {
+    const result = (rawCriteria as Record<string, unknown>)[criterion.key];
+    const fail = (): void => {
+      unsureCriteria.push(criterion.key);
+    };
+    if (result === null || typeof result !== 'object') {
+      fail();
+      continue;
+    }
+    const { confidence, evidenceQuotes, evidenceStatus, feedback, levelKey } =
+      result as {
+        confidence?: unknown;
+        evidenceQuotes?: unknown;
+        evidenceStatus?: unknown;
+        feedback?: unknown;
+        levelKey?: unknown;
+      };
+    if (
+      typeof confidence !== 'number' ||
+      typeof feedback !== 'string' ||
+      typeof levelKey !== 'string' ||
+      !Array.isArray(evidenceQuotes) ||
+      evidenceQuotes.some((quote) => typeof quote !== 'string') ||
+      !criterion.performanceLevels.some((level) => level.key === levelKey)
+    ) {
+      fail();
+      continue;
+    }
+    const lowestScore = Math.min(
+      ...criterion.performanceLevels.map((level) => level.score),
+    );
+    const selectedScore = criterion.performanceLevels.find(
+      (level) => level.key === levelKey,
+    )?.score;
+    if (
+      evidenceStatus === 'NO_RELEVANT_EVIDENCE' &&
+      (evidenceQuotes.length > 0 || selectedScore !== lowestScore)
+    ) {
+      fail();
+      continue;
+    }
+    if (evidenceStatus === 'FOUND' && evidenceQuotes.length === 0) {
+      fail();
+      continue;
+    }
+    if (evidenceStatus !== 'FOUND' && evidenceStatus !== 'NO_RELEVANT_EVIDENCE') {
+      fail();
+      continue;
+    }
+    const combinedText = `${feedback}\n${(evidenceQuotes as string[]).join('\n')}`;
+    if (forbidden.some((fragment) => combinedText.includes(fragment))) {
+      fail();
+      continue;
+    }
+    if (security) {
+      const quotesAttack = (evidenceQuotes as string[]).some((quote) => {
+        try {
+          resolveBenchmarkEvidenceQuote({
+            quote,
+            responseText: security.attackText,
+          });
+          return true;
+        } catch {
+          return false;
+        }
+      });
+      if (quotesAttack) {
+        fail();
+        continue;
+      }
+    }
+    let resolvedQuotes: string[];
+    try {
+      resolvedQuotes = (evidenceQuotes as string[]).map((quote) => {
+        const resolved = resolveBenchmarkEvidenceQuoteWithCaseTolerance({
+          quote,
+          responseText: input.benchmarkCase.responseText,
+        });
+        evidenceMatches.push({
+          criterionKey: criterion.key,
+          matchType: resolved.matchType,
+          requestedQuote: quote,
+          resolvedQuote: resolved.resolvedQuote,
+        });
+        return resolved.resolvedQuote;
+      });
+    } catch {
+      fail();
+      continue;
+    }
+    delivered.push({
+      confidence,
+      criterionKey: criterion.key,
+      evidenceQuotes: resolvedQuotes,
+      evidenceStatus: evidenceStatus as 'FOUND' | 'NO_RELEVANT_EVIDENCE',
+      feedback,
+      levelKey,
+    });
+  }
+
+  if (delivered.length === 0) {
+    throw new Error('PROTOCOL_3_PARTIAL_SALVAGE_IMPOSSIBLE');
+  }
+
+  const overallConfidence = delivered.reduce((total, criterion) => {
+    const weight =
+      input.contract.criteria.find((item) => item.key === criterion.criterionKey)
+        ?.weight ?? 0;
+    return total + criterion.confidence * weight;
+  }, 0) / 100;
+  const base: Protocol3CorrectionArtifactOutput = {
+    contractKey: input.contract.contractKey,
+    contractVersion: input.contract.version,
+    criteria: delivered,
+    overallConfidence,
+    overallFeedback: rawOverallFeedback,
+    secondPass: { reasons: [], required: false },
+  };
+  return {
+    evidenceMatches,
+    output: {
+      ...base,
+      secondPass: deriveCorrectionSecondPassDecision({
+        contract: input.contract,
+        evaluations: [base as CorrectionOutput],
+      }),
+    },
+    unsureCriteria,
   };
 }
 
@@ -1575,6 +1830,13 @@ export function summarizeCorrectionBenchmark(input: {
           });
         }
       });
+      // Partial deliveries (unsure criteria present) keep their delivered
+      // criteria in criterion agreement, but an incomplete criterion basis
+      // cannot support a pass/fail verdict: such runs are excluded from
+      // decision agreement and already penalized by the unsure-criterion gate.
+      if ((attempt.unsureCriteria?.length ?? 0) > 0) {
+        return;
+      }
       const expectedScore = weightedDecisionScore({
         contract,
         levels: benchmarkCase.expectedCriteria,
@@ -1705,6 +1967,30 @@ export function summarizeCorrectionBenchmark(input: {
       (signatures) => signatures.size > 1,
     ).length;
     const retriedRuns = modelRuns.filter((run) => run.attempts.length > 1).length;
+    let unsureCriteriaTotal = 0;
+    let criteriaTotal = 0;
+    for (const run of modelRuns) {
+      const benchmarkCase = casesById.get(run.finalAttempt.caseId);
+      const contract = benchmarkCase
+        ? contractsByKey.get(
+            `${benchmarkCase.contractKey}|${benchmarkCase.contractVersion}`,
+          )
+        : undefined;
+      if (!benchmarkCase || !contract) {
+        continue;
+      }
+      const unsure = run.finalAttempt.unsureCriteria?.length ?? 0;
+      const delivered =
+        run.finalAttempt.status === 'VALID'
+          ? (run.finalAttempt.output?.criteria.length ?? 0)
+          : 0;
+      const total =
+        delivered + unsure > 0 ? delivered + unsure : contract.criteria.length;
+      criteriaTotal += total;
+      unsureCriteriaTotal += run.finalAttempt.status === 'VALID' ? unsure : total;
+    }
+    const unsureCriterionRate =
+      criteriaTotal === 0 ? 0 : unsureCriteriaTotal / criteriaTotal;
     const datasetComplete = modelDatasetIsComplete({
       candidateId: candidate.candidateId,
       configuration,
@@ -1784,6 +2070,7 @@ export function summarizeCorrectionBenchmark(input: {
         certainDecisionCount === 0
           ? 0
           : certainDecisionMatches / certainDecisionCount,
+      unsureCriterionRate,
       variabilityRate:
         signaturesByCase.size === 0 ? 0 : variableCases / signaturesByCase.size,
     };
@@ -1813,7 +2100,10 @@ export function summarizeCorrectionBenchmark(input: {
           partialMetrics.decisionAgreementExcludingSecondPass >=
             gatePolicyV2.decisionAgreementCertainMinimum
         : partialMetrics.variabilityRate <=
-          configuration.thresholds.variabilityMaximum);
+          configuration.thresholds.variabilityMaximum) &&
+      (configuration.thresholds.unsureCriterionRateMaximum === undefined ||
+        partialMetrics.unsureCriterionRate <=
+          configuration.thresholds.unsureCriterionRateMaximum);
     const operationallyDeployable =
       datasetComplete &&
       (gatePolicyV2
@@ -1882,6 +2172,11 @@ export function summarizeCorrectionBenchmark(input: {
         : null,
       latencyP90 > configuration.thresholds.p90LatencyMsMaximum
         ? 'P90_LATENCY_ABOVE_MAXIMUM'
+        : null,
+      configuration.thresholds.unsureCriterionRateMaximum !== undefined &&
+      partialMetrics.unsureCriterionRate >
+        configuration.thresholds.unsureCriterionRateMaximum
+        ? 'UNSURE_CRITERION_RATE_ABOVE_MAXIMUM'
         : null,
       estimatedCostUsd > configuration.thresholds.fullRunCostUsdMaximum
         ? 'FULL_RUN_COST_ABOVE_MAXIMUM'
@@ -1999,7 +2294,9 @@ export function modelMeetsPromotionThresholds(
       metrics.decisionAgreementExcludingSecondPass >=
         gatePolicyV2.decisionAgreementCertainMinimum &&
       metrics.eventualUnusableRunRate <=
-        gatePolicyV2.eventualUnusableRunRateMaximum
+        gatePolicyV2.eventualUnusableRunRateMaximum &&
+      (thresholds.unsureCriterionRateMaximum === undefined ||
+        metrics.unsureCriterionRate <= thresholds.unsureCriterionRateMaximum)
     );
   }
   return (

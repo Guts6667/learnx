@@ -373,3 +373,51 @@ une hallucination « présentée » — elle n’est jamais affichée et est com
 par `eventualUnusableRunRate`. `evidenceHallucinationRate` v2 ne compte désormais
 que les sorties finales VALIDES ; testé ; le verdict holdout reste NO-GO sur
 le seul gate des runs inutilisables.
+
+## 8. Contrat de livraison partielle v3 — 23 août 2026 (nuit)
+
+### 8.1 Décision produit du Propriétaire
+
+Le Propriétaire tranche la doctrine économique : **prix plein du devis débité
+en intégralité, quel que soit le nombre de critères livrés ; aucun
+remboursement, compensation, relance gratuite ni crédit de service** ; le
+consentement préalable énonce explicitement qu’un critère peut revenir en
+état « à retravailler ». La resoumission économique passe par un devis partiel
+portant sur les seuls critères « à retravailler », au prorata de leurs poids —
+une action nouvelle et facturée, jamais une compensation. La règle 10 de
+`BACKLOG_V4.md` est amendée en ce sens (règle historique de remboursement
+intégral remplacée).
+
+### 8.2 Identité v3 préenregistrée
+
+`learnx-french-text-correction-v3` (`benchmarks/ai-correction/benchmark.v3.json`) :
+identique à v2-2 (Sonnet 4.6 route Anthropic, prompt 2.1.0, protocole 3.0.1,
+retries bornés 2, seuils v2) avec deux ajvements :
+
+- `correctionDeliveryPolicy: PARTIAL_CRITERION` : la validation devient
+  critère par critère. Un critère dont les preuves ne vérifient pas (citation
+  absente, incohérence NO_RELEVANT_EVIDENCE, niveau inconnu, fragment interdit
+  ou canari) est livré en état « à retravailler » (`unsureCriteria`) sans
+  invalider la correction ; les critères livrés restent soumis à toutes les
+  garanties. La sécurité n’est jamais relâchée par critère (fragments
+  interdits, canari, citations du segment d’attaque rejetées). Une sortie dont
+  aucun critère n’est livrable reste INVALIDE et consomme son retry borné ;
+- tolérance bornée de casse initiale : une citation rejetée uniquement pour
+  la casse de sa première lettre est réessayée avec la variante casse
+  inversée, la règle de correspondance unique du résolveur restant appliquée.
+  Cette tolérance n’existe que dans la politique PARTIAL_CRITERION ; les
+  identités v1/v2 strictes en sont exclues.
+
+Nouveau gate bloquant : `unsureCriterionRate ≤ 5 %` (projection sur les
+données existantes : 0 % en développement ; 1,85 % strict et 0,46 % avec
+tolérance sur le holdout consommé, utilisé ici uniquement comme estimation,
+jamais comme preuve de promotion). Les livraisons partielles sont exclues de
+l’accord décisionnel (base incomplète pour un verdict) et restent comptées
+dans l’accord critériel pour leurs critères livrés.
+
+### 8.3 Séquence
+
+1. campagne de développement v3 (24×3) sur le corpus v1-3 ;
+2. revue aveugle déléguée indépendante du paquet full ;
+3. si GO : rédaction et approbation d’un **nouveau** corpus holdout scellé
+   (l’ancien est consommé), puis exécution unique sous identité dédiée.
