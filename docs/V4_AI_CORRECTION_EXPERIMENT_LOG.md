@@ -205,3 +205,25 @@ famille) et renforce une contrainte déjà exprimée par le schéma de transport
 mais non représentable sans unions interdites par les fournisseurs. Seul le
 prompt change ; corpus, golds, rubriques, protocole 3.0.1, candidat et seuils
 v2 restent identiques.
+
+### 6.5 Amendement v2-1 → v2-2 du 23 août 2026 — absorption opérationnelle
+
+Le smoke v2-1 sur `benchmark-writing-partial` (mode sans retry) reproduit la
+même violation malgré l’instruction 2.1.0 : le modèle joint une citation à
+`NO_RELEVANT_EVIDENCE` sur `source-fact-use`. Le défaut est stochastique et
+connu : la répétition 3 de la campagne v2 est valide du premier coup, et les
+campagnes historiques alternaient réussite et échec sur ce même cas. Le
+jugement pédagogique reste correct ; seule la discipline d’enveloppe flanche,
+avec un prior d’entraînement (« toujours citer une preuve ») difficile à
+contrebalancer par la seule consigne.
+
+Une seconde itération de prompt sur le même défaut serait du réglage de cas.
+La remédiation retenue est opérationnelle, conformément à la doctrine publiée
+(« réaliste sur les incidents récupérés » ; un incident récupéré n’est jamais
+affiché ni débité) : l’identité `learnx-french-text-correction-v2-2` est
+préenregistrée dans `benchmarks/ai-correction/benchmark.v2_2.json`, identique
+à v2-1 (prompt 2.1.0, seuils v2) hormis `maxRetries: 2` — trois tentatives
+bornées par cellule au lieu de deux. Le coût des retries supplémentaires est
+absorbé par LearnX, jamais débité ; `firstAttemptInvalidRate` continue de
+mesurer l’incident brut sans plafond ; seul le taux final ≤ 2 % reste bloquant.
+Aucun seuil pédagogique ne change.
