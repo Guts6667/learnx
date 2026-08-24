@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_EXAM_BUDGET_PREFLIGHT_PRELIMINARY",
+  "status": "PRELIMINARY_NOT_EXECUTABLE",
+  "createdAt": "2026-08-24T12:39:31Z",
+  "currency": "USD",
+  "supplierCostCapUsd": 2.18,
+  "examShape": {
+    "semanticCases": 24,
+    "repetitions": 3,
+    "primaryCalls": 72,
+    "transportRetriesPerRun": 0,
+    "maximumTransportRetryCalls": 0,
+    "maximumScoreGuardSecondPassCallsBeforeBudgetBounding": 72
+  },
+  "pricing": {
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "promptUsdPerToken": 0.000003,
+    "completionUsdPerToken": 0.000015,
+    "totalOutputTokenLimit": 1500,
+    "catalogAttestationSha256": "41d170211268b71814b209ab0f921cacf325b8ab1d3ff5440f4caf0d197e6f3d"
+  },
+  "historicalWritingSlice": {
+    "role": "EMPIRICAL_REFERENCE_ONLY_NOT_A_BUDGET_GUARANTEE",
+    "sourceAttemptsSha256": "ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097",
+    "calls": 18,
+    "totalActualCostUsd": 0.443169,
+    "meanActualCostUsd": 0.0246205,
+    "maximumActualCostUsd": 0.029253,
+    "maximumInputTokens": 3609,
+    "maximumVisibleOutputTokens": 1255,
+    "empiricalMaximumPrimaryCostUsd": 2.106216,
+    "empiricalMaximumAllGuardCostUsd": 4.212432,
+    "empiricalRemainingGuardBudgetUsd": 0.073784,
+    "empiricalMaximumFundedGuardPasses": 2,
+    "empiricalBoundedTotalUsd": 2.164722,
+    "empiricalUnusedBudgetUsd": 0.015278
+  },
+  "formalProxy": {
+    "role": "CONTINGENCY_RISK_SIGNAL_PENDING_SEALED_CORPUS",
+    "method": "maximum historical input tokens plus the full preregistered output token limit, priced at the attested non-promotional token rates",
+    "inputTokensPerCall": 3609,
+    "completionTokensPerCall": 1500,
+    "conservativeCostPerCallUsd": 0.033327,
+    "primaryCostUsd": 2.399544,
+    "retryCostUsd": 0,
+    "allGuardSecondPassCostUsd": 2.399544,
+    "unboundedWorstCaseUsd": 4.799088,
+    "primaryCapExcessUsd": 0.219544,
+    "preliminaryDecision": "CONTINGENCY_LIKELY_BUT_NOT_YET_DECIDABLE"
+  },
+  "finalPreflightRequirement": {
+    "requiredArtifact": "budget-preflight.final.json",
+    "requiredBeforeAnyNetworkCall": true,
+    "input": "sealed corpus plus frozen request construction and pricing",
+    "calculation": "three times the sum of each of the 24 conservative per-case call costs",
+    "ifPrimaryCostExceedsCap": "CONTINGENCY_REQUIRED_ZERO_CALLS",
+    "ifPrimaryCostFitsCap": "RUN_ALL_72_PRIMARIES_THEN_BOUND_SCORE_GUARD_SECOND_PASSES_TO_THE_RECONCILED_REMAINDER",
+    "midExamBudgetAbortAllowed": false,
+    "skippedSecondPassSignal": "SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET"
+  },
+  "bindings": {
+    "configurationPreregisteredSha256": "753b54ec2d87d0fec3fb9140c9db2b6191bfd5cf512d8666d0cab855ae15d4f2",
+    "budgetCompletionAmendmentSha256": "207cdfef7f38b22267680d742bbf565a838120e8a5899ab5b8a8835e4ea14738",
+    "corpusSha256": null,
+    "executable": false
+  },
+  "limitations": [
+    "The sealed writing corpus does not exist yet, so exact input token counts cannot be computed.",
+    "Observed historical cost is not a conservative guarantee and cannot authorize the exam.",
+    "The formal proxy is intentionally cautious and signals that explicit contingency may be required after the final sealed-corpus calculation."
+  ]
+}

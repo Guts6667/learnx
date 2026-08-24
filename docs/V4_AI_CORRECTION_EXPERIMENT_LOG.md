@@ -656,3 +656,32 @@ contrat dont `activityType` n'est pas `writing`. Ce filtre est un critère
 d'acceptation testé et porte le motif : « défaut éliminatoire Practice confirmé
 par revue canonique du 24 août ». La revue reste autonome, liée par digest ;
 `humanReviewApproved` demeure faux.
+
+### 8.11 Préflight budgétaire Writing — aucune exécution autorisée
+
+Avant rédaction complète et scellement du nouvel examen, une première borne a
+été consignée dans `budget-preflight.preliminary.json`. Elle n'autorise aucun
+appel : le calcul final doit être refait sur les 24 requêtes exactement
+scellées, puis lié par digest au corpus et à la configuration.
+
+La tranche Writing de l'examen général fournit 18 observations historiques :
+coût total `0,443169 USD`, coût maximal observé `0,029253 USD`, maximum de
+`3 609` tokens d'entrée et `1 255` tokens de sortie visible. Si les 72
+primaires coûtaient tous ce maximum observé, ils représenteraient
+`2,106216 USD`. Le reliquat sous le plafond de `2,18 USD` serait seulement de
+`0,073784 USD`, soit au plus deux secondes passes au même maximum observé ; le
+pire cas non borné avec 72 secondes passes atteindrait `4,212432 USD`.
+
+Cette observation n'est pas une garantie. La borne tarifaire de précaution,
+avec `3 609` tokens d'entrée et la limite gelée de `1 500` tokens de sortie à
+`3 USD/M` et `15 USD/M`, vaut `0,033327 USD` par appel : `2,399544 USD` pour
+les seuls primaires et `4,799088 USD` avec toutes les secondes passes. Elle
+signale donc un risque réel de contingency. Seul le préflight final du corpus
+scellé peut trancher : si les 72 primaires dépassent `2,18 USD`, zéro appel et
+demande explicite ; sinon les 72 primaires sont garantis et les secondes passes
+sont bornées au reliquat.
+
+Le garde budgétaire ne peut jamais interrompre la phase primaire après son
+premier appel. Une seconde passe non finançable est sautée avec le signal
+`SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET`, sans score exact ni verdict, et
+rapportée comme écart de mesure. Les retries transport restent bornés à zéro.
