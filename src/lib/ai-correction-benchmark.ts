@@ -576,13 +576,64 @@ export const benchmarkResultReviewSchema = z.discriminatedUnion('status', [
     .strict(),
 ]);
 
+export const benchmarkReviewAuthoritySchema = z.enum([
+  'NONE',
+  'HUMAN',
+  'AUTONOMOUS_AI_NOT_HUMAN',
+]);
+
+const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
+
+const benchmarkAutonomousCorpusReviewMetadataSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_CORPUS_REVIEW_MANIFEST'),
+    authoringManifestSha256: sha256Schema,
+    configurationSha256: sha256Schema,
+    corpusReviewManifestSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+  })
+  .strict();
+
+export const benchmarkAutonomousResultReviewMetadataSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_RESULT_REVIEW_MANIFEST'),
+    attemptsSha256: sha256Schema,
+    blindReviewPacketSha256: sha256Schema,
+    blindedToAutomaticVerdict: z.literal(true),
+    blindedToCandidateIdentity: z.literal(true),
+    blindedToCandidateOutputs: z.literal(false),
+    configurationSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    resultReviewManifestSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+    status: z.enum(['APPROVED', 'REJECTED']),
+  })
+  .strict();
+
 export const benchmarkRunMetadataSchema = z
   .object({
     caseIds: z.array(stableKeySchema).min(1),
     candidateIds: z.array(stableKeySchema).min(1),
+    autonomousReview: benchmarkAutonomousResultReviewMetadataSchema.optional(),
+    configurationSha256: sha256Schema.optional(),
+    corpusReview: benchmarkAutonomousCorpusReviewMetadataSchema.optional(),
+    corpusReviewAuthority: z
+      .enum(['HUMAN', 'AUTONOMOUS_AI_NOT_HUMAN'])
+      .optional(),
+    corpusSha256: sha256Schema.optional(),
     humanReview: benchmarkResultReviewSchema,
     mode: benchmarkRunModeSchema,
     repetitions: z.number().int().positive(),
+    reviewAuthority: benchmarkReviewAuthoritySchema.optional(),
   })
   .strict()
   .superRefine((metadata, context) => {
@@ -598,6 +649,73 @@ export const benchmarkRunMetadataSchema = z
         code: 'custom',
         message: 'Run candidate identifiers must be unique.',
         path: ['candidateIds'],
+      });
+    }
+    if (
+      metadata.autonomousReview &&
+      metadata.humanReview.status !== 'PENDING'
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Human and autonomous result reviews are mutually exclusive.',
+        path: ['autonomousReview'],
+      });
+    }
+    if (
+      metadata.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+      !metadata.corpusReview
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Autonomous corpus authority requires its complete digest chain.',
+        path: ['corpusReview'],
+      });
+    }
+    if (
+      metadata.corpusReview &&
+      (metadata.corpusReviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+        metadata.configurationSha256 !==
+          metadata.corpusReview.configurationSha256 ||
+        metadata.corpusSha256 !== metadata.corpusReview.corpusSha256)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Autonomous corpus evidence must match run authority and digests.',
+        path: ['corpusReview'],
+      });
+    }
+    if (
+      metadata.autonomousReview &&
+      (!metadata.corpusReview ||
+        metadata.corpusReviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+        metadata.configurationSha256 !==
+          metadata.autonomousReview.configurationSha256 ||
+        metadata.corpusSha256 !== metadata.autonomousReview.corpusSha256 ||
+        metadata.corpusReview.ownerAuthorizationReference !==
+          metadata.autonomousReview.ownerAuthorizationReference ||
+        metadata.corpusReview.ownerAuthorizationSha256 !==
+          metadata.autonomousReview.ownerAuthorizationSha256)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Autonomous result review must extend the authorized corpus digest chain.',
+        path: ['autonomousReview'],
+      });
+    }
+    const expectedReviewAuthority =
+      metadata.humanReview.status === 'APPROVED'
+        ? 'HUMAN'
+        : metadata.autonomousReview?.status === 'APPROVED'
+          ? 'AUTONOMOUS_AI_NOT_HUMAN'
+          : 'NONE';
+    if (
+      metadata.reviewAuthority !== undefined &&
+      metadata.reviewAuthority !== expectedReviewAuthority
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Run review authority does not match the applied review.',
+        path: ['reviewAuthority'],
       });
     }
   });
@@ -650,6 +768,87 @@ export const benchmarkHumanReviewArtifactSchema = z
       });
     }
   });
+
+const benchmarkReviewScoresSchema = z
+  .object({
+    criticalScores: z
+      .object({
+        diagnosis: z.number().min(0).max(100),
+        evidence: z.number().min(0).max(100),
+        fidelity: z.number().min(0).max(100),
+      })
+      .strict(),
+    eliminatoryFindings: z.array(z.string().trim().min(1)),
+    familyScores: z
+      .object({
+        practice: z.number().min(0).max(100),
+        project: z.number().min(0).max(100),
+        reflection: z.number().min(0).max(100),
+        writing: z.number().min(0).max(100),
+      })
+      .strict(),
+    meanScore: z.number().min(0).max(100),
+  })
+  .strict();
+
+export const benchmarkAutonomousReviewArtifactSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_RESULT_REVIEW_MANIFEST'),
+    attemptsSha256: sha256Schema,
+    blindReviewPacketSha256: sha256Schema,
+    blindedToAutomaticVerdict: z.literal(true),
+    blindedToCandidateIdentity: z.literal(true),
+    blindedToCandidateOutputs: z.literal(false),
+    configurationSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    criticalScores: benchmarkReviewScoresSchema.shape.criticalScores,
+    eliminatoryFindings: benchmarkReviewScoresSchema.shape.eliminatoryFindings,
+    familyScores: benchmarkReviewScoresSchema.shape.familyScores,
+    meanScore: benchmarkReviewScoresSchema.shape.meanScore,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+    schemaVersion: z.literal(1),
+    status: z.enum(['APPROVED', 'REJECTED']),
+  })
+  .strict()
+  .superRefine((review, context) => {
+    if (
+      review.status === 'APPROVED' &&
+      (review.meanScore < 85 ||
+        Object.values(review.criticalScores).some((score) => score < 80) ||
+        Object.values(review.familyScores).some((score) => score < 80) ||
+        review.eliminatoryFindings.length > 0)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'An approved autonomous review must satisfy every preregistered pedagogical gate.',
+        path: ['status'],
+      });
+    }
+  });
+
+export const benchmarkAutonomousCorpusReviewManifestSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_CORPUS_REVIEW_MANIFEST'),
+    authoringManifestSha256: sha256Schema,
+    benchmarkId: stableKeySchema,
+    blindedToCandidateOutputs: z.literal(true),
+    configurationSha256: sha256Schema,
+    corpusId: stableKeySchema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+    schemaVersion: z.literal(1),
+    status: z.enum(['APPROVED', 'REJECTED']),
+  })
+  .strict();
 
 export const evidenceMatchSchema = z
   .object({
@@ -746,8 +945,18 @@ export type BenchmarkRunMetadata = z.infer<typeof benchmarkRunMetadataSchema>;
 export type BenchmarkHumanReviewArtifact = z.infer<
   typeof benchmarkHumanReviewArtifactSchema
 >;
+export type BenchmarkAutonomousReviewArtifact = z.infer<
+  typeof benchmarkAutonomousReviewArtifactSchema
+>;
+export type BenchmarkAutonomousCorpusReviewManifest = z.infer<
+  typeof benchmarkAutonomousCorpusReviewManifestSchema
+>;
+export type BenchmarkReviewAuthority = z.infer<
+  typeof benchmarkReviewAuthoritySchema
+>;
 
 export type ModelBenchmarkMetrics = {
+  actualCostUsd: number | null;
   automaticGateFailures: string[];
   byFamily: Record<string, {
     criterionAgreement: number;
@@ -786,14 +995,17 @@ export type ModelBenchmarkMetrics = {
   p75LatencyMs: number;
   p90LatencyMs: number;
   datasetComplete: boolean;
+  autonomousReviewApproved: boolean;
   humanReviewApproved: boolean;
   operationallyDeployable: boolean;
   ordinalConfusionMatrix: Record<string, Record<string, number>>;
   pedagogicallyEligible: boolean;
   promotionEligible: boolean;
   promotionIdentity: string;
+  reviewAuthority: BenchmarkReviewAuthority;
   retryRate: number;
   secondPassRate: number;
+  supplierCostReconciled: boolean;
   transportErrorRate: number;
   twoLevelOrdinalGapCount: number;
   decisionAgreementExcludingSecondPass: number;
@@ -827,7 +1039,9 @@ export const benchmarkResumeArtifactSchema = z
     attempts: z.array(benchmarkAttemptSchema),
     benchmarkId: stableKeySchema,
     candidates: z.array(benchmarkResumeCandidateSchema).length(1),
+    configurationSha256: sha256Schema.optional(),
     corpusId: stableKeySchema,
+    corpusSha256: sha256Schema.optional(),
     language: languageTagSchema,
     mode: z.literal('FULL'),
     modelIds: z.array(exactModelIdSchema).length(1),
@@ -851,13 +1065,18 @@ export type BenchmarkRunCell = {
 export function prepareBenchmarkResume(input: {
   artifact: unknown;
   configuration: unknown;
+  configurationSha256?: string;
   corpus: unknown;
+  corpusSha256?: string;
 }): {
   artifact: BenchmarkResumeArtifact;
   candidate: CorrectionBenchmarkConfiguration['candidates'][number];
   pendingCells: BenchmarkRunCell[];
 } {
   const artifact = benchmarkResumeArtifactSchema.parse(input.artifact);
+  if (artifact.runMetadata.autonomousReview) {
+    throw new Error('BENCHMARK_RESUME_AUTONOMOUS_REVIEW_IMMUTABLE');
+  }
   const configuration = parseCorrectionBenchmarkConfiguration(
     input.configuration,
   );
@@ -868,11 +1087,23 @@ export function prepareBenchmarkResume(input: {
     (item) => item.candidateId === artifactCandidate?.candidateId,
   );
   const expectedCaseIds = corpus.cases.map((benchmarkCase) => benchmarkCase.caseId);
+  const casesById = new Map(
+    corpus.cases.map((benchmarkCase) => [benchmarkCase.caseId, benchmarkCase]),
+  );
   if (
     !candidate ||
     !artifactCandidate ||
     artifact.benchmarkId !== configuration.benchmarkId ||
+    (input.configurationSha256 !== undefined &&
+      artifact.configurationSha256 !== input.configurationSha256) ||
+    (input.configurationSha256 !== undefined &&
+      artifact.runMetadata.configurationSha256 !==
+        input.configurationSha256) ||
     artifact.corpusId !== corpus.corpusId ||
+    (input.corpusSha256 !== undefined &&
+      artifact.corpusSha256 !== input.corpusSha256) ||
+    (input.corpusSha256 !== undefined &&
+      artifact.runMetadata.corpusSha256 !== input.corpusSha256) ||
     artifact.language !== configuration.language ||
     artifact.promptVersion !== configuration.promptVersion ||
     artifact.requestProtocolVersion !== configuration.requestProtocolVersion ||
@@ -893,6 +1124,7 @@ export function prepareBenchmarkResume(input: {
 
   const attemptsByCell = new Map<string, BenchmarkAttempt[]>();
   for (const attempt of artifact.attempts) {
+    const benchmarkCase = casesById.get(attempt.caseId);
     if (
       attempt.candidateId !== candidate.candidateId ||
       attempt.modelId !== candidate.modelId ||
@@ -903,6 +1135,13 @@ export function prepareBenchmarkResume(input: {
       attempt.repetition > configuration.repetitions
     ) {
       throw new Error('BENCHMARK_RESUME_ATTEMPT_IDENTITY_MISMATCH');
+    }
+    if (
+      attempt.output &&
+      (attempt.output.contractKey !== benchmarkCase?.contractKey ||
+        attempt.output.contractVersion !== benchmarkCase?.contractVersion)
+    ) {
+      throw new Error('BENCHMARK_ATTEMPT_OUTPUT_CONTRACT_IDENTITY_MISMATCH');
     }
     const key = `${attempt.caseId}|${attempt.repetition}`;
     attemptsByCell.set(key, [...(attemptsByCell.get(key) ?? []), attempt]);
@@ -1541,6 +1780,12 @@ function stableSerialize(value: unknown): string {
   return JSON.stringify(value);
 }
 
+export function serializeCorrectionBenchmarkConfiguration(
+  configuration: unknown,
+): string {
+  return stableSerialize(parseCorrectionBenchmarkConfiguration(configuration));
+}
+
 export function applyBenchmarkHumanReview(input: {
   configuration: unknown;
   corpus: unknown;
@@ -1553,6 +1798,12 @@ export function applyBenchmarkHumanReview(input: {
   const corpus = parseCorrectionBenchmarkCorpus(input.corpus);
   const review = benchmarkHumanReviewArtifactSchema.parse(input.review);
   const runMetadata = benchmarkRunMetadataSchema.parse(input.runMetadata);
+  if (
+    runMetadata.humanReview.status !== 'PENDING' ||
+    runMetadata.autonomousReview
+  ) {
+    throw new Error('BENCHMARK_HUMAN_REVIEW_REQUIRES_EXCLUSIVE_PENDING_STATE');
+  }
   const candidate = configuration.candidates.find(
     (item) => item.candidateId === review.candidateId,
   );
@@ -1571,7 +1822,7 @@ export function applyBenchmarkHumanReview(input: {
   ) {
     throw new Error('BENCHMARK_HUMAN_REVIEW_IDENTITY_MISMATCH');
   }
-  return {
+  const reviewedMetadata: BenchmarkRunMetadata = {
     ...runMetadata,
     humanReview:
       review.status === 'APPROVED'
@@ -1585,7 +1836,12 @@ export function applyBenchmarkHumanReview(input: {
             reviewer: review.reviewer,
             status: 'REJECTED',
           },
+    reviewAuthority:
+      review.status === 'APPROVED'
+        ? 'HUMAN'
+        : 'NONE',
   };
+  return benchmarkRunMetadataSchema.parse(reviewedMetadata);
 }
 
 export function assertBenchmarkHumanReviewDigest(input: {
@@ -1598,6 +1854,143 @@ export function assertBenchmarkHumanReviewDigest(input: {
   ) {
     throw new Error('BENCHMARK_HUMAN_REVIEW_DIGEST_MISMATCH');
   }
+}
+
+export function assertBenchmarkAutonomousCorpusReview(input: {
+  actualAuthoringManifestSha256: string;
+  actualConfigurationSha256: string;
+  actualCorpusReviewManifestSha256: string;
+  actualCorpusSha256: string;
+  actualOwnerAuthorizationReference: string;
+  actualOwnerAuthorizationSha256: string;
+  benchmarkId: string;
+  corpusHumanReviewStatus: 'PENDING' | 'APPROVED';
+  corpusId: string;
+  manifest: unknown;
+}): BenchmarkAutonomousCorpusReviewManifest {
+  const manifest = benchmarkAutonomousCorpusReviewManifestSchema.parse(
+    input.manifest,
+  );
+  if (
+    manifest.benchmarkId !== input.benchmarkId ||
+    manifest.corpusId !== input.corpusId
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_IDENTITY_MISMATCH');
+  }
+  if (
+    manifest.authoringManifestSha256 !==
+      input.actualAuthoringManifestSha256 ||
+    manifest.configurationSha256 !== input.actualConfigurationSha256 ||
+    manifest.corpusSha256 !== input.actualCorpusSha256 ||
+    manifest.ownerAuthorizationReference !==
+      input.actualOwnerAuthorizationReference ||
+    manifest.ownerAuthorizationSha256 !==
+      input.actualOwnerAuthorizationSha256
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_DIGEST_MISMATCH');
+  }
+  if (input.corpusHumanReviewStatus !== 'PENDING') {
+    throw new Error(
+      'BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_REQUIRES_HUMAN_PENDING',
+    );
+  }
+  if (manifest.status !== 'APPROVED') {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_NOT_APPROVED');
+  }
+  if (!sha256Schema.safeParse(input.actualCorpusReviewManifestSha256).success) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_DIGEST_MISMATCH');
+  }
+  return manifest;
+}
+
+export function applyBenchmarkAutonomousReview(input: {
+  actualAttemptsSha256: string;
+  actualBlindReviewPacketSha256: string;
+  actualConfigurationSha256: string;
+  actualCorpusSha256: string;
+  actualOwnerAuthorizationReference: string;
+  actualOwnerAuthorizationSha256: string;
+  actualReviewManifestSha256: string;
+  attempts?: unknown[];
+  configuration: unknown;
+  corpus: unknown;
+  review: unknown;
+  runMetadata: unknown;
+}): BenchmarkRunMetadata {
+  const configuration = parseCorrectionBenchmarkConfiguration(
+    input.configuration,
+  );
+  const corpus = parseCorrectionBenchmarkCorpus(input.corpus);
+  const review = benchmarkAutonomousReviewArtifactSchema.parse(input.review);
+  const runMetadata = benchmarkRunMetadataSchema.parse(input.runMetadata);
+  const candidateId = runMetadata.candidateIds[0];
+  const candidate = configuration.candidates.find(
+    (item) => item.candidateId === candidateId,
+  );
+  if (
+    !candidate ||
+    runMetadata.mode !== 'FULL' ||
+    runMetadata.candidateIds.length !== 1 ||
+    runMetadata.humanReview.status !== 'PENDING' ||
+    runMetadata.autonomousReview !== undefined ||
+    runMetadata.corpusReviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+    !runMetadata.corpusReview ||
+    runMetadata.configurationSha256 !== input.actualConfigurationSha256 ||
+    runMetadata.corpusSha256 !== input.actualCorpusSha256 ||
+    corpus.corpusId !== configuration.corpusId
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_REVIEW_IDENTITY_MISMATCH');
+  }
+  if (
+    review.attemptsSha256 !== input.actualAttemptsSha256 ||
+    review.blindReviewPacketSha256 !==
+      input.actualBlindReviewPacketSha256 ||
+    review.configurationSha256 !== input.actualConfigurationSha256 ||
+    review.corpusSha256 !== input.actualCorpusSha256 ||
+    review.ownerAuthorizationReference !==
+      input.actualOwnerAuthorizationReference ||
+    review.ownerAuthorizationSha256 !==
+      input.actualOwnerAuthorizationSha256 ||
+    runMetadata.corpusReview.ownerAuthorizationReference !==
+      input.actualOwnerAuthorizationReference ||
+    runMetadata.corpusReview.ownerAuthorizationSha256 !==
+      input.actualOwnerAuthorizationSha256 ||
+    !sha256Schema.safeParse(input.actualReviewManifestSha256).success
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_REVIEW_DIGEST_MISMATCH');
+  }
+  const candidateMetrics = summarizeCorrectionBenchmark({
+    attempts: input.attempts ?? [],
+    configuration,
+    corpus,
+    runMetadata,
+  }).models.find((metrics) => metrics.candidateId === candidate.candidateId);
+  if (!candidateMetrics?.datasetComplete) {
+    throw new Error('BENCHMARK_AUTONOMOUS_REVIEW_REQUIRES_COMPLETE_DATASET');
+  }
+  const reviewedMetadata: BenchmarkRunMetadata = {
+    ...runMetadata,
+    autonomousReview: {
+      artifactKind: review.artifactKind,
+      attemptsSha256: review.attemptsSha256,
+      blindReviewPacketSha256: review.blindReviewPacketSha256,
+      blindedToAutomaticVerdict: true,
+      blindedToCandidateIdentity: true,
+      blindedToCandidateOutputs: false,
+      configurationSha256: review.configurationSha256,
+      corpusSha256: review.corpusSha256,
+      ownerAuthorizationReference: review.ownerAuthorizationReference,
+      ownerAuthorizationSha256: review.ownerAuthorizationSha256,
+      resultReviewManifestSha256: input.actualReviewManifestSha256,
+      reviewedAt: review.reviewedAt,
+      reviewerIdentity: review.reviewerIdentity,
+      reviewerKind: 'AUTONOMOUS_AI_NOT_HUMAN',
+      status: review.status,
+    },
+    reviewAuthority:
+      review.status === 'APPROVED' ? 'AUTONOMOUS_AI_NOT_HUMAN' : 'NONE',
+  };
+  return benchmarkRunMetadataSchema.parse(reviewedMetadata);
 }
 
 function sameStringSet(left: string[], right: string[]): boolean {
@@ -1722,8 +2115,39 @@ export function summarizeCorrectionBenchmark(input: {
     ) {
       throw new Error('BENCHMARK_ATTEMPT_IDENTITY_MISMATCH');
     }
-    if (!casesById.has(attempt.caseId)) {
+    const benchmarkCase = casesById.get(attempt.caseId);
+    if (!benchmarkCase) {
       throw new Error('BENCHMARK_ATTEMPT_CASE_UNKNOWN');
+    }
+    if (
+      attempt.output &&
+      (attempt.output.contractKey !== benchmarkCase.contractKey ||
+        attempt.output.contractVersion !== benchmarkCase.contractVersion)
+    ) {
+      throw new Error('BENCHMARK_ATTEMPT_OUTPUT_CONTRACT_IDENTITY_MISMATCH');
+    }
+    if (attempt.status === 'VALID' && attempt.output) {
+      const contract = contractsByKey.get(
+        `${benchmarkCase.contractKey}|${benchmarkCase.contractVersion}`,
+      );
+      if (!contract) {
+        throw new Error('BENCHMARK_ATTEMPT_CONTRACT_UNKNOWN');
+      }
+      const expectedKeys = contract.criteria.map((criterion) => criterion.key);
+      const deliveredKeys = attempt.output.criteria.map(
+        (criterion) => criterion.criterionKey,
+      );
+      const unsureKeys = attempt.unsureCriteria ?? [];
+      const coveredKeys = [...deliveredKeys, ...unsureKeys];
+      const exactCoverage = sameStringSet(coveredKeys, expectedKeys);
+      const wholeDelivery = sameStringSet(deliveredKeys, expectedKeys);
+      if (
+        !exactCoverage ||
+        (configuration.correctionDeliveryPolicy !== 'PARTIAL_CRITERION' &&
+          (!wholeDelivery || unsureKeys.length > 0))
+      ) {
+        throw new Error('BENCHMARK_PARTIAL_CRITERION_COVERAGE_INVALID');
+      }
     }
   }
   const logicalRuns = groupLogicalRuns(attempts);
@@ -1867,6 +2291,8 @@ export function summarizeCorrectionBenchmark(input: {
           });
         }
       });
+      familyAggregate.logicalRuns += 1;
+      familyAggregates.set(family, familyAggregate);
       // Partial deliveries (unsure criteria present) keep their delivered
       // criteria in criterion agreement, but an incomplete criterion basis
       // cannot support a pass/fail verdict: such runs are excluded from
@@ -1900,8 +2326,6 @@ export function summarizeCorrectionBenchmark(input: {
       familyAggregate.falseFailCount += expectedPass && !actualPass ? 1 : 0;
       familyAggregate.goldPassCount += expectedPass ? 1 : 0;
       familyAggregate.goldFailCount += expectedPass ? 0 : 1;
-      familyAggregate.logicalRuns += 1;
-      familyAggregates.set(family, familyAggregate);
       if (!expectedPass && actualPass) {
         eliminatoryHumanReviewFindings.push({
           caseId: attempt.caseId,
@@ -2058,6 +2482,13 @@ export function summarizeCorrectionBenchmark(input: {
       runMetadata,
     });
     const humanReviewApproved = runMetadata.humanReview.status === 'APPROVED';
+    const autonomousReviewApproved =
+      runMetadata.autonomousReview?.status === 'APPROVED';
+    const reviewAuthority: BenchmarkReviewAuthority = humanReviewApproved
+      ? 'HUMAN'
+      : autonomousReviewApproved
+        ? 'AUTONOMOUS_AI_NOT_HUMAN'
+        : 'NONE';
 
     const partialMetrics = {
       byFamily: Object.fromEntries(
@@ -2141,9 +2572,24 @@ export function summarizeCorrectionBenchmark(input: {
       (total, attempt) => total + calculateCost(attempt, candidate),
       0,
     );
+    const supplierCostReconciled =
+      modelAttempts.length > 0 &&
+      modelAttempts.every(
+        (attempt) =>
+          attempt.usage?.costSource === 'ACTUAL' &&
+          attempt.usage.actualCostUsd !== undefined,
+      );
+    const actualCostUsd = supplierCostReconciled
+      ? modelAttempts.reduce(
+          (total, attempt) => total + (attempt.usage?.actualCostUsd ?? 0),
+          0,
+        )
+      : null;
+    const resultReviewApproved =
+      humanReviewApproved || autonomousReviewApproved;
     const pedagogicallyEligible =
       datasetComplete &&
-      humanReviewApproved &&
+      resultReviewApproved &&
       partialMetrics.criterionAgreement >=
         configuration.thresholds.criterionAgreementMinimum &&
       partialMetrics.evidenceHallucinationRate <=
@@ -2165,6 +2611,8 @@ export function summarizeCorrectionBenchmark(input: {
           configuration.thresholds.unsureCriterionRateMaximum);
     const operationallyDeployable =
       datasetComplete &&
+      (reviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+        supplierCostReconciled) &&
       (gatePolicyV2
         ? partialMetrics.eventualUnusableRunRate <=
           gatePolicyV2.eventualUnusableRunRateMaximum
@@ -2240,6 +2688,10 @@ export function summarizeCorrectionBenchmark(input: {
       estimatedCostUsd > configuration.thresholds.fullRunCostUsdMaximum
         ? 'FULL_RUN_COST_ABOVE_MAXIMUM'
         : null,
+      reviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+      !supplierCostReconciled
+        ? 'SUPPLIER_COST_RECONCILIATION_REQUIRED'
+        : null,
     ].filter((failure): failure is string => failure !== null);
 
     const watchSignals = gatePolicyV2
@@ -2259,7 +2711,9 @@ export function summarizeCorrectionBenchmark(input: {
       : [];
 
     return {
+      actualCostUsd,
       automaticGateFailures,
+      autonomousReviewApproved,
       candidateId: candidate.candidateId,
       ...partialMetrics,
       datasetComplete,
@@ -2277,7 +2731,11 @@ export function summarizeCorrectionBenchmark(input: {
       p90LatencyMs: latencyP90,
       operationallyDeployable,
       pedagogicallyEligible,
-      promotionEligible: pedagogicallyEligible && operationallyDeployable,
+      // Autonomous review evidence is validated and reported, but activating
+      // autonomous promotion remains fail-closed until the owner directly
+      // authorizes that policy change.
+      promotionEligible:
+        humanReviewApproved && pedagogicallyEligible && operationallyDeployable,
       promotionIdentity: [
         candidate.candidateId,
         candidate.modelId,
@@ -2286,7 +2744,12 @@ export function summarizeCorrectionBenchmark(input: {
         configuration.promptVersion,
         configuration.requestProtocolVersion,
         stableSerialize(candidate.requestProfile),
+        ...(runMetadata.configurationSha256
+          ? [runMetadata.configurationSha256]
+          : []),
+        ...(runMetadata.corpusSha256 ? [runMetadata.corpusSha256] : []),
       ].join('|'),
+      reviewAuthority,
       retryRate:
         modelRuns.length === 0 ? 0 : retriedRuns / modelRuns.length,
       secondPassRate:
@@ -2295,6 +2758,7 @@ export function summarizeCorrectionBenchmark(input: {
           : validAttempts.filter(
               (attempt) => attempt.output.secondPass.required,
             ).length / validAttempts.length,
+      supplierCostReconciled,
       watchSignals,
     };
   });

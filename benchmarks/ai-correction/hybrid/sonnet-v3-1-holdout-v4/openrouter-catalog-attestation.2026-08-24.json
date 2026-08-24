@@ -1,0 +1,38 @@
+{
+  "attestationType": "PUBLIC_CATALOG_READ_ONLY",
+  "checkedAt": "2026-08-24T11:22:59+02:00",
+  "sourceUrl": "https://openrouter.ai/api/v1/models/anthropic/claude-sonnet-4.6/endpoints",
+  "requestedModelId": "anthropic/claude-sonnet-4.6",
+  "observedModelId": "anthropic/claude-sonnet-4.6",
+  "selectedRoute": {
+    "providerName": "Anthropic",
+    "endpointName": "Anthropic | anthropic/claude-4.6-sonnet-20260217",
+    "canonicalModel": "anthropic/claude-4.6-sonnet-20260217",
+    "contextLength": 1000000,
+    "maxCompletionTokens": 128000,
+    "pricingUsdPerToken": {
+      "prompt": "0.000003",
+      "completion": "0.000015",
+      "inputCacheRead": "0.0000003",
+      "inputCacheWrite": "0.00000375"
+    },
+    "requiredParametersObserved": [
+      "max_tokens",
+      "structured_outputs",
+      "response_format"
+    ],
+    "status": 0
+  },
+  "routingPolicy": {
+    "allowFallback": false,
+    "requireParameters": true,
+    "allowedProviders": [
+      "Anthropic"
+    ]
+  },
+  "limitations": [
+    "This is a dated public-catalog observation, not a successful paid generation.",
+    "The live runner must persist and reconcile the provider actually observed for every call.",
+    "A catalog match does not authorize execution or promotion."
+  ]
+}

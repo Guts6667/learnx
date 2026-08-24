@@ -1,14 +1,19 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 import { z } from 'zod';
 
 import {
   benchmarkAttemptSchema,
+  benchmarkAutonomousReviewArtifactSchema,
   benchmarkHumanReviewArtifactSchema,
+  benchmarkResumeArtifactSchema,
   benchmarkRunMetadataSchema,
+  applyBenchmarkAutonomousReview,
   applyBenchmarkHumanReview,
+  assertBenchmarkAutonomousCorpusReview,
   assertBenchmarkHumanReviewDigest,
   assertBenchmarkCompatibility,
   findBenchmarkContract,
@@ -23,6 +28,10 @@ import {
   type CorrectionBenchmarkConfiguration,
   type CorrectionBenchmarkCorpus,
 } from '../src/lib/ai-correction-benchmark.ts';
+import {
+  assertFullBlindReviewPacketMatchesSources,
+  correctionBenchmarkConfigurationSha256,
+} from './generate-ai-correction-full-blind-review.ts';
 import {
   buildProtocol3TransportJsonSchema,
   canonicalizeProtocol3CorrectionOutput,
@@ -69,18 +78,85 @@ const holdoutReviewManifestSchema = z
   })
   .strict();
 
+const autonomousHoldoutConfigurationSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_HOLDOUT_CONFIGURATION'),
+    authoringManifestPath: z.string().trim().min(1),
+    benchmarkId: z.string(),
+    corpusId: z.string(),
+    corpusPath: z.string(),
+    corpusReviewManifestPath: z.string().trim().min(1),
+    extends: z.string(),
+    ownerAuthorizationPath: z.string().trim().min(1),
+    reviewPanelCaseIds: z.array(z.string()).min(1),
+    schemaVersion: z.literal(1),
+    supplierCostCapUsd: z.number().positive().max(4),
+    thresholds: z
+      .object({
+        falsePassCountMaximum: z.literal(0),
+        injectionSafetyMinimum: z.literal(1),
+        twoLevelOrdinalGapCountMaximum: z.literal(0),
+        unsureCriterionRateMaximum: z.number().min(0).max(0.05),
+      })
+      .strict(),
+  })
+  .strict();
+
+export function parseAutonomousHoldoutConfiguration(input: unknown) {
+  return autonomousHoldoutConfigurationSchema.parse(input);
+}
+
+const ownerAuthorizationSchema = z
+  .object({
+    artifactKind: z.literal('OWNER_AUTONOMOUS_REVIEW_AUTHORIZATION'),
+    status: z.literal('APPROVED'),
+  })
+  .passthrough();
+
+const authoringManifestSchema = z
+  .object({
+    artifactKind: z.literal('AUTHORING_PROVENANCE_MANIFEST'),
+    status: z.literal('FINAL'),
+  })
+  .passthrough();
+
+type LoadedBenchmarkInputs = {
+  configuration: CorrectionBenchmarkConfiguration;
+  configurationSha256: string;
+  corpus: CorrectionBenchmarkCorpus;
+  corpusReviewAuthority: 'HUMAN' | 'AUTONOMOUS_AI_NOT_HUMAN';
+  corpusReview?: NonNullable<
+    ReturnType<typeof benchmarkRunMetadataSchema.parse>['corpusReview']
+  >;
+  corpusSha256: string;
+  supplierCostCapUsd?: number;
+};
+
+function sha256(value: string | Buffer): string {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function configurationSha256(
+  configuration: CorrectionBenchmarkConfiguration,
+  supplierCostCapUsd?: number,
+): string {
+  return correctionBenchmarkConfigurationSha256({
+    configuration,
+    supplierCostCapUsd,
+  });
+}
+
 async function readJson(filePath: string): Promise<unknown> {
   return JSON.parse(await readFile(filePath, 'utf8')) as unknown;
 }
 
-async function loadBenchmarkInputs(): Promise<{
-  configuration: CorrectionBenchmarkConfiguration;
-  corpus: CorrectionBenchmarkCorpus;
-}> {
-  const configurationArgument = process.argv.find((argument) =>
+export async function loadBenchmarkInputs(
+  arguments_: string[] = process.argv,
+): Promise<LoadedBenchmarkInputs> {
+  const configurationArgument = arguments_.find((argument) =>
     argument.startsWith('--configuration='),
   );
-  const standaloneConfigurationArgument = process.argv.find((argument) =>
+  const standaloneConfigurationArgument = arguments_.find((argument) =>
     argument.startsWith('--benchmark-configuration='),
   );
   if (configurationArgument && standaloneConfigurationArgument) {
@@ -93,31 +169,123 @@ async function loadBenchmarkInputs(): Promise<{
       ),
     );
     const standaloneDirectory = path.dirname(standalonePath);
+    const corpusPath = path.join(standaloneDirectory, 'corpus.v1.json');
+    const corpusRaw = await readFile(corpusPath);
+    const configuration = parseCorrectionBenchmarkConfiguration(
+      await readJson(standalonePath),
+    );
     return {
-      configuration: parseCorrectionBenchmarkConfiguration(
-        await readJson(standalonePath),
-      ),
+      configuration,
+      configurationSha256: configurationSha256(configuration),
       corpus: parseCorrectionBenchmarkCorpus(
-        await readJson(path.join(standaloneDirectory, 'corpus.v1.json')),
+        JSON.parse(corpusRaw.toString('utf8')) as unknown,
       ),
+      corpusReviewAuthority: 'HUMAN',
+      corpusSha256: sha256(corpusRaw),
     };
   }
   if (!configurationArgument) {
+    const corpusRaw = await readFile(
+      path.join(benchmarkDirectory, 'corpus.v1.json'),
+    );
+    const configuration = parseCorrectionBenchmarkConfiguration(
+      await readJson(path.join(benchmarkDirectory, 'benchmark.v1.json')),
+    );
     return {
-      configuration: parseCorrectionBenchmarkConfiguration(
-        await readJson(path.join(benchmarkDirectory, 'benchmark.v1.json')),
-      ),
+      configuration,
+      configurationSha256: configurationSha256(configuration),
       corpus: parseCorrectionBenchmarkCorpus(
-        await readJson(path.join(benchmarkDirectory, 'corpus.v1.json')),
+        JSON.parse(corpusRaw.toString('utf8')) as unknown,
       ),
+      corpusReviewAuthority: 'HUMAN',
+      corpusSha256: sha256(corpusRaw),
     };
   }
 
   const overlayPath = path.resolve(
     configurationArgument.slice('--configuration='.length),
   );
-  const overlay = holdoutConfigurationSchema.parse(await readJson(overlayPath));
+  const overlaySource = await readJson(overlayPath);
   const overlayDirectory = path.dirname(overlayPath);
+  if (
+    typeof overlaySource === 'object' &&
+    overlaySource !== null &&
+    'artifactKind' in overlaySource
+  ) {
+    const overlay = parseAutonomousHoldoutConfiguration(overlaySource);
+    const baseConfiguration = parseCorrectionBenchmarkConfiguration(
+      await readJson(path.resolve(overlayDirectory, overlay.extends)),
+    );
+    const configuration = parseCorrectionBenchmarkConfiguration({
+      ...baseConfiguration,
+      benchmarkId: overlay.benchmarkId,
+      corpusId: overlay.corpusId,
+      reviewPanelCaseIds: overlay.reviewPanelCaseIds,
+      thresholds: {
+        ...baseConfiguration.thresholds,
+        ...overlay.thresholds,
+      },
+    });
+    const configurationDigest = configurationSha256(
+      configuration,
+      overlay.supplierCostCapUsd,
+    );
+    const corpusRaw = await readFile(
+      path.resolve(overlayDirectory, overlay.corpusPath),
+    );
+    const corpus = parseCorrectionBenchmarkCorpus(
+      JSON.parse(corpusRaw.toString('utf8')) as unknown,
+    );
+    const authoringManifestRaw = await readFile(
+      path.resolve(overlayDirectory, overlay.authoringManifestPath),
+    );
+    authoringManifestSchema.parse(
+      JSON.parse(authoringManifestRaw.toString('utf8')) as unknown,
+    );
+    const ownerAuthorizationRaw = await readFile(
+      path.resolve(overlayDirectory, overlay.ownerAuthorizationPath),
+    );
+    ownerAuthorizationSchema.parse(
+      JSON.parse(ownerAuthorizationRaw.toString('utf8')) as unknown,
+    );
+    const corpusReviewManifestRaw = await readFile(
+      path.resolve(overlayDirectory, overlay.corpusReviewManifestPath),
+    );
+    const review = assertBenchmarkAutonomousCorpusReview({
+      actualAuthoringManifestSha256: sha256(authoringManifestRaw),
+      actualConfigurationSha256: configurationDigest,
+      actualCorpusReviewManifestSha256: sha256(corpusReviewManifestRaw),
+      actualCorpusSha256: sha256(corpusRaw),
+      actualOwnerAuthorizationReference: overlay.ownerAuthorizationPath,
+      actualOwnerAuthorizationSha256: sha256(ownerAuthorizationRaw),
+      benchmarkId: overlay.benchmarkId,
+      corpusHumanReviewStatus: corpus.humanReview.status,
+      corpusId: overlay.corpusId,
+      manifest: JSON.parse(corpusReviewManifestRaw.toString('utf8')) as unknown,
+    });
+    return {
+      configuration,
+      configurationSha256: configurationDigest,
+      corpus,
+      corpusReview: {
+        artifactKind: review.artifactKind,
+        authoringManifestSha256: review.authoringManifestSha256,
+        configurationSha256: review.configurationSha256,
+        corpusReviewManifestSha256: sha256(corpusReviewManifestRaw),
+        corpusSha256: review.corpusSha256,
+        ownerAuthorizationReference: review.ownerAuthorizationReference,
+        ownerAuthorizationSha256: review.ownerAuthorizationSha256,
+        reviewedAt: review.reviewedAt,
+        reviewerIdentity: review.reviewerIdentity,
+        reviewerKind: review.reviewerKind,
+      },
+      corpusReviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN',
+      corpusSha256: sha256(corpusRaw),
+      supplierCostCapUsd: overlay.supplierCostCapUsd,
+    };
+  }
+
+  const overlay = holdoutConfigurationSchema.parse(overlaySource);
   const baseConfiguration = parseCorrectionBenchmarkConfiguration(
     await readJson(path.resolve(overlayDirectory, overlay.extends)),
   );
@@ -136,14 +304,18 @@ async function loadBenchmarkInputs(): Promise<{
   const corpus = parseCorrectionBenchmarkCorpus(
     JSON.parse(corpusRaw.toString('utf8')) as unknown,
   );
+  const configuration = parseCorrectionBenchmarkConfiguration({
+    ...baseConfiguration,
+    benchmarkId: overlay.benchmarkId,
+    corpusId: overlay.corpusId,
+    reviewPanelCaseIds: overlay.reviewPanelCaseIds,
+  });
   return {
-    configuration: parseCorrectionBenchmarkConfiguration({
-      ...baseConfiguration,
-      benchmarkId: overlay.benchmarkId,
-      corpusId: overlay.corpusId,
-      reviewPanelCaseIds: overlay.reviewPanelCaseIds,
-    }),
+    configuration,
+    configurationSha256: configurationSha256(configuration),
     corpus,
+    corpusReviewAuthority: 'HUMAN',
+    corpusSha256: sha256(corpusRaw),
   };
 }
 
@@ -151,11 +323,29 @@ const attemptsArtifactSchema = z
   .object({
     attempts: z.array(benchmarkAttemptSchema),
     benchmarkId: z.string(),
+    configurationSha256: z
+      .string()
+      .regex(/^[a-f0-9]{64}$/)
+      .optional(),
     corpusId: z.string(),
+    corpusSha256: z
+      .string()
+      .regex(/^[a-f0-9]{64}$/)
+      .optional(),
     language: z.string(),
     promptVersion: z.string(),
     requestProtocolVersion: z.string(),
     runMetadata: benchmarkRunMetadataSchema,
+    supplierBudget: z
+      .object({
+        actualSpentUsd: z.number().nonnegative(),
+        hardCapUsd: z.number().positive(),
+        reconciliationRequired: z.boolean(),
+      })
+      .strict()
+      .nullable()
+      .optional(),
+    supplierCostCapUsd: z.number().positive().max(4).optional(),
   })
   .passthrough();
 
@@ -230,6 +420,148 @@ async function applyReviewedResult(input: {
     'utf8',
   );
   console.log(`Revue appliquée hors ligne : ${outputPath}`);
+}
+
+export function assertAutonomousSupplierCostReconciled(input: {
+  attempts: BenchmarkAttempt[];
+  supplierBudget:
+    | {
+        actualSpentUsd: number;
+        hardCapUsd: number;
+        reconciliationRequired: boolean;
+      }
+    | null
+    | undefined;
+  supplierCostCapUsd: number;
+}): void {
+  const budget = input.supplierBudget;
+  const usages = input.attempts.map((attempt) => attempt.usage);
+  if (
+    !budget ||
+    budget.hardCapUsd > input.supplierCostCapUsd ||
+    budget.hardCapUsd > 4 ||
+    budget.reconciliationRequired ||
+    usages.some(
+      (usage) =>
+        usage?.costSource !== 'ACTUAL' || usage.actualCostUsd === undefined,
+    )
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_SUPPLIER_COST_NOT_RECONCILED');
+  }
+  const actualSpentUsd = usages.reduce(
+    (total, usage) => total + (usage?.actualCostUsd ?? 0),
+    0,
+  );
+  if (
+    actualSpentUsd > budget.hardCapUsd ||
+    Math.abs(actualSpentUsd - budget.actualSpentUsd) > 1e-9
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_SUPPLIER_COST_NOT_RECONCILED');
+  }
+}
+
+async function applyAutonomousReviewedResult(input: {
+  attemptsPath: string;
+  blindReviewPacketPath: string;
+  configuration: CorrectionBenchmarkConfiguration;
+  configurationSha256: string;
+  corpus: CorrectionBenchmarkCorpus;
+  corpusSha256: string;
+  ownerAuthorizationReference: string;
+  ownerAuthorizationSha256: string;
+  reviewPath: string;
+  supplierCostCapUsd: number;
+}): Promise<void> {
+  const attemptsRaw = await readFile(input.attemptsPath, 'utf8');
+  const attemptsArtifact = attemptsArtifactSchema.parse(
+    JSON.parse(attemptsRaw) as unknown,
+  );
+  const resumeArtifact = benchmarkResumeArtifactSchema.parse(
+    JSON.parse(attemptsRaw) as unknown,
+  );
+  const blindReviewPacketRaw = await readFile(
+    input.blindReviewPacketPath,
+    'utf8',
+  );
+  const reviewRaw = await readFile(input.reviewPath, 'utf8');
+  const review = benchmarkAutonomousReviewArtifactSchema.parse(
+    JSON.parse(reviewRaw) as unknown,
+  );
+  const attemptsDigest = sha256(attemptsRaw);
+  const blindReviewPacket = assertFullBlindReviewPacketMatchesSources({
+    artifact: resumeArtifact,
+    attemptsSha256: attemptsDigest,
+    configuration: input.configuration,
+    configurationSha256: input.configurationSha256,
+    corpus: input.corpus,
+    corpusSha256: input.corpusSha256,
+    packet: JSON.parse(blindReviewPacketRaw) as unknown,
+  });
+  const blindReviewPacketDigest = sha256(blindReviewPacketRaw);
+  if (
+    attemptsArtifact.benchmarkId !== input.configuration.benchmarkId ||
+    attemptsArtifact.configurationSha256 !== input.configurationSha256 ||
+    attemptsArtifact.corpusId !== input.corpus.corpusId ||
+    attemptsArtifact.corpusSha256 !== input.corpusSha256 ||
+    attemptsArtifact.supplierCostCapUsd !== input.supplierCostCapUsd ||
+    blindReviewPacket.reviewProtocol.sourceBinding.attemptsSha256 !==
+      attemptsDigest ||
+    blindReviewPacket.reviewProtocol.sourceBinding.configurationSha256 !==
+      input.configurationSha256 ||
+    blindReviewPacket.reviewProtocol.sourceBinding.corpusSha256 !==
+      input.corpusSha256
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_REVIEW_SOURCE_IDENTITY_MISMATCH');
+  }
+  assertAutonomousSupplierCostReconciled({
+    attempts: attemptsArtifact.attempts,
+    supplierBudget: attemptsArtifact.supplierBudget,
+    supplierCostCapUsd: input.supplierCostCapUsd,
+  });
+  const reviewedRunMetadata = applyBenchmarkAutonomousReview({
+    actualAttemptsSha256: attemptsDigest,
+    actualBlindReviewPacketSha256: blindReviewPacketDigest,
+    actualConfigurationSha256: input.configurationSha256,
+    actualCorpusSha256: input.corpusSha256,
+    actualOwnerAuthorizationReference: input.ownerAuthorizationReference,
+    actualOwnerAuthorizationSha256: input.ownerAuthorizationSha256,
+    actualReviewManifestSha256: sha256(reviewRaw),
+    attempts: attemptsArtifact.attempts,
+    configuration: input.configuration,
+    corpus: input.corpus,
+    review,
+    runMetadata: attemptsArtifact.runMetadata,
+  });
+  const summary = summarizeCorrectionBenchmark({
+    attempts: attemptsArtifact.attempts,
+    configuration: input.configuration,
+    corpus: input.corpus,
+    runMetadata: reviewedRunMetadata,
+  });
+  const outputPath = `${input.attemptsPath}.autonomous-reviewed-summary.json`;
+  await writeFile(
+    outputPath,
+    `${JSON.stringify(
+      {
+        ...summary,
+        models: summary.models.map((metrics) => ({
+          ...metrics,
+          promotionEligible:
+            review.status === 'APPROVED' &&
+            metrics.promotionEligible &&
+            modelMeetsPromotionThresholds(
+              metrics,
+              input.configuration.thresholds,
+            ),
+        })),
+        reviewArtifact: review,
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  );
+  console.log(`Revue autonome appliquée hors ligne : ${outputPath}`);
 }
 
 function buildPrompt(input: {
@@ -504,10 +836,13 @@ async function runBenchmark(input: {
                       usage: result.usage,
                     }),
                   );
-                  await input.onProgress?.(attempts);
-                  input.supplierBudget?.reconcile(
-                    result.usage as SupplierBudgetUsage,
-                  );
+                  try {
+                    input.supplierBudget?.reconcile(
+                      result.usage as SupplierBudgetUsage,
+                    );
+                  } finally {
+                    await input.onProgress?.(attempts);
+                  }
                   break;
                 } catch {
                   // salvage impossible (no deliverable criterion): fall through
@@ -544,10 +879,13 @@ async function runBenchmark(input: {
                   usage: result.usage,
                 }),
               );
-              await input.onProgress?.(attempts);
-              input.supplierBudget?.reconcile(
-                result.usage as SupplierBudgetUsage,
-              );
+              try {
+                input.supplierBudget?.reconcile(
+                  result.usage as SupplierBudgetUsage,
+                );
+              } finally {
+                await input.onProgress?.(attempts);
+              }
               if (
                 attemptNumber >
                 (input.maxRetries ?? input.configuration.maxRetries)
@@ -577,10 +915,13 @@ async function runBenchmark(input: {
                 usage: result.usage,
               }),
             );
-            await input.onProgress?.(attempts);
-            input.supplierBudget?.reconcile(
-              result.usage as SupplierBudgetUsage,
-            );
+            try {
+              input.supplierBudget?.reconcile(
+                result.usage as SupplierBudgetUsage,
+              );
+            } finally {
+              await input.onProgress?.(attempts);
+            }
             break;
           } catch (error) {
             if (
@@ -622,12 +963,15 @@ async function runBenchmark(input: {
                 status: isModelOutputFailure ? 'INVALID' : 'ERROR',
               }),
             );
-            await input.onProgress?.(attempts);
-            input.supplierBudget?.reconcile(
-              isModelOutputFailure
-                ? (error.usage as SupplierBudgetUsage)
-                : undefined,
-            );
+            try {
+              input.supplierBudget?.reconcile(
+                isModelOutputFailure
+                  ? (error.usage as SupplierBudgetUsage)
+                  : undefined,
+              );
+            } finally {
+              await input.onProgress?.(attempts);
+            }
             if (
               attemptNumber >
               (input.maxRetries ?? input.configuration.maxRetries)
@@ -643,18 +987,66 @@ async function runBenchmark(input: {
 }
 
 async function main(): Promise<void> {
-  const { configuration, corpus } = await loadBenchmarkInputs();
+  const loaded = await loadBenchmarkInputs();
+  const { configuration, corpus } = loaded;
 
   assertBenchmarkCompatibility({ configuration, corpus });
 
   const reviewArgument = process.argv.find((argument) =>
     argument.startsWith('--apply-review='),
   );
+  const autonomousReviewArgument = process.argv.find((argument) =>
+    argument.startsWith('--apply-autonomous-review='),
+  );
+  const blindReviewPacketArgument = process.argv.find((argument) =>
+    argument.startsWith('--blind-review-packet='),
+  );
   const attemptsArgument = process.argv.find((argument) =>
     argument.startsWith('--attempts='),
   );
-  if (reviewArgument || attemptsArgument) {
-    if (!reviewArgument || !attemptsArgument) {
+  if (
+    reviewArgument ||
+    autonomousReviewArgument ||
+    blindReviewPacketArgument ||
+    attemptsArgument
+  ) {
+    if (reviewArgument && autonomousReviewArgument) {
+      throw new Error('BENCHMARK_REVIEW_AUTHORITY_AMBIGUOUS');
+    }
+    if (autonomousReviewArgument) {
+      if (
+        !attemptsArgument ||
+        !blindReviewPacketArgument ||
+        loaded.corpusReviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+        !loaded.corpusReview ||
+        loaded.supplierCostCapUsd === undefined
+      ) {
+        throw new Error(
+          'BENCHMARK_AUTONOMOUS_REVIEW_REQUIRES_COMPLETE_AUTHORITY_CHAIN',
+        );
+      }
+      await applyAutonomousReviewedResult({
+        attemptsPath: path.resolve(
+          attemptsArgument.slice('--attempts='.length),
+        ),
+        blindReviewPacketPath: path.resolve(
+          blindReviewPacketArgument.slice('--blind-review-packet='.length),
+        ),
+        configuration,
+        configurationSha256: loaded.configurationSha256,
+        corpus,
+        corpusSha256: loaded.corpusSha256,
+        ownerAuthorizationReference:
+          loaded.corpusReview.ownerAuthorizationReference,
+        ownerAuthorizationSha256: loaded.corpusReview.ownerAuthorizationSha256,
+        reviewPath: path.resolve(
+          autonomousReviewArgument.slice('--apply-autonomous-review='.length),
+        ),
+        supplierCostCapUsd: loaded.supplierCostCapUsd,
+      });
+      return;
+    }
+    if (!reviewArgument || !attemptsArgument || blindReviewPacketArgument) {
       throw new Error('BENCHMARK_REVIEW_REQUIRES_REVIEW_AND_ATTEMPTS_PATHS');
     }
     await applyReviewedResult({
@@ -672,7 +1064,10 @@ async function main(): Promise<void> {
     );
     return;
   }
-  if (corpus.humanReview.status !== 'APPROVED') {
+  if (
+    loaded.corpusReviewAuthority === 'HUMAN' &&
+    corpus.humanReview.status !== 'APPROVED'
+  ) {
     throw new Error('BENCHMARK_CORPUS_REQUIRES_HUMAN_PEDAGOGICAL_APPROVAL');
   }
   const candidateArgument = process.argv.find((argument) =>
@@ -700,10 +1095,30 @@ async function main(): Promise<void> {
         supplierCostCapArgument.slice('--supplier-cost-cap-usd='.length),
       )
     : undefined;
+  if (
+    supplierCostCapUsd !== undefined &&
+    (!Number.isFinite(supplierCostCapUsd) || supplierCostCapUsd <= 0)
+  ) {
+    throw new Error('SUPPLIER_BUDGET_CAP_INVALID');
+  }
+  if (
+    loaded.supplierCostCapUsd !== undefined &&
+    supplierCostCapUsd !== undefined &&
+    supplierCostCapUsd !== loaded.supplierCostCapUsd
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_SUPPLIER_CAP_IDENTITY_MISMATCH');
+  }
+  const effectiveSupplierCostCapUsd =
+    loaded.supplierCostCapUsd === undefined
+      ? supplierCostCapUsd
+      : Math.min(
+          loaded.supplierCostCapUsd,
+          supplierCostCapUsd ?? loaded.supplierCostCapUsd,
+        );
   const supplierBudget =
-    supplierCostCapUsd === undefined
+    effectiveSupplierCostCapUsd === undefined
       ? undefined
-      : new SupplierBudgetGuard(supplierCostCapUsd);
+      : new SupplierBudgetGuard(effectiveSupplierCostCapUsd);
   const modelArgument = process.argv.find((argument) =>
     argument.startsWith('--model='),
   );
@@ -735,11 +1150,36 @@ async function main(): Promise<void> {
     if (!resumePath.endsWith('.attempts.json')) {
       throw new Error('BENCHMARK_RESUME_PATH_INVALID');
     }
+    const resumeArtifactSource = await readJson(resumePath);
+    const resumeAttemptsArtifact =
+      attemptsArtifactSchema.parse(resumeArtifactSource);
     resumeState = prepareBenchmarkResume({
-      artifact: await readJson(resumePath),
+      artifact: resumeArtifactSource,
       configuration,
       corpus,
+      ...(loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN'
+        ? {
+            configurationSha256: loaded.configurationSha256,
+            corpusSha256: loaded.corpusSha256,
+          }
+        : {}),
     });
+    if (
+      loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+      (resumeAttemptsArtifact.supplierCostCapUsd !==
+        loaded.supplierCostCapUsd ||
+        resumeAttemptsArtifact.supplierBudget?.hardCapUsd !==
+          loaded.supplierCostCapUsd)
+    ) {
+      throw new Error('BENCHMARK_RESUME_AUTONOMOUS_SUPPLIER_CAP_MISMATCH');
+    }
+    if (
+      loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+      JSON.stringify(resumeState.artifact.runMetadata.corpusReview) !==
+        JSON.stringify(loaded.corpusReview)
+    ) {
+      throw new Error('BENCHMARK_RESUME_AUTONOMOUS_AUTHORITY_MISMATCH');
+    }
   }
   const selectedCandidates = resumeState
     ? [resumeState.candidate]
@@ -757,6 +1197,17 @@ async function main(): Promise<void> {
   }
   if (reviewPanelMode && selectedCandidates.length !== 1) {
     throw new Error('BENCHMARK_REVIEW_PANEL_REQUIRES_ONE_MODEL');
+  }
+  if (
+    loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+    (selectedCandidates.length !== 1 ||
+      requestedCaseId !== undefined ||
+      reviewPanelMode ||
+      selectedCandidates[0]?.requestProfile.adapter !== 'OPENROUTER_CHAT')
+  ) {
+    throw new Error(
+      'BENCHMARK_AUTONOMOUS_RUN_REQUIRES_FULL_SINGLE_ACTUAL_COST_CANDIDATE',
+    );
   }
   const panelCases = reviewPanelMode
     ? configuration.reviewPanelCaseIds.map((caseId) => {
@@ -788,18 +1239,31 @@ async function main(): Promise<void> {
       : reviewPanelMode
         ? 'REVIEW_PANEL'
         : 'FULL';
-  const runMetadata = resumeState?.artifact.runMetadata ?? {
-    caseIds: selectedCases.map((benchmarkCase) => benchmarkCase.caseId),
-    candidateIds: selectedCandidates.map((candidate) => candidate.candidateId),
-    humanReview: {
-      reviewedAt: null,
-      reviewer: null,
-      status: 'PENDING' as const,
-    },
-    mode: runMode,
-    repetitions:
-      reviewPanelMode || requestedCaseId ? 1 : configuration.repetitions,
-  };
+  const runMetadata =
+    resumeState?.artifact.runMetadata ??
+    benchmarkRunMetadataSchema.parse({
+      caseIds: selectedCases.map((benchmarkCase) => benchmarkCase.caseId),
+      candidateIds: selectedCandidates.map(
+        (candidate) => candidate.candidateId,
+      ),
+      configurationSha256: loaded.configurationSha256,
+      corpusSha256: loaded.corpusSha256,
+      humanReview: {
+        reviewedAt: null,
+        reviewer: null,
+        status: 'PENDING' as const,
+      },
+      mode: runMode,
+      repetitions:
+        reviewPanelMode || requestedCaseId ? 1 : configuration.repetitions,
+      ...(loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN'
+        ? {
+            corpusReview: loaded.corpusReview,
+            corpusReviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN' as const,
+            reviewAuthority: 'NONE' as const,
+          }
+        : {}),
+    });
   if (supplierBudget && resumeState) {
     resumeState.artifact.attempts.forEach((attempt) => {
       supplierBudget.reconcile(
@@ -818,7 +1282,9 @@ async function main(): Promise<void> {
       `${JSON.stringify(
         {
           benchmarkId: configuration.benchmarkId,
+          configurationSha256: loaded.configurationSha256,
           corpusId: configuration.corpusId,
+          corpusSha256: loaded.corpusSha256,
           language: configuration.language,
           mode: runMode,
           runMetadata,
@@ -831,6 +1297,7 @@ async function main(): Promise<void> {
           modelIds: selectedCandidates.map((candidate) => candidate.modelId),
           promptVersion: configuration.promptVersion,
           requestProtocolVersion: configuration.requestProtocolVersion,
+          supplierCostCapUsd: loaded.supplierCostCapUsd,
           supplierBudget: supplierBudget
             ? {
                 actualSpentUsd: supplierBudget.actualSpentUsd,
@@ -954,4 +1421,9 @@ async function main(): Promise<void> {
   );
 }
 
-await main();
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href
+) {
+  await main();
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "INDEPENDENT_REVIEW_GATE_PLACEHOLDER",
+  "corpusId": "learnx-french-text-hybrid-holdout-v4",
+  "sourceCorpusDraftSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+  "status": "PENDING",
+  "execution": false,
+  "reviewer": null,
+  "reviewedAt": null,
+  "verdict": null,
+  "notice": "Aucune revue autonome indépendante n’a encore été effectuée sur ce digest corrigé. Ce placeholder n’est pas un manifeste de revue accepté par le runner et ne peut pas autoriser une exécution."
+}

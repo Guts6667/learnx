@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "AUTHORING_PROVENANCE_MANIFEST",
+  "manifestId": "learnx-sonnet-v3-1-holdout-v4-draft",
+  "status": "DRAFT",
+  "reviewStatus": "PENDING",
+  "execution": false,
+  "authoredOn": "2026-08-24",
+  "authoringProvenance": {
+    "method": "Authoring synthétique manuel et contrôles déterministes locaux uniquement",
+    "statement": "Ce corpus a été authoré de zéro après le rejet du holdout v3. Aucun résultat, aucune tentative ni aucune sortie candidate n’a été consulté pour le concevoir ou régler ses golds.",
+    "afterRejectedCorpus": true,
+    "networkOrModelCallsMade": false,
+    "candidateArtifactsConsulted": false,
+    "independentReviewPerformed": false,
+    "consultedInputs": [
+      {
+        "path": "../../../../AGENTS.md",
+        "sha256": "438b791171f8f968b9d80360a0e62458ecfc2aae8f999b9f8df7e39795880fb0",
+        "purpose": "Instructions du dépôt"
+      },
+      {
+        "path": "../../../../docs/INDEX.md",
+        "sha256": "610d0a873c47d2137d021385c65c8509dea13a808540b4f959a4426f6d2efeb3",
+        "purpose": "Routage documentaire"
+      },
+      {
+        "path": "../../README.md",
+        "sha256": "90990d64fc9658b23cff516fe099407fcebb931af8cded9e51c3bec07c5a989d",
+        "purpose": "Protocole et garde-fous du benchmark"
+      },
+      {
+        "path": "../../../../src/lib/ai-correction-benchmark.ts",
+        "sha256": "a0b7d3f23fad85fbbe852f22a26659c4f452f601e75ac6389b2faffd8ee4a22a",
+        "purpose": "Schémas corpus et configuration"
+      },
+      {
+        "path": "../../../../src/lib/ai-correction-contracts.ts",
+        "sha256": "52373ff9cab1998064f158db46e21467d38287d6656ada6c3b52f0a8940ec528",
+        "purpose": "Schéma des contrats et calcul pondéré"
+      },
+      {
+        "path": "../../../../src/lib/ai-correction-benchmark.test.ts",
+        "sha256": "15e702fed61d74a7b9bd0aa2afde9e552b1b89b117ec154c6c9f4d05b70c3552",
+        "purpose": "Fixtures et invariants de parsing ciblés"
+      },
+      {
+        "path": "../../../../scripts/run-ai-correction-benchmark.ts",
+        "sha256": "8b9f5ea7cdd2562565950700690750fe5e036fc3c9c6b15b1c7a802416e18c98",
+        "purpose": "Format d’overlay et gate de revue"
+      },
+      {
+        "path": "../../benchmark.v3_1.json",
+        "sha256": "d527323295949fbf7c052a39620f500763ea280c0f16a66bf5a7449993304311",
+        "purpose": "Identité de configuration v3.1"
+      },
+      {
+        "path": "../../holdout.benchmark.v3.json",
+        "sha256": "1777d9ccbbecf13ad186709821298449867c682f6bcd81fe45d16777b876285e",
+        "purpose": "Exemple historique de format d’overlay"
+      },
+      {
+        "path": "../../holdout.review.v2.json",
+        "sha256": "ecfed8a0f4da6be3133a99987b9c8244e96ccd00dfe9e3049cfbe6de0bfc36ef",
+        "purpose": "Séparation historique corpus/manifeste de revue"
+      },
+      {
+        "path": "../../corpus.v1.json",
+        "sha256": "a78393edbeb6b350fcd8f1d5bb8931c9ddebd8e69cf15e852bc038129c9eb73c",
+        "purpose": "Contrôle d’absence de recopie du corpus de développement"
+      },
+      {
+        "path": "../../holdout.v1.json",
+        "sha256": "a3d018044c6e10c2d599672a9aafc7afb1acfa663231127c57f0c0d069781cf9",
+        "purpose": "Contrôle d’absence de recopie d’un holdout consommé"
+      },
+      {
+        "path": "../../holdout.v2.json",
+        "sha256": "2a74db971138b62b2d059c299876a16c40375d4bd4c1f247f86f62564fefb571",
+        "purpose": "Contrôle d’absence de recopie d’un holdout consommé"
+      },
+      {
+        "path": "../../holdout.v3.json",
+        "sha256": "f16b76b1e5af86a6388b59ecad82fb4b6ec1b9fdde1a8be4ccaeac05bcf4df05",
+        "purpose": "Contrôle mécanique de différence avec le corpus rejeté"
+      },
+      {
+        "path": "../sonnet-v3-1-holdout-v3/INDEPENDENT_REVIEW_REJECTED.md",
+        "sha256": "f97a77eb1be469bcfda83f9d02f2d3696d0ddba76c4d943b90b6956144f142c4",
+        "purpose": "Interdits et défauts à ne pas recycler"
+      }
+    ]
+  },
+  "pipelineIdentity": {
+    "pipelineKey": "learnx-french-text-correction-v3-1",
+    "pipelineVersion": "3.1.0",
+    "safetyEnvelopeVersion": "1.0.0",
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "promptVersion": "2.2.0",
+    "requestProtocolVersion": "3.0.1",
+    "correctionDeliveryPolicy": "PARTIAL_CRITERION",
+    "requestProfile": {
+      "adapter": "OPENROUTER_CHAT",
+      "maxAttempts": 3,
+      "reasoning": "OFF",
+      "visibleOutputTokenTarget": 1500,
+      "totalOutputTokenLimit": 1500,
+      "temperature": null,
+      "timeoutMs": 60000
+    },
+    "runtimeLiveEnabled": false
+  },
+  "hybridEvaluationSemantics": {
+    "modelProposal": "Niveaux, citations et feedback par critère",
+    "learnxValidation": "Validation déterministe critère par critère",
+    "deliveryStates": [
+      "COMPLETE",
+      "PARTIAL",
+      "UNAVAILABLE"
+    ],
+    "separateDeliveredAndRejectedCriteriaMetrics": true,
+    "historicalProjectionIsLiveEvidence": false
+  },
+  "draftIdentity": {
+    "benchmarkId": "learnx-french-text-correction-sonnet-v3-1-holdout-v4",
+    "corpusId": "learnx-french-text-hybrid-holdout-v4",
+    "language": "fr-FR",
+    "caseCount": 24,
+    "criterionGoldCount": 72,
+    "contractCount": 4,
+    "repetitions": 3,
+    "logicalRunCount": 72,
+    "promptInjectionCaseCount": 8,
+    "reviewPanelCaseCount": 6,
+    "corpusDraftSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+    "configurationDraftSha256": "3cad7b592bbd6572781b14220851f9a2d81cfc0592295d29803679e7b0ce2cf7",
+    "reviewGatePlaceholderSha256": "69c1cea58efe6ee34d4b4c2f740aa474cc5abe4fbf795df7071a05b90d3ab4a2",
+    "digestScope": "Identité de brouillon mutable ; toute modification impose un nouveau digest avant revue indépendante."
+  },
+  "requiredNextGate": {
+    "status": "PENDING",
+    "kind": "INDEPENDENT_BLIND_REVIEW",
+    "placeholderPath": "review-manifest.pending.json",
+    "mayExecuteBeforeGate": false,
+    "runnerSourceDigest": "PENDING_GATE_HARDENING"
+  }
+}
