@@ -1,5 +1,12 @@
 # V4 — Reste à faire avant la mise en production
 
+> **Mise à jour du 24 août 2026 :** cette checklist détaillée conserve les
+> étapes et preuves antérieures. Pour l'ordre courant et les états réellement
+> livrés, `docs/V4_ROADMAP.md` fait autorité. Le contrat V4-002-PUBLISH est
+> désormais présent sur la branche ; le prochain blocage est le catalogue
+> pilote V4-007 puis la preview authentifiée. Aucun contenu historique
+> ci-dessous n'est supprimé.
+
 État au 24 août 2026. Ce document fait autorité pour la reprise : chaque
 ligne indique ce qui est fait, ce qui manque et le critère d'achèvement.
 Sources : `BACKLOG_V4.md` (jalons A–E), journal

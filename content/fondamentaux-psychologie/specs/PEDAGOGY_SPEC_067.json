@@ -177,13 +177,176 @@
       },
       {
         "title": "Choisir sans forcer un cadre",
-        "description": "Comparer PICO, PECO, SPIDER et un cadre JBI sur deux projets fictifs ; retenir le plus utile, laisser les dimensions non pertinentes ouvertes et justifier.",
+        "description": "Projet A — comparer deux pratiques d’apprentissage : une équipe universitaire prépare une synthèse d’études menées auprès d’étudiants de première année. Pendant huit semaines, ces études comparent une courte pratique de rappel hebdomadaire à la relecture libre des mêmes contenus. Le résultat principal est la performance à un quiz réalisé deux semaines après la dernière séance. L’équipe cherche à estimer l’effet comparatif des deux pratiques ; elle ne cherche ni à décrire le vécu des étudiants, ni à cartographier tous les usages possibles de la pratique de rappel. Projet B — comprendre une expérience de formation à distance : une équipe prépare une synthèse d’études qualitatives fondées sur des entretiens avec des adultes qui suivent une formation entièrement à distance. Elle étudie leurs six premières semaines de formation et s’intéresse à la charge perçue ainsi qu’au sentiment d’appartenance. Aucune intervention n’est imposée et aucun groupe de comparaison n’est requis. L’équipe cherche à comprendre l’expérience rapportée et les situations qui la façonnent ; elle ne cherche pas à mesurer l’efficacité d’un dispositif. Répondez séparément pour le projet A et le projet B. Pour chacun : 1. choisissez un cadre parmi PICO, PECO, SPIDER et PCC, puis nommez-le ; 2. indiquez les dimensions de ce cadre que vous utiliseriez et celles que vous laisseriez ouvertes parce qu’elles ne sont pas pertinentes pour ce projet ; 3. reprenez ou reformulez fidèlement au moins deux éléments distincts du dossier ; 4. expliquez explicitement le lien entre ces éléments et votre choix de cadre. Plusieurs choix de cadre peuvent être recevables s’ils sont cohérents avec le dossier et correctement justifiés. N’inventez aucune information absente des dossiers.",
         "type": "writing",
         "isRequired": true,
         "weight": 1,
         "position": 2,
         "key": "activity-2",
-        "resourceKeys": []
+        "resourceKeys": [],
+        "correctionContract": {
+          "schemaVersion": 1,
+          "contractKey": "v4-writing-framework-selection-fr",
+          "version": "1.0.0",
+          "target": {
+            "kind": "EXERCISE",
+            "activityKey": "activity-2",
+            "activityType": "writing"
+          },
+          "lifecycle": {
+            "status": "PUBLISHED",
+            "publishedAt": "2026-08-24T21:00:00+02:00"
+          },
+          "objectives": [
+            "Établir, pour chaque projet, si la réponse formule un choix de cadre compréhensible, l’appuie fidèlement sur les propriétés explicites du dossier et explique le lien entre ces propriétés et ce choix, sans conclure sur la maîtrise générale de l’apprenant."
+          ],
+          "evidence": {
+            "primaryKind": "TEXT",
+            "acceptedKinds": ["TEXT"]
+          },
+          "authorizedReferences": [],
+          "passingScore": 70,
+          "secondPass": {
+            "enabled": true,
+            "confidenceThreshold": 0.65,
+            "maxPasses": 2,
+            "triggers": [
+              "LOW_CONFIDENCE",
+              "CRITERION_DISAGREEMENT",
+              "OUTPUT_VALIDATION_WARNING"
+            ]
+          },
+          "criteria": [
+            {
+              "key": "framework-decision",
+              "label": "Décision et délimitation du cadre",
+              "objective": "Identifier séparément le cadre retenu et les dimensions utilisées ou volontairement laissées ouvertes pour chacun des deux projets.",
+              "weight": 34,
+              "expectedElements": [
+                "Projet A : un cadre est nommé explicitement.",
+                "Projet A : les dimensions utilisées et laissées ouvertes sont précisées.",
+                "Projet B : un cadre est nommé explicitement.",
+                "Projet B : les dimensions utilisées et laissées ouvertes sont précisées."
+              ],
+              "acceptableVariants": [
+                "Pour A, PICO est la référence ; PECO est recevable si la pratique de rappel est explicitement traitée comme exposition et si comparaison et résultat restent fidèles.",
+                "Pour B, SPIDER est la référence ; PCC est recevable si adultes, expérience de formation et contexte entièrement distant sont explicitement reliés.",
+                "Une dimension peut rester ouverte si son absence de pertinence pour le projet est explicitée.",
+                "Une réponse concise mais complète est recevable."
+              ],
+              "commonErrors": [
+                "Un cadre n’est pas choisi pour l’un des projets.",
+                "Toutes les dimensions sont remplies mécaniquement avec des informations absentes du dossier.",
+                "Le choix d’un projet compense silencieusement l’absence de choix pour l’autre."
+              ],
+              "calibratedExamples": [],
+              "performanceLevels": [
+                {
+                  "key": "insufficient",
+                  "label": "À retravailler",
+                  "score": 0,
+                  "description": "Aucun choix de cadre identifiable n’est formulé pour au moins un projet, ou les dimensions utilisées et ouvertes ne peuvent pas être établies. Un refus explicite reste distinct d’une omission dans le feedback, mais conduit au même niveau."
+                },
+                {
+                  "key": "partial",
+                  "label": "Partiel",
+                  "score": 50,
+                  "description": "Les choix sont identifiables, mais la délimitation des dimensions est incomplète ou seulement un des deux projets est traité complètement."
+                },
+                {
+                  "key": "mastered",
+                  "label": "Démontré dans la réponse",
+                  "score": 100,
+                  "description": "Pour A et B séparément, un cadre est nommé et ses dimensions utilisées ou volontairement ouvertes sont précisées sans ajout artificiel."
+                }
+              ]
+            },
+            {
+              "key": "dossier-fidelity",
+              "label": "Fidélité au dossier",
+              "objective": "Reprendre fidèlement deux éléments distincts de chacun des deux dossiers sans invention matérielle.",
+              "weight": 33,
+              "expectedElements": [
+                "Projet A : un premier élément explicite du dossier est repris ou paraphrasé fidèlement.",
+                "Projet A : un second élément distinct du dossier est repris ou paraphrasé fidèlement.",
+                "Projet B : un premier élément explicite du dossier est repris ou paraphrasé fidèlement.",
+                "Projet B : un second élément distinct du dossier est repris ou paraphrasé fidèlement."
+              ],
+              "acceptableVariants": [
+                "Toute combinaison de deux faits distincts présents dans le dossier du projet concerné est recevable.",
+                "Une paraphrase fidèle est recevable ; les mots exacts du dossier ne sont pas exigés.",
+                "Une information plus précise que le dossier ne sert pas de preuve et devient une erreur si elle en modifie matériellement le sens."
+              ],
+              "commonErrors": [
+                "Le même fait est reformulé deux fois et compté comme deux éléments.",
+                "Une intervention, une comparaison ou un objectif absent est inventé.",
+                "Les faits du projet A et du projet B sont mélangés."
+              ],
+              "calibratedExamples": [],
+              "performanceLevels": [
+                {
+                  "key": "insufficient",
+                  "label": "À retravailler",
+                  "score": 0,
+                  "description": "Aucun fait fiable n’est démontré pour au moins un projet, ou une contradiction matérielle avec un dossier empêche de publier ce critère."
+                },
+                {
+                  "key": "partial",
+                  "label": "Partiel",
+                  "score": 50,
+                  "description": "Des faits fidèles sont présents, mais moins de deux faits distincts sont démontrés pour au moins un des deux projets."
+                },
+                {
+                  "key": "mastered",
+                  "label": "Démontré dans la réponse",
+                  "score": 100,
+                  "description": "Deux faits distincts et fidèles sont démontrés pour A et deux pour B, sans contradiction matérielle ni information inventée utilisée comme preuve."
+                }
+              ]
+            },
+            {
+              "key": "choice-rationale",
+              "label": "Justification du lien",
+              "objective": "Expliquer séparément en quoi les éléments du dossier rendent le cadre choisi utile pour chaque projet.",
+              "weight": 33,
+              "expectedElements": [
+                "Projet A : un lien explicite relie au moins une propriété du dossier au choix du cadre.",
+                "Projet B : un lien explicite relie au moins une propriété du dossier au choix du cadre."
+              ],
+              "acceptableVariants": [
+                "Le lien peut être formulé en une phrase concise s’il relie clairement dossier, dimension et choix.",
+                "La qualité stylistique, l’orthographe et la longueur ne sont pas évaluées tant que le sens reste compréhensible.",
+                "La justification est évaluée indépendamment de la présence des deux faits demandés afin d’éviter une double pénalisation."
+              ],
+              "commonErrors": [
+                "Le dossier est résumé sans expliquer le choix du cadre.",
+                "Le cadre est décrit en général sans lien avec le projet.",
+                "La justification d’un projet est utilisée pour compenser l’absence de justification pour l’autre."
+              ],
+              "calibratedExamples": [],
+              "performanceLevels": [
+                {
+                  "key": "insufficient",
+                  "label": "À retravailler",
+                  "score": 0,
+                  "description": "Aucun lien explicite entre une propriété du dossier et le choix du cadre n’est démontré pour au moins un projet."
+                },
+                {
+                  "key": "partial",
+                  "label": "Partiel",
+                  "score": 50,
+                  "description": "Un lien explicite est démontré pour un seul projet, ou le lien reste incomplet pour l’un des deux."
+                },
+                {
+                  "key": "mastered",
+                  "label": "Démontré dans la réponse",
+                  "score": 100,
+                  "description": "Un lien explicite et cohérent est démontré séparément pour A et pour B."
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "title": "Rédiger la question du projet",
@@ -265,12 +428,12 @@
   },
   "editorial": {
     "status": "editorial_review",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "language": "fr",
     "audience": "Adultes débutants à intermédiaires étudiant les fondements de la psychologie",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-06",
+    "lastReviewedAt": "2026-08-24",
     "nextReviewAt": "2027-08-04",
     "references": [
       {
@@ -408,20 +571,27 @@
         "author": "LearnX",
         "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
         "reviewRequired": "editorial"
+      },
+      {
+        "version": "1.2.0",
+        "date": "2026-08-24",
+        "author": "LearnX",
+        "change": "Publication du brief exact et de la projection runtime bornée du contrat V4 pour l’activité writing activity-2, sans effet sur la progression.",
+        "reviewRequired": "technical_and_owner_product_gate"
       }
     ],
     "review": {
-      "editorialReviewer": null,
+      "editorialReviewer": "Rayan — arbitrages V4-002A et V4-002B",
       "subjectReviewer": null,
       "scientificAccuracy": false,
       "pedagogicalAlignment": true,
-      "seedCompatibility": false,
+      "seedCompatibility": true,
       "linksAndMedia": true,
       "readyForPublication": false,
       "notes": [
         "Revue humaine en méthodologie de recherche et synthèse des preuves requise.",
-        "L’étape integration-preuves et le module projet-integrateur sont absents du seed actuel.",
-        "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.",
+        "L’étape integration-preuves, le module projet-integrateur, la consigne exacte et le contrat runtime sont présents dans le seed.",
+        "Le contrat PUBLISHED autorise uniquement un feedback formatif writing/fr-FR ; il ne publie pas la leçon au titre d’une revue scientifique et n’écrit jamais dans la progression.",
         "PICO, PECO, SPIDER et les autres cadres restent des outils flexibles, jamais des quotas à remplir.",
         "La question et ses révisions doivent conserver une trace explicite et ne pas être ajustées au résultat souhaité."
       ]

@@ -46,9 +46,10 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 
 ## Ce qui bloque encore une release utilisable
 
-1. **Contrat publié** : le programme contient l'exercice pilote « Choisir sans
-   forcer un cadre », mais aucun bundle déployé ne porte encore son contrat V4
-   `PUBLISHED`. Sans lui, l'UI reste honnêtement masquée.
+1. **Contrat publié — livré sur la branche** : l'exercice pilote « Choisir sans
+   forcer un cadre » porte désormais sa consigne exacte et le contrat V4
+   `PUBLISHED` dans le bundle. Le déploiement du seed et la QA preview restent
+   nécessaires avant qu'il soit visible dans un environnement partagé.
 2. **Catalogue pilote actif** : le devis dépend d'une version de catalogue
    serveur compatible avec l'identité promue. Aucune valeur ne doit être
    inventée dans le code ; la version calibrée doit être activée explicitement
@@ -69,7 +70,7 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | Ordre | Ticket de reprise | Responsable | Sortie |
 | ---: | --- | --- | --- |
 | 1 | V4-010-RUNTIME | Développement | raccord end-to-end implémenté ; suite complète et preview à valider |
-| 2 | V4-002-PUBLISH | Produit/pédagogie + Développement | un contrat writing/fr-FR publié et immuable dans le bundle |
+| 2 | V4-002-PUBLISH | Produit/pédagogie + Développement | livré sur la branche : contrat writing/fr-FR publié et immuable dans le bundle ; seed preview restant |
 | 3 | V4-007-PILOT | Finance + Propriétaire | catalogue crédits offerts calibré et activé, sans vente publique |
 | 4 | V4-016-TOTEM | Développement | livré et QA locale verte ; validation preview propriétaire restante |
 | 5 | V4-012-MONITORING | Développement | livré sur la branche : coûts, incidents et deux indicateurs visibles en admin |

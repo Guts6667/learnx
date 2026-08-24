@@ -773,6 +773,27 @@ scientifique.
 
 ## 12. Contrat versionné de correction assistée par IA
 
+### Projection runtime bornée de la V4 — amendement du 24 août 2026
+
+Pour le pilote V4 autorisé par le Propriétaire, une tâche productive peut
+porter un champ optionnel `correctionContract`. Le seed le valide avec le
+schéma v1 de `src/lib/ai-correction-contracts.ts` puis le persiste sans
+transformation dans `Exercise.rubric`. Le contrat doit être `PUBLISHED`, limité
+à `TEXT`, lié à la clé et au type exacts de l'activité et versionné ; sans ces
+conditions, l'interface de correction reste masquée.
+
+Le `passingScore` de cette projection est un seuil de routage technique pour
+la bande de seconde passe. Il ne produit ni `PASS/FAIL`, ni validation de
+maîtrise, ni effet sur la progression. Les critères doivent conserver les
+éléments attendus, variantes, erreurs et descriptions de niveaux validés par
+l'authoring ; une nouvelle version ne réécrit jamais les corrections
+historiques.
+
+Cette projection temporaire ne supprime pas la recherche sur le moteur de
+rubrique exécutable décrite ci-dessous. Celle-ci reste une preuve historique et
+une direction V4.1 ; elle ne peut pas être substituée silencieusement au
+runtime borné autorisé pour la V4.
+
 Une rubrique historique ne suffit pas à autoriser une correction IA. Pour le
 MVP autonome, une production libre candidate possède un contrat exécutable
 séparé, versionné et conforme à

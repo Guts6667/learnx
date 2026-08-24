@@ -2,7 +2,7 @@
 
 ## Statut et autorité
 
-- Version : 1.6.0
+- Version : 1.6.1
 - Statut : **pilote V4 writing-only autorisé par le Propriétaire — raccord et finition en cours**
 - Dernière consolidation : 24 août 2026 — livraison limitée avec technologie actuelle et Totem approuvé
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
@@ -787,6 +787,24 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 ## V4-002 — Contrat de correction pédagogique versionné
 
 **Priorité : P0 pédagogie. Dépendances : V4-001.**
+
+### Clôture de livraison V4-002-PUBLISH — 24 août 2026
+
+- L'activité `fondamentaux-psychologie / formuler-question-delimitee /
+  activity-2` porte la consigne exacte validée, avec `PCC` et les deux
+  scénarios synthétiques séparés.
+- Le bundle seed porte le contrat immuable
+  `v4-writing-framework-selection-fr@1.0.0`, `PUBLISHED`, `writing/fr-FR` et
+  `TEXT` uniquement.
+- La projection runtime conserve trois critères et dix éléments attendus, sans
+  compensation entre A et B. Le seuil de 70 n'est qu'un seuil de routage pour
+  la seconde passe ; il ne constitue ni un verdict académique ni une preuve de
+  maîtrise.
+- Le seed valide le contrat avec le schéma serveur puis le persiste dans
+  `Exercise.rubric`. Une activité sans contrat valide et publié reste masquée.
+- Le contrat atomique v2, ses oracles et ses campagnes restent conservés comme
+  recherche historique et dette V4.1 ; ils ne sont ni supprimés ni décrits
+  rétroactivement comme le runtime livré.
 
 ### Périmètre
 

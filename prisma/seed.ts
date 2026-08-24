@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { z } from 'zod';
 
+import { correctionContractSchema } from '../src/lib/ai-correction-contracts';
 import {
   belongsToCurrentModuleRun,
   getCanonicalActivityKind,
@@ -160,6 +161,7 @@ const taskSchema = z.object({
   weight: z.number().positive(),
   position: z.number().int().positive(),
   resourceKeys: z.array(z.string().trim().min(1)).default([]),
+  correctionContract: correctionContractSchema.optional(),
 });
 
 const lessonSequenceKindSchema = z.enum([
@@ -414,6 +416,7 @@ export interface SeedProgramRepository {
     key: string;
     lessonId: string;
     position: number;
+    rubric?: Prisma.InputJsonValue;
     title: string;
   }): Promise<{ id: string }>;
   upsertModule(input: {
@@ -987,6 +990,9 @@ export async function seedSampleProgram(
             key: activityKey,
             lessonId: lesson.id,
             position: taskData.position,
+            rubric: taskData.correctionContract as
+              | Prisma.InputJsonValue
+              | undefined,
             title: taskData.title,
           });
           await repository.archiveTaskMirror({

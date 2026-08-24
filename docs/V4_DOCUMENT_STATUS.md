@@ -1,7 +1,7 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.9`
+- **Version** : `1.0.10`
 - **Date** : 24 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
@@ -40,7 +40,8 @@ chemin de lecture actif.
 | `V4_EVIDENCE_SEMANTIC_ARBITRATION.md` | `HISTORICAL_EVIDENCE` | Décisions sémantiques de recherche, dont `EXPLICITLY_REFUTED`, conservées pour les futurs contrats sans autorité runtime V4. |
 | `V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md` | `ACTIVE_AUTHORITY` | Création du premier contrat. |
 | `V4_WRITING_PILOT_BRIEF.md` | `APPROVED_INPUT_V4_002B` | `Rayan A` clos : pilote, scénarios, consigne, objectif et exclusions validés ; aucune autorité d'expérience ou de publication. |
-| `V4_WRITING_FRAMEWORK_SELECTION_CONTRACT_DRAFT.md` | `COMPILED_INPUT_V4_003A` | `Rayan B` clos : contrat approuvé et compilable hors ligne par V4-002C ; toujours non publié et sans autorité d'expérience. |
+| `V4_WRITING_FRAMEWORK_SELECTION_CONTRACT_DRAFT.md` | `HISTORICAL_EVIDENCE` | `Rayan B` clos : contrat atomique v2 et décisions sémantiques conservés pour la recherche et V4.1 ; la projection runtime bornée publiée le 24 août est distincte. |
+| `../seed/sample-program.json` — `activity-2.correctionContract` | `ACTIVE_AUTHORITY` | Projection runtime V4 publiée : `v4-writing-framework-selection-fr@1.0.0`, writing/fr-FR/TEXT, sans effet sur la progression. |
 | `V4_002C_COMPILER_REPORT.md` | `CURRENT_STATUS` | Preuve de clôture hors ligne : schéma/compilateur, certificat v2, compatibilité historique, consultations, tests et limites. |
 | `../benchmarks/ai-correction/executable-rubric/writing-framework-selection-fr.v1.draft.json` | `COMPILED_INPUT_V4_003A` | Projection machine v2 compilée hors ligne ; elle reste `DRAFT`, non liée à une version publiée et sans autorité d'expérience. |
 | `V4_003A_MECHANICAL_ORACLE_REPORT.md` | `CURRENT_STATUS` | Preuve de clôture hors ligne : 19 cas mécaniques, 7 mutations et empreinte canonique ; ouvre seulement l'audit V4-003B. |

@@ -1,5 +1,19 @@
 # Inventaire V4 des contrats de correction
 
+## Mise à jour append-only — 24 août 2026
+
+Depuis l'inventaire initial du 16 août, une seule activité est devenue éligible
+au runtime borné de la V4 :
+
+| Programme | Leçon / activité | Contrat | Portée |
+| --- | --- | --- | --- |
+| `fondamentaux-psychologie` | `formuler-question-delimitee / activity-2` | `v4-writing-framework-selection-fr@1.0.0`, `PUBLISHED` | `writing`, `fr-FR`, `TEXT`, feedback formatif sans effet sur la progression |
+
+Le résultat initial « aucune activité » ci-dessous reste conservé comme
+photographie datée du 16 août. Il n'est ni supprimé ni réécrit
+rétroactivement. Les 311 autres exercices candidats restent sans contrat V4
+publié.
+
 - **Date de référence** : 16 août 2026
 - **Ticket** : V4-002
 - **Portée** : bundles JSON présents dans `seed/`

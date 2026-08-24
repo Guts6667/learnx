@@ -1,5 +1,7 @@
 import { readFile } from 'node:fs/promises';
 
+import { getCorrectionContractRuntimeEligibility } from '../src/lib/ai-correction-contracts';
+
 import {
   SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
   createSeedProgramRepository,
@@ -258,6 +260,10 @@ function createRepository() {
   const concepts = new Map<string, string>();
   const contentBlocks = new Map<string, string>();
   const exercises = new Map<string, string>();
+  const exerciseInputs = new Map<
+    string,
+    Parameters<SeedProgramRepository['upsertExercise']>[0]
+  >();
   const programs = new Map<string, string>();
   const stages = new Map<string, string>();
   const stageAssessments = new Map<string, string>();
@@ -417,6 +423,7 @@ function createRepository() {
       const id = exercises.get(key) ?? `exercise-${exercises.size + 1}`;
 
       exercises.set(key, id);
+      exerciseInputs.set(key, structuredClone(input));
       return { id };
     },
     async upsertModule(input) {
@@ -479,6 +486,7 @@ function createRepository() {
     concepts,
     contentBlocks,
     exercises,
+    exerciseInputs,
     lessons,
     modules,
     programs,
@@ -2331,6 +2339,7 @@ describe('sample program seed', () => {
       concepts,
       contentBlocks,
       exercises,
+      exerciseInputs,
       lessons,
       modules,
       programs,
@@ -2436,6 +2445,33 @@ describe('sample program seed', () => {
     expect(exercises.has(`${firstLessonId}:activity-1`)).toBe(false);
     expect(exercises.has(`${firstLessonId}:activity-2`)).toBe(true);
     expect(exercises.has(`${firstLessonId}:activity-3`)).toBe(true);
+
+    const programId = programs.get('user-1:fondamentaux-psychologie');
+    const integrationStageId = stages.get(
+      `${programId}:integration-preuves`,
+    );
+    const projectModuleId = modules.get(
+      `${integrationStageId}:projet-integrateur`,
+    );
+    const pilotLessonId = lessons.get(
+      `${projectModuleId}:formuler-question-delimitee`,
+    );
+    const pilotExercise = exerciseInputs.get(`${pilotLessonId}:activity-2`);
+
+    expect(pilotExercise?.instructions).toContain('Projet A');
+    expect(pilotExercise?.instructions).toContain('Projet B');
+    expect(pilotExercise?.instructions).toContain('PCC');
+    expect(pilotExercise?.instructions).not.toContain('cadre JBI');
+    expect(
+      getCorrectionContractRuntimeEligibility(pilotExercise?.rubric),
+    ).toMatchObject({
+      eligible: true,
+      contract: {
+        contractKey: 'v4-writing-framework-selection-fr',
+        lifecycle: { status: 'PUBLISHED' },
+        target: { activityKey: 'activity-2', activityType: 'writing' },
+      },
+    });
     expect(stageAssessmentInputs.get('stage-1:1')).toMatchObject({
       description: expect.stringContaining('projet d’intervention'),
       instructions: expect.stringContaining('## Cas NovaWork'),

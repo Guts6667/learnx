@@ -1,5 +1,13 @@
 # V4-002B — Contrat atomique DRAFT du pilote WRITING
 
+> **Successeur de livraison — 24 août 2026 :** ce DRAFT v2 reste conservé
+> intégralement comme autorité historique des arbitrages atomiques et comme
+> direction V4.1. Une projection runtime distincte et bornée du même pilote est
+> publiée dans `seed/sample-program.json` sous
+> `v4-writing-framework-selection-fr@1.0.0`. Cette projection n'annule ni les
+> limites ni les décisions de recherche consignées ici et ne transforme pas le
+> DRAFT v2 en contrat exécuté.
+
 - **Statut** : `COMPILED_INPUT_V4_003A`
 - **Ticket** : `V4-002B`
 - **Contrat** : `v4-writing-framework-selection-fr`
