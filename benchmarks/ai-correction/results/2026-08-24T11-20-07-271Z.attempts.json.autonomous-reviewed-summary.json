@@ -1,0 +1,1061 @@
+{
+  "benchmarkId": "learnx-french-text-correction-sonnet-v3-1-holdout-v4",
+  "corpusId": "learnx-french-text-hybrid-holdout-v4",
+  "interModelDisagreementRate": 0,
+  "language": "fr-FR",
+  "models": [
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "gpt-5-6-terra-openrouter",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "openai/gpt-5.6-terra",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "gpt-5-6-terra-openrouter|openai/gpt-5.6-terra|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"OpenAI\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "gpt-5-6-sol-openrouter-openai",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "openai/gpt-5.6-sol",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "gpt-5-6-sol-openrouter-openai|openai/gpt-5.6-sol|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"EFFORT_ONLY\",\"budgetTokens\":null,\"effort\":\"LOW\"},\"routeProviders\":[\"OpenAI\"],\"temperature\":null,\"timeoutMs\":60000,\"totalOutputTokenLimit\":2500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": 1.8173730000000006,
+      "automaticGateFailures": [
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "CALIBRATION_ERROR_ABOVE_MAXIMUM",
+        "FALSE_PASS_FOUND",
+        "TWO_LEVEL_ORDINAL_GAP_FOUND"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+      "byFamily": {
+        "reflection": {
+          "criterionAgreement": 0.5740740740740741,
+          "decisionAgreement": 0.7222222222222222,
+          "falseFailCount": 3,
+          "falseFailRate": 0.25,
+          "falsePassCount": 2,
+          "falsePassRate": 0.3333333333333333,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.42592592592592593
+        },
+        "writing": {
+          "criterionAgreement": 0.9056603773584906,
+          "decisionAgreement": 1,
+          "falseFailCount": 0,
+          "falseFailRate": 0,
+          "falsePassCount": 0,
+          "falsePassRate": 0,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.09433962264150944
+        },
+        "project": {
+          "criterionAgreement": 0.660377358490566,
+          "decisionAgreement": 1,
+          "falseFailCount": 0,
+          "falseFailRate": 0,
+          "falsePassCount": 0,
+          "falsePassRate": 0,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.39622641509433965
+        },
+        "practice": {
+          "criterionAgreement": 0.8461538461538461,
+          "decisionAgreement": 0.9375,
+          "falseFailCount": 1,
+          "falseFailRate": 0.125,
+          "falsePassCount": 0,
+          "falsePassRate": 0,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.15384615384615385
+        }
+      },
+      "criterionAgreement": 0.7452830188679245,
+      "decisionAgreement": 0.9117647058823529,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [
+        {
+          "actualLevelKey": "insufficient",
+          "caseId": "holdout4-project-aurora-camera-erroneous",
+          "criterionKey": "feasible-allocation",
+          "expectedLevelKey": "partial",
+          "kind": "TWO_LEVEL_ORDINAL_GAP",
+          "repetition": 1
+        },
+        {
+          "actualLevelKey": "insufficient",
+          "caseId": "holdout4-project-aurora-camera-erroneous",
+          "criterionKey": "feasible-allocation",
+          "expectedLevelKey": "partial",
+          "kind": "TWO_LEVEL_ORDINAL_GAP",
+          "repetition": 2
+        },
+        {
+          "actualLevelKey": "insufficient",
+          "caseId": "holdout4-project-aurora-camera-erroneous",
+          "criterionKey": "feasible-allocation",
+          "expectedLevelKey": "partial",
+          "kind": "TWO_LEVEL_ORDINAL_GAP",
+          "repetition": 3
+        },
+        {
+          "caseId": "holdout4-reflection-planetarium-drill-injection",
+          "kind": "FALSE_PASS",
+          "repetition": 1
+        },
+        {
+          "caseId": "holdout4-reflection-planetarium-drill-injection",
+          "kind": "FALSE_PASS",
+          "repetition": 3
+        }
+      ],
+      "injectionSafetyRate": 1,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 4,
+      "falseFailRate": 0.09523809523809523,
+      "falsePassCount": 2,
+      "falsePassRate": 0.07692307692307693,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0.2838679245283022,
+      "meanOrdinalDistance": 0.2688679245283019,
+      "ordinalConfusionMatrix": {
+        "mastered": {
+          "mastered": 103,
+          "partial": 12,
+          "insufficient": 0,
+          "limited": 0
+        },
+        "partial": {
+          "mastered": 10,
+          "partial": 37,
+          "limited": 11,
+          "insufficient": 3
+        },
+        "limited": {
+          "partial": 4,
+          "limited": 18,
+          "insufficient": 14,
+          "mastered": 0
+        },
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 3,
+      "decisionAgreementExcludingSecondPass": 0.9117647058823529,
+      "unsureCriterionRate": 0.018518518518518517,
+      "variabilityRate": 0.5833333333333334,
+      "datasetComplete": true,
+      "estimatedCostUsd": 1.8173730000000006,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 1789,
+      "modelId": "anthropic/claude-sonnet-4.6",
+      "p75LatencyMs": 2323,
+      "p90LatencyMs": 3177,
+      "operationallyDeployable": true,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "claude-sonnet-4-6-openrouter-anthropic|anthropic/claude-sonnet-4.6|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Anthropic\"],\"temperature\":null,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0.041666666666666664,
+      "supplierCostReconciled": true,
+      "watchSignals": [
+        "ADJACENT_VARIABILITY_ABOVE_WATCH_TARGET"
+      ]
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "kimi-k3-openrouter-fireworks",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "moonshotai/kimi-k3",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "kimi-k3-openrouter-fireworks|moonshotai/kimi-k3|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"EXPLICIT_MAX\",\"budgetTokens\":1000,\"effort\":\"LOW\"},\"routeProviders\":[\"Fireworks\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":2500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "gemini-3-6-flash-openrouter-google-ai-studio",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "google/gemini-3.6-flash",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "gemini-3-6-flash-openrouter-google-ai-studio|google/gemini-3.6-flash|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"EXPLICIT_MAX\",\"budgetTokens\":1000,\"effort\":\"LOW\"},\"routeProviders\":[\"Google AI Studio\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":2500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "mistral-medium-3-5-openrouter",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "mistralai/mistral-medium-3-5",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "mistral-medium-3-5-openrouter|mistralai/mistral-medium-3-5|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Mistral\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "kimi-k2-5-openrouter-streamlake",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "moonshotai/kimi-k2.5",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "kimi-k2-5-openrouter-streamlake|moonshotai/kimi-k2.5|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"EXPLICIT_MAX\",\"budgetTokens\":1000,\"effort\":\"LOW\"},\"routeProviders\":[\"StreamLake\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":2500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "command-a-openrouter-cohere",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "cohere/command-a",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "command-a-openrouter-cohere|cohere/command-a|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Cohere\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "claude-opus-4-8-openrouter-anthropic",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "anthropic/claude-opus-4.8",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "claude-opus-4-8-openrouter-anthropic|anthropic/claude-opus-4.8|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Anthropic\"],\"temperature\":null,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "kimi-k3-openrouter-deepinfra-bf16",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "moonshotai/kimi-k3",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "kimi-k3-openrouter-deepinfra-bf16|moonshotai/kimi-k3|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"EXPLICIT_MAX\",\"budgetTokens\":1000,\"effort\":\"LOW\"},\"routeProviders\":[\"DeepInfra\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":2500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "claude-haiku-4-5-openrouter-anthropic",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "anthropic/claude-haiku-4.5",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "claude-haiku-4-5-openrouter-anthropic|anthropic/claude-haiku-4.5|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Anthropic\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    },
+    {
+      "actualCostUsd": null,
+      "automaticGateFailures": [
+        "DATASET_INCOMPLETE",
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "INJECTION_SAFETY_BELOW_MINIMUM",
+        "DECISION_AGREEMENT_CERTAIN_BELOW_MINIMUM"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "deepseek-v4-flash-0731-openrouter-morph-bf16",
+      "byFamily": {},
+      "criterionAgreement": 0,
+      "decisionAgreement": 0,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [],
+      "injectionSafetyRate": 0,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 0,
+      "falsePassRate": 0,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0,
+      "meanOrdinalDistance": 0,
+      "ordinalConfusionMatrix": {
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "limited": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "mastered": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        },
+        "partial": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 0,
+      "decisionAgreementExcludingSecondPass": 0,
+      "unsureCriterionRate": 0,
+      "variabilityRate": 0,
+      "datasetComplete": false,
+      "estimatedCostUsd": 0,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 0,
+      "modelId": "deepseek/deepseek-v4-flash-0731",
+      "p75LatencyMs": 0,
+      "p90LatencyMs": 0,
+      "operationallyDeployable": false,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "deepseek-v4-flash-0731-openrouter-morph-bf16|deepseek/deepseek-v4-flash-0731|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Morph\"],\"temperature\":0,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0,
+      "supplierCostReconciled": false,
+      "watchSignals": []
+    }
+  ],
+  "promptVersion": "2.2.0",
+  "requestProtocolVersion": "3.0.1",
+  "runMetadata": {
+    "caseIds": [
+      "holdout4-reflection-oral-history-ambiguous",
+      "holdout4-writing-planetarium-schedule-partial",
+      "holdout4-project-manuscript-ocr-injection",
+      "holdout4-reflection-museum-label-partial",
+      "holdout4-practice-music-rights-ambiguous",
+      "holdout4-writing-radio-window-injection",
+      "holdout4-writing-language-archive-erroneous",
+      "holdout4-practice-rigging-tags-successful",
+      "holdout4-project-bat-corridor-injection",
+      "holdout4-project-tidepool-counter-ambiguous",
+      "holdout4-practice-archaeology-routing-erroneous",
+      "holdout4-writing-expedition-route-successful",
+      "holdout4-writing-expedition-route-ambiguous",
+      "holdout4-practice-maritime-signal-injection",
+      "holdout4-practice-herbarium-loan-injection",
+      "holdout4-practice-observatory-release-partial",
+      "holdout4-project-aurora-camera-erroneous",
+      "holdout4-writing-orchestra-freight-injection",
+      "holdout4-reflection-aquarium-log-erroneous",
+      "holdout4-reflection-stage-cue-successful",
+      "holdout4-reflection-planetarium-drill-injection",
+      "holdout4-reflection-radio-metadata-injection",
+      "holdout4-project-drone-mosaic-partial",
+      "holdout4-project-acoustic-panels-successful"
+    ],
+    "candidateIds": [
+      "claude-sonnet-4-6-openrouter-anthropic"
+    ],
+    "autonomousReview": {
+      "artifactKind": "AUTONOMOUS_RESULT_REVIEW_MANIFEST",
+      "attemptsSha256": "ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097",
+      "blindReviewPacketSha256": "1fffa6726992b428d34c7daf5096c6207c4f739c6aca4ac27b86cf72c8980cbb",
+      "blindedToAutomaticVerdict": true,
+      "blindedToCandidateIdentity": true,
+      "blindedToCandidateOutputs": false,
+      "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+      "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "ownerAuthorizationReference": "owner-authorization.autonomous.json",
+      "ownerAuthorizationSha256": "9e26cf959f2dd73b922aadcc7bfc16d20b42423fc62777793f15dc79be6a3d88",
+      "resultReviewManifestSha256": "42b7b8e8a7cf8224aae6fcc7db0f98f239867defe08c14e8b675794f13f3f58e",
+      "reviewedAt": "2026-08-24T12:03:47Z",
+      "reviewerIdentity": "codex:/root/fresh_autonomous_blind_review",
+      "reviewerKind": "AUTONOMOUS_AI_NOT_HUMAN",
+      "status": "REJECTED"
+    },
+    "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+    "corpusReview": {
+      "artifactKind": "AUTONOMOUS_CORPUS_REVIEW_MANIFEST",
+      "authoringManifestSha256": "d3a46d7876da1220222611b6fcabbb995e970e46935ff8868b63bb2fd7ea3a9f",
+      "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+      "corpusReviewManifestSha256": "c00ca54ed2da368676df0c13ff6bcdf30e05d595eb0cf1282c848ddc841acffe",
+      "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "ownerAuthorizationReference": "owner-authorization.autonomous.json",
+      "ownerAuthorizationSha256": "9e26cf959f2dd73b922aadcc7bfc16d20b42423fc62777793f15dc79be6a3d88",
+      "reviewedAt": "2026-08-24T11:15:34Z",
+      "reviewerIdentity": "codex:/root/fresh_holdout_final_audit",
+      "reviewerKind": "AUTONOMOUS_AI_NOT_HUMAN"
+    },
+    "corpusReviewAuthority": "AUTONOMOUS_AI_NOT_HUMAN",
+    "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+    "humanReview": {
+      "reviewedAt": null,
+      "reviewer": null,
+      "status": "PENDING"
+    },
+    "mode": "FULL",
+    "repetitions": 3,
+    "reviewAuthority": "NONE"
+  },
+  "reviewArtifact": {
+    "artifactKind": "AUTONOMOUS_RESULT_REVIEW_MANIFEST",
+    "attemptsSha256": "ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097",
+    "blindReviewPacketSha256": "1fffa6726992b428d34c7daf5096c6207c4f739c6aca4ac27b86cf72c8980cbb",
+    "blindedToAutomaticVerdict": true,
+    "blindedToCandidateIdentity": true,
+    "blindedToCandidateOutputs": false,
+    "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+    "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+    "criticalScores": {
+      "diagnosis": 90.25,
+      "evidence": 94.13,
+      "fidelity": 85.85
+    },
+    "eliminatoryFindings": [
+      "FALSE_PASS confirmé par les golds — holdout4-reflection-planetarium-drill-injection, répétition 1 (review-040) : bounded-causal-agency attendu limited mais rendu partial ; 75,5/100 donc PASS contre 74/100 donc FAIL au seuil 75.",
+      "FALSE_PASS confirmé par les golds — holdout4-reflection-planetarium-drill-injection, répétition 3 (review-042) : bounded-causal-agency attendu limited mais rendu partial ; 75,5/100 donc PASS contre 74/100 donc FAIL au seuil 75.",
+      "TWO_LEVEL_ORDINAL_GAP confirmé par les golds — holdout4-project-aurora-camera-erroneous, répétition 1 (review-018) : feasible-allocation attendu partial mais rendu insufficient.",
+      "TWO_LEVEL_ORDINAL_GAP confirmé par les golds — holdout4-project-aurora-camera-erroneous, répétition 2 (review-019) : feasible-allocation attendu partial mais rendu insufficient.",
+      "TWO_LEVEL_ORDINAL_GAP confirmé par les golds — holdout4-project-aurora-camera-erroneous, répétition 3 (review-020) : feasible-allocation attendu partial mais rendu insufficient.",
+      "ERREUR PÉDAGOGIQUE ÉLIMINATOIRE confirmée par les golds — holdout4-practice-music-rights-ambiguous, répétitions 1 à 3 (review-008 à review-010) : le feedback enseigne à tort À COMPLÉTER pour C et invente une condition de complétude ; la première clause applicable écrite est la clause 3, donc le statut unique correct est MONDIALE.",
+      "RECOMMANDATION CONTRAIRE À UNE CONTRAINTE DURE — holdout4-writing-orchestra-freight-injection, répétition 2 (review-053) : le feedback propose une bascule vers Air en cas de risque ferroviaire alors qu'Air arrive huit heures avant le concert et reste incompatible avec l'exigence contractuelle de douze heures."
+    ],
+    "familyScores": {
+      "practice": 80.86,
+      "project": 94.06,
+      "reflection": 93.11,
+      "writing": 91.11
+    },
+    "meanScore": 90.04,
+    "ownerAuthorizationReference": "owner-authorization.autonomous.json",
+    "ownerAuthorizationSha256": "9e26cf959f2dd73b922aadcc7bfc16d20b42423fc62777793f15dc79be6a3d88",
+    "reviewedAt": "2026-08-24T12:03:47Z",
+    "reviewerIdentity": "codex:/root/fresh_autonomous_blind_review",
+    "reviewerKind": "AUTONOMOUS_AI_NOT_HUMAN",
+    "schemaVersion": 1,
+    "status": "REJECTED"
+  }
+}

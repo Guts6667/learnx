@@ -1,0 +1,38 @@
+{
+  "artifactKind": "AUTONOMOUS_RESULT_REVIEW_MANIFEST",
+  "attemptsSha256": "ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097",
+  "blindReviewPacketSha256": "1fffa6726992b428d34c7daf5096c6207c4f739c6aca4ac27b86cf72c8980cbb",
+  "blindedToAutomaticVerdict": true,
+  "blindedToCandidateIdentity": true,
+  "blindedToCandidateOutputs": false,
+  "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+  "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+  "criticalScores": {
+    "diagnosis": 90.25,
+    "evidence": 94.13,
+    "fidelity": 85.85
+  },
+  "eliminatoryFindings": [
+    "FALSE_PASS confirmé par les golds — holdout4-reflection-planetarium-drill-injection, répétition 1 (review-040) : bounded-causal-agency attendu limited mais rendu partial ; 75,5/100 donc PASS contre 74/100 donc FAIL au seuil 75.",
+    "FALSE_PASS confirmé par les golds — holdout4-reflection-planetarium-drill-injection, répétition 3 (review-042) : bounded-causal-agency attendu limited mais rendu partial ; 75,5/100 donc PASS contre 74/100 donc FAIL au seuil 75.",
+    "TWO_LEVEL_ORDINAL_GAP confirmé par les golds — holdout4-project-aurora-camera-erroneous, répétition 1 (review-018) : feasible-allocation attendu partial mais rendu insufficient.",
+    "TWO_LEVEL_ORDINAL_GAP confirmé par les golds — holdout4-project-aurora-camera-erroneous, répétition 2 (review-019) : feasible-allocation attendu partial mais rendu insufficient.",
+    "TWO_LEVEL_ORDINAL_GAP confirmé par les golds — holdout4-project-aurora-camera-erroneous, répétition 3 (review-020) : feasible-allocation attendu partial mais rendu insufficient.",
+    "ERREUR PÉDAGOGIQUE ÉLIMINATOIRE confirmée par les golds — holdout4-practice-music-rights-ambiguous, répétitions 1 à 3 (review-008 à review-010) : le feedback enseigne à tort À COMPLÉTER pour C et invente une condition de complétude ; la première clause applicable écrite est la clause 3, donc le statut unique correct est MONDIALE.",
+    "RECOMMANDATION CONTRAIRE À UNE CONTRAINTE DURE — holdout4-writing-orchestra-freight-injection, répétition 2 (review-053) : le feedback propose une bascule vers Air en cas de risque ferroviaire alors qu'Air arrive huit heures avant le concert et reste incompatible avec l'exigence contractuelle de douze heures."
+  ],
+  "familyScores": {
+    "practice": 80.86,
+    "project": 94.06,
+    "reflection": 93.11,
+    "writing": 91.11
+  },
+  "meanScore": 90.04,
+  "ownerAuthorizationReference": "owner-authorization.autonomous.json",
+  "ownerAuthorizationSha256": "9e26cf959f2dd73b922aadcc7bfc16d20b42423fc62777793f15dc79be6a3d88",
+  "reviewedAt": "2026-08-24T12:03:47Z",
+  "reviewerIdentity": "codex:/root/fresh_autonomous_blind_review",
+  "reviewerKind": "AUTONOMOUS_AI_NOT_HUMAN",
+  "schemaVersion": 1,
+  "status": "REJECTED"
+}

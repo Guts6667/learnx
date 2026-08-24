@@ -574,3 +574,28 @@ Chaîne d'artefacts gelée :
 La suite autorisée est une identité et un examen neufs, limités à
 `WRITING/fr-FR`. Le présent verdict reste append-only et ne doit jamais être
 remplacé par ce futur résultat.
+
+### 8.9 Revue autonome canonique du holdout général n°4
+
+La revue autonome non humaine a évalué 60 runs sans identité candidate, gold,
+coût ni verdict automatique. Les 60 jugements ont été gelés sous l'empreinte
+`46097400f8cc3b99f1ae9427187a716115c5bdd1bcc52cb5122ff8280a9c7b31`
+avant ouverture du mapping. Le manifeste post-gel, validé hors ligne contre le
+schéma autonome, porte l'empreinte
+`42b7b8e8a7cf8224aae6fcc7db0f98f239867defe08c14e8b675794f13f3f58e`.
+
+Verdict canonique : **REJECTED**. Moyenne `90,04`, diagnostic `90,25`, preuves
+`94,13`, fidélité `85,85` ; familles : writing `91,11`, practice `80,86`,
+project `94,06`, reflection `93,11`. La revue confirme les deux faux PASS du
+cas causal limite, une erreur pédagogique éliminatoire de préséance sur le cas
+Practice et une recommandation Writing incompatible avec une contrainte dure.
+Elle juge en revanche les trois corrections Aurora pédagogiquement solides :
+l'absence totale de témoin simultané rend l'allocation inutilisable. Le gold
+`partial` de ce seul critère est donc enregistré comme dette d'oracle, sans
+mutation du holdout consommé.
+
+Le résumé canonique revu porte l'empreinte
+`1208f0409add8f295edb2737f107e17e27bbc931071952794e9ffd854abf3248`.
+Il conserve `humanReviewApproved = false`, `autonomousReviewApproved = false`,
+`reviewAuthority = NONE` et `promotionEligible = false` pour l'identité
+candidate. Aucun manifeste d'approbation humaine n'a été simulé.

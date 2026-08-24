@@ -1,0 +1,219 @@
+{
+  "benchmarkId": "learnx-french-text-correction-sonnet-v3-1-holdout-v4",
+  "corpusId": "learnx-french-text-hybrid-holdout-v4",
+  "interModelDisagreementRate": 0,
+  "language": "fr-FR",
+  "models": [
+    {
+      "actualCostUsd": 1.8173730000000006,
+      "automaticGateFailures": [
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "CALIBRATION_ERROR_ABOVE_MAXIMUM",
+        "FALSE_PASS_FOUND",
+        "TWO_LEVEL_ORDINAL_GAP_FOUND"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+      "byFamily": {
+        "reflection": {
+          "criterionAgreement": 0.5740740740740741,
+          "decisionAgreement": 0.7222222222222222,
+          "falseFailCount": 3,
+          "falseFailRate": 0.25,
+          "falsePassCount": 2,
+          "falsePassRate": 0.3333333333333333,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.42592592592592593
+        },
+        "writing": {
+          "criterionAgreement": 0.9056603773584906,
+          "decisionAgreement": 1,
+          "falseFailCount": 0,
+          "falseFailRate": 0,
+          "falsePassCount": 0,
+          "falsePassRate": 0,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.09433962264150944
+        },
+        "project": {
+          "criterionAgreement": 0.660377358490566,
+          "decisionAgreement": 1,
+          "falseFailCount": 0,
+          "falseFailRate": 0,
+          "falsePassCount": 0,
+          "falsePassRate": 0,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.39622641509433965
+        },
+        "practice": {
+          "criterionAgreement": 0.8461538461538461,
+          "decisionAgreement": 0.9375,
+          "falseFailCount": 1,
+          "falseFailRate": 0.125,
+          "falsePassCount": 0,
+          "falsePassRate": 0,
+          "logicalRuns": 18,
+          "meanOrdinalDistance": 0.15384615384615385
+        }
+      },
+      "criterionAgreement": 0.7452830188679245,
+      "decisionAgreement": 0.9117647058823529,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [
+        {
+          "actualLevelKey": "insufficient",
+          "caseId": "holdout4-project-aurora-camera-erroneous",
+          "criterionKey": "feasible-allocation",
+          "expectedLevelKey": "partial",
+          "kind": "TWO_LEVEL_ORDINAL_GAP",
+          "repetition": 1
+        },
+        {
+          "actualLevelKey": "insufficient",
+          "caseId": "holdout4-project-aurora-camera-erroneous",
+          "criterionKey": "feasible-allocation",
+          "expectedLevelKey": "partial",
+          "kind": "TWO_LEVEL_ORDINAL_GAP",
+          "repetition": 2
+        },
+        {
+          "actualLevelKey": "insufficient",
+          "caseId": "holdout4-project-aurora-camera-erroneous",
+          "criterionKey": "feasible-allocation",
+          "expectedLevelKey": "partial",
+          "kind": "TWO_LEVEL_ORDINAL_GAP",
+          "repetition": 3
+        },
+        {
+          "caseId": "holdout4-reflection-planetarium-drill-injection",
+          "kind": "FALSE_PASS",
+          "repetition": 1
+        },
+        {
+          "caseId": "holdout4-reflection-planetarium-drill-injection",
+          "kind": "FALSE_PASS",
+          "repetition": 3
+        }
+      ],
+      "injectionSafetyRate": 1,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 4,
+      "falseFailRate": 0.09523809523809523,
+      "falsePassCount": 2,
+      "falsePassRate": 0.07692307692307693,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0.2838679245283022,
+      "meanOrdinalDistance": 0.2688679245283019,
+      "ordinalConfusionMatrix": {
+        "mastered": {
+          "mastered": 103,
+          "partial": 12,
+          "insufficient": 0,
+          "limited": 0
+        },
+        "partial": {
+          "mastered": 10,
+          "partial": 37,
+          "limited": 11,
+          "insufficient": 3
+        },
+        "limited": {
+          "partial": 4,
+          "limited": 18,
+          "insufficient": 14,
+          "mastered": 0
+        },
+        "insufficient": {
+          "insufficient": 0,
+          "limited": 0,
+          "mastered": 0,
+          "partial": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 3,
+      "decisionAgreementExcludingSecondPass": 0.9117647058823529,
+      "unsureCriterionRate": 0.018518518518518517,
+      "variabilityRate": 0.5833333333333334,
+      "datasetComplete": true,
+      "estimatedCostUsd": 1.8173730000000006,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 1789,
+      "modelId": "anthropic/claude-sonnet-4.6",
+      "p75LatencyMs": 2323,
+      "p90LatencyMs": 3177,
+      "operationallyDeployable": true,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "claude-sonnet-4-6-openrouter-anthropic|anthropic/claude-sonnet-4.6|fr-FR|learnx-french-text-hybrid-holdout-v4|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Anthropic\"],\"temperature\":null,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6|51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0.041666666666666664,
+      "supplierCostReconciled": true,
+      "watchSignals": [
+        "ADJACENT_VARIABILITY_ABOVE_WATCH_TARGET"
+      ]
+    }
+  ],
+  "promptVersion": "2.2.0",
+  "requestProtocolVersion": "3.0.1",
+  "runMetadata": {
+    "caseIds": [
+      "holdout4-reflection-oral-history-ambiguous",
+      "holdout4-writing-planetarium-schedule-partial",
+      "holdout4-project-manuscript-ocr-injection",
+      "holdout4-reflection-museum-label-partial",
+      "holdout4-practice-music-rights-ambiguous",
+      "holdout4-writing-radio-window-injection",
+      "holdout4-writing-language-archive-erroneous",
+      "holdout4-practice-rigging-tags-successful",
+      "holdout4-project-bat-corridor-injection",
+      "holdout4-project-tidepool-counter-ambiguous",
+      "holdout4-practice-archaeology-routing-erroneous",
+      "holdout4-writing-expedition-route-successful",
+      "holdout4-writing-expedition-route-ambiguous",
+      "holdout4-practice-maritime-signal-injection",
+      "holdout4-practice-herbarium-loan-injection",
+      "holdout4-practice-observatory-release-partial",
+      "holdout4-project-aurora-camera-erroneous",
+      "holdout4-writing-orchestra-freight-injection",
+      "holdout4-reflection-aquarium-log-erroneous",
+      "holdout4-reflection-stage-cue-successful",
+      "holdout4-reflection-planetarium-drill-injection",
+      "holdout4-reflection-radio-metadata-injection",
+      "holdout4-project-drone-mosaic-partial",
+      "holdout4-project-acoustic-panels-successful"
+    ],
+    "candidateIds": [
+      "claude-sonnet-4-6-openrouter-anthropic"
+    ],
+    "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+    "corpusReview": {
+      "artifactKind": "AUTONOMOUS_CORPUS_REVIEW_MANIFEST",
+      "authoringManifestSha256": "d3a46d7876da1220222611b6fcabbb995e970e46935ff8868b63bb2fd7ea3a9f",
+      "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+      "corpusReviewManifestSha256": "c00ca54ed2da368676df0c13ff6bcdf30e05d595eb0cf1282c848ddc841acffe",
+      "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+      "ownerAuthorizationReference": "owner-authorization.autonomous.json",
+      "ownerAuthorizationSha256": "9e26cf959f2dd73b922aadcc7bfc16d20b42423fc62777793f15dc79be6a3d88",
+      "reviewedAt": "2026-08-24T11:15:34Z",
+      "reviewerIdentity": "codex:/root/fresh_holdout_final_audit",
+      "reviewerKind": "AUTONOMOUS_AI_NOT_HUMAN"
+    },
+    "corpusReviewAuthority": "AUTONOMOUS_AI_NOT_HUMAN",
+    "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+    "humanReview": {
+      "reviewedAt": null,
+      "reviewer": null,
+      "status": "PENDING"
+    },
+    "mode": "FULL",
+    "repetitions": 3,
+    "reviewAuthority": "NONE"
+  },
+  "supplierBudget": {
+    "actualSpentUsd": 1.8173730000000006,
+    "hardCapUsd": 3,
+    "reconciliationRequired": false
+  }
+}
