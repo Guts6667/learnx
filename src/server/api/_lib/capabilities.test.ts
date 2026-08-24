@@ -22,12 +22,17 @@ describe('centralized role capabilities', () => {
     expect(hasCapability(Role.ADMIN, 'learning.submission.review')).toBe(true);
   });
 
-  it('reserves AI capability names without granting them to a role', () => {
+  it('grants AI correction to learners (V4-009/010) and reserves generation for V5', () => {
     expect(CAPABILITIES).toContain('ai.assessment.correct');
     expect(CAPABILITIES).toContain('ai.program.generate');
 
+    // V4-009/010 : la correction assistée est une capacité apprenante.
+    expect(hasCapability(Role.USER, 'ai.assessment.correct')).toBe(true);
+    expect(hasCapability(Role.CREATOR, 'ai.assessment.correct')).toBe(true);
+    expect(hasCapability(Role.ADMIN, 'ai.assessment.correct')).toBe(true);
+
+    // La génération de parcours reste réservée à V5.
     for (const role of [Role.USER, Role.CREATOR, Role.ADMIN]) {
-      expect(hasCapability(role, 'ai.assessment.correct')).toBe(false);
       expect(hasCapability(role, 'ai.program.generate')).toBe(false);
     }
   });

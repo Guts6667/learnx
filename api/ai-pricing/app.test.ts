@@ -11,6 +11,19 @@ import {
 const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const targetId = '11111111-1111-4111-8111-111111111111';
 
+const allowWithRole = (role: string): MiddlewareHandler<AuthEnvironment> => {
+  return async (context, next) => {
+    context.set('user', {
+      displayName: 'Learner',
+      email: 'learner@example.com',
+      id: userId,
+      locale: 'fr',
+      role: role as Role,
+    });
+    await next();
+  };
+};
+
 const allow: MiddlewareHandler<AuthEnvironment> = async (context, next) => {
   context.set('user', {
     displayName: 'Learner',
@@ -44,9 +57,12 @@ const quote: StoredPricingQuote = {
 };
 
 describe('AI pricing quote API', () => {
-  it('keeps the quote endpoint unusable while no role owns the correction capability', async () => {
+  it('denies the quote endpoint to a role without the correction capability', async () => {
     const service = { quote: vi.fn().mockResolvedValue(quote) };
-    const app = createAiPricingApp({ authentication: allow, service });
+    const app = createAiPricingApp({
+      authentication: allowWithRole('SUSPENDED'),
+      service,
+    });
 
     const response = await app.request('/api/ai-correction/quotes', {
       body: JSON.stringify({
