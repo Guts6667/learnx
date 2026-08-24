@@ -1,6 +1,8 @@
+import { log } from 'node:console';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { argv } from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 const directory = dirname(fileURLToPath(import.meta.url));
@@ -34,7 +36,7 @@ const mandatoryProbeByCell = new Map(
 );
 const expectedCells = new Set(plan.cellIds);
 
-const inputPaths = process.argv.slice(2).map((path) => resolve(path));
+const inputPaths = argv.slice(2).map((path) => resolve(path));
 invariant(inputPaths.length > 0, 'AUTHOR_PROPOSAL_PATH_REQUIRED');
 
 for (const inputPath of inputPaths) {
@@ -141,5 +143,5 @@ for (const inputPath of inputPaths) {
     );
   }
   invariant(seenCells.size === expectedCells.size, 'AUTHOR_CELL_COVERAGE_INVALID');
-  console.log(`${artifact.authorId}: ${artifact.proposals.length} proposals valid (${inputPath})`);
+  log(`${artifact.authorId}: ${artifact.proposals.length} proposals valid (${inputPath})`);
 }

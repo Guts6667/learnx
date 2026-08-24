@@ -875,11 +875,11 @@ describe('correction benchmark corpus', () => {
       supplierCostCapUsd: 3,
     });
     const contingencyConfigurationPath = path.resolve(
-      'benchmarks/ai-correction/hybrid/writing-only-fr-v1/configuration.contingency-3usd.json',
+      'benchmarks/ai-correction/hybrid/writing-only-fr-v1/configuration.contingency-4usd.json',
     );
     const contingencyConfiguration = parseAutonomousHoldoutConfiguration(
       readJson(
-        'benchmarks/ai-correction/hybrid/writing-only-fr-v1/configuration.contingency-3usd.json',
+        'benchmarks/ai-correction/hybrid/writing-only-fr-v1/configuration.contingency-4usd.json',
       ),
     );
     const budgetPolicyPath = path.resolve(
@@ -889,7 +889,7 @@ describe('correction benchmark corpus', () => {
     expect(contingencyConfiguration).toMatchObject({
       activityTypeScope: ['writing'],
       maxRetries: 0,
-      supplierCostCapUsd: 3,
+      supplierCostCapUsd: 4,
     });
     expect(
       createHash('sha256')

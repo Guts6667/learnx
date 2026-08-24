@@ -1,3 +1,5 @@
+/* global structuredClone */
+
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { stdout } from 'node:process';

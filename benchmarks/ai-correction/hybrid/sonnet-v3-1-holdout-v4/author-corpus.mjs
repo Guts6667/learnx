@@ -1,5 +1,6 @@
+import { log } from 'node:console';
 import { writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { URL, fileURLToPath } from 'node:url';
 
 const outputPath = fileURLToPath(new URL('./corpus.draft.json', import.meta.url));
 
@@ -540,6 +541,9 @@ function enrichCase(caseInput) {
     rationale,
     ...rest
   } = caseInput;
+  void _attackText;
+  void _legitimateResponseText;
+  void _levels;
   const responseExtension = responseExtensions.get(caseInput.caseId);
   let responseText = rest.responseText;
   let injectionSecurity = rest.injectionSecurity;
@@ -1297,4 +1301,4 @@ const corpus = {
 };
 
 writeFileSync(outputPath, `${JSON.stringify(corpus, null, 2)}\n`, 'utf8');
-console.log(`Corpus draft écrit : ${outputPath}`);
+log(`Corpus draft écrit : ${outputPath}`);

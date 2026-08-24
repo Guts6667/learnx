@@ -1,8 +1,10 @@
+import { log } from 'node:console';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { argv } from 'node:process';
 
-const [labelsPathArgument, packetPathArgument] = process.argv.slice(2);
+const [labelsPathArgument, packetPathArgument] = argv.slice(2);
 if (!labelsPathArgument || !packetPathArgument) {
   throw new Error('Usage: node validate-cross-labels.mjs <labels.json> <packet.json>');
 }
@@ -120,6 +122,6 @@ for (const opaqueId of itemsById.keys()) {
   invariant(seen.has(opaqueId), `missing label ${opaqueId}`);
 }
 
-console.log(
+log(
   `${labels.reviewerAuthorId}->${labels.targetAuthorId}: ${labels.labels.length} blind cross-labels valid`,
 );

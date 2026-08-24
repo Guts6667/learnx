@@ -1,3 +1,4 @@
+import { log } from 'node:console';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -680,7 +681,7 @@ assert(
   `SURFACE_CONTEXT_SIMILARITY_TOO_HIGH:${JSON.stringify(maximumContextPair)}`,
 );
 
-console.log(
+log(
   JSON.stringify(
     {
       status: 'DRAFT_CHECKS_PASS',
