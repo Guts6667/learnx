@@ -27,8 +27,10 @@ nav a { color:#cbd5ee !important; }
 nav a[aria-current="page"] { color:#fff !important; border-color:#cc6b57 !important; }
 section { border-color:#d8deea !important; }
 .decision,.metric,.chart,.matrix,details,.card,.candidate,.timeline article { border-color:#d8deea !important; background:#fff !important; box-shadow:none !important; }
-.matrix th,.matrix td,.table-scroll { border-color:#d8deea !important; }
-.matrix th { background:#e7edff !important; color:#17233b !important; }
+.matrix th,.matrix td,table th,table td,.table-scroll { border-color:#d8deea !important; }
+.matrix th,table th { background:#e7edff !important; color:#17233b !important; }
+.matrix td,table td { background:#fff !important; color:#42506a !important; }
+.matrix td:first-child,table td:first-child { color:#17233b !important; font-weight:600; }
 .track { background:#e7edff !important; }
 .fill { background:#3b5bd6 !important; }
 .fill.brass { background:#cc6b57 !important; }

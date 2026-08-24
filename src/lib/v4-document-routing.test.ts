@@ -51,7 +51,7 @@ describe('V4 document routing', () => {
     const french = read('public/research/ai-correction/index.html');
     const english = read('public/research/ai-correction/en.html');
 
-    expect(french).toContain('pilote');
+    expect(french.toLowerCase()).toContain('pilote');
     expect(french.toLowerCase()).toContain('writing');
     expect(french.match(/class="article-card"/g)).toHaveLength(7);
     expect(french).toContain('gates-and-holdout.html');
@@ -61,6 +61,30 @@ describe('V4 document routing', () => {
     expect(english.match(/class="article-card"/g)).toHaveLength(7);
     expect(english).toContain('gates-and-holdout.en.html');
     expect(english).toContain('writing-exam-bounded-pilot.en.html');
+
+    const frenchLatest = french.indexOf('writing-exam-bounded-pilot.html');
+    const frenchOldest = french.indexOf('benchmark-initial.html');
+    const englishLatest = english.indexOf(
+      'writing-exam-bounded-pilot.en.html',
+    );
+    const englishOldest = english.indexOf('benchmark-initial.en.html');
+    expect(frenchLatest).toBeGreaterThan(-1);
+    expect(frenchLatest).toBeLessThan(frenchOldest);
+    expect(englishLatest).toBeGreaterThan(-1);
+    expect(englishLatest).toBeLessThan(englishOldest);
+  });
+
+  it('keeps archived research tables readable on the Totem light surface', () => {
+    const archiveTheme = read(
+      'public/research/ai-correction/archive-totem.css',
+    );
+
+    expect(archiveTheme).toContain(
+      'table td { background:#fff !important; color:#42506a !important; }',
+    );
+    expect(archiveTheme).toContain(
+      'table th { background:#e7edff !important; color:#17233b !important; }',
+    );
   });
 
   it('keeps every public research article reachable as a standalone page', () => {
