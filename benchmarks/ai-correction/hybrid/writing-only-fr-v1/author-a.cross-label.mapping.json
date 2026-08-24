@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_CROSS_LABEL_PRIVATE_MAPPING",
+  "status": "SEALED_UNTIL_REVIEW_LABELS_ARE_FROZEN",
+  "targetAuthorId": "A",
+  "targetBatchSha256": "48f820a8adf49a9c23a0c695bf67f376099ac5f2aa57ec9e9dd70ecaa5f799a6",
+  "packetPath": "author-a.cross-label.blind.json",
+  "mapping": [
+    {
+      "opaqueId": "cross-a-001",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-decision-memo-complete-clear",
+      "caseId": "author-a-decision-memo-complete-clear"
+    },
+    {
+      "opaqueId": "cross-a-002",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-decision-memo-complete-concise",
+      "caseId": "author-a-decision-memo-complete-concise"
+    },
+    {
+      "opaqueId": "cross-a-003",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-decision-memo-partial-omission",
+      "caseId": "author-a-decision-memo-partial-omission"
+    },
+    {
+      "opaqueId": "cross-a-004",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-decision-memo-erroneous-decidable",
+      "caseId": "author-a-decision-memo-erroneous-decidable"
+    },
+    {
+      "opaqueId": "cross-a-005",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-decision-memo-ambiguous-borderline",
+      "caseId": "author-a-decision-memo-ambiguous-borderline"
+    },
+    {
+      "opaqueId": "cross-a-006",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-decision-memo-prompt-injection",
+      "caseId": "author-a-decision-memo-prompt-injection"
+    },
+    {
+      "opaqueId": "cross-a-007",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-explanatory-analysis-complete-clear",
+      "caseId": "author-a-explanatory-analysis-complete-clear"
+    },
+    {
+      "opaqueId": "cross-a-008",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-explanatory-analysis-complete-concise",
+      "caseId": "author-a-explanatory-analysis-complete-concise"
+    },
+    {
+      "opaqueId": "cross-a-009",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-explanatory-analysis-partial-omission",
+      "caseId": "author-a-explanatory-analysis-partial-omission"
+    },
+    {
+      "opaqueId": "cross-a-010",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-explanatory-analysis-erroneous-decidable",
+      "caseId": "author-a-explanatory-analysis-erroneous-decidable"
+    },
+    {
+      "opaqueId": "cross-a-011",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "caseId": "author-a-explanatory-analysis-ambiguous-borderline"
+    },
+    {
+      "opaqueId": "cross-a-012",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-explanatory-analysis-prompt-injection",
+      "caseId": "author-a-explanatory-analysis-prompt-injection"
+    },
+    {
+      "opaqueId": "cross-a-013",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-reflective-note-complete-clear",
+      "caseId": "author-a-reflective-note-complete-clear"
+    },
+    {
+      "opaqueId": "cross-a-014",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-reflective-note-complete-concise",
+      "caseId": "author-a-reflective-note-complete-concise"
+    },
+    {
+      "opaqueId": "cross-a-015",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-reflective-note-partial-omission",
+      "caseId": "author-a-reflective-note-partial-omission"
+    },
+    {
+      "opaqueId": "cross-a-016",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "caseId": "author-a-reflective-note-erroneous-decidable"
+    },
+    {
+      "opaqueId": "cross-a-017",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-reflective-note-ambiguous-borderline",
+      "caseId": "author-a-reflective-note-ambiguous-borderline"
+    },
+    {
+      "opaqueId": "cross-a-018",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-reflective-note-prompt-injection",
+      "caseId": "author-a-reflective-note-prompt-injection"
+    },
+    {
+      "opaqueId": "cross-a-019",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-action-plan-complete-clear",
+      "caseId": "author-a-action-plan-complete-clear"
+    },
+    {
+      "opaqueId": "cross-a-020",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-action-plan-complete-concise",
+      "caseId": "author-a-action-plan-complete-concise"
+    },
+    {
+      "opaqueId": "cross-a-021",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-action-plan-partial-omission",
+      "caseId": "author-a-action-plan-partial-omission"
+    },
+    {
+      "opaqueId": "cross-a-022",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-action-plan-erroneous-decidable",
+      "caseId": "author-a-action-plan-erroneous-decidable"
+    },
+    {
+      "opaqueId": "cross-a-023",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-action-plan-ambiguous-borderline",
+      "caseId": "author-a-action-plan-ambiguous-borderline"
+    },
+    {
+      "opaqueId": "cross-a-024",
+      "targetAuthorId": "A",
+      "cellId": "writing-v1-action-plan-prompt-injection",
+      "caseId": "author-a-action-plan-prompt-injection"
+    }
+  ]
+}

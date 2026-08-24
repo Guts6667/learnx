@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_CROSS_LABEL_PACKETS_FREEZE",
+  "status": "FROZEN_BEFORE_CROSS_LABELING",
+  "frozenAt": "2026-08-24T12:44:00Z",
+  "authorProposalFreezePath": "author-proposals.freeze.json",
+  "packets": [
+    {
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "packetPath": "author-a.cross-label.blind.json",
+      "packetSha256": "4589273f54faaacb772dfd20dd376623c143ba2f4c72c4dd9fd783bc965002c0",
+      "privateMappingPath": "author-a.cross-label.mapping.json",
+      "privateMappingSha256": "fc677423dd1675dc10f1648d6d52864c249e643fab0f82fd78f2b59ad0c49b61",
+      "itemCount": 24
+    },
+    {
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "packetPath": "author-b.cross-label.blind.json",
+      "packetSha256": "94e1c3576540af33121a97af951e33743bcfedb52ffb9378e2dc84e73f290a69",
+      "privateMappingPath": "author-b.cross-label.mapping.json",
+      "privateMappingSha256": "c6b74ed0b95c7e4f45182d3890efc43f4ac86f0a5e7feb9e65d7dcd56c289fcd",
+      "itemCount": 24
+    }
+  ],
+  "blindFieldsExcluded": [
+    "cellId",
+    "caseId",
+    "profile",
+    "expectedCriteria",
+    "expectedScore",
+    "expectedGuardBand",
+    "expectedSecondPass",
+    "goldRationale",
+    "mandatoryProbeId"
+  ],
+  "mappingAccessBeforeLabelFreezeAllowed": false,
+  "mutationAfterFreezeAllowed": false
+}
