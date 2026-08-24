@@ -831,6 +831,15 @@ async function main(): Promise<void> {
           modelIds: selectedCandidates.map((candidate) => candidate.modelId),
           promptVersion: configuration.promptVersion,
           requestProtocolVersion: configuration.requestProtocolVersion,
+          supplierBudget: supplierBudget
+            ? {
+                actualSpentUsd: supplierBudget.actualSpentUsd,
+                hardCapUsd: supplierBudget.hardCapUsd,
+                reconciliationRequired: attempts.some(
+                  (attempt) => attempt.usage?.costSource !== 'ACTUAL',
+                ),
+              }
+            : null,
           attempts,
         },
         null,
@@ -862,6 +871,15 @@ async function main(): Promise<void> {
   });
   const evaluatedSummary = {
     ...summary,
+    supplierBudget: supplierBudget
+      ? {
+          actualSpentUsd: supplierBudget.actualSpentUsd,
+          hardCapUsd: supplierBudget.hardCapUsd,
+          reconciliationRequired: attempts.some(
+            (attempt) => attempt.usage?.costSource !== 'ACTUAL',
+          ),
+        }
+      : null,
     models: summary.models
       .filter((metrics) => selectedCandidateIds.has(metrics.candidateId))
       .map((metrics) => ({
