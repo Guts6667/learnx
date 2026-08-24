@@ -536,3 +536,41 @@ runtime (`src/server/corrections/promoted-identity.ts`). Reste avant
 production : rédaction + approbation + scellement du holdout n°3 (l'agent
 auteur a atteint sa limite d'usage ; relancer), puis exécution unique.
 Le reste du chemin produit est consolidé dans `docs/V4_ROLLOUT_CHECKLIST.md`.
+
+### 8.8 Holdout général autonome n°4 — 24 août 2026 : NO-GO définitif
+
+Le holdout général `learnx-french-text-hybrid-holdout-v4` a été exécuté une
+seule fois sous l'identité
+`learnx-french-text-correction-sonnet-v3-1-holdout-v4` : Claude Sonnet 4.6,
+route Anthropic épinglée via OpenRouter sans fallback, prompt `2.2.0`,
+protocole `3.0.1`, livraison `PARTIAL_CRITERION`, 24 cas × 3 répétitions.
+Les 72 appels ont produit 72 sorties structurellement valides, sans retry ni
+erreur transport. Le coût fournisseur ACTUAL réconcilié est de
+`1,817373 USD`.
+
+**Verdict gelé : NO-GO définitif pour la promotion générale à quatre familles
+(`writing`, `practice`, `project`, `reflection`).** Le holdout est consommé à
+jamais : aucun rejeu, aucune réutilisation comme examen, aucune correction de
+son contenu et aucun retuning post-résultat ne sont autorisés.
+
+Causes automatiques du refus : accord critériel `74,53 %` sous le minimum,
+calibration `28,39 %` au-dessus du plafond, deux faux PASS provenant d'un même
+cas répété et trois écarts de deux niveaux provenant d'un autre cas répété.
+Les signaux de transport et de sécurité restent conformes : 0 sortie
+inutilisable, 0 citation présentée hors réponse, sécurité injection 100 % et
+1,85 % de critères retenus comme incertains. La revue autonome aveugle des 60
+runs préenregistrés reste une analyse canonique du partage modèle/oracle ; elle
+ne peut pas ressusciter cette campagne générale.
+
+Chaîne d'artefacts gelée :
+
+- tentatives : `ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097` ;
+- résumé automatique : `33cef1a329e0ab92a11b4ecc856c50ace2380a8fc62876aecd7ab128df2fd128` ;
+- paquet aveugle : `1fffa6726992b428d34c7daf5096c6207c4f739c6aca4ac27b86cf72c8980cbb` ;
+- mapping post-gel : `3279f6277344358a049e656af3ec1f2df9b8b4b41ceb368d25cfa198b0cba30e` ;
+- jugements aveugles, gelés avant comparaison aux golds :
+  `46097400f8cc3b99f1ae9427187a716115c5bdd1bcc52cb5122ff8280a9c7b31`.
+
+La suite autorisée est une identité et un examen neufs, limités à
+`WRITING/fr-FR`. Le présent verdict reste append-only et ne doit jamais être
+remplacé par ce futur résultat.
