@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "AUTONOMOUS_CORPUS_REVIEW_MANIFEST",
+  "status": "APPROVED",
+  "benchmarkId": "learnx-french-text-correction-sonnet-v3-1-holdout-v4",
+  "corpusId": "learnx-french-text-hybrid-holdout-v4",
+  "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+  "configurationSha256": "9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6",
+  "authoringManifestSha256": "d3a46d7876da1220222611b6fcabbb995e970e46935ff8868b63bb2fd7ea3a9f",
+  "ownerAuthorizationReference": "owner-authorization.autonomous.json",
+  "ownerAuthorizationSha256": "9e26cf959f2dd73b922aadcc7bfc16d20b42423fc62777793f15dc79be6a3d88",
+  "blindedToCandidateOutputs": true,
+  "reviewerIdentity": "codex:/root/fresh_holdout_final_audit",
+  "reviewerKind": "AUTONOMOUS_AI_NOT_HUMAN",
+  "reviewedAt": "2026-08-24T11:15:34Z"
+}

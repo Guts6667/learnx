@@ -2640,7 +2640,7 @@ describe('correction benchmark metrics', () => {
     ).toThrow('BENCHMARK_RESUME_AUTONOMOUS_REVIEW_IMMUTABLE');
   });
 
-  it('evaluates autonomous evidence without fabricating human approval or enabling promotion', () => {
+  it('evaluates autonomous evidence without fabricating human approval and enables authorized promotion', () => {
     const corpus = loadCorpus();
     const configuration = loadConfiguration();
     const candidate = configuration.candidates[0];
@@ -2709,7 +2709,7 @@ describe('correction benchmark metrics', () => {
       humanReviewApproved: false,
       operationallyDeployable: true,
       pedagogicallyEligible: true,
-      promotionEligible: false,
+      promotionEligible: true,
       reviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN',
       supplierCostReconciled: true,
     });
@@ -2717,7 +2717,7 @@ describe('correction benchmark metrics', () => {
     expect(
       metrics &&
         modelMeetsPromotionThresholds(metrics, configuration.thresholds),
-    ).toBe(false);
+    ).toBe(true);
 
     const unreconciled = summarizeCorrectionBenchmark({
       attempts: attempts.map((attempt) => ({

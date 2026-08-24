@@ -2731,11 +2731,8 @@ export function summarizeCorrectionBenchmark(input: {
       p90LatencyMs: latencyP90,
       operationallyDeployable,
       pedagogicallyEligible,
-      // Autonomous review evidence is validated and reported, but activating
-      // autonomous promotion remains fail-closed until the owner directly
-      // authorizes that policy change.
       promotionEligible:
-        humanReviewApproved && pedagogicallyEligible && operationallyDeployable,
+        resultReviewApproved && pedagogicallyEligible && operationallyDeployable,
       promotionIdentity: [
         candidate.candidateId,
         candidate.modelId,
@@ -2796,7 +2793,7 @@ export function modelMeetsPromotionThresholds(
 ): boolean {
   const sharedGates =
     metrics.datasetComplete &&
-    metrics.humanReviewApproved &&
+    (metrics.humanReviewApproved || metrics.autonomousReviewApproved) &&
     metrics.pedagogicallyEligible &&
     metrics.operationallyDeployable &&
     metrics.promotionEligible &&

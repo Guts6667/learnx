@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "AUTHORING_PROVENANCE_MANIFEST",
+  "manifestId": "learnx-sonnet-v3-1-holdout-v4-final",
+  "status": "FINAL",
+  "finalizedAt": "2026-08-24T11:12:45Z",
+  "sourceDraftManifestPath": "manifest.draft.json",
+  "sourceDraftManifestSha256": "e483ef8737bba9a1c24ee1bdd43abc579f57a279d85330fbc73b72c64a880bf5",
+  "corpusPath": "corpus.draft.json",
+  "corpusSha256": "51782c195cd56a3fd9229e03c13ba33c61f8253ea10d016ce1e80cf8e219b38b",
+  "authoringChecks": {
+    "status": "PASS",
+    "caseCount": 24,
+    "criterionGoldCount": 72,
+    "repetitions": 3,
+    "candidateOutputsConsulted": false,
+    "networkOrModelCallsMade": false
+  },
+  "independentReviewArtifact": "PENDING_SEPARATE_AUTHORITY",
+  "execution": false,
+  "notice": "Ce manifeste finalise uniquement l’authoring. Il ne constitue ni une revue indépendante, ni un résultat candidat, ni une décision de promotion."
+}
