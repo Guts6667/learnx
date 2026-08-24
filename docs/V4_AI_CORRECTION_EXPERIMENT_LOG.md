@@ -685,3 +685,27 @@ Le garde budgétaire ne peut jamais interrompre la phase primaire après son
 premier appel. Une seconde passe non finançable est sautée avec le signal
 `SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET`, sans score exact ni verdict, et
 rapportée comme écart de mesure. Les retries transport restent bornés à zéro.
+
+### 8.12 Authoring indépendant et contingency Writing
+
+Deux auteurs autonomes en contextes séparés ont produit 24 propositions chacun
+sans consulter sorties candidates, ancien examen ni travail de l'autre. Leurs
+lots ont été gelés avant génération de deux paquets opaques qui masquaient
+profil, gold, score, garde, sonde et correspondance. Chaque auteur a ensuite
+annoté les 24 textes de l'autre avant ouverture des mappings.
+
+Résultat préenregistré : `0/144` niveaux en désaccord (`0 %`, seuil d'arrêt
+strictement supérieur à `15 %`), zéro désaccord sur la garde ±5, zéro désaccord
+sur la seconde passe et 48 propositions convergentes sur 48. Les 24 cas sont
+donc sélectionnables par alternance A/B sans fallback ni troisième auteur.
+Cette indépendance est procédurale et autonome : elle ne doit pas être
+présentée comme une validation par deux experts humains et peut conserver des
+biais corrélés de famille de modèle.
+
+Après ce gel et avant sélection du corpus ou sortie candidate, Rayan a autorisé
+une contingency fournisseur explicite de `3,00 USD`, contre `2,18 USD`
+initialement. Elle ne change aucun seuil qualité. La borne formelle
+préliminaire de `2,399544 USD` pour 72 primaires tient désormais dans le
+plafond et laisserait `0,600456 USD` aux secondes passes ; le calcul exact
+reste obligatoire sur le corpus scellé. Le préflight à 3 USD, lié par digest,
+reste le seul artefact habilité à autoriser ou refuser l'exécution réseau.
