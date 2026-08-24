@@ -2,6 +2,17 @@
 -- This activates offered-credit quotes only. Payment, packs and purchased-credit
 -- settlement remain outside this migration and outside the V4 pilot runtime.
 
+-- Repair the legacy semantic-version constraint before materializing the pilot.
+-- The original migration used a backslash-escaped regular expression whose
+-- interpretation rejects ordinary values such as 4.0.0 on PostgreSQL.
+ALTER TABLE "ai_pricing_catalog_versions"
+DROP CONSTRAINT IF EXISTS "ai_pricing_catalog_version_format_check";
+
+ALTER TABLE "ai_pricing_catalog_versions"
+ADD CONSTRAINT "ai_pricing_catalog_version_format_check" CHECK (
+  "version" ~ '^[0-9]+[.][0-9]+[.][0-9]+$'
+);
+
 UPDATE "ai_pricing_catalog_versions"
 SET
   "status" = 'retired',
