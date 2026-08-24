@@ -10,6 +10,7 @@ import {
   getCorrectionProviderAdapter,
 } from '@/lib/ai-correction-provider-adapters';
 import {
+  reconcileProtocol3ScoreGuardPasses,
   salvageProtocol3PartialCorrection,
   validateBenchmarkProtocol3ModelOutputWithEvidence,
 } from '@/lib/ai-correction-benchmark';
@@ -60,6 +61,9 @@ export interface AcceptedQuoteSnapshot {
   maximumReservedCredits: bigint;
   expiresAt: Date;
   promptVersion: string;
+  modelId: string;
+  provider: string;
+  includesAutomaticSecondPass: boolean;
   contractKey: string;
   contractVersion: string;
   requestFingerprint: string;
@@ -82,7 +86,6 @@ export interface CreditSettlementPort {
     reservationId: string;
     userId: string;
   }): Promise<void>;
-  release(input: { reservationId: string; userId: string }): Promise<void>;
 }
 
 export interface CorrectionTransportPort {
@@ -93,8 +96,10 @@ export interface CorrectionTransportPort {
     modelId: string;
   }): Promise<{
     latencyMs: number;
+    modelSnapshot: string;
     output: unknown;
     providerRequestId?: string;
+    providerRoute: string;
     usage: {
       actualCostUsd?: number;
       inputTokens: number;
@@ -102,6 +107,21 @@ export interface CorrectionTransportPort {
       visibleOutputTokens: number;
     };
   }>;
+}
+
+export interface RuntimeCorrectionAttempt {
+  actualCostUsd?: number;
+  errorCode?: string;
+  inputTokens?: number;
+  latencyMs?: number;
+  modelSnapshot?: string;
+  output?: unknown;
+  providerRequestId?: string;
+  providerRoute?: string;
+  reasoningTokens?: number;
+  sequence: number;
+  status: 'FAILED' | 'SUCCEEDED';
+  visibleOutputTokens?: number;
 }
 
 export interface OrchestratedCorrectionResult {
@@ -132,8 +152,10 @@ export interface OrchestratedCorrectionResult {
   replay: boolean;
 }
 
-// Identité promue v3-1 : deux retries bornés + la tentative initiale.
-const MAX_RUNTIME_ATTEMPTS = 3;
+// L'identité writing-only interdit les retries/fallbacks. Une seconde
+// exécution reste possible uniquement lorsque la bande de garde l'impose.
+const MAX_RUNTIME_PRIMARY_ATTEMPTS =
+  PROMOTED_CORRECTION_IDENTITY.maxRetries + 1;
 
 function levelLabel(
   contract: CorrectionContract,
@@ -193,6 +215,7 @@ export class CorrectionOrchestrationService {
         requestFingerprint: string;
       }): Promise<OrchestratedCorrectionResult | null>;
       persist(input: {
+        attempts: RuntimeCorrectionAttempt[];
         userId: string;
         quote: AcceptedQuoteSnapshot;
         result: OrchestratedCorrectionResult['correction'];
@@ -222,6 +245,23 @@ export class CorrectionOrchestrationService {
       throw new CorrectionOrchestrationError('QUOTE_EXPIRED');
     }
 
+    const contract = correctionContractSchema.parse(quote.contract);
+    // Scope vendu = scope promu. Le refus a lieu avant replay et réservation :
+    // défaut éliminatoire Practice confirmé par la revue du 24 août.
+    if (
+      !PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
+        (activityType) => activityType === contract.target.activityType,
+      ) ||
+      quote.contractKey !== contract.contractKey ||
+      quote.contractVersion !== contract.version ||
+      quote.modelId !== PROMOTED_CORRECTION_IDENTITY.modelId ||
+      quote.provider !== PROMOTED_CORRECTION_IDENTITY.provider ||
+      quote.promptVersion !== PROMOTED_CORRECTION_IDENTITY.promptVersion ||
+      !quote.includesAutomaticSecondPass
+    ) {
+      throw new CorrectionOrchestrationError('QUOTE_INCOMPATIBLE');
+    }
+
     const replayed = await this.corrections.findByQuote({
       requestFingerprint: quote.requestFingerprint,
       userId: input.userId,
@@ -229,8 +269,6 @@ export class CorrectionOrchestrationService {
     if (replayed) {
       return replayed;
     }
-
-    const contract = correctionContractSchema.parse(quote.contract);
 
     let reservationId: string;
     try {
@@ -253,14 +291,15 @@ export class CorrectionOrchestrationService {
     // est « indisponible — resoumettre ». Une erreur d'infrastructure
     // inattendue remonte sans règlement : la réservation idempotente expire
     // d'elle-même et un rejeu reprend la même réservation.
-    const outcome = await this.executeCorrection({ contract, quote });
+    const execution = await this.executeCorrection({ contract, quote });
 
     const persisted = await this.corrections.persist({
+      attempts: execution.attempts,
       quote,
-      result: outcome,
+      result: execution.correction,
       userId: input.userId,
     });
-    const correction = { ...outcome, id: persisted.id };
+    const correction = { ...execution.correction, id: persisted.id };
     await this.settleFullQuote({ quote, reservationId, userId: input.userId });
     await this.quotes.markConsumed({ quoteId: quote.quoteId });
     return this.asResult({ correction, quote, replay: false });
@@ -276,14 +315,9 @@ export class CorrectionOrchestrationService {
       reservationId: input.reservationId,
       userId: input.userId,
     });
-    const difference =
-      input.quote.maximumReservedCredits - input.quote.estimatedCredits;
-    if (difference > 0n) {
-      await this.credits.release({
-        reservationId: input.reservationId,
-        userId: input.userId,
-      });
-    }
+    // PrismaCreditLedger.settle restitue atomiquement la part non consommée
+    // de la réservation. Un release après settlement tenterait de finaliser
+    // deux fois la même réservation et échouerait en production.
   }
 
   private asResult(input: {
@@ -307,7 +341,10 @@ export class CorrectionOrchestrationService {
   private async executeCorrection(input: {
     contract: CorrectionContract;
     quote: AcceptedQuoteSnapshot;
-  }): Promise<OrchestratedCorrectionResult['correction']> {
+  }): Promise<{
+    attempts: RuntimeCorrectionAttempt[];
+    correction: OrchestratedCorrectionResult['correction'];
+  }> {
     const messages = buildRuntimeCorrectionMessages({
       contract: input.contract,
       exerciseInstructions: input.quote.exerciseInstructions,
@@ -319,7 +356,12 @@ export class CorrectionOrchestrationService {
     ) as Record<string, unknown>;
 
     let usageCost = 0;
-    for (let attempt = 1; attempt <= MAX_RUNTIME_ATTEMPTS; attempt += 1) {
+    const attempts: RuntimeCorrectionAttempt[] = [];
+    for (
+      let attempt = 1;
+      attempt <= MAX_RUNTIME_PRIMARY_ATTEMPTS;
+      attempt += 1
+    ) {
       let generation;
       try {
         generation = await this.transport.execute({
@@ -328,56 +370,197 @@ export class CorrectionOrchestrationService {
           messages,
           modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
         });
-      } catch {
+      } catch (error) {
+        attempts.push({
+          errorCode: error instanceof Error ? error.message : 'TRANSPORT_ERROR',
+          sequence: attempts.length + 1,
+          status: 'FAILED',
+        });
         continue;
       }
       usageCost += generation.usage.actualCostUsd ?? 0;
-      try {
-        const strict = validateBenchmarkProtocol3ModelOutputWithEvidence({
-          benchmarkCase: { responseText: input.quote.submissionText },
-          contract: input.contract,
-          output: generation.output,
-        });
-        return this.toOutcome({
-          contract: input.contract,
-          output: strict.output,
-          unsureCriteria: [],
-          usageCost,
-        });
-      } catch {
-        // pas de validateur d'injection runtime : le prompt et la discipline
-        // de preuve tiennent ce rôle ; tenter la récupération partielle.
-      }
-      try {
-        const salvaged = salvageProtocol3PartialCorrection({
-          benchmarkCase: { responseText: input.quote.submissionText },
-          contract: input.contract,
-          output: generation.output,
-        });
-        return this.toOutcome({
-          contract: input.contract,
-          output: salvaged.output,
-          unsureCriteria: salvaged.unsureCriteria,
-          usageCost,
-        });
-      } catch {
+      const primary = this.resolveRuntimeGeneration({
+        contract: input.contract,
+        output: generation.output,
+        responseText: input.quote.submissionText,
+      });
+      attempts.push(
+        this.runtimeAttemptSnapshot({
+          generation,
+          sequence: attempts.length + 1,
+          valid: primary !== null,
+        }),
+      );
+      if (!primary) {
         continue;
       }
+      const primaryScore =
+        primary.unsureCriteria.length === 0
+          ? weightedIndicativeScore(input.contract, primary.output)
+          : null;
+      const guarded =
+        primaryScore !== null &&
+        Math.abs(primaryScore - input.contract.passingScore) <=
+          PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints;
+      if (!guarded) {
+        return {
+          attempts,
+          correction: this.toOutcome({
+            contract: input.contract,
+            output: primary.output,
+            unsureCriteria: primary.unsureCriteria,
+            usageCost,
+          }),
+        };
+      }
+
+      // La seconde passe utilise le même modèle épinglé et le même
+      // workflow. Ce n'est ni un retry ni un fallback fournisseur. Seuls les
+      // critères dont les niveaux concordent restent publiables.
+      let second: ReturnType<
+        CorrectionOrchestrationService['resolveRuntimeGeneration']
+      > = null;
+      try {
+        const secondGeneration = await this.transport.execute({
+          apiKey: this.options.apiKey,
+          jsonSchema,
+          messages,
+          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+        });
+        usageCost += secondGeneration.usage.actualCostUsd ?? 0;
+        second = this.resolveRuntimeGeneration({
+          contract: input.contract,
+          output: secondGeneration.output,
+          responseText: input.quote.submissionText,
+        });
+        attempts.push(
+          this.runtimeAttemptSnapshot({
+            generation: secondGeneration,
+            sequence: attempts.length + 1,
+            valid: second !== null,
+          }),
+        );
+      } catch (error) {
+        attempts.push({
+          errorCode: error instanceof Error ? error.message : 'TRANSPORT_ERROR',
+          sequence: attempts.length + 1,
+          status: 'FAILED',
+        });
+        // Aucun retry/fallback ne suit. Sans seconde passe valide, aucun
+        // critère ne peut être déclaré concordant.
+      }
+      const reconciled = second
+        ? reconcileProtocol3ScoreGuardPasses({
+            contract: input.contract,
+            primary,
+            second,
+          })
+        : null;
+      if (!reconciled?.output) {
+        return {
+          attempts,
+          correction: {
+            id: '',
+            status: 'FAILED',
+            criteria: [],
+            unsureCriteria: input.contract.criteria.map(
+              (criterion) => criterion.key,
+            ),
+            overallFeedback: null,
+            indicativeScore: null,
+            secondPassRequired: true,
+            modelUsageCostUsd: usageCost,
+          },
+        };
+      }
+      return {
+        attempts,
+        correction: this.toOutcome({
+          contract: input.contract,
+          forceScoreGuardSecondPass: true,
+          output: reconciled.output,
+          unsureCriteria: reconciled.unsureCriteria,
+          usageCost,
+        }),
+      };
     }
     return {
-      id: '',
-      status: 'FAILED',
-      criteria: [],
-      unsureCriteria: [],
-      overallFeedback: null,
-      indicativeScore: null,
-      secondPassRequired: false,
-      modelUsageCostUsd: usageCost,
+      attempts,
+      correction: {
+        id: '',
+        status: 'FAILED',
+        criteria: [],
+        unsureCriteria: [],
+        overallFeedback: null,
+        indicativeScore: null,
+        secondPassRequired: false,
+        modelUsageCostUsd: usageCost,
+      },
     };
+  }
+
+  private runtimeAttemptSnapshot(input: {
+    generation: Awaited<ReturnType<CorrectionTransportPort['execute']>>;
+    sequence: number;
+    valid: boolean;
+  }): RuntimeCorrectionAttempt {
+    return {
+      ...(input.generation.usage.actualCostUsd === undefined
+        ? {}
+        : { actualCostUsd: input.generation.usage.actualCostUsd }),
+      ...(input.valid ? {} : { errorCode: 'MODEL_OUTPUT_INVALID' }),
+      inputTokens: input.generation.usage.inputTokens,
+      latencyMs: input.generation.latencyMs,
+      modelSnapshot: input.generation.modelSnapshot,
+      output: input.generation.output,
+      ...(input.generation.providerRequestId === undefined
+        ? {}
+        : { providerRequestId: input.generation.providerRequestId }),
+      providerRoute: input.generation.providerRoute,
+      reasoningTokens: input.generation.usage.reasoningTokens,
+      sequence: input.sequence,
+      status: input.valid ? 'SUCCEEDED' : 'FAILED',
+      visibleOutputTokens: input.generation.usage.visibleOutputTokens,
+    };
+  }
+
+  private resolveRuntimeGeneration(input: {
+    contract: CorrectionContract;
+    output: unknown;
+    responseText: string;
+  }): {
+    output: Protocol3CorrectionArtifactOutput;
+    unsureCriteria: string[];
+  } | null {
+    try {
+      const strict = validateBenchmarkProtocol3ModelOutputWithEvidence({
+        benchmarkCase: { responseText: input.responseText },
+        contract: input.contract,
+        output: input.output,
+      });
+      return { output: strict.output, unsureCriteria: [] };
+    } catch {
+      // Le contrat de preuve exacte et le prompt épinglé forment la
+      // frontière déterministe avant tentative de livraison partielle.
+    }
+    try {
+      const salvaged = salvageProtocol3PartialCorrection({
+        benchmarkCase: { responseText: input.responseText },
+        contract: input.contract,
+        output: input.output,
+      });
+      return {
+        output: salvaged.output,
+        unsureCriteria: salvaged.unsureCriteria,
+      };
+    } catch {
+      return null;
+    }
   }
 
   private toOutcome(input: {
     contract: CorrectionContract;
+    forceScoreGuardSecondPass?: boolean;
     output: Protocol3CorrectionArtifactOutput;
     unsureCriteria: string[];
     usageCost: number;
@@ -386,9 +569,23 @@ export class CorrectionOrchestrationService {
     const score = deliveredAll
       ? weightedIndicativeScore(input.contract, input.output)
       : null;
+    const scoreGuardBandRequiresSecondPass =
+      input.forceScoreGuardSecondPass === true ||
+      (score !== null &&
+        Math.abs(score - input.contract.passingScore) <=
+          PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints);
+    const secondPassRequired =
+      scoreGuardBandRequiresSecondPass ||
+      deriveCorrectionSecondPassDecision({
+        contract: input.contract,
+        evaluations: [input.output as unknown as CorrectionOutput],
+      }).required;
     return {
       id: '',
-      status: deliveredAll ? 'COMPLETED' : 'COMPLETED_PARTIAL',
+      status:
+        deliveredAll && !scoreGuardBandRequiresSecondPass
+          ? 'COMPLETED'
+          : 'COMPLETED_PARTIAL',
       criteria: input.output.criteria.map((criterion) => ({
         key: criterion.criterionKey,
         label:
@@ -411,13 +608,8 @@ export class CorrectionOrchestrationService {
       })),
       unsureCriteria: input.unsureCriteria,
       overallFeedback: input.output.overallFeedback,
-      indicativeScore: score,
-      secondPassRequired: deriveCorrectionSecondPassDecision({
-        contract: input.contract,
-        evaluations: [
-          input.output as unknown as CorrectionOutput,
-        ],
-      }).required,
+      indicativeScore: scoreGuardBandRequiresSecondPass ? null : score,
+      secondPassRequired,
       modelUsageCostUsd: input.usageCost,
     };
   }
@@ -440,8 +632,10 @@ export function createRuntimeCorrectionTransport(): CorrectionTransportPort {
       });
       return {
         latencyMs: result.latencyMs,
+        modelSnapshot: result.modelSnapshot,
         output: result.output,
         providerRequestId: result.providerRequestId,
+        providerRoute: result.providerRoute,
         usage: result.usage,
       };
     },

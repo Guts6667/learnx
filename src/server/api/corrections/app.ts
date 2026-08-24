@@ -1,6 +1,7 @@
 import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
+import { readOpenRouterConfiguration } from '../../ai/openrouter-configuration.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, type ApiErrorCode } from '../_lib/errors.js';
@@ -8,7 +9,12 @@ import { ApiError, type ApiErrorCode } from '../_lib/errors.js';
 import {
   CorrectionOrchestrationError,
   CorrectionOrchestrationService,
+  createRuntimeCorrectionTransport,
+  type CreditSettlementPort,
 } from '../../corrections/correction-orchestration.ts';
+import { PrismaCorrectionOrchestrationPorts } from '../../corrections/prisma-correction-orchestration-store.js';
+import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
+import { PrismaCreditLedger } from '../../credits/prisma-credit-ledger.js';
 
 const runCorrectionRequestSchema = z
   .object({
@@ -21,10 +27,65 @@ export interface CorrectionsAppOptions {
   authorization?: MiddlewareHandler<AuthEnvironment>;
   now?: () => Date;
   orchestration?: Pick<CorrectionOrchestrationService, 'runAcceptedQuote'>;
+  resolveDefaultOrchestration?: () => Promise<
+    Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null
+  >;
+}
+
+function deploymentEnvironment(): 'development' | 'preview' | 'production' {
+  if (process.env.VERCEL_ENV === 'production') return 'production';
+  if (process.env.VERCEL_ENV === 'preview') return 'preview';
+  return 'development';
+}
+
+async function createDefaultOrchestration(): Promise<
+  Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null
+> {
+  const configuration = readOpenRouterConfiguration({
+    deploymentEnvironment: deploymentEnvironment(),
+  });
+  const assignment = configuration.assignments.CORRECTION_PRIMARY;
+  if (
+    !configuration.enabled ||
+    configuration.killSwitch ||
+    !configuration.apiKey ||
+    assignment?.modelId !== PROMOTED_CORRECTION_IDENTITY.modelId ||
+    assignment.provider !== PROMOTED_CORRECTION_IDENTITY.provider
+  ) {
+    return null;
+  }
+
+  const { prisma } = await import('../../prisma.js');
+  const ports = new PrismaCorrectionOrchestrationPorts(prisma);
+  const ledger = new PrismaCreditLedger(prisma);
+  const credits: CreditSettlementPort = {
+    async reserve(input) {
+      const result = await ledger.reserve(input);
+      if (!result.reservation) {
+        throw new Error('CREDIT_RESERVATION_MISSING');
+      }
+      return { reservationId: result.reservation.id };
+    },
+    async settle(input) {
+      await ledger.settle(input);
+    },
+  };
+
+  return new CorrectionOrchestrationService(
+    ports.quotes,
+    credits,
+    ports.corrections,
+    createRuntimeCorrectionTransport(),
+    { apiKey: configuration.apiKey },
+  );
 }
 
 export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
+  let orchestration = options.orchestration;
+  let defaultOrchestrationPromise:
+    | Promise<Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null>
+    | undefined;
 
   app.use('*', options.authentication ?? requireUser);
   app.use(
@@ -39,7 +100,12 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     if (!parsed.success) {
       throw new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
     }
-    if (!options.orchestration) {
+    if (!orchestration) {
+      defaultOrchestrationPromise ??=
+        options.resolveDefaultOrchestration?.() ?? createDefaultOrchestration();
+      orchestration = (await defaultOrchestrationPromise) ?? undefined;
+    }
+    if (!orchestration) {
       throw new ApiError(
         'AI_CORRECTION_UNAVAILABLE',
         'AI correction is not configured on this deployment.',
@@ -48,7 +114,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     }
 
     try {
-      const result = await options.orchestration.runAcceptedQuote({
+      const result = await orchestration.runAcceptedQuote({
         quoteId: parsed.data.quoteId,
         userId: context.get('user').id,
       });

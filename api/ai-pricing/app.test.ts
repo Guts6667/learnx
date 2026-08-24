@@ -51,6 +51,7 @@ const quote: StoredPricingQuote = {
   language: 'fr-FR',
   modelId: 'internal-model',
   promptVersion: '1.0.0',
+  provider: 'openrouter',
   requestFingerprint: 'a'.repeat(64),
   target: { id: targetId, kind: 'EXERCISE_SUBMISSION' },
   userId,

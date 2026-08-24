@@ -1,4 +1,5 @@
 import type { CorrectionContract } from '@/lib/ai-correction-contracts';
+import { PROMOTED_CORRECTION_IDENTITY } from '@/server/corrections/promoted-identity';
 
 import {
   AiPricingError,
@@ -94,6 +95,7 @@ function makeRepository(): AiPricingQuoteRepository & {
         language: input.catalog.language,
         modelId: input.catalog.modelId,
         promptVersion: input.catalog.promptVersion,
+        provider: input.catalog.provider,
         requestFingerprint: input.requestFingerprint,
         target: input.target.target,
         userId: input.userId,
@@ -104,14 +106,14 @@ function makeRepository(): AiPricingQuoteRepository & {
     async findActiveEntry() {
       return {
         catalog: {
-          benchmarkId: 'benchmark-approved',
+          benchmarkId: PROMOTED_CORRECTION_IDENTITY.benchmarkId,
           corpusId: 'corpus-fr-v1',
           currency: 'LEARNX_CREDIT',
           id: 'catalog-id',
           language: 'fr-FR',
-          modelId: 'vendor/model-20260812',
-          promptVersion: '1.0.0',
-          provider: 'openrouter',
+          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+          promptVersion: PROMOTED_CORRECTION_IDENTITY.promptVersion,
+          provider: PROMOTED_CORRECTION_IDENTITY.provider,
           providerRateCardEffectiveAt: new Date('2026-08-12T00:00:00.000Z'),
           providerRateCardVersion: 'openrouter-2026-08-12',
           quoteTtlSeconds: 900,
@@ -183,6 +185,38 @@ describe('AI pricing calculations', () => {
 });
 
 describe('AI pricing quote service', () => {
+  it('refuses a non-writing contract before selecting or creating a quote', async () => {
+    const repository = makeRepository();
+    const practiceContract: CorrectionContract = {
+      ...contract,
+      target: {
+        activityKey: contract.target.activityKey,
+        activityType: 'practice',
+        kind: 'EXERCISE',
+      },
+    };
+    repository.resolveTarget = async (_userId, target) => ({
+      contract: practiceContract,
+      inputChars: 640,
+      language: 'fr-FR',
+      target,
+    });
+    const service = new AiPricingQuoteService(repository);
+
+    await expect(
+      service.quote({
+        action: 'STANDARD',
+        idempotencyKey: 'quote:practice:blocked',
+        target: {
+          id: '11111111-1111-4111-8111-111111111111',
+          kind: 'EXERCISE_SUBMISSION',
+        },
+        userId: 'user-id',
+      }),
+    ).rejects.toMatchObject({ code: 'TARGET_NOT_ELIGIBLE' });
+    expect(repository.created).toHaveLength(0);
+  });
+
   it('creates an immutable server-calculated quote and replays it idempotently', async () => {
     const repository = makeRepository();
     const service = new AiPricingQuoteService(
@@ -221,6 +255,33 @@ describe('AI pricing quote service', () => {
         userId: 'user-id',
       }),
     ).rejects.toMatchObject({ code: 'CATALOG_UNAVAILABLE' });
+  });
+
+  it('refuses an active catalog that is not bound to the promoted identity', async () => {
+    const repository = makeRepository();
+    const originalFind = repository.findActiveEntry;
+    repository.findActiveEntry = async (input) => {
+      const selection = await originalFind(input);
+      if (!selection) return null;
+      return {
+        ...selection,
+        catalog: { ...selection.catalog, promptVersion: 'obsolete-prompt' },
+      };
+    };
+    const service = new AiPricingQuoteService(repository);
+
+    await expect(
+      service.quote({
+        action: 'STANDARD',
+        idempotencyKey: 'quote:catalog:wrong-identity',
+        target: {
+          id: '11111111-1111-4111-8111-111111111111',
+          kind: 'EXERCISE_SUBMISSION',
+        },
+        userId: 'user-id',
+      }),
+    ).rejects.toMatchObject({ code: 'CATALOG_UNAVAILABLE' });
+    expect(repository.created).toHaveLength(0);
   });
 
   it('rejects an expired idempotent quote instead of silently reusing it', async () => {

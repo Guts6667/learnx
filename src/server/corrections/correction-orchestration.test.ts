@@ -8,6 +8,7 @@ import {
   type AcceptedQuoteSnapshot,
   type CorrectionTransportPort,
 } from './correction-orchestration';
+import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
 
 const contractRaw = {
   schemaVersion: 1,
@@ -117,6 +118,9 @@ function buildQuote(overrides: Partial<AcceptedQuoteSnapshot> = {}): AcceptedQuo
     maximumReservedCredits: 18n,
     expiresAt: new Date('2026-08-24T12:00:00Z'),
     promptVersion: '2.2.0',
+    modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+    provider: PROMOTED_CORRECTION_IDENTITY.provider,
+    includesAutomaticSecondPass: true,
     contractKey: contractRaw.contractKey,
     contractVersion: contractRaw.version,
     requestFingerprint: 'a'.repeat(64),
@@ -172,6 +176,16 @@ function partialOutput() {
   };
 }
 
+function strictOutputWithLevels(input: {
+  decision: 'insufficient' | 'partial' | 'mastered';
+  evidence: 'insufficient' | 'partial' | 'mastered';
+}) {
+  const output = strictOutput();
+  output.criteria['decision-position'].levelKey = input.decision;
+  output.criteria['evidence-selection'].levelKey = input.evidence;
+  return output;
+}
+
 interface Harness {
   service: CorrectionOrchestrationService;
   quotes: {
@@ -184,7 +198,6 @@ interface Harness {
     calls: string[];
     reserve: (input: unknown) => Promise<{ reservationId: string }>;
     settle: (input: unknown) => Promise<void>;
-    release: (input: unknown) => Promise<void>;
   };
   corrections: {
     persisted: unknown[];
@@ -207,9 +220,6 @@ function buildHarness(options: {
     settle: vi.fn(async () => {
       credits.calls.push('settle');
     }),
-    release: vi.fn(async () => {
-      credits.calls.push('release');
-    }),
   };
   const corrections = {
     persisted: [] as unknown[],
@@ -230,7 +240,10 @@ function buildHarness(options: {
       transportOutputs.push(options.transport());
       return {
         latencyMs: 1200,
+        modelSnapshot: PROMOTED_CORRECTION_IDENTITY.modelId,
         output: transportOutputs[transportOutputs.length - 1],
+        providerRequestId: `generation-${transportOutputs.length}`,
+        providerRoute: PROMOTED_CORRECTION_IDENTITY.provider,
         usage: { actualCostUsd: 0.014, inputTokens: 900, reasoningTokens: 0, visibleOutputTokens: 320 },
       };
     }),
@@ -272,8 +285,85 @@ describe('correction orchestration (V4-009)', () => {
       reservedCredits: '18',
       settledCredits: '12',
     });
-    expect(harness.credits.calls).toEqual(['reserve', 'settle', 'release']);
+    expect(harness.credits.calls).toEqual(['reserve', 'settle']);
     expect(harness.corrections.persisted).toHaveLength(1);
+    expect(harness.corrections.persisted[0]).toMatchObject({
+      attempts: [
+        {
+          actualCostUsd: 0.014,
+          providerRequestId: 'generation-1',
+          sequence: 1,
+          status: 'SUCCEEDED',
+        },
+      ],
+    });
+    expect(harness.transportOutputs).toHaveLength(1);
+  });
+
+  it.each([
+    {
+      decision: 'mastered' as const,
+      evidence: 'partial' as const,
+      expectedRawScore: 80,
+    },
+    {
+      decision: 'partial' as const,
+      evidence: 'mastered' as const,
+      expectedRawScore: 70,
+    },
+  ])(
+    'runs a second pass on the inclusive score-guard boundary ($expectedRawScore)',
+    async ({ decision, evidence, expectedRawScore }) => {
+      expect(Math.abs(expectedRawScore - contractRaw.passingScore)).toBe(
+        PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints,
+      );
+      const harness = buildHarness({
+        transport: () => strictOutputWithLevels({ decision, evidence }),
+      });
+
+      const result = await harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      });
+
+      expect(result.correction).toMatchObject({
+        indicativeScore: null,
+        modelUsageCostUsd: 0.028,
+        secondPassRequired: true,
+        status: 'COMPLETED_PARTIAL',
+      });
+      expect(harness.transportOutputs).toHaveLength(2);
+    },
+  );
+
+  it('publishes only criteria whose levels agree across the two passes', async () => {
+    const outputs = [
+      strictOutputWithLevels({ decision: 'mastered', evidence: 'partial' }),
+      strictOutputWithLevels({ decision: 'mastered', evidence: 'mastered' }),
+    ];
+    let callIndex = 0;
+    const harness = buildHarness({
+      transport: () => outputs[callIndex++] ?? outputs[1],
+    });
+
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(result.correction).toMatchObject({
+      indicativeScore: null,
+      secondPassRequired: true,
+      status: 'COMPLETED_PARTIAL',
+      unsureCriteria: ['evidence-selection'],
+    });
+    expect(result.correction.criteria.map((criterion) => criterion.key)).toEqual([
+      'decision-position',
+    ]);
+    expect(result.correction.overallFeedback).toContain(
+      'Certaines parties concordent',
+    );
+    expect(harness.transportOutputs).toHaveLength(2);
   });
 
   it('delivers a partial correction without exact score and still settles the full quote price', async () => {
@@ -290,7 +380,7 @@ describe('correction orchestration (V4-009)', () => {
       'decision-position',
     ]);
     expect(result.settlement.settledCredits).toBe('12');
-    expect(harness.credits.calls).toEqual(['reserve', 'settle', 'release']);
+    expect(harness.credits.calls).toEqual(['reserve', 'settle']);
   });
 
   it('records an honest unavailable state and still settles the full quote when nothing is deliverable', async () => {
@@ -303,7 +393,7 @@ describe('correction orchestration (V4-009)', () => {
     expect(result.correction.status).toBe('FAILED');
     expect(result.correction.criteria).toEqual([]);
     expect(result.settlement.settledCredits).toBe('12');
-    expect(harness.credits.calls).toEqual(['reserve', 'settle', 'release']);
+    expect(harness.credits.calls).toEqual(['reserve', 'settle']);
   });
 
   it('replays an already orchestrated quote without touching credits again', async () => {
@@ -346,6 +436,47 @@ describe('correction orchestration (V4-009)', () => {
     expect(harness.credits.calls).toEqual([]);
   });
 
+  it('refuses a non-writing contract before replay, reservation and transport', async () => {
+    const harness = buildHarness({ transport: strictOutput });
+    harness.quotes.loadAcceptedQuote = (async () =>
+      buildQuote({
+        contract: {
+          ...contractRaw,
+          target: { ...contractRaw.target, activityType: 'practice' },
+        },
+      })) as never;
+
+    await expect(
+      harness.service.runAcceptedQuote({ quoteId: 'quote-1', userId: 'user-1' }),
+    ).rejects.toMatchObject({ code: 'QUOTE_INCOMPATIBLE' });
+    expect(harness.credits.calls).toEqual([]);
+    expect(harness.corrections.findByQuote).not.toHaveBeenCalled();
+    expect(harness.transportOutputs).toEqual([]);
+  });
+
+  it.each([
+    { modelId: 'anthropic/another-model' },
+    { provider: 'AnotherProvider' },
+    { promptVersion: 'obsolete-prompt' },
+    { includesAutomaticSecondPass: false },
+  ])(
+    'refuses a quote outside the promoted runtime identity: %o',
+    async (override) => {
+      const harness = buildHarness({ transport: strictOutput });
+      harness.quotes.loadAcceptedQuote = (async () =>
+        buildQuote(override)) as never;
+
+      await expect(
+        harness.service.runAcceptedQuote({
+          quoteId: 'quote-1',
+          userId: 'user-1',
+        }),
+      ).rejects.toMatchObject({ code: 'QUOTE_INCOMPATIBLE' });
+      expect(harness.credits.calls).toEqual([]);
+      expect(harness.transportOutputs).toEqual([]);
+    },
+  );
+
   it('reports insufficient credits without persisting a correction', async () => {
     const harness = buildHarness({ transport: strictOutput });
     harness.credits.reserve = (async () => {
@@ -361,5 +492,10 @@ describe('correction orchestration (V4-009)', () => {
 
   it('parses the runtime contract snapshot through the published contract schema', () => {
     expect(() => correctionContractSchema.parse(contractRaw)).not.toThrow();
+    expect(PROMOTED_CORRECTION_IDENTITY).toMatchObject({
+      activityTypeScope: ['writing'],
+      maxRetries: 0,
+      scoreGuardBandPoints: 5,
+    });
   });
 });

@@ -6,6 +6,7 @@ import {
 } from '../../../generated/prisma/client.js';
 import { getCorrectionContractRuntimeEligibility } from '../../lib/ai-correction-contracts.js';
 import { toIntlLocale } from '../../shared/locale.js';
+import { PROMOTED_CORRECTION_IDENTITY } from '../corrections/promoted-identity.js';
 import {
   AI_PRICING_ACTIONS,
   AiPricingError,
@@ -91,6 +92,7 @@ function storedQuote(quote: AiPricingQuote): StoredPricingQuote {
     language: quote.language,
     modelId: quote.modelId,
     promptVersion: quote.promptVersion,
+    provider: quote.provider,
     requestFingerprint: quote.requestFingerprint,
     target: { id: quote.targetId, kind: quote.targetKind },
     userId: quote.userId,
@@ -259,10 +261,12 @@ export class PrismaAiPricingQuoteRepository
           inputSizeClass: quote.inputSizeClass,
           status: AiPricingCatalogStatus.ACTIVE,
           catalogVersion: {
+            benchmarkId: PROMOTED_CORRECTION_IDENTITY.benchmarkId,
             effectiveAt: { lte: now },
             language: quote.language,
             modelId: quote.modelId,
             promptVersion: quote.promptVersion,
+            provider: quote.provider,
             status: AiPricingCatalogStatus.ACTIVE,
           },
         },

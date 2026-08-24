@@ -1,27 +1,14 @@
-import type { AcceptedQuoteSnapshot, OrchestratedCorrectionResult } from './correction-orchestration';
+import {
+  Prisma,
+  type PrismaClient,
+} from '../../../generated/prisma/client.js';
 
-interface QuoteRow {
-  ceilingCredits: bigint;
-  estimatedCredits: bigint;
-  expiresAt: Date;
-  id: string;
-  status: string;
-  targetType: string;
-  userId: string;
-}
-
-interface SubmissionRow {
-  contentMarkdown: string;
-  exercise: { instructions: string; rubric: unknown } | null;
-  status: string;
-  userId: string;
-}
-
-interface CorrectionRow {
-  id: string;
-  status: string;
-  structuredResult: unknown;
-}
+import type {
+  AcceptedQuoteSnapshot,
+  OrchestratedCorrectionResult,
+  RuntimeCorrectionAttempt,
+} from './correction-orchestration';
+import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
 
 /**
  * Implémentation Prisma des ports de l'orchestration V4-009 :
@@ -29,44 +16,21 @@ interface CorrectionRow {
  * rejeu idempotent par empreinte de requête.
  */
 export class PrismaCorrectionOrchestrationPorts {
-  public constructor(
-    private readonly prisma: {
-      aiPricingQuote: {
-        findFirst: (input: unknown) => Promise<
-          (QuoteRow & {
-            contractKey: string;
-            contractVersion: string;
-            promptVersion: string;
-            requestFingerprint: string;
-            targetId: string;
-          }) | null
-        >;
-      };
-      exerciseSubmission: {
-        findFirst: (input: unknown) => Promise<
-          (SubmissionRow & { id: string }) | null
-        >;
-      };
-      aiCorrection: {
-        findFirst: (input: unknown) => Promise<CorrectionRow | null>;
-        create: (input: unknown) => Promise<CorrectionRow>;
-      };
-      $executeRaw: (input: TemplateStringsArray, ...values: unknown[]) => Promise<number>;
-    },
-  ) {}
+  public constructor(private readonly prisma: PrismaClient) {}
 
   public readonly quotes = {
     loadAcceptedQuote: async (input: {
       quoteId: string;
       userId: string;
+      now: Date;
     }): Promise<AcceptedQuoteSnapshot | null> => {
       const quote = await this.prisma.aiPricingQuote.findFirst({
         where: { id: input.quoteId, userId: input.userId },
       });
-      if (!quote || quote.status !== 'ACTIVE') {
+      if (!quote || quote.expiresAt.getTime() <= input.now.getTime()) {
         return null;
       }
-      if (quote.targetType !== 'EXERCISE_SUBMISSION') {
+      if (quote.targetKind !== 'EXERCISE_SUBMISSION') {
         return null;
       }
       const submission = await this.prisma.exerciseSubmission.findFirst({
@@ -88,6 +52,9 @@ export class PrismaCorrectionOrchestrationPorts {
         maximumReservedCredits: quote.ceilingCredits,
         expiresAt: quote.expiresAt,
         promptVersion: quote.promptVersion,
+        modelId: quote.modelId,
+        provider: quote.provider,
+        includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
         contractKey: quote.contractKey,
         contractVersion: quote.contractVersion,
         requestFingerprint: quote.requestFingerprint,
@@ -97,12 +64,10 @@ export class PrismaCorrectionOrchestrationPorts {
         contract: submission.exercise.rubric,
       };
     },
-    markConsumed: async (input: { quoteId: string }): Promise<void> => {
-      await this.prisma.$executeRaw`
-        UPDATE ai_pricing_quotes SET status = 'CONSUMED'
-        WHERE id = ${input.quoteId}::uuid AND status = 'ACTIVE'
-      `;
-    },
+    // Le schéma V4 conserve le devis comme snapshot immuable sans colonne
+    // d'état. La consommation est matérialisée par l'AiCorrection unique
+    // sur l'empreinte et par la réservation de crédits idempotente.
+    markConsumed: async (): Promise<void> => {},
   };
 
   public readonly corrections = {
@@ -133,6 +98,7 @@ export class PrismaCorrectionOrchestrationPorts {
       };
     },
     persist: async (input: {
+      attempts: RuntimeCorrectionAttempt[];
       userId: string;
       quote: AcceptedQuoteSnapshot;
       result: OrchestratedCorrectionResult['correction'];
@@ -141,15 +107,61 @@ export class PrismaCorrectionOrchestrationPorts {
         data: {
           contractSnapshot: input.quote.contract as object,
           exerciseSubmissionId: input.quote.target.id,
+          completedAt: new Date(),
           idempotencyKey: `quote:${input.quote.quoteId}`,
           method: 'AI',
-          modelId: 'anthropic/claude-sonnet-4.6',
+          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+          modelRole: 'CORRECTION_PRIMARY',
+          provider: PROMOTED_CORRECTION_IDENTITY.provider,
           promptSnapshot: {},
           promptVersion: input.quote.promptVersion,
           requestFingerprint: input.quote.requestFingerprint,
-          status: input.result.status === 'FAILED' ? 'FAILED_RELEASED' : 'COMPLETED',
-          structuredResult: { correction: input.result },
+          status:
+            input.result.status === 'COMPLETED'
+              ? 'COMPLETED'
+              : 'AI_REVIEW_REQUIRED',
+          structuredResult: {
+            correction: input.result,
+            settlement: {
+              releasedCredits: (
+                input.quote.maximumReservedCredits -
+                input.quote.estimatedCredits
+              ).toString(),
+              reservedCredits: input.quote.maximumReservedCredits.toString(),
+              settledCredits: input.quote.estimatedCredits.toString(),
+            },
+          },
           submissionSnapshot: { text: input.quote.submissionText },
+          attempts: {
+            create: input.attempts.map((attempt) => ({
+              completedAt: new Date(),
+              completionTokens: attempt.visibleOutputTokens,
+              costUsd: attempt.actualCostUsd,
+              errorCode: attempt.errorCode,
+              generationId: attempt.providerRequestId,
+              latencyMs: attempt.latencyMs,
+              modelId:
+                attempt.modelSnapshot ?? PROMOTED_CORRECTION_IDENTITY.modelId,
+              modelRole: 'CORRECTION_PRIMARY',
+              promptTokens: attempt.inputTokens,
+              provider:
+                attempt.providerRoute ?? PROMOTED_CORRECTION_IDENTITY.provider,
+              retryable: false,
+              sequence: attempt.sequence,
+              status: attempt.status,
+              structuredResult:
+                attempt.output === undefined
+                  ? undefined
+                  : (attempt.output as Prisma.InputJsonValue),
+              totalTokens:
+                attempt.inputTokens === undefined ||
+                attempt.visibleOutputTokens === undefined
+                  ? undefined
+                  : attempt.inputTokens +
+                    attempt.visibleOutputTokens +
+                    (attempt.reasoningTokens ?? 0),
+            })),
+          },
           userId: input.userId,
         },
       });

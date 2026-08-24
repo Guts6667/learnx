@@ -4,6 +4,7 @@ import {
   getCorrectionContractRuntimeEligibility,
   type CorrectionContract,
 } from '../../lib/ai-correction-contracts.js';
+import { PROMOTED_CORRECTION_IDENTITY } from '../corrections/promoted-identity.js';
 
 export const AI_PRICING_ACTIONS = [
   'STANDARD',
@@ -73,9 +74,27 @@ export interface StoredPricingQuote {
   language: string;
   modelId: string;
   promptVersion: string;
+  provider: string;
   requestFingerprint: string;
   target: AiPricingTarget;
   userId: string;
+}
+
+function pricingIdentityIsPromoted(input: {
+  benchmarkId?: string;
+  includesAutomaticSecondPass: boolean;
+  modelId: string;
+  promptVersion: string;
+  provider: string;
+}): boolean {
+  return (
+    (input.benchmarkId === undefined ||
+      input.benchmarkId === PROMOTED_CORRECTION_IDENTITY.benchmarkId) &&
+    input.includesAutomaticSecondPass &&
+    input.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
+    input.promptVersion === PROMOTED_CORRECTION_IDENTITY.promptVersion &&
+    input.provider === PROMOTED_CORRECTION_IDENTITY.provider
+  );
 }
 
 export interface CreatePricingQuoteRecordInput {
@@ -299,6 +318,13 @@ export class AiPricingQuoteService {
     if (!target) throw new AiPricingError('TARGET_NOT_FOUND');
     const eligibility = getCorrectionContractRuntimeEligibility(target.contract);
     if (!eligibility.eligible) throw new AiPricingError('TARGET_NOT_ELIGIBLE');
+    if (
+      !PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
+        (activityType) => activityType === eligibility.contract.target.activityType,
+      )
+    ) {
+      throw new AiPricingError('TARGET_NOT_ELIGIBLE');
+    }
     const expectedKind =
       input.target.kind === 'EXERCISE_SUBMISSION'
         ? 'EXERCISE'
@@ -330,6 +356,9 @@ export class AiPricingQuoteService {
       if (!(await this.repository.isQuoteCurrentlyCompatible(existing, now))) {
         throw new AiPricingError('QUOTE_INCOMPATIBLE');
       }
+      if (!pricingIdentityIsPromoted(existing)) {
+        throw new AiPricingError('QUOTE_INCOMPATIBLE');
+      }
       return existing;
     }
 
@@ -343,6 +372,18 @@ export class AiPricingQuoteService {
     if (!selection) throw new AiPricingError('CATALOG_UNAVAILABLE');
     if (selection.entry.action !== input.action) {
       throw new AiPricingError('ACTION_UNAVAILABLE');
+    }
+    if (
+      !pricingIdentityIsPromoted({
+        benchmarkId: selection.catalog.benchmarkId,
+        includesAutomaticSecondPass:
+          selection.entry.includesAutomaticSecondPass,
+        modelId: selection.catalog.modelId,
+        promptVersion: selection.catalog.promptVersion,
+        provider: selection.catalog.provider,
+      })
+    ) {
+      throw new AiPricingError('CATALOG_UNAVAILABLE');
     }
     const price = calculateQuotePrice(selection.entry);
     const expiresAt = new Date(
