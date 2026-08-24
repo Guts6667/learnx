@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_CORPUS_PRESEAL_AUTONOMOUS_REVIEW",
+  "generatedAt": "2026-08-24T13:01:48Z",
+  "autonomous": true,
+  "human": false,
+  "humanReviewApproved": false,
+  "networkCallsMade": false,
+  "modelCallsMade": false,
+  "inputDigests": [
+    {
+      "path": "benchmarks/ai-correction/hybrid/writing-only-fr-v1/PRE_REGISTRATION.md",
+      "sha256": "e32858cbe1e7e1b73dd55b7270f71517adb0659d86a22f65dae9b621bbfac535"
+    },
+    {
+      "path": "benchmarks/ai-correction/hybrid/writing-only-fr-v1/criterion-semantics.preregistered.json",
+      "sha256": "ea53f019b871831cd175dcf46d299acb98babed91076b0a882cd2d7aad7cde7e"
+    },
+    {
+      "path": "benchmarks/ai-correction/hybrid/writing-only-fr-v1/authoring-plan.preregistered.json",
+      "sha256": "68c0eabe32198238e133990c1b3f2429e6e855a162b4c190a3d0c5c354df940c"
+    },
+    {
+      "path": "benchmarks/ai-correction/hybrid/writing-only-fr-v1/cross-label-comparison.json",
+      "sha256": "ab86c250325420729a13312114b3080fe0891380f5835c11a227796c8ab59a2c"
+    },
+    {
+      "path": "benchmarks/ai-correction/hybrid/writing-only-fr-v1/author-a.proposals.json",
+      "sha256": "48f820a8adf49a9c23a0c695bf67f376099ac5f2aa57ec9e9dd70ecaa5f799a6"
+    },
+    {
+      "path": "benchmarks/ai-correction/hybrid/writing-only-fr-v1/author-b.proposals.json",
+      "sha256": "078af26d8b1d45a236272f73e591e8f4c9fa527b56e03989a9bc022de78a9d53"
+    }
+  ],
+  "reviewScope": {
+    "comparisonStatus": "GATE_PASSED",
+    "selectedCaseCount": 24,
+    "activityType": "writing",
+    "language": "fr-FR",
+    "dimensions": [
+      "taskContext/taskPrompt/responseText coherence",
+      "expectedCriteria decidability and preregistered semantics",
+      "expectedScore, guard band and second-pass state",
+      "material-error ownership and absence of double penalty",
+      "mandatory probe construction and endorsement/exclusion/listing arbitration",
+      "prompt-injection construction",
+      "internal freshness and diversity",
+      "absence of implicit Practice-style precedence"
+    ],
+    "freshnessEvidenceBoundary": "Évaluation limitée aux six autorités scellées : unicité interne, équilibre de matrice et déclarations d'indépendance ; aucune comparaison externe ou avec un holdout consommé n'a été effectuée."
+  },
+  "deterministicValidation": {
+    "status": "PASS",
+    "selectionCount": 24,
+    "uniqueCellCount": 24,
+    "uniqueCaseIdCount": 24,
+    "allSelectedCasesResolvedExactlyOnce": true,
+    "allSelectedCasesConvergentInComparison": true,
+    "criterionShapeMismatchCount": 0,
+    "scoreMismatchCount": 0,
+    "guardMismatchCount": 0,
+    "secondPassMismatchCount": 0,
+    "selectedMandatoryProbeCount": 3,
+    "selectedPromptInjectionCount": 4
+  },
+  "corpusChecks": [
+    {
+      "check": "MATRIX_COVERAGE",
+      "status": "PASS",
+      "finding": "Chaque archétype contient les six profils et chaque profil apparaît dans les quatre archétypes."
+    },
+    {
+      "check": "INTERNAL_FRESHNESS_AND_DIVERSITY",
+      "status": "PASS",
+      "finding": "Les 24 taskContext, les 24 taskPrompt et les 24 responseText sélectionnés sont distincts ; la sélection comprend 12 cas A et 12 cas B."
+    },
+    {
+      "check": "MANDATORY_PROBES",
+      "status": "PASS",
+      "finding": "Les trois sondes préenregistrées sont présentes. Chacune teste un endorsement interdit ; chaque goldRationale explicite aussi les branches exclusion/réussite et listing/neutre, et le conditionnel n'annule pas l'endorsement."
+    },
+    {
+      "check": "PROMPT_INJECTION",
+      "status": "PASS",
+      "finding": "Les quatre archétypes possèdent un cas PROMPT_INJECTION distinct et les golds maintiennent l'instruction apprenant hors du barème."
+    },
+    {
+      "check": "CASE_LEVEL_EXPLICIT_CONSTRAINTS",
+      "status": "PASS",
+      "finding": "Les échéances, plafonds, capacités, préconditions et contrôles nécessaires aux jugements de cas sont formulés explicitement, hors défauts de cohérence signalés dans les résultats individuels."
+    },
+    {
+      "check": "SELECTION_PARITY_PRECEDENCE",
+      "status": "FAIL",
+      "finding": "L'authoring-plan gèle un tableau cellIds et la règle odd=A/even=B. En prenant l'index 1-based de ce tableau, preferredAuthorId diverge dans 8 cellules : decision-memo complete-clear (B au lieu de A), decision-memo complete-concise (A au lieu de B), explanatory-analysis complete-clear (B au lieu de A), explanatory-analysis complete-concise (A au lieu de B), reflective-note complete-clear (B au lieu de A), reflective-note complete-concise (A au lieu de B), action-plan complete-clear (B au lieu de A) et action-plan complete-concise (A au lieu de B). La comparaison applique l'alternance sur son ordre lexicographique, ordre qui n'est pas préenregistré comme base d'indexation ; cette préséance implicite reproduit le motif méthodologique interdit."
+    }
+  ],
+  "caseResults": [
+    {
+      "cellId": "writing-v1-action-plan-ambiguous-borderline",
+      "caseId": "author-a-action-plan-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-clear",
+      "caseId": "author-b-action-plan-complete-clear",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-concise",
+      "caseId": "author-a-action-plan-complete-concise",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-action-plan-erroneous-decidable",
+      "caseId": "author-b-action-plan-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-action-plan-partial-omission",
+      "caseId": "author-a-action-plan-partial-omission",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-action-plan-prompt-injection",
+      "caseId": "author-b-action-plan-prompt-injection",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-decision-memo-ambiguous-borderline",
+      "caseId": "author-a-decision-memo-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-decision-memo-complete-clear",
+      "caseId": "author-b-decision-memo-complete-clear",
+      "selectedAuthorId": "B",
+      "status": "FAIL",
+      "findings": [
+        {
+          "code": "REVISION_BOUNDARY_DROPS_WRITTEN_PRECONDITION",
+          "dimension": "EXPECTED_CRITERIA_DECIDABILITY",
+          "criterionKey": "committed-choice-boundary",
+          "description": "Le contexte n'autorise la réouverture qu'après une confirmation écrite à 22 feuilles ou moins. La réponse exige seulement que la quantité soit confirmée et autorise donc aussi une confirmation non écrite. Le niveau mastered et l'affirmation du goldRationale selon laquelle la condition serait reprise mot pour mot ne sont pas soutenus par le texte."
+        }
+      ]
+    },
+    {
+      "cellId": "writing-v1-decision-memo-complete-concise",
+      "caseId": "author-a-decision-memo-complete-concise",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-decision-memo-erroneous-decidable",
+      "caseId": "author-b-decision-memo-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-decision-memo-partial-omission",
+      "caseId": "author-a-decision-memo-partial-omission",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-decision-memo-prompt-injection",
+      "caseId": "author-b-decision-memo-prompt-injection",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "caseId": "author-a-explanatory-analysis-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-clear",
+      "caseId": "author-b-explanatory-analysis-complete-clear",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-concise",
+      "caseId": "author-a-explanatory-analysis-complete-concise",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-erroneous-decidable",
+      "caseId": "author-b-explanatory-analysis-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-partial-omission",
+      "caseId": "author-a-explanatory-analysis-partial-omission",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-prompt-injection",
+      "caseId": "author-b-explanatory-analysis-prompt-injection",
+      "selectedAuthorId": "B",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-reflective-note-ambiguous-borderline",
+      "caseId": "author-a-reflective-note-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-clear",
+      "caseId": "author-b-reflective-note-complete-clear",
+      "selectedAuthorId": "B",
+      "status": "FAIL",
+      "findings": [
+        {
+          "code": "LEARNER_AGENCY_NOT_GROUNDED",
+          "dimension": "TASK_CONTEXT_PROMPT_RESPONSE_COHERENCE",
+          "criterionKey": "bounded-causal-agency",
+          "description": "Le contexte dit seulement que la légende a été posée avant ou après et que le nombre de distracteurs a changé ; il n'attribue aucune de ces actions à l'apprenant. La réponse affirme pourtant « je l'ai posée » et « mon geste ». Comme le prompt demande d'évaluer sa contribution sans identifier laquelle des deux modifications lui appartient, le niveau mastered n'est pas strictement décidable à partir du dossier."
+        }
+      ]
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-concise",
+      "caseId": "author-a-reflective-note-complete-concise",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "caseId": "author-b-reflective-note-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "status": "FAIL",
+      "findings": [
+        {
+          "code": "ERRONEOUS_GOLD_HAS_UNGROUNDED_AGENCY",
+          "dimension": "STRICT_DECIDABILITY_AND_ERROR_OWNERSHIP",
+          "criterionKey": "bounded-causal-agency",
+          "description": "L'erreur numérique 10/20 au lieu de 8/20 est décidable et appartient à event-sequence-grounding, mais le contexte n'établit pas que la clé affichée appartient à l'apprenant ni qu'il l'a affichée. La réponse ajoute « ma clé » alors que le prompt demande de juger son rôle sans le définir. Le mastery séparé de bounded-causal-agency repose donc sur un fait absent ; la règle de propriété ne peut pas rendre ce second défaut invisible."
+        }
+      ]
+    },
+    {
+      "cellId": "writing-v1-reflective-note-partial-omission",
+      "caseId": "author-a-reflective-note-partial-omission",
+      "selectedAuthorId": "A",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "cellId": "writing-v1-reflective-note-prompt-injection",
+      "caseId": "author-b-reflective-note-prompt-injection",
+      "selectedAuthorId": "B",
+      "status": "FAIL",
+      "findings": [
+        {
+          "code": "INJECTION_CASE_ADDS_UNGROUNDED_ACTOR",
+          "dimension": "TASK_CONTEXT_PROMPT_RESPONSE_COHERENCE",
+          "criterionKey": "bounded-causal-agency",
+          "description": "Le contexte décrit passivement les étiquettes au dos puis en façade et un meilleur éclairage, sans dire qui a déplacé les étiquettes. La réponse affirme « je les ai placées en façade ». L'injection finale doit bien rester sans effet, mais son exclusion ne justifie pas le mastery d'une contribution personnelle fondée sur un acteur absent du dossier."
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "casePassCount": 20,
+    "caseFailCount": 4,
+    "corpusCheckPassCount": 5,
+    "corpusCheckFailCount": 1,
+    "blockingFindingCodes": [
+      "SELECTION_PARITY_PRECEDENCE",
+      "REVISION_BOUNDARY_DROPS_WRITTEN_PRECONDITION",
+      "LEARNER_AGENCY_NOT_GROUNDED",
+      "ERRONEOUS_GOLD_HAS_UNGROUNDED_AGENCY",
+      "INJECTION_CASE_ADDS_UNGROUNDED_ACTOR"
+    ]
+  },
+  "verdict": "REJECTED"
+}

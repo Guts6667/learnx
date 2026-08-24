@@ -1,17 +1,25 @@
 /// <reference types="node" />
 
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
+  SupplierBudgetGuard,
+} from '@/lib/ai-benchmark-supplier-budget';
+import {
+  applyBenchmarkAutonomousReview,
   assertBenchmarkCompatibility,
   applyBenchmarkHumanReview,
+  assertBenchmarkAutonomousCorpusReview,
   assertBenchmarkCompletionFinished,
   assertBenchmarkHumanReviewDigest,
   buildBenchmarkOptionalRequestParameters,
   benchmarkAttemptSchema,
+  benchmarkAutonomousReviewArtifactSchema,
+  benchmarkRunMetadataSchema,
   benchmarkResumeArtifactSchema,
   benchmarkRegressed,
   findBenchmarkContract,
@@ -41,9 +49,18 @@ import {
 } from '@/lib/ai-correction-provider-adapters';
 import {
   assertFullBlindReviewSourceIdentity,
+  assertFullBlindReviewPacketIsBlind,
   loadBlindReviewConfiguration,
   selectFullBlindReviewRuns,
 } from '../../scripts/generate-ai-correction-full-blind-review';
+import {
+  assertAutonomousSupplierCostReconciled,
+  buildBenchmarkSupplierBudgetPreflight,
+  loadBenchmarkInputs,
+  mergeAutonomousHoldoutBenchmarkConfiguration,
+  parseAutonomousHoldoutConfiguration,
+  runBenchmark,
+} from '../../scripts/run-ai-correction-benchmark';
 
 function readJson(relativePath: string): unknown {
   return JSON.parse(
@@ -73,7 +90,9 @@ function buildPassingMetrics(
   configuration: CorrectionBenchmarkConfiguration,
 ): ModelBenchmarkMetrics {
   return {
+    actualCostUsd: 0.01,
     automaticGateFailures: [],
+    autonomousReviewApproved: false,
     byFamily: {},
     candidateId: configuration.candidates[0]?.candidateId ?? '',
     criterionAgreement: 0.9,
@@ -95,8 +114,10 @@ function buildPassingMetrics(
     p75LatencyMs: 1500,
     p90LatencyMs: 2000,
     promotionIdentity: 'model|fr-FR|corpus|prompt',
+    reviewAuthority: 'HUMAN',
     retryRate: 0,
     secondPassRate: 0.1,
+    supplierCostReconciled: true,
     transportErrorRate: 0,
     twoLevelOrdinalGapCount: 0,
     decisionAgreementExcludingSecondPass: 1,
@@ -169,6 +190,61 @@ function pendingRunMetadata(input: {
   };
 }
 
+const autonomousDigests = {
+  attempts: 'a'.repeat(64),
+  authoringManifest: 'b'.repeat(64),
+  blindReviewPacket: 'c'.repeat(64),
+  configuration: 'd'.repeat(64),
+  corpus: 'e'.repeat(64),
+  corpusReviewManifest: 'f'.repeat(64),
+  ownerAuthorization: '1'.repeat(64),
+  resultReviewManifest: '2'.repeat(64),
+};
+
+function autonomousCorpusReviewMetadata() {
+  return {
+    artifactKind: 'AUTONOMOUS_CORPUS_REVIEW_MANIFEST' as const,
+    authoringManifestSha256: autonomousDigests.authoringManifest,
+    configurationSha256: autonomousDigests.configuration,
+    corpusReviewManifestSha256: autonomousDigests.corpusReviewManifest,
+    corpusSha256: autonomousDigests.corpus,
+    ownerAuthorizationReference: 'owner-authorization.json',
+    ownerAuthorizationSha256: autonomousDigests.ownerAuthorization,
+    reviewedAt: '2026-08-24T10:00:00Z',
+    reviewerIdentity: 'independent-corpus-review-agent',
+    reviewerKind: 'AUTONOMOUS_AI_NOT_HUMAN' as const,
+  };
+}
+
+function autonomousResultReviewArtifact() {
+  return {
+    artifactKind: 'AUTONOMOUS_RESULT_REVIEW_MANIFEST' as const,
+    attemptsSha256: autonomousDigests.attempts,
+    blindReviewPacketSha256: autonomousDigests.blindReviewPacket,
+    blindedToAutomaticVerdict: true as const,
+    blindedToCandidateIdentity: true as const,
+    blindedToCandidateOutputs: false as const,
+    configurationSha256: autonomousDigests.configuration,
+    corpusSha256: autonomousDigests.corpus,
+    criticalScores: { diagnosis: 90, evidence: 90, fidelity: 90 },
+    eliminatoryFindings: [],
+    familyScores: {
+      practice: 90,
+      project: 90,
+      reflection: 90,
+      writing: 90,
+    },
+    meanScore: 90,
+    ownerAuthorizationReference: 'owner-authorization.json',
+    ownerAuthorizationSha256: autonomousDigests.ownerAuthorization,
+    reviewedAt: '2026-08-24T12:00:00Z',
+    reviewerIdentity: 'independent-result-review-agent',
+    reviewerKind: 'AUTONOMOUS_AI_NOT_HUMAN' as const,
+    schemaVersion: 1 as const,
+    status: 'APPROVED' as const,
+  };
+}
+
 function fullResumeArtifact(input: {
   attempts?: BenchmarkAttempt[];
   configuration: CorrectionBenchmarkConfiguration;
@@ -225,6 +301,26 @@ function validResumeAttempt(input: {
   };
 }
 
+function fullValidBenchmarkAttempts(input: {
+  configuration: CorrectionBenchmarkConfiguration;
+  corpus: CorrectionBenchmarkCorpus;
+}): BenchmarkAttempt[] {
+  const candidate = input.configuration.candidates[0];
+  if (!candidate) {
+    throw new Error('Expected benchmark candidate is missing.');
+  }
+  return input.corpus.cases.flatMap((benchmarkCase) =>
+    Array.from({ length: input.configuration.repetitions }, (_, index) =>
+      validResumeAttempt({
+        benchmarkCase,
+        candidate,
+        configuration: input.configuration,
+        repetition: index + 1,
+      }),
+    ),
+  );
+}
+
 describe('correction benchmark corpus', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -271,6 +367,86 @@ describe('correction benchmark corpus', () => {
       caseId: benchmarkCase.caseId,
       repetition: 1,
     });
+  });
+
+  it('binds resume to configuration and corpus digests', () => {
+    const configuration = loadConfiguration();
+    const corpus = loadCorpus();
+    const artifact = fullResumeArtifact({ configuration, corpus });
+    const boundArtifact = {
+      ...artifact,
+      configurationSha256: autonomousDigests.configuration,
+      corpusSha256: autonomousDigests.corpus,
+      runMetadata: {
+        ...artifact.runMetadata,
+        configurationSha256: autonomousDigests.configuration,
+        corpusSha256: autonomousDigests.corpus,
+      },
+    };
+    expect(() =>
+      prepareBenchmarkResume({
+        artifact: boundArtifact,
+        configuration,
+        configurationSha256: autonomousDigests.configuration,
+        corpus,
+        corpusSha256: autonomousDigests.corpus,
+      }),
+    ).not.toThrow();
+    expect(() =>
+      prepareBenchmarkResume({
+        artifact: boundArtifact,
+        configuration,
+        configurationSha256: '9'.repeat(64),
+        corpus,
+        corpusSha256: autonomousDigests.corpus,
+      }),
+    ).toThrow('BENCHMARK_RESUME_IDENTITY_MISMATCH');
+  });
+
+  it('rejects output contract identity mismatches in resume and summary paths', () => {
+    const configuration = loadConfiguration();
+    const corpus = loadCorpus();
+    const candidate = configuration.candidates[0];
+    const benchmarkCase = corpus.cases[0];
+    if (!candidate || !benchmarkCase) {
+      throw new Error('Expected benchmark fixtures are missing.');
+    }
+    const attempt = validResumeAttempt({
+      benchmarkCase,
+      candidate,
+      configuration,
+      repetition: 1,
+    });
+    if (!attempt.output) {
+      throw new Error('Expected benchmark output.');
+    }
+    const mismatchedAttempt: BenchmarkAttempt = {
+      ...attempt,
+      output: { ...attempt.output, contractVersion: '9.9.9' },
+    };
+
+    expect(() =>
+      prepareBenchmarkResume({
+        artifact: fullResumeArtifact({
+          attempts: [mismatchedAttempt],
+          configuration,
+          corpus,
+        }),
+        configuration,
+        corpus,
+      }),
+    ).toThrow('BENCHMARK_ATTEMPT_OUTPUT_CONTRACT_IDENTITY_MISMATCH');
+    expect(() =>
+      summarizeCorrectionBenchmark({
+        attempts: [mismatchedAttempt],
+        configuration,
+        corpus,
+        runMetadata: pendingRunMetadata({
+          candidateIds: [candidate.candidateId],
+          caseIds: [benchmarkCase.caseId],
+        }),
+      }),
+    ).toThrow('BENCHMARK_ATTEMPT_OUTPUT_CONTRACT_IDENTITY_MISMATCH');
   });
 
   it('resumes only missing cells and preserves a terminally unusable cell', () => {
@@ -608,6 +784,258 @@ describe('correction benchmark corpus', () => {
     ).toThrow('BLIND_REVIEW_SOURCE_IDENTITY_MISMATCH');
   });
 
+  it('keeps the full blind packet free of identity, verdict and automatic attempt determinations', () => {
+    expect(() =>
+      assertFullBlindReviewPacketIsBlind({
+        artifactKind: 'AUTONOMOUS_BLIND_RESULT_REVIEW_PACKET',
+        cases: [
+          {
+            attempts: [
+              {
+                output: {
+                  criteria: [],
+                  overallFeedback: 'Visible model output for blind review.',
+                },
+              },
+            ],
+            reviewId: 'review-001',
+          },
+        ],
+        reviewProtocol: {
+          sourceBinding: {
+            attemptsSha256: 'a'.repeat(64),
+            configurationSha256: 'b'.repeat(64),
+            corpusSha256: 'c'.repeat(64),
+          },
+        },
+      }),
+    ).not.toThrow();
+    for (const forbidden of [
+      { candidateId: 'candidate-a' },
+      { errorCode: 'MODEL_OUTPUT_CONTRACT_INVALID' },
+      { evidenceMatches: [] },
+      { provider: 'Anthropic' },
+      { status: 'VALID' },
+      { unsureCriteria: [] },
+      { usage: { actualCostUsd: 0.01 } },
+      { summary: { promotionEligible: true } },
+      { verdict: 'PROMOTE' },
+    ]) {
+      expect(() =>
+        assertFullBlindReviewPacketIsBlind({ cases: [{ forbidden }] }),
+      ).toThrow('BLIND_REVIEW_PACKET_FORBIDDEN_FIELD');
+    }
+  });
+
+  it('keeps the legacy holdout overlay readable and routes autonomous overlays explicitly', async () => {
+    const legacy = await loadBenchmarkInputs([
+      'node',
+      'runner',
+      '--configuration=benchmarks/ai-correction/holdout.benchmark.v3.json',
+    ]);
+    expect(legacy.corpusReviewAuthority).toBe('HUMAN');
+    expect(legacy.corpus.humanReview.status).toBe('APPROVED');
+
+    const autonomous = {
+      activityTypeScope: ['writing'],
+      artifactKind: 'AUTONOMOUS_HOLDOUT_CONFIGURATION',
+      authoringManifestPath: 'authoring.json',
+      benchmarkId: 'autonomous-benchmark',
+      candidateId: 'claude-sonnet-4-6-openrouter-anthropic',
+      corpusId: 'autonomous-corpus',
+      corpusPath: 'corpus.json',
+      corpusReviewManifestPath: 'corpus-review.json',
+      extends: 'benchmark.json',
+      maxRetries: 0,
+      ownerAuthorizationPath: 'owner-authorization.json',
+      reviewPanelCaseIds: [
+        'case-a',
+        'case-b',
+        'case-c',
+        'case-d',
+        'case-e',
+        'case-f',
+      ],
+      schemaVersion: 1,
+      scoreGuardBandPoints: 5,
+      supplierCostCapUsd: 3,
+      thresholds: {
+        falsePassCountMaximum: 0,
+        injectionSafetyMinimum: 1,
+        twoLevelOrdinalGapCountMaximum: 0,
+        unsureCriterionRateMaximum: 0.05,
+      },
+    };
+    const parsedAutonomous = parseAutonomousHoldoutConfiguration(autonomous);
+    expect(parsedAutonomous).toMatchObject({
+      activityTypeScope: ['writing'],
+      candidateId: 'claude-sonnet-4-6-openrouter-anthropic',
+      maxRetries: 0,
+      scoreGuardBandPoints: 5,
+      supplierCostCapUsd: 3,
+    });
+    const contingencyConfigurationPath = path.resolve(
+      'benchmarks/ai-correction/hybrid/writing-only-fr-v1/configuration.contingency-3usd.json',
+    );
+    const contingencyConfiguration = parseAutonomousHoldoutConfiguration(
+      readJson(
+        'benchmarks/ai-correction/hybrid/writing-only-fr-v1/configuration.contingency-3usd.json',
+      ),
+    );
+    const budgetPolicyPath = path.resolve(
+      path.dirname(contingencyConfigurationPath),
+      contingencyConfiguration.budgetPolicyPath ?? '',
+    );
+    expect(contingencyConfiguration).toMatchObject({
+      activityTypeScope: ['writing'],
+      maxRetries: 0,
+      supplierCostCapUsd: 3,
+    });
+    expect(
+      createHash('sha256')
+        .update(readFileSync(budgetPolicyPath))
+        .digest('hex'),
+    ).toBe(contingencyConfiguration.budgetPolicySha256);
+    expect(
+      parseAutonomousHoldoutConfiguration({
+        ...autonomous,
+        budgetPolicyPath: 'budget-policy.md',
+        budgetPolicySha256: 'a'.repeat(64),
+      }),
+    ).toMatchObject({
+      budgetPolicyPath: 'budget-policy.md',
+      budgetPolicySha256: 'a'.repeat(64),
+    });
+    expect(() =>
+      parseAutonomousHoldoutConfiguration({
+        ...autonomous,
+        budgetPolicyPath: 'budget-policy.md',
+      }),
+    ).toThrow('budget policy path and digest');
+    const merged = mergeAutonomousHoldoutBenchmarkConfiguration({
+      baseConfiguration: readJson(
+        'benchmarks/ai-correction/benchmark.v3_1.json',
+      ),
+      overlay: parsedAutonomous,
+    });
+    expect(merged).toMatchObject({
+      activityTypeScope: ['writing'],
+      maxRetries: 0,
+      scoreGuardBandPoints: 5,
+    });
+    for (const weakened of [
+      { supplierCostCapUsd: 4.01 },
+      { maxRetries: 1 },
+      { scoreGuardBandPoints: undefined },
+      { thresholds: { ...autonomous.thresholds, injectionSafetyMinimum: 0.9 } },
+      { thresholds: { ...autonomous.thresholds, falsePassCountMaximum: 1 } },
+      {
+        thresholds: {
+          ...autonomous.thresholds,
+          twoLevelOrdinalGapCountMaximum: 1,
+        },
+      },
+      {
+        thresholds: {
+          ...autonomous.thresholds,
+          unsureCriterionRateMaximum: 0.051,
+        },
+      },
+    ]) {
+      expect(() =>
+        parseAutonomousHoldoutConfiguration({
+          ...autonomous,
+          ...weakened,
+        }),
+      ).toThrow();
+    }
+  });
+
+  it('reconciles every autonomous supplier charge as ACTUAL under the hard cap', () => {
+    const configuration = loadConfiguration();
+    const corpus = loadCorpus();
+    const candidate = configuration.candidates[0];
+    const benchmarkCase = corpus.cases[0];
+    if (!candidate || !benchmarkCase) {
+      throw new Error('Expected benchmark fixtures.');
+    }
+    const attempt: BenchmarkAttempt = {
+      ...attemptIdentity(configuration),
+      attempt: 1,
+      candidateId: candidate.candidateId,
+      caseId: benchmarkCase.caseId,
+      latencyMs: 100,
+      modelId: candidate.modelId,
+      output: buildOutput({
+        benchmarkCase,
+        quote: benchmarkCase.responseText.slice(0, 20),
+      }),
+      repetition: 1,
+      status: 'VALID',
+      usage: {
+        actualCostUsd: 0.25,
+        costSource: 'ACTUAL',
+        inputTokens: 100,
+        reasoningTokens: 0,
+        visibleOutputTokens: 100,
+      },
+    };
+    expect(() =>
+      assertAutonomousSupplierCostReconciled({
+        attempts: [attempt],
+        supplierBudget: {
+          actualSpentUsd: 0.25,
+          hardCapUsd: 4,
+          reconciliationRequired: false,
+        },
+        supplierCostCapUsd: 4,
+      }),
+    ).not.toThrow();
+    for (const invalid of [
+      {
+        attempts: [
+          {
+            ...attempt,
+            usage: {
+              costSource: 'ESTIMATED' as const,
+              inputTokens: 100,
+              reasoningTokens: 0,
+              visibleOutputTokens: 100,
+            },
+          },
+        ],
+        supplierBudget: {
+          actualSpentUsd: 0,
+          hardCapUsd: 4,
+          reconciliationRequired: true,
+        },
+      },
+      {
+        attempts: [attempt],
+        supplierBudget: {
+          actualSpentUsd: 0.2,
+          hardCapUsd: 4,
+          reconciliationRequired: false,
+        },
+      },
+      {
+        attempts: [attempt],
+        supplierBudget: {
+          actualSpentUsd: 0.25,
+          hardCapUsd: 4.01,
+          reconciliationRequired: false,
+        },
+      },
+    ]) {
+      expect(() =>
+        assertAutonomousSupplierCostReconciled({
+          ...invalid,
+          supplierCostCapUsd: 4,
+        }),
+      ).toThrow('BENCHMARK_AUTONOMOUS_SUPPLIER_COST_NOT_RECONCILED');
+    }
+  });
+
   it('resolves the sealed holdout configuration without reading or exposing its gold', async () => {
     const configurationPath = path.resolve(
       'benchmarks/ai-correction/holdout.benchmark.v1.json',
@@ -623,6 +1051,21 @@ describe('correction benchmark corpus', () => {
       requestProtocolVersion: '3.0.1',
     });
     expect(configuration.reviewPanelCaseIds).toHaveLength(6);
+  });
+
+  it('binds the writing-only scope, no-retry rule and guard in blind-review configuration', async () => {
+    const configurationPath = path.resolve(
+      'benchmarks/ai-correction/hybrid/writing-only-fr-v1/configuration.preregistered.json',
+    );
+    const configuration = await loadBlindReviewConfiguration({
+      configurationJson: readFileSync(configurationPath, 'utf8'),
+      configurationPath,
+    });
+    expect(configuration).toMatchObject({
+      activityTypeScope: ['writing'],
+      maxRetries: 0,
+      scoreGuardBandPoints: 5,
+    });
   });
 
   it('covers every response profile for every pilot activity type', () => {
@@ -1515,12 +1958,16 @@ describe('correction benchmark metrics', () => {
       attempts,
       configuration,
       corpus,
-      runMetadata: pendingRunMetadata({
-        candidateIds: configuration.candidates.map(
-          (candidate) => candidate.candidateId,
-        ),
-        caseIds: [benchmarkCase.caseId],
-      }),
+      runMetadata: {
+        ...pendingRunMetadata({
+          candidateIds: configuration.candidates.map(
+            (candidate) => candidate.candidateId,
+          ),
+          caseIds: [benchmarkCase.caseId],
+        }),
+        configurationSha256: autonomousDigests.configuration,
+        corpusSha256: autonomousDigests.corpus,
+      },
     });
 
     expect(summary.models).toHaveLength(configuration.candidates.length);
@@ -1540,6 +1987,12 @@ describe('correction benchmark metrics', () => {
     );
     expect(summary.models[0]?.promotionIdentity).toContain(
       '"visibleOutputTokenTarget":1500',
+    );
+    expect(summary.models[0]?.promotionIdentity).toContain(
+      autonomousDigests.configuration,
+    );
+    expect(summary.models[0]?.promotionIdentity).toContain(
+      autonomousDigests.corpus,
     );
   });
 
@@ -1946,9 +2399,45 @@ describe('correction benchmark metrics', () => {
       }),
     });
     expect(summary.models[0]?.unsureCriterionRate).toBeCloseTo(1 / 3, 10);
+    expect(
+      summary.models[0]?.byFamily[contract.target.activityType]?.logicalRuns,
+    ).toBe(1);
     expect(summary.models[0]?.automaticGateFailures).toContain(
       'UNSURE_CRITERION_RATE_ABOVE_MAXIMUM',
     );
+    for (const unsureCriteria of [
+      [],
+      [
+        salvaged.output.criteria[0]?.criterionKey ?? '',
+        ...salvaged.unsureCriteria,
+      ],
+      ['unknown-criterion', ...salvaged.unsureCriteria],
+    ]) {
+      expect(() =>
+        summarizeCorrectionBenchmark({
+          attempts: [
+            {
+              ...attemptIdentity(partialConfiguration),
+              attempt: 1,
+              candidateId: candidate.candidateId,
+              caseId: benchmarkCase.caseId,
+              latencyMs: 100,
+              modelId: candidate.modelId,
+              output: salvaged.output,
+              repetition: 1,
+              status: 'VALID',
+              unsureCriteria,
+            },
+          ],
+          configuration: partialConfiguration,
+          corpus,
+          runMetadata: pendingRunMetadata({
+            candidateIds: [candidate.candidateId],
+            caseIds: [benchmarkCase.caseId],
+          }),
+        }),
+      ).toThrow('BENCHMARK_PARTIAL_CRITERION_COVERAGE_INVALID');
+    }
   });
 
   it('rejects the v3 gate without PARTIAL_CRITERION delivery policy', () => {
@@ -1968,6 +2457,641 @@ describe('correction benchmark metrics', () => {
         },
       }),
     ).toThrowError(/requires correctionDeliveryPolicy PARTIAL_CRITERION/);
+  });
+
+  it('binds a benchmark scope to its guard band and rejects out-of-scope contracts', () => {
+    const corpus = loadCorpus();
+    const base = readJson('benchmarks/ai-correction/benchmark.v3_1.json') as
+      Record<string, unknown>;
+    expect(() =>
+      parseCorrectionBenchmarkConfiguration({
+        ...base,
+        activityTypeScope: ['writing'],
+      }),
+    ).toThrowError(/declare both activityTypeScope and scoreGuardBandPoints/);
+    const scoped = parseCorrectionBenchmarkConfiguration({
+      ...base,
+      activityTypeScope: ['writing'],
+      scoreGuardBandPoints: 5,
+    });
+    expect(scoped).toMatchObject({
+      activityTypeScope: ['writing'],
+      scoreGuardBandPoints: 5,
+    });
+    expect(() =>
+      assertBenchmarkCompatibility({ configuration: scoped, corpus }),
+    ).toThrow('BENCHMARK_ACTIVITY_TYPE_OUT_OF_SCOPE');
+  });
+
+  it('routes both inclusive score-guard boundaries to second pass without false PASS/FAIL', () => {
+    const fullCorpus = loadCorpus();
+    const writingContract = fullCorpus.contracts.find(
+      (contract) => contract.target.activityType === 'writing',
+    );
+    const writingCases = fullCorpus.cases.filter(
+      (benchmarkCase) =>
+        benchmarkCase.contractKey === writingContract?.contractKey,
+    );
+    const lowerCase = writingCases.find(
+      (benchmarkCase) => benchmarkCase.caseId === 'benchmark-writing-successful',
+    );
+    const upperCase = writingCases.find(
+      (benchmarkCase) => benchmarkCase.caseId === 'benchmark-writing-partial',
+    );
+    if (!writingContract || !lowerCase || !upperCase) {
+      throw new Error('Expected writing benchmark fixtures.');
+    }
+    const corpus = parseCorrectionBenchmarkCorpus({
+      ...fullCorpus,
+      cases: writingCases,
+      contracts: [writingContract],
+      corpusId: 'writing-score-guard-test',
+    });
+    const configuration = parseCorrectionBenchmarkConfiguration({
+      ...(readJson('benchmarks/ai-correction/benchmark.v3_1.json') as object),
+      activityTypeScope: ['writing'],
+      benchmarkId: 'writing-score-guard-test',
+      corpusId: corpus.corpusId,
+      reviewPanelCaseIds: writingCases.map((benchmarkCase) => benchmarkCase.caseId),
+      scoreGuardBandPoints: 5,
+    });
+    assertBenchmarkCompatibility({ configuration, corpus });
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+    const guardedOutput = (input: {
+      benchmarkCase: typeof lowerCase;
+      levels: ['mastered' | 'partial', 'partial' | 'mastered', 'partial' | 'mastered'];
+    }): CorrectionOutput => {
+      const output = buildOutput({
+        benchmarkCase: input.benchmarkCase,
+        quote: input.benchmarkCase.responseText.slice(0, 12),
+      });
+      return {
+        ...output,
+        criteria: output.criteria.map((criterion, index) => ({
+          ...criterion,
+          levelKey: input.levels[index] ?? criterion.levelKey,
+        })),
+        secondPass: { reasons: [], required: false },
+      };
+    };
+    const attempts: BenchmarkAttempt[] = [
+      {
+        ...attemptIdentity(configuration),
+        attempt: 1,
+        candidateId: candidate.candidateId,
+        caseId: lowerCase.caseId,
+        latencyMs: 100,
+        modelId: candidate.modelId,
+        output: guardedOutput({
+          benchmarkCase: lowerCase,
+          levels: ['mastered', 'partial', 'partial'],
+        }),
+        repetition: 1,
+        status: 'VALID',
+      },
+      {
+        ...attemptIdentity(configuration),
+        attempt: 1,
+        candidateId: candidate.candidateId,
+        caseId: upperCase.caseId,
+        latencyMs: 100,
+        modelId: candidate.modelId,
+        output: guardedOutput({
+          benchmarkCase: upperCase,
+          levels: ['partial', 'mastered', 'mastered'],
+        }),
+        repetition: 1,
+        status: 'VALID',
+      },
+    ];
+    const summary = summarizeCorrectionBenchmark({
+      attempts,
+      configuration,
+      corpus,
+      runMetadata: pendingRunMetadata({
+        candidateIds: [candidate.candidateId],
+        caseIds: [lowerCase.caseId, upperCase.caseId],
+      }),
+    });
+    expect(summary.models[0]).toMatchObject({
+      decisionAgreement: 0,
+      decisionAgreementExcludingSecondPass: 0,
+      falseFailCount: 0,
+      falsePassCount: 0,
+      secondPassRate: 0,
+    });
+
+    const selected = selectFullBlindReviewRuns({
+      attempts,
+      corpus,
+      scoreGuardBandPoints: 5,
+    });
+    expect(selected.get(`${lowerCase.caseId}|1`)).toContain(
+      'SCORE_GUARD_BAND_SECOND_PASS',
+    );
+    expect(selected.get(`${upperCase.caseId}|1`)).toContain(
+      'SCORE_GUARD_BAND_SECOND_PASS',
+    );
+    expect(selected.get(`${upperCase.caseId}|1`)).not.toContain(
+      'FALSE_PASS_DECISION',
+    );
+  });
+
+  it('executes one real same-model score-guard pass without counting it as a retry', async () => {
+    const fullCorpus = loadCorpus();
+    const writingContract = fullCorpus.contracts.find(
+      (contract) => contract.target.activityType === 'writing',
+    );
+    const writingCases = fullCorpus.cases.filter(
+      (benchmarkCase) =>
+        benchmarkCase.contractKey === writingContract?.contractKey,
+    );
+    const benchmarkCase = writingCases.find(
+      (item) => item.caseId === 'benchmark-writing-partial',
+    );
+    if (!writingContract || !benchmarkCase) {
+      throw new Error('Expected writing guard fixture.');
+    }
+    const corpus = parseCorrectionBenchmarkCorpus({
+      ...fullCorpus,
+      cases: writingCases,
+      contracts: [writingContract],
+      corpusId: 'writing-real-second-pass-test',
+    });
+    const configuration = parseCorrectionBenchmarkConfiguration({
+      ...(readJson('benchmarks/ai-correction/benchmark.v3_1.json') as object),
+      activityTypeScope: ['writing'],
+      benchmarkId: 'writing-real-second-pass-test',
+      corpusId: corpus.corpusId,
+      maxRetries: 0,
+      reviewPanelCaseIds: writingCases.map((item) => item.caseId),
+      scoreGuardBandPoints: 5,
+    });
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+    const rawOutput = (
+      levels: ['mastered', 'partial' | 'mastered', 'partial' | 'mastered'],
+    ) => ({
+      criteria: Object.fromEntries(
+        writingContract.criteria.map((criterion, index) => [
+          criterion.key,
+          {
+            confidence: 0.95,
+            evidenceQuotes: [benchmarkCase.responseText.slice(0, 12)],
+            evidenceStatus: 'FOUND',
+            feedback: `Retour vérifiable pour ${criterion.key}.`,
+            levelKey: levels[index],
+          },
+        ]),
+      ),
+      overallFeedback: 'Retour global vérifiable.',
+    });
+    const executeCandidate = vi
+      .fn()
+      .mockResolvedValueOnce({
+        latencyMs: 100,
+        modelSnapshot: candidate.modelId,
+        output: rawOutput(['mastered', 'partial', 'partial']),
+        providerRoute: 'Anthropic',
+        usage: {
+          actualCostUsd: 0.01,
+          costSource: 'ACTUAL',
+          inputTokens: 100,
+          reasoningTokens: 0,
+          visibleOutputTokens: 100,
+        },
+      })
+      .mockResolvedValueOnce({
+        latencyMs: 110,
+        modelSnapshot: candidate.modelId,
+        output: rawOutput(['mastered', 'mastered', 'mastered']),
+        providerRoute: 'Anthropic',
+        usage: {
+          actualCostUsd: 0.01,
+          costSource: 'ACTUAL',
+          inputTokens: 100,
+          reasoningTokens: 0,
+          visibleOutputTokens: 100,
+        },
+      });
+
+    const attempts = await runBenchmark({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      executeCandidate,
+      maxRetries: 0,
+      providerApiKey: 'test-key',
+      repetitions: 1,
+    });
+
+    expect(executeCandidate).toHaveBeenCalledTimes(2);
+    expect(attempts).toHaveLength(2);
+    expect(attempts.map((attempt) => attempt.workflowPass)).toEqual([
+      'PRIMARY',
+      'SCORE_GUARD_SECOND_PASS',
+    ]);
+    expect(attempts[0]?.rawModelOutput).toContain('Retour vérifiable');
+    expect(attempts[1]?.rawModelOutput).toContain('Retour vérifiable');
+    expect(attempts[1]?.output?.criteria.map((criterion) => criterion.criterionKey)).toEqual([
+      writingContract.criteria[0]?.key,
+    ]);
+    expect(attempts[1]?.unsureCriteria).toEqual([
+      writingContract.criteria[1]?.key,
+      writingContract.criteria[2]?.key,
+    ]);
+    const summary = summarizeCorrectionBenchmark({
+      attempts,
+      configuration,
+      corpus,
+      runMetadata: pendingRunMetadata({
+        candidateIds: [candidate.candidateId],
+        caseIds: [benchmarkCase.caseId],
+      }),
+    });
+    expect(summary.models[0]).toMatchObject({
+      actualCostUsd: 0.02,
+      decisionAgreement: 0,
+      falsePassCount: 0,
+      p90LatencyMs: 210,
+      retryRate: 0,
+      secondPassRate: 1,
+    });
+  });
+
+  it('preflights the complete 72-primary envelope and keeps retries separate', () => {
+    const corpus = loadCorpus();
+    const configuration = parseCorrectionBenchmarkConfiguration(
+      readJson('benchmarks/ai-correction/benchmark.v3_1.json'),
+    );
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+
+    const preflight = buildBenchmarkSupplierBudgetPreflight({
+      candidates: [candidate],
+      cases: corpus.cases,
+      configuration,
+      corpus,
+      maxRetries: 0,
+      repetitions: 3,
+      supplierCostCapUsd: 100,
+    });
+
+    expect(preflight).toMatchObject({
+      allGuardCallCount: 72,
+      boundedSecondPassCount: 72,
+      primaryCallCount: 72,
+      retryCallCount: 0,
+      retryWorstCaseUsd: 0,
+      supplierCostCapUsd: 100,
+    });
+    expect(preflight.primaryWorstCaseUsd).toBeGreaterThan(0);
+    expect(preflight.allGuardWorstCaseUsd).toBe(
+      preflight.primaryWorstCaseUsd,
+    );
+  });
+
+  it('refuses an underfunded mandatory envelope before the first provider call', async () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const candidate = configuration.candidates[0];
+    const benchmarkCase = corpus.cases[0];
+    if (!candidate || !benchmarkCase) {
+      throw new Error('Expected benchmark fixtures.');
+    }
+    const preflight = buildBenchmarkSupplierBudgetPreflight({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      maxRetries: 0,
+      repetitions: 1,
+      supplierCostCapUsd: 100,
+    });
+    const executeCandidate = vi.fn();
+    const observedPreflights: unknown[] = [];
+    const onBudgetPreflight = vi.fn(async (preflight: unknown) => {
+      observedPreflights.push(preflight);
+    });
+
+    await expect(
+      runBenchmark({
+        candidates: [candidate],
+        cases: [benchmarkCase],
+        configuration,
+        corpus,
+        executeCandidate,
+        maxRetries: 0,
+        onBudgetPreflight,
+        providerApiKey: 'test-key',
+        repetitions: 1,
+        supplierBudget: new SupplierBudgetGuard(
+          preflight.primaryWorstCaseUsd / 2,
+        ),
+      }),
+    ).rejects.toThrow('BENCHMARK_SUPPLIER_BUDGET_CONTINGENCY_REQUIRED');
+    expect(onBudgetPreflight).toHaveBeenCalledTimes(1);
+    expect(observedPreflights[0]).toMatchObject({
+      decision: 'CONTINGENCY_REQUIRED',
+    });
+    expect(executeCandidate).not.toHaveBeenCalled();
+  });
+
+  it('finishes all 72 primaries before persisting budget-skipped guard passes', async () => {
+    const fullCorpus = loadCorpus();
+    const writingContract = fullCorpus.contracts.find(
+      (contract) => contract.target.activityType === 'writing',
+    );
+    const benchmarkCase = fullCorpus.cases.find(
+      (item) => item.caseId === 'benchmark-writing-partial',
+    );
+    if (!writingContract || !benchmarkCase) {
+      throw new Error('Expected writing guard fixture.');
+    }
+    const corpus = parseCorrectionBenchmarkCorpus({
+      ...fullCorpus,
+      cases: [benchmarkCase],
+      contracts: [writingContract],
+      corpusId: 'writing-budget-skip-test',
+    });
+    const configuration = parseCorrectionBenchmarkConfiguration({
+      ...(readJson('benchmarks/ai-correction/benchmark.v3_1.json') as object),
+      activityTypeScope: ['writing'],
+      benchmarkId: 'writing-budget-skip-test',
+      corpusId: corpus.corpusId,
+      maxRetries: 0,
+      scoreGuardBandPoints: 5,
+    });
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+    const rawOutput = {
+      criteria: Object.fromEntries(
+        writingContract.criteria.map((criterion, index) => [
+          criterion.key,
+          {
+            confidence: 0.95,
+            evidenceQuotes: [benchmarkCase.responseText.slice(0, 12)],
+            evidenceStatus: 'FOUND',
+            feedback: `Retour vérifiable pour ${criterion.key}.`,
+            levelKey:
+              index === 0 ? 'mastered' : 'partial',
+          },
+        ]),
+      ),
+      overallFeedback: 'Retour global vérifiable.',
+    };
+    const envelope = buildBenchmarkSupplierBudgetPreflight({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      maxRetries: 0,
+      repetitions: 72,
+      supplierCostCapUsd: 3,
+    });
+    expect(envelope.decision).toBe('READY');
+    const actualCostPerPrimary = (3 - 1e-9) / 72;
+    const executeCandidate = vi.fn().mockResolvedValue({
+      latencyMs: 100,
+      modelSnapshot: candidate.modelId,
+      output: rawOutput,
+      providerRoute: 'OpenAI',
+      usage: {
+        actualCostUsd: actualCostPerPrimary,
+        costSource: 'ACTUAL',
+        inputTokens: 100,
+        reasoningTokens: 0,
+        visibleOutputTokens: 100,
+      },
+    });
+
+    const attempts = await runBenchmark({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      executeCandidate,
+      maxRetries: 0,
+      providerApiKey: 'test-key',
+      repetitions: 72,
+      supplierBudget: new SupplierBudgetGuard(3),
+    });
+
+    expect(executeCandidate).toHaveBeenCalledTimes(72);
+    expect(attempts).toHaveLength(144);
+    expect(
+      attempts.slice(0, 72).every(
+        (attempt) =>
+          attempt.status === 'VALID' && attempt.workflowPass === 'PRIMARY',
+      ),
+    ).toBe(true);
+    expect(
+      attempts.slice(72).every(
+        (attempt) =>
+          attempt.errorCode === 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+          attempt.status === 'ERROR' &&
+          attempt.workflowPass === 'SCORE_GUARD_SECOND_PASS' &&
+          JSON.stringify(attempt.unsureCriteria) ===
+            JSON.stringify(
+              writingContract.criteria.map((criterion) => criterion.key),
+            ),
+      ),
+    ).toBe(true);
+  });
+
+  it('keeps a budget-skipped guard as a delivered primary without an exact decision', async () => {
+    const fullCorpus = loadCorpus();
+    const writingContract = fullCorpus.contracts.find(
+      (contract) => contract.target.activityType === 'writing',
+    );
+    const benchmarkCase = fullCorpus.cases.find(
+      (item) => item.caseId === 'benchmark-writing-partial',
+    );
+    if (!writingContract || !benchmarkCase) {
+      throw new Error('Expected writing guard fixture.');
+    }
+    const writingCases = fullCorpus.cases.filter(
+      (item) => item.contractKey === writingContract.contractKey,
+    );
+    const corpus = parseCorrectionBenchmarkCorpus({
+      ...fullCorpus,
+      cases: writingCases,
+      contracts: [writingContract],
+      corpusId: 'writing-budget-skip-summary-test',
+    });
+    const configuration = parseCorrectionBenchmarkConfiguration({
+      ...(readJson('benchmarks/ai-correction/benchmark.v3_1.json') as object),
+      activityTypeScope: ['writing'],
+      benchmarkId: 'writing-budget-skip-summary-test',
+      corpusId: corpus.corpusId,
+      maxRetries: 0,
+      repetitions: 2,
+      reviewPanelCaseIds: writingCases.map((item) => item.caseId),
+      scoreGuardBandPoints: 5,
+    });
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+    const rawOutput = {
+      criteria: Object.fromEntries(
+        writingContract.criteria.map((criterion, index) => [
+          criterion.key,
+          {
+            confidence: 0.95,
+            evidenceQuotes: [benchmarkCase.responseText.slice(0, 12)],
+            evidenceStatus: 'FOUND',
+            feedback: `Retour vérifiable pour ${criterion.key}.`,
+            levelKey: index === 0 ? 'mastered' : 'partial',
+          },
+        ]),
+      ),
+      overallFeedback: 'Retour global vérifiable.',
+    };
+    const primaryEnvelope = buildBenchmarkSupplierBudgetPreflight({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      maxRetries: 0,
+      repetitions: 2,
+      supplierCostCapUsd: 100,
+    }).primaryWorstCaseUsd;
+    const attempts = await runBenchmark({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      executeCandidate: vi.fn().mockResolvedValue({
+        latencyMs: 100,
+        modelSnapshot: candidate.modelId,
+        output: rawOutput,
+        providerRoute: 'OpenAI',
+        usage: {
+          actualCostUsd: primaryEnvelope / 2,
+          costSource: 'ACTUAL',
+          inputTokens: 100,
+          reasoningTokens: 0,
+          visibleOutputTokens: 100,
+        },
+      }),
+      maxRetries: 0,
+      providerApiKey: 'test-key',
+      repetitions: 2,
+      supplierBudget: new SupplierBudgetGuard(primaryEnvelope),
+    });
+    const summary = summarizeCorrectionBenchmark({
+      attempts,
+      configuration,
+      corpus,
+      runMetadata: pendingRunMetadata({
+        candidateIds: [candidate.candidateId],
+        caseIds: [benchmarkCase.caseId],
+        repetitions: 2,
+      }),
+    });
+
+    expect(attempts.at(-1)?.errorCode).toBe(
+      'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET',
+    );
+    expect(summary.models[0]).toMatchObject({
+      decisionAgreement: 0,
+      eventualUnusableRunRate: 0,
+      secondPassRate: 0,
+    });
+  });
+
+  it('does not interrupt the funded primary phase when one cost needs reconciliation', async () => {
+    const fullCorpus = loadCorpus();
+    const writingContract = fullCorpus.contracts.find(
+      (contract) => contract.target.activityType === 'writing',
+    );
+    const benchmarkCase = fullCorpus.cases.find(
+      (item) => item.caseId === 'benchmark-writing-successful',
+    );
+    if (!writingContract || !benchmarkCase) {
+      throw new Error('Expected writing fixture.');
+    }
+    const corpus = parseCorrectionBenchmarkCorpus({
+      ...fullCorpus,
+      cases: [benchmarkCase],
+      contracts: [writingContract],
+      corpusId: 'writing-unreconciled-primary-test',
+    });
+    const configuration = parseCorrectionBenchmarkConfiguration({
+      ...(readJson('benchmarks/ai-correction/benchmark.v3_1.json') as object),
+      activityTypeScope: ['writing'],
+      benchmarkId: 'writing-unreconciled-primary-test',
+      corpusId: corpus.corpusId,
+      maxRetries: 0,
+      repetitions: 2,
+      scoreGuardBandPoints: 5,
+    });
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+    const validOutput = buildOutput({
+      benchmarkCase,
+      quote: benchmarkCase.responseText.slice(0, 12),
+    });
+    const executeCandidate = vi
+      .fn()
+      .mockResolvedValueOnce({
+        latencyMs: 100,
+        modelSnapshot: candidate.modelId,
+        output: validOutput,
+        providerRoute: 'OpenAI',
+      })
+      .mockResolvedValueOnce({
+        latencyMs: 100,
+        modelSnapshot: candidate.modelId,
+        output: validOutput,
+        providerRoute: 'OpenAI',
+        usage: {
+          actualCostUsd: 0.01,
+          costSource: 'ACTUAL',
+          inputTokens: 100,
+          reasoningTokens: 0,
+          visibleOutputTokens: 100,
+        },
+      });
+    const envelope = buildBenchmarkSupplierBudgetPreflight({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      maxRetries: 0,
+      repetitions: 2,
+      supplierCostCapUsd: 100,
+    });
+    const attempts = await runBenchmark({
+      candidates: [candidate],
+      cases: [benchmarkCase],
+      configuration,
+      corpus,
+      executeCandidate,
+      maxRetries: 0,
+      providerApiKey: 'test-key',
+      repetitions: 2,
+      supplierBudget: new SupplierBudgetGuard(
+        envelope.primaryWorstCaseUsd,
+      ),
+    });
+
+    expect(executeCandidate).toHaveBeenCalledTimes(2);
+    expect(attempts).toHaveLength(2);
+    expect(attempts.map((attempt) => attempt.repetition)).toEqual([1, 2]);
   });
 
   it('keeps the case tolerance bounded to a unique first-letter variant', () => {
@@ -2047,6 +3171,298 @@ describe('correction benchmark metrics', () => {
     expect(() =>
       parseCorrectionBenchmarkConfiguration(partial),
     ).toThrowError(/Gate policy v2 thresholds must be declared together/);
+  });
+
+  it('binds autonomous corpus review to owner authorization and every preregistered digest', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const {
+      corpusReviewManifestSha256,
+      ...metadata
+    } = autonomousCorpusReviewMetadata();
+    expect(corpusReviewManifestSha256).toBe(
+      autonomousDigests.corpusReviewManifest,
+    );
+    const manifest = {
+      ...metadata,
+      benchmarkId: configuration.benchmarkId,
+      blindedToCandidateOutputs: true,
+      corpusId: corpus.corpusId,
+      schemaVersion: 1,
+      status: 'APPROVED',
+    };
+    const assertedReview = assertBenchmarkAutonomousCorpusReview({
+        actualAuthoringManifestSha256:
+          autonomousDigests.authoringManifest,
+        actualConfigurationSha256: autonomousDigests.configuration,
+        actualCorpusReviewManifestSha256:
+          autonomousDigests.corpusReviewManifest,
+        actualCorpusSha256: autonomousDigests.corpus,
+        actualOwnerAuthorizationReference: 'owner-authorization.json',
+        actualOwnerAuthorizationSha256:
+          autonomousDigests.ownerAuthorization,
+        benchmarkId: configuration.benchmarkId,
+        corpusHumanReviewStatus: 'PENDING',
+        corpusId: corpus.corpusId,
+        manifest,
+      });
+    expect(assertedReview.artifactKind).toBe(
+      'AUTONOMOUS_CORPUS_REVIEW_MANIFEST',
+    );
+    if (assertedReview.artifactKind !== 'AUTONOMOUS_CORPUS_REVIEW_MANIFEST') {
+      throw new Error('Expected autonomous corpus review.');
+    }
+    expect(assertedReview.reviewerKind).toBe('AUTONOMOUS_AI_NOT_HUMAN');
+    expect(() =>
+      assertBenchmarkAutonomousCorpusReview({
+        actualAuthoringManifestSha256:
+          autonomousDigests.authoringManifest,
+        actualConfigurationSha256: '9'.repeat(64),
+        actualCorpusReviewManifestSha256:
+          autonomousDigests.corpusReviewManifest,
+        actualCorpusSha256: autonomousDigests.corpus,
+        actualOwnerAuthorizationReference: 'owner-authorization.json',
+        actualOwnerAuthorizationSha256:
+          autonomousDigests.ownerAuthorization,
+        benchmarkId: configuration.benchmarkId,
+        corpusHumanReviewStatus: 'PENDING',
+        corpusId: corpus.corpusId,
+        manifest,
+      }),
+    ).toThrow('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_DIGEST_MISMATCH');
+    expect(() =>
+      assertBenchmarkAutonomousCorpusReview({
+        actualAuthoringManifestSha256:
+          autonomousDigests.authoringManifest,
+        actualConfigurationSha256: autonomousDigests.configuration,
+        actualCorpusReviewManifestSha256:
+          autonomousDigests.corpusReviewManifest,
+        actualCorpusSha256: autonomousDigests.corpus,
+        actualOwnerAuthorizationReference: 'owner-authorization.json',
+        actualOwnerAuthorizationSha256:
+          autonomousDigests.ownerAuthorization,
+        benchmarkId: configuration.benchmarkId,
+        corpusHumanReviewStatus: 'APPROVED',
+        corpusId: corpus.corpusId,
+        manifest,
+      }),
+    ).toThrow('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_REQUIRES_HUMAN_PENDING');
+  });
+
+  it('requires a result reviewer to see outputs but not candidate identity or the automatic verdict', () => {
+    const review = autonomousResultReviewArtifact();
+    expect(() => benchmarkAutonomousReviewArtifactSchema.parse(review)).not.toThrow();
+    expect(() =>
+      benchmarkAutonomousReviewArtifactSchema.parse({
+        ...review,
+        blindedToCandidateOutputs: true,
+      }),
+    ).toThrow();
+    expect(() =>
+      benchmarkAutonomousReviewArtifactSchema.parse({
+        ...review,
+        candidateId: 'candidate-a',
+      }),
+    ).toThrow();
+  });
+
+  it('applies an autonomous result review only to an exclusive authorized full run', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+    const attempts = fullValidBenchmarkAttempts({ configuration, corpus });
+    const runMetadata = {
+      candidateIds: [candidate.candidateId],
+      caseIds: corpus.cases.map((benchmarkCase) => benchmarkCase.caseId),
+      configurationSha256: autonomousDigests.configuration,
+      corpusReview: autonomousCorpusReviewMetadata(),
+      corpusReviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN',
+      corpusSha256: autonomousDigests.corpus,
+      humanReview: { reviewedAt: null, reviewer: null, status: 'PENDING' },
+      mode: 'FULL',
+      repetitions: configuration.repetitions,
+      reviewAuthority: 'NONE',
+    };
+    const apply = (
+      review = autonomousResultReviewArtifact(),
+      reviewedAttempts: BenchmarkAttempt[] = attempts,
+    ) =>
+      applyBenchmarkAutonomousReview({
+        actualAttemptsSha256: autonomousDigests.attempts,
+        actualBlindReviewPacketSha256:
+          autonomousDigests.blindReviewPacket,
+        actualConfigurationSha256: autonomousDigests.configuration,
+        actualCorpusSha256: autonomousDigests.corpus,
+        actualOwnerAuthorizationReference: 'owner-authorization.json',
+        actualOwnerAuthorizationSha256:
+          autonomousDigests.ownerAuthorization,
+        actualReviewManifestSha256:
+          autonomousDigests.resultReviewManifest,
+        attempts: reviewedAttempts,
+        configuration,
+        corpus,
+        review,
+        runMetadata,
+      });
+    const reviewed = apply();
+    expect(reviewed).toMatchObject({
+      humanReview: { status: 'PENDING' },
+      reviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN',
+      autonomousReview: {
+        blindedToAutomaticVerdict: true,
+        blindedToCandidateIdentity: true,
+        blindedToCandidateOutputs: false,
+        resultReviewManifestSha256:
+          autonomousDigests.resultReviewManifest,
+      },
+    });
+    expect(() =>
+      apply({
+        ...autonomousResultReviewArtifact(),
+        attemptsSha256: '9'.repeat(64),
+      }),
+    ).toThrow('BENCHMARK_AUTONOMOUS_REVIEW_DIGEST_MISMATCH');
+    expect(() =>
+      apply(autonomousResultReviewArtifact(), attempts.slice(0, -1)),
+    ).toThrow('BENCHMARK_AUTONOMOUS_REVIEW_REQUIRES_COMPLETE_DATASET');
+    expect(() =>
+      benchmarkRunMetadataSchema.parse({
+        ...reviewed,
+        humanReview: {
+          reviewedAt: '2026-08-24T13:00:00Z',
+          reviewer: 'human-reviewer',
+          status: 'APPROVED',
+        },
+      }),
+    ).toThrow(/mutually exclusive/);
+
+    const firstAttempt = attempts[0];
+    if (!firstAttempt) {
+      throw new Error('Expected a full benchmark dataset.');
+    }
+    expect(() =>
+      prepareBenchmarkResume({
+        artifact: {
+          ...fullResumeArtifact({
+            attempts: [
+              ...attempts,
+              { ...firstAttempt, attempt: firstAttempt.attempt + 1 },
+            ],
+            configuration,
+            corpus,
+          }),
+          runMetadata: reviewed,
+        },
+        configuration,
+        corpus,
+      }),
+    ).toThrow('BENCHMARK_RESUME_AUTONOMOUS_REVIEW_IMMUTABLE');
+  });
+
+  it('evaluates autonomous evidence without fabricating human approval and enables authorized promotion', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const candidate = configuration.candidates[0];
+    if (!candidate) {
+      throw new Error('Expected benchmark candidate.');
+    }
+    const attempts: BenchmarkAttempt[] = corpus.cases.flatMap((benchmarkCase) =>
+      [1, 2, 3].map((repetition) => ({
+        ...attemptIdentity(configuration),
+        attempt: 1,
+        candidateId: candidate.candidateId,
+        caseId: benchmarkCase.caseId,
+        latencyMs: 100,
+        modelId: candidate.modelId,
+        output: buildOutput({
+          benchmarkCase,
+          quote:
+            benchmarkCase.injectionSecurity?.allowedEvidenceQuotes[0] ??
+            benchmarkCase.responseText.slice(0, 20),
+        }),
+        repetition,
+        status: 'VALID' as const,
+        usage: {
+          actualCostUsd: 0.001,
+          costSource: 'ACTUAL' as const,
+          inputTokens: 100,
+          reasoningTokens: 0,
+          visibleOutputTokens: 100,
+        },
+      })),
+    );
+    const pendingMetadata = {
+      candidateIds: [candidate.candidateId],
+      caseIds: corpus.cases.map((benchmarkCase) => benchmarkCase.caseId),
+      configurationSha256: autonomousDigests.configuration,
+      corpusReview: autonomousCorpusReviewMetadata(),
+      corpusReviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN',
+      corpusSha256: autonomousDigests.corpus,
+      humanReview: { reviewedAt: null, reviewer: null, status: 'PENDING' },
+      mode: 'FULL',
+      repetitions: configuration.repetitions,
+      reviewAuthority: 'NONE',
+    };
+    const reviewedMetadata = applyBenchmarkAutonomousReview({
+      actualAttemptsSha256: autonomousDigests.attempts,
+      actualBlindReviewPacketSha256: autonomousDigests.blindReviewPacket,
+      actualConfigurationSha256: autonomousDigests.configuration,
+      actualCorpusSha256: autonomousDigests.corpus,
+      actualOwnerAuthorizationReference: 'owner-authorization.json',
+      actualOwnerAuthorizationSha256: autonomousDigests.ownerAuthorization,
+      actualReviewManifestSha256: autonomousDigests.resultReviewManifest,
+      attempts,
+      configuration,
+      corpus,
+      review: autonomousResultReviewArtifact(),
+      runMetadata: pendingMetadata,
+    });
+    const metrics = summarizeCorrectionBenchmark({
+      attempts,
+      configuration,
+      corpus,
+      runMetadata: reviewedMetadata,
+    }).models[0];
+    expect(metrics).toMatchObject({
+      autonomousReviewApproved: true,
+      humanReviewApproved: false,
+      operationallyDeployable: true,
+      pedagogicallyEligible: true,
+      promotionEligible: true,
+      reviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN',
+      supplierCostReconciled: true,
+    });
+    expect(metrics?.actualCostUsd).toBeCloseTo(0.072, 10);
+    expect(
+      metrics &&
+        modelMeetsPromotionThresholds(metrics, configuration.thresholds),
+    ).toBe(true);
+
+    const unreconciled = summarizeCorrectionBenchmark({
+      attempts: attempts.map((attempt) => ({
+        ...attempt,
+        usage: {
+          costSource: 'ESTIMATED' as const,
+          inputTokens: 100,
+          reasoningTokens: 0,
+          visibleOutputTokens: 100,
+        },
+      })),
+      configuration,
+      corpus,
+      runMetadata: reviewedMetadata,
+    }).models[0];
+    expect(unreconciled).toMatchObject({
+      actualCostUsd: null,
+      operationallyDeployable: false,
+      supplierCostReconciled: false,
+    });
+    expect(unreconciled?.automaticGateFailures).toContain(
+      'SUPPLIER_COST_RECONCILIATION_REQUIRED',
+    );
   });
 
   it('never promotes smoke, panel, incomplete or unreviewed datasets', () => {

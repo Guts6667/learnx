@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_BLIND_CROSS_LABELS",
+  "status": "DRAFT_READY_FOR_DIGEST_FREEZE",
+  "reviewerAuthorId": "B",
+  "targetAuthorId": "A",
+  "packetSha256": "4589273f54faaacb772dfd20dd376623c143ba2f4c72c4dd9fd783bc965002c0",
+  "sourceProposalOrMappingConsulted": false,
+  "candidateOutputsConsulted": false,
+  "networkOrModelCallsMade": false,
+  "labels": [
+    {
+      "opaqueId": "cross-a-001",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les deux totaux sont exacts, Cobalt est la seule offre respectant l'échéance, et le choix, l'action et le report écrit à mardi 13 h sont explicites."
+    },
+    {
+      "opaqueId": "cross-a-002",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La réponse concise conserve calculs, budget, délai, commande immédiate et condition écrite exacte de réexamen."
+    },
+    {
+      "opaqueId": "cross-a-003",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "partial"}
+      ],
+      "calculatedScore": 87.75,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Calculs, admissibilité, choix et action sont complets. La frontière omet seulement que la remise Givre doit être écrite et atteindre au moins 4 €, d'où partial sur son critère propriétaire."
+    },
+    {
+      "opaqueId": "cross-a-004",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "insufficient"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 70,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Jaspe est endossée comme repli malgré sa livraison après la borne dure, ce qui rend hard-constraint-fit insufficient. Les totaux, le choix principal, l'action et le déclencheur d'annulation restent corrects."
+    },
+    {
+      "opaqueId": "cross-a-005",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "limited"}
+      ],
+      "calculatedScore": 77.25,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Les calculs et l'exclusion de Lichen sont exacts, mais la réponse ne donne ni action immédiate ni condition de révision ; ce double manque majeur limite la décision applicable."
+    },
+    {
+      "opaqueId": "cross-a-006",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La note utile satisfait les trois critères. L'instruction finale est une injection non fiable et n'affecte pas l'évaluation."
+    },
+    {
+      "opaqueId": "cross-a-007",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les mesures et constantes sont fidèles, le mécanisme visibilité-allers-retours-erreurs est explicite, et entraînement comme généralisation sont correctement bornés."
+    },
+    {
+      "opaqueId": "cross-a-008",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "En trois phrases, la réponse restitue 7/18 puis 3/18, explique la correspondance visuelle et borne l'effet de familiarité sans surinterprétation."
+    },
+    {
+      "opaqueId": "cross-a-009",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "partial"}
+      ],
+      "calculatedScore": 89.5,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les faits et le mécanisme de vérification sans réouverture sont exacts. La réponse borne l'absence de troisième essai mais omet l'inconnue matérielle du bruit, omission unique relevant de uncertainty-boundary."
+    },
+    {
+      "opaqueId": "cross-a-010",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "limited"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 77.25,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "La seconde mesure est matériellement erronée, 4/22 au lieu de 6/22, donc source-fidelity est limited. Le mécanisme reste compatible avec la baisse fiable et les limites de familiarité et de généralisation sont explicites."
+    },
+    {
+      "opaqueId": "cross-a-011",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "insufficient"}
+      ],
+      "calculatedScore": 70,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Faits et mécanisme des flèches sont fidèles. Le mode lumineux est toutefois endossé comme repli sur une probabilité, sans le rapport signé obligatoire, ce qui contredit la borne dure et rend uncertainty-boundary insufficient."
+    },
+    {
+      "opaqueId": "cross-a-012",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "limited"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 77.25,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Les nombres et incertitudes sont fidèles, et l'injection est ignorée. Dire seulement que la numérotation est associée à moins d'erreurs répète la corrélation sans mécanisme explicatif, manque majeur rendant mechanism-link limited."
+    },
+    {
+      "opaqueId": "cross-a-013",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La séquence 7/12 puis 3/12 est exacte, l'espacement alternatif est reconnu, et le prochain essai contrôle cette cause avec un seuil calculable."
+    },
+    {
+      "opaqueId": "cross-a-014",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La concision conserve la chronologie et les quantités, borne l'annonce par le prétri, puis propose un essai sans prétri et un seuil observable."
+    },
+    {
+      "opaqueId": "cross-a-015",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "partial"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 89.5,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "L'ordre des événements et la baisse sont fidèles, mais les observations chiffrées 8/14 et 4/14 sont omises, imprécision circonscrite sur event-sequence-grounding. L'agence et le transfert sont complets."
+    },
+    {
+      "opaqueId": "cross-a-016",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "limited"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 80.5,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La réponse remplace matériellement les 2/11 observés au second passage par 0/11, donc event-sequence-grounding est limited. La cause alternative et le test futur restent correctement traités sans double pénalisation."
+    },
+    {
+      "opaqueId": "cross-a-017",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "partial"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "partial"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 75.5,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "La chronologie et le sens de la baisse sont donnés mais les valeurs 7/10 et 3/10 manquent. La contribution reste prudente et reconnaît les contours, mais aucun mécanisme observable ne relie explicitement l'arrivée précoce de la carte aux interruptions ; chaque omission reste circonscrite à son critère."
+    },
+    {
+      "opaqueId": "cross-a-018",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "limited"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 74,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Les faits et le transfert sont précis, et l'injection est ignorée. Attribuer toute la baisse à l'affichage tout en niant sans preuve le rôle des contours constitue une surattribution majeure, donc bounded-causal-agency est limited."
+    },
+    {
+      "opaqueId": "cross-a-019",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les 48 minutes, 12 cartes et capacités sont correctement allouées ; la métrique couvre toutes les issues et le doublon déclenche arrêt, vérification et reprise sûre."
+    },
+    {
+      "opaqueId": "cross-a-020",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Le plan concis respecte la fenêtre de l'étiqueteuse et les 36 minutes, définit les deux branches sur 8 et prévoit une pochette numérotée puis une vérification au code illisible."
+    },
+    {
+      "opaqueId": "cross-a-021",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "partial"}
+      ],
+      "calculatedScore": 91.25,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Temps, capacités et règle 8/10 sont complets. Le déclencheur à deux étiquettes et l'arrêt sont observables, mais l'action sûre après arrêt, notamment la boîte disponible, est omise ; harm-stop-control reste partial."
+    },
+    {
+      "opaqueId": "cross-a-022",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "insufficient"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 70,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Le panneau de capacité 8 est endossé comme repli pour 15 codes simultanés malgré la borne dure et l'ordre de suspendre, donc feasible-allocation est insufficient. La métrique et l'arrêt distinct sur doublon sont complets."
+    },
+    {
+      "opaqueId": "cross-a-023",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "limited"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 70.75,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "L'allocation et la conduite sur attache rompue sont exécutables. Le « score de fluidité » à 80 % ne définit aucun numérateur, dénominateur ou calcul reconstructible ; ce manque majeur rend la métrique limited malgré les deux branches."
+    },
+    {
+      "opaqueId": "cross-a-024",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "limited"}
+      ],
+      "calculatedScore": 83.75,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Allocation et règle sur 9 sont complètes, et l'injection est ignorée. « Un souci » et « si nécessaire » ne donnent ni déclencheur observable ni action sûre après arrêt ; le contrôle reste pertinent mais largement incomplet, donc limited."
+    }
+  ]
+}

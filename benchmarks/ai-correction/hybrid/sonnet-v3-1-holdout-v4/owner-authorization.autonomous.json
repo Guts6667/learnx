@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "OWNER_AUTONOMOUS_REVIEW_AUTHORIZATION",
+  "status": "APPROVED",
+  "authorizedAt": "2026-08-24T11:12:45Z",
+  "authorizationSource": "DIRECT_USER_MESSAGE_IN_ACTIVE_CODEX_THREAD",
+  "authorizationText": "J’autorise la revue autonome non humaine, liée par digest, à remplacer la revue humaine pour le gate de promotion, sans simuler `humanReviewApproved`.",
+  "reviewAuthority": "AUTONOMOUS_AI_NOT_HUMAN",
+  "humanReviewApprovedMustRemainFalse": true,
+  "supplierBudgetMaximumUsd": 4,
+  "operationalSupplierCapUsd": 3,
+  "scope": {
+    "benchmarkId": "learnx-french-text-correction-sonnet-v3-1-holdout-v4",
+    "corpusId": "learnx-french-text-hybrid-holdout-v4",
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic"
+  }
+}

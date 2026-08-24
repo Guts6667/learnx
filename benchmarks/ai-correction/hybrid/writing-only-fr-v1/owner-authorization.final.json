@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "OWNER_AUTONOMOUS_REVIEW_AUTHORIZATION",
+  "status": "APPROVED",
+  "authorizedAt": "2026-08-24T13:55:00Z",
+  "authorizationSource": "DIRECT_USER_MESSAGE_IN_ACTIVE_CODEX_THREAD",
+  "authorizationText": "J’autorise les trois fallbacks convergents et les deux corrections individuelles de gold après la revue REJECTED, puis le scellement et l’exécution unique de l’examen Writing sous le plafond absolu de 4 USD, sans nouvelle revue ni changement de seuil.",
+  "reviewAuthority": "AUTONOMOUS_AI_NOT_HUMAN",
+  "humanReviewApprovedMustRemainFalse": true,
+  "supplierBudgetMaximumUsd": 4,
+  "operationalSupplierCapUsd": 4,
+  "budgetAuthorization": {
+    "path": "OWNER_CONTINGENCY_2026-08-24_4USD.json",
+    "sha256": "453e3ba2142ce64f119aa36f6b1377424a8554801ce57559e1dff6169407e493"
+  },
+  "scope": {
+    "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+    "corpusId": "learnx-french-writing-holdout-v1",
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "activityType": "writing",
+    "semanticCases": 24,
+    "repetitions": 3,
+    "transportRetries": 0
+  }
+}

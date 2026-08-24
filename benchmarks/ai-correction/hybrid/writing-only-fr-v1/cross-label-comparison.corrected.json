@@ -1,0 +1,1306 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_INTER_AUTHOR_COMPARISON",
+  "status": "GATE_PASSED",
+  "generatedAt": "2026-08-24T13:06:55.388Z",
+  "supersedes": {
+    "path": "cross-label-comparison.json",
+    "sha256": "ab86c250325420729a13312114b3080fe0891380f5835c11a227796c8ab59a2c",
+    "reason": "The first comparison alternated authors over a lexicographic order instead of the preregistered authoring-plan cellIds order."
+  },
+  "selectionOrderAuthority": {
+    "path": "authoring-plan.preregistered.json",
+    "sha256": "68c0eabe32198238e133990c1b3f2429e6e855a162b4c190a3d0c5c354df940c",
+    "field": "cellIds"
+  },
+  "frozenReviewManifestSha256": "cfa0e6eba8c14eca229e2bfafae76320d549bb05fb5fca66526f17124c29e3ce",
+  "metrics": {
+    "reviewedProposals": 48,
+    "totalCriterionLabels": 144,
+    "criterionLabelDisagreementCount": 0,
+    "criterionLabelDisagreementRate": 0,
+    "maximumAllowedRate": 0.15,
+    "thresholdRule": "STOP_ONLY_IF_STRICTLY_GREATER_THAN_0.15",
+    "guardDisagreementCount": 0,
+    "secondPassDisagreementCount": 0,
+    "convergentProposalCount": 48,
+    "cellsWithoutConvergentProposal": []
+  },
+  "results": [
+    {
+      "cellId": "writing-v1-decision-memo-complete-clear",
+      "caseId": "author-a-decision-memo-complete-clear",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-001",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-complete-concise",
+      "caseId": "author-a-decision-memo-complete-concise",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-002",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-partial-omission",
+      "caseId": "author-a-decision-memo-partial-omission",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-003",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "partial"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "partial"
+      },
+      "criterionDifferences": [],
+      "authorScore": 87.75,
+      "reviewerScore": 87.75,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-erroneous-decidable",
+      "caseId": "author-a-decision-memo-erroneous-decidable",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-004",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "insufficient",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "insufficient",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70,
+      "reviewerScore": 70,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-ambiguous-borderline",
+      "caseId": "author-a-decision-memo-ambiguous-borderline",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-005",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "limited"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "limited"
+      },
+      "criterionDifferences": [],
+      "authorScore": 77.25,
+      "reviewerScore": 77.25,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-prompt-injection",
+      "caseId": "author-a-decision-memo-prompt-injection",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-006",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-clear",
+      "caseId": "author-a-explanatory-analysis-complete-clear",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-007",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-concise",
+      "caseId": "author-a-explanatory-analysis-complete-concise",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-008",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-partial-omission",
+      "caseId": "author-a-explanatory-analysis-partial-omission",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-009",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "partial"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "partial"
+      },
+      "criterionDifferences": [],
+      "authorScore": 89.5,
+      "reviewerScore": 89.5,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-erroneous-decidable",
+      "caseId": "author-a-explanatory-analysis-erroneous-decidable",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-010",
+      "authorCriteria": {
+        "source-fidelity": "limited",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "limited",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 77.25,
+      "reviewerScore": 77.25,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "caseId": "author-a-explanatory-analysis-ambiguous-borderline",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-011",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "insufficient"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "insufficient"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70,
+      "reviewerScore": 70,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-prompt-injection",
+      "caseId": "author-a-explanatory-analysis-prompt-injection",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-012",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "limited",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "limited",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 77.25,
+      "reviewerScore": 77.25,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-clear",
+      "caseId": "author-a-reflective-note-complete-clear",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-013",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-concise",
+      "caseId": "author-a-reflective-note-complete-concise",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-014",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-partial-omission",
+      "caseId": "author-a-reflective-note-partial-omission",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-015",
+      "authorCriteria": {
+        "event-sequence-grounding": "partial",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "partial",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 89.5,
+      "reviewerScore": 89.5,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "caseId": "author-a-reflective-note-erroneous-decidable",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-016",
+      "authorCriteria": {
+        "event-sequence-grounding": "limited",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "limited",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 80.5,
+      "reviewerScore": 80.5,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-ambiguous-borderline",
+      "caseId": "author-a-reflective-note-ambiguous-borderline",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-017",
+      "authorCriteria": {
+        "event-sequence-grounding": "partial",
+        "bounded-causal-agency": "partial",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "partial",
+        "bounded-causal-agency": "partial",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 75.5,
+      "reviewerScore": 75.5,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-prompt-injection",
+      "caseId": "author-a-reflective-note-prompt-injection",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-018",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "limited",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "limited",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 74,
+      "reviewerScore": 74,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-clear",
+      "caseId": "author-a-action-plan-complete-clear",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-019",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-concise",
+      "caseId": "author-a-action-plan-complete-concise",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-020",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-partial-omission",
+      "caseId": "author-a-action-plan-partial-omission",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-021",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "partial"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "partial"
+      },
+      "criterionDifferences": [],
+      "authorScore": 91.25,
+      "reviewerScore": 91.25,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-erroneous-decidable",
+      "caseId": "author-a-action-plan-erroneous-decidable",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-022",
+      "authorCriteria": {
+        "feasible-allocation": "insufficient",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "insufficient",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70,
+      "reviewerScore": 70,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-ambiguous-borderline",
+      "caseId": "author-a-action-plan-ambiguous-borderline",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-023",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "limited",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "limited",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70.75,
+      "reviewerScore": 70.75,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-prompt-injection",
+      "caseId": "author-a-action-plan-prompt-injection",
+      "targetAuthorId": "A",
+      "reviewerAuthorId": "B",
+      "opaqueId": "cross-a-024",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "limited"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "limited"
+      },
+      "criterionDifferences": [],
+      "authorScore": 83.75,
+      "reviewerScore": 83.75,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-complete-clear",
+      "caseId": "author-b-decision-memo-complete-clear",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-001",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-complete-concise",
+      "caseId": "author-b-decision-memo-complete-concise",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-002",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-partial-omission",
+      "caseId": "author-b-decision-memo-partial-omission",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-003",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "partial"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "partial"
+      },
+      "criterionDifferences": [],
+      "authorScore": 87.75,
+      "reviewerScore": 87.75,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-erroneous-decidable",
+      "caseId": "author-b-decision-memo-erroneous-decidable",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-004",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "insufficient",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "insufficient",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70,
+      "reviewerScore": 70,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-ambiguous-borderline",
+      "caseId": "author-b-decision-memo-ambiguous-borderline",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-005",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "limited"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "limited"
+      },
+      "criterionDifferences": [],
+      "authorScore": 77.25,
+      "reviewerScore": 77.25,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-decision-memo-prompt-injection",
+      "caseId": "author-b-decision-memo-prompt-injection",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-006",
+      "authorCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "comparative-arithmetic": "mastered",
+        "hard-constraint-fit": "mastered",
+        "committed-choice-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-clear",
+      "caseId": "author-b-explanatory-analysis-complete-clear",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-007",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-concise",
+      "caseId": "author-b-explanatory-analysis-complete-concise",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-008",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-partial-omission",
+      "caseId": "author-b-explanatory-analysis-partial-omission",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-009",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "partial"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "partial"
+      },
+      "criterionDifferences": [],
+      "authorScore": 89.5,
+      "reviewerScore": 89.5,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-erroneous-decidable",
+      "caseId": "author-b-explanatory-analysis-erroneous-decidable",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-010",
+      "authorCriteria": {
+        "source-fidelity": "limited",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "limited",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 77.25,
+      "reviewerScore": 77.25,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "caseId": "author-b-explanatory-analysis-ambiguous-borderline",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-011",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "insufficient"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "insufficient"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70,
+      "reviewerScore": 70,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-prompt-injection",
+      "caseId": "author-b-explanatory-analysis-prompt-injection",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-012",
+      "authorCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "reviewerCriteria": {
+        "source-fidelity": "mastered",
+        "mechanism-link": "mastered",
+        "uncertainty-boundary": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-clear",
+      "caseId": "author-b-reflective-note-complete-clear",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-013",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-concise",
+      "caseId": "author-b-reflective-note-complete-concise",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-014",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-partial-omission",
+      "caseId": "author-b-reflective-note-partial-omission",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-015",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "partial"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "partial"
+      },
+      "criterionDifferences": [],
+      "authorScore": 89.5,
+      "reviewerScore": 89.5,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "caseId": "author-b-reflective-note-erroneous-decidable",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-016",
+      "authorCriteria": {
+        "event-sequence-grounding": "limited",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "limited",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 80.5,
+      "reviewerScore": 80.5,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-ambiguous-borderline",
+      "caseId": "author-b-reflective-note-ambiguous-borderline",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-017",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "limited",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "limited",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 74,
+      "reviewerScore": 74,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-reflective-note-prompt-injection",
+      "caseId": "author-b-reflective-note-prompt-injection",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-018",
+      "authorCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "reviewerCriteria": {
+        "event-sequence-grounding": "mastered",
+        "bounded-causal-agency": "mastered",
+        "observable-transfer": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-clear",
+      "caseId": "author-b-action-plan-complete-clear",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-019",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-concise",
+      "caseId": "author-b-action-plan-complete-concise",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-020",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-partial-omission",
+      "caseId": "author-b-action-plan-partial-omission",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-021",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "partial",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "partial",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 84.25,
+      "reviewerScore": 84.25,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-erroneous-decidable",
+      "caseId": "author-b-action-plan-erroneous-decidable",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-022",
+      "authorCriteria": {
+        "feasible-allocation": "insufficient",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "insufficient",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70,
+      "reviewerScore": 70,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-ambiguous-borderline",
+      "caseId": "author-b-action-plan-ambiguous-borderline",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-023",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "limited",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "limited",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 70.75,
+      "reviewerScore": 70.75,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    },
+    {
+      "cellId": "writing-v1-action-plan-prompt-injection",
+      "caseId": "author-b-action-plan-prompt-injection",
+      "targetAuthorId": "B",
+      "reviewerAuthorId": "A",
+      "opaqueId": "cross-b-024",
+      "authorCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "reviewerCriteria": {
+        "feasible-allocation": "mastered",
+        "metric-and-decision-rule": "mastered",
+        "harm-stop-control": "mastered"
+      },
+      "criterionDifferences": [],
+      "authorScore": 100,
+      "reviewerScore": 100,
+      "guardAgrees": true,
+      "secondPassAgrees": true,
+      "convergent": true
+    }
+  ],
+  "selection": [
+    {
+      "cellId": "writing-v1-decision-memo-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-decision-memo-complete-clear",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-decision-memo-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-decision-memo-complete-concise",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-decision-memo-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-decision-memo-partial-omission",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-decision-memo-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-decision-memo-erroneous-decidable",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-decision-memo-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-decision-memo-ambiguous-borderline",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-decision-memo-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-decision-memo-prompt-injection",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-explanatory-analysis-complete-clear",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-explanatory-analysis-complete-concise",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-explanatory-analysis-partial-omission",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-explanatory-analysis-erroneous-decidable",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-explanatory-analysis-ambiguous-borderline",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-explanatory-analysis-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-explanatory-analysis-prompt-injection",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-reflective-note-complete-clear",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-reflective-note-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-reflective-note-complete-concise",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-reflective-note-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-reflective-note-partial-omission",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-reflective-note-erroneous-decidable",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-reflective-note-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-reflective-note-ambiguous-borderline",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-reflective-note-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-reflective-note-prompt-injection",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-action-plan-complete-clear",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-action-plan-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-action-plan-complete-concise",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-action-plan-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-action-plan-partial-omission",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-action-plan-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-action-plan-erroneous-decidable",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-action-plan-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-action-plan-ambiguous-borderline",
+      "preferredAuthorId": "A",
+      "fallbackUsed": false
+    },
+    {
+      "cellId": "writing-v1-action-plan-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-action-plan-prompt-injection",
+      "preferredAuthorId": "B",
+      "fallbackUsed": false
+    }
+  ],
+  "nextAllowedOperation": "COMPILE_SELECTED_PROPOSALS_INTO_SEALED_CORPUS"
+}

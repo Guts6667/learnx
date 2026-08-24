@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "manifestId": "learnx-french-text-hybrid-holdout-v3-draft-manifest",
+  "status": "REJECTED_BY_INDEPENDENT_REVIEW",
+  "executionAllowed": false,
+  "sealed": false,
+  "createdAt": "2026-08-24T10:30:00+02:00",
+  "source": {
+    "branch": "codex/v3-1-holdout3-promotion",
+    "sourceCommit": "70579d1adc8060c7fad1fa7620f7256db9034ea3",
+    "unapprovedDraftPath": "benchmarks/ai-correction/holdout.v3.json",
+    "unapprovedDraftAcceptedAsReview": false,
+    "priorHoldoutsConsumed": [
+      "learnx-french-text-holdout-v1",
+      "learnx-french-text-holdout-v2"
+    ]
+  },
+  "artifacts": {
+    "corpus": {
+      "path": "corpus.draft.json",
+      "draftSha256": "0f2e5b3e82866d72f1c23b4a49544800054478dc0acf9bd8420768bbeb5e30f4",
+      "corpusId": "learnx-french-text-hybrid-holdout-v3",
+      "humanReviewStatus": "PENDING",
+      "contractLifecycle": "DRAFT"
+    },
+    "configuration": {
+      "path": "configuration.draft.json",
+      "draftSha256": "fc9d1d00074891e95ff82d3dea10c0e44f63b6cb1f1ff442ade52553014257d6",
+      "benchmarkId": "learnx-french-text-correction-hybrid-holdout-v3-1",
+      "status": "DRAFT"
+    },
+    "sourceDraftAudit": {
+      "path": "SOURCE_DRAFT_AUDIT.md",
+      "status": "COMPLETED_READ_ONLY_AUDIT"
+    },
+    "independentReview": {
+      "path": "INDEPENDENT_REVIEW_REJECTED.md",
+      "status": "REJECTED",
+      "reviewer": "Codex autonomous independent reviewer (AI, not human)",
+      "reviewedAt": "2026-08-24T10:59:07+02:00",
+      "reviewedCorpusSha256": "0f2e5b3e82866d72f1c23b4a49544800054478dc0acf9bd8420768bbeb5e30f4"
+    }
+  },
+  "identityFreeze": {
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "promptVersion": "2.2.0",
+    "requestProtocolVersion": "3.0.1",
+    "correctionDeliveryPolicy": "PARTIAL_CRITERION",
+    "repetitions": 3,
+    "maxRetries": 2,
+    "requestProfileVersion": "2.0.0"
+  },
+  "corpusDesign": {
+    "contracts": 4,
+    "cases": 24,
+    "expectedLogicalRuns": 72,
+    "families": {
+      "writing": 6,
+      "reflection": 6,
+      "practice": 6,
+      "project": 6
+    },
+    "categories": {
+      "SUCCESSFUL": 4,
+      "PARTIAL": 4,
+      "ERRONEOUS": 4,
+      "AMBIGUOUS": 4,
+      "PROMPT_INJECTION": 8
+    },
+    "coverage": {
+      "longDenseEvidence": [
+        "holdout3-reflection-brake-pads-successful",
+        "holdout3-reflection-oil-plug-erroneous",
+        "holdout3-project-second-table-erroneous",
+        "holdout3-project-esca-pruning-injection",
+        "holdout3-project-harvest-hours-injection"
+      ],
+      "criterionIndependenceAndDoublePenalty": [
+        "holdout3-writing-elevator-modernization-erroneous",
+        "holdout3-reflection-oil-plug-erroneous",
+        "holdout3-practice-invented-thresholds-erroneous",
+        "holdout3-project-second-table-erroneous"
+      ],
+      "partialCriterionDeliveryStress": [
+        "holdout3-writing-water-damage-partial",
+        "holdout3-writing-water-shutdown-injection",
+        "holdout3-reflection-battery-warranty-injection",
+        "holdout3-practice-pale-child-partial",
+        "holdout3-practice-invented-thresholds-erroneous",
+        "holdout3-project-picker-briefing-partial"
+      ],
+      "promptInjection": [
+        "holdout3-writing-plumbing-tender-injection",
+        "holdout3-writing-water-shutdown-injection",
+        "holdout3-reflection-diagnostic-fee-injection",
+        "holdout3-reflection-battery-warranty-injection",
+        "holdout3-practice-drawer-note-injection",
+        "holdout3-practice-liaison-note-injection",
+        "holdout3-project-esca-pruning-injection",
+        "holdout3-project-harvest-hours-injection"
+      ]
+    }
+  },
+  "draftAudit": {
+    "schemaParsed": true,
+    "independenceChecked": true,
+    "injectionBoundariesChecked": true,
+    "goldArithmeticChecked": false,
+    "findings": [
+      "The source draft carried PUBLISHED lifecycle metadata while its review was PENDING; the candidate artifact downgrades every contract to DRAFT.",
+      "PARTIAL response category is not evidence that PARTIAL_CRITERION delivery works; delivery behavior must be measured from final attempt artifacts.",
+      "No approval, review digest, seal, execution authorization or model result exists for this corpus."
+    ]
+  },
+  "localValidation": {
+    "status": "VALID_DRAFT_NOT_EXECUTABLE",
+    "validatedAt": "2026-08-24T10:40:00+02:00",
+    "checks": {
+      "zodCorpusSchema": true,
+      "caseAndContractUniqueness": true,
+      "exactOverlapWithDevelopmentOrConsumedHoldouts": 0,
+      "categoryAndFamilyBalance": true,
+      "injectionConcatenationAndAllowedEvidence": true,
+      "identityMatchesBenchmarkV31": true,
+      "draftLifecycleAndNoApproval": true
+    }
+  },
+  "independentReview": {
+    "status": "REJECTED",
+    "reviewer": "Codex autonomous independent reviewer (AI, not human)",
+    "reviewerKind": "AUTONOMOUS_AI_NOT_HUMAN",
+    "reviewedAt": "2026-08-24T10:59:07+02:00",
+    "reviewedCorpusSha256": "0f2e5b3e82866d72f1c23b4a49544800054478dc0acf9bd8420768bbeb5e30f4",
+    "reportPath": "INDEPENDENT_REVIEW_REJECTED.md",
+    "verdict": "REJECT",
+    "blindedToCandidateOutputs": true,
+    "externalOrModelCallsMade": false,
+    "coverage": {
+      "casesReviewed": 24,
+      "goldsReviewed": 72,
+      "goldDisagreements": 10,
+      "injectionBoundariesReviewed": 8
+    },
+    "p0Summary": [
+      "Semantic independence from consumed holdout v2 is not satisfied; reauthor all 24 cases under a new identity.",
+      "holdout3-writing-water-damage-partial contains an asymmetric subsidy calculation and flips from PASS to FAIL under independent golds.",
+      "holdout3-practice-morning-scan-successful does not execute Sara's PAI and flips from PASS to FAIL under independent golds."
+    ],
+    "p1Summary": [
+      "Five additional criterion golds disagree with the independent review, including one inter-criterion contamination.",
+      "Four expectedSecondPass flags rely on plausible semantic doubt rather than an observed deterministic trigger.",
+      "Four all-mastered injection cases ask for the same outcome as their golds, and five forbidden-fragment lists are incomplete.",
+      "The draft review panel has eight case IDs while benchmark.v3_1 requires exactly six.",
+      "The manifest's prior exact-overlap check does not establish semantic independence or no-derived-tuning provenance."
+    ],
+    "requiredChecks": [
+      "Review all 24 task contexts and responses without access to candidate outputs.",
+      "Re-evaluate all 72 criterion levels and document every disagreement.",
+      "Confirm that factual errors affect only their owner criterion and cannot cause double penalization.",
+      "Verify all exact numbers, dates, bounds and exception priorities against each task context.",
+      "Verify all eight attackText concatenations, allowed evidence quotes and forbidden fragments deterministically.",
+      "Confirm that long evidence remains an exact substring after Unicode and punctuation checks.",
+      "Confirm category balance and absence of exact text overlap with development corpus and consumed holdouts.",
+      "Confirm that no case-specific prompt tuning has been derived from candidate outputs."
+    ]
+  },
+  "budget": {
+    "currency": "USD",
+    "expectedSupplierCostRange": {
+      "minimum": 1.7,
+      "maximum": 2.2
+    },
+    "recommendedOwnerCap": 3,
+    "loadedReserveAtFactor1_30398": 3.91194,
+    "basis": "Prior Sonnet holdouts cost 1.681095–1.750782 USD; this draft contains similarly dense or longer responses. The 3 USD cap is a circuit breaker, not an execution authorization."
+  },
+  "promotionState": "REJECTED_REAUTHOR_FROM_SCRATCH"
+}

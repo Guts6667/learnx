@@ -536,3 +536,274 @@ runtime (`src/server/corrections/promoted-identity.ts`). Reste avant
 production : rédaction + approbation + scellement du holdout n°3 (l'agent
 auteur a atteint sa limite d'usage ; relancer), puis exécution unique.
 Le reste du chemin produit est consolidé dans `docs/V4_ROLLOUT_CHECKLIST.md`.
+
+### 8.8 Holdout général autonome n°4 — 24 août 2026 : NO-GO définitif
+
+Le holdout général `learnx-french-text-hybrid-holdout-v4` a été exécuté une
+seule fois sous l'identité
+`learnx-french-text-correction-sonnet-v3-1-holdout-v4` : Claude Sonnet 4.6,
+route Anthropic épinglée via OpenRouter sans fallback, prompt `2.2.0`,
+protocole `3.0.1`, livraison `PARTIAL_CRITERION`, 24 cas × 3 répétitions.
+Les 72 appels ont produit 72 sorties structurellement valides, sans retry ni
+erreur transport. Le coût fournisseur ACTUAL réconcilié est de
+`1,817373 USD`.
+
+**Verdict gelé : NO-GO définitif pour la promotion générale à quatre familles
+(`writing`, `practice`, `project`, `reflection`).** Le holdout est consommé à
+jamais : aucun rejeu, aucune réutilisation comme examen, aucune correction de
+son contenu et aucun retuning post-résultat ne sont autorisés.
+
+Causes automatiques du refus : accord critériel `74,53 %` sous le minimum,
+calibration `28,39 %` au-dessus du plafond, deux faux PASS provenant d'un même
+cas répété et trois écarts de deux niveaux provenant d'un autre cas répété.
+Les signaux de transport et de sécurité restent conformes : 0 sortie
+inutilisable, 0 citation présentée hors réponse, sécurité injection 100 % et
+1,85 % de critères retenus comme incertains. La revue autonome aveugle des 60
+runs préenregistrés reste une analyse canonique du partage modèle/oracle ; elle
+ne peut pas ressusciter cette campagne générale.
+
+Chaîne d'artefacts gelée :
+
+- tentatives : `ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097` ;
+- résumé automatique : `33cef1a329e0ab92a11b4ecc856c50ace2380a8fc62876aecd7ab128df2fd128` ;
+- paquet aveugle : `1fffa6726992b428d34c7daf5096c6207c4f739c6aca4ac27b86cf72c8980cbb` ;
+- mapping post-gel : `3279f6277344358a049e656af3ec1f2df9b8b4b41ceb368d25cfa198b0cba30e` ;
+- jugements aveugles, gelés avant comparaison aux golds :
+  `46097400f8cc3b99f1ae9427187a716115c5bdd1bcc52cb5122ff8280a9c7b31`.
+
+La suite autorisée est une identité et un examen neufs, limités à
+`WRITING/fr-FR`. Le présent verdict reste append-only et ne doit jamais être
+remplacé par ce futur résultat.
+
+### 8.9 Revue autonome canonique du holdout général n°4
+
+La revue autonome non humaine a évalué 60 runs sans identité candidate, gold,
+coût ni verdict automatique. Les 60 jugements ont été gelés sous l'empreinte
+`46097400f8cc3b99f1ae9427187a716115c5bdd1bcc52cb5122ff8280a9c7b31`
+avant ouverture du mapping. Le manifeste post-gel, validé hors ligne contre le
+schéma autonome, porte l'empreinte
+`42b7b8e8a7cf8224aae6fcc7db0f98f239867defe08c14e8b675794f13f3f58e`.
+
+Verdict canonique : **REJECTED**. Moyenne `90,04`, diagnostic `90,25`, preuves
+`94,13`, fidélité `85,85` ; familles : writing `91,11`, practice `80,86`,
+project `94,06`, reflection `93,11`. La revue confirme les deux faux PASS du
+cas causal limite, une erreur pédagogique éliminatoire de préséance sur le cas
+Practice et une recommandation Writing incompatible avec une contrainte dure.
+Elle juge en revanche les trois corrections Aurora pédagogiquement solides :
+l'absence totale de témoin simultané rend l'allocation inutilisable. Le gold
+`partial` de ce seul critère est donc enregistré comme dette d'oracle, sans
+mutation du holdout consommé.
+
+Le résumé canonique revu porte l'empreinte
+`1208f0409add8f295edb2737f107e17e27bbc931071952794e9ffd854abf3248`.
+Il conserve `humanReviewApproved = false`, `autonomousReviewApproved = false`,
+`reviewAuthority = NONE` et `promotionEligible = false` pour l'identité
+candidate. Aucun manifeste d'approbation humaine n'a été simulé.
+
+### 8.10 Clôture méthodologique et dette transmise à l'examen Writing
+
+Cette entrée append-only applique le manifeste canonique `REJECTED` au résumé
+et clôt définitivement la campagne générale. La chaîne de preuve lie les
+tentatives (`ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097`),
+le paquet aveugle (`1fffa6726992b428d34c7daf5096c6207c4f739c6aca4ac27b86cf72c8980cbb`),
+les jugements gelés (`46097400f8cc3b99f1ae9427187a716115c5bdd1bcc52cb5122ff8280a9c7b31`),
+le manifeste de revue (`42b7b8e8a7cf8224aae6fcc7db0f98f239867defe08c14e8b675794f13f3f58e`)
+et le résumé revu (`1208f0409add8f295edb2737f107e17e27bbc931071952794e9ffd854abf3248`).
+Le verdict général ne peut plus être rejoué, amendé ni utilisé comme examen.
+Le manifeste append-only de supersession
+(`b2285c45da85449e41075fddb88f278f9894493146d5d7498c858e59b759eebd`)
+marque le brouillon d'authoring et le placeholder de revue humaine
+`SUPERSEDED` sans altérer leurs fichiers ni leurs empreintes historiques.
+
+La typologie canonique est la suivante :
+
+- erreurs modèle confirmées : deux faux PASS sur le cas Reflection limite, une
+  erreur éliminatoire de préséance sur le cas Practice et une recommandation
+  Writing incompatible avec une contrainte dure ;
+- dette d'oracle : le gold Project Aurora `partial` était contestable et devra
+  devenir `insufficient` dans de futurs authorings comparables ; le corpus
+  consommé demeure pourtant immuable ;
+- défaut éliminatoire Practice : le modèle a ajouté une condition de complétude
+  absente à la clause 3, puis a laissé la clause résiduelle 4 primer malgré la
+  règle explicite de première clause applicable. Son feedback a donc enseigné
+  `À COMPLÉTER` au lieu de `MONDIALE`. Les futurs cas Writing ne doivent pas
+  reproduire une préséance implicite : si l'ordre de règles intervient, portée,
+  ordre et préconditions doivent être explicites et le gold mécaniquement
+  décidable.
+
+La vérification préalable a trouvé une erreur modèle touchant `WRITING` : sur
+`holdout4-writing-orchestra-freight-injection`, le feedback suggère un fallback
+Air qui viole encore le délai contractuel dur de douze heures. Le prochain
+corpus Writing doit donc inclure trois sondes distinctes, sans copier le cas
+historique :
+
+1. un fallback séduisant qui viole une échéance non négociable ;
+2. un fallback moins coûteux qui viole une capacité ou un plafond dur ;
+3. un fallback qui ne devient admissible qu'après l'apparition explicite d'un
+   fait nouveau, que le feedback ne peut pas supposer.
+
+La dette transmise aux deux auteurs indépendants est figée avant rédaction :
+
+1. sur les profils `ERRONEOUS`, les golds doivent être strictement décidables,
+   sans indulgence de formulation ;
+2. le motif Practice ci-dessus ne doit pas être reproduit ;
+3. les trois sondes de contraintes dures issues de l'erreur Writing sont
+   obligatoires.
+
+Enfin, une éventuelle promotion Writing ne peut devenir un GO runtime que si
+le pin d'identité refuse, avant devis, réservation ou appel fournisseur, tout
+contrat dont `activityType` n'est pas `writing`. Ce filtre est un critère
+d'acceptation testé et porte le motif : « défaut éliminatoire Practice confirmé
+par revue canonique du 24 août ». La revue reste autonome, liée par digest ;
+`humanReviewApproved` demeure faux.
+
+### 8.11 Préflight budgétaire Writing — aucune exécution autorisée
+
+Avant rédaction complète et scellement du nouvel examen, une première borne a
+été consignée dans `budget-preflight.preliminary.json`. Elle n'autorise aucun
+appel : le calcul final doit être refait sur les 24 requêtes exactement
+scellées, puis lié par digest au corpus et à la configuration.
+
+La tranche Writing de l'examen général fournit 18 observations historiques :
+coût total `0,443169 USD`, coût maximal observé `0,029253 USD`, maximum de
+`3 609` tokens d'entrée et `1 255` tokens de sortie visible. Si les 72
+primaires coûtaient tous ce maximum observé, ils représenteraient
+`2,106216 USD`. Le reliquat sous le plafond de `2,18 USD` serait seulement de
+`0,073784 USD`, soit au plus deux secondes passes au même maximum observé ; le
+pire cas non borné avec 72 secondes passes atteindrait `4,212432 USD`.
+
+Cette observation n'est pas une garantie. La borne tarifaire de précaution,
+avec `3 609` tokens d'entrée et la limite gelée de `1 500` tokens de sortie à
+`3 USD/M` et `15 USD/M`, vaut `0,033327 USD` par appel : `2,399544 USD` pour
+les seuls primaires et `4,799088 USD` avec toutes les secondes passes. Elle
+signale donc un risque réel de contingency. Seul le préflight final du corpus
+scellé peut trancher : si les 72 primaires dépassent `2,18 USD`, zéro appel et
+demande explicite ; sinon les 72 primaires sont garantis et les secondes passes
+sont bornées au reliquat.
+
+Le garde budgétaire ne peut jamais interrompre la phase primaire après son
+premier appel. Une seconde passe non finançable est sautée avec le signal
+`SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET`, sans score exact ni verdict, et
+rapportée comme écart de mesure. Les retries transport restent bornés à zéro.
+
+### 8.12 Authoring indépendant et contingency Writing
+
+Deux auteurs autonomes en contextes séparés ont produit 24 propositions chacun
+sans consulter sorties candidates, ancien examen ni travail de l'autre. Leurs
+lots ont été gelés avant génération de deux paquets opaques qui masquaient
+profil, gold, score, garde, sonde et correspondance. Chaque auteur a ensuite
+annoté les 24 textes de l'autre avant ouverture des mappings.
+
+Résultat préenregistré : `0/144` niveaux en désaccord (`0 %`, seuil d'arrêt
+strictement supérieur à `15 %`), zéro désaccord sur la garde ±5, zéro désaccord
+sur la seconde passe et 48 propositions convergentes sur 48. Les 24 cas sont
+donc sélectionnables par alternance A/B sans fallback ni troisième auteur.
+Cette indépendance est procédurale et autonome : elle ne doit pas être
+présentée comme une validation par deux experts humains et peut conserver des
+biais corrélés de famille de modèle.
+
+Après ce gel et avant sélection du corpus ou sortie candidate, Rayan a autorisé
+une contingency fournisseur explicite de `3,00 USD`, contre `2,18 USD`
+initialement. Elle ne change aucun seuil qualité. La borne formelle
+préliminaire de `2,399544 USD` pour 72 primaires tient désormais dans le
+plafond et laisserait `0,600456 USD` aux secondes passes ; le calcul exact
+reste obligatoire sur le corpus scellé. Le préflight à 3 USD, lié par digest,
+reste le seul artefact habilité à autoriser ou refuser l'exécution réseau.
+
+### 8.13 Examen Writing — rejet final avant scellement, zéro appel
+
+La comparaison inter-auteurs initiale
+(`ab86c250325420729a13312114b3080fe0891380f5835c11a227796c8ab59a2c`)
+alternait A/B sur un ordre lexicographique au lieu du tableau `cellIds`
+préenregistré. Elle est conservée mais `SUPERSEDED`. La comparaison corrigée,
+liée à l'ordre préenregistré, porte l'empreinte
+`57642f8cd04c4699267b1bd650cf9d6e723160217420f544e5b4a1bbd58ef453`
+et conserve les résultats d'accord : `0/144` désaccord critériel, zéro
+désaccord de garde et 48 propositions convergentes sur 48. La première revue
+pré-scellement (`37f64e41fd4bf49f2989c1e56ffdd97da095e08ebc17abf74258d457098df5cb`),
+fondée sur la sélection supersédée, est elle aussi conservée uniquement comme
+trace historique.
+
+La dernière revue éditoriale autonome autorisée a ensuite examiné la sélection
+corrigée sans consulter l'ancien audit. Son manifeste
+`corpus-review.preseal-v2.autonomous.json` porte l'empreinte
+`01fc1f9e77be16a3cd18fdbb802fc07c48816f7cb0fe968931b6a0b8dcf5706e`.
+Verdict : **REJECTED — 20 PASS, 4 FAIL**. `humanReviewApproved` reste faux ;
+aucun modèle ni réseau n'a été appelé.
+
+Les quatre défauts bloquants sont des défauts d'étalon, pas des résultats du
+modèle :
+
+- deux erreurs numériques isolées (`16/18` et `10/20`) sont classées
+  `limited`, alors que la sémantique préenregistrée permet aussi `partial`
+  pour une imprécision unique et circonscrite ; ce choix change le score et la
+  décision de seconde passe ;
+- trois notes réflexives attribuent à l'apprenant une action personnelle
+  (`mon exemple`, `ma clé`, `je les ai placées`) que leur contexte formule sans
+  acteur. Le niveau `bounded-causal-agency=mastered` n'est donc pas dérivable
+  du dossier ;
+- le cas d'injection concerné reste correctement construit : son rejet vient
+  uniquement de l'agence personnelle non établie.
+
+Le corpus draft
+(`a0940fb52bf1a3e2c847d04c9a42e1b2cf11b78c4743b83d496a751d34d4fd53`)
+n'est pas scellé et n'est pas consommé comme examen. La contingency propriétaire
+à `4,00 USD` (`453e3ba2142ce64f119aa36f6b1377424a8554801ce57559e1dff6169407e493`)
+reste entièrement inutilisée : coût fournisseur `0 USD`, 0 primaire, 0 seconde
+passe. Conformément à l'arrêt préenregistré et à l'interdiction de relancer des
+auteurs ou d'ajouter une revue, aucune correction spontanée, aucun nouveau
+contrôle éditorial et aucun appel payant ne sont effectués dans cette itération.
+
+Le manifeste terminal `preseal-decision.final.json`
+(`acc3b2639b7a413610e5be075633c570b1902a38940c72ec294dd91671f94f7c`)
+lie cette décision et les supersessions. Résultat de l'itération :
+**NO_GO_PRESEAL_CORPUS**. Cette issue
+ne modifie ni le NO-GO définitif de la campagne générale à quatre familles, ni
+les seuils du futur pipeline Writing.
+
+### 8.14 Examen Writing scellé — NO-GO automatique définitif
+
+Après le verdict pré-scellement `REJECTED`, Rayan a autorisé exactement trois
+fallbacks convergents et deux corrections individuelles de gold. Cette clôture
+mécanique est consignée dans `corpus-resolution.authorized.json` sans convertir
+la dernière revue éditoriale en approbation. `humanReviewApproved` reste faux,
+aucune nouvelle revue n'a été ajoutée et aucun seuil n'a été modifié.
+
+Le corpus Writing/fr-FR scellé contient 24 cas × 3 répétitions. L'identité
+candidate est épinglée dans la configuration et dans son digest : Claude
+Sonnet 4.6, route Anthropic via OpenRouter, sans retry ni fallback, prompt
+`2.2.0`, protocole `3.0.1`. Le préflight final a garanti les 72 primaires sous
+le plafond absolu de `4,00 USD` avec une borne conservatrice de
+`3,862269 USD` et une réserve de secondes passes de `0,137731 USD`.
+
+L'examen a été exécuté une seule fois. Résultat opérationnel : 72/72 primaires
+et 6 secondes passes de garde structurellement valides, aucune erreur transport,
+aucune sortie inutilisable, aucun retry, coût ACTUAL réconcilié
+`1,551831 USD` (`1,428996 USD` primaires + `0,122835 USD` secondes passes).
+Les six secondes passes tiennent dans la réserve en dollars ; le nombre de deux
+du préflight était une capacité conservatrice au coût maximal, pas un quota
+réel silencieusement relâché.
+
+**Verdict terminal préenregistré : NO-GO.** Trois gates éliminatoires échouent :
+
+- accord critériel `80,19 %`, sous le minimum de `85 %` ;
+- 7 faux PASS, pour un maximum autorisé de 0 ;
+- 1 écart ordinal de deux niveaux, pour un maximum autorisé de 0.
+
+Les faux PASS se concentrent sur le cas explicatif ambigu (3 répétitions), le
+plan d'action erroné (3 répétitions) et une répétition du plan d'action ambigu.
+Le pipeline conserve toutefois des signaux forts : sécurité injection 100 %,
+0 hallucination de preuve, 0 erreur transport, 0 sortie inutilisable et 1,85 %
+de critères rendus incertains. Ces signaux ne compensent pas les gates de
+fausse validation et d'écart ordinal.
+
+Chaîne terminale : tentatives
+`8341fce03ccfbb7bcb15c78fffd792d295de743191522540a7336f756b08b0c4`,
+résumé automatique
+`702d1abd8e1570eec205bd3888f820d830167b88f9f1eaa0624e23747c456f8b`,
+préflight
+`5bef5d1a646470f9ca1ad353f0ab55e4dc27644a53e63fd2e2321b7f243bdc88`
+et verdict `exam-verdict.final.json`. Le corpus est consommé et ne doit pas être
+rejoué comme examen. Conformément à la règle d'arrêt, aucune remédiation,
+nouvelle revue, nouvelle campagne ou activation runtime n'est engagée dans
+cette itération.

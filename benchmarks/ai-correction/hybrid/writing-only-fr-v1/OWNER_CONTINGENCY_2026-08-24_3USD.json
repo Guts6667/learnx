@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "OWNER_SUPPLIER_BUDGET_CONTINGENCY",
+  "status": "AUTHORIZED_BEFORE_CORPUS_SELECTION_AND_MODEL_EXECUTION",
+  "authorizedAt": "2026-08-24T12:51:53Z",
+  "owner": "Rayan",
+  "authorizationText": "tu peux consommer jusqu'à 3$",
+  "currency": "USD",
+  "previousSupplierCostCapUsd": 2.18,
+  "authorizedSupplierCostCapUsd": 3,
+  "scope": {
+    "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+    "corpusId": "learnx-french-writing-holdout-v1",
+    "activityType": "writing",
+    "semanticCases": 24,
+    "repetitions": 3,
+    "transportRetries": 0,
+    "modelExecutionsAuthorizedByThisArtifact": false
+  },
+  "unchanged": [
+    "quality thresholds",
+    "sealed-corpus requirement",
+    "no transport retry or provider fallback",
+    "all primaries reserved before first network call",
+    "score-guard second passes bounded to the remaining budget",
+    "no mid-exam budget interruption of the primary phase"
+  ],
+  "limitations": [
+    "This is a financial contingency only; it is not an execution authorization.",
+    "A final corpus-bound budget preflight remains mandatory before any network call."
+  ]
+}

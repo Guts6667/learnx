@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_PROMOTION_EXAM_TERMINAL_VERDICT",
+  "status": "NO_GO",
+  "decidedAt": "2026-08-24T14:26:14Z",
+  "decisionAuthority": "PREREGISTERED_AUTOMATIC_GATES",
+  "additionalReviewPerformed": false,
+  "humanReviewApproved": false,
+  "thresholdsChangedAfterResult": false,
+  "campaignRestarted": false,
+  "scope": {
+    "activityType": "writing",
+    "language": "fr-FR",
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "semanticCases": 24,
+    "repetitions": 3,
+    "primaryCalls": 72,
+    "transportRetries": 0,
+    "scoreGuardSecondPassCalls": 6
+  },
+  "supplierBudget": {
+    "hardCapUsd": 4,
+    "primaryActualCostUsd": 1.4289960000000006,
+    "scoreGuardActualCostUsd": 0.122835,
+    "totalActualCostUsd": 1.5518310000000006,
+    "reconciliationRequired": false
+  },
+  "gateFailures": [
+    {
+      "gate": "criterionAgreementMinimum",
+      "required": 0.85,
+      "observed": 0.8018867924528302
+    },
+    {
+      "gate": "falsePassCountMaximum",
+      "required": 0,
+      "observed": 7
+    },
+    {
+      "gate": "twoLevelOrdinalGapCountMaximum",
+      "required": 0,
+      "observed": 1
+    }
+  ],
+  "conformingSignals": {
+    "datasetComplete": true,
+    "evidenceHallucinationRate": 0,
+    "eventualUnusableRunRate": 0,
+    "firstAttemptInvalidRate": 0,
+    "injectionSafetyRate": 1,
+    "supplierCostReconciled": true,
+    "transportErrorRate": 0,
+    "unsureCriterionRate": 0.018518518518518517
+  },
+  "measurementNote": {
+    "preflightConservativeSecondPassCount": 2,
+    "actualSecondPassCount": 6,
+    "explanation": "Six actual second passes fit inside the preregistered USD remainder because their reconciled aggregate cost was 0.122835 USD, below the conservative second-pass budget of 0.137731 USD."
+  },
+  "artifacts": {
+    "attempts": {
+      "path": "../../results/2026-08-24T14-04-20-269Z.attempts.json",
+      "sha256": "8341fce03ccfbb7bcb15c78fffd792d295de743191522540a7336f756b08b0c4"
+    },
+    "automaticSummary": {
+      "path": "../../results/2026-08-24T14-04-20-269Z.summary.json",
+      "sha256": "702d1abd8e1570eec205bd3888f820d830167b88f9f1eaa0624e23747c456f8b"
+    },
+    "budgetPreflight": {
+      "path": "../../results/2026-08-24T14-04-20-269Z.budget-preflight.final.json",
+      "sha256": "5bef5d1a646470f9ca1ad353f0ab55e4dc27644a53e63fd2e2321b7f243bdc88"
+    },
+    "configuration": {
+      "path": "configuration.contingency-4usd.json",
+      "fileSha256": "1ac025e298f06385ada0f4d5c6b0f2dfa7d5cd2d47ed5ceeea0b768093086494",
+      "identitySha256": "ecef1238cace1d88ab5cb455b00f9cee398bf8c4c3e37b4ca3e15a158650e51c"
+    },
+    "corpus": {
+      "path": "corpus.sealed.json",
+      "sha256": "13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22"
+    },
+    "ownerResolution": {
+      "path": "corpus-resolution.authorized.json",
+      "sha256": "6c5af38cc38340b3090578454a0139573617fde790fb2e8e79eefff3a80142fd"
+    }
+  },
+  "terminalRule": "STOP_AFTER_GO_OR_NO_GO",
+  "runtimePromotionAuthorized": false
+}

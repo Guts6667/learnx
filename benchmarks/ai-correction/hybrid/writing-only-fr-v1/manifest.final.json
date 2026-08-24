@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "AUTHORING_PROVENANCE_MANIFEST",
+  "manifestId": "learnx-french-writing-holdout-v1-final",
+  "status": "FINAL",
+  "finalizedAt": "2026-08-24T13:55:00Z",
+  "corpusPath": "corpus.sealed.json",
+  "corpusSha256": "13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22",
+  "sourceArtifacts": [
+    {
+      "path": "PRE_REGISTRATION.md",
+      "sha256": "e32858cbe1e7e1b73dd55b7270f71517adb0659d86a22f65dae9b621bbfac535"
+    },
+    {
+      "path": "authoring-plan.preregistered.json",
+      "sha256": "68c0eabe32198238e133990c1b3f2429e6e855a162b4c190a3d0c5c354df940c"
+    },
+    {
+      "path": "criterion-semantics.preregistered.json",
+      "sha256": "ea53f019b871831cd175dcf46d299acb98babed91076b0a882cd2d7aad7cde7e"
+    },
+    {
+      "path": "author-proposals.freeze.json",
+      "sha256": "c8b08868978f3fc79a08a52efd48676441f3ec0f98fe7f893586d2796981e022"
+    },
+    {
+      "path": "cross-label-reviews.freeze.json",
+      "sha256": "cfa0e6eba8c14eca229e2bfafae76320d549bb05fb5fca66526f17124c29e3ce"
+    },
+    {
+      "path": "cross-label-comparison.corrected.json",
+      "sha256": "57642f8cd04c4699267b1bd650cf9d6e723160217420f544e5b4a1bbd58ef453"
+    },
+    {
+      "path": "compile-writing-corpus.mjs",
+      "sha256": "4d77e86e347d2d568c756dd16a8ddbd7fc8054ec551dd59bea3e2e9d2b33e22a"
+    }
+  ],
+  "authoringChecks": {
+    "status": "PASS",
+    "caseCount": 24,
+    "criterionGoldCount": 72,
+    "repetitions": 3,
+    "candidateOutputsConsulted": false,
+    "networkOrModelCallsMade": false,
+    "allContractsWriting": true
+  },
+  "humanReview": {
+    "status": "PENDING",
+    "humanReviewApproved": false
+  },
+  "notice": "The final REJECTED review remains the last editorial review. Exact owner-authorized mechanical resolutions are recorded separately and are not presented as a new review."
+}

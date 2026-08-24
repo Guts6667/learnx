@@ -1,0 +1,18 @@
+{
+  "artifactKind": "BENCHMARK_SUPPLIER_BUDGET_PREFLIGHT",
+  "allGuardCallCount": 72,
+  "allGuardWorstCaseUsd": 3.862268999999999,
+  "boundedSecondPassBudgetUsd": 0.13773100000000094,
+  "boundedSecondPassCount": 2,
+  "decision": "READY",
+  "primaryCallCount": 72,
+  "primaryWorstCaseUsd": 3.862268999999999,
+  "retryCallCount": 0,
+  "retryWorstCaseUsd": 0,
+  "schemaVersion": 1,
+  "supplierCostCapUsd": 4,
+  "budgetPolicyPath": "PREREGISTRATION_AMENDMENT_2026-08-24_OWNER_CONTINGENCY_4USD.md",
+  "budgetPolicySha256": "7bf120c46dc210f4238e6aa506b1ecfa6d82dbde6c02cdc55496a80a71066034",
+  "configurationSha256": "ecef1238cace1d88ab5cb455b00f9cee398bf8c4c3e37b4ca3e15a158650e51c",
+  "corpusSha256": "13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22"
+}

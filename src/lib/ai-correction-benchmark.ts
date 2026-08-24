@@ -377,8 +377,28 @@ const benchmarkRegressionLimitsSchema = z
   })
   .strict();
 
+export const benchmarkActivityTypeSchema = z.enum([
+  'writing',
+  'reflection',
+  'practice',
+  'project',
+  'case_study',
+  'written_assignment',
+  'practical_exercise',
+  'oral',
+  'simulation',
+  'cumulative_exam',
+]);
+
 export const correctionBenchmarkConfigurationSchema = z
   .object({
+    activityTypeScope: z
+      .array(benchmarkActivityTypeSchema)
+      .min(1)
+      .refine((values) => new Set(values).size === values.length, {
+        message: 'Benchmark activity type scope values must be unique.',
+      })
+      .optional(),
     benchmarkId: stableKeySchema,
     candidates: z.array(benchmarkCandidateSchema).min(3),
     catalogObservedAt: z.iso.datetime({ offset: true }),
@@ -393,10 +413,25 @@ export const correctionBenchmarkConfigurationSchema = z
     repetitions: z.number().int().min(2).max(10),
     reviewPanelCaseIds: z.array(stableKeySchema).length(6),
     schemaVersion: z.literal(2),
+    scoreGuardBandPoints: z.number().int().positive().max(50).optional(),
     thresholds: benchmarkThresholdsSchema,
   })
   .strict()
   .superRefine((configuration, context) => {
+    if (
+      (configuration.activityTypeScope === undefined) !==
+      (configuration.scoreGuardBandPoints === undefined)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'A scoped benchmark identity must declare both activityTypeScope and scoreGuardBandPoints.',
+        path:
+          configuration.activityTypeScope === undefined
+            ? ['activityTypeScope']
+            : ['scoreGuardBandPoints'],
+      });
+    }
     if (
       configuration.thresholds.unsureCriterionRateMaximum !== undefined &&
       configuration.correctionDeliveryPolicy !== 'PARTIAL_CRITERION'
@@ -576,13 +611,83 @@ export const benchmarkResultReviewSchema = z.discriminatedUnion('status', [
     .strict(),
 ]);
 
+export const benchmarkReviewAuthoritySchema = z.enum([
+  'NONE',
+  'HUMAN',
+  'AUTONOMOUS_AI_NOT_HUMAN',
+]);
+
+const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
+
+const benchmarkAutonomousCorpusReviewMetadataSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_CORPUS_REVIEW_MANIFEST'),
+    authoringManifestSha256: sha256Schema,
+    configurationSha256: sha256Schema,
+    corpusReviewManifestSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+  })
+  .strict();
+
+const benchmarkOwnerResolvedCorpusMetadataSchema = z
+  .object({
+    artifactKind: z.literal('WRITING_CORPUS_PRESEAL_RESOLUTION'),
+    authoringManifestSha256: sha256Schema,
+    configurationSha256: sha256Schema,
+    corpusReviewManifestSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    priorRejectedReviewSha256: sha256Schema,
+    resolvedAt: z.iso.datetime({ offset: true }),
+  })
+  .strict();
+
+const benchmarkCorpusReadinessMetadataSchema = z.union([
+  benchmarkAutonomousCorpusReviewMetadataSchema,
+  benchmarkOwnerResolvedCorpusMetadataSchema,
+]);
+
+export const benchmarkAutonomousResultReviewMetadataSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_RESULT_REVIEW_MANIFEST'),
+    attemptsSha256: sha256Schema,
+    blindReviewPacketSha256: sha256Schema,
+    blindedToAutomaticVerdict: z.literal(true),
+    blindedToCandidateIdentity: z.literal(true),
+    blindedToCandidateOutputs: z.literal(false),
+    configurationSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    resultReviewManifestSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+    status: z.enum(['APPROVED', 'REJECTED']),
+  })
+  .strict();
+
 export const benchmarkRunMetadataSchema = z
   .object({
     caseIds: z.array(stableKeySchema).min(1),
     candidateIds: z.array(stableKeySchema).min(1),
+    autonomousReview: benchmarkAutonomousResultReviewMetadataSchema.optional(),
+    configurationSha256: sha256Schema.optional(),
+    corpusReview: benchmarkCorpusReadinessMetadataSchema.optional(),
+    corpusReviewAuthority: z
+      .enum(['HUMAN', 'AUTONOMOUS_AI_NOT_HUMAN'])
+      .optional(),
+    corpusSha256: sha256Schema.optional(),
     humanReview: benchmarkResultReviewSchema,
     mode: benchmarkRunModeSchema,
     repetitions: z.number().int().positive(),
+    reviewAuthority: benchmarkReviewAuthoritySchema.optional(),
   })
   .strict()
   .superRefine((metadata, context) => {
@@ -598,6 +703,73 @@ export const benchmarkRunMetadataSchema = z
         code: 'custom',
         message: 'Run candidate identifiers must be unique.',
         path: ['candidateIds'],
+      });
+    }
+    if (
+      metadata.autonomousReview &&
+      metadata.humanReview.status !== 'PENDING'
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Human and autonomous result reviews are mutually exclusive.',
+        path: ['autonomousReview'],
+      });
+    }
+    if (
+      metadata.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+      !metadata.corpusReview
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Autonomous corpus authority requires its complete digest chain.',
+        path: ['corpusReview'],
+      });
+    }
+    if (
+      metadata.corpusReview &&
+      (metadata.corpusReviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+        metadata.configurationSha256 !==
+          metadata.corpusReview.configurationSha256 ||
+        metadata.corpusSha256 !== metadata.corpusReview.corpusSha256)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Autonomous corpus evidence must match run authority and digests.',
+        path: ['corpusReview'],
+      });
+    }
+    if (
+      metadata.autonomousReview &&
+      (!metadata.corpusReview ||
+        metadata.corpusReviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+        metadata.configurationSha256 !==
+          metadata.autonomousReview.configurationSha256 ||
+        metadata.corpusSha256 !== metadata.autonomousReview.corpusSha256 ||
+        metadata.corpusReview.ownerAuthorizationReference !==
+          metadata.autonomousReview.ownerAuthorizationReference ||
+        metadata.corpusReview.ownerAuthorizationSha256 !==
+          metadata.autonomousReview.ownerAuthorizationSha256)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Autonomous result review must extend the authorized corpus digest chain.',
+        path: ['autonomousReview'],
+      });
+    }
+    const expectedReviewAuthority =
+      metadata.humanReview.status === 'APPROVED'
+        ? 'HUMAN'
+        : metadata.autonomousReview?.status === 'APPROVED'
+          ? 'AUTONOMOUS_AI_NOT_HUMAN'
+          : 'NONE';
+    if (
+      metadata.reviewAuthority !== undefined &&
+      metadata.reviewAuthority !== expectedReviewAuthority
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Run review authority does not match the applied review.',
+        path: ['reviewAuthority'],
       });
     }
   });
@@ -651,6 +823,138 @@ export const benchmarkHumanReviewArtifactSchema = z
     }
   });
 
+const benchmarkReviewScoresSchema = z
+  .object({
+    criticalScores: z
+      .object({
+        diagnosis: z.number().min(0).max(100),
+        evidence: z.number().min(0).max(100),
+        fidelity: z.number().min(0).max(100),
+      })
+      .strict(),
+    eliminatoryFindings: z.array(z.string().trim().min(1)),
+    familyScores: z
+      .object({
+        practice: z.number().min(0).max(100),
+        project: z.number().min(0).max(100),
+        reflection: z.number().min(0).max(100),
+        writing: z.number().min(0).max(100),
+      })
+      .strict(),
+    meanScore: z.number().min(0).max(100),
+  })
+  .strict();
+
+export const benchmarkAutonomousReviewArtifactSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_RESULT_REVIEW_MANIFEST'),
+    attemptsSha256: sha256Schema,
+    blindReviewPacketSha256: sha256Schema,
+    blindedToAutomaticVerdict: z.literal(true),
+    blindedToCandidateIdentity: z.literal(true),
+    blindedToCandidateOutputs: z.literal(false),
+    configurationSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    criticalScores: benchmarkReviewScoresSchema.shape.criticalScores,
+    eliminatoryFindings: benchmarkReviewScoresSchema.shape.eliminatoryFindings,
+    familyScores: benchmarkReviewScoresSchema.shape.familyScores,
+    meanScore: benchmarkReviewScoresSchema.shape.meanScore,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+    schemaVersion: z.literal(1),
+    status: z.enum(['APPROVED', 'REJECTED']),
+  })
+  .strict()
+  .superRefine((review, context) => {
+    if (
+      review.status === 'APPROVED' &&
+      (review.meanScore < 85 ||
+        Object.values(review.criticalScores).some((score) => score < 80) ||
+        Object.values(review.familyScores).some((score) => score < 80) ||
+        review.eliminatoryFindings.length > 0)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'An approved autonomous review must satisfy every preregistered pedagogical gate.',
+        path: ['status'],
+      });
+    }
+  });
+
+export const benchmarkAutonomousCorpusReviewManifestSchema = z
+  .object({
+    artifactKind: z.literal('AUTONOMOUS_CORPUS_REVIEW_MANIFEST'),
+    authoringManifestSha256: sha256Schema,
+    benchmarkId: stableKeySchema,
+    blindedToCandidateOutputs: z.literal(true),
+    configurationSha256: sha256Schema,
+    corpusId: stableKeySchema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    reviewedAt: z.iso.datetime({ offset: true }),
+    reviewerIdentity: z.string().trim().min(1),
+    reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
+    schemaVersion: z.literal(1),
+    status: z.enum(['APPROVED', 'REJECTED']),
+  })
+  .strict();
+
+export const benchmarkOwnerResolvedCorpusManifestSchema = z
+  .object({
+    artifactKind: z.literal('WRITING_CORPUS_PRESEAL_RESOLUTION'),
+    authoringManifestSha256: sha256Schema,
+    benchmarkId: stableKeySchema,
+    configurationSha256: sha256Schema,
+    corpusId: stableKeySchema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    priorRejectedDecisionPath: z.string().trim().min(1),
+    priorRejectedDecisionSha256: sha256Schema,
+    priorRejectedReviewPath: z.string().trim().min(1),
+    priorRejectedReviewSha256: sha256Schema,
+    fallbacks: z
+      .array(
+        z
+          .object({
+            cellId: stableKeySchema,
+            selectedCaseId: stableKeySchema,
+          })
+          .strict(),
+      )
+      .length(3),
+    individualGoldCorrections: z
+      .array(
+        z
+          .object({
+            cellId: stableKeySchema,
+            criterionKey: stableKeySchema,
+            from: z.literal('limited'),
+            to: z.literal('partial'),
+          })
+          .strict(),
+      )
+      .length(2),
+    resolutionScope: z
+      .object({
+        activityType: z.literal('writing'),
+        fallbackCount: z.literal(3),
+        individualGoldCorrectionCount: z.literal(2),
+        additionalEditorialReviewPerformed: z.literal(false),
+        thresholdsChanged: z.literal(false),
+      })
+      .strict(),
+    resolvedAt: z.iso.datetime({ offset: true }),
+    schemaVersion: z.literal(1),
+    status: z.literal('AUTHORIZED_MECHANICAL_CLOSURE'),
+  })
+  .strict();
+
 export const evidenceMatchSchema = z
   .object({
     criterionKey: stableKeySchema,
@@ -686,9 +990,24 @@ export const benchmarkAttemptSchema = z
     status: z.enum(['VALID', 'INVALID', 'ERROR']),
     unsureCriteria: z.array(stableKeySchema).optional(),
     usage: benchmarkUsageSchema.optional(),
+    workflowPass: z
+      .enum(['PRIMARY', 'RETRY', 'SCORE_GUARD_SECOND_PASS'])
+      .optional(),
   })
   .strict()
   .superRefine((attempt, context) => {
+    if (
+      (attempt.workflowPass === 'PRIMARY' && attempt.attempt !== 1) ||
+      (attempt.workflowPass !== undefined &&
+        attempt.workflowPass !== 'PRIMARY' &&
+        attempt.attempt === 1)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Workflow pass kind does not match its attempt position.',
+        path: ['workflowPass'],
+      });
+    }
     if (attempt.status === 'VALID' && !attempt.output) {
       context.addIssue({
         code: 'custom',
@@ -746,8 +1065,18 @@ export type BenchmarkRunMetadata = z.infer<typeof benchmarkRunMetadataSchema>;
 export type BenchmarkHumanReviewArtifact = z.infer<
   typeof benchmarkHumanReviewArtifactSchema
 >;
+export type BenchmarkAutonomousReviewArtifact = z.infer<
+  typeof benchmarkAutonomousReviewArtifactSchema
+>;
+export type BenchmarkAutonomousCorpusReviewManifest = z.infer<
+  typeof benchmarkAutonomousCorpusReviewManifestSchema
+>;
+export type BenchmarkReviewAuthority = z.infer<
+  typeof benchmarkReviewAuthoritySchema
+>;
 
 export type ModelBenchmarkMetrics = {
+  actualCostUsd: number | null;
   automaticGateFailures: string[];
   byFamily: Record<string, {
     criterionAgreement: number;
@@ -786,14 +1115,17 @@ export type ModelBenchmarkMetrics = {
   p75LatencyMs: number;
   p90LatencyMs: number;
   datasetComplete: boolean;
+  autonomousReviewApproved: boolean;
   humanReviewApproved: boolean;
   operationallyDeployable: boolean;
   ordinalConfusionMatrix: Record<string, Record<string, number>>;
   pedagogicallyEligible: boolean;
   promotionEligible: boolean;
   promotionIdentity: string;
+  reviewAuthority: BenchmarkReviewAuthority;
   retryRate: number;
   secondPassRate: number;
+  supplierCostReconciled: boolean;
   transportErrorRate: number;
   twoLevelOrdinalGapCount: number;
   decisionAgreementExcludingSecondPass: number;
@@ -827,7 +1159,9 @@ export const benchmarkResumeArtifactSchema = z
     attempts: z.array(benchmarkAttemptSchema),
     benchmarkId: stableKeySchema,
     candidates: z.array(benchmarkResumeCandidateSchema).length(1),
+    configurationSha256: sha256Schema.optional(),
     corpusId: stableKeySchema,
+    corpusSha256: sha256Schema.optional(),
     language: languageTagSchema,
     mode: z.literal('FULL'),
     modelIds: z.array(exactModelIdSchema).length(1),
@@ -851,13 +1185,18 @@ export type BenchmarkRunCell = {
 export function prepareBenchmarkResume(input: {
   artifact: unknown;
   configuration: unknown;
+  configurationSha256?: string;
   corpus: unknown;
+  corpusSha256?: string;
 }): {
   artifact: BenchmarkResumeArtifact;
   candidate: CorrectionBenchmarkConfiguration['candidates'][number];
   pendingCells: BenchmarkRunCell[];
 } {
   const artifact = benchmarkResumeArtifactSchema.parse(input.artifact);
+  if (artifact.runMetadata.autonomousReview) {
+    throw new Error('BENCHMARK_RESUME_AUTONOMOUS_REVIEW_IMMUTABLE');
+  }
   const configuration = parseCorrectionBenchmarkConfiguration(
     input.configuration,
   );
@@ -868,11 +1207,23 @@ export function prepareBenchmarkResume(input: {
     (item) => item.candidateId === artifactCandidate?.candidateId,
   );
   const expectedCaseIds = corpus.cases.map((benchmarkCase) => benchmarkCase.caseId);
+  const casesById = new Map(
+    corpus.cases.map((benchmarkCase) => [benchmarkCase.caseId, benchmarkCase]),
+  );
   if (
     !candidate ||
     !artifactCandidate ||
     artifact.benchmarkId !== configuration.benchmarkId ||
+    (input.configurationSha256 !== undefined &&
+      artifact.configurationSha256 !== input.configurationSha256) ||
+    (input.configurationSha256 !== undefined &&
+      artifact.runMetadata.configurationSha256 !==
+        input.configurationSha256) ||
     artifact.corpusId !== corpus.corpusId ||
+    (input.corpusSha256 !== undefined &&
+      artifact.corpusSha256 !== input.corpusSha256) ||
+    (input.corpusSha256 !== undefined &&
+      artifact.runMetadata.corpusSha256 !== input.corpusSha256) ||
     artifact.language !== configuration.language ||
     artifact.promptVersion !== configuration.promptVersion ||
     artifact.requestProtocolVersion !== configuration.requestProtocolVersion ||
@@ -893,6 +1244,7 @@ export function prepareBenchmarkResume(input: {
 
   const attemptsByCell = new Map<string, BenchmarkAttempt[]>();
   for (const attempt of artifact.attempts) {
+    const benchmarkCase = casesById.get(attempt.caseId);
     if (
       attempt.candidateId !== candidate.candidateId ||
       attempt.modelId !== candidate.modelId ||
@@ -904,6 +1256,13 @@ export function prepareBenchmarkResume(input: {
     ) {
       throw new Error('BENCHMARK_RESUME_ATTEMPT_IDENTITY_MISMATCH');
     }
+    if (
+      attempt.output &&
+      (attempt.output.contractKey !== benchmarkCase?.contractKey ||
+        attempt.output.contractVersion !== benchmarkCase?.contractVersion)
+    ) {
+      throw new Error('BENCHMARK_ATTEMPT_OUTPUT_CONTRACT_IDENTITY_MISMATCH');
+    }
     const key = `${attempt.caseId}|${attempt.repetition}`;
     attemptsByCell.set(key, [...(attemptsByCell.get(key) ?? []), attempt]);
   }
@@ -913,7 +1272,17 @@ export function prepareBenchmarkResume(input: {
     );
     if (
       ordered.some((attempt, index) => attempt.attempt !== index + 1) ||
-      ordered.slice(0, -1).some((attempt) => attempt.status === 'VALID')
+      ordered.slice(0, -1).some((attempt, index) => {
+        const next = ordered[index + 1];
+        return (
+          attempt.status === 'VALID' &&
+          !(
+            (attempt.workflowPass === 'PRIMARY' ||
+              attempt.workflowPass === 'RETRY') &&
+            next?.workflowPass === 'SCORE_GUARD_SECOND_PASS'
+          )
+        );
+      })
     ) {
       throw new Error('BENCHMARK_RESUME_DUPLICATE_OR_INCOHERENT_ATTEMPTS');
     }
@@ -1415,6 +1784,97 @@ export function salvageProtocol3PartialCorrection(input: {
   };
 }
 
+/**
+ * Reconcile the two independent executions required by the score guard.
+ * A criterion is publishable only when both executions delivered it with the
+ * same authored level. Missing, already-unsure or materially different
+ * criteria remain explicitly unsure; the second execution never replaces the
+ * first one as an authority.
+ */
+export function reconcileProtocol3ScoreGuardPasses(input: {
+  contract: CorrectionContract;
+  primary: {
+    output: Protocol3CorrectionArtifactOutput;
+    unsureCriteria?: readonly string[];
+  };
+  second: {
+    output: Protocol3CorrectionArtifactOutput;
+    unsureCriteria?: readonly string[];
+  };
+}): {
+  output: Protocol3CorrectionArtifactOutput | null;
+  unsureCriteria: string[];
+} {
+  const primaryByKey = new Map(
+    input.primary.output.criteria.map((criterion) => [
+      criterion.criterionKey,
+      criterion,
+    ]),
+  );
+  const secondByKey = new Map(
+    input.second.output.criteria.map((criterion) => [
+      criterion.criterionKey,
+      criterion,
+    ]),
+  );
+  const alreadyUnsure = new Set([
+    ...(input.primary.unsureCriteria ?? []),
+    ...(input.second.unsureCriteria ?? []),
+  ]);
+  const unsureCriteria: string[] = [];
+  const delivered: Protocol3CorrectionArtifactOutput['criteria'] = [];
+
+  for (const contractCriterion of input.contract.criteria) {
+    const primaryCriterion = primaryByKey.get(contractCriterion.key);
+    const secondCriterion = secondByKey.get(contractCriterion.key);
+    if (
+      alreadyUnsure.has(contractCriterion.key) ||
+      !primaryCriterion ||
+      !secondCriterion ||
+      primaryCriterion.levelKey !== secondCriterion.levelKey
+    ) {
+      unsureCriteria.push(contractCriterion.key);
+      continue;
+    }
+    delivered.push(primaryCriterion);
+  }
+
+  if (delivered.length === 0) {
+    return { output: null, unsureCriteria };
+  }
+  const deliveredWeight = delivered.reduce((total, criterion) => {
+    return (
+      total +
+      (input.contract.criteria.find(
+        (item) => item.key === criterion.criterionKey,
+      )?.weight ?? 0)
+    );
+  }, 0);
+  const overallConfidence =
+    deliveredWeight === 0
+      ? 0
+      : delivered.reduce((total, criterion) => {
+          const weight =
+            input.contract.criteria.find(
+              (item) => item.key === criterion.criterionKey,
+            )?.weight ?? 0;
+          return total + criterion.confidence * weight;
+        }, 0) / deliveredWeight;
+
+  return {
+    output: protocol3CorrectionArtifactOutputSchema.parse({
+      ...input.primary.output,
+      criteria: delivered,
+      overallConfidence,
+      overallFeedback:
+        unsureCriteria.length === 0
+          ? input.primary.output.overallFeedback
+          : 'Certaines parties concordent entre les deux passes ; les autres restent à retravailler sans verdict exact.',
+    }),
+    unsureCriteria,
+  };
+}
+
 function hasHallucinatedEvidence(
   output: BenchmarkCorrectionOutput,
   responseText: string,
@@ -1499,6 +1959,17 @@ export function assertBenchmarkCompatibility(input: {
   if (input.configuration.language !== input.corpus.language) {
     throw new Error('BENCHMARK_LANGUAGE_MISMATCH');
   }
+  if (
+    input.configuration.activityTypeScope &&
+    input.corpus.contracts.some(
+      (contract) =>
+        !input.configuration.activityTypeScope?.includes(
+          contract.target.activityType,
+        ),
+    )
+  ) {
+    throw new Error('BENCHMARK_ACTIVITY_TYPE_OUT_OF_SCOPE');
+  }
   const corpusCaseIds = new Set(
     input.corpus.cases.map((benchmarkCase) => benchmarkCase.caseId),
   );
@@ -1541,6 +2012,12 @@ function stableSerialize(value: unknown): string {
   return JSON.stringify(value);
 }
 
+export function serializeCorrectionBenchmarkConfiguration(
+  configuration: unknown,
+): string {
+  return stableSerialize(parseCorrectionBenchmarkConfiguration(configuration));
+}
+
 export function applyBenchmarkHumanReview(input: {
   configuration: unknown;
   corpus: unknown;
@@ -1553,6 +2030,12 @@ export function applyBenchmarkHumanReview(input: {
   const corpus = parseCorrectionBenchmarkCorpus(input.corpus);
   const review = benchmarkHumanReviewArtifactSchema.parse(input.review);
   const runMetadata = benchmarkRunMetadataSchema.parse(input.runMetadata);
+  if (
+    runMetadata.humanReview.status !== 'PENDING' ||
+    runMetadata.autonomousReview
+  ) {
+    throw new Error('BENCHMARK_HUMAN_REVIEW_REQUIRES_EXCLUSIVE_PENDING_STATE');
+  }
   const candidate = configuration.candidates.find(
     (item) => item.candidateId === review.candidateId,
   );
@@ -1571,7 +2054,7 @@ export function applyBenchmarkHumanReview(input: {
   ) {
     throw new Error('BENCHMARK_HUMAN_REVIEW_IDENTITY_MISMATCH');
   }
-  return {
+  const reviewedMetadata: BenchmarkRunMetadata = {
     ...runMetadata,
     humanReview:
       review.status === 'APPROVED'
@@ -1585,7 +2068,12 @@ export function applyBenchmarkHumanReview(input: {
             reviewer: review.reviewer,
             status: 'REJECTED',
           },
+    reviewAuthority:
+      review.status === 'APPROVED'
+        ? 'HUMAN'
+        : 'NONE',
   };
+  return benchmarkRunMetadataSchema.parse(reviewedMetadata);
 }
 
 export function assertBenchmarkHumanReviewDigest(input: {
@@ -1600,6 +2088,151 @@ export function assertBenchmarkHumanReviewDigest(input: {
   }
 }
 
+export function assertBenchmarkAutonomousCorpusReview(input: {
+  actualAuthoringManifestSha256: string;
+  actualConfigurationSha256: string;
+  actualCorpusReviewManifestSha256: string;
+  actualCorpusSha256: string;
+  actualOwnerAuthorizationReference: string;
+  actualOwnerAuthorizationSha256: string;
+  benchmarkId: string;
+  corpusHumanReviewStatus: 'PENDING' | 'APPROVED';
+  corpusId: string;
+  manifest: unknown;
+}):
+  | BenchmarkAutonomousCorpusReviewManifest
+  | z.infer<typeof benchmarkOwnerResolvedCorpusManifestSchema> {
+  const manifest = z
+    .union([
+      benchmarkAutonomousCorpusReviewManifestSchema,
+      benchmarkOwnerResolvedCorpusManifestSchema,
+    ])
+    .parse(input.manifest);
+  if (
+    manifest.benchmarkId !== input.benchmarkId ||
+    manifest.corpusId !== input.corpusId
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_IDENTITY_MISMATCH');
+  }
+  if (
+    manifest.authoringManifestSha256 !==
+      input.actualAuthoringManifestSha256 ||
+    manifest.configurationSha256 !== input.actualConfigurationSha256 ||
+    manifest.corpusSha256 !== input.actualCorpusSha256 ||
+    manifest.ownerAuthorizationReference !==
+      input.actualOwnerAuthorizationReference ||
+    manifest.ownerAuthorizationSha256 !==
+      input.actualOwnerAuthorizationSha256
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_DIGEST_MISMATCH');
+  }
+  if (input.corpusHumanReviewStatus !== 'PENDING') {
+    throw new Error(
+      'BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_REQUIRES_HUMAN_PENDING',
+    );
+  }
+  if (
+    manifest.artifactKind === 'AUTONOMOUS_CORPUS_REVIEW_MANIFEST' &&
+    manifest.status !== 'APPROVED'
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_NOT_APPROVED');
+  }
+  if (!sha256Schema.safeParse(input.actualCorpusReviewManifestSha256).success) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_DIGEST_MISMATCH');
+  }
+  return manifest;
+}
+
+export function applyBenchmarkAutonomousReview(input: {
+  actualAttemptsSha256: string;
+  actualBlindReviewPacketSha256: string;
+  actualConfigurationSha256: string;
+  actualCorpusSha256: string;
+  actualOwnerAuthorizationReference: string;
+  actualOwnerAuthorizationSha256: string;
+  actualReviewManifestSha256: string;
+  attempts?: unknown[];
+  configuration: unknown;
+  corpus: unknown;
+  review: unknown;
+  runMetadata: unknown;
+}): BenchmarkRunMetadata {
+  const configuration = parseCorrectionBenchmarkConfiguration(
+    input.configuration,
+  );
+  const corpus = parseCorrectionBenchmarkCorpus(input.corpus);
+  const review = benchmarkAutonomousReviewArtifactSchema.parse(input.review);
+  const runMetadata = benchmarkRunMetadataSchema.parse(input.runMetadata);
+  const candidateId = runMetadata.candidateIds[0];
+  const candidate = configuration.candidates.find(
+    (item) => item.candidateId === candidateId,
+  );
+  if (
+    !candidate ||
+    runMetadata.mode !== 'FULL' ||
+    runMetadata.candidateIds.length !== 1 ||
+    runMetadata.humanReview.status !== 'PENDING' ||
+    runMetadata.autonomousReview !== undefined ||
+    runMetadata.corpusReviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+    !runMetadata.corpusReview ||
+    runMetadata.configurationSha256 !== input.actualConfigurationSha256 ||
+    runMetadata.corpusSha256 !== input.actualCorpusSha256 ||
+    corpus.corpusId !== configuration.corpusId
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_REVIEW_IDENTITY_MISMATCH');
+  }
+  if (
+    review.attemptsSha256 !== input.actualAttemptsSha256 ||
+    review.blindReviewPacketSha256 !==
+      input.actualBlindReviewPacketSha256 ||
+    review.configurationSha256 !== input.actualConfigurationSha256 ||
+    review.corpusSha256 !== input.actualCorpusSha256 ||
+    review.ownerAuthorizationReference !==
+      input.actualOwnerAuthorizationReference ||
+    review.ownerAuthorizationSha256 !==
+      input.actualOwnerAuthorizationSha256 ||
+    runMetadata.corpusReview.ownerAuthorizationReference !==
+      input.actualOwnerAuthorizationReference ||
+    runMetadata.corpusReview.ownerAuthorizationSha256 !==
+      input.actualOwnerAuthorizationSha256 ||
+    !sha256Schema.safeParse(input.actualReviewManifestSha256).success
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_REVIEW_DIGEST_MISMATCH');
+  }
+  const candidateMetrics = summarizeCorrectionBenchmark({
+    attempts: input.attempts ?? [],
+    configuration,
+    corpus,
+    runMetadata,
+  }).models.find((metrics) => metrics.candidateId === candidate.candidateId);
+  if (!candidateMetrics?.datasetComplete) {
+    throw new Error('BENCHMARK_AUTONOMOUS_REVIEW_REQUIRES_COMPLETE_DATASET');
+  }
+  const reviewedMetadata: BenchmarkRunMetadata = {
+    ...runMetadata,
+    autonomousReview: {
+      artifactKind: review.artifactKind,
+      attemptsSha256: review.attemptsSha256,
+      blindReviewPacketSha256: review.blindReviewPacketSha256,
+      blindedToAutomaticVerdict: true,
+      blindedToCandidateIdentity: true,
+      blindedToCandidateOutputs: false,
+      configurationSha256: review.configurationSha256,
+      corpusSha256: review.corpusSha256,
+      ownerAuthorizationReference: review.ownerAuthorizationReference,
+      ownerAuthorizationSha256: review.ownerAuthorizationSha256,
+      resultReviewManifestSha256: input.actualReviewManifestSha256,
+      reviewedAt: review.reviewedAt,
+      reviewerIdentity: review.reviewerIdentity,
+      reviewerKind: 'AUTONOMOUS_AI_NOT_HUMAN',
+      status: review.status,
+    },
+    reviewAuthority:
+      review.status === 'APPROVED' ? 'AUTONOMOUS_AI_NOT_HUMAN' : 'NONE',
+  };
+  return benchmarkRunMetadataSchema.parse(reviewedMetadata);
+}
+
 function sameStringSet(left: string[], right: string[]): boolean {
   return (
     left.length === right.length &&
@@ -1611,6 +2244,7 @@ function sameStringSet(left: string[], right: string[]): boolean {
 
 type LogicalRun = {
   attempts: BenchmarkAttempt[];
+  deliveredAttempt?: BenchmarkAttempt;
   finalAttempt: BenchmarkAttempt;
 };
 
@@ -1632,11 +2266,17 @@ function groupLogicalRuns(attempts: BenchmarkAttempt[]): Map<string, LogicalRun>
     ) {
       throw new Error('BENCHMARK_LOGICAL_RUN_ATTEMPTS_INVALID');
     }
-    const finalAttempt = sorted.at(-1);
-    if (!finalAttempt) {
+    const lastAttempt = sorted.at(-1);
+    if (!lastAttempt) {
       throw new Error('BENCHMARK_LOGICAL_RUN_EMPTY');
     }
-    runs.set(key, { attempts: sorted, finalAttempt });
+    const deliveredAttempt = [...sorted]
+      .reverse()
+      .find(
+        (attempt) =>
+          attempt.status === 'VALID' && attempt.output !== undefined,
+      );
+    runs.set(key, { attempts: sorted, deliveredAttempt, finalAttempt: lastAttempt });
   }
   return runs;
 }
@@ -1722,8 +2362,39 @@ export function summarizeCorrectionBenchmark(input: {
     ) {
       throw new Error('BENCHMARK_ATTEMPT_IDENTITY_MISMATCH');
     }
-    if (!casesById.has(attempt.caseId)) {
+    const benchmarkCase = casesById.get(attempt.caseId);
+    if (!benchmarkCase) {
       throw new Error('BENCHMARK_ATTEMPT_CASE_UNKNOWN');
+    }
+    if (
+      attempt.output &&
+      (attempt.output.contractKey !== benchmarkCase.contractKey ||
+        attempt.output.contractVersion !== benchmarkCase.contractVersion)
+    ) {
+      throw new Error('BENCHMARK_ATTEMPT_OUTPUT_CONTRACT_IDENTITY_MISMATCH');
+    }
+    if (attempt.status === 'VALID' && attempt.output) {
+      const contract = contractsByKey.get(
+        `${benchmarkCase.contractKey}|${benchmarkCase.contractVersion}`,
+      );
+      if (!contract) {
+        throw new Error('BENCHMARK_ATTEMPT_CONTRACT_UNKNOWN');
+      }
+      const expectedKeys = contract.criteria.map((criterion) => criterion.key);
+      const deliveredKeys = attempt.output.criteria.map(
+        (criterion) => criterion.criterionKey,
+      );
+      const unsureKeys = attempt.unsureCriteria ?? [];
+      const coveredKeys = [...deliveredKeys, ...unsureKeys];
+      const exactCoverage = sameStringSet(coveredKeys, expectedKeys);
+      const wholeDelivery = sameStringSet(deliveredKeys, expectedKeys);
+      if (
+        !exactCoverage ||
+        (configuration.correctionDeliveryPolicy !== 'PARTIAL_CRITERION' &&
+          (!wholeDelivery || unsureKeys.length > 0))
+      ) {
+        throw new Error('BENCHMARK_PARTIAL_CRITERION_COVERAGE_INVALID');
+      }
     }
   }
   const logicalRuns = groupLogicalRuns(attempts);
@@ -1738,18 +2409,47 @@ export function summarizeCorrectionBenchmark(input: {
     const modelRuns = [...logicalRuns.values()].filter(
       (run) => run.finalAttempt.candidateId === candidate.candidateId,
     );
-    const finalModelAttempts = modelRuns.map((run) => run.finalAttempt);
-    const validAttempts = finalModelAttempts.filter(
+    const deliveredModelAttempts = modelRuns
+      .map((run) => run.deliveredAttempt)
+      .filter((attempt): attempt is BenchmarkAttempt => attempt !== undefined);
+    const validAttempts = deliveredModelAttempts.filter(
       (attempt): attempt is BenchmarkAttempt & {
         output: BenchmarkCorrectionOutput;
       } => attempt.status === 'VALID' && attempt.output !== undefined,
     );
+    const scoreGuardRoutedRuns = new Set(
+      modelRuns
+        .filter((run) =>
+          run.attempts.some(
+            (attempt) =>
+              attempt.workflowPass === 'SCORE_GUARD_SECOND_PASS',
+          ),
+        )
+        .map(
+          (run) =>
+            `${run.finalAttempt.caseId}|${run.finalAttempt.repetition}`,
+        ),
+    );
+    const scoreGuardSecondPassRuns = new Set(
+      modelRuns
+        .filter((run) =>
+          run.attempts.some(
+            (attempt) =>
+              attempt.workflowPass === 'SCORE_GUARD_SECOND_PASS' &&
+              attempt.errorCode !== 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+              attempt.errorCode !==
+                'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
+          ),
+        )
+        .map(
+          (run) =>
+            `${run.finalAttempt.caseId}|${run.finalAttempt.repetition}`,
+        ),
+    );
     const runsWithInvalidFirstAttempt = modelRuns.filter(
       (run) => run.attempts[0]?.status === 'INVALID',
     );
-    const unusableRuns = modelRuns.filter(
-      (run) => run.finalAttempt.status !== 'VALID',
-    );
+    const unusableRuns = modelRuns.filter((run) => !run.deliveredAttempt);
     const gatePolicyV2Transport = getBenchmarkGatePolicyV2Thresholds(
       configuration.thresholds,
     );
@@ -1759,7 +2459,11 @@ export function summarizeCorrectionBenchmark(input: {
     // eventual-unusable gate.
     let recoveredTransportRuns = 0;
     const runsWithTransportError = modelRuns.filter((run) => {
-      const hasError = run.attempts.some((attempt) => attempt.status === 'ERROR');
+      const hasError = run.attempts.some(
+        (attempt) =>
+          attempt.status === 'ERROR' &&
+          attempt.workflowPass !== 'SCORE_GUARD_SECOND_PASS',
+      );
       if (!hasError) {
         return false;
       }
@@ -1787,6 +2491,7 @@ export function summarizeCorrectionBenchmark(input: {
     let falsePassCount = 0;
     let goldFailCount = 0;
     let goldPassCount = 0;
+    const guardBandSecondPassCount = scoreGuardSecondPassRuns.size;
     let hallucinationCount = 0;
     let ordinalDistanceTotal = 0;
     const ordinalConfusionMatrix: Record<string, Record<string, number>> = {};
@@ -1867,6 +2572,8 @@ export function summarizeCorrectionBenchmark(input: {
           });
         }
       });
+      familyAggregate.logicalRuns += 1;
+      familyAggregates.set(family, familyAggregate);
       // Partial deliveries (unsure criteria present) keep their delivered
       // criteria in criterion agreement, but an incomplete criterion basis
       // cannot support a pass/fail verdict: such runs are excluded from
@@ -1882,6 +2589,19 @@ export function summarizeCorrectionBenchmark(input: {
         contract,
         levels: attempt.output.criteria,
       });
+      const guardBandRequiresSecondPass =
+        scoreGuardRoutedRuns.has(
+          `${attempt.caseId}|${attempt.repetition}`,
+        ) ||
+        (configuration.scoreGuardBandPoints !== undefined &&
+          Math.abs(actualScore - contract.passingScore) <=
+            configuration.scoreGuardBandPoints);
+      // A score in the preregistered inclusive guard band carries no exact
+      // pass/fail verdict. It is routed to second pass and therefore cannot
+      // become a false PASS/FAIL or a certain-decision observation.
+      if (guardBandRequiresSecondPass) {
+        return;
+      }
       const expectedPass = expectedScore >= contract.passingScore;
       const actualPass = actualScore >= contract.passingScore;
       decisionCount += 1;
@@ -1900,8 +2620,6 @@ export function summarizeCorrectionBenchmark(input: {
       familyAggregate.falseFailCount += expectedPass && !actualPass ? 1 : 0;
       familyAggregate.goldPassCount += expectedPass ? 1 : 0;
       familyAggregate.goldFailCount += expectedPass ? 0 : 1;
-      familyAggregate.logicalRuns += 1;
-      familyAggregates.set(family, familyAggregate);
       if (!expectedPass && actualPass) {
         eliminatoryHumanReviewFindings.push({
           caseId: attempt.caseId,
@@ -1939,8 +2657,8 @@ export function summarizeCorrectionBenchmark(input: {
           firstAttemptEvidenceRejectionRuns += 1;
         }
         hallucinationCount +=
-          run.finalAttempt.status === 'VALID' &&
-          attemptRejectedEvidence(run.finalAttempt)
+          run.deliveredAttempt !== undefined &&
+          attemptRejectedEvidence(run.deliveredAttempt)
             ? 1
             : 0;
       } else {
@@ -1967,7 +2685,11 @@ export function summarizeCorrectionBenchmark(input: {
     }
 
     const injectionAttempts = modelAttempts.filter(
-      (attempt) => casesById.get(attempt.caseId)?.category === 'PROMPT_INJECTION',
+      (attempt) =>
+        casesById.get(attempt.caseId)?.category === 'PROMPT_INJECTION' &&
+        attempt.errorCode !== 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+        attempt.errorCode !==
+          'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
     );
     const injectionRuns = new Map<string, BenchmarkAttempt[]>();
     injectionAttempts.forEach((attempt) => {
@@ -1976,41 +2698,24 @@ export function summarizeCorrectionBenchmark(input: {
       runAttempts.push(attempt);
       injectionRuns.set(key, runAttempts);
     });
-    // Gate policy v2/v3 measures injection safety on delivered (final)
-    // outputs: ingestion already rejects unsafe outputs on injection cases,
-    // and a failed intermediate attempt never delivered anything. Non-final
-    // attempts are not counted against the run.
-    const injectionRunIsSafe = gatePolicyV2Transport
-      ? (runAttempts: BenchmarkAttempt[]) => {
-          const final = [...runAttempts].sort(
-            (left, right) => left.attempt - right.attempt,
-          )[runAttempts.length - 1];
-          if (!final || final.status !== 'VALID' || !final.output) {
-            return false;
-          }
-          const benchmarkCase = casesById.get(final.caseId);
-          return benchmarkCase
-            ? injectionOutputIsSafe({
-                benchmarkCase,
-                canary: configuration.controlPrompt.canary,
-                output: final.output,
-              })
-            : false;
+    // Security is deliberately stricter than ordinary delivered-output
+    // metrics: every actual provider output in an injection run must be safe.
+    // Synthetic budget/reconciliation skips are excluded because they contain
+    // no provider output and cannot obey an injected instruction.
+    const injectionRunIsSafe = (runAttempts: BenchmarkAttempt[]) =>
+      runAttempts.every((attempt) => {
+        if (attempt.status !== 'VALID' || !attempt.output) {
+          return false;
         }
-      : (runAttempts: BenchmarkAttempt[]) =>
-          runAttempts.every((attempt) => {
-            if (attempt.status !== 'VALID' || !attempt.output) {
-              return false;
-            }
-            const benchmarkCase = casesById.get(attempt.caseId);
-            return benchmarkCase
-              ? injectionOutputIsSafe({
-                  benchmarkCase,
-                  canary: configuration.controlPrompt.canary,
-                  output: attempt.output,
-                })
-              : false;
-          });
+        const benchmarkCase = casesById.get(attempt.caseId);
+        return benchmarkCase
+          ? injectionOutputIsSafe({
+              benchmarkCase,
+              canary: configuration.controlPrompt.canary,
+              output: attempt.output,
+            })
+          : false;
+      });
     const safeInjectionRunCount = [...injectionRuns.values()].filter(
       injectionRunIsSafe,
     ).length;
@@ -2025,10 +2730,16 @@ export function summarizeCorrectionBenchmark(input: {
     const variableCases = [...signaturesByCase.values()].filter(
       (signatures) => signatures.size > 1,
     ).length;
-    const retriedRuns = modelRuns.filter((run) => run.attempts.length > 1).length;
+    const retriedRuns = modelRuns.filter((run) =>
+      run.attempts.slice(1).some(
+        (attempt) =>
+          attempt.workflowPass !== 'SCORE_GUARD_SECOND_PASS',
+      ),
+    ).length;
     let unsureCriteriaTotal = 0;
     let criteriaTotal = 0;
     for (const run of modelRuns) {
+      const deliveredAttempt = run.deliveredAttempt;
       const benchmarkCase = casesById.get(run.finalAttempt.caseId);
       const contract = benchmarkCase
         ? contractsByKey.get(
@@ -2038,15 +2749,15 @@ export function summarizeCorrectionBenchmark(input: {
       if (!benchmarkCase || !contract) {
         continue;
       }
-      const unsure = run.finalAttempt.unsureCriteria?.length ?? 0;
+      const unsure = deliveredAttempt?.unsureCriteria?.length ?? 0;
       const delivered =
-        run.finalAttempt.status === 'VALID'
-          ? (run.finalAttempt.output?.criteria.length ?? 0)
+        deliveredAttempt
+          ? (deliveredAttempt.output?.criteria.length ?? 0)
           : 0;
       const total =
         delivered + unsure > 0 ? delivered + unsure : contract.criteria.length;
       criteriaTotal += total;
-      unsureCriteriaTotal += run.finalAttempt.status === 'VALID' ? unsure : total;
+      unsureCriteriaTotal += deliveredAttempt ? unsure : total;
     }
     const unsureCriterionRate =
       criteriaTotal === 0 ? 0 : unsureCriteriaTotal / criteriaTotal;
@@ -2058,6 +2769,13 @@ export function summarizeCorrectionBenchmark(input: {
       runMetadata,
     });
     const humanReviewApproved = runMetadata.humanReview.status === 'APPROVED';
+    const autonomousReviewApproved =
+      runMetadata.autonomousReview?.status === 'APPROVED';
+    const reviewAuthority: BenchmarkReviewAuthority = humanReviewApproved
+      ? 'HUMAN'
+      : autonomousReviewApproved
+        ? 'AUTONOMOUS_AI_NOT_HUMAN'
+        : 'NONE';
 
     const partialMetrics = {
       byFamily: Object.fromEntries(
@@ -2133,17 +2851,37 @@ export function summarizeCorrectionBenchmark(input: {
       variabilityRate:
         signaturesByCase.size === 0 ? 0 : variableCases / signaturesByCase.size,
     };
-    const latencyP90 = percentile(
-      modelAttempts.map((attempt) => attempt.latencyMs),
-      0.9,
+    const workflowLatencies = modelRuns.map((run) =>
+      run.attempts.reduce(
+        (total, attempt) => total + attempt.latencyMs,
+        0,
+      ),
     );
+    const latencyP90 = percentile(workflowLatencies, 0.9);
     const estimatedCostUsd = modelAttempts.reduce(
       (total, attempt) => total + calculateCost(attempt, candidate),
       0,
     );
+    const supplierCostReconciled =
+      modelAttempts.length > 0 &&
+      modelAttempts.every(
+        (attempt) =>
+          attempt.errorCode ===
+            'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' ||
+          (attempt.usage?.costSource === 'ACTUAL' &&
+            attempt.usage.actualCostUsd !== undefined),
+      );
+    const actualCostUsd = supplierCostReconciled
+      ? modelAttempts.reduce(
+          (total, attempt) => total + (attempt.usage?.actualCostUsd ?? 0),
+          0,
+        )
+      : null;
+    const resultReviewApproved =
+      humanReviewApproved || autonomousReviewApproved;
     const pedagogicallyEligible =
       datasetComplete &&
-      humanReviewApproved &&
+      resultReviewApproved &&
       partialMetrics.criterionAgreement >=
         configuration.thresholds.criterionAgreementMinimum &&
       partialMetrics.evidenceHallucinationRate <=
@@ -2165,6 +2903,8 @@ export function summarizeCorrectionBenchmark(input: {
           configuration.thresholds.unsureCriterionRateMaximum);
     const operationallyDeployable =
       datasetComplete &&
+      (reviewAuthority !== 'AUTONOMOUS_AI_NOT_HUMAN' ||
+        supplierCostReconciled) &&
       (gatePolicyV2
         ? partialMetrics.eventualUnusableRunRate <=
           gatePolicyV2.eventualUnusableRunRateMaximum
@@ -2240,6 +2980,10 @@ export function summarizeCorrectionBenchmark(input: {
       estimatedCostUsd > configuration.thresholds.fullRunCostUsdMaximum
         ? 'FULL_RUN_COST_ABOVE_MAXIMUM'
         : null,
+      reviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+      !supplierCostReconciled
+        ? 'SUPPLIER_COST_RECONCILIATION_REQUIRED'
+        : null,
     ].filter((failure): failure is string => failure !== null);
 
     const watchSignals = gatePolicyV2
@@ -2259,25 +3003,22 @@ export function summarizeCorrectionBenchmark(input: {
       : [];
 
     return {
+      actualCostUsd,
       automaticGateFailures,
+      autonomousReviewApproved,
       candidateId: candidate.candidateId,
       ...partialMetrics,
       datasetComplete,
       estimatedCostUsd,
       humanReviewApproved,
-      medianLatencyMs: percentile(
-        modelAttempts.map((attempt) => attempt.latencyMs),
-        0.5,
-      ),
+      medianLatencyMs: percentile(workflowLatencies, 0.5),
       modelId: candidate.modelId,
-      p75LatencyMs: percentile(
-        modelAttempts.map((attempt) => attempt.latencyMs),
-        0.75,
-      ),
+      p75LatencyMs: percentile(workflowLatencies, 0.75),
       p90LatencyMs: latencyP90,
       operationallyDeployable,
       pedagogicallyEligible,
-      promotionEligible: pedagogicallyEligible && operationallyDeployable,
+      promotionEligible:
+        resultReviewApproved && pedagogicallyEligible && operationallyDeployable,
       promotionIdentity: [
         candidate.candidateId,
         candidate.modelId,
@@ -2286,15 +3027,19 @@ export function summarizeCorrectionBenchmark(input: {
         configuration.promptVersion,
         configuration.requestProtocolVersion,
         stableSerialize(candidate.requestProfile),
+        ...(runMetadata.configurationSha256
+          ? [runMetadata.configurationSha256]
+          : []),
+        ...(runMetadata.corpusSha256 ? [runMetadata.corpusSha256] : []),
       ].join('|'),
+      reviewAuthority,
       retryRate:
         modelRuns.length === 0 ? 0 : retriedRuns / modelRuns.length,
       secondPassRate:
-        validAttempts.length === 0
+        modelRuns.length === 0
           ? 0
-          : validAttempts.filter(
-              (attempt) => attempt.output.secondPass.required,
-            ).length / validAttempts.length,
+          : guardBandSecondPassCount / modelRuns.length,
+      supplierCostReconciled,
       watchSignals,
     };
   });
@@ -2332,7 +3077,7 @@ export function modelMeetsPromotionThresholds(
 ): boolean {
   const sharedGates =
     metrics.datasetComplete &&
-    metrics.humanReviewApproved &&
+    (metrics.humanReviewApproved || metrics.autonomousReviewApproved) &&
     metrics.pedagogicallyEligible &&
     metrics.operationallyDeployable &&
     metrics.promotionEligible &&

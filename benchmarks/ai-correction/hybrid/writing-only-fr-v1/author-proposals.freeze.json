@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_AUTHOR_PROPOSALS_FREEZE",
+  "status": "FROZEN_BEFORE_CROSS_LABELING",
+  "frozenAt": "2026-08-24T12:42:15Z",
+  "authoringPlanSha256": "68c0eabe32198238e133990c1b3f2429e6e855a162b4c190a3d0c5c354df940c",
+  "criterionSemanticsSha256": "ea53f019b871831cd175dcf46d299acb98babed91076b0a882cd2d7aad7cde7e",
+  "feedbackEndorsementAmendmentSha256": "85afad25f9d6e9cebf1c6e8fc6dc024e918538319c57b0478d4fb87a6f067f1f",
+  "batches": [
+    {
+      "authorId": "A",
+      "path": "author-a.proposals.json",
+      "sha256": "48f820a8adf49a9c23a0c695bf67f376099ac5f2aa57ec9e9dd70ecaa5f799a6",
+      "proposalCount": 24,
+      "scoreGuardCaseCount": 9,
+      "mandatoryProbeCount": 3,
+      "candidateOutputsConsulted": false,
+      "networkOrModelCallsMade": false
+    },
+    {
+      "authorId": "B",
+      "path": "author-b.proposals.json",
+      "sha256": "078af26d8b1d45a236272f73e591e8f4c9fa527b56e03989a9bc022de78a9d53",
+      "proposalCount": 24,
+      "scoreGuardCaseCount": 7,
+      "mandatoryProbeCount": 3,
+      "candidateOutputsConsulted": false,
+      "networkOrModelCallsMade": false
+    }
+  ],
+  "independenceStatement": {
+    "authoringContextsSeparated": true,
+    "authorsCommunicatedBeforeFreeze": false,
+    "authorsSawOtherBatchBeforeFreeze": false,
+    "authorsSawCandidateOutputs": false,
+    "humanIndependentAuthors": false,
+    "limitation": "Both authors are autonomous non-human agents in separate contexts and may share model-family biases; independence is procedural, not a claim of human-independent validation."
+  },
+  "nextAllowedOperation": "GENERATE_GOLD_FREE_BLIND_CROSS_LABEL_PACKETS",
+  "mutationAfterFreezeAllowed": false
+}

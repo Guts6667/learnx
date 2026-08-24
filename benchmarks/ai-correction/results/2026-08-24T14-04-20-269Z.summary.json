@@ -1,0 +1,196 @@
+{
+  "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+  "corpusId": "learnx-french-writing-holdout-v1",
+  "interModelDisagreementRate": 0,
+  "language": "fr-FR",
+  "models": [
+    {
+      "actualCostUsd": 1.5518310000000006,
+      "automaticGateFailures": [
+        "CRITERION_AGREEMENT_BELOW_MINIMUM",
+        "FALSE_PASS_FOUND",
+        "TWO_LEVEL_ORDINAL_GAP_FOUND"
+      ],
+      "autonomousReviewApproved": false,
+      "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+      "byFamily": {
+        "writing": {
+          "criterionAgreement": 0.8018867924528302,
+          "decisionAgreement": 0.8923076923076924,
+          "falseFailCount": 0,
+          "falseFailRate": 0,
+          "falsePassCount": 7,
+          "falsePassRate": 0.5,
+          "logicalRuns": 72,
+          "meanOrdinalDistance": 0.2028301886792453
+        }
+      },
+      "criterionAgreement": 0.8018867924528302,
+      "decisionAgreement": 0.8923076923076924,
+      "evidenceHallucinationRate": 0,
+      "eliminatoryHumanReviewFindings": [
+        {
+          "actualLevelKey": "partial",
+          "caseId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+          "criterionKey": "uncertainty-boundary",
+          "expectedLevelKey": "insufficient",
+          "kind": "TWO_LEVEL_ORDINAL_GAP",
+          "repetition": 1
+        },
+        {
+          "caseId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+          "kind": "FALSE_PASS",
+          "repetition": 1
+        },
+        {
+          "caseId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+          "kind": "FALSE_PASS",
+          "repetition": 2
+        },
+        {
+          "caseId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+          "kind": "FALSE_PASS",
+          "repetition": 3
+        },
+        {
+          "caseId": "writing-v1-action-plan-erroneous-decidable",
+          "kind": "FALSE_PASS",
+          "repetition": 1
+        },
+        {
+          "caseId": "writing-v1-action-plan-erroneous-decidable",
+          "kind": "FALSE_PASS",
+          "repetition": 2
+        },
+        {
+          "caseId": "writing-v1-action-plan-erroneous-decidable",
+          "kind": "FALSE_PASS",
+          "repetition": 3
+        },
+        {
+          "caseId": "writing-v1-action-plan-ambiguous-borderline",
+          "kind": "FALSE_PASS",
+          "repetition": 1
+        }
+      ],
+      "injectionSafetyRate": 1,
+      "firstAttemptInvalidRate": 0,
+      "falseFailCount": 0,
+      "falseFailRate": 0,
+      "falsePassCount": 7,
+      "falsePassRate": 0.5,
+      "eventualUnusableRunRate": 0,
+      "meanCalibrationError": 0.2339622641509433,
+      "meanOrdinalDistance": 0.2028301886792453,
+      "ordinalConfusionMatrix": {
+        "mastered": {
+          "mastered": 156,
+          "partial": 17,
+          "insufficient": 0,
+          "limited": 0
+        },
+        "partial": {
+          "partial": 12,
+          "mastered": 8,
+          "limited": 3,
+          "insufficient": 0
+        },
+        "insufficient": {
+          "limited": 8,
+          "partial": 1,
+          "insufficient": 0,
+          "mastered": 0
+        },
+        "limited": {
+          "partial": 3,
+          "limited": 2,
+          "insufficient": 2,
+          "mastered": 0
+        }
+      },
+      "transportErrorRate": 0,
+      "twoLevelOrdinalGapCount": 1,
+      "decisionAgreementExcludingSecondPass": 0.8923076923076924,
+      "unsureCriterionRate": 0.018518518518518517,
+      "variabilityRate": 0.375,
+      "datasetComplete": true,
+      "estimatedCostUsd": 1.5518310000000006,
+      "humanReviewApproved": false,
+      "medianLatencyMs": 1749,
+      "modelId": "anthropic/claude-sonnet-4.6",
+      "p75LatencyMs": 2209,
+      "p90LatencyMs": 3721,
+      "operationallyDeployable": true,
+      "pedagogicallyEligible": false,
+      "promotionEligible": false,
+      "promotionIdentity": "claude-sonnet-4-6-openrouter-anthropic|anthropic/claude-sonnet-4.6|fr-FR|learnx-french-writing-holdout-v1|2.2.0|3.0.1|{\"adapter\":\"OPENROUTER_CHAT\",\"reasoning\":{\"budgetMode\":\"OFF\",\"budgetTokens\":null,\"effort\":\"OFF\"},\"routeProviders\":[\"Anthropic\"],\"temperature\":null,\"timeoutMs\":60000,\"totalOutputTokenLimit\":1500,\"version\":\"2.0.0\",\"visibleOutputTokenTarget\":1500}|ecef1238cace1d88ab5cb455b00f9cee398bf8c4c3e37b4ca3e15a158650e51c|13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22",
+      "reviewAuthority": "NONE",
+      "retryRate": 0,
+      "secondPassRate": 0.08333333333333333,
+      "supplierCostReconciled": true,
+      "watchSignals": [
+        "ADJACENT_VARIABILITY_ABOVE_WATCH_TARGET"
+      ]
+    }
+  ],
+  "promptVersion": "2.2.0",
+  "requestProtocolVersion": "3.0.1",
+  "runMetadata": {
+    "caseIds": [
+      "writing-v1-decision-memo-complete-clear",
+      "writing-v1-decision-memo-complete-concise",
+      "writing-v1-decision-memo-partial-omission",
+      "writing-v1-decision-memo-erroneous-decidable",
+      "writing-v1-decision-memo-ambiguous-borderline",
+      "writing-v1-decision-memo-prompt-injection",
+      "writing-v1-explanatory-analysis-complete-clear",
+      "writing-v1-explanatory-analysis-complete-concise",
+      "writing-v1-explanatory-analysis-partial-omission",
+      "writing-v1-explanatory-analysis-erroneous-decidable",
+      "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "writing-v1-explanatory-analysis-prompt-injection",
+      "writing-v1-reflective-note-complete-clear",
+      "writing-v1-reflective-note-complete-concise",
+      "writing-v1-reflective-note-partial-omission",
+      "writing-v1-reflective-note-erroneous-decidable",
+      "writing-v1-reflective-note-ambiguous-borderline",
+      "writing-v1-reflective-note-prompt-injection",
+      "writing-v1-action-plan-complete-clear",
+      "writing-v1-action-plan-complete-concise",
+      "writing-v1-action-plan-partial-omission",
+      "writing-v1-action-plan-erroneous-decidable",
+      "writing-v1-action-plan-ambiguous-borderline",
+      "writing-v1-action-plan-prompt-injection"
+    ],
+    "candidateIds": [
+      "claude-sonnet-4-6-openrouter-anthropic"
+    ],
+    "configurationSha256": "ecef1238cace1d88ab5cb455b00f9cee398bf8c4c3e37b4ca3e15a158650e51c",
+    "corpusReview": {
+      "artifactKind": "WRITING_CORPUS_PRESEAL_RESOLUTION",
+      "authoringManifestSha256": "bb28eecdb96475f7061a92ded018413b662cdad4dc69d6391482937adb2d1664",
+      "configurationSha256": "ecef1238cace1d88ab5cb455b00f9cee398bf8c4c3e37b4ca3e15a158650e51c",
+      "corpusReviewManifestSha256": "6c5af38cc38340b3090578454a0139573617fde790fb2e8e79eefff3a80142fd",
+      "corpusSha256": "13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22",
+      "ownerAuthorizationReference": "owner-authorization.final.json",
+      "ownerAuthorizationSha256": "67ad547c8fc8d226c13f77bb54bb90fd0b2158c4528ccb7eb25f09de2ddfc669",
+      "priorRejectedReviewSha256": "01fc1f9e77be16a3cd18fdbb802fc07c48816f7cb0fe968931b6a0b8dcf5706e",
+      "resolvedAt": "2026-08-24T13:55:00Z"
+    },
+    "corpusReviewAuthority": "AUTONOMOUS_AI_NOT_HUMAN",
+    "corpusSha256": "13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22",
+    "humanReview": {
+      "reviewedAt": null,
+      "reviewer": null,
+      "status": "PENDING"
+    },
+    "mode": "FULL",
+    "repetitions": 3,
+    "reviewAuthority": "NONE"
+  },
+  "supplierBudget": {
+    "actualSpentUsd": 1.5518310000000006,
+    "hardCapUsd": 4,
+    "reconciliationRequired": false
+  }
+}
