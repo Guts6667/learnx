@@ -170,6 +170,9 @@ export const frenchMessages = {
   'programs.preview': 'Prévisualiser le programme',
   'programs.enroll': 'S’inscrire',
   'programs.start': 'Commencer',
+  'programs.status.notStarted': 'À commencer',
+  'programs.status.inProgress': 'En cours',
+  'programs.status.completed': 'Terminé',
   'programs.withdraw': 'Se désinscrire',
   'programs.confirmWithdraw': 'Confirmer la désinscription',
   'programs.confirmWithdrawAria': 'Confirmer la désinscription de {title}',
@@ -292,11 +295,19 @@ export const frenchMessages = {
   'profile.languageSaved': 'Langue enregistrée.',
   'profile.languageError': 'La langue n’a pas pu être enregistrée. Réessayez.',
   'profile.actions': 'Actions',
+  'profile.group.account': 'Compte',
+  'profile.group.access': 'Accès',
+  'profile.group.device': 'Appareil',
+  'profile.group.session': 'Session',
   'profile.openAdmin': 'Ouvrir l’administration',
   'profile.openCredits': 'Voir mes crédits',
   'profile.logout': 'Se déconnecter',
   'auth.email.label': 'Adresse e-mail',
   'auth.password.label': 'Mot de passe',
+  'auth.shell.eyebrow': 'Votre chemin commence ici',
+  'auth.shell.title': 'Apprendre avec une direction.',
+  'auth.shell.description':
+    'Votre compte conserve vos parcours, vos notes et vos révisions sur tous vos appareils.',
   'auth.login.sessionCheck': 'Vérification de la session',
   'auth.login.eyebrow': 'LearnX',
   'auth.login.title': 'Connexion',
@@ -462,6 +473,7 @@ export const frenchMessages = {
   'notes.editor.deleteError': 'La note n’a pas pu être supprimée.',
   'notes.editor.explicitSave':
     'Les modifications restent locales tant que vous ne les enregistrez pas.',
+  'notes.editor.create': 'Créer la note',
   'notes.editor.save': 'Enregistrer la note',
   'notes.editor.empty': 'La note est vide.',
   'notes.editor.openLesson': 'Ouvrir la leçon',
@@ -481,7 +493,7 @@ export const frenchMessages = {
   'notes.save.dirty': 'Modifications non enregistrées.',
   'notes.save.error': 'Échec de l’enregistrement.',
   'notes.save.saving': 'Enregistrement…',
-  'notes.save.saved': 'Toutes les modifications sont enregistrées.',
+  'notes.save.saved': 'Note enregistrée.',
   'learning.lesson': 'Leçon',
   'learning.lessonWithTitle': 'Leçon : {title}',
   'learning.draftPreview': 'Prévisualisation en lecture seule',
@@ -560,12 +572,14 @@ export const frenchMessages = {
   'aiCorrection.quoteError': 'Le devis n’a pas pu être préparé.',
   'aiCorrection.quoteSummary':
     'Estimation : {estimated} crédits · plafond réservé : {maximum} crédits.',
+  'aiCorrection.quoteAction':
+    'Action : correction formative standard, facturée en crédits LearnX.',
   'aiCorrection.consentNotice':
     'Certains critères peuvent revenir à retravailler sans compensation. Une vérification ciblée éventuelle est incluse dans le plafond.',
   'aiCorrection.confirm': 'Confirmer et lancer la correction',
   'aiCorrection.runError': 'La correction n’a pas pu être exécutée.',
   'aiCorrection.unavailable':
-    'Aucun résultat utilisable n’a été produit. La réservation a été libérée.',
+    'Aucun critère utilisable n’a pu être restitué. Le débit reste celui du devis accepté, conformément au consentement donné avant l’exécution.',
   'aiCorrection.settlementRecap':
     'Plafond réservé : {reserved} · débité : {settled} · libéré : {released} crédits.',
   'aiCorrection.noProgressImpact': 'Sans effet sur la progression',
@@ -712,6 +726,19 @@ export const frenchMessages = {
     'Une politique active est configurée côté serveur.',
   'admin.credits.renewalUnavailable':
     'Le renouvellement reste indisponible tant qu’une politique versionnée n’a pas été calibrée et activée.',
+  'admin.credits.monitoringTitle': 'Coûts et incidents de correction',
+  'admin.credits.monitoringDescription':
+    'Vue opérationnelle des corrections du pilote et des deux signaux de qualité connus. Le signal de contrainte dure est heuristique et doit être lu comme une alerte, pas comme un verdict.',
+  'admin.credits.monitoringError':
+    'Les mesures de correction n’ont pas pu être chargées.',
+  'admin.credits.monitoringCorrections': 'Corrections enregistrées',
+  'admin.credits.monitoringProviderCost': 'Coût fournisseur cumulé',
+  'admin.credits.monitoringPartial': 'Corrections partielles',
+  'admin.credits.monitoringUnavailable': 'Résultats indisponibles',
+  'admin.credits.monitoringConstraint':
+    'Alertes contrainte dure non reflétée dans le niveau',
+  'admin.credits.monitoringGuard': 'Secondes passes déclenchées par la garde',
+  'admin.credits.monitoringUnknownCost': 'Tentatives au coût inconnu',
   'credits.eyebrow': 'Crédits LearnX',
   'credits.title': 'Mes crédits',
   'credits.description':
@@ -963,7 +990,9 @@ export const frenchMessages = {
   'stageAssessment.status.validated': 'Validée',
   'pwa.status': 'État de l’application',
   'pwa.ready':
-    'LearnX est installé. Les contenus privés restent disponibles uniquement en ligne.',
+    'LearnX est prêt pour une utilisation hors connexion. Cela ne signifie pas que l’application est installée.',
+  'pwa.installAvailable':
+    'LearnX peut être installé sur cet appareil pour un accès plus rapide.',
   'pwa.updateAvailable': 'Une nouvelle version de LearnX est disponible.',
   'pwa.update': 'Mettre à jour',
   'pwa.later': 'Plus tard',
@@ -1154,6 +1183,9 @@ export const englishMessages = {
   'programs.preview': 'Preview program',
   'programs.enroll': 'Enroll',
   'programs.start': 'Start',
+  'programs.status.notStarted': 'Not started',
+  'programs.status.inProgress': 'In progress',
+  'programs.status.completed': 'Completed',
   'programs.withdraw': 'Leave program',
   'programs.confirmWithdraw': 'Confirm leaving',
   'programs.confirmWithdrawAria': 'Confirm leaving {title}',
@@ -1272,11 +1304,19 @@ export const englishMessages = {
   'profile.languageSaved': 'Language saved.',
   'profile.languageError': 'The language could not be saved. Please try again.',
   'profile.actions': 'Actions',
+  'profile.group.account': 'Account',
+  'profile.group.access': 'Access',
+  'profile.group.device': 'Device',
+  'profile.group.session': 'Session',
   'profile.openAdmin': 'Open administration',
   'profile.openCredits': 'View my credits',
   'profile.logout': 'Sign out',
   'auth.email.label': 'Email address',
   'auth.password.label': 'Password',
+  'auth.shell.eyebrow': 'Your path starts here',
+  'auth.shell.title': 'Learn with a clear direction.',
+  'auth.shell.description':
+    'Your account keeps your learning paths, notes and reviews available across your devices.',
   'auth.login.sessionCheck': 'Checking your session',
   'auth.login.eyebrow': 'LearnX',
   'auth.login.title': 'Sign in',
@@ -1432,6 +1472,7 @@ export const englishMessages = {
   'notes.editor.deleteError': 'The note could not be deleted.',
   'notes.editor.explicitSave':
     'Changes stay on this device until you explicitly save them.',
+  'notes.editor.create': 'Create note',
   'notes.editor.save': 'Save note',
   'notes.editor.empty': 'The note is empty.',
   'notes.editor.openLesson': 'Open lesson',
@@ -1451,7 +1492,7 @@ export const englishMessages = {
   'notes.save.dirty': 'Changes are not saved.',
   'notes.save.error': 'Save failed.',
   'notes.save.saving': 'Saving…',
-  'notes.save.saved': 'All changes are saved.',
+  'notes.save.saved': 'Note saved.',
   'learning.lesson': 'Lesson',
   'learning.lessonWithTitle': 'Lesson: {title}',
   'learning.draftPreview': 'Read-only preview',
@@ -1527,12 +1568,14 @@ export const englishMessages = {
   'aiCorrection.quoteError': 'The quote could not be prepared.',
   'aiCorrection.quoteSummary':
     'Estimate: {estimated} credits · reserved ceiling: {maximum} credits.',
+  'aiCorrection.quoteAction':
+    'Action: standard formative correction, charged in LearnX credits.',
   'aiCorrection.consentNotice':
     'Some criteria may come back for rework without compensation. Any targeted verification is included in the initial ceiling.',
   'aiCorrection.confirm': 'Confirm and start the correction',
   'aiCorrection.runError': 'The correction could not be completed.',
   'aiCorrection.unavailable':
-    'No usable result was produced. The reservation has been released.',
+    'No usable criterion could be returned. The charge remains the accepted quote amount, as stated before execution.',
   'aiCorrection.settlementRecap':
     'Reserved ceiling: {reserved} · charged: {settled} · released: {released} credits.',
   'aiCorrection.noProgressImpact': 'No effect on progress',
@@ -1676,6 +1719,19 @@ export const englishMessages = {
     'An active policy is configured on the server.',
   'admin.credits.renewalUnavailable':
     'Renewal remains unavailable until a versioned policy has been calibrated and activated.',
+  'admin.credits.monitoringTitle': 'Correction costs and incidents',
+  'admin.credits.monitoringDescription':
+    'Operational view of pilot corrections and the two known quality signals. The hard-constraint signal is heuristic and should be read as an alert, not a verdict.',
+  'admin.credits.monitoringError':
+    'Correction monitoring data could not be loaded.',
+  'admin.credits.monitoringCorrections': 'Recorded corrections',
+  'admin.credits.monitoringProviderCost': 'Cumulative provider cost',
+  'admin.credits.monitoringPartial': 'Partial corrections',
+  'admin.credits.monitoringUnavailable': 'Unavailable results',
+  'admin.credits.monitoringConstraint':
+    'Hard-constraint alerts not reflected in level',
+  'admin.credits.monitoringGuard': 'Second passes triggered by score guard',
+  'admin.credits.monitoringUnknownCost': 'Attempts with unknown cost',
   'credits.eyebrow': 'LearnX credits',
   'credits.title': 'My credits',
   'credits.description':
@@ -1920,7 +1976,9 @@ export const englishMessages = {
   'stageAssessment.status.validated': 'Validated',
   'pwa.status': 'Application status',
   'pwa.ready':
-    'LearnX is installed. Private content remains available online only.',
+    'LearnX is ready for offline use. This does not mean the application is installed.',
+  'pwa.installAvailable':
+    'LearnX can be installed on this device for faster access.',
   'pwa.updateAvailable': 'A new version of LearnX is available.',
   'pwa.update': 'Update',
   'pwa.later': 'Later',

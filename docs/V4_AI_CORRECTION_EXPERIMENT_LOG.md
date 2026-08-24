@@ -807,3 +807,27 @@ et verdict `exam-verdict.final.json`. Le corpus est consommé et ne doit pas êt
 rejoué comme examen. Conformément à la règle d'arrêt, aucune remédiation,
 nouvelle revue, nouvelle campagne ou activation runtime n'est engagée dans
 cette itération.
+
+### 8.15 Arbitrage produit — V4 pilote bornée avec défauts documentés
+
+Après le verdict scientifique `NO-GO` inchangé, Rayan autorise la livraison
+d'une V4 pilote avec la technologie actuelle. Cet arbitrage n'est ni une
+réécriture du verdict, ni une nouvelle promotion expérimentale. Il borne
+l'usage à `writing`, `fr-FR`, preuve texte et faible risque, avec l'identité de
+développement v3.1 : Sonnet 4.6, route Anthropic via OpenRouter, prompt `2.2.0`,
+protocole `3.0.1`.
+
+La correction reste strictement formative. Elle ne modifie aucune progression
+et ne valide aucune maîtrise. Les critères livrables sont restitués avec leurs
+preuves ; un critère non fiable revient « à retravailler » et interdit un score
+exact global. Le devis accepté reste débité selon le consentement préalable ;
+le pilote consomme uniquement des crédits offerts et n'ouvre aucune vente de
+correction IA.
+
+Le risque est borné par le design produit, pas nié : l'anatomie des sept faux
+PASS demeure la preuve terminale. Deux défauts entrent au monitoring : une
+contrainte dure peut être mentionnée dans le feedback sans imposer le niveau
+plancher, et une garde ancrée sur le score du modèle ne détecte pas toute sa
+clémence. Leur remédiation et un nouvel examen Writing sont reportés en V4.1.
+Aucun nouvel appel modèle, changement de prompt, gold ou seuil n'est autorisé
+pour cette livraison. `humanReviewApproved` demeure faux.

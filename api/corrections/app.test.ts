@@ -44,6 +44,7 @@ function buildResult(): OrchestratedCorrectionResult {
       indicativeScore: 100,
       secondPassRequired: false,
       modelUsageCostUsd: 0.012,
+      monitoringSignals: [],
     },
     settlement: { releasedCredits: '6', reservedCredits: '18', settledCredits: '12' },
     replay: false,
@@ -70,7 +71,7 @@ describe('corrections api (V4-009/V4-010)', () => {
   }
 
   it('runs an accepted quote and returns the correction with its settlement', async () => {
-    const response = await app().request('/ai-corrections', {
+    const response = await app().request('/api/ai-corrections', {
       body: JSON.stringify({ quoteId: '5f0b1d2e-1c3d-4e5f-9a8b-7c6d5e4f3b2a' }),
       headers: { 'content-type': 'application/json' },
       method: 'POST',
@@ -92,7 +93,7 @@ describe('corrections api (V4-009/V4-010)', () => {
   });
 
   it('rejects an invalid body', async () => {
-    const response = await app().request('/ai-corrections', {
+    const response = await app().request('/api/ai-corrections', {
       body: JSON.stringify({ quoteId: 'not-a-uuid' }),
       headers: { 'content-type': 'application/json' },
       method: 'POST',
@@ -105,7 +106,7 @@ describe('corrections api (V4-009/V4-010)', () => {
     orchestration.runAcceptedQuote.mockRejectedValue(
       new CorrectionOrchestrationError('QUOTE_EXPIRED'),
     );
-    const response = await app().request('/ai-corrections', {
+    const response = await app().request('/api/ai-corrections', {
       body: JSON.stringify({ quoteId: '5f0b1d2e-1c3d-4e5f-9a8b-7c6d5e4f3b2a' }),
       headers: { 'content-type': 'application/json' },
       method: 'POST',
@@ -119,7 +120,7 @@ describe('corrections api (V4-009/V4-010)', () => {
     orchestration.runAcceptedQuote.mockRejectedValue(
       new CorrectionOrchestrationError('INSUFFICIENT_CREDITS'),
     );
-    const response = await app().request('/ai-corrections', {
+    const response = await app().request('/api/ai-corrections', {
       body: JSON.stringify({ quoteId: '5f0b1d2e-1c3d-4e5f-9a8b-7c6d5e4f3b2a' }),
       headers: { 'content-type': 'application/json' },
       method: 'POST',
@@ -133,7 +134,7 @@ describe('corrections api (V4-009/V4-010)', () => {
     const unconfigured = createCorrectionsApp({
       authentication: authenticatedMiddleware('user-1'),
     });
-    const response = await unconfigured.request('/ai-corrections', {
+    const response = await unconfigured.request('/api/ai-corrections', {
       body: JSON.stringify({ quoteId: '5f0b1d2e-1c3d-4e5f-9a8b-7c6d5e4f3b2a' }),
       headers: { 'content-type': 'application/json' },
       method: 'POST',

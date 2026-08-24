@@ -71,14 +71,18 @@ describe('PwaStatus', () => {
 
     fireEvent(window, event);
     expect(
-      screen.queryByRole('complementary', { name: 'État de l’application' }),
-    ).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Installer LearnX' }));
+      screen.getByRole('complementary', { name: 'État de l’application' }),
+    ).toBeInTheDocument();
+    const [installButton] = screen.getAllByRole('button', {
+      name: 'Installer LearnX',
+    });
+    if (!installButton) throw new Error('Install action not rendered');
+    fireEvent.click(installButton);
 
     await waitFor(() => expect(prompt).toHaveBeenCalledTimes(1));
     expect(
-      screen.queryByRole('button', { name: 'Installer LearnX' }),
-    ).not.toBeInTheDocument();
+      screen.queryAllByRole('button', { name: 'Installer LearnX' }),
+    ).toHaveLength(0);
   });
 
   it('mémorise la fermeture de l’aide iOS sur cet appareil', () => {

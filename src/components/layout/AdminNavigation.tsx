@@ -80,6 +80,13 @@ export function AdminNavigation({
           );
         })}
       </ul>
+      <a
+        class="totem-admin-navigation__exit"
+        href="/today"
+      >
+        <span aria-hidden="true">↗</span>
+        <span>{t('admin.navigation.backToApp')}</span>
+      </a>
     </nav>
   );
 }

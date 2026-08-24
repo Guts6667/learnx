@@ -18,6 +18,7 @@ export interface ExerciseSubmission {
 }
 
 export interface ExerciseDetail {
+  aiCorrectionEligible: boolean;
   id: string;
   instructions: string;
   isRequired: boolean;

@@ -18,6 +18,7 @@ import { sanitizeStructuredOutputJsonSchema } from '@/lib/ai-json-schema.ts';
 
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
 import { buildRuntimeCorrectionMessages } from './runtime-correction-prompt';
+import type { CorrectionMonitoringSignal } from './correction-monitoring';
 
 /**
  * V4-009 — Orchestration devis accepté → réservation → correction → règlement.
@@ -143,6 +144,7 @@ export interface OrchestratedCorrectionResult {
     indicativeScore: number | null;
     secondPassRequired: boolean;
     modelUsageCostUsd: number;
+    monitoringSignals: CorrectionMonitoringSignal[];
   };
   settlement: {
     reservedCredits: string;
@@ -470,6 +472,7 @@ export class CorrectionOrchestrationService {
             indicativeScore: null,
             secondPassRequired: true,
             modelUsageCostUsd: usageCost,
+            monitoringSignals: ['SCORE_GUARD_TRIGGERED'],
           },
         };
       }
@@ -495,6 +498,7 @@ export class CorrectionOrchestrationService {
         indicativeScore: null,
         secondPassRequired: false,
         modelUsageCostUsd: usageCost,
+        monitoringSignals: [],
       },
     };
   }
@@ -580,6 +584,35 @@ export class CorrectionOrchestrationService {
         contract: input.contract,
         evaluations: [input.output as unknown as CorrectionOutput],
       }).required;
+    const monitoringSignals: CorrectionMonitoringSignal[] = [];
+    if (scoreGuardBandRequiresSecondPass) {
+      monitoringSignals.push('SCORE_GUARD_TRIGGERED');
+    }
+    const hardConstraintLanguage =
+      /\b(contrainte|interdit(?:e|es|s)?|violation|constraint|forbidden)\b/i;
+    const hardConstraintMismatchSuspected = input.output.criteria.some(
+      (criterion) => {
+        if (!hardConstraintLanguage.test(criterion.feedback)) return false;
+        const contractCriterion = input.contract.criteria.find(
+          (candidate) => candidate.key === criterion.criterionKey,
+        );
+        const selected = contractCriterion?.performanceLevels.find(
+          (level) => level.key === criterion.levelKey,
+        );
+        const minimum = contractCriterion?.performanceLevels.reduce(
+          (lowest, level) => Math.min(lowest, level.score),
+          Number.POSITIVE_INFINITY,
+        );
+        return (
+          selected !== undefined &&
+          minimum !== undefined &&
+          selected.score > minimum
+        );
+      },
+    );
+    if (hardConstraintMismatchSuspected) {
+      monitoringSignals.push('HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED');
+    }
     return {
       id: '',
       status:
@@ -611,6 +644,7 @@ export class CorrectionOrchestrationService {
       indicativeScore: scoreGuardBandRequiresSecondPass ? null : score,
       secondPassRequired,
       modelUsageCostUsd: input.usageCost,
+      monitoringSignals,
     };
   }
 }

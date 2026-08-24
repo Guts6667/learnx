@@ -44,4 +44,39 @@ describe('SafeMarkdown', () => {
     expect(container.querySelector('script')).toBeNull();
     expect(screen.getByText(/<img src=x/)).toBeInTheDocument();
   });
+
+  it('rend le code, les tableaux et les médias LearnX sans perdre leur structure', () => {
+    const { container } = render(
+      <SafeMarkdown
+        content={
+          '`pnpm dev`\n\n```bash\ncurl http://localhost:3000/health\n```\n\n| Signal | Sens |\n| --- | --- |\n| 200 | Service joignable |\n\n![Architecture](/learning/sourcelab/architecture.svg "Flux local")'
+        }
+      />,
+    );
+
+    expect(screen.getByText('pnpm dev').tagName).toBe('CODE');
+    expect(screen.getByRole('region', { name: 'Code — bash' })).toHaveTextContent(
+      'curl http://localhost:3000/health',
+    );
+    expect(screen.getByRole('table')).toHaveTextContent('Service joignable');
+    expect(screen.getByRole('img', { name: 'Architecture' })).toHaveAttribute(
+      'src',
+      '/learning/sourcelab/architecture.svg',
+    );
+    expect(container.querySelector('pre code')).toBeInTheDocument();
+  });
+
+  it('refuse les médias externes et les traversées de chemin', () => {
+    const { container } = render(
+      <SafeMarkdown
+        content={
+          '![Externe](https://example.com/track.png)\n\n![Traversal](/learning/%2e%2e/secret.png)'
+        }
+      />,
+    );
+
+    expect(container.querySelector('img')).toBeNull();
+    expect(screen.getByText('Externe')).toBeInTheDocument();
+    expect(screen.getByText('Traversal')).toBeInTheDocument();
+  });
 });

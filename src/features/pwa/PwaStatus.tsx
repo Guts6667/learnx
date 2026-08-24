@@ -117,9 +117,16 @@ export function PwaProvider({ children }: { children: ComponentChildren }) {
   );
 }
 
-export function PwaStatus() {
+export function PwaStatus({
+  showInstallPrompt = true,
+}: {
+  showInstallPrompt?: boolean;
+}) {
   const { t } = useI18n();
+  const [installNoticeDismissed, setInstallNoticeDismissed] = useState(false);
   const {
+    installApplication,
+    installPrompt,
     isOnline,
     needRefresh,
     offlineReady,
@@ -127,7 +134,9 @@ export function PwaStatus() {
     setOfflineReady,
     updateServiceWorker,
   } = usePwaContext();
-  const hasStatus = !isOnline || offlineReady || needRefresh;
+  const canShowInstall =
+    showInstallPrompt && Boolean(installPrompt) && !installNoticeDismissed;
+  const hasStatus = !isOnline || offlineReady || needRefresh || canShowInstall;
 
   if (!hasStatus) return null;
 
@@ -135,45 +144,65 @@ export function PwaStatus() {
     <aside
       aria-label={t('pwa.status')}
       aria-live="polite"
-      class="mx-auto max-w-xl space-y-3 px-5 pt-4"
+      class="mx-auto max-w-xl px-5 pt-4"
     >
-      <OfflineBanner isOffline={!isOnline} />
-
-      {offlineReady ? (
-        <Card class="flex items-center justify-between gap-3 border-[var(--color-success)] py-3">
-          <p class="text-sm text-[var(--color-success)]">
-            {t('pwa.ready')}
-          </p>
-          <Button
-            onClick={() => setOfflineReady(false)}
-            size="sm"
-            variant="ghost"
-          >
-            {t('common.close')}
-          </Button>
-        </Card>
-      ) : null}
-
-      {needRefresh ? (
-        <Card class="space-y-3 border-[var(--color-accent)] py-3">
-          <p class="text-sm text-[var(--color-accent-text)]">
-            {t('pwa.updateAvailable')}
-          </p>
-          <div class="flex gap-2">
-            <Button onClick={() => void updateServiceWorker(true)} size="sm">
-              {t('pwa.update')}
-            </Button>
-            <Button
-              onClick={() => setNeedRefresh(false)}
-              size="sm"
-              variant="ghost"
-            >
-              {t('pwa.later')}
-            </Button>
-          </div>
-        </Card>
+      {!isOnline ? (
+        <OfflineBanner isOffline />
+      ) : needRefresh ? (
+        <PwaNotice
+          actionLabel={t('pwa.update')}
+          message={t('pwa.updateAvailable')}
+          onAction={() => void updateServiceWorker(true)}
+          onDismiss={() => setNeedRefresh(false)}
+        />
+      ) : offlineReady ? (
+        <PwaNotice
+          message={t('pwa.ready')}
+          onDismiss={() => setOfflineReady(false)}
+        />
+      ) : canShowInstall ? (
+        <PwaNotice
+          actionLabel={t('pwa.install')}
+          message={t('pwa.installAvailable')}
+          onAction={() => void installApplication()}
+          onDismiss={() => setInstallNoticeDismissed(true)}
+        />
       ) : null}
     </aside>
+  );
+}
+
+function PwaNotice({
+  actionLabel,
+  message,
+  onAction,
+  onDismiss,
+}: {
+  actionLabel?: string;
+  message: string;
+  onAction?: () => void;
+  onDismiss: () => void;
+}) {
+  const { t } = useI18n();
+  return (
+    <Card class="relative space-y-3 border-[var(--color-accent)] py-4 pr-16">
+      <Button
+        aria-label={t('common.close')}
+        class="absolute top-2 right-2 min-h-11 min-w-11 px-0"
+        onClick={onDismiss}
+        variant="ghost"
+      >
+        <span aria-hidden="true" class="text-xl leading-none">
+          ×
+        </span>
+      </Button>
+      <p class="text-sm leading-6 text-[var(--color-text)]">{message}</p>
+      {actionLabel && onAction ? (
+        <Button onClick={onAction} size="sm">
+          {actionLabel}
+        </Button>
+      ) : null}
+    </Card>
   );
 }
 
@@ -190,13 +219,13 @@ export function PwaInstallSettings() {
   return (
     <Card
       aria-labelledby="application-settings-title"
-      class="max-w-2xl space-y-4"
+      class="space-y-4"
     >
       <div>
         <h2 class="text-lg font-semibold" id="application-settings-title">
           {t('pwa.application')}
         </h2>
-        <p class="mt-2 text-sm leading-6 text-slate-300">
+        <p class="ui-text-muted mt-2 text-sm leading-6">
           {t('pwa.description')}
         </p>
       </div>
@@ -210,7 +239,7 @@ export function PwaInstallSettings() {
         </Button>
       ) : showIosHelp ? (
         <div class="space-y-3">
-          <p class="text-sm leading-6 text-slate-300">
+          <p class="ui-text-muted text-sm leading-6">
             {t('pwa.iosHelp')}
           </p>
           <Button onClick={dismissIosHelp} variant="ghost">
@@ -218,7 +247,7 @@ export function PwaInstallSettings() {
           </Button>
         </div>
       ) : (
-        <p class="text-sm text-slate-400">
+        <p class="ui-text-muted text-sm">
           {t('pwa.unavailable')}
         </p>
       )}

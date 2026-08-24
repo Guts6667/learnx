@@ -83,17 +83,34 @@ export function TotemProgramsPage() {
         />
       ) : (
         <div class="ui-program-lines">
-          <ul class="ui-list" aria-label={t('programs.enrolledSection')}>
+          <ul
+            class="ui-list ui-program-list"
+            aria-label={t('programs.enrolledSection')}
+          >
             {programs.data.items.map(({ enrollment, program, progress }) => {
               const percent = progress?.percent ?? 0;
+              const status =
+                percent >= 100
+                  ? t('programs.status.completed')
+                  : percent > 0
+                    ? t('programs.status.inProgress')
+                    : t('programs.status.notStarted');
               return (
-                <li class="ui-program-line" key={enrollment.id}>
-                  <div class="min-w-0 flex-1">
-                    <h2 class="text-lg font-semibold">{program.title}</h2>
+                <li key={enrollment.id}>
+                  <a
+                    aria-label={`${percent > 0 ? t('common.continue') : t('programs.start')} — ${program.title}`}
+                    class="ui-program-line group"
+                    href={`/program/${encodeURIComponent(program.slug)}`}
+                  >
+                    <div class="min-w-0 flex-1">
+                    <h2 class="text-lg font-semibold group-hover:text-[var(--color-action)]">
+                      {program.title}
+                    </h2>
                     <p class="ui-text-muted mt-1 line-clamp-2 text-sm leading-6">
                       {program.description}
                     </p>
                     <p class="ui-text-muted mt-2 text-sm">
+                      {status} ·{' '}
                       <ProgramDuration days={program.estimatedDurationDays} />
                     </p>
                     <ProgressBar
@@ -102,14 +119,12 @@ export function TotemProgramsPage() {
                       showValue={false}
                       value={percent}
                     />
-                  </div>
-                  <NavigationAction
-                    class="w-full sm:w-auto"
-                    href={`/program/${encodeURIComponent(program.slug)}`}
-                    variant="secondary"
-                  >
-                    {percent > 0 ? t('common.continue') : t('programs.start')}
-                  </NavigationAction>
+                    </div>
+                    <span class="ui-program-line__action">
+                      {percent > 0 ? t('common.continue') : t('programs.start')}
+                      <span aria-hidden="true"> →</span>
+                    </span>
+                  </a>
                 </li>
               );
             })}
@@ -221,9 +236,12 @@ export function DiscoverProgramsPage() {
           title={t('programs.catalogEmpty.title')}
         />
       ) : (
-        <ul class="grid gap-4 md:grid-cols-2">
+        <ul class="ui-list ui-program-list">
           {catalog.data.items.map((program) => (
-            <li class="ui-card flex min-w-0 flex-col gap-4 p-5" key={program.id}>
+            <li
+              class="ui-program-line border-b border-[var(--color-border)] last:border-b-0"
+              key={program.id}
+            >
               <div class="min-w-0 flex-1">
                 <h2 class="text-lg font-semibold">{program.title}</h2>
                 <p class="ui-text-muted mt-2 text-sm leading-6">
@@ -236,6 +254,7 @@ export function DiscoverProgramsPage() {
               </div>
               {program.isEnrolled ? (
                 <NavigationAction
+                  class="w-full sm:w-auto"
                   href={`/program/${encodeURIComponent(program.slug)}`}
                   variant="secondary"
                 >
@@ -243,8 +262,10 @@ export function DiscoverProgramsPage() {
                 </NavigationAction>
               ) : (
                 <Button
+                  class="w-full sm:w-auto"
                   isLoading={enrollment.pendingProgramId === program.id}
                   onClick={() => void enroll(program)}
+                  variant="secondary"
                 >
                   {t('programs.enroll')}
                 </Button>

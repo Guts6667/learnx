@@ -710,41 +710,8 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
   const { t } = useI18n();
   return (
     <>
-      <Breadcrumbs items={[{ label: t('admin.title') }]} />
-      <h1 class="text-3xl font-bold tracking-tight">{t('admin.title')}</h1>
-      <Section class="space-y-3">
-        <h2 class="text-xl font-semibold">{t('admin.requests.title')}</h2>
-        <p class="ui-text-muted leading-7">{t('admin.accessDescription')}</p>
-        <NavigationAction href="/admin/access-requests" variant="secondary">
-          {t('admin.requests')}
-        </NavigationAction>
-      </Section>
-      <Section class="space-y-3">
-        <h2 class="text-xl font-semibold">{t('admin.accounts.title')}</h2>
-        <p class="ui-text-muted leading-7">{t('admin.accountsDescription')}</p>
-        <NavigationAction href="/admin/accounts" variant="secondary">
-          {t('admin.accounts')}
-        </NavigationAction>
-      </Section>
-      <Section class="space-y-3">
-        <h2 class="text-xl font-medium">{t('admin.credits.title')}</h2>
-        <p class="ui-text-muted leading-7">
-          {t('admin.credits.description')}
-        </p>
-        <NavigationAction href="/admin/credits" variant="secondary">
-          {t('admin.credits.open')}
-        </NavigationAction>
-      </Section>
-      <Section class="space-y-3">
-        <h2 class="text-xl font-medium">{t('admin.contacts.title')}</h2>
-        <p class="ui-text-muted leading-7">
-          {t('admin.contacts.description')}
-        </p>
-        <NavigationAction href="/admin/contacts" variant="secondary">
-          {t('admin.contacts.open')}
-        </NavigationAction>
-      </Section>
-      <h2 class="text-xl font-semibold">{t('admin.programs')}</h2>
+      <h1 class="text-3xl font-medium tracking-tight">{t('admin.programs')}</h1>
+      <p class="ui-text-muted leading-7">{t('admin.description')}</p>
       {programs.length === 0 ? (
         <EmptyState
           description={t('admin.empty.description')}
@@ -996,7 +963,7 @@ function adminBackTarget({
   if (programId) {
     return { href: '/admin', labelKey: 'navigation.back.admin' };
   }
-  return { href: '/profile', labelKey: 'navigation.back.profile' };
+  return null;
 }
 
 function NavigationView({ data }: { data: AdminNavigationResponse }) {

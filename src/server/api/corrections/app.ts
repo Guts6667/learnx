@@ -15,6 +15,10 @@ import {
 import { PrismaCorrectionOrchestrationPorts } from '../../corrections/prisma-correction-orchestration-store.js';
 import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
 import { PrismaCreditLedger } from '../../credits/prisma-credit-ledger.js';
+import {
+  PrismaCorrectionMonitoringService,
+  type CorrectionMonitoringSummary,
+} from '../../corrections/correction-monitoring.js';
 
 const runCorrectionRequestSchema = z
   .object({
@@ -27,6 +31,7 @@ export interface CorrectionsAppOptions {
   authorization?: MiddlewareHandler<AuthEnvironment>;
   now?: () => Date;
   orchestration?: Pick<CorrectionOrchestrationService, 'runAcceptedQuote'>;
+  monitoring?: { summary(): Promise<CorrectionMonitoringSummary> };
   resolveDefaultOrchestration?: () => Promise<
     Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null
   >;
@@ -84,6 +89,7 @@ async function createDefaultOrchestration(): Promise<
 export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   let orchestration = options.orchestration;
+  let monitoring = options.monitoring;
   let defaultOrchestrationPromise:
     | Promise<Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null>
     | undefined;
@@ -94,7 +100,19 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     options.authorization ?? requireCapability('ai.assessment.correct'),
   );
 
-  app.post('/ai-corrections', async (context) => {
+  app.get(
+    '/api/admin/ai-corrections/monitoring',
+    requireCapability('credit.admin.manage'),
+    async (context) => {
+      if (!monitoring) {
+        const { prisma } = await import('../../prisma.js');
+        monitoring = new PrismaCorrectionMonitoringService(prisma);
+      }
+      return context.json({ monitoring: await monitoring.summary() });
+    },
+  );
+
+  app.post('/api/ai-corrections', async (context) => {
     const parsed = runCorrectionRequestSchema.safeParse(
       await context.req.raw.json().catch(() => null),
     );

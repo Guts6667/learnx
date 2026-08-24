@@ -6,6 +6,7 @@ import { ExerciseCard } from '@/features/exercises/ExerciseCard';
 const exerciseId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const submissionId = '97476e0e-2103-40c0-8185-f7601a8d2fd2';
 const exercise = {
+  aiCorrectionEligible: false,
   id: exerciseId,
   instructions: 'Rédigez une analyse structurée en Markdown.',
   isRequired: true,
@@ -139,6 +140,34 @@ describe('ExerciseCard', () => {
       await screen.findByDisplayValue('# Brouillon restauré'),
     ).toBeInTheDocument();
     expect(screen.getByText('Brouillon')).toBeInTheDocument();
+  });
+
+  it('propose la correction assistée uniquement sur une production éligible soumise', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse({
+            exercise: {
+              ...exerciseResponse(submission('Réponse finale', 'SUBMITTED'))
+                .exercise,
+              aiCorrectionEligible: true,
+            },
+          }),
+        ),
+      ),
+    );
+
+    render(
+      <AppProviders>
+        <ExerciseCard exercise={exercise} isLessonPublished />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('button', { name: 'Voir le devis en crédits' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Correction assistée par IA')).toBeInTheDocument();
   });
 
   it('maintient une leçon brouillon en lecture seule sans appel API', () => {

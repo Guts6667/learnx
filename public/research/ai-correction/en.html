@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark light">
+  <meta name="color-scheme" content="light">
   <title>LearnX — AI-assisted assessment research</title>
   <meta name="description" content="LearnX research report on formative AI-assisted assessment, evaluated models and the composite pipeline under consideration.">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap');
-    :root { --ink:#121c24; --navy:#1a2933; --surface:#243641; --blue:#557f9a; --blue-light:#89acbe; --brass:#bea169; --paper:#f1eee6; --muted:#aab7bd; --max:1160px; }
+    @font-face { font-family:"DM Sans"; src:url("/fonts/dm-sans/dm-sans-latin-400-normal.woff2") format("woff2"); font-weight:400; font-display:swap; }
+    @font-face { font-family:"DM Sans"; src:url("/fonts/dm-sans/dm-sans-latin-500-normal.woff2") format("woff2"); font-weight:500; font-display:swap; }
+    :root { --ink:#f4f6fb; --navy:#ffffff; --surface:#e7edff; --blue:#3b5bd6; --blue-light:#3b5bd6; --brass:#cc6b57; --paper:#17233b; --muted:#647087; --max:1160px; }
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; }
-    body { margin:0; background:var(--ink); color:var(--paper); font:400 16px/1.7 Manrope,system-ui,sans-serif; }
+    body { margin:0; background:var(--ink); color:var(--paper); font:400 16px/1.7 "DM Sans",system-ui,sans-serif; }
     a { color:var(--blue-light); }
     .wrap { width:min(calc(100% - 40px),var(--max)); margin:auto; }
     .hero { position:relative; padding:72px 0 64px; border-bottom:1px solid color-mix(in srgb,var(--blue-light),transparent 72%); background:linear-gradient(90deg,transparent 0 68%,color-mix(in srgb,var(--blue),transparent 92%) 68% 69%,transparent 69%),var(--ink); }
@@ -21,7 +22,7 @@
     h1 { max-width:850px; margin-bottom:20px; font-size:clamp(38px,6vw,72px); letter-spacing:-.045em; }
     h2 { font-size:clamp(28px,4vw,44px); letter-spacing:-.035em; }
     h3 { font-size:20px; }
-    .lead { max-width:760px; margin:0; color:#cad3d7; font:400 clamp(19px,2.4vw,25px)/1.55 "Source Serif 4",Georgia,serif; }
+    .lead { max-width:760px; margin:0; color:var(--muted); font:400 clamp(19px,2.4vw,25px)/1.55 "DM Sans",system-ui,sans-serif; }
     .status { display:flex; flex-wrap:wrap; gap:10px 20px; margin-top:32px; color:var(--muted); font-size:13px; }
     .status strong { color:var(--paper); }
     .language { margin-left:auto; color:var(--paper); font-weight:700; text-decoration:none; }
@@ -32,7 +33,7 @@
     .head { display:grid; grid-template-columns:220px minmax(0,1fr); gap:48px; margin-bottom:42px; }
     .number { color:var(--brass); font-size:12px; }
     .head p { max-width:740px; margin:14px 0 0; color:var(--muted); }
-    blockquote { max-width:850px; margin:0; font:500 clamp(24px,3.4vw,40px)/1.35 "Source Serif 4",Georgia,serif; }
+    blockquote { max-width:850px; margin:0; font:500 clamp(24px,3.4vw,40px)/1.35 "DM Sans",system-ui,sans-serif; }
     .metrics { display:grid; grid-template-columns:repeat(4,1fr); border-block:1px solid color-mix(in srgb,var(--paper),transparent 75%); }
     .metric { padding:26px 20px; border-right:1px solid color-mix(in srgb,var(--paper),transparent 82%); }
     .metric:last-child { border:0; }
@@ -53,7 +54,7 @@
     table { width:100%; border-collapse:collapse; }
     th,td { padding:14px 12px; border-bottom:1px solid color-mix(in srgb,var(--paper),transparent 84%); text-align:left; vertical-align:top; }
     th { color:var(--blue-light); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
-    td { color:#d1d8db; }
+    td { color:var(--paper); }
     td:first-child { color:var(--paper); font-weight:600; }
     .flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); }
     .flow article { position:relative; padding:22px; border-top:1px solid var(--blue); }
@@ -65,7 +66,7 @@
     .gates li { position:relative; padding:12px 0 12px 24px; border-bottom:1px solid color-mix(in srgb,var(--paper),transparent 87%); }
     .gates li:before { content:""; position:absolute; left:0; top:22px; width:8px; height:8px; background:var(--blue); }
     .gates .watch li:before { background:var(--brass); }
-    .note { margin-top:38px; padding:22px 24px; border-left:3px solid var(--brass); background:color-mix(in srgb,var(--navy),transparent 18%); color:#d2d9dc; }
+    .note { margin-top:38px; padding:22px 24px; border-left:3px solid var(--brass); background:color-mix(in srgb,var(--navy),transparent 18%); color:var(--paper); }
     details { border-top:1px solid color-mix(in srgb,var(--paper),transparent 82%); }
     summary { min-height:52px; padding:15px 0; cursor:pointer; font-weight:600; }
     details p { max-width:820px; margin:0 0 20px; color:var(--muted); }
@@ -81,12 +82,13 @@
   <header class="hero"><div class="wrap">
     <p class="eyebrow">LearnX · V4 research dossier</p>
     <h1>Building useful assessment without manufacturing certainty.</h1>
-    <p class="lead">A documented account of model trials, observed limitations, and the move towards formative scoring verified by a composite pipeline.</p>
-    <div class="status"><span><strong>Status</strong> Development gate cleared; final exam not passed — production refused</span><span><strong>Data</strong> 24 synthetic French cases × 3 repetitions</span><span><strong>Updated</strong> 23 August 2026</span><a class="language" href="./" lang="fr" hreflang="fr">Version française</a></div>
+    <p class="lead">A dated journal of model trials, rejected promotions, and the decision to ship a bounded formative pilot without hiding its limitations.</p>
+    <div class="status"><span><strong>Status</strong> Writing exam NO-GO; bounded V4 pilot authorised</span><span><strong>Data</strong> 24 synthetic French cases × 3 repetitions</span><span><strong>Updated</strong> 24 August 2026</span><a class="language" href="./" lang="fr" hreflang="fr">Version française</a></div>
   </div></header>
-  <nav aria-label="Report contents"><div class="wrap"><a href="#decision">Decision</a><a href="#method">Method</a><a href="#results">Results</a><a href="#candidates">Candidates</a><a href="#pipeline">Pipeline</a><a href="#gates">Criteria</a><a href="#update">Update</a><a href="#next">Next steps</a></div></nav>
+  <nav aria-label="Report contents"><div class="wrap"><a href="#pilot">24 August decision</a><a href="#decision">Decision</a><a href="#method">Method</a><a href="#results">Results</a><a href="#candidates">Candidates</a><a href="#pipeline">Pipeline</a><a href="#gates">Criteria</a><a href="#update">Update</a><a href="#next">Next steps</a></div></nav>
   <main>
-    <section id="decision"><div class="wrap"><div class="head"><span class="number">01 · Current decision</span><div><h2>Move from a binary verdict to formative assessment.</h2><p>Models can differ by one adjacent level while still producing useful feedback. LearnX must remain strict about security and evidence, without turning a grading nuance into a definitive academic verdict.</p></div></div><blockquote>An indicative score, explained criterion by criterion, is more honest than an artificially certain “pass”.</blockquote></div></section>
+    <section id="pilot"><div class="wrap"><div class="head"><span class="number">09 · Product decision — 24 August 2026</span><div><h2>Ship a useful pilot without turning a scientific NO-GO into a success.</h2><p>The final Writing exam remains rejected: seven false passes, 80.19% criterion agreement and one two-level gap. Rayan nevertheless authorised a limited V4 to learn from real usage while strictly bounding what the product claims.</p></div></div><div class="metrics"><div class="metric"><b>72/72</b><span>technically valid primary passes</span></div><div class="metric"><b>7</b><span>false passes — scientific NO-GO</span></div><div class="metric"><b>100%</b><span>observed injection safety</span></div><div class="metric"><b>$1.55</b><span>reconciled exam cost</span></div></div><blockquote style="margin-top:42px">Writing, French, complimentary credits, criterion-level feedback and no effect on progression.</blockquote><p class="note"><strong>Two defects remain monitored.</strong> The model can describe a hard-constraint violation without lowering the associated level; and a guard anchored to its own score cannot detect all leniency. Their correction and a new exam are deferred to V4.1.</p><p class="note"><strong>Chronological reading.</strong> The following sections preserve hypotheses and decisions as they stood on their stated dates. Composite-pipeline or production-refused statements describe those historical stages; the 24 August decision above is current.</p></div></section>
+    <section id="decision"><div class="wrap"><div class="head"><span class="number">01 · Historical decision</span><div><h2>Move from a binary verdict to formative assessment.</h2><p>Models can differ by one adjacent level while still producing useful feedback. LearnX must remain strict about security and evidence, without turning a grading nuance into a definitive academic verdict.</p></div></div><blockquote>An indicative score, explained criterion by criterion, is more honest than an artificially certain “pass”.</blockquote></div></section>
 
     <section id="method"><div class="wrap"><div class="head"><span class="number">02 · Understanding the method</span><div><h2>Smoke, mini-panel, full and 24×3: what do they mean?</h2><p>Each stage answers a different question. Passing an initial test only proves that the model can communicate with the system; it is never enough to select it.</p></div></div><div class="table-scroll"><table><caption class="sr">Definitions of benchmark stages</caption><thead><tr><th>Term</th><th>Plain-language definition</th><th>What it demonstrates</th></tr></thead><tbody>
       <tr><td>Smoke test</td><td>A very short test using one representative case. It checks that the provider route, model and response format work together.</td><td>The model may proceed to the next test. Its pedagogical quality is not yet demonstrated.</td></tr>
@@ -135,6 +137,6 @@
 
     <section id="next"><div class="wrap"><div class="head"><span class="number">07 · Evidence still required</span><div><h2>What remains to be demonstrated before beta.</h2><p>The objective is no longer to find a perfect model. It is to demonstrate that the complete workflow is useful, honest, safe and economically predictable.</p></div></div><details open><summary>1. Freeze the formative scoring contract</summary><p>Define levels, formative bands, score presentation, disagreement language and the absence of any progression lock.</p></details><details><summary>2. Give the composite pipeline its own identity</summary><p>Pin models, providers, profiles, prompts, trigger rule, control sample, retry policy and gap resolution.</p></details><details><summary>3. Run a capped composite test</summary><p>Compare the pipeline against baselines under the same protocol, then blindly review major gaps and a sample of agreements.</p></details><details><summary>4. Keep the holdout sealed until the development gate passes</summary><p>The French holdout must not become a tuning set or be replayed until the outcome looks favourable.</p></details><details><summary>5. Calibrate price and experience</summary><p>Reserve at a prudent workflow ceiling, charge actual aggregate cost, release the difference and present one understandable user action.</p></details></div></section>
   </main>
-  <footer><div class="wrap">LearnX · Interim V4-003 research report · Synthetic corpus only · Development gate cleared by identity v2-2 on 23 August 2026; sealed holdout and real-data pilot remaining.</div></footer>
+  <footer><div class="wrap">LearnX · V4 research journal · Updated 24 August 2026 · Writing exam NO-GO preserved · Bounded formative pilot authorised, complimentary credits only.</div></footer>
 </body>
 </html>

@@ -18,7 +18,7 @@ type PanelPhase =
   | { kind: 'CONSENT'; quote: CorrectionQuote }
   | { kind: 'RUN_PENDING'; quote: CorrectionQuote }
   | { kind: 'RESULT'; result: CorrectionResult }
-  | { kind: 'ERROR'; message: string };
+  | { kind: 'ERROR'; message: string; quote?: CorrectionQuote };
 
 /**
  * Contrat avant engagement (EMOTIONAL_DESIGN_CONTRACT §5.10) : le panneau
@@ -68,6 +68,7 @@ export function AiCorrectionPanel({
           error instanceof Error && error.message
             ? error.message
             : t('aiCorrection.runError'),
+        quote,
       });
     }
   }
@@ -101,6 +102,9 @@ export function AiCorrectionPanel({
           <Badge tone="info">{t('aiCorrection.assistedLabel')}</Badge>
         </div>
         <p class="text-sm leading-6">
+          {t('aiCorrection.quoteAction')}
+        </p>
+        <p class="text-sm leading-6">
           {t('aiCorrection.quoteSummary', {
             estimated: quote.estimatedCredits,
             maximum: quote.maximumReservedCredits,
@@ -127,8 +131,15 @@ export function AiCorrectionPanel({
         <p class="ui-text-danger text-sm" role="alert">
           {phase.message}
         </p>
-        <Button variant="secondary" onClick={() => setPhase({ kind: 'IDLE' })}>
-          {t('navigation.back.label')}
+        <Button
+          variant="secondary"
+          onClick={() =>
+            phase.quote
+              ? void confirmAndRun(phase.quote)
+              : void askQuote()
+          }
+        >
+          {t('common.retry')}
         </Button>
       </div>
     );
@@ -201,7 +212,9 @@ export function AiCorrectionPanel({
 
       <section class="space-y-2">
         <h4 class="text-sm font-semibold">{t('aiCorrection.nextAction')}</h4>
-        <p class="text-sm leading-6">{correction.overallFeedback}</p>
+        {correction.overallFeedback ? (
+          <p class="text-sm leading-6">{correction.overallFeedback}</p>
+        ) : null}
         {correction.indicativeScore !== null ? (
           <p class="ui-text-muted text-sm">
             {t('aiCorrection.indicativeScore', {

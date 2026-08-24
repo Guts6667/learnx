@@ -2,7 +2,7 @@
 
 ## Statut et autorité
 
-- Version : 1.5.0
+- Version : 1.6.0
 - Statut : **pilote V4 writing-only autorisé par le Propriétaire — raccord et finition en cours**
 - Dernière consolidation : 24 août 2026 — livraison limitée avec technologie actuelle et Totem approuvé
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
@@ -63,7 +63,16 @@ de périmètre exige désormais un amendement explicite, versionné et approuvé
 les paramètres de calibration et gates externes listés en fin de document ne
 rouvrent pas le scope.
 
-### Amendement validé — notation formative et pipeline composite expérimental
+## Historique expérimental — non exécutoire depuis le 24 août 2026
+
+Les amendements et tickets ci-dessous conservent les hypothèses, campagnes et
+critères qui ont conduit à la décision actuelle. Toute phrase indiquant
+« aucun pipeline promu », « holdout fermé », pipeline composite prioritaire ou
+`HARD_OFF` décrit son époque et ne doit pas annuler l'amendement d'exécution du
+24 août placé en tête de ce document. La file courante et ses derniers
+blocages sont dans `docs/V4_ROADMAP.md`.
+
+### Amendement historique — notation formative et pipeline composite expérimental
 
 Le 12 août 2026, le Propriétaire a validé l'exploration prioritaire d'une
 correction formative à deux modèles. Cet amendement remplace les anciennes

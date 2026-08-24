@@ -73,11 +73,11 @@ describe('Totem visual foundations', () => {
     );
   });
 
-  it('loads DM Sans locally while retaining Atlas fonts during migration', () => {
+  it('loads the approved DM Sans family and Totem component geometry', () => {
     expect(stylesheet).toContain('dm-sans-latin-400-normal.woff2');
     expect(stylesheet).toContain('dm-sans-latin-500-normal.woff2');
-    expect(stylesheet).toContain('manrope-latin-400-normal.woff2');
-    expect(stylesheet).toContain('source-serif-4-latin-400-normal.woff2');
+    expect(stylesheet).not.toContain('manrope-latin-400-normal.woff2');
+    expect(stylesheet).not.toContain('source-serif-4-latin-400-normal.woff2');
     expect(stylesheet).toContain('--totem-font-interface:');
     expect(stylesheet).toContain('--space-1: 0.25rem');
     expect(stylesheet).toContain('--space-12: 3rem');

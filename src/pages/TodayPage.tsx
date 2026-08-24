@@ -130,38 +130,39 @@ function TodayContent({
         <Skeleton label={t('programs.loadingMine')} />
       ) : otherPrograms.length ? (
         <section aria-labelledby="today-other-programs" class="space-y-3">
-          <div class="flex items-center justify-between gap-4">
-            <h2 class="text-lg font-semibold" id="today-other-programs">
-              {t('today.otherPrograms')}
-            </h2>
+          <h2 class="text-lg font-semibold" id="today-other-programs">
+            {t('today.otherPrograms')}
+          </h2>
+          <ul class="ui-list ui-program-list">
+            {otherPrograms.map(({ enrollment, program: item, progress }) => (
+              <li key={enrollment.id}>
+                <a
+                  aria-label={`${t('common.continue')} — ${item.title}`}
+                  class="ui-program-line ui-program-line--compact group"
+                  href={`/program/${encodeURIComponent(item.slug)}`}
+                >
+                  <div class="min-w-0 flex-1">
+                    <h3 class="font-semibold group-hover:text-[var(--color-action)]">
+                      {item.title}
+                    </h3>
+                    <p class="ui-text-muted mt-1 text-sm">
+                      {t('today.progress', {
+                        count: Math.round(progress?.percent ?? 0),
+                      })}
+                    </p>
+                  </div>
+                  <span aria-hidden="true" class="text-xl">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="flex justify-center pt-2">
             <NavigationAction href="/program" variant="ghost">
               {t('today.viewPrograms')}
             </NavigationAction>
           </div>
-          <ul class="ui-list">
-            {otherPrograms.map(({ enrollment, program: item, progress }) => (
-              <li
-                class="ui-program-line ui-program-line--compact"
-                key={enrollment.id}
-              >
-                <div class="min-w-0 flex-1">
-                  <h3 class="font-semibold">{item.title}</h3>
-                  <p class="ui-text-muted mt-1 text-sm">
-                    {t('today.progress', {
-                      count: Math.round(progress?.percent ?? 0),
-                    })}
-                  </p>
-                </div>
-                <NavigationAction
-                  aria-label={`${t('common.continue')} — ${item.title}`}
-                  href={`/program/${encodeURIComponent(item.slug)}`}
-                  variant="ghost"
-                >
-                  <span aria-hidden="true">→</span>
-                </NavigationAction>
-              </li>
-            ))}
-          </ul>
         </section>
       ) : null}
     </div>

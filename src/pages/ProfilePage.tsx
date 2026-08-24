@@ -62,8 +62,12 @@ export function ProfilePage() {
         id="profile-title"
         title={user.displayName}
       />
-      <Card class="max-w-2xl p-0">
-        <Section class="px-5 sm:px-6">
+      <div class="profile-groups">
+        <Card class="p-0">
+        <Section aria-labelledby="profile-account-title" class="px-5 sm:px-6">
+          <h2 class="mb-5 text-lg font-medium" id="profile-account-title">
+            {t('profile.group.account')}
+          </h2>
           <div class="min-w-0">
             <p class="ui-text-muted text-sm">{t('profile.email')}</p>
             <p class="ui-text mt-1 break-all text-base">{user.email}</p>
@@ -103,15 +107,10 @@ export function ProfilePage() {
             </p>
           ) : null}
         </Section>
-        <Section
-          aria-labelledby="profile-actions-title"
-          class="space-y-3 px-5 sm:px-6"
-        >
-          <h2
-            class="ui-text-muted text-sm font-semibold"
-            id="profile-actions-title"
-          >
-            {t('profile.actions')}
+        </Card>
+        <Card aria-labelledby="profile-access-title" class="space-y-4">
+          <h2 class="text-lg font-medium" id="profile-access-title">
+            {t('profile.group.access')}
           </h2>
           <div class="flex w-full min-w-0 flex-col gap-3">
             <NavigationAction
@@ -130,18 +129,28 @@ export function ProfilePage() {
                 {t('profile.openAdmin')}
               </NavigationAction>
             ) : null}
-            <Button
-              class="w-full min-w-0"
-              isLoading={logoutMutation.isPending}
-              onClick={handleLogout}
-              variant="ghost"
-            >
-              {t('profile.logout')}
-            </Button>
           </div>
-        </Section>
-      </Card>
-      <PwaInstallSettings />
+        </Card>
+        <section aria-labelledby="profile-device-title" class="space-y-3">
+          <h2 class="text-lg font-medium" id="profile-device-title">
+            {t('profile.group.device')}
+          </h2>
+          <PwaInstallSettings />
+        </section>
+        <Card aria-labelledby="profile-session-title" class="space-y-4">
+          <h2 class="text-lg font-medium" id="profile-session-title">
+            {t('profile.group.session')}
+          </h2>
+          <Button
+            class="w-full min-w-0"
+            isLoading={logoutMutation.isPending}
+            onClick={handleLogout}
+            variant="secondary"
+          >
+            {t('profile.logout')}
+          </Button>
+        </Card>
+      </div>
     </section>
   );
 }

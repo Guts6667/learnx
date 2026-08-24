@@ -3,24 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark light">
+  <meta name="color-scheme" content="light">
   <title>LearnX — Recherche sur la correction assistée par IA</title>
   <meta name="description" content="État des recherches LearnX sur la correction formative assistée par IA, les modèles évalués et l'architecture composite explorée.">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap');
+    @font-face { font-family: "DM Sans"; src: url("/fonts/dm-sans/dm-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: "DM Sans"; src: url("/fonts/dm-sans/dm-sans-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 
     :root {
-      --ink: #121c24;
-      --navy: #1a2933;
-      --surface: #243641;
-      --surface-high: #304650;
-      --blue: #557f9a;
-      --blue-light: #89acbe;
-      --brass: #bea169;
-      --paper: #f1eee6;
-      --paper-deep: #e2ddd3;
-      --muted: #aab7bd;
-      --danger: #d89b8d;
+      --ink: #f4f6fb;
+      --navy: #ffffff;
+      --surface: #e7edff;
+      --surface-high: #d7e1ff;
+      --blue: #3b5bd6;
+      --blue-light: #3b5bd6;
+      --brass: #cc6b57;
+      --paper: #17233b;
+      --paper-deep: #e7edff;
+      --muted: #647087;
+      --danger: #cc6b57;
       --max: 1160px;
     }
 
@@ -30,7 +31,7 @@
       margin: 0;
       background: var(--ink);
       color: var(--paper);
-      font: 400 16px/1.7 Manrope, system-ui, sans-serif;
+      font: 400 16px/1.7 "DM Sans", system-ui, sans-serif;
     }
     a { color: var(--blue-light); }
     .page { overflow: hidden; }
@@ -67,8 +68,8 @@
     .lead {
       max-width: 720px;
       margin: 0;
-      color: #cad3d7;
-      font: 400 clamp(19px, 2.4vw, 25px)/1.55 "Source Serif 4", Georgia, serif;
+      color: var(--muted);
+      font: 400 clamp(19px, 2.4vw, 25px)/1.55 "DM Sans", system-ui, sans-serif;
     }
     .status-line {
       display: flex;
@@ -104,7 +105,7 @@
     .decision blockquote {
       margin: 0;
       color: var(--paper);
-      font: 500 clamp(24px, 3.4vw, 40px)/1.35 "Source Serif 4", Georgia, serif;
+      font: 500 clamp(24px, 3.4vw, 40px)/1.35 "DM Sans", system-ui, sans-serif;
     }
     .decision aside { border-left: 2px solid var(--blue); padding-left: 24px; color: var(--muted); }
     .decision aside strong { display: block; margin-bottom: 8px; color: var(--blue-light); }
@@ -144,7 +145,7 @@
     .matrix { width: 100%; border-collapse: collapse; }
     .matrix th, .matrix td { padding: 14px 12px; border-bottom: 1px solid color-mix(in srgb, var(--paper), transparent 84%); text-align: left; vertical-align: top; }
     .matrix th { color: var(--blue-light); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
-    .matrix td { color: #d1d8db; }
+    .matrix td { color: var(--paper); }
     .matrix td:first-child { color: var(--paper); font-weight: 600; }
     .timeline { display: grid; grid-template-columns: 96px 1fr; }
     .timeline time { padding: 18px 16px 18px 0; color: var(--brass); font-size: 12px; }
@@ -162,7 +163,7 @@
       padding: 22px 24px;
       border-left: 3px solid var(--brass);
       background: color-mix(in srgb, var(--navy), transparent 18%);
-      color: #d2d9dc;
+      color: var(--paper);
     }
     details { border-top: 1px solid color-mix(in srgb, var(--paper), transparent 82%); }
     details:last-child { border-bottom: 1px solid color-mix(in srgb, var(--paper), transparent 82%); }
@@ -209,11 +210,11 @@
       <div class="wrap">
         <p class="eyebrow">LearnX · Dossier de recherche V4</p>
         <h1>Construire une correction utile, sans fabriquer de certitude.</h1>
-        <p class="lead">État documenté des essais de modèles, des limites rencontrées et du passage vers une notation formative vérifiée par un pipeline composite.</p>
+        <p class="lead">Un journal daté des essais, des refus de promotion et de la décision de livrer un pilote formatif borné sans masquer ses limites.</p>
         <div class="status-line">
-          <span><strong>Statut</strong> Gate de développement franchi ; examen final non passé — production refusée</span>
+          <span><strong>Statut</strong> Examen Writing NO-GO ; pilote V4 borné autorisé</span>
           <span><strong>Données</strong> 24 cas synthétiques français × 3 répétitions</span>
-          <span><strong>Mise à jour</strong> 23 août 2026</span>
+          <span><strong>Mise à jour</strong> 24 août 2026</span>
           <a class="language-link" href="en.html" lang="en" hreflang="en">English version</a>
         </div>
       </div>
@@ -221,6 +222,7 @@
 
     <nav aria-label="Sommaire du rapport">
       <div class="wrap">
+        <a href="#pilote">Décision du 24 août</a>
         <a href="#decision">Décision</a>
         <a href="#travail">Travail réalisé</a>
         <a href="#glossaire">Méthode</a>
@@ -234,10 +236,33 @@
     </nav>
 
     <main>
+      <section id="pilote">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="section-number">09 · Décision produit du 24 août 2026</span>
+            <div>
+              <h2>Livrer un pilote utile, sans transformer un NO-GO scientifique en succès.</h2>
+              <p>Le dernier examen Writing reste refusé : sept faux PASS, 80,19 % d’accord critériel et un écart de deux niveaux. Rayan autorise néanmoins une V4 limitée afin d’apprendre avec de vrais usages tout en bornant ce que le produit affirme.</p>
+            </div>
+          </div>
+          <div class="metrics" aria-label="Résultats de l’examen Writing">
+            <div class="metric"><b>72/72</b><span>premiers passages techniquement valides</span></div>
+            <div class="metric"><b>7</b><span>faux PASS — verdict scientifique NO-GO</span></div>
+            <div class="metric"><b>100 %</b><span>sécurité injection observée</span></div>
+            <div class="metric"><b>1,55 $</b><span>coût réconcilié de l’examen</span></div>
+          </div>
+          <div class="decision" style="margin-top:42px">
+            <blockquote>Writing, français, crédits offerts, feedback par critère et aucun effet sur la progression.</blockquote>
+            <aside><strong>Ce que LearnX ne promet pas</strong>Ni correction certifiée, ni vérité pédagogique universelle, ni validation de maîtrise. Un critère incertain revient « à retravailler » et aucun score exact global n’est alors affiché.</aside>
+          </div>
+          <p class="note"><strong>Deux défauts restent surveillés.</strong> Le modèle peut décrire une contrainte dure sans abaisser le niveau associé ; et une garde ancrée sur son propre score ne détecte pas toute sa clémence. Leur correction et un nouvel examen sont reportés en V4.1.</p>
+          <p class="note"><strong>Lecture chronologique.</strong> Les sections suivantes conservent les hypothèses et décisions telles qu'elles existaient aux dates indiquées. Les mentions de pipeline composite ou de production refusée décrivent ces étapes historiques ; la présente décision du 24 août est l'état courant.</p>
+        </div>
+      </section>
       <section id="decision">
         <div class="wrap">
           <div class="section-head">
-            <span class="section-number">01 · Décision actuelle</span>
+            <span class="section-number">01 · Décision historique</span>
             <div>
               <h2>Passer du verdict binaire à l’évaluation formative.</h2>
               <p>Les expériences montrent que les modèles peuvent différer d’un niveau adjacent sans que le feedback soit inutile. LearnX doit rester strict sur la sécurité et les preuves, mais ne pas transformer une nuance de correction en verdict académique définitif.</p>
@@ -504,7 +529,7 @@
     </main>
 
     <footer>
-      <div class="wrap">LearnX · Rapport de recherche intermédiaire V4-003 · Corpus synthétique uniquement · Gate de développement franchi par l’identité v2-2 le 23 août 2026 ; holdout scellé et pilote réel restants.</div>
+      <div class="wrap">LearnX · Journal de recherche V4 · Mise à jour du 24 août 2026 · Examen Writing NO-GO conservé · Pilote formatif borné autorisé, crédits offerts uniquement.</div>
     </footer>
   </div>
 </body>

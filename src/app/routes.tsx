@@ -19,7 +19,7 @@ import { ExercisePage } from '@/pages/ExercisePage';
 import { LoginPage } from '@/pages/LoginPage';
 import { AccessRequestPage } from '@/pages/AccessRequestPage';
 import { VerifyEmailPage } from '@/pages/VerifyEmailPage';
-import { NotePage, NotesPage } from '@/pages/NotesPage';
+import { NewNotePage, NotePage, NotesPage } from '@/pages/NotesPage';
 import { NotFoundPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { QuizPage } from '@/pages/QuizPage';
@@ -131,7 +131,7 @@ function NoteRoute({ noteId, path }: RouteParams) {
 
   return (
     <ProtectedRoute>
-      <NotePage noteId={noteId} />
+      {noteId === 'new' ? <NewNotePage /> : <NotePage noteId={noteId} />}
     </ProtectedRoute>
   );
 }

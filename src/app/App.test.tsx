@@ -527,7 +527,7 @@ describe('App', () => {
     render(<App />);
 
     const email = await screen.findByText(user.email);
-    const actions = screen.getByRole('heading', { level: 2, name: 'Actions' });
+    const actions = screen.getByRole('heading', { level: 2, name: 'Accès' });
     const adminLink = screen.getByRole('link', {
       name: 'Ouvrir l’administration',
     });

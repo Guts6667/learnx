@@ -31,6 +31,7 @@ const rootPaths = new Set([
   '/reviews',
   '/notes',
   '/profile',
+  '/admin',
 ]);
 
 const authenticationPaths = new Set([
@@ -44,17 +45,16 @@ function usesTotemProductSurface(currentPath: string): boolean {
   if (
     currentPath === '/today' ||
     currentPath === '/program' ||
+    currentPath === '/discover' ||
+    currentPath === '/reviews' ||
+    currentPath === '/credits' ||
     currentPath === '/profile' ||
     currentPath.startsWith('/notes')
   ) {
     return true;
   }
 
-  if (!currentPath.startsWith('/program/')) return false;
-
-  return !['/lesson/', '/assessment', '/exercise/', '/quiz'].some((segment) =>
-    currentPath.includes(segment),
-  );
+  return currentPath.startsWith('/program/');
 }
 
 function SessionNavigation({ currentPath }: { currentPath: string }) {
@@ -163,8 +163,13 @@ export function MobileLayout({
                     <p class="totem-admin-topbar__title">{t('admin.title')}</p>
                   </div>
                 </div>
-                <a class="ui-action ui-action--secondary" href="/today">
-                  {t('admin.navigation.backToApp')}
+                <a
+                  aria-label={t('admin.navigation.backToApp')}
+                  class="ui-action ui-action--secondary min-h-11 min-w-11 px-3 lg:hidden"
+                  href="/today"
+                >
+                  <span aria-hidden="true">↗</span>
+                  <span class="sr-only">{t('admin.navigation.backToApp')}</span>
                 </a>
               </div>
             }
@@ -173,6 +178,41 @@ export function MobileLayout({
             {children}
           </TotemAppShell>
         </BackNavigationProvider>
+      </PwaProvider>
+    );
+  }
+
+  if (authenticationPaths.has(currentPath)) {
+    return (
+      <PwaProvider>
+        <TotemTheme class="totem-auth-surface">
+          <a
+            class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
+            href="#main-content"
+            onClick={focusMainContent}
+          >
+            {t('navigation.skipToContent')}
+          </a>
+          <div class="totem-auth-layout">
+            <aside class="totem-auth-brand">
+              <a class="totem-auth-brand__lockup" href="/">
+                <span aria-hidden="true" class="totem-auth-brand__mark">
+                  LX
+                </span>
+                <span>{t('app.name')}</span>
+              </a>
+              <div class="totem-auth-brand__copy">
+                <p class="page-eyebrow">{t('auth.shell.eyebrow')}</p>
+                <h2>{t('auth.shell.title')}</h2>
+                <p>{t('auth.shell.description')}</p>
+              </div>
+            </aside>
+            <main class="totem-auth-main" id="main-content" tabindex={-1}>
+              <PwaStatus />
+              <div class="totem-auth-content">{children}</div>
+            </main>
+          </div>
+        </TotemTheme>
       </PwaProvider>
     );
   }
@@ -186,7 +226,9 @@ export function MobileLayout({
         >
           {t('navigation.skipToContent')}
         </a>
-        <header class="app-safe-header border-b border-[var(--color-border)] bg-[var(--color-canvas)]">
+        <header
+          class={`app-safe-header border-b border-[var(--color-border)] bg-[var(--color-canvas)] ${rootPaths.has(currentPath) ? 'app-safe-header--root' : ''}`}
+        >
           <div class="app-frame mx-auto flex items-center justify-between gap-3">
             <div class="flex items-center gap-2">
               {!rootPaths.has(currentPath) ? (
@@ -220,7 +262,7 @@ export function MobileLayout({
             </span>
           </div>
         </header>
-        <PwaStatus />
+        <PwaStatus showInstallPrompt={currentPath !== '/profile'} />
         <BackNavigationProvider onTargetChange={updateBackTarget}>
           <main
             id="main-content"

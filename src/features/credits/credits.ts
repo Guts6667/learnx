@@ -62,6 +62,17 @@ export interface CreditPolicySummary {
   version: string;
 }
 
+export interface AiCorrectionMonitoringSummary {
+  completed: number;
+  hardConstraintLevelMismatchSuspected: number;
+  partial: number;
+  scoreGuardTriggered: number;
+  totalCorrections: number;
+  totalProviderCostUsd: string;
+  unavailable: number;
+  unknownCostAttempts: number;
+}
+
 const ownCreditsKey = ['credits', 'own'] as const;
 const adminCreditsKey = ['admin', 'credits'] as const;
 
@@ -187,6 +198,20 @@ export function useAdminCreditPoliciesQuery() {
   }>('/api/admin/credits/policies', [...adminCreditsKey, 'policies']);
   return {
     data: result.data?.policies,
+    error: result.error,
+    isPending: result.isPending,
+  };
+}
+
+export function useAiCorrectionMonitoringQuery() {
+  const result = useObservedQuery<{
+    monitoring: AiCorrectionMonitoringSummary;
+  }>('/api/admin/ai-corrections/monitoring', [
+    ...adminCreditsKey,
+    'ai-correction-monitoring',
+  ]);
+  return {
+    data: result.data?.monitoring,
     error: result.error,
     isPending: result.isPending,
   };

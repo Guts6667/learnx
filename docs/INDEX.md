@@ -16,6 +16,9 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
 | V4 design Totem | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` puis les deux paquets d’autorité cités | Manifestes Totem approuvés le 24 août 2026 |
+| Pilotage V4 courant | `docs/V4_ROADMAP.md`, puis `BACKLOG_V4.md` pour le détail | Roadmap datée du 24 août ; anciennes vues dans `docs/archive/v4/` |
+| Recherche correction V4 | `docs/V4_RESEARCH_FINDINGS.md`, puis `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` | Artefacts et journal append-only priment sur les synthèses |
+| Reports V4.1 | `V4_1_BACKLOG.md` | Aucune dette V4.1 ne modifie implicitement le pilote V4 |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |
 | Évaluations | `ASSESSMENT_SPEC.md` | Schéma, logique serveur et tests |

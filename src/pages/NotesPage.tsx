@@ -1,3 +1,4 @@
+import type { TargetedKeyboardEvent } from 'preact';
 import { route } from 'preact-router';
 import { useEffect, useRef, useState } from 'preact/hooks';
 
@@ -45,13 +46,24 @@ function getExcerpt(markdown: string, emptyLabel: string): string {
   return normalized.length > 140 ? `${normalized.slice(0, 137)}…` : normalized;
 }
 
-function NoteLine({ note }: { note: NoteDetail }) {
+function NoteLine({
+  isSelected,
+  note,
+  onSelect,
+}: {
+  isSelected: boolean;
+  note: NoteDetail;
+  onSelect: (note: NoteDetail) => void;
+}) {
   const { locale, t } = useI18n();
   return (
     <li class="border-b border-[var(--color-border)] last:border-b-0">
-      <a
-        class="group grid min-h-20 gap-2 px-1 py-5 outline-none transition-colors hover:bg-[var(--color-surface-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-8"
-        href={`/notes/${encodeURIComponent(note.id)}`}
+      <button
+        aria-pressed={isSelected}
+        class={`group grid min-h-20 w-full gap-2 px-3 py-5 text-left outline-none transition-colors hover:bg-[var(--color-surface-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-inset sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-8 ${isSelected ? 'bg-[var(--color-surface-subtle)]' : ''}`}
+        data-note-select={note.id}
+        onClick={() => onSelect(note)}
+        type="button"
       >
         <div class="min-w-0 space-y-1">
           <h2 class="font-semibold text-[var(--color-heading)] group-hover:text-[var(--color-action)]">
@@ -71,7 +83,7 @@ function NoteLine({ note }: { note: NoteDetail }) {
             date: formatUpdatedAt(note.updatedAt, locale),
           })}
         </p>
-      </a>
+      </button>
     </li>
   );
 }
@@ -80,8 +92,12 @@ export function NotesPage() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const query = useNotesQuery(debouncedSearch);
-  const mutation = useNoteMutation();
+  const [selectedNoteId, setSelectedNoteId] = useState<string>();
   const { t } = useI18n();
+
+  const selectedNote =
+    query.data?.notes.find((note) => note.id === selectedNoteId) ??
+    query.data?.notes[0];
 
   useEffect(() => {
     const timeout = window.setTimeout(() => setDebouncedSearch(search), 300);
@@ -89,13 +105,41 @@ export function NotesPage() {
     return () => window.clearTimeout(timeout);
   }, [search]);
 
-  async function createNote() {
-    try {
-      const note = await mutation.create();
-      void route(`/notes/${encodeURIComponent(note.id)}`);
-    } catch {
-      // L’erreur normalisée est affichée dans la page.
+  function selectNote(note: NoteDetail) {
+    if (window.matchMedia('(min-width: 64rem)').matches) {
+      setSelectedNoteId(note.id);
+      return;
     }
+
+    void route(`/notes/${encodeURIComponent(note.id)}`);
+  }
+
+  function navigateNoteList(event: TargetedKeyboardEvent<HTMLUListElement>) {
+    if (!['ArrowDown', 'ArrowUp', 'End', 'Home'].includes(event.key)) return;
+
+    const buttons = Array.from(
+      event.currentTarget.querySelectorAll<HTMLButtonElement>(
+        '[data-note-select]',
+      ),
+    );
+    const currentIndex = buttons.indexOf(
+      document.activeElement as HTMLButtonElement,
+    );
+    if (currentIndex < 0) return;
+
+    event.preventDefault();
+    const nextIndex =
+      event.key === 'Home'
+        ? 0
+        : event.key === 'End'
+          ? buttons.length - 1
+          : event.key === 'ArrowDown'
+            ? Math.min(buttons.length - 1, currentIndex + 1)
+            : Math.max(0, currentIndex - 1);
+    const nextButton = buttons[nextIndex];
+    nextButton?.focus();
+    const nextId = nextButton?.dataset.noteSelect;
+    if (nextId) setSelectedNoteId(nextId);
   }
 
   return (
@@ -120,17 +164,13 @@ export function NotesPage() {
         />
         <Button
           class="w-full md:w-auto"
-          isLoading={mutation.isPending}
-          onClick={() => void createNote()}
+          onClick={() => void route('/notes/new')}
           size="lg"
         >
           {t('notes.new')}
         </Button>
       </div>
 
-      {mutation.error ? (
-        <ErrorState description={t('notes.createError')} />
-      ) : null}
       {query.isPending ? <Skeleton label={t('notes.loading')} /> : null}
       {query.error ? <ErrorState description={t('notes.loadError')} /> : null}
       {!query.isPending && !query.error && query.data?.notes.length === 0 ? (
@@ -149,11 +189,43 @@ export function NotesPage() {
       ) : null}
       {query.data?.notes.length ? (
         <div class="space-y-4">
-          <ul class="border-y border-[var(--color-border)]">
-            {query.data.notes.map((note) => (
-              <NoteLine key={note.id} note={note} />
-            ))}
-          </ul>
+          <div class="totem-notes-master-detail">
+            <ul
+              aria-label={t('notes.title')}
+              class="border-y border-[var(--color-border)]"
+              onKeyDown={navigateNoteList}
+            >
+              {query.data.notes.map((note) => (
+                <NoteLine
+                  isSelected={note.id === selectedNote?.id}
+                  key={note.id}
+                  note={note}
+                  onSelect={selectNote}
+                />
+              ))}
+            </ul>
+            {selectedNote ? (
+              <article
+                aria-live="polite"
+                class="totem-notes-detail"
+                key={selectedNote.id}
+              >
+                <p class="page-eyebrow">
+                  {selectedNote.lesson
+                    ? `${selectedNote.program?.title ? `${selectedNote.program.title} · ` : ''}${selectedNote.lesson.title}`
+                    : t('notes.personal')}
+                </p>
+                <h2 class="text-2xl font-medium">{selectedNote.title}</h2>
+                <SafeMarkdown content={selectedNote.markdown} />
+                <NavigationAction
+                  href={`/notes/${encodeURIComponent(selectedNote.id)}`}
+                  variant="secondary"
+                >
+                  {t('notes.edit')}
+                </NavigationAction>
+              </article>
+            ) : null}
+          </div>
           {query.hasMore ? (
             <Button
               isLoading={query.isLoadingMore}
@@ -171,12 +243,12 @@ export function NotesPage() {
 
 type SaveStatus = 'dirty' | 'error' | 'saved' | 'saving';
 
-function NoteEditor({ note }: { note: NoteDetail }) {
-  const { error, isPending, remove, save } = useNoteMutation();
-  const [title, setTitle] = useState(note.title);
-  const [markdown, setMarkdown] = useState(note.markdown);
+function NoteEditor({ note }: { note?: NoteDetail }) {
+  const { create, error, isPending, remove, save } = useNoteMutation();
+  const [title, setTitle] = useState(note?.title ?? '');
+  const [markdown, setMarkdown] = useState(note?.markdown ?? '');
   const [mode, setMode] = useState<'preview' | 'write'>('write');
-  const [status, setStatus] = useState<SaveStatus>('saved');
+  const [status, setStatus] = useState<SaveStatus>(note ? 'saved' : 'dirty');
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const cancelDeleteRef = useRef<HTMLButtonElement>(null);
   const revision = useRef(0);
@@ -192,6 +264,13 @@ function NoteEditor({ note }: { note: NoteDetail }) {
     const savedRevision = revision.current;
     setStatus('saving');
     try {
+      if (!note) {
+        const created = await create({ markdown, title: title.trim() });
+        setStatus('saved');
+        void route(`/notes/${encodeURIComponent(created.id)}`, true);
+        return;
+      }
+
       await save(note.id, { markdown, title: title.trim() });
       setStatus(revision.current === savedRevision ? 'saved' : 'dirty');
     } catch {
@@ -206,6 +285,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
   }, [isConfirmingDelete]);
 
   async function deleteNote() {
+    if (!note) return;
     try {
       await remove(note.id);
       void route('/notes');
@@ -215,8 +295,9 @@ function NoteEditor({ note }: { note: NoteDetail }) {
   }
 
   return (
-    <div class="space-y-5">
-      <TextField
+    <div class="totem-note-editor-layout">
+      <div class="min-w-0 space-y-5">
+        <TextField
         error={!title.trim() ? t('notes.editor.titleRequired') : undefined}
         label={t('notes.editor.title')}
         maxLength={200}
@@ -226,7 +307,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
         }}
         value={title}
       />
-      <div class="space-y-3">
+        <div class="space-y-3">
         <p class="ui-text-muted text-sm leading-6">{t('notes.editor.help')}</p>
         <div
           aria-label={t('notes.editor.mode')}
@@ -310,109 +391,117 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             )}
           </div>
         )}
-      </div>
-      <p
-        aria-live="polite"
-        class={
-          status === 'error'
-            ? 'ui-text-danger text-sm'
-            : 'ui-text-muted text-sm'
-        }
-      >
-        {!title.trim()
-          ? t('notes.save.missingTitle')
-          : t(`notes.save.${status}`)}
-      </p>
-      <div class="ui-sticky-mobile-action">
-        <Button
-          class="w-full sm:w-auto"
-          disabled={status !== 'dirty' || !title.trim()}
-          isLoading={status === 'saving'}
-          onClick={() => void saveNote()}
-          size="lg"
+        </div>
+        <p
+          aria-live="polite"
+          class={
+            status === 'error'
+              ? 'ui-text-danger text-sm'
+              : 'ui-text-muted text-sm'
+          }
         >
-          {t('notes.editor.save')}
-        </Button>
-      </div>
-      {note.lesson ? (
-        <Card class="space-y-2">
-          <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>
-          <p class="font-semibold">{note.lesson.title}</p>
-          {note.program ? (
-            <p class="ui-text-muted text-sm">{note.program.title}</p>
-          ) : null}
-          {note.program ? (
-            <NavigationAction
-              href={`/program/${encodeURIComponent(note.program.slug)}/lesson/${encodeURIComponent(note.lesson.slug)}`}
-              variant="secondary"
-            >
-              {t('notes.editor.openLesson')}
-            </NavigationAction>
-          ) : null}
-        </Card>
-      ) : (
-        <Badge tone="neutral">{t('notes.personal')}</Badge>
-      )}
-      <Card class="space-y-4">
-        {isConfirmingDelete ? (
-          <div
-            aria-describedby="delete-note-description"
-            aria-labelledby="delete-note-title"
-            class="space-y-4"
-            role="alertdialog"
+          {!title.trim()
+            ? t('notes.save.missingTitle')
+            : t(`notes.save.${status}`)}
+        </p>
+        <div class="ui-sticky-mobile-action">
+          <Button
+            class="w-full sm:w-auto"
+            disabled={status !== 'dirty' || !title.trim()}
+            isLoading={status === 'saving'}
+            onClick={() => void saveNote()}
+            size="lg"
           >
-            <div>
-              <h2 class="ui-text-danger font-semibold" id="delete-note-title">
-                {t('notes.editor.deleteTitle')}
-              </h2>
-              <p
-                class="ui-text-muted mt-2 text-sm leading-6"
-                id="delete-note-description"
+            {t(note ? 'notes.editor.save' : 'notes.editor.create')}
+          </Button>
+        </div>
+      </div>
+      {note ? (
+        <aside class="totem-note-editor-context space-y-4">
+          {note.lesson ? (
+            <Card class="space-y-2">
+              <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>
+              <p class="font-semibold">{note.lesson.title}</p>
+              {note.program ? (
+                <p class="ui-text-muted text-sm">{note.program.title}</p>
+              ) : null}
+              {note.program ? (
+                <NavigationAction
+                  href={`/program/${encodeURIComponent(note.program.slug)}/lesson/${encodeURIComponent(note.lesson.slug)}`}
+                  variant="secondary"
+                >
+                  {t('notes.editor.openLesson')}
+                </NavigationAction>
+              ) : null}
+            </Card>
+          ) : (
+            <Badge tone="neutral">{t('notes.personal')}</Badge>
+          )}
+          <Card class="space-y-4">
+            {isConfirmingDelete ? (
+              <div
+                aria-describedby="delete-note-description"
+                aria-labelledby="delete-note-title"
+                class="space-y-4"
+                role="alertdialog"
               >
-                {t('notes.editor.deleteDescription')}
-              </p>
-            </div>
-            {error ? (
-              <ErrorState description={t('notes.editor.deleteError')} />
-            ) : null}
-            <div class="flex flex-col gap-3 sm:flex-row">
-              <Button
-                class="w-full sm:w-auto"
-                disabled={isPending}
-                elementRef={cancelDeleteRef}
-                onClick={() => setIsConfirmingDelete(false)}
-                variant="secondary"
-              >
-                {t('notes.editor.cancel')}
-              </Button>
-              <Button
-                class="w-full sm:w-auto"
-                isLoading={isPending}
-                onClick={() => void deleteNote()}
-                variant="danger"
-              >
-                {t('notes.editor.confirmDelete')}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div class="space-y-3">
-            <div>
-              <h2 class="font-semibold">{t('notes.editor.delete')}</h2>
-              <p class="ui-text-muted mt-2 text-sm leading-6">
-                {t('notes.editor.deleteDescription')}
-              </p>
-            </div>
-            <Button
-              disabled={isPending}
-              onClick={() => setIsConfirmingDelete(true)}
-              variant="danger"
-            >
-              {t('notes.editor.delete')}
-            </Button>
-          </div>
-        )}
-      </Card>
+                <div>
+                  <h2
+                    class="ui-text-danger font-semibold"
+                    id="delete-note-title"
+                  >
+                    {t('notes.editor.deleteTitle')}
+                  </h2>
+                  <p
+                    class="ui-text-muted mt-2 text-sm leading-6"
+                    id="delete-note-description"
+                  >
+                    {t('notes.editor.deleteDescription')}
+                  </p>
+                </div>
+                {error ? (
+                  <ErrorState description={t('notes.editor.deleteError')} />
+                ) : null}
+                <div class="flex flex-col gap-3">
+                  <Button
+                    class="w-full"
+                    disabled={isPending}
+                    elementRef={cancelDeleteRef}
+                    onClick={() => setIsConfirmingDelete(false)}
+                    variant="secondary"
+                  >
+                    {t('notes.editor.cancel')}
+                  </Button>
+                  <Button
+                    class="w-full"
+                    isLoading={isPending}
+                    onClick={() => void deleteNote()}
+                    variant="danger"
+                  >
+                    {t('notes.editor.confirmDelete')}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div class="space-y-3">
+                <div>
+                  <h2 class="font-semibold">{t('notes.editor.delete')}</h2>
+                  <p class="ui-text-muted mt-2 text-sm leading-6">
+                    {t('notes.editor.deleteDescription')}
+                  </p>
+                </div>
+                <Button
+                  disabled={isPending}
+                  onClick={() => setIsConfirmingDelete(true)}
+                  variant="danger"
+                >
+                  {t('notes.editor.delete')}
+                </Button>
+              </div>
+            )}
+          </Card>
+        </aside>
+      ) : null}
     </div>
   );
 }
@@ -444,6 +533,31 @@ export function NotePage({ noteId }: { noteId: string }) {
         </h1>
       </header>
       <NoteEditor key={query.data.note.id} note={query.data.note} />
+    </article>
+  );
+}
+
+export function NewNotePage() {
+  useBackNavigationTarget({
+    href: '/notes',
+    labelKey: 'navigation.back.notes',
+  });
+  const { t } = useI18n();
+
+  return (
+    <article
+      aria-labelledby="new-note-title"
+      class="page-layout page-layout--work space-y-6"
+    >
+      <header class="space-y-3">
+        <NavigationAction href="/notes" variant="ghost">
+          {t('notes.editor.back')}
+        </NavigationAction>
+        <h1 class="text-3xl font-medium tracking-tight" id="new-note-title">
+          {t('notes.new')}
+        </h1>
+      </header>
+      <NoteEditor />
     </article>
   );
 }

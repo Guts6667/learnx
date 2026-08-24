@@ -329,12 +329,33 @@ describe('correction orchestration (V4-009)', () => {
       expect(result.correction).toMatchObject({
         indicativeScore: null,
         modelUsageCostUsd: 0.028,
+        monitoringSignals: ['SCORE_GUARD_TRIGGERED'],
         secondPassRequired: true,
         status: 'COMPLETED_PARTIAL',
       });
       expect(harness.transportOutputs).toHaveLength(2);
     },
   );
+
+  it('signale une contrainte dure mentionnée sans niveau plancher', async () => {
+    const harness = buildHarness({
+      transport: () => {
+        const output = strictOutput();
+        output.criteria['decision-position'].feedback =
+          'La réponse viole une contrainte interdite mais reste exploitable.';
+        return output;
+      },
+    });
+
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(result.correction.monitoringSignals).toContain(
+      'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED',
+    );
+  });
 
   it('publishes only criteria whose levels agree across the two passes', async () => {
     const outputs = [
@@ -407,6 +428,7 @@ describe('correction orchestration (V4-009)', () => {
         indicativeScore: 80,
         secondPassRequired: false,
         modelUsageCostUsd: 0.01,
+        monitoringSignals: [],
       },
       settlement: {
         releasedCredits: '6',

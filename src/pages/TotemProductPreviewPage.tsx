@@ -3,7 +3,6 @@ import type { RoutableProps } from 'preact-router';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
-import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
@@ -18,7 +17,10 @@ export function TotemProductPreviewPage(props: RoutableProps) {
       <div class="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">
         <header class="app-safe-header border-b border-[var(--color-border)] bg-[var(--color-surface)]">
           <div class="app-frame mx-auto flex items-center justify-between gap-3">
-            <a class="text-lg font-semibold" href="/design/totem-product">
+            <a
+              class="inline-flex min-h-11 items-center rounded-lg text-lg font-semibold"
+              href="/design/totem-product"
+            >
               LearnX
             </a>
             <span class="ui-text-muted text-sm">Aperçu de design</span>
@@ -55,32 +57,41 @@ export function TotemProductPreviewPage(props: RoutableProps) {
               description="Retrouvez vos autres engagements sans transformer Aujourd’hui en catalogue."
               title="Mes programmes en cours"
             >
-              <ul class="ui-list">
+              <ul class="ui-list ui-program-list">
                 <li>
-                  <ListRow
-                    aside={
-                      <NavigationAction href="#main-content" variant="ghost">
-                        Reprendre
-                      </NavigationAction>
-                    }
+                  <a
+                    class="ui-program-line group"
+                    href="#main-content"
                   >
-                    <h3 class="font-semibold">Pilotage de projets IA</h3>
-                    <p class="ui-text-muted mt-1 text-sm">En cours · 18 %</p>
-                  </ListRow>
+                    <div class="min-w-0 flex-1">
+                      <h3 class="font-semibold group-hover:text-[var(--color-action)]">
+                        Pilotage de projets IA
+                      </h3>
+                      <p class="ui-text-muted mt-1 text-sm">En cours · 18 %</p>
+                    </div>
+                    <span class="ui-program-line__action">Reprendre →</span>
+                  </a>
                 </li>
                 <li>
-                  <ListRow
-                    aside={
-                      <NavigationAction href="#main-content" variant="ghost">
-                        Commencer
-                      </NavigationAction>
-                    }
+                  <a
+                    class="ui-program-line group"
+                    href="#main-content"
                   >
-                    <h3 class="font-semibold">Fondamentaux de la psychologie</h3>
-                    <p class="ui-text-muted mt-1 text-sm">Pas encore commencé</p>
-                  </ListRow>
+                    <div class="min-w-0 flex-1">
+                      <h3 class="font-semibold group-hover:text-[var(--color-action)]">
+                        Fondamentaux de la psychologie
+                      </h3>
+                      <p class="ui-text-muted mt-1 text-sm">À commencer</p>
+                    </div>
+                    <span class="ui-program-line__action">Commencer →</span>
+                  </a>
                 </li>
               </ul>
+              <div class="mt-4 flex justify-center">
+                <NavigationAction href="/program" variant="ghost">
+                  Voir tous mes programmes
+                </NavigationAction>
+              </div>
             </Section>
           </section>
         </main>

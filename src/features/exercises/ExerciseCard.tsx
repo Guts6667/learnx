@@ -7,6 +7,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
+import { AiCorrectionPanel } from '@/features/exercises/AiCorrectionPanel';
 import type { LessonExerciseSummary } from '@/features/curriculum/queries';
 import {
   type ExerciseDetail,
@@ -56,6 +57,9 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
         <pre class="ui-control-surface whitespace-pre-wrap rounded-lg p-3 font-sans text-sm leading-6">
           {submission.contentMarkdown}
         </pre>
+        {exercise.aiCorrectionEligible ? (
+          <AiCorrectionPanel submissionId={submission.id} />
+        ) : null}
       </div>
     );
   }

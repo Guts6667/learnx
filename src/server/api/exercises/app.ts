@@ -10,6 +10,8 @@ import {
   assertExerciseSubmissionCanBeSubmitted,
   type ExerciseSubmissionState,
 } from '../../../lib/exercises.js';
+import { getCorrectionContractRuntimeEligibility } from '../../../lib/ai-correction-contracts.js';
+import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import {
   assertCapability,
@@ -122,6 +124,18 @@ function serializeSubmission(submission: ExerciseSubmissionRecord) {
     submittedAt: submission.submittedAt?.toISOString() ?? null,
     updatedAt: submission.updatedAt.toISOString(),
   };
+}
+
+export function isExerciseAiCorrectionEligible(rubric: unknown): boolean {
+  const eligibility = getCorrectionContractRuntimeEligibility(rubric);
+  return (
+    eligibility.eligible &&
+    eligibility.contract.target.kind === 'EXERCISE' &&
+    PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
+      (activityType) =>
+        activityType === eligibility.contract.target.activityType,
+    )
+  );
 }
 
 function publishedLessonWhere(userId: string) {
@@ -356,6 +370,7 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
     return context.json({
       exercise: {
         ...exercise,
+        aiCorrectionEligible: isExerciseAiCorrectionEligible(exercise.rubric),
         submission: exercise.submission
           ? serializeSubmission(exercise.submission)
           : null,

@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/preact';
 
 import { AppProviders } from '@/app/providers';
-import { NotePage, NotesPage } from '@/pages/NotesPage';
+import { NewNotePage, NotePage, NotesPage } from '@/pages/NotesPage';
 
 const noteId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 
@@ -53,7 +53,7 @@ describe('NotesPage', () => {
       </AppProviders>,
     );
 
-    expect(await screen.findByText('Ma note')).toBeInTheDocument();
+    expect((await screen.findAllByText('Ma note')).length).toBeGreaterThan(0);
     fireEvent.input(screen.getByLabelText('Rechercher dans les notes'), {
       target: { value: 'attention' },
     });
@@ -64,17 +64,15 @@ describe('NotesPage', () => {
       '/api/notes?search=attention',
       expect.anything(),
     );
-    expect(await screen.findByText('Attention sélective')).toBeInTheDocument();
+    expect(
+      (await screen.findAllByText('Attention sélective')).length,
+    ).toBeGreaterThan(0);
   });
 
-  it('crée une note personnelle depuis la liste', async () => {
-    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/notes' && init?.method === 'POST') {
-        return Promise.resolve(jsonResponse(noteResponse(), 201));
-      }
-
-      return Promise.resolve(jsonResponse({ notes: [] }));
-    });
+  it('ouvre un éditeur sans créer silencieusement de note', async () => {
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(jsonResponse({ notes: [] })),
+    );
     vi.stubGlobal('fetch', fetchMock);
 
     render(
@@ -83,13 +81,11 @@ describe('NotesPage', () => {
       </AppProviders>,
     );
 
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'Nouvelle note' }),
-    );
+    fireEvent.click(await screen.findByRole('button', { name: 'Nouvelle note' }));
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).not.toHaveBeenCalledWith(
       '/api/notes',
-      expect.objectContaining({ body: '{}', method: 'POST' }),
+      expect.objectContaining({ method: 'POST' }),
     );
   });
 
@@ -178,9 +174,44 @@ describe('NotePage', () => {
         method: 'PATCH',
       }),
     );
-    expect(
-      await screen.findByText('Toutes les modifications sont enregistrées.'),
-    ).toBeInTheDocument();
+    expect(await screen.findByText('Note enregistrée.')).toBeInTheDocument();
+  });
+
+  it('crée une note uniquement après la validation explicite', async () => {
+    const fetchMock = vi.fn((_path: string, init?: RequestInit) => {
+      if (init?.method === 'POST') {
+        return Promise.resolve(jsonResponse(noteResponse(), 201));
+      }
+
+      return Promise.resolve(jsonResponse({ notes: [] }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <NewNotePage />
+      </AppProviders>,
+    );
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    fireEvent.input(screen.getByLabelText('Titre'), {
+      target: { value: 'Nouvelle note' },
+    });
+    fireEvent.input(screen.getByLabelText('Contenu de la note'), {
+      target: { value: 'Contenu explicite' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Créer la note' }));
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/notes',
+      expect.objectContaining({
+        body: JSON.stringify({
+          markdown: 'Contenu explicite',
+          title: 'Nouvelle note',
+        }),
+        method: 'POST',
+      }),
+    );
   });
 
   it('bascule au clavier vers un aperçu Markdown sûr', async () => {

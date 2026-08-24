@@ -2,7 +2,7 @@
 
 ## Autorité
 
-Statut : **DESIGN VALIDÉ — À IMPLÉMENTER**
+Statut : **DESIGN VALIDÉ — IMPLÉMENTATION EN COURS, QA FINALE À FAIRE**
 
 Date d’arbitrage : 24 août 2026
 
@@ -37,6 +37,12 @@ comme un défaut à corriger, pas comme une variation libre.
 Les composants partagés à stabiliser avant les pages sont le shell, la
 navigation, les boutons, les champs, les états, les surfaces signature, les
 listes, les tableaux administrateur et les retours de correction.
+
+Au 24 août, les tokens, shells produit/admin/auth, Aujourd’hui, Mes parcours,
+Découvrir, Notes, Profil, Crédits, correction assistée et les primitives PWA
+sont raccordés sur la branche de travail. Cette cartographie ne les déclare pas
+publiés : la QA responsive, la suite complète et le gate de release restent
+obligatoires.
 
 ## Phase 1 — mobile et fondations
 
