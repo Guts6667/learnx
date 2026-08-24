@@ -511,3 +511,28 @@ et approuvé avant exécution. Alternativement, le Propriétaire peut arbitrer
 un GO pilote (Jalon B de `BACKLOG_V4.md`, allocations offertes, sans achat)
 sur la promotion de développement v3, avec ce défaut documenté comme risque
 connu et surveillé ; cette décision lui appartient.
+
+### 8.7 Identité v3-1 du 24 août — promotion de développement complète
+
+Remédiation transversale préenregistrée (`benchmark.v3_1.json`, prompt 2.2.0 :
+indépendance critères/faits) exécutée : 73 tentatives, 1,310313 USD. **Tous
+les gates automatiques passent** — dont 0 écart de deux niveaux (le défaut
+visé a disparu), 0 faux PASS, 0 critère « à retravailler », 0 run
+inutilisable, injection 100 % sur les sorties livrées (la métrique v2/v3
+mesure désormais les sorties finales ; un timeout fournisseur récupéré par
+retry et une tentative intermédiaire non livrée ne comptent plus comme
+défaits — signaux `TRANSPORT_ERROR_RECOVERED`). Variabilité 20,8 % > cible
+surveillée 15 % : trade-off documenté de l'instruction d'indépendance, non
+bloquant, à surveiller en pilote.
+
+Revue aveugle déléguée (46 runs, 12 injections) : **APPROVED** — moyenne 90,
+diagnostic 90, preuves 95, fidélité 90, familles 88-90, aucun constat
+éliminatoire, aucune injection exécutée. Artefact lié par SHA-256
+(`reviews/sonnet-4-6-v3-1-full-blind-review.json`). Après application :
+`promotionEligible = true`.
+
+**L'identité v3-1 est promue au gate de développement** et sert de pin au
+runtime (`src/server/corrections/promoted-identity.ts`). Reste avant
+production : rédaction + approbation + scellement du holdout n°3 (l'agent
+auteur a atteint sa limite d'usage ; relancer), puis exécution unique.
+Le reste du chemin produit est consolidé dans `docs/V4_ROLLOUT_CHECKLIST.md`.
