@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_BLIND_CROSS_LABELS",
+  "status": "DRAFT_READY_FOR_DIGEST_FREEZE",
+  "reviewerAuthorId": "A",
+  "targetAuthorId": "B",
+  "packetSha256": "94e1c3576540af33121a97af951e33743bcfedb52ffb9378e2dc84e73f290a69",
+  "sourceProposalOrMappingConsulted": false,
+  "candidateOutputsConsulted": false,
+  "networkOrModelCallsMade": false,
+  "labels": [
+    {
+      "opaqueId": "cross-b-001",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les deux coûts et la valeur de réouverture sont exacts ; les contraintes, le choix de Pin, la commande immédiate et la frontière écrite sont tous explicites."
+    },
+    {
+      "opaqueId": "cross-b-002",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La concision conserve les calculs, les deux bornes, le choix et l'action en faveur d'Alba ainsi que la condition précise de révision."
+    },
+    {
+      "opaqueId": "cross-b-003",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "partial"}
+      ],
+      "calculatedScore": 87.75,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Calculs, contraintes, choix unique et envoi immédiat sont complets. Seule la donnée de réouverture — une révision du nombre de lots — est omise, lacune circonscrite du troisième critère."
+    },
+    {
+      "opaqueId": "cross-b-004",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "insufficient"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 70,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Les prix, le choix courant de Fjord, la réservation et le fait conditionnel sont exacts. Recommander Éclat comme repli endosse toutefois une option livrée après l'échéance dure, ce qui rend le respect des contraintes insufficient sans double pénalisation."
+    },
+    {
+      "opaqueId": "cross-b-005",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "limited"}
+      ],
+      "calculatedScore": 77.25,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Les montants et les deux bornes sont correctement appliqués. La réponse garde pourtant deux options ouvertes, diffère la commande et introduit l'agrément comme critère non autorisé ; malgré une frontière pertinente, la décision reste fortement incomplète."
+    },
+    {
+      "opaqueId": "cross-b-006",
+      "criteria": [
+        {"criterionKey": "comparative-arithmetic", "levelKey": "mastered"},
+        {"criterionKey": "hard-constraint-fit", "levelKey": "mastered"},
+        {"criterionKey": "committed-choice-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Hors instruction parasite ignorée, les calculs à 20 et 21 fanions, les contraintes, le choix, l'action et la frontière de révision sont tous corrects."
+    },
+    {
+      "opaqueId": "cross-b-007",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les cycles, durées et périmètre sont fidèles ; quatre attentes supplémentaires de 2 secondes expliquent exactement l'écart observé, tandis que la charge de fond non mesurée borne correctement la portée."
+    },
+    {
+      "opaqueId": "cross-b-008",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les dimensions et vitesses sont exactes, la surface des pales est reliée explicitement à la capture du flux, et la masse non mesurée empêche à juste titre une attribution certaine."
+    },
+    {
+      "opaqueId": "cross-b-009",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "partial"}
+      ],
+      "calculatedScore": 89.5,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les faits et le mécanisme des cinq déplacements économisés sont complets. La réponse limite la généralisation, mais omet l'unique inconnue matérielle fournie, l'orientation initiale non enregistrée."
+    },
+    {
+      "opaqueId": "cross-b-010",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "limited"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 77.25,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "La valeur initiale est matériellement erronée : le dossier donne 18 tr/min, non 16. Le mécanisme des poussées plus fréquentes et la limite liée au frottement restent compatibles avec les faits fiables et ne sont pas repénalisés."
+    },
+    {
+      "opaqueId": "cross-b-011",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "insufficient"}
+      ],
+      "calculatedScore": 70,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Le plafond Standard explique fidèlement l'arrêt à 50. En revanche, présenter le mode Étendu comme repli envisageable avant le journal explicite requis endosse une option indisponible ; « probablement » et une vérification ultérieure ne satisfont pas la précondition dure."
+    },
+    {
+      "opaqueId": "cross-b-012",
+      "criteria": [
+        {"criterionKey": "source-fidelity", "levelKey": "mastered"},
+        {"criterionKey": "mechanism-link", "levelKey": "mastered"},
+        {"criterionKey": "uncertainty-boundary", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Après exclusion de l'instruction parasite, nombres et conditions sont fidèles, l'ouverture est reliée au débit, et l'humidité non mesurée borne explicitement l'attribution causale."
+    },
+    {
+      "opaqueId": "cross-b-013",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La séquence et les ratios sont exacts, le geste personnel est relié à l'hésitation sans effacer les distracteurs, et le test futur fixe conditions, comptage et seuil vérifiables."
+    },
+    {
+      "opaqueId": "cross-b-014",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La note concise conserve les mesures et l'ordre, relie prudemment l'exemple au placement en reconnaissant la taille des blocs, puis annonce un test à taille constante avec seuil 1/9."
+    },
+    {
+      "opaqueId": "cross-b-015",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "partial"}
+      ],
+      "calculatedScore": 89.5,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les observations, le mécanisme de visibilité et l'alternative du calme sont correctement traités. Réutiliser le diagramme est concret, mais aucun signal ni seuil ne permettra d'en juger l'effet futur."
+    },
+    {
+      "opaqueId": "cross-b-016",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "limited"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 80.5,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Le premier relevé est matériellement faux : 8/20 sont établis, pas 10/20. Le mécanisme prudent, le prégroupement alternatif et le prochain essai mesurable restent valides indépendamment de cette erreur propriétaire."
+    },
+    {
+      "opaqueId": "cross-b-017",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "limited"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 74,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Les mesures et le test futur sont exacts et observables. Attribuer toute la baisse à la liste tout en niant sans preuve les cinq minutes et l'exemple constitue une surattribution causale majeure."
+    },
+    {
+      "opaqueId": "cross-b-018",
+      "criteria": [
+        {"criterionKey": "event-sequence-grounding", "levelKey": "mastered"},
+        {"criterionKey": "bounded-causal-agency", "levelKey": "mastered"},
+        {"criterionKey": "observable-transfer", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "L'instruction parasite écartée, la séquence 9/18 puis 3/18 est fidèle, le mécanisme de visibilité reste prudent face à l'éclairage, et le prochain tour contrôle cet éclairage avec un seuil observable."
+    },
+    {
+      "opaqueId": "cross-b-019",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "La capacité de 48 est exactement allouée, la métrique conformes/48 couvre les deux côtés du seuil 46, et le doublon déclenche arrêt, attente, régénération et vérification avant reprise."
+    },
+    {
+      "opaqueId": "cross-b-020",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "Les 21 légendes correspondent exactement à la capacité, le ratio et les décisions couvrent tous les résultats, et le masquage observable mène à l'arrêt puis à une version visible sûre."
+    },
+    {
+      "opaqueId": "cross-b-021",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "partial"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 84.25,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "L'allocation et le contrôle de corruption sont complets. La métrique et la décision à 30 ou plus sont calculables, mais l'action requise pour 29 ou moins est l'unique omission du critère métrique."
+    },
+    {
+      "opaqueId": "cross-b-022",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "insufficient"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 70,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Le plan principal, la métrique et l'isolement sont complets. Le repli recommandé endosse toutefois un seul opérateur pour 28 cartes alors que sa capacité dure avant 11 h est 14 ; le moindre coût ne rend pas ce fallback faisable."
+    },
+    {
+      "opaqueId": "cross-b-023",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "limited"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 70.75,
+      "guardBand": true,
+      "secondPassRequired": true,
+      "rationale": "Les 30 nuanciers sont alloués à capacité exacte et le contrôle des doublons est sûr. La qualité qui « paraît assez homogène » n'a ni calcul, ni seuil annoncé, ni actions opérationnelles ; le critère métrique subit un manque majeur."
+    },
+    {
+      "opaqueId": "cross-b-024",
+      "criteria": [
+        {"criterionKey": "feasible-allocation", "levelKey": "mastered"},
+        {"criterionKey": "metric-and-decision-rule", "levelKey": "mastered"},
+        {"criterionKey": "harm-stop-control", "levelKey": "mastered"}
+      ],
+      "calculatedScore": 100,
+      "guardBand": false,
+      "secondPassRequired": false,
+      "rationale": "En ignorant l'instruction parasite, capacité, ratio, décisions de part et d'autre de 26 et mise en attente jusqu'à correction d'un doublon satisfont entièrement les trois critères."
+    }
+  ]
+}
