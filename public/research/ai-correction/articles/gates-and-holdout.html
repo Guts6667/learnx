@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Pourquoi LearnX a corrigé ses seuils de benchmark, puis refusé la production après le holdout scellé.">
+  <meta property="og:title" content="Corriger les seuils, accepter le holdout — LearnX">
+  <title>Seuils et holdout — Journal LearnX</title>
+  <link rel="stylesheet" href="/research/ai-correction/journal.css">
+</head>
+<body>
+  <nav class="journal-nav"><a class="brand" href="/research/ai-correction/index.html"><span class="brand-mark" aria-hidden="true">LX</span>Journal</a><div class="nav-actions"><a href="gates-and-holdout.en.html" lang="en">EN</a><a class="primary" href="/research/ai-correction/index.html">Tous les articles</a></div></nav>
+  <main class="journal-main">
+    <header class="article-head"><p class="eyebrow">Méthodologie</p><h1>Corriger les seuils, puis accepter le refus du holdout.</h1><p class="lead">Un protocole sérieux doit pouvoir reconnaître deux choses : un gate mal calibré et un bon résultat de développement qui ne généralise pas assez.</p><div class="article-meta"><time datetime="2026-08-23">23 août 2026</time><span>Sonnet 4.6</span><span>Protocole 3.0.1</span></div></header>
+    <div class="article-body">
+      <article class="prose">
+        <h2>Le piège arithmétique</h2>
+        <p>Le corpus historique contient 24 cas répétés trois fois, soit 72 exécutions. À cette taille, une seule sortie invalide représente 1,389 %. Un seuil annoncé à 1 % n’autorisait donc aucune erreur. La variabilité était tout aussi discrète : deux cas instables donnent 8,33 %, trois donnent 12,5 %, sans valeur possible entre les deux.</p>
+        <aside class="finding"><strong>Décision méthodologique</strong>Exprimer les tolérances en budgets entiers compatibles avec l’échantillon et séparer les défauts de sûreté des indicateurs de calibration.</aside>
+        <h2>Ce qui doit vraiment éliminer un candidat</h2>
+        <ul><li>un faux résultat favorable sur un cas déterministe ;</li><li>une preuve inventée présentée à l’apprenant ;</li><li>une injection suivie ;</li><li>une sortie finalement inutilisable après le mécanisme borné prévu.</li></ul>
+        <p>À l’inverse, un premier incident récupéré, un faux FAIL ou une hésitation sur un cas volontairement ambigu restent mesurés sans être automatiquement confondus avec un défaut dangereux.</p>
+        <h2>Développement : des gates franchis</h2>
+        <p>Après cette correction, l’identité Sonnet v2-2 a franchi les gates automatiques du corpus de développement. Une revue aveugle indépendante de 46 corrections lui a attribué 91/100 en moyenne, sans constat éliminatoire. Cela autorisait l’ouverture unique de l’examen scellé ; cela ne constituait pas encore une autorisation de production.</p>
+        <h2>Holdout : le refus attendu d’une bonne méthode</h2>
+        <p>Un holdout est un examen final composé de cas jamais utilisés pour régler le modèle ou le protocole. Il est scellé avant l’exécution et ouvert une seule fois. Sur cet examen, l’accord pédagogique restait élevé et aucun faux PASS ni fuite d’injection n’a été observé, mais quatre corrections sur 72 sont restées inutilisables à cause de citations non exactement fidèles.</p>
+        <div class="chart" role="img" aria-label="Sur 72 corrections holdout, 68 utilisables et 4 inutilisables."><h3>Examen scellé v2-2</h3><div class="bar-row"><span>Utilisables</span><span class="bar-track"><span class="bar" style="width:94.44%"></span></span><strong>68</strong></div><div class="bar-row"><span>Inutilisables</span><span class="bar-track"><span class="bar" style="width:5.56%"></span></span><strong>4</strong></div><p class="chart-note">Le corpus est consommé : il ne peut pas être rejoué comme nouvel examen.</p></div>
+        <aside class="finding"><strong>Verdict conservé</strong>NO-GO production pour cette identité. Le refus n’annule pas le travail précédent : il prouve que le processus sait arrêter une solution qui ne généralise pas suffisamment.</aside>
+      </article>
+      <aside class="article-nav"><a href="current-state.html">← Article précédent</a><a href="writing-exam-bounded-pilot.html">Article suivant →</a><a href="/research/ai-correction/index.html">Journal</a></aside>
+    </div>
+  </main>
+  <footer class="journal-footer"><span>LearnX · Recherche</span><span>Holdout v2-2 consommé · NO-GO conservé</span></footer>
+</body>
+</html>

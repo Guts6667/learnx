@@ -73,7 +73,7 @@ describe('LandingPage', () => {
       screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
     ).toBeInTheDocument();
     const researchLink = screen.getByRole('link', {
-      name: 'Lire le rapport de recherche',
+      name: 'Explorer le journal de recherche',
     });
     expect(researchLink).toHaveAttribute(
       'href',
@@ -106,7 +106,7 @@ describe('LandingPage', () => {
       screen.queryByText(/Piloter|Cadrer|Formuler|objectif unique/),
     ).not.toBeInTheDocument();
     const researchLink = screen.getByRole('link', {
-      name: 'Read the research report',
+      name: 'Explore the research journal',
     });
     expect(researchLink).toHaveAttribute(
       'href',

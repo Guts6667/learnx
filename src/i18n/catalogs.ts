@@ -60,10 +60,10 @@ export const frenchMessages = {
     'Les corrections assistées par IA sont prévues pour V4 et la création guidée de parcours pour V5. Elles ne sont pas encore disponibles.',
   'landing.research.eyebrow': 'Recherche & transparence',
   'landing.research.title':
-    'Comment LearnX évalue ses corrections assistées par IA',
+    'Suivre nos recherches, décision après décision',
   'landing.research.description':
-    'Nous documentons nos essais, leurs limites et les critères nécessaires avant toute mise en production. Ce rapport intermédiaire repose sur des cas synthétiques ; aucun pipeline n’est encore retenu.',
-  'landing.research.action': 'Lire le rapport de recherche',
+    'Notre journal conserve chaque benchmark, refus et arbitrage dans un article daté. Les anciennes recherches restent consultables et le verdict scientifique est toujours distingué de la décision produit.',
+  'landing.research.action': 'Explorer le journal de recherche',
   'landing.early.eyebrow': 'Accès anticipé',
   'landing.early.title': 'Participer aux premiers retours terrain',
   'landing.early.description':
@@ -1094,10 +1094,10 @@ export const englishMessages = {
     'AI-assisted corrections are planned for V4 and guided journey creation for V5. They are not available yet.',
   'landing.research.eyebrow': 'Research & transparency',
   'landing.research.title':
-    'How LearnX evaluates its AI-assisted assessments',
+    'Follow our research, decision by decision',
   'landing.research.description':
-    'We document our trials, their limitations and the criteria required before production. This interim report is based on synthetic cases; no pipeline has been selected yet.',
-  'landing.research.action': 'Read the research report',
+    'Our journal preserves each benchmark, refusal and trade-off in a dated article. Earlier research remains available, and scientific verdicts stay separate from product decisions.',
+  'landing.research.action': 'Explore the research journal',
   'landing.early.eyebrow': 'Early access',
   'landing.early.title': 'Help shape the first real-world uses',
   'landing.early.description':

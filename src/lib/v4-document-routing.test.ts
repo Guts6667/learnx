@@ -53,7 +53,38 @@ describe('V4 document routing', () => {
 
     expect(french).toContain('pilote');
     expect(french.toLowerCase()).toContain('writing');
+    expect(french.match(/class="article-card"/g)).toHaveLength(7);
+    expect(french).toContain('gates-and-holdout.html');
+    expect(french).toContain('writing-exam-bounded-pilot.html');
     expect(english).toContain('pilot');
     expect(english.toLowerCase()).toContain('writing');
+    expect(english.match(/class="article-card"/g)).toHaveLength(7);
+    expect(english).toContain('gates-and-holdout.en.html');
+    expect(english).toContain('writing-exam-bounded-pilot.en.html');
+  });
+
+  it('keeps every public research article reachable as a standalone page', () => {
+    const articlePaths = [
+      'benchmark-initial',
+      'composite-pipeline',
+      'executable-rubric',
+      'current-state',
+      'gates-and-holdout',
+      'writing-exam-bounded-pilot',
+      'complete-report',
+    ];
+
+    for (const article of articlePaths) {
+      expect(
+        existsSync(
+          resolve(`public/research/ai-correction/articles/${article}.html`),
+        ),
+      ).toBe(true);
+      expect(
+        existsSync(
+          resolve(`public/research/ai-correction/articles/${article}.en.html`),
+        ),
+      ).toBe(true);
+    }
   });
 });

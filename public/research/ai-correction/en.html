@@ -2,141 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>LearnX — AI-assisted assessment research</title>
-  <meta name="description" content="Dated LearnX research journal on formative AI-assisted assessment, rejected experiments and the bounded V4 pilot.">
-  <style>
-    @font-face { font-family:"DM Sans"; src:url("/fonts/dm-sans/dm-sans-latin-400-normal.woff2") format("woff2"); font-weight:400; font-display:swap; }
-    @font-face { font-family:"DM Sans"; src:url("/fonts/dm-sans/dm-sans-latin-500-normal.woff2") format("woff2"); font-weight:500; font-display:swap; }
-    :root { --ink:#f4f6fb; --navy:#ffffff; --surface:#e7edff; --blue:#3b5bd6; --blue-light:#3b5bd6; --brass:#cc6b57; --paper:#17233b; --muted:#647087; --max:1160px; }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; background:var(--ink); color:var(--paper); font:400 16px/1.7 "DM Sans",system-ui,sans-serif; }
-    a { color:var(--blue-light); }
-    .wrap { width:min(calc(100% - 40px),var(--max)); margin:auto; }
-    .hero { position:relative; padding:72px 0 64px; border-bottom:1px solid color-mix(in srgb,var(--blue-light),transparent 72%); background:linear-gradient(90deg,transparent 0 68%,color-mix(in srgb,var(--blue),transparent 92%) 68% 69%,transparent 69%),var(--ink); }
-    .hero:after { content:"48.8566° N  ·  2.3522° E"; position:absolute; right:max(20px,calc((100vw - var(--max))/2)); bottom:18px; color:var(--muted); font-size:11px; letter-spacing:.12em; }
-    .eyebrow,.number { color:var(--blue-light); font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
-    h1,h2,h3 { margin-top:0; line-height:1.15; }
-    h1 { max-width:850px; margin-bottom:20px; font-size:clamp(38px,6vw,72px); letter-spacing:-.045em; }
-    h2 { font-size:clamp(28px,4vw,44px); letter-spacing:-.035em; }
-    h3 { font-size:20px; }
-    .lead { max-width:760px; margin:0; color:var(--muted); font:400 clamp(19px,2.4vw,25px)/1.55 "DM Sans",system-ui,sans-serif; }
-    .status { display:flex; flex-wrap:wrap; gap:10px 20px; margin-top:32px; color:var(--muted); font-size:13px; }
-    .status strong { color:var(--paper); }
-    .language { margin-left:auto; color:var(--paper); font-weight:700; text-decoration:none; }
-    nav { position:sticky; top:0; z-index:4; border-bottom:1px solid color-mix(in srgb,var(--blue-light),transparent 78%); background:color-mix(in srgb,var(--ink),transparent 5%); backdrop-filter:blur(12px); }
-    nav .wrap { display:flex; gap:24px; overflow-x:auto; padding:13px 0; }
-    nav a { flex:none; color:var(--muted); font-size:13px; text-decoration:none; }
-    section { padding:76px 0; border-bottom:1px solid color-mix(in srgb,var(--paper),transparent 88%); }
-    .head { display:grid; grid-template-columns:220px minmax(0,1fr); gap:48px; margin-bottom:42px; }
-    .number { color:var(--brass); font-size:12px; }
-    .head p { max-width:740px; margin:14px 0 0; color:var(--muted); }
-    blockquote { max-width:850px; margin:0; font:500 clamp(24px,3.4vw,40px)/1.35 "DM Sans",system-ui,sans-serif; }
-    .metrics { display:grid; grid-template-columns:repeat(4,1fr); border-block:1px solid color-mix(in srgb,var(--paper),transparent 75%); }
-    .metric { padding:26px 20px; border-right:1px solid color-mix(in srgb,var(--paper),transparent 82%); }
-    .metric:last-child { border:0; }
-    .metric b { display:block; color:var(--blue-light); font-size:clamp(28px,4vw,44px); letter-spacing:-.04em; }
-    .metric span, figcaption span { color:var(--muted); font-size:13px; }
-    .charts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:56px; margin-top:52px; }
-    figure { margin:0; }
-    figcaption { margin-bottom:20px; }
-    figcaption strong { display:block; font-size:18px; }
-    .bars { display:grid; gap:18px; }
-    .bar { display:grid; grid-template-columns:135px 1fr 68px; gap:12px; align-items:center; font-size:13px; }
-    .track { height:10px; background:var(--surface); }
-    .fill { height:100%; background:var(--blue); }
-    .fill.alt { background:var(--blue-light); }
-    .fill.warn { background:var(--brass); }
-    output { text-align:right; }
-    .table-scroll { overflow-x:auto; }
-    table { width:100%; border-collapse:collapse; }
-    th,td { padding:14px 12px; border-bottom:1px solid color-mix(in srgb,var(--paper),transparent 84%); text-align:left; vertical-align:top; }
-    th { color:var(--blue-light); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
-    td { color:var(--paper); }
-    td:first-child { color:var(--paper); font-weight:600; }
-    .flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); }
-    .flow article { position:relative; padding:22px; border-top:1px solid var(--blue); }
-    .flow article:after { content:""; position:absolute; top:-3px; right:-3px; width:6px; height:6px; border-radius:50%; background:var(--blue-light); }
-    .flow small { color:var(--brass); letter-spacing:.12em; text-transform:uppercase; }
-    .flow p { margin:0; color:var(--muted); font-size:13px; }
-    .gates { display:grid; grid-template-columns:repeat(2,1fr); gap:44px; }
-    .gates ul { margin:0; padding:0; list-style:none; }
-    .gates li { position:relative; padding:12px 0 12px 24px; border-bottom:1px solid color-mix(in srgb,var(--paper),transparent 87%); }
-    .gates li:before { content:""; position:absolute; left:0; top:22px; width:8px; height:8px; background:var(--blue); }
-    .gates .watch li:before { background:var(--brass); }
-    .note { margin-top:38px; padding:22px 24px; border-left:3px solid var(--brass); background:color-mix(in srgb,var(--navy),transparent 18%); color:var(--paper); }
-    details { border-top:1px solid color-mix(in srgb,var(--paper),transparent 82%); }
-    summary { min-height:52px; padding:15px 0; cursor:pointer; font-weight:600; }
-    details p { max-width:820px; margin:0 0 20px; color:var(--muted); }
-    footer { padding:48px 0 72px; color:var(--muted); font-size:13px; }
-    .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
-    :focus-visible { outline:3px solid var(--blue-light); outline-offset:4px; }
-    @media(max-width:800px){ .head{grid-template-columns:1fr;gap:20px}.charts,.gates{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.flow article{border-top:0;border-left:1px solid var(--blue)}.metrics{grid-template-columns:repeat(2,1fr)}table{min-width:700px} }
-    @media(max-width:480px){ .wrap{width:min(calc(100% - 28px),var(--max))}section{padding:56px 0}.metrics{grid-template-columns:1fr}.metric{border-right:0;border-bottom:1px solid color-mix(in srgb,var(--paper),transparent 82%)}.bar{grid-template-columns:105px 1fr 58px;gap:8px} }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A documented timeline of LearnX benchmarks, refusals and decisions on AI-assisted formative feedback.">
+  <meta property="og:title" content="LearnX research journal">
+  <meta property="og:description" content="Trials, limitations and decisions on AI-assisted formative feedback.">
+  <title>Research journal — LearnX formative feedback</title>
+  <link rel="stylesheet" href="/research/ai-correction/journal.css">
 </head>
 <body>
-  <header class="hero"><div class="wrap">
-    <p class="eyebrow">LearnX · V4 research dossier</p>
-    <h1>Building useful assessment without manufacturing certainty.</h1>
-    <p class="lead">A dated journal of model trials, rejected promotions, and the decision to ship a bounded formative pilot without hiding its limitations.</p>
-    <div class="status"><span><strong>Status</strong> Writing exam NO-GO; bounded V4 pilot authorised</span><span><strong>Data</strong> 24 synthetic French cases × 3 repetitions</span><span><strong>Updated</strong> 24 August 2026</span><a class="language" href="./" lang="fr" hreflang="fr">Version française</a></div>
-  </div></header>
-  <nav aria-label="Report contents"><div class="wrap"><a href="#pilot">24 August decision</a><a href="#decision">Decision</a><a href="#method">Method</a><a href="#results">Results</a><a href="#candidates">Candidates</a><a href="#pipeline">Pipeline</a><a href="#gates">Criteria</a><a href="#update">Update</a><a href="#next">Next steps</a></div></nav>
-  <main>
-    <section id="pilot"><div class="wrap"><div class="head"><span class="number">09 · Product decision — 24 August 2026</span><div><h2>Ship a useful pilot without turning a scientific NO-GO into a success.</h2><p>The final Writing exam remains rejected: seven false passes, 80.19% criterion agreement and one two-level gap. Rayan nevertheless authorised a limited V4 to learn from real usage while strictly bounding what the product claims.</p></div></div><div class="metrics"><div class="metric"><b>72/72</b><span>technically valid primary passes</span></div><div class="metric"><b>7</b><span>false passes — scientific NO-GO</span></div><div class="metric"><b>100%</b><span>observed injection safety</span></div><div class="metric"><b>$1.55</b><span>reconciled exam cost</span></div></div><blockquote style="margin-top:42px">Writing, French, complimentary credits, criterion-level feedback and no effect on progression.</blockquote><p class="note"><strong>Two defects remain monitored.</strong> The model can describe a hard-constraint violation without lowering the associated level; and a guard anchored to its own score cannot detect all leniency. Their correction and a new exam are deferred to V4.1.</p><p class="note"><strong>Chronological reading.</strong> The following sections preserve hypotheses and decisions as they stood on their stated dates. Composite-pipeline or production-refused statements describe those historical stages; the 24 August decision above is current.</p></div></section>
-    <section id="decision"><div class="wrap"><div class="head"><span class="number">01 · Historical decision</span><div><h2>Move from a binary verdict to formative assessment.</h2><p>Models can differ by one adjacent level while still producing useful feedback. LearnX must remain strict about security and evidence, without turning a grading nuance into a definitive academic verdict.</p></div></div><blockquote>An indicative score, explained criterion by criterion, is more honest than an artificially certain “pass”.</blockquote></div></section>
-
-    <section id="method"><div class="wrap"><div class="head"><span class="number">02 · Understanding the method</span><div><h2>Smoke, mini-panel, full and 24×3: what do they mean?</h2><p>Each stage answers a different question. Passing an initial test only proves that the model can communicate with the system; it is never enough to select it.</p></div></div><div class="table-scroll"><table><caption class="sr">Definitions of benchmark stages</caption><thead><tr><th>Term</th><th>Plain-language definition</th><th>What it demonstrates</th></tr></thead><tbody>
-      <tr><td>Smoke test</td><td>A very short test using one representative case. It checks that the provider route, model and response format work together.</td><td>The model may proceed to the next test. Its pedagogical quality is not yet demonstrated.</td></tr>
-      <tr><td>Smoke sequence</td><td>Three sequential cases: a clearly successful answer, an ambiguous answer and a prompt-injection attempt. Testing stops at the first material failure.</td><td>The model appears technically compatible and safe enough for a small panel.</td></tr>
-      <tr><td>Mini-panel</td><td>A small predefined set, usually six varied answers, submitted to a blind review whose authority and digest are declared in advance. In the current protocol, that review is autonomous and is never represented as human.</td><td>It quickly exposes grading, tone or rubric errors before an expensive campaign.</td></tr>
-      <tr><td>Full panel</td><td>The complete campaign across the development corpus. Here, it covers all 24 calibrated answers.</td><td>It measures all planned task families, but not yet generalisation to unseen cases.</td></tr>
-      <tr><td>24×3</td><td>The same 24 answers are assessed three times, producing 72 logical runs. Repetition does not inflate the sample; it measures stability.</td><td>It reveals both average errors and changes in judgement on an identical answer.</td></tr>
-      <tr><td>Sealed holdout</td><td>A separate corpus never used to tune the prompt or select thresholds. It remains closed until the configuration is frozen.</td><td>It tests whether the solution generalises without having learned the development answers.</td></tr>
-    </tbody></table></div><p class="note"><strong>Example.</strong> Two successful smokes do not equal a full panel. A successful full panel is still not production approval: an autonomous digest-bound blind review, a fresh sealed exam and a limited pilot must follow. <code>humanReviewApproved</code> remains false.</p></div></section>
-
-    <section id="results"><div class="wrap"><div class="head"><span class="number">03 · Observed results</span><div><h2>Two complementary profiles, no standalone winner.</h2><p>Mistral is reliable and inexpensive but over-rated three answers. Sonnet is more conservative, with no observed false positive, but rejects more acceptable answers and experienced more format incidents.</p></div></div>
-      <div class="metrics"><div class="metric"><b>72</b><span>logical runs per full campaign</span></div><div class="metric"><b>0</b><span>observed injection leaks in retained campaigns</span></div><div class="metric"><b>3</b><span>observed Mistral-only false positives</span></div><div class="metric"><b>0</b><span>observed Sonnet-only false positives</span></div></div>
-      <div class="charts">
-        <figure><figcaption><strong>Observed quality and stability</strong><span>Percentage — historical full campaigns</span></figcaption><div class="bars"><div class="bar"><span>Mistral · criteria</span><div class="track"><div class="fill" style="width:87.5%"></div></div><output>87.5%</output></div><div class="bar"><span>Sonnet · criteria</span><div class="track"><div class="fill alt" style="width:87.793%"></div></div><output>87.8%</output></div><div class="bar"><span>Mistral · decision</span><div class="track"><div class="fill" style="width:88.89%"></div></div><output>88.9%</output></div><div class="bar"><span>Sonnet · decision</span><div class="track"><div class="fill alt" style="width:91.549%"></div></div><output>91.5%</output></div><div class="bar"><span>M. variability</span><div class="track"><div class="fill warn" style="width:12.5%"></div></div><output>12.5%</output></div><div class="bar"><span>S. variability</span><div class="track"><div class="fill warn" style="width:12.5%"></div></div><output>12.5%</output></div></div></figure>
-        <figure><figcaption><strong>Average loaded cost + FX buffer</strong><span>USD equivalent per assessment — historically recombined data</span></figcaption><div class="bars"><div class="bar"><span>Mistral only</span><div class="track"><div class="fill" style="width:32.2%"></div></div><output>0.0077</output></div><div class="bar"><span>Targeted cascade</span><div class="track"><div class="fill warn" style="width:67.4%"></div></div><output>0.0161</output></div><div class="bar"><span>Sonnet only</span><div class="track"><div class="fill alt" style="width:100%"></div></div><output>0.0239</output></div></div></figure>
-      </div>
-      <p class="note"><strong>Comparison limit.</strong> The cascade is a retrospective simulation combining campaigns that did not use exactly the same prompt and protocol. It informs architecture; it is not a promotion result or a final pricing basis.</p>
-    </div></section>
-
-    <section id="candidates"><div class="wrap"><div class="head"><span class="number">04 · Models explored</span><div><h2>The search extended beyond the selected pair.</h2><p>Not every model reached the same evaluation depth. Full campaigns, panels, technical smokes and catalogue-only screening must not be treated as equivalent evidence.</p></div></div><div class="table-scroll"><table><caption class="sr">Models explored during LearnX research</caption><thead><tr><th>Model</th><th>Evidence level</th><th>Observed result</th><th>Lesson</th></tr></thead><tbody>
-      <tr><td>Mistral Medium 3.5</td><td>Several panels and 24×3 full runs</td><td>72/72 usable; 3 false positives and 5 false negatives in campaign 1.6</td><td>Reliable and economical; candidate primary, not sufficient alone for sensitive results.</td></tr>
-      <tr><td>Claude Sonnet 4.6</td><td>Panels and protocol 3.0.1 full</td><td>0 false positives, 6 false negatives, 1 finally unusable run</td><td>Conservative and strong on evidence; candidate verifier, not an absolute authority.</td></tr>
-      <tr><td>Gemini 3.6 Flash</td><td>Historical full then sequential retest</td><td>90.4% criterion agreement, but 50% injection safety and 8.33% invalid outputs; later ambiguous case truncated</td><td>Promising general quality, insufficient safeguards under the tested protocol.</td></tr>
-      <tr><td>GPT-5.6 Terra</td><td>Technical smokes</td><td>Pinned structured OpenRouter route unavailable</td><td>No pedagogical verdict; a direct-API campaign would be a separate experiment.</td></tr>
-      <tr><td>GPT-5.6 Sol</td><td>Sequential smokes</td><td>Successful case valid; ambiguous case timed out or truncated</td><td>Capable, but the current profile is too slow or verbose for the bounded contract.</td></tr>
-      <tr><td>Claude Opus 4.8</td><td>Non-comparable historical full + 2 current smokes</td><td>Two recent smokes valid; older data used a previous corpus and cost more</td><td>Possible qualitative reference, insufficient current evidence for promotion.</td></tr>
-      <tr><td>Kimi K2.5</td><td>First smoke</td><td>Timeout before usable output</td><td>Stopped early under the sequential budget gate.</td></tr>
-      <tr><td>Command A</td><td>First smoke</td><td>Provider 400 before usable output</td><td>Technical compatibility not demonstrated.</td></tr>
-      <tr><td>Qwen 3.7 Max</td><td>Exploratory smokes</td><td>Invalid capped output, followed by timeout</td><td>Stopped before a panel due to cost/latency without enough pedagogical evidence.</td></tr>
-      <tr><td>DeepSeek V4 Flash</td><td>Catalogue only</td><td>Structured routes identified; no paid benchmark run</td><td>Reserve option only; no performance claim.</td></tr>
-    </tbody></table></div><p class="note"><strong>Correct interpretation.</strong> A transport or format failure does not prove that a model is pedagogically poor. It only shows that it did not reliably execute the tested LearnX contract. Conversely, two successful smokes do not demonstrate production quality.</p></div></section>
-
-    <section id="pipeline"><div class="wrap"><div class="head"><span class="number">05 · Pipeline under consideration</span><div><h2>Verify where uncertainty matters.</h2><p>The second model is neither a vote nor a marketing claim. It is invoked only for sensitive first-pass results, while LearnX retains authority over calculation and presentation.</p></div></div><div class="flow"><article><small>Step 1</small><h3>Submission</h3><p>The full answer and versioned rubric are frozen.</p></article><article><small>Step 2</small><h3>Assessment</h3><p>Mistral proposes levels, evidence and feedback.</p></article><article><small>Step 3</small><h3>Calculation</h3><p>LearnX computes the indicative score and identifies sensitive cases.</p></article><article><small>Step 4</small><h3>Verification</h3><p>Sonnet is invoked by a deterministic rule, not systematically.</p></article><article><small>Step 5</small><h3>Delivery</h3><p>Score, formative band or uncertain state, never a progression lock.</p></article></div><p class="note">Initial experimental rule: verify primary scores from 60/100, sensitive criteria, security signals, and a random sample outside the trigger. A difference above 15 points or two levels on one criterion must not be silently averaged.</p></div></section>
-
-    <section id="gates"><div class="wrap"><div class="head"><span class="number">06 · Success criteria</span><div><h2>Strict on risk, realistic about recovered incidents.</h2><p>An invalid output is an unusable technical model response, not a mistake made by the learner. The new criteria separate a recovered first incident from a failure actually visible to the user.</p></div></div><div class="gates"><div><h3>Hard gates</h3><ul><li>No observed injection leakage.</li><li>No fabricated evidence shown to the learner.</li><li>No invalid output displayed or charged.</li><li>Final failure after retry ≤2% in beta.</li><li>Score and formative band computed server-side.</li><li>No effect on progression.</li></ul></div><div class="watch"><h3>Monitored indicators</h3><ul><li>First invalid output: target ≤10%.</li><li>Exact criterion agreement: target ≥85%.</li><li>Score error and repetition stability.</li><li>Two-level gaps and cross-criterion contamination.</li><li>Feedback usefulness, tone and actionability.</li><li>Full-workflow P50/P90 cost and latency.</li></ul></div></div></div></section>
-
-    <section id="update"><div class="wrap"><div class="head"><span class="number">06 bis · Update — 23 August 2026</span><div><h2>The blocker was never the model: it was threshold arithmetic.</h2><p>Four campaigns had failed without a single safety defect ever being observed on the finalists. Re-reading the gates made the explanation obvious: applied to 72 runs, thresholds designed as continuous percentages behaved as zero tolerance.</p></div></div><blockquote>Read as a budget, a 1% invalid-output cap on 72 runs allows exactly zero failures: 1 ÷ 72 = 1.39%.</blockquote>
-      <p class="note"><strong>The correction.</strong> Gate policy v2 now blocks only on safety — zero false passes, zero two-level gaps, zero presented fabricated evidence, final failure after retry ≤2% — while recovered incidents (a first attempt repaired by a bounded retry, one-level flips on deliberately ambiguous cases) become monitored indicators. One measurement was also corrected: evidence hallucination is now counted on outputs actually presentable to the learner, where zero tolerance is kept, instead of double-counting rejected intermediate attempts.</p>
-      <div class="table-scroll"><table><caption class="sr">August 23 campaigns</caption><thead><tr><th>Identity</th><th>Change</th><th>Outcome</th></tr></thead><tbody>
-        <tr><td>v2</td><td>Corrected thresholds, prompt 2.0.0</td><td>Single gate failure: 2/72 runs finally unusable (2.78% &gt; 2%), both from one case where the model announces “no relevant evidence”… and quotes anyway.</td></tr>
-        <tr><td>v2-1</td><td>One transversal prompt remediation</td><td>The stochastic defect resists on that case; a second prompt attempt was refused as case-tuning.</td></tr>
-        <tr><td>v2-2</td><td>Bounded retries 2 (cost absorbed, never charged)</td><td>All automatic gates pass: 89.4% criterion agreement, 0 false positives, 0 unusable final runs, 100% injection safety, $1.30 real cost. Independent blind review of 46 corrections: approved, 91/100, zero eliminatory findings.</td></tr>
-      </tbody></table></div>
-      <p class="note"><strong>Where we stand.</strong> Identity v2-2 — Claude Sonnet 4.6 on the pinned Anthropic route, prompt 2.1.0, protocol 3.0.1 — is the first to clear every automatic gate and the blind review on the development corpus. The final exam on unseen cases (the sealed holdout) was then opened exactly once: pedagogical quality generalises (92.2% agreement on never-seen cases, zero false positives, zero injection leaks), but four corrections out of 72 remained unusable — the model sometimes slips by a single character inside a quotation, and a quotation must be exact. Production is therefore refused for this identity, with no exam replay. The method itself is proven: it can promote at development stage and refuse at production stage, on evidence.</p>
-    </div></section>
-
-    <section id="next"><div class="wrap"><div class="head"><span class="number">07 · Evidence still required</span><div><h2>What remains before the bounded pilot can ship.</h2><p>The objective is no longer to find a perfect model. It is to connect the approved limited workflow honestly and make every operational dependency explicit.</p></div></div><details open><summary>1. Publish an executable Writing contract</summary><p>The pilot remains hidden until a writing/fr-FR exercise carries an immutable, published contract compatible with the runtime.</p></details><details><summary>2. Activate a calibrated complimentary-credit catalogue</summary><p>The server quote must match the selected model, provider, prompt and second-pass coverage exactly. V4 opens neither public pricing nor purchased AI correction.</p></details><details><summary>3. Verify the preview connection</summary><p>Test authentication, quote, complimentary reservation, criterion delivery, guard pass, settlement, idempotent replay and kill switch without widening scope.</p></details><details><summary>4. Complete Totem QA</summary><p>Validate mobile, desktop, 200% zoom, keyboard, contrast, long copy and error states at the declared widths.</p></details><details><summary>5. Observe, then iterate</summary><p>Monitor costs, partial results, unavailable outcomes and both known defects. A fresh exam is required before paid access or any scope extension.</p></details></div></section>
+  <nav class="journal-nav" aria-label="Public navigation">
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">LX</span>LearnX</a>
+    <div class="nav-actions"><a href="/research/ai-correction/index.html" lang="fr">FR</a><a class="primary" href="/">Explore LearnX</a></div>
+  </nav>
+  <main class="journal-main">
+    <header class="journal-hero">
+      <div><p class="eyebrow">Research & transparency</p><h1>A journal of our decisions.</h1><p class="lead">Each article freezes one stage, its results and limitations. Previous research remains available: a new decision adds an article instead of rewriting history.</p></div>
+      <p class="hero-note">Last updated 24 August 2026. Campaigns use synthetic cases; no real learner data or human validation is claimed.</p>
+    </header>
+    <section class="status-strip" aria-label="Current status">
+      <div><strong>NO-GO</strong><span>scientific Writing verdict preserved</span></div>
+      <div><strong>1</strong><span>published writing/fr-FR contract</span></div>
+      <div><strong>Bounded pilot</strong><span>authorised with complimentary credits</span></div>
+    </section>
+    <section class="timeline" aria-label="Chronological articles">
+      <a class="article-card" href="/research/ai-correction/articles/benchmark-initial.en.html"><time datetime="2026-08-12">12 August 2026</time><h2>Comparing models without confusing compliance and pedagogy</h2><p>The 24 × 3 benchmark exposes Mistral, Sonnet and Gemini strengths, along with false verdicts and the limits of asking a model to choose a level directly.</p><span class="read">Read article →</span></a>
+      <a class="article-card" href="/research/ai-correction/articles/composite-pipeline.en.html"><time datetime="2026-08-15">15 August 2026</time><h2>Why two models do not manufacture truth</h2><p>The Mistral + Sonnet cascade reduces some technical risks but still creates false FAILs and abstentions. Disagreement becomes a signal, not an arbiter.</p><span class="read">Read article →</span></a>
+      <a class="article-card" href="/research/ai-correction/articles/executable-rubric.en.html"><time datetime="2026-08-20">20 August 2026</time><h2>From LLM judge to executable rubric engine</h2><p>Models find or challenge exact evidence; LearnX then applies versioned rules and can abstain honestly.</p><span class="read">Read article →</span></a>
+      <a class="article-card" href="/research/ai-correction/articles/current-state.en.html"><time datetime="2026-08-22">22 August 2026</time><h2>What worked and what still blocked us</h2><p>The Gemini probe isolated a transport and reconciliation incident. The method progressed, but no pedagogical verdict was possible yet.</p><span class="read">Read article →</span></a>
+      <a class="article-card" href="/research/ai-correction/articles/gates-and-holdout.en.html"><time datetime="2026-08-23">23 August 2026</time><h2>Fixing the gates, then accepting the holdout refusal</h2><p>Sample arithmetic had turned 1% into zero tolerance. Once corrected, Sonnet cleared development and blind review, then honestly failed the sealed exam.</p><span class="read">Read article →</span></a>
+      <a class="article-card" href="/research/ai-correction/articles/writing-exam-bounded-pilot.en.html"><time datetime="2026-08-24">24 August 2026</time><h2>A scientific NO-GO followed by a bounded product pilot</h2><p>The final Writing exam documents seven false passes despite safe execution. The NO-GO stands; product separately authorises a limited, monitored writing/fr-FR pilot.</p><span class="read">Read article →</span></a>
+      <a class="article-card" href="/research/ai-correction/articles/complete-report.en.html"><time datetime="2026-08-24">Continuous technical dossier</time><h2>Read the full technical report</h2><p>The dossier preserves tables, costs, gates, explored models, protocol changes and limitations at maximum detail.</p><span class="read">Open dossier →</span></a>
+    </section>
   </main>
-  <footer><div class="wrap">LearnX · V4 research journal · Updated 24 August 2026 · Writing exam NO-GO preserved · Bounded formative pilot authorised, complimentary credits only.</div></footer>
+  <footer class="journal-footer"><span>© 2026 LearnX</span><span>Autonomous, formative and documented research</span></footer>
 </body>
 </html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Why LearnX corrected its benchmark gates, then refused production after the sealed holdout.">
+  <meta property="og:title" content="Fixing the gates, accepting the holdout — LearnX">
+  <title>Gates and holdout — LearnX journal</title>
+  <link rel="stylesheet" href="/research/ai-correction/journal.css">
+</head>
+<body>
+  <nav class="journal-nav"><a class="brand" href="/research/ai-correction/en.html"><span class="brand-mark" aria-hidden="true">LX</span>Journal</a><div class="nav-actions"><a href="gates-and-holdout.html" lang="fr">FR</a><a class="primary" href="/research/ai-correction/en.html">All articles</a></div></nav>
+  <main class="journal-main">
+    <header class="article-head"><p class="eyebrow">Methodology</p><h1>Fixing the gates, then accepting the holdout refusal.</h1><p class="lead">A serious protocol must recognise both a miscalibrated gate and a strong development result that does not generalise well enough.</p><div class="article-meta"><time datetime="2026-08-23">23 August 2026</time><span>Sonnet 4.6</span><span>Protocol 3.0.1</span></div></header>
+    <div class="article-body">
+      <article class="prose">
+        <h2>The arithmetic trap</h2><p>The historical corpus contains 24 cases repeated three times: 72 runs. At that size, one invalid output is 1.389%. A stated 1% threshold therefore allowed no error at all. Variability was equally discrete: two unstable cases equal 8.33%, three equal 12.5%, with nothing in between.</p>
+        <aside class="finding"><strong>Method decision</strong>Express tolerances as whole-run budgets compatible with the sample size, and separate safety defects from calibration indicators.</aside>
+        <h2>What should eliminate a candidate</h2><ul><li>a false favourable result on a deterministic case;</li><li>fabricated evidence shown to the learner;</li><li>following an injection;</li><li>an output still unusable after the declared bounded mechanism.</li></ul><p>A recovered first incident, a false FAIL or hesitation on a deliberately ambiguous case remains measured without automatically becoming a dangerous defect.</p>
+        <h2>Development gates cleared</h2><p>After this correction, Sonnet identity v2-2 cleared the automatic development gates. An independent blind review of 46 corrections averaged 91/100 with no eliminatory finding. This authorised opening the sealed exam once; it was not yet a production authorisation.</p>
+        <h2>Holdout: the refusal a good method should allow</h2><p>A holdout is a final exam made of cases never used to tune the model or protocol. It is sealed before execution and opened once. Pedagogical agreement remained high with no false pass or injection leak, but four out of 72 corrections remained unusable because quotations were not exactly faithful.</p>
+        <div class="chart" role="img" aria-label="Out of 72 holdout corrections, 68 were usable and 4 unusable."><h3>Sealed exam v2-2</h3><div class="bar-row"><span>Usable</span><span class="bar-track"><span class="bar" style="width:94.44%"></span></span><strong>68</strong></div><div class="bar-row"><span>Unusable</span><span class="bar-track"><span class="bar" style="width:5.56%"></span></span><strong>4</strong></div><p class="chart-note">The corpus is consumed and cannot be replayed as a new exam.</p></div>
+        <aside class="finding"><strong>Preserved verdict</strong>Production NO-GO for this identity. The refusal does not erase previous work: it proves the process can stop a solution that does not generalise enough.</aside>
+      </article>
+      <aside class="article-nav"><a href="current-state.en.html">← Previous article</a><a href="writing-exam-bounded-pilot.en.html">Next article →</a><a href="/research/ai-correction/en.html">Journal</a></aside>
+    </div>
+  </main>
+  <footer class="journal-footer"><span>LearnX · Research</span><span>Holdout v2-2 consumed · NO-GO preserved</span></footer>
+</body>
+</html>
