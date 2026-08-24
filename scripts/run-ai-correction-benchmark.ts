@@ -33,6 +33,11 @@ import {
   CorrectionModelOutputError,
   getCorrectionProviderAdapter,
 } from '../src/lib/ai-correction-provider-adapters.ts';
+import {
+  conservativeSupplierCallCostUsd,
+  SupplierBudgetGuard,
+  type SupplierBudgetUsage,
+} from '../src/lib/ai-benchmark-supplier-budget.ts';
 
 const benchmarkDirectory = path.resolve('benchmarks/ai-correction');
 const resultDirectory = path.join(benchmarkDirectory, 'results');
@@ -53,7 +58,9 @@ const holdoutReviewManifestSchema = z
   .object({
     artifactSha256AfterReviewMetadata: z.string().regex(/^[a-f0-9]{64}$/),
     corpusId: z.string(),
-    metadataOnlyMutation: z.object({ path: z.literal('humanReview'), value: z.unknown() }).strict(),
+    metadataOnlyMutation: z
+      .object({ path: z.literal('humanReview'), value: z.unknown() })
+      .strict(),
     reviewedAt: z.iso.datetime({ offset: true }),
     reviewedContentSha256: z.string().regex(/^[a-f0-9]{64}$/),
     reviewer: z.string(),
@@ -303,6 +310,37 @@ async function callCandidate(input: {
   });
 }
 
+function conservativeCallCostUsd(input: {
+  benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+  candidate: CorrectionBenchmarkConfiguration['candidates'][number];
+  configuration: CorrectionBenchmarkConfiguration;
+  corpus: CorrectionBenchmarkCorpus;
+}): number {
+  const contract = findBenchmarkContract(
+    input.corpus,
+    input.benchmarkCase.contractKey,
+    input.benchmarkCase.contractVersion,
+  );
+  const messages = buildPrompt({
+    benchmarkCase: input.benchmarkCase,
+    controlPrompt: input.configuration.controlPrompt,
+    contract,
+  });
+  const schema = sanitizeStructuredOutputJsonSchema(
+    buildProtocol3TransportJsonSchema(contract),
+  );
+  return conservativeSupplierCallCostUsd({
+    completionUsdPerToken: input.candidate.completionUsdPerToken,
+    promptCharacters: messages.reduce(
+      (total, message) => total + message.content.length,
+      0,
+    ),
+    promptUsdPerToken: input.candidate.promptUsdPerToken,
+    schemaCharacters: JSON.stringify(schema).length,
+    totalOutputTokenLimit: input.candidate.requestProfile.totalOutputTokenLimit,
+  });
+}
+
 function candidateApiKey(
   candidate: CorrectionBenchmarkConfiguration['candidates'][number],
 ): string {
@@ -351,6 +389,7 @@ async function runBenchmark(input: {
   maxRetries?: number;
   requestDelayMs?: number;
   repetitions?: number;
+  supplierBudget?: SupplierBudgetGuard;
   initialAttempts?: BenchmarkAttempt[];
   pendingCells?: {
     attemptStart: number;
@@ -395,9 +434,18 @@ async function runBenchmark(input: {
         );
         for (
           let attemptNumber = pendingCell?.attemptStart ?? 1;
-          attemptNumber <= (input.maxRetries ?? input.configuration.maxRetries) + 1;
+          attemptNumber <=
+          (input.maxRetries ?? input.configuration.maxRetries) + 1;
           attemptNumber += 1
         ) {
+          input.supplierBudget?.assertCanDispatch(
+            conservativeCallCostUsd({
+              benchmarkCase,
+              candidate,
+              configuration: input.configuration,
+              corpus: input.corpus,
+            }),
+          );
           if (hasStartedRequest && (input.requestDelayMs ?? 0) > 0) {
             await new Promise((resolve) =>
               setTimeout(resolve, input.requestDelayMs),
@@ -457,6 +505,9 @@ async function runBenchmark(input: {
                     }),
                   );
                   await input.onProgress?.(attempts);
+                  input.supplierBudget?.reconcile(
+                    result.usage as SupplierBudgetUsage,
+                  );
                   break;
                 } catch {
                   // salvage impossible (no deliverable criterion): fall through
@@ -476,8 +527,7 @@ async function runBenchmark(input: {
                   attempt: attemptNumber,
                   candidateId: candidate.candidateId,
                   caseId: benchmarkCase.caseId,
-                  errorCode:
-                    stableModelValidationError(error),
+                  errorCode: stableModelValidationError(error),
                   latencyMs: result.latencyMs,
                   modelId: candidate.modelId,
                   modelSnapshot: result.modelSnapshot,
@@ -495,6 +545,9 @@ async function runBenchmark(input: {
                 }),
               );
               await input.onProgress?.(attempts);
+              input.supplierBudget?.reconcile(
+                result.usage as SupplierBudgetUsage,
+              );
               if (
                 attemptNumber >
                 (input.maxRetries ?? input.configuration.maxRetries)
@@ -525,6 +578,9 @@ async function runBenchmark(input: {
               }),
             );
             await input.onProgress?.(attempts);
+            input.supplierBudget?.reconcile(
+              result.usage as SupplierBudgetUsage,
+            );
             break;
           } catch (error) {
             if (
@@ -547,8 +603,7 @@ async function runBenchmark(input: {
                     ? `PROVIDER_HTTP_${error.status}`
                     : error.message,
                 latencyMs:
-                  error.latencyMs ??
-                  Math.round(performance.now() - startedAt),
+                  error.latencyMs ?? Math.round(performance.now() - startedAt),
                 modelId: candidate.modelId,
                 modelSnapshot: error.modelSnapshot,
                 providerRequestId: error.providerRequestId,
@@ -568,6 +623,11 @@ async function runBenchmark(input: {
               }),
             );
             await input.onProgress?.(attempts);
+            input.supplierBudget?.reconcile(
+              isModelOutputFailure
+                ? (error.usage as SupplierBudgetUsage)
+                : undefined,
+            );
             if (
               attemptNumber >
               (input.maxRetries ?? input.configuration.maxRetries)
@@ -625,9 +685,25 @@ async function main(): Promise<void> {
   const requestDelayMs = delayArgument
     ? Number.parseInt(delayArgument.slice('--delay-ms='.length), 10)
     : 0;
-  if (!Number.isInteger(requestDelayMs) || requestDelayMs < 0 || requestDelayMs > 30_000) {
+  if (
+    !Number.isInteger(requestDelayMs) ||
+    requestDelayMs < 0 ||
+    requestDelayMs > 30_000
+  ) {
     throw new Error('BENCHMARK_DELAY_MS_INVALID');
   }
+  const supplierCostCapArgument = process.argv.find((argument) =>
+    argument.startsWith('--supplier-cost-cap-usd='),
+  );
+  const supplierCostCapUsd = supplierCostCapArgument
+    ? Number.parseFloat(
+        supplierCostCapArgument.slice('--supplier-cost-cap-usd='.length),
+      )
+    : undefined;
+  const supplierBudget =
+    supplierCostCapUsd === undefined
+      ? undefined
+      : new SupplierBudgetGuard(supplierCostCapUsd);
   const modelArgument = process.argv.find((argument) =>
     argument.startsWith('--model='),
   );
@@ -642,16 +718,17 @@ async function main(): Promise<void> {
   );
   if (
     resumeArgument &&
-    (requestedCandidateId || requestedModelId || requestedCaseId || reviewPanelMode)
+    (requestedCandidateId ||
+      requestedModelId ||
+      requestedCaseId ||
+      reviewPanelMode)
   ) {
     throw new Error('BENCHMARK_RESUME_FILTERS_FORBIDDEN');
   }
   if (requestedCandidateId && requestedModelId) {
     throw new Error('BENCHMARK_FILTER_AMBIGUOUS');
   }
-  let resumeState:
-    | ReturnType<typeof prepareBenchmarkResume>
-    | undefined;
+  let resumeState: ReturnType<typeof prepareBenchmarkResume> | undefined;
   let resumePath: string | undefined;
   if (resumeArgument) {
     resumePath = path.resolve(resumeArgument.slice('--resume='.length));
@@ -667,14 +744,14 @@ async function main(): Promise<void> {
   const selectedCandidates = resumeState
     ? [resumeState.candidate]
     : requestedCandidateId
-    ? configuration.candidates.filter(
-        (candidate) => candidate.candidateId === requestedCandidateId,
-      )
-    : requestedModelId
       ? configuration.candidates.filter(
-        (candidate) => candidate.modelId === requestedModelId,
-      )
-      : configuration.candidates;
+          (candidate) => candidate.candidateId === requestedCandidateId,
+        )
+      : requestedModelId
+        ? configuration.candidates.filter(
+            (candidate) => candidate.modelId === requestedModelId,
+          )
+        : configuration.candidates;
   if (selectedCandidates.length === 0) {
     throw new Error('BENCHMARK_MODEL_NOT_CONFIGURED');
   }
@@ -707,10 +784,10 @@ async function main(): Promise<void> {
   const runMode = resumeState
     ? 'FULL'
     : requestedCaseId
-    ? 'SMOKE'
-    : reviewPanelMode
-      ? 'REVIEW_PANEL'
-      : 'FULL';
+      ? 'SMOKE'
+      : reviewPanelMode
+        ? 'REVIEW_PANEL'
+        : 'FULL';
   const runMetadata = resumeState?.artifact.runMetadata ?? {
     caseIds: selectedCases.map((benchmarkCase) => benchmarkCase.caseId),
     candidateIds: selectedCandidates.map((candidate) => candidate.candidateId),
@@ -723,6 +800,13 @@ async function main(): Promise<void> {
     repetitions:
       reviewPanelMode || requestedCaseId ? 1 : configuration.repetitions,
   };
+  if (supplierBudget && resumeState) {
+    resumeState.artifact.attempts.forEach((attempt) => {
+      supplierBudget.reconcile(
+        attempt.usage as SupplierBudgetUsage | undefined,
+      );
+    });
+  }
   await mkdir(resultDirectory, { recursive: true });
   const outputStem = resumePath
     ? resumePath.slice(0, -'.attempts.json'.length)
@@ -764,6 +848,7 @@ async function main(): Promise<void> {
     maxRetries: requestedCaseId ? 0 : undefined,
     onProgress: writeAttempts,
     requestDelayMs,
+    supplierBudget,
     repetitions:
       reviewPanelMode || requestedCaseId ? 1 : configuration.repetitions,
     initialAttempts: resumeState?.artifact.attempts,
