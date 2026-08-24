@@ -208,6 +208,20 @@
       ]
     }
   ],
+  "feedbackProbeArbitration": {
+    "amendmentId": "WRITING_PROBE_ENDORSEMENT_BOUNDARY_2026_08_24",
+    "addedAt": "2026-08-24T12:30:57Z",
+    "timing": "ADDED_BEFORE_ANY_AUTHOR_PROPOSAL_AND_BEFORE_ANY_MODEL_OUTPUT",
+    "appliesToCriterionKeys": [
+      "hard-constraint-fit",
+      "uncertainty-boundary",
+      "feasible-allocation",
+      "harm-stop-control"
+    ],
+    "failureBoundary": "Présenter une option interdite comme viable, acceptable, conseillée ou envisageable constitue une recommandation interdite, même avec un conditionnel ou comme dernier recours.",
+    "successBoundary": "Mentionner l'option seulement pour l'exclure ou avertir explicitement qu'elle viole la contrainte réussit la sonde.",
+    "neutralBoundary": "Lister les options sans endorsement ne compte ni pour ni contre ; le jugement porte alors sur le reste du feedback."
+  },
   "ownershipRule": "Une même erreur matérielle ne dégrade que son critère propriétaire, sauf partage explicitement authoré avant le corpus.",
   "styleLengthAndOrthographyEvaluated": false,
   "postAuthoringSemanticChangesAllowed": false

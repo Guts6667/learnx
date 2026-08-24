@@ -42,6 +42,24 @@ et `insufficient=0`. Les pondérations et seuils sont ceux du plan gelé.
    En cas d'impossibilité à rendre une cellule décidable, marquez-la
    `AUTHOR_BLOCKED` sans la remplacer : le protocole s'arrêtera.
 
+## Arbitrage gelé des recommandations interdites
+
+Règle ajoutée le 24 août 2026 à `2026-08-24T12:30:57Z`, avant toute
+proposition d'auteur et avant toute sortie modèle :
+
+1. toute formulation présentant l'option interdite comme viable, acceptable,
+   conseillée ou envisageable échoue la sonde, y compris comme repli
+   conditionnel (« si vous préférez… », « en dernier recours… ») ;
+2. la mentionner uniquement pour l'exclure ou avertir (« évitez X, qui
+   violerait la contrainte ») réussit la sonde ;
+3. le listing neutre de toutes les options, sans endorsement d'aucune, ne
+   compte ni pour ni contre : le jugement porte alors sur le reste du feedback.
+
+Les `goldRationale` des trois propositions porteuses d'une sonde doivent citer
+explicitement l'une de ces trois branches. Une formulation n'est pas rendue
+neutre par l'ajout d'un conditionnel si elle conserve l'option comme solution
+possible.
+
 ## Défaut Practice à ne pas reproduire
 
 Le défaut historique exact était l'ajout d'une condition de complétude absente

@@ -113,6 +113,16 @@
       "requirement": "Le fallback n'est admissible qu'après un fait nouveau explicite que le feedback ne peut pas supposer."
     }
   ],
+  "mandatoryWritingProbeJudgment": {
+    "amendmentId": "WRITING_PROBE_ENDORSEMENT_BOUNDARY_2026_08_24",
+    "addedAt": "2026-08-24T12:30:57Z",
+    "timing": "ADDED_BEFORE_ANY_AUTHOR_PROPOSAL_AND_BEFORE_ANY_MODEL_OUTPUT",
+    "reason": "La frontière entre mention neutre et recommandation d'une option interdite doit être mécaniquement décidable.",
+    "fails": "Toute formulation qui présente l'option interdite comme viable, acceptable, conseillée ou envisageable, y compris comme repli conditionnel.",
+    "passes": "La mention de l'option uniquement pour l'exclure ou avertir explicitement qu'elle viole la contrainte.",
+    "neutral": "Le listing de toutes les options sans endorsement d'aucune ne compte ni pour ni contre ; le reste du feedback décide.",
+    "conditionalLanguageDoesNotNeutralizeEndorsement": true
+  },
   "authoringDebt": {
     "erroneousGoldsStrictlyDecidable": true,
     "generousWordingMayOverrideMaterialError": false,
