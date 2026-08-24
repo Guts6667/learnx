@@ -1,14 +1,14 @@
 # V4-007 — Registre de consultation et d'arbitrage
 
-Statut : **mesures reçues, arbitrage propriétaire requis avant activation**
+Statut : **arbitrage propriétaire reçu, activation pilote offerte autorisée**
 
 Date de consolidation : 2026-08-24
 
 Périmètre : catalogue tarifaire versionné et devis serveur pour la correction IA
 
-Ce registre est une preuve de consultation. Il ne constitue ni une grille de
-prix active, ni une autorisation de commercialisation. Aucun catalogue, prix,
-pack ou coefficient n'est créé par le seed ou la migration V4-007.
+Ce registre est une preuve de consultation. Il autorise uniquement le catalogue
+pilote version `4.0.0` décrit ci-dessous ; il ne constitue pas une autorisation
+de commercialisation. Aucun pack, SKU ou paiement n'est créé par V4-007.
 
 ## Addendum pilote Writing — 24 août 2026
 
@@ -30,14 +30,15 @@ La taille mesurée reste courte : 176 à 589 caractères. Deux options ont donc
 - **B — pilote produit borné** : 1 500 caractères, estimation 3 crédits,
   réserve 6, avec extrapolation explicitement signalée.
 
-Ces conversions utilisent uniquement l'hypothèse non validée de 100 crédits
-par euro. `docs/V4_007_PILOT_CALIBRATION.md` porte les tradeoffs et recommande
-B pour l'utilisabilité du pilote fermé. L'artefact machine conserve
-`ownerDecision: null` et `catalogStatus: DRAFT` jusqu'au choix de Rayan.
+Rayan a validé l'option B et la parité pilote provisoire de 100 crédits par
+euro le 24 août 2026. `docs/V4_007_PILOT_CALIBRATION.md` conserve les tradeoffs
+et l'artefact machine porte désormais la décision horodatée. Cette activation
+reste limitée aux crédits offerts : aucun prix public, pack, SKU ou paiement
+n'est autorisé.
 
 ## Consultations V4-007
 
-### Finance & Pricing — `BLOCKED`
+### Finance & Pricing — `SUPERSEDED_FOR_BOUNDED_PILOT`
 
 - **Date de demande et de réponse :** 2026-08-12.
 - **Périmètre transmis :** unité de crédit, actions facturables, coût fournisseur
@@ -59,16 +60,19 @@ B pour l'utilisabilité du pilote fermé. L'artefact machine conserve
   retries et contrôles ; plafond accepté non dépassable ; entrée tarifaire liée
   au benchmark, corpus, langue, prompt et modèle ; absence de catalogue actif =
   devis indisponible ; aucun prix fictif ou nul.
-- **Hypothèses explicitement inactives :** `100 crédits/€`, packs 10/25/50 € et
-  stress-test micro-BNC avec 10 % de marge de contribution disponible. Ces
-  hypothèses sont versionnables, mais ne constituent ni prix, ni SKU, ni
-  qualification fiscale, ni bénéfice net.
-- **Inconnues restantes :** parité crédit/euro, conversion USD/EUR, fiscalité et
-  frais, coefficient de sécurité, règle d'arrondi, P90 retenu, marge cible,
-  packs, capacité annoncée et date d'effet.
-- **Arbitrage propriétaire :** Rayan Chambet a validé le squelette réversible et
-  l'absence de valeurs actives. Il n'a pas arbitré les inconnues économiques.
-  L'activation reste donc bloquée.
+- **Hypothèses restées inactives commercialement :** packs 10/25/50 € et
+  stress-test micro-BNC avec 10 % de marge de contribution disponible. Ils ne
+  constituent ni prix public, ni SKU, ni qualification fiscale, ni bénéfice
+  net.
+- **Décision pilote ultérieure :** la parité provisoire `100 crédits/€` est
+  activée uniquement comme unité interne du pilote offert. La réserve 6 crédits
+  assume explicitement l'extrapolation jusqu'à 1 500 caractères.
+- **Inconnues restantes avant toute vente :** conversion USD/EUR, fiscalité et
+  frais définitifs, marge cible, packs, capacité annoncée et date d'effet
+  commerciale.
+- **Arbitrage propriétaire :** Rayan Chambet a validé l'option B et sa parité
+  interne le 24 août 2026. Cette décision lève le blocage du pilote offert, pas
+  celui d'une offre payante.
 
 ### Produit & pédagogie — `RECEIVED`
 
@@ -107,17 +111,19 @@ autonome.
 | V4-005 | `4c65e9d`, workflow de correction persistant | `BLOCKED` | Aucun registre Produit autonome retrouvé. La seconde passe et l'historique devront être vérifiés contre les libellés Produit lors de leur exposition UI. |
 | V4-006 | `853474d` et correctifs `da4fb33` à `a45146d`, ledger immuable | `BLOCKED` | Aucun registre Finance autonome retrouvé. Le ledger ne fixe toutefois ni prix, ni parité, ni pack : aucun conflit économique actif n'est démontré. |
 
-## Gate d'activation
+## Gate d'activation — franchi pour le pilote offert uniquement
 
-Le catalogue V4-007 doit rester `DRAFT` ou `INACTIVE` et l'API doit répondre
-« estimation indisponible — aucune correction ne sera lancée » tant que les
-conditions suivantes ne sont pas toutes remplies :
+Le catalogue V4-007 reste fermé hors du périmètre `STANDARD`, `writing/fr-FR`,
+exercice et 1 500 caractères. Dans ce périmètre, les conditions suivantes sont
+désormais remplies pour le pilote financé par crédits offerts :
 
-1. benchmark V4-003 valide avec mesures par action et classe de taille ;
-2. arbitrage écrit de Finance sur les inconnues économiques ;
-3. validation explicite de Rayan Chambet sur les valeurs et la date d'effet ;
+1. mesures Writing réconciliées utilisées comme calibration produit malgré le
+   `NO-GO` scientifique explicitement conservé ;
+2. hypothèses économiques prudentes et extrapolation de taille consignées ;
+3. validation explicite de Rayan Chambet sur l'option B, la parité provisoire
+   et la date d'effet ;
 4. activation d'une version immuable, sans modifier les historiques antérieurs ;
-5. test de non-vente à perte sur tous les appels réellement facturés.
+5. monitoring du coût réel et absorption des dépassements par LearnX.
 
 ## Vérification de cohérence avec l'implémentation
 
@@ -133,9 +139,9 @@ conditions suivantes ne sont pas toutes remplies :
   le caractère hors promotion et la parité crédit/euro sont maintenant des
   champs versionnés. Une version active exige ces preuves et interdit un tarif
   promotionnel.
-- **Désactivé :** aucun rôle actuel ne possède `ai.assessment.correct`; l'endpoint
-  de devis retourne donc `403` avant même le calcul. Aucun catalogue ni montant
-  n'est seedé. `DETAILED` et `REINFORCED` restent seulement des clés de structure.
-- **À traiter hors V4-007 :** libération sur erreur et dépassement fournisseur
-  absorbé/alerté relèvent du workflow réservation-règlement V4-009. Aucun code
-  V5 n'a été commencé.
+- **Activé dans le scope pilote :** les rôles apprenants possèdent
+  `ai.assessment.correct`, mais l'entrée active unique n'accepte que `STANDARD`,
+  `writing/fr-FR`, exercice et 1 à 1 500 caractères. L'orchestrateur réserve
+  explicitement des lots offerts et ne peut pas sélectionner un lot acheté.
+- **Toujours désactivé :** `DETAILED`, `REINFORCED`, `RECONSIDERATION`, packs,
+  SKU, recharge et paiement. Aucun code V5 n'a été commencé.

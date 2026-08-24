@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "V4_WRITING_PILOT_PRICING_CALIBRATION",
-  "status": "READY_FOR_OWNER_ARBITRATION",
+  "status": "OWNER_APPROVED_FOR_BOUNDED_PILOT",
   "measuredAt": "2026-08-24T14:26:14Z",
   "scope": {
     "action": "STANDARD",
@@ -99,11 +99,22 @@
       "tradeoff": "More practical for learners and covered by the observed loaded maximum, but the input-size extension is an explicit extrapolation rather than a measured P90 class."
     }
   ],
-  "ownerDecision": null,
+  "ownerDecision": {
+    "approvedAt": "2026-08-24T19:26:28Z",
+    "approvedBy": "Rayan Chambet",
+    "creditsPerEuro": 100,
+    "estimatedCredits": 3,
+    "key": "BOUNDED_PRODUCT_PILOT",
+    "maximumInputChars": 1500,
+    "maximumReservedCredits": 6,
+    "scope": "OFFERED_CREDITS_PILOT_ONLY"
+  },
   "activation": {
-    "catalogStatus": "DRAFT",
-    "effectiveAt": null,
-    "runtimePromotionAuthorized": false,
-    "requiresExplicitOwnerApproval": true
+    "catalogStatus": "ACTIVE",
+    "catalogVersion": "4.0.0",
+    "effectiveAt": "2026-08-24T19:26:28Z",
+    "publicSaleAuthorized": false,
+    "runtimePromotionAuthorized": true,
+    "requiresExplicitOwnerApproval": false
   }
 }

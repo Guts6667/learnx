@@ -1,6 +1,6 @@
 # V4-007 — Calibration du catalogue pilote Writing
 
-Statut : **prêt pour arbitrage propriétaire, aucun prix actif**  
+Statut : **option B approuvée et activation versionnée prête au déploiement**
 Date : 24 août 2026  
 Périmètre : correction `STANDARD`, `writing/fr-FR`, exercice faible risque,
 crédits offerts uniquement
@@ -38,14 +38,14 @@ la source de coût, tandis que `learnx-french-text-correction-v3-1` reste le pin
 runtime. Cette provenance croisée est conservée explicitement dans l'artefact
 machine, jamais masquée.
 
-## Arbitrage demandé à Rayan
+## Arbitrage de Rayan — 24 août 2026
 
-L'hypothèse historique `100 crédits/€` transforme le coût chargé médian en
+Rayan valide l'option B et la parité pilote provisoire de `100 crédits/€`.
+Cette parité transforme le coût chargé médian en
 environ 3 crédits, le P90 en environ 4 crédits et le maximum observé en environ
-6 crédits. Deux options restent possibles ; aucune n'est activée par ce
-document.
+6 crédits.
 
-### Option A — classe mesurée stricte
+### Option A — classe mesurée stricte — non retenue
 
 - réponse limitée à 600 caractères ;
 - estimation : 3 crédits ;
@@ -55,7 +55,7 @@ document.
 - limite : 600 caractères peuvent être contraignants pour traiter les deux
   projets du pilote.
 
-### Option B — pilote produit borné
+### Option B — pilote produit borné — approuvée
 
 - réponse limitée à 1 500 caractères ;
 - estimation : 3 crédits ;
@@ -65,14 +65,14 @@ document.
 - limite : l'extension de taille est une extrapolation prudente, pas un P90
   directement mesuré sur cette classe.
 
-**Recommandation produit : option B pour le pilote fermé.** Elle rend l'exercice
+L'option B rend l'exercice
 réellement utilisable sans vendre cette capacité au public. La différence entre
 6 crédits réservés et 3 crédits réglés est libérée immédiatement. Les
 dépassements éventuels restent absorbés et signalés par LearnX.
 
 ## Invariants d'activation
 
-- catalogue `DRAFT` jusqu'à validation explicite de l'option et de la parité ;
+- catalogue `ACTIVE` version `4.0.0` à compter du `2026-08-24T19:26:28Z` ;
 - `STANDARD` uniquement ; `DETAILED`, `REINFORCED` et `RECONSIDERATION`
   restent inactifs ;
 - crédits offerts uniquement, aucun pack, SKU ou paiement public ;
@@ -87,5 +87,7 @@ dépassements éventuels restent absorbés et signalés par LearnX.
 L'artefact
 `benchmarks/ai-correction/pricing/writing-pilot-calibration-2026-08-24.json`
 lie par SHA-256 les tentatives, le corpus scellé et le verdict terminal. Il
-porte les distributions, les hypothèses chargées, les deux options et un
-champ `ownerDecision` nul. Le catalogue reste donc fermé par défaut.
+porte les distributions, les hypothèses chargées, les deux options et la
+décision propriétaire horodatée. La migration
+`20260824192628_activate_bounded_writing_pilot_catalog` matérialise uniquement
+le catalogue pilote offert ; elle ne crée aucun pack, SKU ou paiement.
