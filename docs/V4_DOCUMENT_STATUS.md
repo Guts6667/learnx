@@ -1,8 +1,8 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.8`
-- **Date** : 22 août 2026
+- **Version** : `1.0.9`
+- **Date** : 24 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
 
@@ -30,11 +30,14 @@ chemin de lecture actif.
 | `LEARNX_DOMAIN_KNOWLEDGE.md` | `ACTIVE_AUTHORITY` | Vocabulaire, objets et frontières du domaine. |
 | `V4_ROADMAP.md` | `CURRENT_STATUS` | Registre humain unique de progression. |
 | `../BACKLOG_V4.md` | `ACTIVE_AUTHORITY` | Périmètres, critères et tickets. |
-| `V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` | `ACTIVE_DESIGN_AUTHORITY` | Direction Totem validée, file V4-016D→H et frontières ; aucune autorisation de code à elle seule. |
-| `V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` | `CURRENT_STATUS` | Miroir machine du chemin IA. |
-| `V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md` | `ACTIVE_AUTHORITY` | Architecture déterministe du moteur. |
-| `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` | `ACTIVE_AUTHORITY` | Core candidate-only inchangé du prochain gate ; les campagnes Sonnet restent historiques. |
-| `V4_EVIDENCE_SEMANTIC_ARBITRATION.md` | `ACTIVE_AUTHORITY` | Sémantique successeur, dont `EXPLICITLY_REFUTED`. |
+| `V4_RESEARCH_FINDINGS.md` | `CURRENT_STATUS` | Synthèse lisible des preuves, limites et de l'arbitrage de livraison bornée du 24 août ; les artefacts et le journal append-only restent prioritaires. |
+| `../src/server/corrections/promoted-identity.ts` | `ACTIVE_AUTHORITY` | Pin runtime V4 : Sonnet 4.6, writing/fr-FR, exercice, prompt 2.2.0, protocole 3.0.1 et livraison partielle. |
+| `V4_TOTEM_IMPLEMENTATION_MAP.md` | `ACTIVE_DESIGN_AUTHORITY` | Autorité Totem mobile/desktop approuvée le 24 août, surfaces, tokens et matrice de QA. |
+| `V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` | `HISTORICAL_EVIDENCE` | Première direction Totem conservée ; remplacée pour l'UI/UX par la cartographie et les paquets du 24 août. |
+| `V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` | `HISTORICAL_EVIDENCE` | Miroir machine du chemin evidence-assist antérieur ; immuable, non exécutoire depuis l'amendement du 24 août. |
+| `V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md` | `HISTORICAL_EVIDENCE` | Architecture déterministe de recherche conservée pour V4.1 ; elle n'est pas le runtime limité livré en V4. |
+| `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` | `HISTORICAL_EVIDENCE` | Ancien core candidate-only ; campagnes, runners et faux fournisseurs ne peuvent plus diriger le runtime V4. |
+| `V4_EVIDENCE_SEMANTIC_ARBITRATION.md` | `HISTORICAL_EVIDENCE` | Décisions sémantiques de recherche, dont `EXPLICITLY_REFUTED`, conservées pour les futurs contrats sans autorité runtime V4. |
 | `V4_CORRECTION_CONTRACT_AUTHORING_FUNNEL.md` | `ACTIVE_AUTHORITY` | Création du premier contrat. |
 | `V4_WRITING_PILOT_BRIEF.md` | `APPROVED_INPUT_V4_002B` | `Rayan A` clos : pilote, scénarios, consigne, objectif et exclusions validés ; aucune autorité d'expérience ou de publication. |
 | `V4_WRITING_FRAMEWORK_SELECTION_CONTRACT_DRAFT.md` | `COMPILED_INPUT_V4_003A` | `Rayan B` clos : contrat approuvé et compilable hors ligne par V4-002C ; toujours non publié et sans autorité d'expérience. |
@@ -57,12 +60,12 @@ chemin de lecture actif.
 | `V4_003E_Q1_GEMINI_3_6_OFFLINE_DOSSIER.md` | `HISTORICAL_EVIDENCE` | Préparation hors ligne Gemini 3.6 avant consommation du gate réseau. |
 | `V4_003E_Q1_GEMINI_3_6_NETWORK_TRANSPORT_PREFLIGHT.md` | `HISTORICAL_EVIDENCE` | Transport Gemini simulé vert avant le gate réseau désormais clos. |
 | `V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_AUTHORIZATION.md` | `HISTORICAL_EVIDENCE` | Autorisation single-use consommée par le gate clos ; aucune réutilisation. |
-| `V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md` | `CURRENT_STATUS` | Gate clos après `1/4` sur HTTP 400 ; coût/identifiant absents, réconciliation requise, aucun verdict pédagogique. |
-| `V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md` | `CURRENT_STATUS` | Procédure de réconciliation du coût Q1 ; coût réel inconnu, nouvelle lecture Activity à partir du 23 août UTC et écriture conservatrice interdite sans arbitrage Finance séparé. |
-| `V4_003E_Q1_R1_GEMINI_3_6_OFFLINE_REMEDIATION.md` | `CURRENT_STATUS` | Identité R1 `00cd27d8…` gelée sur `07d5d809…`, différentiel conforme et fake preflight `4/4` ; Finance et autorisation réseau absentes, live interdit. |
-| `V4_003E_Q1_R1_PUBLICATION_SECURITY_REVIEW.md` | `CURRENT_STATUS` | Scan exact du delta et de l'historique public : aucun identifiant de compte, secret, raw Q1 privé ou ledger Q1 privé ; seule la branche audit est publiable. |
-| `../benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json` | `CURRENT_STATUS` | Réattestation publique informative, sans inférence, identité, Finance ni GO réseau. |
-| `V4_010_OFFLINE_FAKE_FLOW.md` | `CURRENT_STATUS` | Prototype désactivé, sans autorité live. |
+| `V4_003E_Q1_GEMINI_3_6_NETWORK_GATE_RESULT.md` | `HISTORICAL_EVIDENCE` | Gate clos après `1/4` sur HTTP 400 ; coût/identifiant absents, aucun verdict pédagogique et aucun prolongement runtime. |
+| `V4_003E_Q1_GEMINI_3_6_COST_RECONCILIATION.md` | `HISTORICAL_EVIDENCE` | Procédure de réconciliation historique du coût Q1 ; elle ne finance et n'autorise aucun nouvel appel. |
+| `V4_003E_Q1_R1_GEMINI_3_6_OFFLINE_REMEDIATION.md` | `HISTORICAL_EVIDENCE` | Identité R1 close, différentiel et fake preflight conservés comme preuves sans autorité runtime. |
+| `V4_003E_Q1_R1_PUBLICATION_SECURITY_REVIEW.md` | `HISTORICAL_EVIDENCE` | Scan historique du delta public ; aucune autorisation de publication ou d'exécution courante. |
+| `../benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json` | `HISTORICAL_EVIDENCE` | Réattestation publique informative close, sans inférence, identité, Finance ni GO réseau. |
+| `V4_010_OFFLINE_FAKE_FLOW.md` | `HISTORICAL_EVIDENCE` | Prototype faux fournisseur désactivé et retiré du chemin d'exécution ; document et preuves conservés uniquement pour l'historique. |
 
 ## 3. Preuves historiques
 
@@ -72,7 +75,7 @@ chemin de lecture actif.
 | Synthèse technique | `V4_AI_MODEL_BENCHMARK_REPORT.md` | Historique comparatif, pas gate de promotion actuel. |
 | Composite Mistral/Sonnet | `V4_008A_ALIGNMENT_REGISTER.md`, `V4_009B_*` | `HISTORICAL_EVIDENCE`, pipeline abandonné. |
 | Gemini/Sonnet chercheur v1 | `V4_009C_*`, `V4_EXECUTABLE_RUBRIC_GEMINI_*`, `V4_EXECUTABLE_RUBRIC_SONNET_5_*` | Campagnes closes ; aucun replay. |
-| Evidence-assist 3.0 | `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`, `V4_EVIDENCE_ASSIST_GATE4_*` | La spec reste `ACTIVE_AUTHORITY` du core inchangé ; les rapports et résultats de gates clos sont `HISTORICAL_EVIDENCE`. |
+| Evidence-assist 3.0 | `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`, `V4_EVIDENCE_ASSIST_GATE4_*` | Recherche close et conservée ; ni la spec, ni les runners, ni les faux fournisseurs ne dirigent le runtime V4. |
 | Manifeste antérieur | `V4_AI_CORRECTION_PHASE_MANIFEST.json` | Immuable pour préserver les verdicts historiques. |
 
 ## 4. Brouillons remplacés

@@ -46,6 +46,7 @@ interface ExerciseRecord {
   id: string;
   instructions: string;
   isRequired: boolean;
+  language?: string;
   lessonId: string;
   position: number;
   rubric: unknown;
@@ -126,10 +127,16 @@ function serializeSubmission(submission: ExerciseSubmissionRecord) {
   };
 }
 
-export function isExerciseAiCorrectionEligible(rubric: unknown): boolean {
+export function isExerciseAiCorrectionEligible(
+  rubric: unknown,
+  language?: string,
+): boolean {
   const eligibility = getCorrectionContractRuntimeEligibility(rubric);
   return (
     eligibility.eligible &&
+    PROMOTED_CORRECTION_IDENTITY.languageScope.some(
+      (allowedLanguage) => allowedLanguage === language,
+    ) &&
     eligibility.contract.target.kind === 'EXERCISE' &&
     PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
       (activityType) =>
@@ -205,6 +212,19 @@ export function createPrismaExerciseRepository(
     },
     async findExerciseForUser(exerciseId, userId) {
       const exercise = await client.exercise.findFirst({
+        include: {
+          lesson: {
+            select: {
+              module: {
+                select: {
+                  stage: {
+                    select: { program: { select: { locale: true } } },
+                  },
+                },
+              },
+            },
+          },
+        },
         where: exerciseWhere(exerciseId, userId),
       });
 
@@ -226,7 +246,14 @@ export function createPrismaExerciseRepository(
             select: submissionSelect,
           })
         : null;
-      return { ...exercise, submission };
+      const { lesson, ...exerciseRecord } = exercise;
+      const language =
+        lesson.module.stage.program.locale === 'fr'
+          ? 'fr-FR'
+          : lesson.module.stage.program.locale === 'en'
+            ? 'en-US'
+            : lesson.module.stage.program.locale;
+      return { ...exerciseRecord, language, submission };
     },
     async findOwnedSubmission(submissionId, userId) {
       const submission = await client.exerciseSubmission.findFirst({
@@ -370,7 +397,10 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
     return context.json({
       exercise: {
         ...exercise,
-        aiCorrectionEligible: isExerciseAiCorrectionEligible(exercise.rubric),
+        aiCorrectionEligible: isExerciseAiCorrectionEligible(
+          exercise.rubric,
+          exercise.language,
+        ),
         submission: exercise.submission
           ? serializeSubmission(exercise.submission)
           : null,

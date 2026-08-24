@@ -82,10 +82,10 @@ export function PedagogicalNavigation({
             {t('learning.summaryAction')}
           </Button>
         </div>
-        <div class="ui-divider mt-4 grid min-w-0 grid-cols-2 items-end gap-3 border-t pt-4">
+        <div class="pedagogical-navigation__actions ui-divider mt-4 grid min-w-0 items-end gap-3 border-t pt-4">
           {previous ? (
             <NavigationAction
-              class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
+              class="w-full min-w-0 max-w-full text-center"
               href={previous.href}
               size="sm"
               variant="secondary"
@@ -95,7 +95,7 @@ export function PedagogicalNavigation({
           ) : (
             <span
               aria-disabled="true"
-              class="ui-action ui-action--secondary ui-action--sm min-w-0 max-w-full text-center hyphens-auto opacity-60 [overflow-wrap:anywhere]"
+              class="ui-action ui-action--secondary ui-action--sm min-w-0 max-w-full text-center opacity-60"
             >
               {t('common.previous')}
             </span>
@@ -103,7 +103,7 @@ export function PedagogicalNavigation({
           {onContinue ? (
             <Button
               aria-busy={isContinuePending || undefined}
-              class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
+              class="w-full min-w-0 max-w-full text-center"
               disabled={isContinueDisabled || isContinuePending}
               isLoading={isContinuePending}
               onClick={onContinue}
@@ -113,7 +113,7 @@ export function PedagogicalNavigation({
             </Button>
           ) : nextHref ? (
             <NavigationAction
-              class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
+              class="w-full min-w-0 max-w-full text-center"
               href={nextHref}
               size="sm"
             >
@@ -122,7 +122,7 @@ export function PedagogicalNavigation({
           ) : (
             <span
               aria-disabled="true"
-              class="ui-action ui-action--secondary ui-action--sm min-w-0 max-w-full text-center hyphens-auto opacity-60 [overflow-wrap:anywhere]"
+              class="ui-action ui-action--secondary ui-action--sm min-w-0 max-w-full text-center opacity-60"
             >
               {resolvedContinueLabel}
             </span>

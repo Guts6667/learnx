@@ -9,7 +9,7 @@
 
 ## Statut
 
-- **Classe** : `ACTIVE_DESIGN_AUTHORITY`
+- **Classe** : `HISTORICAL_EVIDENCE`
 - **Décision propriétaire** : `DESIGN_VALIDATED`
 - **Implémentation applicative** : `V4_016D_QA_GREEN_PENDING_PUSH`
 - **Date** : 21 août 2026

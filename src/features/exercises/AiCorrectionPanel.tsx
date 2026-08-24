@@ -127,20 +127,24 @@ export function AiCorrectionPanel({
 
   if (phase.kind === 'ERROR') {
     return (
-      <div class="ui-control-surface space-y-2 rounded-lg p-4">
+      <div class="ui-control-surface space-y-3 rounded-lg p-4">
         <p class="ui-text-danger text-sm" role="alert">
           {phase.message}
         </p>
-        <Button
-          variant="secondary"
-          onClick={() =>
-            phase.quote
-              ? void confirmAndRun(phase.quote)
-              : void askQuote()
-          }
-        >
-          {t('common.retry')}
-        </Button>
+        <div class="flex flex-wrap gap-3">
+          <Button
+            onClick={() =>
+              phase.quote ? void confirmAndRun(phase.quote) : void askQuote()
+            }
+          >
+            {t('common.retry')}
+          </Button>
+          {phase.quote ? (
+            <Button variant="ghost" onClick={() => void askQuote()}>
+              {t('aiCorrection.newQuote')}
+            </Button>
+          ) : null}
+        </div>
       </div>
     );
   }
@@ -167,6 +171,12 @@ export function AiCorrectionPanel({
   }
 
   const unsureKeys = new Set(correction.unsureCriteria);
+  const unsureLabels = new Map(
+    (correction.unsureCriterionDetails ?? []).map(({ key, label }) => [
+      key,
+      label,
+    ]),
+  );
   const delivered = correction.criteria.filter(
     (criterion) => !unsureKeys.has(criterion.key),
   );
@@ -204,7 +214,9 @@ export function AiCorrectionPanel({
               class="ui-control-surface rounded-lg p-3 text-sm leading-6"
               key={key}
             >
-              {t('aiCorrection.reworkCriterion', { criterion: key })}
+              {t('aiCorrection.reworkCriterion', {
+                criterion: unsureLabels.get(key) ?? key,
+              })}
             </p>
           ))}
         </section>

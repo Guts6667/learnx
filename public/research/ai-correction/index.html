@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <title>LearnX — Recherche sur la correction assistée par IA</title>
-  <meta name="description" content="État des recherches LearnX sur la correction formative assistée par IA, les modèles évalués et l'architecture composite explorée.">
+  <meta name="description" content="Journal daté des recherches LearnX sur la correction formative assistée par IA, les refus expérimentaux et le pilote V4 borné.">
   <style>
     @font-face { font-family: "DM Sans"; src: url("/fonts/dm-sans/dm-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
     @font-face { font-family: "DM Sans"; src: url("/fonts/dm-sans/dm-sans-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
@@ -272,7 +272,7 @@
             <blockquote>Une note indicative, expliquée critère par critère, vaut mieux qu’un « validé » artificiellement certain.</blockquote>
             <aside>
               <strong>Direction expérimentale</strong>
-              Mistral produit la première correction. Sonnet vérifie uniquement les résultats sensibles. Le serveur calcule le score et présente honnêtement les désaccords.
+              À cette étape historique, Mistral produisait la première correction et Sonnet vérifiait certains résultats sensibles. Cette piste composite n'est pas le runtime V4 retenu.
             </aside>
           </div>
         </div>
@@ -291,7 +291,7 @@
             <time datetime="2026-08-12">V1</time><article><h3>Corpus et premières comparaisons</h3><p>24 cas synthétiques français couvrant écriture, réflexion, pratique et projet, avec cas réussis, partiels, erronés, ambigus, hors sujet et injectés.</p></article>
             <time datetime="2026-08-12">V2</time><article><h3>Gates de sécurité et revue aveugle</h3><p>Séparation des erreurs fournisseur, sorties invalides, citations inventées, injection, variabilité et décision pédagogique. Création d’un holdout scellé jamais ouvert.</p></article>
             <time datetime="2026-08-12">V3</time><article><h3>Sortie minimale et autorité serveur</h3><p>Le modèle ne produit plus de score ni de verdict. Il rend niveaux, confiance, preuves et feedback ; LearnX calcule le reste.</p></article>
-            <time datetime="2026-08-12">Maintenant</time><article><h3>Notation formative et pipeline composite</h3><p>Exploration de deux modèles complémentaires, déclenchés selon une règle versionnée, sans double appel systématique.</p></article>
+            <time datetime="2026-08-12">Piste historique</time><article><h3>Notation formative et pipeline composite</h3><p>Exploration alors menée avec deux modèles complémentaires, sans double appel systématique. Cette piste est conservée comme résultat de recherche, pas comme instruction runtime actuelle.</p></article>
           </div>
         </div>
       </section>
@@ -312,14 +312,14 @@
               <tbody>
                 <tr><td>Smoke test</td><td>Un test très court sur un seul cas représentatif. Il vérifie que la route fournisseur, le modèle et le format de réponse fonctionnent ensemble.</td><td>Le modèle peut tenter le test suivant. Cela ne prouve pas encore sa qualité pédagogique.</td></tr>
                 <tr><td>Série de smokes</td><td>Trois cas successifs : une réponse clairement réussie, une réponse ambiguë et une tentative d’injection. L’essai s’arrête au premier défaut important.</td><td>Le modèle semble techniquement compatible et assez sûr pour un petit panel.</td></tr>
-                <tr><td>Mini-panel</td><td>Un petit ensemble prédéfini, généralement six réponses variées, relu à l’aveugle par un évaluateur humain.</td><td>Il détecte rapidement les erreurs de jugement, de ton ou de grille avant une campagne coûteuse.</td></tr>
+                <tr><td>Mini-panel</td><td>Un petit ensemble prédéfini, généralement six réponses variées, soumis à une revue aveugle dont l’autorité et le digest sont annoncés à l’avance. Dans le protocole actuel, cette revue est autonome et n’est jamais présentée comme humaine.</td><td>Il détecte rapidement les erreurs de jugement, de ton ou de grille avant une campagne coûteuse.</td></tr>
                 <tr><td>Full panel</td><td>La campagne complète sur tout le corpus de développement. Dans notre cas, elle couvre les 24 réponses étalonnées.</td><td>Elle mesure la qualité sur toutes les familles prévues, mais pas encore la généralisation à des cas inconnus.</td></tr>
                 <tr><td>24×3</td><td>Les mêmes 24 réponses sont évaluées trois fois, soit 72 runs logiques. Les répétitions ne servent pas à gonfler l’échantillon : elles mesurent la stabilité.</td><td>On observe à la fois les erreurs moyennes et les changements de jugement sur une réponse identique.</td></tr>
                 <tr><td>Holdout scellé</td><td>Un second corpus jamais utilisé pour régler le prompt ou choisir les seuils. Son contenu reste fermé jusqu’à ce que la configuration soit figée.</td><td>Il vérifie si la solution se généralise sans avoir appris les réponses du corpus de développement.</td></tr>
               </tbody>
             </table>
           </div>
-          <p class="note"><strong>Exemple.</strong> Deux smokes réussis ne valent pas un full. Et un full réussi ne vaut pas encore une validation de production : il faut ensuite une revue humaine aveugle, le holdout scellé et un pilote limité.</p>
+          <p class="note"><strong>Exemple.</strong> Deux smokes réussis ne valent pas un full. Et un full réussi ne vaut pas encore une validation de production : il faut ensuite une revue aveugle autonome liée par digest, un examen scellé frais et un pilote limité. <code>humanReviewApproved</code> reste faux.</p>
         </div>
       </section>
 
@@ -519,11 +519,11 @@
               <p>Le but n’est plus de trouver un modèle parfait. Il faut prouver qu’un workflow complet produit une évaluation utile, honnête, sûre et économiquement prévisible.</p>
             </div>
           </div>
-          <details open><summary>1. Figer le contrat de notation formative</summary><p>Définir les niveaux, les bandes d’appréciation, la place du score, la formulation d’un désaccord et l’absence totale d’effet bloquant.</p></details>
-          <details><summary>2. Donner une identité au pipeline composite</summary><p>Épingler modèles, fournisseurs, profils, prompts, règle de déclenchement, échantillon de contrôle, politique de retry et résolution des écarts.</p></details>
-          <details><summary>3. Exécuter un test composite plafonné</summary><p>Comparer le pipeline aux baselines sur le même protocole, puis soumettre les écarts importants et un échantillon d’accords à une revue humaine aveugle.</p></details>
-          <details><summary>4. N’ouvrir le holdout qu’après le gate de développement</summary><p>Le holdout français reste scellé. Il ne doit pas devenir un corpus de réglage ni être rejoué jusqu’à obtenir un résultat favorable.</p></details>
-          <details><summary>5. Calibrer prix et expérience</summary><p>Réserver au plafond prudent du workflow, débiter le coût réel agrégé, libérer la différence et présenter une seule action compréhensible à l’utilisateur.</p></details>
+          <details open><summary>1. Publier un contrat Writing exécutable</summary><p>Le pilote reste masqué tant qu’aucun exercice writing/fr-FR ne porte un contrat immuable, publié et compatible avec le runtime.</p></details>
+          <details><summary>2. Activer un catalogue offert calibré</summary><p>Le devis serveur doit correspondre exactement au modèle, au fournisseur, au prompt et à la couverture de seconde passe retenus. Aucun prix public ni achat de correction n’est ouvert en V4.</p></details>
+          <details><summary>3. Vérifier le raccord en preview</summary><p>Tester authentification, devis, réservation offerte, correction par critère, passe de garde, règlement, rejeu idempotent et kill switch, sans élargir le scope.</p></details>
+          <details><summary>4. Finir la QA Totem</summary><p>Valider mobile, desktop, zoom 200 %, clavier, contraste, textes longs et états d’erreur sur les largeurs annoncées.</p></details>
+          <details><summary>5. Observer puis itérer</summary><p>Suivre coûts, résultats partiels, indisponibilités et les deux défauts connus. Un nouvel examen frais sera requis avant toute ouverture payante ou extension du périmètre.</p></details>
         </div>
       </section>
     </main>

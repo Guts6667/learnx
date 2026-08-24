@@ -1,7 +1,10 @@
 import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
-import { readOpenRouterConfiguration } from '../../ai/openrouter-configuration.js';
+import {
+  readOpenRouterConfiguration,
+  type OpenRouterConfiguration,
+} from '../../ai/openrouter-configuration.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, type ApiErrorCode } from '../_lib/errors.js';
@@ -43,19 +46,33 @@ function deploymentEnvironment(): 'development' | 'preview' | 'production' {
   return 'development';
 }
 
+export function isPromotedCorrectionConfiguration(
+  configuration: OpenRouterConfiguration,
+): boolean {
+  const assignment = configuration.assignments.CORRECTION_PRIMARY;
+  const secondPassAssignment =
+    configuration.assignments.CORRECTION_SECOND_PASS;
+  return Boolean(
+    configuration.enabled &&
+      !configuration.killSwitch &&
+      configuration.apiKey &&
+      assignment?.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
+      assignment.provider === PROMOTED_CORRECTION_IDENTITY.provider &&
+      secondPassAssignment?.modelId ===
+        PROMOTED_CORRECTION_IDENTITY.modelId &&
+      secondPassAssignment.provider === PROMOTED_CORRECTION_IDENTITY.provider,
+  );
+}
+
 async function createDefaultOrchestration(): Promise<
   Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null
 > {
   const configuration = readOpenRouterConfiguration({
     deploymentEnvironment: deploymentEnvironment(),
   });
-  const assignment = configuration.assignments.CORRECTION_PRIMARY;
   if (
-    !configuration.enabled ||
-    configuration.killSwitch ||
-    !configuration.apiKey ||
-    assignment?.modelId !== PROMOTED_CORRECTION_IDENTITY.modelId ||
-    assignment.provider !== PROMOTED_CORRECTION_IDENTITY.provider
+    !isPromotedCorrectionConfiguration(configuration) ||
+    !configuration.apiKey
   ) {
     return null;
   }

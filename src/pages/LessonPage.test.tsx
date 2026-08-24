@@ -375,7 +375,9 @@ describe('LessonPage', () => {
       screen.queryByRole('link', { name: 'Continuer' }),
     ).not.toBeInTheDocument();
     expect(previous.parentElement).toBe(continueButton.parentElement);
-    expect(previous.parentElement).toHaveClass('grid-cols-2');
+    expect(previous.parentElement).toHaveClass(
+      'pedagogical-navigation__actions',
+    );
     expect(previous.compareDocumentPosition(continueButton)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );

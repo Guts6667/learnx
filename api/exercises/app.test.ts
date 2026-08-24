@@ -31,7 +31,10 @@ const authentication: MiddlewareHandler<AuthEnvironment> = async (
   await next();
 };
 
-function createRepository(ownerId = userId) {
+function createRepository(
+  ownerId = userId,
+  exerciseOptions: { language?: string; rubric?: unknown } = {},
+) {
   let submission:
     | {
         contentMarkdown: string;
@@ -74,9 +77,10 @@ function createRepository(ownerId = userId) {
         id: exerciseId,
         instructions: 'Rédigez une analyse structurée.',
         isRequired: true,
+        language: exerciseOptions.language,
         lessonId,
         position: 1,
-        rubric: { clarity: true },
+        rubric: exerciseOptions.rubric ?? { clarity: true },
         submission: submission ?? null,
         title: 'Analyse appliquée',
       };
@@ -124,6 +128,63 @@ function jsonRequest(body: unknown, method = 'PATCH') {
 }
 
 describe('exercise API', () => {
+  const publishedWritingContract = {
+    authorizedReferences: [],
+    contractKey: 'exercise-writing-fr',
+    criteria: [
+      {
+        acceptableVariants: ['Une décision conditionnelle observable.'],
+        calibratedExamples: [
+          {
+            expectedLevelKey: 'mastered',
+            rationale: 'La décision est explicite.',
+            responseExcerpt: 'Je retiens l’option locale.',
+          },
+        ],
+        commonErrors: ['Reporter le choix.'],
+        expectedElements: ['Une option choisie explicitement.'],
+        key: 'decision',
+        label: 'Décision',
+        objective: 'Formuler une décision applicable.',
+        performanceLevels: [
+          {
+            description: 'Aucune décision identifiable.',
+            key: 'insufficient',
+            label: 'Insuffisant',
+            score: 0,
+          },
+          {
+            description: 'Décision explicite et applicable.',
+            key: 'mastered',
+            label: 'Maîtrisé',
+            score: 100,
+          },
+        ],
+        weight: 100,
+      },
+    ],
+    evidence: { acceptedKinds: ['TEXT'], primaryKind: 'TEXT' },
+    lifecycle: {
+      publishedAt: '2026-08-24T00:00:00+02:00',
+      status: 'PUBLISHED',
+    },
+    objectives: ['Évaluer une décision écrite.'],
+    passingScore: 70,
+    schemaVersion: 1,
+    secondPass: {
+      confidenceThreshold: 0.7,
+      enabled: true,
+      maxPasses: 2,
+      triggers: ['LOW_CONFIDENCE'],
+    },
+    target: {
+      activityKey: 'exercise-writing-fr',
+      activityType: 'writing',
+      kind: 'EXERCISE',
+    },
+    version: '1.0.0',
+  };
+
   it('retourne l’exercice publié et le brouillon personnel', async () => {
     const state = createRepository();
     const app = createExercisesApp({
@@ -144,6 +205,39 @@ describe('exercise API', () => {
         submission: { id: submissionId, status: 'DRAFT' },
         title: 'Analyse appliquée',
       },
+    });
+  });
+
+  it('n’expose la correction que pour le scope writing/fr-FR promu', async () => {
+    const frenchState = createRepository(userId, {
+      language: 'fr-FR',
+      rubric: publishedWritingContract,
+    });
+    const englishState = createRepository(userId, {
+      language: 'en-US',
+      rubric: publishedWritingContract,
+    });
+    const frenchApp = createExercisesApp({
+      authentication,
+      repository: frenchState.repository,
+    });
+    const englishApp = createExercisesApp({
+      authentication,
+      repository: englishState.repository,
+    });
+
+    const french = await frenchApp.request(
+      `http://localhost/api/exercises/${exerciseId}`,
+    );
+    const english = await englishApp.request(
+      `http://localhost/api/exercises/${exerciseId}`,
+    );
+
+    expect(await french.json()).toMatchObject({
+      exercise: { aiCorrectionEligible: true },
+    });
+    expect(await english.json()).toMatchObject({
+      exercise: { aiCorrectionEligible: false },
     });
   });
 

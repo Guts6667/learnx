@@ -38,7 +38,7 @@ consultables comme historique de recherche et ne doivent pas être effacés.
   présenté « à retravailler » sans score exact ; le prix du devis reste entier,
   conformément à la décision du Propriétaire. Le pilote initial consomme des
   crédits offerts et n’ouvre pas un achat public de correction.
-- Le scope writing est bloqué au devis et à l’exécution. L’identité modèle,
+- Le scope exercice writing/fr-FR est bloqué au devis et à l’exécution. L’identité modèle,
   fournisseur, prompt, benchmark et couverture de seconde passe doit concorder
   avec le catalogue actif avant toute réservation.
 - Aucun nouvel appel de benchmark, examen, changement de seuil, gold, prompt ou

@@ -38,12 +38,10 @@ export function PrimaryResumeCard({
   return (
     <Card class="totem-resume-card" data-totem-component="primary-resume" tone="signature">
       <div class="totem-resume-card__body">
-        <p class="totem-kicker [overflow-wrap:anywhere]">{eyebrow}</p>
-        <h2 class="totem-resume-card__title [overflow-wrap:anywhere]">{title}</h2>
+        <p class="totem-kicker">{eyebrow}</p>
+        <h2 class="totem-resume-card__title">{title}</h2>
         {supportingText ? (
-          <p class="totem-resume-card__copy [overflow-wrap:anywhere]">
-            {supportingText}
-          </p>
+          <p class="totem-resume-card__copy">{supportingText}</p>
         ) : null}
         {metadata.length > 0 ? (
           <ul class="totem-resume-card__meta" role="list">

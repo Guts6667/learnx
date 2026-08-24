@@ -13,6 +13,7 @@ import { TextField } from '@/components/ui/TextField';
 import {
   type CreditMemberSummary,
   useAdminCreditAdjustmentMutation,
+  useAdminCorrectionMonitoringQuery,
   useAdminCreditMemberQuery,
   useAdminCreditMembersQuery,
   useAdminCreditPoliciesQuery,
@@ -275,6 +276,7 @@ export function AdminCreditsPage() {
     useState<CreditMemberSummary | null>(null);
   const query = useAdminCreditMembersQuery({ page, pageSize: 20, search });
   const policies = useAdminCreditPoliciesQuery();
+  const monitoring = useAdminCorrectionMonitoringQuery();
   return (
     <section class="page-layout page-layout--admin page-shell space-y-6">
       <PageHeader
@@ -296,6 +298,57 @@ export function AdminCreditsPage() {
         <p class="ui-text-muted text-sm leading-6">
           {t('admin.credits.renewalUnavailable')}
         </p>
+      </section>
+      <section
+        aria-labelledby="correction-monitoring-title"
+        class="ui-control-surface rounded-lg p-4 sm:p-6"
+      >
+        <div class="space-y-2">
+          <h2 class="font-medium" id="correction-monitoring-title">
+            {t('admin.credits.monitoringTitle')}
+          </h2>
+          <p class="ui-text-muted max-w-3xl text-sm leading-6">
+            {t('admin.credits.monitoringDescription')}
+          </p>
+        </div>
+        {monitoring.isPending ? <Skeleton class="mt-4 h-32" /> : null}
+        {monitoring.error ? (
+          <div class="mt-4">
+            <ErrorState description={t('admin.credits.monitoringError')} />
+          </div>
+        ) : null}
+        {monitoring.data ? (
+          <dl class="admin-credit-monitoring mt-4">
+            <div>
+              <dt>{t('admin.credits.monitoringCorrections')}</dt>
+              <dd>{monitoring.data.totalCorrections}</dd>
+            </div>
+            <div>
+              <dt>{t('admin.credits.monitoringProviderCost')}</dt>
+              <dd>{monitoring.data.totalProviderCostUsd} USD</dd>
+            </div>
+            <div>
+              <dt>{t('admin.credits.monitoringPartial')}</dt>
+              <dd>{monitoring.data.partial}</dd>
+            </div>
+            <div>
+              <dt>{t('admin.credits.monitoringUnavailable')}</dt>
+              <dd>{monitoring.data.unavailable}</dd>
+            </div>
+            <div>
+              <dt>{t('admin.credits.monitoringConstraint')}</dt>
+              <dd>{monitoring.data.hardConstraintLevelMismatchSuspected}</dd>
+            </div>
+            <div>
+              <dt>{t('admin.credits.monitoringGuard')}</dt>
+              <dd>{monitoring.data.scoreGuardTriggered}</dd>
+            </div>
+            <div>
+              <dt>{t('admin.credits.monitoringUnknownCost')}</dt>
+              <dd>{monitoring.data.unknownCostAttempts}</dd>
+            </div>
+          </dl>
+        ) : null}
       </section>
       <form
         class="grid gap-3 sm:grid-cols-[1fr_auto]"

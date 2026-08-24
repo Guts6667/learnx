@@ -588,11 +588,12 @@ export const frenchMessages = {
   'aiCorrection.quoteSummary':
     'Estimation : {estimated} crédits · plafond réservé : {maximum} crédits.',
   'aiCorrection.quoteAction':
-    'Action : correction formative standard, facturée en crédits LearnX.',
+    'Action : correction formative standard, déduite de votre allocation offerte.',
   'aiCorrection.consentNotice':
     'Certains critères peuvent revenir à retravailler sans compensation. Une vérification ciblée éventuelle est incluse dans le plafond.',
   'aiCorrection.confirm': 'Confirmer et lancer la correction',
   'aiCorrection.runError': 'La correction n’a pas pu être exécutée.',
+  'aiCorrection.newQuote': 'Demander un nouveau devis',
   'aiCorrection.unavailable':
     'Aucun critère utilisable n’a pu être restitué. Le débit reste celui du devis accepté, conformément au consentement donné avant l’exécution.',
   'aiCorrection.settlementRecap':
@@ -1599,11 +1600,12 @@ export const englishMessages = {
   'aiCorrection.quoteSummary':
     'Estimate: {estimated} credits · reserved ceiling: {maximum} credits.',
   'aiCorrection.quoteAction':
-    'Action: standard formative correction, charged in LearnX credits.',
+    'Action: standard formative correction, deducted from your complimentary allocation.',
   'aiCorrection.consentNotice':
     'Some criteria may come back for rework without compensation. Any targeted verification is included in the initial ceiling.',
   'aiCorrection.confirm': 'Confirm and start the correction',
   'aiCorrection.runError': 'The correction could not be completed.',
+  'aiCorrection.newQuote': 'Request a new quote',
   'aiCorrection.unavailable':
     'No usable criterion could be returned. The charge remains the accepted quote amount, as stated before execution.',
   'aiCorrection.settlementRecap':

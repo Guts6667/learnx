@@ -91,6 +91,6 @@ describe('V4-007 versioned AI pricing schema', () => {
     expect(response).not.toContain('modelId:');
     expect(response).toContain('maximumReservedCredits');
     expect(response).toContain('includesAutomaticSecondPass');
-    expect(response).toContain('ACTUAL_USAGE_ONLY');
+    expect(response).toContain('ACCEPTED_QUOTE_PRICE');
   });
 });

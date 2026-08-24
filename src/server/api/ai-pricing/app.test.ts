@@ -51,4 +51,55 @@ describe('AI pricing API middleware scope', () => {
     expect(authentication).toHaveBeenCalledOnce();
     expect(authorization).toHaveBeenCalledOnce();
   });
+
+  it('returns the quote in the resource envelope consumed by the learner client', async () => {
+    const app = createAiPricingApp({
+      authentication: async (context, next) => {
+        context.set('user', {
+          displayName: 'Rayan',
+          email: 'rayan@example.com',
+          id: '22222222-2222-4222-8222-222222222222',
+          locale: 'fr',
+          role: 'USER',
+        });
+        await next();
+      },
+      authorization: passThrough(() => undefined),
+      service: {
+        quote: vi.fn().mockResolvedValue({
+          action: 'STANDARD',
+          ceilingCredits: 18n,
+          estimatedCredits: 12n,
+          expiresAt: new Date('2026-08-24T19:00:00.000Z'),
+          id: '89c42047-5133-4ef0-b2df-a6a39092f02f',
+          includesAutomaticSecondPass: true,
+          includesTargetedVerification: false,
+        }),
+      },
+    });
+
+    const response = await app.request('/api/ai-correction/quotes', {
+      body: JSON.stringify({
+        action: 'STANDARD',
+        idempotencyKey: 'quote:request:api',
+        target: {
+          id: '11111111-1111-4111-8111-111111111111',
+          kind: 'EXERCISE_SUBMISSION',
+        },
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+
+    expect(response.status).toBe(201);
+    await expect(response.json()).resolves.toMatchObject({
+      resource: {
+        quote: {
+          estimatedCredits: '12',
+          maximumReservedCredits: '18',
+          releasePolicy: 'ACCEPTED_QUOTE_PRICE',
+        },
+      },
+    });
+  });
 });

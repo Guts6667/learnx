@@ -1,5 +1,10 @@
 # V4-010 — parcours de correction formative hors ligne
 
+> **Historique uniquement depuis le 24 août 2026.** Ce faux flow a été retiré
+> du chemin d'exécution V4. Il ne doit être ni réactivé, ni raccordé à
+> l'interface, ni utilisé comme substitut du runtime borné défini dans
+> `BACKLOG_V4.md` et `src/server/corrections/promoted-identity.ts`.
+
 ## Statut
 
 Ce parcours est un **prototype technique non publiable**. Il est désactivé par

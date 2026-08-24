@@ -193,7 +193,7 @@ export function AdminContactsPage() {
           </ul>
           <nav
             aria-label={t('admin.contacts.pagination')}
-            class="flex items-center justify-between gap-4"
+            class="flex flex-wrap items-center justify-between gap-4"
           >
             <Button
               disabled={offset === 0}

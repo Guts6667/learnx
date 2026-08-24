@@ -14,6 +14,8 @@
  */
 export const PROMOTED_CORRECTION_IDENTITY = {
   activityTypeScope: ['writing'],
+  languageScope: ['fr-FR'],
+  targetKindScope: ['EXERCISE'],
   benchmarkId: 'learnx-french-text-correction-v3-1',
   candidateId: 'claude-sonnet-4-6-openrouter-anthropic',
   modelId: 'anthropic/claude-sonnet-4.6',

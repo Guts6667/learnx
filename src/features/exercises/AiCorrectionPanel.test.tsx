@@ -54,6 +54,12 @@ describe('AiCorrectionPanel', () => {
                   secondPassRequired: true,
                   status: 'COMPLETED_PARTIAL',
                   unsureCriteria: ['justification-du-lien'],
+                  unsureCriterionDetails: [
+                    {
+                      key: 'justification-du-lien',
+                      label: 'Justification du lien',
+                    },
+                  ],
                 },
                 replay: false,
                 settlement: {
@@ -83,7 +89,7 @@ describe('AiCorrectionPanel', () => {
 
     expect(await screen.findByText('Décision explicite')).toBeInTheDocument();
     expect(screen.getByText('La décision est explicitement PICO.')).toBeInTheDocument();
-    expect(screen.getByText(/justification-du-lien.*à retravailler/)).toBeInTheDocument();
+    expect(screen.getByText(/Justification du lien.*à retravailler/)).toBeInTheDocument();
     expect(screen.queryByText(/Score indicatif/)).not.toBeInTheDocument();
     expect(screen.getByText(/Plafond réservé : 18 · débité : 12 · libéré : 6/)).toBeInTheDocument();
   });
@@ -113,6 +119,7 @@ describe('AiCorrectionPanel', () => {
                 secondPassRequired: false,
                 status: 'FAILED',
                 unsureCriteria: [],
+                unsureCriterionDetails: [],
               },
               replay: false,
               settlement: {

@@ -40,6 +40,7 @@ function buildResult(): OrchestratedCorrectionResult {
         },
       ],
       unsureCriteria: [],
+      unsureCriterionDetails: [],
       overallFeedback: 'Note claire.',
       indicativeScore: 100,
       secondPassRequired: false,

@@ -2,7 +2,11 @@ import type { MiddlewareHandler } from 'hono';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { AuthEnvironment } from '../_lib/auth';
-import { createCorrectionsApp } from './app';
+import {
+  createCorrectionsApp,
+  isPromotedCorrectionConfiguration,
+} from './app';
+import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity';
 
 const userId = '11111111-1111-4111-8111-111111111111';
 const quoteId = '22222222-2222-4222-8222-222222222222';
@@ -28,6 +32,44 @@ const authorization: MiddlewareHandler<AuthEnvironment> = async (
 ) => next();
 
 describe('corrections API', () => {
+  it('requires the same promoted model and provider for primary and score-guard passes', () => {
+    const base = {
+      apiKey: 'test-key',
+      appUrl: 'https://learnx.test',
+      assignments: {
+        CORRECTION_PRIMARY: {
+          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+          provider: PROMOTED_CORRECTION_IDENTITY.provider,
+        },
+        CORRECTION_SECOND_PASS: {
+          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+          provider: PROMOTED_CORRECTION_IDENTITY.provider,
+        },
+      },
+      deploymentEnvironment: 'development' as const,
+      enabled: true,
+      killSwitch: false,
+      maxContextCharacters: 120_000,
+      maxOutputTokens: 1_500,
+      maxRetryDelayMs: 0,
+      requestTimeoutMs: 60_000,
+    };
+
+    expect(isPromotedCorrectionConfiguration(base)).toBe(true);
+    expect(
+      isPromotedCorrectionConfiguration({
+        ...base,
+        assignments: {
+          ...base.assignments,
+          CORRECTION_SECOND_PASS: {
+            ...base.assignments.CORRECTION_SECOND_PASS,
+            modelId: 'anthropic/another-model',
+          },
+        },
+      }),
+    ).toBe(false);
+  });
+
   it('resolves and caches the deployment orchestration instead of returning 503', async () => {
     const runAcceptedQuote = vi.fn().mockResolvedValue({
       correction: {

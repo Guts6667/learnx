@@ -106,17 +106,19 @@ describe('AI pricing quote API', () => {
     expect(response.status).toBe(201);
     const body = await response.json();
     expect(body).toEqual({
-      quote: {
-        action: 'STANDARD',
-        currency: 'LEARNX_CREDIT',
-        estimatedCredits: '10',
-        expiresAt: '2026-08-12T13:15:00.000Z',
-        id: quote.id,
-        includesAutomaticSecondPass: true,
-        includesTargetedVerification: false,
-        maximumReservedCredits: '18',
-        releasePolicy: 'ACTUAL_USAGE_ONLY',
-        scope: 'PRIMARY',
+      resource: {
+        quote: {
+          action: 'STANDARD',
+          currency: 'LEARNX_CREDIT',
+          estimatedCredits: '10',
+          expiresAt: '2026-08-12T13:15:00.000Z',
+          id: quote.id,
+          includesAutomaticSecondPass: true,
+          includesTargetedVerification: false,
+          maximumReservedCredits: '18',
+          releasePolicy: 'ACCEPTED_QUOTE_PRICE',
+          scope: 'PRIMARY',
+        },
       },
     });
     expect(JSON.stringify(body)).not.toMatch(

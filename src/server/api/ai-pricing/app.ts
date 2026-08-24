@@ -130,18 +130,22 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
 
     return context.json(
       {
-        quote: {
-          action: quote.action,
-          currency: 'LEARNX_CREDIT',
-          estimatedCredits: quote.estimatedCredits.toString(),
-          expiresAt: quote.expiresAt.toISOString(),
-          id: quote.id,
-          includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
-          includesTargetedVerification: quote.includesTargetedVerification,
-          maximumReservedCredits: quote.ceilingCredits.toString(),
-          releasePolicy: 'ACTUAL_USAGE_ONLY',
-          scope:
-            quote.action === 'RECONSIDERATION' ? 'RECONSIDERATION' : 'PRIMARY',
+        resource: {
+          quote: {
+            action: quote.action,
+            currency: 'LEARNX_CREDIT',
+            estimatedCredits: quote.estimatedCredits.toString(),
+            expiresAt: quote.expiresAt.toISOString(),
+            id: quote.id,
+            includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
+            includesTargetedVerification: quote.includesTargetedVerification,
+            maximumReservedCredits: quote.ceilingCredits.toString(),
+            releasePolicy: 'ACCEPTED_QUOTE_PRICE',
+            scope:
+              quote.action === 'RECONSIDERATION'
+                ? 'RECONSIDERATION'
+                : 'PRIMARY',
+          },
         },
       },
       201,

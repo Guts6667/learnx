@@ -48,6 +48,7 @@ export class PrismaCorrectionOrchestrationPorts {
         quoteId: quote.id,
         userId: quote.userId,
         target: { id: submission.id, kind: 'EXERCISE_SUBMISSION' },
+        language: quote.language,
         estimatedCredits: quote.estimatedCredits,
         maximumReservedCredits: quote.ceilingCredits,
         expiresAt: quote.expiresAt,

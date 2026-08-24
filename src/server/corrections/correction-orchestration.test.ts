@@ -114,6 +114,7 @@ function buildQuote(overrides: Partial<AcceptedQuoteSnapshot> = {}): AcceptedQuo
     quoteId: 'quote-1',
     userId: 'user-1',
     target: { id: 'submission-1', kind: 'EXERCISE_SUBMISSION' },
+    language: 'fr-FR',
     estimatedCredits: 12n,
     maximumReservedCredits: 18n,
     expiresAt: new Date('2026-08-24T12:00:00Z'),
@@ -273,6 +274,7 @@ describe('correction orchestration (V4-009)', () => {
     expect(result.replay).toBe(false);
     expect(result.correction.status).toBe('COMPLETED');
     expect(result.correction.unsureCriteria).toEqual([]);
+    expect(result.correction.unsureCriterionDetails).toEqual([]);
     expect(result.correction.indicativeScore).toBe(100);
     expect(result.correction.criteria).toHaveLength(2);
     expect(result.correction.criteria[0]).toMatchObject({
@@ -396,6 +398,9 @@ describe('correction orchestration (V4-009)', () => {
 
     expect(result.correction.status).toBe('COMPLETED_PARTIAL');
     expect(result.correction.unsureCriteria).toEqual(['evidence-selection']);
+    expect(result.correction.unsureCriterionDetails).toEqual([
+      { key: 'evidence-selection', label: 'Sélection des preuves' },
+    ]);
     expect(result.correction.indicativeScore).toBeNull();
     expect(result.correction.criteria.map((item) => item.key)).toEqual([
       'decision-position',
@@ -477,6 +482,7 @@ describe('correction orchestration (V4-009)', () => {
   });
 
   it.each([
+    { language: 'en-GB' },
     { modelId: 'anthropic/another-model' },
     { provider: 'AnotherProvider' },
     { promptVersion: 'obsolete-prompt' },
@@ -516,8 +522,10 @@ describe('correction orchestration (V4-009)', () => {
     expect(() => correctionContractSchema.parse(contractRaw)).not.toThrow();
     expect(PROMOTED_CORRECTION_IDENTITY).toMatchObject({
       activityTypeScope: ['writing'],
+      languageScope: ['fr-FR'],
       maxRetries: 0,
       scoreGuardBandPoints: 5,
+      targetKindScope: ['EXERCISE'],
     });
   });
 });

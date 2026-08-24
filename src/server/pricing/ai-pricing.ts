@@ -4,6 +4,7 @@ import {
   getCorrectionContractRuntimeEligibility,
   type CorrectionContract,
 } from '../../lib/ai-correction-contracts.js';
+import { PROMOTED_CORRECTION_IDENTITY } from '../corrections/promoted-identity.js';
 
 export const AI_PRICING_ACTIONS = [
   'STANDARD',
@@ -411,6 +412,20 @@ export class AiPricingQuoteService {
     if (eligibility.contract.target.kind !== expectedKind) {
       throw new AiPricingError('TARGET_NOT_ELIGIBLE');
     }
+    if (
+      !PROMOTED_CORRECTION_IDENTITY.targetKindScope.some(
+        (kind) => kind === eligibility.contract.target.kind,
+      ) ||
+      !PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
+        (activityType) =>
+          activityType === eligibility.contract.target.activityType,
+      ) ||
+      !PROMOTED_CORRECTION_IDENTITY.languageScope.some(
+        (language) => language === target.language,
+      )
+    ) {
+      throw new AiPricingError('TARGET_NOT_ELIGIBLE');
+    }
 
     const requestFingerprint = createPricingQuoteFingerprint({
       action: input.action,
@@ -457,6 +472,19 @@ export class AiPricingQuoteService {
         !selection.entry.includesTargetedVerification)
     ) {
       throw new AiPricingError('INVALID_CATALOG_METRICS');
+    }
+    if (
+      selection.catalog.benchmarkId !==
+        PROMOTED_CORRECTION_IDENTITY.benchmarkId ||
+      selection.catalog.language !== target.language ||
+      selection.catalog.modelId !== PROMOTED_CORRECTION_IDENTITY.modelId ||
+      selection.catalog.provider !== PROMOTED_CORRECTION_IDENTITY.provider ||
+      selection.catalog.promptVersion !==
+        PROMOTED_CORRECTION_IDENTITY.promptVersion ||
+      selection.catalog.workflowKind !== 'SINGLE_MODEL' ||
+      !selection.entry.includesAutomaticSecondPass
+    ) {
+      throw new AiPricingError('CATALOG_UNAVAILABLE');
     }
     const price = calculateQuotePrice(selection.entry);
     const expiresAt = new Date(

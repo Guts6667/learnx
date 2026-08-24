@@ -33,7 +33,7 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 
 | Bloc | État | Preuve principale |
 | --- | --- | --- |
-| Filtre writing-only avant devis et exécution | Implémenté et testé | `src/server/pricing/ai-pricing.ts`, `src/server/corrections/correction-orchestration.ts` |
+| Filtre exercice writing/fr-FR avant devis et exécution | Implémenté et testé | `src/server/pricing/ai-pricing.ts`, `src/server/corrections/correction-orchestration.ts` |
 | Identité runtime épinglée | Implémenté | `src/server/corrections/promoted-identity.ts` |
 | Réservation sur lots offerts uniquement | Implémenté et testé | `src/server/api/corrections/app.ts`, `src/server/credits/prisma-credit-ledger.ts` |
 | Route réelle `/api/ai-corrections` | Implémentée et testée | `src/server/api/corrections/app.ts` |
@@ -41,8 +41,8 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | UI devis, consentement, preuves et règlement | Implémentée et testée | `src/features/exercises/AiCorrectionPanel.tsx` |
 | Accès UI réservé aux exercices éligibles | Implémenté et testé | `src/server/api/exercises/app.ts`, `src/features/exercises/ExerciseCard.tsx` |
 | Allocations offertes admin | Implémentées | `src/pages/AdminCreditsPage.tsx`, API crédits |
-| Coûts/incidents et deux signaux connus | Implémentés sur la branche | `src/server/corrections/correction-monitoring.ts` |
-| Totem mobile et desktop | En finition/QA | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` |
+| Coûts/incidents et deux signaux connus | Implémentés et visibles dans Crédits admin | `src/server/corrections/correction-monitoring.ts`, `src/pages/AdminCreditsPage.tsx` |
+| Totem mobile et desktop | Implémentés, QA locale verte | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` |
 
 ## Ce qui bloque encore une release utilisable
 
@@ -56,21 +56,24 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 3. **Configuration de déploiement** : clé OpenRouter, assignation exacte
    Sonnet/Anthropic et kill switch doivent être vérifiés en preview puis en
    production.
-4. **QA finale** : lint, typecheck, tests, build, E2E authentifié, responsive
-   320/390/720/1024/1440/1920, clavier et zoom 200 %.
-5. **Publication de recherche** : le journal public doit refléter les quatre
-   refus, le NO-GO Writing et la décision de pilote borné.
+4. **Preview authentifiée** : la QA locale est verte (lint, typecheck, 865
+   tests, build, 69 scénarios Playwright réussis et 15 conditionnels ignorés).
+   Il reste à valider l'environnement de preview avec ses vraies variables,
+   son catalogue et un compte pilote.
+5. **Gate de release** : la recherche publique FR/EN reflète déjà les refus,
+   le NO-GO Writing et la décision de pilote borné. Son déploiement suivra le
+   même commit de release que l'application, après la QA et le GO explicite.
 
 ## Chemin critique
 
 | Ordre | Ticket de reprise | Responsable | Sortie |
 | ---: | --- | --- | --- |
-| 1 | V4-010-RUNTIME | Développement | raccord end-to-end vert, sans appel réel |
+| 1 | V4-010-RUNTIME | Développement | raccord end-to-end implémenté ; suite complète et preview à valider |
 | 2 | V4-002-PUBLISH | Produit/pédagogie + Développement | un contrat writing/fr-FR publié et immuable dans le bundle |
 | 3 | V4-007-PILOT | Finance + Propriétaire | catalogue crédits offerts calibré et activé, sans vente publique |
-| 4 | V4-016-TOTEM | Développement | mobile + desktop conformes aux paquets approuvés |
-| 5 | V4-012-MONITORING | Développement | coûts, incidents et deux indicateurs visibles en admin |
-| 6 | V4-RESEARCH | Méthodologie + Développement | journal, registre et pages publiques FR/EN à jour |
+| 4 | V4-016-TOTEM | Développement | livré et QA locale verte ; validation preview propriétaire restante |
+| 5 | V4-012-MONITORING | Développement | livré sur la branche : coûts, incidents et deux indicateurs visibles en admin |
+| 6 | V4-RESEARCH | Méthodologie + Développement | livré sur la branche : journal, registre et pages publiques FR/EN à jour |
 | 7 | V4-019-RELEASE | Développement + Propriétaire | preview authentifiée, checklist, GO explicite, puis production |
 
 ## Limites assumées de la V4

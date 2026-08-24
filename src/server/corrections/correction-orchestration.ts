@@ -1,9 +1,7 @@
 import {
   buildProtocol3TransportJsonSchema,
   correctionContractSchema,
-  deriveCorrectionSecondPassDecision,
   type CorrectionContract,
-  type CorrectionOutput,
   type Protocol3CorrectionArtifactOutput,
 } from '../../lib/ai-correction-contracts.js';
 import {
@@ -58,6 +56,7 @@ export interface AcceptedQuoteSnapshot {
   quoteId: string;
   userId: string;
   target: { id: string; kind: 'EXERCISE_SUBMISSION' | 'STAGE_ASSESSMENT_SUBMISSION' };
+  language: string;
   estimatedCredits: bigint;
   maximumReservedCredits: bigint;
   expiresAt: Date;
@@ -140,6 +139,7 @@ export interface OrchestratedCorrectionResult {
       feedback: string;
     }>;
     unsureCriteria: string[];
+    unsureCriterionDetails: Array<{ key: string; label: string }>;
     overallFeedback: string | null;
     indicativeScore: number | null;
     secondPassRequired: boolean;
@@ -254,8 +254,14 @@ export class CorrectionOrchestrationService {
       !PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
         (activityType) => activityType === contract.target.activityType,
       ) ||
+      !PROMOTED_CORRECTION_IDENTITY.targetKindScope.some(
+        (kind) => kind === contract.target.kind,
+      ) ||
       quote.contractKey !== contract.contractKey ||
       quote.contractVersion !== contract.version ||
+      !PROMOTED_CORRECTION_IDENTITY.languageScope.some(
+        (language) => language === quote.language,
+      ) ||
       quote.modelId !== PROMOTED_CORRECTION_IDENTITY.modelId ||
       quote.provider !== PROMOTED_CORRECTION_IDENTITY.provider ||
       quote.promptVersion !== PROMOTED_CORRECTION_IDENTITY.promptVersion ||
@@ -468,6 +474,9 @@ export class CorrectionOrchestrationService {
             unsureCriteria: input.contract.criteria.map(
               (criterion) => criterion.key,
             ),
+            unsureCriterionDetails: input.contract.criteria.map(
+              (criterion) => ({ key: criterion.key, label: criterion.label }),
+            ),
             overallFeedback: null,
             indicativeScore: null,
             secondPassRequired: true,
@@ -494,6 +503,7 @@ export class CorrectionOrchestrationService {
         status: 'FAILED',
         criteria: [],
         unsureCriteria: [],
+        unsureCriterionDetails: [],
         overallFeedback: null,
         indicativeScore: null,
         secondPassRequired: false,
@@ -578,12 +588,7 @@ export class CorrectionOrchestrationService {
       (score !== null &&
         Math.abs(score - input.contract.passingScore) <=
           PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints);
-    const secondPassRequired =
-      scoreGuardBandRequiresSecondPass ||
-      deriveCorrectionSecondPassDecision({
-        contract: input.contract,
-        evaluations: [input.output as unknown as CorrectionOutput],
-      }).required;
+    const secondPassRequired = scoreGuardBandRequiresSecondPass;
     const monitoringSignals: CorrectionMonitoringSignal[] = [];
     if (scoreGuardBandRequiresSecondPass) {
       monitoringSignals.push('SCORE_GUARD_TRIGGERED');
@@ -640,6 +645,12 @@ export class CorrectionOrchestrationService {
         feedback: criterion.feedback,
       })),
       unsureCriteria: input.unsureCriteria,
+      unsureCriterionDetails: input.unsureCriteria.map((key) => ({
+        key,
+        label:
+          input.contract.criteria.find((criterion) => criterion.key === key)
+            ?.label ?? key,
+      })),
       overallFeedback: input.output.overallFeedback,
       indicativeScore: scoreGuardBandRequiresSecondPass ? null : score,
       secondPassRequired,

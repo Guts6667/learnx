@@ -831,3 +831,35 @@ plancher, et une garde ancrée sur le score du modèle ne détecte pas toute sa
 clémence. Leur remédiation et un nouvel examen Writing sont reportés en V4.1.
 Aucun nouvel appel modèle, changement de prompt, gold ou seuil n'est autorisé
 pour cette livraison. `humanReviewApproved` demeure faux.
+
+### 8.16 Audit d'intégration du pilote — coût expérimental nul
+
+Le raccord applicatif conserve le verdict scientifique `NO-GO` et ne crée
+aucune nouvelle preuve de modèle. Il applique seulement l'arbitrage produit du
+24 août : refus avant devis hors exercice `writing/fr-FR`, identité Sonnet 4.6
+et route Anthropic épinglées, passe de garde par le même modèle uniquement dans
+la bande ±5, aucun retry ni fallback, livraison partielle sans score exact et
+réservation sur lots offerts exclusivement.
+
+Le devis exposé à l'apprenant annonce désormais le prix accepté — et non un
+règlement reconstruit depuis l'usage fournisseur — conformément à la doctrine
+de prix plein. Les coûts fournisseur, résultats partiels, indisponibilités et
+deux signaux connus sont exposés dans l'administration. Cette intégration n'a
+effectué aucun appel modèle et ne modifie ni corpus, ni gold, ni seuil, ni
+`humanReviewApproved`.
+
+### 8.17 Clôture locale du raccord V4 — aucun appel modèle
+
+Le chemin applicatif ne référence plus les anciens runners evidence-assist,
+validateurs d'oracle ou faux fournisseurs issus de la fusion `origin/dev`.
+Leurs corpus, manifestes, résultats, rapports et digests restent conservés
+comme `HISTORICAL_EVIDENCE`; le prototype `V4_010_OFFLINE_FAKE_FLOW.md` est
+explicitement non exécutoire. Le runtime unique reste celui épinglé par
+`src/server/corrections/promoted-identity.ts`.
+
+La QA locale du lot est verte : lint, typecheck, 865 tests
+unitaires/intégration, build et 69 scénarios Playwright réussis, avec 15
+scénarios conditionnels ignorés. Le reflow de la navigation admin a été
+corrigé à 200 % sans couper arbitrairement les libellés. Cette preuve
+d'intégration n'active ni contrat, ni catalogue, ni clé fournisseur et n'a
+engagé aucun coût modèle.

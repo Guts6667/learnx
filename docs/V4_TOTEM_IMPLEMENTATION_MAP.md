@@ -2,7 +2,7 @@
 
 ## Autorité
 
-Statut : **DESIGN VALIDÉ — IMPLÉMENTATION EN COURS, QA FINALE À FAIRE**
+Statut : **DESIGN VALIDÉ — IMPLÉMENTATION ET QA LOCALE TERMINÉES, PREVIEW À VALIDER**
 
 Date d’arbitrage : 24 août 2026
 
@@ -24,7 +24,7 @@ comme un défaut à corriger, pas comme une variation libre.
 
 | Contrat | Valeur attendue | Cible principale |
 | --- | --- | --- |
-| Typographie | DM Sans | `src/styles.css` |
+| Typographie | DM Sans | `src/styles/index.css` |
 | Canvas | `#F4F6FB` | tokens CSS |
 | Surface | `#FFFFFF` | tokens CSS |
 | Encre | `#17233B` | tokens CSS |
@@ -40,8 +40,11 @@ listes, les tableaux administrateur et les retours de correction.
 
 Au 24 août, les tokens, shells produit/admin/auth, Aujourd’hui, Mes parcours,
 Découvrir, Notes, Profil, Crédits, correction assistée et les primitives PWA
-sont raccordés sur la branche de travail. Cette cartographie ne les déclare pas
-publiés : la QA responsive, la suite complète et le gate de release restent
+sont raccordés sur la branche de travail. La QA locale couvre lint, typecheck,
+865 tests unitaires/intégration, le build et 69 scénarios Playwright réussis
+(15 scénarios conditionnels ignorés), notamment 320/390/720/1024/1440/1920,
+zoom 200 %, clavier, focus et reduced motion. Cette cartographie ne les déclare
+pas publiés : la preview authentifiée et le gate de release restent
 obligatoires.
 
 ## Phase 1 — mobile et fondations

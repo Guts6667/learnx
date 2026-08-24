@@ -1,4 +1,5 @@
 import type { CorrectionContract } from '@/lib/ai-correction-contracts';
+import { PROMOTED_CORRECTION_IDENTITY } from '@/server/corrections/promoted-identity';
 
 import {
   AiPricingError,
@@ -201,6 +202,7 @@ function makeRepository(): AiPricingQuoteRepository & {
         pipelineIdentitySnapshot: input.catalog.pipelineIdentitySnapshot,
         pipelineVersionId: input.catalog.pipelineVersionId,
         promptVersion: input.catalog.promptVersion,
+        provider: input.catalog.provider,
         requestFingerprint: input.requestFingerprint,
         targetMarginCredits: input.entry.targetMarginCredits,
         target: input.target.target,
@@ -213,17 +215,17 @@ function makeRepository(): AiPricingQuoteRepository & {
     async findActiveEntry() {
       return {
         catalog: {
-          benchmarkId: 'benchmark-approved',
+          benchmarkId: PROMOTED_CORRECTION_IDENTITY.benchmarkId,
           corpusId: 'corpus-fr-v1',
           costDimensions: null,
           currency: 'LEARNX_CREDIT',
           id: 'catalog-id',
           language: 'fr-FR',
-          modelId: 'vendor/model-20260812',
+          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
           pipelineIdentitySnapshot: null,
           pipelineVersionId: null,
-          promptVersion: '1.0.0',
-          provider: 'openrouter',
+          promptVersion: PROMOTED_CORRECTION_IDENTITY.promptVersion,
+          provider: PROMOTED_CORRECTION_IDENTITY.provider,
           providerRateCardEffectiveAt: new Date('2026-08-12T00:00:00.000Z'),
           providerRateCardVersion: 'openrouter-2026-08-12',
           quoteTtlSeconds: 900,
@@ -350,6 +352,29 @@ describe('AI pricing quote service', () => {
         userId: 'user-id',
       }),
     ).rejects.toMatchObject({ code: 'CATALOG_UNAVAILABLE' });
+  });
+
+  it('refuses a published contract outside the promoted French locale', async () => {
+    const repository = makeRepository();
+    repository.resolveTarget = async (_userId, target) => ({
+      contract,
+      inputChars: 640,
+      language: 'en-GB',
+      target,
+    });
+    const service = new AiPricingQuoteService(repository);
+
+    await expect(
+      service.quote({
+        action: 'STANDARD',
+        idempotencyKey: 'quote:request:english',
+        target: {
+          id: '11111111-1111-4111-8111-111111111111',
+          kind: 'EXERCISE_SUBMISSION',
+        },
+        userId: 'user-id',
+      }),
+    ).rejects.toMatchObject({ code: 'TARGET_NOT_ELIGIBLE' });
   });
 
   it('rejects a composite catalog whose immutable pipeline snapshot is absent', async () => {

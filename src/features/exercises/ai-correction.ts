@@ -37,6 +37,7 @@ export interface CorrectionResult {
     secondPassRequired: boolean;
     status: 'COMPLETED' | 'COMPLETED_PARTIAL' | 'FAILED';
     unsureCriteria: string[];
+    unsureCriterionDetails?: Array<{ key: string; label: string }>;
   };
   replay: boolean;
   settlement: {
