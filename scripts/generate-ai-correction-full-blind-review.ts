@@ -24,18 +24,25 @@ function sha256(value: string): string {
 }
 
 export function correctionBenchmarkConfigurationSha256(input: {
+  budgetPolicySha256?: string;
   configuration: ReturnType<typeof parseCorrectionBenchmarkConfiguration>;
   supplierCostCapUsd?: number;
 }): string {
   const serializedConfiguration = serializeCorrectionBenchmarkConfiguration(
     input.configuration,
   );
-  if (input.supplierCostCapUsd === undefined) {
+  if (
+    input.supplierCostCapUsd === undefined &&
+    input.budgetPolicySha256 === undefined
+  ) {
     return sha256(serializedConfiguration);
   }
   return sha256(
     JSON.stringify({
       artifactKind: 'AUTONOMOUS_BENCHMARK_CONFIGURATION_IDENTITY',
+      ...(input.budgetPolicySha256
+        ? { budgetPolicySha256: input.budgetPolicySha256 }
+        : {}),
       configuration: JSON.parse(serializedConfiguration) as unknown,
       schemaVersion: 1,
       supplierCostCapUsd: input.supplierCostCapUsd,
@@ -176,9 +183,16 @@ export async function loadBlindReviewConfiguration(input: {
   const overlay = source as Record<string, unknown>;
   const merged = {
     ...base,
+    ...('activityTypeScope' in overlay
+      ? { activityTypeScope: overlay.activityTypeScope }
+      : {}),
     benchmarkId: overlay.benchmarkId,
     corpusId: overlay.corpusId,
+    ...('maxRetries' in overlay ? { maxRetries: overlay.maxRetries } : {}),
     reviewPanelCaseIds: overlay.reviewPanelCaseIds,
+    ...('scoreGuardBandPoints' in overlay
+      ? { scoreGuardBandPoints: overlay.scoreGuardBandPoints }
+      : {}),
     ...('thresholds' in overlay &&
     overlay.thresholds !== null &&
     typeof overlay.thresholds === 'object'
@@ -281,13 +295,27 @@ function logicalKey(attempt: BenchmarkAttempt): string {
 function finalAttempts(
   attempts: BenchmarkAttempt[],
 ): Map<string, BenchmarkAttempt> {
-  const finalByRun = new Map<string, BenchmarkAttempt>();
+  const grouped = new Map<string, BenchmarkAttempt[]>();
   for (const attempt of attempts) {
     const key = logicalKey(attempt);
-    const current = finalByRun.get(key);
-    if (!current || current.attempt < attempt.attempt) {
-      finalByRun.set(key, attempt);
+    grouped.set(key, [...(grouped.get(key) ?? []), attempt]);
+  }
+  const finalByRun = new Map<string, BenchmarkAttempt>();
+  for (const [key, runAttempts] of grouped) {
+    const ordered = [...runAttempts].sort(
+      (left, right) => left.attempt - right.attempt,
+    );
+    const delivered = [...ordered]
+      .reverse()
+      .find(
+        (attempt) =>
+          attempt.status === 'VALID' && attempt.output !== undefined,
+      );
+    const selected = delivered ?? ordered.at(-1);
+    if (!selected) {
+      continue;
     }
+    finalByRun.set(key, selected);
   }
   return finalByRun;
 }
@@ -339,6 +367,7 @@ function weightedScore(input: {
 export function selectFullBlindReviewRuns(input: {
   attempts: BenchmarkAttempt[];
   corpus: ReturnType<typeof parseCorrectionBenchmarkCorpus>;
+  scoreGuardBandPoints?: number;
 }): Map<string, Set<string>> {
   const finalByRun = finalAttempts(input.attempts);
   const casesById = new Map(
@@ -425,10 +454,19 @@ export function selectFullBlindReviewRuns(input: {
       const expectedPass =
         weightedScore({ contract, levels: benchmarkCase.expectedCriteria }) >=
         contract.passingScore;
-      const actualPass =
-        weightedScore({ contract, levels: attempt.output.criteria }) >=
-        contract.passingScore;
-      if (!expectedPass && actualPass) {
+      const actualScore = weightedScore({
+        contract,
+        levels: attempt.output.criteria,
+      });
+      const actualPass = actualScore >= contract.passingScore;
+      const guardedSecondPass =
+        attempt.workflowPass === 'SCORE_GUARD_SECOND_PASS' ||
+        (input.scoreGuardBandPoints !== undefined &&
+          Math.abs(actualScore - contract.passingScore) <=
+            input.scoreGuardBandPoints);
+      if (guardedSecondPass) {
+        select(key, 'SCORE_GUARD_BAND_SECOND_PASS');
+      } else if (!expectedPass && actualPass) {
         select(key, 'FALSE_PASS_DECISION');
       }
       const expectedByKey = new Map(
@@ -461,7 +499,9 @@ export function selectFullBlindReviewRuns(input: {
     }
   }
   for (const attempt of input.attempts.filter(
-    (item) => item.status === 'INVALID',
+    (item) =>
+      item.status === 'INVALID' &&
+      item.workflowPass !== 'SCORE_GUARD_SECOND_PASS',
   )) {
     select(logicalKey(attempt), 'INITIAL_INVALID_WITH_RETRY');
   }
@@ -504,6 +544,7 @@ export function assertFullBlindReviewPacketIsBlind(packet: unknown): void {
     'unsureCriteria',
     'usage',
     'verdict',
+    'workflowPass',
   ]);
   const visit = (value: unknown): void => {
     if (Array.isArray(value)) {
@@ -611,6 +652,7 @@ export function buildFullBlindReviewPacket(input: {
   const selected = selectFullBlindReviewRuns({
     attempts,
     corpus: input.corpus,
+    scoreGuardBandPoints: input.configuration.scoreGuardBandPoints,
   });
   const selectedKeys = [...selected.keys()].sort();
   const reviewCases = selectedKeys.map((key, index) => {
@@ -724,7 +766,14 @@ async function main(): Promise<void> {
           .max(4)
           .parse(configurationSource.supplierCostCapUsd)
       : undefined;
+  const budgetPolicySha256 =
+    configurationSource !== null &&
+    typeof configurationSource === 'object' &&
+    'budgetPolicySha256' in configurationSource
+      ? sha256Schema.parse(configurationSource.budgetPolicySha256)
+      : undefined;
   const configurationDigest = correctionBenchmarkConfigurationSha256({
+    budgetPolicySha256,
     configuration,
     supplierCostCapUsd,
   });

@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url';
 import { z } from 'zod';
 
 import {
+  benchmarkActivityTypeSchema,
   benchmarkAttemptSchema,
   benchmarkAutonomousReviewArtifactSchema,
   benchmarkHumanReviewArtifactSchema,
@@ -21,6 +22,7 @@ import {
   parseCorrectionBenchmarkConfiguration,
   parseCorrectionBenchmarkCorpus,
   prepareBenchmarkResume,
+  reconcileProtocol3ScoreGuardPasses,
   salvageProtocol3PartialCorrection,
   summarizeCorrectionBenchmark,
   validateBenchmarkProtocol3ModelOutputWithEvidence,
@@ -35,6 +37,7 @@ import {
 import {
   buildProtocol3TransportJsonSchema,
   canonicalizeProtocol3CorrectionOutput,
+  protocol3CorrectionArtifactOutputSchema,
 } from '../src/lib/ai-correction-contracts.ts';
 import { sanitizeStructuredOutputJsonSchema } from '../src/lib/ai-json-schema.ts';
 import {
@@ -44,6 +47,7 @@ import {
 } from '../src/lib/ai-correction-provider-adapters.ts';
 import {
   conservativeSupplierCallCostUsd,
+  SupplierBudgetError,
   SupplierBudgetGuard,
   type SupplierBudgetUsage,
 } from '../src/lib/ai-benchmark-supplier-budget.ts';
@@ -80,16 +84,21 @@ const holdoutReviewManifestSchema = z
 
 const autonomousHoldoutConfigurationSchema = z
   .object({
+    activityTypeScope: z.array(benchmarkActivityTypeSchema).min(1).optional(),
     artifactKind: z.literal('AUTONOMOUS_HOLDOUT_CONFIGURATION'),
     authoringManifestPath: z.string().trim().min(1),
     benchmarkId: z.string(),
+    budgetPolicyPath: z.string().trim().min(1).optional(),
+    budgetPolicySha256: z.string().regex(/^[a-f0-9]{64}$/).optional(),
     corpusId: z.string(),
     corpusPath: z.string(),
     corpusReviewManifestPath: z.string().trim().min(1),
     extends: z.string(),
+    maxRetries: z.literal(0).optional(),
     ownerAuthorizationPath: z.string().trim().min(1),
     reviewPanelCaseIds: z.array(z.string()).min(1),
     schemaVersion: z.literal(1),
+    scoreGuardBandPoints: z.number().int().positive().max(50).optional(),
     supplierCostCapUsd: z.number().positive().max(4),
     thresholds: z
       .object({
@@ -100,10 +109,68 @@ const autonomousHoldoutConfigurationSchema = z
       })
       .strict(),
   })
-  .strict();
+  .strict()
+  .superRefine((configuration, context) => {
+    if (
+      (configuration.budgetPolicyPath === undefined) !==
+      (configuration.budgetPolicySha256 === undefined)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'A budget policy path and digest must be declared together.',
+        path:
+          configuration.budgetPolicyPath === undefined
+            ? ['budgetPolicyPath']
+            : ['budgetPolicySha256'],
+      });
+    }
+    if (
+      (configuration.activityTypeScope === undefined) !==
+      (configuration.scoreGuardBandPoints === undefined)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'A scoped holdout must declare both activityTypeScope and scoreGuardBandPoints.',
+        path:
+          configuration.activityTypeScope === undefined
+            ? ['activityTypeScope']
+            : ['scoreGuardBandPoints'],
+      });
+    }
+  });
 
 export function parseAutonomousHoldoutConfiguration(input: unknown) {
   return autonomousHoldoutConfigurationSchema.parse(input);
+}
+
+export function mergeAutonomousHoldoutBenchmarkConfiguration(input: {
+  baseConfiguration: unknown;
+  overlay: ReturnType<typeof parseAutonomousHoldoutConfiguration>;
+}): CorrectionBenchmarkConfiguration {
+  const baseConfiguration = parseCorrectionBenchmarkConfiguration(
+    input.baseConfiguration,
+  );
+  return parseCorrectionBenchmarkConfiguration({
+    ...baseConfiguration,
+    ...(input.overlay.activityTypeScope
+      ? { activityTypeScope: input.overlay.activityTypeScope }
+      : {}),
+    benchmarkId: input.overlay.benchmarkId,
+    corpusId: input.overlay.corpusId,
+    ...(input.overlay.maxRetries !== undefined
+      ? { maxRetries: input.overlay.maxRetries }
+      : {}),
+    reviewPanelCaseIds: input.overlay.reviewPanelCaseIds,
+    ...(input.overlay.scoreGuardBandPoints !== undefined
+      ? { scoreGuardBandPoints: input.overlay.scoreGuardBandPoints }
+      : {}),
+    thresholds: {
+      ...baseConfiguration.thresholds,
+      ...input.overlay.thresholds,
+    },
+  });
 }
 
 const ownerAuthorizationSchema = z
@@ -121,6 +188,8 @@ const authoringManifestSchema = z
   .passthrough();
 
 type LoadedBenchmarkInputs = {
+  budgetPolicyPath?: string;
+  budgetPolicySha256?: string;
   configuration: CorrectionBenchmarkConfiguration;
   configurationSha256: string;
   corpus: CorrectionBenchmarkCorpus;
@@ -139,8 +208,10 @@ function sha256(value: string | Buffer): string {
 function configurationSha256(
   configuration: CorrectionBenchmarkConfiguration,
   supplierCostCapUsd?: number,
+  budgetPolicySha256?: string,
 ): string {
   return correctionBenchmarkConfigurationSha256({
+    budgetPolicySha256,
     configuration,
     supplierCostCapUsd,
   });
@@ -213,22 +284,24 @@ export async function loadBenchmarkInputs(
     'artifactKind' in overlaySource
   ) {
     const overlay = parseAutonomousHoldoutConfiguration(overlaySource);
-    const baseConfiguration = parseCorrectionBenchmarkConfiguration(
-      await readJson(path.resolve(overlayDirectory, overlay.extends)),
-    );
-    const configuration = parseCorrectionBenchmarkConfiguration({
-      ...baseConfiguration,
-      benchmarkId: overlay.benchmarkId,
-      corpusId: overlay.corpusId,
-      reviewPanelCaseIds: overlay.reviewPanelCaseIds,
-      thresholds: {
-        ...baseConfiguration.thresholds,
-        ...overlay.thresholds,
-      },
+    const configuration = mergeAutonomousHoldoutBenchmarkConfiguration({
+      baseConfiguration: await readJson(
+        path.resolve(overlayDirectory, overlay.extends),
+      ),
+      overlay,
     });
+    if (overlay.budgetPolicyPath && overlay.budgetPolicySha256) {
+      const budgetPolicyRaw = await readFile(
+        path.resolve(overlayDirectory, overlay.budgetPolicyPath),
+      );
+      if (sha256(budgetPolicyRaw) !== overlay.budgetPolicySha256) {
+        throw new Error('BENCHMARK_BUDGET_POLICY_DIGEST_MISMATCH');
+      }
+    }
     const configurationDigest = configurationSha256(
       configuration,
       overlay.supplierCostCapUsd,
+      overlay.budgetPolicySha256,
     );
     const corpusRaw = await readFile(
       path.resolve(overlayDirectory, overlay.corpusPath),
@@ -264,6 +337,8 @@ export async function loadBenchmarkInputs(
       manifest: JSON.parse(corpusReviewManifestRaw.toString('utf8')) as unknown,
     });
     return {
+      budgetPolicyPath: overlay.budgetPolicyPath,
+      budgetPolicySha256: overlay.budgetPolicySha256,
       configuration,
       configurationSha256: configurationDigest,
       corpus,
@@ -435,7 +510,14 @@ export function assertAutonomousSupplierCostReconciled(input: {
   supplierCostCapUsd: number;
 }): void {
   const budget = input.supplierBudget;
-  const usages = input.attempts.map((attempt) => attempt.usage);
+  const usages = input.attempts
+    .filter(
+      (attempt) =>
+        attempt.errorCode !== 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+        attempt.errorCode !==
+          'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
+    )
+    .map((attempt) => attempt.usage);
   if (
     !budget ||
     budget.hardCapUsd > input.supplierCostCapUsd ||
@@ -673,6 +755,101 @@ function conservativeCallCostUsd(input: {
   });
 }
 
+export interface BenchmarkSupplierBudgetPreflight {
+  artifactKind: 'BENCHMARK_SUPPLIER_BUDGET_PREFLIGHT';
+  allGuardCallCount: number;
+  allGuardWorstCaseUsd: number;
+  boundedSecondPassBudgetUsd: number;
+  boundedSecondPassCount: number;
+  decision: 'READY' | 'CONTINGENCY_REQUIRED';
+  primaryCallCount: number;
+  primaryWorstCaseUsd: number;
+  retryCallCount: number;
+  retryWorstCaseUsd: number;
+  schemaVersion: 1;
+  supplierCostCapUsd: number;
+}
+
+/**
+ * Compute the complete primary/retry envelope before any provider request.
+ * Guard passes are budgeted separately because their trigger is observable
+ * only after every primary cell has completed.
+ */
+export function buildBenchmarkSupplierBudgetPreflight(input: {
+  candidates: CorrectionBenchmarkConfiguration['candidates'];
+  cases: CorrectionBenchmarkCorpus['cases'];
+  configuration: CorrectionBenchmarkConfiguration;
+  corpus: CorrectionBenchmarkCorpus;
+  maxRetries: number;
+  repetitions: number;
+  supplierCostCapUsd: number;
+  actualSpentUsd?: number;
+}): BenchmarkSupplierBudgetPreflight {
+  const primaryCallCosts: number[] = [];
+  for (const candidate of input.candidates) {
+    for (const benchmarkCase of input.cases) {
+      const cost = conservativeCallCostUsd({
+        benchmarkCase,
+        candidate,
+        configuration: input.configuration,
+        corpus: input.corpus,
+      });
+      for (let repetition = 1; repetition <= input.repetitions; repetition += 1) {
+        primaryCallCosts.push(cost);
+      }
+    }
+  }
+  const primaryWorstCaseUsd = primaryCallCosts.reduce(
+    (total, cost) => total + cost,
+    0,
+  );
+  const retryWorstCaseUsd = primaryWorstCaseUsd * input.maxRetries;
+  const availableForGuards = Math.max(
+    0,
+    input.supplierCostCapUsd -
+      (input.actualSpentUsd ?? 0) -
+      primaryWorstCaseUsd -
+      retryWorstCaseUsd,
+  );
+  const sortedGuardCosts = [...primaryCallCosts].sort(
+    (left, right) => left - right,
+  );
+  let boundedSecondPassCount = 0;
+  let boundedSecondPassSpend = 0;
+  for (const cost of sortedGuardCosts) {
+    if (boundedSecondPassSpend + cost > availableForGuards + 1e-12) {
+      break;
+    }
+    boundedSecondPassSpend += cost;
+    boundedSecondPassCount += 1;
+  }
+  const allGuardWorstCaseUsd = primaryWorstCaseUsd;
+  const decision =
+    (input.actualSpentUsd ?? 0) +
+        primaryWorstCaseUsd +
+        retryWorstCaseUsd >
+      input.supplierCostCapUsd + 1e-12
+      ? 'CONTINGENCY_REQUIRED'
+      : 'READY';
+  return {
+    artifactKind: 'BENCHMARK_SUPPLIER_BUDGET_PREFLIGHT',
+    allGuardCallCount: primaryCallCosts.length,
+    allGuardWorstCaseUsd,
+    boundedSecondPassBudgetUsd: Math.min(
+      availableForGuards,
+      allGuardWorstCaseUsd,
+    ),
+    boundedSecondPassCount,
+    decision,
+    primaryCallCount: primaryCallCosts.length,
+    primaryWorstCaseUsd,
+    retryCallCount: primaryCallCosts.length * input.maxRetries,
+    retryWorstCaseUsd,
+    schemaVersion: 1,
+    supplierCostCapUsd: input.supplierCostCapUsd,
+  };
+}
+
 function candidateApiKey(
   candidate: CorrectionBenchmarkConfiguration['candidates'][number],
 ): string {
@@ -712,15 +889,197 @@ function serializeRawModelOutput(output: unknown): string {
   }
 }
 
-async function runBenchmark(input: {
+type CandidateExecutor = typeof callCandidate;
+
+function completeOutputScore(input: {
+  contract: ReturnType<typeof findBenchmarkContract>;
+  output: NonNullable<BenchmarkAttempt['output']>;
+}): number {
+  const levels = new Map(
+    input.output.criteria.map((criterion) => [
+      criterion.criterionKey,
+      criterion.levelKey,
+    ]),
+  );
+  return input.contract.criteria.reduce((total, criterion) => {
+    const levelKey = levels.get(criterion.key);
+    const level = criterion.performanceLevels.find(
+      (item) => item.key === levelKey,
+    );
+    if (!level) {
+      throw new Error('BENCHMARK_SCORE_GUARD_LEVEL_MISSING');
+    }
+    return total + criterion.weight * level.score;
+  }, 0) / 100;
+}
+
+async function executeBenchmarkWorkflowPass(input: {
+  apiKey: string;
+  attemptNumber: number;
+  benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+  candidate: CorrectionBenchmarkConfiguration['candidates'][number];
+  configuration: CorrectionBenchmarkConfiguration;
+  contract: ReturnType<typeof findBenchmarkContract>;
+  corpus: CorrectionBenchmarkCorpus;
+  executeCandidate: CandidateExecutor;
+  repetition: number;
+  workflowPass: 'PRIMARY' | 'RETRY' | 'SCORE_GUARD_SECOND_PASS';
+}): Promise<BenchmarkAttempt> {
+  const startedAt = performance.now();
+  try {
+    const result = await input.executeCandidate({
+      apiKey: input.apiKey,
+      benchmarkCase: input.benchmarkCase,
+      candidate: input.candidate,
+      configuration: input.configuration,
+      corpus: input.corpus,
+    });
+    try {
+      const resolved = validateBenchmarkProtocol3ModelOutputWithEvidence({
+        benchmarkCase: input.benchmarkCase,
+        canary: input.configuration.controlPrompt.canary,
+        contract: input.contract,
+        output: result.output,
+      });
+      return benchmarkAttemptSchema.parse({
+        attempt: input.attemptNumber,
+        candidateId: input.candidate.candidateId,
+        caseId: input.benchmarkCase.caseId,
+        evidenceMatches: resolved.evidenceMatches,
+        latencyMs: result.latencyMs,
+        modelId: input.candidate.modelId,
+        modelSnapshot: result.modelSnapshot,
+        output: resolved.output,
+        provider: input.candidate.provider,
+        providerRequestId: result.providerRequestId,
+        providerRoute: result.providerRoute,
+        rawModelOutput: serializeRawModelOutput(result.output),
+        requestProfileSnapshot: input.candidate.requestProfile,
+        requestProtocolVersion: input.configuration.requestProtocolVersion,
+        repetition: input.repetition,
+        status: 'VALID',
+        usage: result.usage,
+        workflowPass: input.workflowPass,
+      });
+    } catch (error) {
+      if (
+        input.configuration.correctionDeliveryPolicy === 'PARTIAL_CRITERION'
+      ) {
+        try {
+          const salvaged = salvageProtocol3PartialCorrection({
+            benchmarkCase: input.benchmarkCase,
+            canary: input.configuration.controlPrompt.canary,
+            contract: input.contract,
+            output: result.output,
+          });
+          return benchmarkAttemptSchema.parse({
+            attempt: input.attemptNumber,
+            candidateId: input.candidate.candidateId,
+            caseId: input.benchmarkCase.caseId,
+            evidenceMatches: salvaged.evidenceMatches,
+            latencyMs: result.latencyMs,
+            modelId: input.candidate.modelId,
+            modelSnapshot: result.modelSnapshot,
+            output: salvaged.output,
+            provider: input.candidate.provider,
+            providerRequestId: result.providerRequestId,
+            providerRoute: result.providerRoute,
+            rawModelOutput: serializeRawModelOutput(result.output),
+            requestProfileSnapshot: input.candidate.requestProfile,
+            requestProtocolVersion: input.configuration.requestProtocolVersion,
+            repetition: input.repetition,
+            status: 'VALID',
+            unsureCriteria: salvaged.unsureCriteria,
+            usage: result.usage,
+            workflowPass: input.workflowPass,
+          });
+        } catch {
+          // No criterion is safely deliverable: preserve the invalid attempt.
+        }
+      }
+      let structuredOutput;
+      try {
+        structuredOutput = canonicalizeProtocol3CorrectionOutput({
+          contract: input.contract,
+          output: result.output,
+        });
+      } catch {
+        structuredOutput = undefined;
+      }
+      return benchmarkAttemptSchema.parse({
+        attempt: input.attemptNumber,
+        candidateId: input.candidate.candidateId,
+        caseId: input.benchmarkCase.caseId,
+        errorCode: stableModelValidationError(error),
+        latencyMs: result.latencyMs,
+        modelId: input.candidate.modelId,
+        modelSnapshot: result.modelSnapshot,
+        output: structuredOutput,
+        provider: input.candidate.provider,
+        providerRequestId: result.providerRequestId,
+        providerRoute: result.providerRoute,
+        rawModelOutput: serializeRawModelOutput(result.output),
+        requestProfileSnapshot: input.candidate.requestProfile,
+        requestProtocolVersion: input.configuration.requestProtocolVersion,
+        repetition: input.repetition,
+        status: 'INVALID',
+        usage: result.usage,
+        workflowPass: input.workflowPass,
+      });
+    }
+  } catch (error) {
+    if (
+      !(error instanceof CorrectionProviderError) &&
+      !(error instanceof CorrectionModelOutputError)
+    ) {
+      throw error;
+    }
+    const isModelOutputFailure = error instanceof CorrectionModelOutputError;
+    return benchmarkAttemptSchema.parse({
+      attempt: input.attemptNumber,
+      candidateId: input.candidate.candidateId,
+      caseId: input.benchmarkCase.caseId,
+      errorCode:
+        error instanceof CorrectionProviderError &&
+        error.message === 'PROVIDER_HTTP_ERROR' &&
+        error.status !== undefined
+          ? `PROVIDER_HTTP_${error.status}`
+          : error.message,
+      latencyMs: error.latencyMs ?? Math.round(performance.now() - startedAt),
+      modelId: input.candidate.modelId,
+      modelSnapshot: error.modelSnapshot,
+      providerRequestId: error.providerRequestId,
+      providerRoute: error.providerRoute,
+      provider: input.candidate.provider,
+      ...(isModelOutputFailure
+        ? {
+            rawModelOutput: error.rawModelOutput,
+            usage: error.usage,
+          }
+        : {}),
+      repetition: input.repetition,
+      requestProfileSnapshot: input.candidate.requestProfile,
+      requestProtocolVersion: input.configuration.requestProtocolVersion,
+      status: isModelOutputFailure ? 'INVALID' : 'ERROR',
+      workflowPass: input.workflowPass,
+    });
+  }
+}
+
+export async function runBenchmark(input: {
   candidates?: CorrectionBenchmarkConfiguration['candidates'];
   cases?: CorrectionBenchmarkCorpus['cases'];
   configuration: CorrectionBenchmarkConfiguration;
   corpus: CorrectionBenchmarkCorpus;
+  executeCandidate?: CandidateExecutor;
+  onBudgetPreflight?: (
+    preflight: BenchmarkSupplierBudgetPreflight,
+  ) => Promise<void>;
   onProgress?: (attempts: BenchmarkAttempt[]) => Promise<void>;
   maxRetries?: number;
   requestDelayMs?: number;
   repetitions?: number;
+  providerApiKey?: string;
   supplierBudget?: SupplierBudgetGuard;
   initialAttempts?: BenchmarkAttempt[];
   pendingCells?: {
@@ -731,6 +1090,9 @@ async function runBenchmark(input: {
   }[];
 }): Promise<BenchmarkAttempt[]> {
   const attempts: BenchmarkAttempt[] = [...(input.initialAttempts ?? [])];
+  const selectedCandidates = input.candidates ?? input.configuration.candidates;
+  const selectedCases = input.cases ?? input.corpus.cases;
+  const repetitions = input.repetitions ?? input.configuration.repetitions;
   const pendingCells = input.pendingCells
     ? new Map(
         input.pendingCells.map((cell) => [
@@ -740,9 +1102,101 @@ async function runBenchmark(input: {
       )
     : null;
   let hasStartedRequest = false;
+  let supplierCostReconciliationRequired = false;
+  const executeCandidate = input.executeCandidate ?? callCandidate;
+  const retryMaximum = input.maxRetries ?? input.configuration.maxRetries;
+  if (input.supplierBudget) {
+    const preflight = buildBenchmarkSupplierBudgetPreflight({
+      actualSpentUsd: input.supplierBudget.actualSpentUsd,
+      candidates: selectedCandidates,
+      cases: selectedCases,
+      configuration: input.configuration,
+      corpus: input.corpus,
+      maxRetries: retryMaximum,
+      repetitions,
+      supplierCostCapUsd: input.supplierBudget.hardCapUsd,
+    });
+    await input.onBudgetPreflight?.(preflight);
+    // This is the only dispatch guard for the mandatory primary/retry phase.
+    // A failure happens after the preflight is persisted but before the first
+    // provider request, never mid-exam.
+    if (preflight.decision === 'CONTINGENCY_REQUIRED') {
+      throw new Error('BENCHMARK_SUPPLIER_BUDGET_CONTINGENCY_REQUIRED');
+    }
+    input.supplierBudget.assertCanDispatch(
+      preflight.primaryWorstCaseUsd + preflight.retryWorstCaseUsd,
+    );
+  }
+  const dispatch = async (dispatchInput: {
+    attemptNumber: number;
+    benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+    candidate: CorrectionBenchmarkConfiguration['candidates'][number];
+    contract: ReturnType<typeof findBenchmarkContract>;
+    deferProgress?: boolean;
+    repetition: number;
+    workflowPass: 'PRIMARY' | 'RETRY' | 'SCORE_GUARD_SECOND_PASS';
+  }): Promise<BenchmarkAttempt> => {
+    if (hasStartedRequest && (input.requestDelayMs ?? 0) > 0) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, input.requestDelayMs),
+      );
+    }
+    hasStartedRequest = true;
+    const attempt = await executeBenchmarkWorkflowPass({
+      apiKey: input.providerApiKey ?? candidateApiKey(dispatchInput.candidate),
+      attemptNumber: dispatchInput.attemptNumber,
+      benchmarkCase: dispatchInput.benchmarkCase,
+      candidate: dispatchInput.candidate,
+      configuration: input.configuration,
+      contract: dispatchInput.contract,
+      corpus: input.corpus,
+      executeCandidate,
+      repetition: dispatchInput.repetition,
+      workflowPass: dispatchInput.workflowPass,
+    });
+    attempts.push(attempt);
+    try {
+      try {
+        input.supplierBudget?.reconcile(
+          attempt.usage as SupplierBudgetUsage | undefined,
+        );
+      } catch (error) {
+        if (
+          error instanceof SupplierBudgetError &&
+          error.code === 'SUPPLIER_COST_RECONCILIATION_REQUIRED' &&
+          dispatchInput.workflowPass !== 'SCORE_GUARD_SECOND_PASS'
+        ) {
+          // The complete primary envelope was reserved before the first
+          // request. An unknown per-call cost therefore remains a financial
+          // reconciliation defect, but it must not burn the sealed exam by
+          // interrupting the already-funded primary phase. Guard passes stay
+          // closed until every primary cost is reconciled.
+          supplierCostReconciliationRequired = true;
+        } else {
+          throw error;
+        }
+      }
+    } finally {
+      if (!dispatchInput.deferProgress) {
+        await input.onProgress?.(attempts);
+      }
+    }
+    return attempt;
+  };
 
-  for (const candidate of input.candidates ?? input.configuration.candidates) {
-    for (const benchmarkCase of input.cases ?? input.corpus.cases) {
+  const guardedCells: Array<{
+    benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+    candidate: CorrectionBenchmarkConfiguration['candidates'][number];
+    contract: ReturnType<typeof findBenchmarkContract>;
+    distanceFromPassingScore: number;
+    primaryAttempt: BenchmarkAttempt;
+    repetition: number;
+  }> = [];
+
+  // Phase 1: finish every mandatory primary cell (and its preregistered retry
+  // budget) before considering a single score-guard pass.
+  for (const candidate of selectedCandidates) {
+    for (const benchmarkCase of selectedCases) {
       const contract = findBenchmarkContract(
         input.corpus,
         benchmarkCase.contractKey,
@@ -750,7 +1204,7 @@ async function runBenchmark(input: {
       );
       for (
         let repetition = 1;
-        repetition <= (input.repetitions ?? input.configuration.repetitions);
+        repetition <= repetitions;
         repetition += 1
       ) {
         if (
@@ -766,222 +1220,167 @@ async function runBenchmark(input: {
         );
         for (
           let attemptNumber = pendingCell?.attemptStart ?? 1;
-          attemptNumber <=
-          (input.maxRetries ?? input.configuration.maxRetries) + 1;
+          attemptNumber <= retryMaximum + 1;
           attemptNumber += 1
         ) {
-          input.supplierBudget?.assertCanDispatch(
-            conservativeCallCostUsd({
-              benchmarkCase,
-              candidate,
-              configuration: input.configuration,
-              corpus: input.corpus,
-            }),
-          );
-          if (hasStartedRequest && (input.requestDelayMs ?? 0) > 0) {
-            await new Promise((resolve) =>
-              setTimeout(resolve, input.requestDelayMs),
-            );
-          }
-          hasStartedRequest = true;
-          const startedAt = performance.now();
-          try {
-            const result = await callCandidate({
-              apiKey: candidateApiKey(candidate),
-              benchmarkCase,
-              candidate,
-              configuration: input.configuration,
-              corpus: input.corpus,
-            });
-            let resolved;
-            try {
-              resolved = validateBenchmarkProtocol3ModelOutputWithEvidence({
-                benchmarkCase,
-                canary: input.configuration.controlPrompt.canary,
-                contract,
-                output: result.output,
-              });
-            } catch (error) {
-              if (
-                input.configuration.correctionDeliveryPolicy ===
-                'PARTIAL_CRITERION'
-              ) {
-                try {
-                  const salvaged = salvageProtocol3PartialCorrection({
-                    benchmarkCase,
-                    canary: input.configuration.controlPrompt.canary,
-                    contract,
-                    output: result.output,
-                  });
-                  attempts.push(
-                    benchmarkAttemptSchema.parse({
-                      attempt: attemptNumber,
-                      candidateId: candidate.candidateId,
-                      caseId: benchmarkCase.caseId,
-                      evidenceMatches: salvaged.evidenceMatches,
-                      latencyMs: result.latencyMs,
-                      modelId: candidate.modelId,
-                      modelSnapshot: result.modelSnapshot,
-                      output: salvaged.output,
-                      provider: candidate.provider,
-                      providerRequestId: result.providerRequestId,
-                      providerRoute: result.providerRoute,
-                      rawModelOutput: serializeRawModelOutput(result.output),
-                      requestProfileSnapshot: candidate.requestProfile,
-                      requestProtocolVersion:
-                        input.configuration.requestProtocolVersion,
-                      repetition,
-                      status: 'VALID',
-                      unsureCriteria: salvaged.unsureCriteria,
-                      usage: result.usage,
-                    }),
-                  );
-                  try {
-                    input.supplierBudget?.reconcile(
-                      result.usage as SupplierBudgetUsage,
-                    );
-                  } finally {
-                    await input.onProgress?.(attempts);
-                  }
-                  break;
-                } catch {
-                  // salvage impossible (no deliverable criterion): fall through
-                }
-              }
-              let structuredOutput;
-              try {
-                structuredOutput = canonicalizeProtocol3CorrectionOutput({
-                  contract,
-                  output: result.output,
-                });
-              } catch {
-                structuredOutput = undefined;
-              }
-              attempts.push(
-                benchmarkAttemptSchema.parse({
-                  attempt: attemptNumber,
-                  candidateId: candidate.candidateId,
-                  caseId: benchmarkCase.caseId,
-                  errorCode: stableModelValidationError(error),
-                  latencyMs: result.latencyMs,
-                  modelId: candidate.modelId,
-                  modelSnapshot: result.modelSnapshot,
-                  output: structuredOutput,
-                  provider: candidate.provider,
-                  providerRequestId: result.providerRequestId,
-                  providerRoute: result.providerRoute,
-                  rawModelOutput: serializeRawModelOutput(result.output),
-                  requestProfileSnapshot: candidate.requestProfile,
-                  requestProtocolVersion:
-                    input.configuration.requestProtocolVersion,
-                  repetition,
-                  status: 'INVALID',
-                  usage: result.usage,
-                }),
-              );
-              try {
-                input.supplierBudget?.reconcile(
-                  result.usage as SupplierBudgetUsage,
-                );
-              } finally {
-                await input.onProgress?.(attempts);
-              }
-              if (
-                attemptNumber >
-                (input.maxRetries ?? input.configuration.maxRetries)
-              ) {
-                break;
-              }
-              continue;
-            }
-            attempts.push(
-              benchmarkAttemptSchema.parse({
-                attempt: attemptNumber,
-                candidateId: candidate.candidateId,
-                caseId: benchmarkCase.caseId,
-                evidenceMatches: resolved.evidenceMatches,
-                latencyMs: result.latencyMs,
-                modelId: candidate.modelId,
-                modelSnapshot: result.modelSnapshot,
-                output: resolved.output,
-                provider: candidate.provider,
-                providerRequestId: result.providerRequestId,
-                providerRoute: result.providerRoute,
-                requestProfileSnapshot: candidate.requestProfile,
-                requestProtocolVersion:
-                  input.configuration.requestProtocolVersion,
-                repetition,
-                status: 'VALID',
-                usage: result.usage,
-              }),
-            );
-            try {
-              input.supplierBudget?.reconcile(
-                result.usage as SupplierBudgetUsage,
-              );
-            } finally {
-              await input.onProgress?.(attempts);
-            }
-            break;
-          } catch (error) {
-            if (
-              !(error instanceof CorrectionProviderError) &&
-              !(error instanceof CorrectionModelOutputError)
-            ) {
-              throw error;
-            }
-            const isModelOutputFailure =
-              error instanceof CorrectionModelOutputError;
-            attempts.push(
-              benchmarkAttemptSchema.parse({
-                attempt: attemptNumber,
-                candidateId: candidate.candidateId,
-                caseId: benchmarkCase.caseId,
-                errorCode:
-                  error instanceof CorrectionProviderError &&
-                  error.message === 'PROVIDER_HTTP_ERROR' &&
-                  error.status !== undefined
-                    ? `PROVIDER_HTTP_${error.status}`
-                    : error.message,
-                latencyMs:
-                  error.latencyMs ?? Math.round(performance.now() - startedAt),
-                modelId: candidate.modelId,
-                modelSnapshot: error.modelSnapshot,
-                providerRequestId: error.providerRequestId,
-                providerRoute: error.providerRoute,
-                provider: candidate.provider,
-                ...(isModelOutputFailure
-                  ? {
-                      rawModelOutput: error.rawModelOutput,
-                      usage: error.usage,
-                    }
-                  : {}),
-                repetition,
-                requestProfileSnapshot: candidate.requestProfile,
-                requestProtocolVersion:
-                  input.configuration.requestProtocolVersion,
-                status: isModelOutputFailure ? 'INVALID' : 'ERROR',
-              }),
-            );
-            try {
-              input.supplierBudget?.reconcile(
-                isModelOutputFailure
-                  ? (error.usage as SupplierBudgetUsage)
-                  : undefined,
-              );
-            } finally {
-              await input.onProgress?.(attempts);
-            }
-            if (
-              attemptNumber >
-              (input.maxRetries ?? input.configuration.maxRetries)
-            ) {
+          const primaryAttempt = await dispatch({
+            attemptNumber,
+            benchmarkCase,
+            candidate,
+            contract,
+            repetition,
+            workflowPass: attemptNumber === 1 ? 'PRIMARY' : 'RETRY',
+          });
+          if (primaryAttempt.status !== 'VALID' || !primaryAttempt.output) {
+            if (attemptNumber > retryMaximum) {
               break;
             }
+            continue;
           }
+          const completeDelivery =
+            (primaryAttempt.unsureCriteria?.length ?? 0) === 0;
+          const score = completeDelivery
+            ? completeOutputScore({ contract, output: primaryAttempt.output })
+            : null;
+          const guarded =
+            score !== null &&
+            input.configuration.scoreGuardBandPoints !== undefined &&
+            Math.abs(score - contract.passingScore) <=
+              input.configuration.scoreGuardBandPoints;
+          if (guarded) {
+            guardedCells.push({
+              benchmarkCase,
+              candidate,
+              contract,
+              distanceFromPassingScore: Math.abs(
+                (score ?? contract.passingScore) - contract.passingScore,
+              ),
+              primaryAttempt,
+              repetition,
+            });
+          }
+          break;
         }
       }
     }
+  }
+
+  // Phase 2: closest-to-threshold guards first, then a stable case/repetition
+  // order. A guard that cannot fit is explicitly persisted as skipped; it
+  // never causes the completed primary exam to abort or publish an exact
+  // score/PASS-FAIL.
+  guardedCells.sort(
+    (left, right) =>
+      left.distanceFromPassingScore - right.distanceFromPassingScore ||
+      left.benchmarkCase.caseId.localeCompare(right.benchmarkCase.caseId) ||
+      left.repetition - right.repetition ||
+      left.candidate.candidateId.localeCompare(right.candidate.candidateId),
+  );
+  for (const guarded of guardedCells) {
+    const guardCost = conservativeCallCostUsd({
+      benchmarkCase: guarded.benchmarkCase,
+      candidate: guarded.candidate,
+      configuration: input.configuration,
+      corpus: input.corpus,
+    });
+    try {
+      if (supplierCostReconciliationRequired) {
+        throw new SupplierBudgetError(
+          'SUPPLIER_COST_RECONCILIATION_REQUIRED',
+        );
+      }
+      input.supplierBudget?.assertCanDispatch(guardCost);
+    } catch (error) {
+      if (
+        !(error instanceof SupplierBudgetError) ||
+        ![
+          'SUPPLIER_BUDGET_CAP_WOULD_BE_EXCEEDED',
+          'SUPPLIER_COST_RECONCILIATION_REQUIRED',
+        ].includes(error.code)
+      ) {
+        throw error;
+      }
+      attempts.push(
+        benchmarkAttemptSchema.parse({
+          attempt: guarded.primaryAttempt.attempt + 1,
+          candidateId: guarded.candidate.candidateId,
+          caseId: guarded.benchmarkCase.caseId,
+          errorCode:
+            error.code === 'SUPPLIER_COST_RECONCILIATION_REQUIRED'
+              ? 'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION'
+              : 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET',
+          latencyMs: 0,
+          modelId: guarded.candidate.modelId,
+          provider: guarded.candidate.provider,
+          repetition: guarded.repetition,
+          requestProfileSnapshot: guarded.candidate.requestProfile,
+          requestProtocolVersion: input.configuration.requestProtocolVersion,
+          status: 'ERROR',
+          unsureCriteria: guarded.contract.criteria.map(
+            (criterion) => criterion.key,
+          ),
+          workflowPass: 'SCORE_GUARD_SECOND_PASS',
+        }),
+      );
+      await input.onProgress?.(attempts);
+      continue;
+    }
+
+    const secondAttempt = await dispatch({
+      attemptNumber: guarded.primaryAttempt.attempt + 1,
+      benchmarkCase: guarded.benchmarkCase,
+      candidate: guarded.candidate,
+      contract: guarded.contract,
+      deferProgress: true,
+      repetition: guarded.repetition,
+      workflowPass: 'SCORE_GUARD_SECOND_PASS',
+    });
+    let reconciledAttempt: BenchmarkAttempt;
+    if (
+      secondAttempt.status === 'VALID' &&
+      secondAttempt.output &&
+      guarded.primaryAttempt.output
+    ) {
+      const reconciled = reconcileProtocol3ScoreGuardPasses({
+        contract: guarded.contract,
+        primary: {
+          output: protocol3CorrectionArtifactOutputSchema.parse(
+            guarded.primaryAttempt.output,
+          ),
+          unsureCriteria: guarded.primaryAttempt.unsureCriteria,
+        },
+        second: {
+          output: protocol3CorrectionArtifactOutputSchema.parse(
+            secondAttempt.output,
+          ),
+          unsureCriteria: secondAttempt.unsureCriteria,
+        },
+      });
+      reconciledAttempt = benchmarkAttemptSchema.parse(
+        reconciled.output
+          ? {
+              ...secondAttempt,
+              output: reconciled.output,
+              unsureCriteria: reconciled.unsureCriteria,
+            }
+          : {
+              ...secondAttempt,
+              errorCode: 'SCORE_GUARD_NO_CONCORDANT_CRITERIA',
+              output: undefined,
+              status: 'INVALID',
+              unsureCriteria: reconciled.unsureCriteria,
+            },
+      );
+    } else {
+      reconciledAttempt = benchmarkAttemptSchema.parse({
+        ...secondAttempt,
+        unsureCriteria: guarded.contract.criteria.map(
+          (criterion) => criterion.key,
+        ),
+      });
+    }
+    attempts[attempts.length - 1] = reconciledAttempt;
+    await input.onProgress?.(attempts);
   }
   return attempts;
 }
@@ -1276,6 +1675,7 @@ async function main(): Promise<void> {
     ? resumePath.slice(0, -'.attempts.json'.length)
     : path.join(resultDirectory, runId);
   const attemptsPath = `${outputStem}.attempts.json`;
+  const budgetPreflightPath = `${outputStem}.budget-preflight.final.json`;
   const writeAttempts = async (attempts: BenchmarkAttempt[]): Promise<void> => {
     await writeFile(
       attemptsPath,
@@ -1303,7 +1703,10 @@ async function main(): Promise<void> {
                 actualSpentUsd: supplierBudget.actualSpentUsd,
                 hardCapUsd: supplierBudget.hardCapUsd,
                 reconciliationRequired: attempts.some(
-                  (attempt) => attempt.usage?.costSource !== 'ACTUAL',
+                  (attempt) =>
+                    attempt.errorCode !==
+                      'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+                    attempt.usage?.costSource !== 'ACTUAL',
                 ),
               }
             : null,
@@ -1322,6 +1725,33 @@ async function main(): Promise<void> {
     configuration,
     corpus,
     maxRetries: requestedCaseId ? 0 : undefined,
+    onBudgetPreflight: async (preflight) => {
+      if (
+        loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+        preflight.primaryCallCount !== 72
+      ) {
+        throw new Error('BENCHMARK_AUTONOMOUS_PRIMARY_CELL_COUNT_INVALID');
+      }
+      await writeFile(
+        budgetPreflightPath,
+        `${JSON.stringify(
+          {
+            ...preflight,
+            ...(loaded.budgetPolicyPath
+              ? { budgetPolicyPath: loaded.budgetPolicyPath }
+              : {}),
+            ...(loaded.budgetPolicySha256
+              ? { budgetPolicySha256: loaded.budgetPolicySha256 }
+              : {}),
+            configurationSha256: loaded.configurationSha256,
+            corpusSha256: loaded.corpusSha256,
+          },
+          null,
+          2,
+        )}\n`,
+        'utf8',
+      );
+    },
     onProgress: writeAttempts,
     requestDelayMs,
     supplierBudget,
@@ -1343,7 +1773,10 @@ async function main(): Promise<void> {
           actualSpentUsd: supplierBudget.actualSpentUsd,
           hardCapUsd: supplierBudget.hardCapUsd,
           reconciliationRequired: attempts.some(
-            (attempt) => attempt.usage?.costSource !== 'ACTUAL',
+            (attempt) =>
+              attempt.errorCode !==
+                'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+              attempt.usage?.costSource !== 'ACTUAL',
           ),
         }
       : null,

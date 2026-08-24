@@ -377,8 +377,28 @@ const benchmarkRegressionLimitsSchema = z
   })
   .strict();
 
+export const benchmarkActivityTypeSchema = z.enum([
+  'writing',
+  'reflection',
+  'practice',
+  'project',
+  'case_study',
+  'written_assignment',
+  'practical_exercise',
+  'oral',
+  'simulation',
+  'cumulative_exam',
+]);
+
 export const correctionBenchmarkConfigurationSchema = z
   .object({
+    activityTypeScope: z
+      .array(benchmarkActivityTypeSchema)
+      .min(1)
+      .refine((values) => new Set(values).size === values.length, {
+        message: 'Benchmark activity type scope values must be unique.',
+      })
+      .optional(),
     benchmarkId: stableKeySchema,
     candidates: z.array(benchmarkCandidateSchema).min(3),
     catalogObservedAt: z.iso.datetime({ offset: true }),
@@ -393,10 +413,25 @@ export const correctionBenchmarkConfigurationSchema = z
     repetitions: z.number().int().min(2).max(10),
     reviewPanelCaseIds: z.array(stableKeySchema).length(6),
     schemaVersion: z.literal(2),
+    scoreGuardBandPoints: z.number().int().positive().max(50).optional(),
     thresholds: benchmarkThresholdsSchema,
   })
   .strict()
   .superRefine((configuration, context) => {
+    if (
+      (configuration.activityTypeScope === undefined) !==
+      (configuration.scoreGuardBandPoints === undefined)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message:
+          'A scoped benchmark identity must declare both activityTypeScope and scoreGuardBandPoints.',
+        path:
+          configuration.activityTypeScope === undefined
+            ? ['activityTypeScope']
+            : ['scoreGuardBandPoints'],
+      });
+    }
     if (
       configuration.thresholds.unsureCriterionRateMaximum !== undefined &&
       configuration.correctionDeliveryPolicy !== 'PARTIAL_CRITERION'
@@ -885,9 +920,24 @@ export const benchmarkAttemptSchema = z
     status: z.enum(['VALID', 'INVALID', 'ERROR']),
     unsureCriteria: z.array(stableKeySchema).optional(),
     usage: benchmarkUsageSchema.optional(),
+    workflowPass: z
+      .enum(['PRIMARY', 'RETRY', 'SCORE_GUARD_SECOND_PASS'])
+      .optional(),
   })
   .strict()
   .superRefine((attempt, context) => {
+    if (
+      (attempt.workflowPass === 'PRIMARY' && attempt.attempt !== 1) ||
+      (attempt.workflowPass !== undefined &&
+        attempt.workflowPass !== 'PRIMARY' &&
+        attempt.attempt === 1)
+    ) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Workflow pass kind does not match its attempt position.',
+        path: ['workflowPass'],
+      });
+    }
     if (attempt.status === 'VALID' && !attempt.output) {
       context.addIssue({
         code: 'custom',
@@ -1152,7 +1202,17 @@ export function prepareBenchmarkResume(input: {
     );
     if (
       ordered.some((attempt, index) => attempt.attempt !== index + 1) ||
-      ordered.slice(0, -1).some((attempt) => attempt.status === 'VALID')
+      ordered.slice(0, -1).some((attempt, index) => {
+        const next = ordered[index + 1];
+        return (
+          attempt.status === 'VALID' &&
+          !(
+            (attempt.workflowPass === 'PRIMARY' ||
+              attempt.workflowPass === 'RETRY') &&
+            next?.workflowPass === 'SCORE_GUARD_SECOND_PASS'
+          )
+        );
+      })
     ) {
       throw new Error('BENCHMARK_RESUME_DUPLICATE_OR_INCOHERENT_ATTEMPTS');
     }
@@ -1654,6 +1714,97 @@ export function salvageProtocol3PartialCorrection(input: {
   };
 }
 
+/**
+ * Reconcile the two independent executions required by the score guard.
+ * A criterion is publishable only when both executions delivered it with the
+ * same authored level. Missing, already-unsure or materially different
+ * criteria remain explicitly unsure; the second execution never replaces the
+ * first one as an authority.
+ */
+export function reconcileProtocol3ScoreGuardPasses(input: {
+  contract: CorrectionContract;
+  primary: {
+    output: Protocol3CorrectionArtifactOutput;
+    unsureCriteria?: readonly string[];
+  };
+  second: {
+    output: Protocol3CorrectionArtifactOutput;
+    unsureCriteria?: readonly string[];
+  };
+}): {
+  output: Protocol3CorrectionArtifactOutput | null;
+  unsureCriteria: string[];
+} {
+  const primaryByKey = new Map(
+    input.primary.output.criteria.map((criterion) => [
+      criterion.criterionKey,
+      criterion,
+    ]),
+  );
+  const secondByKey = new Map(
+    input.second.output.criteria.map((criterion) => [
+      criterion.criterionKey,
+      criterion,
+    ]),
+  );
+  const alreadyUnsure = new Set([
+    ...(input.primary.unsureCriteria ?? []),
+    ...(input.second.unsureCriteria ?? []),
+  ]);
+  const unsureCriteria: string[] = [];
+  const delivered: Protocol3CorrectionArtifactOutput['criteria'] = [];
+
+  for (const contractCriterion of input.contract.criteria) {
+    const primaryCriterion = primaryByKey.get(contractCriterion.key);
+    const secondCriterion = secondByKey.get(contractCriterion.key);
+    if (
+      alreadyUnsure.has(contractCriterion.key) ||
+      !primaryCriterion ||
+      !secondCriterion ||
+      primaryCriterion.levelKey !== secondCriterion.levelKey
+    ) {
+      unsureCriteria.push(contractCriterion.key);
+      continue;
+    }
+    delivered.push(primaryCriterion);
+  }
+
+  if (delivered.length === 0) {
+    return { output: null, unsureCriteria };
+  }
+  const deliveredWeight = delivered.reduce((total, criterion) => {
+    return (
+      total +
+      (input.contract.criteria.find(
+        (item) => item.key === criterion.criterionKey,
+      )?.weight ?? 0)
+    );
+  }, 0);
+  const overallConfidence =
+    deliveredWeight === 0
+      ? 0
+      : delivered.reduce((total, criterion) => {
+          const weight =
+            input.contract.criteria.find(
+              (item) => item.key === criterion.criterionKey,
+            )?.weight ?? 0;
+          return total + criterion.confidence * weight;
+        }, 0) / deliveredWeight;
+
+  return {
+    output: protocol3CorrectionArtifactOutputSchema.parse({
+      ...input.primary.output,
+      criteria: delivered,
+      overallConfidence,
+      overallFeedback:
+        unsureCriteria.length === 0
+          ? input.primary.output.overallFeedback
+          : 'Certaines parties concordent entre les deux passes ; les autres restent à retravailler sans verdict exact.',
+    }),
+    unsureCriteria,
+  };
+}
+
 function hasHallucinatedEvidence(
   output: BenchmarkCorrectionOutput,
   responseText: string,
@@ -1737,6 +1888,17 @@ export function assertBenchmarkCompatibility(input: {
   }
   if (input.configuration.language !== input.corpus.language) {
     throw new Error('BENCHMARK_LANGUAGE_MISMATCH');
+  }
+  if (
+    input.configuration.activityTypeScope &&
+    input.corpus.contracts.some(
+      (contract) =>
+        !input.configuration.activityTypeScope?.includes(
+          contract.target.activityType,
+        ),
+    )
+  ) {
+    throw new Error('BENCHMARK_ACTIVITY_TYPE_OUT_OF_SCOPE');
   }
   const corpusCaseIds = new Set(
     input.corpus.cases.map((benchmarkCase) => benchmarkCase.caseId),
@@ -2004,6 +2166,7 @@ function sameStringSet(left: string[], right: string[]): boolean {
 
 type LogicalRun = {
   attempts: BenchmarkAttempt[];
+  deliveredAttempt?: BenchmarkAttempt;
   finalAttempt: BenchmarkAttempt;
 };
 
@@ -2025,11 +2188,17 @@ function groupLogicalRuns(attempts: BenchmarkAttempt[]): Map<string, LogicalRun>
     ) {
       throw new Error('BENCHMARK_LOGICAL_RUN_ATTEMPTS_INVALID');
     }
-    const finalAttempt = sorted.at(-1);
-    if (!finalAttempt) {
+    const lastAttempt = sorted.at(-1);
+    if (!lastAttempt) {
       throw new Error('BENCHMARK_LOGICAL_RUN_EMPTY');
     }
-    runs.set(key, { attempts: sorted, finalAttempt });
+    const deliveredAttempt = [...sorted]
+      .reverse()
+      .find(
+        (attempt) =>
+          attempt.status === 'VALID' && attempt.output !== undefined,
+      );
+    runs.set(key, { attempts: sorted, deliveredAttempt, finalAttempt: lastAttempt });
   }
   return runs;
 }
@@ -2162,18 +2331,47 @@ export function summarizeCorrectionBenchmark(input: {
     const modelRuns = [...logicalRuns.values()].filter(
       (run) => run.finalAttempt.candidateId === candidate.candidateId,
     );
-    const finalModelAttempts = modelRuns.map((run) => run.finalAttempt);
-    const validAttempts = finalModelAttempts.filter(
+    const deliveredModelAttempts = modelRuns
+      .map((run) => run.deliveredAttempt)
+      .filter((attempt): attempt is BenchmarkAttempt => attempt !== undefined);
+    const validAttempts = deliveredModelAttempts.filter(
       (attempt): attempt is BenchmarkAttempt & {
         output: BenchmarkCorrectionOutput;
       } => attempt.status === 'VALID' && attempt.output !== undefined,
     );
+    const scoreGuardRoutedRuns = new Set(
+      modelRuns
+        .filter((run) =>
+          run.attempts.some(
+            (attempt) =>
+              attempt.workflowPass === 'SCORE_GUARD_SECOND_PASS',
+          ),
+        )
+        .map(
+          (run) =>
+            `${run.finalAttempt.caseId}|${run.finalAttempt.repetition}`,
+        ),
+    );
+    const scoreGuardSecondPassRuns = new Set(
+      modelRuns
+        .filter((run) =>
+          run.attempts.some(
+            (attempt) =>
+              attempt.workflowPass === 'SCORE_GUARD_SECOND_PASS' &&
+              attempt.errorCode !== 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+              attempt.errorCode !==
+                'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
+          ),
+        )
+        .map(
+          (run) =>
+            `${run.finalAttempt.caseId}|${run.finalAttempt.repetition}`,
+        ),
+    );
     const runsWithInvalidFirstAttempt = modelRuns.filter(
       (run) => run.attempts[0]?.status === 'INVALID',
     );
-    const unusableRuns = modelRuns.filter(
-      (run) => run.finalAttempt.status !== 'VALID',
-    );
+    const unusableRuns = modelRuns.filter((run) => !run.deliveredAttempt);
     const gatePolicyV2Transport = getBenchmarkGatePolicyV2Thresholds(
       configuration.thresholds,
     );
@@ -2183,7 +2381,11 @@ export function summarizeCorrectionBenchmark(input: {
     // eventual-unusable gate.
     let recoveredTransportRuns = 0;
     const runsWithTransportError = modelRuns.filter((run) => {
-      const hasError = run.attempts.some((attempt) => attempt.status === 'ERROR');
+      const hasError = run.attempts.some(
+        (attempt) =>
+          attempt.status === 'ERROR' &&
+          attempt.workflowPass !== 'SCORE_GUARD_SECOND_PASS',
+      );
       if (!hasError) {
         return false;
       }
@@ -2211,6 +2413,7 @@ export function summarizeCorrectionBenchmark(input: {
     let falsePassCount = 0;
     let goldFailCount = 0;
     let goldPassCount = 0;
+    const guardBandSecondPassCount = scoreGuardSecondPassRuns.size;
     let hallucinationCount = 0;
     let ordinalDistanceTotal = 0;
     const ordinalConfusionMatrix: Record<string, Record<string, number>> = {};
@@ -2308,6 +2511,19 @@ export function summarizeCorrectionBenchmark(input: {
         contract,
         levels: attempt.output.criteria,
       });
+      const guardBandRequiresSecondPass =
+        scoreGuardRoutedRuns.has(
+          `${attempt.caseId}|${attempt.repetition}`,
+        ) ||
+        (configuration.scoreGuardBandPoints !== undefined &&
+          Math.abs(actualScore - contract.passingScore) <=
+            configuration.scoreGuardBandPoints);
+      // A score in the preregistered inclusive guard band carries no exact
+      // pass/fail verdict. It is routed to second pass and therefore cannot
+      // become a false PASS/FAIL or a certain-decision observation.
+      if (guardBandRequiresSecondPass) {
+        return;
+      }
       const expectedPass = expectedScore >= contract.passingScore;
       const actualPass = actualScore >= contract.passingScore;
       decisionCount += 1;
@@ -2363,8 +2579,8 @@ export function summarizeCorrectionBenchmark(input: {
           firstAttemptEvidenceRejectionRuns += 1;
         }
         hallucinationCount +=
-          run.finalAttempt.status === 'VALID' &&
-          attemptRejectedEvidence(run.finalAttempt)
+          run.deliveredAttempt !== undefined &&
+          attemptRejectedEvidence(run.deliveredAttempt)
             ? 1
             : 0;
       } else {
@@ -2391,7 +2607,11 @@ export function summarizeCorrectionBenchmark(input: {
     }
 
     const injectionAttempts = modelAttempts.filter(
-      (attempt) => casesById.get(attempt.caseId)?.category === 'PROMPT_INJECTION',
+      (attempt) =>
+        casesById.get(attempt.caseId)?.category === 'PROMPT_INJECTION' &&
+        attempt.errorCode !== 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+        attempt.errorCode !==
+          'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
     );
     const injectionRuns = new Map<string, BenchmarkAttempt[]>();
     injectionAttempts.forEach((attempt) => {
@@ -2400,41 +2620,24 @@ export function summarizeCorrectionBenchmark(input: {
       runAttempts.push(attempt);
       injectionRuns.set(key, runAttempts);
     });
-    // Gate policy v2/v3 measures injection safety on delivered (final)
-    // outputs: ingestion already rejects unsafe outputs on injection cases,
-    // and a failed intermediate attempt never delivered anything. Non-final
-    // attempts are not counted against the run.
-    const injectionRunIsSafe = gatePolicyV2Transport
-      ? (runAttempts: BenchmarkAttempt[]) => {
-          const final = [...runAttempts].sort(
-            (left, right) => left.attempt - right.attempt,
-          )[runAttempts.length - 1];
-          if (!final || final.status !== 'VALID' || !final.output) {
-            return false;
-          }
-          const benchmarkCase = casesById.get(final.caseId);
-          return benchmarkCase
-            ? injectionOutputIsSafe({
-                benchmarkCase,
-                canary: configuration.controlPrompt.canary,
-                output: final.output,
-              })
-            : false;
+    // Security is deliberately stricter than ordinary delivered-output
+    // metrics: every actual provider output in an injection run must be safe.
+    // Synthetic budget/reconciliation skips are excluded because they contain
+    // no provider output and cannot obey an injected instruction.
+    const injectionRunIsSafe = (runAttempts: BenchmarkAttempt[]) =>
+      runAttempts.every((attempt) => {
+        if (attempt.status !== 'VALID' || !attempt.output) {
+          return false;
         }
-      : (runAttempts: BenchmarkAttempt[]) =>
-          runAttempts.every((attempt) => {
-            if (attempt.status !== 'VALID' || !attempt.output) {
-              return false;
-            }
-            const benchmarkCase = casesById.get(attempt.caseId);
-            return benchmarkCase
-              ? injectionOutputIsSafe({
-                  benchmarkCase,
-                  canary: configuration.controlPrompt.canary,
-                  output: attempt.output,
-                })
-              : false;
-          });
+        const benchmarkCase = casesById.get(attempt.caseId);
+        return benchmarkCase
+          ? injectionOutputIsSafe({
+              benchmarkCase,
+              canary: configuration.controlPrompt.canary,
+              output: attempt.output,
+            })
+          : false;
+      });
     const safeInjectionRunCount = [...injectionRuns.values()].filter(
       injectionRunIsSafe,
     ).length;
@@ -2449,10 +2652,16 @@ export function summarizeCorrectionBenchmark(input: {
     const variableCases = [...signaturesByCase.values()].filter(
       (signatures) => signatures.size > 1,
     ).length;
-    const retriedRuns = modelRuns.filter((run) => run.attempts.length > 1).length;
+    const retriedRuns = modelRuns.filter((run) =>
+      run.attempts.slice(1).some(
+        (attempt) =>
+          attempt.workflowPass !== 'SCORE_GUARD_SECOND_PASS',
+      ),
+    ).length;
     let unsureCriteriaTotal = 0;
     let criteriaTotal = 0;
     for (const run of modelRuns) {
+      const deliveredAttempt = run.deliveredAttempt;
       const benchmarkCase = casesById.get(run.finalAttempt.caseId);
       const contract = benchmarkCase
         ? contractsByKey.get(
@@ -2462,15 +2671,15 @@ export function summarizeCorrectionBenchmark(input: {
       if (!benchmarkCase || !contract) {
         continue;
       }
-      const unsure = run.finalAttempt.unsureCriteria?.length ?? 0;
+      const unsure = deliveredAttempt?.unsureCriteria?.length ?? 0;
       const delivered =
-        run.finalAttempt.status === 'VALID'
-          ? (run.finalAttempt.output?.criteria.length ?? 0)
+        deliveredAttempt
+          ? (deliveredAttempt.output?.criteria.length ?? 0)
           : 0;
       const total =
         delivered + unsure > 0 ? delivered + unsure : contract.criteria.length;
       criteriaTotal += total;
-      unsureCriteriaTotal += run.finalAttempt.status === 'VALID' ? unsure : total;
+      unsureCriteriaTotal += deliveredAttempt ? unsure : total;
     }
     const unsureCriterionRate =
       criteriaTotal === 0 ? 0 : unsureCriteriaTotal / criteriaTotal;
@@ -2564,10 +2773,13 @@ export function summarizeCorrectionBenchmark(input: {
       variabilityRate:
         signaturesByCase.size === 0 ? 0 : variableCases / signaturesByCase.size,
     };
-    const latencyP90 = percentile(
-      modelAttempts.map((attempt) => attempt.latencyMs),
-      0.9,
+    const workflowLatencies = modelRuns.map((run) =>
+      run.attempts.reduce(
+        (total, attempt) => total + attempt.latencyMs,
+        0,
+      ),
     );
+    const latencyP90 = percentile(workflowLatencies, 0.9);
     const estimatedCostUsd = modelAttempts.reduce(
       (total, attempt) => total + calculateCost(attempt, candidate),
       0,
@@ -2576,8 +2788,10 @@ export function summarizeCorrectionBenchmark(input: {
       modelAttempts.length > 0 &&
       modelAttempts.every(
         (attempt) =>
-          attempt.usage?.costSource === 'ACTUAL' &&
-          attempt.usage.actualCostUsd !== undefined,
+          attempt.errorCode ===
+            'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' ||
+          (attempt.usage?.costSource === 'ACTUAL' &&
+            attempt.usage.actualCostUsd !== undefined),
       );
     const actualCostUsd = supplierCostReconciled
       ? modelAttempts.reduce(
@@ -2719,15 +2933,9 @@ export function summarizeCorrectionBenchmark(input: {
       datasetComplete,
       estimatedCostUsd,
       humanReviewApproved,
-      medianLatencyMs: percentile(
-        modelAttempts.map((attempt) => attempt.latencyMs),
-        0.5,
-      ),
+      medianLatencyMs: percentile(workflowLatencies, 0.5),
       modelId: candidate.modelId,
-      p75LatencyMs: percentile(
-        modelAttempts.map((attempt) => attempt.latencyMs),
-        0.75,
-      ),
+      p75LatencyMs: percentile(workflowLatencies, 0.75),
       p90LatencyMs: latencyP90,
       operationallyDeployable,
       pedagogicallyEligible,
@@ -2750,11 +2958,9 @@ export function summarizeCorrectionBenchmark(input: {
       retryRate:
         modelRuns.length === 0 ? 0 : retriedRuns / modelRuns.length,
       secondPassRate:
-        validAttempts.length === 0
+        modelRuns.length === 0
           ? 0
-          : validAttempts.filter(
-              (attempt) => attempt.output.secondPass.required,
-            ).length / validAttempts.length,
+          : guardBandSecondPassCount / modelRuns.length,
       supplierCostReconciled,
       watchSignals,
     };
