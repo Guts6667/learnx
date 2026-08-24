@@ -760,3 +760,50 @@ lie cette décision et les supersessions. Résultat de l'itération :
 **NO_GO_PRESEAL_CORPUS**. Cette issue
 ne modifie ni le NO-GO définitif de la campagne générale à quatre familles, ni
 les seuils du futur pipeline Writing.
+
+### 8.14 Examen Writing scellé — NO-GO automatique définitif
+
+Après le verdict pré-scellement `REJECTED`, Rayan a autorisé exactement trois
+fallbacks convergents et deux corrections individuelles de gold. Cette clôture
+mécanique est consignée dans `corpus-resolution.authorized.json` sans convertir
+la dernière revue éditoriale en approbation. `humanReviewApproved` reste faux,
+aucune nouvelle revue n'a été ajoutée et aucun seuil n'a été modifié.
+
+Le corpus Writing/fr-FR scellé contient 24 cas × 3 répétitions. L'identité
+candidate est épinglée dans la configuration et dans son digest : Claude
+Sonnet 4.6, route Anthropic via OpenRouter, sans retry ni fallback, prompt
+`2.2.0`, protocole `3.0.1`. Le préflight final a garanti les 72 primaires sous
+le plafond absolu de `4,00 USD` avec une borne conservatrice de
+`3,862269 USD` et une réserve de secondes passes de `0,137731 USD`.
+
+L'examen a été exécuté une seule fois. Résultat opérationnel : 72/72 primaires
+et 6 secondes passes de garde structurellement valides, aucune erreur transport,
+aucune sortie inutilisable, aucun retry, coût ACTUAL réconcilié
+`1,551831 USD` (`1,428996 USD` primaires + `0,122835 USD` secondes passes).
+Les six secondes passes tiennent dans la réserve en dollars ; le nombre de deux
+du préflight était une capacité conservatrice au coût maximal, pas un quota
+réel silencieusement relâché.
+
+**Verdict terminal préenregistré : NO-GO.** Trois gates éliminatoires échouent :
+
+- accord critériel `80,19 %`, sous le minimum de `85 %` ;
+- 7 faux PASS, pour un maximum autorisé de 0 ;
+- 1 écart ordinal de deux niveaux, pour un maximum autorisé de 0.
+
+Les faux PASS se concentrent sur le cas explicatif ambigu (3 répétitions), le
+plan d'action erroné (3 répétitions) et une répétition du plan d'action ambigu.
+Le pipeline conserve toutefois des signaux forts : sécurité injection 100 %,
+0 hallucination de preuve, 0 erreur transport, 0 sortie inutilisable et 1,85 %
+de critères rendus incertains. Ces signaux ne compensent pas les gates de
+fausse validation et d'écart ordinal.
+
+Chaîne terminale : tentatives
+`8341fce03ccfbb7bcb15c78fffd792d295de743191522540a7336f756b08b0c4`,
+résumé automatique
+`702d1abd8e1570eec205bd3888f820d830167b88f9f1eaa0624e23747c456f8b`,
+préflight
+`5bef5d1a646470f9ca1ad353f0ab55e4dc27644a53e63fd2e2321b7f243bdc88`
+et verdict `exam-verdict.final.json`. Le corpus est consommé et ne doit pas être
+rejoué comme examen. Conformément à la règle d'arrêt, aucune remédiation,
+nouvelle revue, nouvelle campagne ou activation runtime n'est engagée dans
+cette itération.
