@@ -1,5 +1,5 @@
 import { route } from 'preact-router';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useRef, useState } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
 import { Drawer } from '@/components/ui/Drawer';
@@ -10,7 +10,7 @@ import { useNoteMutation, type NoteDetail } from '@/features/notes/queries';
 import type { LessonActivity } from '@/lib/lesson-activity-sequence';
 import { useI18n } from '@/i18n';
 
-type AutosaveStatus = 'dirty' | 'error' | 'saved' | 'saving';
+type SaveStatus = 'dirty' | 'error' | 'saved' | 'saving';
 
 export function ContextualNoteAction({
   activity,
@@ -30,7 +30,7 @@ export function ContextualNoteAction({
     t('notes.context.defaultTitle', { title: lesson.title }),
   );
   const [markdown, setMarkdown] = useState('');
-  const [status, setStatus] = useState<AutosaveStatus>('saved');
+  const [status, setStatus] = useState<SaveStatus>('saved');
 
   async function ensureNote() {
     try {
@@ -59,25 +59,21 @@ export function ContextualNoteAction({
     setStatus('dirty');
   }
 
-  useEffect(() => {
-    if (!note || status !== 'dirty' || mutation.isPending || !title.trim()) {
-      return;
-    }
-
+  async function saveNote() {
+    if (!note || status !== 'dirty' || mutation.isPending || !title.trim()) return;
     const savedRevision = revision.current;
-    const timeout = window.setTimeout(() => {
-      setStatus('saving');
-      void mutation
-        .save(note.id, { markdown, title: title.trim() })
-        .then((updated) => {
-          setNote(updated);
-          setStatus(revision.current === savedRevision ? 'saved' : 'dirty');
-        })
-        .catch(() => setStatus('error'));
-    }, 700);
-
-    return () => window.clearTimeout(timeout);
-  }, [markdown, mutation, note, status, title]);
+    setStatus('saving');
+    try {
+      const updated = await mutation.save(note.id, {
+        markdown,
+        title: title.trim(),
+      });
+      setNote(updated);
+      setStatus(revision.current === savedRevision ? 'saved' : 'dirty');
+    } catch {
+      setStatus('error');
+    }
+  }
 
   return (
     <div class="space-y-3">
@@ -133,7 +129,7 @@ export function ContextualNoteAction({
                 value={title}
               />
               <Textarea
-                description={t('notes.editor.savedAutomatically')}
+                description={t('notes.editor.explicitSave')}
                 label={t('notes.editor.content')}
                 maxLength={100_000}
                 onInput={(event) => {
@@ -147,25 +143,37 @@ export function ContextualNoteAction({
                 class={
                   status === 'error'
                     ? 'ui-text-danger text-sm'
-                    : 'text-sm text-[var(--color-success)]'
+                    : 'ui-text-muted text-sm'
                 }
                 role="status"
               >
                 {status === 'saved'
                   ? t('notes.context.created')
                   : status === 'dirty'
-                    ? t('notes.autosave.dirty')
+                    ? t('notes.save.dirty')
                     : status === 'saving'
-                      ? t('notes.autosave.saving')
-                      : t('notes.autosave.error')}
+                      ? t('notes.save.saving')
+                      : t('notes.save.error')}
               </p>
-              <Button
-                class="w-full sm:w-auto"
-                onClick={() => void route(`/notes/${encodeURIComponent(note.id)}`)}
-                variant="secondary"
-              >
-                {t('notes.context.view')}
-              </Button>
+              <div class="flex flex-col gap-3 sm:flex-row">
+                <Button
+                  class="w-full sm:w-auto"
+                  disabled={status !== 'dirty' || !title.trim()}
+                  isLoading={status === 'saving'}
+                  onClick={() => void saveNote()}
+                >
+                  {t('notes.editor.save')}
+                </Button>
+                <Button
+                  class="w-full sm:w-auto"
+                  onClick={() =>
+                    void route(`/notes/${encodeURIComponent(note.id)}`)
+                  }
+                  variant="secondary"
+                >
+                  {t('notes.context.view')}
+                </Button>
+              </div>
             </>
           ) : null}
         </div>

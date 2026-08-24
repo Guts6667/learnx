@@ -108,7 +108,7 @@ describe('ContextualNoteAction', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
-  it('autosauvegarde le titre et le Markdown puis confirme la sauvegarde', async () => {
+  it('enregistre explicitement le titre et le Markdown', async () => {
     const fetchMock = vi.fn(
       async (_path: string, init?: RequestInit) => {
         const body = init?.body ? JSON.parse(String(init.body)) : {};
@@ -128,6 +128,9 @@ describe('ContextualNoteAction', () => {
     const markdown = screen.getByLabelText('Contenu de la note');
     fireEvent.input(title, { target: { value: 'Synthèse personnelle' } });
     fireEvent.input(markdown, { target: { value: 'Une idée importante.' } });
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Enregistrer la note' }));
 
     await waitFor(
       () => {

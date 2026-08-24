@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
@@ -46,45 +45,33 @@ function getExcerpt(markdown: string, emptyLabel: string): string {
   return normalized.length > 140 ? `${normalized.slice(0, 137)}…` : normalized;
 }
 
-function NoteCard({ note }: { note: NoteDetail }) {
+function NoteLine({ note }: { note: NoteDetail }) {
   const { locale, t } = useI18n();
   return (
-    <li>
-      <ListRow class="items-stretch">
-        <div class="space-y-3">
-          <div class="flex items-start justify-between gap-3">
-            <h2 class="font-semibold">{note.title}</h2>
-            {note.lesson ? (
-              <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>
-            ) : null}
-          </div>
-          <p class="text-sm leading-6 text-[var(--color-text)]">
+    <li class="border-b border-[var(--color-border)] last:border-b-0">
+      <a
+        class="group grid min-h-20 gap-2 px-1 py-5 outline-none transition-colors hover:bg-[var(--color-surface-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-8"
+        href={`/notes/${encodeURIComponent(note.id)}`}
+      >
+        <div class="min-w-0 space-y-1">
+          <h2 class="font-semibold text-[var(--color-heading)] group-hover:text-[var(--color-action)]">
+            {note.title}
+          </h2>
+          <p class="truncate text-sm leading-6 text-[var(--color-text)]">
             {getExcerpt(note.markdown, t('notes.emptyExcerpt'))}
           </p>
-          {note.lesson ? (
-            <p class="text-sm text-[var(--color-text-muted)]">
-              {note.program?.title ? `${note.program.title} · ` : ''}
-              {note.lesson.title}
-            </p>
-          ) : (
-            <p class="text-sm text-[var(--color-text-muted)]">
-              {t('notes.personal')}
-            </p>
-          )}
-          <p class="text-xs text-[var(--color-text-muted)]">
-            {t('notes.updatedAt', {
-              date: formatUpdatedAt(note.updatedAt, locale),
-            })}
+          <p class="text-sm text-[var(--color-text-muted)]">
+            {note.lesson
+              ? `${note.program?.title ? `${note.program.title} · ` : ''}${note.lesson.title}`
+              : t('notes.personal')}
           </p>
-          <NavigationAction
-            class="w-full sm:w-auto"
-            href={`/notes/${encodeURIComponent(note.id)}`}
-            variant="secondary"
-          >
-            {t('notes.edit')}
-          </NavigationAction>
         </div>
-      </ListRow>
+        <p class="text-xs text-[var(--color-text-muted)] sm:text-right">
+          {t('notes.updatedAt', {
+            date: formatUpdatedAt(note.updatedAt, locale),
+          })}
+        </p>
+      </a>
     </li>
   );
 }
@@ -162,9 +149,9 @@ export function NotesPage() {
       ) : null}
       {query.data?.notes.length ? (
         <div class="space-y-4">
-          <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <ul class="border-y border-[var(--color-border)]">
             {query.data.notes.map((note) => (
-              <NoteCard key={note.id} note={note} />
+              <NoteLine key={note.id} note={note} />
             ))}
           </ul>
           {query.hasMore ? (
@@ -182,14 +169,14 @@ export function NotesPage() {
   );
 }
 
-type AutosaveStatus = 'dirty' | 'error' | 'saved' | 'saving';
+type SaveStatus = 'dirty' | 'error' | 'saved' | 'saving';
 
 function NoteEditor({ note }: { note: NoteDetail }) {
   const { error, isPending, remove, save } = useNoteMutation();
   const [title, setTitle] = useState(note.title);
   const [markdown, setMarkdown] = useState(note.markdown);
   const [mode, setMode] = useState<'preview' | 'write'>('write');
-  const [status, setStatus] = useState<AutosaveStatus>('saved');
+  const [status, setStatus] = useState<SaveStatus>('saved');
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const cancelDeleteRef = useRef<HTMLButtonElement>(null);
   const revision = useRef(0);
@@ -200,21 +187,17 @@ function NoteEditor({ note }: { note: NoteDetail }) {
     setStatus('dirty');
   }
 
-  useEffect(() => {
+  async function saveNote() {
     if (status !== 'dirty' || isPending || !title.trim()) return;
-
     const savedRevision = revision.current;
-    const timeout = window.setTimeout(() => {
-      setStatus('saving');
-      void save(note.id, { markdown, title: title.trim() })
-        .then(() =>
-          setStatus(revision.current === savedRevision ? 'saved' : 'dirty'),
-        )
-        .catch(() => setStatus('error'));
-    }, 700);
-
-    return () => window.clearTimeout(timeout);
-  }, [isPending, markdown, note.id, save, status, title]);
+    setStatus('saving');
+    try {
+      await save(note.id, { markdown, title: title.trim() });
+      setStatus(revision.current === savedRevision ? 'saved' : 'dirty');
+    } catch {
+      setStatus('error');
+    }
+  }
 
   useEffect(() => {
     if (!isConfirmingDelete) return;
@@ -303,7 +286,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             role="tabpanel"
           >
             <Textarea
-              description={t('notes.editor.savedAutomatically')}
+              description={t('notes.editor.explicitSave')}
               label={t('notes.editor.content')}
               maxLength={100_000}
               onInput={(event) => {
@@ -337,9 +320,20 @@ function NoteEditor({ note }: { note: NoteDetail }) {
         }
       >
         {!title.trim()
-          ? t('notes.autosave.missingTitle')
-          : t(`notes.autosave.${status}`)}
+          ? t('notes.save.missingTitle')
+          : t(`notes.save.${status}`)}
       </p>
+      <div class="ui-sticky-mobile-action">
+        <Button
+          class="w-full sm:w-auto"
+          disabled={status !== 'dirty' || !title.trim()}
+          isLoading={status === 'saving'}
+          onClick={() => void saveNote()}
+          size="lg"
+        >
+          {t('notes.editor.save')}
+        </Button>
+      </div>
       {note.lesson ? (
         <Card class="space-y-2">
           <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>

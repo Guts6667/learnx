@@ -7,9 +7,12 @@ import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import {
   ModulePage,
   ProgramPage,
-  ProgramsPage,
   StagePage,
 } from '@/pages/CurriculumPages';
+import {
+  DiscoverProgramsPage,
+  TotemProgramsPage,
+} from '@/pages/ProgramsDirectoryPages';
 import { ConceptAssessmentPage } from '@/pages/ConceptAssessmentPage';
 import { LessonPage } from '@/pages/LessonPage';
 import { ExercisePage } from '@/pages/ExercisePage';
@@ -197,7 +200,17 @@ function ProgramsRoute({ path }: RouteParams) {
 
   return (
     <ProtectedRoute>
-      <ProgramsPage />
+      <TotemProgramsPage />
+    </ProtectedRoute>
+  );
+}
+
+function DiscoverProgramsRoute({ path }: RouteParams) {
+  void path;
+
+  return (
+    <ProtectedRoute>
+      <DiscoverProgramsPage />
     </ProtectedRoute>
   );
 }
@@ -278,6 +291,7 @@ export function AppRoutes() {
         <VerifyEmailPage path="/verify-email" />
         <ActivateAccountPage path="/activate" />
         <ProgramsRoute path="/program" />
+        <DiscoverProgramsRoute path="/discover" />
         <ProgramRoute path="/program/:programSlug" />
         <StageRoute path="/program/:programSlug/stage/:stageSlug" />
         <ModuleRoute path="/program/:programSlug/module/:moduleSlug" />

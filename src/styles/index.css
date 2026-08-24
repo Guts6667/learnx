@@ -1,73 +1,66 @@
 @font-face {
-  font-family: 'Manrope';
+  font-family: 'DM Sans';
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url('@fontsource/manrope/files/manrope-latin-400-normal.woff2')
+  src: url('@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2')
     format('woff2');
 }
 
 @font-face {
-  font-family: 'Manrope';
+  font-family: 'DM Sans';
   font-style: normal;
   font-display: swap;
   font-weight: 500;
-  src: url('@fontsource/manrope/files/manrope-latin-500-normal.woff2')
+  src: url('@fontsource/dm-sans/files/dm-sans-latin-500-normal.woff2')
     format('woff2');
 }
 
 @font-face {
-  font-family: 'Source Serif 4';
+  font-family: 'DM Sans';
   font-style: normal;
   font-display: swap;
-  font-weight: 400;
-  src: url('@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2')
-    format('woff2');
-}
-
-@font-face {
-  font-family: 'Source Serif 4';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src: url('@fontsource/source-serif-4/files/source-serif-4-latin-500-normal.woff2')
+  font-weight: 600;
+  src: url('@fontsource/dm-sans/files/dm-sans-latin-600-normal.woff2')
     format('woff2');
 }
 @import 'tailwindcss';
 
 @theme {
   --font-sans:
-    Manrope, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'DM Sans', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', sans-serif;
 }
 
 :root {
-  --color-canvas: #121c24;
-  --color-surface: #1a2933;
-  --color-surface-raised: #304650;
-  --color-surface-subtle: #243641;
-  --color-text: #f8f5ee;
-  --color-text-muted: #b8c4c9;
-  --color-border: #3a4e58;
-  --color-control-border: #60747e;
-  --color-accent: #557f9a;
-  --color-accent-text: #89acbe;
-  --color-action: #4c748c;
-  --color-action-hover: #557f9a;
-  --color-on-action: #f8f5ee;
-  --color-focus: #89acbe;
-  --color-success: #89acbe;
-  --color-warning: #bea169;
-  --color-danger: #c4766c;
-  --color-disabled: #89979c;
-  --color-overlay: rgb(18 28 36 / 78%);
-  --color-paper: #f1eee6;
-  --color-paper-deep: #e2ddd3;
-  --color-ivory: #f8f5ee;
-  --color-blue-soft: #d9e4e8;
-  --color-brass: #bea169;
+  --color-canvas: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-subtle: #e7edff;
+  --color-text: #17233b;
+  --color-text-muted: #647087;
+  --color-border: #d7deed;
+  --color-border-strong: #aebad2;
+  --color-control-border: #98a6c0;
+  --color-accent: #3b5bd6;
+  --color-accent-text: #3150c5;
+  --color-action: #3b5bd6;
+  --color-action-hover: #2f4ec6;
+  --color-on-action: #ffffff;
+  --color-focus: #3b5bd6;
+  --color-success: #3150c5;
+  --color-warning: #8a5a24;
+  --color-danger: #a64738;
+  --color-disabled: #8c96a9;
+  --color-overlay: rgb(23 35 59 / 52%);
+  --color-paper: #f4f6fb;
+  --color-paper-deep: #e7edff;
+  --color-ivory: #ffffff;
+  --color-blue-soft: #e7edff;
+  --color-brass: #cc6b57;
+  --color-coral: #cc6b57;
   --font-interface: var(--font-sans);
-  --font-editorial: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-editorial: var(--font-sans);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -79,6 +72,7 @@
   --radius-control: 0.4375rem;
   --radius-group: 0.75rem;
   --radius-overlay: 0.75rem;
+  --radius-surface: 1rem;
   --radius-mobile-frame: 1.25rem;
   --motion-fast: 120ms;
   --motion-standard: 180ms;
@@ -99,7 +93,7 @@
   --app-admin-max: 108rem;
   --app-navigation-height: 5.5rem;
   --app-navigation-width: 216px;
-  color-scheme: dark;
+  color-scheme: light;
   font-family: var(--font-interface);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -508,25 +502,25 @@ body {
 }
 
 [data-color-regime='paper'] {
-  --color-canvas: var(--color-paper);
-  --color-surface: var(--color-ivory);
-  --color-surface-raised: var(--color-ivory);
-  --color-surface-subtle: var(--color-paper-deep);
-  --color-text: #121c24;
-  --color-text-muted: #58676d;
-  --color-border: #c8cdca;
-  --color-control-border: #60747e;
-  --color-accent: #557f9a;
-  --color-accent-text: #466b82;
-  --color-action: #466b82;
-  --color-action-hover: #3f6176;
-  --color-on-action: #f8f5ee;
-  --color-focus: #466b82;
-  --color-success: #466b82;
-  --color-warning: #7f683e;
-  --color-danger: #944f49;
-  --color-disabled: #657277;
-  --color-overlay: rgb(18 28 36 / 45%);
+  --color-canvas: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-subtle: #e7edff;
+  --color-text: #17233b;
+  --color-text-muted: #647087;
+  --color-border: #d7deed;
+  --color-control-border: #98a6c0;
+  --color-accent: #3b5bd6;
+  --color-accent-text: #3150c5;
+  --color-action: #3b5bd6;
+  --color-action-hover: #2f4ec6;
+  --color-on-action: #ffffff;
+  --color-focus: #3b5bd6;
+  --color-success: #3150c5;
+  --color-warning: #8a5a24;
+  --color-danger: #a64738;
+  --color-disabled: #8c96a9;
+  --color-overlay: rgb(23 35 59 / 45%);
   --app-accent: var(--color-accent);
   --app-background: var(--color-canvas);
   --app-border: var(--color-border);
@@ -675,7 +669,43 @@ body {
 
 .ui-card--accent {
   border-color: var(--color-accent);
-  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+  background: var(--color-surface);
+}
+
+.ui-signature-surface {
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(1.5rem, 5vw, 2.25rem);
+}
+
+.ui-signature-surface::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4.25rem;
+  height: 4.25rem;
+  border-bottom-left-radius: 4.25rem;
+  background: var(--color-coral);
+  content: '';
+  pointer-events: none;
+}
+
+.ui-sticky-mobile-action {
+  position: sticky;
+  z-index: 20;
+  bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  padding-block: 0.75rem;
+  background: color-mix(in srgb, var(--color-canvas) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+@media (min-width: 48rem) {
+  .ui-sticky-mobile-action {
+    position: static;
+    padding-block: 0;
+    background: transparent;
+    backdrop-filter: none;
+  }
 }
 
 .ui-card--muted {
@@ -719,6 +749,27 @@ body {
   flex: none;
 }
 
+.ui-program-lines {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.ui-program-line {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 1.25rem;
+  padding-block: 1.25rem;
+}
+
+.ui-program-line + .ui-program-line {
+  border-top: 1px solid var(--color-border);
+}
+
+.ui-program-line--compact {
+  padding-block: 1rem;
+}
+
 @media (max-width: 39.999rem) {
   .ui-list-row {
     flex-wrap: wrap;
@@ -730,6 +781,11 @@ body {
 
   .ui-list-row__aside > :where(a, button) {
     width: 100%;
+  }
+
+  .ui-program-line:not(.ui-program-line--compact) {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
 

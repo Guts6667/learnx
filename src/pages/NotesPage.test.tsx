@@ -129,7 +129,7 @@ describe('NotePage', () => {
     vi.useRealTimers();
   });
 
-  it('autosauvegarde le titre et le Markdown après temporisation', async () => {
+  it('enregistre explicitement le titre et le Markdown', async () => {
     const fetchMock = vi.fn((_path: string, init?: RequestInit) => {
       if (init?.method === 'PATCH') {
         const body = JSON.parse(String(init.body)) as {
@@ -154,21 +154,26 @@ describe('NotePage', () => {
     );
 
     fireEvent.input(await screen.findByLabelText('Titre'), {
-      target: { value: 'Titre autosauvegardé' },
+      target: { value: 'Titre enregistré' },
     });
     fireEvent.input(screen.getByLabelText('Contenu de la note'), {
       target: { value: '# Nouveau contenu' },
     });
-    expect(screen.getByText('Modifications en attente…')).toBeInTheDocument();
+    expect(screen.getByText('Modifications non enregistrées.')).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalledWith(
+      `/api/notes/${noteId}`,
+      expect.objectContaining({ method: 'PATCH' }),
+    );
 
-    await act(() => new Promise((resolve) => window.setTimeout(resolve, 750)));
+    fireEvent.click(screen.getByRole('button', { name: 'Enregistrer la note' }));
+    await act(() => Promise.resolve());
 
     expect(fetchMock).toHaveBeenCalledWith(
       `/api/notes/${noteId}`,
       expect.objectContaining({
         body: JSON.stringify({
           markdown: '# Nouveau contenu',
-          title: 'Titre autosauvegardé',
+          title: 'Titre enregistré',
         }),
         method: 'PATCH',
       }),

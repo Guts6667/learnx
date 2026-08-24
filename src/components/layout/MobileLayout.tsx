@@ -24,6 +24,7 @@ const rootPaths = new Set([
   '/verify-email',
   '/today',
   '/program',
+  '/discover',
   '/reviews',
   '/notes',
   '/profile',

@@ -1,17 +1,18 @@
-import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
+import {
+  type EnrolledProgram,
+  useEnrolledProgramsQuery,
+} from '@/features/programs/queries';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
+import { useI18n } from '@/i18n';
 import type { MessageKey } from '@/i18n/catalogs';
 import type { RecommendationKind } from '@/lib/recommendation';
-import { useI18n, type UiLocale } from '@/i18n';
-import { formatLocalizedDate } from '@/shared/locale';
 
 const actionLabelKeys: Record<RecommendationKind, MessageKey> = {
   DUE_TODAY_REVIEW: 'today.action.dueReview',
@@ -24,15 +25,9 @@ const actionLabelKeys: Record<RecommendationKind, MessageKey> = {
   REQUIRED_QUIZ: 'today.action.requiredQuiz',
 };
 
-function formatLastActivity(value: string, locale: UiLocale): string {
-  return formatLocalizedDate(value, locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
-}
-
 export function TodayPage() {
   const query = useTodayQuery();
+  const programs = useEnrolledProgramsQuery('', 'ACTIVE');
   const { t } = useI18n();
 
   return (
@@ -51,12 +46,18 @@ export function TodayPage() {
       ) : query.error ? (
         <ErrorState description={t('today.error')} />
       ) : query.data?.program ? (
-        <TodayContent data={query.data} program={query.data.program} />
+        <TodayContent
+          data={query.data}
+          otherPrograms={(programs.data.items ?? [])
+            .filter((item) => item.program.id !== query.data?.program?.id)
+            .slice(0, 3)}
+          programsPending={programs.isPending}
+        />
       ) : (
         <EmptyState
           action={
-            <NavigationAction href="/program" variant="secondary">
-              {t('today.viewPrograms')}
+            <NavigationAction href="/discover">
+              {t('programs.exploreAction')}
             </NavigationAction>
           }
           description={t('today.emptyProgram.description')}
@@ -69,82 +70,100 @@ export function TodayPage() {
 
 function TodayContent({
   data,
-  program,
+  otherPrograms,
+  programsPending,
 }: {
   data: TodayResponse;
-  program: NonNullable<TodayResponse['program']>;
+  otherPrograms: EnrolledProgram[];
+  programsPending: boolean;
 }) {
-  const { locale, t } = useI18n();
-  return (
-    <div class="grid min-w-0 gap-5 lg:grid-cols-12">
-      {data.action ? (
-        <Card class="space-y-5 lg:col-span-7 lg:row-span-2" tone="accent">
-          <Badge
-            tone={data.action.kind === 'OVERDUE_REVIEW' ? 'danger' : 'info'}
-          >
-            {t(actionLabelKeys[data.action.kind])}
-          </Badge>
-          <div>
-            <h2 class="text-xl font-semibold">{data.action.title}</h2>
-            {data.action.stageTitle ? (
-              <p class="ui-text-muted mt-2 text-sm">
-                {data.action.stageTitle}
-                {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
-                {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
-              </p>
-            ) : null}
-            {data.action.estimatedMinutes ? (
-              <p class="ui-text-muted mt-1 text-sm">
-                {t('today.duration', { count: data.action.estimatedMinutes })}
-              </p>
-            ) : null}
-          </div>
-          <NavigationAction class="w-full" href={data.action.href} size="lg">
-            {t('common.continue')}
-          </NavigationAction>
-        </Card>
-      ) : (
-        <EmptyState
-          class="lg:col-span-7 lg:row-span-2"
-          description={t('today.upToDate.description')}
-          title={t('today.upToDate.title')}
-        />
-      )}
+  const { t } = useI18n();
+  const program = data.program;
+  if (!program) return null;
 
-      <Section class="space-y-4 lg:col-span-5">
-        <div>
-          <p class="ui-text-muted text-sm">{t('today.activeProgram')}</p>
-          <h2 class="mt-1 text-xl font-semibold">{program.title}</h2>
+  return (
+    <div class="grid min-w-0 gap-6">
+      <Card class="ui-signature-surface space-y-5" tone="accent">
+        <p class="page-eyebrow">
+          {data.action
+            ? t(actionLabelKeys[data.action.kind])
+            : t('today.upToDate.title')}
+        </p>
+        <div class="max-w-3xl">
+          <p class="ui-text-muted text-sm">{program.title}</p>
+          <h2 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+            {data.action?.title ?? t('today.upToDate.description')}
+          </h2>
+          {data.action?.stageTitle ? (
+            <p class="ui-text-muted mt-3 text-sm leading-6">
+              {data.action.stageTitle}
+              {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
+              {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
+            </p>
+          ) : null}
         </div>
         <ProgressBar
           label={t('today.progress', { count: Math.round(program.percent) })}
           value={program.percent}
         />
-      </Section>
+        {data.action ? (
+          <NavigationAction
+            class="w-full sm:w-auto"
+            href={data.action.href}
+            size="lg"
+          >
+            {t('common.continue')}
+          </NavigationAction>
+        ) : (
+          <NavigationAction
+            class="w-full sm:w-auto"
+            href={`/program/${encodeURIComponent(program.slug)}`}
+            size="lg"
+            variant="secondary"
+          >
+            {t('programs.open')}
+          </NavigationAction>
+        )}
+      </Card>
 
-      <div class="grid gap-3 sm:grid-cols-2 lg:col-span-5">
-        <Section>
-          <p class="ui-text-muted text-sm">{t('today.reviewsDue')}</p>
-          <p class="mt-2 text-2xl font-bold">{data.reviewsDue}</p>
-        </Section>
-        <Section>
-          <p class="ui-text-muted text-sm">{t('today.lastActivity')}</p>
-          {data.lastActivity ? (
-            <NavigationAction
-              class="mt-2 w-full"
-              href={data.lastActivity.href}
-              variant="ghost"
-            >
-              {data.lastActivity.title} ·{' '}
-              {formatLastActivity(data.lastActivity.at, locale)}
+      {programsPending ? (
+        <Skeleton label={t('programs.loadingMine')} />
+      ) : otherPrograms.length ? (
+        <section aria-labelledby="today-other-programs" class="space-y-3">
+          <div class="flex items-center justify-between gap-4">
+            <h2 class="text-lg font-semibold" id="today-other-programs">
+              {t('today.otherPrograms')}
+            </h2>
+            <NavigationAction href="/program" variant="ghost">
+              {t('today.viewPrograms')}
             </NavigationAction>
-          ) : (
-            <p class="ui-text-muted mt-2 text-sm">
-              {t('today.noRecentActivity')}
-            </p>
-          )}
-        </Section>
-      </div>
+          </div>
+          <ul class="ui-list">
+            {otherPrograms.map(({ enrollment, program: item, progress }) => (
+              <li
+                class="ui-program-line ui-program-line--compact"
+                key={enrollment.id}
+              >
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-semibold">{item.title}</h3>
+                  <p class="ui-text-muted mt-1 text-sm">
+                    {t('today.progress', {
+                      count: Math.round(progress?.percent ?? 0),
+                    })}
+                  </p>
+                </div>
+                <NavigationAction
+                  aria-label={`${t('common.continue')} — ${item.title}`}
+                  href={`/program/${encodeURIComponent(item.slug)}`}
+                  variant="ghost"
+                >
+                  <span aria-hidden="true">→</span>
+                </NavigationAction>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </div>
   );
 }

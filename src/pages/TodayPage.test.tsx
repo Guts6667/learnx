@@ -57,11 +57,15 @@ describe('TodayPage', () => {
       await screen.findByRole('heading', { name: 'Lire le chapitre' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Progression — 42 %')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.queryByText('Révisions dues')).not.toBeInTheDocument();
     const primaryActions = screen.getAllByRole('link', { name: 'Continuer' });
     expect(primaryActions).toHaveLength(1);
     expect(primaryActions[0]).toHaveClass('ui-action--primary');
-    expect(screen.getByText('Programme actif').closest('.ui-section')).not.toBeNull();
+    expect(
+      screen.getByRole('heading', { name: 'Lire le chapitre' }).closest(
+        '.ui-signature-surface',
+      ),
+    ).not.toBeNull();
   });
 
   it('affiche un état vide sans programme actif', async () => {
@@ -132,7 +136,7 @@ describe('TodayPage', () => {
     ).toBeInTheDocument();
     expect(await screen.findByText('Task to continue')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Continue' })).toBeInTheDocument();
-    expect(screen.getByText('Active program')).toBeInTheDocument();
+    expect(screen.getByText('Psychologie')).toBeInTheDocument();
     expect(screen.getByText('Lire le chapitre')).toBeInTheDocument();
   });
 });
