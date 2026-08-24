@@ -634,6 +634,25 @@ const benchmarkAutonomousCorpusReviewMetadataSchema = z
   })
   .strict();
 
+const benchmarkOwnerResolvedCorpusMetadataSchema = z
+  .object({
+    artifactKind: z.literal('WRITING_CORPUS_PRESEAL_RESOLUTION'),
+    authoringManifestSha256: sha256Schema,
+    configurationSha256: sha256Schema,
+    corpusReviewManifestSha256: sha256Schema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    priorRejectedReviewSha256: sha256Schema,
+    resolvedAt: z.iso.datetime({ offset: true }),
+  })
+  .strict();
+
+const benchmarkCorpusReadinessMetadataSchema = z.union([
+  benchmarkAutonomousCorpusReviewMetadataSchema,
+  benchmarkOwnerResolvedCorpusMetadataSchema,
+]);
+
 export const benchmarkAutonomousResultReviewMetadataSchema = z
   .object({
     artifactKind: z.literal('AUTONOMOUS_RESULT_REVIEW_MANIFEST'),
@@ -660,7 +679,7 @@ export const benchmarkRunMetadataSchema = z
     candidateIds: z.array(stableKeySchema).min(1),
     autonomousReview: benchmarkAutonomousResultReviewMetadataSchema.optional(),
     configurationSha256: sha256Schema.optional(),
-    corpusReview: benchmarkAutonomousCorpusReviewMetadataSchema.optional(),
+    corpusReview: benchmarkCorpusReadinessMetadataSchema.optional(),
     corpusReviewAuthority: z
       .enum(['HUMAN', 'AUTONOMOUS_AI_NOT_HUMAN'])
       .optional(),
@@ -882,6 +901,57 @@ export const benchmarkAutonomousCorpusReviewManifestSchema = z
     reviewerKind: z.literal('AUTONOMOUS_AI_NOT_HUMAN'),
     schemaVersion: z.literal(1),
     status: z.enum(['APPROVED', 'REJECTED']),
+  })
+  .strict();
+
+export const benchmarkOwnerResolvedCorpusManifestSchema = z
+  .object({
+    artifactKind: z.literal('WRITING_CORPUS_PRESEAL_RESOLUTION'),
+    authoringManifestSha256: sha256Schema,
+    benchmarkId: stableKeySchema,
+    configurationSha256: sha256Schema,
+    corpusId: stableKeySchema,
+    corpusSha256: sha256Schema,
+    ownerAuthorizationReference: z.string().trim().min(1),
+    ownerAuthorizationSha256: sha256Schema,
+    priorRejectedDecisionPath: z.string().trim().min(1),
+    priorRejectedDecisionSha256: sha256Schema,
+    priorRejectedReviewPath: z.string().trim().min(1),
+    priorRejectedReviewSha256: sha256Schema,
+    fallbacks: z
+      .array(
+        z
+          .object({
+            cellId: stableKeySchema,
+            selectedCaseId: stableKeySchema,
+          })
+          .strict(),
+      )
+      .length(3),
+    individualGoldCorrections: z
+      .array(
+        z
+          .object({
+            cellId: stableKeySchema,
+            criterionKey: stableKeySchema,
+            from: z.literal('limited'),
+            to: z.literal('partial'),
+          })
+          .strict(),
+      )
+      .length(2),
+    resolutionScope: z
+      .object({
+        activityType: z.literal('writing'),
+        fallbackCount: z.literal(3),
+        individualGoldCorrectionCount: z.literal(2),
+        additionalEditorialReviewPerformed: z.literal(false),
+        thresholdsChanged: z.literal(false),
+      })
+      .strict(),
+    resolvedAt: z.iso.datetime({ offset: true }),
+    schemaVersion: z.literal(1),
+    status: z.literal('AUTHORIZED_MECHANICAL_CLOSURE'),
   })
   .strict();
 
@@ -2029,10 +2099,15 @@ export function assertBenchmarkAutonomousCorpusReview(input: {
   corpusHumanReviewStatus: 'PENDING' | 'APPROVED';
   corpusId: string;
   manifest: unknown;
-}): BenchmarkAutonomousCorpusReviewManifest {
-  const manifest = benchmarkAutonomousCorpusReviewManifestSchema.parse(
-    input.manifest,
-  );
+}):
+  | BenchmarkAutonomousCorpusReviewManifest
+  | z.infer<typeof benchmarkOwnerResolvedCorpusManifestSchema> {
+  const manifest = z
+    .union([
+      benchmarkAutonomousCorpusReviewManifestSchema,
+      benchmarkOwnerResolvedCorpusManifestSchema,
+    ])
+    .parse(input.manifest);
   if (
     manifest.benchmarkId !== input.benchmarkId ||
     manifest.corpusId !== input.corpusId
@@ -2056,7 +2131,10 @@ export function assertBenchmarkAutonomousCorpusReview(input: {
       'BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_REQUIRES_HUMAN_PENDING',
     );
   }
-  if (manifest.status !== 'APPROVED') {
+  if (
+    manifest.artifactKind === 'AUTONOMOUS_CORPUS_REVIEW_MANIFEST' &&
+    manifest.status !== 'APPROVED'
+  ) {
     throw new Error('BENCHMARK_AUTONOMOUS_CORPUS_REVIEW_NOT_APPROVED');
   }
   if (!sha256Schema.safeParse(input.actualCorpusReviewManifestSha256).success) {

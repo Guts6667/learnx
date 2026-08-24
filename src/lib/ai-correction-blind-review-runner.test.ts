@@ -193,4 +193,21 @@ describe('autonomous blind review packet', () => {
       }),
     );
   });
+
+  it('binds the authorized candidate into the autonomous configuration digest', () => {
+    const { configuration } = fullRunFixture();
+    expect(
+      correctionBenchmarkConfigurationSha256({
+        candidateId: 'claude-sonnet-4-6-openrouter-anthropic',
+        configuration,
+        supplierCostCapUsd: 4,
+      }),
+    ).not.toBe(
+      correctionBenchmarkConfigurationSha256({
+        candidateId: 'gemini-3-6-flash-openrouter-google-ai-studio',
+        configuration,
+        supplierCostCapUsd: 4,
+      }),
+    );
+  });
 });

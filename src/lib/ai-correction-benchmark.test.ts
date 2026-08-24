@@ -841,6 +841,7 @@ describe('correction benchmark corpus', () => {
       artifactKind: 'AUTONOMOUS_HOLDOUT_CONFIGURATION',
       authoringManifestPath: 'authoring.json',
       benchmarkId: 'autonomous-benchmark',
+      candidateId: 'claude-sonnet-4-6-openrouter-anthropic',
       corpusId: 'autonomous-corpus',
       corpusPath: 'corpus.json',
       corpusReviewManifestPath: 'corpus-review.json',
@@ -868,6 +869,7 @@ describe('correction benchmark corpus', () => {
     const parsedAutonomous = parseAutonomousHoldoutConfiguration(autonomous);
     expect(parsedAutonomous).toMatchObject({
       activityTypeScope: ['writing'],
+      candidateId: 'claude-sonnet-4-6-openrouter-anthropic',
       maxRetries: 0,
       scoreGuardBandPoints: 5,
       supplierCostCapUsd: 3,
@@ -3189,8 +3191,7 @@ describe('correction benchmark metrics', () => {
       schemaVersion: 1,
       status: 'APPROVED',
     };
-    expect(
-      assertBenchmarkAutonomousCorpusReview({
+    const assertedReview = assertBenchmarkAutonomousCorpusReview({
         actualAuthoringManifestSha256:
           autonomousDigests.authoringManifest,
         actualConfigurationSha256: autonomousDigests.configuration,
@@ -3204,8 +3205,14 @@ describe('correction benchmark metrics', () => {
         corpusHumanReviewStatus: 'PENDING',
         corpusId: corpus.corpusId,
         manifest,
-      }).reviewerKind,
-    ).toBe('AUTONOMOUS_AI_NOT_HUMAN');
+      });
+    expect(assertedReview.artifactKind).toBe(
+      'AUTONOMOUS_CORPUS_REVIEW_MANIFEST',
+    );
+    if (assertedReview.artifactKind !== 'AUTONOMOUS_CORPUS_REVIEW_MANIFEST') {
+      throw new Error('Expected autonomous corpus review.');
+    }
+    expect(assertedReview.reviewerKind).toBe('AUTONOMOUS_AI_NOT_HUMAN');
     expect(() =>
       assertBenchmarkAutonomousCorpusReview({
         actualAuthoringManifestSha256:

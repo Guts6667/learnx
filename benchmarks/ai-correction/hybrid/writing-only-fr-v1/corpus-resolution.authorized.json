@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_CORPUS_PRESEAL_RESOLUTION",
+  "status": "AUTHORIZED_MECHANICAL_CLOSURE",
+  "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+  "corpusId": "learnx-french-writing-holdout-v1",
+  "corpusSha256": "13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22",
+  "configurationSha256": "ecef1238cace1d88ab5cb455b00f9cee398bf8c4c3e37b4ca3e15a158650e51c",
+  "authoringManifestSha256": "bb28eecdb96475f7061a92ded018413b662cdad4dc69d6391482937adb2d1664",
+  "ownerAuthorizationReference": "owner-authorization.final.json",
+  "ownerAuthorizationSha256": "67ad547c8fc8d226c13f77bb54bb90fd0b2158c4528ccb7eb25f09de2ddfc669",
+  "priorRejectedDecisionPath": "preseal-decision.final.json",
+  "priorRejectedDecisionSha256": "acc3b2639b7a413610e5be075633c570b1902a38940c72ec294dd91671f94f7c",
+  "priorRejectedReviewPath": "corpus-review.preseal-v2.autonomous.json",
+  "priorRejectedReviewSha256": "01fc1f9e77be16a3cd18fdbb802fc07c48816f7cb0fe968931b6a0b8dcf5706e",
+  "fallbacks": [
+    {
+      "cellId": "writing-v1-reflective-note-complete-concise",
+      "selectedCaseId": "author-a-reflective-note-complete-concise"
+    },
+    {
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "selectedCaseId": "author-a-reflective-note-erroneous-decidable"
+    },
+    {
+      "cellId": "writing-v1-reflective-note-prompt-injection",
+      "selectedCaseId": "author-a-reflective-note-prompt-injection"
+    }
+  ],
+  "individualGoldCorrections": [
+    {
+      "cellId": "writing-v1-explanatory-analysis-erroneous-decidable",
+      "criterionKey": "source-fidelity",
+      "from": "limited",
+      "to": "partial"
+    },
+    {
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "criterionKey": "event-sequence-grounding",
+      "from": "limited",
+      "to": "partial"
+    }
+  ],
+  "resolutionScope": {
+    "activityType": "writing",
+    "fallbackCount": 3,
+    "individualGoldCorrectionCount": 2,
+    "additionalEditorialReviewPerformed": false,
+    "thresholdsChanged": false
+  },
+  "resolvedAt": "2026-08-24T13:55:00Z"
+}

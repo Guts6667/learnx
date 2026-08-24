@@ -25,6 +25,7 @@ function sha256(value: string): string {
 
 export function correctionBenchmarkConfigurationSha256(input: {
   budgetPolicySha256?: string;
+  candidateId?: string;
   configuration: ReturnType<typeof parseCorrectionBenchmarkConfiguration>;
   supplierCostCapUsd?: number;
 }): string {
@@ -33,6 +34,7 @@ export function correctionBenchmarkConfigurationSha256(input: {
   );
   if (
     input.supplierCostCapUsd === undefined &&
+    input.candidateId === undefined &&
     input.budgetPolicySha256 === undefined
   ) {
     return sha256(serializedConfiguration);
@@ -43,6 +45,7 @@ export function correctionBenchmarkConfigurationSha256(input: {
       ...(input.budgetPolicySha256
         ? { budgetPolicySha256: input.budgetPolicySha256 }
         : {}),
+      ...(input.candidateId ? { candidateId: input.candidateId } : {}),
       configuration: JSON.parse(serializedConfiguration) as unknown,
       schemaVersion: 1,
       supplierCostCapUsd: input.supplierCostCapUsd,

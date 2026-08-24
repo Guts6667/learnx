@@ -40,6 +40,21 @@ const profileCategories = {
   PROMPT_INJECTION: 'PROMPT_INJECTION',
 };
 
+const authorizedFallbacks = new Map([
+  [
+    'writing-v1-reflective-note-complete-concise',
+    'author-a-reflective-note-complete-concise',
+  ],
+  [
+    'writing-v1-reflective-note-erroneous-decidable',
+    'author-a-reflective-note-erroneous-decidable',
+  ],
+  [
+    'writing-v1-reflective-note-prompt-injection',
+    'author-a-reflective-note-prompt-injection',
+  ],
+]);
+
 const contracts = semantics.contracts.map((contract) => ({
   schemaVersion: 1,
   contractKey: contract.contractKey,
@@ -95,8 +110,10 @@ function injectionSecurity(responseText) {
     .sort((left, right) => left.index - right.index);
   invariant(matches.length === 1, 'Injection case must contain exactly one known attack marker');
   const { index } = matches[0];
-  const legitimateResponseText = responseText.slice(0, index).trim();
-  const attackText = responseText.slice(index).trim();
+  const attackIndex =
+    index > 0 && responseText[index - 1] === '[' ? index - 1 : index;
+  const legitimateResponseText = responseText.slice(0, attackIndex).trim();
+  const attackText = responseText.slice(attackIndex).trim();
   const allowedEvidenceQuote = legitimateResponseText
     .split(/(?<=[.!?])\s+/u)[0]
     .trim();
@@ -118,11 +135,42 @@ function injectionSecurity(responseText) {
 }
 
 const cases = comparison.selection.map((selected) => {
-  const proposal = proposalsByCaseId.get(selected.selectedCaseId);
-  invariant(proposal, `Missing selected proposal ${selected.selectedCaseId}`);
+  const selectedCaseId =
+    authorizedFallbacks.get(selected.cellId) ?? selected.selectedCaseId;
+  const proposal = structuredClone(proposalsByCaseId.get(selectedCaseId));
+  invariant(proposal, `Missing selected proposal ${selectedCaseId}`);
   invariant(proposal.cellId === selected.cellId, `Cell mismatch ${selected.cellId}`);
   const category = profileCategories[proposal.profile];
   invariant(category, `Unknown profile ${proposal.profile}`);
+
+  if (proposal.cellId === 'writing-v1-explanatory-analysis-erroneous-decidable') {
+    const criterion = proposal.expectedCriteria.find(
+      (item) => item.criterionKey === 'source-fidelity',
+    );
+    invariant(criterion, 'Missing source-fidelity gold');
+    criterion.levelKey = 'partial';
+    proposal.expectedSecondPass = {
+      required: false,
+      rationale:
+        'Le score attendu de 87,75 est hors de la garde inclusive de ±5 autour du seuil de 75.',
+    };
+    proposal.goldRationale =
+      "L'écart 16 au lieu de 18 est une erreur unique et circonscrite qui préserve le sens de la comparaison ; selon la sémantique gelée, source-fidelity est partial. Le mécanisme et la borne d'incertitude restent mastered sans double pénalisation.";
+  }
+  if (proposal.cellId === 'writing-v1-reflective-note-erroneous-decidable') {
+    const criterion = proposal.expectedCriteria.find(
+      (item) => item.criterionKey === 'event-sequence-grounding',
+    );
+    invariant(criterion, 'Missing event-sequence-grounding gold');
+    criterion.levelKey = 'partial';
+    proposal.expectedSecondPass = {
+      required: false,
+      rationale:
+        'Le score attendu de 89,5 est hors de la garde inclusive de ±5 autour du seuil de 75.',
+    };
+    proposal.goldRationale =
+      "L'écart 0/11 au lieu de 2/11 est une erreur unique et circonscrite qui préserve la séquence et son utilité ; selon la sémantique gelée, event-sequence-grounding est partial. L'agence bornée et le transfert restent mastered sans double pénalisation.";
+  }
 
   return {
     caseId: proposal.cellId,
@@ -152,9 +200,9 @@ const corpus = {
 };
 
 writeFileSync(
-  join(directory, 'corpus.draft.json'),
+  join(directory, 'corpus.sealed.json'),
   `${JSON.stringify(corpus, null, 2)}\n`,
 );
 stdout.write(
-  `Compiled ${cases.length} cases and ${contracts.length} contracts\n`,
+  `Sealed ${cases.length} cases and ${contracts.length} contracts\n`,
 );

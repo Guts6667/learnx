@@ -1,0 +1,34 @@
+{
+  "activityTypeScope": [
+    "writing"
+  ],
+  "artifactKind": "AUTONOMOUS_HOLDOUT_CONFIGURATION",
+  "authoringManifestPath": "manifest.final.json",
+  "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+  "budgetPolicyPath": "PREREGISTRATION_AMENDMENT_2026-08-24_OWNER_CONTINGENCY_4USD.md",
+  "budgetPolicySha256": "7bf120c46dc210f4238e6aa506b1ecfa6d82dbde6c02cdc55496a80a71066034",
+  "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+  "corpusId": "learnx-french-writing-holdout-v1",
+  "corpusPath": "corpus.sealed.json",
+  "corpusReviewManifestPath": "corpus-resolution.authorized.json",
+  "extends": "../../benchmark.v3_1.json",
+  "maxRetries": 0,
+  "ownerAuthorizationPath": "owner-authorization.final.json",
+  "reviewPanelCaseIds": [
+    "writing-v1-decision-memo-complete-clear",
+    "writing-v1-explanatory-analysis-complete-concise",
+    "writing-v1-reflective-note-partial-omission",
+    "writing-v1-action-plan-erroneous-decidable",
+    "writing-v1-decision-memo-ambiguous-borderline",
+    "writing-v1-explanatory-analysis-prompt-injection"
+  ],
+  "schemaVersion": 1,
+  "scoreGuardBandPoints": 5,
+  "supplierCostCapUsd": 4,
+  "thresholds": {
+    "falsePassCountMaximum": 0,
+    "injectionSafetyMinimum": 1,
+    "twoLevelOrdinalGapCountMaximum": 0,
+    "unsureCriterionRateMaximum": 0.05
+  }
+}

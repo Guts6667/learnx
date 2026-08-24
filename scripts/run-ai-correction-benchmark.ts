@@ -10,6 +10,7 @@ import {
   benchmarkAttemptSchema,
   benchmarkAutonomousReviewArtifactSchema,
   benchmarkHumanReviewArtifactSchema,
+  benchmarkOwnerResolvedCorpusManifestSchema,
   benchmarkResumeArtifactSchema,
   benchmarkRunMetadataSchema,
   applyBenchmarkAutonomousReview,
@@ -90,6 +91,7 @@ const autonomousHoldoutConfigurationSchema = z
     benchmarkId: z.string(),
     budgetPolicyPath: z.string().trim().min(1).optional(),
     budgetPolicySha256: z.string().regex(/^[a-f0-9]{64}$/).optional(),
+    candidateId: z.string().trim().min(1).optional(),
     corpusId: z.string(),
     corpusPath: z.string(),
     corpusReviewManifestPath: z.string().trim().min(1),
@@ -188,6 +190,7 @@ const authoringManifestSchema = z
   .passthrough();
 
 type LoadedBenchmarkInputs = {
+  authorizedCandidateId?: string;
   budgetPolicyPath?: string;
   budgetPolicySha256?: string;
   configuration: CorrectionBenchmarkConfiguration;
@@ -209,9 +212,11 @@ function configurationSha256(
   configuration: CorrectionBenchmarkConfiguration,
   supplierCostCapUsd?: number,
   budgetPolicySha256?: string,
+  candidateId?: string,
 ): string {
   return correctionBenchmarkConfigurationSha256({
     budgetPolicySha256,
+    candidateId,
     configuration,
     supplierCostCapUsd,
   });
@@ -302,6 +307,7 @@ export async function loadBenchmarkInputs(
       configuration,
       overlay.supplierCostCapUsd,
       overlay.budgetPolicySha256,
+      overlay.candidateId,
     );
     const corpusRaw = await readFile(
       path.resolve(overlayDirectory, overlay.corpusPath),
@@ -324,6 +330,41 @@ export async function loadBenchmarkInputs(
     const corpusReviewManifestRaw = await readFile(
       path.resolve(overlayDirectory, overlay.corpusReviewManifestPath),
     );
+    const corpusReadinessSource = JSON.parse(
+      corpusReviewManifestRaw.toString('utf8'),
+    ) as unknown;
+    if (
+      typeof corpusReadinessSource === 'object' &&
+      corpusReadinessSource !== null &&
+      'artifactKind' in corpusReadinessSource &&
+      corpusReadinessSource.artifactKind ===
+        'WRITING_CORPUS_PRESEAL_RESOLUTION'
+    ) {
+      const resolution = benchmarkOwnerResolvedCorpusManifestSchema.parse(
+        corpusReadinessSource,
+      );
+      const rejectedReviewRaw = await readFile(
+        path.resolve(overlayDirectory, resolution.priorRejectedReviewPath),
+      );
+      const rejectedDecisionRaw = await readFile(
+        path.resolve(overlayDirectory, resolution.priorRejectedDecisionPath),
+      );
+      const rejectedReview = JSON.parse(
+        rejectedReviewRaw.toString('utf8'),
+      ) as { summary?: { verdict?: unknown } };
+      const rejectedDecision = JSON.parse(
+        rejectedDecisionRaw.toString('utf8'),
+      ) as { status?: unknown };
+      if (
+        sha256(rejectedReviewRaw) !== resolution.priorRejectedReviewSha256 ||
+        rejectedReview.summary?.verdict !== 'REJECTED' ||
+        sha256(rejectedDecisionRaw) !==
+          resolution.priorRejectedDecisionSha256 ||
+        rejectedDecision.status !== 'REJECTED'
+      ) {
+        throw new Error('BENCHMARK_CORPUS_RESOLUTION_REJECTED_REVIEW_MISMATCH');
+      }
+    }
     const review = assertBenchmarkAutonomousCorpusReview({
       actualAuthoringManifestSha256: sha256(authoringManifestRaw),
       actualConfigurationSha256: configurationDigest,
@@ -334,26 +375,41 @@ export async function loadBenchmarkInputs(
       benchmarkId: overlay.benchmarkId,
       corpusHumanReviewStatus: corpus.humanReview.status,
       corpusId: overlay.corpusId,
-      manifest: JSON.parse(corpusReviewManifestRaw.toString('utf8')) as unknown,
+      manifest: corpusReadinessSource,
     });
+    const corpusReview =
+      review.artifactKind === 'AUTONOMOUS_CORPUS_REVIEW_MANIFEST'
+        ? {
+            artifactKind: review.artifactKind,
+            authoringManifestSha256: review.authoringManifestSha256,
+            configurationSha256: review.configurationSha256,
+            corpusReviewManifestSha256: sha256(corpusReviewManifestRaw),
+            corpusSha256: review.corpusSha256,
+            ownerAuthorizationReference: review.ownerAuthorizationReference,
+            ownerAuthorizationSha256: review.ownerAuthorizationSha256,
+            reviewedAt: review.reviewedAt,
+            reviewerIdentity: review.reviewerIdentity,
+            reviewerKind: review.reviewerKind,
+          }
+        : {
+            artifactKind: review.artifactKind,
+            authoringManifestSha256: review.authoringManifestSha256,
+            configurationSha256: review.configurationSha256,
+            corpusReviewManifestSha256: sha256(corpusReviewManifestRaw),
+            corpusSha256: review.corpusSha256,
+            ownerAuthorizationReference: review.ownerAuthorizationReference,
+            ownerAuthorizationSha256: review.ownerAuthorizationSha256,
+            priorRejectedReviewSha256: review.priorRejectedReviewSha256,
+            resolvedAt: review.resolvedAt,
+          };
     return {
+      authorizedCandidateId: overlay.candidateId,
       budgetPolicyPath: overlay.budgetPolicyPath,
       budgetPolicySha256: overlay.budgetPolicySha256,
       configuration,
       configurationSha256: configurationDigest,
       corpus,
-      corpusReview: {
-        artifactKind: review.artifactKind,
-        authoringManifestSha256: review.authoringManifestSha256,
-        configurationSha256: review.configurationSha256,
-        corpusReviewManifestSha256: sha256(corpusReviewManifestRaw),
-        corpusSha256: review.corpusSha256,
-        ownerAuthorizationReference: review.ownerAuthorizationReference,
-        ownerAuthorizationSha256: review.ownerAuthorizationSha256,
-        reviewedAt: review.reviewedAt,
-        reviewerIdentity: review.reviewerIdentity,
-        reviewerKind: review.reviewerKind,
-      },
+      corpusReview,
       corpusReviewAuthority: 'AUTONOMOUS_AI_NOT_HUMAN',
       corpusSha256: sha256(corpusRaw),
       supplierCostCapUsd: overlay.supplierCostCapUsd,
@@ -781,11 +837,25 @@ export function buildBenchmarkSupplierBudgetPreflight(input: {
   configuration: CorrectionBenchmarkConfiguration;
   corpus: CorrectionBenchmarkCorpus;
   maxRetries: number;
+  pendingCells?: {
+    candidateId: string;
+    caseId: string;
+    repetition: number;
+  }[];
   repetitions: number;
   supplierCostCapUsd: number;
   actualSpentUsd?: number;
 }): BenchmarkSupplierBudgetPreflight {
+  const pendingCellKeys = input.pendingCells
+    ? new Set(
+        input.pendingCells.map(
+          (cell) =>
+            `${cell.candidateId}|${cell.caseId}|${cell.repetition}`,
+        ),
+      )
+    : null;
   const primaryCallCosts: number[] = [];
+  const allPotentialGuardCallCosts: number[] = [];
   for (const candidate of input.candidates) {
     for (const benchmarkCase of input.cases) {
       const cost = conservativeCallCostUsd({
@@ -795,7 +865,15 @@ export function buildBenchmarkSupplierBudgetPreflight(input: {
         corpus: input.corpus,
       });
       for (let repetition = 1; repetition <= input.repetitions; repetition += 1) {
-        primaryCallCosts.push(cost);
+        allPotentialGuardCallCosts.push(cost);
+        if (
+          !pendingCellKeys ||
+          pendingCellKeys.has(
+            `${candidate.candidateId}|${benchmarkCase.caseId}|${repetition}`,
+          )
+        ) {
+          primaryCallCosts.push(cost);
+        }
       }
     }
   }
@@ -811,7 +889,7 @@ export function buildBenchmarkSupplierBudgetPreflight(input: {
       primaryWorstCaseUsd -
       retryWorstCaseUsd,
   );
-  const sortedGuardCosts = [...primaryCallCosts].sort(
+  const sortedGuardCosts = [...allPotentialGuardCallCosts].sort(
     (left, right) => left - right,
   );
   let boundedSecondPassCount = 0;
@@ -823,7 +901,10 @@ export function buildBenchmarkSupplierBudgetPreflight(input: {
     boundedSecondPassSpend += cost;
     boundedSecondPassCount += 1;
   }
-  const allGuardWorstCaseUsd = primaryWorstCaseUsd;
+  const allGuardWorstCaseUsd = allPotentialGuardCallCosts.reduce(
+    (total, cost) => total + cost,
+    0,
+  );
   const decision =
     (input.actualSpentUsd ?? 0) +
         primaryWorstCaseUsd +
@@ -833,7 +914,7 @@ export function buildBenchmarkSupplierBudgetPreflight(input: {
       : 'READY';
   return {
     artifactKind: 'BENCHMARK_SUPPLIER_BUDGET_PREFLIGHT',
-    allGuardCallCount: primaryCallCosts.length,
+    allGuardCallCount: allPotentialGuardCallCosts.length,
     allGuardWorstCaseUsd,
     boundedSecondPassBudgetUsd: Math.min(
       availableForGuards,
@@ -1113,6 +1194,7 @@ export async function runBenchmark(input: {
       configuration: input.configuration,
       corpus: input.corpus,
       maxRetries: retryMaximum,
+      ...(input.pendingCells ? { pendingCells: input.pendingCells } : {}),
       repetitions,
       supplierCostCapUsd: input.supplierBudget.hardCapUsd,
     });
@@ -1193,6 +1275,90 @@ export async function runBenchmark(input: {
     repetition: number;
   }> = [];
 
+  const appendGuardedCell = (guardedInput: {
+    benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+    candidate: CorrectionBenchmarkConfiguration['candidates'][number];
+    contract: ReturnType<typeof findBenchmarkContract>;
+    primaryAttempt: BenchmarkAttempt;
+    repetition: number;
+  }): void => {
+    if (!guardedInput.primaryAttempt.output) {
+      return;
+    }
+    const completeDelivery =
+      (guardedInput.primaryAttempt.unsureCriteria?.length ?? 0) === 0;
+    const score = completeDelivery
+      ? completeOutputScore({
+          contract: guardedInput.contract,
+          output: guardedInput.primaryAttempt.output,
+        })
+      : null;
+    if (
+      score !== null &&
+      input.configuration.scoreGuardBandPoints !== undefined &&
+      Math.abs(score - guardedInput.contract.passingScore) <=
+        input.configuration.scoreGuardBandPoints
+    ) {
+      guardedCells.push({
+        ...guardedInput,
+        distanceFromPassingScore: Math.abs(
+          score - guardedInput.contract.passingScore,
+        ),
+      });
+    }
+  };
+
+  // On process resume, rebuild the phase-2 schedule from persisted valid
+  // primaries. Cells that already contain a real or synthetic guard outcome
+  // are terminal and must never dispatch another second pass.
+  const initialAttemptsByCell = new Map<string, BenchmarkAttempt[]>();
+  for (const attempt of input.initialAttempts ?? []) {
+    const key = `${attempt.candidateId}|${attempt.caseId}|${attempt.repetition}`;
+    initialAttemptsByCell.set(key, [
+      ...(initialAttemptsByCell.get(key) ?? []),
+      attempt,
+    ]);
+  }
+  for (const candidate of selectedCandidates) {
+    for (const benchmarkCase of selectedCases) {
+      const contract = findBenchmarkContract(
+        input.corpus,
+        benchmarkCase.contractKey,
+        benchmarkCase.contractVersion,
+      );
+      for (let repetition = 1; repetition <= repetitions; repetition += 1) {
+        const runAttempts = initialAttemptsByCell.get(
+          `${candidate.candidateId}|${benchmarkCase.caseId}|${repetition}`,
+        );
+        if (
+          !runAttempts ||
+          runAttempts.some(
+            (attempt) => attempt.workflowPass === 'SCORE_GUARD_SECOND_PASS',
+          )
+        ) {
+          continue;
+        }
+        const primaryAttempt = [...runAttempts]
+          .sort((left, right) => right.attempt - left.attempt)
+          .find(
+            (attempt) =>
+              attempt.status === 'VALID' &&
+              attempt.output !== undefined &&
+              attempt.workflowPass !== 'SCORE_GUARD_SECOND_PASS',
+          );
+        if (primaryAttempt) {
+          appendGuardedCell({
+            benchmarkCase,
+            candidate,
+            contract,
+            primaryAttempt,
+            repetition,
+          });
+        }
+      }
+    }
+  }
+
   // Phase 1: finish every mandatory primary cell (and its preregistered retry
   // budget) before considering a single score-guard pass.
   for (const candidate of selectedCandidates) {
@@ -1237,28 +1403,13 @@ export async function runBenchmark(input: {
             }
             continue;
           }
-          const completeDelivery =
-            (primaryAttempt.unsureCriteria?.length ?? 0) === 0;
-          const score = completeDelivery
-            ? completeOutputScore({ contract, output: primaryAttempt.output })
-            : null;
-          const guarded =
-            score !== null &&
-            input.configuration.scoreGuardBandPoints !== undefined &&
-            Math.abs(score - contract.passingScore) <=
-              input.configuration.scoreGuardBandPoints;
-          if (guarded) {
-            guardedCells.push({
-              benchmarkCase,
-              candidate,
-              contract,
-              distanceFromPassingScore: Math.abs(
-                (score ?? contract.passingScore) - contract.passingScore,
-              ),
-              primaryAttempt,
-              repetition,
-            });
-          }
+          appendGuardedCell({
+            benchmarkCase,
+            candidate,
+            contract,
+            primaryAttempt,
+            repetition,
+          });
           break;
         }
       }
@@ -1473,6 +1624,13 @@ async function main(): Promise<void> {
     argument.startsWith('--candidate='),
   );
   const requestedCandidateId = candidateArgument?.slice('--candidate='.length);
+  if (
+    loaded.authorizedCandidateId &&
+    requestedCandidateId &&
+    requestedCandidateId !== loaded.authorizedCandidateId
+  ) {
+    throw new Error('BENCHMARK_AUTONOMOUS_CANDIDATE_IDENTITY_MISMATCH');
+  }
   const delayArgument = process.argv.find((argument) =>
     argument.startsWith('--delay-ms='),
   );
@@ -1582,9 +1740,11 @@ async function main(): Promise<void> {
   }
   const selectedCandidates = resumeState
     ? [resumeState.candidate]
-    : requestedCandidateId
+    : requestedCandidateId || loaded.authorizedCandidateId
       ? configuration.candidates.filter(
-          (candidate) => candidate.candidateId === requestedCandidateId,
+          (candidate) =>
+            candidate.candidateId ===
+            (requestedCandidateId ?? loaded.authorizedCandidateId),
         )
       : requestedModelId
         ? configuration.candidates.filter(
@@ -1664,11 +1824,18 @@ async function main(): Promise<void> {
         : {}),
     });
   if (supplierBudget && resumeState) {
-    resumeState.artifact.attempts.forEach((attempt) => {
+    resumeState.artifact.attempts
+      .filter(
+        (attempt) =>
+          attempt.errorCode !== 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET' &&
+          attempt.errorCode !==
+            'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
+      )
+      .forEach((attempt) => {
       supplierBudget.reconcile(
         attempt.usage as SupplierBudgetUsage | undefined,
       );
-    });
+      });
   }
   await mkdir(resultDirectory, { recursive: true });
   const outputStem = resumePath
@@ -1676,6 +1843,58 @@ async function main(): Promise<void> {
     : path.join(resultDirectory, runId);
   const attemptsPath = `${outputStem}.attempts.json`;
   const budgetPreflightPath = `${outputStem}.budget-preflight.final.json`;
+  const writeBudgetPreflight = async (
+    preflight: BenchmarkSupplierBudgetPreflight,
+  ): Promise<void> => {
+    if (
+      loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
+      preflight.primaryCallCount !==
+        (resumeState ? resumeState.pendingCells.length : 72)
+    ) {
+      throw new Error('BENCHMARK_AUTONOMOUS_PRIMARY_CELL_COUNT_INVALID');
+    }
+    await writeFile(
+      budgetPreflightPath,
+      `${JSON.stringify(
+        {
+          ...preflight,
+          ...(loaded.budgetPolicyPath
+            ? { budgetPolicyPath: loaded.budgetPolicyPath }
+            : {}),
+          ...(loaded.budgetPolicySha256
+            ? { budgetPolicySha256: loaded.budgetPolicySha256 }
+            : {}),
+          configurationSha256: loaded.configurationSha256,
+          corpusSha256: loaded.corpusSha256,
+        },
+        null,
+        2,
+      )}\n`,
+      'utf8',
+    );
+  };
+  if (process.argv.includes('--preflight-only')) {
+    if (!supplierBudget) {
+      throw new Error('BENCHMARK_PREFLIGHT_REQUIRES_SUPPLIER_BUDGET_CAP');
+    }
+    const preflight = buildBenchmarkSupplierBudgetPreflight({
+      actualSpentUsd: supplierBudget.actualSpentUsd,
+      candidates: selectedCandidates,
+      cases: selectedCases,
+      configuration,
+      corpus,
+      maxRetries: requestedCaseId ? 0 : configuration.maxRetries,
+      ...(resumeState ? { pendingCells: resumeState.pendingCells } : {}),
+      repetitions:
+        reviewPanelMode || requestedCaseId ? 1 : configuration.repetitions,
+      supplierCostCapUsd: supplierBudget.hardCapUsd,
+    });
+    await writeBudgetPreflight(preflight);
+    console.log(
+      `Préflight fournisseur écrit sans appel : ${budgetPreflightPath}`,
+    );
+    return;
+  }
   const writeAttempts = async (attempts: BenchmarkAttempt[]): Promise<void> => {
     await writeFile(
       attemptsPath,
@@ -1725,33 +1944,7 @@ async function main(): Promise<void> {
     configuration,
     corpus,
     maxRetries: requestedCaseId ? 0 : undefined,
-    onBudgetPreflight: async (preflight) => {
-      if (
-        loaded.corpusReviewAuthority === 'AUTONOMOUS_AI_NOT_HUMAN' &&
-        preflight.primaryCallCount !== 72
-      ) {
-        throw new Error('BENCHMARK_AUTONOMOUS_PRIMARY_CELL_COUNT_INVALID');
-      }
-      await writeFile(
-        budgetPreflightPath,
-        `${JSON.stringify(
-          {
-            ...preflight,
-            ...(loaded.budgetPolicyPath
-              ? { budgetPolicyPath: loaded.budgetPolicyPath }
-              : {}),
-            ...(loaded.budgetPolicySha256
-              ? { budgetPolicySha256: loaded.budgetPolicySha256 }
-              : {}),
-            configurationSha256: loaded.configurationSha256,
-            corpusSha256: loaded.corpusSha256,
-          },
-          null,
-          2,
-        )}\n`,
-        'utf8',
-      );
-    },
+    onBudgetPreflight: writeBudgetPreflight,
     onProgress: writeAttempts,
     requestDelayMs,
     supplierBudget,
