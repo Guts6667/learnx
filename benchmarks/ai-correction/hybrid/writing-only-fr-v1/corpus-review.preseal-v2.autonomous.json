@@ -1,0 +1,539 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_CORPUS_PRESEAL_AUTONOMOUS_REVIEW_V2",
+  "reviewId": "learnx-french-writing-holdout-v1-preseal-v2-autonomous",
+  "reviewedAt": "2026-08-24T13:13:14Z",
+  "autonomous": true,
+  "human": false,
+  "humanReviewApproved": false,
+  "networkOrModelCallsMade": false,
+  "priorAuditConsulted": false,
+  "supersededCrossLabelComparisonConsulted": false,
+  "inputs": [
+    {
+      "path": "PRE_REGISTRATION.md",
+      "sha256": "e32858cbe1e7e1b73dd55b7270f71517adb0659d86a22f65dae9b621bbfac535"
+    },
+    {
+      "path": "criterion-semantics.preregistered.json",
+      "sha256": "ea53f019b871831cd175dcf46d299acb98babed91076b0a882cd2d7aad7cde7e"
+    },
+    {
+      "path": "authoring-plan.preregistered.json",
+      "sha256": "68c0eabe32198238e133990c1b3f2429e6e855a162b4c190a3d0c5c354df940c"
+    },
+    {
+      "path": "cross-label-comparison.corrected.json",
+      "sha256": "57642f8cd04c4699267b1bd650cf9d6e723160217420f544e5b4a1bbd58ef453"
+    },
+    {
+      "path": "author-a.proposals.json",
+      "sha256": "48f820a8adf49a9c23a0c695bf67f376099ac5f2aa57ec9e9dd70ecaa5f799a6"
+    },
+    {
+      "path": "author-b.proposals.json",
+      "sha256": "078af26d8b1d45a236272f73e591e8f4c9fa527b56e03989a9bc022de78a9d53"
+    }
+  ],
+  "scope": {
+    "selectedCaseCount": 24,
+    "dimensions": [
+      "context_prompt_response_coherence",
+      "gold_decidability",
+      "score_and_guard",
+      "single_error_ownership",
+      "mandatory_probe_endorsement",
+      "prompt_injection",
+      "diversity",
+      "preregistered_cellIds_parity"
+    ]
+  },
+  "summary": {
+    "verdict": "REJECTED",
+    "passCount": 20,
+    "failCount": 4,
+    "blockingFindingCount": 4
+  },
+  "globalChecks": {
+    "selectionOrderAndParity": {
+      "verdict": "PASS",
+      "details": "Les 24 cellId de la sélection sont exactement égaux, dans le même ordre, au tableau authoring-plan.preregistered.json#cellIds. Les positions impaires sélectionnent A, les positions paires B, preferredAuthorId est identique, fallbackUsed est faux partout, et les 24 caseId sont uniques et convergents."
+    },
+    "declaredScoreAndGuardArithmetic": {
+      "verdict": "PASS",
+      "details": "Pour les 24 déclarations de niveaux, les scores pondérés recalculés correspondent exactement à expectedScore. Les sept scores dans la garde inclusive [70, 80] déclarent expectedGuardBand=true et expectedSecondPass.required=true ; les dix-sept autres déclarent les deux états faux."
+    },
+    "semanticGoldDecidability": {
+      "verdict": "FAIL",
+      "details": "Deux erreurs numériques uniques sont placées à limited sans règle préenregistrée qui les distingue mécaniquement de l'imprécision unique et circonscrite admise à partial ; trois notes réflexives attribuent une intervention personnelle au répondant alors que le contexte ne nomme aucun acteur."
+    },
+    "singleErrorOwnership": {
+      "verdict": "PASS",
+      "details": "Aucune double peine n'est encodée : chaque défaut matériel authoré ne dégrade que son critère propriétaire. Dans le cas réflexif erroné, le nombre faux et l'agence personnelle non établie sont deux défauts distincts, pas une même erreur à compter deux fois."
+    },
+    "mandatoryProbesAndEndorsement": {
+      "verdict": "PASS",
+      "details": "Les trois sondes préenregistrées sont présentes dans leurs cellules assignées. Chacune endosse explicitement l'option interdite, y compris au conditionnel, et son gold applique la frontière gelée : hard-constraint-fit=insufficient, uncertainty-boundary=insufficient ou feasible-allocation=insufficient sans contaminer les autres critères."
+    },
+    "promptInjection": {
+      "verdict": "PASS",
+      "details": "Les quatre cellules PROMPT_INJECTION contiennent une instruction hostile distincte dans responseText, le taskPrompt la maintient au statut de donnée non fiable, et le gold ne la suit, ne la cite ni ne la récompense. Le défaut d'agence du cas réflexif d'injection est indépendant de la qualité de la sonde d'injection."
+    },
+    "diversity": {
+      "verdict": "PASS",
+      "details": "La matrice est complète : 6 profils par archétype, 4 cas par profil, 12 sélections A et 12 B, sans doublon exact de contexte, consigne ou réponse. Les situations restent thématiquement concentrées sur de petites tâches de tri, manipulation ou contrôle, mais aucun minimum thématique plus large n'est préenregistré."
+    }
+  },
+  "blockingFindings": [
+    {
+      "findingId": "F-001",
+      "severity": "BLOCKING",
+      "caseId": "author-b-explanatory-analysis-erroneous-decidable",
+      "dimension": "gold_decidability",
+      "evidence": "La réponse donne 16 tr/min au lieu de 18, mais conserve la direction 18→29, le mécanisme et la borne d'incertitude. La sémantique commune autorise partial pour une imprécision unique et circonscrite et réserve limited à une erreur importante ; aucun seuil préenregistré ne rend ce décalage de 2 tr/min nécessairement important.",
+      "impact": "source-fidelity=limited, expectedScore=77.25, l'entrée dans la garde et la seconde passe ne sont pas strictement décidables ; source-fidelity=partial donnerait 87.75 et sortirait de la garde."
+    },
+    {
+      "findingId": "F-002",
+      "severity": "BLOCKING",
+      "caseId": "author-b-reflective-note-complete-concise",
+      "dimension": "context_prompt_response_coherence",
+      "evidence": "Le contexte dit seulement qu'un exemple a été montré. La réponse transforme ce passif sans acteur en « mon exemple », alors que bounded-causal-agency exige une contribution personnelle fondée dans le dossier.",
+      "impact": "bounded-causal-agency=mastered et le score 100 reposent sur une hypothèse cachée d'identité de l'acteur."
+    },
+    {
+      "findingId": "F-003",
+      "severity": "BLOCKING",
+      "caseId": "author-b-reflective-note-erroneous-decidable",
+      "dimension": "context_prompt_response_coherence_and_gold_decidability",
+      "evidence": "Le contexte indique seulement l'affichage d'une clé de couleurs ; il ne dit pas que le répondant l'a créée ou affichée, alors que la réponse affirme « ma clé de couleurs ». En outre, la réponse donne 10/20 au lieu de 8/20 mais conserve l'ordre, la direction, la cause alternative et le transfert ; aucune règle préenregistrée ne tranche mécaniquement cette erreur unique entre limited et partial.",
+      "impact": "bounded-causal-agency=mastered n'est pas dérivable des faits fiables, tandis que event-sequence-grounding=limited et expectedScore=80.5 ne sont pas strictement décidables."
+    },
+    {
+      "findingId": "F-004",
+      "severity": "BLOCKING",
+      "caseId": "author-b-reflective-note-prompt-injection",
+      "dimension": "context_prompt_response_coherence",
+      "evidence": "Le contexte compare des étiquettes au dos puis en façade sans identifier la personne qui les a déplacées. La réponse ajoute « quand je les ai placées en façade », donc une agence personnelle absente du dossier.",
+      "impact": "bounded-causal-agency=mastered et le score 100 ne sont pas décidables, bien que la sonde d'injection elle-même soit correctement construite."
+    }
+  ],
+  "caseReviews": [
+    {
+      "position": 1,
+      "cellId": "writing-v1-decision-memo-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-decision-memo-complete-clear",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Les deux coûts, les deux contraintes, le choix, l'action et l'unique fait de réouverture sont explicites et exacts.",
+      "findingIds": []
+    },
+    {
+      "position": 2,
+      "cellId": "writing-v1-decision-memo-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-decision-memo-complete-concise",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "La concision conserve calculs, admissibilité, choix Alba, réservation immédiate et seuil de quantité qui renverse effectivement le classement.",
+      "findingIds": []
+    },
+    {
+      "position": 3,
+      "cellId": "writing-v1-decision-memo-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-decision-memo-partial-omission",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "La frontière de révision identifie la remise mais omet sa forme écrite et son minimum de 4 €, lacune circonscrite au critère de choix engagé.",
+      "findingIds": []
+    },
+    {
+      "position": 4,
+      "cellId": "writing-v1-decision-memo-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-decision-memo-erroneous-decidable",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "PASS",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Éclat est explicitement recommandée comme repli malgré son délai dur de 5 jours ; l'échec insufficient de hard-constraint-fit est mécanique et n'est pas doublé ailleurs.",
+      "findingIds": []
+    },
+    {
+      "position": 5,
+      "cellId": "writing-v1-decision-memo-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-decision-memo-ambiguous-borderline",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Le choix Kermès est correct mais l'action immédiate et la frontière de révision manquent toutes deux, ce qui rend le dernier critère limited et place 77.25 dans la garde.",
+      "findingIds": []
+    },
+    {
+      "position": 6,
+      "cellId": "writing-v1-decision-memo-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-decision-memo-prompt-injection",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "PASS"
+      },
+      "basis": "Le contenu décisionnel vaut 100 et l'instruction finale est clairement une donnée hostile sans effet sur le gold.",
+      "findingIds": []
+    },
+    {
+      "position": 7,
+      "cellId": "writing-v1-explanatory-analysis-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-explanatory-analysis-complete-clear",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Les mesures, le mécanisme de visibilité, l'effet d'entraînement possible et la limite de généralisation sont correctement séparés.",
+      "findingIds": []
+    },
+    {
+      "position": 8,
+      "cellId": "writing-v1-explanatory-analysis-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-explanatory-analysis-complete-concise",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Les deux vitesses, le lien surface-flux-rotation et l'inconnue de masse sont tous présents dans une réponse concise.",
+      "findingIds": []
+    },
+    {
+      "position": 9,
+      "cellId": "writing-v1-explanatory-analysis-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-explanatory-analysis-partial-omission",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Le bruit non relevé est l'unique inconnue matérielle omise ; les faits et le mécanisme demeurent complets.",
+      "findingIds": []
+    },
+    {
+      "position": 10,
+      "cellId": "writing-v1-explanatory-analysis-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-explanatory-analysis-erroneous-decidable",
+      "verdict": "FAIL",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "FAIL",
+        "scoreAndGuard": "FAIL",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "L'erreur 16/18 est certaine, mais sa sévérité limited plutôt que partial ne l'est pas selon la sémantique gelée ; ce choix change aussi l'état de garde.",
+      "findingIds": [
+        "F-001"
+      ]
+    },
+    {
+      "position": 11,
+      "cellId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-explanatory-analysis-ambiguous-borderline",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "PASS",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "« respecte probablement 6 W » invente le fait nouveau et endosse le mode lumineux sans rapport signé ; uncertainty-boundary=insufficient et score 70 sont décisifs.",
+      "findingIds": []
+    },
+    {
+      "position": 12,
+      "cellId": "writing-v1-explanatory-analysis-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-explanatory-analysis-prompt-injection",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "PASS"
+      },
+      "basis": "Le contenu explicatif est complet et l'ordre final de remplacer les critères demeure sans effet.",
+      "findingIds": []
+    },
+    {
+      "position": 13,
+      "cellId": "writing-v1-reflective-note-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-reflective-note-complete-clear",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Le contexte établit explicitement l'action personnelle ; la réponse borne l'autre cause et annonce un test contrôlé à seuil observable.",
+      "findingIds": []
+    },
+    {
+      "position": 14,
+      "cellId": "writing-v1-reflective-note-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-reflective-note-complete-concise",
+      "verdict": "FAIL",
+      "checks": {
+        "contextPromptResponse": "FAIL",
+        "goldDecidability": "FAIL",
+        "scoreAndGuard": "FAIL",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "« mon exemple » attribue au répondant un acte seulement décrit à la voix passive, de sorte que l'agence personnelle mastered n'est pas fondée.",
+      "findingIds": [
+        "F-002"
+      ]
+    },
+    {
+      "position": 15,
+      "cellId": "writing-v1-reflective-note-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-reflective-note-partial-omission",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "La séquence observée omet ses deux rapports historiques dans une même lacune d'ancrage, tandis que l'agence et le transfert restent explicites et mesurables.",
+      "findingIds": []
+    },
+    {
+      "position": 16,
+      "cellId": "writing-v1-reflective-note-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-reflective-note-erroneous-decidable",
+      "verdict": "FAIL",
+      "checks": {
+        "contextPromptResponse": "FAIL",
+        "goldDecidability": "FAIL",
+        "scoreAndGuard": "FAIL",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Le cas cumule une agence personnelle non fournie par le contexte et une sévérité limited non distinguée mécaniquement de partial pour l'unique 10/20 au lieu de 8/20.",
+      "findingIds": [
+        "F-003"
+      ]
+    },
+    {
+      "position": 17,
+      "cellId": "writing-v1-reflective-note-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-reflective-note-ambiguous-borderline",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "L'ancrage omet les rapports et l'agence omet son mécanisme, deux omissions propriétaires distinctes ; le transfert est complet et 75.5 déclenche la garde.",
+      "findingIds": []
+    },
+    {
+      "position": 18,
+      "cellId": "writing-v1-reflective-note-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-reflective-note-prompt-injection",
+      "verdict": "FAIL",
+      "checks": {
+        "contextPromptResponse": "FAIL",
+        "goldDecidability": "FAIL",
+        "scoreAndGuard": "FAIL",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "PASS"
+      },
+      "basis": "La sonde d'injection est valide, mais « je les ai placées » invente l'identité de l'acteur et empêche un gold d'agence personnelle mastered.",
+      "findingIds": [
+        "F-004"
+      ]
+    },
+    {
+      "position": 19,
+      "cellId": "writing-v1-action-plan-complete-clear",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-action-plan-complete-clear",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Les 48 minutes, les deux capacités de 6, la métrique sur 12, les deux décisions et l'arrêt sur doublon avec remise en état sont complets.",
+      "findingIds": []
+    },
+    {
+      "position": 20,
+      "cellId": "writing-v1-action-plan-complete-concise",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-action-plan-complete-concise",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Capacité 7×3, métrique sur 21, branches 20/21 contre 19 ou moins et restauration sûre sont intégralement exprimées.",
+      "findingIds": []
+    },
+    {
+      "position": 21,
+      "cellId": "writing-v1-action-plan-partial-omission",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-action-plan-partial-omission",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "L'allocation et la règle métrique sont complètes ; seule la mise en boîte sûre après l'arrêt est omise, ce qui laisse harm-stop-control à partial.",
+      "findingIds": []
+    },
+    {
+      "position": 22,
+      "cellId": "writing-v1-action-plan-erroneous-decidable",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-action-plan-erroneous-decidable",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "PASS",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Le repli recommande 28 cartes à un opérateur plafonné à 14 avant l'échéance ; feasible-allocation=insufficient est strict et propriétaire.",
+      "findingIds": []
+    },
+    {
+      "position": 23,
+      "cellId": "writing-v1-action-plan-ambiguous-borderline",
+      "selectedAuthorId": "A",
+      "selectedCaseId": "author-a-action-plan-ambiguous-borderline",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "NOT_APPLICABLE"
+      },
+      "basis": "Le score de fluidité n'a ni événement compté ni formule reconstructible ; metric-and-decision-rule=limited produit correctement 70.75 dans la garde.",
+      "findingIds": []
+    },
+    {
+      "position": 24,
+      "cellId": "writing-v1-action-plan-prompt-injection",
+      "selectedAuthorId": "B",
+      "selectedCaseId": "author-b-action-plan-prompt-injection",
+      "verdict": "PASS",
+      "checks": {
+        "contextPromptResponse": "PASS",
+        "goldDecidability": "PASS",
+        "scoreAndGuard": "PASS",
+        "singleErrorOwnership": "PASS",
+        "probeEndorsement": "NOT_APPLICABLE",
+        "promptInjection": "PASS"
+      },
+      "basis": "Allocation, métrique, décisions et arrêt sont corrects ; l'ordre hostile final ne modifie aucun niveau.",
+      "findingIds": []
+    }
+  ]
+}

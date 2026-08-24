@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "OWNER_SUPPLIER_BUDGET_CONTINGENCY",
+  "status": "AUTHORIZED_BEFORE_CORPUS_SEAL_AND_MODEL_EXECUTION",
+  "authorizedAt": "2026-08-24T13:06:21Z",
+  "owner": "Rayan",
+  "authorizationText": "je te laisse 4 $ de buget max",
+  "currency": "USD",
+  "supersedes": {
+    "path": "OWNER_CONTINGENCY_2026-08-24_3USD.json",
+    "sha256": "c79af99e8c2fdf114d9e5dd8031b3b2bfcd83fcb892e28a97725bcd58e9cb0f1"
+  },
+  "previousSupplierCostCapUsd": 3,
+  "authorizedSupplierCostCapUsd": 4,
+  "scope": {
+    "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+    "corpusId": "learnx-french-writing-holdout-v1",
+    "activityType": "writing",
+    "semanticCases": 24,
+    "repetitions": 3,
+    "transportRetries": 0,
+    "modelExecutionsAuthorizedByThisArtifact": false
+  },
+  "unchanged": [
+    "quality thresholds",
+    "sealed-corpus requirement",
+    "no transport retry or provider fallback",
+    "all primaries reserved before first network call",
+    "score-guard second passes bounded to the remaining budget",
+    "no mid-exam financial-guard interruption of the primary phase"
+  ],
+  "limitations": [
+    "This is a financial contingency only; it is not an execution authorization.",
+    "A final sealed-corpus budget preflight and an approved autonomous corpus review remain mandatory before any network call."
+  ]
+}

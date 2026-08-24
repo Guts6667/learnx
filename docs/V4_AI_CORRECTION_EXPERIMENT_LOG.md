@@ -709,3 +709,54 @@ préliminaire de `2,399544 USD` pour 72 primaires tient désormais dans le
 plafond et laisserait `0,600456 USD` aux secondes passes ; le calcul exact
 reste obligatoire sur le corpus scellé. Le préflight à 3 USD, lié par digest,
 reste le seul artefact habilité à autoriser ou refuser l'exécution réseau.
+
+### 8.13 Examen Writing — rejet final avant scellement, zéro appel
+
+La comparaison inter-auteurs initiale
+(`ab86c250325420729a13312114b3080fe0891380f5835c11a227796c8ab59a2c`)
+alternait A/B sur un ordre lexicographique au lieu du tableau `cellIds`
+préenregistré. Elle est conservée mais `SUPERSEDED`. La comparaison corrigée,
+liée à l'ordre préenregistré, porte l'empreinte
+`57642f8cd04c4699267b1bd650cf9d6e723160217420f544e5b4a1bbd58ef453`
+et conserve les résultats d'accord : `0/144` désaccord critériel, zéro
+désaccord de garde et 48 propositions convergentes sur 48. La première revue
+pré-scellement (`37f64e41fd4bf49f2989c1e56ffdd97da095e08ebc17abf74258d457098df5cb`),
+fondée sur la sélection supersédée, est elle aussi conservée uniquement comme
+trace historique.
+
+La dernière revue éditoriale autonome autorisée a ensuite examiné la sélection
+corrigée sans consulter l'ancien audit. Son manifeste
+`corpus-review.preseal-v2.autonomous.json` porte l'empreinte
+`01fc1f9e77be16a3cd18fdbb802fc07c48816f7cb0fe968931b6a0b8dcf5706e`.
+Verdict : **REJECTED — 20 PASS, 4 FAIL**. `humanReviewApproved` reste faux ;
+aucun modèle ni réseau n'a été appelé.
+
+Les quatre défauts bloquants sont des défauts d'étalon, pas des résultats du
+modèle :
+
+- deux erreurs numériques isolées (`16/18` et `10/20`) sont classées
+  `limited`, alors que la sémantique préenregistrée permet aussi `partial`
+  pour une imprécision unique et circonscrite ; ce choix change le score et la
+  décision de seconde passe ;
+- trois notes réflexives attribuent à l'apprenant une action personnelle
+  (`mon exemple`, `ma clé`, `je les ai placées`) que leur contexte formule sans
+  acteur. Le niveau `bounded-causal-agency=mastered` n'est donc pas dérivable
+  du dossier ;
+- le cas d'injection concerné reste correctement construit : son rejet vient
+  uniquement de l'agence personnelle non établie.
+
+Le corpus draft
+(`a0940fb52bf1a3e2c847d04c9a42e1b2cf11b78c4743b83d496a751d34d4fd53`)
+n'est pas scellé et n'est pas consommé comme examen. La contingency propriétaire
+à `4,00 USD` (`453e3ba2142ce64f119aa36f6b1377424a8554801ce57559e1dff6169407e493`)
+reste entièrement inutilisée : coût fournisseur `0 USD`, 0 primaire, 0 seconde
+passe. Conformément à l'arrêt préenregistré et à l'interdiction de relancer des
+auteurs ou d'ajouter une revue, aucune correction spontanée, aucun nouveau
+contrôle éditorial et aucun appel payant ne sont effectués dans cette itération.
+
+Le manifeste terminal `preseal-decision.final.json`
+(`acc3b2639b7a413610e5be075633c570b1902a38940c72ec294dd91671f94f7c`)
+lie cette décision et les supersessions. Résultat de l'itération :
+**NO_GO_PRESEAL_CORPUS**. Cette issue
+ne modifie ni le NO-GO définitif de la campagne générale à quatre familles, ni
+les seuils du futur pipeline Writing.

@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { stdout } from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 const directory = dirname(fileURLToPath(import.meta.url));
@@ -22,6 +23,7 @@ function invariant(condition, message) {
 }
 
 const freeze = readJson('cross-label-reviews.freeze.json');
+const authoringPlan = readJson('authoring-plan.preregistered.json');
 const targets = [
   {
     authorId: 'A',
@@ -128,8 +130,13 @@ for (const result of results) {
 
 const cellsWithoutConvergentProposal = [];
 const selected = [];
-const sortedCellIds = [...byCell.keys()].sort();
-for (const [index, cellId] of sortedCellIds.entries()) {
+const preregisteredCellIds = authoringPlan.cellIds;
+invariant(
+  preregisteredCellIds.length === byCell.size &&
+    preregisteredCellIds.every((cellId) => byCell.has(cellId)),
+  'Preregistered cell order does not match reviewed cells',
+);
+for (const [index, cellId] of preregisteredCellIds.entries()) {
   const candidates = byCell.get(cellId);
   invariant(candidates.length === 2, `${cellId}: expected 2 candidates`);
   const preferredAuthorId = index % 2 === 0 ? 'A' : 'B';
@@ -158,6 +165,17 @@ const output = {
   artifactKind: 'WRITING_ONLY_INTER_AUTHOR_COMPARISON',
   status: gatePasses ? 'GATE_PASSED' : 'STOP_AND_REQUEST_OWNER',
   generatedAt: new Date().toISOString(),
+  supersedes: {
+    path: 'cross-label-comparison.json',
+    sha256: 'ab86c250325420729a13312114b3080fe0891380f5835c11a227796c8ab59a2c',
+    reason:
+      'The first comparison alternated authors over a lexicographic order instead of the preregistered authoring-plan cellIds order.',
+  },
+  selectionOrderAuthority: {
+    path: 'authoring-plan.preregistered.json',
+    sha256: '68c0eabe32198238e133990c1b3f2429e6e855a162b4c190a3d0c5c354df940c',
+    field: 'cellIds',
+  },
   frozenReviewManifestSha256: sha256('cross-label-reviews.freeze.json'),
   metrics: {
     reviewedProposals: results.length,
@@ -179,11 +197,11 @@ const output = {
 };
 
 writeFileSync(
-  join(directory, 'cross-label-comparison.json'),
+  join(directory, 'cross-label-comparison.corrected.json'),
   `${JSON.stringify(output, null, 2)}\n`,
 );
-console.log(
+stdout.write(
   `${output.status}: ${criterionLabelDisagreementCount}/${totalCriterionLabels} (${(
     disagreementRate * 100
-  ).toFixed(2)}%), ${cellsWithoutConvergentProposal.length} cells without a convergent proposal`,
+  ).toFixed(2)}%), ${cellsWithoutConvergentProposal.length} cells without a convergent proposal\n`,
 );
