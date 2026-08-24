@@ -1,0 +1,15 @@
+{
+  "actualCostUsd": 0.012576,
+  "caseId": "writing-fr-no-choice-negative",
+  "costSource": "ACTUAL",
+  "idempotencyKey": "bca5aa8f71fb8ab1d634c88f46d6ac21050d5a1e478ecaf399eea756d3ac12ef",
+  "modelSnapshot": "anthropic/claude-sonnet-5",
+  "observedProvider": "Anthropic",
+  "providerRequestId": "gen-1787245216-2ugwMWw3T4n5x6OcBg2S",
+  "rawModelOutput": "{\"findings\":[{\"elementKey\":\"identifiable-choice\",\"relation\":\"EVIDENCE_AGAINST_ELEMENT\",\"spanIds\":[\"s0002-3f2d177df9878a4c\",\"s0003-ed7a99adae247eed\"]},{\"elementKey\":\"explicit-recommendation\",\"relation\":\"EVIDENCE_AGAINST_ELEMENT\",\"spanIds\":[\"s0003-ed7a99adae247eed\"]},{\"elementKey\":\"relevant-scenario-fact\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0001-2bc7131ec3b9f07b\"]},{\"elementKey\":\"precise-scenario-fact\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0001-2bc7131ec3b9f07b\"]},{\"elementKey\":\"unresolved-position-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"material-fact-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"decision-evidence-relation\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"explicit-justification\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"material-reasoning-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]}]}",
+  "rawModelOutputSha256": "27566bcda96c3b5e6bfe008f11fa76efcbbd652570a2799217c43ce87c6336c8",
+  "repetition": 1,
+  "requestContextFingerprint": "5a91c375f4a7902d63d870466c98e74b60c8b68f109ac2311d476256d88e9189",
+  "requestContextSha256": "21ef4a527ae9d6a2fd27e9a595051dfea8260d9c8f7436f585f7d1b3f4ddd969",
+  "requestedRoute": "Anthropic"
+}

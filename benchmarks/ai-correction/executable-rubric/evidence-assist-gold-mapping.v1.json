@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "mappingId": "learnx-evidence-assist-semantic-gold-v1",
+  "mappingVersion": "1.0.0",
+  "oracleAuthority": "SEALED_SYNTHETIC_PSEUDO_ORACLE",
+  "sourceStatusMapping": {
+    "SUPPORTED": "EVIDENCE_FOR_ELEMENT",
+    "NOT_DEMONSTRATED": "NO_CANDIDATE_RELATION_OR_ABSTAIN"
+  },
+  "relationRules": {
+    "supportedRequires": "EVIDENCE_FOR_ELEMENT",
+    "notDemonstratedAllows": [
+      "OMITTED",
+      "ABSTAIN"
+    ],
+    "evidenceAgainstWithoutExplicitGold": "SEMANTIC_DISAGREEMENT",
+    "spanCorrectness": "KNOWN_SERVER_OWNED_SPAN_ID",
+    "evidenceQuoteFixtures": "DIAGNOSTIC_ONLY_NOT_EXHAUSTIVE_WHITELIST"
+  },
+  "authorityBoundary": {
+    "candidateRelationsMaySetLevel": false,
+    "candidateRelationsMaySetScore": false,
+    "candidateRelationsMaySetProgression": false,
+    "candidateRelationsMaySetMastery": false
+  }
+}

@@ -110,7 +110,7 @@ export function ConceptAssessmentPage({
     t('conceptAssessment.defaultTitle', { title: assessment.concept.title });
 
   return (
-    <article class="page-layout page-layout--work space-y-6">
+    <article class="totem-learning-page page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={title} lesson={lesson} />
       <section class="space-y-3" aria-label={t('conceptAssessment.info')}>
         <p class="page-eyebrow">

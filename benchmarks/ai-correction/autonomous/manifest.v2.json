@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "manifestId": "learnx-writing-fr-autonomous-evidence-v2",
+  "status": "HOLDOUT_V3_QUALIFIED_SEALED_AWAITING_DEVELOPMENT_GO",
+  "oracleType": "AUTONOMOUS_MECHANICAL_METAMORPHIC_AND_SYNTHETIC",
+  "humanValidationClaimed": false,
+  "contract": {
+    "key": "v4-writing-go-no-go-recommendation-fr",
+    "version": "2.0.0-draft",
+    "status": "EVIDENCE_ASSIST_ONLY_DRAFT_NOT_PUBLISHED"
+  },
+  "development": {
+    "path": "writing-fr-development-mini-panel.v1.json",
+    "sha256": "85c8ba63b215db14e87a58a53e806fd4fe48e64a5583d19d4d9657bab6c1151d",
+    "status": "HISTORICAL_SYNTHETIC_DEVELOPMENT_ONLY",
+    "candidateResultsReusedForActiveGate": 0
+  },
+  "holdout": {
+    "status": "QUALIFIED_SEALED_AWAITING_DEVELOPMENT_GO",
+    "sealed": true,
+    "executable": false,
+    "replacementManifest": {
+      "path": "../executable-rubric/writing-fr-holdout.v3.manifest.json",
+      "sha256": "5d115db9c0d50dd92a936cf0848c0ebf2fe901ba289f81181dd970867917a46b"
+    },
+    "encryptedArtifact": {
+      "path": "../executable-rubric/writing-fr-holdout.v3.enc.json",
+      "sha256": "3ff902b1f871b427fef23bbeade6d57995871842d313d7fffd4275ae4601ec6a"
+    },
+    "qualificationRecord": {
+      "path": "../executable-rubric/writing-fr-holdout.v3.qualification.json",
+      "sha256": "987e64782c6484767ee5f01d486cdd63449033f55c7d505ec1cf8b931cca9a99"
+    },
+    "supersededHistoricalDraft": {
+      "path": "../executable-rubric/writing-fr-holdout.v2.manifest.json",
+      "sha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2"
+    },
+    "sealAuthorization": "GRANTED_AND_CONSUMED_2026_08_20",
+    "mayOpenAfter": [
+      "FULL_DEVELOPMENT_CORPUS_GO",
+      "GO_TO_SEALED_HOLDOUT",
+      "SEPARATE_ONE_SHOT_OWNER_AUTHORIZATION"
+    ]
+  },
+  "qualification": {
+    "candidateOutputsAccessibleDuringAuthoring": false,
+    "requiredGates": [
+      "MECHANICAL_ORACLE",
+      "METAMORPHIC",
+      "MUTATION",
+      "INJECTION_AND_CANARY"
+    ],
+    "constructionAndValidationHashesRequired": true,
+    "encryptedArtifactOnly": true
+  },
+  "prohibitions": [
+    "NO_MODEL_CALL_WITH_DRAFT_CONTRACT",
+    "NO_HUMAN_REVIEW_CLAIM",
+    "NO_CANDIDATE_OUTPUT_ACCESS_DURING_AUTHORING",
+    "NO_HOLDOUT_TUNING",
+    "NO_POST_RESULT_GOLD_MUTATION",
+    "NO_PLAINTEXT_IN_REPOSITORY"
+  ]
+}

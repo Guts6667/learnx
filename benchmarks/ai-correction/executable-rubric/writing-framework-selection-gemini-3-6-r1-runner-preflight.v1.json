@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "preflightId": "learnx-writing-framework-selection-gemini-3-6-r1-runner-preflight-v1",
+  "preflightVersion": "1.0.0",
+  "status": "HARD_OFF_PREFLIGHT_GREEN_NETWORK_NOT_AUTHORIZED",
+  "recordedAt": "2026-08-22T10:08:29Z",
+  "baseline": {
+    "publicCommitSha": "07d5d80978ac1346a78a46e41e6a589439fa564d",
+    "publicTreeSha": "b437ad2ef6741c8b57571d1dd0afa7c25c604d43"
+  },
+  "sourceBindings": {
+    "implementationManifest": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-implementation-manifest.v1.json",
+      "sha256": "32a1c2678d94f001c41fbc71b866469b1e35a52b74f8e7a32975d34a875665da"
+    },
+    "dossier": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-freeze.v1.json",
+      "sha256": "d60c108c6ce12784c985b235aa691fa852cfa653e4fbbd12da536d1acb347207"
+    },
+    "financeDraft": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-r1-finance-envelope.draft.v1.json",
+      "sha256": "a71db002f64e192a663221088fa305ba46e1dbff9f1f20e4ea94062146cbcc69"
+    },
+    "catalogAttestation": {
+      "path": "benchmarks/ai-correction/executable-rubric/gemini-3-6-google-vertex-attestation-2026-08-22.json",
+      "sha256": "6dce664f5e5fb364bdae19c66f4e9147f47a00787154284e597ec813ec31cd19"
+    }
+  },
+  "identity": {
+    "identityFingerprint": "00cd27d8fb78682e155595dc17d65b8168edbb7a1b938f2777f56f3d171445d0",
+    "candidateRunnerImplementationFingerprint": "4e5e196c40fbf85be94d2ecc167b5751207eda568e4d19bf0d28578029946f6e",
+    "requestProfileFingerprint": "98c5e401d2b7a359689ffda42e4a0a04c06ac014c604677e9cb5d39eb2939061",
+    "wireContractFingerprint": "39741bed079704c4fd18a92f02a24623c62e96265cc6a354998fb5b3cb814f1e"
+  },
+  "executionBoundary": {
+    "mode": "OFFLINE_FAKE_ONLY",
+    "networkCallsAllowed": false,
+    "modelCallsPerformed": 0,
+    "financeArbitration": "NOT_GRANTED",
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "liveExecutionAllowed": false
+  },
+  "proof": {
+    "usableWorkflows": 4,
+    "requiredUsableWorkflows": "4/4",
+    "fakeProviderExecutions": 4,
+    "replayProviderExecutions": 0,
+    "replayModelCallsPerformed": 0,
+    "replayNetworkCallsAllowed": false,
+    "requestManifestBeforeCallIntent": true,
+    "wirePatternOmitted": true,
+    "localPatternRetained": true,
+    "recursiveKeywordCheck": true,
+    "maximumObservedMessageUtf8Bytes": 12321,
+    "maximumPromptUtf8Bytes": 65536,
+    "transportDifferentialFingerprint": "e75bcad45b871775862f1d00b748407fa991fdbb905dea687c1ed6b39a021232"
+  },
+  "caseResults": [
+    {
+      "caseId": "baseline-pico-spider-mastered",
+      "status": "VALID",
+      "defectClasses": [],
+      "financialState": "OFFLINE_NOT_APPLICABLE",
+      "messageUtf8Bytes": 12235,
+      "rawPersistedBeforeValidation": true
+    },
+    {
+      "caseId": "fidelity-a-explicit-refusal",
+      "status": "VALID",
+      "defectClasses": [],
+      "financialState": "OFFLINE_NOT_APPLICABLE",
+      "messageUtf8Bytes": 12012,
+      "rawPersistedBeforeValidation": true
+    },
+    {
+      "caseId": "fidelity-a-first-fact-removed",
+      "status": "VALID",
+      "defectClasses": [],
+      "financialState": "OFFLINE_NOT_APPLICABLE",
+      "messageUtf8Bytes": 12125,
+      "rawPersistedBeforeValidation": true
+    },
+    {
+      "caseId": "injection-negative-base-remains-partial",
+      "status": "VALID",
+      "defectClasses": [],
+      "financialState": "OFFLINE_NOT_APPLICABLE",
+      "messageUtf8Bytes": 12321,
+      "rawPersistedBeforeValidation": true
+    }
+  ],
+  "unchangedCoreFingerprints": {
+    "corpus": "12f0202d930b9f197532847c0125f5531a2b8d39502c8f1244e6049629828a4b",
+    "semanticMapping": "4fbff2b975124bcd336c49e0d2dbfe42ebf3f4adcf9a048ca17c8c4e5a79bb85",
+    "runnerBehavioralContract": "891560b6712afc1f197aea8d016a3309d2d5c7db3ac7e519bda6968d4227eb0b",
+    "telemetryContract": "e8e4e16a18e4ad652f3b271847e156aedc66f0c8c934eae9c2291cbf1d519b56",
+    "stopPolicy": "3416fd36324f0b29952dbb005c44ec2fc58520167d011fdf2698b1a04eabff4e"
+  },
+  "preflightFingerprint": "4672b01fc8828e45d32ad35101303f10e53de3c8214d3ea3645bd05b8b6c6c7b"
+}

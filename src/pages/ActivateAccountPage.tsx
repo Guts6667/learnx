@@ -110,12 +110,12 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
             value={passwordConfirmation}
           />
           {!token ? (
-            <p class="text-sm text-red-300" role="alert">
+            <p class="ui-text-danger text-sm" role="alert">
               {t('auth.activate.invalidInvitation')}
             </p>
           ) : null}
           {validationError || requestError ? (
-            <p class="text-sm text-red-300" role="alert">
+            <p class="ui-text-danger text-sm" role="alert">
               {validationError ?? requestError}
             </p>
           ) : null}

@@ -1,6 +1,6 @@
-import type { AiPromptMessage } from '@/server/ai/structured-provider';
+import type { AiPromptMessage } from '../ai/structured-provider.js';
 
-import type { CorrectionContract } from '@/lib/ai-correction-contracts';
+import type { CorrectionContract } from '../../lib/ai-correction-contracts.js';
 
 /**
  * Prompt de correction runtime, version 2.2.0 — identique aux instructions

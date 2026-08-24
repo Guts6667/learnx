@@ -168,8 +168,11 @@ async function installJourneyApi(page: Page) {
     if (method === 'GET' && path === '/api/today') {
       await respond({
         action: null,
+        hasMorePrograms: false,
         lastActivity: null,
         program: null,
+        programCount: 0,
+        programs: [],
         reviewsDue: 0,
       });
       return;
@@ -553,7 +556,7 @@ async function openCriticalLesson(page: Page) {
   await page.goto('/program');
   await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Programmes' }),
+    page.getByRole('heading', { level: 1, name: 'Mes parcours' }),
   ).toBeVisible();
   await page
     .getByRole('link', { name: /Commencer|Ouvrir le programme/ })
@@ -574,14 +577,31 @@ async function openCriticalLesson(page: Page) {
 async function expectNoHorizontalOverflow(page: Page) {
   await expect
     .poll(() =>
-      page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
+      page.evaluate(() => {
+        if (document.documentElement.scrollWidth <= window.innerWidth) return [];
+
+        return Array.from(document.querySelectorAll<HTMLElement>('body *'))
+          .map((element) => ({ element, rect: element.getBoundingClientRect() }))
+          .filter(
+            ({ rect }) =>
+              rect.width > 0 &&
+              (rect.right > window.innerWidth + 0.5 || rect.left < -0.5),
+          )
+          .slice(0, 8)
+          .map(({ element, rect }) =>
+            [
+              element.tagName.toLowerCase(),
+              element.className,
+              element.textContent?.trim().slice(0, 60),
+              `${Math.round(rect.left)}..${Math.round(rect.right)}`,
+            ].join(' | '),
+          );
+      }),
     )
-    .toBe(true);
+    .toEqual([]);
 }
 
-test('garde Mes programmes et Explorer utilisables sur tous les viewports', async ({
+test('garde Mes parcours et Découvrir utilisables sur tous les viewports', async ({
   page,
 }) => {
   await installJourneyApi(page);
@@ -593,16 +613,6 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
       method: 'POST',
     });
   }, credentials);
-  await page.goto('/program');
-
-  const enrolledTab = page.getByRole('tab', { name: 'Mes programmes' });
-  const catalogTab = page.getByRole('tab', { name: 'Explorer' });
-  await expect(enrolledTab).toHaveAttribute('aria-selected', 'true');
-  await enrolledTab.focus();
-  await enrolledTab.press('ArrowRight');
-  await expect(catalogTab).toBeFocused();
-  await expect(catalogTab).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByText('Version publiée 1')).toBeVisible();
 
   for (const viewport of [
     { height: 700, width: 320 },
@@ -612,11 +622,67 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
     { height: 1080, width: 1920 },
   ]) {
     await page.setViewportSize(viewport);
-    await expectNoHorizontalOverflow(page);
-    await expect(catalogTab).toBeVisible();
+    await page.goto('/program');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Mes parcours' }),
+    ).toBeVisible();
+    const exploreLink = page.getByRole('link', {
+      name: 'Explorer les programmes',
+    });
+    await expect(exploreLink).toHaveAttribute('href', '/discover');
     await expect(
       page.getByRole('heading', { name: program.title }),
     ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+
+    await exploreLink.click();
+    await expect(page).toHaveURL('/discover');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Découvrir' }),
+    ).toBeVisible();
+    await expect(page.getByRole('searchbox')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: program.title }),
+    ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  }
+
+  await expectNoSeriousA11yViolations(page);
+});
+
+test('oriente la première arrivée sans afficher d’outils vides', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+
+  for (const viewport of [
+    { height: 700, width: 320 },
+    { height: 844, width: 390 },
+    { height: 900, width: 720 },
+    { height: 1000, width: 1440 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/today');
+    await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
+    const action = page.getByRole('link', {
+      name: 'Choisir mon premier parcours',
+    });
+    await expect(action).toBeVisible();
+    await expect(action).toHaveAttribute(
+      'href',
+      '/discover',
+    );
+    await expect(page.getByRole('searchbox')).toHaveCount(0);
+    await expect(page.getByText('Révisions dues')).toHaveCount(0);
+    await expectNoHorizontalOverflow(page);
   }
 
   await expectNoSeriousA11yViolations(page);
@@ -641,7 +707,7 @@ test('applique les gabarits desktop sans étirer la lecture pédagogique', async
     {
       path: `/program/${program.slug}/lesson/${lessonSummary.slug}`,
       template: 'reading',
-      totem: false,
+      totem: true,
     },
     { path: '/notes', template: 'work', totem: true },
     { path: '/profile', template: 'work', totem: true },
@@ -787,7 +853,9 @@ test('utilise des parents UX stables sans boucle entre programme, module et leç
     page.getByRole('button', { name: `1. ${stageSummary.title}` }),
   ).toHaveAttribute('aria-expanded', 'true');
 
-  await page.getByRole('link', { name: 'Options du module' }).click();
+  await page
+    .getByRole('link', { name: 'Options et reprise du module' })
+    .click();
   await expect(
     page.getByRole('heading', { level: 1, name: moduleSummary.title }),
   ).toBeVisible();
@@ -807,10 +875,10 @@ test('utilise des parents UX stables sans boucle entre programme, module et leç
     `/program/${program.slug}?stage=${stageSummary.slug}`,
   );
 
-  await page.getByRole('button', { name: 'Retour à Mes programmes' }).click();
+  await page.getByRole('button', { name: 'Retour à Mes parcours' }).click();
   await expect(page).toHaveURL('/program');
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Programmes' }),
+    page.getByRole('heading', { level: 1, name: 'Mes parcours' }),
   ).toBeVisible();
   await expect(
     page.getByRole('button', { name: /Retour|Revenir/ }),
@@ -1099,6 +1167,7 @@ test('crée une note contextuelle accessible sans casser la lecture mobile', asy
       new URL(autosave.url()).pathname === '/api/notes/note-contextuelle-1',
   );
   await dialog.getByLabel('Contenu de la note').fill('Repère important.');
+  await dialog.getByRole('button', { name: 'Enregistrer' }).click();
   await autosaveRequest;
   await expect(dialog.getByRole('status')).toHaveText('Note enregistrée.');
 

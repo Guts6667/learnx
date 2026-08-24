@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "policyId": "learnx-evidence-assist-development-stop-policy-v1",
+  "policyVersion": "1.0.0",
+  "fourCaseGate": {
+    "stopOnFirstDefect": true,
+    "continuedDefectClasses": []
+  },
+  "conditionalPanel10x2": {
+    "stopOnFirstDefect": false,
+    "continuedDefectClasses": [
+      "SEMANTIC_DISAGREEMENT",
+      "LOCAL_FINDING_REJECTION",
+      "MODEL_OUTPUT_INVALID"
+    ],
+    "continuedDefectsForceNoGo": true,
+    "immediateStopClasses": [
+      "SAFETY",
+      "FINANCE",
+      "IDENTITY",
+      "TRACEABILITY",
+      "BUDGET"
+    ]
+  },
+  "retries": {
+    "maximumRetriesPerWorkflow": 0,
+    "automaticRetriesAllowed": false
+  },
+  "postResultRetuningAllowed": false
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "manifestId": "learnx-writing-fr-autonomous-evidence-v1",
+  "oracleType": "SEALED_AUTONOMOUS",
+  "humanValidationClaimed": false,
+  "contract": {
+    "key": "v4-writing-recommendation-fr",
+    "version": "0.1.0-draft",
+    "status": "DRAFT_NOT_PUBLISHED"
+  },
+  "development": {
+    "path": "writing-fr-development-mini-panel.v1.json",
+    "sha256": "85c8ba63b215db14e87a58a53e806fd4fe48e64a5583d19d4d9657bab6c1151d",
+    "cases": 10,
+    "repetitions": 2,
+    "expectedLogicalWorkflows": 20
+  },
+  "holdout": {
+    "status": "REPLACEMENT_PENDING_INDEPENDENT_REVIEW",
+    "sealed": false,
+    "executable": false,
+    "legacyPlaintext": {
+      "path": "writing-fr-holdout.v1.json",
+      "sha256": "bac15807866e1e0237c6535aec66b3221546b77c56ab1821c5af53dacf470589",
+      "status": "COMPROMISED_PLAINTEXT_REMOVED_FROM_ACTIVE_TREE"
+    },
+    "replacementManifest": {
+      "path": "../executable-rubric/writing-fr-holdout.v2.manifest.json",
+      "sha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2"
+    },
+    "mayOpenAfter": "GO_AUTONOMOUS_FORMATIVE_ON_FULL_DEVELOPMENT_CORPUS"
+  },
+  "prohibitions": [
+    "NO_MODEL_CALL_WITH_DRAFT_CONTRACT",
+    "NO_HUMAN_REVIEW_CLAIM",
+    "NO_HOLDOUT_TUNING",
+    "NO_POST_RESULT_GOLD_MUTATION"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "attempts": [
+    {
+      "actualCostUsd": null,
+      "cacheReadTokens": 0,
+      "cacheWriteTokens": 0,
+      "caseId": "baseline-pico-spider-mastered",
+      "costSource": "UNKNOWN",
+      "defectClasses": [
+        "TRACEABILITY",
+        "FINANCE",
+        "IDENTITY"
+      ],
+      "dispatchState": "CONFIRMED",
+      "errorCode": "PROVIDER_HTTP_400",
+      "financialState": "RECONCILIATION_REQUIRED",
+      "idempotencyKey": "0ca736578435d63d1ac08f98077cd3d77b62cdfc65b5ee2d116b5a7bd01f3243",
+      "inputTokens": 0,
+      "latencyMs": 1698,
+      "messageUtf8Bytes": 12235,
+      "observedProvider": null,
+      "providerRequestId": null,
+      "rawOutputSha256": "77939a87611cd6a5ca7c648fcfd6a28195fb8bd49d6cee6371584dbe02f49166",
+      "rawPersistedBeforeValidation": true,
+      "reasoningTokens": 0,
+      "repetition": 1,
+      "requestContextFingerprint": "bd1bee4c45b72a173ab3fd083e39b71285966a0f0587fe38dc0918144ae0e5b6",
+      "requestedRoute": "google-vertex/global",
+      "status": "INVALID",
+      "validation": null,
+      "visibleOutputTokens": 0
+    }
+  ],
+  "authorizationFingerprint": "a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906",
+  "completedAt": "2026-08-22T07:08:20.642Z",
+  "dossierSha256": "89ee45f1065b868a9cd9f7e019d96a3039851bd14a8382d7b4f491413fb792d3",
+  "financeEnvelopeSha256": "76fbbd343df60fe0bb9dc70d52e992ef8142fcca29b4f8e1e8bd21087f94e922",
+  "forceNoGo": true,
+  "gatePassed": false,
+  "identityFingerprint": "ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed",
+  "ledgerFinalRecordHash": "e86eec31abda9834f4717d137060ad23ffe64610e1ca788ca3780a0ba5b1492f",
+  "maximumProviderCostUsd": 0.5,
+  "mode": "OPENROUTER_LIVE",
+  "modelCallsPerformed": 1,
+  "modelId": "google/gemini-3.6-flash",
+  "outputDirectory": "/private/tmp/learnx-v4-003e-q1-gemini36-live-gate/benchmarks/ai-correction/results/writing-framework-selection-gemini36-v2/2026-08-22T07-02-55Z-owner-go",
+  "requestedRoute": "google-vertex/global",
+  "stoppedReason": "TRACEABILITY",
+  "totalActualCostUsd": 0,
+  "usableWorkflows": 0
+}

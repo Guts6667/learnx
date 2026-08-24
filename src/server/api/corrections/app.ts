@@ -11,7 +11,7 @@ import {
   CorrectionOrchestrationService,
   createRuntimeCorrectionTransport,
   type CreditSettlementPort,
-} from '../../corrections/correction-orchestration.ts';
+} from '../../corrections/correction-orchestration.js';
 import { PrismaCorrectionOrchestrationPorts } from '../../corrections/prisma-correction-orchestration-store.js';
 import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
 import { PrismaCreditLedger } from '../../credits/prisma-credit-ledger.js';

@@ -9,11 +9,17 @@
 - aucune dépendance à un calendrier académique ;
 - plusieurs programmes accessibles depuis le même compte.
 
-## Raccord Emotional Design Atlas
+## Raccord Emotional Design et Totem
 
 `docs/EMOTIONAL_DESIGN_CONTRACT.md` complète cette baseline avec la promesse
 de confiance calme et de progression tangible. Les règles métier, droits,
 destinations et calculs serveur restent ceux du ticket actif.
+
+`docs/V4_TOTEM_IMPLEMENTATION_MAP.md` et les paquets approuvés qu'il cite fixent
+le langage visuel ferme : DM Sans, ardoise, cobalt, brume, corail rare, fond
+clair et papier. Totem supersède Atlas pour les choix de palette, typographie,
+composition et composants, sans remplacer le contrat émotionnel ni modifier
+les règles métier.
 
 Le ticket V4-016C de `BACKLOG_V4.md` porte l’évolution d’Aujourd’hui et du flow
 Parcours :
@@ -25,7 +31,12 @@ Parcours :
 - `Mes parcours` sert à reprendre et `Découvrir` à choisir ; la recherche est
   progressive et n’apparaît pas dans un faux vide.
 
-La référence validée est directionnelle, jamais pixel-perfect :
+Les références Totem du 24 août sont des autorités d'implémentation ; les
+références plus anciennes restent directionnelles et historiques :
+
+`/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-totem-product-surfaces.html`
+
+La référence Atlas suivante reste historique pour le comportement :
 
 `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html`
 

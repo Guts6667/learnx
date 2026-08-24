@@ -9,6 +9,10 @@ const cacheCleanup = readFileSync(
   resolve(process.cwd(), 'public/sw-cache-cleanup.js'),
   'utf8',
 );
+const navigationPolicy = readFileSync(
+  resolve(process.cwd(), 'src/lib/pwa-navigation.ts'),
+  'utf8',
+);
 
 describe('public PWA route freshness', () => {
   it('automatically activates a compatible worker and refreshes public shells from the network', () => {
@@ -28,9 +32,12 @@ describe('public PWA route freshness', () => {
   });
 
   it('keeps APIs outside navigation caching and removes incompatible legacy caches', () => {
-    expect(viteConfig).toContain('/^\\/api\\//');
-    expect(viteConfig).toContain(
+    expect(navigationPolicy).toContain('/^\\/api\\//');
+    expect(navigationPolicy).toContain(
       '/^\\/(?:login|request-access|verify-email|activate|interest)(?:\\/|$)/',
+    );
+    expect(navigationPolicy).toContain(
+      '/^\\/research\\/ai-correction(?:\\/|$)/',
     );
     expect(cacheCleanup).toContain("'learnx-pedagogy-v1'");
     expect(cacheCleanup).toContain("'learnx-public-shell-v0'");

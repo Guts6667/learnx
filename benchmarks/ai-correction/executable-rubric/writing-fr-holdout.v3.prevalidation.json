@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "holdoutId": "writing-fr-evidence-assist-holdout-v3",
+  "status": "PREVALIDATED_NOT_QUALIFIED_NOT_SEALED",
+  "validatedAt": "2026-08-20T13:22:33Z",
+  "constructionManifestSha256": "f3199af3971b1b297f584d00ae1af58dcfb46e47979fa612ccf95bc5d6b0b81e",
+  "plaintextSha256": "d1db9bde71af1d888c6ea7b7467ce2cd3d97b6aebb084f0126c582ddc2a05ddc",
+  "caseCount": 24,
+  "elementCoverageCount": 13,
+  "humanValidationClaimed": false,
+  "pseudoOracleQualification": "SYNTHETIC_PSEUDO_ORACLE_NOT_FORMAL_TRUTH",
+  "gates": {
+    "mechanicalOracle": "PREVALIDATED",
+    "metamorphic": "PREVALIDATED",
+    "mutation": "PREVALIDATED",
+    "injectionAndCanary": "PREVALIDATED"
+  }
+}

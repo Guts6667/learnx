@@ -22,9 +22,10 @@ function renderPage(page: ComponentChildren) {
 describe('CurriculumPages', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+    window.history.replaceState({}, '', '/');
   });
 
-  it('affiche Mes programmes par défaut et permet d’explorer au clavier', async () => {
+  it('affiche Mes parcours par défaut et permet de découvrir au clavier', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn((path: string) => {
@@ -154,8 +155,8 @@ describe('CurriculumPages', () => {
       'href',
       '/program/bases',
     );
-    const enrolledTab = screen.getByRole('tab', { name: 'Mes programmes' });
-    const catalogTab = screen.getByRole('tab', { name: 'Explorer' });
+    const enrolledTab = screen.getByRole('tab', { name: 'Mes parcours' });
+    const catalogTab = screen.getByRole('tab', { name: 'Découvrir' });
     expect(enrolledTab).toHaveAttribute('aria-selected', 'true');
 
     fireEvent.keyDown(enrolledTab, { key: 'ArrowRight' });
@@ -222,7 +223,7 @@ describe('CurriculumPages', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     renderPage(<ProgramsPage />);
-    fireEvent.click(screen.getByRole('tab', { name: 'Explorer' }));
+    fireEvent.click(screen.getByRole('tab', { name: 'Découvrir' }));
     const enrollButton = await screen.findByRole('button', {
       name: 'S’inscrire',
     });
@@ -230,7 +231,7 @@ describe('CurriculumPages', () => {
 
     expect(
       await screen.findByText(
-        'Programme public a été ajouté à Mes programmes.',
+        'Programme public a été ajouté à Mes parcours.',
       ),
     ).toBeInTheDocument();
     expect(
@@ -283,11 +284,14 @@ describe('CurriculumPages', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     renderPage(<ProgramsPage />);
+    fireEvent.click(screen.getByRole('tab', { name: 'Découvrir' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Rechercher un parcours' }),
+    );
     fireEvent.input(screen.getByLabelText('Rechercher un programme'), {
       target: { value: '  sciences   humaines  ' },
     });
     fireEvent.click(screen.getByRole('button', { name: 'Rechercher' }));
-    fireEvent.click(screen.getByRole('tab', { name: 'Explorer' }));
 
     expect(
       await screen.findByRole('heading', { name: 'Premier programme' }),
@@ -304,6 +308,97 @@ describe('CurriculumPages', () => {
     expect(
       screen.getByRole('heading', { name: 'Premier programme' }),
     ).toBeInTheDocument();
+  });
+
+  it('ouvre Découvrir depuis la première arrivée puis reprend la destination serveur', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/program?view=discover&onboarding=1',
+    );
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/programs?preview=true') {
+        return Promise.resolve(jsonResponse({ programs: [] }));
+      }
+      if (init?.method === 'POST') {
+        return Promise.resolve(jsonResponse({ enrollment: { id: 'new' } }));
+      }
+      if (path === '/api/today') {
+        return Promise.resolve(
+          jsonResponse({
+            action: null,
+            hasMorePrograms: false,
+            lastActivity: null,
+            program: {
+              id: 'program-public',
+              percent: 0,
+              slug: 'programme-public',
+              title: 'Programme public',
+            },
+            programCount: 1,
+            programs: [
+              {
+                id: 'program-public',
+                lastActivity: null,
+                nextAction: null,
+                percent: 0,
+                resumeHref: '/program/programme-public/lesson/premiere',
+                slug: 'programme-public',
+                status: 'NOT_STARTED',
+                title: 'Programme public',
+              },
+            ],
+            reviewsDue: 0,
+          }),
+        );
+      }
+      if (path.startsWith('/api/catalog/programs?')) {
+        return Promise.resolve(
+          jsonResponse({
+            items: [
+              {
+                canonicalProgramKey: 'programme-public',
+                description: 'Un programme public.',
+                estimatedDurationDays: 8,
+                icon: null,
+                id: 'program-public',
+                isEnrolled: false,
+                locale: 'fr',
+                publishedVersion: {
+                  checksum: 'checksum',
+                  id: 'version-public',
+                  number: 1,
+                  publishedAt: '2026-08-05T10:00:00.000Z',
+                },
+                slug: 'programme-public',
+                stageCount: 2,
+                title: 'Programme public',
+              },
+            ],
+            nextCursor: null,
+          }),
+        );
+      }
+      return Promise.resolve(jsonResponse({ items: [], nextCursor: null }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderPage(<ProgramsPage />);
+
+    expect(screen.getByRole('tab', { name: 'Découvrir' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'S’inscrire' }),
+    );
+
+    await waitFor(() =>
+      expect(
+        fetchMock.mock.calls.some(([path]) => path === '/api/today'),
+      ).toBe(true),
+    );
   });
 
   it('demande confirmation avant la désinscription et conserve un retour explicite', async () => {

@@ -32,7 +32,7 @@ export function CreditsPage() {
   }
 
   return (
-    <section class="page-layout page-shell space-y-6">
+    <section class="totem-credits-page page-layout page-shell space-y-6">
       <PageHeader
         description={t('credits.description')}
         eyebrow={t('credits.eyebrow')}
@@ -44,7 +44,7 @@ export function CreditsPage() {
         <ErrorState description={t('credits.loadError')} />
       ) : null}
       {query.data ? (
-        <Card class="space-y-0">
+        <Card class="totem-credit-balances space-y-0">
           <div class="credit-balance-row">
             <div>
               <h2 class="font-medium">{t('credits.free')}</h2>
@@ -85,7 +85,7 @@ export function CreditsPage() {
           </div>
         </Card>
       ) : null}
-      <Section class="space-y-4">
+      <Section class="totem-credit-request space-y-4">
         <div>
           <h2 class="text-xl font-medium">{t('credits.increase.title')}</h2>
           <p class="ui-text-muted mt-2 leading-7">

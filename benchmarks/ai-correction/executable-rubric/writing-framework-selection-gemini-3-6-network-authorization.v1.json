@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "authorizationId": "learnx-writing-framework-selection-fr-gemini-3-6-gate4-network-go-v1",
+  "status": "GRANTED_SINGLE_USE_UNCONSUMED",
+  "grantedAt": "2026-08-22T07:02:55Z",
+  "grantedBy": "RAYAN_OWNER",
+  "sourceThreadId": "019fc49c-b0dd-76b2-bf70-22d54b916c4d",
+  "baseline": {
+    "ref": "origin/dev",
+    "commit": "f6607b9c086cffce1f81ac9a8c2fc36194fe5a25"
+  },
+  "identity": {
+    "identityFingerprint": "ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed",
+    "modelId": "google/gemini-3.6-flash",
+    "catalogSnapshotId": "google/gemini-3.6-flash-20260721",
+    "requestedRoute": "google-vertex/global",
+    "expectedObservedProvider": "Google"
+  },
+  "sourceBindings": {
+    "dossierPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json",
+    "dossierSha256": "89ee45f1065b868a9cd9f7e019d96a3039851bd14a8382d7b4f491413fb792d3",
+    "financeEnvelopePath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json",
+    "financeEnvelopeSha256": "76fbbd343df60fe0bb9dc70d52e992ef8142fcca29b4f8e1e8bd21087f94e922",
+    "transportPreflightPath": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-network-transport-preflight.v1.json",
+    "transportPreflightSha256": "1e6ca44931c2fddf9a4c57df58288c3f79a38440ea16c8a172bba8fe30f59419"
+  },
+  "executionBoundary": {
+    "stage": "FOUR_CASE_GATE",
+    "runId": "2026-08-22T07-02-55Z-owner-go",
+    "outputDirectory": "benchmarks/ai-correction/results/writing-framework-selection-gemini36-v2/2026-08-22T07-02-55Z-owner-go",
+    "maximumProviderAttempts": 4,
+    "maximumProviderCostUsd": 0.5,
+    "sequentialOnly": true,
+    "maximumRetriesPerWorkflow": 0,
+    "maximumFallbacks": 0,
+    "stopOnFirstDefect": true,
+    "panel10x2Allowed": false,
+    "holdoutAllowed": false,
+    "v4_010ActivationAllowed": false
+  },
+  "ownerGoToken": "GO_V4_003E_Q1_GEMINI36_EF88A8E3B1BFD57D",
+  "authorizationFingerprint": "a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906"
+}

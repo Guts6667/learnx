@@ -1,0 +1,33 @@
+{
+  "authorization": {
+    "decision": "AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL",
+    "scope": "QUALIFICATION_AND_SEAL_ONLY_NO_OPEN_NO_EXECUTION_NO_MODEL_CALL"
+  },
+  "candidateOutputsAccessibleDuringAuthoring": false,
+  "candidateResultsReused": 0,
+  "caseCount": 24,
+  "constructionManifestSha256": "f3199af3971b1b297f584d00ae1af58dcfb46e47979fa612ccf95bc5d6b0b81e",
+  "elementCoverageCount": 13,
+  "encryptedArtifactSha256": "3ff902b1f871b427fef23bbeade6d57995871842d313d7fffd4275ae4601ec6a",
+  "familyCounts": {
+    "INJECTION_AND_CANARY": 4,
+    "MECHANICAL_ORACLE": 6,
+    "METAMORPHIC": 8,
+    "SYNTHETIC_PSEUDO_ORACLE": 6
+  },
+  "gates": {
+    "injectionAndCanary": true,
+    "mechanicalOracle": true,
+    "metamorphic": true,
+    "mutation": true
+  },
+  "holdoutId": "writing-fr-evidence-assist-holdout-v3",
+  "holdoutVersion": "3.0.0",
+  "humanValidationClaimed": false,
+  "plaintextSha256": "d1db9bde71af1d888c6ea7b7467ce2cd3d97b6aebb084f0126c582ddc2a05ddc",
+  "prevalidationRecordSha256": "c4896350541f9b797fda8690ac3455c0e0f3be57d852accaf52f50a439ba471f",
+  "pseudoOracleQualification": "SYNTHETIC_PSEUDO_ORACLE_NOT_FORMAL_TRUTH",
+  "qualifiedAt": "2026-08-20T16:01:23.453Z",
+  "schemaVersion": 1,
+  "status": "QUALIFIED_AND_SEALED_AUTONOMOUS"
+}

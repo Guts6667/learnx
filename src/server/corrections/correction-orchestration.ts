@@ -5,20 +5,20 @@ import {
   type CorrectionContract,
   type CorrectionOutput,
   type Protocol3CorrectionArtifactOutput,
-} from '@/lib/ai-correction-contracts';
+} from '../../lib/ai-correction-contracts.js';
 import {
   getCorrectionProviderAdapter,
-} from '@/lib/ai-correction-provider-adapters';
+} from '../../lib/ai-correction-provider-adapters.js';
 import {
   reconcileProtocol3ScoreGuardPasses,
   salvageProtocol3PartialCorrection,
   validateBenchmarkProtocol3ModelOutputWithEvidence,
-} from '@/lib/ai-correction-benchmark';
-import { sanitizeStructuredOutputJsonSchema } from '@/lib/ai-json-schema.ts';
+} from '../../lib/ai-correction-benchmark.js';
+import { sanitizeStructuredOutputJsonSchema } from '../../lib/ai-json-schema.js';
 
-import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
-import { buildRuntimeCorrectionMessages } from './runtime-correction-prompt';
-import type { CorrectionMonitoringSignal } from './correction-monitoring';
+import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
+import { buildRuntimeCorrectionMessages } from './runtime-correction-prompt.js';
+import type { CorrectionMonitoringSignal } from './correction-monitoring.js';
 
 /**
  * V4-009 — Orchestration devis accepté → réservation → correction → règlement.

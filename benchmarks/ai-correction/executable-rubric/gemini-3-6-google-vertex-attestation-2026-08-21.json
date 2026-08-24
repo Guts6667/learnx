@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-21T00:00:00Z",
+  "source": "https://openrouter.ai/api/v1/models/google/gemini-3.6-flash-20260721/endpoints",
+  "attestationMode": "PUBLIC_CATALOG_READ_ONLY_NO_INFERENCE",
+  "principalModelId": "google/gemini-3.6-flash",
+  "canonicalCatalogId": "google/gemini-3.6-flash-20260721",
+  "canonicalSnapshotTransportPolicy": "SEND_PRINCIPAL_MODEL_ID_AND_ATTEST_THE_DATED_CATALOG_SNAPSHOT_SEPARATELY",
+  "endpoint": {
+    "providerName": "Google",
+    "routeTag": "google-vertex/global",
+    "status": 0,
+    "contextLength": 1048576,
+    "maxCompletionTokens": 65536
+  },
+  "capabilities": {
+    "reasoningMandatory": true,
+    "reasoningDefaultEffort": "medium",
+    "reasoningSupportedEfforts": ["high", "medium", "low", "minimal"],
+    "reasoningExactTokenBudgetSupported": false,
+    "selectedReasoningEffort": "minimal",
+    "responseFormatSupported": true,
+    "structuredOutputsSupported": true,
+    "maxTokensSupported": true,
+    "temperatureSupportedByPinnedEndpoint": false,
+    "temperaturePolicy": "OMIT"
+  },
+  "supportedParameters": [
+    "reasoning",
+    "include_reasoning",
+    "max_tokens",
+    "seed",
+    "response_format",
+    "stop",
+    "structured_outputs",
+    "tools",
+    "tool_choice",
+    "reasoning_effort"
+  ],
+  "routing": {
+    "fallbackAllowed": false,
+    "automaticRoutingAllowed": false,
+    "singlePinnedRouteRequired": true
+  },
+  "networkAuthorizationEffect": "NONE",
+  "notes": [
+    "The public catalog currently exposes the principal model ID while naming the dated canonical snapshot in the endpoint record.",
+    "This attestation proves request compatibility only; no inference was performed."
+  ]
+}

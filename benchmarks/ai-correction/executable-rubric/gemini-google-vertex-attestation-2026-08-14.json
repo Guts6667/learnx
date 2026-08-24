@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-08-14T11:12:49Z",
+  "source": "https://openrouter.ai/api/v1/models/google/gemini-3.6-flash/endpoints",
+  "modelId": "google/gemini-3.6-flash",
+  "modelSnapshot": "google/gemini-3.6-flash-20260721",
+  "providerName": "Google",
+  "routeTag": "google-vertex/global",
+  "status": 0,
+  "uptimeLast1d": 99.77098370919917,
+  "contextLength": 1048576,
+  "maxCompletionTokens": 65536,
+  "pricing": {
+    "promptUsdPerToken": 0.00000075,
+    "completionUsdPerToken": 0.00000375,
+    "reasoningUsdPerToken": 0.00000375,
+    "inputCacheReadUsdPerToken": 0.000000075,
+    "inputCacheWriteUsdPerToken": 0.0000000416666666666667
+  },
+  "supportedParameters": [
+    "reasoning",
+    "include_reasoning",
+    "max_tokens",
+    "seed",
+    "response_format",
+    "stop",
+    "structured_outputs",
+    "tools",
+    "tool_choice",
+    "reasoning_effort"
+  ],
+  "fallbackAllowed": false,
+  "automaticRoutingAllowed": false,
+  "selectionRationale": "Route Google Vertex global standard disponible, structurée et épinglée. Elle conserve les tarifs attestés, n’annonce pas temperature et interdit tout fallback ou routage automatique.",
+  "warning": "Attestation de catalogue non facturable ; la disponibilité réelle doit encore être confirmée par un smoke autorisé."
+}

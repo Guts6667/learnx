@@ -59,10 +59,10 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
       <Card>
         {verificationMutation.data ? (
           <div class="space-y-5" role="status">
-            <h2 class="text-xl font-semibold text-white">
+            <h2 class="ui-text text-xl font-semibold">
               {t('auth.verify.successTitle')}
             </h2>
-            <p class="leading-7 text-slate-300">
+            <p class="ui-text-muted leading-7">
               {t('auth.verify.successDescription')}
             </p>
             <a
@@ -74,16 +74,16 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
           </div>
         ) : (
           <div class="space-y-5">
-            <p class="leading-7 text-slate-300">
+            <p class="ui-text-muted leading-7">
               {t('auth.verify.explanation')}
             </p>
             {!token ? (
-              <p class="text-sm text-red-300" role="alert">
+              <p class="ui-text-danger text-sm" role="alert">
                 {t('auth.verify.invalidLink')}
               </p>
             ) : null}
             {errorMessage ? (
-              <p class="text-sm text-red-300" role="alert">
+              <p class="ui-text-danger text-sm" role="alert">
                 {errorMessage}
               </p>
             ) : null}

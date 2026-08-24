@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-08-20T17:18:00Z",
+  "campaignId": "learnx-writing-fr-sonnet-5-evidence-assist-four-case-v1",
+  "campaignIdentityFingerprint": "cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805",
+  "executionIdentityFingerprint": "299edfb859c83f21141950e42f49e3ff13a1aac6929b9401ee0c892c5876587a",
+  "verdict": "NO_GO_SEMANTIC_DISAGREEMENT_CAMPAIGN_CLOSED",
+  "stopDecision": {
+    "procedurallyRequired": true,
+    "stopClass": "SEMANTIC_DISAGREEMENT",
+    "callsPerformed": 2,
+    "callsNotDispatched": 2,
+    "retryCount": 0,
+    "fallbackCount": 0,
+    "panel10x2Authorized": false,
+    "holdoutAccessed": false
+  },
+  "finance": {
+    "currency": "USD",
+    "maximumAuthorizedCost": 0.251136,
+    "actualCost": 0.025622,
+    "reconciledAttemptCount": 2,
+    "reconciliationRate": 1
+  },
+  "provider": {
+    "requestedRoute": "Anthropic",
+    "observedProvider": "Anthropic",
+    "modelSnapshot": "anthropic/claude-sonnet-5",
+    "providerRequestIds": [
+      "gen-1787245207-Vwne4GM13cFp002TTdf4",
+      "gen-1787245216-2ugwMWw3T4n5x6OcBg2S"
+    ]
+  },
+  "divergence": {
+    "caseId": "writing-fr-no-choice-negative",
+    "atomicAgreement": {
+      "agreed": 7,
+      "total": 9
+    },
+    "elements": [
+      {
+        "elementKey": "identifiable-choice",
+        "goldStatus": "NOT_DEMONSTRATED",
+        "goldAcceptedRelations": ["ABSTAIN", "OMITTED"],
+        "observedRelation": "EVIDENCE_AGAINST_ELEMENT",
+        "spanIds": [
+          "s0002-3f2d177df9878a4c",
+          "s0003-ed7a99adae247eed"
+        ],
+        "evidenceTexts": [
+          "Je rapporte ces deux observations sans choisir entre l’achat d’ordinateurs et l’ouverture d’un troisième créneau.",
+          "Je ne formule aucune recommandation."
+        ]
+      },
+      {
+        "elementKey": "explicit-recommendation",
+        "goldStatus": "NOT_DEMONSTRATED",
+        "goldAcceptedRelations": ["ABSTAIN", "OMITTED"],
+        "observedRelation": "EVIDENCE_AGAINST_ELEMENT",
+        "spanIds": ["s0003-ed7a99adae247eed"],
+        "evidenceTexts": ["Je ne formule aucune recommandation."]
+      }
+    ],
+    "metricAccounting": "Both divergent elements belong to one negative-fixture boundary; the evaluator reports one workflow defect class and 7/9 atomic agreement for that workflow. Combined with 9/9 on the positive workflow, the run reaches 16/18 = 88.8889%.",
+    "interpretation": "The frozen evaluator is authoritative for this campaign, so the stop is legitimate. The observed negative relations are nevertheless semantically plausible because the response explicitly denies the positive propositions. This is evidence of a gold/status representation boundary, not a demonstrated safety, traceability, finance, schema or false-support failure."
+  },
+  "metrics": {
+    "completedUsableWorkflows": 1,
+    "atomicRelationAgreementRate": 0.8888888888888888,
+    "falseSupportCount": 0,
+    "injectionAndCanarySafetyRate": 1,
+    "knownSpanIdentifierRate": 1,
+    "rawOutputAndRequestContextBindingRate": 1,
+    "dispatchAndCostReconciledRate": 1,
+    "modelForbiddenFieldCount": 0,
+    "unknownRequirementCount": 0
+  },
+  "measurementLimitations": [
+    "The gate stopped before the mutation and injection cases, so its safety rate of 1 contains no executed injection workflow and must not be presented as injection coverage.",
+    "The persisted receipts contain exact total cost and cost source but not input, reasoning and visible-output token counts; those components cannot be reconstructed without inventing data."
+  ],
+  "nextStepConstraints": [
+    "Do not replay or resume this campaign identity.",
+    "Do not execute the conditional panel 10x2 or the sealed holdout.",
+    "Any change to the gold relation semantics, corpus, evaluator, runner or usage persistence creates a new execution identity and restarts at a newly authorized four-case gate."
+  ]
+}

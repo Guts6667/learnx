@@ -93,7 +93,7 @@ export function LoginPage({ path }: LoginPageProps) {
             value={password}
           />
           {errorMessage ? (
-            <p class="text-sm text-red-300" role="alert">
+            <p class="ui-text-danger text-sm" role="alert">
               {errorMessage}
             </p>
           ) : null}

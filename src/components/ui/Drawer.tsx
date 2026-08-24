@@ -38,6 +38,12 @@ export function Drawer({
   useEffect(() => {
     if (!isOpen) return;
 
+    const handleDocumentEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      dismiss();
+    };
+
     const activeElement =
       document.activeElement instanceof HTMLElement
         ? document.activeElement
@@ -65,11 +71,13 @@ export function Drawer({
       element.inert = true;
       element.setAttribute('aria-hidden', 'true');
     });
+    document.addEventListener('keydown', handleDocumentEscape);
     panelRef.current
       ?.querySelector<HTMLElement>('[data-drawer-close]')
       ?.focus();
 
     return () => {
+      document.removeEventListener('keydown', handleDocumentEscape);
       document.body.style.overflow = previousOverflow;
       backgroundState.forEach(({ ariaHidden, element, inert }) => {
         element.inert = inert;
@@ -100,6 +108,7 @@ export function Drawer({
   function handleKeyDown(event: JSX.TargetedKeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Escape') {
       event.preventDefault();
+      event.stopPropagation();
       dismiss();
       return;
     }

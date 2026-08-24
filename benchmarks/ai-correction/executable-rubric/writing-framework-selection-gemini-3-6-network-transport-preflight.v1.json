@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "preflightId": "learnx-writing-framework-selection-fr-gemini-3-6-network-transport-v1",
+  "status": "SIMULATED_TRANSPORT_GREEN_NETWORK_GO_NOT_GRANTED",
+  "recordedAt": "2026-08-22T00:00:00Z",
+  "baseline": {
+    "ref": "origin/dev",
+    "commit": "df368cd2e1338cb3d817fa9b8b221654fab8f31d"
+  },
+  "identity": {
+    "approvalStatus": "APPROVED",
+    "identityFingerprint": "ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed",
+    "modelId": "google/gemini-3.6-flash",
+    "catalogSnapshotId": "google/gemini-3.6-flash-20260721",
+    "requestedRoute": "google-vertex/global",
+    "expectedObservedProvider": "Google",
+    "reasoning": {
+      "mandatory": true,
+      "effort": "MINIMAL"
+    },
+    "temperature": null,
+    "maximumCombinedOutputAndReasoningTokens": 2500,
+    "visibleOutputTokenTarget": 1800,
+    "timeoutMs": 60000,
+    "maximumRetriesPerWorkflow": 0,
+    "maximumFallbacks": 0
+  },
+  "finance": {
+    "approvalStatus": "APPROVED_FOR_IDENTITY_ONLY_NETWORK_NOT_AUTHORIZED",
+    "maximumProviderAttempts": 4,
+    "maximumCostPerAttemptUsd": 0.1208415,
+    "calculatedMaximumProviderCostUsd": 0.483366,
+    "approvedSingleUseProviderCapUsd": 0.5,
+    "calculatedBoundLoadedAndFxUsd": 0.63029959668,
+    "approvedCapTreasuryReserveUsd": 0.65199,
+    "approvedCapTreasuryReserveDisplayUsd": 0.652,
+    "productPriceEffect": "NONE"
+  },
+  "simulation": {
+    "transport": "FETCH_AND_PROVIDER_SIMULATED_ONLY",
+    "actualNetworkRequests": 0,
+    "modelCallsPerformed": 0,
+    "targetedTestFiles": 2,
+    "targetedTestsPassed": 31,
+    "callIntentPersistedBeforeSimulatedDispatch": true,
+    "rawPersistedBeforeSemanticValidation": true,
+    "missingCostRequiresReconciliation": true,
+    "missingRequestIdFailsTraceability": true,
+    "timeoutAfterDispatchIsOrphaned": true,
+    "perAttemptAndCampaignCapsFailClosed": true,
+    "stopOnFirstDefect": true,
+    "resumeWithoutSecondProviderExecution": true,
+    "sonnetOrAnthropicLiteralInGeminiProvider": false,
+    "missingCandidateRejectedBeforeKeyOrNetwork": true,
+    "inheritedSonnetGoTokenRejectedBeforeKeyOrNetwork": true,
+    "geminiGoNamespace": "GO_V4_003E_Q1_GEMINI36"
+  },
+  "sourceBindings": {
+    "dossier": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-freeze.v1.json",
+      "sha256": "89ee45f1065b868a9cd9f7e019d96a3039851bd14a8382d7b4f491413fb792d3"
+    },
+    "financeEnvelope": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-framework-selection-gemini-3-6-finance-envelope.approved.v1.json",
+      "sha256": "76fbbd343df60fe0bb9dc70d52e992ef8142fcca29b4f8e1e8bd21087f94e922"
+    },
+    "provider": {
+      "path": "src/server/ai/writing-framework-selection-openrouter-provider.ts",
+      "sha256": "04e45501552055f8b79a4ed628fe8c66c583e08a6440d5f0993202f9afc219d5"
+    },
+    "runner": {
+      "path": "src/server/ai/writing-framework-selection-gate-runner-v2.ts",
+      "sha256": "e3d60264090b0c2117e528570bc0ecf523119d32ae2d26b1ce4e6bdc3aed2f9d"
+    }
+  },
+  "authorizationBoundary": {
+    "ownerNetworkAuthorization": "NOT_GRANTED",
+    "modelCallsAllowed": false,
+    "panel10x2Allowed": false,
+    "holdoutAllowed": false,
+    "liveActivationAllowed": false
+  },
+  "preflightFingerprint": "317966c06fed11a96a004932e60a8540a3bafb01cc7eceb629c878dada71a079"
+}

@@ -3,10 +3,16 @@ import { expect, type Page } from '@playwright/test';
 
 export async function expectNoSeriousA11yViolations(
   page: Page,
+  scope?: string,
 ): Promise<void> {
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-    .analyze();
+  let builder = new AxeBuilder({ page }).withTags([
+    'wcag2a',
+    'wcag2aa',
+    'wcag21a',
+    'wcag21aa',
+  ]);
+  if (scope) builder = builder.include(scope);
+  const results = await builder.analyze();
   const blockingViolations = results.violations.filter(({ impact }) =>
     impact === 'serious' || impact === 'critical',
   );

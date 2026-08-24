@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import type { CorrectionBenchmarkConfiguration } from './ai-correction-benchmark.ts';
+import type { CorrectionBenchmarkConfiguration } from './ai-correction-benchmark.js';
 
 export type CorrectionProviderMessage = {
   content: string;

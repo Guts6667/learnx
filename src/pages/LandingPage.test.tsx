@@ -43,7 +43,7 @@ describe('LandingPage', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: 'Un parcours, pas une bibliothèque.',
+        name: 'Votre chemin vers la connaissance.',
       }),
     ).toBeInTheDocument();
     expect(
@@ -75,7 +75,12 @@ describe('LandingPage', () => {
     const researchLink = screen.getByRole('link', {
       name: 'Lire le rapport de recherche',
     });
-    expect(researchLink).toHaveAttribute('href', '/research/ai-correction/');
+    expect(researchLink).toHaveAttribute(
+      'href',
+      '/research/ai-correction/index.html',
+    );
+    expect(researchLink).toHaveAttribute('target', '_blank');
+    expect(researchLink).toHaveAttribute('rel', 'noopener');
     expect(researchLink).toHaveClass('ui-action--md');
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
   });
@@ -100,9 +105,15 @@ describe('LandingPage', () => {
     expect(
       screen.queryByText(/Piloter|Cadrer|Formuler|objectif unique/),
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Read the research report' }),
-    ).toHaveAttribute('href', '/research/ai-correction/en.html');
+    const researchLink = screen.getByRole('link', {
+      name: 'Read the research report',
+    });
+    expect(researchLink).toHaveAttribute(
+      'href',
+      '/research/ai-correction/en.html',
+    );
+    expect(researchLink).toHaveAttribute('target', '_blank');
+    expect(researchLink).toHaveAttribute('rel', 'noopener');
   });
 
   it('submits updates without creating an access request', async () => {

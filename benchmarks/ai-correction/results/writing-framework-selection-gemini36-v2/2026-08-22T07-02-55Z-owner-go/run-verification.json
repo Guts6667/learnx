@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-08-22T07:09:35Z",
+  "status": "VERIFIED_NO_GO_TECHNICAL_RECONCILIATION_REQUIRED",
+  "authorizationFingerprint": "a1450be22b255ad7c20d43a76aafc8ea05fa4f5b4af8183b25a1887245b7c906",
+  "identityFingerprint": "ef88a8e3b1bfd57ddc4afe787d8a920ea4b329e3d83b28b3fc4029487e88e9ed",
+  "execution": {
+    "modelCallsPerformed": 1,
+    "maximumAuthorizedCalls": 4,
+    "unusedAuthorizedCallsNotSent": 3,
+    "retryOrFallbackCalls": 0,
+    "usableWorkflows": 0,
+    "errorCode": "PROVIDER_HTTP_400",
+    "actualCostUsd": null,
+    "unresolvedReservedCostUsd": 0.1208415
+  },
+  "ledger": {
+    "events": 3,
+    "sequence": [
+      "CALL_INTENT",
+      "RAW_RECEIVED",
+      "CALL_OUTCOME"
+    ],
+    "hashChainValid": true,
+    "finalRecordHash": "e86eec31abda9834f4717d137060ad23ffe64610e1ca788ca3780a0ba5b1492f",
+    "fileSha256": "92991197d98ac1684822d4ebb7fd94d8dc3022e28040ca7bdba71f1a019e37b6"
+  },
+  "artifacts": {
+    "summarySha256": "a28fa6011ca2c3b70714a3cb8fc3ff609d0cee6d313ee2f34b644141de26662a",
+    "intentFileSha256": "b1dd3fb9d28aa69570a41e0ee86ce8d9ea878cd79fb3f50a375d8bc11595046e",
+    "rawFileSha256": "54874f005c3f83e088859f11c58223aa8310077708187c39175e65cf7839edaa",
+    "rawOutputSha256": "77939a87611cd6a5ca7c648fcfd6a28195fb8bd49d6cee6371584dbe02f49166",
+    "outcomeFileSha256": "7b36d8ec8d0acab2bb44c74c56332780f6e1c9b32389e0ed48ab625db3f7e3df",
+    "attemptSha256": "2c7c2500b4bc99971467d39cc411e49e922f8d7abdaa71211a590801983245e6",
+    "costAddendumSha256": "a4da92dc5fef757d9b23e56e3cae1ffa19cdb5c659ff807a3f004d9aa437fa4d"
+  },
+  "verificationFingerprint": "1192bb02f40d4c5ac159be91738b7696e3c615049f7e428b6618a07d6e2b00b4"
+}

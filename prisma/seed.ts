@@ -242,6 +242,7 @@ const conceptAssessmentBankGroupSchema = z.object({
 const lessonSchema = z.object({
   title: z.string().trim().min(1),
   slug: z.string().trim().min(1),
+  canonicalKey: z.string().trim().min(1).optional(),
   summary: z.string().trim().min(1).optional(),
   objectives: z.array(z.string().trim().min(1)).optional(),
   prerequisites: z.array(z.string().trim().min(1)).default([]),
@@ -258,6 +259,7 @@ const lessonSchema = z.object({
 const moduleSchema = z.object({
   title: z.string().trim().min(1),
   slug: z.string().trim().min(1),
+  canonicalKey: z.string().trim().min(1).optional(),
   position: z.number().int().nonnegative(),
   lessons: z.array(lessonSchema),
 });
@@ -265,6 +267,7 @@ const moduleSchema = z.object({
 const stageSchema = z.object({
   title: z.string().trim().min(1),
   slug: z.string().trim().min(1),
+  canonicalKey: z.string().trim().min(1).optional(),
   position: z.number().int().nonnegative(),
   estimatedDurationDays: z.number().int().positive().optional(),
   assessment: stageAssessmentSchema,
@@ -275,6 +278,8 @@ const sampleProgramSchema = z.object({
   program: z.object({
     title: z.string().trim().min(1),
     slug: z.string().trim().min(1),
+    canonicalProgramKey: z.string().trim().min(1).optional(),
+    locale: z.enum(['fr', 'en']).default('fr'),
     description: z.string().trim().min(1),
     status: programStatusSchema,
     position: z.number().int().nonnegative(),
@@ -395,7 +400,7 @@ export interface SeedProgramRepository {
     moduleId: string;
     title: string;
     slug: string;
-    canonicalKey?: string;
+    canonicalKey: string;
     summary: string;
     objectives: Prisma.InputJsonValue;
     prerequisites: Prisma.InputJsonValue;
@@ -415,7 +420,7 @@ export interface SeedProgramRepository {
     stageId: string;
     title: string;
     slug: string;
-    canonicalKey?: string;
+    canonicalKey: string;
     description: string;
     position: number;
   }): Promise<{ id: string }>;
@@ -446,7 +451,8 @@ export interface SeedProgramRepository {
     ownerId: string;
     title: string;
     slug: string;
-    canonicalProgramKey?: string;
+    canonicalProgramKey: string;
+    locale: 'fr' | 'en';
     description: string;
     status: ProgramStatus;
     position: number;
@@ -456,7 +462,7 @@ export interface SeedProgramRepository {
     programId: string;
     title: string;
     slug: string;
-    canonicalKey?: string;
+    canonicalKey: string;
     description: string;
     position: number;
     estimatedDurationDays?: number;
@@ -652,6 +658,14 @@ export async function readPlatformApmInterviewSeed(): Promise<SampleSeed> {
   return readSeedFile('seed/platform-apm-interview-program.json');
 }
 
+export async function readPilotageProjetsIaSeed(): Promise<SampleSeed> {
+  return readSeedFile('seed/pilotage-projets-ia-iso-42001-program.json');
+}
+
+export async function readPsychologyFoundationsPilotSeed(): Promise<SampleSeed> {
+  return readSeedFile('seed/psychology-foundations-pilot-program.json');
+}
+
 export async function readSourceLabProductionSeed(): Promise<SampleSeed> {
   return readSeedFile('seed/ingenieur-logiciel-production-sourcelab-program.json');
 }
@@ -676,6 +690,14 @@ const seedDefinitions = [
   {
     read: readPlatformApmInterviewSeed,
     slug: 'platform-apm-entretien-tryhackme',
+  },
+  {
+    read: readPilotageProjetsIaSeed,
+    slug: 'pilotage-projets-ia-iso-42001',
+  },
+  {
+    read: readPsychologyFoundationsPilotSeed,
+    slug: 'psychology-foundations-pilot',
   },
   {
     read: readSourceLabProductionSeed,
@@ -749,6 +771,9 @@ export async function seedSampleProgram(
   const importedAssessmentBanks = new Set<string>();
   const program = await repository.upsertProgram({
     ownerId,
+    canonicalProgramKey:
+      sampleProgram.canonicalProgramKey ?? sampleProgram.slug,
+    locale: sampleProgram.locale,
     title: sampleProgram.title,
     slug: sampleProgram.slug,
     description: sampleProgram.description,
@@ -760,6 +785,7 @@ export async function seedSampleProgram(
   for (const stageData of sampleProgram.stages) {
     const stage = await repository.upsertStage({
       programId: program.id,
+      canonicalKey: stageData.canonicalKey ?? stageData.slug,
       title: stageData.title,
       slug: stageData.slug,
       description: getStageDescription(stageData),
@@ -782,6 +808,7 @@ export async function seedSampleProgram(
     for (const moduleData of stageData.modules) {
       const module = await repository.upsertModule({
         stageId: stage.id,
+        canonicalKey: moduleData.canonicalKey ?? moduleData.slug,
         title: moduleData.title,
         slug: moduleData.slug,
         description: getModuleDescription(moduleData),
@@ -816,6 +843,7 @@ export async function seedSampleProgram(
 
         const lesson = await repository.upsertLesson({
           moduleId: module.id,
+          canonicalKey: lessonData.canonicalKey ?? lessonData.slug,
           title: lessonData.title,
           slug: lessonData.slug,
           summary: getLessonSummary(lessonData),
@@ -1607,12 +1635,11 @@ export function createSeedProgramRepository(
       });
     },
     async upsertLesson(input) {
-      const { moduleId, slug, ...data } = input;
+      const { canonicalKey, moduleId, slug, ...data } = input;
 
       return client.lesson.upsert({
         where: { moduleId_slug: { moduleId, slug } },
-        // Ensure canonicalKey exists for create (default to slug)
-        create: { moduleId, slug, ...data, canonicalKey: data.canonicalKey ?? slug },
+        create: { canonicalKey, moduleId, slug, ...data },
         update: data,
       });
     },
@@ -1627,23 +1654,21 @@ export function createSeedProgramRepository(
       });
     },
     async upsertModule(input) {
-      const { stageId, slug, ...data } = input;
+      const { canonicalKey, stageId, slug, ...data } = input;
 
       return client.module.upsert({
         where: { stageId_slug: { stageId, slug } },
-        // Ensure canonicalKey exists for create (default to slug)
-        create: { stageId, slug, ...data, canonicalKey: data.canonicalKey ?? slug },
+        create: { canonicalKey, stageId, slug, ...data },
         update: data,
       });
     },
 
     async upsertProgram(input) {
-      const { ownerId, slug, ...data } = input;
+      const { canonicalProgramKey, locale, ownerId, slug, ...data } = input;
 
       return client.program.upsert({
         where: { ownerId_slug: { ownerId, slug } },
-        // Ensure canonicalProgramKey is present for create (use slug as default)
-        create: { ownerId, slug, ...data, canonicalProgramKey: data.canonicalProgramKey ?? slug },
+        create: { canonicalProgramKey, locale, ownerId, slug, ...data },
         update: data,
       });
     },
@@ -1667,12 +1692,11 @@ export function createSeedProgramRepository(
       });
     },
     async upsertStage(input) {
-      const { programId, slug, ...data } = input;
+      const { canonicalKey, programId, slug, ...data } = input;
 
       return client.stage.upsert({
         where: { programId_slug: { programId, slug } },
-        // Ensure canonicalKey exists for create (default to slug)
-        create: { programId, slug, ...data, canonicalKey: data.canonicalKey ?? slug },
+        create: { canonicalKey, programId, slug, ...data },
         update: data,
       });
     },

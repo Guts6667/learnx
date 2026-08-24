@@ -1,0 +1,15 @@
+{
+  "atomicStatusAgreementRate": 1,
+  "campaignId": "learnx-writing-fr-gemini-evidence-researcher-panel-v2",
+  "campaignSha256": "dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022",
+  "completedLogicalWorkflows": 10,
+  "falseNotDemonstratedCount": 0,
+  "falseSupportedCount": 0,
+  "gatePassed": false,
+  "providerAttempts": 11,
+  "retries": 0,
+  "stoppedReason": "INVALID_QUOTE_NOT_FOUND",
+  "totalActualCostUsd": 0.04345875,
+  "variabilityCases": [],
+  "variabilityRate": 0
+}

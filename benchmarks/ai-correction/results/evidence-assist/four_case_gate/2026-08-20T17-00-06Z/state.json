@@ -1,0 +1,349 @@
+{
+  "attempts": [
+    {
+      "actualCostUsd": 0.013046,
+      "caseId": "writing-fr-base-mastered",
+      "costSource": "ACTUAL",
+      "dispatchState": "CONFIRMED",
+      "executionIdentityFingerprint": "299edfb859c83f21141950e42f49e3ff13a1aac6929b9401ee0c892c5876587a",
+      "financialState": "SETTLED",
+      "observedProvider": "Anthropic",
+      "providerRequestId": "gen-1787245207-Vwne4GM13cFp002TTdf4",
+      "rawModelOutput": "{\"findings\":[{\"elementKey\":\"identifiable-choice\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0001-0dcd4cabca874716\"]},{\"elementKey\":\"explicit-recommendation\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0001-0dcd4cabca874716\"]},{\"elementKey\":\"unresolved-position-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"relevant-scenario-fact\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0002-b6188d012c428fe5\"]},{\"elementKey\":\"precise-scenario-fact\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0002-b6188d012c428fe5\"]},{\"elementKey\":\"material-fact-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"decision-evidence-relation\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0002-b6188d012c428fe5\",\"s0003-f50bc3f37e644cb3\"]},{\"elementKey\":\"explicit-justification\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0003-f50bc3f37e644cb3\"]},{\"elementKey\":\"material-reasoning-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]}]}",
+      "rawModelOutputSha256": "e5c856eaeac39f7355c91e8329ccfac695be1a0aa06743c7cb9bc6298c258832",
+      "rawPersistedBeforeValidation": true,
+      "repetition": 1,
+      "requestContextFingerprint": "8326d870933d0cda292830cafe3093933e01cd21d441509be1e0f7d126afba51",
+      "requestContextSha256": "f68929096f646d3664b1d2fb40aeca58075f3574fef5d79577bd908c1fac6601",
+      "requestedRoute": "Anthropic",
+      "status": "VALID",
+      "validationErrorCode": null,
+      "validationResult": {
+        "abstainedElementKeys": [
+          "unresolved-position-contradiction",
+          "material-fact-contradiction",
+          "material-reasoning-contradiction"
+        ],
+        "candidateFindings": [
+          {
+            "candidateOnly": true,
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "spanId": "s0001-0dcd4cabca874716",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0001-0dcd4cabca874716"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "spanId": "s0001-0dcd4cabca874716",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0001-0dcd4cabca874716"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "spanId": "s0002-b6188d012c428fe5",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0002-b6188d012c428fe5"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "spanId": "s0002-b6188d012c428fe5",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0002-b6188d012c428fe5"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "spanId": "s0002-b6188d012c428fe5",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              },
+              {
+                "end": 331,
+                "sha256": "dfbab1d62afc93beb900d7336c139325fb5bc813623649c50a6e24a44380ab5c",
+                "spanId": "s0003-f50bc3f37e644cb3",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0002-b6188d012c428fe5",
+              "s0003-f50bc3f37e644cb3"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 331,
+                "sha256": "dfbab1d62afc93beb900d7336c139325fb5bc813623649c50a6e24a44380ab5c",
+                "spanId": "s0003-f50bc3f37e644cb3",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0003-f50bc3f37e644cb3"
+            ]
+          }
+        ],
+        "candidateOnly": true,
+        "candidateRubricFingerprint": "69c6aa5fe57b3212cc28026e8cac4d1e80823b5128e57c64c22fb7e1a8ea53ac",
+        "claimScope": "FORMATIVE_EVIDENCE_ASSISTANCE",
+        "completeness": "PARTIAL",
+        "completenessScope": "STRUCTURAL_CANDIDATE_RELATION_COVERAGE",
+        "indicativeScore": null,
+        "level": null,
+        "levelAuthority": "NONE",
+        "masteryEffect": "NONE",
+        "pipelineFingerprint": "b6cf29f954552802df1867ae2ec1ff6cbfb63579bbefa53b09c15ed2266fc34f",
+        "progressionEffect": "NONE",
+        "protocolFingerprint": "cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a",
+        "protocolVersion": "3.0.0",
+        "rawModelOutputSha256": "e5c856eaeac39f7355c91e8329ccfac695be1a0aa06743c7cb9bc6298c258832",
+        "rejectedFindings": [],
+        "requestContextFingerprint": "8326d870933d0cda292830cafe3093933e01cd21d441509be1e0f7d126afba51",
+        "responseSha256": "81266268e92867ca673c7ec1785a94e2d60d39981eafd07d22926ed3452ee32b",
+        "scoreAuthority": "NONE",
+        "semanticAuthority": "CANDIDATE_ONLY",
+        "spanManifestSha256": "97af220d843476893370ea50f8867d548a7663e153328163bbc9a9d1ddb14f72",
+        "unresolvedElementKeys": [
+          "unresolved-position-contradiction",
+          "material-fact-contradiction",
+          "material-reasoning-contradiction"
+        ]
+      }
+    },
+    {
+      "actualCostUsd": 0.012576,
+      "caseId": "writing-fr-no-choice-negative",
+      "costSource": "ACTUAL",
+      "dispatchState": "CONFIRMED",
+      "executionIdentityFingerprint": "299edfb859c83f21141950e42f49e3ff13a1aac6929b9401ee0c892c5876587a",
+      "financialState": "SETTLED",
+      "observedProvider": "Anthropic",
+      "providerRequestId": "gen-1787245216-2ugwMWw3T4n5x6OcBg2S",
+      "rawModelOutput": "{\"findings\":[{\"elementKey\":\"identifiable-choice\",\"relation\":\"EVIDENCE_AGAINST_ELEMENT\",\"spanIds\":[\"s0002-3f2d177df9878a4c\",\"s0003-ed7a99adae247eed\"]},{\"elementKey\":\"explicit-recommendation\",\"relation\":\"EVIDENCE_AGAINST_ELEMENT\",\"spanIds\":[\"s0003-ed7a99adae247eed\"]},{\"elementKey\":\"relevant-scenario-fact\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0001-2bc7131ec3b9f07b\"]},{\"elementKey\":\"precise-scenario-fact\",\"relation\":\"EVIDENCE_FOR_ELEMENT\",\"spanIds\":[\"s0001-2bc7131ec3b9f07b\"]},{\"elementKey\":\"unresolved-position-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"material-fact-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"decision-evidence-relation\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"explicit-justification\",\"relation\":\"ABSTAIN\",\"spanIds\":[]},{\"elementKey\":\"material-reasoning-contradiction\",\"relation\":\"ABSTAIN\",\"spanIds\":[]}]}",
+      "rawModelOutputSha256": "27566bcda96c3b5e6bfe008f11fa76efcbbd652570a2799217c43ce87c6336c8",
+      "rawPersistedBeforeValidation": true,
+      "repetition": 1,
+      "requestContextFingerprint": "5a91c375f4a7902d63d870466c98e74b60c8b68f109ac2311d476256d88e9189",
+      "requestContextSha256": "21ef4a527ae9d6a2fd27e9a595051dfea8260d9c8f7436f585f7d1b3f4ddd969",
+      "requestedRoute": "Anthropic",
+      "status": "VALID",
+      "validationErrorCode": null,
+      "validationResult": {
+        "abstainedElementKeys": [
+          "unresolved-position-contradiction",
+          "material-fact-contradiction",
+          "decision-evidence-relation",
+          "explicit-justification",
+          "material-reasoning-contradiction"
+        ],
+        "candidateFindings": [
+          {
+            "candidateOnly": true,
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 211,
+                "sha256": "f3d9b05105a8177fbde22927a903dd6662065fd2b93ab594e720c42d4844b571",
+                "spanId": "s0002-3f2d177df9878a4c",
+                "start": 98,
+                "text": "Je rapporte ces deux observations sans choisir entre l’achat d’ordinateurs et l’ouverture d’un troisième créneau."
+              },
+              {
+                "end": 248,
+                "sha256": "6d31fbd2463a5a6ebf6d11cd773d25e41f2b71d3caeca95ac3dd04fa5fc171f9",
+                "spanId": "s0003-ed7a99adae247eed",
+                "start": 212,
+                "text": "Je ne formule aucune recommandation."
+              }
+            ],
+            "relation": "EVIDENCE_AGAINST_ELEMENT",
+            "spanIds": [
+              "s0002-3f2d177df9878a4c",
+              "s0003-ed7a99adae247eed"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 248,
+                "sha256": "6d31fbd2463a5a6ebf6d11cd773d25e41f2b71d3caeca95ac3dd04fa5fc171f9",
+                "spanId": "s0003-ed7a99adae247eed",
+                "start": 212,
+                "text": "Je ne formule aucune recommandation."
+              }
+            ],
+            "relation": "EVIDENCE_AGAINST_ELEMENT",
+            "spanIds": [
+              "s0003-ed7a99adae247eed"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 97,
+                "sha256": "e19a2adf965b4ad3e62dd5ea452b6f89f09ae054ecd4ea840b06f718f1b1f6bd",
+                "spanId": "s0001-2bc7131ec3b9f07b",
+                "start": 0,
+                "text": "Le samedi, six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0001-2bc7131ec3b9f07b"
+            ]
+          },
+          {
+            "candidateOnly": true,
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 97,
+                "sha256": "e19a2adf965b4ad3e62dd5ea452b6f89f09ae054ecd4ea840b06f718f1b1f6bd",
+                "spanId": "s0001-2bc7131ec3b9f07b",
+                "start": 0,
+                "text": "Le samedi, six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé."
+              }
+            ],
+            "relation": "EVIDENCE_FOR_ELEMENT",
+            "spanIds": [
+              "s0001-2bc7131ec3b9f07b"
+            ]
+          }
+        ],
+        "candidateOnly": true,
+        "candidateRubricFingerprint": "69c6aa5fe57b3212cc28026e8cac4d1e80823b5128e57c64c22fb7e1a8ea53ac",
+        "claimScope": "FORMATIVE_EVIDENCE_ASSISTANCE",
+        "completeness": "PARTIAL",
+        "completenessScope": "STRUCTURAL_CANDIDATE_RELATION_COVERAGE",
+        "indicativeScore": null,
+        "level": null,
+        "levelAuthority": "NONE",
+        "masteryEffect": "NONE",
+        "pipelineFingerprint": "cb9aef21a30bb62d0b46d7e85c520ef8a0fe6dfc8626d833fff9fc333ffe737c",
+        "progressionEffect": "NONE",
+        "protocolFingerprint": "cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a",
+        "protocolVersion": "3.0.0",
+        "rawModelOutputSha256": "27566bcda96c3b5e6bfe008f11fa76efcbbd652570a2799217c43ce87c6336c8",
+        "rejectedFindings": [],
+        "requestContextFingerprint": "5a91c375f4a7902d63d870466c98e74b60c8b68f109ac2311d476256d88e9189",
+        "responseSha256": "75a211cd9f958d133527c67d3c8905aa7e4b850994273d079a22a16a1cb072ba",
+        "scoreAuthority": "NONE",
+        "semanticAuthority": "CANDIDATE_ONLY",
+        "spanManifestSha256": "23dfab6f169cb5f01310456a5bff8a28f10e28fa9fb475f067bc91551928ddf2",
+        "unresolvedElementKeys": [
+          "unresolved-position-contradiction",
+          "material-fact-contradiction",
+          "decision-evidence-relation",
+          "explicit-justification",
+          "material-reasoning-contradiction"
+        ]
+      }
+    }
+  ],
+  "authorizationId": "gate4-52627a09-5b87-41b9-bec6-0c415d794246",
+  "forceNoGo": true,
+  "ledger": [
+    {
+      "actualCostUsd": null,
+      "caseId": "writing-fr-base-mastered",
+      "event": "CALL_INTENT",
+      "idempotencyKey": "09c99f69c9db1e0c5055bd5461e86da5bf9be09da6afa938a9543424364b8c65",
+      "providerRequestId": null,
+      "repetition": 1,
+      "status": "INTENDED",
+      "previousHash": null,
+      "recordHash": "eb716cbd2d482eb0caffd5d61dc3d9ba189971c478244fb6ca0fd7f1e5943024"
+    },
+    {
+      "actualCostUsd": 0.013046,
+      "caseId": "writing-fr-base-mastered",
+      "event": "CALL_OUTCOME",
+      "idempotencyKey": "09c99f69c9db1e0c5055bd5461e86da5bf9be09da6afa938a9543424364b8c65",
+      "providerRequestId": "gen-1787245207-Vwne4GM13cFp002TTdf4",
+      "repetition": 1,
+      "status": "VALID",
+      "previousHash": "eb716cbd2d482eb0caffd5d61dc3d9ba189971c478244fb6ca0fd7f1e5943024",
+      "recordHash": "bb55cce9a6ddb1c9d6449bd1c96ac629099a8fd2f5725290764e30ea4cf2c3ef"
+    },
+    {
+      "actualCostUsd": null,
+      "caseId": "writing-fr-no-choice-negative",
+      "event": "CALL_INTENT",
+      "idempotencyKey": "bca5aa8f71fb8ab1d634c88f46d6ac21050d5a1e478ecaf399eea756d3ac12ef",
+      "providerRequestId": null,
+      "repetition": 1,
+      "status": "INTENDED",
+      "previousHash": "bb55cce9a6ddb1c9d6449bd1c96ac629099a8fd2f5725290764e30ea4cf2c3ef",
+      "recordHash": "aecc2445b07f5b644ecd740ec8024b7421d733a032ea2799220ffb4cfa9c265c"
+    },
+    {
+      "actualCostUsd": 0.012576,
+      "caseId": "writing-fr-no-choice-negative",
+      "event": "CALL_OUTCOME",
+      "idempotencyKey": "bca5aa8f71fb8ab1d634c88f46d6ac21050d5a1e478ecaf399eea756d3ac12ef",
+      "providerRequestId": "gen-1787245216-2ugwMWw3T4n5x6OcBg2S",
+      "repetition": 1,
+      "status": "VALID",
+      "previousHash": "aecc2445b07f5b644ecd740ec8024b7421d733a032ea2799220ffb4cfa9c265c",
+      "recordHash": "9e552ecdd563a577c553b7dc495519b57886a4ded5c056f6977f9e86a6326787"
+    }
+  ],
+  "stoppedReason": "SEMANTIC_DISAGREEMENT"
+}

@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
-import { sanitizeStructuredOutputJsonSchema } from '@/lib/ai-json-schema.js';
+import { sanitizeStructuredOutputJsonSchema } from '../../lib/ai-json-schema.js';
 
 import type { OpenRouterConfiguration } from './openrouter-configuration.js';
 import {

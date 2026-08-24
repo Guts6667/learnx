@@ -3,6 +3,7 @@ import { route } from 'preact-router';
 
 import { Button } from '@/components/ui/Button';
 import { TextField } from '@/components/ui/TextField';
+import { TotemTheme } from '@/components/ui/TotemTheme';
 import {
   usePublicLeadMutation,
   type PublicLeadPurpose,
@@ -168,8 +169,8 @@ export function LandingPage({ path }: { path?: string }) {
     if (standalone) return;
     document.title =
       locale === 'en'
-        ? 'LearnX — A journey, not a library'
-        : 'LearnX — Un parcours, pas une bibliothèque';
+        ? 'LearnX — Your path to knowledge'
+        : 'LearnX — Votre chemin vers la connaissance';
     const description = document.querySelector<HTMLMetaElement>(
       'meta[name="description"]',
     );
@@ -183,15 +184,21 @@ export function LandingPage({ path }: { path?: string }) {
   if (standalone) return null;
 
   return (
-    <div class="landing-page" data-color-regime="paper">
+    <TotemTheme class="landing-page totem-public-landing">
       <header class="landing-header">
         <a class="landing-brand" href="/">
-          LearnX
+          <span aria-hidden="true" class="landing-brand-mark">LX</span>
+          <span>LearnX</span>
         </a>
         <nav
           aria-label={t('landing.utilityNavigation')}
           class="landing-utility"
         >
+          <div class="landing-primary-navigation">
+            <a href="#product">{t('landing.navigation.product')}</a>
+            <a href="#research">{t('landing.navigation.research')}</a>
+            <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
+          </div>
           <div
             aria-label={t('landing.language')}
             class="landing-language"
@@ -230,9 +237,17 @@ export function LandingPage({ path }: { path?: string }) {
               </a>
             </div>
           </div>
-          <ProgramPreview />
+          <div class="landing-hero-visual">
+            <span aria-hidden="true" class="landing-coral-shape" />
+            <ProgramPreview />
+          </div>
         </section>
-        <section aria-labelledby="landing-product" class="landing-section">
+        <section aria-label={t('landing.product.eyebrow')} class="landing-principles">
+          <p>{t('landing.product.structuredTitle')}</p>
+          <p>{t('landing.product.practiceTitle')}</p>
+          <p>{t('landing.product.evidenceTitle')}</p>
+        </section>
+        <section aria-labelledby="landing-product" class="landing-section" id="product">
           <div>
             <p class="page-eyebrow">{t('landing.product.eyebrow')}</p>
             <h2 id="landing-product">{t('landing.product.title')}</h2>
@@ -282,6 +297,7 @@ export function LandingPage({ path }: { path?: string }) {
         <section
           aria-labelledby="landing-roadmap"
           class="landing-section landing-section--muted"
+          id="roadmap"
         >
           <div>
             <p class="page-eyebrow">{t('landing.roadmap.eyebrow')}</p>
@@ -292,6 +308,7 @@ export function LandingPage({ path }: { path?: string }) {
         <section
           aria-labelledby="landing-research"
           class="landing-section landing-research"
+          id="research"
         >
           <div>
             <p class="page-eyebrow">{t('landing.research.eyebrow')}</p>
@@ -304,8 +321,10 @@ export function LandingPage({ path }: { path?: string }) {
               href={
                 locale === 'en'
                   ? '/research/ai-correction/en.html'
-                  : '/research/ai-correction/'
+                  : '/research/ai-correction/index.html'
               }
+              rel="noopener"
+              target="_blank"
             >
               {t('landing.research.action')}
             </a>
@@ -330,6 +349,6 @@ export function LandingPage({ path }: { path?: string }) {
         <span>© 2026 LearnX</span>
         <a href="/login">{t('landing.login')}</a>
       </footer>
-    </div>
+    </TotemTheme>
   );
 }

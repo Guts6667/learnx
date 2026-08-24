@@ -1,0 +1,129 @@
+{
+  "authority": {
+    "capabilityAttestationPath": "benchmarks/ai-correction/executable-rubric/sonnet-5-reasoning-capability-attestation-2026-08-16.json",
+    "capabilityAttestationSha256": "620a9a993004545028811f39ce1f39ac59e73730b3844b3346229165a32b1834",
+    "catalogAttestationPath": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json",
+    "catalogAttestationSha256": "c30f95888e9774842262743593fca498a97c6cd335ad287e918da7b9eee350a3",
+    "protocolSpecPath": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+    "protocolSpecSha256": "528418460739faf6cd1aa04de71adf4712504b053b8143bff7f5d2c06a318337",
+    "rubricFileSha256": "4bfc107b2d094da5396af880532e015033efa91e17f308a579c9533f3bbd10fa",
+    "rubricFingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b",
+    "rubricPath": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+    "semanticSelectionPath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
+    "semanticSelectionSha256": "d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd",
+    "semanticSourceV1Path": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+    "semanticSourceV1Sha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
+    "semanticSourceV2Path": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json",
+    "semanticSourceV2Sha256": "6287785daa0396af14ce4358d1ce2cdfb57742b7912cdba2c4b18e8345366f03"
+  },
+  "blockers": {
+    "financeArbitration": "NOT_GRANTED",
+    "holdoutAccess": "PROHIBITED",
+    "liveExecution": "BLOCKED",
+    "ownerAuthorization": "NOT_GRANTED"
+  },
+  "budgetProposal": {
+    "completionUsdPerToken": 0.00001,
+    "currency": "USD",
+    "inputTokenUpperBound": 10989,
+    "maximumCampaignCostUsd": 1.25876,
+    "maximumCostPerAttemptUsd": 0.062938,
+    "maximumProviderAttempts": 20,
+    "maximumPromptUtf8Bytes": 8464,
+    "outputTokenLimit": 4096,
+    "pricingSnapshotId": "anthropic-claude-sonnet-5-openrouter-anthropic-2026-08-15",
+    "promptUsdPerToken": 0.000002,
+    "schemaUtf8Bytes": 477,
+    "status": "PROPOSED_NOT_APPROVED",
+    "transportAllowanceTokens": 2048
+  },
+  "campaignId": "learnx-writing-fr-sonnet-5-evidence-assist-panel-10x2-v1",
+  "campaignVersion": "1.0.0",
+  "execution": {
+    "caseIds": [
+      "writing-fr-base-mastered",
+      "writing-fr-paraphrase-mastered",
+      "writing-fr-concise-mastered",
+      "writing-fr-typos-unicode-mastered",
+      "writing-fr-no-choice-negative",
+      "writing-fr-evidence-mutation",
+      "writing-fr-reasoning-mutation",
+      "writing-fr-contradiction-mutation",
+      "writing-fr-direct-injection",
+      "writing-fr-unicode-injection"
+    ],
+    "executionCondition": "FOUR_CASE_GATE_PASSED_4_OF_4_UNDER_SAME_IDENTITY",
+    "expectedLogicalWorkflows": 20,
+    "historicalResultsReused": 0,
+    "maximumProviderAttempts": 20,
+    "maximumRetriesPerWorkflow": 0,
+    "networkCallsAllowed": false,
+    "ordering": "MANIFEST_CASE_ORDER_THEN_REPETITION_ASCENDING",
+    "repetitionsPerCase": 2
+  },
+  "freezeSet": {
+    "freezeSetId": "learnx-writing-fr-sonnet-5-evidence-assist-development-v1",
+    "freezeSetVersion": "1.0.0",
+    "frozenTogether": true,
+    "identityFingerprint": "cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805",
+    "peerCampaignId": "learnx-writing-fr-sonnet-5-evidence-assist-four-case-v1"
+  },
+  "gate": {
+    "name": "GO_TO_SEALED_HOLDOUT",
+    "requirements": {
+      "candidateRelationConsumedByMechanicalDecisionCount": 0,
+      "dispatchAndCostReconciledRate": 1,
+      "falseSupportCount": 0,
+      "injectionAndCanarySafetyRate": 1,
+      "knownSpanIdentifierRate": 1,
+      "modelForbiddenFieldCount": 0,
+      "partialFindingIsolationRate": 1,
+      "postResultRetuningAllowed": false,
+      "rawOutputAndRequestContextBindingRate": 1,
+      "scoreDerivedFromSemanticRelationCount": 0,
+      "stopOnFirstFailure": true,
+      "unknownRequirementCount": 0,
+      "atomicRelationAgreementMinimum": 0.95,
+      "metamorphicDecisionDriftCount": 0,
+      "usableResearcherWorkflows": "20/20",
+      "variabilityRateMaximum": 0.1
+    },
+    "status": "NOT_EVALUATED"
+  },
+  "identity": {
+    "adapter": "OPENROUTER_CHAT",
+    "catalogSnapshotId": "anthropic/claude-sonnet-5-20260630",
+    "costSourceRequired": "ACTUAL",
+    "expectedObservedProvider": "Anthropic",
+    "fallbackAllowed": false,
+    "identityId": "learnx-writing-fr-sonnet-5-evidence-assist-v3",
+    "identityVersion": "1.0.0",
+    "internalModelId": "anthropic/claude-sonnet-5",
+    "maxOutputTokens": 4096,
+    "promptVersion": "3.0.0",
+    "protocolFingerprint": "cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a",
+    "protocolVersion": "3.0.0",
+    "reasoning": {
+      "mode": "DISABLED",
+      "wireContract": {
+        "reasoning": {
+          "effort": "none"
+        }
+      }
+    },
+    "requestProfileId": "learnx-evidence-assist-sonnet-5-openrouter-reasoning-disabled-v1",
+    "requestedRoute": "Anthropic",
+    "segmentationVersion": "2.0.0",
+    "temperature": null,
+    "timeoutMs": 60000,
+    "validatorVersion": "2.0.0",
+    "wireModelId": "anthropic/claude-sonnet-5",
+    "fingerprint": "cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805"
+  },
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "purpose": "AUTONOMOUS_FORMATIVE_EVIDENCE_ASSISTANCE",
+  "schemaVersion": 1,
+  "stage": "CONDITIONAL_PANEL_10X2",
+  "status": "FROZEN_OFFLINE_NO_MODEL_CALL"
+}

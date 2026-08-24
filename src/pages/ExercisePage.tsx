@@ -53,7 +53,7 @@ export function ExercisePage({
 
   const key = activityKey('EXERCISE', exercise.id);
   return (
-    <article class="page-layout page-layout--work space-y-6">
+    <article class="totem-learning-page page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
       <ExerciseCard
         exercise={exercise}

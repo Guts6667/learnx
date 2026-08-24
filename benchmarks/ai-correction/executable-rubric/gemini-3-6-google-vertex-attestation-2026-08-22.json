@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 2,
+  "observedAt": "2026-08-22T08:09:01Z",
+  "sources": {
+    "endpointCatalog": "https://openrouter.ai/api/v1/models/google/gemini-3.6-flash/endpoints",
+    "modelPage": "https://openrouter.ai/google/gemini-3.6-flash",
+    "geminiStructuredOutputSpecification": "https://ai.google.dev/gemini-api/docs/structured-output"
+  },
+  "attestationMode": "PUBLIC_CATALOG_AND_DOCUMENTATION_READ_ONLY_NO_INFERENCE",
+  "principalModelId": "google/gemini-3.6-flash",
+  "canonicalCatalogId": "google/gemini-3.6-flash-20260721",
+  "endpoint": {
+    "providerName": "Google",
+    "routeTag": "google-vertex/global",
+    "status": 0,
+    "contextLength": 1048576,
+    "maxCompletionTokens": 65536
+  },
+  "pricing": {
+    "currency": "USD",
+    "discount": 0,
+    "inputUsdPerMillionTokens": 0.75,
+    "outputAndReasoningUsdPerMillionTokens": 3.75,
+    "cacheReadUsdPerMillionTokens": 0.075,
+    "cacheWriteUsdPerMillionTokens": 0.0416666666666667,
+    "promotionAssumed": false,
+    "cacheDiscountAssumedForGateBound": false
+  },
+  "capabilities": {
+    "reasoningSupported": true,
+    "selectedReasoningEffort": "minimal",
+    "responseFormatSupported": true,
+    "structuredOutputsSupported": true,
+    "maxTokensSupported": true,
+    "temperatureSupportedByPinnedEndpoint": false,
+    "temperaturePolicy": "OMIT"
+  },
+  "supportedParameters": [
+    "reasoning",
+    "include_reasoning",
+    "max_tokens",
+    "seed",
+    "response_format",
+    "stop",
+    "structured_outputs",
+    "tools",
+    "tool_choice",
+    "reasoning_effort"
+  ],
+  "structuredOutputDialect": {
+    "wireVersion": "evidence-assist-wire/3.0.1",
+    "relevantSupportedKeywords": [
+      "type",
+      "title",
+      "description",
+      "properties",
+      "required",
+      "additionalProperties",
+      "enum",
+      "format",
+      "minimum",
+      "maximum",
+      "items",
+      "prefixItems",
+      "minItems",
+      "maxItems"
+    ],
+    "relevantUnsupportedKeywords": [
+      "pattern"
+    ],
+    "serverValidationPolicy": "KEEP_SPAN_ID_REGEX_IN_LOCAL_ZOD_VALIDATOR_ONLY"
+  },
+  "routing": {
+    "fallbackAllowed": false,
+    "automaticRoutingAllowed": false,
+    "singlePinnedRouteRequired": true
+  },
+  "networkAuthorizationEffect": "NONE",
+  "modelCallsPerformed": 0,
+  "status": "REATTESTED_OFFLINE_NETWORK_GO_NOT_GRANTED"
+}

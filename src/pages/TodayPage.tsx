@@ -57,7 +57,7 @@ export function TodayPage() {
         <EmptyState
           action={
             <NavigationAction href="/discover">
-              {t('programs.exploreAction')}
+              {t('today.emptyProgram.action')}
             </NavigationAction>
           }
           description={t('today.emptyProgram.description')}

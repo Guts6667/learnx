@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022",
+  "caseId": "writing-fr-concise-mastered",
+  "cellKey": "writing-fr-concise-mastered:2",
+  "idempotencyKey": "370c5d3a524ff2f48c9c7bf4bd59ef7837c9b30d7e10acd3cd26945b906832a9",
+  "modelSnapshot": "google/gemini-3.6-flash",
+  "observedProvider": "Google",
+  "providerRequestId": "gen-1786820757-FFiSsWxctxkfSiB5eaHl",
+  "providerRoute": "Google",
+  "repetition": 2,
+  "requestedRoute": "google-vertex/global",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"samedi, six personnes partageaient trois postes et seules 9 sur 20 ont terminé.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois postes et seules 9 sur 20 ont terminé.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\",\"Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "ff69045fd9695526d50049b3ca6c48ef0bf4bcf826a664e3eaa1f37524eb1702",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:06:00.603Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.0039105,
+    "costSource": "ACTUAL",
+    "inputTokens": 1999,
+    "reasoningTokens": 0,
+    "visibleOutputTokens": 643
+  }
+}

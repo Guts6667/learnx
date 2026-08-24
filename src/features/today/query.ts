@@ -29,6 +29,22 @@ export interface TodayResponse {
     slug: string;
     title: string;
   } | null;
+  hasMorePrograms: boolean;
+  programCount: number;
+  programs: Array<{
+    id: string;
+    lastActivity: {
+      at: string;
+      href: string;
+      title: string;
+    } | null;
+    nextAction: TodayResponse['action'];
+    percent: number;
+    resumeHref: string | null;
+    slug: string;
+    status: 'COMPLETED' | 'IN_PROGRESS' | 'NOT_STARTED';
+    title: string;
+  }>;
   reviewsDue: number;
 }
 
@@ -64,5 +80,6 @@ export function useTodayQuery() {
     data: result.data,
     error: result.error,
     isPending: result.isPending,
+    reload: () => observer.refetch(),
   };
 }

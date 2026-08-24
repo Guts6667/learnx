@@ -2,11 +2,17 @@
 
 ## Statut et autorité
 
-- Version : 0.8.0
-- Statut : **backlog produit validé et tickets durcis — aucune implémentation avant clôture V3**
-- Date : 10 août 2026
+- Version : 0.9.0
+- Statut : **GO technique obtenu — clôture officielle en attente de validation humaine finale**
+- Date : 20 août 2026
 - Baseline : V3 officiellement clôturée, stable et documentée
 - Suite : V4 corrections IA, crédits, paiement et infrastructure
+
+Les tickets V3.5-001 à V3.5-009 ont atteint leur GO technique sur le candidat
+audité. Ce statut ne vaut pas clôture officielle : installation/réouverture PWA
+réelle, VoiceOver, zoom 200 % et smoke authentifié doivent encore être consignés
+sur la version effectivement promue, conformément à
+`docs/V3_5_RELEASE_REPORT.md` et `docs/V3_5_QA_MATRIX.md`.
 
 Ce backlog constitue une release intermédiaire autonome. Il permet de faire
 évoluer l'image et l'expérience de LearnX avant d'ajouter les surfaces complexes

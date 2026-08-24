@@ -1140,6 +1140,7 @@ body {
 .ui-action {
   display: inline-flex;
   min-width: 0;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -1147,6 +1148,7 @@ body {
   border-radius: var(--radius-control);
   font-weight: 500;
   line-height: 1.25;
+  overflow-wrap: anywhere;
   text-align: center;
   transition:
     background-color var(--motion-fast) var(--motion-easing),

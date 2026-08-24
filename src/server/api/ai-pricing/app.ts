@@ -12,12 +12,16 @@ import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 
+const AI_PRICING_QUOTE_PATH = '/api/ai-correction/quotes';
+
 const requestSchema = z
   .object({
     action: z.enum(AI_PRICING_ACTIONS),
     idempotencyKey: z.string().min(8).max(200),
     target: z.discriminatedUnion('kind', [
-      z.object({ id: z.uuid(), kind: z.literal('EXERCISE_SUBMISSION') }).strict(),
+      z
+        .object({ id: z.uuid(), kind: z.literal('EXERCISE_SUBMISSION') })
+        .strict(),
       z
         .object({
           id: z.uuid(),
@@ -93,9 +97,9 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
   let repository: AiPricingQuoteRepository | undefined = options.repository;
   let service = options.service;
 
-  app.use('*', options.authentication ?? requireUser);
+  app.use(AI_PRICING_QUOTE_PATH, options.authentication ?? requireUser);
   app.use(
-    '*',
+    AI_PRICING_QUOTE_PATH,
     options.authorization ?? requireCapability('ai.assessment.correct'),
   );
   app.onError((error, context) => {
@@ -104,11 +108,15 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
         ? pricingApiError(error)
         : error instanceof ApiError
           ? error
-          : new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 500);
+          : new ApiError(
+              'INTERNAL_ERROR',
+              'An unexpected error occurred.',
+              500,
+            );
     return context.json(toApiErrorBody(apiError), apiError.status);
   });
 
-  app.post('/api/ai-correction/quotes', async (context) => {
+  app.post(AI_PRICING_QUOTE_PATH, async (context) => {
     const parsed = requestSchema.safeParse(await parseJson(context.req.raw));
     if (!parsed.success) throw invalidRequest();
     if (!service) {
@@ -129,12 +137,11 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
           expiresAt: quote.expiresAt.toISOString(),
           id: quote.id,
           includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
+          includesTargetedVerification: quote.includesTargetedVerification,
           maximumReservedCredits: quote.ceilingCredits.toString(),
           releasePolicy: 'ACTUAL_USAGE_ONLY',
           scope:
-            quote.action === 'RECONSIDERATION'
-              ? 'RECONSIDERATION'
-              : 'PRIMARY',
+            quote.action === 'RECONSIDERATION' ? 'RECONSIDERATION' : 'PRIMARY',
         },
       },
       201,

@@ -11,7 +11,12 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Besoin | Documents à lire | Autorité |
 | --- | --- | --- |
 | Ticket V3 | `BACKLOG_V3.md` puis l'ADR ou la spec citée | Le ticket V3 actif |
+| Ticket V3.5 design et landing | `BACKLOG_V3_5.md` puis les fichiers cités par le ticket | Le ticket V3.5 actif après clôture V3 |
+| Ticket V4 IA et économie | `BACKLOG_V4.md` puis l'ADR ou la spec citée | L'amendement d'exécution du 24 août prime sur les tickets expérimentaux historiques |
+| Orientation V6 support et conformité | `V6_CANDIDATES.md` | Candidats uniquement, aucune autorité d'implémentation |
 | Architecture générale | `TECHNICAL_ARCHITECTURE.md` | Code et schéma priment en cas d'écart |
+| Carte du domaine et vocabulaire | `LEARNX_DOMAIN_KNOWLEDGE.md` | Point d'entrée canonique pour les objets et frontières ; la roadmap conserve le statut courant |
+| Statut actif ou historique des documents V4 | `V4_DOCUMENT_STATUS.md` | Une préparation ou demande de GO close ne peut jamais être reprise comme instruction |
 | Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma` | `prisma/schema.prisma` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
@@ -19,6 +24,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Pilotage V4 courant | `docs/V4_ROADMAP.md`, puis `BACKLOG_V4.md` pour le détail | Roadmap datée du 24 août ; anciennes vues dans `docs/archive/v4/` |
 | Recherche correction V4 | `docs/V4_RESEARCH_FINDINGS.md`, puis `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` | Artefacts et journal append-only priment sur les synthèses |
 | Reports V4.1 | `V4_1_BACKLOG.md` | Aucune dette V4.1 ne modifie implicitement le pilote V4 |
+| Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |
 | Évaluations | `ASSESSMENT_SPEC.md` | Schéma, logique serveur et tests |

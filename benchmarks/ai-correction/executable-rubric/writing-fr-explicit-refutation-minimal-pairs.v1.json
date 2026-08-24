@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "ontologyId": "learnx-writing-fr-explicit-refutation-v1",
+  "ontologyVersion": "1.0.0",
+  "statusPolicy": {
+    "SUPPORTED": "SATISFIED",
+    "NOT_DEMONSTRATED": "UNMET",
+    "EXPLICITLY_REFUTED": "UNMET",
+    "CONTRADICTED": "UNMET",
+    "AMBIGUOUS": "INDETERMINATE"
+  },
+  "authorityBoundary": {
+    "candidateRelationsMaySetAtomicStatus": false,
+    "candidateRelationsMaySetLevel": false,
+    "candidateRelationsMaySetScore": false,
+    "candidateRelationsMaySetProgression": false,
+    "offlineOnly": true
+  },
+  "target": {
+    "criterionKey": "decision-position",
+    "elementKey": "explicit-recommendation",
+    "polarity": "POSITIVE"
+  },
+  "cases": [
+    {
+      "caseId": "writing-fr-recommendation-supported",
+      "responseText": "Je recommande l'option A.",
+      "expectedStatus": "SUPPORTED",
+      "expectedLevelEffect": "SATISFIED",
+      "expectedFeedbackTemplateKey": "supported",
+      "expectedCandidateObservation": "EVIDENCE_FOR_ELEMENT",
+      "rationale": "Une recommandation générique est formulée explicitement.",
+      "evidenceSpans": [
+        {
+          "start": 0,
+          "end": 25,
+          "text": "Je recommande l'option A.",
+          "sha256": "fd3ea716fa8cc7a656faaa4ec9ab3bc0b91d48d9fbf7be00f5e9531978f93627"
+        }
+      ]
+    },
+    {
+      "caseId": "writing-fr-recommendation-not-demonstrated",
+      "responseText": "Le délai est passé de 18 à 13 heures.",
+      "expectedStatus": "NOT_DEMONSTRATED",
+      "expectedLevelEffect": "UNMET",
+      "expectedFeedbackTemplateKey": "notDemonstrated",
+      "expectedCandidateObservation": "ABSTAIN",
+      "rationale": "Un fait est présent, mais aucune recommandation n'est observable.",
+      "evidenceSpans": []
+    },
+    {
+      "caseId": "writing-fr-recommendation-explicitly-refuted",
+      "responseText": "Je ne formule aucune recommandation.",
+      "expectedStatus": "EXPLICITLY_REFUTED",
+      "expectedLevelEffect": "UNMET",
+      "expectedFeedbackTemplateKey": "explicitlyRefuted",
+      "expectedCandidateObservation": "EVIDENCE_AGAINST_ELEMENT",
+      "rationale": "La réponse refuse explicitement de produire l'élément positif attendu.",
+      "evidenceSpans": [
+        {
+          "start": 0,
+          "end": 36,
+          "text": "Je ne formule aucune recommandation.",
+          "sha256": "6d31fbd2463a5a6ebf6d11cd773d25e41f2b71d3caeca95ac3dd04fa5fc171f9"
+        }
+      ]
+    },
+    {
+      "caseId": "writing-fr-recommendation-contradicted",
+      "responseText": "Je recommande l'option A. Finalement, je ne recommande aucune option.",
+      "expectedStatus": "CONTRADICTED",
+      "expectedLevelEffect": "UNMET",
+      "expectedFeedbackTemplateKey": "contradicted",
+      "expectedCandidateObservation": "MIXED",
+      "rationale": "Deux passages maintiennent des positions incompatibles sans résolution.",
+      "evidenceSpans": [
+        {
+          "start": 0,
+          "end": 25,
+          "text": "Je recommande l'option A.",
+          "sha256": "fd3ea716fa8cc7a656faaa4ec9ab3bc0b91d48d9fbf7be00f5e9531978f93627"
+        },
+        {
+          "start": 38,
+          "end": 69,
+          "text": "je ne recommande aucune option.",
+          "sha256": "d84d5c1a86e38e3a854d9593940226fbfd779d4dc8554ca3f06cb807b5319c74"
+        }
+      ]
+    },
+    {
+      "caseId": "writing-fr-recommendation-ambiguous",
+      "responseText": "Je penche peut-être pour l'option A, sans vraiment choisir.",
+      "expectedStatus": "AMBIGUOUS",
+      "expectedLevelEffect": "INDETERMINATE",
+      "expectedFeedbackTemplateKey": "ambiguous",
+      "expectedCandidateObservation": "MIXED",
+      "rationale": "L'orientation et son refus coexistent dans une formulation qui peut changer le niveau.",
+      "evidenceSpans": [
+        {
+          "start": 0,
+          "end": 59,
+          "text": "Je penche peut-être pour l'option A, sans vraiment choisir.",
+          "sha256": "a40ae3d4fb414706fcf183a3499f7062011427dfdf4e6923d4f2103887dd57ff"
+        }
+      ]
+    },
+    {
+      "caseId": "writing-fr-recommendation-scoped-negation",
+      "responseText": "Je ne recommande pas l'option B ; je recommande l'option A.",
+      "expectedStatus": "SUPPORTED",
+      "expectedLevelEffect": "SATISFIED",
+      "expectedFeedbackTemplateKey": "supported",
+      "expectedCandidateObservation": "EVIDENCE_FOR_ELEMENT",
+      "rationale": "Le rejet d'une option précise ne réfute pas la recommandation générique lorsque l'autre option est recommandée.",
+      "evidenceSpans": [
+        {
+          "start": 34,
+          "end": 59,
+          "text": "je recommande l'option A.",
+          "sha256": "bef5c13c1757be97888281420a5535fcab38a8df756bbd04bb2c1b379a18b4e9"
+        }
+      ]
+    }
+  ]
+}

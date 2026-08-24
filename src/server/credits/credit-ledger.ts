@@ -32,6 +32,27 @@ export interface CreditSettlementAllocation extends CreditLotAllocation {
   settledAmount: bigint;
 }
 
+export function reservationEffectiveExpiration(input: {
+  executionLeaseExpiresAt: Date | null;
+  holdExpiresAt: Date;
+}): Date {
+  if (
+    input.executionLeaseExpiresAt !== null &&
+    input.executionLeaseExpiresAt.getTime() > input.holdExpiresAt.getTime()
+  ) {
+    return input.executionLeaseExpiresAt;
+  }
+  return input.holdExpiresAt;
+}
+
+export function reservationMayExpire(input: {
+  executionLeaseExpiresAt: Date | null;
+  holdExpiresAt: Date;
+  now: Date;
+}): boolean {
+  return reservationEffectiveExpiration(input).getTime() <= input.now.getTime();
+}
+
 export class CreditLedgerError extends Error {
   public constructor(
     public readonly code:

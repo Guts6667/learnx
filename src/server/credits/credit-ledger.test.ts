@@ -7,6 +7,7 @@ import {
   assertIdempotencyKey,
   creditRequestFingerprint,
   planCreditSettlement,
+  reservationMayExpire,
   reconstructCreditBalance,
   type SpendableCreditLot,
 } from './credit-ledger.js';
@@ -191,6 +192,24 @@ describe('credit ledger domain', () => {
       0n,
     );
     expect(plan[0]).toMatchObject({ restoredAmount: 80n, settledAmount: 0n });
+  });
+
+  it('protects an in-flight reservation until its execution lease expires', () => {
+    const holdExpiresAt = new Date('2026-08-12T11:55:00.000Z');
+    expect(
+      reservationMayExpire({
+        executionLeaseExpiresAt: new Date('2026-08-12T12:05:00.000Z'),
+        holdExpiresAt,
+        now,
+      }),
+    ).toBe(false);
+    expect(
+      reservationMayExpire({
+        executionLeaseExpiresAt: new Date('2026-08-12T11:59:00.000Z'),
+        holdExpiresAt,
+        now,
+      }),
+    ).toBe(true);
   });
 
   it('uses canonical fingerprints for idempotent payload comparison', () => {

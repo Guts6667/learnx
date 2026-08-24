@@ -54,10 +54,10 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
       <Card>
         {requestMutation.data ? (
           <div class="space-y-5" role="status">
-            <h2 class="text-xl font-semibold text-white">
+            <h2 class="ui-text text-xl font-semibold">
               {t('auth.access.successTitle')}
             </h2>
-            <p class="leading-7 text-slate-300">
+            <p class="ui-text-muted leading-7">
               {t('auth.access.successDescription')}
             </p>
             <a
@@ -80,7 +80,7 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
               value={email}
             />
             {errorMessage ? (
-              <p class="text-sm text-red-300" role="alert">
+              <p class="ui-text-danger text-sm" role="alert">
                 {errorMessage}
               </p>
             ) : null}

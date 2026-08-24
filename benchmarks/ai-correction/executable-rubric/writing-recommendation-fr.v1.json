@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "rubricKey": "v4-writing-recommendation-fr",
+  "rubricVersion": "1.0.0-draft",
+  "ruleSetVersion": "1.0.0",
+  "lifecycle": "DRAFT",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "eligibility": "FULLY_COMPILABLE",
+  "progressionAuthority": "NONE",
+  "scorePolicy": {
+    "indicativeScoreEnabled": true,
+    "publishExactScoreWhenAmbiguousLevelIsStable": false
+  },
+  "criteria": [
+    {
+      "key": "decision-position",
+      "label": "Position recommandée",
+      "description": "La réponse formule une position compréhensible et répond à la décision demandée.",
+      "weight": 30,
+      "levels": [
+        { "key": "insufficient", "minimumPoints": -200 },
+        { "key": "partial", "minimumPoints": 50 },
+        { "key": "mastered", "minimumPoints": 100 }
+      ]
+    },
+    {
+      "key": "evidence-fidelity",
+      "label": "Fidélité aux éléments du dossier",
+      "description": "La réponse mobilise fidèlement des éléments observables fournis dans le dossier.",
+      "weight": 40,
+      "levels": [
+        { "key": "insufficient", "minimumPoints": -200 },
+        { "key": "partial", "minimumPoints": 50 },
+        { "key": "mastered", "minimumPoints": 100 }
+      ]
+    },
+    {
+      "key": "reasoning-link",
+      "label": "Lien entre preuves et décision",
+      "description": "La réponse explique de façon cohérente comment les éléments invoqués soutiennent la recommandation.",
+      "weight": 30,
+      "levels": [
+        { "key": "insufficient", "minimumPoints": -200 },
+        { "key": "partial", "minimumPoints": 50 },
+        { "key": "mastered", "minimumPoints": 100 }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "key": "identifiable-choice",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "decision-position",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["evidence-fidelity", "reasoning-link"],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": ["L'option retenue ou l'orientation proposée est identifiable."],
+      "negativeExamples": ["La réponse décrit plusieurs options sans prendre position."],
+      "acceptableVariants": ["Une position conditionnelle est acceptable si la condition et l'orientation restent identifiables."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 2,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": ["Deux positions incompatibles sont maintenues sans résolution."],
+      "pointsByCriterion": {
+        "decision-position": { "SUPPORTED": 50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": -50 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Votre orientation est identifiable dans la réponse.",
+        "notDemonstrated": "Formulez l'option ou l'orientation que vous recommandez.",
+        "contradicted": "Deux orientations paraissent incompatibles ; choisissez-en une ou explicitez leur articulation.",
+        "ambiguous": "Votre orientation peut être comprise de plusieurs façons ; précisez le choix retenu."
+      }
+    },
+    {
+      "key": "explicit-recommendation",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "decision-position",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["evidence-fidelity", "reasoning-link"],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": ["Je recommande l'option B sous la condition indiquée."],
+      "negativeExamples": ["Les options ont chacune des avantages."],
+      "acceptableVariants": ["Un verbe de recommandation n'est pas obligatoire si la décision est formulée sans ambiguïté."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 2,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [],
+      "pointsByCriterion": {
+        "decision-position": { "SUPPORTED": 50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": -50 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "La recommandation est formulée explicitement.",
+        "notDemonstrated": "Rendez la recommandation plus explicite et directement exploitable.",
+        "contradicted": "La formulation explicite contredit une autre position de la réponse.",
+        "ambiguous": "La formulation ne permet pas de déterminer si une recommandation explicite est réellement donnée."
+      }
+    },
+    {
+      "key": "unresolved-position-contradiction",
+      "type": "CONTRADICTION",
+      "polarity": "NEGATIVE",
+      "ownerCriterionKey": "decision-position",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["evidence-fidelity", "reasoning-link"],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": ["La réponse recommande simultanément A et non-A sans condition de résolution."],
+      "negativeExamples": ["Une recommandation principale est distinguée d'une solution de repli."],
+      "acceptableVariants": ["Deux options peuvent coexister si leurs conditions d'application sont clairement distinctes."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 2,
+        "maximumSpans": 4,
+        "relationshipDescription": "Les spans doivent matérialiser deux positions incompatibles non résolues."
+      },
+      "contradictionSignals": ["Recommander et rejeter la même option dans les mêmes conditions."],
+      "pointsByCriterion": {
+        "decision-position": { "SUPPORTED": -100, "NOT_DEMONSTRATED": 0, "CONTRADICTED": 0 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "La réponse contient des positions incompatibles ; révisez-les pour conserver une recommandation cohérente.",
+        "notDemonstrated": "Aucune contradiction non résolue n'est démontrée dans votre position.",
+        "contradicted": "Les passages examinés ne démontrent pas de contradiction de position.",
+        "ambiguous": "Deux passages peuvent être contradictoires selon leur contexte ; précisez les conditions de chaque option."
+      }
+    },
+    {
+      "key": "relevant-scenario-fact",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "evidence-fidelity",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["decision-position", "reasoning-link"],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": ["La réponse reprend un fait, une donnée ou une contrainte pertinente du dossier."],
+      "negativeExamples": ["La réponse ne mobilise aucun élément du dossier."],
+      "acceptableVariants": ["Une paraphrase fidèle suffit ; la reprise mot pour mot n'est pas exigée."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [],
+      "pointsByCriterion": {
+        "evidence-fidelity": { "SUPPORTED": 50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": -50 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Votre réponse mobilise un élément pertinent du dossier.",
+        "notDemonstrated": "Ajoutez au moins un fait, une donnée ou une contrainte du dossier.",
+        "contradicted": "L'élément invoqué paraît contredit par le dossier ; vérifiez sa formulation.",
+        "ambiguous": "L'élément invoqué peut correspondre au dossier, mais le rapprochement reste ambigu."
+      }
+    },
+    {
+      "key": "precise-scenario-fact",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "evidence-fidelity",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["decision-position", "reasoning-link"],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": ["La donnée ou la contrainte est reprise avec une précision suffisante pour être vérifiée."],
+      "negativeExamples": ["La réponse évoque seulement que l'option est meilleure ou moins risquée."],
+      "acceptableVariants": ["Une précision qualitative observable peut suffire lorsqu'aucun chiffre n'est fourni dans le dossier."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [],
+      "pointsByCriterion": {
+        "evidence-fidelity": { "SUPPORTED": 50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": -50 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "L'élément du dossier est formulé avec une précision vérifiable.",
+        "notDemonstrated": "Précisez l'élément du dossier utilisé, sans inventer de donnée absente.",
+        "contradicted": "La précision ajoutée entre en tension avec le dossier ; corrigez-la.",
+        "ambiguous": "La précision de l'élément ne peut pas être établie sans clarification."
+      }
+    },
+    {
+      "key": "material-fact-contradiction",
+      "type": "CONTRADICTION",
+      "polarity": "NEGATIVE",
+      "ownerCriterionKey": "evidence-fidelity",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["decision-position", "reasoning-link"],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": ["Une donnée décisive est inversée ou une information absente est inventée."],
+      "negativeExamples": ["La réponse paraphrase fidèlement le dossier."],
+      "acceptableVariants": ["Une approximation non matérielle n'est pas une contradiction."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": "Le span identifie l'affirmation de la réponse qui contredit matériellement le contexte fiable."
+      },
+      "contradictionSignals": ["Inversion d'un chiffre, d'une tendance ou d'une contrainte décisive."],
+      "pointsByCriterion": {
+        "evidence-fidelity": { "SUPPORTED": -100, "NOT_DEMONSTRATED": 0, "CONTRADICTED": 0 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Un élément décisif de votre réponse contredit le dossier ; corrigez ce passage.",
+        "notDemonstrated": "Aucune contradiction matérielle avec le dossier n'est démontrée.",
+        "contradicted": "Le passage examiné ne démontre pas de contradiction matérielle.",
+        "ambiguous": "Un passage peut contredire le dossier selon son interprétation ; reformulez-le avec précision."
+      }
+    },
+    {
+      "key": "decision-evidence-relation",
+      "type": "RELATION",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "reasoning-link",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["decision-position", "evidence-fidelity"],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": ["La réponse relie explicitement une preuve à la décision proposée."],
+      "negativeExamples": ["Une donnée et une décision sont juxtaposées sans relation explicite."],
+      "acceptableVariants": ["Le lien peut être causal, comparatif, conditionnel ou décisionnel."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 2,
+        "maximumSpans": 4,
+        "relationshipDescription": "Au moins un span matérialise la preuve et un autre la décision ou leur liaison explicite."
+      },
+      "contradictionSignals": [],
+      "pointsByCriterion": {
+        "reasoning-link": { "SUPPORTED": 50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": -50 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Votre réponse relie un élément du dossier à la décision proposée.",
+        "notDemonstrated": "Expliquez comment l'élément cité soutient votre décision.",
+        "contradicted": "Le lien annoncé entre l'élément et la décision est contredit par un autre passage.",
+        "ambiguous": "Le lien entre l'élément et la décision peut être compris de plusieurs façons ; explicitez-le."
+      }
+    },
+    {
+      "key": "explicit-justification",
+      "type": "JUSTIFICATION",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "reasoning-link",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["decision-position", "evidence-fidelity"],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": ["La réponse explique pourquoi l'élément invoqué rend l'option préférable."],
+      "negativeExamples": ["La réponse affirme seulement que l'option est meilleure."],
+      "acceptableVariants": ["La justification peut être concise si elle rend le mécanisme ou la comparaison explicite."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 3,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [],
+      "pointsByCriterion": {
+        "reasoning-link": { "SUPPORTED": 50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": -50 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "La justification explicite pourquoi l'élément soutient la décision.",
+        "notDemonstrated": "Ajoutez une justification expliquant pourquoi la preuve rend l'option préférable.",
+        "contradicted": "La justification entre en contradiction avec la relation annoncée ; révisez-la.",
+        "ambiguous": "La justification peut soutenir plusieurs conclusions ; précisez le mécanisme décisif."
+      }
+    },
+    {
+      "key": "material-reasoning-contradiction",
+      "type": "CONTRADICTION",
+      "polarity": "NEGATIVE",
+      "ownerCriterionKey": "reasoning-link",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": ["decision-position", "evidence-fidelity"],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": ["La conclusion affirme l'inverse de ce que soutient la justification."],
+      "negativeExamples": ["Les étapes du raisonnement convergent vers la décision."],
+      "acceptableVariants": ["Une réserve ou une limite n'est pas une contradiction si la recommandation finale reste cohérente."],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 2,
+        "maximumSpans": 4,
+        "relationshipDescription": "Les spans doivent montrer une incompatibilité matérielle entre la justification et la décision."
+      },
+      "contradictionSignals": ["Le raisonnement décrit un avantage puis conclut que cet avantage justifie l'option opposée."],
+      "pointsByCriterion": {
+        "reasoning-link": { "SUPPORTED": -50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": 0 }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Votre raisonnement et votre décision sont matériellement incompatibles ; révisez leur articulation.",
+        "notDemonstrated": "Aucune contradiction matérielle de raisonnement n'est démontrée.",
+        "contradicted": "Les passages examinés ne démontrent pas de contradiction de raisonnement.",
+        "ambiguous": "Le raisonnement peut contredire la décision selon son interprétation ; explicitez le lien final."
+      }
+    }
+  ]
+}

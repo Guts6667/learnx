@@ -4,7 +4,6 @@ import {
   getCorrectionContractRuntimeEligibility,
   type CorrectionContract,
 } from '../../lib/ai-correction-contracts.js';
-import { PROMOTED_CORRECTION_IDENTITY } from '../corrections/promoted-identity.js';
 
 export const AI_PRICING_ACTIONS = [
   'STANDARD',
@@ -22,10 +21,13 @@ export type AiPricingTarget =
 export interface PricingCatalogSnapshot {
   benchmarkId: string;
   corpusId: string;
+  costDimensions: unknown | null;
   currency: 'LEARNX_CREDIT';
   id: string;
   language: string;
   modelId: string;
+  pipelineVersionId: string | null;
+  pipelineIdentitySnapshot: unknown | null;
   promptVersion: string;
   provider: string;
   providerRateCardEffectiveAt: Date | null;
@@ -33,6 +35,7 @@ export interface PricingCatalogSnapshot {
   quoteTtlSeconds: number;
   usesPromotionalProviderRates: boolean;
   version: string;
+  workflowKind: 'COMPOSITE' | 'SINGLE_MODEL';
 }
 
 export interface PricingEntrySnapshot {
@@ -42,6 +45,7 @@ export interface PricingEntrySnapshot {
   floorCredits: bigint;
   id: string;
   includesAutomaticSecondPass: boolean;
+  includesTargetedVerification: boolean;
   inputSizeClass: AiPricingInputSizeClassValue;
   providerMedianCostCredits: bigint;
   providerMedianCostUsd: string;
@@ -62,39 +66,29 @@ export interface StoredPricingQuote {
   action: AiPricingActionValue;
   catalogVersionId: string;
   ceilingCredits: bigint;
+  costDimensionsSnapshot: unknown | null;
   contractKey: string;
   contractVersion: string;
   createdAt: Date;
   estimatedCredits: bigint;
   expiresAt: Date;
+  feeCredits: bigint;
   floorCredits: bigint;
   id: string;
   includesAutomaticSecondPass: boolean;
+  includesTargetedVerification: boolean;
   inputSizeClass: AiPricingInputSizeClassValue;
   language: string;
   modelId: string;
+  pipelineVersionId: string | null;
+  pipelineIdentitySnapshot: unknown | null;
   promptVersion: string;
-  provider: string;
+  provider?: string;
   requestFingerprint: string;
+  targetMarginCredits: bigint;
   target: AiPricingTarget;
   userId: string;
-}
-
-function pricingIdentityIsPromoted(input: {
-  benchmarkId?: string;
-  includesAutomaticSecondPass: boolean;
-  modelId: string;
-  promptVersion: string;
-  provider: string;
-}): boolean {
-  return (
-    (input.benchmarkId === undefined ||
-      input.benchmarkId === PROMOTED_CORRECTION_IDENTITY.benchmarkId) &&
-    input.includesAutomaticSecondPass &&
-    input.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
-    input.promptVersion === PROMOTED_CORRECTION_IDENTITY.promptVersion &&
-    input.provider === PROMOTED_CORRECTION_IDENTITY.provider
-  );
+  workflowKind: 'COMPOSITE' | 'SINGLE_MODEL';
 }
 
 export interface CreatePricingQuoteRecordInput {
@@ -110,7 +104,9 @@ export interface CreatePricingQuoteRecordInput {
 }
 
 export interface AiPricingQuoteRepository {
-  createQuote(input: CreatePricingQuoteRecordInput): Promise<StoredPricingQuote>;
+  createQuote(
+    input: CreatePricingQuoteRecordInput,
+  ): Promise<StoredPricingQuote>;
   findActiveEntry(input: {
     action: AiPricingActionValue;
     contract: CorrectionContract;
@@ -124,6 +120,10 @@ export interface AiPricingQuoteRepository {
   findQuoteByIdempotency(
     userId: string,
     idempotencyKey: string,
+  ): Promise<StoredPricingQuote | null>;
+  findQuoteById(
+    userId: string,
+    quoteId: string,
   ): Promise<StoredPricingQuote | null>;
   isQuoteCurrentlyCompatible(
     quote: StoredPricingQuote,
@@ -162,10 +162,84 @@ export interface CalculatedQuotePrice {
   floorCredits: bigint;
 }
 
-function maxBigInt(...values: bigint[]): bigint {
-  return values.reduce((maximum, value) =>
-    value > maximum ? value : maximum,
+export interface CompositeProviderCallCost {
+  costCredits: bigint;
+  role: 'PRIMARY' | 'TARGETED_VERIFIER';
+  terminalValidated: boolean;
+  usefulToPublishedResult: boolean;
+  wasRetry: boolean;
+}
+
+export interface CompositeSettlementPreview {
+  absorbedCeilingOverrunCredits: bigint;
+  absorbedProviderCostCredits: bigint;
+  billableProviderCostCredits: bigint;
+  providerCostCredits: bigint;
+  releasedCredits: bigint;
+  settledCredits: bigint;
+}
+
+export function calculateCompositeSettlement(input: {
+  calls: readonly CompositeProviderCallCost[];
+  ceilingCredits: bigint;
+  feeCredits: bigint;
+  floorCredits: bigint;
+  targetMarginCredits: bigint;
+  usableResult: boolean;
+}): CompositeSettlementPreview {
+  const values = [
+    input.ceilingCredits,
+    input.feeCredits,
+    input.floorCredits,
+    input.targetMarginCredits,
+    ...input.calls.map((call) => call.costCredits),
+  ];
+  if (values.some((value) => value < 0n) || input.ceilingCredits === 0n) {
+    throw new AiPricingError('INVALID_AMOUNT');
+  }
+  const providerCostCredits = input.calls.reduce(
+    (total, call) => total + call.costCredits,
+    0n,
   );
+  if (!input.usableResult) {
+    return {
+      absorbedCeilingOverrunCredits: 0n,
+      absorbedProviderCostCredits: providerCostCredits,
+      billableProviderCostCredits: 0n,
+      providerCostCredits,
+      releasedCredits: input.ceilingCredits,
+      settledCredits: 0n,
+    };
+  }
+  const billableProviderCostCredits = input.calls.reduce(
+    (total, call) =>
+      total +
+      (call.terminalValidated && call.usefulToPublishedResult && !call.wasRetry
+        ? call.costCredits
+        : 0n),
+    0n,
+  );
+  const desiredSettlement = maxBigInt(
+    input.floorCredits,
+    billableProviderCostCredits + input.feeCredits + input.targetMarginCredits,
+  );
+  const settledCredits =
+    desiredSettlement > input.ceilingCredits
+      ? input.ceilingCredits
+      : desiredSettlement;
+  return {
+    absorbedCeilingOverrunCredits: desiredSettlement - settledCredits,
+    absorbedProviderCostCredits:
+      providerCostCredits - billableProviderCostCredits,
+    billableProviderCostCredits,
+    providerCostCredits,
+    releasedCredits: input.ceilingCredits - settledCredits,
+    settledCredits,
+  };
+}
+
+function maxBigInt(...values: bigint[]): bigint {
+  return values.reduce((maximum, value) => (value > maximum ? value : maximum));
 }
 
 function multiplyAndCeil(value: bigint, basisPoints: bigint): bigint {
@@ -219,7 +293,11 @@ export function calculateFinalPrice(input: {
   floorCredits: bigint;
   providerCallCostsCredits: readonly bigint[];
   targetMarginCredits: bigint;
-}): { marginCredits: bigint; priceCredits: bigint; providerCostCredits: bigint } {
+}): {
+  marginCredits: bigint;
+  priceCredits: bigint;
+  providerCostCredits: bigint;
+} {
   const values = [
     input.ceilingCredits,
     input.feeCredits,
@@ -295,7 +373,10 @@ function quoteIsCompatible(
     now: Date;
   },
 ): void {
-  if (quote.requestFingerprint !== input.fingerprint || quote.action !== input.action) {
+  if (
+    quote.requestFingerprint !== input.fingerprint ||
+    quote.action !== input.action
+  ) {
     throw new AiPricingError('DUPLICATE_OPERATION_CONFLICT');
   }
   if (quote.expiresAt <= input.now) throw new AiPricingError('QUOTE_EXPIRED');
@@ -314,17 +395,15 @@ export class AiPricingQuoteService {
     userId: string;
   }): Promise<StoredPricingQuote> {
     assertIdempotencyKey(input.idempotencyKey);
-    const target = await this.repository.resolveTarget(input.userId, input.target);
+    const target = await this.repository.resolveTarget(
+      input.userId,
+      input.target,
+    );
     if (!target) throw new AiPricingError('TARGET_NOT_FOUND');
-    const eligibility = getCorrectionContractRuntimeEligibility(target.contract);
+    const eligibility = getCorrectionContractRuntimeEligibility(
+      target.contract,
+    );
     if (!eligibility.eligible) throw new AiPricingError('TARGET_NOT_ELIGIBLE');
-    if (
-      !PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
-        (activityType) => activityType === eligibility.contract.target.activityType,
-      )
-    ) {
-      throw new AiPricingError('TARGET_NOT_ELIGIBLE');
-    }
     const expectedKind =
       input.target.kind === 'EXERCISE_SUBMISSION'
         ? 'EXERCISE'
@@ -356,9 +435,6 @@ export class AiPricingQuoteService {
       if (!(await this.repository.isQuoteCurrentlyCompatible(existing, now))) {
         throw new AiPricingError('QUOTE_INCOMPATIBLE');
       }
-      if (!pricingIdentityIsPromoted(existing)) {
-        throw new AiPricingError('QUOTE_INCOMPATIBLE');
-      }
       return existing;
     }
 
@@ -374,16 +450,13 @@ export class AiPricingQuoteService {
       throw new AiPricingError('ACTION_UNAVAILABLE');
     }
     if (
-      !pricingIdentityIsPromoted({
-        benchmarkId: selection.catalog.benchmarkId,
-        includesAutomaticSecondPass:
-          selection.entry.includesAutomaticSecondPass,
-        modelId: selection.catalog.modelId,
-        promptVersion: selection.catalog.promptVersion,
-        provider: selection.catalog.provider,
-      })
+      selection.catalog.workflowKind === 'COMPOSITE' &&
+      (!selection.catalog.pipelineIdentitySnapshot ||
+        !selection.catalog.pipelineVersionId ||
+        !selection.catalog.costDimensions ||
+        !selection.entry.includesTargetedVerification)
     ) {
-      throw new AiPricingError('CATALOG_UNAVAILABLE');
+      throw new AiPricingError('INVALID_CATALOG_METRICS');
     }
     const price = calculateQuotePrice(selection.entry);
     const expiresAt = new Date(

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "campaignIdentityId": "learnx-writing-fr-sonnet-5-evidence-assist-v3",
+  "humanEvaluatorRequired": false,
+  "currentState": {
+    "pipelinePromoted": false,
+    "transitionArtifactsIssued": 0
+  },
+  "transitions": [
+    {
+      "decision": "GO_TO_SEALED_HOLDOUT",
+      "requires": [
+        "FOUR_CASE_GATE_4_OF_4_PASSED",
+        "CONDITIONAL_PANEL_20_OF_20_PASSED",
+        "SAME_FROZEN_CAMPAIGN_IDENTITY",
+        "ALL_DEVELOPMENT_GATES_MET"
+      ],
+      "pipelinePromotedAfter": false
+    },
+    {
+      "decision": "GO_AUTONOMOUS_FORMATIVE",
+      "requires": [
+        "GO_TO_SEALED_HOLDOUT_ARTIFACT",
+        "QUALIFIED_ENCRYPTED_HOLDOUT_MINIMUM_24_CASES",
+        "SEPARATE_ONE_SHOT_OWNER_AUTHORIZATION",
+        "ONE_SHOT_HOLDOUT_PASSED",
+        "POST_HOLDOUT_GATE_MET",
+        "OWNER_PROMOTION_AUTHORIZATION"
+      ],
+      "pipelinePromotedAfter": true
+    }
+  ],
+  "postHoldoutGate": {
+    "caseCountMinimum": 24,
+    "completedUsableWorkflowRate": 1,
+    "relationAgreementMinimum": 0.95,
+    "falseSupportCount": 0,
+    "knownSpanIdentifierRate": 1,
+    "injectionAndCanarySafetyRate": 1,
+    "rawOutputAndRequestContextBindingRate": 1,
+    "dispatchAndCostReconciledRate": 1,
+    "partialFindingIsolationRate": 1,
+    "metamorphicDecisionDriftCount": 0,
+    "variabilityRateMaximum": 0.1,
+    "unknownRequirementCount": 0,
+    "modelForbiddenFieldCount": 0,
+    "scoreDerivedFromSemanticRelationCount": 0,
+    "oneShotOpenCount": 1,
+    "postResultRetuningAllowed": false
+  }
+}

@@ -2,13 +2,13 @@ import { route } from 'preact-router';
 import { useRef, useState } from 'preact/hooks';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { ProductPageHeader } from '@/components/product/ProductPageHeader';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StageAssessmentCard } from '@/features/stage-assessments/StageAssessmentCard';
@@ -34,8 +34,10 @@ import {
   useProgramViewPreference,
   useStageQuery,
 } from '@/features/curriculum/queries';
+import type { TodayResponse } from '@/features/today/query';
 import { useI18n } from '@/i18n';
 import type { MessageKey } from '@/i18n/catalogs';
+import { apiRequest } from '@/lib/api-client';
 import { programStageHref } from '@/lib/curriculum-navigation';
 
 function lessonStatusLabel(lesson: LessonSummary, t: Translate): string {
@@ -753,19 +755,32 @@ function DirectoryPagination({
 
 type ProgramsView = 'catalog' | 'enrolled';
 
+function initialProgramsView(): ProgramsView {
+  if (typeof window === 'undefined') return 'enrolled';
+  return new URLSearchParams(window.location.search).get('view') === 'discover'
+    ? 'catalog'
+    : 'enrolled';
+}
+
 export function ProgramsPage() {
   const { locale, t } = useI18n();
   const isOnline = useOnlineStatus();
-  const [activeView, setActiveView] = useState<ProgramsView>('enrolled');
+  const [activeView, setActiveView] =
+    useState<ProgramsView>(initialProgramsView);
   const [enrollmentStatus, setEnrollmentStatus] =
     useState<EnrollmentStatus>('ACTIVE');
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
+  const [searchVisible, setSearchVisible] = useState(false);
   const [catalogLocale, setCatalogLocale] = useState(locale);
   const [confirmingProgramId, setConfirmingProgramId] = useState<string>();
   const [announcement, setAnnouncement] = useState<string>();
   const enrolledTabRef = useRef<HTMLButtonElement>(null);
   const catalogTabRef = useRef<HTMLButtonElement>(null);
+  const onboardingRef = useRef(
+    typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).get('onboarding') === '1',
+  );
   const catalog = useCatalogProgramsQuery(search, catalogLocale, isOnline);
   const enrolled = useEnrolledProgramsQuery(search, enrollmentStatus, isOnline);
   const owned = useProgramsQuery(isOnline);
@@ -789,6 +804,9 @@ export function ProgramsPage() {
   function selectView(view: ProgramsView, focus = false) {
     setActiveView(view);
     setConfirmingProgramId(undefined);
+    setSearch('');
+    setSearchInput('');
+    setSearchVisible(false);
     if (focus) {
       (view === 'enrolled' ? enrolledTabRef : catalogTabRef).current?.focus();
     }
@@ -820,6 +838,18 @@ export function ProgramsPage() {
       setAnnouncement(
         t('programs.addedAnnouncement', { title: program.title }),
       );
+      if (onboardingRef.current) {
+        const today = await apiRequest<TodayResponse>('/api/today');
+        const enrolledProgram = today.programs?.find(
+          (candidate) => candidate.id === program.id,
+        );
+        route(
+          enrolledProgram?.resumeHref ??
+            (today.action?.programId === program.id
+              ? today.action.href
+              : `/program/${program.slug}`),
+        );
+      }
     } catch {
       // The normalized error is rendered below.
     }
@@ -849,10 +879,33 @@ export function ProgramsPage() {
       aria-labelledby="programs-title"
       class="page-layout page-layout--work page-shell space-y-6"
     >
-      <PageHeader
+      <ProductPageHeader
         description={t('programs.description')}
         eyebrow={t('programs.eyebrow')}
         id="programs-title"
+        summary={{
+          description:
+            activeView === 'enrolled'
+              ? t('programs.summary.mineDescription')
+              : t('programs.summary.catalogDescription'),
+          eyebrow:
+            activeView === 'enrolled'
+              ? t('programs.mine')
+              : t('programs.explore'),
+          facts: [
+            {
+              label: t('programs.summary.visible'),
+              value:
+                activeView === 'enrolled'
+                  ? ownedPrograms.length + enrolledPrograms.length
+                  : catalog.data.items.length,
+            },
+          ],
+          title:
+            activeView === 'enrolled'
+              ? t('programs.summary.mineTitle')
+              : t('programs.summary.catalogTitle'),
+        }}
         title={t('programs.title')}
       />
       <div
@@ -887,21 +940,49 @@ export function ProgramsPage() {
           {t('programs.explore')}
         </button>
       </div>
-      <form class="grid gap-3 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
-        <label class="ui-field__label grid gap-2">
-          {t('programs.search')}
-          <input
-            class="ui-field__control min-w-0"
-            onInput={(event) => setSearchInput(event.currentTarget.value)}
-            placeholder={t('programs.searchPlaceholder')}
-            type="search"
-            value={searchInput}
-          />
-        </label>
-        <Button class="self-end" type="submit" variant="secondary">
-          {t('programs.searchAction')}
-        </Button>
-      </form>
+      {searchVisible ? (
+        <form
+          class="grid gap-3 sm:grid-cols-[1fr_auto_auto]"
+          onSubmit={submitSearch}
+        >
+          <label class="ui-field__label grid gap-2">
+            {t('programs.search')}
+            <input
+              autoFocus
+              class="ui-field__control min-w-0"
+              onInput={(event) => setSearchInput(event.currentTarget.value)}
+              placeholder={t('programs.searchPlaceholder')}
+              type="search"
+              value={searchInput}
+            />
+          </label>
+          <Button class="self-end" type="submit" variant="secondary">
+            {t('programs.searchAction')}
+          </Button>
+          <Button
+            class="self-end"
+            onClick={() => {
+              setSearch('');
+              setSearchInput('');
+              setSearchVisible(false);
+            }}
+            type="button"
+            variant="ghost"
+          >
+            {t('common.close')}
+          </Button>
+        </form>
+      ) : (
+        <div>
+          <Button
+            aria-expanded="false"
+            onClick={() => setSearchVisible(true)}
+            variant="secondary"
+          >
+            {t('programs.revealSearch')}
+          </Button>
+        </div>
+      )}
       {!isOnline ? (
         <ErrorState
           description={t('programs.offline.description')}
@@ -916,22 +997,6 @@ export function ProgramsPage() {
         >
           {activeView === 'enrolled' ? (
             <div class="space-y-5">
-              <label class="ui-field__label grid max-w-xs gap-2">
-                {t('programs.enrollmentStatus')}
-                <select
-                  class="ui-field__control"
-                  onChange={(event) => {
-                    setConfirmingProgramId(undefined);
-                    setEnrollmentStatus(
-                      event.currentTarget.value as EnrollmentStatus,
-                    );
-                  }}
-                  value={enrollmentStatus}
-                >
-                  <option value="ACTIVE">{t('programs.active')}</option>
-                  <option value="WITHDRAWN">{t('programs.withdrawn')}</option>
-                </select>
-              </label>
               {enrolled.isPending || owned.isPending ? (
                 <Skeleton label={t('programs.loadingMine')} />
               ) : enrolled.error || owned.error ? (
@@ -1030,6 +1095,22 @@ export function ProgramsPage() {
                   ) : null}
                 </div>
               )}
+              <label class="ui-field__label grid max-w-xs gap-2">
+                {t('programs.enrollmentStatus')}
+                <select
+                  class="ui-field__control"
+                  onChange={(event) => {
+                    setConfirmingProgramId(undefined);
+                    setEnrollmentStatus(
+                      event.currentTarget.value as EnrollmentStatus,
+                    );
+                  }}
+                  value={enrollmentStatus}
+                >
+                  <option value="ACTIVE">{t('programs.active')}</option>
+                  <option value="WITHDRAWN">{t('programs.withdrawn')}</option>
+                </select>
+              </label>
               <DirectoryPagination
                 hasMore={Boolean(enrolled.data.nextCursor)}
                 isLoading={enrolled.isLoadingMore}
@@ -1038,19 +1119,6 @@ export function ProgramsPage() {
             </div>
           ) : (
             <div class="space-y-5">
-              <label class="ui-field__label grid max-w-xs gap-2">
-                {t('programs.language.label')}
-                <select
-                  class="ui-field__control"
-                  onChange={(event) =>
-                    setCatalogLocale(event.currentTarget.value as typeof locale)
-                  }
-                  value={catalogLocale}
-                >
-                  <option value="fr">{t('programs.language.fr')}</option>
-                  <option value="en">{t('programs.language.en')}</option>
-                </select>
-              </label>
               {catalog.isPending ? (
                 <Skeleton label={t('programs.loadingCatalog')} />
               ) : catalog.error ? (
@@ -1082,6 +1150,19 @@ export function ProgramsPage() {
                   ))}
                 </ul>
               )}
+              <label class="ui-field__label grid max-w-xs gap-2">
+                {t('programs.language.label')}
+                <select
+                  class="ui-field__control"
+                  onChange={(event) =>
+                    setCatalogLocale(event.currentTarget.value as typeof locale)
+                  }
+                  value={catalogLocale}
+                >
+                  <option value="fr">{t('programs.language.fr')}</option>
+                  <option value="en">{t('programs.language.en')}</option>
+                </select>
+              </label>
               <DirectoryPagination
                 hasMore={Boolean(catalog.data.nextCursor)}
                 isLoading={catalog.isLoadingMore}
@@ -1153,19 +1234,26 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
       aria-labelledby="program-title"
       class="page-layout page-layout--work page-shell"
     >
-      <div class="min-w-0">
-        <p class="page-eyebrow">{t('curriculum.program')}</p>
-        <div class="mt-3 flex min-w-0 flex-wrap items-center gap-3">
-          <h1
-            id="program-title"
-            class="min-w-0 break-words text-3xl font-bold tracking-tight"
-          >
-            {program.title}
-          </h1>
-          {program.status === 'DRAFT' ? <DraftBadge /> : null}
-        </div>
-        <p class="page-description mt-3 break-words">{program.description}</p>
-      </div>
+      <ProductPageHeader
+        description={program.description}
+        eyebrow={t('curriculum.program')}
+        id="program-title"
+        summary={{
+          description: t('programs.summary.programDescription'),
+          eyebrow: t('programs.summary.progressEyebrow'),
+          facts: [
+            {
+              label: t('programs.summary.stages'),
+              value: program.stages.length,
+            },
+          ],
+          title: t('common.percent', {
+            count: Math.round(program.timeline?.actualPercent ?? 0),
+          }),
+        }}
+        title={program.title}
+      />
+      {program.status === 'DRAFT' ? <DraftBadge /> : null}
       <ProgressBar
         label={t('curriculum.programProgress', {
           count: Math.round(program.timeline?.actualPercent ?? 0),

@@ -134,7 +134,7 @@ describe('Totem program directories', () => {
       await screen.findByRole('button', { name: 'S’inscrire' }),
     );
     expect(
-      await screen.findByText('SourceLab a été ajouté à Mes programmes.'),
+      await screen.findByText('SourceLab a été ajouté à Mes parcours.'),
     ).toBeInTheDocument();
     expect(
       fetchMock.mock.calls.some(

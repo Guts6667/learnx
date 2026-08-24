@@ -1,0 +1,24 @@
+{
+  "campaignIdentityFingerprint": "cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805",
+  "freezeSetId": "learnx-writing-fr-sonnet-5-evidence-assist-development-v1",
+  "freezeSetVersion": "1.0.0",
+  "frozenAt": "2026-08-16T11:14:48Z",
+  "frozenTogether": true,
+  "historicalResultsReused": 0,
+  "schemaVersion": 1,
+  "stages": [
+    {
+      "campaignId": "learnx-writing-fr-sonnet-5-evidence-assist-four-case-v1",
+      "manifestPath": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-four-case.v1.json",
+      "manifestSha256": "691fa112517b84e13aa01f8984a10a64a3f5d52f7d00c6d0b9a3a5e3d83e0e9e",
+      "stage": "FOUR_CASE_GATE"
+    },
+    {
+      "campaignId": "learnx-writing-fr-sonnet-5-evidence-assist-panel-10x2-v1",
+      "manifestPath": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-panel-10x2.v1.json",
+      "manifestSha256": "960f36d289b8a36eba8e764c9c2a0cf0862d41d90c0bd05fec6a1df7a42bc21f",
+      "stage": "CONDITIONAL_PANEL_10X2"
+    }
+  ],
+  "status": "FROZEN_OFFLINE_NO_MODEL_CALL"
+}

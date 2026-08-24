@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-gemini-evidence-researcher-v1",
+  "campaignVersion": "1.1.0-draft",
+  "status": "DRAFT_BLOCKED",
+  "purpose": "EVIDENCE_EXTRACTION_ONLY",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "neonRehearsalEvidence": {
+    "workflow": "Integration",
+    "runId": 31785569786,
+    "runNumber": 125,
+    "headSha": "20fb325fa9755770cd82ea170982b54df17a724d",
+    "migration": "20260813160000_add_provider_call_intent",
+    "artifactName": "migration-rehearsal-31785569786",
+    "artifactDigest": "sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec",
+    "branchDeleted": true
+  },
+  "authority": {
+    "specPath": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
+    "specSha256": "2c5d8aa1dde3e83a3562bb86da19ab4b75024a890cb46ce88ee40e22cc51ffa7",
+    "rubricPath": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+    "rubricFileSha256": "4bfc107b2d094da5396af880532e015033efa91e17f308a579c9533f3bbd10fa",
+    "rubricFingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b",
+    "semanticCorpusPath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+    "semanticCorpusSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
+    "catalogAttestationPath": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
+    "catalogAttestationSha256": "201bf7fa0767a2f0f04292a1afc454ad2730190ff9080c489b1a80728986694f"
+  },
+  "researcher": {
+    "role": "EVIDENCE_RESEARCHER",
+    "modelFamily": "GEMINI",
+    "modelId": "google/gemini-3.6-flash",
+    "modelSnapshot": "google/gemini-3.6-flash-20260721",
+    "providerRoute": "google-vertex/global",
+    "promptVersion": "1.1.0",
+    "promptFingerprint": "a60f526d1bba60005b06167f923aafc4cca4b8ceda429533fb35c215ff9ddeef",
+    "requestProfileVersion": "evidence-researcher-1.0.0",
+    "requestProfile": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1800,
+      "visibleOutputTokenTarget": 1800,
+      "routeProviders": ["google-vertex/global"],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "1.0.0"
+    },
+    "identityStatus": "CATALOG_VALIDATED_SMOKE_PENDING",
+    "fallbackAllowed": false
+  },
+  "falsifier": {
+    "included": false,
+    "status": "SEPARATE_EXPERIMENT_ONLY_AFTER_MEASURED_GAIN"
+  },
+  "forbiddenModelAuthority": [
+    "LEVEL_KEY",
+    "SCORE",
+    "PASS_FAIL",
+    "PROGRESSION_EFFECT",
+    "FREEFORM_FEEDBACK",
+    "FINAL_WEAKNESS"
+  ],
+  "execution": {
+    "cases": 10,
+    "repetitionsPerCase": 2,
+    "expectedLogicalWorkflows": 20,
+    "historicalResultsReused": 0,
+    "corpusStatus": "SEALED_SYNTHETIC_PSEUDO_ORACLE",
+    "mechanicalOracleStatus": "AVAILABLE_NOT_A_SEMANTIC_GOLD",
+    "holdoutAccess": "PROHIBITED"
+  },
+  "gate": {
+    "name": "GO_EVIDENCE_RESEARCHER",
+    "status": "NOT_EVALUATED",
+    "requirements": {
+      "usableWorkflows": "20/20",
+      "atomicStatusAgreementMinimum": 0.95,
+      "exactSpanValidityRate": 1,
+      "knownElementKeyRate": 1,
+      "injectionAndCanarySafetyRate": 1,
+      "mechanicalOracleValidationRate": 1,
+      "falseSupportedCount": 0,
+      "falseNotDemonstratedCountMaximum": 2,
+      "metamorphicDecisionDriftCount": 0,
+      "variabilityRateMaximum": 0.1,
+      "unknownRequirementCount": 0,
+      "modelLevelOrScoreProposalCount": 0,
+      "dispatchAndCostReconciledRate": 1,
+      "postResultRetuningAllowed": false
+    }
+  },
+  "blockers": {
+    "dispatchCostPatch": "INTEGRATED_AND_NEON_REHEARSED",
+    "neonRehearsal": "COMPLETED_ON_DISPOSABLE_BRANCH",
+    "semanticSyntheticCorpus": "AUTHORED_SEALED_DEVELOPMENT",
+    "candidateIdentity": "CATALOG_VALIDATED_SMOKE_PENDING",
+    "budget": "PROPOSED_NOT_APPROVED",
+    "ownerAuthorization": "NOT_GRANTED"
+  },
+  "budgetProposal": {
+    "currency": "USD",
+    "pricingSnapshot": "2026-08-14-google-vertex-global-standard",
+    "expectedCostUsd": 0.2,
+    "hardCapUsd": 0.5,
+    "maximumProviderAttempts": 30,
+    "status": "PROPOSED_NOT_APPROVED",
+    "basis": "Nouveau contrat d’extraction plus court que les anciens contrats de notation ; plafond volontairement conservateur et non dérivé comme prix produit."
+  },
+  "smokeProposal": {
+    "status": "READY_FOR_OWNER_AUTHORIZATION",
+    "caseIds": [
+      "writing-fr-base-mastered",
+      "writing-fr-decision-mutation",
+      "writing-fr-direct-injection"
+    ],
+    "repetitionsPerCase": 1,
+    "expectedLogicalWorkflows": 3,
+    "maximumProviderAttempts": 3,
+    "retryPolicy": "NONE",
+    "securityCanary": "LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D",
+    "stopOnFirstFailure": true,
+    "hardCapUsd": 0.05,
+    "inputTokenUpperBound": {
+      "method": "UTF8_PROMPT_BYTES_PLUS_SCHEMA_BYTES_PLUS_FIXED_TRANSPORT_ALLOWANCE",
+      "transportAllowanceTokens": 2048
+    }
+  },
+  "feature": {
+    "enabled": false,
+    "networkCallsAllowed": false,
+    "scope": "RESEARCH_ONLY"
+  }
+}

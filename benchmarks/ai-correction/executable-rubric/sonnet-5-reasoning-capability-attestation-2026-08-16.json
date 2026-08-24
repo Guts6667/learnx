@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "attestationId": "learnx-sonnet-5-reasoning-capabilities-2026-08-16",
+  "observedAt": "2026-08-16T00:00:00+02:00",
+  "status": "REASONING_CAPABILITY_ATTESTED_ONLY",
+  "scope": {
+    "purpose": "REQUEST_REASONING_SERIALIZATION_ONLY",
+    "modelCallPerformed": false,
+    "qualityAttested": false,
+    "costAttested": false,
+    "promotionGranted": false
+  },
+  "modelIdentity": {
+    "internalModelId": "anthropic/claude-sonnet-5",
+    "anthropicApiModelId": "claude-sonnet-5",
+    "anthropicPinnedSnapshotId": "claude-sonnet-5",
+    "anthropicVersioningSemantics": "DATELESS_ID_IS_PINNED_SNAPSHOT"
+  },
+  "claims": {
+    "providerDefaultMode": "ADAPTIVE",
+    "reasoningMandatory": false,
+    "explicitDisabledSupported": true,
+    "legacyBudgetSupported": false,
+    "explicitAdaptiveEffortsAttested": false
+  },
+  "sources": [
+    {
+      "sourceId": "ANTHROPIC_SONNET_5_WHATS_NEW",
+      "url": "https://platform.claude.com/docs/en/about-claude/models/whats-new-sonnet-5",
+      "locator": "API model ID and thinking behavior sections",
+      "supports": [
+        "ANTHROPIC_API_MODEL_ID",
+        "ANTHROPIC_DEFAULT_ADAPTIVE",
+        "ANTHROPIC_DISABLED_WIRE",
+        "ANTHROPIC_LEGACY_BUDGET_REJECTED"
+      ]
+    },
+    {
+      "sourceId": "ANTHROPIC_MODEL_IDS_AND_VERSIONS",
+      "url": "https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions",
+      "locator": "Claude 4.6 and later versioning section",
+      "supports": ["ANTHROPIC_DATELESS_PINNED_SNAPSHOT"]
+    },
+    {
+      "sourceId": "ANTHROPIC_EXTENDED_THINKING_MODELS",
+      "url": "https://platform.claude.com/docs/en/about-claude/models/extended-thinking-models",
+      "locator": "Sonnet 5 disabled-thinking request example",
+      "supports": ["ANTHROPIC_DISABLED_WIRE"]
+    },
+    {
+      "sourceId": "OPENROUTER_REASONING_TOKENS",
+      "url": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+      "locator": "Unified reasoning configuration and effort none semantics",
+      "supports": ["OPENROUTER_NONE_DISABLES_REASONING"]
+    },
+    {
+      "sourceId": "OPENROUTER_CLAUDE_46_MIGRATION",
+      "url": "https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6",
+      "locator": "Claude 4.6+ reasoning effort mapping section",
+      "supports": [
+        "OPENROUTER_CLAUDE_46_PLUS_EFFORT_MAPPING",
+        "OPENROUTER_NONE_DISABLES_REASONING"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "adapter": "ANTHROPIC_MESSAGES",
+      "requestedRoute": "Anthropic",
+      "wireModelId": "claude-sonnet-5",
+      "supportedModes": ["DISABLED", "PROVIDER_DEFAULT"],
+      "disabledWireContract": {
+        "thinking": {
+          "type": "disabled"
+        }
+      },
+      "derivation": [
+        "ANTHROPIC_API_MODEL_ID",
+        "ANTHROPIC_DATELESS_PINNED_SNAPSHOT",
+        "ANTHROPIC_DEFAULT_ADAPTIVE",
+        "ANTHROPIC_DISABLED_WIRE",
+        "ANTHROPIC_LEGACY_BUDGET_REJECTED"
+      ],
+      "costGate": "BLOCKED_ESTIMATED_ONLY",
+      "operationalReadiness": "REASONING_ATTESTED_COST_BLOCKED"
+    },
+    {
+      "adapter": "OPENROUTER_CHAT",
+      "requestedRoute": "Anthropic",
+      "wireModelId": "anthropic/claude-sonnet-5",
+      "catalogSnapshotId": "anthropic/claude-sonnet-5-20260630",
+      "supportedModes": ["DISABLED", "PROVIDER_DEFAULT"],
+      "disabledWireContract": {
+        "reasoning": {
+          "effort": "none"
+        }
+      },
+      "exactRouteCatalog": {
+        "path": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json",
+        "sha256": "c30f95888e9774842262743593fca498a97c6cd335ad287e918da7b9eee350a3",
+        "providerName": "Anthropic",
+        "fallbackAllowed": false,
+        "requiredSupportedParameters": ["reasoning", "reasoning_effort"]
+      },
+      "derivation": [
+        "ANTHROPIC_API_MODEL_ID",
+        "ANTHROPIC_DEFAULT_ADAPTIVE",
+        "ANTHROPIC_DISABLED_WIRE",
+        "ANTHROPIC_LEGACY_BUDGET_REJECTED",
+        "OPENROUTER_NONE_DISABLES_REASONING",
+        "OPENROUTER_CLAUDE_46_PLUS_EFFORT_MAPPING",
+        "OPENROUTER_EXACT_ROUTE_SUPPORTS_REASONING_PARAMETERS"
+      ],
+      "costGate": "REQUIRES_ACTUAL_USAGE_COST_PER_ATTEMPT",
+      "operationalReadiness": "REASONING_ATTESTED_EXISTING_ACTUAL_COST_PATH"
+    }
+  ],
+  "limitations": [
+    "This attestation does not authorize a model call or promotion.",
+    "No explicit adaptive effort value is attested for the exact route.",
+    "The Anthropic Messages adapter reports estimated cost only and cannot satisfy the current reconciliation gate.",
+    "The OpenRouter route remains fail-closed if usage.cost is absent or is not normalized as ACTUAL."
+  ]
+}

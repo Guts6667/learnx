@@ -1,17 +1,36 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const schema = readFileSync(resolve('prisma/schema.prisma'), 'utf8');
 const migration = readFileSync(
-  resolve('prisma/migrations/20260812170000_add_ai_pricing_catalog/migration.sql'),
+  resolve(
+    'prisma/migrations/20260812170000_add_ai_pricing_catalog/migration.sql',
+  ),
   'utf8',
 );
-const api = readFileSync(
-  resolve('src/server/api/ai-pricing/app.ts'),
+const activationGatesMigration = readFileSync(
+  resolve(
+    'prisma/migrations/20260813110000_add_ai_pricing_activation_gates/migration.sql',
+  ),
   'utf8',
 );
+const api = readFileSync(resolve('src/server/api/ai-pricing/app.ts'), 'utf8');
 
 describe('V4-007 versioned AI pricing schema', () => {
+  it('preserves the applied pricing migration checksum and adds gates separately', () => {
+    expect(createHash('sha256').update(migration).digest('hex')).toBe(
+      '4156ce01c562aae5af301e6bf82d453f888e3dcb3a1b6ec7200556020ffe4247',
+    );
+    expect(migration).not.toContain('provider_rate_card_version');
+    expect(activationGatesMigration).toContain(
+      'ADD COLUMN IF NOT EXISTS "provider_rate_card_version"',
+    );
+    expect(activationGatesMigration).toContain(
+      "conname = 'ai_pricing_catalog_active_rate_card_check'",
+    );
+  });
+
   it('stores immutable versioned measured catalogs and quote snapshots', () => {
     expect(schema).toContain('model AiPricingCatalogVersion');
     expect(schema).toContain('model AiPricingCatalogEntry');
@@ -30,11 +49,15 @@ describe('V4-007 versioned AI pricing schema', () => {
 
   it('supports inactive catalogs and actions without seeding fictitious prices', () => {
     expect(migration).toContain("('draft', 'inactive', 'active', 'retired')");
-    expect(migration).toContain('DEFAULT \'draft\'');
+    expect(migration).toContain("DEFAULT 'draft'");
     expect(migration).toContain('ai_pricing_future_action_disabled_check');
     expect(migration).toContain('ai_pricing_reinforced_evidence_check');
-    expect(migration).toContain('ai_pricing_catalog_active_rate_card_check');
-    expect(migration).toContain('"uses_promotional_provider_rates" = false');
+    expect(activationGatesMigration).toContain(
+      'ai_pricing_catalog_active_rate_card_check',
+    );
+    expect(activationGatesMigration).toContain(
+      '"uses_promotional_provider_rates" = false',
+    );
     expect(migration).not.toMatch(/INSERT INTO "ai_pricing_catalog/);
   });
 

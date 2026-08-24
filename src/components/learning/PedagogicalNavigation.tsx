@@ -155,17 +155,17 @@ export function PedagogicalNavigation({
                 >
                   <span
                     aria-hidden="true"
-                    class="ui-text-muted row-span-2 text-center text-xs"
+                    class="ui-text row-span-2 text-center text-xs"
                   >
                     {index + 1}
                   </span>
-                  <span class="ui-text-muted min-w-0 text-xs font-semibold">
+                  <span class="ui-text min-w-0 text-xs font-semibold">
                     {activity.label}
                   </span>
                   <span class="min-w-0 break-words font-medium">
                     {activity.title}
                   </span>
-                  <span class="ui-text-muted col-start-2 mt-1 min-w-0 text-xs">
+                  <span class="ui-text col-start-2 mt-1 min-w-0 text-xs">
                     {isCurrent ? `${t('learning.currentActivity')} · ` : ''}
                     {t(
                       activity.status === 'COMPLETED'

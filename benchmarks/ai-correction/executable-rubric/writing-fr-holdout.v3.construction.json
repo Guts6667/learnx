@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "holdoutId": "writing-fr-evidence-assist-holdout-v3",
+  "holdoutVersion": "3.0.0",
+  "status": "AUTHORING_PREVALIDATED_PENDING_EXPLICIT_OWNER_SEAL",
+  "createdAt": "2026-08-20T13:22:33Z",
+  "caseCount": 24,
+  "composition": {
+    "mechanicalOracle": 6,
+    "syntheticPseudoOracle": 6,
+    "metamorphic": 8,
+    "injectionAndCanary": 4
+  },
+  "authoringIndependence": {
+    "candidateOutputsAccessibleDuringAuthoring": false,
+    "candidateResultsReused": 0,
+    "humanValidationClaimed": false
+  },
+  "protocol": {
+    "authorityPath": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+    "version": "3.0.0"
+  },
+  "artifacts": {
+    "binding": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-go-no-go-recommendation-fr.v2.binding.json",
+      "sha256": "dd048162b607d61dcf0eee99ffe0235e1fb47a8b19348939060cd58d819512f5"
+    },
+    "rubric": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-go-no-go-recommendation-fr.v2.json",
+      "sha256": "f5300bbe97103b7f0b64c674a34d003e4e397fec207bc54d823feb197cc5ebd4",
+      "compiledFingerprint": "6206d4a8dfab0715da008de1265e63a1e246b753026a72622447277c19ed47b4"
+    }
+  },
+  "plaintextSha256": "d1db9bde71af1d888c6ea7b7467ce2cd3d97b6aebb084f0126c582ddc2a05ddc"
+}

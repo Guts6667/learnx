@@ -1,10 +1,15 @@
 import type { ComponentChildren } from 'preact';
 
 import { classNames } from '@/components/ui/classNames';
+import { toPlainMarkdownHeading } from '@/lib/markdown-heading';
+
+type HeadingStartLevel = 2 | 3 | 4;
 
 interface SafeMarkdownProps {
   class?: string;
   content: string;
+  headingStartLevel?: HeadingStartLevel;
+  omitFirstHeadingWhenEqual?: string;
 }
 
 interface MarkdownImage {
@@ -400,17 +405,48 @@ function MarkdownHeading({
   level: number;
 }) {
   const children = renderInline(content);
-  if (level === 1) return <h2>{children}</h2>;
-  if (level === 2) return <h3>{children}</h3>;
-  return <h4>{children}</h4>;
+  if (level === 2) return <h2>{children}</h2>;
+  if (level === 3) return <h3>{children}</h3>;
+  if (level === 4) return <h4>{children}</h4>;
+  if (level === 5) return <h5>{children}</h5>;
+  return <h6>{children}</h6>;
 }
 
-export function SafeMarkdown({ class: className, content }: SafeMarkdownProps) {
+export function SafeMarkdown({
+  class: className,
+  content,
+  headingStartLevel = 2,
+  omitFirstHeadingWhenEqual,
+}: SafeMarkdownProps) {
   const blocks = parseBlocks(content);
+  const firstHeadingIndex = blocks.findIndex(
+    (block) => block.type === 'heading',
+  );
+  const omittedHeadingIndex =
+    firstHeadingIndex >= 0 &&
+    omitFirstHeadingWhenEqual !== undefined &&
+    toPlainMarkdownHeading(
+      (blocks[firstHeadingIndex] as Extract<MarkdownBlock, { type: 'heading' }>)
+        .content,
+    ) === toPlainMarkdownHeading(omitFirstHeadingWhenEqual)
+      ? firstHeadingIndex
+      : -1;
+  const renderedHeadingStartLevel =
+    omittedHeadingIndex >= 0
+      ? Math.max(2, headingStartLevel - 1)
+      : headingStartLevel;
+  const firstHeadingLevel = blocks.reduce<number | null>(
+    (lowestLevel, block) =>
+      block.type === 'heading'
+        ? Math.min(lowestLevel ?? block.level, block.level)
+        : lowestLevel,
+    null,
+  );
 
   return (
     <div class={classNames('ui-prose', className)}>
       {blocks.map((block, index) => {
+        if (index === omittedHeadingIndex) return null;
         if (block.type === 'code') {
           return (
             <MarkdownCodeBlock
@@ -425,7 +461,12 @@ export function SafeMarkdown({ class: className, content }: SafeMarkdownProps) {
             <MarkdownHeading
               content={block.content}
               key={`heading-${index}`}
-              level={block.level}
+              level={Math.min(
+                6,
+                renderedHeadingStartLevel +
+                  block.level -
+                  (firstHeadingLevel ?? block.level),
+              )}
             />
           );
         }

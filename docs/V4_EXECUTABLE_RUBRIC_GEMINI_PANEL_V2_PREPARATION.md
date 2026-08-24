@@ -1,0 +1,119 @@
+# V4-009C — Préparation du panel Gemini evidence researcher 10×2
+
+> **CLOSED_REQUEST — PANEL EXÉCUTÉ ET CLOS.** Le statut de préparation ci-dessous
+> ne vaut plus demande d'autorisation. La campagne s'est arrêtée sur une
+> citation non exacte et ne peut pas être reprise.
+
+- **Statut historique final** : `NO_GO_EXACT_QUOTE_FAILURE / NO_REPLAY`
+- **Date** : 15 août 2026
+- **Portée** : préenregistrement et validations hors ligne
+- **Appels modèle** : aucun
+
+## Résultat de la préparation
+
+Le panel est défini sous une identité nouvelle et reste inexécutable. Il
+conserve Gemini comme chercheur de preuves uniquement ; LearnX valide les
+citations et calcule les niveaux, le score et le feedback authoré.
+
+L'ambiguïté d'observabilité du gate v2 est corrigée pour les futurs artefacts :
+
+- `requestedRoute` enregistre la route épinglée dans la requête
+  (`google-vertex/global`) ;
+- `observedProvider` enregistre l'étiquette renvoyée par OpenRouter (`Google`) ;
+- `providerRoute` reste lisible uniquement pour la rétrocompatibilité des
+  artefacts historiques et n'est plus utilisé comme preuve des deux notions.
+
+La requête continue d'imposer une seule route et `fallback=false`. Cette
+séparation améliore la preuve d'exécution mais ne prétend pas attester un
+sous-endpoint que le fournisseur ne renvoie pas lui-même.
+
+## Corpus v2 composé sans réécriture historique
+
+Le panel contient dix cas, deux répétitions chacun. Son manifeste de sélection
+référence deux sources immuables par SHA-256 :
+
+- neuf cas stables du corpus sémantique v1 ;
+- la fixture négative atomique `writing-fr-no-choice-negative` du corpus trois
+  cas v2.
+
+Le cas historique `writing-fr-decision-mutation`, jugé non discriminant, est
+explicitement exclu. Aucun ancien corpus, gold ou résultat n'est modifié.
+
+- manifeste de sélection :
+  `writing-fr-semantic-development.v2.manifest.json` ;
+- SHA-256 :
+  `d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd` ;
+- holdout : `PROHIBITED`.
+
+## Identité du panel
+
+- campagne : `learnx-writing-fr-gemini-evidence-researcher-panel-v2` ;
+- manifeste : `gemini-evidence-researcher-panel.v1.3-v2.json` ;
+- SHA-256 :
+  `dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022` ;
+- modèle : `google/gemini-3.6-flash-20260721` ;
+- route demandée : `google-vertex/global` ;
+- fournisseur observé attendu : `Google` ;
+- prompt/protocole : `1.3.0` ;
+- profil : `evidence-researcher-1.1.0`, reasoning `MINIMAL`, température
+  omise, 2 500 tokens totaux, 1 800 visibles, timeout 60 secondes ;
+- fallback : interdit ;
+- workflows : 10 cas × 2, zéro résultat historique réutilisé.
+
+## Budget proposé et écart à arbitrer
+
+Le ticket conserve la proposition historique : coût attendu `0,20 USD`, hard
+cap `0,50 USD`, 28 tentatives maximum. Le préflight basé sur le plus grand
+prompt réel calcule :
+
+- borne pessimiste par tentative : `0,0172725 USD` ;
+- 20 appels initiaux : `0,34545 USD`, sous le hard cap ;
+- 28 tentatives : `0,48363 USD`, sous le hard cap ;
+- maximum admissible sous `0,50 USD` au pire cas : 28 tentatives.
+
+Ce n'est pas une erreur masquée : les 20 cellules initiales sont finançables
+sous la proposition, mais tous les retries théoriques ne le sont pas. Finance
+doit arbitrer le couple plafond/nombre de tentatives avant tout GO. Le préflight
+par appel et le premier plafond atteint restent bloquants.
+
+## Gates et point d'arrêt
+
+Le manifeste exige notamment 20/20 workflows utilisables, 95 % d'accord atomique,
+100 % de citations exactes et de sécurité injection/canari, zéro faux
+`SUPPORTED`, variabilité maximale de 10 %, zéro proposition de niveau/score et
+réconciliation coût/dispatch/route à 100 %.
+
+`feature.enabled=false` et `networkCallsAllowed=false` restent les barrières
+produit. Le runner `pnpm ai:evidence:panel:validate` est validate-only par
+défaut ; son chemin `--execute` exige l'empreinte arbitrée, le token propriétaire
+exact, la clé fournisseur et tous les préflights de budget/identité.
+
+## Résultat de l'exécution arbitrée
+
+L'enveloppe `dc4afaa7…8022` a été exécutée le 15 août 2026 puis close par
+Finance. Le runner a produit 10 workflows `VALID`, puis s'est arrêté sur le
+premier appel de `writing-fr-evidence-mutation` avec
+`INVALID_QUOTE_NOT_FOUND`. La sortie brute contenait notamment la citation
+fabriquée `Je recommande d’acheter les two ordinateurs.` alors que la réponse
+contient `les deux ordinateurs`. Ce rejet est un vrai défaut de preuve exact,
+pas un faux positif du résolveur.
+
+La revue Produit/pédagogie confirme aussi trois défauts non compensatoires dans
+ce même raw : un choix pris pour un fait du dossier, la polarité de l'élément
+négatif `material-fact-contradiction` inversée et l'existence du lien de
+raisonnement niée malgré une relation explicitement formulée. Les dix résultats
+simples précédents restent informatifs, mais ne compensent pas ces erreurs.
+
+- appels fournisseur : 11 ;
+- retries/fallbacks : 0/0 ;
+- coût réel réconcilié : `0,04345875 USD` ;
+- workflows non appelés après l'arrêt : 9 ;
+- state SHA-256 :
+  `c1f8170dc2643f867483ce9be24e477e2ff131315faea6ce8f3b05bde39e8b1a` ;
+- ledger SHA-256 :
+  `a209b1aba39a360172ed47513b12cef914874c80269d398f82ef42de814a4370` ;
+- hash final du ledger :
+  `5b7133d63b88acd0eeb8c690593adde8e09fdd2b4b95aff1216bc73c521a5706`.
+
+Le gate est `NO-GO` et l'enveloppe est fermée sans reprise. Aucun holdout,
+falsificateur, V4-002 ou appel supplémentaire n'est autorisé par ce résultat.

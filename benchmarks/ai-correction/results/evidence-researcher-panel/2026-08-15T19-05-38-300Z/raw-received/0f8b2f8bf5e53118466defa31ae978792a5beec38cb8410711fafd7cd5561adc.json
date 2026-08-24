@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022",
+  "caseId": "writing-fr-no-choice-negative",
+  "cellKey": "writing-fr-no-choice-negative:2",
+  "idempotencyKey": "0f8b2f8bf5e53118466defa31ae978792a5beec38cb8410711fafd7cd5561adc",
+  "modelSnapshot": "google/gemini-3.6-flash",
+  "observedProvider": "Google",
+  "providerRequestId": "gen-1786820770-QbLjkvWlZ4Grk9VApI7t",
+  "providerRoute": "Google",
+  "repetition": 2,
+  "requestedRoute": "google-vertex/global",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "2941008e5dfd3adecfb27e5c8a95aad3723ccd305eb63f079569cf75579fe94c",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:06:14.059Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.003639,
+    "costSource": "ACTUAL",
+    "inputTokens": 2007,
+    "reasoningTokens": 0,
+    "visibleOutputTokens": 569
+  }
+}

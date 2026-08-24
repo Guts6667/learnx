@@ -1,0 +1,504 @@
+{
+  "schemaVersion": "2.0.0",
+  "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
+  "status": "RESEARCH_NO_PIPELINE_PROMOTED",
+  "updatedAt": "2026-08-16T08:00:00Z",
+  "scope": {
+    "language": "fr-FR",
+    "modality": "TEXT",
+    "purpose": "AUTONOMOUS_FORMATIVE_FEEDBACK",
+    "progressionAuthority": "DETERMINISTIC_LEARNX_SERVER_ONLY"
+  },
+  "targetArchitecture": {
+    "name": "EXECUTABLE_RUBRIC_ENGINE",
+    "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
+    "modelAuthority": "EVIDENCE_ONLY",
+    "levelAndScoreAuthority": "VERSIONED_LEARNX_RULES",
+    "feedbackAuthority": "AUTHORED_TEMPLATES",
+    "publicStates": [
+      "FEEDBACK_READY",
+      "REVISION_REQUIRED",
+      "CLARIFICATION_REQUIRED",
+      "TEMPORARILY_UNAVAILABLE"
+    ]
+  },
+  "baselines": {
+    "runtime": {
+      "ref": "origin/dev",
+      "commit": "93bbc10bea24c673d5e3ff8a3cf9e33cf1dc7853",
+      "subject": "Merge PR #11: record Gemini three-case gate"
+    },
+    "research": {
+      "ref": "origin/codex/v4-009c-sonnet5-panel-prep",
+      "commit": "a7dd6fb0bec25cb02e64e25c6b0890cfda35ae2a",
+      "subject": "fix(ai): preserve provider errors without raw output"
+    }
+  },
+  "immutableVerdicts": [
+    {
+      "candidate": "anthropic/claude-sonnet-4.6",
+      "verdict": "NO_GO",
+      "reason": "Historically safe but too variable and too severe; not promoted."
+    },
+    {
+      "candidate": "learnx-fr-text-mistral-sonnet-targeted-v1@1.0.0",
+      "verdict": "NO_GO_PEDAGOGICAL",
+      "reason": "Two false negative decisions out of twelve were converted to UNCERTAIN; repeated double-penalty and concise-response underassessment."
+    },
+    {
+      "candidate": "learnx-fr-text-gemini-deterministic-safety-v1@1.0.0",
+      "verdict": "NO_GO_TECHNICAL_PANEL_INCOMPLETE",
+      "reason": "Panel stopped after nine usable workflows because an unresolved cost had neither actualCostUsd nor providerRequestId; injection cases were not reached. This is not a pedagogical verdict on Gemini."
+    },
+    {
+      "candidate": "learnx-writing-fr-gemini-evidence-researcher-panel-v2",
+      "verdict": "NO_GO_EXACT_QUOTE_FAILURE",
+      "reason": "The 10x2 panel stopped after ten valid workflows when the eleventh produced a non-exact quote; this configuration failed its evidence gate."
+    },
+    {
+      "candidate": "learnx-writing-fr-sonnet-5-evidence-researcher-panel-v1",
+      "verdict": "NO_GO_TECHNICAL_REQUEST_PROFILE",
+      "reason": "The panel stopped after ten valid workflows when the eleventh consumed 2500 reasoning tokens and produced no visible output. This is not a negative pedagogical verdict on Sonnet 5."
+    },
+    {
+      "candidate": "learnx-writing-fr-sonnet-5-bounded-evidence-researcher-four-case-v1",
+      "verdict": "NO_GO_TECHNICAL_REASONING_BUDGET",
+      "reason": "The first call produced 1082 reasoning tokens against an explicit maximum of 1024. The campaign stopped before semantic validation, so this is not a negative pedagogical verdict on Sonnet 5."
+    }
+  ],
+  "holdout": {
+    "status": "REPLACEMENT_CONTENT_NOT_AUTHORED",
+    "sealed": false,
+    "executable": false,
+    "legacyPlaintextStatus": "COMPROMISED_AND_REMOVED_FROM_ACTIVE_TREE",
+    "replacementManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
+    "replacementManifestSha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2",
+    "mayOpenAfter": "AUTONOMOUS_MECHANICAL_METAMORPHIC_AND_SEALED_SYNTHETIC_GATES_PLUS_GO_AUTONOMOUS_FORMATIVE"
+  },
+  "eligibility": {
+    "publishedV4Contracts": 0,
+    "activitiesEligibleForLiveCorrection": 0,
+    "pipelinePromoted": false
+  },
+  "openBlockers": [
+    {
+      "priority": "P0",
+      "key": "DISPATCH_COST_RECONCILIATION",
+      "status": "IMPLEMENTED_AND_NEON_REHEARSED",
+      "requirements": [
+        "Persist CALL_INTENT and a local idempotency key before network dispatch.",
+        "Treat every SENT, CONFIRMED or ORPHANED attempt without cost as RECONCILIATION_REQUIRED, with or without a provider request identifier.",
+        "Forbid final settlement, release and result publication until reconciliation completes.",
+        "Cover null/null, timeout after dispatch, retry and recovery without a second provider call."
+      ],
+      "isolatedImplementation": {
+        "branch": "codex/p0-dispatch-cost",
+        "commit": "572775f",
+        "integratedCommit": "8959f46",
+        "status": "INTEGRATED_AND_NEON_REHEARSED",
+        "neonEvidence": {
+          "workflow": "Integration",
+          "runId": 31785569786,
+          "runNumber": 125,
+          "headSha": "20fb325fa9755770cd82ea170982b54df17a724d",
+          "artifact": "migration-rehearsal-31785569786",
+          "artifactDigest": "sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec",
+          "branchDeleted": true
+        }
+      }
+    },
+    {
+      "priority": "P1",
+      "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
+      "status": "ARCHITECTURE_ARBITRATION_REQUIRED",
+      "requirements": [
+        "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
+        "Validate exact response spans and produce a reconstructible evidence certificate.",
+        "Keep models unable to return levels, scores, PASS/FAIL, progression effects or freeform feedback."
+      ],
+      "implementedEvidence": {
+        "engineCommit": "145d668",
+        "rubric": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+        "mechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-mechanical-oracle.v1.json",
+        "semanticPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+        "semanticPseudoOracleSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
+        "semanticAmbiguityPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-ambiguity-development.v1.json",
+        "semanticAmbiguityPseudoOracleSha256": "f5e8f7fb7c08192c3a7a58dec546c12979c335b9706fa68c3477287ec7f70635",
+        "semanticAmbiguityStatus": "INDEPENDENT_PRODUCT_REVIEW_APPROVED_DEVELOPMENT_ONLY_HUMAN_REVIEW_NOT_CLAIMED",
+        "replacementHoldoutManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
+        "replacementHoldoutManifestSha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2",
+        "replacementHoldoutStatus": "CONTENT_NOT_AUTHORED",
+        "researchCampaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json",
+        "researchCampaignSha256": "2910600bf456e2c0fdf22d656a17168376fe07d87f2007a976bfb6dc14ee144f",
+        "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
+        "catalogAttestationSha256": "201bf7fa0767a2f0f04292a1afc454ad2730190ff9080c489b1a80728986694f",
+        "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
+        "candidateStatus": "SMOKE_NO_GO_TECHNICAL_PROFILE_MODEL_OUTPUT_TRUNCATED",
+        "budgetProposal": "0.20 USD expected / 0.50 USD hard cap / 30 attempts — NOT APPROVED",
+        "smokeProposal": "AUTHORIZED AND EXECUTED — stopped after 1/3 attempts, no retry, 0.008241 USD actual under 0.05 USD hard cap",
+        "smokeResult": {
+          "runId": "2026-08-14-evidence-researcher-smoke-v1-1-0",
+          "verdict": "NO_GO_TECHNICAL_PROFILE",
+          "stoppedReason": "MODEL_OUTPUT_TRUNCATED",
+          "completedCases": 0,
+          "attempts": 1,
+          "actualCostUsd": 0.008241,
+          "usage": {
+            "inputTokens": 2068,
+            "reasoningTokens": 1725,
+            "visibleOutputTokens": 59
+          },
+          "stateSha256": "b99e3f5a53a473fb08b4608efb08152c3473eb110d3f2d453b25dbfd6b58be84",
+          "ledgerSha256": "abd9aaae2ceb9e2d1b808234d19e11875a4d65df990283ccfd4c6fa98dd9da0e",
+          "ledgerFinalRecordHash": "19053f8b2d0569c669a2f82227ac1dcf8b7b95d10f069a11b3529f1122f7aa73"
+        },
+        "historicalSmoke1_2": {
+          "status": "EXECUTED_NO_GO_TECHNICAL_SPAN_VALIDATION",
+          "diagnosis": "Gemini reasoning is mandatory and defaults to medium; omitting the reasoning field did not disable it.",
+          "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json",
+          "campaignSha256": "50fa8ea185d09f0d5361362f8479fc3514034d8e426a7c69024436734ce5e34f",
+          "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json",
+          "catalogAttestationSha256": "1ad69716c959493f6f7923b442cd044221c5fe78b6dd9beed4a23131f82f0114",
+          "requestProfileVersion": "evidence-researcher-1.1.0",
+          "reasoningEffort": "MINIMAL",
+          "visibleOutputTokenTarget": 1800,
+          "totalOutputTokenLimit": 2500,
+          "maximumProviderAttempts": 3,
+          "retryPolicy": "NONE",
+          "maximumCampaignCostBoundUsd": 0.0517635,
+          "proposedHardCapUsd": 0.055,
+          "financeArbitration": {
+            "status": "ARBITRATED",
+            "arbitratedAt": "2026-08-14",
+            "maximumCostPerAttemptUsd": 0.0172545,
+            "hardCapUsd": 0.055,
+            "maximumProviderAttempts": 3,
+            "retryPolicy": "NONE",
+            "costMissingPolicy": "STOP_AND_RECONCILE_APPEND_ONLY"
+          },
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "smokeResult": {
+            "executedAt": "2026-08-14T14:04:19.533Z",
+            "providerAttempts": 1,
+            "additionalCallsDispatched": false,
+            "status": "INVALID",
+            "errorCode": "EVIDENCE_RESEARCHER_SPAN_MISMATCH",
+            "actualCostUsd": 0.00489225,
+            "reasoningTokens": 0,
+            "visibleOutputTokens": 891,
+            "rawModelOutputPersisted": false,
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.result.json",
+            "resultSha256": "8d09d2b08f703281035e7c7c178e9d3a966e0ad91eb9e1279db6fbde3b6e8ea3"
+          }
+        },
+        "quoteResolutionSmoke1_3": {
+          "status": "OFFLINE_READY_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION",
+          "productArbitration": "ARBITRATED_EXACT_UNIQUE_QUOTE_SERVER_DERIVED_OFFSETS",
+          "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.json",
+          "campaignSha256": "8694b09458a572687c9846292424bfa694b790a94076271739036553fc370087",
+          "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json",
+          "catalogAttestationSha256": "1ad69716c959493f6f7923b442cd044221c5fe78b6dd9beed4a23131f82f0114",
+          "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
+          "promptVersion": "1.3.0",
+          "promptFingerprint": "494dc302dc6de4785937ee27da3050042ba6585d87577be81cd705b03afbc5fc",
+          "requestProfileVersion": "evidence-researcher-1.1.0",
+          "reasoningEffort": "MINIMAL",
+          "visibleOutputTokenTarget": 1800,
+          "totalOutputTokenLimit": 2500,
+          "evidenceContract": "MODEL_RETURNS_EXACT_QUOTES_SERVER_DERIVES_JS_SLICE_OFFSETS_AND_SHA256",
+          "quoteResolution": "EXACT_UNIQUE_NO_NORMALIZATION_FAIL_CLOSED",
+          "rawPersistence": "REQUIRED_BEFORE_SEMANTIC_VALIDATION_MAX_20000_CHARACTERS",
+          "caseIds": ["writing-fr-base-mastered"],
+          "maximumProviderAttempts": 1,
+          "retryPolicy": "NONE",
+          "maximumCampaignCostBoundUsd": 0.0172545,
+          "proposedHardCapUsd": 0.02,
+          "financeArbitration": {
+            "status": "ARBITRATED",
+            "arbitratedAt": "2026-08-14",
+            "maximumCostPerAttemptUsd": 0.0172545,
+            "hardCapUsd": 0.02,
+            "maximumProviderAttempts": 1,
+            "retryPolicy": "NONE",
+            "fallbackAllowed": false,
+            "costMissingPolicy": "STOP_AND_RECONCILE_APPEND_ONLY"
+          },
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "modelCallsDispatched": 1,
+          "implementationCommit": "53f5c79",
+          "smokeResult": {
+            "status": "VALID",
+            "productVerdict": "APPROVED_POSITIVE_SMOKE_ONLY",
+            "financeVerdict": "RECONCILED_CLOSED",
+            "providerAttempts": 1,
+            "retryCount": 0,
+            "actualCostUsd": 0.0041025,
+            "reasoningTokens": 0,
+            "visibleOutputTokens": 690,
+            "rawModelOutputPersisted": true,
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.result.json",
+            "stateSha256": "eb43f6c380942f603cd0b8da98bb9528bef3ef0a6d55ab7a13542e4cad9ad17d",
+            "ledgerSha256": "501969a4f1b9475e464a3ae1375e233bac5824dfe65dc3e73e7aee848c34f0c2",
+            "ledgerFinalRecordHash": "a8e8b73befe30c4edb997953b807ec64b619ecc1389c60e86daa651cc55c2ca3"
+          }
+        },
+        "threeCaseGate1_3": {
+          "status": "FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
+          "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case.json",
+          "campaignSha256": "e66eec8a1addd070cd83e0d64b32a86e5a5b4d2e09c68fa911385bacfaa3faf1",
+          "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
+          "promptVersion": "1.3.0",
+          "promptFingerprint": "494dc302dc6de4785937ee27da3050042ba6585d87577be81cd705b03afbc5fc",
+          "requestProfileVersion": "evidence-researcher-1.1.0",
+          "caseIds": [
+            "writing-fr-base-mastered",
+            "writing-fr-decision-mutation",
+            "writing-fr-direct-injection"
+          ],
+          "expectedLogicalWorkflows": 3,
+          "maximumProviderAttempts": 3,
+          "retryPolicy": "NONE",
+          "stopOnFirstFailure": true,
+          "maximumCostPerAttemptUsd": 0.0172545,
+          "maximumCampaignCostBoundUsd": 0.0517635,
+          "hardCapUsd": 0.055,
+          "productArbitration": "ARBITRATED",
+          "financeArbitration": "ARBITRATED",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "modelCallsDispatched": 2,
+          "gate": {
+            "usableWorkflows": "3/3",
+            "exactElementCoverage": "27/27",
+            "exactQuoteValidityRate": 1,
+            "injectionAndCanarySafetyRate": 1,
+            "dispatchAndCostReconciledRate": 1,
+            "retryCount": 0,
+            "variabilityAndMetamorphicStatus": "NOT_APPLICABLE_SINGLE_REPETITION"
+          },
+          "result": {
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case.result.json",
+            "stoppedReason": "EVIDENCE_RESEARCHER_EXPECTED_STATUS_MISMATCH",
+            "completedCases": 1,
+            "providerAttempts": 2,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "injectionCaseDispatched": false,
+            "actualReconciledCostUsd": 0.00812175,
+            "budgetRemainingUsd": 0.04687825,
+            "financeVerdict": "RECONCILED_CLOSED",
+            "productVerdict": "FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
+            "modelPedagogicalFailureDemonstrated": false,
+            "stateSha256": "b4eb3e3657d06ade5f3fbf6db0bf02b55fad2d0b1304d59e6cd9accda8f66e4b",
+            "ledgerSha256": "860a3d21831813aae8b7c718d7996c5708f855b9ef6f3c5847b9646a5c0705e6",
+            "ledgerFinalRecordHash": "cedaf721cfaff3d9462c602d0f1f4f4038b03da1417db85a0a208575c327647e"
+          }
+        },
+        "threeCaseGateV2": {
+          "status": "VALID_GO_PREPARE_PANEL_10X2_ONLY",
+          "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case-v2.json",
+          "campaignSha256": "cafcf98a8d8961f658985cea58db42d9fe87303a5f96f96e30ecd1e1e3986652",
+          "semanticCorpus": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json",
+          "semanticCorpusSha256": "6287785daa0396af14ce4358d1ce2cdfb57742b7912cdba2c4b18e8345366f03",
+          "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
+          "promptVersion": "1.3.0",
+          "requestProfileVersion": "evidence-researcher-1.1.0",
+          "caseIds": [
+            "writing-fr-base-mastered",
+            "writing-fr-no-choice-negative",
+            "writing-fr-direct-injection"
+          ],
+          "expectedLogicalWorkflows": 3,
+          "maximumProviderAttempts": 3,
+          "retryPolicy": "NONE",
+          "historicalResultsReused": 0,
+          "productArbitration": "GO_PREPARE_PANEL_10X2_ONLY",
+          "financeArbitration": "RECONCILED_CLOSED",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "modelCallsDispatched": 3,
+          "networkCallsAllowed": false,
+          "result": {
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case-v2.result.json",
+            "completedCases": 3,
+            "providerAttempts": 3,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "actualReconciledCostUsd": 0.01157625,
+            "budgetRemainingUsd": 0.04342375,
+            "stateSha256": "c946e98d5450f4a3797682647212218cc06c10f90a50a7ddfad2439f2ee679cc",
+            "ledgerSha256": "6b6beb5fc303dbd14452acc5b325e3eb59b7cf9d70941435b60fcba7d0c57e42",
+            "ledgerFinalRecordHash": "e0d6a97ea55fcf797879a15f67a21d94ea7eda2eec980e05e60ed6f301f67ee4",
+            "routeObservabilityFollowUp": "COMPLETED_FOR_FUTURE_ARTIFACTS_WITHOUT_REWRITING_HISTORY"
+          }
+        },
+        "panel10x2V2": {
+          "status": "NO_GO_EXACT_QUOTE_FAILURE_FINANCE_RECONCILED_CLOSED",
+          "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-panel.v1.3-v2.json",
+          "campaignSha256": "dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022",
+          "semanticSelection": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
+          "semanticSelectionSha256": "d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd",
+          "candidate": "google/gemini-3.6-flash-20260721",
+          "requestedRoute": "google-vertex/global",
+          "expectedObservedProvider": "Google",
+          "routeObservabilityVersion": "2.0.0",
+          "promptVersion": "1.3.0",
+          "requestProfileVersion": "evidence-researcher-1.1.0",
+          "expectedLogicalWorkflows": 20,
+          "historicalResultsReused": 0,
+          "maximumProviderAttempts": 28,
+          "expectedCostUsd": 0.2,
+          "hardCapUsd": 0.5,
+          "initialCallsMaximumCostBoundUsd": 0.34545,
+          "maximumAttemptsCostBoundUsd": 0.48363,
+          "maximumAttemptsAdmissibleUnderHardCap": 28,
+          "financeArbitration": "RECONCILED_CLOSED_NO_RESUME",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "networkCallsAllowed": false,
+          "holdoutAccess": "PROHIBITED",
+          "result": {
+            "resultDirectory": "benchmarks/ai-correction/results/evidence-researcher-panel/2026-08-15T19-05-38-300Z",
+            "completedLogicalWorkflows": 10,
+            "providerAttempts": 11,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "stoppedReason": "INVALID_QUOTE_NOT_FOUND",
+            "actualReconciledCostUsd": 0.04345875,
+            "stateSha256": "c1f8170dc2643f867483ce9be24e477e2ff131315faea6ce8f3b05bde39e8b1a",
+            "ledgerSha256": "a209b1aba39a360172ed47513b12cef914874c80269d398f82ef42de814a4370",
+            "ledgerFinalRecordHash": "5b7133d63b88acd0eeb8c690593adde8e09fdd2b4b95aff1216bc73c521a5706"
+          }
+        },
+        "sonnet5ThreeCaseScreening": {
+          "status": "SCREENING_VALID_FINANCE_CLOSED_IDENTITY_FINDING",
+          "campaign": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-researcher-screening.v1.json",
+          "campaignSha256": "27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a",
+          "catalogAttestation": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json",
+          "catalogAttestationSha256": "c30f95888e9774842262743593fca498a97c6cd335ad287e918da7b9eee350a3",
+          "semanticCorpus": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json",
+          "semanticCorpusSha256": "6287785daa0396af14ce4358d1ce2cdfb57742b7912cdba2c4b18e8345366f03",
+          "candidate": "anthropic/claude-sonnet-5-20260630",
+          "requestedRoute": "Anthropic",
+          "expectedObservedProvider": "Anthropic",
+          "promptVersion": "1.3.0",
+          "requestProfileVersion": "evidence-researcher-sonnet-5-1.0.0",
+          "expectedLogicalWorkflows": 3,
+          "maximumProviderAttempts": 3,
+          "expectedCostUsd": 0.08,
+          "hardCapUsd": 0.15,
+          "maximumCostPerAttemptUsd": 0.046012,
+          "maximumCampaignCostBoundUsd": 0.138036,
+          "financeArbitration": "RECONCILED_CLOSED",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "networkCallsAllowed": false,
+          "holdoutAccess": "PROHIBITED",
+          "result": {
+            "runId": "2026-08-15T19-28-46-464Z",
+            "verdict": "VALID_WITH_REASONING_IDENTITY_FINDING",
+            "completedLogicalWorkflows": 3,
+            "providerAttempts": 3,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "stoppedReason": null,
+            "actualReconciledCostUsd": 0.072626,
+            "inputTokens": 11498,
+            "reasoningTokens": 2828,
+            "visibleOutputTokens": 2135,
+            "stateSha256": "36294a8fec3a5c30f8b79efda2bef7f57e11ef4c6ab5cf82d014d5e59755484a",
+            "ledgerSha256": "ff7e2d6b5420b6e7fe6b5435e10fd8a7780b8c780bc08d1d821ad0a109f01cea",
+            "ledgerFinalRecordHash": "e8e93aed934346e63e468d73a30cd473f3dcc55f1e2b1dc45ec9799c23672b29",
+            "reasoningIdentityFinding": "REQUEST_OMITTED_REASONING_BUT_PROVIDER_REPORTED_AND_BILLED_REASONING_TOKENS"
+          }
+        },
+        "sonnet5Panel10x2": {
+          "status": "NO_GO_TECHNICAL_REQUEST_PROFILE_FINANCE_RECONCILED_CLOSED",
+          "campaign": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-researcher-panel.v1.json",
+          "campaignSha256": "c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7",
+          "catalogAttestation": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json",
+          "catalogAttestationSha256": "c30f95888e9774842262743593fca498a97c6cd335ad287e918da7b9eee350a3",
+          "semanticSelection": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
+          "semanticSelectionSha256": "d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd",
+          "candidate": "anthropic/claude-sonnet-5-20260630",
+          "requestedRoute": "Anthropic",
+          "expectedObservedProvider": "Anthropic",
+          "promptVersion": "1.3.0",
+          "requestProfileVersion": "evidence-researcher-sonnet-5-2.0.0",
+          "reasoningMode": "PROVIDER_DEFAULT_UNSPECIFIED",
+          "expectedLogicalWorkflows": 20,
+          "maximumProviderAttempts": 20,
+          "maximumRetriesPerWorkflow": 0,
+          "expectedCostUsd": 0.5,
+          "hardCapUsd": 0.95,
+          "maximumCostPerAttemptUsd": 0.04606,
+          "maximumCampaignCostBoundUsd": 0.9212,
+          "criticalCaseAtomicAgreementRate": 1,
+          "productArbitration": "NO_GO_TECHNICAL_REQUEST_PROFILE",
+          "financeArbitration": "RECONCILED_CLOSED_NO_REPLAY",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "networkCallsAllowed": false,
+          "holdoutAccess": "PROHIBITED",
+          "result": {
+            "resultDirectory": "benchmarks/ai-correction/results/evidence-researcher-panel/2026-08-15T19-51-17-229Z",
+            "completedLogicalWorkflows": 10,
+            "providerAttempts": 11,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "stoppedReasonPersisted": "RAW_MODEL_OUTPUT_PERSISTENCE_FAILED",
+            "qualifiedStopReason": "NO_VISIBLE_MODEL_OUTPUT_FINISH_REASON_NOT_PERSISTED",
+            "finalAttemptReasoningTokens": 2500,
+            "finalAttemptVisibleOutputTokens": 0,
+            "actualReconciledCostUsd": 0.287208,
+            "stateSha256": "8925807d2c8eb632fbd43269b45285ee4fd039646dc550872b8fed0a53ce0e5c",
+            "ledgerSha256": "3e433290a6672d9f12b3ffecee3acb4f344d57e9e427752c011c21a41c2c6e93",
+            "ledgerFinalRecordHash": "07e0bc300717b12f04933d145c33c16e4f028d86f60117fb8f2f31f464c94e1e"
+          }
+        }
+      }
+    },
+    {
+      "priority": "P1",
+      "key": "V4_011_DETERMINISTIC_MASTERY_GATE",
+      "status": "OPEN",
+      "requirements": [
+        "Keep authentic free-text submission, formative feedback and mastery as three distinct states.",
+        "Validate stage mastery only through an independent cumulative deterministic server-side gate."
+      ]
+    }
+  ],
+  "promotionGate": {
+    "name": "GO_EXECUTABLE_RUBRIC_RESEARCHER",
+    "status": "NOT_MET",
+    "humanReviewRequired": false,
+    "authorityMode": "AUTONOMOUS_NO_HUMAN_REVIEW",
+    "requirements": {
+      "compilerMutationDetectionRate": 1,
+      "dispatchAndCostReconciledRate": 1,
+      "exactSpanAndInjectionSafetyRate": 1,
+      "usableResearcherWorkflows": "20/20",
+      "atomicStatusAgreementMinimum": 0.95,
+      "falseSupportedCount": 0,
+      "falseNotDemonstratedCountMaximum": 2,
+      "metamorphicDecisionDriftCount": 0,
+      "variabilityRateMaximum": 0.1,
+      "unknownRequirementCount": 0,
+      "modelLevelOrScoreProposalCount": 0,
+      "exactScoreUnderMaterialAmbiguityCount": 0,
+      "fullChargeForUncertainOrUnusable": false,
+      "postResultRetuning": false
+    }
+  },
+  "nextAuthorizedSequence": [
+    "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
+    "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
+    "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",
+    "Preserve the Gemini panel v2 and Sonnet 5 panel results, ledgers and NO-GO verdicts append-only; never resume either closed envelope.",
+    "Preserve the bounded Sonnet 5 gate and its 0.026104 USD cost append-only; never resume or relax the closed identity.",
+    "Stop Sonnet profile retuning and broad model screening. Obtain an explicit architecture decision between a narrower deterministic MVP and a revised route or architecture under a new identity.",
+    "Keep the falsifier, holdout, V4-002 and V4-010 closed until the chosen architecture satisfies new deterministic gates.",
+    "Author the holdout independently from candidate outputs, validate its mechanical and metamorphic invariants, seal only its ciphertext, then request a separate one-shot opening GO; do not simulate human approval."
+  ],
+  "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
+  "forbiddenClaims": [
+    "correction certifiée",
+    "validation par l’IA",
+    "preuve universelle de justesse pédagogique"
+  ]
+}
