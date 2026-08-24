@@ -113,6 +113,27 @@ a consommé 1.817373 USD ; le plafond fournisseur restant est fixé à 2.18 USD.
   transformer l'incident en NO-GO pédagogique ;
 - une seule campagne, puis arrêt et rapport quel que soit le verdict.
 
+Le garde budgétaire fonctionne en deux phases. Avant le premier appel, un
+préflight lié au corpus scellé calcule :
+
+`pireCas = 72 primaires + secondes passes de garde + retries bornés`.
+
+Pour cette identité, `maxRetries=0` : le terme retry vaut donc zéro. Le pire
+cas sans borne de secondes passes vaut deux fois la somme conservatrice des 72
+primaires. Comme il peut dépasser 2.18 USD, le budget des secondes passes est
+borné séparément : tous les primaires sont exécutés d'abord, puis les secondes
+passes sont ordonnées par proximité du seuil et ne sont envoyées que si leur
+coût conservateur tient dans le reliquat. Une seconde passe sautée produit le
+signal explicite `SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET`; elle ne rend aucun
+verdict exact et reste un écart de mesure diagnostique.
+
+Si le coût conservateur des 72 primaires dépasse à lui seul 2.18 USD, le runner
+s'arrête avant tout appel et demande une contingency explicite. Une fois le
+premier appel envoyé, le garde-fou fournisseur ne peut plus interrompre la
+phase primaire pour raison budgétaire. Les contrôles d'identité et de coût
+inconnu restent fail-closed et ne sont pas requalifiés en décisions
+pédagogiques.
+
 ## 7. Revue, digests et verdict
 
 Le paquet de revue autonome est aveugle au modèle, au fournisseur, au coût, aux
