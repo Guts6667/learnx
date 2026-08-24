@@ -546,6 +546,32 @@ export const frenchMessages = {
   'learning.requiredRemaining':
     'Des activités obligatoires restent à terminer.',
   'learning.progressUpdateError': 'La progression n’a pas pu être mise à jour.',
+  'aiCorrection.assistedLabel': 'Correction assistée par IA',
+  'aiCorrection.intro':
+    'Recevez un retour formatif critère par critère sur cette production.',
+  'aiCorrection.doctrineNotice':
+    'Ce retour est indicatif et n’a aucun effet sur votre progression.',
+  'aiCorrection.seePrice': 'Voir le devis en crédits',
+  'aiCorrection.quotePending': 'Préparation du devis de correction',
+  'aiCorrection.quoteError': 'Le devis n’a pas pu être préparé.',
+  'aiCorrection.quoteSummary':
+    'Estimation : {estimated} crédits · plafond réservé : {maximum} crédits.',
+  'aiCorrection.consentNotice':
+    'Certains critères peuvent revenir à retravailler sans compensation. Une vérification ciblée éventuelle est incluse dans le plafond.',
+  'aiCorrection.confirm': 'Confirmer et lancer la correction',
+  'aiCorrection.runError': 'La correction n’a pas pu être exécutée.',
+  'aiCorrection.unavailable':
+    'Aucun résultat utilisable n’a été produit. La réservation a été libérée.',
+  'aiCorrection.settlementRecap':
+    'Plafond réservé : {reserved} · débité : {settled} · libéré : {released} crédits.',
+  'aiCorrection.noProgressImpact': 'Sans effet sur la progression',
+  'aiCorrection.acquired': 'Acquis',
+  'aiCorrection.toReinforce': 'À renforcer',
+  'aiCorrection.reworkCriterion':
+    'Le critère « {criterion} » est à retravailler avant une nouvelle soumission.',
+  'aiCorrection.nextAction': 'Prochaine action',
+  'aiCorrection.indicativeScore': 'Score indicatif : {score} %',
+  'aiCorrection.evidenceLabel': 'Extrait de votre réponse',
   'assessment.previousAttempts': 'Tentatives précédentes',
   'assessment.noAttempts': 'Aucune tentative enregistrée.',
   'assessment.passed': 'Réussi',
@@ -1419,6 +1445,32 @@ export const englishMessages = {
   'learning.allRequiredComplete': 'All required activities are complete.',
   'learning.requiredRemaining': 'Required activities still need completion.',
   'learning.progressUpdateError': 'Progress could not be updated.',
+  'aiCorrection.assistedLabel': 'AI-assisted correction',
+  'aiCorrection.intro':
+    'Receive criterion-by-criterion formative feedback on this submission.',
+  'aiCorrection.doctrineNotice':
+    'This feedback is indicative and does not affect your progress.',
+  'aiCorrection.seePrice': 'View the credit quote',
+  'aiCorrection.quotePending': 'Preparing the correction quote',
+  'aiCorrection.quoteError': 'The quote could not be prepared.',
+  'aiCorrection.quoteSummary':
+    'Estimate: {estimated} credits · reserved ceiling: {maximum} credits.',
+  'aiCorrection.consentNotice':
+    'Some criteria may come back for rework without compensation. Any targeted verification is included in the initial ceiling.',
+  'aiCorrection.confirm': 'Confirm and start the correction',
+  'aiCorrection.runError': 'The correction could not be completed.',
+  'aiCorrection.unavailable':
+    'No usable result was produced. The reservation has been released.',
+  'aiCorrection.settlementRecap':
+    'Reserved ceiling: {reserved} · charged: {settled} · released: {released} credits.',
+  'aiCorrection.noProgressImpact': 'No effect on progress',
+  'aiCorrection.acquired': 'Acquired',
+  'aiCorrection.toReinforce': 'To reinforce',
+  'aiCorrection.reworkCriterion':
+    'The “{criterion}” criterion needs rework before a new submission.',
+  'aiCorrection.nextAction': 'Next action',
+  'aiCorrection.indicativeScore': 'Indicative score: {score}%',
+  'aiCorrection.evidenceLabel': 'Excerpt from your response',
   'assessment.previousAttempts': 'Previous attempts',
   'assessment.noAttempts': 'No attempts recorded.',
   'assessment.passed': 'Passed',
