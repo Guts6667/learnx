@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 
 import { adminApp } from './admin/app.js';
 import { aiPricingApp } from './ai-pricing/app.js';
+import { correctionsApp } from './corrections/app.js';
 import { accessRequestsApp } from './access-requests/app.js';
 import { ApiError, toApiErrorBody } from './_lib/errors.js';
 import { createRequestObservability } from './_lib/observability.js';
@@ -46,6 +47,7 @@ export function createApiApp() {
   app.route('/', accessRequestsApp);
   app.route('/', adminApp);
   app.route('/', aiPricingApp);
+  app.route('/', correctionsApp);
   app.route('/', catalogApp);
   app.route('/', curriculumApp);
   app.route('/', progressApp);

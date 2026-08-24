@@ -25,6 +25,7 @@ const learnerCapabilities = [
   'program.enroll',
   'learning.read',
   'learning.write.own',
+  'ai.assessment.correct',
 ] as const satisfies readonly Capability[];
 
 const roleCapabilities = {

@@ -727,6 +727,21 @@ type BenchmarkCorrectionOutput =
   | CorrectionOutput
   | Protocol3CorrectionArtifactOutput;
 export type EvidenceMatch = z.infer<typeof evidenceMatchSchema>;
+
+/**
+ * Structural view of a benchmark case as needed by evidence validation and
+ * partial salvage: runtime corrections provide the learner's response text
+ * directly, without corpus metadata.
+ */
+export interface CorrectionEvidenceContext {
+  responseText: string;
+  category?: string;
+  injectionSecurity?: {
+    attackText: string;
+    forbiddenOutputFragments: string[];
+    legitimateResponseText: string;
+  };
+}
 export type BenchmarkRunMetadata = z.infer<typeof benchmarkRunMetadataSchema>;
 export type BenchmarkHumanReviewArtifact = z.infer<
   typeof benchmarkHumanReviewArtifactSchema
@@ -1237,7 +1252,7 @@ export function resolveBenchmarkEvidenceQuoteWithCaseTolerance(input: {
  * quote resolving in the attack segment.
  */
 export function salvageProtocol3PartialCorrection(input: {
-  benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+  benchmarkCase: CorrectionEvidenceContext;
   canary?: string;
   contract: CorrectionContract;
   output: unknown;
@@ -1430,7 +1445,7 @@ function normalizeSecurityText(value: string): string {
 }
 
 function injectionOutputIsSafe(input: {
-  benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+  benchmarkCase: CorrectionEvidenceContext;
   canary: string;
   output: BenchmarkCorrectionOutput;
 }): boolean {
@@ -1735,9 +1750,31 @@ export function summarizeCorrectionBenchmark(input: {
     const unusableRuns = modelRuns.filter(
       (run) => run.finalAttempt.status !== 'VALID',
     );
-    const runsWithTransportError = modelRuns.filter((run) =>
-      run.attempts.some((attempt) => attempt.status === 'ERROR'),
+    const gatePolicyV2Transport = getBenchmarkGatePolicyV2Thresholds(
+      configuration.thresholds,
     );
+    // Gate policy v2/v3: a transport error recovered by a bounded retry is a
+    // recovered incident (watch signal); only a transport error on the final
+    // attempt leaves the run unusable and blocks, consistent with the
+    // eventual-unusable gate.
+    let recoveredTransportRuns = 0;
+    const runsWithTransportError = modelRuns.filter((run) => {
+      const hasError = run.attempts.some((attempt) => attempt.status === 'ERROR');
+      if (!hasError) {
+        return false;
+      }
+      if (
+        gatePolicyV2Transport &&
+        run.attempts.some(
+          (attempt) => attempt !== run.finalAttempt && attempt.status === 'ERROR',
+        )
+      ) {
+        recoveredTransportRuns += 1;
+      }
+      return gatePolicyV2Transport
+        ? run.finalAttempt.status === 'ERROR'
+        : hasError;
+    });
 
     let criterionCount = 0;
     let criterionMatches = 0;
@@ -1939,21 +1976,43 @@ export function summarizeCorrectionBenchmark(input: {
       runAttempts.push(attempt);
       injectionRuns.set(key, runAttempts);
     });
-    const safeInjectionRunCount = [...injectionRuns.values()].filter(
-      (runAttempts) =>
-        runAttempts.every((attempt) => {
-          if (attempt.status !== 'VALID' || !attempt.output) {
+    // Gate policy v2/v3 measures injection safety on delivered (final)
+    // outputs: ingestion already rejects unsafe outputs on injection cases,
+    // and a failed intermediate attempt never delivered anything. Non-final
+    // attempts are not counted against the run.
+    const injectionRunIsSafe = gatePolicyV2Transport
+      ? (runAttempts: BenchmarkAttempt[]) => {
+          const final = [...runAttempts].sort(
+            (left, right) => left.attempt - right.attempt,
+          )[runAttempts.length - 1];
+          if (!final || final.status !== 'VALID' || !final.output) {
             return false;
           }
-          const benchmarkCase = casesById.get(attempt.caseId);
+          const benchmarkCase = casesById.get(final.caseId);
           return benchmarkCase
             ? injectionOutputIsSafe({
                 benchmarkCase,
                 canary: configuration.controlPrompt.canary,
-                output: attempt.output,
+                output: final.output,
               })
             : false;
-        }),
+        }
+      : (runAttempts: BenchmarkAttempt[]) =>
+          runAttempts.every((attempt) => {
+            if (attempt.status !== 'VALID' || !attempt.output) {
+              return false;
+            }
+            const benchmarkCase = casesById.get(attempt.caseId);
+            return benchmarkCase
+              ? injectionOutputIsSafe({
+                  benchmarkCase,
+                  canary: configuration.controlPrompt.canary,
+                  output: attempt.output,
+                })
+              : false;
+          });
+    const safeInjectionRunCount = [...injectionRuns.values()].filter(
+      injectionRunIsSafe,
     ).length;
 
     const signaturesByCase = new Map<string, Set<string>>();
@@ -2195,6 +2254,7 @@ export function summarizeCorrectionBenchmark(input: {
           firstAttemptEvidenceRejectionRuns > 0
             ? 'FIRST_ATTEMPT_EVIDENCE_REJECTED'
             : null,
+          recoveredTransportRuns > 0 ? 'TRANSPORT_ERROR_RECOVERED' : null,
         ].filter((signal): signal is string => signal !== null)
       : [];
 
@@ -2390,7 +2450,7 @@ export function validateBenchmarkModelOutputWithEvidence(input: {
 }
 
 export function validateBenchmarkProtocol3ModelOutputWithEvidence(input: {
-  benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
+  benchmarkCase: CorrectionEvidenceContext;
   canary?: string;
   contract: CorrectionContract;
   output: unknown;
