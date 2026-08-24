@@ -8,7 +8,7 @@ import type {
   OrchestratedCorrectionResult,
   RuntimeCorrectionAttempt,
 } from './correction-orchestration';
-import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
+import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 
 /**
  * Implémentation Prisma des ports de l'orchestration V4-009 :
