@@ -6,6 +6,7 @@
   "corpusId": "learnx-french-writing-holdout-v1",
   "language": "fr-FR",
   "activityTypeScope": ["writing"],
+  "criterionSemanticsPath": "criterion-semantics.preregistered.json",
   "caseCount": 24,
   "repetitions": 3,
   "authors": {

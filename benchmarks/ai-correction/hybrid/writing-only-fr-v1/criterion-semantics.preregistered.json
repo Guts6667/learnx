@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_CRITERION_SEMANTICS_PREREGISTRATION",
+  "status": "PREREGISTERED_BEFORE_AUTHORING",
+  "activityType": "writing",
+  "language": "fr-FR",
+  "commonLevelSemantics": {
+    "mastered": "Toutes les exigences du critère sont démontrées sans erreur matérielle.",
+    "partial": "Le critère reste exploitable malgré une omission ou imprécision unique et circonscrite, sans violation d'une contrainte dure.",
+    "limited": "La réponse est pertinente mais une erreur importante ou un manque majeur réduit fortement la valeur du critère.",
+    "insufficient": "Le critère est absent, hors sujet, contradictoire avec une contrainte dure ou inutilisable pour l'objectif demandé."
+  },
+  "contracts": [
+    {
+      "contractKey": "writing-v1-decision-memo",
+      "archetype": "DECISION_MEMO",
+      "passingScore": 75,
+      "criteria": [
+        {
+          "key": "comparative-arithmetic",
+          "weight": 35,
+          "objective": "Vérifier les opérations, unités et périmètres chiffrés nécessaires à la comparaison.",
+          "required": [
+            "Les calculs utiles sont écrits ou restituables sans hypothèse cachée.",
+            "Les unités et périodes comparées sont cohérentes.",
+            "Une erreur numérique est sanctionnée ici seulement."
+          ],
+          "excluded": [
+            "Ne pas juger à nouveau le respect des contraintes ni la qualité du choix.",
+            "Un arrondi annoncé qui ne change pas l'arbitrage est recevable."
+          ]
+        },
+        {
+          "key": "hard-constraint-fit",
+          "weight": 30,
+          "objective": "Établir si l'option finale respecte toutes les limites fiables et non négociables du dossier.",
+          "required": [
+            "Chaque contrainte dure pertinente est appliquée.",
+            "Une option qui viole encore une borne est écartée, y compris comme fallback.",
+            "Aucune contrainte nouvelle n'est inventée."
+          ],
+          "excluded": [
+            "Ne pas transformer une préférence en obligation.",
+            "Ne pas supposer qu'un fait futur rendra une option admissible."
+          ]
+        },
+        {
+          "key": "committed-choice-boundary",
+          "weight": 35,
+          "objective": "Formuler un choix applicable, son action immédiate et la donnée explicite qui pourrait le rouvrir.",
+          "required": [
+            "Une option unique est retenue dans le périmètre demandé.",
+            "La prochaine action est concrète et compatible avec ce choix.",
+            "La frontière de révision découle d'un fait du dossier ou d'une information explicitement manquante."
+          ],
+          "excluded": [
+            "Ne pas recalculer les totaux ni repénaliser une borne déjà évaluée.",
+            "Une réserve générique comme si les conditions changent ne suffit pas pour mastered."
+          ]
+        }
+      ]
+    },
+    {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "archetype": "EXPLANATORY_ANALYSIS",
+      "passingScore": 75,
+      "criteria": [
+        {
+          "key": "source-fidelity",
+          "weight": 35,
+          "objective": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+          "required": [
+            "Les faits déterminants viennent du contexte fourni.",
+            "Les nombres, acteurs, délais et conditions restent exacts.",
+            "Les citations ou reformulations ne changent pas le sens."
+          ],
+          "excluded": [
+            "Ne pas exiger de source externe.",
+            "Une erreur factuelle est sanctionnée ici sans contaminer automatiquement les autres critères."
+          ]
+        },
+        {
+          "key": "mechanism-link",
+          "weight": 35,
+          "objective": "Relier explicitement les faits au mécanisme ou à la conclusion expliquée.",
+          "required": [
+            "Le lien entre cause, condition ou action et effet est explicite.",
+            "Une simple succession ou corrélation n'est pas présentée comme causalité certaine.",
+            "Le mécanisme reste compatible avec les faits fiables."
+          ],
+          "excluded": [
+            "Ne pas récompenser une conclusion répétée sans lien explicatif.",
+            "Ne pas repénaliser ici une faute factuelle déjà propriétaire de source-fidelity."
+          ]
+        },
+        {
+          "key": "uncertainty-boundary",
+          "weight": 30,
+          "objective": "Distinguer ce qui est établi, inféré ou encore inconnu et borner l'effet de cette incertitude.",
+          "required": [
+            "Les inconnues matérielles sont nommées sans inventer leur valeur.",
+            "Une conclusion conditionnelle indique le fait nouveau nécessaire.",
+            "Un fallback n'est proposé que s'il respecte déjà les contraintes du dossier."
+          ],
+          "excluded": [
+            "Ne pas confondre prudence vague et incertitude correctement bornée.",
+            "Ne pas supposer la levée future d'une contrainte dure."
+          ]
+        }
+      ]
+    },
+    {
+      "contractKey": "writing-v1-reflective-note",
+      "archetype": "REFLECTIVE_NOTE",
+      "passingScore": 75,
+      "criteria": [
+        {
+          "key": "event-sequence-grounding",
+          "weight": 30,
+          "objective": "Ancrer la réflexion dans une séquence et des observations présentes dans le dossier.",
+          "required": [
+            "Les événements, quantités et ordre utiles sont fidèles.",
+            "La note distingue observation et interprétation.",
+            "La concision complète est recevable."
+          ],
+          "excluded": [
+            "Ne pas évaluer la richesse stylistique.",
+            "Ne pas exiger une chronologie détaillée au-delà de ce qui soutient l'analyse."
+          ]
+        },
+        {
+          "key": "bounded-causal-agency",
+          "weight": 40,
+          "objective": "Décrire une contribution personnelle plausible sans s'attribuer toute la causalité.",
+          "required": [
+            "La part personnelle s'appuie sur un mécanisme observable.",
+            "Les causes alternatives présentes sont reconnues.",
+            "La causalité n'est pas plus certaine que les preuves."
+          ],
+          "excluded": [
+            "Ne pas récompenser une responsabilité totale non démontrée.",
+            "Ne pas exiger une culpabilité ou une auto-évaluation punitive."
+          ]
+        },
+        {
+          "key": "observable-transfer",
+          "weight": 30,
+          "objective": "Définir une pratique future et un signal observable permettant d'en juger l'effet.",
+          "required": [
+            "L'action future est concrète.",
+            "Le signal ou seuil d'observation est calculable ou vérifiable.",
+            "L'action répond au mécanisme identifié."
+          ],
+          "excluded": [
+            "Ne pas exiger un plan complet de projet.",
+            "Une intention générique sans signal observable ne peut pas être mastered."
+          ]
+        }
+      ]
+    },
+    {
+      "contractKey": "writing-v1-action-plan",
+      "archetype": "ACTION_PLAN",
+      "passingScore": 75,
+      "criteria": [
+        {
+          "key": "feasible-allocation",
+          "weight": 30,
+          "objective": "Allouer simultanément temps, moyens et responsabilités de façon exécutable.",
+          "required": [
+            "Les moyens critiques sont disponibles au moment où ils sont requis.",
+            "Les contraintes de capacité et de calendrier sont respectées.",
+            "Un fallback conserve la faisabilité au lieu de déplacer le défaut."
+          ],
+          "excluded": [
+            "Ne pas considérer un moyen utilisé après l'étape critique comme disponible pendant celle-ci.",
+            "Ne pas repénaliser le calcul d'une métrique."
+          ]
+        },
+        {
+          "key": "metric-and-decision-rule",
+          "weight": 45,
+          "objective": "Définir une métrique calculable et la décision préannoncée qui dépend de son résultat.",
+          "required": [
+            "Le numérateur, dénominateur ou mode de calcul est reconstructible.",
+            "Le seuil ou la règle de décision est annoncé avant observation.",
+            "Chaque issue matérielle mène à une action claire."
+          ],
+          "excluded": [
+            "Ne pas accepter une amélioration sans unité ni règle de calcul.",
+            "Ne pas inventer après coup une règle favorable."
+          ]
+        },
+        {
+          "key": "harm-stop-control",
+          "weight": 25,
+          "objective": "Relier un signal de risque à une condition d'arrêt et à une action immédiatement sûre.",
+          "required": [
+            "Le risque surveillé est défini.",
+            "La condition d'arrêt est observable.",
+            "L'action après arrêt ne viole aucune autre contrainte dure."
+          ],
+          "excluded": [
+            "Ne pas accepter arrêter si nécessaire sans déclencheur.",
+            "Ne pas proposer comme secours une option encore dangereuse ou hors capacité."
+          ]
+        }
+      ]
+    }
+  ],
+  "ownershipRule": "Une même erreur matérielle ne dégrade que son critère propriétaire, sauf partage explicitement authoré avant le corpus.",
+  "styleLengthAndOrthographyEvaluated": false,
+  "postAuthoringSemanticChangesAllowed": false
+}
