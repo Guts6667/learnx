@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "V4_WRITING_PILOT_PRICING_CALIBRATION",
+  "status": "READY_FOR_OWNER_ARBITRATION",
+  "measuredAt": "2026-08-24T14:26:14Z",
+  "scope": {
+    "action": "STANDARD",
+    "activityType": "writing",
+    "language": "fr-FR",
+    "targetKind": "EXERCISE",
+    "workflowKind": "SINGLE_MODEL",
+    "includesAutomaticSecondPass": true,
+    "publicSaleAuthorized": false,
+    "offeredCreditsPilotOnly": true
+  },
+  "runtimeIdentity": {
+    "benchmarkId": "learnx-french-text-correction-v3-1",
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "promptVersion": "2.2.0",
+    "requestProtocolVersion": "3.0.1"
+  },
+  "measurementIdentity": {
+    "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+    "corpusId": "learnx-french-writing-holdout-v1",
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "promptVersion": "2.2.0",
+    "requestProtocolVersion": "3.0.1",
+    "scientificVerdict": "NO_GO",
+    "productUse": "COST_CALIBRATION_FOR_BOUNDED_PILOT"
+  },
+  "sourceArtifacts": {
+    "attempts": {
+      "path": "../results/2026-08-24T14-04-20-269Z.attempts.json",
+      "sha256": "8341fce03ccfbb7bcb15c78fffd792d295de743191522540a7336f756b08b0c4"
+    },
+    "corpus": {
+      "path": "../hybrid/writing-only-fr-v1/corpus.sealed.json",
+      "sha256": "13ef1e6f696ef71ff7da1371bb263c7b3858d6ec737f1f4f6e44ede15b802e22"
+    },
+    "terminalVerdict": {
+      "path": "../hybrid/writing-only-fr-v1/exam-verdict.final.json",
+      "sha256": "fe4a0f96b3362e6100d6e1632e0c4745e06a0a51b91c20a09b67ea2f860aebd1"
+    }
+  },
+  "sample": {
+    "semanticCases": 24,
+    "repetitions": 3,
+    "logicalRuns": 72,
+    "primaryCalls": 72,
+    "automaticSecondPassCalls": 6,
+    "transportRetries": 0,
+    "responseChars": {
+      "minimum": 176,
+      "median": 375.5,
+      "p75": 421.25,
+      "p90": 527.8,
+      "maximum": 589
+    }
+  },
+  "supplierCostUsdByLogicalRun": {
+    "minimum": 0.016158,
+    "median": 0.01968,
+    "p75": 0.0213975,
+    "p90": 0.0230361,
+    "p95": 0.04016505,
+    "maximum": 0.045228,
+    "mean": 0.02155320833333334,
+    "total": 1.551831
+  },
+  "loadedCostAssumption": {
+    "procurementFactor": 1.055,
+    "nonRecoverableVatFactor": 1.2,
+    "fxCushionFactor": 1.03,
+    "combinedFactor": 1.30398,
+    "currencyNote": "USD-equivalent before an actual USD/EUR conversion rate is fixed",
+    "medianUsdEquivalent": 0.0256623264,
+    "p90UsdEquivalent": 0.030038613678,
+    "maximumUsdEquivalent": 0.05897640744
+  },
+  "ownerOptions": [
+    {
+      "key": "MEASURED_SHORT_ONLY",
+      "recommendedFor": "methodological fidelity",
+      "maximumInputChars": 600,
+      "creditsPerEuroHypothesis": 100,
+      "estimatedCredits": 3,
+      "maximumReservedCredits": 4,
+      "tradeoff": "Directly supported by the measured response-size range, but restrictive for a two-scenario answer."
+    },
+    {
+      "key": "BOUNDED_PRODUCT_PILOT",
+      "recommendedFor": "faster usable pilot",
+      "maximumInputChars": 1500,
+      "creditsPerEuroHypothesis": 100,
+      "estimatedCredits": 3,
+      "maximumReservedCredits": 6,
+      "tradeoff": "More practical for learners and covered by the observed loaded maximum, but the input-size extension is an explicit extrapolation rather than a measured P90 class."
+    }
+  ],
+  "ownerDecision": null,
+  "activation": {
+    "catalogStatus": "DRAFT",
+    "effectiveAt": null,
+    "runtimePromotionAuthorized": false,
+    "requiresExplicitOwnerApproval": true
+  }
+}

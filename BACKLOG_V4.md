@@ -2,7 +2,7 @@
 
 ## Statut et autorité
 
-- Version : 1.6.1
+- Version : 1.6.2
 - Statut : **pilote V4 writing-only autorisé par le Propriétaire — raccord et finition en cours**
 - Dernière consolidation : 24 août 2026 — livraison limitée avec technologie actuelle et Totem approuvé
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
@@ -1093,6 +1093,20 @@ Amendement de statut (détails et décisions dans
 ## V4-007 — Catalogue de prix versionné et devis serveur
 
 **Priorité : P0 finance/produit. Dépendances : V4-003 et V4-006.**
+
+### Reprise pilote — 24 août 2026
+
+- La structure catalogue/devis et les garde-fous runtime sont livrés.
+- La campagne Writing finale fournit 72 workflows réconciliés : médiane
+  fournisseur `0,019680 USD`, P90 `0,0230361 USD`, maximum `0,045228 USD`.
+- La source mesure une classe courte de 176 à 589 caractères et conserve son
+  verdict scientifique `NO-GO`. Elle calibre uniquement le pilote produit
+  borné autorisé dans l'amendement d'exécution.
+- Les deux options de borne et de réserve sont consignées dans
+  `docs/V4_007_PILOT_CALIBRATION.md` et dans l'artefact machine lié par digest.
+- **Gate restant :** Rayan doit choisir l'option A ou B et confirmer ou refuser
+  la parité pilote de 100 crédits/€. Jusqu'à cet arbitrage, le catalogue reste
+  `DRAFT`, aucun devis n'est émis et aucune vente publique n'est ouverte.
 
 ### Gate de consultation avant clôture
 

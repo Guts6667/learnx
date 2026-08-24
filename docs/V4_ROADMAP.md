@@ -50,10 +50,10 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
    forcer un cadre » porte désormais sa consigne exacte et le contrat V4
    `PUBLISHED` dans le bundle. Le déploiement du seed et la QA preview restent
    nécessaires avant qu'il soit visible dans un environnement partagé.
-2. **Catalogue pilote actif** : le devis dépend d'une version de catalogue
-   serveur compatible avec l'identité promue. Aucune valeur ne doit être
-   inventée dans le code ; la version calibrée doit être activée explicitement
-   pour les crédits offerts.
+2. **Catalogue pilote à arbitrer** : les mesures Writing sont désormais liées
+   et calibrées dans `docs/V4_007_PILOT_CALIBRATION.md` (médiane, P90, maximum,
+   tailles et deux options). Le devis dépend encore du choix explicite de la
+   borne et de la parité pilote avant activation pour les crédits offerts.
 3. **Configuration de déploiement** : clé OpenRouter, assignation exacte
    Sonnet/Anthropic et kill switch doivent être vérifiés en preview puis en
    production.

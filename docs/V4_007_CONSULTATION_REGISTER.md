@@ -1,14 +1,39 @@
 # V4-007 — Registre de consultation et d'arbitrage
 
-Statut : **structure technique livrable, activation économique bloquée**
+Statut : **mesures reçues, arbitrage propriétaire requis avant activation**
 
-Date de consolidation : 2026-08-12
+Date de consolidation : 2026-08-24
 
 Périmètre : catalogue tarifaire versionné et devis serveur pour la correction IA
 
 Ce registre est une preuve de consultation. Il ne constitue ni une grille de
 prix active, ni une autorisation de commercialisation. Aucun catalogue, prix,
 pack ou coefficient n'est créé par le seed ou la migration V4-007.
+
+## Addendum pilote Writing — 24 août 2026
+
+La décision produit du 24 août autorise un pilote `writing/fr-FR` financé par
+crédits offerts malgré le `NO-GO` scientifique. Elle ne permet ni vente
+publique, ni activation implicite d'une valeur de crédit.
+
+La campagne Writing finale apporte les mesures qui manquaient le 12 août : 72
+workflows logiques, 72 appels primaires, 6 secondes passes, aucun retry et
+`1,551831 USD` de coût fournisseur réconcilié. La médiane est `0,019680 USD`,
+le P90 `0,0230361 USD` et le maximum `0,045228 USD`. Sous l'hypothèse chargée
+défavorable `×1,30398`, ils deviennent respectivement `0,025662`, `0,030039`
+et `0,058976 USD-éq.`.
+
+La taille mesurée reste courte : 176 à 589 caractères. Deux options ont donc
+été préparées, sans activation :
+
+- **A — mesurée stricte** : 600 caractères, estimation 3 crédits, réserve 4 ;
+- **B — pilote produit borné** : 1 500 caractères, estimation 3 crédits,
+  réserve 6, avec extrapolation explicitement signalée.
+
+Ces conversions utilisent uniquement l'hypothèse non validée de 100 crédits
+par euro. `docs/V4_007_PILOT_CALIBRATION.md` porte les tradeoffs et recommande
+B pour l'utilisabilité du pilote fermé. L'artefact machine conserve
+`ownerDecision: null` et `catalogStatus: DRAFT` jusqu'au choix de Rayan.
 
 ## Consultations V4-007
 
