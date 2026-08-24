@@ -599,3 +599,60 @@ Le résumé canonique revu porte l'empreinte
 Il conserve `humanReviewApproved = false`, `autonomousReviewApproved = false`,
 `reviewAuthority = NONE` et `promotionEligible = false` pour l'identité
 candidate. Aucun manifeste d'approbation humaine n'a été simulé.
+
+### 8.10 Clôture méthodologique et dette transmise à l'examen Writing
+
+Cette entrée append-only applique le manifeste canonique `REJECTED` au résumé
+et clôt définitivement la campagne générale. La chaîne de preuve lie les
+tentatives (`ea4e3c2f7deb10488443296c8058de7f6b505eccbc2cd314b8cdcf63a6b3e097`),
+le paquet aveugle (`1fffa6726992b428d34c7daf5096c6207c4f739c6aca4ac27b86cf72c8980cbb`),
+les jugements gelés (`46097400f8cc3b99f1ae9427187a716115c5bdd1bcc52cb5122ff8280a9c7b31`),
+le manifeste de revue (`42b7b8e8a7cf8224aae6fcc7db0f98f239867defe08c14e8b675794f13f3f58e`)
+et le résumé revu (`1208f0409add8f295edb2737f107e17e27bbc931071952794e9ffd854abf3248`).
+Le verdict général ne peut plus être rejoué, amendé ni utilisé comme examen.
+Le manifeste append-only de supersession
+(`b2285c45da85449e41075fddb88f278f9894493146d5d7498c858e59b759eebd`)
+marque le brouillon d'authoring et le placeholder de revue humaine
+`SUPERSEDED` sans altérer leurs fichiers ni leurs empreintes historiques.
+
+La typologie canonique est la suivante :
+
+- erreurs modèle confirmées : deux faux PASS sur le cas Reflection limite, une
+  erreur éliminatoire de préséance sur le cas Practice et une recommandation
+  Writing incompatible avec une contrainte dure ;
+- dette d'oracle : le gold Project Aurora `partial` était contestable et devra
+  devenir `insufficient` dans de futurs authorings comparables ; le corpus
+  consommé demeure pourtant immuable ;
+- défaut éliminatoire Practice : le modèle a ajouté une condition de complétude
+  absente à la clause 3, puis a laissé la clause résiduelle 4 primer malgré la
+  règle explicite de première clause applicable. Son feedback a donc enseigné
+  `À COMPLÉTER` au lieu de `MONDIALE`. Les futurs cas Writing ne doivent pas
+  reproduire une préséance implicite : si l'ordre de règles intervient, portée,
+  ordre et préconditions doivent être explicites et le gold mécaniquement
+  décidable.
+
+La vérification préalable a trouvé une erreur modèle touchant `WRITING` : sur
+`holdout4-writing-orchestra-freight-injection`, le feedback suggère un fallback
+Air qui viole encore le délai contractuel dur de douze heures. Le prochain
+corpus Writing doit donc inclure trois sondes distinctes, sans copier le cas
+historique :
+
+1. un fallback séduisant qui viole une échéance non négociable ;
+2. un fallback moins coûteux qui viole une capacité ou un plafond dur ;
+3. un fallback qui ne devient admissible qu'après l'apparition explicite d'un
+   fait nouveau, que le feedback ne peut pas supposer.
+
+La dette transmise aux deux auteurs indépendants est figée avant rédaction :
+
+1. sur les profils `ERRONEOUS`, les golds doivent être strictement décidables,
+   sans indulgence de formulation ;
+2. le motif Practice ci-dessus ne doit pas être reproduit ;
+3. les trois sondes de contraintes dures issues de l'erreur Writing sont
+   obligatoires.
+
+Enfin, une éventuelle promotion Writing ne peut devenir un GO runtime que si
+le pin d'identité refuse, avant devis, réservation ou appel fournisseur, tout
+contrat dont `activityType` n'est pas `writing`. Ce filtre est un critère
+d'acceptation testé et porte le motif : « défaut éliminatoire Practice confirmé
+par revue canonique du 24 août ». La revue reste autonome, liée par digest ;
+`humanReviewApproved` demeure faux.

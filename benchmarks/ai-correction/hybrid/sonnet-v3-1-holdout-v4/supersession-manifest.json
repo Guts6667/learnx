@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "APPEND_ONLY_ARTIFACT_SUPERSESSION_MANIFEST",
+  "status": "FINAL",
+  "createdAt": "2026-08-24T12:19:32Z",
+  "campaignId": "learnx-french-text-correction-sonnet-v3-1-holdout-v4",
+  "sourceArtifactsRemainImmutable": true,
+  "supersessions": [
+    {
+      "path": "manifest.draft.json",
+      "sha256": "e483ef8737bba9a1c24ee1bdd43abc579f57a279d85330fbc73b72c64a880bf5",
+      "status": "SUPERSEDED",
+      "supersededByPath": "manifest.final.json",
+      "supersededBySha256": "d3a46d7876da1220222611b6fcabbb995e970e46935ff8868b63bb2fd7ea3a9f",
+      "reason": "Le manifeste final d'authoring a été gelé sans muter le brouillon source."
+    },
+    {
+      "path": "review-manifest.pending.json",
+      "sha256": "69c1cea58efe6ee34d4b4c2f740aa474cc5abe4fbf795df7071a05b90d3ab4a2",
+      "status": "SUPERSEDED",
+      "supersededByPath": "corpus-review.autonomous.json",
+      "supersededBySha256": "c00ca54ed2da368676df0c13ff6bcdf30e05d595eb0cf1282c848ddc841acffe",
+      "reason": "La revue autonome liée par digest remplace le placeholder humain sans simuler humanReviewApproved."
+    }
+  ]
+}

@@ -895,6 +895,31 @@ Amendement de statut (détails et décisions dans
   crée une nouvelle identité préenregistrée ; les identités v1 et v2/v2-1/v2-2
   figées ne sont jamais réécrites.
 
+### État autoritaire au 24 août 2026 — campagne générale close, examen Writing préenregistré
+
+- La campagne générale v3-1 à quatre familles est `NO-GO` définitif et son
+  holdout est consommé. La revue autonome canonique liée par digest a confirmé
+  des erreurs modèle en Reflection, Practice et Writing, ainsi qu'un gold
+  Project trop indulgent ; elle ne simule aucune approbation humaine.
+- Le défaut Practice est éliminatoire hors du périmètre Writing : toute
+  promotion suivante doit refuser `activityType != writing` avant devis,
+  réservation et appel fournisseur.
+- Le seul chemin de promotion encore ouvert est l'identité neuve
+  `learnx-french-writing-correction-sonnet-v3-1-guarded-v1`, en `fr-FR`, sur
+  24 cas frais × 3 répétitions, dans le plafond fournisseur restant de
+  `2.18 USD`.
+- Le préenregistrement, la matrice à deux auteurs, le seuil de désaccord
+  inter-auteurs de 15 %, les trois sondes de contraintes dures et la garde
+  inclusive ±5 sont définis dans
+  `benchmarks/ai-correction/hybrid/writing-only-fr-v1/`.
+- Aucun cas ni gold ne peut être rédigé avant le commit de ce
+  préenregistrement. Seuls les étalons convergents sont conservés ; au-delà de
+  15 % de désaccord, ou si une cellule reste sans étalon convergent, le travail
+  s'arrête et revient au Propriétaire.
+- Après une unique exécution, le verdict est `GO` ou `NO_GO`, puis arrêt. Un GO
+  autorise seulement la proposition d'un plan de scellement runtime ; il ne
+  constitue pas une activation automatique de V4-010.
+
 ---
 
 ## V4-004 — Adaptateur OpenRouter central et sortie structurée

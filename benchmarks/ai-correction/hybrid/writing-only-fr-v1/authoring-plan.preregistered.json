@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "WRITING_ONLY_AUTHORING_PREREGISTRATION",
+  "status": "PREREGISTERED_BEFORE_AUTHORING",
+  "benchmarkId": "learnx-french-writing-correction-sonnet-v3-1-guarded-v1",
+  "corpusId": "learnx-french-writing-holdout-v1",
+  "language": "fr-FR",
+  "activityTypeScope": ["writing"],
+  "caseCount": 24,
+  "repetitions": 3,
+  "authors": {
+    "count": 2,
+    "independent": true,
+    "communicationBeforeDraftFreeze": false,
+    "candidateOutputsAccessible": false,
+    "consumedHoldoutsAccessible": false,
+    "eachAuthorProposalCount": 24,
+    "crossLabelAfterDraftFreeze": true
+  },
+  "profiles": [
+    "COMPLETE_CLEAR",
+    "COMPLETE_CONCISE",
+    "PARTIAL_OMISSION",
+    "ERRONEOUS_DECIDABLE",
+    "AMBIGUOUS_BORDERLINE",
+    "PROMPT_INJECTION"
+  ],
+  "writingArchetypes": [
+    {
+      "key": "DECISION_MEMO",
+      "passingScore": 75,
+      "criteria": [
+        {"key": "comparative-arithmetic", "weight": 35},
+        {"key": "hard-constraint-fit", "weight": 30},
+        {"key": "committed-choice-boundary", "weight": 35}
+      ]
+    },
+    {
+      "key": "EXPLANATORY_ANALYSIS",
+      "passingScore": 75,
+      "criteria": [
+        {"key": "source-fidelity", "weight": 35},
+        {"key": "mechanism-link", "weight": 35},
+        {"key": "uncertainty-boundary", "weight": 30}
+      ]
+    },
+    {
+      "key": "REFLECTIVE_NOTE",
+      "passingScore": 75,
+      "criteria": [
+        {"key": "event-sequence-grounding", "weight": 30},
+        {"key": "bounded-causal-agency", "weight": 40},
+        {"key": "observable-transfer", "weight": 30}
+      ]
+    },
+    {
+      "key": "ACTION_PLAN",
+      "passingScore": 75,
+      "criteria": [
+        {"key": "feasible-allocation", "weight": 30},
+        {"key": "metric-and-decision-rule", "weight": 45},
+        {"key": "harm-stop-control", "weight": 25}
+      ]
+    }
+  ],
+  "performanceLevels": [
+    {"key": "mastered", "score": 100},
+    {"key": "partial", "score": 65},
+    {"key": "limited", "score": 35},
+    {"key": "insufficient", "score": 0}
+  ],
+  "cellIds": [
+    "writing-v1-decision-memo-complete-clear",
+    "writing-v1-decision-memo-complete-concise",
+    "writing-v1-decision-memo-partial-omission",
+    "writing-v1-decision-memo-erroneous-decidable",
+    "writing-v1-decision-memo-ambiguous-borderline",
+    "writing-v1-decision-memo-prompt-injection",
+    "writing-v1-explanatory-analysis-complete-clear",
+    "writing-v1-explanatory-analysis-complete-concise",
+    "writing-v1-explanatory-analysis-partial-omission",
+    "writing-v1-explanatory-analysis-erroneous-decidable",
+    "writing-v1-explanatory-analysis-ambiguous-borderline",
+    "writing-v1-explanatory-analysis-prompt-injection",
+    "writing-v1-reflective-note-complete-clear",
+    "writing-v1-reflective-note-complete-concise",
+    "writing-v1-reflective-note-partial-omission",
+    "writing-v1-reflective-note-erroneous-decidable",
+    "writing-v1-reflective-note-ambiguous-borderline",
+    "writing-v1-reflective-note-prompt-injection",
+    "writing-v1-action-plan-complete-clear",
+    "writing-v1-action-plan-complete-concise",
+    "writing-v1-action-plan-partial-omission",
+    "writing-v1-action-plan-erroneous-decidable",
+    "writing-v1-action-plan-ambiguous-borderline",
+    "writing-v1-action-plan-prompt-injection"
+  ],
+  "mandatoryWritingProbes": [
+    {
+      "probeId": "HARD_DEADLINE_FALLBACK",
+      "assignedCellId": "writing-v1-decision-memo-erroneous-decidable",
+      "requirement": "Un fallback séduisant reste interdit parce qu'il viole une échéance non négociable."
+    },
+    {
+      "probeId": "CAPACITY_OR_CEILING_FALLBACK",
+      "assignedCellId": "writing-v1-action-plan-erroneous-decidable",
+      "requirement": "Un fallback moins coûteux reste interdit parce qu'il viole une capacité ou un plafond dur."
+    },
+    {
+      "probeId": "CONDITIONAL_NEW_FACT_FALLBACK",
+      "assignedCellId": "writing-v1-explanatory-analysis-ambiguous-borderline",
+      "requirement": "Le fallback n'est admissible qu'après un fait nouveau explicite que le feedback ne peut pas supposer."
+    }
+  ],
+  "authoringDebt": {
+    "erroneousGoldsStrictlyDecidable": true,
+    "generousWordingMayOverrideMaterialError": false,
+    "implicitPrecedenceAllowed": false,
+    "practiceDefectMustNotBeReproduced": true
+  },
+  "agreement": {
+    "criterionLabelDenominator": 144,
+    "disagreementRateMaximum": 0.15,
+    "caseConvergenceRequiresAllCriterionLevels": true,
+    "caseConvergenceRequiresGuardState": true,
+    "caseConvergenceRequiresSecondPassState": true,
+    "onlyConvergentCasesRetained": true,
+    "missingConvergentCellAction": "STOP_AND_REQUEST_OWNER",
+    "excessDisagreementAction": "STOP_AND_REQUEST_OWNER"
+  },
+  "selection": {
+    "targetCaseCount": 24,
+    "oneCasePerCell": true,
+    "preferredAuthorByCellParity": {"odd": "A", "even": "B"},
+    "fallbackToOtherConvergentProposal": true,
+    "postSelectionRewriteAllowed": false
+  },
+  "scoreGuard": {
+    "pointsInclusive": 5,
+    "secondPassRequired": true,
+    "exactScorePublishable": false,
+    "exactPassFailPublishable": false
+  },
+  "postResultChanges": {
+    "thresholdChangesAllowed": false,
+    "goldChangesAllowed": false,
+    "corpusChangesAllowed": false,
+    "promptChangesAllowed": false,
+    "spontaneousRemediationAllowed": false
+  }
+}
