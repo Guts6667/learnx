@@ -1,8 +1,18 @@
-# Holdout hybride Sonnet v3.1 — DRAFT
+# Holdout hybride Sonnet v3.1 — REJETÉ
 
-Ce dossier prépare hors ligne le troisième holdout du pipeline Sonnet v3.1.
-Il ne constitue ni une approbation, ni un scellement, ni une autorisation
-d'exécution.
+Ce brouillon a été rejeté par une revue autonome indépendante Codex
+explicitement identifiée comme IA, et non comme reviewer humain. Il ne constitue
+ni une approbation, ni un scellement, ni une autorisation d'exécution.
+
+## Interdiction de réutilisation
+
+Le corpus, ses 24 cas et ses 72 golds ne doivent pas être corrigés en place,
+recyclés, mélangés à un autre holdout, scellés ou exécutés. Ils sont conservés
+uniquement comme preuve du rejet. Toute suite exige une réauthoring complète
+depuis zéro sous un nouvel `corpusId`, un nouveau digest et une nouvelle revue
+indépendante.
+
+Rapport exhaustif : `INDEPENDENT_REVIEW_REJECTED.md`.
 
 ## Identité gelée visée
 
@@ -16,11 +26,10 @@ d'exécution.
 
 ## Artefacts
 
-- `corpus.draft.json` : 24 cas synthétiques nouveaux par rapport aux corpus de
-  développement et aux deux holdouts consommés ; les quatre contrats et la
-  revue restent `DRAFT` / `PENDING` ;
+- `corpus.draft.json` : corpus rejeté, préservé sans correction comme preuve ;
 - `configuration.draft.json` : snapshot non exécutable de l'identité visée ;
-- `manifest.draft.json` : couverture, audit, besoins de revue et budget.
+- `manifest.draft.json` : métadonnées du rejet et digest du corpus revu ;
+- `INDEPENDENT_REVIEW_REJECTED.md` : revue autonome indépendante exhaustive.
 
 La catégorie pédagogique `PARTIAL` ne prouve pas la livraison partielle. Cette
 dernière ne peut être mesurée qu'après une exécution autorisée, dans les
@@ -28,7 +37,11 @@ artefacts de tentatives finales, via `unsureCriteria` et
 `unsureCriterionRate`. Le corpus contient seulement des cas de stress conçus
 pour exercer ce chemin sans préjuger de son résultat.
 
-## Gates avant toute ouverture
+## Gates historiques — ouverture désormais interdite
+
+La liste ci-dessous décrivait le chemin envisagé avant la revue. Le verdict
+`REJECT` l'annule pour ce corpus : aucune finalisation ni ouverture n'est
+permise.
 
 1. validation de schéma et contrôles déterministes locaux ;
 2. revue indépendante des 72 golds, des calculs et de l'indépendance des
