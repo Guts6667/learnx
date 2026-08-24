@@ -2,20 +2,54 @@
 
 ## Statut et autorité
 
-- Version : 1.4.0
-- Statut : **scope produit validé et figé — implémentation après clôture V3.5**
-- Dernière consolidation : 13 août 2026 — expérimentation Gemini sous enveloppe déterministe
+- Version : 1.5.0
+- Statut : **pilote V4 writing-only autorisé par le Propriétaire — raccord et finition en cours**
+- Dernière consolidation : 24 août 2026 — livraison limitée avec technologie actuelle et Totem approuvé
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
   Atlas sans vert validée le 10 août 2026
 
-Le contrat fonctionnel autoritaire pour la correction formative composite est
-`docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md`. Les deux références Atlas validées
-pour les crédits et la correction sont :
+Le contrat composite historique est conservé dans
+`docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md` comme preuve de recherche, sans
+autorité sur le runtime limité défini par l’amendement du 24 août. Les deux
+références Atlas historiques pour les crédits et la correction sont :
 
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html`.
+
+### Amendement d’exécution autoritaire — 24 août 2026
+
+Cet amendement prime sur les passages expérimentaux antérieurs lorsqu’ils
+décrivent le pipeline à activer ou le design à implémenter. Ils restent
+consultables comme historique de recherche et ne doivent pas être effacés.
+
+- La V4 est livrée comme pilote **strictement formatif, writing/fr-FR et faible
+  risque**, sans effet sur la progression ni prétention de validation de
+  maîtrise.
+- L’identité runtime est figée sur Sonnet 4.6, prompt 2.2.0, protocole 3.0.1,
+  route Anthropic sans fallback ni retry. Une seconde passe du même modèle est
+  déclenchée dans la bande inclusive de ±5 points autour du seuil.
+- La campagne Writing finale demeure scientifiquement `NO-GO` : sept faux PASS
+  et 80,19 % d’accord critériel. L’ouverture limitée relève d’un arbitrage
+  produit explicite, avec défauts surveillés ; elle ne doit jamais être décrite
+  comme une promotion scientifique.
+- Les résultats sont livrés critère par critère. Un critère non fiable est
+  présenté « à retravailler » sans score exact ; le prix du devis reste entier,
+  conformément à la décision du Propriétaire. Le pilote initial consomme des
+  crédits offerts et n’ouvre pas un achat public de correction.
+- Le scope writing est bloqué au devis et à l’exécution. L’identité modèle,
+  fournisseur, prompt, benchmark et couverture de seconde passe doit concorder
+  avec le catalogue actif avant toute réservation.
+- Aucun nouvel appel de benchmark, examen, changement de seuil, gold, prompt ou
+  modèle n’est autorisé pour cette livraison.
+- Le langage visuel ferme est désormais défini par
+  `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` et les paquets Totem mobile/desktop
+  approuvés le 24 août. Ils remplacent Atlas comme autorité d’implémentation ;
+  Atlas reste une référence historique.
+- Ordre de livraison : raccord runtime → Totem mobile → validation mobile →
+  Totem desktop → validation desktop → surfaces correction/crédits/admin →
+  recherche publique → gate de release.
 
 Ce document fixe le périmètre et l'ordre de livraison de V4. Un ticket ne
 devient une instruction d'implémentation qu'après :
