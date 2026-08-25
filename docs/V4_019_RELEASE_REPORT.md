@@ -290,3 +290,19 @@ Les rendus réels à `390` et `1440 px` sont sans débordement. Le test landing
 ciblé, lint, typecheck, les `906` tests Vitest et le build sont verts. Aucun
 appel modèle, changement de progression ou mutation financière n'a été
 effectué par ce correctif.
+
+## Correctif de diffusion PWA — 25 août 2026
+
+Le bundle portant la carte L-P01 corrigée était disponible sur la preview,
+mais une page déjà contrôlée par l'ancien service worker pouvait rester sur
+l'ancien shell jusqu'à un rechargement manuel. Le tag
+`v4a-premerge-2026-08-25-r1` reste immuable comme preuve de cet écart et est
+remplacé par `v4a-premerge-2026-08-25-r2`.
+
+Le fournisseur PWA écoute désormais le remplacement effectif du service
+worker. Lorsqu'un contrôleur existait déjà, la page est rechargée une seule
+fois après `controllerchange`. La première installation ne recharge pas la
+page, ce qui évite une boucle ou une interruption inutile du parcours. Deux
+tests unitaires couvrent ces deux branches ; la matrice Vitest complète compte
+désormais `908` tests réussis. Ce mécanisme ne change ni le cache des données
+métier, ni les contrats IA, ni les états financiers.

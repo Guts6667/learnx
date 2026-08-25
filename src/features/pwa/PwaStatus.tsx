@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { isStandaloneDisplayMode } from '@/features/pwa/display-mode';
 import { useOnlineStatus } from '@/features/pwa/online-status';
+import { reloadOnServiceWorkerReplacement } from '@/features/pwa/service-worker-update';
 import { useI18n } from '@/i18n';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -60,6 +61,15 @@ export function PwaProvider({ children }: { children: ComponentChildren }) {
     offlineReady: [offlineReady, setOfflineReady],
     updateServiceWorker,
   } = useRegisterSW({ immediate: true });
+
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return undefined;
+
+    return reloadOnServiceWorkerReplacement(
+      navigator.serviceWorker,
+      () => window.location.reload(),
+    );
+  }, []);
 
   useEffect(() => {
     const captureInstallPrompt = (event: Event) => {
