@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What blind review changed in our protocol — LearnX</title>
+    <meta
+      name="description"
+      content="Audits exposed debatable boundaries, double penalties and confusion between learner hesitation and evaluator uncertainty."
+    />
+    <link
+      rel="canonical"
+      href="https://learn-x.app/research/ai-correction/revue-aveugle/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://learn-x.app/research/ai-correction/revue-aveugle/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://learn-x.app/research/ai-correction/revue-aveugle/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://learn-x.app/research/ai-correction/revue-aveugle/"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="What blind review changed in our protocol."
+    />
+    <meta
+      property="og:description"
+      content="Auditing the benchmark before judging models."
+    />
+    <meta
+      property="og:url"
+      content="https://learn-x.app/research/ai-correction/revue-aveugle/en.html"
+    />
+    <meta property="article:published_time" content="2026-08-21T00:00:00Z" />
+    <meta property="article:modified_time" content="2026-08-21T00:00:00Z" />
+    <link rel="stylesheet" href="/research/journal.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "What blind review changed in our protocol.",
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "inLanguage": "en"
+      }
+    </script>
+    <script src="/research/article.js" defer></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#article">Skip to article</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Utility navigation">
+        <a href="/research/en.html">Research</a
+        ><a
+          href="/research/ai-correction/revue-aveugle/"
+          lang="fr"
+          hreflang="fr"
+          >FR</a
+        >
+      </nav>
+    </header>
+    <main>
+      <header class="article-hero shell">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="/research/en.html">Research</a
+          ><span aria-hidden="true">›</span><span>AI assessment · 02</span>
+        </nav>
+        <p class="eyebrow">Protocol · Experimental research</p>
+        <h1>What blind review changed in our protocol.</h1>
+        <p class="article-deck">
+          Before comparing more models, we had to verify that our expectations
+          did not force a single pedagogical interpretation and that review
+          packages did not expose the gold labels.
+        </p>
+        <div class="article-meta">
+          <span>Research from 12 August 2026</span
+          ><span>Retrospectively published 21 August 2026</span
+          ><span>Version 1</span>
+        </div>
+      </header>
+      <div class="article-layout shell" id="article">
+        <aside class="article-aside">
+          <h2>In this article</h2>
+          <ol>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#findings">Findings</a></li>
+            <li><a href="#changes">Changes</a></li>
+            <li><a href="#limits">Limits</a></li>
+          </ol>
+          <div class="share-actions">
+            <button
+              class="share-button"
+              type="button"
+              data-share-article
+              data-canonical-url="https://learn-x.app/research/ai-correction/revue-aveugle/en.html"
+              data-copied-label="Link copied."
+              data-shared-label="Article shared."
+              data-failed-label="Could not copy. Use this page address."
+            >
+              Share article
+            </button>
+          </div>
+          <p class="share-status" data-share-status aria-live="polite"></p>
+        </aside>
+        <article class="article-body">
+          <section id="problem">
+            <h2>The benchmark was part of the experiment</h2>
+            <p>
+              An initial review showed that some model disagreements came from
+              debatable gold boundaries. More importantly, the four responses
+              labelled “ambiguous” could be graded confidently: learner
+              hesitation did not mean the evaluator needed a second pass.
+            </p>
+            <blockquote>
+              Response ambiguity and evaluation uncertainty are different
+              phenomena.
+            </blockquote>
+          </section>
+          <section id="findings">
+            <h2>Three methodological defects</h2>
+            <h3>An artificial second pass</h3>
+            <p>
+              The corpus expected a second pass for all four ambiguous cases
+              even though the rubrics enabled stable classification. The gate
+              measured a corpus convention rather than evaluator quality.
+            </p>
+            <h3>Criteria contaminating each other</h3>
+            <p>
+              A missing target could lower both the indicator and plan
+              coherence. A concise reflection could be penalised for not
+              specifying a future action owned by another criterion.
+            </p>
+            <h3>A falsely blind package</h3>
+            <p>
+              The first review artefact still contained expectations and
+              rationales. That review was invalidated, and the generator was
+              corrected before a genuinely blind reading.
+            </p>
+          </section>
+          <section id="changes">
+            <h2>What changed</h2>
+            <ul>
+              <li>
+                Second pass was separated from the “ambiguous” category and
+                derived from explicit signals.
+              </li>
+              <li>
+                Each criterion received a penalty owner to prevent double
+                penalties.
+              </li>
+              <li>
+                Blind packages exclude model, provider, gold, category and cost.
+              </li>
+              <li>
+                Boundary disagreements are separated from serious failures.
+              </li>
+              <li>
+                A distinct holdout was prepared to avoid promoting on tuning
+                cases.
+              </li>
+            </ul>
+          </section>
+          <section id="limits">
+            <h2>What this review is not</h2>
+            <p>
+              These research audits do not create a human correction service.
+              LearnX targets an autonomous formative system that can abstain.
+              Synthetic corpora and pseudo-oracles test contractual compliance;
+              they do not prove universal pedagogical truth.
+            </p>
+            <div class="article-callout">
+              <strong>Decision</strong>
+              <p>
+                Never lower a threshold to pass a model; first correct the
+                protocol when the target itself is inconsistent.
+              </p>
+            </div>
+          </section>
+        </article>
+      </div>
+      <footer class="article-footer shell">
+        <nav class="article-navigation" aria-label="Series articles">
+          <a href="/research/ai-correction/premiers-benchmarks/en.html"
+            ><small>Previous article</small><strong>First benchmark</strong></a
+          ><a href="/research/ai-correction/pipeline-composite/en.html"
+            ><small>Next article</small
+            ><strong>Are two models better than one?</strong></a
+          >
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

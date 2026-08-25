@@ -1,41 +1,124 @@
-# Ingénieur logiciel en production — Construire SourceLab
+# SourceLab — Docker, API et socle d’ingestion
 
 ## Statut
 
-- Version : 1.0.0
-- Statut : `draft`
-- Classification : `CONTENT_ONLY`
-- Projet fil rouge : SourceLab, produit autonome dans un dépôt et une base séparés de LearnX
-- Durée indicative : 42 jours
-- Public : Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.
+- Version éditoriale : 2.1.0 publiée sur décision du propriétaire
+- Statut runtime : `active`
+- Priorité : P0, demandée par le propriétaire le 22 août 2026
+- Classification : `TECH_VALIDATION`
+- Identité runtime : `sourcelab-docker-api-socle-ingestion`
+- Projet fil rouge : dépôt SourceLab autonome, séparé de LearnX
+- Baseline vérifiée : commit `6dd1cda`, tag `checkpoint-00-starter`
+- Durée cible : 14 h 20, évaluations comprises
+- Rythme indicatif : sept séances, sans contrainte calendaire
 
-## Promesse produit
+Le parcours est ouvert avec son contenu 2.1 après validation explicite du
+propriétaire. Cette publication ne fabrique pas une revue indépendante : les
+sidecars conservent leur état éditorial et le pilote apprenant reste suivi
+comme amélioration prioritaire.
 
-Construire SourceLab V1 comme produit autonome : créer un projet, importer des matériaux, suivre leur traitement, vérifier leur provenance et exporter un Source Pack propre.
+## Promesse pédagogique
 
-## Résultats attendus
+Le parcours apprend à construire une verticale SourceLab locale : API
+Hono/Zod, image Docker, Compose, PostgreSQL/Prisma, ingestion Markdown, worker
+simple, tests et image GHCR traçable. Il prépare une `SourceVersion READY` pour
+le programme RAG suivant, sans prétendre couvrir une exploitation cloud.
 
-- Suivre et diagnostiquer une requête de bout en bout.
-- Containeriser une API et un worker TypeScript avec Docker et Compose.
-- Concevoir des contrats, transactions, jobs idempotents et migrations compatibles.
-- Tester les frontières réelles et construire une CI reproductible.
-- Déployer, observer et restaurer un service avec une méthode d’incident.
+Chaque leçon est désormais découpée en trois à six micro-séquences. Une
+micro-séquence introduit le vocabulaire, montre un diagramme ou un extrait réel
+du starter, donne une commande et sa sortie attendue, explique ce que cette
+sortie prouve, puis demande une seule action assortie d’un contrôle
+déterministe. Une documentation externe complète la synthèse LearnX ; elle ne
+porte plus l’explication principale.
 
-## Hors périmètre
+Les figures suivent sept raisonnements distincts : cycle d’une requête, contrat
+de configuration, couches d’image, réseau Compose, relations de données,
+machine d’états du worker et chaîne de livraison. Elles disposent d’un texte
+alternatif et le contenu adjacent en donne toujours l’équivalent textuel.
+La direction « Totem technique » retenue pose le code comme preuve et réserve
+le diagramme aux relations difficiles à lire dans le code : branche,
+cardinalité, changement de responsabilité ou état dans le temps. Les figures
+ne sont jamais décoratives ; sur mobile, leur région est défilable au clavier
+et leur résumé textuel demeure suffisant.
 
-- Administrer Kubernetes en production.
-- Devenir SRE ou DevOps.
-- Construire une plateforme cloud multi-région.
-- Ajouter des fonctions IA avant que le socle soit fiable.
+## Progression reconstruite
+
+1. Distinguer dépôt, processus Node, application Hono, route et cycle HTTP ;
+   diagnostiquer succès, 404 et méthode non prise en charge avec un request ID.
+2. Séparer lecture de l’environnement, parsing au démarrage, validation Zod,
+   handler et repository mémoire ; classer les erreurs de contrat et de
+   serveur.
+3. Distinguer image, container, couche et digest ; construire une image
+   multi-stage, mise en cache, non-root et configurée au runtime.
+4. Relier API et PostgreSQL par le réseau Compose ; expliquer pourquoi
+   `localhost` est faux depuis un container, migrer puis prouver readiness et
+   persistance.
+5. Modéliser `Project`, `Source`, `SourceVersion` et `ProcessingJob`, puis créer
+   version et job `QUEUED` dans une transaction vérifiée.
+6. Normaliser un texte, calculer son SHA-256 et faire évoluer un job vers
+   `READY` ou `FAILED`, tout en nommant les limites de concurrence et de retry.
+7. Relier risques, tests ciblés, intégration, smoke, CI, tag, SHA, digest GHCR
+   et rollback manuel.
+
+## Évaluations
+
+- Étape 1 : 20 min — réparer séparément `PORT` puis un `title` vide et fournir
+  statuts, logs, request ID et tests.
+- Étape 2 : 35 min — reconstruire une stack propre, prouver non-root,
+  readiness et persistance, puis diagnostiquer `localhost`.
+- Étape 3 : 60 min — rejouer la verticale, vérifier transaction, transitions,
+  checksum, CI, digest et rollback dans un journal de livraison.
+
+Les réponses libres restent formatives. La validation repose sur des preuves
+rejouables : tests, commandes, requêtes SQL, hashes, statuts CI et fichiers
+attendus.
+
+## État réel du starter
+
+Au 22 août 2026, `checkpoint-00-starter`, les sept tags solution et les trois
+checkpoints d’évaluation sont publiés dans le dépôt SourceLab. La PR SourceLab
+#1 et son merge `47243bb` ont passé deux fois la CI complète : image, migrations,
+PostgreSQL, intégration API/worker et smoke. Le README du starter documente les
+micro-actions, la comparaison d’une solution et la récupération sans perte.
+
+Cette gate technique est levée. L’alignement specs/seed est couvert par les
+tests de publication. La revue indépendante et le pilote L1 puis L3/L4 restent
+à renseigner ; la décision de publication du propriétaire ne vaut pas
+validation pédagogique générale.
+
+## Gates de publication et suivi
+
+### P0 — obligatoires
+
+- Starter : **réalisé** — TODO réels, solutions 01–07, checkpoints d’évaluation
+  dégradés, tags et commits vérifiés, aucun secret détecté.
+- Contenu : synthèse interne suffisante, extraits exacts, au moins six
+  diagrammes utiles, commandes et sorties testées, une intention par
+  micro-activité.
+- Cohérence runtime : bundle seed, durées, checkpoints et statut `active`
+  alignés. Les sidecars, revues éditoriale et technique restent volontairement
+  inchangés et ouverts ; l’autorisation propriétaire est consignée séparément.
+
+### P1 — suivi après publication propriétaire
+
+- Pilote : un apprenant réalise L1 puis L3/L4 sans assistance ; temps,
+  blocages et recours aux solutions sont observés.
+- Publication : liens, seed, parcours, accessibilité, responsive mobile et
+  preuves déterministes sont testés.
+
+## Frontière assumée
+
+Le programme ne couvre pas les workers concurrents, le retry automatique, la
+reprise après crash, les fichiers binaires, embeddings, pgvector, retrieval,
+génération LLM, Kubernetes ni l’observabilité distribuée. La livraison continue
+s’arrête à la publication GHCR ; aucune infrastructure absente n’est simulée.
 
 ## Contenu du dossier
 
 - `CURRICULUM_BLUEPRINT.md` : architecture et progression ;
-- `specs/` : une spécification complète par leçon ;
-- `stage-assessments/` : une évaluation finale par étape ;
-- `SOURCE_MANIFEST.json` : inventaire des ressources et date de contrôle ;
-- `../../seed/ingenieur-logiciel-production-sourcelab-program.json` : bundle d’import Prisma en brouillon.
-
-## Porte de publication
-
-Le programme ne peut pas être publié tant que les revues `pedagogicalAlignment`, `seedCompatibility`, `linksAndMedia` et les revues techniques humaines ne sont pas approuvées. Les documentations évolutives sont contrôlées au 18 août 2026 et doivent être revérifiées avant publication.
+- `STARTER_REPOSITORY_CONTRACT.md` : état vérifié et contrat des checkpoints ;
+- `specs/` : sept leçons reconstruites ;
+- `stage-assessments/` : trois évaluations pratiques ;
+- `SOURCE_MANIFEST.json` : inventaire des sources vérifiées ;
+- `../../seed/ingenieur-logiciel-production-sourcelab-program.json` : bundle
+  Prisma `active`.

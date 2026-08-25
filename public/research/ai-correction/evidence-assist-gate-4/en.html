@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gate 4: when a failure reveals an oracle limitation — LearnX</title>
+    <meta
+      name="description"
+      content="Two calls, 16 agreements out of 18 relations, and a stop that requires distinguishing missing evidence from explicit refutation."
+    />
+    <link
+      rel="canonical"
+      href="https://learn-x.app/research/ai-correction/evidence-assist-gate-4/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://learn-x.app/research/ai-correction/evidence-assist-gate-4/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://learn-x.app/research/ai-correction/evidence-assist-gate-4/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://learn-x.app/research/ai-correction/evidence-assist-gate-4/"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Gate 4: when a failure reveals an oracle limitation."
+    />
+    <meta
+      property="og:description"
+      content="16/18 relations and a no-go that exposes an incomplete semantic boundary."
+    />
+    <meta
+      property="og:url"
+      content="https://learn-x.app/research/ai-correction/evidence-assist-gate-4/en.html"
+    />
+    <meta property="article:published_time" content="2026-08-21T00:00:00Z" />
+    <meta property="article:modified_time" content="2026-08-21T00:00:00Z" />
+    <link rel="stylesheet" href="/research/journal.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Gate 4: when a failure reveals an oracle limitation.",
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "inLanguage": "en"
+      }
+    </script>
+    <script src="/research/article.js" defer></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#article">Skip to article</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Utility navigation">
+        <a href="/research/en.html">Research</a
+        ><a
+          href="/research/ai-correction/evidence-assist-gate-4/"
+          lang="fr"
+          hreflang="fr"
+          >FR</a
+        >
+      </nav>
+    </header>
+    <main>
+      <header class="article-hero shell">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="/research/en.html">Research</a
+          ><span aria-hidden="true">›</span><span>AI assessment · 06</span>
+        </nav>
+        <p class="eyebrow">Result · Experimental research</p>
+        <h1>Gate 4: when a failure reveals an oracle limitation.</h1>
+        <p class="article-deck">
+          The gate stopped exactly as planned. Yet the observed disagreement
+          does not show an obvious model error: it reveals a missing category in
+          our own evidence vocabulary.
+        </p>
+        <div class="article-meta">
+          <span>Experiment from 20 August 2026</span
+          ><span>Published 21 August 2026</span><span>Version 1</span
+          ><span>Latest series publication</span>
+        </div>
+      </header>
+      <div class="article-layout shell" id="article">
+        <aside class="article-aside">
+          <h2>In this article</h2>
+          <ol>
+            <li><a href="#gate">Frozen gate</a></li>
+            <li><a href="#result">Result</a></li>
+            <li><a href="#disagreement">Disagreement</a></li>
+            <li><a href="#limits">Limits</a></li>
+            <li><a href="#next">Next step</a></li>
+          </ol>
+          <div class="share-actions">
+            <button
+              class="share-button"
+              type="button"
+              data-share-article
+              data-canonical-url="https://learn-x.app/research/ai-correction/evidence-assist-gate-4/en.html"
+              data-copied-label="Link copied."
+              data-shared-label="Article shared."
+              data-failed-label="Could not copy. Use this page address."
+            >
+              Share article
+            </button>
+          </div>
+          <p class="share-status" data-share-status aria-live="polite"></p>
+        </aside>
+        <article class="article-body">
+          <section id="gate">
+            <h2>A small, bounded, non-replayable gate</h2>
+            <p>
+              The
+              <code>learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0</code>
+              identity allowed at most four calls to Sonnet 5 through the
+              Anthropic route, with no retry or fallback and a USD 0.251136
+              total ceiling. Stop-on-first-failure was preregistered. Mutation,
+              injection, panel and holdout remained closed.
+            </p>
+          </section>
+          <section id="result">
+            <h2>Two calls before the stop</h2>
+            <div class="article-metrics">
+              <div><strong>2/4</strong><span>calls performed</span></div>
+              <div><strong>16/18</strong><span>relations agreed</span></div>
+              <div><strong>0.025622</strong><span>USD reconciled</span></div>
+            </div>
+            <p>
+              The positive case reached 9/9 relations. The negative case reached
+              7/9. Cost was fully reconciled, with no retry or fallback. The
+              procedural verdict is
+              <strong
+                >NO_GO_SEMANTIC_DISAGREEMENT / CAMPAIGN_CLOSED /
+                NO_REPLAY</strong
+              >.
+            </p>
+          </section>
+          <section id="disagreement">
+            <h2>The model may not have been wrong</h2>
+            <p>
+              The negative response explicitly said “without choosing” and “I
+              make no recommendation”. The pseudo-oracle expected
+              <em>NOT_DEMONSTRATED</em>, allowing only abstention or omission.
+              Sonnet linked those passages to <em>EVIDENCE_AGAINST_ELEMENT</em>.
+            </p>
+            <p>
+              That relation is semantically plausible: the response does not
+              merely fail to demonstrate the element, it explicitly states the
+              opposite. The stop remains valid because the mapping was frozen,
+              but the gap exposes an incomplete ontology rather than an obvious
+              pedagogical error.
+            </p>
+            <blockquote>
+              A useful experiment can fail while showing that the measuring
+              instrument needs improvement.
+            </blockquote>
+          </section>
+          <section id="limits">
+            <h2>What we cannot claim</h2>
+            <ul>
+              <li>
+                The injection case was never sent: no injection resistance is
+                proven for this identity.
+              </li>
+              <li>The 10×2 panel and holdout were not opened.</li>
+              <li>
+                Total cost is known, but not the input, cache, reasoning and
+                output breakdown.
+              </li>
+              <li>Two calls cannot assess Sonnet 5’s general quality.</li>
+            </ul>
+          </section>
+          <section id="next">
+            <h2>Next evidence</h2>
+            <p>
+              Before another call, LearnX must distinguish
+              <strong>SUPPORTED</strong>, <strong>EXPLICITLY_REFUTED</strong>,
+              <strong>NOT_DEMONSTRATED</strong> and <strong>AMBIGUOUS</strong>.
+              Minimal pairs must test silence, abstention, explicit negation,
+              internal contradiction and positive evidence. Any change will
+              create a new identity and a new article; this one will remain
+              unchanged.
+            </p>
+            <div class="article-callout">
+              <strong>Current state</strong>
+              <p>
+                0 pipeline promoted, 0 public correction contract, 0 progression
+                effect. The gate is closed and will not be rewritten.
+              </p>
+            </div>
+          </section>
+        </article>
+      </div>
+      <footer class="article-footer shell">
+        <nav class="article-navigation" aria-label="Series articles">
+          <a href="/research/ai-correction/chercheur-de-preuves/en.html"
+            ><small>Previous article</small
+            ><strong>Researching evidence</strong></a
+          ><a href="/research/ai-correction/en.html"
+            ><small>Reference report</small
+            ><strong>Open the full historical synthesis</strong></a
+          >
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

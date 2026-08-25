@@ -1,94 +1,91 @@
 {
   "specId": "PEDAGOGY_STAGE_ASSESSMENT_028",
   "schemaVersion": 1,
-  "programSlug": "ingenieur-logiciel-production-sourcelab",
-  "stageSlug": "containeriser-environnement-multiservice",
+  "programSlug": "sourcelab-docker-api-socle-ingestion",
+  "stageSlug": "containeriser-persister-sourcelab",
   "assessment": {
     "seed": {
-      "title": "Évaluation — Exécuter SourceLab localement avec Docker",
-      "type": "project",
+      "title": "Évaluation — Reconstruire la stack locale SourceLab",
+      "type": "practical_exercise",
       "isRequired": true,
       "passingScore": 70
     },
-    "description": "Livrer une stack locale reproductible API-worker-PostgreSQL démarrant avec une commande et résistant aux remplacements de containers.",
+    "description": "Reconstruire API et PostgreSQL depuis un état propre, diagnostiquer une adresse réseau erronée, puis prouver runtime non-root, readiness et persistance.",
     "instructions": [
-      "Construire les images et compose.yaml, puis démontrer build froid et avec cache, démarrage sain, persistance, configuration runtime, communication interne, remplacement d’un container et erreur de readiness. Fournir une fiche de revue sécurité et exploitation."
+      "1. Construire l’image et relever l’utilisateur runtime ainsi que l’absence du fichier .env dans son système de fichiers.",
+      "2. Lancer le checkpoint dégradé sans corriger DATABASE_URL ; conserver l’erreur de connexion et identifier depuis quel container elle est émise.",
+      "3. Remplacer uniquement l’hôte localhost par le nom de service Compose attendu, puis attendre une readiness réellement verte.",
+      "4. Créer un projet, relever son identifiant, remplacer le container API sans supprimer le volume, puis relire ce même projet.",
+      "5. Fournir les commandes exactes, les sorties utiles et une phrase d’interprétation par contrôle."
     ],
-    "case": "Cas fil rouge SourceLab — étape « Containeriser un environnement multi-service ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
-    "estimatedMinutes": 120,
-    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "case": "Checkpoint d’évaluation à publier dans le starter : Compose contient une DATABASE_URL qui utilise localhost depuis le container API. Le volume nommé est valide et doit être conservé.",
+    "estimatedMinutes": 35,
+    "submissionFormat": "Compose corrigé, cinq commandes de preuve, sorties annotées et note de diagnostic de quinze lignes maximum.",
     "conceptSlugs": [
-      "image-runtime-reproductible",
-      "environnement-multiservice-reproductible"
+      "image-container-contexte-build",
+      "build-multistage-cache",
+      "runtime-minimal-configurable",
+      "adressage-reseau-compose",
+      "ordre-demarrage-observable",
+      "persistance-volume-migration",
+      "stack-compose-persistante"
     ],
     "rubric": [
       {
-        "criterion": "Images reproductibles",
+        "criterion": "Image reproductible",
         "weight": 25,
         "requirements": [
-          "Les Dockerfiles sont multi-stage et figés par lockfile.",
-          "Le runtime ne contient ni secrets ni outils inutiles.",
-          "L’utilisateur non-root et le contexte réduit sont vérifiés."
-        ]
-      },
-      {
-        "criterion": "Orchestration",
-        "weight": 30,
-        "requirements": [
-          "API, worker et base ont des responsabilités séparées.",
-          "Healthchecks et conditions de démarrage reflètent la readiness.",
-          "Réseau interne et ports publiés sont correctement utilisés."
-        ]
-      },
-      {
-        "criterion": "Persistance et configuration",
-        "weight": 25,
-        "requirements": [
-          "Les données métier survivent au remplacement.",
-          "Les données reconstruisibles ne sont pas persistées sans raison.",
+          "L’image est multi-stage et non-root.",
           "La configuration est injectée au runtime."
         ]
       },
       {
-        "criterion": "Reproductibilité",
-        "weight": 20,
+        "criterion": "Orchestration et readiness",
+        "weight": 40,
         "requirements": [
-          "Une commande documentée démarre la stack.",
-          "Les preuves couvrent un démarrage depuis un environnement propre.",
-          "Les limites locales sont explicites."
+          "L’API joint db par le réseau interne.",
+          "Migration et santé précèdent la readiness."
+        ]
+      },
+      {
+        "criterion": "Persistance et diagnostic",
+        "weight": 35,
+        "requirements": [
+          "Le projet survit au remplacement.",
+          "Le piège localhost est expliqué par une preuve."
         ]
       }
     ],
-    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+    "remediation": "Reprendre le scénario défaillant, conserver les sorties initiales et montrer la différence après correction."
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "2.1.0",
     "status": "draft",
-    "createdAt": "2026-08-18",
-    "referenceIds": [
-      "REF-128-01",
-      "REF-128-02",
-      "REF-128-03",
-      "REF-129-01",
-      "REF-129-02",
-      "REF-129-03"
-    ],
+    "createdAt": "2026-08-20",
+    "referenceIds": [],
     "review": {
       "editorialReviewer": null,
       "subjectReviewer": null,
       "readyForPublication": false,
       "notes": [
-        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
-        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+        "Publication bloquée tant que le checkpoint dégradé correspondant n’existe pas dans le starter.",
+        "Les critères sont validés par inspect, état de santé, identifiant relu et sortie réseau ; l’explication seule ne suffit pas."
       ]
     },
     "changeLog": [
       {
-        "version": "1.0.0",
-        "date": "2026-08-18",
-        "author": "Rayan Chambet",
-        "change": "Création de l’évaluation finale de l’étape « Containeriser un environnement multi-service ».",
-        "reviewRequired": "editorial_and_subject"
+        "version": "2.0.0",
+        "date": "2026-08-20",
+        "author": "LearnX",
+        "change": "Remplacement de l’évaluation V1 par une preuve cumulative bornée.",
+        "reviewRequired": "editorial_technical_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Durée portée à 35 minutes et critères rendus vérifiables par inspection, santé et persistance.",
+        "reviewRequired": "editorial_technical_starter_and_seed"
       }
     ]
   }

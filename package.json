@@ -22,6 +22,7 @@
     "prisma:check": "tsx scripts/check-database.ts",
     "prisma:validate-sequence": "tsx scripts/validate-lesson-sequence-backfill.ts",
     "prisma:validate-sequence-removal": "tsx scripts/validate-lesson-sequence-seed-removal.ts",
+    "sourcelab:replacement:plan": "tsx scripts/plan-sourcelab-v2-replacement.ts",
     "progress:recalculate": "tsx scripts/recalculate-progress.ts",
     "maintenance:cleanup": "tsx scripts/cleanup-expired-data.ts",
     "performance:measure": "tsx scripts/measure-database-performance.ts",

@@ -1,71 +1,134 @@
 {
   "specId": "PEDAGOGY_SPEC_131",
   "schemaVersion": 1,
-  "programSlug": "ingenieur-logiciel-production-sourcelab",
-  "stageSlug": "integrer-donnees-traitements",
-  "moduleSlug": "module-integrer-donnees-traitements",
+  "programSlug": "sourcelab-docker-api-socle-ingestion",
+  "stageSlug": "ingerer-livrer-socle-rag",
+  "moduleSlug": "module-sources-worker-livraison",
   "lesson": {
-    "title": "Traiter les imports avec un worker idempotent",
-    "slug": "traiter-imports-worker-idempotent",
-    "summary": "Exécuter les traitements longs hors requête HTTP, réserver les jobs de manière concurrente et reprendre les erreurs sans produire de doublons.",
+    "title": "Traiter une source avec un worker simple",
+    "slug": "traiter-source-worker-simple",
+    "summary": "Séparer la requête API du traitement différé, rendre les transitions du job observables et produire un contenu Markdown normalisé avec un checksum SHA-256 reproductible.",
     "objectives": [
-      "Expliquer la livraison au moins une fois et ses conséquences.",
-      "Réserver un job avec verrouillage transactionnel sans double traitement.",
-      "Classer les erreurs en récupérables ou définitives et borner les retries."
+      "Expliquer la frontière entre requête API courte et traitement différé.",
+      "Implémenter les transitions QUEUED, PROCESSING, READY ou FAILED pour un job unique.",
+      "Calculer et vérifier un checksum SHA-256 du contenu normalisé."
     ],
     "prerequisites": [
-      "Avoir défini ProcessingJob et les transitions du Source Workspace."
+      "Avoir produit checkpoint-05-source-queued ou repartir de ce checkpoint."
     ],
-    "estimatedMinutes": 210,
+    "estimatedMinutes": 135,
     "position": 2,
     "contentBlocks": [
       {
-        "key": "content-asynchronisme",
-        "type": "definition",
+        "key": "content-traiter-source-worker-simple-1",
+        "type": "objective",
         "position": 1,
         "content": {
-          "text": "L’API enregistre l’intention et retourne un identifiant de job ; le worker prend ensuite le travail. Ce découplage protège le temps de réponse et permet de contrôler la concurrence, mais il introduit des états intermédiaires que le produit doit rendre visibles.",
+          "text": "## Point de départ et promesse bornée\n\n`checkpoint-05-source-queued` sait enregistrer une `SourceVersion` brute et un `ProcessingJob` au statut `QUEUED`. Cette leçon active un worker pédagogique qui traite un seul job à la fois : il rend le job visible comme `PROCESSING`, normalise le Markdown, calcule une empreinte et termine en `READY` ou `FAILED`. Le résultat `checkpoint-06-rag-ready-local` est une version traçable prête pour le programme suivant. Il ne garantit ni plusieurs workers concurrents, ni retry automatique, ni reprise après crash.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-2",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "## 1. Une API courte délègue le travail\n\nLa route d’import valide et enregistre une intention. Elle retourne rapidement `sourceId`, `sourceVersionId`, `jobId` et `QUEUED`; elle ne garde pas la connexion HTTP ouverte pendant le traitement. Le **worker** est un processus séparé qui cherche du travail disponible et met à jour son état. Cette séparation rend la latence de l’API prévisible et permet au produit d’afficher l’avancement.\n\nUn **job** décrit une exécution ; une **version de source** décrit le contenu produit. Quand le worker commence, le job et la version passent à `PROCESSING`. Quand il réussit, la version reçoit `normalizedContent` et `checksumSha256`, puis les deux états deviennent `READY`. En cas d’erreur prévue, le job et la version deviennent `FAILED`, le job reçoit un `errorCode` stable et `rawContent` reste conservé pour comprendre ou rejouer manuellement.",
+          "sourceKeys": ["postgres-transactions", "node-process"]
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-3",
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "## Extrait court : sélectionner puis rendre le travail visible\n\nCette première fonction est complète mais volontairement bornée : elle sélectionne un seul job et persiste la transition vers `PROCESSING`. Elle ne prétend pas finaliser le traitement.\n\n```ts\nasync function takeNextQueuedJob() {\n  const job = await prisma.processingJob.findFirst({\n    where: { status: 'QUEUED' },\n    include: { sourceVersion: true },\n  });\n\n  if (!job) return null;\n\n  await prisma.$transaction([\n    prisma.processingJob.update({\n      where: { id: job.id },\n      data: { status: 'PROCESSING', errorCode: null },\n    }),\n    prisma.sourceVersion.update({\n      where: { id: job.sourceVersionId },\n      data: { status: 'PROCESSING' },\n    }),\n  ]);\n\n  return job;\n}\n```\n\n`null` signifie « aucun travail trouvé », pas « échec ». La transaction rend le passage à `PROCESSING` observable sur le job et sa version sans état intermédiaire contradictoire. L’exercice n’insère qu’un job `QUEUED`, donc il ne prétend pas définir une politique d’ordre absente du modèle précédent. Le `findFirst` suivi des mises à jour n’est pas une réservation sûre avec plusieurs consommateurs : cette limite est assumée et doit rester visible dans le code et le compte rendu.",
           "sourceKeys": ["postgres-transactions"]
         }
       },
       {
-        "key": "content-reservation-job",
-        "type": "definition",
-        "position": 2,
+        "key": "content-traiter-source-worker-simple-4",
+        "type": "embed",
+        "position": 4,
         "content": {
-          "text": "Une file PostgreSQL simple peut réserver un job dans une transaction avec FOR UPDATE SKIP LOCKED. Le verrou évite que deux workers sélectionnent la même ligne au même moment ; la transaction doit rester courte et enregistrer la prise en charge avant d’effectuer le travail externe.",
-          "sourceKeys": ["postgres-select-locking"]
+          "text": "## Schéma : états du worker simple\n\nUtilisez la figure pour distinguer les transitions réellement persistées des mécanismes de reprise encore absents.\n\n![Machine d’états du worker SourceLab](/learning/sourcelab/worker-state-machine.svg)\n\n**Description textuelle —** L’API crée le job et la version en `QUEUED`. Le worker choisit le job et passe les deux objets en `PROCESSING`. Une réussite mène à `READY` après écriture du contenu normalisé et du checksum ; une erreur contrôlée mène à `FAILED` sur les deux objets, avec `errorCode` sur le job et `rawContent` inchangé. Aucune flèche automatique ne repart de `FAILED` ou d’un `PROCESSING` abandonné : retry et récupération après crash sont hors périmètre de cette version. Seuls les champs définis dans le schéma Prisma du checkpoint constituent ici le contrat persistant.\n\n**À retenir —** un statut n’est une preuve que lorsqu’il est écrit avec les données qui le rendent cohérent.",
+          "sourceKeys": ["postgres-transactions", "node-process"]
         }
       },
       {
-        "key": "content-idempotence-retry",
+        "key": "content-traiter-source-worker-simple-5",
         "type": "callout",
-        "position": 3,
+        "position": 5,
         "content": {
-          "text": "Un retry signifie qu’une étape peut être rejouée. Chaque effet doit donc être idempotent ou protégé par une clé stable : stocker un même hash, créer une même version ou publier un même résultat ne doit pas multiplier les données. Les erreurs de timeout peuvent être retentées ; un format interdit doit échouer définitivement.",
-          "sourceKeys": ["postgres-transactions", "postgres-select-locking"]
+          "text": "## Micro-action : suivre une intention de bout en bout\n\nÀ partir d’un import valide, relevez `sourceId`, `sourceVersionId`, `jobId` et les deux statuts initiaux `QUEUED`. Une itération nominale peut traverser `PROCESSING` trop vite pour qu’un `curl` l’observe : ne transformez pas un hasard de timing en contrôle.\n\nLa preuve se partage donc en deux : les routes HTTP montrent `QUEUED` avant l’itération puis l’état terminal après ; un test avec une barrière injectée suspend le worker juste après l’écriture de `PROCESSING` et relit les mêmes identifiants. Créer un second job ou ajouter un délai arbitraire pour donner l’impression d’une progression est un échec du contrat.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-6",
+        "type": "rich_text",
+        "position": 6,
+        "content": {
+          "text": "## 2. Finaliser ensemble le résultat et le statut\n\nLa fin du traitement met à jour des données qui doivent raconter la même histoire. Un job `READY` avec une version encore `PROCESSING` est incohérent ; une version `READY` sans checksum ne respecte pas la preuve annoncée. Une courte transaction de finalisation écrit `normalizedContent`, `checksumSha256` et l’état de la version, puis marque le job `READY`.\n\nLa règle d’échec de ce checkpoint est tout aussi explicite : seule une exception levée par la fonction de normalisation produit job `FAILED` avec `NORMALIZATION_FAILED`, version `FAILED`, `rawContent` conservé et champs produits encore nuls. Une erreur Prisma pendant la transaction finale reste une erreur d’infrastructure ; elle ne doit pas être renommée en erreur de normalisation. Le log technique peut contenir l’erreur détaillée sans recopier tout le document. Cette leçon n’ajoute pas de retry : `FAILED` reste terminal. Si le processus meurt après `PROCESSING`, une intervention est nécessaire. Afficher cette limite est plus exact que prétendre une robustesse absente.",
+          "sourceKeys": ["postgres-transactions", "node-process"]
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-7",
+        "type": "example",
+        "position": 7,
+        "content": {
+          "text": "## Extrait exécutable : une itération complète\n\nLa fonction utilise le helper précédent, puis finalise exactement un job. Trois points d’injection ont des valeurs de production par défaut : `normalize` force l’erreur métier prévue, `afterProcessing` installe une barrière après la transition persistée, et `finalizeReady` force une panne d’écriture finale. Le `try` entoure uniquement la normalisation : une panne Prisma ne peut pas être faussement classée `NORMALIZATION_FAILED`.\n\n```ts\ntype Normalize = (input: string) => string;\ntype FinalizeReady = (result: {\n  jobId: string;\n  sourceVersionId: string;\n  normalizedContent: string;\n  checksumSha256: string;\n}) => Promise<void>;\n\nconst persistReady: FinalizeReady = async (result) => {\n  await prisma.$transaction([\n    prisma.sourceVersion.update({\n      where: { id: result.sourceVersionId },\n      data: {\n        status: 'READY',\n        normalizedContent: result.normalizedContent,\n        checksumSha256: result.checksumSha256,\n      },\n    }),\n    prisma.processingJob.update({\n      where: { id: result.jobId },\n      data: { status: 'READY', errorCode: null },\n    }),\n  ]);\n};\n\ninterface WorkerHooks {\n  afterProcessing?: () => Promise<void>;\n  normalize?: Normalize;\n  finalizeReady?: FinalizeReady;\n}\n\nconst continueImmediately = (): Promise<void> => Promise.resolve();\n\nexport async function processNextJob(\n  {\n    afterProcessing = continueImmediately,\n    normalize = normalizeMarkdown,\n    finalizeReady = persistReady,\n  }: WorkerHooks = {},\n): Promise<boolean> {\n  const job = await takeNextQueuedJob();\n  if (!job) return false;\n\n  await afterProcessing();\n\n  let normalizedContent: string;\n  try {\n    normalizedContent = normalize(job.sourceVersion.rawContent);\n  } catch (error) {\n    await prisma.$transaction([\n      prisma.sourceVersion.update({\n        where: { id: job.sourceVersionId },\n        data: { status: 'FAILED' },\n      }),\n      prisma.processingJob.update({\n        where: { id: job.id },\n        data: { status: 'FAILED', errorCode: 'NORMALIZATION_FAILED' },\n      }),\n    ]);\n    throw error;\n  }\n\n  await finalizeReady({\n    jobId: job.id,\n    sourceVersionId: job.sourceVersionId,\n    normalizedContent,\n    checksumSha256: sha256(normalizedContent),\n  });\n\n  return true;\n}\n```\n\nLe premier test d’échec force uniquement la normalisation, puis relit les deux lignes :\n\n```ts\nconst failNormalization = (): string => {\n  throw new Error('forced normalization failure');\n};\n\nawait expect(\n  processNextJob({ normalize: failNormalization }),\n).rejects.toThrow('forced normalization failure');\n\nconst failedJob = await prisma.processingJob.findUniqueOrThrow({\n  where: { id: jobId },\n  include: { sourceVersion: true },\n});\n\nexpect(failedJob.status).toBe('FAILED');\nexpect(failedJob.errorCode).toBe('NORMALIZATION_FAILED');\nexpect(failedJob.sourceVersion.status).toBe('FAILED');\nexpect(failedJob.sourceVersion.normalizedContent).toBeNull();\nexpect(failedJob.sourceVersion.checksumSha256).toBeNull();\nexpect(failedJob.sourceVersion.rawContent).toBe(rawContent);\n```\n\nLe second test échoue après normalisation mais avant toute écriture `READY` :\n\n```ts\nconst failFinalization: FinalizeReady = async () => {\n  throw new Error('forced persistence failure');\n};\n\nawait expect(\n  processNextJob({ finalizeReady: failFinalization }),\n).rejects.toThrow('forced persistence failure');\n\nconst interruptedJob = await prisma.processingJob.findUniqueOrThrow({\n  where: { id: jobId },\n  include: { sourceVersion: true },\n});\n\nexpect(interruptedJob.status).toBe('PROCESSING');\nexpect(interruptedJob.errorCode).toBeNull();\nexpect(interruptedJob.sourceVersion.status).toBe('PROCESSING');\nexpect(interruptedJob.sourceVersion.normalizedContent).toBeNull();\nexpect(interruptedJob.sourceVersion.checksumSha256).toBeNull();\n```\n\nCette seconde sortie n’est pas un succès : elle rend visible la limite annoncée en cas de panne d’infrastructure. Surtout, elle prouve que l’erreur n’a pas été maquillée en `NORMALIZATION_FAILED`. Nettoyez ce fixture après l’assertion pour ne pas laisser un job `PROCESSING` contaminer le test suivant.",
+          "sourceKeys": ["postgres-transactions"]
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-8",
+        "type": "example",
+        "position": 8,
+        "content": {
+          "text": "## 3. Normaliser avant de calculer l’empreinte\n\nLa **normalisation** transforme des représentations différentes mais équivalentes selon une règle versionnée. Ici, elle convertit les fins de ligne Windows, retire les espaces en fin de ligne et garantit exactement une fin de fichier. Le **checksum SHA-256** identifie les octets du résultat normalisé ; ce n’est ni un chiffrement ni une preuve d’autorité.\n\n```ts\nimport { createHash } from 'node:crypto';\n\nexport function normalizeMarkdown(input: string): string {\n  const normalizedLines = input\n    .replace(/\\r\\n?/g, '\\n')\n    .split('\\n')\n    .map((line) => line.trimEnd())\n    .join('\\n');\n\n  return `${normalizedLines.replace(/\\n+$/g, '')}\\n`;\n}\n\nexport function sha256(value: string): string {\n  return createHash('sha256').update(value, 'utf8').digest('hex');\n}\n```\n\nCalculez toujours l’empreinte sur `normalizedContent`, jamais sur la chaîne brute si le contrat annonce une version canonique. Verrouillez aussi une valeur connue :\n\n```ts\nit('normalise puis calcule un SHA-256 reproductible', () => {\n  const normalized = normalizeMarkdown('# Source\\r\\n');\n\n  expect(normalized).toBe('# Source\\n');\n  expect(sha256(normalized)).toBe(\n    'bc0f7a2bc3aaaa2629e0a72f483f8ca62fcee7f5933dc776dd567a68a8b258e9',\n  );\n});\n```\n\nCe test contrôle les octets attendus, pas seulement la longueur du digest.",
+          "sourceKeys": ["node-crypto"]
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-9",
+        "type": "example",
+        "position": 9,
+        "content": {
+          "text": "## Commandes, sortie attendue et interprétation\n\nLes routes de suivi lisent les identifiants retournés par l’import sans déclencher le worker :\n\n```ts\napp.get('/imports/:jobId', async (context) => {\n  const job = await prisma.processingJob.findUnique({\n    where: { id: context.req.param('jobId') },\n    select: { id: true, sourceVersionId: true, status: true, errorCode: true },\n  });\n\n  return job\n    ? context.json({ data: job }, 200)\n    : context.json({ error: { code: 'JOB_NOT_FOUND' } }, 404);\n});\n\napp.get('/sources/:sourceId/versions', async (context) => {\n  const versions = await prisma.sourceVersion.findMany({\n    where: { sourceId: context.req.param('sourceId') },\n    select: {\n      id: true,\n      status: true,\n      rawContent: true,\n      normalizedContent: true,\n      checksumSha256: true,\n    },\n  });\n\n  return context.json({ data: versions }, 200);\n});\n```\n\nUn test attend `404 JOB_NOT_FOUND` pour un job inconnu et vérifie que la consultation ne change aucun statut. Pour contrôler l’état transitoire, suspendez l’itération avec le hook prévu :\n\n```ts\nlet enterProcessing!: () => void;\nlet releaseWorker!: () => void;\nconst processingReached = new Promise<void>((resolve) => {\n  enterProcessing = resolve;\n});\nconst barrier = new Promise<void>((resolve) => {\n  releaseWorker = resolve;\n});\n\nconst iteration = processNextJob({\n  afterProcessing: async () => {\n    enterProcessing();\n    await barrier;\n  },\n});\n\nawait processingReached;\nconst response = await app.request(`/imports/${jobId}`);\nconst body = (await response.json()) as { data: { status: string } };\nexpect(body.data.status).toBe('PROCESSING');\n\nreleaseWorker();\nawait expect(iteration).resolves.toBe(true);\n```\n\nLa promesse ne dépend d’aucun délai : elle se résout seulement après l’écriture des deux statuts `PROCESSING`. Les commandes manuelles servent ensuite à vérifier les états initial et terminal.\n\nAvec les identifiants retournés par l’import :\n\n```bash\npnpm test -- normalize-markdown\npnpm test -- worker-failure\ncurl -sS http://localhost:3000/imports/$JOB_ID\ncurl -sS http://localhost:3000/sources/$SOURCE_ID/versions\ndocker compose run --rm worker\ncurl -sS http://localhost:3000/imports/$JOB_ID\ncurl -sS http://localhost:3000/sources/$SOURCE_ID/versions\n```\n\nLe test compare deux entrées qui ne diffèrent que par fins de ligne ou espaces terminaux et exige le même texte normalisé puis le même hash de 64 caractères hexadécimaux. Sur le cas nominal, les premières lectures montrent `QUEUED`, le test à barrière prouve `PROCESSING`, puis les lectures après l’itération montrent job et version `READY`; la version finale expose `normalizedContent` et `checksumSha256`. Le test `worker-failure` injecte une fonction qui lève toujours ; sur cette erreur forcée, les lectures montrent job et version `FAILED`, `errorCode: \"NORMALIZATION_FAILED\"`, `rawContent` inchangé et champs produits nuls. Si le hash change sur la même chaîne, examinez encodage et normalisation avant d’accuser PostgreSQL. Si les objets restent `PROCESSING` après arrêt brutal, documentez la limite au lieu de les forcer silencieusement à `READY`.",
+          "sourceKeys": ["node-crypto", "node-process"]
+        }
+      },
+      {
+        "key": "content-traiter-source-worker-simple-10",
+        "type": "callout",
+        "position": 10,
+        "content": {
+          "text": "## Erreurs fréquentes et projet intégrateur\n\n- Calculer le hash avant normalisation rend l’empreinte dépendante de détails de format.\n- Confondre hash et chiffrement donne une fausse promesse de confidentialité.\n- Marquer le job `READY` avant l’écriture du résultat publie un état incohérent.\n- Passer seulement le job à `FAILED` contredit la règle d’état choisie pour la version.\n- Avaler l’exception sans `errorCode` rend `FAILED` inutilisable.\n- Présenter le `findFirst` naïf comme sûr avec deux workers masque une limite réelle.\n- Utiliser un `sleep` pour observer `PROCESSING` rend le test lent et aléatoire.\n\nLe script de développement appelle l’entrypoint déjà réservé dans le starter. Le module `src/database/prisma.ts` construit et exporte le client avec `loadConfig()` et `createPrismaClient()` de la leçon 4 ; l’entrypoint importe donc une dépendance réelle, pas une variable globale implicite :\n\n```json\n{\n  \"scripts\": {\n    \"worker\": \"tsx src/worker/main.ts\"\n  }\n}\n```\n\n```ts\n// src/worker/main.ts\nimport { prisma } from '../database/prisma.js';\nimport { processNextJob } from './process-next-job.js';\n\ntry {\n  const processed = await processNextJob();\n  console.info(JSON.stringify({ event: 'worker_iteration', processed }));\n} catch (error) {\n  console.error(\n    JSON.stringify({ event: 'worker_failed', error: error instanceof Error ? error.message : 'unknown' }),\n  );\n  process.exitCode = 1;\n} finally {\n  await prisma.$disconnect();\n}\n```\n\nDans Compose, un profil évite que ce worker **une itération** ne démarre avant la création du job. La commande explicite `docker compose run --rm worker` l’active au bon moment :\n\n```yaml\nworker:\n  profiles: [\"tools\"]\n  build:\n    context: .\n    target: runtime\n  command: [\"node\", \"dist/worker/main.js\"]\n  environment:\n    DATABASE_URL: postgresql://sourcelab:local-only@db:5432/sourcelab\n  depends_on:\n    migrate:\n      condition: service_completed_successfully\n```\n\nLe worker et l’API partagent l’image et la base, mais pas le processus. La sortie JSON de `docker compose run` prouve si une itération a trouvé du travail ; les routes prouvent les identifiants et valeurs persistés.\n\nLe projet final active l’entrypoint, le service worker, les routes de suivi et la finalisation. Les preuves exigées sont : test de normalisation, hash reproductible, `PROCESSING` observé derrière la barrière, transition nominale complète, erreur forcée laissant job et version `FAILED` tout en conservant le brut, et absence d’affirmation sur concurrence, retry ou récupération. Livrez ensuite `checkpoint-06-rag-ready-local`.",
+          "sourceKeys": ["node-crypto", "postgres-transactions", "node-process"]
         }
       }
     ],
     "resources": [
       {
-        "key": "postgres-select-locking",
+        "key": "node-crypto",
         "type": "website",
-        "title": "SELECT — PostgreSQL Documentation",
-        "author": "PostgreSQL Global Development Group",
-        "url": "https://www.postgresql.org/docs/current/sql-select.html",
-        "citation": "PostgreSQL Global Development Group. (n.d.). SELECT — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
+        "title": "Crypto — Node.js Documentation",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/crypto.html",
+        "citation": "Node.js. (2026). Crypto — Node.js Documentation. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Après l’explication et le code, vérifier la signature de `createHash`, `update` et `digest` utilisée pour SHA-256.",
         "guidance": {
-          "objective": "Réserver un job sans que deux workers le traitent simultanément.",
-          "instructions": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
-          "scope": "Clause locking, FOR UPDATE et SKIP LOCKED",
+          "objective": "Vérifier l’API Node exacte utilisée par la fonction `sha256`.",
+          "instructions": "Lire uniquement l’exemple `createHash`, puis confirmer algorithme, encodage d’entrée et sortie hexadécimale.",
+          "scope": "`crypto.createHash()`, `hash.update()` et `hash.digest()`",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML en anglais ; synthèse française, code et test fournis avant cette vérification.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 15,
+        "isRequired": false,
+        "estimatedMinutes": 6,
         "position": 1
       },
       {
@@ -74,18 +137,18 @@
         "title": "Transactions — PostgreSQL Documentation",
         "author": "PostgreSQL Global Development Group",
         "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-        "citation": "PostgreSQL Global Development Group. (n.d.). Transactions — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "citation": "PostgreSQL Global Development Group. (n.d.). Transactions — PostgreSQL Documentation. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : revoir COMMIT et ROLLBACK pour la finalisation atomique du job et de la version.",
         "guidance": {
-          "objective": "Protéger la cohérence entre fichier, source, version et job.",
-          "instructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
-          "scope": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+          "objective": "Approfondir la cohérence des deux mises à jour de réussite.",
+          "instructions": "Relire seulement les paragraphes sur COMMIT et ROLLBACK, puis identifier les deux écritures de finalisation.",
+          "scope": "COMMIT et ROLLBACK",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML en anglais ; la transaction est déjà expliquée et illustrée en français.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 12,
+        "isRequired": false,
+        "estimatedMinutes": 5,
         "position": 2
       },
       {
@@ -94,43 +157,122 @@
         "title": "Process — Node.js Documentation",
         "author": "Node.js",
         "url": "https://nodejs.org/api/process.html",
-        "citation": "Node.js. (2026). Process — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
-        "description": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "citation": "Node.js. (2026). Process — Node.js Documentation. Documentation officielle, consultée le 22 août 2026.",
+        "description": "Approfondissement facultatif : vérifier les signaux et codes de sortie utilisés pour arrêter proprement le worker pédagogique.",
         "guidance": {
-          "objective": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-          "instructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
-          "scope": "process, process.env, exit codes, signals et événements de terminaison",
+          "objective": "Relier arrêt du processus et limite de récupération du job PROCESSING.",
+          "instructions": "Consulter uniquement les sections sur SIGINT, SIGTERM et exitCode ; ne pas traiter les événements hors périmètre.",
+          "scope": "SIGINT, SIGTERM et process.exitCode",
           "urlStatus": "ok",
-          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "accessibilityNotes": "Documentation HTML en anglais ; limites du worker explicitées en français.",
           "alternativeResourceKey": null
         },
-        "isRequired": true,
-        "estimatedMinutes": 12,
+        "isRequired": false,
+        "estimatedMinutes": 5,
         "position": 3
       }
     ],
     "concepts": [
       {
-        "title": "Traitement asynchrone idempotent",
-        "slug": "traitement-asynchrone-idempotent",
-        "description": "Un worker fiable peut reprendre un job au moins une fois sans dupliquer les effets, tout en bornant concurrence, délais et tentatives.",
+        "title": "Frontière API et worker",
+        "slug": "frontiere-api-worker",
+        "description": "L’API enregistre et retourne une intention traçable ; un processus séparé réalise ensuite le traitement observable.",
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["postgres-select-locking"],
+        "resourceKeys": ["node-process"],
         "assessment": {
-          "key": "assessment-traitement-asynchrone-idempotent",
+          "key": "assessment-frontiere-api-worker",
           "type": "case_question",
-          "title": "Mini-évaluation — Traitement asynchrone idempotent",
-          "questionCount": 3
+          "title": "Mini-évaluation — Frontière API/worker",
+          "questionCount": 2
+        }
+      },
+      {
+        "title": "Machine d’états bornée",
+        "slug": "machine-etats-worker-bornee",
+        "description": "Les transitions QUEUED, PROCESSING, READY et FAILED décrivent un job unique sans promettre retry ou récupération automatique.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["postgres-transactions", "node-process"],
+        "assessment": {
+          "key": "assessment-machine-etats-worker-bornee",
+          "type": "case_question",
+          "title": "Mini-évaluation — États du worker",
+          "questionCount": 2
+        }
+      },
+      {
+        "title": "Normalisation et checksum SHA-256",
+        "slug": "normalisation-checksum-sha256",
+        "description": "Une règle de normalisation déterministe précède le calcul d’une empreinte SHA-256 sur les octets canoniques.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["node-crypto"],
+        "assessment": {
+          "key": "assessment-normalisation-checksum-sha256",
+          "type": "practice",
+          "title": "Mini-évaluation — Normalisation et checksum",
+          "questionCount": 2
+        }
+      },
+      {
+        "title": "Traitement de source traçable",
+        "slug": "traitement-source-tracable",
+        "description": "Le worker relie statuts, résultat, checksum et erreur à une même version sans masquer les limites du traitement simple.",
+        "position": 4,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "node-crypto",
+          "postgres-transactions",
+          "node-process"
+        ],
+        "assessment": {
+          "key": "assessment-traitement-source-tracable",
+          "type": "practice",
+          "title": "Mini-évaluation — Traitement de source traçable",
+          "questionCount": 2
         }
       }
     ],
     "tasks": [
       {
-        "key": "exercise-traiter-imports-worker-idempotent",
-        "title": "Construire la boucle de jobs SourceLab",
-        "description": "Implémenter enqueue, claim, heartbeat optionnel, success et failure. Lancer deux workers concurrents, tuer l’un pendant un import, puis redémarrer. Prouver qu’un seul résultat canonique existe, que le job abandonné redevient récupérable et qu’une erreur définitive n’est pas retentée.",
+        "key": "exercise-tracer-frontiere-api-worker",
+        "title": "Tracer la délégation API/worker",
+        "description": "Importer une source, relever sourceId, sourceVersionId et jobId, exécuter une seule itération du worker et livrer un tableau d’observations montrant les mêmes identifiants de QUEUED à PROCESSING.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-verifier-etats-worker",
+        "title": "Vérifier réussite et échec contrôlé",
+        "description": "Exécuter un cas nominal et un cas de normalisation forcé en erreur par le point d’injection prévu ; prouver job et version READY au succès, job et version FAILED à l’échec, errorCode stable et rawContent conservé, sans ajouter retry ni récupération implicite.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-prouver-normalisation-checksum",
+        "title": "Prouver la normalisation et le checksum",
+        "description": "Fournir deux entrées Markdown équivalentes avec fins de ligne différentes, montrer leur sortie normalisée identique et vérifier un même SHA-256 hexadécimal de 64 caractères.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 4,
+        "resourceKeys": []
+      },
+      {
+        "key": "exercise-traiter-source-worker-simple",
+        "title": "Produire une SourceVersion READY",
+        "description": "Depuis checkpoint-05-source-queued, activer le worker Compose, compléter normalisation, checksum, transitions et routes de consultation. Livrer checkpoint-06-rag-ready-local avec parcours nominal, échec contrôlé et limites explicites.",
         "type": "project",
         "isRequired": true,
         "weight": 2,
@@ -140,89 +282,128 @@
     ],
     "quizzes": [
       {
-        "key": "quiz-traiter-imports-worker-idempotent",
-        "title": "Quiz — Worker et idempotence",
-        "description": "Vérifier les acquis essentiels de la leçon « Traiter les imports avec un worker idempotent ».",
-        "passingScore": 70,
-        "isRequired": true,
+        "key": "quiz-traiter-source-worker-simple",
+        "title": "Quiz — Worker, états et empreinte",
+        "description": "Interpréter des traces, du code et des limites du worker simple.",
         "position": 1,
+        "isRequired": true,
+        "passingScore": 70,
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Pourquoi garder la transaction de réservation courte ?",
-            "explanation": "Le travail long ne doit pas immobiliser la transaction.",
+            "prompt": "Pourquoi la route d’import retourne-t-elle QUEUED avant normalisation ?",
+            "explanation": "L’API enregistre l’intention et délègue le travail différé au worker.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Éviter de conserver un verrou pendant le traitement externe",
+                "label": "Pour rendre la requête courte et le traitement observable par jobId.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Supprimer l’historique",
+                "label": "Parce que SHA-256 exige une connexion HTTP ouverte.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Rendre le worker synchrone",
+                "label": "Pour éviter toute écriture PostgreSQL.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Éviter les identifiants",
+                "label": "Parce que QUEUED signifie déjà READY.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Le worker meurt après avoir écrit PROCESSING. Quelles affirmations respectent le périmètre enseigné ?",
+            "explanation": "La version courte n’implémente ni lease, ni reprise, ni retry automatique.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le job peut rester PROCESSING.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une intervention ou une future stratégie de récupération est nécessaire.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le cours garantit déjà une reprise automatique.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le hash transforme automatiquement le job en READY.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
           },
           {
             "type": "single_choice",
-            "prompt": "Une archive est dans un format interdit. Quelle politique ?",
-            "explanation": "Aucune nouvelle tentative ne changera le format fourni.",
+            "prompt": "Deux textes ne diffèrent que par `CRLF` et espaces en fin de ligne. À quel moment comparer leur hash ?",
+            "explanation": "Le contrat calcule l’empreinte sur la représentation normalisée commune.",
             "acceptedAnswers": [],
+            "position": 3,
             "options": [
               {
-                "label": "Échec définitif avec raison explicite",
+                "label": "Après normalisation des deux textes.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Retry sans limite",
+                "label": "Avant lecture du contenu.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Masquer l’erreur et marquer READY",
+                "label": "Après création des futurs embeddings.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "Redémarrer PostgreSQL",
+                "label": "Uniquement après publication GHCR.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 2
+            ]
           },
           {
-            "type": "true_false",
-            "prompt": "Deux exécutions du même job peuvent créer deux versions identiques sans que ce soit un problème.",
-            "explanation": "Le résultat canonique doit être protégé des doublons.",
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves doivent accompagner une SourceVersion READY ?",
+            "explanation": "L’état final est cohérent si le résultat, son empreinte et le job racontent la même exécution.",
             "acceptedAnswers": [],
+            "position": 4,
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "normalizedContent est présent.",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "checksumSha256 correspond à normalizedContent.",
                 "isCorrect": true,
                 "position": 2
+              },
+              {
+                "label": "Le job associé est READY.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Deux workers concurrents ont été prouvés sûrs.",
+                "isCorrect": false,
+                "position": 4
               }
-            ],
-            "position": 3
+            ]
           }
         ]
       }
@@ -230,73 +411,113 @@
     "sequence": [
       {
         "kind": "CONTENT",
-        "key": "content-asynchronisme"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "postgres-select-locking"
+        "key": "content-traiter-source-worker-simple-1"
       },
       {
         "kind": "CONTENT",
-        "key": "content-reservation-job"
-      },
-      {
-        "kind": "RESOURCE",
-        "key": "postgres-transactions"
+        "key": "content-traiter-source-worker-simple-2"
       },
       {
         "kind": "CONTENT",
-        "key": "content-idempotence-retry"
+        "key": "content-traiter-source-worker-simple-3"
       },
       {
-        "kind": "RESOURCE",
-        "key": "node-process"
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-5"
       },
       {
         "kind": "EXERCISE",
-        "key": "exercise-traiter-imports-worker-idempotent"
+        "key": "exercise-tracer-frontiere-api-worker"
       },
       {
         "kind": "CONCEPT_ASSESSMENT",
-        "key": "assessment-traitement-asynchrone-idempotent"
+        "key": "assessment-frontiere-api-worker"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-6"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-7"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-verifier-etats-worker"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-machine-etats-worker-bornee"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-8"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-9"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-prouver-normalisation-checksum"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-normalisation-checksum-sha256"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-source-worker-simple-10"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-traiter-source-worker-simple"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-traitement-source-tracable"
       },
       {
         "kind": "QUIZ",
-        "key": "quiz-traiter-imports-worker-idempotent"
+        "key": "quiz-traiter-source-worker-simple"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "2.1.0",
     "status": "draft",
     "language": "fr",
-    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
-    "owner": "Rayan Chambet",
-    "createdAt": "2026-08-18",
+    "audience": "Développeur TypeScript autonome côté frontend, débutant en Docker, Compose, PostgreSQL, tests et CI/CD.",
+    "owner": "LearnX",
+    "createdAt": "2026-08-20",
     "lastReviewedAt": null,
     "nextReviewAt": null,
     "references": [
       {
-        "id": "REF-131-01",
+        "id": "REF-131-NODE-CRYPTO",
         "type": "official_documentation",
         "authors": [],
-        "organization": "PostgreSQL Global Development Group",
-        "title": "SELECT — PostgreSQL Documentation",
+        "organization": "Node.js",
+        "title": "Crypto — Node.js Documentation",
         "year": null,
         "edition": null,
-        "publication": "PostgreSQL Global Development Group",
+        "publication": "Node.js",
         "doi": null,
-        "url": "https://www.postgresql.org/docs/current/sql-select.html",
-        "accessedAt": "2026-08-18",
+        "url": "https://nodejs.org/api/crypto.html",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
-        "id": "REF-131-02",
+        "id": "REF-131-POSTGRES-TRANSACTIONS",
         "type": "official_documentation",
         "authors": [],
         "organization": "PostgreSQL Global Development Group",
@@ -306,238 +527,547 @@
         "publication": "PostgreSQL Global Development Group",
         "doi": null,
         "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
-        "id": "REF-131-03",
+        "id": "REF-131-NODE-PROCESS",
         "type": "official_documentation",
         "authors": [],
         "organization": "Node.js",
         "title": "Process — Node.js Documentation",
-        "year": 2026,
+        "year": null,
         "edition": null,
         "publication": "Node.js",
         "doi": null,
         "url": "https://nodejs.org/api/process.html",
-        "accessedAt": "2026-08-18",
+        "accessedAt": "2026-08-22",
         "evidenceLevel": "D",
         "peerReviewed": false,
         "language": "en",
         "license": null,
         "status": "verified",
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Source primaire recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "contentBlockSources": [
       {
         "contentBlockPosition": 1,
-        "referenceLinks": [
-          {
-            "referenceId": "REF-131-02",
-            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
-            "supports": "Soutient le bloc « content-asynchronisme » et ses distinctions techniques."
-          }
-        ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
-        "notApplicableReason": null
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Description originale du checkpoint, de la production attendue et de ses limites."
       },
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
           {
-            "referenceId": "REF-131-01",
-            "locator": "Clause locking, FOR UPDATE et SKIP LOCKED",
-            "supports": "Soutient le bloc « content-reservation-job » et ses distinctions techniques."
+            "referenceId": "REF-131-POSTGRES-TRANSACTIONS",
+            "locator": "Transactions et unité de mise à jour",
+            "supports": "Cohérence des écritures de résultat et de statut."
+          },
+          {
+            "referenceId": "REF-131-NODE-PROCESS",
+            "locator": "Process lifecycle et exit codes",
+            "supports": "Séparation entre processus API et processus worker."
           }
         ],
-        "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidence": "moderate",
+        "confidenceRationale": "Synthèse d’architecture spécifique au parcours, fondée sur les mécanismes officiels et à vérifier sur le checkpoint.",
         "notApplicableReason": null
       },
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
           {
-            "referenceId": "REF-131-02",
-            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
-            "supports": "Soutient le bloc « content-idempotence-retry » et ses distinctions techniques."
+            "referenceId": "REF-131-POSTGRES-TRANSACTIONS",
+            "locator": "Transactions et ordre des écritures",
+            "supports": "Limites de la sélection puis mise à jour non atomiques."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Code pédagogique volontairement simple ; API Prisma et exécution à contrôler.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-POSTGRES-TRANSACTIONS",
+            "locator": "COMMIT et ROLLBACK",
+            "supports": "Branches terminales cohérentes de la machine d’états."
           },
           {
-            "referenceId": "REF-131-01",
-            "locator": "Clause locking, FOR UPDATE et SKIP LOCKED",
-            "supports": "Soutient le bloc « content-idempotence-retry » et ses distinctions techniques."
+            "referenceId": "REF-131-NODE-PROCESS",
+            "locator": "Signal events et process termination",
+            "supports": "Limite d’un job abandonné lors de l’arrêt du processus."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Machine d’états originale et bornée ; rendu et transitions finales à revoir.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Consigne originale d’observation des identifiants sans nouvelle affirmation externe."
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-POSTGRES-TRANSACTIONS",
+            "locator": "COMMIT et ROLLBACK",
+            "supports": "Finalisation cohérente ou annulation des écritures groupées."
+          },
+          {
+            "referenceId": "REF-131-NODE-PROCESS",
+            "locator": "Exit codes et signal events",
+            "supports": "Limites de l’arrêt et du job PROCESSING abandonné."
           }
         ],
         "confidence": "high",
-        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "confidenceRationale": "Limites explicitement proportionnées à la portée du worker simple.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 7,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-POSTGRES-TRANSACTIONS",
+            "locator": "Transactional all-or-nothing updates",
+            "supports": "Mise à jour groupée du résultat et du job."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Extrait original dont l’API Prisma et la règle d’échec doivent être exécutées et revues.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 8,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-NODE-CRYPTO",
+            "locator": "`crypto.createHash()`, `hash.update()` et `hash.digest()`",
+            "supports": "Calcul SHA-256 et encodage hexadécimal de l’extrait."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Normalisation originale et API officielle ; vecteurs de test à revoir avant publication.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 9,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-NODE-CRYPTO",
+            "locator": "Exemple `createHash`",
+            "supports": "Interprétation du hash de 64 caractères hexadécimaux."
+          },
+          {
+            "referenceId": "REF-131-NODE-PROCESS",
+            "locator": "Signal events et exit codes",
+            "supports": "Interprétation du job interrompu."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Commandes et sorties spécifiques au checkpoint encore à exécuter.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 10,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-NODE-CRYPTO",
+            "locator": "Hash API",
+            "supports": "Distinction entre empreinte et chiffrement et ordre du calcul."
+          },
+          {
+            "referenceId": "REF-131-POSTGRES-TRANSACTIONS",
+            "locator": "Atomicité",
+            "supports": "Cohérence de la finalisation."
+          },
+          {
+            "referenceId": "REF-131-NODE-PROCESS",
+            "locator": "Process lifecycle",
+            "supports": "Limites de crash et d’arrêt."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse des erreurs directement reliées aux mécanismes enseignés.",
         "notApplicableReason": null
       }
     ],
     "resourceChecks": [
       {
-        "resourceKey": "postgres-select-locking",
-        "referenceIds": ["REF-131-01"],
-        "pedagogicalRationale": "Réserver un job sans que deux workers le traitent simultanément.",
-        "learnerInstructions": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
+        "resourceKey": "node-crypto",
+        "referenceIds": ["REF-131-NODE-CRYPTO"],
+        "pedagogicalRationale": "Approfondissement facultatif et borné de l’API exacte après la synthèse et l’extrait.",
+        "learnerInstructions": "Confirmer algorithme, encodage d’entrée et format de sortie de la fonction `sha256`.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "HTML officiel ; code et explication française précèdent la lecture.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "postgres-transactions",
-        "referenceIds": ["REF-131-02"],
-        "pedagogicalRationale": "Protéger la cohérence entre fichier, source, version et job.",
-        "learnerInstructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "referenceIds": ["REF-131-POSTGRES-TRANSACTIONS"],
+        "pedagogicalRationale": "Approfondissement facultatif de la finalisation atomique déjà expliquée.",
+        "learnerInstructions": "Relire COMMIT et ROLLBACK seulement si la cohérence des deux mises à jour reste incertaine.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "HTML officiel ; la lecture n’est pas nécessaire pour accomplir l’activité.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       },
       {
         "resourceKey": "node-process",
-        "referenceIds": ["REF-131-03"],
-        "pedagogicalRationale": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
-        "learnerInstructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "referenceIds": ["REF-131-NODE-PROCESS"],
+        "pedagogicalRationale": "Approfondissement facultatif des signaux et limites du processus worker.",
+        "learnerInstructions": "Lire SIGINT, SIGTERM et exitCode seulement pour expliquer le scénario d’arrêt.",
         "language": "en",
         "accessType": "open",
-        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "accessibilityNotes": "HTML officiel ; limites et conséquences sont synthétisées dans la leçon.",
         "alternativeResourceKey": null,
-        "checkedAt": "2026-08-18",
+        "checkedAt": "2026-08-22",
         "urlStatus": "ok",
         "mediaSegment": null,
         "transcriptAvailable": null,
-        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+        "notes": "Ressource facultative recontrôlée le 22 août 2026 ; revue du checkpoint encore requise avant publication."
       }
     ],
     "assessmentBanks": [
       {
-        "conceptSlug": "traitement-asynchrone-idempotent",
-        "assessmentTitle": "Mini-évaluation — Traitement asynchrone idempotent",
+        "conceptSlug": "frontiere-api-worker",
+        "assessmentTitle": "Mini-évaluation — Frontière API/worker",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles responsabilités appartiennent à la route d’import dans ce parcours ?",
+            "explanation": "La route valide, enregistre et rend l’intention traçable ; le worker réalise le traitement.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Valider le payload.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Créer le job QUEUED.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Retourner les identifiants de suivi.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Attendre les embeddings avant de répondre.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle observation relie le mieux la requête au traitement différé ?",
+            "explanation": "Le même jobId permet de suivre l’intention créée par l’API dans le worker.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le même jobId apparaît dans la réponse et les transitions du worker.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le titre de l’onglet change.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le port PostgreSQL est publié.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le tag `latest` existe.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "machine-etats-worker-bornee",
+        "assessmentTitle": "Mini-évaluation — États du worker",
         "questions": [
           {
             "type": "single_choice",
-            "prompt": "Quel problème SKIP LOCKED aide-t-il à éviter ?",
-            "explanation": "Le verrouillage coordonne les consommateurs concurrents.",
+            "prompt": "Une normalisation lève une erreur contrôlée. Quel résultat respecte la règle d’échec du checkpoint ?",
+            "explanation": "Les deux objets passent à FAILED, le job porte un code stable et le contenu brut reste disponible pour le diagnostic.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Deux workers attendant ou prenant la même ligne disponible",
+                "label": "Job et version `FAILED`, job avec `NORMALIZATION_FAILED`, `rawContent` conservé.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "La perte du DNS",
+                "label": "READY sans checksum.",
                 "isCorrect": false,
                 "position": 2
               },
               {
-                "label": "Le manque de CSS",
+                "label": "QUEUED avec une stack brute comme statut.",
                 "isCorrect": false,
                 "position": 3
               },
               {
-                "label": "La compilation TypeScript",
+                "label": "Suppression silencieuse du job.",
                 "isCorrect": false,
                 "position": 4
               }
-            ],
-            "position": 1
+            ]
           },
           {
             "type": "multiple_choice",
-            "prompt": "Quels éléments rendent un retry plus sûr ?",
-            "explanation": "La reprise doit être contrôlée et observable.",
+            "prompt": "Quelles limites doivent rester explicites pour le worker simple ?",
+            "explanation": "Le parcours borne volontairement concurrence, retry et récupération après crash.",
             "acceptedAnswers": [],
+            "position": 2,
             "options": [
               {
-                "label": "Clé d’idempotence",
+                "label": "Pas de sécurité multi-worker.",
                 "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Effets transactionnels",
+                "label": "Pas de retry automatique.",
                 "isCorrect": true,
                 "position": 2
               },
               {
-                "label": "Nombre maximal de tentatives",
+                "label": "Pas de récupération automatique d’un PROCESSING abandonné.",
                 "isCorrect": true,
                 "position": 3
               },
               {
-                "label": "Classification de l’erreur",
-                "isCorrect": true,
-                "position": 4
-              },
-              {
-                "label": "Délai infini sans journal",
+                "label": "Aucune trace de statut n’est nécessaire.",
                 "isCorrect": false,
-                "position": 5
+                "position": 4
               }
-            ],
-            "position": 2
-          },
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "normalisation-checksum-sha256",
+        "assessmentTitle": "Mini-évaluation — Normalisation et checksum",
+        "questions": [
           {
-            "type": "true_false",
-            "prompt": "Un endpoint idempotent ne peut jamais retourner une erreur.",
-            "explanation": "L’idempotence concerne l’effet répété, pas l’absence d’échec.",
+            "type": "multiple_choice",
+            "prompt": "Quelles transformations appartiennent à la normalisation V2 décrite ?",
+            "explanation": "La règle borne exactement fins de ligne, espaces terminaux et fin de fichier.",
             "acceptedAnswers": [],
+            "position": 1,
             "options": [
               {
-                "label": "Vrai",
-                "isCorrect": false,
+                "label": "Convertir CRLF et CR en LF.",
+                "isCorrect": true,
                 "position": 1
               },
               {
-                "label": "Faux",
+                "label": "Retirer les espaces de fin de ligne.",
                 "isCorrect": true,
                 "position": 2
+              },
+              {
+                "label": "Garantir une fin de fichier unique.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Traduire automatiquement le Markdown.",
+                "isCorrect": false,
+                "position": 4
               }
-            ],
-            "position": 3
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Sur quelle valeur `sha256` doit-il être appelé ?",
+            "explanation": "L’empreinte identifie la représentation canonique obtenue après normalisation.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le `normalizedContent` exact en UTF-8.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le titre de Source.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le jobId.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le contenu brut après chiffrement inexistant.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "traitement-source-tracable",
+        "assessmentTitle": "Mini-évaluation — Traitement de source traçable",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles observations forment une preuve nominale complète ?",
+            "explanation": "La preuve relie identifiants, transitions, résultat et empreinte.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le même jobId traverse QUEUED, PROCESSING et READY.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "normalizedContent est stocké.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le checksum est recalculable.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "La concurrence de deux workers est supposée sûre sans test.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Le job est READY mais SourceVersion reste PROCESSING. Quel diagnostic est correct ?",
+            "explanation": "Les deux objets racontent des issues incompatibles ; la finalisation n’est pas atomique ou complète.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "La finalisation a produit un état incohérent.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La preuve est complète car un seul statut suffit.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le hash garantit automatiquement la cohérence des statuts.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La route HTTP doit être supprimée.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
           }
         ]
       }
     ],
     "sequenceRationale": {
-      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "strategy": "Quatre cycles : frontière API/worker, machine d’états, normalisation et checksum, puis intégration. Les documentations officielles restent facultatives et hors séquence.",
       "cycles": [
         {
-          "conceptSlug": "traitement-asynchrone-idempotent",
+          "conceptSlug": "frontiere-api-worker",
           "contentKeys": [
-            "content-asynchronisme",
-            "content-reservation-job",
-            "content-idempotence-retry"
+            "content-traiter-source-worker-simple-1",
+            "content-traiter-source-worker-simple-2",
+            "content-traiter-source-worker-simple-3",
+            "content-traiter-source-worker-simple-4",
+            "content-traiter-source-worker-simple-5"
           ],
-          "resourceKeys": [
-            "postgres-select-locking",
-            "postgres-transactions",
-            "node-process"
-          ],
+          "resourceKeys": [],
           "activity": {
             "kind": "EXERCISE",
-            "key": "exercise-traiter-imports-worker-idempotent"
+            "key": "exercise-tracer-frontiere-api-worker"
           },
-          "assessmentKey": "assessment-traitement-asynchrone-idempotent",
-          "rationale": "La production « Une file PostgreSQL et un worker concurrents, reprenables et idempotents. » rend observable la maîtrise avant le quiz de synthèse."
+          "assessmentKey": "assessment-frontiere-api-worker",
+          "rationale": "Le modèle mental, le code et le diagramme précèdent le suivi d’un seul job."
+        },
+        {
+          "conceptSlug": "machine-etats-worker-bornee",
+          "contentKeys": [
+            "content-traiter-source-worker-simple-6",
+            "content-traiter-source-worker-simple-7"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-verifier-etats-worker"
+          },
+          "assessmentKey": "assessment-machine-etats-worker-bornee",
+          "rationale": "L’apprenant provoque une réussite et un échec sans étendre le périmètre aux retries."
+        },
+        {
+          "conceptSlug": "normalisation-checksum-sha256",
+          "contentKeys": [
+            "content-traiter-source-worker-simple-8",
+            "content-traiter-source-worker-simple-9"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-prouver-normalisation-checksum"
+          },
+          "assessmentKey": "assessment-normalisation-checksum-sha256",
+          "rationale": "Le code et son interprétation précèdent le test déterministe ; la documentation crypto reste un approfondissement hors séquence."
+        },
+        {
+          "conceptSlug": "traitement-source-tracable",
+          "contentKeys": ["content-traiter-source-worker-simple-10"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-traiter-source-worker-simple"
+          },
+          "assessmentKey": "assessment-traitement-source-tracable",
+          "rationale": "Le projet final assemble les preuves et conserve explicitement les limites du worker simple."
         }
       ]
     },
@@ -550,18 +1080,26 @@
       "linksAndMedia": false,
       "readyForPublication": false,
       "notes": [
-        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
-        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
-        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+        "Version 2.1.0 refondue pour expliquer le processus worker, les états, la normalisation et l’empreinte avant les ressources.",
+        "SVG créé ; rendu et accessibilité vérifiés. Les extraits, vecteurs de test et sorties restent à revoir sur le checkpoint réel.",
+        "checkpoint-06 et ses scénarios READY/FAILED doivent exister avant publication.",
+        "Revue technique, seed, liens et médias obligatoire avant publication."
       ]
     },
     "changeLog": [
       {
-        "version": "1.0.0",
-        "date": "2026-08-18",
-        "author": "Rayan Chambet",
-        "change": "Création de la leçon « Traiter les imports avec un worker idempotent » et de ses évaluations.",
-        "reviewRequired": "editorial_and_subject"
+        "version": "2.0.0",
+        "date": "2026-08-20",
+        "author": "LearnX",
+        "change": "Réécriture guidée et cumulative du programme SourceLab avec socle RAG et CI/CD bornée.",
+        "reviewRequired": "editorial_technical_links_and_seed"
+      },
+      {
+        "version": "2.1.0",
+        "date": "2026-08-22",
+        "author": "LearnX",
+        "change": "Refonte pédagogique avec synthèse française, machine d’états accessible, code annoté, micro-actions et évaluations par notions distinctes.",
+        "reviewRequired": "editorial_technical_links_media_and_seed"
       }
     ]
   }

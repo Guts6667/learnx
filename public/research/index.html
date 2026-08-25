@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recherche — LearnX</title>
+    <meta
+      name="description"
+      content="Le journal public des hypothèses, protocoles, résultats, limites et décisions de recherche LearnX."
+    />
+    <link rel="canonical" href="/research/" />
+    <link rel="alternate" hreflang="fr" href="/research/" />
+    <link rel="alternate" hreflang="en" href="/research/en.html" />
+    <link rel="alternate" hreflang="x-default" href="/research/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Recherche — LearnX" />
+    <meta
+      property="og:description"
+      content="Le journal public des hypothèses, protocoles, résultats, limites et décisions de recherche LearnX."
+    />
+    <link rel="stylesheet" href="/research/journal.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#publications">Aller aux publications</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Navigation utilitaire">
+        <a href="/">Produit</a>
+        <a href="/login">Connexion</a>
+        <a href="/research/en.html" lang="en" hreflang="en">EN</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero shell" aria-labelledby="research-title">
+        <p class="eyebrow">Journal public</p>
+        <h1 id="research-title">Recherche</h1>
+        <p class="lead">
+          LearnX publie ici ses hypothèses, protocoles, résultats, limites et
+          décisions. Chaque article reste accessible lorsqu’une recherche
+          ultérieure le complète ou le remplace.
+        </p>
+        <p class="method-note">
+          <strong>Engagement éditorial.</strong> Une publication datée n’est
+          jamais réécrite silencieusement. Toute évolution substantielle crée
+          une nouvelle version ; tout correctif est consigné comme erratum.
+        </p>
+      </section>
+      <section class="latest shell" aria-labelledby="latest-title">
+        <div>
+          <p class="publication-series">Correction assistée · Résultat</p>
+          <h2 id="latest-title">
+            Gate 4 : quand un échec révèle une limite de l’oracle.
+          </h2>
+          <p>
+            Deux appels, 16 relations concordantes sur 18 et un arrêt qui nous
+            oblige à distinguer l’absence de preuve de la réfutation explicite.
+          </p>
+          <div class="meta">
+            <span>Travaux du 20 août 2026</span><span>Publié le 21 août</span
+            ><span>Recherche expérimentale</span>
+          </div>
+          <a
+            class="primary-link"
+            href="/research/ai-correction/evidence-assist-gate-4/"
+            >Lire le dernier article</a
+          >
+        </div>
+        <aside class="latest__aside" aria-label="Repère chronologique">
+          <p class="folio">06</p>
+          <p>
+            Six jalons autonomes documentent désormais l’évolution de la
+            méthode, du premier benchmark au moteur de preuves.
+          </p>
+        </aside>
+      </section>
+      <section class="controls shell" aria-labelledby="filter-title">
+        <fieldset class="filters">
+          <legend id="filter-title">Filtrer la chronologie</legend>
+          <button
+            class="filter"
+            type="button"
+            data-filter="all"
+            aria-pressed="true"
+          >
+            Toutes
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="exploration"
+            aria-pressed="false"
+          >
+            Explorations
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="protocol"
+            aria-pressed="false"
+          >
+            Protocoles
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="result"
+            aria-pressed="false"
+          >
+            Résultats
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="decision"
+            aria-pressed="false"
+          >
+            Décisions
+          </button>
+          <button
+            class="filter"
+            type="button"
+            data-filter="erratum"
+            aria-pressed="false"
+          >
+            Errata
+          </button>
+        </fieldset>
+      </section>
+      <section
+        class="journal shell"
+        id="publications"
+        aria-labelledby="timeline-title"
+      >
+        <div class="year">
+          <h2 id="timeline-title">2026</h2>
+          <div class="publication-list">
+            <article class="publication" data-publication-type="result">
+              <time datetime="2026-08-20">20 août 2026</time>
+              <div>
+                <p class="publication-series">Correction assistée · 06</p>
+                <div class="meta">
+                  <span>Résultat</span><span>v1</span
+                  ><span>Recherche expérimentale</span><span>FR · EN</span>
+                </div>
+                <h3>Gate 4 : quand un échec révèle une limite de l’oracle.</h3>
+                <p>
+                  Le dernier arrêt est méthodologiquement valide, mais révèle
+                  surtout une ontologie qui confond « non démontré » et «
+                  explicitement réfuté ».
+                </p>
+                <a
+                  class="publication-link"
+                  href="/research/ai-correction/evidence-assist-gate-4/"
+                  >Lire l’article</a
+                >
+              </div>
+            </article>
+            <article class="publication" data-publication-type="protocol">
+              <time datetime="2026-08-16">16 août 2026</time>
+              <div>
+                <p class="publication-series">Correction assistée · 05</p>
+                <div class="meta">
+                  <span>Protocole</span><span>v1</span
+                  ><span>Recherche expérimentale</span><span>FR · EN</span>
+                </div>
+                <h3>Chercher des preuves plutôt que produire un verdict.</h3>
+                <p>
+                  LearnX segmente désormais la réponse avant l’appel. Le modèle
+                  ne peut proposer que des relations candidates sur des passages
+                  autorisés.
+                </p>
+                <a
+                  class="publication-link"
+                  href="/research/ai-correction/chercheur-de-preuves/"
+                  >Lire l’article</a
+                >
+              </div>
+            </article>
+            <article class="publication" data-publication-type="decision">
+              <time datetime="2026-08-14">14 août 2026</time>
+              <div>
+                <p class="publication-series">Correction assistée · 04</p>
+                <div class="meta">
+                  <span>Décision</span><span>v1</span
+                  ><span>Recherche expérimentale</span><span>FR · EN</span>
+                </div>
+                <h3>Pourquoi LearnX ne demande plus au modèle de noter.</h3>
+                <p>
+                  Les niveaux, le score indicatif et les remédiations passent
+                  sous l’autorité d’une rubrique atomique exécutée par LearnX.
+                </p>
+                <a
+                  class="publication-link"
+                  href="/research/ai-correction/moteur-rubrique-executable/"
+                  >Lire l’article</a
+                >
+              </div>
+            </article>
+            <article class="publication" data-publication-type="exploration">
+              <time datetime="2026-08-13">13 août 2026</time>
+              <div>
+                <p class="publication-series">Correction assistée · 03</p>
+                <div class="meta">
+                  <span>Exploration</span><span>v1</span
+                  ><span>Recherche expérimentale</span><span>FR · EN</span>
+                </div>
+                <h3>Deux modèles valent-ils mieux qu’un ?</h3>
+                <p>
+                  La simulation Mistral–Sonnet réduit les erreurs favorables,
+                  mais augmente les refus et laisse huit décisions incertaines.
+                </p>
+                <a
+                  class="publication-link"
+                  href="/research/ai-correction/pipeline-composite/"
+                  >Lire l’article</a
+                >
+              </div>
+            </article>
+            <article class="publication" data-publication-type="protocol">
+              <time datetime="2026-08-12">12 août 2026</time>
+              <div>
+                <p class="publication-series">Correction assistée · 02</p>
+                <div class="meta">
+                  <span>Protocole</span><span>v1</span
+                  ><span>Recherche expérimentale</span><span>FR · EN</span>
+                </div>
+                <h3>Ce que la revue aveugle a changé dans notre protocole.</h3>
+                <p>
+                  Les cas ambigus et la double pénalisation ont montré que le
+                  benchmark lui-même devait être audité avant les modèles.
+                </p>
+                <a
+                  class="publication-link"
+                  href="/research/ai-correction/revue-aveugle/"
+                  >Lire l’article</a
+                >
+              </div>
+            </article>
+            <article class="publication" data-publication-type="result">
+              <time datetime="2026-08-12">12 août 2026</time>
+              <div>
+                <p class="publication-series">Correction assistée · 01</p>
+                <div class="meta">
+                  <span>Résultat</span><span>v1</span
+                  ><span>Recherche expérimentale</span><span>FR · EN</span>
+                </div>
+                <h3>Premier benchmark : une bonne moyenne ne suffit pas.</h3>
+                <p>
+                  24 cas français répétés trois fois ont révélé que les moyennes
+                  cachent des défauts de sécurité, de format et de stabilité.
+                </p>
+                <a
+                  class="publication-link"
+                  href="/research/ai-correction/premiers-benchmarks/"
+                  >Lire l’article</a
+                >
+              </div>
+            </article>
+            <article class="publication" data-publication-type="exploration">
+              <time datetime="2026-08-12">12–20 août 2026</time>
+              <div>
+                <p class="publication-series">Dossier historique</p>
+                <div class="meta">
+                  <span>Synthèse</span><span>v1</span
+                  ><span>Recherche expérimentale</span><span>FR · EN</span>
+                </div>
+                <h3>
+                  Construire une correction utile, sans fabriquer de certitude.
+                </h3>
+                <p>
+                  Le rapport long est conservé comme archive et rassemble les
+                  chiffres, candidats, coûts, limites et décisions de la série.
+                </p>
+                <a class="publication-link" href="/research/ai-correction/"
+                  >Ouvrir le dossier de synthèse</a
+                >
+              </div>
+            </article>
+          </div>
+        </div>
+        <p class="empty" role="status" hidden>
+          Aucune publication ne correspond à ce filtre.
+          <button class="filter" type="button" data-filter="all">
+            Effacer le filtre
+          </button>
+        </p>
+      </section>
+    </main>
+    <footer class="site-footer shell">
+      <span>© 2026 LearnX</span>
+      <nav aria-label="Pied de page">
+        <a href="/research/">Recherche</a><a href="/">Produit</a
+        ><a href="/login">Connexion</a>
+      </nav>
+    </footer>
+    <script>
+      const publications = [
+        ...document.querySelectorAll('[data-publication-type]'),
+      ];
+      const buttons = [...document.querySelectorAll('[data-filter]')];
+      const empty = document.querySelector('.empty');
+      for (const button of buttons)
+        button.addEventListener('click', () => {
+          const filter = button.dataset.filter;
+          for (const control of buttons)
+            control.setAttribute(
+              'aria-pressed',
+              String(
+                control === button ||
+                  (filter === 'all' && control.dataset.filter === 'all'),
+              ),
+            );
+          let visible = 0;
+          for (const publication of publications) {
+            const show =
+              filter === 'all' ||
+              publication.dataset.publicationType === filter;
+            publication.hidden = !show;
+            if (show) visible += 1;
+          }
+          empty.hidden = visible > 0;
+        });
+    </script>
+  </body>
+</html>

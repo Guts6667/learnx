@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby="docker-title docker-desc">
+  <title id="docker-title">Construction multi-stage de l’image API SourceLab</title>
+  <desc id="docker-desc">Le contexte filtré par dockerignore alimente trois étapes. Deps installe les dépendances verrouillées, build compile TypeScript, runtime ne copie que les artefacts nécessaires et utilise un utilisateur non-root. Le port reste une configuration fournie au lancement du container.</desc>
+  <defs>
+    <marker id="docker-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#466b82"/></marker>
+    <style>
+      .title{font:700 26px system-ui,sans-serif;fill:#121c24}.eyebrow{font:700 12px ui-monospace,monospace;letter-spacing:1.4px;fill:#3f6176}.label{font:700 17px system-ui,sans-serif;fill:#121c24}.body{font:14px system-ui,sans-serif;fill:#58676d}.code{font:13px ui-monospace,monospace;fill:#121c24}.stage{fill:#fffdf8;stroke:#60747e;stroke-width:2}.runtime{fill:#d9e4e8;stroke:#466b82;stroke-width:3}.guard{fill:#fff8f6;stroke:#944f49;stroke-width:2}.line{fill:none;stroke:#466b82;stroke-width:3;marker-end:url(#docker-arrow)}
+    </style>
+  </defs>
+  <rect width="960" height="600" rx="24" fill="#f1eee6"/>
+  <text x="48" y="46" class="eyebrow">L3 · IMAGE REPRODUCTIBLE</text>
+  <text x="48" y="80" class="title">Le build fabrique l’image ; le run crée un container</text>
+
+  <rect x="48" y="126" width="170" height="150" rx="16" class="stage"/>
+  <text x="68" y="160" class="label">Contexte</text>
+  <text x="68" y="190" class="code">package.json</text>
+  <text x="68" y="214" class="code">pnpm-lock.yaml</text>
+  <text x="68" y="238" class="code">src/</text>
+  <text x="68" y="261" class="body">fichiers utiles au build</text>
+
+  <rect x="48" y="304" width="170" height="116" rx="16" class="guard"/>
+  <text x="68" y="338" class="label" style="fill:#944f49">.dockerignore</text>
+  <text x="68" y="368" class="code">.env</text>
+  <text x="68" y="392" class="code">node_modules</text>
+  <text x="68" y="414" class="body">reste hors contexte</text>
+
+  <rect x="274" y="126" width="176" height="196" rx="16" class="stage"/>
+  <text x="294" y="160" class="eyebrow">ÉTAPE 1</text>
+  <text x="294" y="190" class="label">deps</text>
+  <text x="294" y="222" class="code">COPY package...</text>
+  <text x="294" y="247" class="code">pnpm install</text>
+  <text x="294" y="272" class="code">--frozen-lockfile</text>
+  <text x="294" y="302" class="body">cache si lockfile stable</text>
+
+  <rect x="506" y="126" width="176" height="196" rx="16" class="stage"/>
+  <text x="526" y="160" class="eyebrow">ÉTAPE 2</text>
+  <text x="526" y="190" class="label">build</text>
+  <text x="526" y="222" class="code">COPY src ./src</text>
+  <text x="526" y="247" class="code">pnpm build</text>
+  <text x="526" y="278" class="body">TypeScript devient</text>
+  <text x="526" y="299" class="code">dist/</text>
+  <text x="526" y="320" class="body">outils non copiés</text>
+
+  <rect x="738" y="106" width="174" height="236" rx="18" class="runtime"/>
+  <text x="758" y="142" class="eyebrow">IMAGE FINALE</text>
+  <text x="758" y="172" class="label">runtime</text>
+  <text x="758" y="204" class="code">COPY --from=build</text>
+  <text x="758" y="229" class="code">dist/ + prod deps</text>
+  <text x="758" y="260" class="code">USER node</text>
+  <text x="758" y="285" class="code">CMD ["node", ...]</text>
+  <text x="758" y="318" class="body">pas de secret, non-root</text>
+
+  <path d="M218 204H268" class="line"/>
+  <path d="M450 224H500" class="line"/>
+  <path d="M682 224H732" class="line"/>
+
+  <rect x="274" y="380" width="408" height="150" rx="16" class="stage"/>
+  <text x="294" y="414" class="eyebrow">POURQUOI LE DEUXIÈME BUILD EST PLUS RAPIDE ?</text>
+  <text x="294" y="449" class="code">Build 1  deps 18.4s · build 4.2s</text>
+  <text x="294" y="475" class="code">Build 2  deps CACHED · build 4.1s</text>
+  <text x="294" y="505" class="body">Cache = couche réutilisée ; pas image à jour.</text>
+
+  <rect x="738" y="380" width="174" height="150" rx="16" class="stage"/>
+  <text x="758" y="414" class="eyebrow">AU RUNTIME</text>
+  <text x="758" y="449" class="code">docker run</text>
+  <text x="758" y="474" class="code">-e PORT=3000</text>
+  <text x="758" y="499" class="body">configuration runtime</text>
+  <text x="758" y="519" class="body">hors de l’image</text>
+  <path d="M825 342V374" class="line"/>
+
+  <text x="48" y="566" class="body">Image = artefact immuable · container = processus créé depuis cet artefact · digest = identité du contenu publié</text>
+</svg>

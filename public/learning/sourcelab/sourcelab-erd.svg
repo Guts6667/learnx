@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="erd-title erd-desc">
+  <title id="erd-title">Relations entre Project, Source, SourceVersion et ProcessingJob</title>
+  <desc id="erd-desc">Un Project possède zéro à plusieurs Source. Une Source appartient à exactement un Project et possède zéro à plusieurs SourceVersion. Une SourceVersion appartient à exactement une Source et possède zéro à plusieurs ProcessingJob. Chaque ProcessingJob appartient à exactement une SourceVersion.</desc>
+  <style>
+    .title{font:700 26px system-ui,sans-serif;fill:#121c24}.eyebrow{font:700 12px ui-monospace,monospace;letter-spacing:1.4px;fill:#3f6176}.entity{font:700 18px system-ui,sans-serif;fill:#121c24}.field{font:13px ui-monospace,monospace;fill:#121c24}.note{font:14px system-ui,sans-serif;fill:#58676d}.card{fill:#fffdf8;stroke:#60747e;stroke-width:2}.header{fill:#d9e4e8}.relation{fill:none;stroke:#466b82;stroke-width:3}.cardinality{font:700 13px ui-monospace,monospace;fill:#466b82}
+  </style>
+  <rect width="960" height="640" rx="24" fill="#f1eee6"/>
+  <text x="48" y="46" class="eyebrow">L5 · MODÈLE DE DONNÉES</text>
+  <text x="48" y="80" class="title">L’identité durable est séparée de ses versions et traitements</text>
+
+  <g>
+    <rect x="40" y="142" width="230" height="214" rx="16" class="card"/>
+    <path d="M40 158Q40 142 56 142H254Q270 142 270 158V194H40Z" class="header"/>
+    <text x="60" y="177" class="entity">Project</text>
+    <text x="60" y="224" class="field">id            PK</text>
+    <text x="60" y="251" class="field">title</text>
+    <line x1="60" y1="270" x2="250" y2="270" stroke="#c8cdca"/>
+    <text x="60" y="300" class="note">Regroupe les sources</text>
+    <text x="60" y="328" class="note">d’un même projet.</text>
+  </g>
+
+  <g>
+    <rect x="365" y="142" width="230" height="214" rx="16" class="card"/>
+    <path d="M365 158Q365 142 381 142H579Q595 142 595 158V194H365Z" class="header"/>
+    <text x="385" y="177" class="entity">Source</text>
+    <text x="385" y="224" class="field">id            PK</text>
+    <text x="385" y="251" class="field">projectId     FK</text>
+    <text x="385" y="278" class="field">title · origin</text>
+    <line x1="385" y1="297" x2="575" y2="297" stroke="#c8cdca"/>
+    <text x="385" y="327" class="note">Identité durable du</text>
+    <text x="385" y="349" class="note">document importé.</text>
+  </g>
+
+  <g>
+    <rect x="690" y="112" width="230" height="244" rx="16" class="card"/>
+    <path d="M690 128Q690 112 706 112H904Q920 112 920 128V164H690Z" class="header"/>
+    <text x="710" y="147" class="entity">SourceVersion</text>
+    <text x="710" y="194" class="field">id              PK</text>
+    <text x="710" y="221" class="field">sourceId        FK</text>
+    <text x="710" y="248" class="field">versionLabel</text>
+    <text x="710" y="275" class="field">status</text>
+    <text x="710" y="302" class="field">checksumSha256</text>
+    <line x1="710" y1="318" x2="900" y2="318" stroke="#c8cdca"/>
+    <text x="710" y="344" class="note">Contenu à un instant donné.</text>
+  </g>
+
+  <g>
+    <rect x="690" y="430" width="230" height="164" rx="16" class="card"/>
+    <path d="M690 446Q690 430 706 430H904Q920 430 920 446V482H690Z" class="header"/>
+    <text x="710" y="465" class="entity">ProcessingJob</text>
+    <text x="710" y="512" class="field">id              PK</text>
+    <text x="710" y="539" class="field">sourceVersionId FK</text>
+    <text x="710" y="566" class="field">status · errorCode</text>
+  </g>
+
+  <path d="M270 248H365" class="relation"/>
+  <line x1="287" y1="235" x2="287" y2="261" class="relation"/>
+  <line x1="300" y1="235" x2="300" y2="261" class="relation"/>
+  <path d="M347 248L327 235M347 248L327 261M347 248H327" class="relation"/>
+  <text x="278" y="222" class="cardinality">1</text>
+  <text x="318" y="222" class="cardinality">0..n</text>
+
+  <path d="M595 248H690" class="relation"/>
+  <line x1="612" y1="235" x2="612" y2="261" class="relation"/>
+  <line x1="625" y1="235" x2="625" y2="261" class="relation"/>
+  <path d="M672 248L652 235M672 248L652 261M672 248H652" class="relation"/>
+  <text x="603" y="222" class="cardinality">1</text>
+  <text x="643" y="222" class="cardinality">0..n</text>
+
+  <path d="M805 356V430" class="relation"/>
+  <line x1="792" y1="373" x2="818" y2="373" class="relation"/>
+  <line x1="792" y1="386" x2="818" y2="386" class="relation"/>
+  <path d="M805 412L792 392M805 412L818 392M805 412V392" class="relation"/>
+  <text x="826" y="382" class="cardinality">1</text>
+  <text x="826" y="414" class="cardinality">0..n</text>
+
+  <rect x="40" y="430" width="555" height="126" rx="16" fill="#fffdf8" stroke="#c8cdca" stroke-width="2"/>
+  <text x="62" y="465" class="eyebrow">EXEMPLE</text>
+  <text x="62" y="499" class="field">« Guide API » = 1 Source</text>
+  <text x="62" y="526" class="field">v1 puis v2       = 2 SourceVersion</text>
+  <text x="330" y="499" class="note">Importer v2 ne crée pas une</text>
+  <text x="330" y="524" class="note">deuxième identité Source.</text>
+  <text x="62" y="590" class="note">PK = clé primaire · FK = clé étrangère · 0..n = zéro à plusieurs</text>
+</svg>

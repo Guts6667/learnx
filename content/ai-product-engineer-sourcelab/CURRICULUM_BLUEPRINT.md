@@ -8,7 +8,11 @@ SourceLab reste un produit indépendant : aucun exercice n’ajoute de tables, d
 
 ## Public et prérequis
 
-Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.
+Développeur TypeScript/Product Engineer ayant terminé
+`checkpoint-07-continuous-delivery` du programme SourceLab 2.0 dans le dépôt
+séparé, ou disposant d’un service local équivalent produisant une
+`SourceVersion READY` traçable. Le checkpoint constitue l’unique raccord
+obligatoire ; le programme RAG ne suppose aucune fonctionnalité au-delà.
 
 ## Résultats d’apprentissage
 
@@ -26,7 +30,8 @@ Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker,
 - Chaque étape possède une évaluation finale pratique.
 - Les contenus techniques distinguent règle stable, choix contextuel et hypothèse à mesurer.
 - Les sources de rédaction et les ressources apprenant sont déclarées séparément dans les sidecars.
-- Les contenus restent `draft` jusqu’aux revues humaines.
+- Le runtime est actif et public depuis le 21 août 2026 ; les statuts de revue
+  historiques des sidecars restent inchangés et ne simulent aucun reviewer.
 
 ## Architecture cible
 

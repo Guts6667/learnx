@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chercher des preuves plutôt que produire un verdict — LearnX</title>
+    <meta
+      name="description"
+      content="Comment les citations libres ont été remplacées par des passages contrôlés et des relations candidates sans score ni progression."
+    />
+    <link
+      rel="canonical"
+      href="https://learn-x.app/research/ai-correction/chercheur-de-preuves/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="https://learn-x.app/research/ai-correction/chercheur-de-preuves/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://learn-x.app/research/ai-correction/chercheur-de-preuves/en.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://learn-x.app/research/ai-correction/chercheur-de-preuves/"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Chercher des preuves plutôt que produire un verdict."
+    />
+    <meta
+      property="og:description"
+      content="Les essais Gemini et Sonnet 5 qui ont conduit à evidence-assist."
+    />
+    <meta
+      property="og:url"
+      content="https://learn-x.app/research/ai-correction/chercheur-de-preuves/"
+    />
+    <meta property="article:published_time" content="2026-08-21T00:00:00Z" />
+    <meta property="article:modified_time" content="2026-08-21T00:00:00Z" />
+    <link rel="stylesheet" href="/research/journal.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Chercher des preuves plutôt que produire un verdict.",
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "inLanguage": "fr"
+      }
+    </script>
+    <script src="/research/article.js" defer></script>
+  </head>
+  <body class="article-page">
+    <a class="skip-link" href="#article">Aller à l’article</a>
+    <header class="site-header shell">
+      <a class="brand" href="/">LearnX</a>
+      <nav class="utility" aria-label="Navigation utilitaire">
+        <a href="/research/">Recherche</a
+        ><a
+          href="/research/ai-correction/chercheur-de-preuves/en.html"
+          lang="en"
+          hreflang="en"
+          >EN</a
+        >
+      </nav>
+    </header>
+    <main>
+      <header class="article-hero shell">
+        <nav class="breadcrumbs" aria-label="Fil d’Ariane">
+          <a href="/research/">Recherche</a><span aria-hidden="true">›</span
+          ><span>Correction assistée · 05</span>
+        </nav>
+        <p class="eyebrow">Protocole · Recherche expérimentale</p>
+        <h1>Chercher des preuves plutôt que produire un verdict.</h1>
+        <p class="article-deck">
+          Gemini et Sonnet 5 ont montré qu’une bonne compréhension sémantique ne
+          suffit pas lorsque le modèle doit aussi recopier exactement des
+          citations et respecter un budget technique. LearnX a donc repris le
+          contrôle des passages.
+        </p>
+        <div class="article-meta">
+          <span>Travaux des 15–16 août 2026</span
+          ><span>Publication rétrospective du 21 août 2026</span
+          ><span>Version 1</span>
+        </div>
+      </header>
+      <div class="article-layout shell" id="article">
+        <aside class="article-aside">
+          <h2>Dans cet article</h2>
+          <ol>
+            <li><a href="#gemini">Gemini</a></li>
+            <li><a href="#sonnet">Sonnet 5</a></li>
+            <li><a href="#evidence">Evidence-assist</a></li>
+            <li><a href="#gates">Gates</a></li>
+            <li><a href="#limites">Limites</a></li>
+          </ol>
+          <div class="share-actions">
+            <button
+              class="share-button"
+              type="button"
+              data-share-article
+              data-canonical-url="https://learn-x.app/research/ai-correction/chercheur-de-preuves/"
+              data-copied-label="Lien copié."
+              data-shared-label="Article partagé."
+              data-failed-label="Copie impossible : utilisez l’adresse de cette page."
+            >
+              Partager l’article
+            </button>
+          </div>
+          <p class="share-status" data-share-status aria-live="polite"></p>
+        </aside>
+        <article class="article-body">
+          <section id="gemini">
+            <h2>Gemini : le sens juste, la citation rejetée</h2>
+            <p>
+              Gemini a réussi un gate de trois cas uniques : 27 éléments
+              couverts, cas négatif et injection conformes. Le panel 10×2 a
+              ensuite produit 10 workflows valides sur les 20 prévus, couvrant
+              cinq cas deux fois. Le 11e appel a proposé une citation non exacte
+              ; LearnX l’a rejetée et la campagne s’est arrêtée. Coût réconcilié
+              : 0,04345875 USD.
+            </p>
+            <p>
+              Le défaut n’était pas un verdict pédagogique sur Gemini. Il
+              démontrait que demander au modèle de retrouver texte et offsets
+              exacts restait une source d’invalidité.
+            </p>
+          </section>
+          <section id="sonnet">
+            <h2>Sonnet 5 : bon screening, profils techniques insuffisants</h2>
+            <p>
+              Le screening a réussi 3/3 cas, 27/27 statuts et 17 citations
+              exactes. Au panel, dix workflows étaient valides ; le 11e appel a
+              consommé 2 500 tokens de raisonnement sans produire de sortie
+              visible. Une nouvelle identité bornée à 1 024 tokens de
+              raisonnement a encore dépassé cette limite de 58 tokens dès son
+              premier appel. Les deux campagnes ont été stoppées sans conclure
+              que Sonnet était pédagogiquement mauvais.
+            </p>
+          </section>
+          <section id="evidence">
+            <h2>Le changement : des passages créés par LearnX</h2>
+            <p>
+              LearnX segmente désormais la réponse avant le réseau. Chaque
+              passage reçoit un identifiant opaque, des offsets et une
+              empreinte. Le modèle ne recopie plus une citation et ne propose
+              plus de niveau : il relie seulement un passage autorisé à un
+              élément de rubrique avec une relation « pour », « contre » ou «
+              abstention ».
+            </p>
+            <p>
+              La sortie reste candidate. LearnX contrôle l’identifiant, le
+              propriétaire, la sécurité, le schéma et la cohérence avant toute
+              utilisation.
+            </p>
+          </section>
+          <section id="gates">
+            <h2>Ce que le modèle ne peut plus faire</h2>
+            <ul>
+              <li>produire un score, un niveau final ou un PASS/FAIL ;</li>
+              <li>modifier la progression ;</li>
+              <li>écrire librement le feedback publié ;</li>
+              <li>citer un passage non pré-segmenté ;</li>
+              <li>déclencher un retry ou un coût non réconcilié.</li>
+            </ul>
+          </section>
+          <section id="limites">
+            <h2>Ce qui restait à démontrer</h2>
+            <p>
+              Cette architecture réduisait la surface d’erreur, mais elle
+              n’avait pas encore passé le gate de quatre cas. Le rôle de
+              chercheur n’était donc ni promu ni activé. L’article suivant
+              documente le premier arrêt sémantique de cette nouvelle identité.
+            </p>
+            <div class="article-callout">
+              <strong>Lecture correcte</strong>
+              <p>
+                Transport compatible et qualité pédagogique sont deux axes
+                distincts. Un smoke réussi ne vaut pas une sélection.
+              </p>
+            </div>
+          </section>
+        </article>
+      </div>
+      <footer class="article-footer shell">
+        <nav class="article-navigation" aria-label="Articles de la série">
+          <a href="/research/ai-correction/moteur-rubrique-executable/"
+            ><small>Article précédent</small
+            ><strong>Le moteur de rubrique exécutable</strong></a
+          ><a href="/research/ai-correction/evidence-assist-gate-4/"
+            ><small>Article suivant</small
+            ><strong>Gate 4 : la limite de l’oracle</strong></a
+          >
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>
