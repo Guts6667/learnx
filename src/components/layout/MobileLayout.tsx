@@ -219,69 +219,88 @@ export function MobileLayout({
 
   const privateLayout = (
     <div class="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">
-        <a
-          class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
-          href="#main-content"
-          onClick={focusMainContent}
-        >
-          {t('navigation.skipToContent')}
-        </a>
-        <header
-          class={`app-safe-header border-b border-[var(--color-border)] bg-[var(--color-canvas)] ${rootPaths.has(currentPath) ? 'app-safe-header--root' : ''}`}
-        >
-          <div class="app-frame mx-auto flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2">
-              {!rootPaths.has(currentPath) ? (
-                <button
-                  aria-label={
-                    backTarget
-                      ? t(backTarget.labelKey)
-                      : t('navigation.back.ariaLabel')
-                  }
-                  class="ui-action ui-action--secondary min-h-11 min-w-11 px-3"
-                  onClick={goBack}
-                  type="button"
-                >
-                  <span aria-hidden="true">←</span>
-                  <span class="ml-2 hidden sm:inline">
-                    {backTarget
-                      ? t(backTarget.labelKey)
-                      : t('navigation.back.label')}
-                  </span>
-                </button>
-              ) : null}
+      <a
+        class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
+        href="#main-content"
+        onClick={focusMainContent}
+      >
+        {t('navigation.skipToContent')}
+      </a>
+      <header
+        class={`app-safe-header border-b border-[var(--color-border)] bg-[var(--color-canvas)] ${rootPaths.has(currentPath) ? 'app-safe-header--root' : ''} ${currentPath === '/discover' ? 'app-safe-header--discover' : ''}`}
+      >
+        <div class="app-frame app-safe-header__content mx-auto flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            {currentPath === '/discover' ? (
+              <button
+                aria-label={t('navigation.back.programs')}
+                class="ui-action ui-action--secondary min-h-11 min-w-11 px-3"
+                onClick={() => route('/program')}
+                type="button"
+              >
+                <span aria-hidden="true">←</span>
+              </button>
+            ) : null}
+            {!rootPaths.has(currentPath) ? (
+              <button
+                aria-label={
+                  backTarget
+                    ? t(backTarget.labelKey)
+                    : t('navigation.back.ariaLabel')
+                }
+                class="ui-action ui-action--secondary min-h-11 min-w-11 px-3"
+                onClick={goBack}
+                type="button"
+              >
+                <span aria-hidden="true">←</span>
+                <span class="ml-2 hidden sm:inline">
+                  {backTarget
+                    ? t(backTarget.labelKey)
+                    : t('navigation.back.label')}
+                </span>
+              </button>
+            ) : null}
+            {currentPath !== '/discover' ? (
               <a
                 class="inline-flex min-h-11 items-center rounded-lg text-lg font-medium tracking-tight text-[var(--color-text)]"
                 href={authenticationPaths.has(currentPath) ? '/' : '/today'}
               >
                 {t('app.name')}
               </a>
-            </div>
+            ) : null}
+          </div>
+          {currentPath === '/discover' ? (
+            <strong class="app-safe-header__mobile-title">
+              {t('programs.explore')}
+            </strong>
+          ) : (
             <span class="ui-text-muted hidden text-sm sm:inline">
               {t('app.tagline')}
             </span>
-          </div>
-        </header>
-        <PwaStatus showInstallPrompt={currentPath !== '/profile'} />
-        <BackNavigationProvider onTargetChange={updateBackTarget}>
-          <main
-            id="main-content"
-            class="app-safe-main app-frame mx-auto py-8 lg:py-10"
-            tabindex={-1}
-          >
-            {children}
-          </main>
-        </BackNavigationProvider>
-        <PrivateNavigation currentPath={currentPath} />
+          )}
+          {currentPath === '/discover' ? (
+            <span aria-hidden="true" class="size-11" />
+          ) : null}
+        </div>
+      </header>
+      <PwaStatus showInstallPrompt={currentPath !== '/profile'} />
+      <BackNavigationProvider onTargetChange={updateBackTarget}>
+        <main
+          id="main-content"
+          class="app-safe-main app-frame mx-auto py-8 lg:py-10"
+          tabindex={-1}
+        >
+          {children}
+        </main>
+      </BackNavigationProvider>
+      <PrivateNavigation currentPath={currentPath} />
     </div>
   );
 
   return (
     <PwaProvider>
       {usesTotemProductSurface(currentPath) ? (
-        <TotemTheme class="totem-product-surface">
-          {privateLayout}
-        </TotemTheme>
+        <TotemTheme class="totem-product-surface">{privateLayout}</TotemTheme>
       ) : (
         privateLayout
       )}

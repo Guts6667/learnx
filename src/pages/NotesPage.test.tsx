@@ -54,7 +54,10 @@ describe('NotesPage', () => {
     );
 
     expect((await screen.findAllByText('Ma note')).length).toBeGreaterThan(0);
-    fireEvent.input(screen.getByLabelText('Rechercher dans les notes'), {
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Rechercher dans les notes' }),
+    );
+    fireEvent.input(screen.getByRole('searchbox'), {
       target: { value: 'attention' },
     });
 
@@ -70,9 +73,7 @@ describe('NotesPage', () => {
   });
 
   it('ouvre un éditeur sans créer silencieusement de note', async () => {
-    const fetchMock = vi.fn(() =>
-      Promise.resolve(jsonResponse({ notes: [] })),
-    );
+    const fetchMock = vi.fn(() => Promise.resolve(jsonResponse({ notes: [] })));
     vi.stubGlobal('fetch', fetchMock);
 
     render(
@@ -81,7 +82,9 @@ describe('NotesPage', () => {
       </AppProviders>,
     );
 
-    fireEvent.click(await screen.findByRole('button', { name: 'Nouvelle note' }));
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Nouvelle note' }),
+    );
 
     expect(fetchMock).not.toHaveBeenCalledWith(
       '/api/notes',
@@ -155,13 +158,17 @@ describe('NotePage', () => {
     fireEvent.input(screen.getByLabelText('Contenu de la note'), {
       target: { value: '# Nouveau contenu' },
     });
-    expect(screen.getByText('Modifications non enregistrées.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Modifications non enregistrées.'),
+    ).toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalledWith(
       `/api/notes/${noteId}`,
       expect.objectContaining({ method: 'PATCH' }),
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Enregistrer la note' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Enregistrer la note' }),
+    );
     await act(() => Promise.resolve());
 
     expect(fetchMock).toHaveBeenCalledWith(

@@ -121,18 +121,21 @@ describe('Totem program directories', () => {
     expect(
       await screen.findByRole('heading', { name: 'SourceLab' }),
     ).toBeInTheDocument();
-    fireEvent.input(screen.getByLabelText('Rechercher un programme'), {
+    fireEvent.input(screen.getByRole('searchbox'), {
       target: { value: 'docker' },
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Rechercher' }));
+    const searchForm = screen.getByRole('searchbox').closest('form');
+    expect(searchForm).not.toBeNull();
+    if (!searchForm) return;
+    fireEvent.submit(searchForm);
     await waitFor(() =>
       expect(
-        fetchMock.mock.calls.some(([path]) => String(path).includes('search=docker')),
+        fetchMock.mock.calls.some(([path]) =>
+          String(path).includes('search=docker'),
+        ),
       ).toBe(true),
     );
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'S’inscrire' }),
-    );
+    fireEvent.click(await screen.findByRole('button', { name: 'S’inscrire' }));
     expect(
       await screen.findByText('SourceLab a été ajouté à Mes parcours.'),
     ).toBeInTheDocument();

@@ -35,7 +35,9 @@ const adminNavigationItems = [
 
 function isCurrentAdminPage(currentPath: string, href: string): boolean {
   if (href === '/admin') {
-    return currentPath === '/admin' || currentPath.startsWith('/admin/program/');
+    return (
+      currentPath === '/admin' || currentPath.startsWith('/admin/program/')
+    );
   }
 
   return currentPath === href;
@@ -54,8 +56,10 @@ export function AdminNavigation({
       class="totem-admin-navigation"
     >
       <div class="totem-admin-navigation__brand" aria-hidden="true">
-        <span class="totem-admin-navigation__mark">LX</span>
-        <span>LearnX</span>
+        <span class="totem-admin-navigation__brand-name">LearnX</span>
+        <span class="totem-admin-navigation__brand-context">
+          Administration
+        </span>
       </div>
       <ul class="totem-admin-navigation__list">
         {adminNavigationItems.map(({ href, labelKey, shortLabelKey }) => {
@@ -68,7 +72,10 @@ export function AdminNavigation({
                 class="totem-admin-navigation__link"
                 href={href}
               >
-                <span class="totem-admin-navigation__index" aria-hidden="true" />
+                <span
+                  class="totem-admin-navigation__index"
+                  aria-hidden="true"
+                />
                 <span class="totem-admin-navigation__label--long">
                   {t(labelKey)}
                 </span>
@@ -80,10 +87,7 @@ export function AdminNavigation({
           );
         })}
       </ul>
-      <a
-        class="totem-admin-navigation__exit"
-        href="/today"
-      >
+      <a class="totem-admin-navigation__exit" href="/today">
         <span aria-hidden="true">↗</span>
         <span>{t('admin.navigation.backToApp')}</span>
       </a>

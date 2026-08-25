@@ -18,8 +18,8 @@
 
 @theme {
   --font-sans:
-    'DM Sans', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
+    'DM Sans', Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 :root {
@@ -36,7 +36,9 @@
   --color-accent-text: #3150c5;
   --color-action: #3b5bd6;
   --color-action-hover: #2f4ec6;
+  --color-action-soft: #e7edff;
   --color-on-action: #ffffff;
+  --color-direction: #cc6b57;
   --color-focus: #3b5bd6;
   --color-success: #3150c5;
   --color-warning: #8a5a24;
@@ -101,7 +103,7 @@
   --app-work-max: 92rem;
   --app-admin-max: 108rem;
   --app-navigation-height: 5.5rem;
-  --app-navigation-width: 216px;
+  --app-navigation-width: 224px;
   color-scheme: light;
   font-family: var(--font-interface);
   font-synthesis: none;
@@ -130,7 +132,9 @@ body {
   --color-accent-text: var(--totem-color-accent-text);
   --color-action: var(--totem-color-accent);
   --color-action-hover: var(--totem-color-action-hover);
+  --color-action-soft: var(--totem-color-surface-subtle);
   --color-on-action: var(--totem-color-on-action);
+  --color-direction: var(--totem-color-coral);
   --color-focus: #2441a6;
   --color-success: var(--totem-color-accent);
   --color-warning: var(--totem-color-coral);
@@ -684,7 +688,6 @@ body {
     grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
   }
-
 }
 
 @media (min-width: 64rem) {
@@ -743,7 +746,8 @@ body {
     border-radius: var(--radius-surface);
     padding: 0.5rem;
     background: var(--color-surface);
-    box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--color-ink) 14%, transparent);
+    box-shadow: 0 1rem 2.5rem
+      color-mix(in srgb, var(--color-ink) 14%, transparent);
   }
 
   .landing-mobile-navigation nav :is(a, button) {
@@ -935,10 +939,9 @@ body {
 
 .admin-credit-member-row {
   display: grid;
-  grid-template-columns: minmax(14rem, 2fr) repeat(
-      2,
-      minmax(8rem, 1fr)
-    ) auto auto;
+  grid-template-columns:
+    minmax(14rem, 2fr) repeat(2, minmax(8rem, 1fr))
+    auto auto;
   gap: var(--space-4);
   align-items: center;
   padding: var(--space-6);
@@ -1989,10 +1992,7 @@ body {
 
 .totem-admin-navigation__list {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(4.6rem, 100%), 1fr)
-  );
+  grid-template-columns: repeat(auto-fit, minmax(min(4.6rem, 100%), 1fr));
 }
 
 .totem-admin-navigation__link {
@@ -2013,7 +2013,7 @@ body {
 .totem-admin-navigation__link[aria-current='page'] {
   border-top-color: var(--color-action);
   color: var(--color-text);
-  background: var(--color-action-soft);
+  background: transparent;
 }
 
 .totem-admin-navigation__label--long {
@@ -2077,8 +2077,8 @@ body {
 }
 
 .totem-product-surface .ui-main-navigation__link[aria-current='page'] {
-  color: var(--color-text);
-  background: var(--color-action-soft);
+  color: var(--color-action);
+  background: transparent;
   box-shadow: inset 0 3px 0 var(--color-action);
 }
 
@@ -2105,7 +2105,12 @@ body {
 }
 
 .totem-product-surface .today-primary-card {
+  border-color: var(--color-border);
   background: var(--color-surface);
+}
+
+.totem-product-surface .today-primary-card::before {
+  display: none;
 }
 
 .totem-product-surface .ui-card--accent::before {
@@ -2131,6 +2136,62 @@ body {
   min-width: 0;
 }
 
+.notes-page-head {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.notes-page-head__actions {
+  display: flex;
+  flex: none;
+  gap: 0.5rem;
+}
+
+.notes-search-toggle,
+.notes-new-action {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+}
+
+.notes-new-action__label {
+  display: none;
+}
+
+.notes-search-field {
+  display: none;
+}
+
+.notes-search-field--open {
+  display: block;
+}
+
+.totem-notes-master {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.totem-notes-master__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.totem-notes-master__header h2 {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.totem-notes-master__header span {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
 .totem-notes-detail {
   display: none;
 }
@@ -2143,8 +2204,356 @@ body {
 
 .profile-groups {
   display: grid;
-  max-width: 52rem;
+  grid-template-areas:
+    'account'
+    'access'
+    'session'
+    'device';
   gap: 1.25rem;
+}
+
+.profile-account {
+  grid-area: account;
+}
+
+.profile-access {
+  grid-area: access;
+}
+
+.profile-device {
+  grid-area: device;
+}
+
+.profile-session {
+  grid-area: session;
+}
+
+.profile-access-action {
+  display: flex;
+  min-height: 4.75rem;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0;
+  padding-block: 0.75rem;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.profile-access-action strong,
+.profile-access-action small {
+  display: block;
+}
+
+.profile-access-action strong {
+  font-weight: 500;
+}
+
+.profile-access-action small {
+  margin-top: 0.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.profile-access-action > span:last-child {
+  color: var(--color-action);
+  font-size: 1.5rem;
+}
+
+.profile-access-action + .profile-access-action {
+  border-top: 1px solid var(--color-border);
+}
+
+/* Totem v1.0 approved product composition — mobile first. */
+.today-layout,
+.today-primary-card,
+.today-secondary-programs {
+  min-width: 0;
+}
+
+.today-layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.totem-product-surface .today-primary-card {
+  display: grid;
+  gap: 1.25rem;
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.today-primary-card__copy {
+  max-width: 48rem;
+}
+
+.today-primary-card__title {
+  margin-top: 0.65rem;
+  font-size: clamp(1.5rem, 7vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.today-primary-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.today-secondary-programs {
+  display: grid;
+  align-content: start;
+}
+
+.today-secondary-programs__header,
+.totem-programs-list__header {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+}
+
+.today-secondary-programs__header h2,
+.totem-programs-list__header h2 {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.today-secondary-programs__header span,
+.totem-programs-list__header span {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.today-secondary-programs__next {
+  margin-top: 0.4rem;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.totem-programs-page__next {
+  margin-top: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.totem-programs-page__next strong {
+  color: var(--color-action);
+  font-weight: 500;
+}
+
+.today-secondary-programs__next strong {
+  color: var(--color-action);
+  font-weight: 500;
+}
+
+.today-secondary-programs__arrow,
+.totem-programs-page .ui-program-line__action {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: var(--color-action-soft);
+  color: var(--color-action);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.today-secondary-programs__footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.75rem;
+}
+
+.totem-programs-list,
+.totem-discover-results {
+  display: grid;
+  width: min(100%, 57.5rem);
+  margin-inline: auto;
+}
+
+.totem-programs-page .ui-program-line {
+  align-items: center;
+}
+
+.totem-programs-page .ui-program-line .ui-progress {
+  max-width: 40rem;
+}
+
+.discover-back-link {
+  display: none;
+  width: max-content;
+}
+
+.discover-search {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: end;
+  width: min(100%, 57.5rem);
+  margin-inline: auto;
+}
+
+.discover-search__field {
+  position: relative;
+}
+
+.discover-search__icon {
+  position: absolute;
+  z-index: 1;
+  bottom: 0.85rem;
+  left: 1rem;
+  color: var(--color-text);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.discover-search__field .ui-field__control {
+  padding-left: 3rem;
+}
+
+.discover-filters {
+  position: relative;
+}
+
+.discover-filters > summary {
+  display: inline-flex;
+  min-height: 3rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.discover-filters > summary::-webkit-details-marker {
+  display: none;
+}
+
+.discover-filters__panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: min(18rem, calc(100vw - 2rem));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-group);
+  padding: 1rem;
+  background: var(--color-surface);
+  box-shadow: 0 1rem 2rem rgb(23 35 59 / 12%);
+}
+
+.totem-discover-results .ui-program-line {
+  position: relative;
+  border-left: 3px solid var(--color-action);
+  padding-left: 0.75rem;
+}
+
+.discover-result-action {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  place-items: center;
+  padding: 0;
+  border-color: transparent;
+  border-radius: 0.75rem;
+  background: var(--color-action-soft);
+  color: var(--color-action);
+}
+
+.app-main-navigation__profile-initial,
+.app-main-navigation__profile-name,
+.app-main-navigation__profile-arrow {
+  display: none;
+}
+
+.app-main-navigation__profile-mobile-icon {
+  display: contents;
+}
+
+.admin-mobile-landing {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.admin-mobile-landing__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+}
+
+.admin-mobile-landing__header h2 {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.admin-mobile-landing__header span {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.admin-mobile-landing li + li {
+  border-top: 1px solid var(--color-border);
+}
+
+.admin-mobile-landing li > a {
+  display: flex;
+  min-height: 5.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--color-text);
+}
+
+.admin-mobile-landing li strong,
+.admin-mobile-landing li small {
+  display: block;
+}
+
+.admin-mobile-landing li strong {
+  font-weight: 500;
+}
+
+.admin-mobile-landing li small {
+  max-width: 18rem;
+  margin-top: 0.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.admin-mobile-landing li > a > span:last-child {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: var(--color-action-soft);
+  color: var(--color-action);
+  font-size: 1.5rem;
+}
+
+.admin-desktop-programs {
+  display: none;
 }
 
 .totem-auth-surface {
@@ -2319,6 +2728,167 @@ body {
 }
 
 @media (min-width: 64rem) {
+  .totem-product-surface .app-safe-header {
+    display: none;
+  }
+
+  .totem-product-surface .app-safe-main {
+    width: 100%;
+    max-width: none;
+    padding: 3rem;
+  }
+
+  .totem-product-surface .app-main-navigation {
+    background: var(--color-surface);
+    backdrop-filter: none;
+  }
+
+  .app-main-navigation__brand {
+    min-height: 4.5rem;
+    padding-inline: 0;
+    font-size: 1.35rem;
+    font-weight: 500;
+  }
+
+  .app-main-navigation__profile-initial {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: 0 0 2.5rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-action-soft);
+    color: var(--color-action);
+  }
+
+  .app-main-navigation__profile-mobile-icon {
+    display: none;
+  }
+
+  .app-main-navigation__profile-name,
+  .app-main-navigation__profile-label {
+    display: block;
+  }
+
+  .app-main-navigation__profile-name {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .app-main-navigation__profile-label {
+    margin-top: 0.15rem;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+
+  .app-main-navigation__profile-arrow {
+    margin-left: auto;
+    color: var(--color-text);
+    font-size: 1.5rem;
+  }
+
+  .ui-main-navigation__link--profile {
+    border-top: 1px solid var(--color-border);
+    border-radius: 0;
+    padding-top: 1.25rem;
+  }
+
+  .totem-product-surface .ui-main-navigation__link[aria-current='page'] {
+    background: var(--color-action-soft);
+  }
+
+  .totem-product-surface
+    .ui-main-navigation__link--profile[aria-current='page'] {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .today-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 20rem);
+    gap: clamp(2rem, 3vw, 2.5rem);
+    align-items: start;
+  }
+
+  .profile-groups {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 20rem);
+    grid-template-areas:
+      'account device'
+      'access device'
+      'session device';
+    align-items: start;
+    gap: 1.5rem 2.5rem;
+  }
+
+  .profile-device {
+    position: sticky;
+    top: 3rem;
+  }
+
+  .profile-access,
+  .profile-session {
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+    background: var(--color-surface);
+  }
+
+  .totem-product-surface .today-primary-card {
+    min-height: 29.5rem;
+    align-content: start;
+    gap: 1.75rem;
+    padding: 2.75rem;
+  }
+
+  .totem-product-surface .today-primary-card::after {
+    width: 5.4rem;
+    height: 5.4rem;
+    border-bottom-left-radius: 5.4rem;
+  }
+
+  .today-primary-card__title {
+    max-width: 20ch;
+    font-size: clamp(2.25rem, 3vw, 3rem);
+  }
+
+  .today-secondary-programs .ui-program-line {
+    padding-block: 1.2rem;
+  }
+
+  .today-secondary-programs__arrow {
+    width: auto;
+    height: auto;
+    flex-basis: auto;
+    border-radius: 0;
+    background: transparent;
+    font-size: 2rem;
+  }
+
+  .totem-programs-page .ui-program-line__action {
+    width: auto;
+    height: auto;
+    flex-basis: auto;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .totem-discover-results .ui-program-line {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .discover-result-action {
+    width: auto;
+    height: auto;
+    flex-basis: auto;
+    border-radius: 0;
+    background: transparent;
+    font-size: 1.5rem;
+  }
+
+  .discover-back-link {
+    display: inline-flex;
+  }
+
   .totem-note-editor-layout {
     grid-template-columns: minmax(0, 1fr) minmax(17rem, 20rem);
     align-items: start;
@@ -2332,20 +2902,44 @@ body {
 
   .totem-notes-master-detail {
     display: grid;
-    grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
+    grid-template-columns: 20rem minmax(0, 1fr);
+    gap: 2.5rem;
     align-items: start;
+  }
+
+  .notes-search-toggle {
+    display: none;
+  }
+
+  .notes-new-action__label {
+    display: inline;
+  }
+
+  .notes-search-field {
+    display: block;
   }
 
   .totem-notes-detail {
     position: sticky;
-    top: 2rem;
+    top: 3rem;
     display: grid;
-    max-height: calc(100dvh - 4rem);
-    gap: 1.25rem;
+    max-height: calc(100dvh - 6rem);
+    gap: 1.5rem;
     overflow: auto;
-    border-left: 1px solid var(--color-border);
-    padding-left: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-surface);
+    padding: clamp(2rem, 4vw, 3rem);
+    background: var(--color-surface);
+  }
+
+  .admin-mobile-landing {
+    display: none;
+  }
+
+  .admin-desktop-programs {
+    display: grid;
+    min-width: 0;
+    gap: 1.5rem;
   }
 
   .totem-product-surface .ui-main-navigation__link[aria-current='page'] {
@@ -2354,6 +2948,88 @@ body {
 
   .totem-product-surface .app-safe-header {
     min-height: 5rem;
+  }
+}
+
+/* Desktop/mobile authority v1.0 — final composition overrides. */
+.profile-access,
+.profile-session {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.profile-session .ui-action {
+  width: 100%;
+}
+
+.totem-credit-balances,
+.totem-credit-request {
+  background: var(--color-surface);
+}
+
+.totem-credit-balances {
+  padding-inline: clamp(1.25rem, 4vw, 2rem);
+}
+
+.totem-product-surface .page-title,
+.totem-product-surface h2,
+.totem-product-surface h3,
+.totem-admin-surface .page-title,
+.totem-admin-surface h2,
+.totem-admin-surface h3 {
+  font-weight: 500;
+}
+
+@media (min-width: 64rem) {
+  .totem-product-surface .app-safe-main {
+    padding: 3rem;
+  }
+
+  .totem-product-surface .page-layout--work {
+    max-width: 76rem;
+  }
+
+  .totem-product-surface .ui-main-navigation__link[aria-current='page'] {
+    background: var(--color-action-soft);
+    box-shadow: inset 3px 0 0 var(--color-action);
+  }
+
+  .totem-product-surface
+    .ui-main-navigation__link--profile[aria-current='page'] {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .profile-access,
+  .profile-session {
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+    background: var(--color-surface);
+  }
+
+  .admin-mobile-landing {
+    display: none;
+  }
+
+  .admin-desktop-programs {
+    display: grid;
+    min-width: 0;
+    gap: 1.5rem;
+  }
+
+  .totem-discover-results .ui-program-line {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .discover-result-action {
+    width: auto;
+    height: auto;
+    flex-basis: auto;
+    border-radius: 0;
+    background: transparent;
+    font-size: 1.5rem;
   }
 }
 
@@ -2368,36 +3044,49 @@ body {
 }
 
 @media (min-width: 64rem) {
+  .totem-admin-surface.totem-app-shell,
+  .totem-admin-surface.totem-app-shell--without-rail {
+    grid-template:
+      'sidebar main' minmax(0, 1fr) /
+      14.75rem minmax(0, 1fr);
+  }
+
+  .totem-admin-surface .totem-app-shell__topbar {
+    display: none;
+  }
+
+  .totem-admin-surface .totem-app-shell__sidebar {
+    background: var(--color-text);
+    color: var(--color-surface);
+  }
+
   .totem-admin-navigation {
     position: sticky;
     top: 0;
     display: flex;
     height: 100dvh;
     flex-direction: column;
-    padding: 1.25rem 1rem;
+    padding: 1.5rem 1rem;
   }
 
   .totem-admin-navigation__brand {
     display: flex;
     min-height: 3.5rem;
-    align-items: center;
-    gap: 0.75rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
     padding-inline: 0.75rem;
-    color: var(--color-text);
-    font-size: 1.125rem;
+    color: var(--color-surface);
+    font-size: 1.35rem;
     font-weight: 600;
   }
 
-  .totem-admin-navigation__mark {
-    display: grid;
-    width: 2rem;
-    height: 2rem;
-    place-items: center;
-    border-radius: var(--radius-directional);
-    color: var(--color-on-action);
-    background: var(--color-action);
-    font-size: 0.6875rem;
+  .totem-admin-navigation__brand-context {
+    color: #c8d2e6;
+    font-size: 0.75rem;
+    font-weight: 400;
     letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .totem-admin-navigation__list {
@@ -2415,14 +3104,16 @@ body {
     margin-top: auto;
     border-radius: var(--radius-control);
     padding: 0.625rem 0.75rem;
-    color: var(--color-text-muted);
+    border-top: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 0;
+    color: #e6ecf8;
     font-size: 0.875rem;
     font-weight: 500;
   }
 
   .totem-admin-navigation__exit:hover {
-    background: var(--color-surface-subtle);
-    color: var(--color-text);
+    background: rgb(255 255 255 / 8%);
+    color: var(--color-surface);
   }
 
   .totem-admin-navigation__link {
@@ -2435,10 +3126,13 @@ body {
     font-size: 0.875rem;
     line-height: 1.35;
     text-align: left;
+    color: #d7deed;
   }
 
   .totem-admin-navigation__link[aria-current='page'] {
-    box-shadow: inset 3px 0 0 var(--color-action);
+    color: var(--color-surface);
+    background: rgb(255 255 255 / 14%);
+    box-shadow: none;
   }
 
   .totem-admin-navigation__index {
@@ -2463,7 +3157,7 @@ body {
   }
 
   .totem-admin-surface .totem-app-shell__main {
-    padding: clamp(1.5rem, 3vw, 3rem);
+    padding: clamp(2.5rem, 4vw, 3.5rem);
   }
 }
 

@@ -5,10 +5,6 @@ import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
-import {
-  type EnrolledProgram,
-  useEnrolledProgramsQuery,
-} from '@/features/programs/queries';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
 import { useI18n } from '@/i18n';
 import type { MessageKey } from '@/i18n/catalogs';
@@ -27,7 +23,6 @@ const actionLabelKeys: Record<RecommendationKind, MessageKey> = {
 
 export function TodayPage() {
   const query = useTodayQuery();
-  const programs = useEnrolledProgramsQuery('', 'ACTIVE');
   const { t } = useI18n();
 
   return (
@@ -48,10 +43,9 @@ export function TodayPage() {
       ) : query.data?.program ? (
         <TodayContent
           data={query.data}
-          otherPrograms={(programs.data.items ?? [])
-            .filter((item) => item.program.id !== query.data?.program?.id)
+          otherPrograms={(query.data.programs ?? [])
+            .filter((item) => item.id !== query.data?.program?.id)
             .slice(0, 3)}
-          programsPending={programs.isPending}
         />
       ) : (
         <EmptyState
@@ -71,39 +65,37 @@ export function TodayPage() {
 function TodayContent({
   data,
   otherPrograms,
-  programsPending,
 }: {
   data: TodayResponse;
-  otherPrograms: EnrolledProgram[];
-  programsPending: boolean;
+  otherPrograms: TodayResponse['programs'];
 }) {
   const { t } = useI18n();
   const program = data.program;
   if (!program) return null;
 
   return (
-    <div class="grid min-w-0 gap-6">
-      <Card
-        class="today-primary-card ui-signature-surface space-y-5"
-        tone="accent"
-      >
+    <div class="today-layout">
+      <Card class="today-primary-card ui-signature-surface" tone="accent">
         <p class="page-eyebrow">
+          {program.title} ·{' '}
           {data.action
             ? t(actionLabelKeys[data.action.kind])
             : t('today.upToDate.title')}
         </p>
-        <div class="max-w-3xl">
-          <p class="ui-text-muted text-sm">{program.title}</p>
-          <h2 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+        <div class="today-primary-card__copy">
+          <h2 class="today-primary-card__title">
             {data.action?.title ?? t('today.upToDate.description')}
           </h2>
-          {data.action?.stageTitle ? (
-            <p class="ui-text-muted mt-3 text-sm leading-6">
-              {data.action.stageTitle}
-              {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
-              {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
-            </p>
-          ) : null}
+          <div class="today-primary-card__meta">
+            {data.action?.estimatedMinutes ? (
+              <span>
+                {t('common.minutes', { count: data.action.estimatedMinutes })}
+              </span>
+            ) : null}
+            {data.action?.stageTitle ? (
+              <span>{data.action.stageTitle}</span>
+            ) : null}
+          </div>
         </div>
         <ProgressBar
           label={t('today.progress', { count: Math.round(program.percent) })}
@@ -115,7 +107,7 @@ function TodayContent({
             href={data.action.href}
             size="lg"
           >
-            {t('common.continue')}
+            {t('curriculum.lesson.resume')} <span aria-hidden="true">→</span>
           </NavigationAction>
         ) : (
           <NavigationAction
@@ -129,20 +121,27 @@ function TodayContent({
         )}
       </Card>
 
-      {programsPending ? (
-        <Skeleton label={t('programs.loadingMine')} />
-      ) : otherPrograms.length ? (
-        <section aria-labelledby="today-other-programs" class="space-y-3">
-          <h2 class="text-lg font-semibold" id="today-other-programs">
-            {t('today.otherPrograms')}
-          </h2>
+      {otherPrograms.length ? (
+        <section
+          aria-labelledby="today-other-programs"
+          class="today-secondary-programs"
+        >
+          <header class="today-secondary-programs__header">
+            <h2 id="today-other-programs">{t('today.otherPrograms')}</h2>
+            <span>
+              {t('today.otherProgramsCount', { count: otherPrograms.length })}
+            </span>
+          </header>
           <ul class="ui-list ui-program-list">
-            {otherPrograms.map(({ enrollment, program: item, progress }) => (
-              <li key={enrollment.id}>
+            {otherPrograms.map((item) => (
+              <li key={item.id}>
                 <a
                   aria-label={`${t('common.continue')} — ${item.title}`}
                   class="ui-program-line ui-program-line--compact group"
-                  href={`/program/${encodeURIComponent(item.slug)}`}
+                  href={
+                    item.resumeHref ??
+                    `/program/${encodeURIComponent(item.slug)}`
+                  }
                 >
                   <div class="min-w-0 flex-1">
                     <h3 class="font-semibold group-hover:text-[var(--color-action)]">
@@ -150,18 +149,27 @@ function TodayContent({
                     </h3>
                     <p class="ui-text-muted mt-1 text-sm">
                       {t('today.progress', {
-                        count: Math.round(progress?.percent ?? 0),
+                        count: Math.round(item.percent),
                       })}
                     </p>
+                    {item.nextAction ? (
+                      <p class="today-secondary-programs__next">
+                        <strong>{t('today.nextAction')}</strong> ·{' '}
+                        {item.nextAction.title}
+                      </p>
+                    ) : null}
                   </div>
-                  <span aria-hidden="true" class="text-xl">
-                    →
+                  <span
+                    aria-hidden="true"
+                    class="today-secondary-programs__arrow"
+                  >
+                    ›
                   </span>
                 </a>
               </li>
             ))}
           </ul>
-          <div class="flex justify-center pt-2">
+          <div class="today-secondary-programs__footer">
             <NavigationAction href="/program" variant="ghost">
               {t('today.viewPrograms')}
             </NavigationAction>

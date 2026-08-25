@@ -14,6 +14,7 @@ import {
   useEnrolledProgramsQuery,
   useProgramEnrollmentMutation,
 } from '@/features/programs/queries';
+import { useTodayQuery } from '@/features/today/query';
 import { useI18n } from '@/i18n';
 
 function ProgramDuration({ days }: { days: number | null }) {
@@ -31,11 +32,15 @@ export function TotemProgramsPage() {
   const { t } = useI18n();
   const isOnline = useOnlineStatus();
   const programs = useEnrolledProgramsQuery('', 'ACTIVE', isOnline);
+  const today = useTodayQuery();
+  const todayProgramsById = new Map(
+    (today.data?.programs ?? []).map((program) => [program.id, program]),
+  );
 
   return (
     <section
       aria-labelledby="programs-title"
-      class="page-layout page-layout--work page-shell"
+      class="totem-programs-page page-layout page-layout--work page-shell"
     >
       <div class="flex min-w-0 items-start justify-between gap-4">
         <PageHeader
@@ -82,13 +87,20 @@ export function TotemProgramsPage() {
           title={t('programs.emptyMine.title')}
         />
       ) : (
-        <div class="ui-program-lines">
+        <div class="totem-programs-list ui-program-lines">
+          <header class="totem-programs-list__header">
+            <h2>{t('programs.status.inProgress')}</h2>
+            <span>
+              {t('programs.activeCount', { count: programs.data.items.length })}
+            </span>
+          </header>
           <ul
             class="ui-list ui-program-list"
             aria-label={t('programs.enrolledSection')}
           >
             {programs.data.items.map(({ enrollment, program, progress }) => {
               const percent = progress?.percent ?? 0;
+              const nextAction = todayProgramsById.get(program.id)?.nextAction;
               const status =
                 percent >= 100
                   ? t('programs.status.completed')
@@ -103,26 +115,34 @@ export function TotemProgramsPage() {
                     href={`/program/${encodeURIComponent(program.slug)}`}
                   >
                     <div class="min-w-0 flex-1">
-                    <h2 class="text-lg font-semibold group-hover:text-[var(--color-action)]">
-                      {program.title}
-                    </h2>
-                    <p class="ui-text-muted mt-1 line-clamp-2 text-sm leading-6">
-                      {program.description}
-                    </p>
-                    <p class="ui-text-muted mt-2 text-sm">
-                      {status} ·{' '}
-                      <ProgramDuration days={program.estimatedDurationDays} />
-                    </p>
-                    <ProgressBar
-                      class="mt-4"
-                      label={t('today.progress', { count: Math.round(percent) })}
-                      showValue={false}
-                      value={percent}
-                    />
+                      <h2 class="text-lg font-semibold group-hover:text-[var(--color-action)]">
+                        {program.title}
+                      </h2>
+                      <p class="ui-text-muted mt-2 text-sm">
+                        {status} · {Math.round(percent)} %
+                      </p>
+                      {nextAction ? (
+                        <p class="totem-programs-page__next">
+                          <strong>{t('today.nextAction')}</strong> ·{' '}
+                          {nextAction.title}
+                        </p>
+                      ) : null}
+                      <ProgressBar
+                        class="mt-4"
+                        label={t('today.progress', {
+                          count: Math.round(percent),
+                        })}
+                        showValue={false}
+                        value={percent}
+                      />
                     </div>
                     <span class="ui-program-line__action">
-                      {percent > 0 ? t('common.continue') : t('programs.start')}
-                      <span aria-hidden="true"> →</span>
+                      <span aria-hidden="true">›</span>
+                      <span class="sr-only">
+                        {percent > 0
+                          ? t('common.continue')
+                          : t('programs.start')}
+                      </span>
                     </span>
                   </a>
                 </li>
@@ -170,24 +190,34 @@ export function DiscoverProgramsPage() {
   return (
     <section
       aria-labelledby="discover-title"
-      class="page-layout page-layout--work page-shell"
+      class="totem-discover-page page-layout page-layout--work page-shell"
     >
+      <NavigationAction
+        class="discover-back-link"
+        href="/program"
+        variant="ghost"
+      >
+        <span aria-hidden="true">‹</span> {t('programs.mine')}
+      </NavigationAction>
       <PageHeader
-        description={t('programs.catalogEmpty.description')}
-        eyebrow={t('programs.eyebrow')}
+        description={t('programs.discoverDescription')}
+        eyebrow={t('programs.explore')}
         id="discover-title"
-        title={t('programs.explore')}
+        title={t('programs.discoverTitle')}
       />
 
       <form
-        class="grid items-end gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto]"
+        class="discover-search"
         onSubmit={(event) => {
           event.preventDefault();
           setSearch(searchInput.trim().replace(/\s+/g, ' '));
         }}
       >
-        <label class="ui-field">
+        <label class="ui-field discover-search__field">
           <span class="ui-field__label">{t('programs.search')}</span>
+          <span aria-hidden="true" class="discover-search__icon">
+            ⌕
+          </span>
           <input
             class="ui-field__control"
             onInput={(event) => setSearchInput(event.currentTarget.value)}
@@ -196,22 +226,24 @@ export function DiscoverProgramsPage() {
             value={searchInput}
           />
         </label>
-        <label class="ui-field">
-          <span class="ui-field__label">{t('programs.language.label')}</span>
-          <select
-            class="ui-field__control"
-            onChange={(event) =>
-              setCatalogLocale(event.currentTarget.value as typeof locale)
-            }
-            value={catalogLocale}
-          >
-            <option value="fr">{t('programs.language.fr')}</option>
-            <option value="en">{t('programs.language.en')}</option>
-          </select>
-        </label>
-        <Button type="submit" variant="secondary">
-          {t('programs.searchAction')}
-        </Button>
+        <details class="discover-filters">
+          <summary class="ui-action ui-action--secondary">
+            {t('programs.filters')}
+          </summary>
+          <label class="ui-field discover-filters__panel">
+            <span class="ui-field__label">{t('programs.language.label')}</span>
+            <select
+              class="ui-field__control"
+              onChange={(event) =>
+                setCatalogLocale(event.currentTarget.value as typeof locale)
+              }
+              value={catalogLocale}
+            >
+              <option value="fr">{t('programs.language.fr')}</option>
+              <option value="en">{t('programs.language.en')}</option>
+            </select>
+          </label>
+        </details>
       </form>
 
       {!isOnline ? (
@@ -236,43 +268,59 @@ export function DiscoverProgramsPage() {
           title={t('programs.catalogEmpty.title')}
         />
       ) : (
-        <ul class="ui-list ui-program-list">
-          {catalog.data.items.map((program) => (
-            <li
-              class="ui-program-line border-b border-[var(--color-border)] last:border-b-0"
-              key={program.id}
-            >
-              <div class="min-w-0 flex-1">
-                <h2 class="text-lg font-semibold">{program.title}</h2>
-                <p class="ui-text-muted mt-2 text-sm leading-6">
-                  {program.description}
-                </p>
-                <p class="ui-text-muted mt-3 text-sm">
-                  <ProgramDuration days={program.estimatedDurationDays} /> ·{' '}
-                  {t('programs.stageCount', { count: program.stageCount })}
-                </p>
-              </div>
-              {program.isEnrolled ? (
-                <NavigationAction
-                  class="w-full sm:w-auto"
-                  href={`/program/${encodeURIComponent(program.slug)}`}
-                  variant="secondary"
-                >
-                  {t('programs.open')}
-                </NavigationAction>
-              ) : (
-                <Button
-                  class="w-full sm:w-auto"
-                  isLoading={enrollment.pendingProgramId === program.id}
-                  onClick={() => void enroll(program)}
-                  variant="secondary"
-                >
-                  {t('programs.enroll')}
-                </Button>
-              )}
-            </li>
-          ))}
-        </ul>
+        <section
+          class="totem-discover-results"
+          aria-labelledby="discover-results-title"
+        >
+          <header class="totem-programs-list__header">
+            <h2 id="discover-results-title">{t('programs.availableTitle')}</h2>
+            <span>
+              {t('programs.availableCount', {
+                count: catalog.data.items.length,
+              })}
+            </span>
+          </header>
+          <ul class="ui-list ui-program-list">
+            {catalog.data.items.map((program) => (
+              <li
+                class="ui-program-line border-b border-[var(--color-border)] last:border-b-0"
+                key={program.id}
+              >
+                <div class="min-w-0 flex-1">
+                  <h2 class="text-lg font-semibold">{program.title}</h2>
+                  <p class="ui-text-muted mt-2 text-sm leading-6">
+                    {program.description}
+                  </p>
+                  <p class="ui-text-muted mt-3 text-sm">
+                    <ProgramDuration days={program.estimatedDurationDays} /> ·{' '}
+                    {t('programs.stageCount', { count: program.stageCount })}
+                  </p>
+                </div>
+                {program.isEnrolled ? (
+                  <NavigationAction
+                    aria-label={`${t('programs.open')} — ${program.title}`}
+                    class="discover-result-action"
+                    href={`/program/${encodeURIComponent(program.slug)}`}
+                    variant="secondary"
+                  >
+                    <span aria-hidden="true">↗</span>
+                    <span class="sr-only">{t('programs.open')}</span>
+                  </NavigationAction>
+                ) : (
+                  <Button
+                    class="discover-result-action"
+                    isLoading={enrollment.pendingProgramId === program.id}
+                    onClick={() => void enroll(program)}
+                    variant="secondary"
+                  >
+                    <span aria-hidden="true">＋</span>
+                    <span class="sr-only">{t('programs.enroll')}</span>
+                  </Button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
       {enrollment.error ? (
         <ErrorState description={t('programs.enrollmentError')} />

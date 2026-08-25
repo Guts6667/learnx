@@ -56,15 +56,17 @@ describe('TodayPage', () => {
     expect(
       await screen.findByRole('heading', { name: 'Lire le chapitre' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Progression — 42 %')).toBeInTheDocument();
+    expect(
+      screen.getByRole('progressbar', { name: 'Progression — 42 %' }),
+    ).toBeInTheDocument();
     expect(screen.queryByText('Révisions dues')).not.toBeInTheDocument();
-    const primaryActions = screen.getAllByRole('link', { name: 'Continuer' });
+    const primaryActions = screen.getAllByRole('link', { name: 'Reprendre' });
     expect(primaryActions).toHaveLength(1);
     expect(primaryActions[0]).toHaveClass('ui-action--primary');
     expect(
-      screen.getByRole('heading', { name: 'Lire le chapitre' }).closest(
-        '.ui-signature-surface',
-      ),
+      screen
+        .getByRole('heading', { name: 'Lire le chapitre' })
+        .closest('.ui-signature-surface'),
     ).toHaveClass('today-primary-card');
   });
 
@@ -134,9 +136,9 @@ describe('TodayPage', () => {
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Today' }),
     ).toBeInTheDocument();
-    expect(await screen.findByText('Task to continue')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Continue' })).toBeInTheDocument();
-    expect(screen.getByText('Psychologie')).toBeInTheDocument();
+    expect(await screen.findByText(/Task to continue/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Resume' })).toBeInTheDocument();
+    expect(screen.getByText(/Psychologie/)).toBeInTheDocument();
     expect(screen.getByText('Lire le chapitre')).toBeInTheDocument();
   });
 });

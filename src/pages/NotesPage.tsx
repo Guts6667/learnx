@@ -90,6 +90,12 @@ function NoteLine({
 
 export function NotesPage() {
   const [search, setSearch] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(min-width: 64rem)').matches,
+  );
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const query = useNotesQuery(debouncedSearch);
   const [selectedNoteId, setSelectedNoteId] = useState<string>();
@@ -147,28 +153,32 @@ export function NotesPage() {
       aria-labelledby="notes-title"
       class="page-layout page-layout--work page-shell"
     >
-      <PageHeader
-        description={t('notes.description')}
-        eyebrow={t('notes.eyebrow')}
-        id="notes-title"
-        title={t('notes.title')}
-      />
-
-      <div class="grid items-end gap-4 md:grid-cols-[minmax(0,1fr)_auto]">
-        <TextField
-          label={t('notes.search')}
-          onInput={(event) => setSearch(event.currentTarget.value)}
-          placeholder={t('notes.searchPlaceholder')}
-          type="search"
-          value={search}
+      <div class="notes-page-head">
+        <PageHeader
+          description={t('notes.description')}
+          eyebrow={t('notes.eyebrow')}
+          id="notes-title"
+          title={t('notes.title')}
         />
-        <Button
-          class="w-full md:w-auto"
-          onClick={() => void route('/notes/new')}
-          size="lg"
-        >
-          {t('notes.new')}
-        </Button>
+        <div class="notes-page-head__actions">
+          <Button
+            aria-expanded={isSearchOpen}
+            aria-label={t('notes.search')}
+            class="notes-search-toggle"
+            onClick={() => setIsSearchOpen((value) => !value)}
+            variant="secondary"
+          >
+            <span aria-hidden="true">⌕</span>
+          </Button>
+          <Button
+            aria-label={t('notes.new')}
+            class="notes-new-action"
+            onClick={() => void route('/notes/new')}
+          >
+            <span aria-hidden="true">＋</span>
+            <span class="notes-new-action__label">{t('notes.new')}</span>
+          </Button>
+        </div>
       </div>
 
       {query.isPending ? <Skeleton label={t('notes.loading')} /> : null}
@@ -190,20 +200,39 @@ export function NotesPage() {
       {query.data?.notes.length ? (
         <div class="space-y-4">
           <div class="totem-notes-master-detail">
-            <ul
-              aria-label={t('notes.title')}
-              class="border-y border-[var(--color-border)]"
-              onKeyDown={navigateNoteList}
-            >
-              {query.data.notes.map((note) => (
-                <NoteLine
-                  isSelected={note.id === selectedNote?.id}
-                  key={note.id}
-                  note={note}
-                  onSelect={selectNote}
-                />
-              ))}
-            </ul>
+            <div class="totem-notes-master">
+              {isSearchOpen ? (
+                <div class="notes-search-field notes-search-field--open">
+                  <TextField
+                    label={t('notes.search')}
+                    onInput={(event) => setSearch(event.currentTarget.value)}
+                    placeholder={t('notes.searchPlaceholder')}
+                    type="search"
+                    value={search}
+                  />
+                </div>
+              ) : null}
+              <header class="totem-notes-master__header">
+                <h2>{t('notes.recent')}</h2>
+                <span>
+                  {t('notes.count', { count: query.data.notes.length })}
+                </span>
+              </header>
+              <ul
+                aria-label={t('notes.title')}
+                class="border-y border-[var(--color-border)]"
+                onKeyDown={navigateNoteList}
+              >
+                {query.data.notes.map((note) => (
+                  <NoteLine
+                    isSelected={note.id === selectedNote?.id}
+                    key={note.id}
+                    note={note}
+                    onSelect={selectNote}
+                  />
+                ))}
+              </ul>
+            </div>
             {selectedNote ? (
               <article
                 aria-live="polite"
@@ -298,99 +327,102 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
     <div class="totem-note-editor-layout">
       <div class="min-w-0 space-y-5">
         <TextField
-        error={!title.trim() ? t('notes.editor.titleRequired') : undefined}
-        label={t('notes.editor.title')}
-        maxLength={200}
-        onInput={(event) => {
-          setTitle(event.currentTarget.value);
-          markDirty();
-        }}
-        value={title}
-      />
-        <div class="space-y-3">
-        <p class="ui-text-muted text-sm leading-6">{t('notes.editor.help')}</p>
-        <div
-          aria-label={t('notes.editor.mode')}
-          class="ui-subtle-surface inline-flex rounded-lg p-1"
-          onKeyDown={(event) => {
-            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-            event.preventDefault();
-            const nextMode = mode === 'write' ? 'preview' : 'write';
-            setMode(nextMode);
-            window.requestAnimationFrame(() => {
-              document
-                .querySelector<HTMLButtonElement>(
-                  `[data-note-mode="${nextMode}"]`,
-                )
-                ?.focus();
-            });
+          error={!title.trim() ? t('notes.editor.titleRequired') : undefined}
+          label={t('notes.editor.title')}
+          maxLength={200}
+          onInput={(event) => {
+            setTitle(event.currentTarget.value);
+            markDirty();
           }}
-          role="tablist"
-        >
-          <button
-            aria-controls="note-write-panel"
-            aria-selected={mode === 'write'}
-            class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
-              mode === 'write'
-                ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
-                : 'ui-text-muted'
-            }`}
-            data-note-mode="write"
-            id="note-write-tab"
-            onClick={() => setMode('write')}
-            role="tab"
-            type="button"
-          >
-            {t('notes.editor.write')}
-          </button>
-          <button
-            aria-controls="note-preview-panel"
-            aria-selected={mode === 'preview'}
-            class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
-              mode === 'preview'
-                ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
-                : 'ui-text-muted'
-            }`}
-            data-note-mode="preview"
-            id="note-preview-tab"
-            onClick={() => setMode('preview')}
-            role="tab"
-            type="button"
-          >
-            {t('notes.editor.preview')}
-          </button>
-        </div>
-        {mode === 'write' ? (
+          value={title}
+        />
+        <div class="space-y-3">
+          <p class="ui-text-muted text-sm leading-6">
+            {t('notes.editor.help')}
+          </p>
           <div
-            aria-labelledby="note-write-tab"
-            id="note-write-panel"
-            role="tabpanel"
+            aria-label={t('notes.editor.mode')}
+            class="ui-subtle-surface inline-flex rounded-lg p-1"
+            onKeyDown={(event) => {
+              if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')
+                return;
+              event.preventDefault();
+              const nextMode = mode === 'write' ? 'preview' : 'write';
+              setMode(nextMode);
+              window.requestAnimationFrame(() => {
+                document
+                  .querySelector<HTMLButtonElement>(
+                    `[data-note-mode="${nextMode}"]`,
+                  )
+                  ?.focus();
+              });
+            }}
+            role="tablist"
           >
-            <Textarea
-              description={t('notes.editor.explicitSave')}
-              label={t('notes.editor.content')}
-              maxLength={100_000}
-              onInput={(event) => {
-                setMarkdown(event.currentTarget.value);
-                markDirty();
-              }}
-              value={markdown}
-            />
+            <button
+              aria-controls="note-write-panel"
+              aria-selected={mode === 'write'}
+              class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+                mode === 'write'
+                  ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
+                  : 'ui-text-muted'
+              }`}
+              data-note-mode="write"
+              id="note-write-tab"
+              onClick={() => setMode('write')}
+              role="tab"
+              type="button"
+            >
+              {t('notes.editor.write')}
+            </button>
+            <button
+              aria-controls="note-preview-panel"
+              aria-selected={mode === 'preview'}
+              class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+                mode === 'preview'
+                  ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
+                  : 'ui-text-muted'
+              }`}
+              data-note-mode="preview"
+              id="note-preview-tab"
+              onClick={() => setMode('preview')}
+              role="tab"
+              type="button"
+            >
+              {t('notes.editor.preview')}
+            </button>
           </div>
-        ) : (
-          <div
-            aria-labelledby="note-preview-tab"
-            class="ui-control-surface min-h-32 rounded-lg p-4"
-            id="note-preview-panel"
-            role="tabpanel"
-          >
-            {markdown.trim() ? (
-              <SafeMarkdown content={markdown} />
-            ) : (
-              <p class="ui-text-muted text-sm">{t('notes.editor.empty')}</p>
-            )}
-          </div>
-        )}
+          {mode === 'write' ? (
+            <div
+              aria-labelledby="note-write-tab"
+              id="note-write-panel"
+              role="tabpanel"
+            >
+              <Textarea
+                description={t('notes.editor.explicitSave')}
+                label={t('notes.editor.content')}
+                maxLength={100_000}
+                onInput={(event) => {
+                  setMarkdown(event.currentTarget.value);
+                  markDirty();
+                }}
+                value={markdown}
+              />
+            </div>
+          ) : (
+            <div
+              aria-labelledby="note-preview-tab"
+              class="ui-control-surface min-h-32 rounded-lg p-4"
+              id="note-preview-panel"
+              role="tabpanel"
+            >
+              {markdown.trim() ? (
+                <SafeMarkdown content={markdown} />
+              ) : (
+                <p class="ui-text-muted text-sm">{t('notes.editor.empty')}</p>
+              )}
+            </div>
+          )}
         </div>
         <p
           aria-live="polite"

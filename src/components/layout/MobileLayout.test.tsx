@@ -118,8 +118,8 @@ describe('navigation accessible', () => {
     const links = within(navigation).getAllByRole('link');
 
     expect(links).toHaveLength(5);
-    expect(links.map((link) => link.textContent)).toEqual([
-      'Accueil',
+    expect(links.map((link) => link.getAttribute('aria-label'))).toEqual([
+      'Aujourd’hui',
       'Parcours',
       'Réviser',
       'Notes',
@@ -143,9 +143,9 @@ describe('navigation accessible', () => {
     expect(activeLink).toHaveAttribute('aria-current', 'page');
     expect(activeLink).toHaveClass('ui-main-navigation__link');
     expect(activeLink).not.toHaveClass('underline');
-    expect(screen.getByRole('link', { name: 'Accueil' })).not.toHaveAttribute(
-      'aria-current',
-    );
+    expect(
+      screen.getByRole('link', { name: 'Aujourd’hui' }),
+    ).not.toHaveAttribute('aria-current');
     expect(screen.getByRole('navigation')).toHaveClass(
       'app-main-navigation',
       'app-safe-navigation',
@@ -174,13 +174,17 @@ describe('navigation accessible', () => {
     expect(document.querySelector('[data-visual-system="totem"]')).toHaveClass(
       'totem-admin-surface',
     );
-    expect(document.getElementById('main-content')).toHaveTextContent('Comptes');
+    expect(document.getElementById('main-content')).toHaveTextContent(
+      'Comptes',
+    );
     expect(
       screen.getAllByRole('navigation', {
         name: 'Navigation de l’administration',
       }),
     ).toHaveLength(2);
-    expect(screen.queryByRole('link', { name: 'Accueil' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Aujourd’hui' }),
+    ).not.toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Comptes' })[0]).toHaveAttribute(
       'aria-current',
       'page',
@@ -197,20 +201,17 @@ describe('navigation accessible', () => {
     '/credits',
     '/notes',
     '/profile',
-  ])(
-    'active Totem sur la surface produit %s',
-    (currentPath) => {
-      renderWithLocale(
-        <MobileLayout currentPath={currentPath}>
-          <h1>Surface produit</h1>
-        </MobileLayout>,
-      );
+  ])('active Totem sur la surface produit %s', (currentPath) => {
+    renderWithLocale(
+      <MobileLayout currentPath={currentPath}>
+        <h1>Surface produit</h1>
+      </MobileLayout>,
+    );
 
-      expect(
-        document.querySelector('[data-visual-system="totem"]'),
-      ).toHaveClass('totem-product-surface');
-    },
-  );
+    expect(document.querySelector('[data-visual-system="totem"]')).toHaveClass(
+      'totem-product-surface',
+    );
+  });
 
   it.each(['/login', '/request-access', '/verify-email', '/activate'])(
     "n'affiche aucune navigation privée dans le shell d'authentification %s",
@@ -241,8 +242,8 @@ describe('navigation accessible', () => {
       name: 'Main navigation',
     });
     const links = within(navigation).getAllByRole('link');
-    expect(links.map((link) => link.textContent)).toEqual([
-      'Home',
+    expect(links.map((link) => link.getAttribute('aria-label'))).toEqual([
+      'Today',
       'Learning paths',
       'Review',
       'Notes',

@@ -13,6 +13,8 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { ResponsiveTable } from '@/components/ui/ResponsiveTable';
 import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Textarea } from '@/components/ui/Textarea';
@@ -707,29 +709,148 @@ function childList(
 }
 
 function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
+  const [search, setSearch] = useState('');
+  const [status, setStatus] = useState<AdminProgramSummary['status'] | ''>('');
+  const normalizedSearch = search.trim().toLocaleLowerCase(locale);
+  const visiblePrograms = programs.filter((program) => {
+    if (status && program.status !== status) return false;
+    if (!normalizedSearch) return true;
+    return `${program.title} ${program.slug}`
+      .toLocaleLowerCase(locale)
+      .includes(normalizedSearch);
+  });
+  const mobileDestinations: ReadonlyArray<
+    readonly [string, MessageKey, MessageKey]
+  > = [
+    ['/admin', 'admin.programs', 'admin.mobileProgramsDescription'],
+    [
+      '/admin/access-requests',
+      'admin.requests.title',
+      'admin.mobileRequestsDescription',
+    ],
+    [
+      '/admin/accounts',
+      'admin.accounts.title',
+      'admin.mobileAccountsDescription',
+    ],
+    [
+      '/admin/contacts',
+      'admin.contacts.title',
+      'admin.mobileContactsDescription',
+    ],
+    [
+      '/admin/credits',
+      'admin.navigation.credits',
+      'admin.mobileCreditsDescription',
+    ],
+  ];
   return (
     <>
-      <h1 class="text-3xl font-medium tracking-tight">{t('admin.programs')}</h1>
-      <p class="ui-text-muted leading-7">{t('admin.description')}</p>
-      {programs.length === 0 ? (
-        <EmptyState
-          description={t('admin.empty.description')}
-          title={t('admin.empty.title')}
+      <section
+        aria-labelledby="admin-mobile-title"
+        class="admin-mobile-landing"
+      >
+        <PageHeader
+          description={t('admin.mobileDescription')}
+          eyebrow={t('admin.mobileEyebrow')}
+          id="admin-mobile-title"
+          title={t('admin.title')}
         />
-      ) : (
-        <ul class="ui-list">
-          {programs.map((program) => (
-            <EntityCard
-              href={adminProgramHref(program.id)}
-              key={program.id}
-              position={program.position}
-              status={<ProgramStatusBadge status={program.status} />}
-              title={program.title}
-            />
+        <header class="admin-mobile-landing__header">
+          <h2>{t('admin.mobileTools')}</h2>
+          <span>{t('admin.mobileAccess')}</span>
+        </header>
+        <ul>
+          {mobileDestinations.map(([href, titleKey, descriptionKey]) => (
+            <li key={href}>
+              <a href={href}>
+                <span>
+                  <strong>{t(titleKey)}</strong>
+                  <small>{t(descriptionKey)}</small>
+                </span>
+                <span aria-hidden="true">›</span>
+              </a>
+            </li>
           ))}
         </ul>
-      )}
+      </section>
+      <div class="admin-desktop-programs">
+        <PageHeader
+          description={t('admin.description')}
+          eyebrow={`${t('admin.title')} · ${t('admin.programs')}`}
+          id="admin-programs-title"
+          title={t('admin.programs')}
+        />
+        <div class="admin-toolbar">
+          <TextField
+            label={t('admin.searchPrograms')}
+            onInput={(event) => setSearch(event.currentTarget.value)}
+            placeholder={t('admin.searchProgramsPlaceholder')}
+            type="search"
+            value={search}
+          />
+          <label class="ui-field">
+            <span class="ui-field__label">{t('admin.filterPublication')}</span>
+            <select
+              class="ui-field__control"
+              onChange={(event) =>
+                setStatus(
+                  event.currentTarget.value as
+                    AdminProgramSummary['status'] | '',
+                )
+              }
+              value={status}
+            >
+              <option value="">{t('admin.filterAll')}</option>
+              <option value="ACTIVE">{t('common.published')}</option>
+              <option value="DRAFT">{t('common.draft')}</option>
+              <option value="ARCHIVED">{t('admin.archived')}</option>
+            </select>
+          </label>
+        </div>
+        {programs.length === 0 ? (
+          <EmptyState
+            description={t('admin.empty.description')}
+            title={t('admin.empty.title')}
+          />
+        ) : (
+          <ResponsiveTable
+            caption={t('admin.managedPrograms')}
+            columns={[
+              { key: 'program', label: t('admin.programColumn') },
+              { key: 'publication', label: t('admin.publicationColumn') },
+              { key: 'visibility', label: t('admin.visibilityColumn') },
+              { key: 'updatedAt', label: t('admin.updatedColumn') },
+              { key: 'action', label: t('admin.actionColumn') },
+            ]}
+            rows={visiblePrograms.map((program) => ({
+              key: program.id,
+              cells: {
+                program: (
+                  <div>
+                    <strong class="font-medium">{program.title}</strong>
+                    <p class="ui-text-muted mt-1 text-sm">{program.slug}</p>
+                  </div>
+                ),
+                publication: <ProgramStatusBadge status={program.status} />,
+                visibility: <VisibilityBadge visibility={program.visibility} />,
+                updatedAt: formatLocalizedDate(program.updatedAt, locale, {
+                  dateStyle: 'medium',
+                }),
+                action: (
+                  <NavigationAction
+                    href={adminProgramHref(program.id)}
+                    variant="ghost"
+                  >
+                    {t('admin.manageContent')}
+                  </NavigationAction>
+                ),
+              },
+            }))}
+          />
+        )}
+      </div>
     </>
   );
 }
@@ -990,10 +1111,6 @@ export function AdminPage(props: AdminPageProps) {
       aria-label={t('admin.title')}
       class="page-layout page-layout--admin page-shell"
     >
-      <header class="page-header space-y-2">
-        <p class="page-eyebrow">{t('admin.eyebrow')}</p>
-        <p class="page-description mt-0">{t('admin.description')}</p>
-      </header>
       <NavigationView data={query.data} />
     </section>
   );

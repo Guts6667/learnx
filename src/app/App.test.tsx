@@ -547,8 +547,7 @@ describe('App', () => {
 
     expect(email).toHaveClass('break-all');
     expect(adminLink).toHaveAttribute('href', '/admin');
-    expect(adminLink).toHaveClass('ui-action--md', 'w-full');
-    expect(adminLink).not.toHaveClass('underline');
+    expect(adminLink).toHaveClass('profile-access-action');
     expect(logout).toHaveClass('ui-action--md', 'w-full');
     expect(actions.compareDocumentPosition(adminLink)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,

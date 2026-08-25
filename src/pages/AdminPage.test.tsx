@@ -84,23 +84,23 @@ describe('AdminRoute', () => {
   it.each(['USER', 'CREATOR'] as const)(
     'refuse visuellement l’accès au rôle %s',
     async (role) => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() =>
-        Promise.resolve(jsonResponse({ user: { ...adminUser, role } })),
-      ),
-    );
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(() =>
+          Promise.resolve(jsonResponse({ user: { ...adminUser, role } })),
+        ),
+      );
 
-    render(
-      <AppProviders>
-        <AdminRoute>
-          <p>Contenu secret</p>
-        </AdminRoute>
-      </AppProviders>,
-    );
+      render(
+        <AppProviders>
+          <AdminRoute>
+            <p>Contenu secret</p>
+          </AdminRoute>
+        </AppProviders>,
+      );
 
-    expect(await screen.findByText('Accès refusé')).toBeInTheDocument();
-    expect(screen.queryByText('Contenu secret')).not.toBeInTheDocument();
+      expect(await screen.findByText('Accès refusé')).toBeInTheDocument();
+      expect(screen.queryByText('Contenu secret')).not.toBeInTheDocument();
     },
   );
 });
@@ -120,7 +120,7 @@ describe('AdminPage', () => {
       </AppProviders>,
     );
 
-    expect(await screen.findByText('Programme test')).toBeInTheDocument();
+    expect((await screen.findAllByText('Programme test')).length).toBe(2);
     expect(screen.queryByText('Étape test')).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/admin/programs',
