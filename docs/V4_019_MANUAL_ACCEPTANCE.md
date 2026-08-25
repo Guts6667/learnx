@@ -2,7 +2,9 @@
 
 ## Identité de la recette
 
-- **Candidat** : `f49a4d6f419337df4ebd34d2bf906c470c2df9de`
+- **Candidat figé** : tag `v4a-premerge-2026-08-25`
+- **Baseline d'implémentation auditée** :
+  `f49a4d6f419337df4ebd34d2bf906c470c2df9de`
 - **Branche distante** : `origin/dev`
 - **Preview** :
   `https://learnx-git-dev-guts6667s-projects.vercel.app/?qa=f49a4d6f`
@@ -67,10 +69,10 @@ sécurité, accessibilité bloquante ou navigation est éliminatoire pour V4-019
 Après une recette acceptée, l'autorisation attendue doit nommer le candidat et
 rester bornée. Exemple :
 
-> J'accepte la recette manuelle du candidat
-> `f49a4d6f419337df4ebd34d2bf906c470c2df9de`. J'autorise sa promotion unique
-> vers `main` et la configuration de production avec le kill switch fermé.
-> Aucun appel modèle ni ouverture du pilote n'est autorisé par ce GO.
+> J'accepte la recette manuelle du candidat figé
+> `v4a-premerge-2026-08-25`. J'autorise sa promotion unique vers `main` et la
+> configuration de production avec le kill switch fermé. Aucun appel modèle
+> ni ouverture du pilote n'est autorisé par ce GO.
 
 L'ouverture du kill switch et le smoke production font ensuite l'objet d'un
 second GO explicite avec un plafond fournisseur. Cette séparation permet de

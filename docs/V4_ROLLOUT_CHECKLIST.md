@@ -97,7 +97,8 @@ ajouter d'artefacts binaires au dépôt.
 ## Gate production
 
 - [x] migration répétable en preview et rollback documenté ;
-- [ ] recette manuelle propriétaire du candidat `f49a4d6f` selon
+- [ ] recette manuelle propriétaire du candidat figé
+  `v4a-premerge-2026-08-25` selon
   `docs/V4_019_MANUAL_ACCEPTANCE.md` ;
 - [ ] variables de production distinctes de la preview ;
 - [ ] préflight `CONFIGURED_CLOSED` avant toute ouverture ;

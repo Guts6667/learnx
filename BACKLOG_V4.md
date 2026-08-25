@@ -2373,12 +2373,13 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
 - Landing, marque, journal et articles chronologiques sont déployés en preview ;
   la matrice finale couvre les largeurs, le texte à 200 %, le clavier,
   l'accessibilité et WebKit.
-- Le candidat pré-merge réellement déployé est
-  `f49a4d6f419337df4ebd34d2bf906c470c2df9de`. Il contient la réconciliation
-  sélective de SourceLab avec `main` (`ced5e462`), l'alignement public Totem
-  (`ae89a60a`) et la consolidation de release. La recette manuelle de Rayan
-  décrite dans `docs/V4_019_MANUAL_ACCEPTANCE.md` est le prochain gate ;
-  `main` reste inchangée.
+- Le candidat pré-merge est figé par le tag immuable
+  `v4a-premerge-2026-08-25`. Sa baseline d'implémentation auditée est
+  `f49a4d6f419337df4ebd34d2bf906c470c2df9de` ; elle contient la
+  réconciliation sélective de SourceLab avec `main` (`ced5e462`) et
+  l'alignement public Totem (`ae89a60a`). La recette manuelle de Rayan décrite
+  dans `docs/V4_019_MANUAL_ACCEPTANCE.md` est le prochain gate ; `main` reste
+  inchangée.
 - Le scope de release actuel est V4A : crédits offerts uniquement. Le cycle
   d'achat public appartient à V4B et ne bloque pas ce pilote.
 - Restent la configuration production fermée, le budget et le canal d'alerte,
