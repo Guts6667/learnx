@@ -2,7 +2,9 @@
 
 ## Identité de la recette
 
-- **Candidat figé** : tag `v4a-premerge-2026-08-25`
+- **Candidat figé** : tag `v4a-premerge-2026-08-25-r1`
+- **Candidat remplacé** : `v4a-premerge-2026-08-25`, conservé uniquement pour
+  tracer le défaut de proportions de la carte L-P01
 - **Baseline d'implémentation auditée** :
   `f49a4d6f419337df4ebd34d2bf906c470c2df9de`
 - **Branche distante** : `origin/dev`
@@ -70,7 +72,7 @@ Après une recette acceptée, l'autorisation attendue doit nommer le candidat et
 rester bornée. Exemple :
 
 > J'accepte la recette manuelle du candidat figé
-> `v4a-premerge-2026-08-25`. J'autorise sa promotion unique vers `main` et la
+> `v4a-premerge-2026-08-25-r1`. J'autorise sa promotion unique vers `main` et la
 > configuration de production avec le kill switch fermé. Aucun appel modèle
 > ni ouverture du pilote n'est autorisé par ce GO.
 

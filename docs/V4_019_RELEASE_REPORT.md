@@ -264,3 +264,29 @@ de lint, typecheck et build verts.
 Le seul gate volontairement ouvert avant `main` est la recette manuelle de
 Rayan sur cette preview. Elle ne vaut ni ouverture du kill switch, ni GO
 scientifique, ni activation d'un achat public.
+
+## Correctif de recette L-P01 — 25 août 2026
+
+La recette propriétaire du premier candidat figé a identifié un écart entre
+la carte programme du hero et la composition normative de `SCREENS.html`. Le
+tag `v4a-premerge-2026-08-25` reste conservé comme preuve historique et est
+remplacé par `v4a-premerge-2026-08-25-r1`.
+
+Le correctif reprend les valeurs contractuelles sans modifier le contenu ni
+les contrats de collecte :
+
+- grille desktop `.88fr / 1.12fr`, colonne d'aperçu dominante et écart de
+  `86 px` ;
+- corps de la carte à `34 / 32 / 42 px` en desktop ;
+- titre de l'aperçu à `34 px` ;
+- signature corail intégrée de `76 × 76 px`, décalée de `-16 px`, au lieu de
+  la barre décorative du candidat remplacé ;
+- typographie, espacements du chrome, métadonnée et étape active alignés sur
+  l'autorité publique Totem `1.0.0`.
+
+Un test Playwright vérifie désormais à `1440 px` que la carte est plus large
+que la colonne de copie et contrôle ses paddings, rayons et géométrie corail.
+Les rendus réels à `390` et `1440 px` sont sans débordement. Le test landing
+ciblé, lint, typecheck, les `906` tests Vitest et le build sont verts. Aucun
+appel modèle, changement de progression ou mutation financière n'a été
+effectué par ce correctif.

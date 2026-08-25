@@ -98,7 +98,7 @@ ajouter d'artefacts binaires au dépôt.
 
 - [x] migration répétable en preview et rollback documenté ;
 - [ ] recette manuelle propriétaire du candidat figé
-  `v4a-premerge-2026-08-25` selon
+  `v4a-premerge-2026-08-25-r1` selon
   `docs/V4_019_MANUAL_ACCEPTANCE.md` ;
 - [ ] variables de production distinctes de la preview ;
 - [ ] préflight `CONFIGURED_CLOSED` avant toute ouverture ;

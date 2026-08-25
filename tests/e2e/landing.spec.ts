@@ -65,6 +65,43 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
         }),
       ).toBe(true);
     }
+    if (viewport.width === 1440) {
+      const previewGeometry = await page.evaluate(() => {
+        const copy = document.querySelector('.landing-hero-copy');
+        const preview = document.querySelector('.landing-program-preview');
+        const body = document.querySelector('.landing-preview-body');
+        if (!copy || !preview || !body) return null;
+        const copyBox = copy.getBoundingClientRect();
+        const previewBox = preview.getBoundingClientRect();
+        const previewStyle = getComputedStyle(preview);
+        const signatureStyle = getComputedStyle(preview, '::after');
+        const bodyStyle = getComputedStyle(body);
+        return {
+          bodyPaddingBottom: bodyStyle.paddingBottom,
+          bodyPaddingLeft: bodyStyle.paddingLeft,
+          copyWidth: copyBox.width,
+          previewBorderRadius: previewStyle.borderRadius,
+          previewWidth: previewBox.width,
+          signatureBottom: signatureStyle.bottom,
+          signatureHeight: signatureStyle.height,
+          signatureRight: signatureStyle.right,
+          signatureWidth: signatureStyle.width,
+        };
+      });
+      expect(previewGeometry).not.toBeNull();
+      expect(previewGeometry?.previewWidth).toBeGreaterThan(
+        previewGeometry?.copyWidth ?? Number.POSITIVE_INFINITY,
+      );
+      expect(previewGeometry).toMatchObject({
+        bodyPaddingBottom: '42px',
+        bodyPaddingLeft: '32px',
+        previewBorderRadius: '18px 18px 6px',
+        signatureBottom: '-16px',
+        signatureHeight: '76px',
+        signatureRight: '-16px',
+        signatureWidth: '76px',
+      });
+    }
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
