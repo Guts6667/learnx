@@ -5,6 +5,8 @@ import {
   type Protocol3CorrectionArtifactOutput,
 } from '../../lib/ai-correction-contracts.js';
 import {
+  CorrectionModelOutputError,
+  CorrectionProviderError,
   getCorrectionProviderAdapter,
 } from '../../lib/ai-correction-provider-adapters.js';
 import {
@@ -44,9 +46,7 @@ export type CorrectionOrchestrationErrorCode =
   | 'INSUFFICIENT_CREDITS';
 
 export class CorrectionOrchestrationError extends Error {
-  public constructor(
-    public readonly code: CorrectionOrchestrationErrorCode,
-  ) {
+  public constructor(public readonly code: CorrectionOrchestrationErrorCode) {
     super(code);
     this.name = 'CorrectionOrchestrationError';
   }
@@ -55,7 +55,10 @@ export class CorrectionOrchestrationError extends Error {
 export interface AcceptedQuoteSnapshot {
   quoteId: string;
   userId: string;
-  target: { id: string; kind: 'EXERCISE_SUBMISSION' | 'STAGE_ASSESSMENT_SUBMISSION' };
+  target: {
+    id: string;
+    kind: 'EXERCISE_SUBMISSION' | 'STAGE_ASSESSMENT_SUBMISSION';
+  };
   language: string;
   estimatedCredits: bigint;
   maximumReservedCredits: bigint;
@@ -86,6 +89,7 @@ export interface CreditSettlementPort {
     reservationId: string;
     userId: string;
   }): Promise<void>;
+  release(input: { reservationId: string; userId: string }): Promise<void>;
 }
 
 export interface CorrectionTransportPort {
@@ -218,6 +222,7 @@ export class CorrectionOrchestrationService {
       }): Promise<OrchestratedCorrectionResult | null>;
       persist(input: {
         attempts: RuntimeCorrectionAttempt[];
+        reservationId: string;
         userId: string;
         quote: AcceptedQuoteSnapshot;
         result: OrchestratedCorrectionResult['correction'];
@@ -282,9 +287,7 @@ export class CorrectionOrchestrationService {
     try {
       const reservation = await this.credits.reserve({
         amount: quote.maximumReservedCredits,
-        expiresAt: new Date(
-          now.getTime() + 15 * 60 * 1000,
-        ),
+        expiresAt: new Date(now.getTime() + 15 * 60 * 1000),
         idempotencyKey: `ai-correction:${quote.quoteId}`,
         reference: { id: quote.quoteId, type: 'AI_PRICING_QUOTE' },
         userId: input.userId,
@@ -297,16 +300,39 @@ export class CorrectionOrchestrationService {
     // Un échec total (aucun critère livrable après retries bornés) reste un
     // résultat : la doctrine débite le devis en intégralité et l'état livré
     // est « indisponible — resoumettre ». Une erreur d'infrastructure
-    // inattendue remonte sans règlement : la réservation idempotente expire
-    // d'elle-même et un rejeu reprend la même réservation.
-    const execution = await this.executeCorrection({ contract, quote });
-
-    const persisted = await this.corrections.persist({
-      attempts: execution.attempts,
-      quote,
-      result: execution.correction,
-      userId: input.userId,
-    });
+    // inattendue remonte sans règlement : la réservation est libérée
+    // immédiatement avant de rendre l'erreur.
+    let execution: Awaited<
+      ReturnType<CorrectionOrchestrationService['executeCorrection']>
+    >;
+    let persisted: { id: string };
+    try {
+      execution = await this.executeCorrection({ contract, quote });
+      persisted = await this.corrections.persist({
+        attempts: execution.attempts,
+        quote,
+        reservationId,
+        result: execution.correction,
+        userId: input.userId,
+      });
+    } catch (error) {
+      // A transport/runtime or persistence incident is not a delivered
+      // correction. Release the quote ceiling immediately instead of keeping
+      // the user's allocation unavailable until the reservation TTL elapses.
+      try {
+        await this.credits.release({
+          reservationId,
+          userId: input.userId,
+        });
+      } catch (releaseError) {
+        throw new AggregateError(
+          [error, releaseError],
+          'AI_CORRECTION_FAILED_AND_RESERVATION_RELEASE_FAILED',
+          { cause: releaseError },
+        );
+      }
+      throw error;
+    }
     const correction = { ...execution.correction, id: persisted.id };
     await this.settleFullQuote({ quote, reservationId, userId: input.userId });
     await this.quotes.markConsumed({ quoteId: quote.quoteId });
@@ -379,11 +405,7 @@ export class CorrectionOrchestrationService {
           modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
         });
       } catch (error) {
-        attempts.push({
-          errorCode: error instanceof Error ? error.message : 'TRANSPORT_ERROR',
-          sequence: attempts.length + 1,
-          status: 'FAILED',
-        });
+        attempts.push(this.runtimeFailureSnapshot(error, attempts.length + 1));
         continue;
       }
       usageCost += generation.usage.actualCostUsd ?? 0;
@@ -449,11 +471,7 @@ export class CorrectionOrchestrationService {
           }),
         );
       } catch (error) {
-        attempts.push({
-          errorCode: error instanceof Error ? error.message : 'TRANSPORT_ERROR',
-          sequence: attempts.length + 1,
-          status: 'FAILED',
-        });
+        attempts.push(this.runtimeFailureSnapshot(error, attempts.length + 1));
         // Aucun retry/fallback ne suit. Sans seconde passe valide, aucun
         // critère ne peut être déclaré concordant.
       }
@@ -535,6 +553,68 @@ export class CorrectionOrchestrationService {
       sequence: input.sequence,
       status: input.valid ? 'SUCCEEDED' : 'FAILED',
       visibleOutputTokens: input.generation.usage.visibleOutputTokens,
+    };
+  }
+
+  private runtimeFailureSnapshot(
+    error: unknown,
+    sequence: number,
+  ): RuntimeCorrectionAttempt {
+    if (error instanceof CorrectionModelOutputError) {
+      return {
+        ...(error.usage?.actualCostUsd === undefined
+          ? {}
+          : { actualCostUsd: error.usage.actualCostUsd }),
+        errorCode: error.message,
+        ...(error.usage === undefined
+          ? {}
+          : {
+              inputTokens: error.usage.inputTokens,
+              reasoningTokens: error.usage.reasoningTokens,
+              visibleOutputTokens: error.usage.visibleOutputTokens,
+            }),
+        ...(error.latencyMs === undefined
+          ? {}
+          : { latencyMs: error.latencyMs }),
+        ...(error.modelSnapshot === undefined
+          ? {}
+          : { modelSnapshot: error.modelSnapshot }),
+        ...(error.rawModelOutput === undefined
+          ? {}
+          : { output: error.rawModelOutput }),
+        ...(error.providerRequestId === undefined
+          ? {}
+          : { providerRequestId: error.providerRequestId }),
+        ...(error.providerRoute === undefined
+          ? {}
+          : { providerRoute: error.providerRoute }),
+        sequence,
+        status: 'FAILED',
+      };
+    }
+    if (error instanceof CorrectionProviderError) {
+      return {
+        errorCode: error.message,
+        ...(error.latencyMs === undefined
+          ? {}
+          : { latencyMs: error.latencyMs }),
+        ...(error.modelSnapshot === undefined
+          ? {}
+          : { modelSnapshot: error.modelSnapshot }),
+        ...(error.providerRequestId === undefined
+          ? {}
+          : { providerRequestId: error.providerRequestId }),
+        ...(error.providerRoute === undefined
+          ? {}
+          : { providerRoute: error.providerRoute }),
+        sequence,
+        status: 'FAILED',
+      };
+    }
+    return {
+      errorCode: error instanceof Error ? error.message : 'TRANSPORT_ERROR',
+      sequence,
+      status: 'FAILED',
     };
   }
 
@@ -664,7 +744,9 @@ export function createRuntimeCorrectionTransport(): CorrectionTransportPort {
   const adapter = getCorrectionProviderAdapter('OPENROUTER_CHAT');
   const profile = {
     ...PROMOTED_CORRECTION_IDENTITY.requestProfile,
-    routeProviders: [...PROMOTED_CORRECTION_IDENTITY.requestProfile.routeProviders],
+    routeProviders: [
+      ...PROMOTED_CORRECTION_IDENTITY.requestProfile.routeProviders,
+    ],
   };
   return {
     async execute(input) {

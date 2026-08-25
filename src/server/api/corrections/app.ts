@@ -97,6 +97,9 @@ async function createDefaultOrchestration(): Promise<Pick<
     async settle(input) {
       await ledger.settle(input);
     },
+    async release(input) {
+      await ledger.release(input);
+    },
   };
 
   return new CorrectionOrchestrationService(

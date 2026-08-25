@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { correctionContractSchema } from '@/lib/ai-correction-contracts';
+import { CorrectionModelOutputError } from '@/lib/ai-correction-provider-adapters';
 
 import {
   CorrectionOrchestrationError,
@@ -109,7 +110,9 @@ const contractRaw = {
 const SUBMISSION_TEXT =
   'Je retiens l’option locale ce trimestre. Le délai médian est passé de 18 à 13 heures selon le dossier.';
 
-function buildQuote(overrides: Partial<AcceptedQuoteSnapshot> = {}): AcceptedQuoteSnapshot {
+function buildQuote(
+  overrides: Partial<AcceptedQuoteSnapshot> = {},
+): AcceptedQuoteSnapshot {
   return {
     quoteId: 'quote-1',
     userId: 'user-1',
@@ -199,6 +202,7 @@ interface Harness {
     calls: string[];
     reserve: (input: unknown) => Promise<{ reservationId: string }>;
     settle: (input: unknown) => Promise<void>;
+    release: (input: unknown) => Promise<void>;
   };
   corrections: {
     persisted: unknown[];
@@ -220,6 +224,9 @@ function buildHarness(options: {
     }),
     settle: vi.fn(async () => {
       credits.calls.push('settle');
+    }),
+    release: vi.fn(async () => {
+      credits.calls.push('release');
     }),
   };
   const corrections = {
@@ -245,7 +252,12 @@ function buildHarness(options: {
         output: transportOutputs[transportOutputs.length - 1],
         providerRequestId: `generation-${transportOutputs.length}`,
         providerRoute: PROMOTED_CORRECTION_IDENTITY.provider,
-        usage: { actualCostUsd: 0.014, inputTokens: 900, reasoningTokens: 0, visibleOutputTokens: 320 },
+        usage: {
+          actualCostUsd: 0.014,
+          inputTokens: 900,
+          reasoningTokens: 0,
+          visibleOutputTokens: 320,
+        },
       };
     }),
   };
@@ -380,9 +392,9 @@ describe('correction orchestration (V4-009)', () => {
       status: 'COMPLETED_PARTIAL',
       unsureCriteria: ['evidence-selection'],
     });
-    expect(result.correction.criteria.map((criterion) => criterion.key)).toEqual([
-      'decision-position',
-    ]);
+    expect(
+      result.correction.criteria.map((criterion) => criterion.key),
+    ).toEqual(['decision-position']);
     expect(result.correction.overallFeedback).toContain(
       'Certaines parties concordent',
     );
@@ -422,6 +434,47 @@ describe('correction orchestration (V4-009)', () => {
     expect(harness.credits.calls).toEqual(['reserve', 'settle']);
   });
 
+  it('preserves provider usage and generation metadata for a rejected model output', async () => {
+    const harness = buildHarness({
+      transport: () => {
+        throw new CorrectionModelOutputError('MODEL_OUTPUT_TRUNCATED', {
+          latencyMs: 2_100,
+          modelSnapshot: PROMOTED_CORRECTION_IDENTITY.modelId,
+          providerRequestId: 'generation-truncated',
+          providerRoute: PROMOTED_CORRECTION_IDENTITY.provider,
+          rawModelOutput: '{"partial":true}',
+          usage: {
+            actualCostUsd: 0.019,
+            costSource: 'ACTUAL',
+            inputTokens: 1_100,
+            reasoningTokens: 0,
+            visibleOutputTokens: 1_500,
+          },
+        });
+      },
+    });
+
+    await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(harness.corrections.persisted[0]).toMatchObject({
+      attempts: [
+        {
+          actualCostUsd: 0.019,
+          errorCode: 'MODEL_OUTPUT_TRUNCATED',
+          inputTokens: 1_100,
+          output: '{"partial":true}',
+          providerRequestId: 'generation-truncated',
+          sequence: 1,
+          status: 'FAILED',
+          visibleOutputTokens: 1_500,
+        },
+      ],
+    });
+  });
+
   it('replays an already orchestrated quote without touching credits again', async () => {
     const replay = {
       correction: {
@@ -458,7 +511,10 @@ describe('correction orchestration (V4-009)', () => {
     harness.quotes.loadAcceptedQuote = (async () =>
       buildQuote({ expiresAt: new Date('2026-08-24T09:00:00Z') })) as never;
     await expect(
-      harness.service.runAcceptedQuote({ quoteId: 'quote-1', userId: 'user-1' }),
+      harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      }),
     ).rejects.toThrow(CorrectionOrchestrationError);
     expect(harness.credits.calls).toEqual([]);
   });
@@ -474,7 +530,10 @@ describe('correction orchestration (V4-009)', () => {
       })) as never;
 
     await expect(
-      harness.service.runAcceptedQuote({ quoteId: 'quote-1', userId: 'user-1' }),
+      harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      }),
     ).rejects.toMatchObject({ code: 'QUOTE_INCOMPATIBLE' });
     expect(harness.credits.calls).toEqual([]);
     expect(harness.corrections.findByQuote).not.toHaveBeenCalled();
@@ -512,10 +571,30 @@ describe('correction orchestration (V4-009)', () => {
       throw new Error('INSUFFICIENT_CREDITS');
     }) as never;
     await expect(
-      harness.service.runAcceptedQuote({ quoteId: 'quote-1', userId: 'user-1' }),
+      harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      }),
     ).rejects.toMatchObject({ code: 'INSUFFICIENT_CREDITS' });
     expect(harness.corrections.persisted).toHaveLength(0);
     expect(harness.credits.calls).toEqual(['reserve']);
+  });
+
+  it('releases the reservation immediately when persistence fails', async () => {
+    const harness = buildHarness({ transport: strictOutput });
+    harness.corrections.persist = vi.fn(async () => {
+      throw new Error('PERSISTENCE_FAILED');
+    });
+
+    await expect(
+      harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      }),
+    ).rejects.toThrow('PERSISTENCE_FAILED');
+
+    expect(harness.transportOutputs).toHaveLength(1);
+    expect(harness.credits.calls).toEqual(['reserve', 'release']);
   });
 
   it('parses the runtime contract snapshot through the published contract schema', () => {

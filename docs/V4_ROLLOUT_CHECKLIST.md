@@ -57,21 +57,27 @@ configuration attendue est :
 - `LEARNX_AI_KILL_SWITCH=true` jusqu'au GO d'ouverture ;
 - `OPENROUTER_API_KEY` présente côté serveur uniquement.
 
-## QA preview authentifiée — à exécuter
+## QA preview authentifiée — en cours
 
-- [ ] déployer les migrations et le seed sur la base de preview ;
-- [ ] vérifier que l'exercice « Choisir sans forcer un cadre » est visible et
+- [x] déployer les 41 migrations, y compris le correctif formatif, et le seed
+  sur la base de preview ;
+- [x] vérifier que l'exercice « Choisir sans forcer un cadre » est visible et
   porte le contrat publié attendu ;
-- [ ] vérifier les soldes offerts, le catalogue `4.0.0` et l'absence d'achat ;
+- [x] vérifier les soldes offerts, le catalogue `4.0.0` et l'absence d'achat ;
 - [ ] exécuter `deployment:check` avec un compte pilote ;
 - [ ] vérifier landing, journal FR/EN, canonicals, PWA et connexion ;
-- [ ] vérifier le préflight en état `CONFIGURED_CLOSED` ;
+- [x] vérifier le préflight en état `CONFIGURED_CLOSED` ;
 - [ ] vérifier qu'une tentative de correction répond indisponible sans débit
   lorsque le kill switch est fermé ;
 - [ ] obtenir le GO explicite du Propriétaire pour ouvrir le kill switch ;
 - [ ] effectuer un smoke utilisateur borné, réconcilier coût, débit et
   libération, puis refermer immédiatement en cas d'écart ;
 - [ ] capturer les états 320/390/720/1440/1920, zoom 200 %, clavier et WebKit.
+
+Le premier smoke autorisé a été refermé sur une erreur de persistance SQL et
+un coût non réconciliable exactement. La réservation a été libérée et le
+correctif reste à redéployer avant une éventuelle nouvelle autorisation. Voir
+`docs/V4_019_RELEASE_REPORT.md`. Ce smoke ne coche pas le gate de réussite.
 
 ## Gate production
 

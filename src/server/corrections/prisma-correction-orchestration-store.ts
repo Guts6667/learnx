@@ -1,7 +1,4 @@
-import {
-  Prisma,
-  type PrismaClient,
-} from '../../../generated/prisma/client.js';
+import { Prisma, type PrismaClient } from '../../../generated/prisma/client.js';
 
 import type {
   AcceptedQuoteSnapshot,
@@ -100,6 +97,7 @@ export class PrismaCorrectionOrchestrationPorts {
     },
     persist: async (input: {
       attempts: RuntimeCorrectionAttempt[];
+      reservationId: string;
       userId: string;
       quote: AcceptedQuoteSnapshot;
       result: OrchestratedCorrectionResult['correction'];
@@ -107,6 +105,7 @@ export class PrismaCorrectionOrchestrationPorts {
       const created = await this.prisma.aiCorrection.create({
         data: {
           contractSnapshot: input.quote.contract as object,
+          creditReservationId: input.reservationId,
           exerciseSubmissionId: input.quote.target.id,
           completedAt: new Date(),
           idempotencyKey: `quote:${input.quote.quoteId}`,
@@ -116,11 +115,12 @@ export class PrismaCorrectionOrchestrationPorts {
           provider: PROMOTED_CORRECTION_IDENTITY.provider,
           promptSnapshot: {},
           promptVersion: input.quote.promptVersion,
+          indicativeScore: input.result.indicativeScore,
+          pipelineKind: 'SINGLE_MODEL',
+          pricingQuoteId: input.quote.quoteId,
           requestFingerprint: input.quote.requestFingerprint,
           status:
-            input.result.status === 'COMPLETED'
-              ? 'COMPLETED'
-              : 'AI_REVIEW_REQUIRED',
+            input.result.status === 'COMPLETED' ? 'COMPLETED' : 'PROVISIONAL',
           structuredResult: {
             correction: input.result,
             settlement: {
@@ -138,6 +138,14 @@ export class PrismaCorrectionOrchestrationPorts {
               completedAt: new Date(),
               completionTokens: attempt.visibleOutputTokens,
               costUsd: attempt.actualCostUsd,
+              costConfirmedAt:
+                attempt.actualCostUsd === undefined ? undefined : new Date(),
+              costSource:
+                attempt.actualCostUsd === undefined ? undefined : 'ACTUAL',
+              dispatchStatus:
+                attempt.providerRequestId === undefined
+                  ? undefined
+                  : 'CONFIRMED',
               errorCode: attempt.errorCode,
               generationId: attempt.providerRequestId,
               latencyMs: attempt.latencyMs,
@@ -151,9 +159,13 @@ export class PrismaCorrectionOrchestrationPorts {
               sequence: attempt.sequence,
               status: attempt.status,
               structuredResult:
-                attempt.output === undefined
-                  ? undefined
-                  : (attempt.output as Prisma.InputJsonValue),
+                attempt.status === 'SUCCEEDED' && attempt.output !== undefined
+                  ? (attempt.output as Prisma.InputJsonValue)
+                  : undefined,
+              rawOutput:
+                attempt.status === 'FAILED' && attempt.output !== undefined
+                  ? (attempt.output as Prisma.InputJsonValue)
+                  : undefined,
               totalTokens:
                 attempt.inputTokens === undefined ||
                 attempt.visibleOutputTokens === undefined

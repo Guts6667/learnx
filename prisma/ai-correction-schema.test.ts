@@ -8,6 +8,12 @@ const migration = readFileSync(
   ),
   'utf8',
 );
+const formativeResultMigration = readFileSync(
+  resolve(
+    'prisma/migrations/20260825192500_allow_formative_single_model_results/migration.sql',
+  ),
+  'utf8',
+);
 
 describe('persistent AI correction schema', () => {
   it('stores immutable snapshots, server decisions and attempt history', () => {
@@ -28,9 +34,7 @@ describe('persistent AI correction schema', () => {
     expect(schema).toContain(
       '@relation(fields: [stageAssessmentSubmissionId, userId], references: [id, userId]',
     );
-    expect(migration).toContain(
-      'ai_corrections_exactly_one_submission_check',
-    );
+    expect(migration).toContain('ai_corrections_exactly_one_submission_check');
     expect(migration).toContain(
       'FOREIGN KEY ("exercise_submission_id", "user_id")',
     );
@@ -56,5 +60,17 @@ describe('persistent AI correction schema', () => {
     expect(migration).toContain('"confidence" <= 1');
     expect(migration).toContain('ai_corrections_terminal_result_check');
     expect(migration).toContain('ai_correction_attempts_result_check');
+  });
+
+  it('allows terminal formative results without reviving PASS/FAIL authority', () => {
+    expect(formativeResultMigration).toContain(
+      "\"status\" IN ('completed', 'provisional')",
+    );
+    expect(formativeResultMigration).toContain('"decision" IS NULL');
+    expect(formativeResultMigration).toContain('"score" IS NULL');
+    expect(formativeResultMigration).toContain('"confidence" IS NULL');
+    expect(formativeResultMigration).toContain(
+      '"structured_result_json" IS NOT NULL',
+    );
   });
 });
