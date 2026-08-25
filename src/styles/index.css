@@ -2104,6 +2104,10 @@ body {
   background: var(--color-action-soft);
 }
 
+.totem-product-surface .today-primary-card {
+  background: var(--color-surface);
+}
+
 .totem-product-surface .ui-card--accent::before {
   position: absolute;
   top: 0;

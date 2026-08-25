@@ -65,7 +65,7 @@ describe('TodayPage', () => {
       screen.getByRole('heading', { name: 'Lire le chapitre' }).closest(
         '.ui-signature-surface',
       ),
-    ).not.toBeNull();
+    ).toHaveClass('today-primary-card');
   });
 
   it('affiche un état vide sans programme actif', async () => {

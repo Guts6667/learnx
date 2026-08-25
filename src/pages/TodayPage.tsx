@@ -83,7 +83,10 @@ function TodayContent({
 
   return (
     <div class="grid min-w-0 gap-6">
-      <Card class="ui-signature-surface space-y-5" tone="accent">
+      <Card
+        class="today-primary-card ui-signature-surface space-y-5"
+        tone="accent"
+      >
         <p class="page-eyebrow">
           {data.action
             ? t(actionLabelKeys[data.action.kind])

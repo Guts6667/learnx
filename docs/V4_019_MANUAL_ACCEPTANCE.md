@@ -2,16 +2,17 @@
 
 ## Identité de la recette
 
-- **Candidat figé** : tag `v4a-premerge-2026-08-25-r2`
+- **Candidat figé** : tag `v4a-premerge-2026-08-25-r3`
 - **Candidats remplacés** : `v4a-premerge-2026-08-25` et
-  `v4a-premerge-2026-08-25-r1`, conservés respectivement pour tracer le défaut
-  de proportions de la carte L-P01 et l'absence de rechargement automatique
-  d'une page déjà contrôlée par l'ancienne PWA
+  les révisions `r1` et `r2`, conservés respectivement pour tracer le défaut de
+  proportions de la carte L-P01, l'absence de rechargement automatique d'une
+  page déjà contrôlée par l'ancienne PWA et le fond brume résiduel de la carte
+  principale Aujourd'hui
 - **Baseline d'implémentation auditée** :
   `f49a4d6f419337df4ebd34d2bf906c470c2df9de`
 - **Branche distante** : `origin/dev`
 - **Preview** :
-  `https://learnx-git-dev-guts6667s-projects.vercel.app/?qa=v4a-r2`
+  `https://learnx-git-dev-guts6667s-projects.vercel.app/?qa=v4a-r3`
 - **Périmètre** : pilote Writing/fr-FR, crédits offerts, feedback formatif
 - **État attendu de l'IA** : kill switch fermé ; aucun appel modèle n'est requis
   par cette recette
@@ -74,7 +75,7 @@ Après une recette acceptée, l'autorisation attendue doit nommer le candidat et
 rester bornée. Exemple :
 
 > J'accepte la recette manuelle du candidat figé
-> `v4a-premerge-2026-08-25-r2`. J'autorise sa promotion unique vers `main` et la
+> `v4a-premerge-2026-08-25-r3`. J'autorise sa promotion unique vers `main` et la
 > configuration de production avec le kill switch fermé. Aucun appel modèle
 > ni ouverture du pilote n'est autorisé par ce GO.
 

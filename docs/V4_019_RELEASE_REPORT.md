@@ -306,3 +306,14 @@ page, ce qui évite une boucle ou une interruption inutile du parcours. Deux
 tests unitaires couvrent ces deux branches ; la matrice Vitest complète compte
 désormais `908` tests réussis. Ce mécanisme ne change ni le cache des données
 métier, ni les contrats IA, ni les états financiers.
+
+## Correctif de recette Aujourd'hui — 25 août 2026
+
+La recette propriétaire a relevé que la carte principale Aujourd'hui héritait
+encore du fond brume des cartes accentuées génériques. Le candidat `r2` reste
+immuable et est remplacé par `v4a-premerge-2026-08-25-r3`.
+
+La carte conserve sa bordure cobalt, sa hiérarchie, sa progression et sa
+signature corail, mais utilise désormais explicitement le papier blanc
+`--color-surface` imposé par l'autorité Totem. La règle est bornée à la carte
+principale Aujourd'hui et ne modifie pas les autres surfaces accentuées.
