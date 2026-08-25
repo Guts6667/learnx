@@ -77,7 +77,7 @@ configuration attendue est :
 Le premier smoke autorisé a été refermé sur une erreur de persistance SQL et
 un coût non réconciliable exactement. La réservation a été libérée et le
 correctif SQL a été redéployé. Le durcissement d'idempotence et de rejeu
-financier doit encore être livré avant une éventuelle nouvelle autorisation.
+financier est livré par `d0e479cb` et contrôlé coupe-circuit fermé.
 Voir `docs/V4_019_RELEASE_REPORT.md`. Ce smoke ne coche pas le gate de réussite.
 
 ## Gate production

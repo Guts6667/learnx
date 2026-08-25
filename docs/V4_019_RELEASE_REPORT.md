@@ -115,16 +115,19 @@ est persistée mais le règlement encore `RESERVED`, la relance termine seulemen
 le règlement idempotent sans rappeler le fournisseur. Tout autre désaccord
 financier devient `RECONCILIATION_REQUIRED` et bloque un nouvel appel.
 
+Ce durcissement est livré sur `origin/dev` par `d0e479cb`. Après mise à jour de
+l'alias preview, `deployment:check` repasse et l'administration authentifiée
+confirme encore `CONFIGURED_CLOSED`, `0` correction, `0` tentative au coût
+inconnu et le solde pilote `6/0`. Aucun appel fournisseur n'a été envoyé pour
+ces contrôles.
+
 ## Gate restant
 
-1. valider puis déployer le durcissement d'idempotence sur la preview fermée ;
-2. répéter le préflight `CONFIGURED_CLOSED` et les contrôles authentifiés à
-   coût nul ;
-3. obtenir une nouvelle autorisation propriétaire distincte avant tout nouveau
+1. obtenir une nouvelle autorisation propriétaire distincte avant tout nouveau
    workflow facturable ;
-4. si cette tentative réussit, consigner coût, générations, appels, résultat,
+2. si cette tentative réussit, consigner coût, générations, appels, résultat,
    règlement et libération ;
-5. exécuter ensuite la matrice finale et rendre un verdict V4-019 explicite.
+3. exécuter ensuite la matrice finale et rendre un verdict V4-019 explicite.
 
 Le smoke du 25 août ne constitue ni un GO runtime ni une preuve de promotion
 scientifique.
