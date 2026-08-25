@@ -4,6 +4,7 @@ import { App } from '@/app/App';
 
 describe('App', () => {
   beforeEach(() => {
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
     Object.defineProperty(navigator, 'language', {
       configurable: true,
       value: 'fr-FR',
@@ -15,6 +16,7 @@ describe('App', () => {
   });
 
   afterEach(() => {
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
@@ -418,6 +420,8 @@ describe('App', () => {
 
   it('déplace le focus principal sans afficher de retour sur une racine', async () => {
     window.history.pushState({}, '', '/today');
+    const scrollTo = vi.mocked(window.scrollTo);
+    scrollTo.mockClear();
     mockSession({
       id: 'user-1',
       email: 'learner@example.com',
@@ -436,6 +440,11 @@ describe('App', () => {
     await waitFor(() =>
       expect(document.getElementById('main-content')).toHaveFocus(),
     );
+    expect(scrollTo).toHaveBeenCalledWith({
+      behavior: 'auto',
+      left: 0,
+      top: 0,
+    });
     expect(
       screen.queryByRole('button', { name: /Retour|Revenir/ }),
     ).not.toBeInTheDocument();

@@ -2,7 +2,7 @@
 
 ## Statut et autorité
 
-- Version : 1.6.8
+- Version : 1.6.9
 - Statut : **pilote V4 writing-only validé en preview — gate production V4-019 restant**
 - Dernière consolidation : 25 août 2026 — candidat pré-merge déployé, recette propriétaire restante
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
@@ -2374,11 +2374,11 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
   la matrice finale couvre les largeurs, le texte à 200 %, le clavier,
   l'accessibilité et WebKit.
 - Le candidat pré-merge est figé par le tag immuable
-  `v4a-premerge-2026-08-25-r3`. Il remplace sans réécrire les tags historiques
-  `v4a-premerge-2026-08-25`, `r1` et `r2` après le défaut visuel L-P01, le
-  maintien d'un ancien bundle sur une page déjà contrôlée par la PWA, puis le
-  fond brume résiduel de la carte principale Aujourd'hui. Sa baseline
-  d'implémentation auditée est
+  `v4a-premerge-2026-08-25-r4`. Il remplace sans réécrire les tags historiques
+  `v4a-premerge-2026-08-25` et `r1` à `r3` après les écarts corrigés pendant la
+  recette : L-P01, actualisation PWA, fond de la carte Aujourd'hui et position
+  de défilement conservée à tort vers Crédits. Sa baseline d'implémentation
+  auditée est
   `f49a4d6f419337df4ebd34d2bf906c470c2df9de` ; elle contient la
   réconciliation sélective de SourceLab avec `main` (`ced5e462`) et
   l'alignement public Totem (`ae89a60a`). La recette manuelle de Rayan décrite

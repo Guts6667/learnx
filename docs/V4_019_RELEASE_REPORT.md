@@ -317,3 +317,16 @@ La carte conserve sa bordure cobalt, sa hiérarchie, sa progression et sa
 signature corail, mais utilise désormais explicitement le papier blanc
 `--color-surface` imposé par l'autorité Totem. La règle est bornée à la carte
 principale Aujourd'hui et ne modifie pas les autres surfaces accentuées.
+
+## Correctif de navigation Crédits — 25 août 2026
+
+Une navigation effectuée depuis une page déjà défilée conservait sa position
+verticale. Sur Crédits, le titre et l'introduction pouvaient alors passer sous
+la topbar. Le candidat `r3` reste immuable et est remplacé par
+`v4a-premerge-2026-08-25-r4`.
+
+Chaque changement de route applicative repositionne désormais la fenêtre en
+haut avant de focaliser le contenu principal sans défilement secondaire. La
+page Crédits adopte en outre le gabarit de travail borné et la demande
+exceptionnelle utilise une surface blanche encadrée cohérente avec le
+récapitulatif. Aucun contrat de solde ou de demande n'est modifié.

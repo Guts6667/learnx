@@ -32,7 +32,7 @@ export function CreditsPage() {
   }
 
   return (
-    <section class="totem-credits-page page-layout page-shell space-y-6">
+    <section class="totem-credits-page page-layout page-layout--work page-shell space-y-6">
       <PageHeader
         description={t('credits.description')}
         eyebrow={t('credits.eyebrow')}
@@ -85,7 +85,7 @@ export function CreditsPage() {
           </div>
         </Card>
       ) : null}
-      <Section class="totem-credit-request space-y-4">
+      <Section class="totem-credit-request ui-card space-y-4 p-5 sm:p-6">
         <div>
           <h2 class="text-xl font-medium">{t('credits.increase.title')}</h2>
           <p class="ui-text-muted mt-2 leading-7">

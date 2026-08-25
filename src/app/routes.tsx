@@ -287,7 +287,10 @@ export function AppRoutes() {
 
       if (previous) {
         window.requestAnimationFrame(() => {
-          document.getElementById('main-content')?.focus();
+          window.scrollTo({ behavior: 'auto', left: 0, top: 0 });
+          document
+            .getElementById('main-content')
+            ?.focus({ preventScroll: true });
         });
       }
     },
