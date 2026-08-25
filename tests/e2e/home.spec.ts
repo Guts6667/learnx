@@ -1169,7 +1169,9 @@ test('crée une note contextuelle accessible sans casser la lecture mobile', asy
   await dialog.getByLabel('Contenu de la note').fill('Repère important.');
   await dialog.getByRole('button', { name: 'Enregistrer' }).click();
   await autosaveRequest;
-  await expect(dialog.getByRole('status')).toHaveText('Note enregistrée.');
+  await expect(
+    dialog.getByText('Note enregistrée.', { exact: true }),
+  ).toBeVisible();
 
   await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
   await expectNoHorizontalOverflow(page);

@@ -204,6 +204,10 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
             code: 'PRICING_QUOTE_CONFLICT',
             status: 409,
           },
+          FINANCIAL_RECONCILIATION_REQUIRED: {
+            code: 'AI_CORRECTION_UNAVAILABLE',
+            status: 503,
+          },
           QUOTE_NOT_FOUND: { code: 'RESOURCE_NOT_FOUND', status: 404 },
         };
         const mapped: { code: ApiErrorCode; status: 409 | 404 | 503 } = mapping[

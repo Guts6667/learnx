@@ -62,7 +62,7 @@ cette valeur n'est pas liée par identifiant à la requête et ne doit donc pas
 être présentée comme son coût exact. Le smoke reste un incident de coût non
 réconcilié, jamais un coût nul.
 
-## Correctif préparé
+## Correctif déployé et durcissement complémentaire
 
 - migration additive autorisant un résultat formatif terminal sans réactiver
   PASS/FAIL ;
@@ -84,10 +84,41 @@ réservation, puis annulé intégralement la transaction : `verified=true`,
 `financialLinksVerified=true`, `rolledBack=true`. Digest SHA-256 de la migration :
 `1ef23ea0360f86871046ee51a9d6e9eb2d7b944997f26d2a545d2eb5dbdde042`.
 
+Le correctif a ensuite été livré sur `origin/dev` par le commit `5933c142`
+et déployé sous `dpl_Biu3LTSztGb2dbdkqEFDt9gNb6MR`. Le déploiement est
+`Ready` et alimente les alias preview `dev.learn-x.app` et
+`learnx-git-dev-guts6667s-projects.vercel.app`.
+
+### QA sans appel fournisseur après déploiement
+
+- `deployment:check` passe sur la preview ; landing, journal de recherche,
+  manifeste, service worker et routes d'authentification publiques répondent ;
+- la session pilote authentifiée retrouve l'exercice et le devis : estimation
+  `3` crédits, plafond `6` crédits, contrat
+  `v4-writing-framework-selection-fr@1.0.0` ;
+- l'administration affiche `CONFIGURED_CLOSED`, l'identité
+  `learnx-french-text-correction-v3-1`, `0` correction persistée et `0`
+  tentative au coût inconnu après nettoyage de l'incident ;
+- une confirmation effectuée coupe-circuit fermé renvoie
+  `AI correction is not configured on this deployment.` sans réserver ni
+  débiter : le compte pilote reste à `6` crédits offerts et `0` acheté ;
+- matrice locale : lint, typecheck, build et `890` tests unitaires verts ;
+  E2E : `69` réussis, `15` non applicables, `0` échec sur Chromium desktop,
+  mobile, tablette et WebKit mobile.
+
+Le diagnostic du smoke a aussi révélé une frontière d'idempotence à fermer
+avant toute nouvelle dépense. Le durcissement complémentaire persiste donc un
+`CALL_INTENT` local avant chaque futur dispatch, conserve chaque outcome dans
+une ligne de tentative, refuse qu'un coût inconnu soit reconstruit comme zéro,
+et consulte l'état réel de la réservation avant tout rejeu. Si la correction
+est persistée mais le règlement encore `RESERVED`, la relance termine seulement
+le règlement idempotent sans rappeler le fournisseur. Tout autre désaccord
+financier devient `RECONCILIATION_REQUIRED` et bloque un nouvel appel.
+
 ## Gate restant
 
-1. déployer le code correctif sur la preview fermée ;
-2. vérifier le préflight `CONFIGURED_CLOSED` et la réconciliation du ledger à
+1. valider puis déployer le durcissement d'idempotence sur la preview fermée ;
+2. répéter le préflight `CONFIGURED_CLOSED` et les contrôles authentifiés à
    coût nul ;
 3. obtenir une nouvelle autorisation propriétaire distincte avant tout nouveau
    workflow facturable ;

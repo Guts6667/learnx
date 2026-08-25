@@ -2,6 +2,7 @@ import { Prisma, type PrismaClient } from '../../../generated/prisma/client.js';
 
 import type {
   AcceptedQuoteSnapshot,
+  CorrectionPersistencePort,
   OrchestratedCorrectionResult,
   RuntimeCorrectionAttempt,
 } from './correction-orchestration';
@@ -68,61 +69,57 @@ export class PrismaCorrectionOrchestrationPorts {
     markConsumed: async (): Promise<void> => {},
   };
 
-  public readonly corrections = {
-    findByQuote: async (input: {
-      userId: string;
-      requestFingerprint: string;
-    }): Promise<OrchestratedCorrectionResult | null> => {
-      const correction = await this.prisma.aiCorrection.findFirst({
-        where: {
-          requestFingerprint: input.requestFingerprint,
-          userId: input.userId,
-        },
-      });
-      if (!correction || correction.status === 'RESERVED') {
-        return null;
+  public readonly corrections: CorrectionPersistencePort = {
+    begin: async (input): Promise<{
+      correctionId: string;
+      created: boolean;
+    }> => {
+      try {
+        const created = await this.prisma.aiCorrection.create({
+          data: {
+            contractSnapshot: input.quote.contract as object,
+            creditReservationId: input.reservationId,
+            exerciseSubmissionId: input.quote.target.id,
+            idempotencyKey: `quote:${input.quote.quoteId}`,
+            method: 'AI',
+            modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+            modelRole: 'CORRECTION_PRIMARY',
+            pipelineKind: 'SINGLE_MODEL',
+            pricingQuoteId: input.quote.quoteId,
+            promptSnapshot: {},
+            promptVersion: input.quote.promptVersion,
+            provider: PROMOTED_CORRECTION_IDENTITY.provider,
+            requestFingerprint: input.quote.requestFingerprint,
+            startedAt: new Date(),
+            status: 'RESERVED',
+            submissionSnapshot: { text: input.quote.submissionText },
+            userId: input.userId,
+          },
+        });
+        return { correctionId: created.id, created: true };
+      } catch (error) {
+        const existing = await this.prisma.aiCorrection.findFirst({
+          select: { id: true },
+          where: {
+            requestFingerprint: input.quote.requestFingerprint,
+            userId: input.userId,
+          },
+        });
+        if (existing) {
+          return { correctionId: existing.id, created: false };
+        }
+        throw error;
       }
-      const structured = (correction.structuredResult ?? {}) as {
-        correction?: OrchestratedCorrectionResult['correction'];
-        settlement?: OrchestratedCorrectionResult['settlement'];
-      };
-      if (!structured.correction || !structured.settlement) {
-        return null;
-      }
-      return {
-        correction: structured.correction,
-        settlement: structured.settlement,
-        replay: true,
-      };
     },
-    persist: async (input: {
-      attempts: RuntimeCorrectionAttempt[];
-      reservationId: string;
-      userId: string;
-      quote: AcceptedQuoteSnapshot;
-      result: OrchestratedCorrectionResult['correction'];
-    }): Promise<{ id: string }> => {
-      const created = await this.prisma.aiCorrection.create({
+    finalize: async (input): Promise<void> => {
+      await this.prisma.aiCorrection.update({
         data: {
-          contractSnapshot: input.quote.contract as object,
-          creditReservationId: input.reservationId,
-          exerciseSubmissionId: input.quote.target.id,
           completedAt: new Date(),
-          idempotencyKey: `quote:${input.quote.quoteId}`,
-          method: 'AI',
-          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
-          modelRole: 'CORRECTION_PRIMARY',
-          provider: PROMOTED_CORRECTION_IDENTITY.provider,
-          promptSnapshot: {},
-          promptVersion: input.quote.promptVersion,
           indicativeScore: input.result.indicativeScore,
-          pipelineKind: 'SINGLE_MODEL',
-          pricingQuoteId: input.quote.quoteId,
-          requestFingerprint: input.quote.requestFingerprint,
           status:
             input.result.status === 'COMPLETED' ? 'COMPLETED' : 'PROVISIONAL',
           structuredResult: {
-            correction: input.result,
+            correction: { ...input.result, id: input.correctionId },
             settlement: {
               releasedCredits: (
                 input.quote.maximumReservedCredits -
@@ -132,53 +129,143 @@ export class PrismaCorrectionOrchestrationPorts {
               settledCredits: input.quote.estimatedCredits.toString(),
             },
           },
-          submissionSnapshot: { text: input.quote.submissionText },
-          attempts: {
-            create: input.attempts.map((attempt) => ({
-              completedAt: new Date(),
-              completionTokens: attempt.visibleOutputTokens,
-              costUsd: attempt.actualCostUsd,
-              costConfirmedAt:
-                attempt.actualCostUsd === undefined ? undefined : new Date(),
-              costSource:
-                attempt.actualCostUsd === undefined ? undefined : 'ACTUAL',
-              dispatchStatus:
-                attempt.providerRequestId === undefined
-                  ? undefined
-                  : 'CONFIRMED',
-              errorCode: attempt.errorCode,
-              generationId: attempt.providerRequestId,
-              latencyMs: attempt.latencyMs,
-              modelId:
-                attempt.modelSnapshot ?? PROMOTED_CORRECTION_IDENTITY.modelId,
-              modelRole: 'CORRECTION_PRIMARY',
-              promptTokens: attempt.inputTokens,
-              provider:
-                attempt.providerRoute ?? PROMOTED_CORRECTION_IDENTITY.provider,
-              retryable: false,
-              sequence: attempt.sequence,
-              status: attempt.status,
-              structuredResult:
-                attempt.status === 'SUCCEEDED' && attempt.output !== undefined
-                  ? (attempt.output as Prisma.InputJsonValue)
-                  : undefined,
-              rawOutput:
-                attempt.status === 'FAILED' && attempt.output !== undefined
-                  ? (attempt.output as Prisma.InputJsonValue)
-                  : undefined,
-              totalTokens:
-                attempt.inputTokens === undefined ||
-                attempt.visibleOutputTokens === undefined
-                  ? undefined
-                  : attempt.inputTokens +
-                    attempt.visibleOutputTokens +
-                    (attempt.reasoningTokens ?? 0),
-            })),
+        },
+        where: { id: input.correctionId },
+      });
+    },
+    findByQuote: async (input: {
+      userId: string;
+      requestFingerprint: string;
+    }) => {
+      const correction = await this.prisma.aiCorrection.findFirst({
+        include: {
+          creditReservation: {
+            select: { id: true, settledAmount: true, status: true },
           },
+        },
+        where: {
+          requestFingerprint: input.requestFingerprint,
           userId: input.userId,
         },
       });
-      return { id: created.id };
+      if (!correction) {
+        return null;
+      }
+      if (
+        correction.status === 'RESERVED' ||
+        correction.status === 'PROCESSING' ||
+        correction.status === 'PROCESSING_PRIMARY' ||
+        correction.status === 'VERIFYING'
+      ) {
+        return { state: 'IN_PROGRESS' } as const;
+      }
+      if (correction.status === 'RECONCILIATION_REQUIRED') {
+        return { state: 'RECONCILIATION_REQUIRED' } as const;
+      }
+      const structured = (correction.structuredResult ?? {}) as {
+        correction?: OrchestratedCorrectionResult['correction'];
+        settlement?: OrchestratedCorrectionResult['settlement'];
+      };
+      if (
+        !structured.correction ||
+        !structured.settlement ||
+        !correction.creditReservation
+      ) {
+        return { state: 'RECONCILIATION_REQUIRED' } as const;
+      }
+      const result: OrchestratedCorrectionResult = {
+        correction: structured.correction,
+        settlement: structured.settlement,
+        replay: true,
+      };
+      if (correction.creditReservation.status === 'RESERVED') {
+        return {
+          reservationId: correction.creditReservation.id,
+          result,
+          state: 'READY_TO_SETTLE',
+        } as const;
+      }
+      if (
+        correction.creditReservation.status === 'SETTLED' &&
+        correction.creditReservation.settledAmount?.toString() ===
+          structured.settlement.settledCredits
+      ) {
+        return { result, state: 'READY' } as const;
+      }
+      return { state: 'RECONCILIATION_REQUIRED' } as const;
+    },
+    markReconciliationRequired: async (input): Promise<void> => {
+      await this.prisma.aiCorrection.update({
+        data: { status: 'RECONCILIATION_REQUIRED' },
+        where: { id: input.correctionId },
+      });
+    },
+    recordAttemptIntent: async (input): Promise<void> => {
+      await this.prisma.aiCorrectionAttempt.create({
+        data: {
+          correctionId: input.correctionId,
+          dispatchStatus: 'CALL_INTENT',
+          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+          modelRole: 'CORRECTION_PRIMARY',
+          provider: PROMOTED_CORRECTION_IDENTITY.provider,
+          providerIdempotencyKey: `correction:${input.correctionId}:attempt:${input.sequence}`,
+          requestManifest: {
+            modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+            provider: PROMOTED_CORRECTION_IDENTITY.provider,
+            sequence: input.sequence,
+          },
+          retryable: false,
+          sequence: input.sequence,
+          status: 'PROCESSING',
+        },
+      });
+    },
+    recordAttemptOutcome: async (input): Promise<void> => {
+      const attempt: RuntimeCorrectionAttempt = input.attempt;
+      await this.prisma.aiCorrectionAttempt.update({
+        data: {
+          completedAt: new Date(),
+          completionTokens: attempt.visibleOutputTokens,
+          costConfirmedAt:
+            attempt.actualCostUsd === undefined ? undefined : new Date(),
+          costSource:
+            attempt.actualCostUsd === undefined ? undefined : 'ACTUAL',
+          costUsd: attempt.actualCostUsd,
+          dispatchStatus:
+            attempt.providerRequestId === undefined ? 'ORPHANED' : 'CONFIRMED',
+          errorCode: attempt.errorCode,
+          generationId: attempt.providerRequestId,
+          latencyMs: attempt.latencyMs,
+          modelId:
+            attempt.modelSnapshot ?? PROMOTED_CORRECTION_IDENTITY.modelId,
+          promptTokens: attempt.inputTokens,
+          provider:
+            attempt.providerRoute ?? PROMOTED_CORRECTION_IDENTITY.provider,
+          rawOutput:
+            attempt.status === 'FAILED' && attempt.output !== undefined
+              ? (attempt.output as Prisma.InputJsonValue)
+              : Prisma.JsonNull,
+          reasoningTokens: attempt.reasoningTokens,
+          status: attempt.status,
+          structuredResult:
+            attempt.status === 'SUCCEEDED' && attempt.output !== undefined
+              ? (attempt.output as Prisma.InputJsonValue)
+              : Prisma.JsonNull,
+          totalTokens:
+            attempt.inputTokens === undefined ||
+            attempt.visibleOutputTokens === undefined
+              ? undefined
+              : attempt.inputTokens +
+                attempt.visibleOutputTokens +
+                (attempt.reasoningTokens ?? 0),
+        },
+        where: {
+          correctionId_sequence: {
+            correctionId: input.correctionId,
+            sequence: attempt.sequence,
+          },
+        },
+      });
     },
   };
 }

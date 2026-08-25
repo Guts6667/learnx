@@ -42,6 +42,7 @@ export type CorrectionOrchestrationErrorCode =
   | 'QUOTE_NOT_ACTIVE'
   | 'QUOTE_EXPIRED'
   | 'QUOTE_ALREADY_CONSUMED'
+  | 'FINANCIAL_RECONCILIATION_REQUIRED'
   | 'QUOTE_INCOMPATIBLE'
   | 'INSUFFICIENT_CREDITS';
 
@@ -128,6 +129,45 @@ export interface RuntimeCorrectionAttempt {
   visibleOutputTokens?: number;
 }
 
+export type PersistedCorrectionLookup =
+  | {
+      state: 'READY';
+      result: OrchestratedCorrectionResult;
+    }
+  | {
+      state: 'READY_TO_SETTLE';
+      reservationId: string;
+      result: OrchestratedCorrectionResult;
+    }
+  | { state: 'IN_PROGRESS' }
+  | { state: 'RECONCILIATION_REQUIRED' };
+
+export interface CorrectionPersistencePort {
+  begin(input: {
+    reservationId: string;
+    userId: string;
+    quote: AcceptedQuoteSnapshot;
+  }): Promise<{ correctionId: string; created: boolean }>;
+  finalize(input: {
+    correctionId: string;
+    quote: AcceptedQuoteSnapshot;
+    result: OrchestratedCorrectionResult['correction'];
+  }): Promise<void>;
+  findByQuote(input: {
+    userId: string;
+    requestFingerprint: string;
+  }): Promise<PersistedCorrectionLookup | null>;
+  markReconciliationRequired(input: { correctionId: string }): Promise<void>;
+  recordAttemptIntent(input: {
+    correctionId: string;
+    sequence: number;
+  }): Promise<void>;
+  recordAttemptOutcome(input: {
+    attempt: RuntimeCorrectionAttempt;
+    correctionId: string;
+  }): Promise<void>;
+}
+
 export interface OrchestratedCorrectionResult {
   correction: {
     id: string;
@@ -147,7 +187,7 @@ export interface OrchestratedCorrectionResult {
     overallFeedback: string | null;
     indicativeScore: number | null;
     secondPassRequired: boolean;
-    modelUsageCostUsd: number;
+    modelUsageCostUsd: number | null;
     monitoringSignals: CorrectionMonitoringSignal[];
   };
   settlement: {
@@ -215,19 +255,7 @@ export class CorrectionOrchestrationService {
       markConsumed(input: { quoteId: string }): Promise<void>;
     },
     private readonly credits: CreditSettlementPort,
-    private readonly corrections: {
-      findByQuote(input: {
-        userId: string;
-        requestFingerprint: string;
-      }): Promise<OrchestratedCorrectionResult | null>;
-      persist(input: {
-        attempts: RuntimeCorrectionAttempt[];
-        reservationId: string;
-        userId: string;
-        quote: AcceptedQuoteSnapshot;
-        result: OrchestratedCorrectionResult['correction'];
-      }): Promise<{ id: string }>;
-    },
+    private readonly corrections: CorrectionPersistencePort,
     private readonly transport: CorrectionTransportPort,
     private readonly options: {
       apiKey: string;
@@ -280,7 +308,23 @@ export class CorrectionOrchestrationService {
       userId: input.userId,
     });
     if (replayed) {
-      return replayed;
+      if (replayed.state === 'READY') {
+        return replayed.result;
+      }
+      if (replayed.state === 'READY_TO_SETTLE') {
+        await this.settleFullQuote({
+          quote,
+          reservationId: replayed.reservationId,
+          userId: input.userId,
+        });
+        await this.quotes.markConsumed({ quoteId: quote.quoteId });
+        return { ...replayed.result, replay: true };
+      }
+      throw new CorrectionOrchestrationError(
+        replayed.state === 'IN_PROGRESS'
+          ? 'QUOTE_ALREADY_CONSUMED'
+          : 'FINANCIAL_RECONCILIATION_REQUIRED',
+      );
     }
 
     let reservationId: string;
@@ -302,23 +346,60 @@ export class CorrectionOrchestrationService {
     // est « indisponible — resoumettre ». Une erreur d'infrastructure
     // inattendue remonte sans règlement : la réservation est libérée
     // immédiatement avant de rendre l'erreur.
+    let correctionId: string;
+    try {
+      const started = await this.corrections.begin({
+        quote,
+        reservationId,
+        userId: input.userId,
+      });
+      if (!started.created) {
+        throw new CorrectionOrchestrationError('QUOTE_ALREADY_CONSUMED');
+      }
+      correctionId = started.correctionId;
+    } catch (error) {
+      if (
+        error instanceof CorrectionOrchestrationError &&
+        error.code === 'QUOTE_ALREADY_CONSUMED'
+      ) {
+        throw error;
+      }
+      try {
+        await this.credits.release({ reservationId, userId: input.userId });
+      } catch (releaseError) {
+        throw new AggregateError(
+          [error, releaseError],
+          'AI_CORRECTION_START_FAILED_AND_RESERVATION_RELEASE_FAILED',
+          { cause: releaseError },
+        );
+      }
+      throw error;
+    }
+
     let execution: Awaited<
       ReturnType<CorrectionOrchestrationService['executeCorrection']>
     >;
-    let persisted: { id: string };
     try {
-      execution = await this.executeCorrection({ contract, quote });
-      persisted = await this.corrections.persist({
-        attempts: execution.attempts,
+      execution = await this.executeCorrection({
+        contract,
+        correctionId,
         quote,
-        reservationId,
+      });
+      await this.corrections.finalize({
+        correctionId,
+        quote,
         result: execution.correction,
-        userId: input.userId,
       });
     } catch (error) {
       // A transport/runtime or persistence incident is not a delivered
       // correction. Release the quote ceiling immediately instead of keeping
       // the user's allocation unavailable until the reservation TTL elapses.
+      let reconciliationError: unknown;
+      try {
+        await this.corrections.markReconciliationRequired({ correctionId });
+      } catch (markError) {
+        reconciliationError = markError;
+      }
       try {
         await this.credits.release({
           reservationId,
@@ -326,14 +407,23 @@ export class CorrectionOrchestrationService {
         });
       } catch (releaseError) {
         throw new AggregateError(
-          [error, releaseError],
+          [error, reconciliationError, releaseError].filter(
+            (candidate) => candidate !== undefined,
+          ),
           'AI_CORRECTION_FAILED_AND_RESERVATION_RELEASE_FAILED',
           { cause: releaseError },
         );
       }
+      if (reconciliationError !== undefined) {
+        throw new AggregateError(
+          [error, reconciliationError],
+          'AI_CORRECTION_FAILED_AND_RECONCILIATION_MARK_FAILED',
+          { cause: error },
+        );
+      }
       throw error;
     }
-    const correction = { ...execution.correction, id: persisted.id };
+    const correction = { ...execution.correction, id: correctionId };
     await this.settleFullQuote({ quote, reservationId, userId: input.userId });
     await this.quotes.markConsumed({ quoteId: quote.quoteId });
     return this.asResult({ correction, quote, replay: false });
@@ -374,6 +464,7 @@ export class CorrectionOrchestrationService {
 
   private async executeCorrection(input: {
     contract: CorrectionContract;
+    correctionId: string;
     quote: AcceptedQuoteSnapshot;
   }): Promise<{
     attempts: RuntimeCorrectionAttempt[];
@@ -390,12 +481,25 @@ export class CorrectionOrchestrationService {
     ) as Record<string, unknown>;
 
     let usageCost = 0;
+    let usageCostComplete = true;
+    const registerCost = (cost: number | undefined): void => {
+      if (cost === undefined) {
+        usageCostComplete = false;
+        return;
+      }
+      usageCost += cost;
+    };
     const attempts: RuntimeCorrectionAttempt[] = [];
     for (
       let attempt = 1;
       attempt <= MAX_RUNTIME_PRIMARY_ATTEMPTS;
       attempt += 1
     ) {
+      const sequence = attempts.length + 1;
+      await this.corrections.recordAttemptIntent({
+        correctionId: input.correctionId,
+        sequence,
+      });
       let generation;
       try {
         generation = await this.transport.execute({
@@ -405,22 +509,31 @@ export class CorrectionOrchestrationService {
           modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
         });
       } catch (error) {
-        attempts.push(this.runtimeFailureSnapshot(error, attempts.length + 1));
+        const failure = this.runtimeFailureSnapshot(error, sequence);
+        registerCost(failure.actualCostUsd);
+        attempts.push(failure);
+        await this.corrections.recordAttemptOutcome({
+          attempt: failure,
+          correctionId: input.correctionId,
+        });
         continue;
       }
-      usageCost += generation.usage.actualCostUsd ?? 0;
+      registerCost(generation.usage.actualCostUsd);
       const primary = this.resolveRuntimeGeneration({
         contract: input.contract,
         output: generation.output,
         responseText: input.quote.submissionText,
       });
-      attempts.push(
-        this.runtimeAttemptSnapshot({
-          generation,
-          sequence: attempts.length + 1,
-          valid: primary !== null,
-        }),
-      );
+      const primaryAttempt = this.runtimeAttemptSnapshot({
+        generation,
+        sequence,
+        valid: primary !== null,
+      });
+      attempts.push(primaryAttempt);
+      await this.corrections.recordAttemptOutcome({
+        attempt: primaryAttempt,
+        correctionId: input.correctionId,
+      });
       if (!primary) {
         continue;
       }
@@ -439,7 +552,7 @@ export class CorrectionOrchestrationService {
             contract: input.contract,
             output: primary.output,
             unsureCriteria: primary.unsureCriteria,
-            usageCost,
+            usageCost: usageCostComplete ? usageCost : null,
           }),
         };
       }
@@ -450,6 +563,11 @@ export class CorrectionOrchestrationService {
       let second: ReturnType<
         CorrectionOrchestrationService['resolveRuntimeGeneration']
       > = null;
+      const secondSequence = attempts.length + 1;
+      await this.corrections.recordAttemptIntent({
+        correctionId: input.correctionId,
+        sequence: secondSequence,
+      });
       try {
         const secondGeneration = await this.transport.execute({
           apiKey: this.options.apiKey,
@@ -457,21 +575,30 @@ export class CorrectionOrchestrationService {
           messages,
           modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
         });
-        usageCost += secondGeneration.usage.actualCostUsd ?? 0;
+        registerCost(secondGeneration.usage.actualCostUsd);
         second = this.resolveRuntimeGeneration({
           contract: input.contract,
           output: secondGeneration.output,
           responseText: input.quote.submissionText,
         });
-        attempts.push(
-          this.runtimeAttemptSnapshot({
-            generation: secondGeneration,
-            sequence: attempts.length + 1,
-            valid: second !== null,
-          }),
-        );
+        const secondAttempt = this.runtimeAttemptSnapshot({
+          generation: secondGeneration,
+          sequence: secondSequence,
+          valid: second !== null,
+        });
+        attempts.push(secondAttempt);
+        await this.corrections.recordAttemptOutcome({
+          attempt: secondAttempt,
+          correctionId: input.correctionId,
+        });
       } catch (error) {
-        attempts.push(this.runtimeFailureSnapshot(error, attempts.length + 1));
+        const failure = this.runtimeFailureSnapshot(error, secondSequence);
+        registerCost(failure.actualCostUsd);
+        attempts.push(failure);
+        await this.corrections.recordAttemptOutcome({
+          attempt: failure,
+          correctionId: input.correctionId,
+        });
         // Aucun retry/fallback ne suit. Sans seconde passe valide, aucun
         // critère ne peut être déclaré concordant.
       }
@@ -498,7 +625,7 @@ export class CorrectionOrchestrationService {
             overallFeedback: null,
             indicativeScore: null,
             secondPassRequired: true,
-            modelUsageCostUsd: usageCost,
+            modelUsageCostUsd: usageCostComplete ? usageCost : null,
             monitoringSignals: ['SCORE_GUARD_TRIGGERED'],
           },
         };
@@ -510,7 +637,7 @@ export class CorrectionOrchestrationService {
           forceScoreGuardSecondPass: true,
           output: reconciled.output,
           unsureCriteria: reconciled.unsureCriteria,
-          usageCost,
+          usageCost: usageCostComplete ? usageCost : null,
         }),
       };
     }
@@ -525,7 +652,7 @@ export class CorrectionOrchestrationService {
         overallFeedback: null,
         indicativeScore: null,
         secondPassRequired: false,
-        modelUsageCostUsd: usageCost,
+        modelUsageCostUsd: usageCostComplete ? usageCost : null,
         monitoringSignals: [],
       },
     };
@@ -657,7 +784,7 @@ export class CorrectionOrchestrationService {
     forceScoreGuardSecondPass?: boolean;
     output: Protocol3CorrectionArtifactOutput;
     unsureCriteria: string[];
-    usageCost: number;
+    usageCost: number | null;
   }): OrchestratedCorrectionResult['correction'] {
     const deliveredAll = input.unsureCriteria.length === 0;
     const score = deliveredAll

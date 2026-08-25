@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { AuthEnvironment } from '../_lib/auth';
 import { createCorrectionsApp, isPromotedCorrectionConfiguration } from './app';
 import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity';
+import { CorrectionOrchestrationError } from '../../corrections/correction-orchestration';
 
 const userId = '11111111-1111-4111-8111-111111111111';
 const quoteId = '22222222-2222-4222-8222-222222222222';
@@ -114,6 +115,31 @@ describe('corrections API', () => {
       authentication: authentication(),
       authorization,
       resolveDefaultOrchestration: async () => null,
+    });
+
+    const response = await app.request('/api/ai-corrections', {
+      body: JSON.stringify({ quoteId }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({
+      error: { code: 'AI_CORRECTION_UNAVAILABLE' },
+    });
+  });
+
+  it('fails closed without a provider replay when finance requires reconciliation', async () => {
+    const app = createCorrectionsApp({
+      authentication: authentication(),
+      authorization,
+      orchestration: {
+        runAcceptedQuote: vi.fn(async () => {
+          throw new CorrectionOrchestrationError(
+            'FINANCIAL_RECONCILIATION_REQUIRED',
+          );
+        }),
+      },
     });
 
     const response = await app.request('/api/ai-corrections', {

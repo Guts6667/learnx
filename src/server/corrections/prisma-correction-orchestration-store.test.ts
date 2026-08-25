@@ -6,12 +6,6 @@ import type {
 } from './correction-orchestration';
 import { PrismaCorrectionOrchestrationPorts } from './prisma-correction-orchestration-store';
 
-type CapturedCreateInput = {
-  data: Record<string, unknown> & {
-    attempts: { create: Array<Record<string, unknown>> };
-  };
-};
-
 function quote(): AcceptedQuoteSnapshot {
   return {
     contract: { contractKey: 'writing-pilot' },
@@ -63,29 +57,43 @@ describe('Prisma correction orchestration store', () => {
   ] as const)(
     'persists the %s formative result as %s without a PASS/FAIL decision',
     async (runtimeStatus, databaseStatus) => {
-      const create = vi.fn(async (input: CapturedCreateInput) => {
+      const create = vi.fn(async (input: { data: Record<string, unknown> }) => {
+        void input;
+        return { id: 'correction-1' };
+      });
+      const update = vi.fn(async (input: { data: Record<string, unknown> }) => {
         void input;
         return { id: 'correction-1' };
       });
       const ports = new PrismaCorrectionOrchestrationPorts({
-        aiCorrection: { create },
+        aiCorrection: { create, update },
       } as never);
 
-      await ports.corrections.persist({
-        attempts: [],
+      await ports.corrections.begin({
         quote: quote(),
         reservationId: '49dbe27b-00a8-4f9a-ba5e-e8530e820e47',
-        result: result(runtimeStatus),
         userId: quote().userId,
       });
+      await ports.corrections.finalize({
+        correctionId: 'correction-1',
+        quote: quote(),
+        result: result(runtimeStatus),
+      });
 
-      const [call] = create.mock.calls;
-      expect(call).toBeDefined();
-      if (!call) throw new Error('AI_CORRECTION_CREATE_NOT_CALLED');
-      const data = call[0].data;
+      const [beginCall] = create.mock.calls;
+      expect(beginCall).toBeDefined();
+      if (!beginCall) throw new Error('AI_CORRECTION_CREATE_NOT_CALLED');
+      expect(beginCall[0].data).toMatchObject({
+        pipelineKind: 'SINGLE_MODEL',
+        status: 'RESERVED',
+      });
+
+      const [finalizeCall] = update.mock.calls;
+      expect(finalizeCall).toBeDefined();
+      if (!finalizeCall) throw new Error('AI_CORRECTION_UPDATE_NOT_CALLED');
+      const data = finalizeCall[0].data;
       expect(data).toMatchObject({
         indicativeScore: runtimeStatus === 'COMPLETED' ? 92 : null,
-        pipelineKind: 'SINGLE_MODEL',
         status: databaseStatus,
       });
       expect(data).not.toHaveProperty('confidence');
@@ -95,54 +103,124 @@ describe('Prisma correction orchestration store', () => {
   );
 
   it('separates validated structured output from a rejected raw output', async () => {
-    const create = vi.fn(async (input: CapturedCreateInput) => {
-      void input;
-      return { id: 'correction-1' };
-    });
+    const attemptCreate = vi.fn(
+      async (input: { data: Record<string, unknown> }) => {
+        void input;
+        return { id: 'attempt-1' };
+      },
+    );
+    const attemptUpdate = vi.fn(
+      async (input: { data: Record<string, unknown> }) => {
+        void input;
+        return { id: 'attempt-1' };
+      },
+    );
     const ports = new PrismaCorrectionOrchestrationPorts({
-      aiCorrection: { create },
+      aiCorrectionAttempt: { create: attemptCreate, update: attemptUpdate },
     } as never);
 
-    await ports.corrections.persist({
-      attempts: [
-        {
-          actualCostUsd: 0.012,
-          inputTokens: 100,
-          modelSnapshot: 'anthropic/claude-4.6-sonnet-20260217',
-          output: { valid: true },
-          providerRequestId: 'gen-valid',
-          providerRoute: 'Anthropic',
-          reasoningTokens: 0,
-          sequence: 1,
-          status: 'SUCCEEDED',
-          visibleOutputTokens: 50,
-        },
-        {
-          errorCode: 'MODEL_OUTPUT_INVALID',
-          output: { invalid: true },
-          sequence: 2,
-          status: 'FAILED',
-        },
-      ],
-      quote: quote(),
-      reservationId: '49dbe27b-00a8-4f9a-ba5e-e8530e820e47',
-      result: result('COMPLETED'),
-      userId: quote().userId,
+    await ports.corrections.recordAttemptIntent({
+      correctionId: 'correction-1',
+      sequence: 1,
+    });
+    await ports.corrections.recordAttemptOutcome({
+      attempt: {
+        actualCostUsd: 0.012,
+        inputTokens: 100,
+        modelSnapshot: 'anthropic/claude-4.6-sonnet-20260217',
+        output: { valid: true },
+        providerRequestId: 'gen-valid',
+        providerRoute: 'Anthropic',
+        reasoningTokens: 0,
+        sequence: 1,
+        status: 'SUCCEEDED',
+        visibleOutputTokens: 50,
+      },
+      correctionId: 'correction-1',
+    });
+    await ports.corrections.recordAttemptIntent({
+      correctionId: 'correction-1',
+      sequence: 2,
+    });
+    await ports.corrections.recordAttemptOutcome({
+      attempt: {
+        errorCode: 'MODEL_OUTPUT_INVALID',
+        output: { invalid: true },
+        sequence: 2,
+        status: 'FAILED',
+      },
+      correctionId: 'correction-1',
     });
 
-    const [call] = create.mock.calls;
-    expect(call).toBeDefined();
-    if (!call) throw new Error('AI_CORRECTION_CREATE_NOT_CALLED');
-    const data = call[0].data;
-    expect(data.attempts.create[0]).toMatchObject({
+    expect(attemptCreate).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        data: expect.objectContaining({ dispatchStatus: 'CALL_INTENT' }),
+      }),
+    );
+    const firstOutcome = attemptUpdate.mock.calls[0]?.[0].data;
+    const secondOutcome = attemptUpdate.mock.calls[1]?.[0].data;
+    expect(firstOutcome).toMatchObject({
       costSource: 'ACTUAL',
       dispatchStatus: 'CONFIRMED',
-      rawOutput: undefined,
       structuredResult: { valid: true },
     });
-    expect(data.attempts.create[1]).toMatchObject({
+    expect(secondOutcome).toMatchObject({
+      dispatchStatus: 'ORPHANED',
       rawOutput: { invalid: true },
-      structuredResult: undefined,
     });
   });
+
+  it.each([
+    {
+      expected: 'READY',
+      reservation: {
+        id: 'reservation-1',
+        settledAmount: 3n,
+        status: 'SETTLED',
+      },
+    },
+    {
+      expected: 'READY_TO_SETTLE',
+      reservation: {
+        id: 'reservation-1',
+        settledAmount: null,
+        status: 'RESERVED',
+      },
+    },
+    {
+      expected: 'RECONCILIATION_REQUIRED',
+      reservation: {
+        id: 'reservation-1',
+        settledAmount: null,
+        status: 'RELEASED',
+      },
+    },
+  ] as const)(
+    'derives replay state $expected from the authoritative reservation',
+    async ({ expected, reservation }) => {
+      const findFirst = vi.fn(async () => ({
+        creditReservation: reservation,
+        status: 'COMPLETED',
+        structuredResult: {
+          correction: { ...result('COMPLETED'), id: 'correction-1' },
+          settlement: {
+            releasedCredits: '3',
+            reservedCredits: '6',
+            settledCredits: '3',
+          },
+        },
+      }));
+      const ports = new PrismaCorrectionOrchestrationPorts({
+        aiCorrection: { findFirst },
+      } as never);
+
+      const replay = await ports.corrections.findByQuote({
+        requestFingerprint: quote().requestFingerprint,
+        userId: quote().userId,
+      });
+
+      expect(replay).toMatchObject({ state: expected });
+    },
+  );
 });

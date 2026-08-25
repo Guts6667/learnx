@@ -8,6 +8,8 @@ import {
   CorrectionOrchestrationService,
   type AcceptedQuoteSnapshot,
   type CorrectionTransportPort,
+  type PersistedCorrectionLookup,
+  type RuntimeCorrectionAttempt,
 } from './correction-orchestration';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
 
@@ -205,16 +207,29 @@ interface Harness {
     release: (input: unknown) => Promise<void>;
   };
   corrections: {
+    attemptIntents: unknown[];
+    attemptOutcomes: RuntimeCorrectionAttempt[];
+    begin: (
+      input: unknown,
+    ) => Promise<{ correctionId: string; created: boolean }>;
+    finalize: (input: unknown) => Promise<void>;
     persisted: unknown[];
     findByQuote: (input: unknown) => Promise<unknown>;
-    persist: (input: unknown) => Promise<{ id: string }>;
+    markReconciliationRequired: (input: unknown) => Promise<void>;
+    recordAttemptIntent: (input: unknown) => Promise<void>;
+    recordAttemptOutcome: (input: {
+      attempt: RuntimeCorrectionAttempt;
+      correctionId: string;
+    }) => Promise<void>;
   };
   transportOutputs: unknown[];
 }
 
 function buildHarness(options: {
+  beforeTransport?: () => void;
   transport: () => unknown;
   replay?: unknown;
+  replayLookup?: PersistedCorrectionLookup;
 }): Harness {
   const credits = {
     calls: [] as string[],
@@ -230,21 +245,42 @@ function buildHarness(options: {
     }),
   };
   const corrections = {
+    attemptIntents: [] as unknown[],
+    attemptOutcomes: [] as RuntimeCorrectionAttempt[],
+    begin: vi.fn(async () => ({ correctionId: 'correction-1', created: true })),
+    finalize: vi.fn(async (input: unknown) => {
+      corrections.persisted.push({
+        ...(input as Record<string, unknown>),
+        attempts: [...corrections.attemptOutcomes],
+      });
+    }),
     persisted: [] as unknown[],
     findByQuote: vi.fn(
       async () =>
-        (options.replay ?? null) as
-          | import('./correction-orchestration').OrchestratedCorrectionResult
-          | null,
+        options.replayLookup ??
+        (options.replay
+          ? {
+              result:
+                options.replay as import('./correction-orchestration').OrchestratedCorrectionResult,
+              state: 'READY' as const,
+            }
+          : null),
     ),
-    persist: vi.fn(async (input: unknown) => {
-      corrections.persisted.push(input);
-      return { id: `correction-${corrections.persisted.length}` };
+    markReconciliationRequired: vi.fn(async () => undefined),
+    recordAttemptIntent: vi.fn(async (input: unknown) => {
+      corrections.attemptIntents.push(input);
+    }),
+    recordAttemptOutcome: vi.fn(async (input: {
+      attempt: RuntimeCorrectionAttempt;
+      correctionId: string;
+    }) => {
+      corrections.attemptOutcomes.push(input.attempt);
     }),
   };
   const transportOutputs: unknown[] = [];
   const transport: CorrectionTransportPort = {
     execute: vi.fn(async () => {
+      options.beforeTransport?.();
       transportOutputs.push(options.transport());
       return {
         latencyMs: 1200,
@@ -475,6 +511,33 @@ describe('correction orchestration (V4-009)', () => {
     });
   });
 
+  it('keeps an unknown provider cost explicit instead of reconstructing it as zero', async () => {
+    const harness = buildHarness({
+      transport: () => {
+        throw new Error('NETWORK_OUTCOME_UNKNOWN');
+      },
+    });
+
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(result.correction).toMatchObject({
+      modelUsageCostUsd: null,
+      status: 'FAILED',
+    });
+    expect(harness.corrections.attemptOutcomes).toEqual([
+      expect.objectContaining({
+        errorCode: 'NETWORK_OUTCOME_UNKNOWN',
+        status: 'FAILED',
+      }),
+    ]);
+    expect(harness.corrections.attemptOutcomes[0]).not.toHaveProperty(
+      'actualCostUsd',
+    );
+  });
+
   it('replays an already orchestrated quote without touching credits again', async () => {
     const replay = {
       correction: {
@@ -504,6 +567,64 @@ describe('correction orchestration (V4-009)', () => {
     expect(result).toEqual(replay);
     expect(harness.credits.calls).toEqual([]);
     expect(harness.corrections.persisted).toHaveLength(0);
+  });
+
+  it('completes a pending settlement on replay without calling the provider again', async () => {
+    const replay = {
+      correction: {
+        criteria: [],
+        id: 'correction-existing',
+        indicativeScore: 80,
+        modelUsageCostUsd: 0.01,
+        monitoringSignals: [],
+        overallFeedback: null,
+        secondPassRequired: false,
+        status: 'COMPLETED' as const,
+        unsureCriteria: [],
+        unsureCriterionDetails: [],
+      },
+      replay: true,
+      settlement: {
+        releasedCredits: '6',
+        reservedCredits: '18',
+        settledCredits: '12',
+      },
+    };
+    const harness = buildHarness({
+      replayLookup: {
+        reservationId: 'reservation-1',
+        result: replay,
+        state: 'READY_TO_SETTLE',
+      },
+      transport: strictOutput,
+    });
+
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(result).toEqual(replay);
+    expect(harness.credits.calls).toEqual(['settle']);
+    expect(harness.transportOutputs).toEqual([]);
+  });
+
+  it('blocks a replay whose financial state requires reconciliation', async () => {
+    const harness = buildHarness({
+      replayLookup: { state: 'RECONCILIATION_REQUIRED' },
+      transport: strictOutput,
+    });
+
+    await expect(
+      harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      }),
+    ).rejects.toMatchObject({
+      code: 'FINANCIAL_RECONCILIATION_REQUIRED',
+    });
+    expect(harness.credits.calls).toEqual([]);
+    expect(harness.transportOutputs).toEqual([]);
   });
 
   it('refuses an expired quote before any reservation', async () => {
@@ -582,7 +703,7 @@ describe('correction orchestration (V4-009)', () => {
 
   it('releases the reservation immediately when persistence fails', async () => {
     const harness = buildHarness({ transport: strictOutput });
-    harness.corrections.persist = vi.fn(async () => {
+    harness.corrections.finalize = vi.fn(async () => {
       throw new Error('PERSISTENCE_FAILED');
     });
 
@@ -595,6 +716,31 @@ describe('correction orchestration (V4-009)', () => {
 
     expect(harness.transportOutputs).toHaveLength(1);
     expect(harness.credits.calls).toEqual(['reserve', 'release']);
+  });
+
+  it('persists call intent before provider dispatch and leaves a failed settlement replayable', async () => {
+    const harness: Harness = buildHarness({
+      beforeTransport: () => {
+        expect(harness.corrections.attemptIntents).toHaveLength(1);
+      },
+      transport: strictOutput,
+    });
+    harness.credits.settle = vi.fn(async () => {
+      harness.credits.calls.push('settle');
+      throw new Error('SETTLEMENT_FAILED');
+    });
+
+    await expect(
+      harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      }),
+    ).rejects.toThrow('SETTLEMENT_FAILED');
+
+    expect(
+      harness.corrections.markReconciliationRequired,
+    ).not.toHaveBeenCalled();
+    expect(harness.credits.calls).toEqual(['reserve', 'settle']);
   });
 
   it('parses the runtime contract snapshot through the published contract schema', () => {
