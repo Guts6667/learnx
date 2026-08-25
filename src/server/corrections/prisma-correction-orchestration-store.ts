@@ -241,6 +241,7 @@ export class PrismaCorrectionOrchestrationPorts {
           promptTokens: attempt.inputTokens,
           provider:
             attempt.providerRoute ?? PROMOTED_CORRECTION_IDENTITY.provider,
+          providerRequestId: attempt.providerRequestId,
           rawOutput:
             attempt.status === 'FAILED' && attempt.output !== undefined
               ? (attempt.output as Prisma.InputJsonValue)

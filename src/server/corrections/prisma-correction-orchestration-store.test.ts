@@ -163,6 +163,8 @@ describe('Prisma correction orchestration store', () => {
     expect(firstOutcome).toMatchObject({
       costSource: 'ACTUAL',
       dispatchStatus: 'CONFIRMED',
+      generationId: 'gen-valid',
+      providerRequestId: 'gen-valid',
       structuredResult: { valid: true },
     });
     expect(secondOutcome).toMatchObject({
