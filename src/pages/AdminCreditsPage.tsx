@@ -224,6 +224,7 @@ function AdjustmentDrawer({
                   reason.trim().length < 8 ||
                   (operation === 'REDUCE' && !compensatesEntryId)
                 }
+                type="submit"
               >
                 {t('admin.credits.review')}
               </Button>
