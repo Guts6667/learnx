@@ -2,10 +2,7 @@ import type { MiddlewareHandler } from 'hono';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { AuthEnvironment } from '../_lib/auth';
-import {
-  createCorrectionsApp,
-  isPromotedCorrectionConfiguration,
-} from './app';
+import { createCorrectionsApp, isPromotedCorrectionConfiguration } from './app';
 import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity';
 
 const userId = '11111111-1111-4111-8111-111111111111';
@@ -150,13 +147,40 @@ describe('corrections API', () => {
       monitoring,
     });
 
-    const response = await app.request(
-      '/api/admin/ai-corrections/monitoring',
-    );
+    const response = await app.request('/api/admin/ai-corrections/monitoring');
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
       monitoring: { totalCorrections: 3 },
+    });
+  });
+
+  it('expose un préflight de release sans secret ni appel fournisseur', async () => {
+    const app = createCorrectionsApp({
+      authentication: authentication('ADMIN'),
+      authorization,
+      preflight: {
+        apiKeyPresent: true,
+        deploymentEnvironment: 'preview',
+        identityMatches: true,
+        killSwitch: true,
+        promotedBenchmarkId: 'learnx-french-text-correction-v3-1',
+        state: 'CONFIGURED_CLOSED',
+      },
+    });
+
+    const response = await app.request('/api/admin/ai-corrections/preflight');
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      preflight: {
+        apiKeyPresent: true,
+        deploymentEnvironment: 'preview',
+        identityMatches: true,
+        killSwitch: true,
+        promotedBenchmarkId: 'learnx-french-text-correction-v3-1',
+        state: 'CONFIGURED_CLOSED',
+      },
     });
   });
 });

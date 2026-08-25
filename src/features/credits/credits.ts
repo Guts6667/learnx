@@ -73,6 +73,15 @@ export interface CorrectionMonitoringSummary {
   unknownCostAttempts: number;
 }
 
+export interface CorrectionReleasePreflight {
+  apiKeyPresent: boolean;
+  deploymentEnvironment: 'development' | 'preview' | 'production';
+  identityMatches: boolean;
+  killSwitch: boolean;
+  promotedBenchmarkId: string;
+  state: 'CONFIGURATION_BLOCKED' | 'CONFIGURED_CLOSED' | 'DISABLED' | 'READY';
+}
+
 const ownCreditsKey = ['credits', 'own'] as const;
 const adminCreditsKey = ['admin', 'credits'] as const;
 
@@ -210,6 +219,18 @@ export function useAdminCorrectionMonitoringQuery() {
   );
   return {
     data: result.data?.monitoring,
+    error: result.error,
+    isPending: result.isPending,
+  };
+}
+
+export function useAdminCorrectionPreflightQuery() {
+  const result = useObservedQuery<{ preflight: CorrectionReleasePreflight }>(
+    '/api/admin/ai-corrections/preflight',
+    [...adminCreditsKey, 'correction-preflight'],
+  );
+  return {
+    data: result.data?.preflight,
     error: result.error,
     isPending: result.isPending,
   };

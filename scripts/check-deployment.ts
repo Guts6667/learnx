@@ -15,6 +15,16 @@ const authenticatedSessionSchema = z.object({
   user: z.object({ email: z.email() }),
 });
 const programsSchema = z.object({ programs: z.array(z.unknown()) });
+const correctionPreflightSchema = z.object({
+  preflight: z.object({
+    state: z.enum([
+      'DISABLED',
+      'CONFIGURATION_BLOCKED',
+      'CONFIGURED_CLOSED',
+      'READY',
+    ]),
+  }),
+});
 
 function getDeploymentUrl(value: string | undefined): URL {
   if (!value) {
@@ -172,6 +182,30 @@ async function checkDeployment(): Promise<void> {
     }
 
     programsSchema.parse(await programsResponse.json());
+
+    const correctionPreflightResponse = await fetch(
+      new URL('/api/admin/ai-corrections/preflight', baseUrl),
+      { headers: { accept: 'application/json', cookie } },
+    );
+
+    if (!correctionPreflightResponse.ok) {
+      throw new Error(
+        `AI correction preflight returned HTTP ${correctionPreflightResponse.status}.`,
+      );
+    }
+
+    const correctionPreflight = correctionPreflightSchema.parse(
+      await correctionPreflightResponse.json(),
+    );
+    const expectedAiState = process.env.DEPLOYMENT_CHECK_AI_EXPECTED_STATE;
+    if (
+      expectedAiState &&
+      correctionPreflight.preflight.state !== expectedAiState
+    ) {
+      throw new Error(
+        `AI correction preflight expected ${expectedAiState}, received ${correctionPreflight.preflight.state}.`,
+      );
+    }
 
     const logoutResponse = await fetch(new URL('/api/auth/logout', baseUrl), {
       headers: { cookie },

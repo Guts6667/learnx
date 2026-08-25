@@ -26,6 +26,7 @@ produit bornée ; il ne transforme pas ce verdict en promotion scientifique.
 - [x] livraison par critère, score indicatif et état partiel testés ;
 - [x] UI de devis, consentement, résultat et règlement livrée ;
 - [x] monitoring coûts/incidents visible en administration ;
+- [x] état de préflight distant visible en administration sans exposer la clé ;
 - [x] surfaces Totem, landing, marque et journal de recherche alignés ;
 - [x] lint, typecheck, tests, build et matrice E2E locale verts.
 

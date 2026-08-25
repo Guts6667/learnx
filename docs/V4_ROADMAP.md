@@ -59,7 +59,7 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
    Sonnet/Anthropic et kill switch doivent être vérifiés en preview puis en
    production. Le préflight hors réseau `ai:release:check` est livré ; son
    exécution avec les variables réelles de preview reste à faire.
-4. **Preview authentifiée** : la QA locale est verte (lint, typecheck, 873
+4. **Preview authentifiée** : la QA locale est verte (lint, typecheck, 874
    tests, build, 69 scénarios Playwright réussis et 15 conditionnels ignorés).
    Il reste à valider l'environnement de preview avec ses vraies variables,
    son catalogue et un compte pilote.

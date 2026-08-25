@@ -14,6 +14,7 @@ import {
   type CreditMemberSummary,
   useAdminCreditAdjustmentMutation,
   useAdminCorrectionMonitoringQuery,
+  useAdminCorrectionPreflightQuery,
   useAdminCreditMemberQuery,
   useAdminCreditMembersQuery,
   useAdminCreditPoliciesQuery,
@@ -147,18 +148,25 @@ function AdjustmentDrawer({
                 value={amount}
               />
               <label class="ui-field">
-                <span class="ui-field__label">{t('admin.credits.operation')}</span>
+                <span class="ui-field__label">
+                  {t('admin.credits.operation')}
+                </span>
                 <select
                   class="ui-field__control"
                   onInput={(event) => {
-                    const next = event.currentTarget.value as 'GRANT' | 'REDUCE';
+                    const next = event.currentTarget.value as
+                      'GRANT' | 'REDUCE';
                     setOperation(next);
                     setCompensatesEntryId('');
                   }}
                   value={operation}
                 >
-                  <option value="GRANT">{t('admin.credits.operationGrant')}</option>
-                  <option value="REDUCE">{t('admin.credits.operationReduce')}</option>
+                  <option value="GRANT">
+                    {t('admin.credits.operationGrant')}
+                  </option>
+                  <option value="REDUCE">
+                    {t('admin.credits.operationReduce')}
+                  </option>
                 </select>
               </label>
               {operation === 'GRANT' ? (
@@ -171,14 +179,20 @@ function AdjustmentDrawer({
                 />
               ) : (
                 <label class="ui-field">
-                  <span class="ui-field__label">{t('admin.credits.compensates')}</span>
+                  <span class="ui-field__label">
+                    {t('admin.credits.compensates')}
+                  </span>
                   <select
                     class="ui-field__control"
-                    onInput={(event) => setCompensatesEntryId(event.currentTarget.value)}
+                    onInput={(event) =>
+                      setCompensatesEntryId(event.currentTarget.value)
+                    }
                     required
                     value={compensatesEntryId}
                   >
-                    <option value="">{t('admin.credits.compensatesPlaceholder')}</option>
+                    <option value="">
+                      {t('admin.credits.compensatesPlaceholder')}
+                    </option>
                     {detail.data?.history
                       .filter(
                         (entry) =>
@@ -215,24 +229,36 @@ function AdjustmentDrawer({
               </Button>
             </form>
           ) : (
-            <section aria-labelledby="credit-adjustment-summary" class="space-y-4">
+            <section
+              aria-labelledby="credit-adjustment-summary"
+              class="space-y-4"
+            >
               <h3 class="text-xl font-medium" id="credit-adjustment-summary">
                 {t('admin.credits.summary')}
               </h3>
               <dl class="credit-adjustment-summary">
                 <div>
                   <dt>{t('admin.credits.amount')}</dt>
-                  <dd>{value(operation === 'REDUCE' ? `-${amount}` : amount, locale)}</dd>
+                  <dd>
+                    {value(
+                      operation === 'REDUCE' ? `-${amount}` : amount,
+                      locale,
+                    )}
+                  </dd>
                 </div>
                 {operation === 'GRANT' ? (
                   <div>
                     <dt>{t('admin.credits.expiration')}</dt>
                     <dd>
                       {expiresAt
-                        ? formatLocalizedDate(new Date(expiresAt).toISOString(), locale, {
-                            dateStyle: 'medium',
-                            timeStyle: 'short',
-                          })
+                        ? formatLocalizedDate(
+                            new Date(expiresAt).toISOString(),
+                            locale,
+                            {
+                              dateStyle: 'medium',
+                              timeStyle: 'short',
+                            },
+                          )
                         : t('admin.credits.noExpiration')}
                     </dd>
                   </div>
@@ -246,7 +272,10 @@ function AdjustmentDrawer({
                 {t('admin.credits.summaryNotice')}
               </p>
               <div class="flex flex-wrap gap-3">
-                <Button isLoading={mutation.isPending} onClick={() => void confirm()}>
+                <Button
+                  isLoading={mutation.isPending}
+                  onClick={() => void confirm()}
+                >
                   {t('common.confirm')}
                 </Button>
                 <Button onClick={() => setStep('EDIT')} variant="ghost">
@@ -267,7 +296,10 @@ function AdjustmentDrawer({
 }
 
 export function AdminCreditsPage() {
-  useBackNavigationTarget({ href: '/admin', labelKey: 'navigation.back.admin' });
+  useBackNavigationTarget({
+    href: '/admin',
+    labelKey: 'navigation.back.admin',
+  });
   const { t } = useI18n();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -277,6 +309,7 @@ export function AdminCreditsPage() {
   const query = useAdminCreditMembersQuery({ page, pageSize: 20, search });
   const policies = useAdminCreditPoliciesQuery();
   const monitoring = useAdminCorrectionMonitoringQuery();
+  const correctionPreflight = useAdminCorrectionPreflightQuery();
   return (
     <section class="page-layout page-layout--admin page-shell space-y-6">
       <PageHeader
@@ -285,12 +318,17 @@ export function AdminCreditsPage() {
         id="admin-credits-title"
         title={t('admin.credits.title')}
       />
-      <section aria-labelledby="credit-policies-title" class="ui-status-notice space-y-2">
+      <section
+        aria-labelledby="credit-policies-title"
+        class="ui-status-notice space-y-2"
+      >
         <h2 class="font-medium" id="credit-policies-title">
           {t('admin.credits.policiesTitle')}
         </h2>
         <p class="ui-text-muted text-sm leading-6">
-          {policies.data?.allocation.some((policy) => policy.status === 'ACTIVE') ||
+          {policies.data?.allocation.some(
+            (policy) => policy.status === 'ACTIVE',
+          ) ||
           policies.data?.limits.some((policy) => policy.status === 'ACTIVE')
             ? t('admin.credits.policiesConfigured')
             : t('admin.credits.policiesInactive')}
@@ -311,6 +349,25 @@ export function AdminCreditsPage() {
             {t('admin.credits.monitoringDescription')}
           </p>
         </div>
+        {correctionPreflight.isPending ? <Skeleton class="mt-4 h-16" /> : null}
+        {correctionPreflight.error ? (
+          <div class="mt-4">
+            <ErrorState description={t('admin.credits.preflightError')} />
+          </div>
+        ) : null}
+        {correctionPreflight.data ? (
+          <div class="ui-status-notice mt-4 space-y-1" role="status">
+            <p class="font-medium">
+              {t(`admin.credits.preflight.${correctionPreflight.data.state}`)}
+            </p>
+            <p class="ui-text-muted text-sm leading-6">
+              {t('admin.credits.preflightIdentity', {
+                environment: correctionPreflight.data.deploymentEnvironment,
+                identity: correctionPreflight.data.promotedBenchmarkId,
+              })}
+            </p>
+          </div>
+        ) : null}
         {monitoring.isPending ? <Skeleton class="mt-4 h-32" /> : null}
         {monitoring.error ? (
           <div class="mt-4">
@@ -369,7 +426,9 @@ export function AdminCreditsPage() {
         </Button>
       </form>
       {query.isPending ? <Skeleton class="h-72" /> : null}
-      {query.error ? <ErrorState description={t('admin.credits.loadError')} /> : null}
+      {query.error ? (
+        <ErrorState description={t('admin.credits.loadError')} />
+      ) : null}
       {query.data?.items.length === 0 ? (
         <EmptyState
           description={t('admin.credits.emptyDescription')}
@@ -390,15 +449,26 @@ export function AdminCreditsPage() {
       ) : null}
       {query.data && query.data.totalPages > 1 ? (
         <nav aria-label={t('admin.accounts.pagination')} class="flex gap-3">
-          <Button disabled={page <= 1} onClick={() => setPage(page - 1)} variant="ghost">
+          <Button
+            disabled={page <= 1}
+            onClick={() => setPage(page - 1)}
+            variant="ghost"
+          >
             {t('admin.accounts.previous')}
           </Button>
-          <Button disabled={page >= query.data.totalPages} onClick={() => setPage(page + 1)} variant="ghost">
+          <Button
+            disabled={page >= query.data.totalPages}
+            onClick={() => setPage(page + 1)}
+            variant="ghost"
+          >
             {t('admin.accounts.next')}
           </Button>
         </nav>
       ) : null}
-      <AdjustmentDrawer member={selectedMember} onDismiss={() => setSelectedMember(null)} />
+      <AdjustmentDrawer
+        member={selectedMember}
+        onDismiss={() => setSelectedMember(null)}
+      />
     </section>
   );
 }

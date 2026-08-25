@@ -62,12 +62,12 @@ export const frenchMessages = {
   'landing.roadmap.description':
     'Les corrections assistées par IA sont prévues pour V4 et la création guidée de parcours pour V5. Elles ne sont pas encore disponibles.',
   'landing.research.eyebrow': 'Recherche & transparence',
-  'landing.research.title':
-    'Suivre nos recherches, décision après décision',
+  'landing.research.title': 'Suivre nos recherches, décision après décision',
   'landing.research.description':
     'Notre journal conserve chaque benchmark, refus et arbitrage dans un article daté. Les anciennes recherches restent consultables et le verdict scientifique est toujours distingué de la décision produit.',
   'landing.research.action': 'Explorer le journal de recherche',
-  'landing.research.latestMeta': 'Dernière publication · 24 août 2026 · Résultat',
+  'landing.research.latestMeta':
+    'Dernière publication · 24 août 2026 · Résultat',
   'landing.research.latestTitle':
     'Évaluation Writing sous protocole scellé : résultats et décision de déploiement borné',
   'landing.research.verdictLabel': 'Verdict scientifique',
@@ -293,8 +293,7 @@ export const frenchMessages = {
   'curriculum.programRestart.title': 'Recommencer ce programme',
   'curriculum.programRestart.description':
     'La progression courante repartira du début. Les notes, tentatives et soumissions resteront conservées.',
-  'curriculum.programRestart.confirmTitle':
-    'Confirmer la reprise du programme',
+  'curriculum.programRestart.confirmTitle': 'Confirmer la reprise du programme',
   'curriculum.programRestart.resetSummary':
     'Seront remis à zéro : {stages} étapes, {modules} modules, {lessons} leçons, {tasks} tâches, {resources} ressources, {concepts} notions, {quizzes} quiz réussis et {exercises} exercices.',
   'curriculum.programRestart.preservedSummary':
@@ -746,7 +745,8 @@ export const frenchMessages = {
   'admin.credits.adjustError': 'L’ajustement n’a pas pu être enregistré.',
   'admin.credits.loadError': 'La liste des crédits n’a pas pu être chargée.',
   'admin.credits.emptyTitle': 'Aucun membre',
-  'admin.credits.emptyDescription': 'Aucun compte ne correspond à cette recherche.',
+  'admin.credits.emptyDescription':
+    'Aucun compte ne correspond à cette recherche.',
   'admin.credits.policiesTitle': 'Politiques d’allocation et de limites',
   'admin.credits.policiesInactive':
     'Aucune politique active : aucun montant, ordre, renouvellement ou plafond n’est appliqué par défaut.',
@@ -767,6 +767,17 @@ export const frenchMessages = {
     'Alertes contrainte dure non reflétée dans le niveau',
   'admin.credits.monitoringGuard': 'Secondes passes déclenchées par la garde',
   'admin.credits.monitoringUnknownCost': 'Tentatives au coût inconnu',
+  'admin.credits.preflightError':
+    'L’état de préparation de la correction ne peut pas être vérifié.',
+  'admin.credits.preflight.DISABLED':
+    'Correction désactivée sur cet environnement',
+  'admin.credits.preflight.CONFIGURATION_BLOCKED':
+    'Configuration de correction incomplète ou non conforme',
+  'admin.credits.preflight.CONFIGURED_CLOSED':
+    'Correction configurée — coupe-circuit fermé',
+  'admin.credits.preflight.READY': 'Correction configurée et ouverte',
+  'admin.credits.preflightIdentity':
+    'Environnement {environment} · identité {identity}',
   'credits.eyebrow': 'Crédits LearnX',
   'credits.title': 'Mes crédits',
   'credits.description':
@@ -775,7 +786,8 @@ export const frenchMessages = {
   'credits.free': 'Crédits offerts ce mois-ci',
   'credits.freeDescription': 'Allocation offerte, distincte de vos achats.',
   'credits.purchased': 'Crédits achetés',
-  'credits.purchasedDescription': 'Ces crédits ne sont pas modifiés par un changement de rôle ou une suspension.',
+  'credits.purchasedDescription':
+    'Ces crédits ne sont pas modifiés par un changement de rôle ou une suspension.',
   'credits.total': 'Disponible au total',
   'credits.totalDescription': 'Total secondaire des deux origines.',
   'credits.reserved': 'Crédits réservés',
@@ -1108,8 +1120,7 @@ export const englishMessages = {
   'landing.roadmap.description':
     'AI-assisted corrections are planned for V4 and guided journey creation for V5. They are not available yet.',
   'landing.research.eyebrow': 'Research & transparency',
-  'landing.research.title':
-    'Follow our research, decision by decision',
+  'landing.research.title': 'Follow our research, decision by decision',
   'landing.research.description':
     'Our journal preserves each benchmark, refusal and trade-off in a dated article. Earlier research remains available, and scientific verdicts stay separate from product decisions.',
   'landing.research.action': 'Explore the research journal',
@@ -1788,19 +1799,32 @@ export const englishMessages = {
     'Hard-constraint alerts not reflected in level',
   'admin.credits.monitoringGuard': 'Second passes triggered by score guard',
   'admin.credits.monitoringUnknownCost': 'Attempts with unknown cost',
+  'admin.credits.preflightError':
+    'The correction release state could not be verified.',
+  'admin.credits.preflight.DISABLED': 'Correction disabled in this environment',
+  'admin.credits.preflight.CONFIGURATION_BLOCKED':
+    'Correction configuration incomplete or non-compliant',
+  'admin.credits.preflight.CONFIGURED_CLOSED':
+    'Correction configured — kill switch closed',
+  'admin.credits.preflight.READY': 'Correction configured and open',
+  'admin.credits.preflightIdentity':
+    'Environment {environment} · identity {identity}',
   'credits.eyebrow': 'LearnX credits',
   'credits.title': 'My credits',
   'credits.description':
     'Your two balances remain distinct and are calculated from ledger entries.',
   'credits.loadError': 'Your credits could not be loaded.',
   'credits.free': 'Complimentary credits this month',
-  'credits.freeDescription': 'A complimentary allocation, separate from purchases.',
+  'credits.freeDescription':
+    'A complimentary allocation, separate from purchases.',
   'credits.purchased': 'Purchased credits',
-  'credits.purchasedDescription': 'Role changes and suspensions never alter these credits.',
+  'credits.purchasedDescription':
+    'Role changes and suspensions never alter these credits.',
   'credits.total': 'Total available',
   'credits.totalDescription': 'A secondary total across both origins.',
   'credits.reserved': 'Reserved credits',
-  'credits.reservedDescription': 'The allocation is fixed for actions in progress.',
+  'credits.reservedDescription':
+    'The allocation is fixed for actions in progress.',
   'credits.increase.title': 'Request an exceptional increase',
   'credits.increase.description':
     'Explain your need. A request never grants credits automatically.',

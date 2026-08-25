@@ -148,7 +148,10 @@ navigation and the offline banner on a page that has already been visited.
 
 CI can also provide `DEPLOYMENT_CHECK_EMAIL` and `DEPLOYMENT_CHECK_PASSWORD` for
 a dedicated test account. The command then verifies login, the session, a
-curriculum read, and logout without creating or modifying business content.
+curriculum read, the V4 correction preflight, and logout without creating or
+modifying business content. Set `DEPLOYMENT_CHECK_AI_EXPECTED_STATE` when the
+deployment must expose a specific safe state, for example
+`CONFIGURED_CLOSED` before an owner-authorized smoke test.
 
 ## Expired technical data maintenance
 

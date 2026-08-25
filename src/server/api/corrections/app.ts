@@ -17,6 +17,10 @@ import {
 } from '../../corrections/correction-orchestration.js';
 import { PrismaCorrectionOrchestrationPorts } from '../../corrections/prisma-correction-orchestration-store.js';
 import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
+import {
+  evaluateCorrectionReleasePreflight,
+  type CorrectionReleasePreflight,
+} from '../../corrections/release-preflight.js';
 import { PrismaCreditLedger } from '../../credits/prisma-credit-ledger.js';
 import {
   PrismaCorrectionMonitoringService,
@@ -35,9 +39,11 @@ export interface CorrectionsAppOptions {
   now?: () => Date;
   orchestration?: Pick<CorrectionOrchestrationService, 'runAcceptedQuote'>;
   monitoring?: { summary(): Promise<CorrectionMonitoringSummary> };
-  resolveDefaultOrchestration?: () => Promise<
-    Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null
-  >;
+  preflight?: CorrectionReleasePreflight;
+  resolveDefaultOrchestration?: () => Promise<Pick<
+    CorrectionOrchestrationService,
+    'runAcceptedQuote'
+  > | null>;
 }
 
 function deploymentEnvironment(): 'development' | 'preview' | 'production' {
@@ -50,23 +56,22 @@ export function isPromotedCorrectionConfiguration(
   configuration: OpenRouterConfiguration,
 ): boolean {
   const assignment = configuration.assignments.CORRECTION_PRIMARY;
-  const secondPassAssignment =
-    configuration.assignments.CORRECTION_SECOND_PASS;
+  const secondPassAssignment = configuration.assignments.CORRECTION_SECOND_PASS;
   return Boolean(
     configuration.enabled &&
-      !configuration.killSwitch &&
-      configuration.apiKey &&
-      assignment?.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
-      assignment.provider === PROMOTED_CORRECTION_IDENTITY.provider &&
-      secondPassAssignment?.modelId ===
-        PROMOTED_CORRECTION_IDENTITY.modelId &&
-      secondPassAssignment.provider === PROMOTED_CORRECTION_IDENTITY.provider,
+    !configuration.killSwitch &&
+    configuration.apiKey &&
+    assignment?.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
+    assignment.provider === PROMOTED_CORRECTION_IDENTITY.provider &&
+    secondPassAssignment?.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
+    secondPassAssignment.provider === PROMOTED_CORRECTION_IDENTITY.provider,
   );
 }
 
-async function createDefaultOrchestration(): Promise<
-  Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null
-> {
+async function createDefaultOrchestration(): Promise<Pick<
+  CorrectionOrchestrationService,
+  'runAcceptedQuote'
+> | null> {
   const configuration = readOpenRouterConfiguration({
     deploymentEnvironment: deploymentEnvironment(),
   });
@@ -118,6 +123,33 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   );
 
   app.get(
+    '/api/admin/ai-corrections/preflight',
+    requireCapability('credit.admin.manage'),
+    (context) => {
+      let preflight = options.preflight;
+      if (!preflight) {
+        try {
+          preflight = evaluateCorrectionReleasePreflight(
+            readOpenRouterConfiguration({
+              deploymentEnvironment: deploymentEnvironment(),
+            }),
+          );
+        } catch {
+          preflight = {
+            apiKeyPresent: false,
+            deploymentEnvironment: deploymentEnvironment(),
+            identityMatches: false,
+            killSwitch: true,
+            promotedBenchmarkId: PROMOTED_CORRECTION_IDENTITY.benchmarkId,
+            state: 'CONFIGURATION_BLOCKED',
+          };
+        }
+      }
+      return context.json({ preflight });
+    },
+  );
+
+  app.get(
     '/api/admin/ai-corrections/monitoring',
     requireCapability('credit.admin.manage'),
     async (context) => {
@@ -157,7 +189,10 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
       return context.json({ resource: { correction: result } }, 201);
     } catch (error) {
       if (error instanceof CorrectionOrchestrationError) {
-        const mapping: Record<string, { code: ApiErrorCode; status: 409 | 404 | 503 }> = {
+        const mapping: Record<
+          string,
+          { code: ApiErrorCode; status: 409 | 404 | 503 }
+        > = {
           INSUFFICIENT_CREDITS: { code: 'INSUFFICIENT_CREDITS', status: 409 },
           QUOTE_EXPIRED: { code: 'PRICING_QUOTE_EXPIRED', status: 409 },
           QUOTE_INCOMPATIBLE: { code: 'PRICING_QUOTE_CONFLICT', status: 409 },
@@ -168,11 +203,12 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
           },
           QUOTE_NOT_FOUND: { code: 'RESOURCE_NOT_FOUND', status: 404 },
         };
-        const mapped: { code: ApiErrorCode; status: 409 | 404 | 503 } =
-          mapping[error.code] ?? {
-            code: 'AI_CORRECTION_UNAVAILABLE',
-            status: 503,
-          };
+        const mapped: { code: ApiErrorCode; status: 409 | 404 | 503 } = mapping[
+          error.code
+        ] ?? {
+          code: 'AI_CORRECTION_UNAVAILABLE',
+          status: 503,
+        };
         throw new ApiError(
           mapped.code,
           'The correction could not run.',
