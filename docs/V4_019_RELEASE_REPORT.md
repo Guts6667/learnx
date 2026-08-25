@@ -2,7 +2,7 @@
 
 ## Statut
 
-**EN COURS — preview refermée, aucun GO production.**
+**SMOKE PREVIEW RÉUSSI — preview refermée, aucun GO production.**
 
 Ce rapport est append-only à l'échelle des essais de release. Un smoke en
 échec reste consigné ; sa correction ne le transforme pas rétroactivement en
@@ -121,13 +121,53 @@ confirme encore `CONFIGURED_CLOSED`, `0` correction, `0` tentative au coût
 inconnu et le solde pilote `6/0`. Aucun appel fournisseur n'a été envoyé pour
 ces contrôles.
 
+## Second smoke preview réussi du 25 août 2026
+
+### Autorisation et exécution
+
+Rayan a autorisé la poursuite sous les mêmes bornes : un seul workflow
+synthétique, deux appels au maximum si la bande de garde déclenchait la seconde
+passe, aucun retry, aucun fallback et `0,10 USD` fournisseur au maximum. Le kill
+switch a été ouvert sur le déploiement `dpl_AV3kCgJJ1NyE7sR1xcrpDkebmKfA`, puis
+refermé immédiatement après le résultat. Le déploiement fermé
+`dpl_6zy9nE7inCpokpvChuR6rvnWss95` est `Ready` et dessert de nouveau les alias
+preview.
+
+### Preuves persistées
+
+- correction : `87f1b312-0f37-4e3b-b9d1-21cb8eaa972d`, statut `COMPLETED` ;
+- devis : `17d19fcb-7e91-48ad-8b95-81b9c3c2fcd0` ;
+- réservation : `aea676c1-adf2-4ab1-8786-feb36115911a`, statut `SETTLED` ;
+- fournisseur et modèle : `Anthropic`, `anthropic/claude-sonnet-4.6` ;
+- un seul appel, aucune seconde passe, aucun retry et aucun fallback ;
+- génération : `gen-1787681295-HGcyd77FGRWhgwA8YCJP` ;
+- `3 721` tokens d'entrée, `985` tokens de sortie, `0` token de raisonnement ;
+- latence fournisseur enregistrée : `2 637 ms` ;
+- coût fournisseur `ACTUAL` : `0,025938 USD`, inférieur au plafond autorisé ;
+- trois critères livrés sans incertitude, score indicatif `100 %` et citations
+  exactes validées par LearnX ;
+- plafond accepté `6` crédits, règlement `3`, libération `3` ;
+- ledger cohérent : hold `-6`, release `+6`, settlement `-3`, tous issus de
+  l'allocation offerte ;
+- aucun effet sur la progression ou la validation de maîtrise.
+
+Le test démontre qu'un workflow borné peut aller du devis à la restitution et
+au règlement sur la preview. Il ne transforme pas le dernier examen
+scientifique `NO-GO` en promotion générale et n'autorise ni vente publique ni
+déploiement production.
+
+L'audit a relevé un défaut d'observabilité non bloquant pour cette preuve :
+l'identifiant fournisseur était conservé dans le champ historique
+`generationId`, mais pas dupliqué dans le champ dédié `providerRequestId`. Le
+correctif local recopie désormais la même valeur dans les deux champs ; il est
+couvert par test et ne nécessite aucun nouvel appel pour être vérifié.
+
 ## Gate restant
 
-1. obtenir une nouvelle autorisation propriétaire distincte avant tout nouveau
-   workflow facturable ;
-2. si cette tentative réussit, consigner coût, générations, appels, résultat,
-   règlement et libération ;
-3. exécuter ensuite la matrice finale et rendre un verdict V4-019 explicite.
+1. terminer la matrice finale locale et les captures d'accessibilité prévues ;
+2. figer le rapport V4-019 et le plan de rollback avec le kill switch fermé ;
+3. obtenir un GO production explicite de Rayan avant toute modification de
+   `main`, configuration production ou nouvelle dépense.
 
-Le smoke du 25 août ne constitue ni un GO runtime ni une preuve de promotion
-scientifique.
+Le smoke réussi constitue une preuve produit bornée sur preview, pas un GO
+runtime production ni une preuve de promotion scientifique.

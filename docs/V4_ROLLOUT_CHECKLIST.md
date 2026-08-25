@@ -69,8 +69,8 @@ configuration attendue est :
 - [x] vérifier le préflight en état `CONFIGURED_CLOSED` ;
 - [x] vérifier qu'une tentative de correction répond indisponible sans débit
   lorsque le kill switch est fermé ;
-- [ ] obtenir le GO explicite du Propriétaire pour ouvrir le kill switch ;
-- [ ] effectuer un smoke utilisateur borné, réconcilier coût, débit et
+- [x] obtenir le GO explicite du Propriétaire pour ouvrir le kill switch ;
+- [x] effectuer un smoke utilisateur borné, réconcilier coût, débit et
   libération, puis refermer immédiatement en cas d'écart ;
 - [ ] capturer les états 320/390/720/1440/1920, zoom 200 %, clavier et WebKit.
 
@@ -78,7 +78,11 @@ Le premier smoke autorisé a été refermé sur une erreur de persistance SQL et
 un coût non réconciliable exactement. La réservation a été libérée et le
 correctif SQL a été redéployé. Le durcissement d'idempotence et de rejeu
 financier est livré par `d0e479cb` et contrôlé coupe-circuit fermé.
-Voir `docs/V4_019_RELEASE_REPORT.md`. Ce smoke ne coche pas le gate de réussite.
+Le second smoke a livré une correction complète en un seul appel : coût
+`0,025938 USD`, plafond `6`, règlement `3`, libération `3`, puis kill switch
+refermé. Voir `docs/V4_019_RELEASE_REPORT.md` pour les identifiants et les
+écritures du ledger. Cette preuve coche le smoke preview, sans promouvoir le
+pipeline scientifiquement ni autoriser la production.
 
 ## Gate production
 
