@@ -9,7 +9,7 @@ const manifestSchema = z.object({
     }),
   ),
   name: z.string().min(1),
-  start_url: z.literal('/'),
+  start_url: z.literal('/today'),
 });
 const authenticatedSessionSchema = z.object({
   user: z.object({ email: z.email() }),
@@ -62,6 +62,22 @@ async function checkDeployment(): Promise<void> {
 
   if (!html.includes('LearnX')) {
     throw new Error('The application shell does not contain the LearnX title.');
+  }
+
+  const researchResponse = await expectResponse(
+    baseUrl,
+    '/research/ai-correction/index.html',
+    'text/html',
+  );
+  const researchHtml = await researchResponse.text();
+
+  if (
+    !researchHtml.includes('learnx-mark-on-paper.svg') ||
+    !researchHtml.includes('writing-exam-bounded-pilot')
+  ) {
+    throw new Error(
+      'The public research journal is missing its current brand or latest publication.',
+    );
   }
 
   const manifestResponse = await expectResponse(
