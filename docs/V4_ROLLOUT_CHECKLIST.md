@@ -1,94 +1,93 @@
-# V4 — Reste à faire avant la mise en production
+# V4 — Checklist de déploiement du pilote Writing
 
-> **Mise à jour du 24 août 2026 :** cette checklist détaillée conserve les
-> étapes et preuves antérieures. Pour l'ordre courant et les états réellement
-> livrés, `docs/V4_ROADMAP.md` fait autorité. Le contrat V4-002-PUBLISH est
-> désormais présent sur la branche ; le prochain blocage est le catalogue
-> pilote V4-007 puis la preview authentifiée. Aucun contenu historique
-> ci-dessous n'est supprimé.
+> État au 25 août 2026. `docs/V4_ROADMAP.md` reste l'autorité sur le périmètre
+> et l'ordre des tickets. Cette checklist décrit uniquement les preuves à
+> réunir pour V4-019 ; elle ne rouvre ni le benchmark, ni les prix, ni les
+> arbitrages produit.
 
-État au 24 août 2026. Ce document fait autorité pour la reprise : chaque
-ligne indique ce qui est fait, ce qui manque et le critère d'achèvement.
-Sources : `BACKLOG_V4.md` (jalons A–E), journal
-`docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` §6–8, code livré sur
-`codex/v2-promotion-gates`.
+## Périmètre autorisé
 
-## Modèle IA — où l'on en est
+- correction `writing`, `fr-FR`, texte et faible risque uniquement ;
+- identité `learnx-french-text-correction-v3-1`, Sonnet 4.6, route Anthropic ;
+- crédits offerts uniquement, sans achat public de correction IA ;
+- feedback formatif sans effet sur la progression ;
+- seconde passe du même modèle uniquement dans la bande de ±5 points ;
+- aucun retry, fallback ou élargissement silencieux.
 
-| Élément | État |
-| --- | --- |
-| Identité promue au **développement** | `learnx-french-text-correction-v3-1` (Sonnet 4.6, prompt 2.2.0, protocole 3.0.1, PARTIAL_CRITERION) : tous les gates automatiques passent (0 faux PASS, 0 écart de deux niveaux — remédiation efficace, 0 critère « à retravailler », 0 run inutilisable, injection 100 % sur sorties livrées) |
-| Revue aveugle v3-1 | En cours (agent délégué) ; à lier par digest avant promotion dev formelle |
-| Examen final n°3 (holdout) | **Corpus à rédiger** (l'agent d'auteur a atteint sa limite d'usage ; relancer la session suivante avec le même prompt, fichier `holdout.v3.json`), puis approbation indépendante, scellement SHA, exécution unique (~1,70 USD) |
-| Variabilité surveillée | 20,8 % > cible 15 % (signal non bloquant, trade-off de l'instruction d'indépendance des critères) : à surveiller en pilote |
+Le dernier examen scientifique reste `NO-GO`. Le pilote est une décision
+produit bornée ; il ne transforme pas ce verdict en promotion scientifique.
 
-## Jalon B — Première correction utilisable (V4-009 + V4-010)
+## Preuves locales acquises
 
-**Fait :**
+- [x] contrat pilote `PUBLISHED` présent dans le bundle ;
+- [x] filtre serveur `writing/fr-FR` avant devis et exécution ;
+- [x] devis, réservation sur crédits offerts, règlement et libération testés ;
+- [x] identité runtime et route fournisseur épinglées ;
+- [x] livraison par critère, score indicatif et état partiel testés ;
+- [x] UI de devis, consentement, résultat et règlement livrée ;
+- [x] monitoring coûts/incidents visible en administration ;
+- [x] surfaces Totem, landing, marque et journal de recherche alignés ;
+- [x] lint, typecheck, tests, build et matrice E2E locale verts.
 
-- `src/server/corrections/promoted-identity.ts` : pin de l'identité promue
-  (seul modèle callable par le runtime ; changer = nouvelle promotion).
-- `runtime-correction-prompt.ts` : prompt 2.2.0 identique au préenregistré.
-- `CorrectionOrchestrationService` : devis → réservation plafond → correction
-  protocole 3 avec récupération partielle → **règlement intégral du devis
-  (doctrine Propriétaire)** → libération de la différence ; échec total =
-  état honnête « indisponible » débité au prix du devis ; rejeu idempotent
-  par empreinte. 7 tests unitaires.
-- `POST /api/ai-corrections` monté, capacité `ai.assessment.correct` aux
-  apprenants, 5 tests de route.
-- Ports Prisma d'orchestration (`PrismaCorrectionOrchestrationPorts`).
+## Préflight de configuration sans appel modèle
 
-**Reste à faire (critère d'achèvement) :**
+La vérification suivante ne révèle jamais la clé et n'envoie aucun appel :
 
-1. **Câblage défaut de l'orchestration** : composer au démarrage la route avec
-   `PrismaCreditLedger` + `PrismaCorrectionOrchestrationPorts` +
-   transport OpenRouter (`createRuntimeCorrectionTransport`, clé
-   `OPENROUTER_API_KEY`, kill switch `LEARNX_AI_*`) — aujourd'hui la route
-   répond 503 sans injection. Test d'intégration sur base de test.
-2. **Vérifier le schéma du devis** côté ports : les champs Prisma réels
-   (`AiPricingQuote.status/expiresAt/estimatedCredits/ceilingCredits`) et le
-   cycle CONSUMED doivent matcher `loadAcceptedQuote`/`markConsumed`
-   (assertion d'égalité en test d'intégration).
-3. **UI apprenante V4-010 dans ExerciseCard** (contrat V4-016G + EMOTIONAL
-   DESIGN §5.10) : étape devis (prix/plafond + mention explicite « des
-   critères peuvent revenir à retravailler sans compensation » + consentement
-   unique), état d'attente, restitution par critère (acquis → à renforcer →
-   action ; « Extrait de votre réponse » ; critères « à retravailler » sans
-   score exact global quand partiels ; étiquette « Correction assistée par
-   IA » ; rappel sans effet sur la progression), récap plafond/débit/libéré.
-   Tests de rendu (Preact Testing Library) + a11y.
-4. **Requête de devis depuis l'exercice** : brancher `POST
-   /api/ai-correction/quotes` depuis l'UI soumise (l'API existe déjà).
+```bash
+pnpm ai:release:check -- --environment=preview --expect=CONFIGURED_CLOSED
+```
 
-## Jalon A restant
+États possibles :
 
-- **V4-008** écrans admin allocations/limites/budgets (aucune surface
-  aujourd'hui) : P1, bloquant pour le pilote piloté aux allocations offertes.
-- **V4-017** contrôles de dépense (kill switch, plafond fournisseur) : le
-  fournisseur les supporte (`LEARNX_AI_KILL_SWITCH`) ; il manque
-  l'administration/les alertes.
+| État | Signification | Suite autorisée |
+| --- | --- | --- |
+| `DISABLED` | fonctionnalité globalement désactivée | configurer la preview |
+| `CONFIGURATION_BLOCKED` | clé absente ou identité non conforme | corriger la configuration, aucun appel |
+| `CONFIGURED_CLOSED` | identité et clé valides, kill switch fermé | lancer la QA sans appel |
+| `READY` | identité valide et kill switch ouvert | uniquement après GO propriétaire |
 
-## Jalons C–E (non commencés)
+L'identité doit être validable alors que le kill switch reste fermé. La
+configuration attendue est :
 
-- **V4-011** évaluations d'étape textuelles + seconde correction IA
-  (contestation) ; **V4-012** tableau de bord coûts/marge.
-- **V4-013/014/015** Revolut sandbox, packs/checkout, remboursements — aucun
-  code de paiement n'existe ; les valeurs commerciales restent gelées jusqu'à
-  calibration (V4-018).
-- **V4-016A/B/G** landing commerciale, desktop, grammaire visuelle complète
-  des surfaces correction/crédits (les références Atlas existent, à appliquer).
-- **V4-018/018A** pilote progressif et cohortes ; **V4-019** audit final GO.
+- `LEARNX_AI_CONFIG_ENVIRONMENT=preview` en preview ;
+- allowlist limitée à `anthropic/claude-sonnet-4.6` et `Anthropic` ;
+- primaire et seconde passe assignés à cette même paire ;
+- `LEARNX_AI_ENABLED=true` ;
+- `LEARNX_AI_KILL_SWITCH=true` jusqu'au GO d'ouverture ;
+- `OPENROUTER_API_KEY` présente côté serveur uniquement.
 
-## Dépendances critiques (ordre de déverrouillage)
+## QA preview authentifiée — à exécuter
 
-1. Revue aveugle v3-1 liée → promotion **dev** formelle.
-2. Corpus holdout n°3 rédigé + approuvé + scellé → exécution unique →
-   verdict **production** (dernier examen bloquant pour activer la correction
-   payante).
-3. Câblage défaut + UI (Jalon B complet) → pilote allocations offertes
-   (aucun achat requis) → V4-008/012 → puis seulement D (paiements) et E.
+- [ ] déployer les migrations et le seed sur la base de preview ;
+- [ ] vérifier que l'exercice « Choisir sans forcer un cadre » est visible et
+  porte le contrat publié attendu ;
+- [ ] vérifier les soldes offerts, le catalogue `4.0.0` et l'absence d'achat ;
+- [ ] exécuter `deployment:check` avec un compte pilote ;
+- [ ] vérifier landing, journal FR/EN, canonicals, PWA et connexion ;
+- [ ] vérifier le préflight en état `CONFIGURED_CLOSED` ;
+- [ ] vérifier qu'une tentative de correction répond indisponible sans débit
+  lorsque le kill switch est fermé ;
+- [ ] obtenir le GO explicite du Propriétaire pour ouvrir le kill switch ;
+- [ ] effectuer un smoke utilisateur borné, réconcilier coût, débit et
+  libération, puis refermer immédiatement en cas d'écart ;
+- [ ] capturer les états 320/390/720/1440/1920, zoom 200 %, clavier et WebKit.
 
-## Budget consommé (campagnes IA)
+## Gate production
 
-7,40 USD + 1,31 (v3-1) = **8,71 USD** au 24 août, intégralement tracés dans
-les artefacts committés.
+- [ ] migration répétable et rollback documenté ;
+- [ ] variables de production distinctes de la preview ;
+- [ ] préflight `CONFIGURED_CLOSED` avant toute ouverture ;
+- [ ] budget fournisseur et canal d'alerte confirmés ;
+- [ ] procédure de fermeture : `LEARNX_AI_KILL_SWITCH=true` ;
+- [ ] rapport V4-019 consignant digests, version, tests et limites ;
+- [ ] GO production explicite de Rayan ;
+- [ ] après ouverture seulement, préflight `READY` et smoke borné ;
+- [ ] `main` modifiée uniquement par le commit de release autorisé.
+
+## Arrêt immédiat
+
+Fermer le kill switch et ne pas relancer automatiquement si l'identité,
+l'activité, la langue, le coût, le règlement, la citation ou le statut du
+contrat diffère de la configuration attendue. Une sortie inutilisable ou un
+coût non réconcilié reste un incident visible ; il ne devient jamais un coût
+nul silencieux.

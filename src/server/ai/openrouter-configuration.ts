@@ -169,7 +169,7 @@ export function readOpenRouterConfiguration(input: {
   return {
     apiKey,
     appUrl,
-    assignments: operational ? parseAssignments(values) : {},
+    assignments: enabled ? parseAssignments(values) : {},
     deploymentEnvironment: input.deploymentEnvironment,
     enabled,
     killSwitch,

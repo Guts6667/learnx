@@ -140,6 +140,28 @@ describe('OpenRouter configuration', () => {
     });
   });
 
+  it('validates pinned assignments while the kill switch remains closed', () => {
+    expect(
+      readOpenRouterConfiguration({
+        deploymentEnvironment: 'preview',
+        values: { ...activeValues, LEARNX_AI_KILL_SWITCH: 'true' },
+      }),
+    ).toMatchObject({
+      assignments: {
+        CORRECTION_PRIMARY: {
+          modelId: 'vendor/model-20260811',
+          provider: 'vendor',
+        },
+        CORRECTION_SECOND_PASS: {
+          modelId: 'vendor/reviewer-20260811',
+          provider: 'vendor',
+        },
+      },
+      enabled: true,
+      killSwitch: true,
+    });
+  });
+
   it('rejects environment reuse, dynamic aliases and missing allowlists', () => {
     expect(() =>
       readOpenRouterConfiguration({

@@ -27,6 +27,7 @@
     "performance:measure": "tsx scripts/measure-database-performance.ts",
     "migration:rehearse": "tsx scripts/migration-rehearsal.ts",
     "deployment:check": "tsx scripts/check-deployment.ts",
+    "ai:release:check": "tsx scripts/check-ai-release.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "i18n:check": "tsx scripts/check-i18n-catalogs.ts",
