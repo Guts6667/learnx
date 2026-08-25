@@ -21,9 +21,12 @@ test('la landing ouvre le journal statique sans passer par la 404 applicative', 
   await page
     .getByRole('link', { name: 'Explorer le journal de recherche' })
     .click();
-  await expect(page).toHaveURL(/\/research\/index\.html$/);
+  await expect(page).toHaveURL(/\/research\/ai-correction\/index\.html$/);
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Recherche' }),
+    page.getByRole('heading', {
+      level: 1,
+      name: 'Programme de recherche sur la correction formative assistée',
+    }),
   ).toBeVisible();
 
   await page.goto('/');
@@ -31,9 +34,12 @@ test('la landing ouvre le journal statique sans passer par la 404 applicative', 
   await page
     .getByRole('link', { name: 'Explore the research journal' })
     .click();
-  await expect(page).toHaveURL(/\/research\/en\.html$/);
+  await expect(page).toHaveURL(/\/research\/ai-correction\/en\.html$/);
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Research' }),
+    page.getByRole('heading', {
+      level: 1,
+      name: 'Research programme on AI-assisted formative feedback',
+    }),
   ).toBeVisible();
 });
 

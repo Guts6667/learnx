@@ -42,6 +42,8 @@ test('journal de recherche chronologique et responsive', async ({ page }, testIn
     await expect(publications.first()).toContainText(
       'Évaluation Writing sous protocole scellé',
     );
+    await expect(publications.first()).toContainText('Résultat · Décision');
+    await expect(publications.first()).toContainText('v1.0');
     await expect(publications.last()).toContainText('Dossier technique continu');
     await expectNoHorizontalOverflow(page);
 
@@ -64,6 +66,13 @@ test('journal de recherche chronologique et responsive', async ({ page }, testIn
       return Number.parseFloat(style.outlineWidth);
     }),
   ).toBeGreaterThanOrEqual(3);
+  await page.getByRole('button', { name: 'Résultat', exact: true }).click();
+  await expect(page.locator('.article-card:visible')).toHaveCount(3);
+  await page.getByRole('button', { name: 'Erratum', exact: true }).click();
+  await expect(page.locator('.article-card:visible')).toHaveCount(0);
+  await expect(page.getByText(/Aucune publication/)).toBeVisible();
+  await page.getByRole('button', { name: 'Effacer le filtre' }).click();
+  await expect(page.locator('.article-card:visible')).toHaveCount(7);
   await expectNoSeriousA11yViolations(page);
 
   await page.addStyleTag({
@@ -99,6 +108,8 @@ test('article de recherche garde ses métadonnées, son sommaire et son partage'
     ).toBeVisible();
     await expect(page.getByText('Writing · fr-FR')).toBeVisible();
     await expect(page.getByText('Sonnet 4.6 · Anthropic')).toBeVisible();
+    await expect(page.getByText('Version 1.0')).toBeVisible();
+    await expect(page.getByText('Recherche expérimentale')).toBeVisible();
     await expect(
       page.getByText('Verdict expérimental', { exact: true }),
     ).toBeVisible();
@@ -108,8 +119,12 @@ test('article de recherche garde ses métadonnées, son sommaire et son partage'
     await expect(
       page.getByRole('button', { name: 'Partager cette recherche' }),
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Changelog et errata' }),
+    ).toBeVisible();
+    await expect(page.getByText('Version actuelle · v1.0')).toBeVisible();
 
-    if (viewport.width >= 832) {
+    if (viewport.width >= 980) {
       await expect(page.locator('.article-toc--desktop')).toBeVisible();
       await expect(page.locator('.article-toc--mobile')).toBeHidden();
     } else {

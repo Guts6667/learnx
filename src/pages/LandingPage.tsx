@@ -32,18 +32,15 @@ function ProgramPreview() {
           {t('landing.preview.program.stage')}
         </p>
         <h2>{t('landing.preview.program.title')}</h2>
-        <div class="landing-preview-module">
-          <strong>{t('landing.preview.program.module')}</strong>
-          <ol>
-            <li aria-current="step">
-              <span>01</span>
-              <strong>{t('landing.preview.lesson.title')}</strong>
-            </li>
-            <li>
-              <span>02</span>
-              <strong>{t('landing.preview.program.nextLesson')}</strong>
-            </li>
-          </ol>
+        <p class="landing-preview-meta">
+          {t('landing.preview.program.module')}
+        </p>
+        <div class="landing-program-step" aria-current="step">
+          <span class="landing-step-number">01</span>
+          <div>
+            <strong>{t('landing.preview.lesson.title')}</strong>
+            <span>{t('landing.preview.program.nextLesson')}</span>
+          </div>
         </div>
       </div>
     </section>
@@ -255,65 +252,38 @@ export function LandingPage({ path }: { path?: string }) {
             </div>
           </div>
           <div class="landing-hero-visual">
-            <span aria-hidden="true" class="landing-coral-shape" />
             <ProgramPreview />
           </div>
         </section>
         <section aria-label={t('landing.product.eyebrow')} class="landing-principles">
-          <p>{t('landing.product.structuredTitle')}</p>
-          <p>{t('landing.product.practiceTitle')}</p>
-          <p>{t('landing.product.evidenceTitle')}</p>
+          <div>
+            <strong>{t('landing.product.structuredTitle')}</strong>
+            <span>{t('landing.product.structured')}</span>
+          </div>
+          <div>
+            <strong>{t('landing.product.practiceTitle')}</strong>
+            <span>{t('landing.product.practice')}</span>
+          </div>
+          <div>
+            <strong>{t('landing.product.evidenceTitle')}</strong>
+            <span>{t('landing.product.evidence')}</span>
+          </div>
         </section>
-        <section aria-labelledby="landing-product" class="landing-section" id="product">
+        <section
+          aria-labelledby="landing-product"
+          class="landing-section landing-feature-proof"
+          id="product"
+        >
           <div>
             <p class="page-eyebrow">{t('landing.product.eyebrow')}</p>
             <h2 id="landing-product">{t('landing.product.title')}</h2>
             <p>{t('landing.product.description')}</p>
           </div>
-          <ul class="landing-proof-list">
-            <li>
-              <strong>{t('landing.product.structuredTitle')}</strong>
-              <span>{t('landing.product.structured')}</span>
-            </li>
-            <li>
-              <strong>{t('landing.product.practiceTitle')}</strong>
-              <span>{t('landing.product.practice')}</span>
-            </li>
-            <li>
-              <strong>{t('landing.product.evidenceTitle')}</strong>
-              <span>{t('landing.product.evidence')}</span>
-            </li>
-          </ul>
-        </section>
-        <section
-          aria-labelledby="landing-program-proof"
-          class="landing-section landing-feature-proof"
-        >
-          <div>
-            <p class="page-eyebrow">{t('landing.preview.program.type')}</p>
-            <h2 id="landing-program-proof">
-              {t('landing.preview.program.heading')}
-            </h2>
-            <p>{t('landing.preview.program.description')}</p>
-          </div>
-          <ProgramPreview />
-        </section>
-        <section
-          aria-labelledby="landing-lesson-proof"
-          class="landing-section landing-feature-proof"
-        >
-          <div>
-            <p class="page-eyebrow">{t('landing.preview.lesson.type')}</p>
-            <h2 id="landing-lesson-proof">
-              {t('landing.preview.lesson.heading')}
-            </h2>
-            <p>{t('landing.preview.lesson.description')}</p>
-          </div>
           <LessonPreview />
         </section>
         <section
           aria-labelledby="landing-roadmap"
-          class="landing-section landing-section--muted"
+          class="landing-section landing-roadmap"
           id="roadmap"
         >
           <div>
@@ -335,18 +305,19 @@ export function LandingPage({ path }: { path?: string }) {
               {t('landing.research.latestMeta')}
             </p>
             <h3>{t('landing.research.latestTitle')}</h3>
-            <dl>
-              <div>
-                <dt>{t('landing.research.verdictLabel')}</dt>
-                <dd>{t('landing.research.verdict')}</dd>
-              </div>
-              <div>
-                <dt>{t('landing.research.decisionLabel')}</dt>
-                <dd>{t('landing.research.decision')}</dd>
-              </div>
-            </dl>
+            <p class="landing-research-finding">
+              <strong>
+                {t('landing.research.verdictLabel')} :{' '}
+                {t('landing.research.verdict')}
+              </strong>
+              <span>
+                {t('landing.research.decisionLabel')} :{' '}
+                {t('landing.research.decision')}
+              </span>
+            </p>
             <a
               class="landing-research-action"
+              data-native
               href={
                 locale === 'en'
                   ? '/research/ai-correction/en.html'
@@ -376,6 +347,7 @@ export function LandingPage({ path }: { path?: string }) {
         <span>© 2026 LearnX</span>
         <nav aria-label={t('landing.footerNavigation')}>
           <a
+            data-native
             href={
               locale === 'en'
                 ? '/research/ai-correction/en.html'

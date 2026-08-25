@@ -187,6 +187,19 @@ La QA automatisée couvre :
   responsive, URL canonique et action de partage ;
 - contraste des tableaux et rendu des pages d'article.
 
+### Audit de conformité de l'autorité publique 1.0.0
+
+| ID normatif | Statut | Preuve de conformité |
+| --- | --- | --- |
+| `L-P01` | Conforme | Hero resserré, CTA primaire unique, étape active avec pastille cobalt et signature corail intégrée, trois preuves expliquées, aperçu de leçon sourcée, rupture sombre de roadmap et publication de recherche verticale. |
+| `R-I01` | Conforme | Sept publications conservées, ordre antéchronologique, filtres sobres, métadonnées type/statut/version, lignes séparées et état sans résultat réversible. |
+| `R-A01` | Conforme | Métadonnées type/date/version/statut/périmètre, partage rattaché à l'en-tête, sommaire gauche à partir de 980 px, sommaire natif sous ce seuil, changelog/errata et navigations de série/version distinctes. |
+
+Aucune divergence fonctionnelle ou visuelle connue ne reste ouverte sur ces
+trois IDs. Le dossier technique continu demeure volontairement un dossier
+historique distinct du gabarit d'article chronologique ; il reste accessible
+sans remplacer ni réécrire les sept publications de l'index courant.
+
 La preuve reproductible est `tests/e2e/research-public.spec.ts`, complétée par
 `tests/e2e/landing.spec.ts`, `tests/e2e/home.spec.ts` et
 `tests/e2e/ui-primitives.spec.ts`. Les captures sont attachées à l'exécution

@@ -62,7 +62,7 @@ describe('LandingPage', () => {
       screen.getAllByRole('heading', {
         name: 'Piloter un projet en équipe',
       }),
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     expect(
       screen.getByRole('heading', { name: 'Formuler un objectif de sprint' }),
     ).toBeInTheDocument();
@@ -103,7 +103,7 @@ describe('LandingPage', () => {
 
     expect(
       screen.getAllByRole('heading', { name: 'Leading a team project' }),
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     expect(document.title).toBe('LearnX — Your path to knowledge');
     expect(
       screen.getByRole('heading', { name: 'Write a sprint goal' }),
