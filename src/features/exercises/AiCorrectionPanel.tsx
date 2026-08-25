@@ -29,7 +29,11 @@ type PanelPhase =
  * aucun score exact global en cas de critères « à retravailler » — puis
  * récap plafond accepté / débité / libéré.
  */
-export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
+export function AiCorrectionPanel({
+  submissionId,
+}: {
+  submissionId: string;
+}) {
   const { t } = useI18n();
   const [phase, setPhase] = useState<PanelPhase>({ kind: 'IDLE' });
 
@@ -97,7 +101,9 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
         <div class="flex items-center gap-2">
           <Badge tone="info">{t('aiCorrection.assistedLabel')}</Badge>
         </div>
-        <p class="text-sm leading-6">{t('aiCorrection.quoteAction')}</p>
+        <p class="text-sm leading-6">
+          {t('aiCorrection.quoteAction')}
+        </p>
         <p class="text-sm leading-6">
           {t('aiCorrection.quoteSummary', {
             estimated: quote.estimatedCredits,
@@ -180,90 +186,63 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
   const toReinforce = delivered.filter(
     (criterion) => criterion.levelKey !== 'mastered',
   );
-  const priorityCriterion = toReinforce[0];
-  const priorityUnsureKey = correction.unsureCriteria[0];
-  const priorityText = priorityCriterion
-    ? priorityCriterion.feedback
-    : priorityUnsureKey
-      ? correction.overallFeedback
-      : correction.overallFeedback;
 
   return (
-    <div class="totem-correction-layout">
-      <div class="totem-correction-main">
-        <section class="totem-correction-appreciation">
-          <p class="page-eyebrow">{t('aiCorrection.appreciation')}</p>
-          <h2>{t('aiCorrection.resultTitle')}</h2>
-          {correction.overallFeedback ? (
-            <p>{correction.overallFeedback}</p>
-          ) : null}
-          {correction.indicativeScore !== null ? (
-            <span class="totem-correction-score">
-              {t('aiCorrection.indicativeScore', {
-                score: correction.indicativeScore.toFixed(0),
-              })}
-            </span>
-          ) : null}
-        </section>
-
-        {priorityText ? (
-          <aside class="totem-correction-priority">
-            <p class="page-eyebrow">{t('aiCorrection.priority')}</p>
-            <p>{priorityText}</p>
-          </aside>
-        ) : null}
-
-        {acquired.length > 0 ? (
-          <section aria-labelledby="correction-acquired">
-            <h3 class="totem-correction-section-title" id="correction-acquired">
-              {t('aiCorrection.acquired')}
-            </h3>
-            {acquired.map((criterion) => (
-              <CriterionRow criterion={criterion} key={criterion.key} />
-            ))}
-          </section>
-        ) : null}
-
-        {toReinforce.length > 0 || correction.unsureCriteria.length > 0 ? (
-          <section aria-labelledby="correction-reinforce">
-            <h3
-              class="totem-correction-section-title"
-              id="correction-reinforce"
-            >
-              {t('aiCorrection.toReinforce')}
-            </h3>
-            {toReinforce.map((criterion) => (
-              <CriterionRow criterion={criterion} key={criterion.key} />
-            ))}
-            {correction.unsureCriteria.map((key) => (
-              <p class="totem-correction-unsure" key={key}>
-                {t('aiCorrection.reworkCriterion', {
-                  criterion: unsureLabels.get(key) ?? key,
-                })}
-              </p>
-            ))}
-          </section>
-        ) : null}
+    <div class="space-y-4">
+      <div class="flex items-center gap-2">
+        <Badge tone="info">{t('aiCorrection.assistedLabel')}</Badge>
+        <span class="ui-text-muted text-sm">{t('aiCorrection.noProgressImpact')}</span>
       </div>
 
-      <aside class="totem-correction-transparency">
-        <p class="page-eyebrow">{t('aiCorrection.transparency')}</p>
-        <div>
-          <strong>{t('learning.progressLabel')}</strong>
-          <span>{t('aiCorrection.noProgressImpact')}</span>
-        </div>
-        <div>
-          <strong>{t('aiCorrection.verification')}</strong>
-          <span>{t('aiCorrection.verificationIncluded')}</span>
-        </div>
-        <p>
-          {t('aiCorrection.settlementRecap', {
-            reserved: settlement.reservedCredits,
-            settled: settlement.settledCredits,
-            released: settlement.releasedCredits,
-          })}
-        </p>
-      </aside>
+      {acquired.length > 0 ? (
+        <section class="space-y-2">
+          <h4 class="text-sm font-semibold">{t('aiCorrection.acquired')}</h4>
+          {acquired.map((criterion) => (
+            <CriterionRow criterion={criterion} />
+          ))}
+        </section>
+      ) : null}
+
+      {toReinforce.length > 0 || correction.unsureCriteria.length > 0 ? (
+        <section class="space-y-2">
+          <h4 class="text-sm font-semibold">{t('aiCorrection.toReinforce')}</h4>
+          {toReinforce.map((criterion) => (
+            <CriterionRow criterion={criterion} />
+          ))}
+          {correction.unsureCriteria.map((key) => (
+            <p
+              class="ui-control-surface rounded-lg p-3 text-sm leading-6"
+              key={key}
+            >
+              {t('aiCorrection.reworkCriterion', {
+                criterion: unsureLabels.get(key) ?? key,
+              })}
+            </p>
+          ))}
+        </section>
+      ) : null}
+
+      <section class="space-y-2">
+        <h4 class="text-sm font-semibold">{t('aiCorrection.nextAction')}</h4>
+        {correction.overallFeedback ? (
+          <p class="text-sm leading-6">{correction.overallFeedback}</p>
+        ) : null}
+        {correction.indicativeScore !== null ? (
+          <p class="ui-text-muted text-sm">
+            {t('aiCorrection.indicativeScore', {
+              score: correction.indicativeScore.toFixed(0),
+            })}
+          </p>
+        ) : null}
+      </section>
+
+      <p class="ui-text-muted text-sm">
+        {t('aiCorrection.settlementRecap', {
+          reserved: settlement.reservedCredits,
+          settled: settlement.settledCredits,
+          released: settlement.releasedCredits,
+        })}
+      </p>
     </div>
   );
 }
@@ -275,17 +254,23 @@ function CriterionRow({
 }) {
   const { t } = useI18n();
   return (
-    <article class="totem-correction-criterion">
-      <div class="totem-correction-criterion__head">
-        <h4>{criterion.label}</h4>
-        <span>{criterion.levelLabel}</span>
+    <article class="ui-control-surface space-y-2 rounded-lg p-3">
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-sm font-medium">{criterion.label}</span>
+        <Badge tone={criterion.levelKey === 'mastered' ? 'success' : 'neutral'}>
+          {criterion.levelLabel}
+        </Badge>
       </div>
-      <p>{criterion.feedback}</p>
+      <p class="text-sm leading-6">{criterion.feedback}</p>
       {criterion.evidenceQuotes.length > 0 ? (
-        <div class="totem-correction-evidence">
-          <strong>{t('aiCorrection.evidenceLabel')}</strong>
+        <div class="space-y-1">
+          <p class="ui-text-muted text-xs uppercase tracking-wide">
+            {t('aiCorrection.evidenceLabel')}
+          </p>
           {criterion.evidenceQuotes.map((quote) => (
-            <blockquote key={quote}>{quote}</blockquote>
+            <blockquote class="ui-prose border-l-2 border-current/30 pl-3 text-sm italic leading-6">
+              {quote}
+            </blockquote>
           ))}
         </div>
       ) : null}

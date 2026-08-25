@@ -8,7 +8,6 @@ import {
 } from '@/components/layout/BackNavigationContext';
 import { AdminNavigation } from '@/components/layout/AdminNavigation';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
-import { LearningAuthorityShell } from '@/components/layout/LearningAuthorityShell';
 import { TotemAppShell } from '@/components/layout/TotemShell';
 import { useSessionQuery } from '@/features/auth/session';
 import { PwaProvider, PwaStatus } from '@/features/pwa/PwaStatus';
@@ -26,7 +25,6 @@ const rootPaths = new Set([
   '/login',
   '/request-access',
   '/verify-email',
-  '/first-direction',
   '/today',
   '/program',
   '/discover',
@@ -41,40 +39,7 @@ const authenticationPaths = new Set([
   '/request-access',
   '/verify-email',
   '/activate',
-  '/first-direction',
 ]);
-
-function authBrandKeys(currentPath: string) {
-  if (currentPath === '/activate') {
-    return {
-      description: 'auth.activate.shellDescription',
-      eyebrow: 'auth.activate.shellEyebrow',
-      title: 'auth.activate.shellTitle',
-    } as const;
-  }
-
-  if (currentPath === '/verify-email') {
-    return {
-      description: 'auth.verify.shellDescription',
-      eyebrow: 'auth.verify.shellEyebrow',
-      title: 'auth.verify.shellTitle',
-    } as const;
-  }
-
-  if (currentPath === '/first-direction') {
-    return {
-      description: 'auth.firstDirection.shellDescription',
-      eyebrow: 'auth.firstDirection.shellEyebrow',
-      title: 'auth.firstDirection.shellTitle',
-    } as const;
-  }
-
-  return {
-    description: 'auth.shell.description',
-    eyebrow: 'auth.shell.eyebrow',
-    title: 'auth.shell.title',
-  } as const;
-}
 
 function usesTotemProductSurface(currentPath: string): boolean {
   if (
@@ -90,14 +55,6 @@ function usesTotemProductSurface(currentPath: string): boolean {
   }
 
   return currentPath.startsWith('/program/');
-}
-
-function usesLearningAuthoritySurface(currentPath: string): boolean {
-  if (currentPath === '/reviews') return true;
-
-  return /^\/program\/[^/]+\/lesson\/[^/]+(?:\/exercise\/[^/]+)?\/?$/.test(
-    currentPath,
-  );
 }
 
 function SessionNavigation({ currentPath }: { currentPath: string }) {
@@ -226,7 +183,6 @@ export function MobileLayout({
   }
 
   if (authenticationPaths.has(currentPath)) {
-    const authBrand = authBrandKeys(currentPath);
     return (
       <PwaProvider>
         <TotemTheme class="totem-auth-surface">
@@ -240,18 +196,15 @@ export function MobileLayout({
           <div class="totem-auth-layout">
             <aside class="totem-auth-brand">
               <a class="totem-auth-brand__lockup" href="/">
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  class="totem-auth-brand__mark"
-                  src="/learnx-mark-on-night.svg"
-                />
+                <span aria-hidden="true" class="totem-auth-brand__mark">
+                  LX
+                </span>
                 <span>{t('app.name')}</span>
               </a>
               <div class="totem-auth-brand__copy">
-                <p class="page-eyebrow">{t(authBrand.eyebrow)}</p>
-                <h2>{t(authBrand.title)}</h2>
-                <p>{t(authBrand.description)}</p>
+                <p class="page-eyebrow">{t('auth.shell.eyebrow')}</p>
+                <h2>{t('auth.shell.title')}</h2>
+                <p>{t('auth.shell.description')}</p>
               </div>
             </aside>
             <main class="totem-auth-main" id="main-content" tabindex={-1}>
@@ -259,32 +212,6 @@ export function MobileLayout({
               <div class="totem-auth-content">{children}</div>
             </main>
           </div>
-        </TotemTheme>
-      </PwaProvider>
-    );
-  }
-
-  if (usesLearningAuthoritySurface(currentPath)) {
-    return (
-      <PwaProvider>
-        <TotemTheme class="totem-product-surface totem-learning-authority-surface">
-          <a
-            class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
-            href="#main-content"
-            onClick={focusMainContent}
-          >
-            {t('navigation.skipToContent')}
-          </a>
-          <PwaStatus showInstallPrompt={false} />
-          <BackNavigationProvider onTargetChange={updateBackTarget}>
-            <LearningAuthorityShell
-              backTarget={backTarget}
-              currentPath={currentPath}
-              onBack={goBack}
-            >
-              {children}
-            </LearningAuthorityShell>
-          </BackNavigationProvider>
         </TotemTheme>
       </PwaProvider>
     );

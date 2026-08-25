@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
-import { vi } from 'vitest';
+import { render, screen } from '@testing-library/preact';
 
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 
@@ -56,53 +55,15 @@ describe('SafeMarkdown', () => {
     );
 
     expect(screen.getByText('pnpm dev').tagName).toBe('CODE');
-    expect(
-      screen.getByRole('region', { name: 'Code — bash' }),
-    ).toHaveTextContent('curl http://localhost:3000/health');
+    expect(screen.getByRole('region', { name: 'Code — bash' })).toHaveTextContent(
+      'curl http://localhost:3000/health',
+    );
     expect(screen.getByRole('table')).toHaveTextContent('Service joignable');
     expect(screen.getByRole('img', { name: 'Architecture' })).toHaveAttribute(
       'src',
       '/learning/sourcelab/architecture.svg',
     );
     expect(container.querySelector('pre code')).toBeInTheDocument();
-    expect(container.querySelectorAll('.ui-code-block__line')).toHaveLength(1);
-  });
-
-  it('rend le contexte technique, les lignes focales et la copie sans altérer le code', async () => {
-    const writeText = vi.fn().mockResolvedValue(undefined);
-    Object.defineProperty(navigator, 'clipboard', {
-      configurable: true,
-      value: { writeText },
-    });
-
-    const { container } = render(
-      <SafeMarkdown
-        content={
-          '```ts path=src/server.ts focus=2\nconst port = 3000;\nserve(port);\n```'
-        }
-      />,
-    );
-
-    expect(screen.getByText('src/server.ts')).toBeInTheDocument();
-    expect(container.querySelectorAll('.ui-code-block__line')).toHaveLength(2);
-    expect(
-      container.querySelector('.ui-code-block__line--focused'),
-    ).toHaveTextContent('serve(port);');
-    fireEvent.click(screen.getByRole('button', { name: 'Copier' }));
-    await waitFor(() =>
-      expect(writeText).toHaveBeenCalledWith(
-        'const port = 3000;\nserve(port);',
-      ),
-    );
-    expect(screen.getByRole('button', { name: 'Copié' })).toBeInTheDocument();
-  });
-
-  it('distingue une sortie technique du code exécutable', () => {
-    render(<SafeMarkdown content={'```http\nHTTP/1.1 200 OK\n```'} />);
-
-    expect(screen.getByRole('region', { name: 'Sortie — http' })).toHaveClass(
-      'ui-code-block--output',
-    );
   });
 
   it('refuse les médias externes et les traversées de chemin', () => {

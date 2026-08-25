@@ -1,12 +1,5 @@
 # V4-019 — Rapport de release du pilote Writing
 
-> **Rectificatif visuel du 26 août 2026.** Les affirmations de conformité à des
-> paquets visuels publics ou desktop formulées dans ce rapport décrivent l'état
-> audité au 25 août. Elles ne constituent plus une autorité de design. La source
-> de vérité courante est `docs/V4_TOTEM_IMPLEMENTATION_MAP.md`, limitée aux
-> trois références explicitement validées par Rayan. Les preuves runtime,
-> financières et expérimentales de ce rapport restent inchangées.
-
 ## Statut
 
 **SMOKE PREVIEW RÉUSSI — preview refermée, aucun GO production.**
@@ -264,7 +257,7 @@ La preview courante est accessible à
 `https://learnx-git-dev-guts6667s-projects.vercel.app`. Le contrôle du contenu
 déployé retrouve le bundle attendu et un digest de `journal.css` strictement
 identique au fichier de `ae89a60a`. `deployment:check` est vert. La matrice
-locale finale compte `913` tests Vitest réussis et `75` scénarios Playwright
+locale finale compte `906` tests Vitest réussis et `75` scénarios Playwright
 réussis, `33` scénarios non applicables au profil courant et `0` échec, en plus
 de lint, typecheck et build verts.
 

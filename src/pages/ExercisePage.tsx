@@ -54,11 +54,7 @@ export function ExercisePage({
   const key = activityKey('EXERCISE', exercise.id);
   return (
     <article class="totem-learning-page page-layout page-layout--work space-y-6">
-      <LessonContextHeader
-        activityTitle={exercise.title}
-        intro={t('exercise.formativeDescription')}
-        lesson={lesson}
-      />
+      <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
       <ExerciseCard
         exercise={exercise}
         isLessonPublished={lesson.isPublished}

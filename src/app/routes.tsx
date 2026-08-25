@@ -4,7 +4,11 @@ import { useCallback, useState } from 'preact/hooks';
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { AdminRoute } from '@/features/auth/AdminRoute';
 import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
-import { ModulePage, ProgramPage, StagePage } from '@/pages/CurriculumPages';
+import {
+  ModulePage,
+  ProgramPage,
+  StagePage,
+} from '@/pages/CurriculumPages';
 import {
   DiscoverProgramsPage,
   TotemProgramsPage,
@@ -29,7 +33,6 @@ import { AdminCreditsPage } from '@/pages/AdminCreditsPage';
 import { CreditsPage } from '@/pages/CreditsPage';
 import { ActivateAccountPage } from '@/pages/ActivateAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
-import { FirstDirectionPage } from '@/pages/FirstDirectionPage';
 import { PublicInterestPage } from '@/pages/PublicInterestPage';
 import { TotemPrimitivesPage } from '@/pages/TotemPrimitivesPage';
 import { TotemAdminPreviewPage } from '@/pages/TotemAdminPreviewPage';
@@ -315,9 +318,6 @@ export function AppRoutes() {
         <AccessRequestPage path="/request-access" />
         <VerifyEmailPage path="/verify-email" />
         <ActivateAccountPage path="/activate" />
-        <ProtectedRoute path="/first-direction">
-          <FirstDirectionPage />
-        </ProtectedRoute>
         <ProgramsRoute path="/program" />
         <DiscoverProgramsRoute path="/discover" />
         <ProgramRoute path="/program/:programSlug" />

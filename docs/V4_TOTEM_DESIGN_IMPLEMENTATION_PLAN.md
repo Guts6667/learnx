@@ -1,13 +1,11 @@
 # Plan d'implémentation design V4 — Totem modernisé
 
-> **SUPERSEDED_FOR_UI_UX le 26 août 2026.** Ce document conserve l'historique
+> **SUPERSEDED_FOR_UI_UX le 24 août 2026.** Ce document conserve l'historique
 > de la première direction Totem. Pour toute implémentation d'interface,
-> appliquer exclusivement `docs/V4_TOTEM_IMPLEMENTATION_MAP.md`. Seules les
-> trois références restrictives qui y sont listées sont encore autoritaires :
-> apprentissage, landing/compte et contenus techniques. Toutes les autres
-> maquettes citées plus bas sont retirées de l'autorité ; elles ne doivent plus
-> être utilisées pour compléter ou réinterpréter une surface. Les contrats
-> métier encore valides restent des contraintes et ne sont pas supprimés.
+> appliquer `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` et les paquets approuvés
+> `learnx-totem-mobile-authority` / `learnx-totem-desktop-authority` qu'il cite.
+> Les contrats métier encore valides ci-dessous restent des contraintes et ne
+> sont pas supprimés.
 
 ## Statut
 

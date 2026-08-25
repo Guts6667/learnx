@@ -2,7 +2,9 @@ import { useState } from 'preact/hooks';
 
 import { actionClassNames } from '@/components/ui/actionStyles';
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { useEmailVerificationMutation } from '@/features/auth/access-request';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import { ApiClientError } from '@/lib/api-client';
@@ -43,63 +45,66 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
   }
 
   return (
-    <section aria-labelledby="email-verification-title" class="totem-auth-page">
-      <div aria-hidden="true" class="totem-auth-email-mark">
-        ✉
-      </div>
-      <header class="totem-auth-page__header">
-        <p class="page-eyebrow">{t('auth.verify.step')}</p>
-        <h1 class="page-title" id="email-verification-title">
-          {t('auth.verify.title')}
-        </h1>
-        <p>{t('auth.verify.description')}</p>
-      </header>
+    <section
+      aria-labelledby="email-verification-title"
+      class="totem-auth-page page-shell"
+    >
+      <PageHeader
+        description={t('auth.verify.description')}
+        eyebrow={t('auth.verify.eyebrow')}
+        id="email-verification-title"
+        title={t('auth.verify.title')}
+      />
       <OfflineBanner isOffline={!isOnline} message={t('auth.verify.offline')} />
-      {verificationMutation.data ? (
-        <div class="space-y-5" role="status">
-          <h2 class="ui-text text-xl font-semibold">
-            {t('auth.verify.successTitle')}
-          </h2>
-          <p class="ui-text-muted leading-7">
-            {t('auth.verify.successDescription')}
-          </p>
-          <a
-            class={actionClassNames('secondary', 'md', 'w-full')}
-            href="/login"
-          >
-            {t('auth.backToLogin')}
-          </a>
-        </div>
-      ) : (
-        <div class="space-y-5">
-          <p class="ui-text-muted leading-7">{t('auth.verify.explanation')}</p>
-          {!token ? (
-            <p class="ui-text-danger text-sm" role="alert">
-              {t('auth.verify.invalidLink')}
+      <Card>
+        {verificationMutation.data ? (
+          <div class="space-y-5" role="status">
+            <h2 class="ui-text text-xl font-semibold">
+              {t('auth.verify.successTitle')}
+            </h2>
+            <p class="ui-text-muted leading-7">
+              {t('auth.verify.successDescription')}
             </p>
-          ) : null}
-          {errorMessage ? (
-            <p class="ui-text-danger text-sm" role="alert">
-              {errorMessage}
+            <a
+              class={actionClassNames('secondary', 'md', 'w-full')}
+              href="/login"
+            >
+              {t('auth.backToLogin')}
+            </a>
+          </div>
+        ) : (
+          <div class="space-y-5">
+            <p class="ui-text-muted leading-7">
+              {t('auth.verify.explanation')}
             </p>
-          ) : null}
-          <Button
-            class="w-full"
-            disabled={!isOnline || !token}
-            isLoading={verificationMutation.isPending}
-            onClick={handleVerification}
-            type="button"
-          >
-            {t('auth.verify.submit')}
-          </Button>
-          <a
-            class={actionClassNames('ghost', 'md', 'w-full')}
-            href="/request-access"
-          >
-            {t('auth.verify.requestNewLink')}
-          </a>
-        </div>
-      )}
+            {!token ? (
+              <p class="ui-text-danger text-sm" role="alert">
+                {t('auth.verify.invalidLink')}
+              </p>
+            ) : null}
+            {errorMessage ? (
+              <p class="ui-text-danger text-sm" role="alert">
+                {errorMessage}
+              </p>
+            ) : null}
+            <Button
+              class="w-full"
+              disabled={!isOnline || !token}
+              isLoading={verificationMutation.isPending}
+              onClick={handleVerification}
+              type="button"
+            >
+              {t('auth.verify.submit')}
+            </Button>
+            <a
+              class={actionClassNames('ghost', 'md', 'w-full')}
+              href="/request-access"
+            >
+              {t('auth.verify.requestNewLink')}
+            </a>
+          </div>
+        )}
+      </Card>
     </section>
   );
 }
