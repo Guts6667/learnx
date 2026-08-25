@@ -14,7 +14,7 @@ describe('V4 document routing', () => {
 
     expect(index).toContain('docs/V4_ROADMAP.md');
     expect(index).toContain('BACKLOG_V4.md');
-    expect(roadmap).toContain('24 août 2026');
+    expect(roadmap).toContain('25 août 2026');
     expect(roadmap).toContain('writing');
     expect(roadmap).toContain('crédits offerts');
     expect(index).toContain('V4_1_BACKLOG.md');

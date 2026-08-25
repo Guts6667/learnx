@@ -2,7 +2,7 @@
 
 ## Autorité
 
-Statut : **DESIGN VALIDÉ — IMPLÉMENTATION ET QA LOCALE TERMINÉES, PREVIEW À VALIDER**
+Statut : **DESIGN VALIDÉ — IMPLÉMENTATION ET QA PREVIEW TERMINÉES**
 
 Date d’arbitrage : 24 août 2026
 
@@ -52,14 +52,13 @@ Les composants partagés à stabiliser avant les pages sont le shell, la
 navigation, les boutons, les champs, les états, les surfaces signature, les
 listes, les tableaux administrateur et les retours de correction.
 
-Au 24 août, les tokens, shells produit/admin/auth, Aujourd’hui, Mes parcours,
+Au 25 août, les tokens, shells produit/admin/auth, Aujourd’hui, Mes parcours,
 Découvrir, Notes, Profil, Crédits, correction assistée et les primitives PWA
-sont raccordés sur la branche de travail. La QA locale couvre lint, typecheck,
-865 tests unitaires/intégration, le build et 69 scénarios Playwright réussis
-(15 scénarios conditionnels ignorés), notamment 320/390/720/1024/1440/1920,
-zoom 200 %, clavier, focus et reduced motion. Cette cartographie ne les déclare
-pas publiés : la preview authentifiée et le gate de release restent
-obligatoires.
+sont raccordés sur la branche de livraison. La QA locale et preview couvre
+lint, typecheck, tests unitaires/intégration, build et Playwright, notamment
+320/390/720/1024/1440/1920, zoom 200 %, clavier, focus et reduced motion. Le
+smoke preview authentifié a réussi ; cette cartographie n'autorise toutefois
+ni `main` ni l'ouverture production, qui restent gouvernées par V4-019.
 
 ## Phase 1 — mobile et fondations
 

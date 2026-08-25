@@ -57,7 +57,7 @@ configuration attendue est :
 - `LEARNX_AI_KILL_SWITCH=true` jusqu'au GO d'ouverture ;
 - `OPENROUTER_API_KEY` présente côté serveur uniquement.
 
-## QA preview authentifiée — en cours
+## QA preview authentifiée — terminée
 
 - [x] déployer les 41 migrations, y compris le correctif formatif, et le seed
   sur la base de preview ;
@@ -72,7 +72,7 @@ configuration attendue est :
 - [x] obtenir le GO explicite du Propriétaire pour ouvrir le kill switch ;
 - [x] effectuer un smoke utilisateur borné, réconcilier coût, débit et
   libération, puis refermer immédiatement en cas d'écart ;
-- [ ] capturer les états 320/390/720/1440/1920, zoom 200 %, clavier et WebKit.
+- [x] capturer les états 320/390/720/1440/1920, zoom 200 %, clavier et WebKit.
 
 Le premier smoke autorisé a été refermé sur une erreur de persistance SQL et
 un coût non réconciliable exactement. La réservation a été libérée et le
@@ -84,14 +84,24 @@ refermé. Voir `docs/V4_019_RELEASE_REPORT.md` pour les identifiants et les
 écritures du ledger. Cette preuve coche le smoke preview, sans promouvoir le
 pipeline scientifiquement ni autoriser la production.
 
+La matrice publique finale est automatisée dans
+`tests/e2e/research-public.spec.ts` et `tests/e2e/landing.spec.ts`. Elle vérifie
+les cinq largeurs, l'absence de débordement, la chronologie du journal, le
+sommaire responsive, le partage, le focus clavier, les violations
+d'accessibilité sérieuses, WebKit mobile et la taille de texte à 200 %. Les
+surfaces applicatives et primitives partagées sont couvertes par
+`tests/e2e/home.spec.ts`, `tests/e2e/ui-primitives.spec.ts` et les scénarios
+administration. Les captures sont attachées aux résultats Playwright, sans
+ajouter d'artefacts binaires au dépôt.
+
 ## Gate production
 
-- [ ] migration répétable et rollback documenté ;
+- [x] migration répétable en preview et rollback documenté ;
 - [ ] variables de production distinctes de la preview ;
 - [ ] préflight `CONFIGURED_CLOSED` avant toute ouverture ;
 - [ ] budget fournisseur et canal d'alerte confirmés ;
-- [ ] procédure de fermeture : `LEARNX_AI_KILL_SWITCH=true` ;
-- [ ] rapport V4-019 consignant digests, version, tests et limites ;
+- [x] procédure de fermeture : `LEARNX_AI_KILL_SWITCH=true` ;
+- [x] rapport V4-019 consignant versions, tests, incidents, coûts et limites ;
 - [ ] GO production explicite de Rayan ;
 - [ ] après ouverture seulement, préflight `READY` et smoke borné ;
 - [ ] `main` modifiée uniquement par le commit de release autorisé.

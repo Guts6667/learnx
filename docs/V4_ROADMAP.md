@@ -1,6 +1,6 @@
 # Roadmap V4 — correction formative pilote
 
-## Statut au 24 août 2026
+## Statut au 25 août 2026
 
 La V4 n'est plus bloquée par le choix d'un modèle. Rayan a autorisé une
 livraison produit bornée avec la technologie actuelle : **Sonnet 4.6,
@@ -44,40 +44,36 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | Coûts/incidents et deux signaux connus | Implémentés et visibles dans Crédits admin | `src/server/corrections/correction-monitoring.ts`, `src/pages/AdminCreditsPage.tsx` |
 | Totem mobile et desktop | Implémentés, QA locale verte | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` |
 
-## Ce qui bloque encore une release utilisable
+## État de release réel
 
-1. **Contrat publié — livré sur la branche** : l'exercice pilote « Choisir sans
-   forcer un cadre » porte désormais sa consigne exacte et le contrat V4
-   `PUBLISHED` dans le bundle. Le déploiement du seed et la QA preview restent
-   nécessaires avant qu'il soit visible dans un environnement partagé.
-2. **Catalogue pilote — livré sur la branche** : Rayan a validé l'option B,
-   1 500 caractères, estimation 3 crédits, réserve 6 et parité pilote
-   provisoire de 100 crédits/€. La migration active la version immuable `4.0.0`
-   pour les crédits offerts uniquement ; son déploiement et sa QA preview
-   restent nécessaires.
-3. **Configuration de déploiement** : clé OpenRouter, assignation exacte
-   Sonnet/Anthropic et kill switch doivent être vérifiés en preview puis en
-   production. Le préflight hors réseau `ai:release:check` est livré ; son
-   exécution avec les variables réelles de preview reste à faire.
-4. **Preview authentifiée** : la QA locale est verte (lint, typecheck, 874
-   tests, build, 69 scénarios Playwright réussis et 15 conditionnels ignorés).
-   Il reste à valider l'environnement de preview avec ses vraies variables,
-   son catalogue et un compte pilote.
-5. **Gate de release** : la recherche publique FR/EN reflète déjà les refus,
-   le NO-GO Writing et la décision de pilote borné. Son déploiement suivra le
-   même commit de release que l'application, après la QA et le GO explicite.
+1. **Contrat et catalogue déployés** : l'exercice « Choisir sans forcer un
+   cadre », son contrat `PUBLISHED` et le catalogue immuable `4.0.0` sont
+   présents dans la base preview. Le pilote reste limité aux crédits offerts.
+2. **Configuration preview validée** : l'identité Sonnet/Anthropic est
+   épinglée, le préflight a confirmé `CONFIGURED_CLOSED`, puis le kill switch a
+   été ouvert uniquement pendant un smoke autorisé et refermé ensuite.
+3. **Parcours bout en bout prouvé** : le second smoke a livré trois critères,
+   réglé `3` crédits après une réserve de `6`, libéré `3` et réconcilié un coût
+   fournisseur de `0,025938 USD` en un appel, sans effet sur la progression.
+4. **QA et publication preview** : les surfaces privées, landing, marque et
+   sept articles de recherche sont raccordés. La matrice finale couvre les
+   largeurs, le texte à 200 %, le clavier, l'accessibilité et WebKit.
+5. **Frontière restante** : aucune implémentation produit n'est bloquante pour
+   le pilote V4A. Restent la configuration de production fermée, le budget et
+   le canal d'alerte, le GO explicite de Rayan, puis un smoke production borné.
+   `main` et la production ne sont pas modifiées avant ce GO.
 
 ## Chemin critique
 
 | Ordre | Ticket de reprise | Responsable | Sortie |
 | ---: | --- | --- | --- |
-| 1 | V4-010-RUNTIME | Développement | raccord end-to-end implémenté ; suite complète et preview à valider |
-| 2 | V4-002-PUBLISH | Produit/pédagogie + Développement | livré sur la branche : contrat writing/fr-FR publié et immuable dans le bundle ; seed preview restant |
-| 3 | V4-007-PILOT | Finance + Propriétaire | catalogue crédits offerts calibré et activé, sans vente publique |
-| 4 | V4-016-TOTEM | Développement | livré et QA locale verte ; validation preview propriétaire restante |
-| 5 | V4-012-MONITORING | Développement | livré sur la branche : coûts, incidents et deux indicateurs visibles en admin |
-| 6 | V4-RESEARCH | Méthodologie + Développement | livré sur la branche : journal, registre et pages publiques FR/EN à jour |
-| 7 | V4-019-RELEASE | Développement + Propriétaire | preview authentifiée, checklist, GO explicite, puis production |
+| 1 | V4-010-RUNTIME | Développement | terminé et prouvé en preview |
+| 2 | V4-002-PUBLISH | Produit/pédagogie + Développement | terminé : contrat publié et seed preview validé |
+| 3 | V4-007-PILOT | Finance + Propriétaire | terminé pour V4A : crédits offerts, aucune vente publique |
+| 4 | V4-016-TOTEM | Développement | terminé et validé en preview |
+| 5 | V4-012-MONITORING | Développement | terminé : coûts, incidents et préflight visibles en admin |
+| 6 | V4-RESEARCH | Méthodologie + Développement | terminé : journal et articles publics chronologiques |
+| 7 | V4-019-RELEASE | Développement + Propriétaire | en cours : preuves figées ; GO production puis smoke borné |
 
 ## Limites assumées de la V4
 

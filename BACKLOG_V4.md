@@ -2,9 +2,9 @@
 
 ## Statut et autorité
 
-- Version : 1.6.3
-- Statut : **pilote V4 writing-only autorisé par le Propriétaire — raccord et finition en cours**
-- Dernière consolidation : 24 août 2026 — livraison limitée avec technologie actuelle et Totem approuvé
+- Version : 1.6.4
+- Statut : **pilote V4 writing-only validé en preview — gate production V4-019 restant**
+- Dernière consolidation : 25 août 2026 — parcours bout en bout prouvé, QA finale en clôture
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -2362,6 +2362,22 @@ calibration V4-018.**
 
 **Priorité : P0 release. Dépendances : V3.5 clôturée, V4-001 à V4-018A,
 V4-016A, V4-016B, V4-016C et V4-016G.**
+
+### État de reprise au 25 août 2026
+
+- Preview migrée et seedée ; contrat writing/fr-FR et catalogue `4.0.0`
+  contrôlés avec un compte pilote.
+- Préflight `CONFIGURED_CLOSED` vérifié, puis smoke autorisé réussi en un appel :
+  coût `0,025938 USD`, réserve `6`, règlement `3`, libération `3`, aucun effet
+  sur la progression. Le kill switch a ensuite été refermé.
+- Landing, marque, journal et articles chronologiques sont déployés en preview ;
+  la matrice finale couvre les largeurs, le texte à 200 %, le clavier,
+  l'accessibilité et WebKit.
+- Le scope de release actuel est V4A : crédits offerts uniquement. Le cycle
+  d'achat public appartient à V4B et ne bloque pas ce pilote.
+- Restent la configuration production fermée, le budget et le canal d'alerte,
+  le GO explicite du Propriétaire, puis un smoke production borné. Aucun de ces
+  actes n'est autorisé par l'état actuel du backlog.
 
 ### Périmètre
 

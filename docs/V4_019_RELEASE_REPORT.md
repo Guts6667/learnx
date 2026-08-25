@@ -169,12 +169,65 @@ contrôle distant anonyme vérifie l'application, le journal de recherche, la
 PWA et les routes publiques. L'environnement preview conserve
 `LEARNX_AI_KILL_SWITCH=true` ; aucun appel n'a été effectué après le smoke.
 
+## Matrice finale publique et Totem
+
+Les paquets d'autorité approuvés `learnx-totem-public-authority` et
+`learnx-brand-assets-authority` ont été relus intégralement. Les six actifs de
+marque servis par l'application ont été comparés par SHA-256 avec leurs sources
+approuvées : ils sont identiques. La landing conserve un CTA primaire unique,
+le journal reste chronologique et append-only, les sept publications sont
+accessibles séparément, et le dossier technique continu demeure distinct.
+
+La QA automatisée couvre :
+
+- landing et journal à 320, 390, 720, 1440 et 1920 px ;
+- taille de texte à 200 %, focus clavier et absence de débordement horizontal ;
+- Chromium desktop, WebKit mobile et contrôles d'accessibilité sérieux ;
+- ordre du plus récent au plus ancien, métadonnées visibles, sommaire
+  responsive, URL canonique et action de partage ;
+- contraste des tableaux et rendu des pages d'article.
+
+La preuve reproductible est `tests/e2e/research-public.spec.ts`, complétée par
+`tests/e2e/landing.spec.ts`, `tests/e2e/home.spec.ts` et
+`tests/e2e/ui-primitives.spec.ts`. Les captures sont attachées à l'exécution
+Playwright et ne sont pas committées comme copies divergentes.
+
+Le domaine canonique public `https://learn-x.app` répond en HTTP 200. L'alias
+de convenance `dev.learn-x.app` ne résout plus au DNS lors du contrôle du
+25 août ; l'URL immuable du déploiement preview reste disponible. Ce défaut
+d'alias ne touche pas la production, mais doit être corrigé avant de présenter
+de nouveau ce sous-domaine comme accès de validation.
+
+## Plan de fermeture et rollback
+
+1. Avant ouverture, conserver `LEARNX_AI_KILL_SWITCH=true` et exiger le
+   préflight `CONFIGURED_CLOSED` sur l'environnement ciblé.
+2. En cas d'écart d'identité, coût, citation, contrat ou règlement, refermer le
+   kill switch avant toute nouvelle tentative. Ne jamais reconstruire un coût
+   absent comme zéro ; les tentatives concernées restent
+   `RECONCILIATION_REQUIRED`.
+3. Revenir au déploiement applicatif précédent validé. Les migrations V4 sont
+   additives : ne pas exécuter de descente de schéma destructive. Une
+   restauration de base n'est envisagée qu'en cas de corruption avérée, depuis
+   un point de restauration contrôlé.
+4. Réconcilier les réservations encore ouvertes, confirmer qu'aucun nouvel
+   appel ne part coupe-circuit fermé, puis rejouer les contrôles publics et
+   authentifiés sans fournisseur.
+5. Les pages publiques et les parcours déterministes restent utilisables même
+   si la correction assistée demeure fermée.
+
 ## Gate restant
 
-1. terminer la matrice finale locale et les captures d'accessibilité prévues ;
-2. figer le rapport V4-019 et le plan de rollback avec le kill switch fermé ;
-3. obtenir un GO production explicite de Rayan avant toute modification de
-   `main`, configuration production ou nouvelle dépense.
+Les preuves locales et preview sont réunies. Restent exclusivement des actes
+de production :
+
+1. configurer les variables production distinctes avec le kill switch fermé,
+   le budget fournisseur et le canal d'alerte confirmés ;
+2. obtenir le GO production explicite de Rayan avant toute modification de
+   `main`, ouverture production ou nouvelle dépense ;
+3. après ce GO seulement, vérifier `CONFIGURED_CLOSED`, ouvrir, obtenir
+   `READY`, effectuer un smoke borné, puis décider de laisser ouvert ou de
+   refermer selon les preuves.
 
 Le smoke réussi constitue une preuve produit bornée sur preview, pas un GO
 runtime production ni une preuve de promotion scientifique.
