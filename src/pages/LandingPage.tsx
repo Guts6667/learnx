@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useState } from 'preact/hooks';
 import { route } from 'preact-router';
 
 import { Button } from '@/components/ui/Button';
@@ -165,17 +165,19 @@ export function LandingPage({ path }: { path?: string }) {
   useEffect(() => {
     if (standalone) route('/today', true);
   }, [standalone]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (standalone) return;
+    document.documentElement.dataset.documentMetadataOwner = 'page';
+    const description = document.querySelector<HTMLMetaElement>(
+      'meta[name="description"]',
+    );
     document.title =
       locale === 'en'
         ? 'LearnX — Your path to knowledge'
         : 'LearnX — Votre chemin vers la connaissance';
-    const description = document.querySelector<HTMLMetaElement>(
-      'meta[name="description"]',
-    );
     if (description) description.content = t('landing.lead');
     return () => {
+      delete document.documentElement.dataset.documentMetadataOwner;
       document.title = t('app.documentTitle');
       if (description) description.content = t('app.description');
     };
@@ -185,9 +187,12 @@ export function LandingPage({ path }: { path?: string }) {
 
   return (
     <TotemTheme class="landing-page totem-public-landing">
+      <a class="public-skip-link" href="#main-content">
+        {t('landing.skipToContent')}
+      </a>
       <header class="landing-header">
         <a class="landing-brand" href="/">
-          <span aria-hidden="true" class="landing-brand-mark">LX</span>
+          <img alt="" aria-hidden="true" src="/learnx-mark-on-paper.svg" />
           <span>LearnX</span>
         </a>
         <nav
@@ -221,6 +226,18 @@ export function LandingPage({ path }: { path?: string }) {
           </div>
           <a href="/login">{t('landing.login')}</a>
         </nav>
+        <details class="landing-mobile-navigation">
+          <summary>{t('landing.menu')}</summary>
+          <nav aria-label={t('landing.utilityNavigation')}>
+            <a href="#product">{t('landing.navigation.product')}</a>
+            <a href="#research">{t('landing.navigation.research')}</a>
+            <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
+            <button onClick={() => setLocale(locale === 'fr' ? 'en' : 'fr')} type="button">
+              {locale === 'fr' ? 'EN' : 'FR'}
+            </button>
+            <a href="/login">{t('landing.login')}</a>
+          </nav>
+        </details>
       </header>
       <main id="main-content" tabindex={-1}>
         <section class="landing-hero">
@@ -232,7 +249,7 @@ export function LandingPage({ path }: { path?: string }) {
               <a class="ui-action ui-action--primary" href="#early-adopter">
                 {t('landing.cta.early')}
               </a>
-              <a class="ui-action ui-action--secondary" href="#launch-updates">
+              <a class="landing-updates-action" href="#launch-updates">
                 {t('landing.cta.updates')}
               </a>
             </div>
@@ -310,25 +327,35 @@ export function LandingPage({ path }: { path?: string }) {
           class="landing-section landing-research"
           id="research"
         >
-          <div>
-            <p class="page-eyebrow">{t('landing.research.eyebrow')}</p>
-            <h2 id="landing-research">{t('landing.research.title')}</h2>
-          </div>
-          <div>
-            <p>{t('landing.research.description')}</p>
+          <p class="page-eyebrow">{t('landing.research.eyebrow')}</p>
+          <h2 id="landing-research">{t('landing.research.title')}</h2>
+          <p>{t('landing.research.description')}</p>
+          <article class="landing-research-latest">
+            <p class="landing-research-meta">
+              {t('landing.research.latestMeta')}
+            </p>
+            <h3>{t('landing.research.latestTitle')}</h3>
+            <dl>
+              <div>
+                <dt>{t('landing.research.verdictLabel')}</dt>
+                <dd>{t('landing.research.verdict')}</dd>
+              </div>
+              <div>
+                <dt>{t('landing.research.decisionLabel')}</dt>
+                <dd>{t('landing.research.decision')}</dd>
+              </div>
+            </dl>
             <a
-              class="ui-action ui-action--secondary ui-action--md"
+              class="landing-research-action"
               href={
                 locale === 'en'
                   ? '/research/ai-correction/en.html'
                   : '/research/ai-correction/index.html'
               }
-              rel="noopener"
-              target="_blank"
             >
               {t('landing.research.action')}
             </a>
-          </div>
+          </article>
         </section>
         <section class="landing-forms">
           <article id="early-adopter">
@@ -347,7 +374,18 @@ export function LandingPage({ path }: { path?: string }) {
       </main>
       <footer class="landing-footer">
         <span>© 2026 LearnX</span>
-        <a href="/login">{t('landing.login')}</a>
+        <nav aria-label={t('landing.footerNavigation')}>
+          <a
+            href={
+              locale === 'en'
+                ? '/research/ai-correction/en.html'
+                : '/research/ai-correction/index.html'
+            }
+          >
+            {t('landing.navigation.research')}
+          </a>
+          <a href="/login">{t('landing.login')}</a>
+        </nav>
       </footer>
     </TotemTheme>
   );

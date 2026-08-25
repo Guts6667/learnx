@@ -21,13 +21,19 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: '/learnx-icon-192.png?v=totem-1',
+            src: '/pwa-192x192.png?v=brand-1',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/learnx-icon-512.png?v=totem-1',
+            src: '/pwa-512x512.png?v=brand-1',
             sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            purpose: 'maskable',
+            sizes: '512x512',
+            src: '/pwa-maskable-512x512.png?v=brand-1',
             type: 'image/png',
           },
         ],

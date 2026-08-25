@@ -29,12 +29,14 @@ export function I18nProvider({ children, locale = 'fr' }: I18nProviderProps) {
 
   useEffect(() => {
     document.documentElement.lang = activeLocale;
-    document.title = translate(activeLocale, 'app.documentTitle');
     const description =
       document.querySelector<HTMLMetaElement>('meta[name="description"]') ??
       document.head.appendChild(document.createElement('meta'));
-    description.name = 'description';
-    description.content = translate(activeLocale, 'app.description');
+    if (document.documentElement.dataset.documentMetadataOwner !== 'page') {
+      document.title = translate(activeLocale, 'app.documentTitle');
+      description.name = 'description';
+      description.content = translate(activeLocale, 'app.description');
+    }
 
     const manifest =
       document.querySelector<HTMLLinkElement>('link[rel="manifest"]') ??

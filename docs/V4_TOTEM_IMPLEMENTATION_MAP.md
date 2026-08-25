@@ -20,6 +20,20 @@ Le manifeste de chaque paquet est `APPROVED`, version `1.0.0`, avec
 `implementationHandoffAllowed: true`. Une différence visuelle doit être traitée
 comme un défaut à corriger, pas comme une variation libre.
 
+Les surfaces publiques et la marque disposent en outre de deux autorités
+approuvées le 24 août 2026. Elles étendent Totem sans modifier les contrats
+produit ou scientifiques :
+
+- landing et journal de recherche :
+  `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-totem-public-authority/` ;
+- icône, marque PWA et favicon :
+  `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-brand-assets-authority/`.
+
+Ces deux manifestes sont `APPROVED`, version `1.0.0`. La landing conserve un
+CTA primaire unique, le journal reste append-only et chaque article peut être
+partagé via son URL canonique. Le dossier technique continu demeure distinct
+des publications chronologiques.
+
 ## Fondations partagées
 
 | Contrat | Valeur attendue | Cible principale |
@@ -112,4 +126,5 @@ libellés. À 720 px et zoom 200 %, aucune sidebar fixe ne subsiste.
 4. Étendre les mêmes composants au desktop.
 5. Faire la validation desktop et responsive complète.
 6. Finaliser correction, crédits et administration sur ces primitives.
-7. Mettre à jour la recherche publique, puis exécuter le gate de release.
+7. Mettre à jour la recherche publique et la marque, puis exécuter le gate de
+   release.

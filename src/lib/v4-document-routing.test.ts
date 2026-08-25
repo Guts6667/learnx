@@ -43,6 +43,8 @@ describe('V4 document routing', () => {
     expect(index).toContain('docs/V4_TOTEM_IMPLEMENTATION_MAP.md');
     expect(map).toContain('learnx-totem-mobile-authority');
     expect(map).toContain('learnx-totem-desktop-authority');
+    expect(map).toContain('learnx-totem-public-authority');
+    expect(map).toContain('learnx-brand-assets-authority');
     expect(map).toContain('320, 390, 720, 1024, 1440 et 1920 px');
     expect(map).toContain('DESIGN VALIDÉ');
   });
@@ -99,16 +101,26 @@ describe('V4 document routing', () => {
     ];
 
     for (const article of articlePaths) {
-      expect(
-        existsSync(
-          resolve(`public/research/ai-correction/articles/${article}.html`),
-        ),
-      ).toBe(true);
-      expect(
-        existsSync(
-          resolve(`public/research/ai-correction/articles/${article}.en.html`),
-        ),
-      ).toBe(true);
+      const frenchPath = `public/research/ai-correction/articles/${article}.html`;
+      const englishPath = `public/research/ai-correction/articles/${article}.en.html`;
+      expect(existsSync(resolve(frenchPath))).toBe(true);
+      expect(existsSync(resolve(englishPath))).toBe(true);
+      expect(read(frenchPath)).toContain('rel="canonical"');
+      expect(read(englishPath)).toContain('hreflang="fr"');
     }
+  });
+
+  it('uses the approved brand and share behavior across the research journal', () => {
+    const french = read('public/research/ai-correction/index.html');
+    const article = read(
+      'public/research/ai-correction/articles/writing-exam-bounded-pilot.html',
+    );
+    const script = read('public/research/ai-correction/journal.js');
+
+    expect(french).toContain('/learnx-mark-on-paper.svg');
+    expect(article).toContain('/research/ai-correction/journal.js');
+    expect(article).toContain('application/ld+json');
+    expect(script).toContain('navigator.share');
+    expect(script).toContain('navigator.clipboard.writeText');
   });
 });

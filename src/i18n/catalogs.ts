@@ -5,6 +5,9 @@ export const frenchMessages = {
     'LearnX, votre environnement personnel pour apprendre, pratiquer et réviser.',
   'app.tagline': 'Parcours personnel',
   'landing.utilityNavigation': 'Navigation publique',
+  'landing.footerNavigation': 'Navigation de pied de page',
+  'landing.skipToContent': 'Aller au contenu principal',
+  'landing.menu': 'Menu',
   'landing.language': 'Langue',
   'landing.login': 'Se connecter',
   'landing.navigation.product': 'Le produit',
@@ -64,6 +67,15 @@ export const frenchMessages = {
   'landing.research.description':
     'Notre journal conserve chaque benchmark, refus et arbitrage dans un article daté. Les anciennes recherches restent consultables et le verdict scientifique est toujours distingué de la décision produit.',
   'landing.research.action': 'Explorer le journal de recherche',
+  'landing.research.latestMeta': 'Dernière publication · 24 août 2026 · Résultat',
+  'landing.research.latestTitle':
+    'Évaluation Writing sous protocole scellé : résultats et décision de déploiement borné',
+  'landing.research.verdictLabel': 'Verdict scientifique',
+  'landing.research.verdict':
+    'NO-GO : 80,19 % d’accord critériel, 7 faux PASS et un écart ordinal de deux niveaux.',
+  'landing.research.decisionLabel': 'Décision produit',
+  'landing.research.decision':
+    'Pilote Writing borné autorisé avec crédits offerts, sans effet sur la progression.',
   'landing.early.eyebrow': 'Accès anticipé',
   'landing.early.title': 'Participer aux premiers retours terrain',
   'landing.early.description':
@@ -1039,6 +1051,9 @@ export const englishMessages = {
     'LearnX, your personal environment to learn, practise and review.',
   'app.tagline': 'Personal learning journey',
   'landing.utilityNavigation': 'Public navigation',
+  'landing.footerNavigation': 'Footer navigation',
+  'landing.skipToContent': 'Skip to main content',
+  'landing.menu': 'Menu',
   'landing.language': 'Language',
   'landing.login': 'Sign in',
   'landing.navigation.product': 'Product',
@@ -1098,6 +1113,15 @@ export const englishMessages = {
   'landing.research.description':
     'Our journal preserves each benchmark, refusal and trade-off in a dated article. Earlier research remains available, and scientific verdicts stay separate from product decisions.',
   'landing.research.action': 'Explore the research journal',
+  'landing.research.latestMeta': 'Latest publication · 24 August 2026 · Result',
+  'landing.research.latestTitle':
+    'Sealed-protocol Writing evaluation: results and bounded deployment decision',
+  'landing.research.verdictLabel': 'Scientific verdict',
+  'landing.research.verdict':
+    'NO-GO: 80.19% criterion agreement, seven false passes and one two-level ordinal gap.',
+  'landing.research.decisionLabel': 'Product decision',
+  'landing.research.decision':
+    'A bounded Writing pilot is authorised with complimentary credits and no effect on progression.',
   'landing.early.eyebrow': 'Early access',
   'landing.early.title': 'Help shape the first real-world uses',
   'landing.early.description':

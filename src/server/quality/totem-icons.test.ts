@@ -6,7 +6,12 @@ const geometry = {
   x: 'm264 176 44 62 44-62h76l-82 108 88 116h-78l-48-68-48 68h-78l88-116-82-108z',
 } as const;
 
-const sizes = [1024, 512, 192, 180, 60, 40, 32, 29] as const;
+const paperIcons = [
+  ['public/apple-touch-icon.png', 180],
+  ['public/pwa-192x192.png', 192],
+  ['public/pwa-512x512.png', 512],
+  ['public/pwa-maskable-512x512.png', 512],
+] as const;
 
 function pngDimensions(buffer: Buffer) {
   expect(buffer.subarray(1, 4).toString('ascii')).toBe('PNG');
@@ -16,30 +21,30 @@ function pngDimensions(buffer: Buffer) {
   };
 }
 
-describe('Totem application icons', () => {
+describe('approved LearnX brand assets', () => {
   it('preserves the canonical geometry and exact color roles', async () => {
     const main = await readFile('public/learnx-icon.svg', 'utf8');
-    const dark = await readFile('public/learnx-icon-dark.svg', 'utf8');
+    const mark = await readFile('public/learnx-mark-on-paper.svg', 'utf8');
 
-    for (const svg of [main, dark]) {
+    for (const svg of [main, mark]) {
       expect(svg).toContain(`viewBox="${geometry.viewBox}"`);
       expect(svg).toContain(`d="${geometry.l}"`);
       expect(svg).toContain(`d="${geometry.x}"`);
     }
     expect(new Set(main.match(/#[0-9A-F]{6}/g))).toEqual(
-      new Set(['#FFFAF0', '#17233B', '#3558C9']),
+      new Set(['#121C24', '#F8F5EE', '#557F9A']),
     );
-    expect(new Set(dark.match(/#[0-9A-F]{6}/g))).toEqual(
-      new Set(['#17233B', '#FFFAF0', '#89A7FF']),
+    expect(new Set(mark.match(/#[0-9A-F]{6}/g))).toEqual(
+      new Set(['#121C24', '#557F9A']),
     );
   });
 
-  it.each(sizes)('exports the paper icon at %d px', async (size) => {
-    const buffer = await readFile(`public/learnx-icon-${size}.png`);
+  it.each(paperIcons)('exports %s at %d px', async (path, size) => {
+    const buffer = await readFile(path);
     expect(pngDimensions(buffer)).toEqual({ height: size, width: size });
   });
 
-  it('connects manifests and HTML to documented Totem exports', async () => {
+  it('connects manifests and HTML to the approved brand exports', async () => {
     const html = await readFile('index.html', 'utf8');
     const englishManifest = await readFile(
       'public/manifest-en.webmanifest',
@@ -47,12 +52,12 @@ describe('Totem application icons', () => {
     );
     const vite = await readFile('vite.config.ts', 'utf8');
 
-    expect(html).toContain('/learnx-icon-dark.svg?v=totem-1');
-    expect(html).toContain('/learnx-icon-180.png?v=totem-1');
+    expect(html).toContain('/learnx-icon.svg?v=brand-1');
+    expect(html).toContain('/apple-touch-icon.png?v=brand-1');
     for (const source of [englishManifest, vite]) {
-      expect(source).toContain('/learnx-icon-192.png?v=totem-1');
-      expect(source).toContain('/learnx-icon-512.png?v=totem-1');
-      expect(source).not.toContain('pwa-maskable-512x512.png');
+      expect(source).toContain('/pwa-192x192.png?v=brand-1');
+      expect(source).toContain('/pwa-512x512.png?v=brand-1');
+      expect(source).toContain('/pwa-maskable-512x512.png?v=brand-1');
     }
   });
 });

@@ -56,8 +56,8 @@ describe('LandingPage', () => {
       screen.getAllByRole('link', { name: 'Se connecter' })[0],
     ).toHaveAttribute('href', '/login');
     expect(
-      screen.queryByRole('navigation', { name: 'Navigation principale' }),
-    ).not.toBeInTheDocument();
+      screen.getAllByRole('navigation', { name: 'Navigation publique' }),
+    ).toHaveLength(2);
     expect(
       screen.getAllByRole('heading', {
         name: 'Piloter un projet en équipe',
@@ -79,9 +79,18 @@ describe('LandingPage', () => {
       'href',
       '/research/ai-correction/index.html',
     );
-    expect(researchLink).toHaveAttribute('target', '_blank');
-    expect(researchLink).toHaveAttribute('rel', 'noopener');
-    expect(researchLink).toHaveClass('ui-action--md');
+    expect(researchLink).not.toHaveAttribute('target');
+    expect(researchLink).toHaveClass('landing-research-action');
+    expect(
+      screen.getByText(/7 faux PASS et un écart ordinal de deux niveaux/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Être informé du lancement' }),
+    ).not.toHaveClass('ui-action--secondary');
+    expect(document.querySelector('.landing-brand img')).toHaveAttribute(
+      'src',
+      '/learnx-mark-on-paper.svg',
+    );
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
   });
 
@@ -95,6 +104,7 @@ describe('LandingPage', () => {
     expect(
       screen.getAllByRole('heading', { name: 'Leading a team project' }),
     ).toHaveLength(2);
+    expect(document.title).toBe('LearnX — Your path to knowledge');
     expect(
       screen.getByRole('heading', { name: 'Write a sprint goal' }),
     ).toBeInTheDocument();
@@ -112,8 +122,7 @@ describe('LandingPage', () => {
       'href',
       '/research/ai-correction/en.html',
     );
-    expect(researchLink).toHaveAttribute('target', '_blank');
-    expect(researchLink).toHaveAttribute('rel', 'noopener');
+    expect(researchLink).not.toHaveAttribute('target');
   });
 
   it('submits updates without creating an access request', async () => {

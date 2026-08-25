@@ -32,9 +32,13 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
         name: 'Votre chemin vers la connaissance.',
       }),
     ).toBeVisible();
-    await expect(
-      page.getByRole('navigation', { name: 'Navigation principale' }),
-    ).toHaveCount(0);
+    if (viewport.width < 768) {
+      await expect(page.locator('.landing-utility')).toBeHidden();
+      await expect(page.locator('.landing-mobile-navigation')).toBeVisible();
+    } else {
+      await expect(page.locator('.landing-utility')).toBeVisible();
+      await expect(page.locator('.landing-mobile-navigation')).toBeHidden();
+    }
     await expect(
       page
         .getByRole('heading', { name: 'Piloter un projet en équipe' })
@@ -73,9 +77,10 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   }
 
   await page.setViewportSize({ height: 844, width: 390 });
+  await page.locator('.landing-mobile-navigation summary').click();
   await page.getByRole('button', { name: 'EN', exact: true }).click();
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Your Path to knowledge' }),
+    page.getByRole('heading', { level: 1, name: 'Your path to knowledge.' }),
   ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Leading a team project' }).first(),
@@ -91,14 +96,19 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   const manifest = await page.request.get('/manifest-en.webmanifest');
   expect(manifest.ok()).toBe(true);
   expect((await manifest.json()).start_url).toBe('/today');
-  for (const size of [1024, 512, 192, 180, 60, 40, 32, 29]) {
-    const icon = await page.request.get(`/learnx-icon-${size}.png`);
+  for (const iconPath of [
+    '/apple-touch-icon.png',
+    '/pwa-192x192.png',
+    '/pwa-512x512.png',
+    '/pwa-maskable-512x512.png',
+  ]) {
+    const icon = await page.request.get(iconPath);
     expect(icon.ok()).toBe(true);
   }
   const html = await page.request.get('/');
   const source = await html.text();
-  expect(source).toContain('/learnx-icon-dark.svg?v=totem-1');
-  expect(source).toContain('/learnx-icon-180.png?v=totem-1');
+  expect(source).toContain('/learnx-icon.svg?v=brand-1');
+  expect(source).toContain('/apple-touch-icon.png?v=brand-1');
   await expect(
     page.getByRole('link', { name: 'Sign in' }).first(),
   ).toHaveAttribute('href', '/login');
