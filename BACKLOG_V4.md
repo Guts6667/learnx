@@ -2373,6 +2373,9 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
 - Landing, marque, journal et articles chronologiques sont déployés en preview ;
   la matrice finale couvre les largeurs, le texte à 200 %, le clavier,
   l'accessibilité et WebKit.
+- Le candidat pré-merge `ae89a60a` est déployé sur l'alias preview après
+  réconciliation sélective de SourceLab avec `main`. La recette manuelle de
+  Rayan sur `dev` est le prochain gate ; `main` reste inchangée.
 - Le scope de release actuel est V4A : crédits offerts uniquement. Le cycle
   d'achat public appartient à V4B et ne bloque pas ce pilote.
 - Restent la configuration production fermée, le budget et le canal d'alerte,

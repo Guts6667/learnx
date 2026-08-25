@@ -244,3 +244,23 @@ de production :
 
 Le smoke réussi constitue une preuve produit bornée sur preview, pas un GO
 runtime production ni une preuve de promotion scientifique.
+
+## Candidat pré-merge du 25 août 2026
+
+La réconciliation sélective avec la publication SourceLab de `main` est portée
+par `ced5e462` ; elle conserve le runtime V4, les crédits, les recherches et les
+surfaces Totem de `dev`. La conformité finale de la landing et du journal à
+l'autorité publique Totem 1.0.0 est portée par `ae89a60a`. Ces deux commits sont
+sur `origin/dev` ; `main` n'a pas été modifiée.
+
+La preview courante est accessible à
+`https://learnx-git-dev-guts6667s-projects.vercel.app`. Le contrôle du contenu
+déployé retrouve le bundle attendu et un digest de `journal.css` strictement
+identique au fichier de `ae89a60a`. `deployment:check` est vert. La matrice
+locale finale compte `906` tests Vitest réussis et `75` scénarios Playwright
+réussis, `33` scénarios non applicables au profil courant et `0` échec, en plus
+de lint, typecheck et build verts.
+
+Le seul gate volontairement ouvert avant `main` est la recette manuelle de
+Rayan sur cette preview. Elle ne vaut ni ouverture du kill switch, ni GO
+scientifique, ni activation d'un achat public.
