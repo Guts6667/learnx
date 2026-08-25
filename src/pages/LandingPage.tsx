@@ -24,23 +24,40 @@ function ProgramPreview() {
       class="landing-product-preview landing-program-preview"
     >
       <header class="landing-preview-header">
-        <span>{t('landing.preview.program.type')}</span>
-        <span>{t('landing.preview.realContent')}</span>
+        <h2>{t('landing.preview.program.title')}</h2>
+        <span>{t('landing.preview.program.activity')}</span>
       </header>
       <div class="landing-preview-body">
-        <p class="landing-preview-kicker">
-          {t('landing.preview.program.stage')}
-        </p>
-        <h2>{t('landing.preview.program.title')}</h2>
-        <p class="landing-preview-meta">
-          {t('landing.preview.program.module')}
-        </p>
-        <div class="landing-program-step" aria-current="step">
-          <span class="landing-step-number">01</span>
-          <div>
-            <strong>{t('landing.preview.lesson.title')}</strong>
-            <span>{t('landing.preview.program.nextLesson')}</span>
-          </div>
+        <nav
+          aria-label={t('landing.preview.productNavigation')}
+          class="landing-preview-mini-nav"
+        >
+          <span aria-hidden="true">⌂</span>
+          <span aria-current="page" aria-hidden="true">
+            ◇
+          </span>
+          <span aria-hidden="true">↻</span>
+          <span aria-hidden="true">▤</span>
+        </nav>
+        <div class="landing-preview-content">
+          <p class="landing-preview-kicker">
+            {t('landing.preview.program.nextStep')}
+          </p>
+          <h3>{t('landing.preview.program.greeting')}</h3>
+          <article class="landing-next-card">
+            <p class="landing-preview-kicker">
+              {t('landing.preview.program.stage')}
+            </p>
+            <h4>{t('landing.preview.lesson.title')}</h4>
+            <p>{t('landing.preview.program.saved')}</p>
+            <div aria-hidden="true" class="landing-preview-progress">
+              <span />
+            </div>
+            <span class="landing-preview-next-action">
+              {t('landing.preview.program.resume')}
+              <span aria-hidden="true">→</span>
+            </span>
+          </article>
         </div>
       </div>
     </section>
@@ -229,7 +246,10 @@ export function LandingPage({ path }: { path?: string }) {
             <a href="#product">{t('landing.navigation.product')}</a>
             <a href="#research">{t('landing.navigation.research')}</a>
             <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
-            <button onClick={() => setLocale(locale === 'fr' ? 'en' : 'fr')} type="button">
+            <button
+              onClick={() => setLocale(locale === 'fr' ? 'en' : 'fr')}
+              type="button"
+            >
               {locale === 'fr' ? 'EN' : 'FR'}
             </button>
             <a href="/login">{t('landing.login')}</a>
@@ -255,7 +275,10 @@ export function LandingPage({ path }: { path?: string }) {
             <ProgramPreview />
           </div>
         </section>
-        <section aria-label={t('landing.product.eyebrow')} class="landing-principles">
+        <section
+          aria-label={t('landing.product.eyebrow')}
+          class="landing-principles"
+        >
           <div>
             <strong>{t('landing.product.structuredTitle')}</strong>
             <span>{t('landing.product.structured')}</span>
@@ -329,17 +352,17 @@ export function LandingPage({ path }: { path?: string }) {
           </article>
         </section>
         <section class="landing-forms">
-          <article id="early-adopter">
-            <p class="page-eyebrow">{t('landing.early.eyebrow')}</p>
-            <h2>{t('landing.early.title')}</h2>
-            <p>{t('landing.early.description')}</p>
-            <InterestForm purpose="EARLY_ADOPTER" />
-          </article>
           <article id="launch-updates">
             <p class="page-eyebrow">{t('landing.updates.eyebrow')}</p>
             <h2>{t('landing.updates.title')}</h2>
             <p>{t('landing.updates.description')}</p>
             <InterestForm purpose="LAUNCH_UPDATES" />
+          </article>
+          <article id="early-adopter">
+            <p class="page-eyebrow">{t('landing.early.eyebrow')}</p>
+            <h2>{t('landing.early.title')}</h2>
+            <p>{t('landing.early.description')}</p>
+            <InterestForm purpose="EARLY_ADOPTER" />
           </article>
         </section>
       </main>

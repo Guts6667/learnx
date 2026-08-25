@@ -16,13 +16,16 @@ afterEach(() => {
 
 describe('LandingPage', () => {
   it('opens the learner application instead of the landing page in standalone mode', async () => {
-    vi.stubGlobal('matchMedia', vi.fn().mockImplementation(
-      (query) =>
-        ({
-          matches: query === '(display-mode: standalone)',
-          media: query,
-        }) as MediaQueryList,
-    ));
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn().mockImplementation(
+        (query) =>
+          ({
+            matches: query === '(display-mode: standalone)',
+            media: query,
+          }) as MediaQueryList,
+      ),
+    );
 
     const { container } = render(
       <I18nProvider locale="fr">
@@ -59,16 +62,16 @@ describe('LandingPage', () => {
       screen.getAllByRole('navigation', { name: 'Navigation publique' }),
     ).toHaveLength(2);
     expect(
-      screen.getAllByRole('heading', {
-        name: 'Piloter un projet en équipe',
+      screen.getByRole('region', {
+        name: 'Aperçu réaliste du programme Piloter un projet en équipe',
       }),
-    ).toHaveLength(1);
+    ).toHaveTextContent('Activité 7 sur 17');
     expect(
-      screen.getByRole('heading', { name: 'Formuler un objectif de sprint' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/The Scrum Guide 2020/),
-    ).toBeInTheDocument();
+      screen.getAllByRole('heading', {
+        name: 'Formuler un objectif de sprint',
+      }),
+    ).toHaveLength(2);
+    expect(screen.getByText(/The Scrum Guide 2020/)).toBeInTheDocument();
     expect(
       screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
     ).toBeInTheDocument();
@@ -102,12 +105,14 @@ describe('LandingPage', () => {
     );
 
     expect(
-      screen.getAllByRole('heading', { name: 'Leading a team project' }),
-    ).toHaveLength(1);
+      screen.getByRole('region', {
+        name: 'Realistic preview of the Leading a team project programme',
+      }),
+    ).toHaveTextContent('Activity 7 of 17');
     expect(document.title).toBe('LearnX — Your path to knowledge');
     expect(
-      screen.getByRole('heading', { name: 'Write a sprint goal' }),
-    ).toBeInTheDocument();
+      screen.getAllByRole('heading', { name: 'Write a sprint goal' }),
+    ).toHaveLength(2);
     expect(screen.getByText('One useful objective')).toBeInTheDocument();
     expect(
       screen.getByText(/A sprint goal describes the outcome/),

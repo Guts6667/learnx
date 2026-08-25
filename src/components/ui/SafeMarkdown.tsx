@@ -1,6 +1,8 @@
 import type { ComponentChildren } from 'preact';
+import { useState } from 'preact/hooks';
 
 import { classNames } from '@/components/ui/classNames';
+import { useI18n } from '@/i18n';
 import { toPlainMarkdownHeading } from '@/lib/markdown-heading';
 
 type HeadingStartLevel = 2 | 3 | 4;
@@ -19,7 +21,13 @@ interface MarkdownImage {
 }
 
 type MarkdownBlock =
-  | { content: string; language: string | null; type: 'code' }
+  | {
+      content: string;
+      focusLines: number[];
+      language: string | null;
+      path: string | null;
+      type: 'code';
+    }
   | { content: string; level: number; type: 'heading' }
   | { image: MarkdownImage; type: 'image' }
   | { content: string; type: 'paragraph' }
@@ -30,13 +38,39 @@ type MarkdownBlock =
 const headingPattern = /^(#{1,3})\s+(.+)$/;
 const orderedListPattern = /^(\d+)\.\s+(.+)$/;
 const unorderedListPattern = /^[-+*]\s+(.+)$/;
-const codeFencePattern = /^```([a-zA-Z0-9_+#.-]*)\s*$/;
+const codeFencePattern = /^```([a-zA-Z0-9_+#.-]*)(?:\s+(.+?))?\s*$/;
 const markdownImagePattern =
   /^!\[([^\]\n]*)\]\(([^\s)\n]+)(?:\s+"([^"\n]*)")?\)$/;
 const tableRowPattern = /^\|(.+)\|$/;
 const inlinePattern =
   /(`[^`\n]+`|!\[[^\]\n]*\]\([^\s)\n]+(?:\s+"[^"\n]*")?\)|\[[^\]\n]+\]\([^)\n]+\)|\*\*[^*\n]+\*\*|\*[^*\n]+\*)/g;
 const localImageOrigin = 'https://learnx.local';
+
+interface CodeFenceMetadata {
+  focusLines: number[];
+  path: string | null;
+}
+
+function parseFocusLines(value: string | undefined): number[] {
+  if (!value) return [];
+  const lines = new Set<number>();
+  for (const range of value.split(',')) {
+    const match = /^(\d+)(?:-(\d+))?$/.exec(range);
+    if (!match) continue;
+    const start = Number(match[1]);
+    const end = Number(match[2] ?? match[1]);
+    if (start < 1 || end < start || end - start > 20) continue;
+    for (let line = start; line <= end; line += 1) lines.add(line);
+  }
+  return [...lines].sort((left, right) => left - right);
+}
+
+function parseCodeFenceMetadata(value: string | undefined): CodeFenceMetadata {
+  if (!value) return { focusLines: [], path: null };
+  const path = /(?:^|\s)path=([^\s]+)/.exec(value)?.[1] ?? null;
+  const focus = /(?:^|\s)focus=([^\s]+)/.exec(value)?.[1];
+  return { focusLines: parseFocusLines(focus), path };
+}
 
 export function getSafeLink(value: string): string | null {
   try {
@@ -120,8 +154,8 @@ function isTableStart(lines: string[], index: number): boolean {
   const delimiter = parseTableRow(lines[index + 1] ?? '');
   return Boolean(
     headers?.length &&
-      delimiter?.length === headers.length &&
-      delimiter.every((cell) => /^:?-{3,}:?$/.test(cell)),
+    delimiter?.length === headers.length &&
+    delimiter.every((cell) => /^:?-{3,}:?$/.test(cell)),
   );
 }
 
@@ -150,6 +184,7 @@ function parseBlocks(markdown: string): MarkdownBlock[] {
     const codeFence = codeFencePattern.exec(line);
     if (codeFence) {
       const code: string[] = [];
+      const metadata = parseCodeFenceMetadata(codeFence[2]);
       index += 1;
       while (index < lines.length && lines[index]?.trim() !== '```') {
         code.push(lines[index] ?? '');
@@ -158,7 +193,9 @@ function parseBlocks(markdown: string): MarkdownBlock[] {
       if (lines[index]?.trim() === '```') index += 1;
       blocks.push({
         content: code.join('\n'),
+        focusLines: metadata.focusLines,
         language: codeFence[1]?.toLowerCase() || null,
+        path: metadata.path,
         type: 'code',
       });
       continue;
@@ -307,26 +344,74 @@ function renderInline(content: string): ComponentChildren[] {
 
 function MarkdownCodeBlock({
   content,
+  focusLines,
   language,
+  path,
 }: {
   content: string;
+  focusLines: number[];
   language: string | null;
+  path: string | null;
 }) {
+  const { t } = useI18n();
+  const [copied, setCopied] = useState(false);
+  const lines = content.split('\n');
+  const outputLanguages = new Set(['console', 'http', 'log', 'output', 'text']);
+  const isOutput = language ? outputLanguages.has(language) : false;
+  const label = isOutput ? t('markdown.output') : t('markdown.code');
+
+  async function copyCode() {
+    if (!navigator.clipboard) return;
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // Clipboard permissions vary by browser; code remains selectable.
+    }
+  }
+
   return (
     <div
-      aria-label={language ? `Code — ${language}` : 'Code'}
-      class="ui-code-block"
+      aria-label={language ? `${label} — ${language}` : label}
+      class={classNames('ui-code-block', isOutput && 'ui-code-block--output')}
       role="region"
       tabIndex={0}
     >
-      {language ? (
-        <div aria-hidden="true" class="ui-code-block__language">
-          {language}
+      <div class="ui-code-block__bar">
+        <div class="ui-code-block__context">
+          {path ? <strong class="ui-code-block__path">{path}</strong> : null}
+          <span class="ui-code-block__language">{language ?? label}</span>
         </div>
-      ) : null}
+        <button
+          class="ui-code-block__copy"
+          onClick={() => void copyCode()}
+          type="button"
+        >
+          {copied ? t('markdown.copied') : t('markdown.copy')}
+        </button>
+      </div>
       <pre>
         <code class={language ? `language-${language}` : undefined}>
-          {content}
+          {lines.map((line, index) => {
+            const lineNumber = index + 1;
+            return (
+              <span
+                class={classNames(
+                  'ui-code-block__line',
+                  focusLines.includes(lineNumber) &&
+                    'ui-code-block__line--focused',
+                )}
+                key={`${lineNumber}-${line}`}
+              >
+                <span aria-hidden="true" class="ui-code-block__line-number">
+                  {lineNumber}
+                </span>
+                <span class="ui-code-block__line-content">{line || ' '}</span>
+                {index < lines.length - 1 ? '\n' : null}
+              </span>
+            );
+          })}
         </code>
       </pre>
     </div>
@@ -451,8 +536,10 @@ export function SafeMarkdown({
           return (
             <MarkdownCodeBlock
               content={block.content}
+              focusLines={block.focusLines}
               key={`code-${index}`}
               language={block.language}
+              path={block.path}
             />
           );
         }

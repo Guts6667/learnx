@@ -503,7 +503,6 @@ function LessonWorkspace({
           </p>
         </Card>
       )}
-      <p class="totem-learning-summary ui-reading-copy">{lesson.summary}</p>
       <div class="totem-learning-layout grid gap-6">
         <section
           class="totem-learning-activity space-y-4"

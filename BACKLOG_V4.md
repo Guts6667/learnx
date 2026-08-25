@@ -2,9 +2,9 @@
 
 ## Statut et autorité
 
-- Version : 1.6.9
-- Statut : **pilote V4 writing-only validé en preview — gate production V4-019 restant**
-- Dernière consolidation : 25 août 2026 — candidat pré-merge déployé, recette propriétaire restante
+- Version : 1.6.11
+- Statut : **pilote V4 writing-only fonctionnel — Totem restrictif implémenté, recette propriétaire et gate production restants**
+- Dernière consolidation : 26 août 2026 — implémentation des trois seules autorités visuelles validées
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -43,13 +43,29 @@ consultables comme historique de recherche et ne doivent pas être effacés.
   avec le catalogue actif avant toute réservation.
 - Aucun nouvel appel de benchmark, examen, changement de seuil, gold, prompt ou
   modèle n’est autorisé pour cette livraison.
-- Le langage visuel ferme est désormais défini par
-  `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` et les paquets Totem mobile/desktop
-  approuvés le 24 août. Ils remplacent Atlas comme autorité d’implémentation ;
-  Atlas reste une référence historique.
-- Ordre de livraison : raccord runtime → Totem mobile → validation mobile →
-  Totem desktop → validation desktop → surfaces correction/crédits/admin →
-  recherche publique → gate de release.
+- Le langage visuel ferme est défini par la cartographie restrictive
+  `docs/V4_TOTEM_IMPLEMENTATION_MAP.md`. Seuls apprentissage, landing/entrée et
+  contenus techniques SourceLab disposent d’une autorité active. Toutes les
+  autres maquettes, y compris Atlas et les anciens paquets Totem, sont des
+  références historiques non exécutoires.
+- Ordre de livraison visuel : apprentissage → landing/entrée couverte → Totem
+  technique SourceLab → QA mobile/desktop → arbitrage propriétaire des surfaces
+  non couvertes → gate de release.
+
+### Amendement visuel restrictif — 25 août 2026
+
+- Leçon, Exercice, Correction formative et Révisions suivent uniquement
+  `learnx-totem-learning-flow.html`.
+- Landing, création/activation de compte, vérification e-mail, première
+  direction et composants d’entrée présents suivent uniquement
+  `learnx-totem-landing-account-components.html`.
+- Les contenus techniques SourceLab suivent uniquement
+  `learnx-totem-technical-content-system.html`.
+- L’accès demeure privé : aucune inscription publique n’est ouverte par cette
+  référence visuelle. Première direction intervient après activation.
+- Connexion et demande d’accès ne sont pas refondues sans nouvelle autorité.
+- Toute surface non couverte est `ARBITRATION_REQUIRED`; aucune ancienne
+  maquette ne peut combler silencieusement le manque.
 
 Ce document fixe le périmètre et l'ordre de livraison de V4. Un ticket ne
 devient une instruction d'implémentation qu'après :

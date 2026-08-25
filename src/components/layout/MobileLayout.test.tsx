@@ -213,7 +213,13 @@ describe('navigation accessible', () => {
     );
   });
 
-  it.each(['/login', '/request-access', '/verify-email', '/activate'])(
+  it.each([
+    '/login',
+    '/request-access',
+    '/verify-email',
+    '/activate',
+    '/first-direction',
+  ])(
     "n'affiche aucune navigation privée dans le shell d'authentification %s",
     (currentPath) => {
       renderWithLocale(

@@ -578,10 +578,14 @@ async function expectNoHorizontalOverflow(page: Page) {
   await expect
     .poll(() =>
       page.evaluate(() => {
-        if (document.documentElement.scrollWidth <= window.innerWidth) return [];
+        if (document.documentElement.scrollWidth <= window.innerWidth)
+          return [];
 
         return Array.from(document.querySelectorAll<HTMLElement>('body *'))
-          .map((element) => ({ element, rect: element.getBoundingClientRect() }))
+          .map((element) => ({
+            element,
+            rect: element.getBoundingClientRect(),
+          }))
           .filter(
             ({ rect }) =>
               rect.width > 0 &&
@@ -638,7 +642,7 @@ test('garde Mes parcours et Découvrir utilisables sur tous les viewports', asyn
     await exploreLink.click();
     await expect(page).toHaveURL('/discover');
     await expect(
-      page.getByRole('heading', { level: 1, name: 'Découvrir' }),
+      page.getByRole('heading', { level: 1, name: 'Trouver un parcours' }),
     ).toBeVisible();
     await expect(page.getByRole('searchbox')).toBeVisible();
     await expect(
@@ -676,10 +680,7 @@ test('oriente la première arrivée sans afficher d’outils vides', async ({
       name: 'Choisir mon premier parcours',
     });
     await expect(action).toBeVisible();
-    await expect(action).toHaveAttribute(
-      'href',
-      '/discover',
-    );
+    await expect(action).toHaveAttribute('href', '/discover');
     await expect(page.getByRole('searchbox')).toHaveCount(0);
     await expect(page.getByText('Révisions dues')).toHaveCount(0);
     await expectNoHorizontalOverflow(page);
@@ -724,9 +725,13 @@ test('applique les gabarits desktop sans étirer la lecture pédagogique', async
       const layout = page.locator(`.page-layout--${screen.template}`).first();
       await expect(layout).toBeVisible();
       if (screen.totem) {
-        await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();
+        await expect(
+          page.locator('[data-visual-system="totem"]'),
+        ).toBeVisible();
       } else {
-        await expect(page.locator('[data-visual-system="totem"]')).toHaveCount(0);
+        await expect(page.locator('[data-visual-system="totem"]')).toHaveCount(
+          0,
+        );
       }
       await expectNoHorizontalOverflow(page);
     }
@@ -903,7 +908,13 @@ test('garde les cinq destinations lisibles et accessibles sur mobile et desktop'
   const navigation = page.getByRole('navigation', {
     name: 'Navigation principale',
   });
-  const expectedLabels = ['Accueil', 'Parcours', 'Réviser', 'Notes', 'Profil'];
+  const expectedLabels = [
+    'Aujourd’hui',
+    'Parcours',
+    'Réviser',
+    'Notes',
+    'Profil',
+  ];
 
   for (const viewport of [
     { height: 700, width: 320 },
@@ -927,7 +938,7 @@ test('garde les cinq destinations lisibles et accessibles sur mobile et desktop'
     ).toBe(true);
   }
 
-  const activeLink = navigation.getByRole('link', { name: 'Accueil' });
+  const activeLink = navigation.getByRole('link', { name: 'Aujourd’hui' });
   await expect(activeLink).toHaveAttribute('aria-current', 'page');
   expect(
     await activeLink.evaluate(
@@ -1003,15 +1014,12 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await expect(page.getByText('Quiz réussi')).toBeVisible();
   await expect(page.getByText('100 %').first()).toBeVisible();
 
-  await page.getByRole('button', { name: 'Retour à la leçon' }).click();
+  await page.getByRole('link', { name: 'Continuer' }).click();
   await expect(
     page.getByRole('progressbar', { name: /Validation de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
 
-  await page
-    .getByRole('navigation', { name: 'Navigation principale' })
-    .getByRole('link', { name: 'Profil' })
-    .click();
+  await page.getByRole('link', { name: /Profil$/ }).click();
   await page.getByRole('button', { name: 'Se déconnecter' }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: 'Connexion' }),
@@ -1020,6 +1028,9 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await page.getByLabel('Adresse e-mail').fill(credentials.email);
   await page.getByLabel('Mot de passe').fill(credentials.password);
   await page.getByRole('button', { name: 'Se connecter' }).click();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+  ).toBeVisible();
   await openCriticalLesson(page);
 
   await expect(

@@ -2,9 +2,7 @@ import { route } from 'preact-router';
 import { useState } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
-import { PageHeader } from '@/components/ui/PageHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useAccessInvitationActivationMutation } from '@/features/auth/access-invitation';
 import { useOnlineStatus } from '@/features/pwa/online-status';
@@ -52,83 +50,79 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
     try {
       await mutation.mutateAsync({ displayName, password, token });
       window.history.replaceState({}, '', '/activate');
-      route('/today', true);
+      route('/first-direction', true);
     } catch {
       // The normalized mutation error is rendered below.
     }
   }
 
   return (
-    <section
-      aria-labelledby="activation-title"
-      class="totem-auth-page page-shell"
-    >
-      <PageHeader
-        description={t('auth.activate.description')}
-        eyebrow={t('auth.activate.eyebrow')}
-        id="activation-title"
-        title={t('auth.activate.title')}
-      />
+    <section aria-labelledby="activation-title" class="totem-auth-page">
+      <header class="totem-auth-page__header">
+        <p class="page-eyebrow">{t('auth.activate.step')}</p>
+        <h1 class="page-title" id="activation-title">
+          {t('auth.activate.title')}
+        </h1>
+        <p>{t('auth.activate.description')}</p>
+      </header>
       <OfflineBanner
         isOffline={!isOnline}
         message={t('auth.activate.offline')}
       />
-      <Card>
-        <form class="space-y-5" onSubmit={handleSubmit}>
-          <TextField
-            autoComplete="name"
-            label={t('auth.activate.displayName')}
-            maxLength={80}
-            name="displayName"
-            onInput={(event) => setDisplayName(event.currentTarget.value)}
-            required
-            value={displayName}
-          />
-          <TextField
-            autoComplete="new-password"
-            description={t('auth.activate.passwordDescription')}
-            label={t('auth.password.label')}
-            maxLength={128}
-            minLength={12}
-            name="password"
-            onInput={(event) => setPassword(event.currentTarget.value)}
-            required
-            type="password"
-            value={password}
-          />
-          <TextField
-            autoComplete="new-password"
-            label={t('auth.activate.passwordConfirmation')}
-            maxLength={128}
-            minLength={12}
-            name="passwordConfirmation"
-            onInput={(event) =>
-              setPasswordConfirmation(event.currentTarget.value)
-            }
-            required
-            type="password"
-            value={passwordConfirmation}
-          />
-          {!token ? (
-            <p class="ui-text-danger text-sm" role="alert">
-              {t('auth.activate.invalidInvitation')}
-            </p>
-          ) : null}
-          {validationError || requestError ? (
-            <p class="ui-text-danger text-sm" role="alert">
-              {validationError ?? requestError}
-            </p>
-          ) : null}
-          <Button
-            class="w-full"
-            disabled={!isOnline || !token}
-            isLoading={mutation.isPending}
-            type="submit"
-          >
-            {t('auth.activate.submit')}
-          </Button>
-        </form>
-      </Card>
+      <form class="totem-auth-form" onSubmit={handleSubmit}>
+        <TextField
+          autoComplete="name"
+          label={t('auth.activate.displayName')}
+          maxLength={80}
+          name="displayName"
+          onInput={(event) => setDisplayName(event.currentTarget.value)}
+          required
+          value={displayName}
+        />
+        <TextField
+          autoComplete="new-password"
+          description={t('auth.activate.passwordDescription')}
+          label={t('auth.password.label')}
+          maxLength={128}
+          minLength={12}
+          name="password"
+          onInput={(event) => setPassword(event.currentTarget.value)}
+          required
+          type="password"
+          value={password}
+        />
+        <TextField
+          autoComplete="new-password"
+          label={t('auth.activate.passwordConfirmation')}
+          maxLength={128}
+          minLength={12}
+          name="passwordConfirmation"
+          onInput={(event) =>
+            setPasswordConfirmation(event.currentTarget.value)
+          }
+          required
+          type="password"
+          value={passwordConfirmation}
+        />
+        {!token ? (
+          <p class="ui-text-danger text-sm" role="alert">
+            {t('auth.activate.invalidInvitation')}
+          </p>
+        ) : null}
+        {validationError || requestError ? (
+          <p class="ui-text-danger text-sm" role="alert">
+            {validationError ?? requestError}
+          </p>
+        ) : null}
+        <Button
+          class="w-full"
+          disabled={!isOnline || !token}
+          isLoading={mutation.isPending}
+          type="submit"
+        >
+          {t('auth.activate.submit')}
+        </Button>
+      </form>
     </section>
   );
 }

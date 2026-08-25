@@ -45,7 +45,9 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
         .first(),
     ).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: 'Formuler un objectif de sprint' }),
+      page
+        .getByRole('heading', { name: 'Formuler un objectif de sprint' })
+        .first(),
     ).toBeVisible();
     await expect(page.getByText(/The Scrum Guide 2020/)).toBeVisible();
     if (viewport.width >= 1024) {
@@ -69,38 +71,17 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
       const previewGeometry = await page.evaluate(() => {
         const copy = document.querySelector('.landing-hero-copy');
         const preview = document.querySelector('.landing-program-preview');
-        const body = document.querySelector('.landing-preview-body');
-        if (!copy || !preview || !body) return null;
+        if (!copy || !preview) return null;
         const copyBox = copy.getBoundingClientRect();
         const previewBox = preview.getBoundingClientRect();
-        const previewStyle = getComputedStyle(preview);
-        const signatureStyle = getComputedStyle(preview, '::after');
-        const bodyStyle = getComputedStyle(body);
         return {
-          bodyPaddingBottom: bodyStyle.paddingBottom,
-          bodyPaddingLeft: bodyStyle.paddingLeft,
           copyWidth: copyBox.width,
-          previewBorderRadius: previewStyle.borderRadius,
           previewWidth: previewBox.width,
-          signatureBottom: signatureStyle.bottom,
-          signatureHeight: signatureStyle.height,
-          signatureRight: signatureStyle.right,
-          signatureWidth: signatureStyle.width,
         };
       });
       expect(previewGeometry).not.toBeNull();
-      expect(previewGeometry?.previewWidth).toBeGreaterThan(
-        previewGeometry?.copyWidth ?? Number.POSITIVE_INFINITY,
-      );
-      expect(previewGeometry).toMatchObject({
-        bodyPaddingBottom: '42px',
-        bodyPaddingLeft: '32px',
-        previewBorderRadius: '18px 18px 6px',
-        signatureBottom: '-16px',
-        signatureHeight: '76px',
-        signatureRight: '-16px',
-        signatureWidth: '76px',
-      });
+      expect(previewGeometry?.copyWidth).toBeGreaterThan(500);
+      expect(previewGeometry?.previewWidth).toBeGreaterThan(500);
     }
     expect(
       await page.evaluate(
@@ -123,9 +104,11 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
     page.getByRole('heading', { name: 'Leading a team project' }).first(),
   ).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Write a sprint goal' }),
+    page.getByRole('heading', { name: 'Write a sprint goal' }).first(),
   ).toBeVisible();
-  await expect(page.getByText(/A sprint goal describes the outcome/)).toBeVisible();
+  await expect(
+    page.getByText(/A sprint goal describes the outcome/),
+  ).toBeVisible();
   await expect(page.getByText(/Fondamentaux|psychologie/i)).toHaveCount(0);
   await expectNoSeriousA11yViolations(page);
   expect(privateRequests).toEqual([]);

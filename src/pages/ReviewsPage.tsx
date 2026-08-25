@@ -1,6 +1,5 @@
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
@@ -41,18 +40,23 @@ function ReviewCard({
   item,
   onComplete,
   pendingId,
+  priority = false,
 }: {
   item: ReviewItem;
   onComplete: (reviewId: string) => Promise<unknown>;
   pendingId: string | null;
+  priority?: boolean;
 }) {
   const { locale, t } = useI18n();
   const assessmentHref = `/program/${encodeURIComponent(item.program.slug)}/lesson/${encodeURIComponent(item.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(item.sourceId)}`;
 
   return (
-    <li>
-      <Card class="space-y-4">
+    <li class={priority ? 'totem-review-primary' : 'totem-review-row'}>
+      <article>
         <div class="flex flex-wrap items-center gap-2">
+          {priority ? (
+            <span class="page-eyebrow">{t('reviews.todayPriority')}</span>
+          ) : null}
           <Badge tone={isOverdue(item.dueAt) ? 'danger' : 'warning'}>
             {t(isOverdue(item.dueAt) ? 'reviews.overdue' : 'reviews.due')}
           </Badge>
@@ -61,9 +65,7 @@ function ReviewCard({
           ) : null}
         </div>
         <div>
-          <h2 class="text-lg font-semibold">
-            {item.conceptTitle ?? item.lesson.title}
-          </h2>
+          <h2>{item.conceptTitle ?? item.lesson.title}</h2>
           <p class="ui-text-muted mt-1 text-sm">
             {item.program.title} · {item.lesson.title}
           </p>
@@ -103,19 +105,22 @@ function ReviewCard({
             </ul>
           </Section>
         ) : null}
-        <div class="grid gap-3 sm:grid-cols-2">
-          <NavigationAction href={assessmentHref} variant="secondary">
+        <div class="totem-review-actions">
+          <NavigationAction
+            href={assessmentHref}
+            variant={priority ? 'primary' : 'ghost'}
+          >
             {t('reviews.retake')}
           </NavigationAction>
           <Button
             isLoading={pendingId === item.id}
             onClick={() => void onComplete(item.id)}
-            variant="secondary"
+            variant="ghost"
           >
             {t('reviews.complete')}
           </Button>
         </div>
-      </Card>
+      </article>
     </li>
   );
 }
@@ -157,26 +162,41 @@ export function ReviewsPage() {
         />
       ) : null}
       {query.data?.reviews.length ? (
-        <div class="space-y-4">
-          <ul class="grid gap-4 md:grid-cols-2">
-            {query.data.reviews.map((item) => (
-              <ReviewCard
-                item={item}
-                key={item.id}
-                onComplete={completeReview}
-                pendingId={mutation.pendingId}
-              />
-            ))}
-          </ul>
-          {query.hasMore ? (
-            <Button
-              isLoading={query.isLoadingMore}
-              onClick={() => void query.loadMore()}
-              variant="secondary"
-            >
-              {t('common.loadMore')}
-            </Button>
-          ) : null}
+        <div class="totem-reviews-content">
+          <div class="totem-reviews-main">
+            <div class="totem-review-count">
+              <strong>{query.data.reviews.length}</strong>
+              <span>{t('reviews.pendingCount')}</span>
+            </div>
+            <ul class="totem-review-list">
+              {query.data.reviews.map((item, index) => (
+                <ReviewCard
+                  item={item}
+                  key={item.id}
+                  onComplete={completeReview}
+                  pendingId={mutation.pendingId}
+                  priority={index === 0}
+                />
+              ))}
+            </ul>
+            {query.hasMore ? (
+              <Button
+                isLoading={query.isLoadingMore}
+                onClick={() => void query.loadMore()}
+                variant="secondary"
+              >
+                {t('common.loadMore')}
+              </Button>
+            ) : null}
+          </div>
+          <aside class="totem-reviews-principle">
+            <p class="page-eyebrow">{t('reviews.principleLabel')}</p>
+            <p>{t('reviews.principle')}</p>
+            <div>
+              <strong>{t('reviews.pendingLabel')}</strong>
+              <span>{query.data.reviews.length}</span>
+            </div>
+          </aside>
         </div>
       ) : null}
     </section>

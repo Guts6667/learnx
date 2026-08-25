@@ -4,6 +4,10 @@ export const frenchMessages = {
   'app.description':
     'LearnX, votre environnement personnel pour apprendre, pratiquer et réviser.',
   'app.tagline': 'Parcours personnel',
+  'markdown.code': 'Code',
+  'markdown.output': 'Sortie',
+  'markdown.copy': 'Copier',
+  'markdown.copied': 'Copié',
   'landing.utilityNavigation': 'Navigation publique',
   'landing.footerNavigation': 'Navigation de pied de page',
   'landing.skipToContent': 'Aller au contenu principal',
@@ -36,6 +40,13 @@ export const frenchMessages = {
   'landing.preview.program.ariaLabel':
     'Aperçu réaliste du programme Piloter un projet en équipe',
   'landing.preview.program.type': 'Aperçu du programme',
+  'landing.preview.productNavigation': 'Navigation de l’aperçu LearnX',
+  'landing.preview.program.activity': 'Activité 7 sur 17',
+  'landing.preview.program.nextStep': 'Votre prochaine étape',
+  'landing.preview.program.greeting': 'Bonjour',
+  'landing.preview.program.saved':
+    'Votre réponse et vos notes sont enregistrées.',
+  'landing.preview.program.resume': 'Reprendre l’activité',
   'landing.preview.program.heading': 'Le programme donne une direction.',
   'landing.preview.program.description':
     'Les étapes, modules et leçons rendent le chemin visible sans transformer LearnX en catalogue infini.',
@@ -369,6 +380,11 @@ export const frenchMessages = {
   'auth.access.existingAccount': 'J’ai déjà un compte',
   'auth.backToLogin': 'Revenir à la connexion',
   'auth.verify.eyebrow': 'Demande d’accès',
+  'auth.verify.step': 'Étape de confiance',
+  'auth.verify.shellEyebrow': 'Une étape de confiance',
+  'auth.verify.shellTitle': 'Votre progression vous appartient.',
+  'auth.verify.shellDescription':
+    'La vérification protège l’accès à votre parcours, vos notes et vos futures corrections.',
   'auth.verify.title': 'Vérifier mon adresse e-mail',
   'auth.verify.description':
     'Confirme ton adresse pour transmettre ta demande à l’administrateur LearnX.',
@@ -385,6 +401,11 @@ export const frenchMessages = {
   'auth.verify.submit': 'Vérifier mon adresse',
   'auth.verify.requestNewLink': 'Demander un nouveau lien',
   'auth.activate.eyebrow': 'Invitation acceptée',
+  'auth.activate.step': 'Dernière étape d’activation',
+  'auth.activate.shellEyebrow': 'Votre chemin commence ici',
+  'auth.activate.shellTitle': 'Apprendre avec une direction.',
+  'auth.activate.shellDescription':
+    'Un compte suffit pour conserver votre progression, vos notes et vos révisions sur tous vos appareils.',
   'auth.activate.title': 'Activer mon compte',
   'auth.activate.description':
     'Choisis tes informations de connexion pour finaliser ton accès à LearnX.',
@@ -399,6 +420,23 @@ export const frenchMessages = {
   'auth.activate.passwordDescription': 'Utilise entre 12 et 128 caractères.',
   'auth.activate.passwordConfirmation': 'Confirmer le mot de passe',
   'auth.activate.submit': 'Activer mon compte',
+  'auth.firstDirection.step': 'Première direction',
+  'auth.firstDirection.title': 'Comment souhaitez-vous commencer ?',
+  'auth.firstDirection.description':
+    'Ce choix détermine seulement votre premier écran. Vous pourrez toujours changer de parcours ensuite.',
+  'auth.firstDirection.legend': 'Choisir une première action',
+  'auth.firstDirection.discoverTitle': 'Découvrir les parcours disponibles',
+  'auth.firstDirection.discoverDescription':
+    'Explorer la sélection LearnX et choisir votre premier programme.',
+  'auth.firstDirection.sharedTitle': 'Rejoindre un parcours partagé',
+  'auth.firstDirection.sharedDescription':
+    'Retrouver les parcours déjà associés à votre compte.',
+  'auth.firstDirection.language': 'Langue de l’interface',
+  'auth.firstDirection.later': 'Je déciderai plus tard',
+  'auth.firstDirection.shellEyebrow': 'Pas d’écran vide',
+  'auth.firstDirection.shellTitle': 'Choisir une première direction.',
+  'auth.firstDirection.shellDescription':
+    'LearnX propose une prochaine action explicite sans prétendre connaître votre objectif à votre place.',
   'common.loading': 'Chargement',
   'common.close': 'Fermer',
   'common.closePanel': 'Fermer le panneau',
@@ -473,6 +511,12 @@ export const frenchMessages = {
   'reviews.resources': 'Ressources suggérées',
   'reviews.retake': 'Refaire l’évaluation',
   'reviews.complete': 'Marquer comme terminée',
+  'reviews.todayPriority': 'À revoir aujourd’hui',
+  'reviews.pendingCount': 'notions à revoir',
+  'reviews.principleLabel': 'Principe',
+  'reviews.principle':
+    'Une révision est terminée après une nouvelle activité, jamais après la simple ouverture d’une ressource.',
+  'reviews.pendingLabel': 'À faire',
   'notes.eyebrow': 'Espace personnel',
   'notes.title': 'Notes',
   'notes.description': 'Retrouvez vos idées et leur contexte d’apprentissage.',
@@ -548,6 +592,13 @@ export const frenchMessages = {
   'learning.finishLesson': 'Terminer la leçon',
   'learning.nextLesson': 'Leçon suivante',
   'learning.progress': 'Validation de la leçon — {count} %',
+  'learning.progressShort': 'Progression {count} %',
+  'learning.exerciseType': 'Exercice textuel',
+  'learning.context': 'Contexte',
+  'learning.position': 'Votre position',
+  'learning.activities': 'Activités',
+  'learning.progressLabel': 'Progression',
+  'learning.nonBlocking': 'Non bloquante',
   'learning.loadError': 'La leçon n’a pas pu être chargée.',
   'learning.notFound.title': 'Leçon introuvable',
   'learning.notFound.description': 'Cette leçon est indisponible.',
@@ -630,6 +681,12 @@ export const frenchMessages = {
   'aiCorrection.nextAction': 'Prochaine action',
   'aiCorrection.indicativeScore': 'Score indicatif : {score} %',
   'aiCorrection.evidenceLabel': 'Extrait de votre réponse',
+  'aiCorrection.appreciation': 'Appréciation LearnX',
+  'aiCorrection.resultTitle': 'Votre retour critériel est prêt',
+  'aiCorrection.priority': 'Amélioration prioritaire',
+  'aiCorrection.transparency': 'Transparence',
+  'aiCorrection.verification': 'Vérification',
+  'aiCorrection.verificationIncluded': 'Incluse',
   'assessment.previousAttempts': 'Tentatives précédentes',
   'assessment.noAttempts': 'Aucune tentative enregistrée.',
   'assessment.passed': 'Réussi',
@@ -695,6 +752,13 @@ export const frenchMessages = {
   'exercise.notFound.description':
     'Cet exercice n’appartient pas à la leçon accessible.',
   'exercise.answerMarkdown': 'Votre réponse en Markdown',
+  'exercise.formativeDescription':
+    'Votre réponse sera évaluée selon les critères annoncés avant l’envoi.',
+  'exercise.instruction': 'Consigne',
+  'exercise.announcedCriteria': 'Critères annoncés',
+  'exercise.criteriaAvailableWithPrompt':
+    'Les critères publiés avec cet exercice s’appliquent à votre réponse.',
+  'exercise.reviewLesson': 'Relire la notion',
   'exercise.markdownHelp':
     'Vous pouvez utiliser la syntaxe Markdown. Le brouillon est conservé comme texte brut.',
   'exercise.saveDraft': 'Enregistrer le brouillon',
@@ -1098,6 +1162,10 @@ export const englishMessages = {
   'app.description':
     'LearnX, your personal environment to learn, practise and review.',
   'app.tagline': 'Personal learning journey',
+  'markdown.code': 'Code',
+  'markdown.output': 'Output',
+  'markdown.copy': 'Copy',
+  'markdown.copied': 'Copied',
   'landing.utilityNavigation': 'Public navigation',
   'landing.footerNavigation': 'Footer navigation',
   'landing.skipToContent': 'Skip to main content',
@@ -1130,6 +1198,12 @@ export const englishMessages = {
   'landing.preview.program.ariaLabel':
     'Realistic preview of the Leading a team project programme',
   'landing.preview.program.type': 'Programme preview',
+  'landing.preview.productNavigation': 'LearnX preview navigation',
+  'landing.preview.program.activity': 'Activity 7 of 17',
+  'landing.preview.program.nextStep': 'Your next step',
+  'landing.preview.program.greeting': 'Hello',
+  'landing.preview.program.saved': 'Your answer and notes are saved.',
+  'landing.preview.program.resume': 'Resume activity',
   'landing.preview.program.heading': 'The programme provides direction.',
   'landing.preview.program.description':
     'Stages, modules and lessons make the route visible without turning LearnX into an endless catalogue.',
@@ -1453,6 +1527,11 @@ export const englishMessages = {
   'auth.access.existingAccount': 'I already have an account',
   'auth.backToLogin': 'Back to sign in',
   'auth.verify.eyebrow': 'Access request',
+  'auth.verify.step': 'Trust step',
+  'auth.verify.shellEyebrow': 'A trust step',
+  'auth.verify.shellTitle': 'Your progress belongs to you.',
+  'auth.verify.shellDescription':
+    'Verification protects access to your learning paths, notes and future corrections.',
   'auth.verify.title': 'Verify my email address',
   'auth.verify.description':
     'Confirm your address to send your request to the LearnX administrator.',
@@ -1467,6 +1546,11 @@ export const englishMessages = {
   'auth.verify.submit': 'Verify my address',
   'auth.verify.requestNewLink': 'Request a new link',
   'auth.activate.eyebrow': 'Invitation accepted',
+  'auth.activate.step': 'Final activation step',
+  'auth.activate.shellEyebrow': 'Your path starts here',
+  'auth.activate.shellTitle': 'Learn with a clear direction.',
+  'auth.activate.shellDescription':
+    'One account keeps your progress, notes and reviews available across your devices.',
   'auth.activate.title': 'Activate my account',
   'auth.activate.description':
     'Choose your sign-in details to complete your LearnX access.',
@@ -1479,6 +1563,23 @@ export const englishMessages = {
   'auth.activate.passwordDescription': 'Use between 12 and 128 characters.',
   'auth.activate.passwordConfirmation': 'Confirm password',
   'auth.activate.submit': 'Activate my account',
+  'auth.firstDirection.step': 'First direction',
+  'auth.firstDirection.title': 'How would you like to begin?',
+  'auth.firstDirection.description':
+    'This choice only determines your first screen. You can always change learning paths later.',
+  'auth.firstDirection.legend': 'Choose a first action',
+  'auth.firstDirection.discoverTitle': 'Discover available learning paths',
+  'auth.firstDirection.discoverDescription':
+    'Explore the LearnX selection and choose your first programme.',
+  'auth.firstDirection.sharedTitle': 'Join a shared learning path',
+  'auth.firstDirection.sharedDescription':
+    'Find learning paths already associated with your account.',
+  'auth.firstDirection.language': 'Interface language',
+  'auth.firstDirection.later': 'I will decide later',
+  'auth.firstDirection.shellEyebrow': 'No empty screen',
+  'auth.firstDirection.shellTitle': 'Choose a first direction.',
+  'auth.firstDirection.shellDescription':
+    'LearnX offers a clear next action without pretending to know your goal for you.',
   'common.loading': 'Loading',
   'common.close': 'Close',
   'common.closePanel': 'Close panel',
@@ -1551,6 +1652,12 @@ export const englishMessages = {
   'reviews.resources': 'Suggested resources',
   'reviews.retake': 'Retake assessment',
   'reviews.complete': 'Mark as complete',
+  'reviews.todayPriority': 'Review today',
+  'reviews.pendingCount': 'concepts to review',
+  'reviews.principleLabel': 'Principle',
+  'reviews.principle':
+    'A review is complete after a new activity, never after simply opening a resource.',
+  'reviews.pendingLabel': 'To do',
   'notes.eyebrow': 'Personal space',
   'notes.title': 'Notes',
   'notes.description': 'Find your ideas and their learning context.',
@@ -1625,6 +1732,13 @@ export const englishMessages = {
   'learning.finishLesson': 'Finish lesson',
   'learning.nextLesson': 'Next lesson',
   'learning.progress': 'Lesson validation — {count}%',
+  'learning.progressShort': 'Progress {count}%',
+  'learning.exerciseType': 'Written exercise',
+  'learning.context': 'Context',
+  'learning.position': 'Your position',
+  'learning.activities': 'Activities',
+  'learning.progressLabel': 'Progress',
+  'learning.nonBlocking': 'Non-blocking',
   'learning.loadError': 'The lesson could not be loaded.',
   'learning.notFound.title': 'Lesson not found',
   'learning.notFound.description': 'This lesson is unavailable.',
@@ -1704,6 +1818,12 @@ export const englishMessages = {
   'aiCorrection.nextAction': 'Next action',
   'aiCorrection.indicativeScore': 'Indicative score: {score}%',
   'aiCorrection.evidenceLabel': 'Excerpt from your response',
+  'aiCorrection.appreciation': 'LearnX assessment',
+  'aiCorrection.resultTitle': 'Your criterion-based feedback is ready',
+  'aiCorrection.priority': 'Priority improvement',
+  'aiCorrection.transparency': 'Transparency',
+  'aiCorrection.verification': 'Verification',
+  'aiCorrection.verificationIncluded': 'Included',
   'assessment.previousAttempts': 'Previous attempts',
   'assessment.noAttempts': 'No attempts recorded.',
   'assessment.passed': 'Passed',
@@ -1766,6 +1886,13 @@ export const englishMessages = {
   'exercise.notFound.description':
     'This exercise does not belong to the accessible lesson.',
   'exercise.answerMarkdown': 'Your answer in Markdown',
+  'exercise.formativeDescription':
+    'Your answer will be assessed against the criteria shown before submission.',
+  'exercise.instruction': 'Instructions',
+  'exercise.announcedCriteria': 'Published criteria',
+  'exercise.criteriaAvailableWithPrompt':
+    'The criteria published with this exercise apply to your answer.',
+  'exercise.reviewLesson': 'Review the concept',
   'exercise.markdownHelp':
     'You can use Markdown syntax. The draft is stored as plain text.',
   'exercise.saveDraft': 'Save draft',

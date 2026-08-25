@@ -42,7 +42,7 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | Accès UI réservé aux exercices éligibles | Implémenté et testé | `src/server/api/exercises/app.ts`, `src/features/exercises/ExerciseCard.tsx` |
 | Allocations offertes admin | Implémentées | `src/pages/AdminCreditsPage.tsx`, API crédits |
 | Coûts/incidents et deux signaux connus | Implémentés et visibles dans Crédits admin | `src/server/corrections/correction-monitoring.ts`, `src/pages/AdminCreditsPage.tsx` |
-| Totem mobile et desktop | Implémentés, QA locale verte | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` |
+| Totem — périmètre restreint | Implémenté et validé automatiquement ; recette propriétaire `dev` restante | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` |
 
 ## État de release réel
 
@@ -55,12 +55,11 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 3. **Parcours bout en bout prouvé** : le second smoke a livré trois critères,
    réglé `3` crédits après une réserve de `6`, libéré `3` et réconcilié un coût
    fournisseur de `0,025938 USD` en un appel, sans effet sur la progression.
-4. **QA et publication preview** : les surfaces privées, landing, marque et
-   sept articles de recherche sont raccordés. La matrice finale couvre les
-   largeurs, le texte à 200 %, le clavier, l'accessibilité et WebKit.
-5. **Frontière restante** : aucune implémentation produit n'est bloquante pour
-   le pilote V4A. Restent la configuration de production fermée, le budget et
-   le canal d'alerte, le GO explicite de Rayan, puis un smoke production borné.
+4. **QA visuelle restrictive réalisée** : apprentissage, landing/entrée et
+   SourceLab ont été repris sans réutiliser les références retirées. Les tests,
+   le build et les contrôles responsive publics sont verts.
+5. **Frontière restante** : le runtime pilote est fonctionnel et la passe
+   visuelle est implémentée ; la recette propriétaire sur `dev` précède le GO.
    `main` et la production ne sont pas modifiées avant ce GO.
 
 ## Chemin critique
@@ -70,7 +69,7 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | 1 | V4-010-RUNTIME | Développement | terminé et prouvé en preview |
 | 2 | V4-002-PUBLISH | Produit/pédagogie + Développement | terminé : contrat publié et seed preview validé |
 | 3 | V4-007-PILOT | Finance + Propriétaire | terminé pour V4A : crédits offerts, aucune vente publique |
-| 4 | V4-016-TOTEM | Développement | terminé et validé en preview |
+| 4 | V4-016-TOTEM-R | Développement | terminé côté code ; recette propriétaire `dev` restante |
 | 5 | V4-012-MONITORING | Développement | terminé : coûts, incidents et préflight visibles en admin |
 | 6 | V4-RESEARCH | Méthodologie + Développement | terminé : journal et articles publics chronologiques |
 | 7 | V4-019-RELEASE | Développement + Propriétaire | en cours : preuves figées ; GO production puis smoke borné |
