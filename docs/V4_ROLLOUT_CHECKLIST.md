@@ -97,12 +97,17 @@ ajouter d'artefacts binaires au dépôt.
 ## Gate production
 
 - [x] migration répétable en preview et rollback documenté ;
+- [ ] recette manuelle propriétaire du candidat `f49a4d6f` selon
+  `docs/V4_019_MANUAL_ACCEPTANCE.md` ;
 - [ ] variables de production distinctes de la preview ;
 - [ ] préflight `CONFIGURED_CLOSED` avant toute ouverture ;
 - [ ] budget fournisseur et canal d'alerte confirmés ;
 - [x] procédure de fermeture : `LEARNX_AI_KILL_SWITCH=true` ;
 - [x] rapport V4-019 consignant versions, tests, incidents, coûts et limites ;
-- [ ] GO production explicite de Rayan ;
+- [ ] GO explicite de Rayan pour promouvoir le candidat Git et configurer la
+  production avec le kill switch fermé ;
+- [ ] GO explicite distinct de Rayan pour ouvrir le kill switch et autoriser
+  le smoke borné ;
 - [ ] après ouverture seulement, préflight `READY` et smoke borné ;
 - [ ] `main` modifiée uniquement par le commit de release autorisé.
 

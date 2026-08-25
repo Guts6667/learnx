@@ -2,9 +2,9 @@
 
 ## Statut et autorité
 
-- Version : 1.6.4
+- Version : 1.6.5
 - Statut : **pilote V4 writing-only validé en preview — gate production V4-019 restant**
-- Dernière consolidation : 25 août 2026 — parcours bout en bout prouvé, QA finale en clôture
+- Dernière consolidation : 25 août 2026 — candidat pré-merge déployé, recette propriétaire restante
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -2373,9 +2373,12 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
 - Landing, marque, journal et articles chronologiques sont déployés en preview ;
   la matrice finale couvre les largeurs, le texte à 200 %, le clavier,
   l'accessibilité et WebKit.
-- Le candidat pré-merge `ae89a60a` est déployé sur l'alias preview après
-  réconciliation sélective de SourceLab avec `main`. La recette manuelle de
-  Rayan sur `dev` est le prochain gate ; `main` reste inchangée.
+- Le candidat pré-merge réellement déployé est
+  `f49a4d6f419337df4ebd34d2bf906c470c2df9de`. Il contient la réconciliation
+  sélective de SourceLab avec `main` (`ced5e462`), l'alignement public Totem
+  (`ae89a60a`) et la consolidation de release. La recette manuelle de Rayan
+  décrite dans `docs/V4_019_MANUAL_ACCEPTANCE.md` est le prochain gate ;
+  `main` reste inchangée.
 - Le scope de release actuel est V4A : crédits offerts uniquement. Le cycle
   d'achat public appartient à V4B et ne bloque pas ce pilote.
 - Restent la configuration production fermée, le budget et le canal d'alerte,

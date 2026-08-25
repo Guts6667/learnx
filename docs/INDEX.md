@@ -22,7 +22,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
 | V4 design Totem | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` puis les paquets d’autorité produit, public et marque cités | Manifestes Totem approuvés le 24 août 2026 |
 | Pilotage V4 courant | `docs/V4_ROADMAP.md`, puis `BACKLOG_V4.md` pour le détail | Roadmap datée du 24 août ; anciennes vues dans `docs/archive/v4/` |
-| Release du pilote V4 | `docs/V4_019_RELEASE_REPORT.md`, puis `docs/V4_ROLLOUT_CHECKLIST.md` | Les essais preview sont append-only ; seul un GO explicite peut clore V4-019 |
+| Release du pilote V4 | `docs/V4_019_RELEASE_REPORT.md`, puis `docs/V4_ROLLOUT_CHECKLIST.md` et `docs/V4_019_MANUAL_ACCEPTANCE.md` | Les essais preview sont append-only ; la recette propriétaire précède deux GO distincts : promotion Git/configuration fermée, puis ouverture/smoke |
 | Calibration du pilote V4 | `docs/V4_007_PILOT_CALIBRATION.md` | Option B et parité pilote provisoire approuvées le 24 août ; crédits offerts uniquement, aucune vente publique |
 | Recherche correction V4 | `docs/V4_RESEARCH_FINDINGS.md`, puis `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` | Artefacts et journal append-only priment sur les synthèses |
 | Reports V4.1 | `V4_1_BACKLOG.md` | Aucune dette V4.1 ne modifie implicitement le pilote V4 |
