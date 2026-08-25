@@ -162,6 +162,13 @@ l'identifiant fournisseur était conservé dans le champ historique
 correctif local recopie désormais la même valeur dans les deux champs ; il est
 couvert par test et ne nécessite aucun nouvel appel pour être vérifié.
 
+Le correctif d'observabilité est livré par `3db856af` et le présent rapport par
+`a3d05221` sur `origin/dev`. Le déploiement automatique correspondant,
+`dpl_AUs4dQj1GQ3HyDeseUpHpLyuptAg`, est `Ready` et dessert les alias preview. Le
+contrôle distant anonyme vérifie l'application, le journal de recherche, la
+PWA et les routes publiques. L'environnement preview conserve
+`LEARNX_AI_KILL_SWITCH=true` ; aucun appel n'a été effectué après le smoke.
+
 ## Gate restant
 
 1. terminer la matrice finale locale et les captures d'accessibilité prévues ;
