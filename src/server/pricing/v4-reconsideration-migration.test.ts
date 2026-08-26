@@ -30,6 +30,15 @@ describe('V4 reconsideration migration', () => {
     );
     expect(migration).toContain("'{reconsiderationPromptExtensionVersion}'");
     expect(migration).toContain("#- '{pilotScope,activityType}'");
+    expect(migration).toContain("'4.0.1'");
+    expect(migration).toContain(
+      'ON CONFLICT ("catalog_version_id", "action", "input_size_class") DO NOTHING',
+    );
+    expect(migration).toContain('WHERE "version" = \'4.0.0\'');
+    expect(migration).toContain('WHERE "version" = \'4.0.1\'');
+    expect(migration).not.toContain(
+      'UPDATE "ai_pricing_catalog_versions"\nSET "pipeline_identity_snapshot_json"',
+    );
     expect(migration).not.toMatch(/stripe|purchased_credit/i);
   });
 });
