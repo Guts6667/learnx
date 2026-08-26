@@ -659,6 +659,7 @@ export const frenchMessages = {
     'Ce retour est indicatif et n’a aucun effet sur votre progression.',
   'aiCorrection.seePrice': 'Voir le devis en crédits',
   'aiCorrection.quotePending': 'Préparation du devis de correction',
+  'aiCorrection.historyPending': 'Recherche de votre dernière correction',
   'aiCorrection.quoteError': 'Le devis n’a pas pu être préparé.',
   'aiCorrection.quoteSummary':
     'Estimation : {estimated} crédits · plafond réservé : {maximum} crédits.',
@@ -1796,6 +1797,7 @@ export const englishMessages = {
     'This feedback is indicative and does not affect your progress.',
   'aiCorrection.seePrice': 'View the credit quote',
   'aiCorrection.quotePending': 'Preparing the correction quote',
+  'aiCorrection.historyPending': 'Loading your latest correction',
   'aiCorrection.quoteError': 'The quote could not be prepared.',
   'aiCorrection.quoteSummary':
     'Estimate: {estimated} credits · reserved ceiling: {maximum} credits.',

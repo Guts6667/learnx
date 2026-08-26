@@ -33,7 +33,11 @@ const authentication: MiddlewareHandler<AuthEnvironment> = async (
 
 function createRepository(
   ownerId = userId,
-  exerciseOptions: { language?: string; rubric?: unknown } = {},
+  exerciseOptions: {
+    activityType?: string;
+    language?: string;
+    rubric?: unknown;
+  } = {},
 ) {
   let submission:
     | {
@@ -74,13 +78,21 @@ function createRepository(
       }
 
       return {
+        activityType: exerciseOptions.activityType ?? 'WRITING',
         id: exerciseId,
         instructions: 'Rédigez une analyse structurée.',
         isRequired: true,
+        key: 'activity-1',
         language: exerciseOptions.language,
+        lessonObjectives: ['Produire une analyse structurée.'],
+        lessonSlug: 'analyse-appliquee',
+        lessonSummary: 'Distinguer une observation et une interprétation.',
         lessonId,
         position: 1,
-        rubric: exerciseOptions.rubric ?? { clarity: true },
+        programSlug: 'programme-pilote',
+        rubric: Object.hasOwn(exerciseOptions, 'rubric')
+          ? exerciseOptions.rubric
+          : { clarity: true },
         submission: submission ?? null,
         title: 'Analyse appliquée',
       };
@@ -178,7 +190,7 @@ describe('exercise API', () => {
       triggers: ['LOW_CONFIDENCE'],
     },
     target: {
-      activityKey: 'exercise-writing-fr',
+      activityKey: 'activity-1',
       activityType: 'writing',
       kind: 'EXERCISE',
     },
@@ -208,7 +220,7 @@ describe('exercise API', () => {
     });
   });
 
-  it('n’expose la correction que pour le scope writing/fr-FR promu', async () => {
+  it('n’expose la correction que pour les productions fr-FR au contrat lié', async () => {
     const frenchState = createRepository(userId, {
       language: 'fr-FR',
       rubric: publishedWritingContract,
@@ -240,6 +252,29 @@ describe('exercise API', () => {
       exercise: { aiCorrectionEligible: false },
     });
   });
+
+  it.each(['WRITING', 'REFLECTION', 'PRACTICE', 'PROJECT'])(
+    'génère un contrat publié pour une production %s sans contrat spécialisé',
+    async (activityType) => {
+      const state = createRepository(userId, {
+        activityType,
+        language: 'fr-FR',
+        rubric: null,
+      });
+      const app = createExercisesApp({
+        authentication,
+        repository: state.repository,
+      });
+
+      const response = await app.request(
+        `http://localhost/api/exercises/${exerciseId}`,
+      );
+
+      expect(await response.json()).toMatchObject({
+        exercise: { aiCorrectionEligible: true },
+      });
+    },
+  );
 
   it('crée le brouillon de manière idempotente', async () => {
     const state = createRepository();

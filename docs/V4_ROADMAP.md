@@ -1,11 +1,13 @@
 # Roadmap V4 — correction formative pilote
 
-## Statut au 25 août 2026
+## Statut au 26 août 2026
 
 La V4 n'est plus bloquée par le choix d'un modèle. Rayan a autorisé une
 livraison produit bornée avec la technologie actuelle : **Sonnet 4.6,
 writing/fr-FR, crédits offerts, feedback formatif sans effet sur la
-progression**. Cette décision produit ne transforme pas le dernier examen
+progression**. Le 26 août, Rayan a étendu le produit aux quatre familles de
+texte libre fr-FR via des contrats hybrides spécialisés/archétypes. Cette
+décision produit ne transforme pas le dernier examen
 scientifique en GO : son verdict reste `NO-GO`.
 
 L'ancienne roadmap du 22 août est conservée dans
@@ -16,7 +18,8 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 
 - identité runtime : `learnx-french-text-correction-v3-1`, Claude Sonnet 4.6,
   route Anthropic via OpenRouter, prompt `2.2.0`, protocole `3.0.1` ;
-- scope vendu et exécuté : `activityType=writing`, `fr-FR`, preuve texte ;
+- scope produit et exécuté : `writing`, `reflection`, `practice`, `project`,
+  `fr-FR`, preuve texte ; le scope scientifiquement évalué reste `writing` ;
 - aucun retry ni fallback ; seconde passe du même modèle uniquement dans la
   bande inclusive de ±5 points autour du seuil ;
 - livraison par critère : les critères fiables sont restitués, les autres
@@ -33,12 +36,13 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 
 | Bloc | État | Preuve principale |
 | --- | --- | --- |
-| Filtre exercice writing/fr-FR avant devis et exécution | Implémenté et testé | `src/server/pricing/ai-pricing.ts`, `src/server/corrections/correction-orchestration.ts` |
+| Résolution hybride des contrats pour les quatre familles fr-FR | Implémentée et testée | `src/lib/exercise-correction-contracts.ts`, pricing, API exercices et orchestration |
 | Identité runtime épinglée | Implémenté | `src/server/corrections/promoted-identity.ts` |
 | Réservation sur lots offerts uniquement | Implémenté et testé | `src/server/api/corrections/app.ts`, `src/server/credits/prisma-credit-ledger.ts` |
 | Route réelle `/api/ai-corrections` | Implémentée et testée | `src/server/api/corrections/app.ts` |
 | Seconde passe et livraison partielle | Implémentées et testées | `src/server/corrections/correction-orchestration.ts` |
 | UI devis, consentement, preuves et règlement | Implémentée et testée | `src/features/exercises/AiCorrectionPanel.tsx` |
+| Restitution après actualisation sans nouvel appel | Implémentée et testée | API historique et `AiCorrectionPanel.tsx` |
 | Accès UI réservé aux exercices éligibles | Implémenté et testé | `src/server/api/exercises/app.ts`, `src/features/exercises/ExerciseCard.tsx` |
 | Allocations offertes admin | Implémentées | `src/pages/AdminCreditsPage.tsx`, API crédits |
 | Coûts/incidents et deux signaux connus | Implémentés et visibles dans Crédits admin | `src/server/corrections/correction-monitoring.ts`, `src/pages/AdminCreditsPage.tsx` |
@@ -82,8 +86,9 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 - le modèle peut mentionner une violation de contrainte dure sans abaisser le
   niveau correspondant ; le monitoring expose un signal heuristique ;
 - une garde basée sur le score du modèle ne détecte pas toute sa clémence ;
-- la V4 ne couvre ni `practice`, ni `reflection`, ni `project`, ni une autre
-  langue ;
+- `practice`, `reflection` et `project` sont ouverts par décision produit sans
+  campagne scientifique dédiée ; une autre langue reste exclue ;
+- le catalogue actif ne couvre pas les réponses au-delà de 1 500 caractères ;
 - aucun résultat IA ne valide une maîtrise ou une progression.
 
 Ces limites sont reportées, pas cachées. Leur plan de traitement est

@@ -1,5 +1,6 @@
 import { Prisma, type PrismaClient } from '../../../generated/prisma/client.js';
 
+import { resolveExerciseCorrectionContract } from '../../lib/exercise-correction-contracts.js';
 import type {
   AcceptedQuoteSnapshot,
   CorrectionPersistencePort,
@@ -15,6 +16,42 @@ import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
  */
 export class PrismaCorrectionOrchestrationPorts {
   public constructor(private readonly prisma: PrismaClient) {}
+
+  public async findLatestForSubmission(input: {
+    submissionId: string;
+    userId: string;
+  }): Promise<OrchestratedCorrectionResult | null> {
+    const correction = await this.prisma.aiCorrection.findFirst({
+      include: {
+        creditReservation: {
+          select: { settledAmount: true, status: true },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      where: {
+        exerciseSubmissionId: input.submissionId,
+        userId: input.userId,
+      },
+    });
+    if (!correction?.creditReservation) return null;
+    const structured = (correction.structuredResult ?? {}) as {
+      correction?: OrchestratedCorrectionResult['correction'];
+      settlement?: OrchestratedCorrectionResult['settlement'];
+    };
+    if (!structured.correction || !structured.settlement) return null;
+    if (
+      correction.creditReservation.status !== 'SETTLED' ||
+      correction.creditReservation.settledAmount?.toString() !==
+        structured.settlement.settledCredits
+    ) {
+      return null;
+    }
+    return {
+      correction: structured.correction,
+      replay: true,
+      settlement: structured.settlement,
+    };
+  }
 
   public readonly quotes = {
     loadAcceptedQuote: async (input: {
@@ -32,7 +69,26 @@ export class PrismaCorrectionOrchestrationPorts {
         return null;
       }
       const submission = await this.prisma.exerciseSubmission.findFirst({
-        include: { exercise: true },
+        include: {
+          exercise: {
+            include: {
+              lesson: {
+                select: {
+                  objectives: true,
+                  slug: true,
+                  summary: true,
+                  module: {
+                    select: {
+                      stage: {
+                        select: { program: { select: { slug: true } } },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
         where: { id: quote.targetId, userId: input.userId },
       });
       if (
@@ -42,6 +98,34 @@ export class PrismaCorrectionOrchestrationPorts {
       ) {
         return null;
       }
+      const contractResolution = resolveExerciseCorrectionContract({
+        activityKey: submission.exercise.key,
+        activityType: submission.exercise.activityType,
+        explicitContract: submission.exercise.rubric,
+        instructions: submission.exercise.instructions,
+        language: quote.language,
+        lessonObjectives: Array.isArray(
+          submission.exercise.lesson.objectives,
+        )
+          ? submission.exercise.lesson.objectives.filter(
+              (objective): objective is string =>
+                typeof objective === 'string',
+            )
+          : [],
+        lessonSlug: submission.exercise.lesson.slug,
+        lessonSummary: submission.exercise.lesson.summary,
+        programSlug:
+          submission.exercise.lesson.module.stage.program.slug,
+        title: submission.exercise.title,
+      });
+      if (!contractResolution.eligible) return null;
+      const lessonObjectives = Array.isArray(
+        submission.exercise.lesson.objectives,
+      )
+        ? submission.exercise.lesson.objectives.filter(
+            (objective): objective is string => typeof objective === 'string',
+          )
+        : [];
       return {
         quoteId: quote.id,
         userId: quote.userId,
@@ -59,8 +143,11 @@ export class PrismaCorrectionOrchestrationPorts {
         requestFingerprint: quote.requestFingerprint,
         submissionText: submission.contentMarkdown,
         exerciseInstructions: submission.exercise.instructions,
-        taskContext: null,
-        contract: submission.exercise.rubric,
+        taskContext: [
+          submission.exercise.lesson.summary,
+          ...lessonObjectives,
+        ].join('\n'),
+        contract: contractResolution.contract,
       };
     },
     // Le schéma V4 conserve le devis comme snapshot immuable sans colonne

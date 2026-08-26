@@ -640,7 +640,7 @@ describe('correction orchestration (V4-009)', () => {
     expect(harness.credits.calls).toEqual([]);
   });
 
-  it('refuses a non-writing contract before replay, reservation and transport', async () => {
+  it('accepts every owner-approved productive activity type', async () => {
     const harness = buildHarness({ transport: strictOutput });
     harness.quotes.loadAcceptedQuote = (async () =>
       buildQuote({
@@ -650,15 +650,14 @@ describe('correction orchestration (V4-009)', () => {
         },
       })) as never;
 
-    await expect(
-      harness.service.runAcceptedQuote({
-        quoteId: 'quote-1',
-        userId: 'user-1',
-      }),
-    ).rejects.toMatchObject({ code: 'QUOTE_INCOMPATIBLE' });
-    expect(harness.credits.calls).toEqual([]);
-    expect(harness.corrections.findByQuote).not.toHaveBeenCalled();
-    expect(harness.transportOutputs).toEqual([]);
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(result.correction.status).toBe('COMPLETED');
+    expect(harness.credits.calls).toEqual(['reserve', 'settle']);
+    expect(harness.transportOutputs).toHaveLength(1);
   });
 
   it.each([
@@ -746,7 +745,8 @@ describe('correction orchestration (V4-009)', () => {
   it('parses the runtime contract snapshot through the published contract schema', () => {
     expect(() => correctionContractSchema.parse(contractRaw)).not.toThrow();
     expect(PROMOTED_CORRECTION_IDENTITY).toMatchObject({
-      activityTypeScope: ['writing'],
+      activityTypeScope: ['writing', 'reflection', 'practice', 'project'],
+      scientificallyValidatedActivityTypeScope: ['writing'],
       languageScope: ['fr-FR'],
       maxRetries: 0,
       scoreGuardBandPoints: 5,

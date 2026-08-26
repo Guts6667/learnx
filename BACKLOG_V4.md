@@ -2,9 +2,9 @@
 
 ## Statut et autorité
 
-- Version : 1.6.9
-- Statut : **pilote V4 writing-only validé en preview — gate production V4-019 restant**
-- Dernière consolidation : 25 août 2026 — candidat pré-merge déployé, recette propriétaire restante
+- Version : 1.7.0
+- Statut : **extension formative des productions textuelles fr-FR en cours — gate production V4-019 restant**
+- Dernière consolidation : 26 août 2026 — contrats hybrides validés, implémentation et QA en cours
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -50,6 +50,30 @@ consultables comme historique de recherche et ne doivent pas être effacés.
 - Ordre de livraison : raccord runtime → Totem mobile → validation mobile →
   Totem desktop → validation desktop → surfaces correction/crédits/admin →
   recherche publique → gate de release.
+
+### Amendement d'extension produit — 26 août 2026
+
+Rayan autorise la correction formative après toutes les soumissions textuelles
+libres fr-FR de type `writing`, `reflection`, `practice` ou `project`.
+
+- Un contrat spécialisé `PUBLISHED` lié exactement à l'activité reste
+  prioritaire. Sans contrat explicite, LearnX compile un contrat d'archétype
+  exact et versionné. Un contrat explicite invalide ou `DRAFT` bloque la
+  correction au lieu de déclencher un fallback silencieux.
+- La preuve scientifique Writing et ses verdicts historiques restent
+  inchangés. L'extension aux trois autres familles est une décision produit
+  formative surveillée, jamais une promotion scientifique implicite.
+- Quiz et corrections déterministes restent hors appel IA. Fichiers, images,
+  audio, vidéo et langues autres que fr-FR restent exclus.
+- Le catalogue actif reste borné à 1 500 caractères. Les contrats couvrent les
+  familles de réponse, mais une classe `MEDIUM` ou `LONG` requiert encore une
+  calibration Finance explicite ; aucun tarif n'est inventé.
+- Une correction réglée doit être retrouvée après actualisation sans appel ni
+  débit supplémentaire. Elle n'est affichée que lorsque son règlement est
+  finalisé.
+
+Le contrat qualité détaillé est
+`docs/V4_FREE_TEXT_CORRECTION_CONTRACTS.md`.
 
 Ce document fixe le périmètre et l'ordre de livraison de V4. Un ticket ne
 devient une instruction d'implémentation qu'après :
@@ -334,8 +358,10 @@ la grammaire visuelle.
    validation, progression et droits d'accès.
 2. L'utilisateur ne voit jamais de tokens. Il voit des crédits LearnX, une
    allocation, un prix estimé, un plafond et un historique compréhensible.
-3. Une correction n'est possible que si l'activité possède un contrat de
-   correction publié, versionné et compatible.
+3. Une correction n'est possible que si l'activité résout un contrat de
+   correction publié, versionné et compatible : contrat spécialisé prioritaire
+   ou archétype exact en l'absence de contrat explicite. Un contrat explicite
+   invalide, brouillon ou mal lié bloque la correction.
 4. Le modèle ne choisit ni les critères, ni leurs poids, ni le seuil de réussite.
    Il applique un contrat pédagogique authoré et le serveur recalcule le score.
 5. La sortie IA cite les éléments de la réponse justifiant chaque appréciation ;
@@ -805,6 +831,20 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 - Le contrat atomique v2, ses oracles et ses campagnes restent conservés comme
   recherche historique et dette V4.1 ; ils ne sont ni supprimés ni décrits
   rétroactivement comme le runtime livré.
+
+### Extension V4-002A — contrats hybrides — 26 août 2026
+
+- Inventaire seed : 357 productions candidates (`182 practice`, `87 project`,
+  `87 writing`, `1 reflection`).
+- Quatre archétypes qualité sont compilés par activité, en fr-FR et texte
+  uniquement. Chacun totalise 100 points et n'évalue ni style, ni longueur, ni
+  orthographe sans exigence explicite.
+- Les contrats spécialisés publiés gagnent toujours. Un contrat explicite
+  invalide ou brouillon échoue fermé.
+- Cette extension ne prétend pas avoir benchmarké les quatre familles : la
+  preuve scientifique reste Writing ; les autres familles sont surveillées.
+- Les classes de taille supérieures à 1 500 caractères restent bloquées par le
+  catalogue tant qu'elles ne sont pas calibrées.
 
 ### Périmètre
 
@@ -1535,6 +1575,9 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 
 ### Périmètre
 
+- Couvrir les activités texte fr-FR `writing`, `reflection`, `practice` et
+  `project` via le contrat spécialisé ou l'archétype effectif.
+
 - Intégrer la correction aux exercices à production libre éligibles sans casser
   le parcours authoré, la navigation ni l'historique existant.
 - Afficher prix estimé/plafond, soldes utilisés et confirmation avant lancement.
@@ -1590,11 +1633,28 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
   320/390, 1440/1920 px, au zoom 200 %, avec focus visible, contrastes WCAG et
   reduced motion. Aucun état ne dépend de la couleur seule.
 - Une actualisation ne relance ni l'appel ni le débit.
+- Une actualisation restitue uniquement une correction dont le règlement est
+  finalisé ; une réconciliation ouverte ne devient jamais un résultat livré.
+- Un contrat explicite invalide, brouillon ou lié à une autre activité ne peut
+  pas être remplacé silencieusement par un archétype.
 
 ### Tests et risques
 
 - Composants, E2E, réseau lent/hors ligne, double clic et textes longs.
 - Risque : présenter le feedback IA comme une vérité ou un jugement personnel.
+
+### État d'implémentation au 26 août 2026
+
+- **Implémenté** : résolution hybride du contrat, éligibilité des quatre familles,
+  devis et exécution sur le même snapshot, restitution de la dernière correction
+  réglée après actualisation et masquage des métriques fournisseur côté apprenant.
+- **Validé automatiquement** : lint, typecheck, 925 tests et build.
+- **Ouvert** : classe tarifaire au-delà de 1 500 caractères, comparaison de
+  plusieurs corrections, contestation argumentée, recette authentifiée des
+  quatre familles et neuf scénarios E2E UI/navigation sans lien avec la
+  correction.
+- **Référence de preuve** :
+  `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md`.
 
 ---
 

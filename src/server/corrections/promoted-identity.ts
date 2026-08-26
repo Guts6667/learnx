@@ -9,11 +9,17 @@
  * passe par une modification explicite de ce fichier, jamais par une
  * configuration implicite.
  *
- * Le scope writing-only et la bande de garde sont bloquants : le défaut
- * éliminatoire Practice a été confirmé par la revue canonique du 24 août.
+ * Le benchmark reste scientifiquement borné à WRITING : le défaut
+ * éliminatoire Practice confirmé le 24 août n'est ni effacé ni requalifié.
+ * Le 26 août, le Propriétaire a néanmoins autorisé un périmètre produit
+ * formatif plus large pour collecter des données et itérer. Cette extension
+ * est donc une décision de rollout surveillé, pas une promotion scientifique
+ * des familles reflection/practice/project.
  */
 export const PROMOTED_CORRECTION_IDENTITY = {
-  activityTypeScope: ['writing'],
+  activityTypeScope: ['writing', 'reflection', 'practice', 'project'],
+  scientificallyValidatedActivityTypeScope: ['writing'],
+  scopeDecisionId: 'owner-formative-free-text-rollout-2026-08-26',
   languageScope: ['fr-FR'],
   targetKindScope: ['EXERCISE'],
   benchmarkId: 'learnx-french-text-correction-v3-1',

@@ -16,6 +16,7 @@ describe('AiCorrectionPanel', () => {
   it('demande un consentement explicite puis restitue seulement les critères fiables', async () => {
     const fetchMock = vi
       .fn()
+      .mockResolvedValueOnce(jsonResponse({ resource: { correction: null } }))
       .mockResolvedValueOnce(
         jsonResponse({
           resource: {
@@ -81,6 +82,7 @@ describe('AiCorrectionPanel', () => {
       </AppProviders>,
     );
 
+    await screen.findByRole('button', { name: 'Voir le devis en crédits' });
     fireEvent.click(screen.getByRole('button', { name: 'Voir le devis en crédits' }));
     expect(await screen.findByText(/Action : correction formative standard/)).toBeInTheDocument();
     expect(screen.getByText(/Certains critères peuvent revenir à retravailler sans compensation/)).toBeInTheDocument();
@@ -105,6 +107,7 @@ describe('AiCorrectionPanel', () => {
     };
     const fetchMock = vi
       .fn()
+      .mockResolvedValueOnce(jsonResponse({ resource: { correction: null } }))
       .mockResolvedValueOnce(jsonResponse({ resource: { quote } }))
       .mockRejectedValueOnce(new Error('Connexion interrompue'))
       .mockResolvedValueOnce(
@@ -139,12 +142,62 @@ describe('AiCorrectionPanel', () => {
       </AppProviders>,
     );
 
+    await screen.findByRole('button', { name: 'Voir le devis en crédits' });
     fireEvent.click(screen.getByRole('button', { name: 'Voir le devis en crédits' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Confirmer et lancer la correction' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Connexion interrompue');
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
 
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
     expect(await screen.findByText(/Le débit reste celui du devis accepté/)).toBeInTheDocument();
+  });
+
+  it('restaure une correction réglée sans proposer un nouveau devis', async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(
+      jsonResponse({
+        resource: {
+          correction: {
+            correction: {
+              criteria: [
+                {
+                  evidenceQuotes: ['Je compare deux contraintes.'],
+                  evidenceStatus: 'FOUND',
+                  feedback: 'Le lien est explicite.',
+                  key: 'context-fidelity',
+                  label: 'Fidélité au contexte',
+                  levelKey: 'mastered',
+                  levelLabel: 'Maîtrisé',
+                  weight: 33,
+                },
+              ],
+              id: 'a14cbe99-31dd-48f1-9fb3-4549a2d88bc2',
+              indicativeScore: 100,
+              overallFeedback: 'Réponse étayée.',
+              secondPassRequired: false,
+              status: 'COMPLETED',
+              unsureCriteria: [],
+              unsureCriterionDetails: [],
+            },
+            replay: true,
+            settlement: {
+              releasedCredits: '6',
+              reservedCredits: '18',
+              settledCredits: '12',
+            },
+          },
+        },
+      }),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AiCorrectionPanel submissionId="0286768e-5b9c-491b-a4f4-f2e6863ef398" />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('Fidélité au contexte')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Voir le devis en crédits' })).not.toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

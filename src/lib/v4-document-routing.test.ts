@@ -8,13 +8,13 @@ function read(path: string): string {
 }
 
 describe('V4 document routing', () => {
-  it('routes current work through the August 24 product roadmap', () => {
+  it('routes current work through the latest product roadmap', () => {
     const index = read('docs/INDEX.md');
     const roadmap = read('docs/V4_ROADMAP.md');
 
     expect(index).toContain('docs/V4_ROADMAP.md');
     expect(index).toContain('BACKLOG_V4.md');
-    expect(roadmap).toContain('25 août 2026');
+    expect(roadmap).toContain('26 août 2026');
     expect(roadmap).toContain('writing');
     expect(roadmap).toContain('crédits offerts');
     expect(index).toContain('V4_1_BACKLOG.md');

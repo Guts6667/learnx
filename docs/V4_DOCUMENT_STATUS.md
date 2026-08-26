@@ -1,8 +1,8 @@
 # Statut des documents V4
 
 - **Statut** : `CANONICAL_ROUTING_REGISTER`
-- **Version** : `1.0.10`
-- **Date** : 24 août 2026
+- **Version** : `1.0.12`
+- **Date** : 26 août 2026
 - **Objet** : empêcher qu'une préparation, une demande de GO ou un protocole
   clos soit repris comme direction active
 
@@ -31,7 +31,9 @@ chemin de lecture actif.
 | `V4_ROADMAP.md` | `CURRENT_STATUS` | Registre humain unique de progression. |
 | `../BACKLOG_V4.md` | `ACTIVE_AUTHORITY` | Périmètres, critères et tickets. |
 | `V4_RESEARCH_FINDINGS.md` | `CURRENT_STATUS` | Synthèse lisible des preuves, limites et de l'arbitrage de livraison bornée du 24 août ; les artefacts et le journal append-only restent prioritaires. |
-| `../src/server/corrections/promoted-identity.ts` | `ACTIVE_AUTHORITY` | Pin runtime V4 : Sonnet 4.6, writing/fr-FR, exercice, prompt 2.2.0, protocole 3.0.1 et livraison partielle. |
+| `../src/server/corrections/promoted-identity.ts` | `ACTIVE_AUTHORITY` | Pin runtime V4 : Sonnet 4.6, exercices textuels productifs fr-FR, prompt 2.2.0, protocole 3.0.1 et livraison partielle ; la preuve scientifique reste writing-only. |
+| `V4_FREE_TEXT_CORRECTION_CONTRACTS.md` | `ACTIVE_AUTHORITY` | Portée produit, archétypes qualité, priorité des contrats spécialisés et limites tarifaires approuvées le 26 août. |
+| `V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` | `CURRENT_STATUS` | Couverture runtime réelle, validations et limites résiduelles de l'extension aux productions libres. |
 | `V4_TOTEM_IMPLEMENTATION_MAP.md` | `ACTIVE_DESIGN_AUTHORITY` | Autorité Totem mobile/desktop approuvée le 24 août, surfaces, tokens et matrice de QA. |
 | `V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md` | `HISTORICAL_EVIDENCE` | Première direction Totem conservée ; remplacée pour l'UI/UX par la cartographie et les paquets du 24 août. |
 | `V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` | `HISTORICAL_EVIDENCE` | Miroir machine du chemin evidence-assist antérieur ; immuable, non exécutoire depuis l'amendement du 24 août. |

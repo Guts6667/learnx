@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 
 import { correctionContractSchema } from '../src/lib/ai-correction-contracts';
+import { resolveExerciseCorrectionContract } from '../src/lib/exercise-correction-contracts';
 import {
   belongsToCurrentModuleRun,
   getCanonicalActivityKind,
@@ -990,9 +991,40 @@ export async function seedSampleProgram(
             key: activityKey,
             lessonId: lesson.id,
             position: taskData.position,
-            rubric: taskData.correctionContract as
-              | Prisma.InputJsonValue
-              | undefined,
+            rubric: (() => {
+              const resolution = resolveExerciseCorrectionContract({
+                activityKey,
+                activityType: taskData.type,
+                explicitContract: taskData.correctionContract,
+                instructions: taskData.description ?? taskData.title,
+                language:
+                  sampleProgram.locale === 'fr'
+                    ? 'fr-FR'
+                    : sampleProgram.locale === 'en'
+                      ? 'en-US'
+                      : sampleProgram.locale,
+                lessonObjectives: lessonData.objectives,
+                lessonSlug: lessonData.slug,
+                lessonSummary: lessonData.summary,
+                programSlug: sampleProgram.slug,
+                title: taskData.title,
+              });
+
+              if (
+                !resolution.eligible &&
+                resolution.reasons.includes('CONTRACT_TARGET_MISMATCH')
+              ) {
+                throw new Error(
+                  `Correction contract target mismatch for "${sampleProgram.slug}/${lessonData.slug}/${activityKey}".`,
+                );
+              }
+
+              return (resolution.eligible
+                ? resolution.contract
+                : taskData.correctionContract) as
+                | Prisma.InputJsonValue
+                | undefined;
+            })(),
             title: taskData.title,
           });
           await repository.archiveTaskMirror({

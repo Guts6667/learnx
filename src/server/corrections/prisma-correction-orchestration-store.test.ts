@@ -225,4 +225,71 @@ describe('Prisma correction orchestration store', () => {
       expect(replay).toMatchObject({ state: expected });
     },
   );
+
+  it('restores only a correction whose credit settlement is authoritative', async () => {
+    const findFirst = vi.fn(async () => ({
+      creditReservation: {
+        settledAmount: 3n,
+        status: 'SETTLED',
+      },
+      structuredResult: {
+        correction: { ...result('COMPLETED'), id: 'correction-1' },
+        settlement: {
+          releasedCredits: '3',
+          reservedCredits: '6',
+          settledCredits: '3',
+        },
+      },
+    }));
+    const ports = new PrismaCorrectionOrchestrationPorts({
+      aiCorrection: { findFirst },
+    } as never);
+
+    const latest = await ports.findLatestForSubmission({
+      submissionId: quote().target.id,
+      userId: quote().userId,
+    });
+
+    expect(latest).toMatchObject({
+      correction: { id: 'correction-1', status: 'COMPLETED' },
+      replay: true,
+      settlement: { settledCredits: '3' },
+    });
+    expect(findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          exerciseSubmissionId: quote().target.id,
+          userId: quote().userId,
+        },
+      }),
+    );
+  });
+
+  it('does not expose a correction before its credit settlement is complete', async () => {
+    const ports = new PrismaCorrectionOrchestrationPorts({
+      aiCorrection: {
+        findFirst: vi.fn(async () => ({
+          creditReservation: {
+            settledAmount: null,
+            status: 'RESERVED',
+          },
+          structuredResult: {
+            correction: { ...result('COMPLETED'), id: 'correction-1' },
+            settlement: {
+              releasedCredits: '3',
+              reservedCredits: '6',
+              settledCredits: '3',
+            },
+          },
+        })),
+      },
+    } as never);
+
+    await expect(
+      ports.findLatestForSubmission({
+        submissionId: quote().target.id,
+        userId: quote().userId,
+      }),
+    ).resolves.toBeNull();
+  });
 });

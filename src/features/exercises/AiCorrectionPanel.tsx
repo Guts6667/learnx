@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -7,12 +7,14 @@ import { Spinner } from '@/components/ui/Spinner';
 import {
   type CorrectionQuote,
   type CorrectionResult,
+  loadLatestCorrection,
   requestCorrectionQuote,
   runCorrection,
 } from '@/features/exercises/ai-correction';
 import { useI18n } from '@/i18n';
 
 type PanelPhase =
+  | { kind: 'HISTORY_PENDING' }
   | { kind: 'IDLE' }
   | { kind: 'QUOTE_PENDING' }
   | { kind: 'CONSENT'; quote: CorrectionQuote }
@@ -35,7 +37,25 @@ export function AiCorrectionPanel({
   submissionId: string;
 }) {
   const { t } = useI18n();
-  const [phase, setPhase] = useState<PanelPhase>({ kind: 'IDLE' });
+  const [phase, setPhase] = useState<PanelPhase>({ kind: 'HISTORY_PENDING' });
+
+  useEffect(() => {
+    let active = true;
+    void loadLatestCorrection(submissionId)
+      .then((result) => {
+        if (active) {
+          setPhase(result ? { kind: 'RESULT', result } : { kind: 'IDLE' });
+        }
+      })
+      .catch(() => {
+        // Une indisponibilité de l'historique ne doit pas empêcher un nouveau
+        // devis. Le serveur conserve l'idempotence et interdit le double débit.
+        if (active) setPhase({ kind: 'IDLE' });
+      });
+    return () => {
+      active = false;
+    };
+  }, [submissionId]);
 
   async function askQuote() {
     setPhase({ kind: 'QUOTE_PENDING' });
@@ -71,6 +91,10 @@ export function AiCorrectionPanel({
         quote,
       });
     }
+  }
+
+  if (phase.kind === 'HISTORY_PENDING') {
+    return <Spinner label={t('aiCorrection.historyPending')} size="sm" />;
   }
 
   if (phase.kind === 'IDLE') {

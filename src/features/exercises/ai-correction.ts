@@ -79,3 +79,14 @@ export async function runCorrection(input: {
   );
   return response.resource.correction;
 }
+
+export async function loadLatestCorrection(
+  submissionId: string,
+): Promise<CorrectionResult | null> {
+  const response = await apiRequest<{
+    resource: { correction: CorrectionResult | null };
+  }>(
+    `/api/exercise-submissions/${encodeURIComponent(submissionId)}/ai-corrections/latest`,
+  );
+  return response.resource.correction;
+}

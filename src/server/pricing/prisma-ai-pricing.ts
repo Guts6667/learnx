@@ -5,6 +5,7 @@ import {
   type PrismaClient,
 } from '../../../generated/prisma/client.js';
 import { getCorrectionContractRuntimeEligibility } from '../../lib/ai-correction-contracts.js';
+import { resolveExerciseCorrectionContract } from '../../lib/exercise-correction-contracts.js';
 import { toIntlLocale } from '../../shared/locale.js';
 import { PROMOTED_CORRECTION_IDENTITY } from '../corrections/promoted-identity.js';
 import {
@@ -131,6 +132,46 @@ function targetSnapshot(input: {
   };
 }
 
+function exerciseTargetSnapshot(input: {
+  activityKey: string;
+  activityType: string;
+  content: string | null;
+  contract: unknown;
+  instructions: string;
+  lessonObjectives: unknown;
+  lessonSlug: string;
+  lessonSummary: string;
+  locale: string;
+  programSlug: string;
+  target: AiPricingTarget;
+  title: string;
+}): PricingTargetSnapshot {
+  const language = toIntlLocale(input.locale === 'en' ? 'en' : 'fr');
+  const resolution = resolveExerciseCorrectionContract({
+    activityKey: input.activityKey,
+    activityType: input.activityType,
+    explicitContract: input.contract,
+    instructions: input.instructions,
+    language,
+    lessonObjectives: Array.isArray(input.lessonObjectives)
+      ? input.lessonObjectives.filter(
+          (objective): objective is string => typeof objective === 'string',
+        )
+      : [],
+    lessonSlug: input.lessonSlug,
+    lessonSummary: input.lessonSummary,
+    programSlug: input.programSlug,
+    title: input.title,
+  });
+  if (!resolution.eligible) throw new AiPricingError('TARGET_NOT_ELIGIBLE');
+  return {
+    contract: resolution.contract,
+    inputChars: input.content?.length ?? 0,
+    language,
+    target: input.target,
+  };
+}
+
 export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository {
   public constructor(private readonly prisma: PrismaClient) {}
 
@@ -145,13 +186,22 @@ export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository 
           contentMarkdown: true,
           exercise: {
             select: {
+              activityType: true,
+              instructions: true,
+              key: true,
               rubric: true,
+              title: true,
               lesson: {
                 select: {
+                  objectives: true,
+                  slug: true,
+                  summary: true,
                   module: {
                     select: {
                       stage: {
-                        select: { program: { select: { locale: true } } },
+                        select: {
+                          program: { select: { locale: true, slug: true } },
+                        },
                       },
                     },
                   },
@@ -162,11 +212,20 @@ export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository 
         },
       });
       return submission
-        ? targetSnapshot({
+        ? exerciseTargetSnapshot({
+            activityKey: submission.exercise.key,
+            activityType: submission.exercise.activityType,
             content: submission.contentMarkdown,
             contract: submission.exercise.rubric,
+            instructions: submission.exercise.instructions,
+            lessonObjectives: submission.exercise.lesson.objectives,
+            lessonSlug: submission.exercise.lesson.slug,
+            lessonSummary: submission.exercise.lesson.summary,
             locale: submission.exercise.lesson.module.stage.program.locale,
+            programSlug:
+              submission.exercise.lesson.module.stage.program.slug,
             target,
+            title: submission.exercise.title,
           })
         : null;
     }

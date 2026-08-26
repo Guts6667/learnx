@@ -14,6 +14,7 @@ import {
   CorrectionOrchestrationService,
   createRuntimeCorrectionTransport,
   type CreditSettlementPort,
+  type OrchestratedCorrectionResult,
 } from '../../corrections/correction-orchestration.js';
 import { PrismaCorrectionOrchestrationPorts } from '../../corrections/prisma-correction-orchestration-store.js';
 import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
@@ -33,11 +34,37 @@ const runCorrectionRequestSchema = z
   })
   .strict();
 
+function serializeLearnerCorrectionResult(
+  result: OrchestratedCorrectionResult,
+) {
+  const correction = {
+    criteria: result.correction.criteria,
+    id: result.correction.id,
+    indicativeScore: result.correction.indicativeScore,
+    overallFeedback: result.correction.overallFeedback,
+    secondPassRequired: result.correction.secondPassRequired,
+    status: result.correction.status,
+    unsureCriteria: result.correction.unsureCriteria,
+    unsureCriterionDetails: result.correction.unsureCriterionDetails,
+  };
+  return {
+    correction,
+    replay: result.replay,
+    settlement: result.settlement,
+  };
+}
+
 export interface CorrectionsAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
   authorization?: MiddlewareHandler<AuthEnvironment>;
   now?: () => Date;
   orchestration?: Pick<CorrectionOrchestrationService, 'runAcceptedQuote'>;
+  history?: {
+    findLatestForSubmission(input: {
+      submissionId: string;
+      userId: string;
+    }): Promise<OrchestratedCorrectionResult | null>;
+  };
   monitoring?: { summary(): Promise<CorrectionMonitoringSummary> };
   preflight?: CorrectionReleasePreflight;
   resolveDefaultOrchestration?: () => Promise<Pick<
@@ -115,6 +142,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   let orchestration = options.orchestration;
   let monitoring = options.monitoring;
+  let history = options.history;
   let defaultOrchestrationPromise:
     | Promise<Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null>
     | undefined;
@@ -164,6 +192,31 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     },
   );
 
+  app.get(
+    '/api/exercise-submissions/:submissionId/ai-corrections/latest',
+    async (context) => {
+      const submissionId = z.uuid().safeParse(context.req.param('submissionId'));
+      if (!submissionId.success) {
+        throw new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
+      }
+      if (!history) {
+        const { prisma } = await import('../../prisma.js');
+        history = new PrismaCorrectionOrchestrationPorts(prisma);
+      }
+      const correction = await history.findLatestForSubmission({
+        submissionId: submissionId.data,
+        userId: context.get('user').id,
+      });
+      return context.json({
+        resource: {
+          correction: correction
+            ? serializeLearnerCorrectionResult(correction)
+            : null,
+        },
+      });
+    },
+  );
+
   app.post('/api/ai-corrections', async (context) => {
     const parsed = runCorrectionRequestSchema.safeParse(
       await context.req.raw.json().catch(() => null),
@@ -189,7 +242,10 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
         quoteId: parsed.data.quoteId,
         userId: context.get('user').id,
       });
-      return context.json({ resource: { correction: result } }, 201);
+      return context.json(
+        { resource: { correction: serializeLearnerCorrectionResult(result) } },
+        201,
+      );
     } catch (error) {
       if (error instanceof CorrectionOrchestrationError) {
         const mapping: Record<

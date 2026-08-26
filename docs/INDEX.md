@@ -25,6 +25,8 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Release du pilote V4 | `docs/V4_019_RELEASE_REPORT.md`, puis `docs/V4_ROLLOUT_CHECKLIST.md` et `docs/V4_019_MANUAL_ACCEPTANCE.md` | Les essais preview sont append-only ; la recette propriétaire précède deux GO distincts : promotion Git/configuration fermée, puis ouverture/smoke |
 | Calibration du pilote V4 | `docs/V4_007_PILOT_CALIBRATION.md` | Option B et parité pilote provisoire approuvées le 24 août ; crédits offerts uniquement, aucune vente publique |
 | Recherche correction V4 | `docs/V4_RESEARCH_FINDINGS.md`, puis `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` | Artefacts et journal append-only priment sur les synthèses |
+| Contrats correction texte V4 | `docs/V4_FREE_TEXT_CORRECTION_CONTRACTS.md` | Résolution hybride spécialisée/archétype, portée fr-FR et garde-fous runtime approuvés le 26 août |
+| État d'implémentation correction texte V4 | `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` | Couverture réelle, validations et limites résiduelles du lot du 26 août |
 | Reports V4.1 | `V4_1_BACKLOG.md` | Aucune dette V4.1 ne modifie implicitement le pilote V4 |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |

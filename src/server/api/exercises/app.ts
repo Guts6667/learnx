@@ -10,7 +10,7 @@ import {
   assertExerciseSubmissionCanBeSubmitted,
   type ExerciseSubmissionState,
 } from '../../../lib/exercises.js';
-import { getCorrectionContractRuntimeEligibility } from '../../../lib/ai-correction-contracts.js';
+import { resolveExerciseCorrectionContract } from '../../../lib/exercise-correction-contracts.js';
 import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import {
@@ -43,12 +43,18 @@ interface ExerciseSubmissionRecord {
 }
 
 interface ExerciseRecord {
+  activityType: string;
   id: string;
   instructions: string;
   isRequired: boolean;
+  key: string;
   language?: string;
+  lessonObjectives: string[];
+  lessonSlug: string;
+  lessonSummary: string;
   lessonId: string;
   position: number;
+  programSlug: string;
   rubric: unknown;
   submission: ExerciseSubmissionRecord | null;
   title: string;
@@ -128,14 +134,25 @@ function serializeSubmission(submission: ExerciseSubmissionRecord) {
 }
 
 export function isExerciseAiCorrectionEligible(
-  rubric: unknown,
-  language?: string,
+  exercise: Omit<ExerciseRecord, 'submission'>,
 ): boolean {
-  const eligibility = getCorrectionContractRuntimeEligibility(rubric);
+  if (!exercise.language) return false;
+  const eligibility = resolveExerciseCorrectionContract({
+    activityKey: exercise.key,
+    activityType: exercise.activityType,
+    explicitContract: exercise.rubric,
+    instructions: exercise.instructions,
+    language: exercise.language,
+    lessonObjectives: exercise.lessonObjectives,
+    lessonSlug: exercise.lessonSlug,
+    lessonSummary: exercise.lessonSummary,
+    programSlug: exercise.programSlug,
+    title: exercise.title,
+  });
   return (
     eligibility.eligible &&
     PROMOTED_CORRECTION_IDENTITY.languageScope.some(
-      (allowedLanguage) => allowedLanguage === language,
+      (allowedLanguage) => allowedLanguage === exercise.language,
     ) &&
     eligibility.contract.target.kind === 'EXERCISE' &&
     PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
@@ -215,10 +232,15 @@ export function createPrismaExerciseRepository(
         include: {
           lesson: {
             select: {
+              objectives: true,
+              slug: true,
+              summary: true,
               module: {
                 select: {
                   stage: {
-                    select: { program: { select: { locale: true } } },
+                    select: {
+                      program: { select: { locale: true, slug: true } },
+                    },
                   },
                 },
               },
@@ -253,7 +275,20 @@ export function createPrismaExerciseRepository(
           : lesson.module.stage.program.locale === 'en'
             ? 'en-US'
             : lesson.module.stage.program.locale;
-      return { ...exerciseRecord, language, submission };
+      const objectives = Array.isArray(lesson.objectives)
+        ? lesson.objectives.filter(
+            (objective): objective is string => typeof objective === 'string',
+          )
+        : [];
+      return {
+        ...exerciseRecord,
+        language,
+        lessonObjectives: objectives,
+        lessonSlug: lesson.slug,
+        lessonSummary: lesson.summary,
+        programSlug: lesson.module.stage.program.slug,
+        submission,
+      };
     },
     async findOwnedSubmission(submissionId, userId) {
       const submission = await client.exerciseSubmission.findFirst({
@@ -397,10 +432,7 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
     return context.json({
       exercise: {
         ...exercise,
-        aiCorrectionEligible: isExerciseAiCorrectionEligible(
-          exercise.rubric,
-          exercise.language,
-        ),
+        aiCorrectionEligible: isExerciseAiCorrectionEligible(exercise),
         submission: exercise.submission
           ? serializeSubmission(exercise.submission)
           : null,

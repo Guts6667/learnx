@@ -67,9 +67,30 @@ describe('corrections api (V4-009/V4-010)', () => {
   function app(userId = 'user-1') {
     return createCorrectionsApp({
       authentication: authenticatedMiddleware(userId),
+      history: { findLatestForSubmission: vi.fn(async () => buildResult()) },
       orchestration,
     });
   }
+
+  it('returns the latest settled correction without running the model again', async () => {
+    const response = await app().request(
+      '/api/exercise-submissions/0286768e-5b9c-491b-a4f4-f2e6863ef398/ai-corrections/latest',
+    );
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as {
+      resource: { correction: OrchestratedCorrectionResult };
+    };
+    expect(body.resource.correction.replay).toBe(false);
+    expect(body.resource.correction.correction.id).toBe('correction-1');
+    expect(orchestration.runAcceptedQuote).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid submission id before querying history', async () => {
+    const response = await app().request(
+      '/api/exercise-submissions/not-a-uuid/ai-corrections/latest',
+    );
+    expect(response.status).toBe(400);
+  });
 
   it('runs an accepted quote and returns the correction with its settlement', async () => {
     const response = await app().request('/api/ai-corrections', {
@@ -87,6 +108,12 @@ describe('corrections api (V4-009/V4-010)', () => {
       reservedCredits: '18',
       settledCredits: '12',
     });
+    expect(body.resource.correction.correction).not.toHaveProperty(
+      'modelUsageCostUsd',
+    );
+    expect(body.resource.correction.correction).not.toHaveProperty(
+      'monitoringSignals',
+    );
     expect(orchestration.runAcceptedQuote).toHaveBeenCalledWith({
       quoteId: '5f0b1d2e-1c3d-4e5f-9a8b-7c6d5e4f3b2a',
       userId: 'user-1',
