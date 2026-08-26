@@ -457,6 +457,7 @@ function AppRouteTree() {
 
       if (
         !anchor ||
+        anchor.hasAttribute('data-native') ||
         anchor.hasAttribute('download') ||
         (anchor.target && anchor.target !== '_self')
       ) {

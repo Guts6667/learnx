@@ -53,6 +53,30 @@ describe('App', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('laisse le navigateur charger les documents publics marqués data-native', async () => {
+    window.history.pushState({}, '', '/');
+    vi.stubGlobal('fetch', vi.fn());
+
+    render(<App />);
+
+    const researchLink = await screen.findByRole('link', {
+      name: 'Explorer le journal de recherche',
+    });
+    let routerPreventedNavigation: boolean | null = null;
+    const observeThenCancelNativeNavigation = (event: MouseEvent) => {
+      routerPreventedNavigation = event.defaultPrevented;
+      event.preventDefault();
+    };
+    document.addEventListener('click', observeThenCancelNativeNavigation, {
+      once: true,
+    });
+
+    fireEvent.click(researchLink);
+
+    expect(routerPreventedNavigation).toBe(false);
+    expect(window.location.pathname).toBe('/');
+  });
+
   it('ouvre la connexion depuis une ancienne installation PWA sans session', async () => {
     window.history.pushState({}, '', '/');
     vi.stubGlobal(
