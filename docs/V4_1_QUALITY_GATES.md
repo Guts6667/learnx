@@ -27,17 +27,17 @@ si un autre gate technique échoue.
 
 ## Mesure courante
 
-Mesure locale du 26 août 2026 après les primitives React/shadcn et le
-durcissement fail-closed de la couverture, sur 154 fichiers de tests et 968
+Mesure locale du 26 août 2026 après les shells React/shadcn et le
+durcissement fail-closed de la couverture, sur 155 fichiers de tests et 975
 tests verts. Tous les fichiers TypeScript de production sous `api/` et `src/`
 sont inclus, même lorsqu'aucun test ne les importe :
 
 | Périmètre | Mesure | Cible de release | État |
 | --- | ---: | ---: | --- |
-| Statements globaux | 77,57 % | 80 % | ouvert |
-| Branches globales | 69,36 % | 80 % | ouvert |
-| Functions globales | 79,11 % | 80 % | ouvert |
-| Lines globales | 79,01 % | 80 % | ouvert |
+| Statements globaux | 77,61 % | 80 % | ouvert |
+| Branches globales | 69,45 % | 80 % | ouvert |
+| Functions globales | 79,14 % | 80 % | ouvert |
+| Lines globales | 79,05 % | 80 % | ouvert |
 | Authentification et accès | 73,74 % (410/556) | 90 % lines | ouvert |
 | Correction, pricing, crédits et réconciliation | 64,77 % (1 193/1 842) | 90 % lines | ouvert |
 | Progression et évaluations | 81,80 % (1 007/1 231) | 90 % lines | ouvert |

@@ -63,7 +63,9 @@ candidats V5.
 - Reviewer : Sécurité / Frontend platform
 - Dépendances : V4.1-001
 - Source : `package.json`, lockfile, Vite, TypeScript, routes et code baseline
-- Statut : **livré pour revue** dans `docs/V4_1_TECHNICAL_AUDIT.md`
+- Statut : **terminé** — audit corrigé au SHA `fc269f72` puis accepté en
+  revue indépendante ; les 113 couplages Preact globaux de la baseline, les
+  routes, montages API, hotspots, dépendances et risques sont reproductibles
 - Critères d'acceptation :
   - runtime, devDependencies et points de couplage Preact sont inventoriés ;
   - l'audit sécurité daté expose les avis et overrides réellement appliqués ;
@@ -266,10 +268,10 @@ candidats V5.
 - Reviewer : Produit / Accessibilité
 - Dépendances : V4.1-102, V4.1-202
 - Source : navigation V4.1-102 ; primitives V4.1-202
-- Statut : **livré pour revue** — shells dédiés public, authentification,
-  application et administration ; navigation admin unique et responsive ;
-  skip link et focus du contenu unifiés ; shell produit vérifié de 320 à
-  1 920 px, à 200 % et avec reduced motion
+- Statut : **terminé** — implémentation au SHA `13f31bb4` et revue indépendante
+  `REVIEW_PASS` ; shells public, authentification, application et
+  administration, navigation responsive, skip link, focus, contraste, PWA et
+  budgets initiaux vérifiés avec 975 tests verts
 - Critères d'acceptation :
   - shells public, authentifié et admin partagent les primitives approuvées ;
   - navigation mobile/desktop conserve hiérarchie, repères et action primaire ;
@@ -285,7 +287,7 @@ candidats V5.
 - Reviewer : Sécurité / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline auth/public V4.1-006
-- Statut : **bloqué** — dépendances V4.1-103, V4.1-104 et V4.1-203
+- Statut : **prêt** — dépendances V4.1-103, V4.1-104 et V4.1-203 terminées
 - Critères d'acceptation :
   - landing, intérêt, login, demande d'accès, vérification et activation migrent ;
   - sessions, redirections, messages et protections anti-abus restent identiques ;
@@ -299,7 +301,7 @@ candidats V5.
 - Reviewer : Domaine / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline parcours V4.1-006
-- Statut : **bloqué** — dépendances V4.1-103, V4.1-104 et V4.1-203
+- Statut : **prêt** — dépendances V4.1-103, V4.1-104 et V4.1-203 terminées
 - Critères d'acceptation :
   - Today, annuaire, découverte, programme, étape, module et leçon migrent ;
   - `Program > Stage > Module > Lesson` et URLs restent inchangés ;
