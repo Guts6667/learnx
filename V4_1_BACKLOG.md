@@ -307,7 +307,10 @@ neuvième statut.
 - Reviewer : Sécurité / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline auth/public V4.1-006
-- Statut : **prêt** — dépendances V4.1-103, V4.1-104 et V4.1-203 terminées
+- Statut : **livré pour revue** — landing, intérêt, authentification et 404
+  publique migrés vers les shells React et primitives partagées ; URLs,
+  payloads et protections inchangés ; 980 tests unitaires et matrice E2E
+  320/390/720/1440/1920 vertes sur la branche `codex/v4-1-301`
 - Critères d'acceptation :
   - landing, intérêt, login, demande d'accès, vérification et activation migrent ;
   - sessions, redirections, messages et protections anti-abus restent identiques ;

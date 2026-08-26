@@ -252,6 +252,15 @@ body {
   border-bottom: 1px solid var(--color-border);
 }
 
+.totem-public-shell__navigation > .landing-header,
+.totem-public-shell__footer > .landing-footer {
+  border: 0;
+}
+
+.landing-header--minimal {
+  justify-content: flex-start;
+}
+
 .landing-brand {
   min-height: 2.75rem;
   display: inline-flex;
@@ -804,17 +813,11 @@ body {
 
 .landing-consent {
   min-height: 2.75rem;
-  display: grid;
-  grid-template-columns: 1.5rem minmax(0, 1fr);
-  gap: 0.75rem;
-  align-items: center;
   line-height: 1.5;
 }
 
-.landing-consent input {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-top: 0.15rem;
+.landing-consent .ui-field__label {
+  font-weight: 400;
 }
 
 .landing-privacy,
@@ -826,9 +829,11 @@ body {
 
 .landing-action-page {
   display: grid;
+  width: min(calc(100% - 2rem), 52rem);
   align-content: center;
   gap: 1.5rem;
-  min-height: 100dvh;
+  min-height: calc(100dvh - 5rem);
+  margin-inline: auto;
   padding-block: 3rem;
 }
 

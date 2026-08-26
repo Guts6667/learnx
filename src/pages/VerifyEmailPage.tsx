@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { actionClassNames } from '@/components/ui/actionStyles';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
@@ -65,12 +64,9 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
             <p className="ui-text-muted leading-7">
               {t('auth.verify.successDescription')}
             </p>
-            <a
-              className={actionClassNames('secondary', 'md', 'w-full')}
-              href="/login"
-            >
-              {t('auth.backToLogin')}
-            </a>
+            <Button asChild className="w-full" variant="secondary">
+              <a href="/login">{t('auth.backToLogin')}</a>
+            </Button>
           </div>
         ) : (
           <div className="space-y-5">
@@ -96,12 +92,9 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
             >
               {t('auth.verify.submit')}
             </Button>
-            <a
-              className={actionClassNames('ghost', 'md', 'w-full')}
-              href="/request-access"
-            >
-              {t('auth.verify.requestNewLink')}
-            </a>
+            <Button asChild className="w-full" variant="ghost">
+              <a href="/request-access">{t('auth.verify.requestNewLink')}</a>
+            </Button>
           </div>
         )}
       </Card>

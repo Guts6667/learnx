@@ -1,7 +1,6 @@
 import type { FormEvent } from 'react';
 import { useState } from 'react';
 
-import { actionClassNames } from '@/components/ui/actionStyles';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
@@ -61,12 +60,9 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
             <p className="ui-text-muted leading-7">
               {t('auth.access.successDescription')}
             </p>
-            <a
-              className={actionClassNames('secondary', 'md', 'w-full')}
-              href="/login"
-            >
-              {t('auth.backToLogin')}
-            </a>
+            <Button asChild className="w-full" variant="secondary">
+              <a href="/login">{t('auth.backToLogin')}</a>
+            </Button>
           </div>
         ) : (
           <form className="space-y-5" onSubmit={handleSubmit}>
@@ -93,12 +89,9 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
             >
               {t('auth.access.submit')}
             </Button>
-            <a
-              className={actionClassNames('ghost', 'md', 'w-full')}
-              href="/login"
-            >
-              {t('auth.access.existingAccount')}
-            </a>
+            <Button asChild className="w-full" variant="ghost">
+              <a href="/login">{t('auth.access.existingAccount')}</a>
+            </Button>
           </form>
         )}
       </Card>

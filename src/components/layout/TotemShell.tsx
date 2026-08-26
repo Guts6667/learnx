@@ -73,21 +73,23 @@ export function TotemAppShell({
 
 interface TotemPublicShellProps {
   children: ReactNode;
+  className?: string;
   contentId?: string;
-  footer: ReactNode;
+  footer?: ReactNode;
   navigation: ReactNode;
   skipLinkLabel?: string;
 }
 
 export function TotemPublicShell({
   children,
+  className,
   contentId = 'main-content',
   footer,
   navigation,
   skipLinkLabel,
 }: TotemPublicShellProps) {
   return (
-    <TotemTheme className="totem-public-shell">
+    <TotemTheme className={classNames('totem-public-shell', className)}>
       {skipLinkLabel ? (
         <SkipLink label={skipLinkLabel} targetId={contentId} />
       ) : null}
@@ -95,7 +97,9 @@ export function TotemPublicShell({
       <main id={contentId} tabIndex={-1}>
         {children}
       </main>
-      <footer className="totem-public-shell__footer">{footer}</footer>
+      {footer ? (
+        <footer className="totem-public-shell__footer">{footer}</footer>
+      ) : null}
     </TotemTheme>
   );
 }

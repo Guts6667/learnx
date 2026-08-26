@@ -2,9 +2,11 @@ import type { FormEvent } from 'react';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { navigate as route } from '@/app/navigation';
 
+import { TotemPublicShell } from '@/components/layout/TotemShell';
 import { Button } from '@/components/ui/Button';
+import { Checkbox } from '@/components/ui/Checkbox';
 import { TextField } from '@/components/ui/TextField';
-import { TotemTheme } from '@/components/ui/TotemTheme';
+import { Textarea } from '@/components/ui/Textarea';
 import {
   usePublicLeadMutation,
   type PublicLeadPurpose,
@@ -137,29 +139,26 @@ function InterestForm({ purpose }: InterestFormProps) {
         value={email}
       />
       {early ? (
-        <div className="ui-field">
-          <label className="ui-field__label" htmlFor="early-motivation">
-            {t('landing.form.motivation')}
-          </label>
-          <textarea
-            className="ui-field__control min-h-32"
-            id="early-motivation"
-            minLength={20}
-            maxLength={2000}
-            onInput={(event) => setMotivation(event.currentTarget.value)}
-            required
-            value={motivation}
-          />
-        </div>
+        <Textarea
+          className="min-h-32"
+          id="early-motivation"
+          label={t('landing.form.motivation')}
+          maxLength={2000}
+          minLength={20}
+          onInput={(event) => setMotivation(event.currentTarget.value)}
+          required
+          value={motivation}
+        />
       ) : null}
-      <label className="landing-consent">
-        <input required type="checkbox" />
-        <span>
-          {early
+      <Checkbox
+        className="landing-consent"
+        label={
+          early
             ? t('landing.form.consentEarly')
-            : t('landing.form.consentUpdates')}
-        </span>
-      </label>
+            : t('landing.form.consentUpdates')
+        }
+        required
+      />
       {mutation.error ? (
         <p className="ui-text-danger" role="alert">
           {t('landing.form.error')}
@@ -201,146 +200,13 @@ export function LandingPage({ path }: { path?: string }) {
   if (standalone) return null;
 
   return (
-    <TotemTheme className="landing-page totem-public-landing">
-      <a className="public-skip-link" href="#main-content">
-        {t('landing.skipToContent')}
-      </a>
-      <header className="landing-header">
-        <a className="landing-brand" href="/">
-          <img alt="" aria-hidden="true" src="/learnx-mark-on-paper.svg" />
-          <span>LearnX</span>
-        </a>
-        <nav
-          aria-label={t('landing.utilityNavigation')}
-          className="landing-utility"
-        >
-          <div className="landing-primary-navigation">
-            <a href="#product">{t('landing.navigation.product')}</a>
-            <a href="#research">{t('landing.navigation.research')}</a>
-            <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
-          </div>
-          <div
-            aria-label={t('landing.language')}
-            className="landing-language"
-            role="group"
-          >
-            <button
-              aria-pressed={locale === 'fr'}
-              onClick={() => setLocale('fr')}
-              type="button"
-            >
-              FR
-            </button>
-            <button
-              aria-pressed={locale === 'en'}
-              onClick={() => setLocale('en')}
-              type="button"
-            >
-              EN
-            </button>
-          </div>
-          <a href="/login">{t('landing.login')}</a>
-        </nav>
-        <details className="landing-mobile-navigation">
-          <summary>{t('landing.menu')}</summary>
-          <nav aria-label={t('landing.utilityNavigation')}>
-            <a href="#product">{t('landing.navigation.product')}</a>
-            <a href="#research">{t('landing.navigation.research')}</a>
-            <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
-            <button
-              onClick={() => setLocale(locale === 'fr' ? 'en' : 'fr')}
-              type="button"
-            >
-              {locale === 'fr' ? 'EN' : 'FR'}
-            </button>
-            <a href="/login">{t('landing.login')}</a>
-          </nav>
-        </details>
-      </header>
-      <main id="main-content" tabIndex={-1}>
-        <section className="landing-hero">
-          <div className="landing-hero-copy">
-            <p className="page-eyebrow">{t('landing.eyebrow')}</p>
-            <h1>{t('landing.title')}</h1>
-            <p className="landing-lead">{t('landing.lead')}</p>
-            <div className="landing-actions">
-              <a className="ui-action ui-action--primary" href="#early-adopter">
-                {t('landing.cta.early')}
-              </a>
-              <a className="landing-updates-action" href="#launch-updates">
-                {t('landing.cta.updates')}
-              </a>
-            </div>
-          </div>
-          <div className="landing-hero-visual">
-            <ProgramPreview />
-          </div>
-        </section>
-        <section
-          aria-label={t('landing.product.eyebrow')}
-          className="landing-principles"
-        >
-          <div>
-            <strong>{t('landing.product.structuredTitle')}</strong>
-            <span>{t('landing.product.structured')}</span>
-          </div>
-          <div>
-            <strong>{t('landing.product.practiceTitle')}</strong>
-            <span>{t('landing.product.practice')}</span>
-          </div>
-          <div>
-            <strong>{t('landing.product.evidenceTitle')}</strong>
-            <span>{t('landing.product.evidence')}</span>
-          </div>
-        </section>
-        <section
-          aria-labelledby="landing-product"
-          className="landing-section landing-feature-proof"
-          id="product"
-        >
-          <div>
-            <p className="page-eyebrow">{t('landing.product.eyebrow')}</p>
-            <h2 id="landing-product">{t('landing.product.title')}</h2>
-            <p>{t('landing.product.description')}</p>
-          </div>
-          <LessonPreview />
-        </section>
-        <section
-          aria-labelledby="landing-roadmap"
-          className="landing-section landing-roadmap"
-          id="roadmap"
-        >
-          <div>
-            <p className="page-eyebrow">{t('landing.roadmap.eyebrow')}</p>
-            <h2 id="landing-roadmap">{t('landing.roadmap.title')}</h2>
-          </div>
-          <p>{t('landing.roadmap.description')}</p>
-        </section>
-        <section
-          aria-labelledby="landing-research"
-          className="landing-section landing-research"
-          id="research"
-        >
-          <p className="page-eyebrow">{t('landing.research.eyebrow')}</p>
-          <h2 id="landing-research">{t('landing.research.title')}</h2>
-          <p>{t('landing.research.description')}</p>
-          <article className="landing-research-latest">
-            <p className="landing-research-meta">
-              {t('landing.research.latestMeta')}
-            </p>
-            <h3>{t('landing.research.latestTitle')}</h3>
-            <p className="landing-research-finding">
-              <strong>
-                {t('landing.research.verdictLabel')} :{' '}
-                {t('landing.research.verdict')}
-              </strong>
-              <span>
-                {t('landing.research.decisionLabel')} :{' '}
-                {t('landing.research.decision')}
-              </span>
-            </p>
+    <TotemPublicShell
+      className="landing-page totem-public-landing"
+      footer={
+        <div className="landing-footer">
+          <span>© 2026 LearnX</span>
+          <nav aria-label={t('landing.footerNavigation')}>
             <a
-              className="landing-research-action"
               data-native
               href={
                 locale === 'en'
@@ -348,29 +214,151 @@ export function LandingPage({ path }: { path?: string }) {
                   : '/research/ai-correction/index.html'
               }
             >
-              {t('landing.research.action')}
+              {t('landing.navigation.research')}
             </a>
-          </article>
-        </section>
-        <section className="landing-forms">
-          <article id="launch-updates">
-            <p className="page-eyebrow">{t('landing.updates.eyebrow')}</p>
-            <h2>{t('landing.updates.title')}</h2>
-            <p>{t('landing.updates.description')}</p>
-            <InterestForm purpose="LAUNCH_UPDATES" />
-          </article>
-          <article id="early-adopter">
-            <p className="page-eyebrow">{t('landing.early.eyebrow')}</p>
-            <h2>{t('landing.early.title')}</h2>
-            <p>{t('landing.early.description')}</p>
-            <InterestForm purpose="EARLY_ADOPTER" />
-          </article>
-        </section>
-      </main>
-      <footer className="landing-footer">
-        <span>© 2026 LearnX</span>
-        <nav aria-label={t('landing.footerNavigation')}>
+            <a href="/login">{t('landing.login')}</a>
+          </nav>
+        </div>
+      }
+      navigation={
+        <div className="landing-header">
+          <a className="landing-brand" href="/">
+            <img alt="" aria-hidden="true" src="/learnx-mark-on-paper.svg" />
+            <span>LearnX</span>
+          </a>
+          <nav
+            aria-label={t('landing.utilityNavigation')}
+            className="landing-utility"
+          >
+            <div className="landing-primary-navigation">
+              <a href="#product">{t('landing.navigation.product')}</a>
+              <a href="#research">{t('landing.navigation.research')}</a>
+              <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
+            </div>
+            <div
+              aria-label={t('landing.language')}
+              className="landing-language"
+              role="group"
+            >
+              <button
+                aria-pressed={locale === 'fr'}
+                onClick={() => setLocale('fr')}
+                type="button"
+              >
+                FR
+              </button>
+              <button
+                aria-pressed={locale === 'en'}
+                onClick={() => setLocale('en')}
+                type="button"
+              >
+                EN
+              </button>
+            </div>
+            <a href="/login">{t('landing.login')}</a>
+          </nav>
+          <details className="landing-mobile-navigation">
+            <summary>{t('landing.menu')}</summary>
+            <nav aria-label={t('landing.utilityNavigation')}>
+              <a href="#product">{t('landing.navigation.product')}</a>
+              <a href="#research">{t('landing.navigation.research')}</a>
+              <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
+              <button
+                onClick={() => setLocale(locale === 'fr' ? 'en' : 'fr')}
+                type="button"
+              >
+                {locale === 'fr' ? 'EN' : 'FR'}
+              </button>
+              <a href="/login">{t('landing.login')}</a>
+            </nav>
+          </details>
+        </div>
+      }
+      skipLinkLabel={t('landing.skipToContent')}
+    >
+      <section className="landing-hero">
+        <div className="landing-hero-copy">
+          <p className="page-eyebrow">{t('landing.eyebrow')}</p>
+          <h1>{t('landing.title')}</h1>
+          <p className="landing-lead">{t('landing.lead')}</p>
+          <div className="landing-actions">
+            <Button asChild>
+              <a href="#early-adopter">{t('landing.cta.early')}</a>
+            </Button>
+            <a className="landing-updates-action" href="#launch-updates">
+              {t('landing.cta.updates')}
+            </a>
+          </div>
+        </div>
+        <div className="landing-hero-visual">
+          <ProgramPreview />
+        </div>
+      </section>
+      <section
+        aria-label={t('landing.product.eyebrow')}
+        className="landing-principles"
+      >
+        <div>
+          <strong>{t('landing.product.structuredTitle')}</strong>
+          <span>{t('landing.product.structured')}</span>
+        </div>
+        <div>
+          <strong>{t('landing.product.practiceTitle')}</strong>
+          <span>{t('landing.product.practice')}</span>
+        </div>
+        <div>
+          <strong>{t('landing.product.evidenceTitle')}</strong>
+          <span>{t('landing.product.evidence')}</span>
+        </div>
+      </section>
+      <section
+        aria-labelledby="landing-product"
+        className="landing-section landing-feature-proof"
+        id="product"
+      >
+        <div>
+          <p className="page-eyebrow">{t('landing.product.eyebrow')}</p>
+          <h2 id="landing-product">{t('landing.product.title')}</h2>
+          <p>{t('landing.product.description')}</p>
+        </div>
+        <LessonPreview />
+      </section>
+      <section
+        aria-labelledby="landing-roadmap"
+        className="landing-section landing-roadmap"
+        id="roadmap"
+      >
+        <div>
+          <p className="page-eyebrow">{t('landing.roadmap.eyebrow')}</p>
+          <h2 id="landing-roadmap">{t('landing.roadmap.title')}</h2>
+        </div>
+        <p>{t('landing.roadmap.description')}</p>
+      </section>
+      <section
+        aria-labelledby="landing-research"
+        className="landing-section landing-research"
+        id="research"
+      >
+        <p className="page-eyebrow">{t('landing.research.eyebrow')}</p>
+        <h2 id="landing-research">{t('landing.research.title')}</h2>
+        <p>{t('landing.research.description')}</p>
+        <article className="landing-research-latest">
+          <p className="landing-research-meta">
+            {t('landing.research.latestMeta')}
+          </p>
+          <h3>{t('landing.research.latestTitle')}</h3>
+          <p className="landing-research-finding">
+            <strong>
+              {t('landing.research.verdictLabel')} :{' '}
+              {t('landing.research.verdict')}
+            </strong>
+            <span>
+              {t('landing.research.decisionLabel')} :{' '}
+              {t('landing.research.decision')}
+            </span>
+          </p>
           <a
+            className="landing-research-action"
             data-native
             href={
               locale === 'en'
@@ -378,11 +366,24 @@ export function LandingPage({ path }: { path?: string }) {
                 : '/research/ai-correction/index.html'
             }
           >
-            {t('landing.navigation.research')}
+            {t('landing.research.action')}
           </a>
-          <a href="/login">{t('landing.login')}</a>
-        </nav>
-      </footer>
-    </TotemTheme>
+        </article>
+      </section>
+      <section className="landing-forms">
+        <article id="launch-updates">
+          <p className="page-eyebrow">{t('landing.updates.eyebrow')}</p>
+          <h2>{t('landing.updates.title')}</h2>
+          <p>{t('landing.updates.description')}</p>
+          <InterestForm purpose="LAUNCH_UPDATES" />
+        </article>
+        <article id="early-adopter">
+          <p className="page-eyebrow">{t('landing.early.eyebrow')}</p>
+          <h2>{t('landing.early.title')}</h2>
+          <p>{t('landing.early.description')}</p>
+          <InterestForm purpose="EARLY_ADOPTER" />
+        </article>
+      </section>
+    </TotemPublicShell>
   );
 }

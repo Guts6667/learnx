@@ -53,6 +53,29 @@ describe('App', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('rend la page 404 dans un shell public sans lire la session', async () => {
+    window.history.pushState({}, '', '/adresse-inconnue');
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Page introuvable',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('main')).toHaveAttribute('id', 'main-content');
+    expect(
+      screen.getByRole('link', { name: 'Aller au contenu principal' }),
+    ).toHaveAttribute('href', '#main-content');
+    expect(
+      screen.queryByRole('navigation', { name: 'Navigation principale' }),
+    ).not.toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('laisse le navigateur charger les documents publics marqués data-native', async () => {
     window.history.pushState({}, '', '/');
     vi.stubGlobal('fetch', vi.fn());

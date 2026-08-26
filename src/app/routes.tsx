@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import { lazy, Suspense, useEffect, useRef } from 'react';
 import {
   BrowserRouter,
+  Outlet,
   Route,
   Routes,
   useLocation,
@@ -198,6 +199,28 @@ function RouteLoadingFallback() {
     <div className="flex min-h-48 items-center justify-center">
       <Spinner label={t('common.loadingContent')} />
     </div>
+  );
+}
+
+function PublicLayoutRoute() {
+  return (
+    <PwaProvider>
+      <Outlet />
+    </PwaProvider>
+  );
+}
+
+function ApplicationLayoutRoute({ canGoBack }: { canGoBack: boolean }) {
+  const location = useLocation();
+
+  return (
+    <Suspense fallback={<RouteLoadingFallback />}>
+      <AppQueryProvider>
+        <MobileLayout canGoBack={canGoBack} currentPath={location.pathname}>
+          <Outlet />
+        </MobileLayout>
+      </AppQueryProvider>
+    </Suspense>
   );
 }
 
@@ -487,167 +510,160 @@ function AppRouteTree() {
   const routeContent = (
     <Suspense fallback={<RouteLoadingFallback />}>
       <Routes>
-        <Route element={<LandingPage />} path="/" />
-        <Route element={<PublicInterestPage />} path="/interest" />
-        {import.meta.env.DEV ? (
+        <Route element={<PublicLayoutRoute />}>
+          <Route element={<LandingPage />} path="/" />
+          <Route element={<PublicInterestPage />} path="/interest" />
+          <Route element={<NotFoundPage />} path="*" />
+        </Route>
+        <Route
+          element={
+            <ApplicationLayoutRoute canGoBack={previousPath.current !== null} />
+          }
+        >
+          {import.meta.env.DEV ? (
+            <Route
+              element={<TotemPrimitivesPage />}
+              path="/design/totem-primitives"
+            />
+          ) : null}
+          {import.meta.env.DEV ? (
+            <Route
+              element={<TotemAdminPreviewPage />}
+              path="/design/totem-admin"
+            />
+          ) : null}
+          {import.meta.env.DEV ? (
+            <Route
+              element={<TotemProductPreviewPage />}
+              path="/design/totem-product"
+            />
+          ) : null}
           <Route
-            element={<TotemPrimitivesPage />}
-            path="/design/totem-primitives"
+            element={
+              <ProtectedRoute>
+                <TodayPage />
+              </ProtectedRoute>
+            }
+            path="/today"
           />
-        ) : null}
-        {import.meta.env.DEV ? (
+          <Route element={<LoginPage />} path="/login" />
+          <Route element={<AccessRequestPage />} path="/request-access" />
+          <Route element={<VerifyEmailPage />} path="/verify-email" />
+          <Route element={<ActivateAccountPage />} path="/activate" />
           <Route
-            element={<TotemAdminPreviewPage />}
-            path="/design/totem-admin"
+            element={<RouteElement component={ProgramsRoute} />}
+            path="/program"
           />
-        ) : null}
-        {import.meta.env.DEV ? (
           <Route
-            element={<TotemProductPreviewPage />}
-            path="/design/totem-product"
+            element={<RouteElement component={DiscoverProgramsRoute} />}
+            path="/discover"
           />
-        ) : null}
-        <Route
-          element={
-            <ProtectedRoute>
-              <TodayPage />
-            </ProtectedRoute>
-          }
-          path="/today"
-        />
-        <Route element={<LoginPage />} path="/login" />
-        <Route element={<AccessRequestPage />} path="/request-access" />
-        <Route element={<VerifyEmailPage />} path="/verify-email" />
-        <Route element={<ActivateAccountPage />} path="/activate" />
-        <Route
-          element={<RouteElement component={ProgramsRoute} />}
-          path="/program"
-        />
-        <Route
-          element={<RouteElement component={DiscoverProgramsRoute} />}
-          path="/discover"
-        />
-        <Route
-          element={<RouteElement component={ProgramRoute} />}
-          path="/program/:programSlug"
-        />
-        <Route
-          element={<RouteElement component={StageRoute} />}
-          path="/program/:programSlug/stage/:stageSlug"
-        />
-        <Route
-          element={<RouteElement component={ModuleRoute} />}
-          path="/program/:programSlug/module/:moduleSlug"
-        />
-        <Route
-          element={<RouteElement component={ConceptAssessmentRoute} />}
-          path="/program/:programSlug/lesson/:lessonSlug/assessment"
-        />
-        <Route
-          element={<RouteElement component={QuizRoute} />}
-          path="/program/:programSlug/lesson/:lessonSlug/quiz"
-        />
-        <Route
-          element={<RouteElement component={ExerciseRoute} />}
-          path="/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId"
-        />
-        <Route
-          element={<RouteElement component={LessonRoute} />}
-          path="/program/:programSlug/lesson/:lessonSlug"
-        />
-        <Route
-          element={
-            <ProtectedRoute>
-              <ReviewsPage />
-            </ProtectedRoute>
-          }
-          path="/reviews"
-        />
-        <Route
-          element={
-            <ProtectedRoute>
-              <NotesPage />
-            </ProtectedRoute>
-          }
-          path="/notes"
-        />
-        <Route
-          element={<RouteElement component={NoteRoute} />}
-          path="/notes/:noteId"
-        />
-        <Route
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-          path="/profile"
-        />
-        <Route
-          element={
-            <ProtectedRoute>
-              <CreditsPage />
-            </ProtectedRoute>
-          }
-          path="/credits"
-        />
-        <Route
-          element={<RouteElement component={AdminAccessRequestsRoute} />}
-          path="/admin/access-requests"
-        />
-        <Route
-          element={<RouteElement component={AdminAccountsRoute} />}
-          path="/admin/accounts"
-        />
-        <Route
-          element={<RouteElement component={AdminContactsRoute} />}
-          path="/admin/contacts"
-        />
-        <Route
-          element={<RouteElement component={AdminCreditsRoute} />}
-          path="/admin/credits"
-        />
-        <Route
-          element={<RouteElement component={AdminManagementRoute} />}
-          path="/admin/program/:programId/stage/:stageId/module/:moduleId/lesson/:lessonId"
-        />
-        <Route
-          element={<RouteElement component={AdminManagementRoute} />}
-          path="/admin/program/:programId/stage/:stageId/module/:moduleId"
-        />
-        <Route
-          element={<RouteElement component={AdminManagementRoute} />}
-          path="/admin/program/:programId/stage/:stageId"
-        />
-        <Route
-          element={<RouteElement component={AdminManagementRoute} />}
-          path="/admin/program/:programId"
-        />
-        <Route
-          element={<RouteElement component={AdminManagementRoute} />}
-          path="/admin"
-        />
-        <Route element={<NotFoundPage />} path="*" />
+          <Route
+            element={<RouteElement component={ProgramRoute} />}
+            path="/program/:programSlug"
+          />
+          <Route
+            element={<RouteElement component={StageRoute} />}
+            path="/program/:programSlug/stage/:stageSlug"
+          />
+          <Route
+            element={<RouteElement component={ModuleRoute} />}
+            path="/program/:programSlug/module/:moduleSlug"
+          />
+          <Route
+            element={<RouteElement component={ConceptAssessmentRoute} />}
+            path="/program/:programSlug/lesson/:lessonSlug/assessment"
+          />
+          <Route
+            element={<RouteElement component={QuizRoute} />}
+            path="/program/:programSlug/lesson/:lessonSlug/quiz"
+          />
+          <Route
+            element={<RouteElement component={ExerciseRoute} />}
+            path="/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId"
+          />
+          <Route
+            element={<RouteElement component={LessonRoute} />}
+            path="/program/:programSlug/lesson/:lessonSlug"
+          />
+          <Route
+            element={
+              <ProtectedRoute>
+                <ReviewsPage />
+              </ProtectedRoute>
+            }
+            path="/reviews"
+          />
+          <Route
+            element={
+              <ProtectedRoute>
+                <NotesPage />
+              </ProtectedRoute>
+            }
+            path="/notes"
+          />
+          <Route
+            element={<RouteElement component={NoteRoute} />}
+            path="/notes/:noteId"
+          />
+          <Route
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+            path="/profile"
+          />
+          <Route
+            element={
+              <ProtectedRoute>
+                <CreditsPage />
+              </ProtectedRoute>
+            }
+            path="/credits"
+          />
+          <Route
+            element={<RouteElement component={AdminAccessRequestsRoute} />}
+            path="/admin/access-requests"
+          />
+          <Route
+            element={<RouteElement component={AdminAccountsRoute} />}
+            path="/admin/accounts"
+          />
+          <Route
+            element={<RouteElement component={AdminContactsRoute} />}
+            path="/admin/contacts"
+          />
+          <Route
+            element={<RouteElement component={AdminCreditsRoute} />}
+            path="/admin/credits"
+          />
+          <Route
+            element={<RouteElement component={AdminManagementRoute} />}
+            path="/admin/program/:programId/stage/:stageId/module/:moduleId/lesson/:lessonId"
+          />
+          <Route
+            element={<RouteElement component={AdminManagementRoute} />}
+            path="/admin/program/:programId/stage/:stageId/module/:moduleId"
+          />
+          <Route
+            element={<RouteElement component={AdminManagementRoute} />}
+            path="/admin/program/:programId/stage/:stageId"
+          />
+          <Route
+            element={<RouteElement component={AdminManagementRoute} />}
+            path="/admin/program/:programId"
+          />
+          <Route
+            element={<RouteElement component={AdminManagementRoute} />}
+            path="/admin"
+          />
+        </Route>
       </Routes>
     </Suspense>
   );
 
-  if (location.pathname === '/' || location.pathname === '/interest') {
-    return <PwaProvider>{routeContent}</PwaProvider>;
-  }
-
-  return (
-    <Suspense fallback={<RouteLoadingFallback />}>
-      <AppQueryProvider>
-        <MobileLayout
-          canGoBack={previousPath.current !== null}
-          currentPath={location.pathname}
-        >
-          {routeContent}
-        </MobileLayout>
-      </AppQueryProvider>
-    </Suspense>
-  );
+  return routeContent;
 }
 
 export function AppRoutes() {

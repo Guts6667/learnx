@@ -57,4 +57,18 @@ describe('Totem shells', () => {
       screen.getByRole('navigation', { name: 'Pied de page' }),
     ).toBeInTheDocument();
   });
+
+  it('n’impose pas de pied de page vide aux pages publiques transactionnelles', () => {
+    render(
+      <TotemPublicShell
+        navigation={<nav aria-label="Navigation publique">Accueil</nav>}
+        skipLinkLabel="Aller au contenu"
+      >
+        <h1>Action publique</h1>
+      </TotemPublicShell>,
+    );
+
+    expect(screen.getByRole('main')).toHaveTextContent('Action publique');
+    expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument();
+  });
 });

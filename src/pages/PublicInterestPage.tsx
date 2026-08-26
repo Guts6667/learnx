@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { PublicPageShell } from '@/components/layout/PublicPageShell';
+import { Button } from '@/components/ui/Button';
 import { applyPublicLeadAction } from '@/features/public-leads/public-leads';
 import { useI18n } from '@/i18n';
 
@@ -31,11 +33,8 @@ export function PublicInterestPage({ path }: { path?: string }) {
       .catch(() => setState('error'));
   }, []);
   return (
-    <div className="landing-page" data-color-regime="paper">
-      <main className="landing-action-page" id="main-content" tabIndex={-1}>
-        <a className="landing-brand" href="/">
-          LearnX
-        </a>
+    <PublicPageShell className="landing-page landing-action-shell">
+      <section className="landing-action-page" aria-live="polite">
         <h1>
           {state === 'loading'
             ? t('landing.manage.loading')
@@ -50,10 +49,10 @@ export function PublicInterestPage({ path }: { path?: string }) {
               ? t('landing.manage.errorDescription')
               : t('landing.manage.loadingDescription')}
         </p>
-        <a className="ui-action ui-action--secondary" href="/">
-          {t('landing.manage.back')}
-        </a>
-      </main>
-    </div>
+        <Button asChild variant="secondary">
+          <a href="/">{t('landing.manage.back')}</a>
+        </Button>
+      </section>
+    </PublicPageShell>
   );
 }

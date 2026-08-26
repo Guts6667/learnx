@@ -3,7 +3,6 @@ import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
-import { actionClassNames } from '@/components/ui/actionStyles';
 import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -109,12 +108,9 @@ export function LoginPage({ path }: LoginPageProps) {
           >
             {t('auth.login.submit')}
           </Button>
-          <a
-            className={actionClassNames('secondary', 'md', 'w-full')}
-            href="/request-access"
-          >
-            {t('auth.login.requestAccess')}
-          </a>
+          <Button asChild className="w-full" variant="secondary">
+            <a href="/request-access">{t('auth.login.requestAccess')}</a>
+          </Button>
         </form>
       </Card>
     </section>

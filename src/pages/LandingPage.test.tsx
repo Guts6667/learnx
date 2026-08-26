@@ -95,6 +95,16 @@ describe('LandingPage', () => {
       '/learnx-mark-on-paper.svg',
     );
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
+    expect(screen.getByRole('main')).toHaveAttribute('id', 'main-content');
+    expect(
+      screen.getByRole('link', { name: 'Aller au contenu principal' }),
+    ).toHaveAttribute('href', '#main-content');
+    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+    expect(
+      screen.getByRole('textbox', {
+        name: 'Comment souhaitez-vous utiliser LearnX ?',
+      }),
+    ).toHaveAttribute('maxlength', '2000');
   });
 
   it('localizes the complete product preview in English', () => {
@@ -167,5 +177,59 @@ describe('LandingPage', () => {
         'Check your inbox to confirm your launch updates subscription.',
       ),
     ).toBeInTheDocument();
+  });
+
+  it('conserve une candidature après une erreur et permet une reprise explicite', async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockRejectedValueOnce(new TypeError('Network unavailable'))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ message: 'ok' }), {
+          status: 202,
+          headers: { 'content-type': 'application/json' },
+        }),
+      );
+    render(
+      <I18nProvider locale="fr">
+        <LandingPage />
+      </I18nProvider>,
+    );
+    const article = screen
+      .getByRole('heading', {
+        name: 'Participer aux premiers retours terrain',
+      })
+      .closest('article');
+    if (!article) throw new Error('Early adopter form missing.');
+    const email = article.querySelector<HTMLInputElement>(
+      'input[type="email"]',
+    );
+    const consent = article.querySelector<HTMLInputElement>(
+      'input[type="checkbox"]',
+    );
+    const motivation = article.querySelector<HTMLTextAreaElement>('textarea');
+    const form = article.querySelector('form');
+    if (!email || !consent || !motivation || !form) {
+      throw new Error('Early adopter controls missing.');
+    }
+
+    fireEvent.input(email, { target: { value: 'candidate@example.com' } });
+    fireEvent.input(motivation, {
+      target: { value: 'Je veux tester LearnX sur un parcours professionnel.' },
+    });
+    fireEvent.click(consent);
+    fireEvent.submit(form);
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/Réessayez/);
+    expect(email).toHaveValue('candidate@example.com');
+    expect(motivation).toHaveValue(
+      'Je veux tester LearnX sur un parcours professionnel.',
+    );
+    expect(consent).toBeChecked();
+
+    fireEvent.submit(form);
+    expect(
+      await screen.findByText(/confirmer votre candidature early adopter/i),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 });
