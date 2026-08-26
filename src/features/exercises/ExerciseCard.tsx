@@ -48,18 +48,21 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
 
   if (submission.status === 'SUBMITTED') {
     return (
-      <div class="space-y-3">
-        <Badge tone="success">{t('exercise.submitted')}</Badge>
-        <p class="ui-text-muted text-sm">
-          {t('exercise.submittedAt', {
-            date: submission.submittedAt
-              ? formatSubmissionDate(submission.submittedAt, locale)
-              : t('exercise.unknownDate'),
-          })}
-        </p>
-        <pre class="ui-control-surface whitespace-pre-wrap rounded-lg p-3 font-sans text-sm leading-6">
-          {submission.contentMarkdown}
-        </pre>
+      <div class="exercise-submission space-y-4">
+        <div class="exercise-submission__meta">
+          <Badge tone="success">{t('exercise.submitted')}</Badge>
+          <p class="ui-text-muted text-sm">
+            {t('exercise.submittedAt', {
+              date: submission.submittedAt
+                ? formatSubmissionDate(submission.submittedAt, locale)
+                : t('exercise.unknownDate'),
+            })}
+          </p>
+        </div>
+        <section class="exercise-submission__response">
+          <p class="page-eyebrow">{t('exercise.answerMarkdown')}</p>
+          <pre>{submission.contentMarkdown}</pre>
+        </section>
         {exercise.aiCorrectionEligible ? (
           <AiCorrectionPanel submissionId={submission.id} />
         ) : null}
@@ -173,9 +176,7 @@ export function ExerciseCard({
       ) : (
         <div class="space-y-2">
           <Badge tone="warning">{t('common.draft')}</Badge>
-          <p class="ui-text-warning text-sm">
-            {t('exercise.preview')}
-          </p>
+          <p class="ui-text-warning text-sm">{t('exercise.preview')}</p>
         </div>
       )}
     </Card>

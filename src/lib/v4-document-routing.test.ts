@@ -18,9 +18,9 @@ describe('V4 document routing', () => {
     expect(roadmap).toContain('writing');
     expect(roadmap).toContain('crédits offerts');
     expect(index).toContain('V4_1_BACKLOG.md');
-    expect(existsSync(resolve('docs/archive/v4/V4_ROADMAP_2026-08-22.md'))).toBe(
-      true,
-    );
+    expect(
+      existsSync(resolve('docs/archive/v4/V4_ROADMAP_2026-08-22.md')),
+    ).toBe(true);
   });
 
   it('keeps research evidence separate from the bounded product decision', () => {
@@ -36,7 +36,7 @@ describe('V4 document routing', () => {
     expect(backlogV41).toContain('V4.1');
   });
 
-  it('declares the approved Totem packages as the active UI authority', () => {
+  it('declares the critical release screens separately from the historical Totem baseline', () => {
     const index = read('docs/INDEX.md');
     const map = read('docs/V4_TOTEM_IMPLEMENTATION_MAP.md');
 
@@ -45,8 +45,13 @@ describe('V4 document routing', () => {
     expect(map).toContain('learnx-totem-desktop-authority');
     expect(map).toContain('learnx-totem-public-authority');
     expect(map).toContain('learnx-brand-assets-authority');
+    expect(map).toContain('learnx-correction-flow.html');
+    expect(map).toContain('learnx-assessment-results.html');
+    expect(map).toContain('learnx-reviews-priorities.html');
     expect(map).toContain('320, 390, 720, 1024, 1440 et 1920 px');
-    expect(map).toContain('DESIGN VALIDÉ');
+    expect(map).toContain('BASELINE HISTORIQUE');
+    expect(map).toContain('Mes parcours');
+    expect(map).toContain('Ouvrir les filtres');
   });
 
   it('publishes the bounded research state in French and English', () => {
@@ -66,9 +71,7 @@ describe('V4 document routing', () => {
 
     const frenchLatest = french.indexOf('writing-exam-bounded-pilot.html');
     const frenchOldest = french.indexOf('benchmark-initial.html');
-    const englishLatest = english.indexOf(
-      'writing-exam-bounded-pilot.en.html',
-    );
+    const englishLatest = english.indexOf('writing-exam-bounded-pilot.en.html');
     const englishOldest = english.indexOf('benchmark-initial.en.html');
     expect(frenchLatest).toBeGreaterThan(-1);
     expect(frenchLatest).toBeLessThan(frenchOldest);

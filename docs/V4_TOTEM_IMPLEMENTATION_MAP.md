@@ -1,15 +1,56 @@
 # V4 — cartographie d’implémentation Totem
 
+## Autorité critique de release — 26 août 2026
+
+Pour la release V4, les trois références validées ci-dessous remplacent les
+anciennes maquettes de correction, d’évaluation et de révisions sur leur
+périmètre exact :
+
+- correction d’exercice textuel :
+  `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-correction-flow.html` ;
+- évaluation, résultat et historique :
+  `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-assessment-results.html` ;
+- révisions et priorisation :
+  `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-reviews-priorities.html`.
+
+`Mes parcours` et `Découvrir` sont explicitement exclus de cette refonte. La
+seule modification autorisée sur `Découvrir` est le remplacement du libellé
+`Filtres` par un bouton icône ayant le nom accessible `Ouvrir les filtres`.
+
+### Matrice d’écarts pré-implémentation
+
+| Surface | État au 26 août | Écart bloquant | Cible de release |
+| --- | --- | --- | --- |
+| Correction textuelle | Fonctionnelle, devis et résultat persistés | le devis est encore présenté comme CTA ; analyse réduite à un spinner ; résultat insuffisamment hiérarchisé | CTA `Soumettre` ou `Corriger`, coût avant confirmation, analyse explicite, acquis → à renforcer → priorité → score/règlement |
+| Évaluation | Questions, score, correction et historique fonctionnels | score et verdict dominent le résultat ; correction en cartes répétées | compréhension et notions d’abord, score secondaire, historique en lignes |
+| Révisions | API priorisée par échéance et ressources disponible | grille de cartes sans résumé ni séparation aujourd’hui/à venir | résumé borné, listes pleine largeur et une action principale par notion |
+| Navigation privée desktop | Sidebar existante | aucun contrôle de réduction | contrôle accessible, état réduit sans perte de navigation |
+| Révision guidée par confiance | aucun contrat serveur | la maquette propose trois niveaux de confiance qui modifieraient la prochaine date | non implémentée en V4 ; le CTA conserve la reprise de l’évaluation déterministe |
+
+### Tickets de durcissement
+
+1. `V4-016G-R1` — recomposer devis, analyse, résultat partiel/indisponible et
+   règlement sans modifier le ledger ni le pipeline IA.
+2. `V4-016G-R2` — recomposer question, résultat et historique des tentatives
+   sans modifier le calcul serveur de maîtrise.
+3. `V4-016G-R3` — transformer Révisions en priorités lisibles à partir des
+   données existantes, sans inventer d’auto-évaluation de confiance.
+4. `V4-016B-R2` — ajouter la réduction de sidebar desktop et vérifier le reflow
+   320/390/720/1440/1920, zoom 200 %, clavier et reduced motion.
+
+Ces tickets sont bloquants avant la recette propriétaire V4-019.
+
 ## Autorité
 
-Statut : **DESIGN VALIDÉ — IMPLÉMENTATION ET QA PREVIEW TERMINÉES**
+Statut : **BASELINE HISTORIQUE — SURFACES CRITIQUES EN RÉINTÉGRATION**
 
 Date d’arbitrage : 24 août 2026
 
 Validation : Rayan
 
-Les deux paquets ci-dessous constituent le langage visuel ferme de la V4. Ils
-priment sur les anciennes captures Atlas et sur les ajustements UI ponctuels :
+Les deux paquets ci-dessous décrivent la baseline livrée le 24 août. Sur les
+surfaces critiques listées plus haut, ils sont désormais remplacés par les
+trois références validées le 26 août :
 
 - mobile et fondations partagées :
   `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-totem-mobile-authority/` ;

@@ -147,7 +147,9 @@ describe('ExerciseCard', () => {
       'fetch',
       vi.fn(() =>
         Promise.resolve(
-          jsonResponse(exerciseResponse(submission('x'.repeat(1_501), 'DRAFT'))),
+          jsonResponse(
+            exerciseResponse(submission('x'.repeat(1_501), 'DRAFT')),
+          ),
         ),
       ),
     );
@@ -194,7 +196,7 @@ describe('ExerciseCard', () => {
     );
 
     expect(
-      await screen.findByRole('button', { name: 'Voir le devis en crédits' }),
+      await screen.findByRole('button', { name: 'Corriger' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Correction assistée par IA')).toBeInTheDocument();
   });

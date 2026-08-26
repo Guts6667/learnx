@@ -153,6 +153,22 @@ describe('navigation accessible', () => {
     );
   });
 
+  it('permet de réduire puis de déployer la navigation desktop', () => {
+    renderWithLocale(<BottomNavigation currentPath="/today" />);
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Réduire la barre latérale' }),
+    );
+
+    expect(document.documentElement).toHaveAttribute(
+      'data-sidebar-collapsed',
+      'true',
+    );
+    expect(
+      screen.getByRole('button', { name: 'Déployer la barre latérale' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('utilise un cadre responsive sans limiter le desktop à une largeur mobile', () => {
     renderWithLocale(
       <MobileLayout currentPath="/today">

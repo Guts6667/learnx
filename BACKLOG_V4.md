@@ -2187,14 +2187,29 @@ V4-010, V4-011 et V4-014 disponibles.**
 
 **Références canoniques complémentaires :**
 
-- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
-- `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-correction-flow.html` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-assessment-results.html` ;
+- `/Users/rayanchambet/.codex/visualizations/2026/08/21/01a02406-0bb7-7021-9d19-15a38fa46705/learnx-reviews-priorities.html` ;
 - `docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md` ;
 - `docs/EMOTIONAL_DESIGN_CONTRACT.md` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-atlas-emotional-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/emotional-design-renders/`.
 
 ### Périmètre
+
+- Traiter les références du 26 août comme autorité ferme pour correction
+  textuelle, évaluations/résultats et priorités de révision. `Mes parcours` et
+  `Découvrir` restent hors refonte, sauf remplacement du bouton textuel
+  `Filtres` par une icône accessible.
+- Conserver le contrôle de réduction de la sidebar desktop. Sur mobile, garder
+  la navigation basse et les zones sûres sans reproduire le chrome de
+  démonstration des maquettes.
+- Le CTA de correction est `Soumettre` avant remise ou `Corriger` après remise,
+  jamais `Vérifier le coût`. Le devis en crédits reste visible avant la
+  confirmation et ne devient pas le nom de l’action.
+- La maquette de session de révision ne crée pas à elle seule un contrat de
+  confiance ou de replanification. Tant que le serveur ne porte pas cette
+  règle, la reprise ouvre l’évaluation déterministe existante.
 
 - Définir une grammaire de confiance commune aux surfaces de correction et de
   finance, sans modifier leurs règles serveur ni leurs contrats métier.

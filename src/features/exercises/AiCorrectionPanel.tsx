@@ -31,11 +31,7 @@ type PanelPhase =
  * aucun score exact global en cas de critères « à retravailler » — puis
  * récap plafond accepté / débité / libéré.
  */
-export function AiCorrectionPanel({
-  submissionId,
-}: {
-  submissionId: string;
-}) {
+export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
   const { t } = useI18n();
   const [phase, setPhase] = useState<PanelPhase>({ kind: 'HISTORY_PENDING' });
 
@@ -94,68 +90,141 @@ export function AiCorrectionPanel({
   }
 
   if (phase.kind === 'HISTORY_PENDING') {
-    return <Spinner label={t('aiCorrection.historyPending')} size="sm" />;
-  }
-
-  if (phase.kind === 'IDLE') {
     return (
-      <div class="ui-control-surface space-y-3 rounded-lg p-4">
-        <div class="flex items-center gap-2">
-          <Badge tone="info">{t('aiCorrection.assistedLabel')}</Badge>
-        </div>
-        <p class="text-sm leading-6">{t('aiCorrection.intro')}</p>
-        <p class="ui-text-muted text-sm leading-6">
-          {t('aiCorrection.doctrineNotice')}
-        </p>
-        <Button variant="secondary" onClick={() => void askQuote()}>
-          {t('aiCorrection.seePrice')}
-        </Button>
+      <div class="correction-state correction-state--pending" role="status">
+        <Spinner label={t('aiCorrection.historyPending')} size="sm" />
       </div>
     );
   }
 
-  if (phase.kind === 'QUOTE_PENDING') {
-    return <Spinner label={t('aiCorrection.quotePending')} size="sm" />;
+  if (phase.kind === 'IDLE') {
+    return (
+      <section class="correction-state correction-state--idle">
+        <div class="correction-state__heading">
+          <div>
+            <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+            <h4>{t('aiCorrection.readyTitle')}</h4>
+          </div>
+          <span class="correction-state__doctrine">
+            {t('aiCorrection.noProgressImpact')}
+          </span>
+        </div>
+        <p>{t('aiCorrection.intro')}</p>
+        <div class="correction-contract correction-contract--preview">
+          <div>
+            <span>{t('aiCorrection.contractCostLabel')}</span>
+            <strong>{t('aiCorrection.contractCostPending')}</strong>
+          </div>
+          <div>
+            <span>{t('aiCorrection.contractFailureLabel')}</span>
+            <strong>{t('aiCorrection.contractFailureValue')}</strong>
+          </div>
+          <div>
+            <span>{t('aiCorrection.contractProgressLabel')}</span>
+            <strong>{t('aiCorrection.noProgressImpact')}</strong>
+          </div>
+        </div>
+        <p class="correction-state__notice">
+          {t('aiCorrection.doctrineNotice')}
+        </p>
+        <Button onClick={() => void askQuote()}>
+          {t('aiCorrection.seePrice')}
+        </Button>
+      </section>
+    );
   }
 
-  if (phase.kind === 'CONSENT' || phase.kind === 'RUN_PENDING') {
+  if (phase.kind === 'QUOTE_PENDING') {
+    return (
+      <div class="correction-state correction-state--pending" role="status">
+        <Spinner label={t('aiCorrection.quotePending')} size="sm" />
+      </div>
+    );
+  }
+
+  if (phase.kind === 'RUN_PENDING') {
     const { quote } = phase;
     return (
-      <div class="ui-control-surface space-y-3 rounded-lg p-4">
-        <div class="flex items-center gap-2">
-          <Badge tone="info">{t('aiCorrection.assistedLabel')}</Badge>
+      <section
+        aria-live="polite"
+        class="correction-state correction-state--running"
+        role="status"
+      >
+        <div class="correction-state__heading">
+          <div>
+            <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+            <h4>{t('aiCorrection.processingTitle')}</h4>
+          </div>
+          <Spinner label={t('aiCorrection.processingShort')} size="sm" />
         </div>
-        <p class="text-sm leading-6">
-          {t('aiCorrection.quoteAction')}
-        </p>
-        <p class="text-sm leading-6">
-          {t('aiCorrection.quoteSummary', {
-            estimated: quote.estimatedCredits,
-            maximum: quote.maximumReservedCredits,
-          })}
-        </p>
-        <p class="ui-text-muted text-sm leading-6">
+        <p>{t('aiCorrection.processingDescription')}</p>
+        <ol class="correction-progress">
+          <li data-state="complete">{t('aiCorrection.processingReceived')}</li>
+          <li data-state="active">{t('aiCorrection.processingCriteria')}</li>
+          <li>{t('aiCorrection.processingEvidence')}</li>
+          <li>{t('aiCorrection.processingSynthesis')}</li>
+        </ol>
+        <div class="correction-contract">
+          <div>
+            <span>{t('aiCorrection.contractCeilingLabel')}</span>
+            <strong>{quote.maximumReservedCredits}</strong>
+          </div>
+          <div>
+            <span>{t('aiCorrection.verification')}</span>
+            <strong>{t('aiCorrection.verificationIncluded')}</strong>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (phase.kind === 'CONSENT') {
+    const { quote } = phase;
+    return (
+      <section class="correction-state correction-state--consent">
+        <div class="correction-state__heading">
+          <div>
+            <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+            <h4>{t('aiCorrection.quoteTitle')}</h4>
+          </div>
+          <span class="correction-state__doctrine">
+            {t('aiCorrection.noProgressImpact')}
+          </span>
+        </div>
+        <p>{t('aiCorrection.quoteAction')}</p>
+        <div class="correction-contract">
+          <div>
+            <span>{t('aiCorrection.contractEstimateLabel')}</span>
+            <strong>{quote.estimatedCredits}</strong>
+          </div>
+          <div>
+            <span>{t('aiCorrection.contractCeilingLabel')}</span>
+            <strong>{quote.maximumReservedCredits}</strong>
+          </div>
+          <div>
+            <span>{t('aiCorrection.verification')}</span>
+            <strong>{t('aiCorrection.verificationIncluded')}</strong>
+          </div>
+        </div>
+        <p class="correction-state__notice">
           {t('aiCorrection.consentNotice')}
         </p>
-        <div>
-          <Button
-            isLoading={phase.kind === 'RUN_PENDING'}
-            onClick={() => void confirmAndRun(quote)}
-          >
-            {t('aiCorrection.confirm')}
-          </Button>
-        </div>
-      </div>
+        <Button onClick={() => void confirmAndRun(quote)}>
+          {t('aiCorrection.confirm')}
+        </Button>
+      </section>
     );
   }
 
   if (phase.kind === 'ERROR') {
     return (
-      <div class="ui-control-surface space-y-3 rounded-lg p-4">
-        <p class="ui-text-danger text-sm" role="alert">
+      <section class="correction-state correction-state--error">
+        <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+        <h4>{t('aiCorrection.errorTitle')}</h4>
+        <p class="ui-text-danger" role="alert">
           {phase.message}
         </p>
-        <div class="flex flex-wrap gap-3">
+        <div class="correction-state__actions">
           <Button
             onClick={() =>
               phase.quote ? void confirmAndRun(phase.quote) : void askQuote()
@@ -169,7 +238,7 @@ export function AiCorrectionPanel({
             </Button>
           ) : null}
         </div>
-      </div>
+      </section>
     );
   }
 
@@ -178,19 +247,18 @@ export function AiCorrectionPanel({
 
   if (correction.status === 'FAILED') {
     return (
-      <div class="ui-control-surface space-y-3 rounded-lg p-4">
-        <div class="flex items-center gap-2">
-          <Badge tone="info">{t('aiCorrection.assistedLabel')}</Badge>
-        </div>
-        <p class="text-sm leading-6">{t('aiCorrection.unavailable')}</p>
-        <p class="ui-text-muted text-sm leading-6">
+      <section class="correction-state correction-state--unavailable">
+        <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+        <h4>{t('aiCorrection.unavailableTitle')}</h4>
+        <p>{t('aiCorrection.unavailable')}</p>
+        <p class="correction-settlement">
           {t('aiCorrection.settlementRecap', {
             reserved: settlement.reservedCredits,
             settled: settlement.settledCredits,
             released: settlement.releasedCredits,
           })}
         </p>
-      </div>
+      </section>
     );
   }
 
@@ -212,15 +280,18 @@ export function AiCorrectionPanel({
   );
 
   return (
-    <div class="space-y-4">
-      <div class="flex items-center gap-2">
-        <Badge tone="info">{t('aiCorrection.assistedLabel')}</Badge>
-        <span class="ui-text-muted text-sm">{t('aiCorrection.noProgressImpact')}</span>
-      </div>
+    <section class="correction-result">
+      <header class="correction-result__header">
+        <div>
+          <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+          <h4>{t('aiCorrection.resultTitle')}</h4>
+        </div>
+        <span>{t('aiCorrection.noProgressImpact')}</span>
+      </header>
 
       {acquired.length > 0 ? (
-        <section class="space-y-2">
-          <h4 class="text-sm font-semibold">{t('aiCorrection.acquired')}</h4>
+        <section class="correction-result__group">
+          <h5>{t('aiCorrection.acquired')}</h5>
           {acquired.map((criterion) => (
             <CriterionRow criterion={criterion} />
           ))}
@@ -228,46 +299,55 @@ export function AiCorrectionPanel({
       ) : null}
 
       {toReinforce.length > 0 || correction.unsureCriteria.length > 0 ? (
-        <section class="space-y-2">
-          <h4 class="text-sm font-semibold">{t('aiCorrection.toReinforce')}</h4>
+        <section class="correction-result__group">
+          <h5>{t('aiCorrection.toReinforce')}</h5>
           {toReinforce.map((criterion) => (
             <CriterionRow criterion={criterion} />
           ))}
           {correction.unsureCriteria.map((key) => (
-            <p
-              class="ui-control-surface rounded-lg p-3 text-sm leading-6"
+            <article
+              class="correction-criterion correction-criterion--unsure"
               key={key}
             >
-              {t('aiCorrection.reworkCriterion', {
-                criterion: unsureLabels.get(key) ?? key,
-              })}
-            </p>
+              <div class="correction-criterion__heading">
+                <strong>{unsureLabels.get(key) ?? key}</strong>
+                <Badge tone="warning">{t('aiCorrection.reworkLabel')}</Badge>
+              </div>
+              <p>
+                {t('aiCorrection.reworkCriterion', {
+                  criterion: unsureLabels.get(key) ?? key,
+                })}
+              </p>
+            </article>
           ))}
         </section>
       ) : null}
 
-      <section class="space-y-2">
-        <h4 class="text-sm font-semibold">{t('aiCorrection.nextAction')}</h4>
+      <section class="correction-result__priority">
+        <p class="page-eyebrow">{t('aiCorrection.priority')}</p>
+        <h5>{t('aiCorrection.nextAction')}</h5>
         {correction.overallFeedback ? (
-          <p class="text-sm leading-6">{correction.overallFeedback}</p>
+          <p>{correction.overallFeedback}</p>
         ) : null}
+      </section>
+
+      <footer class="correction-result__footer">
         {correction.indicativeScore !== null ? (
-          <p class="ui-text-muted text-sm">
+          <p class="correction-result__score">
             {t('aiCorrection.indicativeScore', {
               score: correction.indicativeScore.toFixed(0),
             })}
           </p>
         ) : null}
-      </section>
-
-      <p class="ui-text-muted text-sm">
-        {t('aiCorrection.settlementRecap', {
-          reserved: settlement.reservedCredits,
-          settled: settlement.settledCredits,
-          released: settlement.releasedCredits,
-        })}
-      </p>
-    </div>
+        <p class="correction-settlement">
+          {t('aiCorrection.settlementRecap', {
+            reserved: settlement.reservedCredits,
+            settled: settlement.settledCredits,
+            released: settlement.releasedCredits,
+          })}
+        </p>
+      </footer>
+    </section>
   );
 }
 
@@ -278,23 +358,19 @@ function CriterionRow({
 }) {
   const { t } = useI18n();
   return (
-    <article class="ui-control-surface space-y-2 rounded-lg p-3">
-      <div class="flex items-center justify-between gap-2">
-        <span class="text-sm font-medium">{criterion.label}</span>
+    <article class="correction-criterion">
+      <div class="correction-criterion__heading">
+        <strong>{criterion.label}</strong>
         <Badge tone={criterion.levelKey === 'mastered' ? 'success' : 'neutral'}>
           {criterion.levelLabel}
         </Badge>
       </div>
-      <p class="text-sm leading-6">{criterion.feedback}</p>
+      <p>{criterion.feedback}</p>
       {criterion.evidenceQuotes.length > 0 ? (
-        <div class="space-y-1">
-          <p class="ui-text-muted text-xs uppercase tracking-wide">
-            {t('aiCorrection.evidenceLabel')}
-          </p>
+        <div class="correction-criterion__evidence">
+          <p>{t('aiCorrection.evidenceLabel')}</p>
           {criterion.evidenceQuotes.map((quote) => (
-            <blockquote class="ui-prose border-l-2 border-current/30 pl-3 text-sm italic leading-6">
-              {quote}
-            </blockquote>
+            <blockquote>{quote}</blockquote>
           ))}
         </div>
       ) : null}

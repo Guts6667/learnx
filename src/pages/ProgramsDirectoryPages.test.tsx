@@ -121,6 +121,8 @@ describe('Totem program directories', () => {
     expect(
       await screen.findByRole('heading', { name: 'SourceLab' }),
     ).toBeInTheDocument();
+    expect(screen.getByLabelText('Ouvrir les filtres')).toBeInTheDocument();
+    expect(screen.queryByText('Filtres')).not.toBeInTheDocument();
     fireEvent.input(screen.getByRole('searchbox'), {
       target: { value: 'docker' },
     });

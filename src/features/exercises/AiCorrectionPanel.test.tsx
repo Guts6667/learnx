@@ -82,18 +82,32 @@ describe('AiCorrectionPanel', () => {
       </AppProviders>,
     );
 
-    await screen.findByRole('button', { name: 'Voir le devis en crédits' });
-    fireEvent.click(screen.getByRole('button', { name: 'Voir le devis en crédits' }));
-    expect(await screen.findByText(/Action : correction formative standard/)).toBeInTheDocument();
-    expect(screen.getByText(/Certains critères peuvent revenir à retravailler sans compensation/)).toBeInTheDocument();
+    await screen.findByRole('button', { name: 'Corriger' });
+    fireEvent.click(screen.getByRole('button', { name: 'Corriger' }));
+    expect(
+      await screen.findByText(/Action : correction formative standard/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Certains critères peuvent revenir à retravailler sans compensation/,
+      ),
+    ).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Confirmer et lancer la correction' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Confirmer et lancer la correction' }),
+    );
 
     expect(await screen.findByText('Décision explicite')).toBeInTheDocument();
-    expect(screen.getByText('La décision est explicitement PICO.')).toBeInTheDocument();
-    expect(screen.getByText(/Justification du lien.*à retravailler/)).toBeInTheDocument();
+    expect(
+      screen.getByText('La décision est explicitement PICO.'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Justification du lien.*à retravailler/),
+    ).toBeInTheDocument();
     expect(screen.queryByText(/Score indicatif/)).not.toBeInTheDocument();
-    expect(screen.getByText(/Plafond réservé : 18 · débité : 12 · libéré : 6/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Plafond réservé : 18 · débité : 12 · libéré : 6/),
+    ).toBeInTheDocument();
   });
 
   it('permet de relancer la même exécution après une erreur réseau', async () => {
@@ -142,14 +156,22 @@ describe('AiCorrectionPanel', () => {
       </AppProviders>,
     );
 
-    await screen.findByRole('button', { name: 'Voir le devis en crédits' });
-    fireEvent.click(screen.getByRole('button', { name: 'Voir le devis en crédits' }));
-    fireEvent.click(await screen.findByRole('button', { name: 'Confirmer et lancer la correction' }));
-    expect(await screen.findByRole('alert')).toHaveTextContent('Connexion interrompue');
+    await screen.findByRole('button', { name: 'Corriger' });
+    fireEvent.click(screen.getByRole('button', { name: 'Corriger' }));
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Confirmer et lancer la correction',
+      }),
+    );
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Connexion interrompue',
+    );
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
-    expect(await screen.findByText(/Le débit reste celui du devis accepté/)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Le débit reste celui du devis accepté/),
+    ).toBeInTheDocument();
   });
 
   it('restaure une correction réglée sans proposer un nouveau devis', async () => {
@@ -197,7 +219,9 @@ describe('AiCorrectionPanel', () => {
     );
 
     expect(await screen.findByText('Fidélité au contexte')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Voir le devis en crédits' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Corriger' }),
+    ).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

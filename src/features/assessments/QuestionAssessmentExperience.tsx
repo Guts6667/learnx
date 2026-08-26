@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Textarea } from '@/components/ui/Textarea';
@@ -115,43 +114,34 @@ function AttemptHistory({
   const { locale, t } = useI18n();
   return (
     <section aria-labelledby="assessment-history-title" class="space-y-3">
-      <h2 class="text-xl font-semibold" id="assessment-history-title">
+      <h2 class="assessment-history__title" id="assessment-history-title">
         {t('assessment.previousAttempts')}
       </h2>
       {attempts.length === 0 ? (
         <p class="ui-text-muted text-sm">{t('assessment.noAttempts')}</p>
       ) : (
-        <ol class="ui-list">
+        <ol class="assessment-history">
           {attempts.map((attempt) => (
-            <li key={attempt.id}>
-              <ListRow
-                aside={
-                  <Badge tone={attempt.passed ? 'success' : 'danger'}>
-                    {t(
-                      attempt.passed
-                        ? 'assessment.passed'
-                        : 'assessment.retry',
-                    )}
-                  </Badge>
-                }
-              >
-                <div>
-                  <p class="font-semibold">
-                    {t('assessment.score', {
-                      score: formatLocalizedNumber(
-                        Math.round(attempt.score),
-                        locale,
-                      ),
-                    })}
-                  </p>
-                  <p class="ui-text-muted mt-1 text-sm">
-                    {t('assessment.run', {
-                      date: formatAttemptDate(attempt.submittedAt, locale),
-                      run: attempt.runSequence ?? 1,
-                    })}
-                  </p>
-                </div>
-              </ListRow>
+            <li class="assessment-history__row" key={attempt.id}>
+              <div>
+                <strong>
+                  {t('assessment.run', {
+                    date: formatAttemptDate(attempt.submittedAt, locale),
+                    run: attempt.runSequence ?? 1,
+                  })}
+                </strong>
+                <span>
+                  {t('assessment.score', {
+                    score: formatLocalizedNumber(
+                      Math.round(attempt.score),
+                      locale,
+                    ),
+                  })}
+                </span>
+              </div>
+              <Badge tone={attempt.passed ? 'success' : 'warning'}>
+                {t(attempt.passed ? 'assessment.passed' : 'assessment.retry')}
+              </Badge>
             </li>
           ))}
         </ol>
@@ -245,28 +235,56 @@ function AssessmentResult({
       new Map(assessment.questions.map((question) => [question.id, question])),
     [assessment.questions],
   );
+  const correctCount = result.corrections.filter(
+    (correction) => correction.correct,
+  ).length;
+  const reinforceCount = result.corrections.length - correctCount;
 
   return (
-    <div class="space-y-5">
-      <Card class="space-y-4 text-center" role="status">
-        <Badge tone={result.attempt.passed ? 'success' : 'danger'}>
-          {result.attempt.passed ? labels.success : labels.failure}
-        </Badge>
-        <p class="text-4xl font-bold">{Math.round(result.attempt.score)} %</p>
-        <p class="ui-text-muted text-sm">
+    <div class="assessment-result">
+      <section class="assessment-result__summary" role="status">
+        <div class="assessment-result__heading">
+          <div>
+            <p class="page-eyebrow">{t('assessment.result')}</p>
+            <h2>{t('assessment.resultSummaryTitle')}</h2>
+          </div>
+          <Badge tone={result.attempt.passed ? 'success' : 'warning'}>
+            {result.attempt.passed ? labels.success : labels.failure}
+          </Badge>
+        </div>
+        <p>
+          {t(
+            result.attempt.passed
+              ? 'assessment.resultSuccessSummary'
+              : 'assessment.resultFailureSummary',
+          )}
+        </p>
+        <dl class="assessment-result__signals">
+          <div>
+            <dt>{t('assessment.acquiredCount')}</dt>
+            <dd>{correctCount}</dd>
+          </div>
+          <div>
+            <dt>{t('assessment.reinforceCount')}</dt>
+            <dd>{reinforceCount}</dd>
+          </div>
+          <div class="assessment-result__score">
+            <dt>{t('assessment.scoreLabel')}</dt>
+            <dd>{Math.round(result.attempt.score)} %</dd>
+          </div>
+        </dl>
+        <p class="assessment-result__threshold">
           {t('assessment.passingScore', {
             count: Math.round(assessment.passingScore),
           })}
         </p>
-        <Button class="w-full" onClick={onRestart} size="lg">
-          {labels.restart}
-        </Button>
-      </Card>
+      </section>
 
-      <section aria-labelledby="assessment-corrections-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="assessment-corrections-title">
-          {t('assessment.correction')}
-        </h2>
+      <section
+        aria-labelledby="assessment-corrections-title"
+        class="assessment-result__corrections"
+      >
+        <h2 id="assessment-corrections-title">{t('assessment.correction')}</h2>
         {result.corrections.map((correction, index) => {
           const question = questionsById.get(correction.questionId);
           const correctLabels = question?.options
@@ -278,15 +296,18 @@ function AssessmentResult({
               : correction.acceptedAnswers.join(', ');
 
           return (
-            <Card class="space-y-2" key={correction.questionId}>
-              <div class="flex items-start justify-between gap-3">
-                <h3 class="font-semibold">
+            <article
+              class="assessment-result__criterion"
+              key={correction.questionId}
+            >
+              <div class="assessment-result__criterion-heading">
+                <h3>
                   {t('assessment.question', {
                     count: index + 1,
                     prompt: question?.prompt ?? '',
                   })}
                 </h3>
-                <Badge tone={correction.correct ? 'success' : 'danger'}>
+                <Badge tone={correction.correct ? 'success' : 'warning'}>
                   {t(
                     correction.correct
                       ? 'assessment.correct'
@@ -294,17 +315,29 @@ function AssessmentResult({
                   )}
                 </Badge>
               </div>
-              <p class="ui-text-muted text-sm leading-6">
-                {correction.explanation}
-              </p>
+              <p>{correction.explanation}</p>
               {!correction.correct && expected ? (
-                <p class="ui-text text-sm">
+                <p class="assessment-result__expected">
                   {t('assessment.expectedAnswer', { answer: expected })}
                 </p>
               ) : null}
-            </Card>
+            </article>
           );
         })}
+      </section>
+
+      <section class="assessment-result__next">
+        <p class="page-eyebrow">{t('assessment.nextAction')}</p>
+        <h2>
+          {t(
+            result.attempt.passed
+              ? 'assessment.nextActionPassed'
+              : 'assessment.nextActionRetry',
+          )}
+        </h2>
+        <Button onClick={onRestart} size="lg">
+          {labels.restart}
+        </Button>
       </section>
     </div>
   );
@@ -427,7 +460,7 @@ export function QuestionAssessmentExperience({
   const answer = answers[question.id] ?? { optionIds: [], text: '' };
 
   return (
-    <div class="space-y-6">
+    <div class="assessment-experience">
       <ProgressBar
         label={t('assessment.questionPosition', {
           current: currentIndex + 1,
@@ -439,13 +472,13 @@ export function QuestionAssessmentExperience({
       />
 
       <form
-        class="space-y-5"
+        class="assessment-experience__form"
         onSubmit={(event) => {
           event.preventDefault();
           void continueAssessment();
         }}
       >
-        <Card class="space-y-5">
+        <Card class="assessment-question-card">
           <fieldset class="space-y-5">
             <legend
               class="rounded-lg text-xl font-semibold leading-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"

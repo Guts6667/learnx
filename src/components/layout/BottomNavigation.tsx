@@ -5,6 +5,7 @@ import {
 import type { MessageKey } from '@/i18n/catalogs';
 import { useI18n } from '@/i18n';
 import { useSessionQuery } from '@/features/auth/session';
+import { useEffect, useState } from 'preact/hooks';
 
 const navigationItems = [
   { href: '/today', icon: 'home', labelKey: 'navigation.home' },
@@ -28,17 +29,56 @@ function isCurrentPage(currentPath: string, href: string): boolean {
 export function BottomNavigation({ currentPath = window.location.pathname }) {
   const { t } = useI18n();
   const sessionQuery = useSessionQuery();
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const displayName =
     sessionQuery.data?.user?.displayName ?? t('navigation.profile');
   const profileInitial = displayName.trim().slice(0, 1).toLocaleUpperCase();
+
+  useEffect(() => {
+    document.documentElement.dataset.sidebarCollapsed = String(isCollapsed);
+
+    return () => {
+      delete document.documentElement.dataset.sidebarCollapsed;
+    };
+  }, [isCollapsed]);
 
   return (
     <nav
       aria-label={t('navigation.main.ariaLabel')}
       class="app-main-navigation ui-main-navigation app-safe-navigation fixed right-0 bottom-0 left-0 z-40 border-t backdrop-blur lg:top-0 lg:right-auto lg:w-[var(--app-navigation-width)] lg:border-t-0 lg:border-r"
     >
-      <div aria-hidden="true" class="app-main-navigation__brand">
-        <span>{t('app.name')}</span>
+      <div class="app-main-navigation__brand">
+        <span aria-hidden="true" class="app-main-navigation__mark">
+          LX
+        </span>
+        <span class="app-main-navigation__brand-label">{t('app.name')}</span>
+        <button
+          aria-label={t(
+            isCollapsed
+              ? 'navigation.expandSidebar'
+              : 'navigation.collapseSidebar',
+          )}
+          aria-pressed={isCollapsed}
+          class="app-main-navigation__collapse"
+          onClick={() => setIsCollapsed((current) => !current)}
+          title={t(
+            isCollapsed
+              ? 'navigation.expandSidebar'
+              : 'navigation.collapseSidebar',
+          )}
+          type="button"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              d={isCollapsed ? 'm9 6 6 6-6 6' : 'm15 6-6 6 6 6'}
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+            />
+          </svg>
+        </button>
       </div>
       <ul class="mx-auto grid max-w-xl grid-cols-5 items-stretch gap-1 lg:flex lg:min-h-0 lg:max-w-none lg:flex-1 lg:flex-col lg:gap-2">
         {navigationItems.map(({ href, icon, labelKey }) => {
@@ -71,7 +111,7 @@ export function BottomNavigation({ currentPath = window.location.pathname }) {
                 ) : (
                   <NavigationIcon name={icon} />
                 )}
-                <span class="max-w-full break-words text-center lg:text-left">
+                <span class="ui-main-navigation__label max-w-full break-words text-center lg:text-left">
                   {href === '/profile' ? (
                     <>
                       <span class="app-main-navigation__profile-name">

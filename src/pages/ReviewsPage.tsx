@@ -1,11 +1,9 @@
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
 import {
   type ReviewItem,
@@ -23,6 +21,12 @@ function isOverdue(value: string): boolean {
   return new Date(value).getTime() < Date.now();
 }
 
+function isDueTodayOrOverdue(value: string): boolean {
+  const endOfToday = new Date();
+  endOfToday.setHours(23, 59, 59, 999);
+  return new Date(value).getTime() <= endOfToday.getTime();
+}
+
 function getSafeExternalUrl(value: string | null): string | null {
   if (!value) return null;
 
@@ -37,7 +41,7 @@ function getSafeExternalUrl(value: string | null): string | null {
   }
 }
 
-function ReviewCard({
+function ReviewRow({
   item,
   onComplete,
   pendingId,
@@ -50,9 +54,9 @@ function ReviewCard({
   const assessmentHref = `/program/${encodeURIComponent(item.program.slug)}/lesson/${encodeURIComponent(item.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(item.sourceId)}`;
 
   return (
-    <li>
-      <Card class="space-y-4">
-        <div class="flex flex-wrap items-center gap-2">
+    <li class="review-priority-row">
+      <div class="review-priority-row__content">
+        <div class="review-priority-row__status">
           <Badge tone={isOverdue(item.dueAt) ? 'danger' : 'warning'}>
             {t(isOverdue(item.dueAt) ? 'reviews.overdue' : 'reviews.due')}
           </Badge>
@@ -60,31 +64,25 @@ function ReviewCard({
             <Badge tone="neutral">{t('common.draft')}</Badge>
           ) : null}
         </div>
-        <div>
-          <h2 class="text-lg font-semibold">
-            {item.conceptTitle ?? item.lesson.title}
-          </h2>
-          <p class="ui-text-muted mt-1 text-sm">
+        <div class="review-priority-row__heading">
+          <h3>{item.conceptTitle ?? item.lesson.title}</h3>
+          <p>
             {item.program.title} · {item.lesson.title}
           </p>
-          <p class="ui-text-muted mt-2 text-sm">
-            {t('reviews.dueAt', { date: formatDueAt(item.dueAt, locale) })}
-          </p>
+          <p>{t('reviews.dueAt', { date: formatDueAt(item.dueAt, locale) })}</p>
         </div>
         {item.assessmentTitle ? (
-          <p class="ui-text-muted text-sm">{item.assessmentTitle}</p>
+          <p class="review-priority-row__assessment">{item.assessmentTitle}</p>
         ) : null}
         {item.resources.length > 0 ? (
-          <Section>
-            <h3 class="ui-text text-sm font-semibold">
-              {t('reviews.resources')}
-            </h3>
-            <ul class="mt-2 space-y-2">
+          <div class="review-priority-row__resources">
+            <strong>{t('reviews.resources')}</strong>
+            <ul>
               {item.resources.map((resource) => {
                 const href = getSafeExternalUrl(resource.url);
 
                 return (
-                  <li class="text-sm" key={resource.id}>
+                  <li key={resource.id}>
                     {href ? (
                       <a
                         class="ui-link inline-flex min-h-11 items-center"
@@ -101,21 +99,21 @@ function ReviewCard({
                 );
               })}
             </ul>
-          </Section>
+          </div>
         ) : null}
-        <div class="grid gap-3 sm:grid-cols-2">
-          <NavigationAction href={assessmentHref} variant="secondary">
-            {t('reviews.retake')}
-          </NavigationAction>
-          <Button
-            isLoading={pendingId === item.id}
-            onClick={() => void onComplete(item.id)}
-            variant="secondary"
-          >
-            {t('reviews.complete')}
-          </Button>
-        </div>
-      </Card>
+      </div>
+      <div class="review-priority-row__actions">
+        <NavigationAction href={assessmentHref}>
+          {t('reviews.retake')}
+        </NavigationAction>
+        <Button
+          isLoading={pendingId === item.id}
+          onClick={() => void onComplete(item.id)}
+          variant="ghost"
+        >
+          {t('reviews.complete')}
+        </Button>
+      </div>
     </li>
   );
 }
@@ -124,6 +122,11 @@ export function ReviewsPage() {
   const query = useReviewsQuery();
   const mutation = useCompleteReviewMutation();
   const { t } = useI18n();
+  const dueNow =
+    query.data?.reviews.filter((item) => isDueTodayOrOverdue(item.dueAt)) ?? [];
+  const upcoming =
+    query.data?.reviews.filter((item) => !isDueTodayOrOverdue(item.dueAt)) ??
+    [];
 
   async function completeReview(reviewId: string) {
     try {
@@ -157,17 +160,56 @@ export function ReviewsPage() {
         />
       ) : null}
       {query.data?.reviews.length ? (
-        <div class="space-y-4">
-          <ul class="grid gap-4 md:grid-cols-2">
-            {query.data.reviews.map((item) => (
-              <ReviewCard
-                item={item}
-                key={item.id}
-                onComplete={completeReview}
-                pendingId={mutation.pendingId}
-              />
-            ))}
-          </ul>
+        <div class="reviews-priorities">
+          <div class="reviews-priorities__summary" role="status">
+            <strong>{dueNow.length}</strong>
+            <span>{t('reviews.summary', { count: dueNow.length })}</span>
+          </div>
+
+          {dueNow.length > 0 ? (
+            <section
+              aria-labelledby="reviews-today-title"
+              class="reviews-priorities__section"
+            >
+              <div class="reviews-priorities__section-heading">
+                <h2 id="reviews-today-title">{t('reviews.todayPriority')}</h2>
+                <span>{dueNow.length}</span>
+              </div>
+              <ul class="reviews-priorities__list">
+                {dueNow.map((item) => (
+                  <ReviewRow
+                    item={item}
+                    key={item.id}
+                    onComplete={completeReview}
+                    pendingId={mutation.pendingId}
+                  />
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
+          {upcoming.length > 0 ? (
+            <section
+              aria-labelledby="reviews-upcoming-title"
+              class="reviews-priorities__section"
+            >
+              <div class="reviews-priorities__section-heading">
+                <h2 id="reviews-upcoming-title">{t('reviews.upcoming')}</h2>
+                <span>{upcoming.length}</span>
+              </div>
+              <ul class="reviews-priorities__list">
+                {upcoming.map((item) => (
+                  <ReviewRow
+                    item={item}
+                    key={item.id}
+                    onComplete={completeReview}
+                    pendingId={mutation.pendingId}
+                  />
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
           {query.hasMore ? (
             <Button
               isLoading={query.isLoadingMore}

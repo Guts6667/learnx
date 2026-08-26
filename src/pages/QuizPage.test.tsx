@@ -253,14 +253,22 @@ describe('QuizPage', () => {
     await waitFor(() =>
       expect(screen.getByLabelText('Résultat de l’évaluation')).toHaveFocus(),
     );
+    expect(
+      screen.getByRole('heading', { name: 'Ce que vos réponses montrent' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Réponses acquises')).toBeInTheDocument();
+    expect(screen.getByText('Réponses à renforcer')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'Consolider ou poursuivre le parcours',
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByText('100 %')).toBeInTheDocument();
     expect(screen.getByText('La proposition est vraie.')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Recommencer le quiz' }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Continuer' }),
-    ).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Continuer' })).toHaveAttribute(
       'href',
       '/program/programme-test/lesson/demarrer?activity=complete%3Alesson#activity-complete%3Alesson',
     );
