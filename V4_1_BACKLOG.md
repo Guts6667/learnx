@@ -94,8 +94,8 @@ candidats V5.
 - Reviewer : Documentation / Recherche IA
 - Dépendances : V4.1-001
 - Source : `docs/INDEX.md` ; historique de recherche correction IA
-- Statut : **livré pour revue** dans `docs/DOCUMENT_MANIFEST.yaml` et
-  `docs/AI_CORRECTION_RESEARCH_DIGEST.md`
+- Statut : **terminé** — archive vérifiée dans `docs/DOCUMENT_MANIFEST.yaml` et
+  `docs/AI_CORRECTION_RESEARCH_DIGEST.md`, sans suppression de recherche
 - Critères d'acceptation :
   - les autorités V4.1, V4.5 et V5 ont owner, reviewer et gate explicites ;
   - corpus, manifests, résultats, revues, décisions et contrats IA sont
@@ -143,7 +143,8 @@ candidats V5.
 - Reviewer : Architecture / Produit
 - Dépendances : V4.1-002, V4.1-006
 - Source : `docs/V4_1_TECHNICAL_AUDIT.md` ; mesures de V4.1-006
-- Statut : **bloqué** — dépendance V4.1-006
+- Statut : **en cours** — gates baseline actives et vertes ; clôture dépendante
+  de la matrice de parité V4.1-006
 - Critères d'acceptation :
   - la méthode de couverture et la trajectoire vers V4.1-501 sont gelées ;
   - un avis `high` applicable bloque la release ou possède une exception revue,
@@ -161,7 +162,8 @@ candidats V5.
 - Reviewer : Architecture frontend
 - Dépendances : V4.1-006, V4.1-007
 - Source : audit V4.1-002 ; gates V4.1-007
-- Statut : **bloqué** — dépendances V4.1-006 et V4.1-007
+- Statut : **en revue** — React 19 est l'unique runtime UI, sans import ni
+  dépendance Preact ; baseline technique et revue indépendante vertes
 - Critères d'acceptation :
   - React et React DOM deviennent le runtime UI configuré par Vite ;
   - JSX, types, aliases et montage racine restent TypeScript strict ;
@@ -175,7 +177,8 @@ candidats V5.
 - Reviewer : Produit / Accessibilité
 - Dépendances : V4.1-101
 - Source : 33 routes client et baseline V4.1-006
-- Statut : **bloqué** — dépendance V4.1-101
+- Statut : **en revue** — routes migrées, parité contrôlée et navigation native
+  Recherche protégée par tests unitaires et Playwright
 - Critères d'acceptation :
   - URLs, paramètres, liens profonds, redirections et page 404 sont identiques ;
   - gardes public, authentifié et admin conservent leurs permissions ;
@@ -189,7 +192,8 @@ candidats V5.
 - Reviewer : Backend / PWA / i18n
 - Dépendances : V4.1-101, V4.1-102
 - Source : providers et requêtes baseline ; configuration PWA et catalogues
-- Statut : **bloqué** — dépendances V4.1-101 et V4.1-102
+- Statut : **en revue** — providers React, React Query figé, i18n et PWA passent
+  la baseline sans transfert d'autorité métier vers le client
 - Critères d'acceptation :
   - React Query remplace l'usage direct de query-core avec clés et invalidations
     équivalentes ;
@@ -204,7 +208,8 @@ candidats V5.
 - Reviewer : Frontend platform
 - Dépendances : V4.1-101, V4.1-102, V4.1-103
 - Source : suites `@testing-library/preact` et baseline V4.1-006
-- Statut : **bloqué** — dépendances V4.1-101 à V4.1-103
+- Statut : **en revue** — Testing Library React en place, 950 tests conservés
+  et aucun test supprimé ou ignoré pour la migration
 - Critères d'acceptation :
   - helpers, render, événements et tests passent sous Testing Library React ;
   - assertions métier, a11y et navigation sont conservées ;
@@ -220,7 +225,8 @@ candidats V5.
 - Reviewer : Direction artistique / Accessibilité
 - Dépendances : V4.1-007, V4.1-101
 - Source : direction Totem/Maia promue ; seuils V4.1-007
-- Statut : **bloqué** — dépendances V4.1-007 et V4.1-101
+- Statut : **en cours** — fondation shadcn Maia et tokens LearnX en worktree
+  dédié, sans migration de surface
 - Critères d'acceptation :
   - shadcn est initialisé avec la direction Maia sans esthétique générique ;
   - couleurs, typo, espaces, rayons, ombres, focus et motion sont tokenisés ;
