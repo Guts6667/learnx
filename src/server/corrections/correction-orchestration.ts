@@ -54,6 +54,7 @@ export class CorrectionOrchestrationError extends Error {
 }
 
 export interface AcceptedQuoteSnapshot {
+  action?: 'STANDARD' | 'RECONSIDERATION';
   quoteId: string;
   userId: string;
   target: {
@@ -71,6 +72,11 @@ export interface AcceptedQuoteSnapshot {
   contractKey: string;
   contractVersion: string;
   requestFingerprint: string;
+  reconsideration?: {
+    argument: string;
+    previousCorrection: OrchestratedCorrectionResult['correction'];
+    sourceCorrectionId: string;
+  };
   submissionText: string;
   exerciseInstructions: string;
   taskContext: string | null;
@@ -199,7 +205,9 @@ export interface OrchestratedCorrectionResult {
 }
 
 export interface CorrectionHistoryEntry {
+  action?: 'STANDARD' | 'RECONSIDERATION';
   createdAt: Date;
+  sourceCorrectionId?: string | null;
   result: OrchestratedCorrectionResult;
 }
 
@@ -304,7 +312,9 @@ export class CorrectionOrchestrationService {
       quote.modelId !== PROMOTED_CORRECTION_IDENTITY.modelId ||
       quote.provider !== PROMOTED_CORRECTION_IDENTITY.provider ||
       quote.promptVersion !== PROMOTED_CORRECTION_IDENTITY.promptVersion ||
-      !quote.includesAutomaticSecondPass
+      !quote.includesAutomaticSecondPass ||
+      ((quote.action ?? 'STANDARD') === 'RECONSIDERATION') !==
+        Boolean(quote.reconsideration)
     ) {
       throw new CorrectionOrchestrationError('QUOTE_INCOMPATIBLE');
     }
@@ -479,6 +489,15 @@ export class CorrectionOrchestrationService {
     const messages = buildRuntimeCorrectionMessages({
       contract: input.contract,
       exerciseInstructions: input.quote.exerciseInstructions,
+      ...(input.quote.reconsideration
+        ? {
+            reconsideration: {
+              argument: input.quote.reconsideration.argument,
+              previousCorrection:
+                input.quote.reconsideration.previousCorrection,
+            },
+          }
+        : {}),
       submissionText: input.quote.submissionText,
       taskContext: input.quote.taskContext ?? undefined,
     });

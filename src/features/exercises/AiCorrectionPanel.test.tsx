@@ -310,4 +310,127 @@ describe('AiCorrectionPanel', () => {
     expect(screen.queryByText('Partiel → Maîtrisé')).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
+
+  it('demande un argument borné puis un devis distinct avant un unique réexamen', async () => {
+    const submissionId = '0286768e-5b9c-491b-a4f4-f2e6863ef398';
+    const sourceCorrectionId = 'a14cbe99-31dd-48f1-9fb3-4549a2d88bc2';
+    const source = {
+      action: 'STANDARD',
+      correction: {
+        criteria: [],
+        id: sourceCorrectionId,
+        indicativeScore: 50,
+        overallFeedback: 'Le lien reste partiel.',
+        secondPassRequired: false,
+        status: 'COMPLETED',
+        unsureCriteria: [],
+        unsureCriterionDetails: [],
+      },
+      createdAt: '2026-08-24T19:00:00.000Z',
+      replay: true,
+      settlement: {
+        releasedCredits: '3',
+        reservedCredits: '6',
+        settledCredits: '3',
+      },
+      sourceCorrectionId: null,
+    };
+    const reconsideration = {
+      ...source,
+      action: 'RECONSIDERATION',
+      correction: {
+        ...source.correction,
+        id: '3fb16723-221f-4e1c-841a-9d819ec82854',
+        indicativeScore: 100,
+        overallFeedback: 'Le lien est confirmé.',
+      },
+      createdAt: '2026-08-26T19:00:00.000Z',
+      sourceCorrectionId,
+    };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse({ resource: { corrections: [source] } }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resource: {
+            quote: {
+              action: 'RECONSIDERATION',
+              estimatedCredits: '3',
+              expiresAt: '2026-08-26T19:00:00.000Z',
+              id: '89c42047-5133-4ef0-b2df-a6a39092f02f',
+              includesAutomaticSecondPass: true,
+              maximumReservedCredits: '6',
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse(
+          {
+            resource: {
+              correction: {
+                correction: reconsideration.correction,
+                replay: false,
+                settlement: reconsideration.settlement,
+              },
+            },
+          },
+          201,
+        ),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resource: { corrections: [source, reconsideration] },
+        }),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AiCorrectionPanel submissionId={submissionId} />
+      </AppProviders>,
+    );
+
+    const argument = await screen.findByLabelText('Votre argument');
+    const quoteButton = screen.getByRole('button', {
+      name: 'Obtenir le devis de réexamen',
+    });
+    expect(quoteButton).toBeDisabled();
+
+    fireEvent.input(argument, {
+      target: {
+        value:
+          'La phrase citée répond entièrement au critère de justification.',
+      },
+    });
+    expect(quoteButton).toBeEnabled();
+    fireEvent.click(quoteButton);
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    const quoteRequest = fetchMock.mock.calls[1];
+    expect(quoteRequest?.[0]).toBe('/api/ai-correction/quotes');
+    expect(JSON.parse(String(quoteRequest?.[1]?.body))).toMatchObject({
+      action: 'RECONSIDERATION',
+      target: {
+        id: submissionId,
+        reconsideration: {
+          sourceCorrectionId,
+        },
+      },
+    });
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Confirmer et lancer le réexamen',
+      }),
+    );
+
+    expect(await screen.findByText(/Réexamen/)).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Obtenir le devis de réexamen' }),
+    ).not.toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(4);
+  });
 });

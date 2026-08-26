@@ -57,7 +57,9 @@ function serializeLearnerCorrectionResult(
 
 function serializeLearnerCorrectionHistoryEntry(entry: CorrectionHistoryEntry) {
   return {
+    action: entry.action ?? 'STANDARD',
     createdAt: entry.createdAt.toISOString(),
+    sourceCorrectionId: entry.sourceCorrectionId ?? null,
     ...serializeLearnerCorrectionResult(entry.result),
   };
 }

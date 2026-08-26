@@ -719,6 +719,20 @@ export const frenchMessages = {
   'aiCorrection.transparency': 'Transparence',
   'aiCorrection.verification': 'Vérification',
   'aiCorrection.verificationIncluded': 'Incluse',
+  'aiCorrection.reconsiderationShort': 'Réexamen',
+  'aiCorrection.reconsiderationEyebrow': 'Contester ce retour',
+  'aiCorrection.reconsiderationTitle': 'Demander un réexamen argumenté',
+  'aiCorrection.reconsiderationDescription':
+    'Expliquez précisément le point à réexaminer. Votre réponse et la rubrique restent inchangées ; cette demande lance une nouvelle correction facturable, pas une discussion.',
+  'aiCorrection.reconsiderationArgumentLabel': 'Votre argument',
+  'aiCorrection.reconsiderationArgumentHelp':
+    '20 à 500 caractères. N’ajoutez pas de nouveaux éléments à votre réponse.',
+  'aiCorrection.reconsiderationQuote': 'Obtenir le devis de réexamen',
+  'aiCorrection.reconsiderationQuoteAction':
+    'Action : réexamen indépendant de la même réponse et de la même rubrique, déduit de votre allocation offerte.',
+  'aiCorrection.reconsiderationConsentNotice':
+    'Une seule contestation est possible pour cette correction. L’argument signale le point contesté mais ne devient jamais une preuve de votre réponse.',
+  'aiCorrection.reconsiderationConfirm': 'Confirmer et lancer le réexamen',
   'assessment.previousAttempts': 'Tentatives précédentes',
   'assessment.noAttempts': 'Aucune tentative enregistrée.',
   'assessment.passed': 'Réussi',
@@ -1903,6 +1917,21 @@ export const englishMessages = {
   'aiCorrection.transparency': 'Transparency',
   'aiCorrection.verification': 'Verification',
   'aiCorrection.verificationIncluded': 'Included',
+  'aiCorrection.reconsiderationShort': 'Reconsideration',
+  'aiCorrection.reconsiderationEyebrow': 'Challenge this feedback',
+  'aiCorrection.reconsiderationTitle': 'Request an argued reconsideration',
+  'aiCorrection.reconsiderationDescription':
+    'Explain precisely what should be reconsidered. Your answer and rubric remain unchanged; this starts a new paid correction, not a conversation.',
+  'aiCorrection.reconsiderationArgumentLabel': 'Your argument',
+  'aiCorrection.reconsiderationArgumentHelp':
+    '20 to 500 characters. Do not add new material to your answer.',
+  'aiCorrection.reconsiderationQuote': 'Get a reconsideration quote',
+  'aiCorrection.reconsiderationQuoteAction':
+    'Action: independent reconsideration of the same answer and rubric, deducted from your complimentary allocation.',
+  'aiCorrection.reconsiderationConsentNotice':
+    'Only one challenge is allowed for this correction. Your argument identifies the disputed point but never becomes evidence for your answer.',
+  'aiCorrection.reconsiderationConfirm':
+    'Confirm and start the reconsideration',
   'assessment.previousAttempts': 'Previous attempts',
   'assessment.noAttempts': 'No attempts recorded.',
   'assessment.passed': 'Passed',

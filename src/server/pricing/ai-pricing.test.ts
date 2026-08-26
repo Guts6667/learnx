@@ -260,7 +260,15 @@ function makeRepository(): AiPricingQuoteRepository & {
     },
     async resolveTarget(userId, target) {
       if (userId !== 'user-id') return null;
-      return { contract, inputChars: 640, language: 'fr-FR', target };
+      return {
+        contract,
+        inputChars: 640,
+        language: 'fr-FR',
+        ...(target.kind === 'EXERCISE_SUBMISSION' && target.reconsideration
+          ? { reconsideration: target.reconsideration }
+          : {}),
+        target,
+      };
     },
   };
 }
@@ -454,6 +462,44 @@ describe('AI pricing quote service', () => {
       service.quote({ ...request, action: 'DETAILED' }),
     ).rejects.toMatchObject({ code: 'DUPLICATE_OPERATION_CONFLICT' });
   });
+
+  it.each([
+    {
+      action: 'RECONSIDERATION' as const,
+      target: {
+        id: '11111111-1111-4111-8111-111111111111',
+        kind: 'EXERCISE_SUBMISSION' as const,
+      },
+    },
+    {
+      action: 'STANDARD' as const,
+      target: {
+        id: '11111111-1111-4111-8111-111111111111',
+        kind: 'EXERCISE_SUBMISSION' as const,
+        reconsideration: {
+          argument:
+            'La preuve citée soutient le niveau supérieur de ce critère.',
+          sourceCorrectionId: '33333333-3333-4333-8333-333333333333',
+        },
+      },
+    },
+  ])(
+    'rejects an action and reconsideration context mismatch',
+    async ({ action, target }) => {
+      const repository = makeRepository();
+      const service = new AiPricingQuoteService(repository);
+
+      await expect(
+        service.quote({
+          action,
+          idempotencyKey: `quote:request:${action.toLowerCase()}`,
+          target,
+          userId: 'user-id',
+        }),
+      ).rejects.toMatchObject({ code: 'TARGET_NOT_ELIGIBLE' });
+      expect(repository.created).toHaveLength(0);
+    },
+  );
 
   it('rejects a quote whose catalog was retired or invalidated', async () => {
     const repository = makeRepository();

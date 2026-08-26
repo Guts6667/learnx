@@ -9,6 +9,7 @@ import type {
   RuntimeCorrectionAttempt,
 } from './correction-orchestration';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
+import { RUNTIME_RECONSIDERATION_PROMPT_VERSION } from './runtime-correction-prompt.js';
 
 /**
  * Implémentation Prisma des ports de l'orchestration V4-009 :
@@ -63,6 +64,7 @@ export class PrismaCorrectionOrchestrationPorts {
         creditReservation: {
           select: { settledAmount: true, status: true },
         },
+        pricingQuote: { select: { action: true } },
       },
       orderBy: { createdAt: 'asc' },
       where: {
@@ -87,7 +89,12 @@ export class PrismaCorrectionOrchestrationPorts {
       }
       return [
         {
+          action:
+            correction.pricingQuote?.action === 'RECONSIDERATION'
+              ? 'RECONSIDERATION'
+              : 'STANDARD',
           createdAt: correction.createdAt,
+          sourceCorrectionId: correction.reconsiderationOfId,
           result: {
             correction: structured.correction,
             replay: true,
@@ -143,23 +150,6 @@ export class PrismaCorrectionOrchestrationPorts {
       ) {
         return null;
       }
-      const contractResolution = resolveExerciseCorrectionContract({
-        activityKey: submission.exercise.key,
-        activityType: submission.exercise.activityType,
-        explicitContract: submission.exercise.rubric,
-        instructions: submission.exercise.instructions,
-        language: quote.language,
-        lessonObjectives: Array.isArray(submission.exercise.lesson.objectives)
-          ? submission.exercise.lesson.objectives.filter(
-              (objective): objective is string => typeof objective === 'string',
-            )
-          : [],
-        lessonSlug: submission.exercise.lesson.slug,
-        lessonSummary: submission.exercise.lesson.summary,
-        programSlug: submission.exercise.lesson.module.stage.program.slug,
-        title: submission.exercise.title,
-      });
-      if (!contractResolution.eligible) return null;
       const lessonObjectives = Array.isArray(
         submission.exercise.lesson.objectives,
       )
@@ -167,7 +157,101 @@ export class PrismaCorrectionOrchestrationPorts {
             (objective): objective is string => typeof objective === 'string',
           )
         : [];
+      const taskContext = [
+        submission.exercise.lesson.summary,
+        ...lessonObjectives,
+      ].join('\n');
+      if (quote.action === 'RECONSIDERATION') {
+        if (
+          !quote.reconsiderationOfCorrectionId ||
+          !quote.reconsiderationArgument
+        ) {
+          return null;
+        }
+        const source = await this.prisma.aiCorrection.findFirst({
+          include: {
+            creditReservation: {
+              select: { settledAmount: true, status: true },
+            },
+            pricingQuote: { select: { action: true } },
+            reconsideration: { select: { id: true } },
+          },
+          where: {
+            exerciseSubmissionId: submission.id,
+            id: quote.reconsiderationOfCorrectionId,
+            userId: input.userId,
+          },
+        });
+        const structured = (source?.structuredResult ?? {}) as {
+          correction?: OrchestratedCorrectionResult['correction'];
+        };
+        const sourceSubmission = (source?.submissionSnapshot ?? {}) as {
+          text?: unknown;
+        };
+        const sourcePrompt = (source?.promptSnapshot ?? {}) as {
+          exerciseInstructions?: unknown;
+          taskContext?: unknown;
+        };
+        if (
+          !source ||
+          source.pricingQuote?.action !== 'STANDARD' ||
+          source.reconsideration ||
+          source.creditReservation?.status !== 'SETTLED' ||
+          source.creditReservation.settledAmount === null ||
+          !structured.correction ||
+          typeof sourceSubmission.text !== 'string'
+        ) {
+          return null;
+        }
+        return {
+          action: 'RECONSIDERATION',
+          quoteId: quote.id,
+          userId: quote.userId,
+          target: { id: submission.id, kind: 'EXERCISE_SUBMISSION' },
+          language: quote.language,
+          estimatedCredits: quote.estimatedCredits,
+          maximumReservedCredits: quote.ceilingCredits,
+          expiresAt: quote.expiresAt,
+          promptVersion: quote.promptVersion,
+          modelId: quote.modelId,
+          provider: quote.provider,
+          includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
+          contractKey: quote.contractKey,
+          contractVersion: quote.contractVersion,
+          requestFingerprint: quote.requestFingerprint,
+          submissionText: sourceSubmission.text,
+          exerciseInstructions:
+            typeof sourcePrompt.exerciseInstructions === 'string'
+              ? sourcePrompt.exerciseInstructions
+              : submission.exercise.instructions,
+          taskContext:
+            typeof sourcePrompt.taskContext === 'string'
+              ? sourcePrompt.taskContext
+              : taskContext,
+          contract: source.contractSnapshot,
+          reconsideration: {
+            argument: quote.reconsiderationArgument,
+            previousCorrection: structured.correction,
+            sourceCorrectionId: source.id,
+          },
+        };
+      }
+      if (quote.action !== 'STANDARD') return null;
+      const contractResolution = resolveExerciseCorrectionContract({
+        activityKey: submission.exercise.key,
+        activityType: submission.exercise.activityType,
+        explicitContract: submission.exercise.rubric,
+        instructions: submission.exercise.instructions,
+        language: quote.language,
+        lessonObjectives,
+        lessonSlug: submission.exercise.lesson.slug,
+        lessonSummary: submission.exercise.lesson.summary,
+        programSlug: submission.exercise.lesson.module.stage.program.slug,
+        title: submission.exercise.title,
+      });
+      if (!contractResolution.eligible) return null;
       return {
+        action: 'STANDARD',
         quoteId: quote.id,
         userId: quote.userId,
         target: { id: submission.id, kind: 'EXERCISE_SUBMISSION' },
@@ -184,10 +268,7 @@ export class PrismaCorrectionOrchestrationPorts {
         requestFingerprint: quote.requestFingerprint,
         submissionText: submission.contentMarkdown,
         exerciseInstructions: submission.exercise.instructions,
-        taskContext: [
-          submission.exercise.lesson.summary,
-          ...lessonObjectives,
-        ].join('\n'),
+        taskContext,
         contract: contractResolution.contract,
       };
     },
@@ -216,10 +297,25 @@ export class PrismaCorrectionOrchestrationPorts {
             modelRole: 'CORRECTION_PRIMARY',
             pipelineKind: 'SINGLE_MODEL',
             pricingQuoteId: input.quote.quoteId,
-            promptSnapshot: {},
-            promptVersion: input.quote.promptVersion,
+            promptSnapshot: {
+              exerciseInstructions: input.quote.exerciseInstructions,
+              ...(input.quote.reconsideration
+                ? {
+                    reconsiderationPromptVersion:
+                      RUNTIME_RECONSIDERATION_PROMPT_VERSION,
+                  }
+                : {}),
+              taskContext: input.quote.taskContext,
+            },
+            promptVersion: input.quote.reconsideration
+              ? `${input.quote.promptVersion}+reconsideration-${RUNTIME_RECONSIDERATION_PROMPT_VERSION}`
+              : input.quote.promptVersion,
             provider: PROMOTED_CORRECTION_IDENTITY.provider,
             requestFingerprint: input.quote.requestFingerprint,
+            reconsiderationArgument:
+              input.quote.reconsideration?.argument ?? null,
+            reconsiderationOfId:
+              input.quote.reconsideration?.sourceCorrectionId ?? null,
             startedAt: new Date(),
             status: 'RESERVED',
             submissionSnapshot: { text: input.quote.submissionText },
@@ -231,8 +327,18 @@ export class PrismaCorrectionOrchestrationPorts {
         const existing = await this.prisma.aiCorrection.findFirst({
           select: { id: true },
           where: {
-            requestFingerprint: input.quote.requestFingerprint,
             userId: input.userId,
+            OR: [
+              { requestFingerprint: input.quote.requestFingerprint },
+              ...(input.quote.reconsideration
+                ? [
+                    {
+                      reconsiderationOfId:
+                        input.quote.reconsideration.sourceCorrectionId,
+                    },
+                  ]
+                : []),
+            ],
           },
         });
         if (existing) {

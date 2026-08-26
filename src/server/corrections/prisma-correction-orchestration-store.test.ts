@@ -173,6 +173,47 @@ describe('Prisma correction orchestration store', () => {
     });
   });
 
+  it('persists the immutable source and bounded argument of a reconsideration', async () => {
+    const create = vi.fn(async () => ({ id: 'reconsideration-1' }));
+    const ports = new PrismaCorrectionOrchestrationPorts({
+      aiCorrection: { create },
+    } as never);
+    const reconsiderationQuote: AcceptedQuoteSnapshot = {
+      ...quote(),
+      action: 'RECONSIDERATION',
+      reconsideration: {
+        argument:
+          'La preuve exacte justifie un niveau supérieur sur ce critère.',
+        previousCorrection: {
+          ...result('COMPLETED'),
+          id: '33333333-3333-4333-8333-333333333333',
+        },
+        sourceCorrectionId: '33333333-3333-4333-8333-333333333333',
+      },
+    };
+
+    await expect(
+      ports.corrections.begin({
+        quote: reconsiderationQuote,
+        reservationId: '49dbe27b-00a8-4f9a-ba5e-e8530e820e47',
+        userId: reconsiderationQuote.userId,
+      }),
+    ).resolves.toEqual({ correctionId: 'reconsideration-1', created: true });
+
+    expect(create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        promptSnapshot: expect.objectContaining({
+          reconsiderationPromptVersion: '1.0.0',
+        }),
+        promptVersion: '2.2.0+reconsideration-1.0.0',
+        reconsiderationArgument:
+          'La preuve exacte justifie un niveau supérieur sur ce critère.',
+        reconsiderationOfId: '33333333-3333-4333-8333-333333333333',
+        submissionSnapshot: { text: reconsiderationQuote.submissionText },
+      }),
+    });
+  });
+
   it.each([
     {
       expected: 'READY',
@@ -335,11 +376,13 @@ describe('Prisma correction orchestration store', () => {
       }),
     ).resolves.toEqual([
       {
+        action: 'STANDARD',
         createdAt,
         result: expect.objectContaining({
           correction: expect.objectContaining({ id: 'correction-1' }),
           replay: true,
         }),
+        sourceCorrectionId: undefined,
       },
     ]);
     expect(findMany).toHaveBeenCalledWith(

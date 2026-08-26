@@ -2,7 +2,8 @@
 
 - Statut : `CURRENT_STATUS`
 - Date : 26 août 2026
-- Branche : `codex/totem-three-authorities`
+- Branche de préparation : `codex/v4-critical-screens`
+- Candidat de recette : `v4a-premerge-2026-08-26-r5`
 - Périmètre : runtime formatif fr-FR, sans effet sur la progression
 
 ## Résultat livré
@@ -35,6 +36,8 @@ non productives restent corrigés par leurs mécanismes déterministes.
 - le résultat structuré et le règlement sont affichés après exécution ;
 - une actualisation retrouve la dernière correction réglée sans nouvel appel ni
   nouveau débit ;
+- une correction primaire réglée peut recevoir un unique réexamen argumenté,
+  avec nouveau devis, même réponse/rubrique et historique non destructif ;
 - les coûts fournisseur, tokens et signaux internes ne sont pas exposés à
   l'apprenant.
 
@@ -55,7 +58,7 @@ non productives restent corrigés par leurs mécanismes déterministes.
 - recette authentifiée hors ligne des quatre familles : 4/4 vertes ;
 - frontière de saisie V4 : 1 500 accepté, 1 501 refusé avant tout devis, sans
   troncature ni mutation du brouillon ;
-- suite Vitest complète : 148 fichiers, 939 tests verts avec
+- suite Vitest complète : 150 fichiers, 949 tests verts avec
   `NODE_OPTIONS=--no-experimental-webstorage` ;
 - `pnpm build` : vert ;
 - E2E : 75 verts, 33 ignorés et 0 échec sur desktop Chromium, mobile Chromium,
@@ -70,9 +73,10 @@ non productives restent corrigés par leurs mécanismes déterministes.
    tarifaire longue reste une extension future soumise à calibration.
 2. Seule Writing dispose d'une preuve expérimentale scellée. Les trois autres
    familles sont un rollout produit surveillé décidé par le Propriétaire.
-3. Le runtime restitue toutes les corrections réglées d'une soumission et
-   compare les changements de niveau critériel sans nouvel appel. La
-   contestation argumentée prévue par V4-010 reste à implémenter.
+3. Le runtime restitue toutes les corrections réglées d'une soumission,
+   compare les changements de niveau critériel sans nouvel appel et permet un
+   unique réexamen argumenté. L'argument, borné à 20–500 caractères, n'est
+   jamais traité comme une preuve. Voir `docs/V4_010_R3_RECONSIDERATION.md`.
 4. Aucune activation de `main`, aucun prix public et aucun appel modèle ne sont
    réalisés par ce lot.
 5. La recette `dev` ne peut pas encore couvrir un exercice `reflection` actif :
@@ -87,5 +91,6 @@ automatique des quatre familles est consigné dans
 décision explicite sur un exercice actif ou une fixture de développement. Cette
 recette ne doit pas être présentée comme un nouveau benchmark scientifique.
 
-La preuve de restitution comparative est consignée dans
+Les preuves de contestation et de restitution comparative sont consignées dans
+`docs/V4_010_R3_RECONSIDERATION.md` et
 `docs/V4_010_R4_HISTORY_COMPARISON.md`.

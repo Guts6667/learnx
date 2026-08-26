@@ -330,3 +330,38 @@ haut avant de focaliser le contenu principal sans défilement secondaire. La
 page Crédits adopte en outre le gabarit de travail borné et la demande
 exceptionnelle utilise une surface blanche encadrée cohérente avec le
 récapitulatif. Aucun contrat de solde ou de demande n'est modifié.
+
+## Extension fonctionnelle V4-010 R1–R4 — 26 août 2026
+
+Le candidat `v4a-premerge-2026-08-26-r5` étend le produit sans réécrire les
+preuves scientifiques précédentes. La correction formative est proposée aux
+activités textuelles fr-FR `writing`, `reflection`, `practice` et `project` ;
+la validation expérimentale demeure explicitement limitée à Writing.
+
+Le lot ajoute quatre garanties produit :
+
+- résolution déterministe du contrat spécialisé ou de l'archétype versionné ;
+- limite client et serveur de 1 500 caractères, sans troncature silencieuse ;
+- unique réexamen argumenté d'une correction primaire réglée, avec nouveau
+  devis et nouvelle réservation, même réponse et même rubrique ;
+- historique non destructif permettant de comparer les niveaux critériels des
+  deux analyses sans appel supplémentaire.
+
+L'argument du réexamen est borné à 20–500 caractères. Il identifie le point
+contesté mais n'est jamais une preuve apprenant. Le runtime refuse un second
+réexamen, un réexamen imbriqué, un changement de soumission ou de rubrique et
+une réutilisation d'un devis dont le contexte a dérivé. La migration est
+additive et porte ces invariants jusque dans les contraintes de base de
+données.
+
+La validation finale locale est verte : schéma Prisma, lint, typecheck, build,
+`150` fichiers et `949` tests Vitest, puis `75` scénarios Playwright réussis
+sur desktop Chromium, mobile Chromium, tablette Chromium et mobile WebKit.
+`33` scénarios conditionnels sont ignorés et aucun scénario n'échoue. Aucun
+appel modèle, achat public, modification de `main` ou activation production
+n'a été réalisé par ce lot.
+
+Restent avant publication : déploiement de la migration additive sur preview,
+contrôle de l'entrée catalogue `RECONSIDERATION`, puis recette authentifiée du
+candidat sur `dev`. L'absence actuelle d'exercice Reflection actif doit être
+consignée comme limite de recette et non masquée par une donnée fictive.

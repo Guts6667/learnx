@@ -1,18 +1,24 @@
-# V4 — Checklist de déploiement du pilote Writing
+# V4 — Checklist de déploiement de la correction formative
 
-> État au 25 août 2026. `docs/V4_ROADMAP.md` reste l'autorité sur le périmètre
+> État au 26 août 2026. `docs/V4_ROADMAP.md` reste l'autorité sur le périmètre
 > et l'ordre des tickets. Cette checklist décrit uniquement les preuves à
 > réunir pour V4-019 ; elle ne rouvre ni le benchmark, ni les prix, ni les
 > arbitrages produit.
 
 ## Périmètre autorisé
 
-- correction `writing`, `fr-FR`, texte et faible risque uniquement ;
+- correction produit `writing`, `reflection`, `practice` et `project`,
+  `fr-FR`, texte et faible risque ;
+- preuve scientifique scellée limitée à `writing` ; l'extension aux trois
+  autres familles est une décision produit surveillée, pas un résultat de
+  benchmark ;
 - identité `learnx-french-text-correction-v3-1`, Sonnet 4.6, route Anthropic ;
 - crédits offerts uniquement, sans achat public de correction IA ;
 - feedback formatif sans effet sur la progression ;
 - seconde passe du même modèle uniquement dans la bande de ±5 points ;
 - aucun retry, fallback ou élargissement silencieux.
+- un réexamen argumenté maximum par correction primaire, avec nouveau devis,
+  même soumission/rubrique et historique non destructif.
 
 Le dernier examen scientifique reste `NO-GO`. Le pilote est une décision
 produit bornée ; il ne transforme pas ce verdict en promotion scientifique.
@@ -20,11 +26,13 @@ produit bornée ; il ne transforme pas ce verdict en promotion scientifique.
 ## Preuves locales acquises
 
 - [x] contrat pilote `PUBLISHED` présent dans le bundle ;
-- [x] filtre serveur `writing/fr-FR` avant devis et exécution ;
+- [x] filtre serveur `fr-FR` et allowlist des quatre familles avant devis et
+  exécution ;
 - [x] devis, réservation sur crédits offerts, règlement et libération testés ;
 - [x] identité runtime et route fournisseur épinglées ;
 - [x] livraison par critère, score indicatif et état partiel testés ;
 - [x] UI de devis, consentement, résultat et règlement livrée ;
+- [x] réexamen argumenté borné 20–500, devis distinct et unicité serveur ;
 - [x] monitoring coûts/incidents visible en administration ;
 - [x] état de préflight distant visible en administration sans exposer la clé ;
 - [x] surfaces Totem, landing, marque et journal de recherche alignés ;
@@ -98,8 +106,13 @@ ajouter d'artefacts binaires au dépôt.
 
 - [x] migration répétable en preview et rollback documenté ;
 - [ ] recette manuelle propriétaire du candidat figé
-  `v4a-premerge-2026-08-25-r4` selon
+  `v4a-premerge-2026-08-26-r5` selon
   `docs/V4_019_MANUAL_ACCEPTANCE.md` ;
+- [ ] migration additive R3 appliquée en preview et entrée
+  `RECONSIDERATION` active contrôlée ;
+- [ ] recette des familles actives, de la limite 1 500 et du réexamen sur
+  `dev` ; `reflection` reste explicitement non testable tant qu'aucun exercice
+  actif n'existe ;
 - [ ] variables de production distinctes de la preview ;
 - [ ] préflight `CONFIGURED_CLOSED` avant toute ouverture ;
 - [ ] budget fournisseur et canal d'alerte confirmés ;

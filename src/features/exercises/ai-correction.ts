@@ -48,20 +48,38 @@ export interface CorrectionResult {
 }
 
 export interface CorrectionHistoryEntry extends CorrectionResult {
+  action?: 'STANDARD' | 'RECONSIDERATION';
   createdAt: string;
+  sourceCorrectionId?: string | null;
 }
 
 export async function requestCorrectionQuote(input: {
+  action?: 'STANDARD' | 'RECONSIDERATION';
+  argument?: string;
   idempotencyKey: string;
+  sourceCorrectionId?: string;
   targetId: string;
 }): Promise<CorrectionQuote> {
   const response = await apiRequest<{ resource: { quote: CorrectionQuote } }>(
     '/api/ai-correction/quotes',
     {
       body: JSON.stringify({
-        action: 'STANDARD',
+        action: input.action ?? 'STANDARD',
         idempotencyKey: input.idempotencyKey,
-        target: { id: input.targetId, kind: 'EXERCISE_SUBMISSION' },
+        target: {
+          id: input.targetId,
+          kind: 'EXERCISE_SUBMISSION',
+          ...(input.action === 'RECONSIDERATION' &&
+          input.argument &&
+          input.sourceCorrectionId
+            ? {
+                reconsideration: {
+                  argument: input.argument,
+                  sourceCorrectionId: input.sourceCorrectionId,
+                },
+              }
+            : {}),
+        },
       }),
       headers: { 'content-type': 'application/json' },
       method: 'POST',

@@ -20,7 +20,17 @@ const requestSchema = z
     idempotencyKey: z.string().min(8).max(200),
     target: z.discriminatedUnion('kind', [
       z
-        .object({ id: z.uuid(), kind: z.literal('EXERCISE_SUBMISSION') })
+        .object({
+          id: z.uuid(),
+          kind: z.literal('EXERCISE_SUBMISSION'),
+          reconsideration: z
+            .object({
+              argument: z.string().trim().min(20).max(500),
+              sourceCorrectionId: z.uuid(),
+            })
+            .strict()
+            .optional(),
+        })
         .strict(),
       z
         .object({
@@ -30,7 +40,19 @@ const requestSchema = z
         .strict(),
     ]),
   })
-  .strict();
+  .strict()
+  .superRefine((value, context) => {
+    const hasReconsideration =
+      value.target.kind === 'EXERCISE_SUBMISSION' &&
+      value.target.reconsideration !== undefined;
+    if ((value.action === 'RECONSIDERATION') !== hasReconsideration) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Reconsideration context and action must match.',
+        path: ['target', 'reconsideration'],
+      });
+    }
+  });
 
 export interface AiPricingAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;

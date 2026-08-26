@@ -2,8 +2,8 @@
 
 ## Statut et autorité
 
-- Version : 1.8.0
-- Statut : **release formative en finition — compléments V4-010 et gate production V4-019 restants**
+- Version : 1.8.1
+- Statut : **release formative en finition — recette propriétaire et gate production V4-019 restants**
 - Dernière consolidation : 26 août 2026 — séquencement V4 / V4.1 / V4.5 arbitré par le Propriétaire
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
@@ -80,11 +80,11 @@ Le contrat qualité détaillé est
 Le Propriétaire remplace le découpage historique `V4A` / `V4B` par trois
 releases explicites :
 
-- **V4** livre la correction formative des productions textuelles fr-FR. Sa
-  clôture exige encore la recette authentifiée des quatre familles, un refus
-  explicite et sûr des réponses dépassant la borne tarifable de 1 500
-  caractères, la contestation argumentée et la comparaison de plusieurs
-  corrections, puis V4-019.
+- **V4** livre la correction formative des productions textuelles fr-FR. Son
+  candidat couvre la borne tarifable de 1 500 caractères, la contestation
+  argumentée et la comparaison de plusieurs corrections. Sa clôture exige
+  encore la recette authentifiée des familles réellement disponibles, puis
+  V4-019.
 - **V4.1** est une refondation technique sans extension métier : audit et
   nettoyage du workspace, migration Preact vers React, adoption contrôlée de
   shadcn et overhaul de l'application à parité fonctionnelle.
@@ -459,8 +459,9 @@ la grammaire visuelle.
     une autre action IA. Une erreur technique reste à la charge de LearnX.
 25. Une nouvelle analyse volontaire valide produit une nouvelle version du
     score indicatif et du feedback ; elle ne réécrit pas la première et n'a
-    aucun pouvoir bloquant sur la progression. Le nombre, la forme et les
-    conditions de contestation restent une politique versionnée à arbitrer.
+    aucun pouvoir bloquant sur la progression. La politique V4 autorise un
+    unique réexamen argumenté par correction primaire, avec un argument trimé
+    de 20 à 500 caractères et un nouveau devis en crédits offerts.
 26. Lorsque LearnX déclenche automatiquement un vérificateur ou une passe de
     contrôle, son coût prudent est inclus dans le plafond du devis initial.
     Aucun débit ou consentement surprise n'intervient ; la part non consommée
@@ -1672,7 +1673,7 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
   devis et exécution sur le même snapshot, restitution de la dernière correction
   réglée après actualisation et masquage des métriques fournisseur côté apprenant.
 - **Validé automatiquement** : recette authentifiée hors ligne des quatre
-  familles, lint, typecheck et 939 tests. La recette prouve le cycle
+  familles, lint, typecheck et 949 tests. La recette prouve le cycle
   remise → devis → réservation → correction simulée → règlement → historique,
   sans nouvel effet de progression ni métrique fournisseur exposée.
 - **Validé automatiquement** : frontière 1 500/1 501 appliquée dans l'interface
@@ -1681,8 +1682,10 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 - **Validé automatiquement** : historique chronologique des corrections réglées,
   navigation entre versions et comparaison des niveaux critériels sans nouvel
   appel, nouveau devis ni exposition des métriques fournisseur.
-- **Bloquants release V4** : contestation argumentée et recette propriétaire
-  réelle sur `dev`. L'inventaire ne contient
+- **Validé automatiquement** : un réexamen argumenté maximum par correction
+  primaire, argument 20–500, devis/réservation distincts, même snapshot de
+  soumission et de rubrique, historique immuable et argument non probant.
+- **Bloquant release V4** : recette propriétaire réelle sur `dev`. L'inventaire ne contient
   aucun exercice `reflection` actif ; l'unique occurrence reste dans un
   programme brouillon et ne doit pas être publiée silencieusement.
 - **Validé automatiquement** : gate E2E complet, 75 scénarios passés sur les
@@ -1691,6 +1694,7 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 - **Référence de preuve** :
   `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` et
   `docs/V4_010_R1_ACCEPTANCE.md`, `docs/V4_010_R2_INPUT_LIMIT.md` et
+  `docs/V4_010_R3_RECONSIDERATION.md` et
   `docs/V4_010_R4_HISTORY_COMPARISON.md`.
 
 ---
@@ -2477,7 +2481,7 @@ V4-012, V4-016, V4-016A/B/C/G et V4-017 au niveau requis par la release
 formative. V4-011, V4-013 à V4-015, V4-018 commercial et V4-018A sont
 différés à V4.5.**
 
-### État de reprise au 25 août 2026
+### État de reprise au 26 août 2026
 
 - Preview migrée et seedée ; contrat writing/fr-FR et catalogue `4.0.0`
   contrôlés avec un compte pilote.
@@ -2488,7 +2492,7 @@ différés à V4.5.**
   la matrice finale couvre les largeurs, le texte à 200 %, le clavier,
   l'accessibilité et WebKit.
 - Le candidat pré-merge est figé par le tag immuable
-  `v4a-premerge-2026-08-25-r4`. Il remplace sans réécrire les tags historiques
+  `v4a-premerge-2026-08-26-r5`. Il prolonge sans réécrire les tags historiques
   `v4a-premerge-2026-08-25` et `r1` à `r3` après les écarts corrigés pendant la
   recette : L-P01, actualisation PWA, fond de la carte Aujourd'hui et position
   de défilement conservée à tort vers Crédits. Sa baseline d'implémentation
@@ -2498,6 +2502,12 @@ différés à V4.5.**
   l'alignement public Totem (`ae89a60a`). La recette manuelle de Rayan décrite
   dans `docs/V4_019_MANUAL_ACCEPTANCE.md` est le prochain gate ; `main` reste
   inchangée.
+- Cette révision ajoute le rollout produit fr-FR des quatre familles de texte,
+  la borne stricte de 1 500 caractères, un unique réexamen argumenté par
+  correction primaire et la comparaison non destructive de l'historique. La
+  preuve scientifique reste Writing-only. Lint, typecheck, validation Prisma,
+  build, 949 tests Vitest et 75 scénarios E2E sont verts ; 33 scénarios E2E
+  conditionnels sont ignorés et aucun n'échoue.
 - Le scope de release actuel est V4 : crédits offerts uniquement. Le cycle
   d'achat public appartient à V4.5 et ne bloque pas cette release.
 - Restent la configuration production fermée, le budget et le canal d'alerte,

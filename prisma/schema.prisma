@@ -1223,6 +1223,8 @@ model AiCorrection {
   scoreRange                  Json?                           @map("score_range_json")
   pricingQuoteId              String?                         @unique @map("pricing_quote_id") @db.Uuid
   creditReservationId         String?                         @unique @map("credit_reservation_id") @db.Uuid
+  reconsiderationOfId         String?                         @unique @map("reconsideration_of_id") @db.Uuid
+  reconsiderationArgument     String?                         @map("reconsideration_argument") @db.VarChar(500)
   orchestrationFingerprint    String?                         @map("orchestration_fingerprint") @db.Char(64)
   startedAt                   DateTime?                       @map("started_at")
   completedAt                 DateTime?                       @map("completed_at")
@@ -1237,6 +1239,9 @@ model AiCorrection {
   pricingQuote                AiPricingQuote?                 @relation(fields: [pricingQuoteId, userId], references: [id, userId], onDelete: Restrict)
   creditReservation           CreditReservation?              @relation(fields: [creditReservationId, userId], references: [id, userId], onDelete: Restrict)
   financialOperation          AiCorrectionFinancialOperation?
+  reconsiderationOf           AiCorrection?                   @relation("AiCorrectionReconsideration", fields: [reconsiderationOfId], references: [id], onDelete: Restrict)
+  reconsideration             AiCorrection?                   @relation("AiCorrectionReconsideration")
+  reconsiderationQuotes       AiPricingQuote[]                 @relation("AiPricingQuoteReconsideration")
 
   @@unique([userId, idempotencyKey])
   @@unique([pricingQuoteId, userId])
@@ -1674,18 +1679,22 @@ model AiPricingQuote {
   costDimensionsSnapshot        Json?                        @map("cost_dimensions_snapshot_json")
   idempotencyKey                String                       @map("idempotency_key")
   requestFingerprint            String                       @map("request_fingerprint") @db.Char(64)
+  reconsiderationOfCorrectionId String?                      @map("reconsideration_of_correction_id") @db.Uuid
+  reconsiderationArgument       String?                      @map("reconsideration_argument") @db.VarChar(500)
   expiresAt                     DateTime                     @map("expires_at")
   createdAt                     DateTime                     @default(now()) @map("created_at")
   user                          User                         @relation(fields: [userId], references: [id], onDelete: Restrict)
   catalogEntry                  AiPricingCatalogEntry        @relation(fields: [catalogEntryId, catalogVersionId], references: [id, catalogVersionId], onDelete: Restrict)
   pipelineVersion               AiCorrectionPipelineVersion? @relation(fields: [pipelineVersionId], references: [id], onDelete: Restrict)
   aiCorrection                  AiCorrection?
+  reconsiderationOfCorrection   AiCorrection?                 @relation("AiPricingQuoteReconsideration", fields: [reconsiderationOfCorrectionId], references: [id], onDelete: Restrict)
 
   @@unique([userId, idempotencyKey])
   @@unique([id, userId])
   @@index([userId, createdAt])
   @@index([targetKind, targetId, createdAt])
   @@index([expiresAt])
+  @@index([reconsiderationOfCorrectionId, createdAt])
   @@map("ai_pricing_quotes")
 }
 

@@ -29,6 +29,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | État d'implémentation correction texte V4 | `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` | Couverture réelle, validations et limites résiduelles du lot du 26 août |
 | Recette quatre familles V4-010-R1 | `docs/V4_010_R1_ACCEPTANCE.md` | Gate authentifié hors ligne passé ; recette réelle `dev` encore ouverte, notamment faute d'exercice `reflection` actif |
 | Limite de saisie V4-010-R2 | `docs/V4_010_R2_INPUT_LIMIT.md` | Gate 1 500/1 501 passé ; refus avant devis et aucun tarif long inventé |
+| Contestation argumentée V4-010-R3 | `docs/V4_010_R3_RECONSIDERATION.md` | Un réexamen maximum, argument 20–500, nouveau devis, même soumission/rubrique et historique immuable |
 | Historique et comparaison V4-010-R4 | `docs/V4_010_R4_HISTORY_COMPARISON.md` | Corrections réglées uniquement, consultation sans nouvel appel et comparaison critérielle |
 | Refondation V4.1 | `V4_1_BACKLOG.md` | Audit, nettoyage, React, shadcn et overhaul à parité fonctionnelle après clôture V4 |
 | Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Nouvelle génération IA, évaluations textuelles, calibration, essai public et paiement après V4.1 |

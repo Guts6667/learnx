@@ -16,7 +16,14 @@ export const AI_PRICING_ACTIONS = [
 export type AiPricingActionValue = (typeof AI_PRICING_ACTIONS)[number];
 export type AiPricingInputSizeClassValue = 'SHORT' | 'MEDIUM' | 'LONG';
 export type AiPricingTarget =
-  | { id: string; kind: 'EXERCISE_SUBMISSION' }
+  | {
+      id: string;
+      kind: 'EXERCISE_SUBMISSION';
+      reconsideration?: {
+        argument: string;
+        sourceCorrectionId: string;
+      };
+    }
   | { id: string; kind: 'STAGE_ASSESSMENT_SUBMISSION' };
 
 export interface PricingCatalogSnapshot {
@@ -60,6 +67,10 @@ export interface PricingTargetSnapshot {
   contract: CorrectionContract;
   inputChars: number;
   language: string;
+  reconsideration?: {
+    argument: string;
+    sourceCorrectionId: string;
+  };
   target: AiPricingTarget;
 }
 
@@ -86,6 +97,10 @@ export interface StoredPricingQuote {
   promptVersion: string;
   provider?: string;
   requestFingerprint: string;
+  reconsideration?: {
+    argument: string;
+    sourceCorrectionId: string;
+  };
   targetMarginCredits: bigint;
   target: AiPricingTarget;
   userId: string;
@@ -401,6 +416,10 @@ export class AiPricingQuoteService {
       input.target,
     );
     if (!target) throw new AiPricingError('TARGET_NOT_FOUND');
+    const isReconsideration = input.action === 'RECONSIDERATION';
+    if (isReconsideration !== Boolean(target.reconsideration)) {
+      throw new AiPricingError('TARGET_NOT_ELIGIBLE');
+    }
     const eligibility = getCorrectionContractRuntimeEligibility(
       target.contract,
     );

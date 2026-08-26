@@ -109,6 +109,14 @@ function storedQuote(quote: AiPricingQuote): StoredPricingQuote {
     promptVersion: quote.promptVersion,
     provider: quote.provider,
     requestFingerprint: quote.requestFingerprint,
+    ...(quote.reconsiderationOfCorrectionId && quote.reconsiderationArgument
+      ? {
+          reconsideration: {
+            argument: quote.reconsiderationArgument,
+            sourceCorrectionId: quote.reconsiderationOfCorrectionId,
+          },
+        }
+      : {}),
     targetMarginCredits: quote.targetMarginCreditsSnapshot,
     target: { id: quote.targetId, kind: quote.targetKind },
     userId: quote.userId,
@@ -180,6 +188,48 @@ export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository 
     target: AiPricingTarget,
   ): Promise<PricingTargetSnapshot | null> {
     if (target.kind === 'EXERCISE_SUBMISSION') {
+      if (target.reconsideration) {
+        const source = await this.prisma.aiCorrection.findFirst({
+          include: {
+            creditReservation: {
+              select: { settledAmount: true, status: true },
+            },
+            pricingQuote: {
+              select: { action: true, language: true },
+            },
+            reconsideration: { select: { id: true } },
+          },
+          where: {
+            exerciseSubmissionId: target.id,
+            id: target.reconsideration.sourceCorrectionId,
+            userId,
+          },
+        });
+        const submission = (source?.submissionSnapshot ?? {}) as {
+          text?: unknown;
+        };
+        if (
+          !source ||
+          source.pricingQuote?.action !== 'STANDARD' ||
+          source.reconsideration ||
+          source.creditReservation?.status !== 'SETTLED' ||
+          source.creditReservation.settledAmount === null ||
+          typeof submission.text !== 'string'
+        ) {
+          return null;
+        }
+        const eligibility = getCorrectionContractRuntimeEligibility(
+          source.contractSnapshot,
+        );
+        if (!eligibility.eligible) return null;
+        return {
+          contract: eligibility.contract,
+          inputChars: submission.text.length,
+          language: source.pricingQuote.language,
+          reconsideration: target.reconsideration,
+          target,
+        };
+      }
       const submission = await this.prisma.exerciseSubmission.findFirst({
         where: { id: target.id, userId, status: { not: 'DRAFT' } },
         select: {
@@ -321,6 +371,10 @@ export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository 
         providerP90CostUsdSnapshot: input.entry.providerP90CostUsd,
         providerP90CreditsSnapshot: input.entry.providerP90CostCredits,
         requestFingerprint: input.requestFingerprint,
+        reconsiderationArgument:
+          input.target.reconsideration?.argument ?? null,
+        reconsiderationOfCorrectionId:
+          input.target.reconsideration?.sourceCorrectionId ?? null,
         safetyCoefficientSnapshot:
           Number(input.entry.safetyCoefficientBasisPoints) / 10_000,
         targetId: input.target.target.id,

@@ -19,14 +19,30 @@ type PanelPhase =
   | { kind: 'HISTORY_PENDING' }
   | { kind: 'IDLE' }
   | { kind: 'QUOTE_PENDING' }
-  | { kind: 'CONSENT'; quote: CorrectionQuote }
-  | { kind: 'RUN_PENDING'; quote: CorrectionQuote }
+  | {
+      argument?: string;
+      kind: 'CONSENT';
+      quote: CorrectionQuote;
+      sourceCorrectionId?: string;
+    }
+  | {
+      argument?: string;
+      kind: 'RUN_PENDING';
+      quote: CorrectionQuote;
+      sourceCorrectionId?: string;
+    }
   | {
       history: CorrectionHistoryEntry[];
       kind: 'RESULT';
       selectedIndex: number;
     }
-  | { kind: 'ERROR'; message: string; quote?: CorrectionQuote };
+  | {
+      argument?: string;
+      kind: 'ERROR';
+      message: string;
+      quote?: CorrectionQuote;
+      sourceCorrectionId?: string;
+    };
 
 /**
  * Contrat avant engagement (EMOTIONAL_DESIGN_CONTRACT §5.10) : le panneau
@@ -40,6 +56,7 @@ type PanelPhase =
 export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
   const { locale, t } = useI18n();
   const [phase, setPhase] = useState<PanelPhase>({ kind: 'HISTORY_PENDING' });
+  const [reconsiderationArgument, setReconsiderationArgument] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -67,16 +84,31 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
     };
   }, [submissionId]);
 
-  async function askQuote() {
+  async function askQuote(input?: {
+    argument: string;
+    sourceCorrectionId: string;
+  }) {
     setPhase({ kind: 'QUOTE_PENDING' });
     try {
       const quote = await requestCorrectionQuote({
-        idempotencyKey: `correction:${submissionId}:${Date.now()}`,
+        ...(input
+          ? {
+              action: 'RECONSIDERATION' as const,
+              argument: input.argument,
+              sourceCorrectionId: input.sourceCorrectionId,
+            }
+          : {}),
+        idempotencyKey: `${input ? 'reconsideration' : 'correction'}:${submissionId}:${Date.now()}`,
         targetId: submissionId,
       });
-      setPhase({ kind: 'CONSENT', quote });
+      setPhase({
+        ...(input ?? {}),
+        kind: 'CONSENT',
+        quote,
+      });
     } catch (error) {
       setPhase({
+        ...(input ?? {}),
         kind: 'ERROR',
         message:
           error instanceof Error && error.message
@@ -86,17 +118,32 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
     }
   }
 
-  async function confirmAndRun(quote: CorrectionQuote) {
-    setPhase({ kind: 'RUN_PENDING', quote });
+  async function confirmAndRun(input: {
+    argument?: string;
+    quote: CorrectionQuote;
+    sourceCorrectionId?: string;
+  }) {
+    const { quote } = input;
+    setPhase({ ...input, kind: 'RUN_PENDING' });
     try {
       const result = await runCorrection({ quoteId: quote.id });
       const persistedHistory = await loadCorrectionHistory(submissionId).catch(
         () => [],
       );
-      const history =
+      const history: CorrectionHistoryEntry[] =
         persistedHistory.length > 0
           ? persistedHistory
-          : [{ ...result, createdAt: new Date().toISOString() }];
+          : [
+              {
+                ...result,
+                action:
+                  quote.action === 'RECONSIDERATION'
+                    ? 'RECONSIDERATION'
+                    : 'STANDARD',
+                createdAt: new Date().toISOString(),
+                sourceCorrectionId: input.sourceCorrectionId ?? null,
+              },
+            ];
       setPhase({
         history,
         kind: 'RESULT',
@@ -104,6 +151,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
       });
     } catch (error) {
       setPhase({
+        ...input,
         kind: 'ERROR',
         message:
           error instanceof Error && error.message
@@ -216,7 +264,11 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
             {t('aiCorrection.noProgressImpact')}
           </span>
         </div>
-        <p>{t('aiCorrection.quoteAction')}</p>
+        <p>
+          {quote.action === 'RECONSIDERATION'
+            ? t('aiCorrection.reconsiderationQuoteAction')
+            : t('aiCorrection.quoteAction')}
+        </p>
         <div class="correction-contract">
           <div>
             <span>{t('aiCorrection.contractEstimateLabel')}</span>
@@ -232,10 +284,14 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
           </div>
         </div>
         <p class="correction-state__notice">
-          {t('aiCorrection.consentNotice')}
+          {quote.action === 'RECONSIDERATION'
+            ? t('aiCorrection.reconsiderationConsentNotice')
+            : t('aiCorrection.consentNotice')}
         </p>
-        <Button onClick={() => void confirmAndRun(quote)}>
-          {t('aiCorrection.confirm')}
+        <Button onClick={() => void confirmAndRun(phase)}>
+          {quote.action === 'RECONSIDERATION'
+            ? t('aiCorrection.reconsiderationConfirm')
+            : t('aiCorrection.confirm')}
         </Button>
       </section>
     );
@@ -252,13 +308,34 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
         <div class="correction-state__actions">
           <Button
             onClick={() =>
-              phase.quote ? void confirmAndRun(phase.quote) : void askQuote()
+              phase.quote
+                ? void confirmAndRun({
+                    argument: phase.argument,
+                    quote: phase.quote,
+                    sourceCorrectionId: phase.sourceCorrectionId,
+                  })
+                : phase.argument && phase.sourceCorrectionId
+                  ? void askQuote({
+                      argument: phase.argument,
+                      sourceCorrectionId: phase.sourceCorrectionId,
+                    })
+                  : void askQuote()
             }
           >
             {t('common.retry')}
           </Button>
           {phase.quote ? (
-            <Button variant="ghost" onClick={() => void askQuote()}>
+            <Button
+              variant="ghost"
+              onClick={() =>
+                phase.argument && phase.sourceCorrectionId
+                  ? void askQuote({
+                      argument: phase.argument,
+                      sourceCorrectionId: phase.sourceCorrectionId,
+                    })
+                  : void askQuote()
+              }
+            >
               {t('aiCorrection.newQuote')}
             </Button>
           ) : null}
@@ -345,6 +422,9 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
                   }),
                   index: index + 1,
                 })}
+                {entry.action === 'RECONSIDERATION'
+                  ? ` · ${t('aiCorrection.reconsiderationShort')}`
+                  : null}
               </Button>
             ))}
           </div>
@@ -412,6 +492,55 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
           })}
         </p>
       </footer>
+
+      {result.action === 'STANDARD' &&
+      !phase.history.some(
+        (entry) => entry.sourceCorrectionId === correction.id,
+      ) ? (
+        <section class="correction-reconsideration">
+          <p class="page-eyebrow">
+            {t('aiCorrection.reconsiderationEyebrow')}
+          </p>
+          <h5>{t('aiCorrection.reconsiderationTitle')}</h5>
+          <p>{t('aiCorrection.reconsiderationDescription')}</p>
+          <label for={`reconsideration-${correction.id}`}>
+            {t('aiCorrection.reconsiderationArgumentLabel')}
+          </label>
+          <textarea
+            aria-describedby={`reconsideration-help-${correction.id}`}
+            id={`reconsideration-${correction.id}`}
+            maxLength={500}
+            minLength={20}
+            onInput={(event) =>
+              setReconsiderationArgument(event.currentTarget.value)
+            }
+            rows={4}
+            value={reconsiderationArgument}
+          />
+          <div
+            class="correction-reconsideration__help"
+            id={`reconsideration-help-${correction.id}`}
+          >
+            <span>{t('aiCorrection.reconsiderationArgumentHelp')}</span>
+            <span>{reconsiderationArgument.length}/500</span>
+          </div>
+          <Button
+            disabled={
+              reconsiderationArgument.trim().length < 20 ||
+              reconsiderationArgument.trim().length > 500
+            }
+            onClick={() =>
+              void askQuote({
+                argument: reconsiderationArgument.trim(),
+                sourceCorrectionId: correction.id,
+              })
+            }
+            variant="secondary"
+          >
+            {t('aiCorrection.reconsiderationQuote')}
+          </Button>
+        </section>
+      ) : null}
     </section>
   );
 }
