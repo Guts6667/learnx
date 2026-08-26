@@ -48,6 +48,19 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | Coûts/incidents et deux signaux connus | Implémentés et visibles dans Crédits admin | `src/server/corrections/correction-monitoring.ts`, `src/pages/AdminCreditsPage.tsx` |
 | Totem mobile et desktop | Implémentés, QA locale verte | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` |
 
+## Séquencement de release arbitré le 26 août
+
+- **V4** : terminer les quatre compléments de V4-010, exécuter V4-019, puis
+  publier la correction formative financée par crédits offerts.
+- **V4.1** : auditer et nettoyer le workspace, migrer Preact vers React,
+  intégrer shadcn de manière contrôlée et refaire les surfaces à parité métier.
+- **V4.5** : introduire la nouvelle correction IA assistée, les évaluations
+  textuelles d'étape, la calibration commerciale, l'essai public et tout le
+  cycle packs/paiements/remboursements.
+
+Les tickets commerciaux historiques de V4 ne bloquent donc plus V4-019. Leur
+nouvelle autorité est `V4_5_BACKLOG.md`.
+
 ## État de release réel
 
 1. **Contrat et catalogue déployés** : l'exercice « Choisir sans forcer un
@@ -62,10 +75,12 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 4. **QA et publication preview** : les surfaces privées, landing, marque et
    sept articles de recherche sont raccordés. La matrice finale couvre les
    largeurs, le texte à 200 %, le clavier, l'accessibilité et WebKit.
-5. **Frontière restante** : aucune implémentation produit n'est bloquante pour
-   le pilote V4A. Restent la configuration de production fermée, le budget et
-   le canal d'alerte, le GO explicite de Rayan, puis un smoke production borné.
-   `main` et la production ne sont pas modifiées avant ce GO.
+5. **Frontière restante** : quatre compléments V4-010 sont désormais bloquants
+   avant le gate final : recette authentifiée des quatre familles, réponses
+   supérieures à 1 500 caractères, contestation argumentée et comparaison de
+   plusieurs corrections. Viennent ensuite la configuration production
+   fermée, le budget, le canal d'alerte, le GO explicite de Rayan et un smoke
+   production borné. `main` reste inchangée avant ce GO.
 
 ## Chemin critique
 
@@ -73,11 +88,15 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | ---: | --- | --- | --- |
 | 1 | V4-010-RUNTIME | Développement | terminé et prouvé en preview |
 | 2 | V4-002-PUBLISH | Produit/pédagogie + Développement | terminé : contrat publié et seed preview validé |
-| 3 | V4-007-PILOT | Finance + Propriétaire | terminé pour V4A : crédits offerts, aucune vente publique |
+| 3 | V4-007-PILOT | Finance + Propriétaire | terminé pour V4 : crédits offerts, aucune vente publique |
 | 4 | V4-016-TOTEM | Développement | terminé et validé en preview |
 | 5 | V4-012-MONITORING | Développement | terminé : coûts, incidents et préflight visibles en admin |
 | 6 | V4-RESEARCH | Méthodologie + Développement | terminé : journal et articles publics chronologiques |
-| 7 | V4-019-RELEASE | Développement + Propriétaire | en cours : preuves figées ; GO production puis smoke borné |
+| 7 | V4-010-R1 | Développement + Propriétaire | recette authentifiée des quatre familles |
+| 8 | V4-010-R2 | Développement + Finance | réponses au-delà de 1 500 caractères, limite et classe calibrées |
+| 9 | V4-010-R3 | Développement + Produit | contestation argumentée, bornée et historisée |
+| 10 | V4-010-R4 | Développement + Produit | comparaison lisible de plusieurs corrections |
+| 11 | V4-019-RELEASE | Développement + Propriétaire | preuves régénérées ; GO production puis smoke borné |
 
 ## Limites assumées de la V4
 

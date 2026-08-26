@@ -1,84 +1,108 @@
-# Backlog V4.1 — fiabilisation après le pilote
+# Backlog V4.1 — refondation technique et visuelle
 
 ## Objet
 
-Ce document recueille ce qui est explicitement différé afin de livrer V4 sans
-présenter son pipeline comme parfait. Rien ici ne bloque le pilote V4 borné,
-mais chaque extension de scope ou ouverture payante exige les gates indiqués.
+V4.1 intervient uniquement après la clôture de V4. Elle remet le workspace et
+la codebase sur des bases simples, documentées et maintenables, puis migre
+Preact vers React et introduit shadcn pour fiabiliser les primitives UI.
 
-## P0 — qualité du pipeline Writing
+V4.1 doit conserver la parité fonctionnelle de V4. Elle n'ajoute ni paiement,
+ni évaluation textuelle d'étape, ni nouveau pipeline de correction IA.
 
-### V4.1-001 — Contrainte dure → niveau plancher
+## Principes bloquants
 
-- Corriger le contrat/prompt pour qu'une violation de contrainte dure reconnue
-  dans le feedback impose mécaniquement le niveau plancher du critère.
-- Ajouter des tests sur échéance, plafond, capacité et option interdite.
-- Preuve du report : anatomie du dernier examen Writing, faux PASS sur plan
-  d'action erroné.
+- Auditer avant de supprimer ou migrer.
+- Préserver les contrats métier, données, migrations et historiques V4.
+- Une seule source de vérité par décision ; les documents obsolètes sont
+  archivés ou supprimés avec un manifeste de redirection.
+- Migrer par lots vérifiables, jamais par réécriture globale non auditable.
+- Chaque écran migré conserve ses états, son accessibilité et son responsive.
+- shadcn fournit des primitives maîtrisées ; il ne redéfinit pas le produit ni
+  la direction artistique.
 
-### V4.1-002 — Garde indépendante du score du modèle
+## P0 — audit et assainissement
 
-- À l'examen, ancrer la garde sur le gold scellé.
-- Au runtime, utiliser des signaux indépendants et versionnés ; ne jamais
-  prétendre connaître l'écart au gold d'une copie réelle.
-- Mesurer séparément déclenchement utile, abstention et surcoût.
+### V4.1-001 — Audit exhaustif du workspace
 
-### V4.1-003 — Nouvel examen Writing pour un GO payant
+- Inventorier branches, worktrees, dépendances, scripts, migrations, routes,
+  composants, styles, tests, documents, artefacts et sources de vérité.
+- Classer chaque élément : actif, dette, doublon, archive, dangereux ou à
+  supprimer après validation.
+- Produire une carte des dépendances et des risques de migration.
 
-- Auteur(s), accord préalable, corpus frais et préenregistrement avant modèle.
-- Ne réutiliser aucun examen brûlé.
-- Conserver `humanReviewApproved=false` tant qu'aucune vraie revue humaine
-  n'existe ; une revue autonome reste nommée comme telle.
-- Faux PASS, sécurité, preuve, coût P50/P90 et taux partiel sont bloquants.
+### V4.1-002 — Nettoyage documentaire et backlog canonique
 
-## P1 — expérience et exploitation
+- Conserver le contexte minimal suffisant pour reprendre le projet.
+- Archiver ou supprimer les instructions obsolètes sans effacer l'historique de
+  recherche utile.
+- Reconstituer un backlog ticket par ticket avec responsable, dépendances,
+  critères d'acceptation et statut prouvé.
 
-### V4.1-004 — Nouvelle version ciblée d'une soumission
+### V4.1-003 — Baseline de parité V4
 
-- Permettre à l'apprenant de ne modifier que la partie « à retravailler » sans
-  écraser la version précédente.
-- Définir devis et coût d'une recorrrection minimale avant implémentation.
-- Mesurer compréhension, abandon et perception du prix plein.
+- Geler les parcours critiques et leurs résultats attendus avant migration.
+- Couvrir authentification, parcours, leçons, notes, révisions, corrections,
+  crédits, administration, landing et recherche publique.
+- Capturer les références mobile, desktop, clavier et zoom 200 %.
 
-### V4.1-005 — Monitoring de calibration
+## P0 — migration React
 
-- Remplacer le signal heuristique de contrainte dure par un événement issu du
-  contrat et de règles déterministes.
-- Ajouter cohortes, dérive par contrat, coût P50/P75/P90 et incidents de
-  réconciliation.
-- Ne jamais convertir un coût absent en zéro.
+### V4.1-004 — Couche de compatibilité Preact vers React
 
-### V4.1-006 — Workflow challenger
+- Cartographier APIs Preact, router, hooks, tests et dépendances incompatibles.
+- Définir la stratégie de migration et le rollback sans maintenir durablement
+  deux runtimes concurrents.
+- Valider build, taille du bundle, PWA, SSR éventuel et environnement de test.
 
-- Exécuter périodiquement des candidats sur un corpus non brûlé.
-- Comparer à identité de protocole constante.
-- Aucun remplacement automatique du modèle promu ; décision et rollback
-  explicites.
+### V4.1-005 — Migration applicative vers React
 
-## P2 — extension du scope
+- Migrer providers, routing, composants partagés puis pages par lots.
+- Maintenir TypeScript strict et déplacer la logique métier hors composants.
+- Supprimer la compatibilité Preact seulement après parité complète.
 
-### V4.1-007 — Familles non Writing
+## P0 — shadcn et overhaul
 
-- Créer des contrats et examens distincts pour `reflection`, `practice` et
-  `project`.
-- Le défaut Practice du 24 août interdit toute réutilisation automatique du
-  pin Writing.
+### V4.1-006 — Fondation shadcn contrôlée
 
-### V4.1-008 — Langues supplémentaires
+- Installer uniquement les primitives réellement utilisées.
+- Relier tokens, focus, contrastes, rayons et états à la direction visuelle
+  LearnX sans importer une esthétique générique.
+- Interdire les composants dupliqués et les variantes locales non documentées.
 
-- Contrat, corpus, QA linguistique et coûts par langue.
-- Aucun simple changement de locale sur le pipeline fr-FR.
+### V4.1-007 — Migration des primitives et layouts
 
-### V4.1-009 — Correction payante
+- Migrer boutons, champs, dialogues, navigation, tables, formulaires, retours
+  d'état et surfaces éditoriales.
+- Unifier shells mobile/desktop et supprimer les CSS devenus inaccessibles.
+- Conserver une seule action principale et les règles d'accessibilité V4.
 
-- Ouvrir seulement après GO Writing, calibration des plafonds P90, traitement
-  légal/comptable, parcours d'achat et support incident.
-- Le pilote V4 reste crédits offerts ; ce ticket ne rétroactive aucun prix.
+### V4.1-008 — Overhaul progressif des écrans
+
+- Reprendre les écrans par parcours utilisateur, avec validation visuelle avant
+  le lot suivant.
+- Ne jamais modifier un contrat métier pour faciliter un composant UI.
+- Documenter toute divergence approuvée.
+
+## P1 — clôture de refondation
+
+### V4.1-009 — Réduction de dette et performances
+
+- Supprimer dépendances, styles, composants et feature flags devenus inutiles.
+- Mesurer bundle, rendu, requêtes, accessibilité et stabilité PWA.
+- Corriger les régressions avant toute nouvelle fonctionnalité V4.5.
+
+### V4.1-010 — Gate de release V4.1
+
+- Rejouer la baseline V4 et les parcours critiques sur environnements réels.
+- Produire rapport de migration, dette résiduelle, rollback et nouvelle carte
+  documentaire.
+- V4.5 reste fermée tant que la parité fonctionnelle n'est pas démontrée.
 
 ## Définition de terminé V4.1
 
-- identité, contrat, corpus, règles, coûts et verdict liés par digest ;
-- zéro promesse au-delà des données ;
-- tests de transport, sécurité, preuve, calibration et UX ;
-- mécanisme de rollback ;
-- documentation publique datée, avec anciens résultats conservés.
+- React est l'unique runtime UI ;
+- les primitives shadcn retenues sont adaptées et documentées ;
+- aucune fonctionnalité V4 n'est perdue ;
+- tests, build, PWA, accessibilité et responsive sont verts ;
+- workspace, backlog et documentation ont une source de vérité explicite ;
+- rollback et dette résiduelle sont documentés.

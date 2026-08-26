@@ -18,6 +18,9 @@ describe('V4 document routing', () => {
     expect(roadmap).toContain('writing');
     expect(roadmap).toContain('crédits offerts');
     expect(index).toContain('V4_1_BACKLOG.md');
+    expect(index).toContain('V4_5_BACKLOG.md');
+    expect(read('V4_1_BACKLOG.md')).toContain('Preact vers React');
+    expect(read('V4_5_BACKLOG.md')).toContain('ouverture commerciale');
     expect(
       existsSync(resolve('docs/archive/v4/V4_ROADMAP_2026-08-22.md')),
     ).toBe(true);

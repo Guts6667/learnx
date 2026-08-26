@@ -27,7 +27,8 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Recherche correction V4 | `docs/V4_RESEARCH_FINDINGS.md`, puis `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` | Artefacts et journal append-only priment sur les synthèses |
 | Contrats correction texte V4 | `docs/V4_FREE_TEXT_CORRECTION_CONTRACTS.md` | Résolution hybride spécialisée/archétype, portée fr-FR et garde-fous runtime approuvés le 26 août |
 | État d'implémentation correction texte V4 | `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` | Couverture réelle, validations et limites résiduelles du lot du 26 août |
-| Reports V4.1 | `V4_1_BACKLOG.md` | Aucune dette V4.1 ne modifie implicitement le pilote V4 |
+| Refondation V4.1 | `V4_1_BACKLOG.md` | Audit, nettoyage, React, shadcn et overhaul à parité fonctionnelle après clôture V4 |
+| Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Nouvelle génération IA, évaluations textuelles, calibration, essai public et paiement après V4.1 |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |

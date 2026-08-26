@@ -2,9 +2,9 @@
 
 ## Statut et autorité
 
-- Version : 1.7.0
-- Statut : **extension formative des productions textuelles fr-FR en cours — gate production V4-019 restant**
-- Dernière consolidation : 26 août 2026 — contrats hybrides validés, implémentation et QA en cours
+- Version : 1.8.0
+- Statut : **release formative en finition — compléments V4-010 et gate production V4-019 restants**
+- Dernière consolidation : 26 août 2026 — séquencement V4 / V4.1 / V4.5 arbitré par le Propriétaire
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -74,6 +74,27 @@ libres fr-FR de type `writing`, `reflection`, `practice` ou `project`.
 
 Le contrat qualité détaillé est
 `docs/V4_FREE_TEXT_CORRECTION_CONTRACTS.md`.
+
+### Amendement de séquencement release — 26 août 2026
+
+Le Propriétaire remplace le découpage historique `V4A` / `V4B` par trois
+releases explicites :
+
+- **V4** livre la correction formative des productions textuelles fr-FR. Sa
+  clôture exige encore la recette authentifiée des quatre familles, la prise
+  en charge calibrée de réponses dépassant 1 500 caractères, la contestation
+  argumentée et la comparaison de plusieurs corrections, puis V4-019.
+- **V4.1** est une refondation technique sans extension métier : audit et
+  nettoyage du workspace, migration Preact vers React, adoption contrôlée de
+  shadcn et overhaul de l'application à parité fonctionnelle.
+- **V4.5** porte la nouvelle version de correction IA assistée, les évaluations
+  textuelles d'étape, la calibration commerciale, l'essai public, les packs,
+  paiements, remboursements et litiges.
+
+En conséquence, V4-011, V4-013 à V4-015 et les parties commerciales de
+V4-018/V4-018A restent documentés ici comme historique de cadrage mais ne
+bloquent plus V4. Leur reprise exécutoire appartient à `V4_5_BACKLOG.md`.
+V4 ne publie ni pack ni paiement réel ; elle reste financée par crédits offerts.
 
 Ce document fixe le périmètre et l'ordre de livraison de V4. Un ticket ne
 devient une instruction d'implémentation qu'après :
@@ -691,18 +712,19 @@ V4-001…V4-017 + V4-016A + V4-016B + V4-016C + V4-016G
 
 ### Gates de livraison validées
 
-- **V4A — correction pilote sans paiement réel** : V4-001 à V4-010, y compris
+- **V4 — correction formative sans paiement réel** : V4-001 à V4-010, y compris
   le correctif V4-008A, la preuve V4-009B et le gate V4-009C, V4-012,
   V4-016, V4-016C, V4-016G pour les surfaces disponibles et V4-017 au niveau
   requis. Elle livre corrections d'exercices textuels, allocations gratuites,
   ledger, administration et mesure des coûts. Les évaluations d'étape et les
   achats restent désactivés.
-- **V4B — évaluations, commerce et clôture** : V4-011, V4-013 à V4-015,
-  compléments V4-016A/B/G, V4-018 et V4-019. Elle ouvre les évaluations d'étape
-  textuelles, packs et paiement seulement après validation économique, fiscale,
-  juridique, sécurité et exploitation.
-- V4A peut être testée et déployée à un groupe pilote sans attendre V4B. V4 ne
-  reçoit toutefois son verdict final qu'après V4B et V4-019.
+- **V4.1 — refondation technique** : parité fonctionnelle de V4 avant et après
+  migration React/shadcn ; aucune capacité commerciale ajoutée.
+- **V4.5 — correction assistée et commerce** : reprise de V4-011, V4-013 à
+  V4-015, calibration commerciale V4-018, essai public V4-018A et nouveau gate
+  de correction IA. Cette release possède ses propres validations économique,
+  fiscale, juridique, sécurité et exploitation.
+- V4 reçoit son verdict final après V4-019 sans attendre V4.5.
 
 ## Jalons livrables et changements visibles
 
@@ -1649,10 +1671,11 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
   devis et exécution sur le même snapshot, restitution de la dernière correction
   réglée après actualisation et masquage des métriques fournisseur côté apprenant.
 - **Validé automatiquement** : lint, typecheck, 925 tests et build.
-- **Ouvert** : classe tarifaire au-delà de 1 500 caractères, comparaison de
-  plusieurs corrections, contestation argumentée, recette authentifiée des
-  quatre familles et neuf scénarios E2E UI/navigation sans lien avec la
-  correction.
+- **Bloquants release V4** : classe tarifaire et limite utilisateur au-delà de
+  1 500 caractères, comparaison de plusieurs corrections, contestation
+  argumentée et recette authentifiée des quatre familles.
+- **Ouvert hors correction** : neuf scénarios E2E UI/navigation à couvrir dans
+  le gate V4-019.
 - **Référence de preuve** :
   `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md`.
 
@@ -2435,8 +2458,10 @@ calibration V4-018.**
 
 ## V4-019 — Audit final, déploiement et clôture V4
 
-**Priorité : P0 release. Dépendances : V3.5 clôturée, V4-001 à V4-018A,
-V4-016A, V4-016B, V4-016C et V4-016G.**
+**Priorité : P0 release. Dépendances : V3.5 clôturée, V4-001 à V4-010,
+V4-012, V4-016, V4-016A/B/C/G et V4-017 au niveau requis par la release
+formative. V4-011, V4-013 à V4-015, V4-018 commercial et V4-018A sont
+différés à V4.5.**
 
 ### État de reprise au 25 août 2026
 
@@ -2459,8 +2484,8 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
   l'alignement public Totem (`ae89a60a`). La recette manuelle de Rayan décrite
   dans `docs/V4_019_MANUAL_ACCEPTANCE.md` est le prochain gate ; `main` reste
   inchangée.
-- Le scope de release actuel est V4A : crédits offerts uniquement. Le cycle
-  d'achat public appartient à V4B et ne bloque pas ce pilote.
+- Le scope de release actuel est V4 : crédits offerts uniquement. Le cycle
+  d'achat public appartient à V4.5 et ne bloque pas cette release.
 - Restent la configuration production fermée, le budget et le canal d'alerte,
   le GO explicite du Propriétaire, puis un smoke production borné. Aucun de ces
   actes n'est autorisé par l'état actuel du backlog.
@@ -2475,8 +2500,9 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
 - Exécuter lint, typecheck, tests, build, E2E, migrations sur clone Neon,
   tests sandbox paiement et smoke production borné.
 - Vérifier clés, budgets, kill switches, alertes, sauvegarde et rollback.
-- Réconcilier un cycle complet : achat → crédits → correction → règlement →
-  clôture, ainsi qu'un échec et un litige.
+- Réconcilier un cycle complet V4 : attribution offerte → réservation →
+  correction → règlement/libération, ainsi qu'un échec sans débit. Le cycle
+  achat/remboursement/litige appartient à V4.5.
 - Rejouer domaine public → liste d'attente/early adopter et domaine public →
   connexion → installation → réouverture directe de l'application.
 - Produire le rapport de clôture et mettre à jour les sources de vérité.
@@ -2487,8 +2513,8 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
 
 ### Critères d'acceptation
 
-- Aucun P0/P1 ouvert ; toutes les migrations sont répétables et réversibles selon
-  la stratégie approuvée.
+- Aucun P0/P1 ouvert dans le périmètre V4 ; toutes les migrations sont
+  répétables et réversibles selon la stratégie approuvée.
 - Les soldes et agrégats se réconcilient ; aucun secret ou coût orphelin.
 - Les paiements réels restent désactivables indépendamment des corrections.
 - Le canal minimal de support, les informations de confidentialité et les
@@ -2505,12 +2531,13 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
 ### Tests et risques
 
 - Matrice desktop/mobile/WebKit, réseau lent, concurrence, reprise et sécurité.
-- Risque : déclarer V4 terminée sur tests locaux sans parcours financier réel.
+- Risque : déclarer V4 terminée sur tests locaux sans cycle réel de crédits
+  offerts, correction, règlement et libération.
 
 ## Gates externes et paramètres à résoudre avant ouverture commerciale
 
 Le scope produit 1.0 est figé. Les éléments suivants déterminent les valeurs de
-configuration, la conformité et le GO de V4B ; ils ne peuvent ajouter une
+configuration, la conformité et le GO de V4.5 ; ils ne peuvent ajouter une
 fonctionnalité au backlog sans amendement produit explicite.
 
 1. Qualification BIC ou BNC et traitement TVA des factures OpenRouter.
