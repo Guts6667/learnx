@@ -145,12 +145,10 @@ candidats V5.
 - Reviewer : Architecture / Produit
 - Dépendances : V4.1-002, V4.1-006
 - Source : `docs/V4_1_TECHNICAL_AUDIT.md` ; mesures de V4.1-006
-- Statut : **livré pour revue finale** — les deux revues rejetées ont durci le
-  lot : la couverture est fail-closed, la découverte protège désormais les
-  deux sens du manifeste critique, les imports dynamiques entrent dans le
-  graphe, les actions CI sont épinglées par SHA et `knip`, chunks lazy et
-  précache PWA sont bloquants. Le gate final reste rouge par conception
-  jusqu'à V4.1-501
+- Statut : **terminé** — après deux revues rejetées, le lot a fermé les
+  contournements du manifeste critique et du graphe d'imports ; une revue
+  indépendante finale conclut `REVIEW_PASS` au SHA `c22c93ab`. Le gate final
+  reste rouge par conception jusqu'à V4.1-501
 - Critères d'acceptation :
   - la méthode de couverture et la trajectoire vers V4.1-501 sont gelées ;
   - un avis `high` applicable bloque la release ou possède une exception revue,
@@ -168,8 +166,8 @@ candidats V5.
 - Reviewer : Architecture frontend
 - Dépendances : V4.1-006, V4.1-007
 - Source : audit V4.1-002 ; gates V4.1-007
-- Statut : **en revue** — React 19 est l'unique runtime UI, sans import ni
-  dépendance Preact ; baseline technique et revue indépendante vertes
+- Statut : **terminé** — React 19 est l'unique runtime UI, sans import ni
+  dépendance Preact ; revue indépendante `REVIEW_PASS` au SHA `2277b205`
 - Critères d'acceptation :
   - React et React DOM deviennent le runtime UI configuré par Vite ;
   - JSX, types, aliases et montage racine restent TypeScript strict ;
@@ -183,8 +181,9 @@ candidats V5.
 - Reviewer : Produit / Accessibilité
 - Dépendances : V4.1-101
 - Source : 33 routes client et baseline V4.1-006
-- Statut : **en revue** — routes migrées, parité contrôlée et navigation native
-  Recherche protégée par tests unitaires et Playwright
+- Statut : **terminé** — routes migrées, parité contrôlée et navigation native
+  Recherche protégée par tests unitaires et Playwright ; revue indépendante
+  `REVIEW_PASS` au SHA `2277b205`
 - Critères d'acceptation :
   - URLs, paramètres, liens profonds, redirections et page 404 sont identiques ;
   - gardes public, authentifié et admin conservent leurs permissions ;
@@ -198,8 +197,9 @@ candidats V5.
 - Reviewer : Backend / PWA / i18n
 - Dépendances : V4.1-101, V4.1-102
 - Source : providers et requêtes baseline ; configuration PWA et catalogues
-- Statut : **en revue** — providers React, React Query figé, i18n et PWA passent
-  la baseline sans transfert d'autorité métier vers le client
+- Statut : **terminé** — providers React, React Query, i18n et PWA passent la
+  baseline sans transfert d'autorité métier vers le client ; revue indépendante
+  `REVIEW_PASS` au SHA `2277b205`
 - Critères d'acceptation :
   - React Query remplace l'usage direct de query-core avec clés et invalidations
     équivalentes ;
@@ -214,8 +214,9 @@ candidats V5.
 - Reviewer : Frontend platform
 - Dépendances : V4.1-101, V4.1-102, V4.1-103
 - Source : suites `@testing-library/preact` et baseline V4.1-006
-- Statut : **en revue** — Testing Library React en place, 953 tests conservés
-  et aucun test supprimé ou ignoré pour la migration
+- Statut : **terminé** — Testing Library React en place ; revue indépendante
+  `REVIEW_PASS` au SHA `2277b205` avec 968 tests conservés, aucune suppression
+  ni désactivation destinée à faire passer la migration
 - Critères d'acceptation :
   - helpers, render, événements et tests passent sous Testing Library React ;
   - assertions métier, a11y et navigation sont conservées ;
