@@ -133,6 +133,13 @@ export default defineConfig({
       'src/**/*.test.{ts,tsx}',
     ],
     coverage: {
+      exclude: [
+        '**/*.d.ts',
+        '**/*.test.{ts,tsx}',
+        'src/server/quality/**',
+        'src/test/**',
+      ],
+      include: ['api/**/*.ts', 'src/**/*.{ts,tsx}'],
       reporter: ['text', 'json-summary', 'html'],
       thresholds: coverageThresholds,
     },

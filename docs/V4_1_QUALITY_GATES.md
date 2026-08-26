@@ -27,23 +27,27 @@ si un autre gate technique échoue.
 
 ## Mesure courante
 
-Mesure locale du 26 août 2026 après la fondation React/shadcn et l'ajout du
-gate, sur 152 fichiers de tests et 956 tests verts :
+Mesure locale du 26 août 2026 après la fondation React/shadcn et le
+durcissement fail-closed de la couverture, sur 153 fichiers de tests et 964
+tests verts. Tous les fichiers TypeScript de production sous `api/` et `src/`
+sont inclus, même lorsqu'aucun test ne les importe :
 
 | Périmètre | Mesure | Cible de release | État |
 | --- | ---: | ---: | --- |
-| Statements globaux | 75,67 % | 80 % | ouvert |
-| Branches globales | 66,90 % | 80 % | ouvert |
-| Functions globales | 77,41 % | 80 % | ouvert |
-| Lines globales | 76,90 % | 80 % | ouvert |
-| Authentification et accès | 78,97 % (353/447) | 90 % lines | ouvert |
-| Correction, pricing, crédits et réconciliation | 56,97 % (646/1 134) | 90 % lines | ouvert |
-| Progression et évaluations | 81,02 % (734/906) | 90 % lines | ouvert |
+| Statements globaux | 77,57 % | 80 % | ouvert |
+| Branches globales | 69,24 % | 80 % | ouvert |
+| Functions globales | 79,18 % | 80 % | ouvert |
+| Lines globales | 79,01 % | 80 % | ouvert |
+| Authentification et accès | 73,74 % (410/556) | 90 % lines | ouvert |
+| Correction, pricing, crédits et réconciliation | 64,19 % (1 108/1 726) | 90 % lines | ouvert |
+| Progression et évaluations | 81,80 % (1 007/1 231) | 90 % lines | ouvert |
 | Autorisations admin | 80,56 % (232/288) | 90 % lines | ouvert |
 
 Les listes de fichiers critiques sont explicites dans
-`quality/v4-1-critical-domains.json`. Une absence de mesure échoue en mode
-final : elle n'est jamais assimilée à zéro ligne à couvrir ni ignorée.
+`quality/v4-1-critical-domains.json`. Des règles de découverte par domaine
+font échouer le gate si un nouveau fichier critique n'est pas déclaré. Une
+absence de mesure échoue en mode final : elle n'est jamais assimilée à zéro
+ligne à couvrir ni ignorée.
 
 ## Chaîne de contrôles
 
@@ -51,12 +55,21 @@ La baseline et le gate final couvrent, dans cet ordre :
 
 1. génération Prisma ;
 2. lint et typecheck ;
-3. règles d'imports, absence de Preact et cycles interdits ;
+3. règles d'imports, frontières UI/serveur, absence de Preact et cycles
+   interdits ;
 4. tests et couverture globale ;
 5. agrégation de la couverture par domaine critique ;
 6. build de production ;
-7. budgets des bundles et du précache PWA ;
-8. audit des dépendances de production.
+7. budgets du bundle initial, du plus gros chunk lazy et du précache PWA ;
+8. audit des dépendances de production ;
+9. en gate final uniquement, `knip` bloque fichiers, exports et dépendances
+   inutilisés.
+
+Le JS/CSS total reste un diagnostic de migration et n'est pas un gate de
+release : le budget produit contractuel porte sur l'entrée initiale. Le plus
+gros chunk lazy et le précache PWA disposent en plus d'un budget de régression
+de 10 % dérivé de la première mesure reproductible, soit 10 018 octets gzip,
+140 entrées et 1 371 224 octets émis.
 
 Les parcours Recherche data-native possèdent en plus un gate Playwright dédié
 avec `pnpm test:e2e:research`. La matrice fonctionnelle complète et les trous
@@ -83,4 +96,3 @@ d'un lot UI consiste à revenir au dernier SHA revu sans migration de données.
 `main` reste sur V4 jusqu'au GO propriétaire de `V4.1-504` ; la release finale
 doit disposer d'un tag/SHA immuable, d'un build reproductible, d'une vérification
 PWA et d'un chemin de retour documenté vers la V4.
-

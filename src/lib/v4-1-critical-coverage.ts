@@ -10,9 +10,62 @@ export interface CoverageSummaryEntry {
 export type CoverageSummary = Record<string, CoverageSummaryEntry>;
 
 export interface CriticalCoverageConfiguration {
+  discoveryRules: Record<string, string[]>;
   domains: Record<string, string[]>;
   schemaVersion: number;
   thresholdLinesPercent: number;
+}
+
+export function criticalManifestFailures(
+  configuration: CriticalCoverageConfiguration,
+  productionFiles: string[],
+): string[] {
+  const failures: string[] = [];
+  const normalizedProductionFiles = productionFiles.map(normalizePath);
+
+  for (const [domain, files] of Object.entries(configuration.domains)) {
+    const normalizedFiles = files.map(normalizePath);
+    const duplicates = normalizedFiles.filter(
+      (file, index) => normalizedFiles.indexOf(file) !== index,
+    );
+    if (duplicates.length > 0) {
+      failures.push(
+        `${domain}: duplicate manifest files ${[...new Set(duplicates)].join(', ')}`,
+      );
+    }
+
+    const rawRules = configuration.discoveryRules[domain];
+    if (!rawRules || rawRules.length === 0) {
+      failures.push(`${domain}: no discovery rules declared`);
+      continue;
+    }
+
+    const declaredFiles = new Set(normalizedFiles);
+    for (const rawRule of rawRules) {
+      let rule: RegExp;
+      try {
+        rule = new RegExp(rawRule, 'u');
+      } catch {
+        failures.push(`${domain}: invalid discovery rule ${rawRule}`);
+        continue;
+      }
+      for (const productionFile of normalizedProductionFiles) {
+        if (rule.test(productionFile) && !declaredFiles.has(productionFile)) {
+          failures.push(
+            `${domain}: discovered critical file is undeclared: ${productionFile}`,
+          );
+        }
+      }
+    }
+  }
+
+  for (const domain of Object.keys(configuration.discoveryRules)) {
+    if (!(domain in configuration.domains)) {
+      failures.push(`${domain}: discovery rules target an unknown domain`);
+    }
+  }
+
+  return [...new Set(failures)].sort();
 }
 
 export interface CriticalCoverageDomainResult {

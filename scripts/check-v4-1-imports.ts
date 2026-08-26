@@ -3,6 +3,12 @@ import { dirname, extname, join, relative, resolve } from 'node:path';
 
 import ts from 'typescript';
 
+import {
+  importBoundaryFailures,
+  type ImportBoundaryConfiguration,
+  type ProjectImportEdge,
+} from '../src/lib/v4-1-import-boundaries.ts';
+
 type QualityMode = 'baseline' | 'final' | 'report';
 
 interface ImportBaseline {
@@ -204,6 +210,12 @@ const mode = readMode(process.argv.slice(2));
 const baseline = JSON.parse(
   readFileSync(resolve(projectRoot, 'quality/v4-1-baseline.json'), 'utf8'),
 ) as ImportBaseline;
+const boundaryConfiguration = JSON.parse(
+  readFileSync(
+    resolve(projectRoot, 'quality/v4-1-import-boundaries.json'),
+    'utf8',
+  ),
+) as ImportBoundaryConfiguration;
 const packageManifest = JSON.parse(
   readFileSync(resolve(projectRoot, 'package.json'), 'utf8'),
 ) as PackageManifest;
@@ -226,6 +238,7 @@ const graph = new Map<string, Set<string>>();
 const preactImports = new Map<string, Set<string>>();
 const reactImports = new Map<string, Set<string>>();
 let staticProjectEdges = 0;
+const projectImportEdges: ProjectImportEdge[] = [];
 
 for (const file of files) {
   const normalizedFile = normalizeProjectPath(file);
@@ -250,7 +263,12 @@ for (const file of files) {
     }
     const dependency = resolveProjectModule(file, specifier, projectFiles);
     if (dependency) {
-      dependencies.add(normalizeProjectPath(dependency));
+      const normalizedDependency = normalizeProjectPath(dependency);
+      dependencies.add(normalizedDependency);
+      projectImportEdges.push({
+        from: normalizedFile,
+        to: normalizedDependency,
+      });
     }
   }
   staticProjectEdges += dependencies.size;
@@ -265,6 +283,10 @@ const preactManifestPackages = Object.keys(manifestPackages)
   .filter((packageName) => isPreactSpecifier(packageName))
   .sort();
 const cycles = findCycles(graph);
+const boundaryFailures = importBoundaryFailures(
+  boundaryConfiguration,
+  projectImportEdges,
+);
 
 console.log(`TypeScript files: ${files.length}`);
 console.log(`Static project import/export edges: ${staticProjectEdges}`);
@@ -274,6 +296,7 @@ console.log(
   `Preact manifest packages: ${preactManifestPackages.join(', ') || 'none'}`,
 );
 console.log(`Project cycles: ${cycles.length}`);
+console.log(`Forbidden import-boundary edges: ${boundaryFailures.length}`);
 
 for (const [file, specifiers] of [...preactImports].sort(([left], [right]) =>
   left.localeCompare(right),
@@ -288,12 +311,16 @@ for (const [file, specifiers] of [...reactImports].sort(([left], [right]) =>
 for (const cycle of cycles) {
   console.log(`  Cycle: ${cycle}`);
 }
+for (const boundaryFailure of boundaryFailures) {
+  console.log(`  Boundary: ${boundaryFailure}`);
+}
 
 if (mode === 'report') {
   process.exit(0);
 }
 
 const failures: string[] = [];
+failures.push(...boundaryFailures);
 const newCycles = cycles.filter(
   (cycle) => !baseline.imports.knownCycles.includes(cycle),
 );

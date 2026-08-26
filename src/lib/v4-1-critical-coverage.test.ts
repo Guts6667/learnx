@@ -1,11 +1,15 @@
 import {
   criticalCoverageFailures,
+  criticalManifestFailures,
   evaluateCriticalCoverage,
   type CoverageSummary,
   type CriticalCoverageConfiguration,
 } from '@/lib/v4-1-critical-coverage';
 
 const configuration: CriticalCoverageConfiguration = {
+  discoveryRules: {
+    auth: ['^src/(?:auth.*|access)\\.ts$'],
+  },
   domains: {
     auth: ['src/auth.ts', 'src/access.ts'],
   },
@@ -61,6 +65,32 @@ describe('V4.1 critical coverage gate', () => {
 
     expect(criticalCoverageFailures([result], 90)).toEqual([
       'auth: 85.00% lines is below 90%',
+    ]);
+  });
+
+  it('fails when discovery finds a critical production file outside the manifest', () => {
+    expect(
+      criticalManifestFailures(configuration, [
+        'src/access.ts',
+        'src/auth.ts',
+        'src/auth-extra.ts',
+      ]),
+    ).toEqual([
+      'auth: discovered critical file is undeclared: src/auth-extra.ts',
+    ]);
+  });
+
+  it('fails when a domain has no discovery rule or duplicate files', () => {
+    const invalidConfiguration: CriticalCoverageConfiguration = {
+      discoveryRules: {},
+      domains: { auth: ['src/auth.ts', 'src/auth.ts'] },
+      schemaVersion: 1,
+      thresholdLinesPercent: 90,
+    };
+
+    expect(criticalManifestFailures(invalidConfiguration, [])).toEqual([
+      'auth: duplicate manifest files src/auth.ts',
+      'auth: no discovery rules declared',
     ]);
   });
 });

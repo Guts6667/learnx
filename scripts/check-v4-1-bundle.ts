@@ -4,13 +4,24 @@ import { gzipSync } from 'node:zlib';
 
 interface BundleBaseline {
   bundle: {
+    asyncChunk: RegressionBudget & {
+      observedMaxGzipBytes: number;
+    };
     initial: {
       budgetsGzipBytes: BundleSizes;
+    };
+    pwaPrecache: RegressionBudget & {
+      observedBytes: number;
+      observedEntries: number;
     };
     totalDiagnostic: {
       warningThresholdsGzipBytes: BundleSizes;
     };
   };
+}
+
+interface RegressionBudget {
+  maxRegressionPercent: number;
 }
 
 interface BundleSizes {
@@ -110,6 +121,57 @@ function collectInitialFiles(manifest: ViteManifest): string[] {
   return [...emittedFiles].sort();
 }
 
+function allowedRegression(
+  observed: number,
+  maxRegressionPercent: number,
+): number {
+  return Math.floor(observed * (1 + maxRegressionPercent / 100));
+}
+
+function collectAsyncJavaScriptFiles(
+  manifest: ViteManifest,
+  initialFiles: string[],
+): string[] {
+  const initial = new Set(initialFiles);
+  return [
+    ...new Set(
+      Object.values(manifest)
+        .map((chunk) => resolveEmittedFile(chunk.file))
+        .filter((file) => extname(file) === '.js' && !initial.has(file)),
+    ),
+  ].sort();
+}
+
+function measurePwaPrecache(): { bytes: number; entries: number } {
+  const serviceWorkerPath = resolve(distRoot, 'sw.js');
+  if (!existsSync(serviceWorkerPath)) {
+    throw new Error('The production service worker is missing.');
+  }
+  const serviceWorker = readFileSync(serviceWorkerPath, 'utf8');
+  const manifestMatch = /precacheAndRoute\(\[(.*?)\],\{\}\)/su.exec(
+    serviceWorker,
+  );
+  if (!manifestMatch?.[1]) {
+    throw new Error('The Workbox precache manifest cannot be read.');
+  }
+  const urls = [...manifestMatch[1].matchAll(/url:"([^"]+)"/gu)].map(
+    (match) => match[1],
+  );
+  if (urls.length === 0) {
+    throw new Error('The Workbox precache manifest is empty.');
+  }
+
+  let bytes = 0;
+  for (const url of urls) {
+    const normalizedUrl = url.split('?')[0]?.replace(/^\//u, '');
+    if (!normalizedUrl) {
+      throw new Error(`Invalid Workbox precache URL: ${url}.`);
+    }
+    bytes += statSync(resolveEmittedFile(normalizedUrl)).size;
+  }
+  return { bytes, entries: urls.length };
+}
+
 function printAssets(label: string, assets: SizedAsset[]): void {
   console.log(`${label}:`);
   for (const asset of assets) {
@@ -130,19 +192,41 @@ const baseline = JSON.parse(
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as ViteManifest;
 const emittedFiles = collectFiles(distRoot);
 const initialFiles = collectInitialFiles(manifest);
+const asyncJavaScriptFiles = collectAsyncJavaScriptFiles(
+  manifest,
+  initialFiles,
+);
 const initialJavaScriptAssets = measureAssets(initialFiles, '.js');
 const initialCssAssets = measureAssets(initialFiles, '.css');
+const asyncJavaScriptAssets = measureAssets(asyncJavaScriptFiles, '.js');
 const totalJavaScriptAssets = measureAssets(emittedFiles, '.js');
 const totalCssAssets = measureAssets(emittedFiles, '.css');
 const initialJavaScriptTotal = totalGzipBytes(initialJavaScriptAssets);
 const initialCssTotal = totalGzipBytes(initialCssAssets);
 const totalJavaScript = totalGzipBytes(totalJavaScriptAssets);
 const totalCss = totalGzipBytes(totalCssAssets);
+const largestAsyncJavaScript = [...asyncJavaScriptAssets].sort(
+  (left, right) => right.gzipBytes - left.gzipBytes,
+)[0];
+const pwaPrecache = measurePwaPrecache();
 const { budgetsGzipBytes } = baseline.bundle.initial;
+const asyncChunkBudget = allowedRegression(
+  baseline.bundle.asyncChunk.observedMaxGzipBytes,
+  baseline.bundle.asyncChunk.maxRegressionPercent,
+);
+const pwaEntryBudget = allowedRegression(
+  baseline.bundle.pwaPrecache.observedEntries,
+  baseline.bundle.pwaPrecache.maxRegressionPercent,
+);
+const pwaByteBudget = allowedRegression(
+  baseline.bundle.pwaPrecache.observedBytes,
+  baseline.bundle.pwaPrecache.maxRegressionPercent,
+);
 const { warningThresholdsGzipBytes } = baseline.bundle.totalDiagnostic;
 
 printAssets('Initial JavaScript assets', initialJavaScriptAssets);
 printAssets('Initial CSS assets', initialCssAssets);
+printAssets('Lazy JavaScript assets', asyncJavaScriptAssets);
 console.log(
   `Initial JavaScript: ${initialJavaScriptTotal}/${budgetsGzipBytes.javascript} bytes gzip`,
 );
@@ -155,6 +239,11 @@ console.log(
 console.log(
   `Total CSS diagnostic: ${totalCss}/${warningThresholdsGzipBytes.css} bytes gzip`,
 );
+console.log(
+  `Largest lazy JavaScript: ${largestAsyncJavaScript?.gzipBytes ?? 0}/${asyncChunkBudget} bytes gzip`,
+);
+console.log(`PWA precache entries: ${pwaPrecache.entries}/${pwaEntryBudget}`);
+console.log(`PWA precache bytes: ${pwaPrecache.bytes}/${pwaByteBudget}`);
 
 const failures: string[] = [];
 if (initialJavaScriptTotal > budgetsGzipBytes.javascript) {
@@ -165,6 +254,21 @@ if (initialJavaScriptTotal > budgetsGzipBytes.javascript) {
 if (initialCssTotal > budgetsGzipBytes.css) {
   failures.push(
     `Initial CSS exceeds its budget by ${initialCssTotal - budgetsGzipBytes.css} bytes.`,
+  );
+}
+if ((largestAsyncJavaScript?.gzipBytes ?? 0) > asyncChunkBudget) {
+  failures.push(
+    `Largest lazy JavaScript chunk exceeds its regression budget by ${(largestAsyncJavaScript?.gzipBytes ?? 0) - asyncChunkBudget} bytes.`,
+  );
+}
+if (pwaPrecache.entries > pwaEntryBudget) {
+  failures.push(
+    `PWA precache contains ${pwaPrecache.entries - pwaEntryBudget} entries above its regression budget.`,
+  );
+}
+if (pwaPrecache.bytes > pwaByteBudget) {
+  failures.push(
+    `PWA precache exceeds its regression budget by ${pwaPrecache.bytes - pwaByteBudget} bytes.`,
   );
 }
 

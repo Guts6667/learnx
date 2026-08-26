@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "api/**/*.ts",
+    "playwright.config.ts",
+    "playwright.integration.config.ts",
+    "scripts/**/*.{ts,mjs}",
+    "src/main.tsx",
+    "vite.config.ts"
+  ],
+  "ignore": ["benchmarks/**", "public/**", "src/server/quality/**"],
+  "ignoreDependencies": [
+    "@fontsource/dm-sans",
+    "@fontsource/manrope",
+    "@fontsource/source-serif-4",
+    "@prisma/client"
+  ],
+  "project": [
+    "api/**/*.ts",
+    "prisma/**/*.ts",
+    "scripts/**/*.{ts,mjs}",
+    "src/**/*.{ts,tsx}",
+    "tests/**/*.ts",
+    "*.{ts,mjs}"
+  ]
+}

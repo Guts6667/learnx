@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "from": "^(?:api/|src/server/)",
+      "disallow": "^src/(?:app|components|features|pages)/",
+      "message": "Server and API modules cannot depend on UI modules."
+    },
+    {
+      "from": "^src/(?:app|components|features|pages)/",
+      "disallow": "^src/server/",
+      "message": "UI modules cannot import server implementations."
+    },
+    {
+      "from": "^src/features/",
+      "disallow": "^src/pages/",
+      "message": "Feature modules cannot depend on route pages."
+    }
+  ]
+}

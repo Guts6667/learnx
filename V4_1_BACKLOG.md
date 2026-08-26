@@ -145,9 +145,11 @@ candidats V5.
 - Reviewer : Architecture / Produit
 - Dépendances : V4.1-002, V4.1-006
 - Source : `docs/V4_1_TECHNICAL_AUDIT.md` ; mesures de V4.1-006
-- Statut : **livré pour revue** — gates baseline/final et domaines critiques
-  explicités dans `docs/V4_1_QUALITY_GATES.md` ; le gate final reste rouge par
-  conception jusqu'à l'atteinte des seuils par V4.1-501
+- Statut : **livré pour nouvelle revue** — après une première revue
+  indépendante rejetée, la couverture est fail-closed, la CI exécute le gate
+  critique, la découverte empêche les omissions, les frontières d'import,
+  `knip`, les chunks lazy et le précache PWA sont désormais réellement
+  bloquants ; le gate final reste rouge par conception jusqu'à V4.1-501
 - Critères d'acceptation :
   - la méthode de couverture et la trajectoire vers V4.1-501 sont gelées ;
   - un avis `high` applicable bloque la release ou possède une exception revue,
@@ -228,10 +230,10 @@ candidats V5.
 - Reviewer : Direction artistique / Accessibilité
 - Dépendances : V4.1-007, V4.1-101
 - Source : direction Totem/Maia promue ; seuils V4.1-007
-- Statut : **en revue** — fondation shadcn Maia et tokens LearnX intégrés sans
-  migration de surface ; gate baseline complet vert (953 tests), zéro import
-  Preact, zéro cycle, audit production vert, navigation Recherche E2E 3/3 et
-  bundle initial à 112 267 octets JS gzip / 18 307 octets CSS gzip
+- Statut : **terminé** — fondation shadcn Maia et tokens LearnX intégrés sans
+  migration de surface ; les défauts d'alias Tailwind et d'interaction du
+  bouton `asChild` désactivé ont été corrigés, puis la revue indépendante a
+  conclu `REVIEW_PASS` au SHA `cc8bae9e`
 - Critères d'acceptation :
   - shadcn est initialisé avec la direction Maia sans esthétique générique ;
   - couleurs, typo, espaces, rayons, ombres, focus et motion sont tokenisés ;

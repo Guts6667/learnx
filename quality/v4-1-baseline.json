@@ -27,7 +27,7 @@
     }
   },
   "bundle": {
-    "scope": "Vite initial entry dependency closure from dist/.vite/manifest.json; dynamic chunks, PWA files and public assets are excluded from the blocking gate.",
+    "scope": "Vite initial entry dependency closure, largest lazy JavaScript chunk and Workbox precache from the production build.",
     "initial": {
       "observedGzipBytes": {
         "javascript": 101738,
@@ -37,6 +37,17 @@
         "javascript": 125000,
         "css": 25000
       }
+    },
+    "asyncChunk": {
+      "scope": "Largest JavaScript file referenced by the Vite manifest outside the initial dependency closure.",
+      "observedMaxGzipBytes": 9108,
+      "maxRegressionPercent": 10
+    },
+    "pwaPrecache": {
+      "scope": "Files referenced by Workbox precacheAndRoute in dist/sw.js; byte count uses emitted file sizes before transfer compression.",
+      "observedEntries": 128,
+      "observedBytes": 1246568,
+      "maxRegressionPercent": 10
     },
     "totalDiagnostic": {
       "scope": "All JavaScript and CSS files emitted below dist, including dynamic chunks, PWA files and public research assets.",

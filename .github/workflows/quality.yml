@@ -47,6 +47,8 @@ jobs:
         run: pnpm test:coverage:baseline
         env:
           NODE_OPTIONS: --no-experimental-webstorage
+      - name: Report critical-domain coverage
+        run: pnpm quality:coverage:critical:report
       - name: Build
         run: pnpm build
       - name: Critical public research navigation
@@ -90,6 +92,10 @@ jobs:
         run: pnpm test:coverage:v4.1
         env:
           NODE_OPTIONS: --no-experimental-webstorage
+      - name: Final 90 percent critical-domain coverage gate
+        run: pnpm quality:coverage:critical
+      - name: Dead files, exports, and dependencies
+        run: pnpm quality:dead-code
       - name: Build
         run: pnpm build
       - name: Critical public research navigation
