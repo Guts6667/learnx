@@ -114,6 +114,10 @@ opération de nettoyage a été exécutée : `git worktree prune --verbose`.
   un emplacement inexistant ;
 - résultat : 70 métadonnées orphelines retirées, 15 worktrees enregistrés
   conservés, 0 entrée `prunable` restante ;
+- lecture du delta : l'instantané initial comptait 12 worktrees non
+  `prunable` ; trois worktrees V4.1 concurrents ont été enregistrés avant
+  l'opération autorisée, ce qui explique les 15 conservés sans disparition
+  d'une entrée initiale ;
 - fichiers de travail supprimés : aucun ;
 - branches supprimées : aucune ;
 - worktrees actifs retirés : aucun ;

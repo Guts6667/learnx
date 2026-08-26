@@ -79,7 +79,10 @@ candidats V5.
 - Reviewer : Propriétaire
 - Dépendances : V4.1-001, V4.1-002
 - Source : registre Git observé ; politique de préservation V4.1
-- Statut : **livré pour revue** dans `docs/GIT_WORKSPACE_MANIFEST.md`
+- Statut : **terminé** — manifeste accepté en revue indépendante au HEAD
+  `8458c8df` ; les 70 métadonnées orphelines ont été retirées, les 12
+  worktrees initiaux et les trois worktrees concurrents ont été conservés, et
+  aucune branche ni donnée de travail n'a été supprimée
 - Critères d'acceptation :
   - le manifeste distingue branches protégées, worktrees actifs et entrées
     `prunable` sans inférer leur obsolescence ;
