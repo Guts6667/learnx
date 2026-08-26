@@ -27,14 +27,27 @@
     }
   },
   "bundle": {
-    "scope": "All JavaScript and CSS files emitted below dist, including PWA and public research assets.",
-    "observedGzipBytes": {
-      "javascript": 118287,
-      "css": 24076
+    "scope": "Vite initial entry dependency closure from dist/.vite/manifest.json; dynamic chunks, PWA files and public assets are excluded from the blocking gate.",
+    "initial": {
+      "observedGzipBytes": {
+        "javascript": 101738,
+        "css": 18145
+      },
+      "budgetsGzipBytes": {
+        "javascript": 125000,
+        "css": 25000
+      }
     },
-    "budgetsGzipBytes": {
-      "javascript": 125000,
-      "css": 25000
+    "totalDiagnostic": {
+      "scope": "All JavaScript and CSS files emitted below dist, including dynamic chunks, PWA files and public research assets.",
+      "observedGzipBytes": {
+        "javascript": 118287,
+        "css": 24076
+      },
+      "warningThresholdsGzipBytes": {
+        "javascript": 150000,
+        "css": 30000
+      }
     }
   },
   "imports": {

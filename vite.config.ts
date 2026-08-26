@@ -42,6 +42,9 @@ const coverageThresholds =
     : qualityBaseline.coverage.baselineThresholdsPercent;
 
 export default defineConfig({
+  build: {
+    manifest: true,
+  },
   plugins: [
     preact(),
     tailwindcss(),
