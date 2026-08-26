@@ -47,15 +47,20 @@ function buildResult(): OrchestratedCorrectionResult {
       modelUsageCostUsd: 0.012,
       monitoringSignals: [],
     },
-    settlement: { releasedCredits: '6', reservedCredits: '18', settledCredits: '12' },
+    settlement: {
+      releasedCredits: '6',
+      reservedCredits: '18',
+      settledCredits: '12',
+    },
     replay: false,
   };
 }
 
 describe('corrections api (V4-009/V4-010)', () => {
   const runAcceptedQuote = vi.fn(
-    async (): Promise<import('../../src/server/corrections/correction-orchestration').OrchestratedCorrectionResult> =>
-      buildResult(),
+    async (): Promise<
+      import('../../src/server/corrections/correction-orchestration').OrchestratedCorrectionResult
+    > => buildResult(),
   );
   const orchestration = { runAcceptedQuote };
 
@@ -67,7 +72,15 @@ describe('corrections api (V4-009/V4-010)', () => {
   function app(userId = 'user-1') {
     return createCorrectionsApp({
       authentication: authenticatedMiddleware(userId),
-      history: { findLatestForSubmission: vi.fn(async () => buildResult()) },
+      history: {
+        findLatestForSubmission: vi.fn(async () => buildResult()),
+        listForSubmission: vi.fn(async () => [
+          {
+            createdAt: new Date('2026-08-24T19:00:00.000Z'),
+            result: buildResult(),
+          },
+        ]),
+      },
       orchestration,
     });
   }
@@ -90,6 +103,28 @@ describe('corrections api (V4-009/V4-010)', () => {
       '/api/exercise-submissions/not-a-uuid/ai-corrections/latest',
     );
     expect(response.status).toBe(400);
+  });
+
+  it('returns every settled correction chronologically without provider metrics', async () => {
+    const response = await app().request(
+      '/api/exercise-submissions/0286768e-5b9c-491b-a4f4-f2e6863ef398/ai-corrections',
+    );
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as {
+      resource: {
+        corrections: Array<{
+          correction: Record<string, unknown>;
+          createdAt: string;
+        }>;
+      };
+    };
+    expect(body.resource.corrections).toHaveLength(1);
+    expect(body.resource.corrections[0]).toMatchObject({
+      correction: { id: 'correction-1' },
+      createdAt: '2026-08-24T19:00:00.000Z',
+    });
+    expect(JSON.stringify(body)).not.toContain('modelUsageCostUsd');
+    expect(JSON.stringify(body)).not.toContain('monitoringSignals');
   });
 
   it('runs an accepted quote and returns the correction with its settlement', async () => {

@@ -3,6 +3,7 @@ import { Prisma, type PrismaClient } from '../../../generated/prisma/client.js';
 import { resolveExerciseCorrectionContract } from '../../lib/exercise-correction-contracts.js';
 import type {
   AcceptedQuoteSnapshot,
+  CorrectionHistoryEntry,
   CorrectionPersistencePort,
   OrchestratedCorrectionResult,
   RuntimeCorrectionAttempt,
@@ -51,6 +52,50 @@ export class PrismaCorrectionOrchestrationPorts {
       replay: true,
       settlement: structured.settlement,
     };
+  }
+
+  public async listForSubmission(input: {
+    submissionId: string;
+    userId: string;
+  }): Promise<CorrectionHistoryEntry[]> {
+    const corrections = await this.prisma.aiCorrection.findMany({
+      include: {
+        creditReservation: {
+          select: { settledAmount: true, status: true },
+        },
+      },
+      orderBy: { createdAt: 'asc' },
+      where: {
+        exerciseSubmissionId: input.submissionId,
+        userId: input.userId,
+      },
+    });
+
+    return corrections.flatMap((correction) => {
+      if (!correction.creditReservation) return [];
+      const structured = (correction.structuredResult ?? {}) as {
+        correction?: OrchestratedCorrectionResult['correction'];
+        settlement?: OrchestratedCorrectionResult['settlement'];
+      };
+      if (!structured.correction || !structured.settlement) return [];
+      if (
+        correction.creditReservation.status !== 'SETTLED' ||
+        correction.creditReservation.settledAmount?.toString() !==
+          structured.settlement.settledCredits
+      ) {
+        return [];
+      }
+      return [
+        {
+          createdAt: correction.createdAt,
+          result: {
+            correction: structured.correction,
+            replay: true,
+            settlement: structured.settlement,
+          },
+        },
+      ];
+    });
   }
 
   public readonly quotes = {
@@ -104,18 +149,14 @@ export class PrismaCorrectionOrchestrationPorts {
         explicitContract: submission.exercise.rubric,
         instructions: submission.exercise.instructions,
         language: quote.language,
-        lessonObjectives: Array.isArray(
-          submission.exercise.lesson.objectives,
-        )
+        lessonObjectives: Array.isArray(submission.exercise.lesson.objectives)
           ? submission.exercise.lesson.objectives.filter(
-              (objective): objective is string =>
-                typeof objective === 'string',
+              (objective): objective is string => typeof objective === 'string',
             )
           : [],
         lessonSlug: submission.exercise.lesson.slug,
         lessonSummary: submission.exercise.lesson.summary,
-        programSlug:
-          submission.exercise.lesson.module.stage.program.slug,
+        programSlug: submission.exercise.lesson.module.stage.program.slug,
         title: submission.exercise.title,
       });
       if (!contractResolution.eligible) return null;
@@ -157,7 +198,9 @@ export class PrismaCorrectionOrchestrationPorts {
   };
 
   public readonly corrections: CorrectionPersistencePort = {
-    begin: async (input): Promise<{
+    begin: async (
+      input,
+    ): Promise<{
       correctionId: string;
       created: boolean;
     }> => {

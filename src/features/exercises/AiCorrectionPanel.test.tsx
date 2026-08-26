@@ -16,7 +16,7 @@ describe('AiCorrectionPanel', () => {
   it('demande un consentement explicite puis restitue seulement les critères fiables', async () => {
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(jsonResponse({ resource: { correction: null } }))
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }))
       .mockResolvedValueOnce(
         jsonResponse({
           resource: {
@@ -73,7 +73,8 @@ describe('AiCorrectionPanel', () => {
           },
           201,
         ),
-      );
+      )
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }));
     vi.stubGlobal('fetch', fetchMock);
 
     render(
@@ -121,7 +122,7 @@ describe('AiCorrectionPanel', () => {
     };
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(jsonResponse({ resource: { correction: null } }))
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }))
       .mockResolvedValueOnce(jsonResponse({ resource: { quote } }))
       .mockRejectedValueOnce(new Error('Connexion interrompue'))
       .mockResolvedValueOnce(
@@ -147,7 +148,8 @@ describe('AiCorrectionPanel', () => {
             },
           },
         }),
-      );
+      )
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }));
     vi.stubGlobal('fetch', fetchMock);
 
     render(
@@ -168,7 +170,7 @@ describe('AiCorrectionPanel', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
 
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(5));
     expect(
       await screen.findByText(/Le débit reste celui du devis accepté/),
     ).toBeInTheDocument();
@@ -178,35 +180,38 @@ describe('AiCorrectionPanel', () => {
     const fetchMock = vi.fn().mockResolvedValueOnce(
       jsonResponse({
         resource: {
-          correction: {
-            correction: {
-              criteria: [
-                {
-                  evidenceQuotes: ['Je compare deux contraintes.'],
-                  evidenceStatus: 'FOUND',
-                  feedback: 'Le lien est explicite.',
-                  key: 'context-fidelity',
-                  label: 'Fidélité au contexte',
-                  levelKey: 'mastered',
-                  levelLabel: 'Maîtrisé',
-                  weight: 33,
-                },
-              ],
-              id: 'a14cbe99-31dd-48f1-9fb3-4549a2d88bc2',
-              indicativeScore: 100,
-              overallFeedback: 'Réponse étayée.',
-              secondPassRequired: false,
-              status: 'COMPLETED',
-              unsureCriteria: [],
-              unsureCriterionDetails: [],
+          corrections: [
+            {
+              createdAt: '2026-08-24T19:00:00.000Z',
+              correction: {
+                criteria: [
+                  {
+                    evidenceQuotes: ['Je compare deux contraintes.'],
+                    evidenceStatus: 'FOUND',
+                    feedback: 'Le lien est explicite.',
+                    key: 'context-fidelity',
+                    label: 'Fidélité au contexte',
+                    levelKey: 'mastered',
+                    levelLabel: 'Maîtrisé',
+                    weight: 33,
+                  },
+                ],
+                id: 'a14cbe99-31dd-48f1-9fb3-4549a2d88bc2',
+                indicativeScore: 100,
+                overallFeedback: 'Réponse étayée.',
+                secondPassRequired: false,
+                status: 'COMPLETED',
+                unsureCriteria: [],
+                unsureCriterionDetails: [],
+              },
+              replay: true,
+              settlement: {
+                releasedCredits: '6',
+                reservedCredits: '18',
+                settledCredits: '12',
+              },
             },
-            replay: true,
-            settlement: {
-              releasedCredits: '6',
-              reservedCredits: '18',
-              settledCredits: '12',
-            },
-          },
+          ],
         },
       }),
     );
@@ -222,6 +227,87 @@ describe('AiCorrectionPanel', () => {
     expect(
       screen.queryByRole('button', { name: 'Corriger' }),
     ).not.toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('permet de consulter deux corrections et compare leurs niveaux critériels', async () => {
+    const correction = (
+      id: string,
+      levelKey: string,
+      levelLabel: string,
+      createdAt: string,
+    ) => ({
+      correction: {
+        criteria: [
+          {
+            evidenceQuotes: ['Je relie le choix aux contraintes.'],
+            evidenceStatus: 'FOUND',
+            feedback: 'Le lien est documenté.',
+            key: 'justification-du-lien',
+            label: 'Justification du lien',
+            levelKey,
+            levelLabel,
+            weight: 33,
+          },
+        ],
+        id,
+        indicativeScore: null,
+        overallFeedback: 'Poursuivez la justification.',
+        secondPassRequired: false,
+        status: 'COMPLETED',
+        unsureCriteria: [],
+        unsureCriterionDetails: [],
+      },
+      createdAt,
+      replay: true,
+      settlement: {
+        releasedCredits: '6',
+        reservedCredits: '18',
+        settledCredits: '12',
+      },
+    });
+    const fetchMock = vi.fn().mockResolvedValueOnce(
+      jsonResponse({
+        resource: {
+          corrections: [
+            correction(
+              'a14cbe99-31dd-48f1-9fb3-4549a2d88bc2',
+              'partial',
+              'Partiel',
+              '2026-08-24T19:00:00.000Z',
+            ),
+            correction(
+              '3fb16723-221f-4e1c-841a-9d819ec82854',
+              'mastered',
+              'Maîtrisé',
+              '2026-08-25T19:00:00.000Z',
+            ),
+          ],
+        },
+      }),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AiCorrectionPanel submissionId="0286768e-5b9c-491b-a4f4-f2e6863ef398" />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', {
+        name: 'Historique des corrections',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Partiel → Maîtrisé')).toBeInTheDocument();
+
+    const firstCorrection = screen.getByRole('button', {
+      name: /Correction 1/,
+    });
+    fireEvent.click(firstCorrection);
+
+    expect(firstCorrection).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByText('Partiel → Maîtrisé')).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

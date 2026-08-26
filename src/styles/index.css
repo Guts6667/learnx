@@ -3758,6 +3758,79 @@ body {
   display: grid;
 }
 
+.correction-history {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+  border-block: 1px solid var(--color-border);
+  padding-block: 1rem;
+}
+
+.correction-history__heading {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.correction-history__heading h5,
+.correction-comparison h6 {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.correction-history__heading span {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.correction-history__choices {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.correction-history__choices .ui-action {
+  min-height: 2.75rem;
+}
+
+.correction-comparison {
+  display: grid;
+  gap: 0.75rem;
+  border-left: 3px solid var(--color-action);
+  padding: 1rem;
+  background: var(--color-action-soft);
+}
+
+.correction-comparison ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.correction-comparison li {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.correction-comparison li strong {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.correction-comparison li span {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
 .correction-result__group > h5,
 .correction-result__priority h5 {
   margin-bottom: 0.75rem;
@@ -4139,6 +4212,11 @@ body {
   .correction-state__doctrine,
   .correction-result__header > span {
     width: max-content;
+  }
+
+  .correction-history__heading,
+  .correction-comparison li {
+    display: grid;
   }
 
   .correction-contract,

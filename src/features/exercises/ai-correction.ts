@@ -47,6 +47,10 @@ export interface CorrectionResult {
   };
 }
 
+export interface CorrectionHistoryEntry extends CorrectionResult {
+  createdAt: string;
+}
+
 export async function requestCorrectionQuote(input: {
   idempotencyKey: string;
   targetId: string;
@@ -69,14 +73,13 @@ export async function requestCorrectionQuote(input: {
 export async function runCorrection(input: {
   quoteId: string;
 }): Promise<CorrectionResult> {
-  const response = await apiRequest<{ resource: { correction: CorrectionResult } }>(
-    '/api/ai-corrections',
-    {
-      body: JSON.stringify({ quoteId: input.quoteId }),
-      headers: { 'content-type': 'application/json' },
-      method: 'POST',
-    },
-  );
+  const response = await apiRequest<{
+    resource: { correction: CorrectionResult };
+  }>('/api/ai-corrections', {
+    body: JSON.stringify({ quoteId: input.quoteId }),
+    headers: { 'content-type': 'application/json' },
+    method: 'POST',
+  });
   return response.resource.correction;
 }
 
@@ -89,4 +92,15 @@ export async function loadLatestCorrection(
     `/api/exercise-submissions/${encodeURIComponent(submissionId)}/ai-corrections/latest`,
   );
   return response.resource.correction;
+}
+
+export async function loadCorrectionHistory(
+  submissionId: string,
+): Promise<CorrectionHistoryEntry[]> {
+  const response = await apiRequest<{
+    resource: { corrections: CorrectionHistoryEntry[] };
+  }>(
+    `/api/exercise-submissions/${encodeURIComponent(submissionId)}/ai-corrections`,
+  );
+  return response.resource.corrections;
 }

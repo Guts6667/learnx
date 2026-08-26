@@ -5,13 +5,15 @@ import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
 
 import {
+  type CorrectionHistoryEntry,
   type CorrectionQuote,
   type CorrectionResult,
-  loadLatestCorrection,
+  loadCorrectionHistory,
   requestCorrectionQuote,
   runCorrection,
 } from '@/features/exercises/ai-correction';
 import { useI18n } from '@/i18n';
+import { formatLocalizedDate } from '@/shared/locale';
 
 type PanelPhase =
   | { kind: 'HISTORY_PENDING' }
@@ -19,7 +21,11 @@ type PanelPhase =
   | { kind: 'QUOTE_PENDING' }
   | { kind: 'CONSENT'; quote: CorrectionQuote }
   | { kind: 'RUN_PENDING'; quote: CorrectionQuote }
-  | { kind: 'RESULT'; result: CorrectionResult }
+  | {
+      history: CorrectionHistoryEntry[];
+      kind: 'RESULT';
+      selectedIndex: number;
+    }
   | { kind: 'ERROR'; message: string; quote?: CorrectionQuote };
 
 /**
@@ -32,15 +38,23 @@ type PanelPhase =
  * récap plafond accepté / débité / libéré.
  */
 export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [phase, setPhase] = useState<PanelPhase>({ kind: 'HISTORY_PENDING' });
 
   useEffect(() => {
     let active = true;
-    void loadLatestCorrection(submissionId)
-      .then((result) => {
+    void loadCorrectionHistory(submissionId)
+      .then((history) => {
         if (active) {
-          setPhase(result ? { kind: 'RESULT', result } : { kind: 'IDLE' });
+          setPhase(
+            history.length > 0
+              ? {
+                  history,
+                  kind: 'RESULT',
+                  selectedIndex: history.length - 1,
+                }
+              : { kind: 'IDLE' },
+          );
         }
       })
       .catch(() => {
@@ -76,7 +90,18 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
     setPhase({ kind: 'RUN_PENDING', quote });
     try {
       const result = await runCorrection({ quoteId: quote.id });
-      setPhase({ kind: 'RESULT', result });
+      const persistedHistory = await loadCorrectionHistory(submissionId).catch(
+        () => [],
+      );
+      const history =
+        persistedHistory.length > 0
+          ? persistedHistory
+          : [{ ...result, createdAt: new Date().toISOString() }];
+      setPhase({
+        history,
+        kind: 'RESULT',
+        selectedIndex: history.length - 1,
+      });
     } catch (error) {
       setPhase({
         kind: 'ERROR',
@@ -242,8 +267,11 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
     );
   }
 
-  const { result } = phase;
+  const result = phase.history[phase.selectedIndex];
+  if (!result) return null;
   const { correction, settlement } = result;
+  const previous =
+    phase.selectedIndex > 0 ? phase.history[phase.selectedIndex - 1] : null;
 
   if (correction.status === 'FAILED') {
     return (
@@ -288,6 +316,43 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
         </div>
         <span>{t('aiCorrection.noProgressImpact')}</span>
       </header>
+
+      {phase.history.length > 1 ? (
+        <section
+          aria-label={t('aiCorrection.historyTitle')}
+          class="correction-history"
+        >
+          <div class="correction-history__heading">
+            <h5>{t('aiCorrection.historyTitle')}</h5>
+            <span>
+              {t('aiCorrection.historyCount', {
+                count: phase.history.length,
+              })}
+            </span>
+          </div>
+          <div class="correction-history__choices">
+            {phase.history.map((entry, index) => (
+              <Button
+                aria-pressed={phase.selectedIndex === index}
+                key={entry.correction.id}
+                onClick={() => setPhase({ ...phase, selectedIndex: index })}
+                variant={phase.selectedIndex === index ? 'secondary' : 'ghost'}
+              >
+                {t('aiCorrection.historyEntry', {
+                  date: formatLocalizedDate(entry.createdAt, locale, {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  }),
+                  index: index + 1,
+                })}
+              </Button>
+            ))}
+          </div>
+          {previous ? (
+            <CorrectionComparison current={result} previous={previous} />
+          ) : null}
+        </section>
+      ) : null}
 
       {acquired.length > 0 ? (
         <section class="correction-result__group">
@@ -348,6 +413,54 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
         </p>
       </footer>
     </section>
+  );
+}
+
+function CorrectionComparison({
+  current,
+  previous,
+}: {
+  current: CorrectionResult;
+  previous: CorrectionResult;
+}) {
+  const { t } = useI18n();
+  const previousByKey = new Map(
+    previous.correction.criteria.map((criterion) => [criterion.key, criterion]),
+  );
+  const changes = current.correction.criteria.flatMap((criterion) => {
+    const prior = previousByKey.get(criterion.key);
+    if (!prior || prior.levelKey === criterion.levelKey) return [];
+    return [
+      {
+        current: criterion.levelLabel,
+        key: criterion.key,
+        label: criterion.label,
+        previous: prior.levelLabel,
+      },
+    ];
+  });
+
+  return (
+    <div class="correction-comparison">
+      <h6>{t('aiCorrection.comparisonTitle')}</h6>
+      {changes.length > 0 ? (
+        <ul>
+          {changes.map((change) => (
+            <li key={change.key}>
+              <strong>{change.label}</strong>
+              <span>
+                {t('aiCorrection.comparisonChange', {
+                  current: change.current,
+                  previous: change.previous,
+                })}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>{t('aiCorrection.comparisonStable')}</p>
+      )}
+    </div>
   );
 }
 

@@ -292,4 +292,58 @@ describe('Prisma correction orchestration store', () => {
       }),
     ).resolves.toBeNull();
   });
+
+  it('lists only settled corrections in chronological order', async () => {
+    const createdAt = new Date('2026-08-24T19:00:00.000Z');
+    const findMany = vi.fn(async () => [
+      {
+        createdAt,
+        creditReservation: {
+          settledAmount: 3n,
+          status: 'SETTLED',
+        },
+        structuredResult: {
+          correction: { ...result('COMPLETED'), id: 'correction-1' },
+          settlement: {
+            releasedCredits: '3',
+            reservedCredits: '6',
+            settledCredits: '3',
+          },
+        },
+      },
+      {
+        createdAt: new Date('2026-08-24T19:05:00.000Z'),
+        creditReservation: { settledAmount: null, status: 'RESERVED' },
+        structuredResult: {
+          correction: { ...result('COMPLETED'), id: 'correction-hidden' },
+          settlement: {
+            releasedCredits: '3',
+            reservedCredits: '6',
+            settledCredits: '3',
+          },
+        },
+      },
+    ]);
+    const ports = new PrismaCorrectionOrchestrationPorts({
+      aiCorrection: { findMany },
+    } as never);
+
+    await expect(
+      ports.listForSubmission({
+        submissionId: quote().target.id,
+        userId: quote().userId,
+      }),
+    ).resolves.toEqual([
+      {
+        createdAt,
+        result: expect.objectContaining({
+          correction: expect.objectContaining({ id: 'correction-1' }),
+          replay: true,
+        }),
+      },
+    ]);
+    expect(findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ orderBy: { createdAt: 'asc' } }),
+    );
+  });
 });

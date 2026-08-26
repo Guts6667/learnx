@@ -13,6 +13,7 @@ import {
   CorrectionOrchestrationError,
   CorrectionOrchestrationService,
   createRuntimeCorrectionTransport,
+  type CorrectionHistoryEntry,
   type CreditSettlementPort,
   type OrchestratedCorrectionResult,
 } from '../../corrections/correction-orchestration.js';
@@ -54,6 +55,13 @@ function serializeLearnerCorrectionResult(
   };
 }
 
+function serializeLearnerCorrectionHistoryEntry(entry: CorrectionHistoryEntry) {
+  return {
+    createdAt: entry.createdAt.toISOString(),
+    ...serializeLearnerCorrectionResult(entry.result),
+  };
+}
+
 export interface CorrectionsAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
   authorization?: MiddlewareHandler<AuthEnvironment>;
@@ -64,6 +72,10 @@ export interface CorrectionsAppOptions {
       submissionId: string;
       userId: string;
     }): Promise<OrchestratedCorrectionResult | null>;
+    listForSubmission(input: {
+      submissionId: string;
+      userId: string;
+    }): Promise<CorrectionHistoryEntry[]>;
   };
   monitoring?: { summary(): Promise<CorrectionMonitoringSummary> };
   preflight?: CorrectionReleasePreflight;
@@ -181,6 +193,31 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   );
 
   app.get(
+    '/api/exercise-submissions/:submissionId/ai-corrections',
+    async (context) => {
+      const submissionId = z
+        .uuid()
+        .safeParse(context.req.param('submissionId'));
+      if (!submissionId.success) {
+        throw new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
+      }
+      if (!history) {
+        const { prisma } = await import('../../prisma.js');
+        history = new PrismaCorrectionOrchestrationPorts(prisma);
+      }
+      const corrections = await history.listForSubmission({
+        submissionId: submissionId.data,
+        userId: context.get('user').id,
+      });
+      return context.json({
+        resource: {
+          corrections: corrections.map(serializeLearnerCorrectionHistoryEntry),
+        },
+      });
+    },
+  );
+
+  app.get(
     '/api/admin/ai-corrections/monitoring',
     requireCapability('credit.admin.manage'),
     async (context) => {
@@ -195,7 +232,9 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   app.get(
     '/api/exercise-submissions/:submissionId/ai-corrections/latest',
     async (context) => {
-      const submissionId = z.uuid().safeParse(context.req.param('submissionId'));
+      const submissionId = z
+        .uuid()
+        .safeParse(context.req.param('submissionId'));
       if (!submissionId.success) {
         throw new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
       }

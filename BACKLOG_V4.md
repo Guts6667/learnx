@@ -1672,21 +1672,25 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
   devis et exécution sur le même snapshot, restitution de la dernière correction
   réglée après actualisation et masquage des métriques fournisseur côté apprenant.
 - **Validé automatiquement** : recette authentifiée hors ligne des quatre
-  familles, lint ciblé, typecheck et 933 tests. La recette prouve le cycle
+  familles, lint, typecheck et 939 tests. La recette prouve le cycle
   remise → devis → réservation → correction simulée → règlement → historique,
   sans nouvel effet de progression ni métrique fournisseur exposée.
 - **Validé automatiquement** : frontière 1 500/1 501 appliquée dans l'interface
   et par le serveur, sans troncature, devis, réservation ni appel fournisseur
   lorsqu'une réponse dépasse la borne V4.
-- **Bloquants release V4** : comparaison de plusieurs corrections, contestation
-  argumentée et recette propriétaire réelle sur `dev`. L'inventaire ne contient
+- **Validé automatiquement** : historique chronologique des corrections réglées,
+  navigation entre versions et comparaison des niveaux critériels sans nouvel
+  appel, nouveau devis ni exposition des métriques fournisseur.
+- **Bloquants release V4** : contestation argumentée et recette propriétaire
+  réelle sur `dev`. L'inventaire ne contient
   aucun exercice `reflection` actif ; l'unique occurrence reste dans un
   programme brouillon et ne doit pas être publiée silencieusement.
 - **Ouvert hors correction** : neuf scénarios E2E UI/navigation à couvrir dans
   le gate V4-019.
 - **Référence de preuve** :
   `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` et
-  `docs/V4_010_R1_ACCEPTANCE.md`, `docs/V4_010_R2_INPUT_LIMIT.md`.
+  `docs/V4_010_R1_ACCEPTANCE.md`, `docs/V4_010_R2_INPUT_LIMIT.md` et
+  `docs/V4_010_R4_HISTORY_COMPARISON.md`.
 
 ---
 

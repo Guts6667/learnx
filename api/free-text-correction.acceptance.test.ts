@@ -152,7 +152,8 @@ function buildExerciseHarness(input: (typeof CASES)[number]) {
       return { ...exercise, submission: submission ?? null };
     },
     async findOwnedSubmission(submissionId, userId) {
-      if (submissionId !== input.submissionId || userId !== USER_ID) return null;
+      if (submissionId !== input.submissionId || userId !== USER_ID)
+        return null;
       return submission ?? null;
     },
     async saveSubmission(submissionId, contentMarkdown, userId) {
@@ -233,10 +234,8 @@ function buildPricingRepository(input: {
         feeCredits: record.entry.feeCredits,
         floorCredits: record.price.floorCredits,
         id: input.quoteId,
-        includesAutomaticSecondPass:
-          record.entry.includesAutomaticSecondPass,
-        includesTargetedVerification:
-          record.entry.includesTargetedVerification,
+        includesAutomaticSecondPass: record.entry.includesAutomaticSecondPass,
+        includesTargetedVerification: record.entry.includesTargetedVerification,
         inputSizeClass: record.entry.inputSizeClass,
         language: record.catalog.language,
         modelId: record.catalog.modelId,
@@ -473,6 +472,19 @@ function buildCorrectionHarness(input: {
         }
         return { ...latest, replay: true };
       },
+      async listForSubmission(request: {
+        submissionId: string;
+        userId: string;
+      }) {
+        if (
+          request.submissionId !== input.submissionId ||
+          request.userId !== USER_ID ||
+          !latest
+        ) {
+          return [];
+        }
+        return [{ createdAt: NOW, result: { ...latest, replay: true } }];
+      },
     },
     orchestration: {
       async runAcceptedQuote(request: { quoteId: string; userId: string }) {
@@ -610,9 +622,7 @@ describe('V4-010-R1 — recette authentifiée des productions textuelles', () =>
       ).toEqual(exercises.contract.criteria.map((criterion) => criterion.key));
 
       const publicPayload = JSON.stringify({ quoteBody, correctionBody });
-      expect(publicPayload).not.toContain(
-        PROMOTED_CORRECTION_IDENTITY.modelId,
-      );
+      expect(publicPayload).not.toContain(PROMOTED_CORRECTION_IDENTITY.modelId);
       expect(publicPayload).not.toContain(
         PROMOTED_CORRECTION_IDENTITY.provider,
       );

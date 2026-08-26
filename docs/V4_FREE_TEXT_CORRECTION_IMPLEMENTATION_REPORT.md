@@ -55,7 +55,7 @@ non productives restent corrigés par leurs mécanismes déterministes.
 - recette authentifiée hors ligne des quatre familles : 4/4 vertes ;
 - frontière de saisie V4 : 1 500 accepté, 1 501 refusé avant tout devis, sans
   troncature ni mutation du brouillon ;
-- suite Vitest complète : 148 fichiers, 933 tests verts avec
+- suite Vitest complète : 148 fichiers, 939 tests verts avec
   `NODE_OPTIONS=--no-experimental-webstorage` ;
 - `pnpm build` : vert ;
 - E2E existants : 66 verts, 33 ignorés et 9 échecs de navigation/UI déjà
@@ -72,9 +72,9 @@ un gate de release à résoudre dans le chantier UI avant `main`.
    tarifaire longue reste une extension future soumise à calibration.
 2. Seule Writing dispose d'une preuve expérimentale scellée. Les trois autres
    familles sont un rollout produit surveillé décidé par le Propriétaire.
-3. Le runtime restitue la dernière correction réglée ; la comparaison complète
-   de plusieurs corrections et la contestation argumentée prévues par V4-010
-   restent à implémenter.
+3. Le runtime restitue toutes les corrections réglées d'une soumission et
+   compare les changements de niveau critériel sans nouvel appel. La
+   contestation argumentée prévue par V4-010 reste à implémenter.
 4. Aucune activation de `main`, aucun prix public et aucun appel modèle ne sont
    réalisés par ce lot.
 5. La recette `dev` ne peut pas encore couvrir un exercice `reflection` actif :
@@ -88,3 +88,6 @@ automatique des quatre familles est consigné dans
 `docs/V4_010_R1_ACCEPTANCE.md`. La couverture réelle de `reflection` exige une
 décision explicite sur un exercice actif ou une fixture de développement. Cette
 recette ne doit pas être présentée comme un nouveau benchmark scientifique.
+
+La preuve de restitution comparative est consignée dans
+`docs/V4_010_R4_HISTORY_COMPARISON.md`.

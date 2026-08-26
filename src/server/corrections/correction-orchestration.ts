@@ -198,6 +198,11 @@ export interface OrchestratedCorrectionResult {
   replay: boolean;
 }
 
+export interface CorrectionHistoryEntry {
+  createdAt: Date;
+  result: OrchestratedCorrectionResult;
+}
+
 // L'identité V4 interdit les retries/fallbacks sur tout le périmètre produit.
 // Une seconde exécution reste possible uniquement lorsque la bande de garde
 // l'impose ; la preuve scientifique demeure bornée à Writing.

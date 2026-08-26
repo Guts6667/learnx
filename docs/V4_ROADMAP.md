@@ -42,7 +42,7 @@ Gemini et le hard-off ; elle n'est plus une instruction d'exécution.
 | Route réelle `/api/ai-corrections` | Implémentée et testée | `src/server/api/corrections/app.ts` |
 | Seconde passe et livraison partielle | Implémentées et testées | `src/server/corrections/correction-orchestration.ts` |
 | UI devis, consentement, preuves et règlement | Implémentée et testée | `src/features/exercises/AiCorrectionPanel.tsx` |
-| Restitution après actualisation sans nouvel appel | Implémentée et testée | API historique et `AiCorrectionPanel.tsx` |
+| Restitution et comparaison de l'historique sans nouvel appel | Implémentées et testées | API historique et `AiCorrectionPanel.tsx` |
 | Accès UI réservé aux exercices éligibles | Implémenté et testé | `src/server/api/exercises/app.ts`, `src/features/exercises/ExerciseCard.tsx` |
 | Allocations offertes admin | Implémentées | `src/pages/AdminCreditsPage.tsx`, API crédits |
 | Coûts/incidents et deux signaux connus | Implémentés et visibles dans Crédits admin | `src/server/corrections/correction-monitoring.ts`, `src/pages/AdminCreditsPage.tsx` |
@@ -75,10 +75,9 @@ nouvelle autorité est `V4_5_BACKLOG.md`.
 4. **QA et publication preview** : les surfaces privées, landing, marque et
    sept articles de recherche sont raccordés. La matrice finale couvre les
    largeurs, le texte à 200 %, le clavier, l'accessibilité et WebKit.
-5. **Frontière restante** : les gates hors ligne des quatre familles et de la
-   borne 1 500/1 501 sont passés. Restent la recette réelle `dev`, la
-   contestation argumentée et la comparaison de plusieurs corrections avant
-   la configuration production
+5. **Frontière restante** : les gates hors ligne des quatre familles, de la
+   borne 1 500/1 501 et de la comparaison sont passés. Restent la recette
+   réelle `dev` et la contestation argumentée avant la configuration production
    fermée, le budget, le canal d'alerte, le GO explicite de Rayan et un smoke
    production borné. `main` reste inchangée avant ce GO.
 
@@ -95,7 +94,7 @@ nouvelle autorité est `V4_5_BACKLOG.md`.
 | 7 | V4-010-R1 | Développement + Propriétaire | gate hors ligne 4/4 passé ; recette réelle `dev` ouverte, `reflection` sans exercice actif |
 | 8 | V4-010-R2 | Développement + Finance | terminé : 1 500 accepté, 1 501 refusé avant devis ; aucune classe longue inventée |
 | 9 | V4-010-R3 | Développement + Produit | contestation argumentée, bornée et historisée |
-| 10 | V4-010-R4 | Développement + Produit | comparaison lisible de plusieurs corrections |
+| 10 | V4-010-R4 | Développement + Produit | terminé : historique réglé, navigation et comparaison critérielle sans appel |
 | 11 | V4-019-RELEASE | Développement + Propriétaire | preuves régénérées ; GO production puis smoke borné |
 
 ## Limites assumées de la V4
