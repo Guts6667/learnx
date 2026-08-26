@@ -126,7 +126,9 @@ candidats V5.
 - Reviewer : Release engineering
 - Dépendances : V4.1-002, V4.1-004, V4.1-005
 - Source : release V4 clôturée ; routes, contrats et suites de tests baseline
-- Statut : **prêt** — V4 clôturée et audits de préparation disponibles
+- Statut : **livré pour revue** — matrice canonique gelée dans
+  `docs/V4_1_FUNCTIONAL_PARITY_BASELINE.md` ; preuves locales exécutées et
+  trous d'intégration réelle explicitement ouverts
 - Critères d'acceptation :
   - public, auth, Today, programmes, leçons, activités, notes, reviews, profil,
     crédits et admin ont leurs résultats attendus ;
