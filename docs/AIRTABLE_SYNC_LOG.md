@@ -48,3 +48,18 @@ l'autorisation.
   supplémentaires et le choix `READY_FOR_OWNER_GO` ne sont pas fabriqués avant
   une transition réelle.
 - Interface : aucun brouillon n'a été publié.
+
+## 26 août 2026 — ouverture des lots fonctionnels
+
+- V4.1-301 : `REVIEW` → `DONE`, preuve indépendante `REVIEW_PASS`, commit
+  owner `f53a23a9`, commit d'intégration `b8f3a1af`.
+- V4.1-302 : `QA` → `DONE`, preuve indépendante `REVIEW_PASS`, commit owner
+  `b4a43d3b`, commit d'intégration `6c8c529c`.
+- V4.1-303, V4.1-304 et V4.1-305 : `DRAFT` → `READY`. Le choix canonique
+  `READY` a été créé par ces trois transitions réelles, après clôture de leurs
+  dépendances ; aucun lot n'est passé artificiellement par un état non acquis.
+- Relecture : les cinq tickets portent `État de synchro = Canonique Git`, les
+  mêmes statuts que `V4_1_BACKLOG.md`, les SHA de preuve et une date de
+  synchronisation. Aucun champ manuel hors périmètre n'a été modifié.
+- Le choix `READY_FOR_OWNER_GO` reste volontairement absent tant qu'aucun ticket
+  ne satisfait réellement ce gate.
