@@ -53,7 +53,7 @@ describe('NotesPage', () => {
       </AppProviders>,
     );
 
-    expect((await screen.findAllByText('Ma note')).length).toBeGreaterThan(0);
+    expect(await screen.findAllByText('Ma note')).toHaveLength(1);
     fireEvent.click(
       screen.getByRole('button', { name: 'Rechercher dans les notes' }),
     );

@@ -47,22 +47,19 @@ function getExcerpt(markdown: string, emptyLabel: string): string {
 }
 
 function NoteLine({
-  isSelected,
   note,
-  onSelect,
+  onOpen,
 }: {
-  isSelected: boolean;
   note: NoteDetail;
-  onSelect: (note: NoteDetail) => void;
+  onOpen: (note: NoteDetail) => void;
 }) {
   const { locale, t } = useI18n();
   return (
     <li class="border-b border-[var(--color-border)] last:border-b-0">
       <button
-        aria-pressed={isSelected}
-        class={`group grid min-h-20 w-full gap-2 px-3 py-5 text-left outline-none transition-colors hover:bg-[var(--color-surface-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-inset sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-8 ${isSelected ? 'bg-[var(--color-surface-subtle)]' : ''}`}
+        class="group grid min-h-20 w-full gap-2 px-3 py-5 text-left outline-none transition-colors hover:bg-[var(--color-surface-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-inset sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-8"
         data-note-select={note.id}
-        onClick={() => onSelect(note)}
+        onClick={() => onOpen(note)}
         type="button"
       >
         <div class="min-w-0 space-y-1">
@@ -98,12 +95,7 @@ export function NotesPage() {
   );
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const query = useNotesQuery(debouncedSearch);
-  const [selectedNoteId, setSelectedNoteId] = useState<string>();
   const { t } = useI18n();
-
-  const selectedNote =
-    query.data?.notes.find((note) => note.id === selectedNoteId) ??
-    query.data?.notes[0];
 
   useEffect(() => {
     const timeout = window.setTimeout(() => setDebouncedSearch(search), 300);
@@ -111,12 +103,7 @@ export function NotesPage() {
     return () => window.clearTimeout(timeout);
   }, [search]);
 
-  function selectNote(note: NoteDetail) {
-    if (window.matchMedia('(min-width: 64rem)').matches) {
-      setSelectedNoteId(note.id);
-      return;
-    }
-
+  function openNote(note: NoteDetail) {
     void route(`/notes/${encodeURIComponent(note.id)}`);
   }
 
@@ -144,8 +131,6 @@ export function NotesPage() {
             : Math.max(0, currentIndex - 1);
     const nextButton = buttons[nextIndex];
     nextButton?.focus();
-    const nextId = nextButton?.dataset.noteSelect;
-    if (nextId) setSelectedNoteId(nextId);
   }
 
   return (
@@ -199,7 +184,7 @@ export function NotesPage() {
       ) : null}
       {query.data?.notes.length ? (
         <div class="space-y-4">
-          <div class="totem-notes-master-detail">
+          <div class="totem-notes-list">
             <div class="totem-notes-master">
               {isSearchOpen ? (
                 <div class="notes-search-field notes-search-field--open">
@@ -225,35 +210,13 @@ export function NotesPage() {
               >
                 {query.data.notes.map((note) => (
                   <NoteLine
-                    isSelected={note.id === selectedNote?.id}
                     key={note.id}
                     note={note}
-                    onSelect={selectNote}
+                    onOpen={openNote}
                   />
                 ))}
               </ul>
             </div>
-            {selectedNote ? (
-              <article
-                aria-live="polite"
-                class="totem-notes-detail"
-                key={selectedNote.id}
-              >
-                <p class="page-eyebrow">
-                  {selectedNote.lesson
-                    ? `${selectedNote.program?.title ? `${selectedNote.program.title} · ` : ''}${selectedNote.lesson.title}`
-                    : t('notes.personal')}
-                </p>
-                <h2 class="text-2xl font-medium">{selectedNote.title}</h2>
-                <SafeMarkdown content={selectedNote.markdown} />
-                <NavigationAction
-                  href={`/notes/${encodeURIComponent(selectedNote.id)}`}
-                  variant="secondary"
-                >
-                  {t('notes.edit')}
-                </NavigationAction>
-              </article>
-            ) : null}
           </div>
           {query.hasMore ? (
             <Button

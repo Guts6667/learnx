@@ -2261,8 +2261,9 @@ body {
   letter-spacing: -0.045em;
 }
 
-.totem-notes-master-detail {
+.totem-notes-list {
   min-width: 0;
+  max-width: 64rem;
 }
 
 .notes-page-head {
@@ -2319,10 +2320,6 @@ body {
 .totem-notes-master__header span {
   color: var(--color-text-muted);
   font-size: 0.8125rem;
-}
-
-.totem-notes-detail {
-  display: none;
 }
 
 .totem-note-editor-layout {
@@ -3029,13 +3026,6 @@ body {
     top: 2rem;
   }
 
-  .totem-notes-master-detail {
-    display: grid;
-    grid-template-columns: 20rem minmax(0, 1fr);
-    gap: 2.5rem;
-    align-items: start;
-  }
-
   .notes-search-toggle {
     display: none;
   }
@@ -3046,19 +3036,6 @@ body {
 
   .notes-search-field {
     display: block;
-  }
-
-  .totem-notes-detail {
-    position: sticky;
-    top: 3rem;
-    display: grid;
-    max-height: calc(100dvh - 6rem);
-    gap: 1.5rem;
-    overflow: auto;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-surface);
-    padding: clamp(2rem, 4vw, 3rem);
-    background: var(--color-surface);
   }
 
   .admin-mobile-landing {
