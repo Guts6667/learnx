@@ -35,6 +35,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Install the critical browser runtime
+        run: pnpm exec playwright install --with-deps chromium
       - name: Generate Prisma client
         run: pnpm prisma:generate
       - name: Lint
@@ -47,6 +49,8 @@ jobs:
           NODE_OPTIONS: --no-experimental-webstorage
       - name: Build
         run: pnpm build
+      - name: Critical public research navigation
+        run: pnpm test:e2e:research
       - name: Bundle budgets
         run: pnpm quality:bundle
       - name: High and critical production dependency audit
@@ -74,6 +78,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Install the critical browser runtime
+        run: pnpm exec playwright install --with-deps chromium
       - name: Generate Prisma client
         run: pnpm prisma:generate
       - name: Lint
@@ -86,6 +92,8 @@ jobs:
           NODE_OPTIONS: --no-experimental-webstorage
       - name: Build
         run: pnpm build
+      - name: Critical public research navigation
+        run: pnpm test:e2e:research
       - name: Bundle budgets
         run: pnpm quality:bundle
       - name: High and critical production dependency audit
