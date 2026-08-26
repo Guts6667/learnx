@@ -11,7 +11,6 @@ export function TotemAdminPreviewPage() {
 
   return (
     <TotemAppShell
-      bottomNavigation={<AdminNavigation currentPath="/admin/accounts" />}
       className="totem-admin-surface"
       contentId="main-content"
       contentTabIndex={-1}

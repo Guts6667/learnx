@@ -213,7 +213,8 @@ body {
   font-family: var(--font-interface);
 }
 
-.public-skip-link {
+.public-skip-link,
+.app-skip-link {
   position: fixed;
   z-index: 100;
   top: 0.75rem;
@@ -230,7 +231,8 @@ body {
   text-decoration: none;
 }
 
-.public-skip-link:focus-visible {
+.public-skip-link:focus-visible,
+.app-skip-link:focus-visible {
   translate: 0;
 }
 
@@ -1000,10 +1002,29 @@ body {
 }
 
 .app-safe-header {
-  padding-top: calc(1rem + env(safe-area-inset-top));
-  padding-right: calc(1.25rem + env(safe-area-inset-right));
-  padding-bottom: 1rem;
-  padding-left: calc(1.25rem + env(safe-area-inset-left));
+  padding-top: calc(0.625rem + env(safe-area-inset-top));
+  padding-right: calc(1rem + env(safe-area-inset-right));
+  padding-bottom: 0.625rem;
+  padding-left: calc(1rem + env(safe-area-inset-left));
+}
+
+.app-safe-header__content {
+  min-height: 2.75rem;
+}
+
+.app-safe-header__brand {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--color-text);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-safe-header__tagline,
+.shell-back-action__label {
+  display: none;
 }
 
 .app-safe-main {
@@ -1482,6 +1503,13 @@ body {
   transition:
     background-color var(--motion-fast) var(--motion-easing),
     color var(--motion-fast) var(--motion-easing);
+}
+
+.ui-main-navigation__label {
+  overflow: hidden;
+  font-size: 0.6875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ui-main-navigation__link:hover {
@@ -2185,6 +2213,17 @@ body {
 
 .totem-admin-navigation {
   height: 100%;
+}
+
+.totem-admin-surface .totem-app-shell__sidebar {
+  position: sticky;
+  z-index: 20;
+  bottom: 0;
+  display: block;
+  min-width: 0;
+  grid-area: bottom;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .totem-admin-navigation__brand {
@@ -3708,6 +3747,29 @@ body {
     padding-right: 0.75rem;
     padding-bottom: calc(1rem + env(safe-area-inset-bottom));
     padding-left: calc(0.75rem + env(safe-area-inset-left));
+  }
+}
+
+@media (min-width: 48rem) {
+  .app-safe-header__tagline,
+  .shell-back-action__label {
+    display: inline;
+  }
+}
+
+@media (min-width: 64rem) {
+  .ui-main-navigation__label {
+    overflow: visible;
+    font-size: inherit;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .totem-admin-surface .totem-app-shell__sidebar {
+    position: static;
+    display: block;
+    grid-area: sidebar;
+    border-top: 0;
   }
 }
 

@@ -59,6 +59,25 @@ describe('navigation accessible', () => {
     expect(document.getElementById('main-content')).toHaveFocus();
   });
 
+  it.each(['/login', '/admin/accounts'])(
+    'conserve le même accès direct au contenu dans le shell %s',
+    (currentPath) => {
+      renderWithLocale(
+        <MobileLayout currentPath={currentPath}>
+          <h1>Contenu</h1>
+        </MobileLayout>,
+      );
+
+      const skipLink = screen.getByRole('link', {
+        name: 'Aller au contenu principal',
+      });
+
+      expect(skipLink).toHaveAttribute('href', '#main-content');
+      fireEvent.click(skipLink);
+      expect(document.getElementById('main-content')).toHaveFocus();
+    },
+  );
+
   it('affiche un retour clavier sur une page secondaire', () => {
     const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
 
@@ -77,6 +96,20 @@ describe('navigation accessible', () => {
 
     expect(button).toHaveFocus();
     expect(back).toHaveBeenCalledTimes(1);
+  });
+
+  it('conserve la destination explicite vers Mes parcours depuis Découvrir', () => {
+    renderWithLocale(
+      <MobileLayout currentPath="/discover">
+        <h1>Découvrir</h1>
+      </MobileLayout>,
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Retour à Mes parcours' }),
+    );
+
+    expect(route).toHaveBeenCalledWith('/program');
   });
 
   it('utilise la destination contextuelle stable avant l’historique', () => {
@@ -192,7 +225,7 @@ describe('navigation accessible', () => {
       screen.getAllByRole('navigation', {
         name: 'Navigation de l’administration',
       }),
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     expect(
       screen.queryByRole('link', { name: 'Aujourd’hui' }),
     ).not.toBeInTheDocument();

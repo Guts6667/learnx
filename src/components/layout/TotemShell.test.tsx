@@ -39,6 +39,7 @@ describe('Totem shells', () => {
       <TotemPublicShell
         footer={<nav aria-label="Pied de page">Confidentialité</nav>}
         navigation={<nav aria-label="Navigation publique">Recherche</nav>}
+        skipLinkLabel="Aller au contenu"
       >
         <h1>LearnX</h1>
       </TotemPublicShell>,
@@ -48,6 +49,10 @@ describe('Totem shells', () => {
       screen.getByRole('navigation', { name: 'Navigation publique' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('main')).toHaveTextContent('LearnX');
+    expect(screen.getByRole('main')).toHaveAttribute('id', 'main-content');
+    expect(
+      screen.getByRole('link', { name: 'Aller au contenu' }),
+    ).toHaveAttribute('href', '#main-content');
     expect(
       screen.getByRole('navigation', { name: 'Pied de page' }),
     ).toBeInTheDocument();

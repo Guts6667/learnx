@@ -265,7 +265,10 @@ candidats V5.
 - Reviewer : Produit / Accessibilité
 - Dépendances : V4.1-102, V4.1-202
 - Source : navigation V4.1-102 ; primitives V4.1-202
-- Statut : **en cours** — travail isolé ouvert après clôture de V4.1-202
+- Statut : **livré pour revue** — shells dédiés public, authentification,
+  application et administration ; navigation admin unique et responsive ;
+  skip link et focus du contenu unifiés ; shell produit vérifié de 320 à
+  1 920 px, à 200 % et avec reduced motion
 - Critères d'acceptation :
   - shells public, authentifié et admin partagent les primitives approuvées ;
   - navigation mobile/desktop conserve hiérarchie, repères et action primaire ;

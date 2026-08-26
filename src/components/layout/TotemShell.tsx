@@ -1,6 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
+import { SkipLink } from '@/components/layout/SkipLink';
 import { TotemTheme } from '@/components/ui/TotemTheme';
 
 interface TotemAppShellProps extends Omit<
@@ -72,19 +73,28 @@ export function TotemAppShell({
 
 interface TotemPublicShellProps {
   children: ReactNode;
+  contentId?: string;
   footer: ReactNode;
   navigation: ReactNode;
+  skipLinkLabel?: string;
 }
 
 export function TotemPublicShell({
   children,
+  contentId = 'main-content',
   footer,
   navigation,
+  skipLinkLabel,
 }: TotemPublicShellProps) {
   return (
     <TotemTheme className="totem-public-shell">
+      {skipLinkLabel ? (
+        <SkipLink label={skipLinkLabel} targetId={contentId} />
+      ) : null}
       <header className="totem-public-shell__navigation">{navigation}</header>
-      <main>{children}</main>
+      <main id={contentId} tabIndex={-1}>
+        {children}
+      </main>
       <footer className="totem-public-shell__footer">{footer}</footer>
     </TotemTheme>
   );
