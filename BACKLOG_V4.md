@@ -1685,8 +1685,9 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
   réelle sur `dev`. L'inventaire ne contient
   aucun exercice `reflection` actif ; l'unique occurrence reste dans un
   programme brouillon et ne doit pas être publiée silencieusement.
-- **Ouvert hors correction** : neuf scénarios E2E UI/navigation à couvrir dans
-  le gate V4-019.
+- **Validé automatiquement** : gate E2E complet, 75 scénarios passés sur les
+  quatre projets navigateur configurés, 33 scénarios conditionnels ignorés et
+  aucun échec.
 - **Référence de preuve** :
   `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` et
   `docs/V4_010_R1_ACCEPTANCE.md`, `docs/V4_010_R2_INPUT_LIMIT.md` et

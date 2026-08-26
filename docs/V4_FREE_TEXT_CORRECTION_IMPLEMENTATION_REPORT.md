@@ -58,12 +58,10 @@ non productives restent corrigés par leurs mécanismes déterministes.
 - suite Vitest complète : 148 fichiers, 939 tests verts avec
   `NODE_OPTIONS=--no-experimental-webstorage` ;
 - `pnpm build` : vert ;
-- E2E existants : 66 verts, 33 ignorés et 9 échecs de navigation/UI déjà
-  présents sur la branche (`Découvrir`, lien `Accueil`, retour à la leçon).
-
-Les neuf échecs E2E ne traversent pas le chemin de correction et ne remettent
-pas en cause les tests unitaires et d'intégration de ce lot. Ils restent néanmoins
-un gate de release à résoudre dans le chantier UI avant `main`.
+- E2E : 75 verts, 33 ignorés et 0 échec sur desktop Chromium, mobile Chromium,
+  tablette Chromium et mobile WebKit. Trois attentes historiques ont été
+  réalignées sur les libellés et le retour contextuel réellement livrés, sans
+  modification d'écran ni de comportement métier.
 
 ## Limites encore ouvertes
 
