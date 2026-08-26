@@ -41,6 +41,8 @@
     "asyncChunk": {
       "scope": "Largest JavaScript file referenced by the Vite manifest outside the initial dependency closure.",
       "observedMaxGzipBytes": 9108,
+      "maiaFoundationCommit": "6ca24079",
+      "maiaFoundationObservedMaxGzipBytes": 12237,
       "maxRegressionPercent": 10
     },
     "pwaPrecache": {

@@ -68,8 +68,13 @@ La baseline et le gate final couvrent, dans cet ordre :
 Le JS/CSS total reste un diagnostic de migration et n'est pas un gate de
 release : le budget produit contractuel porte sur l'entrée initiale. Le plus
 gros chunk lazy et le précache PWA disposent en plus d'un budget de régression
-de 10 % dérivé de la première mesure reproductible, soit 10 018 octets gzip,
-140 entrées et 1 371 224 octets émis.
+de 10 % dérivé d'une mesure reproductible. La référence historique du plus
+gros chunk reste 9 108 octets gzip. L'intégration obligatoire de la primitive
+Radix Dialog au SHA `6ca24079` établit une référence de fondation Maia séparée
+à 12 237 octets gzip, soit un plafond borné de 13 460 octets pour les lots
+suivants. Ce recalage unique ne modifie pas les budgets initiaux de 125 000
+octets JS et 25 000 octets CSS. Le précache reste borné à 140 entrées et
+1 371 224 octets émis.
 
 Les parcours Recherche data-native possèdent en plus un gate Playwright dédié
 avec `pnpm test:e2e:research`. La matrice fonctionnelle complète et les trous

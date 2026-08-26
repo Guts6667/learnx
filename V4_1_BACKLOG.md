@@ -247,8 +247,10 @@ candidats V5.
 - Reviewer : QA / Accessibilité
 - Dépendances : V4.1-201
 - Source : inventaire UI V4.1-006 ; fondation V4.1-201
-- Statut : **prêt** — dépendance V4.1-201 livrée pour revue ; aucune surface
-  métier ne sera migrée dans ce ticket
+- Statut : **terminé** — implémentation et revue indépendante `REVIEW_PASS` au
+  SHA `6ca24079` ; 968 tests, lint, typecheck et build sont verts. Le chunk
+  Radix/Drawer est mesuré séparément comme référence de fondation Maia et reste
+  soumis à un plafond de régression de 10 %, sans modifier les budgets initiaux
 - Critères d'acceptation :
   - boutons, liens, champs, formulaires, dialogues et tables sont unifiés ;
   - états chargement, vide, succès, erreur, indisponible et interdit existent ;
@@ -262,7 +264,7 @@ candidats V5.
 - Reviewer : Produit / Accessibilité
 - Dépendances : V4.1-102, V4.1-202
 - Source : navigation V4.1-102 ; primitives V4.1-202
-- Statut : **bloqué** — dépendances V4.1-102 et V4.1-202
+- Statut : **en cours** — travail isolé ouvert après clôture de V4.1-202
 - Critères d'acceptation :
   - shells public, authentifié et admin partagent les primitives approuvées ;
   - navigation mobile/desktop conserve hiérarchie, repères et action primaire ;

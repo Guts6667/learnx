@@ -5,6 +5,7 @@ import { gzipSync } from 'node:zlib';
 interface BundleBaseline {
   bundle: {
     asyncChunk: RegressionBudget & {
+      maiaFoundationObservedMaxGzipBytes?: number;
       observedMaxGzipBytes: number;
     };
     initial: {
@@ -210,8 +211,12 @@ const largestAsyncJavaScript = [...asyncJavaScriptAssets].sort(
 )[0];
 const pwaPrecache = measurePwaPrecache();
 const { budgetsGzipBytes } = baseline.bundle.initial;
-const asyncChunkBudget = allowedRegression(
+const asyncChunkReference = Math.max(
   baseline.bundle.asyncChunk.observedMaxGzipBytes,
+  baseline.bundle.asyncChunk.maiaFoundationObservedMaxGzipBytes ?? 0,
+);
+const asyncChunkBudget = allowedRegression(
+  asyncChunkReference,
   baseline.bundle.asyncChunk.maxRegressionPercent,
 );
 const pwaEntryBudget = allowedRegression(
