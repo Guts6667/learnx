@@ -8,14 +8,24 @@ preuve exécutée d'une preuve seulement disponible ou absente.
 
 - baseline produit à préserver :
   `a02ecc3f307af36656fa5cb8a7b62954fdec73e9` (release V4) ;
-- état observé pour cette capture :
+- première preuve exécutable après migration du runtime :
   `bdc82e354b8f7bb58b2aa48a3e8b8bc8c0e5c81d` ;
 - date de capture : 26 août 2026, Europe/Paris ;
 - aucun appel modèle, fournisseur ou service externe n'a été réalisé ;
 - aucune base réelle n'a été modifiée.
 
-Cette capture constitue une baseline reproductible, pas un GO de release. Une
-preuve avec API simulée ne prouve pas l'intégration au déploiement réel.
+Le SHA `a02ecc3f` porte l'autorité fonctionnelle et contractuelle. Le SHA
+`bdc82e35` porte seulement la première exécution reproductible des suites après
+migration React ; il ne remplace pas la release comme baseline. Le verrou
+historique de `a02ecc3f` ne permet plus un `pnpm install --frozen-lockfile`
+exact, car son bloc `pnpm.overrides` et son lockfile divergent. Cette limite est
+consignée au lieu de présenter une exécution post-migration comme une exécution
+de la release.
+
+La parité est donc bilatérale : les URL et contrats de V4 sont extraits du SHA
+release, puis contrôlés sur le candidat ; les suites du candidat vérifient les
+comportements. Une preuve avec API simulée ne prouve pas l'intégration au
+déploiement réel.
 
 ## Légende de preuve
 
@@ -39,6 +49,26 @@ pnpm prisma:generate
 `prisma:generate` est obligatoire avant le typecheck. Sans cette étape, le
 typecheck échoue parce que le client généré n'existe pas ; ce n'est pas un
 défaut fonctionnel de l'application.
+
+Ces commandes reproduisent le candidat migré. Elles ne prétendent pas
+reproduire `a02ecc3f` avec une résolution de dépendances différente.
+
+### Contrôle bilatéral des routes
+
+Le manifeste `quality/v4-1-functional-parity.json` contient les 33 routes
+applicatives extraites de `a02ecc3f`. Le test
+`src/lib/v4-1-functional-parity.test.ts` vérifie que le candidat les expose
+toutes sans renommer une URL publique. Le routeur React ajoute seulement la
+route explicite `*`, équivalente au fallback 404 du routeur V4.
+
+```bash
+pnpm vitest run src/lib/v4-1-functional-parity.test.ts
+```
+
+Le montage serveur (`src/server/api/app.ts`), les contrôleurs métier, le schéma
+Prisma et les migrations n'ont aucun diff entre `a02ecc3f` et cette première
+capture. Les futures décompositions peuvent déplacer du code, mais ne peuvent
+modifier ces contrats pour faciliter la migration UI.
 
 ### Gates exécutés
 
@@ -90,10 +120,10 @@ Elle exige au minimum `DATABASE_URL`, `DIRECT_URL`,
 | Activation et auth | Activation, connexion, session restaurée, déconnexion, redirection de route privée et reprise hors ligne | `/activate`, `/login`, routes protégées | `UNIT` `src/app/App.test.tsx`, tests `features/auth` et `server/api/auth` ; `E2E-MOCK` `home.spec.ts` | Auth locale fortement couverte ; cycle réel multi-utilisateur disponible dans `tests/integration/access-lifecycle.spec.ts` mais non exécuté |
 | Aujourd'hui | Prochaine action, contexte, progression, plusieurs programmes et état vide | `/today` | `UNIT` `TodayPage.test.tsx` ; `E2E-MOCK` `home.spec.ts` | Prouvé avec fixtures ; données réelles non rejouées |
 | Programmes et hiérarchie | Répertoire, découverte, inscription/reprise, Program > Stage > Module > Lesson, routes parentes et verrous | `/program`, `/discover`, `/program/:programSlug`, routes stage/module | `UNIT` `ProgramsDirectoryPages.test.tsx`, `CurriculumPages.test.tsx` et tests de queries/pages ; `E2E-MOCK` `home.spec.ts` | Prouvé avec fixtures ; réconciliation réelle progression/catalogue non rejouée |
-| Leçons et contenus | Ressources, progression, activité suivante, contenu verrouillé, hors-ligne et tâches | `/program/:programSlug/lesson/:lessonSlug/*`, `/lesson` | `UNIT` tests `features/lessons` ; `E2E-MOCK` chemin critique de `home.spec.ts` | Prouvé avec fixtures ; lecture/écriture réelles non rejouées |
+| Leçons et contenus | Ressources, progression, activité suivante, contenu verrouillé, hors-ligne et tâches | `/program/:programSlug/lesson/:lessonSlug/*` | `UNIT` `src/pages/LessonPage.test.tsx` ; `E2E-MOCK` chemin critique de `home.spec.ts` | Prouvé avec fixtures ; lecture/écriture réelles non rejouées |
 | Activités | Exercices, quiz, évaluations de notion et d'étape, limite de saisie et navigation pédagogique | `/exercise/:exerciseId`, `/quiz`, `/.../assessment` | `UNIT` tests `features/exercises`, quiz, concept/stage assessments et `ExerciseCard` | Couverture composant/serveur disponible ; pas de parcours navigateur complet sur les quatre familles avec backend réel |
-| Notes | Liste, recherche, création, édition, autosave, contexte, clavier et suppression confirmée | `/notes`, `/notes/:noteId` | `UNIT` tests `features/notes` ; `E2E-MOCK` `home.spec.ts` | Prouvé avec API simulée ; persistance réelle non rejouée |
-| Révisions | Liste, ressources associées, marquage terminé et état vide | `/reviews` | `UNIT` tests `features/reviews` | Pas de parcours Playwright dédié de bout en bout ; API réelle non rejouée (`GAP`) |
+| Notes | Liste, recherche, création, édition, autosave, contexte, clavier et suppression confirmée | `/notes`, `/notes/:noteId` | `UNIT` `src/pages/NotesPage.test.tsx` ; `E2E-MOCK` `home.spec.ts` | Prouvé avec API simulée ; persistance réelle non rejouée |
+| Révisions | Liste, ressources associées, marquage terminé et état vide | `/reviews` | `UNIT` `src/pages/ReviewsPage.test.tsx` | Pas de parcours Playwright dédié de bout en bout ; API réelle non rejouée (`GAP`) |
 | Profil | Langue d'interface, identité/session et accès aux crédits | `/profile` | `UNIT` `src/app/App.test.tsx` et tests i18n/session | Aucun test dédié de la page entière ni parcours Playwright dédié (`GAP`) |
 | Crédits utilisateur | Origines offertes/achetées distinctes, total secondaire, réservations et surface de demande | `/credits` | `UNIT` `credits-surfaces.test.ts` et tests serveur du ledger | Pas de test dédié `CreditsPage` ni parcours navigateur avec ledger réel (`GAP`) |
 | Administration | Garde admin, comptes, demandes d'accès, contacts, crédits et hiérarchie programme | `/admin/*` | `UNIT` tests pages/API admin ; `E2E-MOCK` `admin.spec.ts`, `admin-contacts.spec.ts` | Navigation/états prouvés avec mocks ; permissions/persistance réelles non rejouées |
@@ -107,6 +137,24 @@ Elle exige au minimum `DATABASE_URL`, `DIRECT_URL`,
 | Ledger/crédits | lots et origines immuables, priorité, expiration, réserve, règlement/libération, plafond, idempotence et conservation | `UNIT` `server/credits/credit-ledger.test.ts` et tests API crédits | ledger pur 98,27 % ; adaptateur Prisma 5,82 % ; API crédits 47,50 % | Atomicité DB réelle seulement décrite par `tests/integration/credit-ledger.spec.ts`, non exécutée |
 | Progression/évaluations | calcul côté serveur, validations d'étape, recalcul, tentatives et absence d'effet implicite d'une ressource | `UNIT` `lib/progress.test.ts`, tests API progression, stage validation et recalcul | API progression 97,75 % ; recalcul 88,76 % ; API stage assessment 68,65 % | Parcours cumulatif réel avec DB non exécuté |
 | Permissions | session et rôle, capacités admin, périmètre programme, refus d'un utilisateur ordinaire | `UNIT` `capabilities.test.ts`, `program-access-policy.test.ts`, App/auth et API crédits/admin | auth client 91,30 % ; API auth 93,33 % | Matrice multi-utilisateur réelle disponible dans `tests/integration/backend.spec.ts`, non exécutée |
+
+## Contrat visible de correction assistée à préserver
+
+Ces comportements font partie de V4 et ne peuvent pas être réduits à la seule
+réussite d'un appel de correction. Ils sont couverts par
+`src/features/exercises/AiCorrectionPanel.test.tsx` et par les tests serveur
+cités ci-dessus.
+
+| Comportement V4 | Preuve candidate | Gate de parité |
+| --- | --- | --- |
+| devis préalable avec estimation, plafond réservé et seconde passe incluse | test « consentement explicite » | aucun dispatch avant confirmation |
+| avertissement et consentement à la livraison partielle sans compensation | test « consentement explicite » | le consentement reste explicite et antérieur au débit |
+| résultat partiel : critères fiables livrés, critères incertains à retravailler, aucun score exact | test « consentement explicite » | aucune incertitude présentée comme certitude |
+| règlement : réservé, débité et libéré visibles | test « consentement explicite » | les montants proviennent du contrat serveur |
+| retry réseau borné sans nouveau devis ni double facturation | test « relancer la même exécution » | l'idempotence et le devis accepté sont conservés |
+| restauration d'une correction réglée et historique immuable | tests « restaure » et « deux corrections » | aucune nouvelle réservation pour une lecture |
+| comparaison critérielle de plusieurs corrections | test « deux corrections » | comparaison de niveaux, pas de réécriture du passé |
+| contestation argumentée et réexamen distinct | test « argument borné » | argument borné, nouveau devis, un seul réexamen |
 
 ## Matrice appareil, accessibilité et résilience
 
