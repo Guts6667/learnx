@@ -1,5 +1,5 @@
 schema_version: 1
-manifest_version: '1.0.0'
+manifest_version: '1.1.0'
 captured_on: '2026-08-26'
 baseline:
   ref: origin/dev
@@ -18,10 +18,13 @@ invariants:
 status_definitions:
   active_instruction: current instructions for the named scope
   active_backlog: canonical backlog open according to ticket dependencies
+  active_runtime_authority: current runtime identity or contract
+  current_status: current observation without execution authority
   gated_backlog: canonical backlog whose implementation is conditionally closed
   exploratory: hypotheses only; no implementation authority
   navigation_only: routing aid; evidence and source documents prevail
   append_only_evidence: immutable historical evidence; new facts use a new version
+  superseded_evidence: immutable predecessor retained only for provenance
 
 documents:
   - path: AGENTS.md
@@ -92,6 +95,50 @@ documents:
     reviewer: Architecture / Produit
     supersession: append_new_routing_section_or_reviewed_version_bump
 
+  - path: docs/V4_DOCUMENT_STATUS.md
+    scope: v4_document_classification
+    status: active_instruction
+    owner: Architecture / Produit
+    reviewer: Propriétaire
+    supersession: versioned_reviewed_update
+
+  - path: docs/V4_RESEARCH_FINDINGS.md
+    scope: v4_ai_research_readable_status
+    status: current_status
+    owner: Recherche IA
+    reviewer: Produit
+    supersession: append_or_version_without_rewriting_evidence
+
+  - path: docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md
+    scope: v4_ai_research_chronology
+    status: append_only_evidence
+    owner: Recherche IA
+    reviewer: Produit / Finance
+    supersession: append_dated_entry_only
+
+  - path: docs/V4_AI_CORRECTION_PHASE_MANIFEST.json
+    scope: historical_ai_phase_2026_08_13
+    status: append_only_evidence
+    execution_allowed: false
+    owner: Recherche IA
+    reviewer: Architecture
+    supersession: preserved_historical_snapshot
+
+  - path: docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json
+    scope: historical_evidence_assist_phase_2026_08_16
+    status: append_only_evidence
+    execution_allowed: false
+    owner: Recherche IA
+    reviewer: Architecture
+    supersession: preserved_historical_snapshot
+
+  - path: src/server/corrections/promoted-identity.ts
+    scope: v4_bounded_runtime_identity
+    status: active_runtime_authority
+    owner: Backend / Recherche IA
+    reviewer: Produit / Sécurité
+    supersession: explicit_runtime_ticket_and_regression_proof
+
 append_only_families:
   - id: ai_correction_decisions
     paths:
@@ -118,6 +165,90 @@ append_only_families:
       - docs/V4_007_PILOT_CALIBRATION.md
     status: append_only_evidence
     rule: preserve_promoted_contracts_acceptance_and_limits
+
+archive_integrity:
+  audit_ticket: V4.1-004
+  audited_on: '2026-08-26'
+  audited_ref: origin/codex/v4-1-foundation
+  audited_sha: 64691f2f2be3e04c050447cb23a386720487255e
+  archive_root: benchmarks/ai-correction
+  git_tree: ae889cdcd1e5ef9c9ff7318cc9da50de8ce26822
+  tracked_files: 235
+  tracked_bytes: 5121753
+  json_files: 202
+  json_parse_errors: 0
+  aggregate_algorithm: sha256_of_sorted_lines_each_line_file_sha256_two_spaces_path_lf
+  aggregate_sha256: 4687910b53f612584c0b98f709f4d9731c53b590f6e04b4e153f62189cbb0e3c
+  overlapping_families:
+    - id: corpora
+      selection: basename_or_path_contains_corpus_development_or_holdout_v
+      files: 25
+      bytes: 956108
+      aggregate_sha256: 882800e62f9da73ece5a07540ba4dd15ac82373e4f135574727c379f60601ee6
+    - id: holdouts
+      selection: path_contains_holdout
+      files: 35
+      bytes: 717055
+      aggregate_sha256: 837a34d9e7738915392d0d5b0d00f17acb45ae64fe002730b346188627da81a2
+    - id: manifests
+      selection: path_contains_manifest_freeze_preflight_authorization_attestation_or_supersession
+      files: 43
+      bytes: 132355
+      aggregate_sha256: c30eb4937c3a5e5334160aba295d0dff6f0f7d0d20a40d2f743f79bfcd308822
+    - id: results_and_reviews
+      selection: path_contains_result_review_verdict_comparison_decision_or_recommendation
+      files: 103
+      bytes: 3299475
+      aggregate_sha256: e476e9d0d510a180fb4396dccd27da7201076e92baf50e7dc6874ec5be67d024
+  digest_binding_validation:
+    unique_path_sha256_bindings: 145
+    matched_current_bytes: 108
+    matched_git_history: 34
+    unresolved_historical_bindings: 3
+    phase_manifest_direct_bindings: 17
+    phase_manifest_direct_matches: 17
+    checksum_sidecars: 3
+    checksum_sidecar_matches: 3
+    mutation_performed: false
+    unresolved:
+      - source: benchmarks/ai-correction/hybrid/sonnet-v3-1-holdout-v4/manifest.draft.json
+        target: src/lib/ai-correction-benchmark.ts
+        expected_sha256: a0b7d3f23fad85fbbe852f22a26659c4f452f601e75ac6389b2faffd8ee4a22a
+        handling: preserve_historical_binding_without_rewrite
+      - source: benchmarks/ai-correction/hybrid/sonnet-v3-1-holdout-v4/manifest.draft.json
+        target: src/lib/ai-correction-benchmark.test.ts
+        expected_sha256: 15e702fed61d74a7b9bd0aa2afde9e552b1b89b117ec154c6c9f4d05b70c3552
+        handling: preserve_historical_binding_without_rewrite
+      - source: benchmarks/ai-correction/results/2026-08-24T11-20-07-271Z.full-blind-review.mapping.json
+        target: configuration.autonomous.json
+        expected_sha256: 9eac90ee29a45ee888b0ceb3907429891f7d1aadbd06e723d4bba440871658f6
+        handling: preserve_historical_binding_without_rewrite
+  verified_supersessions:
+    - predecessor: benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json
+      predecessor_sha256: 83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2
+      successor: benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json
+      successor_sha256: 5d115db9c0d50dd92a936cf0848c0ebf2fe901ba289f81181dd970867917a46b
+      status: superseded_evidence
+    - predecessor: benchmarks/ai-correction/hybrid/sonnet-v3-1-holdout-v4/manifest.draft.json
+      predecessor_sha256: e483ef8737bba9a1c24ee1bdd43abc579f57a279d85330fbc73b72c64a880bf5
+      successor: benchmarks/ai-correction/hybrid/sonnet-v3-1-holdout-v4/manifest.final.json
+      successor_sha256: d3a46d7876da1220222611b6fcabbb995e970e46935ff8868b63bb2fd7ea3a9f
+      status: superseded_evidence
+    - predecessor: benchmarks/ai-correction/hybrid/sonnet-v3-1-holdout-v4/review-manifest.pending.json
+      predecessor_sha256: 69c1cea58efe6ee34d4b4c2f740aa474cc5abe4fbf795df7071a05b90d3ab4a2
+      successor: benchmarks/ai-correction/hybrid/sonnet-v3-1-holdout-v4/corpus-review.autonomous.json
+      successor_sha256: c00ca54ed2da368676df0c13ff6bcdf30e05d595eb0cf1282c848ddc841acffe
+      status: superseded_evidence
+    - predecessor: benchmarks/ai-correction/hybrid/writing-only-fr-v1/cross-label-comparison.json
+      predecessor_sha256: ab86c250325420729a13312114b3080fe0891380f5835c11a227796c8ab59a2c
+      successor: benchmarks/ai-correction/hybrid/writing-only-fr-v1/cross-label-comparison.corrected.json
+      successor_sha256: 57642f8cd04c4699267b1bd650cf9d6e723160217420f544e5b4a1bbd58ef453
+      status: superseded_evidence
+    - predecessor: benchmarks/ai-correction/hybrid/writing-only-fr-v1/corpus-review.preseal.autonomous.json
+      predecessor_sha256: 37f64e41fd4bf49f2989c1e56ffdd97da095e08ebc17abf74258d457098df5cb
+      successor: benchmarks/ai-correction/hybrid/writing-only-fr-v1/corpus-review.preseal-v2.autonomous.json
+      successor_sha256: 01fc1f9e77be16a3cd18fdbb802fc07c48816f7cb0fe968931b6a0b8dcf5706e
+      status: superseded_evidence
 
 replacement_policy:
   required_fields:
