@@ -1,5 +1,5 @@
-import { QueryObserver } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -35,27 +35,14 @@ interface CompleteReviewResponse {
 }
 
 export function useReviewsQuery() {
-  const queryClient = useAppQueryClient();
-  const observer = useMemo(
-    () =>
-      new QueryObserver<ReviewsResponse>(queryClient, {
-        queryKey: ['reviews'],
-        queryFn: () => apiRequest<ReviewsResponse>('/api/reviews'),
-        staleTime: 0,
-      }),
-    [queryClient],
-  );
-  const [result, setResult] = useState(() => observer.getCurrentResult());
+  const result = useQuery({
+    queryKey: ['reviews'],
+    queryFn: () => apiRequest<ReviewsResponse>('/api/reviews'),
+    staleTime: 0,
+  });
   const [reviews, setReviews] = useState<ReviewItem[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  useEffect(() => {
-    setResult(observer.getCurrentResult());
-    const unsubscribe = observer.subscribe(setResult);
-    void observer.refetch();
-    return unsubscribe;
-  }, [observer]);
 
   useEffect(() => {
     if (!result.data) return;
@@ -89,6 +76,7 @@ export function useReviewsQuery() {
     isPending: result.isPending,
     isLoadingMore,
     loadMore,
+    refetch: result.refetch,
   };
 }
 

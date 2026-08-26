@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { SelectField } from '@/components/ui/SelectField';
 import { Section } from '@/components/ui/Section';
 import {
   useLocaleMutation,
@@ -77,34 +78,22 @@ export function ProfilePage() {
             </div>
           </Section>
           <Section className="px-5 sm:px-6">
-            <label
-              className="ui-text block text-sm font-semibold"
-              htmlFor="profile-locale"
-            >
-              {t('profile.language')}
-            </label>
-            <p
-              className="ui-text-muted mt-1 text-sm leading-6"
-              id="profile-locale-description"
-            >
-              {t('profile.languageDescription')}
-            </p>
-            <select
-              aria-describedby="profile-locale-description"
-              className="ui-field__control mt-3"
+            <SelectField
+              description={t('profile.languageDescription')}
               disabled={localeMutation.isPending}
+              error={
+                localeMutation.error ? t('profile.languageError') : undefined
+              }
               id="profile-locale"
+              label={t('profile.language')}
               onInput={handleLocaleChange}
+              options={[
+                { label: t('profile.languageFrench'), value: 'fr' },
+                { label: t('profile.languageEnglish'), value: 'en' },
+              ]}
               value={locale}
-            >
-              <option value="fr">{t('profile.languageFrench')}</option>
-              <option value="en">{t('profile.languageEnglish')}</option>
-            </select>
-            {localeMutation.error ? (
-              <p className="ui-text-danger mt-2 text-sm" role="alert">
-                {t('profile.languageError')}
-              </p>
-            ) : savedLocale === locale ? (
+            />
+            {savedLocale === locale ? (
               <p className="ui-text-success mt-2 text-sm" role="status">
                 {t('profile.languageSaved')}
               </p>
@@ -169,6 +158,11 @@ export function ProfilePage() {
           >
             {t('profile.logout')}
           </Button>
+          {logoutMutation.error ? (
+            <p className="ui-text-danger text-sm" role="alert">
+              {t('profile.logoutError')}
+            </p>
+          ) : null}
         </Card>
       </div>
     </section>

@@ -652,6 +652,73 @@ describe('App', () => {
     ).toHaveValue('en');
   });
 
+  it('restaure la langue précédente lorsque le serveur refuse la préférence', async () => {
+    window.history.pushState({}, '', '/profile');
+    const user = {
+      displayName: 'Learner',
+      email: 'locale-error@example.com',
+      id: 'user-locale-error',
+      locale: 'fr',
+      role: 'USER',
+    };
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/auth/locale' && init?.method === 'PATCH') {
+        return Promise.resolve(jsonResponse({ error: 'unavailable' }, 503));
+      }
+      return Promise.resolve(jsonResponse({ user }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    const language = await screen.findByRole('combobox', {
+      name: 'Langue de l’interface',
+    });
+    fireEvent.input(language, { target: { value: 'en' } });
+
+    expect(
+      await screen.findByText(
+        'La langue n’a pas pu être enregistrée. Réessayez.',
+      ),
+    ).toHaveAttribute('role', 'alert');
+    expect(
+      screen.getByRole('combobox', { name: 'Langue de l’interface' }),
+    ).toHaveValue('fr');
+    expect(document.documentElement.lang).toBe('fr');
+  });
+
+  it('conserve la session lorsque le serveur ne confirme pas la déconnexion', async () => {
+    window.history.pushState({}, '', '/profile');
+    const user = {
+      displayName: 'Learner',
+      email: 'logout-error@example.com',
+      id: 'user-logout-error',
+      locale: 'fr',
+      role: 'USER',
+    };
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/auth/logout' && init?.method === 'POST') {
+        return Promise.resolve(jsonResponse({ error: 'unavailable' }, 503));
+      }
+      return Promise.resolve(jsonResponse({ user }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Se déconnecter' }),
+    );
+
+    expect(
+      await screen.findByText(
+        'La déconnexion n’a pas pu être confirmée. Votre session reste active.',
+      ),
+    ).toHaveAttribute('role', 'alert');
+    expect(window.location.pathname).toBe('/profile');
+    expect(screen.getByText(user.email)).toBeInTheDocument();
+  });
+
   it('ne propose aucune navigation d’administration au rôle créateur', async () => {
     window.history.pushState({}, '', '/profile');
     vi.stubGlobal(

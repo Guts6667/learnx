@@ -2,9 +2,9 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { QueryState } from '@/components/learnx/QueryState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { Skeleton } from '@/components/ui/Skeleton';
 import {
   type ReviewItem,
   useCompleteReviewMutation,
@@ -153,8 +153,14 @@ export function ReviewsPage() {
       {mutation.error ? (
         <ErrorState description={t('reviews.updateError')} />
       ) : null}
-      {query.isPending ? <Skeleton label={t('reviews.loading')} /> : null}
-      {query.error ? <ErrorState description={t('reviews.loadError')} /> : null}
+      <QueryState
+        error={query.error}
+        errorDescription={t('reviews.loadError')}
+        isPending={query.isPending}
+        loadingLabel={t('reviews.loading')}
+        onRetry={query.refetch}
+        retryLabel={t('common.retry')}
+      />
       {!query.isPending && !query.error && query.data?.reviews.length === 0 ? (
         <EmptyState
           description={t('reviews.empty.description')}

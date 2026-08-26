@@ -3,6 +3,7 @@ import { navigate as route } from '@/app/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { QueryState } from '@/components/learnx/QueryState';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -11,8 +12,6 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
-import { Skeleton } from '@/components/ui/Skeleton';
-import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
 import {
@@ -166,8 +165,14 @@ export function NotesPage() {
         </div>
       </div>
 
-      {query.isPending ? <Skeleton label={t('notes.loading')} /> : null}
-      {query.error ? <ErrorState description={t('notes.loadError')} /> : null}
+      <QueryState
+        error={query.error}
+        errorDescription={t('notes.loadError')}
+        isPending={query.isPending}
+        loadingLabel={t('notes.loading')}
+        onRetry={query.refetch}
+        retryLabel={t('common.retry')}
+      />
       {!query.isPending && !query.error && query.data?.notes.length === 0 ? (
         <EmptyState
           description={
@@ -507,8 +512,19 @@ export function NotePage({ noteId }: { noteId: string }) {
   const query = useNoteQuery(noteId);
   const { t } = useI18n();
 
-  if (query.isPending) return <Spinner label={t('notes.editor.load')} />;
-  if (query.error || !query.data?.note) {
+  if (query.isPending || query.error) {
+    return (
+      <QueryState
+        error={query.error}
+        errorDescription={t('notes.editor.loadError')}
+        isPending={query.isPending}
+        loadingLabel={t('notes.editor.load')}
+        onRetry={query.refetch}
+        retryLabel={t('common.retry')}
+      />
+    );
+  }
+  if (!query.data?.note) {
     return <ErrorState description={t('notes.editor.loadError')} />;
   }
 

@@ -120,6 +120,33 @@ describe('NotesPage', () => {
     ).toBeInTheDocument();
     expect(screen.queryByText(/# Titre/)).not.toBeInTheDocument();
   });
+
+  it('rend une erreur de liste récupérable sans perdre la page', async () => {
+    let attempt = 0;
+    const fetchMock = vi.fn(() => {
+      attempt += 1;
+      return Promise.resolve(
+        attempt === 1
+          ? jsonResponse({ error: 'unavailable' }, 503)
+          : jsonResponse({ notes: [noteResponse().note] }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <NotesPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('Les notes n’ont pas pu être chargées.'),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+
+    expect(await screen.findByText('Ma note')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe('NotePage', () => {

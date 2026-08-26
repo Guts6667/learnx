@@ -92,21 +92,26 @@ export function useLoginMutation() {
 export function useLogoutMutation() {
   const queryClient = useAppQueryClient();
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<unknown>();
 
   const mutateAsync = useCallback(async () => {
     setIsPending(true);
+    setError(undefined);
 
     try {
       await apiRequest<undefined>('/api/auth/logout', { method: 'POST' });
       replacePrivateSessionCache(queryClient, {
         user: null,
       });
+    } catch (requestError) {
+      setError(requestError);
+      throw requestError;
     } finally {
       setIsPending(false);
     }
   }, [queryClient]);
 
-  return { isPending, mutateAsync };
+  return { error, isPending, mutateAsync };
 }
 
 export function useLocaleMutation() {

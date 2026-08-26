@@ -1,5 +1,5 @@
-import { QueryObserver } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -51,28 +51,15 @@ function getNotesPath(
 }
 
 export function useNotesQuery(search: string, lessonId?: string) {
-  const queryClient = useAppQueryClient();
   const path = getNotesPath(search, lessonId);
-  const observer = useMemo(
-    () =>
-      new QueryObserver<NotesResponse>(queryClient, {
-        queryKey: ['notes', search, lessonId ?? ''],
-        queryFn: () => apiRequest<NotesResponse>(path),
-        staleTime: 0,
-      }),
-    [lessonId, path, queryClient, search],
-  );
-  const [result, setResult] = useState(() => observer.getCurrentResult());
+  const result = useQuery({
+    queryKey: ['notes', search, lessonId ?? ''],
+    queryFn: () => apiRequest<NotesResponse>(path),
+    staleTime: 0,
+  });
   const [notes, setNotes] = useState<NoteDetail[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  useEffect(() => {
-    setResult(observer.getCurrentResult());
-    const unsubscribe = observer.subscribe(setResult);
-    void observer.refetch();
-    return unsubscribe;
-  }, [observer]);
 
   useEffect(() => {
     if (!result.data) return;
@@ -106,34 +93,23 @@ export function useNotesQuery(search: string, lessonId?: string) {
     isPending: result.isPending,
     isLoadingMore,
     loadMore,
+    refetch: result.refetch,
   };
 }
 
 export function useNoteQuery(noteId: string) {
-  const queryClient = useAppQueryClient();
-  const observer = useMemo(
-    () =>
-      new QueryObserver<NoteResponse>(queryClient, {
-        queryKey: ['note', noteId],
-        queryFn: () =>
-          apiRequest<NoteResponse>(`/api/notes/${encodeURIComponent(noteId)}`),
-        staleTime: 0,
-      }),
-    [noteId, queryClient],
-  );
-  const [result, setResult] = useState(() => observer.getCurrentResult());
-
-  useEffect(() => {
-    setResult(observer.getCurrentResult());
-    const unsubscribe = observer.subscribe(setResult);
-    void observer.refetch();
-    return unsubscribe;
-  }, [observer]);
+  const result = useQuery({
+    queryKey: ['note', noteId],
+    queryFn: () =>
+      apiRequest<NoteResponse>(`/api/notes/${encodeURIComponent(noteId)}`),
+    staleTime: 0,
+  });
 
   return {
     data: result.data,
     error: result.error,
     isPending: result.isPending,
+    refetch: result.refetch,
   };
 }
 

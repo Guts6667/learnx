@@ -352,6 +352,8 @@ export const frenchMessages = {
   'profile.adminTitle': 'Administration',
   'profile.adminDescription': 'Gérer les parcours et les accès autorisés.',
   'profile.logout': 'Se déconnecter',
+  'profile.logoutError':
+    'La déconnexion n’a pas pu être confirmée. Votre session reste active.',
   'auth.email.label': 'Adresse e-mail',
   'auth.password.label': 'Mot de passe',
   'auth.shell.eyebrow': 'Votre chemin commence ici',
@@ -1563,6 +1565,8 @@ export const englishMessages = {
   'profile.adminTitle': 'Administration',
   'profile.adminDescription': 'Manage learning paths and authorised access.',
   'profile.logout': 'Sign out',
+  'profile.logoutError':
+    'Sign-out could not be confirmed. Your session remains active.',
   'auth.email.label': 'Email address',
   'auth.password.label': 'Password',
   'auth.shell.eyebrow': 'Your path starts here',

@@ -1,5 +1,5 @@
-import { QueryObserver } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -86,32 +86,11 @@ const ownCreditsKey = ['credits', 'own'] as const;
 const adminCreditsKey = ['admin', 'credits'] as const;
 
 function useObservedQuery<T>(path: string, queryKey: readonly unknown[]) {
-  const queryClient = useAppQueryClient();
-  const queryKeySignature = JSON.stringify(queryKey);
-  const stableQueryKey = useMemo<readonly unknown[]>(
-    () => JSON.parse(queryKeySignature) as readonly unknown[],
-    [queryKeySignature],
-  );
-  const observer = useMemo(
-    () =>
-      new QueryObserver<T>(queryClient, {
-        queryFn: () => apiRequest<T>(path),
-        queryKey: stableQueryKey,
-        staleTime: 10_000,
-      }),
-    [path, queryClient, stableQueryKey],
-  );
-  const [result, setResult] = useState(() => observer.getCurrentResult());
-  useEffect(() => {
-    setResult(observer.getCurrentResult());
-    const unsubscribe = observer.subscribe(setResult);
-    void observer.refetch();
-    return unsubscribe;
-  }, [observer]);
-  return {
-    ...result,
-    retry: () => observer.refetch(),
-  };
+  return useQuery({
+    queryFn: () => apiRequest<T>(path),
+    queryKey,
+    staleTime: 10_000,
+  });
 }
 
 export function useOwnCreditsQuery() {
@@ -123,7 +102,7 @@ export function useOwnCreditsQuery() {
     data: result.data?.credits,
     error: result.error,
     isPending: result.isPending,
-    retry: result.retry,
+    refetch: result.refetch,
   };
 }
 
@@ -183,7 +162,6 @@ export function useAdminCreditMembersQuery(input: {
     data: result.data?.page,
     error: result.error,
     isPending: result.isPending,
-    retry: result.retry,
   };
 }
 
@@ -200,7 +178,6 @@ export function useAdminCreditMemberQuery(userId: string | undefined) {
     data: userId ? result.data?.member : undefined,
     error: userId ? result.error : undefined,
     isPending: userId ? result.isPending : false,
-    retry: result.retry,
   };
 }
 
@@ -215,7 +192,6 @@ export function useAdminCreditPoliciesQuery() {
     data: result.data?.policies,
     error: result.error,
     isPending: result.isPending,
-    retry: result.retry,
   };
 }
 
@@ -228,7 +204,6 @@ export function useAdminCorrectionMonitoringQuery() {
     data: result.data?.monitoring,
     error: result.error,
     isPending: result.isPending,
-    retry: result.retry,
   };
 }
 
@@ -241,7 +216,6 @@ export function useAdminCorrectionPreflightQuery() {
     data: result.data?.preflight,
     error: result.error,
     isPending: result.isPending,
-    retry: result.retry,
   };
 }
 

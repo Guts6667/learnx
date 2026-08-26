@@ -144,4 +144,31 @@ describe('ReviewsPage', () => {
       await screen.findByText('Aucune révision en attente'),
     ).toBeInTheDocument();
   });
+
+  it('rend une erreur récupérable par une relance explicite', async () => {
+    let attempt = 0;
+    const fetchMock = vi.fn(() => {
+      attempt += 1;
+      return Promise.resolve(
+        attempt === 1
+          ? jsonResponse({ error: 'unavailable' }, 503)
+          : jsonResponse(reviewsResponse()),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <ReviewsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('Les révisions n’ont pas pu être chargées.'),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+
+    expect(await screen.findByText('Mémoire de travail')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
 });

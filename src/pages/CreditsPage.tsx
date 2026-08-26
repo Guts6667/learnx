@@ -3,10 +3,9 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { ErrorState } from '@/components/ui/ErrorState';
+import { QueryState } from '@/components/learnx/QueryState';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Section } from '@/components/ui/Section';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { Textarea } from '@/components/ui/Textarea';
 import {
   useCreditIncreaseRequestMutation,
@@ -40,8 +39,14 @@ export function CreditsPage() {
         id="credits-title"
         title={t('credits.title')}
       />
-      {query.isPending ? <Skeleton className="h-64" /> : null}
-      {query.error ? <ErrorState description={t('credits.loadError')} /> : null}
+      <QueryState
+        error={query.error}
+        errorDescription={t('credits.loadError')}
+        isPending={query.isPending}
+        loadingLabel={t('common.loading')}
+        onRetry={query.refetch}
+        retryLabel={t('common.retry')}
+      />
       {query.data ? (
         <Card className="totem-credit-balances space-y-0">
           <div className="credit-balance-row">
@@ -114,6 +119,7 @@ export function CreditsPage() {
             <Button
               disabled={reason.trim().length < 8}
               isLoading={mutation.isPending}
+              type="submit"
             >
               {t('credits.increase.submit')}
             </Button>
