@@ -26,9 +26,14 @@ export function CreditsPage() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await mutation.execute(reason);
-    setReason('');
-    setSuccess(true);
+    setSuccess(false);
+    try {
+      await mutation.execute(reason);
+      setReason('');
+      setSuccess(true);
+    } catch {
+      // La mutation conserve l'erreur et le motif pour une reprise explicite.
+    }
   }
 
   return (

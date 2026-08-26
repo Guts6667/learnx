@@ -155,6 +155,49 @@ describe('CreditsPage', () => {
     ).toBeInTheDocument();
   });
 
+  it('conserve le motif et permet de réessayer une demande en échec', async () => {
+    let postAttempt = 0;
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (
+        path === '/api/credits/increase-requests' &&
+        init?.method === 'POST'
+      ) {
+        postAttempt += 1;
+        return Promise.resolve(
+          postAttempt === 1
+            ? jsonResponse({ error: 'unavailable' }, 503)
+            : jsonResponse({ request: { id: 'request-2' } }),
+        );
+      }
+      return Promise.resolve(jsonResponse(creditsResponse()));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    const reason = await screen.findByLabelText('Motif de la demande');
+    fireEvent.input(reason, {
+      target: { value: 'Allocation temporaire pour le pilote privé' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Envoyer la demande' }));
+
+    expect(
+      await screen.findByText('La demande n’a pas pu être envoyée.'),
+    ).toBeInTheDocument();
+    expect(reason).toHaveValue('Allocation temporaire pour le pilote privé');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Envoyer la demande' }));
+    expect(
+      await screen.findByText('Votre demande a été transmise.'),
+    ).toBeInTheDocument();
+    expect(reason).toHaveValue('');
+    expect(postAttempt).toBe(2);
+  });
+
   it('n’affiche aucun formulaire lorsqu’une demande est déjà en attente', async () => {
     vi.stubGlobal(
       'fetch',

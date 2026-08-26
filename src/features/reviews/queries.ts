@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -35,47 +35,46 @@ interface CompleteReviewResponse {
 }
 
 export function useReviewsQuery() {
-  const result = useQuery({
+  const result = useInfiniteQuery({
     queryKey: ['reviews'],
-    queryFn: () => apiRequest<ReviewsResponse>('/api/reviews'),
+    queryFn: ({ pageParam }) =>
+      apiRequest<ReviewsResponse>(
+        pageParam
+          ? `/api/reviews?cursor=${encodeURIComponent(pageParam)}`
+          : '/api/reviews',
+      ),
+    getNextPageParam: (page) => page.nextCursor ?? undefined,
+    initialPageParam: null as string | null,
     staleTime: 0,
   });
-  const [reviews, setReviews] = useState<ReviewItem[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  useEffect(() => {
-    if (!result.data) return;
-    setReviews(result.data.reviews);
-    setNextCursor(result.data.nextCursor);
-  }, [result.data]);
-
-  const loadMore = useCallback(async () => {
-    if (!nextCursor || isLoadingMore) return;
-    setIsLoadingMore(true);
-    try {
-      const page = await apiRequest<ReviewsResponse>(
-        `/api/reviews?cursor=${encodeURIComponent(nextCursor)}`,
-      );
-      setReviews((current) => [
-        ...current,
-        ...page.reviews.filter(
-          (review) => !current.some((existing) => existing.id === review.id),
-        ),
-      ]);
-      setNextCursor(page.nextCursor);
-    } finally {
-      setIsLoadingMore(false);
+  const reviews = useMemo(() => {
+    const uniqueReviews = new Map<string, ReviewItem>();
+    for (const page of result.data?.pages ?? []) {
+      for (const review of page.reviews) uniqueReviews.set(review.id, review);
     }
-  }, [isLoadingMore, nextCursor]);
+    return [...uniqueReviews.values()];
+  }, [result.data?.pages]);
+  const loadMore = useCallback(async () => {
+    if (!result.hasNextPage || result.isFetchingNextPage) return;
+    try {
+      await result.fetchNextPage();
+    } catch {
+      // React Query conserve les pages déjà chargées et expose l'erreur.
+    }
+  }, [result.fetchNextPage, result.hasNextPage, result.isFetchingNextPage]);
+  const lastPage = result.data?.pages.at(-1);
 
   return {
-    data: result.data ? { ...result.data, nextCursor, reviews } : undefined,
-    error: result.error,
-    hasMore: Boolean(nextCursor),
+    data: result.data
+      ? { nextCursor: lastPage?.nextCursor ?? null, reviews }
+      : undefined,
+    error: result.data ? null : result.error,
+    hasMore: result.hasNextPage,
     isPending: result.isPending,
-    isLoadingMore,
+    isLoadingMore: result.isFetchingNextPage,
     loadMore,
+    loadMoreError:
+      result.data && result.isFetchNextPageError ? result.error : null,
     refetch: result.refetch,
   };
 }

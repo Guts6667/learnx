@@ -1,4 +1,10 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { NewNotePage, NotePage, NotesPage } from '@/pages/NotesPage';
@@ -146,6 +152,51 @@ describe('NotesPage', () => {
 
     expect(await screen.findByText('Ma note')).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('conserve les notes chargées et reprend une page suivante en erreur', async () => {
+    let pageAttempt = 0;
+    const nextNote = noteResponse({
+      id: '2dd116ff-8dfa-4734-b4d3-3119461f17ad',
+      title: 'Note suivante',
+    }).note;
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/notes?cursor=page-2') {
+        pageAttempt += 1;
+        return Promise.resolve(
+          pageAttempt === 1
+            ? jsonResponse({ error: 'unavailable' }, 503)
+            : jsonResponse({ nextCursor: null, notes: [nextNote] }),
+        );
+      }
+
+      return Promise.resolve(
+        jsonResponse({
+          nextCursor: 'page-2',
+          notes: [noteResponse().note],
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <NotesPage />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('Ma note')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Afficher plus' }));
+    expect(
+      await screen.findByText(
+        'Les notes suivantes n’ont pas pu être chargées.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Ma note')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+    expect(await screen.findByText('Note suivante')).toBeInTheDocument();
+    await waitFor(() => expect(pageAttempt).toBe(2));
   });
 });
 

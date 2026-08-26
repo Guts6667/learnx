@@ -507,6 +507,8 @@ export const frenchMessages = {
     'Reprenez les notions à renforcer et leurs ressources recommandées.',
   'reviews.loading': 'Chargement des révisions',
   'reviews.loadError': 'Les révisions n’ont pas pu être chargées.',
+  'reviews.loadMoreError':
+    'Les révisions suivantes n’ont pas pu être chargées.',
   'reviews.updateError': 'La révision n’a pas pu être mise à jour.',
   'reviews.empty.title': 'Aucune révision en attente',
   'reviews.empty.description':
@@ -541,6 +543,7 @@ export const frenchMessages = {
   'notes.createError': 'La note n’a pas pu être créée.',
   'notes.loading': 'Chargement des notes',
   'notes.loadError': 'Les notes n’ont pas pu être chargées.',
+  'notes.loadMoreError': 'Les notes suivantes n’ont pas pu être chargées.',
   'notes.noResults.title': 'Aucun résultat',
   'notes.noResults.description': 'Essayez une autre recherche.',
   'notes.empty.title': 'Aucune note',
@@ -1712,6 +1715,7 @@ export const englishMessages = {
     'Revisit concepts that need reinforcement and their recommended resources.',
   'reviews.loading': 'Loading reviews',
   'reviews.loadError': 'Reviews could not be loaded.',
+  'reviews.loadMoreError': 'The next reviews could not be loaded.',
   'reviews.updateError': 'The review could not be updated.',
   'reviews.empty.title': 'No pending reviews',
   'reviews.empty.description':
@@ -1746,6 +1750,7 @@ export const englishMessages = {
   'notes.createError': 'The note could not be created.',
   'notes.loading': 'Loading notes',
   'notes.loadError': 'Notes could not be loaded.',
+  'notes.loadMoreError': 'The next notes could not be loaded.',
   'notes.noResults.title': 'No results',
   'notes.noResults.description': 'Try another search.',
   'notes.empty.title': 'No notes',

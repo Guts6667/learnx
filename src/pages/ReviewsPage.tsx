@@ -227,6 +227,19 @@ export function ReviewsPage() {
               {t('common.loadMore')}
             </Button>
           ) : null}
+          {query.loadMoreError ? (
+            <ErrorState
+              action={
+                <Button
+                  onClick={() => void query.loadMore()}
+                  variant="secondary"
+                >
+                  {t('common.retry')}
+                </Button>
+              }
+              description={t('reviews.loadMoreError')}
+            />
+          ) : null}
         </div>
       ) : null}
     </section>

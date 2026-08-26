@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -51,48 +51,44 @@ function getNotesPath(
 }
 
 export function useNotesQuery(search: string, lessonId?: string) {
-  const path = getNotesPath(search, lessonId);
-  const result = useQuery({
+  const result = useInfiniteQuery({
     queryKey: ['notes', search, lessonId ?? ''],
-    queryFn: () => apiRequest<NotesResponse>(path),
+    queryFn: ({ pageParam }) =>
+      apiRequest<NotesResponse>(
+        getNotesPath(search, lessonId, pageParam ?? undefined),
+      ),
+    getNextPageParam: (page) => page.nextCursor ?? undefined,
+    initialPageParam: null as string | null,
     staleTime: 0,
   });
-  const [notes, setNotes] = useState<NoteDetail[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  useEffect(() => {
-    if (!result.data) return;
-    setNotes(result.data.notes);
-    setNextCursor(result.data.nextCursor);
-  }, [result.data]);
-
-  const loadMore = useCallback(async () => {
-    if (!nextCursor || isLoadingMore) return;
-    setIsLoadingMore(true);
-    try {
-      const page = await apiRequest<NotesResponse>(
-        getNotesPath(search, lessonId, nextCursor),
-      );
-      setNotes((current) => [
-        ...current,
-        ...page.notes.filter(
-          (note) => !current.some((existing) => existing.id === note.id),
-        ),
-      ]);
-      setNextCursor(page.nextCursor);
-    } finally {
-      setIsLoadingMore(false);
+  const notes = useMemo(() => {
+    const uniqueNotes = new Map<string, NoteDetail>();
+    for (const page of result.data?.pages ?? []) {
+      for (const note of page.notes) uniqueNotes.set(note.id, note);
     }
-  }, [isLoadingMore, lessonId, nextCursor, search]);
+    return [...uniqueNotes.values()];
+  }, [result.data?.pages]);
+  const loadMore = useCallback(async () => {
+    if (!result.hasNextPage || result.isFetchingNextPage) return;
+    try {
+      await result.fetchNextPage();
+    } catch {
+      // React Query conserve les pages déjà chargées et expose l'erreur.
+    }
+  }, [result.fetchNextPage, result.hasNextPage, result.isFetchingNextPage]);
+  const lastPage = result.data?.pages.at(-1);
 
   return {
-    data: result.data ? { ...result.data, nextCursor, notes } : undefined,
-    error: result.error,
-    hasMore: Boolean(nextCursor),
+    data: result.data
+      ? { nextCursor: lastPage?.nextCursor ?? null, notes }
+      : undefined,
+    error: result.data ? null : result.error,
+    hasMore: result.hasNextPage,
     isPending: result.isPending,
-    isLoadingMore,
+    isLoadingMore: result.isFetchingNextPage,
     loadMore,
+    loadMoreError:
+      result.data && result.isFetchNextPageError ? result.error : null,
     refetch: result.refetch,
   };
 }

@@ -13,8 +13,12 @@ function jsonResponse(body: unknown, status = 200): Response {
   });
 }
 
-function reviewsResponse() {
+function reviewsResponse(
+  overrides: Record<string, unknown> = {},
+  nextCursor: string | null = null,
+) {
   return {
+    nextCursor,
     reviews: [
       {
         assessmentTitle: 'Mini-évaluation — Mémoire',
@@ -48,6 +52,7 @@ function reviewsResponse() {
         sourceId: assessmentId,
         sourceType: 'CONCEPT_ASSESSMENT',
         status: 'PENDING',
+        ...overrides,
       },
     ],
   };
@@ -170,5 +175,46 @@ describe('ReviewsPage', () => {
 
     expect(await screen.findByText('Mémoire de travail')).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('conserve les révisions chargées et reprend une page suivante en erreur', async () => {
+    let pageAttempt = 0;
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/reviews?cursor=page-2') {
+        pageAttempt += 1;
+        return Promise.resolve(
+          pageAttempt === 1
+            ? jsonResponse({ error: 'unavailable' }, 503)
+            : jsonResponse(
+                reviewsResponse({
+                  conceptTitle: 'Mémoire à long terme',
+                  id: '2dd116ff-8dfa-4734-b4d3-3119461f17ad',
+                }),
+              ),
+        );
+      }
+
+      return Promise.resolve(jsonResponse(reviewsResponse({}, 'page-2')));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <ReviewsPage />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('Mémoire de travail')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Afficher plus' }));
+    expect(
+      await screen.findByText(
+        'Les révisions suivantes n’ont pas pu être chargées.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Mémoire de travail')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+    expect(await screen.findByText('Mémoire à long terme')).toBeInTheDocument();
+    await waitFor(() => expect(pageAttempt).toBe(2));
   });
 });
