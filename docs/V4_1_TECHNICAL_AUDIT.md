@@ -50,12 +50,28 @@ plus lu par cette version de pnpm. L'override déclaré pour
 supportée ou remplacé par une résolution prouvée ; il ne faut pas supposer qu'il
 protège actuellement l'installation.
 
+### Résolution V4.1-007 après l'audit
+
+Le lot qualité a ensuite déplacé les résolutions `nanoid` et `deepmerge-ts`
+dans `pnpm-workspace.yaml`, qui est la configuration effectivement lue. Les
+installations gelées ont été rejouées avec pnpm 10.28.1 et 11.19.0. La
+résolution bornée `deepmerge-ts@<8.0.0 -> 8.0.0` supprime l'avis applicable ;
+`pnpm audit --prod --audit-level high` ne remonte plus de vulnérabilité haute ou
+critique. Cette résolution reste couverte par la CI et ne vaut pas autorisation
+de mise à jour globale des dépendances.
+
 ## Bundle et budgets
 
 La configuration Vite ne déclare ni budget de taille, ni gate de chunks. Aucun
 bundle `dist` versionné n'est disponible dans le worktree, et l'audit n'a pas
 installé de dépendances pour en fabriquer un. La mesure de référence et les
 seuils bloquants appartiennent à V4.1-007.
+
+Le lot V4.1-007 ajoute ensuite une mesure reproductible et sépare l'entrée
+initiale bloquante des chunks différés diagnostiques. Les budgets gelés restent
+ceux du plan propriétaire : 125 kB JS gzip et 25 kB CSS gzip pour l'entrée
+initiale. Le gate final reste volontairement rouge tant que Preact subsiste ou
+que les quatre métriques globales de couverture restent sous 80 %.
 
 La PWA utilise `autoUpdate`, un fallback de navigation, un cache runtime public
 `NetworkFirst` et un script de nettoyage de cache. La migration doit mesurer au
@@ -113,8 +129,9 @@ sécurité et de bundle avant migration.
 ## Décisions de sortie d'audit
 
 1. Ne pas lancer une mise à jour globale des dépendances.
-2. Traiter l'avis `high` et la configuration d'override avant le gate V4.1-007.
-3. Mesurer un bundle reproductible avant de fixer son budget.
+2. Conserver l'override borné et l'audit strict introduits par V4.1-007.
+3. Mesurer le bundle initial à chaque lot et rapporter séparément les chunks
+   différés.
 4. Utiliser les 33 routes client et 19 montages API pour construire V4.1-006.
 5. Décomposer les hotspots uniquement dans les tickets 401 à 404 correspondants.
 6. Conserver migrations, SQL runtime, contrats correction et ledger tant qu'une
