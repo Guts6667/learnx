@@ -1,5 +1,14 @@
 # Backlog V4.5 — correction IA assistée et ouverture commerciale
 
+## Autorité et état
+
+- Version : 1.0.0
+- Statut : **fermé — aucun ticket activable avant GO de V4.1-504**
+- Owner de séquence : Produit
+- Reviewer d'activation : Propriétaire
+- Autorité : ce fichier devient le backlog d'exécution V4.5 uniquement après
+  un GO explicite de V4.1-504.
+
 ## Objet
 
 V4.5 commence après la clôture de V4.1. Elle combine une nouvelle version de
@@ -10,6 +19,32 @@ remboursements et exploitation.
 Les anciens tickets V4-011, V4-013 à V4-015, V4-018 et V4-018A restent des
 références historiques. Ce document devient l'autorité d'exécution de leur
 reprise ; aucune valeur de prix ou de pack n'est activée par sa seule création.
+
+La recherche, les résultats et les décisions V4 restent append-only. Ils
+informent le cadrage mais ne qualifient automatiquement ni un modèle, ni un
+fournisseur, ni une famille, ni un tarif pour V4.5. Chaque nouvelle campagne
+doit être préenregistrée, versionnée et relue sur des preuves fraîches.
+
+## Registre d'exécution
+
+| Ticket | Owner | Reviewer | Dépendances minimales | Statut |
+| --- | --- | --- | --- | --- |
+| V4.5-001 | Recherche IA | Produit / Pédagogie | V4.1-504 | Bloqué — V4.1 ouverte |
+| V4.5-002 | Architecture IA | Sécurité / Recherche IA | V4.5-001 | Bloqué |
+| V4.5-003 | Recherche IA | Reviewer indépendant | V4.5-001, V4.5-002 | Bloqué |
+| V4.5-004 | Recherche IA | Pédagogie / Produit | V4.5-003 | Bloqué |
+| V4.5-005 | Domaine / Pédagogie | Produit / Sécurité | V4.5-001, V4.5-004 | Bloqué |
+| V4.5-006 | Produit / Frontend | QA / Accessibilité | V4.5-005 | Bloqué |
+| V4.5-007 | Finance & Pricing | Produit / Recherche IA | V4.5-003, V4.5-004 | Bloqué |
+| V4.5-008 | Growth / Produit | Sécurité / Finance | V4.5-007 | Bloqué |
+| V4.5-009 | Commerce / Backend | Finance / Sécurité | V4.5-007, V4.5-008 | Bloqué |
+| V4.5-010 | Finance / Support | Juridique / Sécurité | V4.5-009 | Bloqué |
+| V4.5-011 | Exploitation | Recherche IA / Finance | V4.5-004, V4.5-008, V4.5-010 | Bloqué |
+| V4.5-012 | Release engineering | Propriétaire | V4.5-001 à V4.5-011 | Bloqué |
+
+Un changement de statut exige une preuve liée et le verdict du reviewer. La
+seule clôture de V4.1 n'ouvre pas automatiquement une campagne, un essai ou un
+paiement : l'activation du ticket concerné reste explicite.
 
 ## P0 — nouvelle correction IA assistée
 

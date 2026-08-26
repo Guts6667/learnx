@@ -31,8 +31,14 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Limite de saisie V4-010-R2 | `docs/V4_010_R2_INPUT_LIMIT.md` | Gate 1 500/1 501 passé ; refus avant devis et aucun tarif long inventé |
 | Contestation argumentée V4-010-R3 | `docs/V4_010_R3_RECONSIDERATION.md` | Un réexamen maximum, argument 20–500, nouveau devis, même soumission/rubrique et historique immuable |
 | Historique et comparaison V4-010-R4 | `docs/V4_010_R4_HISTORY_COMPARISON.md` | Corrections réglées uniquement, consultation sans nouvel appel et comparaison critérielle |
-| Refondation V4.1 | `V4_1_BACKLOG.md` | Audit, nettoyage, React, shadcn et overhaul à parité fonctionnelle après clôture V4 |
-| Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Nouvelle génération IA, évaluations textuelles, calibration, essai public et paiement après V4.1 |
+| Gouvernance documentaire de migration | `docs/DOCUMENT_MANIFEST.yaml` | Registre V4.1/V4.5/V5 et familles de recherche IA append-only ; les sources nommées gardent leur autorité |
+| Workflow des agents | `docs/AGENT_WORKFLOW.md` | Isolation Git, ownership, revue, validations et handoff ; complète `AGENTS.md` sans le remplacer |
+| Inventaire Git de préparation V4.1 | `docs/GIT_WORKSPACE_MANIFEST.md` | Instantané en lecture seule ; ne vaut jamais autorisation de prune ou suppression |
+| Audit technique de préparation V4.1 | `docs/V4_1_TECHNICAL_AUDIT.md` | Dépendances, sécurité, bundle, routes et dette au SHA released ; constats sans correction automatique |
+| Conservation recherche correction IA | `docs/AI_CORRECTION_RESEARCH_DIGEST.md` | Route vers journaux et preuves ; digest sans autorité scientifique ou runtime |
+| Refondation V4.1 | `V4_1_BACKLOG.md` | Backlog canonique de 27 IDs stables ; V4 est clôturée et V4.1-006 est le prochain ticket prêt |
+| Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Fermé jusqu'au GO explicite V4.1-504 ; nouvelle génération IA, évaluations textuelles, calibration, essai et paiement |
+| Exploration V5 | `V5_CANDIDATES.md` | Conception guidée et analytics restent des candidats sans ticket activable |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |

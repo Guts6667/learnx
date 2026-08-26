@@ -2,13 +2,31 @@
 
 ## Statut
 
-- Version : 0.2.0
+- Version : 0.3.0
 - Statut : **exploratoire — aucun ticket activable avant cadrage et validation V5**
 - Source : arbitrage Produit, pédagogie et Finance & Pricing du 12 août 2026
 
 Ce document conserve les hypothèses à tester pour V5. Il ne modifie pas le
 scope V4, n'autorise aucun appel utilisateur de génération et ne fixe aucun
 prix, modèle ou nombre de leçons.
+
+## Séquençage et gouvernance
+
+- Prérequis de séquence : clôture prouvée de V4.1-504 puis de V4.5-012.
+- Autorité d'activation : Propriétaire, après cadrage Produit distinct.
+- Les identifiants `V5-CANDIDATE-*` et `V5-ANALYTICS-*` ci-dessous ne sont pas
+  des tickets d'implémentation et ne peuvent pas être affectés à un agent.
+- La recherche de conception ne réutilise pas silencieusement les corpus,
+  seuils, prix ou verdicts de correction IA V4/V4.5.
+- Les analytics n'instrumentent aucune donnée avant décision confidentialité,
+  rétention et consentement ; ils ne modifient jamais la progression.
+- Une promotion en backlog V5 crée un nouveau ticket avec owner, reviewer,
+  dépendances, critères d'acceptation, source, statut et rollback.
+
+| Candidat | Owner du cadrage | Reviewer requis | Dépendance de promotion | Statut |
+| --- | --- | --- | --- | --- |
+| V5-CANDIDATE-001 — conception guidée | Produit / Pédagogie | Recherche IA / Finance | V4.5-012 + protocole V5 approuvé | Exploratoire |
+| V5-CANDIDATE-002 — analytics | Produit / Data | Confidentialité / Sécurité | V4.5-012 + contrat de mesure approuvé | Exploratoire |
 
 ## V5-CANDIDATE-001 — Benchmark du pipeline de conception
 

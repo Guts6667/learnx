@@ -1,0 +1,137 @@
+schema_version: 1
+manifest_version: '1.0.0'
+captured_on: '2026-08-26'
+baseline:
+  ref: origin/dev
+  sha: a02ecc3f307af36656fa5cb8a7b62954fdec73e9
+scope: v4_1_v4_5_v5_migration_governance
+
+invariants:
+  routing_entrypoint: docs/INDEX.md
+  archives_are_instructions: false
+  digest_is_execution_authority: false
+  ai_research_is_append_only: true
+  silent_deletion_allowed: false
+  silent_supersession_allowed: false
+  owner_approval_required_for_release_activation: true
+
+status_definitions:
+  active_instruction: current instructions for the named scope
+  active_backlog: canonical backlog open according to ticket dependencies
+  gated_backlog: canonical backlog whose implementation is conditionally closed
+  exploratory: hypotheses only; no implementation authority
+  navigation_only: routing aid; evidence and source documents prevail
+  append_only_evidence: immutable historical evidence; new facts use a new version
+
+documents:
+  - path: AGENTS.md
+    scope: repository_agent_rules
+    status: active_instruction
+    owner: Architecture
+    reviewer: Propriétaire
+    supersession: explicit_reviewed_commit
+
+  - path: docs/INDEX.md
+    scope: documentation_routing
+    status: active_instruction
+    owner: Documentation
+    reviewer: Architecture
+    supersession: update_in_place_with_authority_change_recorded
+
+  - path: docs/AGENT_WORKFLOW.md
+    scope: agent_delivery_workflow
+    status: active_instruction
+    owner: Release engineering
+    reviewer: Architecture
+    supersession: versioned_reviewed_update
+
+  - path: docs/GIT_WORKSPACE_MANIFEST.md
+    scope: v4_1_git_snapshot
+    status: append_only_evidence
+    owner: Architecture / Produit
+    reviewer: Release engineering
+    supersession: add_a_new_dated_snapshot
+
+  - path: docs/V4_1_TECHNICAL_AUDIT.md
+    scope: v4_1_dependencies_security_bundle_routes_debt
+    status: append_only_evidence
+    owner: Architecture
+    reviewer: Sécurité / Frontend platform
+    supersession: add_a_new_dated_audit
+
+  - path: V4_1_BACKLOG.md
+    scope: v4_1_execution
+    status: active_backlog
+    activation_gate: v4_released_and_closed
+    activation_gate_status: satisfied
+    activation_gate_evidence: a02ecc3f307af36656fa5cb8a7b62954fdec73e9
+    owner: Architecture / Produit
+    reviewer: Propriétaire
+    supersession: reviewed_version_bump_preserving_git_history
+
+  - path: V4_5_BACKLOG.md
+    scope: v4_5_execution
+    status: gated_backlog
+    activation_gate: V4.1-504_owner_go
+    owner: Produit
+    reviewer: Propriétaire
+    supersession: reviewed_version_bump_preserving_git_history
+
+  - path: V5_CANDIDATES.md
+    scope: v5_exploration
+    status: exploratory
+    activation_gate: new_v5_backlog_and_owner_go
+    owner: Produit / Pédagogie
+    reviewer: Propriétaire
+    supersession: reviewed_version_bump_preserving_candidate_history
+
+  - path: docs/AI_CORRECTION_RESEARCH_DIGEST.md
+    scope: ai_correction_research_navigation
+    status: navigation_only
+    owner: Recherche IA
+    reviewer: Architecture / Produit
+    supersession: append_new_routing_section_or_reviewed_version_bump
+
+append_only_families:
+  - id: ai_correction_decisions
+    paths:
+      - ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md
+      - BACKLOG_V4.md
+      - docs/V4_RESEARCH_FINDINGS.md
+      - docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md
+      - docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md
+      - docs/V4_AI_CORRECTION_PHASE_MANIFEST.json
+      - docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json
+    status: append_only_evidence
+    rule: preserve_original_and_add_a_versioned_successor
+
+  - id: ai_correction_benchmarks
+    paths:
+      - 'benchmarks/ai-correction/**'
+    status: append_only_evidence
+    rule: preserve_corpora_configs_holdouts_reviews_results_attestations_and_pricing
+
+  - id: ai_correction_runtime_reports
+    paths:
+      - 'docs/V4_FREE_TEXT_CORRECTION_*.md'
+      - 'docs/V4_010_*.md'
+      - docs/V4_007_PILOT_CALIBRATION.md
+    status: append_only_evidence
+    rule: preserve_promoted_contracts_acceptance_and_limits
+
+replacement_policy:
+  required_fields:
+    - previous_path_or_glob
+    - successor_path
+    - reason
+    - owner
+    - reviewer
+    - decision_date
+    - compatibility_or_redirect
+    - rollback
+  forbidden_actions:
+    - delete_during_audit
+    - rewrite_historical_result
+    - promote_digest_as_evidence
+    - activate_gated_backlog_implicitly
+    - infer_obsolescence_from_branch_or_filename

@@ -1,108 +1,453 @@
 # Backlog V4.1 — refondation technique et visuelle
 
-## Objet
+## Autorité et état
 
-V4.1 intervient uniquement après la clôture de V4. Elle remet le workspace et
-la codebase sur des bases simples, documentées et maintenables, puis migre
-Preact vers React et introduit shadcn pour fiabiliser les primitives UI.
+- Version : 1.0.0
+- Date de gel : 26 août 2026
+- Baseline : `origin/dev` à
+  `a02ecc3f307af36656fa5cb8a7b62954fdec73e9`
+- État de la baseline : V4 **released et clôturée** à ce SHA.
+- Statut V4.1 : **actif**, avec ouverture ticket par ticket selon dépendances.
+- Autorité : ce fichier est l'unique backlog d'exécution V4.1.
+- Identifiants : les IDs Airtable sont stables et ne doivent jamais être
+  renumérotés, réutilisés ou interprétés avec un autre livrable.
 
-V4.1 doit conserver la parité fonctionnelle de V4. Elle n'ajoute ni paiement,
-ni évaluation textuelle d'étape, ni nouveau pipeline de correction IA.
+V4.1 conserve la parité fonctionnelle V4. Elle migre Preact vers React,
+introduit shadcn avec le thème Maia, refond les écrans à contrat constant et
+réduit les monolithes techniques. Paiement, nouveau pipeline IA et évaluations
+textuelles d'étape restent en V4.5 ; conception guidée et analytics restent des
+candidats V5.
 
-## Principes bloquants
+## Règles d'exécution
 
-- Auditer avant de supprimer ou migrer.
-- Préserver les contrats métier, données, migrations et historiques V4.
-- Une seule source de vérité par décision ; les documents obsolètes sont
-  archivés ou supprimés avec un manifeste de redirection.
-- Migrer par lots vérifiables, jamais par réécriture globale non auditable.
-- Chaque écran migré conserve ses états, son accessibilité et son responsive.
-- shadcn fournit des primitives maîtrisées ; il ne redéfinit pas le produit ni
-  la direction artistique.
+- L'owner produit les preuves ; un reviewer distinct rend le verdict.
+- Une dépendance est terminée lorsqu'elle est revue et promue, pas seulement
+  présente dans un worktree.
+- Un statut `bloqué` interdit l'implémentation anticipée.
+- Chaque ticket utilise une branche, un worktree et un commit traçables.
+- Aucun nettoyage Git, documentaire ou IA n'est implicite : l'audit préserve,
+  puis une décision explicitement revue autorise éventuellement une mutation.
+- Les contrats métier, migrations, SQL runtime, progression, correction,
+  pricing, ledger et historique restent inchangés sauf ticket qui les nomme.
+- Chaque handoff fournit SHA, fichiers, validations, limites et rollback.
 
-## P0 — audit et assainissement
+## Statuts canoniques
 
-### V4.1-001 — Audit exhaustif du workspace
+- `livré pour revue` : preuve présente sur une branche, non encore promue.
+- `prêt` : dépendances disponibles et ticket activable.
+- `bloqué` : une dépendance nommée reste ouverte.
+- `terminé` : critères acceptés et preuve promue.
 
-- Inventorier branches, worktrees, dépendances, scripts, migrations, routes,
-  composants, styles, tests, documents, artefacts et sources de vérité.
-- Classer chaque élément : actif, dette, doublon, archive, dangereux ou à
-  supprimer après validation.
-- Produire une carte des dépendances et des risques de migration.
+## Lot 000 — gouvernance, audit et baseline
 
-### V4.1-002 — Nettoyage documentaire et backlog canonique
+### V4.1-001 — Snapshot release/worktree/Git
 
-- Conserver le contexte minimal suffisant pour reprendre le projet.
-- Archiver ou supprimer les instructions obsolètes sans effacer l'historique de
-  recherche utile.
-- Reconstituer un backlog ticket par ticket avec responsable, dépendances,
-  critères d'acceptation et statut prouvé.
+- Priorité : P0
+- Owner : Release engineering
+- Reviewer : Architecture / Produit
+- Dépendances : aucune
+- Source : release V4 à `a02ecc3f` ; `AGENTS.md`
+- Statut : **livré pour revue** dans `docs/GIT_WORKSPACE_MANIFEST.md`
+- Critères d'acceptation :
+  - le SHA released, la branche source et l'état V4 clôturé sont enregistrés ;
+  - branches, worktrees et état dirty du worktree principal sont relevés en
+    lecture seule ;
+  - le worktree V4.1 est isolé de tous les worktrees existants ;
+  - aucune suppression, prune, reset, checkout externe ou push n'est exécuté.
 
-### V4.1-003 — Baseline de parité V4
+### V4.1-002 — Audit dépendances/sécurité/bundle/routes/dette
 
-- Geler les parcours critiques et leurs résultats attendus avant migration.
-- Couvrir authentification, parcours, leçons, notes, révisions, corrections,
-  crédits, administration, landing et recherche publique.
-- Capturer les références mobile, desktop, clavier et zoom 200 %.
+- Priorité : P0
+- Owner : Architecture
+- Reviewer : Sécurité / Frontend platform
+- Dépendances : V4.1-001
+- Source : `package.json`, lockfile, Vite, TypeScript, routes et code baseline
+- Statut : **livré pour revue** dans `docs/V4_1_TECHNICAL_AUDIT.md`
+- Critères d'acceptation :
+  - runtime, devDependencies et points de couplage Preact sont inventoriés ;
+  - l'audit sécurité daté expose les avis et overrides réellement appliqués ;
+  - routes client/API, état des mesures bundle et seuils absents sont explicites ;
+  - hotspots et dette sont chiffrés sans mise à jour ou suppression automatique.
 
-## P0 — migration React
+### V4.1-003 — Manifeste branches/worktrees/nettoyage sécurisé
 
-### V4.1-004 — Couche de compatibilité Preact vers React
+- Priorité : P0
+- Owner : Release engineering
+- Reviewer : Propriétaire
+- Dépendances : V4.1-001, V4.1-002
+- Source : registre Git observé ; politique de préservation V4.1
+- Statut : **livré pour revue** dans `docs/GIT_WORKSPACE_MANIFEST.md`
+- Critères d'acceptation :
+  - le manifeste distingue branches protégées, worktrees actifs et entrées
+    `prunable` sans inférer leur obsolescence ;
+  - les commandes de reproduction sont exclusivement en lecture seule ;
+  - toute rationalisation future exige SHA, owner, reviewer, sauvegarde et
+    autorisation explicite ;
+  - le verdict par défaut reste `préserver` et aucun nettoyage n'est exécuté.
 
-- Cartographier APIs Preact, router, hooks, tests et dépendances incompatibles.
-- Définir la stratégie de migration et le rollback sans maintenir durablement
-  deux runtimes concurrents.
-- Valider build, taille du bundle, PWA, SSR éventuel et environnement de test.
+### V4.1-004 — Manifeste documentaire/archive IA
 
-### V4.1-005 — Migration applicative vers React
+- Priorité : P0
+- Owner : Architecture / Produit
+- Reviewer : Documentation / Recherche IA
+- Dépendances : V4.1-001
+- Source : `docs/INDEX.md` ; historique de recherche correction IA
+- Statut : **livré pour revue** dans `docs/DOCUMENT_MANIFEST.yaml` et
+  `docs/AI_CORRECTION_RESEARCH_DIGEST.md`
+- Critères d'acceptation :
+  - les autorités V4.1, V4.5 et V5 ont owner, reviewer et gate explicites ;
+  - corpus, manifests, résultats, revues, décisions et contrats IA sont
+    append-only ;
+  - le digest route vers les preuves sans remplacer leurs verdicts ;
+  - archive, digest et nom de fichier ne deviennent jamais des instructions.
 
-- Migrer providers, routing, composants partagés puis pages par lots.
-- Maintenir TypeScript strict et déplacer la logique métier hors composants.
-- Supprimer la compatibilité Preact seulement après parité complète.
+### V4.1-005 — Airtable/workflow agents
 
-## P0 — shadcn et overhaul
+- Priorité : P0
+- Owner : Architecture / Produit
+- Reviewer : Release engineering
+- Dépendances : V4.1-003, V4.1-004
+- Source : mapping Airtable approuvé ; `AGENTS.md`
+- Statut : **livré pour revue** côté Git dans ce backlog et
+  `docs/AGENT_WORKFLOW.md`
+- Critères d'acceptation :
+  - les IDs `001–007`, `101–104`, `201–203`, `301–305`, `401–404` et
+    `501–504` conservent exactement leurs livrables autoritatifs ;
+  - aucun ID n'est renuméroté ou réutilisé lors d'une synchronisation Airtable ;
+  - le workflow définit affectation, isolation, revue, promotion et handoff ;
+  - aucune écriture Airtable externe n'est réalisée par le lot documentaire Git.
 
-### V4.1-006 — Fondation shadcn contrôlée
+### V4.1-006 — Baseline parité fonctionnelle
 
-- Installer uniquement les primitives réellement utilisées.
-- Relier tokens, focus, contrastes, rayons et états à la direction visuelle
-  LearnX sans importer une esthétique générique.
-- Interdire les composants dupliqués et les variantes locales non documentées.
+- Priorité : P0
+- Owner : QA / Produit
+- Reviewer : Release engineering
+- Dépendances : V4.1-002, V4.1-004, V4.1-005
+- Source : release V4 clôturée ; routes, contrats et suites de tests baseline
+- Statut : **prêt** — V4 clôturée et audits de préparation disponibles
+- Critères d'acceptation :
+  - public, auth, Today, programmes, leçons, activités, notes, reviews, profil,
+    crédits et admin ont leurs résultats attendus ;
+  - corrections, pricing, ledger, progression et permissions ont une preuve de
+    comportement serveur ;
+  - mobile, desktop, clavier, focus, zoom 200 %, reduced motion, PWA et erreurs
+    sont couverts ;
+  - commandes, fixtures, environnement, résultats et écarts connus sont gelés.
 
-### V4.1-007 — Migration des primitives et layouts
+### V4.1-007 — Seuils couverture/sécurité/bundle
 
-- Migrer boutons, champs, dialogues, navigation, tables, formulaires, retours
-  d'état et surfaces éditoriales.
-- Unifier shells mobile/desktop et supprimer les CSS devenus inaccessibles.
-- Conserver une seule action principale et les règles d'accessibilité V4.
+- Priorité : P0
+- Owner : QA / Sécurité / Frontend platform
+- Reviewer : Architecture / Produit
+- Dépendances : V4.1-002, V4.1-006
+- Source : `docs/V4_1_TECHNICAL_AUDIT.md` ; mesures de V4.1-006
+- Statut : **bloqué** — dépendance V4.1-006
+- Critères d'acceptation :
+  - la méthode de couverture et la trajectoire vers V4.1-501 sont gelées ;
+  - un avis `high` applicable bloque la release ou possède une exception revue,
+    bornée et datée ;
+  - budgets JS, CSS, chunks, précache et régression sont dérivés d'une mesure
+    reproductible, jamais inventés ;
+  - les gates CI, signaux d'arrêt et rollback sont documentés avant migration.
 
-### V4.1-008 — Overhaul progressif des écrans
+## Lot 100 — migration React
 
-- Reprendre les écrans par parcours utilisateur, avec validation visuelle avant
-  le lot suivant.
-- Ne jamais modifier un contrat métier pour faciliter un composant UI.
-- Documenter toute divergence approuvée.
+### V4.1-101 — Fondation React/Vite/TS
 
-## P1 — clôture de refondation
+- Priorité : P0
+- Owner : Frontend platform
+- Reviewer : Architecture frontend
+- Dépendances : V4.1-006, V4.1-007
+- Source : audit V4.1-002 ; gates V4.1-007
+- Statut : **bloqué** — dépendances V4.1-006 et V4.1-007
+- Critères d'acceptation :
+  - React et React DOM deviennent le runtime UI configuré par Vite ;
+  - JSX, types, aliases et montage racine restent TypeScript strict ;
+  - la compatibilité Preact éventuelle est inventoriée, bornée et réversible ;
+  - lint, typecheck, tests smoke, build et budgets V4.1-007 passent.
 
-### V4.1-009 — Réduction de dette et performances
+### V4.1-102 — Routeur/navigations
 
-- Supprimer dépendances, styles, composants et feature flags devenus inutiles.
-- Mesurer bundle, rendu, requêtes, accessibilité et stabilité PWA.
-- Corriger les régressions avant toute nouvelle fonctionnalité V4.5.
+- Priorité : P0
+- Owner : Frontend application
+- Reviewer : Produit / Accessibilité
+- Dépendances : V4.1-101
+- Source : 33 routes client et baseline V4.1-006
+- Statut : **bloqué** — dépendance V4.1-101
+- Critères d'acceptation :
+  - URLs, paramètres, liens profonds, redirections et page 404 sont identiques ;
+  - gardes public, authentifié et admin conservent leurs permissions ;
+  - back, scroll, focus après navigation et analytics autorisés sont testés ;
+  - aucun routeur concurrent ou écran dupliqué ne reste après le lot.
 
-### V4.1-010 — Gate de release V4.1
+### V4.1-103 — Providers React/React Query/i18n/PWA
 
-- Rejouer la baseline V4 et les parcours critiques sur environnements réels.
-- Produire rapport de migration, dette résiduelle, rollback et nouvelle carte
-  documentaire.
-- V4.5 reste fermée tant que la parité fonctionnelle n'est pas démontrée.
+- Priorité : P0
+- Owner : Frontend platform
+- Reviewer : Backend / PWA / i18n
+- Dépendances : V4.1-101, V4.1-102
+- Source : providers et requêtes baseline ; configuration PWA et catalogues
+- Statut : **bloqué** — dépendances V4.1-101 et V4.1-102
+- Critères d'acceptation :
+  - React Query remplace l'usage direct de query-core avec clés et invalidations
+    équivalentes ;
+  - providers session, erreur, i18n et données gardent leurs contrats typés ;
+  - PWA install, offline, update, cache et récupération restent vérifiés ;
+  - aucune autorité métier ne migre du serveur vers un provider client.
+
+### V4.1-104 — Testing Library Preact→React
+
+- Priorité : P0
+- Owner : QA automation
+- Reviewer : Frontend platform
+- Dépendances : V4.1-101, V4.1-102, V4.1-103
+- Source : suites `@testing-library/preact` et baseline V4.1-006
+- Statut : **bloqué** — dépendances V4.1-101 à V4.1-103
+- Critères d'acceptation :
+  - helpers, render, événements et tests passent sous Testing Library React ;
+  - assertions métier, a11y et navigation sont conservées ;
+  - aucun test n'est supprimé, affaibli ou ignoré pour obtenir un résultat vert ;
+  - flakes et différences d'ordonnancement React sont mesurés puis résolus.
+
+## Lot 200 — shadcn Maia et layouts
+
+### V4.1-201 — shadcn Maia/tokens
+
+- Priorité : P0
+- Owner : Design systems
+- Reviewer : Direction artistique / Accessibilité
+- Dépendances : V4.1-007, V4.1-101
+- Source : direction Totem/Maia promue ; seuils V4.1-007
+- Statut : **bloqué** — dépendances V4.1-007 et V4.1-101
+- Critères d'acceptation :
+  - shadcn est initialisé avec la direction Maia sans esthétique générique ;
+  - couleurs, typo, espaces, rayons, ombres, focus et motion sont tokenisés ;
+  - seules les primitives réellement consommées sont ajoutées au dépôt ;
+  - tokens et composants restent génériques à tous les programmes LearnX.
+
+### V4.1-202 — Primitives/forms/dialogues/tables/states
+
+- Priorité : P0
+- Owner : Design systems
+- Reviewer : QA / Accessibilité
+- Dépendances : V4.1-201
+- Source : inventaire UI V4.1-006 ; fondation V4.1-201
+- Statut : **bloqué** — dépendance V4.1-201
+- Critères d'acceptation :
+  - boutons, liens, champs, formulaires, dialogues et tables sont unifiés ;
+  - états chargement, vide, succès, erreur, indisponible et interdit existent ;
+  - clavier, focus, libellés, erreurs et restauration du focus sont testés ;
+  - doublons et CSS ne sont retirés qu'après preuve d'absence de consommateur.
+
+### V4.1-203 — Shells/navigation/responsive
+
+- Priorité : P0
+- Owner : Frontend application
+- Reviewer : Produit / Accessibilité
+- Dépendances : V4.1-102, V4.1-202
+- Source : navigation V4.1-102 ; primitives V4.1-202
+- Statut : **bloqué** — dépendances V4.1-102 et V4.1-202
+- Critères d'acceptation :
+  - shells public, authentifié et admin partagent les primitives approuvées ;
+  - navigation mobile/desktop conserve hiérarchie, repères et action primaire ;
+  - 320, 390, 720, 1440 et 1920 px, clavier et zoom 200 % sont testés ;
+  - landmarks, skip links, focus et reduced motion sont conformes.
+
+## Lot 300 — migration des surfaces
+
+### V4.1-301 — Auth/public
+
+- Priorité : P0
+- Owner : Frontend application
+- Reviewer : Sécurité / Produit
+- Dépendances : V4.1-103, V4.1-104, V4.1-203
+- Source : baseline auth/public V4.1-006
+- Statut : **bloqué** — dépendances V4.1-103, V4.1-104 et V4.1-203
+- Critères d'acceptation :
+  - landing, intérêt, login, demande d'accès, vérification et activation migrent ;
+  - sessions, redirections, messages et protections anti-abus restent identiques ;
+  - états clavier, responsive, erreur et reprise sont couverts ;
+  - le lot se rollbacke sans mutation de comptes ou de données.
+
+### V4.1-302 — Today/programmes/leçons
+
+- Priorité : P0
+- Owner : Frontend application
+- Reviewer : Domaine / Produit
+- Dépendances : V4.1-103, V4.1-104, V4.1-203
+- Source : baseline parcours V4.1-006
+- Statut : **bloqué** — dépendances V4.1-103, V4.1-104 et V4.1-203
+- Critères d'acceptation :
+  - Today, annuaire, découverte, programme, étape, module et leçon migrent ;
+  - `Program > Stage > Module > Lesson` et URLs restent inchangés ;
+  - progression, avance/retard, maîtrise et durée restent des autorités serveur ;
+  - états longs, vides, indisponibles et responsive passent la baseline.
+
+### V4.1-303 — Exercises/quiz/assessments/correction
+
+- Priorité : P0
+- Owner : Frontend application
+- Reviewer : Pédagogie / Backend / Recherche IA
+- Dépendances : V4.1-103, V4.1-104, V4.1-202, V4.1-302
+- Source : contrats d'évaluation et correction V4 ; baseline V4.1-006
+- Statut : **bloqué** — dépendances non terminées
+- Critères d'acceptation :
+  - exercices, quiz, assessments concept/étape et panneaux de correction migrent ;
+  - tentative, score, maîtrise, devis, soumission, abstention et historique
+    gardent leurs contrats ;
+  - une ressource ouverte ou un verdict IA seul ne valide jamais une notion ;
+  - saisie, indisponibilité, reprise, recours et familles autorisées sont testés.
+
+### V4.1-304 — Reviews/notes/profile/credits
+
+- Priorité : P0
+- Owner : Frontend application
+- Reviewer : Produit / Finance / QA
+- Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-302
+- Source : baseline V4.1-006 ; contrats notes, reviews et ledger
+- Statut : **bloqué** — dépendances non terminées
+- Critères d'acceptation :
+  - reviews, liste/édition de notes, profil et crédits migrent sans perte d'état ;
+  - historique, lots offerts/achetés et écritures restent immuables ;
+  - consultation, erreur, reprise et responsive sont couverts ;
+  - aucune vente ou valeur de pack V4.5 n'est activée.
+
+### V4.1-305 — Admin/permissions
+
+- Priorité : P0
+- Owner : Frontend application
+- Reviewer : Sécurité / Produit
+- Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-301
+- Source : routes admin et matrice d'accès V4.1-006
+- Statut : **bloqué** — dépendances non terminées
+- Critères d'acceptation :
+  - accès, comptes, contacts, crédits et gestion pédagogique admin migrent ;
+  - rôle admin, accès interdit et erreurs serveur restent stricts ;
+  - aucune action destructive ne devient implicite ou sans confirmation ;
+  - tables, formulaires, clavier, zoom et grands volumes sont testés.
+
+## Lot 400 — décomposition technique
+
+### V4.1-401 — API/services decomposition
+
+- Priorité : P1
+- Owner : Backend platform
+- Reviewer : Architecture / QA
+- Dépendances : V4.1-301, V4.1-302, V4.1-303, V4.1-304, V4.1-305
+- Source : audit V4.1-002 ; contrats prouvés par les lots 300
+- Statut : **bloqué** — dépendances V4.1-301 à V4.1-305
+- Critères d'acceptation :
+  - handlers, validation, services et repositories ont des frontières explicites ;
+  - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
+  - fonctions et fichiers monolithiques sont scindés par responsabilité ;
+  - tests de contrat prouvent zéro mutation métier silencieuse.
+
+### V4.1-402 — Correction/pricing/ledger decomposition
+
+- Priorité : P0
+- Owner : Backend / Finance
+- Reviewer : Sécurité / Recherche IA
+- Dépendances : V4.1-303, V4.1-304, V4.1-305, V4.1-401
+- Source : contrats V4 correction/pricing/ledger ; audit V4.1-002
+- Statut : **bloqué** — dépendance V4.1-401 et surfaces métier
+- Critères d'acceptation :
+  - orchestration, contrats, fournisseurs, pricing et ledger sont séparés ;
+  - idempotence, devis, réserve, compensation et historique restent identiques ;
+  - aucun prix, modèle, fournisseur ou seuil ne change par la décomposition ;
+  - tests de concurrence, échec partiel et rollback couvrent les frontières.
+
+### V4.1-403 — Prisma multi-file zero SQL
+
+- Priorité : P0
+- Owner : Data / Backend platform
+- Reviewer : DBA / Release engineering
+- Dépendances : V4.1-401, V4.1-402
+- Source : `prisma/schema.prisma`, migrations et audit V4.1-002
+- Statut : **bloqué** — dépendances V4.1-401 et V4.1-402
+- Critères d'acceptation :
+  - le schéma est scindé par domaine avec une configuration Prisma supportée ;
+  - le diff de modèle généré est nul et aucune migration SQL n'est produite ;
+  - les 42 migrations et usages SQL runtime existants restent inchangés ;
+  - generate, validate, seed, clone et répétition de migration sont prouvés.
+
+### V4.1-404 — i18n/CSS/benchmark runner split
+
+- Priorité : P1
+- Owner : Frontend platform / Recherche IA
+- Reviewer : i18n / Design systems / QA
+- Dépendances : V4.1-104, V4.1-203, V4.1-303, V4.1-304, V4.1-305,
+  V4.1-401, V4.1-402, V4.1-403
+- Source : hotspots de l'audit V4.1-002
+- Statut : **bloqué** — dépendances non terminées
+- Critères d'acceptation :
+  - catalogues i18n sont scindés sans clé perdue ni fallback silencieux ;
+  - CSS est réparti par tokens/primitives/surfaces sans changer le rendu ;
+  - bibliothèque et runner benchmark sont séparés sans réécrire les artefacts ;
+  - checks i18n, snapshots, benchmarks validate-only et parité restent verts.
+
+## Lot 500 — gates et release
+
+### V4.1-501 — Coverage 80/90
+
+- Priorité : P0
+- Owner : QA automation
+- Reviewer : Architecture / Produit
+- Dépendances : V4.1-104, V4.1-301, V4.1-302, V4.1-303, V4.1-304,
+  V4.1-305, V4.1-401, V4.1-402, V4.1-403, V4.1-404
+- Source : seuils V4.1-007 ; suites migrées et modules décomposés
+- Statut : **bloqué** — dépendances non terminées
+- Critères d'acceptation :
+  - la couverture globale atteint au moins 80 % selon la méthode gelée ;
+  - auth, progression, correction, pricing, ledger et permissions atteignent au
+    moins 90 % ;
+  - les seuils sont bloquants en CI et aucun fichier critique n'est exclu ;
+  - tests artificiels sans assertion métier ne comptent pas comme couverture.
+
+### V4.1-502 — Full QA/perf/security/a11y
+
+- Priorité : P0
+- Owner : QA / Release engineering
+- Reviewer : Sécurité / Accessibilité / Produit
+- Dépendances : V4.1-501
+- Source : baseline V4.1-006 ; seuils V4.1-007 ; couverture V4.1-501
+- Statut : **bloqué** — dépendance V4.1-501
+- Critères d'acceptation :
+  - lint, typecheck, tests, e2e, build, PWA et tests d'intégration sont verts ;
+  - bundle, rendu, requêtes et erreurs respectent les budgets ;
+  - audit dépendances, auth, permissions, secrets et données sensibles passent ;
+  - responsive, clavier, focus, contraste, zoom 200 % et reduced motion passent.
+
+### V4.1-503 — Handoff/debt
+
+- Priorité : P0
+- Owner : Architecture / Produit
+- Reviewer : Release engineering
+- Dépendances : V4.1-502
+- Source : preuves de tous les tickets V4.1 antérieurs
+- Statut : **bloqué** — dépendance V4.1-502
+- Critères d'acceptation :
+  - migration, architecture, composants, scripts et documentation sont remis ;
+  - dette résiduelle a owner, priorité, impact, dépendances et date de réexamen ;
+  - aucun alias Preact, flag, composant dupliqué ou risque sans owner ne subsiste ;
+  - handoff contient SHA, validations, limites, exploitation et rollback.
+
+### V4.1-504 — Final preview/rollback/GO/release
+
+- Priorité : P0
+- Owner : Release engineering
+- Reviewer : Propriétaire
+- Dépendances : V4.1-503 et tous les tickets P0 V4.1 terminés
+- Source : handoff V4.1-503 ; preuves des 26 tickets précédents
+- Statut : **bloqué** — dépendance V4.1-503
+- Critères d'acceptation :
+  - preview réelle rejoue la baseline V4 et les parcours critiques ;
+  - rollback code/config/PWA est répété et les données restent compatibles ;
+  - React est l'unique runtime et les seuils V4.1-007/501/502 sont verts ;
+  - le Propriétaire rend un GO explicite, puis la promotion et la release sont
+    tracées séparément ; V4.5 reste fermée avant ce GO.
 
 ## Définition de terminé V4.1
 
-- React est l'unique runtime UI ;
-- les primitives shadcn retenues sont adaptées et documentées ;
-- aucune fonctionnalité V4 n'est perdue ;
-- tests, build, PWA, accessibilité et responsive sont verts ;
-- workspace, backlog et documentation ont une source de vérité explicite ;
-- rollback et dette résiduelle sont documentés.
+V4.1 est terminée uniquement après acceptation et promotion de V4.1-504. Un
+commit local, une preview sans recette ou une documentation préparatoire ne
+suffit pas à déclarer la release close.
