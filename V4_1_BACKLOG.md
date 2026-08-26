@@ -208,7 +208,7 @@ candidats V5.
 - Reviewer : Frontend platform
 - Dépendances : V4.1-101, V4.1-102, V4.1-103
 - Source : suites `@testing-library/preact` et baseline V4.1-006
-- Statut : **en revue** — Testing Library React en place, 950 tests conservés
+- Statut : **en revue** — Testing Library React en place, 953 tests conservés
   et aucun test supprimé ou ignoré pour la migration
 - Critères d'acceptation :
   - helpers, render, événements et tests passent sous Testing Library React ;
@@ -225,8 +225,10 @@ candidats V5.
 - Reviewer : Direction artistique / Accessibilité
 - Dépendances : V4.1-007, V4.1-101
 - Source : direction Totem/Maia promue ; seuils V4.1-007
-- Statut : **en cours** — fondation shadcn Maia et tokens LearnX en worktree
-  dédié, sans migration de surface
+- Statut : **en revue** — fondation shadcn Maia et tokens LearnX intégrés sans
+  migration de surface ; gate baseline complet vert (953 tests), zéro import
+  Preact, zéro cycle, audit production vert, navigation Recherche E2E 3/3 et
+  bundle initial à 112 267 octets JS gzip / 18 307 octets CSS gzip
 - Critères d'acceptation :
   - shadcn est initialisé avec la direction Maia sans esthétique générique ;
   - couleurs, typo, espaces, rayons, ombres, focus et motion sont tokenisés ;
@@ -240,7 +242,8 @@ candidats V5.
 - Reviewer : QA / Accessibilité
 - Dépendances : V4.1-201
 - Source : inventaire UI V4.1-006 ; fondation V4.1-201
-- Statut : **bloqué** — dépendance V4.1-201
+- Statut : **prêt** — dépendance V4.1-201 livrée pour revue ; aucune surface
+  métier ne sera migrée dans ce ticket
 - Critères d'acceptation :
   - boutons, liens, champs, formulaires, dialogues et tables sont unifiés ;
   - états chargement, vide, succès, erreur, indisponible et interdit existent ;
