@@ -1,12 +1,12 @@
-import type { ComponentChildren, JSX } from 'preact';
-import { createPortal } from 'preact/compat';
-import { useEffect, useId, useRef } from 'preact/hooks';
+import type { KeyboardEvent as ReactKeyboardEvent, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
+import { useEffect, useId, useRef } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { useI18n } from '@/i18n';
 
 interface DrawerProps {
-  children: ComponentChildren;
+  children: ReactNode;
   isOpen: boolean;
   onDismiss: () => void;
   returnFocusElement?: HTMLElement | null;
@@ -105,7 +105,7 @@ export function Drawer({
     restoreTriggerFocus();
   }
 
-  function handleKeyDown(event: JSX.TargetedKeyboardEvent<HTMLDivElement>) {
+  function handleKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
@@ -136,7 +136,7 @@ export function Drawer({
 
   return createPortal(
     <div
-      class="ui-drawer-overlay fixed inset-0 z-50 flex min-w-0 items-end md:items-stretch md:justify-end"
+      className="ui-drawer-overlay fixed inset-0 z-50 flex min-w-0 items-end md:items-stretch md:justify-end"
       onClick={(event) => {
         if (event.currentTarget === event.target) dismiss();
       }}
@@ -146,12 +146,12 @@ export function Drawer({
       <div
         aria-labelledby={titleId}
         aria-modal="true"
-        class="ui-drawer-panel min-w-0 w-full max-w-[100vw] max-h-[calc(100dvh-var(--app-navigation-height)-env(safe-area-inset-bottom))] overflow-x-hidden overflow-y-auto border-t px-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] md:h-full md:max-h-none md:max-w-2xl md:border-t-0 md:border-l md:px-6 md:py-6"
+        className="ui-drawer-panel min-w-0 w-full max-w-[100vw] max-h-[calc(100dvh-var(--app-navigation-height)-env(safe-area-inset-bottom))] overflow-x-hidden overflow-y-auto border-t px-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] md:h-full md:max-h-none md:max-w-2xl md:border-t-0 md:border-l md:px-6 md:py-6"
         ref={panelRef}
         role="dialog"
       >
-        <div class="ui-drawer-header sticky top-0 z-10 mb-4 flex min-w-0 items-start justify-between gap-4 border-b py-3 md:mb-6 md:pt-0">
-          <h2 class="text-xl font-medium" id={titleId}>
+        <div className="ui-drawer-header sticky top-0 z-10 mb-4 flex min-w-0 items-start justify-between gap-4 border-b py-3 md:mb-6 md:pt-0">
+          <h2 className="text-xl font-medium" id={titleId}>
             {title}
           </h2>
           <Button

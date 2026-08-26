@@ -1,5 +1,5 @@
-import { QueryObserver } from '@tanstack/query-core';
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { QueryObserver } from '@tanstack/react-query';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';

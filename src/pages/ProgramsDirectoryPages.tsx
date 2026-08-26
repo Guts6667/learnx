@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -40,9 +40,9 @@ export function TotemProgramsPage() {
   return (
     <section
       aria-labelledby="programs-title"
-      class="totem-programs-page page-layout page-layout--work page-shell"
+      className="totem-programs-page page-layout page-layout--work page-shell"
     >
-      <div class="flex min-w-0 items-start justify-between gap-4">
+      <div className="flex min-w-0 items-start justify-between gap-4">
         <PageHeader
           description={t('programs.description')}
           eyebrow={t('programs.eyebrow')}
@@ -51,12 +51,12 @@ export function TotemProgramsPage() {
         />
         <NavigationAction
           aria-label={t('programs.exploreAction')}
-          class="shrink-0"
+          className="shrink-0"
           href="/discover"
           variant="secondary"
         >
           <span aria-hidden="true">⌕</span>
-          <span class="hidden sm:inline">{t('programs.explore')}</span>
+          <span className="hidden sm:inline">{t('programs.explore')}</span>
         </NavigationAction>
       </div>
 
@@ -87,15 +87,15 @@ export function TotemProgramsPage() {
           title={t('programs.emptyMine.title')}
         />
       ) : (
-        <div class="totem-programs-list ui-program-lines">
-          <header class="totem-programs-list__header">
+        <div className="totem-programs-list ui-program-lines">
+          <header className="totem-programs-list__header">
             <h2>{t('programs.status.inProgress')}</h2>
             <span>
               {t('programs.activeCount', { count: programs.data.items.length })}
             </span>
           </header>
           <ul
-            class="ui-list ui-program-list"
+            className="ui-list ui-program-list"
             aria-label={t('programs.enrolledSection')}
           >
             {programs.data.items.map(({ enrollment, program, progress }) => {
@@ -111,24 +111,24 @@ export function TotemProgramsPage() {
                 <li key={enrollment.id}>
                   <a
                     aria-label={`${percent > 0 ? t('common.continue') : t('programs.start')} — ${program.title}`}
-                    class="ui-program-line group"
+                    className="ui-program-line group"
                     href={`/program/${encodeURIComponent(program.slug)}`}
                   >
-                    <div class="min-w-0 flex-1">
-                      <h2 class="text-lg font-semibold group-hover:text-[var(--color-action)]">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-lg font-semibold group-hover:text-[var(--color-action)]">
                         {program.title}
                       </h2>
-                      <p class="ui-text-muted mt-2 text-sm">
+                      <p className="ui-text-muted mt-2 text-sm">
                         {status} · {Math.round(percent)} %
                       </p>
                       {nextAction ? (
-                        <p class="totem-programs-page__next">
+                        <p className="totem-programs-page__next">
                           <strong>{t('today.nextAction')}</strong> ·{' '}
                           {nextAction.title}
                         </p>
                       ) : null}
                       <ProgressBar
-                        class="mt-4"
+                        className="mt-4"
                         label={t('today.progress', {
                           count: Math.round(percent),
                         })}
@@ -136,9 +136,9 @@ export function TotemProgramsPage() {
                         value={percent}
                       />
                     </div>
-                    <span class="ui-program-line__action">
+                    <span className="ui-program-line__action">
                       <span aria-hidden="true">›</span>
-                      <span class="sr-only">
+                      <span className="sr-only">
                         {percent > 0
                           ? t('common.continue')
                           : t('programs.start')}
@@ -190,10 +190,10 @@ export function DiscoverProgramsPage() {
   return (
     <section
       aria-labelledby="discover-title"
-      class="totem-discover-page page-layout page-layout--work page-shell"
+      className="totem-discover-page page-layout page-layout--work page-shell"
     >
       <NavigationAction
-        class="discover-back-link"
+        className="discover-back-link"
         href="/program"
         variant="ghost"
       >
@@ -207,29 +207,29 @@ export function DiscoverProgramsPage() {
       />
 
       <form
-        class="discover-search"
+        className="discover-search"
         onSubmit={(event) => {
           event.preventDefault();
           setSearch(searchInput.trim().replace(/\s+/g, ' '));
         }}
       >
-        <label class="ui-field discover-search__field">
-          <span class="ui-field__label">{t('programs.search')}</span>
-          <span aria-hidden="true" class="discover-search__icon">
+        <label className="ui-field discover-search__field">
+          <span className="ui-field__label">{t('programs.search')}</span>
+          <span aria-hidden="true" className="discover-search__icon">
             ⌕
           </span>
           <input
-            class="ui-field__control"
+            className="ui-field__control"
             onInput={(event) => setSearchInput(event.currentTarget.value)}
             placeholder={t('programs.searchPlaceholder')}
             type="search"
             value={searchInput}
           />
         </label>
-        <details class="discover-filters">
+        <details className="discover-filters">
           <summary
             aria-label={t('programs.openFilters')}
-            class="ui-action ui-action--secondary discover-filters__trigger"
+            className="ui-action ui-action--secondary discover-filters__trigger"
             title={t('programs.openFilters')}
           >
             <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -237,16 +237,18 @@ export function DiscoverProgramsPage() {
                 d="M4 7h10M18 7h2M10 17h10M4 17h2M14 4v6M10 14v6"
                 fill="none"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-width="1.8"
+                strokeLinecap="round"
+                strokeWidth="1.8"
               />
             </svg>
-            <span class="sr-only">{t('programs.openFilters')}</span>
+            <span className="sr-only">{t('programs.openFilters')}</span>
           </summary>
-          <label class="ui-field discover-filters__panel">
-            <span class="ui-field__label">{t('programs.language.label')}</span>
+          <label className="ui-field discover-filters__panel">
+            <span className="ui-field__label">
+              {t('programs.language.label')}
+            </span>
             <select
-              class="ui-field__control"
+              className="ui-field__control"
               onChange={(event) =>
                 setCatalogLocale(event.currentTarget.value as typeof locale)
               }
@@ -282,10 +284,10 @@ export function DiscoverProgramsPage() {
         />
       ) : (
         <section
-          class="totem-discover-results"
+          className="totem-discover-results"
           aria-labelledby="discover-results-title"
         >
-          <header class="totem-programs-list__header">
+          <header className="totem-programs-list__header">
             <h2 id="discover-results-title">{t('programs.availableTitle')}</h2>
             <span>
               {t('programs.availableCount', {
@@ -293,18 +295,18 @@ export function DiscoverProgramsPage() {
               })}
             </span>
           </header>
-          <ul class="ui-list ui-program-list">
+          <ul className="ui-list ui-program-list">
             {catalog.data.items.map((program) => (
               <li
-                class="ui-program-line border-b border-[var(--color-border)] last:border-b-0"
+                className="ui-program-line border-b border-[var(--color-border)] last:border-b-0"
                 key={program.id}
               >
-                <div class="min-w-0 flex-1">
-                  <h2 class="text-lg font-semibold">{program.title}</h2>
-                  <p class="ui-text-muted mt-2 text-sm leading-6">
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg font-semibold">{program.title}</h2>
+                  <p className="ui-text-muted mt-2 text-sm leading-6">
                     {program.description}
                   </p>
-                  <p class="ui-text-muted mt-3 text-sm">
+                  <p className="ui-text-muted mt-3 text-sm">
                     <ProgramDuration days={program.estimatedDurationDays} /> ·{' '}
                     {t('programs.stageCount', { count: program.stageCount })}
                   </p>
@@ -312,22 +314,22 @@ export function DiscoverProgramsPage() {
                 {program.isEnrolled ? (
                   <NavigationAction
                     aria-label={`${t('programs.open')} — ${program.title}`}
-                    class="discover-result-action"
+                    className="discover-result-action"
                     href={`/program/${encodeURIComponent(program.slug)}`}
                     variant="secondary"
                   >
                     <span aria-hidden="true">↗</span>
-                    <span class="sr-only">{t('programs.open')}</span>
+                    <span className="sr-only">{t('programs.open')}</span>
                   </NavigationAction>
                 ) : (
                   <Button
-                    class="discover-result-action"
+                    className="discover-result-action"
                     isLoading={enrollment.pendingProgramId === program.id}
                     onClick={() => void enroll(program)}
                     variant="secondary"
                   >
                     <span aria-hidden="true">＋</span>
-                    <span class="sr-only">{t('programs.enroll')}</span>
+                    <span className="sr-only">{t('programs.enroll')}</span>
                   </Button>
                 )}
               </li>
@@ -338,7 +340,7 @@ export function DiscoverProgramsPage() {
       {enrollment.error ? (
         <ErrorState description={t('programs.enrollmentError')} />
       ) : null}
-      <p aria-live="polite" class="ui-text-muted text-sm" role="status">
+      <p aria-live="polite" className="ui-text-muted text-sm" role="status">
         {announcement}
       </p>
     </section>

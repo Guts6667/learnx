@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { apiRequest } from '@/lib/api-client';
 import type { UiLocale } from '@/i18n';

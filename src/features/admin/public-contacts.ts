@@ -1,15 +1,12 @@
-import { QueryObserver } from '@tanstack/query-core';
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { QueryObserver } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
 export type PublicLeadPurpose = 'EARLY_ADOPTER' | 'LAUNCH_UPDATES';
 export type PublicLeadStatus =
-  | 'CONFIRMED'
-  | 'DELETED'
-  | 'PENDING_CONFIRMATION'
-  | 'UNSUBSCRIBED';
+  'CONFIRMED' | 'DELETED' | 'PENDING_CONFIRMATION' | 'UNSUBSCRIBED';
 
 export interface PublicContactPurpose {
   confirmedAt: string | null;

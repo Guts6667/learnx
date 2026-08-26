@@ -1,26 +1,26 @@
-import type { ComponentChildren, JSX } from 'preact';
+import type { HTMLAttributes, ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
 interface ListRowProps extends Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  'class'
+  HTMLAttributes<HTMLDivElement>,
+  'className'
 > {
-  aside?: ComponentChildren;
-  children: ComponentChildren;
-  class?: string;
+  aside?: ReactNode;
+  children: ReactNode;
+  className?: string;
 }
 
 export function ListRow({
   aside,
   children,
-  class: className,
+  className,
   ...rowProps
 }: ListRowProps) {
   return (
-    <div {...rowProps} class={classNames('ui-list-row', className)}>
-      <div class="ui-list-row__content">{children}</div>
-      {aside ? <div class="ui-list-row__aside">{aside}</div> : null}
+    <div {...rowProps} className={classNames('ui-list-row', className)}>
+      <div className="ui-list-row__content">{children}</div>
+      {aside ? <div className="ui-list-row__aside">{aside}</div> : null}
     </div>
   );
 }

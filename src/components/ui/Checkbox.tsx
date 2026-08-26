@@ -1,13 +1,13 @@
-import { useId } from 'preact/hooks';
-import type { JSX } from 'preact';
+import { useId } from 'react';
+import type { InputHTMLAttributes } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
 interface CheckboxProps extends Omit<
-  JSX.InputHTMLAttributes<HTMLInputElement>,
-  'class' | 'id' | 'type'
+  InputHTMLAttributes<HTMLInputElement>,
+  'className' | 'id' | 'type'
 > {
-  class?: string;
+  className?: string;
   description?: string;
   error?: string;
   id?: string;
@@ -15,7 +15,7 @@ interface CheckboxProps extends Omit<
 }
 
 export function Checkbox({
-  class: className,
+  className,
   description,
   error,
   id,
@@ -28,23 +28,23 @@ export function Checkbox({
   const messageId = message ? `${inputId}-message` : undefined;
 
   return (
-    <div class={classNames('ui-field', className)}>
-      <div class="flex items-start gap-3">
+    <div className={classNames('ui-field', className)}>
+      <div className="flex items-start gap-3">
         <input
           {...inputProps}
           aria-describedby={messageId}
           aria-invalid={Boolean(error) || undefined}
-          class="ui-checkbox mt-0.5"
+          className="ui-checkbox mt-0.5"
           id={inputId}
           type="checkbox"
         />
-        <label class="ui-field__label leading-5" for={inputId}>
+        <label className="ui-field__label leading-5" htmlFor={inputId}>
           {label}
         </label>
       </div>
       {message ? (
         <p
-          class={classNames(
+          className={classNames(
             'ui-field__message',
             error && 'ui-field__message--error',
           )}

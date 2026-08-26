@@ -1,6 +1,6 @@
-import { createContext } from 'preact';
-import type { ComponentChildren } from 'preact';
-import { useContext, useEffect, useMemo, useState } from 'preact/hooks';
+import { createContext } from 'react';
+import type { ReactNode } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
 import type { MessageKey } from '@/i18n/catalogs';
 import {
@@ -16,7 +16,7 @@ interface I18nContextValue {
 }
 
 interface I18nProviderProps {
-  children: ComponentChildren;
+  children: ReactNode;
   locale?: UiLocale;
 }
 

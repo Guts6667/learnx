@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/query-core';
+import { QueryClient } from '@tanstack/react-query';
 
 import {
   replacePrivateSessionCache,
@@ -41,9 +41,7 @@ describe('private session cache isolation', () => {
     expect(
       queryClient.getQueryData(['lesson-progress', 'lesson-1']),
     ).toBeUndefined();
-    expect(queryClient.getQueryData(['session'])).toEqual(
-      authenticatedSession,
-    );
+    expect(queryClient.getQueryData(['session'])).toEqual(authenticatedSession);
     expect(
       window.localStorage.getItem('learnx:lesson-activity:lesson-1'),
     ).toBeNull();
@@ -56,11 +54,16 @@ describe('private session cache isolation', () => {
     queryClient.setQueryData(['quiz-attempts', 'quiz-1'], {
       attempts: [{ id: 'attempt-1' }],
     });
-    window.localStorage.setItem('learnx:lesson-activity:lesson-1', 'quiz:quiz-1');
+    window.localStorage.setItem(
+      'learnx:lesson-activity:lesson-1',
+      'quiz:quiz-1',
+    );
 
     replacePrivateSessionCache(queryClient, { user: null });
 
-    expect(queryClient.getQueryData(['quiz-attempts', 'quiz-1'])).toBeUndefined();
+    expect(
+      queryClient.getQueryData(['quiz-attempts', 'quiz-1']),
+    ).toBeUndefined();
     expect(queryClient.getQueryData(['session'])).toEqual({ user: null });
     expect(window.localStorage.length).toBe(0);
   });

@@ -1,5 +1,5 @@
-import type { ComponentChildren } from 'preact';
-import { useId } from 'preact/hooks';
+import type { ReactNode } from 'react';
+import { useId } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 import { Spinner } from '@/components/ui/Spinner';
@@ -7,9 +7,9 @@ import { Spinner } from '@/components/ui/Spinner';
 export type StatePanelStatus = 'empty' | 'loading' | 'error' | 'safe';
 
 interface StatePanelProps {
-  action?: ComponentChildren;
-  children: ComponentChildren;
-  class?: string;
+  action?: ReactNode;
+  children: ReactNode;
+  className?: string;
   status: StatePanelStatus;
   title: string;
 }
@@ -18,7 +18,7 @@ interface StatePanelProps {
 export function StatePanel({
   action,
   children,
-  class: className,
+  className,
   status,
   title,
 }: StatePanelProps) {
@@ -30,7 +30,7 @@ export function StatePanel({
     <section
       aria-busy={isLoading || undefined}
       aria-labelledby={titleId}
-      class={classNames(
+      className={classNames(
         'ui-state-panel',
         `ui-state-panel--${status}`,
         className,
@@ -38,14 +38,14 @@ export function StatePanel({
       role={role}
     >
       {isLoading ? (
-        <Spinner class="ui-state-panel__spinner" isDecorative />
+        <Spinner className="ui-state-panel__spinner" isDecorative />
       ) : null}
-      <div class="min-w-0">
-        <h2 class="ui-state-panel__title" id={titleId}>
+      <div className="min-w-0">
+        <h2 className="ui-state-panel__title" id={titleId}>
           {title}
         </h2>
-        <div class="ui-state-panel__content">{children}</div>
-        {action ? <div class="ui-state-panel__action">{action}</div> : null}
+        <div className="ui-state-panel__content">{children}</div>
+        {action ? <div className="ui-state-panel__action">{action}</div> : null}
       </div>
     </section>
   );

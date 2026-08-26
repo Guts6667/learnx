@@ -1,11 +1,11 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';
 
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Spinner } from '@/components/ui/Spinner';
 import { useSessionQuery } from '@/features/auth/session';
 import { useI18n } from '@/i18n';
 
-export function AdminRoute({ children }: { children: ComponentChildren }) {
+export function AdminRoute({ children }: { children: ReactNode }) {
   const sessionQuery = useSessionQuery();
   const { t } = useI18n();
 

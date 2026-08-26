@@ -1,4 +1,5 @@
-import { useState } from 'preact/hooks';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { useI18n } from '@/i18n';
@@ -88,7 +89,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
 
   if (request.status !== 'PENDING_APPROVAL') {
     return (
-      <div class="ui-text-muted space-y-2 text-sm">
+      <div className="ui-text-muted space-y-2 text-sm">
         {request.assignedRole ? (
           <p>
             {t('admin.requests.assignedRole', {
@@ -113,7 +114,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
           </Button>
         ) : null}
         {success ? (
-          <p class="text-sm text-[var(--color-success)]" role="status">
+          <p className="text-sm text-[var(--color-success)]" role="status">
             {success}
           </p>
         ) : null}
@@ -125,9 +126,9 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
   }
 
   return (
-    <div class="space-y-4">
+    <div className="space-y-4">
       {!action ? (
-        <div class="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           <Button onClick={() => setAction('APPROVE')}>
             {t('admin.requests.accept')}
           </Button>
@@ -136,12 +137,12 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
           </Button>
         </div>
       ) : (
-        <div class="space-y-4 border-t border-[var(--color-border)] pt-4">
+        <div className="space-y-4 border-t border-[var(--color-border)] pt-4">
           {action === 'APPROVE' ? (
-            <label class="ui-field">
+            <label className="ui-field">
               {t('admin.requests.role')}
               <select
-                class="ui-field__control"
+                className="ui-field__control"
                 onChange={(event) =>
                   setRole(event.currentTarget.value as AssignableRole)
                 }
@@ -165,7 +166,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
             />
           )}
           {!confirmation ? (
-            <div class="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3">
               <Button
                 disabled={action === 'REJECT' && !reason.trim()}
                 onClick={() => setConfirmation(true)}
@@ -178,11 +179,11 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
               </Button>
             </div>
           ) : (
-            <Card class="space-y-3" tone="muted" role="region">
-              <h3 class="font-medium">
+            <Card className="space-y-3" tone="muted" role="region">
+              <h3 className="font-medium">
                 {t('admin.requests.confirmDecision')}
               </h3>
-              <p class="ui-text-muted text-sm leading-6">
+              <p className="ui-text-muted text-sm leading-6">
                 {action === 'APPROVE'
                   ? t('admin.requests.approvePreview', {
                       role: t(roleLabelKeys[role]),
@@ -191,7 +192,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
                       reason: reason.trim(),
                     })}
               </p>
-              <div class="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3">
                 <Button
                   isLoading={mutation.isPending}
                   onClick={() => void applyDecision()}
@@ -208,7 +209,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
         </div>
       )}
       {success ? (
-        <p class="text-sm text-[var(--color-success)]" role="status">
+        <p className="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
@@ -230,13 +231,13 @@ function RequestCard({ request }: { request: AdminAccessRequest }) {
 
   return (
     <li>
-      <div class="admin-collection-item space-y-4">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div class="min-w-0">
-            <h2 class="break-words text-lg font-semibold">
+      <div className="admin-collection-item space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="break-words text-lg font-semibold">
               {request.emailNormalized}
             </h2>
-            <p class="ui-text-muted mt-1 text-sm">
+            <p className="ui-text-muted mt-1 text-sm">
               {t('admin.requests.verifiedAt', {
                 date: formatLocalizedDate(request.emailVerifiedAt, locale, {
                   dateStyle: 'medium',
@@ -270,7 +271,7 @@ export function AdminAccessRequestsPage() {
   });
   const { t } = useI18n();
 
-  function submitSearch(event: SubmitEvent) {
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPage(1);
     setSearch(searchInput.trim());
@@ -279,7 +280,7 @@ export function AdminAccessRequestsPage() {
   return (
     <section
       aria-labelledby="access-review-title"
-      class="page-layout page-layout--admin page-shell space-y-6"
+      className="page-layout page-layout--admin page-shell space-y-6"
     >
       <PageHeader
         description={t('admin.requests.description')}
@@ -287,9 +288,9 @@ export function AdminAccessRequestsPage() {
         id="access-review-title"
         title={t('admin.requests.title')}
       />
-      <div class="admin-toolbar">
+      <div className="admin-toolbar">
         <form
-          class="grid gap-3 sm:grid-cols-[1fr_auto]"
+          className="grid gap-3 sm:grid-cols-[1fr_auto]"
           onSubmit={submitSearch}
         >
           <TextField
@@ -298,14 +299,14 @@ export function AdminAccessRequestsPage() {
             type="search"
             value={searchInput}
           />
-          <Button class="self-end" type="submit" variant="secondary">
+          <Button className="self-end" type="submit" variant="secondary">
             {t('programs.searchAction')}
           </Button>
         </form>
-        <label class="ui-field">
-          <span class="ui-field__label">{t('admin.requests.status')}</span>
+        <label className="ui-field">
+          <span className="ui-field__label">{t('admin.requests.status')}</span>
           <select
-            class="ui-field__control"
+            className="ui-field__control"
             onChange={(event) => {
               setPage(1);
               setStatus(event.currentTarget.value as AccessRequestStatus);
@@ -331,17 +332,17 @@ export function AdminAccessRequestsPage() {
         />
       ) : (
         <>
-          <p class="ui-text-muted text-sm">
+          <p className="ui-text-muted text-sm">
             {t('admin.requests.count', { count: query.data.total })}
           </p>
-          <ul class="admin-collection">
+          <ul className="admin-collection">
             {query.data.items.map((request) => (
               <RequestCard key={request.id} request={request} />
             ))}
           </ul>
           <nav
             aria-label={t('admin.requests.pagination')}
-            class="flex items-center justify-between gap-4"
+            className="flex items-center justify-between gap-4"
           >
             <Button
               disabled={page <= 1}
@@ -350,7 +351,7 @@ export function AdminAccessRequestsPage() {
             >
               {t('admin.accounts.previous')}
             </Button>
-            <span class="ui-text-muted text-sm">
+            <span className="ui-text-muted text-sm">
               {t('admin.accounts.page', {
                 page: query.data.page,
                 total: query.data.totalPages,

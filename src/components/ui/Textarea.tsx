@@ -1,13 +1,13 @@
-import { useId } from 'preact/hooks';
-import type { JSX } from 'preact';
+import { useId } from 'react';
+import type { TextareaHTMLAttributes } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
 interface TextareaProps extends Omit<
-  JSX.TextareaHTMLAttributes<HTMLTextAreaElement>,
-  'class' | 'id'
+  TextareaHTMLAttributes<HTMLTextAreaElement>,
+  'className' | 'id'
 > {
-  class?: string;
+  className?: string;
   description?: string;
   error?: string;
   id?: string;
@@ -15,7 +15,7 @@ interface TextareaProps extends Omit<
 }
 
 export function Textarea({
-  class: className,
+  className,
   description,
   error,
   id,
@@ -28,20 +28,20 @@ export function Textarea({
   const messageId = message ? `${textareaId}-message` : undefined;
 
   return (
-    <div class={classNames('ui-field', className)}>
-      <label class="ui-field__label" for={textareaId}>
+    <div className={classNames('ui-field', className)}>
+      <label className="ui-field__label" htmlFor={textareaId}>
         {label}
       </label>
       <textarea
         {...textareaProps}
         aria-describedby={messageId}
         aria-invalid={Boolean(error) || undefined}
-        class="ui-field__control min-h-28 resize-y"
+        className="ui-field__control min-h-28 resize-y"
         id={textareaId}
       />
       {message ? (
         <p
-          class={classNames(
+          className={classNames(
             'ui-field__message',
             error && 'ui-field__message--error',
           )}

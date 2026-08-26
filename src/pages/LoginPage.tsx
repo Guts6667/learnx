@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
-import { useEffect, useState } from 'preact/hooks';
+import { navigate as route } from '@/app/navigation';
+import type { FormEvent } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { actionClassNames } from '@/components/ui/actionStyles';
@@ -34,7 +35,7 @@ export function LoginPage({ path }: LoginPageProps) {
 
   if (sessionQuery.isPending) {
     return (
-      <section class="mx-auto min-h-48 max-w-xl" aria-live="polite">
+      <section className="mx-auto min-h-48 max-w-xl" aria-live="polite">
         <Skeleton label={t('auth.login.sessionCheck')} />
       </section>
     );
@@ -52,7 +53,7 @@ export function LoginPage({ path }: LoginPageProps) {
         ? t('auth.login.error')
         : undefined;
 
-  async function handleSubmit(event: SubmitEvent) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {
@@ -64,7 +65,10 @@ export function LoginPage({ path }: LoginPageProps) {
   }
 
   return (
-    <section aria-labelledby="login-title" class="totem-auth-page page-shell">
+    <section
+      aria-labelledby="login-title"
+      className="totem-auth-page page-shell"
+    >
       <PageHeader
         description={t('auth.login.description')}
         eyebrow={t('auth.login.eyebrow')}
@@ -73,7 +77,7 @@ export function LoginPage({ path }: LoginPageProps) {
       />
       <OfflineBanner isOffline={!isOnline} message={t('auth.login.offline')} />
       <Card>
-        <form class="space-y-5" onSubmit={handleSubmit}>
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <TextField
             autoComplete="email"
             label={t('auth.email.label')}
@@ -93,12 +97,12 @@ export function LoginPage({ path }: LoginPageProps) {
             value={password}
           />
           {errorMessage ? (
-            <p class="ui-text-danger text-sm" role="alert">
+            <p className="ui-text-danger text-sm" role="alert">
               {errorMessage}
             </p>
           ) : null}
           <Button
-            class="w-full"
+            className="w-full"
             disabled={!isOnline}
             isLoading={loginMutation.isPending}
             type="submit"
@@ -106,7 +110,7 @@ export function LoginPage({ path }: LoginPageProps) {
             {t('auth.login.submit')}
           </Button>
           <a
-            class={actionClassNames('secondary', 'md', 'w-full')}
+            className={actionClassNames('secondary', 'md', 'w-full')}
             href="/request-access"
           >
             {t('auth.login.requestAccess')}

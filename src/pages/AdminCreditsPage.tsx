@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
@@ -37,17 +37,17 @@ function MemberRow({
 }) {
   const { locale, t } = useI18n();
   return (
-    <li class="admin-credit-member-row">
+    <li className="admin-credit-member-row">
       <div>
-        <h2 class="font-medium">{member.displayName}</h2>
-        <p class="ui-text-muted mt-1 break-all text-sm">{member.email}</p>
+        <h2 className="font-medium">{member.displayName}</h2>
+        <p className="ui-text-muted mt-1 break-all text-sm">{member.email}</p>
       </div>
       <div>
-        <span class="admin-credit-label">{t('credits.free')}</span>
+        <span className="admin-credit-label">{t('credits.free')}</span>
         <strong>{value(member.projection.free.available, locale)}</strong>
       </div>
       <div>
-        <span class="admin-credit-label">{t('credits.purchased')}</span>
+        <span className="admin-credit-label">{t('credits.purchased')}</span>
         <strong>{value(member.projection.purchased.available, locale)}</strong>
       </div>
       <Badge tone={member.accountStatus === 'ACTIVE' ? 'success' : 'warning'}>
@@ -105,17 +105,17 @@ function AdjustmentDrawer({
       title={t('admin.credits.adjustTitle')}
     >
       {member ? (
-        <div class="space-y-6">
+        <div className="space-y-6">
           <div>
-            <p class="font-medium">{member.displayName}</p>
-            <p class="ui-text-muted mt-1 text-sm">{member.email}</p>
+            <p className="font-medium">{member.displayName}</p>
+            <p className="ui-text-muted mt-1 text-sm">{member.email}</p>
           </div>
-          {detail.isPending ? <Skeleton class="h-48" /> : null}
+          {detail.isPending ? <Skeleton className="h-48" /> : null}
           {detail.error ? (
             <ErrorState description={t('admin.credits.memberError')} />
           ) : null}
           {detail.data ? (
-            <div class="credit-admin-current">
+            <div className="credit-admin-current">
               <div>
                 <span>{t('credits.free')}</span>
                 <strong>
@@ -132,7 +132,7 @@ function AdjustmentDrawer({
           ) : null}
           {step === 'EDIT' ? (
             <form
-              class="space-y-4"
+              className="space-y-4"
               onSubmit={(event) => {
                 event.preventDefault();
                 setStep('REVIEW');
@@ -147,12 +147,12 @@ function AdjustmentDrawer({
                 required
                 value={amount}
               />
-              <label class="ui-field">
-                <span class="ui-field__label">
+              <label className="ui-field">
+                <span className="ui-field__label">
                   {t('admin.credits.operation')}
                 </span>
                 <select
-                  class="ui-field__control"
+                  className="ui-field__control"
                   onInput={(event) => {
                     const next = event.currentTarget.value as
                       'GRANT' | 'REDUCE';
@@ -178,12 +178,12 @@ function AdjustmentDrawer({
                   value={expiresAt}
                 />
               ) : (
-                <label class="ui-field">
-                  <span class="ui-field__label">
+                <label className="ui-field">
+                  <span className="ui-field__label">
                     {t('admin.credits.compensates')}
                   </span>
                   <select
-                    class="ui-field__control"
+                    className="ui-field__control"
                     onInput={(event) =>
                       setCompensatesEntryId(event.currentTarget.value)
                     }
@@ -232,12 +232,15 @@ function AdjustmentDrawer({
           ) : (
             <section
               aria-labelledby="credit-adjustment-summary"
-              class="space-y-4"
+              className="space-y-4"
             >
-              <h3 class="text-xl font-medium" id="credit-adjustment-summary">
+              <h3
+                className="text-xl font-medium"
+                id="credit-adjustment-summary"
+              >
                 {t('admin.credits.summary')}
               </h3>
-              <dl class="credit-adjustment-summary">
+              <dl className="credit-adjustment-summary">
                 <div>
                   <dt>{t('admin.credits.amount')}</dt>
                   <dd>
@@ -269,10 +272,10 @@ function AdjustmentDrawer({
                   <dd>{reason}</dd>
                 </div>
               </dl>
-              <p class="ui-text-muted text-sm leading-6">
+              <p className="ui-text-muted text-sm leading-6">
                 {t('admin.credits.summaryNotice')}
               </p>
-              <div class="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3">
                 <Button
                   isLoading={mutation.isPending}
                   onClick={() => void confirm()}
@@ -284,7 +287,7 @@ function AdjustmentDrawer({
                 </Button>
               </div>
               {mutation.error ? (
-                <p class="ui-text-danger" role="alert">
+                <p className="ui-text-danger" role="alert">
                   {t('admin.credits.adjustError')}
                 </p>
               ) : null}
@@ -312,7 +315,7 @@ export function AdminCreditsPage() {
   const monitoring = useAdminCorrectionMonitoringQuery();
   const correctionPreflight = useAdminCorrectionPreflightQuery();
   return (
-    <section class="page-layout page-layout--admin page-shell space-y-6">
+    <section className="page-layout page-layout--admin page-shell space-y-6">
       <PageHeader
         description={t('admin.credits.description')}
         eyebrow={t('admin.eyebrow')}
@@ -321,12 +324,12 @@ export function AdminCreditsPage() {
       />
       <section
         aria-labelledby="credit-policies-title"
-        class="ui-status-notice space-y-2"
+        className="ui-status-notice space-y-2"
       >
-        <h2 class="font-medium" id="credit-policies-title">
+        <h2 className="font-medium" id="credit-policies-title">
           {t('admin.credits.policiesTitle')}
         </h2>
-        <p class="ui-text-muted text-sm leading-6">
+        <p className="ui-text-muted text-sm leading-6">
           {policies.data?.allocation.some(
             (policy) => policy.status === 'ACTIVE',
           ) ||
@@ -334,34 +337,36 @@ export function AdminCreditsPage() {
             ? t('admin.credits.policiesConfigured')
             : t('admin.credits.policiesInactive')}
         </p>
-        <p class="ui-text-muted text-sm leading-6">
+        <p className="ui-text-muted text-sm leading-6">
           {t('admin.credits.renewalUnavailable')}
         </p>
       </section>
       <section
         aria-labelledby="correction-monitoring-title"
-        class="ui-control-surface rounded-lg p-4 sm:p-6"
+        className="ui-control-surface rounded-lg p-4 sm:p-6"
       >
-        <div class="space-y-2">
-          <h2 class="font-medium" id="correction-monitoring-title">
+        <div className="space-y-2">
+          <h2 className="font-medium" id="correction-monitoring-title">
             {t('admin.credits.monitoringTitle')}
           </h2>
-          <p class="ui-text-muted max-w-3xl text-sm leading-6">
+          <p className="ui-text-muted max-w-3xl text-sm leading-6">
             {t('admin.credits.monitoringDescription')}
           </p>
         </div>
-        {correctionPreflight.isPending ? <Skeleton class="mt-4 h-16" /> : null}
+        {correctionPreflight.isPending ? (
+          <Skeleton className="mt-4 h-16" />
+        ) : null}
         {correctionPreflight.error ? (
-          <div class="mt-4">
+          <div className="mt-4">
             <ErrorState description={t('admin.credits.preflightError')} />
           </div>
         ) : null}
         {correctionPreflight.data ? (
-          <div class="ui-status-notice mt-4 space-y-1" role="status">
-            <p class="font-medium">
+          <div className="ui-status-notice mt-4 space-y-1" role="status">
+            <p className="font-medium">
               {t(`admin.credits.preflight.${correctionPreflight.data.state}`)}
             </p>
-            <p class="ui-text-muted text-sm leading-6">
+            <p className="ui-text-muted text-sm leading-6">
               {t('admin.credits.preflightIdentity', {
                 environment: correctionPreflight.data.deploymentEnvironment,
                 identity: correctionPreflight.data.promotedBenchmarkId,
@@ -369,14 +374,14 @@ export function AdminCreditsPage() {
             </p>
           </div>
         ) : null}
-        {monitoring.isPending ? <Skeleton class="mt-4 h-32" /> : null}
+        {monitoring.isPending ? <Skeleton className="mt-4 h-32" /> : null}
         {monitoring.error ? (
-          <div class="mt-4">
+          <div className="mt-4">
             <ErrorState description={t('admin.credits.monitoringError')} />
           </div>
         ) : null}
         {monitoring.data ? (
-          <dl class="admin-credit-monitoring mt-4">
+          <dl className="admin-credit-monitoring mt-4">
             <div>
               <dt>{t('admin.credits.monitoringCorrections')}</dt>
               <dd>{monitoring.data.totalCorrections}</dd>
@@ -409,7 +414,7 @@ export function AdminCreditsPage() {
         ) : null}
       </section>
       <form
-        class="grid gap-3 sm:grid-cols-[1fr_auto]"
+        className="grid gap-3 sm:grid-cols-[1fr_auto]"
         onSubmit={(event) => {
           event.preventDefault();
           setPage(1);
@@ -422,11 +427,11 @@ export function AdminCreditsPage() {
           type="search"
           value={searchInput}
         />
-        <Button class="self-end" type="submit" variant="secondary">
+        <Button className="self-end" type="submit" variant="secondary">
           {t('programs.searchAction')}
         </Button>
       </form>
-      {query.isPending ? <Skeleton class="h-72" /> : null}
+      {query.isPending ? <Skeleton className="h-72" /> : null}
       {query.error ? (
         <ErrorState description={t('admin.credits.loadError')} />
       ) : null}
@@ -437,7 +442,7 @@ export function AdminCreditsPage() {
         />
       ) : null}
       {query.data?.items.length ? (
-        <ul class="admin-credit-members">
+        <ul className="admin-credit-members">
           {query.data.items.map((member) => (
             <MemberRow
               isSelected={selectedMember?.userId === member.userId}
@@ -449,7 +454,7 @@ export function AdminCreditsPage() {
         </ul>
       ) : null}
       {query.data && query.data.totalPages > 1 ? (
-        <nav aria-label={t('admin.accounts.pagination')} class="flex gap-3">
+        <nav aria-label={t('admin.accounts.pagination')} className="flex gap-3">
           <Button
             disabled={page <= 1}
             onClick={() => setPage(page - 1)}

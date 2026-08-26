@@ -1,7 +1,7 @@
 import { classNames } from '@/components/ui/classNames';
 
 interface ProgressBarProps {
-  class?: string;
+  className?: string;
   label: string;
   max?: number;
   showValue?: boolean;
@@ -13,7 +13,7 @@ function clamp(value: number, min: number, max: number) {
 }
 
 export function ProgressBar({
-  class: className,
+  className,
   label,
   max = 100,
   showValue = true,
@@ -24,13 +24,11 @@ export function ProgressBar({
   const percentage = (safeValue / safeMax) * 100;
 
   return (
-    <div class={classNames('space-y-2', className)}>
-      <div class="ui-progress__header">
-        <span class="ui-progress__label">{label}</span>
+    <div className={classNames('space-y-2', className)}>
+      <div className="ui-progress__header">
+        <span className="ui-progress__label">{label}</span>
         {showValue ? (
-          <span class="ui-progress__value">
-            {Math.round(percentage)} %
-          </span>
+          <span className="ui-progress__value">{Math.round(percentage)} %</span>
         ) : null}
       </div>
       <div
@@ -38,13 +36,10 @@ export function ProgressBar({
         aria-valuemax={safeMax}
         aria-valuemin={0}
         aria-valuenow={safeValue}
-        class="ui-progress__track"
+        className="ui-progress__track"
         role="progressbar"
       >
-        <div
-          class="ui-progress__bar"
-          style={{ width: `${percentage}%` }}
-        />
+        <div className="ui-progress__bar" style={{ width: `${percentage}%` }} />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import { render } from 'preact';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import { App } from '@/app/App';
 import '@/styles/index.css';
@@ -9,4 +10,8 @@ if (!root) {
   throw new Error('L’élément racine de l’application est introuvable.');
 }
 
-render(<App />, root);
+createRoot(root).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { AdminAccountsPage } from '@/pages/AdminAccountsPage';
@@ -86,7 +86,9 @@ describe('AdminAccountsPage', () => {
     );
 
     expect(await screen.findByText('learner@example.com')).toBeInTheDocument();
-    expect(screen.getByText('Compte administrateur courant')).toBeInTheDocument();
+    expect(
+      screen.getByText('Compte administrateur courant'),
+    ).toBeInTheDocument();
     expect(
       screen.getAllByRole('button', { name: 'Suspendre le compte' }),
     ).toHaveLength(1);
@@ -120,7 +122,9 @@ describe('AdminAccountsPage', () => {
         name: 'Attribuer le rôle Créateur',
       }),
     );
-    expect(screen.getByText(/aucun accès à l’administration/)).toHaveTextContent(
+    expect(
+      screen.getByText(/aucun accès à l’administration/),
+    ).toHaveTextContent(
       /ni création, ni édition, ni prévisualisation, ni publication avant V5/,
     );
     fireEvent.click(screen.getByRole('button', { name: 'Confirmer' }));
@@ -165,7 +169,9 @@ describe('AdminAccountsPage', () => {
     fireEvent.click(
       await screen.findByRole('button', { name: 'Rétrograder en Apprenant' }),
     );
-    expect(screen.getByText(/notes, progressions, tentatives/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/notes, progressions, tentatives/),
+    ).toBeInTheDocument();
   });
 
   it('confirme une suspension en annonçant la révocation et la conservation', async () => {
@@ -198,7 +204,9 @@ describe('AdminAccountsPage', () => {
       await screen.findByRole('button', { name: 'Suspendre le compte' }),
     );
     expect(screen.getByText('Confirmer la suspension')).toBeInTheDocument();
-    expect(screen.getByText(/notes, progressions, tentatives/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/notes, progressions, tentatives/),
+    ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Confirmer' }));
 
     await vi.waitFor(() => {

@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState } from 'react';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -48,10 +48,10 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
 
   if (submission.status === 'SUBMITTED') {
     return (
-      <div class="exercise-submission space-y-4">
-        <div class="exercise-submission__meta">
+      <div className="exercise-submission space-y-4">
+        <div className="exercise-submission__meta">
           <Badge tone="success">{t('exercise.submitted')}</Badge>
-          <p class="ui-text-muted text-sm">
+          <p className="ui-text-muted text-sm">
             {t('exercise.submittedAt', {
               date: submission.submittedAt
                 ? formatSubmissionDate(submission.submittedAt, locale)
@@ -59,8 +59,8 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
             })}
           </p>
         </div>
-        <section class="exercise-submission__response">
-          <p class="page-eyebrow">{t('exercise.answerMarkdown')}</p>
+        <section className="exercise-submission__response">
+          <p className="page-eyebrow">{t('exercise.answerMarkdown')}</p>
           <pre>{submission.contentMarkdown}</pre>
         </section>
         {exercise.aiCorrectionEligible ? (
@@ -82,7 +82,7 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
   }
 
   return (
-    <div class="space-y-4">
+    <div className="space-y-4">
       <Badge tone="neutral">{t('common.draft')}</Badge>
       <Textarea
         description={
@@ -112,8 +112,8 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
         onInput={(event) => setContentMarkdown(event.currentTarget.value)}
         value={contentMarkdown}
       />
-      <p class="ui-text-muted text-sm">{t('exercise.markdownHelp')}</p>
-      <div class="flex flex-wrap gap-3">
+      <p className="ui-text-muted text-sm">{t('exercise.markdownHelp')}</p>
+      <div className="flex flex-wrap gap-3">
         <Button
           disabled={isOverLimit}
           isLoading={mutation.isPending}
@@ -131,7 +131,7 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
         </Button>
       </div>
       {mutation.error ? (
-        <p class="ui-text-danger text-sm" role="alert">
+        <p className="ui-text-danger text-sm" role="alert">
           {t('exercise.saveError')}
         </p>
       ) : null}
@@ -163,9 +163,9 @@ export function ExerciseCard({
 }) {
   const { t } = useI18n();
   return (
-    <Card class="space-y-4">
-      <div class="flex items-start justify-between gap-3">
-        <h3 class="font-semibold">{exercise.title}</h3>
+    <Card className="space-y-4">
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="font-semibold">{exercise.title}</h3>
         <Badge tone={exercise.isRequired ? 'warning' : 'neutral'}>
           {exercise.isRequired ? t('common.required') : t('exercise.optional')}
         </Badge>
@@ -174,9 +174,9 @@ export function ExerciseCard({
       {isLessonPublished ? (
         <PublishedExerciseCard exerciseId={exercise.id} />
       ) : (
-        <div class="space-y-2">
+        <div className="space-y-2">
           <Badge tone="warning">{t('common.draft')}</Badge>
-          <p class="ui-text-warning text-sm">{t('exercise.preview')}</p>
+          <p className="ui-text-warning text-sm">{t('exercise.preview')}</p>
         </div>
       )}
     </Card>

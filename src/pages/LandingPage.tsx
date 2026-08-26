@@ -1,5 +1,6 @@
-import { useEffect, useLayoutEffect, useState } from 'preact/hooks';
-import { route } from 'preact-router';
+import type { FormEvent } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { navigate as route } from '@/app/navigation';
 
 import { Button } from '@/components/ui/Button';
 import { TextField } from '@/components/ui/TextField';
@@ -21,16 +22,16 @@ function ProgramPreview() {
   return (
     <section
       aria-label={t('landing.preview.program.ariaLabel')}
-      class="landing-product-preview landing-program-preview"
+      className="landing-product-preview landing-program-preview"
     >
-      <header class="landing-preview-header">
+      <header className="landing-preview-header">
         <h2>{t('landing.preview.program.title')}</h2>
         <span>{t('landing.preview.program.activity')}</span>
       </header>
-      <div class="landing-preview-body">
+      <div className="landing-preview-body">
         <nav
           aria-label={t('landing.preview.productNavigation')}
-          class="landing-preview-mini-nav"
+          className="landing-preview-mini-nav"
         >
           <span aria-hidden="true">⌂</span>
           <span aria-current="page" aria-hidden="true">
@@ -39,21 +40,21 @@ function ProgramPreview() {
           <span aria-hidden="true">↻</span>
           <span aria-hidden="true">▤</span>
         </nav>
-        <div class="landing-preview-content">
-          <p class="landing-preview-kicker">
+        <div className="landing-preview-content">
+          <p className="landing-preview-kicker">
             {t('landing.preview.program.nextStep')}
           </p>
           <h3>{t('landing.preview.program.greeting')}</h3>
-          <article class="landing-next-card">
-            <p class="landing-preview-kicker">
+          <article className="landing-next-card">
+            <p className="landing-preview-kicker">
               {t('landing.preview.program.stage')}
             </p>
             <h4>{t('landing.preview.lesson.title')}</h4>
             <p>{t('landing.preview.program.saved')}</p>
-            <div aria-hidden="true" class="landing-preview-progress">
+            <div aria-hidden="true" className="landing-preview-progress">
               <span />
             </div>
-            <span class="landing-preview-next-action">
+            <span className="landing-preview-next-action">
               {t('landing.preview.program.resume')}
               <span aria-hidden="true">→</span>
             </span>
@@ -70,14 +71,14 @@ function LessonPreview() {
   return (
     <section
       aria-label={t('landing.preview.lesson.ariaLabel')}
-      class="landing-product-preview landing-lesson-preview"
+      className="landing-product-preview landing-lesson-preview"
     >
-      <header class="landing-preview-header">
+      <header className="landing-preview-header">
         <span>{t('landing.preview.lesson.type')}</span>
         <span>{t('landing.preview.realContent')}</span>
       </header>
-      <div class="landing-preview-body">
-        <p class="landing-preview-kicker">
+      <div className="landing-preview-body">
+        <p className="landing-preview-kicker">
           {t('landing.preview.lesson.module')}
         </p>
         <h2>{t('landing.preview.lesson.title')}</h2>
@@ -101,7 +102,7 @@ function InterestForm({ purpose }: InterestFormProps) {
   const [motivation, setMotivation] = useState('');
   const early = purpose === 'EARLY_ADOPTER';
 
-  async function submit(event: SubmitEvent) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       await mutation.mutateAsync({
@@ -118,14 +119,14 @@ function InterestForm({ purpose }: InterestFormProps) {
 
   if (mutation.isSuccess) {
     return (
-      <p class="landing-form-status" role="status">
+      <p className="landing-form-status" role="status">
         {t(early ? 'landing.form.successEarly' : 'landing.form.successUpdates')}
       </p>
     );
   }
 
   return (
-    <form class="landing-form" onSubmit={submit}>
+    <form className="landing-form" onSubmit={submit}>
       <TextField
         autoComplete="email"
         label={t('landing.form.email')}
@@ -136,22 +137,22 @@ function InterestForm({ purpose }: InterestFormProps) {
         value={email}
       />
       {early ? (
-        <div class="ui-field">
-          <label class="ui-field__label" for="early-motivation">
+        <div className="ui-field">
+          <label className="ui-field__label" htmlFor="early-motivation">
             {t('landing.form.motivation')}
           </label>
           <textarea
-            class="ui-field__control min-h-32"
+            className="ui-field__control min-h-32"
             id="early-motivation"
-            minlength={20}
-            maxlength={2000}
+            minLength={20}
+            maxLength={2000}
             onInput={(event) => setMotivation(event.currentTarget.value)}
             required
             value={motivation}
           />
         </div>
       ) : null}
-      <label class="landing-consent">
+      <label className="landing-consent">
         <input required type="checkbox" />
         <span>
           {early
@@ -160,14 +161,14 @@ function InterestForm({ purpose }: InterestFormProps) {
         </span>
       </label>
       {mutation.error ? (
-        <p class="ui-text-danger" role="alert">
+        <p className="ui-text-danger" role="alert">
           {t('landing.form.error')}
         </p>
       ) : null}
-      <Button class="w-full" isLoading={mutation.isPending} type="submit">
+      <Button className="w-full" isLoading={mutation.isPending} type="submit">
         {early ? t('landing.cta.early') : t('landing.cta.updates')}
       </Button>
-      <p class="landing-privacy">{t('landing.form.privacy')}</p>
+      <p className="landing-privacy">{t('landing.form.privacy')}</p>
     </form>
   );
 }
@@ -200,27 +201,27 @@ export function LandingPage({ path }: { path?: string }) {
   if (standalone) return null;
 
   return (
-    <TotemTheme class="landing-page totem-public-landing">
-      <a class="public-skip-link" href="#main-content">
+    <TotemTheme className="landing-page totem-public-landing">
+      <a className="public-skip-link" href="#main-content">
         {t('landing.skipToContent')}
       </a>
-      <header class="landing-header">
-        <a class="landing-brand" href="/">
+      <header className="landing-header">
+        <a className="landing-brand" href="/">
           <img alt="" aria-hidden="true" src="/learnx-mark-on-paper.svg" />
           <span>LearnX</span>
         </a>
         <nav
           aria-label={t('landing.utilityNavigation')}
-          class="landing-utility"
+          className="landing-utility"
         >
-          <div class="landing-primary-navigation">
+          <div className="landing-primary-navigation">
             <a href="#product">{t('landing.navigation.product')}</a>
             <a href="#research">{t('landing.navigation.research')}</a>
             <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
           </div>
           <div
             aria-label={t('landing.language')}
-            class="landing-language"
+            className="landing-language"
             role="group"
           >
             <button
@@ -240,7 +241,7 @@ export function LandingPage({ path }: { path?: string }) {
           </div>
           <a href="/login">{t('landing.login')}</a>
         </nav>
-        <details class="landing-mobile-navigation">
+        <details className="landing-mobile-navigation">
           <summary>{t('landing.menu')}</summary>
           <nav aria-label={t('landing.utilityNavigation')}>
             <a href="#product">{t('landing.navigation.product')}</a>
@@ -256,28 +257,28 @@ export function LandingPage({ path }: { path?: string }) {
           </nav>
         </details>
       </header>
-      <main id="main-content" tabindex={-1}>
-        <section class="landing-hero">
-          <div class="landing-hero-copy">
-            <p class="page-eyebrow">{t('landing.eyebrow')}</p>
+      <main id="main-content" tabIndex={-1}>
+        <section className="landing-hero">
+          <div className="landing-hero-copy">
+            <p className="page-eyebrow">{t('landing.eyebrow')}</p>
             <h1>{t('landing.title')}</h1>
-            <p class="landing-lead">{t('landing.lead')}</p>
-            <div class="landing-actions">
-              <a class="ui-action ui-action--primary" href="#early-adopter">
+            <p className="landing-lead">{t('landing.lead')}</p>
+            <div className="landing-actions">
+              <a className="ui-action ui-action--primary" href="#early-adopter">
                 {t('landing.cta.early')}
               </a>
-              <a class="landing-updates-action" href="#launch-updates">
+              <a className="landing-updates-action" href="#launch-updates">
                 {t('landing.cta.updates')}
               </a>
             </div>
           </div>
-          <div class="landing-hero-visual">
+          <div className="landing-hero-visual">
             <ProgramPreview />
           </div>
         </section>
         <section
           aria-label={t('landing.product.eyebrow')}
-          class="landing-principles"
+          className="landing-principles"
         >
           <div>
             <strong>{t('landing.product.structuredTitle')}</strong>
@@ -294,11 +295,11 @@ export function LandingPage({ path }: { path?: string }) {
         </section>
         <section
           aria-labelledby="landing-product"
-          class="landing-section landing-feature-proof"
+          className="landing-section landing-feature-proof"
           id="product"
         >
           <div>
-            <p class="page-eyebrow">{t('landing.product.eyebrow')}</p>
+            <p className="page-eyebrow">{t('landing.product.eyebrow')}</p>
             <h2 id="landing-product">{t('landing.product.title')}</h2>
             <p>{t('landing.product.description')}</p>
           </div>
@@ -306,29 +307,29 @@ export function LandingPage({ path }: { path?: string }) {
         </section>
         <section
           aria-labelledby="landing-roadmap"
-          class="landing-section landing-roadmap"
+          className="landing-section landing-roadmap"
           id="roadmap"
         >
           <div>
-            <p class="page-eyebrow">{t('landing.roadmap.eyebrow')}</p>
+            <p className="page-eyebrow">{t('landing.roadmap.eyebrow')}</p>
             <h2 id="landing-roadmap">{t('landing.roadmap.title')}</h2>
           </div>
           <p>{t('landing.roadmap.description')}</p>
         </section>
         <section
           aria-labelledby="landing-research"
-          class="landing-section landing-research"
+          className="landing-section landing-research"
           id="research"
         >
-          <p class="page-eyebrow">{t('landing.research.eyebrow')}</p>
+          <p className="page-eyebrow">{t('landing.research.eyebrow')}</p>
           <h2 id="landing-research">{t('landing.research.title')}</h2>
           <p>{t('landing.research.description')}</p>
-          <article class="landing-research-latest">
-            <p class="landing-research-meta">
+          <article className="landing-research-latest">
+            <p className="landing-research-meta">
               {t('landing.research.latestMeta')}
             </p>
             <h3>{t('landing.research.latestTitle')}</h3>
-            <p class="landing-research-finding">
+            <p className="landing-research-finding">
               <strong>
                 {t('landing.research.verdictLabel')} :{' '}
                 {t('landing.research.verdict')}
@@ -339,7 +340,7 @@ export function LandingPage({ path }: { path?: string }) {
               </span>
             </p>
             <a
-              class="landing-research-action"
+              className="landing-research-action"
               data-native
               href={
                 locale === 'en'
@@ -351,22 +352,22 @@ export function LandingPage({ path }: { path?: string }) {
             </a>
           </article>
         </section>
-        <section class="landing-forms">
+        <section className="landing-forms">
           <article id="launch-updates">
-            <p class="page-eyebrow">{t('landing.updates.eyebrow')}</p>
+            <p className="page-eyebrow">{t('landing.updates.eyebrow')}</p>
             <h2>{t('landing.updates.title')}</h2>
             <p>{t('landing.updates.description')}</p>
             <InterestForm purpose="LAUNCH_UPDATES" />
           </article>
           <article id="early-adopter">
-            <p class="page-eyebrow">{t('landing.early.eyebrow')}</p>
+            <p className="page-eyebrow">{t('landing.early.eyebrow')}</p>
             <h2>{t('landing.early.title')}</h2>
             <p>{t('landing.early.description')}</p>
             <InterestForm purpose="EARLY_ADOPTER" />
           </article>
         </section>
       </main>
-      <footer class="landing-footer">
+      <footer className="landing-footer">
         <span>© 2026 LearnX</span>
         <nav aria-label={t('landing.footerNavigation')}>
           <a

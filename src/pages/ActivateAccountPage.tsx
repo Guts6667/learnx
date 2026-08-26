@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
-import { useState } from 'preact/hooks';
+import { navigate as route } from '@/app/navigation';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -37,7 +38,7 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
         ? t('auth.activate.error')
         : undefined;
 
-  async function handleSubmit(event: SubmitEvent) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setValidationError(undefined);
     if (!token) {
@@ -61,7 +62,7 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
   return (
     <section
       aria-labelledby="activation-title"
-      class="totem-auth-page page-shell"
+      className="totem-auth-page page-shell"
     >
       <PageHeader
         description={t('auth.activate.description')}
@@ -74,7 +75,7 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
         message={t('auth.activate.offline')}
       />
       <Card>
-        <form class="space-y-5" onSubmit={handleSubmit}>
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <TextField
             autoComplete="name"
             label={t('auth.activate.displayName')}
@@ -110,17 +111,17 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
             value={passwordConfirmation}
           />
           {!token ? (
-            <p class="ui-text-danger text-sm" role="alert">
+            <p className="ui-text-danger text-sm" role="alert">
               {t('auth.activate.invalidInvitation')}
             </p>
           ) : null}
           {validationError || requestError ? (
-            <p class="ui-text-danger text-sm" role="alert">
+            <p className="ui-text-danger text-sm" role="alert">
               {validationError ?? requestError}
             </p>
           ) : null}
           <Button
-            class="w-full"
+            className="w-full"
             disabled={!isOnline || !token}
             isLoading={mutation.isPending}
             type="submit"

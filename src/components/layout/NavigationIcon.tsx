@@ -1,9 +1,5 @@
 export type NavigationIconName =
-  | 'home'
-  | 'journey'
-  | 'notes'
-  | 'profile'
-  | 'review';
+  'home' | 'journey' | 'notes' | 'profile' | 'review';
 
 export function NavigationIcon({ name }: { name: NavigationIconName }) {
   const paths = {
@@ -38,22 +34,22 @@ export function NavigationIcon({ name }: { name: NavigationIconName }) {
         <path d="M4 4v4.5h4.5M9 12l2 2 4-5" />
       </>
     ),
-  } satisfies Record<NavigationIconName, ComponentChildren>;
+  } satisfies Record<NavigationIconName, ReactNode>;
 
   return (
     <svg
       aria-hidden="true"
-      class="size-5 shrink-0"
+      className="size-5 shrink-0"
       fill="none"
       focusable="false"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.8"
       viewBox="0 0 24 24"
     >
       {paths[name]}
     </svg>
   );
 }
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';

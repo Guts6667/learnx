@@ -1,5 +1,5 @@
-import type { ComponentChildren } from 'preact';
-import { useRef, useState } from 'preact/hooks';
+import type { ReactNode } from 'react';
+import { useRef, useState } from 'react';
 
 import {
   type BackNavigationTarget,
@@ -96,19 +96,22 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   const { t } = useI18n();
   return (
     <nav aria-label={t('admin.breadcrumb')}>
-      <ol class="ui-text-muted flex flex-wrap items-center gap-2 text-sm">
+      <ol className="ui-text-muted flex flex-wrap items-center gap-2 text-sm">
         {items.map((item, index) => (
-          <li class="flex items-center gap-2" key={`${item.label}-${index}`}>
+          <li
+            className="flex items-center gap-2"
+            key={`${item.label}-${index}`}
+          >
             {index > 0 ? <span aria-hidden="true">/</span> : null}
             {item.href ? (
               <a
-                class="ui-link inline-flex min-h-11 items-center rounded-[var(--radius-control)]"
+                className="ui-link inline-flex min-h-11 items-center rounded-[var(--radius-control)]"
                 href={item.href}
               >
                 {item.label}
               </a>
             ) : (
-              <span aria-current="page" class="ui-text">
+              <span aria-current="page" className="ui-text">
                 {item.label}
               </span>
             )}
@@ -221,16 +224,16 @@ function PublicationAction({
   }
 
   return (
-    <section aria-labelledby={`publication-${targetId}`} class="space-y-3">
-      <h3 class="font-semibold" id={`publication-${targetId}`}>
+    <section aria-labelledby={`publication-${targetId}`} className="space-y-3">
+      <h3 className="font-semibold" id={`publication-${targetId}`}>
         {t('admin.publication.title', { title: targetTitle })}
       </h3>
       {isPublished ? (
-        <fieldset class="space-y-2 text-sm">
-          <legend class="ui-text font-medium">
+        <fieldset className="space-y-2 text-sm">
+          <legend className="ui-text font-medium">
             {t('admin.publication.scope')}
           </legend>
-          <label class="flex min-h-11 items-center gap-2">
+          <label className="flex min-h-11 items-center gap-2">
             <input
               checked={mode === 'PARENT_ONLY'}
               name={`publication-mode-${targetId}`}
@@ -242,7 +245,7 @@ function PublicationAction({
             />
             {t('admin.publication.parentOnly')}
           </label>
-          <label class="flex min-h-11 items-center gap-2">
+          <label className="flex min-h-11 items-center gap-2">
             <input
               checked={mode === 'FULL'}
               name={`publication-mode-${targetId}`}
@@ -265,14 +268,19 @@ function PublicationAction({
         {t('admin.publication.preview', { action: actionLabelLower })}
       </Button>
       {success ? (
-        <p class="text-sm text-[var(--color-success)]" role="status">
+        <p className="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
       {plan ? (
-        <Card aria-live="polite" class="space-y-4" tone="muted" role="region">
-          <h4 class="font-medium">{t('admin.publication.previewTitle')}</h4>
-          <p class="ui-text-muted text-sm">
+        <Card
+          aria-live="polite"
+          className="space-y-4"
+          tone="muted"
+          role="region"
+        >
+          <h4 className="font-medium">{t('admin.publication.previewTitle')}</h4>
+          <p className="ui-text-muted text-sm">
             {plan.changes.length === 0
               ? t('admin.publication.noChanges')
               : t('admin.publication.changeCount', {
@@ -280,7 +288,7 @@ function PublicationAction({
                 })}
           </p>
           {plan.changes.length > 0 ? (
-            <ul class="ui-text-muted list-disc space-y-1 pl-5 text-sm">
+            <ul className="ui-text-muted list-disc space-y-1 pl-5 text-sm">
               {plan.changes.map((change) => (
                 <li key={`${change.type}-${change.id}`}>
                   {changeLabel(change, t)}
@@ -289,16 +297,16 @@ function PublicationAction({
             </ul>
           ) : null}
           {plan.warnings.map((warning) => (
-            <p class="ui-text-warning text-sm" key={warning}>
+            <p className="ui-text-warning text-sm" key={warning}>
               {warning}
             </p>
           ))}
           {plan.blockers.length > 0 ? (
-            <div class="space-y-2" role="alert">
-              <p class="ui-text-danger font-medium">
+            <div className="space-y-2" role="alert">
+              <p className="ui-text-danger font-medium">
                 {t('admin.publication.impossible')}
               </p>
-              <ul class="ui-text-danger list-disc space-y-1 pl-5 text-sm">
+              <ul className="ui-text-danger list-disc space-y-1 pl-5 text-sm">
                 {plan.blockers.map((blocker) => (
                   <li key={`${blocker.code}-${blocker.id}`}>
                     {blocker.title} — {blocker.message}
@@ -310,7 +318,7 @@ function PublicationAction({
           {mutation.error ? (
             <ErrorState description={getMutationError(mutation.error, t)} />
           ) : null}
-          <div class="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button
               disabled={plan.blockers.length > 0}
               isLoading={mutation.isPending}
@@ -353,24 +361,24 @@ function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
   }
 
   return (
-    <section aria-labelledby={`visibility-${program.id}`} class="space-y-3">
-      <div class="flex flex-wrap items-center gap-2">
-        <h3 class="font-semibold" id={`visibility-${program.id}`}>
+    <section aria-labelledby={`visibility-${program.id}`} className="space-y-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <h3 className="font-semibold" id={`visibility-${program.id}`}>
           {t('admin.visibility.title')}
         </h3>
         <VisibilityBadge visibility={program.visibility} />
       </div>
-      <p class="ui-text-muted text-sm leading-6">
+      <p className="ui-text-muted text-sm leading-6">
         {t('admin.visibility.description')}
       </p>
       {isConfirming ? (
-        <Card class="space-y-3" tone="muted" role="alertdialog">
-          <p class="ui-text text-sm">
+        <Card className="space-y-3" tone="muted" role="alertdialog">
+          <p className="ui-text text-sm">
             {nextVisibility === 'PUBLIC'
               ? t('admin.visibility.makePublicQuestion')
               : t('admin.visibility.makePrivateQuestion')}
           </p>
-          <div class="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button isLoading={mutation.isPending} onClick={() => void apply()}>
               {t('common.confirm')}
             </Button>
@@ -387,7 +395,7 @@ function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
         </Button>
       )}
       {success ? (
-        <p class="text-sm text-[var(--color-success)]" role="status">
+        <p className="text-sm text-[var(--color-success)]" role="status">
           {t('admin.visibility.saved')}
         </p>
       ) : null}
@@ -427,9 +435,9 @@ function ModuleEditor({ module }: { module: AdminModuleSummary }) {
   }
 
   return (
-    <div class="space-y-6">
-      <section class="space-y-4" aria-labelledby="module-details-title">
-        <h3 class="font-semibold" id="module-details-title">
+    <div className="space-y-6">
+      <section className="space-y-4" aria-labelledby="module-details-title">
+        <h3 className="font-semibold" id="module-details-title">
           {t('admin.module.details')}
         </h3>
         <TextField
@@ -463,7 +471,7 @@ function ModuleEditor({ module }: { module: AdminModuleSummary }) {
           {t('admin.module.save')}
         </Button>
         {saved ? (
-          <p class="text-sm text-[var(--color-success)]" role="status">
+          <p className="text-sm text-[var(--color-success)]" role="status">
             {t('admin.module.saved')}
           </p>
         ) : null}
@@ -524,9 +532,9 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
   }
 
   return (
-    <div class="space-y-6">
-      <section class="space-y-4" aria-labelledby="lesson-details-title">
-        <h3 class="font-semibold" id="lesson-details-title">
+    <div className="space-y-6">
+      <section className="space-y-4" aria-labelledby="lesson-details-title">
+        <h3 className="font-semibold" id="lesson-details-title">
           {t('admin.lesson.details')}
         </h3>
         <TextField
@@ -560,8 +568,8 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
           {t('admin.lesson.save')}
         </Button>
       </section>
-      <section class="space-y-3" aria-labelledby="lesson-publication-title">
-        <h3 class="font-semibold" id="lesson-publication-title">
+      <section className="space-y-3" aria-labelledby="lesson-publication-title">
+        <h3 className="font-semibold" id="lesson-publication-title">
           {t('admin.lesson.publication')}
         </h3>
         {!confirmPublication ? (
@@ -576,8 +584,8 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
             })}
           </Button>
         ) : (
-          <Card class="space-y-3" tone="muted" role="region">
-            <p class="ui-text text-sm">
+          <Card className="space-y-3" tone="muted" role="region">
+            <p className="ui-text text-sm">
               {t('admin.lesson.confirmAction', {
                 action: t(
                   lesson.isPublished ? 'admin.unpublish' : 'admin.publish',
@@ -585,7 +593,7 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
                 title: lesson.title,
               })}
             </p>
-            <div class="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3">
               <Button
                 isLoading={mutation.isPending}
                 onClick={() => void togglePublication()}
@@ -604,7 +612,7 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
         )}
       </section>
       {message ? (
-        <p class="text-sm text-[var(--color-success)]" role="status">
+        <p className="text-sm text-[var(--color-success)]" role="status">
           {message}
         </p>
       ) : null}
@@ -619,7 +627,7 @@ function ManagementDrawer({
   children,
   title,
 }: {
-  children: ComponentChildren;
+  children: ReactNode;
   title: string;
 }) {
   const { t } = useI18n();
@@ -657,7 +665,7 @@ function EntityCard({
 }: {
   href: string;
   position: number;
-  status: ComponentChildren;
+  status: ReactNode;
   title: string;
 }) {
   const { t } = useI18n();
@@ -669,14 +677,14 @@ function EntityCard({
             {t('admin.open')}
           </NavigationAction>
         }
-        class="items-start"
+        className="items-start"
       >
-        <div class="flex min-w-0 flex-wrap items-start justify-between gap-3">
-          <div class="min-w-0">
-            <p class="ui-text-muted text-xs font-semibold tracking-wide uppercase">
+        <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="ui-text-muted text-xs font-semibold tracking-wide uppercase">
               {t('admin.position', { position })}
             </p>
-            <h3 class="mt-1 break-words text-lg font-semibold">{title}</h3>
+            <h3 className="mt-1 break-words text-lg font-semibold">{title}</h3>
           </div>
           {status}
         </div>
@@ -685,15 +693,11 @@ function EntityCard({
   );
 }
 
-function childList(
-  title: string,
-  children: ComponentChildren,
-  isEmpty: boolean,
-) {
+function childList(title: string, children: ReactNode, isEmpty: boolean) {
   const { t } = useI18n();
   return (
-    <section aria-labelledby="admin-children-title" class="space-y-4">
-      <h2 class="text-xl font-semibold" id="admin-children-title">
+    <section aria-labelledby="admin-children-title" className="space-y-4">
+      <h2 className="text-xl font-semibold" id="admin-children-title">
         {title}
       </h2>
       {isEmpty ? (
@@ -702,7 +706,7 @@ function childList(
           title={t('admin.emptyChild.title')}
         />
       ) : (
-        <ul class="ui-list">{children}</ul>
+        <ul className="ui-list">{children}</ul>
       )}
     </section>
   );
@@ -749,7 +753,7 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
     <>
       <section
         aria-labelledby="admin-mobile-title"
-        class="admin-mobile-landing"
+        className="admin-mobile-landing"
       >
         <PageHeader
           description={t('admin.mobileDescription')}
@@ -757,7 +761,7 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
           id="admin-mobile-title"
           title={t('admin.title')}
         />
-        <header class="admin-mobile-landing__header">
+        <header className="admin-mobile-landing__header">
           <h2>{t('admin.mobileTools')}</h2>
           <span>{t('admin.mobileAccess')}</span>
         </header>
@@ -775,14 +779,14 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
           ))}
         </ul>
       </section>
-      <div class="admin-desktop-programs">
+      <div className="admin-desktop-programs">
         <PageHeader
           description={t('admin.description')}
           eyebrow={`${t('admin.title')} · ${t('admin.programs')}`}
           id="admin-programs-title"
           title={t('admin.programs')}
         />
-        <div class="admin-toolbar">
+        <div className="admin-toolbar">
           <TextField
             label={t('admin.searchPrograms')}
             onInput={(event) => setSearch(event.currentTarget.value)}
@@ -790,10 +794,12 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
             type="search"
             value={search}
           />
-          <label class="ui-field">
-            <span class="ui-field__label">{t('admin.filterPublication')}</span>
+          <label className="ui-field">
+            <span className="ui-field__label">
+              {t('admin.filterPublication')}
+            </span>
             <select
-              class="ui-field__control"
+              className="ui-field__control"
               onChange={(event) =>
                 setStatus(
                   event.currentTarget.value as
@@ -829,8 +835,8 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
               cells: {
                 program: (
                   <div>
-                    <strong class="font-medium">{program.title}</strong>
-                    <p class="ui-text-muted mt-1 text-sm">{program.slug}</p>
+                    <strong className="font-medium">{program.title}</strong>
+                    <p className="ui-text-muted mt-1 text-sm">{program.slug}</p>
                   </div>
                 ),
                 publication: <ProgramStatusBadge status={program.status} />,
@@ -867,11 +873,11 @@ function ProgramView({ program }: { program: AdminProgram }) {
           { label: program.title },
         ]}
       />
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <h1 class="text-3xl font-bold tracking-tight">{program.title}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold tracking-tight">{program.title}</h1>
         <ProgramStatusBadge status={program.status} />
       </div>
-      <p class="ui-text-muted text-sm">
+      <p className="ui-text-muted text-sm">
         {program.publishedVersion
           ? t('admin.publishedVersion', {
               date: formatLocalizedDate(
@@ -923,8 +929,8 @@ function StageView({ stage }: { stage: AdminStage }) {
           { label: stage.title },
         ]}
       />
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <h1 class="text-3xl font-bold tracking-tight">{stage.title}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold tracking-tight">{stage.title}</h1>
         <StatusBadge isPublished={stage.isPublished} />
       </div>
       <ManagementDrawer title={t('admin.manage', { title: stage.title })}>
@@ -970,8 +976,8 @@ function ModuleView({ module }: { module: AdminModule }) {
           { label: module.title },
         ]}
       />
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <h1 class="text-3xl font-bold tracking-tight">{module.title}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold tracking-tight">{module.title}</h1>
         <StatusBadge isPublished={module.isPublished} />
       </div>
       <ManagementDrawer title={t('admin.manage', { title: module.title })}>
@@ -1027,13 +1033,13 @@ function LessonView({ lesson }: { lesson: AdminLesson }) {
           { label: lesson.title },
         ]}
       />
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <h1 class="text-3xl font-bold tracking-tight">{lesson.title}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold tracking-tight">{lesson.title}</h1>
         <StatusBadge isPublished={lesson.isPublished} />
       </div>
-      <Section class="space-y-3">
-        <p class="ui-text-muted leading-7">{lesson.summary}</p>
-        <p class="ui-text-muted text-sm">
+      <Section className="space-y-3">
+        <p className="ui-text-muted leading-7">{lesson.summary}</p>
+        <p className="ui-text-muted text-sm">
           {t('admin.position', { position: lesson.position })}
         </p>
       </Section>
@@ -1109,7 +1115,7 @@ export function AdminPage(props: AdminPageProps) {
   return (
     <section
       aria-label={t('admin.title')}
-      class="page-layout page-layout--admin page-shell"
+      className="page-layout page-layout--admin page-shell"
     >
       <NavigationView data={query.data} />
     </section>

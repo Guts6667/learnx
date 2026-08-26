@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
-import { useRef, useState } from 'preact/hooks';
+import { navigate as route } from '@/app/navigation';
+import type { FormEvent, KeyboardEvent } from 'react';
+import { useRef, useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { ProductPageHeader } from '@/components/product/ProductPageHeader';
@@ -88,23 +89,25 @@ function LessonSummaryCard({
         : t('curriculum.lesson.start');
 
   return (
-    <Card class="space-y-4">
-      <div class="flex flex-wrap items-start justify-between gap-3">
+    <Card className="space-y-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 class="text-lg font-semibold">{lesson.title}</h3>
-          <p class="ui-text-muted mt-2 text-sm leading-6">{lesson.summary}</p>
+          <h3 className="text-lg font-semibold">{lesson.title}</h3>
+          <p className="ui-text-muted mt-2 text-sm leading-6">
+            {lesson.summary}
+          </p>
         </div>
         <Badge tone={lesson.isPublished ? 'info' : 'warning'}>
           {lessonStatusLabel(lesson, t)}
         </Badge>
       </div>
-      <p class="ui-text-muted text-sm">
+      <p className="ui-text-muted text-sm">
         {lesson.estimatedMinutes === null
           ? t('curriculum.durationUnknown')
           : `${lesson.estimatedMinutes} min`}{' '}
         · {t('curriculum.activityCount', { count: activityTotal })}
       </p>
-      <p class="ui-text-muted text-sm">
+      <p className="ui-text-muted text-sm">
         {t('curriculum.lesson.nextLabel', {
           activity: nextActivityLabel(lesson, t),
         })}
@@ -115,11 +118,11 @@ function LessonSummaryCard({
         })}
         value={lesson.progress.percent}
       />
-      <details class="ui-divider rounded-lg border px-4 py-3 text-sm">
-        <summary class="ui-text min-h-11 cursor-pointer py-2 font-medium">
+      <details className="ui-divider rounded-lg border px-4 py-3 text-sm">
+        <summary className="ui-text min-h-11 cursor-pointer py-2 font-medium">
           {t('curriculum.lesson.details')}
         </summary>
-        <ul class="ui-text-muted space-y-1 pb-2">
+        <ul className="ui-text-muted space-y-1 pb-2">
           <li>
             {t('curriculum.lesson.resources', { count: counts.resources })}
           </li>
@@ -240,19 +243,19 @@ function ProgramLessonRow({
   const status = lessonLineStatus(lesson, t);
   const content = (
     <>
-      <span class="min-w-0 flex-1 lg:flex lg:items-center lg:justify-between lg:gap-4">
+      <span className="min-w-0 flex-1 lg:flex lg:items-center lg:justify-between lg:gap-4">
         <span
-          class={`block min-w-0 break-words font-medium ${
+          className={`block min-w-0 break-words font-medium ${
             lesson.isLocked ? 'ui-text-muted' : 'ui-text'
           }`}
         >
           {lesson.title}
         </span>
-        <span class="mt-2 flex flex-wrap items-center gap-2 lg:mt-0 lg:shrink-0">
-          <span class="ui-text-muted text-sm">
+        <span className="mt-2 flex flex-wrap items-center gap-2 lg:mt-0 lg:shrink-0">
+          <span className="ui-text-muted text-sm">
             {formatLessonDuration(lesson, t)}
           </span>
-          <Badge class="gap-1" tone={status.tone}>
+          <Badge className="gap-1" tone={status.tone}>
             <span aria-hidden="true">{status.icon}</span>
             {status.label}
           </Badge>
@@ -260,7 +263,7 @@ function ProgramLessonRow({
       </span>
       <span
         aria-hidden="true"
-        class="ui-text-muted flex min-h-11 w-8 shrink-0 items-center justify-end text-lg"
+        className="ui-text-muted flex min-h-11 w-8 shrink-0 items-center justify-end text-lg"
       >
         {lesson.isLocked ? '⌧' : '›'}
       </span>
@@ -277,7 +280,7 @@ function ProgramLessonRow({
           status: status.label,
           title: lesson.title,
         })}
-        class={`${className} ui-text-muted cursor-not-allowed`}
+        className={`${className} ui-text-muted cursor-not-allowed`}
       >
         {content}
       </div>
@@ -299,7 +302,7 @@ function ProgramLessonRow({
         status: status.label,
         title: lesson.title,
       })}
-      class={`${className} rounded-lg hover:bg-[var(--color-surface-subtle)] focus-visible:outline-2 focus-visible:outline-[var(--color-focus)]`}
+      className={`${className} rounded-lg hover:bg-[var(--color-surface-subtle)] focus-visible:outline-2 focus-visible:outline-[var(--color-focus)]`}
       href={`/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lesson.slug)}`}
     >
       {content}
@@ -323,8 +326,8 @@ function ModuleLessonList({
   return (
     <section aria-labelledby={showHeading ? `${listId}-title` : undefined}>
       {showHeading ? (
-        <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
-          <h3 class="ui-text font-semibold" id={`${listId}-title`}>
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="ui-text font-semibold" id={`${listId}-title`}>
             {module.title}
           </h3>
           <NavigationAction href={optionsHref} variant="ghost">
@@ -351,7 +354,7 @@ function ModuleLessonList({
         ))}
       </ul>
       {!showHeading ? (
-        <NavigationAction class="mt-3" href={optionsHref} variant="ghost">
+        <NavigationAction className="mt-3" href={optionsHref} variant="ghost">
           {t('curriculum.moduleOptionsRestart')}
         </NavigationAction>
       ) : null}
@@ -386,23 +389,23 @@ function StageAccordionItem({
 
   return (
     <li>
-      <Card class="overflow-hidden p-0">
+      <Card className="overflow-hidden p-0">
         <button
           aria-controls={panelId}
           aria-expanded={isExpanded}
-          class="flex min-h-20 w-full items-center gap-3 rounded-lg px-4 py-5 text-left transition-colors hover:bg-[var(--color-surface-raised)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)] motion-reduce:transition-none sm:px-5"
+          className="flex min-h-20 w-full items-center gap-3 rounded-lg px-4 py-5 text-left transition-colors hover:bg-[var(--color-surface-raised)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)] motion-reduce:transition-none sm:px-5"
           onClick={onToggle}
           type="button"
         >
-          <span class="min-w-0 flex-1">
-            <span class="flex flex-wrap items-center gap-2">
-              <span class="ui-text font-semibold">
+          <span className="min-w-0 flex-1">
+            <span className="flex flex-wrap items-center gap-2">
+              <span className="ui-text font-semibold">
                 {stage.position}. {stage.title}
               </span>
             </span>
-            <span class="ui-text-muted mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            <span className="ui-text-muted mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
               <span>{formatStageDuration(stage, t)}</span>
-              <Badge class="gap-1" tone={statusTone}>
+              <Badge className="gap-1" tone={statusTone}>
                 <span aria-hidden="true">
                   {lessonProgressIcons[stage.progress.status]}
                 </span>
@@ -412,7 +415,7 @@ function StageAccordionItem({
           </span>
           <span
             aria-hidden="true"
-            class={`ui-text-muted text-xl transition-transform motion-reduce:transition-none ${
+            className={`ui-text-muted text-xl transition-transform motion-reduce:transition-none ${
               isExpanded ? 'rotate-180' : ''
             }`}
           >
@@ -422,14 +425,16 @@ function StageAccordionItem({
         {isExpanded ? (
           <div
             aria-label={t('curriculum.stageDetails', { title: stage.title })}
-            class="ui-divider space-y-6 border-t px-4 py-4 sm:px-5 sm:py-5"
+            className="ui-divider space-y-6 border-t px-4 py-4 sm:px-5 sm:py-5"
             id={panelId}
             role="region"
           >
             {stage.modules.length === 0 ? (
-              <p class="ui-text-muted text-sm">{t('curriculum.noModules')}</p>
+              <p className="ui-text-muted text-sm">
+                {t('curriculum.noModules')}
+              </p>
             ) : (
-              <div class="space-y-5">
+              <div className="space-y-5">
                 {stage.modules.map((module) => (
                   <ModuleLessonList
                     key={module.id}
@@ -462,14 +467,16 @@ function StageValidationCard({
   if (!validation) return null;
 
   return (
-    <Card class="space-y-4">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-xl font-semibold">{t('curriculum.stageValidation')}</h2>
+    <Card className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-xl font-semibold">
+          {t('curriculum.stageValidation')}
+        </h2>
         <Badge tone={validation.isValidated ? 'success' : 'info'}>
           {t(progressStatusKeys[validation.status])}
         </Badge>
       </div>
-      <ul class="ui-text-muted space-y-1 text-sm">
+      <ul className="ui-text-muted space-y-1 text-sm">
         <li>
           {t('curriculum.requiredConcepts', {
             done: validation.requiredConcepts.validated,
@@ -496,13 +503,15 @@ function StageValidationCard({
         </li>
       </ul>
       {validation.missingRequirements.length === 0 ? (
-        <p class="ui-text-success text-sm">
+        <p className="ui-text-success text-sm">
           {t('curriculum.requirementsComplete')}
         </p>
       ) : (
         <div>
-          <h3 class="font-semibold">{t('curriculum.missingRequirements')}</h3>
-          <ul class="ui-text-warning mt-2 list-disc space-y-1 pl-5 text-sm">
+          <h3 className="font-semibold">
+            {t('curriculum.missingRequirements')}
+          </h3>
+          <ul className="ui-text-warning mt-2 list-disc space-y-1 pl-5 text-sm">
             {validation.missingRequirements.map((requirement) => (
               <li key={`${requirement.type}:${requirement.id ?? 'missing'}`}>
                 {requirement.title}
@@ -554,15 +563,15 @@ function CatalogProgramCard({
   const { t } = useI18n();
   return (
     <li>
-      <Card class="flex h-full flex-col space-y-4">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <h2 class="text-xl font-semibold">{program.title}</h2>
+      <Card className="flex h-full flex-col space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <h2 className="text-xl font-semibold">{program.title}</h2>
           <Badge tone={program.isEnrolled ? 'success' : 'info'}>
             {t(program.isEnrolled ? 'programs.enrolled' : 'programs.available')}
           </Badge>
         </div>
-        <p class="ui-text-muted text-sm leading-6">{program.description}</p>
-        <ul class="ui-text-muted space-y-1 text-sm">
+        <p className="ui-text-muted text-sm leading-6">{program.description}</p>
+        <ul className="ui-text-muted space-y-1 text-sm">
           <li>{programLocaleLabel(program.locale, t)}</li>
           <li>{durationLabel(program.estimatedDurationDays, t)}</li>
           <li>
@@ -572,14 +581,14 @@ function CatalogProgramCard({
         </ul>
         {program.isEnrolled ? (
           <NavigationAction
-            class="mt-auto"
+            className="mt-auto"
             href={`/program/${encodeURIComponent(program.slug)}`}
           >
             {t('programs.open')}
           </NavigationAction>
         ) : (
           <Button
-            class="mt-auto w-full"
+            className="mt-auto w-full"
             disabled={isMutationDisabled}
             isLoading={isMutationLoading}
             onClick={() => onEnroll(program)}
@@ -615,17 +624,17 @@ function EnrolledProgramCard({
 
   return (
     <li>
-      <Card class="flex h-full flex-col space-y-4">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <h2 class="text-xl font-semibold">{program.program.title}</h2>
+      <Card className="flex h-full flex-col space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <h2 className="text-xl font-semibold">{program.program.title}</h2>
           <Badge tone={isActive ? 'success' : 'warning'}>
             {t(isActive ? 'programs.enrolled' : 'programs.withdrawnBadge')}
           </Badge>
         </div>
-        <p class="ui-text-muted text-sm leading-6">
+        <p className="ui-text-muted text-sm leading-6">
           {program.program.description}
         </p>
-        <ul class="ui-text-muted space-y-1 text-sm">
+        <ul className="ui-text-muted space-y-1 text-sm">
           <li>{programLocaleLabel(program.program.locale, t)}</li>
           <li>{durationLabel(program.program.estimatedDurationDays, t)}</li>
           <li>
@@ -656,13 +665,13 @@ function EnrolledProgramCard({
                 aria-label={t('programs.confirmWithdrawAria', {
                   title: program.program.title,
                 })}
-                class="ui-feedback ui-feedback--warning space-y-3"
+                className="ui-feedback ui-feedback--warning space-y-3"
                 role="region"
               >
-                <p class="text-sm leading-6">
+                <p className="text-sm leading-6">
                   {t('programs.withdrawDescription')}
                 </p>
-                <div class="flex flex-col gap-3 sm:flex-row">
+                <div className="flex flex-col gap-3 sm:flex-row">
                   <Button
                     disabled={isMutationDisabled}
                     isLoading={isMutationLoading}
@@ -679,7 +688,7 @@ function EnrolledProgramCard({
             )}
           </>
         ) : (
-          <p class="ui-text-muted text-sm">{t('programs.dataPreserved')}</p>
+          <p className="ui-text-muted text-sm">{t('programs.dataPreserved')}</p>
         )}
       </Card>
     </li>
@@ -695,10 +704,10 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
 
   return (
     <li>
-      <Card class="flex h-full flex-col space-y-4">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <h2 class="text-xl font-semibold">{program.title}</h2>
-          <div class="flex flex-wrap gap-2">
+      <Card className="flex h-full flex-col space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <h2 className="text-xl font-semibold">{program.title}</h2>
+          <div className="flex flex-wrap gap-2">
             <Badge tone="info">{t('programs.owner')}</Badge>
             <Badge
               tone={program.visibility === 'PRIVATE' ? 'warning' : 'success'}
@@ -712,8 +721,8 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
             {hasDraftContent ? <DraftBadge /> : null}
           </div>
         </div>
-        <p class="ui-text-muted text-sm leading-6">{program.description}</p>
-        <ul class="ui-text-muted space-y-1 text-sm">
+        <p className="ui-text-muted text-sm leading-6">{program.description}</p>
+        <ul className="ui-text-muted space-y-1 text-sm">
           <li>{programLocaleLabel(program.locale, t)}</li>
           <li>{durationLabel(program.estimatedDurationDays, t)}</li>
           <li>{t('programs.stageCount', { count: program.stages.length })}</li>
@@ -723,7 +732,7 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
           value={percent}
         />
         <NavigationAction
-          class="mt-auto"
+          className="mt-auto"
           href={`/program/${encodeURIComponent(program.slug)}`}
         >
           {hasDraftContent ? t('programs.preview') : t('programs.open')}
@@ -745,7 +754,7 @@ function DirectoryPagination({
   const { t } = useI18n();
   if (!hasMore) return null;
   return (
-    <div class="flex justify-center">
+    <div className="flex justify-center">
       <Button isLoading={isLoading} onClick={onLoadMore} variant="secondary">
         {t('programs.showMore')}
       </Button>
@@ -812,7 +821,10 @@ export function ProgramsPage() {
     }
   }
 
-  function handleTabKeyDown(event: KeyboardEvent, view: ProgramsView) {
+  function handleTabKeyDown(
+    event: KeyboardEvent<HTMLButtonElement>,
+    view: ProgramsView,
+  ) {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
     const nextView =
@@ -869,7 +881,7 @@ export function ProgramsPage() {
     }
   }
 
-  function submitSearch(event: SubmitEvent) {
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSearch(searchInput.trim().replace(/\s+/g, ' '));
   }
@@ -877,7 +889,7 @@ export function ProgramsPage() {
   return (
     <section
       aria-labelledby="programs-title"
-      class="page-layout page-layout--work page-shell space-y-6"
+      className="page-layout page-layout--work page-shell space-y-6"
     >
       <ProductPageHeader
         description={t('programs.description')}
@@ -910,13 +922,13 @@ export function ProgramsPage() {
       />
       <div
         aria-label={t('programs.views')}
-        class="ui-control-surface grid grid-cols-2 gap-1 rounded-lg p-1"
+        className="ui-control-surface grid grid-cols-2 gap-1 rounded-lg p-1"
         role="tablist"
       >
         <button
           aria-controls="enrolled-programs-panel"
           aria-selected={activeView === 'enrolled'}
-          class={`min-h-11 rounded-md px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] ${activeView === 'enrolled' ? 'bg-[var(--color-action)] text-[var(--color-on-action)]' : 'ui-text hover:bg-[var(--color-surface-raised)]'}`}
+          className={`min-h-11 rounded-md px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] ${activeView === 'enrolled' ? 'bg-[var(--color-action)] text-[var(--color-on-action)]' : 'ui-text hover:bg-[var(--color-surface-raised)]'}`}
           id="enrolled-programs-tab"
           onClick={() => selectView('enrolled')}
           onKeyDown={(event) => handleTabKeyDown(event, 'enrolled')}
@@ -929,7 +941,7 @@ export function ProgramsPage() {
         <button
           aria-controls="catalog-programs-panel"
           aria-selected={activeView === 'catalog'}
-          class={`min-h-11 rounded-md px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] ${activeView === 'catalog' ? 'bg-[var(--color-action)] text-[var(--color-on-action)]' : 'ui-text hover:bg-[var(--color-surface-raised)]'}`}
+          className={`min-h-11 rounded-md px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] ${activeView === 'catalog' ? 'bg-[var(--color-action)] text-[var(--color-on-action)]' : 'ui-text hover:bg-[var(--color-surface-raised)]'}`}
           id="catalog-programs-tab"
           onClick={() => selectView('catalog')}
           onKeyDown={(event) => handleTabKeyDown(event, 'catalog')}
@@ -942,25 +954,25 @@ export function ProgramsPage() {
       </div>
       {searchVisible ? (
         <form
-          class="grid gap-3 sm:grid-cols-[1fr_auto_auto]"
+          className="grid gap-3 sm:grid-cols-[1fr_auto_auto]"
           onSubmit={submitSearch}
         >
-          <label class="ui-field__label grid gap-2">
+          <label className="ui-field__label grid gap-2">
             {t('programs.search')}
             <input
               autoFocus
-              class="ui-field__control min-w-0"
+              className="ui-field__control min-w-0"
               onInput={(event) => setSearchInput(event.currentTarget.value)}
               placeholder={t('programs.searchPlaceholder')}
               type="search"
               value={searchInput}
             />
           </label>
-          <Button class="self-end" type="submit" variant="secondary">
+          <Button className="self-end" type="submit" variant="secondary">
             {t('programs.searchAction')}
           </Button>
           <Button
-            class="self-end"
+            className="self-end"
             onClick={() => {
               setSearch('');
               setSearchInput('');
@@ -993,10 +1005,10 @@ export function ProgramsPage() {
           aria-labelledby={`${activeView}-programs-tab`}
           id={`${activeView}-programs-panel`}
           role="tabpanel"
-          tabindex={0}
+          tabIndex={0}
         >
           {activeView === 'enrolled' ? (
-            <div class="space-y-5">
+            <div className="space-y-5">
               {enrolled.isPending || owned.isPending ? (
                 <Skeleton label={t('programs.loadingMine')} />
               ) : enrolled.error || owned.error ? (
@@ -1036,19 +1048,19 @@ export function ProgramsPage() {
                   }
                 />
               ) : (
-                <div class="space-y-6">
+                <div className="space-y-6">
                   {enrollmentStatus === 'ACTIVE' && ownedPrograms.length ? (
                     <section
                       aria-labelledby="owned-programs-title"
-                      class="space-y-3"
+                      className="space-y-3"
                     >
                       <h2
-                        class="ui-text text-lg font-semibold"
+                        className="ui-text text-lg font-semibold"
                         id="owned-programs-title"
                       >
                         {t('programs.ownedSection')}
                       </h2>
-                      <ul class="grid gap-5 md:grid-cols-2">
+                      <ul className="grid gap-5 md:grid-cols-2">
                         {ownedPrograms.map((program) => (
                           <OwnedProgramCard
                             key={program.id}
@@ -1061,15 +1073,15 @@ export function ProgramsPage() {
                   {enrolledPrograms.length ? (
                     <section
                       aria-labelledby="enrolled-programs-title"
-                      class="space-y-3"
+                      className="space-y-3"
                     >
                       <h2
-                        class="ui-text text-lg font-semibold"
+                        className="ui-text text-lg font-semibold"
                         id="enrolled-programs-title"
                       >
                         {t('programs.enrolledSection')}
                       </h2>
-                      <ul class="grid gap-5 md:grid-cols-2">
+                      <ul className="grid gap-5 md:grid-cols-2">
                         {enrolledPrograms.map((program) => (
                           <EnrolledProgramCard
                             isConfirming={
@@ -1095,10 +1107,10 @@ export function ProgramsPage() {
                   ) : null}
                 </div>
               )}
-              <label class="ui-field__label grid max-w-xs gap-2">
+              <label className="ui-field__label grid max-w-xs gap-2">
                 {t('programs.enrollmentStatus')}
                 <select
-                  class="ui-field__control"
+                  className="ui-field__control"
                   onChange={(event) => {
                     setConfirmingProgramId(undefined);
                     setEnrollmentStatus(
@@ -1118,7 +1130,7 @@ export function ProgramsPage() {
               />
             </div>
           ) : (
-            <div class="space-y-5">
+            <div className="space-y-5">
               {catalog.isPending ? (
                 <Skeleton label={t('programs.loadingCatalog')} />
               ) : catalog.error ? (
@@ -1136,7 +1148,7 @@ export function ProgramsPage() {
                   title={t('programs.catalogEmpty.title')}
                 />
               ) : (
-                <ul class="grid gap-5 md:grid-cols-2">
+                <ul className="grid gap-5 md:grid-cols-2">
                   {catalog.data.items.map((program) => (
                     <CatalogProgramCard
                       isMutationDisabled={Boolean(mutation.pendingProgramId)}
@@ -1150,10 +1162,10 @@ export function ProgramsPage() {
                   ))}
                 </ul>
               )}
-              <label class="ui-field__label grid max-w-xs gap-2">
+              <label className="ui-field__label grid max-w-xs gap-2">
                 {t('programs.language.label')}
                 <select
-                  class="ui-field__control"
+                  className="ui-field__control"
                   onChange={(event) =>
                     setCatalogLocale(event.currentTarget.value as typeof locale)
                   }
@@ -1177,7 +1189,7 @@ export function ProgramsPage() {
       ) : null}
       <p
         aria-live="polite"
-        class="text-sm text-[var(--color-success)]"
+        className="text-sm text-[var(--color-success)]"
         role="status"
       >
         {announcement}
@@ -1232,7 +1244,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
   return (
     <section
       aria-labelledby="program-title"
-      class="page-layout page-layout--work page-shell"
+      className="page-layout page-layout--work page-shell"
     >
       <ProductPageHeader
         description={program.description}
@@ -1266,7 +1278,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
           title={t('curriculum.noStages.title')}
         />
       ) : (
-        <ol class="space-y-4">
+        <ol className="space-y-4">
           {program.stages.map((stage) => (
             <StageAccordionItem
               isExpanded={activeStageId === stage.id}
@@ -1298,86 +1310,88 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
         </ol>
       )}
       {program.status === 'ACTIVE' ? (
-        <Card class="space-y-4">
-        <div>
-          <h2 class="font-semibold">{t('curriculum.programRestart.title')}</h2>
-          <p class="ui-text-muted mt-2 text-sm leading-6">
-            {t('curriculum.programRestart.description')}
-          </p>
-        </div>
-        {restart.preview ? (
-          <div
-            aria-labelledby="program-restart-title"
-            class="space-y-4"
-            role="alertdialog"
-          >
-            <h3
-              class="ui-text-danger font-semibold"
-              id="program-restart-title"
-            >
-              {t('curriculum.programRestart.confirmTitle')}
-            </h3>
-            <p class="ui-text-muted text-sm leading-6">
-              {t('curriculum.programRestart.resetSummary', {
-                concepts: restart.preview.reset.concepts,
-                exercises: restart.preview.reset.exercises,
-                lessons: restart.preview.reset.lessons,
-                modules: restart.preview.reset.modules,
-                quizzes: restart.preview.reset.quizzes,
-                resources: restart.preview.reset.resources,
-                stages: restart.preview.reset.stages,
-                tasks: restart.preview.reset.tasks,
-              })}
+        <Card className="space-y-4">
+          <div>
+            <h2 className="font-semibold">
+              {t('curriculum.programRestart.title')}
+            </h2>
+            <p className="ui-text-muted mt-2 text-sm leading-6">
+              {t('curriculum.programRestart.description')}
             </p>
-            <p class="ui-text-muted text-sm leading-6">
-              {t('curriculum.programRestart.preservedSummary', {
-                conceptAttempts: restart.preview.preserved.conceptAttempts,
-                exerciseSubmissions:
-                  restart.preview.preserved.exerciseSubmissions,
-                notes: restart.preview.preserved.notes,
-                quizAttempts: restart.preview.preserved.quizAttempts,
-                stageAssessmentSubmissions:
-                  restart.preview.preserved.stageAssessmentSubmissions,
-              })}
-            </p>
-            <div class="flex flex-wrap gap-3">
-              <Button
-                isLoading={restart.isPending}
-                onClick={() => {
-                  void restart.restart().then((result) => {
-                    if (!result.firstLesson) return;
-                    void route(
-                      `/program/${encodeURIComponent(program.slug)}/lesson/${encodeURIComponent(result.firstLesson.slug)}`,
-                    );
-                  });
-                }}
-                variant="danger"
-              >
-                {t('curriculum.programRestart.confirm')}
-              </Button>
-              <Button onClick={restart.cancel} variant="secondary">
-                {t('programs.cancel')}
-              </Button>
-            </div>
           </div>
-        ) : (
-          <Button
-            isLoading={restart.isPending}
-            onClick={() => void restart.loadPreview()}
-            variant="danger"
-          >
-            {t('curriculum.programRestart.action')}
-          </Button>
-        )}
-        {restart.error ? (
-          <p class="ui-text-danger text-sm" role="alert">
-            {t('curriculum.programRestart.error')}
-          </p>
-        ) : null}
+          {restart.preview ? (
+            <div
+              aria-labelledby="program-restart-title"
+              className="space-y-4"
+              role="alertdialog"
+            >
+              <h3
+                className="ui-text-danger font-semibold"
+                id="program-restart-title"
+              >
+                {t('curriculum.programRestart.confirmTitle')}
+              </h3>
+              <p className="ui-text-muted text-sm leading-6">
+                {t('curriculum.programRestart.resetSummary', {
+                  concepts: restart.preview.reset.concepts,
+                  exercises: restart.preview.reset.exercises,
+                  lessons: restart.preview.reset.lessons,
+                  modules: restart.preview.reset.modules,
+                  quizzes: restart.preview.reset.quizzes,
+                  resources: restart.preview.reset.resources,
+                  stages: restart.preview.reset.stages,
+                  tasks: restart.preview.reset.tasks,
+                })}
+              </p>
+              <p className="ui-text-muted text-sm leading-6">
+                {t('curriculum.programRestart.preservedSummary', {
+                  conceptAttempts: restart.preview.preserved.conceptAttempts,
+                  exerciseSubmissions:
+                    restart.preview.preserved.exerciseSubmissions,
+                  notes: restart.preview.preserved.notes,
+                  quizAttempts: restart.preview.preserved.quizAttempts,
+                  stageAssessmentSubmissions:
+                    restart.preview.preserved.stageAssessmentSubmissions,
+                })}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  isLoading={restart.isPending}
+                  onClick={() => {
+                    void restart.restart().then((result) => {
+                      if (!result.firstLesson) return;
+                      void route(
+                        `/program/${encodeURIComponent(program.slug)}/lesson/${encodeURIComponent(result.firstLesson.slug)}`,
+                      );
+                    });
+                  }}
+                  variant="danger"
+                >
+                  {t('curriculum.programRestart.confirm')}
+                </Button>
+                <Button onClick={restart.cancel} variant="secondary">
+                  {t('programs.cancel')}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Button
+              isLoading={restart.isPending}
+              onClick={() => void restart.loadPreview()}
+              variant="danger"
+            >
+              {t('curriculum.programRestart.action')}
+            </Button>
+          )}
+          {restart.error ? (
+            <p className="ui-text-danger text-sm" role="alert">
+              {t('curriculum.programRestart.error')}
+            </p>
+          ) : null}
         </Card>
       ) : null}
       {preference.error ? (
-        <p aria-live="polite" class="ui-text-danger text-sm" role="status">
+        <p aria-live="polite" className="ui-text-danger text-sm" role="status">
           {t('curriculum.preferenceError')}
         </p>
       ) : null}
@@ -1418,12 +1432,12 @@ export function StagePage({
   return (
     <section
       aria-labelledby="stage-title"
-      class="page-layout page-layout--work page-shell"
+      className="page-layout page-layout--work page-shell"
     >
       <div>
-        <p class="page-eyebrow">{t('curriculum.stage')}</p>
-        <div class="mt-3 flex flex-wrap items-center gap-3">
-          <h1 id="stage-title" class="text-3xl font-bold tracking-tight">
+        <p className="page-eyebrow">{t('curriculum.stage')}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <h1 id="stage-title" className="text-3xl font-bold tracking-tight">
             {stage.title}
           </h1>
           {stage.isPublished ? null : <DraftBadge />}
@@ -1437,15 +1451,15 @@ export function StagePage({
           title={t('curriculum.noModules.title')}
         />
       ) : (
-        <div class="grid gap-5">
+        <div className="grid gap-5">
           {stage.modules.map((module) => (
-            <Card class="space-y-4" key={module.id}>
-              <div class="flex flex-wrap items-center gap-2">
-                <h2 class="text-lg font-semibold">{module.title}</h2>
+            <Card className="space-y-4" key={module.id}>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-lg font-semibold">{module.title}</h2>
                 {module.isPublished ? null : <DraftBadge />}
               </div>
               <NavigationAction
-                class="mt-3"
+                className="mt-3"
                 href={`/program/${programSlug}/module/${module.slug}`}
                 variant="secondary"
               >
@@ -1510,17 +1524,17 @@ export function ModulePage({
   return (
     <section
       aria-labelledby="module-title"
-      class="page-layout page-layout--work page-shell"
+      className="page-layout page-layout--work page-shell"
     >
       <div>
-        <p class="page-eyebrow">{t('curriculum.module')}</p>
-        <div class="mt-3 flex flex-wrap items-center gap-3">
-          <h1 id="module-title" class="text-3xl font-bold tracking-tight">
+        <p className="page-eyebrow">{t('curriculum.module')}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <h1 id="module-title" className="text-3xl font-bold tracking-tight">
             {module.title}
           </h1>
           {module.isPublished ? null : <DraftBadge />}
         </div>
-        <p class="page-description mt-3">{module.description}</p>
+        <p className="page-description mt-3">{module.description}</p>
       </div>
       <ProgressPlaceholder />
       {module.lessons.length === 0 ? (
@@ -1529,7 +1543,7 @@ export function ModulePage({
           title={t('curriculum.noLessons.title')}
         />
       ) : (
-        <div class="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {module.lessons.map((lesson) => (
             <LessonSummaryCard
               key={lesson.id}
@@ -1541,23 +1555,23 @@ export function ModulePage({
         </div>
       )}
       {module.isPublished && module.stage.isPublished ? (
-        <Card class="space-y-4">
+        <Card className="space-y-4">
           <div>
-            <h2 class="font-semibold">{t('curriculum.restart.title')}</h2>
-            <p class="ui-text-muted mt-2 text-sm leading-6">
+            <h2 className="font-semibold">{t('curriculum.restart.title')}</h2>
+            <p className="ui-text-muted mt-2 text-sm leading-6">
               {t('curriculum.restart.description')}
             </p>
           </div>
           {restart.preview ? (
             <div
-              class="space-y-4"
+              className="space-y-4"
               role="alertdialog"
               aria-labelledby="restart-title"
             >
-              <h3 class="ui-text-danger font-semibold" id="restart-title">
+              <h3 className="ui-text-danger font-semibold" id="restart-title">
                 {t('curriculum.restart.confirmTitle')}
               </h3>
-              <p class="ui-text-muted text-sm leading-6">
+              <p className="ui-text-muted text-sm leading-6">
                 {t('curriculum.restart.resetSummary', {
                   concepts: restart.preview.reset.concepts,
                   exercises: restart.preview.reset.exercises,
@@ -1567,7 +1581,7 @@ export function ModulePage({
                   tasks: restart.preview.reset.tasks,
                 })}
               </p>
-              <p class="ui-text-muted text-sm leading-6">
+              <p className="ui-text-muted text-sm leading-6">
                 {t('curriculum.restart.preservedSummary', {
                   conceptAttempts: restart.preview.preserved.conceptAttempts,
                   exerciseSubmissions:
@@ -1576,7 +1590,7 @@ export function ModulePage({
                   quizAttempts: restart.preview.preserved.quizAttempts,
                 })}
               </p>
-              <div class="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3">
                 <Button
                   isLoading={restart.isPending}
                   onClick={() => {
@@ -1606,7 +1620,7 @@ export function ModulePage({
             </Button>
           )}
           {restart.error ? (
-            <p class="ui-text-danger text-sm" role="alert">
+            <p className="ui-text-danger text-sm" role="alert">
               {t('curriculum.restart.error')}
             </p>
           ) : null}

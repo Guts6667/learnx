@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
-import { useRef, useState } from 'preact/hooks';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Drawer } from '@/components/ui/Drawer';

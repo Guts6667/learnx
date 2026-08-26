@@ -1,5 +1,5 @@
-import { route } from 'preact-router';
-import { useRef, useState } from 'preact/hooks';
+import { navigate as route } from '@/app/navigation';
+import { useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Drawer } from '@/components/ui/Drawer';
@@ -60,7 +60,8 @@ export function ContextualNoteAction({
   }
 
   async function saveNote() {
-    if (!note || status !== 'dirty' || mutation.isPending || !title.trim()) return;
+    if (!note || status !== 'dirty' || mutation.isPending || !title.trim())
+      return;
     const savedRevision = revision.current;
     setStatus('saving');
     try {
@@ -76,11 +77,11 @@ export function ContextualNoteAction({
   }
 
   return (
-    <div class="space-y-3">
+    <div className="space-y-3">
       <Button
         aria-expanded={isOpen}
         aria-haspopup="dialog"
-        class="w-full gap-2 sm:w-auto"
+        className="w-full gap-2 sm:w-auto"
         elementRef={triggerRef}
         onClick={open}
         variant="secondary"
@@ -94,8 +95,8 @@ export function ContextualNoteAction({
         returnFocusElement={triggerRef.current}
         title={t('notes.context.take')}
       >
-        <div class="space-y-5">
-          <p class="ui-text-muted text-sm leading-6">
+        <div className="space-y-5">
+          <p className="ui-text-muted text-sm leading-6">
             {t(
               activity.sequenceItemId
                 ? 'notes.context.linkedActivity'
@@ -104,12 +105,12 @@ export function ContextualNoteAction({
             )}
           </p>
           {!note && mutation.isPending ? (
-            <p aria-live="polite" class="ui-text-muted text-sm">
+            <p aria-live="polite" className="ui-text-muted text-sm">
               {t('notes.context.creating')}
             </p>
           ) : null}
           {!note && mutation.error ? (
-            <div class="space-y-3">
+            <div className="space-y-3">
               <ErrorState description={t('notes.createError')} />
               <Button onClick={() => void ensureNote()} variant="secondary">
                 {t('common.retry')}
@@ -119,7 +120,9 @@ export function ContextualNoteAction({
           {note ? (
             <>
               <TextField
-                error={!title.trim() ? t('notes.editor.titleRequired') : undefined}
+                error={
+                  !title.trim() ? t('notes.editor.titleRequired') : undefined
+                }
                 label={t('notes.editor.title')}
                 maxLength={200}
                 onInput={(event) => {
@@ -140,7 +143,7 @@ export function ContextualNoteAction({
               />
               <p
                 aria-live="polite"
-                class={
+                className={
                   status === 'error'
                     ? 'ui-text-danger text-sm'
                     : 'ui-text-muted text-sm'
@@ -155,9 +158,9 @@ export function ContextualNoteAction({
                       ? t('notes.save.saving')
                       : t('notes.save.error')}
               </p>
-              <div class="flex flex-col gap-3 sm:flex-row">
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <Button
-                  class="w-full sm:w-auto"
+                  className="w-full sm:w-auto"
                   disabled={status !== 'dirty' || !title.trim()}
                   isLoading={status === 'saving'}
                   onClick={() => void saveNote()}
@@ -165,7 +168,7 @@ export function ContextualNoteAction({
                   {t('notes.editor.save')}
                 </Button>
                 <Button
-                  class="w-full sm:w-auto"
+                  className="w-full sm:w-auto"
                   onClick={() =>
                     void route(`/notes/${encodeURIComponent(note.id)}`)
                   }

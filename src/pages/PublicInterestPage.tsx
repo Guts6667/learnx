@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'react';
 
 import { applyPublicLeadAction } from '@/features/public-leads/public-leads';
 import { useI18n } from '@/i18n';
@@ -31,9 +31,9 @@ export function PublicInterestPage({ path }: { path?: string }) {
       .catch(() => setState('error'));
   }, []);
   return (
-    <div class="landing-page" data-color-regime="paper">
-      <main class="landing-action-page" id="main-content" tabindex={-1}>
-        <a class="landing-brand" href="/">
+    <div className="landing-page" data-color-regime="paper">
+      <main className="landing-action-page" id="main-content" tabIndex={-1}>
+        <a className="landing-brand" href="/">
           LearnX
         </a>
         <h1>
@@ -50,7 +50,7 @@ export function PublicInterestPage({ path }: { path?: string }) {
               ? t('landing.manage.errorDescription')
               : t('landing.manage.loadingDescription')}
         </p>
-        <a class="ui-action ui-action--secondary" href="/">
+        <a className="ui-action ui-action--secondary" href="/">
           {t('landing.manage.back')}
         </a>
       </main>

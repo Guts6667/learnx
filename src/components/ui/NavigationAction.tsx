@@ -1,4 +1,4 @@
-import type { ComponentChildren, JSX } from 'preact';
+import type { AnchorHTMLAttributes, ReactNode } from 'react';
 
 import {
   actionClassNames,
@@ -7,11 +7,11 @@ import {
 } from '@/components/ui/actionStyles';
 
 interface NavigationActionProps extends Omit<
-  JSX.AnchorHTMLAttributes<HTMLAnchorElement>,
-  'class' | 'href' | 'onClick' | 'role'
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  'className' | 'href' | 'onClick' | 'role'
 > {
-  children: ComponentChildren;
-  class?: string;
+  children: ReactNode;
+  className?: string;
   href: string;
   size?: ActionSize;
   variant?: Exclude<ActionVariant, 'danger'>;
@@ -19,7 +19,7 @@ interface NavigationActionProps extends Omit<
 
 export function NavigationAction({
   children,
-  class: className,
+  className,
   href,
   size = 'md',
   variant = 'primary',
@@ -28,7 +28,7 @@ export function NavigationAction({
   return (
     <a
       {...anchorProps}
-      class={actionClassNames(variant, size, className)}
+      className={actionClassNames(variant, size, className)}
       href={href}
     >
       {children}

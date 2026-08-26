@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState } from 'react';
 
 import { actionClassNames } from '@/components/ui/actionStyles';
 import { Button } from '@/components/ui/Button';
@@ -47,7 +47,7 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
   return (
     <section
       aria-labelledby="email-verification-title"
-      class="totem-auth-page page-shell"
+      className="totem-auth-page page-shell"
     >
       <PageHeader
         description={t('auth.verify.description')}
@@ -58,37 +58,37 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
       <OfflineBanner isOffline={!isOnline} message={t('auth.verify.offline')} />
       <Card>
         {verificationMutation.data ? (
-          <div class="space-y-5" role="status">
-            <h2 class="ui-text text-xl font-semibold">
+          <div className="space-y-5" role="status">
+            <h2 className="ui-text text-xl font-semibold">
               {t('auth.verify.successTitle')}
             </h2>
-            <p class="ui-text-muted leading-7">
+            <p className="ui-text-muted leading-7">
               {t('auth.verify.successDescription')}
             </p>
             <a
-              class={actionClassNames('secondary', 'md', 'w-full')}
+              className={actionClassNames('secondary', 'md', 'w-full')}
               href="/login"
             >
               {t('auth.backToLogin')}
             </a>
           </div>
         ) : (
-          <div class="space-y-5">
-            <p class="ui-text-muted leading-7">
+          <div className="space-y-5">
+            <p className="ui-text-muted leading-7">
               {t('auth.verify.explanation')}
             </p>
             {!token ? (
-              <p class="ui-text-danger text-sm" role="alert">
+              <p className="ui-text-danger text-sm" role="alert">
                 {t('auth.verify.invalidLink')}
               </p>
             ) : null}
             {errorMessage ? (
-              <p class="ui-text-danger text-sm" role="alert">
+              <p className="ui-text-danger text-sm" role="alert">
                 {errorMessage}
               </p>
             ) : null}
             <Button
-              class="w-full"
+              className="w-full"
               disabled={!isOnline || !token}
               isLoading={verificationMutation.isPending}
               onClick={handleVerification}
@@ -97,7 +97,7 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
               {t('auth.verify.submit')}
             </Button>
             <a
-              class={actionClassNames('ghost', 'md', 'w-full')}
+              className={actionClassNames('ghost', 'md', 'w-full')}
               href="/request-access"
             >
               {t('auth.verify.requestNewLink')}

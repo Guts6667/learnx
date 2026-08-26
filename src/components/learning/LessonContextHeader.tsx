@@ -58,24 +58,24 @@ export function LessonContextHeader({
   const { t } = useI18n();
 
   return (
-    <header class="totem-learning-header space-y-4">
+    <header className="totem-learning-header space-y-4">
       {activityTitle ? (
         <a
-          class="ui-link inline-flex min-h-11 max-w-full min-w-0 items-center break-words rounded-lg text-sm font-medium"
+          className="ui-link inline-flex min-h-11 max-w-full min-w-0 items-center break-words rounded-lg text-sm font-medium"
           href={canonicalLessonHref}
         >
           {t('learning.lessonWithTitle', { title: lesson.title })}
         </a>
       ) : null}
-      <div class="totem-learning-header__title flex flex-wrap items-start justify-between gap-3">
-        <div class="min-w-0 max-w-full flex-1">
-          <p class="page-eyebrow break-words">
+      <div className="totem-learning-header__title flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0 max-w-full flex-1">
+          <p className="page-eyebrow break-words">
             {activityTitle
               ? `${t('learning.lesson')} · ${lesson.title}`
               : t('learning.lesson')}
           </p>
           <h1
-            class="mt-2 break-words text-3xl font-bold tracking-tight"
+            className="mt-2 break-words text-3xl font-bold tracking-tight"
             id="lesson-title"
           >
             {activityTitle ?? lesson.title}
@@ -85,7 +85,7 @@ export function LessonContextHeader({
           <Badge tone="warning">{t('common.draft')}</Badge>
         )}
       </div>
-      <div class="totem-learning-header__meta ui-text-muted text-sm">
+      <div className="totem-learning-header__meta ui-text-muted text-sm">
         {lesson.estimatedMinutes === null ? null : (
           <span>{t('common.minutes', { count: lesson.estimatedMinutes })}</span>
         )}
@@ -110,7 +110,7 @@ export function LessonActivitySummary({
   const sequence = lessonActivitySequence(lesson, currentKey);
 
   return (
-    <div class="space-y-6">
+    <div className="space-y-6">
       {sequence.current ? (
         <ContextualNoteAction
           activity={sequence.current}

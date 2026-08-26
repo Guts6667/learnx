@@ -1,5 +1,5 @@
-import { createContext, type ComponentChildren } from 'preact';
-import { useContext, useEffect } from 'preact/hooks';
+import { createContext, type ReactNode } from 'react';
+import { useContext, useEffect } from 'react';
 
 import type { MessageKey } from '@/i18n/catalogs';
 
@@ -16,7 +16,7 @@ export function BackNavigationProvider({
   children,
   onTargetChange,
 }: {
-  children: ComponentChildren;
+  children: ReactNode;
   onTargetChange: SetBackTarget;
 }) {
   return (

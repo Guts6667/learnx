@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { ConceptAssessmentPage } from '@/pages/ConceptAssessmentPage';
@@ -194,9 +194,7 @@ describe('ConceptAssessmentPage', () => {
     expect(
       await screen.findByText('Les données sont indispensables.'),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Continuer' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Continuer' })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
     expect(fetchMock).toHaveBeenCalledWith(
       `${basePath}/attempts?preview=true`,

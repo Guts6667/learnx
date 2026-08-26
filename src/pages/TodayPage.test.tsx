@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/preact';
+import { render, screen } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { TodayPage } from '@/pages/TodayPage';

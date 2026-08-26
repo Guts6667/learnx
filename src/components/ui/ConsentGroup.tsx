@@ -1,13 +1,13 @@
-import type { ComponentChildren, JSX } from 'preact';
+import type { HTMLAttributes, ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
 interface ConsentGroupProps extends Omit<
-  JSX.HTMLAttributes<HTMLFieldSetElement>,
-  'class'
+  HTMLAttributes<HTMLFieldSetElement>,
+  'className'
 > {
-  children: ComponentChildren;
-  class?: string;
+  children: ReactNode;
+  className?: string;
   description?: string;
   legend: string;
 }
@@ -15,18 +15,18 @@ interface ConsentGroupProps extends Omit<
 /** Keeps legally distinct choices visually and semantically independent. */
 export function ConsentGroup({
   children,
-  class: className,
+  className,
   description,
   legend,
   ...props
 }: ConsentGroupProps) {
   return (
-    <fieldset {...props} class={classNames('ui-consent-group', className)}>
-      <legend class="ui-consent-group__legend">{legend}</legend>
+    <fieldset {...props} className={classNames('ui-consent-group', className)}>
+      <legend className="ui-consent-group__legend">{legend}</legend>
       {description ? (
-        <p class="ui-consent-group__description">{description}</p>
+        <p className="ui-consent-group__description">{description}</p>
       ) : null}
-      <div class="ui-consent-group__items">{children}</div>
+      <div className="ui-consent-group__items">{children}</div>
     </fieldset>
   );
 }

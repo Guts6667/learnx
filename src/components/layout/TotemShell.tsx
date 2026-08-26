@@ -1,28 +1,28 @@
-import type { ComponentChildren, JSX } from 'preact';
+import type { HTMLAttributes, ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 import { TotemTheme } from '@/components/ui/TotemTheme';
 
 interface TotemAppShellProps extends Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  'class'
+  HTMLAttributes<HTMLDivElement>,
+  'className'
 > {
-  bottomNavigation?: ComponentChildren;
-  children: ComponentChildren;
-  class?: string;
+  bottomNavigation?: ReactNode;
+  children: ReactNode;
+  className?: string;
   contentId?: string;
   contentTabIndex?: number;
-  pageHeader?: ComponentChildren;
-  rail?: ComponentChildren;
-  sidebar?: ComponentChildren;
-  topbar: ComponentChildren;
+  pageHeader?: ReactNode;
+  rail?: ReactNode;
+  sidebar?: ReactNode;
+  topbar: ReactNode;
 }
 
 /** Layout-only shell. Consumers own navigation labels, routes and permissions. */
 export function TotemAppShell({
   bottomNavigation,
   children,
-  class: className,
+  className,
   contentId,
   contentTabIndex,
   pageHeader,
@@ -33,7 +33,7 @@ export function TotemAppShell({
 }: TotemAppShellProps) {
   return (
     <TotemTheme
-      class={classNames(
+      className={classNames(
         'totem-app-shell',
         !rail && 'totem-app-shell--without-rail',
         !sidebar && 'totem-app-shell--without-sidebar',
@@ -41,36 +41,39 @@ export function TotemAppShell({
       )}
       {...props}
     >
-      {sidebar ? <aside class="totem-app-shell__sidebar">{sidebar}</aside> : null}
-      <header class="totem-app-shell__topbar">{topbar}</header>
-      <main class="totem-app-shell__main">
+      {sidebar ? (
+        <aside className="totem-app-shell__sidebar">{sidebar}</aside>
+      ) : null}
+      <header className="totem-app-shell__topbar">{topbar}</header>
+      <main className="totem-app-shell__main">
         {pageHeader ? (
-          <div class="totem-app-shell__page-head">{pageHeader}</div>
+          <div className="totem-app-shell__page-head">{pageHeader}</div>
         ) : null}
         <div
-          class={classNames(
+          className={classNames(
             'totem-app-shell__content',
-            Boolean(pageHeader) &&
-              'totem-app-shell__content--after-page-head',
+            Boolean(pageHeader) && 'totem-app-shell__content--after-page-head',
           )}
           id={contentId}
-          tabindex={contentTabIndex}
+          tabIndex={contentTabIndex}
         >
           {children}
         </div>
       </main>
-      {rail ? <aside class="totem-app-shell__rail">{rail}</aside> : null}
+      {rail ? <aside className="totem-app-shell__rail">{rail}</aside> : null}
       {bottomNavigation ? (
-        <div class="totem-app-shell__bottom-navigation">{bottomNavigation}</div>
+        <div className="totem-app-shell__bottom-navigation">
+          {bottomNavigation}
+        </div>
       ) : null}
     </TotemTheme>
   );
 }
 
 interface TotemPublicShellProps {
-  children: ComponentChildren;
-  footer: ComponentChildren;
-  navigation: ComponentChildren;
+  children: ReactNode;
+  footer: ReactNode;
+  navigation: ReactNode;
 }
 
 export function TotemPublicShell({
@@ -79,10 +82,10 @@ export function TotemPublicShell({
   navigation,
 }: TotemPublicShellProps) {
   return (
-    <TotemTheme class="totem-public-shell">
-      <header class="totem-public-shell__navigation">{navigation}</header>
+    <TotemTheme className="totem-public-shell">
+      <header className="totem-public-shell__navigation">{navigation}</header>
       <main>{children}</main>
-      <footer class="totem-public-shell__footer">{footer}</footer>
+      <footer className="totem-public-shell__footer">{footer}</footer>
     </TotemTheme>
   );
 }

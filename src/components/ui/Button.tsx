@@ -1,4 +1,4 @@
-import type { ComponentChildren, JSX, Ref } from 'preact';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 
 import {
   actionClassNames,
@@ -9,11 +9,11 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useI18n } from '@/i18n';
 
 interface ButtonProps extends Omit<
-  JSX.ButtonHTMLAttributes<HTMLButtonElement>,
-  'class' | 'disabled'
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'className' | 'disabled'
 > {
-  children: ComponentChildren;
-  class?: string;
+  children: ReactNode;
+  className?: string;
   disabled?: boolean;
   elementRef?: Ref<HTMLButtonElement>;
   isLoading?: boolean;
@@ -23,7 +23,7 @@ interface ButtonProps extends Omit<
 
 export function Button({
   children,
-  class: className,
+  className,
   disabled = false,
   elementRef,
   isLoading = false,
@@ -39,11 +39,7 @@ export function Button({
     <button
       {...buttonProps}
       aria-busy={isLoading || undefined}
-      class={actionClassNames(
-        variant,
-        size,
-        className,
-      )}
+      className={actionClassNames(variant, size, className)}
       disabled={isDisabled}
       ref={elementRef}
       type={type ?? 'button'}

@@ -1,4 +1,4 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
@@ -8,13 +8,13 @@ export interface ResponsiveTableColumn {
 }
 
 export interface ResponsiveTableRow {
-  cells: Record<string, ComponentChildren>;
+  cells: Record<string, ReactNode>;
   key: string;
 }
 
 interface ResponsiveTableProps {
   caption: string;
-  class?: string;
+  className?: string;
   columns: readonly ResponsiveTableColumn[];
   rows: readonly ResponsiveTableRow[];
 }
@@ -26,17 +26,17 @@ interface ResponsiveTableProps {
  */
 export function ResponsiveTable({
   caption,
-  class: className,
+  className,
   columns,
   rows,
 }: ResponsiveTableProps) {
   return (
-    <div class={classNames('ui-responsive-table', className)}>
+    <div className={classNames('ui-responsive-table', className)}>
       <div
         aria-label={`${caption} — tableau défilable`}
-        class="ui-responsive-table__desktop"
+        className="ui-responsive-table__desktop"
         role="region"
-        tabindex={0}
+        tabIndex={0}
       >
         <table>
           <caption>{caption}</caption>
@@ -60,11 +60,19 @@ export function ResponsiveTable({
           </tbody>
         </table>
       </div>
-      <div aria-label={caption} class="ui-responsive-table__mobile" role="list">
+      <div
+        aria-label={caption}
+        className="ui-responsive-table__mobile"
+        role="list"
+      >
         {rows.map((row) => (
-          <dl class="ui-responsive-table__record" key={row.key} role="listitem">
+          <dl
+            className="ui-responsive-table__record"
+            key={row.key}
+            role="listitem"
+          >
             {columns.map((column) => (
-              <div class="ui-responsive-table__field" key={column.key}>
+              <div className="ui-responsive-table__field" key={column.key}>
                 <dt>{column.label}</dt>
                 <dd>{row.cells[column.key]}</dd>
               </div>

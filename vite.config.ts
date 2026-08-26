@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
-import preact from '@preact/preset-vite';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 
@@ -46,7 +46,7 @@ export default defineConfig({
     manifest: true,
   },
   plugins: [
-    preact(),
+    react(),
     tailwindcss(),
     VitePWA({
       injectRegister: null,

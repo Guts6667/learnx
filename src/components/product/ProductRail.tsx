@@ -1,8 +1,8 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';
 
 interface ProductRailProps {
-  action?: ComponentChildren;
-  children: ComponentChildren;
+  action?: ReactNode;
+  children: ReactNode;
   description?: string;
   eyebrow: string;
   id: string;
@@ -18,16 +18,18 @@ export function ProductRail({
   title,
 }: ProductRailProps) {
   return (
-    <aside aria-labelledby={id} class="totem-product-rail">
-      <p class="totem-kicker">{eyebrow}</p>
-      <h2 class="totem-product-rail__title" id={id}>
+    <aside aria-labelledby={id} className="totem-product-rail">
+      <p className="totem-kicker">{eyebrow}</p>
+      <h2 className="totem-product-rail__title" id={id}>
         {title}
       </h2>
       {description ? (
-        <p class="totem-product-rail__description">{description}</p>
+        <p className="totem-product-rail__description">{description}</p>
       ) : null}
-      <div class="totem-product-rail__content">{children}</div>
-      {action ? <div class="totem-product-rail__action">{action}</div> : null}
+      <div className="totem-product-rail__content">{children}</div>
+      {action ? (
+        <div className="totem-product-rail__action">{action}</div>
+      ) : null}
     </aside>
   );
 }

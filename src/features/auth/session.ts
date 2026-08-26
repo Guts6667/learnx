@@ -1,7 +1,8 @@
-import { QueryObserver, type QueryClient } from '@tanstack/query-core';
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { type QueryClient, useQuery } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
+import { useOnlineStatus } from '@/features/pwa/online-status';
 import { apiRequest } from '@/lib/api-client';
 import { purgePrivateBrowserStorage } from '@/lib/private-browser-storage';
 import type { UiLocale } from '@/i18n';
@@ -41,35 +42,18 @@ export function getSession(): Promise<SessionResponse> {
 }
 
 export function useSessionQuery() {
-  const queryClient = useAppQueryClient();
-  const observer = useMemo(
-    () =>
-      new QueryObserver(queryClient, {
-        queryKey: sessionQueryKey,
-        queryFn: getSession,
-        networkMode: 'always',
-        staleTime: 0,
-      }),
-    [queryClient],
-  );
-  const [result, setResult] = useState(() => observer.getCurrentResult());
-
-  useEffect(() => {
-    const unsubscribe = observer.subscribe(setResult);
-
-    void observer.refetch();
-
-    return unsubscribe;
-  }, [observer]);
-
-  const refetch = useCallback(() => observer.refetch(), [observer]);
+  const isOnline = useOnlineStatus();
+  const query = useQuery({
+    enabled: isOnline,
+    queryKey: sessionQueryKey,
+    queryFn: getSession,
+    networkMode: 'always',
+    staleTime: Infinity,
+  });
 
   return {
-    data: result.data,
-    error: result.error,
-    isFetching: result.isFetching,
-    isPending: result.isPending,
-    refetch,
+    ...query,
+    isPending: isOnline && query.isPending,
   };
 }
 

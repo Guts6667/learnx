@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { AdminContactsPage } from '@/pages/AdminContactsPage';

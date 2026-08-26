@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/preact';
+import { render, screen, within } from '@testing-library/react';
 
 import { StageAssessmentCard } from '@/features/stage-assessments/StageAssessmentCard';
 
@@ -66,7 +66,9 @@ describe('StageAssessmentCard', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('60 %')).toBeInTheDocument();
     expect(screen.queryByText(/## Consignes/)).not.toBeInTheDocument();
-    expect(screen.getByText('Exactitude').closest('.ui-list-row')).not.toBeNull();
+    expect(
+      screen.getByText('Exactitude').closest('.ui-list-row'),
+    ).not.toBeNull();
     expect(document.querySelector('.ui-card .ui-card')).toBeNull();
   });
 });

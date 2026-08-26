@@ -1,5 +1,5 @@
-import { QueryObserver } from '@tanstack/query-core';
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { QueryObserver } from '@tanstack/react-query';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -34,7 +34,11 @@ interface NoteResponse {
   note: NoteDetail;
 }
 
-function getNotesPath(search: string, lessonId?: string, cursor?: string): string {
+function getNotesPath(
+  search: string,
+  lessonId?: string,
+  cursor?: string,
+): string {
   const parameters = new URLSearchParams();
 
   if (search.trim()) parameters.set('search', search.trim());
@@ -160,13 +164,15 @@ export function useNoteMutation() {
     [queryClient],
   );
   const create = useCallback(
-    (input: {
-      creationKey?: string;
-      lessonId?: string;
-      markdown?: string;
-      sequenceItemId?: string;
-      title?: string;
-    } = {}) =>
+    (
+      input: {
+        creationKey?: string;
+        lessonId?: string;
+        markdown?: string;
+        sequenceItemId?: string;
+        title?: string;
+      } = {},
+    ) =>
       execute(() =>
         apiRequest<NoteResponse>('/api/notes', {
           body: JSON.stringify(input),

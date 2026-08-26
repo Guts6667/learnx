@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/preact';
+import { render, screen } from '@testing-library/react';
 
 import { frenchMessages } from '@/i18n/catalogs';
 import { I18nProvider, normalizeUiLocale, translate, useI18n } from '@/i18n';

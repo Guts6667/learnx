@@ -1,8 +1,8 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';
 
 interface ProductPageHeaderFact {
   label: string;
-  value: ComponentChildren;
+  value: ReactNode;
 }
 
 interface ProductPageHeaderSummary {
@@ -28,21 +28,21 @@ export function ProductPageHeader({
   title,
 }: ProductPageHeaderProps) {
   return (
-    <header class="totem-product-page-head">
-      <div class="totem-product-page-head__intro">
-        <p class="totem-kicker">{eyebrow}</p>
-        <h1 class="page-title" id={id}>
+    <header className="totem-product-page-head">
+      <div className="totem-product-page-head__intro">
+        <p className="totem-kicker">{eyebrow}</p>
+        <h1 className="page-title" id={id}>
           {title}
         </h1>
-        {description ? <p class="page-description">{description}</p> : null}
+        {description ? <p className="page-description">{description}</p> : null}
       </div>
       {summary ? (
-        <aside class="totem-product-page-summary">
-          <p class="totem-kicker">{summary.eyebrow}</p>
+        <aside className="totem-product-page-summary">
+          <p className="totem-kicker">{summary.eyebrow}</p>
           <strong>{summary.title}</strong>
           {summary.description ? <p>{summary.description}</p> : null}
           {summary.facts?.length ? (
-            <dl class="totem-product-page-summary__facts">
+            <dl className="totem-product-page-summary__facts">
               {summary.facts.map((fact) => (
                 <div key={fact.label}>
                   <dt>{fact.label}</dt>

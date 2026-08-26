@@ -4,7 +4,7 @@ import {
   screen,
   waitFor,
   within,
-} from '@testing-library/preact';
+} from '@testing-library/react';
 
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import type { LessonActivity } from '@/lib/lesson-activity-sequence';

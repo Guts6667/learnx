@@ -1,7 +1,7 @@
 import { classNames } from '@/components/ui/classNames';
 
 interface PageHeaderProps {
-  class?: string;
+  className?: string;
   description?: string;
   eyebrow: string;
   id: string;
@@ -9,19 +9,19 @@ interface PageHeaderProps {
 }
 
 export function PageHeader({
-  class: className,
+  className,
   description,
   eyebrow,
   id,
   title,
 }: PageHeaderProps) {
   return (
-    <header class={classNames('page-header', className)}>
-      <p class="page-eyebrow">{eyebrow}</p>
-      <h1 class="page-title" id={id}>
+    <header className={classNames('page-header', className)}>
+      <p className="page-eyebrow">{eyebrow}</p>
+      <h1 className="page-title" id={id}>
         {title}
       </h1>
-      {description ? <p class="page-description">{description}</p> : null}
+      {description ? <p className="page-description">{description}</p> : null}
     </header>
   );
 }

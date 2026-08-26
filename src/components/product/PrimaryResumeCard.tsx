@@ -1,4 +1,4 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';
 
 import { Card } from '@/components/ui/Card';
 import { NavigationAction } from '@/components/ui/NavigationAction';
@@ -7,8 +7,8 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 interface PrimaryResumeCardProps {
   actionHref: string;
   actionLabel: string;
-  children?: ComponentChildren;
-  eyebrow: ComponentChildren;
+  children?: ReactNode;
+  eyebrow: ReactNode;
   metadata?: string[];
   progress?: {
     label: string;
@@ -36,15 +36,19 @@ export function PrimaryResumeCard({
   title,
 }: PrimaryResumeCardProps) {
   return (
-    <Card class="totem-resume-card" data-totem-component="primary-resume" tone="signature">
-      <div class="totem-resume-card__body">
-        <p class="totem-kicker">{eyebrow}</p>
-        <h2 class="totem-resume-card__title">{title}</h2>
+    <Card
+      className="totem-resume-card"
+      data-totem-component="primary-resume"
+      tone="signature"
+    >
+      <div className="totem-resume-card__body">
+        <p className="totem-kicker">{eyebrow}</p>
+        <h2 className="totem-resume-card__title">{title}</h2>
         {supportingText ? (
-          <p class="totem-resume-card__copy">{supportingText}</p>
+          <p className="totem-resume-card__copy">{supportingText}</p>
         ) : null}
         {metadata.length > 0 ? (
-          <ul class="totem-resume-card__meta" role="list">
+          <ul className="totem-resume-card__meta" role="list">
             {metadata.map((item) => (
               <li key={item}>{item}</li>
             ))}
@@ -59,7 +63,7 @@ export function PrimaryResumeCard({
       {children}
 
       <NavigationAction
-        class="totem-resume-card__action"
+        className="totem-resume-card__action"
         href={actionHref}
         size="lg"
       >

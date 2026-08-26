@@ -1,11 +1,10 @@
-import { AppProviders } from '@/app/providers';
 import { AppRoutes } from '@/app/routes';
-import { normalizeUiLocale } from '@/i18n';
+import { I18nProvider, normalizeUiLocale } from '@/i18n';
 
 export function App() {
   return (
-    <AppProviders locale={normalizeUiLocale(navigator.language)}>
+    <I18nProvider locale={normalizeUiLocale(navigator.language)}>
       <AppRoutes />
-    </AppProviders>
+    </I18nProvider>
   );
 }

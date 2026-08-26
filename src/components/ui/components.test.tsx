@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -48,7 +48,7 @@ describe('design system minimal', () => {
   it('structure une section, une ligne et des métadonnées sans carte imbriquée', () => {
     const { container } = render(
       <Section description="Description secondaire" title="Comprendre">
-        <div class="ui-list">
+        <div className="ui-list">
           <ListRow aside={<span>12 min</span>}>
             <strong>Leçon accessible</strong>
           </ListRow>

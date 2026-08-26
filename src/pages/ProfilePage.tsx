@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
-import { useState } from 'preact/hooks';
+import { navigate as route } from '@/app/navigation';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -30,9 +31,8 @@ export function ProfilePage() {
     }
   }
 
-  async function handleLocaleChange(event: Event) {
-    const nextLocale = (event.currentTarget as HTMLSelectElement)
-      .value as UiLocale;
+  async function handleLocaleChange(event: FormEvent<HTMLSelectElement>) {
+    const nextLocale = event.currentTarget.value as UiLocale;
     const previousLocale = locale;
     setSavedLocale(undefined);
     setLocale(nextLocale);
@@ -54,7 +54,7 @@ export function ProfilePage() {
   return (
     <section
       aria-labelledby="profile-title"
-      class="page-layout page-layout--work page-shell"
+      className="page-layout page-layout--work page-shell"
     >
       <PageHeader
         description={t('profile.description')}
@@ -62,33 +62,36 @@ export function ProfilePage() {
         id="profile-title"
         title={user.displayName}
       />
-      <div class="profile-groups">
-        <Card class="profile-account p-0">
-          <Section aria-labelledby="profile-account-title" class="px-5 sm:px-6">
-            <h2 class="mb-5 text-lg font-medium" id="profile-account-title">
+      <div className="profile-groups">
+        <Card className="profile-account p-0">
+          <Section
+            aria-labelledby="profile-account-title"
+            className="px-5 sm:px-6"
+          >
+            <h2 className="mb-5 text-lg font-medium" id="profile-account-title">
               {t('profile.group.account')}
             </h2>
-            <div class="min-w-0">
-              <p class="ui-text-muted text-sm">{t('profile.email')}</p>
-              <p class="ui-text mt-1 break-all text-base">{user.email}</p>
+            <div className="min-w-0">
+              <p className="ui-text-muted text-sm">{t('profile.email')}</p>
+              <p className="ui-text mt-1 break-all text-base">{user.email}</p>
             </div>
           </Section>
-          <Section class="px-5 sm:px-6">
+          <Section className="px-5 sm:px-6">
             <label
-              class="ui-text block text-sm font-semibold"
-              for="profile-locale"
+              className="ui-text block text-sm font-semibold"
+              htmlFor="profile-locale"
             >
               {t('profile.language')}
             </label>
             <p
-              class="ui-text-muted mt-1 text-sm leading-6"
+              className="ui-text-muted mt-1 text-sm leading-6"
               id="profile-locale-description"
             >
               {t('profile.languageDescription')}
             </p>
             <select
               aria-describedby="profile-locale-description"
-              class="ui-field__control mt-3"
+              className="ui-field__control mt-3"
               disabled={localeMutation.isPending}
               id="profile-locale"
               onInput={handleLocaleChange}
@@ -98,11 +101,11 @@ export function ProfilePage() {
               <option value="en">{t('profile.languageEnglish')}</option>
             </select>
             {localeMutation.error ? (
-              <p class="ui-text-danger mt-2 text-sm" role="alert">
+              <p className="ui-text-danger mt-2 text-sm" role="alert">
                 {t('profile.languageError')}
               </p>
             ) : savedLocale === locale ? (
-              <p class="ui-text-success mt-2 text-sm" role="status">
+              <p className="ui-text-success mt-2 text-sm" role="status">
                 {t('profile.languageSaved')}
               </p>
             ) : null}
@@ -110,15 +113,15 @@ export function ProfilePage() {
         </Card>
         <Card
           aria-labelledby="profile-access-title"
-          class="profile-access space-y-4"
+          className="profile-access space-y-4"
         >
-          <h2 class="text-lg font-medium" id="profile-access-title">
+          <h2 className="text-lg font-medium" id="profile-access-title">
             {t('profile.group.access')}
           </h2>
-          <div class="flex w-full min-w-0 flex-col gap-3">
+          <div className="flex w-full min-w-0 flex-col gap-3">
             <a
               aria-label={t('profile.openCredits')}
-              class="profile-access-action"
+              className="profile-access-action"
               href="/credits"
             >
               <span>
@@ -130,7 +133,7 @@ export function ProfilePage() {
             {user.role === 'ADMIN' ? (
               <a
                 aria-label={t('profile.openAdmin')}
-                class="profile-access-action"
+                className="profile-access-action"
                 href="/admin"
               >
                 <span>
@@ -144,22 +147,22 @@ export function ProfilePage() {
         </Card>
         <Card
           aria-labelledby="profile-device-title"
-          class="profile-device space-y-3"
+          className="profile-device space-y-3"
         >
-          <h2 class="text-lg font-medium" id="profile-device-title">
+          <h2 className="text-lg font-medium" id="profile-device-title">
             {t('profile.group.device')}
           </h2>
           <PwaInstallSettings />
         </Card>
         <Card
           aria-labelledby="profile-session-title"
-          class="profile-session space-y-4"
+          className="profile-session space-y-4"
         >
-          <h2 class="text-lg font-medium" id="profile-session-title">
+          <h2 className="text-lg font-medium" id="profile-session-title">
             {t('profile.group.session')}
           </h2>
           <Button
-            class="w-full min-w-0"
+            className="w-full min-w-0"
             isLoading={logoutMutation.isPending}
             onClick={handleLogout}
             variant="danger"

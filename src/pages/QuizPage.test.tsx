@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { QuizPage } from '@/pages/QuizPage';

@@ -2,13 +2,13 @@ import { classNames } from '@/components/ui/classNames';
 import { useI18n } from '@/i18n';
 
 interface OfflineBannerProps {
-  class?: string;
+  className?: string;
   isOffline?: boolean;
   message?: string;
 }
 
 export function OfflineBanner({
-  class: className,
+  className,
   isOffline = true,
   message,
 }: OfflineBannerProps) {
@@ -20,13 +20,13 @@ export function OfflineBanner({
   return (
     <div
       aria-label={t('offline.ariaLabel')}
-      class={classNames(
+      className={classNames(
         'ui-feedback ui-feedback--warning text-sm',
         className,
       )}
       role="status"
     >
-      <span class="font-medium">{t('offline.title')} </span>
+      <span className="font-medium">{t('offline.title')} </span>
       {message ?? t('offline.description')}
     </div>
   );

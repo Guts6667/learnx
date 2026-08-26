@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'preact/hooks';
+import { useCallback, useState } from 'react';
 
 import type { UiLocale } from '@/i18n';
 import { apiRequest } from '@/lib/api-client';

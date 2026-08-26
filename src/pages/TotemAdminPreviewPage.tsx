@@ -1,5 +1,3 @@
-import type { RoutableProps } from 'preact-router';
-
 import { AdminNavigation } from '@/components/layout/AdminNavigation';
 import { TotemAppShell } from '@/components/layout/TotemShell';
 import { Badge } from '@/components/ui/Badge';
@@ -8,38 +6,42 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { ResponsiveTable } from '@/components/ui/ResponsiveTable';
 import { useI18n } from '@/i18n';
 
-export function TotemAdminPreviewPage(props: RoutableProps) {
-  void props;
+export function TotemAdminPreviewPage() {
   const { t } = useI18n();
 
   return (
     <TotemAppShell
       bottomNavigation={<AdminNavigation currentPath="/admin/accounts" />}
-      class="totem-admin-surface"
+      className="totem-admin-surface"
       contentId="main-content"
       contentTabIndex={-1}
       sidebar={<AdminNavigation currentPath="/admin/accounts" />}
       topbar={
-        <div class="totem-admin-topbar">
+        <div className="totem-admin-topbar">
           <div>
-            <p class="page-eyebrow">{t('admin.eyebrow')}</p>
-            <p class="totem-admin-topbar__title">{t('admin.title')}</p>
+            <p className="page-eyebrow">{t('admin.eyebrow')}</p>
+            <p className="totem-admin-topbar__title">{t('admin.title')}</p>
           </div>
           <Button variant="secondary">{t('admin.navigation.backToApp')}</Button>
         </div>
       }
     >
-      <section class="page-layout page-layout--admin page-shell">
+      <section className="page-layout page-layout--admin page-shell">
         <PageHeader
           description={t('admin.accounts.description')}
           eyebrow="Aperçu de design — données de démonstration"
           id="totem-admin-preview-title"
           title={t('admin.accounts.title')}
         />
-        <div class="admin-toolbar">
-          <label class="ui-field">
-            <span class="ui-field__label">{t('admin.accounts.search')}</span>
-            <input class="ui-field__control" placeholder="camille@learnx.test" />
+        <div className="admin-toolbar">
+          <label className="ui-field">
+            <span className="ui-field__label">
+              {t('admin.accounts.search')}
+            </span>
+            <input
+              className="ui-field__control"
+              placeholder="camille@learnx.test"
+            />
           </label>
           <Button variant="secondary">{t('programs.searchAction')}</Button>
         </div>
@@ -57,10 +59,14 @@ export function TotemAdminPreviewPage(props: RoutableProps) {
                 account: (
                   <div>
                     <strong>Camille Martin</strong>
-                    <p class="ui-text-muted text-sm">camille@learnx.test</p>
+                    <p className="ui-text-muted text-sm">camille@learnx.test</p>
                   </div>
                 ),
-                action: <Button variant="secondary">{t('admin.accounts.suspend')}</Button>,
+                action: (
+                  <Button variant="secondary">
+                    {t('admin.accounts.suspend')}
+                  </Button>
+                ),
                 role: t('admin.role.user'),
                 status: <Badge tone="info">{t('admin.accounts.active')}</Badge>,
               },
@@ -71,12 +77,18 @@ export function TotemAdminPreviewPage(props: RoutableProps) {
                 account: (
                   <div>
                     <strong>Alex Renard</strong>
-                    <p class="ui-text-muted text-sm">alex@learnx.test</p>
+                    <p className="ui-text-muted text-sm">alex@learnx.test</p>
                   </div>
                 ),
-                action: <Button variant="secondary">{t('admin.accounts.reactivate')}</Button>,
+                action: (
+                  <Button variant="secondary">
+                    {t('admin.accounts.reactivate')}
+                  </Button>
+                ),
                 role: t('admin.role.creator'),
-                status: <Badge tone="warning">{t('admin.accounts.suspended')}</Badge>,
+                status: (
+                  <Badge tone="warning">{t('admin.accounts.suspended')}</Badge>
+                ),
               },
               key: 'demo-account-suspended',
             },

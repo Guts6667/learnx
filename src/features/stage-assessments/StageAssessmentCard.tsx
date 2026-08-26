@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -129,19 +129,21 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
   }
 
   return (
-    <div class="space-y-4">
+    <div className="space-y-4">
       <Badge tone={statusTones[submission.status]}>
         {t(statusLabelKeys[submission.status])}
       </Badge>
       {submission.reviewFeedback ? (
-        <p class="ui-feedback ui-feedback--warning text-sm">
-          {t('stageAssessment.feedback', { feedback: submission.reviewFeedback })}
+        <p className="ui-feedback ui-feedback--warning text-sm">
+          {t('stageAssessment.feedback', {
+            feedback: submission.reviewFeedback,
+          })}
         </p>
       ) : null}
       {editable ? (
         <>
           <Textarea
-            class="[&_textarea]:min-h-40"
+            className="[&_textarea]:min-h-40"
             id="assessment-content"
             label={t('stageAssessment.answer')}
             onInput={(event) => setContentMarkdown(event.currentTarget.value)}
@@ -154,7 +156,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
             type="url"
             value={attachmentUrl}
           />
-          <div class="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button
               isLoading={mutation.isPending}
               onClick={() =>
@@ -182,7 +184,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
           </div>
         </>
       ) : (
-        <p class="ui-text-muted text-sm">
+        <p className="ui-text-muted text-sm">
           {submission.status === 'VALIDATED'
             ? t('stageAssessment.result', {
                 result:
@@ -194,7 +196,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
         </p>
       )}
       {mutation.error ? (
-        <p role="alert" class="ui-text-danger text-sm">
+        <p role="alert" className="ui-text-danger text-sm">
           {t('stageAssessment.saveError')}
         </p>
       ) : null}
@@ -212,8 +214,7 @@ export function StageAssessmentCard({
   const query = useStageAssessmentQuery(stageId);
   const { t } = useI18n();
 
-  if (query.isPending)
-    return <Spinner label={t('stageAssessment.loading')} />;
+  if (query.isPending) return <Spinner label={t('stageAssessment.loading')} />;
   if (query.error || !query.data) {
     return <ErrorState description={t('stageAssessment.unavailable')} />;
   }
@@ -225,16 +226,16 @@ export function StageAssessmentCard({
   const rubric = getRubricCriteria(assessment.rubric);
 
   return (
-    <Card class="space-y-6">
-      <div class="flex flex-wrap items-center gap-2">
-        <h2 class="text-xl font-semibold">{t('stageAssessment.final')}</h2>
+    <Card className="space-y-6">
+      <div className="flex flex-wrap items-center gap-2">
+        <h2 className="text-xl font-semibold">{t('stageAssessment.final')}</h2>
         {isStagePublished ? null : (
           <Badge tone="warning">{t('common.draft')}</Badge>
         )}
       </div>
       <div>
-        <h3 class="font-semibold">{assessment.title}</h3>
-        <p class="ui-text-muted mt-2 text-sm">
+        <h3 className="font-semibold">{assessment.title}</h3>
+        <p className="ui-text-muted mt-2 text-sm">
           {t('stageAssessment.type', {
             type: typeLabelKeys[assessment.type]
               ? t(typeLabelKeys[assessment.type])
@@ -242,7 +243,7 @@ export function StageAssessmentCard({
           })}
         </p>
         {assessment.passingScore === null ? null : (
-          <p class="ui-text-muted mt-1 text-sm">
+          <p className="ui-text-muted mt-1 text-sm">
             {t('assessment.passingScore', { count: assessment.passingScore })}
           </p>
         )}
@@ -250,12 +251,12 @@ export function StageAssessmentCard({
       {assessment.description ? (
         <Section aria-labelledby={`assessment-objective-${assessment.id}`}>
           <h3
-            class="text-lg font-semibold"
+            className="text-lg font-semibold"
             id={`assessment-objective-${assessment.id}`}
           >
             {t('stageAssessment.objective')}
           </h3>
-          <SafeMarkdown class="mt-3" content={assessment.description} />
+          <SafeMarkdown className="mt-3" content={assessment.description} />
         </Section>
       ) : null}
       {sections.map((section, index) => (
@@ -264,32 +265,30 @@ export function StageAssessmentCard({
           key={`${section.title}-${index}`}
         >
           <h3
-            class="ui-text text-lg font-semibold"
+            className="ui-text text-lg font-semibold"
             id={`assessment-section-${assessment.id}-${index}`}
           >
             {section.title}
           </h3>
-          <SafeMarkdown class="mt-3" content={section.content} />
+          <SafeMarkdown className="mt-3" content={section.content} />
         </Section>
       ))}
       {rubric.length > 0 ? (
-        <Section
-          aria-labelledby={`assessment-rubric-${assessment.id}`}
-        >
+        <Section aria-labelledby={`assessment-rubric-${assessment.id}`}>
           <h3
-            class="text-lg font-semibold"
+            className="text-lg font-semibold"
             id={`assessment-rubric-${assessment.id}`}
           >
             {t('stageAssessment.rubric')}
           </h3>
-          <ol class="ui-list mt-4">
+          <ol className="ui-list mt-4">
             {rubric.map((criterion, index) => (
               <li
-                class="ui-list-row block"
+                className="ui-list-row block"
                 key={`${criterion.criterion}-${index}`}
               >
-                <div class="flex flex-wrap items-start justify-between gap-2">
-                  <h4 class="ui-text font-semibold">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <h4 className="ui-text font-semibold">
                     {criterion.criterion}
                   </h4>
                   {criterion.weight === null ? null : (
@@ -297,7 +296,7 @@ export function StageAssessmentCard({
                   )}
                 </div>
                 {criterion.requirements.length > 0 ? (
-                  <ul class="ui-text-muted mt-3 list-disc space-y-2 pl-5 text-sm leading-6">
+                  <ul className="ui-text-muted mt-3 list-disc space-y-2 pl-5 text-sm leading-6">
                     {criterion.requirements.map((requirement) => (
                       <li key={requirement}>{requirement}</li>
                     ))}
@@ -311,7 +310,7 @@ export function StageAssessmentCard({
       {isStagePublished ? (
         <AssessmentForm assessment={assessment} />
       ) : (
-        <p class="ui-text-warning text-sm">
+        <p className="ui-text-warning text-sm">
           {t('stageAssessment.preview')}
         </p>
       )}

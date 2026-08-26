@@ -1,13 +1,13 @@
-import type { ComponentChildren, JSX } from 'preact';
+import type { HTMLAttributes, ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
 interface TotemThemeProps extends Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  'class'
+  HTMLAttributes<HTMLDivElement>,
+  'className'
 > {
-  children: ComponentChildren;
-  class?: string;
+  children: ReactNode;
+  className?: string;
 }
 
 /**
@@ -17,15 +17,11 @@ interface TotemThemeProps extends Omit<
  * Atlas aliases remain untouched outside this boundary, which keeps rollback
  * local and prevents a partial migration from changing unrelated routes.
  */
-export function TotemTheme({
-  children,
-  class: className,
-  ...props
-}: TotemThemeProps) {
+export function TotemTheme({ children, className, ...props }: TotemThemeProps) {
   return (
     <div
       {...props}
-      class={classNames('totem-theme', className)}
+      className={classNames('totem-theme', className)}
       data-visual-system="totem"
     >
       {children}

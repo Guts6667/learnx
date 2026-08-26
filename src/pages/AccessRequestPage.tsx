@@ -1,4 +1,5 @@
-import { useState } from 'preact/hooks';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 
 import { actionClassNames } from '@/components/ui/actionStyles';
 import { Button } from '@/components/ui/Button';
@@ -29,7 +30,7 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
         ? t('auth.access.error')
         : undefined;
 
-  async function handleSubmit(event: SubmitEvent) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     try {
@@ -42,7 +43,7 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
   return (
     <section
       aria-labelledby="access-request-title"
-      class="totem-auth-page page-shell"
+      className="totem-auth-page page-shell"
     >
       <PageHeader
         description={t('auth.access.description')}
@@ -53,22 +54,22 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
       <OfflineBanner isOffline={!isOnline} message={t('auth.access.offline')} />
       <Card>
         {requestMutation.data ? (
-          <div class="space-y-5" role="status">
-            <h2 class="ui-text text-xl font-semibold">
+          <div className="space-y-5" role="status">
+            <h2 className="ui-text text-xl font-semibold">
               {t('auth.access.successTitle')}
             </h2>
-            <p class="ui-text-muted leading-7">
+            <p className="ui-text-muted leading-7">
               {t('auth.access.successDescription')}
             </p>
             <a
-              class={actionClassNames('secondary', 'md', 'w-full')}
+              className={actionClassNames('secondary', 'md', 'w-full')}
               href="/login"
             >
               {t('auth.backToLogin')}
             </a>
           </div>
         ) : (
-          <form class="space-y-5" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <TextField
               autoComplete="email"
               description={t('auth.access.emailDescription')}
@@ -80,19 +81,22 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
               value={email}
             />
             {errorMessage ? (
-              <p class="ui-text-danger text-sm" role="alert">
+              <p className="ui-text-danger text-sm" role="alert">
                 {errorMessage}
               </p>
             ) : null}
             <Button
-              class="w-full"
+              className="w-full"
               disabled={!isOnline}
               isLoading={requestMutation.isPending}
               type="submit"
             >
               {t('auth.access.submit')}
             </Button>
-            <a class={actionClassNames('ghost', 'md', 'w-full')} href="/login">
+            <a
+              className={actionClassNames('ghost', 'md', 'w-full')}
+              href="/login"
+            >
               {t('auth.access.existingAccount')}
             </a>
           </form>

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { AdminAccessRequestsPage } from '@/pages/AdminAccessRequestsPage';
@@ -55,7 +55,9 @@ describe('AdminAccessRequestsPage', () => {
       </AppProviders>,
     );
 
-    expect(await screen.findByText('candidate@example.com')).toBeInTheDocument();
+    expect(
+      await screen.findByText('candidate@example.com'),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole('combobox', { name: 'État des demandes' }),
     ).toHaveValue('PENDING_APPROVAL');
@@ -71,9 +73,7 @@ describe('AdminAccessRequestsPage', () => {
         expect.any(Object),
       );
     });
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'Accepter' }),
-    );
+    fireEvent.click(await screen.findByRole('button', { name: 'Accepter' }));
     expect(screen.getByLabelText('Rôle à attribuer')).toHaveValue('USER');
     fireEvent.click(
       screen.getByRole('button', { name: 'Prévisualiser la décision' }),

@@ -1,49 +1,21 @@
-import { QueryClient } from '@tanstack/query-core';
-import { createContext } from 'preact';
-import type { ComponentChildren } from 'preact';
-import { useContext, useState } from 'preact/hooks';
+import type { ReactNode } from 'react';
 
-import {
-  I18nProvider,
-  type UiLocale,
-} from '@/i18n';
+import { AppQueryProvider } from '@/app/query-provider';
+import { I18nProvider, type UiLocale } from '@/i18n';
 
 interface AppProvidersProps {
-  children: ComponentChildren;
+  children: ReactNode;
   locale?: UiLocale;
 }
 
-const QueryClientContext = createContext<QueryClient | null>(null);
-
 export function AppProviders({ children, locale }: AppProvidersProps) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            networkMode: 'always',
-            retry: false,
-          },
-        },
-      }),
-  );
   const initialLocale = locale ?? 'fr';
 
   return (
-    <QueryClientContext.Provider value={queryClient}>
-      <I18nProvider locale={initialLocale}>
-        {children}
-      </I18nProvider>
-    </QueryClientContext.Provider>
+    <AppQueryProvider>
+      <I18nProvider locale={initialLocale}>{children}</I18nProvider>
+    </AppQueryProvider>
   );
 }
 
-export function useAppQueryClient(): QueryClient {
-  const queryClient = useContext(QueryClientContext);
-
-  if (!queryClient) {
-    throw new Error('useAppQueryClient must be used within AppProviders.');
-  }
-
-  return queryClient;
-}
+export { useAppQueryClient } from '@/app/query-provider';

@@ -1,12 +1,12 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
 type BadgeTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
 
 interface BadgeProps {
-  children: ComponentChildren;
-  class?: string;
+  children: ReactNode;
+  className?: string;
   tone?: BadgeTone;
 }
 
@@ -18,19 +18,9 @@ const toneClasses: Record<BadgeTone, string> = {
   danger: 'ui-badge--danger',
 };
 
-export function Badge({
-  children,
-  class: className,
-  tone = 'neutral',
-}: BadgeProps) {
+export function Badge({ children, className, tone = 'neutral' }: BadgeProps) {
   return (
-    <span
-      class={classNames(
-        'ui-badge',
-        toneClasses[tone],
-        className,
-      )}
-    >
+    <span className={classNames('ui-badge', toneClasses[tone], className)}>
       {children}
     </span>
   );

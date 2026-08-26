@@ -1,4 +1,4 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 import { toPlainMarkdownHeading } from '@/lib/markdown-heading';
@@ -6,7 +6,7 @@ import { toPlainMarkdownHeading } from '@/lib/markdown-heading';
 type HeadingStartLevel = 2 | 3 | 4;
 
 interface SafeMarkdownProps {
-  class?: string;
+  className?: string;
   content: string;
   headingStartLevel?: HeadingStartLevel;
   omitFirstHeadingWhenEqual?: string;
@@ -120,8 +120,8 @@ function isTableStart(lines: string[], index: number): boolean {
   const delimiter = parseTableRow(lines[index + 1] ?? '');
   return Boolean(
     headers?.length &&
-      delimiter?.length === headers.length &&
-      delimiter.every((cell) => /^:?-{3,}:?$/.test(cell)),
+    delimiter?.length === headers.length &&
+    delimiter.every((cell) => /^:?-{3,}:?$/.test(cell)),
   );
 }
 
@@ -237,8 +237,8 @@ function parseBlocks(markdown: string): MarkdownBlock[] {
   return blocks;
 }
 
-function renderInline(content: string): ComponentChildren[] {
-  const children: ComponentChildren[] = [];
+function renderInline(content: string): ReactNode[] {
+  const children: ReactNode[] = [];
   let lastIndex = 0;
 
   for (const match of content.matchAll(inlinePattern)) {
@@ -248,7 +248,7 @@ function renderInline(content: string): ComponentChildren[] {
 
     if (value.startsWith('`')) {
       children.push(
-        <code class="ui-inline-code" key={`${index}-code`}>
+        <code className="ui-inline-code" key={`${index}-code`}>
           {value.slice(1, -1)}
         </code>,
       );
@@ -259,7 +259,7 @@ function renderInline(content: string): ComponentChildren[] {
         image && source ? (
           <img
             alt={image.alt}
-            class="ui-markdown-image ui-markdown-image--inline"
+            className="ui-markdown-image ui-markdown-image--inline"
             decoding="async"
             key={`${index}-image`}
             loading="lazy"
@@ -267,7 +267,7 @@ function renderInline(content: string): ComponentChildren[] {
             title={image.title ?? undefined}
           />
         ) : (
-          <span class="ui-image-fallback" key={`${index}-image-fallback`}>
+          <span className="ui-image-fallback" key={`${index}-image-fallback`}>
             {image?.alt ?? value}
           </span>
         ),
@@ -291,7 +291,7 @@ function renderInline(content: string): ComponentChildren[] {
             target="_blank"
           >
             {label}
-            <span class="sr-only"> (nouvel onglet)</span>
+            <span className="sr-only"> (nouvel onglet)</span>
           </a>
         ) : (
           <span key={`${index}-unsafe-link`}>{label}</span>
@@ -315,17 +315,17 @@ function MarkdownCodeBlock({
   return (
     <div
       aria-label={language ? `Code — ${language}` : 'Code'}
-      class="ui-code-block"
+      className="ui-code-block"
       role="region"
       tabIndex={0}
     >
       {language ? (
-        <div aria-hidden="true" class="ui-code-block__language">
+        <div aria-hidden="true" className="ui-code-block__language">
           {language}
         </div>
       ) : null}
       <pre>
-        <code class={language ? `language-${language}` : undefined}>
+        <code className={language ? `language-${language}` : undefined}>
           {content}
         </code>
       </pre>
@@ -335,18 +335,18 @@ function MarkdownCodeBlock({
 
 function MarkdownImageBlock({ image }: { image: MarkdownImage }) {
   const source = getSafeImageSource(image.source);
-  if (!source) return <p class="ui-image-fallback">{image.alt}</p>;
+  if (!source) return <p className="ui-image-fallback">{image.alt}</p>;
   return (
-    <figure class="ui-markdown-figure">
+    <figure className="ui-markdown-figure">
       <div
         aria-label={image.alt}
-        class="ui-markdown-figure__viewport"
+        className="ui-markdown-figure__viewport"
         role="region"
         tabIndex={0}
       >
         <img
           alt={image.alt}
-          class="ui-markdown-image"
+          className="ui-markdown-image"
           decoding="async"
           loading="lazy"
           src={source}
@@ -367,7 +367,7 @@ function MarkdownTable({
   return (
     <div
       aria-label={headers.join(', ')}
-      class="ui-markdown-table"
+      className="ui-markdown-table"
       role="region"
       tabIndex={0}
     >
@@ -413,7 +413,7 @@ function MarkdownHeading({
 }
 
 export function SafeMarkdown({
-  class: className,
+  className,
   content,
   headingStartLevel = 2,
   omitFirstHeadingWhenEqual,
@@ -444,7 +444,7 @@ export function SafeMarkdown({
   );
 
   return (
-    <div class={classNames('ui-prose', className)}>
+    <div className={classNames('ui-prose', className)}>
       {blocks.map((block, index) => {
         if (index === omittedHeadingIndex) return null;
         if (block.type === 'code') {

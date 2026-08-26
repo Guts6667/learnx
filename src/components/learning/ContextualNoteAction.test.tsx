@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction';
@@ -67,15 +67,13 @@ describe('ContextualNoteAction', () => {
   });
 
   it('crée une note liée, conserve la position et restaure le focus', async () => {
-    const fetchMock = vi.fn(
-      async (path: string, init?: RequestInit) => {
-        void path;
-        void init;
-        return new Response(JSON.stringify(noteResponse()), {
-          headers: { 'content-type': 'application/json' },
-        });
-      },
-    );
+    const fetchMock = vi.fn(async (path: string, init?: RequestInit) => {
+      void path;
+      void init;
+      return new Response(JSON.stringify(noteResponse()), {
+        headers: { 'content-type': 'application/json' },
+      });
+    });
     vi.stubGlobal('fetch', fetchMock);
     renderAction();
     const trigger = screen.getByRole('button', { name: 'Prendre une note' });
@@ -109,17 +107,15 @@ describe('ContextualNoteAction', () => {
   });
 
   it('enregistre explicitement le titre et le Markdown', async () => {
-    const fetchMock = vi.fn(
-      async (_path: string, init?: RequestInit) => {
-        const body = init?.body ? JSON.parse(String(init.body)) : {};
-        return new Response(
-          JSON.stringify(
-            noteResponse({ markdown: body.markdown, title: body.title }),
-          ),
-          { headers: { 'content-type': 'application/json' } },
-        );
-      },
-    );
+    const fetchMock = vi.fn(async (_path: string, init?: RequestInit) => {
+      const body = init?.body ? JSON.parse(String(init.body)) : {};
+      return new Response(
+        JSON.stringify(
+          noteResponse({ markdown: body.markdown, title: body.title }),
+        ),
+        { headers: { 'content-type': 'application/json' } },
+      );
+    });
     vi.stubGlobal('fetch', fetchMock);
     renderAction();
 
@@ -130,7 +126,9 @@ describe('ContextualNoteAction', () => {
     fireEvent.input(markdown, { target: { value: 'Une idée importante.' } });
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    fireEvent.click(screen.getByRole('button', { name: 'Enregistrer la note' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Enregistrer la note' }),
+    );
 
     await waitFor(
       () => {
@@ -149,9 +147,7 @@ describe('ContextualNoteAction', () => {
       markdown: 'Une idée importante.',
       title: 'Synthèse personnelle',
     });
-    expect(
-      screen.getByRole('button', { name: 'Voir la note' }),
-    ).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Voir la note' })).toBeVisible();
   });
 
   it('réessaie avec la même clé après une erreur de création', async () => {
@@ -173,8 +169,8 @@ describe('ContextualNoteAction', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
 
     expect(await screen.findByLabelText('Contenu de la note')).toBeVisible();
-    const creationKeys = fetchMock.mock.calls.map(([, init]) =>
-      JSON.parse(String(init?.body)).creationKey,
+    const creationKeys = fetchMock.mock.calls.map(
+      ([, init]) => JSON.parse(String(init?.body)).creationKey,
     );
     expect(creationKeys).toEqual([creationKey, creationKey]);
   });

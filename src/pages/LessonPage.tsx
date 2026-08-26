@@ -1,5 +1,5 @@
-import { route } from 'preact-router';
-import { useEffect, useMemo, useRef } from 'preact/hooks';
+import { navigate as route } from '@/app/navigation';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction';
 import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
@@ -90,14 +90,14 @@ function ContentActivity({
 }) {
   const { t } = useI18n();
   if (block.type === 'DIVIDER')
-    return <hr class="border-[var(--color-border)]" />;
+    return <hr className="border-[var(--color-border)]" />;
   const sources = getSourceKeys(block.content)
     .map((key) => resourcesByKey.get(key))
     .filter((resource): resource is LessonResource => Boolean(resource));
 
   return (
-    <Section class="totem-learning-content-block space-y-4">
-      <p class="text-sm font-semibold text-[var(--color-accent-text)]">
+    <Section className="totem-learning-content-block space-y-4">
+      <p className="text-sm font-semibold text-[var(--color-accent-text)]">
         {t(contentBlockLabelKeys[block.type])}
       </p>
       <SafeMarkdown
@@ -106,11 +106,11 @@ function ContentActivity({
         omitFirstHeadingWhenEqual={activityTitle}
       />
       {sources.length === 0 ? null : (
-        <details class="border-t border-[var(--color-border)] pt-3">
-          <summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-[var(--color-text-muted)]">
+        <details className="border-t border-[var(--color-border)] pt-3">
+          <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-[var(--color-text-muted)]">
             {t('learning.sources')}
           </summary>
-          <ul class="mt-2 space-y-2 text-sm text-[var(--color-text-muted)]">
+          <ul className="mt-2 space-y-2 text-sm text-[var(--color-text-muted)]">
             {sources.map((source) => {
               const url = getSafeExternalUrl(source.url);
               return (
@@ -120,7 +120,7 @@ function ContentActivity({
                   {source.citation ? ` — ${source.citation}` : ''}
                   {url ? (
                     <a
-                      class="ml-2 text-[var(--color-action)] underline"
+                      className="ml-2 text-[var(--color-action)] underline"
                       href={url}
                       rel="noreferrer"
                       target="_blank"
@@ -172,8 +172,8 @@ function ResourceActivity({
   const verb = t(resourceVerbKey(resource.type));
 
   return (
-    <Card class="space-y-4">
-      <div class="flex flex-wrap items-center gap-2">
+    <Card className="space-y-4">
+      <div className="flex flex-wrap items-center gap-2">
         <Badge tone={resource.isRequired ? 'warning' : 'neutral'}>
           {resource.isRequired
             ? t('common.required')
@@ -187,26 +187,29 @@ function ResourceActivity({
       </div>
       {guidance?.objective ? (
         <div>
-          <h3 class="ui-text font-semibold">
+          <h3 className="ui-text font-semibold">
             {t('learning.resource.objective')}
           </h3>
-          <p class="ui-reading-copy mt-1">{guidance.objective}</p>
+          <p className="ui-reading-copy mt-1">{guidance.objective}</p>
         </div>
       ) : null}
       {guidance?.scope ? (
-        <p class="ui-text-muted text-sm">
+        <p className="ui-text-muted text-sm">
           <strong>{t('learning.resource.scope')}</strong> {guidance.scope}
         </p>
       ) : null}
-      <p class="ui-reading-copy">
+      <p className="ui-reading-copy">
         {guidance?.instructions ?? resource.description}
       </p>
       {unavailable ? (
-        <div role="status" class="ui-feedback ui-feedback--warning space-y-2">
+        <div
+          role="status"
+          className="ui-feedback ui-feedback--warning space-y-2"
+        >
           <p>{t('learning.resource.unavailable')}</p>
           {alternativeHref ? (
             <a
-              class="ui-link inline-flex min-h-11 items-center"
+              className="ui-link inline-flex min-h-11 items-center"
               href={alternativeHref}
               rel="noreferrer"
               target="_blank"
@@ -219,7 +222,7 @@ function ResourceActivity({
         </div>
       ) : href ? (
         <a
-          class="ui-action ui-action--secondary ui-action--md"
+          className="ui-action ui-action--secondary ui-action--md"
           href={href}
           onClick={() => void onOpen?.()}
           rel="noreferrer"
@@ -258,20 +261,20 @@ function TaskActivity({
 }) {
   const { t } = useI18n();
   return (
-    <Card class="space-y-4">
+    <Card className="space-y-4">
       <Badge tone={task.isRequired ? 'warning' : 'neutral'}>
         {task.isRequired ? t('common.required') : t('learning.task.optional')}
       </Badge>
-      <p class="ui-reading-copy">{task.description}</p>
+      <p className="ui-reading-copy">{task.description}</p>
       {(task.resources ?? []).length === 0 ? null : (
-        <ul class="space-y-2" aria-label={t('learning.task.supports')}>
+        <ul className="space-y-2" aria-label={t('learning.task.supports')}>
           {(task.resources ?? []).map((resource) => {
             const href = getSafeExternalUrl(resource.url);
             return (
               <li key={resource.id}>
                 {href ? (
                   <a
-                    class="ui-link inline-flex min-h-11 items-center"
+                    className="ui-link inline-flex min-h-11 items-center"
                     href={href}
                     rel="noreferrer"
                     target="_blank"
@@ -304,13 +307,13 @@ function TaskActivity({
 function SecondaryActivity({ activity }: { activity: LessonActivity }) {
   const { t } = useI18n();
   return (
-    <Card class="space-y-3">
+    <Card className="space-y-3">
       <Badge tone={activity.required ? 'warning' : 'neutral'}>
         {activity.required
           ? t('common.required')
           : t('learning.secondary.optional')}
       </Badge>
-      <p class="ui-reading-copy">{t('learning.secondary.description')}</p>
+      <p className="ui-reading-copy">{t('learning.secondary.description')}</p>
     </Card>
   );
 }
@@ -486,7 +489,7 @@ function LessonWorkspace({
 
   return (
     <article
-      class="totem-learning-page page-layout page-layout--reading space-y-6"
+      className="totem-learning-page page-layout page-layout--reading space-y-6"
       aria-labelledby="lesson-title"
     >
       <LessonContextHeader
@@ -495,18 +498,18 @@ function LessonWorkspace({
       />
       {lesson.isPublished ? null : (
         <Card tone="muted">
-          <p class="ui-text-warning font-semibold">
+          <p className="ui-text-warning font-semibold">
             {t('learning.draftPreview')}
           </p>
-          <p class="ui-text-muted mt-2 text-sm">
+          <p className="ui-text-muted mt-2 text-sm">
             {t('learning.previewDescription')}
           </p>
         </Card>
       )}
-      <p class="totem-learning-summary ui-reading-copy">{lesson.summary}</p>
-      <div class="totem-learning-layout grid gap-6">
+      <p className="totem-learning-summary ui-reading-copy">{lesson.summary}</p>
+      <div className="totem-learning-layout grid gap-6">
         <section
-          class="totem-learning-activity space-y-4"
+          className="totem-learning-activity space-y-4"
           aria-labelledby="current-activity-title"
         >
           {current ? (
@@ -514,12 +517,15 @@ function LessonWorkspace({
               data-activity-key={activityKey(current.kind, current.id)}
               tabIndex={-1}
             >
-              <p class="page-eyebrow">{current.label}</p>
-              <h2 class="mt-2 text-2xl font-bold" id="current-activity-title">
+              <p className="page-eyebrow">{current.label}</p>
+              <h2
+                className="mt-2 text-2xl font-bold"
+                id="current-activity-title"
+              >
                 {current.title}
               </h2>
               {current.estimatedMinutes === null ? null : (
-                <p class="ui-text-muted mt-2 text-sm">
+                <p className="ui-text-muted mt-2 text-sm">
                   {t('learning.duration', { count: current.estimatedMinutes })}
                 </p>
               )}
@@ -571,7 +577,7 @@ function LessonWorkspace({
           ) : null}
           {current?.kind === 'COMPLETE' ? (
             <Card>
-              <p class="ui-text-muted text-sm">
+              <p className="ui-text-muted text-sm">
                 {progress?.canComplete
                   ? t('learning.allRequiredComplete')
                   : t('learning.requiredRemaining')}

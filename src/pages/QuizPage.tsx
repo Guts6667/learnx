@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/Badge';
-import { useEffect } from 'preact/hooks';
+import { useEffect } from 'react';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import {
   LessonContextHeader,
@@ -103,18 +103,18 @@ export function QuizPage({
   const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
 
   return (
-    <article class="totem-learning-page page-layout page-layout--work space-y-6">
+    <article className="totem-learning-page page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={quiz.title} lesson={lesson} />
-      <section class="space-y-3" aria-label={t('quiz.info')}>
-        <div class="flex flex-wrap items-center gap-3">
+      <section className="space-y-3" aria-label={t('quiz.info')}>
+        <div className="flex flex-wrap items-center gap-3">
           <Badge tone={quiz.isRequired ? 'warning' : 'neutral'}>
             {quiz.isRequired ? t('common.required') : t('quiz.optional')}
           </Badge>
         </div>
         {quiz.description ? (
-          <p class="ui-text-muted leading-7">{quiz.description}</p>
+          <p className="ui-text-muted leading-7">{quiz.description}</p>
         ) : null}
-        <p class="ui-text-muted text-sm">
+        <p className="ui-text-muted text-sm">
           {t('quiz.scoreSummary', {
             questions: t('assessment.questionCount', {
               count: quiz.questionCount,

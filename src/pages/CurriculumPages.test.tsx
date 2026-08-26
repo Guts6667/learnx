@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
-import type { ComponentChildren } from 'preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import type { ReactNode } from 'react';
 
 import { AppProviders } from '@/app/providers';
 import {
@@ -15,7 +15,7 @@ function jsonResponse(body: unknown): Response {
   });
 }
 
-function renderPage(page: ComponentChildren) {
+function renderPage(page: ReactNode) {
   return render(<AppProviders>{page}</AppProviders>);
 }
 
@@ -171,9 +171,9 @@ describe('CurriculumPages', () => {
     });
     await waitFor(() =>
       expect(
-        vi.mocked(fetch).mock.calls.some(([path]) =>
-          String(path).includes('locale=en'),
-        ),
+        vi
+          .mocked(fetch)
+          .mock.calls.some(([path]) => String(path).includes('locale=en')),
       ).toBe(true),
     );
     expect(
@@ -230,9 +230,7 @@ describe('CurriculumPages', () => {
     fireEvent.click(enrollButton);
 
     expect(
-      await screen.findByText(
-        'Programme public a été ajouté à Mes parcours.',
-      ),
+      await screen.findByText('Programme public a été ajouté à Mes parcours.'),
     ).toBeInTheDocument();
     expect(
       fetchMock.mock.calls.some(
@@ -311,11 +309,7 @@ describe('CurriculumPages', () => {
   });
 
   it('ouvre Découvrir depuis la première arrivée puis reprend la destination serveur', async () => {
-    window.history.replaceState(
-      {},
-      '',
-      '/program?view=discover&onboarding=1',
-    );
+    window.history.replaceState({}, '', '/program?view=discover&onboarding=1');
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
       if (path === '/api/programs?preview=true') {
         return Promise.resolve(jsonResponse({ programs: [] }));
@@ -390,14 +384,12 @@ describe('CurriculumPages', () => {
       'true',
     );
     expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'S’inscrire' }),
-    );
+    fireEvent.click(await screen.findByRole('button', { name: 'S’inscrire' }));
 
     await waitFor(() =>
-      expect(
-        fetchMock.mock.calls.some(([path]) => path === '/api/today'),
-      ).toBe(true),
+      expect(fetchMock.mock.calls.some(([path]) => path === '/api/today')).toBe(
+        true,
+      ),
     );
   });
 
@@ -1333,7 +1325,9 @@ describe('program restart', () => {
         name: 'Confirmer la reprise du programme',
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/1 étapes, 1 modules, 2 leçons/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/1 étapes, 1 modules, 2 leçons/),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(/3 notes, 5 tentatives de quiz/),
     ).toBeInTheDocument();

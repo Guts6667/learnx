@@ -1,6 +1,6 @@
-import type { TargetedKeyboardEvent } from 'preact';
-import { route } from 'preact-router';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import type { KeyboardEvent as TargetedKeyboardEvent } from 'react';
+import { navigate as route } from '@/app/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
@@ -55,27 +55,27 @@ function NoteLine({
 }) {
   const { locale, t } = useI18n();
   return (
-    <li class="border-b border-[var(--color-border)] last:border-b-0">
+    <li className="border-b border-[var(--color-border)] last:border-b-0">
       <button
-        class="group grid min-h-20 w-full gap-2 px-3 py-5 text-left outline-none transition-colors hover:bg-[var(--color-surface-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-inset sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-8"
+        className="group grid min-h-20 w-full gap-2 px-3 py-5 text-left outline-none transition-colors hover:bg-[var(--color-surface-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-inset sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-8"
         data-note-select={note.id}
         onClick={() => onOpen(note)}
         type="button"
       >
-        <div class="min-w-0 space-y-1">
-          <h2 class="font-semibold text-[var(--color-heading)] group-hover:text-[var(--color-action)]">
+        <div className="min-w-0 space-y-1">
+          <h2 className="font-semibold text-[var(--color-heading)] group-hover:text-[var(--color-action)]">
             {note.title}
           </h2>
-          <p class="truncate text-sm leading-6 text-[var(--color-text)]">
+          <p className="truncate text-sm leading-6 text-[var(--color-text)]">
             {getExcerpt(note.markdown, t('notes.emptyExcerpt'))}
           </p>
-          <p class="text-sm text-[var(--color-text-muted)]">
+          <p className="text-sm text-[var(--color-text-muted)]">
             {note.lesson
               ? `${note.program?.title ? `${note.program.title} · ` : ''}${note.lesson.title}`
               : t('notes.personal')}
           </p>
         </div>
-        <p class="text-xs text-[var(--color-text-muted)] sm:text-right">
+        <p className="text-xs text-[var(--color-text-muted)] sm:text-right">
           {t('notes.updatedAt', {
             date: formatUpdatedAt(note.updatedAt, locale),
           })}
@@ -136,20 +136,20 @@ export function NotesPage() {
   return (
     <section
       aria-labelledby="notes-title"
-      class="page-layout page-layout--work page-shell"
+      className="page-layout page-layout--work page-shell"
     >
-      <div class="notes-page-head">
+      <div className="notes-page-head">
         <PageHeader
           description={t('notes.description')}
           eyebrow={t('notes.eyebrow')}
           id="notes-title"
           title={t('notes.title')}
         />
-        <div class="notes-page-head__actions">
+        <div className="notes-page-head__actions">
           <Button
             aria-expanded={isSearchOpen}
             aria-label={t('notes.search')}
-            class="notes-search-toggle"
+            className="notes-search-toggle"
             onClick={() => setIsSearchOpen((value) => !value)}
             variant="secondary"
           >
@@ -157,11 +157,11 @@ export function NotesPage() {
           </Button>
           <Button
             aria-label={t('notes.new')}
-            class="notes-new-action"
+            className="notes-new-action"
             onClick={() => void route('/notes/new')}
           >
             <span aria-hidden="true">＋</span>
-            <span class="notes-new-action__label">{t('notes.new')}</span>
+            <span className="notes-new-action__label">{t('notes.new')}</span>
           </Button>
         </div>
       </div>
@@ -183,11 +183,11 @@ export function NotesPage() {
         />
       ) : null}
       {query.data?.notes.length ? (
-        <div class="space-y-4">
-          <div class="totem-notes-list">
-            <div class="totem-notes-master">
+        <div className="space-y-4">
+          <div className="totem-notes-list">
+            <div className="totem-notes-master">
               {isSearchOpen ? (
-                <div class="notes-search-field notes-search-field--open">
+                <div className="notes-search-field notes-search-field--open">
                   <TextField
                     label={t('notes.search')}
                     onInput={(event) => setSearch(event.currentTarget.value)}
@@ -197,7 +197,7 @@ export function NotesPage() {
                   />
                 </div>
               ) : null}
-              <header class="totem-notes-master__header">
+              <header className="totem-notes-master__header">
                 <h2>{t('notes.recent')}</h2>
                 <span>
                   {t('notes.count', { count: query.data.notes.length })}
@@ -205,15 +205,11 @@ export function NotesPage() {
               </header>
               <ul
                 aria-label={t('notes.title')}
-                class="border-y border-[var(--color-border)]"
+                className="border-y border-[var(--color-border)]"
                 onKeyDown={navigateNoteList}
               >
                 {query.data.notes.map((note) => (
-                  <NoteLine
-                    key={note.id}
-                    note={note}
-                    onOpen={openNote}
-                  />
+                  <NoteLine key={note.id} note={note} onOpen={openNote} />
                 ))}
               </ul>
             </div>
@@ -287,8 +283,8 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
   }
 
   return (
-    <div class="totem-note-editor-layout">
-      <div class="min-w-0 space-y-5">
+    <div className="totem-note-editor-layout">
+      <div className="min-w-0 space-y-5">
         <TextField
           error={!title.trim() ? t('notes.editor.titleRequired') : undefined}
           label={t('notes.editor.title')}
@@ -299,13 +295,13 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
           }}
           value={title}
         />
-        <div class="space-y-3">
-          <p class="ui-text-muted text-sm leading-6">
+        <div className="space-y-3">
+          <p className="ui-text-muted text-sm leading-6">
             {t('notes.editor.help')}
           </p>
           <div
             aria-label={t('notes.editor.mode')}
-            class="ui-subtle-surface inline-flex rounded-lg p-1"
+            className="ui-subtle-surface inline-flex rounded-lg p-1"
             onKeyDown={(event) => {
               if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')
                 return;
@@ -325,7 +321,7 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
             <button
               aria-controls="note-write-panel"
               aria-selected={mode === 'write'}
-              class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+              className={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
                 mode === 'write'
                   ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
                   : 'ui-text-muted'
@@ -341,7 +337,7 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
             <button
               aria-controls="note-preview-panel"
               aria-selected={mode === 'preview'}
-              class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+              className={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
                 mode === 'preview'
                   ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
                   : 'ui-text-muted'
@@ -375,21 +371,23 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
           ) : (
             <div
               aria-labelledby="note-preview-tab"
-              class="ui-control-surface min-h-32 rounded-lg p-4"
+              className="ui-control-surface min-h-32 rounded-lg p-4"
               id="note-preview-panel"
               role="tabpanel"
             >
               {markdown.trim() ? (
                 <SafeMarkdown content={markdown} />
               ) : (
-                <p class="ui-text-muted text-sm">{t('notes.editor.empty')}</p>
+                <p className="ui-text-muted text-sm">
+                  {t('notes.editor.empty')}
+                </p>
               )}
             </div>
           )}
         </div>
         <p
           aria-live="polite"
-          class={
+          className={
             status === 'error'
               ? 'ui-text-danger text-sm'
               : 'ui-text-muted text-sm'
@@ -399,9 +397,9 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
             ? t('notes.save.missingTitle')
             : t(`notes.save.${status}`)}
         </p>
-        <div class="ui-sticky-mobile-action">
+        <div className="ui-sticky-mobile-action">
           <Button
-            class="w-full sm:w-auto"
+            className="w-full sm:w-auto"
             disabled={status !== 'dirty' || !title.trim()}
             isLoading={status === 'saving'}
             onClick={() => void saveNote()}
@@ -412,13 +410,13 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
         </div>
       </div>
       {note ? (
-        <aside class="totem-note-editor-context space-y-4">
+        <aside className="totem-note-editor-context space-y-4">
           {note.lesson ? (
-            <Card class="space-y-2">
+            <Card className="space-y-2">
               <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>
-              <p class="font-semibold">{note.lesson.title}</p>
+              <p className="font-semibold">{note.lesson.title}</p>
               {note.program ? (
-                <p class="ui-text-muted text-sm">{note.program.title}</p>
+                <p className="ui-text-muted text-sm">{note.program.title}</p>
               ) : null}
               {note.program ? (
                 <NavigationAction
@@ -432,23 +430,23 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
           ) : (
             <Badge tone="neutral">{t('notes.personal')}</Badge>
           )}
-          <Card class="space-y-4">
+          <Card className="space-y-4">
             {isConfirmingDelete ? (
               <div
                 aria-describedby="delete-note-description"
                 aria-labelledby="delete-note-title"
-                class="space-y-4"
+                className="space-y-4"
                 role="alertdialog"
               >
                 <div>
                   <h2
-                    class="ui-text-danger font-semibold"
+                    className="ui-text-danger font-semibold"
                     id="delete-note-title"
                   >
                     {t('notes.editor.deleteTitle')}
                   </h2>
                   <p
-                    class="ui-text-muted mt-2 text-sm leading-6"
+                    className="ui-text-muted mt-2 text-sm leading-6"
                     id="delete-note-description"
                   >
                     {t('notes.editor.deleteDescription')}
@@ -457,9 +455,9 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
                 {error ? (
                   <ErrorState description={t('notes.editor.deleteError')} />
                 ) : null}
-                <div class="flex flex-col gap-3">
+                <div className="flex flex-col gap-3">
                   <Button
-                    class="w-full"
+                    className="w-full"
                     disabled={isPending}
                     elementRef={cancelDeleteRef}
                     onClick={() => setIsConfirmingDelete(false)}
@@ -468,7 +466,7 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
                     {t('notes.editor.cancel')}
                   </Button>
                   <Button
-                    class="w-full"
+                    className="w-full"
                     isLoading={isPending}
                     onClick={() => void deleteNote()}
                     variant="danger"
@@ -478,10 +476,10 @@ function NoteEditor({ note }: { note?: NoteDetail }) {
                 </div>
               </div>
             ) : (
-              <div class="space-y-3">
+              <div className="space-y-3">
                 <div>
-                  <h2 class="font-semibold">{t('notes.editor.delete')}</h2>
-                  <p class="ui-text-muted mt-2 text-sm leading-6">
+                  <h2 className="font-semibold">{t('notes.editor.delete')}</h2>
+                  <p className="ui-text-muted mt-2 text-sm leading-6">
                     {t('notes.editor.deleteDescription')}
                   </p>
                 </div>
@@ -517,13 +515,13 @@ export function NotePage({ noteId }: { noteId: string }) {
   return (
     <article
       aria-labelledby="note-title"
-      class="page-layout page-layout--work space-y-6"
+      className="page-layout page-layout--work space-y-6"
     >
-      <header class="space-y-3">
+      <header className="space-y-3">
         <NavigationAction href="/notes" variant="ghost">
           {t('notes.editor.back')}
         </NavigationAction>
-        <h1 class="text-3xl font-bold tracking-tight" id="note-title">
+        <h1 className="text-3xl font-bold tracking-tight" id="note-title">
           {t('notes.edit')}
         </h1>
       </header>
@@ -542,13 +540,13 @@ export function NewNotePage() {
   return (
     <article
       aria-labelledby="new-note-title"
-      class="page-layout page-layout--work space-y-6"
+      className="page-layout page-layout--work space-y-6"
     >
-      <header class="space-y-3">
+      <header className="space-y-3">
         <NavigationAction href="/notes" variant="ghost">
           {t('notes.editor.back')}
         </NavigationAction>
-        <h1 class="text-3xl font-medium tracking-tight" id="new-note-title">
+        <h1 className="text-3xl font-medium tracking-tight" id="new-note-title">
           {t('notes.new')}
         </h1>
       </header>

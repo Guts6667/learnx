@@ -1,6 +1,6 @@
-import { createContext, type ComponentChildren } from 'preact';
-import { useRegisterSW } from 'virtual:pwa-register/preact';
-import { useContext, useEffect, useState } from 'preact/hooks';
+import { createContext, type ReactNode } from 'react';
+import { useRegisterSW } from 'virtual:pwa-register/react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -49,13 +49,12 @@ function usePwaContext(): PwaContextValue {
   return value;
 }
 
-export function PwaProvider({ children }: { children: ComponentChildren }) {
+export function PwaProvider({ children }: { children: ReactNode }) {
   const isOnline = useOnlineStatus();
   const [installPrompt, setInstallPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
-  const [installHelpDismissed, setInstallHelpDismissed] = useState(
-    readIosHelpDismissed,
-  );
+  const [installHelpDismissed, setInstallHelpDismissed] =
+    useState(readIosHelpDismissed);
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     offlineReady: [offlineReady, setOfflineReady],
@@ -65,9 +64,8 @@ export function PwaProvider({ children }: { children: ComponentChildren }) {
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return undefined;
 
-    return reloadOnServiceWorkerReplacement(
-      navigator.serviceWorker,
-      () => window.location.reload(),
+    return reloadOnServiceWorkerReplacement(navigator.serviceWorker, () =>
+      window.location.reload(),
     );
   }, []);
 
@@ -154,7 +152,7 @@ export function PwaStatus({
     <aside
       aria-label={t('pwa.status')}
       aria-live="polite"
-      class="mx-auto max-w-xl px-5 pt-4"
+      className="mx-auto max-w-xl px-5 pt-4"
     >
       {!isOnline ? (
         <OfflineBanner isOffline />
@@ -195,18 +193,18 @@ function PwaNotice({
 }) {
   const { t } = useI18n();
   return (
-    <Card class="relative space-y-3 border-[var(--color-accent)] py-4 pr-16">
+    <Card className="relative space-y-3 border-[var(--color-accent)] py-4 pr-16">
       <Button
         aria-label={t('common.close')}
-        class="absolute top-2 right-2 min-h-11 min-w-11 px-0"
+        className="absolute top-2 right-2 min-h-11 min-w-11 px-0"
         onClick={onDismiss}
         variant="ghost"
       >
-        <span aria-hidden="true" class="text-xl leading-none">
+        <span aria-hidden="true" className="text-xl leading-none">
           ×
         </span>
       </Button>
-      <p class="text-sm leading-6 text-[var(--color-text)]">{message}</p>
+      <p className="text-sm leading-6 text-[var(--color-text)]">{message}</p>
       {actionLabel && onAction ? (
         <Button onClick={onAction} size="sm">
           {actionLabel}
@@ -218,29 +216,22 @@ function PwaNotice({
 
 export function PwaInstallSettings() {
   const { t } = useI18n();
-  const {
-    dismissIosHelp,
-    installApplication,
-    installPrompt,
-    showIosHelp,
-  } = usePwaContext();
+  const { dismissIosHelp, installApplication, installPrompt, showIosHelp } =
+    usePwaContext();
   const standalone = isStandaloneDisplayMode();
 
   return (
-    <Card
-      aria-labelledby="application-settings-title"
-      class="space-y-4"
-    >
+    <Card aria-labelledby="application-settings-title" className="space-y-4">
       <div>
-        <h2 class="text-lg font-semibold" id="application-settings-title">
+        <h2 className="text-lg font-semibold" id="application-settings-title">
           {t('pwa.application')}
         </h2>
-        <p class="ui-text-muted mt-2 text-sm leading-6">
+        <p className="ui-text-muted mt-2 text-sm leading-6">
           {t('pwa.description')}
         </p>
       </div>
       {standalone ? (
-        <p class="text-sm text-[var(--color-success)]" role="status">
+        <p className="text-sm text-[var(--color-success)]" role="status">
           {t('pwa.installed')}
         </p>
       ) : installPrompt ? (
@@ -248,18 +239,14 @@ export function PwaInstallSettings() {
           {t('pwa.install')}
         </Button>
       ) : showIosHelp ? (
-        <div class="space-y-3">
-          <p class="ui-text-muted text-sm leading-6">
-            {t('pwa.iosHelp')}
-          </p>
+        <div className="space-y-3">
+          <p className="ui-text-muted text-sm leading-6">{t('pwa.iosHelp')}</p>
           <Button onClick={dismissIosHelp} variant="ghost">
             {t('pwa.understood')}
           </Button>
         </div>
       ) : (
-        <p class="ui-text-muted text-sm">
-          {t('pwa.unavailable')}
-        </p>
+        <p className="ui-text-muted text-sm">{t('pwa.unavailable')}</p>
       )}
     </Card>
   );

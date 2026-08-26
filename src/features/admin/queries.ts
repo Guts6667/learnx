@@ -1,5 +1,5 @@
-import { QueryObserver } from '@tanstack/query-core';
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { QueryObserver } from '@tanstack/react-query';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -89,7 +89,10 @@ interface AdminLessonResponse {
 }
 
 interface AdminProgramVisibilityResponse {
-  program: Pick<AdminProgramSummary, 'id' | 'status' | 'updatedAt' | 'visibility'>;
+  program: Pick<
+    AdminProgramSummary,
+    'id' | 'status' | 'updatedAt' | 'visibility'
+  >;
 }
 
 export type PublicationAction = 'PUBLISH' | 'UNPUBLISH';

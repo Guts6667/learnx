@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Button } from '@/components/ui/Button';
 import { NavigationAction } from '@/components/ui/NavigationAction';

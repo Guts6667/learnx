@@ -1,11 +1,11 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { I18nProvider } from '@/i18n/I18nProvider';
 import { LandingPage } from '@/pages/LandingPage';
 
 const routeMock = vi.hoisted(() => vi.fn());
-vi.mock('preact-router', () => ({ route: routeMock }));
+vi.mock('@/app/navigation', () => ({ navigate: routeMock }));
 
 afterEach(() => {
   vi.restoreAllMocks();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -164,7 +164,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
 
   if (phase.kind === 'HISTORY_PENDING') {
     return (
-      <div class="correction-state correction-state--pending" role="status">
+      <div className="correction-state correction-state--pending" role="status">
         <Spinner label={t('aiCorrection.historyPending')} size="sm" />
       </div>
     );
@@ -172,18 +172,18 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
 
   if (phase.kind === 'IDLE') {
     return (
-      <section class="correction-state correction-state--idle">
-        <div class="correction-state__heading">
+      <section className="correction-state correction-state--idle">
+        <div className="correction-state__heading">
           <div>
-            <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+            <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
             <h4>{t('aiCorrection.readyTitle')}</h4>
           </div>
-          <span class="correction-state__doctrine">
+          <span className="correction-state__doctrine">
             {t('aiCorrection.noProgressImpact')}
           </span>
         </div>
         <p>{t('aiCorrection.intro')}</p>
-        <div class="correction-contract correction-contract--preview">
+        <div className="correction-contract correction-contract--preview">
           <div>
             <span>{t('aiCorrection.contractCostLabel')}</span>
             <strong>{t('aiCorrection.contractCostPending')}</strong>
@@ -197,7 +197,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
             <strong>{t('aiCorrection.noProgressImpact')}</strong>
           </div>
         </div>
-        <p class="correction-state__notice">
+        <p className="correction-state__notice">
           {t('aiCorrection.doctrineNotice')}
         </p>
         <Button onClick={() => void askQuote()}>
@@ -209,7 +209,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
 
   if (phase.kind === 'QUOTE_PENDING') {
     return (
-      <div class="correction-state correction-state--pending" role="status">
+      <div className="correction-state correction-state--pending" role="status">
         <Spinner label={t('aiCorrection.quotePending')} size="sm" />
       </div>
     );
@@ -220,24 +220,24 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
     return (
       <section
         aria-live="polite"
-        class="correction-state correction-state--running"
+        className="correction-state correction-state--running"
         role="status"
       >
-        <div class="correction-state__heading">
+        <div className="correction-state__heading">
           <div>
-            <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+            <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
             <h4>{t('aiCorrection.processingTitle')}</h4>
           </div>
           <Spinner label={t('aiCorrection.processingShort')} size="sm" />
         </div>
         <p>{t('aiCorrection.processingDescription')}</p>
-        <ol class="correction-progress">
+        <ol className="correction-progress">
           <li data-state="complete">{t('aiCorrection.processingReceived')}</li>
           <li data-state="active">{t('aiCorrection.processingCriteria')}</li>
           <li>{t('aiCorrection.processingEvidence')}</li>
           <li>{t('aiCorrection.processingSynthesis')}</li>
         </ol>
-        <div class="correction-contract">
+        <div className="correction-contract">
           <div>
             <span>{t('aiCorrection.contractCeilingLabel')}</span>
             <strong>{quote.maximumReservedCredits}</strong>
@@ -254,13 +254,13 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
   if (phase.kind === 'CONSENT') {
     const { quote } = phase;
     return (
-      <section class="correction-state correction-state--consent">
-        <div class="correction-state__heading">
+      <section className="correction-state correction-state--consent">
+        <div className="correction-state__heading">
           <div>
-            <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+            <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
             <h4>{t('aiCorrection.quoteTitle')}</h4>
           </div>
-          <span class="correction-state__doctrine">
+          <span className="correction-state__doctrine">
             {t('aiCorrection.noProgressImpact')}
           </span>
         </div>
@@ -269,7 +269,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
             ? t('aiCorrection.reconsiderationQuoteAction')
             : t('aiCorrection.quoteAction')}
         </p>
-        <div class="correction-contract">
+        <div className="correction-contract">
           <div>
             <span>{t('aiCorrection.contractEstimateLabel')}</span>
             <strong>{quote.estimatedCredits}</strong>
@@ -283,7 +283,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
             <strong>{t('aiCorrection.verificationIncluded')}</strong>
           </div>
         </div>
-        <p class="correction-state__notice">
+        <p className="correction-state__notice">
           {quote.action === 'RECONSIDERATION'
             ? t('aiCorrection.reconsiderationConsentNotice')
             : t('aiCorrection.consentNotice')}
@@ -299,13 +299,13 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
 
   if (phase.kind === 'ERROR') {
     return (
-      <section class="correction-state correction-state--error">
-        <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+      <section className="correction-state correction-state--error">
+        <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
         <h4>{t('aiCorrection.errorTitle')}</h4>
-        <p class="ui-text-danger" role="alert">
+        <p className="ui-text-danger" role="alert">
           {phase.message}
         </p>
-        <div class="correction-state__actions">
+        <div className="correction-state__actions">
           <Button
             onClick={() =>
               phase.quote
@@ -352,11 +352,11 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
 
   if (correction.status === 'FAILED') {
     return (
-      <section class="correction-state correction-state--unavailable">
-        <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+      <section className="correction-state correction-state--unavailable">
+        <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
         <h4>{t('aiCorrection.unavailableTitle')}</h4>
         <p>{t('aiCorrection.unavailable')}</p>
-        <p class="correction-settlement">
+        <p className="correction-settlement">
           {t('aiCorrection.settlementRecap', {
             reserved: settlement.reservedCredits,
             settled: settlement.settledCredits,
@@ -385,10 +385,10 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
   );
 
   return (
-    <section class="correction-result">
-      <header class="correction-result__header">
+    <section className="correction-result">
+      <header className="correction-result__header">
         <div>
-          <p class="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
+          <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
           <h4>{t('aiCorrection.resultTitle')}</h4>
         </div>
         <span>{t('aiCorrection.noProgressImpact')}</span>
@@ -397,9 +397,9 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
       {phase.history.length > 1 ? (
         <section
           aria-label={t('aiCorrection.historyTitle')}
-          class="correction-history"
+          className="correction-history"
         >
-          <div class="correction-history__heading">
+          <div className="correction-history__heading">
             <h5>{t('aiCorrection.historyTitle')}</h5>
             <span>
               {t('aiCorrection.historyCount', {
@@ -407,7 +407,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
               })}
             </span>
           </div>
-          <div class="correction-history__choices">
+          <div className="correction-history__choices">
             {phase.history.map((entry, index) => (
               <Button
                 aria-pressed={phase.selectedIndex === index}
@@ -435,7 +435,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
       ) : null}
 
       {acquired.length > 0 ? (
-        <section class="correction-result__group">
+        <section className="correction-result__group">
           <h5>{t('aiCorrection.acquired')}</h5>
           {acquired.map((criterion) => (
             <CriterionRow criterion={criterion} />
@@ -444,17 +444,17 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
       ) : null}
 
       {toReinforce.length > 0 || correction.unsureCriteria.length > 0 ? (
-        <section class="correction-result__group">
+        <section className="correction-result__group">
           <h5>{t('aiCorrection.toReinforce')}</h5>
           {toReinforce.map((criterion) => (
             <CriterionRow criterion={criterion} />
           ))}
           {correction.unsureCriteria.map((key) => (
             <article
-              class="correction-criterion correction-criterion--unsure"
+              className="correction-criterion correction-criterion--unsure"
               key={key}
             >
-              <div class="correction-criterion__heading">
+              <div className="correction-criterion__heading">
                 <strong>{unsureLabels.get(key) ?? key}</strong>
                 <Badge tone="warning">{t('aiCorrection.reworkLabel')}</Badge>
               </div>
@@ -468,23 +468,23 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
         </section>
       ) : null}
 
-      <section class="correction-result__priority">
-        <p class="page-eyebrow">{t('aiCorrection.priority')}</p>
+      <section className="correction-result__priority">
+        <p className="page-eyebrow">{t('aiCorrection.priority')}</p>
         <h5>{t('aiCorrection.nextAction')}</h5>
         {correction.overallFeedback ? (
           <p>{correction.overallFeedback}</p>
         ) : null}
       </section>
 
-      <footer class="correction-result__footer">
+      <footer className="correction-result__footer">
         {correction.indicativeScore !== null ? (
-          <p class="correction-result__score">
+          <p className="correction-result__score">
             {t('aiCorrection.indicativeScore', {
               score: correction.indicativeScore.toFixed(0),
             })}
           </p>
         ) : null}
-        <p class="correction-settlement">
+        <p className="correction-settlement">
           {t('aiCorrection.settlementRecap', {
             reserved: settlement.reservedCredits,
             settled: settlement.settledCredits,
@@ -497,13 +497,13 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
       !phase.history.some(
         (entry) => entry.sourceCorrectionId === correction.id,
       ) ? (
-        <section class="correction-reconsideration">
-          <p class="page-eyebrow">
+        <section className="correction-reconsideration">
+          <p className="page-eyebrow">
             {t('aiCorrection.reconsiderationEyebrow')}
           </p>
           <h5>{t('aiCorrection.reconsiderationTitle')}</h5>
           <p>{t('aiCorrection.reconsiderationDescription')}</p>
-          <label for={`reconsideration-${correction.id}`}>
+          <label htmlFor={`reconsideration-${correction.id}`}>
             {t('aiCorrection.reconsiderationArgumentLabel')}
           </label>
           <textarea
@@ -518,7 +518,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
             value={reconsiderationArgument}
           />
           <div
-            class="correction-reconsideration__help"
+            className="correction-reconsideration__help"
             id={`reconsideration-help-${correction.id}`}
           >
             <span>{t('aiCorrection.reconsiderationArgumentHelp')}</span>
@@ -570,7 +570,7 @@ function CorrectionComparison({
   });
 
   return (
-    <div class="correction-comparison">
+    <div className="correction-comparison">
       <h6>{t('aiCorrection.comparisonTitle')}</h6>
       {changes.length > 0 ? (
         <ul>
@@ -600,8 +600,8 @@ function CriterionRow({
 }) {
   const { t } = useI18n();
   return (
-    <article class="correction-criterion">
-      <div class="correction-criterion__heading">
+    <article className="correction-criterion">
+      <div className="correction-criterion__heading">
         <strong>{criterion.label}</strong>
         <Badge tone={criterion.levelKey === 'mastered' ? 'success' : 'neutral'}>
           {criterion.levelLabel}
@@ -609,7 +609,7 @@ function CriterionRow({
       </div>
       <p>{criterion.feedback}</p>
       {criterion.evidenceQuotes.length > 0 ? (
-        <div class="correction-criterion__evidence">
+        <div className="correction-criterion__evidence">
           <p>{t('aiCorrection.evidenceLabel')}</p>
           {criterion.evidenceQuotes.map((quote) => (
             <blockquote>{quote}</blockquote>

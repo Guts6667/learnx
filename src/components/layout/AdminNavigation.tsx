@@ -53,15 +53,15 @@ export function AdminNavigation({
   return (
     <nav
       aria-label={t('admin.navigation.label')}
-      class="totem-admin-navigation"
+      className="totem-admin-navigation"
     >
-      <div class="totem-admin-navigation__brand" aria-hidden="true">
-        <span class="totem-admin-navigation__brand-name">LearnX</span>
-        <span class="totem-admin-navigation__brand-context">
+      <div className="totem-admin-navigation__brand" aria-hidden="true">
+        <span className="totem-admin-navigation__brand-name">LearnX</span>
+        <span className="totem-admin-navigation__brand-context">
           Administration
         </span>
       </div>
-      <ul class="totem-admin-navigation__list">
+      <ul className="totem-admin-navigation__list">
         {adminNavigationItems.map(({ href, labelKey, shortLabelKey }) => {
           const current = isCurrentAdminPage(currentPath, href);
           return (
@@ -69,17 +69,17 @@ export function AdminNavigation({
               <a
                 aria-current={current ? 'page' : undefined}
                 aria-label={t(shortLabelKey)}
-                class="totem-admin-navigation__link"
+                className="totem-admin-navigation__link"
                 href={href}
               >
                 <span
-                  class="totem-admin-navigation__index"
+                  className="totem-admin-navigation__index"
                   aria-hidden="true"
                 />
-                <span class="totem-admin-navigation__label--long">
+                <span className="totem-admin-navigation__label--long">
                   {t(labelKey)}
                 </span>
-                <span class="totem-admin-navigation__label--short">
+                <span className="totem-admin-navigation__label--short">
                   {t(shortLabelKey)}
                 </span>
               </a>
@@ -87,7 +87,7 @@ export function AdminNavigation({
           );
         })}
       </ul>
-      <a class="totem-admin-navigation__exit" href="/today">
+      <a className="totem-admin-navigation__exit" href="/today">
         <span aria-hidden="true">↗</span>
         <span>{t('admin.navigation.backToApp')}</span>
       </a>

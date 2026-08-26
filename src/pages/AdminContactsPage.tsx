@@ -1,4 +1,5 @@
-import { useState } from 'preact/hooks';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
@@ -39,12 +40,14 @@ function statusTone(status: PublicLeadStatus) {
 function PurposeDetails({ item }: { item: PublicContactPurpose }) {
   const { locale, t } = useI18n();
   return (
-    <div class="space-y-2 border-t border-[var(--color-border)] pt-3 first:border-0 first:pt-0">
-      <div class="flex flex-wrap items-center gap-2">
-        <strong class="font-medium">{t(purposeKeys[item.purpose])}</strong>
-        <Badge tone={statusTone(item.status)}>{t(statusKeys[item.status])}</Badge>
+    <div className="space-y-2 border-t border-[var(--color-border)] pt-3 first:border-0 first:pt-0">
+      <div className="flex flex-wrap items-center gap-2">
+        <strong className="font-medium">{t(purposeKeys[item.purpose])}</strong>
+        <Badge tone={statusTone(item.status)}>
+          {t(statusKeys[item.status])}
+        </Badge>
       </div>
-      <p class="ui-text-muted text-sm">
+      <p className="ui-text-muted text-sm">
         {t('admin.contacts.date', {
           date: formatLocalizedDate(item.createdAt, locale, {
             dateStyle: 'medium',
@@ -54,7 +57,7 @@ function PurposeDetails({ item }: { item: PublicContactPurpose }) {
         {t('admin.contacts.locale', { locale: item.locale.toUpperCase() })}
       </p>
       {item.motivation ? (
-        <p class="ui-text-muted break-words text-sm leading-6">
+        <p className="ui-text-muted break-words text-sm leading-6">
           {item.motivation}
         </p>
       ) : null}
@@ -65,9 +68,11 @@ function PurposeDetails({ item }: { item: PublicContactPurpose }) {
 function ContactCard({ contact }: { contact: PublicContact }) {
   return (
     <li>
-      <Card class="min-w-0 space-y-4">
-        <h2 class="break-all text-lg font-medium">{contact.emailNormalized}</h2>
-        <div class="space-y-3">
+      <Card className="min-w-0 space-y-4">
+        <h2 className="break-all text-lg font-medium">
+          {contact.emailNormalized}
+        </h2>
+        <div className="space-y-3">
           {contact.purposes.map((purpose) => (
             <PurposeDetails item={purpose} key={purpose.purpose} />
           ))}
@@ -95,7 +100,7 @@ export function AdminContactsPage() {
     search,
   });
 
-  function submitSearch(event: SubmitEvent) {
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setOffset(0);
     setSearch(searchInput.trim());
@@ -109,7 +114,7 @@ export function AdminContactsPage() {
   return (
     <section
       aria-labelledby="contacts-title"
-      class="page-layout page-layout--admin page-shell space-y-6"
+      className="page-layout page-layout--admin page-shell space-y-6"
     >
       <PageHeader
         description={t('admin.contacts.description')}
@@ -118,41 +123,44 @@ export function AdminContactsPage() {
         title={t('admin.contacts.title')}
       />
       {query.data && !query.error && !query.isPending ? (
-        <dl class="grid gap-4 sm:grid-cols-2">
-          <Card class="space-y-2" tone="muted">
-            <dt class="ui-text-muted text-sm">
+        <dl className="grid gap-4 sm:grid-cols-2">
+          <Card className="space-y-2" tone="muted">
+            <dt className="ui-text-muted text-sm">
               {t('admin.contacts.metric.launch')}
             </dt>
-            <dd class="text-3xl font-medium">
+            <dd className="text-3xl font-medium">
               {query.data.launchUpdatesConfirmed}
             </dd>
           </Card>
-          <Card class="space-y-2" tone="muted">
-            <dt class="ui-text-muted text-sm">
+          <Card className="space-y-2" tone="muted">
+            <dt className="ui-text-muted text-sm">
               {t('admin.contacts.metric.early')}
             </dt>
-            <dd class="text-3xl font-medium">
+            <dd className="text-3xl font-medium">
               {query.data.earlyAdopterApplications}
             </dd>
           </Card>
         </dl>
       ) : null}
-      <div class="admin-toolbar">
-        <form class="grid gap-3 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
+      <div className="admin-toolbar">
+        <form
+          className="grid gap-3 sm:grid-cols-[1fr_auto]"
+          onSubmit={submitSearch}
+        >
           <TextField
             label={t('admin.contacts.search')}
             onInput={(event) => setSearchInput(event.currentTarget.value)}
             type="search"
             value={searchInput}
           />
-          <Button class="self-end" type="submit" variant="secondary">
+          <Button className="self-end" type="submit" variant="secondary">
             {t('programs.searchAction')}
           </Button>
         </form>
-        <label class="ui-field">
-          <span class="ui-field__label">{t('admin.contacts.filter')}</span>
+        <label className="ui-field">
+          <span className="ui-field__label">{t('admin.contacts.filter')}</span>
           <select
-            class="ui-field__control"
+            className="ui-field__control"
             onChange={(event) => {
               setOffset(0);
               setPurpose(event.currentTarget.value as PublicLeadPurpose | '');
@@ -160,8 +168,12 @@ export function AdminContactsPage() {
             value={purpose}
           >
             <option value="">{t('admin.contacts.filter.all')}</option>
-            <option value="LAUNCH_UPDATES">{t(purposeKeys.LAUNCH_UPDATES)}</option>
-            <option value="EARLY_ADOPTER">{t(purposeKeys.EARLY_ADOPTER)}</option>
+            <option value="LAUNCH_UPDATES">
+              {t(purposeKeys.LAUNCH_UPDATES)}
+            </option>
+            <option value="EARLY_ADOPTER">
+              {t(purposeKeys.EARLY_ADOPTER)}
+            </option>
           </select>
         </label>
       </div>
@@ -183,17 +195,17 @@ export function AdminContactsPage() {
         />
       ) : (
         <>
-          <p class="ui-text-muted text-sm">
+          <p className="ui-text-muted text-sm">
             {t('admin.contacts.count', { count: query.data.total })}
           </p>
-          <ul class="admin-collection">
+          <ul className="admin-collection">
             {query.data.items.map((contact) => (
               <ContactCard contact={contact} key={contact.id} />
             ))}
           </ul>
           <nav
             aria-label={t('admin.contacts.pagination')}
-            class="flex flex-wrap items-center justify-between gap-4"
+            className="flex flex-wrap items-center justify-between gap-4"
           >
             <Button
               disabled={offset === 0}
@@ -202,7 +214,7 @@ export function AdminContactsPage() {
             >
               {t('admin.accounts.previous')}
             </Button>
-            <span class="ui-text-muted text-sm">
+            <span className="ui-text-muted text-sm">
               {t('admin.accounts.page', { page, total: totalPages })}
             </span>
             <Button

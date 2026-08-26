@@ -1,13 +1,10 @@
-import { QueryObserver } from '@tanstack/query-core';
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
+import { QueryObserver } from '@tanstack/react-query';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
-export type AccessRequestStatus =
-  | 'APPROVED'
-  | 'PENDING_APPROVAL'
-  | 'REJECTED';
+export type AccessRequestStatus = 'APPROVED' | 'PENDING_APPROVAL' | 'REJECTED';
 export type AssignableRole = 'ADMIN' | 'CREATOR' | 'USER';
 
 export interface AdminAccessRequest {

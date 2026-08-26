@@ -1,4 +1,5 @@
-import { useState } from 'preact/hooks';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { useI18n } from '@/i18n';
@@ -73,7 +74,7 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
   }
 
   return (
-    <div class="space-y-3 border-t border-[var(--color-border)] pt-4">
+    <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
       {!isConfirming ? (
         <Button onClick={() => setIsConfirming(true)} variant="secondary">
           {isCreator
@@ -81,18 +82,18 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
             : t('admin.accounts.creator.assign')}
         </Button>
       ) : (
-        <Card class="space-y-3" tone="muted" role="region">
-          <h3 class="font-medium">
+        <Card className="space-y-3" tone="muted" role="region">
+          <h3 className="font-medium">
             {isCreator
               ? t('admin.accounts.learner.confirm')
               : t('admin.accounts.creator.confirm')}
           </h3>
-          <p class="ui-text-muted text-sm leading-6">
+          <p className="ui-text-muted text-sm leading-6">
             {isCreator
               ? t('admin.accounts.learner.description')
               : t('admin.accounts.creator.description')}
           </p>
-          <div class="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button
               isLoading={mutation.isPending}
               onClick={() => void confirm()}
@@ -106,7 +107,7 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
         </Card>
       )}
       {success ? (
-        <p class="text-sm text-[var(--color-success)]" role="status">
+        <p className="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
@@ -149,11 +150,13 @@ function AccountAction({
   }
 
   if (isCurrentAccount) {
-    return <p class="ui-text-muted text-sm">{t('admin.accounts.current')}</p>;
+    return (
+      <p className="ui-text-muted text-sm">{t('admin.accounts.current')}</p>
+    );
   }
 
   return (
-    <div class="space-y-3 border-t border-[var(--color-border)] pt-4">
+    <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
       {!isConfirming ? (
         <Button
           onClick={() => setIsConfirming(true)}
@@ -166,18 +169,18 @@ function AccountAction({
           )}
         </Button>
       ) : (
-        <Card class="space-y-3" tone="muted" role="region">
-          <h3 class="font-medium">
+        <Card className="space-y-3" tone="muted" role="region">
+          <h3 className="font-medium">
             {isSuspended
               ? t('admin.accounts.reactivateConfirm')
               : t('admin.accounts.suspendConfirm')}
           </h3>
-          <p class="ui-text-muted text-sm leading-6">
+          <p className="ui-text-muted text-sm leading-6">
             {isSuspended
               ? t('admin.accounts.reactivateDescription')
               : t('admin.accounts.suspendDescription')}
           </p>
-          <div class="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button
               isLoading={mutation.isPending}
               onClick={() => void confirm()}
@@ -192,7 +195,7 @@ function AccountAction({
         </Card>
       )}
       {success ? (
-        <p class="text-sm text-[var(--color-success)]" role="status">
+        <p className="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
@@ -215,13 +218,15 @@ function AccountCard({
 
   return (
     <li>
-      <div class="admin-collection-item space-y-4">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div class="min-w-0">
-            <h2 class="break-words text-lg font-semibold">
+      <div className="admin-collection-item space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="break-words text-lg font-semibold">
               {account.displayName}
             </h2>
-            <p class="ui-text-muted mt-1 break-all text-sm">{account.email}</p>
+            <p className="ui-text-muted mt-1 break-all text-sm">
+              {account.email}
+            </p>
           </div>
           <Badge tone={isSuspended ? 'danger' : 'success'}>
             {t(
@@ -231,13 +236,13 @@ function AccountCard({
             )}
           </Badge>
         </div>
-        <p class="ui-text-muted text-sm">
+        <p className="ui-text-muted text-sm">
           {t('admin.accounts.role', {
             role: t(roleLabels[account.role] as MessageKey),
           })}
         </p>
         {account.suspendedAt ? (
-          <p class="ui-text-muted text-sm">
+          <p className="ui-text-muted text-sm">
             {t('admin.accounts.suspendedAt', {
               date: formatLocalizedDate(account.suspendedAt, locale, {
                 dateStyle: 'medium',
@@ -274,7 +279,7 @@ export function AdminAccountsPage() {
   });
   const { t } = useI18n();
 
-  function submitSearch(event: SubmitEvent) {
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPage(1);
     setSearch(searchInput.trim());
@@ -283,7 +288,7 @@ export function AdminAccountsPage() {
   return (
     <section
       aria-labelledby="accounts-title"
-      class="page-layout page-layout--admin page-shell space-y-6"
+      className="page-layout page-layout--admin page-shell space-y-6"
     >
       <PageHeader
         description={t('admin.accounts.description')}
@@ -291,9 +296,9 @@ export function AdminAccountsPage() {
         id="accounts-title"
         title={t('admin.accounts.title')}
       />
-      <div class="admin-toolbar">
+      <div className="admin-toolbar">
         <form
-          class="grid gap-3 sm:grid-cols-[1fr_auto]"
+          className="grid gap-3 sm:grid-cols-[1fr_auto]"
           onSubmit={submitSearch}
         >
           <TextField
@@ -302,14 +307,14 @@ export function AdminAccountsPage() {
             type="search"
             value={searchInput}
           />
-          <Button class="self-end" type="submit" variant="secondary">
+          <Button className="self-end" type="submit" variant="secondary">
             {t('programs.searchAction')}
           </Button>
         </form>
-        <label class="ui-field">
-          <span class="ui-field__label">{t('admin.accounts.status')}</span>
+        <label className="ui-field">
+          <span className="ui-field__label">{t('admin.accounts.status')}</span>
           <select
-            class="ui-field__control"
+            className="ui-field__control"
             onChange={(event) => {
               setPage(1);
               setStatus(event.currentTarget.value as AccountStatus | '');
@@ -335,10 +340,10 @@ export function AdminAccountsPage() {
         />
       ) : (
         <>
-          <p class="ui-text-muted text-sm">
+          <p className="ui-text-muted text-sm">
             {t('admin.accounts.count', { count: query.data.total })}
           </p>
-          <ul class="admin-collection">
+          <ul className="admin-collection">
             {query.data.items.map((account) => (
               <AccountCard
                 account={account}
@@ -349,7 +354,7 @@ export function AdminAccountsPage() {
           </ul>
           <nav
             aria-label={t('admin.accounts.pagination')}
-            class="flex items-center justify-between gap-4"
+            className="flex items-center justify-between gap-4"
           >
             <Button
               disabled={page <= 1}
@@ -358,7 +363,7 @@ export function AdminAccountsPage() {
             >
               {t('admin.accounts.previous')}
             </Button>
-            <span class="ui-text-muted text-sm">
+            <span className="ui-text-muted text-sm">
               {t('admin.accounts.page', {
                 page: query.data.page,
                 total: query.data.totalPages,

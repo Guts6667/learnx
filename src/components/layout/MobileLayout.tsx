@@ -1,6 +1,6 @@
-import type { ComponentChildren } from 'preact';
-import { route } from 'preact-router';
-import { useCallback, useState } from 'preact/hooks';
+import type { ReactNode } from 'react';
+import { navigate as route } from '@/app/navigation';
+import { useCallback, useState } from 'react';
 
 import {
   BackNavigationProvider,
@@ -16,7 +16,7 @@ import { TotemTheme } from '@/components/ui/TotemTheme';
 
 interface MobileLayoutProps {
   canGoBack?: boolean;
-  children: ComponentChildren;
+  children: ReactNode;
   currentPath?: string;
 }
 
@@ -123,7 +123,7 @@ export function MobileLayout({
     return (
       <PwaProvider>
         <a
-          class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
+          className="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
           href="#main-content"
           onClick={focusMainContent}
         >
@@ -132,13 +132,13 @@ export function MobileLayout({
         <BackNavigationProvider onTargetChange={updateBackTarget}>
           <TotemAppShell
             bottomNavigation={<AdminNavigation currentPath={currentPath} />}
-            class="totem-admin-surface"
+            className="totem-admin-surface"
             contentId="main-content"
             contentTabIndex={-1}
             sidebar={<AdminNavigation currentPath={currentPath} />}
             topbar={
-              <div class="totem-admin-topbar">
-                <div class="totem-admin-topbar__context">
+              <div className="totem-admin-topbar">
+                <div className="totem-admin-topbar__context">
                   {!rootPaths.has(currentPath) ? (
                     <button
                       aria-label={
@@ -146,12 +146,12 @@ export function MobileLayout({
                           ? t(backTarget.labelKey)
                           : t('navigation.back.ariaLabel')
                       }
-                      class="ui-action ui-action--secondary min-h-11 px-3"
+                      className="ui-action ui-action--secondary min-h-11 px-3"
                       onClick={goBack}
                       type="button"
                     >
                       <span aria-hidden="true">←</span>
-                      <span class="ml-2 hidden sm:inline">
+                      <span className="ml-2 hidden sm:inline">
                         {backTarget
                           ? t(backTarget.labelKey)
                           : t('navigation.back.label')}
@@ -159,17 +159,21 @@ export function MobileLayout({
                     </button>
                   ) : null}
                   <div>
-                    <p class="page-eyebrow">{t('admin.eyebrow')}</p>
-                    <p class="totem-admin-topbar__title">{t('admin.title')}</p>
+                    <p className="page-eyebrow">{t('admin.eyebrow')}</p>
+                    <p className="totem-admin-topbar__title">
+                      {t('admin.title')}
+                    </p>
                   </div>
                 </div>
                 <a
                   aria-label={t('admin.navigation.backToApp')}
-                  class="ui-action ui-action--secondary min-h-11 min-w-11 px-3 lg:hidden"
+                  className="ui-action ui-action--secondary min-h-11 min-w-11 px-3 lg:hidden"
                   href="/today"
                 >
                   <span aria-hidden="true">↗</span>
-                  <span class="sr-only">{t('admin.navigation.backToApp')}</span>
+                  <span className="sr-only">
+                    {t('admin.navigation.backToApp')}
+                  </span>
                 </a>
               </div>
             }
@@ -185,31 +189,31 @@ export function MobileLayout({
   if (authenticationPaths.has(currentPath)) {
     return (
       <PwaProvider>
-        <TotemTheme class="totem-auth-surface">
+        <TotemTheme className="totem-auth-surface">
           <a
-            class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
+            className="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
             href="#main-content"
             onClick={focusMainContent}
           >
             {t('navigation.skipToContent')}
           </a>
-          <div class="totem-auth-layout">
-            <aside class="totem-auth-brand">
-              <a class="totem-auth-brand__lockup" href="/">
-                <span aria-hidden="true" class="totem-auth-brand__mark">
+          <div className="totem-auth-layout">
+            <aside className="totem-auth-brand">
+              <a className="totem-auth-brand__lockup" href="/">
+                <span aria-hidden="true" className="totem-auth-brand__mark">
                   LX
                 </span>
                 <span>{t('app.name')}</span>
               </a>
-              <div class="totem-auth-brand__copy">
-                <p class="page-eyebrow">{t('auth.shell.eyebrow')}</p>
+              <div className="totem-auth-brand__copy">
+                <p className="page-eyebrow">{t('auth.shell.eyebrow')}</p>
                 <h2>{t('auth.shell.title')}</h2>
                 <p>{t('auth.shell.description')}</p>
               </div>
             </aside>
-            <main class="totem-auth-main" id="main-content" tabindex={-1}>
+            <main className="totem-auth-main" id="main-content" tabIndex={-1}>
               <PwaStatus />
-              <div class="totem-auth-content">{children}</div>
+              <div className="totem-auth-content">{children}</div>
             </main>
           </div>
         </TotemTheme>
@@ -218,23 +222,23 @@ export function MobileLayout({
   }
 
   const privateLayout = (
-    <div class="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">
+    <div className="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">
       <a
-        class="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
+        className="ui-action ui-action--primary fixed top-2 left-2 z-50 -translate-y-20 px-4 py-3 transition focus:translate-y-0"
         href="#main-content"
         onClick={focusMainContent}
       >
         {t('navigation.skipToContent')}
       </a>
       <header
-        class={`app-safe-header border-b border-[var(--color-border)] bg-[var(--color-canvas)] ${rootPaths.has(currentPath) ? 'app-safe-header--root' : ''} ${currentPath === '/discover' ? 'app-safe-header--discover' : ''}`}
+        className={`app-safe-header border-b border-[var(--color-border)] bg-[var(--color-canvas)] ${rootPaths.has(currentPath) ? 'app-safe-header--root' : ''} ${currentPath === '/discover' ? 'app-safe-header--discover' : ''}`}
       >
-        <div class="app-frame app-safe-header__content mx-auto flex items-center justify-between gap-3">
-          <div class="flex items-center gap-2">
+        <div className="app-frame app-safe-header__content mx-auto flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
             {currentPath === '/discover' ? (
               <button
                 aria-label={t('navigation.back.programs')}
-                class="ui-action ui-action--secondary min-h-11 min-w-11 px-3"
+                className="ui-action ui-action--secondary min-h-11 min-w-11 px-3"
                 onClick={() => route('/program')}
                 type="button"
               >
@@ -248,12 +252,12 @@ export function MobileLayout({
                     ? t(backTarget.labelKey)
                     : t('navigation.back.ariaLabel')
                 }
-                class="ui-action ui-action--secondary min-h-11 min-w-11 px-3"
+                className="ui-action ui-action--secondary min-h-11 min-w-11 px-3"
                 onClick={goBack}
                 type="button"
               >
                 <span aria-hidden="true">←</span>
-                <span class="ml-2 hidden sm:inline">
+                <span className="ml-2 hidden sm:inline">
                   {backTarget
                     ? t(backTarget.labelKey)
                     : t('navigation.back.label')}
@@ -262,7 +266,7 @@ export function MobileLayout({
             ) : null}
             {currentPath !== '/discover' ? (
               <a
-                class="inline-flex min-h-11 items-center rounded-lg text-lg font-medium tracking-tight text-[var(--color-text)]"
+                className="inline-flex min-h-11 items-center rounded-lg text-lg font-medium tracking-tight text-[var(--color-text)]"
                 href={authenticationPaths.has(currentPath) ? '/' : '/today'}
               >
                 {t('app.name')}
@@ -270,16 +274,16 @@ export function MobileLayout({
             ) : null}
           </div>
           {currentPath === '/discover' ? (
-            <strong class="app-safe-header__mobile-title">
+            <strong className="app-safe-header__mobile-title">
               {t('programs.explore')}
             </strong>
           ) : (
-            <span class="ui-text-muted hidden text-sm sm:inline">
+            <span className="ui-text-muted hidden text-sm sm:inline">
               {t('app.tagline')}
             </span>
           )}
           {currentPath === '/discover' ? (
-            <span aria-hidden="true" class="size-11" />
+            <span aria-hidden="true" className="size-11" />
           ) : null}
         </div>
       </header>
@@ -287,8 +291,8 @@ export function MobileLayout({
       <BackNavigationProvider onTargetChange={updateBackTarget}>
         <main
           id="main-content"
-          class="app-safe-main app-frame mx-auto py-8 lg:py-10"
-          tabindex={-1}
+          className="app-safe-main app-frame mx-auto py-8 lg:py-10"
+          tabIndex={-1}
         >
           {children}
         </main>
@@ -300,7 +304,9 @@ export function MobileLayout({
   return (
     <PwaProvider>
       {usesTotemProductSurface(currentPath) ? (
-        <TotemTheme class="totem-product-surface">{privateLayout}</TotemTheme>
+        <TotemTheme className="totem-product-surface">
+          {privateLayout}
+        </TotemTheme>
       ) : (
         privateLayout
       )}

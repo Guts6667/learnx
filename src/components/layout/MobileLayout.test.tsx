@@ -1,6 +1,7 @@
-import { fireEvent, render, screen, within } from '@testing-library/preact';
-import { route } from 'preact-router';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import type { ReactNode } from 'react';
 
+import { navigate as route } from '@/app/navigation';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { MobileLayout } from '@/components/layout/MobileLayout';
@@ -21,10 +22,7 @@ vi.mock('@/features/auth/session', () => ({
   }),
 }));
 
-vi.mock('preact-router', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('preact-router')>()),
-  route: vi.fn(),
-}));
+vi.mock('@/app/navigation', () => ({ navigate: vi.fn() }));
 
 function PageWithStableBackTarget() {
   useBackNavigationTarget({
@@ -35,10 +33,7 @@ function PageWithStableBackTarget() {
   return <h1>Leçon</h1>;
 }
 
-function renderWithLocale(
-  children: preact.ComponentChildren,
-  locale: 'fr' | 'en' = 'fr',
-) {
+function renderWithLocale(children: ReactNode, locale: 'fr' | 'en' = 'fr') {
   return render(<I18nProvider locale={locale}>{children}</I18nProvider>);
 }
 

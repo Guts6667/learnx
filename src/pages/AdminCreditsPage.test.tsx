@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { AdminCreditsPage } from '@/pages/AdminCreditsPage';
@@ -189,16 +189,17 @@ describe('AdminCreditsPage', () => {
       </AppProviders>,
     );
 
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'Ajuster' }),
-    );
+    fireEvent.click(await screen.findByRole('button', { name: 'Ajuster' }));
     fireEvent.input(
       await screen.findByRole('textbox', { name: 'Montant en crédits' }),
       { target: { value: '6' } },
     );
-    fireEvent.input(screen.getByRole('textbox', { name: 'Motif obligatoire' }), {
-      target: { value: 'Smoke V4-019 preview' },
-    });
+    fireEvent.input(
+      screen.getByRole('textbox', { name: 'Motif obligatoire' }),
+      {
+        target: { value: 'Smoke V4-019 preview' },
+      },
+    );
     fireEvent.click(
       screen.getByRole('button', { name: 'Vérifier le récapitulatif' }),
     );
@@ -215,8 +216,7 @@ describe('AdminCreditsPage', () => {
       expect(
         requests.some(
           ({ init, path }) =>
-            path ===
-              '/api/admin/credits/members/user-rayan/adjustments' &&
+            path === '/api/admin/credits/members/user-rayan/adjustments' &&
             init?.method === 'POST',
         ),
       ).toBe(true),

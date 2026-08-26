@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { App } from '@/app/App';
 
@@ -34,7 +34,7 @@ describe('App', () => {
     );
   }
 
-  it('affiche la landing sans requête privée ni navigation applicative', () => {
+  it('affiche la landing sans requête privée ni navigation applicative', async () => {
     window.history.pushState({}, '', '/');
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
@@ -42,7 +42,7 @@ describe('App', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('heading', {
+      await screen.findByRole('heading', {
         level: 1,
         name: 'Votre chemin vers la connaissance.',
       }),
@@ -53,7 +53,7 @@ describe('App', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("ouvre la connexion depuis une ancienne installation PWA sans session", async () => {
+  it('ouvre la connexion depuis une ancienne installation PWA sans session', async () => {
     window.history.pushState({}, '', '/');
     vi.stubGlobal(
       'matchMedia',
@@ -138,7 +138,7 @@ describe('App', () => {
       configurable: true,
       value: false,
     });
-    const fetchMock = vi.fn(() =>
+    const fetchMock = vi.fn<(path: string) => Promise<Response>>(() =>
       Promise.resolve(
         jsonResponse({
           user: {
@@ -175,6 +175,9 @@ describe('App', () => {
       '/api/auth/session',
       expect.objectContaining({ credentials: 'include' }),
     );
+    expect(
+      fetchMock.mock.calls.filter(([path]) => path === '/api/auth/session'),
+    ).toHaveLength(1);
   });
 
   it('propose une relance explicite après un échec réseau en ligne', async () => {
@@ -206,7 +209,9 @@ describe('App', () => {
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Aujourd’hui' }),
     ).toBeInTheDocument();
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(
+      fetchMock.mock.calls.filter(([path]) => path === '/api/auth/session'),
+    ).toHaveLength(2);
   });
 
   it('désactive la connexion tant que le navigateur est hors ligne', async () => {
@@ -285,7 +290,7 @@ describe('App', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/access-requests',
       expect.objectContaining({
-          body: JSON.stringify({ email: 'learner@example.com', locale: 'fr' }),
+        body: JSON.stringify({ email: 'learner@example.com', locale: 'fr' }),
         credentials: 'include',
         method: 'POST',
       }),

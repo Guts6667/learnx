@@ -44,30 +44,30 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
   void path;
 
   return (
-    <TotemTheme class="min-h-dvh px-4 py-8 sm:px-6 lg:px-10">
-      <div class="mx-auto grid w-full max-w-6xl gap-10">
-        <header class="max-w-3xl">
-          <p class="text-sm font-medium tracking-[0.12em] text-[var(--color-accent)] uppercase">
+    <TotemTheme className="min-h-dvh px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto grid w-full max-w-6xl gap-10">
+        <header className="max-w-3xl">
+          <p className="text-sm font-medium tracking-[0.12em] text-[var(--color-accent)] uppercase">
             V4-016E · Catalogue de développement
           </p>
-          <h1 class="mt-3 text-4xl leading-tight font-medium tracking-[-0.04em] sm:text-6xl">
+          <h1 className="mt-3 text-4xl leading-tight font-medium tracking-[-0.04em] sm:text-6xl">
             Primitives et états Totem
           </h1>
-          <p class="mt-4 max-w-2xl text-lg leading-7 text-[var(--color-text-muted)]">
+          <p className="mt-4 max-w-2xl text-lg leading-7 text-[var(--color-text-muted)]">
             Cette route locale vérifie la hiérarchie, les états et le reflow des
             composants communs. Elle ne contient aucune donnée financière,
             pédagogique ou utilisateur réelle.
           </p>
         </header>
 
-        <section aria-labelledby="actions-title" class="grid gap-5">
-          <h2 class="text-2xl font-medium" id="actions-title">
+        <section aria-labelledby="actions-title" className="grid gap-5">
+          <h2 className="text-2xl font-medium" id="actions-title">
             Actions, champs et statuts
           </h2>
-          <div class="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             <Card>
-              <h3 class="font-medium">Actions</h3>
-              <div class="mt-4 flex flex-wrap gap-3">
+              <h3 className="font-medium">Actions</h3>
+              <div className="mt-4 flex flex-wrap gap-3">
                 <Button>Action principale</Button>
                 <Button variant="secondary">Action secondaire</Button>
                 <NavigationAction href="#states" variant="editorial">
@@ -77,8 +77,8 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
               </div>
             </Card>
             <Card>
-              <h3 class="font-medium">Champs</h3>
-              <div class="mt-4 grid gap-4">
+              <h3 className="font-medium">Champs</h3>
+              <div className="mt-4 grid gap-4">
                 <TextField
                   description="Une aide reste distincte du libellé."
                   label="État initial"
@@ -92,8 +92,8 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
               </div>
             </Card>
             <Card>
-              <h3 class="font-medium">Tags libellés</h3>
-              <div class="mt-4 flex flex-wrap gap-2">
+              <h3 className="font-medium">Tags libellés</h3>
+              <div className="mt-4 flex flex-wrap gap-2">
                 <Badge>En cours</Badge>
                 <Badge tone="info">Correction assistée</Badge>
                 <Badge tone="warning">À examiner</Badge>
@@ -103,23 +103,23 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
           </div>
         </section>
 
-        <section aria-labelledby="signature-title" class="grid gap-5">
-          <h2 class="text-2xl font-medium" id="signature-title">
+        <section aria-labelledby="signature-title" className="grid gap-5">
+          <h2 className="text-2xl font-medium" id="signature-title">
             Progression et attention
           </h2>
-          <div class="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             <Card tone="signature">
-              <p class="text-xs font-medium tracking-[0.1em] text-[var(--color-accent)] uppercase">
+              <p className="text-xs font-medium tracking-[0.1em] text-[var(--color-accent)] uppercase">
                 Surface signature
               </p>
-              <h3 class="mt-3 max-w-[18ch] text-xl font-medium">
+              <h3 className="mt-3 max-w-[18ch] text-xl font-medium">
                 Une prochaine étape identifiable
               </h3>
-              <p class="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">
+              <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">
                 L’angle corail signe la surface sans encoder son statut.
               </p>
               <ProgressBar
-                class="mt-5"
+                className="mt-5"
                 label="Progression illustrative"
                 value={41}
               />
@@ -135,8 +135,8 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
           </div>
         </section>
 
-        <section aria-labelledby="consents-title" class="grid gap-5">
-          <h2 class="text-2xl font-medium" id="consents-title">
+        <section aria-labelledby="consents-title" className="grid gap-5">
+          <h2 className="text-2xl font-medium" id="consents-title">
             Consentements distincts
           </h2>
           <Card>
@@ -156,11 +156,15 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
           </Card>
         </section>
 
-        <section aria-labelledby="states-title" class="grid gap-5" id="states">
-          <h2 class="text-2xl font-medium" id="states-title">
+        <section
+          aria-labelledby="states-title"
+          className="grid gap-5"
+          id="states"
+        >
+          <h2 className="text-2xl font-medium" id="states-title">
             États explicites
           </h2>
-          <div class="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-2">
             <StatePanel status="loading" title="Chargement du contenu">
               Les actions restent indisponibles pendant la récupération.
             </StatePanel>
@@ -181,8 +185,8 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
           </div>
         </section>
 
-        <section aria-labelledby="table-title" class="grid gap-5">
-          <h2 class="text-2xl font-medium" id="table-title">
+        <section aria-labelledby="table-title" className="grid gap-5">
+          <h2 className="text-2xl font-medium" id="table-title">
             Table responsive
           </h2>
           <ResponsiveTable

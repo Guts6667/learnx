@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/Badge';
-import { useEffect } from 'preact/hooks';
+import { useEffect } from 'react';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import {
   LessonContextHeader,
@@ -110,13 +110,13 @@ export function ConceptAssessmentPage({
     t('conceptAssessment.defaultTitle', { title: assessment.concept.title });
 
   return (
-    <article class="totem-learning-page page-layout page-layout--work space-y-6">
+    <article className="totem-learning-page page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={title} lesson={lesson} />
-      <section class="space-y-3" aria-label={t('conceptAssessment.info')}>
-        <p class="page-eyebrow">
+      <section className="space-y-3" aria-label={t('conceptAssessment.info')}>
+        <p className="page-eyebrow">
           {t('conceptAssessment.concept', { title: assessment.concept.title })}
         </p>
-        <div class="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Badge tone={assessment.isRequired ? 'warning' : 'neutral'}>
             {assessment.isRequired
               ? t('common.required')
@@ -125,11 +125,11 @@ export function ConceptAssessmentPage({
           {preview ? <Badge tone="warning">{t('common.draft')}</Badge> : null}
         </div>
         {preview ? (
-          <p class="text-sm text-[var(--color-warning)]">
+          <p className="text-sm text-[var(--color-warning)]">
             {t('conceptAssessment.preview')}
           </p>
         ) : null}
-        <p class="ui-text-muted text-sm">
+        <p className="ui-text-muted text-sm">
           {t('conceptAssessment.scoreSummary', {
             questions: t('assessment.questionCount', {
               count: assessment.questionCount,

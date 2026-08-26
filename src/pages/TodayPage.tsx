@@ -28,7 +28,7 @@ export function TodayPage() {
   return (
     <section
       aria-labelledby="today-title"
-      class="page-layout page-layout--work page-shell"
+      className="page-layout page-layout--work page-shell"
     >
       <PageHeader
         eyebrow={t('today.eyebrow')}
@@ -74,19 +74,19 @@ function TodayContent({
   if (!program) return null;
 
   return (
-    <div class="today-layout">
-      <Card class="today-primary-card ui-signature-surface" tone="accent">
-        <p class="page-eyebrow">
+    <div className="today-layout">
+      <Card className="today-primary-card ui-signature-surface" tone="accent">
+        <p className="page-eyebrow">
           {program.title} ·{' '}
           {data.action
             ? t(actionLabelKeys[data.action.kind])
             : t('today.upToDate.title')}
         </p>
-        <div class="today-primary-card__copy">
-          <h2 class="today-primary-card__title">
+        <div className="today-primary-card__copy">
+          <h2 className="today-primary-card__title">
             {data.action?.title ?? t('today.upToDate.description')}
           </h2>
-          <div class="today-primary-card__meta">
+          <div className="today-primary-card__meta">
             {data.action?.estimatedMinutes ? (
               <span>
                 {t('common.minutes', { count: data.action.estimatedMinutes })}
@@ -103,7 +103,7 @@ function TodayContent({
         />
         {data.action ? (
           <NavigationAction
-            class="w-full sm:w-auto"
+            className="w-full sm:w-auto"
             href={data.action.href}
             size="lg"
           >
@@ -111,7 +111,7 @@ function TodayContent({
           </NavigationAction>
         ) : (
           <NavigationAction
-            class="w-full sm:w-auto"
+            className="w-full sm:w-auto"
             href={`/program/${encodeURIComponent(program.slug)}`}
             size="lg"
             variant="secondary"
@@ -124,36 +124,36 @@ function TodayContent({
       {otherPrograms.length ? (
         <section
           aria-labelledby="today-other-programs"
-          class="today-secondary-programs"
+          className="today-secondary-programs"
         >
-          <header class="today-secondary-programs__header">
+          <header className="today-secondary-programs__header">
             <h2 id="today-other-programs">{t('today.otherPrograms')}</h2>
             <span>
               {t('today.otherProgramsCount', { count: otherPrograms.length })}
             </span>
           </header>
-          <ul class="ui-list ui-program-list">
+          <ul className="ui-list ui-program-list">
             {otherPrograms.map((item) => (
               <li key={item.id}>
                 <a
                   aria-label={`${t('common.continue')} — ${item.title}`}
-                  class="ui-program-line ui-program-line--compact group"
+                  className="ui-program-line ui-program-line--compact group"
                   href={
                     item.resumeHref ??
                     `/program/${encodeURIComponent(item.slug)}`
                   }
                 >
-                  <div class="min-w-0 flex-1">
-                    <h3 class="font-semibold group-hover:text-[var(--color-action)]">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-semibold group-hover:text-[var(--color-action)]">
                       {item.title}
                     </h3>
-                    <p class="ui-text-muted mt-1 text-sm">
+                    <p className="ui-text-muted mt-1 text-sm">
                       {t('today.progress', {
                         count: Math.round(item.percent),
                       })}
                     </p>
                     {item.nextAction ? (
-                      <p class="today-secondary-programs__next">
+                      <p className="today-secondary-programs__next">
                         <strong>{t('today.nextAction')}</strong> ·{' '}
                         {item.nextAction.title}
                       </p>
@@ -161,7 +161,7 @@ function TodayContent({
                   </div>
                   <span
                     aria-hidden="true"
-                    class="today-secondary-programs__arrow"
+                    className="today-secondary-programs__arrow"
                   >
                     ›
                   </span>
@@ -169,7 +169,7 @@ function TodayContent({
               </li>
             ))}
           </ul>
-          <div class="today-secondary-programs__footer">
+          <div className="today-secondary-programs__footer">
             <NavigationAction href="/program" variant="ghost">
               {t('today.viewPrograms')}
             </NavigationAction>

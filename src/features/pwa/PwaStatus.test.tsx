@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import {
   PwaInstallSettings,
@@ -8,7 +8,7 @@ import {
 
 const updateServiceWorker = vi.fn(async () => undefined);
 
-vi.mock('virtual:pwa-register/preact', () => ({
+vi.mock('virtual:pwa-register/react', () => ({
   useRegisterSW: () => ({
     needRefresh: [false, vi.fn()],
     offlineReady: [false, vi.fn()],
@@ -96,7 +96,9 @@ describe('PwaStatus', () => {
       </PwaProvider>,
     );
 
-    expect(screen.getByText(/Sur iPhone, touchez Partager/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Sur iPhone, touchez Partager/),
+    ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'J’ai compris' }));
     expect(window.localStorage.getItem('learnx:pwa-ios-help-dismissed')).toBe(
       'true',

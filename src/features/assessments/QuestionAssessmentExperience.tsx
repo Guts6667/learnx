@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -113,16 +113,16 @@ function AttemptHistory({
 }) {
   const { locale, t } = useI18n();
   return (
-    <section aria-labelledby="assessment-history-title" class="space-y-3">
-      <h2 class="assessment-history__title" id="assessment-history-title">
+    <section aria-labelledby="assessment-history-title" className="space-y-3">
+      <h2 className="assessment-history__title" id="assessment-history-title">
         {t('assessment.previousAttempts')}
       </h2>
       {attempts.length === 0 ? (
-        <p class="ui-text-muted text-sm">{t('assessment.noAttempts')}</p>
+        <p className="ui-text-muted text-sm">{t('assessment.noAttempts')}</p>
       ) : (
-        <ol class="assessment-history">
+        <ol className="assessment-history">
           {attempts.map((attempt) => (
-            <li class="assessment-history__row" key={attempt.id}>
+            <li className="assessment-history__row" key={attempt.id}>
               <div>
                 <strong>
                   {t('assessment.run', {
@@ -185,18 +185,18 @@ function QuestionOptions({
   const multiple = question.type === 'MULTIPLE_CHOICE';
 
   return (
-    <div class="space-y-3">
+    <div className="space-y-3">
       {question.options.map((option) => {
         const checked = answer.optionIds.includes(option.id);
 
         return (
           <label
-            class="ui-assessment-option flex min-h-12 cursor-pointer items-start gap-3 rounded-lg px-4 py-3 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--color-focus)]"
+            className="ui-assessment-option flex min-h-12 cursor-pointer items-start gap-3 rounded-lg px-4 py-3 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--color-focus)]"
             key={option.id}
           >
             <input
               checked={checked}
-              class="ui-checkbox mt-0.5 shrink-0"
+              className="ui-checkbox mt-0.5 shrink-0"
               name={question.id}
               onChange={() => {
                 const optionIds = multiple
@@ -210,7 +210,7 @@ function QuestionOptions({
               type={multiple ? 'checkbox' : 'radio'}
               value={option.id}
             />
-            <span class="ui-text text-sm leading-5">{option.label}</span>
+            <span className="ui-text text-sm leading-5">{option.label}</span>
           </label>
         );
       })}
@@ -241,11 +241,11 @@ function AssessmentResult({
   const reinforceCount = result.corrections.length - correctCount;
 
   return (
-    <div class="assessment-result">
-      <section class="assessment-result__summary" role="status">
-        <div class="assessment-result__heading">
+    <div className="assessment-result">
+      <section className="assessment-result__summary" role="status">
+        <div className="assessment-result__heading">
           <div>
-            <p class="page-eyebrow">{t('assessment.result')}</p>
+            <p className="page-eyebrow">{t('assessment.result')}</p>
             <h2>{t('assessment.resultSummaryTitle')}</h2>
           </div>
           <Badge tone={result.attempt.passed ? 'success' : 'warning'}>
@@ -259,7 +259,7 @@ function AssessmentResult({
               : 'assessment.resultFailureSummary',
           )}
         </p>
-        <dl class="assessment-result__signals">
+        <dl className="assessment-result__signals">
           <div>
             <dt>{t('assessment.acquiredCount')}</dt>
             <dd>{correctCount}</dd>
@@ -268,12 +268,12 @@ function AssessmentResult({
             <dt>{t('assessment.reinforceCount')}</dt>
             <dd>{reinforceCount}</dd>
           </div>
-          <div class="assessment-result__score">
+          <div className="assessment-result__score">
             <dt>{t('assessment.scoreLabel')}</dt>
             <dd>{Math.round(result.attempt.score)} %</dd>
           </div>
         </dl>
-        <p class="assessment-result__threshold">
+        <p className="assessment-result__threshold">
           {t('assessment.passingScore', {
             count: Math.round(assessment.passingScore),
           })}
@@ -282,7 +282,7 @@ function AssessmentResult({
 
       <section
         aria-labelledby="assessment-corrections-title"
-        class="assessment-result__corrections"
+        className="assessment-result__corrections"
       >
         <h2 id="assessment-corrections-title">{t('assessment.correction')}</h2>
         {result.corrections.map((correction, index) => {
@@ -297,10 +297,10 @@ function AssessmentResult({
 
           return (
             <article
-              class="assessment-result__criterion"
+              className="assessment-result__criterion"
               key={correction.questionId}
             >
-              <div class="assessment-result__criterion-heading">
+              <div className="assessment-result__criterion-heading">
                 <h3>
                   {t('assessment.question', {
                     count: index + 1,
@@ -317,7 +317,7 @@ function AssessmentResult({
               </div>
               <p>{correction.explanation}</p>
               {!correction.correct && expected ? (
-                <p class="assessment-result__expected">
+                <p className="assessment-result__expected">
                   {t('assessment.expectedAnswer', { answer: expected })}
                 </p>
               ) : null}
@@ -326,8 +326,8 @@ function AssessmentResult({
         })}
       </section>
 
-      <section class="assessment-result__next">
-        <p class="page-eyebrow">{t('assessment.nextAction')}</p>
+      <section className="assessment-result__next">
+        <p className="page-eyebrow">{t('assessment.nextAction')}</p>
         <h2>
           {t(
             result.attempt.passed
@@ -437,9 +437,9 @@ export function QuestionAssessmentExperience({
     return (
       <div
         aria-label={t('assessment.result')}
-        class="space-y-6 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+        className="space-y-6 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
         ref={resultRef}
-        tabindex={-1}
+        tabIndex={-1}
       >
         <AssessmentResult
           assessment={assessment}
@@ -460,7 +460,7 @@ export function QuestionAssessmentExperience({
   const answer = answers[question.id] ?? { optionIds: [], text: '' };
 
   return (
-    <div class="assessment-experience">
+    <div className="assessment-experience">
       <ProgressBar
         label={t('assessment.questionPosition', {
           current: currentIndex + 1,
@@ -472,18 +472,18 @@ export function QuestionAssessmentExperience({
       />
 
       <form
-        class="assessment-experience__form"
+        className="assessment-experience__form"
         onSubmit={(event) => {
           event.preventDefault();
           void continueAssessment();
         }}
       >
-        <Card class="assessment-question-card">
-          <fieldset class="space-y-5">
+        <Card className="assessment-question-card">
+          <fieldset className="space-y-5">
             <legend
-              class="rounded-lg text-xl font-semibold leading-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+              className="rounded-lg text-xl font-semibold leading-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
               ref={questionTitleRef}
-              tabindex={-1}
+              tabIndex={-1}
             >
               {question.prompt}
             </legend>
@@ -500,14 +500,14 @@ export function QuestionAssessmentExperience({
             />
           </fieldset>
           {message ? (
-            <p class="ui-text-danger text-sm" role="alert">
+            <p className="ui-text-danger text-sm" role="alert">
               {message}
             </p>
           ) : null}
           {error ? (
             <ErrorState description={t('assessment.saveError')} />
           ) : null}
-          <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
               disabled={currentIndex === 0 || isPending}
               onClick={() => {

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'preact/hooks';
+import { useCallback, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import {

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/preact';
+import { render, screen } from '@testing-library/react';
 
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 
@@ -55,9 +55,9 @@ describe('SafeMarkdown', () => {
     );
 
     expect(screen.getByText('pnpm dev').tagName).toBe('CODE');
-    expect(screen.getByRole('region', { name: 'Code — bash' })).toHaveTextContent(
-      'curl http://localhost:3000/health',
-    );
+    expect(
+      screen.getByRole('region', { name: 'Code — bash' }),
+    ).toHaveTextContent('curl http://localhost:3000/health');
     expect(screen.getByRole('table')).toHaveTextContent('Service joignable');
     expect(screen.getByRole('img', { name: 'Architecture' })).toHaveAttribute(
       'src',

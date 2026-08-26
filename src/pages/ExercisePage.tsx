@@ -3,7 +3,7 @@ import {
   LessonContextHeader,
 } from '@/components/learning/LessonContextHeader';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
-import { useEffect } from 'preact/hooks';
+import { useEffect } from 'react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Spinner } from '@/components/ui/Spinner';
@@ -53,7 +53,7 @@ export function ExercisePage({
 
   const key = activityKey('EXERCISE', exercise.id);
   return (
-    <article class="totem-learning-page page-layout page-layout--work space-y-6">
+    <article className="totem-learning-page page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
       <ExerciseCard
         exercise={exercise}

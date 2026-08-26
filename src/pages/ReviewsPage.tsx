@@ -54,9 +54,9 @@ function ReviewRow({
   const assessmentHref = `/program/${encodeURIComponent(item.program.slug)}/lesson/${encodeURIComponent(item.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(item.sourceId)}`;
 
   return (
-    <li class="review-priority-row">
-      <div class="review-priority-row__content">
-        <div class="review-priority-row__status">
+    <li className="review-priority-row">
+      <div className="review-priority-row__content">
+        <div className="review-priority-row__status">
           <Badge tone={isOverdue(item.dueAt) ? 'danger' : 'warning'}>
             {t(isOverdue(item.dueAt) ? 'reviews.overdue' : 'reviews.due')}
           </Badge>
@@ -64,7 +64,7 @@ function ReviewRow({
             <Badge tone="neutral">{t('common.draft')}</Badge>
           ) : null}
         </div>
-        <div class="review-priority-row__heading">
+        <div className="review-priority-row__heading">
           <h3>{item.conceptTitle ?? item.lesson.title}</h3>
           <p>
             {item.program.title} · {item.lesson.title}
@@ -72,10 +72,12 @@ function ReviewRow({
           <p>{t('reviews.dueAt', { date: formatDueAt(item.dueAt, locale) })}</p>
         </div>
         {item.assessmentTitle ? (
-          <p class="review-priority-row__assessment">{item.assessmentTitle}</p>
+          <p className="review-priority-row__assessment">
+            {item.assessmentTitle}
+          </p>
         ) : null}
         {item.resources.length > 0 ? (
-          <div class="review-priority-row__resources">
+          <div className="review-priority-row__resources">
             <strong>{t('reviews.resources')}</strong>
             <ul>
               {item.resources.map((resource) => {
@@ -85,7 +87,7 @@ function ReviewRow({
                   <li key={resource.id}>
                     {href ? (
                       <a
-                        class="ui-link inline-flex min-h-11 items-center"
+                        className="ui-link inline-flex min-h-11 items-center"
                         href={href}
                         rel="noreferrer"
                         target="_blank"
@@ -93,7 +95,7 @@ function ReviewRow({
                         {resource.title}
                       </a>
                     ) : (
-                      <span class="ui-text-muted">{resource.title}</span>
+                      <span className="ui-text-muted">{resource.title}</span>
                     )}
                   </li>
                 );
@@ -102,7 +104,7 @@ function ReviewRow({
           </div>
         ) : null}
       </div>
-      <div class="review-priority-row__actions">
+      <div className="review-priority-row__actions">
         <NavigationAction href={assessmentHref}>
           {t('reviews.retake')}
         </NavigationAction>
@@ -139,7 +141,7 @@ export function ReviewsPage() {
   return (
     <section
       aria-labelledby="reviews-title"
-      class="totem-reviews-page page-layout page-layout--work page-shell"
+      className="totem-reviews-page page-layout page-layout--work page-shell"
     >
       <PageHeader
         description={t('reviews.description')}
@@ -160,8 +162,8 @@ export function ReviewsPage() {
         />
       ) : null}
       {query.data?.reviews.length ? (
-        <div class="reviews-priorities">
-          <div class="reviews-priorities__summary" role="status">
+        <div className="reviews-priorities">
+          <div className="reviews-priorities__summary" role="status">
             <strong>{dueNow.length}</strong>
             <span>{t('reviews.summary', { count: dueNow.length })}</span>
           </div>
@@ -169,13 +171,13 @@ export function ReviewsPage() {
           {dueNow.length > 0 ? (
             <section
               aria-labelledby="reviews-today-title"
-              class="reviews-priorities__section"
+              className="reviews-priorities__section"
             >
-              <div class="reviews-priorities__section-heading">
+              <div className="reviews-priorities__section-heading">
                 <h2 id="reviews-today-title">{t('reviews.todayPriority')}</h2>
                 <span>{dueNow.length}</span>
               </div>
-              <ul class="reviews-priorities__list">
+              <ul className="reviews-priorities__list">
                 {dueNow.map((item) => (
                   <ReviewRow
                     item={item}
@@ -191,13 +193,13 @@ export function ReviewsPage() {
           {upcoming.length > 0 ? (
             <section
               aria-labelledby="reviews-upcoming-title"
-              class="reviews-priorities__section"
+              className="reviews-priorities__section"
             >
-              <div class="reviews-priorities__section-heading">
+              <div className="reviews-priorities__section-heading">
                 <h2 id="reviews-upcoming-title">{t('reviews.upcoming')}</h2>
                 <span>{upcoming.length}</span>
               </div>
-              <ul class="reviews-priorities__list">
+              <ul className="reviews-priorities__list">
                 {upcoming.map((item) => (
                   <ReviewRow
                     item={item}
