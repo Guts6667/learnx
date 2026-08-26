@@ -38,6 +38,7 @@
       "src/server/api/ai-pricing/app.ts",
       "src/server/api/corrections/app.ts",
       "src/server/api/credits/app.ts",
+      "src/server/api/exercises/app.ts",
       "src/server/corrections/correction-monitoring.ts",
       "src/server/corrections/correction-orchestration.ts",
       "src/server/corrections/prisma-correction-orchestration-store.ts",
@@ -83,6 +84,7 @@
   "discoveryRules": {
     "auth-and-access": [
       "^src/features/auth/",
+      "^src/server/api/access-requests/app\\.ts$",
       "^src/server/api/auth/",
       "^src/server/api/_lib/(?:access-invitation|access-request(?:-rate-limit)?|auth(?:-repository|-types|-validation)?|email-verification|login-rate-limit|password|session)\\.ts$"
     ],
@@ -91,13 +93,13 @@
       "^src/features/exercises/(?:AiCorrectionPanel|ai-correction)\\.tsx?$",
       "^src/lib/(?:ai-correction-contracts|ai-correction-provider-adapters|ai-json-schema|exercise-correction-contracts)\\.ts$",
       "^src/server/(?:ai/(?:openrouter-configuration|openrouter-provider|persistent-correction|prisma-correction-repository|structured-provider)|corrections/.+|credits/.+|pricing/.+)\\.ts$",
-      "^src/server/api/(?:ai-pricing|corrections|credits)/app\\.ts$"
+      "^src/server/api/(?:ai-pricing|corrections|credits|exercises)/app\\.ts$"
     ],
     "progress-and-assessments": [
       "^src/features/(?:assessments|concept-assessments|stage-assessments)/",
       "^src/lib/(?:concept-assessments|lesson-activity-sequence|module-progress|progress|stage-assessments|stage-validation|timeline)\\.ts$",
       "^src/server/api/_lib/(?:module-runs|progress-recalculation|stage-validation|timeline-progress)\\.ts$",
-      "^src/server/api/(?:concept-assessments|module-runs|progress|stage-assessments)/app\\.ts$"
+      "^src/server/api/(?:concept-assessments|module-runs|progress|quizzes|stage-assessments)/app\\.ts$"
     ],
     "admin-authorization": [
       "^src/features/auth/AdminRoute\\.tsx$",

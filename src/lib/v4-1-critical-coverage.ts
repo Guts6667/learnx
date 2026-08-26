@@ -41,6 +41,7 @@ export function criticalManifestFailures(
     }
 
     const declaredFiles = new Set(normalizedFiles);
+    const compiledRules: RegExp[] = [];
     for (const rawRule of rawRules) {
       let rule: RegExp;
       try {
@@ -49,12 +50,21 @@ export function criticalManifestFailures(
         failures.push(`${domain}: invalid discovery rule ${rawRule}`);
         continue;
       }
+      compiledRules.push(rule);
       for (const productionFile of normalizedProductionFiles) {
         if (rule.test(productionFile) && !declaredFiles.has(productionFile)) {
           failures.push(
             `${domain}: discovered critical file is undeclared: ${productionFile}`,
           );
         }
+      }
+    }
+
+    for (const declaredFile of declaredFiles) {
+      if (!compiledRules.some((rule) => rule.test(declaredFile))) {
+        failures.push(
+          `${domain}: declared critical file is outside discovery rules: ${declaredFile}`,
+        );
       }
     }
   }

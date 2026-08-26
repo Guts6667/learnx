@@ -8,6 +8,7 @@ import {
   type ImportBoundaryConfiguration,
   type ProjectImportEdge,
 } from '../src/lib/v4-1-import-boundaries.ts';
+import { findModuleSpecifiers } from '../src/server/quality/import-analysis.ts';
 
 type QualityMode = 'baseline' | 'final' | 'report';
 
@@ -70,20 +71,6 @@ function collectTypeScriptFiles(directory: string): string[] {
 
 function normalizeProjectPath(path: string): string {
   return relative(projectRoot, path).split('\\').join('/');
-}
-
-function findModuleSpecifiers(sourceFile: ts.SourceFile): string[] {
-  const specifiers: string[] = [];
-  sourceFile.forEachChild((node) => {
-    if (
-      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-      node.moduleSpecifier &&
-      ts.isStringLiteral(node.moduleSpecifier)
-    ) {
-      specifiers.push(node.moduleSpecifier.text);
-    }
-  });
-  return specifiers;
 }
 
 function resolveProjectModule(
@@ -237,7 +224,7 @@ const projectFiles = new Set(files);
 const graph = new Map<string, Set<string>>();
 const preactImports = new Map<string, Set<string>>();
 const reactImports = new Map<string, Set<string>>();
-let staticProjectEdges = 0;
+let projectDependencyEdges = 0;
 const projectImportEdges: ProjectImportEdge[] = [];
 
 for (const file of files) {
@@ -271,7 +258,7 @@ for (const file of files) {
       });
     }
   }
-  staticProjectEdges += dependencies.size;
+  projectDependencyEdges += dependencies.size;
   graph.set(normalizedFile, dependencies);
 }
 
@@ -289,7 +276,7 @@ const boundaryFailures = importBoundaryFailures(
 );
 
 console.log(`TypeScript files: ${files.length}`);
-console.log(`Static project import/export edges: ${staticProjectEdges}`);
+console.log(`Project dependency edges: ${projectDependencyEdges}`);
 console.log(`Files importing Preact APIs: ${preactImports.size}`);
 console.log(`Files importing React APIs: ${reactImports.size}`);
 console.log(

@@ -93,4 +93,22 @@ describe('V4.1 critical coverage gate', () => {
       'auth: no discovery rules declared',
     ]);
   });
+
+  it('fails when a declared file is not protected by any discovery rule', () => {
+    const incompleteConfiguration: CriticalCoverageConfiguration = {
+      discoveryRules: { auth: ['^src/auth\\.ts$'] },
+      domains: { auth: ['src/auth.ts', 'src/access.ts'] },
+      schemaVersion: 1,
+      thresholdLinesPercent: 90,
+    };
+
+    expect(
+      criticalManifestFailures(incompleteConfiguration, [
+        'src/access.ts',
+        'src/auth.ts',
+      ]),
+    ).toEqual([
+      'auth: declared critical file is outside discovery rules: src/access.ts',
+    ]);
+  });
 });

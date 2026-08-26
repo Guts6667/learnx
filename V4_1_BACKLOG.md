@@ -145,11 +145,12 @@ candidats V5.
 - Reviewer : Architecture / Produit
 - Dépendances : V4.1-002, V4.1-006
 - Source : `docs/V4_1_TECHNICAL_AUDIT.md` ; mesures de V4.1-006
-- Statut : **livré pour nouvelle revue** — après une première revue
-  indépendante rejetée, la couverture est fail-closed, la CI exécute le gate
-  critique, la découverte empêche les omissions, les frontières d'import,
-  `knip`, les chunks lazy et le précache PWA sont désormais réellement
-  bloquants ; le gate final reste rouge par conception jusqu'à V4.1-501
+- Statut : **livré pour revue finale** — les deux revues rejetées ont durci le
+  lot : la couverture est fail-closed, la découverte protège désormais les
+  deux sens du manifeste critique, les imports dynamiques entrent dans le
+  graphe, les actions CI sont épinglées par SHA et `knip`, chunks lazy et
+  précache PWA sont bloquants. Le gate final reste rouge par conception
+  jusqu'à V4.1-501
 - Critères d'acceptation :
   - la méthode de couverture et la trajectoire vers V4.1-501 sont gelées ;
   - un avis `high` applicable bloque la release ou possède une exception revue,
