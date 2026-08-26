@@ -324,7 +324,12 @@ neuvième statut.
 - Reviewer : Domaine / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline parcours V4.1-006
-- Statut : **prêt** — dépendances V4.1-103, V4.1-104 et V4.1-203 terminées
+- Statut : **livré pour revue** — branche `codex/v4-1-302`, fondée sur
+  `4b342511`; les contrats et URLs restent inchangés
+- Preuves : 156 fichiers / 978 tests verts, tests ciblés Today/annuaire/
+  programme/leçon et état de reprise verts, lint/typecheck/build/PWA verts ;
+  `QueryState`, `TextField` et `SelectField` remplacent les états et contrôles
+  ad hoc du périmètre actif
 - Critères d'acceptation :
   - Today, annuaire, découverte, programme, étape, module et leçon migrent ;
   - `Program > Stage > Module > Lesson` et URLs restent inchangés ;

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { TodayPage } from '@/pages/TodayPage';
@@ -94,6 +94,34 @@ describe('TodayPage', () => {
     expect(
       await screen.findByRole('heading', { name: 'Aucun programme actif' }),
     ).toBeInTheDocument();
+  });
+
+  it('permet de reprendre le chargement après une indisponibilité', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError('Network unavailable'))
+      .mockResolvedValueOnce(
+        jsonResponse({
+          action: null,
+          lastActivity: null,
+          program: null,
+          programs: [],
+          reviewsDue: 0,
+        }),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <TodayPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Réessayer' }));
+    expect(
+      await screen.findByRole('heading', { name: 'Aucun programme actif' }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
   it('traduit l’écran authentifié complet en anglais sans traduire les contenus', async () => {

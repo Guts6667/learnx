@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { ProductPageHeader } from '@/components/product/ProductPageHeader';
+import { QueryState } from '@/components/learnx/QueryState';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -149,18 +150,6 @@ function LessonSummaryCard({
       </NavigationAction>
     </Card>
   );
-}
-
-function getQueryState(error: unknown, isPending: boolean, t: Translate) {
-  if (isPending) {
-    return <Skeleton label={t('curriculum.loading')} />;
-  }
-
-  if (error) {
-    return <ErrorState description={t('curriculum.loadError')} />;
-  }
-
-  return null;
 }
 
 function ProgressPlaceholder() {
@@ -1211,13 +1200,22 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
     expandedStageId: string | null;
     programId: string;
   } | null>(null);
-  const state = getQueryState(query.error, query.isPending, t);
+  const state = (
+    <QueryState
+      error={query.error}
+      errorDescription={t('curriculum.loadError')}
+      isPending={query.isPending}
+      loadingLabel={t('curriculum.loading')}
+      onRetry={query.reload}
+      retryLabel={t('common.retry')}
+    />
+  );
   const program = query.data?.program;
   const requestedStageSlug = new URLSearchParams(window.location.search).get(
     'stage',
   );
 
-  if (state) {
+  if (query.isPending || query.error) {
     return state;
   }
 
@@ -1412,9 +1410,18 @@ export function StagePage({
   });
   const query = useStageQuery(programSlug, stageSlug);
   const { t } = useI18n();
-  const state = getQueryState(query.error, query.isPending, t);
+  const state = (
+    <QueryState
+      error={query.error}
+      errorDescription={t('curriculum.loadError')}
+      isPending={query.isPending}
+      loadingLabel={t('curriculum.loading')}
+      onRetry={query.reload}
+      retryLabel={t('common.retry')}
+    />
+  );
 
-  if (state) {
+  if (query.isPending || query.error) {
     return state;
   }
 
@@ -1504,9 +1511,18 @@ export function ModulePage({
   );
   const restart = useModuleRestart(query.data?.module.id ?? '');
   const { t } = useI18n();
-  const state = getQueryState(query.error, query.isPending, t);
+  const state = (
+    <QueryState
+      error={query.error}
+      errorDescription={t('curriculum.loadError')}
+      isPending={query.isPending}
+      loadingLabel={t('curriculum.loading')}
+      onRetry={query.reload}
+      retryLabel={t('common.retry')}
+    />
+  );
 
-  if (state) {
+  if (query.isPending || query.error) {
     return state;
   }
 

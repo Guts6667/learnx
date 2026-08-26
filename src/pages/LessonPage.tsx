@@ -5,6 +5,7 @@ import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction
 import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { QueryState } from '@/components/learnx/QueryState';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -644,7 +645,14 @@ export function LessonPage({
   if (query.isPending) return <Spinner label={t('common.loading')} />;
   if (query.error) {
     return navigator.onLine ? (
-      <ErrorState description={t('learning.loadError')} />
+      <QueryState
+        error={query.error}
+        errorDescription={t('learning.loadError')}
+        isPending={query.isPending}
+        loadingLabel={t('common.loading')}
+        onRetry={query.reload}
+        retryLabel={t('common.retry')}
+      />
     ) : (
       <EmptyState
         description={t('learning.offline.description')}

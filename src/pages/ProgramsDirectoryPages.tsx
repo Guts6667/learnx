@@ -6,7 +6,9 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
+import { SelectField } from '@/components/ui/SelectField';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { TextField } from '@/components/ui/TextField';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import {
   type CatalogProgram,
@@ -213,19 +215,18 @@ export function DiscoverProgramsPage() {
           setSearch(searchInput.trim().replace(/\s+/g, ' '));
         }}
       >
-        <label className="ui-field discover-search__field">
-          <span className="ui-field__label">{t('programs.search')}</span>
+        <div className="discover-search__field">
           <span aria-hidden="true" className="discover-search__icon">
             ⌕
           </span>
-          <input
-            className="ui-field__control"
+          <TextField
+            label={t('programs.search')}
             onInput={(event) => setSearchInput(event.currentTarget.value)}
             placeholder={t('programs.searchPlaceholder')}
             type="search"
             value={searchInput}
           />
-        </label>
+        </div>
         <details className="discover-filters">
           <summary
             aria-label={t('programs.openFilters')}
@@ -243,21 +244,18 @@ export function DiscoverProgramsPage() {
             </svg>
             <span className="sr-only">{t('programs.openFilters')}</span>
           </summary>
-          <label className="ui-field discover-filters__panel">
-            <span className="ui-field__label">
-              {t('programs.language.label')}
-            </span>
-            <select
-              className="ui-field__control"
-              onChange={(event) =>
-                setCatalogLocale(event.currentTarget.value as typeof locale)
-              }
-              value={catalogLocale}
-            >
-              <option value="fr">{t('programs.language.fr')}</option>
-              <option value="en">{t('programs.language.en')}</option>
-            </select>
-          </label>
+          <SelectField
+            className="discover-filters__panel"
+            label={t('programs.language.label')}
+            onChange={(event) =>
+              setCatalogLocale(event.currentTarget.value as typeof locale)
+            }
+            options={[
+              { label: t('programs.language.fr'), value: 'fr' },
+              { label: t('programs.language.en'), value: 'en' },
+            ]}
+            value={catalogLocale}
+          />
         </details>
       </form>
 

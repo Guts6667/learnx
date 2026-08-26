@@ -1,10 +1,9 @@
 import { Card } from '@/components/ui/Card';
+import { QueryState } from '@/components/learnx/QueryState';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
 import { useI18n } from '@/i18n';
 import type { MessageKey } from '@/i18n/catalogs';
@@ -24,6 +23,16 @@ const actionLabelKeys: Record<RecommendationKind, MessageKey> = {
 export function TodayPage() {
   const query = useTodayQuery();
   const { t } = useI18n();
+  const queryState = (
+    <QueryState
+      error={query.error}
+      errorDescription={t('today.error')}
+      isPending={query.isPending}
+      loadingLabel={t('today.loading')}
+      onRetry={query.reload}
+      retryLabel={t('common.retry')}
+    />
+  );
 
   return (
     <section
@@ -36,10 +45,8 @@ export function TodayPage() {
         title={t('today.title')}
       />
 
-      {query.isPending ? (
-        <Skeleton label={t('today.loading')} />
-      ) : query.error ? (
-        <ErrorState description={t('today.error')} />
+      {query.isPending || query.error ? (
+        queryState
       ) : query.data?.program ? (
         <TodayContent
           data={query.data}
