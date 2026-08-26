@@ -520,7 +520,7 @@ export const frenchMessages = {
   'reviews.principle':
     'Une révision est terminée après une nouvelle activité, jamais après la simple ouverture d’une ressource.',
   'reviews.pendingLabel': 'À faire',
-  'reviews.summary': '{count} révision(s) prioritaire(s) aujourd’hui',
+  'reviews.summary': 'Révisions prioritaires aujourd’hui : {count}',
   'reviews.upcoming': 'À venir',
   'notes.eyebrow': 'Espace personnel',
   'notes.title': 'Notes',
@@ -1702,7 +1702,7 @@ export const englishMessages = {
   'reviews.principle':
     'A review is complete after a new activity, never after simply opening a resource.',
   'reviews.pendingLabel': 'To do',
-  'reviews.summary': '{count} priority review(s) today',
+  'reviews.summary': 'Priority reviews today: {count}',
   'reviews.upcoming': 'Upcoming',
   'notes.eyebrow': 'Personal space',
   'notes.title': 'Notes',
