@@ -208,4 +208,72 @@ describe('AdminAccessRequestsPage', () => {
       );
     });
   });
+
+  it('récupère une erreur serveur sans contourner les filtres', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ error: 'unavailable' }, 503))
+      .mockResolvedValueOnce(jsonResponse(pageResponse()));
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminAccessRequestsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('Les demandes d’accès n’ont pas pu être chargées.'),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+
+    expect(
+      await screen.findByText('candidate@example.com'),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      expect.stringContaining('status=PENDING_APPROVAL'),
+      expect.any(Object),
+    );
+  });
+
+  it('pagine un volume supérieur à une page sans charger une collection implicite', async () => {
+    const fetchMock = vi.fn((path: string) => {
+      const isSecondPage = path.includes('page=2');
+      return Promise.resolve(
+        jsonResponse({
+          page: {
+            items: [
+              {
+                ...pendingRequest(),
+                emailNormalized: isSecondPage
+                  ? 'page-2@example.com'
+                  : 'page-1@example.com',
+                id: isSecondPage ? `${requestId}-2` : requestId,
+              },
+            ],
+            page: isSecondPage ? 2 : 1,
+            pageSize: 20,
+            total: 41,
+            totalPages: 3,
+          },
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminAccessRequestsPage />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('page-1@example.com')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Suivant' }));
+    expect(await screen.findByText('page-2@example.com')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining('page=2'),
+      expect.any(Object),
+    );
+  });
 });

@@ -324,7 +324,14 @@ export function AdminAccessRequestsPage() {
       {query.isPending ? (
         <p aria-live="polite">{t('admin.requests.loading')}</p>
       ) : query.error || !query.data ? (
-        <ErrorState description={t('admin.requests.loadError')} />
+        <ErrorState
+          action={
+            <Button onClick={() => void query.retry()} variant="secondary">
+              {t('common.retry')}
+            </Button>
+          }
+          description={t('admin.requests.loadError')}
+        />
       ) : query.data.items.length === 0 ? (
         <EmptyState
           description={t('admin.requests.empty.description')}

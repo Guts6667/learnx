@@ -108,6 +108,29 @@ describe('AdminRoute', () => {
 describe('AdminPage', () => {
   afterEach(() => vi.unstubAllGlobals());
 
+  it('permet de relancer le chargement pédagogique après une erreur serveur', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ error: 'unavailable' }, 503))
+      .mockResolvedValueOnce(
+        jsonResponse({ kind: 'PROGRAMS', programs: [program] }),
+      );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('Les contenus administrables n’ont pas pu être chargés.'),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+    expect(await screen.findAllByText('Programme test')).not.toHaveLength(0);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
   it('ne charge que les programmes à la racine', async () => {
     const fetchMock = vi.fn(() =>
       Promise.resolve(jsonResponse({ kind: 'PROGRAMS', programs: [program] })),

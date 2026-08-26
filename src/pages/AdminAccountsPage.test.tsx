@@ -56,6 +56,35 @@ function sessionResponse() {
 describe('AdminAccountsPage', () => {
   afterEach(() => vi.unstubAllGlobals());
 
+  it('permet de réessayer une liste indisponible sans perdre le contrôle de session', async () => {
+    let accountAttempts = 0;
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/auth/session') {
+        return Promise.resolve(jsonResponse(sessionResponse()));
+      }
+      accountAttempts += 1;
+      return Promise.resolve(
+        accountAttempts === 1
+          ? jsonResponse({ error: 'unavailable' }, 503)
+          : jsonResponse(pageResponse()),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminAccountsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('Les comptes n’ont pas pu être chargés.'),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+    expect(await screen.findByText('learner@example.com')).toBeInTheDocument();
+    expect(accountAttempts).toBe(2);
+  });
+
   it('liste les comptes sans permettre la suspension du compte courant', async () => {
     vi.stubGlobal(
       'fetch',

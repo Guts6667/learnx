@@ -1109,7 +1109,16 @@ export function AdminPage(props: AdminPageProps) {
 
   if (query.isPending) return <Skeleton label={t('admin.loading')} />;
   if (query.error || !query.data) {
-    return <ErrorState description={t('admin.loadError')} />;
+    return (
+      <ErrorState
+        action={
+          <Button onClick={() => void query.retry()} variant="secondary">
+            {t('common.retry')}
+          </Button>
+        }
+        description={t('admin.loadError')}
+      />
+    );
   }
 
   return (

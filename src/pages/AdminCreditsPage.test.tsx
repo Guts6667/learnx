@@ -3,15 +3,89 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { AppProviders } from '@/app/providers';
 import { AdminCreditsPage } from '@/pages/AdminCreditsPage';
 
-function jsonResponse(body: unknown): Response {
+function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     headers: { 'content-type': 'application/json' },
-    status: 200,
+    status,
   });
 }
 
 describe('AdminCreditsPage', () => {
   afterEach(() => vi.unstubAllGlobals());
+
+  it('permet de relancer uniquement la liste des membres après une erreur serveur', async () => {
+    let memberAttempts = 0;
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/admin/ai-corrections/preflight') {
+        return Promise.resolve(
+          jsonResponse({
+            preflight: {
+              apiKeyPresent: true,
+              deploymentEnvironment: 'preview',
+              identityMatches: true,
+              killSwitch: true,
+              promotedBenchmarkId: 'benchmark-id',
+              state: 'CONFIGURED_CLOSED',
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/ai-corrections/monitoring') {
+        return Promise.resolve(
+          jsonResponse({
+            monitoring: {
+              completed: 0,
+              hardConstraintLevelMismatchSuspected: 0,
+              partial: 0,
+              scoreGuardTriggered: 0,
+              totalCorrections: 0,
+              totalProviderCostUsd: '0.00000000',
+              unavailable: 0,
+              unknownCostAttempts: 0,
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/credits/policies') {
+        return Promise.resolve(
+          jsonResponse({ policies: { allocation: [], limits: [] } }),
+        );
+      }
+      if (path.startsWith('/api/admin/credits/members?')) {
+        memberAttempts += 1;
+        return Promise.resolve(
+          memberAttempts === 1
+            ? jsonResponse({ error: 'unavailable' }, 503)
+            : jsonResponse({
+                page: {
+                  items: [],
+                  page: 1,
+                  pageSize: 20,
+                  total: 0,
+                  totalPages: 0,
+                },
+              }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminCreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('La liste des crédits n’a pas pu être chargée.'),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button', { name: 'Réessayer' })[0]);
+    expect(
+      await screen.findByRole('heading', { name: 'Aucun membre' }),
+    ).toBeInTheDocument();
+    expect(memberAttempts).toBe(2);
+  });
 
   it('shows the real correction cost and incident summary without adding an admin navigation item', async () => {
     vi.stubGlobal(

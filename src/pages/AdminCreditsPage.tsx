@@ -112,7 +112,14 @@ function AdjustmentDrawer({
           </div>
           {detail.isPending ? <Skeleton className="h-48" /> : null}
           {detail.error ? (
-            <ErrorState description={t('admin.credits.memberError')} />
+            <ErrorState
+              action={
+                <Button onClick={() => void detail.retry()} variant="secondary">
+                  {t('common.retry')}
+                </Button>
+              }
+              description={t('admin.credits.memberError')}
+            />
           ) : null}
           {detail.data ? (
             <div className="credit-admin-current">
@@ -358,7 +365,17 @@ export function AdminCreditsPage() {
         ) : null}
         {correctionPreflight.error ? (
           <div className="mt-4">
-            <ErrorState description={t('admin.credits.preflightError')} />
+            <ErrorState
+              action={
+                <Button
+                  onClick={() => void correctionPreflight.retry()}
+                  variant="secondary"
+                >
+                  {t('common.retry')}
+                </Button>
+              }
+              description={t('admin.credits.preflightError')}
+            />
           </div>
         ) : null}
         {correctionPreflight.data ? (
@@ -377,7 +394,17 @@ export function AdminCreditsPage() {
         {monitoring.isPending ? <Skeleton className="mt-4 h-32" /> : null}
         {monitoring.error ? (
           <div className="mt-4">
-            <ErrorState description={t('admin.credits.monitoringError')} />
+            <ErrorState
+              action={
+                <Button
+                  onClick={() => void monitoring.retry()}
+                  variant="secondary"
+                >
+                  {t('common.retry')}
+                </Button>
+              }
+              description={t('admin.credits.monitoringError')}
+            />
           </div>
         ) : null}
         {monitoring.data ? (
@@ -433,7 +460,14 @@ export function AdminCreditsPage() {
       </form>
       {query.isPending ? <Skeleton className="h-72" /> : null}
       {query.error ? (
-        <ErrorState description={t('admin.credits.loadError')} />
+        <ErrorState
+          action={
+            <Button onClick={() => void query.retry()} variant="secondary">
+              {t('common.retry')}
+            </Button>
+          }
+          description={t('admin.credits.loadError')}
+        />
       ) : null}
       {query.data?.items.length === 0 ? (
         <EmptyState

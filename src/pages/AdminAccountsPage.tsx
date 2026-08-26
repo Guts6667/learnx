@@ -332,7 +332,14 @@ export function AdminAccountsPage() {
       {query.isPending ? (
         <p aria-live="polite">{t('admin.accounts.loading')}</p>
       ) : query.error || !query.data ? (
-        <ErrorState description={t('admin.accounts.loadError')} />
+        <ErrorState
+          action={
+            <Button onClick={() => void query.retry()} variant="secondary">
+              {t('common.retry')}
+            </Button>
+          }
+          description={t('admin.accounts.loadError')}
+        />
       ) : query.data.items.length === 0 ? (
         <EmptyState
           description={t('admin.accounts.empty.description')}

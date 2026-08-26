@@ -108,7 +108,10 @@ function useObservedQuery<T>(path: string, queryKey: readonly unknown[]) {
     void observer.refetch();
     return unsubscribe;
   }, [observer]);
-  return result;
+  return {
+    ...result,
+    retry: () => observer.refetch(),
+  };
 }
 
 export function useOwnCreditsQuery() {
@@ -120,6 +123,7 @@ export function useOwnCreditsQuery() {
     data: result.data?.credits,
     error: result.error,
     isPending: result.isPending,
+    retry: result.retry,
   };
 }
 
@@ -179,6 +183,7 @@ export function useAdminCreditMembersQuery(input: {
     data: result.data?.page,
     error: result.error,
     isPending: result.isPending,
+    retry: result.retry,
   };
 }
 
@@ -195,6 +200,7 @@ export function useAdminCreditMemberQuery(userId: string | undefined) {
     data: userId ? result.data?.member : undefined,
     error: userId ? result.error : undefined,
     isPending: userId ? result.isPending : false,
+    retry: result.retry,
   };
 }
 
@@ -209,6 +215,7 @@ export function useAdminCreditPoliciesQuery() {
     data: result.data?.policies,
     error: result.error,
     isPending: result.isPending,
+    retry: result.retry,
   };
 }
 
@@ -221,6 +228,7 @@ export function useAdminCorrectionMonitoringQuery() {
     data: result.data?.monitoring,
     error: result.error,
     isPending: result.isPending,
+    retry: result.retry,
   };
 }
 
@@ -233,6 +241,7 @@ export function useAdminCorrectionPreflightQuery() {
     data: result.data?.preflight,
     error: result.error,
     isPending: result.isPending,
+    retry: result.retry,
   };
 }
 

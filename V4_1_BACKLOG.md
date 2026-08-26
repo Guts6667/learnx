@@ -374,8 +374,10 @@ neuvième statut.
 - Reviewer : Sécurité / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-301
 - Source : routes admin et matrice d'accès V4.1-006
-- Statut : **prêt** — dépendances frontend terminées ; branche dédiée et revue
-  distincte obligatoires
+- Statut : **livré pour revue** — surfaces React/shadcn conservées à contrats
+  constants ; contrôle de rôle fail-closed, erreurs récupérables, confirmations
+  explicites, pagination grands volumes et QA responsive/clavier documentés par
+  les tests du lot ; revue Sécurité / Produit distincte requise
 - Critères d'acceptation :
   - accès, comptes, contacts, crédits et gestion pédagogique admin migrent ;
   - rôle admin, accès interdit et erreurs serveur restent stricts ;

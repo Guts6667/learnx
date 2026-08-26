@@ -78,6 +78,7 @@ export function useAdminAccessRequestsQuery(filters: AccessRequestFilters) {
     data: result.data,
     error: result.error,
     isPending: result.isPending,
+    retry: () => observer.refetch(),
   };
 }
 
