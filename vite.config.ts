@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
 import preact from '@preact/preset-vite';
@@ -6,6 +7,39 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 
 import { pwaNavigateFallbackDenylist } from './src/lib/pwa-navigation.ts';
+
+interface CoverageThresholds {
+  branches: number;
+  functions: number;
+  lines: number;
+  statements: number;
+}
+
+interface QualityBaseline {
+  coverage: {
+    baselineThresholdsPercent: CoverageThresholds;
+    finalThresholdsPercent: CoverageThresholds;
+  };
+}
+
+const qualityBaseline = JSON.parse(
+  readFileSync(
+    new URL('./quality/v4-1-baseline.json', import.meta.url),
+    'utf8',
+  ),
+) as QualityBaseline;
+const qualityMode = process.env.LEARNX_V4_1_QUALITY_MODE ?? 'baseline';
+
+if (qualityMode !== 'baseline' && qualityMode !== 'final') {
+  throw new Error(
+    `Unsupported LEARNX_V4_1_QUALITY_MODE: ${qualityMode}. Expected baseline or final.`,
+  );
+}
+
+const coverageThresholds =
+  qualityMode === 'final'
+    ? qualityBaseline.coverage.finalThresholdsPercent
+    : qualityBaseline.coverage.baselineThresholdsPercent;
 
 export default defineConfig({
   plugins: [
@@ -96,7 +130,8 @@ export default defineConfig({
       'src/**/*.test.{ts,tsx}',
     ],
     coverage: {
-      reporter: ['text', 'html'],
+      reporter: ['text', 'json-summary', 'html'],
+      thresholds: coverageThresholds,
     },
   },
 });

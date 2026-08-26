@@ -11,6 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -b",
     "test": "vitest run",
+    "test:coverage:baseline": "LEARNX_V4_1_QUALITY_MODE=baseline vitest run --coverage",
+    "test:coverage:v4.1": "LEARNX_V4_1_QUALITY_MODE=final vitest run --coverage",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:integration": "node --import tsx scripts/run-integration-tests.ts",
@@ -35,7 +37,13 @@
     "icons:export": "tsx scripts/export-atlas-icons.ts",
     "editorial:bilingual:check": "tsx scripts/validate-bilingual-editorial.ts",
     "ai:benchmark:validate": "tsx scripts/run-ai-correction-benchmark.ts --validate-only",
-    "ai:benchmark": "tsx scripts/run-ai-correction-benchmark.ts"
+    "ai:benchmark": "tsx scripts/run-ai-correction-benchmark.ts",
+    "quality:bundle": "tsx scripts/check-v4-1-bundle.ts",
+    "quality:imports:baseline": "pnpm typecheck && tsx scripts/check-v4-1-imports.ts --mode baseline",
+    "quality:imports:v4.1": "pnpm typecheck && tsx scripts/check-v4-1-imports.ts --mode final",
+    "quality:security": "pnpm audit --audit-level=high --prod",
+    "quality:v4.1:baseline": "pnpm lint && pnpm quality:imports:baseline && pnpm test:coverage:baseline && pnpm build && pnpm quality:bundle && pnpm quality:security",
+    "quality:v4.1:final": "pnpm lint && pnpm quality:imports:v4.1 && pnpm test:coverage:v4.1 && pnpm build && pnpm quality:bundle && pnpm quality:security"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {
@@ -78,6 +86,7 @@
   },
   "pnpm": {
     "overrides": {
+      "deepmerge-ts@<8.0.0": "8.0.0",
       "nanoid@<3.3.17": "3.3.18"
     }
   }

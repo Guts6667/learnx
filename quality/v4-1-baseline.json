@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "a02ecc3f307af36656fa5cb8a7b62954fdec73e9",
+  "capturedAt": "2026-08-26",
+  "unitTests": {
+    "files": 150,
+    "cases": 949
+  },
+  "coverage": {
+    "observedPercent": {
+      "branches": 66.64,
+      "functions": 76.97,
+      "lines": 76.45,
+      "statements": 75.23
+    },
+    "baselineThresholdsPercent": {
+      "branches": 66.64,
+      "functions": 76.97,
+      "lines": 76.45,
+      "statements": 75.23
+    },
+    "finalThresholdsPercent": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80,
+      "statements": 80
+    }
+  },
+  "bundle": {
+    "scope": "All JavaScript and CSS files emitted below dist, including PWA and public research assets.",
+    "observedGzipBytes": {
+      "javascript": 118287,
+      "css": 24076
+    },
+    "budgetsGzipBytes": {
+      "javascript": 125000,
+      "css": 25000
+    }
+  },
+  "imports": {
+    "typescriptFiles": 396,
+    "staticProjectEdges": 1051,
+    "preactImportingFiles": 113,
+    "preactManifestPackages": [
+      "@preact/preset-vite",
+      "@testing-library/preact",
+      "preact",
+      "preact-router"
+    ],
+    "knownCycles": []
+  }
+}

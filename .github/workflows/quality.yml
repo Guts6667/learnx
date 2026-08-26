@@ -5,6 +5,12 @@ on:
   push:
     branches: [dev]
   workflow_dispatch:
+    inputs:
+      v4_1_final:
+        description: Run the strict V4.1 release gate (expected red until migration is complete)
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -15,7 +21,7 @@ concurrency:
 
 jobs:
   required-quality:
-    name: Lint, types, unit tests, and build
+    name: Current baseline (required)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -33,11 +39,61 @@ jobs:
         run: pnpm prisma:generate
       - name: Lint
         run: pnpm lint
-      - name: Typecheck
-        run: pnpm typecheck
-      - name: Unit tests
-        run: pnpm test
+      - name: Types, unused imports, Preact inventory, and cycles
+        run: pnpm quality:imports:baseline
+      - name: Unit tests and frozen coverage baseline
+        run: pnpm test:coverage:baseline
         env:
           NODE_OPTIONS: --no-experimental-webstorage
       - name: Build
         run: pnpm build
+      - name: Bundle budgets
+        run: pnpm quality:bundle
+      - name: High and critical production dependency audit
+        run: pnpm quality:security
+      - name: Upload coverage evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: ignore
+          name: coverage-baseline-${{ github.run_id }}
+          path: coverage/coverage-summary.json
+
+  v4-1-final:
+    name: V4.1 final gate (opt-in)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.v4_1_final }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+      - name: Lint
+        run: pnpm lint
+      - name: Final imports, runtime, and cycle gate
+        run: pnpm quality:imports:v4.1
+      - name: Final 80 percent global coverage gate
+        run: pnpm test:coverage:v4.1
+        env:
+          NODE_OPTIONS: --no-experimental-webstorage
+      - name: Build
+        run: pnpm build
+      - name: Bundle budgets
+        run: pnpm quality:bundle
+      - name: High and critical production dependency audit
+        run: pnpm quality:security
+      - name: Upload coverage evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: ignore
+          name: coverage-v4-1-final-${{ github.run_id }}
+          path: coverage/coverage-summary.json
