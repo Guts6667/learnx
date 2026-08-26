@@ -23,20 +23,14 @@ function luminance(hex: string): number {
     .match(/\w\w/g)
     ?.map((channel) => Number.parseInt(channel, 16) / 255)
     .map((channel) =>
-      channel <= 0.04045
-        ? channel / 12.92
-        : ((channel + 0.055) / 1.055) ** 2.4,
+      channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
     );
 
   if (!channels || channels.length !== 3) {
     throw new Error(`Invalid color: ${hex}`);
   }
 
-  return (
-    0.2126 * channels[0] +
-    0.7152 * channels[1] +
-    0.0722 * channels[2]
-  );
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
 }
 
 function contrast(first: string, second: string): number {
@@ -85,9 +79,7 @@ describe('Totem visual foundations', () => {
     expect(stylesheet).toContain('--radius-control: 0.4375rem');
     expect(stylesheet).toContain('--radius-group: 0.75rem');
     expect(stylesheet).toContain('--radius-mobile-frame: 1.25rem');
-    expect(stylesheet).toContain(
-      '.ui-badge {\n  display: inline-flex;',
-    );
+    expect(stylesheet).toContain('.ui-badge {\n  display: inline-flex;');
     expect(stylesheet).toMatch(
       /\.ui-badge \{[\s\S]*?border-radius: var\(--radius-directional\)/,
     );
@@ -105,6 +97,7 @@ describe('Totem visual foundations', () => {
     expect(contrast('#ffffff', '#3b5bd6')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#314fbe', '#ffffff')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#8491a8', '#ffffff')).toBeGreaterThanOrEqual(3);
+    expect(contrast('#8a5a24', '#f4f6fb')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#9b3e32', '#ffffff')).toBeGreaterThanOrEqual(4.5);
     expect(stylesheet).toMatch(
       /\.ui-action--danger \{[\s\S]*?color: color-mix\([\s\S]*?var\(--color-danger\) 90%[\s\S]*?var\(--color-ivory\) 10%/,

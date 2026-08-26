@@ -112,6 +112,7 @@
   --totem-color-on-action: #ffffff;
   --totem-color-coral: #cc6b57;
   --totem-color-coral-soft: #f9eae6;
+  --totem-color-warning: #8a5a24;
   --totem-color-danger: #9b3e32;
   --totem-color-overlay: rgb(23 35 59 / 58%);
   --totem-font-interface:
@@ -183,7 +184,7 @@ body {
   --color-direction: var(--totem-color-coral);
   --color-focus: #2441a6;
   --color-success: var(--totem-color-accent);
-  --color-warning: var(--totem-color-coral);
+  --color-warning: var(--totem-color-warning);
   --color-danger: var(--totem-color-danger);
   --color-disabled: #7a8599;
   --color-overlay: var(--totem-color-overlay);
