@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "thresholdLinesPercent": 90,
+  "domains": {
+    "auth-and-access": [
+      "src/features/auth/AdminRoute.tsx",
+      "src/features/auth/ProtectedRoute.tsx",
+      "src/features/auth/access-invitation.ts",
+      "src/features/auth/access-request.ts",
+      "src/features/auth/session.ts",
+      "src/server/api/_lib/access-invitation.ts",
+      "src/server/api/_lib/access-request-rate-limit.ts",
+      "src/server/api/_lib/access-request.ts",
+      "src/server/api/_lib/auth-repository.ts",
+      "src/server/api/_lib/auth-validation.ts",
+      "src/server/api/_lib/auth.ts",
+      "src/server/api/_lib/session.ts",
+      "src/server/api/access-requests/app.ts",
+      "src/server/api/auth/app.ts"
+    ],
+    "correction-pricing-credits-reconciliation": [
+      "src/features/credits/credits.ts",
+      "src/features/exercises/AiCorrectionPanel.tsx",
+      "src/features/exercises/ai-correction.ts",
+      "src/server/api/ai-pricing/app.ts",
+      "src/server/api/corrections/app.ts",
+      "src/server/api/credits/app.ts",
+      "src/server/corrections/correction-monitoring.ts",
+      "src/server/corrections/correction-orchestration.ts",
+      "src/server/corrections/prisma-correction-orchestration-store.ts",
+      "src/server/corrections/promoted-identity.ts",
+      "src/server/corrections/release-preflight.ts",
+      "src/server/corrections/runtime-correction-prompt.ts",
+      "src/server/credits/credit-administration.ts",
+      "src/server/credits/credit-ledger.ts",
+      "src/server/credits/prisma-credit-ledger.ts",
+      "src/server/pricing/ai-pricing.ts",
+      "src/server/pricing/prisma-ai-pricing.ts"
+    ],
+    "progress-and-assessments": [
+      "src/features/assessments/QuestionAssessmentExperience.tsx",
+      "src/features/concept-assessments/queries.ts",
+      "src/features/stage-assessments/StageAssessmentCard.tsx",
+      "src/features/stage-assessments/queries.ts",
+      "src/lib/concept-assessments.ts",
+      "src/lib/module-progress.ts",
+      "src/lib/progress.ts",
+      "src/lib/stage-assessments.ts",
+      "src/server/api/_lib/progress-recalculation.ts",
+      "src/server/api/_lib/timeline-progress.ts",
+      "src/server/api/concept-assessments/app.ts",
+      "src/server/api/progress/app.ts",
+      "src/server/api/quizzes/app.ts",
+      "src/server/api/stage-assessments/app.ts"
+    ],
+    "admin-authorization": [
+      "src/features/auth/AdminRoute.tsx",
+      "src/server/api/_lib/authorization.ts",
+      "src/server/api/_lib/capabilities.ts",
+      "src/server/api/_lib/program-access-policy.ts",
+      "src/server/api/admin/app.ts"
+    ]
+  }
+}

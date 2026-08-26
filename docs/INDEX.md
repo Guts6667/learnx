@@ -38,6 +38,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Conservation recherche correction IA | `docs/AI_CORRECTION_RESEARCH_DIGEST.md` | Route vers journaux et preuves ; digest sans autorité scientifique ou runtime |
 | Refondation V4.1 | `V4_1_BACKLOG.md` | Backlog canonique de 27 IDs stables ; V4 est clôturée et V4.1-006 est livré pour revue |
 | Baseline de parité V4.1 | `docs/V4_1_FUNCTIONAL_PARITY_BASELINE.md` | Matrice reproductible des parcours et autorités V4 ; une preuve absente reste un trou explicite |
+| Gates qualité et release V4.1 | `docs/V4_1_QUALITY_GATES.md` | Sépare le gate de migration reproductible du gate final 80 % global / 90 % critique, sans assouplissement opportuniste |
 | Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Fermé jusqu'au GO explicite V4.1-504 ; nouvelle génération IA, évaluations textuelles, calibration, essai et paiement |
 | Exploration V5 | `V5_CANDIDATES.md` | Conception guidée et analytics restent des candidats sans ticket activable |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |

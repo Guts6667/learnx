@@ -145,8 +145,9 @@ candidats V5.
 - Reviewer : Architecture / Produit
 - Dépendances : V4.1-002, V4.1-006
 - Source : `docs/V4_1_TECHNICAL_AUDIT.md` ; mesures de V4.1-006
-- Statut : **en cours** — gates baseline actives et vertes ; clôture dépendante
-  de la matrice de parité V4.1-006
+- Statut : **livré pour revue** — gates baseline/final et domaines critiques
+  explicités dans `docs/V4_1_QUALITY_GATES.md` ; le gate final reste rouge par
+  conception jusqu'à l'atteinte des seuils par V4.1-501
 - Critères d'acceptation :
   - la méthode de couverture et la trajectoire vers V4.1-501 sont gelées ;
   - un avis `high` applicable bloque la release ou possède une exception revue,
