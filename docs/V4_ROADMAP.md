@@ -75,10 +75,10 @@ nouvelle autorité est `V4_5_BACKLOG.md`.
 4. **QA et publication preview** : les surfaces privées, landing, marque et
    sept articles de recherche sont raccordés. La matrice finale couvre les
    largeurs, le texte à 200 %, le clavier, l'accessibilité et WebKit.
-5. **Frontière restante** : quatre compléments V4-010 sont désormais bloquants
-   avant le gate final : recette authentifiée des quatre familles, réponses
-   supérieures à 1 500 caractères, contestation argumentée et comparaison de
-   plusieurs corrections. Viennent ensuite la configuration production
+5. **Frontière restante** : les gates hors ligne des quatre familles et de la
+   borne 1 500/1 501 sont passés. Restent la recette réelle `dev`, la
+   contestation argumentée et la comparaison de plusieurs corrections avant
+   la configuration production
    fermée, le budget, le canal d'alerte, le GO explicite de Rayan et un smoke
    production borné. `main` reste inchangée avant ce GO.
 
@@ -93,7 +93,7 @@ nouvelle autorité est `V4_5_BACKLOG.md`.
 | 5 | V4-012-MONITORING | Développement | terminé : coûts, incidents et préflight visibles en admin |
 | 6 | V4-RESEARCH | Méthodologie + Développement | terminé : journal et articles publics chronologiques |
 | 7 | V4-010-R1 | Développement + Propriétaire | gate hors ligne 4/4 passé ; recette réelle `dev` ouverte, `reflection` sans exercice actif |
-| 8 | V4-010-R2 | Développement + Finance | réponses au-delà de 1 500 caractères, limite et classe calibrées |
+| 8 | V4-010-R2 | Développement + Finance | terminé : 1 500 accepté, 1 501 refusé avant devis ; aucune classe longue inventée |
 | 9 | V4-010-R3 | Développement + Produit | contestation argumentée, bornée et historisée |
 | 10 | V4-010-R4 | Développement + Produit | comparaison lisible de plusieurs corrections |
 | 11 | V4-019-RELEASE | Développement + Propriétaire | preuves régénérées ; GO production puis smoke borné |
@@ -107,7 +107,8 @@ nouvelle autorité est `V4_5_BACKLOG.md`.
 - une garde basée sur le score du modèle ne détecte pas toute sa clémence ;
 - `practice`, `reflection` et `project` sont ouverts par décision produit sans
   campagne scientifique dédiée ; une autre langue reste exclue ;
-- le catalogue actif ne couvre pas les réponses au-delà de 1 500 caractères ;
+- la V4 refuse explicitement les réponses au-delà de 1 500 caractères ; une
+  classe longue calibrée reste une extension ultérieure ;
 - aucun résultat IA ne valide une maîtrise ou une progression.
 
 Ces limites sont reportées, pas cachées. Leur plan de traitement est

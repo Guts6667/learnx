@@ -81,9 +81,10 @@ Le Propriétaire remplace le découpage historique `V4A` / `V4B` par trois
 releases explicites :
 
 - **V4** livre la correction formative des productions textuelles fr-FR. Sa
-  clôture exige encore la recette authentifiée des quatre familles, la prise
-  en charge calibrée de réponses dépassant 1 500 caractères, la contestation
-  argumentée et la comparaison de plusieurs corrections, puis V4-019.
+  clôture exige encore la recette authentifiée des quatre familles, un refus
+  explicite et sûr des réponses dépassant la borne tarifable de 1 500
+  caractères, la contestation argumentée et la comparaison de plusieurs
+  corrections, puis V4-019.
 - **V4.1** est une refondation technique sans extension métier : audit et
   nettoyage du workspace, migration Preact vers React, adoption contrôlée de
   shadcn et overhaul de l'application à parité fonctionnelle.
@@ -1674,8 +1675,10 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
   familles, lint ciblé, typecheck et 933 tests. La recette prouve le cycle
   remise → devis → réservation → correction simulée → règlement → historique,
   sans nouvel effet de progression ni métrique fournisseur exposée.
-- **Bloquants release V4** : classe tarifaire et limite utilisateur au-delà de
-  1 500 caractères, comparaison de plusieurs corrections, contestation
+- **Validé automatiquement** : frontière 1 500/1 501 appliquée dans l'interface
+  et par le serveur, sans troncature, devis, réservation ni appel fournisseur
+  lorsqu'une réponse dépasse la borne V4.
+- **Bloquants release V4** : comparaison de plusieurs corrections, contestation
   argumentée et recette propriétaire réelle sur `dev`. L'inventaire ne contient
   aucun exercice `reflection` actif ; l'unique occurrence reste dans un
   programme brouillon et ne doit pas être publiée silencieusement.
@@ -1683,7 +1686,7 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
   le gate V4-019.
 - **Référence de preuve** :
   `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` et
-  `docs/V4_010_R1_ACCEPTANCE.md`.
+  `docs/V4_010_R1_ACCEPTANCE.md`, `docs/V4_010_R2_INPUT_LIMIT.md`.
 
 ---
 

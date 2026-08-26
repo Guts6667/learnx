@@ -336,6 +336,7 @@ describe('exercise API', () => {
         jsonRequest({ contentMarkdown: oversized }),
       )).status,
     ).toBe(400);
+    expect(state.submission?.contentMarkdown).toBe('');
 
     await state.repository.saveSubmission(submissionId, oversized, userId);
     expect(

@@ -5,6 +5,7 @@ import {
   resolveExerciseCorrectionContract,
   type ProductiveExerciseActivityType,
 } from '../src/lib/exercise-correction-contracts';
+import { MAX_EXERCISE_SUBMISSION_CHARACTERS } from '../src/lib/exercises';
 import type { CorrectionContract } from '../src/lib/ai-correction-contracts';
 import type { AuthEnvironment } from '../src/server/api/_lib/auth';
 import { createAiPricingApp } from '../src/server/api/ai-pricing/app';
@@ -640,4 +641,48 @@ describe('V4-010-R1 — recette authentifiée des productions textuelles', () =>
       expect(exercises.progressWrites).toBe(1);
     },
   );
+});
+
+describe('V4-010-R2 — borne tarifable des productions textuelles', () => {
+  it('refuse 1 501 caractères avant soumission, devis, réservation et correction', async () => {
+    const testCase = CASES[0];
+    const exercises = buildExerciseHarness(testCase);
+    const exerciseApp = createExercisesApp({
+      authentication,
+      now: () => NOW,
+      repository: exercises.repository,
+    });
+
+    expect(
+      (
+        await exerciseApp.request(
+          `http://localhost/api/exercises/${testCase.exerciseId}/submissions`,
+          { method: 'POST' },
+        )
+      ).status,
+    ).toBe(201);
+    expect(
+      (
+        await exerciseApp.request(
+          `http://localhost/api/exercise-submissions/${testCase.submissionId}`,
+          jsonRequest(
+            {
+              contentMarkdown: 'x'.repeat(
+                MAX_EXERCISE_SUBMISSION_CHARACTERS + 1,
+              ),
+            },
+            'PATCH',
+          ),
+        )
+      ).status,
+    ).toBe(400);
+
+    const stored = await exercises.repository.findOwnedSubmission(
+      testCase.submissionId,
+      USER_ID,
+    );
+    expect(stored?.contentMarkdown).toBe('');
+    expect(stored?.status).toBe('DRAFT');
+    expect(exercises.progressWrites).toBe(0);
+  });
 });

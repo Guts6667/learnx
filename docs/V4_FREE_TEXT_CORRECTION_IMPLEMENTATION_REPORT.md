@@ -53,6 +53,8 @@ non productives restent corrigés par leurs mécanismes déterministes.
 - `pnpm lint` : vert ;
 - `pnpm typecheck` : vert ;
 - recette authentifiée hors ligne des quatre familles : 4/4 vertes ;
+- frontière de saisie V4 : 1 500 accepté, 1 501 refusé avant tout devis, sans
+  troncature ni mutation du brouillon ;
 - suite Vitest complète : 148 fichiers, 933 tests verts avec
   `NODE_OPTIONS=--no-experimental-webstorage` ;
 - `pnpm build` : vert ;
@@ -65,9 +67,9 @@ un gate de release à résoudre dans le chantier UI avant `main`.
 
 ## Limites encore ouvertes
 
-1. Le catalogue actif ne sait chiffrer honnêtement que les réponses de
-   1 500 caractères ou moins. Au-delà, aucun devis n'est proposé tant qu'une
-   classe tarifaire n'est pas calibrée.
+1. La V4 borne explicitement les réponses à 1 500 caractères. La frontière
+   client/serveur est prouvée par `docs/V4_010_R2_INPUT_LIMIT.md`. Une classe
+   tarifaire longue reste une extension future soumise à calibration.
 2. Seule Writing dispose d'une preuve expérimentale scellée. Les trois autres
    familles sont un rollout produit surveillé décidé par le Propriétaire.
 3. Le runtime restitue la dernière correction réglée ; la comparaison complète

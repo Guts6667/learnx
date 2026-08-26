@@ -173,6 +173,36 @@ describe('ExerciseCard', () => {
     ).toBeDisabled();
   });
 
+  it('autorise une réponse exactement à la limite sans masquer le compteur', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse(
+            exerciseResponse(submission('x'.repeat(1_500), 'DRAFT')),
+          ),
+        ),
+      ),
+    );
+
+    render(
+      <AppProviders>
+        <ExerciseCard exercise={exercise} isLessonPublished />
+      </AppProviders>,
+    );
+
+    const editor = await screen.findByLabelText('Votre réponse en Markdown');
+    expect(editor).toHaveAttribute('maxlength', '1500');
+    expect(screen.getByText(/1 500 \/ 1 500 caractères/)).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Enregistrer le brouillon' }),
+    ).toBeEnabled();
+    expect(
+      screen.getByRole('button', { name: 'Soumettre l’exercice' }),
+    ).toBeEnabled();
+  });
+
   it('propose la correction assistée uniquement sur une production éligible soumise', async () => {
     vi.stubGlobal(
       'fetch',

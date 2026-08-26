@@ -28,6 +28,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Contrats correction texte V4 | `docs/V4_FREE_TEXT_CORRECTION_CONTRACTS.md` | Résolution hybride spécialisée/archétype, portée fr-FR et garde-fous runtime approuvés le 26 août |
 | État d'implémentation correction texte V4 | `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` | Couverture réelle, validations et limites résiduelles du lot du 26 août |
 | Recette quatre familles V4-010-R1 | `docs/V4_010_R1_ACCEPTANCE.md` | Gate authentifié hors ligne passé ; recette réelle `dev` encore ouverte, notamment faute d'exercice `reflection` actif |
+| Limite de saisie V4-010-R2 | `docs/V4_010_R2_INPUT_LIMIT.md` | Gate 1 500/1 501 passé ; refus avant devis et aucun tarif long inventé |
 | Refondation V4.1 | `V4_1_BACKLOG.md` | Audit, nettoyage, React, shadcn et overhaul à parité fonctionnelle après clôture V4 |
 | Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Nouvelle génération IA, évaluations textuelles, calibration, essai public et paiement après V4.1 |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |
