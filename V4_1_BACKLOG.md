@@ -307,10 +307,10 @@ neuvième statut.
 - Reviewer : Sécurité / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline auth/public V4.1-006
-- Statut : **livré pour revue** — landing, intérêt, authentification et 404
-  publique migrés vers les shells React et primitives partagées ; URLs,
-  payloads et protections inchangés ; 980 tests unitaires et matrice E2E
-  320/390/720/1440/1920 vertes sur la branche `codex/v4-1-301`
+- Statut : **terminé** — revue indépendante `REVIEW_PASS` au commit
+  `f53a23a9` : landing, intérêt, authentification et 404 publique migrés vers
+  les shells React et primitives partagées ; URLs, payloads et protections
+  inchangés ; 980 tests unitaires et matrice E2E 320/390/720/1440/1920 verts
 - Critères d'acceptation :
   - landing, intérêt, login, demande d'accès, vérification et activation migrent ;
   - sessions, redirections, messages et protections anti-abus restent identiques ;
@@ -324,8 +324,8 @@ neuvième statut.
 - Reviewer : Domaine / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline parcours V4.1-006
-- Statut : **livré pour revue** — branche `codex/v4-1-302`, fondée sur
-  `4b342511`; les contrats et URLs restent inchangés
+- Statut : **terminé** — revue indépendante `REVIEW_PASS` au commit
+  `b4a43d3b` ; les contrats et URLs restent inchangés
 - Preuves : 156 fichiers / 978 tests verts, tests ciblés Today/annuaire/
   programme/leçon et état de reprise verts, lint/typecheck/build/PWA verts ;
   `QueryState`, `TextField` et `SelectField` remplacent les états et contrôles
@@ -343,7 +343,8 @@ neuvième statut.
 - Reviewer : Pédagogie / Backend / Recherche IA
 - Dépendances : V4.1-103, V4.1-104, V4.1-202, V4.1-302
 - Source : contrats d'évaluation et correction V4 ; baseline V4.1-006
-- Statut : **bloqué** — dépendances non terminées
+- Statut : **prêt** — dépendances frontend terminées ; branche dédiée et revue
+  distincte obligatoires
 - Critères d'acceptation :
   - exercices, quiz, assessments concept/étape et panneaux de correction migrent ;
   - tentative, score, maîtrise, devis, soumission, abstention et historique
@@ -358,7 +359,8 @@ neuvième statut.
 - Reviewer : Produit / Finance / QA
 - Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-302
 - Source : baseline V4.1-006 ; contrats notes, reviews et ledger
-- Statut : **bloqué** — dépendances non terminées
+- Statut : **prêt** — dépendances frontend terminées ; branche dédiée et revue
+  distincte obligatoires
 - Critères d'acceptation :
   - reviews, liste/édition de notes, profil et crédits migrent sans perte d'état ;
   - historique, lots offerts/achetés et écritures restent immuables ;
@@ -372,7 +374,8 @@ neuvième statut.
 - Reviewer : Sécurité / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-301
 - Source : routes admin et matrice d'accès V4.1-006
-- Statut : **bloqué** — dépendances non terminées
+- Statut : **prêt** — dépendances frontend terminées ; branche dédiée et revue
+  distincte obligatoires
 - Critères d'acceptation :
   - accès, comptes, contacts, crédits et gestion pédagogique admin migrent ;
   - rôle admin, accès interdit et erreurs serveur restent stricts ;
