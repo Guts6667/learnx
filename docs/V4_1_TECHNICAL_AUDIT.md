@@ -25,10 +25,22 @@ change aucun seuil.
 - `src/main.tsx` monte l'application avec `render` de Preact.
 
 Le passage React doit donc couvrir ensemble preset Vite, JSX/types, montage,
-routeur, hooks/imports, Testing Library et provider de requêtes. L'inventaire
-trouve 84 fichiers sous `src`, `tests` ou `scripts` important Preact ou un
-sous-chemin Preact ; ce nombre est une baseline de recherche, pas un objectif de
-réécriture automatique.
+routeur, hooks/imports, Testing Library et provider de requêtes. Le manifeste
+reproductible de V4.1-007 compte 113 fichiers TypeScript important Preact ou un
+sous-chemin Preact dans son périmètre global. Parmi eux, 112 se trouvent sous
+`src`, `tests` ou `scripts`, selon la recherche Git appliquée au commit de
+baseline. Ces nombres décrivent le couplage initial ; ils ne constituent pas un
+objectif de réécriture automatique.
+
+### État courant après les lots de fondation
+
+Cet encadré décrit le HEAD React au `13f31bb4` et ne réécrit pas le snapshot V4
+ci-dessus : React 19, React Router et React Query sont actifs, aucun import
+Preact ne subsiste, 34 déclarations `Route` incluant le wildcard 404 couvrent
+les 33 routes déclarées de la baseline et les 19 montages API sont conservés. Les
+mesures de migration et leurs gates vivent dans `docs/V4_1_QUALITY_GATES.md` ;
+elles ne doivent pas être confondues avec les constats historiques de cet
+audit.
 
 ## Sécurité des dépendances
 
@@ -93,8 +105,9 @@ fonctionnelle et les résultats attendus de V4.1-006.
 
 ## Dette structurelle mesurée
 
-Le dépôt compte 310 fichiers sous `src`. Les principaux hotspots par taille
-sont :
+Le dépôt compte 310 fichiers TypeScript, TSX ou CSS sous `src` dans la baseline
+auditée (316 fichiers suivis sous `src` tous formats confondus). Les principaux
+hotspots par taille sont :
 
 | Fichier | Lignes observées | Risque de migration |
 | --- | ---: | --- |
