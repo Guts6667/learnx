@@ -1,15 +1,14 @@
 import { Badge } from '@/components/ui/Badge';
 import { useEffect } from 'react';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { QueryState } from '@/components/learnx/QueryState';
 import {
   LessonContextHeader,
   LessonActivitySummary,
   lessonHref,
 } from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { Spinner } from '@/components/ui/Spinner';
 import { QuestionAssessmentExperience } from '@/features/assessments/QuestionAssessmentExperience';
 import {
   useConceptAssessmentAttemptMutation,
@@ -68,11 +67,29 @@ export function ConceptAssessmentPage({
   }, [lesson, selectedAssessment]);
 
   if (lessonQuery.isPending) {
-    return <Spinner label={t('conceptAssessment.loading')} />;
+    return (
+      <QueryState
+        error={lessonQuery.error}
+        errorDescription={t('conceptAssessment.loadError')}
+        isPending={lessonQuery.isPending}
+        loadingLabel={t('conceptAssessment.loading')}
+        onRetry={lessonQuery.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
   if (lessonQuery.error) {
-    return <ErrorState description={t('conceptAssessment.loadError')} />;
+    return (
+      <QueryState
+        error={lessonQuery.error}
+        errorDescription={t('conceptAssessment.loadError')}
+        isPending={lessonQuery.isPending}
+        loadingLabel={t('conceptAssessment.loading')}
+        onRetry={lessonQuery.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
   if (!lesson || !selectedAssessment) {
@@ -90,15 +107,47 @@ export function ConceptAssessmentPage({
   }
 
   if (assessmentQuery.isPending || attemptsQuery.isPending) {
-    return <Spinner label={t('conceptAssessment.loading')} />;
+    return (
+      <QueryState
+        error={assessmentQuery.error ?? attemptsQuery.error}
+        errorDescription={t('conceptAssessment.loadError')}
+        isPending
+        loadingLabel={t('conceptAssessment.loading')}
+        onRetry={() =>
+          Promise.all([assessmentQuery.reload(), attemptsQuery.reload()])
+        }
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
-  if (
-    assessmentQuery.error ||
-    attemptsQuery.error ||
-    !assessmentQuery.data?.assessment
-  ) {
-    return <ErrorState description={t('conceptAssessment.loadError')} />;
+  if (assessmentQuery.error || attemptsQuery.error) {
+    return (
+      <QueryState
+        error={assessmentQuery.error ?? attemptsQuery.error}
+        errorDescription={t('conceptAssessment.loadError')}
+        isPending={false}
+        loadingLabel={t('conceptAssessment.loading')}
+        onRetry={() =>
+          Promise.all([assessmentQuery.reload(), attemptsQuery.reload()])
+        }
+        retryLabel={t('common.retry')}
+      />
+    );
+  }
+
+  if (!assessmentQuery.data?.assessment) {
+    return (
+      <EmptyState
+        action={
+          <NavigationAction href={fallbackLessonHref} variant="secondary">
+            {t('assessment.openLesson')}
+          </NavigationAction>
+        }
+        description={t('conceptAssessment.notFound.description')}
+        title={t('conceptAssessment.notFound.title')}
+      />
+    );
   }
 
   const assessment = assessmentQuery.data.assessment;

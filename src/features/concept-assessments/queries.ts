@@ -84,10 +84,15 @@ export function useConceptAssessmentQuery(
     return unsubscribe;
   }, [assessmentId, observer]);
 
+  const reload = useCallback(async () => {
+    await observer.refetch();
+  }, [observer]);
+
   return {
     data: result.data,
     error: result.error,
     isPending: Boolean(assessmentId) && result.isPending,
+    reload,
   };
 }
 
@@ -148,6 +153,10 @@ export function useConceptAssessmentAttemptsQuery(
     }
   }, [assessmentId, isLoadingMore, nextCursor, preview]);
 
+  const reload = useCallback(async () => {
+    await observer.refetch();
+  }, [observer]);
+
   return {
     data: result.data ? { ...result.data, attempts, nextCursor } : undefined,
     error: result.error,
@@ -155,6 +164,7 @@ export function useConceptAssessmentAttemptsQuery(
     isPending: Boolean(assessmentId) && result.isPending,
     isLoadingMore,
     loadMore,
+    reload,
   };
 }
 

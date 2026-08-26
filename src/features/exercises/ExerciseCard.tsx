@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
+import { QueryState } from '@/components/learnx/QueryState';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
-import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import { AiCorrectionPanel } from '@/features/exercises/AiCorrectionPanel';
 import type { LessonExerciseSummary } from '@/features/curriculum/queries';
@@ -144,10 +144,32 @@ function PublishedExerciseCard({ exerciseId }: { exerciseId: string }) {
   const { t } = useI18n();
 
   if (query.isPending) {
-    return <Spinner label={t('exercise.loading')} size="sm" />;
+    return (
+      <QueryState
+        error={query.error}
+        errorDescription={t('exercise.unavailable')}
+        isPending={query.isPending}
+        loadingLabel={t('exercise.loading')}
+        onRetry={query.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
-  if (query.error || !query.data?.exercise) {
+  if (query.error) {
+    return (
+      <QueryState
+        error={query.error}
+        errorDescription={t('exercise.unavailable')}
+        isPending={false}
+        loadingLabel={t('exercise.loading')}
+        onRetry={query.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
+  }
+
+  if (!query.data?.exercise) {
     return <ErrorState description={t('exercise.unavailable')} />;
   }
 

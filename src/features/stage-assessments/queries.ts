@@ -64,10 +64,15 @@ export function useStageAssessmentQuery(stageId: string) {
     return unsubscribe;
   }, [observer]);
 
+  const reload = useCallback(async () => {
+    await observer.refetch();
+  }, [observer]);
+
   return {
     data: result.data,
     error: result.error,
     isPending: result.isPending,
+    reload,
   };
 }
 

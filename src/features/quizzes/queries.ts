@@ -93,10 +93,15 @@ export function useQuizQuery(quizId: string | null) {
     return unsubscribe;
   }, [observer, quizId]);
 
+  const reload = useCallback(async () => {
+    await observer.refetch();
+  }, [observer]);
+
   return {
     data: result.data,
     error: result.error,
     isPending: Boolean(quizId) && result.isPending,
+    reload,
   };
 }
 
@@ -154,6 +159,10 @@ export function useQuizAttemptsQuery(quizId: string | null) {
     }
   }, [isLoadingMore, nextCursor, quizId]);
 
+  const reload = useCallback(async () => {
+    await observer.refetch();
+  }, [observer]);
+
   return {
     data: result.data ? { ...result.data, attempts, nextCursor } : undefined,
     error: result.error,
@@ -161,6 +170,7 @@ export function useQuizAttemptsQuery(quizId: string | null) {
     isPending: Boolean(quizId) && result.isPending,
     isLoadingMore,
     loadMore,
+    reload,
   };
 }
 

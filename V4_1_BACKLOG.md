@@ -343,8 +343,15 @@ neuvième statut.
 - Reviewer : Pédagogie / Backend / Recherche IA
 - Dépendances : V4.1-103, V4.1-104, V4.1-202, V4.1-302
 - Source : contrats d'évaluation et correction V4 ; baseline V4.1-006
-- Statut : **prêt** — dépendances frontend terminées ; branche dédiée et revue
-  distincte obligatoires
+- Statut : **livré pour revue** — implémenté sur la branche dédiée
+  `agent/v41-303-assessments` depuis la base `d417c726` ; revue indépendante
+  encore obligatoire avant clôture
+- Preuves : exercices, quiz, assessments concept/étape et correction assistée
+  utilisent les primitives React partagées (`QueryState`, `Textarea`) ; le
+  panneau de résultat est séparé du workflow de devis/exécution ; 6 fichiers /
+  21 tests ciblés et la suite complète 158 fichiers / 986 tests sont verts,
+  ainsi que 22 scénarios E2E desktop/mobile, lint, typecheck, build, budgets
+  bundle/PWA et frontières d'import
 - Critères d'acceptation :
   - exercices, quiz, assessments concept/étape et panneaux de correction migrent ;
   - tentative, score, maîtrise, devis, soumission, abstention et historique

@@ -2,11 +2,10 @@ import {
   LessonActivitySummary,
   LessonContextHeader,
 } from '@/components/learning/LessonContextHeader';
+import { QueryState } from '@/components/learnx/QueryState';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { useEffect } from 'react';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { ErrorState } from '@/components/ui/ErrorState';
-import { Spinner } from '@/components/ui/Spinner';
 import { ExerciseCard } from '@/features/exercises/ExerciseCard';
 import { useLessonQuery } from '@/features/curriculum/queries';
 import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
@@ -37,9 +36,17 @@ export function ExercisePage({
     }
   }, [exercise, lesson]);
 
-  if (lessonQuery.isPending) return <Spinner label={t('exercise.loading')} />;
-  if (lessonQuery.error) {
-    return <ErrorState description={t('exercise.loadError')} />;
+  if (lessonQuery.isPending || lessonQuery.error) {
+    return (
+      <QueryState
+        error={lessonQuery.error}
+        errorDescription={t('exercise.loadError')}
+        isPending={lessonQuery.isPending}
+        loadingLabel={t('exercise.loading')}
+        onRetry={lessonQuery.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
   if (!lesson || !exercise) {

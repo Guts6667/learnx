@@ -1,15 +1,14 @@
 import { Badge } from '@/components/ui/Badge';
 import { useEffect } from 'react';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { QueryState } from '@/components/learnx/QueryState';
 import {
   LessonContextHeader,
   LessonActivitySummary,
   lessonHref,
 } from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
-import { Spinner } from '@/components/ui/Spinner';
 import { QuestionAssessmentExperience } from '@/features/assessments/QuestionAssessmentExperience';
 import { useLessonQuery } from '@/features/curriculum/queries';
 import {
@@ -55,11 +54,29 @@ export function QuizPage({
   }, [lesson, selectedQuiz]);
 
   if (lessonQuery.isPending) {
-    return <Spinner label={t('quiz.loading')} />;
+    return (
+      <QueryState
+        error={lessonQuery.error}
+        errorDescription={t('quiz.loadError')}
+        isPending={lessonQuery.isPending}
+        loadingLabel={t('quiz.loading')}
+        onRetry={lessonQuery.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
   if (lessonQuery.error) {
-    return <ErrorState description={t('quiz.loadError')} />;
+    return (
+      <QueryState
+        error={lessonQuery.error}
+        errorDescription={t('quiz.loadError')}
+        isPending={lessonQuery.isPending}
+        loadingLabel={t('quiz.loading')}
+        onRetry={lessonQuery.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
   if (!lesson?.isPublished) {
@@ -91,11 +108,47 @@ export function QuizPage({
   }
 
   if (quizQuery.isPending || attemptsQuery.isPending) {
-    return <Spinner label={t('quiz.loading')} />;
+    return (
+      <QueryState
+        error={quizQuery.error ?? attemptsQuery.error}
+        errorDescription={t('quiz.loadError')}
+        isPending
+        loadingLabel={t('quiz.loading')}
+        onRetry={() =>
+          Promise.all([quizQuery.reload(), attemptsQuery.reload()])
+        }
+        retryLabel={t('common.retry')}
+      />
+    );
   }
 
-  if (quizQuery.error || attemptsQuery.error || !quizQuery.data?.quiz) {
-    return <ErrorState description={t('quiz.loadError')} />;
+  if (quizQuery.error || attemptsQuery.error) {
+    return (
+      <QueryState
+        error={quizQuery.error ?? attemptsQuery.error}
+        errorDescription={t('quiz.loadError')}
+        isPending={false}
+        loadingLabel={t('quiz.loading')}
+        onRetry={() =>
+          Promise.all([quizQuery.reload(), attemptsQuery.reload()])
+        }
+        retryLabel={t('common.retry')}
+      />
+    );
+  }
+
+  if (!quizQuery.data?.quiz) {
+    return (
+      <EmptyState
+        action={
+          <NavigationAction href={fallbackLessonHref} variant="secondary">
+            {t('assessment.openLesson')}
+          </NavigationAction>
+        }
+        description={t('quiz.notFound.description')}
+        title={t('quiz.notFound.title')}
+      />
+    );
   }
 
   const quiz = quizQuery.data.quiz;

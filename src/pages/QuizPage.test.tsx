@@ -245,6 +245,10 @@ describe('QuizPage', () => {
     fireEvent.input(await screen.findByLabelText('Votre réponse'), {
       target: { value: 'Données empiriques' },
     });
+    expect(screen.getByLabelText('Votre réponse')).toHaveAttribute(
+      'maxlength',
+      '500',
+    );
     fireEvent.click(
       screen.getByRole('button', { name: 'Envoyer mes réponses' }),
     );
@@ -348,5 +352,42 @@ describe('QuizPage', () => {
       await screen.findByRole('heading', { name: 'Quiz non publié' }),
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('reprend ensemble le questionnaire et son historique après une indisponibilité', async () => {
+    let quizRequests = 0;
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/lessons/demarrer') {
+        return Promise.resolve(jsonResponse(lessonResponse()));
+      }
+      if (path === `/api/quizzes/${quizId}`) {
+        quizRequests += 1;
+        return Promise.resolve(
+          quizRequests === 1
+            ? jsonResponse({ error: 'temporary' }, 503)
+            : jsonResponse(quizResponse()),
+        );
+      }
+      if (path === `/api/quizzes/${quizId}/attempts`) {
+        return Promise.resolve(jsonResponse({ attempts: [] }));
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <QuizPage
+          lessonSlug="demarrer"
+          programSlug="programme-test"
+          quizId={quizId}
+        />
+      </AppProviders>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Réessayer' }));
+
+    expect(await screen.findByText('Question 1 sur 4')).toBeInTheDocument();
+    expect(quizRequests).toBe(2);
   });
 });

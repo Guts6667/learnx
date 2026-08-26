@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import { QueryState } from '@/components/learnx/QueryState';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Section } from '@/components/ui/Section';
-import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
 import {
@@ -214,8 +214,32 @@ export function StageAssessmentCard({
   const query = useStageAssessmentQuery(stageId);
   const { t } = useI18n();
 
-  if (query.isPending) return <Spinner label={t('stageAssessment.loading')} />;
-  if (query.error || !query.data) {
+  if (query.isPending) {
+    return (
+      <QueryState
+        error={query.error}
+        errorDescription={t('stageAssessment.unavailable')}
+        isPending={query.isPending}
+        loadingLabel={t('stageAssessment.loading')}
+        onRetry={query.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
+  }
+  if (query.error) {
+    return (
+      <QueryState
+        error={query.error}
+        errorDescription={t('stageAssessment.unavailable')}
+        isPending={false}
+        loadingLabel={t('stageAssessment.loading')}
+        onRetry={query.reload}
+        retryLabel={t('common.retry')}
+      />
+    );
+  }
+
+  if (!query.data) {
     return <ErrorState description={t('stageAssessment.unavailable')} />;
   }
 

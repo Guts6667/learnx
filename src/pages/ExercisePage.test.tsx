@@ -5,9 +5,10 @@ import { ExercisePage } from '@/pages/ExercisePage';
 
 const exerciseId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 
-function jsonResponse(body: unknown): Response {
+function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     headers: { 'content-type': 'application/json' },
+    status,
   });
 }
 
@@ -159,5 +160,53 @@ describe('ExercisePage', () => {
       await screen.findByRole('heading', { name: 'Exercice introuvable' }),
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('permet de reprendre le chargement sans quitter la route profonde', async () => {
+    let lessonRequests = 0;
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/lessons/demarrer') {
+        lessonRequests += 1;
+        return Promise.resolve(
+          lessonRequests === 1
+            ? jsonResponse({ error: 'temporary' }, 503)
+            : jsonResponse(lessonResponse()),
+        );
+      }
+      if (path === `/api/exercises/${exerciseId}`) {
+        return Promise.resolve(
+          jsonResponse({
+            exercise: {
+              ...lessonResponse().lesson.exercises[0],
+              aiCorrectionEligible: false,
+              lessonId: 'lesson-1',
+              submission: null,
+            },
+          }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <ExercisePage
+          exerciseId={exerciseId}
+          lessonSlug="demarrer"
+          programSlug="programme-test"
+        />
+      </AppProviders>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Réessayer' }));
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Analyse appliquée',
+      }),
+    ).toBeInTheDocument();
+    expect(lessonRequests).toBe(2);
   });
 });

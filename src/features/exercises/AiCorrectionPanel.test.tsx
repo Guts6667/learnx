@@ -394,6 +394,9 @@ describe('AiCorrectionPanel', () => {
     );
 
     const argument = await screen.findByLabelText('Votre argument');
+    expect(argument).toHaveAttribute('minlength', '20');
+    expect(argument).toHaveAttribute('maxlength', '500');
+    expect(argument).toHaveAccessibleDescription(/0\/500/);
     const quoteButton = screen.getByRole('button', {
       name: 'Obtenir le devis de réexamen',
     });
@@ -405,6 +408,7 @@ describe('AiCorrectionPanel', () => {
           'La phrase citée répond entièrement au critère de justification.',
       },
     });
+    expect(argument).toHaveAccessibleDescription(/63\/500/);
     expect(quoteButton).toBeEnabled();
     fireEvent.click(quoteButton);
 

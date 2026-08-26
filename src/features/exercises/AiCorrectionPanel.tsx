@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Spinner } from '@/components/ui/Spinner';
 
 import {
   type CorrectionHistoryEntry,
   type CorrectionQuote,
-  type CorrectionResult,
   loadCorrectionHistory,
   requestCorrectionQuote,
   runCorrection,
 } from '@/features/exercises/ai-correction';
+import { AiCorrectionResult } from '@/features/exercises/AiCorrectionResult';
 import { useI18n } from '@/i18n';
-import { formatLocalizedDate } from '@/shared/locale';
 
 type PanelPhase =
   | { kind: 'HISTORY_PENDING' }
@@ -54,7 +52,7 @@ type PanelPhase =
  * récap plafond accepté / débité / libéré.
  */
 export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
   const [phase, setPhase] = useState<PanelPhase>({ kind: 'HISTORY_PENDING' });
   const [reconsiderationArgument, setReconsiderationArgument] = useState('');
 
@@ -344,278 +342,16 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
     );
   }
 
-  const result = phase.history[phase.selectedIndex];
-  if (!result) return null;
-  const { correction, settlement } = result;
-  const previous =
-    phase.selectedIndex > 0 ? phase.history[phase.selectedIndex - 1] : null;
-
-  if (correction.status === 'FAILED') {
-    return (
-      <section className="correction-state correction-state--unavailable">
-        <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
-        <h4>{t('aiCorrection.unavailableTitle')}</h4>
-        <p>{t('aiCorrection.unavailable')}</p>
-        <p className="correction-settlement">
-          {t('aiCorrection.settlementRecap', {
-            reserved: settlement.reservedCredits,
-            settled: settlement.settledCredits,
-            released: settlement.releasedCredits,
-          })}
-        </p>
-      </section>
-    );
-  }
-
-  const unsureKeys = new Set(correction.unsureCriteria);
-  const unsureLabels = new Map(
-    (correction.unsureCriterionDetails ?? []).map(({ key, label }) => [
-      key,
-      label,
-    ]),
-  );
-  const delivered = correction.criteria.filter(
-    (criterion) => !unsureKeys.has(criterion.key),
-  );
-  const acquired = delivered.filter(
-    (criterion) => criterion.levelKey === 'mastered',
-  );
-  const toReinforce = delivered.filter(
-    (criterion) => criterion.levelKey !== 'mastered',
-  );
-
   return (
-    <section className="correction-result">
-      <header className="correction-result__header">
-        <div>
-          <p className="page-eyebrow">{t('aiCorrection.assistedLabel')}</p>
-          <h4>{t('aiCorrection.resultTitle')}</h4>
-        </div>
-        <span>{t('aiCorrection.noProgressImpact')}</span>
-      </header>
-
-      {phase.history.length > 1 ? (
-        <section
-          aria-label={t('aiCorrection.historyTitle')}
-          className="correction-history"
-        >
-          <div className="correction-history__heading">
-            <h5>{t('aiCorrection.historyTitle')}</h5>
-            <span>
-              {t('aiCorrection.historyCount', {
-                count: phase.history.length,
-              })}
-            </span>
-          </div>
-          <div className="correction-history__choices">
-            {phase.history.map((entry, index) => (
-              <Button
-                aria-pressed={phase.selectedIndex === index}
-                key={entry.correction.id}
-                onClick={() => setPhase({ ...phase, selectedIndex: index })}
-                variant={phase.selectedIndex === index ? 'secondary' : 'ghost'}
-              >
-                {t('aiCorrection.historyEntry', {
-                  date: formatLocalizedDate(entry.createdAt, locale, {
-                    dateStyle: 'medium',
-                    timeStyle: 'short',
-                  }),
-                  index: index + 1,
-                })}
-                {entry.action === 'RECONSIDERATION'
-                  ? ` · ${t('aiCorrection.reconsiderationShort')}`
-                  : null}
-              </Button>
-            ))}
-          </div>
-          {previous ? (
-            <CorrectionComparison current={result} previous={previous} />
-          ) : null}
-        </section>
-      ) : null}
-
-      {acquired.length > 0 ? (
-        <section className="correction-result__group">
-          <h5>{t('aiCorrection.acquired')}</h5>
-          {acquired.map((criterion) => (
-            <CriterionRow criterion={criterion} />
-          ))}
-        </section>
-      ) : null}
-
-      {toReinforce.length > 0 || correction.unsureCriteria.length > 0 ? (
-        <section className="correction-result__group">
-          <h5>{t('aiCorrection.toReinforce')}</h5>
-          {toReinforce.map((criterion) => (
-            <CriterionRow criterion={criterion} />
-          ))}
-          {correction.unsureCriteria.map((key) => (
-            <article
-              className="correction-criterion correction-criterion--unsure"
-              key={key}
-            >
-              <div className="correction-criterion__heading">
-                <strong>{unsureLabels.get(key) ?? key}</strong>
-                <Badge tone="warning">{t('aiCorrection.reworkLabel')}</Badge>
-              </div>
-              <p>
-                {t('aiCorrection.reworkCriterion', {
-                  criterion: unsureLabels.get(key) ?? key,
-                })}
-              </p>
-            </article>
-          ))}
-        </section>
-      ) : null}
-
-      <section className="correction-result__priority">
-        <p className="page-eyebrow">{t('aiCorrection.priority')}</p>
-        <h5>{t('aiCorrection.nextAction')}</h5>
-        {correction.overallFeedback ? (
-          <p>{correction.overallFeedback}</p>
-        ) : null}
-      </section>
-
-      <footer className="correction-result__footer">
-        {correction.indicativeScore !== null ? (
-          <p className="correction-result__score">
-            {t('aiCorrection.indicativeScore', {
-              score: correction.indicativeScore.toFixed(0),
-            })}
-          </p>
-        ) : null}
-        <p className="correction-settlement">
-          {t('aiCorrection.settlementRecap', {
-            reserved: settlement.reservedCredits,
-            settled: settlement.settledCredits,
-            released: settlement.releasedCredits,
-          })}
-        </p>
-      </footer>
-
-      {result.action === 'STANDARD' &&
-      !phase.history.some(
-        (entry) => entry.sourceCorrectionId === correction.id,
-      ) ? (
-        <section className="correction-reconsideration">
-          <p className="page-eyebrow">
-            {t('aiCorrection.reconsiderationEyebrow')}
-          </p>
-          <h5>{t('aiCorrection.reconsiderationTitle')}</h5>
-          <p>{t('aiCorrection.reconsiderationDescription')}</p>
-          <label htmlFor={`reconsideration-${correction.id}`}>
-            {t('aiCorrection.reconsiderationArgumentLabel')}
-          </label>
-          <textarea
-            aria-describedby={`reconsideration-help-${correction.id}`}
-            id={`reconsideration-${correction.id}`}
-            maxLength={500}
-            minLength={20}
-            onInput={(event) =>
-              setReconsiderationArgument(event.currentTarget.value)
-            }
-            rows={4}
-            value={reconsiderationArgument}
-          />
-          <div
-            className="correction-reconsideration__help"
-            id={`reconsideration-help-${correction.id}`}
-          >
-            <span>{t('aiCorrection.reconsiderationArgumentHelp')}</span>
-            <span>{reconsiderationArgument.length}/500</span>
-          </div>
-          <Button
-            disabled={
-              reconsiderationArgument.trim().length < 20 ||
-              reconsiderationArgument.trim().length > 500
-            }
-            onClick={() =>
-              void askQuote({
-                argument: reconsiderationArgument.trim(),
-                sourceCorrectionId: correction.id,
-              })
-            }
-            variant="secondary"
-          >
-            {t('aiCorrection.reconsiderationQuote')}
-          </Button>
-        </section>
-      ) : null}
-    </section>
-  );
-}
-
-function CorrectionComparison({
-  current,
-  previous,
-}: {
-  current: CorrectionResult;
-  previous: CorrectionResult;
-}) {
-  const { t } = useI18n();
-  const previousByKey = new Map(
-    previous.correction.criteria.map((criterion) => [criterion.key, criterion]),
-  );
-  const changes = current.correction.criteria.flatMap((criterion) => {
-    const prior = previousByKey.get(criterion.key);
-    if (!prior || prior.levelKey === criterion.levelKey) return [];
-    return [
-      {
-        current: criterion.levelLabel,
-        key: criterion.key,
-        label: criterion.label,
-        previous: prior.levelLabel,
-      },
-    ];
-  });
-
-  return (
-    <div className="correction-comparison">
-      <h6>{t('aiCorrection.comparisonTitle')}</h6>
-      {changes.length > 0 ? (
-        <ul>
-          {changes.map((change) => (
-            <li key={change.key}>
-              <strong>{change.label}</strong>
-              <span>
-                {t('aiCorrection.comparisonChange', {
-                  current: change.current,
-                  previous: change.previous,
-                })}
-              </span>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>{t('aiCorrection.comparisonStable')}</p>
-      )}
-    </div>
-  );
-}
-
-function CriterionRow({
-  criterion,
-}: {
-  criterion: CorrectionResult['correction']['criteria'][number];
-}) {
-  const { t } = useI18n();
-  return (
-    <article className="correction-criterion">
-      <div className="correction-criterion__heading">
-        <strong>{criterion.label}</strong>
-        <Badge tone={criterion.levelKey === 'mastered' ? 'success' : 'neutral'}>
-          {criterion.levelLabel}
-        </Badge>
-      </div>
-      <p>{criterion.feedback}</p>
-      {criterion.evidenceQuotes.length > 0 ? (
-        <div className="correction-criterion__evidence">
-          <p>{t('aiCorrection.evidenceLabel')}</p>
-          {criterion.evidenceQuotes.map((quote) => (
-            <blockquote>{quote}</blockquote>
-          ))}
-        </div>
-      ) : null}
-    </article>
+    <AiCorrectionResult
+      history={phase.history}
+      onReconsiderationArgumentChange={setReconsiderationArgument}
+      onRequestReconsideration={(input) => void askQuote(input)}
+      onSelectCorrection={(selectedIndex) =>
+        setPhase({ ...phase, selectedIndex })
+      }
+      reconsiderationArgument={reconsiderationArgument}
+      selectedIndex={phase.selectedIndex}
+    />
   );
 }
