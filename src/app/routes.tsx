@@ -13,181 +13,156 @@ import { Spinner } from '@/components/ui/Spinner';
 import { PwaProvider } from '@/features/pwa/PwaStatus';
 import { useI18n } from '@/i18n';
 
-const AdminRoute = lazy(() =>
-  import('@/features/auth/AdminRoute').then((module) => ({
-    default: module.AdminRoute,
-  })),
-);
-const AppQueryProvider = lazy(() =>
-  import('@/app/query-provider').then((module) => ({
-    default: module.AppQueryProvider,
-  })),
-);
-const MobileLayout = lazy(() =>
-  import('@/components/layout/MobileLayout').then((module) => ({
-    default: module.MobileLayout,
-  })),
-);
-const ProtectedRoute = lazy(() =>
-  import('@/features/auth/ProtectedRoute').then((module) => ({
-    default: module.ProtectedRoute,
-  })),
-);
+type LazyRouteModules = {
+  './query-provider.tsx': typeof import('./query-provider');
+  '../components/layout/MobileLayout.tsx': typeof import('../components/layout/MobileLayout');
+  '../features/auth/AdminRoute.tsx': typeof import('../features/auth/AdminRoute');
+  '../features/auth/ProtectedRoute.tsx': typeof import('../features/auth/ProtectedRoute');
+  '../pages/AccessRequestPage.tsx': typeof import('../pages/AccessRequestPage');
+  '../pages/ActivateAccountPage.tsx': typeof import('../pages/ActivateAccountPage');
+  '../pages/AdminAccessRequestsPage.tsx': typeof import('../pages/AdminAccessRequestsPage');
+  '../pages/AdminAccountsPage.tsx': typeof import('../pages/AdminAccountsPage');
+  '../pages/AdminContactsPage.tsx': typeof import('../pages/AdminContactsPage');
+  '../pages/AdminCreditsPage.tsx': typeof import('../pages/AdminCreditsPage');
+  '../pages/AdminPage.tsx': typeof import('../pages/AdminPage');
+  '../pages/ConceptAssessmentPage.tsx': typeof import('../pages/ConceptAssessmentPage');
+  '../pages/CreditsPage.tsx': typeof import('../pages/CreditsPage');
+  '../pages/CurriculumPages.tsx': typeof import('../pages/CurriculumPages');
+  '../pages/ExercisePage.tsx': typeof import('../pages/ExercisePage');
+  '../pages/LandingPage.tsx': typeof import('../pages/LandingPage');
+  '../pages/LessonPage.tsx': typeof import('../pages/LessonPage');
+  '../pages/LoginPage.tsx': typeof import('../pages/LoginPage');
+  '../pages/NotesPage.tsx': typeof import('../pages/NotesPage');
+  '../pages/PlaceholderPage.tsx': typeof import('../pages/PlaceholderPage');
+  '../pages/ProfilePage.tsx': typeof import('../pages/ProfilePage');
+  '../pages/ProgramsDirectoryPages.tsx': typeof import('../pages/ProgramsDirectoryPages');
+  '../pages/PublicInterestPage.tsx': typeof import('../pages/PublicInterestPage');
+  '../pages/QuizPage.tsx': typeof import('../pages/QuizPage');
+  '../pages/ReviewsPage.tsx': typeof import('../pages/ReviewsPage');
+  '../pages/TodayPage.tsx': typeof import('../pages/TodayPage');
+  '../pages/TotemAdminPreviewPage.tsx': typeof import('../pages/TotemAdminPreviewPage');
+  '../pages/TotemPrimitivesPage.tsx': typeof import('../pages/TotemPrimitivesPage');
+  '../pages/TotemProductPreviewPage.tsx': typeof import('../pages/TotemProductPreviewPage');
+  '../pages/VerifyEmailPage.tsx': typeof import('../pages/VerifyEmailPage');
+};
 
-const AccessRequestPage = lazy(() =>
-  import('@/pages/AccessRequestPage').then((module) => ({
-    default: module.AccessRequestPage,
-  })),
+type ComponentExport<
+  ModulePath extends keyof LazyRouteModules,
+  ExportName extends keyof LazyRouteModules[ModulePath],
+> =
+  LazyRouteModules[ModulePath][ExportName] extends ComponentType<infer Props>
+    ? ComponentType<Props>
+    : never;
+
+const lazyRouteModules = import.meta.glob([
+  './query-provider.tsx',
+  '../components/layout/MobileLayout.tsx',
+  '../features/auth/{AdminRoute,ProtectedRoute}.tsx',
+  '../pages/*.tsx',
+  '!../pages/*.test.tsx',
+]) as {
+  [ModulePath in keyof LazyRouteModules]: () => Promise<
+    LazyRouteModules[ModulePath]
+  >;
+};
+
+function lazyPage<
+  ModulePath extends keyof LazyRouteModules,
+  ExportName extends keyof LazyRouteModules[ModulePath],
+>(modulePath: ModulePath, exportName: ExportName) {
+  const loadModule = lazyRouteModules[modulePath];
+
+  return lazy(async () => {
+    const module = await loadModule();
+
+    return {
+      default: module[exportName] as ComponentExport<ModulePath, ExportName>,
+    };
+  });
+}
+
+const AdminRoute = lazyPage('../features/auth/AdminRoute.tsx', 'AdminRoute');
+const AppQueryProvider = lazyPage('./query-provider.tsx', 'AppQueryProvider');
+const MobileLayout = lazyPage(
+  '../components/layout/MobileLayout.tsx',
+  'MobileLayout',
 );
-const ActivateAccountPage = lazy(() =>
-  import('@/pages/ActivateAccountPage').then((module) => ({
-    default: module.ActivateAccountPage,
-  })),
+const ProtectedRoute = lazyPage(
+  '../features/auth/ProtectedRoute.tsx',
+  'ProtectedRoute',
 );
-const AdminAccessRequestsPage = lazy(() =>
-  import('@/pages/AdminAccessRequestsPage').then((module) => ({
-    default: module.AdminAccessRequestsPage,
-  })),
+const AccessRequestPage = lazyPage(
+  '../pages/AccessRequestPage.tsx',
+  'AccessRequestPage',
 );
-const AdminAccountsPage = lazy(() =>
-  import('@/pages/AdminAccountsPage').then((module) => ({
-    default: module.AdminAccountsPage,
-  })),
+const ActivateAccountPage = lazyPage(
+  '../pages/ActivateAccountPage.tsx',
+  'ActivateAccountPage',
 );
-const AdminContactsPage = lazy(() =>
-  import('@/pages/AdminContactsPage').then((module) => ({
-    default: module.AdminContactsPage,
-  })),
+const AdminAccessRequestsPage = lazyPage(
+  '../pages/AdminAccessRequestsPage.tsx',
+  'AdminAccessRequestsPage',
 );
-const AdminCreditsPage = lazy(() =>
-  import('@/pages/AdminCreditsPage').then((module) => ({
-    default: module.AdminCreditsPage,
-  })),
+const AdminAccountsPage = lazyPage(
+  '../pages/AdminAccountsPage.tsx',
+  'AdminAccountsPage',
 );
-const AdminPage = lazy(() =>
-  import('@/pages/AdminPage').then((module) => ({
-    default: module.AdminPage,
-  })),
+const AdminContactsPage = lazyPage(
+  '../pages/AdminContactsPage.tsx',
+  'AdminContactsPage',
 );
-const ConceptAssessmentPage = lazy(() =>
-  import('@/pages/ConceptAssessmentPage').then((module) => ({
-    default: module.ConceptAssessmentPage,
-  })),
+const AdminCreditsPage = lazyPage(
+  '../pages/AdminCreditsPage.tsx',
+  'AdminCreditsPage',
 );
-const CreditsPage = lazy(() =>
-  import('@/pages/CreditsPage').then((module) => ({
-    default: module.CreditsPage,
-  })),
+const AdminPage = lazyPage('../pages/AdminPage.tsx', 'AdminPage');
+const ConceptAssessmentPage = lazyPage(
+  '../pages/ConceptAssessmentPage.tsx',
+  'ConceptAssessmentPage',
 );
-const ExercisePage = lazy(() =>
-  import('@/pages/ExercisePage').then((module) => ({
-    default: module.ExercisePage,
-  })),
+const CreditsPage = lazyPage('../pages/CreditsPage.tsx', 'CreditsPage');
+const ExercisePage = lazyPage('../pages/ExercisePage.tsx', 'ExercisePage');
+const LandingPage = lazyPage('../pages/LandingPage.tsx', 'LandingPage');
+const LessonPage = lazyPage('../pages/LessonPage.tsx', 'LessonPage');
+const LoginPage = lazyPage('../pages/LoginPage.tsx', 'LoginPage');
+const ModulePage = lazyPage('../pages/CurriculumPages.tsx', 'ModulePage');
+const NewNotePage = lazyPage('../pages/NotesPage.tsx', 'NewNotePage');
+const NotePage = lazyPage('../pages/NotesPage.tsx', 'NotePage');
+const NotesPage = lazyPage('../pages/NotesPage.tsx', 'NotesPage');
+const NotFoundPage = lazyPage('../pages/PlaceholderPage.tsx', 'NotFoundPage');
+const ProfilePage = lazyPage('../pages/ProfilePage.tsx', 'ProfilePage');
+const ProgramPage = lazyPage('../pages/CurriculumPages.tsx', 'ProgramPage');
+const PublicInterestPage = lazyPage(
+  '../pages/PublicInterestPage.tsx',
+  'PublicInterestPage',
 );
-const LandingPage = lazy(() =>
-  import('@/pages/LandingPage').then((module) => ({
-    default: module.LandingPage,
-  })),
+const QuizPage = lazyPage('../pages/QuizPage.tsx', 'QuizPage');
+const ReviewsPage = lazyPage('../pages/ReviewsPage.tsx', 'ReviewsPage');
+const StagePage = lazyPage('../pages/CurriculumPages.tsx', 'StagePage');
+const TodayPage = lazyPage('../pages/TodayPage.tsx', 'TodayPage');
+const TotemAdminPreviewPage = lazyPage(
+  '../pages/TotemAdminPreviewPage.tsx',
+  'TotemAdminPreviewPage',
 );
-const LessonPage = lazy(() =>
-  import('@/pages/LessonPage').then((module) => ({
-    default: module.LessonPage,
-  })),
+const TotemPrimitivesPage = lazyPage(
+  '../pages/TotemPrimitivesPage.tsx',
+  'TotemPrimitivesPage',
 );
-const LoginPage = lazy(() =>
-  import('@/pages/LoginPage').then((module) => ({
-    default: module.LoginPage,
-  })),
+const TotemProductPreviewPage = lazyPage(
+  '../pages/TotemProductPreviewPage.tsx',
+  'TotemProductPreviewPage',
 );
-const ModulePage = lazy(() =>
-  import('@/pages/CurriculumPages').then((module) => ({
-    default: module.ModulePage,
-  })),
+const TotemProgramsPage = lazyPage(
+  '../pages/ProgramsDirectoryPages.tsx',
+  'TotemProgramsPage',
 );
-const NewNotePage = lazy(() =>
-  import('@/pages/NotesPage').then((module) => ({
-    default: module.NewNotePage,
-  })),
+const DiscoverProgramsPage = lazyPage(
+  '../pages/ProgramsDirectoryPages.tsx',
+  'DiscoverProgramsPage',
 );
-const NotePage = lazy(() =>
-  import('@/pages/NotesPage').then((module) => ({
-    default: module.NotePage,
-  })),
-);
-const NotesPage = lazy(() =>
-  import('@/pages/NotesPage').then((module) => ({
-    default: module.NotesPage,
-  })),
-);
-const NotFoundPage = lazy(() =>
-  import('@/pages/PlaceholderPage').then((module) => ({
-    default: module.NotFoundPage,
-  })),
-);
-const ProfilePage = lazy(() =>
-  import('@/pages/ProfilePage').then((module) => ({
-    default: module.ProfilePage,
-  })),
-);
-const ProgramPage = lazy(() =>
-  import('@/pages/CurriculumPages').then((module) => ({
-    default: module.ProgramPage,
-  })),
-);
-const PublicInterestPage = lazy(() =>
-  import('@/pages/PublicInterestPage').then((module) => ({
-    default: module.PublicInterestPage,
-  })),
-);
-const QuizPage = lazy(() =>
-  import('@/pages/QuizPage').then((module) => ({
-    default: module.QuizPage,
-  })),
-);
-const ReviewsPage = lazy(() =>
-  import('@/pages/ReviewsPage').then((module) => ({
-    default: module.ReviewsPage,
-  })),
-);
-const StagePage = lazy(() =>
-  import('@/pages/CurriculumPages').then((module) => ({
-    default: module.StagePage,
-  })),
-);
-const TodayPage = lazy(() =>
-  import('@/pages/TodayPage').then((module) => ({
-    default: module.TodayPage,
-  })),
-);
-const TotemAdminPreviewPage = lazy(() =>
-  import('@/pages/TotemAdminPreviewPage').then((module) => ({
-    default: module.TotemAdminPreviewPage,
-  })),
-);
-const TotemPrimitivesPage = lazy(() =>
-  import('@/pages/TotemPrimitivesPage').then((module) => ({
-    default: module.TotemPrimitivesPage,
-  })),
-);
-const TotemProductPreviewPage = lazy(() =>
-  import('@/pages/TotemProductPreviewPage').then((module) => ({
-    default: module.TotemProductPreviewPage,
-  })),
-);
-const TotemProgramsPage = lazy(() =>
-  import('@/pages/ProgramsDirectoryPages').then((module) => ({
-    default: module.TotemProgramsPage,
-  })),
-);
-const DiscoverProgramsPage = lazy(() =>
-  import('@/pages/ProgramsDirectoryPages').then((module) => ({
-    default: module.DiscoverProgramsPage,
-  })),
-);
-const VerifyEmailPage = lazy(() =>
-  import('@/pages/VerifyEmailPage').then((module) => ({
-    default: module.VerifyEmailPage,
-  })),
+const VerifyEmailPage = lazyPage(
+  '../pages/VerifyEmailPage.tsx',
+  'VerifyEmailPage',
 );
 
 interface RouteParams {
