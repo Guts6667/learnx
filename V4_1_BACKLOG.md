@@ -47,7 +47,8 @@ candidats V5.
 - Reviewer : Architecture / Produit
 - Dépendances : aucune
 - Source : release V4 à `a02ecc3f` ; `AGENTS.md`
-- Statut : **livré pour revue** dans `docs/GIT_WORKSPACE_MANIFEST.md`
+- Statut : **terminé** — manifeste conservé et 70 métadonnées de worktrees
+  orphelines retirées sans supprimer de branche, fichier ou worktree actif
 - Critères d'acceptation :
   - le SHA released, la branche source et l'état V4 clôturé sont enregistrés ;
   - branches, worktrees et état dirty du worktree principal sont relevés en
@@ -83,7 +84,8 @@ candidats V5.
   - les commandes de reproduction sont exclusivement en lecture seule ;
   - toute rationalisation future exige SHA, owner, reviewer, sauvegarde et
     autorisation explicite ;
-  - le verdict par défaut reste `préserver` et aucun nettoyage n'est exécuté.
+  - le verdict par défaut reste `préserver` pour toute branche ; seul le prune
+    des métadonnées déjà orphelines est exécuté et consigné.
 
 ### V4.1-004 — Manifeste documentaire/archive IA
 

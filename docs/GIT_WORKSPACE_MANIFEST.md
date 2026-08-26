@@ -5,6 +5,9 @@
 Instantané en lecture seule du 26 août 2026, préparé pour V4.1-001 depuis
 `/private/tmp/learnx-v4-1-docs`. Il ne constitue ni une liste de suppression,
 ni une preuve qu'une branche est fusionnée, ni une autorisation de nettoyage.
+Une opération ultérieure autorisée et strictement limitée aux métadonnées
+`prunable` est consignée séparément à la fin du document ; elle ne réécrit pas
+cet instantané.
 
 - dépôt : `/Users/rayanchambet/Desktop/Workflow/learnx`
 - baseline demandée : `origin/dev`
@@ -55,10 +58,11 @@ daté et ne réécrit pas celui-ci.
 | `/Users/rayanchambet/Documents/Codex/2026-08-03/referenced-chatgpt-conversation-this-is-an/work/learnx-editorial` | `agent/editorial-governance` | `8cc1dcd6` | éditorial |
 | `/Users/rayanchambet/Documents/Codex/learnx-v3-backlog-sync` | `codex/v3-backlog-sync` | `1002cff3` | historique V3 |
 
-Les 70 entrées `prunable` restent dans le registre Git. Le signal `prunable`
+Au moment de cet instantané, les 70 entrées `prunable` restaient dans le
+registre Git. Le signal `prunable`
 indique seulement que Git ne retrouve plus leur fichier administratif ; il ne
 prouve ni fusion, ni obsolescence, ni absence d'artefacts ailleurs. Leur
-effacement est donc hors périmètre.
+effacement était donc hors du périmètre de l'audit initial.
 
 ## Branches sensibles au séquençage
 
@@ -99,3 +103,24 @@ fournir : owner, reviewer, dernier SHA, upstream, worktree, état dirty, preuve
 de fusion ou de sauvegarde, artefacts uniques, dépendants, rollback et accord
 explicite du Propriétaire. Sans ces éléments, la décision canonique est
 `préserver`.
+
+## Nettoyage de registre autorisé du 26 août 2026
+
+Après validation explicite du plan V4.1 par le Propriétaire, une seule
+opération de nettoyage a été exécutée : `git worktree prune --verbose`.
+
+- préflight : `git worktree prune --dry-run --verbose` ;
+- cible exacte : 70 entrées dont le fichier administratif pointait déjà vers
+  un emplacement inexistant ;
+- résultat : 70 métadonnées orphelines retirées, 15 worktrees enregistrés
+  conservés, 0 entrée `prunable` restante ;
+- fichiers de travail supprimés : aucun ;
+- branches supprimées : aucune ;
+- worktrees actifs retirés : aucun ;
+- worktree principal sale : conservé sans mutation ;
+- capacité de reprise : les branches et SHA consignés par l'instantané restent
+  présents dans Git.
+
+Ce nettoyage réduit le bruit du registre sans qualifier ni effacer les 93
+branches historiques. Toute suppression future de branche reste soumise au
+gate individuel ci-dessus.
