@@ -1,3 +1,4 @@
+import { Slot, Slottable } from '@radix-ui/react-slot';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 
 import {
@@ -13,6 +14,7 @@ interface ButtonProps extends Omit<
   'className' | 'disabled'
 > {
   children: ReactNode;
+  asChild?: boolean;
   className?: string;
   disabled?: boolean;
   elementRef?: Ref<HTMLButtonElement>;
@@ -22,6 +24,7 @@ interface ButtonProps extends Omit<
 }
 
 export function Button({
+  asChild = false,
   children,
   className,
   disabled = false,
@@ -34,6 +37,27 @@ export function Button({
 }: ButtonProps) {
   const isDisabled = disabled || isLoading;
   const { t } = useI18n();
+  const content = (
+    <>
+      {isLoading ? <Spinner label={t('common.loading')} size="sm" /> : null}
+      {children}
+    </>
+  );
+
+  if (asChild) {
+    return (
+      <Slot
+        {...buttonProps}
+        aria-busy={isLoading || undefined}
+        aria-disabled={isDisabled || undefined}
+        className={actionClassNames(variant, size, className)}
+        data-disabled={isDisabled || undefined}
+      >
+        {isLoading ? <Spinner label={t('common.loading')} size="sm" /> : null}
+        <Slottable>{children}</Slottable>
+      </Slot>
+    );
+  }
 
   return (
     <button
@@ -44,8 +68,7 @@ export function Button({
       ref={elementRef}
       type={type ?? 'button'}
     >
-      {isLoading ? <Spinner label={t('common.loading')} size="sm" /> : null}
-      {children}
+      {content}
     </button>
   );
 }

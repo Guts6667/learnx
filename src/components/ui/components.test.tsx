@@ -90,6 +90,22 @@ describe('design system minimal', () => {
     ).toBeInTheDocument();
   });
 
+  it('permet à une action shadcn possédée de composer un lien sans wrapper', () => {
+    render(
+      <Button asChild variant="secondary">
+        <a href="/today">Revenir à aujourd’hui</a>
+      </Button>,
+    );
+
+    const link = screen.getByRole('link', { name: 'Revenir à aujourd’hui' });
+    expect(link).toHaveAttribute('href', '/today');
+    expect(link).toHaveClass(
+      'ui-action',
+      'ui-action--secondary',
+      'ui-action--md',
+    );
+  });
+
   it('associe labels et erreurs aux champs de formulaire', () => {
     const onChange = vi.fn();
 
