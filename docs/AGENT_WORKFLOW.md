@@ -12,6 +12,78 @@ actif et les instructions explicites du Propriétaire prévalent. Il s'applique
 aux lots parallèles, aux worktrees et aux handoffs ; il n'autorise pas à lancer
 des agents ou à muter un système externe lorsque la tâche ne le demande pas.
 
+Pour V4.1, `AGENTS.md` route vers `V4_1_BACKLOG.md` et impose React 19. Une
+instruction plus ancienne mentionnant Preact ou un backlog V4 clôturé ne peut
+donc pas être utilisée pour réintroduire ces choix dans V4.1.
+
+## 0. États et limite d'encours
+
+La machine d'état unique est :
+
+```text
+DRAFT → NEEDS_ARBITRATION → READY → IN_PROGRESS
+→ REVIEW → QA → READY_FOR_OWNER_GO → DONE
+```
+
+Un retour vers `NEEDS_ARBITRATION`, `READY`, `IN_PROGRESS` ou `REVIEW` est
+possible uniquement avec motif audité. Un agent n'a jamais plus d'un ticket
+d'implémentation `IN_PROGRESS`. Une revue ou un diagnostic read-only peut être
+mené en parallèle s'il ne modifie pas le même worktree.
+
+## 0.1 Contrat Git ↔ Airtable
+
+Les tickets sont liés par leur identifiant stable (`V4.1-…`). L'autorité est
+répartie, jamais fusionnée implicitement :
+
+| Donnée | Autorité | Écriture autorisée |
+| --- | --- | --- |
+| livrable, critères d'acceptation, dépendances, source canonique | Git (`V4_1_BACKLOG.md`) | revue Git puis synchronisation ciblée |
+| release, epic, nature, risque, owner et reviewer | Git | synchronisation ciblée par identifiant |
+| statut opérationnel et blocage courant | Airtable | mutation explicite du seul ticket concerné |
+| branche, PR, SHA et preuves QA | preuve Git/CI, reflet Airtable | après vérification de l'objet référencé |
+| arbitrage Rayan | Airtable et décision source liée | Rayan ou transmission explicitement autorisée |
+| date de synchronisation | journal de synchro | uniquement après succès vérifié |
+
+Une synchronisation suit obligatoirement ce protocole :
+
+1. lecture du ticket Git et de l'enregistrement Airtable courant ;
+2. production d'un dry-run champ par champ ;
+3. allow-list limitée aux champs nommés ci-dessus ;
+4. comparaison de la valeur Airtable relue avec la valeur attendue ;
+5. si un statut, blocage ou arbitrage manuel diverge, aucune écriture et passage
+   explicite à `NEEDS_ARBITRATION` après accord du propriétaire ;
+6. mutation ciblée par record ID, jamais mise à jour de table en masse ;
+7. relecture du record, puis journalisation de la date, du SHA et du diff dans
+   `docs/AIRTABLE_SYNC_LOG.md`.
+
+Il est interdit de créer un statut, renuméroter un ticket, écraser un blocage,
+publier une interface Airtable ou supprimer/archiver un enregistrement sans
+autorisation explicite. Git ne reçoit jamais automatiquement une valeur venue
+d'Airtable : tout changement de définition repasse par une revue Git.
+
+### Schéma opérationnel attendu
+
+Chaque ticket V4.1 doit pouvoir exposer les champs suivants. Un champ absent de
+la base est consigné comme écart de gouvernance ; il n'est jamais déclaré
+disponible par simple convention documentaire.
+
+- identifiant stable du ticket ;
+- release, epic, nature et risque ;
+- owner et reviewer distincts ;
+- statut et blocage courant ;
+- dépendances et critères d'acceptation ;
+- source canonique ;
+- branche, PR et SHA ;
+- preuves QA ;
+- arbitrage Rayan ;
+- date de dernière synchronisation.
+
+Les vues opérationnelles attendues sont : `V4.1 — Maintenant`, `Ready`,
+`En cours par owner`, `Review`, `QA`, `Arbitrages Rayan`, `Gate de release`,
+`V4.5 — Préparation`, `V5 — Candidats` et `Archive V4`. Une vue non publiée ou
+non vérifiée reste un élément à configurer ; sa présence ne peut pas être
+inférée depuis le seul schéma des tickets.
+
 ## 1. Contrat d'affectation
 
 Une affectation exploitable contient :

@@ -16,6 +16,9 @@ Construire LearnX comme une plateforme générique et modulaire de parcours d’
   officielle de V3.
 - Pour un ticket V4, lire uniquement `BACKLOG_V4.md`, l'ADR ou la spécification
   citée, puis les fichiers concernés. V4 consomme la baseline V3.5 clôturée.
+- Pour un ticket V4.1, lire uniquement `V4_1_BACKLOG.md`, la source canonique
+  citée par le ticket, puis les fichiers concernés. Le workflow d'exécution et
+  de revue est défini par `docs/AGENT_WORKFLOW.md`.
 - Pour une modification pédagogique, appliquer la liste dédiée ci-dessous ; ne
   pas charger toutes les spécifications pédagogiques du programme.
 
@@ -39,7 +42,8 @@ pnpm prisma:seed
 - Pas de `any` sans justification documentée.
 - Fonctions courtes.
 - Noms explicites.
-- Composants Preact fonctionnels.
+- React 19 est l'unique runtime UI de V4.1 ; composants React fonctionnels.
+- Aucun import, alias, type ou dépendance Preact n'est autorisé.
 - Logique métier hors des composants.
 - API responses typées.
 - Erreurs normalisées.

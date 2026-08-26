@@ -33,10 +33,26 @@ candidats V5.
 
 ## Statuts canoniques
 
-- `livré pour revue` : preuve présente sur une branche, non encore promue.
-- `prêt` : dépendances disponibles et ticket activable.
-- `bloqué` : une dépendance nommée reste ouverte.
-- `terminé` : critères acceptés et preuve promue.
+La machine d'état opérationnelle, identique dans Git et Airtable, est :
+
+```text
+DRAFT → NEEDS_ARBITRATION → READY → IN_PROGRESS
+→ REVIEW → QA → READY_FOR_OWNER_GO → DONE
+```
+
+- `DRAFT` : définition encore incomplète ou non activable ;
+- `NEEDS_ARBITRATION` : décision propriétaire ou conflit de synchronisation ;
+- `READY` : dépendances disponibles et ticket activable ;
+- `IN_PROGRESS` : un owner travaille dans un worktree identifié ;
+- `REVIEW` : preuve immuable remise au reviewer distinct ;
+- `QA` : revue acceptée, gates techniques ou produit en cours ;
+- `READY_FOR_OWNER_GO` : tous les gates sont verts, action propriétaire requise ;
+- `DONE` : preuve promue et clôture autorisée.
+
+Les mentions historiques du backlog se lisent ainsi : `prêt` = `READY`,
+`livré pour revue` = `REVIEW`, `terminé` = `DONE`. Un ticket `bloqué` conserve
+le dernier statut valide et renseigne son blocage ; il ne constitue pas un
+neuvième statut.
 
 ## Lot 000 — gouvernance, audit et baseline
 
@@ -116,7 +132,8 @@ candidats V5.
 - Dépendances : V4.1-003, V4.1-004
 - Source : mapping Airtable approuvé ; `AGENTS.md`
 - Statut : **livré pour revue** côté Git dans ce backlog et
-  `docs/AGENT_WORKFLOW.md`
+  `docs/AGENT_WORKFLOW.md` ; contrat de synchronisation audité dans
+  `docs/AIRTABLE_SYNC_LOG.md`
 - Critères d'acceptation :
   - les IDs `001–007`, `101–104`, `201–203`, `301–305`, `401–404` et
     `501–504` conservent exactement leurs livrables autoritatifs ;
