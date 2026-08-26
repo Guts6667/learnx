@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+import { compile } from 'tailwindcss';
+
 interface ShadcnConfiguration {
   aliases: {
     components: string;
@@ -55,5 +57,18 @@ describe('shadcn Maia foundation', () => {
 
     expect(stylesheet).toContain("'DM Sans'");
     expect(stylesheet).not.toContain('.dark');
+  });
+
+  it('compiles the standard accent and border utilities from the live bridge', async () => {
+    const theme = stylesheet.match(/@theme inline\s*\{[\s\S]*?\n\}/)?.[0];
+    expect(theme).toBeDefined();
+
+    const compiler = await compile(`${theme}\n@tailwind utilities;`);
+    const output = compiler.build(['bg-accent', 'border-border']);
+
+    expect(output).toContain('.bg-accent');
+    expect(output).toContain('background-color: var(--accent)');
+    expect(output).toContain('.border-border');
+    expect(output).toContain('border-color: var(--border)');
   });
 });

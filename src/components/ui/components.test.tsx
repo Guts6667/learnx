@@ -106,6 +106,47 @@ describe('design system minimal', () => {
     );
   });
 
+  it('neutralise navigation et callbacks avec asChild désactivé', () => {
+    const childClick = vi.fn();
+    const buttonClick = vi.fn();
+    render(
+      <Button asChild disabled onClick={buttonClick}>
+        <a href="/today" onClick={childClick}>
+          Action indisponible
+        </a>
+      </Button>,
+    );
+
+    const action = screen.getByText('Action indisponible');
+    expect(action).toHaveAttribute('aria-disabled', 'true');
+    expect(action).toHaveAttribute('tabindex', '-1');
+    expect(action).not.toHaveAttribute('href');
+
+    expect(fireEvent.click(action)).toBe(false);
+    expect(fireEvent.keyDown(action, { key: 'Enter' })).toBe(false);
+    expect(fireEvent.keyDown(action, { key: ' ' })).toBe(false);
+    expect(fireEvent.keyDown(action, { key: 'Tab' })).toBe(true);
+
+    expect(childClick).not.toHaveBeenCalled();
+    expect(buttonClick).not.toHaveBeenCalled();
+  });
+
+  it('conserve le statut de chargement avec asChild neutralisé', () => {
+    render(
+      <Button asChild isLoading>
+        <a href="/today">Chargement du lien</a>
+      </Button>,
+    );
+
+    expect(screen.getByText('Chargement du lien')).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
+    expect(
+      screen.getByRole('status', { name: 'Chargement' }),
+    ).toBeInTheDocument();
+  });
+
   it('associe labels et erreurs aux champs de formulaire', () => {
     const onChange = vi.fn();
 
