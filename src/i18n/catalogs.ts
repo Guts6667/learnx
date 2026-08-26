@@ -142,6 +142,7 @@ export const frenchMessages = {
   'common.confirm': 'Confirmer',
   'common.loadMore': 'Afficher plus',
   'common.loadingContent': 'Chargement du contenu',
+  'common.noData': 'Aucune donnée disponible.',
   'notFound.eyebrow': 'Erreur 404',
   'notFound.title': 'Page introuvable',
   'notFound.description':
@@ -1359,6 +1360,7 @@ export const englishMessages = {
   'common.confirm': 'Confirm',
   'common.loadMore': 'Load more',
   'common.loadingContent': 'Loading content',
+  'common.noData': 'No data available.',
   'notFound.eyebrow': 'Error 404',
   'notFound.title': 'Page not found',
   'notFound.description': 'The requested address does not match a LearnX page.',

@@ -1,9 +1,6 @@
-import type { KeyboardEvent as ReactKeyboardEvent, ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import { useEffect, useId, useRef } from 'react';
+import type { ReactNode } from 'react';
 
-import { Button } from '@/components/ui/Button';
-import { useI18n } from '@/i18n';
+import { OverlayDialog } from '@/components/ui/Dialog';
 
 interface DrawerProps {
   children: ReactNode;
@@ -13,15 +10,6 @@ interface DrawerProps {
   title: string;
 }
 
-const focusableSelector = [
-  'a[href]',
-  'button:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])',
-].join(',');
-
 export function Drawer({
   children,
   isOpen,
@@ -29,144 +17,16 @@ export function Drawer({
   returnFocusElement,
   title,
 }: DrawerProps) {
-  const { t } = useI18n();
-  const titleId = `drawer-title-${useId()}`;
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const returnFocusRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleDocumentEscape = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      event.preventDefault();
-      dismiss();
-    };
-
-    const activeElement =
-      document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : null;
-    const expandedTrigger = document.querySelector<HTMLElement>(
-      '[aria-haspopup="dialog"][aria-expanded="true"]',
-    );
-    returnFocusRef.current =
-      returnFocusElement ??
-      (activeElement && activeElement !== document.body
-        ? activeElement
-        : expandedTrigger);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const backgroundElements = Array.from(document.body.children).filter(
-      (element): element is HTMLElement =>
-        element instanceof HTMLElement && element !== overlayRef.current,
-    );
-    const backgroundState = backgroundElements.map((element) => ({
-      ariaHidden: element.getAttribute('aria-hidden'),
-      element,
-      inert: element.inert,
-    }));
-    backgroundElements.forEach((element) => {
-      element.inert = true;
-      element.setAttribute('aria-hidden', 'true');
-    });
-    document.addEventListener('keydown', handleDocumentEscape);
-    panelRef.current
-      ?.querySelector<HTMLElement>('[data-drawer-close]')
-      ?.focus();
-
-    return () => {
-      document.removeEventListener('keydown', handleDocumentEscape);
-      document.body.style.overflow = previousOverflow;
-      backgroundState.forEach(({ ariaHidden, element, inert }) => {
-        element.inert = inert;
-        if (ariaHidden === null) element.removeAttribute('aria-hidden');
-        else element.setAttribute('aria-hidden', ariaHidden);
-      });
-      const returnTarget = returnFocusRef.current;
-      window.requestAnimationFrame(() => {
-        if (returnTarget?.isConnected) returnTarget.focus();
-      });
-    };
-  }, [isOpen, returnFocusElement]);
-
-  if (!isOpen) return null;
-
-  function restoreTriggerFocus() {
-    const returnTarget = returnFocusRef.current;
-    window.requestAnimationFrame(() => {
-      returnTarget?.focus({ preventScroll: true });
-    });
-  }
-
-  function dismiss() {
-    onDismiss();
-    restoreTriggerFocus();
-  }
-
-  function handleKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      event.stopPropagation();
-      dismiss();
-      return;
-    }
-
-    if (event.key !== 'Tab') return;
-
-    const focusable = Array.from(
-      panelRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? [],
-    );
-    if (focusable.length === 0) {
-      event.preventDefault();
-      return;
-    }
-
-    const first = focusable[0];
-    const last = focusable.at(-1);
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last?.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first?.focus();
-    }
-  }
-
-  return createPortal(
-    <div
-      className="ui-drawer-overlay fixed inset-0 z-50 flex min-w-0 items-end md:items-stretch md:justify-end"
-      onClick={(event) => {
-        if (event.currentTarget === event.target) dismiss();
-      }}
-      onKeyDown={handleKeyDown}
-      ref={overlayRef}
+  return (
+    <OverlayDialog
+      className="ui-drawer-content"
+      isOpen={isOpen}
+      onDismiss={onDismiss}
+      placement="drawer"
+      returnFocusElement={returnFocusElement}
+      title={title}
     >
-      <div
-        aria-labelledby={titleId}
-        aria-modal="true"
-        className="ui-drawer-panel min-w-0 w-full max-w-[100vw] max-h-[calc(100dvh-var(--app-navigation-height)-env(safe-area-inset-bottom))] overflow-x-hidden overflow-y-auto border-t px-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] md:h-full md:max-h-none md:max-w-2xl md:border-t-0 md:border-l md:px-6 md:py-6"
-        ref={panelRef}
-        role="dialog"
-      >
-        <div className="ui-drawer-header sticky top-0 z-10 mb-4 flex min-w-0 items-start justify-between gap-4 border-b py-3 md:mb-6 md:pt-0">
-          <h2 className="text-xl font-medium" id={titleId}>
-            {title}
-          </h2>
-          <Button
-            aria-label={t('common.closePanel')}
-            data-drawer-close
-            onClick={dismiss}
-            size="sm"
-            variant="ghost"
-          >
-            {t('common.close')}
-          </Button>
-        </div>
-        {children}
-      </div>
-    </div>,
-    document.body,
+      {children}
+    </OverlayDialog>
   );
 }

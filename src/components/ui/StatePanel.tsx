@@ -4,7 +4,14 @@ import { useId } from 'react';
 import { classNames } from '@/components/ui/classNames';
 import { Spinner } from '@/components/ui/Spinner';
 
-export type StatePanelStatus = 'empty' | 'loading' | 'error' | 'safe';
+export type StatePanelStatus =
+  | 'empty'
+  | 'error'
+  | 'forbidden'
+  | 'loading'
+  | 'safe'
+  | 'success'
+  | 'unavailable';
 
 interface StatePanelProps {
   action?: ReactNode;

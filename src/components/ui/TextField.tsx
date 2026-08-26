@@ -24,8 +24,9 @@ export function TextField({
 }: TextFieldProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
-  const message = error ?? description;
-  const messageId = message ? `${inputId}-message` : undefined;
+  const descriptionId = description ? `${inputId}-description` : undefined;
+  const errorId = error ? `${inputId}-error` : undefined;
+  const describedBy = [descriptionId, errorId].filter(Boolean).join(' ');
 
   return (
     <div className={classNames('ui-field', className)}>
@@ -34,21 +35,23 @@ export function TextField({
       </label>
       <input
         {...inputProps}
-        aria-describedby={messageId}
+        aria-describedby={describedBy || undefined}
         aria-invalid={Boolean(error) || undefined}
         className="ui-field__control"
         id={inputId}
       />
-      {message ? (
+      {description ? (
+        <p className="ui-field__message" id={descriptionId}>
+          {description}
+        </p>
+      ) : null}
+      {error ? (
         <p
-          className={classNames(
-            'ui-field__message',
-            error && 'ui-field__message--error',
-          )}
-          id={messageId}
-          role={error ? 'alert' : undefined}
+          className="ui-field__message ui-field__message--error"
+          id={errorId}
+          role="alert"
         >
-          {message}
+          {error}
         </p>
       ) : null}
     </div>

@@ -24,8 +24,9 @@ export function Textarea({
 }: TextareaProps) {
   const generatedId = useId();
   const textareaId = id ?? generatedId;
-  const message = error ?? description;
-  const messageId = message ? `${textareaId}-message` : undefined;
+  const descriptionId = description ? `${textareaId}-description` : undefined;
+  const errorId = error ? `${textareaId}-error` : undefined;
+  const describedBy = [descriptionId, errorId].filter(Boolean).join(' ');
 
   return (
     <div className={classNames('ui-field', className)}>
@@ -34,21 +35,23 @@ export function Textarea({
       </label>
       <textarea
         {...textareaProps}
-        aria-describedby={messageId}
+        aria-describedby={describedBy || undefined}
         aria-invalid={Boolean(error) || undefined}
         className="ui-field__control min-h-28 resize-y"
         id={textareaId}
       />
-      {message ? (
+      {description ? (
+        <p className="ui-field__message" id={descriptionId}>
+          {description}
+        </p>
+      ) : null}
+      {error ? (
         <p
-          className={classNames(
-            'ui-field__message',
-            error && 'ui-field__message--error',
-          )}
-          id={messageId}
-          role={error ? 'alert' : undefined}
+          className="ui-field__message ui-field__message--error"
+          id={errorId}
+          role="alert"
         >
-          {message}
+          {error}
         </p>
       ) : null}
     </div>

@@ -14,6 +14,7 @@ import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { ResponsiveTable } from '@/components/ui/ResponsiveTable';
+import { SelectField } from '@/components/ui/SelectField';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
 import { StatePanel } from '@/components/ui/StatePanel';
@@ -153,8 +154,21 @@ describe('design system minimal', () => {
     render(
       <>
         <Checkbox label="Accepter les conditions" onChange={onChange} />
-        <TextField error="Adresse e-mail invalide" label="E-mail" />
+        <TextField
+          description="Utilisez votre adresse professionnelle."
+          error="Adresse e-mail invalide"
+          label="E-mail"
+        />
         <Textarea description="Maximum 500 caractères" label="Note" />
+        <SelectField
+          description="Ce choix peut être modifié."
+          label="Langue"
+          options={[
+            { label: 'Français', value: 'fr' },
+            { label: 'English', value: 'en' },
+          ]}
+          placeholder="Choisir une langue"
+        />
       </>,
     );
 
@@ -172,7 +186,12 @@ describe('design system minimal', () => {
     expect(screen.getByRole('alert')).toHaveTextContent(
       'Adresse e-mail invalide',
     );
+    expect(screen.getByLabelText('E-mail')).toHaveAccessibleDescription(
+      'Utilisez votre adresse professionnelle. Adresse e-mail invalide',
+    );
     expect(screen.getByLabelText('Note')).toHaveAttribute('aria-describedby');
+    expect(screen.getByRole('combobox', { name: 'Langue' })).toHaveValue('');
+    expect(screen.getByRole('option', { name: 'Français' })).toHaveValue('fr');
   });
 
   it('rend les états de feedback accessibles', () => {
@@ -281,6 +300,15 @@ describe('design system minimal', () => {
         <StatePanel status="safe" title="Enregistré">
           Aucune autre action requise.
         </StatePanel>
+        <StatePanel status="success" title="Publication terminée">
+          Le contenu est disponible.
+        </StatePanel>
+        <StatePanel status="unavailable" title="Service indisponible">
+          Réessayez plus tard.
+        </StatePanel>
+        <StatePanel status="forbidden" title="Accès interdit">
+          Ce rôle ne permet pas cette action.
+        </StatePanel>
       </>,
     );
 
@@ -297,6 +325,15 @@ describe('design system minimal', () => {
     expect(
       screen.getByRole('status', { name: 'Enregistré' }),
     ).toHaveTextContent('Aucune autre action');
+    expect(
+      screen.getByRole('status', { name: 'Publication terminée' }),
+    ).toHaveClass('ui-state-panel--success');
+    expect(
+      screen.getByRole('status', { name: 'Service indisponible' }),
+    ).toHaveClass('ui-state-panel--unavailable');
+    expect(screen.getByRole('status', { name: 'Accès interdit' })).toHaveClass(
+      'ui-state-panel--forbidden',
+    );
   });
 
   it('garde les consentements indépendants dans un fieldset nommé', () => {
@@ -323,7 +360,7 @@ describe('design system minimal', () => {
       <ResponsiveTable
         caption="Ressources"
         columns={[
-          { key: 'name', label: 'Nom' },
+          { isRowHeader: true, key: 'name', label: 'Nom' },
           { key: 'status', label: 'État' },
         ]}
         rows={[
@@ -343,5 +380,23 @@ describe('design system minimal', () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText('Guide')).toHaveLength(2);
     expect(screen.getAllByText('Disponible')).toHaveLength(2);
+    expect(
+      screen.getByRole('rowheader', { name: 'Guide' }),
+    ).toBeInTheDocument();
+  });
+
+  it('annonce explicitement une table vide dans les deux reflows', () => {
+    render(
+      <ResponsiveTable
+        caption="Historique"
+        columns={[{ key: 'date', label: 'Date' }]}
+        emptyMessage="Aucune tentative enregistrée."
+        rows={[]}
+      />,
+    );
+
+    expect(screen.getAllByText('Aucune tentative enregistrée.')).toHaveLength(
+      2,
+    );
   });
 });
