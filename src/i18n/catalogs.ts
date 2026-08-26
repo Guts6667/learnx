@@ -753,6 +753,10 @@ export const frenchMessages = {
   'exercise.notFound.description':
     'Cet exercice n’appartient pas à la leçon accessible.',
   'exercise.answerMarkdown': 'Votre réponse en Markdown',
+  'exercise.answerLimit':
+    '{current} / {maximum} caractères. Cette limite permet de calculer et d’afficher le devis de correction avant l’envoi.',
+  'exercise.answerTooLong':
+    '{current} / {maximum} caractères. Réduisez votre réponse avant de l’enregistrer ou de l’envoyer.',
   'exercise.formativeDescription':
     'Votre réponse sera évaluée selon les critères annoncés avant l’envoi.',
   'exercise.instruction': 'Consigne',
@@ -1888,6 +1892,10 @@ export const englishMessages = {
   'exercise.notFound.description':
     'This exercise does not belong to the accessible lesson.',
   'exercise.answerMarkdown': 'Your answer in Markdown',
+  'exercise.answerLimit':
+    '{current} / {maximum} characters. This limit lets LearnX calculate and display the correction quote before submission.',
+  'exercise.answerTooLong':
+    '{current} / {maximum} characters. Shorten your answer before saving or submitting it.',
   'exercise.formativeDescription':
     'Your answer will be assessed against the criteria shown before submission.',
   'exercise.instruction': 'Instructions',

@@ -15,7 +15,8 @@ import {
   useExerciseQuery,
 } from '@/features/exercises/queries';
 import { useI18n, type UiLocale } from '@/i18n';
-import { formatLocalizedDate } from '@/shared/locale';
+import { MAX_EXERCISE_SUBMISSION_CHARACTERS } from '@/lib/exercises';
+import { formatLocalizedDate, formatLocalizedNumber } from '@/shared/locale';
 
 function formatSubmissionDate(value: string, locale: UiLocale): string {
   return formatLocalizedDate(value, locale, {
@@ -31,6 +32,8 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
   const [contentMarkdown, setContentMarkdown] = useState(
     submission?.contentMarkdown ?? '',
   );
+  const characterCount = contentMarkdown.length;
+  const isOverLimit = characterCount > MAX_EXERCISE_SUBMISSION_CHARACTERS;
 
   if (!submission) {
     return (
@@ -79,14 +82,37 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
     <div class="space-y-4">
       <Badge tone="neutral">{t('common.draft')}</Badge>
       <Textarea
-        description={t('exercise.markdownHelp')}
+        description={
+          isOverLimit
+            ? undefined
+            : t('exercise.answerLimit', {
+                current: formatLocalizedNumber(characterCount, locale),
+                maximum: formatLocalizedNumber(
+                  MAX_EXERCISE_SUBMISSION_CHARACTERS,
+                  locale,
+                ),
+              })
+        }
+        error={
+          isOverLimit
+            ? t('exercise.answerTooLong', {
+                current: formatLocalizedNumber(characterCount, locale),
+                maximum: formatLocalizedNumber(
+                  MAX_EXERCISE_SUBMISSION_CHARACTERS,
+                  locale,
+                ),
+              })
+            : undefined
+        }
         label={t('exercise.answerMarkdown')}
-        maxLength={100_000}
+        maxLength={MAX_EXERCISE_SUBMISSION_CHARACTERS}
         onInput={(event) => setContentMarkdown(event.currentTarget.value)}
         value={contentMarkdown}
       />
+      <p class="ui-text-muted text-sm">{t('exercise.markdownHelp')}</p>
       <div class="flex flex-wrap gap-3">
         <Button
+          disabled={isOverLimit}
           isLoading={mutation.isPending}
           onClick={() => void saveDraft()}
           variant="secondary"
@@ -94,7 +120,7 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
           {t('exercise.saveDraft')}
         </Button>
         <Button
-          disabled={!contentMarkdown.trim()}
+          disabled={!contentMarkdown.trim() || isOverLimit}
           isLoading={mutation.isPending}
           onClick={() => void submitExercise()}
         >

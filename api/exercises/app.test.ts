@@ -316,6 +316,33 @@ describe('exercise API', () => {
     expect(state.submission?.contentMarkdown).toBe('## Analyse\n\nRéponse.');
   });
 
+  it('refuse de sauvegarder ou soumettre une réponse dépassant 1 500 caractères', async () => {
+    const state = createRepository();
+    const app = createExercisesApp({
+      authentication,
+      repository: state.repository,
+    });
+    await app.request(
+      `http://localhost/api/exercises/${exerciseId}/submissions`,
+      { method: 'POST' },
+    );
+    const submissionUrl =
+      `http://localhost/api/exercise-submissions/${submissionId}`;
+    const oversized = 'x'.repeat(1_501);
+
+    expect(
+      (await app.request(
+        submissionUrl,
+        jsonRequest({ contentMarkdown: oversized }),
+      )).status,
+    ).toBe(400);
+
+    await state.repository.saveSubmission(submissionId, oversized, userId);
+    expect(
+      (await app.request(`${submissionUrl}/submit`, { method: 'POST' })).status,
+    ).toBe(409);
+  });
+
   it('exige un contenu puis soumet avec une date UTC', async () => {
     const state = createRepository();
     const app = createExercisesApp({

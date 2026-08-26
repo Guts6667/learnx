@@ -107,6 +107,10 @@ la correction `STANDARD` jusqu'à 1 500 caractères, pour 3 crédits estimés et
 6 crédits réservés. Cette borne est une extrapolation déjà approuvée, pas un P90
 mesuré pour des productions longues.
 
+Le champ de réponse affiche cette limite et un compteur. La même borne est
+appliquée par le serveur à l'enregistrement et à la soumission ; un brouillon
+historique plus long doit être réduit avant de pouvoir être renvoyé.
+
 Les contrats rendent toutes les familles textuelles éligibles, mais LearnX ne
 doit pas inventer un tarif pour une réponse dépassant cette borne. Une entrée
 de catalogue `MEDIUM` ou `LONG` exige une calibration distincte et une décision

@@ -142,6 +142,35 @@ describe('ExerciseCard', () => {
     expect(screen.getByText('Brouillon')).toBeInTheDocument();
   });
 
+  it('annonce la limite de correction et bloque un ancien brouillon trop long', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse(exerciseResponse(submission('x'.repeat(1_501), 'DRAFT'))),
+        ),
+      ),
+    );
+
+    render(
+      <AppProviders>
+        <ExerciseCard exercise={exercise} isLessonPublished />
+      </AppProviders>,
+    );
+
+    const editor = await screen.findByLabelText('Votre réponse en Markdown');
+    expect(editor).toHaveAttribute('maxlength', '1500');
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      '1 501 / 1 500 caractères',
+    );
+    expect(
+      screen.getByRole('button', { name: 'Enregistrer le brouillon' }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: 'Soumettre l’exercice' }),
+    ).toBeDisabled();
+  });
+
   it('propose la correction assistée uniquement sur une production éligible soumise', async () => {
     vi.stubGlobal(
       'fetch',

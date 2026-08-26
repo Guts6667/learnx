@@ -8,6 +8,7 @@ import {
 import {
   assertExerciseSubmissionCanBeEdited,
   assertExerciseSubmissionCanBeSubmitted,
+  MAX_EXERCISE_SUBMISSION_CHARACTERS,
   type ExerciseSubmissionState,
 } from '../../../lib/exercises.js';
 import { resolveExerciseCorrectionContract } from '../../../lib/exercise-correction-contracts.js';
@@ -93,7 +94,7 @@ interface ExercisesAppOptions {
 
 const identifierSchema = z.uuid();
 const saveSchema = z.object({
-  contentMarkdown: z.string().max(100_000),
+  contentMarkdown: z.string().max(MAX_EXERCISE_SUBMISSION_CHARACTERS),
 });
 
 function invalidRequest(): ApiError {

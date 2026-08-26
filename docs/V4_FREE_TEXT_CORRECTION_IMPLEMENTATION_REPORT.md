@@ -30,6 +30,8 @@ non productives restent corrigés par leurs mécanismes déterministes.
 - l'éligibilité est calculée sur chaque exercice concerné ;
 - le devis utilise le même contrat que l'exécution ;
 - le plafond est réservé avant l'appel ;
+- le champ affiche un compteur et la limite tarifable de 1 500 caractères,
+  également vérifiée par le serveur ;
 - le résultat structuré et le règlement sont affichés après exécution ;
 - une actualisation retrouve la dernière correction réglée sans nouvel appel ni
   nouveau débit ;
