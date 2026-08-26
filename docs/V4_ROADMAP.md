@@ -92,7 +92,7 @@ nouvelle autorité est `V4_5_BACKLOG.md`.
 | 4 | V4-016-TOTEM | Développement | terminé et validé en preview |
 | 5 | V4-012-MONITORING | Développement | terminé : coûts, incidents et préflight visibles en admin |
 | 6 | V4-RESEARCH | Méthodologie + Développement | terminé : journal et articles publics chronologiques |
-| 7 | V4-010-R1 | Développement + Propriétaire | recette authentifiée des quatre familles |
+| 7 | V4-010-R1 | Développement + Propriétaire | gate hors ligne 4/4 passé ; recette réelle `dev` ouverte, `reflection` sans exercice actif |
 | 8 | V4-010-R2 | Développement + Finance | réponses au-delà de 1 500 caractères, limite et classe calibrées |
 | 9 | V4-010-R3 | Développement + Produit | contestation argumentée, bornée et historisée |
 | 10 | V4-010-R4 | Développement + Produit | comparaison lisible de plusieurs corrections |

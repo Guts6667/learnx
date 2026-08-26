@@ -1670,14 +1670,20 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 - **Implémenté** : résolution hybride du contrat, éligibilité des quatre familles,
   devis et exécution sur le même snapshot, restitution de la dernière correction
   réglée après actualisation et masquage des métriques fournisseur côté apprenant.
-- **Validé automatiquement** : lint, typecheck, 925 tests et build.
+- **Validé automatiquement** : recette authentifiée hors ligne des quatre
+  familles, lint ciblé, typecheck et 933 tests. La recette prouve le cycle
+  remise → devis → réservation → correction simulée → règlement → historique,
+  sans nouvel effet de progression ni métrique fournisseur exposée.
 - **Bloquants release V4** : classe tarifaire et limite utilisateur au-delà de
   1 500 caractères, comparaison de plusieurs corrections, contestation
-  argumentée et recette authentifiée des quatre familles.
+  argumentée et recette propriétaire réelle sur `dev`. L'inventaire ne contient
+  aucun exercice `reflection` actif ; l'unique occurrence reste dans un
+  programme brouillon et ne doit pas être publiée silencieusement.
 - **Ouvert hors correction** : neuf scénarios E2E UI/navigation à couvrir dans
   le gate V4-019.
 - **Référence de preuve** :
-  `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md`.
+  `docs/V4_FREE_TEXT_CORRECTION_IMPLEMENTATION_REPORT.md` et
+  `docs/V4_010_R1_ACCEPTANCE.md`.
 
 ---
 

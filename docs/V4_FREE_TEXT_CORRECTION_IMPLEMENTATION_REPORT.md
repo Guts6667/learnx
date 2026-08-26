@@ -52,7 +52,9 @@ non productives restent corrigés par leurs mécanismes déterministes.
 
 - `pnpm lint` : vert ;
 - `pnpm typecheck` : vert ;
-- suite Vitest complète : 147 fichiers, 925 tests verts ;
+- recette authentifiée hors ligne des quatre familles : 4/4 vertes ;
+- suite Vitest complète : 148 fichiers, 933 tests verts avec
+  `NODE_OPTIONS=--no-experimental-webstorage` ;
 - `pnpm build` : vert ;
 - E2E existants : 66 verts, 33 ignorés et 9 échecs de navigation/UI déjà
   présents sur la branche (`Découvrir`, lien `Accueil`, retour à la leçon).
@@ -73,10 +75,14 @@ un gate de release à résoudre dans le chantier UI avant `main`.
    restent à implémenter.
 4. Aucune activation de `main`, aucun prix public et aucun appel modèle ne sont
    réalisés par ce lot.
+5. La recette `dev` ne peut pas encore couvrir un exercice `reflection` actif :
+   l'unique occurrence inventoriée appartient à un programme encore `draft`.
 
 ## Prochain gate recommandé
 
-Avant la release, calibrer une classe de taille supérieure puis effectuer sur
-`dev` une recette authentifiée couvrant au moins un exercice de chaque famille,
-une actualisation, un solde insuffisant et un incident sans résultat. Cette
+Avant la release, effectuer sur `dev` la recette propriétaire réelle couvrant
+une actualisation, un solde insuffisant et un incident sans résultat. Le gate
+automatique des quatre familles est consigné dans
+`docs/V4_010_R1_ACCEPTANCE.md`. La couverture réelle de `reflection` exige une
+décision explicite sur un exercice actif ou une fixture de développement. Cette
 recette ne doit pas être présentée comme un nouveau benchmark scientifique.
