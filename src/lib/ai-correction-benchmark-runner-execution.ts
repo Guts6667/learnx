@@ -7,24 +7,24 @@ import {
   type BenchmarkAttempt,
   type CorrectionBenchmarkConfiguration,
   type CorrectionBenchmarkCorpus,
-} from './ai-correction-benchmark.ts';
+} from './ai-correction-benchmark';
 import {
   buildProtocol3TransportJsonSchema,
   canonicalizeProtocol3CorrectionOutput,
   protocol3CorrectionArtifactOutputSchema,
-} from './ai-correction-contracts.ts';
+} from './ai-correction-contracts';
 import {
   conservativeSupplierCallCostUsd,
   SupplierBudgetError,
   SupplierBudgetGuard,
   type SupplierBudgetUsage,
-} from './ai-benchmark-supplier-budget.ts';
+} from './ai-benchmark-supplier-budget';
 import {
   CorrectionModelOutputError,
   CorrectionProviderError,
   getCorrectionProviderAdapter,
-} from './ai-correction-provider-adapters.ts';
-import { sanitizeStructuredOutputJsonSchema } from './ai-json-schema.ts';
+} from './ai-correction-provider-adapters';
+import { sanitizeStructuredOutputJsonSchema } from './ai-json-schema';
 
 function buildPrompt(input: {
   benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];

@@ -17,9 +17,9 @@ import {
   type BenchmarkAttempt,
   type CorrectionBenchmarkConfiguration,
   type CorrectionBenchmarkCorpus,
-} from './ai-correction-benchmark.ts';
-import { assertFullBlindReviewPacketMatchesSources } from '../../scripts/generate-ai-correction-full-blind-review.ts';
-import { readJson, sha256 } from './ai-correction-benchmark-runner-inputs.ts';
+} from './ai-correction-benchmark';
+import { assertFullBlindReviewPacketMatchesSources } from '../../scripts/generate-ai-correction-full-blind-review';
+import { readJson, sha256 } from './ai-correction-benchmark-runner-inputs';
 
 export const attemptsArtifactSchema = z
   .object({

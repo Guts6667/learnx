@@ -13,8 +13,8 @@ import {
   parseCorrectionBenchmarkCorpus,
   type CorrectionBenchmarkConfiguration,
   type CorrectionBenchmarkCorpus,
-} from './ai-correction-benchmark.ts';
-import { correctionBenchmarkConfigurationSha256 } from '../../scripts/generate-ai-correction-full-blind-review.ts';
+} from './ai-correction-benchmark';
+import { correctionBenchmarkConfigurationSha256 } from '../../scripts/generate-ai-correction-full-blind-review';
 
 export const benchmarkDirectory = path.resolve('benchmarks/ai-correction');
 export const resultDirectory = path.join(benchmarkDirectory, 'results');

@@ -8,7 +8,7 @@ import {
   prepareBenchmarkResume,
   summarizeCorrectionBenchmark,
   type BenchmarkAttempt,
-} from './ai-correction-benchmark.ts';
+} from './ai-correction-benchmark';
 import {
   applyAutonomousReviewedResult,
   applyReviewedResult,
@@ -19,11 +19,11 @@ import {
   resultDirectory,
   runBenchmark,
   type BenchmarkSupplierBudgetPreflight,
-} from './ai-correction-benchmark-runner.ts';
+} from './ai-correction-benchmark-runner';
 import {
   SupplierBudgetGuard,
   type SupplierBudgetUsage,
-} from './ai-benchmark-supplier-budget.ts';
+} from './ai-benchmark-supplier-budget';
 
 export async function runAiCorrectionBenchmarkCli(
   arguments_: string[] = process.argv,
