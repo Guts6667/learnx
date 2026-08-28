@@ -31,9 +31,11 @@ flowchart LR
   Facade --> Core
 ```
 
-Le chemin de commande publié reste identique. Importer l'entrypoint ou le
-barrel `ai-correction-benchmark-runner.ts` n'exécute ni CLI, ni réseau, ni
-écriture.
+Le chemin de commande publié et ses sept exports TypeScript historiques
+restent identiques. Importer l'entrypoint ou le barrel
+`ai-correction-benchmark-runner.ts` n'exécute ni CLI, ni réseau, ni écriture.
+La façade scientifique conserve également sa liste exacte de 55 exports
+historiques, dont 40 exports runtime ; ces deux contrats sont figés par test.
 
 La façade scientifique conserve tous les exports historiques. Les domaines
 configuration, corpus, preuves, revues, reprise, compatibilité et artefacts
@@ -59,9 +61,9 @@ bord lors de l'import du script public.
 
 ## Preuves de parité
 
-- tests ciblés : 13 fichiers et 91 tests verts, dont parité CLI/library et
+- tests ciblés : 13 fichiers et 92 tests verts, dont parité CLI/library et
   import runtime sans effet de bord ;
-- suite complète : 181 fichiers et 1 059 tests verts ;
+- suite complète : 183 fichiers et 1 065 tests verts ;
 - `lint`, `typecheck` et `build` verts ;
 - les quatre commandes `--validate-only` retournent exactement
   `Benchmark validé hors ligne : 24 cas, 12 modèles épinglés.` ;
@@ -78,8 +80,9 @@ Le seul hotspot benchmark écrit à la main encore au-dessus de 400 lignes est
 noyau d'agrégation scientifique où l'ordre des calculs, l'accumulation
 numérique et l'application des gates sont interdépendants.
 
-Cette exception est enregistrée comme `V4.1-404-R1`, priorité P2, owner
-Architecture. Son découpage devra être précédé de goldens ciblés sur chaque
+Cette exception est enregistrée dans `V4_1_BACKLOG.md` comme `V4.1-404-R1`,
+priorité P2, owner Architecture/Produit et cible V4.1-503. Son découpage devra
+être précédé de goldens ciblés sur chaque
 sous-agrégat et conserver l'ordre exact des calculs. Il n'est pas opportun de
 le morceler mécaniquement dans ce lot au risque de modifier silencieusement
 les métriques ou verdicts. Les fichiers de tests dépassant 400 lignes restent

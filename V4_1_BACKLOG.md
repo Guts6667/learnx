@@ -518,8 +518,8 @@ neuvième statut.
 - Reviewer : QA/Release
 - Dépendances : V4.1-401, V4.1-402
 - Source : `prisma/schema.prisma`, migrations et audit V4.1-002
-- Statut : **DONE** — schéma multi-file livré par `0abc159d`, preuve de parité
-  par `6ead7222`. `prisma migrate diff` ne détecte aucune différence, le modèle
+- Statut : **DONE** — schéma multi-file livré par `bf69865a`, preuve de parité
+  par `87593d29` et clôture intégrée par `848ded02`. `prisma migrate diff` ne détecte aucune différence, le modèle
   runtime canonique reste identique (63 modèles), les hashes des 42 migrations
   sont inchangés et les 1 050 tests passent. La répétition sur clone est
   couverte par le test existant de `migration-rehearsal` ; aucune base distante
@@ -538,8 +538,19 @@ neuvième statut.
 - Dépendances : V4.1-104, V4.1-203, V4.1-303, V4.1-304, V4.1-305,
   V4.1-401, V4.1-402, V4.1-403
 - Source : hotspots de l'audit V4.1-002
-- Statut : **READY** — toutes les dépendances sont terminées ; le découpage
-  i18n/CSS/runner peut commencer depuis la fondation intégrant V4.1-403.
+- Statut : **DONE** — les 1 007 clés FR/EN et leurs digests restent identiques ;
+  le CSS source et compilé est identique octet par octet à la baseline ; le
+  runner public, sa bibliothèque scientifique et ses tests sont séparés sans
+  changer leurs exports historiques, les quatre validations hors ligne ni le
+  préflight writing. La suite intégrée compte 1 065 tests verts, avec lint,
+  typecheck, build/PWA, imports et budgets initiaux verts. Aucun appel réseau
+  ni artefact expérimental n'a été produit. Les preuves sont consignées dans
+  `docs/qa/V4_1_404_CSS_PARITY.md` et
+  `docs/V4_1_404_BENCHMARK_RUNNER_SPLIT.md`.
+- Dette enregistrée : `V4.1-404-R1`, P2, owner Architecture/Produit, cible
+  `V4.1-503`. Elle concerne uniquement le noyau d'agrégation scientifique
+  `ai-correction-benchmark-summary.ts` (1 021 lignes). Son découpage exige des
+  goldens par sous-agrégat afin de conserver strictement l'ordre des calculs.
 - Critères d'acceptation :
   - catalogues i18n sont scindés sans clé perdue ni fallback silencieux ;
   - CSS est réparti par tokens/primitives/surfaces sans changer le rendu ;
@@ -556,8 +567,11 @@ neuvième statut.
 - Dépendances : V4.1-104, V4.1-301, V4.1-302, V4.1-303, V4.1-304,
   V4.1-305, V4.1-401, V4.1-402, V4.1-403, V4.1-404
 - Source : seuils V4.1-007 ; suites migrées et modules décomposés
-- Statut : **bloqué** — dépendances V4.1-402 à V4.1-404. Une première
-  campagne de couverture après V4.1-401 a révélé un flake de synchronisation
+- Statut : **READY** — toutes les dépendances sont terminées. La mesure de
+  départ intégrée est de 79,72 % statements, 71,11 % branches, 80,90 %
+  functions et 81,09 % lines. L'écart principal est donc la couverture des
+  branches et des domaines serveur critiques, pas le volume général de tests.
+  Une première campagne de couverture après V4.1-401 a révélé un flake de synchronisation
   dans `LessonPage.test.tsx` : le bouton est parfois interrogé avant la fin du
   chargement. La suite normale reste verte (1 046/1 046) et le fichier isolé
   repasse à 7/7 ; le test doit être stabilisé ici sans changement produit avant
@@ -596,6 +610,8 @@ neuvième statut.
   - dette résiduelle a owner, priorité, impact, dépendances et date de réexamen ;
   - aucun alias Preact, flag, composant dupliqué ou risque sans owner ne subsiste ;
   - handoff contient SHA, validations, limites, exploitation et rollback.
+  - `V4.1-404-R1` est fermé après goldens scientifiques et découpage sûr, ou
+    explicitement arbitré par Rayan avec une nouvelle version cible.
 
 ### V4.1-504 — Final preview/rollback/GO/release
 
