@@ -173,3 +173,9 @@ l'autorisation.
   `pbdEbIxppEhMMEwsM` a été publiée puis relue : elle expose exactement dix
   pages, conformes aux noms déclarés dans le contrat, et aucune des quatre pages
   supprimées ne reste visible.
+- Après signalement de colonnes Kanban dupliquées (`Done` / `DONE`,
+  `In progress` / `IN_PROGRESS`), la page `V4.1 — Maintenant` a été remplacée
+  par `pagy6L1WyLSf9DAxy`. Sa portée reste `Release = V4.1` et exclut `DONE` ;
+  elle masque désormais toutes les piles vides, ce qui retire de l'affichage les
+  choix de statuts historiques sans altérer l'archive. L'interface corrigée a
+  été republiée et relue avec dix pages exactement.

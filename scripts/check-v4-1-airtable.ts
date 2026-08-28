@@ -178,9 +178,9 @@ const archivePage = contract.pages.find(({ name }) => name === 'Archive V4');
 if (!archivePage?.filter.includes('Release = Archive V4')) {
   throw new Error('Archive V4 must use the existing Archive V4 release choice');
 }
-const unpublishedDrafts = contract.pages.filter(({ published }) => !published);
-if (unpublishedDrafts.length !== 9) {
-  throw new Error('Exactly nine new Airtable pages must remain unpublished');
+const unpublishedPages = contract.pages.filter(({ published }) => !published);
+if (unpublishedPages.length !== 0) {
+  throw new Error('The owner-approved Airtable interface must be fully published');
 }
 if (
   contract.statusAuthority !== 'Airtable' ||

@@ -55,19 +55,19 @@
   "releaseValues": ["V4.1", "V4.5", "V5", "Archive V4"],
   "pages": [
     {
-      "id": "pag9Ou1lZGtplgfCU",
+      "id": "pagy6L1WyLSf9DAxy",
       "name": "V4.1 — Maintenant",
       "visualization": "kanban",
       "filter": "Release = V4.1 AND Statut != DONE",
       "groupBy": "Statut",
-      "published": false
+      "published": true
     },
     {
       "id": "pagaqMosHyNv6WAGT",
       "name": "Ready",
       "visualization": "list",
       "filter": "Statut = READY",
-      "published": false
+      "published": true
     },
     {
       "id": "pagNrmhdBAswxtsRp",
@@ -75,21 +75,21 @@
       "visualization": "list",
       "filter": "Statut = IN_PROGRESS",
       "groupBy": "Owner",
-      "published": false
+      "published": true
     },
     {
       "id": "pagPODll59tYbiCVp",
       "name": "Review",
       "visualization": "list",
       "filter": "Statut = REVIEW",
-      "published": false
+      "published": true
     },
     {
       "id": "pagTlI8DuvjJQMJ5E",
       "name": "QA",
       "visualization": "list",
       "filter": "Statut = QA",
-      "published": false
+      "published": true
     },
     {
       "id": "pagk1VyDJhqR2rG0j",
@@ -104,28 +104,28 @@
       "name": "Gate de release",
       "visualization": "list",
       "filter": "Statut = READY_FOR_OWNER_GO",
-      "published": false
+      "published": true
     },
     {
       "id": "pagvv6a80fbqtfMAk",
       "name": "V4.5 — Préparation",
       "visualization": "list",
       "filter": "Release = V4.5",
-      "published": false
+      "published": true
     },
     {
       "id": "pagzYksoHx5HIvcdv",
       "name": "V5 — Candidats",
       "visualization": "list",
       "filter": "Release = V5",
-      "published": false
+      "published": true
     },
     {
       "id": "pagLlT1p15kbN1IBT",
       "name": "Archive V4",
       "visualization": "list",
       "filter": "Release = Archive V4 AND Statut = DONE",
-      "published": false
+      "published": true
     }
   ],
   "publicationRequiresOwnerConfirmation": true,
