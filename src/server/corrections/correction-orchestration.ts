@@ -1,893 +1,267 @@
+import { correctionContractSchema } from '../../lib/ai-correction-contracts.js';
+import { getCorrectionProviderAdapter } from '../../lib/ai-correction-provider-adapters.js';
+import { CorrectionExecutionService } from './correction-execution-service.js';
 import {
-  buildProtocol3TransportJsonSchema,
-  correctionContractSchema,
-  type CorrectionContract,
-  type Protocol3CorrectionArtifactOutput,
-} from '../../lib/ai-correction-contracts.js';
-import {
-  CorrectionModelOutputError,
-  CorrectionProviderError,
-  getCorrectionProviderAdapter,
-} from '../../lib/ai-correction-provider-adapters.js';
-import {
-  reconcileProtocol3ScoreGuardPasses,
-  salvageProtocol3PartialCorrection,
-  validateBenchmarkProtocol3ModelOutputWithEvidence,
-} from '../../lib/ai-correction-benchmark.js';
-import { sanitizeStructuredOutputJsonSchema } from '../../lib/ai-json-schema.js';
-
+  CorrectionOrchestrationError,
+  type AcceptedQuotePort,
+  type AcceptedQuoteSnapshot,
+  type CorrectionPersistencePort,
+  type CorrectionTransportPort,
+  type CreditSettlementPort,
+  type OrchestratedCorrectionResult,
+} from './correction-orchestration-contracts.js';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
-import { buildRuntimeCorrectionMessages } from './runtime-correction-prompt.js';
-import type { CorrectionMonitoringSignal } from './correction-monitoring.js';
 
-/**
- * V4-009 — Orchestration devis accepté → réservation → correction → règlement.
- *
- * Doctrine économique (règle 10 de BACKLOG_V4.md, décision du Propriétaire) :
- * le devis accepté est débité en intégralité (estimatedCredits) quel que soit
- * le nombre de critères livrés ; la réservation couvre le plafond
- * (maximumReservedCredits) et la différence est libérée immédiatement. Aucun
- * remboursement, compensation ou relance gratuite n'existe ; le consentement
- * préalable énonce explicitement qu'un critère peut revenir « à retravailler ».
- *
- * Livraison PARTIAL_CRITERION (identité promue v3-1) : chaque critère est
- * validé indépendamment ; un critère invérifiable est livré en état
- * « à retravailler » sans invalider la correction ni le règlement. Une
- * correction dont aucun critère n'est livrable reste un échec technique —
- * débité au prix du devis conformément à la doctrine — avec un état
- * « indisponible » honnête et une invitation à resoumettre.
- */
-export type CorrectionOrchestrationErrorCode =
-  | 'QUOTE_NOT_FOUND'
-  | 'QUOTE_NOT_ACTIVE'
-  | 'QUOTE_EXPIRED'
-  | 'QUOTE_ALREADY_CONSUMED'
-  | 'FINANCIAL_RECONCILIATION_REQUIRED'
-  | 'QUOTE_INCOMPATIBLE'
-  | 'INSUFFICIENT_CREDITS';
+export * from './correction-orchestration-contracts.js';
 
-export class CorrectionOrchestrationError extends Error {
-  public constructor(public readonly code: CorrectionOrchestrationErrorCode) {
-    super(code);
-    this.name = 'CorrectionOrchestrationError';
-  }
-}
+type ParsedContract = ReturnType<typeof correctionContractSchema.parse>;
 
-export interface AcceptedQuoteSnapshot {
-  action?: 'STANDARD' | 'RECONSIDERATION';
-  quoteId: string;
-  userId: string;
-  target: {
-    id: string;
-    kind: 'EXERCISE_SUBMISSION' | 'STAGE_ASSESSMENT_SUBMISSION';
-  };
-  language: string;
-  estimatedCredits: bigint;
-  maximumReservedCredits: bigint;
-  expiresAt: Date;
-  promptVersion: string;
-  modelId: string;
-  provider: string;
-  includesAutomaticSecondPass: boolean;
-  contractKey: string;
-  contractVersion: string;
-  requestFingerprint: string;
-  reconsideration?: {
-    argument: string;
-    previousCorrection: OrchestratedCorrectionResult['correction'];
-    sourceCorrectionId: string;
-  };
-  submissionText: string;
-  exerciseInstructions: string;
-  taskContext: string | null;
-  contract: unknown;
-}
-
-export interface CreditSettlementPort {
-  reserve(input: {
-    amount: bigint;
-    expiresAt: Date;
-    idempotencyKey: string;
-    reference: { id: string; type: string };
-    userId: string;
-  }): Promise<{ reservationId: string }>;
-  settle(input: {
-    amount: bigint;
-    reservationId: string;
-    userId: string;
-  }): Promise<void>;
-  release(input: { reservationId: string; userId: string }): Promise<void>;
-}
-
-export interface CorrectionTransportPort {
-  execute(input: {
-    apiKey: string;
-    jsonSchema: Record<string, unknown>;
-    messages: Array<{ content: string; role: 'system' | 'user' }>;
-    modelId: string;
-  }): Promise<{
-    latencyMs: number;
-    modelSnapshot: string;
-    output: unknown;
-    providerRequestId?: string;
-    providerRoute: string;
-    usage: {
-      actualCostUsd?: number;
-      inputTokens: number;
-      reasoningTokens: number;
-      visibleOutputTokens: number;
-    };
-  }>;
-}
-
-export interface RuntimeCorrectionAttempt {
-  actualCostUsd?: number;
-  errorCode?: string;
-  inputTokens?: number;
-  latencyMs?: number;
-  modelSnapshot?: string;
-  output?: unknown;
-  providerRequestId?: string;
-  providerRoute?: string;
-  reasoningTokens?: number;
-  sequence: number;
-  status: 'FAILED' | 'SUCCEEDED';
-  visibleOutputTokens?: number;
-}
-
-export type PersistedCorrectionLookup =
-  | {
-      state: 'READY';
-      result: OrchestratedCorrectionResult;
-    }
-  | {
-      state: 'READY_TO_SETTLE';
-      reservationId: string;
-      result: OrchestratedCorrectionResult;
-    }
-  | { state: 'IN_PROGRESS' }
-  | { state: 'RECONCILIATION_REQUIRED' };
-
-export interface CorrectionPersistencePort {
-  begin(input: {
-    reservationId: string;
-    userId: string;
-    quote: AcceptedQuoteSnapshot;
-  }): Promise<{ correctionId: string; created: boolean }>;
-  finalize(input: {
-    correctionId: string;
-    quote: AcceptedQuoteSnapshot;
-    result: OrchestratedCorrectionResult['correction'];
-  }): Promise<void>;
-  findByQuote(input: {
-    userId: string;
-    requestFingerprint: string;
-  }): Promise<PersistedCorrectionLookup | null>;
-  markReconciliationRequired(input: { correctionId: string }): Promise<void>;
-  recordAttemptIntent(input: {
-    correctionId: string;
-    sequence: number;
-  }): Promise<void>;
-  recordAttemptOutcome(input: {
-    attempt: RuntimeCorrectionAttempt;
-    correctionId: string;
-  }): Promise<void>;
-}
-
-export interface OrchestratedCorrectionResult {
-  correction: {
-    id: string;
-    status: 'COMPLETED' | 'COMPLETED_PARTIAL' | 'FAILED';
-    criteria: Array<{
-      key: string;
-      label: string;
-      weight: number;
-      levelKey: string;
-      levelLabel: string;
-      evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
-      evidenceQuotes: string[];
-      feedback: string;
-    }>;
-    unsureCriteria: string[];
-    unsureCriterionDetails: Array<{ key: string; label: string }>;
-    overallFeedback: string | null;
-    indicativeScore: number | null;
-    secondPassRequired: boolean;
-    modelUsageCostUsd: number | null;
-    monitoringSignals: CorrectionMonitoringSignal[];
-  };
-  settlement: {
-    reservedCredits: string;
-    settledCredits: string;
-    releasedCredits: string;
-  };
-  replay: boolean;
-}
-
-export interface CorrectionHistoryEntry {
-  action?: 'STANDARD' | 'RECONSIDERATION';
-  createdAt: Date;
-  sourceCorrectionId?: string | null;
-  result: OrchestratedCorrectionResult;
-}
-
-// L'identité V4 interdit les retries/fallbacks sur tout le périmètre produit.
-// Une seconde exécution reste possible uniquement lorsque la bande de garde
-// l'impose ; la preuve scientifique demeure bornée à Writing.
-const MAX_RUNTIME_PRIMARY_ATTEMPTS =
-  PROMOTED_CORRECTION_IDENTITY.maxRetries + 1;
-
-function levelLabel(
-  contract: CorrectionContract,
-  criterionKey: string,
-  levelKey: string,
-): string {
-  const criterion = contract.criteria.find((item) => item.key === criterionKey);
-  return (
-    criterion?.performanceLevels.find((level) => level.key === levelKey)
-      ?.label ?? levelKey
-  );
-}
-
-function weightedIndicativeScore(
-  contract: CorrectionContract,
-  output: Protocol3CorrectionArtifactOutput,
-): number {
-  const deliveredWeight = output.criteria.reduce((total, criterion) => {
-    const weight =
-      contract.criteria.find((item) => item.key === criterion.criterionKey)
-        ?.weight ?? 0;
-    return total + weight;
-  }, 0);
-  if (deliveredWeight <= 0) {
-    return 0;
-  }
-  const total = output.criteria.reduce((accumulated, criterion) => {
-    const contractCriterion = contract.criteria.find(
-      (item) => item.key === criterion.criterionKey,
+function assertCompatibleQuote(
+  quote: AcceptedQuoteSnapshot,
+  contract: ParsedContract,
+): void {
+  const inScope =
+    PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
+      (activityType) => activityType === contract.target.activityType,
+    ) &&
+    PROMOTED_CORRECTION_IDENTITY.targetKindScope.some(
+      (kind) => kind === contract.target.kind,
+    ) &&
+    PROMOTED_CORRECTION_IDENTITY.languageScope.some(
+      (language) => language === quote.language,
     );
-    if (!contractCriterion) {
-      return accumulated;
-    }
-    const score =
-      contractCriterion.performanceLevels.find(
-        (level) => level.key === criterion.levelKey,
-      )?.score ?? 0;
-    return accumulated + contractCriterion.weight * score;
-  }, 0);
-  return Math.round((total / deliveredWeight) * 100) / 100;
+  const exactIdentity =
+    quote.contractKey === contract.contractKey &&
+    quote.contractVersion === contract.version &&
+    quote.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
+    quote.provider === PROMOTED_CORRECTION_IDENTITY.provider &&
+    quote.promptVersion === PROMOTED_CORRECTION_IDENTITY.promptVersion;
+  const validAction =
+    ((quote.action ?? 'STANDARD') === 'RECONSIDERATION') ===
+    Boolean(quote.reconsideration);
+  if (
+    !inScope ||
+    !exactIdentity ||
+    !quote.includesAutomaticSecondPass ||
+    !validAction
+  ) {
+    throw new CorrectionOrchestrationError('QUOTE_INCOMPATIBLE');
+  }
 }
 
 export class CorrectionOrchestrationService {
+  private readonly execution: CorrectionExecutionService;
+
   public constructor(
-    private readonly quotes: {
-      loadAcceptedQuote(input: {
-        quoteId: string;
-        userId: string;
-        now: Date;
-      }): Promise<AcceptedQuoteSnapshot | null>;
-      markConsumed(input: { quoteId: string }): Promise<void>;
-    },
+    private readonly quotes: AcceptedQuotePort,
     private readonly credits: CreditSettlementPort,
     private readonly corrections: CorrectionPersistencePort,
-    private readonly transport: CorrectionTransportPort,
-    private readonly options: {
-      apiKey: string;
-      now?: () => Date;
-    },
-  ) {}
+    transport: CorrectionTransportPort,
+    private readonly options: { apiKey: string; now?: () => Date },
+  ) {
+    this.execution = new CorrectionExecutionService(
+      corrections,
+      transport,
+      options.apiKey,
+    );
+  }
 
   public async runAcceptedQuote(input: {
     quoteId: string;
     userId: string;
   }): Promise<OrchestratedCorrectionResult> {
-    const now = this.options.now?.() ?? new Date();
-    const quote = await this.quotes.loadAcceptedQuote({
-      quoteId: input.quoteId,
+    const { now, quote } = await this.loadQuote(input);
+    const contract = correctionContractSchema.parse(quote.contract);
+    assertCompatibleQuote(quote, contract);
+    const replay = await this.replayIfAvailable(quote, input.userId);
+    if (replay) return replay;
+    const reservationId = await this.reserveQuote(quote, input.userId, now);
+    const correctionId = await this.beginCorrection(
+      quote,
+      reservationId,
+      input.userId,
+    );
+    const correction = await this.executeAndPersist({
+      contract,
+      correctionId,
+      quote,
+      reservationId,
       userId: input.userId,
-      now,
     });
-    if (!quote) {
-      throw new CorrectionOrchestrationError('QUOTE_NOT_FOUND');
-    }
+    await this.settleQuote(quote, reservationId, input.userId);
+    await this.quotes.markConsumed({ quoteId: quote.quoteId });
+    return this.result(correction, quote, false);
+  }
+
+  private async loadQuote(input: { quoteId: string; userId: string }) {
+    const now = this.options.now?.() ?? new Date();
+    const quote = await this.quotes.loadAcceptedQuote({ ...input, now });
+    if (!quote) throw new CorrectionOrchestrationError('QUOTE_NOT_FOUND');
     if (quote.expiresAt.getTime() <= now.getTime()) {
       throw new CorrectionOrchestrationError('QUOTE_EXPIRED');
     }
+    return { now, quote };
+  }
 
-    const contract = correctionContractSchema.parse(quote.contract);
-    // Scope vendu = scope promu. Le refus a lieu avant replay et réservation :
-    // défaut éliminatoire Practice confirmé par la revue du 24 août.
-    if (
-      !PROMOTED_CORRECTION_IDENTITY.activityTypeScope.some(
-        (activityType) => activityType === contract.target.activityType,
-      ) ||
-      !PROMOTED_CORRECTION_IDENTITY.targetKindScope.some(
-        (kind) => kind === contract.target.kind,
-      ) ||
-      quote.contractKey !== contract.contractKey ||
-      quote.contractVersion !== contract.version ||
-      !PROMOTED_CORRECTION_IDENTITY.languageScope.some(
-        (language) => language === quote.language,
-      ) ||
-      quote.modelId !== PROMOTED_CORRECTION_IDENTITY.modelId ||
-      quote.provider !== PROMOTED_CORRECTION_IDENTITY.provider ||
-      quote.promptVersion !== PROMOTED_CORRECTION_IDENTITY.promptVersion ||
-      !quote.includesAutomaticSecondPass ||
-      ((quote.action ?? 'STANDARD') === 'RECONSIDERATION') !==
-        Boolean(quote.reconsideration)
-    ) {
-      throw new CorrectionOrchestrationError('QUOTE_INCOMPATIBLE');
-    }
-
-    const replayed = await this.corrections.findByQuote({
+  private async replayIfAvailable(
+    quote: AcceptedQuoteSnapshot,
+    userId: string,
+  ): Promise<OrchestratedCorrectionResult | null> {
+    const replay = await this.corrections.findByQuote({
       requestFingerprint: quote.requestFingerprint,
-      userId: input.userId,
+      userId,
     });
-    if (replayed) {
-      if (replayed.state === 'READY') {
-        return replayed.result;
-      }
-      if (replayed.state === 'READY_TO_SETTLE') {
-        await this.settleFullQuote({
-          quote,
-          reservationId: replayed.reservationId,
-          userId: input.userId,
-        });
-        await this.quotes.markConsumed({ quoteId: quote.quoteId });
-        return { ...replayed.result, replay: true };
-      }
-      throw new CorrectionOrchestrationError(
-        replayed.state === 'IN_PROGRESS'
-          ? 'QUOTE_ALREADY_CONSUMED'
-          : 'FINANCIAL_RECONCILIATION_REQUIRED',
-      );
+    if (!replay) return null;
+    if (replay.state === 'READY') return replay.result;
+    if (replay.state === 'READY_TO_SETTLE') {
+      await this.settleQuote(quote, replay.reservationId, userId);
+      await this.quotes.markConsumed({ quoteId: quote.quoteId });
+      return { ...replay.result, replay: true };
     }
+    throw new CorrectionOrchestrationError(
+      replay.state === 'IN_PROGRESS'
+        ? 'QUOTE_ALREADY_CONSUMED'
+        : 'FINANCIAL_RECONCILIATION_REQUIRED',
+    );
+  }
 
-    let reservationId: string;
+  private async reserveQuote(
+    quote: AcceptedQuoteSnapshot,
+    userId: string,
+    now: Date,
+  ): Promise<string> {
     try {
       const reservation = await this.credits.reserve({
         amount: quote.maximumReservedCredits,
         expiresAt: new Date(now.getTime() + 15 * 60 * 1000),
         idempotencyKey: `ai-correction:${quote.quoteId}`,
         reference: { id: quote.quoteId, type: 'AI_PRICING_QUOTE' },
-        userId: input.userId,
+        userId,
       });
-      reservationId = reservation.reservationId;
+      return reservation.reservationId;
     } catch {
       throw new CorrectionOrchestrationError('INSUFFICIENT_CREDITS');
     }
+  }
 
-    // Un échec total (aucun critère livrable après retries bornés) reste un
-    // résultat : la doctrine débite le devis en intégralité et l'état livré
-    // est « indisponible — resoumettre ». Une erreur d'infrastructure
-    // inattendue remonte sans règlement : la réservation est libérée
-    // immédiatement avant de rendre l'erreur.
-    let correctionId: string;
+  private async beginCorrection(
+    quote: AcceptedQuoteSnapshot,
+    reservationId: string,
+    userId: string,
+  ): Promise<string> {
     try {
       const started = await this.corrections.begin({
         quote,
         reservationId,
-        userId: input.userId,
+        userId,
       });
       if (!started.created) {
         throw new CorrectionOrchestrationError('QUOTE_ALREADY_CONSUMED');
       }
-      correctionId = started.correctionId;
+      return started.correctionId;
     } catch (error) {
-      if (
-        error instanceof CorrectionOrchestrationError &&
-        error.code === 'QUOTE_ALREADY_CONSUMED'
-      ) {
-        throw error;
-      }
-      try {
-        await this.credits.release({ reservationId, userId: input.userId });
-      } catch (releaseError) {
-        throw new AggregateError(
-          [error, releaseError],
-          'AI_CORRECTION_START_FAILED_AND_RESERVATION_RELEASE_FAILED',
-          { cause: releaseError },
-        );
-      }
+      if (error instanceof CorrectionOrchestrationError) throw error;
+      await this.releaseAfterStartFailure(error, reservationId, userId);
       throw error;
     }
-
-    let execution: Awaited<
-      ReturnType<CorrectionOrchestrationService['executeCorrection']>
-    >;
-    try {
-      execution = await this.executeCorrection({
-        contract,
-        correctionId,
-        quote,
-      });
-      await this.corrections.finalize({
-        correctionId,
-        quote,
-        result: execution.correction,
-      });
-    } catch (error) {
-      // A transport/runtime or persistence incident is not a delivered
-      // correction. Release the quote ceiling immediately instead of keeping
-      // the user's allocation unavailable until the reservation TTL elapses.
-      let reconciliationError: unknown;
-      try {
-        await this.corrections.markReconciliationRequired({ correctionId });
-      } catch (markError) {
-        reconciliationError = markError;
-      }
-      try {
-        await this.credits.release({
-          reservationId,
-          userId: input.userId,
-        });
-      } catch (releaseError) {
-        throw new AggregateError(
-          [error, reconciliationError, releaseError].filter(
-            (candidate) => candidate !== undefined,
-          ),
-          'AI_CORRECTION_FAILED_AND_RESERVATION_RELEASE_FAILED',
-          { cause: releaseError },
-        );
-      }
-      if (reconciliationError !== undefined) {
-        throw new AggregateError(
-          [error, reconciliationError],
-          'AI_CORRECTION_FAILED_AND_RECONCILIATION_MARK_FAILED',
-          { cause: error },
-        );
-      }
-      throw error;
-    }
-    const correction = { ...execution.correction, id: correctionId };
-    await this.settleFullQuote({ quote, reservationId, userId: input.userId });
-    await this.quotes.markConsumed({ quoteId: quote.quoteId });
-    return this.asResult({ correction, quote, replay: false });
   }
 
-  private async settleFullQuote(input: {
+  private async releaseAfterStartFailure(
+    error: unknown,
+    reservationId: string,
+    userId: string,
+  ): Promise<void> {
+    try {
+      await this.credits.release({ reservationId, userId });
+    } catch (releaseError) {
+      throw new AggregateError(
+        [error, releaseError],
+        'AI_CORRECTION_START_FAILED_AND_RESERVATION_RELEASE_FAILED',
+        { cause: releaseError },
+      );
+    }
+  }
+
+  private async executeAndPersist(input: {
+    contract: ParsedContract;
+    correctionId: string;
     quote: AcceptedQuoteSnapshot;
     reservationId: string;
     userId: string;
-  }): Promise<void> {
-    await this.credits.settle({
-      amount: input.quote.estimatedCredits,
-      reservationId: input.reservationId,
-      userId: input.userId,
-    });
-    // PrismaCreditLedger.settle restitue atomiquement la part non consommée
-    // de la réservation. Un release après settlement tenterait de finaliser
-    // deux fois la même réservation et échouerait en production.
-  }
-
-  private asResult(input: {
-    correction: OrchestratedCorrectionResult['correction'];
-    quote: AcceptedQuoteSnapshot;
-    replay: boolean;
-  }): OrchestratedCorrectionResult {
-    return {
-      correction: input.correction,
-      replay: input.replay,
-      settlement: {
-        reservedCredits: input.quote.maximumReservedCredits.toString(),
-        releasedCredits: (
-          input.quote.maximumReservedCredits - input.quote.estimatedCredits
-        ).toString(),
-        settledCredits: input.quote.estimatedCredits.toString(),
-      },
-    };
-  }
-
-  private async executeCorrection(input: {
-    contract: CorrectionContract;
-    correctionId: string;
-    quote: AcceptedQuoteSnapshot;
-  }): Promise<{
-    attempts: RuntimeCorrectionAttempt[];
-    correction: OrchestratedCorrectionResult['correction'];
-  }> {
-    const messages = buildRuntimeCorrectionMessages({
-      contract: input.contract,
-      exerciseInstructions: input.quote.exerciseInstructions,
-      ...(input.quote.reconsideration
-        ? {
-            reconsideration: {
-              argument: input.quote.reconsideration.argument,
-              previousCorrection:
-                input.quote.reconsideration.previousCorrection,
-            },
-          }
-        : {}),
-      submissionText: input.quote.submissionText,
-      taskContext: input.quote.taskContext ?? undefined,
-    });
-    const jsonSchema = sanitizeStructuredOutputJsonSchema(
-      buildProtocol3TransportJsonSchema(input.contract),
-    ) as Record<string, unknown>;
-
-    let usageCost = 0;
-    let usageCostComplete = true;
-    const registerCost = (cost: number | undefined): void => {
-      if (cost === undefined) {
-        usageCostComplete = false;
-        return;
-      }
-      usageCost += cost;
-    };
-    const attempts: RuntimeCorrectionAttempt[] = [];
-    for (
-      let attempt = 1;
-      attempt <= MAX_RUNTIME_PRIMARY_ATTEMPTS;
-      attempt += 1
-    ) {
-      const sequence = attempts.length + 1;
-      await this.corrections.recordAttemptIntent({
+  }): Promise<OrchestratedCorrectionResult['correction']> {
+    try {
+      const execution = await this.execution.execute(input);
+      await this.corrections.finalize({
         correctionId: input.correctionId,
-        sequence,
+        quote: input.quote,
+        result: execution.correction,
       });
-      let generation;
-      try {
-        generation = await this.transport.execute({
-          apiKey: this.options.apiKey,
-          jsonSchema,
-          messages,
-          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
-        });
-      } catch (error) {
-        const failure = this.runtimeFailureSnapshot(error, sequence);
-        registerCost(failure.actualCostUsd);
-        attempts.push(failure);
-        await this.corrections.recordAttemptOutcome({
-          attempt: failure,
-          correctionId: input.correctionId,
-        });
-        continue;
-      }
-      registerCost(generation.usage.actualCostUsd);
-      const primary = this.resolveRuntimeGeneration({
-        contract: input.contract,
-        output: generation.output,
-        responseText: input.quote.submissionText,
-      });
-      const primaryAttempt = this.runtimeAttemptSnapshot({
-        generation,
-        sequence,
-        valid: primary !== null,
-      });
-      attempts.push(primaryAttempt);
-      await this.corrections.recordAttemptOutcome({
-        attempt: primaryAttempt,
-        correctionId: input.correctionId,
-      });
-      if (!primary) {
-        continue;
-      }
-      const primaryScore =
-        primary.unsureCriteria.length === 0
-          ? weightedIndicativeScore(input.contract, primary.output)
-          : null;
-      const guarded =
-        primaryScore !== null &&
-        Math.abs(primaryScore - input.contract.passingScore) <=
-          PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints;
-      if (!guarded) {
-        return {
-          attempts,
-          correction: this.toOutcome({
-            contract: input.contract,
-            output: primary.output,
-            unsureCriteria: primary.unsureCriteria,
-            usageCost: usageCostComplete ? usageCost : null,
-          }),
-        };
-      }
-
-      // La seconde passe utilise le même modèle épinglé et le même
-      // workflow. Ce n'est ni un retry ni un fallback fournisseur. Seuls les
-      // critères dont les niveaux concordent restent publiables.
-      let second: ReturnType<
-        CorrectionOrchestrationService['resolveRuntimeGeneration']
-      > = null;
-      const secondSequence = attempts.length + 1;
-      await this.corrections.recordAttemptIntent({
-        correctionId: input.correctionId,
-        sequence: secondSequence,
-      });
-      try {
-        const secondGeneration = await this.transport.execute({
-          apiKey: this.options.apiKey,
-          jsonSchema,
-          messages,
-          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
-        });
-        registerCost(secondGeneration.usage.actualCostUsd);
-        second = this.resolveRuntimeGeneration({
-          contract: input.contract,
-          output: secondGeneration.output,
-          responseText: input.quote.submissionText,
-        });
-        const secondAttempt = this.runtimeAttemptSnapshot({
-          generation: secondGeneration,
-          sequence: secondSequence,
-          valid: second !== null,
-        });
-        attempts.push(secondAttempt);
-        await this.corrections.recordAttemptOutcome({
-          attempt: secondAttempt,
-          correctionId: input.correctionId,
-        });
-      } catch (error) {
-        const failure = this.runtimeFailureSnapshot(error, secondSequence);
-        registerCost(failure.actualCostUsd);
-        attempts.push(failure);
-        await this.corrections.recordAttemptOutcome({
-          attempt: failure,
-          correctionId: input.correctionId,
-        });
-        // Aucun retry/fallback ne suit. Sans seconde passe valide, aucun
-        // critère ne peut être déclaré concordant.
-      }
-      const reconciled = second
-        ? reconcileProtocol3ScoreGuardPasses({
-            contract: input.contract,
-            primary,
-            second,
-          })
-        : null;
-      if (!reconciled?.output) {
-        return {
-          attempts,
-          correction: {
-            id: '',
-            status: 'FAILED',
-            criteria: [],
-            unsureCriteria: input.contract.criteria.map(
-              (criterion) => criterion.key,
-            ),
-            unsureCriterionDetails: input.contract.criteria.map(
-              (criterion) => ({ key: criterion.key, label: criterion.label }),
-            ),
-            overallFeedback: null,
-            indicativeScore: null,
-            secondPassRequired: true,
-            modelUsageCostUsd: usageCostComplete ? usageCost : null,
-            monitoringSignals: ['SCORE_GUARD_TRIGGERED'],
-          },
-        };
-      }
-      return {
-        attempts,
-        correction: this.toOutcome({
-          contract: input.contract,
-          forceScoreGuardSecondPass: true,
-          output: reconciled.output,
-          unsureCriteria: reconciled.unsureCriteria,
-          usageCost: usageCostComplete ? usageCost : null,
-        }),
-      };
+      return { ...execution.correction, id: input.correctionId };
+    } catch (error) {
+      await this.reconcileExecutionFailure(error, input);
+      throw error;
     }
-    return {
-      attempts,
-      correction: {
-        id: '',
-        status: 'FAILED',
-        criteria: [],
-        unsureCriteria: [],
-        unsureCriterionDetails: [],
-        overallFeedback: null,
-        indicativeScore: null,
-        secondPassRequired: false,
-        modelUsageCostUsd: usageCostComplete ? usageCost : null,
-        monitoringSignals: [],
-      },
-    };
   }
 
-  private runtimeAttemptSnapshot(input: {
-    generation: Awaited<ReturnType<CorrectionTransportPort['execute']>>;
-    sequence: number;
-    valid: boolean;
-  }): RuntimeCorrectionAttempt {
-    return {
-      ...(input.generation.usage.actualCostUsd === undefined
-        ? {}
-        : { actualCostUsd: input.generation.usage.actualCostUsd }),
-      ...(input.valid ? {} : { errorCode: 'MODEL_OUTPUT_INVALID' }),
-      inputTokens: input.generation.usage.inputTokens,
-      latencyMs: input.generation.latencyMs,
-      modelSnapshot: input.generation.modelSnapshot,
-      output: input.generation.output,
-      ...(input.generation.providerRequestId === undefined
-        ? {}
-        : { providerRequestId: input.generation.providerRequestId }),
-      providerRoute: input.generation.providerRoute,
-      reasoningTokens: input.generation.usage.reasoningTokens,
-      sequence: input.sequence,
-      status: input.valid ? 'SUCCEEDED' : 'FAILED',
-      visibleOutputTokens: input.generation.usage.visibleOutputTokens,
-    };
-  }
-
-  private runtimeFailureSnapshot(
+  private async reconcileExecutionFailure(
     error: unknown,
-    sequence: number,
-  ): RuntimeCorrectionAttempt {
-    if (error instanceof CorrectionModelOutputError) {
-      return {
-        ...(error.usage?.actualCostUsd === undefined
-          ? {}
-          : { actualCostUsd: error.usage.actualCostUsd }),
-        errorCode: error.message,
-        ...(error.usage === undefined
-          ? {}
-          : {
-              inputTokens: error.usage.inputTokens,
-              reasoningTokens: error.usage.reasoningTokens,
-              visibleOutputTokens: error.usage.visibleOutputTokens,
-            }),
-        ...(error.latencyMs === undefined
-          ? {}
-          : { latencyMs: error.latencyMs }),
-        ...(error.modelSnapshot === undefined
-          ? {}
-          : { modelSnapshot: error.modelSnapshot }),
-        ...(error.rawModelOutput === undefined
-          ? {}
-          : { output: error.rawModelOutput }),
-        ...(error.providerRequestId === undefined
-          ? {}
-          : { providerRequestId: error.providerRequestId }),
-        ...(error.providerRoute === undefined
-          ? {}
-          : { providerRoute: error.providerRoute }),
-        sequence,
-        status: 'FAILED',
-      };
-    }
-    if (error instanceof CorrectionProviderError) {
-      return {
-        errorCode: error.message,
-        ...(error.latencyMs === undefined
-          ? {}
-          : { latencyMs: error.latencyMs }),
-        ...(error.modelSnapshot === undefined
-          ? {}
-          : { modelSnapshot: error.modelSnapshot }),
-        ...(error.providerRequestId === undefined
-          ? {}
-          : { providerRequestId: error.providerRequestId }),
-        ...(error.providerRoute === undefined
-          ? {}
-          : { providerRoute: error.providerRoute }),
-        sequence,
-        status: 'FAILED',
-      };
-    }
-    return {
-      errorCode: error instanceof Error ? error.message : 'TRANSPORT_ERROR',
-      sequence,
-      status: 'FAILED',
-    };
-  }
-
-  private resolveRuntimeGeneration(input: {
-    contract: CorrectionContract;
-    output: unknown;
-    responseText: string;
-  }): {
-    output: Protocol3CorrectionArtifactOutput;
-    unsureCriteria: string[];
-  } | null {
+    input: { correctionId: string; reservationId: string; userId: string },
+  ): Promise<void> {
+    let reconciliationError: unknown;
     try {
-      const strict = validateBenchmarkProtocol3ModelOutputWithEvidence({
-        benchmarkCase: { responseText: input.responseText },
-        contract: input.contract,
-        output: input.output,
+      await this.corrections.markReconciliationRequired({
+        correctionId: input.correctionId,
       });
-      return { output: strict.output, unsureCriteria: [] };
-    } catch {
-      // Le contrat de preuve exacte et le prompt épinglé forment la
-      // frontière déterministe avant tentative de livraison partielle.
+    } catch (markError) {
+      reconciliationError = markError;
     }
     try {
-      const salvaged = salvageProtocol3PartialCorrection({
-        benchmarkCase: { responseText: input.responseText },
-        contract: input.contract,
-        output: input.output,
-      });
-      return {
-        output: salvaged.output,
-        unsureCriteria: salvaged.unsureCriteria,
-      };
-    } catch {
-      return null;
-    }
-  }
-
-  private toOutcome(input: {
-    contract: CorrectionContract;
-    forceScoreGuardSecondPass?: boolean;
-    output: Protocol3CorrectionArtifactOutput;
-    unsureCriteria: string[];
-    usageCost: number | null;
-  }): OrchestratedCorrectionResult['correction'] {
-    const deliveredAll = input.unsureCriteria.length === 0;
-    const score = deliveredAll
-      ? weightedIndicativeScore(input.contract, input.output)
-      : null;
-    const scoreGuardBandRequiresSecondPass =
-      input.forceScoreGuardSecondPass === true ||
-      (score !== null &&
-        Math.abs(score - input.contract.passingScore) <=
-          PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints);
-    const secondPassRequired = scoreGuardBandRequiresSecondPass;
-    const monitoringSignals: CorrectionMonitoringSignal[] = [];
-    if (scoreGuardBandRequiresSecondPass) {
-      monitoringSignals.push('SCORE_GUARD_TRIGGERED');
-    }
-    const hardConstraintLanguage =
-      /\b(contrainte|interdit(?:e|es|s)?|violation|constraint|forbidden)\b/i;
-    const hardConstraintMismatchSuspected = input.output.criteria.some(
-      (criterion) => {
-        if (!hardConstraintLanguage.test(criterion.feedback)) return false;
-        const contractCriterion = input.contract.criteria.find(
-          (candidate) => candidate.key === criterion.criterionKey,
-        );
-        const selected = contractCriterion?.performanceLevels.find(
-          (level) => level.key === criterion.levelKey,
-        );
-        const minimum = contractCriterion?.performanceLevels.reduce(
-          (lowest, level) => Math.min(lowest, level.score),
-          Number.POSITIVE_INFINITY,
-        );
-        return (
-          selected !== undefined &&
-          minimum !== undefined &&
-          selected.score > minimum
-        );
-      },
-    );
-    if (hardConstraintMismatchSuspected) {
-      monitoringSignals.push('HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED');
-    }
-    return {
-      id: '',
-      status:
-        deliveredAll && !scoreGuardBandRequiresSecondPass
-          ? 'COMPLETED'
-          : 'COMPLETED_PARTIAL',
-      criteria: input.output.criteria.map((criterion) => ({
-        key: criterion.criterionKey,
-        label:
-          input.contract.criteria.find(
-            (item) => item.key === criterion.criterionKey,
-          )?.label ?? criterion.criterionKey,
-        weight:
-          input.contract.criteria.find(
-            (item) => item.key === criterion.criterionKey,
-          )?.weight ?? 0,
-        levelKey: criterion.levelKey,
-        levelLabel: levelLabel(
-          input.contract,
-          criterion.criterionKey,
-          criterion.levelKey,
+      await this.credits.release(input);
+    } catch (releaseError) {
+      throw new AggregateError(
+        [error, reconciliationError, releaseError].filter(
+          (candidate) => candidate !== undefined,
         ),
-        evidenceStatus: criterion.evidenceStatus,
-        evidenceQuotes: criterion.evidenceQuotes,
-        feedback: criterion.feedback,
-      })),
-      unsureCriteria: input.unsureCriteria,
-      unsureCriterionDetails: input.unsureCriteria.map((key) => ({
-        key,
-        label:
-          input.contract.criteria.find((criterion) => criterion.key === key)
-            ?.label ?? key,
-      })),
-      overallFeedback: input.output.overallFeedback,
-      indicativeScore: scoreGuardBandRequiresSecondPass ? null : score,
-      secondPassRequired,
-      modelUsageCostUsd: input.usageCost,
-      monitoringSignals,
+        'AI_CORRECTION_FAILED_AND_RESERVATION_RELEASE_FAILED',
+        { cause: releaseError },
+      );
+    }
+    if (reconciliationError !== undefined) {
+      throw new AggregateError(
+        [error, reconciliationError],
+        'AI_CORRECTION_FAILED_AND_RECONCILIATION_MARK_FAILED',
+        { cause: error },
+      );
+    }
+  }
+
+  private async settleQuote(
+    quote: AcceptedQuoteSnapshot,
+    reservationId: string,
+    userId: string,
+  ): Promise<void> {
+    await this.credits.settle({
+      amount: quote.estimatedCredits,
+      reservationId,
+      userId,
+    });
+  }
+
+  private result(
+    correction: OrchestratedCorrectionResult['correction'],
+    quote: AcceptedQuoteSnapshot,
+    replay: boolean,
+  ): OrchestratedCorrectionResult {
+    return {
+      correction,
+      replay,
+      settlement: {
+        reservedCredits: quote.maximumReservedCredits.toString(),
+        releasedCredits: (
+          quote.maximumReservedCredits - quote.estimatedCredits
+        ).toString(),
+        settledCredits: quote.estimatedCredits.toString(),
+      },
     };
   }
 }
@@ -902,13 +276,7 @@ export function createRuntimeCorrectionTransport(): CorrectionTransportPort {
   };
   return {
     async execute(input) {
-      const result = await adapter.execute({
-        apiKey: input.apiKey,
-        jsonSchema: input.jsonSchema,
-        messages: input.messages,
-        modelId: input.modelId,
-        profile,
-      });
+      const result = await adapter.execute({ ...input, profile });
       return {
         latencyMs: result.latencyMs,
         modelSnapshot: result.modelSnapshot,
