@@ -78,3 +78,20 @@ l'autorisation.
 - Relecture : les trois enregistrements portent les statuts, branches, SHA,
   preuves QA et horodatage attendus ; l'état reste `Canonique Git`.
 - Interface : aucun brouillon n'a été publié.
+
+## 28 août 2026 — clôture de la baseline et des surfaces personnelles
+
+- Autorisation : reprise du plan V4.1 validé ; aucune publication de
+  l'interface Airtable.
+- V4.1-006 : `REVIEW` → `DONE`, après deux revues indépendantes et intégration
+  des preuves `0b5f1e74` / `0e4c25f6`. Les parcours navigateur, PWA et
+  accessibilité non encore exercés restent portés par V4.1-501/502.
+- V4.1-304 : `REVIEW` → `DONE`, après correction du cycle d'idempotence, de la
+  pagination et du raccord React Query. La revue indépendante de `bb4c0ffb`
+  ne relève aucun P0, P1 ou P2 bloquant ; 1 011 tests sont verts.
+- V4.1-401 : `DRAFT` → `READY`, les cinq lots fonctionnels 301 à 305 étant
+  terminés et revus. Correction, pricing et ledger restent exclus de son
+  périmètre et réservés à V4.1-402.
+- Relecture : les trois enregistrements portent les statuts, SHA, preuves QA
+  et horodatage attendus ; `État de synchro = Canonique Git`.
+- Interface : aucun brouillon n'a été publié.
