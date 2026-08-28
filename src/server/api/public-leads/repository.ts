@@ -44,6 +44,7 @@ async function convertLead(
   now: Date,
 ): Promise<string | null> {
   return client.$transaction(async (transaction) => {
+    await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`public-lead-conversion:${leadId}`}, 0))`;
     const lead = await transaction.publicLead.findFirst({
       select: {
         contact: { select: { emailNormalized: true } },
