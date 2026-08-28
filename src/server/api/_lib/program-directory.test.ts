@@ -6,7 +6,7 @@ import {
   createPrismaProgramDirectoryService,
   InvalidProgramDirectoryCursorError,
   normalizeProgramSearch,
-} from './program-directory.js';
+} from './program-directory/index.js';
 
 const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const programId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';

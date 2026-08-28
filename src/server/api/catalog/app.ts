@@ -12,7 +12,7 @@ import {
   createPrismaProgramDirectoryService,
   InvalidProgramDirectoryCursorError,
   type ProgramDirectoryService,
-} from '../_lib/program-directory.js';
+} from '../_lib/program-directory/index.js';
 import {
   createPrismaProgramEnrollmentService,
   type ProgramEnrollmentService,
