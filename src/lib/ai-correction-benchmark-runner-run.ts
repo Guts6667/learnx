@@ -7,11 +7,7 @@ import {
   type CorrectionBenchmarkCorpus,
 } from './ai-correction-benchmark.js';
 import { protocol3CorrectionArtifactOutputSchema } from './ai-correction-contracts.js';
-import {
-  SupplierBudgetError,
-  SupplierBudgetGuard,
-  type SupplierBudgetUsage,
-} from './ai-benchmark-supplier-budget.js';
+import { SupplierBudgetError, SupplierBudgetGuard, type SupplierBudgetUsage } from './ai-benchmark-supplier-budget.js';
 import {
   buildBenchmarkSupplierBudgetPreflight,
   callCandidate,
@@ -29,9 +25,7 @@ export async function runBenchmark(input: {
   configuration: CorrectionBenchmarkConfiguration;
   corpus: CorrectionBenchmarkCorpus;
   executeCandidate?: CandidateExecutor;
-  onBudgetPreflight?: (
-    preflight: BenchmarkSupplierBudgetPreflight,
-  ) => Promise<void>;
+  onBudgetPreflight?: (preflight: BenchmarkSupplierBudgetPreflight) => Promise<void>;
   onProgress?: (attempts: BenchmarkAttempt[]) => Promise<void>;
   maxRetries?: number;
   requestDelayMs?: number;
