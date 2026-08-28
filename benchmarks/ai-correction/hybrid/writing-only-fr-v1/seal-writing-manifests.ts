@@ -8,7 +8,7 @@ import { correctionBenchmarkConfigurationSha256 } from '../../../../scripts/gene
 import {
   mergeAutonomousHoldoutBenchmarkConfiguration,
   parseAutonomousHoldoutConfiguration,
-} from '../../../../scripts/run-ai-correction-benchmark.ts';
+} from '../../../../src/lib/ai-correction-benchmark-runner.ts';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const sealedAt = '2026-08-24T13:55:00Z';

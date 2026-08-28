@@ -60,7 +60,7 @@ import {
   mergeAutonomousHoldoutBenchmarkConfiguration,
   parseAutonomousHoldoutConfiguration,
   runBenchmark,
-} from '../../scripts/run-ai-correction-benchmark';
+} from './ai-correction-benchmark-runner.ts';
 
 function readJson(relativePath: string): unknown {
   return JSON.parse(
