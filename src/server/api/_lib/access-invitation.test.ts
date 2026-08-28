@@ -3,7 +3,9 @@ import type { AccessInvitationEmailInput } from '../../email/email-provider';
 import {
   buildAccessInvitationUrl,
   createAccessInvitationDelivery,
+  createAccessInvitationToken,
   createPrismaAccessInvitationActivationService,
+  getAccessInvitationTtlMilliseconds,
   hashAccessInvitationToken,
 } from './access-invitation';
 
@@ -217,5 +219,81 @@ describe('access invitation lifecycle', () => {
 
     expect(url).toBe(`https://learn-x.app/activate#token=${rawToken}`);
     expect(new URL(url).searchParams.size).toBe(0);
+  });
+
+  it('validates delivery configuration and accepts localhost only outside production', () => {
+    expect(createAccessInvitationToken()).toHaveLength(43);
+    expect(createAccessInvitationDelivery({})).toBeUndefined();
+    expect(() =>
+      createAccessInvitationDelivery({
+        APP_URL: 'https://learn-x.app',
+        LEARNX_EMAIL_VERIFICATION_ENABLED: 'true',
+      }),
+    ).toThrow('Access invitation provider is not fully configured.');
+    expect(() =>
+      createAccessInvitationDelivery(
+        { LEARNX_EMAIL_VERIFICATION_ENABLED: 'true' },
+        { name: 'test', sendAccessInvitationEmail: vi.fn() },
+      ),
+    ).toThrow('Access invitation delivery requires APP_URL.');
+    expect(() =>
+      createAccessInvitationDelivery(
+        {
+          APP_URL: 'http://learn-x.app',
+          LEARNX_EMAIL_VERIFICATION_ENABLED: 'true',
+          NODE_ENV: 'production',
+        },
+        { name: 'test', sendAccessInvitationEmail: vi.fn() },
+      ),
+    ).toThrow('APP_URL must use HTTPS');
+    expect(
+      createAccessInvitationDelivery(
+        {
+          APP_URL: 'http://localhost:5173/path',
+          LEARNX_EMAIL_VERIFICATION_ENABLED: 'true',
+        },
+        { name: 'test', sendAccessInvitationEmail: vi.fn() },
+      ),
+    ).toBeDefined();
+
+    expect(
+      getAccessInvitationTtlMilliseconds({
+        LEARNX_ACCESS_INVITATION_TTL_MS: '300000',
+      }),
+    ).toBe(300_000);
+    for (const ttl of ['299999', '604800001', 'invalid']) {
+      expect(() =>
+        getAccessInvitationTtlMilliseconds({
+          LEARNX_ACCESS_INVITATION_TTL_MS: ttl,
+        }),
+      ).toThrow('Invalid access invitation TTL configuration.');
+    }
+  });
+
+  it('maps activation races to null and rethrows unrelated failures', async () => {
+    const fixture = createPrismaFixture();
+    const transaction = vi
+      .spyOn(fixture.client, '$transaction')
+      .mockRejectedValueOnce({ code: 'P2002' })
+      .mockRejectedValueOnce(new Error('ACCESS_INVITATION_CONFLICT'))
+      .mockRejectedValueOnce(new Error('database unavailable'));
+    const service = createPrismaAccessInvitationActivationService(
+      fixture.client,
+      {
+        createSessionToken: () => 'new-session-token',
+        hashPassword: async () => 'password-hash',
+        now: () => now,
+      },
+    );
+    const input = {
+      displayName: 'Learner',
+      password: 'correct-horse-battery-staple',
+      token: rawToken,
+    };
+
+    await expect(service.activate(input)).resolves.toBeNull();
+    await expect(service.activate(input)).resolves.toBeNull();
+    await expect(service.activate(input)).rejects.toThrow('database unavailable');
+    expect(transaction).toHaveBeenCalledTimes(3);
   });
 });
