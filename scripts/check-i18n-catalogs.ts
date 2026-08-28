@@ -1,8 +1,11 @@
+import { createHash } from 'node:crypto';
+
 import {
   englishMessages,
   frenchMessages,
   type MessageValue,
 } from '../src/i18n/catalogs.ts';
+import { messageCatalogBaseline } from '../src/i18n/catalogs/baseline.ts';
 
 function placeholders(value: MessageValue): string[] {
   const messages =
@@ -25,6 +28,12 @@ function assertCatalogsMatch(): void {
   if (JSON.stringify(frenchKeys) !== JSON.stringify(englishKeys)) {
     throw new Error(
       'The French and English catalogs do not have the same keys.',
+    );
+  }
+
+  if (frenchKeys.length !== messageCatalogBaseline.keyCount) {
+    throw new Error(
+      `Expected ${messageCatalogBaseline.keyCount} messages, found ${frenchKeys.length}.`,
     );
   }
 
@@ -55,6 +64,27 @@ function assertCatalogsMatch(): void {
     const values = [...frenchValues, ...englishValues];
     if (values.some((value) => value.trim().length === 0)) {
       throw new Error(`Message "${key}" contains an empty translation.`);
+    }
+  }
+
+  const catalogs = {
+    en: englishMessages,
+    fr: frenchMessages,
+  } as const;
+
+  for (const locale of ['en', 'fr'] as const) {
+    const canonicalCatalog = JSON.stringify(
+      Object.fromEntries(
+        Object.entries(catalogs[locale]).sort(([left], [right]) =>
+          left.localeCompare(right),
+        ),
+      ),
+    );
+    const digest = createHash('sha256').update(canonicalCatalog).digest('hex');
+    if (digest !== messageCatalogBaseline.sha256[locale]) {
+      throw new Error(
+        `The ${locale} catalog differs from the V4.1-404 baseline (${digest}).`,
+      );
     }
   }
 }
