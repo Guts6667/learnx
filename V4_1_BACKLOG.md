@@ -522,7 +522,7 @@ neuvième statut.
 - Dépendances : V4.1-104, V4.1-203, V4.1-303, V4.1-304, V4.1-305,
   V4.1-401, V4.1-402, V4.1-403
 - Source : hotspots de l'audit V4.1-002
-- Statut : **bloqué** — dépendances non terminées
+- Statut : **bloqué** — dépendances V4.1-402 et V4.1-403
 - Critères d'acceptation :
   - catalogues i18n sont scindés sans clé perdue ni fallback silencieux ;
   - CSS est réparti par tokens/primitives/surfaces sans changer le rendu ;
@@ -539,7 +539,12 @@ neuvième statut.
 - Dépendances : V4.1-104, V4.1-301, V4.1-302, V4.1-303, V4.1-304,
   V4.1-305, V4.1-401, V4.1-402, V4.1-403, V4.1-404
 - Source : seuils V4.1-007 ; suites migrées et modules décomposés
-- Statut : **bloqué** — dépendances non terminées
+- Statut : **bloqué** — dépendances V4.1-402 à V4.1-404. Une première
+  campagne de couverture après V4.1-401 a révélé un flake de synchronisation
+  dans `LessonPage.test.tsx` : le bouton est parfois interrogé avant la fin du
+  chargement. La suite normale reste verte (1 046/1 046) et le fichier isolé
+  repasse à 7/7 ; le test doit être stabilisé ici sans changement produit avant
+  de mesurer puis d'élever les seuils.
 - Critères d'acceptation :
   - la couverture globale atteint au moins 80 % selon la méthode gelée ;
   - auth, progression, correction, pricing, ledger et permissions atteignent au
