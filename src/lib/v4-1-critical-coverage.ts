@@ -1,9 +1,9 @@
-export interface CoverageMetric {
+interface CoverageMetric {
   covered: number;
   total: number;
 }
 
-export interface CoverageSummaryEntry {
+interface CoverageSummaryEntry {
   lines: CoverageMetric;
 }
 

@@ -4,7 +4,7 @@ export type ActionSize = 'sm' | 'md' | 'lg';
 export type ActionVariant =
   'primary' | 'secondary' | 'editorial' | 'ghost' | 'danger';
 
-export const actionVariants = cva('ui-action', {
+const actionVariants = cva('ui-action', {
   defaultVariants: {
     size: 'md',
     variant: 'primary',

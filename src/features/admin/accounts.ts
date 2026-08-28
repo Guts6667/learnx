@@ -5,7 +5,7 @@ import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
 export type AccountStatus = 'ACTIVE' | 'SUSPENDED';
-export type AccountRole = 'ADMIN' | 'CREATOR' | 'USER';
+type AccountRole = 'ADMIN' | 'CREATOR' | 'USER';
 export type AssignableAccountRole = Exclude<AccountRole, 'ADMIN'>;
 
 export interface AdminAccount {

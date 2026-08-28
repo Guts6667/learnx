@@ -3,13 +3,13 @@ import type { ReactNode } from 'react';
 import { classNames } from '@/components/ui/classNames';
 import { useI18n } from '@/i18n';
 
-export interface ResponsiveTableColumn {
+interface ResponsiveTableColumn {
   isRowHeader?: boolean;
   key: string;
   label: string;
 }
 
-export interface ResponsiveTableRow {
+interface ResponsiveTableRow {
   cells: Record<string, ReactNode>;
   key: string;
 }

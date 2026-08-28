@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/Textarea';
 import { useI18n, type UiLocale } from '@/i18n';
 import { formatLocalizedDate, formatLocalizedNumber } from '@/shared/locale';
 
-export type AssessmentQuestionType =
+type AssessmentQuestionType =
   'MULTIPLE_CHOICE' | 'SHORT_ANSWER' | 'SINGLE_CHOICE' | 'TRUE_FALSE';
 
 export interface AssessmentQuestion {
@@ -37,7 +37,7 @@ export interface SubmittedAssessmentAnswer {
   text?: string;
 }
 
-export interface AssessmentCorrection {
+interface AssessmentCorrection {
   acceptedAnswers: string[];
   correct: boolean;
   correctOptionIds: string[];

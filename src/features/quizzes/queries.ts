@@ -4,10 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
-export type QuizQuestionType =
+type QuizQuestionType =
   'MULTIPLE_CHOICE' | 'SHORT_ANSWER' | 'SINGLE_CHOICE' | 'TRUE_FALSE';
 
-export interface QuizQuestion {
+interface QuizQuestion {
   id: string;
   options: Array<{
     id: string;
@@ -19,7 +19,7 @@ export interface QuizQuestion {
   type: QuizQuestionType;
 }
 
-export interface QuizDetail {
+interface QuizDetail {
   description: string | null;
   id: string;
   isRequired: boolean;
@@ -45,7 +45,7 @@ export interface SubmittedQuizAnswer {
   text?: string;
 }
 
-export interface QuizCorrection {
+interface QuizCorrection {
   acceptedAnswers: string[];
   correct: boolean;
   correctOptionIds: string[];

@@ -1,7 +1,7 @@
-export type ConceptQuestionKind =
+type ConceptQuestionKind =
   'MULTIPLE_CHOICE' | 'SHORT_ANSWER' | 'SINGLE_CHOICE' | 'TRUE_FALSE';
 
-export interface AssessmentOptionKey {
+interface AssessmentOptionKey {
   id: string;
   isCorrect: boolean;
 }
@@ -20,7 +20,7 @@ export interface SubmittedAssessmentAnswer {
   text?: string;
 }
 
-export interface QuestionCorrection {
+interface QuestionCorrection {
   acceptedAnswers: string[];
   correct: boolean;
   correctOptionIds: string[];

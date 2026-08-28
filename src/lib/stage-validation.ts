@@ -1,7 +1,7 @@
-export type StageValidationProgressStatus =
+type StageValidationProgressStatus =
   'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
 
-export type StageRequirementType =
+type StageRequirementType =
   | 'FINAL_ASSESSMENT'
   | 'REQUIRED_CONCEPT'
   | 'REQUIRED_EXERCISE'
@@ -13,7 +13,7 @@ export interface StageRequirement {
   type: StageRequirementType;
 }
 
-export interface StageValidationItem {
+interface StageValidationItem {
   id: string;
   isValidated: boolean;
   title: string;

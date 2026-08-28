@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
-export interface NoteContext {
+interface NoteContext {
   id: string;
   slug: string;
   title: string;

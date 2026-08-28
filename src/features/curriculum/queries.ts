@@ -25,7 +25,7 @@ export interface ProgramSummary {
   visibility: 'PRIVATE' | 'PUBLIC';
 }
 
-export type TemporalStatus =
+type TemporalStatus =
   | 'ahead'
   | 'behind'
   | 'completed_early'
@@ -34,7 +34,7 @@ export type TemporalStatus =
   | 'on_track'
   | 'overdue';
 
-export interface TimelineSnapshot {
+interface TimelineSnapshot {
   actualPercent: number;
   completedAt: string | null;
   expectedPercent: number;
@@ -63,7 +63,7 @@ export interface LessonSummary {
   title: string;
 }
 
-export interface ModuleSummary {
+interface ModuleSummary {
   id: string;
   isPublished: boolean;
   lessons: LessonSummary[];
@@ -104,7 +104,7 @@ export interface StageDetail extends StageSummary {
   validation: StageValidation | null;
 }
 
-export interface StageValidationRequirement {
+interface StageValidationRequirement {
   id: string | null;
   title: string;
   type:
@@ -177,7 +177,7 @@ export interface ProgramRestartResult extends ProgramRestartPreview {
   runIds: string[];
 }
 
-export type ContentBlockType =
+type ContentBlockType =
   | 'CALLOUT'
   | 'DEFINITION'
   | 'DIVIDER'
@@ -239,7 +239,7 @@ export interface LessonExerciseSummary {
   title: string;
 }
 
-export interface LessonQuizSummary {
+interface LessonQuizSummary {
   description: string | null;
   id: string;
   key: string;
@@ -250,7 +250,7 @@ export interface LessonQuizSummary {
   title: string;
 }
 
-export interface LessonConceptSummary {
+interface LessonConceptSummary {
   assessments: Array<{
     id: string;
     key: string;
@@ -309,9 +309,9 @@ export interface LessonDetail extends Omit<
   tasks: LessonTask[];
 }
 
-export type LessonProgressStatus =
+type LessonProgressStatus =
   'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'NEEDS_REVIEW';
-export type ResourceProgressStatus = 'COMPLETED' | 'NOT_STARTED' | 'STARTED';
+type ResourceProgressStatus = 'COMPLETED' | 'NOT_STARTED' | 'STARTED';
 export type TaskCompletionStatus = 'DONE' | 'SKIPPED' | 'TODO';
 
 export interface LessonProgressResponse {

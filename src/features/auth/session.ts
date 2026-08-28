@@ -7,7 +7,7 @@ import { apiRequest } from '@/lib/api-client';
 import { purgePrivateBrowserStorage } from '@/lib/private-browser-storage';
 import type { UiLocale } from '@/i18n';
 
-export interface SessionUser {
+interface SessionUser {
   displayName: string;
   email: string;
   id: string;
@@ -37,7 +37,7 @@ export function replacePrivateSessionCache(
   queryClient.setQueryData(sessionQueryKey, session);
 }
 
-export function getSession(): Promise<SessionResponse> {
+function getSession(): Promise<SessionResponse> {
   return apiRequest<SessionResponse>('/api/auth/session');
 }
 

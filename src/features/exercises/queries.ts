@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
-export type ExerciseSubmissionStatus = 'DRAFT' | 'SUBMITTED';
+type ExerciseSubmissionStatus = 'DRAFT' | 'SUBMITTED';
 
 export interface ExerciseSubmission {
   contentMarkdown: string;

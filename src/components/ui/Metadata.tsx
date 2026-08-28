@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
-export interface MetadataItem {
+interface MetadataItem {
   label: string;
   value: ReactNode;
   visuallyHiddenLabel?: boolean;

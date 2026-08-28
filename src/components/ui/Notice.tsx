@@ -3,7 +3,7 @@ import { useId } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
-export type NoticeTone = 'info' | 'attention' | 'safe' | 'danger';
+type NoticeTone = 'info' | 'attention' | 'safe' | 'danger';
 
 interface NoticeProps extends Omit<
   HTMLAttributes<HTMLElement>,

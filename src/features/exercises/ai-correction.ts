@@ -17,7 +17,7 @@ export interface CorrectionQuote {
   maximumReservedCredits: string;
 }
 
-export interface CorrectionCriterionResult {
+interface CorrectionCriterionResult {
   evidenceQuotes: string[];
   evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
   feedback: string;
@@ -98,17 +98,6 @@ export async function runCorrection(input: {
     headers: { 'content-type': 'application/json' },
     method: 'POST',
   });
-  return response.resource.correction;
-}
-
-export async function loadLatestCorrection(
-  submissionId: string,
-): Promise<CorrectionResult | null> {
-  const response = await apiRequest<{
-    resource: { correction: CorrectionResult | null };
-  }>(
-    `/api/exercise-submissions/${encodeURIComponent(submissionId)}/ai-corrections/latest`,
-  );
   return response.resource.correction;
 }
 

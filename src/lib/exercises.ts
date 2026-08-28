@@ -2,7 +2,7 @@ export type ExerciseSubmissionState = 'DRAFT' | 'SUBMITTED';
 
 export const MAX_EXERCISE_SUBMISSION_CHARACTERS = 1_500;
 
-export function assertExerciseSubmissionContentWithinLimit(
+function assertExerciseSubmissionContentWithinLimit(
   contentMarkdown: string,
 ): void {
   if (contentMarkdown.length > MAX_EXERCISE_SUBMISSION_CHARACTERS) {

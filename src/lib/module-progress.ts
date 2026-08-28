@@ -1,4 +1,4 @@
-export type ModuleProgressStatus =
+type ModuleProgressStatus =
   | 'AVAILABLE'
   | 'COMPLETED'
   | 'IN_PROGRESS'

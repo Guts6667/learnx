@@ -45,7 +45,7 @@ export function selectDailyRecommendation(
   );
 }
 
-export function getDateKey(date: Date, timeZone: string): string {
+function getDateKey(date: Date, timeZone: string): string {
   const parts = new Intl.DateTimeFormat('en-CA', {
     day: '2-digit',
     month: '2-digit',

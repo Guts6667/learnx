@@ -20,7 +20,7 @@ export interface AdminProgramSummary {
   } | null;
 }
 
-export interface AdminStageSummary {
+interface AdminStageSummary {
   id: string;
   isPublished: boolean;
   position: number;
@@ -95,7 +95,7 @@ interface AdminProgramVisibilityResponse {
   >;
 }
 
-export type PublicationAction = 'PUBLISH' | 'UNPUBLISH';
+type PublicationAction = 'PUBLISH' | 'UNPUBLISH';
 export type PublicationMode = 'FULL' | 'PARENT_ONLY';
 export type PublicationTargetType = 'MODULE' | 'PROGRAM' | 'STAGE';
 

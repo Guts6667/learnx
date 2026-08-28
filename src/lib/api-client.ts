@@ -1,4 +1,4 @@
-export interface ApiErrorResponse {
+interface ApiErrorResponse {
   error: {
     code: string;
     message: string;
@@ -14,12 +14,6 @@ export class ApiClientError extends Error {
     super(message);
     this.name = 'ApiClientError';
   }
-}
-
-export function isOfflineRequestError(error: unknown): boolean {
-  return (
-    error instanceof ApiClientError && error.code === 'OFFLINE_REQUEST_NOT_ALLOWED'
-  );
 }
 
 function assertOnline(): void {

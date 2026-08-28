@@ -3,7 +3,7 @@ export interface ImportBoundaryConfiguration {
   schemaVersion: number;
 }
 
-export interface ImportBoundaryRule {
+interface ImportBoundaryRule {
   disallow: string;
   from: string;
   message: string;

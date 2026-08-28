@@ -3,7 +3,7 @@ import type { SelectHTMLAttributes } from 'react';
 
 import { classNames } from '@/components/ui/classNames';
 
-export interface SelectFieldOption {
+interface SelectFieldOption {
   disabled?: boolean;
   label: string;
   value: string;

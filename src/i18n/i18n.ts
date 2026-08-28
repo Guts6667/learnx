@@ -6,11 +6,9 @@ import {
 import {
   normalizeLocale,
   supportedLocales,
-  type SupportedLocale,
 } from '@/shared/locale';
 
-export const supportedUiLocales = supportedLocales;
-export type UiLocale = SupportedLocale;
+export type UiLocale = (typeof supportedLocales)[number];
 export type TranslationParameters = Readonly<Record<string, string | number>>;
 
 export function normalizeUiLocale(locale: string | null | undefined): UiLocale {

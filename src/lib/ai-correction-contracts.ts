@@ -10,7 +10,7 @@ const semanticVersionSchema = z
   .string()
   .regex(/^\d+\.\d+\.\d+$/, 'Expected a semantic version such as 1.0.0.');
 
-export const correctionEvidenceKindSchema = z.enum([
+const correctionEvidenceKindSchema = z.enum([
   'TEXT',
   'FILE',
   'IMAGE',
@@ -43,7 +43,7 @@ const stageAssessmentCorrectionTargetSchema = z
   })
   .strict();
 
-export const correctionTargetSchema = z.discriminatedUnion('kind', [
+const correctionTargetSchema = z.discriminatedUnion('kind', [
   exerciseCorrectionTargetSchema,
   stageAssessmentCorrectionTargetSchema,
 ]);
@@ -393,7 +393,7 @@ export function buildProtocol3TransportJsonSchema(
   };
 }
 
-export type Protocol3CorrectionOutput = {
+type Protocol3CorrectionOutput = {
   criteria: Record<
     string,
     z.infer<typeof protocol3CriterionSchema>
@@ -463,13 +463,10 @@ export function canonicalizeProtocol3CorrectionOutput(input: {
   };
 }
 
-export const CORRECTION_SECOND_PASS_SIGNALS = [
-  'LOW_CONFIDENCE',
-  'CRITERION_DISAGREEMENT',
-  'OUTPUT_VALIDATION_WARNING',
-] as const;
-export type CorrectionSecondPassSignal =
-  (typeof CORRECTION_SECOND_PASS_SIGNALS)[number];
+type CorrectionSecondPassSignal =
+  | 'LOW_CONFIDENCE'
+  | 'CRITERION_DISAGREEMENT'
+  | 'OUTPUT_VALIDATION_WARNING';
 
 export type CorrectionSecondPassDecision = {
   reasons: CorrectionSecondPassSignal[];

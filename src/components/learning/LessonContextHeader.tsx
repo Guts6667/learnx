@@ -11,7 +11,7 @@ export function lessonHref(lesson: LessonDetail): string {
   return buildLessonHref(lesson.module.stage.program.slug, lesson.slug);
 }
 
-export function lessonActivitySequence(
+function lessonActivitySequence(
   lesson: LessonDetail,
   currentKey?: string,
 ) {
@@ -31,18 +31,6 @@ export function lessonActivitySequence(
     },
     currentKey,
   );
-}
-
-export function nextLessonActivityHref(
-  lesson: LessonDetail,
-  currentKey: string,
-): string | null {
-  const activities = lessonActivitySequence(lesson).activities;
-  const currentIndex = activities.findIndex(
-    (activity) =>
-      `${activity.kind.toLowerCase()}:${activity.id}` === currentKey,
-  );
-  return currentIndex < 0 ? null : (activities[currentIndex + 1]?.href ?? null);
 }
 
 export function LessonContextHeader({

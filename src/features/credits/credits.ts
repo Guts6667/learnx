@@ -4,14 +4,14 @@ import { useCallback, useRef, useState } from 'react';
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
-export interface CreditProjectionPart {
+interface CreditProjectionPart {
   available: string;
   consumed: string;
   expired: string;
   reserved: string;
 }
 
-export interface CreditProjection {
+interface CreditProjection {
   free: CreditProjectionPart;
   purchased: CreditProjectionPart;
   totalAvailable: string;
@@ -26,7 +26,7 @@ export interface CreditMemberSummary {
   userId: string;
 }
 
-export interface CreditHistoryItem {
+interface CreditHistoryItem {
   actorUserId: string | null;
   amount: string;
   createdAt: string;

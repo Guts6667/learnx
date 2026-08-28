@@ -4,7 +4,7 @@ import { useId } from 'react';
 import { classNames } from '@/components/ui/classNames';
 import { Spinner } from '@/components/ui/Spinner';
 
-export type StatePanelStatus =
+type StatePanelStatus =
   | 'empty'
   | 'error'
   | 'forbidden'

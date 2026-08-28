@@ -9,7 +9,7 @@ export type LessonActivityKind =
   | 'QUIZ'
   | 'COMPLETE';
 
-export type LessonActivityStatus =
+type LessonActivityStatus =
   'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'PREVIEW';
 
 export interface LessonActivity {

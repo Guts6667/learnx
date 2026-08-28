@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import type { CorrectionBenchmarkConfiguration } from './ai-correction-benchmark.js';
 
-export type CorrectionProviderMessage = {
+type CorrectionProviderMessage = {
   content: string;
   role: 'system' | 'user';
 };
@@ -15,7 +15,7 @@ export type CorrectionProviderUsage = {
   visibleOutputTokens: number;
 };
 
-export type CorrectionProviderResult = {
+type CorrectionProviderResult = {
   latencyMs: number;
   modelSnapshot: string;
   output: unknown;

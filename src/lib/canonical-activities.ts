@@ -1,15 +1,12 @@
-export const editorialTaskTypes = [
-  'reading',
-  'watching',
-  'listening',
-  'reflection',
-  'checklist',
-  'writing',
-  'practice',
-  'project',
-] as const;
-
-export type EditorialTaskType = (typeof editorialTaskTypes)[number];
+export type EditorialTaskType =
+  | 'reading'
+  | 'watching'
+  | 'listening'
+  | 'reflection'
+  | 'checklist'
+  | 'writing'
+  | 'practice'
+  | 'project';
 export type CanonicalActivityKind = 'TASK' | 'EXERCISE';
 
 const passiveTaskTypes = new Set<EditorialTaskType>([

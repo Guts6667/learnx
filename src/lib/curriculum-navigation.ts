@@ -1,4 +1,4 @@
-export function programHref(programSlug: string): string {
+function programHref(programSlug: string): string {
   return `/program/${encodeURIComponent(programSlug)}`;
 }
 

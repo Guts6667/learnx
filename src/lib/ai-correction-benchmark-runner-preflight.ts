@@ -9,7 +9,7 @@ import { conservativeSupplierCallCostUsd } from './ai-benchmark-supplier-budget'
 import { getCorrectionProviderAdapter } from './ai-correction-provider-adapters';
 import { sanitizeStructuredOutputJsonSchema } from './ai-json-schema';
 
-export function buildPrompt(input: {
+function buildPrompt(input: {
   benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
   controlPrompt: CorrectionBenchmarkConfiguration['controlPrompt'];
   contract: ReturnType<typeof findBenchmarkContract>;

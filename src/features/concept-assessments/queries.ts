@@ -10,7 +10,7 @@ import type {
 } from '@/features/assessments/QuestionAssessmentExperience';
 import { apiRequest } from '@/lib/api-client';
 
-export interface ConceptAssessmentDetail {
+interface ConceptAssessmentDetail {
   concept: {
     id: string;
     lessonId: string;

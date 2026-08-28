@@ -1,4 +1,4 @@
-export interface PluralMessage {
+interface PluralMessage {
   readonly one: string;
   readonly other: string;
 }
