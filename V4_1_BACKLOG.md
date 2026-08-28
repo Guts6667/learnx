@@ -430,8 +430,7 @@ neuvième statut.
   demande d'accès est sérialisée et couverte contre la concurrence
   (`cd20d7bf`), puis les handlers HTTP sont isolés (`6320409e`). L'annuaire de
   programmes est découpé sans changer recherche, curseurs ni isolation par
-  utilisateur (`e4e369d0`). Restent `progress`, `stage-assessments`,
-  `exercises` et les helpers de recalcul encore supérieurs aux limites V4.1.
+  utilisateur (`e4e369d0`).
   Correction, pricing et ledger restent exclus et réservés à V4.1-402.
   Preuves du checkpoint : lint, typecheck, tests ciblés des domaines concernés,
   suite complète 1 016/1 016 et build/PWA verts. Une exécution lancée en parallèle du build a
@@ -445,12 +444,20 @@ neuvième statut.
   dépendances paresseuses et un service d'édition pédagogique
   (`e18167f4`, nettoyage final `047eb4d2`). Les URLs, payloads, capacités,
   erreurs et transactions restent
-  couverts par les 47 tests Admin ciblés. Preuves : lint et typecheck verts,
+  couverts par les 47 tests Admin ciblés. Le sous-lot Progress est également
+  `REVIEW_PASS` sans P0/P1/P2 : ses frontières validation/service/repository et
+  son unité de travail sont explicites (`db09333e`), les recalculs leçon,
+  étape et programme sont séparés (`4be9195c`), et leurs contrats sont figés
+  par les tests de transaction et de hiérarchie (`4efe022a`). La mutation et
+  le recalcul complet restent dans une transaction `Serializable` unique,
+  avec trois reprises `P2034` au maximum. Les carryovers du module run courant,
+  l'agrégation multi-modules et l'atomicité sont couverts sans changer URLs,
+  payloads, auth ou erreurs. Preuves : lint et typecheck verts,
   contrôle d'imports avec 0 cycle et 0 frontière interdite, suite complète
-  1 021/1 021, build et génération PWA verts. Le ticket complet reste en cours :
-  `progress`, `stage-assessments`, `exercises` et les helpers de recalcul restent
-  à traiter. Correction, pricing et ledger restent
-  exclus et réservés à V4.1-402.
+  1 034/1 034 après intégration, build et génération PWA verts. Le ticket
+  complet reste en cours : `stage-assessments` et `exercises` restent à
+  traiter. Correction, pricing et ledger restent exclus et réservés à
+  V4.1-402.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
