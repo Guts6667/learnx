@@ -415,7 +415,8 @@ neuvième statut.
 - Reviewer : Architecture/Produit
 - Dépendances : V4.1-301, V4.1-302, V4.1-303, V4.1-304, V4.1-305
 - Source : audit V4.1-002 ; contrats prouvés par les lots 300
-- Statut : **en cours** — sous-lots Backend/Data livrés sur la branche ticket :
+- Statut : **terminé** — sous-lots Backend/Data livrés et revus sur la branche
+  V4.1 :
   Today et Notes (`c6c81317`), reprises module/programme (`98ce5383`), Quiz
   (`cd80b7ef`), évaluations de notion (`d54375f1`) et programmes
   (`b5bc73b1`). Les reprises de revue déplacent l'orchestration Notes dans son
@@ -454,8 +455,8 @@ neuvième statut.
   l'agrégation multi-modules et l'atomicité sont couverts sans changer URLs,
   payloads, auth ou erreurs. Preuves : lint et typecheck verts,
   contrôle d'imports avec 0 cycle et 0 frontière interdite, suite complète
-  1 034/1 034 après intégration, build et génération PWA verts. Le ticket
-  Le sous-lot `stage-assessments` est livré pour revue : le contrôleur de 612
+  1 034/1 034 après intégration, build et génération PWA verts. Le sous-lot
+  `stage-assessments` est `REVIEW_PASS` sans P0/P1 : le contrôleur de 612
   lignes est remplacé par une composition de 75 lignes et des frontières
   validation, routes, service, sérialisation et repository explicites. Les
   transitions DRAFT/SUBMITTED/NEEDS_REVISION/VALIDATED, le seuil de réussite,
@@ -464,9 +465,19 @@ neuvième statut.
   168 fichiers / 1 041 tests et build/PWA sont verts. Les doubles Prisma
   prouvent les branches et paramètres transactionnels sans prétendre valider
   une base réelle ; le gate V4.1-502 doit encore exécuter les scénarios de
-  concurrence contre la base d'intégration éphémère. Le ticket complet reste
-  en cours : `exercises` reste à traiter. Correction, pricing et ledger restent
-  exclus et réservés à V4.1-402.
+  concurrence propres aux évaluations d'étape contre la base d'intégration
+  éphémère. Le sous-lot `exercises` est également `REVIEW_PASS` : les
+  frontières validation/service/repository et l'unité de travail sont
+  explicites (`6f53a64f`), puis un test PostgreSQL réel sur branche Neon
+  éphémère prouve la convergence de deux créations concurrentes et le rollback
+  intégral d'un recalcul forcé en échec (`77040cbe`). Après intégration finale
+  de `stage-assessments` (`bb5524b2`), lint, typecheck, 169 fichiers / 1 046
+  tests, build/PWA, contrôle des imports (0 Preact, 0 cycle, 0 frontière
+  interdite), budgets initiaux et contrat Airtable sont verts. Le dépassement
+  du budget JS total reste un diagnostic non bloquant suivi par V4.1-502 ; les
+  budgets du chargement initial et du plus gros chunk paresseux sont respectés.
+  Correction, pricing et ledger n'ont pas été modifiés et sont réservés à
+  V4.1-402.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
@@ -480,7 +491,9 @@ neuvième statut.
 - Reviewer : IA/Recherche
 - Dépendances : V4.1-303, V4.1-304, V4.1-305, V4.1-401
 - Source : contrats V4 correction/pricing/ledger ; audit V4.1-002
-- Statut : **bloqué** — dépendance V4.1-401 et surfaces métier
+- Statut : **prêt** — V4.1-401 et les surfaces métier sont terminés ; le lot
+  peut commencer sans changer prix, modèle, fournisseur, seuil ni contrat
+  public
 - Critères d'acceptation :
   - orchestration, contrats, fournisseurs, pricing et ledger sont séparés ;
   - idempotence, devis, réserve, compensation et historique restent identiques ;
@@ -494,7 +507,7 @@ neuvième statut.
 - Reviewer : QA/Release
 - Dépendances : V4.1-401, V4.1-402
 - Source : `prisma/schema.prisma`, migrations et audit V4.1-002
-- Statut : **bloqué** — dépendances V4.1-401 et V4.1-402
+- Statut : **bloqué** — dépendance V4.1-402
 - Critères d'acceptation :
   - le schéma est scindé par domaine avec une configuration Prisma supportée ;
   - le diff de modèle généré est nul et aucune migration SQL n'est produite ;
