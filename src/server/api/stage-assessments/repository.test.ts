@@ -131,4 +131,154 @@ describe('stage assessment Prisma repository', () => {
     ).resolves.toBeNull();
     expect(auditUpsert).not.toHaveBeenCalled();
   });
+
+  it('returns the learner assessment shape in published and preview scopes', async () => {
+    const assessment = {
+      description: null,
+      id: assessmentId,
+      instructions: 'Produire une synthèse.',
+      isRequired: true,
+      passingScore: 80,
+      position: 1,
+      rubric: null,
+      stageId: 'stage-id',
+      submissions: [submission()],
+      title: 'Évaluation finale',
+      type: 'WRITING',
+    };
+    const findFirst = vi
+      .fn()
+      .mockResolvedValueOnce(assessment)
+      .mockResolvedValueOnce({ ...assessment, submissions: [] });
+    const repository = createPrismaStageAssessmentRepository({
+      stageAssessment: { findFirst },
+    } as unknown as PrismaClient);
+
+    await expect(
+      repository.findAssessmentForUser('stage-id', userId, false),
+    ).resolves.toMatchObject({ submission: { id: submissionId } });
+    await expect(
+      repository.findAssessmentForUser('stage-id', userId, true),
+    ).resolves.toMatchObject({ submission: null });
+
+    expect(findFirst.mock.calls[0]?.[0]).toEqual(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          stage: expect.objectContaining({ isPublished: true }),
+        }),
+      }),
+    );
+    expect(findFirst.mock.calls[1]?.[0]).toEqual(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          stage: expect.not.objectContaining({ isPublished: true }),
+        }),
+      }),
+    );
+  });
+
+  it('keeps learner and editorial ownership scopes on repository reads', async () => {
+    const ownedSubmission = submission();
+    const reviewRecord = {
+      ...submission('SUBMITTED'),
+      stageAssessment: { passingScore: 80, stageId: 'stage-id' },
+    };
+    const submissionFindFirst = vi
+      .fn()
+      .mockResolvedValueOnce(ownedSubmission)
+      .mockResolvedValueOnce(reviewRecord);
+    const assessmentFindFirst = vi.fn(async () => ({ id: assessmentId }));
+    const repository = createPrismaStageAssessmentRepository({
+      stageAssessment: { findFirst: assessmentFindFirst },
+      stageAssessmentSubmission: { findFirst: submissionFindFirst },
+    } as unknown as PrismaClient);
+
+    await expect(
+      repository.findOwnedSubmission(submissionId, userId),
+    ).resolves.toBe(ownedSubmission);
+    await expect(
+      repository.findPublishedAssessmentForUser(assessmentId, userId),
+    ).resolves.toEqual({ id: assessmentId });
+    await expect(
+      repository.findSubmissionForReview(submissionId, userId),
+    ).resolves.toEqual({
+      passingScore: 80,
+      stageId: 'stage-id',
+      submission: expect.objectContaining({ id: submissionId }),
+    });
+    expect(submissionFindFirst).toHaveBeenCalledTimes(2);
+    expect(assessmentFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: expect.objectContaining({ id: assessmentId }) }),
+    );
+  });
+
+  it('saves editable content and submits evidenced drafts transactionally', async () => {
+    const editable = { ...submission(), contentMarkdown: 'Réponse complète' };
+    const findFirst = vi.fn(async () => editable);
+    const update = vi
+      .fn()
+      .mockResolvedValueOnce({ ...editable, contentMarkdown: 'Réponse révisée' })
+      .mockResolvedValueOnce({
+        ...editable,
+        status: 'SUBMITTED',
+        submittedAt: now,
+      });
+    const transaction = {
+      stageAssessmentSubmission: { findFirst, update },
+    };
+    const repository = createPrismaStageAssessmentRepository(
+      prismaClient(transaction),
+    );
+
+    await expect(
+      repository.saveSubmission({
+        attachmentUrl: null,
+        contentMarkdown: 'Réponse révisée',
+        id: submissionId,
+        userId,
+      }),
+    ).resolves.toMatchObject({ contentMarkdown: 'Réponse révisée' });
+    await expect(
+      repository.submitSubmission(submissionId, now, userId),
+    ).resolves.toMatchObject({ status: 'SUBMITTED', submittedAt: now });
+
+    expect(update).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        data: {
+          attachmentUrl: null,
+          contentMarkdown: 'Réponse révisée',
+        },
+      }),
+    );
+    expect(update).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        data: { status: 'SUBMITTED', submittedAt: now },
+      }),
+    );
+  });
+
+  it('normalizes invalid state transitions and missing ownership', async () => {
+    const transaction = {
+      stageAssessmentSubmission: {
+        findFirst: vi
+          .fn()
+          .mockResolvedValueOnce(submission('SUBMITTED'))
+          .mockResolvedValueOnce(null),
+        update: vi.fn(),
+      },
+    };
+    const repository = createPrismaStageAssessmentRepository(
+      prismaClient(transaction),
+    );
+
+    await expect(
+      repository.saveSubmission({ id: submissionId, userId }),
+    ).rejects.toMatchObject({ code: 'INVALID_SUBMISSION_STATE' });
+    await expect(
+      repository.submitSubmission(submissionId, now, userId),
+    ).rejects.toMatchObject({ code: 'RESOURCE_NOT_FOUND' });
+    expect(transaction.stageAssessmentSubmission.update).not.toHaveBeenCalled();
+  });
 });
