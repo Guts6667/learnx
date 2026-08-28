@@ -139,3 +139,13 @@ l'autorisation.
 - Relecture : les 27 écritures de rôles/natures ont retourné les valeurs
   attendues et `État de synchronisation = Canonique Git`. Aucun brouillon n'a
   été publié.
+
+## 28 août 2026 — gate propriétaire V4.1-005
+
+- Le commit `eda48a1b` a reçu `REVIEW_PASS`, sans P0, P1 ni P2.
+- Airtable a été relu puis le ticket V4.1-005 a effectué la transition réelle
+  `REVIEW` → `READY_FOR_OWNER_GO`. Cette transition a matérialisé le huitième
+  état canonique ; aucun ticket factice n'a été créé.
+- La clôture du ticket et la publication des neuf pages brouillon restent deux
+  actions distinctes soumises au GO explicite de Rayan. L'interface n'a pas été
+  publiée.

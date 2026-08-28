@@ -131,9 +131,11 @@ neuvième statut.
 - Reviewer : Rayan
 - Dépendances : V4.1-003, V4.1-004
 - Source : mapping Airtable approuvé ; `AGENTS.md`
-- Statut : **livré pour revue** — schéma, rôles stables, natures de tickets et
-  pages opérationnelles Airtable réconciliés sans publier l'interface ; contrat
-  de synchronisation audité dans `docs/AIRTABLE_SYNC_LOG.md`
+- Statut : **READY_FOR_OWNER_GO** — schéma, rôles stables, natures de tickets
+  et pages opérationnelles Airtable réconciliés sans publier l'interface ;
+  contrat de synchronisation audité et revue indépendante sans P0/P1/P2 ; la
+  clôture et la publication de l'interface restent deux décisions explicites de
+  Rayan
 - Critères d'acceptation :
   - les IDs `001–007`, `101–104`, `201–203`, `301–305`, `401–404` et
     `501–504` conservent exactement leurs livrables autoritatifs ;
