@@ -7,6 +7,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 
 import { pwaNavigateFallbackDenylist } from './src/lib/pwa-navigation.ts';
+import {
+  assertV4_1GlobalCoveragePolicy,
+  V4_1_TEST_SUPPORT_COVERAGE_EXCLUDES,
+} from './src/lib/v4-1-coverage-policy.ts';
 
 interface CoverageThresholds {
   branches: number;
@@ -40,6 +44,10 @@ const coverageThresholds =
   qualityMode === 'final'
     ? qualityBaseline.coverage.finalThresholdsPercent
     : qualityBaseline.coverage.baselineThresholdsPercent;
+
+if (qualityMode === 'final') {
+  assertV4_1GlobalCoveragePolicy(coverageThresholds);
+}
 
 export default defineConfig({
   build: {
@@ -138,6 +146,7 @@ export default defineConfig({
         '**/*.test.{ts,tsx}',
         'src/server/quality/**',
         'src/test/**',
+        ...V4_1_TEST_SUPPORT_COVERAGE_EXCLUDES,
       ],
       include: ['api/**/*.ts', 'src/**/*.{ts,tsx}'],
       reporter: ['text', 'json-summary', 'html'],

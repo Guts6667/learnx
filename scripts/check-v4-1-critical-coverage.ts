@@ -8,6 +8,10 @@ import {
   type CoverageSummary,
   type CriticalCoverageConfiguration,
 } from '../src/lib/v4-1-critical-coverage.ts';
+import {
+  assertV4_1CriticalCoveragePolicy,
+  isV4_1TestSupportPath,
+} from '../src/lib/v4-1-coverage-policy.ts';
 
 const mode = process.argv.includes('--final') ? 'final' : 'report';
 const projectRoot = process.cwd();
@@ -24,7 +28,9 @@ function collectProductionFiles(directory: string): string[] {
     if (entry.isDirectory()) return collectProductionFiles(path);
     if (!['.ts', '.tsx'].includes(extname(path))) return [];
     if (path.endsWith('.d.ts') || /\.test\.[cm]?tsx?$/u.test(path)) return [];
-    return [relative(projectRoot, path).replaceAll('\\', '/')];
+    const normalizedPath = relative(projectRoot, path).replaceAll('\\', '/');
+    if (isV4_1TestSupportPath(normalizedPath)) return [];
+    return [normalizedPath];
   });
 }
 
@@ -37,6 +43,7 @@ if (!existsSync(summaryPath)) {
 const configuration = JSON.parse(
   readFileSync(configurationPath, 'utf8'),
 ) as CriticalCoverageConfiguration;
+assertV4_1CriticalCoveragePolicy(configuration.thresholdLinesPercent);
 const summary = JSON.parse(
   readFileSync(summaryPath, 'utf8'),
 ) as CoverageSummary;

@@ -567,10 +567,19 @@ neuvième statut.
 - Dépendances : V4.1-104, V4.1-301, V4.1-302, V4.1-303, V4.1-304,
   V4.1-305, V4.1-401, V4.1-402, V4.1-403, V4.1-404
 - Source : seuils V4.1-007 ; suites migrées et modules décomposés
-- Statut : **READY** — toutes les dépendances sont terminées. La mesure de
-  départ intégrée est de 79,72 % statements, 71,11 % branches, 80,90 %
-  functions et 81,09 % lines. L'écart principal est donc la couverture des
-  branches et des domaines serveur critiques, pas le volume général de tests.
+- Statut : **IN_PROGRESS** — toutes les dépendances sont terminées. Après
+  retrait des helpers purement réservés aux tests, la mesure reproductible du
+  28 août est de 78,54 % statements, 69,08 % branches, 79,59 % functions et
+  79,80 % lines sur 184 fichiers / 1 073 tests. Les domaines mesurent 74,60 %
+  auth/accès, 66,51 % correction-pricing-crédits-réconciliation, 83,61 %
+  progression/évaluations et 93,22 % autorisations admin. Le manifeste inclut
+  désormais tous les modules issus des décompositions 401/402, le résultat de
+  correction et les routes admin protégées ; aucun fichier découvert n'est
+  hors manifeste.
+  Les minima 80 % global et 90 % critique sont refusés s'ils sont abaissés dans
+  la configuration. Le commit d'activation automatique du job final reste à
+  promouvoir seulement lorsque les seuils mesurés sont atteints, afin de ne pas
+  rendre la branche rouge par conception.
   Une première campagne de couverture après V4.1-401 a révélé un flake de synchronisation
   dans `LessonPage.test.tsx` : le bouton est parfois interrogé avant la fin du
   chargement. La suite normale reste verte (1 046/1 046) et le fichier isolé

@@ -25,31 +25,48 @@ métriques globales est sous 80 %, si un domaine critique est sous 90 % de
 lignes, si un fichier critique déclaré n'apparaît pas dans la couverture, ou
 si un autre gate technique échoue.
 
+Les minima sont également codés comme invariants : une configuration finale
+abaissant une métrique globale sous 80 % ou le seuil critique sous 90 % est
+refusée avant la mesure. Les helpers réservés aux tests sont exclus
+explicitement ; ils ne peuvent pas améliorer artificiellement la couverture de
+l'application.
+
 ## Mesure courante
 
-Mesure locale du 26 août 2026 après les shells React/shadcn et le
-durcissement fail-closed de la couverture, sur 155 fichiers de tests et 975
-tests verts. Tous les fichiers TypeScript de production sous `api/` et `src/`
-sont inclus, même lorsqu'aucun test ne les importe :
+Mesure locale du 28 août 2026 après les décompositions serveur V4.1-401/402 et
+le durcissement du périmètre, sur 184 fichiers de tests et 1 073 tests verts.
+Tous les fichiers TypeScript de production sous `api/` et `src/` sont inclus,
+même lorsqu'aucun test ne les importe. Sont exclus les tests, les outils de QA
+hors runtime et quatre helpers purement réservés aux tests :
+`src/test-utils/**`, les fichiers `*.test-support.ts` et
+`src/server/ai/fake-structured-provider.ts`.
 
 | Périmètre | Mesure | Cible de release | État |
 | --- | ---: | ---: | --- |
-| Statements globaux | 77,61 % | 80 % | ouvert |
-| Branches globales | 69,45 % | 80 % | ouvert |
-| Functions globales | 79,14 % | 80 % | ouvert |
-| Lines globales | 79,05 % | 80 % | ouvert |
-| Authentification et accès | 73,74 % (410/556) | 90 % lines | ouvert |
-| Correction, pricing, crédits et réconciliation | 64,77 % (1 193/1 842) | 90 % lines | ouvert |
-| Progression et évaluations | 81,80 % (1 007/1 231) | 90 % lines | ouvert |
-| Autorisations admin | 80,56 % (232/288) | 90 % lines | ouvert |
+| Statements globaux | 78,54 % | 80 % | ouvert |
+| Branches globales | 69,08 % | 80 % | ouvert |
+| Functions globales | 79,59 % | 80 % | ouvert |
+| Lines globales | 79,80 % | 80 % | ouvert |
+| Authentification et accès | 74,60 % (420/563) | 90 % lines | ouvert |
+| Correction, pricing, crédits et réconciliation | 66,51 % (1 251/1 881) | 90 % lines | ouvert |
+| Progression et évaluations | 83,61 % (1 173/1 403) | 90 % lines | ouvert |
+| Autorisations admin | 93,22 % (165/177) | 90 % lines | atteint |
 
 Les listes de fichiers critiques sont explicites dans
-`quality/v4-1-critical-domains.json`. Des règles de découverte par domaine
-font échouer le gate si un nouveau fichier critique n'est pas déclaré ou si
-un fichier déclaré n'est protégé par aucune règle. Une absence de mesure
-échoue en mode final : elle n'est jamais assimilée à zéro ligne à couvrir ni
-ignorée. Le graphe de dépendances inspecte aussi les imports dynamiques et les
-anciens `require()` littéraux ; ils ne contournent pas les frontières.
+`quality/v4-1-critical-domains.json`. Les règles couvrent les dossiers issus
+des décompositions serveur, `AiCorrectionResult` et chaque fichier de routes
+admin protégé par le middleware ou une assertion de capacité. Elles font
+échouer le gate si un nouveau fichier critique n'est pas déclaré ou si un
+fichier déclaré n'est protégé par aucune règle. Une absence de mesure échoue en
+mode final : elle n'est jamais assimilée à zéro ligne à couvrir ni ignorée. Le
+graphe de dépendances inspecte aussi les imports dynamiques et les anciens
+`require()` littéraux ; ils ne contournent pas les frontières.
+
+Au 28 août, le job final GitHub reste volontairement déclenché manuellement :
+les seuils sont encore rouges. Le commit d'activation automatique doit être
+promu uniquement après leur atteinte, afin que le check final devienne alors
+obligatoire sur chaque pull request et push vers `dev`, sans période où la CI
+requise est rouge par conception.
 
 ## Chaîne de contrôles
 
