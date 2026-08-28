@@ -3,7 +3,9 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const schema = readFileSync(resolve('prisma/schema.prisma'), 'utf8');
+import { readPrismaSchemaSync } from './schema-test-utils.js';
+
+const schema = readPrismaSchemaSync();
 const migration = readFileSync(
   resolve(
     'prisma/migrations/20260822120000_add_ai_correction_attempt_request_audit/migration.sql',
@@ -20,11 +22,11 @@ function aiCorrectionAttemptModel(): string {
 }
 
 function aiCorrectionCostSourceEnum(): string {
-  const start = schema.indexOf('enum AiCorrectionCostSource {');
-  const end = schema.indexOf('\nenum CreditCurrency', start);
-  expect(start).toBeGreaterThanOrEqual(0);
-  expect(end).toBeGreaterThan(start);
-  return schema.slice(start, end);
+  const declaration = schema.match(
+    /enum AiCorrectionCostSource \{[\s\S]*?\n\}/,
+  )?.[0];
+  expect(declaration).toBeDefined();
+  return declaration ?? '';
 }
 
 describe('AI correction attempt request audit persistence', () => {

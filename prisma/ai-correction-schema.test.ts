@@ -1,7 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const schema = readFileSync(resolve('prisma/schema.prisma'), 'utf8');
+import { readPrismaSchemaSync } from './schema-test-utils.js';
+
+const schema = readPrismaSchemaSync();
 const migration = readFileSync(
   resolve(
     'prisma/migrations/20260812090000_add_persistent_ai_corrections/migration.sql',

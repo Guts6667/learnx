@@ -1,0 +1,84 @@
+enum CreditCurrency {
+  LEARNX_CREDIT @map("learnx_credit")
+
+  @@map("credit_currency")
+}
+
+enum CreditProvenance {
+  FREE_ALLOCATION @map("free_allocation")
+  PURCHASED       @map("purchased")
+
+  @@map("credit_provenance")
+}
+
+enum CreditLedgerEntryType {
+  GRANT               @map("grant")
+  RESERVATION_HOLD    @map("reservation_hold")
+  RESERVATION_RELEASE @map("reservation_release")
+  SETTLEMENT          @map("settlement")
+  EXPIRATION          @map("expiration")
+  ADMIN_ADJUSTMENT    @map("admin_adjustment")
+
+  @@map("credit_ledger_entry_type")
+}
+
+enum CreditReservationStatus {
+  RESERVED         @map("reserved")
+  SETTLED          @map("settled")
+  RELEASED         @map("released")
+  EXPIRED_RELEASED @map("expired_released")
+
+  @@map("credit_reservation_status")
+}
+
+enum CreditPolicyStatus {
+  DRAFT    @map("draft")
+  INACTIVE @map("inactive")
+  ACTIVE   @map("active")
+  RETIRED  @map("retired")
+
+  @@map("credit_policy_status")
+}
+
+enum CreditIncreaseRequestStatus {
+  PENDING   @map("pending")
+  APPROVED  @map("approved")
+  REJECTED  @map("rejected")
+  CANCELLED @map("cancelled")
+
+  @@map("credit_increase_request_status")
+}
+
+enum AiPricingCatalogStatus {
+  DRAFT    @map("draft")
+  INACTIVE @map("inactive")
+  ACTIVE   @map("active")
+  RETIRED  @map("retired")
+
+  @@map("ai_pricing_catalog_status")
+}
+
+enum AiPricingAction {
+  STANDARD        @map("standard")
+  DETAILED        @map("detailed")
+  REINFORCED      @map("reinforced")
+  RECONSIDERATION @map("reconsideration")
+  FUTURE_RESERVED @map("future_reserved")
+
+  @@map("ai_pricing_action")
+}
+
+enum AiPricingInputSizeClass {
+  SHORT  @map("short")
+  MEDIUM @map("medium")
+  LONG   @map("long")
+
+  @@map("ai_pricing_input_size_class")
+}
+
+enum AiPricingTargetKind {
+  EXERCISE_SUBMISSION         @map("exercise_submission")
+  STAGE_ASSESSMENT_SUBMISSION @map("stage_assessment_submission")
+
+  @@map("ai_pricing_target_kind")
+}

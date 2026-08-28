@@ -1,0 +1,181 @@
+model User {
+  id                              String                        @id @default(uuid()) @db.Uuid
+  email                           String                        @unique
+  passwordHash                    String                        @map("password_hash")
+  displayName                     String                        @map("display_name")
+  role                            Role                          @default(USER)
+  accountStatus                   AccountStatus                 @default(ACTIVE) @map("account_status")
+  locale                          String                        @default("fr") @db.VarChar(2)
+  suspendedAt                     DateTime?                     @map("suspended_at")
+  createdAt                       DateTime                      @default(now()) @map("created_at")
+  updatedAt                       DateTime                      @updatedAt @map("updated_at")
+  sessions                        Session[]
+  programs                        Program[]
+  programProgresses               ProgramProgress[]
+  stageProgresses                 StageProgress[]
+  lessonProgresses                LessonProgress[]
+  taskCompletions                 TaskCompletion[]
+  resourceProgresses              ResourceProgress[]
+  conceptProgresses               ConceptProgress[]
+  conceptAttempts                 ConceptAssessmentAttempt[]
+  quizAttempts                    QuizAttempt[]
+  exerciseSubmissions             ExerciseSubmission[]
+  stageAssessmentSubmissions      StageAssessmentSubmission[]
+  aiCorrections                   AiCorrection[]
+  creditAccounts                  CreditAccount[]               @relation("CreditAccountOwner")
+  creditAdjustmentEntries         CreditLedgerEntry[]           @relation("CreditLedgerAdjustmentActor")
+  creditGrantCycles               CreditGrantCycle[]
+  creditIncreaseRequests          CreditIncreaseRequest[]       @relation("CreditIncreaseRequestOwner")
+  reviewedCreditIncreaseRequests  CreditIncreaseRequest[]       @relation("CreditIncreaseRequestReviewer")
+  aiPricingQuotes                 AiPricingQuote[]
+  reviewItems                     ReviewItem[]
+  notes                           Note[]
+  moduleRuns                      ModuleRun[]
+  activityCompletionCarryovers    ActivityCompletionCarryover[]
+  reviewedAccessRequests          AccessRequest[]               @relation("AccessRequestReviewer")
+  activatedAccessRequest          AccessRequest?                @relation("ActivatedAccessRequest")
+  issuedAccessInvitations         AccessInvitation[]            @relation("AccessInvitationIssuer")
+  auditEvents                     AuditEvent[]                  @relation("AuditEventActor")
+  publishedProgramVersions        ProgramVersion[]              @relation("ProgramVersionPublisher")
+  programEnrollments              ProgramEnrollment[]
+  programViewPreferences          ProgramViewPreference[]
+  linguisticTranslationReviews    ProgramTranslationWorkflow[]  @relation("TranslationLinguisticReviewer")
+  pedagogicalTranslationReviews   ProgramTranslationWorkflow[]  @relation("TranslationPedagogicalReviewer")
+  culturalLegalTranslationReviews ProgramTranslationWorkflow[]  @relation("TranslationCulturalLegalReviewer")
+  approvedTranslationWorkflows    ProgramTranslationWorkflow[]  @relation("TranslationWorkflowApprover")
+
+  @@map("users")
+}
+
+model Session {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  tokenHash  String   @unique @map("token_hash")
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  lastUsedAt DateTime @default(now()) @map("last_used_at")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@map("sessions")
+}
+
+model LoginRateLimit {
+  keyHash         String   @id @map("key_hash")
+  failures        Int
+  windowStartedAt DateTime @map("window_started_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([windowStartedAt])
+  @@map("login_rate_limits")
+}
+
+model AccessRequest {
+  id                 String              @id @default(uuid()) @db.Uuid
+  emailNormalized    String              @map("email_normalized")
+  status             AccessRequestStatus @default(PENDING_EMAIL)
+  locale             String              @default("fr") @db.VarChar(2)
+  version            Int                 @default(1)
+  emailVerifiedAt    DateTime?           @map("email_verified_at")
+  reviewedAt         DateTime?           @map("reviewed_at")
+  reviewedByUserId   String?             @map("reviewed_by_user_id") @db.Uuid
+  rejectionReason    String?             @map("rejection_reason")
+  activatedUserId    String?             @unique @map("activated_user_id") @db.Uuid
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  reviewedBy         User?               @relation("AccessRequestReviewer", fields: [reviewedByUserId], references: [id], onDelete: Restrict)
+  activatedUser      User?               @relation("ActivatedAccessRequest", fields: [activatedUserId], references: [id], onDelete: SetNull)
+  emailVerifications EmailVerification[]
+  invitations        AccessInvitation[]
+  sourcePublicLead   PublicLead?
+
+  @@index([emailNormalized, status])
+  @@index([status, createdAt])
+  @@map("access_requests")
+}
+
+model PublicLead {
+  id                       String            @id @default(uuid()) @db.Uuid
+  contactId                String            @map("contact_id") @db.Uuid
+  purpose                  PublicLeadPurpose
+  status                   PublicLeadStatus  @default(PENDING_CONFIRMATION)
+  locale                   String            @default("fr") @db.VarChar(2)
+  motivation               String?
+  consentVersion           String            @map("consent_version") @db.VarChar(32)
+  confirmationTokenHash    String?           @unique @map("confirmation_token_hash")
+  confirmationExpiresAt    DateTime?         @map("confirmation_expires_at")
+  managementTokenHash      String?           @unique @map("management_token_hash")
+  confirmedAt              DateTime?         @map("confirmed_at")
+  unsubscribedAt           DateTime?         @map("unsubscribed_at")
+  deletedAt                DateTime?         @map("deleted_at")
+  convertedAccessRequestId String?           @unique @map("converted_access_request_id") @db.Uuid
+  createdAt                DateTime          @default(now()) @map("created_at")
+  updatedAt                DateTime          @updatedAt @map("updated_at")
+  convertedAccessRequest   AccessRequest?    @relation(fields: [convertedAccessRequestId], references: [id], onDelete: SetNull)
+  contact                  PublicContact     @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, purpose])
+  @@index([purpose, status, createdAt])
+  @@map("public_leads")
+}
+
+model PublicContact {
+  id              String       @id @default(uuid()) @db.Uuid
+  emailNormalized String       @unique @map("email_normalized")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  leads           PublicLead[]
+
+  @@map("public_contacts")
+}
+
+model EmailVerification {
+  id              String        @id @default(uuid()) @db.Uuid
+  accessRequestId String        @map("access_request_id") @db.Uuid
+  tokenHash       String        @unique @map("token_hash")
+  expiresAt       DateTime      @map("expires_at")
+  consumedAt      DateTime?     @map("consumed_at")
+  invalidatedAt   DateTime?     @map("invalidated_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  accessRequest   AccessRequest @relation(fields: [accessRequestId], references: [id], onDelete: Cascade)
+
+  @@index([accessRequestId, expiresAt])
+  @@index([expiresAt])
+  @@map("email_verifications")
+}
+
+model AccessInvitation {
+  id              String        @id @default(uuid()) @db.Uuid
+  accessRequestId String        @map("access_request_id") @db.Uuid
+  tokenHash       String        @unique @map("token_hash")
+  assignedRole    Role          @default(USER) @map("assigned_role")
+  expiresAt       DateTime      @map("expires_at")
+  consumedAt      DateTime?     @map("consumed_at")
+  invalidatedAt   DateTime?     @map("invalidated_at")
+  invitedByUserId String?       @map("invited_by_user_id") @db.Uuid
+  createdAt       DateTime      @default(now()) @map("created_at")
+  accessRequest   AccessRequest @relation(fields: [accessRequestId], references: [id], onDelete: Cascade)
+  invitedBy       User?         @relation("AccessInvitationIssuer", fields: [invitedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([accessRequestId, expiresAt])
+  @@index([expiresAt])
+  @@index([invitedByUserId])
+  @@map("access_invitations")
+}
+
+model AuditEvent {
+  id             String      @id @default(uuid()) @db.Uuid
+  actorUserId    String      @map("actor_user_id") @db.Uuid
+  action         AuditAction
+  targetType     String      @map("target_type")
+  targetId       String      @map("target_id") @db.Uuid
+  idempotencyKey String      @map("idempotency_key")
+  metadata       Json        @default("{}") @map("metadata_json")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  actor          User        @relation("AuditEventActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@unique([actorUserId, action, idempotencyKey])
+  @@index([action, createdAt])
+  @@index([targetType, targetId, createdAt])
+  @@map("audit_events")
+}

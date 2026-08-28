@@ -6,7 +6,7 @@ const fallbackDatabaseUrl =
   'postgresql://learnx:learnx@localhost:5432/learnx?schema=public';
 
 export default defineConfig({
-  schema: 'prisma/schema.prisma',
+  schema: 'prisma',
   migrations: {
     path: 'prisma/migrations',
     seed: 'tsx prisma/seed.ts',

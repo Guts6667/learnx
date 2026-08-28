@@ -2,7 +2,9 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const schema = readFileSync(resolve('prisma/schema.prisma'), 'utf8');
+import { readPrismaSchemaSync } from './schema-test-utils.js';
+
+const schema = readPrismaSchemaSync();
 const migration = readFileSync(
   resolve(
     'prisma/migrations/20260812170000_add_ai_pricing_catalog/migration.sql',

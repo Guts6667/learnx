@@ -3,7 +3,9 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const schema = readFileSync(resolve('prisma/schema.prisma'), 'utf8');
+import { readPrismaSchemaSync } from './schema-test-utils.js';
+
+const schema = readPrismaSchemaSync();
 const migration = readFileSync(
   resolve(
     'prisma/migrations/20260805150000_add_program_visibility/migration.sql',
@@ -13,7 +15,9 @@ const migration = readFileSync(
 
 describe('V3 program visibility schema', () => {
   it('sépare la visibilité du statut de publication', () => {
-    expect(schema).toMatch(/enum ProgramVisibility \{[\s\S]*PRIVATE[\s\S]*PUBLIC/);
+    expect(schema).toMatch(
+      /enum ProgramVisibility \{[\s\S]*PRIVATE[\s\S]*PUBLIC/,
+    );
     expect(schema).toMatch(/status\s+ProgramStatus\s+@default\(DRAFT\)/);
     expect(schema).toMatch(
       /visibility\s+ProgramVisibility\s+@default\(PRIVATE\)/,

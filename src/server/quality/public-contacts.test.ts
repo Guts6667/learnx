@@ -3,11 +3,13 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
+import { readPrismaSchemaSync } from '../../../prisma/schema-test-utils.js';
+
 const root = process.cwd();
 
 describe('public contact identity migration', () => {
   it('backfills one normalized identity and keeps purposes separate', () => {
-    const schema = readFileSync(resolve(root, 'prisma/schema.prisma'), 'utf8');
+    const schema = readPrismaSchemaSync(root);
     const migration = readFileSync(
       resolve(
         root,

@@ -17,7 +17,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Architecture générale | `TECHNICAL_ARCHITECTURE.md` | Code et schéma priment en cas d'écart |
 | Carte du domaine et vocabulaire | `LEARNX_DOMAIN_KNOWLEDGE.md` | Point d'entrée canonique pour les objets et frontières ; la roadmap conserve le statut courant |
 | Statut actif ou historique des documents V4 | `V4_DOCUMENT_STATUS.md` | Une préparation ou demande de GO close ne peut jamais être reprise comme instruction |
-| Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma` | `prisma/schema.prisma` et migrations |
+| Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma`, `prisma/models/*.prisma` | dossier `prisma/` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
 | V4 design Totem | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` puis les paquets d’autorité produit, public et marque cités | Manifestes Totem approuvés le 24 août 2026 |

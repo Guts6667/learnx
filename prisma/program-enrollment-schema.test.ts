@@ -3,7 +3,9 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const schema = readFileSync(resolve('prisma/schema.prisma'), 'utf8');
+import { readPrismaSchemaSync } from './schema-test-utils.js';
+
+const schema = readPrismaSchemaSync();
 const migration = readFileSync(
   resolve(
     'prisma/migrations/20260805183000_add_program_enrollments/migration.sql',
@@ -21,9 +23,7 @@ describe('V3 program enrollment schema', () => {
     expect(schema).toContain(
       'programVersion   ProgramVersion          @relation(fields: [programVersionId]',
     );
-    expect(migration).toContain(
-      'program_enrollments_program_version_fkey',
-    );
+    expect(migration).toContain('program_enrollments_program_version_fkey');
     expect(migration).toContain(
       'REFERENCES "program_versions"("program_id", "id")',
     );
@@ -32,9 +32,7 @@ describe('V3 program enrollment schema', () => {
   it('contraint les états actif et désinscrit sans supprimer la ligne', () => {
     expect(schema).toContain('enum ProgramEnrollmentStatus {');
     expect(schema).toContain('WITHDRAWN @map("withdrawn")');
-    expect(migration).toContain(
-      'program_enrollments_status_consistency_check',
-    );
+    expect(migration).toContain('program_enrollments_status_consistency_check');
     expect(migration).toContain(
       '("status" = \'active\' AND "withdrawn_at" IS NULL)',
     );

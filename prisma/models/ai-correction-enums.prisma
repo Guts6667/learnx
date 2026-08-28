@@ -1,0 +1,108 @@
+enum AiCorrectionMethod {
+  DETERMINISTIC @map("deterministic")
+  AI            @map("ai")
+
+  @@map("ai_correction_method")
+}
+
+enum AiCorrectionStatus {
+  RESERVED                @map("reserved")
+  PROCESSING              @map("processing")
+  PROCESSING_PRIMARY      @map("processing_primary")
+  VERIFYING               @map("verifying")
+  COMPLETED               @map("completed")
+  PROVISIONAL             @map("provisional")
+  UNCERTAIN               @map("uncertain")
+  AI_REVIEW_REQUIRED      @map("ai_review_required")
+  RETRY_PENDING           @map("retry_pending")
+  SETTLEMENT_PENDING      @map("settlement_pending")
+  RELEASE_PENDING         @map("release_pending")
+  RECONCILIATION_REQUIRED @map("reconciliation_required")
+  UNUSABLE_RELEASED       @map("unusable_released")
+  FAILED_RELEASED         @map("failed_released")
+
+  @@map("ai_correction_status")
+}
+
+enum AiCorrectionFinancialStatus {
+  PENDING                 @map("pending")
+  RECONCILIATION_REQUIRED @map("reconciliation_required")
+  READY_TO_SETTLE         @map("ready_to_settle")
+  SETTLED                 @map("settled")
+  RELEASED                @map("released")
+
+  @@map("ai_correction_financial_status")
+}
+
+enum AiProviderDispatchStatus {
+  PENDING     @map("pending")
+  CALL_INTENT @map("call_intent")
+  SENT        @map("sent")
+  CONFIRMED   @map("confirmed")
+  ORPHANED    @map("orphaned")
+
+  @@map("ai_provider_dispatch_status")
+}
+
+enum AiCorrectionPipelineKind {
+  SINGLE_MODEL @map("single_model")
+  COMPOSITE    @map("composite")
+
+  @@map("ai_correction_pipeline_kind")
+}
+
+enum AiCorrectionPipelineStatus {
+  DRAFT    @map("draft")
+  INACTIVE @map("inactive")
+  ACTIVE   @map("active")
+  RETIRED  @map("retired")
+
+  @@map("ai_correction_pipeline_status")
+}
+
+enum AiCorrectionRole {
+  PRIMARY           @map("primary")
+  TARGETED_VERIFIER @map("targeted_verifier")
+
+  @@map("ai_correction_role")
+}
+
+enum AiCorrectionRoleExecutionStatus {
+  PENDING       @map("pending")
+  PROCESSING    @map("processing")
+  SUCCEEDED     @map("succeeded")
+  RETRY_PENDING @map("retry_pending")
+  FAILED        @map("failed")
+
+  @@map("ai_correction_role_execution_status")
+}
+
+enum AiPricingWorkflowKind {
+  SINGLE_MODEL @map("single_model")
+  COMPOSITE    @map("composite")
+
+  @@map("ai_pricing_workflow_kind")
+}
+
+enum AiCorrectionDecision {
+  PASSED          @map("passed")
+  NOT_PASSED      @map("not_passed")
+  REVIEW_REQUIRED @map("review_required")
+
+  @@map("ai_correction_decision")
+}
+
+enum AiCorrectionAttemptStatus {
+  PROCESSING @map("processing")
+  SUCCEEDED  @map("succeeded")
+  FAILED     @map("failed")
+
+  @@map("ai_correction_attempt_status")
+}
+
+enum AiCorrectionCostSource {
+  ACTUAL                 @map("actual")
+  CONSERVATIVE_WRITE_OFF @map("conservative_write_off")
+
+  @@map("ai_correction_cost_source")
+}

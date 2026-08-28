@@ -1,0 +1,133 @@
+enum ProgramStatus {
+  DRAFT    @map("draft")
+  ACTIVE   @map("active")
+  ARCHIVED @map("archived")
+
+  @@map("program_status")
+}
+
+enum ProgramVisibility {
+  PRIVATE @map("private")
+  PUBLIC  @map("public")
+
+  @@map("program_visibility")
+}
+
+enum TranslationWorkflowStatus {
+  DRAFT             @map("draft")
+  IN_REVIEW         @map("in_review")
+  CHANGES_REQUESTED @map("changes_requested")
+  APPROVED          @map("approved")
+
+  @@map("translation_workflow_status")
+}
+
+enum ProgramEnrollmentStatus {
+  ACTIVE    @map("active")
+  WITHDRAWN @map("withdrawn")
+
+  @@map("program_enrollment_status")
+}
+
+enum ContentBlockType {
+  RICH_TEXT  @map("rich_text")
+  OBJECTIVE  @map("objective")
+  DEFINITION @map("definition")
+  EXAMPLE    @map("example")
+  CALLOUT    @map("callout")
+  QUOTE      @map("quote")
+  EMBED      @map("embed")
+  DIVIDER    @map("divider")
+
+  @@map("content_block_type")
+}
+
+enum ResourceType {
+  BOOK         @map("book")
+  BOOK_CHAPTER @map("book_chapter")
+  ARTICLE      @map("article")
+  VIDEO        @map("video")
+  COURSE       @map("course")
+  PODCAST      @map("podcast")
+  WEBSITE      @map("website")
+  DOCUMENT     @map("document")
+  TOOL         @map("tool")
+
+  @@map("resource_type")
+}
+
+enum TaskType {
+  READING    @map("reading")
+  WATCHING   @map("watching")
+  LISTENING  @map("listening")
+  REFLECTION @map("reflection")
+  CHECKLIST  @map("checklist")
+  WRITING    @map("writing")
+  PRACTICE   @map("practice")
+  PROJECT    @map("project")
+
+  @@map("task_type")
+}
+
+enum CanonicalActivityKind {
+  TASK     @map("task")
+  EXERCISE @map("exercise")
+
+  @@map("canonical_activity_kind")
+}
+
+enum LessonSequenceKind {
+  CONTENT
+  RESOURCE
+  TASK
+  CONCEPT_ASSESSMENT
+  EXERCISE
+  QUIZ
+}
+
+enum LessonProgressStatus {
+  AVAILABLE    @map("available")
+  IN_PROGRESS  @map("in_progress")
+  COMPLETED    @map("completed")
+  NEEDS_REVIEW @map("needs_review")
+
+  @@map("lesson_progress_status")
+}
+
+enum TaskCompletionStatus {
+  TODO    @map("todo")
+  DONE    @map("done")
+  SKIPPED @map("skipped")
+
+  @@map("task_completion_status")
+}
+
+enum ResourceProgressStatus {
+  NOT_STARTED @map("not_started")
+  STARTED     @map("started")
+  COMPLETED   @map("completed")
+
+  @@map("resource_progress_status")
+}
+
+enum StageProgressStatus {
+  LOCKED      @map("locked")
+  AVAILABLE   @map("available")
+  IN_PROGRESS @map("in_progress")
+  COMPLETED   @map("completed")
+
+  @@map("stage_progress_status")
+}
+
+enum ReviewSourceType {
+  CONCEPT_ASSESSMENT @map("concept_assessment")
+
+  @@map("review_source_type")
+}
+
+enum ReviewStatus {
+  PENDING   @map("pending")
+  COMPLETED @map("completed")
+
+  @@map("review_status")
+}

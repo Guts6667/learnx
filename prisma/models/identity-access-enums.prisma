@@ -1,0 +1,54 @@
+enum Role {
+  USER    @map("user")
+  CREATOR @map("creator")
+  ADMIN   @map("admin")
+
+  @@map("user_role")
+}
+
+enum AuditAction {
+  PROGRAM_PUBLICATION_APPLY           @map("program_publication_apply")
+  PROGRAM_VISIBILITY_UPDATE           @map("program_visibility_update")
+  MODULE_UPDATE                       @map("module_update")
+  LESSON_UPDATE                       @map("lesson_update")
+  STAGE_ASSESSMENT_REVIEW             @map("stage_assessment_review")
+  ACCESS_REQUEST_APPROVE              @map("access_request_approve")
+  ACCESS_REQUEST_REJECT               @map("access_request_reject")
+  ACCESS_INVITATION_ISSUE             @map("access_invitation_issue")
+  ACCOUNT_ROLE_ASSIGN                 @map("account_role_assign")
+  ACCOUNT_SUSPEND                     @map("account_suspend")
+  ACCOUNT_REACTIVATE                  @map("account_reactivate")
+  PROGRAM_TRANSLATION_WORKFLOW_UPDATE @map("program_translation_workflow_update")
+  CREDIT_ADMIN_ADJUSTMENT             @map("credit_admin_adjustment")
+  CREDIT_INCREASE_REQUEST_REVIEW      @map("credit_increase_request_review")
+
+  @@map("audit_action")
+}
+
+enum AccountStatus {
+  ACTIVE    @map("active")
+  SUSPENDED @map("suspended")
+
+  @@map("account_status")
+}
+
+enum AccessRequestStatus {
+  PENDING_EMAIL    @map("pending_email")
+  PENDING_APPROVAL @map("pending_approval")
+  APPROVED         @map("approved")
+  REJECTED         @map("rejected")
+
+  @@map("access_request_status")
+}
+
+enum PublicLeadPurpose {
+  LAUNCH_UPDATES
+  EARLY_ADOPTER
+}
+
+enum PublicLeadStatus {
+  PENDING_CONFIRMATION
+  CONFIRMED
+  UNSUBSCRIBED
+  DELETED
+}

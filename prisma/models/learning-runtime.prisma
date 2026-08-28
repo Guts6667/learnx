@@ -1,0 +1,340 @@
+model Module {
+  id               String      @id @default(uuid()) @db.Uuid
+  stageId          String      @map("stage_id") @db.Uuid
+  title            String
+  slug             String
+  canonicalKey     String      @map("canonical_key")
+  description      String
+  position         Int         @default(0)
+  estimatedMinutes Int?        @map("estimated_minutes")
+  isPublished      Boolean     @default(false) @map("is_published")
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+  stage            Stage       @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  lessons          Lesson[]
+  runs             ModuleRun[]
+
+  @@unique([stageId, slug])
+  @@unique([stageId, canonicalKey])
+  @@index([stageId, position])
+  @@map("modules")
+}
+
+model ModuleRun {
+  id                           String                        @id @default(uuid()) @db.Uuid
+  userId                       String                        @map("user_id") @db.Uuid
+  moduleId                     String                        @map("module_id") @db.Uuid
+  sequence                     Int
+  startedAt                    DateTime                      @default(now()) @map("started_at")
+  restartKey                   String?                       @map("restart_key") @db.Uuid
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  user                         User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module                       Module                        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  quizAttempts                 QuizAttempt[]
+  conceptAttempts              ConceptAssessmentAttempt[]
+  exerciseSubmissions          ExerciseSubmission[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
+
+  @@unique([userId, moduleId, sequence])
+  @@unique([userId, moduleId, restartKey])
+  @@index([userId, moduleId, startedAt])
+  @@map("module_runs")
+}
+
+model Lesson {
+  id                           String                        @id @default(uuid()) @db.Uuid
+  moduleId                     String                        @map("module_id") @db.Uuid
+  title                        String
+  slug                         String
+  canonicalKey                 String                        @map("canonical_key")
+  summary                      String
+  objectives                   Json                          @map("objectives_json")
+  prerequisites                Json                          @map("prerequisites_json")
+  estimatedMinutes             Int?                          @map("estimated_minutes")
+  position                     Int                           @default(0)
+  isPublished                  Boolean                       @default(false) @map("is_published")
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  updatedAt                    DateTime                      @updatedAt @map("updated_at")
+  module                       Module                        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  contentBlocks                ContentBlock[]
+  resources                    Resource[]
+  tasks                        Task[]
+  progress                     LessonProgress[]
+  concepts                     Concept[]
+  conceptAssessments           ConceptAssessment[]
+  quizzes                      Quiz[]
+  exercises                    Exercise[]
+  reviewItems                  ReviewItem[]
+  notes                        Note[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
+  lessonSequenceItems          LessonSequenceItem[]
+
+  @@unique([moduleId, slug])
+  @@unique([moduleId, canonicalKey])
+  @@index([moduleId, position])
+  @@map("lessons")
+}
+
+model ContentBlock {
+  id           String              @id @default(uuid()) @db.Uuid
+  lessonId     String              @map("lesson_id") @db.Uuid
+  key          String
+  type         ContentBlockType
+  content      Json                @map("content_json")
+  position     Int                 @default(0)
+  lesson       Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  sequenceItem LessonSequenceItem? @relation("ContentBlockSequenceItem")
+
+  @@unique([lessonId, position])
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
+  @@index([lessonId, position])
+  @@map("content_blocks")
+}
+
+model Resource {
+  id               String              @id @default(uuid()) @db.Uuid
+  lessonId         String              @map("lesson_id") @db.Uuid
+  key              String
+  type             ResourceType
+  title            String
+  author           String?
+  url              String?
+  citation         String?
+  description      String?
+  guidance         Json?               @map("guidance_json")
+  isRequired       Boolean             @default(false) @map("is_required")
+  estimatedMinutes Int?                @map("estimated_minutes")
+  position         Int                 @default(0)
+  lesson           Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  progress         ResourceProgress[]
+  conceptLinks     ConceptResource[]
+  taskLinks        TaskResource[]
+  sequenceItem     LessonSequenceItem? @relation("ResourceSequenceItem")
+
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
+  @@index([lessonId, position])
+  @@map("resources")
+}
+
+model Task {
+  id           String              @id @default(uuid()) @db.Uuid
+  lessonId     String              @map("lesson_id") @db.Uuid
+  key          String
+  title        String
+  description  String?
+  type         TaskType
+  isRequired   Boolean             @default(true) @map("is_required")
+  weight       Float               @default(1)
+  position     Int                 @default(0)
+  isCanonical  Boolean             @default(true) @map("is_canonical")
+  lesson       Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completions  TaskCompletion[]
+  resources    TaskResource[]
+  sequenceItem LessonSequenceItem? @relation("TaskSequenceItem")
+
+  @@unique([lessonId, position])
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
+  @@index([lessonId, position])
+  @@map("tasks")
+}
+
+model LessonProgress {
+  id                    String               @id @default(uuid()) @db.Uuid
+  userId                String               @map("user_id") @db.Uuid
+  lessonId              String               @map("lesson_id") @db.Uuid
+  status                LessonProgressStatus @default(AVAILABLE)
+  percent               Float                @default(0)
+  startedAt             DateTime?            @map("started_at")
+  completedAt           DateTime?            @map("completed_at")
+  lastViewedAt          DateTime?            @map("last_viewed_at")
+  currentSequenceItemId String?              @map("current_sequence_item_id") @db.Uuid
+  user                  User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson                Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  currentSequenceItem   LessonSequenceItem?  @relation(fields: [lessonId, currentSequenceItemId], references: [lessonId, id], onDelete: NoAction)
+
+  @@unique([userId, lessonId])
+  @@index([userId, status])
+  @@map("lesson_progress")
+}
+
+model ProgramProgress {
+  id           String    @id @default(uuid()) @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  programId    String    @map("program_id") @db.Uuid
+  percent      Float     @default(0)
+  startedAt    DateTime? @map("started_at")
+  targetEndAt  DateTime? @map("target_end_at")
+  completedAt  DateTime? @map("completed_at")
+  lastViewedAt DateTime  @default(now()) @map("last_viewed_at")
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program      Program   @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@index([userId, lastViewedAt])
+  @@map("program_progress")
+}
+
+model StageProgress {
+  id           String              @id @default(uuid()) @db.Uuid
+  userId       String              @map("user_id") @db.Uuid
+  stageId      String              @map("stage_id") @db.Uuid
+  status       StageProgressStatus @default(AVAILABLE)
+  percent      Float               @default(0)
+  startedAt    DateTime?           @map("started_at")
+  targetEndAt  DateTime?           @map("target_end_at")
+  completedAt  DateTime?           @map("completed_at")
+  lastViewedAt DateTime?           @map("last_viewed_at")
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stage        Stage               @relation(fields: [stageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stageId])
+  @@index([userId, status])
+  @@map("stage_progress")
+}
+
+model TaskCompletion {
+  id          String               @id @default(uuid()) @db.Uuid
+  userId      String               @map("user_id") @db.Uuid
+  taskId      String               @map("task_id") @db.Uuid
+  status      TaskCompletionStatus @default(TODO)
+  completedAt DateTime?            @map("completed_at")
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task        Task                 @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, taskId])
+  @@index([userId, status])
+  @@map("task_completions")
+}
+
+model ResourceProgress {
+  id          String                 @id @default(uuid()) @db.Uuid
+  userId      String                 @map("user_id") @db.Uuid
+  resourceId  String                 @map("resource_id") @db.Uuid
+  status      ResourceProgressStatus @default(NOT_STARTED)
+  completedAt DateTime?              @map("completed_at")
+  user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource    Resource               @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+  @@index([userId, status])
+  @@map("resource_progress")
+}
+
+model Note {
+  id             String              @id @default(uuid()) @db.Uuid
+  userId         String              @map("user_id") @db.Uuid
+  programId      String?             @map("program_id") @db.Uuid
+  lessonId       String?             @map("lesson_id") @db.Uuid
+  sequenceItemId String?             @map("sequence_item_id") @db.Uuid
+  creationKey    String?             @map("creation_key") @db.Uuid
+  title          String
+  markdown       String              @default("")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program        Program?            @relation(fields: [programId], references: [id], onDelete: SetNull)
+  lesson         Lesson?             @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  sequenceItem   LessonSequenceItem? @relation(fields: [sequenceItemId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, creationKey])
+  @@index([userId, updatedAt])
+  @@index([userId, lessonId])
+  @@index([sequenceItemId])
+  @@map("notes")
+}
+
+model Concept {
+  id               String              @id @default(uuid()) @db.Uuid
+  lessonId         String              @map("lesson_id") @db.Uuid
+  title            String
+  slug             String
+  description      String?
+  position         Int                 @default(0)
+  isRequired       Boolean             @default(true) @map("is_required")
+  masteryThreshold Float               @default(70) @map("mastery_threshold")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+  lesson           Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  resources        ConceptResource[]
+  assessments      ConceptAssessment[]
+  progress         ConceptProgress[]
+
+  @@unique([lessonId, slug])
+  @@unique([lessonId, id])
+  @@index([lessonId, position])
+  @@map("concepts")
+}
+
+model ConceptResource {
+  id         String   @id @default(uuid()) @db.Uuid
+  conceptId  String   @map("concept_id") @db.Uuid
+  resourceId String   @map("resource_id") @db.Uuid
+  concept    Concept  @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([conceptId, resourceId])
+  @@index([resourceId])
+  @@map("concept_resources")
+}
+
+model LessonSequenceItem {
+  id                  String             @id @default(uuid()) @db.Uuid
+  lessonId            String             @map("lesson_id") @db.Uuid
+  kind                LessonSequenceKind
+  key                 String
+  position            Int
+  contentBlockId      String?            @unique @map("content_block_id") @db.Uuid
+  resourceId          String?            @unique @map("resource_id") @db.Uuid
+  taskId              String?            @unique @map("task_id") @db.Uuid
+  conceptAssessmentId String?            @unique @map("concept_assessment_id") @db.Uuid
+  exerciseId          String?            @unique @map("exercise_id") @db.Uuid
+  quizId              String?            @unique @map("quiz_id") @db.Uuid
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @updatedAt @map("updated_at")
+  backfilledFromV2    Boolean            @default(false) @map("backfilled_from_v2")
+  lesson              Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  contentBlock        ContentBlock?      @relation("ContentBlockSequenceItem", fields: [lessonId, contentBlockId], references: [lessonId, id], onDelete: Cascade)
+  resource            Resource?          @relation("ResourceSequenceItem", fields: [lessonId, resourceId], references: [lessonId, id], onDelete: Cascade)
+  task                Task?              @relation("TaskSequenceItem", fields: [lessonId, taskId], references: [lessonId, id], onDelete: Cascade)
+  conceptAssessment   ConceptAssessment? @relation("ConceptAssessmentSequenceItem", fields: [lessonId, conceptAssessmentId], references: [lessonId, id], onDelete: Cascade)
+  exercise            Exercise?          @relation("ExerciseSequenceItem", fields: [lessonId, exerciseId], references: [lessonId, id], onDelete: Cascade)
+  quiz                Quiz?              @relation("QuizSequenceItem", fields: [lessonId, quizId], references: [lessonId, id], onDelete: Cascade)
+  currentProgress     LessonProgress[]
+  notes               Note[]
+
+  @@unique([lessonId, position])
+  @@unique([lessonId, kind, key])
+  @@unique([lessonId, id])
+  @@unique([lessonId, contentBlockId])
+  @@unique([lessonId, resourceId])
+  @@unique([lessonId, taskId])
+  @@unique([lessonId, conceptAssessmentId])
+  @@unique([lessonId, exerciseId])
+  @@unique([lessonId, quizId])
+  @@index([lessonId, position])
+  @@map("lesson_sequence_items")
+}
+
+model ReviewItem {
+  id           String           @id @default(uuid()) @db.Uuid
+  userId       String           @map("user_id") @db.Uuid
+  programId    String           @map("program_id") @db.Uuid
+  lessonId     String           @map("lesson_id") @db.Uuid
+  sourceType   ReviewSourceType @map("source_type")
+  sourceId     String           @map("source_id") @db.Uuid
+  dueAt        DateTime         @map("due_at")
+  intervalDays Int              @default(1) @map("interval_days")
+  status       ReviewStatus     @default(PENDING)
+  createdAt    DateTime         @default(now()) @map("created_at")
+  completedAt  DateTime?        @map("completed_at")
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program      Program          @relation(fields: [programId], references: [id], onDelete: Cascade)
+  lesson       Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sourceType, sourceId])
+  @@index([userId, dueAt, status])
+  @@map("review_items")
+}

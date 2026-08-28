@@ -1,12 +1,13 @@
 import { readFile } from 'node:fs/promises';
 
-const schemaPath = 'prisma/schema.prisma';
+import { readPrismaSchema } from './schema-test-utils.js';
+
 const migrationPath =
   'prisma/migrations/20260809010000_add_contextual_note_activity/migration.sql';
 
 describe('contextual note schema', () => {
   it('relie facultativement une note à une identité stable d’activité', async () => {
-    const schema = await readFile(schemaPath, 'utf8');
+    const schema = await readPrismaSchema();
 
     expect(schema).toContain(
       'sequenceItem   LessonSequenceItem? @relation(fields: [sequenceItemId], references: [id], onDelete: SetNull)',

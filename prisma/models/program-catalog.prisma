@@ -1,0 +1,149 @@
+model Program {
+  id                    String                      @id @default(uuid()) @db.Uuid
+  ownerId               String                      @map("owner_id") @db.Uuid
+  title                 String
+  slug                  String
+  canonicalProgramKey   String                      @map("canonical_program_key")
+  locale                String                      @default("fr") @db.VarChar(2)
+  description           String
+  status                ProgramStatus               @default(DRAFT)
+  visibility            ProgramVisibility           @default(PRIVATE)
+  icon                  String?
+  position              Int                         @default(0)
+  estimatedDurationDays Int?                        @map("estimated_duration_days")
+  createdAt             DateTime                    @default(now()) @map("created_at")
+  updatedAt             DateTime                    @updatedAt @map("updated_at")
+  publishedVersionId    String?                     @unique @map("published_version_id") @db.Uuid
+  owner                 User                        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  publishedVersion      ProgramVersion?             @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
+  versions              ProgramVersion[]            @relation("ProgramVersions")
+  enrollments           ProgramEnrollment[]
+  viewPreferences       ProgramViewPreference[]
+  stages                Stage[]
+  progress              ProgramProgress[]
+  reviewItems           ReviewItem[]
+  notes                 Note[]
+  translationWorkflow   ProgramTranslationWorkflow?
+
+  @@unique([ownerId, slug])
+  @@unique([ownerId, canonicalProgramKey, locale])
+  @@index([ownerId, position])
+  @@index([locale, visibility, status, position])
+  @@index([visibility, status, position])
+  @@map("programs")
+}
+
+model ProgramTranslationWorkflow {
+  id                      String                    @id @default(uuid()) @db.Uuid
+  programId               String                    @unique @map("program_id") @db.Uuid
+  sourceProgramVersionId  String                    @map("source_program_version_id") @db.Uuid
+  status                  TranslationWorkflowStatus @default(DRAFT)
+  glossaryVersion         String                    @map("glossary_version")
+  qaChecks                Json                      @default("{}") @map("qa_checks_json")
+  linguisticReviewerId    String?                   @map("linguistic_reviewer_id") @db.Uuid
+  linguisticReviewedAt    DateTime?                 @map("linguistic_reviewed_at")
+  pedagogicalReviewerId   String?                   @map("pedagogical_reviewer_id") @db.Uuid
+  pedagogicalReviewedAt   DateTime?                 @map("pedagogical_reviewed_at")
+  culturalLegalReviewerId String?                   @map("cultural_legal_reviewer_id") @db.Uuid
+  culturalLegalReviewedAt DateTime?                 @map("cultural_legal_reviewed_at")
+  approvedByUserId        String?                   @map("approved_by_user_id") @db.Uuid
+  approvedAt              DateTime?                 @map("approved_at")
+  version                 Int                       @default(1)
+  createdAt               DateTime                  @default(now()) @map("created_at")
+  updatedAt               DateTime                  @updatedAt @map("updated_at")
+  program                 Program                   @relation(fields: [programId], references: [id], onDelete: Cascade)
+  sourceProgramVersion    ProgramVersion            @relation("TranslationSourceProgramVersion", fields: [sourceProgramVersionId], references: [id], onDelete: Restrict)
+  linguisticReviewer      User?                     @relation("TranslationLinguisticReviewer", fields: [linguisticReviewerId], references: [id], onDelete: Restrict)
+  pedagogicalReviewer     User?                     @relation("TranslationPedagogicalReviewer", fields: [pedagogicalReviewerId], references: [id], onDelete: Restrict)
+  culturalLegalReviewer   User?                     @relation("TranslationCulturalLegalReviewer", fields: [culturalLegalReviewerId], references: [id], onDelete: Restrict)
+  approvedBy              User?                     @relation("TranslationWorkflowApprover", fields: [approvedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([sourceProgramVersionId])
+  @@index([status, updatedAt])
+  @@map("program_translation_workflows")
+}
+
+model ProgramVersion {
+  id                  String                       @id @default(uuid()) @db.Uuid
+  programId           String                       @map("program_id") @db.Uuid
+  version             Int
+  checksum            String
+  snapshot            Json                         @map("snapshot_json")
+  publishedAt         DateTime                     @default(now()) @map("published_at")
+  publishedByUserId   String                       @map("published_by_user_id") @db.Uuid
+  program             Program                      @relation("ProgramVersions", fields: [programId], references: [id], onDelete: Cascade)
+  publishedBy         User                         @relation("ProgramVersionPublisher", fields: [publishedByUserId], references: [id], onDelete: Restrict)
+  currentForProgram   Program?                     @relation("CurrentPublishedProgramVersion")
+  enrollments         ProgramEnrollment[]
+  derivedTranslations ProgramTranslationWorkflow[] @relation("TranslationSourceProgramVersion")
+
+  @@unique([programId, version])
+  @@unique([programId, checksum])
+  @@unique([programId, id])
+  @@index([programId, publishedAt])
+  @@index([publishedByUserId, publishedAt])
+  @@map("program_versions")
+}
+
+model ProgramEnrollment {
+  id               String                  @id @default(uuid()) @db.Uuid
+  userId           String                  @map("user_id") @db.Uuid
+  programId        String                  @map("program_id") @db.Uuid
+  programVersionId String                  @map("program_version_id") @db.Uuid
+  status           ProgramEnrollmentStatus @default(ACTIVE)
+  enrolledAt       DateTime                @default(now()) @map("enrolled_at")
+  withdrawnAt      DateTime?               @map("withdrawn_at")
+  createdAt        DateTime                @default(now()) @map("created_at")
+  updatedAt        DateTime                @updatedAt @map("updated_at")
+  user             User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program          Program                 @relation(fields: [programId], references: [id], onDelete: Cascade)
+  programVersion   ProgramVersion          @relation(fields: [programVersionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@index([userId, status, updatedAt])
+  @@index([programId, status])
+  @@index([programVersionId])
+  @@map("program_enrollments")
+}
+
+model ProgramViewPreference {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  programId       String   @map("program_id") @db.Uuid
+  expandedStageId String   @map("expanded_stage_id") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program         Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  expandedStage   Stage    @relation(fields: [programId, expandedStageId], references: [programId, id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@index([programId, expandedStageId])
+  @@map("program_view_preferences")
+}
+
+model Stage {
+  id                    String                  @id @default(uuid()) @db.Uuid
+  programId             String                  @map("program_id") @db.Uuid
+  title                 String
+  slug                  String
+  canonicalKey          String                  @map("canonical_key")
+  description           String
+  position              Int                     @default(0)
+  estimatedMinutes      Int?                    @map("estimated_minutes")
+  estimatedDurationDays Int?                    @map("estimated_duration_days")
+  isPublished           Boolean                 @default(false) @map("is_published")
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
+  program               Program                 @relation(fields: [programId], references: [id], onDelete: Cascade)
+  modules               Module[]
+  progress              StageProgress[]
+  assessments           StageAssessment[]
+  expandedPreferences   ProgramViewPreference[]
+
+  @@unique([programId, slug])
+  @@unique([programId, canonicalKey])
+  @@unique([programId, id])
+  @@index([programId, position])
+  @@map("stages")
+}

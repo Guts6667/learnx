@@ -1,0 +1,263 @@
+model StageAssessment {
+  id           String                      @id @default(uuid()) @db.Uuid
+  stageId      String                      @map("stage_id") @db.Uuid
+  title        String
+  description  String?
+  type         StageAssessmentType
+  instructions String?
+  rubric       Json?                       @map("rubric_json")
+  passingScore Float?                      @map("passing_score")
+  isRequired   Boolean                     @default(true) @map("is_required")
+  position     Int                         @default(0)
+  createdAt    DateTime                    @default(now()) @map("created_at")
+  updatedAt    DateTime                    @updatedAt @map("updated_at")
+  stage        Stage                       @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  submissions  StageAssessmentSubmission[]
+
+  @@unique([stageId, position])
+  @@index([stageId, position])
+  @@map("stage_assessments")
+}
+
+model StageAssessmentSubmission {
+  id                String                          @id @default(uuid()) @db.Uuid
+  userId            String                          @map("user_id") @db.Uuid
+  stageAssessmentId String                          @map("stage_assessment_id") @db.Uuid
+  contentMarkdown   String?                         @map("content_markdown")
+  attachmentUrl     String?                         @map("attachment_url")
+  score             Float?
+  reviewFeedback    String?                         @map("review_feedback")
+  status            StageAssessmentSubmissionStatus @default(DRAFT)
+  submittedAt       DateTime?                       @map("submitted_at")
+  reviewedAt        DateTime?                       @map("reviewed_at")
+  createdAt         DateTime                        @default(now()) @map("created_at")
+  updatedAt         DateTime                        @updatedAt @map("updated_at")
+  user              User                            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stageAssessment   StageAssessment                 @relation(fields: [stageAssessmentId], references: [id], onDelete: Cascade)
+  aiCorrections     AiCorrection[]
+
+  @@unique([userId, stageAssessmentId])
+  @@unique([id, userId])
+  @@index([stageAssessmentId, status])
+  @@map("stage_assessment_submissions")
+}
+
+model Quiz {
+  id           String              @id @default(uuid()) @db.Uuid
+  lessonId     String              @map("lesson_id") @db.Uuid
+  key          String
+  title        String
+  description  String?
+  passingScore Float               @default(70) @map("passing_score")
+  isRequired   Boolean             @default(true) @map("is_required")
+  position     Int                 @default(0)
+  lesson       Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions    Question[]
+  attempts     QuizAttempt[]
+  sequenceItem LessonSequenceItem? @relation("QuizSequenceItem")
+
+  @@unique([lessonId, position])
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
+  @@index([lessonId, position])
+  @@map("quizzes")
+}
+
+model Question {
+  id              String           @id @default(uuid()) @db.Uuid
+  quizId          String           @map("quiz_id") @db.Uuid
+  type            QuizQuestionType
+  prompt          String
+  explanation     String
+  acceptedAnswers String[]         @default([]) @map("accepted_answers")
+  position        Int              @default(0)
+  quiz            Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options         QuestionOption[]
+
+  @@unique([quizId, position])
+  @@map("questions")
+}
+
+model QuestionOption {
+  id         String   @id @default(uuid()) @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  label      String
+  isCorrect  Boolean  @default(false) @map("is_correct")
+  position   Int      @default(0)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, position])
+  @@map("question_options")
+}
+
+model QuizAttempt {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  quizId      String    @map("quiz_id") @db.Uuid
+  moduleRunId String    @map("module_run_id") @db.Uuid
+  score       Float
+  passed      Boolean
+  answers     Json      @map("answers_json")
+  submittedAt DateTime  @default(now()) @map("submitted_at")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  moduleRun   ModuleRun @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
+
+  @@index([userId, quizId, moduleRunId, submittedAt], map: "quiz_attempts_user_quiz_run_submitted_idx")
+  @@map("quiz_attempts")
+}
+
+model Exercise {
+  id           String               @id @default(uuid()) @db.Uuid
+  lessonId     String               @map("lesson_id") @db.Uuid
+  key          String
+  activityType TaskType             @map("activity_type")
+  title        String
+  instructions String
+  rubric       Json?                @map("rubric_json")
+  isRequired   Boolean              @default(true) @map("is_required")
+  position     Int                  @default(0)
+  isCanonical  Boolean              @default(true) @map("is_canonical")
+  lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  submissions  ExerciseSubmission[]
+  sequenceItem LessonSequenceItem?  @relation("ExerciseSequenceItem")
+
+  @@unique([lessonId, position])
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
+  @@index([lessonId, position])
+  @@map("exercises")
+}
+
+model TaskResource {
+  taskId     String   @map("task_id") @db.Uuid
+  resourceId String   @map("resource_id") @db.Uuid
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, resourceId])
+  @@index([resourceId])
+  @@map("task_resources")
+}
+
+model ActivityCompletionCarryover {
+  id          String                @id @default(uuid()) @db.Uuid
+  userId      String                @map("user_id") @db.Uuid
+  lessonId    String                @map("lesson_id") @db.Uuid
+  activityKey String                @map("activity_key")
+  kind        CanonicalActivityKind
+  moduleRunId String                @map("module_run_id") @db.Uuid
+  completedAt DateTime              @map("completed_at")
+  sources     Json                  @map("sources_json")
+  createdAt   DateTime              @default(now()) @map("created_at")
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson                @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  moduleRun   ModuleRun             @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId, activityKey, kind, moduleRunId])
+  @@index([lessonId, activityKey, kind])
+  @@map("activity_completion_carryovers")
+}
+
+model ExerciseSubmission {
+  id              String                   @id @default(uuid()) @db.Uuid
+  userId          String                   @map("user_id") @db.Uuid
+  exerciseId      String                   @map("exercise_id") @db.Uuid
+  moduleRunId     String                   @map("module_run_id") @db.Uuid
+  contentMarkdown String                   @default("") @map("content_markdown")
+  status          ExerciseSubmissionStatus @default(DRAFT)
+  submittedAt     DateTime?                @map("submitted_at")
+  createdAt       DateTime                 @default(now()) @map("created_at")
+  updatedAt       DateTime                 @updatedAt @map("updated_at")
+  user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercise        Exercise                 @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  moduleRun       ModuleRun                @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
+  aiCorrections   AiCorrection[]
+
+  @@unique([userId, exerciseId, moduleRunId])
+  @@unique([id, userId])
+  @@index([exerciseId, status])
+  @@map("exercise_submissions")
+}
+
+model ConceptAssessment {
+  id             String                      @id @default(uuid()) @db.Uuid
+  conceptId      String                      @map("concept_id") @db.Uuid
+  lessonId       String                      @map("lesson_id") @db.Uuid
+  key            String
+  assessmentType ConceptAssessmentType       @map("assessment_type")
+  title          String?
+  questionCount  Int?                        @map("question_count")
+  isRequired     Boolean                     @default(true) @map("is_required")
+  position       Int                         @default(0)
+  concept        Concept                     @relation(fields: [lessonId, conceptId], references: [lessonId, id], onDelete: Cascade)
+  lesson         Lesson                      @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions      ConceptAssessmentQuestion[]
+  attempts       ConceptAssessmentAttempt[]
+  sequenceItem   LessonSequenceItem?         @relation("ConceptAssessmentSequenceItem")
+
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
+  @@index([conceptId, position])
+  @@map("concept_assessments")
+}
+
+model ConceptAssessmentQuestion {
+  id              String                    @id @default(uuid()) @db.Uuid
+  assessmentId    String                    @map("assessment_id") @db.Uuid
+  type            ConceptQuestionType
+  prompt          String
+  explanation     String
+  acceptedAnswers String[]                  @default([]) @map("accepted_answers")
+  position        Int                       @default(0)
+  assessment      ConceptAssessment         @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  options         ConceptAssessmentOption[]
+
+  @@unique([assessmentId, position])
+  @@map("concept_assessment_questions")
+}
+
+model ConceptAssessmentOption {
+  id         String                    @id @default(uuid()) @db.Uuid
+  questionId String                    @map("question_id") @db.Uuid
+  label      String
+  isCorrect  Boolean                   @default(false) @map("is_correct")
+  position   Int                       @default(0)
+  question   ConceptAssessmentQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, position])
+  @@map("concept_assessment_options")
+}
+
+model ConceptAssessmentAttempt {
+  id           String            @id @default(uuid()) @db.Uuid
+  userId       String            @map("user_id") @db.Uuid
+  assessmentId String            @map("assessment_id") @db.Uuid
+  moduleRunId  String            @map("module_run_id") @db.Uuid
+  answers      Json              @map("answers_json")
+  score        Float
+  passed       Boolean
+  submittedAt  DateTime          @default(now()) @map("submitted_at")
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assessment   ConceptAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  moduleRun    ModuleRun         @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
+
+  @@index([userId, assessmentId, moduleRunId, submittedAt], map: "concept_assessment_attempts_user_assessment_run_submitted_idx")
+  @@map("concept_assessment_attempts")
+}
+
+model ConceptProgress {
+  id            String                @id @default(uuid()) @db.Uuid
+  userId        String                @map("user_id") @db.Uuid
+  conceptId     String                @map("concept_id") @db.Uuid
+  status        ConceptProgressStatus @default(NOT_STARTED)
+  bestScore     Float?                @map("best_score")
+  validatedAt   DateTime?             @map("validated_at")
+  lastAttemptAt DateTime?             @map("last_attempt_at")
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concept       Concept               @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conceptId])
+  @@index([userId, status])
+  @@map("concept_progress")
+}

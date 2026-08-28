@@ -9,12 +9,30 @@ LearnX utilise Prisma ORM.
 ```text
 prisma/
 ├── schema.prisma
+├── models/
+│   ├── ai-correction-enums.prisma
+│   ├── ai-correction.prisma
+│   ├── assessment-enums.prisma
+│   ├── assessments-progress.prisma
+│   ├── credits-pricing-enums.prisma
+│   ├── credits-pricing.prisma
+│   ├── identity-access-enums.prisma
+│   ├── identity-access.prisma
+│   ├── learning-enums.prisma
+│   ├── learning-runtime.prisma
+│   └── program-catalog.prisma
 ├── migrations/
 └── seed.ts
 
 src/server/
 └── prisma.ts
 ```
+
+`prisma.config.ts` désigne le dossier `prisma/`, conformément au mode
+multi-file de Prisma. `schema.prisma` conserve uniquement le générateur et la
+datasource ; les déclarations métier sont réparties par domaine sous
+`prisma/models/`. Les migrations restent au même niveau et leur historique ne
+doit jamais être régénéré pour un simple déplacement de déclaration.
 
 ## Client Prisma
 

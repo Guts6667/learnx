@@ -3,7 +3,9 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const schema = readFileSync(resolve('prisma/schema.prisma'), 'utf8');
+import { readPrismaSchemaSync } from './schema-test-utils.js';
+
+const schema = readPrismaSchemaSync();
 const migration = readFileSync(
   resolve(
     'prisma/migrations/20260813100000_orchestrate_composite_correction_settlement/migration.sql',
@@ -32,7 +34,9 @@ describe('V4-009 composite correction orchestration schema', () => {
   });
 
   it('keeps reconciliation and ledger completion distinct from terminal results', () => {
-    expect(schema).toContain('RECONCILIATION_REQUIRED @map("reconciliation_required")');
+    expect(schema).toContain(
+      'RECONCILIATION_REQUIRED @map("reconciliation_required")',
+    );
     expect(schema).toMatch(/SETTLEMENT_PENDING\s+@map\("settlement_pending"\)/);
     expect(schema).toMatch(/RELEASE_PENDING\s+@map\("release_pending"\)/);
     expect(migration).toContain('reconciliation_code');
@@ -58,7 +62,9 @@ describe('V4-009 composite correction orchestration schema', () => {
     expect(callIntentMigration).toContain(
       'ALTER TYPE "ai_provider_dispatch_status" ADD VALUE \'call_intent\'',
     );
-    expect(callIntentMigration).not.toMatch(/UPDATE\s+"ai_correction_attempts"/);
+    expect(callIntentMigration).not.toMatch(
+      /UPDATE\s+"ai_correction_attempts"/,
+    );
   });
 
   it('keeps historical fields nullable and performs no destructive backfill', () => {

@@ -1,0 +1,64 @@
+enum StageAssessmentType {
+  PROJECT            @map("project")
+  CASE_STUDY         @map("case_study")
+  WRITTEN_ASSIGNMENT @map("written_assignment")
+  PRACTICAL_EXERCISE @map("practical_exercise")
+  ORAL               @map("oral")
+  SIMULATION         @map("simulation")
+  CUMULATIVE_EXAM    @map("cumulative_exam")
+
+  @@map("stage_assessment_type")
+}
+
+enum StageAssessmentSubmissionStatus {
+  DRAFT          @map("draft")
+  SUBMITTED      @map("submitted")
+  VALIDATED      @map("validated")
+  NEEDS_REVISION @map("needs_revision")
+
+  @@map("stage_assessment_submission_status")
+}
+
+enum ConceptAssessmentType {
+  QUIZ          @map("quiz")
+  SHORT_ANSWER  @map("short_answer")
+  PRACTICE      @map("practice")
+  FLASHCARD     @map("flashcard")
+  CASE_QUESTION @map("case_question")
+
+  @@map("concept_assessment_type")
+}
+
+enum ConceptProgressStatus {
+  NOT_STARTED  @map("not_started")
+  LEARNING     @map("learning")
+  VALIDATED    @map("validated")
+  NEEDS_REVIEW @map("needs_review")
+
+  @@map("concept_progress_status")
+}
+
+enum ConceptQuestionType {
+  TRUE_FALSE      @map("true_false")
+  SINGLE_CHOICE   @map("single_choice")
+  MULTIPLE_CHOICE @map("multiple_choice")
+  SHORT_ANSWER    @map("short_answer")
+
+  @@map("concept_question_type")
+}
+
+enum QuizQuestionType {
+  TRUE_FALSE      @map("true_false")
+  SINGLE_CHOICE   @map("single_choice")
+  MULTIPLE_CHOICE @map("multiple_choice")
+  SHORT_ANSWER    @map("short_answer")
+
+  @@map("quiz_question_type")
+}
+
+enum ExerciseSubmissionStatus {
+  DRAFT     @map("draft")
+  SUBMITTED @map("submitted")
+
+  @@map("exercise_submission_status")
+}

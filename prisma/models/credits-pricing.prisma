@@ -1,0 +1,322 @@
+model CreditAccount {
+  id               String              @id @default(uuid()) @db.Uuid
+  userId           String              @map("user_id") @db.Uuid
+  currency         CreditCurrency      @default(LEARNX_CREDIT)
+  freeBalance      BigInt              @default(0) @map("free_balance")
+  purchasedBalance BigInt              @default(0) @map("purchased_balance")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+  user             User                @relation("CreditAccountOwner", fields: [userId], references: [id], onDelete: Restrict)
+  lots             CreditLot[]
+  ledgerEntries    CreditLedgerEntry[]
+  reservations     CreditReservation[]
+  grantCycles      CreditGrantCycle[]
+
+  @@unique([userId, currency])
+  @@unique([id, userId])
+  @@map("credit_accounts")
+}
+
+model CreditLot {
+  id                     String                         @id @default(uuid()) @db.Uuid
+  accountId              String                         @map("account_id") @db.Uuid
+  provenance             CreditProvenance
+  initialAmount          BigInt                         @map("initial_amount")
+  remainingAmount        BigInt                         @map("remaining_amount")
+  expiresAt              DateTime?                      @map("expires_at")
+  sourceReferenceType    String                         @map("source_reference_type")
+  sourceReferenceId      String                         @map("source_reference_id")
+  createdAt              DateTime                       @default(now()) @map("created_at")
+  allocationPolicyId     String?                        @map("allocation_policy_id") @db.Uuid
+  account                CreditAccount                  @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  allocationPolicy       CreditAllocationPolicyVersion? @relation(fields: [allocationPolicyId, provenance], references: [id, provenance], onDelete: Restrict)
+  grantCycle             CreditGrantCycle?
+  ledgerEntries          CreditLedgerEntry[]
+  reservationAllocations CreditReservationAllocation[]
+
+  @@unique([id, accountId])
+  @@index([accountId, provenance, expiresAt, createdAt])
+  @@index([allocationPolicyId, createdAt])
+  @@map("credit_lots")
+}
+
+model CreditReservation {
+  id                      String                          @id @default(uuid()) @db.Uuid
+  accountId               String                          @map("account_id") @db.Uuid
+  userId                  String                          @map("user_id") @db.Uuid
+  status                  CreditReservationStatus         @default(RESERVED)
+  ceilingAmount           BigInt                          @map("ceiling_amount")
+  settledAmount           BigInt?                         @map("settled_amount")
+  idempotencyKey          String                          @map("idempotency_key")
+  requestFingerprint      String                          @map("request_fingerprint") @db.Char(64)
+  referenceType           String                          @map("reference_type")
+  referenceId             String                          @map("reference_id")
+  expiresAt               DateTime                        @map("expires_at")
+  executionLeaseExpiresAt DateTime?                       @map("execution_lease_expires_at")
+  settledAt               DateTime?                       @map("settled_at")
+  releasedAt              DateTime?                       @map("released_at")
+  createdAt               DateTime                        @default(now()) @map("created_at")
+  updatedAt               DateTime                        @updatedAt @map("updated_at")
+  account                 CreditAccount                   @relation(fields: [accountId, userId], references: [id, userId], onDelete: Restrict)
+  allocations             CreditReservationAllocation[]
+  ledgerEntries           CreditLedgerEntry[]
+  aiCorrection            AiCorrection?
+  financialOperation      AiCorrectionFinancialOperation?
+
+  @@unique([accountId, idempotencyKey])
+  @@unique([id, accountId])
+  @@unique([id, userId])
+  @@index([status, expiresAt])
+  @@map("credit_reservations")
+}
+
+model CreditReservationAllocation {
+  id            String            @id @default(uuid()) @db.Uuid
+  reservationId String            @map("reservation_id") @db.Uuid
+  accountId     String            @map("account_id") @db.Uuid
+  lotId         String            @map("lot_id") @db.Uuid
+  amount        BigInt
+  position      Int
+  createdAt     DateTime          @default(now()) @map("created_at")
+  reservation   CreditReservation @relation(fields: [reservationId, accountId], references: [id, accountId], onDelete: Restrict)
+  lot           CreditLot         @relation(fields: [lotId, accountId], references: [id, accountId], onDelete: Restrict)
+
+  @@unique([reservationId, lotId])
+  @@unique([reservationId, position])
+  @@index([accountId, lotId])
+  @@map("credit_reservation_allocations")
+}
+
+model CreditLedgerEntry {
+  id                 String                @id @default(uuid()) @db.Uuid
+  accountId          String                @map("account_id") @db.Uuid
+  userId             String                @map("user_id") @db.Uuid
+  lotId              String                @map("lot_id") @db.Uuid
+  reservationId      String?               @map("reservation_id") @db.Uuid
+  currency           CreditCurrency        @default(LEARNX_CREDIT)
+  provenance         CreditProvenance
+  type               CreditLedgerEntryType
+  amount             BigInt
+  operationKey       String                @map("operation_key")
+  operationSequence  Int                   @map("operation_sequence")
+  requestFingerprint String                @map("request_fingerprint") @db.Char(64)
+  referenceType      String                @map("reference_type")
+  referenceId        String                @map("reference_id")
+  reason             String?
+  actorUserId        String?               @map("actor_user_id") @db.Uuid
+  createdAt          DateTime              @default(now()) @map("created_at")
+  account            CreditAccount         @relation(fields: [accountId, userId], references: [id, userId], onDelete: Restrict)
+  lot                CreditLot             @relation(fields: [lotId, accountId], references: [id, accountId], onDelete: Restrict)
+  reservation        CreditReservation?    @relation(fields: [reservationId, accountId], references: [id, accountId], onDelete: Restrict)
+  actor              User?                 @relation("CreditLedgerAdjustmentActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@unique([accountId, operationKey, operationSequence])
+  @@index([accountId, createdAt, id])
+  @@index([reservationId, createdAt])
+  @@index([referenceType, referenceId])
+  @@map("credit_ledger_entries")
+}
+
+model CreditAllocationPolicyVersion {
+  id                      String             @id @default(uuid()) @db.Uuid
+  key                     String
+  version                 String
+  status                  CreditPolicyStatus @default(DRAFT)
+  provenance              CreditProvenance
+  allocationAmount        BigInt?            @map("allocation_amount")
+  consumptionPriority     Int?               @map("consumption_priority")
+  renewalConfiguration    Json?              @map("renewal_configuration_json")
+  expirationConfiguration Json?              @map("expiration_configuration_json")
+  carryoverConfiguration  Json?              @map("carryover_configuration_json")
+  graceConfiguration      Json?              @map("grace_configuration_json")
+  adjustmentConfiguration Json?              @map("adjustment_configuration_json")
+  closureConfiguration    Json?              @map("closure_configuration_json")
+  preNoticeConfiguration  Json?              @map("pre_notice_configuration_json")
+  effectiveAt             DateTime?          @map("effective_at")
+  retiredAt               DateTime?          @map("retired_at")
+  createdAt               DateTime           @default(now()) @map("created_at")
+  lots                    CreditLot[]
+  grantCycles             CreditGrantCycle[]
+
+  @@unique([key, version])
+  @@unique([id, provenance])
+  @@index([status, effectiveAt])
+  @@map("credit_allocation_policy_versions")
+}
+
+model CreditLimitPolicyVersion {
+  id                       String             @id @default(uuid()) @db.Uuid
+  key                      String
+  version                  String
+  status                   CreditPolicyStatus @default(DRAFT)
+  userId                   String?            @map("user_id") @db.Uuid
+  capability               String?
+  action                   String?
+  periodConfiguration      Json?              @map("period_configuration_json")
+  maximumCredits           BigInt?            @map("maximum_credits")
+  maximumConcurrentActions Int?               @map("maximum_concurrent_actions")
+  globalBudgetCredits      BigInt?            @map("global_budget_credits")
+  warningThresholdCredits  BigInt?            @map("warning_threshold_credits")
+  effectiveAt              DateTime?          @map("effective_at")
+  retiredAt                DateTime?          @map("retired_at")
+  createdAt                DateTime           @default(now()) @map("created_at")
+
+  @@unique([key, version])
+  @@index([status, userId, capability, action])
+  @@map("credit_limit_policy_versions")
+}
+
+model CreditGrantCycle {
+  id              String                        @id @default(uuid()) @db.Uuid
+  accountId       String                        @map("account_id") @db.Uuid
+  userId          String                        @map("user_id") @db.Uuid
+  policyVersionId String                        @map("policy_version_id") @db.Uuid
+  cycleKey        String                        @map("cycle_key")
+  lotId           String                        @unique @map("lot_id") @db.Uuid
+  idempotencyKey  String                        @map("idempotency_key")
+  createdAt       DateTime                      @default(now()) @map("created_at")
+  user            User                          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  account         CreditAccount                 @relation(fields: [accountId, userId], references: [id, userId], onDelete: Restrict)
+  policyVersion   CreditAllocationPolicyVersion @relation(fields: [policyVersionId], references: [id], onDelete: Restrict)
+  lot             CreditLot                     @relation(fields: [lotId, accountId], references: [id, accountId], onDelete: Restrict)
+
+  @@unique([userId, policyVersionId, cycleKey])
+  @@unique([userId, idempotencyKey])
+  @@unique([lotId, accountId])
+  @@index([policyVersionId, cycleKey])
+  @@map("credit_grant_cycles")
+}
+
+model CreditIncreaseRequest {
+  id                 String                      @id @default(uuid()) @db.Uuid
+  userId             String                      @map("user_id") @db.Uuid
+  status             CreditIncreaseRequestStatus @default(PENDING)
+  reason             String
+  idempotencyKey     String                      @map("idempotency_key")
+  requestFingerprint String                      @map("request_fingerprint") @db.Char(64)
+  reviewedByUserId   String?                     @map("reviewed_by_user_id") @db.Uuid
+  reviewReason       String?                     @map("review_reason")
+  reviewedAt         DateTime?                   @map("reviewed_at")
+  createdAt          DateTime                    @default(now()) @map("created_at")
+  updatedAt          DateTime                    @updatedAt @map("updated_at")
+  user               User                        @relation("CreditIncreaseRequestOwner", fields: [userId], references: [id], onDelete: Restrict)
+  reviewedBy         User?                       @relation("CreditIncreaseRequestReviewer", fields: [reviewedByUserId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@map("credit_increase_requests")
+}
+
+model AiPricingCatalogVersion {
+  id                           String                       @id @default(uuid()) @db.Uuid
+  version                      String                       @unique
+  status                       AiPricingCatalogStatus       @default(DRAFT)
+  currency                     CreditCurrency               @default(LEARNX_CREDIT)
+  language                     String                       @db.VarChar(10)
+  benchmarkId                  String                       @map("benchmark_id")
+  corpusId                     String                       @map("corpus_id")
+  promptVersion                String                       @map("prompt_version")
+  provider                     String
+  modelId                      String                       @map("model_id")
+  workflowKind                 AiPricingWorkflowKind        @default(SINGLE_MODEL) @map("workflow_kind")
+  pipelineVersionId            String?                      @map("pipeline_version_id") @db.Uuid
+  pipelineIdentitySnapshot     Json?                        @map("pipeline_identity_snapshot_json")
+  costDimensions               Json?                        @map("cost_dimensions_json")
+  providerRateCardVersion      String?                      @map("provider_rate_card_version")
+  providerRateCardEffectiveAt  DateTime?                    @map("provider_rate_card_effective_at")
+  usesPromotionalProviderRates Boolean                      @default(false) @map("uses_promotional_provider_rates")
+  creditsPerEuro               Int?                         @map("credits_per_euro")
+  quoteTtlSeconds              Int                          @map("quote_ttl_seconds")
+  effectiveAt                  DateTime?                    @map("effective_at")
+  retiredAt                    DateTime?                    @map("retired_at")
+  createdAt                    DateTime                     @default(now()) @map("created_at")
+  entries                      AiPricingCatalogEntry[]
+  pipelineVersion              AiCorrectionPipelineVersion? @relation(fields: [pipelineVersionId], references: [id], onDelete: Restrict)
+
+  @@index([status, effectiveAt])
+  @@map("ai_pricing_catalog_versions")
+}
+
+model AiPricingCatalogEntry {
+  id                           String                  @id @default(uuid()) @db.Uuid
+  catalogVersionId             String                  @map("catalog_version_id") @db.Uuid
+  action                       AiPricingAction
+  inputSizeClass               AiPricingInputSizeClass @map("input_size_class")
+  minInputChars                Int                     @map("min_input_chars")
+  maxInputChars                Int?                    @map("max_input_chars")
+  providerMedianCostUsd        Decimal                 @map("provider_median_cost_usd") @db.Decimal(18, 8)
+  providerP90CostUsd           Decimal                 @map("provider_p90_cost_usd") @db.Decimal(18, 8)
+  providerMedianCostCredits    BigInt                  @map("provider_median_cost_credits")
+  providerP90CostCredits       BigInt                  @map("provider_p90_cost_credits")
+  feeCredits                   BigInt                  @map("fee_credits")
+  targetMarginCredits          BigInt                  @map("target_margin_credits")
+  floorCredits                 BigInt                  @map("floor_credits")
+  safetyCoefficient            Decimal                 @map("safety_coefficient") @db.Decimal(8, 4)
+  includesAutomaticSecondPass  Boolean                 @default(false) @map("includes_automatic_second_pass")
+  includesTargetedVerification Boolean                 @default(false) @map("includes_targeted_verification")
+  verificationEvidenceId       String?                 @map("verification_evidence_id")
+  status                       AiPricingCatalogStatus  @default(DRAFT)
+  measuredAt                   DateTime                @map("measured_at")
+  createdAt                    DateTime                @default(now()) @map("created_at")
+  catalogVersion               AiPricingCatalogVersion @relation(fields: [catalogVersionId], references: [id], onDelete: Restrict)
+  quotes                       AiPricingQuote[]
+
+  @@unique([catalogVersionId, action, inputSizeClass])
+  @@unique([id, catalogVersionId])
+  @@index([catalogVersionId, action, status])
+  @@map("ai_pricing_catalog_entries")
+}
+
+model AiPricingQuote {
+  id                            String                       @id @default(uuid()) @db.Uuid
+  userId                        String                       @map("user_id") @db.Uuid
+  catalogVersionId              String                       @map("catalog_version_id") @db.Uuid
+  catalogEntryId                String                       @map("catalog_entry_id") @db.Uuid
+  action                        AiPricingAction
+  inputSizeClass                AiPricingInputSizeClass      @map("input_size_class")
+  targetKind                    AiPricingTargetKind          @map("target_kind")
+  targetId                      String                       @map("target_id") @db.Uuid
+  contractKey                   String                       @map("contract_key")
+  contractVersion               String                       @map("contract_version")
+  language                      String                       @db.VarChar(10)
+  provider                      String
+  modelId                       String                       @map("model_id")
+  promptVersion                 String                       @map("prompt_version")
+  inputChars                    Int                          @map("input_chars")
+  estimatedCredits              BigInt                       @map("estimated_credits")
+  ceilingCredits                BigInt                       @map("ceiling_credits")
+  floorCredits                  BigInt                       @map("floor_credits")
+  providerMedianCostUsdSnapshot Decimal                      @map("provider_median_cost_usd_snapshot") @db.Decimal(18, 8)
+  providerP90CostUsdSnapshot    Decimal                      @map("provider_p90_cost_usd_snapshot") @db.Decimal(18, 8)
+  providerMedianCreditsSnapshot BigInt                       @map("provider_median_credits_snapshot")
+  providerP90CreditsSnapshot    BigInt                       @map("provider_p90_credits_snapshot")
+  feeCreditsSnapshot            BigInt                       @map("fee_credits_snapshot")
+  targetMarginCreditsSnapshot   BigInt                       @map("target_margin_credits_snapshot")
+  safetyCoefficientSnapshot     Decimal                      @map("safety_coefficient_snapshot") @db.Decimal(8, 4)
+  includesAutomaticSecondPass   Boolean                      @map("includes_automatic_second_pass")
+  includesTargetedVerification  Boolean                      @default(false) @map("includes_targeted_verification")
+  workflowKind                  AiPricingWorkflowKind        @default(SINGLE_MODEL) @map("workflow_kind")
+  pipelineIdentitySnapshot      Json?                        @map("pipeline_identity_snapshot_json")
+  pipelineVersionId             String?                      @map("pipeline_version_id") @db.Uuid
+  costDimensionsSnapshot        Json?                        @map("cost_dimensions_snapshot_json")
+  idempotencyKey                String                       @map("idempotency_key")
+  requestFingerprint            String                       @map("request_fingerprint") @db.Char(64)
+  reconsiderationOfCorrectionId String?                      @map("reconsideration_of_correction_id") @db.Uuid
+  reconsiderationArgument       String?                      @map("reconsideration_argument") @db.VarChar(500)
+  expiresAt                     DateTime                     @map("expires_at")
+  createdAt                     DateTime                     @default(now()) @map("created_at")
+  user                          User                         @relation(fields: [userId], references: [id], onDelete: Restrict)
+  catalogEntry                  AiPricingCatalogEntry        @relation(fields: [catalogEntryId, catalogVersionId], references: [id, catalogVersionId], onDelete: Restrict)
+  pipelineVersion               AiCorrectionPipelineVersion? @relation(fields: [pipelineVersionId], references: [id], onDelete: Restrict)
+  aiCorrection                  AiCorrection?
+  reconsiderationOfCorrection   AiCorrection?                @relation("AiPricingQuoteReconsideration", fields: [reconsiderationOfCorrectionId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, idempotencyKey])
+  @@unique([id, userId])
+  @@index([userId, createdAt])
+  @@index([targetKind, targetId, createdAt])
+  @@index([expiresAt])
+  @@index([reconsiderationOfCorrectionId, createdAt])
+  @@map("ai_pricing_quotes")
+}
