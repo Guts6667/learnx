@@ -179,6 +179,7 @@ export function useAdminCreditMembersQuery(input: {
     data: result.data?.page,
     error: result.error,
     isPending: result.isPending,
+    retry: result.refetch,
   };
 }
 
@@ -195,6 +196,7 @@ export function useAdminCreditMemberQuery(userId: string | undefined) {
     data: userId ? result.data?.member : undefined,
     error: userId ? result.error : undefined,
     isPending: userId ? result.isPending : false,
+    retry: result.refetch,
   };
 }
 
@@ -209,6 +211,7 @@ export function useAdminCreditPoliciesQuery() {
     data: result.data?.policies,
     error: result.error,
     isPending: result.isPending,
+    retry: result.refetch,
   };
 }
 
@@ -221,6 +224,7 @@ export function useAdminCorrectionMonitoringQuery() {
     data: result.data?.monitoring,
     error: result.error,
     isPending: result.isPending,
+    retry: result.refetch,
   };
 }
 
@@ -233,6 +237,7 @@ export function useAdminCorrectionPreflightQuery() {
     data: result.data?.preflight,
     error: result.error,
     isPending: result.isPending,
+    retry: result.refetch,
   };
 }
 
