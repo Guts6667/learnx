@@ -5,6 +5,7 @@ import type {
 import {
   buildVerificationUrl,
   consumeEmailVerification,
+  createEmailVerificationConsumerDependencies,
   createEmailVerificationDependencies,
   hashVerificationToken,
   issueEmailVerification,
@@ -137,5 +138,63 @@ describe('email verification', () => {
         RESEND_API_KEY: 'secret',
       }),
     ).toThrow('APP_URL must use HTTPS');
+  });
+
+  it('builds production and local dependency sets with bounded TTL values', () => {
+    const production = createEmailVerificationDependencies({
+      APP_URL: 'https://learnx.example/path-is-normalized',
+      LEARNX_EMAIL_FROM: 'LearnX <access@learnx.example>',
+      LEARNX_EMAIL_VERIFICATION_ENABLED: 'true',
+      LEARNX_EMAIL_VERIFICATION_TTL_MS: '300000',
+      NODE_ENV: 'production',
+      RESEND_API_KEY: 'secret',
+    });
+    expect(production).toMatchObject({
+      appUrl: 'https://learnx.example',
+      ttlMilliseconds: 300_000,
+    });
+    expect(production?.createAccessRequestId()).toMatch(/^[0-9a-f-]{36}$/);
+    expect(production?.createVerificationId()).toMatch(/^[0-9a-f-]{36}$/);
+    expect(production?.createToken()).toHaveLength(43);
+    expect(production?.now()).toBeInstanceOf(Date);
+
+    expect(
+      createEmailVerificationDependencies({
+        APP_URL: 'http://localhost:5173/path',
+        LEARNX_EMAIL_FROM: 'LearnX <access@learnx.example>',
+        LEARNX_EMAIL_VERIFICATION_ENABLED: 'true',
+        RESEND_API_KEY: 'secret',
+      }),
+    ).toMatchObject({ appUrl: 'http://localhost:5173' });
+
+    for (const ttl of ['299999', '604800001', 'not-a-number']) {
+      expect(() =>
+        createEmailVerificationDependencies({
+          APP_URL: 'https://learnx.example',
+          LEARNX_EMAIL_FROM: 'LearnX <access@learnx.example>',
+          LEARNX_EMAIL_VERIFICATION_ENABLED: 'true',
+          LEARNX_EMAIL_VERIFICATION_TTL_MS: ttl,
+          NODE_ENV: 'production',
+          RESEND_API_KEY: 'secret',
+        }),
+      ).toThrow('Invalid email verification TTL configuration.');
+    }
+
+    const consumer = createEmailVerificationConsumerDependencies();
+    expect(consumer.now()).toBeInstanceOf(Date);
+    expect(consumer.repository).toBeDefined();
+  });
+
+  it('does not send an email when the repository declines issuance', async () => {
+    const context = createContext();
+    context.dependencies.repository.issue = async () => null;
+
+    await issueEmailVerification(
+      'registered@example.com',
+      'fr',
+      context.dependencies,
+    );
+
+    expect(context.sent).toHaveLength(0);
   });
 });
