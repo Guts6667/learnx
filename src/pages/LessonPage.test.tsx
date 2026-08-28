@@ -582,7 +582,7 @@ describe('LessonPage', () => {
       screen.getAllByRole('link', { name: 'Article de référence' }),
     ).toHaveLength(1);
     fireEvent.click(
-      screen.getByRole('button', { name: 'Marquer comme terminé' }),
+      await screen.findByRole('button', { name: 'Marquer comme terminé' }),
     );
 
     expect(
