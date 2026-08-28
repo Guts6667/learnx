@@ -420,8 +420,11 @@ neuvième statut.
   helpers de recalcul et les services génériques encore supérieurs aux limites
   V4.1. Correction, pricing et ledger restent exclus et réservés à V4.1-402.
   Preuves du checkpoint : lint, typecheck, 24 tests ciblés, suite complète
-  1 016/1 016 et build/PWA verts. Le checkpoint attend la revue Architecture /
-  QA ; le ticket complet reste en cours.
+  1 016/1 016 et build/PWA verts. Une exécution lancée en parallèle du build a
+  observé un flake `LessonPage` (bouton encore dans son état de chargement) ; le
+  test isolé a ensuite réussi, puis la suite stable complète a confirmé
+  1 016/1 016 tests verts. Le checkpoint attend la revue Architecture / QA ; le
+  ticket complet reste en cours.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
