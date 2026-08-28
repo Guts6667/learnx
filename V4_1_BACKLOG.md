@@ -343,9 +343,9 @@ neuvième statut.
 - Reviewer : Pédagogie / Backend / Recherche IA
 - Dépendances : V4.1-103, V4.1-104, V4.1-202, V4.1-302
 - Source : contrats d'évaluation et correction V4 ; baseline V4.1-006
-- Statut : **livré pour revue** — implémenté sur la branche dédiée
-  `agent/v41-303-assessments` depuis la base `d417c726` ; revue indépendante
-  encore obligatoire avant clôture
+- Statut : **terminé** — implémentation `ead8f10a`, revue indépendante
+  `REVIEW_PASS` puis intégration sur la branche V4.1 au commit `692c09c2` ;
+  aucun contrat serveur, score de progression ou payload n'a changé
 - Preuves : exercices, quiz, assessments concept/étape et correction assistée
   utilisent les primitives React partagées (`QueryState`, `Textarea`) ; le
   panneau de résultat est séparé du workflow de devis/exécution ; 6 fichiers /
@@ -381,10 +381,10 @@ neuvième statut.
 - Reviewer : Sécurité / Produit
 - Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-301
 - Source : routes admin et matrice d'accès V4.1-006
-- Statut : **livré pour revue** — surfaces React/shadcn conservées à contrats
-  constants ; contrôle de rôle fail-closed, erreurs récupérables, confirmations
-  explicites, pagination grands volumes et QA responsive/clavier documentés par
-  les tests du lot ; revue Sécurité / Produit distincte requise
+- Statut : **terminé** — implémentation `6c0bdde2`, revue indépendante
+  `REVIEW_PASS` puis intégration sur la branche V4.1 au commit `4acfc10a` ;
+  contrôle de rôle fail-closed, erreurs récupérables, confirmations explicites
+  et pagination bornée sont couverts sans modification des autorisations serveur
 - Critères d'acceptation :
   - accès, comptes, contacts, crédits et gestion pédagogique admin migrent ;
   - rôle admin, accès interdit et erreurs serveur restent stricts ;
