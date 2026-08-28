@@ -179,3 +179,16 @@ l'autorisation.
   elle masque désormais toutes les piles vides, ce qui retire de l'affichage les
   choix de statuts historiques sans altérer l'archive. L'interface corrigée a
   été republiée et relue avec dix pages exactement.
+
+## 28 août 2026 — clôture V4.1-503 et ouverture V4.1-504
+
+- Source Git : `c3e81c4b` sur `origin/codex/v4-1-foundation`.
+- `V4.1-503` (`recuId91JKChNHdmd`) est passé de `READY` à `DONE` après
+  consolidation des cinq documents canoniques, fermeture de la dette
+  `V4.1-404-R1` et validation de 1 371 tests.
+- `V4.1-504` (`recKRf2xYnUZAWrSx`) est passé de `DRAFT` à `READY`. Son blocage
+  de dépendance est levé ; la preview finale, la recette propriétaire, la
+  preuve de rollback/PWA et le GO explicite de Rayan restent à exécuter.
+- Les deux enregistrements ont été relus après mutation : branche, SHA, statut,
+  blocage et preuves QA correspondent au backlog Git. Aucun autre ticket,
+  champ, page ou statut Airtable n'a été modifié.
