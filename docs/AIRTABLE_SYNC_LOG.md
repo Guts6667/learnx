@@ -105,3 +105,30 @@ l'autorisation.
 - Relecture : statut, branche, SHA de base, preuve de démarrage et horodatage
   sont présents ; `État de synchro = Canonique Git`.
 - Interface : aucun brouillon n'a été publié.
+
+## 28 août 2026 — normalisation du pilotage V4.1
+
+- Autorisation : plan V4.1 approuvé par Rayan ; publication de l'interface
+  toujours exclue sans confirmation distincte.
+- Les 27 tickets V4.1 ont reçu une nature canonique et les champs `Owner` /
+  `Reviewer` ont été normalisés vers les huit rôles stables. Les valeurs
+  historiques restent uniquement sur les cartes antérieures ; aucun
+  enregistrement n'a été supprimé.
+- Les définitions exécutables se trouvent dans
+  `docs/V4_1_AIRTABLE_CONTRACT.json` et sont contrôlées par
+  `pnpm quality:airtable`. Le contrôle vérifie 27 IDs, huit rôles, six natures,
+  huit états et dix pages attendues sans écrire dans Airtable.
+- Pages brouillon créées : `V4.1 — Maintenant` (`pag9Ou1lZGtplgfCU`, Kanban),
+  `Ready` (`pagaqMosHyNv6WAGT`), `En cours par owner`
+  (`pagNrmhdBAswxtsRp`), `Review` (`pagPODll59tYbiCVp`), `QA`
+  (`pagTlI8DuvjJQMJ5E`), `Gate de release` (`pagnqJhh4IsLhkJkF`),
+  `V4.5 — Préparation` (`pagvv6a80fbqtfMAk`), `V5 — Candidats`
+  (`pagzYksoHx5HIvcdv`) et `Archive V4` (`pagLlT1p15kbN1IBT`). La page
+  `Arbitrages Rayan` existante (`pagk1VyDJhqR2rG0j`) complète les dix vues.
+- Le choix `READY_FOR_OWNER_GO` ne sera matérialisé que lors d'une transition
+  réelle après revue, jamais en attribuant artificiellement ce statut à un
+  ticket. Les statuts historiques restent disponibles pour l'archive, mais le
+  workflow actif V4.1 est borné au contrat canonique.
+- Relecture : les 27 écritures de rôles/natures ont retourné les valeurs
+  attendues et `État de synchronisation = Canonique Git`. Aucun brouillon n'a
+  été publié.

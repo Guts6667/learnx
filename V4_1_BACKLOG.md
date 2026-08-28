@@ -59,8 +59,8 @@ neuvième statut.
 ### V4.1-001 — Snapshot release/worktree/Git
 
 - Priorité : P0
-- Owner : Release engineering
-- Reviewer : Architecture / Produit
+- Owner : Architecture/Produit
+- Reviewer : QA/Release
 - Dépendances : aucune
 - Source : release V4 à `a02ecc3f` ; `AGENTS.md`
 - Statut : **terminé** — manifeste conservé et 70 métadonnées de worktrees
@@ -75,8 +75,8 @@ neuvième statut.
 ### V4.1-002 — Audit dépendances/sécurité/bundle/routes/dette
 
 - Priorité : P0
-- Owner : Architecture
-- Reviewer : Sécurité / Frontend platform
+- Owner : Backend/Data
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-001
 - Source : `package.json`, lockfile, Vite, TypeScript, routes et code baseline
 - Statut : **terminé** — audit corrigé au SHA `fc269f72` puis accepté en
@@ -91,8 +91,8 @@ neuvième statut.
 ### V4.1-003 — Manifeste branches/worktrees/nettoyage sécurisé
 
 - Priorité : P0
-- Owner : Release engineering
-- Reviewer : Propriétaire
+- Owner : Architecture/Produit
+- Reviewer : QA/Release
 - Dépendances : V4.1-001, V4.1-002
 - Source : registre Git observé ; politique de préservation V4.1
 - Statut : **terminé** — manifeste accepté en revue indépendante au HEAD
@@ -111,8 +111,8 @@ neuvième statut.
 ### V4.1-004 — Manifeste documentaire/archive IA
 
 - Priorité : P0
-- Owner : Architecture / Produit
-- Reviewer : Documentation / Recherche IA
+- Owner : IA/Recherche
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-001
 - Source : `docs/INDEX.md` ; historique de recherche correction IA
 - Statut : **terminé** — archive vérifiée dans `docs/DOCUMENT_MANIFEST.yaml` et
@@ -127,25 +127,30 @@ neuvième statut.
 ### V4.1-005 — Airtable/workflow agents
 
 - Priorité : P0
-- Owner : Architecture / Produit
-- Reviewer : Release engineering
+- Owner : Architecture/Produit
+- Reviewer : Rayan
 - Dépendances : V4.1-003, V4.1-004
 - Source : mapping Airtable approuvé ; `AGENTS.md`
-- Statut : **livré pour revue** côté Git dans ce backlog et
-  `docs/AGENT_WORKFLOW.md` ; contrat de synchronisation audité dans
-  `docs/AIRTABLE_SYNC_LOG.md`
+- Statut : **livré pour revue** — schéma, rôles stables, natures de tickets et
+  pages opérationnelles Airtable réconciliés sans publier l'interface ; contrat
+  de synchronisation audité dans `docs/AIRTABLE_SYNC_LOG.md`
 - Critères d'acceptation :
   - les IDs `001–007`, `101–104`, `201–203`, `301–305`, `401–404` et
     `501–504` conservent exactement leurs livrables autoritatifs ;
   - aucun ID n'est renuméroté ou réutilisé lors d'une synchronisation Airtable ;
+  - release, epic, nature, risque, owner et reviewer sont renseignés selon la
+    taxonomie canonique, avec un seul owner et un reviewer distinct ;
+  - les huit états canoniques et les dix vues opérationnelles sont configurés ;
   - le workflow définit affectation, isolation, revue, promotion et handoff ;
-  - aucune écriture Airtable externe n'est réalisée par le lot documentaire Git.
+  - les anciens noms d'agents et statuts restent historiques, hors workflow
+    V4.1, sans suppression aveugle ni réactivation implicite ;
+  - aucune interface Airtable n'est publiée sans validation propriétaire.
 
 ### V4.1-006 — Baseline parité fonctionnelle
 
 - Priorité : P0
-- Owner : QA / Produit
-- Reviewer : Release engineering
+- Owner : QA/Release
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-002, V4.1-004, V4.1-005
 - Source : release V4 clôturée ; routes, contrats et suites de tests baseline
 - Statut : **terminé** — matrice, égalité bilatérale des routes, contrat visible
@@ -170,8 +175,8 @@ neuvième statut.
 ### V4.1-007 — Seuils couverture/sécurité/bundle
 
 - Priorité : P0
-- Owner : QA / Sécurité / Frontend platform
-- Reviewer : Architecture / Produit
+- Owner : QA/Release
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-002, V4.1-006
 - Source : `docs/V4_1_TECHNICAL_AUDIT.md` ; mesures de V4.1-006
 - Statut : **terminé** — après deux revues rejetées, le lot a fermé les
@@ -191,8 +196,8 @@ neuvième statut.
 ### V4.1-101 — Fondation React/Vite/TS
 
 - Priorité : P0
-- Owner : Frontend platform
-- Reviewer : Architecture frontend
+- Owner : Frontend
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-006, V4.1-007
 - Source : audit V4.1-002 ; gates V4.1-007
 - Statut : **terminé** — React 19 est l'unique runtime UI, sans import ni
@@ -206,8 +211,8 @@ neuvième statut.
 ### V4.1-102 — Routeur/navigations
 
 - Priorité : P0
-- Owner : Frontend application
-- Reviewer : Produit / Accessibilité
+- Owner : Frontend
+- Reviewer : QA/Release
 - Dépendances : V4.1-101
 - Source : 33 routes client et baseline V4.1-006
 - Statut : **terminé** — routes migrées, parité contrôlée et navigation native
@@ -222,8 +227,8 @@ neuvième statut.
 ### V4.1-103 — Providers React/React Query/i18n/PWA
 
 - Priorité : P0
-- Owner : Frontend platform
-- Reviewer : Backend / PWA / i18n
+- Owner : Frontend
+- Reviewer : Backend/Data
 - Dépendances : V4.1-101, V4.1-102
 - Source : providers et requêtes baseline ; configuration PWA et catalogues
 - Statut : **terminé** — providers React, React Query, i18n et PWA passent la
@@ -239,8 +244,8 @@ neuvième statut.
 ### V4.1-104 — Testing Library Preact→React
 
 - Priorité : P0
-- Owner : QA automation
-- Reviewer : Frontend platform
+- Owner : QA/Release
+- Reviewer : Frontend
 - Dépendances : V4.1-101, V4.1-102, V4.1-103
 - Source : suites `@testing-library/preact` et baseline V4.1-006
 - Statut : **terminé** — Testing Library React en place ; revue indépendante
@@ -257,8 +262,8 @@ neuvième statut.
 ### V4.1-201 — shadcn Maia/tokens
 
 - Priorité : P0
-- Owner : Design systems
-- Reviewer : Direction artistique / Accessibilité
+- Owner : Frontend
+- Reviewer : Design
 - Dépendances : V4.1-007, V4.1-101
 - Source : direction Totem/Maia promue ; seuils V4.1-007
 - Statut : **terminé** — fondation shadcn Maia et tokens LearnX intégrés sans
@@ -274,8 +279,8 @@ neuvième statut.
 ### V4.1-202 — Primitives/forms/dialogues/tables/states
 
 - Priorité : P0
-- Owner : Design systems
-- Reviewer : QA / Accessibilité
+- Owner : Frontend
+- Reviewer : QA/Release
 - Dépendances : V4.1-201
 - Source : inventaire UI V4.1-006 ; fondation V4.1-201
 - Statut : **terminé** — implémentation et revue indépendante `REVIEW_PASS` au
@@ -291,8 +296,8 @@ neuvième statut.
 ### V4.1-203 — Shells/navigation/responsive
 
 - Priorité : P0
-- Owner : Frontend application
-- Reviewer : Produit / Accessibilité
+- Owner : Frontend
+- Reviewer : Design
 - Dépendances : V4.1-102, V4.1-202
 - Source : navigation V4.1-102 ; primitives V4.1-202
 - Statut : **terminé** — implémentation au SHA `13f31bb4` et revue indépendante
@@ -310,8 +315,8 @@ neuvième statut.
 ### V4.1-301 — Auth/public
 
 - Priorité : P0
-- Owner : Frontend application
-- Reviewer : Sécurité / Produit
+- Owner : Frontend
+- Reviewer : QA/Release
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline auth/public V4.1-006
 - Statut : **terminé** — revue indépendante `REVIEW_PASS` au commit
@@ -327,8 +332,8 @@ neuvième statut.
 ### V4.1-302 — Today/programmes/leçons
 
 - Priorité : P0
-- Owner : Frontend application
-- Reviewer : Domaine / Produit
+- Owner : Frontend
+- Reviewer : QA/Release
 - Dépendances : V4.1-103, V4.1-104, V4.1-203
 - Source : baseline parcours V4.1-006
 - Statut : **terminé** — revue indépendante `REVIEW_PASS` au commit
@@ -346,8 +351,8 @@ neuvième statut.
 ### V4.1-303 — Exercises/quiz/assessments/correction
 
 - Priorité : P0
-- Owner : Frontend application
-- Reviewer : Pédagogie / Backend / Recherche IA
+- Owner : Frontend
+- Reviewer : IA/Recherche
 - Dépendances : V4.1-103, V4.1-104, V4.1-202, V4.1-302
 - Source : contrats d'évaluation et correction V4 ; baseline V4.1-006
 - Statut : **terminé** — implémentation `ead8f10a`, revue indépendante
@@ -369,8 +374,8 @@ neuvième statut.
 ### V4.1-304 — Reviews/notes/profile/credits
 
 - Priorité : P0
-- Owner : Frontend application
-- Reviewer : Produit / Finance / QA
+- Owner : Frontend
+- Reviewer : Backend/Data
 - Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-302
 - Source : baseline V4.1-006 ; contrats notes, reviews et ledger
 - Statut : **terminé** — migration et reprises `0347c87d`, `aa68c992`,
@@ -385,8 +390,8 @@ neuvième statut.
 ### V4.1-305 — Admin/permissions
 
 - Priorité : P0
-- Owner : Frontend application
-- Reviewer : Sécurité / Produit
+- Owner : Frontend
+- Reviewer : Backend/Data
 - Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-301
 - Source : routes admin et matrice d'accès V4.1-006
 - Statut : **terminé** — implémentation `6c0bdde2`, revue indépendante
@@ -404,8 +409,8 @@ neuvième statut.
 ### V4.1-401 — API/services decomposition
 
 - Priorité : P1
-- Owner : Backend platform
-- Reviewer : Architecture / QA
+- Owner : Backend/Data
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-301, V4.1-302, V4.1-303, V4.1-304, V4.1-305
 - Source : audit V4.1-002 ; contrats prouvés par les lots 300
 - Statut : **prêt** — dépendances V4.1-301 à V4.1-305 terminées et revues ;
@@ -419,8 +424,8 @@ neuvième statut.
 ### V4.1-402 — Correction/pricing/ledger decomposition
 
 - Priorité : P0
-- Owner : Backend / Finance
-- Reviewer : Sécurité / Recherche IA
+- Owner : Backend/Data
+- Reviewer : IA/Recherche
 - Dépendances : V4.1-303, V4.1-304, V4.1-305, V4.1-401
 - Source : contrats V4 correction/pricing/ledger ; audit V4.1-002
 - Statut : **bloqué** — dépendance V4.1-401 et surfaces métier
@@ -433,8 +438,8 @@ neuvième statut.
 ### V4.1-403 — Prisma multi-file zero SQL
 
 - Priorité : P0
-- Owner : Data / Backend platform
-- Reviewer : DBA / Release engineering
+- Owner : Backend/Data
+- Reviewer : QA/Release
 - Dépendances : V4.1-401, V4.1-402
 - Source : `prisma/schema.prisma`, migrations et audit V4.1-002
 - Statut : **bloqué** — dépendances V4.1-401 et V4.1-402
@@ -447,8 +452,8 @@ neuvième statut.
 ### V4.1-404 — i18n/CSS/benchmark runner split
 
 - Priorité : P1
-- Owner : Frontend platform / Recherche IA
-- Reviewer : i18n / Design systems / QA
+- Owner : Architecture/Produit
+- Reviewer : Frontend
 - Dépendances : V4.1-104, V4.1-203, V4.1-303, V4.1-304, V4.1-305,
   V4.1-401, V4.1-402, V4.1-403
 - Source : hotspots de l'audit V4.1-002
@@ -464,8 +469,8 @@ neuvième statut.
 ### V4.1-501 — Coverage 80/90
 
 - Priorité : P0
-- Owner : QA automation
-- Reviewer : Architecture / Produit
+- Owner : QA/Release
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-104, V4.1-301, V4.1-302, V4.1-303, V4.1-304,
   V4.1-305, V4.1-401, V4.1-402, V4.1-403, V4.1-404
 - Source : seuils V4.1-007 ; suites migrées et modules décomposés
@@ -480,8 +485,8 @@ neuvième statut.
 ### V4.1-502 — Full QA/perf/security/a11y
 
 - Priorité : P0
-- Owner : QA / Release engineering
-- Reviewer : Sécurité / Accessibilité / Produit
+- Owner : QA/Release
+- Reviewer : Architecture/Produit
 - Dépendances : V4.1-501
 - Source : baseline V4.1-006 ; seuils V4.1-007 ; couverture V4.1-501
 - Statut : **bloqué** — dépendance V4.1-501
@@ -494,8 +499,8 @@ neuvième statut.
 ### V4.1-503 — Handoff/debt
 
 - Priorité : P0
-- Owner : Architecture / Produit
-- Reviewer : Release engineering
+- Owner : Architecture/Produit
+- Reviewer : Rayan
 - Dépendances : V4.1-502
 - Source : preuves de tous les tickets V4.1 antérieurs
 - Statut : **bloqué** — dépendance V4.1-502
@@ -508,8 +513,8 @@ neuvième statut.
 ### V4.1-504 — Final preview/rollback/GO/release
 
 - Priorité : P0
-- Owner : Release engineering
-- Reviewer : Propriétaire
+- Owner : QA/Release
+- Reviewer : Rayan
 - Dépendances : V4.1-503 et tous les tickets P0 V4.1 terminés
 - Source : handoff V4.1-503 ; preuves des 26 tickets précédents
 - Statut : **bloqué** — dépendance V4.1-503

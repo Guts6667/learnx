@@ -45,6 +45,7 @@
     "quality:dead-code": "knip",
     "quality:imports:baseline": "pnpm typecheck && tsx scripts/check-v4-1-imports.ts --mode baseline",
     "quality:imports:v4.1": "pnpm typecheck && tsx scripts/check-v4-1-imports.ts --mode final",
+    "quality:airtable": "tsx scripts/check-v4-1-airtable.ts",
     "quality:prepare": "pnpm prisma:generate",
     "quality:security": "pnpm audit --audit-level=high --prod",
     "quality:v4.1:baseline": "pnpm quality:prepare && pnpm lint && pnpm quality:imports:baseline && pnpm test:coverage:baseline && pnpm quality:coverage:critical:report && pnpm build && pnpm quality:bundle && pnpm quality:security",

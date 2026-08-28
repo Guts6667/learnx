@@ -4,8 +4,8 @@
 
 - Version : 1.0.0
 - Date : 26 août 2026
-- Owner : Release engineering
-- Reviewer : Architecture / Produit
+- Owner : Architecture/Produit
+- Reviewer : Rayan
 
 Ce workflow complète `AGENTS.md` sans le remplacer. `AGENTS.md`, le ticket
 actif et les instructions explicites du Propriétaire prévalent. Il s'applique
@@ -83,6 +83,46 @@ Les vues opérationnelles attendues sont : `V4.1 — Maintenant`, `Ready`,
 `V4.5 — Préparation`, `V5 — Candidats` et `Archive V4`. Une vue non publiée ou
 non vérifiée reste un élément à configurer ; sa présence ne peut pas être
 inférée depuis le seul schéma des tickets.
+
+### Rôles stables
+
+Les champs `Owner` et `Reviewer` utilisent exclusivement les huit rôles
+suivants pour V4.1 et les releases suivantes :
+
+- `Architecture/Produit` : architecture, ADR, backlog et documentation ;
+- `Frontend` : React, shadcn et surfaces applicatives ;
+- `Backend/Data` : API, Prisma, crédits, finance technique et sécurité serveur ;
+- `QA/Release` : tests, couverture, previews, rollback et release ;
+- `IA/Recherche` : preuves expérimentales, correction assistée et V4.5 ;
+- `Design` : validation visuelle sans mutation des contrats métier ;
+- `Finance` : consultation économique V4.5 uniquement ;
+- `Rayan` : arbitrages produit, dépenses et GO de production.
+
+Chaque ticket possède exactement un owner et un reviewer distinct. Les
+expertises supplémentaires requises sont inscrites dans les critères ou les
+preuves QA, jamais concaténées dans ces deux champs.
+
+Les valeurs historiques (`AGENT-*`, `Frontend platform`, `Release engineering`
+et synonymes) restent lisibles sur les cartes archivées afin de préserver
+l'audit. Elles sont retirées du workflow actif : aucun nouveau ticket ne peut
+les utiliser et leur réactivation exige une décision explicite. Cette règle
+archive les anciens agents au niveau opérationnel sans effacer leur historique
+ni les décisions uniques déjà extraites dans les sources canoniques.
+
+### Natures de tickets
+
+La taxonomie active est bornée aux six valeurs suivantes :
+
+- `Audit/Gouvernance` pour V4.1-001 à V4.1-007 ;
+- `Migration frontend` pour V4.1-101 à V4.1-104 ;
+- `Design system` pour V4.1-201 à V4.1-203 ;
+- `Surface fonctionnelle` pour V4.1-301 à V4.1-305 ;
+- `Refactor technique` pour V4.1-401 à V4.1-404 ;
+- `Qualité/Release` pour V4.1-501 à V4.1-504.
+
+Les anciennes valeurs de nature restent historiques et ne s'appliquent pas à
+V4.1. Une valeur nouvelle exige une modification revue de ce contrat avant sa
+création dans Airtable.
 
 ## 1. Contrat d'affectation
 
