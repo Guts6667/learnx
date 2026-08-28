@@ -15,7 +15,7 @@ export const AI_DEPLOYMENT_ENVIRONMENTS = [
 export type AiDeploymentEnvironment =
   (typeof AI_DEPLOYMENT_ENVIRONMENTS)[number];
 
-export interface AiModelAssignment {
+interface AiModelAssignment {
   modelId: string;
   provider: string;
 }

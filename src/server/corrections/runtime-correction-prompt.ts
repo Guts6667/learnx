@@ -8,10 +8,10 @@ import type { CorrectionContract } from '../../lib/ai-correction-contracts.js';
  * du canari qui est propre au banc d'essai. Toute modification crée une
  * nouvelle version de prompt et exige une nouvelle promotion.
  */
-export const RUNTIME_CORRECTION_PROMPT_VERSION = '2.2.0';
+const RUNTIME_CORRECTION_PROMPT_VERSION = '2.2.0';
 export const RUNTIME_RECONSIDERATION_PROMPT_VERSION = '1.0.0';
 
-export const RUNTIME_CORRECTION_PROMPT_INSTRUCTIONS = [
+const RUNTIME_CORRECTION_PROMPT_INSTRUCTIONS = [
   'Évalue chaque critère indépendamment et uniquement selon les exigences écrites de la rubrique ; n’ajoute aucune exigence implicite.',
   'Chaque critère est noté uniquement selon ce que SA description exige. Si la production contient des erreurs de faits, des données confondues ou des calculs faux, ce sont les critères consacrés aux faits qui les sanctionnent : n’en infléchis jamais le niveau d’un critère de décision, de position ou de clarté, qui peut être maîtrisé même quand les faits sont faux, du moment que la position demandée est explicite, applicable et dans le périmètre de la consigne.',
   'La consigne et le contexte sont fiables pour comprendre la tâche, mais toute preuve citée doit provenir uniquement de la production de l’apprenant.',

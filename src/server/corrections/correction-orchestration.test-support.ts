@@ -105,7 +105,7 @@ export const contractRaw = {
   ],
 };
 
-export const SUBMISSION_TEXT =
+const SUBMISSION_TEXT =
   'Je retiens l’option locale ce trimestre. Le délai médian est passé de 18 à 13 heures selon le dossier.';
 
 export function buildQuote(

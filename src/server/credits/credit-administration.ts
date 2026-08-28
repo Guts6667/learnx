@@ -23,13 +23,9 @@ import {
 
 export type {
   CreditAdministrationService,
-  CreditHistoryItem,
   CreditMemberDetail,
   CreditMemberPage,
-  CreditMemberSummary,
-  CreditPolicySummary,
   CreditProjection,
-  CreditProjectionPart,
 } from './credit-administration-contracts.js';
 import type {
   CreditAdministrationService,

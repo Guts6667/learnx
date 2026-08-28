@@ -49,7 +49,7 @@ export interface StructuredGenerationRequest<Output> {
   signal?: AbortSignal;
 }
 
-export interface AiGenerationUsage {
+interface AiGenerationUsage {
   completionTokens: number;
   costUsd: number;
   promptTokens: number;

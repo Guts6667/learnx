@@ -17,8 +17,7 @@ import {
   type StructuredAiProvider,
 } from './structured-provider.js';
 
-export const CORRECTION_METHODS = ['DETERMINISTIC', 'AI'] as const;
-export type CorrectionMethod = (typeof CORRECTION_METHODS)[number];
+type CorrectionMethod = 'AI' | 'DETERMINISTIC';
 
 export type CorrectionStatus =
   | 'RESERVED'
@@ -128,7 +127,7 @@ function canonicalize(value: unknown): unknown {
   );
 }
 
-export function createCorrectionRequestFingerprint(input: {
+function createCorrectionRequestFingerprint(input: {
   contract: CorrectionContract;
   maxOutputTokens: number;
   messages: AiPromptMessage[];

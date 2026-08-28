@@ -7,7 +7,7 @@ export const AI_PRICING_ACTIONS = [
   'RECONSIDERATION',
 ] as const;
 export type AiPricingActionValue = (typeof AI_PRICING_ACTIONS)[number];
-export type AiPricingInputSizeClassValue = 'SHORT' | 'MEDIUM' | 'LONG';
+type AiPricingInputSizeClassValue = 'SHORT' | 'MEDIUM' | 'LONG';
 export type AiPricingTarget =
   | {
       id: string;

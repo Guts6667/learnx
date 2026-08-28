@@ -19,7 +19,7 @@ export interface CreditProjection {
   totalReserved: bigint;
 }
 
-export interface CreditHistoryItem {
+interface CreditHistoryItem {
   actorUserId: string | null;
   amount: bigint;
   createdAt: Date;
@@ -31,7 +31,7 @@ export interface CreditHistoryItem {
   type: CreditLedgerEntryType;
 }
 
-export interface CreditMemberSummary {
+interface CreditMemberSummary {
   accountStatus: 'ACTIVE' | 'SUSPENDED';
   displayName: string;
   email: string;
@@ -56,7 +56,7 @@ export interface CreditMemberPage {
   totalPages: number;
 }
 
-export interface CreditPolicySummary {
+interface CreditPolicySummary {
   id: string;
   key: string;
   status: CreditPolicyStatus;

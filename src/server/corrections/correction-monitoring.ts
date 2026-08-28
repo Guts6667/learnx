@@ -1,12 +1,8 @@
 import type { PrismaClient } from '../../../generated/prisma/client.js';
 
-export const CORRECTION_MONITORING_SIGNALS = [
-  'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED',
-  'SCORE_GUARD_TRIGGERED',
-] as const;
-
 export type CorrectionMonitoringSignal =
-  (typeof CORRECTION_MONITORING_SIGNALS)[number];
+  | 'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED'
+  | 'SCORE_GUARD_TRIGGERED';
 
 export interface CorrectionMonitoringSummary {
   completed: number;

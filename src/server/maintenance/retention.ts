@@ -22,7 +22,7 @@ export interface RetentionRepository {
   deleteExpiredSessions(cutoff: Date, limit: number): Promise<number>;
 }
 
-export interface RetentionTargetResult {
+interface RetentionTargetResult {
   candidates: number;
   deleted: number;
   hasMore: boolean;
