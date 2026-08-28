@@ -149,3 +149,23 @@ l'autorisation.
 - La clôture du ticket et la publication des neuf pages brouillon restent deux
   actions distinctes soumises au GO explicite de Rayan. L'interface n'a pas été
   publiée.
+
+## 28 août 2026 — nettoyage structurel du backlog
+
+- Autorisation propriétaire : supprimer les structures Airtable obsolètes afin
+  de rendre la progression V4.1 lisible, sans perdre l'historique utile.
+- La base ne contient qu'une table, `Tickets` : elle est conservée comme table
+  canonique. Les 27 tickets V4.1 restent séparés de six chantiers préparatoires
+  V4.5 et de 45 enregistrements classés `Archive V4`.
+- Les huit champs historiques qui doublonnaient le contrat V4.1 ont été
+  préfixés `Archive V4 ·` et exclus du workflow actif. Les champs canoniques
+  restent `Release`, `Epic`, `Nature`, `Risque`, `Owner`, `Reviewer`, `Statut`,
+  `Blocage courant`, `Dépendances`, `Critères d’acceptation`, les références Git
+  et les preuves QA.
+- Quatre pages hors contrat ont été supprimées du brouillon de l'interface :
+  `Kanban — Pilotage détaillé`, `Roadmap détaillée`, le doublon
+  `V4.1 — Maintenant` et la page temporaire `V4.1 — Pilotage`.
+- Les dix pages déclarées dans `V4_1_AIRTABLE_CONTRACT.json` restent la seule
+  structure d'interface attendue. Les suppressions des pages publiées ne seront
+  visibles pour les utilisateurs qu'après un GO distinct de publication de
+  l'interface ; aucun GO de ce type n'a été inféré pendant le nettoyage.
