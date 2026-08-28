@@ -49,7 +49,7 @@ hors runtime et quatre helpers purement réservés aux tests :
 | Functions globales | 90,20 % | 80 % | atteint |
 | Lines globales | 90,11 % | 80 % | atteint |
 | Authentification et accès | 90,59 % (510/563) | 90 % lines | atteint |
-| Correction, pricing, crédits et réconciliation | 90,22 % (1 697/1 881) | 90 % lines | atteint |
+| Correction, pricing, crédits et réconciliation | 90,30 % (1 694/1 876) | 90 % lines | atteint |
 | Progression et évaluations | 92,23 % (1 294/1 403) | 90 % lines | atteint |
 | Autorisations admin | 93,22 % (165/177) | 90 % lines | atteint |
 

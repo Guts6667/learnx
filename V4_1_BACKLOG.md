@@ -570,7 +570,7 @@ neuvième statut.
 - Statut : **DONE** — la mesure finale reproductible du 28 août atteint
   88,95 % statements, 80,46 % branches, 90,20 % functions et 90,11 % lines,
   sur 215 fichiers / 1 370 tests verts. Les domaines critiques atteignent
-  90,59 % auth/accès, 90,22 % correction-pricing-crédits-réconciliation,
+  90,59 % auth/accès, 90,30 % correction-pricing-crédits-réconciliation,
   92,23 % progression/évaluations et 93,22 % autorisations admin.
   Le gate final est désormais le job obligatoire des pull requests et pushes
   vers `dev`. Il refuse les seuils abaissés, les fichiers critiques absents,
