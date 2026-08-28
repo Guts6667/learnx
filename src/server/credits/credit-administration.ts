@@ -2,12 +2,14 @@ import {
   AuditAction,
   CreditIncreaseRequestStatus,
   CreditLedgerEntryType,
-  CreditPolicyStatus,
   CreditProvenance,
   Prisma,
   type PrismaClient,
 } from '../../../generated/prisma/client.js';
-import { createAuditIdempotencyKey, writeAuditEvent } from '../api/_lib/audit.js';
+import {
+  createAuditIdempotencyKey,
+  writeAuditEvent,
+} from '../api/_lib/audit.js';
 import {
   assertAdjustmentReason,
   assertIdempotencyKey,
@@ -19,91 +21,23 @@ import {
   type AdjustCreditsInput,
 } from './prisma-credit-ledger.js';
 
-export interface CreditProjectionPart {
-  available: bigint;
-  consumed: bigint;
-  expired: bigint;
-  reserved: bigint;
-}
-
-export interface CreditProjection {
-  free: CreditProjectionPart;
-  purchased: CreditProjectionPart;
-  totalAvailable: bigint;
-  totalReserved: bigint;
-}
-
-export interface CreditHistoryItem {
-  actorUserId: string | null;
-  amount: bigint;
-  createdAt: Date;
-  entryId: string;
-  provenance: CreditProvenanceValue;
-  reason: string | null;
-  referenceId: string;
-  referenceType: string;
-  type: CreditLedgerEntryType;
-}
-
-export interface CreditMemberSummary {
-  accountStatus: 'ACTIVE' | 'SUSPENDED';
-  displayName: string;
-  email: string;
-  projection: CreditProjection;
-  userId: string;
-}
-
-export interface CreditMemberDetail extends CreditMemberSummary {
-  history: CreditHistoryItem[];
-  pendingIncreaseRequest: {
-    createdAt: Date;
-    id: string;
-    reason: string;
-  } | null;
-}
-
-export interface CreditMemberPage {
-  items: CreditMemberSummary[];
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
-}
-
-export interface CreditPolicySummary {
-  id: string;
-  key: string;
-  status: CreditPolicyStatus;
-  version: string;
-}
-
-export interface CreditAdministrationService {
-  adjustFreeAllocation(input: AdjustCreditsInput): Promise<CreditMemberDetail>;
-  createIncreaseRequest(input: {
-    idempotencyKey: string;
-    reason: string;
-    userId: string;
-  }): Promise<{ createdAt: Date; id: string; reason: string; status: string }>;
-  getMember(actorUserId: string, userId: string): Promise<CreditMemberDetail | null>;
-  getOwnCredits(userId: string): Promise<CreditMemberDetail | null>;
-  listMembers(input: {
-    actorUserId: string;
-    page: number;
-    pageSize: number;
-    search?: string;
-  }): Promise<CreditMemberPage>;
-  listPolicies(): Promise<{
-    allocation: CreditPolicySummary[];
-    limits: CreditPolicySummary[];
-  }>;
-  reviewIncreaseRequest(input: {
-    actorUserId: string;
-    idempotencyKey: string;
-    requestId: string;
-    reviewReason: string;
-    status: 'APPROVED' | 'REJECTED';
-  }): Promise<void>;
-}
+export type {
+  CreditAdministrationService,
+  CreditHistoryItem,
+  CreditMemberDetail,
+  CreditMemberPage,
+  CreditMemberSummary,
+  CreditPolicySummary,
+  CreditProjection,
+  CreditProjectionPart,
+} from './credit-administration-contracts.js';
+import type {
+  CreditAdministrationService,
+  CreditMemberDetail,
+  CreditMemberPage,
+  CreditProjection,
+  CreditProjectionPart,
+} from './credit-administration-contracts.js';
 
 interface ProjectionEntry {
   amount: bigint;
@@ -122,9 +56,7 @@ export function deriveCreditProjection(
   const purchased = emptyPart();
   for (const entry of entries) {
     const target =
-      entry.provenance === CreditProvenance.FREE_ALLOCATION
-        ? free
-        : purchased;
+      entry.provenance === CreditProvenance.FREE_ALLOCATION ? free : purchased;
     target.available += entry.amount;
     if (entry.type === CreditLedgerEntryType.SETTLEMENT) {
       target.consumed += -entry.amount;
@@ -161,9 +93,7 @@ function provenance(value: CreditProvenance): CreditProvenanceValue {
     : 'PURCHASED';
 }
 
-export class PrismaCreditAdministrationService
-  implements CreditAdministrationService
-{
+export class PrismaCreditAdministrationService implements CreditAdministrationService {
   private readonly ledger: PrismaCreditLedger;
 
   public constructor(
@@ -209,7 +139,9 @@ export class PrismaCreditAdministrationService
       },
     });
     if (!user) return null;
-    const entries = user.creditAccounts.flatMap((account) => account.ledgerEntries);
+    const entries = user.creditAccounts.flatMap(
+      (account) => account.ledgerEntries,
+    );
     return {
       accountStatus: user.accountStatus,
       displayName: user.displayName,
@@ -231,7 +163,9 @@ export class PrismaCreditAdministrationService
     };
   }
 
-  public async getOwnCredits(userId: string): Promise<CreditMemberDetail | null> {
+  public async getOwnCredits(
+    userId: string,
+  ): Promise<CreditMemberDetail | null> {
     return this.detail(userId);
   }
 
@@ -267,9 +201,13 @@ export class PrismaCreditAdministrationService
       }),
       this.client.user.count({ where }),
     ]);
-    const details = await Promise.all(users.map((user) => this.detail(user.id)));
+    const details = await Promise.all(
+      users.map((user) => this.detail(user.id)),
+    );
     return {
-      items: details.filter((item): item is CreditMemberDetail => item !== null),
+      items: details.filter(
+        (item): item is CreditMemberDetail => item !== null,
+      ),
       page: input.page,
       pageSize: input.pageSize,
       total,
@@ -352,43 +290,46 @@ export class PrismaCreditAdministrationService
   }): Promise<void> {
     assertIdempotencyKey(input.idempotencyKey);
     assertAdjustmentReason(input.reviewReason);
-    await this.client.$transaction(async (transaction) => {
-      const request = await transaction.creditIncreaseRequest.findUnique({
-        where: { id: input.requestId },
-      });
-      if (!request) throw new Error('CREDIT_REQUEST_NOT_FOUND');
-      if (request.status !== CreditIncreaseRequestStatus.PENDING) {
-        if (request.status === input.status) return;
-        throw new Error('CREDIT_REQUEST_STATE_CONFLICT');
-      }
-      await transaction.creditIncreaseRequest.update({
-        where: { id: request.id },
-        data: {
-          reviewedAt: this.clock(),
-          reviewedByUserId: input.actorUserId,
-          reviewReason: input.reviewReason.trim(),
-          status: input.status,
-        },
-      });
-      await writeAuditEvent(transaction, {
-        action: AuditAction.CREDIT_INCREASE_REQUEST_REVIEW,
-        actorUserId: input.actorUserId,
-        idempotencyKey: createAuditIdempotencyKey(
-          AuditAction.CREDIT_INCREASE_REQUEST_REVIEW,
-          request.id,
-          {
-            idempotencyKey: input.idempotencyKey,
+    await this.client.$transaction(
+      async (transaction) => {
+        const request = await transaction.creditIncreaseRequest.findUnique({
+          where: { id: input.requestId },
+        });
+        if (!request) throw new Error('CREDIT_REQUEST_NOT_FOUND');
+        if (request.status !== CreditIncreaseRequestStatus.PENDING) {
+          if (request.status === input.status) return;
+          throw new Error('CREDIT_REQUEST_STATE_CONFLICT');
+        }
+        await transaction.creditIncreaseRequest.update({
+          where: { id: request.id },
+          data: {
+            reviewedAt: this.clock(),
+            reviewedByUserId: input.actorUserId,
+            reviewReason: input.reviewReason.trim(),
             status: input.status,
           },
-        ),
-        metadata: {
-          reviewReason: input.reviewReason.trim(),
-          status: input.status,
-        },
-        targetId: request.id,
-        targetType: 'credit_increase_request',
-      });
-    }, { isolationLevel: 'Serializable' });
+        });
+        await writeAuditEvent(transaction, {
+          action: AuditAction.CREDIT_INCREASE_REQUEST_REVIEW,
+          actorUserId: input.actorUserId,
+          idempotencyKey: createAuditIdempotencyKey(
+            AuditAction.CREDIT_INCREASE_REQUEST_REVIEW,
+            request.id,
+            {
+              idempotencyKey: input.idempotencyKey,
+              status: input.status,
+            },
+          ),
+          metadata: {
+            reviewReason: input.reviewReason.trim(),
+            status: input.status,
+          },
+          targetId: request.id,
+          targetType: 'credit_increase_request',
+        });
+      },
+      { isolationLevel: 'Serializable' },
+    );
   }
 
   public async listPolicies() {
