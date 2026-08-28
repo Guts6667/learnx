@@ -148,9 +148,10 @@ neuvième statut.
 - Reviewer : Release engineering
 - Dépendances : V4.1-002, V4.1-004, V4.1-005
 - Source : release V4 clôturée ; routes, contrats et suites de tests baseline
-- Statut : **livré pour revue** — matrice canonique gelée dans
-  `docs/V4_1_FUNCTIONAL_PARITY_BASELINE.md` ; preuves locales exécutées et
-  trous d'intégration réelle explicitement ouverts
+- Statut : **terminé** — matrice, égalité bilatérale des routes, contrat visible
+  de correction et bornes serveur/interface acceptés en revue indépendante ;
+  commits de preuve intégrés `0b5f1e74` et `0e4c25f6`, tandis que les écarts
+  d'intégration réelle restent transférés aux gates V4.1-501/502
 - Critères d'acceptation :
   - public, auth, Today, programmes, leçons, activités, notes, reviews, profil,
     crédits et admin ont leurs résultats attendus ;
@@ -372,8 +373,9 @@ neuvième statut.
 - Reviewer : Produit / Finance / QA
 - Dépendances : V4.1-103, V4.1-104, V4.1-203, V4.1-302
 - Source : baseline V4.1-006 ; contrats notes, reviews et ledger
-- Statut : **prêt** — dépendances frontend terminées ; branche dédiée et revue
-  distincte obligatoires
+- Statut : **terminé** — migration et reprises `0347c87d`, `aa68c992`,
+  `345ee7ca` et `3e836fe0` acceptées en revue indépendante ; pagination
+  récupérable et cycle complet d'idempotence des demandes de crédits couverts
 - Critères d'acceptation :
   - reviews, liste/édition de notes, profil et crédits migrent sans perte d'état ;
   - historique, lots offerts/achetés et écritures restent immuables ;
@@ -406,7 +408,8 @@ neuvième statut.
 - Reviewer : Architecture / QA
 - Dépendances : V4.1-301, V4.1-302, V4.1-303, V4.1-304, V4.1-305
 - Source : audit V4.1-002 ; contrats prouvés par les lots 300
-- Statut : **bloqué** — dépendances V4.1-301 à V4.1-305
+- Statut : **prêt** — dépendances V4.1-301 à V4.1-305 terminées et revues ;
+  le lot exclut correction, pricing et ledger, réservés à V4.1-402
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;

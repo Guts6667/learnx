@@ -205,8 +205,10 @@ cités ci-dessus.
 
 ## Verdict V4.1-006
 
-**Livré pour revue, non promu comme gate de release.** La matrice gèle les
-comportements, les commandes et les preuves locales réellement observées.
-L'intégration réelle, plusieurs parcours navigateur critiques et les preuves
-manuelles PWA/accessibilité restent explicitement ouverts ; ils ne doivent pas
-être présentés comme acquis pendant la migration.
+**Promu comme baseline de parité, pas comme gate de release.** Une revue
+indépendante a accepté la matrice et les preuves ciblées : égalité exacte des
+routes V4, contrat visible de correction et bornes serveur/interface de la
+contestation. L'intégration réelle, plusieurs parcours navigateur critiques et
+les preuves manuelles PWA/accessibilité restent explicitement ouverts pour
+V4.1-501/502 ; ils ne doivent pas être présentés comme acquis pendant la
+migration.
