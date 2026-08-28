@@ -6,6 +6,58 @@ import { loadBenchmarkInputs } from './ai-correction-benchmark-runner.ts';
 const validationMessage =
   'Benchmark validé hors ligne : 24 cas, 12 modèles épinglés.';
 
+const historicalCoreRuntimeExports = [
+  'applyBenchmarkAutonomousReview',
+  'applyBenchmarkHumanReview',
+  'assertBenchmarkAutonomousCorpusReview',
+  'assertBenchmarkCompatibility',
+  'assertBenchmarkCompletionFinished',
+  'assertBenchmarkHumanReviewDigest',
+  'benchmarkActivityTypeSchema',
+  'benchmarkAttemptSchema',
+  'benchmarkAutonomousCorpusReviewManifestSchema',
+  'benchmarkAutonomousResultReviewMetadataSchema',
+  'benchmarkAutonomousReviewArtifactSchema',
+  'benchmarkHumanReviewArtifactSchema',
+  'benchmarkOwnerResolvedCorpusManifestSchema',
+  'benchmarkRegressed',
+  'benchmarkResponseCategorySchema',
+  'benchmarkResultReviewSchema',
+  'benchmarkResumeArtifactSchema',
+  'benchmarkReviewAuthoritySchema',
+  'benchmarkRunMetadataSchema',
+  'benchmarkRunModeSchema',
+  'buildBenchmarkOptionalRequestParameters',
+  'correctionBenchmarkConfigurationSchema',
+  'correctionBenchmarkCorpusSchema',
+  'evidenceMatchSchema',
+  'findBenchmarkContract',
+  'getBenchmarkGatePolicyV2Thresholds',
+  'modelMeetsPromotionThresholds',
+  'parseCorrectionBenchmarkConfiguration',
+  'parseCorrectionBenchmarkCorpus',
+  'prepareBenchmarkResume',
+  'reconcileProtocol3ScoreGuardPasses',
+  'resolveBenchmarkEvidenceQuote',
+  'resolveBenchmarkEvidenceQuoteWithCaseTolerance',
+  'resolveBenchmarkModelEvidence',
+  'salvageProtocol3PartialCorrection',
+  'serializeCorrectionBenchmarkConfiguration',
+  'summarizeCorrectionBenchmark',
+  'validateBenchmarkModelOutput',
+  'validateBenchmarkModelOutputWithEvidence',
+  'validateBenchmarkProtocol3ModelOutputWithEvidence',
+] as const;
+
+const historicalScriptRuntimeExports = [
+  'assertAutonomousSupplierCostReconciled',
+  'buildBenchmarkSupplierBudgetPreflight',
+  'loadBenchmarkInputs',
+  'mergeAutonomousHoldoutBenchmarkConfiguration',
+  'parseAutonomousHoldoutConfiguration',
+  'runBenchmark',
+] as const;
+
 const goldenConfigurations = [
   {
     arguments: [],
@@ -113,9 +165,20 @@ describe('AI correction benchmark runner parity', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     vi.resetModules();
 
-    await import('../../scripts/run-ai-correction-benchmark.ts');
+    const publicScript = await import(
+      '../../scripts/run-ai-correction-benchmark.ts'
+    );
 
     expect(log).not.toHaveBeenCalled();
+    expect(Object.keys(publicScript).sort()).toEqual(historicalScriptRuntimeExports);
     log.mockRestore();
+  });
+
+  it('preserves the exact historical scientific runtime facade', async () => {
+    const scientificFacade = await import('./ai-correction-benchmark.js');
+
+    expect(Object.keys(scientificFacade).sort()).toEqual(
+      historicalCoreRuntimeExports,
+    );
   });
 });
