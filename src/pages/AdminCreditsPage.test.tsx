@@ -271,12 +271,14 @@ describe('AdminCreditsPage', () => {
     fireEvent.input(
       screen.getByRole('textbox', { name: 'Motif obligatoire' }),
       {
-        target: { value: 'Smoke V4-019 preview' },
+        target: { value: '123' },
       },
     );
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Vérifier le récapitulatif' }),
-    );
+    const reviewButton = screen.getByRole('button', {
+      name: 'Vérifier le récapitulatif',
+    });
+    expect(reviewButton).toBeEnabled();
+    fireEvent.click(reviewButton);
 
     expect(
       await screen.findByRole('heading', {

@@ -69,6 +69,18 @@ Passe de finition UI du 28 août 2026 :
 - contrôle visuel local à 390 px et desktop sans débordement horizontal. Cette
   preuve ne remplace pas la recette authentifiée du propriétaire sur la preview.
 
+Correctifs issus de la recette propriétaire du 28 août 2026 :
+
+- les listes « Mes parcours » et « Notes » ne conservent plus de plafond de
+  largeur interne sur desktop et utilisent toute la largeur de travail ;
+- les comptes administrés sont présentés en lignes nettement séparées, avec
+  identité et statut d'un côté, actions regroupées de l'autre, puis reflow en
+  une colonne sous 896 px ;
+- le motif d'une demande ou d'un ajustement de crédits accepte désormais trois
+  caractères minimum dans un contrat partagé entre UI, API et ledger ;
+- vérifications : lint, typecheck, build, 1 371 tests complets et 58 tests
+  ciblés verts.
+
 ## Recette propriétaire restante
 
 Chaque case doit recevoir une preuve ou un défaut explicite. Une case non

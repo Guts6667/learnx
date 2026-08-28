@@ -1,0 +1,2 @@
+export const CREDIT_OPERATION_REASON_MIN_LENGTH = 3;
+

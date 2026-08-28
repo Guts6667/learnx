@@ -12,6 +12,7 @@ import {
   useOwnCreditsQuery,
 } from '@/features/credits/credits';
 import { useI18n } from '@/i18n';
+import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '@/shared/credit-rules';
 
 function credits(value: string, locale: 'en' | 'fr'): string {
   return BigInt(value).toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-US');
@@ -116,7 +117,7 @@ export function CreditsPage() {
             <Textarea
               label={t('credits.increase.reason')}
               maxLength={1_000}
-              minLength={8}
+              minLength={CREDIT_OPERATION_REASON_MIN_LENGTH}
               onInput={(event) => {
                 const nextReason = event.currentTarget.value;
                 if (nextReason !== reason) mutation.abandon();
@@ -126,7 +127,9 @@ export function CreditsPage() {
               value={reason}
             />
             <Button
-              disabled={reason.trim().length < 8}
+              disabled={
+                reason.trim().length < CREDIT_OPERATION_REASON_MIN_LENGTH
+              }
               isLoading={mutation.isPending}
               type="submit"
             >

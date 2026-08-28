@@ -20,6 +20,7 @@ import {
   useAdminCreditPoliciesQuery,
 } from '@/features/credits/credits';
 import { useI18n } from '@/i18n';
+import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '@/shared/credit-rules';
 import { formatLocalizedDate } from '@/shared/locale';
 
 function value(amount: string, locale: 'en' | 'fr'): string {
@@ -220,7 +221,7 @@ function AdjustmentDrawer({
               <Textarea
                 label={t('admin.credits.reason')}
                 maxLength={500}
-                minLength={8}
+                minLength={CREDIT_OPERATION_REASON_MIN_LENGTH}
                 onInput={(event) => setReason(event.currentTarget.value)}
                 required
                 value={reason}
@@ -228,7 +229,7 @@ function AdjustmentDrawer({
               <Button
                 disabled={
                   !amount ||
-                  reason.trim().length < 8 ||
+                  reason.trim().length < CREDIT_OPERATION_REASON_MIN_LENGTH ||
                   (operation === 'REDUCE' && !compensatesEntryId)
                 }
                 type="submit"

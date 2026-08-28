@@ -109,3 +109,40 @@
   border-radius: var(--radius-group);
   background: var(--color-surface);
 }
+
+.totem-admin-surface .admin-account-row {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) minmax(18rem, auto);
+  gap: 1rem 2rem;
+  align-items: center;
+}
+
+.totem-admin-surface .admin-account-row__summary,
+.totem-admin-surface .admin-account-row__actions,
+.totem-admin-surface .admin-account-action {
+  min-width: 0;
+}
+
+.totem-admin-surface .admin-account-row__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.totem-admin-surface .admin-account-action > .ui-card,
+.totem-admin-surface .admin-account-action > .ui-error-state {
+  width: min(100%, 28rem);
+}
+
+@media (max-width: 56rem) {
+  .totem-admin-surface .admin-account-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .totem-admin-surface .admin-account-row__actions {
+    justify-content: flex-start;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+}

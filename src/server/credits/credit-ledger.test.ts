@@ -229,9 +229,10 @@ describe('credit ledger domain', () => {
     expect(() => assertIdempotencyKey('short')).toThrowError(
       new CreditLedgerError('INVALID_IDEMPOTENCY_KEY'),
     );
-    expect(() => assertAdjustmentReason('tiny')).toThrowError(
+    expect(() => assertAdjustmentReason('ab')).toThrowError(
       new CreditLedgerError('INVALID_REASON'),
     );
+    expect(() => assertAdjustmentReason('abc')).not.toThrow();
   });
 
   it('preserves allocation conservation over deterministic property samples', () => {

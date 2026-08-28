@@ -135,7 +135,7 @@ export function NotesPage() {
   return (
     <section
       aria-labelledby="notes-title"
-      className="page-layout page-layout--work page-shell"
+      className="totem-notes-page page-layout page-layout--work page-shell"
     >
       <div className="notes-page-head">
         <PageHeader

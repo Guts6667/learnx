@@ -1,6 +1,8 @@
 import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
+import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '../../../shared/credit-rules.js';
+
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
@@ -47,7 +49,11 @@ const listSchema = z.object({
 const increaseRequestSchema = z
   .object({
     idempotencyKey: z.string().regex(/^[a-zA-Z0-9._:-]{8,200}$/),
-    reason: z.string().trim().min(8).max(1_000),
+    reason: z
+      .string()
+      .trim()
+      .min(CREDIT_OPERATION_REASON_MIN_LENGTH)
+      .max(1_000),
   })
   .strict();
 const adjustmentSchema = z
@@ -56,7 +62,11 @@ const adjustmentSchema = z
     compensatesEntryId: z.uuid().optional(),
     expiresAt: z.iso.datetime({ offset: true }).optional(),
     idempotencyKey: z.string().regex(/^[a-zA-Z0-9._:-]{8,200}$/),
-    reason: z.string().trim().min(8).max(500),
+    reason: z
+      .string()
+      .trim()
+      .min(CREDIT_OPERATION_REASON_MIN_LENGTH)
+      .max(500),
   })
   .strict()
   .superRefine((input, context) => {

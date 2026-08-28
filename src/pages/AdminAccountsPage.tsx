@@ -74,7 +74,7 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
   }
 
   return (
-    <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
+    <div className="admin-account-action space-y-3">
       {!isConfirming ? (
         <Button onClick={() => setIsConfirming(true)} variant="secondary">
           {isCreator
@@ -151,12 +151,14 @@ function AccountAction({
 
   if (isCurrentAccount) {
     return (
-      <p className="ui-text-muted text-sm">{t('admin.accounts.current')}</p>
+      <div className="admin-account-action">
+        <p className="ui-text-muted text-sm">{t('admin.accounts.current')}</p>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
+    <div className="admin-account-action space-y-3">
       {!isConfirming ? (
         <Button
           onClick={() => setIsConfirming(true)}
@@ -218,44 +220,48 @@ function AccountCard({
 
   return (
     <li>
-      <div className="admin-collection-item space-y-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h2 className="break-words text-lg font-semibold">
-              {account.displayName}
-            </h2>
-            <p className="ui-text-muted mt-1 break-all text-sm">
-              {account.email}
-            </p>
+      <div className="admin-collection-item admin-account-row">
+        <div className="admin-account-row__summary">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h2 className="break-words text-lg font-semibold">
+                {account.displayName}
+              </h2>
+              <p className="ui-text-muted mt-1 break-all text-sm">
+                {account.email}
+              </p>
+            </div>
+            <Badge tone={isSuspended ? 'danger' : 'success'}>
+              {t(
+                isSuspended
+                  ? 'admin.accounts.suspended'
+                  : 'admin.accounts.active',
+              )}
+            </Badge>
           </div>
-          <Badge tone={isSuspended ? 'danger' : 'success'}>
-            {t(
-              isSuspended
-                ? 'admin.accounts.suspended'
-                : 'admin.accounts.active',
-            )}
-          </Badge>
-        </div>
-        <p className="ui-text-muted text-sm">
-          {t('admin.accounts.role', {
-            role: t(roleLabels[account.role] as MessageKey),
-          })}
-        </p>
-        {account.suspendedAt ? (
-          <p className="ui-text-muted text-sm">
-            {t('admin.accounts.suspendedAt', {
-              date: formatLocalizedDate(account.suspendedAt, locale, {
-                dateStyle: 'medium',
-                timeStyle: 'short',
-              }),
+          <p className="ui-text-muted mt-3 text-sm">
+            {t('admin.accounts.role', {
+              role: t(roleLabels[account.role] as MessageKey),
             })}
           </p>
-        ) : null}
-        <AccountRoleAction account={account} />
-        <AccountAction
-          account={account}
-          isCurrentAccount={account.id === currentUserId}
-        />
+          {account.suspendedAt ? (
+            <p className="ui-text-muted mt-2 text-sm">
+              {t('admin.accounts.suspendedAt', {
+                date: formatLocalizedDate(account.suspendedAt, locale, {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                }),
+              })}
+            </p>
+          ) : null}
+        </div>
+        <div className="admin-account-row__actions">
+          <AccountRoleAction account={account} />
+          <AccountAction
+            account={account}
+            isCurrentAccount={account.id === currentUserId}
+          />
+        </div>
       </div>
     </li>
   );

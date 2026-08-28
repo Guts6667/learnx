@@ -78,8 +78,14 @@
 }
 
 .totem-notes-list {
+  width: 100%;
   min-width: 0;
-  max-width: 64rem;
+  max-width: none;
+}
+
+.totem-product-surface .page-layout--work.totem-notes-page,
+.totem-product-surface .page-layout--work.totem-programs-page {
+  max-width: 100%;
 }
 
 .notes-page-head {
@@ -328,6 +334,11 @@
   display: grid;
   width: min(100%, 57.5rem);
   margin-inline: auto;
+}
+
+.totem-programs-page .totem-programs-list {
+  width: 100%;
+  margin-inline: 0;
 }
 
 .totem-programs-page .ui-program-line {

@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto';
 
+import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '../../shared/credit-rules.js';
+
 export type CreditProvenanceValue = 'FREE_ALLOCATION' | 'PURCHASED';
 
 export interface CreditBalance {
@@ -111,7 +113,10 @@ export function assertIdempotencyKey(key: string): void {
 }
 
 export function assertAdjustmentReason(reason: string): void {
-  if (reason.trim().length < 8 || reason.trim().length > 500) {
+  if (
+    reason.trim().length < CREDIT_OPERATION_REASON_MIN_LENGTH ||
+    reason.trim().length > 500
+  ) {
     throw new CreditLedgerError('INVALID_REASON');
   }
 }
