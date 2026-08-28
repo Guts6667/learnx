@@ -408,9 +408,15 @@ neuvième statut.
 - Reviewer : Architecture / QA
 - Dépendances : V4.1-301, V4.1-302, V4.1-303, V4.1-304, V4.1-305
 - Source : audit V4.1-002 ; contrats prouvés par les lots 300
-- Statut : **en cours** — premier sous-lot de décomposition Backend/Data ouvert
-  sur les contrôleurs génériques ; le lot exclut correction, pricing et ledger,
-  réservés à V4.1-402
+- Statut : **en cours** — sous-lots Backend/Data livrés sur la branche ticket :
+  Today et Notes (`c6c81317`), reprises module/programme (`98ce5383`), Quiz
+  (`cd80b7ef`) et évaluations de notion (`d54375f1`). Les routeurs exposent
+  désormais des frontières validation/service/repository sans changer les
+  contrats. Restent notamment `admin`, `programs`, `progress`,
+  `stage-assessments`, `exercises`, les helpers de recalcul et les services
+  génériques encore supérieurs aux limites V4.1. Correction, pricing et ledger
+  restent exclus et réservés à V4.1-402. Preuves du sous-lot : lint, typecheck,
+  39 tests ciblés, suite complète 1 016/1 016 et build/PWA verts.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
