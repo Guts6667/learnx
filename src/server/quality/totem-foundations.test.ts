@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { readStylesheetSourceGraph } from './stylesheet-source';
+import { readStylesheetSourceGraph } from '@/test-utils/stylesheet-source';
 
 const stylesheet = readStylesheetSourceGraph(
   resolve(process.cwd(), 'src/styles/index.css'),

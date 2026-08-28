@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { readStylesheetSourceGraph } from '@/server/quality/stylesheet-source';
+import { readStylesheetSourceGraph } from '@/test-utils/stylesheet-source';
 
 const learner = readFileSync(resolve('src/pages/CreditsPage.tsx'), 'utf8');
 const admin = readFileSync(resolve('src/pages/AdminCreditsPage.tsx'), 'utf8');

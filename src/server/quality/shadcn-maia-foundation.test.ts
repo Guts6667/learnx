@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 import { compile } from 'tailwindcss';
 
-import { readStylesheetSourceGraph } from './stylesheet-source';
+import { readStylesheetSourceGraph } from '@/test-utils/stylesheet-source';
 
 interface ShadcnConfiguration {
   aliases: {
