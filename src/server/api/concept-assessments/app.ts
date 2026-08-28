@@ -1,522 +1,32 @@
-import { Hono, type MiddlewareHandler } from 'hono';
-import { z } from 'zod';
+import { Hono } from 'hono';
 
-import {
-  ConceptProgressStatus,
-  type ConceptQuestionType,
-  type Prisma,
-  type PrismaClient,
-  ReviewSourceType,
-  ReviewStatus,
-} from '../../../../generated/prisma/client.js';
-import {
-  gradeConceptAssessment,
-  type AssessmentQuestionKey,
-  type SubmittedAssessmentAnswer,
-} from '../../../lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
-import {
-  assertCapability,
-  requireCapability,
-} from '../_lib/authorization.js';
-import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import {
   cursorPageQuerySchema,
-  encodeCursor,
   InvalidCursorError,
-  parseCursor,
-  toCursorPage,
-  type CursorPage,
 } from '../_lib/cursor-pagination.js';
+import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { createPrismaRepository } from './repository.js';
+import { serializeAssessment, serializeAttempt } from './serialization.js';
+import { submitConceptAssessment } from './service.js';
+import type {
+  ConceptAssessmentRepository,
+  ConceptAssessmentsAppOptions,
+} from './types.js';
 import {
-  learningOrPreviewProgramWhere,
-  learningProgramWhere,
-  previewProgramWhere,
-} from '../_lib/program-access-policy.js';
-import {
-  recalculateLessonProgress,
-  runSerializableProgressTransaction,
-} from '../_lib/progress-recalculation.js';
-import { ensureCurrentModuleRunForLesson } from '../_lib/module-runs.js';
+  assessmentNotFound,
+  invalidAssessmentRequest,
+  isAssessmentPreviewRequest,
+  parseAssessmentAttempt,
+  parseAssessmentIdentifier,
+} from './validation.js';
 
-interface AssessmentQuestionReadModel {
-  acceptedAnswers: string[];
-  explanation: string;
-  id: string;
-  options: Array<{
-    id: string;
-    isCorrect: boolean;
-    label: string;
-    position: number;
-  }>;
-  position: number;
-  prompt: string;
-  type: ConceptQuestionType;
-}
-
-interface AssessmentReadModel {
-  concept: {
-    id: string;
-    lessonId: string;
-    masteryThreshold: number;
-    programId: string;
-    stageId: string;
-    title: string;
-  };
-  id: string;
-  isRequired: boolean;
-  position: number;
-  questions: AssessmentQuestionReadModel[];
-  title: string | null;
-}
-
-interface AttemptReadModel {
-  answers: unknown;
-  id: string;
-  passed: boolean;
-  score: number;
-  submittedAt: Date;
-  runSequence?: number;
-}
-
-interface RecordedAttempt {
-  attempt: AttemptReadModel;
-  progress: {
-    bestScore: number | null;
-    lastAttemptAt: Date | null;
-    status: ConceptProgressStatus;
-    validatedAt: Date | null;
-  };
-}
-
-interface RecordAttemptInput {
-  answers: Prisma.InputJsonValue;
-  assessmentId: string;
-  conceptId: string;
-  dueAt: Date;
-  lessonId: string;
-  passed: boolean;
-  programId: string;
-  preview: boolean;
-  score: number;
-  submittedAt: Date;
-  userId: string;
-}
-
-export interface ConceptAssessmentRepository {
-  findAssessmentForUser(
-    assessmentId: string,
-    userId: string,
-    preview: boolean,
-  ): Promise<AssessmentReadModel | null>;
-  listAttempts(
-    input: {
-      assessmentId: string;
-      cursor?: string;
-      pageSize: number;
-      preview: boolean;
-      userId: string;
-    },
-  ): Promise<CursorPage<AttemptReadModel>>;
-  recordAttempt(input: RecordAttemptInput): Promise<RecordedAttempt>;
-}
-
-interface ConceptAssessmentsAppOptions {
-  authentication?: MiddlewareHandler<AuthEnvironment>;
-  now?: () => Date;
-  repository?: ConceptAssessmentRepository;
-  refreshValidation?: (
-    stageId: string,
-    userId: string,
-    now: Date,
-  ) => Promise<void>;
-}
-
-const identifierSchema = z.string().uuid();
-const submittedAnswerSchema = z.object({
-  optionIds: z.array(identifierSchema).max(20).default([]),
-  questionId: identifierSchema,
-  text: z.string().trim().min(1).max(500).optional(),
-});
-const attemptSchema = z.object({
-  answers: z.array(submittedAnswerSchema).min(1).max(50),
-});
-
-function isPreviewRequest(url: string): boolean {
-  return new URL(url).searchParams.get('preview') === 'true';
-}
-
-function invalidRequest(): ApiError {
-  return new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
-}
-
-function notFound(): ApiError {
-  return new ApiError('RESOURCE_NOT_FOUND', 'Resource not found.', 404);
-}
-
-function assessmentNotReady(): ApiError {
-  return new ApiError(
-    'ASSESSMENT_NOT_READY',
-    'This assessment has no questions.',
-    409,
-  );
-}
-
-function assertIdentifier(value: string): string {
-  const parsed = identifierSchema.safeParse(value);
-
-  if (!parsed.success) {
-    throw invalidRequest();
-  }
-
-  return parsed.data;
-}
-
-async function parseAttempt(request: Request) {
-  try {
-    return attemptSchema.safeParse(await request.json());
-  } catch {
-    return attemptSchema.safeParse(null);
-  }
-}
-
-function toJsonValue(value: unknown): Prisma.InputJsonValue {
-  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
-}
-
-function addDays(date: Date, days: number): Date {
-  return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
-}
-
-function toQuestionKey(
-  question: AssessmentQuestionReadModel,
-): AssessmentQuestionKey {
-  return {
-    acceptedAnswers: question.acceptedAnswers,
-    explanation: question.explanation,
-    id: question.id,
-    options: question.options.map((option) => ({
-      id: option.id,
-      isCorrect: option.isCorrect,
-    })),
-    type: question.type,
-  };
-}
-
-function serializeAssessment(assessment: AssessmentReadModel) {
-  return {
-    concept: assessment.concept,
-    id: assessment.id,
-    isRequired: assessment.isRequired,
-    position: assessment.position,
-    questionCount: assessment.questions.length,
-    questions: assessment.questions.map((question) => ({
-      id: question.id,
-      options: question.options.map((option) => ({
-        id: option.id,
-        label: option.label,
-        position: option.position,
-      })),
-      position: question.position,
-      prompt: question.prompt,
-      type: question.type,
-    })),
-    title: assessment.title,
-  };
-}
-
-function serializeAttempt(attempt: AttemptReadModel) {
-  return {
-    answers: attempt.answers,
-    id: attempt.id,
-    passed: attempt.passed,
-    score: attempt.score,
-    submittedAt: attempt.submittedAt,
-    runSequence: attempt.runSequence ?? 1,
-  };
-}
-
-export function createPrismaRepository(
-  client: PrismaClient,
-  recalculateProgress = recalculateLessonProgress,
-): ConceptAssessmentRepository {
-  return {
-    async findAssessmentForUser(assessmentId, userId, preview) {
-      const assessment = await client.conceptAssessment.findFirst({
-        where: {
-          id: assessmentId,
-          concept: {
-            lesson: {
-              ...(preview ? {} : { isPublished: true }),
-              module: {
-                ...(preview ? {} : { isPublished: true }),
-                stage: {
-                  ...(preview ? {} : { isPublished: true }),
-                  program: preview
-                    ? previewProgramWhere(userId)
-                    : learningProgramWhere(userId),
-                },
-              },
-            },
-          },
-        },
-        include: {
-          concept: {
-            include: {
-              lesson: {
-                select: {
-                  id: true,
-                  module: {
-                    select: {
-                      stage: { select: { id: true, programId: true } },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          questions: {
-            orderBy: { position: 'asc' },
-            include: { options: { orderBy: { position: 'asc' } } },
-          },
-        },
-      });
-
-      if (!assessment) {
-        return null;
-      }
-
-      return {
-        concept: {
-          id: assessment.concept.id,
-          lessonId: assessment.concept.lesson.id,
-          masteryThreshold: assessment.concept.masteryThreshold,
-          programId: assessment.concept.lesson.module.stage.programId,
-          stageId: assessment.concept.lesson.module.stage.id,
-          title: assessment.concept.title,
-        },
-        id: assessment.id,
-        isRequired: assessment.isRequired,
-        position: assessment.position,
-        questions: assessment.questions,
-        title: assessment.title,
-      };
-    },
-    async listAttempts(input) {
-      const publicationFilter = input.preview ? {} : { isPublished: true };
-      const context = `${input.userId}:${input.assessmentId}:${input.preview}`;
-      const cursor = parseCursor(
-        input.cursor,
-        'concept-assessment-attempts',
-        context,
-      );
-      const cursorDate = cursor ? new Date(cursor.value) : undefined;
-      if (cursorDate && Number.isNaN(cursorDate.getTime())) {
-        throw new InvalidCursorError();
-      }
-      const attempts = await client.conceptAssessmentAttempt.findMany({
-        where: {
-          assessmentId: input.assessmentId,
-          userId: input.userId,
-          assessment: {
-            concept: {
-              lesson: {
-                ...publicationFilter,
-                module: {
-                  ...publicationFilter,
-                  stage: {
-                    ...publicationFilter,
-                    program: learningOrPreviewProgramWhere(
-                      input.userId,
-                      input.preview,
-                    ),
-                  },
-                },
-              },
-            },
-          },
-          ...(cursor && cursorDate
-            ? {
-                OR: [
-                  { submittedAt: { lt: cursorDate } },
-                  { id: { lt: cursor.id }, submittedAt: cursorDate },
-                ],
-              }
-            : {}),
-        },
-        orderBy: [{ submittedAt: 'desc' }, { id: 'desc' }],
-        include: { moduleRun: { select: { sequence: true } } },
-        take: input.pageSize + 1,
-      });
-      const page = toCursorPage(attempts, input.pageSize, (attempt) =>
-        encodeCursor('concept-assessment-attempts', context, {
-          id: attempt.id,
-          value: attempt.submittedAt.toISOString(),
-        }),
-      );
-      return {
-        items: page.items.map(({ moduleRun, ...attempt }) => ({
-          ...attempt,
-          runSequence: moduleRun.sequence,
-        })),
-        nextCursor: page.nextCursor,
-      };
-    },
-    async recordAttempt(input) {
-      return runSerializableProgressTransaction(client, async (transaction) => {
-        const publicationFilter = input.preview ? {} : { isPublished: true };
-        const accessibleAssessment =
-          await transaction.conceptAssessment.findFirst({
-            where: {
-              conceptId: input.conceptId,
-              id: input.assessmentId,
-              concept: {
-                lesson: {
-                  id: input.lessonId,
-                  ...publicationFilter,
-                  module: {
-                    ...publicationFilter,
-                    stage: {
-                      ...publicationFilter,
-                      program: {
-                        id: input.programId,
-                        ...learningOrPreviewProgramWhere(
-                          input.userId,
-                          input.preview,
-                        ),
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            select: { id: true },
-          });
-        if (!accessibleAssessment) throw notFound();
-
-        const moduleRun = await ensureCurrentModuleRunForLesson(
-          transaction,
-          input.lessonId,
-          input.userId,
-          input.submittedAt,
-        );
-        const currentProgress = await transaction.conceptProgress.findUnique({
-          where: {
-            userId_conceptId: {
-              conceptId: input.conceptId,
-              userId: input.userId,
-            },
-          },
-        });
-        const bestScore = Math.max(
-          currentProgress?.bestScore ?? 0,
-          input.score,
-        );
-        const wasValidated =
-          currentProgress?.status === ConceptProgressStatus.VALIDATED;
-        const status =
-          input.passed || wasValidated
-            ? ConceptProgressStatus.VALIDATED
-            : ConceptProgressStatus.NEEDS_REVIEW;
-        const validatedAt = input.passed
-          ? input.submittedAt
-          : (currentProgress?.validatedAt ?? null);
-        const [attempt, progress] = await Promise.all([
-          transaction.conceptAssessmentAttempt.create({
-            data: {
-              answers: input.answers,
-              assessmentId: input.assessmentId,
-              moduleRunId: moduleRun.id,
-              passed: input.passed,
-              score: input.score,
-              submittedAt: input.submittedAt,
-              userId: input.userId,
-            },
-          }),
-          transaction.conceptProgress.upsert({
-            where: {
-              userId_conceptId: {
-                conceptId: input.conceptId,
-                userId: input.userId,
-              },
-            },
-            create: {
-              bestScore,
-              conceptId: input.conceptId,
-              lastAttemptAt: input.submittedAt,
-              status,
-              userId: input.userId,
-              validatedAt,
-            },
-            update: {
-              bestScore,
-              lastAttemptAt: input.submittedAt,
-              status,
-              validatedAt,
-            },
-          }),
-        ]);
-
-        if (input.passed) {
-          await transaction.reviewItem.updateMany({
-            where: {
-              sourceId: input.assessmentId,
-              sourceType: ReviewSourceType.CONCEPT_ASSESSMENT,
-              userId: input.userId,
-            },
-            data: {
-              completedAt: input.submittedAt,
-              status: ReviewStatus.COMPLETED,
-            },
-          });
-        } else {
-          await transaction.reviewItem.upsert({
-            where: {
-              userId_sourceType_sourceId: {
-                sourceId: input.assessmentId,
-                sourceType: ReviewSourceType.CONCEPT_ASSESSMENT,
-                userId: input.userId,
-              },
-            },
-            create: {
-              dueAt: input.dueAt,
-              lessonId: input.lessonId,
-              programId: input.programId,
-              sourceId: input.assessmentId,
-              sourceType: ReviewSourceType.CONCEPT_ASSESSMENT,
-              status: ReviewStatus.PENDING,
-              userId: input.userId,
-            },
-            update: {
-              completedAt: null,
-              dueAt: input.dueAt,
-              status: ReviewStatus.PENDING,
-            },
-          });
-        }
-
-        const lessonProgress = await recalculateProgress(
-          transaction,
-          input.lessonId,
-          input.userId,
-          input.submittedAt,
-          { requirePublished: !input.preview },
-        );
-
-        if (!lessonProgress) throw notFound();
-
-        return {
-          attempt: { ...attempt, runSequence: moduleRun.sequence },
-          progress,
-        };
-      });
-    },
-  };
-}
+export { createPrismaRepository } from './repository.js';
+export type { ConceptAssessmentRepository } from './types.js';
 
 async function getPrismaRepository(): Promise<ConceptAssessmentRepository> {
   const { prisma } = await import('../../prisma.js');
-
   return createPrismaRepository(prisma);
 }
 
@@ -527,19 +37,16 @@ export function createConceptAssessmentsApp(
   const now = options.now ?? (() => new Date());
   const refreshValidation =
     options.refreshValidation ?? (async () => undefined);
-
   app.use('*', options.authentication ?? requireUser);
   app.use('*', requireCapability('learning.read'));
-
   app.onError((error, context) => {
     if (error instanceof InvalidCursorError) {
-      const apiError = invalidRequest();
+      const apiError = invalidAssessmentRequest();
       return context.json(toApiErrorBody(apiError), apiError.status);
     }
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
     }
-
     return context.json(
       toApiErrorBody(
         new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 500),
@@ -552,25 +59,22 @@ export function createConceptAssessmentsApp(
     get(key: 'user'): AuthEnvironment['Variables']['user'];
     req: { param(name: string): string; url: string };
   }) {
-    const assessmentId = assertIdentifier(context.req.param('assessmentId'));
+    const assessmentId = parseAssessmentIdentifier(
+      context.req.param('assessmentId'),
+    );
     const repository = options.repository ?? (await getPrismaRepository());
-    const preview = isPreviewRequest(context.req.url);
+    const preview = isAssessmentPreviewRequest(context.req.url);
     const assessment = await repository.findAssessmentForUser(
       assessmentId,
       context.get('user').id,
       preview,
     );
-
-    if (!assessment) {
-      throw notFound();
-    }
-
+    if (!assessment) throw assessmentNotFound();
     return { assessment, assessmentId, preview, repository };
   }
 
   app.get('/api/concept-assessments/:assessmentId', async (context) => {
     const { assessment } = await getAssessment(context);
-
     return context.json({ assessment: serializeAssessment(assessment) });
   });
 
@@ -580,14 +84,13 @@ export function createConceptAssessmentsApp(
       const { assessmentId, preview, repository } =
         await getAssessment(context);
       const query = cursorPageQuerySchema.safeParse(context.req.query());
-      if (!query.success) throw invalidRequest();
+      if (!query.success) throw invalidAssessmentRequest();
       const page = await repository.listAttempts({
         ...query.data,
         assessmentId,
         preview,
         userId: context.get('user').id,
       });
-
       return context.json({
         attempts: page.items.map(serializeAttempt),
         nextCursor: page.nextCursor,
@@ -599,42 +102,17 @@ export function createConceptAssessmentsApp(
     '/api/concept-assessments/:assessmentId/attempts',
     async (context) => {
       assertCapability(context.get('user').role, 'learning.write.own');
-      const parsedAttempt = await parseAttempt(context.req.raw);
-
-      if (!parsedAttempt.success) {
-        throw invalidRequest();
-      }
-
+      const parsedAttempt = await parseAssessmentAttempt(context.req.raw);
+      if (!parsedAttempt.success) throw invalidAssessmentRequest();
       const { assessment, assessmentId, preview, repository } =
         await getAssessment(context);
-
-      if (assessment.questions.length === 0) {
-        throw assessmentNotReady();
-      }
-
-      let result;
-
-      try {
-        result = gradeConceptAssessment({
-          answers: parsedAttempt.data.answers as SubmittedAssessmentAnswer[],
-          masteryThreshold: assessment.concept.masteryThreshold,
-          questions: assessment.questions.map(toQuestionKey),
-        });
-      } catch {
-        throw invalidRequest();
-      }
-
       const submittedAt = now();
-      const recorded = await repository.recordAttempt({
-        answers: toJsonValue(parsedAttempt.data.answers),
+      const result = await submitConceptAssessment({
+        answers: parsedAttempt.data.answers,
+        assessment,
         assessmentId,
-        conceptId: assessment.concept.id,
-        dueAt: addDays(submittedAt, 1),
-        lessonId: assessment.concept.lessonId,
-        passed: result.passed,
-        programId: assessment.concept.programId,
         preview,
-        score: result.score,
+        repository,
         submittedAt,
         userId: context.get('user').id,
       });
@@ -643,12 +121,11 @@ export function createConceptAssessmentsApp(
         context.get('user').id,
         submittedAt,
       );
-
       return context.json(
         {
-          attempt: serializeAttempt(recorded.attempt),
+          attempt: serializeAttempt(result.recorded.attempt),
           corrections: result.corrections,
-          progress: recorded.progress,
+          progress: result.recorded.progress,
         },
         201,
       );

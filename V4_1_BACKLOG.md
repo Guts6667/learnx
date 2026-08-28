@@ -415,8 +415,26 @@ neuvième statut.
 - Reviewer : Architecture/Produit
 - Dépendances : V4.1-301, V4.1-302, V4.1-303, V4.1-304, V4.1-305
 - Source : audit V4.1-002 ; contrats prouvés par les lots 300
-- Statut : **prêt** — dépendances V4.1-301 à V4.1-305 terminées et revues ;
-  le lot exclut correction, pricing et ledger, réservés à V4.1-402
+- Statut : **en cours** — sous-lots Backend/Data livrés sur la branche ticket :
+  Today et Notes (`c6c81317`), reprises module/programme (`98ce5383`), Quiz
+  (`cd80b7ef`), évaluations de notion (`d54375f1`) et programmes
+  (`b5bc73b1`). Les reprises de revue déplacent l'orchestration Notes dans son
+  service (`181fcb2f`), séparent les services de reprise module/programme de la
+  persistance (`b2ecf18d`) et découpent les repositories Today et évaluations
+  de notion au-delà de 80 lignes (`37a52e94`). Les routeurs Notes et Quiz sont
+  isolés (`22e3e4f0`) et leurs repositories Prisma sont à leur tour découpés
+  en opérations de moins de 80 lignes (`d5844372`). Les routeurs exposent
+  désormais des frontières validation/service/repository sans changer les
+  contrats.
+  Restent notamment `admin`, `progress`, `stage-assessments`, `exercises`, les
+  helpers de recalcul et les services génériques encore supérieurs aux limites
+  V4.1. Correction, pricing et ledger restent exclus et réservés à V4.1-402.
+  Preuves du checkpoint : lint, typecheck, tests ciblés des domaines concernés,
+  suite complète 1 016/1 016 et build/PWA verts. Une exécution lancée en parallèle du build a
+  observé un flake `LessonPage` (bouton encore dans son état de chargement) ; le
+  test isolé a ensuite réussi, puis la suite stable complète a confirmé
+  1 016/1 016 tests verts. La revue indépendante du checkpoint est `REVIEW_PASS`
+  sans P0/P1 ; le ticket complet reste en cours sur les contrôleurs listés.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;

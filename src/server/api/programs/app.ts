@@ -1,295 +1,55 @@
-import { Hono, type MiddlewareHandler } from 'hono';
-import { z } from 'zod';
+import { Hono } from 'hono';
 
-import {
-  LessonProgressStatus,
-  StageProgressStatus,
-  type PrismaClient,
-} from '../../../../generated/prisma/client.js';
+import type { PrismaClient } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
-import {
-  learningProgramWhere,
-  previewProgramWhere,
-} from '../_lib/program-access-policy.js';
+import { getStageValidation } from '../_lib/stage-validation.js';
 import {
   getProgramTimeline,
   getStageTimeline,
 } from '../_lib/timeline-progress.js';
-import { getStageValidation } from '../_lib/stage-validation.js';
-import { calculateModuleProgress } from '../../../lib/module-progress.js';
+import { createCurriculumService } from './service.js';
+import type { CurriculumAppOptions } from './types.js';
+import {
+  invalidCurriculumRequest,
+  isPreviewRequest,
+  programViewPreferenceSchema,
+} from './validation.js';
+import {
+  readProgramViewPreference,
+  saveProgramViewPreference,
+} from './view-preference-repository.js';
+
+export { getRecommendedExpandedStageId } from './serialization.js';
 
 async function getPrismaClient(): Promise<PrismaClient> {
   const { prisma } = await import('../../prisma.js');
-
   return prisma;
-}
-
-interface CurriculumAppOptions {
-  authentication?: MiddlewareHandler<AuthEnvironment>;
-  getClient?: () => Promise<PrismaClient>;
-  readProgramTimeline?: typeof getProgramTimeline;
-  readStageTimeline?: typeof getStageTimeline;
-  readStageValidation?: typeof getStageValidation;
-  readProgramViewPreference?: typeof readProgramViewPreference;
-  saveProgramViewPreference?: typeof saveProgramViewPreference;
-}
-
-const previewQuerySchema = z.object({
-  preview: z.enum(['true']).optional(),
-});
-
-const programViewPreferenceSchema = z.object({
-  expandedStageId: z.string().uuid(),
-});
-
-function notFound(): ApiError {
-  return new ApiError('RESOURCE_NOT_FOUND', 'Resource not found.', 404);
-}
-
-function ambiguousResource(): ApiError {
-  return new ApiError(
-    'AMBIGUOUS_RESOURCE',
-    'This slug is not unique. Use the parent resource route instead.',
-    409,
-  );
-}
-
-function invalidRequest(): ApiError {
-  return new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
-}
-
-function isPreviewRequest(url: string): boolean {
-  const query = previewQuerySchema.safeParse(
-    Object.fromEntries(new URL(url).searchParams),
-  );
-
-  if (!query.success) {
-    throw invalidRequest();
-  }
-
-  return query.data.preview === 'true';
-}
-
-function getProgramAccessFilter(userId: string, preview: boolean) {
-  return preview ? previewProgramWhere(userId) : learningProgramWhere(userId);
-}
-
-function selectAccessibleCandidate<T>(
-  candidates: T[],
-  userId: string,
-  getOwnerId: (candidate: T) => string,
-): T {
-  const owned = candidates.find(
-    (candidate) => getOwnerId(candidate) === userId,
-  );
-  if (owned) return owned;
-  if (candidates.length === 0) throw notFound();
-  if (candidates.length > 1) throw ambiguousResource();
-  return candidates[0];
-}
-
-function getPublicationFilter(preview: boolean) {
-  return preview ? {} : { isPublished: true };
-}
-
-const lessonSummarySelect = {
-  id: true,
-  title: true,
-  slug: true,
-  summary: true,
-  objectives: true,
-  prerequisites: true,
-  estimatedMinutes: true,
-  isPublished: true,
-  position: true,
-} as const;
-
-function getLessonSummarySelect(userId: string) {
-  return {
-    ...lessonSummarySelect,
-    _count: {
-      select: {
-        concepts: true,
-        exercises: { where: { isCanonical: true } },
-        quizzes: true,
-        resources: true,
-        tasks: { where: { isCanonical: true } },
-      },
-    },
-    progress: {
-      where: { userId },
-      take: 1,
-      select: { percent: true, status: true },
-    },
-  } as const;
-}
-
-function getModuleInclude(preview: boolean, userId: string) {
-  return {
-    lessons: {
-      where: getPublicationFilter(preview),
-      orderBy: { position: 'asc' as const },
-      select: getLessonSummarySelect(userId),
-    },
-  };
-}
-
-function getStageInclude(preview: boolean, userId: string) {
-  return {
-    modules: {
-      where: getPublicationFilter(preview),
-      orderBy: { position: 'asc' as const },
-      include: getModuleInclude(preview, userId),
-    },
-    progress: {
-      where: { userId },
-      take: 1,
-      select: { percent: true, status: true },
-    },
-  };
-}
-
-interface LessonSummaryRecord {
-  _count: {
-    concepts: number;
-    exercises: number;
-    quizzes: number;
-    resources: number;
-    tasks: number;
-  };
-  progress: Array<{ percent: number; status: LessonProgressStatus }>;
-}
-
-function serializeLessonSummary<T extends LessonSummaryRecord>(
-  lesson: T,
-  isLocked = false,
-) {
-  const { _count, progress, ...summary } = lesson;
-  return {
-    ...summary,
-    activityCounts: _count,
-    isLocked,
-    progress: progress[0] ?? {
-      percent: 0,
-      status: LessonProgressStatus.AVAILABLE,
-    },
-  };
-}
-
-function serializeModules<T extends { lessons: LessonSummaryRecord[] }>(
-  modules: T[],
-  isLocked = false,
-) {
-  return modules.map((module) => {
-    const lessons = module.lessons.map((lesson) =>
-      serializeLessonSummary(lesson, isLocked),
-    );
-
-    return {
-      ...module,
-      lessons,
-      progress: calculateModuleProgress(
-        lessons.map((lesson) => lesson.progress),
-        isLocked,
-      ),
-    };
-  });
-}
-
-function isStageLocked(stage: {
-  progress?: Array<{ status: string }>;
-}): boolean {
-  return stage.progress?.[0]?.status === StageProgressStatus.LOCKED;
-}
-
-function serializeStage<
-  T extends {
-    modules: Array<{ lessons: LessonSummaryRecord[] }>;
-    progress: Array<{ percent: number; status: StageProgressStatus }>;
-  },
->(stage: T) {
-  const { progress, ...summary } = stage;
-  const stageProgress = progress[0] ?? {
-    percent: 0,
-    status: StageProgressStatus.AVAILABLE,
-  };
-
-  return {
-    ...summary,
-    modules: serializeModules(stage.modules, isStageLocked(stage)),
-    progress: stageProgress,
-  };
-}
-
-export function getRecommendedExpandedStageId(
-  stages: Array<{
-    id: string;
-    progress: { status: StageProgressStatus };
-  }>,
-): string | null {
-  if (stages.length === 0) return null;
-
-  const activeStage = stages.find(
-    ({ progress }) =>
-      progress.status !== StageProgressStatus.COMPLETED &&
-      progress.status !== StageProgressStatus.LOCKED,
-  );
-  if (activeStage) return activeStage.id;
-
-  const lastCompletedStage = [...stages]
-    .reverse()
-    .find(({ progress }) => progress.status === StageProgressStatus.COMPLETED);
-
-  return lastCompletedStage?.id ?? stages[0].id;
-}
-
-async function readProgramViewPreference(
-  prisma: PrismaClient,
-  userId: string,
-  programId: string,
-): Promise<string | null> {
-  const preference = await prisma.programViewPreference.findUnique({
-    where: { userId_programId: { programId, userId } },
-    select: { expandedStageId: true },
-  });
-
-  return preference?.expandedStageId ?? null;
-}
-
-async function saveProgramViewPreference(
-  prisma: PrismaClient,
-  userId: string,
-  programId: string,
-  expandedStageId: string,
-): Promise<void> {
-  await prisma.programViewPreference.upsert({
-    where: { userId_programId: { programId, userId } },
-    create: { expandedStageId, programId, userId },
-    update: { expandedStageId },
-  });
 }
 
 export function createCurriculumApp(options: CurriculumAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   const getClient = options.getClient ?? getPrismaClient;
-  const readProgramTimeline = options.readProgramTimeline ?? getProgramTimeline;
-  const readStageTimeline = options.readStageTimeline ?? getStageTimeline;
-  const readStageValidation = options.readStageValidation ?? getStageValidation;
-  const readViewPreference =
-    options.readProgramViewPreference ?? readProgramViewPreference;
-  const saveViewPreference =
-    options.saveProgramViewPreference ?? saveProgramViewPreference;
+  const getService = async () =>
+    createCurriculumService({
+      client: await getClient(),
+      readProgramTimeline:
+        options.readProgramTimeline ?? getProgramTimeline,
+      readProgramViewPreference:
+        options.readProgramViewPreference ?? readProgramViewPreference,
+      readStageTimeline: options.readStageTimeline ?? getStageTimeline,
+      readStageValidation: options.readStageValidation ?? getStageValidation,
+      saveProgramViewPreference:
+        options.saveProgramViewPreference ?? saveProgramViewPreference,
+    });
 
   app.use('*', options.authentication ?? requireUser);
   app.use('*', requireCapability('learning.read'));
-
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
     }
-
     return context.json(
       toApiErrorBody(
         new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 500),
@@ -300,86 +60,22 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
 
   app.get('/api/programs', async (context) => {
     const preview = isPreviewRequest(context.req.url);
-    const prisma = await getClient();
-    const user = context.get('user');
-    const programs = await prisma.program.findMany({
-      where: getProgramAccessFilter(user.id, preview),
-      orderBy: { position: 'asc' },
-      include: {
-        stages: {
-          where: getPublicationFilter(preview),
-          orderBy: { position: 'asc' },
-          select: {
-            id: true,
-            isPublished: true,
-            position: true,
-            slug: true,
-            title: true,
-          },
-        },
-      },
-    });
-    const programsWithTimeline = await Promise.all(
-      programs.map(async (program) => ({
-        ...program,
-        timeline: await readProgramTimeline(prisma, program.id, user.id),
-      })),
-    );
-
-    return context.json({ programs: programsWithTimeline });
+    const programs = await (
+      await getService()
+    ).listPrograms(context.get('user').id, preview);
+    return context.json({ programs });
   });
 
   app.get('/api/programs/:programSlug', async (context) => {
     const preview = isPreviewRequest(context.req.url);
-    const prisma = await getClient();
-    const user = context.get('user');
-    const programs = await prisma.program.findMany({
-      where: {
-        ...getProgramAccessFilter(user.id, preview),
-        slug: context.req.param('programSlug'),
-      },
-      take: 3,
-      include: {
-        stages: {
-          where: getPublicationFilter(preview),
-          orderBy: { position: 'asc' },
-          include: getStageInclude(preview, user.id),
-        },
-      },
-    });
-    const program = selectAccessibleCandidate(
-      programs,
-      user.id,
-      (candidate) => candidate.ownerId,
+    const program = await (
+      await getService()
+    ).readProgram(
+      context.req.param('programSlug'),
+      context.get('user').id,
+      preview,
     );
-
-    const [timeline, stages, storedExpandedStageId] = await Promise.all([
-      readProgramTimeline(prisma, program.id, user.id),
-      Promise.all(
-        program.stages.map(async (stage) => {
-          return {
-            ...serializeStage(stage),
-            timeline: await readStageTimeline(prisma, stage.id, user.id),
-          };
-        }),
-      ),
-      readViewPreference(prisma, user.id, program.id),
-    ]);
-
-    const visibleStageIds = new Set(stages.map(({ id }) => id));
-    const expandedStageId =
-      storedExpandedStageId && visibleStageIds.has(storedExpandedStageId)
-        ? storedExpandedStageId
-        : getRecommendedExpandedStageId(stages);
-
-    return context.json({
-      program: {
-        ...program,
-        stages,
-        timeline,
-        viewPreference: { expandedStageId },
-      },
-    });
+    return context.json({ program });
   });
 
   app.put('/api/programs/:programSlug/view-preference', async (context) => {
@@ -387,301 +83,53 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     const parsedBody = programViewPreferenceSchema.safeParse(
       await context.req.json().catch(() => null),
     );
-    if (!parsedBody.success) throw invalidRequest();
-
-    const prisma = await getClient();
-    const user = context.get('user');
-    const programs = await prisma.program.findMany({
-      where: {
-        ...getProgramAccessFilter(user.id, preview),
-        slug: context.req.param('programSlug'),
-      },
-      take: 3,
-      include: {
-        stages: {
-          where: getPublicationFilter(preview),
-          select: { id: true },
-        },
-      },
-    });
-    const program = selectAccessibleCandidate(
-      programs,
-      user.id,
-      (candidate) => candidate.ownerId,
+    if (!parsedBody.success) throw invalidCurriculumRequest();
+    const viewPreference = await (
+      await getService()
+    ).saveViewPreference(
+      context.req.param('programSlug'),
+      context.get('user').id,
+      parsedBody.data.expandedStageId,
+      preview,
     );
-    const expandedStageId = parsedBody.data.expandedStageId;
-
-    if (!program.stages.some(({ id }) => id === expandedStageId)) {
-      throw notFound();
-    }
-
-    await saveViewPreference(prisma, user.id, program.id, expandedStageId);
-
-    return context.json({ viewPreference: { expandedStageId } });
+    return context.json({ viewPreference });
   });
 
   app.get('/api/programs/:programSlug/stages/:stageSlug', async (context) => {
     const preview = isPreviewRequest(context.req.url);
-    const prisma = await getClient();
-    const user = context.get('user');
-    const stages = await prisma.stage.findMany({
-      where: {
-        slug: context.req.param('stageSlug'),
-        ...getPublicationFilter(preview),
-        program: {
-          ...getProgramAccessFilter(user.id, preview),
-          slug: context.req.param('programSlug'),
-        },
-      },
-      take: 3,
-      include: {
-        ...getStageInclude(preview, user.id),
-        program: { select: { ownerId: true } },
-      },
-    });
-    const stage = selectAccessibleCandidate(
-      stages,
-      user.id,
-      (candidate) => candidate.program.ownerId,
+    const stage = await (
+      await getService()
+    ).readStage(
+      context.req.param('programSlug'),
+      context.req.param('stageSlug'),
+      context.get('user').id,
+      preview,
     );
-
-    const [timeline, validation] = await Promise.all([
-      readStageTimeline(prisma, stage.id, user.id),
-      readStageValidation(prisma, stage.id, user.id, { preview }),
-    ]);
-
-    const { program: _programAccess, ...stageWithAccess } = stage;
-    void _programAccess;
-    return context.json({
-      stage: {
-        ...serializeStage(stageWithAccess),
-        timeline,
-        validation,
-      },
-    });
+    return context.json({ stage });
   });
 
   app.get('/api/modules/:moduleSlug', async (context) => {
     const preview = isPreviewRequest(context.req.url);
-    const prisma = await getClient();
-    const user = context.get('user');
-    const modules = await prisma.module.findMany({
-      where: {
-        slug: context.req.param('moduleSlug'),
-        ...getPublicationFilter(preview),
-        stage: {
-          ...getPublicationFilter(preview),
-          program: {
-            ...getProgramAccessFilter(user.id, preview),
-          },
-        },
-      },
-      take: 2,
-      include: {
-        ...getModuleInclude(preview, user.id),
-        stage: {
-          select: {
-            id: true,
-            isPublished: true,
-            slug: true,
-            title: true,
-            program: {
-              select: { id: true, ownerId: true, slug: true, title: true },
-            },
-            progress: {
-              where: { userId: user.id },
-              take: 1,
-              select: { status: true },
-            },
-          },
-        },
-      },
-    });
-
-    const selectedModule = selectAccessibleCandidate(
-      modules,
-      user.id,
-      (candidate) => candidate.stage.program.ownerId,
+    const module = await (
+      await getService()
+    ).readModule(
+      context.req.param('moduleSlug'),
+      context.get('user').id,
+      preview,
     );
-    const moduleIsLocked = isStageLocked(selectedModule.stage);
-    const { progress, program, ...stageWithoutProgram } = selectedModule.stage;
-    const { ownerId: _ownerId, ...programContext } = program;
-    const stageContext = { ...stageWithoutProgram, program: programContext };
-    void _ownerId;
-    void progress;
-    return context.json({
-      module: {
-        ...selectedModule,
-        lessons: selectedModule.lessons.map((lesson) =>
-          serializeLessonSummary(lesson, moduleIsLocked),
-        ),
-        stage: stageContext,
-      },
-    });
+    return context.json({ module });
   });
 
   app.get('/api/lessons/:lessonSlug', async (context) => {
     const preview = isPreviewRequest(context.req.url);
-    const prisma = await getClient();
-    const user = context.get('user');
-    const lessons = await prisma.lesson.findMany({
-      where: {
-        slug: context.req.param('lessonSlug'),
-        ...getPublicationFilter(preview),
-        module: {
-          ...getPublicationFilter(preview),
-          stage: {
-            ...getPublicationFilter(preview),
-            program: {
-              ...getProgramAccessFilter(user.id, preview),
-            },
-          },
-        },
-      },
-      take: 2,
-      include: {
-        concepts: {
-          orderBy: { position: 'asc' },
-          select: {
-            assessments: {
-              orderBy: { position: 'asc' },
-              select: {
-                id: true,
-                key: true,
-                isRequired: true,
-                position: true,
-                questionCount: true,
-                title: true,
-              },
-            },
-            id: true,
-            isRequired: true,
-            masteryThreshold: true,
-            position: true,
-            slug: true,
-            title: true,
-          },
-        },
-        contentBlocks: { orderBy: { position: 'asc' } },
-        exercises: {
-          where: { isCanonical: true },
-          orderBy: { position: 'asc' },
-          select: {
-            id: true,
-            instructions: true,
-            isRequired: true,
-            key: true,
-            position: true,
-            rubric: true,
-            title: true,
-          },
-        },
-        quizzes: {
-          orderBy: { position: 'asc' },
-          select: {
-            _count: { select: { questions: true } },
-            description: true,
-            id: true,
-            isRequired: true,
-            key: true,
-            passingScore: true,
-            position: true,
-            title: true,
-          },
-        },
-        resources: { orderBy: { position: 'asc' } },
-        lessonSequenceItems: {
-          orderBy: { position: 'asc' },
-          select: { id: true, key: true, kind: true },
-        },
-        tasks: {
-          where: { isCanonical: true },
-          orderBy: { position: 'asc' },
-          include: {
-            resources: {
-              orderBy: { resource: { position: 'asc' } },
-              include: { resource: true },
-            },
-          },
-        },
-        module: {
-          select: {
-            id: true,
-            isPublished: true,
-            lessons: {
-              where: getPublicationFilter(preview),
-              orderBy: { position: 'asc' },
-              select: lessonSummarySelect,
-            },
-            slug: true,
-            title: true,
-            stage: {
-              select: {
-                id: true,
-                isPublished: true,
-                slug: true,
-                title: true,
-                program: {
-                  select: { id: true, ownerId: true, slug: true, title: true },
-                },
-                progress: {
-                  where: { userId: user.id },
-                  take: 1,
-                  select: { status: true },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-
-    const lesson = selectAccessibleCandidate(
-      lessons,
-      user.id,
-      (candidate) => candidate.module.stage.program.ownerId,
+    const lesson = await (
+      await getService()
+    ).readLesson(
+      context.req.param('lessonSlug'),
+      context.get('user').id,
+      preview,
     );
-    const currentLessonIndex = lesson.module.lessons.findIndex(
-      (candidate) => candidate.id === lesson.id,
-    );
-    const previousLesson =
-      lesson.module.lessons[currentLessonIndex - 1] ?? null;
-    const nextLesson = lesson.module.lessons[currentLessonIndex + 1] ?? null;
-    const lessonIsLocked = isStageLocked(lesson.module.stage);
-    const { progress, program, ...stageWithoutProgram } = lesson.module.stage;
-    const { ownerId: _ownerId, ...programContext } = program;
-    const stageContext = { ...stageWithoutProgram, program: programContext };
-    const { lessons: siblingLessons, ...moduleWithoutLessons } = lesson.module;
-    const moduleContext = { ...moduleWithoutLessons, stage: stageContext };
-    void siblingLessons;
-    void _ownerId;
-    void progress;
-
-    return context.json({
-      lesson: {
-        ...lesson,
-        sequence: lesson.lessonSequenceItems,
-        isLocked: lessonIsLocked,
-        module: moduleContext,
-        navigation: {
-          nextLesson: nextLesson
-            ? { ...nextLesson, isLocked: lessonIsLocked }
-            : null,
-          previousLesson: previousLesson
-            ? { ...previousLesson, isLocked: lessonIsLocked }
-            : null,
-        },
-        quizzes: lesson.quizzes.map(({ _count, ...quiz }) => ({
-          ...quiz,
-          questionCount: _count.questions,
-        })),
-        tasks: lesson.tasks.map(({ resources, ...task }) => ({
-          ...task,
-          resources: resources.map((link) => link.resource),
-        })),
-        lessonSequenceItems: undefined,
-      },
-    });
+    return context.json({ lesson });
   });
 
   return app;
