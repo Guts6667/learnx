@@ -1,6 +1,10 @@
 import { render, screen } from '@testing-library/react';
 
-import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
+import {
+  getSafeImageSource,
+  getSafeLink,
+  SafeMarkdown,
+} from '@/components/ui/SafeMarkdown';
 
 describe('SafeMarkdown', () => {
   it('rend les titres, paragraphes, listes et emphases sémantiquement', () => {
@@ -78,5 +82,69 @@ describe('SafeMarkdown', () => {
     expect(container.querySelector('img')).toBeNull();
     expect(screen.getByText('Externe')).toBeInTheDocument();
     expect(screen.getByText('Traversal')).toBeInTheDocument();
+  });
+
+  it('conserve uniquement les destinations web et médias LearnX sûrs', () => {
+    expect(getSafeLink('http://example.com/source')).toBe(
+      'http://example.com/source',
+    );
+    expect(getSafeLink('mailto:learner@example.com')).toBeNull();
+    expect(getSafeLink('pas une url')).toBeNull();
+    expect(getSafeImageSource(' /learning/guide.svg?version=2#schema ')).toBe(
+      '/learning/guide.svg?version=2#schema',
+    );
+    expect(getSafeImageSource('/assets/guide.svg')).toBeNull();
+    expect(getSafeImageSource('/learning\\guide.svg')).toBeNull();
+    expect(getSafeImageSource('/learning/%E0%A4%A')).toBeNull();
+    expect(getSafeImageSource('/learning/guide.svg\u0000')).toBeNull();
+    expect(
+      getSafeImageSource('/learning/nested/%252e%252e/secret.svg'),
+    ).toBeNull();
+  });
+
+  it('rend les variantes de titres, code, images et tableaux sans inventer de structure', () => {
+    render(
+      <SafeMarkdown
+        content={`# Titre **principal**\n## Sous-titre\n### Détail\n\n\`\`\`\nligne brute\n\`\`\`\n\n![Schéma](/learning/schema.svg)\n\n| **État** | Suite |\n| :--- | ---: |\n| prêt | [Guide](https://example.com) |\n| ligne incomplète |`}
+        headingStartLevel={4}
+      />,
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 4, name: 'Titre principal' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 5, name: 'Sous-titre' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 6, name: 'Détail' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Code' })).toHaveTextContent(
+      'ligne brute',
+    );
+    expect(screen.getByRole('img', { name: 'Schéma' })).not.toHaveAttribute(
+      'title',
+    );
+    expect(screen.getByRole('table')).toHaveTextContent('prêt');
+    expect(screen.getByText('| ligne incomplète |')).toBeInTheDocument();
+  });
+
+  it('omet un premier titre équivalent et remonte les suivants sans masquer le contenu', () => {
+    render(
+      <SafeMarkdown
+        content={'Avant\n\n# **Introduction**\n## Étape suivante\n\nAprès'}
+        headingStartLevel={3}
+        omitFirstHeadingWhenEqual="Introduction"
+      />,
+    );
+
+    expect(
+      screen.queryByRole('heading', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Étape suivante' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Avant')).toBeInTheDocument();
+    expect(screen.getByText('Après')).toBeInTheDocument();
   });
 });
