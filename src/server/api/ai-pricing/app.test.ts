@@ -163,6 +163,74 @@ describe('AI pricing API middleware scope', () => {
   });
 
   it.each([
+    { argumentLength: 19, expectedStatus: 400 },
+    { argumentLength: 20, expectedStatus: 201 },
+    { argumentLength: 500, expectedStatus: 201 },
+    { argumentLength: 501, expectedStatus: 400 },
+  ])(
+    'enforces the trimmed reconsideration boundary at $argumentLength characters',
+    async ({ argumentLength, expectedStatus }) => {
+      const quote = vi.fn().mockResolvedValue({
+        action: 'RECONSIDERATION',
+        ceilingCredits: 6n,
+        estimatedCredits: 3n,
+        expiresAt: new Date('2026-08-26T19:00:00.000Z'),
+        id: '89c42047-5133-4ef0-b2df-a6a39092f02f',
+        includesAutomaticSecondPass: true,
+        includesTargetedVerification: false,
+      });
+      const app = createAiPricingApp({
+        authentication: async (context, next) => {
+          context.set('user', {
+            displayName: 'Rayan',
+            email: 'rayan@example.com',
+            id: '22222222-2222-4222-8222-222222222222',
+            locale: 'fr',
+            role: 'USER',
+          });
+          await next();
+        },
+        authorization: passThrough(() => undefined),
+        service: { quote },
+      });
+      const trimmedArgument = 'a'.repeat(argumentLength);
+
+      const response = await app.request('/api/ai-correction/quotes', {
+        body: JSON.stringify({
+          action: 'RECONSIDERATION',
+          idempotencyKey: `quote:reconsideration:boundary:${argumentLength}`,
+          target: {
+            id: '11111111-1111-4111-8111-111111111111',
+            kind: 'EXERCISE_SUBMISSION',
+            reconsideration: {
+              argument: `  ${trimmedArgument}  `,
+              sourceCorrectionId: '33333333-3333-4333-8333-333333333333',
+            },
+          },
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      });
+
+      expect(response.status).toBe(expectedStatus);
+      if (expectedStatus === 201) {
+        expect(quote).toHaveBeenCalledOnce();
+        expect(quote).toHaveBeenCalledWith(
+          expect.objectContaining({
+            target: expect.objectContaining({
+              reconsideration: expect.objectContaining({
+                argument: trimmedArgument,
+              }),
+            }),
+          }),
+        );
+      } else {
+        expect(quote).not.toHaveBeenCalled();
+      }
+    },
+  );
+
+  it.each([
     {
       action: 'RECONSIDERATION',
       reconsideration: undefined,
