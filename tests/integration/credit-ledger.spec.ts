@@ -78,8 +78,11 @@ test('ledger réel atomique, reconstructible et immuable', async ({
     }),
   ]);
   const fulfilled = concurrent.filter(
-    (result): result is PromiseFulfilledResult<Awaited<ReturnType<typeof ledger.reserve>>> =>
-      result.status === 'fulfilled',
+    (
+      result,
+    ): result is PromiseFulfilledResult<
+      Awaited<ReturnType<typeof ledger.reserve>>
+    > => result.status === 'fulfilled',
   );
   const rejected = concurrent.filter(
     (result): result is PromiseRejectedResult => result.status === 'rejected',
@@ -107,7 +110,10 @@ test('ledger réel atomique, reconstructible et immuable', async ({
       reservationId: winningKey,
       userId: learner.id,
     }),
-  ).toMatchObject({ balance: settled.balance, reservation: settled.reservation });
+  ).toMatchObject({
+    balance: settled.balance,
+    reservation: settled.reservation,
+  });
 
   const originalEntry = await prisma.creditLedgerEntry.findFirstOrThrow({
     where: { lotId: freeGrant.lotId, type: 'GRANT' },
@@ -138,7 +144,9 @@ test('ledger réel atomique, reconstructible et immuable', async ({
   ).rejects.toThrow(/append-only/i);
 
   await prisma.creditAccount.update({
-    where: { userId_currency: { currency: 'LEARNX_CREDIT', userId: learner.id } },
+    where: {
+      userId_currency: { currency: 'LEARNX_CREDIT', userId: learner.id },
+    },
     data: { freeBalance: 0n, purchasedBalance: 0n },
   });
   expect(await ledger.rebuildProjection(learner.id)).toEqual({
@@ -146,4 +154,81 @@ test('ledger réel atomique, reconstructible et immuable', async ({
     purchased: 100n,
     total: 130n,
   });
+});
+
+test('un échec de finalisation annule toutes les écritures du règlement', async ({
+  baseURL,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium-desktop');
+  expect(baseURL).toBeTruthy();
+  const now = new Date('2026-08-12T13:00:00.000Z');
+  const learner = await prisma.user.create({
+    data: {
+      displayName: 'Learner ledger rollback',
+      email: integrationEmail('credit-rollback'),
+      passwordHash: 'not-a-login-account',
+    },
+  });
+  const ledger = new PrismaCreditLedger(prisma, () => now);
+  const grant = await ledger.grant({
+    amount: 100n,
+    expiresAt: new Date('2026-09-01T00:00:00.000Z'),
+    idempotencyKey: 'integration-rollback-grant',
+    provenance: 'FREE_ALLOCATION',
+    reference: { id: 'rollback-cycle', type: 'FREE_ALLOCATION_CYCLE' },
+    userId: learner.id,
+  });
+  if (!grant.lotId) throw new Error('The rollback grant lot is missing.');
+  const reserved = await ledger.reserve({
+    amount: 80n,
+    expiresAt: new Date('2026-08-12T13:15:00.000Z'),
+    idempotencyKey: 'integration-rollback-reservation',
+    priorityLotIds: [grant.lotId],
+    reference: { id: 'rollback-correction', type: 'AI_CORRECTION' },
+    userId: learner.id,
+  });
+  const reservationId = reserved.reservation?.id;
+  if (!reservationId) throw new Error('The rollback reservation is missing.');
+
+  await prisma.$executeRawUnsafe(`
+    CREATE OR REPLACE FUNCTION reject_credit_reservation_finalization()
+    RETURNS trigger LANGUAGE plpgsql AS $$
+    BEGIN
+      IF OLD.id = '${reservationId}'::uuid THEN
+        RAISE EXCEPTION 'forced finalization failure';
+      END IF;
+      RETURN NEW;
+    END;
+    $$;
+    CREATE TRIGGER reject_credit_reservation_finalization_trigger
+    BEFORE UPDATE ON credit_reservations
+    FOR EACH ROW EXECUTE FUNCTION reject_credit_reservation_finalization();
+  `);
+  try {
+    await expect(
+      ledger.settle({ amount: 60n, reservationId, userId: learner.id }),
+    ).rejects.toThrow(/forced finalization failure/i);
+    expect(
+      await prisma.creditLedgerEntry.count({
+        where: {
+          reservationId,
+          type: { in: ['RESERVATION_RELEASE', 'SETTLEMENT'] },
+        },
+      }),
+    ).toBe(0);
+    expect(
+      await prisma.creditReservation.findUniqueOrThrow({
+        where: { id: reservationId },
+        select: { status: true },
+      }),
+    ).toEqual({ status: 'RESERVED' });
+  } finally {
+    await prisma.$executeRawUnsafe(
+      'DROP TRIGGER IF EXISTS reject_credit_reservation_finalization_trigger ON credit_reservations',
+    );
+    await prisma.$executeRawUnsafe(
+      'DROP FUNCTION IF EXISTS reject_credit_reservation_finalization()',
+    );
+  }
+  await ledger.release({ reservationId, userId: learner.id });
 });

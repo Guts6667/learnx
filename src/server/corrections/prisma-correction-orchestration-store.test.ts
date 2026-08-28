@@ -171,6 +171,8 @@ describe('Prisma correction orchestration store', () => {
       dispatchStatus: 'ORPHANED',
       rawOutput: { invalid: true },
     });
+    expect(secondOutcome.costSource).toBeUndefined();
+    expect(secondOutcome.costUsd).toBeUndefined();
   });
 
   it('persists the immutable source and bounded argument of a reconsideration', async () => {
