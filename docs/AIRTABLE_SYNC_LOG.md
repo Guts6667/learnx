@@ -192,3 +192,17 @@ l'autorisation.
 - Les deux enregistrements ont été relus après mutation : branche, SHA, statut,
   blocage et preuves QA correspondent au backlog Git. Aucun autre ticket,
   champ, page ou statut Airtable n'a été modifié.
+
+## 28 août 2026 — démarrage de la recette V4.1-504
+
+- Source Git : `bbf4a59c` sur `origin/codex/v4-1-foundation` ; checklist
+  `docs/qa/V4_1_504_RELEASE_CANDIDATE.md`.
+- `V4.1-504` (`recKRf2xYnUZAWrSx`) est passé de `READY` à `IN_PROGRESS` après
+  vérification de la preview publique et smoke HTTP 200 des routes publiques,
+  du manifeste PWA et du service worker.
+- Le blocage courant nomme uniquement les gates manuels réels : recette
+  authentifiée correction/pricing/ledger/permissions, PWA sur appareil,
+  accessibilité native et rollback. Aucun de ces contrôles n'est déclaré réussi
+  avant preuve propriétaire.
+- L'enregistrement a été relu après mutation ; aucun autre ticket ou élément
+  d'interface Airtable n'a été modifié.
