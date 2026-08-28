@@ -1,4 +1,4 @@
-import { Prisma, type PrismaClient } from '../../../generated/prisma/client.js';
+import { type PrismaClient } from '../../../generated/prisma/client.js';
 
 import { resolveExerciseCorrectionContract } from '../../lib/exercise-correction-contracts.js';
 import type {
@@ -11,6 +11,7 @@ import type {
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 import { RUNTIME_RECONSIDERATION_PROMPT_VERSION } from './runtime-correction-prompt.js';
 import { PrismaCorrectionHistoryRepository } from './prisma-correction-history.js';
+import { toAttemptOutcomeData } from './prisma-correction-attempt-mapper.js';
 
 /**
  * Implémentation Prisma des ports de l'orchestration V4-009 :
@@ -392,43 +393,7 @@ export class PrismaCorrectionOrchestrationPorts {
     recordAttemptOutcome: async (input): Promise<void> => {
       const attempt: RuntimeCorrectionAttempt = input.attempt;
       await this.prisma.aiCorrectionAttempt.update({
-        data: {
-          completedAt: new Date(),
-          completionTokens: attempt.visibleOutputTokens,
-          costConfirmedAt:
-            attempt.actualCostUsd === undefined ? undefined : new Date(),
-          costSource:
-            attempt.actualCostUsd === undefined ? undefined : 'ACTUAL',
-          costUsd: attempt.actualCostUsd,
-          dispatchStatus:
-            attempt.providerRequestId === undefined ? 'ORPHANED' : 'CONFIRMED',
-          errorCode: attempt.errorCode,
-          generationId: attempt.providerRequestId,
-          latencyMs: attempt.latencyMs,
-          modelId:
-            attempt.modelSnapshot ?? PROMOTED_CORRECTION_IDENTITY.modelId,
-          promptTokens: attempt.inputTokens,
-          provider:
-            attempt.providerRoute ?? PROMOTED_CORRECTION_IDENTITY.provider,
-          providerRequestId: attempt.providerRequestId,
-          rawOutput:
-            attempt.status === 'FAILED' && attempt.output !== undefined
-              ? (attempt.output as Prisma.InputJsonValue)
-              : Prisma.JsonNull,
-          reasoningTokens: attempt.reasoningTokens,
-          status: attempt.status,
-          structuredResult:
-            attempt.status === 'SUCCEEDED' && attempt.output !== undefined
-              ? (attempt.output as Prisma.InputJsonValue)
-              : Prisma.JsonNull,
-          totalTokens:
-            attempt.inputTokens === undefined ||
-            attempt.visibleOutputTokens === undefined
-              ? undefined
-              : attempt.inputTokens +
-                attempt.visibleOutputTokens +
-                (attempt.reasoningTokens ?? 0),
-        },
+        data: toAttemptOutcomeData(attempt),
         where: {
           correctionId_sequence: {
             correctionId: input.correctionId,
