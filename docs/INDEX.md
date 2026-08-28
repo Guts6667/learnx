@@ -36,7 +36,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Inventaire Git de préparation V4.1 | `docs/GIT_WORKSPACE_MANIFEST.md` | Instantané en lecture seule ; ne vaut jamais autorisation de prune ou suppression |
 | Audit technique de préparation V4.1 | `docs/V4_1_TECHNICAL_AUDIT.md` | Dépendances, sécurité, bundle, routes et dette au SHA released ; constats sans correction automatique |
 | Conservation recherche correction IA | `docs/AI_CORRECTION_RESEARCH_DIGEST.md` | Route vers journaux et preuves ; digest sans autorité scientifique ou runtime |
-| Refondation V4.1 | `V4_1_BACKLOG.md` | Backlog canonique de 27 IDs stables ; V4 est clôturée et V4.1-006 est livré pour revue |
+| Refondation V4.1 | `V4_1_BACKLOG.md` | Backlog canonique de 27 IDs stables ; V4 est clôturée et V4.1-006 est la baseline de parité acceptée, distincte du gate final |
 | Workflow agents V4.1 | `docs/AGENT_WORKFLOW.md` | Affectation, isolation, revue, états et contrat Git ↔ Airtable |
 | Journal Airtable V4.1 | `docs/AIRTABLE_SYNC_LOG.md` | Journal append-only des synchronisations opérationnelles |
 | Baseline de parité V4.1 | `docs/V4_1_FUNCTIONAL_PARITY_BASELINE.md` | Matrice reproductible des parcours et autorités V4 ; une preuve absente reste un trou explicite |
