@@ -1,8 +1,6 @@
 import { type PrismaClient } from '../../../generated/prisma/client.js';
 
-import { resolveExerciseCorrectionContract } from '../../lib/exercise-correction-contracts.js';
 import type {
-  AcceptedQuoteSnapshot,
   CorrectionHistoryEntry,
   CorrectionPersistencePort,
   OrchestratedCorrectionResult,
@@ -12,6 +10,7 @@ import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 import { RUNTIME_RECONSIDERATION_PROMPT_VERSION } from './runtime-correction-prompt.js';
 import { PrismaCorrectionHistoryRepository } from './prisma-correction-history.js';
 import { toAttemptOutcomeData } from './prisma-correction-attempt-mapper.js';
+import { PrismaCorrectionQuoteRepository } from './prisma-correction-quotes.js';
 
 /**
  * Implémentation Prisma des ports de l'orchestration V4-009 :
@@ -20,9 +19,11 @@ import { toAttemptOutcomeData } from './prisma-correction-attempt-mapper.js';
  */
 export class PrismaCorrectionOrchestrationPorts {
   private readonly history: PrismaCorrectionHistoryRepository;
+  private readonly quoteRepository: PrismaCorrectionQuoteRepository;
 
   public constructor(private readonly prisma: PrismaClient) {
     this.history = new PrismaCorrectionHistoryRepository(prisma);
+    this.quoteRepository = new PrismaCorrectionQuoteRepository(prisma);
   }
 
   public async findLatestForSubmission(input: {
@@ -39,178 +40,9 @@ export class PrismaCorrectionOrchestrationPorts {
     return this.history.list(input);
   }
 
-  public readonly quotes = {
-    loadAcceptedQuote: async (input: {
-      quoteId: string;
-      userId: string;
-      now: Date;
-    }): Promise<AcceptedQuoteSnapshot | null> => {
-      const quote = await this.prisma.aiPricingQuote.findFirst({
-        where: { id: input.quoteId, userId: input.userId },
-      });
-      if (!quote || quote.expiresAt.getTime() <= input.now.getTime()) {
-        return null;
-      }
-      if (quote.targetKind !== 'EXERCISE_SUBMISSION') {
-        return null;
-      }
-      const submission = await this.prisma.exerciseSubmission.findFirst({
-        include: {
-          exercise: {
-            include: {
-              lesson: {
-                select: {
-                  objectives: true,
-                  slug: true,
-                  summary: true,
-                  module: {
-                    select: {
-                      stage: {
-                        select: { program: { select: { slug: true } } },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        where: { id: quote.targetId, userId: input.userId },
-      });
-      if (
-        !submission ||
-        submission.status !== 'SUBMITTED' ||
-        !submission.exercise
-      ) {
-        return null;
-      }
-      const lessonObjectives = Array.isArray(
-        submission.exercise.lesson.objectives,
-      )
-        ? submission.exercise.lesson.objectives.filter(
-            (objective): objective is string => typeof objective === 'string',
-          )
-        : [];
-      const taskContext = [
-        submission.exercise.lesson.summary,
-        ...lessonObjectives,
-      ].join('\n');
-      if (quote.action === 'RECONSIDERATION') {
-        if (
-          !quote.reconsiderationOfCorrectionId ||
-          !quote.reconsiderationArgument
-        ) {
-          return null;
-        }
-        const source = await this.prisma.aiCorrection.findFirst({
-          include: {
-            creditReservation: {
-              select: { settledAmount: true, status: true },
-            },
-            pricingQuote: { select: { action: true } },
-            reconsideration: { select: { id: true } },
-          },
-          where: {
-            exerciseSubmissionId: submission.id,
-            id: quote.reconsiderationOfCorrectionId,
-            userId: input.userId,
-          },
-        });
-        const structured = (source?.structuredResult ?? {}) as {
-          correction?: OrchestratedCorrectionResult['correction'];
-        };
-        const sourceSubmission = (source?.submissionSnapshot ?? {}) as {
-          text?: unknown;
-        };
-        const sourcePrompt = (source?.promptSnapshot ?? {}) as {
-          exerciseInstructions?: unknown;
-          taskContext?: unknown;
-        };
-        if (
-          !source ||
-          source.pricingQuote?.action !== 'STANDARD' ||
-          source.reconsideration ||
-          source.creditReservation?.status !== 'SETTLED' ||
-          source.creditReservation.settledAmount === null ||
-          !structured.correction ||
-          typeof sourceSubmission.text !== 'string'
-        ) {
-          return null;
-        }
-        return {
-          action: 'RECONSIDERATION',
-          quoteId: quote.id,
-          userId: quote.userId,
-          target: { id: submission.id, kind: 'EXERCISE_SUBMISSION' },
-          language: quote.language,
-          estimatedCredits: quote.estimatedCredits,
-          maximumReservedCredits: quote.ceilingCredits,
-          expiresAt: quote.expiresAt,
-          promptVersion: quote.promptVersion,
-          modelId: quote.modelId,
-          provider: quote.provider,
-          includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
-          contractKey: quote.contractKey,
-          contractVersion: quote.contractVersion,
-          requestFingerprint: quote.requestFingerprint,
-          submissionText: sourceSubmission.text,
-          exerciseInstructions:
-            typeof sourcePrompt.exerciseInstructions === 'string'
-              ? sourcePrompt.exerciseInstructions
-              : submission.exercise.instructions,
-          taskContext:
-            typeof sourcePrompt.taskContext === 'string'
-              ? sourcePrompt.taskContext
-              : taskContext,
-          contract: source.contractSnapshot,
-          reconsideration: {
-            argument: quote.reconsiderationArgument,
-            previousCorrection: structured.correction,
-            sourceCorrectionId: source.id,
-          },
-        };
-      }
-      if (quote.action !== 'STANDARD') return null;
-      const contractResolution = resolveExerciseCorrectionContract({
-        activityKey: submission.exercise.key,
-        activityType: submission.exercise.activityType,
-        explicitContract: submission.exercise.rubric,
-        instructions: submission.exercise.instructions,
-        language: quote.language,
-        lessonObjectives,
-        lessonSlug: submission.exercise.lesson.slug,
-        lessonSummary: submission.exercise.lesson.summary,
-        programSlug: submission.exercise.lesson.module.stage.program.slug,
-        title: submission.exercise.title,
-      });
-      if (!contractResolution.eligible) return null;
-      return {
-        action: 'STANDARD',
-        quoteId: quote.id,
-        userId: quote.userId,
-        target: { id: submission.id, kind: 'EXERCISE_SUBMISSION' },
-        language: quote.language,
-        estimatedCredits: quote.estimatedCredits,
-        maximumReservedCredits: quote.ceilingCredits,
-        expiresAt: quote.expiresAt,
-        promptVersion: quote.promptVersion,
-        modelId: quote.modelId,
-        provider: quote.provider,
-        includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
-        contractKey: quote.contractKey,
-        contractVersion: quote.contractVersion,
-        requestFingerprint: quote.requestFingerprint,
-        submissionText: submission.contentMarkdown,
-        exerciseInstructions: submission.exercise.instructions,
-        taskContext,
-        contract: contractResolution.contract,
-      };
-    },
-    // Le schéma V4 conserve le devis comme snapshot immuable sans colonne
-    // d'état. La consommation est matérialisée par l'AiCorrection unique
-    // sur l'empreinte et par la réservation de crédits idempotente.
-    markConsumed: async (): Promise<void> => {},
-  };
+  public get quotes() {
+    return this.quoteRepository.quotes;
+  }
 
   public readonly corrections: CorrectionPersistencePort = {
     begin: async (
