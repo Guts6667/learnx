@@ -7,15 +7,15 @@
 - baseline de rollback V4 :
   `a02ecc3f307af36656fa5cb8a7b62954fdec73e9` ;
 - SHA fonctionnel du candidat : `c3e81c4b` ;
-- dernier SHA documentaire de la branche candidate : `3c42e056` ;
+- SHA exact déployé sur la preview : `1fcce21c` ;
 - branche : `origin/codex/v4-1-foundation` ;
 - preview de branche :
   `https://learnx-git-codex-v4-1-foundation-guts6667s-projects.vercel.app`.
 
-Le SHA fonctionnel contient le code, les tests et les documents de handoff. Le
-commit suivant consigne uniquement la synchronisation Airtable. Le domaine de
-preview répond après ce dernier push ; l'interface Vercel doit encore confirmer
-explicitement le SHA de déploiement avant le GO propriétaire.
+Le SHA fonctionnel contient le code, les tests et les documents de handoff. Les
+commits suivants consignent uniquement la synchronisation Airtable et la recette
+de release. GitHub associe le statut Vercel `success` au SHA `1fcce21c`, dont le
+domaine de preview répond.
 
 ## Preuves automatiques acquises
 
@@ -41,12 +41,24 @@ Smoke HTTP public du 28 août 2026 :
 | `/manifest.webmanifest` | 200 | manifeste PWA servi |
 | `/sw.js` | 200 | service worker servi |
 
+Contrôles complémentaires du 28 août 2026 :
+
+- les quatre surfaces publiques `/`, `/login`, `/request-access` et
+  `/research/ai-correction/en.html` ne présentent aucun débordement horizontal
+  mesuré à 390, 720, 1 440 et 1 920 px dans le navigateur intégré ;
+- la V4 de rollback `a02ecc3f…` a été reconstruite dans un worktree détaché
+  après `pnpm prisma:generate` ; son build de production et les six smokes HTTP
+  ci-dessus sont verts ; le worktree a ensuite été supprimé et la preview du
+  candidat est restée active ;
+- ce contrôle prouve la reconstructibilité locale du rollback, mais ne remplace
+  pas un basculement Vercel réel suivi d'une restauration.
+
 ## Recette propriétaire restante
 
 Chaque case doit recevoir une preuve ou un défaut explicite. Une case non
 testée n'est jamais assimilée à un succès.
 
-- [ ] Vercel confirme le SHA `3c42e056` pour l'URL ci-dessus.
+- [x] Vercel confirme le SHA `1fcce21c` pour l'URL ci-dessus.
 - [ ] Demande d'accès, activation, connexion et déconnexion.
 - [ ] Refus d'accès utilisateur et permissions administrateur.
 - [ ] Aujourd'hui → programme → étape → module → leçon.
@@ -68,4 +80,3 @@ testée n'est jamais assimilée à un succès.
 - aucun défaut connu et toutes les cases prouvées : demande de **GO explicite
   de Rayan** ;
 - aucun merge ou push sur `main` n'est autorisé avant ce GO.
-
