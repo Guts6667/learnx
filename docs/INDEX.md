@@ -14,8 +14,11 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Ticket V3.5 design et landing | `BACKLOG_V3_5.md` puis les fichiers cités par le ticket | Le ticket V3.5 actif après clôture V3 |
 | Ticket V4 IA et économie | `BACKLOG_V4.md` puis l'ADR ou la spec citée | L'amendement d'exécution du 24 août prime sur les tickets expérimentaux historiques |
 | Orientation V6 support et conformité | `V6_CANDIDATES.md` | Candidats uniquement, aucune autorité d'implémentation |
-| Architecture générale | `TECHNICAL_ARCHITECTURE.md` | Code et schéma priment en cas d'écart |
-| Carte du domaine et vocabulaire | `LEARNX_DOMAIN_KNOWLEDGE.md` | Point d'entrée canonique pour les objets et frontières ; la roadmap conserve le statut courant |
+| Reprise rapide V4.1 | `docs/HANDOFF.md` | Point d'entrée humain actuel ; code, preuves QA et ticket actif priment en cas d'écart |
+| Architecture générale | `docs/ARCHITECTURE.md` | Frontières React/API/Neon/OpenRouter et dépendances de domaines ; code et schéma priment |
+| Carte du domaine et vocabulaire | `docs/DOMAIN_MODEL.md` | Autorités, objets métier et séparation remise/feedback/maîtrise |
+| Conventions d'ingénierie | `docs/ENGINEERING_CONVENTIONS.md` | Frontières, anti-monolithes, React/shadcn, Git et Definition of Done |
+| Tests et release | `docs/TESTING_AND_RELEASE.md` | Gates reproductibles, recette V4.1-504 et rollback |
 | Statut actif ou historique des documents V4 | `V4_DOCUMENT_STATUS.md` | Une préparation ou demande de GO close ne peut jamais être reprise comme instruction |
 | Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma`, `prisma/models/*.prisma` | dossier `prisma/` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
@@ -43,6 +46,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Gates qualité et release V4.1 | `docs/V4_1_QUALITY_GATES.md` | Sépare le gate de migration reproductible du gate final 80 % global / 90 % critique, sans assouplissement opportuniste |
 | Parité du découpage CSS V4.1-404 | `docs/qa/V4_1_404_CSS_PARITY.md` | Sous-lot CSS uniquement : graphe d'imports, parité source et CSS compilé, sans clôturer i18n/runner |
 | Séparation du runner de benchmark V4.1 | `docs/V4_1_404_BENCHMARK_RUNNER_SPLIT.md` | Frontières library/CLI, invariants de parité et dette scientifique P2 explicitement conservée |
+| Handoff et fermeture de dette V4.1 | `docs/qa/V4_1_503_HANDOFF.md` | Preuve du découpage du noyau d'agrégation, goldens et consolidation documentaire |
 | Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Fermé jusqu'au GO explicite V4.1-504 ; nouvelle génération IA, évaluations textuelles, calibration, essai et paiement |
 | Exploration V5 | `V5_CANDIDATES.md` | Conception guidée et analytics restent des candidats sans ticket activable |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |

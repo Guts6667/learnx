@@ -131,11 +131,10 @@ neuvième statut.
 - Reviewer : Rayan
 - Dépendances : V4.1-003, V4.1-004
 - Source : mapping Airtable approuvé ; `AGENTS.md`
-- Statut : **READY_FOR_OWNER_GO** — schéma, rôles stables, natures de tickets
-  et pages opérationnelles Airtable réconciliés sans publier l'interface ;
-  contrat de synchronisation audité et revue indépendante sans P0/P1/P2 ; la
-  clôture et la publication de l'interface restent deux décisions explicites de
-  Rayan
+- Statut : **DONE** — schéma, rôles stables, natures de tickets et pages
+  opérationnelles Airtable réconciliés ; Rayan a autorisé la publication de
+  l'interface nettoyée et les vues actives ne conservent qu'une colonne par
+  statut canonique.
 - Critères d'acceptation :
   - les IDs `001–007`, `101–104`, `201–203`, `301–305`, `401–404` et
     `501–504` conservent exactement leurs livrables autoritatifs ;
@@ -547,10 +546,9 @@ neuvième statut.
   ni artefact expérimental n'a été produit. Les preuves sont consignées dans
   `docs/qa/V4_1_404_CSS_PARITY.md` et
   `docs/V4_1_404_BENCHMARK_RUNNER_SPLIT.md`.
-- Dette enregistrée : `V4.1-404-R1`, P2, owner Architecture/Produit, cible
-  `V4.1-503`. Elle concerne uniquement le noyau d'agrégation scientifique
-  `ai-correction-benchmark-summary.ts` (1 021 lignes). Son découpage exige des
-  goldens par sous-agrégat afin de conserver strictement l'ordre des calculs.
+- Dette fermée : `V4.1-404-R1` a été reprise dans `V4.1-503`. Le noyau
+  d'agrégation scientifique de 1 021 lignes est séparé par responsabilité et
+  des goldens de sous-agrégats conservent strictement les calculs publics.
 - Critères d'acceptation :
   - catalogues i18n sont scindés sans clé perdue ni fallback silencieux ;
   - CSS est réparti par tokens/primitives/surfaces sans changer le rendu ;
@@ -616,8 +614,10 @@ neuvième statut.
 - Reviewer : Rayan
 - Dépendances : V4.1-502
 - Source : preuves de tous les tickets V4.1 antérieurs
-- Statut : **READY** — V4.1-502 est terminé ; la consolidation du handoff et
-  la fermeture de la dette documentée peuvent commencer.
+- Statut : **DONE** — les cinq documents canoniques de reprise sont consolidés,
+  le manifeste route les autorités actives, et `V4.1-404-R1` est fermé par un
+  découpage sûr du noyau d'agrégation et des goldens de sous-agrégats sans
+  modifier les verdicts scientifiques historiques.
 - Critères d'acceptation :
   - migration, architecture, composants, scripts et documentation sont remis ;
   - dette résiduelle a owner, priorité, impact, dépendances et date de réexamen ;
@@ -633,7 +633,8 @@ neuvième statut.
 - Reviewer : Rayan
 - Dépendances : V4.1-503 et tous les tickets P0 V4.1 terminés
 - Source : handoff V4.1-503 ; preuves des 26 tickets précédents
-- Statut : **bloqué** — dépendance V4.1-503
+- Statut : **READY** — V4.1-503 est terminé ; la preview finale, la recette
+  propriétaire, le rollback et le GO explicite restent à exécuter.
 - Critères d'acceptation :
   - preview réelle rejoue la baseline V4 et les parcours critiques ;
   - rollback code/config/PWA est répété et les données restent compatibles ;

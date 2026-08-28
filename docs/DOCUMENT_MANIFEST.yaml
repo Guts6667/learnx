@@ -1,6 +1,6 @@
 schema_version: 1
-manifest_version: '1.1.0'
-captured_on: '2026-08-26'
+manifest_version: '1.2.0'
+captured_on: '2026-08-28'
 baseline:
   ref: origin/dev
   sha: a02ecc3f307af36656fa5cb8a7b62954fdec73e9
@@ -25,6 +25,7 @@ status_definitions:
   navigation_only: routing aid; evidence and source documents prevail
   append_only_evidence: immutable historical evidence; new facts use a new version
   superseded_evidence: immutable predecessor retained only for provenance
+  superseded_reference: preserved reference replaced as current routing authority
 
 documents:
   - path: AGENTS.md
@@ -40,6 +41,56 @@ documents:
     owner: Documentation
     reviewer: Architecture
     supersession: update_in_place_with_authority_change_recorded
+
+  - path: docs/HANDOFF.md
+    scope: v4_1_human_handoff
+    status: active_instruction
+    owner: Architecture / Produit
+    reviewer: QA / Release
+    supersession: reviewed_versioned_update
+
+  - path: docs/ARCHITECTURE.md
+    scope: current_system_architecture
+    status: active_instruction
+    owner: Architecture / Produit
+    reviewer: Backend / Data
+    supersession: reviewed_versioned_update
+
+  - path: docs/DOMAIN_MODEL.md
+    scope: current_domain_authorities_and_model
+    status: active_instruction
+    owner: Architecture / Produit
+    reviewer: Backend / Data
+    supersession: reviewed_versioned_update
+
+  - path: docs/ENGINEERING_CONVENTIONS.md
+    scope: current_engineering_boundaries_and_conventions
+    status: active_instruction
+    owner: Architecture / Produit
+    reviewer: QA / Release
+    supersession: reviewed_versioned_update
+
+  - path: docs/TESTING_AND_RELEASE.md
+    scope: current_testing_preview_release_and_rollback
+    status: active_instruction
+    owner: QA / Release
+    reviewer: Architecture / Produit
+    supersession: reviewed_versioned_update
+
+  - path: docs/LEARNX_DOMAIN_KNOWLEDGE.md
+    scope: historical_domain_digest_before_v4_1
+    status: superseded_reference
+    owner: Architecture / Produit
+    reviewer: Documentation
+    superseded_by: docs/DOMAIN_MODEL.md
+    rule: preserve_for_provenance_do_not_use_as_current_status
+
+  - path: docs/qa/V4_1_503_HANDOFF.md
+    scope: v4_1_handoff_and_debt_closure_evidence
+    status: append_only_evidence
+    owner: Architecture / Produit
+    reviewer: QA / Release
+    supersession: add_new_evidence_file
 
   - path: docs/AGENT_WORKFLOW.md
     scope: agent_delivery_workflow
