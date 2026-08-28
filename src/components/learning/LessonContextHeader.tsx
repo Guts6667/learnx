@@ -2,7 +2,11 @@ import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import type { LessonDetail } from '@/features/curriculum/queries';
+import {
+  type LessonDetail,
+  type LessonProgressResponse,
+  useLessonProgressQuery,
+} from '@/features/curriculum/queries';
 import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
 import { buildLessonActivitySequence } from '@/lib/lesson-activity-sequence';
 import { useI18n } from '@/i18n';
@@ -14,6 +18,7 @@ export function lessonHref(lesson: LessonDetail): string {
 function lessonActivitySequence(
   lesson: LessonDetail,
   currentKey?: string,
+  progress?: LessonProgressResponse,
 ) {
   return buildLessonActivitySequence(
     {
@@ -24,6 +29,17 @@ function lessonActivitySequence(
       lessonSlug: lesson.slug,
       nextLesson: lesson.navigation.nextLesson,
       programSlug: lesson.module.stage.program.slug,
+      progress: progress
+        ? {
+            canComplete: progress.canComplete,
+            conceptStatus: progress.conceptProgress,
+            exerciseStatus: progress.exerciseSubmissions,
+            lessonStatus: progress.lessonProgress.status,
+            quizPassed: progress.quizPassed,
+            resourceStatus: progress.resourceProgress,
+            taskStatus: progress.taskCompletions,
+          }
+        : undefined,
       quizzes: lesson.quizzes,
       resources: lesson.resources,
       sequence: lesson.sequence,
@@ -95,7 +111,12 @@ export function LessonActivitySummary({
   currentKey: string;
   lesson: LessonDetail;
 }) {
-  const sequence = lessonActivitySequence(lesson, currentKey);
+  const progressQuery = useLessonProgressQuery(lesson.id, lesson.isPublished);
+  const sequence = lessonActivitySequence(
+    lesson,
+    currentKey,
+    progressQuery.data,
+  );
 
   return (
     <div className="space-y-6">
@@ -108,6 +129,7 @@ export function LessonActivitySummary({
       ) : null}
       <PedagogicalNavigation
         activities={sequence.activities}
+        continueActivity={sequence.next}
         currentKey={currentKey}
         lessonTitle={lesson.title}
         moduleTitle={lesson.module.title}

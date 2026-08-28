@@ -123,10 +123,29 @@ describe('progression query mutations', () => {
 
   it('records a concept attempt in the cache and reports transport failures', async () => {
     const queryClient = createQueryClient();
+    const lessonId = '66666666-6666-4666-8666-666666666666';
     queryClient.setQueryData(
       ['concept-assessment-attempts', assessmentId, true],
       { attempts: [], nextCursor: 'next-page' },
     );
+    const progress = {
+      canComplete: true,
+      conceptProgress: { 'concept-1': 'VALIDATED' },
+      currentActivity: {
+        id: assessmentId,
+        kind: 'CONCEPT_ASSESSMENT' as const,
+      },
+      exerciseSubmissions: {},
+      lessonProgress: {
+        completedAt: null,
+        percent: 50,
+        startedAt: '2026-08-28T09:00:00.000Z',
+        status: 'IN_PROGRESS' as const,
+      },
+      quizPassed: {},
+      resourceProgress: {},
+      taskCompletions: {},
+    };
     const response = {
       attempt: {
         id: submissionId,
@@ -135,11 +154,11 @@ describe('progression query mutations', () => {
         submittedAt: '2026-08-28T09:00:00.000Z',
       },
       corrections: [],
-      progress: null,
+      progress,
     };
     mockedApiRequest.mockResolvedValueOnce(response);
     const { result } = renderHook(
-      () => useConceptAssessmentAttemptMutation(assessmentId, true),
+      () => useConceptAssessmentAttemptMutation(assessmentId, true, lessonId),
       { wrapper: createWrapper(queryClient) },
     );
 
@@ -154,6 +173,9 @@ describe('progression query mutations', () => {
         nextCursor: string | null;
       }>(['concept-assessment-attempts', assessmentId, true]),
     ).toEqual({ attempts: [response.attempt], nextCursor: 'next-page' });
+    expect(queryClient.getQueryData(['lesson-progress', lessonId])).toEqual(
+      progress,
+    );
 
     const failure = new Error('concept request failed');
     mockedApiRequest.mockRejectedValueOnce(failure);

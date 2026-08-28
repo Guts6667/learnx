@@ -156,6 +156,47 @@ describe('lesson activity sequence', () => {
     expect(sequence.next?.href).toContain('assessmentId=assessment-1');
   });
 
+  it('ne reboucle pas vers une mini-évaluation déjà validée', () => {
+    const input = fixture();
+    if (!input.progress) throw new Error('Missing progress fixture.');
+    input.sequence = [
+      { kind: 'CONCEPT_ASSESSMENT', key: 'assessment' },
+      { kind: 'CONTENT', key: 'content-3' },
+      { kind: 'CONTENT', key: 'content-4' },
+    ];
+    input.contentBlocks = [
+      {
+        id: 'block-3',
+        key: 'content-3',
+        position: 3,
+        type: 'RICH_TEXT',
+      },
+      {
+        id: 'block-4',
+        key: 'content-4',
+        position: 4,
+        type: 'RICH_TEXT',
+      },
+    ];
+    input.exercises = [];
+    input.quizzes = [];
+    input.resources = [];
+    input.tasks = [];
+    input.progress.conceptStatus['concept-1'] = 'VALIDATED';
+    input.progress.canComplete = true;
+
+    const sequence = buildLessonActivitySequence(
+      input,
+      activityKey('CONTENT', 'block-4'),
+    );
+
+    expect(sequence.next).toMatchObject({
+      id: 'lesson',
+      kind: 'COMPLETE',
+    });
+    expect(sequence.next?.id).not.toBe('assessment-1');
+  });
+
   it('respecte l’ordre inter-types fourni par le serveur', () => {
     const input = fixture();
     input.sequence = [

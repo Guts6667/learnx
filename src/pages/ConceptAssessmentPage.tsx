@@ -50,6 +50,7 @@ export function ConceptAssessmentPage({
   const mutation = useConceptAssessmentAttemptMutation(
     selectedAssessmentId,
     preview,
+    lesson?.id ?? null,
   );
   const fallbackLessonHref = buildLessonHref(programSlug, lessonSlug);
   useBackNavigationTarget({

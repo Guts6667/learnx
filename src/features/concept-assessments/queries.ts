@@ -8,6 +8,7 @@ import type {
   AssessmentQuestion,
   SubmittedAssessmentAnswer,
 } from '@/features/assessments/QuestionAssessmentExperience';
+import type { LessonProgressResponse } from '@/features/curriculum/queries';
 import { apiRequest } from '@/lib/api-client';
 
 interface ConceptAssessmentDetail {
@@ -35,6 +36,10 @@ interface ConceptAssessmentAttemptsResponse {
   attempts: AssessmentAttempt[];
   nextCursor: string | null;
 }
+
+type ConceptAssessmentAttemptResponse = AssessmentAttemptResponse & {
+  progress: LessonProgressResponse;
+};
 
 function getAssessmentPath(assessmentId: string, preview: boolean): string {
   const basePath = `/api/concept-assessments/${encodeURIComponent(assessmentId)}`;
@@ -171,6 +176,7 @@ export function useConceptAssessmentAttemptsQuery(
 export function useConceptAssessmentAttemptMutation(
   assessmentId: string | null,
   preview: boolean,
+  lessonId: string | null = null,
 ) {
   const queryClient = useAppQueryClient();
   const [error, setError] = useState<unknown>();
@@ -185,7 +191,7 @@ export function useConceptAssessmentAttemptMutation(
       setIsPending(true);
 
       try {
-        const response = await apiRequest<AssessmentAttemptResponse>(
+        const response = await apiRequest<ConceptAssessmentAttemptResponse>(
           getAttemptsPath(assessmentId, preview),
           {
             body: JSON.stringify({ answers }),
@@ -201,6 +207,12 @@ export function useConceptAssessmentAttemptMutation(
             nextCursor: current?.nextCursor ?? null,
           }),
         );
+        if (lessonId) {
+          queryClient.setQueryData(
+            ['lesson-progress', lessonId],
+            response.progress,
+          );
+        }
         return response;
       } catch (requestError) {
         setError(requestError);
@@ -209,7 +221,7 @@ export function useConceptAssessmentAttemptMutation(
         setIsPending(false);
       }
     },
-    [assessmentId, preview, queryClient],
+    [assessmentId, lessonId, preview, queryClient],
   );
 
   return { error, isPending, submit };

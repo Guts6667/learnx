@@ -40,7 +40,7 @@ export function QuizPage({
     : null;
   const quizQuery = useQuizQuery(selectedQuizId);
   const attemptsQuery = useQuizAttemptsQuery(selectedQuizId);
-  const mutation = useQuizAttemptMutation(selectedQuizId);
+  const mutation = useQuizAttemptMutation(selectedQuizId, lesson?.id ?? null);
   const fallbackLessonHref = buildLessonHref(programSlug, lessonSlug);
   useBackNavigationTarget({
     href: fallbackLessonHref,

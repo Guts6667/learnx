@@ -174,21 +174,45 @@ function attemptResponse() {
   };
 }
 
+function progressResponse(quizPassed: boolean) {
+  return {
+    canComplete: quizPassed,
+    conceptProgress: {},
+    currentActivity: { id: quizId, kind: 'QUIZ' },
+    exerciseSubmissions: {},
+    lessonProgress: {
+      completedAt: null,
+      percent: quizPassed ? 100 : 0,
+      startedAt: '2026-08-03T08:00:00.000Z',
+      status: 'IN_PROGRESS',
+    },
+    quizPassed: { [quizId]: quizPassed },
+    resourceProgress: {},
+    taskCompletions: {},
+  };
+}
+
 describe('QuizPage', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('parcourt les quatre formats, soumet et affiche le feedback serveur', async () => {
+    let quizPassed = false;
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
       if (path === '/api/lessons/demarrer') {
         return Promise.resolve(jsonResponse(lessonResponse()));
       }
 
       if (path === `/api/quizzes/${quizId}/attempts`) {
+        if (init?.method === 'POST') quizPassed = true;
         return Promise.resolve(
           init?.method === 'POST'
             ? jsonResponse(attemptResponse(), 201)
             : jsonResponse({ attempts: [] }),
         );
+      }
+
+      if (path === '/api/lessons/lesson-1/progress') {
+        return Promise.resolve(jsonResponse(progressResponse(quizPassed)));
       }
 
       return Promise.resolve(jsonResponse(quizResponse()));
@@ -291,6 +315,7 @@ describe('QuizPage', () => {
   });
 
   it('permet de recommencer après une tentative', async () => {
+    let quizPassed = false;
     vi.stubGlobal(
       'fetch',
       vi.fn((path: string, init?: RequestInit) => {
@@ -298,11 +323,15 @@ describe('QuizPage', () => {
           return Promise.resolve(jsonResponse(lessonResponse()));
         }
         if (path === `/api/quizzes/${quizId}/attempts`) {
+          if (init?.method === 'POST') quizPassed = true;
           return Promise.resolve(
             init?.method === 'POST'
               ? jsonResponse(attemptResponse(), 201)
               : jsonResponse({ attempts: [] }),
           );
+        }
+        if (path === '/api/lessons/lesson-1/progress') {
+          return Promise.resolve(jsonResponse(progressResponse(quizPassed)));
         }
         return Promise.resolve(jsonResponse(quizResponse()));
       }),
@@ -370,6 +399,9 @@ describe('QuizPage', () => {
       }
       if (path === `/api/quizzes/${quizId}/attempts`) {
         return Promise.resolve(jsonResponse({ attempts: [] }));
+      }
+      if (path === '/api/lessons/lesson-1/progress') {
+        return Promise.resolve(jsonResponse(progressResponse(false)));
       }
       throw new Error(`Unexpected request: ${path}`);
     });

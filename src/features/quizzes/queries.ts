@@ -174,7 +174,10 @@ export function useQuizAttemptsQuery(quizId: string | null) {
   };
 }
 
-export function useQuizAttemptMutation(quizId: string | null) {
+export function useQuizAttemptMutation(
+  quizId: string | null,
+  lessonId: string | null = null,
+) {
   const queryClient = useAppQueryClient();
   const [error, setError] = useState<unknown>();
   const [isPending, setIsPending] = useState(false);
@@ -204,6 +207,11 @@ export function useQuizAttemptMutation(quizId: string | null) {
             nextCursor: current?.nextCursor ?? null,
           }),
         );
+        if (lessonId) {
+          await queryClient.invalidateQueries({
+            queryKey: ['lesson-progress', lessonId],
+          });
+        }
         return response;
       } catch (requestError) {
         setError(requestError);
@@ -212,7 +220,7 @@ export function useQuizAttemptMutation(quizId: string | null) {
         setIsPending(false);
       }
     },
-    [queryClient, quizId],
+    [lessonId, queryClient, quizId],
   );
 
   return { error, isPending, submit };
