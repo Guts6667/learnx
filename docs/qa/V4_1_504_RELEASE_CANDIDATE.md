@@ -6,29 +6,42 @@
 
 - baseline de rollback V4 :
   `a02ecc3f307af36656fa5cb8a7b62954fdec73e9` ;
-- SHA fonctionnel du candidat : `c3e81c4b` ;
-- SHA exact déployé sur la preview : `1fcce21c` ;
+- SHA fonctionnel du candidat : `d7b1949e` ;
+- SHA exact déployé sur la preview : `d7b1949e` ;
 - branche : `origin/codex/v4-1-foundation` ;
 - preview de branche :
   `https://learnx-git-codex-v4-1-foundation-guts6667s-projects.vercel.app`.
 
-Le SHA fonctionnel contient le code, les tests et les documents de handoff. Les
-commits suivants consignent uniquement la synchronisation Airtable et la recette
-de release. GitHub associe le statut Vercel `success` au SHA `1fcce21c`, dont le
-domaine de preview répond.
+Le SHA fonctionnel contient le code, les tests et les documents de handoff.
+GitHub associe le statut Vercel `success` au SHA `d7b1949e`, dont le domaine de
+preview répond.
 
 ## Preuves automatiques acquises
 
 - `quality:v4.1:final` : vert ;
-- 1 371 tests Vitest ;
-- couverture globale : 88,97 % statements, 80,46 % branches, 90,23 % functions,
-  90,16 % lines ;
+- 1 374 tests Vitest ;
+- couverture globale : 88,96 % statements, 80,43 % branches, 90,21 % functions,
+  90,15 % lines ;
 - quatre domaines critiques au-dessus de 90 % lines ;
 - 0 import Preact, cycle, code mort, vulnérabilité de production haute ou
   critique ;
 - budgets JS, CSS, lazy chunk et précache PWA respectés ;
 - 72 scénarios Playwright du bundle de production réussis ;
 - 11 tests d'intégration sur branche Neon jetable réussis.
+
+Reproduction distante sur le SHA final `d7b1949e` :
+
+- workflow `Quality`, job bloquant `V4.1 final (required)` : succès ;
+- workflow `Integration`, job `real-functions` : succès ;
+- snapshot avant/après migrations, rejeu complet dans un schéma isolé, tests
+  Functions/navigateur et seeds ciblés : succès ;
+- déploiements Vercel `Preview` : succès pour `dev` et la branche candidate.
+
+Le répétiteur de migrations distingue désormais un ancien essai explicitement
+annulé d'une migration réellement incomplète. Le cas de production observé
+(essai annulé puis répétition appliquée) est couvert par un test de régression ;
+une tentative non résolue ou deux checksums appliqués incompatibles restent
+bloquants.
 
 Smoke HTTP public du 28 août 2026 :
 
@@ -86,7 +99,7 @@ Correctifs issus de la recette propriétaire du 28 août 2026 :
 Chaque case doit recevoir une preuve ou un défaut explicite. Une case non
 testée n'est jamais assimilée à un succès.
 
-- [x] Vercel confirme le SHA `1fcce21c` pour l'URL ci-dessus.
+- [x] Vercel confirme le SHA `d7b1949e` pour l'URL ci-dessus.
 - [ ] Demande d'accès, activation, connexion et déconnexion.
 - [ ] Refus d'accès utilisateur et permissions administrateur.
 - [ ] Aujourd'hui → programme → étape → module → leçon.
@@ -99,7 +112,8 @@ testée n'est jamais assimilée à un succès.
   à jour.
 - [ ] 320, 390, 720, 1440 et 1920 px ; zoom 200 % ; clavier ; lecteur d'écran.
 - [ ] Rollback de preview vers `a02ecc3f…`, smoke, puis restauration du candidat.
-- [ ] Protection de branche exigeant `Quality / V4.1 final (required)`.
+- [x] Protection de `main` stricte et appliquée aux administrateurs, exigeant
+  `V4.1 final (required)`, historique linéaire et résolution des conversations.
 
 ## Règle de décision
 
