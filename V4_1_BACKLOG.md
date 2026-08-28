@@ -491,9 +491,20 @@ neuvième statut.
 - Reviewer : IA/Recherche
 - Dépendances : V4.1-303, V4.1-304, V4.1-305, V4.1-401
 - Source : contrats V4 correction/pricing/ledger ; audit V4.1-002
-- Statut : **prêt** — V4.1-401 et les surfaces métier sont terminés ; le lot
-  peut commencer sans changer prix, modèle, fournisseur, seuil ni contrat
-  public
+- Statut : **terminé** — correction, pricing, persistance des devis et ledger
+  sont séparés par responsabilité sans changer les contrats publics. Le P0
+  détecté en revue (échec de persistance après réponse fournisseur transformé
+  en faux échec facturable) a été corrigé avant intégration : il conduit
+  désormais à la réconciliation et à la libération, sans finalisation ni
+  règlement. Les deux revues indépendantes concluent `APPROVE`, sans P0/P1.
+  Lint, typecheck, 169 fichiers / 1 048 tests et build/PWA sont verts. La preuve
+  PostgreSQL réelle de concurrence, idempotence, immutabilité et rollback est
+  consignée dans `docs/qa/V4_1_402_POSTGRES_EVIDENCE.md`. Tous les fichiers
+  concernés restent sous 400 lignes et les tests du domaine sous 600 lignes.
+  L'identité Sonnet gelée, l'absence de retry/fallback, les coûts inconnus à
+  `null`, les devis, réservations, règlements, libérations et historiques sont
+  inchangés. Le dernier P2 sur le typage des codes de retry a été fermé avant
+  intégration (`cc8f2254`).
 - Critères d'acceptation :
   - orchestration, contrats, fournisseurs, pricing et ledger sont séparés ;
   - idempotence, devis, réserve, compensation et historique restent identiques ;
@@ -507,7 +518,8 @@ neuvième statut.
 - Reviewer : QA/Release
 - Dépendances : V4.1-401, V4.1-402
 - Source : `prisma/schema.prisma`, migrations et audit V4.1-002
-- Statut : **bloqué** — dépendance V4.1-402
+- Statut : **prêt** — V4.1-401 et V4.1-402 sont terminés ; le découpage du
+  schéma peut commencer, sans migration SQL ni changement de données.
 - Critères d'acceptation :
   - le schéma est scindé par domaine avec une configuration Prisma supportée ;
   - le diff de modèle généré est nul et aucune migration SQL n'est produite ;
