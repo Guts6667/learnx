@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -110,16 +110,32 @@ export function useCreditIncreaseRequestMutation() {
   const queryClient = useAppQueryClient();
   const [error, setError] = useState<unknown>();
   const [isPending, setIsPending] = useState(false);
+  const pendingAttempt = useRef<{
+    idempotencyKey: string;
+    reason: string;
+  } | null>(null);
+  const abandon = useCallback(() => {
+    pendingAttempt.current = null;
+    setError(undefined);
+  }, []);
   const execute = useCallback(
     async (reason: string) => {
       setError(undefined);
       setIsPending(true);
+      const attempt =
+        pendingAttempt.current?.reason === reason
+          ? pendingAttempt.current
+          : {
+              idempotencyKey: `increase:${crypto.randomUUID()}`,
+              reason,
+            };
+      pendingAttempt.current = attempt;
       try {
         const response = await apiRequest<{ request: { id: string } }>(
           '/api/credits/increase-requests',
           {
             body: JSON.stringify({
-              idempotencyKey: `increase:${crypto.randomUUID()}`,
+              idempotencyKey: attempt.idempotencyKey,
               reason,
             }),
             headers: { 'content-type': 'application/json' },
@@ -127,6 +143,7 @@ export function useCreditIncreaseRequestMutation() {
           },
         );
         await queryClient.invalidateQueries({ queryKey: ownCreditsKey });
+        pendingAttempt.current = null;
         return response.request;
       } catch (requestError) {
         setError(requestError);
@@ -137,7 +154,7 @@ export function useCreditIncreaseRequestMutation() {
     },
     [queryClient],
   );
-  return { error, execute, isPending };
+  return { abandon, error, execute, isPending };
 }
 
 export function useAdminCreditMembersQuery(input: {

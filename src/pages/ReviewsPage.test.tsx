@@ -212,6 +212,9 @@ describe('ReviewsPage', () => {
       ),
     ).toBeInTheDocument();
     expect(screen.getByText('Mémoire de travail')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Afficher plus' }),
+    ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
     expect(await screen.findByText('Mémoire à long terme')).toBeInTheDocument();

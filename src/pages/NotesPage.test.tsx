@@ -193,6 +193,9 @@ describe('NotesPage', () => {
       ),
     ).toBeInTheDocument();
     expect(screen.getByText('Ma note')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Afficher plus' }),
+    ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
     expect(await screen.findByText('Note suivante')).toBeInTheDocument();

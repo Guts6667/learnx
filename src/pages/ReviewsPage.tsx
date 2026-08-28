@@ -218,7 +218,7 @@ export function ReviewsPage() {
             </section>
           ) : null}
 
-          {query.hasMore ? (
+          {query.hasMore && !query.loadMoreError ? (
             <Button
               isLoading={query.isLoadingMore}
               onClick={() => void query.loadMore()}

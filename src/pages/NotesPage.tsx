@@ -219,7 +219,7 @@ export function NotesPage() {
               </ul>
             </div>
           </div>
-          {query.hasMore ? (
+          {query.hasMore && !query.loadMoreError ? (
             <Button
               isLoading={query.isLoadingMore}
               onClick={() => void query.loadMore()}

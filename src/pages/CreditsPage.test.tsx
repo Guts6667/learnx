@@ -157,12 +157,19 @@ describe('CreditsPage', () => {
 
   it('conserve le motif et permet de réessayer une demande en échec', async () => {
     let postAttempt = 0;
+    const postBodies: Array<{ idempotencyKey: string; reason: string }> = [];
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
       if (
         path === '/api/credits/increase-requests' &&
         init?.method === 'POST'
       ) {
         postAttempt += 1;
+        postBodies.push(
+          JSON.parse(String(init.body)) as {
+            idempotencyKey: string;
+            reason: string;
+          },
+        );
         return Promise.resolve(
           postAttempt === 1
             ? jsonResponse({ error: 'unavailable' }, 503)
@@ -196,6 +203,8 @@ describe('CreditsPage', () => {
     ).toBeInTheDocument();
     expect(reason).toHaveValue('');
     expect(postAttempt).toBe(2);
+    expect(postBodies).toHaveLength(2);
+    expect(postBodies[0]?.idempotencyKey).toBe(postBodies[1]?.idempotencyKey);
   });
 
   it('n’affiche aucun formulaire lorsqu’une demande est déjà en attente', async () => {
