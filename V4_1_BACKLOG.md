@@ -408,8 +408,9 @@ neuvième statut.
 - Reviewer : Architecture / QA
 - Dépendances : V4.1-301, V4.1-302, V4.1-303, V4.1-304, V4.1-305
 - Source : audit V4.1-002 ; contrats prouvés par les lots 300
-- Statut : **prêt** — dépendances V4.1-301 à V4.1-305 terminées et revues ;
-  le lot exclut correction, pricing et ledger, réservés à V4.1-402
+- Statut : **en cours** — premier sous-lot de décomposition Backend/Data ouvert
+  sur les contrôleurs génériques ; le lot exclut correction, pricing et ledger,
+  réservés à V4.1-402
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
