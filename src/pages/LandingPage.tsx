@@ -3,6 +3,10 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { navigate as route } from '@/app/navigation';
 
 import { TotemPublicShell } from '@/components/layout/TotemShell';
+import {
+  LessonPreview,
+  ProgramPreview,
+} from '@/components/landing/LandingPreviews';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { TextField } from '@/components/ui/TextField';
@@ -16,85 +20,6 @@ import { useI18n } from '@/i18n';
 
 interface InterestFormProps {
   purpose: PublicLeadPurpose;
-}
-
-function ProgramPreview() {
-  const { t } = useI18n();
-
-  return (
-    <section
-      aria-label={t('landing.preview.program.ariaLabel')}
-      className="landing-product-preview landing-program-preview"
-    >
-      <header className="landing-preview-header">
-        <h2>{t('landing.preview.program.title')}</h2>
-        <span>{t('landing.preview.program.activity')}</span>
-      </header>
-      <div className="landing-preview-body">
-        <nav
-          aria-label={t('landing.preview.productNavigation')}
-          className="landing-preview-mini-nav"
-        >
-          <span aria-hidden="true">⌂</span>
-          <span aria-current="page" aria-hidden="true">
-            ◇
-          </span>
-          <span aria-hidden="true">↻</span>
-          <span aria-hidden="true">▤</span>
-        </nav>
-        <div className="landing-preview-content">
-          <p className="landing-preview-kicker">
-            {t('landing.preview.program.nextStep')}
-          </p>
-          <h3>{t('landing.preview.program.greeting')}</h3>
-          <article className="landing-next-card">
-            <p className="landing-preview-kicker">
-              {t('landing.preview.program.stage')}
-            </p>
-            <h4>{t('landing.preview.lesson.title')}</h4>
-            <p>{t('landing.preview.program.saved')}</p>
-            <div aria-hidden="true" className="landing-preview-progress">
-              <span />
-            </div>
-            <span className="landing-preview-next-action">
-              {t('landing.preview.program.resume')}
-              <span aria-hidden="true">→</span>
-            </span>
-          </article>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function LessonPreview() {
-  const { t } = useI18n();
-
-  return (
-    <section
-      aria-label={t('landing.preview.lesson.ariaLabel')}
-      className="landing-product-preview landing-lesson-preview"
-    >
-      <header className="landing-preview-header">
-        <span>{t('landing.preview.lesson.type')}</span>
-        <span>{t('landing.preview.realContent')}</span>
-      </header>
-      <div className="landing-preview-body">
-        <p className="landing-preview-kicker">
-          {t('landing.preview.lesson.module')}
-        </p>
-        <h2>{t('landing.preview.lesson.title')}</h2>
-        <article>
-          <h3>{t('landing.preview.lesson.section')}</h3>
-          <p>{t('landing.preview.lesson.excerpt')}</p>
-          <footer>
-            <strong>{t('landing.preview.lesson.sourceLabel')}</strong>
-            <cite>{t('landing.preview.lesson.source')}</cite>
-          </footer>
-        </article>
-      </div>
-    </section>
-  );
 }
 
 function InterestForm({ purpose }: InterestFormProps) {
@@ -316,10 +241,24 @@ export function LandingPage({ path }: { path?: string }) {
         className="landing-section landing-feature-proof"
         id="product"
       >
-        <div>
+        <div className="landing-product-copy">
           <p className="page-eyebrow">{t('landing.product.eyebrow')}</p>
           <h2 id="landing-product">{t('landing.product.title')}</h2>
           <p>{t('landing.product.description')}</p>
+          <ul className="landing-product-benefits">
+            <li>
+              <strong>{t('landing.product.benefitDirectionTitle')}</strong>
+              <span>{t('landing.product.benefitDirection')}</span>
+            </li>
+            <li>
+              <strong>{t('landing.product.benefitPracticeTitle')}</strong>
+              <span>{t('landing.product.benefitPractice')}</span>
+            </li>
+            <li>
+              <strong>{t('landing.product.benefitContinuityTitle')}</strong>
+              <span>{t('landing.product.benefitContinuity')}</span>
+            </li>
+          </ul>
         </div>
         <LessonPreview />
       </section>
@@ -328,11 +267,53 @@ export function LandingPage({ path }: { path?: string }) {
         className="landing-section landing-roadmap"
         id="roadmap"
       >
-        <div>
+        <div className="landing-roadmap-heading">
           <p className="page-eyebrow">{t('landing.roadmap.eyebrow')}</p>
           <h2 id="landing-roadmap">{t('landing.roadmap.title')}</h2>
+          <p>{t('landing.roadmap.description')}</p>
         </div>
-        <p>{t('landing.roadmap.description')}</p>
+        <ol className="landing-roadmap-timeline">
+          <li data-state="available">
+            <span className="landing-roadmap-marker" aria-hidden="true" />
+            <div>
+              <p className="landing-roadmap-status">
+                {t('landing.roadmap.available')}
+              </p>
+              <h3>{t('landing.roadmap.learningTitle')}</h3>
+              <p>{t('landing.roadmap.learningDescription')}</p>
+            </div>
+          </li>
+          <li data-state="current">
+            <span className="landing-roadmap-marker" aria-hidden="true" />
+            <div>
+              <p className="landing-roadmap-status">
+                {t('landing.roadmap.current')}
+              </p>
+              <h3>{t('landing.roadmap.correctionTitle')}</h3>
+              <p>{t('landing.roadmap.correctionDescription')}</p>
+            </div>
+          </li>
+          <li>
+            <span className="landing-roadmap-marker" aria-hidden="true" />
+            <div>
+              <p className="landing-roadmap-status">
+                {t('landing.roadmap.next')}
+              </p>
+              <h3>{t('landing.roadmap.improvedTitle')}</h3>
+              <p>{t('landing.roadmap.improvedDescription')}</p>
+            </div>
+          </li>
+          <li>
+            <span className="landing-roadmap-marker" aria-hidden="true" />
+            <div>
+              <p className="landing-roadmap-status">
+                {t('landing.roadmap.exploration')}
+              </p>
+              <h3>{t('landing.roadmap.creationTitle')}</h3>
+              <p>{t('landing.roadmap.creationDescription')}</p>
+            </div>
+          </li>
+        </ol>
       </section>
       <section
         aria-labelledby="landing-research"

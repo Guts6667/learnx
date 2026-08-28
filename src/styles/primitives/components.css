@@ -78,6 +78,28 @@
   border-top: 1px solid var(--color-border);
 }
 
+.lesson-activity-surface {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-group);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--color-surface);
+}
+
+.lesson-resource-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+@media (max-width: 39.999rem) {
+  .lesson-resource-actions > :where(a, button) {
+    width: 100%;
+  }
+}
+
 .ui-list {
   min-width: 0;
   border-block: 1px solid var(--color-border);

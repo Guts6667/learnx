@@ -19,7 +19,16 @@ export const frenchLandingMessages = {
   'landing.product.eyebrow': 'Disponible aujourd’hui',
   'landing.product.title': 'Avancer, pratiquer, vérifier.',
   'landing.product.description':
-    'Chaque programme organise des étapes, des leçons et des activités. Votre progression, vos tentatives et vos notes restent personnelles.',
+    'LearnX transforme un objectif en chemin d’apprentissage concret : vous savez quoi faire maintenant, pourquoi le faire et ce qui vient ensuite.',
+  'landing.product.benefitDirectionTitle': 'Une prochaine étape claire',
+  'landing.product.benefitDirection':
+    'Chaque parcours ordonne les notions et vous ramène directement au bon endroit.',
+  'landing.product.benefitPracticeTitle': 'Des connaissances mises en pratique',
+  'landing.product.benefitPractice':
+    'Leçons, exercices et évaluations s’enchaînent pour passer de la compréhension à l’action.',
+  'landing.product.benefitContinuityTitle': 'Un apprentissage qui garde le contexte',
+  'landing.product.benefitContinuity':
+    'Progression, tentatives, notes et sources restent réunies dans votre espace personnel.',
   'landing.product.structuredTitle': 'Parcours structurés',
   'landing.product.structured':
     'Une progression guidée plutôt qu’une accumulation de contenus.',
@@ -61,10 +70,26 @@ export const frenchLandingMessages = {
   'landing.preview.lesson.sourceLabel': 'Source du contenu',
   'landing.preview.lesson.source':
     'The Scrum Guide 2020 · Ken Schwaber et Jeff Sutherland',
-  'landing.roadmap.eyebrow': 'À venir',
-  'landing.roadmap.title': 'Une assistance plus guidée, sans fausse promesse.',
+  'landing.roadmap.eyebrow': 'Feuille de route produit',
+  'landing.roadmap.title': 'Construire une assistance utile, étape par étape.',
   'landing.roadmap.description':
-    'Les corrections assistées par IA sont prévues pour V4 et la création guidée de parcours pour V5. Elles ne sont pas encore disponibles.',
+    'Chaque jalon est livré dans un périmètre mesurable avant d’élargir les usages de l’IA.',
+  'landing.roadmap.available': 'Disponible',
+  'landing.roadmap.current': 'Pilote actuel',
+  'landing.roadmap.next': 'Prochaine évolution',
+  'landing.roadmap.exploration': 'Horizon V5',
+  'landing.roadmap.learningTitle': 'Parcours structurés et progression personnelle',
+  'landing.roadmap.learningDescription':
+    'Apprendre, pratiquer, conserver ses tentatives et reprendre exactement là où l’on s’est arrêté.',
+  'landing.roadmap.correctionTitle': 'Correction formative assistée par IA',
+  'landing.roadmap.correctionDescription':
+    'Un retour critériel et borné sur les exercices textuels, sans effet automatique sur la progression.',
+  'landing.roadmap.improvedTitle': 'Correction enrichie et mieux calibrée',
+  'landing.roadmap.improvedDescription':
+    'Étendre les formats couverts, comparer les corrections et améliorer la qualité à partir des usages observés.',
+  'landing.roadmap.creationTitle': 'Création guidée de programmes par IA',
+  'landing.roadmap.creationDescription':
+    'Aider à concevoir des parcours sourcés tout en conservant les règles pédagogiques et la validation dans LearnX.',
   'landing.research.eyebrow': 'Recherche & transparence',
   'landing.research.title': 'Suivre nos recherches, décision après décision',
   'landing.research.description':
@@ -132,7 +157,16 @@ export const englishLandingMessages = {
   'landing.product.eyebrow': 'Available today',
   'landing.product.title': 'Move forward, practise, validate.',
   'landing.product.description':
-    'Each programme organises stages, lessons and activities. Your progress, attempts and notes remain personal.',
+    'LearnX turns an objective into a concrete learning path: you know what to do now, why it matters and what comes next.',
+  'landing.product.benefitDirectionTitle': 'One clear next step',
+  'landing.product.benefitDirection':
+    'Every journey orders the concepts and brings you directly back to the right place.',
+  'landing.product.benefitPracticeTitle': 'Knowledge put into practice',
+  'landing.product.benefitPractice':
+    'Lessons, exercises and assessments connect understanding to action.',
+  'landing.product.benefitContinuityTitle': 'Learning that keeps its context',
+  'landing.product.benefitContinuity':
+    'Progress, attempts, notes and sources remain together in your personal space.',
   'landing.product.structuredTitle': 'Structured journeys',
   'landing.product.structured':
     'A guided progression instead of an accumulation of content.',
@@ -173,10 +207,26 @@ export const englishLandingMessages = {
   'landing.preview.lesson.sourceLabel': 'Content source',
   'landing.preview.lesson.source':
     'The Scrum Guide 2020 · Ken Schwaber and Jeff Sutherland',
-  'landing.roadmap.eyebrow': 'Coming later',
-  'landing.roadmap.title': 'More guidance, without false promises.',
+  'landing.roadmap.eyebrow': 'Product roadmap',
+  'landing.roadmap.title': 'Building useful assistance, one step at a time.',
   'landing.roadmap.description':
-    'AI-assisted corrections are planned for V4 and guided journey creation for V5. They are not available yet.',
+    'Each milestone is delivered within a measurable scope before AI capabilities are expanded.',
+  'landing.roadmap.available': 'Available',
+  'landing.roadmap.current': 'Current pilot',
+  'landing.roadmap.next': 'Next evolution',
+  'landing.roadmap.exploration': 'V5 horizon',
+  'landing.roadmap.learningTitle': 'Structured journeys and personal progress',
+  'landing.roadmap.learningDescription':
+    'Learn, practise, preserve attempts and resume exactly where you stopped.',
+  'landing.roadmap.correctionTitle': 'AI-assisted formative correction',
+  'landing.roadmap.correctionDescription':
+    'Bounded, criterion-based feedback on written exercises, with no automatic effect on progress.',
+  'landing.roadmap.improvedTitle': 'Richer, better-calibrated correction',
+  'landing.roadmap.improvedDescription':
+    'Cover more formats, compare corrections and improve quality from observed usage.',
+  'landing.roadmap.creationTitle': 'AI-assisted programme creation',
+  'landing.roadmap.creationDescription':
+    'Help design sourced learning journeys while LearnX retains pedagogical rules and validation.',
   'landing.research.eyebrow': 'Research & transparency',
   'landing.research.title': 'Follow our research, decision by decision',
   'landing.research.description':

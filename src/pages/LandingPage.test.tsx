@@ -73,8 +73,16 @@ describe('LandingPage', () => {
     ).toHaveLength(2);
     expect(screen.getByText(/The Scrum Guide 2020/)).toBeInTheDocument();
     expect(
-      screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
+      screen.getByRole('heading', {
+        name: 'Correction formative assistée par IA',
+      }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'Création guidée de programmes par IA',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Pilote actuel')).toBeInTheDocument();
     const researchLink = screen.getByRole('link', {
       name: 'Explorer le journal de recherche',
     });

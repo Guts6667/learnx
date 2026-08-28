@@ -53,6 +53,22 @@ Contrôles complémentaires du 28 août 2026 :
 - ce contrôle prouve la reconstructibilité locale du rollback, mais ne remplace
   pas un basculement Vercel réel suivi d'une restauration.
 
+Passe de finition UI du 28 août 2026 :
+
+- le rapport anglais pointe désormais vers la page française réellement
+  déployable, avec un test de routage dédié ;
+- les sections Produit et Roadmap de la landing ont été clarifiées sans ajouter
+  de promesse produit non livrée ;
+- comptes, demandes d'accès et contacts utilisent une liste verticale adaptée à
+  la croissance plutôt qu'une grille de cartes ;
+- les contenus de leçon partagent une surface blanche, espacée et réutilisable,
+  et les actions de ressource ont une hiérarchie visuelle distincte ;
+- listes de navigation et de programmes occupent toute la largeur disponible ;
+- vérifications locales : 1 371 tests, lint, typecheck et build verts ; bundle
+  initial à 109,32 kB JS gzip et 19,08 kB CSS gzip, sous les budgets V4.1 ;
+- contrôle visuel local à 390 px et desktop sans débordement horizontal. Cette
+  preuve ne remplace pas la recette authentifiée du propriétaire sur la preview.
+
 ## Recette propriétaire restante
 
 Chaque case doit recevoir une preuve ou un défaut explicite. Une case non

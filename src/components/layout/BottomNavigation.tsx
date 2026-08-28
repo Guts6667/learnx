@@ -82,7 +82,7 @@ export function BottomNavigation({ currentPath = window.location.pathname }) {
           </svg>
         </button>
       </div>
-      <ul className="mx-auto grid max-w-xl grid-cols-5 items-stretch gap-1 lg:flex lg:min-h-0 lg:max-w-none lg:flex-1 lg:flex-col lg:gap-2">
+      <ul className="mx-auto grid w-full max-w-xl grid-cols-5 items-stretch gap-1 lg:flex lg:min-h-0 lg:max-w-none lg:flex-1 lg:flex-col lg:gap-2">
         {navigationItems.map(({ href, icon, labelKey }) => {
           const current = isCurrentPage(currentPath, href);
           const label = t(labelKey);

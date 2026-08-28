@@ -956,13 +956,7 @@
 }
 
 .totem-admin-surface .admin-collection > li + li {
-  border-top: 0;
-}
-
-@media (min-width: 48rem) {
-  .totem-admin-surface .admin-collection {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  border-top: 1px solid var(--color-border);
 }
 
 @media (min-width: 64rem) {

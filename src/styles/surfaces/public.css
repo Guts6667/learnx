@@ -269,6 +269,92 @@
   color: #c8d0df;
 }
 
+.landing-roadmap-heading {
+  min-width: 0;
+}
+
+.landing-roadmap-timeline {
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.landing-roadmap-timeline::before {
+  position: absolute;
+  top: 0.65rem;
+  bottom: 0.65rem;
+  left: 0.4375rem;
+  width: 1px;
+  background: rgb(255 255 255 / 28%);
+  content: '';
+}
+
+.landing-roadmap-timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+.landing-roadmap-timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.landing-roadmap-marker {
+  position: relative;
+  z-index: 1;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  margin-top: 0.25rem;
+  border: 2px solid #aebfff;
+  border-radius: 999px;
+  background: var(--color-text);
+}
+
+.landing-roadmap-timeline li[data-state='available'] .landing-roadmap-marker {
+  border-color: #aebfff;
+  background: #aebfff;
+}
+
+.landing-roadmap-timeline li[data-state='current'] .landing-roadmap-marker {
+  border-color: var(--color-coral);
+  background: var(--color-coral);
+  box-shadow: 0 0 0 0.3rem rgb(204 107 87 / 18%);
+}
+
+.landing-roadmap-timeline h3 {
+  margin-top: 0.3rem;
+  color: var(--color-surface);
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  font-weight: 550;
+  line-height: 1.2;
+}
+
+.landing-roadmap-timeline p {
+  margin-top: 0.55rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.landing-roadmap-timeline .landing-roadmap-status {
+  margin: 0;
+  color: #aebfff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.landing-roadmap-timeline li[data-state='current']
+  .landing-roadmap-status {
+  color: #f2b4a7;
+}
+
 .landing-research {
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
@@ -345,6 +431,38 @@
 
 .landing-feature-proof {
   align-items: center;
+}
+
+.landing-product-copy {
+  min-width: 0;
+}
+
+.landing-product-benefits {
+  display: grid;
+  gap: 0;
+  margin-top: 2rem;
+  border-block: 1px solid var(--color-border);
+}
+
+.landing-product-benefits li {
+  display: grid;
+  gap: 0.35rem;
+  padding-block: 1rem;
+}
+
+.landing-product-benefits li + li {
+  border-top: 1px solid var(--color-border);
+}
+
+.landing-product-benefits strong {
+  color: var(--color-text);
+  font-weight: 650;
+}
+
+.landing-product-benefits span {
+  max-width: 58ch;
+  color: var(--color-text-muted);
+  line-height: 1.55;
 }
 
 .landing-product-preview {

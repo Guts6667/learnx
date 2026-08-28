@@ -46,6 +46,10 @@
   max-width: var(--app-reading-max);
 }
 
+.totem-learning-page.page-layout--reading {
+  max-width: min(100%, 64rem);
+}
+
 .page-layout--work {
   max-width: var(--app-work-max);
 }

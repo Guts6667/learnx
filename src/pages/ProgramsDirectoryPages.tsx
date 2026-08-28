@@ -97,7 +97,7 @@ export function TotemProgramsPage() {
             </span>
           </header>
           <ul
-            className="ui-list ui-program-list"
+            className="ui-list ui-program-list w-full"
             aria-label={t('programs.enrolledSection')}
           >
             {programs.data.items.map(({ enrollment, program, progress }) => {
@@ -293,7 +293,7 @@ export function DiscoverProgramsPage() {
               })}
             </span>
           </header>
-          <ul className="ui-list ui-program-list">
+          <ul className="ui-list ui-program-list w-full">
             {catalog.data.items.map((program) => (
               <li
                 className="ui-program-line border-b border-[var(--color-border)] last:border-b-0"

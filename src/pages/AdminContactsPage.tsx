@@ -68,7 +68,7 @@ function PurposeDetails({ item }: { item: PublicContactPurpose }) {
 function ContactCard({ contact }: { contact: PublicContact }) {
   return (
     <li>
-      <Card className="min-w-0 space-y-4">
+      <div className="admin-collection-item min-w-0 space-y-4">
         <h2 className="break-all text-lg font-medium">
           {contact.emailNormalized}
         </h2>
@@ -77,7 +77,7 @@ function ContactCard({ contact }: { contact: PublicContact }) {
             <PurposeDetails item={purpose} key={purpose.purpose} />
           ))}
         </div>
-      </Card>
+      </div>
     </li>
   );
 }

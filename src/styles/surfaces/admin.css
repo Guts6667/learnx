@@ -93,14 +93,19 @@
 
 .totem-admin-surface .admin-collection-item,
 .totem-admin-surface .admin-credit-member-row {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-group);
   padding: clamp(1rem, 3vw, 1.5rem);
   background: var(--color-surface);
 }
 
+.totem-admin-surface .admin-credit-member-row {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-group);
+}
+
 .totem-admin-surface .admin-collection {
-  display: grid;
-  border: 0;
-  gap: 1rem;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-group);
+  background: var(--color-surface);
 }

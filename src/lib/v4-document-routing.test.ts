@@ -114,6 +114,12 @@ describe('V4 document routing', () => {
       expect(read(frenchPath)).toContain('rel="canonical"');
       expect(read(englishPath)).toContain('hreflang="fr"');
     }
+
+    expect(
+      read(
+        'public/research/ai-correction/articles/complete-report.en.html',
+      ),
+    ).toContain('href="./complete-report.html"');
   });
 
   it('uses the approved brand and share behavior across the research journal', () => {

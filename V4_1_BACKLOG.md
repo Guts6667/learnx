@@ -636,7 +636,10 @@ neuvième statut.
 - Statut : **IN_PROGRESS** — Vercel confirme la preview au SHA exact
   `1fcce21c`; les routes publiques, les breakpoints publics mesurables et la
   reconstructibilité locale de la V4 de rollback sont prouvés dans
-  `docs/qa/V4_1_504_RELEASE_CANDIDATE.md`. La recette authentifiée, le
+  `docs/qa/V4_1_504_RELEASE_CANDIDATE.md`. La passe UI du 28 août corrige en
+  plus le lien français du rapport, la présentation Produit/Roadmap, les listes
+  admin, les surfaces de leçon et les largeurs de listes/navigation ; elle est
+  couverte par 1 371 tests, lint, typecheck et build. La recette authentifiée, le
   basculement/restauration Vercel, la recette PWA sur appareil et le GO explicite
   restent à exécuter.
 - Critères d'acceptation :
@@ -645,6 +648,63 @@ neuvième statut.
   - React est l'unique runtime et les seuils V4.1-007/501/502 sont verts ;
   - le Propriétaire rend un GO explicite, puis la promotion et la release sont
     tracées séparément ; V4.5 reste fermée avant ce GO.
+
+## Candidats post-V4.1 — hors gate de release
+
+Ces tickets sont enregistrés maintenant pour rester visibles, mais ne modifient
+ni les contrats ni le périmètre de la release V4.1.
+
+### V4.5-ADM-001 — Ajustements de crédits et équivalent USD auditable
+
+- Priorité : P1
+- Owner : Backend/Data
+- Reviewer : Finance + QA/Release
+- Statut : **DRAFT**
+- Dépendances : politique financière V4.5, taux/version de conversion et règles
+  d'autorisation admin validés
+- Critères d'acceptation :
+  - un administrateur autorisé peut ajouter ou retirer des crédits sans solde
+    négatif et avec une mutation idempotente, horodatée et auditée ;
+  - le motif accepte au minimum 3 caractères et conserve une borne maximale ;
+  - chaque opération affiche l'équivalent USD réel issu du contrat serveur
+    versionné, jamais une reconstruction UI ni une valeur fictive ;
+  - les crédits offerts, achetés, réservés et consommés restent distincts.
+- Arbitrage/tradeoff : afficher l'USD apporte de la lisibilité opérationnelle,
+  mais lie l'interface admin à une autorité de conversion datée qui doit exister
+  avant l'implémentation.
+
+### V5-CATALOG-001 — Thèmes et tags de programmes
+
+- Priorité : P1
+- Owner : Architecture/Produit
+- Reviewer : Frontend + Gouvernance éditoriale
+- Statut : **DRAFT**
+- Dépendances : taxonomie canonique et règle d'authoring à valider
+- Critères d'acceptation :
+  - thèmes et tags sont normalisés, versionnés et utilisables par la recherche
+    et les filtres sans coder en dur un domaine ;
+  - synonymes, renommages et programmes sans tag ont un comportement explicite ;
+  - les surfaces publiques et admin restent utilisables au clavier et sur 320 px.
+- Arbitrage/tradeoff : des tags libres sont rapides mais dérivent ; une
+  taxonomie gouvernée améliore la recherche au prix d'un authoring initial.
+
+### V4.5-UX-001 — Cartes de parcours responsives
+
+- Priorité : P2
+- Owner : Frontend
+- Reviewer : Design + QA/Release
+- Statut : **DRAFT**
+- Dépendances : contenu minimal et densité d'une carte à arbitrer par Rayan
+- Critères d'acceptation :
+  - Mes parcours affiche trois cartes par ligne sur grand desktop et une carte
+    par ligne sur mobile, avec un reflow intermédiaire sans overflow ;
+  - prochaine action, progression et statut restent lisibles sans multiplier
+    les CTA ;
+  - la liste DOM reste sémantique et la navigation clavier conserve un ordre
+    logique ;
+  - les programmes nombreux sont paginés ou virtualisés selon une mesure réelle.
+- Arbitrage/tradeoff : les cartes rendent les parcours plus identifiables, mais
+  consomment davantage d'espace qu'une liste et nécessitent une règle de densité.
 
 ## Définition de terminé V4.1
 

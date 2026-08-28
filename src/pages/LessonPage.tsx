@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction';
 import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
+import { LessonActivitySurface } from '@/components/learning/LessonActivitySurface';
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { QueryState } from '@/components/learnx/QueryState';
@@ -13,7 +14,6 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
-import { Section } from '@/components/ui/Section';
 import { Spinner } from '@/components/ui/Spinner';
 import {
   type LessonContentBlock,
@@ -97,7 +97,7 @@ function ContentActivity({
     .filter((resource): resource is LessonResource => Boolean(resource));
 
   return (
-    <Section className="totem-learning-content-block space-y-4">
+    <LessonActivitySurface className="totem-learning-content-block space-y-4">
       <p className="text-sm font-semibold text-[var(--color-accent-text)]">
         {t(contentBlockLabelKeys[block.type])}
       </p>
@@ -135,7 +135,7 @@ function ContentActivity({
           </ul>
         </details>
       )}
-    </Section>
+    </LessonActivitySurface>
   );
 }
 
@@ -173,7 +173,7 @@ function ResourceActivity({
   const verb = t(resourceVerbKey(resource.type));
 
   return (
-    <Card className="space-y-4">
+    <LessonActivitySurface className="space-y-5">
       <div className="flex flex-wrap items-center gap-2">
         <Badge tone={resource.isRequired ? 'warning' : 'neutral'}>
           {resource.isRequired
@@ -222,21 +222,32 @@ function ResourceActivity({
           ) : null}
         </div>
       ) : href ? (
-        <a
-          className="ui-action ui-action--secondary ui-action--md"
-          href={href}
-          onClick={() => void onOpen?.()}
-          rel="noreferrer"
-          target="_blank"
-        >
-          {resourceVerbKey(resource.type) === 'learning.resource.read'
-            ? t('learning.resource.openReading')
-            : t('learning.resource.open', { verb })}
-        </a>
+        <div className="lesson-resource-actions">
+          <a
+            className="ui-action ui-action--primary ui-action--md"
+            href={href}
+            onClick={() => void onOpen?.()}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {resourceVerbKey(resource.type) === 'learning.resource.read'
+              ? t('learning.resource.openReading')
+              : t('learning.resource.open', { verb })}
+          </a>
+          {onComplete && status !== 'COMPLETED' ? (
+            <Button
+              isLoading={isPending}
+              onClick={() => void onComplete()}
+              variant="secondary"
+            >
+              {t('learning.resource.markConsulted')}
+            </Button>
+          ) : null}
+        </div>
       ) : (
         <p role="status">{t('learning.source.none')}</p>
       )}
-      {onComplete && status !== 'COMPLETED' ? (
+      {!href && onComplete && status !== 'COMPLETED' ? (
         <Button
           isLoading={isPending}
           onClick={() => void onComplete()}
@@ -245,7 +256,7 @@ function ResourceActivity({
           {t('learning.resource.markConsulted')}
         </Button>
       ) : null}
-    </Card>
+    </LessonActivitySurface>
   );
 }
 
@@ -262,7 +273,7 @@ function TaskActivity({
 }) {
   const { t } = useI18n();
   return (
-    <Card className="space-y-4">
+    <LessonActivitySurface className="space-y-4">
       <Badge tone={task.isRequired ? 'warning' : 'neutral'}>
         {task.isRequired ? t('common.required') : t('learning.task.optional')}
       </Badge>
@@ -301,21 +312,21 @@ function TaskActivity({
             : t('learning.task.markComplete')}
         </Button>
       ) : null}
-    </Card>
+    </LessonActivitySurface>
   );
 }
 
 function SecondaryActivity({ activity }: { activity: LessonActivity }) {
   const { t } = useI18n();
   return (
-    <Card className="space-y-3">
+    <LessonActivitySurface className="space-y-3">
       <Badge tone={activity.required ? 'warning' : 'neutral'}>
         {activity.required
           ? t('common.required')
           : t('learning.secondary.optional')}
       </Badge>
       <p className="ui-reading-copy">{t('learning.secondary.description')}</p>
-    </Card>
+    </LessonActivitySurface>
   );
 }
 
