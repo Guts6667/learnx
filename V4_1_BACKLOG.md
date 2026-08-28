@@ -434,7 +434,18 @@ neuvième statut.
   observé un flake `LessonPage` (bouton encore dans son état de chargement) ; le
   test isolé a ensuite réussi, puis la suite stable complète a confirmé
   1 016/1 016 tests verts. La revue indépendante du checkpoint est `REVIEW_PASS`
-  sans P0/P1 ; le ticket complet reste en cours sur les contrôleurs listés.
+  sans P0/P1. Le sous-lot Admin suivant est livré pour `REVIEW` : revue des
+  demandes d'accès et publication sont séparées en query/repository/service
+  (`325ae9b9`), puis le contrôleur `admin/app.ts` passe de 904 à 49 lignes et
+  délègue à des routeurs par domaine, une couche de validation commune, des
+  dépendances paresseuses et un service d'édition pédagogique
+  (`e18167f4`). Les URLs, payloads, capacités, erreurs et transactions restent
+  couverts par les 47 tests Admin ciblés. Preuves : lint et typecheck verts,
+  contrôle d'imports avec 0 cycle et 0 frontière interdite, suite complète
+  1 021/1 021, build et génération PWA verts. Le ticket complet reste en cours :
+  `progress`, `stage-assessments`, `exercises` et les helpers de recalcul restent
+  à traiter après revue de ce checkpoint. Correction, pricing et ledger restent
+  exclus et réservés à V4.1-402.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
