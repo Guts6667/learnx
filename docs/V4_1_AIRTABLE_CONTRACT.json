@@ -17,6 +17,7 @@
     "fldk2B3SBT2zWZzUS",
     "fldDwchSuKf0TgZLk",
     "fldL8w7Tx4pRDETqn",
+    "fldxX5HZ44FyhEJrX",
     "fldHTpFmYm4J63mwo",
     "fldXsaSfpD2TFMSKS",
     "fldBfduOzWbsZvlF0",
@@ -52,16 +53,78 @@
     "Qualité/Release"
   ],
   "pages": [
-    "V4.1 — Maintenant",
-    "Ready",
-    "En cours par owner",
-    "Review",
-    "QA",
-    "Arbitrages Rayan",
-    "Gate de release",
-    "V4.5 — Préparation",
-    "V5 — Candidats",
-    "Archive V4"
+    {
+      "id": "pag9Ou1lZGtplgfCU",
+      "name": "V4.1 — Maintenant",
+      "visualization": "kanban",
+      "filter": "Release = V4.1 AND Statut != DONE",
+      "groupBy": "Statut",
+      "published": false
+    },
+    {
+      "id": "pagaqMosHyNv6WAGT",
+      "name": "Ready",
+      "visualization": "list",
+      "filter": "Statut = READY",
+      "published": false
+    },
+    {
+      "id": "pagNrmhdBAswxtsRp",
+      "name": "En cours par owner",
+      "visualization": "list",
+      "filter": "Statut = IN_PROGRESS",
+      "groupBy": "Owner",
+      "published": false
+    },
+    {
+      "id": "pagPODll59tYbiCVp",
+      "name": "Review",
+      "visualization": "list",
+      "filter": "Statut = REVIEW",
+      "published": false
+    },
+    {
+      "id": "pagTlI8DuvjJQMJ5E",
+      "name": "QA",
+      "visualization": "list",
+      "filter": "Statut = QA",
+      "published": false
+    },
+    {
+      "id": "pagk1VyDJhqR2rG0j",
+      "name": "Arbitrages Rayan",
+      "visualization": "list",
+      "filter": "Statut = NEEDS_ARBITRATION",
+      "published": true
+    },
+    {
+      "id": "pagnqJhh4IsLhkJkF",
+      "name": "Gate de release",
+      "visualization": "list",
+      "filter": "Statut = READY_FOR_OWNER_GO",
+      "published": false
+    },
+    {
+      "id": "pagvv6a80fbqtfMAk",
+      "name": "V4.5 — Préparation",
+      "visualization": "list",
+      "filter": "Release = V4.5",
+      "published": false
+    },
+    {
+      "id": "pagzYksoHx5HIvcdv",
+      "name": "V5 — Candidats",
+      "visualization": "list",
+      "filter": "Release = V5",
+      "published": false
+    },
+    {
+      "id": "pagLlT1p15kbN1IBT",
+      "name": "Archive V4",
+      "visualization": "list",
+      "filter": "Release = V4 AND Statut = DONE",
+      "published": false
+    }
   ],
   "publicationRequiresOwnerConfirmation": true,
   "statusAuthority": "Airtable",

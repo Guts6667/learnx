@@ -1,11 +1,26 @@
 import { readFile } from 'node:fs/promises';
 
 type AirtableContract = {
+  version: string;
+  baseId: string;
+  tableId: string;
+  interfaceId: string;
+  identityField: string;
+  writableFieldIds: string[];
   statuses: string[];
   roles: string[];
   natures: string[];
-  pages: string[];
+  pages: Array<{
+    id: string;
+    name: string;
+    visualization: 'kanban' | 'list';
+    filter: string;
+    groupBy?: string;
+    published: boolean;
+  }>;
   publicationRequiresOwnerConfirmation: boolean;
+  statusAuthority: string;
+  definitionAuthority: string;
 };
 
 const expectedTickets = [
@@ -39,6 +54,27 @@ const requiredPages = [
   'V4.5 — Préparation',
   'V5 — Candidats',
   'Archive V4',
+];
+
+const requiredWritableFieldIds = [
+  'fldOcnwOA7SIgevgS',
+  'fldaxsjnqkqoWjC63',
+  'fldnVONeSoSJ7qDAR',
+  'fldH5hxP6oblAPKrV',
+  'fld0z76ObQNmZSl6b',
+  'fldedfw94bRRQZZOj',
+  'fldrhf83OmSJROCsn',
+  'fldTFIA2xII50E1ir',
+  'fld4lGYLnC4hwTVse',
+  'fldk2B3SBT2zWZzUS',
+  'fldDwchSuKf0TgZLk',
+  'fldL8w7Tx4pRDETqn',
+  'fldxX5HZ44FyhEJrX',
+  'fldHTpFmYm4J63mwo',
+  'fldXsaSfpD2TFMSKS',
+  'fldBfduOzWbsZvlF0',
+  'fld2Dz1bD665cb6AU',
+  'fldAN6bhZDsCc4Yig',
 ];
 
 function assertExact(label: string, actual: string[], expected: string[]) {
@@ -78,7 +114,51 @@ assertExact(
   expectedTickets,
 );
 assertExact('statuses', contract.statuses, requiredStatuses);
-assertExact('pages', contract.pages, requiredPages);
+assertExact(
+  'pages',
+  contract.pages.map(({ name }) => name),
+  requiredPages,
+);
+assertExact(
+  'writable fields',
+  contract.writableFieldIds,
+  requiredWritableFieldIds,
+);
+if (!/^fld[A-Za-z0-9]{14}$/.test(contract.identityField)) {
+  throw new Error('The Airtable identity field must be a stable field ID');
+}
+if (contract.writableFieldIds.includes(contract.identityField)) {
+  throw new Error('The stable ticket identity field must not be writable');
+}
+for (const [label, id, prefix] of [
+  ['base', contract.baseId, 'app'],
+  ['table', contract.tableId, 'tbl'],
+  ['interface', contract.interfaceId, 'pbd'],
+] as const) {
+  if (!new RegExp(`^${prefix}[A-Za-z0-9]{14}$`).test(id)) {
+    throw new Error(`The Airtable ${label} ID is invalid`);
+  }
+}
+for (const page of contract.pages) {
+  if (!/^pag[A-Za-z0-9]{14}$/.test(page.id)) {
+    throw new Error(`${page.name}: invalid Airtable page ID`);
+  }
+  if (!page.filter.trim()) throw new Error(`${page.name}: missing filter`);
+}
+const nowPage = contract.pages.find(({ name }) => name === 'V4.1 — Maintenant');
+if (nowPage?.visualization !== 'kanban' || nowPage.groupBy !== 'Statut') {
+  throw new Error('V4.1 — Maintenant must be a Kanban grouped by Statut');
+}
+const unpublishedDrafts = contract.pages.filter(({ published }) => !published);
+if (unpublishedDrafts.length !== 9) {
+  throw new Error('Exactly nine new Airtable pages must remain unpublished');
+}
+if (
+  contract.statusAuthority !== 'Airtable' ||
+  contract.definitionAuthority !== 'V4_1_BACKLOG.md'
+) {
+  throw new Error('Airtable and Git authorities must remain explicit');
+}
 
 for (const ticket of tickets) {
   if (!contract.roles.includes(ticket.owner))

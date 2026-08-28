@@ -117,7 +117,10 @@ l'autorisation.
 - Les définitions exécutables se trouvent dans
   `docs/V4_1_AIRTABLE_CONTRACT.json` et sont contrôlées par
   `pnpm quality:airtable`. Le contrôle vérifie 27 IDs, huit rôles, six natures,
-  huit états et dix pages attendues sans écrire dans Airtable.
+  huit états, l'allow-list exacte des champs modifiables et dix pages attendues
+  sans écrire dans Airtable. Chaque page est liée à son ID, son type de
+  visualisation, son filtre, son regroupement éventuel et son état de
+  publication afin de rendre la configuration reproductible.
 - Pages brouillon créées : `V4.1 — Maintenant` (`pag9Ou1lZGtplgfCU`, Kanban),
   `Ready` (`pagaqMosHyNv6WAGT`), `En cours par owner`
   (`pagNrmhdBAswxtsRp`), `Review` (`pagPODll59tYbiCVp`), `QA`
