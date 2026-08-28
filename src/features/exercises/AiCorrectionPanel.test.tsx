@@ -93,6 +93,21 @@ describe('AiCorrectionPanel', () => {
         /Certains critères peuvent revenir à retravailler sans compensation/,
       ),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText('Coût estimé en crédits').closest('div'),
+    ).toHaveTextContent('12');
+    expect(
+      screen.getByText('Plafond réservé en crédits').closest('div'),
+    ).toHaveTextContent('18');
+    expect(screen.getByText('Vérification').closest('div')).toHaveTextContent(
+      'Incluse',
+    );
+    expect(
+      fetchMock.mock.calls.some(
+        ([url, init]) =>
+          url === '/api/ai-corrections' && init?.method === 'POST',
+      ),
+    ).toBe(false);
 
     fireEvent.click(
       screen.getByRole('button', { name: 'Confirmer et lancer la correction' }),
@@ -400,7 +415,30 @@ describe('AiCorrectionPanel', () => {
     const quoteButton = screen.getByRole('button', {
       name: 'Obtenir le devis de réexamen',
     });
+    expect(argument).toHaveAttribute('minlength', '20');
+    expect(argument).toHaveAttribute('maxlength', '500');
     expect(quoteButton).toBeDisabled();
+
+    fireEvent.input(argument, {
+      target: { value: 'a'.repeat(19) },
+    });
+    expect(quoteButton).toBeDisabled();
+
+    fireEvent.input(argument, {
+      target: { value: 'a'.repeat(20) },
+    });
+    expect(quoteButton).toBeEnabled();
+
+    fireEvent.input(argument, {
+      target: { value: 'a'.repeat(500) },
+    });
+    expect(quoteButton).toBeEnabled();
+
+    fireEvent.input(argument, {
+      target: { value: 'a'.repeat(501) },
+    });
+    expect(quoteButton).toBeDisabled();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
 
     fireEvent.input(argument, {
       target: {

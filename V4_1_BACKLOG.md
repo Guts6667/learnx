@@ -156,6 +156,12 @@ neuvième statut.
     crédits et admin ont leurs résultats attendus ;
   - corrections, pricing, ledger, progression et permissions ont une preuve de
     comportement serveur ;
+  - le manifeste de routes est strictement égal au routeur de la release V4 et
+    le candidat n'ajoute que le fallback `*` ;
+  - le contrat visible de correction prouve l'estimation, le plafond, la
+    vérification incluse et l'absence de dispatch avant confirmation ;
+  - la contestation conserve ses bornes serveur et interface de 20 à 500
+    caractères, testées aux frontières 19/20 et 500/501 ;
   - mobile, desktop, clavier, focus, zoom 200 %, reduced motion, PWA et erreurs
     sont couverts ;
   - commandes, fixtures, environnement, résultats et écarts connus sont gelés.

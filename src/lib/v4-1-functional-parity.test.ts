@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -16,10 +17,25 @@ function readManifest(): FunctionalParityManifest {
   ) as FunctionalParityManifest;
 }
 
+function extractDeclaredRoutes(routerSource: string): string[] {
+  return [
+    ...new Set(
+      [...routerSource.matchAll(/\bpath="([^"]+)"/g)].map(([, route]) => route),
+    ),
+  ].sort();
+}
+
+function readReleaseRouterSource(releaseSha: string): string {
+  return execFileSync('git', ['show', `${releaseSha}:src/app/routes.tsx`], {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+  });
+}
+
 describe('V4.1 functional parity contract', () => {
-  it('preserves every public and authenticated V4 route', () => {
+  it('keeps the manifest, V4 release and candidate routes in exact bilateral parity', () => {
     const manifest = readManifest();
-    const routerSource = readFileSync(
+    const candidateRouterSource = readFileSync(
       resolve(process.cwd(), 'src/app/routes.tsx'),
       'utf8',
     );
@@ -29,8 +45,13 @@ describe('V4.1 functional parity contract', () => {
     );
     expect(new Set(manifest.routes).size).toBe(manifest.routes.length);
 
-    for (const route of manifest.routes) {
-      expect(routerSource).toContain(`path="${route}"`);
-    }
+    const releaseRoutes = extractDeclaredRoutes(
+      readReleaseRouterSource(manifest.releaseSha),
+    );
+    const manifestRoutes = [...manifest.routes].sort();
+    const candidateRoutes = extractDeclaredRoutes(candidateRouterSource);
+
+    expect(manifestRoutes).toEqual(releaseRoutes);
+    expect(candidateRoutes).toEqual([...releaseRoutes, '*'].sort());
   });
 });

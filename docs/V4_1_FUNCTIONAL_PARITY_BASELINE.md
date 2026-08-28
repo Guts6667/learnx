@@ -57,9 +57,12 @@ reproduire `a02ecc3f` avec une résolution de dépendances différente.
 
 Le manifeste `quality/v4-1-functional-parity.json` contient les 33 routes
 applicatives extraites de `a02ecc3f`. Le test
-`src/lib/v4-1-functional-parity.test.ts` vérifie que le candidat les expose
-toutes sans renommer une URL publique. Le routeur React ajoute seulement la
-route explicite `*`, équivalente au fallback 404 du routeur V4.
+`src/lib/v4-1-functional-parity.test.ts` relit le routeur directement depuis
+ce SHA Git et exige une égalité bilatérale exacte entre la release et le
+manifeste. Il exige ensuite que le candidat contienne exactement ces mêmes
+routes, avec pour seul ajout autorisé la route explicite `*`, équivalente au
+fallback `default` du routeur V4. Une suppression ou un ajout simultané dans
+le manifeste et le candidat ne peut donc pas masquer une dérive de la release.
 
 ```bash
 pnpm vitest run src/lib/v4-1-functional-parity.test.ts
@@ -147,14 +150,14 @@ cités ci-dessus.
 
 | Comportement V4 | Preuve candidate | Gate de parité |
 | --- | --- | --- |
-| devis préalable avec estimation, plafond réservé et seconde passe incluse | test « consentement explicite » | aucun dispatch avant confirmation |
+| devis préalable avec estimation, plafond réservé et seconde passe incluse | test « consentement explicite » vérifiant explicitement 12 crédits estimés, 18 réservés et la vérification incluse | aucun `POST /api/ai-corrections` avant confirmation |
 | avertissement et consentement à la livraison partielle sans compensation | test « consentement explicite » | le consentement reste explicite et antérieur au débit |
 | résultat partiel : critères fiables livrés, critères incertains à retravailler, aucun score exact | test « consentement explicite » | aucune incertitude présentée comme certitude |
 | règlement : réservé, débité et libéré visibles | test « consentement explicite » | les montants proviennent du contrat serveur |
 | retry réseau borné sans nouveau devis ni double facturation | test « relancer la même exécution » | l'idempotence et le devis accepté sont conservés |
 | restauration d'une correction réglée et historique immuable | tests « restaure » et « deux corrections » | aucune nouvelle réservation pour une lecture |
 | comparaison critérielle de plusieurs corrections | test « deux corrections » | comparaison de niveaux, pas de réécriture du passé |
-| contestation argumentée et réexamen distinct | test « argument borné » | argument borné, nouveau devis, un seul réexamen |
+| contestation argumentée et réexamen distinct | test « argument borné » aux frontières 19/20 et 500/501 | argument trimé de 20 à 500 caractères, nouveau devis, un seul réexamen |
 
 ## Matrice appareil, accessibilité et résilience
 
