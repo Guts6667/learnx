@@ -40,6 +40,15 @@ les fragments interdits et un canari du prompt sont vérifiés de manière
 déterministe dans les citations, feedbacks et raisons de seconde passe, sans
 juge LLM supplémentaire.
 
+### Frontière d’implémentation V4.1
+
+La commande publique reste `scripts/run-ai-correction-benchmark.ts`. Ce fichier
+est uniquement l’entrypoint ; le parsing et la persistance CLI vivent dans
+`src/lib/ai-correction-benchmark-cli.ts`, tandis que chargement, revues et
+exécution sont exposés par `src/lib/ai-correction-benchmark-runner.ts`.
+Importer ces modules ne lance aucun benchmark. Les chemins de sortie, formats
+d’artefacts et digests historiques restent inchangés.
+
 ## Langues
 
 Chaque corpus et chaque configuration déclarent une langue canonique BCP 47
