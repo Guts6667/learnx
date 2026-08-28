@@ -43,4 +43,3 @@ export type AccessRequestReviewResult =
   | { kind: 'APPLIED' | 'IDEMPOTENT'; request: AccessRequestReviewItem }
   | { kind: 'CONFLICT' }
   | { kind: 'NOT_FOUND' };
-

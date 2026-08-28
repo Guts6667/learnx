@@ -66,4 +66,3 @@ export function registerAccountRoutes(
     return context.json({ account: handleAccountTransition(result) });
   });
 }
-

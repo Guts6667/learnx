@@ -59,4 +59,3 @@ export function registerNavigationRoutes(
     return context.json({ kind: 'LESSON', lesson });
   });
 }
-
