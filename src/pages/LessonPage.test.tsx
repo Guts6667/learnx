@@ -442,9 +442,11 @@ describe('LessonPage', () => {
     expect(
       screen.getByRole('link', { name: 'Ouvrir la lecture' }),
     ).toHaveAttribute('href', 'https://example.com/article');
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Marquer comme consultée' }),
-    );
+    const consultedButton = await screen.findByRole('button', {
+      name: 'Marquer comme consultée',
+    });
+    await waitFor(() => expect(consultedButton).toBeEnabled());
+    fireEvent.click(consultedButton);
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(
         '/api/resources/resource-1/progress',
@@ -456,11 +458,15 @@ describe('LessonPage', () => {
     );
   });
 
-  it('remplace Terminer la leçon par Leçon suivante après la réussite serveur', async () => {
+  it('termine la leçon et navigue atomiquement vers la suivante', async () => {
     window.history.replaceState(
       null,
       '',
       '/program/programme-test/lesson/demarrer?activity=complete%3Alesson',
+    );
+    window.localStorage.setItem(
+      'learnx:lesson-activity:lesson-1',
+      'concept_assessment:assessment-1',
     );
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
       if (path === '/api/lessons/demarrer') {
@@ -493,20 +499,54 @@ describe('LessonPage', () => {
     expect(screen.getAllByText('Terminer la leçon')).toHaveLength(2);
     fireEvent.click(completeButton);
 
-    expect(
-      await screen.findByRole('link', { name: 'Leçon suivante' }),
-    ).toHaveAttribute('href', '/program/programme-test/lesson/approfondir');
+    await waitFor(() =>
+      expect(window.location.pathname).toBe(
+        '/program/programme-test/lesson/approfondir',
+      ),
+    );
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/lessons/lesson-1/complete',
       expect.objectContaining({ method: 'POST' }),
     );
-    const nextLessonLink = screen.getByRole('link', {
-      name: 'Leçon suivante',
-    });
+    expect(window.location.search).toBe('');
     expect(
-      screen.getAllByRole('link', { name: 'Leçon suivante' }),
-    ).toHaveLength(1);
-    expect(nextLessonLink).toHaveClass('ui-action', 'ui-action--primary');
+      window.localStorage.getItem('learnx:lesson-activity:lesson-1'),
+    ).toBeNull();
+  });
+
+  it('ignore une ancienne activité lorsqu’une leçon est déjà terminée', async () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/program/programme-test/lesson/demarrer?activity=concept_assessment%3Aassessment-1',
+    );
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((path: string) => {
+        if (path === '/api/lessons/demarrer') {
+          return Promise.resolve(jsonResponse(lessonResponse(true)));
+        }
+        if (path === '/api/lessons/lesson-1/progress') {
+          return Promise.resolve(
+            jsonResponse(completableProgressResponse(true)),
+          );
+        }
+        throw new Error(`Unexpected request: ${path}`);
+      }),
+    );
+
+    render(
+      <AppProviders>
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Leçon suivante' }),
+    ).toHaveAttribute('href', '/program/programme-test/lesson/approfondir');
+    expect(
+      screen.queryByText('Mini-évaluation — Comprendre'),
+    ).not.toBeInTheDocument();
   });
 
   it('revient au programme et à la bonne étape après la dernière leçon', async () => {

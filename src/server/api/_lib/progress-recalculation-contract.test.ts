@@ -3,12 +3,15 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   CanonicalActivityKind,
   ExerciseSubmissionStatus,
+  LessonProgressStatus,
+  LessonSequenceKind,
   StageAssessmentSubmissionStatus,
   StageProgressStatus,
   TaskCompletionStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { getLessonProgressSnapshot } from './progress-recalculation-lesson-snapshot.js';
+import { recalculateLessonProgress } from './progress-recalculation-lesson.js';
 import { recalculateStageAndProgram } from './progress-recalculation-stage.js';
 import type { LessonProgressSnapshot } from './progress-recalculation-types.js';
 
@@ -92,6 +95,86 @@ function programFromStage(stage: ReturnType<typeof multiModuleStage>) {
 }
 
 describe('progress recalculation contracts', () => {
+  it('efface le pointeur d’activité quand la leçon devient terminée', async () => {
+    const lessonProgressUpsert = vi.fn(async ({ update }) => ({
+      completedAt: now,
+      currentSequenceItemId: update.currentSequenceItemId,
+      id: 'lesson-progress-1',
+      lastViewedAt: now,
+      lessonId,
+      percent: update.percent,
+      startedAt: now,
+      status: update.status,
+      userId,
+    }));
+    const transaction = {
+      lesson: {
+        findFirst: vi
+          .fn()
+          .mockResolvedValueOnce({ moduleId })
+          .mockResolvedValueOnce({
+            activityCompletionCarryovers: [],
+            concepts: [],
+            exercises: [],
+            isPublished: false,
+            module: {
+              isPublished: false,
+              stage: {
+                estimatedDurationDays: 7,
+                id: stageId,
+                isPublished: false,
+                programId,
+              },
+            },
+            progress: [
+              {
+                completedAt: null,
+                currentSequenceItem: {
+                  conceptAssessmentId: 'assessment-1',
+                  contentBlockId: null,
+                  exerciseId: null,
+                  kind: LessonSequenceKind.CONCEPT_ASSESSMENT,
+                  quizId: null,
+                  resourceId: null,
+                  taskId: null,
+                },
+                currentSequenceItemId: 'sequence-item-1',
+                id: 'lesson-progress-1',
+                lastViewedAt: now,
+                lessonId,
+                percent: 90,
+                startedAt: now,
+                status: LessonProgressStatus.IN_PROGRESS,
+                userId,
+              },
+            ],
+            quizzes: [],
+            resources: [],
+            tasks: [],
+          }),
+      },
+      lessonProgress: { upsert: lessonProgressUpsert },
+      moduleRun: { findFirst: vi.fn(async () => null) },
+    };
+
+    await recalculateLessonProgress(
+      transaction as never,
+      lessonId,
+      userId,
+      now,
+      { completeRequested: true },
+    );
+
+    expect(lessonProgressUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        update: expect.objectContaining({
+          currentSequenceItemId: null,
+          status: LessonProgressStatus.COMPLETED,
+        }),
+      }),
+    );
+  });
+
   it('applies carryovers only through the current module run selection', async () => {
     const state = {
       activityCompletionCarryovers: [

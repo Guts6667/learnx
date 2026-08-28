@@ -128,23 +128,16 @@ describe('progression query mutations', () => {
       ['concept-assessment-attempts', assessmentId, true],
       { attempts: [], nextCursor: 'next-page' },
     );
+    const existingLessonProgress = { lessonProgress: { percent: 25 } };
+    queryClient.setQueryData(
+      ['lesson-progress', lessonId],
+      existingLessonProgress,
+    );
     const progress = {
-      canComplete: true,
-      conceptProgress: { 'concept-1': 'VALIDATED' },
-      currentActivity: {
-        id: assessmentId,
-        kind: 'CONCEPT_ASSESSMENT' as const,
-      },
-      exerciseSubmissions: {},
-      lessonProgress: {
-        completedAt: null,
-        percent: 50,
-        startedAt: '2026-08-28T09:00:00.000Z',
-        status: 'IN_PROGRESS' as const,
-      },
-      quizPassed: {},
-      resourceProgress: {},
-      taskCompletions: {},
+      bestScore: 100,
+      lastAttemptAt: '2026-08-28T09:00:00.000Z',
+      status: 'VALIDATED',
+      validatedAt: '2026-08-28T09:00:00.000Z',
     };
     const response = {
       attempt: {
@@ -174,8 +167,11 @@ describe('progression query mutations', () => {
       }>(['concept-assessment-attempts', assessmentId, true]),
     ).toEqual({ attempts: [response.attempt], nextCursor: 'next-page' });
     expect(queryClient.getQueryData(['lesson-progress', lessonId])).toEqual(
-      progress,
+      existingLessonProgress,
     );
+    expect(
+      queryClient.getQueryState(['lesson-progress', lessonId])?.isInvalidated,
+    ).toBe(true);
 
     const failure = new Error('concept request failed');
     mockedApiRequest.mockRejectedValueOnce(failure);

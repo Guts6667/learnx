@@ -8,7 +8,6 @@ import type {
   AssessmentQuestion,
   SubmittedAssessmentAnswer,
 } from '@/features/assessments/QuestionAssessmentExperience';
-import type { LessonProgressResponse } from '@/features/curriculum/queries';
 import { apiRequest } from '@/lib/api-client';
 
 interface ConceptAssessmentDetail {
@@ -38,7 +37,12 @@ interface ConceptAssessmentAttemptsResponse {
 }
 
 type ConceptAssessmentAttemptResponse = AssessmentAttemptResponse & {
-  progress: LessonProgressResponse;
+  progress: {
+    bestScore: number | null;
+    lastAttemptAt: string | null;
+    status: string;
+    validatedAt: string | null;
+  };
 };
 
 function getAssessmentPath(assessmentId: string, preview: boolean): string {
@@ -208,10 +212,9 @@ export function useConceptAssessmentAttemptMutation(
           }),
         );
         if (lessonId) {
-          queryClient.setQueryData(
-            ['lesson-progress', lessonId],
-            response.progress,
-          );
+          await queryClient.invalidateQueries({
+            queryKey: ['lesson-progress', lessonId],
+          });
         }
         return response;
       } catch (requestError) {

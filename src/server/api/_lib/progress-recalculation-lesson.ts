@@ -84,6 +84,9 @@ async function persistLessonProgress(
     },
     update: {
       completedAt: state.completedAt,
+      ...(state.status === LessonProgressStatus.COMPLETED
+        ? { currentSequenceItemId: null }
+        : {}),
       ...(options.preserveTimestamps ? {} : { lastViewedAt: now }),
       percent: state.percent,
       startedAt: snapshot.lessonProgress?.startedAt ?? now,

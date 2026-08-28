@@ -124,6 +124,14 @@ export function rememberActivity(lessonId: string, key: string): void {
   }
 }
 
+export function forgetRememberedActivity(lessonId: string): void {
+  try {
+    window.localStorage.removeItem(activityStorageKey(lessonId));
+  } catch {
+    // Storage can be unavailable in private or hardened browser contexts.
+  }
+}
+
 function lessonHref(programSlug: string, lessonSlug: string): string {
   return `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}`;
 }

@@ -26,12 +26,16 @@ import {
   useLessonProgressQuery,
   useLessonQuery,
 } from '@/features/curriculum/queries';
-import { programStageHref } from '@/lib/curriculum-navigation';
+import {
+  lessonHref as buildLessonHref,
+  programStageHref,
+} from '@/lib/curriculum-navigation';
 import { useI18n } from '@/i18n';
 import type { MessageKey } from '@/i18n/catalogs';
 import {
   activityKey,
   buildLessonActivitySequence,
+  forgetRememberedActivity,
   type LessonActivity,
   readRememberedActivity,
   rememberActivity,
@@ -373,12 +377,18 @@ function LessonWorkspace({
   const mutation = useLessonProgressMutation(lesson.id);
   const lastReportedActivity = useRef<string | null>(null);
   const serverActivity = progressQuery.data?.currentActivity;
-  const currentKey =
-    new URLSearchParams(window.location.search).get('activity') ??
-    (serverActivity
-      ? activityKey(serverActivity.kind, serverActivity.id)
-      : null) ??
-    readRememberedActivity(lesson.id);
+  const explicitActivity = new URLSearchParams(window.location.search).get(
+    'activity',
+  );
+  const isPersistedComplete =
+    progressQuery.data?.lessonProgress?.status === 'COMPLETED';
+  const currentKey = isPersistedComplete
+    ? activityKey('COMPLETE', 'lesson')
+    : explicitActivity ??
+      (serverActivity
+        ? activityKey(serverActivity.kind, serverActivity.id)
+        : null) ??
+      readRememberedActivity(lesson.id);
   const sequence = useMemo(
     () =>
       buildLessonActivitySequence(
@@ -392,7 +402,11 @@ function LessonWorkspace({
 
   useEffect(() => {
     if (!current) return;
-    rememberActivity(lesson.id, activityKey(current.kind, current.id));
+    if (current.kind === 'COMPLETE') {
+      forgetRememberedActivity(lesson.id);
+    } else {
+      rememberActivity(lesson.id, activityKey(current.kind, current.id));
+    }
     const key = activityKey(current.kind, current.id);
     if (
       lesson.isPublished &&
@@ -463,6 +477,11 @@ function LessonWorkspace({
           `/api/lessons/${encodeURIComponent(lesson.id)}/complete`,
           'POST',
         );
+        forgetRememberedActivity(lesson.id);
+        const destination = lesson.navigation.nextLesson
+          ? buildLessonHref(programSlug, lesson.navigation.nextLesson.slug)
+          : programStageHref(programSlug, lesson.module.stage.slug);
+        route(destination, true);
       }
       return;
     }

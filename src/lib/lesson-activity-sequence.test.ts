@@ -1,6 +1,7 @@
 import {
   activityKey,
   buildLessonActivitySequence,
+  forgetRememberedActivity,
   readRememberedActivity,
   rememberActivity,
   type LessonSequenceInput,
@@ -273,5 +274,8 @@ describe('lesson activity memory', () => {
 
     expect(readRememberedActivity('lesson-1')).toBe('task:task-1');
     expect(readRememberedActivity('lesson-2')).toBeNull();
+
+    forgetRememberedActivity('lesson-1');
+    expect(readRememberedActivity('lesson-1')).toBeNull();
   });
 });
