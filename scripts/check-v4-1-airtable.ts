@@ -10,11 +10,13 @@ type AirtableContract = {
   statuses: string[];
   roles: string[];
   natures: string[];
+  releaseValues: string[];
   pages: Array<{
     id: string;
     name: string;
     visualization: 'kanban' | 'list';
     filter: string;
+    focusField?: string;
     groupBy?: string;
     published: boolean;
   }>;
@@ -55,6 +57,8 @@ const requiredPages = [
   'V5 — Candidats',
   'Archive V4',
 ];
+
+const requiredReleaseValues = ['V4.1', 'V4.5', 'V5', 'Archive V4'];
 
 const requiredWritableFieldIds = [
   'fldOcnwOA7SIgevgS',
@@ -114,6 +118,7 @@ assertExact(
   expectedTickets,
 );
 assertExact('statuses', contract.statuses, requiredStatuses);
+assertExact('release values', contract.releaseValues, requiredReleaseValues);
 assertExact(
   'pages',
   contract.pages.map(({ name }) => name),
@@ -144,10 +149,34 @@ for (const page of contract.pages) {
     throw new Error(`${page.name}: invalid Airtable page ID`);
   }
   if (!page.filter.trim()) throw new Error(`${page.name}: missing filter`);
+  const releaseFilter = page.filter.match(/Release = ([^ ]+(?: [^ ]+)*)/);
+  if (
+    releaseFilter &&
+    !contract.releaseValues.some((release) =>
+      releaseFilter[1].startsWith(release),
+    )
+  ) {
+    throw new Error(`${page.name}: filter uses an unknown release value`);
+  }
 }
 const nowPage = contract.pages.find(({ name }) => name === 'V4.1 — Maintenant');
 if (nowPage?.visualization !== 'kanban' || nowPage.groupBy !== 'Statut') {
   throw new Error('V4.1 — Maintenant must be a Kanban grouped by Statut');
+}
+const arbitrationPage = contract.pages.find(
+  ({ name }) => name === 'Arbitrages Rayan',
+);
+if (
+  arbitrationPage?.filter !== 'none' ||
+  arbitrationPage.focusField !== 'Arbitrage Rayan'
+) {
+  throw new Error(
+    'The historical arbitration page must expose Arbitrage Rayan without claiming a status filter',
+  );
+}
+const archivePage = contract.pages.find(({ name }) => name === 'Archive V4');
+if (!archivePage?.filter.includes('Release = Archive V4')) {
+  throw new Error('Archive V4 must use the existing Archive V4 release choice');
 }
 const unpublishedDrafts = contract.pages.filter(({ published }) => !published);
 if (unpublishedDrafts.length !== 9) {

@@ -128,6 +128,10 @@ l'autorisation.
   `V4.5 — Préparation` (`pagvv6a80fbqtfMAk`), `V5 — Candidats`
   (`pagzYksoHx5HIvcdv`) et `Archive V4` (`pagLlT1p15kbN1IBT`). La page
   `Arbitrages Rayan` existante (`pagk1VyDJhqR2rG0j`) complète les dix vues.
+  Cette page historique n'est pas filtrée par le statut : elle expose le champ
+  `Arbitrage Rayan`. Le contrat le consigne explicitement au lieu de lui
+  attribuer un filtre fictif. `Archive V4` s'appuie sur la valeur existante
+  `Release = Archive V4`, et non sur une valeur `V4` inexistante.
 - Le choix `READY_FOR_OWNER_GO` ne sera matérialisé que lors d'une transition
   réelle après revue, jamais en attribuant artificiellement ce statut à un
   ticket. Les statuts historiques restent disponibles pour l'archive, mais le

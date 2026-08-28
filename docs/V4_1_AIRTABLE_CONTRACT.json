@@ -52,6 +52,7 @@
     "Refactor technique",
     "Qualité/Release"
   ],
+  "releaseValues": ["V4.1", "V4.5", "V5", "Archive V4"],
   "pages": [
     {
       "id": "pag9Ou1lZGtplgfCU",
@@ -94,7 +95,8 @@
       "id": "pagk1VyDJhqR2rG0j",
       "name": "Arbitrages Rayan",
       "visualization": "list",
-      "filter": "Statut = NEEDS_ARBITRATION",
+      "filter": "none",
+      "focusField": "Arbitrage Rayan",
       "published": true
     },
     {
@@ -122,7 +124,7 @@
       "id": "pagLlT1p15kbN1IBT",
       "name": "Archive V4",
       "visualization": "list",
-      "filter": "Release = V4 AND Statut = DONE",
+      "filter": "Release = Archive V4 AND Statut = DONE",
       "published": false
     }
   ],
