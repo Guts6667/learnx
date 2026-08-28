@@ -9,17 +9,25 @@ const migration = readFileSync(
   ),
   'utf8',
 );
-const ledger = readFileSync(
-  resolve('src/server/credits/prisma-credit-ledger.ts'),
-  'utf8',
-);
+const ledger = [
+  'prisma-credit-ledger.ts',
+  'prisma-credit-ledger-context.ts',
+  'prisma-credit-ledger-contracts.ts',
+  'prisma-credit-ledger-grants.ts',
+  'prisma-credit-ledger-lifecycle.ts',
+  'prisma-credit-ledger-reserve.ts',
+]
+  .map((file) => readFileSync(resolve('src/server/credits', file), 'utf8'))
+  .join('\n');
 
 describe('V4-008 credit allocation administration schema', () => {
   it('keeps policy values versioned and inactive by default', () => {
     expect(schema).toContain('model CreditAllocationPolicyVersion');
     expect(schema).toContain('model CreditLimitPolicyVersion');
     expect(migration).toContain("DEFAULT 'draft'");
-    expect(migration).not.toMatch(/INSERT INTO "credit_(allocation|limit)_policy_versions"/);
+    expect(migration).not.toMatch(
+      /INSERT INTO "credit_(allocation|limit)_policy_versions"/,
+    );
   });
 
   it('makes lots and reservation allocations immutable', () => {
@@ -32,15 +40,19 @@ describe('V4-008 credit allocation administration schema', () => {
   });
 
   it('derives balances from ledger entries and protects purchased credits', () => {
-    expect(migration).toContain('credit account balances are derived from the ledger');
+    expect(migration).toContain(
+      'credit account balances are derived from the ledger',
+    );
     expect(ledger).toContain('balanceFromLedger');
-    expect(ledger).toContain("throw new CreditLedgerError('PURCHASED_CREDITS_PROTECTED')");
+    expect(ledger).toContain(
+      "throw new CreditLedgerError('PURCHASED_CREDITS_PROTECTED')",
+    );
   });
 
   it('does not impose an expiration on complimentary allocations', () => {
-    expect(migration).toContain("\"provenance\" = 'free_allocation' OR");
+    expect(migration).toContain('"provenance" = \'free_allocation\' OR');
     expect(migration).toContain(
-      "(\"provenance\" = 'purchased' AND \"expires_at\" IS NULL)",
+      '("provenance" = \'purchased\' AND "expires_at" IS NULL)',
     );
   });
 

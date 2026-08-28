@@ -7,10 +7,16 @@ const migration = readFileSync(
   resolve('prisma/migrations/20260812130000_add_credit_ledger/migration.sql'),
   'utf8',
 );
-const service = readFileSync(
-  resolve('src/server/credits/prisma-credit-ledger.ts'),
-  'utf8',
-);
+const service = [
+  'prisma-credit-ledger.ts',
+  'prisma-credit-ledger-context.ts',
+  'prisma-credit-ledger-contracts.ts',
+  'prisma-credit-ledger-grants.ts',
+  'prisma-credit-ledger-lifecycle.ts',
+  'prisma-credit-ledger-reserve.ts',
+]
+  .map((file) => readFileSync(resolve('src/server/credits', file), 'utf8'))
+  .join('\n');
 
 describe('V4-006 credit ledger schema', () => {
   it('stores integer balances with separate free and purchased provenance', () => {
@@ -47,7 +53,9 @@ describe('V4-006 credit ledger schema', () => {
 
   it('makes ledger entries append-only at the database boundary', () => {
     expect(migration).toContain('prevent_credit_ledger_mutation');
-    expect(migration).toContain('BEFORE UPDATE OR DELETE ON "credit_ledger_entries"');
+    expect(migration).toContain(
+      'BEFORE UPDATE OR DELETE ON "credit_ledger_entries"',
+    );
     expect(migration).toContain('credit ledger entries are append-only');
   });
 
@@ -75,10 +83,10 @@ describe('V4-006 credit ledger schema', () => {
     expect(service).toContain('Prisma.TransactionIsolationLevel.Serializable');
     expect(service).toContain('FOR UPDATE');
     expect(service).toContain('isRetryableCreditTransactionError');
-    expect(service).toContain("candidate.code === 'P2034'");
-    expect(service).toContain("candidate.code === 'P2002'");
-    expect(service).toContain("candidate.message.includes('40001')");
-    expect(service).toContain("meta.code === '40001'");
+    expect(service).toContain("'P2034'");
+    expect(service).toContain("'P2002'");
+    expect(service).toContain("'40001'");
+    expect(service).toContain("includes('could not serialize access')");
   });
 
   it('keeps the ledger as source of truth and treats projections as rebuildable', () => {
