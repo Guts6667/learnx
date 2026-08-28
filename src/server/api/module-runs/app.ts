@@ -3,8 +3,8 @@ import { Hono } from 'hono';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
-import { createPrismaModuleRestartRepository } from './module-repository.js';
-import { createPrismaProgramRestartRepository } from './program-repository.js';
+import { createPrismaModuleRestartRepository } from './module-service.js';
+import { createPrismaProgramRestartRepository } from './program-service.js';
 import type { ModuleRunsAppOptions } from './types.js';
 import {
   invalidRestartRequest,
@@ -13,8 +13,8 @@ import {
   restartResourceNotFound,
 } from './validation.js';
 
-export { createPrismaModuleRestartRepository } from './module-repository.js';
-export { createPrismaProgramRestartRepository } from './program-repository.js';
+export { createPrismaModuleRestartRepository } from './module-service.js';
+export { createPrismaProgramRestartRepository } from './program-service.js';
 export type {
   ModuleRestartPreview,
   ModuleRestartRepository,
