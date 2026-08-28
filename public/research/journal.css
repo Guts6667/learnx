@@ -365,6 +365,9 @@ h3 {
   gap: clamp(2rem, 7vw, 6rem);
   padding-block: clamp(3rem, 7vw, 6rem);
 }
+.article-layout > * {
+  min-width: 0;
+}
 .article-aside {
   align-self: start;
   position: sticky;
@@ -417,6 +420,9 @@ h3 {
 .article-body p,
 .article-body li {
   color: var(--ink-soft);
+}
+.article-body :is(a, code, strong) {
+  overflow-wrap: anywhere;
 }
 .article-body blockquote {
   margin: 2rem 0;

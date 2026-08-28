@@ -35,11 +35,12 @@ interface DigestRow {
   count: string;
 }
 
-interface MigrationRow {
+export interface MigrationRow {
   checksum: string;
   finished_at: Date | null;
   migration_name: string;
   rolled_back_at: Date | null;
+  started_at: Date;
 }
 
 interface ExtensionFunctionRow {
@@ -130,6 +131,29 @@ export function compareMigrationSnapshots(
   return differences;
 }
 
+export function resolveAppliedMigrationChecksums(
+  rows: MigrationRow[],
+): Record<string, string> {
+  const checksums: Record<string, string> = {};
+
+  for (const row of rows) {
+    if (!row.finished_at && !row.rolled_back_at) {
+      throw new Error(`Migration ${row.migration_name} is not fully applied.`);
+    }
+    if (row.rolled_back_at) continue;
+
+    const existingChecksum = checksums[row.migration_name];
+    if (existingChecksum && existingChecksum !== row.checksum) {
+      throw new Error(
+        `Migration ${row.migration_name} has multiple applied checksums.`,
+      );
+    }
+    checksums[row.migration_name] = row.checksum;
+  }
+
+  return checksums;
+}
+
 async function createClient(connectionString: string): Promise<RawClient> {
   const { PrismaClient } = await import('../generated/prisma/client.js');
   return new PrismaClient({
@@ -161,20 +185,11 @@ async function appliedMigrationChecksums(
   schema?: string,
 ): Promise<Record<string, string>> {
   const rows = await client.$queryRawUnsafe<MigrationRow[]>(
-    `SELECT migration_name, checksum, finished_at, rolled_back_at
+    `SELECT migration_name, checksum, started_at, finished_at, rolled_back_at
      FROM ${migrationLedgerTable(schema)}
-     ORDER BY migration_name`,
+     ORDER BY migration_name, started_at`,
   );
-  const checksums: Record<string, string> = {};
-
-  for (const row of rows) {
-    if (!row.finished_at || row.rolled_back_at) {
-      throw new Error(`Migration ${row.migration_name} is not fully applied.`);
-    }
-    checksums[row.migration_name] = row.checksum;
-  }
-
-  return checksums;
+  return resolveAppliedMigrationChecksums(rows);
 }
 
 async function listTableColumns(client: RawClient): Promise<ColumnRow[]> {

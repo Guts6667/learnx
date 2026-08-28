@@ -6,6 +6,8 @@ import {
   compareMigrationSnapshots,
   migrationLedgerTable,
   parseMigrationRehearsalArguments,
+  resolveAppliedMigrationChecksums,
+  type MigrationRow,
   type MigrationSnapshot,
   withDatabaseSchema,
 } from '../../../scripts/migration-rehearsal.js';
@@ -27,6 +29,17 @@ function snapshot(checksum = 'stable'): MigrationSnapshot {
 }
 
 describe('migration rehearsal', () => {
+  const migrationRow = (
+    overrides: Partial<MigrationRow> = {},
+  ): MigrationRow => ({
+    checksum: 'applied-checksum',
+    finished_at: new Date('2026-08-24T19:42:28.000Z'),
+    migration_name: 'activate_bounded_catalog',
+    rolled_back_at: null,
+    started_at: new Date('2026-08-24T19:42:27.000Z'),
+    ...overrides,
+  });
+
   it('ignores the pnpm argument separator', () => {
     expect(
       parseMigrationRehearsalArguments([
@@ -84,5 +97,38 @@ describe('migration rehearsal', () => {
       'notes: protected row checksum changed',
       'initial: applied migration checksum changed or disappeared',
     ]);
+  });
+
+  it('keeps a successful retry after an earlier attempt was rolled back', () => {
+    expect(
+      resolveAppliedMigrationChecksums([
+        migrationRow({
+          checksum: 'failed-checksum',
+          finished_at: null,
+          rolled_back_at: new Date('2026-08-24T19:41:26.000Z'),
+          started_at: new Date('2026-08-24T19:31:30.000Z'),
+        }),
+        migrationRow(),
+      ]),
+    ).toEqual({ activate_bounded_catalog: 'applied-checksum' });
+  });
+
+  it('rejects an unresolved migration attempt', () => {
+    expect(() =>
+      resolveAppliedMigrationChecksums([
+        migrationRow({ finished_at: null, rolled_back_at: null }),
+      ]),
+    ).toThrow('Migration activate_bounded_catalog is not fully applied.');
+  });
+
+  it('rejects conflicting checksums across successful attempts', () => {
+    expect(() =>
+      resolveAppliedMigrationChecksums([
+        migrationRow(),
+        migrationRow({ checksum: 'different-checksum' }),
+      ]),
+    ).toThrow(
+      'Migration activate_bounded_catalog has multiple applied checksums.',
+    );
   });
 });
