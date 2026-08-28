@@ -410,13 +410,18 @@ neuvième statut.
 - Source : audit V4.1-002 ; contrats prouvés par les lots 300
 - Statut : **en cours** — sous-lots Backend/Data livrés sur la branche ticket :
   Today et Notes (`c6c81317`), reprises module/programme (`98ce5383`), Quiz
-  (`cd80b7ef`) et évaluations de notion (`d54375f1`). Les routeurs exposent
-  désormais des frontières validation/service/repository sans changer les
-  contrats. Restent notamment `admin`, `programs`, `progress`,
-  `stage-assessments`, `exercises`, les helpers de recalcul et les services
-  génériques encore supérieurs aux limites V4.1. Correction, pricing et ledger
-  restent exclus et réservés à V4.1-402. Preuves du sous-lot : lint, typecheck,
-  39 tests ciblés, suite complète 1 016/1 016 et build/PWA verts.
+  (`cd80b7ef`), évaluations de notion (`d54375f1`) et programmes
+  (`b5bc73b1`). Les reprises de revue déplacent l'orchestration Notes dans son
+  service (`181fcb2f`), séparent les services de reprise module/programme de la
+  persistance (`b2ecf18d`) et découpent les repositories Today et évaluations
+  de notion au-delà de 80 lignes (`37a52e94`). Les routeurs exposent désormais
+  des frontières validation/service/repository sans changer les contrats.
+  Restent notamment `admin`, `progress`, `stage-assessments`, `exercises`, les
+  helpers de recalcul et les services génériques encore supérieurs aux limites
+  V4.1. Correction, pricing et ledger restent exclus et réservés à V4.1-402.
+  Preuves du checkpoint : lint, typecheck, 24 tests ciblés, suite complète
+  1 016/1 016 et build/PWA verts. Le checkpoint attend la revue Architecture /
+  QA ; le ticket complet reste en cours.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
