@@ -92,6 +92,13 @@ documents:
     reviewer: QA / Release
     supersession: add_new_evidence_file
 
+  - path: docs/qa/V4_1_504_RELEASE_CANDIDATE.md
+    scope: v4_1_final_preview_owner_recipe_and_release_gate
+    status: append_only_evidence
+    owner: QA / Release
+    reviewer: Rayan
+    supersession: add_new_evidence_file
+
   - path: docs/AGENT_WORKFLOW.md
     scope: agent_delivery_workflow
     status: active_instruction

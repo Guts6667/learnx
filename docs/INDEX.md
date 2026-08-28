@@ -47,6 +47,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Parité du découpage CSS V4.1-404 | `docs/qa/V4_1_404_CSS_PARITY.md` | Sous-lot CSS uniquement : graphe d'imports, parité source et CSS compilé, sans clôturer i18n/runner |
 | Séparation du runner de benchmark V4.1 | `docs/V4_1_404_BENCHMARK_RUNNER_SPLIT.md` | Frontières library/CLI, invariants de parité et dette scientifique P2 explicitement conservée |
 | Handoff et fermeture de dette V4.1 | `docs/qa/V4_1_503_HANDOFF.md` | Preuve du découpage du noyau d'agrégation, goldens et consolidation documentaire |
+| Candidat de release V4.1 | `docs/qa/V4_1_504_RELEASE_CANDIDATE.md` | SHA et preview candidats, preuves automatiques, recette propriétaire et règle de GO/rollback |
 | Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Fermé jusqu'au GO explicite V4.1-504 ; nouvelle génération IA, évaluations textuelles, calibration, essai et paiement |
 | Exploration V5 | `V5_CANDIDATES.md` | Conception guidée et analytics restent des candidats sans ticket activable |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |

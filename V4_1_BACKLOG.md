@@ -633,8 +633,9 @@ neuvième statut.
 - Reviewer : Rayan
 - Dépendances : V4.1-503 et tous les tickets P0 V4.1 terminés
 - Source : handoff V4.1-503 ; preuves des 26 tickets précédents
-- Statut : **READY** — V4.1-503 est terminé ; la preview finale, la recette
-  propriétaire, le rollback et le GO explicite restent à exécuter.
+- Statut : **IN_PROGRESS** — la preview de branche répond et le paquet de
+  recette est préparé dans `docs/qa/V4_1_504_RELEASE_CANDIDATE.md`. La recette
+  authentifiée, la preuve de rollback/PWA et le GO explicite restent à exécuter.
 - Critères d'acceptation :
   - preview réelle rejoue la baseline V4 et les parcours critiques ;
   - rollback code/config/PWA est répété et les données restent compatibles ;
