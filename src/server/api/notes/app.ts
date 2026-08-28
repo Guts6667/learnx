@@ -8,13 +8,12 @@ import {
 import { InvalidCursorError } from '../_lib/cursor-pagination.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import { createPrismaNotesRepository } from './repository.js';
-import { serializeNote } from './service.js';
+import { createNotesService } from './service.js';
 import type { NotesAppOptions, NotesRepository } from './types.js';
 import {
   createNoteSchema,
   invalidNoteRequest,
   noteListSchema,
-  noteNotFound,
   parseNoteIdentifier,
   parseNoteJson,
   updateNoteSchema,
@@ -36,6 +35,7 @@ export function createNotesApp(options: NotesAppOptions = {}) {
     defaultRepository ??= await getPrismaRepository();
     return defaultRepository;
   };
+  const getService = async () => createNotesService(await getRepository());
 
   app.use('*', options.authentication ?? requireUser);
   app.use('*', requireCapability('learning.read'));
@@ -59,15 +59,12 @@ export function createNotesApp(options: NotesAppOptions = {}) {
   app.get('/api/notes', async (context) => {
     const parsed = noteListSchema.safeParse(context.req.query());
     if (!parsed.success) throw invalidNoteRequest();
-    const page = await (await getRepository()).list({
+    const page = await (await getService()).list({
       ...parsed.data,
       search: parsed.data.search || undefined,
       userId: context.get('user').id,
     });
-    return context.json({
-      nextCursor: page.nextCursor,
-      notes: page.items.map(serializeNote),
-    });
+    return context.json(page);
   });
 
   app.post('/api/notes', async (context) => {
@@ -77,32 +74,26 @@ export function createNotesApp(options: NotesAppOptions = {}) {
     );
     if (!parsed.success) throw invalidNoteRequest();
 
-    const repository = await getRepository();
     const userId = context.get('user').id;
-    const lesson = parsed.data.lessonId
-      ? await repository.findLessonForUser(parsed.data.lessonId, userId, true)
-      : null;
-    if (parsed.data.lessonId && !lesson) throw noteNotFound();
-    const note = await repository.create({
-      creationKey: parsed.data.creationKey ?? null,
-      includeOwnerPreview: true,
-      lessonId: lesson?.id ?? null,
-      markdown: parsed.data.markdown,
-      programId: lesson?.programId ?? null,
-      sequenceItemId: parsed.data.sequenceItemId ?? null,
-      title: parsed.data.title,
+    const note = await (await getService()).create(
+      {
+        creationKey: parsed.data.creationKey ?? null,
+        lessonId: parsed.data.lessonId,
+        markdown: parsed.data.markdown,
+        sequenceItemId: parsed.data.sequenceItemId ?? null,
+        title: parsed.data.title,
+      },
       userId,
-    });
-    return context.json({ note: serializeNote(note) }, 201);
+    );
+    return context.json({ note }, 201);
   });
 
   app.get('/api/notes/:noteId', async (context) => {
-    const note = await (await getRepository()).findOwned(
+    const note = await (await getService()).read(
       parseNoteIdentifier(context.req.param('noteId')),
       context.get('user').id,
     );
-    if (!note) throw noteNotFound();
-    return context.json({ note: serializeNote(note) });
+    return context.json({ note });
   });
 
   app.patch('/api/notes/:noteId', async (context) => {
@@ -112,21 +103,19 @@ export function createNotesApp(options: NotesAppOptions = {}) {
       await parseNoteJson(context.req.raw),
     );
     if (!parsed.success) throw invalidNoteRequest();
-    const repository = await getRepository();
-    if (!await repository.findOwned(noteId, context.get('user').id)) {
-      throw noteNotFound();
-    }
-    const note = await repository.update({ id: noteId, ...parsed.data });
-    return context.json({ note: serializeNote(note) });
+    const note = await (await getService()).update(
+      { id: noteId, ...parsed.data },
+      context.get('user').id,
+    );
+    return context.json({ note });
   });
 
   app.delete('/api/notes/:noteId', async (context) => {
     assertCapability(context.get('user').role, 'learning.write.own');
-    const deleted = await (await getRepository()).deleteOwned(
+    await (await getService()).delete(
       parseNoteIdentifier(context.req.param('noteId')),
       context.get('user').id,
     );
-    if (!deleted) throw noteNotFound();
     return context.body(null, 204);
   });
 
