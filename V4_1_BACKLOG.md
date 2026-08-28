@@ -455,9 +455,18 @@ neuvième statut.
   payloads, auth ou erreurs. Preuves : lint et typecheck verts,
   contrôle d'imports avec 0 cycle et 0 frontière interdite, suite complète
   1 034/1 034 après intégration, build et génération PWA verts. Le ticket
-  complet reste en cours : `stage-assessments` et `exercises` restent à
-  traiter. Correction, pricing et ledger restent exclus et réservés à
-  V4.1-402.
+  Le sous-lot `stage-assessments` est livré pour revue : le contrôleur de 612
+  lignes est remplacé par une composition de 75 lignes et des frontières
+  validation, routes, service, sérialisation et repository explicites. Les
+  transitions DRAFT/SUBMITTED/NEEDS_REVISION/VALIDATED, le seuil de réussite,
+  les prédicats d'accès et d'ownership, l'écriture atomique de revue et son
+  audit sont couverts par 18 tests ciblés. Lint, typecheck, suite complète
+  168 fichiers / 1 041 tests et build/PWA sont verts. Les doubles Prisma
+  prouvent les branches et paramètres transactionnels sans prétendre valider
+  une base réelle ; le gate V4.1-502 doit encore exécuter les scénarios de
+  concurrence contre la base d'intégration éphémère. Le ticket complet reste
+  en cours : `exercises` reste à traiter. Correction, pricing et ledger restent
+  exclus et réservés à V4.1-402.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
   - réponses, erreurs, auth, transactions et observabilité restent compatibles ;
