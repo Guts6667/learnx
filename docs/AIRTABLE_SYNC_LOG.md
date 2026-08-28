@@ -168,4 +168,8 @@ l'autorisation.
 - Les dix pages déclarées dans `V4_1_AIRTABLE_CONTRACT.json` restent la seule
   structure d'interface attendue. Les suppressions des pages publiées ne seront
   visibles pour les utilisateurs qu'après un GO distinct de publication de
-  l'interface ; aucun GO de ce type n'a été inféré pendant le nettoyage.
+  l'interface.
+- Rayan a ensuite explicitement autorisé cette publication. L'interface
+  `pbdEbIxppEhMMEwsM` a été publiée puis relue : elle expose exactement dix
+  pages, conformes aux noms déclarés dans le contrat, et aucune des quatre pages
+  supprimées ne reste visible.
