@@ -567,24 +567,17 @@ neuvième statut.
 - Dépendances : V4.1-104, V4.1-301, V4.1-302, V4.1-303, V4.1-304,
   V4.1-305, V4.1-401, V4.1-402, V4.1-403, V4.1-404
 - Source : seuils V4.1-007 ; suites migrées et modules décomposés
-- Statut : **IN_PROGRESS** — toutes les dépendances sont terminées. Après
-  retrait des helpers purement réservés aux tests, la mesure reproductible du
-  28 août est de 78,54 % statements, 69,08 % branches, 79,59 % functions et
-  79,80 % lines sur 184 fichiers / 1 073 tests. Les domaines mesurent 74,60 %
-  auth/accès, 66,51 % correction-pricing-crédits-réconciliation, 83,61 %
-  progression/évaluations et 93,22 % autorisations admin. Le manifeste inclut
-  désormais tous les modules issus des décompositions 401/402, le résultat de
-  correction et les routes admin protégées ; aucun fichier découvert n'est
-  hors manifeste.
-  Les minima 80 % global et 90 % critique sont refusés s'ils sont abaissés dans
-  la configuration. Le job final obligatoire est préparé dans un commit séparé
-  et ne peut être promu qu'une fois les seuils mesurés atteints ; il doit alors
-  devenir un contexte requis de la protection de `dev`.
-  Une première campagne de couverture après V4.1-401 a révélé un flake de synchronisation
-  dans `LessonPage.test.tsx` : le bouton est parfois interrogé avant la fin du
-  chargement. La suite normale reste verte (1 046/1 046) et le fichier isolé
-  repasse à 7/7 ; le test doit être stabilisé ici sans changement produit avant
-  de mesurer puis d'élever les seuils.
+- Statut : **DONE** — la mesure finale reproductible du 28 août atteint
+  88,95 % statements, 80,46 % branches, 90,20 % functions et 90,11 % lines,
+  sur 215 fichiers / 1 370 tests verts. Les domaines critiques atteignent
+  90,59 % auth/accès, 90,22 % correction-pricing-crédits-réconciliation,
+  92,23 % progression/évaluations et 93,22 % autorisations admin.
+  Le gate final est désormais le job obligatoire des pull requests et pushes
+  vers `dev`. Il refuse les seuils abaissés, les fichiers critiques absents,
+  Preact, les cycles/imports interdits et le code mort. Le flake de
+  `LessonPage.test.tsx` a été stabilisé en attendant le contrôle réellement
+  asynchrone, sans changement produit. Le détail reproductible est consigné
+  dans `docs/qa/V4_1_501_COVERAGE.md`.
 - Critères d'acceptation :
   - la couverture globale atteint au moins 80 % selon la méthode gelée ;
   - auth, progression, correction, pricing, ledger et permissions atteignent au
@@ -599,7 +592,8 @@ neuvième statut.
 - Reviewer : Architecture/Produit
 - Dépendances : V4.1-501
 - Source : baseline V4.1-006 ; seuils V4.1-007 ; couverture V4.1-501
-- Statut : **bloqué** — dépendance V4.1-501
+- Statut : **READY** — V4.1-501 est terminé ; la recette fonctionnelle,
+  performance, sécurité et accessibilité peut commencer.
 - Critères d'acceptation :
   - lint, typecheck, tests, e2e, build, PWA et tests d'intégration sont verts ;
   - bundle, rendu, requêtes et erreurs respectent les budgets ;

@@ -33,8 +33,9 @@ l'application.
 
 ## Mesure courante
 
-Mesure locale du 28 août 2026 après les décompositions serveur V4.1-401/402 et
-le durcissement du périmètre, sur 184 fichiers de tests et 1 073 tests verts.
+Mesure finale locale du 28 août 2026 après les décompositions serveur, le
+durcissement du périmètre et la campagne V4.1-501, sur 215 fichiers de tests et
+1 370 tests verts.
 Tous les fichiers TypeScript de production sous `api/` et `src/` sont inclus,
 même lorsqu'aucun test ne les importe. Sont exclus les tests, les outils de QA
 hors runtime et quatre helpers purement réservés aux tests :
@@ -43,13 +44,13 @@ hors runtime et quatre helpers purement réservés aux tests :
 
 | Périmètre | Mesure | Cible de release | État |
 | --- | ---: | ---: | --- |
-| Statements globaux | 78,54 % | 80 % | ouvert |
-| Branches globales | 69,08 % | 80 % | ouvert |
-| Functions globales | 79,59 % | 80 % | ouvert |
-| Lines globales | 79,80 % | 80 % | ouvert |
-| Authentification et accès | 74,60 % (420/563) | 90 % lines | ouvert |
-| Correction, pricing, crédits et réconciliation | 66,51 % (1 251/1 881) | 90 % lines | ouvert |
-| Progression et évaluations | 83,61 % (1 173/1 403) | 90 % lines | ouvert |
+| Statements globaux | 88,95 % | 80 % | atteint |
+| Branches globales | 80,46 % | 80 % | atteint |
+| Functions globales | 90,20 % | 80 % | atteint |
+| Lines globales | 90,11 % | 80 % | atteint |
+| Authentification et accès | 90,59 % (510/563) | 90 % lines | atteint |
+| Correction, pricing, crédits et réconciliation | 90,22 % (1 697/1 881) | 90 % lines | atteint |
+| Progression et évaluations | 92,23 % (1 294/1 403) | 90 % lines | atteint |
 | Autorisations admin | 93,22 % (165/177) | 90 % lines | atteint |
 
 Les listes de fichiers critiques sont explicites dans
@@ -64,9 +65,8 @@ graphe de dépendances inspecte aussi les imports dynamiques et les anciens
 
 Le job GitHub final s'exécute automatiquement sur chaque pull request et push
 vers `dev`. Son contexte `Quality / V4.1 final (required)` doit être requis par
-la protection de branche sans contournement administrateur. Ce changement ne
-doit être promu qu'après atteinte locale des seuils, afin de ne pas rendre la CI
-requise rouge par conception.
+la protection de branche sans contournement administrateur. Les seuils locaux
+étant atteints, ce job remplace le gate transitoire de baseline.
 
 ## Chaîne de contrôles
 
