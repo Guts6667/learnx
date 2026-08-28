@@ -10,6 +10,7 @@ import type {
 } from './correction-orchestration';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 import { RUNTIME_RECONSIDERATION_PROMPT_VERSION } from './runtime-correction-prompt.js';
+import { PrismaCorrectionHistoryRepository } from './prisma-correction-history.js';
 
 /**
  * Implémentation Prisma des ports de l'orchestration V4-009 :
@@ -17,92 +18,24 @@ import { RUNTIME_RECONSIDERATION_PROMPT_VERSION } from './runtime-correction-pro
  * rejeu idempotent par empreinte de requête.
  */
 export class PrismaCorrectionOrchestrationPorts {
-  public constructor(private readonly prisma: PrismaClient) {}
+  private readonly history: PrismaCorrectionHistoryRepository;
+
+  public constructor(private readonly prisma: PrismaClient) {
+    this.history = new PrismaCorrectionHistoryRepository(prisma);
+  }
 
   public async findLatestForSubmission(input: {
     submissionId: string;
     userId: string;
   }): Promise<OrchestratedCorrectionResult | null> {
-    const correction = await this.prisma.aiCorrection.findFirst({
-      include: {
-        creditReservation: {
-          select: { settledAmount: true, status: true },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-      where: {
-        exerciseSubmissionId: input.submissionId,
-        userId: input.userId,
-      },
-    });
-    if (!correction?.creditReservation) return null;
-    const structured = (correction.structuredResult ?? {}) as {
-      correction?: OrchestratedCorrectionResult['correction'];
-      settlement?: OrchestratedCorrectionResult['settlement'];
-    };
-    if (!structured.correction || !structured.settlement) return null;
-    if (
-      correction.creditReservation.status !== 'SETTLED' ||
-      correction.creditReservation.settledAmount?.toString() !==
-        structured.settlement.settledCredits
-    ) {
-      return null;
-    }
-    return {
-      correction: structured.correction,
-      replay: true,
-      settlement: structured.settlement,
-    };
+    return this.history.findLatest(input);
   }
 
   public async listForSubmission(input: {
     submissionId: string;
     userId: string;
   }): Promise<CorrectionHistoryEntry[]> {
-    const corrections = await this.prisma.aiCorrection.findMany({
-      include: {
-        creditReservation: {
-          select: { settledAmount: true, status: true },
-        },
-        pricingQuote: { select: { action: true } },
-      },
-      orderBy: { createdAt: 'asc' },
-      where: {
-        exerciseSubmissionId: input.submissionId,
-        userId: input.userId,
-      },
-    });
-
-    return corrections.flatMap((correction) => {
-      if (!correction.creditReservation) return [];
-      const structured = (correction.structuredResult ?? {}) as {
-        correction?: OrchestratedCorrectionResult['correction'];
-        settlement?: OrchestratedCorrectionResult['settlement'];
-      };
-      if (!structured.correction || !structured.settlement) return [];
-      if (
-        correction.creditReservation.status !== 'SETTLED' ||
-        correction.creditReservation.settledAmount?.toString() !==
-          structured.settlement.settledCredits
-      ) {
-        return [];
-      }
-      return [
-        {
-          action:
-            correction.pricingQuote?.action === 'RECONSIDERATION'
-              ? 'RECONSIDERATION'
-              : 'STANDARD',
-          createdAt: correction.createdAt,
-          sourceCorrectionId: correction.reconsiderationOfId,
-          result: {
-            correction: structured.correction,
-            replay: true,
-            settlement: structured.settlement,
-          },
-        },
-      ];
-    });
+    return this.history.list(input);
   }
 
   public readonly quotes = {
