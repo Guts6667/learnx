@@ -117,7 +117,11 @@ export function CreditsPage() {
               label={t('credits.increase.reason')}
               maxLength={1_000}
               minLength={8}
-              onInput={(event) => setReason(event.currentTarget.value)}
+              onInput={(event) => {
+                const nextReason = event.currentTarget.value;
+                if (nextReason !== reason) mutation.abandon();
+                setReason(nextReason);
+              }}
               required
               value={reason}
             />
