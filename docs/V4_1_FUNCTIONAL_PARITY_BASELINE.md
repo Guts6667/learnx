@@ -34,7 +34,7 @@ déploiement réel.
 | `UNIT` | Test Vitest de composant, service, contrat ou contrôleur, exécuté localement |
 | `E2E-MOCK` | Parcours Playwright exécuté dans un navigateur avec API interceptée/simulée |
 | `BUILD` | Production build/PWA généré localement |
-| `INTEGRATION` | Test sur API et base jetable réelles ; aucune preuve de ce type n'a été exécutée dans cette capture |
+| `INTEGRATION` | Test sur API et branche Neon jetable réelles, exécuté puis supprimé dans V4.1-502 |
 | `GAP` | Preuve absente ou insuffisante ; elle doit rester visible jusqu'à sa clôture |
 
 ## Reproduction
@@ -101,18 +101,27 @@ une seule fois avec des viewports déterministes. Elles ne doivent pas être
 comptées comme des parcours validés. Le rapport Playwright reste la source du
 détail par projet.
 
-### Intégration réelle non exécutée
+### Mise à jour V4.1-502 — intégration réelle exécutée
 
-La suite suivante existe mais n'a pas été lancée, faute de branche Neon
-jetable explicitement fournie :
+Le 28 août 2026, la suite a été exécutée sur la branche Neon copy-on-write
+jetable `br-misty-scene-aseegwr1`, créée pour cette seule recette puis supprimée
+et vérifiée absente. Aucun secret ni URL de connexion n'est consigné.
 
 ```bash
-pnpm exec playwright test --config playwright.integration.config.ts
+LEARNX_INTEGRATION_DATABASE=ephemeral \
+LEARNX_INTEGRATION_RUN_ID=<run-id> \
+NEON_BRANCH_ID=br-misty-scene-aseegwr1 \
+DATABASE_URL=<secret> DIRECT_URL=<secret> \
+pnpm test:integration
 ```
 
-Elle exige au minimum `DATABASE_URL`, `DIRECT_URL`,
-`LEARNX_INTEGRATION_DATABASE`, `LEARNX_INTEGRATION_RUN_ID` et
-`NEON_BRANCH_ID`. Elle ne doit jamais viser une base partagée ou la production.
+Résultat : **11 réussis, 16 ignorés attendus, 0 échec**. Les preuves serveur
+ont couvert le cycle d'accès multi-utilisateur, l'isolation backend et la
+progression, l'atomicité/rollback du ledger, ainsi que la concurrence et le
+rollback des exercices. Le parcours d'authentification UI a été rejoué sur
+desktop Chromium, mobile Chromium et mobile WebKit. Les 16 cellules ignorées
+correspondent aux tests serveur volontairement exécutés une seule fois sur
+desktop, pas à des parcours silencieusement manquants.
 
 ## Matrice des parcours utilisateur
 
@@ -120,7 +129,7 @@ Elle exige au minimum `DATABASE_URL`, `DIRECT_URL`,
 | --- | --- | --- | --- | --- |
 | Public | Landing bilingue, journal Recherche partageable, 404, aucune donnée privée | `/`, `/interest`, `/research/*`, `*` | `UNIT` `src/app/App.test.tsx` ; `E2E-MOCK` `landing.spec.ts`, `research-journal.spec.ts`, `research-public.spec.ts` | Prouvé localement et en navigateur simulé ; déploiement public réel non rejoué |
 | Demande d'accès | Soumission, états de validation/erreur et retour de suivi | `/request-access`, `/verify-email` | `UNIT` `src/app/App.test.tsx` ; `E2E-MOCK` `home.spec.ts` | Prouvé avec API simulée ; e-mail et API réels non exercés |
-| Activation et auth | Activation, connexion, session restaurée, déconnexion, redirection de route privée et reprise hors ligne | `/activate`, `/login`, routes protégées | `UNIT` `src/app/App.test.tsx`, tests `features/auth` et `server/api/auth` ; `E2E-MOCK` `home.spec.ts` | Auth locale fortement couverte ; cycle réel multi-utilisateur disponible dans `tests/integration/access-lifecycle.spec.ts` mais non exécuté |
+| Activation et auth | Activation, connexion, session restaurée, déconnexion, redirection de route privée et reprise hors ligne | `/activate`, `/login`, routes protégées | `UNIT` `src/app/App.test.tsx`, tests `features/auth` et `server/api/auth` ; `E2E-MOCK` `home.spec.ts` ; `INTEGRATION` `access-lifecycle.spec.ts` | Cycle réel multi-utilisateur et parcours UI sur trois navigateurs exécutés ; e-mail externe non envoyé |
 | Aujourd'hui | Prochaine action, contexte, progression, plusieurs programmes et état vide | `/today` | `UNIT` `TodayPage.test.tsx` ; `E2E-MOCK` `home.spec.ts` | Prouvé avec fixtures ; données réelles non rejouées |
 | Programmes et hiérarchie | Répertoire, découverte, inscription/reprise, Program > Stage > Module > Lesson, routes parentes et verrous | `/program`, `/discover`, `/program/:programSlug`, routes stage/module | `UNIT` `ProgramsDirectoryPages.test.tsx`, `CurriculumPages.test.tsx` et tests de queries/pages ; `E2E-MOCK` `home.spec.ts` | Prouvé avec fixtures ; réconciliation réelle progression/catalogue non rejouée |
 | Leçons et contenus | Ressources, progression, activité suivante, contenu verrouillé, hors-ligne et tâches | `/program/:programSlug/lesson/:lessonSlug/*` | `UNIT` `src/pages/LessonPage.test.tsx` ; `E2E-MOCK` chemin critique de `home.spec.ts` | Prouvé avec fixtures ; lecture/écriture réelles non rejouées |
@@ -137,9 +146,9 @@ Elle exige au minimum `DATABASE_URL`, `DIRECT_URL`,
 | --- | --- | --- | --- | --- |
 | Correction | devis accepté avant appel, intention persistée avant dispatch, résultat complet/partiel/indisponible, score serveur, idempotence, coût inconnu réconciliable | `UNIT` `correction-orchestration.test.ts`, `persistent-correction.test.ts`, `server/api/corrections/app.test.ts`, `AiCorrectionPanel.test.tsx` | API corrections 70,58 % ; orchestration corrections 79,03 % | Pas d'appel fournisseur ni de correction réelle ; aucun E2E navigateur complet |
 | Pricing | somme des appels du workflow, plafond utilisateur, retries absorbés, échec inutilisable libéré, coût/P90 et marge fail-close, quote immuable | `UNIT` `server/pricing/ai-pricing.test.ts` et tests API pricing | pricing global 56,84 % ; `ai-pricing.ts` 83,83 % | Adaptateur Prisma pricing non couvert ; intégration DB non exécutée |
-| Ledger/crédits | lots et origines immuables, priorité, expiration, réserve, règlement/libération, plafond, idempotence et conservation | `UNIT` `server/credits/credit-ledger.test.ts` et tests API crédits | ledger pur 98,27 % ; adaptateur Prisma 5,82 % ; API crédits 47,50 % | Atomicité DB réelle seulement décrite par `tests/integration/credit-ledger.spec.ts`, non exécutée |
-| Progression/évaluations | calcul côté serveur, validations d'étape, recalcul, tentatives et absence d'effet implicite d'une ressource | `UNIT` `lib/progress.test.ts`, tests API progression, stage validation et recalcul | API progression 97,75 % ; recalcul 88,76 % ; API stage assessment 68,65 % | Parcours cumulatif réel avec DB non exécuté |
-| Permissions | session et rôle, capacités admin, périmètre programme, refus d'un utilisateur ordinaire | `UNIT` `capabilities.test.ts`, `program-access-policy.test.ts`, App/auth et API crédits/admin | auth client 91,30 % ; API auth 93,33 % | Matrice multi-utilisateur réelle disponible dans `tests/integration/backend.spec.ts`, non exécutée |
+| Ledger/crédits | lots et origines immuables, priorité, expiration, réserve, règlement/libération, plafond, idempotence et conservation | `UNIT` `server/credits/credit-ledger.test.ts` et tests API crédits ; `INTEGRATION` `credit-ledger.spec.ts` | seuil critique final ≥ 90 % lines | Atomicité, rollback et contraintes DB réelles exécutés ; aucun parcours navigateur avec ledger réel |
+| Progression/évaluations | calcul côté serveur, validations d'étape, recalcul, tentatives et absence d'effet implicite d'une ressource | `UNIT` `lib/progress.test.ts`, tests API progression, stage validation et recalcul ; `INTEGRATION` `backend.spec.ts` | seuil critique final ≥ 90 % lines | Isolation et progression réelles exécutées ; évaluations textuelles d'étape hors V4.1 |
+| Permissions | session et rôle, capacités admin, périmètre programme, refus d'un utilisateur ordinaire | `UNIT` `capabilities.test.ts`, `program-access-policy.test.ts`, App/auth et API crédits/admin ; `INTEGRATION` `backend.spec.ts` | seuil critique final ≥ 90 % lines | Matrice multi-utilisateur réelle exécutée ; permissions de production restent à rejouer en preview finale |
 
 ## Contrat visible de correction assistée à préserver
 
@@ -164,7 +173,7 @@ cités ci-dessus.
 | Axe | Preuve exécutée | Statut et limite |
 | --- | --- | --- |
 | Largeurs 320/390/720/1440/1920 | `E2E-MOCK` `ui-primitives.spec.ts` vérifie les primitives et previews Totem, le reflow et l'absence d'overflow | Prouvé pour les surfaces de référence seulement, pas chaque route métier |
-| Desktop, tablette, mobile Chromium et mobile WebKit | projets Playwright Desktop Chrome, Pixel 5, tablette 768 et iPhone 13 | 75 cellules réussies ; les 33 ignorées ne sont pas une preuve |
+| Desktop, tablette, mobile Chromium et mobile WebKit | projets Playwright Desktop Chrome, Pixel 5, tablette 768 et iPhone 13 | 76 réussies, 36 ignorées intentionnellement et classifiées ; suite de parité production séparée dans V4.1-502 |
 | Texte/zoom 200 % | `ui-primitives.spec.ts` et `home.spec.ts` appliquent `font-size: 200%`, contrôlent overflow et lisibilité | Équivalence de reflow textuel prouvée ; zoom navigateur natif manuel non effectué |
 | Clavier et focus | focus visible des primitives, focus restauré après dialogue, `#main-content` après navigation | Prouvé sur parcours ciblés ; audit exhaustif de chaque contrôle absent |
 | Reduced motion | `emulateMedia({ reducedMotion: 'reduce' })` et durée d'animation contrôlée | Prouvé sur Today et previews Totem ; pas chaque route |
@@ -178,37 +187,33 @@ cités ci-dessus.
   temps et fournisseurs selon le domaine.
 - Playwright local intercepte les routes API via les helpers de `tests/e2e` ;
   il vérifie le navigateur, pas Neon ni les Functions déployées.
-- Les tests d'intégration sont séquentiels et conçus pour une branche Neon
-  jetable ; ils ne sont pas implicitement sûrs sans les variables attendues.
+- Les tests d'intégration sont séquentiels et ont été exécutés sur une branche
+  Neon jetable supprimée après la recette ; le garde refuse toujours une base
+  partagée ou la production.
 - Aucun secret, coût fournisseur ou donnée utilisateur réelle n'est requis par
   cette baseline.
 
 ## Écarts ouverts à reprendre dans V4.1-007 et la QA finale
 
-1. Exécuter la suite d'intégration sur une branche Neon jetable et conserver
-   son identifiant, le SHA et le rapport.
-2. Ajouter des parcours navigateur authentifiés pour correction/pricing/ledger,
+1. Ajouter des parcours navigateur authentifiés pour correction/pricing/ledger,
    crédits, révisions et profil ; les preuves de composants ne suffisent pas à
    démontrer leur assemblage.
-3. Faire une recette PWA installée, offline/update et rollback sur une preview
+2. Faire une recette PWA installée, offline/update et rollback sur une preview
    représentative.
-4. Réaliser une passe manuelle clavier/lecteur d'écran et le zoom navigateur
+3. Réaliser une passe manuelle clavier/lecteur d'écran et le zoom navigateur
    natif, en complément des contrôles automatisés.
-5. Classifier les 33 cellules Playwright ignorées avant de fixer un gate de
-   non-régression ; aucune cellule nécessaire ne doit être silencieusement
-   exclue.
-6. Corriger les avertissements React des previews Totem concernant des champs
-   contrôlés avec `value` sans `onChange`/`readOnly`.
-7. La couverture globale reste sous les objectifs V4.1 (80 % sur les quatre
-   métriques), et les adaptateurs Prisma pricing/ledger ainsi que les APIs
-   crédits/corrections sont les trous critiques les plus visibles.
+4. Rejouer sur la preview finale les permissions réelles, l'installation PWA
+   et le rollback. Les 36 cellules Playwright ignorées sont désormais
+   classifiées comme répétitions de matrices internes ; l'avertissement React
+   du catalogue Totem est corrigé et les seuils 80 % global / 90 % critique
+   sont atteints dans V4.1-501.
 
 ## Verdict V4.1-006
 
 **Promu comme baseline de parité, pas comme gate de release.** Une revue
 indépendante a accepté la matrice et les preuves ciblées : égalité exacte des
 routes V4, contrat visible de correction et bornes serveur/interface de la
-contestation. L'intégration réelle, plusieurs parcours navigateur critiques et
-les preuves manuelles PWA/accessibilité restent explicitement ouverts pour
-V4.1-501/502 ; ils ne doivent pas être présentés comme acquis pendant la
-migration.
+contestation. V4.1-502 a depuis exécuté l'intégration réelle et classifié la
+matrice navigateur. La recette manuelle PWA/accessibilité sur preview et les
+parcours navigateur avec backend réel restent explicitement réservés à
+V4.1-504 ; ils ne doivent pas être présentés comme acquis avant ce gate.

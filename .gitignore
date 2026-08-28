@@ -3,8 +3,10 @@ dist/
 coverage/
 playwright-report/
 playwright-report-integration/
+playwright-report-production/
 test-results/
 test-results-integration/
+test-results-production/
 generated/
 .env
 .env.*

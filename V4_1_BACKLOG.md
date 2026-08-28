@@ -592,8 +592,17 @@ neuvième statut.
 - Reviewer : Architecture/Produit
 - Dépendances : V4.1-501
 - Source : baseline V4.1-006 ; seuils V4.1-007 ; couverture V4.1-501
-- Statut : **READY** — V4.1-501 est terminé ; la recette fonctionnelle,
-  performance, sécurité et accessibilité peut commencer.
+- Statut : **DONE** — le gate final est vert sur 215 fichiers / 1 370 tests,
+  sans Preact, cycle, import interdit, code mort ni vulnérabilité de production
+  haute/critique. La suite navigateur de développement compte 76 réussites,
+  36 répétitions de matrices explicitement ignorées et 0 échec ; la suite
+  complémentaire sur le bundle de production compte 72 réussites, 24
+  répétitions ignorées et 0 échec. L'intégration sur branche Neon jetable
+  `br-misty-scene-aseegwr1` compte 11 réussites, 16 cellules serveur
+  volontairement non dupliquées et 0 échec ; la branche a été supprimée puis
+  vérifiée absente. Les budgets JS initial, CSS, chunk lazy et précache PWA
+  sont sous leurs plafonds. La preuve et les limites de recette manuelle
+  transférées à V4.1-504 sont consignées dans `docs/qa/V4_1_502_QA.md`.
 - Critères d'acceptation :
   - lint, typecheck, tests, e2e, build, PWA et tests d'intégration sont verts ;
   - bundle, rendu, requêtes et erreurs respectent les budgets ;
@@ -607,7 +616,8 @@ neuvième statut.
 - Reviewer : Rayan
 - Dépendances : V4.1-502
 - Source : preuves de tous les tickets V4.1 antérieurs
-- Statut : **bloqué** — dépendance V4.1-502
+- Statut : **READY** — V4.1-502 est terminé ; la consolidation du handoff et
+  la fermeture de la dette documentée peuvent commencer.
 - Critères d'acceptation :
   - migration, architecture, composants, scripts et documentation sont remis ;
   - dette résiduelle a owner, priorité, impact, dépendances et date de réexamen ;

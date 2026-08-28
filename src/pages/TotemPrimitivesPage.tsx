@@ -87,6 +87,7 @@ export function TotemPrimitivesPage({ path }: TotemPrimitivesPageProps) {
                 <TextField
                   error="Vérifiez la valeur indiquée."
                   label="État en erreur"
+                  readOnly
                   value="Valeur incomplète"
                 />
               </div>
