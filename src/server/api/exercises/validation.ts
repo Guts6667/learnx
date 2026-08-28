@@ -14,7 +14,7 @@ const saveSchema = z.object({
   contentMarkdown: z.string().max(MAX_EXERCISE_SUBMISSION_CHARACTERS),
 });
 
-export function exerciseInvalidRequest(): ApiError {
+function exerciseInvalidRequest(): ApiError {
   return new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
 }
 

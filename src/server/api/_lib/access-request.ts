@@ -8,7 +8,7 @@ import {
 import { ApiError } from './errors.js';
 import type { SupportedLocale } from '../../../shared/locale.js';
 
-export interface AccessRequestRepository {
+interface AccessRequestRepository {
   createPendingUnlessUserExists(input: {
     email: string;
     id: string;

@@ -47,7 +47,6 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
   return app;
 }
 
-export { isExerciseAiCorrectionEligible } from './eligibility.js';
 export { createPrismaExerciseRepository } from './repository.js';
 export type { ExerciseRepository } from './types.js';
 

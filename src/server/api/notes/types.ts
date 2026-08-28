@@ -3,13 +3,13 @@ import type { MiddlewareHandler } from 'hono';
 import type { AuthEnvironment } from '../_lib/auth.js';
 import type { CursorPage } from '../_lib/cursor-pagination.js';
 
-export interface NoteContext {
+interface NoteContext {
   id: string;
   slug: string;
   title: string;
 }
 
-export interface NoteActivityContext {
+interface NoteActivityContext {
   id: string;
   key: string;
   kind: string;

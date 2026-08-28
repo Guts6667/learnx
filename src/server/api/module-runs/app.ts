@@ -16,12 +16,8 @@ import {
 export { createPrismaModuleRestartRepository } from './module-service.js';
 export { createPrismaProgramRestartRepository } from './program-service.js';
 export type {
-  ModuleRestartPreview,
   ModuleRestartRepository,
-  ModuleRestartResult,
-  ProgramRestartPreview,
   ProgramRestartRepository,
-  ProgramRestartResult,
 } from './types.js';
 
 async function getRepository() {

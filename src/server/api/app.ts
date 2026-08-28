@@ -22,7 +22,7 @@ import { reviewsApp } from './reviews/app.js';
 import { stageAssessmentsApp } from './stage-assessments/app.js';
 import { todayApp } from './today/app.js';
 
-export function createApiApp() {
+function createApiApp() {
   const app = new Hono();
 
   app.use('*', createRequestObservability());

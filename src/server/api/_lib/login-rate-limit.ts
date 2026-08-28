@@ -13,7 +13,7 @@ export interface LoginRateLimiter {
   registerFailure(key: string, now: Date): Promise<void>;
 }
 
-export interface LoginRateLimiterOptions {
+interface LoginRateLimiterOptions {
   maxFailures: number;
   windowMs: number;
 }

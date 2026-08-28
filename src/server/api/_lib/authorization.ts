@@ -4,7 +4,7 @@ import type { AuthEnvironment } from './auth.js';
 import { hasCapability, type Capability } from './capabilities.js';
 import { ApiError } from './errors.js';
 
-export function forbiddenCapability(): ApiError {
+function forbiddenCapability(): ApiError {
   return new ApiError('FORBIDDEN', 'Access is not permitted.', 403);
 }
 

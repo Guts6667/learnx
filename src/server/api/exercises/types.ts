@@ -3,7 +3,7 @@ import type { MiddlewareHandler } from 'hono';
 import { ExerciseSubmissionStatus } from '../../../../generated/prisma/client.js';
 import type { AuthEnvironment } from '../_lib/auth.js';
 
-export type SubmissionStatus = keyof typeof ExerciseSubmissionStatus;
+type SubmissionStatus = keyof typeof ExerciseSubmissionStatus;
 
 export interface ExerciseSubmissionRecord {
   contentMarkdown: string;

@@ -13,7 +13,6 @@ import { registerProgramRoutes } from './program-routes.js';
 import { registerPublicationRoutes } from './publication-routes.js';
 
 export type { AdminRepository } from './curriculum-edit-types.js';
-export { createPrismaAdminRepository } from './curriculum-edit-repository.js';
 
 function registerErrorHandler(app: Hono<AuthEnvironment>) {
   app.onError((error, context) => {

@@ -12,8 +12,8 @@ export const SOURCELAB_V2_IDENTITY = {
 
 export const SOURCELAB_REPLACEMENT_MODE = 'HARD_OFF' as const;
 
-export type ReplacementProgramStatus = 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
-export type ReplacementProgramVisibility = 'PRIVATE' | 'PUBLIC';
+type ReplacementProgramStatus = 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
+type ReplacementProgramVisibility = 'PRIVATE' | 'PUBLIC';
 
 export interface SourceLabPreservationCounts {
   conceptAssessmentAttempts: number;
@@ -61,7 +61,7 @@ export interface SourceLabReplacementSnapshot {
     | null;
 }
 
-export type SourceLabReplacementBlockerCode =
+type SourceLabReplacementBlockerCode =
   | 'PROGRAM_IDENTITIES_COLLIDE'
   | 'V1_IDENTITY_MISMATCH'
   | 'V1_NOT_FOUND'
@@ -72,12 +72,12 @@ export type SourceLabReplacementBlockerCode =
   | 'V2_NOT_PRIVATE_BEFORE_CUTOVER'
   | 'V2_STRUCTURE_INCOMPLETE';
 
-export interface SourceLabReplacementBlocker {
+interface SourceLabReplacementBlocker {
   code: SourceLabReplacementBlockerCode;
   message: string;
 }
 
-export interface SourceLabReplacementAction {
+interface SourceLabReplacementAction {
   operation: 'UPDATE';
   target: 'V1_ACTIVE_ENROLLMENTS' | 'V1_PROGRAM' | 'V2_PROGRAM';
   summary: string;

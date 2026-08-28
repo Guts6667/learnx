@@ -23,7 +23,7 @@ export const translationWorkflowActions = [
   'APPROVE',
 ] as const;
 
-export type TranslationWorkflowAction =
+type TranslationWorkflowAction =
   (typeof translationWorkflowActions)[number];
 
 interface BaseTransitionInput {
@@ -31,13 +31,13 @@ interface BaseTransitionInput {
   expectedVersion: number;
 }
 
-export type TranslationWorkflowTransitionInput = BaseTransitionInput & {
+type TranslationWorkflowTransitionInput = BaseTransitionInput & {
   glossaryVersion?: string;
   qaChecks?: BilingualQaChecks;
   sourceProgramVersionId?: string;
 };
 
-export interface TranslationWorkflowRecord {
+interface TranslationWorkflowRecord {
   approvedAt: Date | null;
   approvedByUserId: string | null;
   culturalLegalReviewedAt: Date | null;
@@ -55,7 +55,7 @@ export interface TranslationWorkflowRecord {
   version: number;
 }
 
-export type TranslationWorkflowTransitionResult =
+type TranslationWorkflowTransitionResult =
   | { kind: 'APPLIED'; workflow: TranslationWorkflowRecord }
   | { kind: 'CONFLICT' }
   | { kind: 'INVALID_SOURCE' }

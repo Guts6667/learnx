@@ -6,14 +6,14 @@ import {
 import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
 import { editorialProgramWhere } from '../_lib/program-access-policy.js';
 
-export interface ProgramVisibilityState {
+interface ProgramVisibilityState {
   id: string;
   status: 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
   updatedAt: Date;
   visibility: ProgramVisibility;
 }
 
-export type ProgramVisibilityUpdateResult =
+type ProgramVisibilityUpdateResult =
   | { kind: 'CONFLICT' }
   | { kind: 'NOT_FOUND' }
   | { kind: 'SUCCESS'; program: ProgramVisibilityState };

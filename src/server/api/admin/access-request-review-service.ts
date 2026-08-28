@@ -19,12 +19,7 @@ import type {
 } from './access-request-review-types.js';
 
 export {
-  reviewableAccessRequestStatuses,
-  type AccessRequestReviewFilters,
   type AccessRequestReviewItem,
-  type AccessRequestReviewPage,
-  type AccessRequestReviewResult,
-  type ReviewableAccessRequestStatus,
 } from './access-request-review-types.js';
 
 export interface AccessRequestReviewService {

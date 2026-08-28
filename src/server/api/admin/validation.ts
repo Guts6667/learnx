@@ -10,7 +10,7 @@ import {
 import { reviewableAccessRequestStatuses } from './access-request-review-types.js';
 import { translationWorkflowActions } from './translation-workflow-service.js';
 
-export const identifierSchema = z.uuid();
+const identifierSchema = z.uuid();
 const positionSchema = z.number().int().min(0).max(10_000);
 
 export const moduleUpdateSchema = z
@@ -107,7 +107,7 @@ export const translationWorkflowTransitionSchema = z
   })
   .strict();
 
-export function invalidRequest() {
+function invalidRequest() {
   return new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
 }
 

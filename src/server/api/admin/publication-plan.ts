@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 export type PublicationAction = 'PUBLISH' | 'UNPUBLISH';
 export type PublicationMode = 'FULL' | 'PARENT_ONLY';
 export type PublicationTargetType = 'MODULE' | 'PROGRAM' | 'STAGE';
-export type PublicationEntityType = PublicationTargetType | 'LESSON';
+type PublicationEntityType = PublicationTargetType | 'LESSON';
 
 interface PublicationEntityBase {
   id: string;
@@ -11,7 +11,7 @@ interface PublicationEntityBase {
   updatedAt: string;
 }
 
-export interface PublicationLesson extends PublicationEntityBase {
+interface PublicationLesson extends PublicationEntityBase {
   isPublished: boolean;
   requiredConcepts: Array<{
     assessmentIds: string[];
@@ -41,7 +41,7 @@ export type PublicationTarget =
   | { entity: PublicationProgram; type: 'PROGRAM' }
   | { entity: PublicationStage; type: 'STAGE' };
 
-export interface PublicationChange {
+interface PublicationChange {
   from: 'ACTIVE' | 'ARCHIVED' | 'DRAFT' | boolean;
   id: string;
   title: string;
@@ -49,7 +49,7 @@ export interface PublicationChange {
   type: PublicationEntityType;
 }
 
-export interface PublicationBlocker {
+interface PublicationBlocker {
   code:
     | 'FINAL_ASSESSMENT_MISSING'
     | 'LESSON_ASSESSMENT_MISSING'

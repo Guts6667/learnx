@@ -3,7 +3,7 @@ import type { MiddlewareHandler } from 'hono';
 import type { StageAssessmentSubmissionStatus } from '../../../../generated/prisma/client.js';
 import type { AuthEnvironment } from '../_lib/auth.js';
 
-export type SubmissionStatus = keyof typeof StageAssessmentSubmissionStatus;
+type SubmissionStatus = keyof typeof StageAssessmentSubmissionStatus;
 
 export interface SubmissionRecord {
   attachmentUrl: string | null;
@@ -20,7 +20,7 @@ export interface SubmissionRecord {
   userId: string;
 }
 
-export interface AssessmentRecord {
+interface AssessmentRecord {
   description: string | null;
   id: string;
   instructions: string | null;
@@ -34,7 +34,7 @@ export interface AssessmentRecord {
   type: string;
 }
 
-export interface ReviewRecord {
+interface ReviewRecord {
   passingScore: number | null;
   stageId: string;
   submission: SubmissionRecord;

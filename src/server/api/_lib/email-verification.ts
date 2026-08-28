@@ -10,7 +10,7 @@ const defaultTtlMilliseconds = 24 * 60 * 60 * 1_000;
 const minimumTtlMilliseconds = 5 * 60 * 1_000;
 const maximumTtlMilliseconds = 7 * 24 * 60 * 60 * 1_000;
 
-export interface IssuedEmailVerification {
+interface IssuedEmailVerification {
   expiresAt: Date;
   recipientEmail: string;
   locale: SupportedLocale;
@@ -31,7 +31,7 @@ export interface EmailVerificationRepository {
   }): Promise<IssuedEmailVerification | null>;
 }
 
-export interface EmailVerificationLogger {
+interface EmailVerificationLogger {
   error(
     message: string,
     metadata: { provider: string; verificationId: string },

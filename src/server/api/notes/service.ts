@@ -6,7 +6,7 @@ import type {
 } from './types.js';
 import { noteNotFound } from './validation.js';
 
-export function serializeNote(note: NoteRecord) {
+function serializeNote(note: NoteRecord) {
   return {
     ...note,
     createdAt: note.createdAt.toISOString(),

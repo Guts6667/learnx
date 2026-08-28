@@ -16,8 +16,6 @@ import {
 export {
   PublicationPlanBlockedError,
   PublicationPlanStaleError,
-  type ApplyPublicationRequest,
-  type PublicationRequest,
   type PublicationService,
 } from './publication-types.js';
 

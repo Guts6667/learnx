@@ -68,7 +68,7 @@ async function recoverConcurrentRestart(
   return { ...preview, idempotent: true, runId: existing.id };
 }
 
-export function createModuleRestartService(
+function createModuleRestartService(
   repository: PrismaModuleRestartDataRepository,
 ): ModuleRestartRepository {
   return {

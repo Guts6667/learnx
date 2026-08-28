@@ -5,7 +5,7 @@ import {
 } from '../../../../generated/prisma/client.js';
 import { editorialProgramWhere } from '../_lib/program-access-policy.js';
 
-export interface AdminProgramSummary {
+interface AdminProgramSummary {
   id: string;
   position: number;
   slug: string;
@@ -21,7 +21,7 @@ export interface AdminProgramSummary {
   } | null;
 }
 
-export interface AdminStageSummary {
+interface AdminStageSummary {
   id: string;
   isPublished: boolean;
   position: number;
@@ -29,7 +29,7 @@ export interface AdminStageSummary {
   title: string;
 }
 
-export interface AdminModuleSummary {
+interface AdminModuleSummary {
   description: string;
   id: string;
   isPublished: boolean;
@@ -38,7 +38,7 @@ export interface AdminModuleSummary {
   title: string;
 }
 
-export interface AdminLessonSummary {
+interface AdminLessonSummary {
   id: string;
   isPublished: boolean;
   position: number;
@@ -47,21 +47,21 @@ export interface AdminLessonSummary {
   title: string;
 }
 
-export interface AdminProgramDetail extends AdminProgramSummary {
+interface AdminProgramDetail extends AdminProgramSummary {
   stages: AdminStageSummary[];
 }
 
-export interface AdminStageDetail extends AdminStageSummary {
+interface AdminStageDetail extends AdminStageSummary {
   modules: AdminModuleSummary[];
   program: AdminProgramSummary;
 }
 
-export interface AdminModuleDetail extends AdminModuleSummary {
+interface AdminModuleDetail extends AdminModuleSummary {
   lessons: AdminLessonSummary[];
   stage: AdminStageSummary & { program: AdminProgramSummary };
 }
 
-export interface AdminLessonDetail extends AdminLessonSummary {
+interface AdminLessonDetail extends AdminLessonSummary {
   module: AdminModuleSummary & {
     stage: AdminStageSummary & { program: AdminProgramSummary };
   };

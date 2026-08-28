@@ -12,7 +12,6 @@ import type {
 } from './curriculum-edit-types.js';
 
 export type {
-  CurriculumEditResult,
   CurriculumEditService,
 } from './curriculum-edit-types.js';
 

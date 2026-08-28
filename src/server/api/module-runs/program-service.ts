@@ -128,7 +128,7 @@ async function recoverConcurrentRestart(
     : null;
 }
 
-export function createProgramRestartService(
+function createProgramRestartService(
   repository: PrismaProgramRestartDataRepository,
 ): ProgramRestartRepository {
   return {

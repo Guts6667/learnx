@@ -19,7 +19,6 @@ import type {
   ReviewSubmissionInput,
   SaveSubmissionInput,
   StageAssessmentRepository,
-  SubmissionRecord,
 } from './types.js';
 import { stageAssessmentNotFound, submissionConflict } from './validation.js';
 
@@ -265,5 +264,3 @@ export function createPrismaStageAssessmentRepository(
       submitSubmission(client, id, submittedAt, userId),
   };
 }
-
-export type { SubmissionRecord };

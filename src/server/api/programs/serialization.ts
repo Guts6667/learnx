@@ -17,7 +17,7 @@ export const lessonSummarySelect = {
   position: true,
 } as const;
 
-export function getLessonSummarySelect(userId: string) {
+function getLessonSummarySelect(userId: string) {
   return {
     ...lessonSummarySelect,
     _count: {
@@ -89,7 +89,7 @@ export function serializeLessonSummary<T extends LessonSummaryRecord>(
   };
 }
 
-export function serializeModules<
+function serializeModules<
   T extends { lessons: LessonSummaryRecord[] },
 >(modules: T[], isLocked = false) {
   return modules.map((module) => {

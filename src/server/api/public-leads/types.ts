@@ -1,10 +1,10 @@
 import type { SupportedLocale } from '../../../shared/locale.js';
 
-export type PublicLeadPurpose = 'LAUNCH_UPDATES' | 'EARLY_ADOPTER';
-export type PublicLeadStatus =
+type PublicLeadPurpose = 'LAUNCH_UPDATES' | 'EARLY_ADOPTER';
+type PublicLeadStatus =
   'PENDING_CONFIRMATION' | 'CONFIRMED' | 'UNSUBSCRIBED' | 'DELETED';
 
-export interface PublicContactListItem {
+interface PublicContactListItem {
   createdAt: Date;
   emailNormalized: string;
   id: string;

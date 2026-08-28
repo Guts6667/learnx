@@ -60,13 +60,7 @@ export async function requestPublicLead(
 
 export { createPublicLeadServiceDependencies } from './configuration.js';
 export { prismaPublicLeadRepository } from './repository.js';
-export { hashPublicLeadToken } from './token-service.js';
 export type {
-  PublicContactListItem,
-  PublicContactPage,
-  PublicLeadEmailProvider,
-  PublicLeadPurpose,
   PublicLeadRepository,
   PublicLeadServiceDependencies,
-  PublicLeadStatus,
 } from './types.js';

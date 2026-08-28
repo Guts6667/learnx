@@ -1,7 +1,7 @@
 import type { ProgramEnrollmentStatus } from '../../../../../generated/prisma/client.js';
 import type { SupportedLocale } from '../../../../shared/locale.js';
 
-export interface ProgramDirectoryPage<T> {
+interface ProgramDirectoryPage<T> {
   items: T[];
   nextCursor: string | null;
 }

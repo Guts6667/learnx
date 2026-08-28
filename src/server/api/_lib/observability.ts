@@ -3,7 +3,7 @@ import type { MiddlewareHandler } from 'hono';
 const identifierPattern =
   /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/gi;
 
-export const SLOW_REQUEST_THRESHOLD_MS = 1_000;
+const SLOW_REQUEST_THRESHOLD_MS = 1_000;
 
 export interface RequestLogEvent {
   durationMs: number;

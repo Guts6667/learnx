@@ -48,7 +48,7 @@ export interface AttemptReadModel {
   runSequence?: number;
 }
 
-export interface RecordedAttempt {
+interface RecordedAttempt {
   attempt: AttemptReadModel;
   progress: {
     bestScore: number | null;

@@ -38,9 +38,9 @@ export interface AuthResult {
   user: AuthenticatedUser;
 }
 
-export const SESSION_TOUCH_INTERVAL_MS = 5 * 60 * 1_000;
+const SESSION_TOUCH_INTERVAL_MS = 5 * 60 * 1_000;
 
-export function shouldTouchSession(lastUsedAt: Date, now: Date): boolean {
+function shouldTouchSession(lastUsedAt: Date, now: Date): boolean {
   return now.getTime() - lastUsedAt.getTime() >= SESSION_TOUCH_INTERVAL_MS;
 }
 

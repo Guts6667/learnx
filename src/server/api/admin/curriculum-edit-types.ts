@@ -22,7 +22,7 @@ export interface LessonPublicationState {
   id: string;
 }
 
-export interface ModulePublicationState {
+interface ModulePublicationState {
   id: string;
   lessons: LessonPublicationState[];
 }

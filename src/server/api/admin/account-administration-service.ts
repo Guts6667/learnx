@@ -8,7 +8,7 @@ import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
 
 export const administrableAccountStatuses = ['ACTIVE', 'SUSPENDED'] as const;
 
-export type AdministrableAccountStatus =
+type AdministrableAccountStatus =
   (typeof administrableAccountStatuses)[number];
 
 export interface AdministrableAccount {
@@ -22,7 +22,7 @@ export interface AdministrableAccount {
   updatedAt: Date;
 }
 
-export interface AccountAdministrationPage {
+interface AccountAdministrationPage {
   items: AdministrableAccount[];
   page: number;
   pageSize: number;
@@ -30,14 +30,14 @@ export interface AccountAdministrationPage {
   totalPages: number;
 }
 
-export interface AccountAdministrationFilters {
+interface AccountAdministrationFilters {
   page: number;
   pageSize: number;
   search?: string;
   status?: AdministrableAccountStatus;
 }
 
-export interface AccountTransitionInput {
+interface AccountTransitionInput {
   expectedStatus: AdministrableAccountStatus;
   expectedUpdatedAt: Date;
 }
@@ -49,7 +49,7 @@ export type AccountTransitionResult =
   | { kind: 'ROLE_NOT_ASSIGNABLE' }
   | { kind: 'SELF_SUSPENSION' };
 
-export interface AccountRoleTransitionInput {
+interface AccountRoleTransitionInput {
   expectedRole: Extract<Role, 'CREATOR' | 'USER'>;
   expectedUpdatedAt: Date;
   role: Extract<Role, 'CREATOR' | 'USER'>;

@@ -4,8 +4,8 @@ import {
 } from '../../../../generated/prisma/client.js';
 import { createHash } from 'node:crypto';
 
-export type AuditMetadataValue = boolean | number | string | null;
-export type AuditMetadata = Record<
+type AuditMetadataValue = boolean | number | string | null;
+type AuditMetadata = Record<
   string,
   AuditMetadataValue | readonly AuditMetadataValue[]
 >;

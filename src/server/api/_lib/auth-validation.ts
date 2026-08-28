@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-export const localeSchema = z.enum(['fr', 'en']);
+const localeSchema = z.enum(['fr', 'en']);
 
-export const emailSchema = z.string().trim().toLowerCase().email().max(320);
-export const passwordSchema = z.string().min(12).max(128);
-export const displayNameSchema = z.string().trim().min(1).max(80);
+const emailSchema = z.string().trim().toLowerCase().email().max(320);
+const passwordSchema = z.string().min(12).max(128);
+const displayNameSchema = z.string().trim().min(1).max(80);
 
 export const loginInputSchema = z.object({
   email: emailSchema,
@@ -44,10 +44,6 @@ export const accessInvitationActivationInputSchema = z
       .regex(/^[A-Za-z0-9_-]+$/),
   })
   .strict();
-
-export type LoginInput = z.infer<typeof loginInputSchema>;
-export type RegisterInput = z.infer<typeof registerInputSchema>;
-export type AccessRequestInput = z.infer<typeof accessRequestInputSchema>;
 
 export const localePreferenceInputSchema = z
   .object({ locale: localeSchema })

@@ -32,7 +32,7 @@ export interface AccessInvitationDelivery {
   send(input: AccessInvitationDeliveryInput): Promise<void>;
 }
 
-export interface AccessInvitationActivationResult {
+interface AccessInvitationActivationResult {
   sessionToken: string;
   user: {
     displayName: string;

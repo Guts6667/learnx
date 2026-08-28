@@ -4,5 +4,4 @@ export { recalculateStageAndProgram as refreshStageAndProgram } from './progress
 export { runSerializableProgressTransaction } from './progress-recalculation-transaction.js';
 export type {
   LessonProgressSnapshot,
-  RecalculationOptions,
 } from './progress-recalculation-types.js';
