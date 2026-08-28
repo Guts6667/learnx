@@ -425,26 +425,31 @@ neuvième statut.
   isolés (`22e3e4f0`) et leurs repositories Prisma sont à leur tour découpés
   en opérations de moins de 80 lignes (`d5844372`). Les routeurs exposent
   désormais des frontières validation/service/repository sans changer les
-  contrats.
-  Restent notamment `admin`, `progress`, `stage-assessments`, `exercises`, les
-  helpers de recalcul et les services génériques encore supérieurs aux limites
-  V4.1. Correction, pricing et ledger restent exclus et réservés à V4.1-402.
+  contrats. Les contacts publics sont séparés en configuration, tokens,
+  fournisseur e-mail, repository et service (`78a2283b`) ; leur conversion en
+  demande d'accès est sérialisée et couverte contre la concurrence
+  (`cd20d7bf`), puis les handlers HTTP sont isolés (`6320409e`). L'annuaire de
+  programmes est découpé sans changer recherche, curseurs ni isolation par
+  utilisateur (`e4e369d0`). Restent `progress`, `stage-assessments`,
+  `exercises` et les helpers de recalcul encore supérieurs aux limites V4.1.
+  Correction, pricing et ledger restent exclus et réservés à V4.1-402.
   Preuves du checkpoint : lint, typecheck, tests ciblés des domaines concernés,
   suite complète 1 016/1 016 et build/PWA verts. Une exécution lancée en parallèle du build a
   observé un flake `LessonPage` (bouton encore dans son état de chargement) ; le
   test isolé a ensuite réussi, puis la suite stable complète a confirmé
   1 016/1 016 tests verts. La revue indépendante du checkpoint est `REVIEW_PASS`
-  sans P0/P1. Le sous-lot Admin suivant est livré pour `REVIEW` : revue des
+  sans P0/P1. Le sous-lot Admin suivant est `REVIEW_PASS` sans P0/P1 : revue des
   demandes d'accès et publication sont séparées en query/repository/service
   (`325ae9b9`), puis le contrôleur `admin/app.ts` passe de 904 à 49 lignes et
   délègue à des routeurs par domaine, une couche de validation commune, des
   dépendances paresseuses et un service d'édition pédagogique
-  (`e18167f4`). Les URLs, payloads, capacités, erreurs et transactions restent
+  (`e18167f4`, nettoyage final `047eb4d2`). Les URLs, payloads, capacités,
+  erreurs et transactions restent
   couverts par les 47 tests Admin ciblés. Preuves : lint et typecheck verts,
   contrôle d'imports avec 0 cycle et 0 frontière interdite, suite complète
   1 021/1 021, build et génération PWA verts. Le ticket complet reste en cours :
   `progress`, `stage-assessments`, `exercises` et les helpers de recalcul restent
-  à traiter après revue de ce checkpoint. Correction, pricing et ledger restent
+  à traiter. Correction, pricing et ledger restent
   exclus et réservés à V4.1-402.
 - Critères d'acceptation :
   - handlers, validation, services et repositories ont des frontières explicites ;
