@@ -38,7 +38,9 @@ function lot(
 describe('credit ledger domain', () => {
   it('recognizes direct and Prisma-wrapped serialization conflicts', () => {
     expect(isRetryableCreditTransactionError({ code: 'P2034' })).toBe(true);
+    expect(isRetryableCreditTransactionError({ code: 'P2002' })).toBe(true);
     expect(isRetryableCreditTransactionError({ code: '40001' })).toBe(true);
+    expect(isRetryableCreditTransactionError({ code: 40001 })).toBe(false);
     expect(
       isRetryableCreditTransactionError({
         code: 'P2010',
@@ -122,9 +124,7 @@ describe('credit ledger domain', () => {
         now,
         ['expired-free', 'purchased'],
       ),
-    ).toEqual([
-      { amount: 75n, lotId: 'purchased', provenance: 'PURCHASED' },
-    ]);
+    ).toEqual([{ amount: 75n, lotId: 'purchased', provenance: 'PURCHASED' }]);
   });
 
   it('allows a non-expiring complimentary lot when an explicit policy prioritizes it', () => {
@@ -150,12 +150,9 @@ describe('credit ledger domain', () => {
 
   it('rejects reservation ceilings above the available balance', () => {
     expect(() =>
-      allocateCreditLots(
-        [lot('free', 'FREE_ALLOCATION', 10n)],
-        11n,
-        now,
-        ['free'],
-      ),
+      allocateCreditLots([lot('free', 'FREE_ALLOCATION', 10n)], 11n, now, [
+        'free',
+      ]),
     ).toThrowError(new CreditLedgerError('INSUFFICIENT_CREDITS'));
   });
 
@@ -213,8 +210,14 @@ describe('credit ledger domain', () => {
   });
 
   it('uses canonical fingerprints for idempotent payload comparison', () => {
-    const left = creditRequestFingerprint({ amount: 12n, nested: { b: 2, a: 1 } });
-    const right = creditRequestFingerprint({ nested: { a: 1, b: 2 }, amount: 12n });
+    const left = creditRequestFingerprint({
+      amount: 12n,
+      nested: { b: 2, a: 1 },
+    });
+    const right = creditRequestFingerprint({
+      nested: { a: 1, b: 2 },
+      amount: 12n,
+    });
     expect(left).toBe(right);
     expect(left).toMatch(/^[0-9a-f]{64}$/);
   });

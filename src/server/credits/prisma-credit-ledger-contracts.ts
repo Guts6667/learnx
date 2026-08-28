@@ -64,7 +64,11 @@ export interface CreditOperationResult {
 export function isRetryableCreditTransactionError(error: unknown): boolean {
   if (typeof error !== 'object' || error === null) return false;
   const candidate = error as Record<string, unknown>;
-  if (['P2034', 'P2002', '40001'].includes(String(candidate.code))) return true;
+  if (
+    typeof candidate.code === 'string' &&
+    ['P2034', 'P2002', '40001'].includes(candidate.code)
+  )
+    return true;
   if (
     typeof candidate.message === 'string' &&
     candidate.message.includes('could not serialize access') &&
