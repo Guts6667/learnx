@@ -95,3 +95,13 @@ l'autorisation.
 - Relecture : les trois enregistrements portent les statuts, SHA, preuves QA
   et horodatage attendus ; `État de synchro = Canonique Git`.
 - Interface : aucun brouillon n'a été publié.
+
+## 28 août 2026 — ouverture du lot backend générique
+
+- V4.1-401 : `READY` → `IN_PROGRESS`, owner Backend/Data, branche dédiée
+  `codex/v4-1-401`, base exacte `8193294f`.
+- Périmètre consigné : décomposition des routes génériques sans changement de
+  contrat ; correction, pricing, crédits, ledger et réconciliation sont exclus.
+- Relecture : statut, branche, SHA de base, preuve de démarrage et horodatage
+  sont présents ; `État de synchro = Canonique Git`.
+- Interface : aucun brouillon n'a été publié.
