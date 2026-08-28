@@ -3,6 +3,8 @@ import { resolve } from 'node:path';
 
 import { compile } from 'tailwindcss';
 
+import { readStylesheetSourceGraph } from './stylesheet-source';
+
 interface ShadcnConfiguration {
   aliases: {
     components: string;
@@ -19,10 +21,9 @@ interface ShadcnConfiguration {
 const configuration = JSON.parse(
   readFileSync(resolve(process.cwd(), 'components.json'), 'utf8'),
 ) as ShadcnConfiguration;
-const stylesheet = readFileSync(
+const stylesheet = readStylesheetSourceGraph(
   resolve(process.cwd(), 'src/styles/index.css'),
-  'utf8',
-);
+).source;
 
 describe('shadcn Maia foundation', () => {
   it('pins the Radix Maia, Vite and client-component contract', () => {

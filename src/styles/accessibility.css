@@ -1,0 +1,87 @@
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: var(--color-control-border);
+    --color-text-muted: var(--color-text);
+  }
+}
+
+.app-safe-navigation {
+  padding-right: calc(0.5rem + env(safe-area-inset-right));
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: calc(0.5rem + env(safe-area-inset-left));
+}
+
+@media (min-width: 64rem) {
+  .app-layout {
+    padding-left: calc(var(--app-navigation-width) + env(safe-area-inset-left));
+  }
+
+  .app-safe-main {
+    padding-bottom: 2rem;
+  }
+
+  .app-safe-navigation {
+    padding-top: calc(1rem + env(safe-area-inset-top));
+    padding-right: 0.75rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+    padding-left: calc(0.75rem + env(safe-area-inset-left));
+  }
+}
+
+@media (min-width: 48rem) {
+  .app-safe-header__tagline,
+  .shell-back-action__label {
+    display: inline;
+  }
+}
+
+@media (min-width: 64rem) {
+  .ui-main-navigation__label {
+    overflow: visible;
+    font-size: inherit;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .totem-admin-surface .totem-app-shell__sidebar {
+    position: static;
+    display: block;
+    grid-area: sidebar;
+    border-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .ui-action,
+  .ui-card,
+  .ui-field__control,
+  .ui-list-row,
+  .ui-feedback,
+  .ui-dialog-content,
+  .ui-drawer-panel {
+    border: 1px solid CanvasText;
+  }
+
+  .ui-action:focus-visible,
+  .ui-field__control:focus-visible,
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .ui-progress__fill {
+    background: Highlight;
+  }
+}

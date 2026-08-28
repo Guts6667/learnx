@@ -2,9 +2,11 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
+import { readStylesheetSourceGraph } from '@/server/quality/stylesheet-source';
+
 const learner = readFileSync(resolve('src/pages/CreditsPage.tsx'), 'utf8');
 const admin = readFileSync(resolve('src/pages/AdminCreditsPage.tsx'), 'utf8');
-const styles = readFileSync(resolve('src/styles/index.css'), 'utf8');
+const styles = readStylesheetSourceGraph(resolve('src/styles/index.css')).source;
 
 describe('V4-008 credit surfaces', () => {
   it('keeps both credit origins primary and the total secondary', () => {

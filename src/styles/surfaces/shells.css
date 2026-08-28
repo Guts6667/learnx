@@ -1,0 +1,108 @@
+.totem-app-shell {
+  display: grid;
+  min-height: 100dvh;
+  grid-template:
+    'topbar' auto
+    'main' minmax(0, 1fr)
+    'bottom' auto / minmax(0, 1fr);
+}
+
+.totem-app-shell__sidebar,
+.totem-app-shell__rail {
+  display: none;
+}
+
+.totem-app-shell__topbar {
+  grid-area: topbar;
+  min-width: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.totem-app-shell__main {
+  min-width: 0;
+  grid-area: main;
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.totem-app-shell__page-head,
+.totem-app-shell__content {
+  width: min(100%, 76rem);
+  margin-inline: auto;
+}
+
+.totem-app-shell__content {
+  min-width: 0;
+}
+
+.totem-app-shell__content--after-page-head {
+  margin-top: 1.5rem;
+}
+
+.totem-app-shell__bottom-navigation {
+  position: sticky;
+  z-index: 20;
+  bottom: 0;
+  grid-area: bottom;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.totem-public-shell__navigation,
+.totem-public-shell__footer {
+  min-width: 0;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.totem-public-shell__navigation {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.totem-public-shell__footer {
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 64rem) {
+  .totem-app-shell {
+    grid-template:
+      'sidebar topbar topbar' auto
+      'sidebar main rail' minmax(0, 1fr) /
+      minmax(13.5rem, 16rem) minmax(0, 1fr) minmax(0, 18rem);
+  }
+
+  .totem-app-shell__sidebar,
+  .totem-app-shell__rail {
+    display: block;
+    min-width: 0;
+    background: var(--color-surface);
+  }
+
+  .totem-app-shell__sidebar {
+    grid-area: sidebar;
+    border-right: 1px solid var(--color-border);
+  }
+
+  .totem-app-shell__rail {
+    grid-area: rail;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .totem-app-shell__bottom-navigation {
+    display: none;
+  }
+
+  .totem-app-shell--without-rail {
+    grid-template:
+      'sidebar topbar' auto
+      'sidebar main' minmax(0, 1fr) /
+      minmax(13.5rem, 16rem) minmax(0, 1fr);
+  }
+
+  .totem-app-shell--without-sidebar {
+    grid-template:
+      'topbar' auto
+      'main' minmax(0, 1fr) /
+      minmax(0, 1fr);
+  }
+}

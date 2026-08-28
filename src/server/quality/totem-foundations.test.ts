@@ -1,10 +1,11 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const stylesheet = readFileSync(
+import { readStylesheetSourceGraph } from './stylesheet-source';
+
+const stylesheet = readStylesheetSourceGraph(
   resolve(process.cwd(), 'src/styles/index.css'),
-  'utf8',
-);
+).source;
 const brandContract = readFileSync(
   resolve(process.cwd(), 'docs/V4_TOTEM_DESIGN_IMPLEMENTATION_PLAN.md'),
   'utf8',

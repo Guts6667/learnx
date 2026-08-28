@@ -1,0 +1,190 @@
+@theme inline {
+  --font-sans:
+    'DM Sans', Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+}
+
+:root {
+  --color-canvas: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-subtle: #e7edff;
+  --color-text: #17233b;
+  --color-text-muted: #647087;
+  --color-border: #d7deed;
+  --color-border-strong: #aebad2;
+  --color-control-border: #98a6c0;
+  --color-accent: #3b5bd6;
+  --color-accent-text: #3150c5;
+  --color-action: #3b5bd6;
+  --color-action-hover: #2f4ec6;
+  --color-action-soft: #e7edff;
+  --color-on-action: #ffffff;
+  --color-direction: #cc6b57;
+  --color-focus: #3b5bd6;
+  --color-success: #3150c5;
+  --color-warning: #8a5a24;
+  --color-danger: #a64738;
+  --color-disabled: #8c96a9;
+  --color-overlay: rgb(23 35 59 / 52%);
+  --color-paper: #f4f6fb;
+  --color-paper-deep: #e7edff;
+  --color-ivory: #ffffff;
+  --color-blue-soft: #e7edff;
+  --color-brass: #cc6b57;
+  --color-coral: #cc6b57;
+
+  /* shadcn Maia maps to LearnX tokens; it does not introduce a new brand. */
+  --background: var(--color-canvas);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-action);
+  --primary-foreground: var(--color-on-action);
+  --secondary: var(--color-action-soft);
+  --secondary-foreground: var(--color-text);
+  --muted: var(--color-surface-subtle);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--color-accent);
+  --accent-foreground: var(--color-on-action);
+  --destructive: var(--color-danger);
+  --border: var(--color-border);
+  --input: var(--color-control-border);
+  --ring: var(--color-focus);
+  --radius: 0.75rem;
+  --shadow-xs: 0 1px 2px rgb(23 35 59 / 6%);
+  --shadow-sm: 0 2px 8px rgb(23 35 59 / 8%);
+  --shadow-md: 0 8px 24px rgb(23 35 59 / 10%);
+
+  /* Autorité Totem mobile et desktop : mêmes composants, mêmes tokens. */
+  --totem-color-canvas: #f4f6fb;
+  --totem-color-surface: #ffffff;
+  --totem-color-surface-subtle: #e7edff;
+  --totem-color-text: #17233b;
+  --totem-color-text-muted: #647087;
+  --totem-color-border: #d6deeb;
+  --totem-color-control-border: #8491a8;
+  --totem-color-accent: #3b5bd6;
+  --totem-color-accent-text: #314fbe;
+  --totem-color-action-hover: #304db8;
+  --totem-color-on-action: #ffffff;
+  --totem-color-coral: #cc6b57;
+  --totem-color-coral-soft: #f9eae6;
+  --totem-color-warning: #8a5a24;
+  --totem-color-danger: #9b3e32;
+  --totem-color-overlay: rgb(23 35 59 / 58%);
+  --totem-font-interface:
+    'DM Sans', Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-interface: var(--font-sans);
+  --font-editorial: var(--font-sans);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --radius-directional: 0.25rem;
+  --radius-control: 0.4375rem;
+  --radius-group: 0.75rem;
+  --radius-overlay: 0.75rem;
+  --radius-surface: 1rem;
+  --radius-mobile-frame: 1.25rem;
+  --motion-fast: 120ms;
+  --motion-standard: 180ms;
+  --motion-overlay: 240ms;
+  --motion-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Aliases V3 conservés pendant la migration écran par écran. */
+  --app-background: var(--color-canvas);
+  --app-surface: var(--color-surface);
+  --app-surface-raised: var(--color-surface-raised);
+  --app-border: var(--color-border);
+  --app-text: var(--color-text);
+  --app-text-muted: var(--color-text-muted);
+  --app-accent: var(--color-accent);
+  --app-content-max: 112rem;
+  --app-reading-max: 72ch;
+  --app-work-max: 92rem;
+  --app-admin-max: 108rem;
+  --app-navigation-height: 5.5rem;
+  --app-navigation-width: 224px;
+  color-scheme: light;
+  font-family: var(--font-interface);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--app-background);
+  color: var(--app-text);
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* V4-016E: Totem is opt-in until each product surface is migrated. */
+.totem-theme {
+  --color-canvas: var(--totem-color-canvas);
+  --color-surface: var(--totem-color-surface);
+  --color-surface-raised: var(--totem-color-surface-subtle);
+  --color-surface-subtle: var(--totem-color-surface-subtle);
+  --color-text: var(--totem-color-text);
+  --color-text-muted: var(--totem-color-text-muted);
+  --color-border: var(--totem-color-border);
+  --color-control-border: var(--totem-color-control-border);
+  --color-accent: var(--totem-color-accent);
+  --color-accent-text: var(--totem-color-accent-text);
+  --color-action: var(--totem-color-accent);
+  --color-action-hover: var(--totem-color-action-hover);
+  --color-action-soft: var(--totem-color-surface-subtle);
+  --color-on-action: var(--totem-color-on-action);
+  --color-direction: var(--totem-color-coral);
+  --color-focus: #2441a6;
+  --color-success: var(--totem-color-accent);
+  --color-warning: var(--totem-color-warning);
+  --color-danger: var(--totem-color-danger);
+  --color-disabled: #7a8599;
+  --color-overlay: var(--totem-color-overlay);
+  --color-paper: var(--totem-color-surface);
+  --color-paper-deep: var(--totem-color-canvas);
+  --color-ivory: var(--totem-color-surface);
+  --color-blue-soft: var(--totem-color-surface-subtle);
+  --color-brass: var(--totem-color-coral);
+  --app-background: var(--totem-color-canvas);
+  --app-surface: var(--totem-color-surface);
+  --app-surface-raised: var(--totem-color-surface-subtle);
+  --app-border: var(--totem-color-border);
+  --app-text: var(--totem-color-text);
+  --app-text-muted: var(--totem-color-text-muted);
+  --app-accent: var(--totem-color-accent);
+  min-width: 0;
+  background: var(--totem-color-canvas);
+  color: var(--totem-color-text);
+  color-scheme: light;
+  font-family: var(--totem-font-interface);
+}
