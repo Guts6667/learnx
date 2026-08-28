@@ -518,8 +518,12 @@ neuvième statut.
 - Reviewer : QA/Release
 - Dépendances : V4.1-401, V4.1-402
 - Source : `prisma/schema.prisma`, migrations et audit V4.1-002
-- Statut : **prêt** — V4.1-401 et V4.1-402 sont terminés ; le découpage du
-  schéma peut commencer, sans migration SQL ni changement de données.
+- Statut : **DONE** — schéma multi-file livré par `0abc159d`, preuve de parité
+  par `6ead7222`. `prisma migrate diff` ne détecte aucune différence, le modèle
+  runtime canonique reste identique (63 modèles), les hashes des 42 migrations
+  sont inchangés et les 1 050 tests passent. La répétition sur clone est
+  couverte par le test existant de `migration-rehearsal` ; aucune base distante
+  n'a été créée ou modifiée pour cette réorganisation sans changement SQL.
 - Critères d'acceptation :
   - le schéma est scindé par domaine avec une configuration Prisma supportée ;
   - le diff de modèle généré est nul et aucune migration SQL n'est produite ;
@@ -534,7 +538,8 @@ neuvième statut.
 - Dépendances : V4.1-104, V4.1-203, V4.1-303, V4.1-304, V4.1-305,
   V4.1-401, V4.1-402, V4.1-403
 - Source : hotspots de l'audit V4.1-002
-- Statut : **bloqué** — dépendances V4.1-402 et V4.1-403
+- Statut : **READY** — toutes les dépendances sont terminées ; le découpage
+  i18n/CSS/runner peut commencer depuis la fondation intégrant V4.1-403.
 - Critères d'acceptation :
   - catalogues i18n sont scindés sans clé perdue ni fallback silencieux ;
   - CSS est réparti par tokens/primitives/surfaces sans changer le rendu ;

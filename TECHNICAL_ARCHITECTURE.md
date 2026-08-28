@@ -106,6 +106,18 @@ L’authentification est implémentée côté serveur. Aucun token de session n�
 │   └── main.tsx
 ├── prisma/
 │   ├── schema.prisma
+│   ├── models/
+│   │   ├── ai-correction-enums.prisma
+│   │   ├── ai-correction.prisma
+│   │   ├── assessment-enums.prisma
+│   │   ├── assessments-progress.prisma
+│   │   ├── credits-pricing-enums.prisma
+│   │   ├── credits-pricing.prisma
+│   │   ├── identity-access-enums.prisma
+│   │   ├── identity-access.prisma
+│   │   ├── learning-enums.prisma
+│   │   ├── learning-runtime.prisma
+│   │   └── program-catalog.prisma
 │   ├── migrations/
 │   └── seed.ts
 ├── src/

@@ -35,6 +35,59 @@ et comparé. Les deux documents contiennent 63 modèles et ont le même SHA-256 
 9faa2e4a7e4ccea405ca9e34b597755ef7ad9c89024e63406659c99f0a3393d4
 ```
 
+La comparaison est reproductible depuis le dépôt sans dépendre des fichiers
+temporaires du run initial :
+
+```bash
+git show d1acaa8b:prisma/schema.prisma \
+  > /tmp/learnx-v41-403-before-generate.prisma
+perl -0pi -e \
+  's#output   = "\.\./generated/prisma"#output   = "./learnx-v41-403-generated-before"#' \
+  /tmp/learnx-v41-403-before-generate.prisma
+pnpm exec prisma generate \
+  --schema /tmp/learnx-v41-403-before-generate.prisma
+pnpm exec prisma generate --schema prisma
+node - <<'NODE'
+const { readFileSync } = require('node:fs');
+
+function runtimeDataModel(path) {
+  const line = readFileSync(path, 'utf8')
+    .split('\n')
+    .find((candidate) =>
+      candidate.startsWith('config.runtimeDataModel = JSON.parse('),
+    );
+  if (!line) throw new Error(`runtimeDataModel absent de ${path}`);
+  const prefix = 'config.runtimeDataModel = JSON.parse(';
+  return JSON.parse(JSON.parse(line.slice(prefix.length, -1)));
+}
+
+function canonical(value) {
+  if (Array.isArray(value)) return value.map(canonical);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .map((key) => [key, canonical(value[key])]),
+    );
+  }
+  return value;
+}
+
+const before = canonical(
+  runtimeDataModel(
+    '/tmp/learnx-v41-403-generated-before/internal/class.ts',
+  ),
+);
+const after = canonical(runtimeDataModel('generated/prisma/internal/class.ts'));
+if (JSON.stringify(before) !== JSON.stringify(after)) process.exit(1);
+console.log(`runtime data model parity: ${Object.keys(after.models).length}`);
+NODE
+```
+
+Le premier `generate` écrit uniquement sous `/tmp`; le second régénère le
+client local normal. La canonicalisation trie les clés d'objet mais conserve
+l'ordre des champs, afin de neutraliser seulement l'ordre des fichiers Prisma.
+
 ## Historique de migration
 
 Un manifeste SHA-256 de tous les fichiers suivis sous `prisma/migrations/` a
