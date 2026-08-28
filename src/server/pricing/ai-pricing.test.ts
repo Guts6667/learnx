@@ -251,8 +251,9 @@ function makeRepository(): AiPricingQuoteRepository & {
     },
     async findQuoteById(userId, quoteId) {
       return (
-        quotes.find((quote) => quote.userId === userId && quote.id === quoteId) ??
-        null
+        quotes.find(
+          (quote) => quote.userId === userId && quote.id === quoteId,
+        ) ?? null
       );
     },
     async isQuoteCurrentlyCompatible() {
