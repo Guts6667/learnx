@@ -270,12 +270,14 @@ function buildHarness(options: {
     recordAttemptIntent: vi.fn(async (input: unknown) => {
       corrections.attemptIntents.push(input);
     }),
-    recordAttemptOutcome: vi.fn(async (input: {
-      attempt: RuntimeCorrectionAttempt;
-      correctionId: string;
-    }) => {
-      corrections.attemptOutcomes.push(input.attempt);
-    }),
+    recordAttemptOutcome: vi.fn(
+      async (input: {
+        attempt: RuntimeCorrectionAttempt;
+        correctionId: string;
+      }) => {
+        corrections.attemptOutcomes.push(input.attempt);
+      },
+    ),
   };
   const transportOutputs: unknown[] = [];
   const transport: CorrectionTransportPort = {
@@ -312,6 +314,9 @@ function buildHarness(options: {
 }
 
 describe('correction orchestration (V4-009)', () => {
+  it('fails closed when the promoted runtime identity declares zero retries', () => {
+    expect(PROMOTED_CORRECTION_IDENTITY.maxRetries).toBe(0);
+  });
   it('delivers a full correction, settles the full quote price and releases the ceiling difference', async () => {
     const harness = buildHarness({ transport: strictOutput });
     const result = await harness.service.runAcceptedQuote({
@@ -715,6 +720,27 @@ describe('correction orchestration (V4-009)', () => {
 
     expect(harness.transportOutputs).toHaveLength(1);
     expect(harness.credits.calls).toEqual(['reserve', 'release']);
+  });
+
+  it('reconciles instead of rewriting a successful provider call when outcome persistence fails', async () => {
+    const harness = buildHarness({ transport: strictOutput });
+    harness.corrections.recordAttemptOutcome = vi.fn(async () => {
+      throw new Error('ATTEMPT_OUTCOME_PERSISTENCE_FAILED');
+    });
+
+    await expect(
+      harness.service.runAcceptedQuote({
+        quoteId: 'quote-1',
+        userId: 'user-1',
+      }),
+    ).rejects.toThrow('ATTEMPT_OUTCOME_PERSISTENCE_FAILED');
+
+    expect(harness.transportOutputs).toHaveLength(1);
+    expect(
+      harness.corrections.markReconciliationRequired,
+    ).toHaveBeenCalledOnce();
+    expect(harness.credits.calls).toEqual(['reserve', 'release']);
+    expect(harness.corrections.finalize).not.toHaveBeenCalled();
   });
 
   it('persists call intent before provider dispatch and leaves a failed settlement replayable', async () => {

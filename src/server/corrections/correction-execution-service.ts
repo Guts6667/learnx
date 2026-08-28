@@ -201,30 +201,14 @@ export class CorrectionExecutionService {
       correctionId: input.correctionId,
       sequence,
     });
+    let generation: Awaited<ReturnType<CorrectionTransportPort['execute']>>;
     try {
-      const generation = await this.transport.execute({
+      generation = await this.transport.execute({
         apiKey: this.apiKey,
         jsonSchema: input.jsonSchema,
         messages: input.messages,
         modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
       });
-      input.usage.add(generation.usage.actualCostUsd);
-      const resolved = resolveGeneration({
-        contract: input.contract,
-        output: generation.output,
-        responseText: input.quote.submissionText,
-      });
-      const attempt = successfulAttempt({
-        generation,
-        sequence,
-        valid: resolved !== null,
-      });
-      input.attempts.push(attempt);
-      await this.corrections.recordAttemptOutcome({
-        attempt,
-        correctionId: input.correctionId,
-      });
-      return resolved;
     } catch (error) {
       const attempt = failedAttempt(error, sequence);
       input.usage.add(attempt.actualCostUsd);
@@ -235,5 +219,25 @@ export class CorrectionExecutionService {
       });
       return null;
     }
+    input.usage.add(generation.usage.actualCostUsd);
+    const resolved = resolveGeneration({
+      contract: input.contract,
+      output: generation.output,
+      responseText: input.quote.submissionText,
+    });
+    const attempt = successfulAttempt({
+      generation,
+      sequence,
+      valid: resolved !== null,
+    });
+    input.attempts.push(attempt);
+    // Persistence failures after a successful dispatch are infrastructure
+    // failures. They must escape to reconciliation and must never be rewritten
+    // as a model/provider FAILED outcome.
+    await this.corrections.recordAttemptOutcome({
+      attempt,
+      correctionId: input.correctionId,
+    });
+    return resolved;
   }
 }
