@@ -5,12 +5,6 @@ on:
   push:
     branches: [dev]
   workflow_dispatch:
-    inputs:
-      v4_1_final:
-        description: Run the strict V4.1 release gate (expected red until migration is complete)
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: read
@@ -21,58 +15,13 @@ concurrency:
 
 jobs:
   required-quality:
-    name: Current baseline (required)
+    name: V4.1 final (required)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           # The R1 freeze test verifies bytes against its pinned code commit.
-          fetch-depth: 0
-      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Install the critical browser runtime
-        run: pnpm exec playwright install --with-deps chromium
-      - name: Generate Prisma client
-        run: pnpm prisma:generate
-      - name: Lint
-        run: pnpm lint
-      - name: Types, unused imports, Preact inventory, and cycles
-        run: pnpm quality:imports:baseline
-      - name: Unit tests and frozen coverage baseline
-        run: pnpm test:coverage:baseline
-        env:
-          NODE_OPTIONS: --no-experimental-webstorage
-      - name: Report critical-domain coverage
-        run: pnpm quality:coverage:critical:report
-      - name: Build
-        run: pnpm build
-      - name: Critical public research navigation
-        run: pnpm test:e2e:research
-      - name: Bundle budgets
-        run: pnpm quality:bundle
-      - name: High and critical production dependency audit
-        run: pnpm quality:security
-      - name: Upload coverage evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          if-no-files-found: ignore
-          name: coverage-baseline-${{ github.run_id }}
-          path: coverage/coverage-summary.json
-
-  v4-1-final:
-    name: V4.1 final gate (opt-in)
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.v4_1_final }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        with:
           fetch-depth: 0
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4

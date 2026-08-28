@@ -62,11 +62,11 @@ mode final : elle n'est jamais assimilée à zéro ligne à couvrir ni ignorée.
 graphe de dépendances inspecte aussi les imports dynamiques et les anciens
 `require()` littéraux ; ils ne contournent pas les frontières.
 
-Au 28 août, le job final GitHub reste volontairement déclenché manuellement :
-les seuils sont encore rouges. Le commit d'activation automatique doit être
-promu uniquement après leur atteinte, afin que le check final devienne alors
-obligatoire sur chaque pull request et push vers `dev`, sans période où la CI
-requise est rouge par conception.
+Le job GitHub final s'exécute automatiquement sur chaque pull request et push
+vers `dev`. Son contexte `Quality / V4.1 final (required)` doit être requis par
+la protection de branche sans contournement administrateur. Ce changement ne
+doit être promu qu'après atteinte locale des seuils, afin de ne pas rendre la CI
+requise rouge par conception.
 
 ## Chaîne de contrôles
 

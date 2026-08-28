@@ -577,9 +577,9 @@ neuvième statut.
   correction et les routes admin protégées ; aucun fichier découvert n'est
   hors manifeste.
   Les minima 80 % global et 90 % critique sont refusés s'ils sont abaissés dans
-  la configuration. Le commit d'activation automatique du job final reste à
-  promouvoir seulement lorsque les seuils mesurés sont atteints, afin de ne pas
-  rendre la branche rouge par conception.
+  la configuration. Le job final obligatoire est préparé dans un commit séparé
+  et ne peut être promu qu'une fois les seuils mesurés atteints ; il doit alors
+  devenir un contexte requis de la protection de `dev`.
   Une première campagne de couverture après V4.1-401 a révélé un flake de synchronisation
   dans `LessonPage.test.tsx` : le bouton est parfois interrogé avant la fin du
   chargement. La suite normale reste verte (1 046/1 046) et le fichier isolé
