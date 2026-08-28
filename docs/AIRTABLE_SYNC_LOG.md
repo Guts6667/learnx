@@ -63,3 +63,18 @@ l'autorisation.
   synchronisation. Aucun champ manuel hors périmètre n'a été modifié.
 - Le choix `READY_FOR_OWNER_GO` reste volontairement absent tant qu'aucun ticket
   ne satisfait réellement ce gate.
+
+## 28 août 2026 — promotion partielle des lots fonctionnels
+
+- Autorisation : poursuite du plan V4.1 validé par Rayan ; aucune publication
+  de l'interface Airtable.
+- V4.1-303 : `REVIEW` → `DONE`, preuve indépendante `REVIEW_PASS`, commit
+  owner `ead8f10a`, commit d'intégration `692c09c2`.
+- V4.1-305 : `REVIEW` → `DONE`, preuve indépendante `REVIEW_PASS`, commit
+  owner `6c0bdde2`, commit d'intégration `4acfc10a`.
+- V4.1-304 : statut `REVIEW` conservé. La revue a identifié un risque P1
+  d'idempotence au retry d'une demande de crédits et un écart P2 de pagination ;
+  le blocage et le correctif en cours sont consignés sans promouvoir le ticket.
+- Relecture : les trois enregistrements portent les statuts, branches, SHA,
+  preuves QA et horodatage attendus ; l'état reste `Canonique Git`.
+- Interface : aucun brouillon n'a été publié.
