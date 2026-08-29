@@ -41,3 +41,39 @@ export const PROMOTED_CORRECTION_IDENTITY = {
     visibleOutputTokenTarget: 1_500,
   },
 } as const;
+
+/**
+ * Vérificateur indépendant promu le 29 août 2026 (V4.5-111).
+ *
+ * Ce modèle ne corrige jamais : il répond par oui ou non à une question fermée
+ * par critère déjà livré, à partir de la ligne de rubrique, du niveau retenu et
+ * de la citation. La production complète de l'apprenant ne lui est jamais
+ * transmise.
+ *
+ * `promotion.scientific` est faux et doit le rester tant que V4.5-121 n'a pas
+ * mesuré l'accord du vérificateur. Le pin est donc *attesté*, pas *mesuré* :
+ * il garantit qu'un seul modèle nommé peut tenir ce rôle, pas que ce modèle
+ * soit bon. C'est la distinction que la V4 avait perdue en croyant la
+ * confiance auto-déclarée du correcteur.
+ */
+export const PROMOTED_CHECKER_IDENTITY = {
+  role: 'VERIFICATION_ONLY',
+  modelId: 'mistralai/mistral-medium-3-5',
+  provider: 'Mistral',
+  promotion: {
+    scientific: false,
+    decisionId: 'owner-checker-family-2026-08-29',
+    evidence: 'pending V4.5-121',
+  },
+  maxRetries: 0,
+  requestProfile: {
+    adapter: 'OPENROUTER_CHAT',
+    reasoning: { budgetTokens: null, budgetMode: 'OFF', effort: 'OFF' },
+    routeProviders: ['Mistral'],
+    temperature: null,
+    timeoutMs: 20_000,
+    totalOutputTokenLimit: 400,
+    version: '1.0.0',
+    visibleOutputTokenTarget: 400,
+  },
+} as const;

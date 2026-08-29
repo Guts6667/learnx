@@ -3,7 +3,10 @@ import { describe, expect, it, vi } from 'vitest';
 
 import type { AuthEnvironment } from '../_lib/auth';
 import { createCorrectionsApp, isPromotedCorrectionConfiguration } from './app';
-import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity';
+import {
+  PROMOTED_CHECKER_IDENTITY,
+  PROMOTED_CORRECTION_IDENTITY,
+} from '../../corrections/promoted-identity';
 import { CorrectionOrchestrationError } from '../../corrections/correction-orchestration';
 
 const userId = '11111111-1111-4111-8111-111111111111';
@@ -187,11 +190,15 @@ describe('corrections API', () => {
       authorization,
       preflight: {
         apiKeyPresent: true,
+        checkerIdentityMatches: true,
+        checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
+        checkerScientificallyMeasured: false,
         deploymentEnvironment: 'preview',
         identityMatches: true,
         killSwitch: true,
         promotedBenchmarkId: 'learnx-french-text-correction-v3-1',
         state: 'CONFIGURED_CLOSED',
+        transport: 'REAL',
       },
     });
 
@@ -201,11 +208,15 @@ describe('corrections API', () => {
     await expect(response.json()).resolves.toEqual({
       preflight: {
         apiKeyPresent: true,
+        checkerIdentityMatches: true,
+        checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
+        checkerScientificallyMeasured: false,
         deploymentEnvironment: 'preview',
         identityMatches: true,
         killSwitch: true,
         promotedBenchmarkId: 'learnx-french-text-correction-v3-1',
         state: 'CONFIGURED_CLOSED',
+        transport: 'REAL',
       },
     });
   });

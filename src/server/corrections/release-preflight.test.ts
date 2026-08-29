@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import type { OpenRouterConfiguration } from '../ai/openrouter-configuration';
 
-import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
+import {
+  PROMOTED_CHECKER_IDENTITY,
+  PROMOTED_CORRECTION_IDENTITY,
+} from './promoted-identity';
 import { evaluateCorrectionReleasePreflight } from './release-preflight';
 
 function configuration(
@@ -18,6 +21,10 @@ function configuration(
     assignments: {
       CORRECTION_PRIMARY: promotedAssignment,
       CORRECTION_SECOND_PASS: promotedAssignment,
+      CORRECTION_CHECKER: {
+        modelId: PROMOTED_CHECKER_IDENTITY.modelId,
+        provider: PROMOTED_CHECKER_IDENTITY.provider,
+      },
     },
     deploymentEnvironment: 'preview',
     enabled: true,
@@ -67,6 +74,59 @@ describe('correction release preflight', () => {
       identityMatches: false,
       state: 'CONFIGURATION_BLOCKED',
     });
+  });
+
+  it('bloque un environnement sans vérificateur sans le faire tomber', () => {
+    // The checker is what authorises HIGH, so its absence cannot be READY.
+    // It is not CONFIGURATION_INVALID either: the configuration parses, the
+    // correction path runs, and verdicts resolve to UNAVAILABLE. That is what
+    // lets the code deploy before the environment variables.
+    const withoutChecker = configuration().assignments;
+    delete withoutChecker.CORRECTION_CHECKER;
+    const preflight = evaluateCorrectionReleasePreflight(
+      configuration({ assignments: withoutChecker, killSwitch: false }),
+    );
+    expect(preflight).toMatchObject({
+      checkerIdentityMatches: false,
+      identityMatches: true,
+      state: 'CONFIGURATION_BLOCKED',
+    });
+  });
+
+  it('refuse un vérificateur qui n’est pas le modèle promu', () => {
+    expect(
+      evaluateCorrectionReleasePreflight(
+        configuration({
+          assignments: {
+            ...configuration().assignments,
+            CORRECTION_CHECKER: {
+              modelId: 'vendor/unpromoted-checker',
+              provider: 'vendor',
+            },
+          },
+          killSwitch: false,
+        }),
+      ),
+    ).toMatchObject({
+      checkerIdentityMatches: false,
+      state: 'CONFIGURATION_BLOCKED',
+    });
+  });
+
+  it('annonce que le vérificateur est épinglé mais pas encore mesuré', () => {
+    // Attested is not measured. V4.5-121 flips this, and nothing else should.
+    expect(evaluateCorrectionReleasePreflight(configuration())).toMatchObject({
+      checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
+      checkerScientificallyMeasured: false,
+    });
+  });
+
+  it('signale un transport factice pour qu’aucun READY ne passe pour réel', () => {
+    expect(
+      evaluateCorrectionReleasePreflight(configuration({ killSwitch: false }), {
+        transport: 'FAKE',
+      }),
+    ).toMatchObject({ state: 'READY', transport: 'FAKE' });
   });
 
   it('keeps the globally disabled state explicit', () => {

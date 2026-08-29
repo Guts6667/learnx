@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
   AI_MODEL_ROLES,
   AiProviderError,
+  REQUIRED_AI_MODEL_ROLES,
   type AiModelRole,
 } from './structured-provider.js';
 
@@ -116,13 +117,20 @@ function parseAssignments(
   );
   const assignments: Partial<Record<AiModelRole, AiModelAssignment>> = {};
 
+  const required: readonly AiModelRole[] = REQUIRED_AI_MODEL_ROLES;
+
   AI_MODEL_ROLES.forEach((role) => {
-    const model = exactModelIdSchema.safeParse(
-      values[assignmentVariable(role, 'MODEL')],
-    );
-    const provider = providerSchema.safeParse(
-      values[assignmentVariable(role, 'PROVIDER')],
-    );
+    const rawModel = values[assignmentVariable(role, 'MODEL')];
+    const rawProvider = values[assignmentVariable(role, 'PROVIDER')];
+    // An optional role left entirely unset stays unassigned. Anything else —
+    // one half set, an invalid value, a model outside the allowlist — is a
+    // misconfiguration and still refuses to boot: silently ignoring a checker
+    // someone tried to configure would be worse than not having one.
+    if (!required.includes(role) && !rawModel?.trim() && !rawProvider?.trim()) {
+      return;
+    }
+    const model = exactModelIdSchema.safeParse(rawModel);
+    const provider = providerSchema.safeParse(rawProvider);
     if (!model.success || !provider.success) {
       throw new AiProviderError('CONFIGURATION_INVALID', false);
     }
