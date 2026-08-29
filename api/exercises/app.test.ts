@@ -276,6 +276,63 @@ describe('exercise API', () => {
     },
   );
 
+  it.each([
+    ['WRITING', 'writing', true],
+    ['REFLECTION', 'reflection', false],
+    ['PRACTICE', 'practice', false],
+    ['PROJECT', 'project', false],
+  ] as const)(
+    'expose le périmètre de validation scientifique pour %s',
+    async (activityType, family, validated) => {
+      const state = createRepository(userId, {
+        activityType,
+        language: 'fr-FR',
+        rubric: null,
+      });
+      const app = createExercisesApp({
+        authentication,
+        repository: state.repository,
+      });
+
+      const response = await app.request(
+        `http://localhost/api/exercises/${exerciseId}`,
+      );
+
+      // Eligible and scientifically validated are different questions. Four
+      // families are corrected at runtime; only writing has a sealed exam
+      // behind it, and the interface must be able to say so.
+      expect(await response.json()).toMatchObject({
+        exercise: {
+          aiCorrectionEligible: true,
+          aiCorrectionValidationScope: { family, validated },
+        },
+      });
+    },
+  );
+
+  it('n’expose aucun périmètre de validation pour un exercice non éligible', async () => {
+    const state = createRepository(userId, {
+      activityType: 'WRITING',
+      language: 'en-GB',
+      rubric: null,
+    });
+    const app = createExercisesApp({
+      authentication,
+      repository: state.repository,
+    });
+
+    const response = await app.request(
+      `http://localhost/api/exercises/${exerciseId}`,
+    );
+
+    expect(await response.json()).toMatchObject({
+      exercise: {
+        aiCorrectionEligible: false,
+        aiCorrectionValidationScope: null,
+      },
+    });
+  });
+
   it('crée le brouillon de manière idempotente', async () => {
     const state = createRepository();
     const app = createExercisesApp({

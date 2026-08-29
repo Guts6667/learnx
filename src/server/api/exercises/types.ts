@@ -1,3 +1,11 @@
+import type { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
+
+/** The family a correction would run under, and whether it has a sealed exam. */
+export type AiCorrectionValidationScope = {
+  family: (typeof PROMOTED_CORRECTION_IDENTITY.activityTypeScope)[number];
+  validated: boolean;
+};
+
 import type { MiddlewareHandler } from 'hono';
 
 import { ExerciseSubmissionStatus } from '../../../../generated/prisma/client.js';
@@ -77,6 +85,7 @@ export interface ExerciseService {
   ): Promise<
     ExerciseRecord & {
       aiCorrectionEligible: boolean;
+      aiCorrectionValidationScope: AiCorrectionValidationScope | null;
     }
   >;
   saveSubmission(

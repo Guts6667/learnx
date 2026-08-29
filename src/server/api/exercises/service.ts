@@ -1,4 +1,7 @@
-import { isExerciseAiCorrectionEligible } from './eligibility.js';
+import {
+  isExerciseAiCorrectionEligible,
+  resolveAiCorrectionValidationScope,
+} from './eligibility.js';
 import type { ExerciseRepository, ExerciseService } from './types.js';
 import {
   assertSubmissionEditable,
@@ -23,6 +26,8 @@ export function createExerciseService(
       return {
         ...exercise,
         aiCorrectionEligible: isExerciseAiCorrectionEligible(exercise),
+        aiCorrectionValidationScope:
+          resolveAiCorrectionValidationScope(exercise),
       };
     },
 
