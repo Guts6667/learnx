@@ -57,6 +57,15 @@
 > qualité est mesurée par des oracles machine, des signaux apprenants et un
 > coupe-circuit automatique (contrat qualité V4.5).
 
+> **Décision du 29 août 2026 — résidence du vérificateur.** Le vérificateur
+> indépendant (`mistralai/mistral-medium-3-5`, V4.5-111) est épinglé sur le
+> point de terminaison OpenRouter `mistral/eu` par étiquette d'endpoint, et non
+> par nom de fournisseur (les trois endpoints Mistral partagent le nom
+> `Mistral`). Il ne reçoit que la ligne de rubrique, le niveau et les extraits
+> cités, jamais la production complète ; `data_collection: deny` reste envoyé.
+> Identifiant de décision : `owner-checker-residency-eu-2026-08-29`. Le
+> registre des traitements (V4.5-165) déclare ce destinataire et sa résidence.
+
 ## 1. Contexte
 
 LearnX corrige aujourd'hui de manière déterministe les quiz et les
