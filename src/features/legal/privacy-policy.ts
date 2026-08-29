@@ -6,15 +6,26 @@
  * fichier de test compare chaque phrase au document ; une divergence fait
  * échouer la suite plutôt que de publier une page juridique inexacte.
  *
+ * Le corps d'une section est une suite de segments plutôt qu'une chaîne : le
+ * document met en gras des mots juridiquement porteurs — « empreinte non
+ * réversible » — et perdre cette emphase changerait la lecture d'un texte dont
+ * chaque nuance a été arbitrée. Un titre de section est un gras EN DÉBUT DE
+ * LIGNE ; un gras au milieu d'une phrase est de l'insistance, pas un titre.
+ *
  * Ce contenu ne passe pas par les catalogues i18n : ce ne sont pas des libellés
  * d'interface mais un texte de référence versionné, relu et daté, dont les deux
  * versions linguistiques doivent rester lisibles côte à côte au moment de la
  * revue.
  */
 
+interface PrivacyPolicyFragment {
+  strong?: boolean;
+  text: string;
+}
+
 interface PrivacyPolicySection {
-  body?: string;
-  bullets?: string[];
+  body?: PrivacyPolicyFragment[];
+  bullets?: PrivacyPolicyFragment[][];
   heading: string;
 }
 
@@ -31,40 +42,88 @@ export const privacyPolicy: Record<'en' | 'fr', PrivacyPolicyContent> = {
     sections: [
       {
         heading: 'Who is responsible.',
-        body: "LearnX is published by [Owner's name / legal status / address]. For any question or request about your data: [contact e-mail].",
+        body: [
+          {
+            text: 'LearnX is published by Rayan Chambet, sole trader (SIREN 820 401 990), 59 rue de Ponthieu, 75008 Paris, France. For any question or request about your data: support@learn-x.app.',
+          },
+        ],
       },
       {
         bullets: [
-          'Your e-mail address and, if you provide it, your name, to create and secure your account.',
-          'Your learning activity: paths followed, lessons completed, answers to exercises and assessments, personal notes.',
-          'If you use AI-assisted correction: the text you submit, the feedback produced, your "helpful / wrong" votes on each criterion, and the credits used.',
-          'The technical logs needed to run the service (errors, rate limiting). To limit abuse, we keep a non-reversible fingerprint of your IP address for 24 hours, and an anti-abuse marker tied to the free trial for 12 months; we do not store your IP address in clear or your browser.',
+          [
+            {
+              text: 'Your e-mail address and, if you provide it, your name, to create and secure your account.',
+            },
+          ],
+          [
+            {
+              text: 'Your learning activity: paths followed, lessons completed, answers to exercises and assessments, personal notes.',
+            },
+          ],
+          [
+            {
+              text: 'If you use AI-assisted correction: the text you submit, the feedback produced, your "helpful / wrong" votes on each criterion, and the credits used.',
+            },
+          ],
+          [
+            {
+              text: 'The technical logs needed to run the service (errors, rate limiting). To limit abuse, we keep a ',
+            },
+            { strong: true, text: 'non-reversible fingerprint' },
+            {
+              text: ' of your IP address for 24 hours, and an anti-abuse marker tied to the free trial for 12 months; we do not store your IP address in clear or your browser.',
+            },
+          ],
         ],
         heading: 'What we collect.',
       },
       {
         heading: 'Why.',
-        body: 'To run your learning path, suggest the next useful action, give formative feedback on your answers, secure your account, and improve the correction system.',
+        body: [
+          {
+            text: 'To run your learning path, suggest the next useful action, give formative feedback on your answers, secure your account, and improve the correction system.',
+          },
+        ],
       },
       {
         heading: 'AI-assisted correction.',
-        body: 'When you start a correction, your text is sent, without your name or e-mail, to an Anthropic model via OpenRouter; the quoted excerpts are then checked by a Mistral model hosted in the European Union. These services keep your data for at most 30 days (Anthropic, Mistral) and do not use it to train their models; OpenRouter does not publish a retention period. The feedback is produced by an AI, is reviewed by no one, is not a validation, and has no effect on your progression.',
+        body: [
+          {
+            text: 'When you start a correction, your text is sent, without your name or e-mail, to an Anthropic model via OpenRouter; the quoted excerpts are then checked by a Mistral model hosted in the European Union. These services keep your data for at most 30 days (Anthropic, Mistral) and do not use it to train their models; OpenRouter does not publish a retention period. The feedback is produced by an AI, is reviewed by no one, is not a validation, and has no effect on your progression.',
+          },
+        ],
       },
       {
         heading: 'Where your data is.',
-        body: 'Database: Neon, Frankfurt (Germany). Application: Vercel, Frankfurt. E-mails: Resend, Ireland. Only OpenRouter and Anthropic process data outside the European Union, solely for AI correction, under the conditions above.',
+        body: [
+          {
+            text: 'Database: Neon, Frankfurt (Germany). Application: Vercel, Frankfurt. E-mails: Resend, Ireland. Only OpenRouter and Anthropic process data outside the European Union, solely for AI correction, under the conditions above.',
+          },
+        ],
       },
       {
         heading: 'For how long.',
-        body: 'As long as your account exists. Sessions expire and are purged within 7 days, login links within 30 days. After 180 days, an AI correction is detached from your account: it is kept under an irreversible pseudonym, to improve the system, and can no longer be linked to you.',
+        body: [
+          {
+            text: 'As long as your account exists. Sessions expire and are purged within 7 days, login links within 30 days. After 180 days, an AI correction is detached from your account: it is kept under an irreversible pseudonym, to improve the system, and can no longer be linked to you.',
+          },
+        ],
       },
       {
         heading: 'Your rights.',
-        body: 'You can request access to, rectification or deletion of your data at [contact e-mail]. Deleting your account erases your e-mail, name, notes and sessions. Your answers and the feedback produced are kept under an irreversible pseudonym: they are no longer linked to your account, but if you wrote things about yourself in them, they may remain personal data under the GDPR. The credit history is kept without identifiers, as accounting law requires, and the free-trial anti-abuse marker survives deletion for 12 months so that deleting an account does not grant a new trial. You may lodge a complaint with the CNIL (cnil.fr) or your local supervisory authority.',
+        body: [
+          {
+            text: 'You can request access to, rectification or deletion of your data at support@learn-x.app. Deleting your account erases your e-mail, name, notes and sessions. Your answers and the feedback produced are kept under an irreversible pseudonym: they are no longer linked to your account, but if you wrote things about yourself in them, they may remain personal data under the GDPR. The credit history is kept without identifiers, as accounting law requires, and the free-trial anti-abuse marker survives deletion for 12 months so that deleting an account does not grant a new trial. You may lodge a complaint with the CNIL (cnil.fr) or your local supervisory authority.',
+          },
+        ],
       },
       {
         heading: 'Cookies.',
-        body: 'LearnX uses only a session cookie, required to sign in. No analytics or advertising cookies.',
+        body: [
+          {
+            text: 'LearnX uses only a session cookie, required to sign in. No analytics or advertising cookies.',
+          },
+        ],
       },
     ],
   },
@@ -74,40 +133,88 @@ export const privacyPolicy: Record<'en' | 'fr', PrivacyPolicyContent> = {
     sections: [
       {
         heading: 'Qui est responsable.',
-        body: 'LearnX est édité par [nom / statut / adresse du Propriétaire]. Pour toute question ou demande concernant vos données : [adresse e-mail de contact].',
+        body: [
+          {
+            text: 'LearnX est édité par Rayan Chambet, entrepreneur individuel (SIREN 820 401 990), 59 rue de Ponthieu, 75008 Paris. Pour toute question ou demande concernant vos données : support@learn-x.app.',
+          },
+        ],
       },
       {
         bullets: [
-          'Votre adresse e-mail et, si vous le renseignez, votre nom, pour créer et sécuriser votre compte.',
-          "Votre activité d'apprentissage : parcours suivis, leçons terminées, réponses aux exercices et aux évaluations, notes personnelles.",
-          'Si vous utilisez la correction assistée par IA : le texte que vous soumettez, le retour produit, vos votes « utile / faux » sur chaque critère, et les crédits utilisés.',
-          "Les journaux techniques nécessaires au fonctionnement du service (erreurs, limitation des tentatives). Pour limiter les abus, nous conservons une empreinte non réversible de votre adresse IP pendant 24 heures, et un marqueur anti-abus lié à l'essai gratuit pendant 12 mois ; nous n'enregistrons pas votre adresse IP en clair ni votre navigateur.",
+          [
+            {
+              text: 'Votre adresse e-mail et, si vous le renseignez, votre nom, pour créer et sécuriser votre compte.',
+            },
+          ],
+          [
+            {
+              text: "Votre activité d'apprentissage : parcours suivis, leçons terminées, réponses aux exercices et aux évaluations, notes personnelles.",
+            },
+          ],
+          [
+            {
+              text: 'Si vous utilisez la correction assistée par IA : le texte que vous soumettez, le retour produit, vos votes « utile / faux » sur chaque critère, et les crédits utilisés.',
+            },
+          ],
+          [
+            {
+              text: 'Les journaux techniques nécessaires au fonctionnement du service (erreurs, limitation des tentatives). Pour limiter les abus, nous conservons une ',
+            },
+            { strong: true, text: 'empreinte non réversible' },
+            {
+              text: " de votre adresse IP pendant 24 heures, et un marqueur anti-abus lié à l'essai gratuit pendant 12 mois ; nous n'enregistrons pas votre adresse IP en clair ni votre navigateur.",
+            },
+          ],
         ],
         heading: 'Ce que nous collectons.',
       },
       {
         heading: 'Pourquoi.',
-        body: 'Faire fonctionner votre parcours, vous proposer la prochaine action utile, produire un retour formatif sur vos réponses, sécuriser votre compte, et améliorer le système de correction.',
+        body: [
+          {
+            text: 'Faire fonctionner votre parcours, vous proposer la prochaine action utile, produire un retour formatif sur vos réponses, sécuriser votre compte, et améliorer le système de correction.',
+          },
+        ],
       },
       {
         heading: 'La correction assistée par IA.',
-        body: "Quand vous lancez une correction, votre texte est envoyé, sans votre nom ni votre e-mail, à un modèle d'Anthropic via OpenRouter ; les extraits cités sont ensuite vérifiés par un modèle de Mistral hébergé dans l'Union européenne. Ces services conservent vos données au plus 30 jours (Anthropic, Mistral) et ne les utilisent pas pour entraîner leurs modèles ; OpenRouter ne publie pas de durée de conservation. Le retour est produit par une IA, n'est relu par personne, ne vaut pas validation et n'a aucun effet sur votre progression.",
+        body: [
+          {
+            text: "Quand vous lancez une correction, votre texte est envoyé, sans votre nom ni votre e-mail, à un modèle d'Anthropic via OpenRouter ; les extraits cités sont ensuite vérifiés par un modèle de Mistral hébergé dans l'Union européenne. Ces services conservent vos données au plus 30 jours (Anthropic, Mistral) et ne les utilisent pas pour entraîner leurs modèles ; OpenRouter ne publie pas de durée de conservation. Le retour est produit par une IA, n'est relu par personne, ne vaut pas validation et n'a aucun effet sur votre progression.",
+          },
+        ],
       },
       {
         heading: 'Où sont vos données.',
-        body: "Base de données : Neon, Francfort (Allemagne). Application : Vercel, Francfort. E-mails : Resend, Irlande. Seuls OpenRouter et Anthropic traitent des données hors de l'Union européenne, uniquement pour la correction IA, dans les conditions ci-dessus.",
+        body: [
+          {
+            text: "Base de données : Neon, Francfort (Allemagne). Application : Vercel, Francfort. E-mails : Resend, Irlande. Seuls OpenRouter et Anthropic traitent des données hors de l'Union européenne, uniquement pour la correction IA, dans les conditions ci-dessus.",
+          },
+        ],
       },
       {
         heading: 'Combien de temps.',
-        body: 'Tant que votre compte existe. Les sessions expirent et sont purgées sous 7 jours, les liens de connexion sous 30 jours. Après 180 jours, une correction IA est détachée de votre compte : elle est conservée sous un pseudonyme irréversible, pour améliorer le système, sans pouvoir vous être rattachée.',
+        body: [
+          {
+            text: 'Tant que votre compte existe. Les sessions expirent et sont purgées sous 7 jours, les liens de connexion sous 30 jours. Après 180 jours, une correction IA est détachée de votre compte : elle est conservée sous un pseudonyme irréversible, pour améliorer le système, sans pouvoir vous être rattachée.',
+          },
+        ],
       },
       {
         heading: 'Vos droits.',
-        body: "Vous pouvez demander l'accès, la rectification ou la suppression de vos données à [adresse e-mail de contact]. La suppression de compte efface votre e-mail, votre nom, vos notes et vos sessions. Vos réponses et les retours produits sont conservés sous un pseudonyme irréversible : ils ne sont plus rattachés à votre compte, mais si vous y avez écrit des éléments vous concernant, ils peuvent rester des données personnelles au sens du RGPD. L'historique des crédits est conservé sans identifiant, comme la loi comptable l'exige, et le marqueur anti-abus de l'essai gratuit survit à la suppression pendant 12 mois, afin qu'un compte supprimé ne redonne pas droit à un nouvel essai. Vous pouvez introduire une réclamation auprès de la CNIL (cnil.fr).",
+        body: [
+          {
+            text: "Vous pouvez demander l'accès, la rectification ou la suppression de vos données à support@learn-x.app. La suppression de compte efface votre e-mail, votre nom, vos notes et vos sessions. Vos réponses et les retours produits sont conservés sous un pseudonyme irréversible : ils ne sont plus rattachés à votre compte, mais si vous y avez écrit des éléments vous concernant, ils peuvent rester des données personnelles au sens du RGPD. L'historique des crédits est conservé sans identifiant, comme la loi comptable l'exige, et le marqueur anti-abus de l'essai gratuit survit à la suppression pendant 12 mois, afin qu'un compte supprimé ne redonne pas droit à un nouvel essai. Vous pouvez introduire une réclamation auprès de la CNIL (cnil.fr).",
+          },
+        ],
       },
       {
         heading: 'Cookies.',
-        body: "LearnX utilise uniquement un cookie de session, nécessaire à la connexion. Aucun cookie de mesure d'audience ni de publicité.",
+        body: [
+          {
+            text: "LearnX utilise uniquement un cookie de session, nécessaire à la connexion. Aucun cookie de mesure d'audience ni de publicité.",
+          },
+        ],
       },
     ],
   },
