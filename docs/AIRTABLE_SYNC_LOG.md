@@ -316,3 +316,40 @@ l'autorisation.
 - V4.5-112 : voie C démarre l'UI inerte ; voie A livre route et migration
   après 131 et 130.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+## 29 août 2026 — tickets d'exploitation DevOps V4.5-170…176
+
+- Autorisation : demande explicite de Rayan (« add your recommendations in
+  tickets in the V4.5 backlog ») après l'audit Head of DevOps du 29 août 2026,
+  session `learnx-e0`. Coordination préalable avec les sessions
+  `Head of AI (Fable 5)`, `Head of Development` et `Head of UX/UI` : aucune
+  n'écrivait dans Airtable ni dans ce journal ; base de travail imposée
+  `origin/dev@67a801ae`, branche dédiée `chore/v4-5-devops-airtable-sync`.
+- Base `app8IaHD1sJtI83WT`, table `tblpSbdB7K4MioyJq`, API REST, token
+  personnel. Création uniquement : aucun enregistrement existant modifié,
+  aucune suppression, aucune page d'interface créée ou publiée.
+- 7 enregistrements créés, `Release = V4.5`, `Statut = DRAFT`,
+  `Epic = V4.5-013 Exploitation DevOps (proposition)`,
+  `État de synchronisation = Proposition Airtable` (la définition Git dans
+  `V4_5_BACKLOG.md` reste à écrire, comme pour le lot V4.5-1xx) :
+  - `recL3BtE3hDGOdhPW` V4.5-170 — migrations Prisma hors des builds preview
+    (P0, `Arbitrage Rayan = À faire`) ;
+  - `recJFACuVNTMXxuYP` V4.5-171 — branches Neon `ci-*` et Integration requis (P1) ;
+  - `recLb4hF4nvLUH3DO` V4.5-172 — `/api/health`, stack dans `onError`, suivi
+    d'erreurs (P1) ;
+  - `reczMF60hUFIPkHht` V4.5-173 — smoke post-déploiement et purge planifiés (P2) ;
+  - `recLKyPSMTz5aQ1zN` V4.5-174 — modèle de branches et protection de `dev`
+    (P1, `Arbitrage Rayan = À faire`) ;
+  - `recwXlmCPqUK7kXYB` V4.5-175 — Dependabot, `.nvmrc`, hygiène des branches (P2) ;
+  - `recI0o4zDR5FFD7MQ` V4.5-176 — restauration Neon et SHA de rollback (P2).
+- Natures et statuts pris exclusivement dans les choix existants ; aucune
+  valeur de `Nature`, `Statut`, `Release` ou `Risque` ajoutée, donc
+  `docs/V4_1_AIRTABLE_CONTRACT.json` et `scripts/check-v4-1-airtable.ts`
+  restent inchangés.
+- Relecture : 7/7 enregistrements relus champ par champ après création
+  (16 champs chacun), aucun écart avec le dry-run.
+- Deux tickets attendent un arbitrage propriétaire avant exécution : V4.5-170
+  (valeurs `DATABASE_URL` des environnements Vercel Preview et Production,
+  non lisibles depuis le dépôt) et V4.5-174 (choix du modèle de branches).
+- Source de définition : rapport d'audit DevOps du 29 août 2026
+  (artefact `2014c4b7-c223-44d8-b1e8-c9f143886646`) → à transcrire dans
+  `V4_5_BACKLOG.md`.
