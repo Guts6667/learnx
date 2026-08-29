@@ -1,0 +1,541 @@
+{
+  "hints": {
+    "corpus-v1-3/benchmark-writing-successful": [
+      {
+        "criterionKey": "source-fact-use",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 18 à 13 heures",
+          "to": "de 13 à 18 heures"
+        }
+      },
+      {
+        "criterionKey": "source-fact-use",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "corpus-v1-3/benchmark-writing-partial": [
+      {
+        "criterionKey": "recommendation-clarity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "corpus-v1-3/benchmark-writing-ambiguous": [
+      {
+        "criterionKey": "source-fact-use",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 18 à 13 heures",
+          "to": "de 13 à 18 heures"
+        }
+      },
+      {
+        "criterionKey": "source-fact-use",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v1/holdout-writing-library-hours-successful": [
+      {
+        "criterionKey": "evidence-selection",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "46 visites supplémentaires, contre 11",
+          "to": "11 visites supplémentaires, contre 46"
+        }
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "holdout-v1/holdout-writing-scanner-repair-partial": [
+      {
+        "criterionKey": "evidence-selection",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "2 700 euros",
+          "to": "3 700 euros"
+        }
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "holdout-v1/holdout-writing-vendor-renewal-erroneous": [
+      {
+        "criterionKey": "decision-position",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v1/holdout-writing-shuttle-boundary": [
+      {
+        "criterionKey": "evidence-selection",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "17 des 22 répondants",
+          "to": "3 des 22 répondants"
+        }
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v2/holdout2-writing-maintenance-contract-successful": [
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "27 900 euros",
+          "to": "17 900 euros"
+        }
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 3
+      }
+    ],
+    "holdout-v2/holdout2-writing-spare-stock-partial": [
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "23 000 euros",
+          "to": "2 300 euros"
+        }
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "holdout-v2/holdout2-writing-pump-report-erroneous": [
+      {
+        "criterionKey": "arbitration-choice",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v2/holdout2-writing-oven-revision-ambiguous": [
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 95 % à 82 %",
+          "to": "de 82 % à 95 %"
+        }
+      },
+      {
+        "criterionKey": "arbitration-choice",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v3/holdout3-writing-roof-tender-successful": [
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "31 500 euros",
+          "to": "41 500 euros"
+        }
+      },
+      {
+        "criterionKey": "decision-stance",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "residual-risk-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "holdout-v3/holdout3-writing-water-damage-partial": [
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "9 600 euros nets",
+          "to": "6 600 euros nets"
+        }
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "residual-risk-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "holdout-v3/holdout3-writing-elevator-modernization-erroneous": [
+      {
+        "criterionKey": "decision-stance",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v3/holdout3-writing-crack-strategy-ambiguous": [
+      {
+        "criterionKey": "residual-risk-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-complete-clear": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 54 €",
+          "to": "= 44 €"
+        }
+      },
+      {
+        "criterionKey": "committed-choice-boundary",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 3
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-complete-concise": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 60 €",
+          "to": "= 50 €"
+        }
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-partial-omission": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 36 € et",
+          "to": "= 32 € et"
+        }
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "hard-constraint-fit",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-erroneous-decidable": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 36 € ;",
+          "to": "= 26 € ;"
+        }
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "hard-constraint-fit",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 10 sur 24 à 4 sur 24",
+          "to": "de 4 sur 24 à 10 sur 24"
+        }
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "48 tr/min contre 28",
+          "to": "28 tr/min contre 48"
+        }
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 11/20 à 5/20",
+          "to": "de 5/20 à 11/20"
+        }
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable": [
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 9/16 à 5/16",
+          "to": "de 5/16 à 9/16"
+        }
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-complete-clear": [
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "et 7/12 personnes ont hésité",
+          "to": "et 2/12 personnes ont hésité"
+        }
+      },
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-complete-concise": [
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "à 1/9 quand je les annonce avant",
+          "to": "à 8/9 quand je les annonce avant"
+        }
+      },
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-partial-omission": [
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-erroneous-decidable": [
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline": [
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-action-plan-complete-clear": [
+      {
+        "criterionKey": "metric-and-decision-rule",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "à 10/12 ou plus",
+          "to": "à 15/12 ou plus"
+        }
+      },
+      {
+        "criterionKey": "feasible-allocation",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "harm-stop-control",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      },
+      {
+        "criterionKey": "metric-and-decision-rule",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-action-plan-complete-concise": [
+      {
+        "criterionKey": "feasible-allocation",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "soit 21",
+          "to": "soit 12"
+        }
+      },
+      {
+        "criterionKey": "feasible-allocation",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "harm-stop-control",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      },
+      {
+        "criterionKey": "metric-and-decision-rule",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-action-plan-partial-omission": [
+      {
+        "criterionKey": "feasible-allocation",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "metric-and-decision-rule",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable": [
+      {
+        "criterionKey": "harm-stop-control",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      },
+      {
+        "criterionKey": "metric-and-decision-rule",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline": [
+      {
+        "criterionKey": "feasible-allocation",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "harm-stop-control",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

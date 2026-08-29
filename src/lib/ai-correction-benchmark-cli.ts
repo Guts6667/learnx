@@ -16,10 +16,26 @@ import {
 } from './ai-correction-benchmark-cli-output.js';
 import { applyBenchmarkReviewArguments } from './ai-correction-benchmark-cli-review.js';
 import { selectBenchmarkCliRun } from './ai-correction-benchmark-cli-selection.js';
+import {
+  readCliOption,
+  runRegressionPoolBuild,
+  runRegressionPoolValidation,
+} from './ai-correction-regression-cli.js';
 
 export async function runAiCorrectionBenchmarkCli(
   arguments_: string[] = process.argv,
 ): Promise<void> {
+  // The regression-pool subcommands are offline by construction and must not
+  // require a benchmark configuration, so they answer before any input loading.
+  if (arguments_.some((argument) => argument.startsWith('--build-pool'))) {
+    await runRegressionPoolBuild(arguments_);
+    return;
+  }
+  if (readCliOption(arguments_, 'pool') !== undefined) {
+    await runRegressionPoolValidation(arguments_);
+    return;
+  }
+
   const loaded = await loadBenchmarkInputs(arguments_);
   const { configuration, corpus } = loaded;
   assertBenchmarkCompatibility({ configuration, corpus });
