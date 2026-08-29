@@ -137,8 +137,15 @@ export function buildOpenRouterRequestBody(
     max_tokens: request.profile.totalOutputTokenLimit,
     ...optionalTemperature(request.profile),
     ...optionalReasoning(request.profile),
+    // V4.5-115: the runtime body is fail-closed on routing and retention.
+    // `only` restricts serving to the pinned route(s) and `data_collection`
+    // refuses provider-side retention for training. The authenticated probe of
+    // 29 Aug 2026 (benchmarks/ai-correction/probes/2026-08-29-v4-5-115-route-probe.json)
+    // showed these parameters do not change which endpoint serves the primary.
     provider: {
       allow_fallbacks: false,
+      data_collection: 'deny',
+      only: request.profile.routeProviders,
       order: request.profile.routeProviders,
       require_parameters: true,
     },

@@ -316,10 +316,20 @@ describe('correction benchmark corpus — part 3', () => {
       model: 'anthropic/claude-opus-4.8',
       provider: {
         allow_fallbacks: false,
+        data_collection: 'deny',
+        only: ['Anthropic'],
         order: ['Anthropic'],
         require_parameters: true,
       },
     });
+    // V4.5-115: `only` must always mirror `order`, and retention for training
+    // must always be refused — a body without them is not the promoted body.
+    const provider = buildOpenRouterRequestBody(request).provider as Record<
+      string,
+      unknown
+    >;
+    expect(provider.only).toEqual(provider.order);
+    expect(provider.data_collection).toBe('deny');
     expect(buildOpenRouterRequestBody(request)).not.toHaveProperty(
       'temperature',
     );
