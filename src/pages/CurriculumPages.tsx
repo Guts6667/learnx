@@ -152,11 +152,6 @@ function LessonSummaryCard({
   );
 }
 
-function ProgressPlaceholder() {
-  const { t } = useI18n();
-  return <ProgressBar label={t('curriculum.progressSoon')} value={0} />;
-}
-
 function DraftBadge() {
   const { t } = useI18n();
   return <Badge tone="warning">{t('common.draft')}</Badge>;
@@ -1450,7 +1445,6 @@ export function StagePage({
           {stage.isPublished ? null : <DraftBadge />}
         </div>
       </div>
-      <ProgressPlaceholder />
       <StageValidationCard validation={stage.validation} />
       {stage.modules.length === 0 ? (
         <EmptyState
@@ -1552,7 +1546,6 @@ export function ModulePage({
         </div>
         <p className="page-description mt-3">{module.description}</p>
       </div>
-      <ProgressPlaceholder />
       {module.lessons.length === 0 ? (
         <EmptyState
           description={t('curriculum.noLessons.description')}

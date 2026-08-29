@@ -6,7 +6,6 @@ export const frenchCurriculumMessages = {
   'curriculum.stagePrerequisites': 'Voir les prérequis de l’étape',
   'curriculum.loading': 'Chargement du parcours',
   'curriculum.loadError': 'Le parcours n’a pas pu être chargé.',
-  'curriculum.progressSoon': 'Progression — bientôt disponible',
   'curriculum.durationUnknown': 'Durée non renseignée',
   'curriculum.activityCount': {
     one: '{count} activité',
@@ -98,7 +97,6 @@ export const englishCurriculumMessages = {
   'curriculum.stagePrerequisites': 'View stage prerequisites',
   'curriculum.loading': 'Loading learning path',
   'curriculum.loadError': 'The learning path could not be loaded.',
-  'curriculum.progressSoon': 'Progress — coming soon',
   'curriculum.durationUnknown': 'Duration not provided',
   'curriculum.activityCount': {
     one: '{count} activity',
