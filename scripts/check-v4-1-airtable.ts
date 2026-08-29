@@ -54,6 +54,7 @@ const requiredPages = [
   'Arbitrages Rayan',
   'Gate de release',
   'V4.5 — Préparation',
+  'V4.5 — Maintenant',
   'V5 — Candidats',
   'Archive V4',
 ];
