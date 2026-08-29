@@ -7,6 +7,7 @@ import {
   moduleSummary,
   program,
 } from '../e2e/journey-api';
+import { installLongContentPrograms } from './long-content';
 
 /**
  * Baselines for the surfaces a design-system change touches. Public pages need
@@ -68,6 +69,27 @@ test('app — my programmes', async ({ page }) => {
   ).toBeVisible();
   await settle(page);
   await expect(page).toHaveScreenshot('programmes.png', { fullPage: true });
+});
+
+/**
+ * Même surface, contenu le plus long du corpus (V4.5-UX-002) : trois parcours,
+ * titres longs, étapes longues. La capture précédente n'en dit rien — un seul
+ * parcours au titre court ne peut pas révéler un débordement de grille.
+ */
+test('app — my programmes (long content)', async ({ page }) => {
+  await signIn(page);
+  await installLongContentPrograms(page);
+  await page.goto('/program');
+  await expect(
+    page.getByRole('heading', {
+      level: 3,
+      name: 'Pilotage de projets IA et ISO/IEC 42001',
+    }),
+  ).toBeVisible();
+  await settle(page);
+  await expect(page).toHaveScreenshot('programmes-long-content.png', {
+    fullPage: true,
+  });
 });
 
 test('app — discover', async ({ page }) => {
