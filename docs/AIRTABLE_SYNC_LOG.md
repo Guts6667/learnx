@@ -644,3 +644,9 @@ l'autorisation.
   (0,0199 USD réconcilié), run complète lancée sous 12,80 USD.
 - Question Propriétaire ouverte : fournisseur de paiement (Stripe sans compte
   Business vs Revolut Business) — ADR_004 à amender selon la réponse.
+- Décision Rayan `owner-payment-provider-stripe-2026-08-29` : Stripe (compte
+  Revolut Business impossible à ouvrir). V4.5-184 créé (`READY`,
+  `recOJrKrdkkWQhi0a`, voie B, après 162) ; blocages 160/161 mis à jour.
+  Décision `owner-refund-policy-2026-08-29` : remboursement volontaire au
+  prorata ; 162 `IN_PROGRESS`. V4.5-160 `REVIEW` (`1b6576a3`), V4.5-161
+  `REVIEW` (`c285306e`).

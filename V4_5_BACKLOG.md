@@ -462,6 +462,12 @@ l'autorité de définition ; Airtable porte le statut.
   sandbox ; états WON/LOST ; règle de clôture sans suppression du ledger ;
   `docs/V4_5_REFUNDS_PROCEDURE.md` listant les décisions juridiques/fiscales
   du Propriétaire.
+- Décisions du 29 août 2026 : remboursement volontaire **au prorata** des
+  crédits non consommés (`owner-refund-policy-2026-08-29`, arrondi au centime
+  écrit dans l'ADR) ; contestation bancaire : montant de la banque, écart
+  `writtenOffCredits` sur la commande, jamais dans le ledger ; type
+  d'écriture `REFUND` ; ouverture de litige sans effet, seul le résultat
+  agit ; écriture compensatoire même contre un compte pseudonymisé.
 - Acceptation : tests de chaque transition ; UI admin.
 
 ### V4.5-163 — Essai public, cohortes et anti-abus
@@ -556,6 +562,7 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-181 | C | Frontend → Head of AI | Page confidentialité générée au build (supprimer le couplage document ↔ module surveillé par test) | après le pilote |
 | V4.5-182 | C | Frontend → Backend/Data | Validation à la frontière client (`zod/mini`, +4,8 Ko, budget intact) ; forme inconnue ⇒ état d'erreur, jamais un rendu partiel — livré `83cb5e77` | — |
 | V4.5-183 | C | Frontend → DevOps | Instruire l'écart de bundle (252 Ko / seuil diagnostic 150 Ko) : rapport chiffré, proposition, aucun changement de seuil | 182 |
+| V4.5-184 | B | Backend/Data → Architecture/Produit | Stripe : ADR_004 amendé sur place, adaptateur Stripe derrière l'interface (`LEARNX_PAYMENTS_PROVIDER`, défaut `stripe`), passe test-mode réelle ; décision `owner-payment-provider-stripe-2026-08-29` | 162 |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
