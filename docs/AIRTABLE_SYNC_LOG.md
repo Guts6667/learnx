@@ -281,3 +281,20 @@ l'autorisation.
 - V4.5-113 : `DRAFT` → `READY` (voie C, partie indépendante de 110).
 - Répartition par voie consignée dans `V4_5_BACKLOG.md`. Aucun autre champ
   modifié ; chaque enregistrement relu après mutation.
+
+## 29 août 2026 — voies A et C : premiers merges
+
+- V4.5-101 : `READY` → `REVIEW` (changements demandés : persistance/replay)
+  → `QA` → `DONE`, PR #27 mergée dans `dev` (`0d991545`), owner Head of
+  Development, revue Head of AI (2 tours).
+- V4.5-110 : `READY` → `REVIEW` (changements demandés : câblage) → `QA` →
+  `DONE`, PR #29 (`3ea51fc1`). Décision consignée : les corrections stockées
+  avant 110 se résolvent à `LOW` sans score indicatif ; aucune correction
+  réelle n'existe en production, aucun historique n'est donc réécrit.
+- V4.5-113 : `READY` → `REVIEW` (partie 1 acceptée, 17b619ae ; merge après
+  rebase sur 110, partie 2 dans le même SHA).
+- V4.5-150 : `DRAFT` → `READY` → `QA` (accepté, 37784a55 ; merge après 113).
+- V4.5-111 : description complétée (transport factice `LEARNX_AI_TRANSPORT`,
+  identité vérificateur jumelle, fail-closed, signaux `CHECKER_*`).
+- V4.5-131 : sous-item ajouté (colonne `status` PROVISIONAL vs payload FAILED).
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
