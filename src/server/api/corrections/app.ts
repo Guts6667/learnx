@@ -333,6 +333,22 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     },
   );
 
+  app.get(
+    '/api/admin/ai-corrections/breaker/events',
+    requireCapability('credit.admin.manage'),
+    async (context) => {
+      if (!breaker) {
+        const { prisma } = await import('../../prisma.js');
+        breaker = new PrismaCorrectionBreaker(prisma, ownerAlert());
+      }
+      // The journal is the audit: the current state says a guardrail is open,
+      // this says when it tripped, on what number, whether the owner was told,
+      // and who reopened it the last time. A state without a history cannot
+      // answer whether this has happened before.
+      return context.json({ resource: { events: await breaker.events() } });
+    },
+  );
+
   app.post(
     '/api/admin/ai-corrections/breaker/reopen',
     requireCapability('credit.admin.manage'),

@@ -290,3 +290,56 @@ describe('alerte propriétaire au déclenchement', () => {
     );
   });
 });
+
+describe('taux du déclenchement relus, jamais remesurés', () => {
+  it('rend le taux enregistré sous sa propre cause', async () => {
+    // The window has moved since the trip, so a fresh measurement would answer
+    // "what is it now" where the admin is asking "what tripped this".
+    const { breaker: service } = breaker({
+      latest: {
+        action: 'TRIPPED',
+        createdAt: new Date('2026-08-29T11:00:00.000Z'),
+        rate: 0.62,
+        reason: 'CHECKER_DISAGREEMENT',
+      },
+    });
+
+    await expect(service.status()).resolves.toMatchObject({
+      rates: { checkerDisagreement: null },
+      state: 'OPEN',
+      trippedRates: {
+        checkerDisagreement: 0.62,
+        unusable: null,
+        wrongAtHigh: null,
+      },
+    });
+  });
+
+  it('laisse les autres causes nulles au lieu de les remplir', async () => {
+    const { breaker: service } = breaker({
+      latest: {
+        action: 'TRIPPED',
+        createdAt: new Date('2026-08-29T11:00:00.000Z'),
+        rate: 0.09,
+        reason: 'UNUSABLE_RATE',
+      },
+    });
+
+    const status = await service.status();
+    expect(status.trippedRates.unusable).toBe(0.09);
+    expect(status.trippedRates.checkerDisagreement).toBeNull();
+    expect(status.trippedRates.wrongAtHigh).toBeNull();
+  });
+
+  it('ne rend aucun taux de déclenchement quand le circuit est fermé', async () => {
+    const { breaker: service } = breaker({});
+    await expect(service.status()).resolves.toMatchObject({
+      state: 'CLOSED',
+      trippedRates: {
+        checkerDisagreement: null,
+        unusable: null,
+        wrongAtHigh: null,
+      },
+    });
+  });
+});

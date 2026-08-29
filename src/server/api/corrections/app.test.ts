@@ -297,16 +297,23 @@ describe('transport factice câblé (V4.5-116)', () => {
   });
 });
 
+const closedStatus = {
+  evaluationError: null,
+  rates: { checkerDisagreement: null, unusable: null, wrongAtHigh: null },
+  reason: null,
+  state: 'CLOSED' as const,
+  thresholds: BREAKER_THRESHOLDS,
+  trippedAt: null,
+  trippedRates: {
+    checkerDisagreement: null,
+    unusable: null,
+    wrongAtHigh: null,
+  },
+  window: { observed: 0, size: 50 },
+};
+
 describe('coupe-circuit de correction (V4.5-140)', () => {
-  const closed = {
-    evaluationError: null,
-    rates: { checkerDisagreement: null, unusable: null, wrongAtHigh: null },
-    reason: null,
-    state: 'CLOSED' as const,
-    thresholds: BREAKER_THRESHOLDS,
-    trippedAt: null,
-    window: { observed: 0, size: 50 },
-  };
+  const closed = closedStatus;
 
   function build(overrides: Record<string, unknown> = {}) {
     const reopen = vi.fn(async () => undefined);
@@ -315,6 +322,7 @@ describe('coupe-circuit de correction (V4.5-140)', () => {
       authorization,
       breaker: {
         evaluate: vi.fn(async () => closed),
+        events: vi.fn(async () => []),
         reopen,
         status: vi.fn(async () => closed),
         ...overrides,
@@ -363,5 +371,46 @@ describe('coupe-circuit de correction (V4.5-140)', () => {
     );
     expect(response.status).toBe(400);
     expect(reopen).not.toHaveBeenCalled();
+  });
+});
+
+describe('journal du coupe-circuit (V4.5-143)', () => {
+  const event = {
+    actorId: null,
+    actorName: null,
+    alertError: 'resend refused',
+    alertedAt: null,
+    at: '2026-08-29T12:00:00.000Z',
+    id: 'event-1',
+    kind: 'TRIPPED' as const,
+    note: null,
+    rate: 0.6,
+    reason: 'CHECKER_DISAGREEMENT' as const,
+    threshold: 0.4,
+    windowSize: 50,
+  };
+
+  it('rend le journal, du plus récent au plus ancien', async () => {
+    const app = createCorrectionsApp({
+      authentication: authentication('ADMIN'),
+      authorization,
+      breaker: {
+        evaluate: vi.fn(async () => closedStatus),
+        events: vi.fn(async () => [event]),
+        reopen: vi.fn(async () => undefined),
+        status: vi.fn(async () => closedStatus),
+      },
+    });
+
+    const response = await app.request(
+      '/api/admin/ai-corrections/breaker/events',
+    );
+
+    expect(response.status).toBe(200);
+    // The undelivered alert is part of the record: a journal that showed only
+    // the trip would hide that nobody was told about it.
+    await expect(response.json()).resolves.toEqual({
+      resource: { events: [event] },
+    });
   });
 });
