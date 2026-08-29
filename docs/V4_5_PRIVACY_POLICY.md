@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (texte à intégrer tel quel par la voie C ;
   toute modification passe par ce document)
-- **Version** : 1.2.0 (adresse de contact support@learn-x.app, redirigée — décision Rayan 29 août 2026 ; publiable après V4.5-147) · **Date** : 29 août 2026 (1.1.0 : sections paiement et
+- **Version** : 1.3.0 (identité de l'éditeur, décision Rayan `owner-editor-identity-2026-08-29` ; publiable après V4.5-147 — mergée)
   échantillonnage retirées tant que 160 et 141 ne sont pas livrés)
 - **Owner** : Head of AI · **Reviewer** : Rayan
 - **Source des faits** : `docs/V4_5_RGPD_AUDIT.md` 1.2.0 (registre,
@@ -27,8 +27,8 @@ entre crochets sont à renseigner par le Propriétaire avant publication.
 
 Dernière mise à jour : 29 août 2026.
 
-**Qui est responsable.** LearnX est édité par [nom / statut / adresse du
-Propriétaire]. Pour toute question ou demande concernant vos données :
+**Qui est responsable.** LearnX est édité par Rayan Chambet, entrepreneur individuel (SIREN 820 401 990), 59 rue de
+Ponthieu, 75008 Paris. Pour toute question ou demande concernant vos données :
 support@learn-x.app.
 
 **Ce que nous collectons.**
@@ -93,8 +93,8 @@ connexion. Aucun cookie de mesure d'audience ni de publicité.
 
 Last updated: 29 August 2026.
 
-**Who is responsible.** LearnX is published by [Owner's name / legal status
-/ address]. For any question or request about your data:
+**Who is responsible.** LearnX is published by Rayan Chambet, sole trader (SIREN 820 401 990), 59 rue de Ponthieu,
+75008 Paris, France. For any question or request about your data:
 support@learn-x.app.
 
 **What we collect.**
