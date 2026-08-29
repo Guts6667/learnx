@@ -6,6 +6,8 @@ export const frenchCorrectionMessages = {
     'Recevez un retour formatif critère par critère sur cette production.',
   'aiCorrection.doctrineNotice':
     'Ce retour est indicatif et n’a aucun effet sur votre progression.',
+  'aiCorrection.privacyLink':
+    'Ce que devient votre texte : politique de confidentialité.',
   'aiCorrection.collectingLabel':
     'Correction en phase de collecte — fiabilité non démontrée',
   'aiCorrection.collectingDescription':
@@ -120,6 +122,7 @@ export const englishCorrectionMessages = {
     'Receive criterion-by-criterion formative feedback on this submission.',
   'aiCorrection.doctrineNotice':
     'This feedback is indicative and does not affect your progress.',
+  'aiCorrection.privacyLink': 'What happens to your text: privacy policy.',
   'aiCorrection.collectingLabel':
     'Correction in data-collection phase — reliability not demonstrated',
   'aiCorrection.collectingDescription':

@@ -1085,3 +1085,52 @@
   padding-top: clamp(2rem, 4vw, 3rem);
   border-top: 0;
 }
+
+/* Politique de confidentialité (V4.5-167). Une colonne de lecture, pas une
+   page marketing : un texte juridique se lit en entier ou pas du tout, donc
+   rien ne vient concurrencer la ligne de texte. */
+.legal-article {
+  display: grid;
+  width: min(100%, 46rem);
+  margin-inline: auto;
+  gap: var(--space-8);
+  padding-block: var(--space-10) var(--space-12);
+}
+
+.legal-article__header {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.legal-article__updated {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+.legal-section {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.legal-section h2 {
+  font-family: var(--font-editorial);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.legal-section p,
+.legal-section li {
+  max-width: 68ch;
+  color: var(--color-text);
+  font-size: var(--text-md);
+  line-height: 1.7;
+}
+
+.legal-section ul {
+  display: grid;
+  margin: 0;
+  gap: var(--space-2);
+  padding-left: var(--space-5);
+  list-style: disc;
+}

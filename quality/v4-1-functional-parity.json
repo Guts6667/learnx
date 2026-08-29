@@ -35,5 +35,7 @@
     "/admin/program/:programId/stage/:stageId",
     "/admin/program/:programId",
     "/admin"
-  ]
+  ],
+  "v45RoutesNote": "Routes ajoutées après la release V4.1, chacune revue comme une décision (cf. V4_5_BACKLOG.md). La liste `routes` ci-dessus reste la surface V4.1 et ne bouge pas ; V4.5-151 repointera le contrat sur le SHA de release V4.5 et videra cette liste.",
+  "v45Routes": ["/confidentialite", "/privacy"]
 }

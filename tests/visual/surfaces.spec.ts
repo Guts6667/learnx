@@ -37,6 +37,7 @@ async function settle(page: Page) {
 
 const publicSurfaces = [
   { name: 'landing', path: '/' },
+  { name: 'privacy-policy', path: '/confidentialite' },
   { name: 'login', path: '/login' },
   { name: 'request-access', path: '/request-access' },
   { name: 'not-found', path: '/cette-route-nexiste-pas' },
