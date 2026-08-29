@@ -1,6 +1,5 @@
 import { Prisma } from '../../../generated/prisma/client.js';
 import type { RuntimeCorrectionAttempt } from './correction-orchestration-contracts.js';
-import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 
 export function toAttemptOutcomeData(
   attempt: RuntimeCorrectionAttempt,
@@ -17,9 +16,13 @@ export function toAttemptOutcomeData(
     errorCode: attempt.errorCode,
     generationId: attempt.providerRequestId,
     latencyMs: attempt.latencyMs,
-    modelId: attempt.modelSnapshot ?? PROMOTED_CORRECTION_IDENTITY.modelId,
+    // Left undefined rather than defaulted, so Prisma skips the field and the
+    // identity written at call intent survives. Defaulting here would rewrite a
+    // checker attempt as corrector spend whenever the response carried no
+    // model snapshot.
+    modelId: attempt.modelSnapshot,
     promptTokens: attempt.inputTokens,
-    provider: attempt.providerRoute ?? PROMOTED_CORRECTION_IDENTITY.provider,
+    provider: attempt.providerRoute,
     providerRequestId: attempt.providerRequestId,
     rawOutput:
       attempt.status === 'FAILED' && attempt.output !== undefined

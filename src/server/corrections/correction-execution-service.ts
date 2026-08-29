@@ -28,7 +28,10 @@ import {
   failedAttempt,
   successfulAttempt,
 } from './correction-runtime-attempts.js';
-import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
+import {
+  PROMOTED_CHECKER_IDENTITY,
+  PROMOTED_CORRECTION_IDENTITY,
+} from './promoted-identity.js';
 import { buildRuntimeCorrectionMessages } from './runtime-correction-prompt.js';
 
 interface ResolvedGeneration {
@@ -196,7 +199,13 @@ export class CorrectionExecutionService {
     // The score guard used to fire here, asking the same model to answer again
     // near the pass mark and treating agreement as reassurance. It is replaced
     // by one independent check of the evidence, which can disagree.
-    const verdicts = await this.verify(input.contract, primary);
+    const verdicts = await this.verify({
+      attempts,
+      contract: input.contract,
+      correctionId: input.correctionId,
+      primary,
+      usage,
+    });
     return {
       attempts,
       correction: buildCorrectionOutcome({
@@ -215,24 +224,64 @@ export class CorrectionExecutionService {
    * at MEDIUM. Letting a checker failure fail the correction would make the
    * guard more dangerous than its absence.
    */
-  private async verify(
-    contract: CorrectionContract,
-    primary: ResolvedGeneration,
-  ): Promise<Record<string, CheckerVerdict>> {
-    const questions = buildCheckerQuestions(contract, primary.output);
-    if (!this.checker || questions.length === 0) {
-      return Object.fromEntries(
+  private async verify(input: {
+    attempts: RuntimeCorrectionAttempt[];
+    contract: CorrectionContract;
+    correctionId: string;
+    primary: ResolvedGeneration;
+    usage: UsageTracker;
+  }): Promise<Record<string, CheckerVerdict>> {
+    const questions = buildCheckerQuestions(
+      input.contract,
+      input.primary.output,
+    );
+    const unavailable = (): Record<string, CheckerVerdict> =>
+      Object.fromEntries(
         questions.map((question) => [question.criterionKey, 'UNAVAILABLE']),
       );
-    }
-    try {
-      const outcome = await this.checker.verify({ questions });
-      return outcome.verdicts;
-    } catch {
-      return Object.fromEntries(
-        questions.map((question) => [question.criterionKey, 'UNAVAILABLE']),
-      );
-    }
+    if (!this.checker || questions.length === 0) return unavailable();
+
+    // The checker's call is recorded like any other, under its own role. Its
+    // spend was previously measured and dropped, so a correction's recorded
+    // cost understated what was actually spent and V4.5-114 had no checker
+    // figure to price a ceiling from.
+    const sequence = input.attempts.length + 1;
+    await this.corrections.recordAttemptIntent({
+      correctionId: input.correctionId,
+      identity: {
+        modelId: PROMOTED_CHECKER_IDENTITY.modelId,
+        provider: PROMOTED_CHECKER_IDENTITY.provider,
+        role: 'CORRECTION_CHECKER',
+      },
+      sequence,
+    });
+
+    // A checker that throws is the same as one that answers UNAVAILABLE: the
+    // attempt is still recorded, so the call is not invisible in the ledger.
+    const outcome = await this.checker.verify({ questions }).catch(() => null);
+
+    const attempt: RuntimeCorrectionAttempt = {
+      ...(outcome?.costUsd == null ? {} : { actualCostUsd: outcome.costUsd }),
+      ...(outcome?.unavailableReason == null
+        ? {}
+        : { errorCode: outcome.unavailableReason }),
+      ...(outcome?.latencyMs == null ? {} : { latencyMs: outcome.latencyMs }),
+      modelSnapshot: PROMOTED_CHECKER_IDENTITY.modelId,
+      ...(outcome?.providerRoute == null
+        ? {}
+        : { providerRoute: outcome.providerRoute }),
+      sequence,
+      status:
+        outcome && outcome.unavailableReason === null ? 'SUCCEEDED' : 'FAILED',
+    };
+    input.attempts.push(attempt);
+    input.usage.add(attempt.actualCostUsd);
+    await this.corrections.recordAttemptOutcome({
+      attempt,
+      correctionId: input.correctionId,
+    });
+
+    return outcome?.verdicts ?? unavailable();
   }
 
   private async callModel(input: {

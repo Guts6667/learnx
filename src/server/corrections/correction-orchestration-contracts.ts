@@ -127,6 +127,12 @@ export interface CorrectionPersistencePort {
   markReconciliationRequired(input: { correctionId: string }): Promise<void>;
   recordAttemptIntent(input: {
     correctionId: string;
+    /**
+     * Which model is about to be called. Defaults to the promoted corrector;
+     * the checker passes its own so its spend is attributable rather than
+     * filed under the primary's identity.
+     */
+    identity?: { modelId: string; provider: string; role: string };
     sequence: number;
   }): Promise<void>;
   recordAttemptOutcome(input: {
