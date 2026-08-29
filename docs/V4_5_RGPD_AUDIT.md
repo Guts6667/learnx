@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (ticket V4.5-165, partie IA) ·
   partie paiement `EN_ATTENTE` (V4.5-160)
-- **Version** : 1.3.0 (décision effacement `owner-erasure-2026-08-29` : pseudonymisation, textes conservés)
+- **Version** : 1.4.0 (empreintes IP, marqueur anti-abus — V4.5-147/163)
 - **Date** : 29 août 2026
 - **Owner** : Architecture/Produit (Head of AI) · **Reviewer** : Rayan
 - **Autorité supérieure** : `ADR_003` §7, `docs/V4_5_AI_QUALITY_CONTRACT.md`
@@ -39,9 +39,17 @@ Ce qui **ne quitte jamais** LearnX (ADR_003 §7.2, vérifié dans
 `runtime-correction-prompt.ts` et `correction-checker.ts`) : e-mail, nom, rôle,
 solde, autres notes, autres programmes, historique non requis.
 
-Ce qui n'est **pas collecté** : adresse IP et user-agent ne figurent dans
-aucun modèle Prisma (`identity-access.prisma`) ; le rate-limit de connexion
-est indexé par e-mail normalisé et purgé sous 24 h.
+Adresse IP : **jamais en clair**. Correction du 29 août 2026 (constat voie
+A) : les limites de tentatives (`access-request-rate-limit.ts`,
+`auth/app.ts`) stockent une empreinte SHA-256 **non salée** de l'IP —
+réversible par table précalculée sur l'espace IPv4 — purgée sous 24 h.
+V4.5-147 la remplace par un HMAC sous secret serveur ; la politique ne parle
+d'« empreinte non réversible » qu'à partir de là.
+
+| T8 | Anti-abus de l'essai gratuit (V4.5-163) | marqueur HMAC par compte/IP, cycles d'attribution | Intérêt légitime (prévention de la fraude) | LearnX | **12 mois** depuis le dernier contact, purge `cleanup-expired-data` ; **survit à l'effacement** (sinon la suppression de compte redonnerait un essai) — nommé dans la politique |
+| --- | --- | --- | --- | --- | --- |
+
+User-agent : non collecté.
 
 ## 3. Sous-traitants et destinataires
 

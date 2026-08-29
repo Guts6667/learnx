@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (texte à intégrer tel quel par la voie C ;
   toute modification passe par ce document)
-- **Version** : 1.1.1 (effacement : pseudonymisation explicite) · **Date** : 29 août 2026 (1.1.0 : sections paiement et
+- **Version** : 1.1.2 (empreinte IP et marqueur anti-abus ; publiable seulement après V4.5-147) · **Date** : 29 août 2026 (1.1.0 : sections paiement et
   échantillonnage retirées tant que 160 et 141 ne sont pas livrés)
 - **Owner** : Head of AI · **Reviewer** : Rayan
 - **Source des faits** : `docs/V4_5_RGPD_AUDIT.md` 1.2.0 (registre,
@@ -41,8 +41,10 @@ Propriétaire]. Pour toute question ou demande concernant vos données :
   soumettez, le retour produit, vos votes « utile / faux » sur chaque
   critère, et les crédits utilisés.
 - Les journaux techniques nécessaires au fonctionnement du service (erreurs,
-  limitation des tentatives de connexion). Nous n'enregistrons ni votre
-  adresse IP ni votre navigateur dans notre base de données.
+  limitation des tentatives). Pour limiter les abus, nous conservons une
+  **empreinte non réversible** de votre adresse IP pendant 24 heures, et un
+  marqueur anti-abus lié à l'essai gratuit pendant 12 mois ; nous
+  n'enregistrons pas votre adresse IP en clair ni votre navigateur.
 
 **Pourquoi.** Faire fonctionner votre parcours, vous proposer la prochaine
 action utile, produire un retour formatif sur vos réponses, sécuriser votre
@@ -75,7 +77,9 @@ réponses et les retours produits sont conservés sous un pseudonyme
 irréversible : ils ne sont plus rattachés à votre compte, mais si vous y
 avez écrit des éléments vous concernant, ils peuvent rester des données
 personnelles au sens du RGPD. L'historique des crédits est conservé sans
-identifiant, comme la loi comptable l'exige. Vous pouvez introduire une
+identifiant, comme la loi comptable l'exige, et le marqueur anti-abus de
+l'essai gratuit survit à la suppression pendant 12 mois, afin qu'un compte
+supprimé ne redonne pas droit à un nouvel essai. Vous pouvez introduire une
 réclamation auprès de la CNIL (cnil.fr).
 
 **Cookies.** LearnX utilise uniquement un cookie de session, nécessaire à la
@@ -102,8 +106,10 @@ Last updated: 29 August 2026.
 - If you use AI-assisted correction: the text you submit, the feedback
   produced, your "helpful / wrong" votes on each criterion, and the credits
   used.
-- The technical logs needed to run the service (errors, login rate
-  limiting). We do not store your IP address or browser in our database.
+- The technical logs needed to run the service (errors, rate limiting). To
+  limit abuse, we keep a **non-reversible fingerprint** of your IP address
+  for 24 hours, and an anti-abuse marker tied to the free trial for 12
+  months; we do not store your IP address in clear or your browser.
 
 **Why.** To run your learning path, suggest the next useful action, give
 formative feedback on your answers, secure your account, and improve the
@@ -133,7 +139,9 @@ name, notes and sessions. Your answers and the feedback produced are kept
 under an irreversible pseudonym: they are no longer linked to your account,
 but if you wrote things about yourself in them, they may remain personal
 data under the GDPR. The credit history is kept without identifiers, as
-accounting law requires. You may
+accounting law requires, and the free-trial anti-abuse marker survives
+deletion for 12 months so that deleting an account does not grant a new
+trial. You may
 lodge a complaint with the CNIL (cnil.fr) or your local supervisory
 authority.
 
