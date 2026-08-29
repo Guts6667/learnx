@@ -78,10 +78,7 @@ export function LessonContextHeader({
               ? `${t('learning.lesson')} · ${lesson.title}`
               : t('learning.lesson')}
           </p>
-          <h1
-            className="mt-2 break-words text-3xl font-bold tracking-tight"
-            id="lesson-title"
-          >
+          <h1 className="page-title break-words" id="lesson-title">
             {activityTitle ?? lesson.title}
           </h1>
         </div>

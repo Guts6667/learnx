@@ -64,7 +64,7 @@
   right: 0;
   width: 2.75rem;
   height: 2.75rem;
-  background: var(--color-direction);
+  background: var(--color-coral);
   clip-path: polygon(100% 0, 100% 100%, 0 0);
   content: '';
   pointer-events: none;
@@ -887,13 +887,6 @@
 
 .totem-credit-balances {
   padding-inline: clamp(1.25rem, 4vw, 2rem);
-}
-
-.totem-product-surface h2,
-.totem-product-surface h3,
-.totem-admin-surface h2,
-.totem-admin-surface h3 {
-  font-weight: 500;
 }
 
 @media (min-width: 64rem) {

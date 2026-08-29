@@ -29,27 +29,28 @@
 :root {
   --color-canvas: #f6f7fb;
   --color-surface: #ffffff;
-  --color-surface-raised: #eef0fd;
+  --color-surface-raised: var(--color-surface-subtle);
   --color-surface-subtle: #eef0fd;
   --color-text: #101b33;
   --color-text-muted: #5b6478;
   --color-border: #e4e6f0;
   --color-border-strong: #c3c7d8;
   --color-control-border: #8491a8;
-  --color-accent: #4f52d9;
-  --color-accent-text: #3e41b8;
+  --color-accent: var(--color-action);
+  --color-accent-text: var(--color-action-hover);
   --color-action: #4f52d9;
   --color-action-hover: #3e41b8;
-  --color-action-soft: #eef0fd;
-  --color-on-action: #ffffff;
-  --color-direction: #d97757;
-  --color-focus: #3e41b8;
-  --color-success: #4f52d9;
+  --color-action-soft: var(--color-surface-subtle);
+  --color-on-action: var(--color-surface);
+  --color-focus: var(--color-action-hover);
+  /* Un état de réussite partage aujourd'hui la couleur de l'action.
+     C'est une question de design ouverte, reportée en V4.3. */
+  --color-success: var(--color-action);
   --color-warning: #8a5a24;
   --color-danger: #9b3e32;
   --color-disabled: #7a8599;
   --color-overlay: rgb(16 27 51 / 58%);
-  --color-ivory: #ffffff;
+  --color-ivory: var(--color-surface);
   --color-coral: #d97757;
   --color-coral-soft: #f7e3da;
 

@@ -75,7 +75,7 @@
 }
 
 .correction-state__notice {
-  border-left: 3px solid var(--color-direction);
+  border-left: 3px solid var(--color-coral);
   padding-left: var(--space-4);
 }
 
@@ -290,14 +290,14 @@
 }
 
 .correction-criterion--unsure {
-  border-left: 3px solid var(--color-direction);
+  border-left: 3px solid var(--color-coral);
   padding-left: var(--space-4);
   background: var(--color-coral-soft);
 }
 
 .correction-result__priority,
 .assessment-result__next {
-  border-left: 4px solid var(--color-direction);
+  border-left: 4px solid var(--color-coral);
   padding: var(--space-5);
   background: var(--color-coral-soft);
 }
@@ -468,7 +468,7 @@
 }
 
 .assessment-result__expected {
-  border-left: 3px solid var(--color-direction);
+  border-left: 3px solid var(--color-coral);
   padding-left: var(--space-4);
   color: var(--color-text) !important;
 }

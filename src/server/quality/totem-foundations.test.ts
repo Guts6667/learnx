@@ -72,6 +72,22 @@ describe('Totem visual foundations', () => {
     );
   });
 
+  it('defines each brand colour exactly once', () => {
+    // Five hex values were written thirteen times between them, which is how
+    // the five token layers drifted apart before V4.2 merged them. A role may
+    // reference another role, but a literal must appear once.
+    const root = stylesheet.slice(
+      stylesheet.indexOf(':root {'),
+      stylesheet.indexOf('body {'),
+    );
+    const counts = new Map<string, number>();
+    for (const match of root.matchAll(/:\s*(#[0-9a-f]{6});/g)) {
+      counts.set(match[1], (counts.get(match[1]) ?? 0) + 1);
+    }
+    const duplicated = [...counts.entries()].filter(([, count]) => count > 1);
+    expect(duplicated).toEqual([]);
+  });
+
   it('loads the approved DM Sans family and Totem component geometry', () => {
     expect(stylesheet).toContain('dm-sans-latin-400-normal.woff2');
     expect(stylesheet).toContain('dm-sans-latin-500-normal.woff2');
