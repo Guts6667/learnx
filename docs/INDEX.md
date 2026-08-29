@@ -50,7 +50,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Séparation du runner de benchmark V4.1 | `docs/V4_1_404_BENCHMARK_RUNNER_SPLIT.md` | Frontières library/CLI, invariants de parité et dette scientifique P2 explicitement conservée |
 | Handoff et fermeture de dette V4.1 | `docs/qa/V4_1_503_HANDOFF.md` | Preuve du découpage du noyau d'agrégation, goldens et consolidation documentaire |
 | Candidat de release V4.1 | `docs/qa/V4_1_504_RELEASE_CANDIDATE.md` | SHA et preview candidats, preuves automatiques, recette propriétaire et règle de GO/rollback |
-| Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md` | Fermé jusqu'au GO explicite V4.1-504 ; nouvelle génération IA, évaluations textuelles, calibration, essai et paiement |
+| Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md`, puis `docs/V4_5_AI_QUALITY_CONTRACT.md` | Ouvert depuis le GO V4.1-504 (29 août 2026) ; tickets `V4.5-1xx`, contrat qualité, évaluations textuelles, calibration, essai et paiement ; release après V4.2/V4.3 |
 | Exploration V5 | `V5_CANDIDATES.md` | Conception guidée et analytics restent des candidats sans ticket activable |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |

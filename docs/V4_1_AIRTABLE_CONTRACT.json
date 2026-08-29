@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "baseId": "app8IaHD1sJtI83WT",
   "tableId": "tblpSbdB7K4MioyJq",
   "interfaceId": "pbdEbIxppEhMMEwsM",
@@ -52,7 +52,12 @@
     "Refactor technique",
     "Qualité/Release"
   ],
-  "releaseValues": ["V4.1", "V4.5", "V5", "Archive V4"],
+  "releaseValues": [
+    "V4.1",
+    "V4.5",
+    "V5",
+    "Archive V4"
+  ],
   "pages": [
     {
       "id": "pagy6L1WyLSf9DAxy",
@@ -125,6 +130,14 @@
       "name": "Archive V4",
       "visualization": "list",
       "filter": "Release = Archive V4 AND Statut = DONE",
+      "published": true
+    },
+    {
+      "id": "pagQ98siiH1Ud298H",
+      "name": "V4.5 — Maintenant",
+      "visualization": "kanban",
+      "filter": "Release = V4.5 AND Statut != DONE",
+      "groupBy": "Statut",
       "published": true
     }
   ],

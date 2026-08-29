@@ -253,3 +253,18 @@ l'autorisation.
 - V4.5-141 : `Arbitrage Rayan = Rayan A` — ré-analyse anonymisée, plafond
   2 USD/semaine ; statut `DRAFT`.
 - Chaque enregistrement a été relu après mutation ; aucun autre ticket modifié.
+
+## 29 août 2026 — clôture V4.5-100, ouverture 101/110, page kanban V4.5
+
+- V4.5-100 : `REVIEW` → `DONE`, PR #22 mergée dans `dev` (`e59ff287`) ;
+  `Commit source`, `Preuves QA` et `Blocage courant` mis à jour.
+- V4.5-101 et V4.5-110 : `DRAFT` → `READY` (dépendance V4.5-100 close),
+  `Blocage courant` = aucun.
+- V4.5-111, V4.5-121, V4.5-141 : `Arbitrage Rayan = Rayan A` (voir entrée
+  précédente) ; statuts inchangés.
+- Interface : page **« V4.5 — Maintenant »** (`pagQ98siiH1Ud298H`, kanban,
+  `Release = V4.5 AND Statut != DONE`, groupée par `Statut`) créée et publiée
+  par le propriétaire, enregistrée dans `docs/V4_1_AIRTABLE_CONTRACT.json`
+  1.1.0. Aucune autre page modifiée.
+- Relecture : les quatre enregistrements relus après mutation ; aucun autre
+  ticket modifié.
