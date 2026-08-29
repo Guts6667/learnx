@@ -77,6 +77,37 @@ function resolveGeneration(input: {
   }
 }
 
+/**
+ * The reconsideration prompt embeds the previous correction verbatim through
+ * `JSON.stringify`. The confidence labels V4.5-110 derives are the server's
+ * judgement *about* that correction, not part of it, and they must not reach
+ * the model for two reasons.
+ *
+ * The prompt is pinned by the promoted identity: changing what it carries is a
+ * prompt change requiring re-promotion, not a refactor. And a reexamination
+ * told which criteria we already rated LOW is anchored towards revising exactly
+ * those, which is the opposite of the independent second look the prompt asks
+ * for.
+ *
+ * Deleting from a spread copy rather than rebuilding a whitelist keeps the
+ * remaining keys in their original order, so the serialised prompt stays
+ * byte-identical to what was promoted.
+ */
+function withoutDerivedConfidence(
+  correction: OrchestratedCorrectionResult['correction'],
+): unknown {
+  const stripped: Record<string, unknown> = {
+    ...correction,
+    criteria: correction.criteria.map((criterion) => {
+      const item: Record<string, unknown> = { ...criterion };
+      delete item.confidence;
+      return item;
+    }),
+  };
+  delete stripped.overallConfidence;
+  return stripped;
+}
+
 export class CorrectionExecutionService {
   public constructor(
     private readonly corrections: CorrectionPersistencePort,
@@ -99,8 +130,9 @@ export class CorrectionExecutionService {
         ? {
             reconsideration: {
               argument: input.quote.reconsideration.argument,
-              previousCorrection:
+              previousCorrection: withoutDerivedConfidence(
                 input.quote.reconsideration.previousCorrection,
+              ),
             },
           }
         : {}),

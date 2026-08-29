@@ -6,6 +6,10 @@ import type {
   OrchestratedCorrectionResult,
   RuntimeCorrectionAttempt,
 } from './correction-orchestration';
+import {
+  withStoredConfidence,
+  type StoredCorrection,
+} from './correction-outcome.js';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 import { RUNTIME_RECONSIDERATION_PROMPT_VERSION } from './runtime-correction-prompt.js';
 import { PrismaCorrectionHistoryRepository } from './prisma-correction-history.js';
@@ -180,7 +184,7 @@ export class PrismaCorrectionOrchestrationPorts {
         return { state: 'RECONCILIATION_REQUIRED' } as const;
       }
       const structured = (correction.structuredResult ?? {}) as {
-        correction?: OrchestratedCorrectionResult['correction'];
+        correction?: StoredCorrection;
         settlement?: OrchestratedCorrectionResult['settlement'];
       };
       if (
@@ -191,7 +195,7 @@ export class PrismaCorrectionOrchestrationPorts {
         return { state: 'RECONCILIATION_REQUIRED' } as const;
       }
       const result: OrchestratedCorrectionResult = {
-        correction: structured.correction,
+        correction: withStoredConfidence(structured.correction),
         settlement: structured.settlement,
         replay: true,
       };

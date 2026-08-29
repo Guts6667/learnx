@@ -37,10 +37,12 @@ function buildResult(): OrchestratedCorrectionResult {
           evidenceStatus: 'FOUND',
           evidenceQuotes: ['Je retiens l’option locale.'],
           feedback: 'Décision explicite.',
+          confidence: 'MEDIUM',
         },
       ],
       unsureCriteria: [],
       unsureCriterionDetails: [],
+      overallConfidence: 'MEDIUM',
       overallFeedback: 'Note claire.',
       indicativeScore: 100,
       secondPassRequired: false,
@@ -96,6 +98,22 @@ describe('corrections api (V4-009/V4-010)', () => {
     expect(body.resource.correction.replay).toBe(false);
     expect(body.resource.correction.correction.id).toBe('correction-1');
     expect(orchestration.runAcceptedQuote).not.toHaveBeenCalled();
+  });
+
+  it('exposes the derived confidence on the correction and each criterion', async () => {
+    // Lane C reads these two fields to decide what it may show. They are the
+    // server's judgement, derived from checkable facts; the model's own
+    // `confidence` number must never appear in a learner payload.
+    const response = await app().request(
+      '/api/exercise-submissions/0286768e-5b9c-491b-a4f4-f2e6863ef398/ai-corrections/latest',
+    );
+    const body = (await response.json()) as {
+      resource: { correction: OrchestratedCorrectionResult };
+    };
+    const { correction } = body.resource.correction;
+    expect(correction.overallConfidence).toBe('MEDIUM');
+    expect(correction.criteria).toHaveLength(1);
+    expect(correction.criteria[0]?.confidence).toBe('MEDIUM');
   });
 
   it('rejects an invalid submission id before querying history', async () => {

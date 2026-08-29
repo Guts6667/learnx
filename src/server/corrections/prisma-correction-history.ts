@@ -1,4 +1,8 @@
 import type { PrismaClient } from '../../../generated/prisma/client.js';
+import {
+  withStoredConfidence,
+  type StoredCorrection,
+} from './correction-outcome.js';
 import type {
   CorrectionHistoryEntry,
   OrchestratedCorrectionResult,
@@ -10,7 +14,7 @@ function settledResult(correction: {
 }): OrchestratedCorrectionResult | null {
   if (!correction.creditReservation) return null;
   const structured = (correction.structuredResult ?? {}) as {
-    correction?: OrchestratedCorrectionResult['correction'];
+    correction?: StoredCorrection;
     settlement?: OrchestratedCorrectionResult['settlement'];
   };
   if (!structured.correction || !structured.settlement) return null;
@@ -22,7 +26,7 @@ function settledResult(correction: {
     return null;
   }
   return {
-    correction: structured.correction,
+    correction: withStoredConfidence(structured.correction),
     replay: true,
     settlement: structured.settlement,
   };
