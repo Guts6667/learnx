@@ -16,6 +16,7 @@ import { moduleRunsApp } from './module-runs/app.js';
 import { notesApp } from './notes/app.js';
 import { curriculumApp } from './programs/app.js';
 import { progressApp } from './progress/app.js';
+import { createCheckoutRoute } from './credits/checkout-route.js';
 import { paymentsApp } from './payments/app.js';
 import { publicLeadsApp } from './public-leads/app.js';
 import { quizzesApp } from './quizzes/app.js';
@@ -54,6 +55,7 @@ function createApiApp() {
   app.route('/', curriculumApp);
   app.route('/', progressApp);
   app.route('/', paymentsApp);
+  app.route('/', createCheckoutRoute());
   app.route('/', publicLeadsApp);
   app.route('/', conceptsApp);
   app.route('/', conceptAssessmentsApp);

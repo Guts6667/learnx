@@ -13,10 +13,43 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
 
   return {
     async applyTransition(input) {
+      if (!input.attributeCredits) {
+        await prisma.paymentOrder.update({
+          data: { status: input.status },
+          where: { id: input.orderId },
+        });
+        return;
+      }
+
+      const order = await prisma.paymentOrder.findUniqueOrThrow({
+        select: { creditLotId: true, packKey: true, userId: true },
+        where: { id: input.orderId },
+      });
+      // Already granted: the lot id on the order is the first of two guards,
+      // and the ledger's own idempotency below is the second. Neither alone
+      // would be enough under a concurrent redelivery.
+      if (order.creditLotId) return;
+
+      const pack = await prisma.creditPack.findUniqueOrThrow({
+        select: { credits: true },
+        where: { key: order.packKey },
+      });
+      const { PrismaCreditLedger } =
+        await import('../credits/prisma-credit-ledger.js');
+      const result = await new PrismaCreditLedger(prisma).grant({
+        amount: pack.credits,
+        // Derived from the order, so a redelivery computes the same key and
+        // the ledger returns the original lot instead of creating a second.
+        idempotencyKey: `purchase:${input.orderId}`,
+        provenance: 'PURCHASED',
+        reference: { id: input.orderId, type: 'PAYMENT_ORDER' },
+        userId: order.userId,
+      });
       await prisma.paymentOrder.update({
         data: {
+          creditLotId: result.lotId,
+          fulfilledAt: new Date(),
           status: input.status,
-          ...(input.attributeCredits ? { fulfilledAt: new Date() } : {}),
         },
         where: { id: input.orderId },
       });

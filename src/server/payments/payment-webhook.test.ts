@@ -65,26 +65,27 @@ function run(
 }
 
 describe('handleRevolutWebhook', () => {
-  it('applique une transition et n’attribue pas sur un simple paiement', async () => {
-    // PAID is the money arriving. FULFILLED is us deciding it counts.
+  it('attribue les crédits sur PAID et honore dans le même geste', async () => {
+    // An order that reached PAID and stopped would be money taken with nothing
+    // given, waiting on an event the provider has no reason to send.
     const harness = build();
     await expect(run(harness)).resolves.toEqual({
-      attributed: false,
-      kind: 'APPLIED',
-      status: 'PAID',
-    });
-  });
-
-  it('attribue les crédits à la première arrivée en FULFILLED', async () => {
-    const harness = build({ order: { id: 'order-1', status: 'PAID' } });
-    await expect(
-      run(harness, payloadFor({ event: 'ORDER_FULFILLED', event_id: 'evt_2' })),
-    ).resolves.toEqual({
       attributed: true,
       kind: 'APPLIED',
       status: 'FULFILLED',
     });
-    expect(harness.applied[0]).toMatchObject({ attributeCredits: true });
+    expect(harness.applied[0]).toMatchObject({
+      attributeCredits: true,
+      status: 'FULFILLED',
+    });
+  });
+
+  it('ignore un FULFILLED du fournisseur après notre attribution', async () => {
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+    await expect(
+      run(harness, payloadFor({ event: 'ORDER_FULFILLED', event_id: 'evt_2' })),
+    ).resolves.toEqual({ kind: 'OUT_OF_ORDER' });
+    expect(harness.applied).toEqual([]);
   });
 
   it('n’attribue rien deux fois sur un événement rejoué', async () => {

@@ -4,6 +4,17 @@
 n'existent pas, l'intégration est développée et vérifiée contre des
 enregistrements figés ; cette passe est la dernière étape et n'a pas été jouée.
 
+## Ce que cette passe doit établir en premier
+
+**Quels événements Revolut envoie réellement.** Toute l'attribution en dépend :
+LearnX crédite à la réception de « payé » et marque lui-même la commande comme
+honorée, parce que le fournisseur n'a aucune raison d'émettre un événement
+d'attribution — il ignore si l'apprenant a reçu ses crédits. Si le nom de
+l'événement de paiement diffère de celui attendu, la commande reste bloquée à
+« en attente » : argent encaissé, rien attribué, et rien qui échoue bruyamment.
+
+C'est le point le plus important de cette passe, avant la forme de la signature.
+
 ## Ce qui est déjà prouvé sans compte
 
 Les propriétés que le fournisseur ne garantit pas sont testées hors ligne, en
