@@ -627,19 +627,6 @@
   background: transparent;
 }
 
-.totem-auth-page .text-white {
-  color: var(--color-text);
-}
-
-.totem-auth-page .text-slate-300,
-.totem-auth-page .text-slate-400 {
-  color: var(--color-text-muted);
-}
-
-.totem-auth-page .text-red-300 {
-  color: var(--color-danger);
-}
-
 @media (max-width: 48rem) {
   .totem-auth-layout {
     display: block;

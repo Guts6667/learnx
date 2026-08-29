@@ -3,7 +3,9 @@ import { navigate as route } from '@/app/navigation';
 import { useEffect } from 'react';
 
 import { Button } from '@/components/ui/Button';
+import { ErrorState } from '@/components/ui/ErrorState';
 import { Spinner } from '@/components/ui/Spinner';
+import { StatePanel } from '@/components/ui/StatePanel';
 import { useSessionQuery } from '@/features/auth/session';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import { normalizeUiLocale, useI18n } from '@/i18n';
@@ -42,18 +44,13 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (!isOnline) {
     return (
-      <section
-        aria-labelledby="offline-private-title"
-        className="mx-auto max-w-md space-y-3 rounded-xl border border-slate-800 bg-slate-900 p-5 text-center"
-        role="status"
+      <StatePanel
+        headingLevel={1}
+        status="safe"
+        title={t('offline.privateTitle')}
       >
-        <h1 className="text-xl font-semibold" id="offline-private-title">
-          {t('offline.privateTitle')}
-        </h1>
-        <p className="text-sm leading-6 text-slate-300">
-          {t('offline.privateDescription')}
-        </p>
-      </section>
+        {t('offline.privateDescription')}
+      </StatePanel>
     );
   }
 
@@ -70,23 +67,19 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (sessionQuery.error) {
     return (
-      <section
-        aria-labelledby="session-retry-title"
-        className="mx-auto max-w-md space-y-4 rounded-xl border border-slate-800 bg-slate-900 p-5 text-center"
-      >
-        <h1 className="text-xl font-semibold" id="session-retry-title">
-          {t('session.errorTitle')}
-        </h1>
-        <p className="text-sm leading-6 text-slate-300">
-          {t('session.errorDescription')}
-        </p>
-        <Button
-          isLoading={sessionQuery.isFetching}
-          onClick={() => void sessionQuery.refetch()}
-        >
-          {t('common.retry')}
-        </Button>
-      </section>
+      <ErrorState
+        action={
+          <Button
+            isLoading={sessionQuery.isFetching}
+            onClick={() => void sessionQuery.refetch()}
+          >
+            {t('common.retry')}
+          </Button>
+        }
+        description={t('session.errorDescription')}
+        headingLevel={1}
+        title={t('session.errorTitle')}
+      />
     );
   }
 

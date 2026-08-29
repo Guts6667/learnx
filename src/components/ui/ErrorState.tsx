@@ -7,6 +7,8 @@ interface ErrorStateProps {
   action?: ReactNode;
   className?: string;
   description: string;
+  /** Use 1 only when this state replaces the whole routed view. */
+  headingLevel?: 1 | 2;
   title?: string;
 }
 
@@ -14,9 +16,11 @@ export function ErrorState({
   action,
   className,
   description,
+  headingLevel = 2,
   title = 'Une erreur est survenue',
 }: ErrorStateProps) {
   const titleId = useId();
+  const Heading = `h${headingLevel}` as const;
 
   return (
     <section
@@ -24,9 +28,9 @@ export function ErrorState({
       className={classNames('ui-feedback ui-feedback--danger', className)}
       role="alert"
     >
-      <h2 className="ui-feedback__title" id={titleId}>
+      <Heading className="ui-feedback__title" id={titleId}>
         {title}
-      </h2>
+      </Heading>
       <p className="ui-feedback__description">{description}</p>
       {action ? <div className="mt-5">{action}</div> : null}
     </section>

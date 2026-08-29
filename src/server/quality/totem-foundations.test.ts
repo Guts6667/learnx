@@ -63,8 +63,12 @@ describe('Totem visual foundations', () => {
     const source = collectSourceFiles(resolve(process.cwd(), 'src'))
       .map((path) => readFileSync(path, 'utf8'))
       .join('\n');
+    // The Totem tokens are the only colour authority. Raw Tailwind palette
+    // classes must never bypass them: a `bg-slate-900` card once shipped into
+    // the authenticated offline state, unreadable on the light canvas and
+    // opted out of the prefers-contrast overrides.
     expect(source).not.toMatch(
-      /(?:text|bg|border)-(?:cyan|emerald|green|teal)-/i,
+      /\b(?:bg|text|border|ring|from|via|to)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}\b/i,
     );
   });
 
