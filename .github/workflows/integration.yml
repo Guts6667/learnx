@@ -9,15 +9,21 @@ on:
 permissions:
   contents: read
 
-# Each run creates a Neon branch against a project quota, so two runs racing on
-# the same ref exhaust it and the second fails with a 422 on branch creation —
-# a failure that reads like a database problem and is really a scheduling one.
+# Each run creates a Neon branch against a project-wide quota that is shared by
+# every branch and every pull request. The group must therefore be GLOBAL, not
+# per-ref: keying it on the PR number or the ref gives each pull request its own
+# group, which serialises a pull request against itself and not at all against
+# the others. On 29 August 2026 four pull requests started within two minutes,
+# each created a branch, and the project hit its ten-branch ceiling — a 422 on
+# branch creation that reads like a database fault and is really a scheduling
+# one. One constant group means one Neon branch in flight at a time.
 #
 # Queued rather than cancelled: this workflow creates an external resource and
 # deletes it in an always() step, so cancelling a run mid-flight risks leaving
-# an orphaned branch behind and making the quota problem permanent.
+# an orphaned branch behind and making the quota problem permanent. The cost is
+# a queue when several lanes are active; the alternative is a red pipeline.
 concurrency:
-  group: integration-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: integration-neon-${{ github.repository }}
   cancel-in-progress: false
 
 jobs:
