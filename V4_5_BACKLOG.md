@@ -433,6 +433,14 @@ l'autorité de définition ; Airtable porte le statut.
   `src/server/payments/revolut-*.ts` derrière une interface ;
   `LEARNX_PAYMENTS_ENABLED=false` par défaut + kill switch ; tables
   `payment_order`, `payment_event` (migration additive, états ADR_003 §6.3).
+- Livré le 29 août 2026 (inerte) avec la route webhook et deux corrections :
+  `PAID` est le dernier mot du fournisseur — l'attribution du lot `PURCHASED`
+  et le passage à `FULFILLED` sont un seul acte transactionnel chez LearnX
+  (`ORDER_FULFILLED` toléré comme no-op) ; kill switch paiement indépendant du
+  coupe-circuit correction (les crédits achetés gardent leur valeur ; le
+  checkout affiche la suspension, ne refuse pas). Passe sandbox réelle en
+  attente du fournisseur choisi par le Propriétaire (Stripe ou Revolut ;
+  adaptateur derrière interface, ADR_004 amendé plutôt que remplacé).
 - Acceptation : tests de signature (valide, altéré, rejoué, désordonné) ;
   aucun secret dans bundle/logs ; sandbox consigné dans
   `docs/qa/V4_5_160_SANDBOX.md` ; aucune clé live.
@@ -546,6 +554,8 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-180 | D | DevOps → Frontend | Gate visuel : plancher absolu `maxDiffPixels` en plus du ratio (un lien entier passe sous 0,05 % d'une page longue) | — |
 | V4.5-163C | A | Backend/Data → IA/Recherche | Déclencheurs de l'attribution d'essai : première période à l'activation (après commit, jamais bloquante), passe quotidienne idempotente `pnpm trial:grant-cycle` (hébergée par 173) — omission nommée, pas décision | 163 |
 | V4.5-181 | C | Frontend → Head of AI | Page confidentialité générée au build (supprimer le couplage document ↔ module surveillé par test) | après le pilote |
+| V4.5-182 | C | Frontend → Backend/Data | Validation à la frontière client (`zod/mini`, +4,8 Ko, budget intact) ; forme inconnue ⇒ état d'erreur, jamais un rendu partiel — livré `83cb5e77` | — |
+| V4.5-183 | C | Frontend → DevOps | Instruire l'écart de bundle (252 Ko / seuil diagnostic 150 Ko) : rapport chiffré, proposition, aucun changement de seuil | 182 |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
