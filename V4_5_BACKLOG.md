@@ -384,6 +384,49 @@ l'autorité de définition ; Airtable porte le statut.
 - Acceptation : chiffres reproductibles depuis les exports ; GO Rayan avant
   tout prix réel.
 
+### Répartition par voie (29 août 2026, décision Propriétaire : V4.3 reportée)
+
+Une voie = un répertoire, une session, un ticket `IN_PROGRESS` à la fois, un
+worktree dédié basé sur `origin/dev`. Un fichier appartient à une seule voie à
+la fois ; les migrations Prisma atterrissent en série (A puis B).
+
+| Voie | Session | Fichiers possédés | Tickets dans l'ordre |
+| --- | --- | --- | --- |
+| A — backend IA | Head of Development | `src/server/corrections/**`, `src/server/ai/**`, `src/server/api/corrections/**`, `src/server/api/exercises/eligibility.ts`, migrations associées | 101 → 110 → 111 → 131 → 130 → 112 (API + migration) → 140 (backend + coupe-circuit) |
+| B — backend commerce | Head of Development après la voie A (ou session dédiée) | `src/server/payments/**`, `src/server/credits/**`, `src/server/pricing/**`, `src/server/api/credits/**`, migrations associées | 160 → 161 → 163 → 162 ; démarre après le merge de 101 |
+| C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/AdminCreditsPage.tsx`, `src/pages/Credits*`, `src/i18n/catalogs/correction.ts`, `tests/e2e/**` | 113 → 112 (UI) → 150 → 140 (UI admin) → 162 (UI admin) → UX-001 |
+| D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub | 174 → 177 → 170 → 178 → 172 → 173 → 176 → 175 → 151 → 132 (après 120–122) |
+| E — recherche IA | session « AI Research » (à ouvrir) | `src/lib/ai-correction-benchmark-*`, `benchmarks/**`, `scripts/run-ai-correction-benchmark.ts`, `docs/V4_5_REGRESSION_SUITE.md`, `public/research/**` | 120 → 122 → 121 → 141 |
+| F — direction IA | Head of AI | docs, ADR, backlog, Airtable, revues | spec 120, 165, 164, revue des voies A et E |
+
+Points de contact inter-voies : `prisma/migrations` (A-112 puis B-160, B-161) ;
+`src/server/credits` (A-101 puis B) ; `AdminCreditsPage.tsx` (C seulement) ;
+`src/lib/ai-correction-benchmark-*` (E jusqu'au merge de 122, puis D-132) ;
+`promoted-identity.ts` (A seulement) ; `docs/INDEX.md`, ce backlog et le
+journal Airtable (append-only, point de merge F).
+
+### V4.5-165 — Audit RGPD, registre des traitements et rétention IA/paiement
+
+- Epic : V4.5-010/012 · Owner : Architecture/Produit (Head of AI) · Reviewer : Rayan ·
+  Deps : V4.5-111 (destinataire Mistral), V4.5-160 (Revolut). Bloque la partie
+  rétention/consentement de V4.5-151 et la partie paiement de V4.5-161.
+- Livrable : `docs/V4_5_RGPD_AUDIT.md` — registre des traitements et
+  sous-traitants (OpenRouter, Anthropic, Mistral, Revolut, Resend, Vercel,
+  Neon) ; rétention effective attestée et affichée (ADR_003 §7.2) ; textes
+  d'information et ligne de consentement (141) ; droits d'accès/suppression
+  cohérents avec le ledger append-only ; décisions nécessitant un conseil
+  externe listées pour le Propriétaire.
+- Acceptation : registre daté et complet ; rétention attestée par fournisseur
+  avec source ; textes FR/EN livrés aux tickets 113/141 ; GO Rayan consigné.
+- Origine : carte Airtable « Faire un audit RGPD » (Archive V4) convertie le
+  29 août 2026.
+
+### Cartes closes le 29 août 2026 (nettoyage du tableau)
+
+Remplacées par des tickets V4.5 : V4-011 (→ 130), V4-013 (→ 160), V4-014
+(→ 161), V4-015 (→ 162), V4-018 (→ 164), V4-018A (→ 163), V4-016G (→ 160/161),
+V4-017 (→ 163/165). Livrées et closes : V4-019-RELEASE, V4.1-504, V4.1-005.
+
 ### Séquence
 
 100 → 101 ∥ 110 → 111 → (112 ∥ 113 ∥ 131) → 120 → 122 → 121 → 130 ∥ 140 →

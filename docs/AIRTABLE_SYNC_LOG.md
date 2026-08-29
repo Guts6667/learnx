@@ -268,3 +268,16 @@ l'autorisation.
   1.1.0. Aucune autre page modifiée.
 - Relecture : les quatre enregistrements relus après mutation ; aucun autre
   ticket modifié.
+
+## 29 août 2026 — nettoyage du tableau et voies V4.5
+
+- Autorisation : « You can clean the board » (Rayan, 29 août 2026).
+- Clos (`DONE`, résumé « Clos le 29 août 2026 (nettoyage V4.5) — … ») :
+  V4-011, V4-013, V4-014, V4-015, V4-018, V4-018A (remplacés par 130, 160,
+  161, 162, 164, 163) ; V4-016G, V4-017 (remplacés par 160/161 et 163/165) ;
+  V4-019-RELEASE, V4.1-504 (publiés) ; V4.1-005 (GO Rayan).
+- Carte « Faire un audit RGPD » (Archive V4) convertie en **V4.5-165**
+  (Release V4.5, `DRAFT`, `Arbitrage Rayan = À faire`).
+- V4.5-113 : `DRAFT` → `READY` (voie C, partie indépendante de 110).
+- Répartition par voie consignée dans `V4_5_BACKLOG.md`. Aucun autre champ
+  modifié ; chaque enregistrement relu après mutation.
