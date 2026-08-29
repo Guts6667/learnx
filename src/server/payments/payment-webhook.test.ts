@@ -1,14 +1,15 @@
 import { handleRevolutWebhook } from './payment-webhook';
-import { signRevolutPayload } from './revolut-webhook-signature';
+import { signStripePayload } from './stripe-webhook-signature';
 
-const SECRET = 'wsk_sandbox_secret';
+const SECRET = 'whsec_test';
 const NOW = new Date('2026-08-29T12:00:00.000Z');
+const SECONDS = Math.floor(NOW.getTime() / 1_000);
 
 function payloadFor(overrides: Record<string, unknown> = {}) {
   return JSON.stringify({
-    event: 'ORDER_COMPLETED',
-    event_id: 'evt_1',
-    order_id: 'ord_1',
+    data: { object: { client_reference_id: 'ord_1' } },
+    id: 'evt_1',
+    type: 'checkout.session.completed',
     ...overrides,
   });
 }
@@ -37,13 +38,13 @@ function build(
       return options.stored ?? true;
     }),
   };
-  return { applied, ports, recorded, options };
+  return { applied, options, ports, recorded };
 }
 
 function run(
   harness: ReturnType<typeof build>,
   payload = payloadFor(),
-  headerOverrides: Record<string, unknown> = {},
+  signingSecret = SECRET,
 ) {
   return handleRevolutWebhook({
     configuration: {
@@ -54,48 +55,34 @@ function run(
     now: NOW,
     ports: harness.ports as never,
     rawPayload: payload,
-    signatureHeader: `v1=${signRevolutPayload({
+    signatureHeader: `t=${SECONDS},v1=${signStripePayload({
       payload,
-      secret: SECRET,
-      timestamp: NOW.getTime(),
+      secret: signingSecret,
+      timestampSeconds: SECONDS,
     })}`,
-    timestampHeader: String(NOW.getTime()),
-    ...headerOverrides,
   });
 }
 
-describe('handleRevolutWebhook', () => {
-  it('attribue les crédits sur PAID et honore dans le même geste', async () => {
-    // An order that reached PAID and stopped would be money taken with nothing
-    // given, waiting on an event the provider has no reason to send.
+describe('réception d’un webhook de paiement', () => {
+  it('attribue sur checkout.session.completed et honore dans le même geste', async () => {
+    // The provider's last word on the money. No processor emits an event about
+    // fulfilment, because none knows whether the learner received credits.
     const harness = build();
     await expect(run(harness)).resolves.toEqual({
       attributed: true,
       kind: 'APPLIED',
       status: 'FULFILLED',
     });
-    expect(harness.applied[0]).toMatchObject({
-      attributeCredits: true,
-      status: 'FULFILLED',
-    });
   });
 
-  it('ignore un FULFILLED du fournisseur après notre attribution', async () => {
-    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
-    await expect(
-      run(harness, payloadFor({ event: 'ORDER_FULFILLED', event_id: 'evt_2' })),
-    ).resolves.toEqual({ kind: 'OUT_OF_ORDER' });
-    expect(harness.applied).toEqual([]);
-  });
-
-  it('n’attribue rien deux fois sur un événement rejoué', async () => {
+  it('n’attribue rien deux fois sur un événement rejeué', async () => {
     // The provider retries; the unique event id is what makes that harmless.
     const harness = build({ stored: false });
     await expect(run(harness)).resolves.toEqual({ kind: 'DUPLICATE' });
     expect(harness.applied).toEqual([]);
   });
 
-  it('ne fait pas régresser une commande sur un événement désordonné', async () => {
+  it('ne fait pas régresser une commande déjà honorée', async () => {
     const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
     await expect(run(harness)).resolves.toEqual({ kind: 'OUT_OF_ORDER' });
     expect(harness.applied).toEqual([]);
@@ -110,11 +97,10 @@ describe('handleRevolutWebhook', () => {
 
   it('refuse une charge utile falsifiée sans jamais la lire', async () => {
     const harness = build();
-    await expect(
-      run(harness, payloadFor(), {
-        rawPayload: payloadFor({ order_id: 'ord_evil' }),
-      }),
-    ).resolves.toEqual({ kind: 'REJECTED', reason: 'SIGNATURE_MISMATCH' });
+    await expect(run(harness, payloadFor(), 'whsec_wrong')).resolves.toEqual({
+      kind: 'REJECTED',
+      reason: 'SIGNATURE_MISMATCH',
+    });
     // Nothing was looked up: an unverified webhook is not data.
     expect(harness.ports.findOrder).not.toHaveBeenCalled();
     expect(harness.recorded).toEqual([]);
@@ -138,6 +124,27 @@ describe('handleRevolutWebhook', () => {
     await expect(run(harness)).resolves.toEqual({ kind: 'UNKNOWN_ORDER' });
     expect(harness.recorded[0]).toMatchObject({ orderId: null });
     expect(harness.applied).toEqual([]);
+  });
+
+  it('enregistre un événement inconnu sans l’appliquer', async () => {
+    // Stripe's vocabulary will grow and must leave orders untouched rather
+    // than corrupt them.
+    const harness = build();
+    await expect(
+      run(harness, payloadFor({ id: 'evt_2', type: 'invoice.upcoming' })),
+    ).resolves.toEqual({ kind: 'OUT_OF_ORDER' });
+    expect(harness.applied).toEqual([]);
+  });
+
+  it('refuse une enveloppe sans référence de commande', async () => {
+    // Guessing here would attach an event to the wrong order.
+    const harness = build();
+    await expect(
+      run(
+        harness,
+        JSON.stringify({ data: { object: {} }, id: 'e', type: 't' }),
+      ),
+    ).resolves.toEqual({ kind: 'REJECTED', reason: 'MALFORMED_PAYLOAD' });
   });
 
   it('refuse un corps illisible après signature valide', async () => {

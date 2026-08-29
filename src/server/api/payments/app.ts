@@ -19,7 +19,10 @@ export function createPaymentsApp(
 ) {
   const app = new Hono();
 
-  app.post('/api/payments/revolut/webhook', async (context) => {
+  // One endpoint for both processors: the path names the feature, not the
+  // vendor, so switching provider does not change a URL configured on their
+  // side and forgotten on ours.
+  app.post('/api/payments/webhook', async (context) => {
     // Read as bytes, never re-serialised: the signature covers what was sent,
     // and JSON.stringify of a parsed body changes key order and whitespace.
     const rawPayload = await context.req.text();
@@ -29,8 +32,8 @@ export function createPaymentsApp(
       now: options.now?.() ?? new Date(),
       ports,
       rawPayload,
-      signatureHeader: context.req.header('revolut-signature') ?? null,
-      timestampHeader: context.req.header('revolut-request-timestamp') ?? null,
+      // Stripe carries its timestamp inside the signature header.
+      signatureHeader: context.req.header('stripe-signature') ?? null,
     });
 
     // A rejected signature answers 400 and says nothing about why: a caller
