@@ -2,6 +2,7 @@ import type {
   CorrectionContract,
   Protocol3CorrectionArtifactOutput,
 } from '../../lib/ai-correction-contracts.js';
+import type { CheckerVerdict } from './correction-checker.js';
 import {
   allowsIndicativeScore,
   deriveCorrectionConfidence,
@@ -23,7 +24,7 @@ const HARD_CONSTRAINT =
 const SCIENTIFICALLY_VALIDATED_FAMILIES: readonly string[] =
   PROMOTED_CORRECTION_IDENTITY.scientificallyValidatedActivityTypeScope;
 
-export function weightedIndicativeScore(
+function weightedIndicativeScore(
   contract: CorrectionContract,
   output: Protocol3CorrectionArtifactOutput,
 ): number {
@@ -96,6 +97,7 @@ function levelPosition(
 function confidenceSignalsFor(
   contract: CorrectionContract,
   item: DeliveredCriterion,
+  verdict: CheckerVerdict,
 ): CriterionConfidenceInput {
   const position = levelPosition(contract, item);
   return {
@@ -111,33 +113,33 @@ function confidenceSignalsFor(
       HARD_CONSTRAINT.test(item.feedback) && position?.isFloorLevel === false,
     isFloorLevel: position?.isFloorLevel ?? false,
     isMasteredLevel: position?.isMasteredLevel ?? false,
-    // The independent verifier arrives in V4.5-111. Until it actually runs,
-    // nothing may be labelled HIGH: an unchecked criterion is not a checked
-    // one, and claiming otherwise would repeat the V4 mistake in a new place.
-    verifier: 'UNAVAILABLE',
+    // The independent checker's answer for this criterion. A criterion it did
+    // not reach is UNAVAILABLE, never AGREED: unchecked is not checked, and
+    // claiming otherwise would repeat the V4 mistake in a new place.
+    verifier: verdict,
   };
 }
 
 export function buildCorrectionOutcome(input: {
   contract: CorrectionContract;
-  forceScoreGuardSecondPass?: boolean;
   output: Protocol3CorrectionArtifactOutput;
   unsureCriteria: string[];
   usageCost: number | null;
+  /** The checker's answer per criterion key. Absent keys are UNAVAILABLE. */
+  verdicts: Record<string, CheckerVerdict>;
 }): OrchestratedCorrectionResult['correction'] {
   const deliveredAll = input.unsureCriteria.length === 0;
   const score = deliveredAll
     ? weightedIndicativeScore(input.contract, input.output)
     : null;
-  const guarded =
-    input.forceScoreGuardSecondPass === true ||
-    (score !== null &&
-      Math.abs(score - input.contract.passingScore) <=
-        PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints);
 
   const delivered = input.output.criteria.map((item) => ({
     item,
-    signals: confidenceSignalsFor(input.contract, item),
+    signals: confidenceSignalsFor(
+      input.contract,
+      item,
+      input.verdicts[item.criterionKey] ?? 'UNAVAILABLE',
+    ),
   }));
   const correctionSignals: CorrectionConfidenceInput = {
     criteria: delivered.map(({ signals }) => signals),
@@ -147,9 +149,14 @@ export function buildCorrectionOutcome(input: {
   };
 
   const monitoringSignals: CorrectionMonitoringSignal[] = [];
-  if (guarded) monitoringSignals.push('SCORE_GUARD_TRIGGERED');
   if (delivered.some(({ signals }) => signals.hardConstraintMismatch)) {
     monitoringSignals.push('HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED');
+  }
+  if (delivered.some(({ signals }) => signals.verifier === 'DISAGREED')) {
+    monitoringSignals.push('CHECKER_DISAGREED');
+  }
+  if (delivered.some(({ signals }) => signals.verifier === 'UNAVAILABLE')) {
+    monitoringSignals.push('CHECKER_UNAVAILABLE');
   }
 
   // A criterion returned as « à retravailler » is LOW by construction: nothing
@@ -163,7 +170,7 @@ export function buildCorrectionOutcome(input: {
 
   return {
     id: '',
-    status: deliveredAll && !guarded ? 'COMPLETED' : 'COMPLETED_PARTIAL',
+    status: deliveredAll ? 'COMPLETED' : 'COMPLETED_PARTIAL',
     criteria: delivered.map(({ item, signals }) => {
       const criterion = input.contract.criteria.find(
         (candidate) => candidate.key === item.criterionKey,
@@ -193,32 +200,31 @@ export function buildCorrectionOutcome(input: {
     })),
     overallFeedback: input.output.overallFeedback,
     overallConfidence,
-    indicativeScore: guarded || !publishesScore ? null : score,
-    secondPassRequired: guarded,
+    indicativeScore: publishesScore ? score : null,
+    // The score guard is gone: it asked the model to re-answer near the pass
+    // mark and trusted the agreement. The field stays false so stored-result
+    // readers keep working; V4.5-131 removes it.
+    secondPassRequired: false,
     modelUsageCostUsd: input.usageCost,
     monitoringSignals,
   };
 }
 
 export function failedCorrection(
-  contract: CorrectionContract,
   usageCost: number | null,
-  guarded: boolean,
 ): OrchestratedCorrectionResult['correction'] {
   return {
     id: '',
     status: 'FAILED',
     criteria: [],
-    unsureCriteria: guarded ? contract.criteria.map(({ key }) => key) : [],
-    unsureCriterionDetails: guarded
-      ? contract.criteria.map(({ key, label }) => ({ key, label }))
-      : [],
+    unsureCriteria: [],
+    unsureCriterionDetails: [],
     overallFeedback: null,
     overallConfidence: 'LOW',
     indicativeScore: null,
-    secondPassRequired: guarded,
+    secondPassRequired: false,
     modelUsageCostUsd: usageCost,
-    monitoringSignals: guarded ? ['SCORE_GUARD_TRIGGERED'] : [],
+    monitoringSignals: [],
   };
 }
 

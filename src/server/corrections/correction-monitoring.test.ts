@@ -20,6 +20,7 @@ describe('PrismaCorrectionMonitoringService', () => {
                 monitoringSignals: [
                   'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED',
                   'SCORE_GUARD_TRIGGERED',
+                  'CHECKER_DISAGREED',
                 ],
                 status: 'COMPLETED_PARTIAL',
               },
@@ -33,7 +34,10 @@ describe('PrismaCorrectionMonitoringService', () => {
               },
             ],
             structuredResult: {
-              correction: { monitoringSignals: [], status: 'COMPLETED' },
+              correction: {
+                monitoringSignals: ['CHECKER_UNAVAILABLE'],
+                status: 'COMPLETED',
+              },
             },
           },
         ]),
@@ -43,6 +47,9 @@ describe('PrismaCorrectionMonitoringService', () => {
     await expect(
       new PrismaCorrectionMonitoringService(prisma).summary(),
     ).resolves.toEqual({
+      // Counted apart so an unconfigured checker never reads as a bad one.
+      checkerDisagreed: 1,
+      checkerUnavailable: 1,
       completed: 1,
       hardConstraintLevelMismatchSuspected: 1,
       partial: 1,

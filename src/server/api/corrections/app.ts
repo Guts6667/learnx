@@ -18,7 +18,12 @@ import {
   type OrchestratedCorrectionResult,
 } from '../../corrections/correction-orchestration.js';
 import { PrismaCorrectionOrchestrationPorts } from '../../corrections/prisma-correction-orchestration-store.js';
-import { PROMOTED_CORRECTION_IDENTITY } from '../../corrections/promoted-identity.js';
+import {
+  PROMOTED_CHECKER_IDENTITY,
+  PROMOTED_CORRECTION_IDENTITY,
+} from '../../corrections/promoted-identity.js';
+import { resolveCorrectionTransportMode } from '../../corrections/correction-transport-mode.js';
+import { createRuntimeCorrectionChecker } from '../../corrections/correction-checker.js';
 import {
   evaluateCorrectionReleasePreflight,
   type CorrectionReleasePreflight,
@@ -149,7 +154,19 @@ async function createDefaultOrchestration(): Promise<Pick<
     credits,
     ports.corrections,
     createRuntimeCorrectionTransport(),
-    { apiKey: configuration.apiKey },
+    {
+      apiKey: configuration.apiKey,
+      // Absent when the environment has no checker assigned: verdicts stay
+      // UNAVAILABLE and corrections cap at MEDIUM rather than failing.
+      ...(configuration.assignments.CORRECTION_CHECKER
+        ? {
+            checker: createRuntimeCorrectionChecker({
+              apiKey: configuration.apiKey,
+              appUrl: configuration.appUrl,
+            }),
+          }
+        : {}),
+    },
   );
 }
 
@@ -179,15 +196,25 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
             readOpenRouterConfiguration({
               deploymentEnvironment: deploymentEnvironment(),
             }),
+            { transport: resolveCorrectionTransportMode() },
           );
         } catch {
+          // Reached when the configuration itself refuses to parse, which
+          // includes a fake transport asked for under production. Reporting
+          // REAL here would be a lie in the one case that matters, but the
+          // configuration is blocked either way, so nothing runs.
           preflight = {
             apiKeyPresent: false,
+            checker: 'UNASSIGNED',
+            checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
+            checkerScientificallyMeasured:
+              PROMOTED_CHECKER_IDENTITY.promotion.scientific,
             deploymentEnvironment: deploymentEnvironment(),
             identityMatches: false,
             killSwitch: true,
             promotedBenchmarkId: PROMOTED_CORRECTION_IDENTITY.benchmarkId,
             state: 'CONFIGURATION_BLOCKED',
+            transport: 'REAL',
           };
         }
       }

@@ -1,9 +1,21 @@
 import type { PrismaClient } from '../../../generated/prisma/client.js';
 
 export type CorrectionMonitoringSignal =
-  'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED' | 'SCORE_GUARD_TRIGGERED';
+  | 'CHECKER_DISAGREED'
+  | 'CHECKER_UNAVAILABLE'
+  | 'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED'
+  | 'SCORE_GUARD_TRIGGERED';
 
 export interface CorrectionMonitoringSummary {
+  /** Corrections where the checker contradicted at least one criterion. */
+  checkerDisagreed: number;
+  /**
+   * Corrections that ran without a usable verdict. A high count with the
+   * checker unassigned is a configuration gap; the same count with it assigned
+   * is a provider problem. The preflight's `checker` field tells them apart, so
+   * a MEDIUM-capped week is never mistaken for a model that went bad.
+   */
+  checkerUnavailable: number;
   completed: number;
   hardConstraintLevelMismatchSuspected: number;
   partial: number;
@@ -33,6 +45,8 @@ export class PrismaCorrectionMonitoringService {
       },
       take: 1_000,
     });
+    let checkerDisagreed = 0;
+    let checkerUnavailable = 0;
     let completed = 0;
     let hardConstraintLevelMismatchSuspected = 0;
     let partial = 0;
@@ -58,6 +72,12 @@ export class PrismaCorrectionMonitoringService {
       if (result?.monitoringSignals?.includes('SCORE_GUARD_TRIGGERED')) {
         scoreGuardTriggered += 1;
       }
+      if (result?.monitoringSignals?.includes('CHECKER_DISAGREED')) {
+        checkerDisagreed += 1;
+      }
+      if (result?.monitoringSignals?.includes('CHECKER_UNAVAILABLE')) {
+        checkerUnavailable += 1;
+      }
       for (const attempt of correction.attempts) {
         if (attempt.costUsd === null) {
           if (attempt.status !== 'PROCESSING') unknownCostAttempts += 1;
@@ -68,6 +88,8 @@ export class PrismaCorrectionMonitoringService {
     }
 
     return {
+      checkerDisagreed,
+      checkerUnavailable,
       completed,
       hardConstraintLevelMismatchSuspected,
       partial,
