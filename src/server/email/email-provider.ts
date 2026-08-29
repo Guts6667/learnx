@@ -33,6 +33,20 @@ export interface AccessInvitationEmailProvider {
   sendAccessInvitationEmail(input: AccessInvitationEmailInput): Promise<void>;
 }
 
+export interface OwnerAlertEmailInput {
+  /** Short line naming what happened, e.g. the breaker reason. */
+  headline: string;
+  idempotencyKey: string;
+  /** One line per fact. No learner content ever goes in here. */
+  facts: string[];
+  recipientEmail: string;
+}
+
+export interface OwnerAlertEmailProvider {
+  readonly name: string;
+  sendOwnerAlertEmail(input: OwnerAlertEmailInput): Promise<void>;
+}
+
 interface ResendEmailProviderOptions {
   apiKey: string;
   fetch?: typeof fetch;
@@ -164,8 +178,43 @@ export function createAccessInvitationEmailContent({
   };
 }
 
+/**
+ * An operational alert addressed to the owner, never to a learner.
+ *
+ * It carries facts and no learner content: a guardrail that trips because
+ * corrections are going wrong must not put those corrections in an e-mail. The
+ * admin page is where the detail lives, behind authentication.
+ */
+export function createOwnerAlertEmailContent({
+  headline,
+  facts,
+  recipientEmail,
+}: Omit<OwnerAlertEmailInput, 'idempotencyKey'>) {
+  return {
+    html: [
+      `<h1>LearnX — ${escapeHtml(headline)}</h1>`,
+      '<ul>',
+      ...facts.map((fact) => `<li>${escapeHtml(fact)}</li>`),
+      '</ul>',
+      '<p>Détail complet dans l’administration LearnX.</p>',
+    ].join(''),
+    subject: `LearnX — ${headline}`,
+    text: [
+      `LearnX — ${headline}`,
+      '',
+      ...facts,
+      '',
+      'Détail complet dans l’administration LearnX.',
+    ].join('\n'),
+    to: recipientEmail,
+  };
+}
+
 export class ResendEmailProvider
-  implements EmailProvider, AccessInvitationEmailProvider
+  implements
+    EmailProvider,
+    AccessInvitationEmailProvider,
+    OwnerAlertEmailProvider
 {
   public readonly name = 'resend';
 
@@ -189,6 +238,13 @@ export class ResendEmailProvider
   ): Promise<void> {
     await this.sendEmail(
       createAccessInvitationEmailContent(input),
+      input.idempotencyKey,
+    );
+  }
+
+  public async sendOwnerAlertEmail(input: OwnerAlertEmailInput): Promise<void> {
+    await this.sendEmail(
+      createOwnerAlertEmailContent(input),
       input.idempotencyKey,
     );
   }

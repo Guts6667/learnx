@@ -1,7 +1,8 @@
 import {
-  createAccessInvitationEmailContent,
-  createVerificationEmailContent,
   ResendEmailProvider,
+  createAccessInvitationEmailContent,
+  createOwnerAlertEmailContent,
+  createVerificationEmailContent,
 } from './email-provider';
 
 const input = {
@@ -131,5 +132,30 @@ describe('email provider', () => {
     await expect(provider.sendVerificationEmail(input)).rejects.toThrow(
       'Email provider rejected the request (422).',
     );
+  });
+});
+
+describe('createOwnerAlertEmailContent', () => {
+  it('échappe ce qu’il interpole', () => {
+    const content = createOwnerAlertEmailContent({
+      facts: ['<script>alert(1)</script>'],
+      headline: 'coupe-circuit & alerte',
+      recipientEmail: 'owner@example.com',
+    });
+    expect(content.html).not.toContain('<script>');
+    expect(content.html).toContain('&lt;script&gt;');
+    expect(content.subject).toBe('LearnX — coupe-circuit & alerte');
+    expect(content.to).toBe('owner@example.com');
+  });
+
+  it('renvoie vers l’administration au lieu de détailler', () => {
+    // The detail lives behind authentication. An operational alert says what
+    // happened and where to look, never what a learner wrote.
+    const content = createOwnerAlertEmailContent({
+      facts: ['Cause : CHECKER_DISAGREEMENT'],
+      headline: 'coupe-circuit déclenché',
+      recipientEmail: 'owner@example.com',
+    });
+    expect(content.text).toContain('administration LearnX');
   });
 });
