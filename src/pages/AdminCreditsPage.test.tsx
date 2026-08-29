@@ -34,14 +34,33 @@ describe('AdminCreditsPage', () => {
         return Promise.resolve(
           jsonResponse({
             monitoring: {
-              completed: 0,
-              hardConstraintLevelMismatchSuspected: 0,
-              partial: 0,
-              scoreGuardTriggered: 0,
-              totalCorrections: 0,
-              totalProviderCostUsd: '0.00000000',
-              unavailable: 0,
-              unknownCostAttempts: 0,
+              breaker: {
+                evaluationError: null,
+                rates: {
+                  checkerDisagreement: null,
+                  unusable: null,
+                  wrongAtHigh: null,
+                },
+                reason: null,
+                state: 'CLOSED',
+                thresholds: {
+                  checkerDisagreement: 0.4,
+                  unusable: 0.05,
+                  wrongAtHigh: 0.1,
+                },
+                trippedAt: null,
+                window: { observed: 0, size: 50 },
+              },
+              checker: { disagreed: 0, unavailable: 0 },
+              confidence: { high: 0, low: 0, medium: 0, scoreWithheld: 0 },
+              corrections: { completed: 0, partial: 0, total: 0, unusable: 0 },
+              cost: {
+                p50Usd: '0.00000000',
+                p90Usd: '0.00000000',
+                totalUsd: '0.00000000',
+                unknownCostAttempts: 0,
+              },
+              learner: { helpful: 0, wrong: 0, wrongAtHigh: 0 },
             },
           }),
         );
@@ -109,14 +128,38 @@ describe('AdminCreditsPage', () => {
           return Promise.resolve(
             jsonResponse({
               monitoring: {
-                completed: 8,
-                hardConstraintLevelMismatchSuspected: 2,
-                partial: 3,
-                scoreGuardTriggered: 4,
-                totalCorrections: 12,
-                totalProviderCostUsd: '0.05200000',
-                unavailable: 1,
-                unknownCostAttempts: 0,
+                breaker: {
+                  evaluationError: null,
+                  rates: {
+                    checkerDisagreement: 0.12,
+                    unusable: 0.08,
+                    wrongAtHigh: null,
+                  },
+                  reason: null,
+                  state: 'CLOSED',
+                  thresholds: {
+                    checkerDisagreement: 0.4,
+                    unusable: 0.05,
+                    wrongAtHigh: 0.1,
+                  },
+                  trippedAt: null,
+                  window: { observed: 12, size: 50 },
+                },
+                checker: { disagreed: 2, unavailable: 1 },
+                confidence: { high: 4, low: 3, medium: 5, scoreWithheld: 4 },
+                corrections: {
+                  completed: 8,
+                  partial: 3,
+                  total: 12,
+                  unusable: 1,
+                },
+                cost: {
+                  p50Usd: '0.00300000',
+                  p90Usd: '0.00900000',
+                  totalUsd: '0.05200000',
+                  unknownCostAttempts: 0,
+                },
+                learner: { helpful: 6, wrong: 2, wrongAtHigh: 1 },
               },
             }),
           );
@@ -164,8 +207,197 @@ describe('AdminCreditsPage', () => {
       ),
     ).toBeInTheDocument();
     expect(screen.getByText('12')).toBeInTheDocument();
+    // Le seul chiffre de cet écran qui ne vienne pas de l'opinion du système
+    // sur lui-même est mis en tête.
     expect(
-      screen.getByText('Alertes contrainte dure non reflétée dans le niveau'),
+      screen.getByText(
+        'Critères annoncés fiables et contredits par un apprenant',
+      ),
+    ).toBeInTheDocument();
+    // Un taux mesurable est rendu ; un taux non mesurable dit qu'il ne l'est
+    // pas, au lieu d'afficher un zéro rassurant.
+    expect(screen.getByText('12.0 %')).toBeInTheDocument();
+    expect(screen.getByText('Pas assez de données')).toBeInTheDocument();
+    // 8 % au-dessus d'un seuil de 5 %, mais l'état reste fermé : la
+    // suspension a lieu au prochain devis, pas à l'ouverture de cette page.
+    expect(screen.getByText('8.0 %')).toBeInTheDocument();
+    expect(
+      screen.getByText('Seuil franchi — suspension au prochain devis'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Service ouvert')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Rouvrir le service…' }),
+    ).not.toBeInTheDocument();
+  });
+
+  function breakerMock(
+    breaker: Record<string, unknown>,
+    onPost?: (init?: RequestInit) => void,
+  ) {
+    return vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/admin/ai-corrections/breaker/reopen') {
+        onPost?.(init);
+        return Promise.resolve(
+          jsonResponse({
+            resource: { breaker: { ...breaker, state: 'CLOSED' } },
+          }),
+        );
+      }
+      if (path === '/api/admin/ai-corrections/preflight') {
+        return Promise.resolve(
+          jsonResponse({
+            preflight: {
+              apiKeyPresent: true,
+              deploymentEnvironment: 'preview',
+              identityMatches: true,
+              killSwitch: true,
+              promotedBenchmarkId: 'learnx-french-text-correction-v3-1',
+              state: 'CONFIGURED_CLOSED',
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/ai-corrections/monitoring') {
+        return Promise.resolve(
+          jsonResponse({
+            monitoring: {
+              breaker,
+              checker: { disagreed: 9, unavailable: 0 },
+              confidence: { high: 2, low: 8, medium: 4, scoreWithheld: 8 },
+              corrections: {
+                completed: 6,
+                partial: 2,
+                total: 20,
+                unusable: 12,
+              },
+              cost: {
+                p50Usd: '0.00300000',
+                p90Usd: '0.00900000',
+                totalUsd: '0.08000000',
+                unknownCostAttempts: 0,
+              },
+              learner: { helpful: 3, wrong: 5, wrongAtHigh: 4 },
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/credits/policies') {
+        return Promise.resolve(
+          jsonResponse({ policies: { allocation: [], limits: [] } }),
+        );
+      }
+      if (path.startsWith('/api/admin/credits/members')) {
+        return Promise.resolve(
+          jsonResponse({
+            page: {
+              items: [],
+              page: 1,
+              pageSize: 20,
+              total: 0,
+              totalPages: 0,
+            },
+          }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+  }
+
+  it('rend un coupe-circuit ouvert avec son motif, et exige une confirmation pour rouvrir', async () => {
+    const posts: Array<RequestInit | undefined> = [];
+    vi.stubGlobal(
+      'fetch',
+      breakerMock(
+        {
+          evaluationError: null,
+          rates: {
+            checkerDisagreement: null,
+            unusable: null,
+            wrongAtHigh: null,
+          },
+          reason: 'UNUSABLE_RATE',
+          state: 'OPEN',
+          thresholds: {
+            checkerDisagreement: 0.4,
+            unusable: 0.05,
+            wrongAtHigh: 0.1,
+          },
+          trippedAt: '2026-08-29T14:31:00.000Z',
+          window: { observed: 50, size: 50 },
+        },
+        (init) => posts.push(init),
+      ),
+    );
+
+    render(
+      <AppProviders>
+        <AdminCreditsPage />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('Service suspendu')).toBeInTheDocument();
+    // Le motif apparaît deux fois — en tête, et comme règle franchie. On
+    // vérifie la ligne de tête, seule à porter la date de suspension.
+    expect(
+      screen.getByText(/Corrections sans résultat exploitable · suspendu le/),
+    ).toBeInTheDocument();
+    // Les taux ne sont pas mesurés quand le coupe-circuit est verrouillé :
+    // l'écran le dit au lieu d'afficher trois zéros.
+    expect(screen.getAllByText('Pas assez de données')).toHaveLength(3);
+
+    // La réouverture ne part pas au premier clic.
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Rouvrir le service…' }),
+    );
+    expect(posts).toHaveLength(0);
+
+    fireEvent.input(
+      screen.getByLabelText('Motif de la réouverture (facultatif)'),
+      {
+        target: { value: 'Fournisseur rétabli, vérifié sur dix corrections.' },
+      },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Rouvrir le service' }));
+
+    await waitFor(() => expect(posts).toHaveLength(1));
+    expect(JSON.parse(String(posts[0]?.body))).toEqual({
+      note: 'Fournisseur rétabli, vérifié sur dix corrections.',
+    });
+  });
+
+  it('annonce un garde-fou aveugle plutôt qu’un service sain', async () => {
+    vi.stubGlobal(
+      'fetch',
+      breakerMock({
+        evaluationError: 'BREAKER_EVALUATION_FAILED',
+        rates: {
+          checkerDisagreement: null,
+          unusable: null,
+          wrongAtHigh: null,
+        },
+        reason: null,
+        state: 'CLOSED',
+        thresholds: {
+          checkerDisagreement: 0.4,
+          unusable: 0.05,
+          wrongAtHigh: 0.1,
+        },
+        trippedAt: null,
+        window: { observed: 0, size: 50 },
+      }),
+    );
+
+    render(
+      <AppProviders>
+        <AdminCreditsPage />
+      </AppProviders>,
+    );
+
+    // L'état reste ouvert — c'est délibéré côté serveur — mais l'écran ne
+    // laisse pas croire que les règles sont vérifiées.
+    expect(await screen.findByText('Service ouvert')).toBeInTheDocument();
+    expect(
+      screen.getByText(/n’a pas pu être mesuré : BREAKER_EVALUATION_FAILED/),
     ).toBeInTheDocument();
   });
 
@@ -214,14 +446,38 @@ describe('AdminCreditsPage', () => {
           return Promise.resolve(
             jsonResponse({
               monitoring: {
-                completed: 0,
-                hardConstraintLevelMismatchSuspected: 0,
-                partial: 0,
-                scoreGuardTriggered: 0,
-                totalCorrections: 0,
-                totalProviderCostUsd: '0.00000000',
-                unavailable: 0,
-                unknownCostAttempts: 0,
+                breaker: {
+                  evaluationError: null,
+                  rates: {
+                    checkerDisagreement: null,
+                    unusable: null,
+                    wrongAtHigh: null,
+                  },
+                  reason: null,
+                  state: 'CLOSED',
+                  thresholds: {
+                    checkerDisagreement: 0.4,
+                    unusable: 0.05,
+                    wrongAtHigh: 0.1,
+                  },
+                  trippedAt: null,
+                  window: { observed: 0, size: 50 },
+                },
+                checker: { disagreed: 0, unavailable: 0 },
+                confidence: { high: 0, low: 0, medium: 0, scoreWithheld: 0 },
+                corrections: {
+                  completed: 0,
+                  partial: 0,
+                  total: 0,
+                  unusable: 0,
+                },
+                cost: {
+                  p50Usd: '0.00000000',
+                  p90Usd: '0.00000000',
+                  totalUsd: '0.00000000',
+                  unknownCostAttempts: 0,
+                },
+                learner: { helpful: 0, wrong: 0, wrongAtHigh: 0 },
               },
             }),
           );

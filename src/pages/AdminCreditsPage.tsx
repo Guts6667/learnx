@@ -11,7 +11,10 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
 import {
+  type BreakerReason,
+  type BreakerStatus,
   type CreditMemberSummary,
+  useAdminCorrectionBreakerReopenMutation,
   useAdminCreditAdjustmentMutation,
   useAdminCorrectionMonitoringQuery,
   useAdminCorrectionPreflightQuery,
@@ -25,6 +28,189 @@ import { formatLocalizedDate } from '@/shared/locale';
 
 function value(amount: string, locale: 'en' | 'fr'): string {
   return BigInt(amount).toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-US');
+}
+
+/**
+ * Coupe-circuit de la correction assistée (V4.5-140).
+ *
+ * Trois règles indépendantes, trois seuils, trois taux. Un taux `null` veut
+ * dire « pas assez de données » et n'est jamais rendu comme 0 % : un seuil
+ * comparé à un taux inconnu n'est pas un seuil respecté, et un zéro rassurant
+ * à la place d'une absence de mesure est précisément le mensonge que cet écran
+ * doit rendre impossible.
+ */
+function BreakerRule({
+  rate,
+  reason,
+  threshold,
+  tripped,
+}: {
+  rate: number | null;
+  reason: string;
+  threshold: number;
+  tripped: boolean;
+}) {
+  const { t } = useI18n();
+  const crossed = rate !== null && rate > threshold;
+  return (
+    <div className="admin-breaker-rule">
+      <dt>{reason}</dt>
+      <dd>
+        <span
+          className={crossed ? 'admin-breaker-rule__rate--crossed' : undefined}
+        >
+          {rate === null
+            ? t('admin.breaker.rateUnknown')
+            : `${(rate * 100).toFixed(1)} %`}
+        </span>
+        <span className="ui-text-muted">
+          {' '}
+          {t('admin.breaker.threshold', {
+            value: (threshold * 100).toFixed(0),
+          })}
+        </span>
+        {crossed && !tripped ? (
+          <span className="admin-breaker-rule__pending">
+            {t('admin.breaker.suspendsAtNextQuote')}
+          </span>
+        ) : null}
+      </dd>
+    </div>
+  );
+}
+
+function BreakerPanel({ breaker }: { breaker: BreakerStatus }) {
+  const { locale, t } = useI18n();
+  const reopen = useAdminCorrectionBreakerReopenMutation();
+  const [note, setNote] = useState('');
+  const [confirming, setConfirming] = useState(false);
+  const isOpen = breaker.state === 'OPEN';
+
+  const reasonLabels: Record<BreakerReason, string> = {
+    CHECKER_DISAGREEMENT: t('admin.breaker.reasonCheckerDisagreement'),
+    LEARNER_CONTRADICTION_AT_HIGH: t('admin.breaker.reasonWrongAtHigh'),
+    UNUSABLE_RATE: t('admin.breaker.reasonUnusable'),
+  };
+
+  return (
+    <section
+      aria-labelledby="correction-breaker-title"
+      className="admin-breaker mt-4"
+      data-state={breaker.state}
+    >
+      <div className="admin-breaker__heading">
+        <h3 className="font-medium" id="correction-breaker-title">
+          {t('admin.breaker.title')}
+        </h3>
+        <Badge tone={isOpen ? 'danger' : 'neutral'}>
+          {isOpen
+            ? t('admin.breaker.stateOpen')
+            : t('admin.breaker.stateClosed')}
+        </Badge>
+      </div>
+
+      {isOpen ? (
+        <p className="admin-breaker__reason">
+          {breaker.reason
+            ? reasonLabels[breaker.reason]
+            : t('admin.breaker.reasonUnknown')}
+          {breaker.trippedAt
+            ? ` · ${t('admin.breaker.trippedAt', {
+                date: formatLocalizedDate(breaker.trippedAt, locale, {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                }),
+              })}`
+            : ''}
+        </p>
+      ) : (
+        <p className="ui-text-muted text-sm">{t('admin.breaker.serving')}</p>
+      )}
+
+      {breaker.evaluationError ? (
+        <p className="admin-breaker__blind">
+          {t('admin.breaker.blind', { error: breaker.evaluationError })}
+        </p>
+      ) : null}
+
+      <dl className="admin-breaker-rules">
+        <BreakerRule
+          rate={breaker.rates.wrongAtHigh}
+          reason={reasonLabels.LEARNER_CONTRADICTION_AT_HIGH}
+          threshold={breaker.thresholds.wrongAtHigh}
+          tripped={isOpen}
+        />
+        <BreakerRule
+          rate={breaker.rates.checkerDisagreement}
+          reason={reasonLabels.CHECKER_DISAGREEMENT}
+          threshold={breaker.thresholds.checkerDisagreement}
+          tripped={isOpen}
+        />
+        <BreakerRule
+          rate={breaker.rates.unusable}
+          reason={reasonLabels.UNUSABLE_RATE}
+          threshold={breaker.thresholds.unusable}
+          tripped={isOpen}
+        />
+      </dl>
+
+      <p className="ui-text-muted text-sm">
+        {t('admin.breaker.window', {
+          observed: breaker.window.observed,
+          size: breaker.window.size,
+        })}
+      </p>
+
+      {isOpen ? (
+        <div className="admin-breaker__reopen">
+          {confirming ? (
+            <>
+              <Textarea
+                description={t('admin.breaker.noteHelp')}
+                id="breaker-reopen-note"
+                label={t('admin.breaker.noteLabel')}
+                maxLength={500}
+                onInput={(event) => setNote(event.currentTarget.value)}
+                rows={3}
+                value={note}
+              />
+              <div className="admin-breaker__actions">
+                <Button
+                  isLoading={reopen.isPending}
+                  onClick={() => {
+                    void reopen.execute({ note }).then(
+                      () => {
+                        setConfirming(false);
+                        setNote('');
+                      },
+                      () => undefined,
+                    );
+                  }}
+                >
+                  {t('admin.breaker.reopenConfirm')}
+                </Button>
+                <Button onClick={() => setConfirming(false)} variant="ghost">
+                  {t('common.cancel')}
+                </Button>
+              </div>
+              {reopen.error ? (
+                <p className="ui-text-danger text-sm">
+                  {t('admin.breaker.reopenError')}
+                </p>
+              ) : null}
+            </>
+          ) : (
+            <Button onClick={() => setConfirming(true)} variant="secondary">
+              {t('admin.breaker.reopenAction')}
+            </Button>
+          )}
+          <p className="ui-text-muted text-sm">
+            {t('admin.breaker.reopenAudit')}
+          </p>
+        </div>
+      ) : null}
+    </section>
+  );
 }
 
 function MemberRow({
@@ -409,36 +595,62 @@ export function AdminCreditsPage() {
           </div>
         ) : null}
         {monitoring.data ? (
-          <dl className="admin-credit-monitoring mt-4">
-            <div>
-              <dt>{t('admin.credits.monitoringCorrections')}</dt>
-              <dd>{monitoring.data.totalCorrections}</dd>
-            </div>
-            <div>
-              <dt>{t('admin.credits.monitoringProviderCost')}</dt>
-              <dd>{monitoring.data.totalProviderCostUsd} USD</dd>
-            </div>
-            <div>
-              <dt>{t('admin.credits.monitoringPartial')}</dt>
-              <dd>{monitoring.data.partial}</dd>
-            </div>
-            <div>
-              <dt>{t('admin.credits.monitoringUnavailable')}</dt>
-              <dd>{monitoring.data.unavailable}</dd>
-            </div>
-            <div>
-              <dt>{t('admin.credits.monitoringConstraint')}</dt>
-              <dd>{monitoring.data.hardConstraintLevelMismatchSuspected}</dd>
-            </div>
-            <div>
-              <dt>{t('admin.credits.monitoringGuard')}</dt>
-              <dd>{monitoring.data.scoreGuardTriggered}</dd>
-            </div>
-            <div>
-              <dt>{t('admin.credits.monitoringUnknownCost')}</dt>
-              <dd>{monitoring.data.unknownCostAttempts}</dd>
-            </div>
-          </dl>
+          <>
+            <BreakerPanel breaker={monitoring.data.breaker} />
+            <dl className="admin-credit-monitoring mt-4">
+              <div>
+                <dt>{t('admin.credits.monitoringWrongAtHigh')}</dt>
+                <dd>{monitoring.data.learner.wrongAtHigh}</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringCorrections')}</dt>
+                <dd>{monitoring.data.corrections.total}</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringPartial')}</dt>
+                <dd>{monitoring.data.corrections.partial}</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringUnusable')}</dt>
+                <dd>{monitoring.data.corrections.unusable}</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringCheckerDisagreed')}</dt>
+                <dd>{monitoring.data.checker.disagreed}</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringCheckerUnavailable')}</dt>
+                <dd>{monitoring.data.checker.unavailable}</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringScoreWithheld')}</dt>
+                <dd>{monitoring.data.confidence.scoreWithheld}</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringLearnerVotes')}</dt>
+                <dd>
+                  {monitoring.data.learner.helpful} /{' '}
+                  {monitoring.data.learner.wrong}
+                </dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringCostMedian')}</dt>
+                <dd>{monitoring.data.cost.p50Usd} USD</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringCostP90')}</dt>
+                <dd>{monitoring.data.cost.p90Usd} USD</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringProviderCost')}</dt>
+                <dd>{monitoring.data.cost.totalUsd} USD</dd>
+              </div>
+              <div>
+                <dt>{t('admin.credits.monitoringUnknownCost')}</dt>
+                <dd>{monitoring.data.cost.unknownCostAttempts}</dd>
+              </div>
+            </dl>
+          </>
         ) : null}
       </section>
       <form

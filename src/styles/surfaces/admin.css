@@ -145,3 +145,89 @@
     border-top: 1px solid var(--color-border);
   }
 }
+
+/* Coupe-circuit (V4.5-140). Le rouge n'existe que sur cette surface : service
+   à l'arrêt, action corrective attendue d'un administrateur. Jamais côté
+   apprenant, où une difficulté normale ne doit pas être colorée en faute. */
+.admin-breaker {
+  display: grid;
+  gap: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-group);
+  padding: var(--space-5);
+  background: var(--color-surface);
+}
+
+.admin-breaker[data-state='OPEN'] {
+  border-color: var(--color-danger);
+}
+
+.admin-breaker__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.admin-breaker__reason {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.admin-breaker__blind {
+  border-left: 3px solid var(--color-warning);
+  padding-left: var(--space-4);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+.admin-breaker-rules {
+  display: grid;
+  margin: 0;
+  gap: var(--space-2);
+}
+
+.admin-breaker-rule {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-base);
+}
+
+.admin-breaker-rule dt {
+  min-width: 0;
+}
+
+.admin-breaker-rule dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-breaker-rule__rate--crossed {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.admin-breaker-rule__pending {
+  display: block;
+  color: var(--color-warning);
+  font-size: var(--text-sm);
+}
+
+.admin-breaker__reopen {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.admin-breaker__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

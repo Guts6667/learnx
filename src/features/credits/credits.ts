@@ -62,15 +62,58 @@ export interface CreditPolicySummary {
   version: string;
 }
 
+export type BreakerReason =
+  'CHECKER_DISAGREEMENT' | 'LEARNER_CONTRADICTION_AT_HIGH' | 'UNUSABLE_RATE';
+
+/** `null` signifie « pas assez de données », jamais zéro. */
+interface BreakerRates {
+  checkerDisagreement: number | null;
+  unusable: number | null;
+  wrongAtHigh: number | null;
+}
+
+export interface BreakerStatus {
+  /** Non nul quand la règle n'a pas pu être mesurée : le garde-fou est aveugle. */
+  evaluationError: string | null;
+  rates: BreakerRates;
+  reason: BreakerReason | null;
+  state: 'CLOSED' | 'OPEN';
+  thresholds: {
+    checkerDisagreement: number;
+    unusable: number;
+    wrongAtHigh: number;
+  };
+  trippedAt: string | null;
+  window: { observed: number; size: number };
+}
+
 export interface CorrectionMonitoringSummary {
-  completed: number;
-  hardConstraintLevelMismatchSuspected: number;
-  partial: number;
-  scoreGuardTriggered: number;
-  totalCorrections: number;
-  totalProviderCostUsd: string;
-  unavailable: number;
-  unknownCostAttempts: number;
+  breaker: BreakerStatus;
+  checker: { disagreed: number; unavailable: number };
+  confidence: {
+    high: number;
+    low: number;
+    medium: number;
+    scoreWithheld: number;
+  };
+  corrections: {
+    completed: number;
+    partial: number;
+    total: number;
+    unusable: number;
+  };
+  cost: {
+    p50Usd: string;
+    p90Usd: string;
+    totalUsd: string;
+    unknownCostAttempts: number;
+  };
+  /**
+   * Les seuls chiffres qui ne viennent pas de l'opinion du système sur
+   * lui-même. `wrongAtHigh` est un apprenant qui contredit un critère annoncé
+   * HIGH : la falsification directe d'une affirmation portée à l'écran.
+   */
+  learner: { helpful: number; wrong: number; wrongAtHigh: number };
 }
 
 export interface CorrectionReleasePreflight {
@@ -239,6 +282,45 @@ export function useAdminCorrectionPreflightQuery() {
     isPending: result.isPending,
     retry: result.refetch,
   };
+}
+
+/**
+ * Réouverture du coupe-circuit (V4.5-140). Écrit une ligne de journal côté
+ * serveur plutôt que d'effacer un drapeau : la note est facultative, mais elle
+ * est le seul endroit où « pourquoi on a rouvert » subsiste.
+ */
+export function useAdminCorrectionBreakerReopenMutation() {
+  const queryClient = useAppQueryClient();
+  const [error, setError] = useState<unknown>();
+  const [isPending, setIsPending] = useState(false);
+  const execute = useCallback(
+    async (input: { note?: string }) => {
+      setError(undefined);
+      setIsPending(true);
+      try {
+        const response = await apiRequest<{
+          resource: { breaker: BreakerStatus };
+        }>('/api/admin/ai-corrections/breaker/reopen', {
+          body: JSON.stringify(
+            input.note && input.note.trim().length > 0
+              ? { note: input.note.trim() }
+              : {},
+          ),
+          headers: { 'content-type': 'application/json' },
+          method: 'POST',
+        });
+        await queryClient.invalidateQueries({ queryKey: adminCreditsKey });
+        return response.resource.breaker;
+      } catch (requestError) {
+        setError(requestError);
+        throw requestError;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [queryClient],
+  );
+  return { error, execute, isPending };
 }
 
 export function useAdminCreditAdjustmentMutation() {
