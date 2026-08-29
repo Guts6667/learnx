@@ -415,3 +415,26 @@ l'autorisation.
     `src/lib/ai-correction-benchmark-runner-preflight.ts` (outillage
     benchmark, déjà visé par V4.5-132). Vérification faite : ces noms
     n'apparaissent pas dans le bundle client construit.
+
+## 29 août 2026 — V4.5-170 : les URL de base sont illisibles par conception
+
+- Aucune écriture Airtable. Entrée de traçabilité uniquement.
+- `DATABASE_URL` et `DIRECT_URL` sont marquées « Sensitive » dans Vercel :
+  elles sont en écriture seule. `vercel env pull` écrit littéralement
+  `"[SENSITIVE]"` (13 caractères) à la place de la valeur, et ni l'API REST,
+  ni le tableau de bord, ni la CLI ne peuvent les relire. Bonne posture de
+  sécurité, mais la question « Preview et Production partagent-elles la même
+  base ? » ne peut être tranchée par lecture.
+- Fausse piste écartée : une première comparaison a répondu « SAME HOST » avec
+  quatre empreintes identiques `0d2c63a2`. Vérification faite, `0d2c63a2` est
+  l'empreinte de la chaîne littérale `(unparsed)` : les quatre lectures
+  avaient échoué et se comparaient entre elles. Aucune conclusion n'en a été
+  tirée et aucun ticket n'a été modifié sur cette base.
+- Conséquence pour V4.5-170 : ne plus chercher à vérifier, mais à établir.
+  (1) Conditionner `prisma:deploy` à `VERCEL_ENV=production`, ce qui rend la
+  question sans objet quel que soit l'état actuel ; (2) réécrire ensuite les
+  variables Preview avec une branche Neon dédiée, connue par construction.
+- Vérification restante, côté Neon et non Vercel : compter dans le projet
+  `dawn-cake-93662551` les branches autres que `ci-*`. S'il n'en existe
+  qu'une, Preview partageait nécessairement la base de production. Le même
+  écran renseigne aussi V4.5-171 (branches `ci-*` orphelines).
