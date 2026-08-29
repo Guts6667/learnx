@@ -5,6 +5,7 @@ import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import { registerAccessRequestRoutes } from './access-request-routes.js';
 import { registerAccountRoutes } from './account-routes.js';
+import { registerPaymentRefundRoutes } from './payment-refund-routes.js';
 import type { AdminAppOptions } from './app-contracts.js';
 import { registerCurriculumEditRoutes } from './curriculum-edit-routes.js';
 import { createAdminDependencies } from './dependencies.js';
@@ -38,6 +39,7 @@ export function createAdminApp(options: AdminAppOptions = {}) {
   registerErrorHandler(app);
   registerNavigationRoutes(app, dependencies);
   registerAccountRoutes(app, dependencies);
+  registerPaymentRefundRoutes(app);
   registerAccessRequestRoutes(app, dependencies);
   registerProgramRoutes(app, dependencies);
   registerPublicationRoutes(app, dependencies);

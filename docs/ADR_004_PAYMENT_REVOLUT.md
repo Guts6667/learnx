@@ -90,6 +90,47 @@ horodatages, et le corps brut de l'événement **après vérification de signatu
 pour réconciliation. Jamais : numéro de carte, cryptogramme, nom du porteur,
 empreinte de carte, ni aucune donnée transmise par Revolut qui les approcherait.
 
+## 7bis. Remboursements et litiges (V4.5-162)
+
+Le registre de crédits n'est **jamais réécrit** (ADR_003 §6). Un remboursement
+ajoute une écriture `REFUND` ; il ne modifie pas l'attribution qu'il compense.
+Ce qui s'est passé reste lisible, y compris quand ce qui s'est passé était une
+erreur.
+
+### Remboursement volontaire
+
+Décision du Propriétaire du 29 août 2026 (`owner-refund-policy-2026-08-29`) :
+seule la part non consommée est remboursée.
+
+```text
+montant = prix du pack × crédits non consommés ÷ crédits du pack
+```
+
+**Arrondi au centime, moitié vers le haut**, calculé en entiers sans flottant.
+La règle est énoncée ici et implémentée une seule fois (`voluntaryRefundMinor`) :
+une règle d'arrondi re-dérivée finit par différer entre deux endroits, et
+l'écart ne se voit que sur les centimes, c'est-à-dire jamais avant qu'il ne
+compte.
+
+Sous cette politique, un remboursement volontaire ne peut pas produire de
+perte : les crédits repris sont exactement les non consommés.
+
+### Litige et rejet bancaire
+
+Le montant est celui de la banque, pas le nôtre. LearnX reprend ce qui reste sur
+le lot et **absorbe la part déjà consommée** : un apprenant remboursé ne doit
+pas se retrouver débiteur de crédits.
+
+Cette part absorbée est inscrite dans `payment_orders.written_off_credits`, et
+non au registre. Le solde d'un compte est la somme des montants d'écritures :
+une écriture de perte déplacerait le solde du montant même qu'on déclare
+irrécupérable. C'est un fait d'argent, pas un fait de crédits.
+
+### Ouverture de litige
+
+Ne touche à rien. Seule l'issue agit : un litige gagné doit laisser les choses
+exactement comme elles étaient.
+
 ## 8. Décisions du Propriétaire, non supposées ici
 
 Ces points sont **ouverts**. Le code ne les tranche pas et n'en dépend pas.
@@ -100,8 +141,8 @@ Ces points sont **ouverts**. Le code ne les tranche pas et n'en dépend pas.
    traitement des ventes hors France. Un prix affiché sans savoir s'il est TTC
    est une décision, pas un détail d'affichage.
 3. **Conditions générales de vente** — droit de rétractation sur un contenu
-   numérique, sa renonciation expresse, et la politique de remboursement que
-   V4.5-162 devra implémenter.
+   numérique et sa renonciation expresse. La politique de remboursement est
+   tranchée (§7bis) ; sa formulation contractuelle reste à écrire.
 4. **Compte Revolut Merchant** — création, vérification d'identité, et
    fourniture de la clé bac à sable et du secret de webhook. L'intégration est
    développée contre des enregistrements figés jusque-là ; la passe bac à sable

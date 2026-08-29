@@ -22,6 +22,7 @@ enum AuditAction {
   CREDIT_ADMIN_ADJUSTMENT             @map("credit_admin_adjustment")
   CREDIT_INCREASE_REQUEST_REVIEW      @map("credit_increase_request_review")
   ACCOUNT_PSEUDONYMISE                @map("account_pseudonymise")
+  PAYMENT_REFUND                      @map("payment_refund")
 
   @@map("audit_action")
 }

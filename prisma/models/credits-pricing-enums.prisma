@@ -18,6 +18,11 @@ enum CreditLedgerEntryType {
   SETTLEMENT          @map("settlement")
   EXPIRATION          @map("expiration")
   ADMIN_ADJUSTMENT    @map("admin_adjustment")
+  /// Reprise de crédits après remboursement ou litige perdu (V4.5-162).
+  /// Distinct d'un ajustement : un remboursement n'est pas un jugement
+  /// d'administrateur, et les confondre rendrait l'historique des ajustements
+  /// illisible le jour où il faudra le lire.
+  REFUND              @map("refund")
 
   @@map("credit_ledger_entry_type")
 }

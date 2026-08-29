@@ -78,6 +78,7 @@
       "src/server/credits/prisma-credit-ledger-contracts.ts",
       "src/server/credits/prisma-credit-ledger-grants.ts",
       "src/server/credits/prisma-credit-ledger-lifecycle.ts",
+      "src/server/credits/prisma-credit-ledger-refund.ts",
       "src/server/credits/prisma-credit-ledger-reserve.ts",
       "src/server/credits/prisma-credit-ledger.ts",
       "src/server/credits/prisma-trial-allocation.ts",
@@ -90,7 +91,11 @@
       "src/server/payments/payments-configuration.ts",
       "src/server/payments/prisma-checkout-ports.ts",
       "src/server/payments/prisma-payment-webhook-ports.ts",
+      "src/server/payments/prisma-refund-ports.ts",
+      "src/server/payments/refund-service.ts",
+      "src/server/payments/refund-split.ts",
       "src/server/payments/revolut-webhook-signature.ts",
+      "src/server/payments/voluntary-refund.ts",
       "src/server/pricing/ai-pricing-calculations.ts",
       "src/server/pricing/ai-pricing-fingerprint.ts",
       "src/server/pricing/ai-pricing-quote-service.ts",
@@ -168,6 +173,7 @@
       "src/server/api/admin/app.ts",
       "src/server/api/admin/curriculum-edit-routes.ts",
       "src/server/api/admin/navigation-routes.ts",
+      "src/server/api/admin/payment-refund-routes.ts",
       "src/server/api/admin/program-routes.ts",
       "src/server/api/admin/publication-routes.ts"
     ]
