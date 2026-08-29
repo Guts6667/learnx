@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (texte à intégrer tel quel par la voie C ;
   toute modification passe par ce document)
-- **Version** : 1.1.0 · **Date** : 29 août 2026 (1.1.0 : sections paiement et
+- **Version** : 1.1.1 (effacement : pseudonymisation explicite) · **Date** : 29 août 2026 (1.1.0 : sections paiement et
   échantillonnage retirées tant que 160 et 141 ne sont pas livrés)
 - **Owner** : Head of AI · **Reviewer** : Rayan
 - **Source des faits** : `docs/V4_5_RGPD_AUDIT.md` 1.2.0 (registre,
@@ -70,9 +70,12 @@ vous être rattachée.
 
 **Vos droits.** Vous pouvez demander l'accès, la rectification ou la
 suppression de vos données à [adresse e-mail de contact]. La suppression de
-compte efface votre e-mail, votre nom et vos sessions ; vos réponses sont
-conservées sous forme anonymisée et l'historique des crédits est conservé
-sans identifiant, comme la loi comptable l'exige. Vous pouvez introduire une
+compte efface votre e-mail, votre nom, vos notes et vos sessions. Vos
+réponses et les retours produits sont conservés sous un pseudonyme
+irréversible : ils ne sont plus rattachés à votre compte, mais si vous y
+avez écrit des éléments vous concernant, ils peuvent rester des données
+personnelles au sens du RGPD. L'historique des crédits est conservé sans
+identifiant, comme la loi comptable l'exige. Vous pouvez introduire une
 réclamation auprès de la CNIL (cnil.fr).
 
 **Cookies.** LearnX utilise uniquement un cookie de session, nécessaire à la
@@ -126,8 +129,11 @@ pseudonym, to improve the system, and can no longer be linked to you.
 
 **Your rights.** You can request access to, rectification or deletion of
 your data at [contact e-mail]. Deleting your account erases your e-mail,
-name and sessions; your answers are kept in anonymised form and the credit
-history is kept without identifiers, as accounting law requires. You may
+name, notes and sessions. Your answers and the feedback produced are kept
+under an irreversible pseudonym: they are no longer linked to your account,
+but if you wrote things about yourself in them, they may remain personal
+data under the GDPR. The credit history is kept without identifiers, as
+accounting law requires. You may
 lodge a complaint with the CNIL (cnil.fr) or your local supervisory
 authority.
 
