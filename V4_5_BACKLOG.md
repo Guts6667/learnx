@@ -412,6 +412,9 @@ l'autorité de définition ; Airtable porte le statut.
   110, 111, 113, 140, 150, 121 verts ; deux GO Rayan distincts.
 - Livrable : les neuf cases restantes de `docs/V4_ROLLOUT_CHECKLIST.md` sur
   preview puis production ; smoke borné avec clé réelle sur compte allow-listé.
+- Rollback : V4.4→V4.5 reste **code seul** — trois migrations additives
+  (112, 140, 142), aucune n'altère un objet existant ; la checklist le
+  vérifie à chaque migration ajoutée.
 - Acceptation : preuves (coût, request IDs) dans `docs/qa/V4_5_151_ROLLOUT.md`.
 
 ### V4.5-160 — ADR Revolut Merchant et intégration sandbox
@@ -520,6 +523,7 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-177 | D | DevOps → Backend/Data | Palier `staging` : branche protégée, environnement Vercel, base Neon dédiée (décision Rayan dev → staging → main) | 174 |
 | V4.5-178 | D | DevOps → Sécurité | `LEARNX_PUBLIC_LEADS_ENABLED` fermé par défaut, défini par environnement | — |
 | V4.5-179 | D | DevOps → QA/Release | Playwright : port dérivé du worktree ou `reuseExistingServer: false` (un serveur dev d'un autre checkout capte les tests) | — |
+| V4.5-142 | A | Backend/Data → IA/Recherche | Alerte owner du coupe-circuit (e-mail Resend, livraison journalisée `alertedAt`/`alertError`, jamais de texte apprenant), audit des coûts inconnus sur 24 h (`pnpm ai:cost-audit`, PROCESSING < 60 min exclus, au-delà `STUCK_PROCESSING`), rapport hebdomadaire (`pnpm ai:weekly-report`, lecture seule). Réconciliation = rapport seul (aucune écriture ; `CONSERVATIVE_WRITE_OFF` reste dormant). Planification par 173. | 140 ; bloque 151 |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |

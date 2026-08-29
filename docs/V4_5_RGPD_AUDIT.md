@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (ticket V4.5-165, partie IA) ·
   partie paiement `EN_ATTENTE` (V4.5-160)
-- **Version** : 1.0.0
+- **Version** : 1.1.0 (décisions Propriétaire du 29 août 2026, `owner-rgpd-2026-08-29`)
 - **Date** : 29 août 2026
 - **Owner** : Architecture/Produit (Head of AI) · **Reviewer** : Rayan
 - **Autorité supérieure** : `ADR_003` §7, `docs/V4_5_AI_QUALITY_CONTRACT.md`
@@ -47,12 +47,12 @@ est indexé par e-mail normalisé et purgé sous 24 h.
 
 | Destinataire | Rôle | Données | Localisation | Paramètres LearnX | Attestation |
 | --- | --- | --- | --- | --- | --- |
-| Neon | hébergement base | tout | **à confirmer** (région du projet) | plan Launch, PITR selon plan | §7 |
-| Vercel | hébergement app/API, logs | requêtes, logs d'erreur (stack, pas de corps) | **à confirmer** (région des fonctions) | — | §7 |
+| Neon | hébergement base | tout | AWS eu-central-1 (Francfort), attesté 29 août 2026 (console) | plan Launch, PITR selon plan | §7 |
+| Vercel | hébergement app/API, logs | requêtes, logs d'erreur (stack, pas de corps) | fonctions `fra1` (Francfort), attesté 29 août 2026 (console) | — | §7 |
 | OpenRouter | routeur d'inférence | T2, T3 | US (siège) | `data_collection: 'deny'`, `allow_fallbacks: false`, `only`/`order` épinglés, `require_parameters: true` (`ai-correction-provider-adapters.ts`) | rétention **à attester** |
 | Anthropic | modèle primaire (Sonnet 4.6) | T2 | via OpenRouter, route `anthropic` | idem | rétention **à attester** |
 | Mistral | vérificateur (Medium 3.5) | T3 (extraits) | endpoint `mistral/eu` | idem | rétention **à attester** |
-| Resend | e-mails transactionnels | e-mail, contenu d'invitation/vérification ; alertes owner (142) | **à confirmer** | — | §7 |
+| Resend | e-mails transactionnels | e-mail, contenu d'invitation/vérification ; alertes owner (142) | eu-west-1 (Irlande), domaine `send.learn-x.app`, attesté 29 août 2026 (console) | — | §7 |
 | Revolut Merchant | paiement (V4.5-160) | référence d'ordre, montant, devise, pack | — | jamais de données de carte chez LearnX (ADR_003 §7.3) | partie paiement `EN_ATTENTE` |
 
 ## 4. Rétention — état réel et écarts
@@ -137,24 +137,31 @@ peut être écrite qu'après la décision E2 et l'attestation des fournisseurs.
 
 ## 7. Décisions du Propriétaire et attestations externes
 
-Aucune de ces lignes n'est une hypothèse de ce document ; chacune bloque une
-partie de V4.5-151 (rollout) tant qu'elle n'est pas tranchée.
+Décisions prises le 29 août 2026 (`owner-rgpd-2026-08-29`) :
 
-1. **Rétention fournisseurs** : obtenir et consigner, avec source (URL et
-   date), la politique de rétention effective d'OpenRouter, d'Anthropic (via
-   OpenRouter, `data_collection: deny`) et de Mistral (`mistral/eu`). Sans
-   cela, la phrase « ne pas conserver » du §5 reste une demande, pas un fait.
-2. **Régions** : région du projet Neon, des fonctions Vercel et de Resend.
-3. **E2** : purge de `raw_output_json` à 180 jours — oui/non/autre durée.
-4. **E1** : suppression = anonymisation avec conservation du ledger — valider
-   le principe avant le ticket.
-5. **Politique de confidentialité publique** et adresse de réclamation : à
-   publier avant le pilote (page statique, hors périmètre de ce document).
-6. **DPO / registre formel** : exploitation solo, pas de traitement à grande
-   échelle de données sensibles → pas de DPO obligatoire selon la lecture
-   courante ; **à confirmer par un conseil** si le pilote dépasse le cercle
-   des early adopters.
-7. **Paiement (V4.5-160)** : compléter §2–§3 à la livraison de l'ADR Revolut.
+1. **Rétention fournisseurs** — GO pour que le Head of AI consulte et
+   consigne les politiques d'OpenRouter, d'Anthropic et de Mistral avec URL et
+   date. **En cours** ; tant que ce n'est pas fait, le §5 dit « nous
+   demandons », pas « ils ne conservent pas ».
+2. **Sortie brute du modèle** — pas de purge : à 180 jours, la correction est
+   **détachée de l'identité** (pseudonyme de recherche) et conservée, sortie
+   brute comprise, en vue d'une réutilisation ultérieure (RAG). Cette
+   réutilisation est une **nouvelle finalité** : information préalable dans
+   la notice IA, aucun export tant que le ticket dédié n'existe pas.
+   → V4.5-168.
+3. **Suppression de compte** — parcours à créer ; les réponses données sont
+   conservées, anonymisées ; le ledger n'est jamais réécrit. → V4.5-166.
+4. **Politique de confidentialité et adresse de réclamation** — intégrées à
+   V4.5. Texte rédigé par le Head of AI (`docs/V4_5_PRIVACY_POLICY.md`, à
+   venir), intégré par la voie C. → V4.5-167.
+5. **Régions** — Neon Francfort, Vercel `fra1`, Resend Irlande : **tout dans
+   l'UE** (§3). Seuls OpenRouter (US) et Anthropic (via OpenRouter) sont hors
+   UE ; Mistral est épinglé `mistral/eu`.
+6. **DPO** — pas de délégué à la protection des données obligatoire
+   (exploitation solo, pas de suivi à grande échelle ni de données
+   sensibles) ; lecture à faire confirmer par un conseil si le pilote
+   dépasse les early adopters.
+7. **Paiement (V4.5-160)** — §2–§3 complétés à la livraison de l'ADR Revolut.
 
 ## 8. Ce que ce document n'autorise pas
 

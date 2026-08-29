@@ -579,3 +579,24 @@ l'autorisation.
   `evaluationError` exposé ; trois raisons dont `UNUSABLE_RATE` ; `wrongAtHigh`
   câblé avec quorum de 20 critères HIGH votés.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+
+## 2026-08-29 (nuit) — Head of AI, base `app8IaHD1sJtI83WT`
+
+- UX-003 : `READY` → `DONE` (`29babe7d`).
+- V4.5-140 : `DRAFT` → `REVIEW` (acceptée à `20dcd1dd`, PR #57) ; dérive de
+  statut corrigée (la carte n'était pas passée `IN_PROGRESS`).
+- V4.5-142 créé (`READY`, `recgEX8YHHsjDVixm`, voie A) : alerte owner,
+  audit des coûts inconnus, rapport hebdomadaire — écart du contrat §6
+  constaté à la revue de 140.
+- V4.5-121 : critère d'acceptation ajouté — article public FR/EN de
+  résultats (décision Rayan `owner-research-article-2026-08-29`).
+- V4.5-165 : `DRAFT` → `REVIEW` (PR #55 mergée `69271bb1`) ; sept décisions
+  Propriétaire en attente (§7 de l'audit).
+- Backlog : définitions 118, 170–179, UX-001/002/003 consignées (PR #54,
+  `3320e332`) ; 142 et ligne de rollback 151 dans cette entrée.
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+- V4.5-166, 167, 168 créés (`READY`, `recAv8JFD09VrSS1Z`, `recn4AgQSeVl2BB5T`,
+  `recUdTdyD55CJ7Z78`) : suppression par anonymisation, page de
+  confidentialité, détachement à 180 jours + information RAG — décisions
+  Rayan `owner-rgpd-2026-08-29` ; V4.5-165 : blocage mis à jour.
+- V4.5-140 : `REVIEW` → `DONE` (`fa1b2a5e`, PR #57).
