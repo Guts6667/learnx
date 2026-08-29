@@ -10,6 +10,7 @@ import {
   requestCorrectionQuote,
   runCorrection,
 } from '@/features/exercises/ai-correction';
+import { type AiCorrectionValidationScope } from '@/features/exercises/queries';
 import { AiCorrectionResult } from '@/features/exercises/AiCorrectionResult';
 import { useI18n } from '@/i18n';
 
@@ -42,6 +43,21 @@ type PanelPhase =
       sourceCorrectionId?: string;
     };
 
+function CollectingPhaseNotice({
+  scope,
+}: {
+  scope: AiCorrectionValidationScope | null;
+}) {
+  const { t } = useI18n();
+  if (!scope || scope.validated) return null;
+  return (
+    <div className="correction-state__notice correction-state__notice--collecting">
+      <strong>{t('aiCorrection.collectingLabel')}</strong>
+      <p>{t('aiCorrection.collectingDescription')}</p>
+    </div>
+  );
+}
+
 /**
  * Contrat avant engagement (EMOTIONAL_DESIGN_CONTRACT §5.10) : le panneau
  * énonce action, unité, plafond, prix estimé et scénario « à retravailler »
@@ -51,7 +67,13 @@ type PanelPhase =
  * aucun score exact global en cas de critères « à retravailler » — puis
  * récap plafond accepté / débité / libéré.
  */
-export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
+export function AiCorrectionPanel({
+  submissionId,
+  validationScope = null,
+}: {
+  submissionId: string;
+  validationScope?: AiCorrectionValidationScope | null;
+}) {
   const { t } = useI18n();
   const [phase, setPhase] = useState<PanelPhase>({ kind: 'HISTORY_PENDING' });
   const [reconsiderationArgument, setReconsiderationArgument] = useState('');
@@ -181,6 +203,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
           </span>
         </div>
         <p>{t('aiCorrection.intro')}</p>
+        <CollectingPhaseNotice scope={validationScope} />
         <div className="correction-contract correction-contract--preview">
           <div>
             <span>{t('aiCorrection.contractCostLabel')}</span>
@@ -229,12 +252,6 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
           <Spinner label={t('aiCorrection.processingShort')} size="sm" />
         </div>
         <p>{t('aiCorrection.processingDescription')}</p>
-        <ol className="correction-progress">
-          <li data-state="complete">{t('aiCorrection.processingReceived')}</li>
-          <li data-state="active">{t('aiCorrection.processingCriteria')}</li>
-          <li>{t('aiCorrection.processingEvidence')}</li>
-          <li>{t('aiCorrection.processingSynthesis')}</li>
-        </ol>
         <div className="correction-contract">
           <div>
             <span>{t('aiCorrection.contractCeilingLabel')}</span>
@@ -267,6 +284,7 @@ export function AiCorrectionPanel({ submissionId }: { submissionId: string }) {
             ? t('aiCorrection.reconsiderationQuoteAction')
             : t('aiCorrection.quoteAction')}
         </p>
+        <CollectingPhaseNotice scope={validationScope} />
         <div className="correction-contract">
           <div>
             <span>{t('aiCorrection.contractEstimateLabel')}</span>

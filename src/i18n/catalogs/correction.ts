@@ -6,12 +6,22 @@ export const frenchCorrectionMessages = {
     'Recevez un retour formatif critère par critère sur cette production.',
   'aiCorrection.doctrineNotice':
     'Ce retour est indicatif et n’a aucun effet sur votre progression.',
+  'aiCorrection.collectingLabel':
+    'Correction en phase de collecte — fiabilité non démontrée',
+  'aiCorrection.collectingDescription':
+    'La fiabilité de la correction n’est pas encore démontrée pour ce type d’exercice. Ce retour reste indicatif et contribue à mesurer la qualité du système.',
   'aiCorrection.seePrice': 'Corriger',
   'aiCorrection.readyTitle': 'Obtenir une correction formative',
   'aiCorrection.quoteTitle': 'Devis de correction',
   'aiCorrection.errorTitle': 'Correction interrompue',
   'aiCorrection.unavailableTitle': 'Résultat temporairement indisponible',
   'aiCorrection.reworkLabel': 'À retravailler',
+  'aiCorrection.toCheck': 'À vérifier',
+  'aiCorrection.toCheckLabel': 'À vérifier',
+  'aiCorrection.toCheckExplanation':
+    'La vérification indépendante ne confirme pas l’analyse de ce critère. Aucun niveau n’est affiché : relisez ce point à partir de l’énoncé de l’exercice.',
+  'aiCorrection.scoreWithheld':
+    'Aucun score indicatif tant qu’un critère reste à vérifier ou à retravailler.',
   'aiCorrection.contractCostLabel': 'Coût avant confirmation',
   'aiCorrection.contractCostPending': 'Devis affiché avant tout débit',
   'aiCorrection.contractEstimateLabel': 'Coût estimé en crédits',
@@ -23,10 +33,6 @@ export const frenchCorrectionMessages = {
   'aiCorrection.processingShort': 'Correction en cours',
   'aiCorrection.processingDescription':
     'LearnX analyse votre réponse critère par critère et vérifie les extraits utilisés.',
-  'aiCorrection.processingReceived': 'Réponse reçue',
-  'aiCorrection.processingCriteria': 'Analyse des critères',
-  'aiCorrection.processingEvidence': 'Vérification des extraits',
-  'aiCorrection.processingSynthesis': 'Préparation du retour',
   'aiCorrection.quotePending': 'Préparation du devis de correction',
   'aiCorrection.historyPending': 'Recherche de votre dernière correction',
   'aiCorrection.historyTitle': 'Historique des corrections',
@@ -107,12 +113,22 @@ export const englishCorrectionMessages = {
     'Receive criterion-by-criterion formative feedback on this submission.',
   'aiCorrection.doctrineNotice':
     'This feedback is indicative and does not affect your progress.',
+  'aiCorrection.collectingLabel':
+    'Correction in data-collection phase — reliability not demonstrated',
+  'aiCorrection.collectingDescription':
+    'Reliability has not yet been demonstrated for this type of exercise. This feedback remains indicative and helps measure the quality of the system.',
   'aiCorrection.seePrice': 'Correct',
   'aiCorrection.readyTitle': 'Get formative feedback',
   'aiCorrection.quoteTitle': 'Correction quote',
   'aiCorrection.errorTitle': 'Correction interrupted',
   'aiCorrection.unavailableTitle': 'Result temporarily unavailable',
   'aiCorrection.reworkLabel': 'Needs rework',
+  'aiCorrection.toCheck': 'Needs checking',
+  'aiCorrection.toCheckLabel': 'Needs checking',
+  'aiCorrection.toCheckExplanation':
+    'The independent check does not confirm the analysis of this criterion. No level is shown: review this point against the exercise brief.',
+  'aiCorrection.scoreWithheld':
+    'No indicative score while a criterion still needs checking or rework.',
   'aiCorrection.contractCostLabel': 'Cost before confirmation',
   'aiCorrection.contractCostPending': 'Quote shown before any charge',
   'aiCorrection.contractEstimateLabel': 'Estimated cost in credits',
@@ -124,10 +140,6 @@ export const englishCorrectionMessages = {
   'aiCorrection.processingShort': 'Correction in progress',
   'aiCorrection.processingDescription':
     'LearnX reviews your answer criterion by criterion and verifies every excerpt it uses.',
-  'aiCorrection.processingReceived': 'Answer received',
-  'aiCorrection.processingCriteria': 'Reviewing criteria',
-  'aiCorrection.processingEvidence': 'Verifying excerpts',
-  'aiCorrection.processingSynthesis': 'Preparing feedback',
   'aiCorrection.quotePending': 'Preparing the correction quote',
   'aiCorrection.historyPending': 'Loading your latest correction',
   'aiCorrection.historyTitle': 'Correction history',

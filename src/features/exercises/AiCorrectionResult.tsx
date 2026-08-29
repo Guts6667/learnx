@@ -63,10 +63,18 @@ export function AiCorrectionResult({
   const delivered = correction.criteria.filter(
     (criterion) => !unsureKeys.has(criterion.key),
   );
-  const acquired = delivered.filter(
+  // V4.5-113 : un critère en confiance basse ne porte aucun niveau, il ne peut
+  // donc être ni « acquis » ni « à renforcer ». Il forme son propre groupe.
+  const toCheck = delivered.filter(
+    (criterion) => criterion.confidence === 'LOW',
+  );
+  const levelled = delivered.filter(
+    (criterion) => criterion.confidence !== 'LOW',
+  );
+  const acquired = levelled.filter(
     (criterion) => criterion.levelKey === 'mastered',
   );
-  const toReinforce = delivered.filter(
+  const toReinforce = levelled.filter(
     (criterion) => criterion.levelKey !== 'mastered',
   );
 
@@ -127,6 +135,18 @@ export function AiCorrectionResult({
         />
       ) : null}
 
+      {toCheck.length > 0 ? (
+        <section className="correction-result__group">
+          <h5>{t('aiCorrection.toCheck')}</h5>
+          {toCheck.map((criterion) => (
+            <LowConfidenceCriterionRow
+              criterion={criterion}
+              key={criterion.key}
+            />
+          ))}
+        </section>
+      ) : null}
+
       {toReinforce.length > 0 || correction.unsureCriteria.length > 0 ? (
         <section className="correction-result__group">
           <h5>{t('aiCorrection.toReinforce')}</h5>
@@ -167,7 +187,11 @@ export function AiCorrectionResult({
               score: correction.indicativeScore.toFixed(0),
             })}
           </p>
-        ) : null}
+        ) : (
+          <p className="correction-result__score">
+            {t('aiCorrection.scoreWithheld')}
+          </p>
+        )}
         <p className="correction-settlement">
           {t('aiCorrection.settlementRecap', {
             reserved: settlement.reservedCredits,
@@ -281,6 +305,37 @@ function CorrectionComparison({
         <p>{t('aiCorrection.comparisonStable')}</p>
       )}
     </div>
+  );
+}
+
+/**
+ * Confiance basse (V4.5-110/113) : on montre ce que l'apprenant a écrit et on
+ * dit que le système ne conclut pas. Aucun niveau, et surtout aucun retour
+ * prescriptif — le retour du modèle sur ce critère n'est pas assez fiable pour
+ * être présenté comme une consigne.
+ */
+function LowConfidenceCriterionRow({
+  criterion,
+}: {
+  criterion: CorrectionResult['correction']['criteria'][number];
+}) {
+  const { t } = useI18n();
+  return (
+    <article className="correction-criterion correction-criterion--unsure">
+      <div className="correction-criterion__heading">
+        <strong>{criterion.label}</strong>
+        <Badge tone="warning">{t('aiCorrection.toCheckLabel')}</Badge>
+      </div>
+      <p>{t('aiCorrection.toCheckExplanation')}</p>
+      {criterion.evidenceQuotes.length > 0 ? (
+        <div className="correction-criterion__evidence">
+          <p>{t('aiCorrection.evidenceLabel')}</p>
+          {criterion.evidenceQuotes.map((quote) => (
+            <blockquote key={quote}>{quote}</blockquote>
+          ))}
+        </div>
+      ) : null}
+    </article>
   );
 }
 
