@@ -54,7 +54,9 @@ describe('Prisma correction orchestration store', () => {
   it.each([
     ['COMPLETED', 'COMPLETED'],
     ['COMPLETED_PARTIAL', 'PROVISIONAL'],
-    ['FAILED', 'PROVISIONAL'],
+    // Nothing delivered, reservation released: the column says so rather than
+    // filing the failure among results pending something.
+    ['FAILED', 'FAILED_RELEASED'],
   ] as const)(
     'persists the %s formative result as %s without a PASS/FAIL decision',
     async (runtimeStatus, databaseStatus) => {

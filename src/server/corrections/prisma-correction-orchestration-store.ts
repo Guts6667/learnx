@@ -22,6 +22,18 @@ import { PrismaCorrectionQuoteRepository } from './prisma-correction-quotes.js';
  * reservation, so it is stored as nothing charged; anything else settles the
  * accepted quote, partial deliveries included.
  */
+/**
+ * The runtime status of a correction, expressed in the column's vocabulary.
+ * PROVISIONAL means delivered but incomplete; FAILED_RELEASED means nothing was
+ * delivered and the credits went back.
+ */
+function correctionColumnStatus(
+  status: OrchestratedCorrectionResult['correction']['status'],
+): 'COMPLETED' | 'PROVISIONAL' | 'FAILED_RELEASED' {
+  if (status === 'COMPLETED') return 'COMPLETED';
+  return status === 'FAILED' ? 'FAILED_RELEASED' : 'PROVISIONAL';
+}
+
 function settlementFor(
   status: OrchestratedCorrectionResult['correction']['status'],
   quote: { estimatedCredits: bigint; maximumReservedCredits: bigint },
@@ -140,8 +152,13 @@ export class PrismaCorrectionOrchestrationPorts {
         data: {
           completedAt: new Date(),
           indicativeScore: input.result.indicativeScore,
-          status:
-            input.result.status === 'COMPLETED' ? 'COMPLETED' : 'PROVISIONAL',
+          // A failed correction released its reservation and charged nothing,
+          // so the column has to say so. Storing it as PROVISIONAL — a result
+          // pending something — made every failure count as a delivery in any
+          // query reading this column, which is where a failure rate would be
+          // read from. The legacy V4 repository already wrote FAILED_RELEASED;
+          // the V4.5 store lost it, and a test pinned the loss in place.
+          status: correctionColumnStatus(input.result.status),
           structuredResult: {
             correction: { ...input.result, id: input.correctionId },
             // A correction that delivered nothing has its reservation released,
