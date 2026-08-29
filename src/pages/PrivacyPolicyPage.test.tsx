@@ -28,19 +28,23 @@ describe('PrivacyPolicyPage', () => {
     }
   });
 
-  it('affiche les champs que le propriétaire n’a pas encore renseignés', () => {
+  it('nomme l’éditeur responsable du traitement', () => {
     render(
       <AppProviders>
         <PrivacyPolicyPage />
       </AppProviders>,
     );
 
-    // Décision produit : un crochet visible vaut mieux qu'une page juridique à
-    // moitié fausse. Ce test empêche qu'on « nettoie » l'affichage sans que
-    // le champ soit renseigné.
-    expect(
-      screen.getByText(/nom \/ statut \/ adresse du Propriétaire/),
-    ).toBeInTheDocument();
+    // Une politique de confidentialité sans responsable de traitement
+    // identifiable ne remplit pas son objet, quelle que soit la qualité du
+    // reste du texte.
+    expect(screen.getByText(/SIREN 820 401 990/)).toBeInTheDocument();
+    // L'adresse de contact figure deux fois dans le document : sous « Qui est
+    // responsable » et sous « Vos droits ». C'est voulu — un lecteur qui
+    // cherche à exercer un droit ne devrait pas avoir à remonter la page.
+    expect(screen.getAllByText(/support@learn-x\.app/).length).toBeGreaterThan(
+      1,
+    );
   });
 
   it('n’exige aucun compte et n’expose aucune action de session', () => {
@@ -59,5 +63,24 @@ describe('PrivacyPolicyPage', () => {
       'href',
       '/login',
     );
+  });
+
+  it('garde l’emphase des mots juridiquement porteurs', () => {
+    render(
+      <AppProviders>
+        <PrivacyPolicyPage />
+      </AppProviders>,
+    );
+
+    // « non réversible » qualifie la seule garantie que la page donne sur
+    // l'effacement. Rendue en texte simple, la phrase reste vraie mais cesse
+    // de signaler ce sur quoi le lecteur doit s'arrêter.
+    const emphasised = document.querySelectorAll('.legal-section strong');
+    expect(emphasised.length).toBeGreaterThan(0);
+    expect(
+      [...emphasised].some((node) =>
+        node.textContent?.includes('non réversible'),
+      ),
+    ).toBe(true);
   });
 });
