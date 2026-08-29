@@ -289,8 +289,11 @@ test.describe('correction assistée', () => {
       result.locator('.correction-criterion__evidence blockquote').first(),
     ).toContainText('une comparaison entre une pratique de rappel');
 
-    // Aucun score indicatif n'est affiché quand un critère reste incertain.
-    await expect(result.locator('.correction-result__score')).toHaveCount(0);
+    // Aucun chiffre quand un critère reste incertain — et l'absence est
+    // expliquée plutôt que laissée vide (V4.5-113).
+    await expect(result.locator('.correction-result__score')).toHaveText(
+      /Aucun score indicatif/,
+    );
     await expect(result.locator('.correction-settlement')).toBeVisible();
 
     // Aucun test ne couvrait l'accessibilité des états de correction.
