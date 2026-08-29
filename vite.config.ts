@@ -116,6 +116,8 @@ export default defineConfig({
                 '/verify-email',
                 '/activate',
                 '/interest',
+                '/confidentialite',
+                '/privacy',
               ].includes(url.pathname),
           },
         ],

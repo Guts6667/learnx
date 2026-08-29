@@ -5,6 +5,13 @@ import { resolve } from 'node:path';
 type FunctionalParityManifest = {
   releaseSha: string;
   routes: string[];
+  /**
+   * Routes ajoutées après V4.1. La parité reste vérifiée : une route qui
+   * n'apparaît ni dans la release ni dans cette liste fait toujours échouer le
+   * contrat. Ce qui change, c'est qu'un ajout devient une ligne écrite et revue
+   * plutôt qu'une dérive silencieuse.
+   */
+  v45Routes?: string[];
   version: number;
 };
 
@@ -52,6 +59,8 @@ describe('V4.1 functional parity contract', () => {
     const candidateRoutes = extractDeclaredRoutes(candidateRouterSource);
 
     expect(manifestRoutes).toEqual(releaseRoutes);
-    expect(candidateRoutes).toEqual([...releaseRoutes, '*'].sort());
+    expect(candidateRoutes).toEqual(
+      [...releaseRoutes, '*', ...(manifest.v45Routes ?? [])].sort(),
+    );
   });
 });

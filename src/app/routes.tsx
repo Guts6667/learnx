@@ -38,6 +38,7 @@ type LazyRouteModules = {
   '../pages/PlaceholderPage.tsx': typeof import('../pages/PlaceholderPage');
   '../pages/ProfilePage.tsx': typeof import('../pages/ProfilePage');
   '../pages/ProgramsDirectoryPages.tsx': typeof import('../pages/ProgramsDirectoryPages');
+  '../pages/PrivacyPolicyPage.tsx': typeof import('../pages/PrivacyPolicyPage');
   '../pages/PublicInterestPage.tsx': typeof import('../pages/PublicInterestPage');
   '../pages/QuizPage.tsx': typeof import('../pages/QuizPage');
   '../pages/ReviewsPage.tsx': typeof import('../pages/ReviewsPage');
@@ -134,6 +135,10 @@ const NotesPage = lazyPage('../pages/NotesPage.tsx', 'NotesPage');
 const NotFoundPage = lazyPage('../pages/PlaceholderPage.tsx', 'NotFoundPage');
 const ProfilePage = lazyPage('../pages/ProfilePage.tsx', 'ProfilePage');
 const ProgramPage = lazyPage('../pages/CurriculumPages.tsx', 'ProgramPage');
+const PrivacyPolicyPage = lazyPage(
+  '../pages/PrivacyPolicyPage.tsx',
+  'PrivacyPolicyPage',
+);
 const PublicInterestPage = lazyPage(
   '../pages/PublicInterestPage.tsx',
   'PublicInterestPage',
@@ -519,6 +524,8 @@ function AppRouteTree() {
         <Route element={<PublicLayoutRoute />}>
           <Route element={<LandingPage />} path="/" />
           <Route element={<PublicInterestPage />} path="/interest" />
+          <Route element={<PrivacyPolicyPage />} path="/confidentialite" />
+          <Route element={<PrivacyPolicyPage />} path="/privacy" />
           <Route element={<NotFoundPage />} path="*" />
         </Route>
         <Route

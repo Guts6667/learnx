@@ -26,6 +26,8 @@ describe('public PWA route freshness', () => {
       '/verify-email',
       '/activate',
       '/interest',
+      '/confidentialite',
+      '/privacy',
     ]) {
       expect(viteConfig).toContain(`'${path}'`);
     }
@@ -34,7 +36,7 @@ describe('public PWA route freshness', () => {
   it('keeps APIs outside navigation caching and removes incompatible legacy caches', () => {
     expect(navigationPolicy).toContain('/^\\/api\\//');
     expect(navigationPolicy).toContain(
-      '/^\\/(?:login|request-access|verify-email|activate|interest)(?:\\/|$)/',
+      '/^\\/(?:login|request-access|verify-email|activate|interest|confidentialite|privacy)(?:\\/|$)/',
     );
     expect(navigationPolicy).toContain(
       '/^\\/research\\/ai-correction(?:\\/|$)/',

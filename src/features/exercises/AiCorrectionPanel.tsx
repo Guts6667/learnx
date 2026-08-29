@@ -74,7 +74,7 @@ export function AiCorrectionPanel({
   submissionId: string;
   validationScope?: AiCorrectionValidationScope | null;
 }) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [phase, setPhase] = useState<PanelPhase>({ kind: 'HISTORY_PENDING' });
   const [reconsiderationArgument, setReconsiderationArgument] = useState('');
 
@@ -219,7 +219,10 @@ export function AiCorrectionPanel({
           </div>
         </div>
         <p className="correction-state__notice">
-          {t('aiCorrection.doctrineNotice')}
+          {t('aiCorrection.doctrineNotice')}{' '}
+          <a href={locale === 'en' ? '/privacy' : '/confidentialite'}>
+            {t('aiCorrection.privacyLink')}
+          </a>
         </p>
         <Button onClick={() => void askQuote()}>
           {t('aiCorrection.seePrice')}
