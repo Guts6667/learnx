@@ -129,3 +129,45 @@ describe('formatWeeklyCorrectionReport', () => {
     expect(report).toContain('dont « faux » sur un critère HIGH 1');
   });
 });
+
+describe('entonnoir d’essai dans le rapport', () => {
+  it('compte sans jamais afficher de taux', () => {
+    // With a handful of learners a percentage moves twenty points on one
+    // purchase and would read as a trend.
+    const report = formatWeeklyCorrectionReport({
+      funnel: {
+        grantedThisWeek: 4,
+        purchasedAfterTrial: 1,
+        suspendedByBreaker: 0,
+        trialAccounts: 12,
+      },
+      journal: [],
+      summary: summary(),
+      week,
+    });
+    expect(report).toContain('12 compte(s) en cohorte essai');
+    expect(report).toContain('1 achat(s) après essai');
+    expect(report).not.toMatch(/essai[^\n]*%/);
+  });
+
+  it('distingue une allocation refusée par le coupe-circuit d’une perte', () => {
+    const report = formatWeeklyCorrectionReport({
+      funnel: {
+        grantedThisWeek: 0,
+        purchasedAfterTrial: 0,
+        suspendedByBreaker: 3,
+        trialAccounts: 12,
+      },
+      journal: [],
+      summary: summary(),
+      week,
+    });
+    expect(report).toContain('3 allocation(s) non versée(s) — coupe-circuit');
+  });
+
+  it('omet la section quand aucune donnée d’essai n’est fournie', () => {
+    expect(
+      formatWeeklyCorrectionReport({ journal: [], summary: summary(), week }),
+    ).not.toContain('cohorte essai');
+  });
+});

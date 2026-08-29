@@ -7,6 +7,13 @@ export interface RetentionPolicy {
   rateLimitRetentionMs: number;
   sessionGraceMs: number;
   tokenRetentionMs: number;
+  /**
+   * Anti-abuse markers for the trial allocation (V4.5-163). Twelve months from
+   * last contact: long enough to be a deterrent, bounded because a marker that
+   * never expires is a permanent record about someone we cannot name and who
+   * may have left.
+   */
+  trialMarkerRetentionMs: number;
 }
 
 export interface RetentionRepository {
@@ -15,11 +22,13 @@ export interface RetentionRepository {
   countExpiredRateLimits(cutoff: Date): Promise<number>;
   countExpiredPublicLeads(cutoff: Date): Promise<number>;
   countExpiredSessions(cutoff: Date): Promise<number>;
+  countExpiredTrialMarkers(cutoff: Date): Promise<number>;
   deleteExpiredAccessInvitations(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredEmailVerifications(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredRateLimits(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredPublicLeads(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredSessions(cutoff: Date, limit: number): Promise<number>;
+  deleteExpiredTrialMarkers(cutoff: Date, limit: number): Promise<number>;
 }
 
 interface RetentionTargetResult {
@@ -35,6 +44,7 @@ export interface RetentionCleanupResult {
   rateLimits: RetentionTargetResult;
   publicLeads: RetentionTargetResult;
   sessions: RetentionTargetResult;
+  trialMarkers: RetentionTargetResult;
 }
 
 export const defaultRetentionPolicy: RetentionPolicy = {
@@ -44,6 +54,7 @@ export const defaultRetentionPolicy: RetentionPolicy = {
   rateLimitRetentionMs: DAY_IN_MILLISECONDS,
   sessionGraceMs: 7 * DAY_IN_MILLISECONDS,
   tokenRetentionMs: 30 * DAY_IN_MILLISECONDS,
+  trialMarkerRetentionMs: 365 * DAY_IN_MILLISECONDS,
 };
 
 function readPositiveInteger(
@@ -96,6 +107,11 @@ export function getRetentionPolicy(
       'LEARNX_RETENTION_TOKEN_MS',
       defaultRetentionPolicy.tokenRetentionMs,
     ),
+    trialMarkerRetentionMs: readPositiveInteger(
+      environment,
+      'LEARNX_RETENTION_TRIAL_MARKER_MS',
+      defaultRetentionPolicy.trialMarkerRetentionMs,
+    ),
   };
 }
 
@@ -143,6 +159,9 @@ export async function runRetentionCleanup(
   const tokenCutoff = new Date(now.getTime() - policy.tokenRetentionMs);
   const publicLeadCutoff = new Date(
     now.getTime() - policy.publicLeadRetentionMs,
+  );
+  const trialMarkerCutoff = new Date(
+    now.getTime() - policy.trialMarkerRetentionMs,
   );
 
   const sessions = await cleanupTarget(
@@ -196,6 +215,17 @@ export async function runRetentionCleanup(
     policy,
   );
 
+  const trialMarkers = await cleanupTarget(
+    {
+      count: (cutoff) => repository.countExpiredTrialMarkers(cutoff),
+      cutoff: trialMarkerCutoff,
+      deleteBatch: (cutoff, limit) =>
+        repository.deleteExpiredTrialMarkers(cutoff, limit),
+    },
+    options.apply,
+    policy,
+  );
+
   return {
     accessInvitations,
     applied: options.apply,
@@ -203,5 +233,6 @@ export async function runRetentionCleanup(
     publicLeads,
     rateLimits,
     sessions,
+    trialMarkers,
   };
 }

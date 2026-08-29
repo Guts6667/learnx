@@ -38,6 +38,11 @@ const repository: RetentionRepository = {
   countExpiredSessions(cutoff) {
     return prisma.session.count({ where: { expiresAt: { lt: cutoff } } });
   },
+  countExpiredTrialMarkers(cutoff) {
+    return prisma.trialAllocationMarker.count({
+      where: { lastSeenAt: { lt: cutoff } },
+    });
+  },
   async deleteExpiredAccessInvitations(cutoff, limit) {
     const records = await prisma.accessInvitation.findMany({
       orderBy: { createdAt: 'asc' },
@@ -93,6 +98,20 @@ const repository: RetentionRepository = {
     if (records.length === 0) return 0;
     const result = await prisma.publicLead.deleteMany({
       where: { id: { in: records.map(({ id }) => id) } },
+    });
+    return result.count;
+  },
+  async deleteExpiredTrialMarkers(cutoff, limit) {
+    const records = await prisma.trialAllocationMarker.findMany({
+      orderBy: { lastSeenAt: 'asc' },
+      select: { keyHash: true },
+      take: limit,
+      where: { lastSeenAt: { lt: cutoff } },
+    });
+    if (records.length === 0) return 0;
+
+    const result = await prisma.trialAllocationMarker.deleteMany({
+      where: { keyHash: { in: records.map(({ keyHash }) => keyHash) } },
     });
     return result.count;
   },

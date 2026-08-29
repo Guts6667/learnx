@@ -121,6 +121,8 @@ model CreditAllocationPolicyVersion {
   id                      String             @id @default(uuid()) @db.Uuid
   key                     String
   version                 String
+  /// Cohorte servie par cette politique. Nulle = applicable à toutes.
+  cohort                  CreditCohort?
   status                  CreditPolicyStatus @default(DRAFT)
   provenance              CreditProvenance
   allocationAmount        BigInt?            @map("allocation_amount")
@@ -172,6 +174,9 @@ model CreditGrantCycle {
   userId          String                        @map("user_id") @db.Uuid
   policyVersionId String                        @map("policy_version_id") @db.Uuid
   cycleKey        String                        @map("cycle_key")
+  /// La cohorte au moment de l'octroi. Estampillée plutôt que jointe : changer
+  /// la cohorte d'un compte ne doit pas réécrire ce qui lui a déjà été versé.
+  cohort          CreditCohort
   lotId           String                        @unique @map("lot_id") @db.Uuid
   idempotencyKey  String                        @map("idempotency_key")
   createdAt       DateTime                      @default(now()) @map("created_at")
@@ -319,4 +324,22 @@ model AiPricingQuote {
   @@index([expiresAt])
   @@index([reconsiderationOfCorrectionId, createdAt])
   @@map("ai_pricing_quotes")
+}
+
+/// Marqueur anti-abus des allocations d'essai (V4.5-163).
+///
+/// Indexé sur une empreinte HMAC de l'adresse IP : sans le secret serveur, la
+/// ligne ne désigne personne. Elle survit volontairement à la suppression du
+/// compte — sinon effacer son compte remettrait le compteur à zéro et
+/// l'effacement deviendrait le contournement que cette limite existe pour
+/// fermer. Intérêt légitime, conservation 12 mois depuis le dernier contact,
+/// purge par `cleanup-expired-data`.
+model TrialAllocationMarker {
+  keyHash     String   @id @map("key_hash")
+  grants      Int      @default(0)
+  firstSeenAt DateTime @default(now()) @map("first_seen_at")
+  lastSeenAt  DateTime @updatedAt @map("last_seen_at")
+
+  @@index([lastSeenAt])
+  @@map("trial_allocation_markers")
 }

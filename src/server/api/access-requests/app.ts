@@ -64,6 +64,25 @@ async function parseBody(request: Request): Promise<unknown> {
   }
 }
 
+/**
+ * Hands a newly activated account its first cycle. Failures are swallowed on
+ * purpose: the account exists, the learner is signed in, and a missing grant is
+ * recoverable by the monthly run — losing the activation to a credit error is
+ * not.
+ */
+async function grantFirstCycle(userId: string): Promise<void> {
+  try {
+    const { createDefaultTrialAllocation } =
+      await import('../../credits/default-trial-allocation.js');
+    const allocation = await createDefaultTrialAllocation();
+    await allocation?.grantForCycle(userId);
+  } catch {
+    // Deliberately silent to the learner. The weekly report shows the funnel,
+    // and an account that received no grant appears there as one that never
+    // had a cycle rather than as a success.
+  }
+}
+
 export function createAccessRequestsApp(
   options: AccessRequestsAppOptions = {},
 ) {
@@ -195,6 +214,11 @@ export function createAccessRequestsApp(
         400,
       );
     }
+    // Granted after the activation transaction has committed, and never
+    // allowed to fail it: an account must not be lost because a credit grant
+    // did. The grant is idempotent per cycle, so the monthly run picks up
+    // anyone missed here.
+    await grantFirstCycle(result.user.id);
     setSessionCookie(context, result.sessionToken, secureCookies);
     return context.json({ user: result.user }, 201);
   });
