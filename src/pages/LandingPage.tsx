@@ -143,6 +143,9 @@ export function LandingPage({ path }: { path?: string }) {
             >
               {t('landing.navigation.research')}
             </a>
+            <a href={locale === 'en' ? '/privacy' : '/confidentialite'}>
+              {t('legal.privacyLink')}
+            </a>
             <a href="/login">{t('landing.login')}</a>
           </nav>
         </div>

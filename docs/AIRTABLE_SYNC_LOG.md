@@ -611,3 +611,23 @@ l'autorisation.
 - V4.5-142 : `READY` → `DONE` (`e0d6b383`, PR #59).
 - Règle de handoff « Sorties et leur destination » ajoutée à
   `docs/AGENT_WORKFLOW.md` §7.
+
+## 2026-08-29 (fin de soirée) — Head of AI, base `app8IaHD1sJtI83WT`
+
+- V4.5-120 `IN_PROGRESS` → `DONE` (`5fb24615`) ; V4.5-122 `DRAFT` → `DONE`
+  (`af2ff0bf`) ; V4.5-121 `DRAFT` → `IN_PROGRESS` (plafond 3 → 10 → 13 USD,
+  décisions Rayan ; « go 13 » du Head of AI).
+- V4.5-143 `READY` → `DONE` (`c369a68f`) ; V4.5-144 créé et clos
+  (`6ef4de03`, Integration verte sur `97a614b3`) ; V4.5-145, 146, 147, 180,
+  169 créés ; V4.5-147 clos (`87f6d020`) ; V4.5-166 clos (`b4b136ca`) ;
+  V4.5-179 clos (`93ae5790`, voie D) ; V4.5-163 `IN_PROGRESS` (décisions
+  cohorte (a), défaut `EARLY_ADOPTER`, coupe-circuit ⇒ pas d'attribution).
+- V4.5-140 UI mergée (`89b2165d`) ; V4.5-167 mergée (`REVIEW`, publiable
+  après 169).
+- Décisions Rayan consignées : `owner-erasure-2026-08-29` (b, textes
+  conservés sous pseudonyme), `owner-openrouter-retention-2026-08-29`,
+  `owner-editor-identity-2026-08-29`, adresse de contact `support@learn-x.app`.
+- Incident évité : PR #69 (e-mail personnel) fermée sans merge et branches
+  supprimées avant toute entrée dans `dev` (dépôt public) — signalé par la
+  voie C.
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
