@@ -23,6 +23,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma`, `prisma/models/*.prisma` | dossier `prisma/` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
+| Design, toutes surfaces | `docs/DESIGN_SYSTEM.md` | Autorité V4.2 ; remplace les fondations Totem |
 | V4 design Totem | `docs/V4_TOTEM_IMPLEMENTATION_MAP.md` puis les paquets d’autorité produit, public et marque cités | Manifestes Totem approuvés le 24 août 2026 |
 | Pilotage V4 courant | `docs/V4_ROADMAP.md`, puis `BACKLOG_V4.md` pour le détail | Roadmap datée du 24 août ; anciennes vues dans `docs/archive/v4/` |
 | Release du pilote V4 | `docs/V4_019_RELEASE_REPORT.md`, puis `docs/V4_ROLLOUT_CHECKLIST.md` et `docs/V4_019_MANUAL_ACCEPTANCE.md` | Les essais preview sont append-only ; la recette propriétaire précède deux GO distincts : promotion Git/configuration fermée, puis ouverture/smoke |

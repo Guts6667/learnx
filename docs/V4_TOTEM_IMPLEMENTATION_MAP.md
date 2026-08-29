@@ -1,5 +1,10 @@
 # V4 — cartographie d’implémentation Totem
 
+> **Fondations remplacées le 29 août 2026 par `docs/DESIGN_SYSTEM.md` (V4.2).**
+> La palette, la typographie, l'espacement et les règles de composition de ce
+> document sont historiques. Ses cartographies de surface V4 restent utiles
+> comme mémoire d'implémentation.
+
 ## Autorité critique de release — 26 août 2026
 
 Pour la release V4, les trois références validées ci-dessous remplacent les
