@@ -97,54 +97,59 @@ export function TotemProgramsPage() {
             </span>
           </header>
           <ul
-            className="ui-list ui-program-list w-full"
+            className="ui-program-cards"
             aria-label={t('programs.enrolledSection')}
           >
             {programs.data.items.map(({ enrollment, program, progress }) => {
               const percent = progress?.percent ?? 0;
-              const nextAction = todayProgramsById.get(program.id)?.nextAction;
+              const todayProgram = todayProgramsById.get(program.id);
+              const nextAction = todayProgram?.nextAction;
               const status =
                 percent >= 100
                   ? t('programs.status.completed')
                   : percent > 0
                     ? t('programs.status.inProgress')
                     : t('programs.status.notStarted');
+              const actionLabel =
+                percent > 0 ? t('common.continue') : t('programs.start');
               return (
-                <li key={enrollment.id}>
+                <li className="ui-program-cards__item" key={enrollment.id}>
                   <a
-                    aria-label={`${percent > 0 ? t('common.continue') : t('programs.start')} — ${program.title}`}
-                    className="ui-program-line group"
+                    aria-label={`${actionLabel} — ${program.title}`}
+                    className="ui-program-card group"
                     href={`/program/${encodeURIComponent(program.slug)}`}
                   >
-                    <div className="min-w-0 flex-1">
-                      <h2 className="text-lg font-semibold group-hover:text-[var(--color-action)]">
-                        {program.title}
-                      </h2>
-                      <p className="ui-text-muted mt-2 text-sm">
-                        {status} · {Math.round(percent)} %
+                    <h3 className="ui-program-card__title group-hover:text-[var(--color-action)]">
+                      {program.title}
+                    </h3>
+                    <p className="ui-program-card__position">
+                      {status}
+                      {nextAction?.stageTitle
+                        ? ` · ${t('curriculum.stage')} : ${nextAction.stageTitle}`
+                        : ''}
+                    </p>
+                    {nextAction ? (
+                      <p className="ui-program-card__next">
+                        <strong>{t('today.nextAction')}</strong> ·{' '}
+                        {nextAction.title}
                       </p>
-                      {nextAction ? (
-                        <p className="totem-programs-page__next">
-                          <strong>{t('today.nextAction')}</strong> ·{' '}
-                          {nextAction.title}
-                        </p>
-                      ) : null}
+                    ) : null}
+                    {percent > 0 ? (
                       <ProgressBar
-                        className="mt-4"
+                        className="ui-program-card__progress"
                         label={t('today.progress', {
                           count: Math.round(percent),
                         })}
                         showValue={false}
                         value={percent}
                       />
-                    </div>
-                    <span className="ui-program-line__action">
-                      <span aria-hidden="true">›</span>
-                      <span className="sr-only">
-                        {percent > 0
-                          ? t('common.continue')
-                          : t('programs.start')}
-                      </span>
+                    ) : null}
+                    <span
+                      aria-hidden="true"
+                      className="ui-program-card__action"
+                    >
+                      {actionLabel}
+                      <span className="ui-program-card__chevron">›</span>
                     </span>
                   </a>
                 </li>
