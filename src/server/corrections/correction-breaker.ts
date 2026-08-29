@@ -21,7 +21,29 @@ export interface BreakerStatus {
   state: 'CLOSED' | 'OPEN';
   thresholds: typeof BREAKER_THRESHOLDS;
   trippedAt: string | null;
+  /**
+   * The rates recorded on the trip, for the reason that tripped it. Never
+   * re-measured: the window has moved since, so a fresh measurement would
+   * answer "what is it now" where the admin is asking "what tripped this".
+   * Other reasons stay null rather than being filled from a current reading.
+   */
+  trippedRates: BreakerRates;
   window: { observed: number; size: number };
+}
+
+export interface BreakerJournalEvent {
+  actorId: string | null;
+  actorName: string | null;
+  alertError: string | null;
+  alertedAt: string | null;
+  at: string;
+  id: string;
+  kind: 'REOPENED' | 'TRIPPED';
+  note: string | null;
+  rate: number | null;
+  reason: BreakerReason | null;
+  threshold: number | null;
+  windowSize: number | null;
 }
 
 /**
@@ -43,7 +65,15 @@ export interface CorrectionBreakerPort {
   /** Measures, trips and latches if a rule is crossed, then returns the state. */
   evaluate(): Promise<BreakerStatus>;
   reopen(input: { actorId: string; note?: string }): Promise<void>;
+  /** Newest first. The journal is what makes a reopen auditable. */
+  events(input?: { limit?: number }): Promise<BreakerJournalEvent[]>;
 }
+
+const NO_RATES: BreakerRates = {
+  checkerDisagreement: null,
+  unusable: null,
+  wrongAtHigh: null,
+};
 
 const CLOSED: Omit<BreakerStatus, 'rates' | 'window'> = {
   evaluationError: null,
@@ -51,12 +81,7 @@ const CLOSED: Omit<BreakerStatus, 'rates' | 'window'> = {
   state: 'CLOSED',
   thresholds: BREAKER_THRESHOLDS,
   trippedAt: null,
-};
-
-const NO_RATES: BreakerRates = {
-  checkerDisagreement: null,
-  unusable: null,
-  wrongAtHigh: null,
+  trippedRates: NO_RATES,
 };
 
 export class PrismaCorrectionBreaker implements CorrectionBreakerPort {
@@ -139,8 +164,46 @@ export class PrismaCorrectionBreaker implements CorrectionBreakerPort {
       state: 'OPEN',
       thresholds: BREAKER_THRESHOLDS,
       trippedAt: event.createdAt.toISOString(),
+      trippedRates: ratesAt(reason, rate),
       window,
     };
+  }
+
+  public async events(
+    input: { limit?: number } = {},
+  ): Promise<BreakerJournalEvent[]> {
+    const rows = await this.prisma.aiCorrectionBreakerEvent.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: {
+        action: true,
+        actor: { select: { displayName: true } },
+        actorId: true,
+        alertError: true,
+        alertedAt: true,
+        createdAt: true,
+        id: true,
+        note: true,
+        rate: true,
+        reason: true,
+        threshold: true,
+        windowSize: true,
+      },
+      take: Math.min(Math.max(input.limit ?? 100, 1), 100),
+    });
+    return rows.map((row) => ({
+      actorId: row.actorId,
+      actorName: row.actor?.displayName ?? null,
+      alertError: row.alertError,
+      alertedAt: row.alertedAt?.toISOString() ?? null,
+      at: row.createdAt.toISOString(),
+      id: row.id,
+      kind: row.action,
+      note: row.note,
+      rate: row.rate,
+      reason: row.reason,
+      threshold: row.threshold,
+      windowSize: row.windowSize,
+    }));
   }
 
   public async reopen(input: {
@@ -218,7 +281,12 @@ export class PrismaCorrectionBreaker implements CorrectionBreakerPort {
   > | null> {
     const latest = await this.prisma.aiCorrectionBreakerEvent.findFirst({
       orderBy: { createdAt: 'desc' },
-      select: { action: true, createdAt: true, reason: true },
+      select: {
+        action: true,
+        createdAt: true,
+        rate: true,
+        reason: true,
+      },
     });
     if (!latest || latest.action !== 'TRIPPED') return null;
     return {
@@ -227,6 +295,8 @@ export class PrismaCorrectionBreaker implements CorrectionBreakerPort {
       state: 'OPEN',
       thresholds: BREAKER_THRESHOLDS,
       trippedAt: latest.createdAt.toISOString(),
+      // Read back from the trip, not measured again.
+      trippedRates: ratesAt(latest.reason, latest.rate),
     };
   }
 
@@ -296,6 +366,23 @@ export function observeCorrections(
     unusable,
     windowObserved: corrections.length,
   };
+}
+
+/**
+ * The recorded rate placed under the reason it belongs to, leaving the others
+ * null. Filling them from a current reading would put two different questions
+ * — "what tripped this" and "what is it now" — side by side under one label.
+ */
+function ratesAt(
+  reason: BreakerReason | null,
+  rate: number | null,
+): BreakerRates {
+  if (reason === null) return NO_RATES;
+  if (reason === 'CHECKER_DISAGREEMENT') {
+    return { ...NO_RATES, checkerDisagreement: rate };
+  }
+  if (reason === 'UNUSABLE_RATE') return { ...NO_RATES, unusable: rate };
+  return { ...NO_RATES, wrongAtHigh: rate };
 }
 
 function rateFor(reason: BreakerReason, rates: BreakerRates): number | null {

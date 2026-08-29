@@ -13,6 +13,11 @@ function summary(
       state: 'CLOSED',
       thresholds: BREAKER_THRESHOLDS,
       trippedAt: null,
+      trippedRates: {
+        checkerDisagreement: null,
+        unusable: null,
+        wrongAtHigh: null,
+      },
       window: { observed: 50, size: 50 },
     },
     checker: { disagreed: 5, unavailable: 1 },

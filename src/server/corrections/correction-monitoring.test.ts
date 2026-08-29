@@ -12,6 +12,11 @@ const closed = {
   state: 'CLOSED' as const,
   thresholds: BREAKER_THRESHOLDS,
   trippedAt: null,
+  trippedRates: {
+    checkerDisagreement: null,
+    unusable: null,
+    wrongAtHigh: null,
+  },
   window: { observed: 0, size: 50 },
 };
 
@@ -24,6 +29,7 @@ function service(
   } as unknown as PrismaClient;
   return new PrismaCorrectionMonitoringService(prisma, {
     evaluate: vi.fn(async () => closed),
+    events: vi.fn(async () => []),
     reopen: vi.fn(async () => undefined),
     status: vi.fn(async () => closed),
     ...breaker,
@@ -132,6 +138,11 @@ describe('PrismaCorrectionMonitoringService', () => {
       reason: 'CHECKER_DISAGREEMENT' as const,
       state: 'OPEN' as const,
       trippedAt: '2026-08-29T12:00:00.000Z',
+      trippedRates: {
+        checkerDisagreement: 0.6,
+        unusable: null,
+        wrongAtHigh: null,
+      },
     };
     const summary = await service([], {
       status: vi.fn(async () => open),
