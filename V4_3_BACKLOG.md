@@ -4,7 +4,7 @@
 
 - Version : 0.1.0
 - Date d'ouverture : 29 août 2026
-- Baseline attendue : `origin/dev` au SHA de clôture de V4.2
+- Baseline : `origin/main` à `9c35e9db` (V4.2 released et clôturée)
 - Statut V4.3 : **DRAFT** — le périmètre du lot 100 attend la remise d'un audit
   UX indépendant. Aucun ticket n'est activable avant que ce périmètre soit
   arrêté par le propriétaire.

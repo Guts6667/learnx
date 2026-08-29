@@ -5,8 +5,8 @@
 - Version : 1.0.0
 - Date : 29 août 2026
 - Baseline : `origin/main` à `63c436d9` (V4.1 released et clôturée)
-- Statut V4.2 : **READY_FOR_OWNER_GO** — les dix tickets sont `DONE` et
-  fusionnés dans `dev`.
+- Statut V4.2 : **clôturée** — les dix tickets sont `DONE` et la release est
+  publiée le 29 août 2026 au SHA `9c35e9db`. `main` avancé depuis `63c436d9`.
 - Périmètre arrêté le 29 août 2026 : V4.2 livre le système de design et la
   surface publique. **La refonte des surfaces produit en est explicitement
   exclue** et devient V4.3, informée par un audit UX indépendant.
@@ -197,12 +197,40 @@ Identiques à V4.1 : `DRAFT → NEEDS_ARBITRATION → READY → IN_PROGRESS → 
 - Ce gate doit exister **avant** la refonte produit de V4.3, dont il est la
   protection principale.
 
-## Définition de terminé V4.2
+## Définition de terminé V4.2 — atteinte
 
-V4.2 est terminée lorsque le lot 500 est livré et revu, que
-`pnpm quality:v4.1:final` et la matrice e2e sont verts, que les références
-visuelles sont à jour et acceptées, et que le propriétaire rend un GO explicite
-avant toute promotion vers `main`.
+Publiée le 29 août 2026 au SHA `9c35e9db` sur GO du propriétaire.
+
+Preuves à la promotion : `Quality`, `Visual` et `Integration` verts sur ce SHA ;
+`pnpm quality:v4.1:final` vert localement ; 30 références visuelles Linux
+comparées en CI ; 76 tests e2e dont axe sur huit specs. Smoke de production
+après déploiement : huit routes publiques en `200`, les deux polices servies,
+`/api/auth/session` conserve `private, no-store`.
+
+Exception de publication, identique à V4.1 et pour la même raison : `main` exige
+un historique linéaire et `dev` portait quatre commits de fusion, cette fois
+issus des pull requests des autres sessions. `required_linear_history` a été
+désactivé le temps de l'avance rapide puis rétabli, la configuration comparée
+avant et après et trouvée identique sur neuf réglages.
+
+**Cette incompatibilité s'est maintenant produite deux fois sur deux releases.**
+Elle se reproduira à chaque fois : l'équipe intègre par pull request, ce qui crée
+des commits de fusion, et `main` les refuse. La décision de retirer
+`required_linear_history` appartient au propriétaire ; en l'état, chaque release
+exige de désactiver puis rétablir une protection de la branche de production.
+
+## Ce qui n'a pas été fait, et pourquoi
+
+- **La refonte des surfaces produit** est sortie du périmètre le 29 août sur
+  décision du propriétaire et devient V4.3, nourrie par deux audits UX
+  indépendants. Les constats relevés pendant V4.2 sont reportés dans
+  `V4_3_BACKLOG.md` sans être corrigés ici.
+- **`Visual baselines (required)` n'est pas encore un check requis** sur `dev`
+  ni sur `main`. Le job échoue bruyamment mais n'est pas imposé par la
+  protection de branche ; l'API me refuse ce réglage.
+- **`--color-success` vaut la couleur d'action.** Un état de réussite qui
+  partage la couleur du bouton principal est une question de design, reportée en
+  V4.3.
 
 Aucune surface produit n'est modifiée par cette release. Ce qui a été observé
 sur l'écran de leçon pendant V4.2 est reporté tel quel dans `V4_3_BACKLOG.md`
