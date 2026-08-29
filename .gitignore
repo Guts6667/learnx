@@ -17,3 +17,4 @@ generated/
 .vercel
 benchmarks/ai-correction/results/
 .mcp.json
+.claude/settings.local.json

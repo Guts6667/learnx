@@ -49,6 +49,8 @@ jobs:
         run: pnpm quality:coverage:critical
       - name: Dead files, exports, and dependencies
         run: pnpm quality:dead-code
+      - name: Dead CSS
+        run: pnpm quality:dead-css
       - name: Build
         run: pnpm build
       - name: Critical public research navigation

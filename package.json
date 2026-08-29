@@ -46,13 +46,14 @@
     "quality:coverage:critical:report": "tsx scripts/check-v4-1-critical-coverage.ts",
     "quality:coverage:critical": "tsx scripts/check-v4-1-critical-coverage.ts --final",
     "quality:dead-code": "knip",
+    "quality:dead-css": "tsx scripts/check-dead-css.ts",
     "quality:imports:baseline": "pnpm typecheck && tsx scripts/check-v4-1-imports.ts --mode baseline",
     "quality:imports:v4.1": "pnpm typecheck && tsx scripts/check-v4-1-imports.ts --mode final",
     "quality:airtable": "tsx scripts/check-v4-1-airtable.ts",
     "quality:prepare": "pnpm prisma:generate",
     "quality:security": "pnpm audit --audit-level=high --prod",
     "quality:v4.1:baseline": "pnpm quality:prepare && pnpm i18n:check && pnpm format:check && pnpm lint && pnpm quality:imports:baseline && pnpm test:coverage:baseline && pnpm quality:coverage:critical:report && pnpm build && pnpm quality:bundle && pnpm quality:security",
-    "quality:v4.1:final": "pnpm quality:prepare && pnpm i18n:check && pnpm format:check && pnpm lint && pnpm quality:imports:v4.1 && pnpm test:coverage:v4.1 && pnpm quality:coverage:critical && pnpm quality:dead-code && pnpm build && pnpm quality:bundle && pnpm quality:security"
+    "quality:v4.1:final": "pnpm quality:prepare && pnpm i18n:check && pnpm format:check && pnpm lint && pnpm quality:imports:v4.1 && pnpm test:coverage:v4.1 && pnpm quality:coverage:critical && pnpm quality:dead-code && pnpm quality:dead-css && pnpm build && pnpm quality:bundle && pnpm quality:security"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {

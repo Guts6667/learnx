@@ -130,8 +130,7 @@
   gap: var(--space-3);
 }
 
-.totem-admin-surface .admin-account-action > .ui-card,
-.totem-admin-surface .admin-account-action > .ui-error-state {
+.totem-admin-surface .admin-account-action > .ui-card {
   width: min(100%, 28rem);
 }
 

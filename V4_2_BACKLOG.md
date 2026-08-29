@@ -1,21 +1,24 @@
-# Backlog V4.2 — système de design réel et refonte des surfaces
+# Backlog V4.2 — système de design réel et surface publique
 
 ## Autorité et état
 
 - Version : 1.0.0
 - Date : 29 août 2026
 - Baseline : `origin/main` à `63c436d9` (V4.1 released et clôturée)
-- Statut V4.2 : **actif** — lots 000 à 500 `DONE` et fusionnés dans `dev` à
-  `ed8d5098` ; lot 600 ouvert.
+- Statut V4.2 : **actif** — lots 000 à 400 `DONE` et fusionnés dans `dev` ;
+  lot 500 ouvert.
+- Périmètre arrêté le 29 août 2026 : V4.2 livre le système de design et la
+  surface publique. **La refonte des surfaces produit en est explicitement
+  exclue** et devient V4.3, informée par un audit UX indépendant.
 - Autorité : ce fichier est l'unique backlog d'exécution V4.2.
 - Autorité de design : `docs/DESIGN_SYSTEM.md`.
 
 **Note de rédaction.** Ce backlog est écrit rétroactivement, après la livraison
-des lots 000 à 500. C'est un manquement à la gouvernance du projet, qui exige un
+des lots 000 à 400. C'est un manquement à la gouvernance du projet, qui exige un
 backlog d'exécution par version : le travail a été piloté depuis un fichier de
 plan hors dépôt, illisible par quiconque reprendrait. Les preuves ci-dessous
 sont réelles et vérifiables par SHA, mais la traçabilité a été reconstituée
-après coup et non produite ticket par ticket. Le lot 600 revient au
+après coup et non produite ticket par ticket. Le lot 500 revient au
 fonctionnement normal.
 
 ## Objet
@@ -52,7 +55,7 @@ Identiques à V4.1 : `DRAFT → NEEDS_ARBITRATION → READY → IN_PROGRESS → 
   sonde fait échouer les 10 captures d'un projet et une exécution propre reste
   verte.
 - Limite assumée : pré-vol local, pas un gate CI. Les captures sont générées
-  sur macOS. Voir V4.2-603.
+  sur macOS. Voir V4.2-502.
 - Effet de bord : `tests/e2e` n'appartenait à aucun projet TypeScript et
   n'était donc jamais typé. `tsconfig.e2e.json` ajouté.
 
@@ -150,59 +153,40 @@ Identiques à V4.1 : `DRAFT → NEEDS_ARBITRATION → READY → IN_PROGRESS → 
   1 357 197 octets avec la raison inscrite dans le fichier ; l'allocation de
   10 % continue de garder la croissance accidentelle.
 
-## Lot 600 — surfaces produit
+## Lot 500 — gates de fin
 
-### V4.2-601 — Refonte des surfaces apprenant
+### V4.2-501 — Gate de CSS mort
 
-- Priorité : P0 · Owner : Frontend · Reviewer : Design + Produit
-- Statut : **IN_PROGRESS** — audit UX indépendant en cours. Le propriétaire a
-  élargi le mandat : il ne s'agit plus d'appliquer le système existant aux
-  écrans produit, mais de remettre en cause l'expérience et de proposer mieux.
-  Le périmètre de ce ticket sera arrêté à la remise de cet audit.
-- Constats déjà établis sur l'écran de leçon, à confirmer ou contredire :
-  - « 0 % » affiché deux fois sur une ligne et barre de progression vide, ce
-    qui contredit `EMOTIONAL_DESIGN_CONTRACT.md` 5.2 ;
-  - contenu enterré sous trois niveaux d'étiquettes pour un paragraphe ;
-  - aucune source affichée alors que la landing en fait une promesse centrale
-    et que le modèle de données porte ressources et références éditoriales ;
-  - hiérarchie visuelle plate entre titre, section et corps ;
-  - navigation basse mêlant contexte et actions sans hiérarchie.
-- Réserve de méthode : ces constats viennent de captures sur données de test.
-  Ils valent pour la structure et la densité, pas pour le contenu éditorial
-  réel.
-- Critères d'acceptation :
-  - les surfaces apprenant appliquent une direction unique et documentée ;
-  - aucune métrique sans action n'est affichée, `0` compris ;
-  - la preuve éditoriale est visible au point d'usage ;
-  - contraste, clavier, zoom 200 % et reduced motion vérifiés ;
-  - aucun contrat serveur, URL ou règle de progression modifié.
+- Priorité : P2 · Owner : Frontend platform · Reviewer : QA
+- Statut : **READY**
+- `knip` couvre le JavaScript mort ; rien ne couvre le CSS. Deux blocs morts
+  ont été trouvés à la main pendant V4.1 et V4.2 — `.landing-proof-list` et
+  quatre surcharges `.totem-auth-page` remappant des classes Tailwind qui
+  n'existaient plus nulle part.
+- Critères d'acceptation : une classe définie et jamais consommée fait échouer
+  le gate ; les faux positifs des classes construites dynamiquement sont
+  documentés plutôt que contournés silencieusement.
 
-### V4.2-602 — Reprise du travail en stash
+### V4.2-502 — Gate visuel bloquant en CI
 
-- Priorité : P2 · Statut : **READY**
-- `stash@{0}` conserve une passe UX sur notes, profil et découvrir, faite sur
-  une branche périmée et non rejouable telle quelle. À réimplémenter sur la
-  disposition actuelle, dans le périmètre de V4.2-601 qui touche les mêmes
-  écrans.
-
-### V4.2-603 — Gate visuel bloquant en CI
-
-- Priorité : P2 · Statut : **READY** — approuvé par le propriétaire
+- Priorité : P2 · Owner : QA automation · Reviewer : Release engineering
+- Statut : **READY** — approuvé par le propriétaire
 - Les références actuelles sont générées sur macOS et ne peuvent pas servir de
   gate sur un runner Linux. Générer les références Linux via une exécution CI
   dédiée, les committer, puis rendre le job bloquant.
 - Justification : le filet a détecté un CTA totalement invisible qu'axe n'a pas
   vu, et a établi empiriquement quelle couche de tokens était réelle.
-
-### V4.2-604 — Gate de CSS mort
-
-- Priorité : P2 · Statut : **READY**
-- `knip` couvre le JavaScript mort ; rien ne couvre le CSS. Deux blocs morts
-  ont été trouvés à la main pendant V4.1 et V4.2.
+- Ce gate doit exister **avant** la refonte produit de V4.3, dont il est la
+  protection principale.
 
 ## Définition de terminé V4.2
 
-V4.2 est terminée lorsque le lot 600 est livré et revu, que
+V4.2 est terminée lorsque le lot 500 est livré et revu, que
 `pnpm quality:v4.1:final` et la matrice e2e sont verts, que les références
-visuelles sont à jour et acceptées écran par écran, et que le propriétaire rend
-un GO explicite avant toute promotion vers `main`.
+visuelles sont à jour et acceptées, et que le propriétaire rend un GO explicite
+avant toute promotion vers `main`.
+
+Aucune surface produit n'est modifiée par cette release. Ce qui a été observé
+sur l'écran de leçon pendant V4.2 est reporté tel quel dans `V4_3_BACKLOG.md`
+sans être corrigé ici : corriger à moitié une expérience qu'on s'apprête à
+refondre coûterait deux fois et brouillerait les preuves visuelles.
