@@ -95,6 +95,12 @@ function benchmarkCaseIdFor(unitId: string): string {
  * unchanged; only the response text differs between a baseline and its mutants.
  */
 export function planRegressionRun(input: {
+  /**
+   * Verified, non-stale paraphrases keyed by pool `caseId`. Staleness is the
+   * caller's business (`checkParaphraseCacheEntry`), so a case reaching here
+   * with an entry has one that still matches its response.
+   */
+  paraphrases?: Map<string, string>;
   pool: RegressionPool;
   /** Restrict the run to these pool cases; defaults to the whole pool. */
   poolCaseIds?: Set<string>;
@@ -139,9 +145,11 @@ export function planRegressionRun(input: {
     units.push(baseline);
     cases.push(compileCase({ sourceCase, unit: baseline }));
 
+    const paraphraseText = input.paraphrases?.get(poolCase.caseId);
     for (const mutant of generateRegressionMutants({
       canonicalAttackSegment: input.pool.canonicalAttackSegment,
       locale: input.pool.language,
+      ...(paraphraseText === undefined ? {} : { paraphraseText }),
       poolCase,
       responseText: sourceCase.responseText,
     })) {

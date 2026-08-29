@@ -120,6 +120,7 @@ const DRIFT_KINDS: RegressionMutantKind[] = [
   'FACT_INVERSION',
   'PARAGRAPH_SHUFFLE',
   'INJECTION_APPEND',
+  'PARAPHRASE',
 ];
 
 export function computeRegressionMetrics(input: {
