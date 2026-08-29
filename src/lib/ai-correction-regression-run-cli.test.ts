@@ -11,6 +11,10 @@ import {
   type CorrectionBenchmarkCorpus,
 } from './ai-correction-benchmark.js';
 import {
+  acquireRunLock,
+  releaseRunLock,
+} from './ai-correction-regression-envelope.js';
+import {
   pendingCellsFor,
   runRegressionPool,
 } from './ai-correction-regression-run-cli.js';
@@ -350,6 +354,93 @@ describe('--run-pool', () => {
     ]);
   });
 
+  it('refuses to start while another run holds the lock', async () => {
+    const directory = await scratchRegressionDirectory();
+    // The pid must be a process that is genuinely alive, and this test's own
+    // is the only one it can be sure of. An invented pid — 999999, say — is not
+    // alive, so the run takes its lock over as stale and starts perfectly
+    // happily: the test then passes while asserting nothing. That is how the
+    // first version of this test was written, and it was green.
+    await acquireRunLock({
+      directory,
+      pid: process.pid,
+      resultsDirectory: '/results/other',
+    });
+
+    // Two concurrent runs each honour their own cap, so a pair is authorised
+    // to spend twice the envelope. The lock is what stops a pasted command.
+    await expect(
+      runRegressionPool({
+        arguments: EXECUTING_ARGUMENTS,
+        checker: CHECKER,
+        configuration: configuration(),
+        executeCandidate: fakeExecutor(),
+        identities: IDENTITIES,
+        now: () => new Date('2026-08-30T00:00:00.000Z'),
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow(/ALREADY_ACTIVE/);
+
+    await releaseRunLock(directory);
+  });
+
+  it('persists checker verdicts and reuses them instead of buying twice', async () => {
+    const directory = await scratchRegressionDirectory();
+    let verifyCalls = 0;
+    const countingChecker = {
+      verify: async ({ criteria }: Parameters<typeof CHECKER.verify>[0]) => {
+        verifyCalls += 1;
+        return {
+          costUsd: 0.00002,
+          verdicts: Object.fromEntries(
+            criteria.map((criterion) => [
+              criterion.criterionKey,
+              'AGREED' as const,
+            ]),
+          ),
+        };
+      },
+    };
+
+    const first = await runRegressionPool({
+      arguments: EXECUTING_ARGUMENTS,
+      checker: countingChecker,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T01:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+    const firstCalls = verifyCalls;
+    const persisted = JSON.parse(
+      await readFile(
+        path.join(first.resultsDirectory, 'checker-verdicts.json'),
+        'utf8',
+      ),
+    ) as { criterionKey: string; unitId: string; verdict: string }[];
+
+    expect(firstCalls).toBeGreaterThan(0);
+    expect(persisted.length).toBeGreaterThan(0);
+
+    // Resuming reuses the recorded verdicts. Before V4.5-123 they lived only in
+    // memory, so an interrupted run lost every checker oracle and recomputing
+    // meant paying the verifier a second time.
+    await runRegressionPool({
+      arguments: [...EXECUTING_ARGUMENTS, `--resume=${first.resultsDirectory}`],
+      checker: countingChecker,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T01:10:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    expect(verifyCalls).toBe(firstCalls);
+  });
+
   it('refuses to run without an explicit cost cap', async () => {
     const directory = await scratchRegressionDirectory();
 
@@ -396,6 +487,9 @@ describe('--run-pool', () => {
       'REPORT.md',
       'attempts.json',
       'budget-preflight.json',
+      // Verdicts are written as they are bought, so an interrupted run keeps
+      // its checker oracles instead of losing them to the analysis phase.
+      'checker-verdicts.json',
       // Both sides of the bill: our ledger and the provider's own usage delta.
       'cost-reconciliation.json',
       'ledger.jsonl',

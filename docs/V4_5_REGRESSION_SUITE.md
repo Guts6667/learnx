@@ -1,7 +1,7 @@
 # Spécification V4.5-120 — suite de régression décidable par la machine
 
 - **Statut** : `ACTIVE_AUTHORITY` (spécification d'implémentation, voie E)
-- **Version** : 1.0.2
+- **Version** : 1.1.0
 - **Date** : 29 août 2026 (amendée le 29 août 2026 : §2, §3 et §6 en 1.0.1 ;
   §9 en 1.0.2 après livraison de V4.5-122)
 - **Owner** : Head of AI (design) · **Exécutant** : session « AI Research »
@@ -202,6 +202,39 @@ comme aujourd'hui.
 `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` reçoit une entrée par run (V4.5-121
 en écrit la première) ; la page publique reçoit un article seulement si le
 Propriétaire le décide.
+
+## 7 bis. Garde-fous d'exécution (V4.5-123)
+
+Ajoutés après l'incident du 29 août 2026, où une commande de lancement collée
+deux fois a produit deux runs concurrents ; chacun honorait son plafond de
+12,60 USD, si bien que la paire était autorisée à dépenser 25,20 USD. C'est une
+intervention humaine qui a borné la dépense, pas la machine. La garde budgétaire
+protégeait **un run** ; personne ne protégeait **l'enveloppe**.
+
+**Verrou de run.** `.run-lock.json` dans le répertoire de régression contient le
+PID, l'instant de départ et le répertoire de résultats. Un second run refuse de
+démarrer tant qu'un premier est vivant. Un verrou dont le processus a disparu
+est repris — un run tué ne doit pas bloquer le suivant indéfiniment — et la
+reprise est signalée pour que l'on sache qu'un run est mort sans se libérer.
+
+**Enveloppe de dépense.** `--envelope-usd=<N>`, avec `--envelope-decision=<id>`,
+ouvre une enveloppe enregistrée dans `spend-envelope.v1.json` avec l'usage
+fournisseur au moment de son ouverture. La dépense se mesure ensuite comme
+`usage actuel − usage à l'ouverture` : un compteur interne à un processus ne
+peut pas voir un second processus, l'usage fournisseur le peut. Le plafond
+effectif d'un run vaut donc `min(plafond demandé, reste d'enveloppe)`. Une
+enveloppe dont l'usage ne peut pas être lu n'autorise **aucune** dépense : une
+enveloppe non mesurable n'est pas une enveloppe avec de la place.
+
+**Persistance des verdicts du vérificateur.** Les verdicts sont écrits dans
+`checker-verdicts.json` au fil de leur production, et relus lors d'une reprise
+plutôt que rachetés. Avant ce correctif ils n'existaient qu'en mémoire pendant
+la phase d'analyse, si bien qu'un run interrompu pendant la phase primaire
+perdait **tous** ses oracles de vérificateur — c'est ce qui est arrivé au run
+partiel du 29 août, dont les 0,9375 USD sont entièrement du modèle primaire.
+
+**Nom de journal unique.** La commande de lancement recommandée écrit
+`run-<horodatage>.log` : deux runs concurrents écrasaient le même `run.log`.
 
 ## 8. Ce que la suite ne prouve pas
 
