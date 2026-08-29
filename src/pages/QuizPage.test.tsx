@@ -132,13 +132,13 @@ function quizResponse() {
   };
 }
 
-function attemptResponse() {
+function attemptResponse(passed = true) {
   return {
     attempt: {
       answers: [],
       id: 'attempt-1',
-      passed: true,
-      score: 100,
+      passed,
+      score: passed ? 100 : 50,
       submittedAt: '2026-08-03T08:30:00.000Z',
     },
     corrections: [
@@ -288,14 +288,20 @@ describe('QuizPage', () => {
     expect(screen.getByText('Réponses à renforcer')).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
-        name: 'Consolider ou poursuivre le parcours',
+        name: 'Notion maîtrisée, poursuivez le parcours',
       }),
     ).toBeInTheDocument();
     expect(screen.getByText('100 %')).toBeInTheDocument();
     expect(screen.getByText('La proposition est vraie.')).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: 'Recommencer le quiz' }),
-    ).toBeInTheDocument();
+      screen.getByRole('link', { name: 'Poursuivre le parcours' }),
+    ).toHaveAttribute(
+      'href',
+      '/program/programme-test/lesson/demarrer?activity=complete%3Alesson#activity-complete%3Alesson',
+    );
+    expect(
+      screen.queryByRole('button', { name: 'Recommencer le quiz' }),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Continuer' })).toHaveAttribute(
       'href',
       '/program/programme-test/lesson/demarrer?activity=complete%3Alesson#activity-complete%3Alesson',
@@ -323,10 +329,10 @@ describe('QuizPage', () => {
           return Promise.resolve(jsonResponse(lessonResponse()));
         }
         if (path === `/api/quizzes/${quizId}/attempts`) {
-          if (init?.method === 'POST') quizPassed = true;
+          if (init?.method === 'POST') quizPassed = false;
           return Promise.resolve(
             init?.method === 'POST'
-              ? jsonResponse(attemptResponse(), 201)
+              ? jsonResponse(attemptResponse(false), 201)
               : jsonResponse({ attempts: [] }),
           );
         }

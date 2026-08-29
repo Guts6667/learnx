@@ -222,11 +222,13 @@ function AssessmentResult({
   assessment,
   labels,
   onRestart,
+  passedHref,
   result,
 }: {
   assessment: QuestionAssessment;
   labels: ExperienceLabels;
   onRestart: () => void;
+  passedHref: string;
   result: AssessmentAttemptResponse;
 }) {
   const { t } = useI18n();
@@ -335,9 +337,15 @@ function AssessmentResult({
               : 'assessment.nextActionRetry',
           )}
         </h2>
-        <Button onClick={onRestart} size="lg">
-          {labels.restart}
-        </Button>
+        {result.attempt.passed ? (
+          <NavigationAction href={passedHref} size="lg">
+            {t('assessment.continuePath')}
+          </NavigationAction>
+        ) : (
+          <Button onClick={onRestart} size="lg">
+            {labels.restart}
+          </Button>
+        )}
       </section>
     </div>
   );
@@ -354,6 +362,7 @@ export function QuestionAssessmentExperience({
   labels,
   onLoadMoreAttempts,
   onSubmit,
+  passedHref,
 }: {
   assessment: QuestionAssessment;
   attempts: AssessmentAttempt[];
@@ -363,6 +372,7 @@ export function QuestionAssessmentExperience({
   isPending: boolean;
   isLoadingMoreAttempts?: boolean;
   labels: ExperienceLabels;
+  passedHref: string;
   onSubmit: (
     answers: SubmittedAssessmentAnswer[],
   ) => Promise<AssessmentAttemptResponse>;
@@ -445,6 +455,7 @@ export function QuestionAssessmentExperience({
           assessment={assessment}
           labels={labels}
           onRestart={restart}
+          passedHref={passedHref}
           result={result}
         />
         <AttemptHistory

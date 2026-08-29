@@ -5,6 +5,7 @@ import { QueryState } from '@/components/learnx/QueryState';
 import {
   LessonContextHeader,
   LessonActivitySummary,
+  lessonActivitySequence,
   lessonHref,
 } from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -15,7 +16,11 @@ import {
   useConceptAssessmentAttemptsQuery,
   useConceptAssessmentQuery,
 } from '@/features/concept-assessments/queries';
-import { useLessonQuery } from '@/features/curriculum/queries';
+import {
+  type LessonProgressResponse,
+  useLessonProgressQuery,
+  useLessonQuery,
+} from '@/features/curriculum/queries';
 import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
 import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
 import { useI18n } from '@/i18n';
@@ -51,6 +56,10 @@ export function ConceptAssessmentPage({
     selectedAssessmentId,
     preview,
     lesson?.id ?? null,
+  );
+  const progressQuery = useLessonProgressQuery(
+    lesson?.id ?? '',
+    Boolean(lesson?.isPublished),
   );
   const fallbackLessonHref = buildLessonHref(programSlug, lessonSlug);
   useBackNavigationTarget({
@@ -155,6 +164,32 @@ export function ConceptAssessmentPage({
   const passingScore = assessment.concept.masteryThreshold;
   const key = activityKey('CONCEPT_ASSESSMENT', assessment.id);
   const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
+  const projectedProgress: LessonProgressResponse = progressQuery.data
+    ? {
+        ...progressQuery.data,
+        conceptProgress: {
+          ...progressQuery.data.conceptProgress,
+          [assessment.concept.id]: 'VALIDATED',
+        },
+      }
+    : {
+        canComplete: false,
+        conceptProgress: { [assessment.concept.id]: 'VALIDATED' },
+        currentActivity: null,
+        exerciseSubmissions: {},
+        lessonProgress: {
+          completedAt: null,
+          percent: 0,
+          startedAt: null,
+          status: 'IN_PROGRESS',
+        },
+        quizPassed: {},
+        resourceProgress: {},
+        taskCompletions: {},
+      };
+  const passedHref =
+    lessonActivitySequence(lesson, key, projectedProgress).next?.href ??
+    fallbackLessonHref;
   const title =
     assessment.title ??
     t('conceptAssessment.defaultTitle', { title: assessment.concept.title });
@@ -207,6 +242,7 @@ export function ConceptAssessmentPage({
         }}
         onSubmit={mutation.submit}
         onLoadMoreAttempts={attemptsQuery.loadMore}
+        passedHref={passedHref}
       />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
     </article>

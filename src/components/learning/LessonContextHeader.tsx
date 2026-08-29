@@ -15,7 +15,7 @@ export function lessonHref(lesson: LessonDetail): string {
   return buildLessonHref(lesson.module.stage.program.slug, lesson.slug);
 }
 
-function lessonActivitySequence(
+export function lessonActivitySequence(
   lesson: LessonDetail,
   currentKey?: string,
   progress?: LessonProgressResponse,

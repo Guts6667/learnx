@@ -194,6 +194,22 @@ describe('ConceptAssessmentPage', () => {
     expect(
       await screen.findByText('Les données sont indispensables.'),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'Notion maîtrisée, poursuivez le parcours',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Poursuivre le parcours' }),
+    ).toHaveAttribute(
+      'href',
+      '/program/programme-test/lesson/demarrer?activity=complete%3Alesson#activity-complete%3Alesson',
+    );
+    expect(
+      screen.queryByRole('button', {
+        name: 'Recommencer la mini-évaluation',
+      }),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Continuer' })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
     expect(fetchMock).toHaveBeenCalledWith(

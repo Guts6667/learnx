@@ -5,12 +5,17 @@ import { QueryState } from '@/components/learnx/QueryState';
 import {
   LessonContextHeader,
   LessonActivitySummary,
+  lessonActivitySequence,
   lessonHref,
 } from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { QuestionAssessmentExperience } from '@/features/assessments/QuestionAssessmentExperience';
-import { useLessonQuery } from '@/features/curriculum/queries';
+import {
+  type LessonProgressResponse,
+  useLessonProgressQuery,
+  useLessonQuery,
+} from '@/features/curriculum/queries';
 import {
   useQuizAttemptMutation,
   useQuizAttemptsQuery,
@@ -41,6 +46,10 @@ export function QuizPage({
   const quizQuery = useQuizQuery(selectedQuizId);
   const attemptsQuery = useQuizAttemptsQuery(selectedQuizId);
   const mutation = useQuizAttemptMutation(selectedQuizId, lesson?.id ?? null);
+  const progressQuery = useLessonProgressQuery(
+    lesson?.id ?? '',
+    Boolean(lesson?.isPublished),
+  );
   const fallbackLessonHref = buildLessonHref(programSlug, lessonSlug);
   useBackNavigationTarget({
     href: fallbackLessonHref,
@@ -154,6 +163,29 @@ export function QuizPage({
   const quiz = quizQuery.data.quiz;
   const key = activityKey('QUIZ', quiz.id);
   const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
+  const projectedProgress: LessonProgressResponse = progressQuery.data
+    ? {
+        ...progressQuery.data,
+        quizPassed: { ...progressQuery.data.quizPassed, [quiz.id]: true },
+      }
+    : {
+        canComplete: false,
+        conceptProgress: {},
+        currentActivity: null,
+        exerciseSubmissions: {},
+        lessonProgress: {
+          completedAt: null,
+          percent: 0,
+          startedAt: null,
+          status: 'IN_PROGRESS',
+        },
+        quizPassed: { [quiz.id]: true },
+        resourceProgress: {},
+        taskCompletions: {},
+      };
+  const passedHref =
+    lessonActivitySequence(lesson, key, projectedProgress).next?.href ??
+    fallbackLessonHref;
 
   return (
     <article className="totem-learning-page page-layout page-layout--work space-y-6">
@@ -195,6 +227,7 @@ export function QuizPage({
         }}
         onSubmit={mutation.submit}
         onLoadMoreAttempts={attemptsQuery.loadMore}
+        passedHref={passedHref}
       />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
     </article>

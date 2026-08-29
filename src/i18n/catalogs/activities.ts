@@ -31,7 +31,8 @@ export const frenchActivitiesMessages = {
   'assessment.reinforceCount': 'Réponses à renforcer',
   'assessment.scoreLabel': 'Score de la tentative',
   'assessment.nextAction': 'Prochaine action',
-  'assessment.nextActionPassed': 'Consolider ou poursuivre le parcours',
+  'assessment.nextActionPassed': 'Notion maîtrisée, poursuivez le parcours',
+  'assessment.continuePath': 'Poursuivre le parcours',
   'assessment.nextActionRetry': 'Revoir les explications puis retenter',
   'assessment.questionCount': {
     one: '{count} question',
@@ -164,7 +165,8 @@ export const englishActivitiesMessages = {
   'assessment.reinforceCount': 'Answers to reinforce',
   'assessment.scoreLabel': 'Attempt score',
   'assessment.nextAction': 'Next action',
-  'assessment.nextActionPassed': 'Consolidate or continue the learning path',
+  'assessment.nextActionPassed': 'Concept mastered, continue the learning path',
+  'assessment.continuePath': 'Continue the learning path',
   'assessment.nextActionRetry': 'Review the explanations, then try again',
   'assessment.questionCount': {
     one: '{count} question',
