@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (ticket V4.5-165, partie IA) ·
   partie paiement `EN_ATTENTE` (V4.5-160)
-- **Version** : 1.2.0 (attestations fournisseurs du 29 août 2026)
+- **Version** : 1.3.0 (décision effacement `owner-erasure-2026-08-29` : pseudonymisation, textes conservés)
 - **Date** : 29 août 2026
 - **Owner** : Architecture/Produit (Head of AI) · **Reviewer** : Rayan
 - **Autorité supérieure** : `ADR_003` §7, `docs/V4_5_AI_QUALITY_CONTRACT.md`
@@ -74,7 +74,7 @@ et **aucun parcours de suppression de compte n'existe** dans le code serveur
 - **E1** — Droit à l'effacement non outillé pour les comptes (art. 17). Un
   compte supprimé à la main en base cascade correctement sur les corrections,
   mais le ledger de crédits est append-only par conception (ADR_003 §6) : la
-  suppression doit **anonymiser** le compte (e-mail remplacé, sessions
+  suppression doit **pseudonymiser** le compte (e-mail remplacé, sessions
   révoquées) et conserver les écritures financières sans identifiant direct.
   Ticket à créer (voie A, après 163) ; le ledger n'est jamais réécrit.
 - **E2** — `raw_output_json` conserve la sortie brute du modèle sans limite.
@@ -149,8 +149,14 @@ Décisions prises le 29 août 2026 (`owner-rgpd-2026-08-29`) :
    réutilisation est une **nouvelle finalité** : information préalable dans
    la notice IA, aucun export tant que le ticket dédié n'existe pas.
    → V4.5-168.
-3. **Suppression de compte** — parcours à créer ; les réponses données sont
-   conservées, anonymisées ; le ledger n'est jamais réécrit. → V4.5-166.
+3. **Suppression de compte** — parcours à créer (V4.5-166). Décision
+   complémentaire du 29 août (`owner-erasure-2026-08-29`), après constat de
+   la voie A qu'un texte libre reste une donnée personnelle même détaché du
+   compte : les textes (réponses, snapshots, extraits cités, sorties brutes)
+   sont **conservés sous pseudonyme irréversible** — c'est une
+   **pseudonymisation**, pas une anonymisation, et la politique de
+   confidentialité le dit ; les notes privées sont supprimées ; le ledger
+   n'est jamais réécrit.
 4. **Politique de confidentialité et adresse de réclamation** — intégrées à
    V4.5. Texte rédigé par le Head of AI (`docs/V4_5_PRIVACY_POLICY.md`, à
    venir), intégré par la voie C. → V4.5-167.
