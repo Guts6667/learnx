@@ -44,6 +44,9 @@ export interface WebhookPorts {
 const EVENT_STATUS: Record<string, PaymentOrderStatus> = {
   ORDER_AUTHORISED: 'PENDING',
   ORDER_COMPLETED: 'PAID',
+  // Tolerated rather than expected: if Revolut ever emits something like it,
+  // it arrives after we already fulfilled and is ignored as out-of-order,
+  // which is the right answer whether or not the event exists.
   ORDER_FULFILLED: 'FULFILLED',
   ORDER_FAILED: 'FAILED',
   ORDER_EXPIRED: 'EXPIRED',
@@ -134,14 +137,14 @@ export async function handleRevolutWebhook(input: {
     current: order.status,
     incoming: status,
   });
+  // On PAID the grant and the FULFILLED transition are one act. An order that
+  // reached PAID and stopped would be money taken with nothing given, waiting
+  // on an event the provider has no reason to send.
+  const applied = attributeCredits ? 'FULFILLED' : decision.status;
   await input.ports.applyTransition({
     attributeCredits,
     orderId: order.id,
-    status: decision.status,
+    status: applied,
   });
-  return {
-    attributed: attributeCredits,
-    kind: 'APPLIED',
-    status: decision.status,
-  };
+  return { attributed: attributeCredits, kind: 'APPLIED', status: applied };
 }

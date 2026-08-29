@@ -46,3 +46,26 @@ model PaymentEvent {
   @@index([receivedAt])
   @@map("payment_events")
 }
+
+/// Pack de crédits achetable (V4.5-161).
+///
+/// `active` vaut faux par défaut et aucun pack n'est activable sans une
+/// décision du Propriétaire (V4.5-164/012). Un pack inactif est invisible au
+/// catalogue et refusé au paiement : les deux, parce que masquer sans refuser
+/// laisserait un identifiant deviné acheter un prix non arbitré.
+model CreditPack {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique
+  label       String
+  credits     BigInt
+  /// En plus petite unité monétaire, jamais en flottant.
+  priceMinor  BigInt   @map("price_minor")
+  currency    String   @db.VarChar(3)
+  active      Boolean  @default(false)
+  position    Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([active, position])
+  @@map("credit_packs")
+}

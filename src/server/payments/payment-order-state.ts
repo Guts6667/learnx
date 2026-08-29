@@ -56,16 +56,24 @@ export function decideTransition(
 }
 
 /**
- * Credits are attributed exactly once, when an order first reaches FULFILLED.
- * The redirect never attributes anything (ADR_004 §2), and neither does a
- * repeated FULFILLED.
+ * Credits are attributed exactly once, when an order first reaches PAID.
+ *
+ * PAID is the provider's last word: Revolut knows the money arrived and has no
+ * reason to emit anything about fulfilment, because whether a learner received
+ * credits is a fact only LearnX holds. So FULFILLED is our own transition,
+ * written in the same breath as the grant, and it means "we have granted" —
+ * which is what the order's `creditLotId` was always recording.
+ *
+ * V4.5-160 keyed this on a provider `ORDER_FULFILLED` event instead. Had that
+ * shipped enabled, an order would have reached PAID and stopped: money taken,
+ * credits never granted, nothing failing loudly.
  */
 export function shouldAttributeCredits(input: {
   current: PaymentOrderStatus;
   incoming: PaymentOrderStatus;
 }): boolean {
   return (
-    input.incoming === 'FULFILLED' &&
+    input.incoming === 'PAID' &&
     decideTransition(input.current, input.incoming).kind === 'APPLY'
   );
 }

@@ -82,6 +82,8 @@
       "src/server/credits/prisma-trial-allocation.ts",
       "src/server/credits/trial-abuse-limit.ts",
       "src/server/credits/trial-allocation.ts",
+      "src/server/payments/checkout.ts",
+      "src/server/payments/credit-pack-catalogue.ts",
       "src/server/payments/payment-order-state.ts",
       "src/server/payments/payment-webhook.ts",
       "src/server/payments/payments-configuration.ts",

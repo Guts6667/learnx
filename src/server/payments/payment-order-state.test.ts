@@ -49,26 +49,34 @@ describe('decideTransition', () => {
     });
   });
 });
-
 describe('shouldAttributeCredits', () => {
-  it('attribue une fois, à la première arrivée en FULFILLED', () => {
+  it('attribue une fois, à la première arrivée en PAID', () => {
+    // PAID is the provider's last word. Waiting for a provider "fulfilled"
+    // event would leave an order at PAID for ever: money taken, nothing given.
     expect(
-      shouldAttributeCredits({ current: 'PAID', incoming: 'FULFILLED' }),
+      shouldAttributeCredits({ current: 'PENDING', incoming: 'PAID' }),
     ).toBe(true);
   });
 
-  it('n’attribue pas une seconde fois sur un FULFILLED rejoué', () => {
+  it('n’attribue pas une seconde fois sur un PAID rejoué', () => {
     // The unique event id already stops a replay from being processed twice;
     // this stops a distinct event from attributing twice.
+    expect(shouldAttributeCredits({ current: 'PAID', incoming: 'PAID' })).toBe(
+      false,
+    );
+  });
+
+  it('n’attribue rien après que nous ayons déjà honoré', () => {
     expect(
-      shouldAttributeCredits({ current: 'FULFILLED', incoming: 'FULFILLED' }),
+      shouldAttributeCredits({ current: 'FULFILLED', incoming: 'PAID' }),
     ).toBe(false);
   });
 
-  it('n’attribue rien sur un simple paiement', () => {
-    // PAID is the money arriving; FULFILLED is us deciding it counts.
+  it('n’attribue rien sur un FULFILLED venu du fournisseur', () => {
+    // FULFILLED is our own transition. If Revolut ever emits something like
+    // it, it arrives after we granted and must change nothing.
     expect(
-      shouldAttributeCredits({ current: 'PENDING', incoming: 'PAID' }),
+      shouldAttributeCredits({ current: 'PAID', incoming: 'FULFILLED' }),
     ).toBe(false);
   });
 });
