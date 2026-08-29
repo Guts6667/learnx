@@ -190,7 +190,7 @@ describe('corrections API', () => {
       authorization,
       preflight: {
         apiKeyPresent: true,
-        checkerIdentityMatches: true,
+        checker: 'PROMOTED',
         checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
         checkerScientificallyMeasured: false,
         deploymentEnvironment: 'preview',
@@ -208,7 +208,7 @@ describe('corrections API', () => {
     await expect(response.json()).resolves.toEqual({
       preflight: {
         apiKeyPresent: true,
-        checkerIdentityMatches: true,
+        checker: 'PROMOTED',
         checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
         checkerScientificallyMeasured: false,
         deploymentEnvironment: 'preview',

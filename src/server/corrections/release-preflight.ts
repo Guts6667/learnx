@@ -17,8 +17,16 @@ export type CorrectionReleasePreflightState =
 
 export interface CorrectionReleasePreflight {
   apiKeyPresent: boolean;
-  /** The CORRECTION_CHECKER assignment matches the promoted checker pin. */
-  checkerIdentityMatches: boolean;
+  /**
+   * PROMOTED  — assigned and matching the pin.
+   * UNASSIGNED — no checker configured; verdicts degrade to UNAVAILABLE.
+   * MISMATCHED — a checker is configured but it is not the promoted model.
+   *
+   * The two failure states are reported apart on purpose: unassigned is an
+   * environment that has not been finished, mismatched is one that has been
+   * finished wrong, and they call for opposite reactions.
+   */
+  checker: 'PROMOTED' | 'UNASSIGNED' | 'MISMATCHED';
   checkerPromotedModelId: string;
   /**
    * False until V4.5-121 measures the checker. The pin is attested, meaning
@@ -47,14 +55,15 @@ function assignmentMatchesPromotedIdentity(
   );
 }
 
-function assignmentMatchesPromotedChecker(
+function checkerAttestation(
   configuration: OpenRouterConfiguration,
-): boolean {
+): CorrectionReleasePreflight['checker'] {
   const assignment = configuration.assignments.CORRECTION_CHECKER;
-  return (
-    assignment?.modelId === PROMOTED_CHECKER_IDENTITY.modelId &&
+  if (!assignment) return 'UNASSIGNED';
+  return assignment.modelId === PROMOTED_CHECKER_IDENTITY.modelId &&
     assignment.provider === PROMOTED_CHECKER_IDENTITY.provider
-  );
+    ? 'PROMOTED'
+    : 'MISMATCHED';
 }
 
 export function evaluateCorrectionReleasePreflight(
@@ -65,8 +74,7 @@ export function evaluateCorrectionReleasePreflight(
   const identityMatches =
     assignmentMatchesPromotedIdentity(configuration, 'CORRECTION_PRIMARY') &&
     assignmentMatchesPromotedIdentity(configuration, 'CORRECTION_SECOND_PASS');
-  const checkerIdentityMatches =
-    assignmentMatchesPromotedChecker(configuration);
+  const checker = checkerAttestation(configuration);
   const transport = options.transport ?? 'REAL';
 
   // An environment without the checker is not broken, only incomplete: the
@@ -75,7 +83,7 @@ export function evaluateCorrectionReleasePreflight(
   let state: CorrectionReleasePreflightState;
   if (!configuration.enabled) {
     state = 'DISABLED';
-  } else if (!apiKeyPresent || !identityMatches || !checkerIdentityMatches) {
+  } else if (!apiKeyPresent || !identityMatches || checker !== 'PROMOTED') {
     state = 'CONFIGURATION_BLOCKED';
   } else if (configuration.killSwitch) {
     state = 'CONFIGURED_CLOSED';
@@ -85,7 +93,7 @@ export function evaluateCorrectionReleasePreflight(
 
   return {
     apiKeyPresent,
-    checkerIdentityMatches,
+    checker,
     checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
     checkerScientificallyMeasured:
       PROMOTED_CHECKER_IDENTITY.promotion.scientific,

@@ -192,7 +192,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
           // configuration is blocked either way, so nothing runs.
           preflight = {
             apiKeyPresent: false,
-            checkerIdentityMatches: false,
+            checker: 'UNASSIGNED',
             checkerPromotedModelId: PROMOTED_CHECKER_IDENTITY.modelId,
             checkerScientificallyMeasured:
               PROMOTED_CHECKER_IDENTITY.promotion.scientific,

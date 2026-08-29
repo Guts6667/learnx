@@ -87,7 +87,7 @@ describe('correction release preflight', () => {
       configuration({ assignments: withoutChecker, killSwitch: false }),
     );
     expect(preflight).toMatchObject({
-      checkerIdentityMatches: false,
+      checker: 'UNASSIGNED',
       identityMatches: true,
       state: 'CONFIGURATION_BLOCKED',
     });
@@ -108,7 +108,7 @@ describe('correction release preflight', () => {
         }),
       ),
     ).toMatchObject({
-      checkerIdentityMatches: false,
+      checker: 'MISMATCHED',
       state: 'CONFIGURATION_BLOCKED',
     });
   });

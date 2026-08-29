@@ -50,6 +50,15 @@ export const PROMOTED_CORRECTION_IDENTITY = {
  * de la citation. La production complète de l'apprenant ne lui est jamais
  * transmise.
  *
+ * Route ré-attestée le 29 août 2026 contre la liste OpenRouter : le slug
+ * `mistralai/mistral-medium-3-5` existe et ses trois points de terminaison
+ * portent tous `provider_name: 'Mistral'` (tags `mistral`, `mistral/eu`,
+ * `mistral/zdr`). `only: ['Mistral']` ne distingue donc pas la variante
+ * européenne de la variante par défaut, là où `only: ['Anthropic']` ne
+ * désigne qu'un seul point de terminaison pour le correcteur. L'adaptateur
+ * envoie déjà `data_collection: 'deny'` ; la résidence des données reste une
+ * décision ouverte, à trancher dans l'ADR §7.2, pas ici.
+ *
  * `promotion.scientific` est faux et doit le rester tant que V4.5-121 n'a pas
  * mesuré l'accord du vérificateur. Le pin est donc *attesté*, pas *mesuré* :
  * il garantit qu'un seul modèle nommé peut tenir ce rôle, pas que ce modèle
