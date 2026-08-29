@@ -30,14 +30,25 @@ export const PROMOTED_CORRECTION_IDENTITY = {
   scoreGuardBandPoints: 5,
   deliveryPolicy: 'PARTIAL_CRITERION',
   maxRetries: 0,
+  /**
+   * Profil 2.1.0 (V4.5-115, 29 août 2026) : le corps runtime envoie désormais
+   * `provider.only` (= routeProviders) et `data_collection: 'deny'`, et la
+   * route porte le slug documenté `anthropic` au lieu du nom d'affichage.
+   * La sonde authentifiée
+   * `benchmarks/ai-correction/probes/2026-08-29-v4-5-115-route-probe.json`
+   * a montré qu'Anthropic sert le primaire sous les deux formes, avec ou sans
+   * ces paramètres : le point de terminaison ne change pas. Ce profil est
+   * attesté par la sonde et re-promu par la suite de régression (V4.5-121) ;
+   * le benchmark scellé v3.1 a été mesuré sous 2.0.0 / `['Anthropic']`.
+   */
   requestProfile: {
     adapter: 'OPENROUTER_CHAT',
     reasoning: { budgetTokens: null, budgetMode: 'OFF', effort: 'OFF' },
-    routeProviders: ['Anthropic'],
+    routeProviders: ['anthropic'],
     temperature: null,
     timeoutMs: 60_000,
     totalOutputTokenLimit: 1_500,
-    version: '2.0.0',
+    version: '2.1.0',
     visibleOutputTokenTarget: 1_500,
   },
 } as const;

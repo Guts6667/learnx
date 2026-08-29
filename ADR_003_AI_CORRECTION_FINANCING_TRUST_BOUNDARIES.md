@@ -81,6 +81,16 @@
 > profil primaire et l'ajout éventuel de ces paramètres (nouvelle version de
 > profil, re-promotion par la suite de régression) sont le ticket V4.5-115,
 > préalable à V4.5-121.
+>
+> **Résultat V4.5-115 (29 août 2026).** Sonde authentifiée (3 appels,
+> 0,000306 USD, autorisation Rayan) : Anthropic sert le modèle primaire sous
+> `order: ['Anthropic']`, `order: ['anthropic']` et avec
+> `only` + `data_collection: 'deny'` — le point de terminaison ne change pas.
+> Décision : l'adaptateur runtime envoie désormais `provider.only`
+> (= routes épinglées) et `data_collection: 'deny'` sur tout appel ; la route
+> primaire porte le slug `anthropic` ; profil de requête `2.1.0`, attesté par
+> la sonde, re-promu par V4.5-121. Artefact :
+> `benchmarks/ai-correction/probes/2026-08-29-v4-5-115-route-probe.json`.
 
 ## 1. Contexte
 
