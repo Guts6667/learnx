@@ -4,7 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
-export type AccountStatus = 'ACTIVE' | 'SUSPENDED';
+/**
+ * An erased account keeps a row so the credit ledger's references hold, so the
+ * admin surfaces have to be able to name that state rather than treat it as
+ * one of the two they can act on. `administrableAccountStatuses` stays the
+ * pair: PSEUDONYMISED is terminal and nothing transitions out of it.
+ */
+export type AccountStatus = 'ACTIVE' | 'PSEUDONYMISED' | 'SUSPENDED';
 type AccountRole = 'ADMIN' | 'CREATOR' | 'USER';
 export type AssignableAccountRole = Exclude<AccountRole, 'ADMIN'>;
 

@@ -3,6 +3,9 @@ import type { MiddlewareHandler } from 'hono';
 import type { PrismaClient } from '../../../../generated/prisma/client.js';
 import type { AuthEnvironment } from '../_lib/auth.js';
 import type { AccountAdministrationService } from './account-administration-service.js';
+import type { createAccountErasureService } from './account-erasure-service.js';
+
+type AccountErasureService = ReturnType<typeof createAccountErasureService>;
 import type { AccessRequestReviewService } from './access-request-review-service.js';
 import type {
   AdminRepository,
@@ -15,6 +18,7 @@ import type { TranslationWorkflowService } from './translation-workflow-service.
 
 export interface AdminAppOptions {
   accountAdministrationService?: AccountAdministrationService;
+  accountErasureService?: AccountErasureService;
   accessRequestReviewService?: AccessRequestReviewService;
   authentication?: MiddlewareHandler<AuthEnvironment>;
   curriculumEditService?: CurriculumEditService;
@@ -27,6 +31,7 @@ export interface AdminAppOptions {
 
 export interface AdminDependencies {
   accountAdministration(): Promise<AccountAdministrationService>;
+  accountErasure(): Promise<AccountErasureService>;
   accessRequestReview(): Promise<AccessRequestReviewService>;
   curriculumEdit(): Promise<CurriculumEditService>;
   navigation(): Promise<AdminNavigationService>;

@@ -5,6 +5,7 @@ export const CAPABILITIES = [
   'account.invitation.issue',
   'account.role.assign',
   'account.suspend',
+  'account.erase',
   'audit.read',
   'credit.admin.manage',
   'program.catalog.read',
@@ -38,6 +39,10 @@ const roleCapabilities = {
     'account.invitation.issue',
     'account.role.assign',
     'account.suspend',
+    // Distinct from account.suspend: suspending is reversible and erasure is
+    // not, so the two are grantable apart even though both sit with ADMIN
+    // today.
+    'account.erase',
     'audit.read',
     'credit.admin.manage',
     'learning.submission.review',

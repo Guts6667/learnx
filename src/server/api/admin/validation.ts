@@ -7,6 +7,7 @@ import {
   administrableAccountStatuses,
   type AccountTransitionResult,
 } from './account-administration-service.js';
+import type { AccountErasureResult } from './account-erasure-service.js';
 import { reviewableAccessRequestStatuses } from './access-request-review-types.js';
 import { translationWorkflowActions } from './translation-workflow-service.js';
 
@@ -82,6 +83,19 @@ export const accountTransitionSchema = z
   })
   .strict();
 
+/**
+ * No `expectedStatus`: erasure is terminal from any state, and requiring the
+ * caller to name the current one would only make an irreversible action fail
+ * for a reason that does not matter. The `updatedAt` check stays, so the
+ * account cannot have changed under the administrator between reading and
+ * acting.
+ */
+export const accountErasureSchema = z
+  .object({
+    expectedUpdatedAt: z.iso.datetime({ offset: true }),
+  })
+  .strict();
+
 export const accountRoleTransitionSchema = z
   .object({
     expectedRole: z.enum(['USER', 'CREATOR']),
@@ -148,6 +162,22 @@ export function parseQuery<T>(schema: ZodType<T>, query: unknown) {
 
 export function parseIdentifier(value: string) {
   return parseQuery(identifierSchema, value);
+}
+
+export function handleAccountErasure(result: AccountErasureResult) {
+  if (result.kind === 'NOT_FOUND') throw notFound();
+  if (result.kind === 'CONFLICT') {
+    throw new ApiError(
+      'ACCOUNT_STATE_CONFLICT',
+      'The account has changed. Refresh before retrying.',
+      409,
+    );
+  }
+  // Repeating an erasure is not an error: the account is already erased and
+  // the caller's intent is satisfied. Saying so lets a retried request settle
+  // instead of looking like a failure to an operator acting on a request they
+  // cannot see the result of.
+  return { alreadyErased: result.kind === 'ALREADY_ERASED', erased: true };
 }
 
 export function handleAccountTransition(result: AccountTransitionResult) {
