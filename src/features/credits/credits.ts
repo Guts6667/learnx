@@ -66,7 +66,7 @@ export type BreakerReason =
   'CHECKER_DISAGREEMENT' | 'LEARNER_CONTRADICTION_AT_HIGH' | 'UNUSABLE_RATE';
 
 /** `null` signifie « pas assez de données », jamais zéro. */
-export interface BreakerRates {
+interface BreakerRates {
   checkerDisagreement: number | null;
   unusable: number | null;
   wrongAtHigh: number | null;
