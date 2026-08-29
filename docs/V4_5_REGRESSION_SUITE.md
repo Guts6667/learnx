@@ -1,8 +1,9 @@
 # Spécification V4.5-120 — suite de régression décidable par la machine
 
 - **Statut** : `ACTIVE_AUTHORITY` (spécification d'implémentation, voie E)
-- **Version** : 1.0.1
-- **Date** : 29 août 2026 (amendée le 29 août 2026, §2, §3 et §6)
+- **Version** : 1.0.2
+- **Date** : 29 août 2026 (amendée le 29 août 2026 : §2, §3 et §6 en 1.0.1 ;
+  §9 en 1.0.2 après livraison de V4.5-122)
 - **Owner** : Head of AI (design) · **Exécutant** : session « AI Research »
 - **Reviewer** : Architecture/Produit
 - **Autorité supérieure** : `docs/V4_5_AI_QUALITY_CONTRACT.md` §4–5, `ADR_003`
@@ -84,6 +85,16 @@ Règles :
   **aucun indice de mutation** (amendement 1.0.1) : mêler une direction de
   mutation à une attaque active rendrait un gate rouge ambigu entre les deux
   oracles.
+
+**Gel d'une version de pool** (décision du 29 août 2026, amendement 1.0.2) :
+une version de pool est gelée par son **premier run payant**, non par sa
+création. Tant qu'aucun run payant n'a été exécuté sur `v1`, un corpus peut y
+être ajouté — c'est ainsi que les 24 cas de domaine de V4.5-122 ont rejoint
+`regression-pool.v1.json`. Dès que V4.5-121 s'exécute sur `v1`, tout cas ajouté
+ou modifié impose une version `v2` : une comparaison entre deux promotions n'a
+de sens que si le pool n'a pas bougé entre elles, et le cache de paraphrases est
+gelé par version pour la même raison. Il est donc interdit d'étendre `v1` après
+son run au motif que l'extension précédente s'était bien passée.
 
 Membership du pool v1 (décision du Propriétaire de la voie F, 29 août 2026) :
 les cinq corpus scellés — `corpus.v1`, `holdout.v1`, `holdout.v2`,
@@ -204,12 +215,14 @@ l'approchent, et aucune validation humaine n'est revendiquée.
 1. Schéma + validateur du pool, agrégation des corpus historiques (aucun appel
    modèle) ;
 
-Note d'exécution (1.0.1) : les 120 réponses du pool v1 tiennent toutes en un
-seul paragraphe, si bien que `PARAGRAPH_SHUFFLE` n'y produit aucun mutant. Le
-générateur l'implémente et le teste sur des entrées multi-paragraphes, et le
-rapport affiche le dénominateur nul plutôt qu'un taux flatteur. V4.5-122 doit
-rédiger ses cas de domaine sur au moins deux paragraphes pour donner de la
-matière à cet oracle (décision du 29 août 2026).
+Note d'exécution (1.0.2) : les 120 réponses historiques tiennent toutes en un
+seul paragraphe, si bien que `PARAGRAPH_SHUFFLE` n'y produisait aucun mutant.
+V4.5-122 a livré 24 cas de domaine rédigés sur au moins deux paragraphes
+(décision du 29 août 2026) : l'oracle dispose désormais de 24 mutants et
+contribue à `unrelatedCriterionDrift`. Le pool compte 144 cas issus de six
+corpus. Une permutation tirée qui serait l'identité est re-tirée avec une
+graine salée plutôt qu'abandonnée : sans cela, une réponse de deux paragraphes
+perdait son mutant une fois sur deux.
 2. générateur de mutants + tests (hors `PARAPHRASE`) ;
 3. métriques + politique v3 + rapport, testés sur le fake provider ;
 4. `PARAPHRASE` (nécessite V4.5-111) ;

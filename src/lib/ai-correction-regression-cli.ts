@@ -16,8 +16,13 @@ import { z } from 'zod';
 import {
   buildRegressionPool,
   collectAuthoredHints,
+  derivePoolCasePrefix,
   type RegressionPoolSourceInput,
 } from './ai-correction-regression-pool-build.js';
+import {
+  buildDomainCorpus,
+  parseAuthoredDomainCorpus,
+} from './ai-correction-regression-domain-build.js';
 import {
   loadRegressionSource,
   parseRegressionPool,
@@ -69,7 +74,14 @@ const REGRESSION_POOL_SOURCES: {
     path: '../hybrid/writing-only-fr-v1/corpus.sealed.json',
     role: 'WRITING_HOLDOUT_HISTORICAL',
   },
+  // V4.5-122: cases compiled from real lesson archetypes rather than authored
+  // in the abstract, and the first with multi-paragraph responses, which is
+  // what gives PARAGRAPH_SHUFFLE material to work on.
+  { path: '../domain/corpus.v1.json', role: 'DOMAIN_ARCHETYPE' },
 ];
+
+const domainAuthoredPath = '../domain/authored-cases.v1.json';
+const domainCorpusPath = '../domain/corpus.v1.json';
 
 const REGRESSION_POOL_EXCLUSIONS: RegressionPool['excluded'] = [
   {
@@ -128,6 +140,67 @@ async function loadSources(
     inputs.push({ path: source.path, role: source.role, source: entry });
   }
   return { inputs, loaded };
+}
+
+/**
+ * `--build-domain` — compiles the V4.5-122 authored cases into a corpus and
+ * merges their mutation hints into the shared hint artefact.
+ *
+ * Offline: the contracts come from the production archetype builder, and no
+ * model is asked for anything.
+ */
+export async function runDomainCorpusBuild(
+  arguments_: string[],
+): Promise<void> {
+  const directory = regressionDirectory;
+  const authoredPath = path.resolve(directory, domainAuthoredPath);
+  const corpusPath = path.resolve(directory, domainCorpusPath);
+
+  const authored = parseAuthoredDomainCorpus(
+    JSON.parse(await readFile(authoredPath, 'utf8')) as unknown,
+  );
+  const { corpus, hints } = buildDomainCorpus(authored);
+
+  await mkdir(path.dirname(corpusPath), { recursive: true });
+  await writeFile(corpusPath, `${JSON.stringify(corpus, null, 2)}\n`, 'utf8');
+
+  // Hints are stored against pool identifiers so a pool rebuild picks them up
+  // exactly like the hand-authored ones.
+  const prefix = derivePoolCasePrefix(corpus.corpusId);
+  const hintsPath = path.join(directory, defaultHintsFileName);
+  const existing = await readAuthoredHints(hintsPath);
+  const merged = new Map(existing ?? []);
+  for (const [caseId, list] of hints) merged.set(`${prefix}/${caseId}`, list);
+
+  await writeFile(
+    hintsPath,
+    `${JSON.stringify(
+      {
+        hints: Object.fromEntries(
+          [...merged].sort(([a], [b]) => a.localeCompare(b)),
+        ),
+        schemaVersion: 1,
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  );
+
+  const hinted = [...hints.values()].reduce(
+    (total, list) => total + list.length,
+    0,
+  );
+  console.log(
+    `Corpus de domaine écrit : ${corpusPath} — ${corpus.cases.length} cas sur ${corpus.contracts.length} archétypes réels, ${hinted} indices fusionnés dans ${defaultHintsFileName}.`,
+  );
+  if (readCliOption(arguments_, 'build-domain') === 'verbose') {
+    for (const contract of corpus.contracts) {
+      console.log(
+        `  ${contract.target.activityType} — ${contract.contractKey}`,
+      );
+    }
+  }
 }
 
 /**

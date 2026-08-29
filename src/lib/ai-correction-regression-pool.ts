@@ -46,6 +46,9 @@ const regressionSourceRoleSchema = z.enum([
   'DEVELOPMENT_HISTORICAL',
   'HOLDOUT_HISTORICAL',
   'WRITING_HOLDOUT_HISTORICAL',
+  // Compiled from a real lesson archetype (V4.5-122) rather than inherited
+  // from a historical run.
+  'DOMAIN_ARCHETYPE',
   'LIVE_DERIVED',
 ]);
 

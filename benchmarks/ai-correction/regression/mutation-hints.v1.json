@@ -1,5 +1,27 @@
 {
   "hints": {
+    "corpus-v1-3/benchmark-writing-ambiguous": [
+      {
+        "criterionKey": "source-fact-use",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 18 à 13 heures",
+          "to": "de 13 à 18 heures"
+        }
+      },
+      {
+        "criterionKey": "source-fact-use",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "corpus-v1-3/benchmark-writing-partial": [
+      {
+        "criterionKey": "recommendation-clarity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
     "corpus-v1-3/benchmark-writing-successful": [
       {
         "criterionKey": "source-fact-use",
@@ -15,26 +37,172 @@
         "sentenceIndex": 1
       }
     ],
-    "corpus-v1-3/benchmark-writing-partial": [
+    "domain-archetypes-v1/domaine-ecrit-objectif-ambigu": [
       {
-        "criterionKey": "recommendation-clarity",
+        "criterionKey": "context-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "domain-archetypes-v1/domaine-ecrit-objectif-complet": [
+      {
+        "criterionKey": "instruction-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      },
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "Aucune mesure de durée n’existe aujourd’hui",
+          "to": "Une mesure de durée médiane de 14 minutes a déjà été relevée"
+        }
+      }
+    ],
+    "domain-archetypes-v1/domaine-ecrit-objectif-errone": [
+      {
+        "criterionKey": "instruction-coverage",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 0
       }
     ],
-    "corpus-v1-3/benchmark-writing-ambiguous": [
+    "domain-archetypes-v1/domaine-ecrit-objectif-partiel": [
       {
-        "criterionKey": "source-fact-use",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "de 18 à 13 heures",
-          "to": "de 13 à 18 heures"
-        }
+        "criterionKey": "context-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
       },
       {
-        "criterionKey": "source-fact-use",
+        "criterionKey": "context-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "les 12 personnes de l’équipe",
+          "to": "les 40 personnes de l’équipe"
+        }
+      }
+    ],
+    "domain-archetypes-v1/domaine-pratique-update-ambigu": [
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "domain-archetypes-v1/domaine-pratique-update-complet": [
+      {
+        "criterionKey": "practice-evidence",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 6
+      },
+      {
+        "criterionKey": "instruction-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 5
+      },
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "2 des 5 tickets sont terminés",
+          "to": "4 des 5 tickets sont terminés"
+        }
+      }
+    ],
+    "domain-archetypes-v1/domaine-pratique-update-errone": [
+      {
+        "criterionKey": "instruction-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 5
+      }
+    ],
+    "domain-archetypes-v1/domaine-pratique-update-partiel": [
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "coupure de 2 heures annoncée jeudi",
+          "to": "coupure de 2 jours annoncée jeudi"
+        }
+      }
+    ],
+    "domain-archetypes-v1/domaine-projet-worker-ambigu": [
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "domain-archetypes-v1/domaine-projet-worker-complet": [
+      {
+        "criterionKey": "project-coherence",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 3
+      },
+      {
+        "criterionKey": "instruction-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      },
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "calcule le SHA-256 du contenu normalisé",
+          "to": "calcule le MD5 du contenu brut"
+        }
+      }
+    ],
+    "domain-archetypes-v1/domaine-projet-worker-errone": [
+      {
+        "criterionKey": "instruction-coverage",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 0
+      }
+    ],
+    "domain-archetypes-v1/domaine-projet-worker-partiel": [
+      {
+        "criterionKey": "project-coherence",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "domain-archetypes-v1/domaine-reflexion-mission-ambigu": [
+      {
+        "criterionKey": "reflection-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "domain-archetypes-v1/domaine-reflexion-mission-complet": [
+      {
+        "criterionKey": "reflection-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      },
+      {
+        "criterionKey": "instruction-coverage",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "context-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "les six autres étapes n’ont produit aucune preuve datée",
+          "to": "les six autres étapes ont toutes produit une preuve datée"
+        }
+      }
+    ],
+    "domain-archetypes-v1/domaine-reflexion-mission-partiel": [
+      {
+        "criterionKey": "reflection-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
       }
     ],
     "holdout-v1/holdout-writing-library-hours-successful": [
@@ -72,13 +240,6 @@
         "sentenceIndex": 2
       }
     ],
-    "holdout-v1/holdout-writing-vendor-renewal-erroneous": [
-      {
-        "criterionKey": "decision-position",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      }
-    ],
     "holdout-v1/holdout-writing-shuttle-boundary": [
       {
         "criterionKey": "evidence-selection",
@@ -90,6 +251,13 @@
       },
       {
         "criterionKey": "evidence-selection",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v1/holdout-writing-vendor-renewal-erroneous": [
+      {
+        "criterionKey": "decision-position",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 0
       }
@@ -114,6 +282,28 @@
         "sentenceIndex": 3
       }
     ],
+    "holdout-v2/holdout2-writing-oven-revision-ambiguous": [
+      {
+        "criterionKey": "fact-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 95 % à 82 %",
+          "to": "de 82 % à 95 %"
+        }
+      },
+      {
+        "criterionKey": "arbitration-choice",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "holdout-v2/holdout2-writing-pump-report-erroneous": [
+      {
+        "criterionKey": "arbitration-choice",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
     "holdout-v2/holdout2-writing-spare-stock-partial": [
       {
         "criterionKey": "fact-fidelity",
@@ -129,24 +319,16 @@
         "sentenceIndex": 1
       }
     ],
-    "holdout-v2/holdout2-writing-pump-report-erroneous": [
+    "holdout-v3/holdout3-writing-crack-strategy-ambiguous": [
       {
-        "criterionKey": "arbitration-choice",
+        "criterionKey": "residual-risk-coverage",
         "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
+        "sentenceIndex": 1
       }
     ],
-    "holdout-v2/holdout2-writing-oven-revision-ambiguous": [
+    "holdout-v3/holdout3-writing-elevator-modernization-erroneous": [
       {
-        "criterionKey": "fact-fidelity",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "de 95 % à 82 %",
-          "to": "de 82 % à 95 %"
-        }
-      },
-      {
-        "criterionKey": "arbitration-choice",
+        "criterionKey": "decision-stance",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 0
       }
@@ -191,261 +373,14 @@
         "sentenceIndex": 2
       }
     ],
-    "holdout-v3/holdout3-writing-elevator-modernization-erroneous": [
+    "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline": [
       {
-        "criterionKey": "decision-stance",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      }
-    ],
-    "holdout-v3/holdout3-writing-crack-strategy-ambiguous": [
-      {
-        "criterionKey": "residual-risk-coverage",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      }
-    ],
-    "writing-holdout-v1/writing-v1-decision-memo-complete-clear": [
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "= 54 €",
-          "to": "= 44 €"
-        }
-      },
-      {
-        "criterionKey": "committed-choice-boundary",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 3
-      },
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      }
-    ],
-    "writing-holdout-v1/writing-v1-decision-memo-complete-concise": [
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "= 60 €",
-          "to": "= 50 €"
-        }
-      },
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      }
-    ],
-    "writing-holdout-v1/writing-v1-decision-memo-partial-omission": [
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "= 36 € et",
-          "to": "= 32 € et"
-        }
-      },
-      {
-        "criterionKey": "comparative-arithmetic",
+        "criterionKey": "feasible-allocation",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 0
       },
       {
-        "criterionKey": "hard-constraint-fit",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      }
-    ],
-    "writing-holdout-v1/writing-v1-decision-memo-erroneous-decidable": [
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      }
-    ],
-    "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline": [
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "= 36 € ;",
-          "to": "= 26 € ;"
-        }
-      },
-      {
-        "criterionKey": "comparative-arithmetic",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      },
-      {
-        "criterionKey": "hard-constraint-fit",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      }
-    ],
-    "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear": [
-      {
-        "criterionKey": "source-fidelity",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "de 10 sur 24 à 4 sur 24",
-          "to": "de 4 sur 24 à 10 sur 24"
-        }
-      },
-      {
-        "criterionKey": "mechanism-link",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      },
-      {
-        "criterionKey": "source-fidelity",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      }
-    ],
-    "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise": [
-      {
-        "criterionKey": "source-fidelity",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "48 tr/min contre 28",
-          "to": "28 tr/min contre 48"
-        }
-      },
-      {
-        "criterionKey": "uncertainty-boundary",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      }
-    ],
-    "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission": [
-      {
-        "criterionKey": "source-fidelity",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "de 11/20 à 5/20",
-          "to": "de 5/20 à 11/20"
-        }
-      },
-      {
-        "criterionKey": "mechanism-link",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      }
-    ],
-    "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable": [
-      {
-        "criterionKey": "mechanism-link",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      },
-      {
-        "criterionKey": "uncertainty-boundary",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 2
-      }
-    ],
-    "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline": [
-      {
-        "criterionKey": "source-fidelity",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "de 9/16 à 5/16",
-          "to": "de 5/16 à 9/16"
-        }
-      },
-      {
-        "criterionKey": "mechanism-link",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      },
-      {
-        "criterionKey": "source-fidelity",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      }
-    ],
-    "writing-holdout-v1/writing-v1-reflective-note-complete-clear": [
-      {
-        "criterionKey": "event-sequence-grounding",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "et 7/12 personnes ont hésité",
-          "to": "et 2/12 personnes ont hésité"
-        }
-      },
-      {
-        "criterionKey": "bounded-causal-agency",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      },
-      {
-        "criterionKey": "event-sequence-grounding",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      },
-      {
-        "criterionKey": "observable-transfer",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 2
-      }
-    ],
-    "writing-holdout-v1/writing-v1-reflective-note-complete-concise": [
-      {
-        "criterionKey": "event-sequence-grounding",
-        "kind": "FACT_INVERSION",
-        "replace": {
-          "from": "à 1/9 quand je les annonce avant",
-          "to": "à 8/9 quand je les annonce avant"
-        }
-      },
-      {
-        "criterionKey": "bounded-causal-agency",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      },
-      {
-        "criterionKey": "event-sequence-grounding",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      },
-      {
-        "criterionKey": "observable-transfer",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 2
-      }
-    ],
-    "writing-holdout-v1/writing-v1-reflective-note-partial-omission": [
-      {
-        "criterionKey": "bounded-causal-agency",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      },
-      {
-        "criterionKey": "observable-transfer",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 2
-      }
-    ],
-    "writing-holdout-v1/writing-v1-reflective-note-erroneous-decidable": [
-      {
-        "criterionKey": "bounded-causal-agency",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      },
-      {
-        "criterionKey": "observable-transfer",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 2
-      }
-    ],
-    "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline": [
-      {
-        "criterionKey": "observable-transfer",
+        "criterionKey": "harm-stop-control",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 2
       }
@@ -500,18 +435,6 @@
         "sentenceIndex": 1
       }
     ],
-    "writing-holdout-v1/writing-v1-action-plan-partial-omission": [
-      {
-        "criterionKey": "feasible-allocation",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 0
-      },
-      {
-        "criterionKey": "metric-and-decision-rule",
-        "kind": "SENTENCE_DELETION",
-        "sentenceIndex": 1
-      }
-    ],
     "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable": [
       {
         "criterionKey": "harm-stop-control",
@@ -524,14 +447,259 @@
         "sentenceIndex": 1
       }
     ],
-    "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline": [
+    "writing-holdout-v1/writing-v1-action-plan-partial-omission": [
       {
         "criterionKey": "feasible-allocation",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 0
       },
       {
-        "criterionKey": "harm-stop-control",
+        "criterionKey": "metric-and-decision-rule",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 36 € ;",
+          "to": "= 26 € ;"
+        }
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "hard-constraint-fit",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-complete-clear": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 54 €",
+          "to": "= 44 €"
+        }
+      },
+      {
+        "criterionKey": "committed-choice-boundary",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 3
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-complete-concise": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 60 €",
+          "to": "= 50 €"
+        }
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-erroneous-decidable": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-decision-memo-partial-omission": [
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "= 36 € et",
+          "to": "= 32 € et"
+        }
+      },
+      {
+        "criterionKey": "comparative-arithmetic",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "hard-constraint-fit",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 9/16 à 5/16",
+          "to": "de 5/16 à 9/16"
+        }
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 10 sur 24 à 4 sur 24",
+          "to": "de 4 sur 24 à 10 sur 24"
+        }
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "48 tr/min contre 28",
+          "to": "28 tr/min contre 48"
+        }
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable": [
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission": [
+      {
+        "criterionKey": "source-fidelity",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "de 11/20 à 5/20",
+          "to": "de 5/20 à 11/20"
+        }
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline": [
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-complete-clear": [
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "et 7/12 personnes ont hésité",
+          "to": "et 2/12 personnes ont hésité"
+        }
+      },
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-complete-concise": [
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "FACT_INVERSION",
+        "replace": {
+          "from": "à 1/9 quand je les annonce avant",
+          "to": "à 8/9 quand je les annonce avant"
+        }
+      },
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "event-sequence-grounding",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 0
+      },
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-erroneous-decidable": [
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "observable-transfer",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 2
+      }
+    ],
+    "writing-holdout-v1/writing-v1-reflective-note-partial-omission": [
+      {
+        "criterionKey": "bounded-causal-agency",
+        "kind": "SENTENCE_DELETION",
+        "sentenceIndex": 1
+      },
+      {
+        "criterionKey": "observable-transfer",
         "kind": "SENTENCE_DELETION",
         "sentenceIndex": 2
       }
