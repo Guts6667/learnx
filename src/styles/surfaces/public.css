@@ -182,15 +182,8 @@
 }
 
 .landing-hero h1 {
-  max-width: 100%;
   margin-top: var(--space-4);
-  font-family: var(--font-interface);
-  font-size: clamp(2.85rem, 12cqi, 5.7rem);
-  font-weight: 500;
-  hyphens: auto;
-  line-height: 0.98;
-  letter-spacing: -0.055em;
-  overflow-wrap: break-word;
+  line-height: 1.08;
 }
 
 .landing-lead,
@@ -993,6 +986,7 @@
 
 .landing-page .page-eyebrow {
   font-size: var(--text-xs);
+  font-weight: 600;
   letter-spacing: 0.11em;
 }
 
@@ -1048,4 +1042,85 @@
   padding: 0.25rem 0.625rem;
   background: var(--color-surface-subtle);
   color: var(--color-accent-text);
+}
+
+/* --- V4.2 landing: display scale, tracking the reference ---
+   The public page is a pitch, not a workspace: headings carry the display face
+   at 700, and the sizes match the reference (60 / 44 / 40 px at the top end)
+   instead of inheriting the product surface's flatter treatment. */
+
+.landing-page :is(h1, h2, h3) {
+  font-family: var(--font-editorial);
+}
+
+.landing-page .landing-hero h1 {
+  max-width: 13ch;
+  font-size: clamp(2.375rem, 5vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+
+.landing-page :is(.landing-section, .landing-research) h2 {
+  max-width: 13ch;
+  font-size: clamp(1.875rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.landing-page .landing-research h2 {
+  max-width: 20ch;
+}
+
+.landing-page .landing-forms h2 {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+.landing-page .landing-principles strong {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.landing-page .landing-product-benefits strong {
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+
+.landing-page .landing-roadmap-timeline h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.landing-page .landing-research-latest h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* The application section opens on its own statement, centred, before the two
+   deliberately unequal cards. */
+.landing-forms-head {
+  width: 100%;
+  padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.2rem, 6vw, 6rem) 0;
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.landing-forms-head h2 {
+  max-width: 18ch;
+  margin: var(--space-3) auto 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+.landing-forms-head + .landing-forms {
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 0;
 }

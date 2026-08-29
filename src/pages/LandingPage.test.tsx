@@ -102,9 +102,7 @@ describe('LandingPage', () => {
     );
     expect(researchLink).not.toHaveAttribute('target');
     expect(researchLink).toHaveClass('landing-research-action');
-    expect(
-      screen.getByText(/7 faux PASS et un écart ordinal de deux niveaux/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/sept faux PASS/i)).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: 'Voir comment ça marche' }),
     ).not.toHaveClass('ui-action--secondary');
@@ -214,7 +212,7 @@ describe('LandingPage', () => {
     );
     const article = screen
       .getByRole('heading', {
-        name: 'Participer aux premiers retours terrain',
+        name: 'Participez aux premiers usages réels',
       })
       .closest('article');
     if (!article) throw new Error('Early adopter form missing.');

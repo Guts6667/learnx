@@ -13,32 +13,32 @@ export const frenchLandingMessages = {
   'landing.eyebrow': 'Apprendre avec une direction',
   'landing.title': 'Votre chemin vers la connaissance.',
   'landing.lead':
-    'LearnX relie cours, pratique et validation dans un chemin clair que vous pouvez reprendre sans perdre le fil.',
+    "Arrêtez de deviner quoi apprendre ensuite. LearnX transforme n'importe quel objectif en un chemin clair — cours, pratique et preuve, toujours dans l'ordre.",
   'landing.cta.early': 'Candidater comme early adopter',
   'landing.cta.updates': 'Être informé du lancement',
-  'landing.product.eyebrow': 'Disponible aujourd’hui',
-  'landing.product.title': 'Avancer, pratiquer, vérifier.',
+  'landing.product.eyebrow': "Disponible aujourd'hui",
+  'landing.product.title': 'Avancer, pratiquer, valider.',
   'landing.product.description':
-    'LearnX transforme un objectif en chemin d’apprentissage concret : vous savez quoi faire maintenant, pourquoi le faire et ce qui vient ensuite.',
+    'Chaque objectif devient un chemin : quoi faire maintenant, pourquoi ça compte, ce qui vient ensuite.',
   'landing.product.benefitDirectionTitle': 'Une prochaine étape claire',
   'landing.product.benefitDirection':
-    'Chaque parcours ordonne les notions et vous ramène directement au bon endroit.',
-  'landing.product.benefitPracticeTitle': 'Des connaissances mises en pratique',
+    'Toujours le bon endroit où reprendre — jamais un menu à trier.',
+  'landing.product.benefitPracticeTitle':
+    'De la pratique, pas que de la théorie',
   'landing.product.benefitPractice':
-    'Leçons, exercices et évaluations s’enchaînent pour passer de la compréhension à l’action.',
-  'landing.product.benefitContinuityTitle':
-    'Un apprentissage qui garde le contexte',
+    'Exercices et évaluations transforment ce que vous lisez en ce que vous savez faire.',
+  'landing.product.benefitContinuityTitle': 'Rien ne se perd',
   'landing.product.benefitContinuity':
-    'Progression, tentatives, notes et sources restent réunies dans votre espace personnel.',
-  'landing.product.structuredTitle': 'Parcours structurés',
+    'Progression, tentatives et sources restent ensemble, exactement où vous les avez laissées.',
+  'landing.product.structuredTitle': 'Ne plus jamais chercher la suite',
   'landing.product.structured':
-    'Une progression guidée plutôt qu’une accumulation de contenus.',
-  'landing.product.practiceTitle': 'Pratique et tentatives',
+    'Un chemin guidé, pas une pile de contenus à trier vous-même.',
+  'landing.product.practiceTitle': 'Une pratique qui reste',
   'landing.product.practice':
-    'Des tâches, exercices et évaluations avec historique conservé.',
-  'landing.product.evidenceTitle': 'Sources au point d’usage',
+    'De vrais exercices et tentatives, conservés pour que rien ne se perde.',
+  'landing.product.evidenceTitle': 'Une preuve à montrer',
   'landing.product.evidence':
-    'Les références restent attachées aux contenus qu’elles étayent.',
+    'Chaque leçon cite sa source — et chaque étape compte pour la validation.',
   'landing.preview.realContent': 'Contenu réel',
   'landing.preview.program.ariaLabel':
     'Aperçu réaliste du programme Piloter un projet en équipe',
@@ -72,33 +72,36 @@ export const frenchLandingMessages = {
   'landing.preview.lesson.source':
     'The Scrum Guide 2020 · Ken Schwaber et Jeff Sutherland',
   'landing.roadmap.eyebrow': 'Feuille de route produit',
-  'landing.roadmap.title': 'Construire une assistance utile, étape par étape.',
+  'landing.roadmap.title':
+    'Construit pour gagner votre confiance, étape par étape.',
   'landing.roadmap.description':
-    'Chaque jalon est livré dans un périmètre mesurable avant d’élargir les usages de l’IA.',
+    'Chaque nouvelle capacité est livrée petite et prouvée avant de grandir.',
   'landing.roadmap.available': 'Disponible',
   'landing.roadmap.next': 'Prochaine évolution',
   'landing.research.eyebrow': 'Recherche & transparence',
-  'landing.research.title': 'Suivre nos recherches, décision après décision',
+  'landing.research.title': 'Nous publions chaque verdict IA — bon ou mauvais.',
   'landing.research.description':
-    'Notre journal conserve chaque benchmark, refus et arbitrage dans un article daté. Les anciennes recherches restent consultables et le verdict scientifique est toujours distingué de la décision produit.',
+    'Aucune promesse opaque. Chaque benchmark et chaque refus part dans un journal public daté, distinct des décisions produit.',
   'landing.research.latestMeta':
     'Dernière publication · 24 août 2026 · Résultat',
   'landing.research.latestTitle':
-    'Évaluation Writing sous protocole scellé : résultats et décision de déploiement borné',
+    "Notre modèle de correction a échoué à sa propre barre — nous l'avons dit.",
   'landing.research.verdictLabel': 'Verdict scientifique',
   'landing.research.verdict':
-    'NO-GO : 80,19 % d’accord critériel, 7 faux PASS et un écart ordinal de deux niveaux.',
-  'landing.research.decisionLabel': 'Décision produit',
+    "80,19 % d'accord critériel, sept faux PASS. Pas assez fiable.",
+  'landing.research.decisionLabel': 'Ce qui a été livré à la place',
   'landing.research.decision':
-    'Pilote Writing borné autorisé avec crédits offerts, sans effet sur la progression.',
+    'un pilote borné avec crédits offerts, sans aucun effet sur votre progression.',
+  'landing.forms.eyebrow': 'Prêt quand vous l’êtes',
+  'landing.forms.title': 'Votre chemin commence par une candidature.',
   'landing.early.eyebrow': 'Accès anticipé',
-  'landing.early.title': 'Participer aux premiers retours terrain',
+  'landing.early.title': 'Participez aux premiers usages réels',
   'landing.early.description':
-    'Présentez brièvement votre usage. Une candidature ne crée ni compte ni accès automatique.',
-  'landing.updates.eyebrow': 'Actualités',
+    'Décrivez brièvement votre usage. Une candidature ne crée ni compte ni accès automatique.',
+  'landing.updates.eyebrow': 'Pas encore prêt ?',
   'landing.updates.title': 'Suivre le lancement',
   'landing.updates.description':
-    'Recevez uniquement les informations importantes sur l’ouverture de LearnX.',
+    "Seulement les informations importantes sur l'ouverture de LearnX.",
   'landing.form.email': 'Adresse e-mail',
   'landing.form.motivation': 'Comment souhaitez-vous utiliser LearnX ?',
   'landing.form.consentEarly':
@@ -154,31 +157,31 @@ export const englishLandingMessages = {
   'landing.eyebrow': 'Learn with direction',
   'landing.title': 'Your path to knowledge.',
   'landing.lead':
-    'LearnX connects learning, practice and validation in a clear path you can resume without losing context.',
+    'Stop guessing what to learn next. LearnX turns any goal into one clear path — lessons, practice and proof, always in order.',
   'landing.cta.early': 'Apply as an early adopter',
   'landing.cta.updates': 'Get launch updates',
   'landing.product.eyebrow': 'Available today',
   'landing.product.title': 'Move forward, practise, validate.',
   'landing.product.description':
-    'LearnX turns an objective into a concrete learning path: you know what to do now, why it matters and what comes next.',
+    "Every goal becomes a path: what to do now, why it matters, what's next.",
   'landing.product.benefitDirectionTitle': 'One clear next step',
   'landing.product.benefitDirection':
-    'Every journey orders the concepts and brings you directly back to the right place.',
-  'landing.product.benefitPracticeTitle': 'Knowledge put into practice',
+    'Always the right place to pick up — never a menu to sort through.',
+  'landing.product.benefitPracticeTitle': 'Practice, not just theory',
   'landing.product.benefitPractice':
-    'Lessons, exercises and assessments connect understanding to action.',
-  'landing.product.benefitContinuityTitle': 'Learning that keeps its context',
+    'Exercises and assessments turn what you read into what you can do.',
+  'landing.product.benefitContinuityTitle': 'Nothing gets lost',
   'landing.product.benefitContinuity':
-    'Progress, attempts, notes and sources remain together in your personal space.',
-  'landing.product.structuredTitle': 'Structured journeys',
+    'Progress, attempts and sources stay together, exactly where you left them.',
+  'landing.product.structuredTitle': "Never wonder what's next",
   'landing.product.structured':
-    'A guided progression instead of an accumulation of content.',
-  'landing.product.practiceTitle': 'Practice and attempts',
+    'A guided path, not a pile of content to sort through yourself.',
+  'landing.product.practiceTitle': 'Practice that sticks',
   'landing.product.practice':
-    'Tasks, exercises and assessments with preserved history.',
-  'landing.product.evidenceTitle': 'Sources at the point of use',
+    'Real exercises and attempts, saved so nothing is lost.',
+  'landing.product.evidenceTitle': 'Proof you can show',
   'landing.product.evidence':
-    'References remain attached to the content they support.',
+    'Every lesson cites its source — and every step counts toward validation.',
   'landing.preview.realContent': 'Real content',
   'landing.preview.program.ariaLabel':
     'Realistic preview of the Leading a team project programme',
@@ -211,32 +214,34 @@ export const englishLandingMessages = {
   'landing.preview.lesson.source':
     'The Scrum Guide 2020 · Ken Schwaber and Jeff Sutherland',
   'landing.roadmap.eyebrow': 'Product roadmap',
-  'landing.roadmap.title': 'Building useful assistance, one step at a time.',
+  'landing.roadmap.title': 'Built to earn trust, one step at a time.',
   'landing.roadmap.description':
-    'Each milestone is delivered within a measurable scope before AI capabilities are expanded.',
+    'Every new capability ships small and proven before it grows.',
   'landing.roadmap.available': 'Available',
   'landing.roadmap.next': 'Next evolution',
   'landing.research.eyebrow': 'Research & transparency',
-  'landing.research.title': 'Follow our research, decision by decision',
+  'landing.research.title': 'We publish every AI verdict — good or bad.',
   'landing.research.description':
-    'Our journal preserves each benchmark, refusal and trade-off in a dated article. Earlier research remains available, and scientific verdicts stay separate from product decisions.',
+    'No black-box claims. Every benchmark and refusal goes in a dated public journal, separate from product decisions.',
   'landing.research.latestMeta': 'Latest publication · 24 August 2026 · Result',
   'landing.research.latestTitle':
-    'Sealed-protocol Writing evaluation: results and bounded deployment decision',
+    'Our writing-correction model failed its own bar — so we said so.',
   'landing.research.verdictLabel': 'Scientific verdict',
   'landing.research.verdict':
-    'NO-GO: 80.19% criterion agreement, seven false passes and one two-level ordinal gap.',
-  'landing.research.decisionLabel': 'Product decision',
+    '80.19% criterion agreement, seven false passes. Not good enough to trust.',
+  'landing.research.decisionLabel': 'What shipped instead',
   'landing.research.decision':
-    'A bounded Writing pilot is authorised with complimentary credits and no effect on progression.',
+    'a bounded pilot with free credits, zero effect on your progress.',
+  'landing.forms.eyebrow': 'Ready when you are',
+  'landing.forms.title': 'Your path starts with one application.',
   'landing.early.eyebrow': 'Early access',
   'landing.early.title': 'Help shape the first real-world uses',
   'landing.early.description':
     'Briefly describe your use case. An application creates neither an account nor automatic access.',
-  'landing.updates.eyebrow': 'Updates',
+  'landing.updates.eyebrow': 'Not ready yet?',
   'landing.updates.title': 'Follow the launch',
   'landing.updates.description':
-    'Receive only important information about the opening of LearnX.',
+    'Just the important updates on LearnX opening up.',
   'landing.form.email': 'Email address',
   'landing.form.motivation': 'How would you like to use LearnX?',
   'landing.form.consentEarly':

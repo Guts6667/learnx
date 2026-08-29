@@ -359,6 +359,10 @@ export function LandingPage({ path }: { path?: string }) {
           </a>
         </article>
       </section>
+      <div className="landing-forms-head">
+        <p className="page-eyebrow">{t('landing.forms.eyebrow')}</p>
+        <h2>{t('landing.forms.title')}</h2>
+      </div>
       <section className="landing-forms">
         <article
           className="landing-form-card landing-form-card--primary"
