@@ -3,11 +3,23 @@
 ## Autorité et état
 
 - Version : 1.0.0
-- Statut : **fermé — aucun ticket activable avant GO de V4.1-504**
+- Statut : **ouvert** — le GO de V4.1-504 a été rendu le 29 août 2026 et V4.1
+  est publiée au SHA `63c436d9`. La condition d'activation est donc levée.
+  L'ordonnancement produit reste une décision du propriétaire : V4.2 (design)
+  puis V4.3 (pipeline programmes) sont séquencées avant V4.5.
 - Owner de séquence : Produit
 - Reviewer d'activation : Propriétaire
-- Autorité : ce fichier devient le backlog d'exécution V4.5 uniquement après
-  un GO explicite de V4.1-504.
+- Autorité : ce fichier est le backlog d'exécution V4.5.
+
+> **Écart connu, non traité ici.** Les deux manques que V4.5-001 et V4.5-002
+> décrivent sont toujours littéralement présents dans le code livré :
+> `detectsHardConstraintMismatch()` dans
+> `src/server/corrections/correction-outcome.ts` ajoute seulement un signal de
+> monitoring `HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED` au lieu d'imposer le
+> niveau plancher du critère, et la garde de score dérive du score déclaré par
+> le modèle avec une bande de ±5 points issue de `promoted-identity.ts`. Le
+> pilote reste fermé par défaut derrière deux drapeaux indépendants, donc rien
+> n'est exposé sans ouverture explicite.
 
 ## Objet
 
