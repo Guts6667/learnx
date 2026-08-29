@@ -30,7 +30,11 @@ import {
   type BenchmarkSupplierBudgetPreflight,
   type CandidateExecutor,
 } from './ai-correction-benchmark-runner.js';
-import { SupplierBudgetGuard } from './ai-benchmark-supplier-budget.js';
+import {
+  conservativeSupplierCallCostUsd,
+  SupplierBudgetGuard,
+} from './ai-benchmark-supplier-budget.js';
+import { z } from 'zod';
 import {
   evaluateRegressionGates,
   parseRegressionGatePolicy,
@@ -42,6 +46,7 @@ import {
 } from './ai-correction-regression-metrics.js';
 import {
   deriveHeldOutSeed,
+  deterministicPermutation,
   REGRESSION_MUTANT_GENERATOR_VERSION,
 } from './ai-correction-regression-mutants.js';
 import { renderRegressionReport } from './ai-correction-regression-report.js';
@@ -60,8 +65,10 @@ import {
 export type RegressionRunOutcome = {
   attempts: BenchmarkAttempt[];
   dryRun: boolean;
-  /** Worst-case primary spend across both passes, before retries. */
+  /** Worst-case spend for the whole plan, primary and checker together. */
   estimatedPrimaryUsd: number;
+  /** Whether that bound fits the authorised cap. Authoritative. */
+  fitsWithinCap: boolean;
   evaluation?: RegressionGateEvaluation;
   metrics?: RegressionMetrics;
   paraphraseRefusals: { caseId: string; reason: string }[];
@@ -94,6 +101,14 @@ import {
 /** The promoted identities a regression run is allowed to measure. */
 export type RegressionPinnedIdentities = {
   checkerModelId: string;
+  /**
+   * The promoted identity's retry policy, which is part of the identity rather
+   * than of the benchmark configuration. A run that retries where the promoted
+   * identity does not is measuring a different system — and
+   * `eventualUnusableRunRate`, a blocking gate, is precisely about what happens
+   * when a call fails and is not retried.
+   */
+  maxRetries: number;
   primaryCandidateId: string;
   primaryModelId: string;
 };
@@ -204,6 +219,28 @@ export async function loadParaphraseCache(input: {
   return { paraphrases, refusals };
 }
 
+/**
+ * Reads the recorded checker price, if one has been recorded yet.
+ *
+ * Absent is a legitimate state, not an error: it means the run's bound covers
+ * the primary model only, and the preflight says so rather than pretending the
+ * checker is free.
+ */
+async function readCheckerPricing(
+  directory: string,
+): Promise<CheckerPricing | undefined> {
+  try {
+    const raw = await readFile(
+      path.join(directory, 'checker-pricing.v1.json'),
+      'utf8',
+    );
+    return checkerPricingSchema.parse(JSON.parse(raw) as unknown);
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') return undefined;
+    throw error;
+  }
+}
+
 /** Loads the pool and its pinned sources for a run. */
 async function loadPoolForRun(arguments_: string[]): Promise<{
   pool: RegressionPool;
@@ -266,6 +303,111 @@ async function writeRunArtifact(input: {
   return filePath;
 }
 
+/**
+ * Reads the attempts of an interrupted run, given its results directory.
+ *
+ * `--resume` points at a directory, not a file: spec §7 names the artefact
+ * `attempts.json`, and the stock resume path insists on a `*.attempts.json`
+ * stem it would never find there. Rather than rename the artefact to suit the
+ * older convention, the regression path reads its own directory — the spec's
+ * naming is the one a reader of a results directory sees.
+ */
+async function readResumeAttempts(
+  resumeDirectory: string,
+): Promise<BenchmarkAttempt[]> {
+  const raw = await readFile(
+    path.join(resumeDirectory, 'attempts.json'),
+    'utf8',
+  );
+  const parsed = JSON.parse(raw) as unknown;
+  if (!Array.isArray(parsed)) {
+    throw new RegressionRunError(
+      `REGRESSION_RESUME_ATTEMPTS_INVALID: ${resumeDirectory}/attempts.json n'est pas un tableau de tentatives.`,
+    );
+  }
+  return parsed as BenchmarkAttempt[];
+}
+
+/** Cell key shared by the runner and the resume computation. */
+function cellKey(input: {
+  candidateId: string;
+  caseId: string;
+  repetition: number;
+}): string {
+  return `${input.candidateId}|${input.caseId}|${input.repetition}`;
+}
+
+/**
+ * The cells of a pass that an interrupted run has not yet completed.
+ *
+ * Returned as the runner's `pendingCells` whitelist, so a resumed run dispatches
+ * exactly the work that is missing and never pays twice for a cell already
+ * bought.
+ */
+export function pendingCellsFor(input: {
+  candidateId: string;
+  cases: { caseId: string }[];
+  completed: Set<string>;
+  repetitions: number;
+}): {
+  attemptStart: number;
+  candidateId: string;
+  caseId: string;
+  repetition: number;
+}[] {
+  const pending: {
+    attemptStart: number;
+    candidateId: string;
+    caseId: string;
+    repetition: number;
+  }[] = [];
+  for (const benchmarkCase of input.cases) {
+    for (let repetition = 1; repetition <= input.repetitions; repetition += 1) {
+      const key = cellKey({
+        candidateId: input.candidateId,
+        caseId: benchmarkCase.caseId,
+        repetition,
+      });
+      if (input.completed.has(key)) continue;
+      pending.push({
+        attemptStart: 1,
+        candidateId: input.candidateId,
+        caseId: benchmarkCase.caseId,
+        repetition,
+      });
+    }
+  }
+  return pending;
+}
+
+/**
+ * The provider's own lifetime usage figure, read before and after a run.
+ *
+ * Our ledger sums what each response reported. This reads the other side of the
+ * same transaction, so the run's spend can be reconciled against the provider
+ * rather than only against our own arithmetic — which is what "reconciled"
+ * ought to mean. A failure to read it is recorded as `null`, never as zero.
+ */
+async function readProviderUsageUsd(
+  apiKey: string | undefined,
+): Promise<number | null> {
+  if (!apiKey) return null;
+  try {
+    const response = await fetch('https://openrouter.ai/api/v1/credits', {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!response.ok) return null;
+    const body = (await response.json()) as {
+      data?: { total_usage?: unknown };
+    };
+    const usage = body.data?.total_usage;
+    return typeof usage === 'number' && Number.isFinite(usage) ? usage : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Serialises attempts as the run's append-only ledger, one JSON per line. */
 export function renderLedger(attempts: BenchmarkAttempt[]): string {
   return attempts
@@ -302,6 +444,8 @@ export async function runRegressionPool(input: {
   /** Absent means a dry run: plan and preflight, no provider call. */
   executeCandidate?: CandidateExecutor;
   configuration: CorrectionBenchmarkConfiguration;
+  /** `totalOutputTokenLimit` of the promoted checker; 400 unless overridden. */
+  checkerOutputTokenLimit?: number;
   identities: RegressionPinnedIdentities;
   now?: () => Date;
   /**
@@ -353,45 +497,153 @@ export async function runRegressionPool(input: {
     ) as unknown,
   );
 
-  // Spec §4 prices the two halves differently: the pool is repeated to measure
-  // stability, mutants are executed once because their oracle is a direction,
-  // not a distribution. Pricing and running them together would triple the
-  // mutant bill for no added signal.
-  const { baselineCases, mutantCases } = splitPlanCases(plan);
+  // Spec §4 prices the halves differently: the pool is repeated to measure
+  // stability, mutants run once because their oracle is a direction, not a
+  // distribution. Pricing them together would multiply the mutant bill for no
+  // added signal.
+  const requestedProfile = readCliOption(input.arguments, 'profile');
+  const profile: RegressionProfileName =
+    requestedProfile === 'reduced'
+      ? 'reduced'
+      : requestedProfile === 'smoke'
+        ? 'smoke'
+        : 'full';
+  const requestedPasses = buildRunPasses({
+    plan,
+    poolSha256,
+    profile,
+    repetitions: input.configuration.repetitions,
+  });
+  const checkerPricing = await readCheckerPricing(directory);
+  const checkerPromptCharacters = checkerPromptCharactersUpperBound(plan);
+  const checkerCostFor = (passes: RegressionRunPass[]): number => {
+    if (!checkerPricing) return 0;
+    const corrections = passes.reduce(
+      (total, pass) => total + pass.cases.length * pass.repetitions,
+      0,
+    );
+    return checkerWorstCaseUsd({
+      corrections,
+      outputTokenLimit: input.checkerOutputTokenLimit ?? 400,
+      pricing: checkerPricing,
+      promptCharactersPerCall: checkerPromptCharacters,
+    });
+  };
+
+  const pricePass = (pass: RegressionRunPass): number => {
+    if (pass.cases.length === 0) return 0;
+    const passPreflight = buildBenchmarkSupplierBudgetPreflight({
+      actualSpentUsd: 0,
+      candidates: [candidate],
+      cases: pass.cases,
+      configuration: input.configuration,
+      corpus: plan.corpus,
+      maxRetries: input.identities.maxRetries,
+      repetitions: pass.repetitions,
+      supplierCostCapUsd,
+    });
+    // Retries are part of the worst case the runner refuses to exceed, so they
+    // belong in the bound too. Leaving them out made this preflight disagree
+    // with the runner's own dispatch guard, which refused a plan this function
+    // had just called affordable.
+    return passPreflight.primaryWorstCaseUsd + passPreflight.retryWorstCaseUsd;
+  };
+  // One bill, not two: the cap governs the run, so the checker's share is
+  // inside the number the drop order works against rather than beside it.
+  const priceAll = (passes: RegressionRunPass[]): number =>
+    passes.reduce((total, pass) => total + pricePass(pass), 0) +
+    checkerCostFor(passes);
+
+  // Two checker calls per case in scope: one to rewrite, one to confirm the
+  // meaning survived. Priced with the checker's own recorded rate.
+  const paraphraseCandidates = requestedPasses[0]?.cases.length ?? 0;
+  const paraphraseCostUsd = checkerPricing
+    ? checkerWorstCaseUsd({
+        corrections: paraphraseCandidates * 2,
+        outputTokenLimit: input.checkerOutputTokenLimit ?? 400,
+        pricing: checkerPricing,
+        promptCharactersPerCall: checkerPromptCharacters,
+      })
+    : 0;
+  const budgeted = applyDropOrder({
+    capUsd: supplierCostCapUsd,
+    paraphraseCostUsd,
+    paraphrasesRequested: input.arguments.includes('--with-paraphrases'),
+    passes: requestedPasses,
+    price: priceAll,
+  });
+  const passes = budgeted.passes.filter((pass) => pass.cases.length > 0);
   const preflight = buildBenchmarkSupplierBudgetPreflight({
     actualSpentUsd: 0,
     candidates: [candidate],
-    cases: baselineCases,
+    cases: passes[0]?.cases ?? [],
     configuration: input.configuration,
     corpus: plan.corpus,
-    maxRetries: input.configuration.maxRetries,
-    repetitions: input.configuration.repetitions,
-    supplierCostCapUsd,
-  });
-  const mutantPreflight = buildBenchmarkSupplierBudgetPreflight({
-    actualSpentUsd: 0,
-    candidates: [candidate],
-    cases: mutantCases,
-    configuration: input.configuration,
-    corpus: plan.corpus,
-    maxRetries: input.configuration.maxRetries,
-    repetitions: 1,
+    maxRetries: input.identities.maxRetries,
+    repetitions: passes[0]?.repetitions ?? 1,
     supplierCostCapUsd,
   });
 
   const willExecute = !dryRun && input.executeCandidate !== undefined;
+  const providerUsageBeforeUsd = willExecute
+    ? await readProviderUsageUsd(input.providerApiKey)
+    : null;
   const resultsDirectory = await createResultsDirectory({
     dryRun: !willExecute,
     regressionDirectory: directory,
     runStartedAt,
   });
+  // Only what this profile dispatches: the report's "mutants exécutés" must
+  // name mutants that were actually executed.
+  const executedCaseIds = new Set(
+    passes.flatMap((pass) => pass.cases.map((item) => item.caseId)),
+  );
+  const passBreakdown = passes.map((pass) => ({
+    cases: pass.cases.length,
+    cells: pass.cases.length * pass.repetitions,
+    label: pass.label,
+    primaryWorstCaseUsd: pricePass(pass),
+    repetitions: pass.repetitions,
+  }));
   await writeRunArtifact({
     content: `${JSON.stringify(
       {
-        baselinePass: preflight,
-        combinedPrimaryWorstCaseUsd:
-          preflight.primaryWorstCaseUsd + mutantPreflight.primaryWorstCaseUsd,
-        mutantPass: mutantPreflight,
+        checkerCost: checkerPricing
+          ? {
+              corrections: passes.reduce(
+                (total, pass) => total + pass.cases.length * pass.repetitions,
+                0,
+              ),
+              modelId: checkerPricing.modelId,
+              outputTokenLimit: input.checkerOutputTokenLimit ?? 400,
+              pricedInThisPreflight: true,
+              promptCharactersPerCall: checkerPromptCharacters,
+              source: checkerPricing.source,
+              worstCaseUsd: checkerCostFor(passes),
+            }
+          : {
+              note: "Aucun prix par jeton n'est enregistré pour le vérificateur promu : la borne ne couvre que le modèle primaire. Ses appels restent réconciliés contre le même plafond pendant l'exécution, ce qui arrête le run au plafond sans l'empêcher de l'atteindre.",
+              pricedInThisPreflight: false,
+            },
+        combinedWorstCaseUsd: budgeted.pricedUsd,
+        primaryWorstCaseUsd: passes.reduce(
+          (total, pass) => total + pricePass(pass),
+          0,
+        ),
+        // `fitsWithinCap` is the authoritative verdict for the profile: it
+        // weighs the whole plan, both models included, against the cap.
+        // `singlePassLegacyDecision` is the stock runner's verdict on the first
+        // pass alone and can read CONTINGENCY_REQUIRED on a plan that fits,
+        // because it prices that pass's retries as if they were certain.
+        // Reading it as the run's verdict would be a mistake, so it is named
+        // for what it is.
+        singlePassLegacyDecision: preflight.decision,
+        dropped: budgeted.dropped,
+        fitsWithinCap: budgeted.fits,
+        paraphraseWorstCaseUsd: budgeted.paraphrases ? paraphraseCostUsd : 0,
+        paraphrasesIncluded: budgeted.paraphrases,
+        passes: passBreakdown,
+        profile,
         supplierCostCapUsd,
       },
       null,
@@ -401,14 +653,24 @@ export async function runRegressionPool(input: {
     fileName: 'budget-preflight.json',
   });
 
+  // A plan that does not fit its cap is never dispatched. The guard would stop
+  // it partway, but a half-executed run spends real money and produces a
+  // results directory that measures nothing: the refusal has to come before the
+  // first call, not during it.
+  if (!dryRun && input.executeCandidate && !budgeted.fits) {
+    throw new RegressionRunError(
+      `REGRESSION_RUN_EXCEEDS_CAP: borne ${budgeted.pricedUsd.toFixed(4)} USD > plafond ${supplierCostCapUsd} USD après application de l'ordre de retrait. Préflight écrit dans ${resultsDirectory}.`,
+    );
+  }
+
   if (dryRun || !input.executeCandidate) {
     // The plan, its cost bound and the artefact layout, for free. Nothing here
     // has spoken to a provider.
     return {
       attempts: [],
       dryRun: true,
-      estimatedPrimaryUsd:
-        preflight.primaryWorstCaseUsd + mutantPreflight.primaryWorstCaseUsd,
+      estimatedPrimaryUsd: budgeted.pricedUsd,
+      fitsWithinCap: budgeted.fits,
       paraphraseRefusals: cache.refusals,
       plan,
       poolSha256,
@@ -418,33 +680,92 @@ export async function runRegressionPool(input: {
     };
   }
 
-  // One guard across both passes: the cap is on the run, not on each half.
+  // One guard across every pass: the cap is on the run, not on each slice.
   const guard = new SupplierBudgetGuard(supplierCostCapUsd);
-  const attempts = [
-    ...(await runBenchmark({
+  const attempts: BenchmarkAttempt[] = [];
+
+  const resumeDirectory = readCliOption(input.arguments, 'resume');
+  const resumed = resumeDirectory
+    ? await readResumeAttempts(path.resolve(resumeDirectory))
+    : [];
+  // Spend already made is spend the cap has already absorbed. Reconciling it
+  // into the guard stops a resumed run from quietly spending the whole cap a
+  // second time.
+  for (const attempt of resumed) {
+    if (attempt.usage?.costSource === 'ACTUAL') {
+      guard.reconcile(attempt.usage);
+    }
+  }
+  const completed = new Set(
+    resumed.map((attempt) =>
+      cellKey({
+        candidateId: attempt.candidateId,
+        caseId: attempt.caseId,
+        repetition: attempt.repetition,
+      }),
+    ),
+  );
+
+  // Attempts are persisted as they arrive, not at the end. A long paid run that
+  // is interrupted must leave behind what it already bought: without this, a
+  // stopped run loses every recorded call, its spend becomes unreconcilable
+  // from the artefacts, and `--resume` has no attempts file to resume from.
+  const persistProgress = async (
+    passAttempts: BenchmarkAttempt[],
+  ): Promise<void> => {
+    await writeRunArtifact({
+      content: `${JSON.stringify([...attempts, ...passAttempts], null, 2)}\n`,
+      directory: resultsDirectory,
+      fileName: 'attempts.json',
+    });
+    await writeRunArtifact({
+      content: renderLedger([...attempts, ...passAttempts]),
+      directory: resultsDirectory,
+      fileName: 'ledger.jsonl',
+    });
+  };
+
+  for (const pass of passes) {
+    const passCaseIds = new Set(
+      pass.cases.map((benchmarkCase) => benchmarkCase.caseId),
+    );
+    const passResumed = resumed.filter((attempt) =>
+      passCaseIds.has(attempt.caseId),
+    );
+    const pendingCells = pendingCellsFor({
+      candidateId: candidate.candidateId,
+      cases: pass.cases,
+      completed,
+      repetitions: pass.repetitions,
+    });
+    if (pendingCells.length === 0) {
+      // Nothing left to buy in this pass; keep what the interrupted run paid
+      // for and move on.
+      attempts.push(...passResumed);
+      await persistProgress([]);
+      continue;
+    }
+    const passAttempts = await runBenchmark({
       candidates: [candidate],
-      cases: baselineCases,
+      cases: pass.cases,
       configuration: input.configuration,
       corpus: plan.corpus,
       executeCandidate: input.executeCandidate,
+      ...(passResumed.length > 0 ? { initialAttempts: passResumed } : {}),
+      maxRetries: input.identities.maxRetries,
+      onProgress: persistProgress,
+      ...(resumed.length > 0 ? { pendingCells } : {}),
       ...(input.providerApiKey ? { providerApiKey: input.providerApiKey } : {}),
-      repetitions: input.configuration.repetitions,
+      repetitions: pass.repetitions,
       supplierBudget: guard,
-    })),
-    ...(await runBenchmark({
-      candidates: [candidate],
-      cases: mutantCases,
-      configuration: input.configuration,
-      corpus: plan.corpus,
-      executeCandidate: input.executeCandidate,
-      ...(input.providerApiKey ? { providerApiKey: input.providerApiKey } : {}),
-      repetitions: 1,
-      supplierBudget: guard,
-    })),
-  ];
+    });
+    attempts.push(...passAttempts);
+    await persistProgress([]);
+  }
 
   const observations = await deriveRegressionObservations({
     attempts,
+    budget: guard,
     ...(input.checker ? { checker: input.checker } : {}),
     familyScientificallyValidated: true,
     plan,
@@ -471,11 +792,17 @@ export async function runRegressionPool(input: {
     confidence: summarizeConfidence(observations),
     costs: {
       actualCostUsd: guard.actualSpentUsd,
+      checkerBoundUsd: checkerPricing ? checkerCostFor(passes) : null,
+      costCapUsd: supplierCostCapUsd,
+      dropped: budgeted.dropped,
+      primaryBoundUsd: passes.reduce(
+        (total, pass) => total + pricePass(pass),
+        0,
+      ),
       // The preflight's own worst-case envelope: primary calls, their
       // retries and the bounded guard passes. Reported as the estimate the
       // run was authorised against, next to what it actually spent.
-      estimatedCostUsd:
-        preflight.primaryWorstCaseUsd + mutantPreflight.primaryWorstCaseUsd,
+      estimatedCostUsd: budgeted.pricedUsd,
       p50CostUsdPerCorrection: null,
       p50LatencyMs: percentile(attempts, 0.5),
       p90CostUsdPerCorrection: null,
@@ -491,12 +818,12 @@ export async function runRegressionPool(input: {
       poolId: pool.poolId,
       poolSha256,
       primaryIdentity: input.identities.primaryCandidateId,
-      profile: readCliOption(input.arguments, 'profile') ?? 'full',
+      profile,
       repetitions: input.configuration.repetitions,
       runStartedAt,
     },
     metrics,
-    mutantCounts: countMutantsByKind(plan),
+    mutantCounts: countMutantsByKind(plan, executedCaseIds),
   });
 
   await writeRunArtifact({
@@ -516,7 +843,7 @@ export async function runRegressionPool(input: {
         poolSha256,
         generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
         gatePolicyVersion: policy.policyVersion,
-        mutantCounts: countMutantsByKind(plan),
+        mutantCounts: countMutantsByKind(plan, executedCaseIds),
         runStartedAt,
         security,
       },
@@ -525,6 +852,31 @@ export async function runRegressionPool(input: {
     )}\n`,
     directory: resultsDirectory,
     fileName: 'summary.json',
+  });
+  const providerUsageAfterUsd = await readProviderUsageUsd(
+    input.providerApiKey,
+  );
+  await writeRunArtifact({
+    content: `${JSON.stringify(
+      {
+        // Both sides of the same transaction. `ledgerUsd` is what the responses
+        // reported; `providerDeltaUsd` is what the provider says it charged.
+        // They should agree; recording both means a disagreement is visible
+        // rather than assumed away.
+        ledgerUsd: guard.actualSpentUsd,
+        note: 'total_usage est cumulatif sur la clé, pas propre à ce run ; seul le delta est imputable.',
+        providerDeltaUsd:
+          providerUsageBeforeUsd !== null && providerUsageAfterUsd !== null
+            ? providerUsageAfterUsd - providerUsageBeforeUsd
+            : null,
+        providerUsageAfterUsd,
+        providerUsageBeforeUsd,
+      },
+      null,
+      2,
+    )}\n`,
+    directory: resultsDirectory,
+    fileName: 'cost-reconciliation.json',
   });
   await writeRunArtifact({
     content: renderLedger(attempts),
@@ -540,8 +892,8 @@ export async function runRegressionPool(input: {
   return {
     attempts,
     dryRun: false,
-    estimatedPrimaryUsd:
-      preflight.primaryWorstCaseUsd + mutantPreflight.primaryWorstCaseUsd,
+    estimatedPrimaryUsd: budgeted.pricedUsd,
+    fitsWithinCap: budgeted.fits,
     evaluation,
     metrics,
     paraphraseRefusals: cache.refusals,
@@ -583,4 +935,259 @@ function percentile(
     Math.floor(fraction * latencies.length),
   );
   return latencies[index] ?? null;
+}
+
+/** One dispatchable slice of a run: a set of cases at a repetition count. */
+export type RegressionRunPass = {
+  cases: RegressionRunPlan['corpus']['cases'];
+  /** Why this slice exists, for the report. */
+  label: string;
+  repetitions: number;
+};
+
+type RegressionProfileName = 'full' | 'reduced' | 'smoke';
+
+/**
+ * The deterministic 24-case subset the reduced profile repeats.
+ *
+ * Drawn by the same seeded permutation the held-out set uses, so the subset is
+ * reproducible from the pool digest and cannot be chosen after seeing results.
+ */
+export function reducedProfileSubset(input: {
+  caseIds: string[];
+  seed: string;
+  size: number;
+}): Set<string> {
+  const ordered = [...input.caseIds].sort((left, right) =>
+    left.localeCompare(right),
+  );
+  const order = deterministicPermutation({
+    length: ordered.length,
+    seed: input.seed,
+  });
+  return new Set(
+    order
+      .slice(0, Math.min(input.size, ordered.length))
+      .flatMap((index) => (ordered[index] ? [ordered[index]] : [])),
+  );
+}
+
+/**
+ * The passes a profile dispatches, before any budget-driven drop.
+ *
+ * `full` is spec §4's reference run: the pool at its repetition count plus every
+ * mutant once. `reduced` is the budgeted variant: the whole pool once — so no
+ * case goes unseen — plus repetitions and mutants on a fixed subset.
+ */
+function buildRunPasses(input: {
+  plan: RegressionRunPlan;
+  poolSha256: string;
+  profile: RegressionProfileName;
+  repetitions: number;
+  subsetSize?: number;
+}): RegressionRunPass[] {
+  const { baselineCases, mutantCases } = splitPlanCases(input.plan);
+
+  if (input.profile === 'smoke') {
+    // One pooled case, once, no mutants: the smallest plan that still exercises
+    // a real primary call, a real checker call, provider cost reconciliation
+    // and a ledger line. It proves the wiring, and claims nothing about the
+    // system under test — a smoke run is not a measurement.
+    const first = [...baselineCases].sort((left, right) =>
+      left.caseId.localeCompare(right.caseId),
+    )[0];
+    return first
+      ? [{ cases: [first], label: 'fumée — un cas', repetitions: 1 }]
+      : [];
+  }
+
+  if (input.profile === 'full') {
+    return [
+      {
+        cases: baselineCases,
+        label: 'pool complet',
+        repetitions: input.repetitions,
+      },
+      { cases: mutantCases, label: 'mutants', repetitions: 1 },
+    ];
+  }
+
+  const poolCaseIds = [...input.plan.unitsByBenchmarkCaseId.values()]
+    .filter((unit) => unit.mutantId === undefined)
+    .map((unit) => unit.poolCaseId);
+  const subset = reducedProfileSubset({
+    caseIds: poolCaseIds,
+    seed: input.poolSha256,
+    size: input.subsetSize ?? 24,
+  });
+  const inSubset = (caseId: string): boolean => {
+    const unit = input.plan.unitsByBenchmarkCaseId.get(caseId);
+    return unit ? subset.has(unit.poolCaseId) : false;
+  };
+
+  return [
+    // Every pooled case is seen once: a budget may reduce repetition, never
+    // coverage, or the run stops being a regression suite over the pool.
+    { cases: baselineCases, label: 'pool complet × 1', repetitions: 1 },
+    {
+      cases: baselineCases.filter((benchmarkCase) =>
+        inSubset(benchmarkCase.caseId),
+      ),
+      label: 'répétitions du sous-ensemble',
+      repetitions: 2,
+    },
+    {
+      cases: mutantCases.filter((benchmarkCase) =>
+        inSubset(benchmarkCase.caseId),
+      ),
+      label: 'mutants du sous-ensemble',
+      repetitions: 1,
+    },
+  ];
+}
+
+/**
+ * Applies the agreed drop order until the priced plan fits the cap.
+ *
+ * Order, fixed in advance so no result can influence it: paraphrases first —
+ * the weakest oracle, since its input is itself a model output — then the
+ * subset's extra repetitions from two down to one. Safety and mutation cells
+ * and the full-pool single pass are never dropped; if the plan still does not
+ * fit after those two steps, it is reported as not fitting rather than trimmed
+ * further.
+ */
+export function applyDropOrder(input: {
+  capUsd: number;
+  /** Worst-case cost of generating paraphrases, if they are included. */
+  paraphraseCostUsd?: number;
+  paraphrasesRequested: boolean;
+  passes: RegressionRunPass[];
+  price: (passes: RegressionRunPass[]) => number;
+}): {
+  dropped: string[];
+  fits: boolean;
+  paraphrases: boolean;
+  passes: RegressionRunPass[];
+  pricedUsd: number;
+} {
+  const dropped: string[] = [];
+  let paraphrases = input.paraphrasesRequested;
+  let passes = input.passes;
+  // Paraphrase generation is a paid call like any other, so it belongs inside
+  // the number the order works against. Leaving it out was how requesting
+  // paraphrases could breach the cap without the preflight noticing.
+  const total = (): number =>
+    input.price(passes) + (paraphrases ? (input.paraphraseCostUsd ?? 0) : 0);
+
+  // Nothing is dropped that the budget can afford: the order exists to fit a
+  // plan to a cap, not to shrink it on principle.
+  if (paraphrases && total() > input.capUsd) {
+    paraphrases = false;
+    dropped.push(
+      'paraphrases : oracle le plus faible (son entrée est elle-même une sortie de modèle), retiré en premier',
+    );
+  }
+
+  if (total() > input.capUsd) {
+    passes = passes.map((pass) =>
+      pass.label === 'répétitions du sous-ensemble'
+        ? { ...pass, repetitions: 1 }
+        : pass,
+    );
+    dropped.push(
+      'répétitions du sous-ensemble ramenées de 3 à 2 : la stabilité perd un point de mesure, la couverture n’en perd aucun',
+    );
+  }
+
+  const pricedUsd = total();
+  return {
+    dropped,
+    fits: pricedUsd <= input.capUsd,
+    paraphrases,
+    passes,
+    pricedUsd,
+  };
+}
+
+export const checkerPricingSchema = z
+  .object({
+    completionUsdPerToken: z.number().nonnegative(),
+    contextTokens: z.number().int().positive(),
+    modelId: z.string().trim().min(1),
+    note: z.string().trim().min(1),
+    promptUsdPerToken: z.number().nonnegative(),
+    provider: z.string().trim().min(1),
+    schemaVersion: z.literal(1),
+    source: z
+      .object({
+        consultedAt: z.string().trim().min(1),
+        consultedBy: z.string().trim().min(1),
+        publishedRates: z.string().trim().min(1),
+        url: z.string().trim().min(1),
+      })
+      .strict(),
+  })
+  .strict();
+
+export type CheckerPricing = z.infer<typeof checkerPricingSchema>;
+
+/**
+ * Worst-case checker spend for a planned run.
+ *
+ * Uses the same conservative bound as the primary model — one token per UTF-16
+ * code unit plus a fixed envelope — so the two halves of the bill are computed
+ * the same way rather than one being generous and the other optimistic. The
+ * output side is not estimated at all: it is `totalOutputTokenLimit` from the
+ * promoted checker identity, which the checker sends as `max_tokens`.
+ */
+export function checkerWorstCaseUsd(input: {
+  /** Characters of rubric text and quotes sent per correction. */
+  promptCharactersPerCall: number;
+  corrections: number;
+  outputTokenLimit: number;
+  pricing: CheckerPricing;
+}): number {
+  if (input.corrections === 0) return 0;
+  return (
+    input.corrections *
+    conservativeSupplierCallCostUsd({
+      completionUsdPerToken: input.pricing.completionUsdPerToken,
+      promptCharacters: input.promptCharactersPerCall,
+      promptUsdPerToken: input.pricing.promptUsdPerToken,
+      schemaCharacters: 0,
+      totalOutputTokenLimit: input.outputTokenLimit,
+    })
+  );
+}
+
+/**
+ * Upper bound on the characters one checker call carries, measured from the
+ * plan rather than assumed: the criteria of the largest contract, their level
+ * descriptions, and the quotes a correction may cite.
+ */
+function checkerPromptCharactersUpperBound(plan: RegressionRunPlan): number {
+  let widest = 0;
+  for (const contract of plan.corpus.contracts) {
+    const rubric = contract.criteria.reduce(
+      (total, criterion) =>
+        total +
+        criterion.label.length +
+        criterion.performanceLevels.reduce(
+          (levels, level) =>
+            levels + level.description.length + level.label.length,
+          0,
+        ),
+      0,
+    );
+    if (rubric > widest) widest = rubric;
+  }
+  // A correction may quote up to the whole production once per criterion; the
+  // longest pooled response bounds that.
+  let longestResponse = 0;
+  for (const unit of plan.unitsByBenchmarkCaseId.values()) {
+    if (unit.responseText.length > longestResponse) {
+      longestResponse = unit.responseText.length;
+    }
+  }
+  return widest + longestResponse;
 }

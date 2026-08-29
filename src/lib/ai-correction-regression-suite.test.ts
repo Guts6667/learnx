@@ -182,10 +182,14 @@ function firstSentence(text: string): string {
 
 /** A verifier that agrees with everything — the failure mode v3 measures. */
 const AGREEABLE_CHECKER: RegressionCheckerPort = {
-  verify: async ({ criteria }) =>
-    Object.fromEntries(
+  verify: async ({ criteria }) => ({
+    // A priced call: offline tests still reconcile a cost so the guard path is
+    // exercised rather than skipped.
+    costUsd: 0.00002,
+    verdicts: Object.fromEntries(
       criteria.map((criterion) => [criterion.criterionKey, 'AGREED' as const]),
     ),
+  }),
 };
 
 /** A verifier that refuses a level the text no longer supports. */
@@ -196,8 +200,9 @@ function discerningChecker(plan: RegressionRunPlan): RegressionCheckerPort {
       .map((unit) => unit.mutantId),
   );
   return {
-    verify: async ({ criteria, unitId }) =>
-      Object.fromEntries(
+    verify: async ({ criteria, unitId }) => ({
+      costUsd: 0.00002,
+      verdicts: Object.fromEntries(
         criteria.map((criterion) => [
           criterion.criterionKey,
           mutantUnitIds.has(unitId)
@@ -205,6 +210,7 @@ function discerningChecker(plan: RegressionRunPlan): RegressionCheckerPort {
             : ('AGREED' as const),
         ]),
       ),
+    }),
   };
 }
 

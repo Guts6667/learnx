@@ -23,7 +23,15 @@ import type {
 /** Cost and latency figures the runner already computes. */
 export type RegressionRunCosts = {
   actualCostUsd: number | null;
+  /** Worst-case checker share of the bound, when a rate is recorded. */
+  checkerBoundUsd?: number | null;
+  /** The cap the run was authorised against. */
+  costCapUsd?: number;
   estimatedCostUsd: number;
+  /** What was dropped to fit the cap, and why. */
+  dropped?: string[];
+  /** Worst-case primary share of the bound. */
+  primaryBoundUsd?: number;
   p50CostUsdPerCorrection: number | null;
   p90CostUsdPerCorrection: number | null;
   p50LatencyMs: number | null;
@@ -184,11 +192,34 @@ export function renderRegressionReport(input: {
 
   lines.push('## Coûts et latences');
   lines.push('');
+  lines.push(
+    "La **borne** ci-dessous est calculée selon la convention conservatrice du dépôt, appliquée de la même façon aux deux moitiés de la facture : un jeton par unité de code UTF-16 du prompt, plus une enveloppe fixe de 2 048 jetons, plus la limite de jetons de sortie du profil. Elle surestime délibérément. Le **réconcilié** est ce que le fournisseur a réellement facturé. Les deux sont affichés côte à côte parce qu'une borne lue comme une prévision fait paraître un run trois fois plus cher qu'il n'est, et qu'un réconcilié lu comme une borne autorise un run qu'on ne peut pas garantir de terminer.",
+  );
+  lines.push('');
   lines.push('| Mesure | Valeur |');
   lines.push('| --- | --- |');
-  lines.push(`| Coût estimé | ${formatUsd(input.costs.estimatedCostUsd)} |`);
+  if (input.costs.costCapUsd !== undefined) {
+    lines.push(`| Plafond autorisé | ${formatUsd(input.costs.costCapUsd)} |`);
+  }
+  if (input.costs.primaryBoundUsd !== undefined) {
+    lines.push(
+      `| Borne — modèle primaire | ${formatUsd(input.costs.primaryBoundUsd)} |`,
+    );
+  }
+  if (input.costs.checkerBoundUsd !== undefined) {
+    lines.push(
+      `| Borne — vérificateur | ${
+        input.costs.checkerBoundUsd === null
+          ? 'non tarifé'
+          : formatUsd(input.costs.checkerBoundUsd)
+      } |`,
+    );
+  }
   lines.push(
-    `| Coût réconcilié fournisseur | ${formatUsd(input.costs.actualCostUsd)} |`,
+    `| Borne — total (convention conservatrice) | ${formatUsd(input.costs.estimatedCostUsd)} |`,
+  );
+  lines.push(
+    `| Réconcilié fournisseur (réel) | ${formatUsd(input.costs.actualCostUsd)} |`,
   );
   lines.push(
     `| Coût P50 par correction | ${formatUsd(input.costs.p50CostUsdPerCorrection)} |`,
@@ -199,6 +230,18 @@ export function renderRegressionReport(input: {
   lines.push(`| Latence P50 | ${formatMs(input.costs.p50LatencyMs)} |`);
   lines.push(`| Latence P90 | ${formatMs(input.costs.p90LatencyMs)} |`);
   lines.push('');
+  if ((input.costs.dropped?.length ?? 0) > 0) {
+    lines.push('### Ce qui a été retiré pour tenir dans le plafond');
+    lines.push('');
+    for (const dropped of input.costs.dropped ?? []) {
+      lines.push(`- ${dropped}`);
+    }
+    lines.push('');
+    lines.push(
+      "L'ordre de retrait est fixé avant l'exécution : les paraphrases d'abord — l'oracle le plus faible, puisque son entrée est elle-même une sortie de modèle — puis les répétitions du sous-ensemble. La couverture du pool, les mutants de mutation et les oracles de sécurité ne sont jamais retirés : un run qui les sacrifierait cesserait de mesurer ce que la suite prétend mesurer.",
+    );
+    lines.push('');
+  }
 
   lines.push('## Dix cas les moins stables');
   lines.push('');
