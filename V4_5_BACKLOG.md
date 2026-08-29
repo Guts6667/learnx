@@ -412,6 +412,9 @@ l'autorité de définition ; Airtable porte le statut.
   110, 111, 113, 140, 150, 121 verts ; deux GO Rayan distincts.
 - Livrable : les neuf cases restantes de `docs/V4_ROLLOUT_CHECKLIST.md` sur
   preview puis production ; smoke borné avec clé réelle sur compte allow-listé.
+- Latence du garde-fou : tant que 173 n'a pas planifié `evaluate()`, un
+  déclenchement n'a lieu qu'au prochain devis — un trip peut sembler arriver
+  des heures après le franchissement ; à vérifier et à documenter.
 - Rollback : V4.4→V4.5 reste **code seul** — trois migrations additives
   (112, 140, 142), aucune n'altère un objet existant ; la checklist le
   vérifie à chaque migration ajoutée.
@@ -516,13 +519,18 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-170 | D | DevOps → Backend/Data | Migrations Prisma hors des builds preview ; preview sur sa propre branche Neon | — |
 | V4.5-171 | D | DevOps → QA/Release | Nettoyage des branches Neon `ci-*` ; Integration fiable (422 quota) | — |
 | V4.5-172 | D | DevOps → Backend/Data | `/api/health`, stack dans `onError`, suivi d'incidents | — |
-| V4.5-173 | D | DevOps → QA/Release | Smoke post-déploiement et purge de rétention planifiés | 172 |
+| V4.5-173 | D | DevOps → QA/Release | Smoke post-déploiement et purge de rétention planifiés ; **appel planifié de `evaluate()` du coupe-circuit et de `pnpm ai:cost-audit` (quotidien)** — tant qu'il n'existe pas, la latence du garde-fou est « le prochain apprenant » | 172, 142 |
 | V4.5-174 | D | DevOps → Propriétaire | Modèle de branches et protection de `dev` (check requis `V4.1 final (required)`) | — |
 | V4.5-175 | D | DevOps → QA/Release | Dependabot, `.nvmrc`, suppression des branches mergées | — |
 | V4.5-176 | D | DevOps → Backend/Data | Restauration Neon documentée, SHA de rollback tenu à jour | 171 |
 | V4.5-177 | D | DevOps → Backend/Data | Palier `staging` : branche protégée, environnement Vercel, base Neon dédiée (décision Rayan dev → staging → main) | 174 |
 | V4.5-178 | D | DevOps → Sécurité | `LEARNX_PUBLIC_LEADS_ENABLED` fermé par défaut, défini par environnement | — |
 | V4.5-179 | D | DevOps → QA/Release | Playwright : port dérivé du worktree ou `reuseExistingServer: false` (un serveur dev d'un autre checkout capte les tests) | — |
+| V4.5-119 | A | Backend/Data → IA/Recherche | Coût, latence et route du vérificateur réellement enregistrés (tentative `CORRECTION_CHECKER`, identité explicite, mapper sans défaut vers le correcteur) — défaut de 111 signalé par le Head of Development | préalable à 114 |
+| V4.5-143 | A | Backend/Data → Frontend | `GET /api/admin/ai-corrections/breaker/events` (journal, auteur, `alertedAt`/`alertError`) et `breaker.trippedRates` figés au déclenchement quand l'état est OPEN | 142 |
+| V4.5-166 | A | Backend/Data → Sécurité | Suppression de compte par anonymisation : e-mail/nom/sessions effacés, réponses conservées sous pseudonyme, ledger intact (décision `owner-rgpd-2026-08-29`) | 163 ; bloque 151 |
+| V4.5-167 | C | Frontend → Head of AI | Page `/confidentialite` + `/privacy` depuis `docs/V4_5_PRIVACY_POLICY.md`, lien pied de page et notice IA, clé `aiCorrection.dataNotice` | 165, 166 ; bloque 151 |
+| V4.5-168 | A+C | Backend/Data → Head of AI | Détachement des corrections à 180 jours (pseudonyme, aucune suppression) et ligne d'information « réutilisation pour améliorer le système » | 166, 173 |
 | V4.5-142 | A | Backend/Data → IA/Recherche | Alerte owner du coupe-circuit (e-mail Resend, livraison journalisée `alertedAt`/`alertError`, jamais de texte apprenant), audit des coûts inconnus sur 24 h (`pnpm ai:cost-audit`, PROCESSING < 60 min exclus, au-delà `STUCK_PROCESSING`), rapport hebdomadaire (`pnpm ai:weekly-report`, lecture seule). Réconciliation = rapport seul (aucune écriture ; `CONSERVATIVE_WRITE_OFF` reste dormant). Planification par 173. | 140 ; bloque 151 |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
