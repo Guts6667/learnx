@@ -631,3 +631,10 @@ l'autorisation.
   supprimées avant toute entrée dans `dev` (dépôt public) — signalé par la
   voie C.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+- V4.5-163 : `IN_PROGRESS` → `DONE` (PR #81, 163A+B+C) ; V4.5-167 et 169 :
+  `DONE` (PR #83) ; V4.5-181 créé (`DRAFT`, `recN6vydl1IY1mKuU`).
+- Incident `dev` rouge (test de fidélité de la politique) causé par le Head
+  of AI (textes 1.2.0/1.3.0 mergés sans régénération) ; réparé par #83 ;
+  couplage documenté dans l'en-tête du document.
+- Règle de handoff « Symboles exportés et leurs appelants » remplace
+  « Sorties et leur destination » (AGENT_WORKFLOW §7).

@@ -272,17 +272,18 @@ Résultat livré:
 Validations passées:
 Validations non exécutées:
 Limites / dette:
-Sorties et leur destination:
+Symboles exportés et leurs appelants:
 Rollback ou revert:
 Action attendue du reviewer:
 ```
 
-`Sorties et leur destination` (règle du 29 août 2026, après deux défauts
-V4.5-116 et V4.5-119) : pour **chaque valeur que le composant calcule ou
-mesure** (résultat, coût, latence, route, signal), nommer la ligne, le champ
-ou l'appelant où elle atterrit — ou écrire « abandonnée volontairement ».
-Un composant correct dont la sortie n'est lue par personne est un défaut ;
-cette ligne est celle qui l'attrape avant la revue, pas pendant.
+`Symboles exportés et leurs appelants` (règle du 29 août 2026, après trois
+défauts de la même classe — V4.5-116, V4.5-119, V4.5-163C) : pour **chaque
+symbole exporté nouveau** (fonction, service, valeur calculée, script),
+nommer ce qui l'invoque en production — ou écrire « volontairement non
+câblé » avec la raison. Un diff montre ce qui a été écrit, jamais ce qui
+n'est appelé par personne ; cette ligne est celle qui l'attrape avant la
+revue, pas pendant.
 
 ## 8. Promotion et clôture
 
