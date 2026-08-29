@@ -49,6 +49,7 @@ export class PrismaCorrectionQuoteRepository {
           select: {
             description: true,
             instructions: true,
+            key: true,
             position: true,
             rubric: true,
             title: true,
@@ -141,11 +142,10 @@ export class PrismaCorrectionQuoteRepository {
 
   /**
    * Stage assessments resolve through their own contract rule, which refuses
-   * anything but an explicit, published, bound contract. Today that means every
-   * stage assessment refuses — no seeded assessment carries a v3 contract, and
-   * none can be bound while stage assessments have no stable key. The promoted
-   * identity's targetKindScope also still excludes STAGE_ASSESSMENT, so this
-   * path is guarded twice over and cannot run until both are answered.
+   * anything but an explicit, published, bound contract. Since V4.5-117 they
+   * carry a key, so binding is checkable; what still refuses everything is that
+   * no seeded assessment carries a v3 contract, and that the promoted identity's
+   * targetKindScope excludes STAGE_ASSESSMENT until an owner decision adds it.
    */
   private async loadStageAssessmentQuote(
     quote: NonNullable<
@@ -162,9 +162,11 @@ export class PrismaCorrectionQuoteRepository {
     if (!submission.contentMarkdown) return null;
 
     const resolution = resolveStageAssessmentCorrectionContract({
-      // No key convention exists yet, so nothing can be bound and the resolver
-      // refuses. This is the one line that changes when the convention lands.
-      activityKey: null,
+      // V4.5-117: the assessment's own key, so a contract has to name the
+      // assessment it belongs to. An empty key still refuses — the schema
+      // forbids it, and trusting an empty string would bind everything to
+      // everything.
+      activityKey: submission.stageAssessment.key || null,
       explicitContract: submission.stageAssessment.rubric,
       language: quote.language,
     });
