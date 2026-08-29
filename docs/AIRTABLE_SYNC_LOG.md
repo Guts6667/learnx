@@ -206,3 +206,31 @@ l'autorisation.
   avant preuve propriétaire.
 - L'enregistrement a été relu après mutation ; aucun autre ticket ou élément
   d'interface Airtable n'a été modifié.
+
+## 29 août 2026 — création des tickets V4.5 (correction IA et commerce)
+
+- Autorisation : plan Head of AI validé par Rayan (session `learnx-f7`),
+  après coordination explicite avec la session `learnx-v4-1-migration-audit`
+  (aucun recouvrement de fichiers ni d'accès Airtable).
+- Base `app8IaHD1sJtI83WT`, table `tblpSbdB7K4MioyJq`, accès par token
+  personnel scoppé à la base, API REST ; création uniquement, aucun record
+  existant modifié, aucune suppression, aucune interface publiée.
+- 21 enregistrements créés, `Release = V4.5`,
+  `État de synchronisation = Proposition Airtable` (la définition Git
+  `V4_5_BACKLOG.md` sera amendée par V4.5-100) :
+  - V4.5-100 (`READY`, arbitrage `À faire`), V4.5-101, 110, 111, 112, 113,
+    120, 121, 122, 130, 131, 132, 140, 141, 150, 151 (`DRAFT`) ;
+  - lot commerce V4.5-160, 161, 162, 163, 164 (`DRAFT`).
+- Décisions propriétaire appliquées : tickets seulement (pas de cartes epic
+  001–012) ; natures limitées aux choix existants ; V4.5-100 seul `READY`.
+- Relecture : 21/21 enregistrements relus, aucun écart champ par champ avec
+  le dry-run (`Ticket`, `Release`, `Epic`, `Nature`, `Risque`, `Owner`,
+  `Reviewer`, `Statut`, `Dépendances`, `Résumé simple`, `Description`,
+  `Critères d’acceptation`, `Source canonique`, `Blocage courant`,
+  `Arbitrage Rayan`, `Dernière synchronisation`).
+- Les six cartes héritées `V4-011/013/014/015/018/018A` (Release V4.5,
+  nature `Conditionnel`) et `V4.5-ADM-001`, `V4.5-UX-001` conservent
+  exactement leur statut ; les tickets 130 et 160–164 les référencent dans
+  `Epic` sans les modifier.
+- Source de définition : plan `glimmering-wishing-pudding.md` (Head of AI,
+  29 août 2026) → à transcrire dans `V4_5_BACKLOG.md` par V4.5-100.
