@@ -39,6 +39,44 @@ export const frenchAdminCreditsMessages = {
   'admin.credits.renewalUnavailable':
     'Le renouvellement reste indisponible tant qu’une politique versionnée n’a pas été calibrée et activée.',
   'admin.credits.monitoringTitle': 'Coûts et incidents de correction',
+  'admin.credits.monitoringWrongAtHigh':
+    'Critères annoncés fiables et contredits par un apprenant',
+  'admin.credits.monitoringUnusable': 'Corrections sans résultat exploitable',
+  'admin.credits.monitoringCheckerDisagreed': 'Vérificateur en désaccord',
+  'admin.credits.monitoringCheckerUnavailable': 'Vérificateur indisponible',
+  'admin.credits.monitoringScoreWithheld': 'Sans score indicatif',
+  'admin.credits.monitoringLearnerVotes':
+    'Retours apprenants (utiles / inexacts)',
+  'admin.credits.monitoringCostMedian': 'Coût médian par correction',
+  'admin.credits.monitoringCostP90': 'Coût au 90e centile',
+  'admin.breaker.title': 'Coupe-circuit',
+  'admin.breaker.stateOpen': 'Service suspendu',
+  'admin.breaker.stateClosed': 'Service ouvert',
+  'admin.breaker.serving':
+    'Les corrections sont acceptées. Le coupe-circuit est évalué au moment du devis, pas à l’ouverture de cette page.',
+  'admin.breaker.reasonCheckerDisagreement':
+    'Désaccord du vérificateur indépendant',
+  'admin.breaker.reasonUnusable': 'Corrections sans résultat exploitable',
+  'admin.breaker.reasonWrongAtHigh':
+    'Apprenants contredisant un critère annoncé fiable',
+  'admin.breaker.reasonUnknown': 'Motif non enregistré',
+  'admin.breaker.trippedAt': 'suspendu le {date}',
+  'admin.breaker.threshold': '(seuil {value} %)',
+  'admin.breaker.rateUnknown': 'Pas assez de données',
+  'admin.breaker.suspendsAtNextQuote':
+    'Seuil franchi — suspension au prochain devis',
+  'admin.breaker.blind':
+    'Le garde-fou n’a pas pu être mesuré : {error}. Le service continue de répondre, mais aucune règle n’est vérifiée en ce moment.',
+  'admin.breaker.window':
+    'Mesuré sur {observed} corrections parmi les {size} dernières.',
+  'admin.breaker.reopenAction': 'Rouvrir le service…',
+  'admin.breaker.reopenConfirm': 'Rouvrir le service',
+  'admin.breaker.reopenError': 'La réouverture n’a pas abouti.',
+  'admin.breaker.reopenAudit':
+    'La réouverture est enregistrée avec son auteur et sa note. Elle ne peut pas être effacée.',
+  'admin.breaker.noteLabel': 'Motif de la réouverture (facultatif)',
+  'admin.breaker.noteHelp':
+    'Ce que vous avez vérifié avant de rouvrir. 500 caractères au plus.',
   'admin.credits.monitoringDescription':
     'Vue opérationnelle des corrections du pilote et des deux signaux de qualité connus. Le signal de contrainte dure est heuristique et doit être lu comme une alerte, pas comme un verdict.',
   'admin.credits.monitoringError':
@@ -47,9 +85,6 @@ export const frenchAdminCreditsMessages = {
   'admin.credits.monitoringProviderCost': 'Coût fournisseur cumulé',
   'admin.credits.monitoringPartial': 'Corrections partielles',
   'admin.credits.monitoringUnavailable': 'Résultats indisponibles',
-  'admin.credits.monitoringConstraint':
-    'Alertes contrainte dure non reflétée dans le niveau',
-  'admin.credits.monitoringGuard': 'Secondes passes déclenchées par la garde',
   'admin.credits.monitoringUnknownCost': 'Tentatives au coût inconnu',
   'admin.credits.preflightError':
     'L’état de préparation de la correction ne peut pas être vérifié.',
@@ -102,6 +137,43 @@ export const englishAdminCreditsMessages = {
   'admin.credits.renewalUnavailable':
     'Renewal remains unavailable until a versioned policy has been calibrated and activated.',
   'admin.credits.monitoringTitle': 'Correction costs and incidents',
+  'admin.credits.monitoringWrongAtHigh':
+    'Criteria labelled reliable and contradicted by a learner',
+  'admin.credits.monitoringUnusable': 'Corrections delivering nothing usable',
+  'admin.credits.monitoringCheckerDisagreed': 'Checker disagreed',
+  'admin.credits.monitoringCheckerUnavailable': 'Checker unavailable',
+  'admin.credits.monitoringScoreWithheld': 'Without an indicative score',
+  'admin.credits.monitoringLearnerVotes':
+    'Learner feedback (helpful / inaccurate)',
+  'admin.credits.monitoringCostMedian': 'Median cost per correction',
+  'admin.credits.monitoringCostP90': 'Cost at the 90th percentile',
+  'admin.breaker.title': 'Circuit breaker',
+  'admin.breaker.stateOpen': 'Service suspended',
+  'admin.breaker.stateClosed': 'Service open',
+  'admin.breaker.serving':
+    'Corrections are accepted. The breaker is evaluated at quote time, not when this page opens.',
+  'admin.breaker.reasonCheckerDisagreement': 'Independent checker disagreement',
+  'admin.breaker.reasonUnusable': 'Corrections delivering nothing usable',
+  'admin.breaker.reasonWrongAtHigh':
+    'Learners contradicting a criterion labelled reliable',
+  'admin.breaker.reasonUnknown': 'Reason not recorded',
+  'admin.breaker.trippedAt': 'suspended on {date}',
+  'admin.breaker.threshold': '(threshold {value} %)',
+  'admin.breaker.rateUnknown': 'Not enough data',
+  'admin.breaker.suspendsAtNextQuote':
+    'Threshold crossed — suspends at the next quote',
+  'admin.breaker.blind':
+    'The guardrail could not be measured: {error}. The service keeps answering, but no rule is being checked right now.',
+  'admin.breaker.window':
+    'Measured on {observed} corrections out of the last {size}.',
+  'admin.breaker.reopenAction': 'Reopen the service…',
+  'admin.breaker.reopenConfirm': 'Reopen the service',
+  'admin.breaker.reopenError': 'The reopen did not go through.',
+  'admin.breaker.reopenAudit':
+    'A reopen is recorded with its author and note. It cannot be erased.',
+  'admin.breaker.noteLabel': 'Reason for reopening (optional)',
+  'admin.breaker.noteHelp':
+    'What you checked before reopening. 500 characters at most.',
   'admin.credits.monitoringDescription':
     'Operational view of pilot corrections and the two known quality signals. The hard-constraint signal is heuristic and should be read as an alert, not a verdict.',
   'admin.credits.monitoringError':
@@ -110,9 +182,6 @@ export const englishAdminCreditsMessages = {
   'admin.credits.monitoringProviderCost': 'Cumulative provider cost',
   'admin.credits.monitoringPartial': 'Partial corrections',
   'admin.credits.monitoringUnavailable': 'Unavailable results',
-  'admin.credits.monitoringConstraint':
-    'Hard-constraint alerts not reflected in level',
-  'admin.credits.monitoringGuard': 'Second passes triggered by score guard',
   'admin.credits.monitoringUnknownCost': 'Attempts with unknown cost',
   'admin.credits.preflightError':
     'The correction release state could not be verified.',
