@@ -36,6 +36,7 @@ import {
   type CorrectionReleasePreflight,
 } from '../../corrections/release-preflight.js';
 import { PrismaCreditLedger } from '../../credits/prisma-credit-ledger.js';
+import { ownerAlert } from '../../corrections/owner-alert.js';
 import {
   PrismaCorrectionBreaker,
   type CorrectionBreakerPort,
@@ -345,7 +346,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
       }
       if (!breaker) {
         const { prisma } = await import('../../prisma.js');
-        breaker = new PrismaCorrectionBreaker(prisma);
+        breaker = new PrismaCorrectionBreaker(prisma, ownerAlert());
       }
       // Reopening writes a line rather than clearing a flag, so who reopened a
       // tripped guardrail and why is recoverable afterwards. The quality
@@ -365,7 +366,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     async (context) => {
       if (!monitoring) {
         const { prisma } = await import('../../prisma.js');
-        breaker ??= new PrismaCorrectionBreaker(prisma);
+        breaker ??= new PrismaCorrectionBreaker(prisma, ownerAlert());
         monitoring = new PrismaCorrectionMonitoringService(prisma, breaker);
       }
       return context.json({ monitoring: await monitoring.summary() });

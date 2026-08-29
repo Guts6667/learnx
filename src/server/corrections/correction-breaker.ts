@@ -24,6 +24,19 @@ export interface BreakerStatus {
   window: { observed: number; size: number };
 }
 
+/**
+ * The owner alert channel. Optional: an environment without e-mail configured
+ * still trips, latches and refuses — it simply cannot tell anyone, and says so
+ * in the journal rather than pretending it did.
+ */
+export interface BreakerAlertPort {
+  send(input: {
+    facts: string[];
+    headline: string;
+    idempotencyKey: string;
+  }): Promise<void>;
+}
+
 export interface CorrectionBreakerPort {
   /** Reads the latched state without measuring or writing. */
   status(): Promise<BreakerStatus>;
@@ -47,7 +60,10 @@ const NO_RATES: BreakerRates = {
 };
 
 export class PrismaCorrectionBreaker implements CorrectionBreakerPort {
-  public constructor(private readonly prisma: PrismaClient) {}
+  public constructor(
+    private readonly prisma: PrismaClient,
+    private readonly alert?: BreakerAlertPort,
+  ) {}
 
   public async status(): Promise<BreakerStatus> {
     const latched = await this.latched();
@@ -110,8 +126,12 @@ export class PrismaCorrectionBreaker implements CorrectionBreakerPort {
         threshold: thresholdFor(reason),
         windowSize: BREAKER_WINDOW_SIZE,
       },
-      select: { createdAt: true },
+      select: { createdAt: true, id: true },
     });
+    // The trip is durable before anyone is told, so a provider outage can never
+    // stop the breaker latching. The learner is refused because corrections are
+    // suspended, never because an e-mail failed.
+    await this.notify(event.id, reason, rate);
     return {
       evaluationError: null,
       rates,
@@ -134,6 +154,61 @@ export class PrismaCorrectionBreaker implements CorrectionBreakerPort {
         ...(input.note === undefined ? {} : { note: input.note }),
       },
     });
+  }
+
+  /**
+   * Best effort, and recorded either way. An owner who was never told must at
+   * least be discoverable: an alert lost in silence brings back the failure
+   * this alerting exists to remove.
+   *
+   * The message carries the reason, the rates and the window — never a
+   * learner's production, feedback or quotes. A guardrail that trips because
+   * corrections are going wrong must not put those corrections in an e-mail.
+   */
+  private async notify(
+    eventId: string,
+    reason: BreakerReason,
+    rate: number | null,
+  ): Promise<void> {
+    if (!this.alert) {
+      await this.stampAlert(eventId, 'ALERT_CHANNEL_NOT_CONFIGURED');
+      return;
+    }
+    try {
+      await this.alert.send({
+        facts: [
+          `Cause : ${reason}`,
+          `Taux mesuré : ${rate === null ? 'indisponible' : rate.toFixed(4)}`,
+          `Seuil : ${thresholdFor(reason)}`,
+          `Fenêtre : ${BREAKER_WINDOW_SIZE} corrections`,
+          'La correction IA est suspendue jusqu’à réouverture manuelle.',
+        ],
+        headline: 'coupe-circuit de correction déclenché',
+        idempotencyKey: eventId,
+      });
+      await this.prisma.aiCorrectionBreakerEvent.update({
+        data: { alertedAt: new Date() },
+        where: { id: eventId },
+      });
+    } catch (error) {
+      await this.stampAlert(
+        eventId,
+        error instanceof Error ? error.message : 'ALERT_FAILED',
+      );
+    }
+  }
+
+  private async stampAlert(eventId: string, reason: string): Promise<void> {
+    try {
+      await this.prisma.aiCorrectionBreakerEvent.update({
+        data: { alertError: reason.slice(0, 500) },
+        where: { id: eventId },
+      });
+    } catch {
+      // Recording the failure has itself failed. Nothing further is available
+      // here, and the trip stands regardless — which is the property that
+      // matters.
+    }
   }
 
   /** The open state, or null when the latest event is a reopen or none exists. */

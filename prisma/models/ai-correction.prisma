@@ -223,6 +223,12 @@ model AiCorrectionBreakerEvent {
   /// L'administrateur qui rouvre. Nul quand le système déclenche.
   actorId    String?                    @map("actor_id") @db.Uuid
   note       String?                    @db.VarChar(500)
+  /// Quand l'alerte propriétaire est partie. Nul tant qu'aucune tentative.
+  alertedAt  DateTime?                  @map("alerted_at")
+  /// Pourquoi elle n'est pas partie. Un propriétaire jamais prévenu doit au
+  /// moins être découvrable : une alerte silencieusement perdue ramène le
+  /// défaut que ce ticket existe pour supprimer.
+  alertError String?                    @map("alert_error") @db.VarChar(500)
   createdAt  DateTime                   @default(now()) @map("created_at")
   actor      User?                      @relation(fields: [actorId], references: [id], onDelete: SetNull)
 
