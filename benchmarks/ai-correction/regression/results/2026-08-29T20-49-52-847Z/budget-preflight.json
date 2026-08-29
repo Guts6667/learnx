@@ -1,0 +1,50 @@
+{
+  "checkerCost": {
+    "corrections": 200,
+    "modelId": "mistralai/mistral-medium-3-5",
+    "outputTokenLimit": 400,
+    "pricedInThisPreflight": true,
+    "promptCharactersPerCall": 2659,
+    "source": {
+      "consultedAt": "2026-08-29",
+      "consultedBy": "Head of AI (voie F)",
+      "publishedRates": "entrée 1,50 USD / M jetons ; sortie 7,50 USD / M jetons",
+      "url": "https://openrouter.ai/mistralai/mistral-medium-3-5"
+    },
+    "worstCaseUsd": 2.0121
+  },
+  "combinedWorstCaseUsd": 12.513891000000001,
+  "primaryWorstCaseUsd": 10.501791,
+  "singlePassLegacyDecision": "READY",
+  "dropped": [
+    "répétitions du sous-ensemble ramenées de 3 à 2 : la stabilité perd un point de mesure, la couverture n’en perd aucun"
+  ],
+  "fitsWithinCap": true,
+  "paraphraseWorstCaseUsd": 0,
+  "paraphrasesIncluded": false,
+  "passes": [
+    {
+      "cases": 144,
+      "cells": 144,
+      "label": "pool complet × 1",
+      "primaryWorstCaseUsd": 7.550064000000001,
+      "repetitions": 1
+    },
+    {
+      "cases": 24,
+      "cells": 24,
+      "label": "répétitions du sous-ensemble",
+      "primaryWorstCaseUsd": 1.262805,
+      "repetitions": 1
+    },
+    {
+      "cases": 32,
+      "cells": 32,
+      "label": "mutants du sous-ensemble",
+      "primaryWorstCaseUsd": 1.6889219999999996,
+      "repetitions": 1
+    }
+  ],
+  "profile": "reduced",
+  "supplierCostCapUsd": 12.6
+}

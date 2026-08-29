@@ -863,3 +863,56 @@ scénarios conditionnels ignorés. Le reflow de la navigation admin a été
 corrigé à 200 % sans couper arbitrairement les libellés. Cette preuve
 d'intégration n'active ni contrat, ni catalogue, ni clé fournisseur et n'a
 engagé aucun coût modèle.
+
+### 8.18 V4.5-121 — première exécution payante, partielle et arrêtée
+
+Première dépense modèle de la suite de régression V4.5-120, le 29 août 2026,
+sous l'enveloppe `owner-121-budget-2026-08-29`. Le run a été **arrêté par le
+Propriétaire à 49 cellules sur 200**, une fois le gate d'inexploitabilité
+franchi : continuer n'aurait acheté qu'une estimation plus précise d'un nombre
+déjà au-delà de son seuil. Artefacts append-only sous
+`benchmarks/ai-correction/regression/results/2026-08-29T20-49-50-434Z/`.
+
+**Le seul résultat établi** est un taux de corrections inexploitables de
+**3 sur 49, soit 6,12 %**, contre un gate bloquant à 3 % — codes
+`MODEL_EVIDENCE_NOT_IN_RESPONSE` (×2) et `MODEL_OUTPUT_CONTRACT_INVALID` (×1).
+Aucune de ces corrections n'a produit un niveau faux : elles n'ont produit aucun
+niveau exploitable. C'est un échec de transport, pas de qualité.
+
+Ce gate mesure la politique de reprise autant que le modèle : l'identité promue
+fixe `maxRetries: 0`, si bien qu'une réponse malformée perd la cellule
+définitivement. À ce taux, environ un apprenant sur seize recevrait
+« indisponible » et un crédit rendu plutôt qu'une correction — précisément le
+signal que surveille le coupe-circuit de V4.5-140, dont le seuil
+`BREAKER_THRESHOLDS.unusable` vaut 0,05 sur une fenêtre de 50 corrections. Les
+49 cellules forment presque exactement une fenêtre et la franchissent : la suite
+hors ligne et le moniteur de production concluent la même chose, avant qu'aucun
+apprenant ne le subisse. Le Propriétaire a décidé de passer `maxRetries` à 1 sur
+l'identité promue (V4.5-124) puis de relancer sur l'identité corrigée ; aucun
+gate n'a été retuné.
+
+**Mesuré par ailleurs, avec son dénominateur réel** : accord avec l'étalon
+`MODEL_AUTHORED` de 126/138 (91,3 %), rapporté et jamais bloquant puisque
+l'étalon est lui-même écrit par un modèle ; coût par correction P50 0,01904 USD
+et P90 0,02284 USD sur 49 corrections — première distribution réelle disponible
+pour V4.5-114 — pour une borne conservatrice de 2,58 USD, soit une surestimation
+d'un facteur 2,8. Une borne autorise un run, elle ne le prédit pas.
+
+**Non mesuré, et déclaré tel** : tous les oracles de mutation, de dérive et de
+stabilité, faute de mutants exécutés et de répétitions ; tous les oracles de
+vérificateur, celui-ci n'ayant **jamais été appelé** — ses verdicts sont produits
+à l'analyse, après la totalité des appels primaires, et le run s'est arrêté
+avant. Les 0,9375 USD de ce run sont donc entièrement du modèle primaire. Un
+gate sans dénominateur est déclaré non mesuré, jamais vert.
+
+**Dépense de la nuit : environ 2,61 USD**, dont **≈ 1,0 USD non enregistré** —
+un run tué par un délai d'attente trop court fixé par l'agent, avant que les
+tentatives ne soient persistées et sans instantané préalable de l'usage
+fournisseur. Ce montant ne peut être ni prouvé ni rapproché ; il est déclaré tel
+quel plutôt que fondu dans un total. Les deux correctifs qui l'empêchent de se
+reproduire — persistance incrémentale des tentatives et réconciliation
+bilatérale contre l'usage fournisseur — ont été livrés le même soir, et le run
+suivant a laissé une trace exploitable là où celui-ci n'avait rien laissé.
+
+Un run partiel donne cette entrée de journal, pas d'article public : la page
+publique attend le run sur l'identité corrigée.

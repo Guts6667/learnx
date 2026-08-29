@@ -20,6 +20,8 @@
 
 import { createHash } from 'node:crypto';
 
+import type { SupplierBudgetGuard } from './ai-benchmark-supplier-budget.js';
+
 import {
   deriveCriterionConfidence,
   type CriterionConfidence,
@@ -54,9 +56,31 @@ import type {
  */
 export interface RegressionCheckerPort {
   verify(input: {
-    criteria: { criterionKey: string; levelKey: string; quotes: string[] }[];
+    /**
+     * Everything the closed question needs: the rubric wording as well as the
+     * level chosen. Sending only keys would force the adapter to re-derive the
+     * rubric, which is how a verifier ends up asked about a level description
+     * that is not the one the correction was graded against.
+     */
+    criteria: {
+      criterionKey: string;
+      criterionLabel: string;
+      levelDescription: string;
+      levelKey: string;
+      levelLabel: string;
+      quotes: string[];
+    }[];
     unitId: string;
-  }): Promise<Record<string, RegressionCheckerVerdict>>;
+  }): Promise<{
+    /**
+     * What the provider actually charged, when it says so. The checker spends
+     * real money and must therefore reconcile against the run's budget guard
+     * like any other call; `null` means the provider returned no cost, which
+     * the caller treats as a reason to stop rather than as zero.
+     */
+    costUsd: number | null;
+    verdicts: Record<string, RegressionCheckerVerdict>;
+  }>;
 }
 
 /** One thing to be corrected: a pool case as-is, or one of its mutants. */
@@ -264,6 +288,12 @@ function firstSentence(text: string): string {
  */
 export async function deriveRegressionObservations(input: {
   attempts: BenchmarkAttempt[];
+  /**
+   * The run's budget guard. The checker is a paid call: without reconciling it
+   * here the cap would govern the primary model alone, and a run could finish
+   * well past its authorised spend while every guard reported green.
+   */
+  budget?: SupplierBudgetGuard;
   checker?: RegressionCheckerPort;
   /** Families inside the promoted identity's validated scope. */
   familyScientificallyValidated: boolean;
@@ -287,16 +317,42 @@ export async function deriveRegressionObservations(input: {
       quotesByCriterion.set(criterion.criterionKey, quotes);
     }
 
-    const verdicts = input.checker
-      ? await input.checker.verify({
-          criteria: attempt.output.criteria.map((criterion) => ({
+    let verdicts: Record<string, RegressionCheckerVerdict> = {};
+    if (input.checker) {
+      const contract = input.plan.corpus.contracts.find(
+        (candidate) =>
+          candidate.contractKey === attempt.output?.contractKey &&
+          candidate.version === attempt.output.contractVersion,
+      );
+      const outcome = await input.checker.verify({
+        criteria: attempt.output.criteria.map((criterion) => {
+          const rubric = contract?.criteria.find(
+            (candidate) => candidate.key === criterion.criterionKey,
+          );
+          const level = rubric?.performanceLevels.find(
+            (candidate) => candidate.key === criterion.levelKey,
+          );
+          return {
             criterionKey: criterion.criterionKey,
+            criterionLabel: rubric?.label ?? criterion.criterionKey,
+            levelDescription: level?.description ?? '',
             levelKey: criterion.levelKey,
+            levelLabel: level?.label ?? criterion.levelKey,
             quotes: quotesByCriterion.get(criterion.criterionKey) ?? [],
-          })),
-          unitId: unit.mutantId ?? unit.poolCaseId,
-        })
-      : {};
+          };
+        }),
+        unitId: unit.mutantId ?? unit.poolCaseId,
+      });
+      verdicts = outcome.verdicts;
+      // Reconciled after the fact rather than reserved before it: the checker
+      // has no per-token price recorded anywhere in the repository, so there is
+      // no defensible worst case to reserve. Reconciling still stops the run at
+      // the cap; it cannot stop it before crossing.
+      input.budget?.reconcile({
+        actualCostUsd: outcome.costUsd ?? undefined,
+        costSource: outcome.costUsd === null ? 'ESTIMATED' : 'ACTUAL',
+      });
+    }
 
     const criteria: RegressionCriterionObservation[] =
       attempt.output.criteria.map((criterion) => {
@@ -485,9 +541,18 @@ export function computeRunSecurityRates(input: {
   };
 }
 
-/** Counts of executed mutants per kind, for the report's denominators. */
+/**
+ * Counts of mutants per kind, for the report's denominators.
+ *
+ * `executedCaseIds` restricts the count to what a run actually dispatched. It
+ * matters: a profile that executes a subset would otherwise report the whole
+ * plan's mutants under a heading that says "executed", telling a reader that
+ * oracles ran which never did. Omitting it counts the whole plan, which is only
+ * correct for a profile that runs all of it.
+ */
 export function countMutantsByKind(
   plan: RegressionRunPlan,
+  executedCaseIds?: Set<string>,
 ): Record<string, number> {
   const counts: Record<string, number> = {
     FACT_INVERSION: 0,
@@ -498,6 +563,7 @@ export function countMutantsByKind(
   };
   for (const unit of plan.unitsByBenchmarkCaseId.values()) {
     if (!unit.kind) continue;
+    if (executedCaseIds && !executedCaseIds.has(unit.benchmarkCaseId)) continue;
     counts[unit.kind] = (counts[unit.kind] ?? 0) + 1;
   }
   return counts;

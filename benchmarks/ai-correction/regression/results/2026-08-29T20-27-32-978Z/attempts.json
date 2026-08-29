@@ -1,0 +1,85 @@
+[
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-4a3c70a3d77de171",
+    "errorCode": "MODEL_EVIDENCE_NOT_IN_RESPONSE",
+    "latencyMs": 1513,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "benchmark-writing-contract",
+      "contractVersion": "1.1.0",
+      "criteria": [
+        {
+          "confidence": 0.98,
+          "evidenceQuotes": [
+            "Je recommande le pilote étendu de quatre semaines avec formation."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le choix est formulé de façon explicite et sans ambiguïté dès la première phrase. L'option retenue est parfaitement identifiable et directement exploitable.",
+          "levelKey": "mastered",
+          "criterionKey": "recommendation-clarity"
+        },
+        {
+          "confidence": 0.97,
+          "evidenceQuotes": [
+            "Le premier test a réduit le délai médian de 18 à 13 heures",
+            "l'incident lié au manque de formation"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Deux faits du scénario sont mobilisés avec exactitude : la réduction du délai médian de 18 à 13 heures (le scénario indique bien ce passage) et l'incident causé par l'absence de formation de deux agents. Les informations sont restituées fidèlement, sans invention ni distorsion.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fact-use"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "le premier test a réduit le délai médian de 18 à 13 heures, mais l'incident lié au manque de formation montre qu'il faut sécuriser la méthode avant de la généraliser."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le raisonnement est clair et cohérent : le résultat positif du pilote est reconnu, puis l'incident est utilisé comme signal de risque pour justifier la prudence avant généralisation. Le lien logique entre les faits et le choix est explicitement formulé. Une légère piste d'enrichissement : mentionner le bénéfice concret attendu pour les équipes ou les demandes (120 par semaine) aurait renforcé encore davantage l'argumentation.",
+          "levelKey": "mastered",
+          "criterionKey": "reasoning-coherence"
+        }
+      ],
+      "overallConfidence": 0.9690000000000001,
+      "overallFeedback": "Très bonne réponse : le choix est immédiatement identifiable, les faits du scénario sont repris avec précision et le raisonnement les relie de manière logique et directe au choix formulé. Pour aller plus loin, tu pourrais intégrer d'autres éléments du contexte, comme le volume de 120 demandes hebdomadaires, pour illustrer l'ampleur des enjeux d'un déploiement immédiat non préparé.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788035253-fpUHDMpsgBIlAocd2sSu",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"recommendation-clarity\":{\"confidence\":0.98,\"evidenceQuotes\":[\"Je recommande le pilote étendu de quatre semaines avec formation.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le choix est formulé de façon explicite et sans ambiguïté dès la première phrase. L'option retenue est parfaitement identifiable et directement exploitable.\",\"levelKey\":\"mastered\"},\"source-fact-use\":{\"confidence\":0.97,\"evidenceQuotes\":[\"Le premier test a réduit le délai médian de 18 à 13 heures\",\"l'incident lié au manque de formation\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Deux faits du scénario sont mobilisés avec exactitude : la réduction du délai médian de 18 à 13 heures (le scénario indique bien ce passage) et l'incident causé par l'absence de formation de deux agents. Les informations sont restituées fidèlement, sans invention ni distorsion.\",\"levelKey\":\"mastered\"},\"reasoning-coherence\":{\"confidence\":0.95,\"evidenceQuotes\":[\"le premier test a réduit le délai médian de 18 à 13 heures, mais l'incident lié au manque de formation montre qu'il faut sécuriser la méthode avant de la généraliser.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le raisonnement est clair et cohérent : le résultat positif du pilote est reconnu, puis l'incident est utilisé comme signal de risque pour justifier la prudence avant généralisation. Le lien logique entre les faits et le choix est explicitement formulé. Une légère piste d'enrichissement : mentionner le bénéfice concret attendu pour les équipes ou les demandes (120 par semaine) aurait renforcé encore davantage l'argumentation.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Très bonne réponse : le choix est immédiatement identifiable, les faits du scénario sont repris avec précision et le raisonnement les relie de manière logique et directe au choix formulé. Pour aller plus loin, tu pourrais intégrer d'autres éléments du contexte, comme le volume de 120 demandes hebdomadaires, pour illustrer l'ampleur des enjeux d'un déploiement immédiat non préparé.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "INVALID",
+    "usage": {
+      "actualCostUsd": 0.016485,
+      "costSource": "ACTUAL",
+      "inputTokens": 2545,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 590
+    },
+    "workflowPass": "PRIMARY"
+  }
+]

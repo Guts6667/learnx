@@ -3,7 +3,10 @@ import { pathToFileURL } from 'node:url';
 
 import { runAiCorrectionBenchmarkCli } from '../src/lib/ai-correction-benchmark-cli.ts';
 import { loadBenchmarkInputs as loadInputsForRegression } from '../src/lib/ai-correction-benchmark-runner.ts';
+import { callCandidate } from '../src/lib/ai-correction-benchmark-runner.ts';
 import { runRegressionPool } from '../src/lib/ai-correction-regression-run-cli.ts';
+import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
+import { createRuntimeCorrectionChecker } from '../src/server/corrections/correction-checker.ts';
 import {
   PROMOTED_CHECKER_IDENTITY,
   PROMOTED_CORRECTION_IDENTITY,
@@ -23,6 +26,7 @@ import {
  */
 const REGRESSION_PINNED_IDENTITIES = {
   checkerModelId: PROMOTED_CHECKER_IDENTITY.modelId,
+  maxRetries: PROMOTED_CORRECTION_IDENTITY.maxRetries,
   primaryCandidateId: PROMOTED_CORRECTION_IDENTITY.candidateId,
   primaryModelId: PROMOTED_CORRECTION_IDENTITY.modelId,
 };
@@ -34,12 +38,61 @@ const REGRESSION_PINNED_IDENTITIES = {
  * authorisation in hand. Until then the command is free and prints what a paid
  * run would cost.
  */
+/**
+ * Adapts the promoted runtime checker to the suite's port.
+ *
+ * The runtime checker already resolves every failure to `UNAVAILABLE` rather
+ * than to `AGREED` — a checker that is down must cost the HIGH ceiling, never
+ * buy a confidence nobody established — so this adapter reshapes and never
+ * interprets. Cost passes through untouched so the budget guard reconciles the
+ * checker like any other paid call.
+ */
+function buildRegressionChecker(apiKey: string): RegressionCheckerPort {
+  const runtime = createRuntimeCorrectionChecker({
+    apiKey,
+    appUrl: process.env.LEARNX_APP_URL ?? 'https://learnx.local',
+  });
+  return {
+    async verify({ criteria }) {
+      const outcome = await runtime.verify({
+        questions: criteria.map((criterion) => ({
+          criterionKey: criterion.criterionKey,
+          criterionLabel: criterion.criterionLabel,
+          levelDescription: criterion.levelDescription,
+          levelLabel: criterion.levelLabel,
+          quotes: criterion.quotes,
+        })),
+      });
+      return { costUsd: outcome.costUsd, verdicts: outcome.verdicts };
+    },
+  };
+}
+
 async function runAiCorrectionRegressionCli(
   arguments_: string[] = process.argv,
 ): Promise<void> {
   const { configuration } = await loadInputsForRegression(arguments_);
+
+  // Dispatching is opt-in twice over: the preflight refuses a plan that does
+  // not fit its cap, and nothing contacts a provider without --execute. The
+  // default of this command therefore cannot spend money by accident.
+  const execute = arguments_.includes('--execute');
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (execute && !apiKey) {
+    throw new Error(
+      'REGRESSION_RUN_API_KEY_REQUIRED: --execute demande OPENROUTER_API_KEY dans l’environnement.',
+    );
+  }
+
   const outcome = await runRegressionPool({
     arguments: arguments_,
+    ...(execute && apiKey
+      ? {
+          checker: buildRegressionChecker(apiKey),
+          executeCandidate: callCandidate,
+          providerApiKey: apiKey,
+        }
+      : {}),
     configuration,
     identities: REGRESSION_PINNED_IDENTITIES,
   });
@@ -50,7 +103,7 @@ async function runAiCorrectionRegressionCli(
       : `Run de régression terminé : ${outcome.resultsDirectory}`,
   );
   console.log(
-    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; borne primaire ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous plafond ${outcome.preflight.supplierCostCapUsd} USD (décision ${outcome.preflight.decision}).`,
+    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; borne totale ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous plafond ${outcome.preflight.supplierCostCapUsd} USD — ${outcome.fitsWithinCap ? 'tient dans le plafond' : 'NE TIENT PAS dans le plafond'}.`,
   );
   for (const refusal of outcome.paraphraseRefusals) {
     console.warn(`Paraphrase écartée — ${refusal.caseId} : ${refusal.reason}`);

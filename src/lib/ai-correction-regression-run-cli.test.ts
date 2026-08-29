@@ -10,7 +10,10 @@ import {
   type CorrectionBenchmarkConfiguration,
   type CorrectionBenchmarkCorpus,
 } from './ai-correction-benchmark.js';
-import { runRegressionPool } from './ai-correction-regression-run-cli.js';
+import {
+  pendingCellsFor,
+  runRegressionPool,
+} from './ai-correction-regression-run-cli.js';
 import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
 
 const REGRESSION_SOURCE = path.resolve('benchmarks/ai-correction/regression');
@@ -18,6 +21,8 @@ const POOL_PATH = path.join(REGRESSION_SOURCE, 'regression-pool.v1.json');
 
 const IDENTITIES = {
   checkerModelId: 'mistralai/mistral-medium-3-5',
+  // The promoted identity's own policy: no retry.
+  maxRetries: 0,
   primaryCandidateId: 'claude-sonnet-4-6-openrouter-anthropic',
   primaryModelId: 'anthropic/claude-sonnet-4.6',
 };
@@ -100,16 +105,31 @@ function fakeExecutor() {
 }
 
 const CHECKER: RegressionCheckerPort = {
-  verify: async ({ criteria }) =>
-    Object.fromEntries(
+  verify: async ({ criteria }) => ({
+    // A priced call: offline tests still reconcile a cost so the guard path is
+    // exercised rather than skipped.
+    costUsd: 0.00002,
+    verdicts: Object.fromEntries(
       criteria.map((criterion) => [criterion.criterionKey, 'AGREED' as const]),
     ),
+  }),
 };
 
 const SAMPLE_ARGUMENTS = [
   `--run-pool=${POOL_PATH}`,
   '--supplier-cost-cap-usd=100',
 ];
+
+/**
+ * The smoke profile for tests that execute rather than plan.
+ *
+ * Running the whole pool through a fake executor is ~380 units of real
+ * filesystem and schema work, which under parallel load has exceeded the
+ * default per-test timeout. These tests assert that artefacts are written and
+ * gates evaluated, not how many cells ran, so the smallest executing profile
+ * asserts the same thing without the flake.
+ */
+const EXECUTING_ARGUMENTS = [...SAMPLE_ARGUMENTS, '--profile=smoke'];
 
 describe('--run-pool', () => {
   it('plans and prices a run without contacting a provider', async () => {
@@ -149,14 +169,185 @@ describe('--run-pool', () => {
         'utf8',
       ),
     ) as {
-      baselinePass: { primaryCallCount: number };
-      mutantPass: { primaryCallCount: number };
+      passes: { cells: number; label: string; repetitions: number }[];
+      profile: string;
     };
+    const pool = preflight.passes.find((pass) => pass.label === 'pool complet');
+    const mutants = preflight.passes.find((pass) => pass.label === 'mutants');
 
+    expect(preflight.profile).toBe('full');
     // 144 pooled cases at 2 repetitions; 236 mutants once, because a mutant's
     // oracle is a direction rather than a distribution.
-    expect(preflight.baselinePass.primaryCallCount).toBe(288);
-    expect(preflight.mutantPass.primaryCallCount).toBe(236);
+    expect(pool?.repetitions).toBe(2);
+    expect(pool?.cells).toBe(288);
+    expect(mutants?.repetitions).toBe(1);
+    expect(mutants?.cells).toBe(236);
+  });
+
+  it('prices the checker inside the same bound as the primary model', async () => {
+    const directory = await scratchRegressionDirectory();
+    await copyFile(
+      path.join(REGRESSION_SOURCE, 'checker-pricing.v1.json'),
+      path.join(directory, 'checker-pricing.v1.json'),
+    );
+
+    const outcome = await runRegressionPool({
+      arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
+      configuration: configuration(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T00:00:02.000Z'),
+      regressionDirectory: directory,
+    });
+    const preflight = JSON.parse(
+      await readFile(
+        path.join(outcome.resultsDirectory, 'budget-preflight.json'),
+        'utf8',
+      ),
+    ) as {
+      checkerCost: { pricedInThisPreflight: boolean; worstCaseUsd: number };
+      combinedWorstCaseUsd: number;
+      primaryWorstCaseUsd: number;
+    };
+
+    // The cap governs the run, so the checker's share sits inside the bound
+    // rather than beside it. Without the price file it would read as unpriced.
+    expect(preflight.checkerCost.pricedInThisPreflight).toBe(true);
+    expect(preflight.checkerCost.worstCaseUsd).toBeGreaterThan(0);
+    expect(preflight.combinedWorstCaseUsd).toBeCloseTo(
+      preflight.primaryWorstCaseUsd + preflight.checkerCost.worstCaseUsd,
+      6,
+    );
+  });
+
+  it('reports the checker as unpriced when no rate is recorded', async () => {
+    const directory = await scratchRegressionDirectory();
+
+    const outcome = await runRegressionPool({
+      arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
+      configuration: configuration(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T00:00:03.000Z'),
+      regressionDirectory: directory,
+    });
+    const preflight = JSON.parse(
+      await readFile(
+        path.join(outcome.resultsDirectory, 'budget-preflight.json'),
+        'utf8',
+      ),
+    ) as { checkerCost: { pricedInThisPreflight: boolean } };
+
+    // Saying "unpriced" is the honest state; reporting zero would read as free.
+    expect(preflight.checkerCost.pricedInThisPreflight).toBe(false);
+  });
+
+  it('reports only the mutants a subset profile actually dispatched', async () => {
+    const directory = await scratchRegressionDirectory();
+
+    const outcome = await runRegressionPool({
+      arguments: EXECUTING_ARGUMENTS,
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T04:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+    const summary = JSON.parse(
+      await readFile(
+        path.join(outcome.resultsDirectory, 'summary.json'),
+        'utf8',
+      ),
+    ) as { mutantCounts: Record<string, number> };
+
+    // The smoke profile dispatches one baseline case and no mutants. Counting
+    // the whole plan here printed 236 mutants under a heading reading
+    // "exécutés", which told a reader the mutation and injection oracles had
+    // run when nothing of the sort had happened.
+    expect(
+      Object.values(summary.mutantCounts).reduce(
+        (total, count) => total + count,
+        0,
+      ),
+    ).toBe(0);
+    expect(outcome.report).toContain('Aucun mutant produit pour');
+  });
+
+  it('resumes an interrupted run at the next cell and never repays for a bought one', async () => {
+    const directory = await scratchRegressionDirectory();
+    let dispatches = 0;
+    const counting = () => {
+      const inner = fakeExecutor();
+      return async (call: Parameters<ReturnType<typeof fakeExecutor>>[0]) => {
+        dispatches += 1;
+        return inner(call);
+      };
+    };
+
+    // First run: reduced profile, interrupted by a cap that stops it partway.
+    // Whatever it bought is on disk, because attempts persist as they arrive.
+    const first = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: counting(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T05:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+    const firstDispatches = dispatches;
+    const firstAttempts = JSON.parse(
+      await readFile(
+        path.join(first.resultsDirectory, 'attempts.json'),
+        'utf8',
+      ),
+    ) as unknown[];
+
+    expect(firstDispatches).toBeGreaterThan(0);
+    expect(firstAttempts.length).toBe(firstDispatches);
+
+    // Second run, resuming that directory: every cell is already bought, so it
+    // must dispatch nothing and still carry the earlier attempts forward.
+    dispatches = 0;
+    const second = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+        `--resume=${first.resultsDirectory}`,
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: counting(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T05:10:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    expect(dispatches).toBe(0);
+    expect(second.attempts.length).toBe(firstAttempts.length);
+  });
+
+  it('computes the pending cells an interrupted run still owes', () => {
+    const completed = new Set(['cand|cas-a|1', 'cand|cas-b|1']);
+    const pending = pendingCellsFor({
+      candidateId: 'cand',
+      cases: [{ caseId: 'cas-a' }, { caseId: 'cas-b' }],
+      completed,
+      repetitions: 2,
+    });
+
+    // Repetition 1 of both cases is bought; only repetition 2 remains.
+    expect(pending).toEqual([
+      { attemptStart: 1, candidateId: 'cand', caseId: 'cas-a', repetition: 2 },
+      { attemptStart: 1, candidateId: 'cand', caseId: 'cas-b', repetition: 2 },
+    ]);
   });
 
   it('refuses to run without an explicit cost cap', async () => {
@@ -185,11 +376,11 @@ describe('--run-pool', () => {
     ).rejects.toThrow(/IDENTITY_MISMATCH/);
   });
 
-  it('writes the five §7 artefacts when it actually runs', async () => {
+  it('writes the §7 artefacts plus a provider reconciliation when it runs', async () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
-      arguments: SAMPLE_ARGUMENTS,
+      arguments: EXECUTING_ARGUMENTS,
       checker: CHECKER,
       configuration: configuration(),
       executeCandidate: fakeExecutor(),
@@ -205,6 +396,8 @@ describe('--run-pool', () => {
       'REPORT.md',
       'attempts.json',
       'budget-preflight.json',
+      // Both sides of the bill: our ledger and the provider's own usage delta.
+      'cost-reconciliation.json',
       'ledger.jsonl',
       'summary.json',
     ]);
@@ -237,7 +430,7 @@ describe('--run-pool', () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
-      arguments: SAMPLE_ARGUMENTS,
+      arguments: EXECUTING_ARGUMENTS,
       checker: CHECKER,
       configuration: configuration(),
       executeCandidate: fakeExecutor(),

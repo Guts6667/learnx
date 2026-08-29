@@ -1,0 +1,1 @@
+{"attempt":1,"candidateId":"claude-sonnet-4-6-openrouter-anthropic","caseId":"regression-0009843d9a164f27","costUsd":0.018819,"costSource":"ACTUAL","errorCode":null,"latencyMs":10304,"modelId":"anthropic/claude-sonnet-4.6","providerRoute":"Anthropic","repetition":1,"status":"VALID"}

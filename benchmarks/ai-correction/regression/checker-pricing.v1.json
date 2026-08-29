@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "modelId": "mistralai/mistral-medium-3-5",
+  "provider": "Mistral",
+  "promptUsdPerToken": 0.0000015,
+  "completionUsdPerToken": 0.0000075,
+  "contextTokens": 262000,
+  "source": {
+    "url": "https://openrouter.ai/mistralai/mistral-medium-3-5",
+    "consultedAt": "2026-08-29",
+    "consultedBy": "Head of AI (voie F)",
+    "publishedRates": "entrée 1,50 USD / M jetons ; sortie 7,50 USD / M jetons"
+  },
+  "note": "Tarif du vérificateur promu (PROMOTED_CHECKER_IDENTITY). Enregistré ici plutôt que dans benchmark.v1.json, qui est un artefact historique scellé : les artefacts de benchmarks/ sont append-only et ne sont pas modifiés après coup. Sans ce fichier, la borne budgétaire d'un run ne couvrait que le modèle primaire et laissait la part vérificateur non bornée (constat du préflight V4.5-121, 29 août 2026). La borne de sortie n'est pas estimée : elle vaut totalOutputTokenLimit = 400, lu sur PROMOTED_CHECKER_IDENTITY.requestProfile."
+}

@@ -1,0 +1,131 @@
+[
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0009843d9a164f27",
+    "evidenceMatches": [
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "Je prolongerais le test pendant un mois",
+        "resolvedQuote": "Je prolongerais le test pendant un mois"
+      },
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service",
+        "resolvedQuote": "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service"
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "19 personnes sont revenues au moins trois fois",
+        "resolvedQuote": "19 personnes sont revenues au moins trois fois"
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "17 des 22 répondants souhaitent une poursuite",
+        "resolvedQuote": "17 des 22 répondants souhaitent une poursuite"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "seuls 22 questionnaires ont été remplis",
+        "resolvedQuote": "seuls 22 questionnaires ont été remplis"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "Le problème du dernier train doit aussi être observé précisément",
+        "resolvedQuote": "Le problème du dernier train doit aussi être observé précisément"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "TYPOGRAPHIC_EQUIVALENT",
+        "requestedQuote": "si les retards de correspondance persistent, l'itinéraire ou l'horaire devra être revu avant toute décision durable",
+        "resolvedQuote": "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable"
+      }
+    ],
+    "latencyMs": 10304,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "holdout-writing-decision-note",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.92,
+          "evidenceQuotes": [
+            "Je prolongerais le test pendant un mois",
+            "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La décision est clairement formulée : prolonger le test d'un mois. La précision de la durée la rend directement opérationnelle, et la distinction entre prolongation du test et pérennisation du service affine intelligiblement la portée de la décision. C'est suffisamment net pour guider l'action demandée.",
+          "levelKey": "mastered",
+          "criterionKey": "decision-position"
+        },
+        {
+          "confidence": 0.93,
+          "evidenceQuotes": [
+            "19 personnes sont revenues au moins trois fois",
+            "17 des 22 répondants souhaitent une poursuite"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Deux faits décisifs du dossier sont sélectionnés avec exactitude : l'usage répété (19 personnes, au moins 3 fois) et l'adhésion mesurée (17/22 répondants favorables). Les chiffres sont repris fidèlement et articulés pour soutenir la position. La mention du taux de réponse limité (22 questionnaires) montre également une lecture attentive du dossier. Aucune donnée n'est déformée ni inventée.",
+          "levelKey": "mastered",
+          "criterionKey": "evidence-selection"
+        },
+        {
+          "confidence": 0.91,
+          "evidenceQuotes": [
+            "seuls 22 questionnaires ont été remplis",
+            "Le problème du dernier train doit aussi être observé précisément",
+            "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Deux limites pertinentes sont explicitement bornées : la couverture partielle du questionnaire (22/34 utilisateurs) et le risque des correspondances manquées le soir, dont la récurrence reste à mesurer. Une conséquence concrète est attachée à chaque limite, ce qui évite la réserve générique. La décision n'en est pas annulée, mais conditionnée de façon proportionnée.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-bounds"
+        }
+      ],
+      "overallConfidence": 0.9205,
+      "overallFeedback": "Réponse solide sur les trois critères. La décision est nette et immédiatement actionnable, les preuves chiffrées sont fidèlement mobilisées, et les incertitudes sont nommées avec leur conséquence pratique. Un point d'attention pour la suite : pensez à quantifier ou à planifier l'observation du problème de correspondance (par exemple, fréquence des retards constatée sur la période test) afin que le suivi proposé soit lui aussi opérationnel dès le départ.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788033955-lRp5Dehg2z8a5r5t0Pho",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"decision-position\":{\"confidence\":0.92,\"evidenceQuotes\":[\"Je prolongerais le test pendant un mois\",\"Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La décision est clairement formulée : prolonger le test d'un mois. La précision de la durée la rend directement opérationnelle, et la distinction entre prolongation du test et pérennisation du service affine intelligiblement la portée de la décision. C'est suffisamment net pour guider l'action demandée.\",\"levelKey\":\"mastered\"},\"evidence-selection\":{\"confidence\":0.93,\"evidenceQuotes\":[\"19 personnes sont revenues au moins trois fois\",\"17 des 22 répondants souhaitent une poursuite\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Deux faits décisifs du dossier sont sélectionnés avec exactitude : l'usage répété (19 personnes, au moins 3 fois) et l'adhésion mesurée (17/22 répondants favorables). Les chiffres sont repris fidèlement et articulés pour soutenir la position. La mention du taux de réponse limité (22 questionnaires) montre également une lecture attentive du dossier. Aucune donnée n'est déformée ni inventée.\",\"levelKey\":\"mastered\"},\"uncertainty-bounds\":{\"confidence\":0.91,\"evidenceQuotes\":[\"seuls 22 questionnaires ont été remplis\",\"Le problème du dernier train doit aussi être observé précisément\",\"si les retards de correspondance persistent, l'itinéraire ou l'horaire devra être revu avant toute décision durable\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Deux limites pertinentes sont explicitement bornées : la couverture partielle du questionnaire (22/34 utilisateurs) et le risque des correspondances manquées le soir, dont la récurrence reste à mesurer. Une conséquence concrète est attachée à chaque limite, ce qui évite la réserve générique. La décision n'en est pas annulée, mais conditionnée de façon proportionnée.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Réponse solide sur les trois critères. La décision est nette et immédiatement actionnable, les preuves chiffrées sont fidèlement mobilisées, et les incertitudes sont nommées avec leur conséquence pratique. Un point d'attention pour la suite : pensez à quantifier ou à planifier l'observation du problème de correspondance (par exemple, fréquence des retards constatée sur la période test) afin que le suivi proposé soit lui aussi opérationnel dès le départ.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.018819,
+      "costSource": "ACTUAL",
+      "inputTokens": 2823,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 690
+    },
+    "workflowPass": "PRIMARY"
+  }
+]

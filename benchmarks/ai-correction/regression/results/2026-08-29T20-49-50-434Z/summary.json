@@ -1,0 +1,88 @@
+{
+  "artifactKind": "REGRESSION_PARTIAL_RUN_SUMMARY",
+  "schemaVersion": 1,
+  "runStartedAt": "2026-08-29T20:49:50.434Z",
+  "status": "STOPPED_BY_OWNER",
+  "stopDecisionId": "owner-retry-policy-2026-08-29",
+  "poolId": "learnx-fr-regression-pool-v1",
+  "poolSha256Prefix": "c59a7ba5497b",
+  "profileRequested": "reduced",
+  "cellsPlanned": 200,
+  "cellsExecuted": 49,
+  "mutantsExecuted": 0,
+  "distinctPoolCases": 49,
+  "primaryIdentity": "claude-sonnet-4-6-openrouter-anthropic",
+  "primaryMaxRetries": 0,
+  "checkerCalled": false,
+  "measured": {
+    "eventualUnusableRuns": {
+      "numerator": 3,
+      "denominator": 49,
+      "rate": 0.061224489795918366,
+      "gate": "<=0.03 blocking",
+      "status": "FAIL",
+      "codes": {
+        "MODEL_EVIDENCE_NOT_IN_RESPONSE": 2,
+        "MODEL_OUTPUT_CONTRACT_INVALID": 1
+      }
+    },
+    "modelAuthoredAgreement": {
+      "numerator": 126,
+      "denominator": 138,
+      "rate": 0.9130434782608695,
+      "gate": "reported, never blocking",
+      "byFamily": {
+        "writing": [
+          31,
+          33
+        ],
+        "reflection": [
+          34,
+          36
+        ],
+        "practice": [
+          30,
+          36
+        ],
+        "project": [
+          31,
+          33
+        ]
+      }
+    },
+    "costUsdPerCorrection": {
+      "p50": 0.01904,
+      "p90": 0.02284,
+      "min": 0.01467,
+      "max": 0.02546,
+      "note": "primary model only; no checker share"
+    },
+    "latencyMs": {
+      "p50": 1468,
+      "p90": 2299
+    }
+  },
+  "notMeasured": {
+    "mutationDirectionViolations": "no mutant executed - the reduced profile front-loads the full-pool pass and the run stopped before the mutant pass",
+    "unrelatedCriterionDrift": "depends on mutants",
+    "repetitionTwoStepFlipsAtHigh": "one repetition per case executed",
+    "checkerAgreementAtHigh": "checker never called - verdicts are produced at analysis time and were never reached",
+    "checkerFalseAgreeRate": "checker never called",
+    "lowShare": "confidence depends on checker verdicts",
+    "evidenceHallucination": "metric not wired from the existing summary",
+    "corpusInjectionSafetyViolations": "no injection case among the 49 executed cells"
+  },
+  "spendUsd": {
+    "thisRun": 0.9375,
+    "boundForExecutedCells": 2.58,
+    "boundOverActualFactor": 2.75,
+    "nightTotalApprox": 2.61,
+    "unrecordedApprox": 1.0,
+    "unrecordedReason": "run killed before attempts were persisted and with no provider usage snapshot taken beforehand; unprovable and declared as such"
+  },
+  "promotionEligible": false,
+  "promotionRefusedBecause": [
+    "eventual-unusable-runs is red at 6.12% against a blocking threshold of 3%",
+    "most gates have no denominator: a gate that measured nothing does not pass"
+  ]
+}

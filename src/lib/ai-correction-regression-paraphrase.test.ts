@@ -310,6 +310,7 @@ describe('run guards', () => {
   } as never;
   const identities = {
     checkerModelId: 'mistralai/mistral-medium-3-5',
+    maxRetries: 0,
     primaryCandidateId: 'claude-sonnet-4-6-openrouter-anthropic',
     primaryModelId: 'anthropic/claude-sonnet-4.6',
   };

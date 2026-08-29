@@ -1,0 +1,34 @@
+{
+  "checkerCost": {
+    "corrections": 1,
+    "modelId": "mistralai/mistral-medium-3-5",
+    "outputTokenLimit": 400,
+    "pricedInThisPreflight": true,
+    "promptCharactersPerCall": 2659,
+    "source": {
+      "consultedAt": "2026-08-29",
+      "consultedBy": "Head of AI (voie F)",
+      "publishedRates": "entrée 1,50 USD / M jetons ; sortie 7,50 USD / M jetons",
+      "url": "https://openrouter.ai/mistralai/mistral-medium-3-5"
+    },
+    "worstCaseUsd": 0.0100605
+  },
+  "combinedWorstCaseUsd": 0.0627765,
+  "primaryWorstCaseUsd": 0.052716,
+  "singlePassLegacyDecision": "READY",
+  "dropped": [],
+  "fitsWithinCap": true,
+  "paraphraseWorstCaseUsd": 0,
+  "paraphrasesIncluded": false,
+  "passes": [
+    {
+      "cases": 1,
+      "cells": 1,
+      "label": "fumée — un cas",
+      "primaryWorstCaseUsd": 0.052716,
+      "repetitions": 1
+    }
+  ],
+  "profile": "smoke",
+  "supplierCostCapUsd": 0.2
+}
