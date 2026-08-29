@@ -13,6 +13,24 @@ import { toAttemptOutcomeData } from './prisma-correction-attempt-mapper.js';
 import { PrismaCorrectionQuoteRepository } from './prisma-correction-quotes.js';
 
 /**
+ * The settlement figures written with a correction must match what the ledger
+ * did, not what the quote asked for. A FAILED correction releases its
+ * reservation, so it is stored as nothing charged; anything else settles the
+ * accepted quote, partial deliveries included.
+ */
+function settlementFor(
+  status: OrchestratedCorrectionResult['correction']['status'],
+  quote: { estimatedCredits: bigint; maximumReservedCredits: bigint },
+): OrchestratedCorrectionResult['settlement'] {
+  const settled = status === 'FAILED' ? 0n : quote.estimatedCredits;
+  return {
+    releasedCredits: (quote.maximumReservedCredits - settled).toString(),
+    reservedCredits: quote.maximumReservedCredits.toString(),
+    settledCredits: settled.toString(),
+  };
+}
+
+/**
  * Implémentation Prisma des ports de l'orchestration V4-009 :
  * chargement d'un devis accepté, journal de la correction consommée et
  * rejeu idempotent par empreinte de requête.
@@ -122,14 +140,11 @@ export class PrismaCorrectionOrchestrationPorts {
             input.result.status === 'COMPLETED' ? 'COMPLETED' : 'PROVISIONAL',
           structuredResult: {
             correction: { ...input.result, id: input.correctionId },
-            settlement: {
-              releasedCredits: (
-                input.quote.maximumReservedCredits -
-                input.quote.estimatedCredits
-              ).toString(),
-              reservedCredits: input.quote.maximumReservedCredits.toString(),
-              settledCredits: input.quote.estimatedCredits.toString(),
-            },
+            // A correction that delivered nothing has its reservation released,
+            // so persisting the quote amount here would record a charge that
+            // never happens. The stored figures must describe what the ledger
+            // did, because the history endpoint and any replay read them back.
+            settlement: settlementFor(input.result.status, input.quote),
           },
         },
         where: { id: input.correctionId },
@@ -191,6 +206,17 @@ export class PrismaCorrectionOrchestrationPorts {
         correction.creditReservation.status === 'SETTLED' &&
         correction.creditReservation.settledAmount?.toString() ===
           structured.settlement.settledCredits
+      ) {
+        return { result, state: 'READY' } as const;
+      }
+      // A released reservation is a settled state too, for a correction that
+      // delivered nothing: the ledger closed it by giving the credits back.
+      // Without this the learner gets a reconciliation error on refresh, for a
+      // failure that was handled correctly.
+      if (
+        correction.creditReservation.status === 'RELEASED' &&
+        structured.correction.status === 'FAILED' &&
+        structured.settlement.settledCredits === '0'
       ) {
         return { result, state: 'READY' } as const;
       }

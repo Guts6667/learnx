@@ -187,7 +187,7 @@ describe('AiCorrectionPanel', () => {
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(5));
     expect(
-      await screen.findByText(/Le débit reste celui du devis accepté/),
+      await screen.findByText(/réservation de crédits a été libérée/),
     ).toBeInTheDocument();
   });
 

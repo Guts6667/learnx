@@ -102,6 +102,111 @@ describe('Prisma correction orchestration store', () => {
     },
   );
 
+  it.each([
+    ['FAILED', '0', '6'],
+    ['COMPLETED_PARTIAL', '3', '3'],
+  ] as const)(
+    'persists the settlement the ledger actually performed for %s',
+    async (runtimeStatus, settled, released) => {
+      const update = vi.fn(async (input: { data: Record<string, unknown> }) => {
+        void input;
+        return { id: 'correction-1' };
+      });
+      const ports = new PrismaCorrectionOrchestrationPorts({
+        aiCorrection: { update },
+      } as never);
+
+      await ports.corrections.finalize({
+        correctionId: 'correction-1',
+        quote: quote(),
+        result: result(runtimeStatus),
+      });
+
+      const [finalizeCall] = update.mock.calls;
+      if (!finalizeCall) throw new Error('AI_CORRECTION_UPDATE_NOT_CALLED');
+      const stored = (
+        finalizeCall[0].data as {
+          structuredResult: {
+            settlement: Record<string, string>;
+          };
+        }
+      ).structuredResult.settlement;
+
+      // A released reservation persisted as a charge would surface in the
+      // history endpoint as money the learner never spent.
+      expect(stored).toEqual({
+        releasedCredits: released,
+        reservedCredits: '6',
+        settledCredits: settled,
+      });
+    },
+  );
+
+  it('restores a failed correction whose reservation was released', async () => {
+    const ports = new PrismaCorrectionOrchestrationPorts({
+      aiCorrection: {
+        findFirst: vi.fn(async () => ({
+          creditReservation: {
+            id: 'reservation-1',
+            settledAmount: null,
+            status: 'RELEASED',
+          },
+          structuredResult: {
+            correction: { ...result('FAILED'), id: 'correction-1' },
+            settlement: {
+              releasedCredits: '6',
+              reservedCredits: '6',
+              settledCredits: '0',
+            },
+          },
+        })),
+      },
+    } as never);
+
+    // Without this the learner refreshing a failed correction gets a
+    // reconciliation error for a failure that was handled correctly.
+    await expect(
+      ports.corrections.findByQuote({
+        requestFingerprint: quote().requestFingerprint,
+        userId: quote().userId,
+      }),
+    ).resolves.toMatchObject({
+      result: { correction: { status: 'FAILED' } },
+      state: 'READY',
+    });
+  });
+
+  it('still requires reconciliation when a release does not match the record', async () => {
+    const ports = new PrismaCorrectionOrchestrationPorts({
+      aiCorrection: {
+        findFirst: vi.fn(async () => ({
+          creditReservation: {
+            id: 'reservation-1',
+            settledAmount: null,
+            status: 'RELEASED',
+          },
+          structuredResult: {
+            // Released, yet stored as charged: the ledger and the record
+            // disagree and no replay may paper over that.
+            correction: { ...result('COMPLETED'), id: 'correction-1' },
+            settlement: {
+              releasedCredits: '3',
+              reservedCredits: '6',
+              settledCredits: '3',
+            },
+          },
+        })),
+      },
+    } as never);
+
+    await expect(
+      ports.corrections.findByQuote({
+        requestFingerprint: quote().requestFingerprint,
+        userId: quote().userId,
+      }),
+    ).resolves.toEqual({ state: 'RECONCILIATION_REQUIRED' });
+  });
+
   it('separates validated structured output from a rejected raw output', async () => {
     const attemptCreate = vi.fn(
       async (input: { data: Record<string, unknown> }) => {

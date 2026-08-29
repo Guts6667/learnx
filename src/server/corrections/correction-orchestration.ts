@@ -88,9 +88,14 @@ export class CorrectionOrchestrationService {
       reservationId,
       userId: input.userId,
     });
-    await this.settleQuote(quote, reservationId, input.userId);
+    const charged = await this.closeReservation(
+      correction,
+      quote,
+      reservationId,
+      input.userId,
+    );
     await this.quotes.markConsumed({ quoteId: quote.quoteId });
-    return this.result(correction, quote, false);
+    return this.result(correction, quote, false, charged);
   }
 
   private async loadQuote(input: { quoteId: string; userId: string }) {
@@ -114,9 +119,16 @@ export class CorrectionOrchestrationService {
     if (!replay) return null;
     if (replay.state === 'READY') return replay.result;
     if (replay.state === 'READY_TO_SETTLE') {
-      await this.settleQuote(quote, replay.reservationId, userId);
+      const charged = await this.closeReservation(
+        replay.result.correction,
+        quote,
+        replay.reservationId,
+        userId,
+      );
       await this.quotes.markConsumed({ quoteId: quote.quoteId });
-      return { ...replay.result, replay: true };
+      return {
+        ...this.result(replay.result.correction, quote, true, charged),
+      };
     }
     throw new CorrectionOrchestrationError(
       replay.state === 'IN_PROGRESS'
@@ -235,6 +247,29 @@ export class CorrectionOrchestrationService {
     }
   }
 
+  /**
+   * A correction that delivered nothing releases its reservation instead of
+   * settling it. Charging the accepted price for a partial delivery is a
+   * deliberate economic decision — the learner consented to it — but charging
+   * for an empty result is not a decision, it is a defect the learner pays for.
+   *
+   * Returns whether the reservation was charged, so the settlement figures the
+   * caller reports describe what actually happened.
+   */
+  private async closeReservation(
+    correction: OrchestratedCorrectionResult['correction'],
+    quote: AcceptedQuoteSnapshot,
+    reservationId: string,
+    userId: string,
+  ): Promise<boolean> {
+    if (correction.status === 'FAILED') {
+      await this.credits.release({ reservationId, userId });
+      return false;
+    }
+    await this.settleQuote(quote, reservationId, userId);
+    return true;
+  }
+
   private async settleQuote(
     quote: AcceptedQuoteSnapshot,
     reservationId: string,
@@ -251,16 +286,16 @@ export class CorrectionOrchestrationService {
     correction: OrchestratedCorrectionResult['correction'],
     quote: AcceptedQuoteSnapshot,
     replay: boolean,
+    charged = true,
   ): OrchestratedCorrectionResult {
+    const settled = charged ? quote.estimatedCredits : 0n;
     return {
       correction,
       replay,
       settlement: {
         reservedCredits: quote.maximumReservedCredits.toString(),
-        releasedCredits: (
-          quote.maximumReservedCredits - quote.estimatedCredits
-        ).toString(),
-        settledCredits: quote.estimatedCredits.toString(),
+        releasedCredits: (quote.maximumReservedCredits - settled).toString(),
+        settledCredits: settled.toString(),
       },
     };
   }

@@ -164,7 +164,7 @@ describe('correction orchestration (V4-009)', () => {
     expect(harness.credits.calls).toEqual(['reserve', 'settle']);
   });
 
-  it('records an honest unavailable state and still settles the full quote when nothing is deliverable', async () => {
+  it('records an honest unavailable state and releases the reservation when nothing is deliverable', async () => {
     const harness = buildHarness({ transport: () => 'not-json-structured' });
     const result = await harness.service.runAcceptedQuote({
       quoteId: 'quote-1',
@@ -173,8 +173,14 @@ describe('correction orchestration (V4-009)', () => {
 
     expect(result.correction.status).toBe('FAILED');
     expect(result.correction.criteria).toEqual([]);
-    expect(result.settlement.settledCredits).toBe('12');
-    expect(harness.credits.calls).toEqual(['reserve', 'settle']);
+    // Charging the accepted price for a partial delivery is a consented
+    // economic decision; charging for an empty result is a defect the learner
+    // would be paying for.
+    expect(result.settlement.settledCredits).toBe('0');
+    expect(result.settlement.releasedCredits).toBe(
+      result.settlement.reservedCredits,
+    );
+    expect(harness.credits.calls).toEqual(['reserve', 'release']);
   });
 
   it('preserves provider usage and generation metadata for a rejected model output', async () => {
@@ -313,6 +319,53 @@ describe('correction orchestration (V4-009)', () => {
 
     expect(result).toEqual(replay);
     expect(harness.credits.calls).toEqual(['settle']);
+    expect(harness.transportOutputs).toEqual([]);
+  });
+
+  it('never charges a replayed correction that delivered nothing', async () => {
+    const failed = {
+      correction: {
+        contractVersion: '1.0.0',
+        criteria: [],
+        id: 'correction-failed',
+        indicativeScore: null,
+        modelUsageCostUsd: 0.01,
+        monitoringSignals: [],
+        overallFeedback: null,
+        secondPassRequired: false,
+        status: 'FAILED' as const,
+        unsureCriteria: [],
+        unsureCriterionDetails: [],
+      },
+      replay: true,
+      settlement: {
+        releasedCredits: '6',
+        reservedCredits: '18',
+        settledCredits: '12',
+      },
+    };
+    const harness = buildHarness({
+      replayLookup: {
+        reservationId: 'reservation-1',
+        result: failed,
+        state: 'READY_TO_SETTLE',
+      },
+      transport: strictOutput,
+    });
+
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    // The stored settlement figures came from before the doctrine changed, so
+    // the replay must recompute them rather than echo what was persisted.
+    expect(result.settlement.settledCredits).toBe('0');
+    expect(result.settlement.releasedCredits).toBe(
+      result.settlement.reservedCredits,
+    );
+    expect(result.replay).toBe(true);
+    expect(harness.credits.calls).toEqual(['release']);
     expect(harness.transportOutputs).toEqual([]);
   });
 
