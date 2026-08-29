@@ -3,7 +3,8 @@ import {
   decideTransition,
   shouldAttributeCredits,
 } from './payment-order-state.js';
-import { verifyRevolutSignature } from './revolut-webhook-signature.js';
+import { STRIPE_EVENT_STATUS, readStripeEnvelope } from './stripe-webhook.js';
+import { verifyStripeSignature } from './stripe-webhook-signature.js';
 
 /**
  * The webhook receiver (ADR_004 §2, §3, §6).
@@ -41,48 +42,27 @@ export interface WebhookPorts {
   }): Promise<void>;
 }
 
-const EVENT_STATUS: Record<string, PaymentOrderStatus> = {
-  ORDER_AUTHORISED: 'PENDING',
-  ORDER_COMPLETED: 'PAID',
-  // Tolerated rather than expected: if Revolut ever emits something like it,
-  // it arrives after we already fulfilled and is ignored as out-of-order,
-  // which is the right answer whether or not the event exists.
-  ORDER_FULFILLED: 'FULFILLED',
-  ORDER_FAILED: 'FAILED',
-  ORDER_EXPIRED: 'EXPIRED',
-  REFUND_INITIATED: 'REFUND_PENDING',
-  REFUND_COMPLETED: 'REFUNDED',
-  DISPUTE_OPENED: 'DISPUTED',
-  DISPUTE_WON: 'DISPUTE_WON',
-  DISPUTE_LOST: 'DISPUTE_LOST',
-};
-
 interface WebhookEnvelope {
   event: string;
   event_id: string;
   order_id: string;
 }
 
-function readEnvelope(rawPayload: string): WebhookEnvelope | null {
-  try {
-    const parsed: unknown = JSON.parse(rawPayload);
-    if (typeof parsed !== 'object' || parsed === null) return null;
-    const {
-      event,
-      event_id: eventId,
-      order_id: orderId,
-    } = parsed as Record<string, unknown>;
-    if (
-      typeof event !== 'string' ||
-      typeof eventId !== 'string' ||
-      typeof orderId !== 'string'
-    ) {
-      return null;
-    }
-    return { event, event_id: eventId, order_id: orderId };
-  } catch {
-    return null;
-  }
+/**
+ * Stripe's envelope, reshaped to the shape the receiver speaks.
+ *
+ * The receiver deliberately does not speak Stripe: its rules are about the
+ * absence of provider guarantees, and keeping them in provider-neutral terms is
+ * what made V4.5-184's switch cost a function rather than a rewrite.
+ */
+function stripeEnvelope(rawPayload: string): WebhookEnvelope | null {
+  const parsed = readStripeEnvelope(rawPayload);
+  if (!parsed) return null;
+  return {
+    event: parsed.eventType,
+    event_id: parsed.eventId,
+    order_id: parsed.orderReference,
+  };
 }
 
 export async function handleRevolutWebhook(input: {
@@ -91,7 +71,6 @@ export async function handleRevolutWebhook(input: {
   ports: WebhookPorts;
   rawPayload: string;
   signatureHeader: string | null;
-  timestampHeader: string | null;
 }): Promise<WebhookResult> {
   // Disabled answers without doing anything rather than failing, so a delivery
   // sent during a shutdown does not pile up as errors on the provider's side
@@ -102,20 +81,19 @@ export async function handleRevolutWebhook(input: {
 
   // Verified before the payload is read. Parsing first — even to find an order
   // id for a log line — would make what we read attacker-controlled.
-  const verdict = verifyRevolutSignature({
+  const verdict = verifyStripeSignature({
     now: input.now,
     rawPayload: input.rawPayload,
     secret: input.configuration.webhookSecret,
     signatureHeader: input.signatureHeader,
-    timestampHeader: input.timestampHeader,
   });
   if (!verdict.valid) return { kind: 'REJECTED', reason: verdict.reason };
 
-  const envelope = readEnvelope(input.rawPayload);
+  const envelope = stripeEnvelope(input.rawPayload);
   if (!envelope) return { kind: 'REJECTED', reason: 'MALFORMED_PAYLOAD' };
 
   const order = await input.ports.findOrder(envelope.order_id);
-  const status = EVENT_STATUS[envelope.event];
+  const status = STRIPE_EVENT_STATUS[envelope.event];
 
   // Stored before anything is applied, so the record of what arrived exists
   // even for events we do not act on — that is what reconciliation reads.

@@ -16,6 +16,6 @@ export function readPaymentsConfiguration(
 ): PaymentsConfiguration {
   return {
     enabled: environment.LEARNX_PAYMENTS_ENABLED === 'true',
-    webhookSecret: environment.LEARNX_REVOLUT_WEBHOOK_SECRET?.trim() || null,
+    webhookSecret: environment.STRIPE_TEST_WEBHOOK_SECRET?.trim() || null,
   };
 }

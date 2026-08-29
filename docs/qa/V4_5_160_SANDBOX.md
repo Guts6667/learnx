@@ -1,4 +1,4 @@
-# V4.5-160 — passe bac à sable Revolut
+# V4.5-160 / 184 — passe en mode test Stripe
 
 **Statut** : en attente des identifiants bac à sable (ADR_004 §8.4). Tant qu'ils
 n'existent pas, l'intégration est développée et vérifiée contre des
@@ -6,7 +6,7 @@ enregistrements figés ; cette passe est la dernière étape et n'a pas été jo
 
 ## Ce que cette passe doit établir en premier
 
-**Quels événements Revolut envoie réellement.** Toute l'attribution en dépend :
+**Quels événements Stripe envoie réellement.** Toute l'attribution en dépend :
 LearnX crédite à la réception de « payé » et marque lui-même la commande comme
 honorée, parce que le fournisseur n'a aucune raison d'émettre un événement
 d'attribution — il ignore si l'apprenant a reçu ses crédits. Si le nom de
@@ -32,9 +32,10 @@ cassant chacune pour vérifier qu'un test tombe :
 
 Ce qu'un enregistrement figé ne peut pas montrer :
 
-1. **La forme réelle de la signature.** L'algorithme et le format d'en-tête sont
-   implémentés d'après la documentation ; seule une livraison authentique prouve
-   que la vérification accepte ce que Revolut envoie vraiment.
+1. **La forme réelle de la signature.** L'algorithme et le format d'en-tête
+   sont implémentés d'après la documentation ; seule une livraison authentique
+   prouve que la vérification accepte ce que Stripe envoie vraiment — y compris
+   le cas de plusieurs signatures `v1` pendant une rotation de secret.
 2. **Les noms d'événements.** La table de correspondance vers les états
    d'ADR_003 §6.3 est écrite d'après la documentation. Un nom d'événement
    inconnu est traité sans être appliqué, donc une divergence ne casse rien —
@@ -46,8 +47,10 @@ Ce qu'un enregistrement figé ne peut pas montrer :
 
 ## Déroulé
 
-1. Renseigner `LEARNX_REVOLUT_API_KEY`, `LEARNX_REVOLUT_WEBHOOK_SECRET` et
+1. Renseigner `STRIPE_TEST_SECRET_KEY`, `STRIPE_TEST_WEBHOOK_SECRET` et
    `LEARNX_PAYMENTS_ENABLED=true` dans l'environnement d'aperçu **uniquement**.
+   `stripe listen --forward-to <url>/api/payments/webhook` donne une livraison
+   authentique en local, ce qu'aucun enregistrement figé ne remplace.
 2. Créer un ordre depuis l'application, payer avec une carte de test.
 3. Vérifier : un `payment_orders` en `FULFILLED`, une suite de `payment_events`
    dont les identifiants sont distincts, aucun crédit attribué deux fois.

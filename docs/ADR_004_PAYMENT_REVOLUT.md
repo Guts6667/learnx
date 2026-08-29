@@ -1,8 +1,63 @@
-# ADR_004 — Paiement par Revolut Merchant
+# ADR_004 — Encaissement par checkout hébergé
 
-**Statut** : accepté pour l'intégration bac à sable (V4.5-160). Le passage en
-production dépend des décisions du Propriétaire listées au §8, qui ne sont pas
-supposées ici.
+**Statut** : accepté. Fournisseur **Stripe** depuis le 29 août 2026
+(`owner-payment-provider-stripe-2026-08-29`). Le passage en production dépend
+des décisions du Propriétaire listées au §8, qui ne sont pas supposées ici.
+
+**Amendée plutôt que remplacée** (V4.5-184) : les décisions des §1 à §3 et §5
+à §7bis ne dépendent pas du fournisseur — checkout hébergé, webhook seule
+autorité, idempotence par identifiant d'événement, tolérance au désordre,
+frontières de données. Seule la section fournisseur change. Les éclater en deux
+documents obligerait le prochain lecteur à chercher laquelle fait foi.
+
+## 0. Fournisseur
+
+Revolut Merchant était le choix initial. Aucun compte Revolut Business n'a pu
+être ouvert, et le mode test de Stripe ne demande ni compte vérifié ni pièce
+d'identité : la recette bout en bout cesse donc d'être bloquée par une
+démarche hors de notre contrôle.
+
+L'adaptateur Revolut a été **supprimé**, pas conservé désactivé : un adaptateur
+non sélectionné est un chemin que personne n'exécute, contre un fournisseur chez
+qui nous n'avons pas de compte — précisément ce que le contrôle de code mort
+existe pour attraper. L'historique le conserve :
+`git log --diff-filter=D -- 'src/server/payments/revolut-*'`. Un SHA cité ici
+serait périmé au premier rebase ; cette commande ne l'est jamais.
+
+Ce que le changement a coûté est la mesure de la qualité de la couture : une
+fonction de signature, une table de noms d'événements, un appel de création
+d'ordre. Les propriétés testées — signature vérifiée avant lecture, unicité de
+l'événement, monotonie des états, coupure — n'ont pas bougé d'une ligne, parce
+qu'elles portent sur l'**absence** de garanties du fournisseur, que Stripe
+partage.
+
+### Signature Stripe
+
+`Stripe-Signature` porte `t=<secondes>` puis un ou **plusieurs** `v1=<hex>`,
+chacun un HMAC-SHA256 de `${t}.${charge utile brute}`. Pendant une rotation de
+secret, Stripe signe avec l'ancien **et** le nouveau : un vérificateur qui ne
+lirait que la première signature commencerait à rejeter des livraisons
+authentiques le jour de la rotation. Toutes sont comparées, une correspondance
+suffit, en temps constant.
+
+### Événements
+
+| Stripe | État (ADR_003 §6.3) |
+| --- | --- |
+| `checkout.session.completed` | `PAID` |
+| `checkout.session.expired` | `EXPIRED` |
+| `payment_intent.payment_failed` | `FAILED` |
+| `charge.refunded` | `REFUNDED` |
+| `charge.dispute.created` / `.closed` | `DISPUTED` |
+
+Tout autre événement est conservé pour réconciliation et appliqué à rien : le
+vocabulaire de Stripe grandira, et il doit laisser les commandes intactes
+plutôt que les corrompre.
+
+`checkout.session.completed` est le dernier mot de Stripe sur l'argent. Aucun
+fournisseur n'émet d'événement d'attribution, parce qu'aucun ne sait si
+l'apprenant a reçu ses crédits — c'est le même constat que V4.5-161 a corrigé
+pour Revolut, et il ne dépend pas du fournisseur.
 
 **Autorité supérieure** : `ADR_003` §6.3 (états de paiement) et §7.3
 (frontières de données). Cette ADR ne les redéfinit pas ; elle décrit comment
@@ -10,9 +65,9 @@ Revolut s'y branche.
 
 ## 1. Décision
 
-LearnX encaisse par **Revolut Merchant en checkout hébergé**. L'apprenant est
-redirigé vers une page de paiement opérée par Revolut, saisit ses données de
-carte chez Revolut, et revient sur LearnX.
+LearnX encaisse par **checkout hébergé**. L'apprenant est redirigé vers une
+page de paiement opérée par le fournisseur, y saisit ses données de carte, et
+revient sur LearnX.
 
 Conséquence directe et non négociable : **aucune donnée de carte n'entre jamais
 dans LearnX**, ni en base, ni en journal, ni en mémoire applicative. Le périmètre
@@ -143,10 +198,10 @@ Ces points sont **ouverts**. Le code ne les tranche pas et n'en dépend pas.
 3. **Conditions générales de vente** — droit de rétractation sur un contenu
    numérique et sa renonciation expresse. La politique de remboursement est
    tranchée (§7bis) ; sa formulation contractuelle reste à écrire.
-4. **Compte Revolut Merchant** — création, vérification d'identité, et
-   fourniture de la clé bac à sable et du secret de webhook. L'intégration est
-   développée contre des enregistrements figés jusque-là ; la passe bac à sable
-   réelle est la dernière étape (`docs/qa/V4_5_160_SANDBOX.md`).
+4. **Compte Stripe** — création et fourniture de `STRIPE_TEST_SECRET_KEY` et
+   `STRIPE_TEST_WEBHOOK_SECRET`, en environnement d'aperçu uniquement. Le mode
+   test ne demande pas de vérification d'identité. La passe réelle est la
+   dernière étape (`docs/qa/V4_5_160_SANDBOX.md`).
 
 Aucune de ces décisions n'est prise par défaut dans le code. Là où il faut une
 valeur, elle est lue depuis la configuration et absente par défaut.
