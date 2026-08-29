@@ -43,7 +43,6 @@ function result(
     monitoringSignals: [],
     overallConfidence: 'MEDIUM',
     overallFeedback: null,
-    secondPassRequired: false,
     status,
     unsureCriteria: [],
     unsureCriterionDetails: [],

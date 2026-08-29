@@ -39,7 +39,6 @@ export interface CorrectionResult {
     indicativeScore: number | null;
     overallConfidence: CorrectionConfidence;
     overallFeedback: string | null;
-    secondPassRequired: boolean;
     status: 'COMPLETED' | 'COMPLETED_PARTIAL' | 'FAILED';
     unsureCriteria: string[];
     unsureCriterionDetails?: Array<{ key: string; label: string }>;

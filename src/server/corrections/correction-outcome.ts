@@ -201,10 +201,6 @@ export function buildCorrectionOutcome(input: {
     overallFeedback: input.output.overallFeedback,
     overallConfidence,
     indicativeScore: publishesScore ? score : null,
-    // The score guard is gone: it asked the model to re-answer near the pass
-    // mark and trusted the agreement. The field stays false so stored-result
-    // readers keep working; V4.5-131 removes it.
-    secondPassRequired: false,
     modelUsageCostUsd: input.usageCost,
     monitoringSignals,
   };
@@ -222,7 +218,6 @@ export function failedCorrection(
     overallFeedback: null,
     overallConfidence: 'LOW',
     indicativeScore: null,
-    secondPassRequired: false,
     modelUsageCostUsd: usageCost,
     monitoringSignals: [],
   };

@@ -180,7 +180,6 @@ describe('buildCorrectionOutcome — score indicatif', () => {
       }),
     ]);
     expect(outcome.criteria[0]?.confidence).toBe('LOW');
-    expect(outcome.secondPassRequired).toBe(false);
     expect(outcome.indicativeScore).toBeNull();
     expect(outcome.monitoringSignals).toContain(
       'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED',

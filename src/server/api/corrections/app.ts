@@ -52,7 +52,6 @@ function serializeLearnerCorrectionResult(
     indicativeScore: result.correction.indicativeScore,
     overallConfidence: result.correction.overallConfidence,
     overallFeedback: result.correction.overallFeedback,
-    secondPassRequired: result.correction.secondPassRequired,
     status: result.correction.status,
     unsureCriteria: result.correction.unsureCriteria,
     unsureCriterionDetails: result.correction.unsureCriterionDetails,

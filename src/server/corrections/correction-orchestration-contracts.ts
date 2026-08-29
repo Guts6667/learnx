@@ -162,7 +162,6 @@ export interface OrchestratedCorrectionResult {
      */
     overallConfidence: CriterionConfidence;
     indicativeScore: number | null;
-    secondPassRequired: boolean;
     modelUsageCostUsd: number | null;
     monitoringSignals: CorrectionMonitoringSignal[];
   };

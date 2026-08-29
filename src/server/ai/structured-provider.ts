@@ -1,5 +1,3 @@
-import type { z } from 'zod';
-
 export const AI_MODEL_ROLES = [
   'CORRECTION_PRIMARY',
   'CORRECTION_SECOND_PASS',
@@ -53,55 +51,4 @@ export class AiProviderError extends Error {
 export interface AiPromptMessage {
   content: string;
   role: 'system' | 'user';
-}
-
-export interface StructuredGenerationRequest<Output> {
-  idempotencyKey: string;
-  maxOutputTokens: number;
-  messages: AiPromptMessage[];
-  outputSchema: z.ZodType<Output>;
-  outputSchemaName: string;
-  role: AiModelRole;
-  signal?: AbortSignal;
-}
-
-interface AiGenerationUsage {
-  completionTokens: number;
-  costUsd: number;
-  promptTokens: number;
-  totalTokens: number;
-}
-
-export interface AiGenerationMetadata {
-  attemptCount: number;
-  generationId: string;
-  latencyMs: number;
-  modelId: string;
-  provider: string;
-  role: AiModelRole;
-  usage: AiGenerationUsage;
-}
-
-export interface AiProviderLogEvent {
-  attempt: number;
-  code?: AiProviderErrorCode;
-  durationMs: number;
-  event: 'ai_provider_request';
-  modelId: string;
-  operationHash: string;
-  provider: string;
-  role: string;
-  status: 'failure' | 'success';
-}
-
-export interface StructuredGenerationResult<Output> {
-  metadata: AiGenerationMetadata;
-  output: Output;
-}
-
-export interface StructuredAiProvider {
-  readonly name: string;
-  generate<Output>(
-    request: StructuredGenerationRequest<Output>,
-  ): Promise<StructuredGenerationResult<Output>>;
 }
