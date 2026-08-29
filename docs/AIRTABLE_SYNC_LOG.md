@@ -558,3 +558,24 @@ l'autorisation.
   Integration (Neon 422, quota de branches) escaladé à la voie D (171) ;
   projet Neon passé au plan Launch par le Propriétaire.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+
+## 2026-08-29 (soir, suite) — Head of AI, base `app8IaHD1sJtI83WT`
+
+- V4.5-112 : `IN_PROGRESS` → `DONE` (`f338f61a`, moitié API mergée).
+- V4.5-UX-002 : `READY` → `DONE` (`4160e8ea`, cinq fichiers, baselines
+  générées par `visual.yml`).
+- UX-003 créé (`READY`, `rec43hW3p7Y3sVUTP`) : pourcentage chiffré encore
+  visible sur la carte programme via le libellé de `ProgressBar` — défaut
+  attrapé par la fixture non nulle d'UX-002.
+- V4.5-179 créé (`READY`, `recFVUKTfqYsjE4km`, voie D) : `reuseExistingServer`
+  sur port fixe capte un serveur dev d'un autre checkout (faux verts).
+- V4.5-120 : étapes 1–3 acceptées à `0fc85f6b` (non poussé au moment de
+  l'écriture) ; décisions Head of AI : `evidenceHallucination` non câblé →
+  `NOT_MEASURED` bloquant jusqu'à 121 ; gate bloquante de bascule = `AtHigh`
+  (contrat §5), version non restreinte surveillée ; profil `reduced` : budget
+  entier 0 pour tout dénominateur < 50.
+- V4.5-140 : décisions coupe-circuit consignées (`head-of-ai-breaker-2026-08-29`) :
+  latch manuel audité ; refus au devis ; échec d'évaluation → reste fermé avec
+  `evaluationError` exposé ; trois raisons dont `UNUSABLE_RATE` ; `wrongAtHigh`
+  câblé avec quorum de 20 critères HIGH votés.
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
