@@ -79,6 +79,7 @@ const submittedSubmission = {
   stageAssessment: {
     description: 'Synthèse du palier 1.',
     instructions: 'Rédige une synthèse.',
+    key: 'assessment-1',
     position: 1,
     rubric: [{ criterion: 'Synthèse', requirements: ['Relier'], weight: 100 }],
     stage: { slug: 'psychologie-palier-1' },
@@ -96,7 +97,7 @@ const contractedSubmission = {
     rubric: {
       ...contractRaw,
       target: {
-        activityKey: 'psychologie-palier-1-evaluation-1',
+        activityKey: 'assessment-1',
         activityType: 'written_assignment',
         kind: 'STAGE_ASSESSMENT',
       },
@@ -149,10 +150,11 @@ describe('devis de correction sur une évaluation de palier', () => {
     ).resolves.toBeNull();
   });
 
-  it('refuse un contrat valide tant qu’aucune clé ne le rattache', async () => {
-    // The state after authors write contracts and before a key convention
-    // exists. The contract is runnable; nothing proves it belongs to this
-    // assessment, so the path refuses rather than assuming.
+  it('accepte un contrat valide rattaché par la clé de l’évaluation', async () => {
+    // V4.5-117 gave assessments a key, so belonging is checkable and this
+    // resolves. What still refuses a stage-assessment correction is the
+    // promoted identity's targetKindScope, one layer up in the pricing service
+    // and again in the orchestration — this repository is not the last gate.
     const { prisma } = spyPrisma(contractedSubmission);
     const repository = new PrismaCorrectionQuoteRepository(prisma as never);
 
@@ -162,7 +164,9 @@ describe('devis de correction sur une évaluation de palier', () => {
         quoteId: QUOTE_ID,
         userId: USER_ID,
       }),
-    ).resolves.toBeNull();
+    ).resolves.toMatchObject({
+      target: { id: SUBMISSION_ID, kind: 'STAGE_ASSESSMENT_SUBMISSION' },
+    });
   });
 
   it('n’écrit dans aucune table de progression', async () => {
@@ -188,5 +192,46 @@ describe('devis de correction sur une évaluation de palier', () => {
       'aiPricingQuote.findFirst',
       'stageAssessmentSubmission.findFirst',
     ]);
+  });
+});
+
+describe('rattachement par clé (V4.5-117)', () => {
+  it('refuse un contrat qui nomme une autre évaluation', async () => {
+    // The whole point of the key: a runnable contract from a neighbouring
+    // assessment must not be accepted here.
+    const { prisma } = spyPrisma({
+      ...contractedSubmission,
+      stageAssessment: {
+        ...contractedSubmission.stageAssessment,
+        key: 'assessment-2',
+      },
+    });
+    const repository = new PrismaCorrectionQuoteRepository(prisma as never);
+
+    await expect(
+      repository.quotes.loadAcceptedQuote({
+        now: new Date('2026-08-24T10:00:00Z'),
+        quoteId: QUOTE_ID,
+        userId: USER_ID,
+      }),
+    ).resolves.toBeNull();
+  });
+
+  it('refuse une évaluation dont la clé est vide', async () => {
+    // The schema forbids it; trusting an empty string would bind everything to
+    // everything, so the refusal stays even though it should be unreachable.
+    const { prisma } = spyPrisma({
+      ...contractedSubmission,
+      stageAssessment: { ...contractedSubmission.stageAssessment, key: '' },
+    });
+    const repository = new PrismaCorrectionQuoteRepository(prisma as never);
+
+    await expect(
+      repository.quotes.loadAcceptedQuote({
+        now: new Date('2026-08-24T10:00:00Z'),
+        quoteId: QUOTE_ID,
+        userId: USER_ID,
+      }),
+    ).resolves.toBeNull();
   });
 });

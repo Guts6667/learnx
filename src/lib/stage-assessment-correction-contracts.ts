@@ -18,6 +18,10 @@ import {
  * `{criterion, requirements, weight}` rubric and none carries a v3 contract, so
  * nothing is eligible today. A synthesising resolver would have hidden that
  * behind corrections nobody authored.
+ *
+ * Since V4.5-117 the binding itself is checkable: an assessment carries a key
+ * and a contract must name it. What still refuses every stage assessment is the
+ * missing content, and the promoted identity's targetKindScope one layer up.
  */
 
 type StageAssessmentContractRefusal =
@@ -28,11 +32,11 @@ type StageAssessmentContractRefusal =
   /** The contract describes an exercise, not a stage assessment. */
   | 'CONTRACT_TARGET_MISMATCH'
   /**
-   * The assessment has no stable key to bind the contract to, so belonging
-   * cannot be checked. Exercises carry a `key` column; stage assessments carry
-   * only an id, a stage and a position. Until a key convention exists, a valid
-   * contract could be attached to the wrong assessment and nothing would
-   * notice — so this refuses rather than trusts.
+   * The assessment has no key, so belonging cannot be checked. V4.5-117 gave
+   * stage assessments a `key` column and backfilled every existing row, so this
+   * is now reachable only for a row created without one — which the schema
+   * forbids. Kept because a refusal that cannot happen costs nothing, and a
+   * trust that can is what this whole rule exists to prevent.
    */
   | 'CONTRACT_BINDING_UNAVAILABLE'
   | 'LANGUAGE_NOT_SUPPORTED';
@@ -43,9 +47,9 @@ export type ResolvedStageAssessmentCorrectionContract =
 
 export interface StageAssessmentCorrectionContractContext {
   /**
-   * The assessment's stable key, or null while no key convention exists. Null
-   * is not "unknown, carry on" — it is a refusal, because binding is what
-   * stops one assessment's contract being used on another.
+   * The assessment's stable key. Null is not "unknown, carry on" — it is a
+   * refusal, because binding is what stops one assessment's contract being
+   * used on another.
    */
   activityKey: string | null;
   explicitContract: unknown;

@@ -1,6 +1,11 @@
 model StageAssessment {
   id           String                      @id @default(uuid()) @db.Uuid
   stageId      String                      @map("stage_id") @db.Uuid
+  /// Clé stable de l'évaluation, à laquelle un contrat de correction se
+  /// rattache (V4.5-117). Même forme que `Exercise.key` : courte, unique dans
+  /// son parent, choisie par l'auteur. Sans elle, rien ne prouvait qu'un
+  /// contrat appartenait à l'évaluation à laquelle on l'appliquait.
+  key          String                      @default("")
   title        String
   description  String?
   type         StageAssessmentType
@@ -15,6 +20,7 @@ model StageAssessment {
   submissions  StageAssessmentSubmission[]
 
   @@unique([stageId, position])
+  @@unique([stageId, key])
   @@index([stageId, position])
   @@map("stage_assessments")
 }
