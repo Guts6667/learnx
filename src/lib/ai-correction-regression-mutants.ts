@@ -302,3 +302,54 @@ export function mutantId(input: {
 }): string {
   return `${input.caseId}#${input.kind}#${input.discriminator}`;
 }
+
+/**
+ * Seed of the held-out mutant set (spec §6, as amended for V4.5-120).
+ *
+ * Derived from the pool digest, the generator version and the gate policy
+ * version — the three things that decide what a mutant is. The commit SHA was
+ * the original proposal but is not recoverable from the artefacts alone, so a
+ * reader could not reproduce the held-out set from a results directory. These
+ * three are all recorded in the summary, so they can.
+ */
+export function deriveHeldOutSeed(input: {
+  gatePolicyVersion: string;
+  generatorVersion: string;
+  poolSha256: string;
+}): string {
+  return createHash('sha256')
+    .update(
+      `${input.poolSha256} ${input.generatorVersion} ${input.gatePolicyVersion}`,
+    )
+    .digest('hex');
+}
+
+/**
+ * The held-out subset, chosen deterministically from the seed.
+ *
+ * Held out only in the sense that it is reported separately: spec §6 requires
+ * these results to count in the gates like any other mutant. Reporting them
+ * apart makes it visible whether a green run stayed green on mutants nobody
+ * was tuning against.
+ */
+export function selectHeldOutMutants(input: {
+  mutants: RegressionMutant[];
+  seed: string;
+  size: number;
+}): RegressionMutant[] {
+  const ordered = [...input.mutants].sort((left, right) =>
+    left.mutantId.localeCompare(right.mutantId),
+  );
+  if (ordered.length <= input.size) return ordered;
+  const permutation = deterministicPermutation({
+    length: ordered.length,
+    seed: input.seed,
+  });
+  return permutation
+    .slice(0, input.size)
+    .flatMap((index) => {
+      const mutant = ordered[index];
+      return mutant ? [mutant] : [];
+    })
+    .sort((left, right) => left.mutantId.localeCompare(right.mutantId));
+}
