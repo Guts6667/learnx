@@ -1,7 +1,4 @@
-import {
-  CreditProvenance,
-  Role,
-} from '../../../generated/prisma/client.js';
+import { CreditProvenance, Role } from '../../../generated/prisma/client.js';
 import { describe, expect, it, vi } from 'vitest';
 
 import { creditRequestFingerprint } from './credit-ledger.js';
@@ -163,9 +160,9 @@ describe('adjustCredits', () => {
         type: 'ADMIN_ADJUSTMENT',
       }),
     });
-    await expect(adjustCredits(context, adjustmentInput)).resolves.toMatchObject(
-      { balance: { total: 10n } },
-    );
+    await expect(
+      adjustCredits(context, adjustmentInput),
+    ).resolves.toMatchObject({ balance: { total: 10n } });
 
     transaction.creditLedgerEntry.findFirst.mockResolvedValueOnce({
       requestFingerprint: 'different',
@@ -179,9 +176,9 @@ describe('adjustCredits', () => {
     const { context, transaction } = harness();
     transaction.creditLedgerEntry.findFirst.mockResolvedValueOnce(null);
 
-    await expect(adjustCredits(context, adjustmentInput)).resolves.toMatchObject(
-      { balance: { free: 10n } },
-    );
+    await expect(
+      adjustCredits(context, adjustmentInput),
+    ).resolves.toMatchObject({ balance: { free: 10n } });
     expect(transaction.creditLot.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
         initialAmount: 5n,

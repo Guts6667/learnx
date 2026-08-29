@@ -7,11 +7,7 @@ import {
   buildRecommendationCandidates,
   lessonHref,
 } from './recommendation-candidates.js';
-import type {
-  LessonRecord,
-  ProgramRecord,
-  TodayRepository,
-} from './types.js';
+import type { LessonRecord, ProgramRecord, TodayRepository } from './types.js';
 
 function selectFallbackProgram(programs: ProgramRecord[]) {
   return [...programs].sort((left, right) => {
@@ -63,10 +59,7 @@ function serializeProgramSummary(
   const lastActivity = lastLesson
     ? {
         at: lastLesson.progress[0]?.lastViewedAt,
-        href: lessonHref(
-          lastLesson.module.stage.program.slug,
-          lastLesson.slug,
-        ),
+        href: lessonHref(lastLesson.module.stage.program.slug, lastLesson.slug),
         title: lastLesson.title,
       }
     : null;

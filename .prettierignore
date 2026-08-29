@@ -4,5 +4,26 @@ node_modules/
 playwright-report/
 pnpm-lock.yaml
 test-results/
-seed/sample-program.json
 *.md
+
+# Versioned seed bundles are import contracts checked by signature in CI.
+seed/
+
+# Governance manifests and dated evidence live beside the docs they bind.
+docs/
+
+# Research evidence is append-only: corpora, gold sets, oracle artifacts and
+# benchmark results are cited by digest and must never be reformatted.
+benchmarks/
+
+# Pedagogy specifications change only through PEDAGOGY_CHANGE_POLICY.md.
+content/
+
+# Published, dated research articles and their assets are a public record.
+public/
+
+# Applied migrations are immutable once released.
+prisma/migrations/
+
+generated/
+.vercel/

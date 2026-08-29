@@ -13,11 +13,7 @@ import {
   previewProgramWhere,
 } from '../_lib/program-access-policy.js';
 import { runSerializableProgressTransaction } from '../_lib/progress-recalculation.js';
-import type {
-  CreateNoteInput,
-  NoteRecord,
-  NotesRepository,
-} from './types.js';
+import type { CreateNoteInput, NoteRecord, NotesRepository } from './types.js';
 import { invalidNoteRequest, noteNotFound } from './validation.js';
 
 const noteSelect = {
@@ -63,16 +59,18 @@ function linkedLessonWhere(
         },
       },
       ...(includeOwnerPreview
-        ? [{
-            module: {
-              stage: {
-                program: {
-                  ...(programId ? { id: programId } : {}),
-                  ...previewProgramWhere(userId),
+        ? [
+            {
+              module: {
+                stage: {
+                  program: {
+                    ...(programId ? { id: programId } : {}),
+                    ...previewProgramWhere(userId),
+                  },
                 },
               },
             },
-          }]
+          ]
         : []),
     ],
   };
@@ -177,20 +175,26 @@ async function listNotes(
     where: {
       userId: input.userId,
       ...(input.lessonId ? { lessonId: input.lessonId } : {}),
-      ...(search ? {
-          OR: [
-            { title: { contains: search, mode: 'insensitive' } },
-            { markdown: { contains: search, mode: 'insensitive' } },
-          ],
-        } : {}),
-      ...(cursor && cursorDate ? {
-          AND: [{
+      ...(search
+        ? {
             OR: [
-              { updatedAt: { lt: cursorDate } },
-              { id: { lt: cursor.id }, updatedAt: cursorDate },
+              { title: { contains: search, mode: 'insensitive' } },
+              { markdown: { contains: search, mode: 'insensitive' } },
             ],
-          }],
-        } : {}),
+          }
+        : {}),
+      ...(cursor && cursorDate
+        ? {
+            AND: [
+              {
+                OR: [
+                  { updatedAt: { lt: cursorDate } },
+                  { id: { lt: cursor.id }, updatedAt: cursorDate },
+                ],
+              },
+            ],
+          }
+        : {}),
     },
     orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
     select: noteSelect,

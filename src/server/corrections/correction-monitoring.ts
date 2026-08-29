@@ -1,8 +1,7 @@
 import type { PrismaClient } from '../../../generated/prisma/client.js';
 
 export type CorrectionMonitoringSignal =
-  | 'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED'
-  | 'SCORE_GUARD_TRIGGERED';
+  'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED' | 'SCORE_GUARD_TRIGGERED';
 
 export interface CorrectionMonitoringSummary {
   completed: number;
@@ -43,7 +42,8 @@ export class PrismaCorrectionMonitoringService {
     let unknownCostAttempts = 0;
 
     for (const correction of corrections) {
-      const stored = (correction.structuredResult ?? {}) as StoredCorrectionResult;
+      const stored = (correction.structuredResult ??
+        {}) as StoredCorrectionResult;
       const result = stored.correction;
       if (result?.status === 'COMPLETED') completed += 1;
       if (result?.status === 'COMPLETED_PARTIAL') partial += 1;

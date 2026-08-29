@@ -255,10 +255,7 @@ describe('AppRoutes', () => {
     ['/admin', 'admin'],
     ['/admin/program/program-1', 'admin'],
     ['/admin/program/program-1/stage/stage-1', 'admin'],
-    [
-      '/admin/program/program-1/stage/stage-1/module/module-1',
-      'admin',
-    ],
+    ['/admin/program/program-1/stage/stage-1/module/module-1', 'admin'],
     [
       '/admin/program/program-1/stage/stage-1/module/module-1/lesson/lesson-1',
       'admin',
@@ -282,9 +279,17 @@ describe('AppRoutes', () => {
     document.body.append(host);
 
     fireEvent.click(host.querySelector('#internal') as Element);
-    expect(routeSpies.navigate).toHaveBeenCalledWith('/today?source=test#suite');
+    expect(routeSpies.navigate).toHaveBeenCalledWith(
+      '/today?source=test#suite',
+    );
 
-    for (const selector of ['#external', '#download', '#native', '#blank', '#hash']) {
+    for (const selector of [
+      '#external',
+      '#download',
+      '#native',
+      '#blank',
+      '#hash',
+    ]) {
       fireEvent.click(host.querySelector(selector) as Element);
     }
     expect(routeSpies.navigate).toHaveBeenCalledTimes(1);

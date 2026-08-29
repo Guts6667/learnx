@@ -17,9 +17,6 @@ export function sanitizeStructuredOutputJsonSchema(input: unknown): unknown {
   return Object.fromEntries(
     Object.entries(input)
       .filter(([key]) => !unsupportedNumericKeywords.has(key))
-      .map(([key, value]) => [
-        key,
-        sanitizeStructuredOutputJsonSchema(value),
-      ]),
+      .map(([key, value]) => [key, sanitizeStructuredOutputJsonSchema(value)]),
   );
 }

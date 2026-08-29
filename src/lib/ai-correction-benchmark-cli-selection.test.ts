@@ -169,10 +169,7 @@ describe('selectBenchmarkCliRun', () => {
     await expect(
       selectBenchmarkCliRun({
         ...selectionInput([]),
-        arguments: [
-          `--candidate=${candidate.candidateId}`,
-          '--review-panel',
-        ],
+        arguments: [`--candidate=${candidate.candidateId}`, '--review-panel'],
         configuration,
         loaded: { ...loaded, configuration },
       }),
@@ -200,7 +197,10 @@ describe('selectBenchmarkCliRun', () => {
 
     await expect(
       selectBenchmarkCliRun(
-        selectionInput([`--candidate=${otherCandidate.candidateId}`], authority),
+        selectionInput(
+          [`--candidate=${otherCandidate.candidateId}`],
+          authority,
+        ),
       ),
     ).rejects.toThrow('BENCHMARK_AUTONOMOUS_CANDIDATE_IDENTITY_MISMATCH');
     await expect(
@@ -209,7 +209,9 @@ describe('selectBenchmarkCliRun', () => {
       ),
     ).rejects.toThrow('BENCHMARK_AUTONOMOUS_SUPPLIER_CAP_IDENTITY_MISMATCH');
 
-    const selection = await selectBenchmarkCliRun(selectionInput([], authority));
+    const selection = await selectBenchmarkCliRun(
+      selectionInput([], authority),
+    );
     expect(selection.selectedCandidates).toEqual([authorizedCandidate]);
     expect(selection.supplierBudget?.hardCapUsd).toBe(0.5);
   });
@@ -228,7 +230,9 @@ describe('selectBenchmarkCliRun', () => {
       supplierCostCapUsd: 0.5,
     };
 
-    const selection = await selectBenchmarkCliRun(selectionInput([], authority));
+    const selection = await selectBenchmarkCliRun(
+      selectionInput([], authority),
+    );
     expect(selection.runMetadata.corpusReviewAuthority).toBe(
       'AUTONOMOUS_AI_NOT_HUMAN',
     );

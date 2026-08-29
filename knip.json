@@ -8,8 +8,7 @@
   ],
   "ignoreDependencies": [
     "@fontsource/dm-sans",
-    "@fontsource/manrope",
-    "@fontsource/source-serif-4",
+    "@fontsource/plus-jakarta-sans",
     "@prisma/client"
   ],
   "project": [

@@ -384,11 +384,11 @@ function LessonWorkspace({
     progressQuery.data?.lessonProgress?.status === 'COMPLETED';
   const currentKey = isPersistedComplete
     ? activityKey('COMPLETE', 'lesson')
-    : explicitActivity ??
+    : (explicitActivity ??
       (serverActivity
         ? activityKey(serverActivity.kind, serverActivity.id)
         : null) ??
-      readRememberedActivity(lesson.id);
+      readRememberedActivity(lesson.id));
   const sequence = useMemo(
     () =>
       buildLessonActivitySequence(

@@ -671,7 +671,9 @@ export async function readPsychologyFoundationsPilotSeed(): Promise<SampleSeed> 
 }
 
 export async function readSourceLabProductionSeed(): Promise<SampleSeed> {
-  return readSeedFile('seed/ingenieur-logiciel-production-sourcelab-program.json');
+  return readSeedFile(
+    'seed/ingenieur-logiciel-production-sourcelab-program.json',
+  );
 }
 
 export async function readSourceLabAiSeed(): Promise<SampleSeed> {
@@ -1019,11 +1021,11 @@ export async function seedSampleProgram(
                 );
               }
 
-              return (resolution.eligible
-                ? resolution.contract
-                : taskData.correctionContract) as
-                | Prisma.InputJsonValue
-                | undefined;
+              return (
+                resolution.eligible
+                  ? resolution.contract
+                  : taskData.correctionContract
+              ) as Prisma.InputJsonValue | undefined;
             })(),
             title: taskData.title,
           });

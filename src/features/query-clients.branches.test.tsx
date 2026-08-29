@@ -144,7 +144,10 @@ describe('program query clients', () => {
   });
 
   it('désactive une requête puis la recharge avec le filtre d’inscription', async () => {
-    apiRequest.mockResolvedValue({ items: [enrolledProgram], nextCursor: null });
+    apiRequest.mockResolvedValue({
+      items: [enrolledProgram],
+      nextCursor: null,
+    });
     const { rerender, result } = renderHook(
       ({ enabled }) => useEnrolledProgramsQuery('', 'ACTIVE', enabled),
       { initialProps: { enabled: false }, wrapper: QueryWrapper },
@@ -167,10 +170,9 @@ describe('program query clients', () => {
     apiRequest
       .mockRejectedValueOnce(requestError)
       .mockResolvedValue({ items: [], nextCursor: null });
-    const { result } = renderHook(
-      () => useCatalogProgramsQuery('', 'en'),
-      { wrapper: QueryWrapper },
-    );
+    const { result } = renderHook(() => useCatalogProgramsQuery('', 'en'), {
+      wrapper: QueryWrapper,
+    });
 
     await waitFor(() => expect(result.current.error).toBe(requestError));
     expect(result.current.isPending).toBe(false);
@@ -197,9 +199,9 @@ describe('program query clients', () => {
       { method: 'DELETE' },
     );
     await act(async () => {
-      await expect(result.current.execute('program/2', 'enroll')).rejects.toThrow(
-        'enrollment unavailable',
-      );
+      await expect(
+        result.current.execute('program/2', 'enroll'),
+      ).rejects.toThrow('enrollment unavailable');
     });
     await waitFor(() =>
       expect(result.current.error).toEqual(new Error('enrollment unavailable')),
@@ -296,7 +298,9 @@ describe('note query clients', () => {
       headers: { 'content-type': 'application/json' },
       method: 'POST',
     });
-    await act(() => result.current.save('note/1', { markdown: 'M', title: 'T' }));
+    await act(() =>
+      result.current.save('note/1', { markdown: 'M', title: 'T' }),
+    );
     expect(apiRequest).toHaveBeenNthCalledWith(2, '/api/notes/note%2F1', {
       body: JSON.stringify({ markdown: 'M', title: 'T' }),
       headers: { 'content-type': 'application/json' },
@@ -329,7 +333,9 @@ describe('exercise query clients', () => {
       wrapper: QueryWrapper,
     });
 
-    await waitFor(() => expect(result.current.data?.exercise).toEqual(exercise));
+    await waitFor(() =>
+      expect(result.current.data?.exercise).toEqual(exercise),
+    );
     expect(apiRequest).toHaveBeenCalledWith('/api/exercises/exercise%2F1');
     await act(() => result.current.reload());
     expect(apiRequest).toHaveBeenCalledTimes(2);
@@ -338,7 +344,9 @@ describe('exercise query clients', () => {
   it('crée, sauvegarde et soumet une réponse avec les contrats HTTP attendus', async () => {
     apiRequest
       .mockResolvedValueOnce({ submission })
-      .mockResolvedValueOnce({ submission: { ...submission, contentMarkdown: 'Suite' } })
+      .mockResolvedValueOnce({
+        submission: { ...submission, contentMarkdown: 'Suite' },
+      })
       .mockResolvedValueOnce({
         submission: { ...submission, status: 'SUBMITTED', submittedAt: 'now' },
       });
@@ -361,7 +369,6 @@ describe('exercise query clients', () => {
     );
     expect(result.current.isPending).toBe(false);
   });
-
 });
 
 describe('admin query clients', () => {
@@ -397,8 +404,12 @@ describe('admin query clients', () => {
       wrapper: QueryWrapper,
     });
 
-    await act(() => result.current.updateModule('module/1', { title: 'Module' }));
-    await act(() => result.current.updateLesson('lesson/1', { title: 'Leçon' }));
+    await act(() =>
+      result.current.updateModule('module/1', { title: 'Module' }),
+    );
+    await act(() =>
+      result.current.updateLesson('lesson/1', { title: 'Leçon' }),
+    );
     await act(() =>
       result.current.updateProgramVisibility('program/1', {
         updatedAt: '2026-08-28T10:00:00Z',
@@ -411,9 +422,13 @@ describe('admin query clients', () => {
       targetId: 'program/1',
       targetType: 'PROGRAM' as const,
     };
-    await expect(act(() => result.current.previewPublication(request))).resolves.toEqual(plan);
     await expect(
-      act(() => result.current.applyPublication({ ...request, planId: 'plan-1' })),
+      act(() => result.current.previewPublication(request)),
+    ).resolves.toEqual(plan);
+    await expect(
+      act(() =>
+        result.current.applyPublication({ ...request, planId: 'plan-1' }),
+      ),
     ).resolves.toEqual(plan);
     expect(apiRequest).toHaveBeenNthCalledWith(
       3,
@@ -431,5 +446,4 @@ describe('admin query clients', () => {
       expect.objectContaining({ method: 'POST' }),
     );
   });
-
 });

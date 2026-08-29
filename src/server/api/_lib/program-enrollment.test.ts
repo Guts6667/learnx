@@ -30,14 +30,8 @@ interface StoredEnrollment {
 function createClient() {
   const enrollments = new Map<string, StoredEnrollment>();
   const versions = new Map([
-    [
-      versionOneId,
-      { checksum: 'a'.repeat(64), id: versionOneId, version: 1 },
-    ],
-    [
-      versionTwoId,
-      { checksum: 'b'.repeat(64), id: versionTwoId, version: 2 },
-    ],
+    [versionOneId, { checksum: 'a'.repeat(64), id: versionOneId, version: 1 }],
+    [versionTwoId, { checksum: 'b'.repeat(64), id: versionTwoId, version: 2 }],
   ]);
   let available = true;
   let currentVersionId = versionOneId;

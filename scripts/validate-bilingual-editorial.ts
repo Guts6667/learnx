@@ -33,7 +33,9 @@ export function validateBilingualEditorialArtifacts(): {
   for (const path of manifests) {
     const manifest = translationManifestSchema.parse(readJson(path));
     if (manifest.glossaryVersion !== glossary.version) {
-      throw new Error(`${basename(path)} references an unknown glossary version.`);
+      throw new Error(
+        `${basename(path)} references an unknown glossary version.`,
+      );
     }
     if (!bilingualQaIsComplete(manifest.qa)) {
       throw new Error(`${basename(path)} has incomplete bilingual QA.`);
@@ -42,7 +44,9 @@ export function validateBilingualEditorialArtifacts(): {
       (key) => !glossaryKeys.has(key),
     );
     if (missingTerm) {
-      throw new Error(`${basename(path)} references missing glossary term ${missingTerm}.`);
+      throw new Error(
+        `${basename(path)} references missing glossary term ${missingTerm}.`,
+      );
     }
   }
 

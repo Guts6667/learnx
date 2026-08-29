@@ -40,36 +40,39 @@ function createRepository(): ReviewsRepository {
     async listPending(input) {
       if (input.userId !== userId) return { items: [], nextCursor: null };
 
-      return { items: [
-        {
-          assessmentTitle: 'Mini-évaluation — Mémoire',
-          conceptTitle: 'Mémoire de travail',
-          dueAt: new Date('2026-08-03T08:00:00.000Z'),
-          id: reviewId,
-          intervalDays: 1,
-          isDraft: false,
-          lesson: {
-            id: 'lesson-1',
-            slug: 'memoire',
-            title: 'Comprendre la mémoire',
-          },
-          program: {
-            id: 'program-1',
-            slug: 'psychologie',
-            title: 'Psychologie',
-          },
-          resources: [
-            {
-              id: 'resource-1',
-              title: 'Chapitre sur la mémoire',
-              url: 'https://example.com/memoire',
+      return {
+        items: [
+          {
+            assessmentTitle: 'Mini-évaluation — Mémoire',
+            conceptTitle: 'Mémoire de travail',
+            dueAt: new Date('2026-08-03T08:00:00.000Z'),
+            id: reviewId,
+            intervalDays: 1,
+            isDraft: false,
+            lesson: {
+              id: 'lesson-1',
+              slug: 'memoire',
+              title: 'Comprendre la mémoire',
             },
-          ],
-          sourceId: assessmentId,
-          sourceType: ReviewSourceType.CONCEPT_ASSESSMENT,
-          status: ReviewStatus.PENDING,
-        },
-      ], nextCursor: null };
+            program: {
+              id: 'program-1',
+              slug: 'psychologie',
+              title: 'Psychologie',
+            },
+            resources: [
+              {
+                id: 'resource-1',
+                title: 'Chapitre sur la mémoire',
+                url: 'https://example.com/memoire',
+              },
+            ],
+            sourceId: assessmentId,
+            sourceType: ReviewSourceType.CONCEPT_ASSESSMENT,
+            status: ReviewStatus.PENDING,
+          },
+        ],
+        nextCursor: null,
+      };
     },
   };
 }
@@ -190,7 +193,9 @@ describe('reviews persistence', () => {
         take: 21,
         where: expect.objectContaining({
           program: expect.objectContaining({
-            OR: expect.arrayContaining([expect.objectContaining({ ownerId: userId })]),
+            OR: expect.arrayContaining([
+              expect.objectContaining({ ownerId: userId }),
+            ]),
           }),
           status: ReviewStatus.PENDING,
           userId,

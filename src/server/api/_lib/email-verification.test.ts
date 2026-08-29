@@ -75,7 +75,11 @@ describe('email verification', () => {
   it('stores only the token hash and sends a fragment link', async () => {
     const context = createContext();
 
-    await issueEmailVerification('learner@example.com', 'en', context.dependencies);
+    await issueEmailVerification(
+      'learner@example.com',
+      'en',
+      context.dependencies,
+    );
 
     expect(context.issues).toHaveLength(1);
     expect(context.issues[0]?.tokenHash).toBe(hashVerificationToken(rawToken));
@@ -97,7 +101,11 @@ describe('email verification', () => {
   it('invalidates a token after a simulated delivery failure without logging secrets', async () => {
     const context = createContext({ deliveryFails: true });
 
-    await issueEmailVerification('learner@example.com', 'fr', context.dependencies);
+    await issueEmailVerification(
+      'learner@example.com',
+      'fr',
+      context.dependencies,
+    );
 
     expect(context.invalidated).toEqual(['verification-1']);
     expect(context.logs).toEqual([

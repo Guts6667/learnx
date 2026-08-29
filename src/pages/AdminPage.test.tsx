@@ -124,7 +124,9 @@ describe('AdminPage', () => {
     );
 
     expect(
-      await screen.findByText('Les contenus administrables n’ont pas pu être chargés.'),
+      await screen.findByText(
+        'Les contenus administrables n’ont pas pu être chargés.',
+      ),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
     expect(await screen.findAllByText('Programme test')).not.toHaveLength(0);

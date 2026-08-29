@@ -2505,9 +2505,7 @@ describe('sample program seed', () => {
     expect(exercises.has(`${firstLessonId}:activity-3`)).toBe(true);
 
     const programId = programs.get('user-1:fondamentaux-psychologie');
-    const integrationStageId = stages.get(
-      `${programId}:integration-preuves`,
-    );
+    const integrationStageId = stages.get(`${programId}:integration-preuves`);
     const projectModuleId = modules.get(
       `${integrationStageId}:projet-integrateur`,
     );

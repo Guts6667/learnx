@@ -20,7 +20,10 @@ export type { ResolvedPublicationTarget } from './publication-query.js';
 
 export interface PublicationTransactionRepository {
   applyChanges(plan: PublicationPlan): Promise<void>;
-  createPublishedVersion(programId: string, ownerId: string): Promise<{
+  createPublishedVersion(
+    programId: string,
+    ownerId: string,
+  ): Promise<{
     id: string;
     version: number;
   } | null>;
@@ -143,9 +146,7 @@ async function runSerializableTransaction<T>(
   throw new Error('Publication transaction retry limit reached.');
 }
 
-class PrismaPublicationRepository
-  implements PublicationTransactionRepository
-{
+class PrismaPublicationRepository implements PublicationTransactionRepository {
   public constructor(private readonly client: PublicationClient) {}
 
   applyChanges(plan: PublicationPlan) {
@@ -153,15 +154,27 @@ class PrismaPublicationRepository
   }
 
   createPublishedVersion(programId: string, ownerId: string) {
-    return createOrReusePublishedProgramVersion(this.client, programId, ownerId);
+    return createOrReusePublishedProgramVersion(
+      this.client,
+      programId,
+      ownerId,
+    );
   }
 
-  readTarget(ownerId: string, targetType: PublicationTargetType, targetId: string) {
+  readTarget(
+    ownerId: string,
+    targetType: PublicationTargetType,
+    targetId: string,
+  ) {
     return readPublicationTarget(this.client, ownerId, targetType, targetId);
   }
 
-  writeApplyAudit(ownerId: string, request: ApplyPublicationRequest, plan: PublicationPlan,
-    version: { id: string; version: number } | null) {
+  writeApplyAudit(
+    ownerId: string,
+    request: ApplyPublicationRequest,
+    plan: PublicationPlan,
+    version: { id: string; version: number } | null,
+  ) {
     return writeApplyAudit(this.client, ownerId, request, plan, version);
   }
 }
@@ -169,7 +182,11 @@ class PrismaPublicationRepository
 class PrismaPublicationRootRepository implements PublicationRepository {
   public constructor(private readonly client: PrismaClient) {}
 
-  readTarget(ownerId: string, targetType: PublicationTargetType, targetId: string) {
+  readTarget(
+    ownerId: string,
+    targetType: PublicationTargetType,
+    targetId: string,
+  ) {
     return readPublicationTarget(
       this.client as unknown as Prisma.TransactionClient,
       ownerId,
@@ -178,7 +195,9 @@ class PrismaPublicationRootRepository implements PublicationRepository {
     );
   }
 
-  transaction<T>(operation: (repository: PublicationTransactionRepository) => Promise<T>) {
+  transaction<T>(
+    operation: (repository: PublicationTransactionRepository) => Promise<T>,
+  ) {
     return runSerializableTransaction(this.client, (transaction) =>
       operation(new PrismaPublicationRepository(transaction)),
     );

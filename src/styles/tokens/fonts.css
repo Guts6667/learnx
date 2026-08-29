@@ -13,3 +13,37 @@
   font-weight: 500;
   src: url('/fonts/dm-sans/dm-sans-latin-500-normal.woff2') format('woff2');
 }
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/dm-sans/dm-sans-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/dm-sans/dm-sans-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-600-normal.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-700-normal.woff2')
+    format('woff2');
+}

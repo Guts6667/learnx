@@ -362,7 +362,12 @@ describe('program restart API', () => {
       runIds: [restartedRun.id],
     });
     expect(transaction.moduleRun.create).toHaveBeenCalledWith({
-      data: expect.objectContaining({ moduleId, restartKey, sequence: 2, userId }),
+      data: expect.objectContaining({
+        moduleId,
+        restartKey,
+        sequence: 2,
+        userId,
+      }),
     });
     expect(updateLessonProgress).toHaveBeenCalledTimes(1);
     expect(updateTasks).toHaveBeenCalledTimes(1);
@@ -375,7 +380,9 @@ describe('program restart API', () => {
       }),
     );
     expect(programProgressUpsert).toHaveBeenCalledWith(
-      expect.objectContaining({ update: expect.objectContaining({ percent: 0 }) }),
+      expect.objectContaining({
+        update: expect.objectContaining({ percent: 0 }),
+      }),
     );
     expect(viewPreferenceUpsert).toHaveBeenCalledWith(
       expect.objectContaining({

@@ -48,7 +48,9 @@ describe('AdminRoute', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
 
-    expect(await screen.findByText('Administration privée')).toBeInTheDocument();
+    expect(
+      await screen.findByText('Administration privée'),
+    ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 

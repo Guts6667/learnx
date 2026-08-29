@@ -6,14 +6,12 @@ const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
 const expectedUpdatedAt = new Date('2026-08-05T10:00:00.000Z');
 
 function createClient(
-  current:
-    | {
-        id: string;
-        status: 'ACTIVE';
-        updatedAt: Date;
-        visibility: 'PRIVATE' | 'PUBLIC';
-      }
-    | null,
+  current: {
+    id: string;
+    status: 'ACTIVE';
+    updatedAt: Date;
+    visibility: 'PRIVATE' | 'PUBLIC';
+  } | null,
 ) {
   const updatedProgram = current
     ? { ...current, updatedAt: new Date('2026-08-05T10:01:00.000Z') }
@@ -27,8 +25,9 @@ function createClient(
     },
   };
   const client = {
-    $transaction: vi.fn(async (callback: (value: typeof transaction) => unknown) =>
-      callback(transaction),
+    $transaction: vi.fn(
+      async (callback: (value: typeof transaction) => unknown) =>
+        callback(transaction),
     ),
   } as unknown as PrismaClient;
 
@@ -53,7 +52,11 @@ describe('program visibility service', () => {
     expect(result).toMatchObject({ kind: 'SUCCESS' });
     expect(transaction.program.updateMany).toHaveBeenCalledWith({
       data: { visibility: 'PUBLIC' },
-      where: { id: programId, ownerId: actorUserId, updatedAt: expectedUpdatedAt },
+      where: {
+        id: programId,
+        ownerId: actorUserId,
+        updatedAt: expectedUpdatedAt,
+      },
     });
     expect(transaction.auditEvent.upsert).toHaveBeenCalledWith(
       expect.objectContaining({

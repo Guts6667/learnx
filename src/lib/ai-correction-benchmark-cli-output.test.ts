@@ -152,7 +152,9 @@ describe('benchmark CLI output artifacts', () => {
       loaded: autonomousLoaded,
       selection: selection(),
     });
-    const preflight = { primaryCallCount: 72 } as BenchmarkSupplierBudgetPreflight;
+    const preflight = {
+      primaryCallCount: 72,
+    } as BenchmarkSupplierBudgetPreflight;
 
     await writers.writeBudgetPreflight(preflight);
     expect(writtenJson()).toMatchObject({

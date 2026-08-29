@@ -8,10 +8,7 @@ import {
 } from '../../../../generated/prisma/client.js';
 import type { AuthEnvironment } from '../_lib/auth.js';
 import { ApiError } from '../_lib/errors.js';
-import {
-  encodeCursor,
-  InvalidCursorError,
-} from '../_lib/cursor-pagination.js';
+import { encodeCursor, InvalidCursorError } from '../_lib/cursor-pagination.js';
 import {
   createPrismaReviewsRepository,
   createReviewsApp,
@@ -85,8 +82,9 @@ describe('reviews Prisma repository', () => {
       reviewItem: { findFirst: vi.fn(async () => null), update },
     };
     const client = {
-      $transaction: vi.fn(async (operation: (value: typeof transaction) => unknown) =>
-        operation(transaction),
+      $transaction: vi.fn(
+        async (operation: (value: typeof transaction) => unknown) =>
+          operation(transaction),
       ),
     } as unknown as PrismaClient;
     const repository = createPrismaReviewsRepository(client);
@@ -103,31 +101,32 @@ describe('reviews Prisma repository', () => {
       persistedCompletedAt: new Date('2026-08-28T10:00:00.000Z'),
       expected: new Date('2026-08-28T10:00:00.000Z'),
     },
-  ])('completes owned reviews with persisted date $persistedCompletedAt', async ({
-    expected,
-    persistedCompletedAt,
-  }) => {
-    const transaction = {
-      reviewItem: {
-        findFirst: vi.fn(async () => ({ id: reviewId })),
-        update: vi.fn(async () => ({
-          completedAt: persistedCompletedAt,
-          id: reviewId,
-          status: ReviewStatus.COMPLETED,
-        })),
-      },
-    };
-    const client = {
-      $transaction: vi.fn(async (operation: (value: typeof transaction) => unknown) =>
-        operation(transaction),
-      ),
-    } as unknown as PrismaClient;
-    const repository = createPrismaReviewsRepository(client);
+  ])(
+    'completes owned reviews with persisted date $persistedCompletedAt',
+    async ({ expected, persistedCompletedAt }) => {
+      const transaction = {
+        reviewItem: {
+          findFirst: vi.fn(async () => ({ id: reviewId })),
+          update: vi.fn(async () => ({
+            completedAt: persistedCompletedAt,
+            id: reviewId,
+            status: ReviewStatus.COMPLETED,
+          })),
+        },
+      };
+      const client = {
+        $transaction: vi.fn(
+          async (operation: (value: typeof transaction) => unknown) =>
+            operation(transaction),
+        ),
+      } as unknown as PrismaClient;
+      const repository = createPrismaReviewsRepository(client);
 
-    await expect(
-      repository.complete(reviewId, userId, dueAt, true),
-    ).resolves.toMatchObject({ completedAt: expected });
-  });
+      await expect(
+        repository.complete(reviewId, userId, dueAt, true),
+      ).resolves.toMatchObject({ completedAt: expected });
+    },
+  );
 
   it('hydrates review metadata and computes every draft boundary', async () => {
     const reviews = [
@@ -329,31 +328,27 @@ describe('reviews API contracts', () => {
     },
     {
       expectedStatus: 409,
-      repositoryError: new ApiError(
-        'ACCOUNT_STATE_CONFLICT',
-        'Conflict.',
-        409,
-      ),
+      repositoryError: new ApiError('ACCOUNT_STATE_CONFLICT', 'Conflict.', 409),
     },
     {
       expectedStatus: 500,
       repositoryError: new Error('database unavailable'),
     },
-  ])('normalizes repository errors as $expectedStatus', async ({
-    expectedStatus,
-    repositoryError,
-  }) => {
-    const app = createReviewsApp({
-      authentication: authentication(),
-      repository: appRepository({
-        listPending: vi.fn().mockRejectedValue(repositoryError),
-      }),
-    });
+  ])(
+    'normalizes repository errors as $expectedStatus',
+    async ({ expectedStatus, repositoryError }) => {
+      const app = createReviewsApp({
+        authentication: authentication(),
+        repository: appRepository({
+          listPending: vi.fn().mockRejectedValue(repositoryError),
+        }),
+      });
 
-    const response = await app.request('/api/reviews');
+      const response = await app.request('/api/reviews');
 
-    expect(response.status).toBe(expectedStatus);
-  });
+      expect(response.status).toBe(expectedStatus);
+    },
+  );
 
   it.each([
     {

@@ -7,10 +7,7 @@ import type {
   AssessmentReadModel,
   ConceptAssessmentRepository,
 } from './types.js';
-import {
-  assessmentNotReady,
-  invalidAssessmentRequest,
-} from './validation.js';
+import { assessmentNotReady, invalidAssessmentRequest } from './validation.js';
 
 function addDays(date: Date, days: number): Date {
   return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);

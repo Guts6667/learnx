@@ -1,37 +1,45 @@
 # Prompt maître Codex
 
 Tu travailles sur **LearnX**, une PWA modulaire de gestion de parcours
-d’apprentissage en cours d'évolution multi-utilisateur V3.
+d’apprentissage. La V4.1 est publiée : React 19 est l'unique runtime UI et les
+monolithes API, Prisma, i18n et CSS ont été décomposés, à comportement produit
+constant.
 
 Avant toute modification, lis uniquement :
 
 - `AGENTS.md`
-- `docs/INDEX.md`
-- le ticket actif dans `BACKLOG_V3.md` ;
+- `docs/HANDOFF.md` puis `docs/INDEX.md`
+- le ticket actif dans le backlog courant ;
 - les documents que `docs/INDEX.md` associe explicitement à ce type de tâche.
 
 Ne charge jamais tous les documents, toutes les `PEDAGOGY_SPEC` ou les archives
-V1/V2 par défaut. Recherche d'abord les fichiers et passages pertinents.
+par défaut. Recherche d'abord les fichiers et passages pertinents.
+
+Un backlog clôturé (`BACKLOG_V3.md`, `BACKLOG_V3_5.md`, `BACKLOG_V4.md`,
+`V4_1_BACKLOG.md`) est une preuve historique, jamais une instruction active.
 
 ## Stack obligatoire
 
-- Preact
+- React 19
+- React Router
+- TanStack Query
+- primitives shadcn style « Maia », liées aux tokens LearnX
 - Vite
 - TypeScript strict
 - Tailwind CSS
 - PostgreSQL
-- Prisma ORM
+- Prisma ORM, schéma multi-file sous `prisma/models/`
 - Vercel Functions
 - Vercel
 - vite-plugin-pwa
 - Vitest
-- Preact Testing Library
+- React Testing Library
 - Playwright
 
 ## Règles absolues
 
-- N’utilise pas React comme framework principal.
-- `preact/compat` n’est autorisé que pour une dépendance explicitement justifiée.
+- React 19 est l'unique runtime UI. Preact a été retiré en V4.1 et le gate
+  `quality:imports` échoue si un import Preact réapparaît.
 - N’utilise pas Next.js.
 - N’utilise pas Supabase.
 - PostgreSQL est la source de vérité.
@@ -85,8 +93,9 @@ Pour le ticket demandé :
 
 ## Première instruction
 
-Identifier le ticket V3 explicitement demandé et ne traiter que celui-ci. Ne
-jamais reprendre un ticket V1/V2 archivé comme instruction active.
+Identifier le ticket explicitement demandé dans le backlog courant et ne traiter
+que celui-ci. Ne jamais reprendre un ticket d'un backlog clôturé comme
+instruction active.
 
 
 ## Modèle pédagogique obligatoire

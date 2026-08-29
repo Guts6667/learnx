@@ -6,9 +6,7 @@ describe('service worker cache cleanup', () => {
     const source = await readFile('public/sw-cache-cleanup.js', 'utf8');
     const deleteCache = vi.fn(async () => true);
     let activateListener:
-      | ((event: {
-          waitUntil(promise: Promise<unknown>): void;
-        }) => void)
+      | ((event: { waitUntil(promise: Promise<unknown>): void }) => void)
       | undefined;
     let cleanup: Promise<unknown> | undefined;
 

@@ -112,9 +112,9 @@ describe('reserveCredits', () => {
         status: CreditReservationStatus.RESERVED,
       },
     });
-    expect(transaction.creditReservationAllocation.create).toHaveBeenCalledTimes(
-      2,
-    );
+    expect(
+      transaction.creditReservationAllocation.create,
+    ).toHaveBeenCalledTimes(2);
     expect(
       transaction.creditReservationAllocation.create.mock.calls.map(
         ([request]) => request.data,

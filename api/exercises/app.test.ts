@@ -326,15 +326,16 @@ describe('exercise API', () => {
       `http://localhost/api/exercises/${exerciseId}/submissions`,
       { method: 'POST' },
     );
-    const submissionUrl =
-      `http://localhost/api/exercise-submissions/${submissionId}`;
+    const submissionUrl = `http://localhost/api/exercise-submissions/${submissionId}`;
     const oversized = 'x'.repeat(1_501);
 
     expect(
-      (await app.request(
-        submissionUrl,
-        jsonRequest({ contentMarkdown: oversized }),
-      )).status,
+      (
+        await app.request(
+          submissionUrl,
+          jsonRequest({ contentMarkdown: oversized }),
+        )
+      ).status,
     ).toBe(400);
     expect(state.submission?.contentMarkdown).toBe('');
 

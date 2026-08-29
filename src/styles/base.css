@@ -1,39 +1,9 @@
 ::selection {
-  background: color-mix(in srgb, var(--app-accent) 35%, transparent);
-  color: var(--app-text);
+  background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  color: var(--color-text);
 }
 
 :where(a, button, input, select, textarea):focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
-}
-
-[data-color-regime='paper'] {
-  --color-canvas: #f4f6fb;
-  --color-surface: #ffffff;
-  --color-surface-raised: #ffffff;
-  --color-surface-subtle: #e7edff;
-  --color-text: #17233b;
-  --color-text-muted: #647087;
-  --color-border: #d7deed;
-  --color-control-border: #98a6c0;
-  --color-accent: #3b5bd6;
-  --color-accent-text: #3150c5;
-  --color-action: #3b5bd6;
-  --color-action-hover: #2f4ec6;
-  --color-on-action: #ffffff;
-  --color-focus: #3b5bd6;
-  --color-success: #3150c5;
-  --color-warning: #8a5a24;
-  --color-danger: #a64738;
-  --color-disabled: #8c96a9;
-  --color-overlay: rgb(23 35 59 / 45%);
-  --app-accent: var(--color-accent);
-  --app-background: var(--color-canvas);
-  --app-border: var(--color-border);
-  --app-surface: var(--color-surface);
-  --app-surface-raised: var(--color-surface-raised);
-  --app-text: var(--color-text);
-  --app-text-muted: var(--color-text-muted);
-  color-scheme: light;
 }

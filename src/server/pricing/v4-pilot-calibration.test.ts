@@ -109,9 +109,7 @@ describe('V4 Writing pilot pricing calibration', () => {
     expect(migration).toContain(
       'DROP CONSTRAINT IF EXISTS "ai_pricing_catalog_version_format_check"',
     );
-    expect(migration).toContain(
-      '"version" ~ \'^[0-9]+[.][0-9]+[.][0-9]+$\'',
-    );
+    expect(migration).toContain('"version" ~ \'^[0-9]+[.][0-9]+[.][0-9]+$\'');
     expect(migration).toContain("'4.0.0'");
     expect(migration).toContain("'standard'");
     expect(migration).toContain('  1500,');

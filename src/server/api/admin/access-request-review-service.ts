@@ -1,6 +1,9 @@
 import { randomUUID } from 'node:crypto';
 
-import type { PrismaClient, Role } from '../../../../generated/prisma/client.js';
+import type {
+  PrismaClient,
+  Role,
+} from '../../../../generated/prisma/client.js';
 import {
   createAccessInvitationToken,
   getAccessInvitationTtlMilliseconds,
@@ -18,9 +21,7 @@ import type {
   AccessRequestReviewResult,
 } from './access-request-review-types.js';
 
-export {
-  type AccessRequestReviewItem,
-} from './access-request-review-types.js';
+export { type AccessRequestReviewItem } from './access-request-review-types.js';
 
 export interface AccessRequestReviewService {
   approve(

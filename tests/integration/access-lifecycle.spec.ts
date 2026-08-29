@@ -14,12 +14,12 @@ import {
 } from '../../src/server/api/_lib/email-verification.js';
 import { createPrismaAccessRequestReviewService } from '../../src/server/api/admin/access-request-review-service.js';
 import { createPrismaAccountAdministrationService } from '../../src/server/api/admin/account-administration-service.js';
-import {
-  getSessionUser,
-  loginUser,
-} from '../../src/server/api/_lib/auth.js';
+import { getSessionUser, loginUser } from '../../src/server/api/_lib/auth.js';
 import { hashPassword } from '../../src/server/api/_lib/password.js';
-import { hashSessionToken, SESSION_COOKIE_NAME } from '../../src/server/api/_lib/session.js';
+import {
+  hashSessionToken,
+  SESSION_COOKIE_NAME,
+} from '../../src/server/api/_lib/session.js';
 
 function uniqueValue(label: string): string {
   const runId = process.env.LEARNX_INTEGRATION_RUN_ID ?? 'local';
@@ -477,9 +477,9 @@ test('suspension réelle multi-session, conservation et réactivation', async ({
       account: { accountStatus: 'SUSPENDED' },
       kind: 'APPLIED',
     });
-    expect(
-      await prisma.session.count({ where: { userId: learner.id } }),
-    ).toBe(0);
+    expect(await prisma.session.count({ where: { userId: learner.id } })).toBe(
+      0,
+    );
     expect(await prisma.note.count({ where: { id: note.id } })).toBe(1);
     await expect(
       getSessionUser(
@@ -490,7 +490,9 @@ test('suspension réelle multi-session, conservation et réactivation', async ({
         }),
       ),
     ).resolves.toBeNull();
-    await expect(loginUser({ email: learner.email, password })).rejects.toMatchObject({
+    await expect(
+      loginUser({ email: learner.email, password }),
+    ).rejects.toMatchObject({
       code: 'INVALID_CREDENTIALS',
     });
     await expect(
@@ -520,10 +522,12 @@ test('suspension réelle multi-session, conservation et réactivation', async ({
       account: { accountStatus: 'ACTIVE', suspendedAt: null },
       kind: 'APPLIED',
     });
-    expect(
-      await prisma.session.count({ where: { userId: learner.id } }),
-    ).toBe(0);
-    await expect(loginUser({ email: learner.email, password })).resolves.toMatchObject({
+    expect(await prisma.session.count({ where: { userId: learner.id } })).toBe(
+      0,
+    );
+    await expect(
+      loginUser({ email: learner.email, password }),
+    ).resolves.toMatchObject({
       user: { id: learner.id },
     });
   } finally {

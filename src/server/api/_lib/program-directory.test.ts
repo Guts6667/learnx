@@ -150,10 +150,7 @@ describe('program directory service', () => {
     expect(secondPage.items[0]?.id).toBe(secondProgramId);
     expect(findMany.mock.calls[1]?.[0].where.AND).toEqual([
       {
-        OR: [
-          { position: { gt: 1 } },
-          { id: { gt: programId }, position: 1 },
-        ],
+        OR: [{ position: { gt: 1 } }, { id: { gt: programId }, position: 1 }],
       },
     ]);
 

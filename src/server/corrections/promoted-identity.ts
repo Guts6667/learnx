@@ -1,4 +1,3 @@
-
 /**
  * Identité de correction promue au gate de développement le 24 août 2026
  * (learnx-french-text-correction-v3-1 : Sonnet 4.6 route Anthropic épinglée,

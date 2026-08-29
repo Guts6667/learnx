@@ -14,6 +14,20 @@
 - Cadrage : rapport et plan Head of AI du 29 août 2026, validés par le
   Propriétaire ; contrat qualité `docs/V4_5_AI_QUALITY_CONTRACT.md` ; addendum
   `ADR_003` du 29 août 2026.
+- Ordonnancement produit (décision du Propriétaire, 29 août 2026) : V4.2
+  (design) puis V4.3 (pipeline programmes) sont séquencées avant V4.5. Les
+  tickets V4.5 peuvent être préparés et exécutés en parallèle lorsqu'ils ne
+  touchent pas les surfaces de V4.2/V4.3 ; leur release reste après.
+
+> **Écart connu, traité par V4.5-110 et V4.5-111.** Les deux manques que
+> V4.5-001 et V4.5-002 décrivent sont toujours littéralement présents dans le
+> code livré : `detectsHardConstraintMismatch()` dans
+> `src/server/corrections/correction-outcome.ts` ajoute seulement un signal de
+> monitoring `HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED` au lieu d'imposer le
+> niveau plancher du critère, et la garde de score dérive du score déclaré par
+> le modèle avec une bande de ±5 points issue de `promoted-identity.ts`. Le
+> pilote reste fermé par défaut derrière deux drapeaux indépendants, donc rien
+> n'est exposé sans ouverture explicite.
 
 ## Objet
 

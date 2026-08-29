@@ -89,9 +89,10 @@ export function serializeLessonSummary<T extends LessonSummaryRecord>(
   };
 }
 
-function serializeModules<
-  T extends { lessons: LessonSummaryRecord[] },
->(modules: T[], isLocked = false) {
+function serializeModules<T extends { lessons: LessonSummaryRecord[] }>(
+  modules: T[],
+  isLocked = false,
+) {
   return modules.map((module) => {
     const lessons = module.lessons.map((lesson) =>
       serializeLessonSummary(lesson, isLocked),

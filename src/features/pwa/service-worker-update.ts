@@ -1,13 +1,7 @@
 interface ServiceWorkerControllerSource {
   readonly controller: ServiceWorker | null;
-  addEventListener(
-    type: 'controllerchange',
-    listener: EventListener,
-  ): void;
-  removeEventListener(
-    type: 'controllerchange',
-    listener: EventListener,
-  ): void;
+  addEventListener(type: 'controllerchange', listener: EventListener): void;
+  removeEventListener(type: 'controllerchange', listener: EventListener): void;
 }
 
 /**

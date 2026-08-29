@@ -33,17 +33,14 @@ export type CorrectionProviderRequest = {
 };
 
 export interface CorrectionProviderAdapter {
-  readonly kind:
-    | 'OPENROUTER_CHAT'
-    | 'OPENAI_RESPONSES'
-    | 'ANTHROPIC_MESSAGES';
-  execute(request: CorrectionProviderRequest): Promise<CorrectionProviderResult>;
+  readonly kind: 'OPENROUTER_CHAT' | 'OPENAI_RESPONSES' | 'ANTHROPIC_MESSAGES';
+  execute(
+    request: CorrectionProviderRequest,
+  ): Promise<CorrectionProviderResult>;
 }
 
 type ProviderTransportCode =
-  | 'PROVIDER_HTTP_ERROR'
-  | 'PROVIDER_NETWORK_ERROR'
-  | 'PROVIDER_TIMEOUT';
+  'PROVIDER_HTTP_ERROR' | 'PROVIDER_NETWORK_ERROR' | 'PROVIDER_TIMEOUT';
 
 type ModelOutputCode =
   | 'MODEL_OUTPUT_EMPTY'
@@ -69,7 +66,10 @@ export class CorrectionProviderError extends Error {
   readonly providerRoute?: string;
   readonly status?: number;
 
-  constructor(code: ProviderTransportCode, metadata: ProviderFailureMetadata = {}) {
+  constructor(
+    code: ProviderTransportCode,
+    metadata: ProviderFailureMetadata = {},
+  ) {
     super(code);
     this.name = 'CorrectionProviderError';
     this.latencyMs = metadata.latencyMs;
@@ -104,18 +104,16 @@ function boundedRaw(value: string): string {
   return value.slice(0, 20_000);
 }
 
-function optionalTemperature(
-  profile: CorrectionProviderRequest['profile'],
-): { temperature?: 0 } {
-  return profile.temperature === null ? {} : { temperature: profile.temperature };
+function optionalTemperature(profile: CorrectionProviderRequest['profile']): {
+  temperature?: 0;
+} {
+  return profile.temperature === null
+    ? {}
+    : { temperature: profile.temperature };
 }
 
-function optionalReasoning(
-  profile: CorrectionProviderRequest['profile'],
-): {
-  reasoning?:
-    | { effort: 'minimal' | 'low' }
-    | { max_tokens: number };
+function optionalReasoning(profile: CorrectionProviderRequest['profile']): {
+  reasoning?: { effort: 'minimal' | 'low' } | { max_tokens: number };
 } {
   return profile.reasoning.effort === 'OFF'
     ? {}
@@ -124,8 +122,7 @@ function optionalReasoning(
           profile.reasoning.budgetTokens === null
             ? {
                 effort: profile.reasoning.effort.toLocaleLowerCase() as
-                  | 'minimal'
-                  | 'low',
+                  'minimal' | 'low',
               }
             : { max_tokens: profile.reasoning.budgetTokens },
       };
@@ -222,7 +219,9 @@ const openRouterResponseSchema = z
       .object({
         completion_tokens: z.number().int().nonnegative(),
         completion_tokens_details: z
-          .object({ reasoning_tokens: z.number().int().nonnegative().optional() })
+          .object({
+            reasoning_tokens: z.number().int().nonnegative().optional(),
+          })
           .passthrough()
           .optional(),
         cost: z.number().nonnegative().optional(),
@@ -257,7 +256,9 @@ const openAiResponseSchema = z
         input_tokens: z.number().int().nonnegative(),
         output_tokens: z.number().int().nonnegative(),
         output_tokens_details: z
-          .object({ reasoning_tokens: z.number().int().nonnegative().optional() })
+          .object({
+            reasoning_tokens: z.number().int().nonnegative().optional(),
+          })
           .passthrough()
           .optional(),
       })
@@ -400,7 +401,8 @@ function parseStructuredText(input: {
 function openRouterUsage(
   usage: z.infer<typeof openRouterResponseSchema>['usage'],
 ): CorrectionProviderUsage {
-  const reasoningTokens = usage.completion_tokens_details?.reasoning_tokens ?? 0;
+  const reasoningTokens =
+    usage.completion_tokens_details?.reasoning_tokens ?? 0;
   return {
     ...(usage.cost === undefined ? {} : { actualCostUsd: usage.cost }),
     costSource: usage.cost === undefined ? 'ESTIMATED' : 'ACTUAL',
@@ -478,7 +480,10 @@ const openAiAdapter: CorrectionProviderAdapter = {
       costSource: 'ESTIMATED',
       inputTokens: parsed.usage.input_tokens,
       reasoningTokens,
-      visibleOutputTokens: Math.max(0, parsed.usage.output_tokens - reasoningTokens),
+      visibleOutputTokens: Math.max(
+        0,
+        parsed.usage.output_tokens - reasoningTokens,
+      ),
     };
     const metadata = {
       latencyMs: result.latencyMs,

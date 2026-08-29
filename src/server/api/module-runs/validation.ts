@@ -16,9 +16,9 @@ export function invalidRestartRequest() {
 export function isUniqueConstraintError(error: unknown): boolean {
   return Boolean(
     error &&
-      typeof error === 'object' &&
-      'code' in error &&
-      error.code === 'P2002',
+    typeof error === 'object' &&
+    'code' in error &&
+    error.code === 'P2002',
   );
 }
 

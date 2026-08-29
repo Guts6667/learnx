@@ -13,8 +13,8 @@ export async function expectNoSeriousA11yViolations(
   ]);
   if (scope) builder = builder.include(scope);
   const results = await builder.analyze();
-  const blockingViolations = results.violations.filter(({ impact }) =>
-    impact === 'serious' || impact === 'critical',
+  const blockingViolations = results.violations.filter(
+    ({ impact }) => impact === 'serious' || impact === 'critical',
   );
 
   expect(

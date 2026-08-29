@@ -31,9 +31,9 @@ const catalogQuerySchema = directoryQuerySchema.extend({
 });
 
 const enrolledQuerySchema = directoryQuerySchema.extend({
-  status: z.nativeEnum(ProgramEnrollmentStatus).default(
-    ProgramEnrollmentStatus.ACTIVE,
-  ),
+  status: z
+    .nativeEnum(ProgramEnrollmentStatus)
+    .default(ProgramEnrollmentStatus.ACTIVE),
 });
 
 const programIdentifierSchema = z.string().uuid();

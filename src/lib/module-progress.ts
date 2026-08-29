@@ -1,8 +1,5 @@
 type ModuleProgressStatus =
-  | 'AVAILABLE'
-  | 'COMPLETED'
-  | 'IN_PROGRESS'
-  | 'LOCKED';
+  'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
 
 export interface ModuleLessonProgress {
   percent: number;
@@ -30,15 +27,17 @@ export function calculateModuleProgress(
     lessons.reduce((total, lesson) => total + clampPercent(lesson.percent), 0) /
     lessons.length;
   if (isLocked) return { percent, status: 'LOCKED' };
-  const isCompleted = lessons.every(
-    (lesson) => lesson.status === 'COMPLETED',
-  );
+  const isCompleted = lessons.every((lesson) => lesson.status === 'COMPLETED');
   const hasStarted = lessons.some(
     (lesson) => lesson.percent > 0 || lesson.status !== 'AVAILABLE',
   );
 
   return {
     percent,
-    status: isCompleted ? 'COMPLETED' : hasStarted ? 'IN_PROGRESS' : 'AVAILABLE',
+    status: isCompleted
+      ? 'COMPLETED'
+      : hasStarted
+        ? 'IN_PROGRESS'
+        : 'AVAILABLE',
   };
 }

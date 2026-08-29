@@ -11,9 +11,7 @@ import type {
   CurriculumEditService,
 } from './curriculum-edit-types.js';
 
-export type {
-  CurriculumEditService,
-} from './curriculum-edit-types.js';
+export type { CurriculumEditService } from './curriculum-edit-types.js';
 
 function isReadyForPublication(lesson: LessonPublicationState) {
   return lesson.concepts.every((concept) => concept.assessments.length > 0);

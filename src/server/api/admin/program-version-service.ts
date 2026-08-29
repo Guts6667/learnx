@@ -1,9 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import {
-  Prisma,
-  ProgramStatus,
-} from '../../../../generated/prisma/client.js';
+import { Prisma, ProgramStatus } from '../../../../generated/prisma/client.js';
 
 const programSnapshotInclude = {
   stages: {
@@ -99,14 +96,14 @@ interface JsonObject {
   [key: string]: JsonValue;
 }
 
-const volatileKeys = new Set([
-  'createdAt',
-  'publishedVersionId',
-  'updatedAt',
-]);
+const volatileKeys = new Set(['createdAt', 'publishedVersionId', 'updatedAt']);
 
 function normalizeSnapshotValue(value: unknown): JsonValue {
-  if (value === null || typeof value === 'boolean' || typeof value === 'string') {
+  if (
+    value === null ||
+    typeof value === 'boolean' ||
+    typeof value === 'string'
+  ) {
     return value;
   }
   if (typeof value === 'number') return value;

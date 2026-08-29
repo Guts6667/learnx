@@ -8,6 +8,7 @@
 | Intégration | transactions, repositories, permissions et concurrence | Playwright/runner sur branche Neon jetable |
 | E2E développement | routes, responsive, accessibilité et catalogues internes | Playwright multi-projets |
 | E2E production | bundle livré, sans routes de design | Playwright production config |
+| Références visuelles | dérive visuelle d'un changement de design system | Playwright `toHaveScreenshot`, pré-vol local |
 | Statique | types, lint, imports, cycles et code mort | TypeScript, ESLint, contrôle imports, knip |
 | Supply chain | vulnérabilités de production | `pnpm audit --prod` |
 
@@ -31,6 +32,33 @@ La chaîne consolidée est `pnpm quality:v4.1:final`. Elle exige 80 % sur les
 quatre métriques globales et 90 % lines sur auth/accès,
 correction/pricing/crédits/réconciliation, progression/évaluations et
 autorisations admin.
+
+## Références visuelles
+
+`pnpm test:visual` compare 30 captures — landing, connexion, demande d'accès, 404,
+Aujourd'hui, Mes parcours, Découvrir, programme, leçon et notes — à 390, 768 et
+1440 px. Les surfaces authentifiées réutilisent le mock déterministe
+`tests/e2e/journey-api.ts`, donc les pixels ne dépendent d'aucune base.
+
+C'est un **pré-vol local, pas un gate CI** : les captures dépendent de la
+plateforme et les références versionnées sont produites sur macOS. Les rendre
+bloquantes en CI exige de générer des références Linux avec
+`--update-snapshots` sur un runner Linux, puis de les committer.
+
+Usage pendant un travail de design :
+
+```bash
+pnpm test:visual              # avant le changement : doit être vert
+# … modifier tokens, typographie ou palette …
+pnpm test:visual              # lire chaque écart et l'accepter délibérément
+pnpm test:visual:update       # seulement après revue des écarts
+```
+
+La tolérance est calibrée : `threshold: 0.01` par pixel et un ratio de
+`0.0005`. Elle a été vérifiée dans les deux sens — un simple changement d'accent
+de marque (`#3b5bd6` → `#4F52D9`) fait échouer les 10 captures d'un projet, et
+une exécution sans changement reste verte. Une tolérance plus permissive
+masquait exactement ce changement.
 
 ## Environnements
 

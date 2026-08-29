@@ -82,15 +82,16 @@ function createDatabase() {
       ),
     },
     programVersion: {
-      findFirst: vi.fn(
-        async (): Promise<{ id: string } | null> => ({ id: sourceVersionId }),
-      ),
+      findFirst: vi.fn(async (): Promise<{ id: string } | null> => ({
+        id: sourceVersionId,
+      })),
     },
   };
   const client = {
     ...transaction,
-    $transaction: async <T>(operation: (client: typeof transaction) => Promise<T>) =>
-      operation(transaction),
+    $transaction: async <T>(
+      operation: (client: typeof transaction) => Promise<T>,
+    ) => operation(transaction),
   } as unknown as PrismaClient;
   return { client, transaction };
 }
@@ -98,7 +99,10 @@ function createDatabase() {
 describe('translation workflow service', () => {
   it('requires all human reviews and QA before approval', async () => {
     const { client, transaction } = createDatabase();
-    const service = createPrismaTranslationWorkflowService(client, () => reviewedAt);
+    const service = createPrismaTranslationWorkflowService(
+      client,
+      () => reviewedAt,
+    );
     let result = await service.transition(actorUserId, programId, {
       action: 'CONFIGURE',
       expectedVersion: 0,
@@ -152,7 +156,10 @@ describe('translation workflow service', () => {
 
   it('rejects stale transitions and a source outside the canonical French program', async () => {
     const { client, transaction } = createDatabase();
-    const service = createPrismaTranslationWorkflowService(client, () => reviewedAt);
+    const service = createPrismaTranslationWorkflowService(
+      client,
+      () => reviewedAt,
+    );
     transaction.programVersion.findFirst.mockResolvedValueOnce(null);
     expect(
       await service.transition(actorUserId, programId, {

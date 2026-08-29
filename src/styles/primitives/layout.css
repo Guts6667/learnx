@@ -1,7 +1,7 @@
 .app-safe-header {
   padding-top: calc(0.625rem + env(safe-area-inset-top));
   padding-right: calc(1rem + env(safe-area-inset-right));
-  padding-bottom: 0.625rem;
+  padding-bottom: var(--space-2-5);
   padding-left: calc(1rem + env(safe-area-inset-left));
 }
 
@@ -14,7 +14,7 @@
   min-height: 2.75rem;
   align-items: center;
   color: var(--color-text);
-  font-size: 1.0625rem;
+  font-size: var(--text-md);
   font-weight: 600;
   text-decoration: none;
 }
@@ -65,7 +65,7 @@
 .admin-toolbar {
   display: grid;
   min-width: 0;
-  gap: 1rem;
+  gap: var(--space-4);
   align-items: end;
 }
 
@@ -80,7 +80,7 @@
 
 .admin-collection-item {
   min-width: 0;
-  padding-block: 1.25rem;
+  padding-block: var(--space-5);
 }
 
 .credit-balance-row {
@@ -98,7 +98,7 @@
 
 .credit-balance-row strong {
   font-family: var(--font-editorial);
-  font-size: 1.5rem;
+  font-size: var(--text-2xl);
   font-weight: 500;
 }
 
@@ -126,11 +126,11 @@
 
 .admin-credit-monitoring dt {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-base);
 }
 
 .admin-credit-monitoring dd {
-  font-size: 1.125rem;
+  font-size: var(--text-lg);
   font-weight: 500;
 }
 
@@ -155,7 +155,7 @@
   display: block;
   margin-bottom: var(--space-1);
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-base);
 }
 
 .credit-admin-current,
@@ -216,7 +216,7 @@
 
 .page-shell {
   display: grid;
-  gap: 1.5rem;
+  gap: var(--space-6);
   grid-template-columns: minmax(0, 1fr);
   min-width: 0;
 }
@@ -227,27 +227,27 @@
 
 .page-eyebrow {
   color: var(--color-accent-text);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .page-title {
-  margin-top: 0.75rem;
+  margin-top: var(--space-3);
   min-width: 0;
   font-size: clamp(2rem, 5vw, 3rem);
   font-family: var(--font-editorial);
-  font-weight: 650;
-  letter-spacing: -0.035em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1.08;
   overflow-wrap: break-word;
 }
 
 .page-description {
-  margin-top: 1rem;
+  margin-top: var(--space-4);
   max-width: 65ch;
-  color: var(--app-text-muted);
+  color: var(--color-text-muted);
   line-height: 1.75;
 }
 
@@ -260,12 +260,12 @@
 @media (min-width: 64rem) {
   .app-safe-header,
   .app-safe-main {
-    padding-right: 2rem;
+    padding-right: var(--space-8);
     padding-left: calc(var(--app-navigation-width) + 2rem);
   }
 
   .app-safe-main {
-    padding-bottom: 3rem;
+    padding-bottom: var(--space-12);
   }
 
   .ui-main-navigation__link[aria-current='page'] {
@@ -276,7 +276,7 @@
 @media (min-width: 90rem) {
   .app-safe-header,
   .app-safe-main {
-    padding-right: 3rem;
+    padding-right: var(--space-12);
     padding-left: calc(var(--app-navigation-width) + 3rem);
   }
 }

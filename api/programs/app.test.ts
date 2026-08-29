@@ -431,9 +431,7 @@ describe('curriculum draft preview authorization', () => {
       program: {
         stages: [
           {
-            modules: [
-              { progress: { percent: 0, status: 'AVAILABLE' } },
-            ],
+            modules: [{ progress: { percent: 0, status: 'AVAILABLE' } }],
             progress: { percent: 0, status: 'AVAILABLE' },
           },
         ],

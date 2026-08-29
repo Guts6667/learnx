@@ -3,10 +3,7 @@ import {
   createPrismaModuleRestartDataRepository,
   type PrismaModuleRestartDataRepository,
 } from './module-repository.js';
-import type {
-  ModuleRestartRepository,
-  ModuleRestartResult,
-} from './types.js';
+import type { ModuleRestartRepository, ModuleRestartResult } from './types.js';
 import { isUniqueConstraintError } from './validation.js';
 
 async function restartInTransaction(
@@ -24,7 +21,9 @@ async function restartInTransaction(
   );
   if (existing) {
     const preview = await repository.buildPreview(moduleId, userId);
-    return preview ? { ...preview, idempotent: true, runId: existing.id } : null;
+    return preview
+      ? { ...preview, idempotent: true, runId: existing.id }
+      : null;
   }
   let current = await repository.getCurrentRun(moduleId, userId);
   if (!current) {

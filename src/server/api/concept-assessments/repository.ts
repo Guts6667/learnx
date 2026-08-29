@@ -70,9 +70,10 @@ function getProgressWrite(
   const wasValidated = current?.status === ConceptProgressStatus.VALIDATED;
   return {
     bestScore,
-    status: input.passed || wasValidated
-      ? ConceptProgressStatus.VALIDATED
-      : ConceptProgressStatus.NEEDS_REVIEW,
+    status:
+      input.passed || wasValidated
+        ? ConceptProgressStatus.VALIDATED
+        : ConceptProgressStatus.NEEDS_REVIEW,
     validatedAt: input.passed
       ? input.submittedAt
       : (current?.validatedAt ?? null),
@@ -179,8 +180,7 @@ async function recordAttemptTransaction(
   return { attempt: { ...attempt, runSequence: moduleRun.sequence }, progress };
 }
 
-class PrismaConceptAssessmentRepository
-  implements ConceptAssessmentRepository {
+class PrismaConceptAssessmentRepository implements ConceptAssessmentRepository {
   constructor(
     private readonly client: PrismaClient,
     private readonly recalculateProgress: RecalculateProgress,
@@ -215,7 +215,9 @@ class PrismaConceptAssessmentRepository
             lesson: {
               select: {
                 id: true,
-                module: { select: { stage: { select: { id: true, programId: true } } } },
+                module: {
+                  select: { stage: { select: { id: true, programId: true } } },
+                },
               },
             },
           },
@@ -244,10 +246,16 @@ class PrismaConceptAssessmentRepository
     };
   }
 
-  async listAttempts(input: Parameters<ConceptAssessmentRepository['listAttempts']>[0]) {
+  async listAttempts(
+    input: Parameters<ConceptAssessmentRepository['listAttempts']>[0],
+  ) {
     const publication = input.preview ? {} : { isPublished: true };
     const context = `${input.userId}:${input.assessmentId}:${input.preview}`;
-    const cursor = parseCursor(input.cursor, 'concept-assessment-attempts', context);
+    const cursor = parseCursor(
+      input.cursor,
+      'concept-assessment-attempts',
+      context,
+    );
     const cursorDate = cursor ? new Date(cursor.value) : undefined;
     if (cursorDate && Number.isNaN(cursorDate.getTime())) {
       throw new InvalidCursorError();
@@ -264,18 +272,23 @@ class PrismaConceptAssessmentRepository
                 ...publication,
                 stage: {
                   ...publication,
-                  program: learningOrPreviewProgramWhere(input.userId, input.preview),
+                  program: learningOrPreviewProgramWhere(
+                    input.userId,
+                    input.preview,
+                  ),
                 },
               },
             },
           },
         },
-        ...(cursor && cursorDate ? {
-          OR: [
-            { submittedAt: { lt: cursorDate } },
-            { id: { lt: cursor.id }, submittedAt: cursorDate },
-          ],
-        } : {}),
+        ...(cursor && cursorDate
+          ? {
+              OR: [
+                { submittedAt: { lt: cursorDate } },
+                { id: { lt: cursor.id }, submittedAt: cursorDate },
+              ],
+            }
+          : {}),
       },
       orderBy: [{ submittedAt: 'desc' }, { id: 'desc' }],
       include: { moduleRun: { select: { sequence: true } } },
@@ -285,7 +298,8 @@ class PrismaConceptAssessmentRepository
       encodeCursor('concept-assessment-attempts', context, {
         id: attempt.id,
         value: attempt.submittedAt.toISOString(),
-      }));
+      }),
+    );
     return {
       items: page.items.map(({ moduleRun, ...attempt }) => ({
         ...attempt,
@@ -297,7 +311,8 @@ class PrismaConceptAssessmentRepository
 
   recordAttempt(input: RecordAttemptInput) {
     return runSerializableProgressTransaction(this.client, (transaction) =>
-      recordAttemptTransaction(transaction, input, this.recalculateProgress));
+      recordAttemptTransaction(transaction, input, this.recalculateProgress),
+    );
   }
 }
 

@@ -16,3 +16,4 @@ generated/
 .DS_Store
 .vercel
 benchmarks/ai-correction/results/
+.mcp.json

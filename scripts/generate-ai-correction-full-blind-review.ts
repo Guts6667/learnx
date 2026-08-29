@@ -311,8 +311,7 @@ function finalAttempts(
     const delivered = [...ordered]
       .reverse()
       .find(
-        (attempt) =>
-          attempt.status === 'VALID' && attempt.output !== undefined,
+        (attempt) => attempt.status === 'VALID' && attempt.output !== undefined,
       );
     const selected = delivered ?? ordered.at(-1);
     if (!selected) {

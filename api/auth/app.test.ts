@@ -370,17 +370,14 @@ describe('auth API', () => {
     if (!user) throw new Error('Expected registered user.');
     user.accountStatus = 'SUSPENDED';
 
-    const loginResponse = await app.request(
-      'http://localhost/api/auth/login',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email: user.email,
-          password: 'correct-horse-battery-staple',
-        }),
-        headers: { 'content-type': 'application/json' },
-      },
-    );
+    const loginResponse = await app.request('http://localhost/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: user.email,
+        password: 'correct-horse-battery-staple',
+      }),
+      headers: { 'content-type': 'application/json' },
+    });
     const sessionResponse = await app.request(
       'http://localhost/api/auth/session',
       { headers: { cookie: getSessionCookie(registerResponse) } },
@@ -606,10 +603,7 @@ describe('auth API', () => {
     );
 
     await expect(
-      secondInstance.assertAllowed(
-        '203.0.113.1:learner@example.com',
-        testNow,
-      ),
+      secondInstance.assertAllowed('203.0.113.1:learner@example.com', testNow),
     ).rejects.toMatchObject({
       code: 'TOO_MANY_LOGIN_ATTEMPTS',
       status: 429,

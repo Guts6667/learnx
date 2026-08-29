@@ -30,7 +30,10 @@ export interface AccessRequestReviewRepository {
     input: { expectedVersion: number; role: Role },
     invitation: InvitationMaterial,
   ): Promise<AccessRequestReviewResult>;
-  invalidateInvitation(invitationId: string, invalidatedAt: Date): Promise<void>;
+  invalidateInvitation(
+    invitationId: string,
+    invalidatedAt: Date,
+  ): Promise<void>;
   list(filters: AccessRequestReviewFilters): Promise<AccessRequestReviewPage>;
   reject(
     actorUserId: string,
@@ -322,9 +325,7 @@ async function resendInvitation(
   return { kind: 'APPLIED', request: toReviewItem(updated) };
 }
 
-class PrismaAccessRequestReviewRepository
-  implements AccessRequestReviewRepository
-{
+class PrismaAccessRequestReviewRepository implements AccessRequestReviewRepository {
   public constructor(private readonly client: PrismaClient) {}
 
   approve(

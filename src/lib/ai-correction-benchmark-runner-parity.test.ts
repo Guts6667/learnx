@@ -165,12 +165,13 @@ describe('AI correction benchmark runner parity', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     vi.resetModules();
 
-    const publicScript = await import(
-      '../../scripts/run-ai-correction-benchmark.ts'
-    );
+    const publicScript =
+      await import('../../scripts/run-ai-correction-benchmark.ts');
 
     expect(log).not.toHaveBeenCalled();
-    expect(Object.keys(publicScript).sort()).toEqual(historicalScriptRuntimeExports);
+    expect(Object.keys(publicScript).sort()).toEqual(
+      historicalScriptRuntimeExports,
+    );
     log.mockRestore();
   });
 

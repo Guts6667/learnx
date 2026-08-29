@@ -47,9 +47,11 @@
     },
     "pwaPrecache": {
       "scope": "Files referenced by Workbox precacheAndRoute in dist/sw.js; byte count uses emitted file sizes before transfer compression.",
-      "observedEntries": 128,
-      "observedBytes": 1246568,
-      "maxRegressionPercent": 10
+      "observedEntries": 139,
+      "observedBytes": 1357197,
+      "maxRegressionPercent": 10,
+      "rebaselinedAt": "2026-08-29",
+      "rebaselineReason": "V4.2 ships four font files on purpose: DM Sans 600/700, which the stylesheet already asked for and font-synthesis: none prevented the browser from faking, and Plus Jakarta Sans 600/700 as the display face. Measured against the V4.1 baseline this left one entry of headroom, so an unrelated asset would have failed the gate and invited a hurried raise. Re-measured at the V4.2 design commit; the 10% allowance still guards accidental growth from here."
     },
     "totalDiagnostic": {
       "scope": "All JavaScript and CSS files emitted below dist, including dynamic chunks, PWA files and public research assets.",

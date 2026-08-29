@@ -15,6 +15,8 @@
     "test:coverage:v4.1": "NODE_OPTIONS=--no-experimental-webstorage LEARNX_V4_1_QUALITY_MODE=final vitest run --coverage",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:visual": "playwright test --config=playwright.visual.config.ts",
+    "test:visual:update": "playwright test --config=playwright.visual.config.ts --update-snapshots",
     "test:e2e:production": "playwright test --config=playwright.production.config.ts",
     "test:e2e:research": "playwright test tests/e2e/research-journal.spec.ts --project=desktop-chromium",
     "test:integration": "node --import tsx scripts/run-integration-tests.ts",
@@ -49,14 +51,12 @@
     "quality:airtable": "tsx scripts/check-v4-1-airtable.ts",
     "quality:prepare": "pnpm prisma:generate",
     "quality:security": "pnpm audit --audit-level=high --prod",
-    "quality:v4.1:baseline": "pnpm quality:prepare && pnpm i18n:check && pnpm lint && pnpm quality:imports:baseline && pnpm test:coverage:baseline && pnpm quality:coverage:critical:report && pnpm build && pnpm quality:bundle && pnpm quality:security",
-    "quality:v4.1:final": "pnpm quality:prepare && pnpm i18n:check && pnpm lint && pnpm quality:imports:v4.1 && pnpm test:coverage:v4.1 && pnpm quality:coverage:critical && pnpm quality:dead-code && pnpm build && pnpm quality:bundle && pnpm quality:security"
+    "quality:v4.1:baseline": "pnpm quality:prepare && pnpm i18n:check && pnpm format:check && pnpm lint && pnpm quality:imports:baseline && pnpm test:coverage:baseline && pnpm quality:coverage:critical:report && pnpm build && pnpm quality:bundle && pnpm quality:security",
+    "quality:v4.1:final": "pnpm quality:prepare && pnpm i18n:check && pnpm format:check && pnpm lint && pnpm quality:imports:v4.1 && pnpm test:coverage:v4.1 && pnpm quality:coverage:critical && pnpm quality:dead-code && pnpm build && pnpm quality:bundle && pnpm quality:security"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {
     "@fontsource/dm-sans": "^5.3.0",
-    "@fontsource/manrope": "^5.3.0",
-    "@fontsource/source-serif-4": "^5.3.0",
     "@prisma/adapter-neon": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "@radix-ui/react-dialog": "1.1.23",
@@ -75,6 +75,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^10.0.1",
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
     "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",

@@ -44,45 +44,42 @@ describe('Resend public lead email provider', () => {
       purpose: 'LAUNCH_UPDATES' as const,
       subject: 'Confirme ton suivi du lancement LearnX',
     },
-  ])('renders $locale $purpose transactional copy', async ({
-    locale,
-    purpose,
-    subject,
-  }) => {
-    const fetchMock = vi.fn<typeof fetch>(
-      async () => new Response(null, { status: 202 }),
-    );
-    globalThis.fetch = fetchMock;
-    const provider = createResendPublicLeadEmailProvider({
-      apiKey: 'resend-key',
-      from: 'LearnX <hello@learn-x.app>',
-    });
+  ])(
+    'renders $locale $purpose transactional copy',
+    async ({ locale, purpose, subject }) => {
+      const fetchMock = vi.fn<typeof fetch>(
+        async () => new Response(null, { status: 202 }),
+      );
+      globalThis.fetch = fetchMock;
+      const provider = createResendPublicLeadEmailProvider({
+        apiKey: 'resend-key',
+        from: 'LearnX <hello@learn-x.app>',
+      });
 
-    await provider.send(emailInput(locale, purpose));
+      await provider.send(emailInput(locale, purpose));
 
-    const request = fetchMock.mock.calls[0]?.[1];
-    const body = JSON.parse(String(request?.body)) as {
-      html: string;
-      subject: string;
-      text: string;
-      to: string[];
-    };
-    expect(body).toMatchObject({
-      subject,
-      to: ['reader@example.com'],
-    });
-    expect(body.html).toContain('https://learn-x.app/confirm');
-    expect(body.text).toContain('https://learn-x.app/delete');
-    expect(request?.headers).toMatchObject({
-      authorization: 'Bearer resend-key',
-      'idempotency-key': `public-lead-${locale}-${purpose}`,
-    });
-  });
+      const request = fetchMock.mock.calls[0]?.[1];
+      const body = JSON.parse(String(request?.body)) as {
+        html: string;
+        subject: string;
+        text: string;
+        to: string[];
+      };
+      expect(body).toMatchObject({
+        subject,
+        to: ['reader@example.com'],
+      });
+      expect(body.html).toContain('https://learn-x.app/confirm');
+      expect(body.text).toContain('https://learn-x.app/delete');
+      expect(request?.headers).toMatchObject({
+        authorization: 'Bearer resend-key',
+        'idempotency-key': `public-lead-${locale}-${purpose}`,
+      });
+    },
+  );
 
   it('surfaces provider rejection with its HTTP status', async () => {
-    globalThis.fetch = vi.fn(
-      async () => new Response(null, { status: 429 }),
-    );
+    globalThis.fetch = vi.fn(async () => new Response(null, { status: 429 }));
     const provider = createResendPublicLeadEmailProvider({
       apiKey: 'resend-key',
       from: 'LearnX <hello@learn-x.app>',

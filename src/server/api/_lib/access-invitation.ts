@@ -59,7 +59,10 @@ export function createAccessInvitationToken(): string {
   return randomBytes(32).toString('base64url');
 }
 
-export function buildAccessInvitationUrl(appUrl: string, token: string): string {
+export function buildAccessInvitationUrl(
+  appUrl: string,
+  token: string,
+): string {
   const url = new URL('/activate', appUrl);
   url.hash = new URLSearchParams({ token }).toString();
   return url.toString();
@@ -203,8 +206,7 @@ export function createPrismaAccessInvitationActivationService(
               accountStatus: 'ACTIVE',
               displayName: input.displayName,
               email: invitation.accessRequest.emailNormalized,
-              locale:
-                invitation.accessRequest.locale === 'en' ? 'en' : 'fr',
+              locale: invitation.accessRequest.locale === 'en' ? 'en' : 'fr',
               passwordHash,
               role: invitation.assignedRole,
             },

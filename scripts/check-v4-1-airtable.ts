@@ -180,7 +180,9 @@ if (!archivePage?.filter.includes('Release = Archive V4')) {
 }
 const unpublishedPages = contract.pages.filter(({ published }) => !published);
 if (unpublishedPages.length !== 0) {
-  throw new Error('The owner-approved Airtable interface must be fully published');
+  throw new Error(
+    'The owner-approved Airtable interface must be fully published',
+  );
 }
 if (
   contract.statusAuthority !== 'Airtable' ||

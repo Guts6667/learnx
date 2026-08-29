@@ -91,7 +91,9 @@ type LessonRecord = Prisma.LessonGetPayload<{ select: typeof lessonSelect }>;
 type ModuleRecord = Prisma.ModuleGetPayload<{ select: typeof moduleSelect }>;
 type StageRecord = Prisma.StageGetPayload<{ select: typeof stageSelect }>;
 type ProgramRecord = Prisma.ProgramGetPayload<{ select: typeof programSelect }>;
-type TranslationPolicy = Prisma.ProgramGetPayload<{ select: typeof policySelect }>;
+type TranslationPolicy = Prisma.ProgramGetPayload<{
+  select: typeof policySelect;
+}>;
 
 function mapLesson(lesson: LessonRecord) {
   return {
@@ -144,14 +146,16 @@ function publicationContext(policy: TranslationPolicy) {
   return {
     blockers:
       policy.locale !== 'fr' && !approved
-        ? [{
-            code: 'TRANSLATION_REVIEW_REQUIRED' as const,
-            id: policy.id,
-            message:
-              'La variante linguistique doit terminer ses revues humaines et sa QA avant publication.',
-            title: policy.title,
-            type: 'PROGRAM' as const,
-          }]
+        ? [
+            {
+              code: 'TRANSLATION_REVIEW_REQUIRED' as const,
+              id: policy.id,
+              message:
+                'La variante linguistique doit terminer ses revues humaines et sa QA avant publication.',
+              title: policy.title,
+              type: 'PROGRAM' as const,
+            },
+          ]
         : [],
     version: JSON.stringify({
       locale: policy.locale,
@@ -179,9 +183,11 @@ async function readModuleTarget(
     where: { id: targetId, stage: { program: editorialProgramWhere(ownerId) } },
   });
   return module
-    ? { context: publicationContext(module.stage.program),
+    ? {
+        context: publicationContext(module.stage.program),
         programId: module.stage.programId,
-        target: { entity: mapModule(module), type: 'MODULE' } }
+        target: { entity: mapModule(module), type: 'MODULE' },
+      }
     : null;
 }
 
@@ -197,8 +203,11 @@ export async function readPublicationTarget(
       where: { id: targetId, ...editorialProgramWhere(ownerId) },
     });
     return program
-      ? { context: publicationContext(program), programId: program.id,
-          target: { entity: mapProgram(program), type: 'PROGRAM' } }
+      ? {
+          context: publicationContext(program),
+          programId: program.id,
+          target: { entity: mapProgram(program), type: 'PROGRAM' },
+        }
       : null;
   }
   if (targetType === 'STAGE') {
@@ -207,8 +216,11 @@ export async function readPublicationTarget(
       where: { id: targetId, program: editorialProgramWhere(ownerId) },
     });
     return stage
-      ? { context: publicationContext(stage.program), programId: stage.programId,
-          target: { entity: mapStage(stage), type: 'STAGE' } }
+      ? {
+          context: publicationContext(stage.program),
+          programId: stage.programId,
+          target: { entity: mapStage(stage), type: 'STAGE' },
+        }
       : null;
   }
   return readModuleTarget(client, ownerId, targetId);

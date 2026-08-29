@@ -140,9 +140,7 @@ describe('PwaStatus', () => {
       screen.getByText('Une nouvelle version de LearnX est disponible.'),
     ).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: 'Mettre à jour' }));
-    await waitFor(() =>
-      expect(updateServiceWorker).toHaveBeenCalledWith(true),
-    );
+    await waitFor(() => expect(updateServiceWorker).toHaveBeenCalledWith(true));
     fireEvent.click(screen.getByRole('button', { name: 'Fermer' }));
     expect(setNeedRefresh).toHaveBeenCalledWith(false);
   });
@@ -155,7 +153,9 @@ describe('PwaStatus', () => {
       </PwaProvider>,
     );
 
-    expect(screen.getByText(/LearnX est prêt pour une utilisation hors connexion/)).toBeVisible();
+    expect(
+      screen.getByText(/LearnX est prêt pour une utilisation hors connexion/),
+    ).toBeVisible();
     expect(screen.queryByRole('button', { name: 'Mettre à jour' })).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Fermer' }));
     expect(setOfflineReady).toHaveBeenCalledWith(false);
@@ -221,7 +221,9 @@ describe('PwaStatus', () => {
   });
 
   it('signale clairement un composant utilisé hors de son provider', () => {
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
 
     expect(() => render(<PwaStatus />)).toThrow('PwaProvider is required.');
 

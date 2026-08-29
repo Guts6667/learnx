@@ -59,7 +59,7 @@ export default defineConfig({
     VitePWA({
       injectRegister: null,
       manifest: {
-        background_color: '#f4f6fb',
+        background_color: '#f6f7fb',
         categories: ['education', 'productivity'],
         description:
           'Votre environnement personnel pour apprendre, pratiquer et réviser.',
@@ -88,7 +88,7 @@ export default defineConfig({
         scope: '/',
         short_name: 'LearnX',
         start_url: '/today',
-        theme_color: '#17233b',
+        theme_color: '#101b33',
       },
       registerType: 'autoUpdate',
       workbox: {

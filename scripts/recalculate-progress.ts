@@ -54,9 +54,7 @@ async function main() {
 
   const where = {
     ...(userId ? { userId } : {}),
-    ...(programId
-      ? { lesson: { module: { stage: { programId } } } }
-      : {}),
+    ...(programId ? { lesson: { module: { stage: { programId } } } } : {}),
   };
   const total = await prisma.lessonProgress.count({ where });
 
@@ -71,14 +69,15 @@ async function main() {
 
   const now = new Date();
   const processed = await processCursorBatches({
-    fetchBatch: (cursor) => prisma.lessonProgress.findMany({
-      cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { id: 'asc' },
-      skip: cursor ? 1 : 0,
-      take: batchSize,
-      where,
-      select: { id: true, lessonId: true, userId: true },
-    }),
+    fetchBatch: (cursor) =>
+      prisma.lessonProgress.findMany({
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { id: 'asc' },
+        skip: cursor ? 1 : 0,
+        take: batchSize,
+        where,
+        select: { id: true, lessonId: true, userId: true },
+      }),
     onBatchComplete: (count) =>
       console.info(`Recalculated ${count}/${total} progress record(s).`),
     processRecord: async (progress) => {

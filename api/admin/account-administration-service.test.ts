@@ -22,23 +22,25 @@ function createFixture(initialRole: AdministrableAccount['role'] = 'USER') {
   const audits: Array<{ action: string; idempotencyKey: string }> = [];
   const transaction = {
     auditEvent: {
-      upsert: vi.fn(async (input: {
-        create: { action: string; idempotencyKey: string };
-      }) => {
-        if (
-          !audits.some(
-            (audit) =>
-              audit.action === input.create.action &&
-              audit.idempotencyKey === input.create.idempotencyKey,
-          )
-        ) {
-          audits.push({
-            action: input.create.action,
-            idempotencyKey: input.create.idempotencyKey,
-          });
-        }
-        return input.create;
-      }),
+      upsert: vi.fn(
+        async (input: {
+          create: { action: string; idempotencyKey: string };
+        }) => {
+          if (
+            !audits.some(
+              (audit) =>
+                audit.action === input.create.action &&
+                audit.idempotencyKey === input.create.idempotencyKey,
+            )
+          ) {
+            audits.push({
+              action: input.create.action,
+              idempotencyKey: input.create.idempotencyKey,
+            });
+          }
+          return input.create;
+        },
+      ),
     },
     session: {
       deleteMany: vi.fn(async () => {
@@ -51,12 +53,10 @@ function createFixture(initialRole: AdministrableAccount['role'] = 'USER') {
       findUnique: vi.fn(async ({ where }: { where: { id: string } }) =>
         where.id === account.id ? { ...account } : null,
       ),
-      findUniqueOrThrow: vi.fn(
-        async ({ where }: { where: { id: string } }) => {
-          if (where.id !== account.id) throw new Error('Account not found.');
-          return { ...account };
-        },
-      ),
+      findUniqueOrThrow: vi.fn(async ({ where }: { where: { id: string } }) => {
+        if (where.id !== account.id) throw new Error('Account not found.');
+        return { ...account };
+      }),
       updateMany: vi.fn(
         async (input: {
           data: Partial<
@@ -73,7 +73,8 @@ function createFixture(initialRole: AdministrableAccount['role'] = 'USER') {
             input.where.id !== account.id ||
             (input.where.accountStatus !== undefined &&
               input.where.accountStatus !== account.accountStatus) ||
-            (input.where.role !== undefined && input.where.role !== account.role) ||
+            (input.where.role !== undefined &&
+              input.where.role !== account.role) ||
             input.where.updatedAt.getTime() !== account.updatedAt.getTime()
           ) {
             return { count: 0 };
@@ -91,9 +92,9 @@ function createFixture(initialRole: AdministrableAccount['role'] = 'USER') {
   const client = {
     $transaction: vi.fn(async (input: unknown) => {
       if (typeof input === 'function') {
-        return (
-          input as (value: typeof transaction) => Promise<unknown>
-        )(transaction);
+        return (input as (value: typeof transaction) => Promise<unknown>)(
+          transaction,
+        );
       }
       return Promise.all(input as Promise<unknown>[]);
     }),

@@ -11,10 +11,7 @@ import {
   serializeLessonSummary,
   serializeStage,
 } from './serialization.js';
-import {
-  curriculumNotFound,
-  selectAccessibleCandidate,
-} from './validation.js';
+import { curriculumNotFound, selectAccessibleCandidate } from './validation.js';
 import type {
   readProgramViewPreference,
   saveProgramViewPreference,
@@ -211,7 +208,9 @@ async function readLesson(
       stage: { ...stageWithoutProgram, program: programContext },
     },
     navigation: {
-      nextLesson: nextLesson ? { ...nextLesson, isLocked: lessonIsLocked } : null,
+      nextLesson: nextLesson
+        ? { ...nextLesson, isLocked: lessonIsLocked }
+        : null,
       previousLesson: previousLesson
         ? { ...previousLesson, isLocked: lessonIsLocked }
         : null,
@@ -244,7 +243,8 @@ export function createCurriculumService(options: CurriculumServiceOptions) {
       stageSlug: string,
       userId: string,
       preview: boolean,
-    ) => readStage(options, repository, programSlug, stageSlug, userId, preview),
+    ) =>
+      readStage(options, repository, programSlug, stageSlug, userId, preview),
     saveViewPreference: (
       programSlug: string,
       userId: string,

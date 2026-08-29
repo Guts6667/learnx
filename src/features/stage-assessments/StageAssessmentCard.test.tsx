@@ -98,21 +98,35 @@ describe('StageAssessmentCard', () => {
     setAssessment();
     render(<StageAssessmentCard isStagePublished={false} stageId="stage-1" />);
 
-    expect(screen.getByRole('heading', { name: 'Objectif' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Consignes' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Cas NovaWork' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Objectif' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Consignes' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Cas NovaWork' }),
+    ).toBeInTheDocument();
     const instructions = screen
       .getByRole('heading', { name: 'Consignes' })
       .closest('section');
     expect(instructions).not.toBeNull();
-    expect(within(instructions as HTMLElement).getAllByRole('listitem')).toHaveLength(2);
+    expect(
+      within(instructions as HTMLElement).getAllByRole('listitem'),
+    ).toHaveLength(2);
     expect(screen.getByText('notions').tagName).toBe('STRONG');
-    expect(screen.getByRole('heading', { name: 'Grille d’évaluation' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Grille d’évaluation' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('60 %')).toBeInTheDocument();
     expect(screen.queryByText(/## Consignes/)).not.toBeInTheDocument();
-    expect(screen.getByText('Exactitude').closest('.ui-list-row')).not.toBeNull();
+    expect(
+      screen.getByText('Exactitude').closest('.ui-list-row'),
+    ).not.toBeNull();
     expect(document.querySelector('.ui-card .ui-card')).toBeNull();
-    expect(screen.getByText(/Prévisualisation en lecture seule/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Prévisualisation en lecture seule/),
+    ).toBeInTheDocument();
   });
 
   it('affiche les états de chargement, erreur et absence de données', () => {
@@ -125,11 +139,15 @@ describe('StageAssessmentCard', () => {
     queryState.isPending = false;
     queryState.error = new Error('indisponible');
     rerender(<StageAssessmentCard isStagePublished stageId="stage-1" />);
-    expect(screen.getByText('L’évaluation finale est indisponible.')).toBeVisible();
+    expect(
+      screen.getByText('L’évaluation finale est indisponible.'),
+    ).toBeVisible();
 
     queryState.error = undefined;
     rerender(<StageAssessmentCard isStagePublished stageId="stage-1" />);
-    expect(screen.getByText('L’évaluation finale est indisponible.')).toBeVisible();
+    expect(
+      screen.getByText('L’évaluation finale est indisponible.'),
+    ).toBeVisible();
   });
 
   it('tolère une grille hétérogène et des métadonnées optionnelles', () => {
@@ -158,7 +176,9 @@ describe('StageAssessmentCard', () => {
     expect(screen.queryByText(/Score de réussite/)).not.toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Objectif' })).toBeNull();
     expect(screen.getByRole('heading', { name: 'Consignes' })).toBeVisible();
-    expect(screen.getByRole('heading', { name: 'Première partie' })).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: 'Première partie' }),
+    ).toBeVisible();
     expect(screen.getByText('Sans exigences')).toBeVisible();
     expect(screen.getByText('Exigences filtrées')).toBeVisible();
     expect(screen.getByText('Conserver')).toBeVisible();
@@ -171,15 +191,21 @@ describe('StageAssessmentCard', () => {
     render(<StageAssessmentCard isStagePublished stageId="stage-1" />);
 
     expect(screen.queryByRole('heading', { name: 'Objectif' })).toBeNull();
-    expect(screen.queryByRole('heading', { name: 'Grille d’évaluation' })).toBeNull();
-    expect(screen.getByRole('button', { name: 'Commencer l’évaluation' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: 'Grille d’évaluation' }),
+    ).toBeNull();
+    expect(
+      screen.getByRole('button', { name: 'Commencer l’évaluation' }),
+    ).toBeVisible();
   });
 
   it('crée un brouillon depuis une évaluation publiée', () => {
     setAssessment();
     render(<StageAssessmentCard isStagePublished stageId="stage-1" />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Commencer l’évaluation' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Commencer l’évaluation' }),
+    );
     expect(mutationState.createDraft).toHaveBeenCalledOnce();
   });
 
@@ -194,7 +220,9 @@ describe('StageAssessmentCard', () => {
     mutationState.error = new Error('échec');
     render(<StageAssessmentCard isStagePublished stageId="stage-1" />);
 
-    expect(screen.getByText('Retour : Précisez la justification.')).toBeVisible();
+    expect(
+      screen.getByText('Retour : Précisez la justification.'),
+    ).toBeVisible();
     expect(screen.getByRole('alert')).toHaveTextContent(
       'L’action n’a pas pu être enregistrée.',
     );
@@ -205,7 +233,9 @@ describe('StageAssessmentCard', () => {
     fireEvent.input(screen.getByLabelText('Lien vers une pièce jointe'), {
       target: { value: '   ' },
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Enregistrer le brouillon' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Enregistrer le brouillon' }),
+    );
     expect(mutationState.save).toHaveBeenLastCalledWith('submission-draft', {
       attachmentUrl: null,
       contentMarkdown: null,

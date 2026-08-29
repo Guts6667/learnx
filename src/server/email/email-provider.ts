@@ -19,8 +19,7 @@ export interface VerificationEmailInput extends VerificationEmailContent {
   idempotencyKey: string;
 }
 
-export interface AccessInvitationEmailInput
-  extends AccessInvitationEmailContent {
+export interface AccessInvitationEmailInput extends AccessInvitationEmailContent {
   idempotencyKey: string;
 }
 

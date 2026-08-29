@@ -87,9 +87,7 @@ function mapCorrection(record: {
   };
 }
 
-export class PrismaCorrectionRepository
-  implements PersistentCorrectionRepository
-{
+export class PrismaCorrectionRepository implements PersistentCorrectionRepository {
   public constructor(private readonly prisma: PrismaClient) {}
 
   private async transaction<T>(

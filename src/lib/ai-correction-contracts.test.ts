@@ -164,10 +164,12 @@ describe('versioned AI correction contracts', () => {
           levelKey: 'insufficient',
         },
       },
-      overallFeedback: 'La direction est acquise, les responsabilités restent à préciser.',
+      overallFeedback:
+        'La direction est acquise, les responsabilités restent à préciser.',
     };
-    expect(buildProtocol3CorrectionOutputSchema(validContract).parse(modelOutput))
-      .toEqual(modelOutput);
+    expect(
+      buildProtocol3CorrectionOutputSchema(validContract).parse(modelOutput),
+    ).toEqual(modelOutput);
     const canonical = canonicalizeProtocol3CorrectionOutput({
       contract: validContract,
       output: modelOutput,
@@ -178,10 +180,9 @@ describe('versioned AI correction contracts', () => {
       overallConfidence: 0.78,
       secondPass: { reasons: ['LOW_CONFIDENCE'], required: true },
     });
-    expect(canonical.criteria.map((criterion) => criterion.criterionKey)).toEqual([
-      'direction',
-      'ownership',
-    ]);
+    expect(
+      canonical.criteria.map((criterion) => criterion.criterionKey),
+    ).toEqual(['direction', 'ownership']);
     expect(modelOutput).not.toHaveProperty('contractKey');
     expect(modelOutput).not.toHaveProperty('secondPass');
     expect(modelOutput).not.toHaveProperty('overallConfidence');
@@ -204,7 +205,11 @@ describe('versioned AI correction contracts', () => {
     ).toBe(false);
     expect(
       schema.safeParse({
-        criteria: { direction: criterion, ownership: criterion, extra: criterion },
+        criteria: {
+          direction: criterion,
+          ownership: criterion,
+          extra: criterion,
+        },
         overallFeedback: 'Retour.',
       }).success,
     ).toBe(false);

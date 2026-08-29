@@ -55,7 +55,12 @@ describe('access request review query', () => {
 
   it.each([
     {
-      filters: { page: 2, pageSize: 2, search: 'learn', status: 'APPROVED' as const },
+      filters: {
+        page: 2,
+        pageSize: 2,
+        search: 'learn',
+        status: 'APPROVED' as const,
+      },
       total: 3,
       totalPages: 2,
     },
@@ -64,37 +69,46 @@ describe('access request review query', () => {
       total: 0,
       totalPages: 1,
     },
-  ])('lists reviewable records with filters and pagination', async ({ filters, total, totalPages }) => {
-    const count = vi.fn().mockResolvedValue(total);
-    const findMany = vi.fn().mockResolvedValue(total ? [record({ status: 'APPROVED' })] : []);
-    const client = {
-      $transaction: vi.fn(async (operations: Promise<unknown>[]) => Promise.all(operations)),
-      accessRequest: { count, findMany },
-    };
+  ])(
+    'lists reviewable records with filters and pagination',
+    async ({ filters, total, totalPages }) => {
+      const count = vi.fn().mockResolvedValue(total);
+      const findMany = vi
+        .fn()
+        .mockResolvedValue(total ? [record({ status: 'APPROVED' })] : []);
+      const client = {
+        $transaction: vi.fn(async (operations: Promise<unknown>[]) =>
+          Promise.all(operations),
+        ),
+        accessRequest: { count, findMany },
+      };
 
-    await expect(
-      listReviewRequests(client as unknown as PrismaClient, filters),
-    ).resolves.toMatchObject({
-      page: filters.page,
-      pageSize: filters.pageSize,
-      total,
-      totalPages,
-    });
-    expect(count).toHaveBeenCalledWith({
-      where: expect.objectContaining({
-        emailNormalized: 'search' in filters
-          ? { contains: filters.search, mode: 'insensitive' }
-          : undefined,
-        status: 'status' in filters
-          ? filters.status
-          : { in: ['PENDING_APPROVAL', 'APPROVED', 'REJECTED'] },
-      }),
-    });
-    expect(findMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        skip: (filters.page - 1) * filters.pageSize,
-        take: filters.pageSize,
-      }),
-    );
-  });
+      await expect(
+        listReviewRequests(client as unknown as PrismaClient, filters),
+      ).resolves.toMatchObject({
+        page: filters.page,
+        pageSize: filters.pageSize,
+        total,
+        totalPages,
+      });
+      expect(count).toHaveBeenCalledWith({
+        where: expect.objectContaining({
+          emailNormalized:
+            'search' in filters
+              ? { contains: filters.search, mode: 'insensitive' }
+              : undefined,
+          status:
+            'status' in filters
+              ? filters.status
+              : { in: ['PENDING_APPROVAL', 'APPROVED', 'REJECTED'] },
+        }),
+      });
+      expect(findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          skip: (filters.page - 1) * filters.pageSize,
+          take: filters.pageSize,
+        }),
+      );
+    },
+  );
 });

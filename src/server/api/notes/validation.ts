@@ -10,13 +10,15 @@ export const noteListSchema = cursorPageQuerySchema.extend({
   search: z.string().trim().max(100).optional(),
 });
 
-export const createNoteSchema = z.object({
-  creationKey: identifierSchema.nullable().optional(),
-  lessonId: identifierSchema.nullable().optional(),
-  markdown: z.string().max(100_000).default(''),
-  sequenceItemId: identifierSchema.nullable().optional(),
-  title: z.string().trim().min(1).max(200).default('Nouvelle note'),
-}).refine((input) => !input.sequenceItemId || Boolean(input.lessonId));
+export const createNoteSchema = z
+  .object({
+    creationKey: identifierSchema.nullable().optional(),
+    lessonId: identifierSchema.nullable().optional(),
+    markdown: z.string().max(100_000).default(''),
+    sequenceItemId: identifierSchema.nullable().optional(),
+    title: z.string().trim().min(1).max(200).default('Nouvelle note'),
+  })
+  .refine((input) => !input.sequenceItemId || Boolean(input.lessonId));
 
 export const updateNoteSchema = z
   .object({

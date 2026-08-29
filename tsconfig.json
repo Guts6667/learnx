@@ -15,6 +15,7 @@
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.e2e.json" },
     { "path": "./tsconfig.node.json" },
     { "path": "./tsconfig.server.json" }
   ]

@@ -1,8 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { dirname, relative, resolve, sep } from 'node:path';
 
-const importPattern =
-  /^[\t ]*@import[\t ]+(['"])([^'"]+)\1[\t ]*;[\t ]*$/gmu;
+const importPattern = /^[\t ]*@import[\t ]+(['"])([^'"]+)\1[\t ]*;[\t ]*$/gmu;
 
 export interface StylesheetSourceGraph {
   files: string[];
@@ -14,7 +13,9 @@ function repositoryPath(path: string): string {
   return relative(process.cwd(), path).split(sep).join('/');
 }
 
-export function readStylesheetSourceGraph(entryPath: string): StylesheetSourceGraph {
+export function readStylesheetSourceGraph(
+  entryPath: string,
+): StylesheetSourceGraph {
   const files: string[] = [];
   const packageImports: string[] = [];
   const visited = new Set<string>();
@@ -44,7 +45,10 @@ export function readStylesheetSourceGraph(entryPath: string): StylesheetSourceGr
           return statement;
         }
 
-        return visit(resolve(dirname(absolutePath), specifier)).replace(/\n$/u, '');
+        return visit(resolve(dirname(absolutePath), specifier)).replace(
+          /\n$/u,
+          '',
+        );
       },
     );
 

@@ -165,7 +165,8 @@ export function allocateCreditLots(
 
   for (const lot of eligible) {
     if (remaining === 0n) break;
-    const allocated = lot.remainingAmount < remaining ? lot.remainingAmount : remaining;
+    const allocated =
+      lot.remainingAmount < remaining ? lot.remainingAmount : remaining;
     allocations.push({
       amount: allocated,
       lotId: lot.id,
@@ -182,11 +183,15 @@ export function planCreditSettlement(
   amount: bigint,
 ): CreditSettlementAllocation[] {
   assertCreditAmount(amount, { allowZero: true });
-  const ceiling = allocations.reduce((total, allocation) => total + allocation.amount, 0n);
+  const ceiling = allocations.reduce(
+    (total, allocation) => total + allocation.amount,
+    0n,
+  );
   if (amount > ceiling) throw new CreditLedgerError('INVALID_AMOUNT');
   let remaining = amount;
   return allocations.map((allocation) => {
-    const settledAmount = remaining < allocation.amount ? remaining : allocation.amount;
+    const settledAmount =
+      remaining < allocation.amount ? remaining : allocation.amount;
     remaining -= settledAmount;
     return {
       ...allocation,

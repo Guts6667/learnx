@@ -155,7 +155,10 @@ async function readStageValidationState(
   );
   const exercises = stage.modules.flatMap((module) =>
     module.lessons.flatMap((lesson) =>
-      lesson.exercises.map((exercise) => ({ ...exercise, lessonId: lesson.id })),
+      lesson.exercises.map((exercise) => ({
+        ...exercise,
+        lessonId: lesson.id,
+      })),
     ),
   );
   const hasActivity =

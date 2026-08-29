@@ -69,8 +69,7 @@ export function createAccessRequestsApp(
 ) {
   const app = new Hono();
   const environment = options.environment ?? process.env;
-  const enabled =
-    options.enabled ?? areAccessRequestsEnabled(environment);
+  const enabled = options.enabled ?? areAccessRequestsEnabled(environment);
   const rateLimiter = options.rateLimiter ?? sharedRateLimiter;
   const secureCookies =
     options.secureCookies ?? environment.NODE_ENV === 'production';

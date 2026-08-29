@@ -91,17 +91,17 @@ describe('catalog API', () => {
       ...services,
     });
 
-    expect(
-      (await app.request('/api/catalog/programs?locale=en')).status,
-    ).toBe(200);
+    expect((await app.request('/api/catalog/programs?locale=en')).status).toBe(
+      200,
+    );
     expect(services.directoryService.listCatalog).toHaveBeenCalledWith({
       locale: 'en',
       pageSize: 20,
       userId,
     });
-    expect(
-      (await app.request('/api/catalog/programs?locale=de')).status,
-    ).toBe(400);
+    expect((await app.request('/api/catalog/programs?locale=de')).status).toBe(
+      400,
+    );
   });
 
   it('refuse les tailles non bornées et les capacités inconnues', async () => {
@@ -111,7 +111,8 @@ describe('catalog API', () => {
       ...services,
     });
     expect(
-      (await invalidQueryApp.request('/api/catalog/programs?pageSize=51')).status,
+      (await invalidQueryApp.request('/api/catalog/programs?pageSize=51'))
+        .status,
     ).toBe(400);
 
     const forbiddenApp = createCatalogApp({

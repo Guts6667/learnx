@@ -102,7 +102,9 @@ test('contacts Totem restent complets à 390 px et sur desktop', async ({
       page.getByRole('heading', { level: 1, name: 'Contacts de la landing' }),
     ).toBeVisible();
     const contacts = page.locator('.admin-collection');
-    await expect(contacts.getByText('Lancement', { exact: true })).toBeVisible();
+    await expect(
+      contacts.getByText('Lancement', { exact: true }),
+    ).toBeVisible();
     await expect(
       contacts.getByText('Early adopter', { exact: true }),
     ).toBeVisible();
@@ -141,9 +143,7 @@ for (const [state, label] of [
         : page.getByText(label, { exact: true });
     await expect(stateMessage).toBeVisible();
     await expect(
-      page.getByText(
-        'very-long-contact-address@example-learning-domain.test',
-      ),
+      page.getByText('very-long-contact-address@example-learning-domain.test'),
     ).toHaveCount(0);
   });
 }
@@ -152,9 +152,7 @@ test('rend une erreur explicite et permet le retry', async ({ page }) => {
   await installContactsApi(page, 'error');
   await page.setViewportSize({ height: 844, width: 390 });
   await page.goto('/admin/contacts');
-  await expect(
-    page.getByText(/Aucune donnée n’a été modifiée/),
-  ).toBeVisible();
+  await expect(page.getByText(/Aucune donnée n’a été modifiée/)).toBeVisible();
   await page.getByRole('button', { name: 'Réessayer' }).click();
   await expect(
     page.getByText('very-long-contact-address@example-learning-domain.test'),

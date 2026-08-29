@@ -57,9 +57,7 @@ async function resetProgramProgress(
     await repository.resetStageProgress(
       stage.id,
       userId,
-      index === 0
-        ? StageProgressStatus.AVAILABLE
-        : StageProgressStatus.LOCKED,
+      index === 0 ? StageProgressStatus.AVAILABLE : StageProgressStatus.LOCKED,
     );
   }
   await repository.resetProgramProgress(program.id, userId, now);
@@ -87,7 +85,11 @@ async function restartInTransaction(
   if (modules.length > 0 && existingRuns.length === modules.length) {
     const preview = await repository.buildPreview(programId, userId);
     return preview
-      ? { ...preview, idempotent: true, runIds: existingRuns.map(({ id }) => id) }
+      ? {
+          ...preview,
+          idempotent: true,
+          runIds: existingRuns.map(({ id }) => id),
+        }
       : null;
   }
   const existingByModuleId = new Map(
@@ -115,7 +117,8 @@ async function recoverConcurrentRestart(
   const program = await repository.readProgram(programId, userId);
   if (!program) return null;
   const moduleIds = program.stages.flatMap((stage) =>
-    stage.modules.map((module) => module.id));
+    stage.modules.map((module) => module.id),
+  );
   const existingRuns = await repository.findRestartRuns(
     moduleIds,
     restartKey,

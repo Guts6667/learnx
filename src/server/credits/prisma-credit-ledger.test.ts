@@ -42,7 +42,10 @@ function harness() {
   const context = (
     ledger as unknown as {
       context: {
-        assertProjection: (transaction: never, accountId: string) => Promise<void>;
+        assertProjection: (
+          transaction: never,
+          accountId: string,
+        ) => Promise<void>;
         balanceFromLedger: (
           transaction: never,
           accountId: string,
@@ -160,7 +163,8 @@ describe('PrismaCreditLedger facade', () => {
   it('delegates every mutation to the specialized ledger operation', async () => {
     const { ledger } = harness();
     const result = { balance: { free: 1n, purchased: 0n, total: 1n } };
-    for (const helper of Object.values(helpers)) helper.mockResolvedValue(result);
+    for (const helper of Object.values(helpers))
+      helper.mockResolvedValue(result);
 
     await expect(ledger.grant({} as never)).resolves.toBe(result);
     await expect(ledger.reserve({} as never)).resolves.toBe(result);

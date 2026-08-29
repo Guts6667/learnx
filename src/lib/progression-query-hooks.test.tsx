@@ -23,9 +23,7 @@ const submissionId = '33333333-3333-4333-8333-333333333333';
 function createWrapper(queryClient: QueryClient) {
   return function QueryWrapper({ children }: { children: ReactNode }) {
     return (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
   };
 }
@@ -115,9 +113,9 @@ describe('progression query mutations', () => {
       { wrapper: createWrapper(createQueryClient()) },
     );
 
-    await expect(
-      act(() => result.current.submit([])),
-    ).rejects.toThrow('An assessment identifier is required.');
+    await expect(act(() => result.current.submit([]))).rejects.toThrow(
+      'An assessment identifier is required.',
+    );
     expect(mockedApiRequest).not.toHaveBeenCalled();
   });
 

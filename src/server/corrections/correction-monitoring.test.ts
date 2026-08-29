@@ -9,7 +9,10 @@ describe('PrismaCorrectionMonitoringService', () => {
         findMany: vi.fn().mockResolvedValue([
           {
             attempts: [
-              { costUsd: { toString: () => '0.02000000' }, status: 'SUCCEEDED' },
+              {
+                costUsd: { toString: () => '0.02000000' },
+                status: 'SUCCEEDED',
+              },
               { costUsd: null, status: 'FAILED' },
             ],
             structuredResult: {
@@ -24,7 +27,10 @@ describe('PrismaCorrectionMonitoringService', () => {
           },
           {
             attempts: [
-              { costUsd: { toString: () => '0.01500000' }, status: 'SUCCEEDED' },
+              {
+                costUsd: { toString: () => '0.01500000' },
+                status: 'SUCCEEDED',
+              },
             ],
             structuredResult: {
               correction: { monitoringSignals: [], status: 'COMPLETED' },

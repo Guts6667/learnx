@@ -78,13 +78,14 @@ class PrismaTodayRepository implements TodayRepository {
       select: getTodayLessonSelect(userId),
     });
     const moduleIds = [...new Set(lessons.map(({ module }) => module.id))];
-    const currentRuns = moduleIds.length === 0
-      ? []
-      : await this.client.moduleRun.findMany({
-          where: { moduleId: { in: moduleIds }, userId },
-          orderBy: [{ moduleId: 'asc' }, { sequence: 'desc' }],
-          select: { id: true, moduleId: true },
-        });
+    const currentRuns =
+      moduleIds.length === 0
+        ? []
+        : await this.client.moduleRun.findMany({
+            where: { moduleId: { in: moduleIds }, userId },
+            orderBy: [{ moduleId: 'asc' }, { sequence: 'desc' }],
+            select: { id: true, moduleId: true },
+          });
     const currentRunByModule = new Map<string, string>();
     for (const run of currentRuns) {
       if (!currentRunByModule.has(run.moduleId)) {

@@ -17,6 +17,7 @@ import {
 } from '@/features/public-leads/public-leads';
 import { isStandaloneDisplayMode } from '@/features/pwa/display-mode';
 import { useI18n } from '@/i18n';
+import { useRevealOnScroll } from '@/lib/use-reveal-on-scroll';
 
 interface InterestFormProps {
   purpose: PublicLeadPurpose;
@@ -100,6 +101,7 @@ function InterestForm({ purpose }: InterestFormProps) {
 export function LandingPage({ path }: { path?: string }) {
   void path;
   const { locale, setLocale, t } = useI18n();
+  const researchRule = useRevealOnScroll<HTMLDivElement>();
   const standalone = isStandaloneDisplayMode();
   useEffect(() => {
     if (standalone) route('/today', true);
@@ -180,7 +182,12 @@ export function LandingPage({ path }: { path?: string }) {
                 EN
               </button>
             </div>
-            <a href="/login">{t('landing.login')}</a>
+            <a className="landing-signin" href="/login">
+              {t('landing.login')}
+            </a>
+            <Button asChild size="sm">
+              <a href="#early-adopter">{t('landing.cta.apply')}</a>
+            </Button>
           </nav>
           <details className="landing-mobile-navigation">
             <summary>{t('landing.menu')}</summary>
@@ -195,6 +202,9 @@ export function LandingPage({ path }: { path?: string }) {
                 {locale === 'fr' ? 'EN' : 'FR'}
               </button>
               <a href="/login">{t('landing.login')}</a>
+              <a className="landing-mobile-apply" href="#early-adopter">
+                {t('landing.cta.apply')}
+              </a>
             </nav>
           </details>
         </div>
@@ -210,10 +220,11 @@ export function LandingPage({ path }: { path?: string }) {
             <Button asChild>
               <a href="#early-adopter">{t('landing.cta.early')}</a>
             </Button>
-            <a className="landing-updates-action" href="#launch-updates">
-              {t('landing.cta.updates')}
+            <a className="landing-updates-action" href="#product">
+              {t('landing.cta.howItWorks')}
             </a>
           </div>
+          <p className="landing-hero-trust">{t('landing.hero.trust')}</p>
         </div>
         <div className="landing-hero-visual">
           <ProgramPreview />
@@ -279,38 +290,28 @@ export function LandingPage({ path }: { path?: string }) {
               <p className="landing-roadmap-status">
                 {t('landing.roadmap.available')}
               </p>
-              <h3>{t('landing.roadmap.learningTitle')}</h3>
-              <p>{t('landing.roadmap.learningDescription')}</p>
+              <h3>{t('landing.roadmap.availableTitle')}</h3>
+              <p>{t('landing.roadmap.availableDescription')}</p>
             </div>
           </li>
           <li data-state="current">
             <span className="landing-roadmap-marker" aria-hidden="true" />
             <div>
               <p className="landing-roadmap-status">
-                {t('landing.roadmap.current')}
+                {t('landing.roadmap.pilotLabel')}
               </p>
-              <h3>{t('landing.roadmap.correctionTitle')}</h3>
-              <p>{t('landing.roadmap.correctionDescription')}</p>
+              <h3>{t('landing.roadmap.pilotTitle')}</h3>
+              <p>{t('landing.roadmap.pilotDescription')}</p>
             </div>
           </li>
           <li>
             <span className="landing-roadmap-marker" aria-hidden="true" />
             <div>
               <p className="landing-roadmap-status">
-                {t('landing.roadmap.next')}
+                {t('landing.roadmap.nextLabel')}
               </p>
-              <h3>{t('landing.roadmap.improvedTitle')}</h3>
-              <p>{t('landing.roadmap.improvedDescription')}</p>
-            </div>
-          </li>
-          <li>
-            <span className="landing-roadmap-marker" aria-hidden="true" />
-            <div>
-              <p className="landing-roadmap-status">
-                {t('landing.roadmap.exploration')}
-              </p>
-              <h3>{t('landing.roadmap.creationTitle')}</h3>
-              <p>{t('landing.roadmap.creationDescription')}</p>
+              <h3>{t('landing.roadmap.nextTitle')}</h3>
+              <p>{t('landing.roadmap.nextDescription')}</p>
             </div>
           </li>
         </ol>
@@ -323,6 +324,13 @@ export function LandingPage({ path }: { path?: string }) {
         <p className="page-eyebrow">{t('landing.research.eyebrow')}</p>
         <h2 id="landing-research">{t('landing.research.title')}</h2>
         <p>{t('landing.research.description')}</p>
+        <div
+          aria-hidden="true"
+          className="landing-research-rule progress-rule"
+          ref={researchRule}
+        >
+          <span />
+        </div>
         <article className="landing-research-latest">
           <p className="landing-research-meta">
             {t('landing.research.latestMeta')}
@@ -347,18 +355,28 @@ export function LandingPage({ path }: { path?: string }) {
                 : '/research/ai-correction/index.html'
             }
           >
-            {t('landing.research.action')}
+            {t('landing.research.readVerdict')}
           </a>
         </article>
       </section>
+      <div className="landing-forms-head">
+        <p className="page-eyebrow">{t('landing.forms.eyebrow')}</p>
+        <h2>{t('landing.forms.title')}</h2>
+      </div>
       <section className="landing-forms">
-        <article id="early-adopter">
+        <article
+          className="landing-form-card landing-form-card--primary"
+          id="early-adopter"
+        >
           <p className="page-eyebrow">{t('landing.early.eyebrow')}</p>
           <h2>{t('landing.early.title')}</h2>
           <p>{t('landing.early.description')}</p>
           <InterestForm purpose="EARLY_ADOPTER" />
         </article>
-        <article id="launch-updates">
+        <article
+          className="landing-form-card landing-form-card--secondary"
+          id="launch-updates"
+        >
           <p className="page-eyebrow">{t('landing.updates.eyebrow')}</p>
           <h2>{t('landing.updates.title')}</h2>
           <p>{t('landing.updates.description')}</p>

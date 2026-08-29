@@ -8,8 +8,7 @@ import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
 
 export const administrableAccountStatuses = ['ACTIVE', 'SUSPENDED'] as const;
 
-type AdministrableAccountStatus =
-  (typeof administrableAccountStatuses)[number];
+type AdministrableAccountStatus = (typeof administrableAccountStatuses)[number];
 
 export interface AdministrableAccount {
   accountStatus: AccountStatus;
@@ -197,8 +196,7 @@ export function createPrismaAccountAdministrationService(
       const update = await transaction.user.updateMany({
         data: {
           accountStatus: targetStatus,
-          suspendedAt:
-            targetStatus === AccountStatus.SUSPENDED ? now : null,
+          suspendedAt: targetStatus === AccountStatus.SUSPENDED ? now : null,
         },
         where: {
           accountStatus: existing.accountStatus,
@@ -236,11 +234,7 @@ export function createPrismaAccountAdministrationService(
       await writeAuditEvent(transaction, {
         action,
         actorUserId,
-        idempotencyKey: createAuditIdempotencyKey(
-          action,
-          userId,
-          auditValues,
-        ),
+        idempotencyKey: createAuditIdempotencyKey(action, userId, auditValues),
         metadata: auditValues,
         targetId: userId,
         targetType: 'user',
@@ -296,20 +290,10 @@ export function createPrismaAccountAdministrationService(
       };
     },
     reactivate(actorUserId, userId, input) {
-      return transition(
-        actorUserId,
-        userId,
-        input,
-        AccountStatus.ACTIVE,
-      );
+      return transition(actorUserId, userId, input, AccountStatus.ACTIVE);
     },
     suspend(actorUserId, userId, input) {
-      return transition(
-        actorUserId,
-        userId,
-        input,
-        AccountStatus.SUSPENDED,
-      );
+      return transition(actorUserId, userId, input, AccountStatus.SUSPENDED);
     },
   };
 }

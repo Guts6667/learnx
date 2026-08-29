@@ -68,9 +68,11 @@ describe('program versions', () => {
           stages: [],
           title,
         })),
-        update: vi.fn(async ({ data }: { data: { publishedVersionId: string } }) => {
-          currentVersionId = data.publishedVersionId;
-        }),
+        update: vi.fn(
+          async ({ data }: { data: { publishedVersionId: string } }) => {
+            currentVersionId = data.publishedVersionId;
+          },
+        ),
       },
       programVersion: {
         create: vi.fn(
@@ -91,7 +93,11 @@ describe('program versions', () => {
             : { version: versions[versions.length - 1].version },
         ),
         findUnique: vi.fn(
-          async ({ where }: { where: { programId_checksum: { checksum: string } } }) =>
+          async ({
+            where,
+          }: {
+            where: { programId_checksum: { checksum: string } };
+          }) =>
             versions.find(
               (version) =>
                 version.checksum === where.programId_checksum.checksum,
@@ -131,11 +137,7 @@ describe('program versions', () => {
     } as unknown as Prisma.TransactionClient;
 
     await expect(
-      createOrReusePublishedProgramVersion(
-        transaction,
-        programId,
-        publisherId,
-      ),
+      createOrReusePublishedProgramVersion(transaction, programId, publisherId),
     ).resolves.toBeNull();
     expect(transaction.programVersion.create).not.toHaveBeenCalled();
   });

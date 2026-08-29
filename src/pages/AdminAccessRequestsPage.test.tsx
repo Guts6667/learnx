@@ -223,7 +223,9 @@ describe('AdminAccessRequestsPage', () => {
     );
 
     expect(
-      await screen.findByText('Les demandes d’accès n’ont pas pu être chargées.'),
+      await screen.findByText(
+        'Les demandes d’accès n’ont pas pu être chargées.',
+      ),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
 

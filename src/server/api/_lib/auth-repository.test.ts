@@ -93,9 +93,9 @@ describe('prismaAuthRepository', () => {
 
     const databaseFailure = new Error('database unavailable');
     prisma.user.create.mockRejectedValueOnce(databaseFailure);
-    await expect(
-      prismaAuthRepository.createUser(createUserInput),
-    ).rejects.toBe(databaseFailure);
+    await expect(prismaAuthRepository.createUser(createUserInput)).rejects.toBe(
+      databaseFailure,
+    );
   });
 
   it('deletes, finds and touches sessions through the persistence boundary', async () => {

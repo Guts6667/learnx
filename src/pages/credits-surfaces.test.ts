@@ -6,7 +6,9 @@ import { readStylesheetSourceGraph } from '@/test-utils/stylesheet-source';
 
 const learner = readFileSync(resolve('src/pages/CreditsPage.tsx'), 'utf8');
 const admin = readFileSync(resolve('src/pages/AdminCreditsPage.tsx'), 'utf8');
-const styles = readStylesheetSourceGraph(resolve('src/styles/index.css')).source;
+const styles = readStylesheetSourceGraph(
+  resolve('src/styles/index.css'),
+).source;
 
 describe('V4-008 credit surfaces', () => {
   it('keeps both credit origins primary and the total secondary', () => {

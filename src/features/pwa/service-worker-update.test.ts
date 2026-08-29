@@ -8,9 +8,7 @@ class ServiceWorkerControllerStub extends EventTarget {
 
 describe('reloadOnServiceWorkerReplacement', () => {
   it('recharge une seule fois lorsqu’une nouvelle version remplace un worker actif', () => {
-    const serviceWorker = new ServiceWorkerControllerStub(
-      {} as ServiceWorker,
-    );
+    const serviceWorker = new ServiceWorkerControllerStub({} as ServiceWorker);
     const reload = vi.fn();
     const cleanup = reloadOnServiceWorkerReplacement(serviceWorker, reload);
 

@@ -101,7 +101,9 @@ describe('PrismaAiPricingQuoteRepository', () => {
     const { prisma, repository } = harness();
     resolvePricingTarget.mockResolvedValueOnce({ eligible: true });
     await expect(
-      repository.resolveTarget('user-1', { kind: 'EXERCISE_SUBMISSION' } as never),
+      repository.resolveTarget('user-1', {
+        kind: 'EXERCISE_SUBMISSION',
+      } as never),
     ).resolves.toEqual({ eligible: true });
     expect(resolvePricingTarget).toHaveBeenCalledWith(
       prisma,
@@ -190,8 +192,12 @@ describe('PrismaAiPricingQuoteRepository', () => {
     await expect(
       repository.findQuoteByIdempotency('user-1', 'quote:idempotency:1'),
     ).resolves.toMatchObject({ id: 'quote-1' });
-    await expect(repository.findQuoteById('user-1', 'missing')).resolves.toBeNull();
-    await expect(repository.findQuoteById('user-1', 'quote-1')).resolves.toMatchObject({
+    await expect(
+      repository.findQuoteById('user-1', 'missing'),
+    ).resolves.toBeNull();
+    await expect(
+      repository.findQuoteById('user-1', 'quote-1'),
+    ).resolves.toMatchObject({
       id: 'quote-1',
     });
   });

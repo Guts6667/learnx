@@ -8,12 +8,7 @@ describe('integration runtime module resolution', () => {
   it('loads the API entrypoint through the same tsx loader used by integration CI', () => {
     const result = spawnSync(
       process.execPath,
-      [
-        '--import',
-        'tsx',
-        '--eval',
-        "import('./api/index.ts')",
-      ],
+      ['--import', 'tsx', '--eval', "import('./api/index.ts')"],
       {
         cwd: process.cwd(),
         encoding: 'utf8',

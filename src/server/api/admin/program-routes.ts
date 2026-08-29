@@ -20,7 +20,9 @@ function visibilityConflict() {
   );
 }
 
-function translationError(kind: 'CONFLICT' | 'INVALID_SOURCE' | 'INVALID_TRANSITION') {
+function translationError(
+  kind: 'CONFLICT' | 'INVALID_SOURCE' | 'INVALID_TRANSITION',
+) {
   if (kind === 'CONFLICT') {
     return new ApiError(
       'TRANSLATION_WORKFLOW_CONFLICT',
