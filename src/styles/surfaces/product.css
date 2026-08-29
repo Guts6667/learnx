@@ -528,7 +528,7 @@
   overflow: hidden;
   flex-direction: column;
   padding: clamp(1.5rem, 4vw, 3.5rem);
-  background: var(--color-text);
+  background: var(--color-ink-surface);
   color: var(--color-surface);
 }
 
@@ -562,9 +562,9 @@
   width: 2.5rem;
   height: 2.5rem;
   place-items: center;
-  border: 1px solid rgb(255 255 255 / 24%);
+  border: 1px solid var(--color-line-on-ink-mark);
   border-radius: 0.75rem 0.75rem 0.25rem 0.75rem;
-  background: rgb(255 255 255 / 8%);
+  background: var(--color-fill-on-ink);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
 }
@@ -577,7 +577,7 @@
 }
 
 .totem-auth-brand__copy .page-eyebrow {
-  color: #aebfff;
+  color: var(--color-accent-on-ink);
 }
 
 .totem-auth-brand__copy h2 {
@@ -593,7 +593,7 @@
 .totem-auth-brand__copy > p:last-child {
   max-width: 44ch;
   margin-top: 1rem;
-  color: #c8d2e6;
+  color: var(--color-on-ink-muted);
   line-height: 1.6;
 }
 
@@ -970,7 +970,7 @@
   }
 
   .totem-admin-surface .totem-app-shell__sidebar {
-    background: var(--color-text);
+    background: var(--color-ink-surface);
     color: var(--color-surface);
   }
 
@@ -996,7 +996,7 @@
   }
 
   .totem-admin-navigation__brand-context {
-    color: #c8d2e6;
+    color: var(--color-on-ink-muted);
     font-size: 0.75rem;
     font-weight: 400;
     letter-spacing: 0.08em;
@@ -1018,15 +1018,15 @@
     margin-top: auto;
     border-radius: var(--radius-control);
     padding: 0.625rem 0.75rem;
-    border-top: 1px solid rgb(255 255 255 / 16%);
+    border-top: 1px solid var(--color-line-on-ink-soft);
     border-radius: 0;
-    color: #e6ecf8;
+    color: var(--color-on-ink);
     font-size: 0.875rem;
     font-weight: 500;
   }
 
   .totem-admin-navigation__exit:hover {
-    background: rgb(255 255 255 / 8%);
+    background: var(--color-fill-on-ink);
     color: var(--color-surface);
   }
 
@@ -1045,7 +1045,7 @@
 
   .totem-admin-navigation__link[aria-current='page'] {
     color: var(--color-surface);
-    background: rgb(255 255 255 / 14%);
+    background: var(--color-fill-on-ink-active);
     box-shadow: none;
   }
 

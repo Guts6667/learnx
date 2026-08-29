@@ -292,14 +292,14 @@
 .correction-criterion--unsure {
   border-left: 3px solid var(--color-direction);
   padding-left: 1rem;
-  background: var(--totem-color-coral-soft);
+  background: var(--color-coral-soft);
 }
 
 .correction-result__priority,
 .assessment-result__next {
   border-left: 4px solid var(--color-direction);
   padding: 1.25rem;
-  background: var(--totem-color-coral-soft);
+  background: var(--color-coral-soft);
 }
 
 .correction-result__footer {

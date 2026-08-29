@@ -17,7 +17,7 @@
   align-items: center;
   border-radius: var(--radius-control);
   padding-inline: 1rem;
-  background: var(--color-text);
+  background: var(--color-ink-surface);
   color: var(--color-surface);
   font-weight: 650;
   text-decoration: none;
@@ -147,7 +147,7 @@
   width: 100%;
   display: grid;
   gap: 0;
-  background: var(--color-text);
+  background: var(--color-ink-surface);
 }
 
 .landing-principles > div {
@@ -160,7 +160,7 @@
 }
 
 .landing-principles > div + div {
-  border-top: 1px solid rgb(255 255 255 / 18%);
+  border-top: 1px solid var(--color-line-on-ink);
 }
 
 .landing-principles strong {
@@ -170,7 +170,7 @@
 
 .landing-principles span {
   max-width: 34ch;
-  color: #aebfff;
+  color: var(--color-accent-on-ink);
   font-size: 0.82rem;
   line-height: 1.5;
 }
@@ -255,7 +255,7 @@
 .landing-roadmap {
   align-items: start;
   border-top: 0;
-  background: var(--color-text);
+  background: var(--color-ink-surface);
   box-shadow: 0 0 0 100vmax var(--color-text);
   color: var(--color-surface);
   clip-path: inset(0 -100vmax);
@@ -266,7 +266,7 @@
 }
 
 .landing-roadmap p {
-  color: #c8d0df;
+  color: var(--color-on-ink-muted);
 }
 
 .landing-roadmap-heading {
@@ -288,7 +288,7 @@
   bottom: 0.65rem;
   left: 0.4375rem;
   width: 1px;
-  background: rgb(255 255 255 / 28%);
+  background: var(--color-line-on-ink-strong);
   content: '';
 }
 
@@ -310,14 +310,14 @@
   width: 0.9375rem;
   height: 0.9375rem;
   margin-top: 0.25rem;
-  border: 2px solid #aebfff;
+  border: 2px solid var(--color-accent-on-ink);
   border-radius: 999px;
-  background: var(--color-text);
+  background: var(--color-ink-surface);
 }
 
 .landing-roadmap-timeline li[data-state='available'] .landing-roadmap-marker {
-  border-color: #aebfff;
-  background: #aebfff;
+  border-color: var(--color-accent-on-ink);
+  background: var(--color-accent-on-ink);
 }
 
 .landing-roadmap-timeline li[data-state='current'] .landing-roadmap-marker {
@@ -342,7 +342,7 @@
 
 .landing-roadmap-timeline .landing-roadmap-status {
   margin: 0;
-  color: #aebfff;
+  color: var(--color-accent-on-ink);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.09em;
@@ -351,7 +351,7 @@
 }
 
 .landing-roadmap-timeline li[data-state='current'] .landing-roadmap-status {
-  color: #f2b4a7;
+  color: var(--color-coral-on-ink);
 }
 
 .landing-research {
@@ -747,7 +747,7 @@
 
   .landing-principles > div + div {
     border-top: 0;
-    border-left: 1px solid rgb(255 255 255 / 18%);
+    border-left: 1px solid var(--color-line-on-ink);
   }
 
   .landing-section,

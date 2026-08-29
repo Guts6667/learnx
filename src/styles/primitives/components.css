@@ -1,8 +1,8 @@
 .ui-card {
   min-width: 0;
-  border: 1px solid var(--app-border);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-group);
-  background: var(--app-surface);
+  background: var(--color-surface);
 }
 
 .ui-card--accent {
@@ -63,7 +63,7 @@
   width: 3.75rem;
   height: 3.75rem;
   border-radius: 50% 46% 1.125rem 50%;
-  background: var(--totem-color-coral, var(--color-warning));
+  background: var(--color-coral);
   content: '';
   pointer-events: none;
   transform: rotate(12deg);
@@ -619,11 +619,11 @@
 }
 
 .ui-notice--attention {
-  border-left: 0.25rem solid var(--totem-color-coral, var(--color-warning));
+  border-left: 0.25rem solid var(--color-coral);
 }
 
 .ui-notice--attention .ui-notice__marker {
-  color: var(--totem-color-coral, var(--color-warning));
+  color: var(--color-coral);
 }
 
 .ui-notice--safe {

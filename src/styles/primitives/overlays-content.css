@@ -127,7 +127,7 @@
 .ui-prose h2,
 .ui-prose h3,
 .ui-prose h4 {
-  color: var(--app-text);
+  color: var(--color-text);
   font-weight: 700;
   line-height: 1.3;
   text-wrap: balance;

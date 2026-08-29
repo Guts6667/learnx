@@ -77,7 +77,7 @@ describe('Totem visual foundations', () => {
     expect(stylesheet).toContain('dm-sans-latin-500-normal.woff2');
     expect(stylesheet).not.toContain('manrope-latin-400-normal.woff2');
     expect(stylesheet).not.toContain('source-serif-4-latin-400-normal.woff2');
-    expect(stylesheet).toContain('--totem-font-interface:');
+    expect(stylesheet).toContain('--font-interface:');
     expect(stylesheet).toContain('--space-1: 0.25rem');
     expect(stylesheet).toContain('--space-12: 3rem');
     expect(stylesheet).toContain('--radius-directional: 0.25rem');
@@ -104,6 +104,12 @@ describe('Totem visual foundations', () => {
     expect(contrast('#8491a8', '#ffffff')).toBeGreaterThanOrEqual(3);
     expect(contrast('#8a5a24', '#f4f6fb')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#9b3e32', '#ffffff')).toBeGreaterThanOrEqual(4.5);
+    // Roles carried on the ink band. Four surfaces used to invent their own
+    // on-dark values; these are the single set they collapsed into.
+    expect(contrast('#e6ecf8', '#17233b')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#c8d2e6', '#17233b')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#aebfff', '#17233b')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#f2b4a7', '#17233b')).toBeGreaterThanOrEqual(4.5);
     expect(stylesheet).toMatch(
       /\.ui-action--danger \{[\s\S]*?color: color-mix\([\s\S]*?var\(--color-danger\) 90%[\s\S]*?var\(--color-ivory\) 10%/,
     );

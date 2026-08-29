@@ -247,7 +247,7 @@
 .page-description {
   margin-top: 1rem;
   max-width: 65ch;
-  color: var(--app-text-muted);
+  color: var(--color-text-muted);
   line-height: 1.75;
 }
 
