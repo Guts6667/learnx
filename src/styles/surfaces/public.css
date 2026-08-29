@@ -956,3 +956,96 @@
     transition: none;
   }
 }
+
+/* --- V4.2 landing: reading scale ---
+   The app scale is tuned for density; a marketing page is read, not operated.
+   These steps track the reference (17.5 / 16.5 / 15 / 14.5 / 12.5px) while
+   staying on the shared scale rather than inventing new values. */
+
+.landing-page .landing-lead {
+  max-width: 42ch;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+}
+
+.landing-page :is(.landing-section, .landing-forms) > div > p,
+.landing-page .landing-research > p {
+  max-width: 56ch;
+  font-size: var(--text-md);
+  line-height: 1.65;
+}
+
+.landing-page .landing-product-benefits span,
+.landing-page .landing-principles span,
+.landing-page .landing-roadmap-timeline p {
+  font-size: var(--text-base);
+  line-height: 1.55;
+}
+
+.landing-page .landing-principles strong,
+.landing-page .landing-roadmap-timeline h3 {
+  font-size: var(--text-lg);
+}
+
+.landing-page .landing-product-benefits strong {
+  font-size: var(--text-md);
+}
+
+.landing-page .page-eyebrow {
+  font-size: var(--text-xs);
+  letter-spacing: 0.11em;
+}
+
+.landing-page .landing-lesson-preview article > p,
+.landing-page .landing-preview-body > p {
+  font-size: var(--text-md);
+  line-height: 1.65;
+}
+
+/* --- V4.2 landing: the verdict reads as a published result, not a paragraph --- */
+
+.landing-research-latest {
+  max-width: 51rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--color-canvas);
+}
+
+.landing-research-latest h3 {
+  max-width: 26ch;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.landing-research-finding {
+  margin-top: var(--space-6);
+  padding-left: var(--space-5);
+  border-left: 3px solid var(--color-coral);
+}
+
+.landing-research-finding strong,
+.landing-research-finding span {
+  font-size: var(--text-md);
+  line-height: 1.7;
+}
+
+/* --- V4.2 landing: the decorative blob sits behind the mockup --- */
+
+.landing-hero::after {
+  top: -2.125rem;
+  right: -1.875rem;
+  width: 9.375rem;
+  height: 9.375rem;
+  border-radius: 44% 56% 61% 39% / 42% 46% 54% 58%;
+  opacity: 0.94;
+  transform: none;
+}
+
+/* --- V4.2 landing: "real content" reads as a tag --- */
+
+.landing-preview-header > span:last-child {
+  border-radius: 999px;
+  padding: 0.25rem 0.625rem;
+  background: var(--color-surface-subtle);
+  color: var(--color-accent-text);
+}
