@@ -232,6 +232,8 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
             identityMatches: false,
             killSwitch: true,
             promotedBenchmarkId: PROMOTED_CORRECTION_IDENTITY.benchmarkId,
+            promotedRequestProfileVersion:
+              PROMOTED_CORRECTION_IDENTITY.requestProfile.version,
             state: 'CONFIGURATION_BLOCKED',
             transport: 'REAL',
           };

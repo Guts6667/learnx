@@ -16,8 +16,11 @@ import {
 } from './correction-orchestration.test-support';
 
 describe('correction orchestration (V4-009)', () => {
-  it('fails closed when the promoted runtime identity declares zero retries', () => {
-    expect(PROMOTED_CORRECTION_IDENTITY.maxRetries).toBe(0);
+  it('n’autorise qu’une seule reprise, et seulement sur une réponse inutilisable', () => {
+    // owner-retry-policy-2026-08-29. One, not "some": a second retry would
+    // pay a third time for a model that has already refused twice to satisfy
+    // its own contract.
+    expect(PROMOTED_CORRECTION_IDENTITY.maxRetries).toBe(1);
   });
   it('delivers a full correction, settles the full quote price and releases the ceiling difference', async () => {
     const harness = buildHarness({ transport: strictOutput });
@@ -491,7 +494,7 @@ describe('correction orchestration (V4-009)', () => {
       activityTypeScope: ['writing', 'reflection', 'practice', 'project'],
       scientificallyValidatedActivityTypeScope: ['writing'],
       languageScope: ['fr-FR'],
-      maxRetries: 0,
+      maxRetries: 1,
       scoreGuardBandPoints: 5,
       targetKindScope: ['EXERCISE'],
     });

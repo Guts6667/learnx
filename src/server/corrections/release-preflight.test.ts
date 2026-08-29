@@ -137,3 +137,15 @@ describe('correction release preflight', () => {
     ).toMatchObject({ identityMatches: false, state: 'DISABLED' });
   });
 });
+
+describe('version du profil de requête (V4.5-124)', () => {
+  it('annonce le profil que le runtime utilisera', () => {
+    // A profile is a version of what was measured. An operator reading READY
+    // should be able to see which one is running — 2.2.0 added a retry and no
+    // campaign has run under it yet.
+    expect(
+      evaluateCorrectionReleasePreflight(configuration())
+        .promotedRequestProfileVersion,
+    ).toBe(PROMOTED_CORRECTION_IDENTITY.requestProfile.version);
+  });
+});
