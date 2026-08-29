@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (ticket V4.5-165, partie IA) ·
   partie paiement `EN_ATTENTE` (V4.5-160)
-- **Version** : 1.4.0 (empreintes IP, marqueur anti-abus — V4.5-147/163)
+- **Version** : 1.4.1 (noms réels du marqueur anti-abus, V4.5-163 livré)
 - **Date** : 29 août 2026
 - **Owner** : Architecture/Produit (Head of AI) · **Reviewer** : Rayan
 - **Autorité supérieure** : `ADR_003` §7, `docs/V4_5_AI_QUALITY_CONTRACT.md`
@@ -46,7 +46,7 @@ réversible par table précalculée sur l'espace IPv4 — purgée sous 24 h.
 V4.5-147 la remplace par un HMAC sous secret serveur ; la politique ne parle
 d'« empreinte non réversible » qu'à partir de là.
 
-| T8 | Anti-abus de l'essai gratuit (V4.5-163) | marqueur HMAC par compte/IP, cycles d'attribution | Intérêt légitime (prévention de la fraude) | LearnX | **12 mois** depuis le dernier contact, purge `cleanup-expired-data` ; **survit à l'effacement** (sinon la suppression de compte redonnerait un essai) — nommé dans la politique |
+| T8 | Anti-abus de l'essai gratuit (V4.5-163) | table `trial_allocation_markers` : `key_hash` = HMAC(`trial-allocation:ip:<adresse>`, `LEARNX_BUCKET_HMAC_SECRET`), `grants`, `first_seen_at`, `last_seen_at` ; cycles `credit_grant_cycles` avec la cohorte enregistrée | Intérêt légitime (prévention de la fraude) | LearnX | **12 mois** depuis `last_seen_at` (`LEARNX_RETENTION_TRIAL_MARKER_MS`, défaut 365 j), purge `cleanup-expired-data` ; **survit à l'effacement** (sinon la suppression de compte redonnerait un essai) — nommé dans la politique |
 | --- | --- | --- | --- | --- | --- |
 
 User-agent : non collecté.
