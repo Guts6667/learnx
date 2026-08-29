@@ -5,8 +5,8 @@
 - Version : 1.0.0
 - Date : 29 août 2026
 - Baseline : `origin/main` à `63c436d9` (V4.1 released et clôturée)
-- Statut V4.2 : **actif** — lots 000 à 400 `DONE` et fusionnés dans `dev` ;
-  lot 500 ouvert.
+- Statut V4.2 : **READY_FOR_OWNER_GO** — tous les tickets sont `DONE` sauf
+  V4.2-502, seul reste ouvert. Fusionné dans `dev`.
 - Périmètre arrêté le 29 août 2026 : V4.2 livre le système de design et la
   surface publique. **La refonte des surfaces produit en est explicitement
   exclue** et devient V4.3, informée par un audit UX indépendant.
@@ -158,7 +158,16 @@ Identiques à V4.1 : `DRAFT → NEEDS_ARBITRATION → READY → IN_PROGRESS → 
 ### V4.2-501 — Gate de CSS mort
 
 - Priorité : P2 · Owner : Frontend platform · Reviewer : QA
-- Statut : **READY**
+- Statut : **DONE** au SHA `35d15da0`
+- A trouvé un vrai défaut et pas seulement du décor : `accessibility.css` stylait
+  `.ui-progress__fill` dans un bloc `forced-colors` alors que le composant rend
+  `.ui-progress__bar`. En mode contraste forcé, aucune barre de progression
+  n'avait jamais reçu la couleur système. Quatre classes réellement mortes
+  retirées, dont trois vestiges de l'ancienne landing.
+- Le gate autorise les noms assemblés à l'exécution via une liste qui doit
+  nommer le fichier construisant chaque préfixe, pour qu'un constat ne puisse
+  pas être réduit au silence sans dire d'où vient le nom. Sondé dans les deux
+  sens.
 - `knip` couvre le JavaScript mort ; rien ne couvre le CSS. Deux blocs morts
   ont été trouvés à la main pendant V4.1 et V4.2 — `.landing-proof-list` et
   quatre surcharges `.totem-auth-page` remappant des classes Tailwind qui
