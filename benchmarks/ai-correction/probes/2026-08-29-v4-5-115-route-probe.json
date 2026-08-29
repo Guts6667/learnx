@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "ticket": "V4.5-115",
+  "artifactKind": "REQUEST_PROFILE_ROUTE_PROBE",
+  "executedAt": "2026-08-29T16:13:54.959009+00:00",
+  "authorization": "Rayan, 29 août 2026, plafond 0,10 USD",
+  "results": [
+    {
+      "label": "A-displayname",
+      "requestProvider": {
+        "allow_fallbacks": false,
+        "order": [
+          "Anthropic"
+        ],
+        "require_parameters": true
+      },
+      "httpStatus": 200,
+      "id": "gen-1788020019-OUNz6q5wI6UHExVacZFx",
+      "model": "anthropic/claude-sonnet-4.6",
+      "provider": "Anthropic",
+      "usage": {
+        "prompt_tokens": 14,
+        "completion_tokens": 4,
+        "total_tokens": 18,
+        "cost": 0.000102,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000102,
+          "upstream_inference_prompt_cost": 4.2e-05,
+          "upstream_inference_completions_cost": 6e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latencyMs": 1474,
+      "content": "OK",
+      "generation": {
+        "provider_name": "Anthropic",
+        "model": "anthropic/claude-4.6-sonnet-20260217",
+        "total_cost": 0.000102,
+        "usage": 0.000102,
+        "tokens_prompt": 7,
+        "tokens_completion": 1,
+        "is_byok": false,
+        "upstream_id": "msg_011CeXLSGhjsKuPAZtax9oy5"
+      }
+    },
+    {
+      "label": "B-slug",
+      "requestProvider": {
+        "allow_fallbacks": false,
+        "order": [
+          "anthropic"
+        ],
+        "require_parameters": true
+      },
+      "httpStatus": 200,
+      "id": "gen-1788020020-3tTt8RcUapQ4UhHJOKEt",
+      "model": "anthropic/claude-sonnet-4.6",
+      "provider": "Anthropic",
+      "usage": {
+        "prompt_tokens": 14,
+        "completion_tokens": 4,
+        "total_tokens": 18,
+        "cost": 0.000102,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000102,
+          "upstream_inference_prompt_cost": 4.2e-05,
+          "upstream_inference_completions_cost": 6e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latencyMs": 1161,
+      "content": "OK",
+      "generation": {
+        "provider_name": "Anthropic",
+        "model": "anthropic/claude-4.6-sonnet-20260217",
+        "total_cost": 0.000102,
+        "usage": 0.000102,
+        "tokens_prompt": 7,
+        "tokens_completion": 1,
+        "is_byok": false,
+        "upstream_id": "msg_011CeXLSMZw87sH534dK6yW4"
+      }
+    },
+    {
+      "label": "C-slug-only-deny",
+      "requestProvider": {
+        "allow_fallbacks": false,
+        "order": [
+          "anthropic"
+        ],
+        "only": [
+          "anthropic"
+        ],
+        "require_parameters": true,
+        "data_collection": "deny"
+      },
+      "httpStatus": 200,
+      "id": "gen-1788020021-lpVtcscW0Pzrx5zEgayS",
+      "model": "anthropic/claude-sonnet-4.6",
+      "provider": "Anthropic",
+      "usage": {
+        "prompt_tokens": 14,
+        "completion_tokens": 4,
+        "total_tokens": 18,
+        "cost": 0.000102,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000102,
+          "upstream_inference_prompt_cost": 4.2e-05,
+          "upstream_inference_completions_cost": 6e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latencyMs": 1253,
+      "content": "OK",
+      "generation": {
+        "provider_name": "Anthropic",
+        "model": "anthropic/claude-4.6-sonnet-20260217",
+        "total_cost": 0.000102,
+        "usage": 0.000102,
+        "tokens_prompt": 7,
+        "tokens_completion": 1,
+        "is_byok": false,
+        "upstream_id": "msg_011CeXLSSf2AWLiXAC4F41Vp"
+      }
+    }
+  ],
+  "totalActualCostUsd": 0.000306
+}

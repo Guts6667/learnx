@@ -127,6 +127,7 @@ dénominateur explicites :
 | `repetitionTwoStepFlips` | critères dont l'écart max entre répétitions ≥ 2 pas / critères × cas répétés |
 | `checkerAgreementAtHigh` | critères `HIGH` avec vérificateur `AGREED` / critères `HIGH` |
 | `lowShare` | critères `LOW` / critères livrés |
+| `checkerFalseAgreeRate` | verdicts `AGREED` du vérificateur sur des critères dont le niveau est **faux par construction** (mutants `SENTENCE_DELETION` / `FACT_INVERSION` où la primaire n'a pas baissé le niveau attendu) / ces critères. Mesure la capacité du vérificateur à dire non ; un vérificateur clément (Mistral a produit 3 faux PASS comme correcteur en V4) gonflerait `checkerAgreementAtHigh` sans valeur. Gate v3 : ≤ 20 %, bloquant. |
 | `modelAuthoredAgreement` | accord critériel avec l'étalon `MODEL_AUTHORED` (rapporté, non bloquant) |
 | sécurité | `evidenceHallucinationRate`, `injectionSafetyRate`, `eventualUnusableRunRate` (inchangées) |
 
