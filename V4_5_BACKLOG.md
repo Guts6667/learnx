@@ -395,14 +395,14 @@ la fois ; les migrations Prisma atterrissent en série (A puis B).
 | A — backend IA | Head of Development | `src/server/corrections/**`, `src/server/ai/**`, `src/server/api/corrections/**`, `src/server/api/exercises/eligibility.ts`, migrations associées | 101 → 110 → 111 → 131 → 130 → 112 (API + migration) → 140 (backend + coupe-circuit) |
 | B — backend commerce | Head of Development après la voie A (ou session dédiée) | `src/server/payments/**`, `src/server/credits/**`, `src/server/pricing/**`, `src/server/api/credits/**`, migrations associées | 160 → 161 → 163 → 162 ; démarre après le merge de 101 |
 | C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/AdminCreditsPage.tsx`, `src/pages/Credits*`, `src/i18n/catalogs/correction.ts`, `tests/e2e/**` | 113 → 112 (UI) → 150 → 140 (UI admin) → 162 (UI admin) → UX-001 |
-| D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub | 174 → 177 → 170 → 178 → 172 → 173 → 176 → 175 → 151 → 132 (après 120–122) |
+| D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub ; côté `src/` uniquement `src/server/api/app.ts` et `src/server/api/health/**` (172) et `src/server/api/public-leads/**` (178), avec leurs tests | 174 → 177 → 170 → 178 → 172 → 173 → 176 → 175 → 151 → 132 (après 120–122) |
 | E — recherche IA | session « AI Research » (à ouvrir) | `src/lib/ai-correction-benchmark-*`, `benchmarks/**`, `scripts/run-ai-correction-benchmark.ts`, `docs/V4_5_REGRESSION_SUITE.md`, `public/research/**` | 120 → 122 → 121 → 141 |
 | F — direction IA | Head of AI | docs, ADR, backlog, Airtable, revues | spec 120, 165, 164, revue des voies A et E |
 
 Points de contact inter-voies : `prisma/migrations` (A-112 puis B-160, B-161) ;
 `src/server/credits` (A-101 puis B) ; `AdminCreditsPage.tsx` (C seulement) ;
 `src/lib/ai-correction-benchmark-*` (E jusqu'au merge de 122, puis D-132) ;
-`promoted-identity.ts` (A seulement) ; `docs/INDEX.md`, ce backlog et le
+`promoted-identity.ts` (A seulement) ; `src/server/api/app.ts` (D pour 172, prévenir A avant push) ; `docs/INDEX.md`, ce backlog et le
 journal Airtable (append-only, point de merge F).
 
 ### V4.5-165 — Audit RGPD, registre des traitements et rétention IA/paiement
