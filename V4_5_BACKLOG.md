@@ -217,11 +217,18 @@ l'autorité de définition ; Airtable porte le statut.
   du 29 août 2026 : `mistralai/mistral-medium-3-5` via OpenRouter, route et
   tarif à réattester dans le ticket ; sans raisonnement, ≤ 400 tokens) ; prompt et schéma fermés oui/non par critère ; suppression de
   `executeGuardedPass` et de la garde ±5 ; config `LEARNX_AI_CORRECTION_CHECKER_*` ;
-  préflight et catalogue pricing mis à jour ; échec vérificateur →
-  `overallConfidence` plafonnée `MEDIUM`, signal `CHECKER_UNAVAILABLE`.
+  préflight attestant les deux identités (`PROMOTED_CHECKER_IDENTITY`,
+  `promotion.scientific = false`) ; transport factice `LEARNX_AI_TRANSPORT=fake`
+  refusé au démarrage en production ; échec vérificateur (transport, timeout,
+  schéma, clé inconnue) → `UNAVAILABLE`, jamais `AGREED`, `overallConfidence`
+  plafonnée `MEDIUM`, signaux `CHECKER_UNAVAILABLE` / `CHECKER_DISAGREED`. Le
+  vérificateur reçoit uniquement la ligne de rubrique, le niveau et les
+  extraits cités — jamais la production complète. Le vérificateur est facturé
+  dans le plafond existant de seconde passe ; la sémantique tarifaire est
+  V4.5-114.
 - Acceptation : tests fake-provider accord/désaccord/indisponible ; préflight
-  `READY` exige l'identité vérificateur ; devis couvre primaire + vérificateur
-  P90 ; aucun appel payant dans les tests.
+  `READY` exige les deux identités et rapporte `transport` ; test « jamais la
+  production complète » ; aucun appel payant dans les tests ; rollback = déploiement.
 
 ### V4.5-112 — Retour apprenant par critère
 
@@ -241,10 +248,23 @@ l'autorité de définition ; Airtable porte le statut.
   champ `aiCorrectionValidationScope` côté API exercices.
 - Acceptation : tests RTL par état ; baseline visuelle ; `i18n:check` vert.
 
+### V4.5-114 — Sémantique tarifaire du vérificateur indépendant
+
+- Epic : V4.5-007/009 · Owner : Backend/Data · Reviewer : Finance ·
+  Deps : V4.5-111, V4.5-121 (mesure réelle du vérificateur)
+- Livrable : nouvelle version du catalogue pricing ; plafond = P90 primaire +
+  P90 vérificateur mesurés ; renommage `includesAutomaticSecondPass` →
+  `includesIndependentCheck` (colonnes catalogue et devis) par migration
+  additive ; note de rollback écrite avant l'atterrissage.
+- Acceptation : devis existants relisibles ; reconstruction du ledger verte ;
+  test prouvant qu'un devis ancien et un devis nouveau se règlent chacun selon
+  leur propre formule ; `quality:v4.1:final` vert.
+
 ### V4.5-120 — Suite de régression décidable par la machine
 
 - Epic : V4.5-003 · Owner : IA/Recherche · Reviewer : Architecture/Produit ·
   Deps : V4.5-100, V4.5-111
+- Spécification : `docs/V4_5_REGRESSION_SUITE.md`.
 - Livrable : `benchmarks/ai-correction/regression/regression-pool.v1.json`
   (tous corpus historiques, `oracleKind: MODEL_AUTHORED`) ; générateur de
   mutants déterministe ; métriques `mutationDirectionViolations`,
@@ -392,7 +412,7 @@ la fois ; les migrations Prisma atterrissent en série (A puis B).
 
 | Voie | Session | Fichiers possédés | Tickets dans l'ordre |
 | --- | --- | --- | --- |
-| A — backend IA | Head of Development | `src/server/corrections/**`, `src/server/ai/**`, `src/server/api/corrections/**`, `src/server/api/exercises/eligibility.ts`, migrations associées | 101 → 110 → 111 → 131 → 130 → 112 (API + migration) → 140 (backend + coupe-circuit) |
+| A — backend IA | Head of Development | `src/server/corrections/**`, `src/server/ai/**`, `src/server/api/corrections/**`, `src/server/api/exercises/eligibility.ts`, migrations associées | 101 → 110 → 111 → 131 → 130 → 112 (API + migration) → 140 (backend + coupe-circuit) → 114 (après 121) |
 | B — backend commerce | Head of Development après la voie A (ou session dédiée) | `src/server/payments/**`, `src/server/credits/**`, `src/server/pricing/**`, `src/server/api/credits/**`, migrations associées | 160 → 161 → 163 → 162 ; démarre après le merge de 101 |
 | C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/AdminCreditsPage.tsx`, `src/pages/Credits*`, `src/i18n/catalogs/correction.ts`, `tests/e2e/**` | 113 → 112 (UI) → 150 → 140 (UI admin) → 162 (UI admin) → UX-001 |
 | D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub ; côté `src/` uniquement `src/server/api/app.ts` et `src/server/api/health/**` (172) et `src/server/api/public-leads/**` (178), avec leurs tests | 174 → 177 → 170 → 178 → 172 → 173 → 176 → 175 → 151 → 132 (après 120–122) |
