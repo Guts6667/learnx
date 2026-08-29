@@ -238,9 +238,17 @@ Résultat livré:
 Validations passées:
 Validations non exécutées:
 Limites / dette:
+Sorties et leur destination:
 Rollback ou revert:
 Action attendue du reviewer:
 ```
+
+`Sorties et leur destination` (règle du 29 août 2026, après deux défauts
+V4.5-116 et V4.5-119) : pour **chaque valeur que le composant calcule ou
+mesure** (résultat, coût, latence, route, signal), nommer la ligne, le champ
+ou l'appelant où elle atterrit — ou écrire « abandonnée volontairement ».
+Un composant correct dont la sortie n'est lue par personne est un défaut ;
+cette ligne est celle qui l'attrape avant la revue, pas pendant.
 
 ## 8. Promotion et clôture
 

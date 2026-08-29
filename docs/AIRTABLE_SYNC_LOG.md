@@ -600,3 +600,14 @@ l'autorisation.
   confidentialité, détachement à 180 jours + information RAG — décisions
   Rayan `owner-rgpd-2026-08-29` ; V4.5-165 : blocage mis à jour.
 - V4.5-140 : `REVIEW` → `DONE` (`fa1b2a5e`, PR #57).
+- V4.5-165 : attestation fournisseurs (PR #60, `30403064`) et décision
+  `owner-openrouter-retention-2026-08-29` consignées ; texte de la politique
+  de confidentialité livré (PR #61, `cc27a43e`).
+- V4.5-143 créé (`READY`, `rectmO3jKoeB9VRer`, voie A) : journal du
+  coupe-circuit exposé et taux figés au déclenchement (manques signalés par la
+  voie C sur 140 UI).
+- V4.5-119 créé (`REVIEW`, `recvok4Y0lX27n088`, voie A) : coût du vérificateur
+  enregistré (défaut de 111, signalé par la voie A ; PR #63).
+- V4.5-142 : `READY` → `DONE` (`e0d6b383`, PR #59).
+- Règle de handoff « Sorties et leur destination » ajoutée à
+  `docs/AGENT_WORKFLOW.md` §7.
