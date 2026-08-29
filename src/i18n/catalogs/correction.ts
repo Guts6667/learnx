@@ -46,7 +46,7 @@ export const frenchCorrectionMessages = {
   'aiCorrection.runError': 'La correction n’a pas pu être exécutée.',
   'aiCorrection.newQuote': 'Demander un nouveau devis',
   'aiCorrection.unavailable':
-    'Aucun critère utilisable n’a pu être restitué. Le débit reste celui du devis accepté, conformément au consentement donné avant l’exécution.',
+    'Aucun critère utilisable n’a pu être restitué. Votre réservation de crédits a été libérée : rien ne vous est débité.',
   'aiCorrection.settlementRecap':
     'Plafond réservé : {reserved} · débité : {settled} · libéré : {released} crédits.',
   'aiCorrection.noProgressImpact': 'Sans effet sur la progression',
@@ -147,7 +147,7 @@ export const englishCorrectionMessages = {
   'aiCorrection.runError': 'The correction could not be completed.',
   'aiCorrection.newQuote': 'Request a new quote',
   'aiCorrection.unavailable':
-    'No usable criterion could be returned. The charge remains the accepted quote amount, as stated before execution.',
+    'No usable criterion could be returned. Your credit reservation has been released: you are not charged.',
   'aiCorrection.settlementRecap':
     'Reserved ceiling: {reserved} · charged: {settled} · released: {released} credits.',
   'aiCorrection.noProgressImpact': 'No effect on progress',
