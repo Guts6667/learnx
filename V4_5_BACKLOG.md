@@ -199,8 +199,8 @@ l'autorité de définition ; Airtable porte le statut.
 - Epic : V4.5-002 · Owner : Backend/Data · Reviewer : IA/Recherche · Deps : V4.5-110 ;
   arbitrage Rayan (seconde famille de modèle).
 - Livrable : `checkerIdentity` épinglée dans `promoted-identity.ts`
-  (`anthropic/claude-haiku-4.5`, route Anthropic, sans raisonnement, ≤ 400
-  tokens) ; prompt et schéma fermés oui/non par critère ; suppression de
+  (famille **non Anthropic**, décision Rayan du 29 août 2026 pour réduire les
+  biais corrélés ; modèle exact à arbitrer, sans raisonnement, ≤ 400 tokens) ; prompt et schéma fermés oui/non par critère ; suppression de
   `executeGuardedPass` et de la garde ±5 ; config `LEARNX_AI_CORRECTION_CHECKER_*` ;
   préflight et catalogue pricing mis à jour ; échec vérificateur →
   `overallConfidence` plafonnée `MEDIUM`, signal `CHECKER_UNAVAILABLE`.
@@ -242,7 +242,8 @@ l'autorité de définition ; Airtable porte le statut.
 ### V4.5-121 — Première exécution payante de la suite
 
 - Epic : V4.5-003 · Owner : IA/Recherche · Reviewer : Rayan · Deps : V4.5-120 ;
-  autorisation budget (≤ 10 USD).
+  budget autorisé le 29 août 2026 : **≤ 3 USD** (pool réduit : 1 répétition
+  sur le pool complet + 3 répétitions sur un sous-ensemble de 24 cas + mutants).
 - Livrable : un run complet, coût réconcilié, résultats append-only sous
   `benchmarks/ai-correction/regression/results/`, entrée FR/EN du journal
   public.
