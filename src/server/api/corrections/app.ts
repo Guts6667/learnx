@@ -12,8 +12,8 @@ import { ApiError, type ApiErrorCode } from '../_lib/errors.js';
 import {
   CorrectionOrchestrationError,
   CorrectionOrchestrationService,
-  createRuntimeCorrectionTransport,
   type CorrectionHistoryEntry,
+  type CorrectionTransportPort,
   type CreditSettlementPort,
   type OrchestratedCorrectionResult,
 } from '../../corrections/correction-orchestration.js';
@@ -22,7 +22,10 @@ import {
   PROMOTED_CHECKER_IDENTITY,
   PROMOTED_CORRECTION_IDENTITY,
 } from '../../corrections/promoted-identity.js';
-import { resolveCorrectionTransportMode } from '../../corrections/correction-transport-mode.js';
+import {
+  selectCorrectionTransport,
+  type CorrectionTransportSelection,
+} from '../../corrections/correction-transport-mode.js';
 import { createRuntimeCorrectionChecker } from '../../corrections/correction-checker.js';
 import {
   evaluateCorrectionReleasePreflight,
@@ -115,10 +118,9 @@ export function isPromotedCorrectionConfiguration(
   );
 }
 
-async function createDefaultOrchestration(): Promise<Pick<
-  CorrectionOrchestrationService,
-  'runAcceptedQuote'
-> | null> {
+async function createDefaultOrchestration(
+  transport: CorrectionTransportPort,
+): Promise<Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null> {
   const configuration = readOpenRouterConfiguration({
     deploymentEnvironment: deploymentEnvironment(),
   });
@@ -153,7 +155,7 @@ async function createDefaultOrchestration(): Promise<Pick<
     ports.quotes,
     credits,
     ports.corrections,
-    createRuntimeCorrectionTransport(),
+    transport,
     {
       apiKey: configuration.apiKey,
       // Absent when the environment has no checker assigned: verdicts stay
@@ -172,6 +174,11 @@ async function createDefaultOrchestration(): Promise<Pick<
 
 export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
+  // One decision, read by both the preflight and the orchestration, so the
+  // reported transport is always the constructed transport.
+  let selection: CorrectionTransportSelection | undefined;
+  const transportSelection = (): CorrectionTransportSelection =>
+    (selection ??= selectCorrectionTransport());
   let orchestration = options.orchestration;
   let monitoring = options.monitoring;
   let history = options.history;
@@ -196,7 +203,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
             readOpenRouterConfiguration({
               deploymentEnvironment: deploymentEnvironment(),
             }),
-            { transport: resolveCorrectionTransportMode() },
+            { transport: transportSelection().mode },
           );
         } catch {
           // Reached when the configuration itself refuses to parse, which
@@ -295,7 +302,8 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     }
     if (!orchestration) {
       defaultOrchestrationPromise ??=
-        options.resolveDefaultOrchestration?.() ?? createDefaultOrchestration();
+        options.resolveDefaultOrchestration?.() ??
+        createDefaultOrchestration(transportSelection().transport);
       orchestration = (await defaultOrchestrationPromise) ?? undefined;
     }
     if (!orchestration) {

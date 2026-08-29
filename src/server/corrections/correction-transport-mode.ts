@@ -1,4 +1,7 @@
 import { AiProviderError } from '../ai/structured-provider.js';
+import { createRuntimeCorrectionTransport } from './correction-orchestration.js';
+import type { CorrectionTransportPort } from './correction-orchestration-contracts.js';
+import { createFakeCorrectionTransport } from './fake-correction-transport.js';
 
 export type CorrectionTransportMode = 'REAL' | 'FAKE';
 
@@ -29,4 +32,31 @@ export function resolveCorrectionTransportMode(
     throw new AiProviderError('CONFIGURATION_INVALID', false);
   }
   return 'FAKE';
+}
+
+export interface CorrectionTransportSelection {
+  mode: CorrectionTransportMode;
+  transport: CorrectionTransportPort;
+}
+
+/**
+ * Resolves the mode and builds the matching transport in one step.
+ *
+ * The mode and the transport must come from the same decision. V4.5-111 shipped
+ * them as two independent calls — the preflight resolved the mode while the
+ * composition root always built the real transport — so the preflight could
+ * report FAKE while real requests went to the provider and spent real money.
+ * Returning both together makes that disagreement unrepresentable.
+ */
+export function selectCorrectionTransport(
+  values: EnvironmentValues = process.env,
+): CorrectionTransportSelection {
+  const mode = resolveCorrectionTransportMode(values);
+  return {
+    mode,
+    transport:
+      mode === 'FAKE'
+        ? createFakeCorrectionTransport()
+        : createRuntimeCorrectionTransport(),
+  };
 }

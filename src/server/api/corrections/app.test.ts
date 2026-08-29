@@ -221,3 +221,77 @@ describe('corrections API', () => {
     });
   });
 });
+
+describe('transport factice câblé (V4.5-116)', () => {
+  const identity = {
+    LEARNX_AI_ALLOWED_MODELS: `${PROMOTED_CORRECTION_IDENTITY.modelId},${PROMOTED_CHECKER_IDENTITY.modelId}`,
+    LEARNX_AI_ALLOWED_PROVIDERS: `${PROMOTED_CORRECTION_IDENTITY.provider},${PROMOTED_CHECKER_IDENTITY.provider}`,
+    LEARNX_AI_CONFIG_ENVIRONMENT: 'development',
+    LEARNX_AI_CORRECTION_CHECKER_MODEL: PROMOTED_CHECKER_IDENTITY.modelId,
+    LEARNX_AI_CORRECTION_CHECKER_PROVIDER: PROMOTED_CHECKER_IDENTITY.provider,
+    LEARNX_AI_CORRECTION_PRIMARY_MODEL: PROMOTED_CORRECTION_IDENTITY.modelId,
+    LEARNX_AI_CORRECTION_PRIMARY_PROVIDER:
+      PROMOTED_CORRECTION_IDENTITY.provider,
+    LEARNX_AI_CORRECTION_SECOND_PASS_MODEL:
+      PROMOTED_CORRECTION_IDENTITY.modelId,
+    LEARNX_AI_CORRECTION_SECOND_PASS_PROVIDER:
+      PROMOTED_CORRECTION_IDENTITY.provider,
+    LEARNX_AI_ENABLED: 'true',
+    LEARNX_AI_KILL_SWITCH: 'false',
+    OPENROUTER_API_KEY: 'server-secret',
+    APP_URL: 'https://preview.learn-x.app',
+  };
+
+  function stub(values: Record<string, string>) {
+    for (const [key, value] of Object.entries({ ...identity, ...values })) {
+      vi.stubEnv(key, value);
+    }
+  }
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it.each([
+    ['fake', 'FAKE'],
+    ['', 'REAL'],
+  ])(
+    'annonce le transport réellement construit (%s)',
+    async (flag, expected) => {
+      // The V4.5-111 defect: the preflight resolved the mode on its own while
+      // the composition root always built the real transport, so it could
+      // announce FAKE while spending real money. Both now read one selection.
+      stub({ LEARNX_AI_TRANSPORT: flag });
+      const app = createCorrectionsApp({
+        authentication: authentication('ADMIN'),
+        authorization,
+      });
+
+      const response = await app.request('/api/admin/ai-corrections/preflight');
+      const body = (await response.json()) as {
+        preflight: { state: string; transport: string };
+      };
+
+      expect(body.preflight.transport).toBe(expected);
+      expect(body.preflight.state).toBe('READY');
+    },
+  );
+
+  it('bloque la configuration quand le faux transport est demandé en production', async () => {
+    stub({
+      LEARNX_AI_CONFIG_ENVIRONMENT: 'production',
+      LEARNX_AI_TRANSPORT: 'fake',
+    });
+    const app = createCorrectionsApp({
+      authentication: authentication('ADMIN'),
+      authorization,
+    });
+
+    const response = await app.request('/api/admin/ai-corrections/preflight');
+    const body = (await response.json()) as {
+      preflight: { state: string };
+    };
+
+    expect(body.preflight.state).toBe('CONFIGURATION_BLOCKED');
+  });
+});
