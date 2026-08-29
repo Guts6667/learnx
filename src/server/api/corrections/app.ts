@@ -23,6 +23,7 @@ import {
   PROMOTED_CORRECTION_IDENTITY,
 } from '../../corrections/promoted-identity.js';
 import { resolveCorrectionTransportMode } from '../../corrections/correction-transport-mode.js';
+import { createRuntimeCorrectionChecker } from '../../corrections/correction-checker.js';
 import {
   evaluateCorrectionReleasePreflight,
   type CorrectionReleasePreflight,
@@ -153,7 +154,19 @@ async function createDefaultOrchestration(): Promise<Pick<
     credits,
     ports.corrections,
     createRuntimeCorrectionTransport(),
-    { apiKey: configuration.apiKey },
+    {
+      apiKey: configuration.apiKey,
+      // Absent when the environment has no checker assigned: verdicts stay
+      // UNAVAILABLE and corrections cap at MEDIUM rather than failing.
+      ...(configuration.assignments.CORRECTION_CHECKER
+        ? {
+            checker: createRuntimeCorrectionChecker({
+              apiKey: configuration.apiKey,
+              appUrl: configuration.appUrl,
+            }),
+          }
+        : {}),
+    },
   );
 }
 

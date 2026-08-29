@@ -4,7 +4,6 @@ import {
   type Protocol3CorrectionArtifactOutput,
 } from '../../lib/ai-correction-contracts.js';
 import {
-  reconcileProtocol3ScoreGuardPasses,
   salvageProtocol3PartialCorrection,
   validateBenchmarkProtocol3ModelOutputWithEvidence,
 } from '../../lib/ai-correction-benchmark.js';
@@ -12,8 +11,12 @@ import { sanitizeStructuredOutputJsonSchema } from '../../lib/ai-json-schema.js'
 import {
   buildCorrectionOutcome,
   failedCorrection,
-  weightedIndicativeScore,
 } from './correction-outcome.js';
+import type {
+  CheckerQuestion,
+  CheckerVerdict,
+  CorrectionCheckerPort,
+} from './correction-checker.js';
 import type {
   AcceptedQuoteSnapshot,
   CorrectionPersistencePort,
@@ -108,11 +111,42 @@ function withoutDerivedConfidence(
   return stripped;
 }
 
+/**
+ * One closed question per delivered criterion, carrying the rubric line, the
+ * level the correction chose and the quotes it relied on — and nothing else.
+ * The learner's production never enters the checker's request.
+ */
+function buildCheckerQuestions(
+  contract: CorrectionContract,
+  output: Protocol3CorrectionArtifactOutput,
+): CheckerQuestion[] {
+  return output.criteria.flatMap((item) => {
+    const criterion = contract.criteria.find(
+      (candidate) => candidate.key === item.criterionKey,
+    );
+    const level = criterion?.performanceLevels.find(
+      (candidate) => candidate.key === item.levelKey,
+    );
+    if (!criterion || !level) return [];
+    return [
+      {
+        criterionKey: item.criterionKey,
+        criterionLabel: criterion.label,
+        levelDescription: level.description,
+        levelLabel: level.label,
+        quotes: item.evidenceQuotes,
+      },
+    ];
+  });
+}
+
 export class CorrectionExecutionService {
   public constructor(
     private readonly corrections: CorrectionPersistencePort,
     private readonly transport: CorrectionTransportPort,
     private readonly apiKey: string,
+    /** Absent in an environment with no checker configured. */
+    private readonly checker?: CorrectionCheckerPort,
   ) {}
 
   public async execute(input: {
@@ -156,67 +190,49 @@ export class CorrectionExecutionService {
     const usage = createUsageTracker();
     const primary = await this.callModel({ ...input, attempts, usage });
     if (!primary) {
-      return {
-        attempts,
-        correction: failedCorrection(input.contract, usage.value(), false),
-      };
+      return { attempts, correction: failedCorrection(usage.value()) };
     }
-    const score =
-      primary.unsureCriteria.length === 0
-        ? weightedIndicativeScore(input.contract, primary.output)
-        : null;
-    const guarded =
-      score !== null &&
-      Math.abs(score - input.contract.passingScore) <=
-        PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints;
-    if (!guarded) {
-      return {
-        attempts,
-        correction: buildCorrectionOutcome({
-          contract: input.contract,
-          output: primary.output,
-          unsureCriteria: primary.unsureCriteria,
-          usageCost: usage.value(),
-        }),
-      };
-    }
-    return this.executeGuardedPass({ ...input, attempts, primary, usage });
-  }
 
-  private async executeGuardedPass(input: {
-    contract: CorrectionContract;
-    correctionId: string;
-    quote: AcceptedQuoteSnapshot;
-    jsonSchema: Record<string, unknown>;
-    messages: Array<{ content: string; role: 'system' | 'user' }>;
-    attempts: RuntimeCorrectionAttempt[];
-    primary: ResolvedGeneration;
-    usage: UsageTracker;
-  }) {
-    const second = await this.callModel(input);
-    const reconciled = second
-      ? reconcileProtocol3ScoreGuardPasses({
-          contract: input.contract,
-          primary: input.primary,
-          second,
-        })
-      : null;
-    if (!reconciled?.output) {
-      return {
-        attempts: input.attempts,
-        correction: failedCorrection(input.contract, input.usage.value(), true),
-      };
-    }
+    // The score guard used to fire here, asking the same model to answer again
+    // near the pass mark and treating agreement as reassurance. It is replaced
+    // by one independent check of the evidence, which can disagree.
+    const verdicts = await this.verify(input.contract, primary);
     return {
-      attempts: input.attempts,
+      attempts,
       correction: buildCorrectionOutcome({
         contract: input.contract,
-        forceScoreGuardSecondPass: true,
-        output: reconciled.output,
-        unsureCriteria: reconciled.unsureCriteria,
-        usageCost: input.usage.value(),
+        output: primary.output,
+        unsureCriteria: primary.unsureCriteria,
+        usageCost: usage.value(),
+        verdicts,
       }),
     };
+  }
+
+  /**
+   * Never throws. A checker that fails takes the HIGH ceiling away and nothing
+   * else — the correction it was checking is already produced and stays valid
+   * at MEDIUM. Letting a checker failure fail the correction would make the
+   * guard more dangerous than its absence.
+   */
+  private async verify(
+    contract: CorrectionContract,
+    primary: ResolvedGeneration,
+  ): Promise<Record<string, CheckerVerdict>> {
+    const questions = buildCheckerQuestions(contract, primary.output);
+    if (!this.checker || questions.length === 0) {
+      return Object.fromEntries(
+        questions.map((question) => [question.criterionKey, 'UNAVAILABLE']),
+      );
+    }
+    try {
+      const outcome = await this.checker.verify({ questions });
+      return outcome.verdicts;
+    } catch {
+      return Object.fromEntries(
+        questions.map((question) => [question.criterionKey, 'UNAVAILABLE']),
+      );
+    }
   }
 
   private async callModel(input: {

@@ -58,22 +58,16 @@ describe('correction orchestration (V4-009)', () => {
   });
 
   it.each([
-    {
-      decision: 'mastered' as const,
-      evidence: 'partial' as const,
-      expectedRawScore: 80,
-    },
-    {
-      decision: 'partial' as const,
-      evidence: 'mastered' as const,
-      expectedRawScore: 70,
-    },
+    { decision: 'mastered' as const, evidence: 'partial' as const, raw: 80 },
+    { decision: 'partial' as const, evidence: 'mastered' as const, raw: 70 },
   ])(
-    'runs a second pass on the inclusive score-guard boundary ($expectedRawScore)',
-    async ({ decision, evidence, expectedRawScore }) => {
-      expect(Math.abs(expectedRawScore - contractRaw.passingScore)).toBe(
-        PROMOTED_CORRECTION_IDENTITY.scoreGuardBandPoints,
-      );
+    'n’appelle plus le modèle deux fois près du seuil de réussite ($raw)',
+    async ({ decision, evidence, raw }) => {
+      // These two scores sit exactly on the old inclusive score-guard band and
+      // used to trigger a second pass. V4.5-111 replaced that with one
+      // independent check of the evidence: asking the same model again and
+      // treating agreement as reassurance established nothing.
+      expect(Math.abs(raw - contractRaw.passingScore)).toBe(5);
       const harness = buildHarness({
         transport: () => strictOutputWithLevels({ decision, evidence }),
       });
@@ -83,14 +77,14 @@ describe('correction orchestration (V4-009)', () => {
         userId: 'user-1',
       });
 
+      expect(harness.transportOutputs).toHaveLength(1);
       expect(result.correction).toMatchObject({
-        indicativeScore: null,
-        modelUsageCostUsd: 0.028,
-        monitoringSignals: ['SCORE_GUARD_TRIGGERED'],
-        secondPassRequired: true,
-        status: 'COMPLETED_PARTIAL',
+        secondPassRequired: false,
+        status: 'COMPLETED',
       });
-      expect(harness.transportOutputs).toHaveLength(2);
+      expect(result.correction.monitoringSignals).not.toContain(
+        'SCORE_GUARD_TRIGGERED',
+      );
     },
   );
 
@@ -112,36 +106,6 @@ describe('correction orchestration (V4-009)', () => {
     expect(result.correction.monitoringSignals).toContain(
       'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED',
     );
-  });
-
-  it('publishes only criteria whose levels agree across the two passes', async () => {
-    const outputs = [
-      strictOutputWithLevels({ decision: 'mastered', evidence: 'partial' }),
-      strictOutputWithLevels({ decision: 'mastered', evidence: 'mastered' }),
-    ];
-    let callIndex = 0;
-    const harness = buildHarness({
-      transport: () => outputs[callIndex++] ?? outputs[1],
-    });
-
-    const result = await harness.service.runAcceptedQuote({
-      quoteId: 'quote-1',
-      userId: 'user-1',
-    });
-
-    expect(result.correction).toMatchObject({
-      indicativeScore: null,
-      secondPassRequired: true,
-      status: 'COMPLETED_PARTIAL',
-      unsureCriteria: ['evidence-selection'],
-    });
-    expect(
-      result.correction.criteria.map((criterion) => criterion.key),
-    ).toEqual(['decision-position']);
-    expect(result.correction.overallFeedback).toContain(
-      'Certaines parties concordent',
-    );
-    expect(harness.transportOutputs).toHaveLength(2);
   });
 
   it('delivers a partial correction without exact score and still settles the full quote price', async () => {

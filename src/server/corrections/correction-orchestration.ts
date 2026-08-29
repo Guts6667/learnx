@@ -49,6 +49,8 @@ function assertCompatibleQuote(
   }
 }
 
+import type { CorrectionCheckerPort } from './correction-checker.js';
+
 export class CorrectionOrchestrationService {
   private readonly execution: CorrectionExecutionService;
 
@@ -57,12 +59,18 @@ export class CorrectionOrchestrationService {
     private readonly credits: CreditSettlementPort,
     private readonly corrections: CorrectionPersistencePort,
     transport: CorrectionTransportPort,
-    private readonly options: { apiKey: string; now?: () => Date },
+    private readonly options: {
+      apiKey: string;
+      /** Absent where no checker is configured; verdicts stay UNAVAILABLE. */
+      checker?: CorrectionCheckerPort;
+      now?: () => Date;
+    },
   ) {
     this.execution = new CorrectionExecutionService(
       corrections,
       transport,
       options.apiKey,
+      options.checker,
     );
   }
 

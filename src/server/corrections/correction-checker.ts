@@ -20,7 +20,7 @@ import { PROMOTED_CHECKER_IDENTITY } from './promoted-identity.js';
 export type CheckerVerdict = 'AGREED' | 'DISAGREED' | 'UNAVAILABLE';
 
 /** Why no usable verdict came back. Recorded, never shown to the learner. */
-export type CheckerUnavailableReason =
+type CheckerUnavailableReason =
   | 'HTTP_ERROR'
   | 'NETWORK_ERROR'
   | 'ROUTE_MISMATCH'
@@ -38,7 +38,7 @@ export interface CheckerQuestion {
   quotes: string[];
 }
 
-export interface CheckerOutcome {
+interface CheckerOutcome {
   costUsd: number | null;
   latencyMs: number | null;
   providerRoute: string | null;
@@ -94,7 +94,7 @@ const CHECKER_OUTPUT_JSON_SCHEMA = {
  * already relied on. That keeps what leaves LearnX to the minimum the question
  * needs (ADR §7.2) and makes the recipient register entry a short one.
  */
-export function buildCheckerMessages(
+function buildCheckerMessages(
   questions: CheckerQuestion[],
 ): Array<{ content: string; role: 'system' }> {
   const lines = [

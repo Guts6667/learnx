@@ -5,6 +5,7 @@ import {
   type CorrectionContract,
   type Protocol3CorrectionArtifactOutput,
 } from '../../lib/ai-correction-contracts';
+import type { CheckerVerdict } from './correction-checker';
 import {
   buildCorrectionOutcome,
   failedCorrection,
@@ -58,13 +59,23 @@ function output(
 
 function build(
   criteria: Criterion[],
-  options: { contract?: CorrectionContract; unsureCriteria?: string[] } = {},
+  options: {
+    contract?: CorrectionContract;
+    unsureCriteria?: string[];
+    /** Defaults to the checker agreeing on every delivered criterion. */
+    verdicts?: Record<string, CheckerVerdict>;
+  } = {},
 ) {
   return buildCorrectionOutcome({
     contract: options.contract ?? contract,
     output: output(criteria),
     unsureCriteria: options.unsureCriteria ?? [],
     usageCost: 0.01,
+    verdicts:
+      options.verdicts ??
+      Object.fromEntries(
+        criteria.map((item) => [item.criterionKey, 'AGREED' as const]),
+      ),
   });
 }
 
@@ -72,16 +83,30 @@ describe('buildCorrectionOutcome — confiance exposée', () => {
   it('étiquette chaque critère livré', () => {
     const outcome = build([foundCriterion()]);
     expect(outcome.criteria).toHaveLength(1);
-    expect(outcome.criteria[0]?.confidence).toBe('MEDIUM');
+    expect(outcome.criteria[0]?.confidence).toBe('HIGH');
   });
 
-  it('plafonne à MEDIUM tant que le vérificateur indépendant n’existe pas', () => {
-    // V4.5-111 brings the verifier. Until it runs, a criterion at an extreme
-    // level with a verified citation is still only MEDIUM: unchecked is not
-    // checked. This expectation is meant to change when 111 lands.
+  it('atteint HIGH quand le vérificateur confirme un niveau extrême', () => {
     const outcome = build([foundCriterion({ levelKey: 'mastered' })]);
+    expect(outcome.criteria[0]?.confidence).toBe('HIGH');
+    expect(outcome.overallConfidence).toBe('HIGH');
+  });
+
+  it('plafonne à MEDIUM quand le vérificateur n’a pas répondu', () => {
+    const outcome = build([foundCriterion({ levelKey: 'mastered' })], {
+      verdicts: {},
+    });
     expect(outcome.criteria[0]?.confidence).toBe('MEDIUM');
-    expect(outcome.overallConfidence).toBe('MEDIUM');
+    expect(outcome.monitoringSignals).toContain('CHECKER_UNAVAILABLE');
+  });
+
+  it('déclasse en LOW un critère que le vérificateur contredit', () => {
+    const outcome = build([foundCriterion({ levelKey: 'mastered' })], {
+      verdicts: { 'decision-position': 'DISAGREED' },
+    });
+    expect(outcome.criteria[0]?.confidence).toBe('LOW');
+    expect(outcome.indicativeScore).toBeNull();
+    expect(outcome.monitoringSignals).toContain('CHECKER_DISAGREED');
   });
 
   it('retient le critère le plus faible pour la correction entière', () => {
@@ -108,9 +133,7 @@ describe('buildCorrectionOutcome — confiance exposée', () => {
   });
 
   it('marque une correction échouée LOW', () => {
-    expect(failedCorrection(contract, 0.01, false).overallConfidence).toBe(
-      'LOW',
-    );
+    expect(failedCorrection(0.01).overallConfidence).toBe('LOW');
   });
 });
 
@@ -176,7 +199,7 @@ describe('buildCorrectionOutcome — score indicatif', () => {
     expect(outcome.monitoringSignals).not.toContain(
       'HARD_CONSTRAINT_LEVEL_MISMATCH_SUSPECTED',
     );
-    expect(outcome.criteria[0]?.confidence).toBe('MEDIUM');
+    expect(outcome.criteria[0]?.confidence).toBe('HIGH');
   });
 });
 
@@ -190,17 +213,14 @@ describe('buildCorrectionOutcome — périmètre scientifique', () => {
     expect(practiceContract.target.activityType).toBe('practice');
   });
 
-  it('reste à MEDIUM pour les deux familles tant que le vérificateur manque', () => {
-    // The family gate only decides whether HIGH is reachable, and the
-    // UNAVAILABLE verifier already forbids HIGH correction-wide. So the two
-    // families are indistinguishable through the API until V4.5-111 lands.
-    // `deriveCorrectionConfidence` covers the family rule on its own; this
-    // records that the wiring is not yet observable end to end, and is the
-    // assertion that should start separating the two once the verifier runs.
-    expect(build([foundCriterion()]).overallConfidence).toBe('MEDIUM');
+  it('sépare les familles maintenant que le vérificateur répond', () => {
+    // Written in V4.5-110 as a tripwire while the UNAVAILABLE ceiling made the
+    // two families indistinguishable. The checker lifts that ceiling, so the
+    // family gate is finally the thing deciding, and it decides.
+    const mastered = [foundCriterion({ levelKey: 'mastered' })];
+    expect(build(mastered).overallConfidence).toBe('HIGH');
     expect(
-      build([foundCriterion()], { contract: practiceContract })
-        .overallConfidence,
+      build(mastered, { contract: practiceContract }).overallConfidence,
     ).toBe('MEDIUM');
   });
 });
@@ -208,7 +228,7 @@ describe('buildCorrectionOutcome — périmètre scientifique', () => {
 describe('withStoredConfidence', () => {
   it('résout une correction stockée avant V4.5-110 en LOW', () => {
     const stored = {
-      ...failedCorrection(contract, 0.01, false),
+      ...failedCorrection(0.01),
       criteria: [
         {
           key: 'decision-position',
@@ -231,7 +251,7 @@ describe('withStoredConfidence', () => {
 
   it('laisse intacte une correction déjà étiquetée', () => {
     const resolved = withStoredConfidence({
-      ...failedCorrection(contract, 0.01, false),
+      ...failedCorrection(0.01),
       criteria: [],
       overallConfidence: 'MEDIUM',
     });
@@ -263,8 +283,8 @@ describe('le prompt de réexamen ne reçoit pas la confiance dérivée', () => {
       foundCriterion(),
       foundCriterion({ criterionKey: 'evidence-selection' }),
     ]);
-    expect(previous.overallConfidence).toBe('MEDIUM');
-    expect(previous.criteria[0]?.confidence).toBe('MEDIUM');
+    expect(previous.overallConfidence).toBe('HIGH');
+    expect(previous.criteria[0]?.confidence).toBe('HIGH');
 
     const harness = buildHarness({
       quote: buildQuote({
