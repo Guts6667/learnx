@@ -37,6 +37,10 @@ import {
 } from '../../corrections/release-preflight.js';
 import { PrismaCreditLedger } from '../../credits/prisma-credit-ledger.js';
 import {
+  PrismaCorrectionBreaker,
+  type CorrectionBreakerPort,
+} from '../../corrections/correction-breaker.js';
+import {
   PrismaCorrectionMonitoringService,
   type CorrectionMonitoringSummary,
 } from '../../corrections/correction-monitoring.js';
@@ -92,6 +96,7 @@ export interface CorrectionsAppOptions {
     }): Promise<CorrectionHistoryEntry[]>;
   };
   feedback?: CorrectionFeedbackPort;
+  breaker?: CorrectionBreakerPort;
   monitoring?: { summary(): Promise<CorrectionMonitoringSummary> };
   preflight?: CorrectionReleasePreflight;
   resolveDefaultOrchestration?: () => Promise<Pick<
@@ -180,6 +185,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   // One decision, read by both the preflight and the orchestration, so the
   // reported transport is always the constructed transport.
+  let breaker = options.breaker;
   let feedback = options.feedback;
   let selection: CorrectionTransportSelection | undefined;
   const transportSelection = (): CorrectionTransportSelection =>
@@ -326,13 +332,41 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     },
   );
 
+  app.post(
+    '/api/admin/ai-corrections/breaker/reopen',
+    requireCapability('credit.admin.manage'),
+    async (context) => {
+      const body = z
+        .object({ note: z.string().trim().min(1).max(500).optional() })
+        .strict()
+        .safeParse(await context.req.json().catch(() => ({})));
+      if (!body.success) {
+        throw new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
+      }
+      if (!breaker) {
+        const { prisma } = await import('../../prisma.js');
+        breaker = new PrismaCorrectionBreaker(prisma);
+      }
+      // Reopening writes a line rather than clearing a flag, so who reopened a
+      // tripped guardrail and why is recoverable afterwards. The quality
+      // contract requires the reopen to be audited; append-only is how it is
+      // audited rather than how it is promised to be.
+      await breaker.reopen({
+        actorId: context.get('user').id,
+        ...(body.data.note === undefined ? {} : { note: body.data.note }),
+      });
+      return context.json({ resource: { breaker: await breaker.status() } });
+    },
+  );
+
   app.get(
     '/api/admin/ai-corrections/monitoring',
     requireCapability('credit.admin.manage'),
     async (context) => {
       if (!monitoring) {
         const { prisma } = await import('../../prisma.js');
-        monitoring = new PrismaCorrectionMonitoringService(prisma);
+        breaker ??= new PrismaCorrectionBreaker(prisma);
+        monitoring = new PrismaCorrectionMonitoringService(prisma, breaker);
       }
       return context.json({ monitoring: await monitoring.summary() });
     },

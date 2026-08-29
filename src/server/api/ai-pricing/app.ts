@@ -11,6 +11,7 @@ import { PrismaAiPricingQuoteRepository } from '../../pricing/prisma-ai-pricing.
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { PrismaCorrectionBreaker } from '../../corrections/correction-breaker.js';
 
 const AI_PRICING_QUOTE_PATH = '/api/ai-correction/quotes';
 
@@ -59,6 +60,8 @@ export interface AiPricingAppOptions {
   authorization?: MiddlewareHandler<AuthEnvironment>;
   now?: () => Date;
   repository?: AiPricingQuoteRepository;
+  /** Overridable so a test can gate quoting without a database. */
+  breaker?: { evaluate(): Promise<{ state: 'CLOSED' | 'OPEN' }> };
   service?: Pick<AiPricingQuoteService, 'quote'>;
 }
 
@@ -68,6 +71,10 @@ function invalidRequest(): ApiError {
 
 function pricingApiError(error: AiPricingError): ApiError {
   switch (error.code) {
+    // The suspended breaker renders the same unavailability the learner
+    // already knows: no new string, and no explanation of the guardrail that
+    // would invite anyone to work around it.
+    case 'CORRECTION_SUSPENDED':
     case 'CATALOG_UNAVAILABLE':
     case 'ACTION_UNAVAILABLE':
       return new ApiError(
@@ -143,7 +150,12 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
     if (!parsed.success) throw invalidRequest();
     if (!service) {
       repository ??= await defaultRepository();
-      service = new AiPricingQuoteService(repository, options.now);
+      const { prisma } = await import('../../prisma.js');
+      service = new AiPricingQuoteService(
+        repository,
+        options.now,
+        options.breaker ?? new PrismaCorrectionBreaker(prisma),
+      );
     }
     const quote = await service.quote({
       ...parsed.data,

@@ -1,4 +1,6 @@
 import type { MiddlewareHandler } from 'hono';
+
+import { BREAKER_THRESHOLDS } from '@/lib/ai-correction-breaker';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { AuthEnvironment } from '../_lib/auth';
@@ -292,5 +294,74 @@ describe('transport factice câblé (V4.5-116)', () => {
     };
 
     expect(body.preflight.state).toBe('CONFIGURATION_BLOCKED');
+  });
+});
+
+describe('coupe-circuit de correction (V4.5-140)', () => {
+  const closed = {
+    evaluationError: null,
+    rates: { checkerDisagreement: null, unusable: null, wrongAtHigh: null },
+    reason: null,
+    state: 'CLOSED' as const,
+    thresholds: BREAKER_THRESHOLDS,
+    trippedAt: null,
+    window: { observed: 0, size: 50 },
+  };
+
+  function build(overrides: Record<string, unknown> = {}) {
+    const reopen = vi.fn(async () => undefined);
+    const app = createCorrectionsApp({
+      authentication: authentication('ADMIN'),
+      authorization,
+      breaker: {
+        evaluate: vi.fn(async () => closed),
+        reopen,
+        status: vi.fn(async () => closed),
+        ...overrides,
+      },
+    });
+    return { app, reopen };
+  }
+
+  it('enregistre qui rouvre et pourquoi', async () => {
+    const { app, reopen } = build();
+    const response = await app.request(
+      '/api/admin/ai-corrections/breaker/reopen',
+      {
+        body: JSON.stringify({ note: 'fournisseur rétabli' }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(reopen).toHaveBeenCalledWith({
+      actorId: userId,
+      note: 'fournisseur rétabli',
+    });
+  });
+
+  it('accepte une réouverture sans note', async () => {
+    const { app, reopen } = build();
+    const response = await app.request(
+      '/api/admin/ai-corrections/breaker/reopen',
+      { method: 'POST' },
+    );
+    expect(response.status).toBe(200);
+    expect(reopen).toHaveBeenCalledWith({ actorId: userId });
+  });
+
+  it('refuse une note hors format sans rien écrire', async () => {
+    const { app, reopen } = build();
+    const response = await app.request(
+      '/api/admin/ai-corrections/breaker/reopen',
+      {
+        body: JSON.stringify({ note: 'x'.repeat(501) }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      },
+    );
+    expect(response.status).toBe(400);
+    expect(reopen).not.toHaveBeenCalled();
   });
 });

@@ -206,3 +206,26 @@ model AiCorrectionCriterionFeedback {
   @@index([correctionId])
   @@map("ai_correction_criterion_feedback")
 }
+
+/// Journal du coupe-circuit de correction (V4.5-140).
+///
+/// En ajout seul, et non un état modifiable : l'état courant se déduit du
+/// dernier événement. Refermer le circuit exige donc d'écrire une ligne, ce qui
+/// rend la réouverture auditée par construction — on ne peut pas effacer un
+/// déclenchement en remettant un booléen à faux.
+model AiCorrectionBreakerEvent {
+  id         String                     @id @default(uuid()) @db.Uuid
+  action     AiCorrectionBreakerAction
+  reason     AiCorrectionBreakerReason?
+  rate       Float?
+  threshold  Float?
+  windowSize Int?                       @map("window_size")
+  /// L'administrateur qui rouvre. Nul quand le système déclenche.
+  actorId    String?                    @map("actor_id") @db.Uuid
+  note       String?                    @db.VarChar(500)
+  createdAt  DateTime                   @default(now()) @map("created_at")
+  actor      User?                      @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@map("ai_correction_breaker_events")
+}

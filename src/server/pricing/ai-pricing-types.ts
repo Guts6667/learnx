@@ -146,6 +146,7 @@ export class AiPricingError extends Error {
     public readonly code:
       | 'ACTION_UNAVAILABLE'
       | 'CATALOG_UNAVAILABLE'
+      | 'CORRECTION_SUSPENDED'
       | 'DUPLICATE_OPERATION_CONFLICT'
       | 'FINAL_PRICE_EXCEEDS_CEILING'
       | 'INVALID_AMOUNT'
