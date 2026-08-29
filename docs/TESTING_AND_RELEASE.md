@@ -40,19 +40,30 @@ Aujourd'hui, Mes parcours, Découvrir, programme, leçon et notes — à 390, 76
 1440 px. Les surfaces authentifiées réutilisent le mock déterministe
 `tests/e2e/journey-api.ts`, donc les pixels ne dépendent d'aucune base.
 
-C'est un **pré-vol local, pas un gate CI** : les captures dépendent de la
-plateforme et les références versionnées sont produites sur macOS. Les rendre
-bloquantes en CI exige de générer des références Linux avec
-`--update-snapshots` sur un runner Linux, puis de les committer.
+C'est un **gate CI bloquant**, exécuté par `.github/workflows/visual.yml` sur
+chaque pull request et chaque push sur `dev`. Les références versionnées sont
+générées sur Linux par ce même workflow.
+
+Conséquence à connaître : **`pnpm test:visual` échoue sur macOS, par
+construction**. Il compare des pixels Linux à un rendu macOS ; ce n'est pas une
+régression. Le pré-vol local n'existe plus sous cette forme.
 
 Usage pendant un travail de design :
 
 ```bash
-pnpm test:visual              # avant le changement : doit être vert
-# … modifier tokens, typographie ou palette …
-pnpm test:visual              # lire chaque écart et l'accepter délibérément
-pnpm test:visual:update       # seulement après revue des écarts
+# voir son propre écart : pousser la branche, lire l'artefact `visual-diff`
+gh run watch                  # le job échoue et joint les images de différence
+
+# accepter un changement, après avoir compris pourquoi les pixels ont bougé
+gh workflow run visual.yml --ref <branche> -f update=true
+gh run download <run-id> -n visual-baselines -D /tmp/b
+cp -R /tmp/b/. tests/visual/__screenshots__
 ```
+
+Une seule série de références a été retenue plutôt que des références par
+plateforme : deux séries devraient être régénérées ensemble à chaque changement
+de design, et le système que cette suite protège existe précisément parce que
+des valeurs dupliquées finissent par diverger.
 
 La tolérance est calibrée : `threshold: 0.01` par pixel et un ratio de
 `0.0005`. Elle a été vérifiée dans les deux sens — un simple changement d'accent

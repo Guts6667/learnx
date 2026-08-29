@@ -5,8 +5,8 @@
 - Version : 1.0.0
 - Date : 29 août 2026
 - Baseline : `origin/main` à `63c436d9` (V4.1 released et clôturée)
-- Statut V4.2 : **READY_FOR_OWNER_GO** — tous les tickets sont `DONE` sauf
-  V4.2-502, seul reste ouvert. Fusionné dans `dev`.
+- Statut V4.2 : **READY_FOR_OWNER_GO** — les dix tickets sont `DONE` et
+  fusionnés dans `dev`.
 - Périmètre arrêté le 29 août 2026 : V4.2 livre le système de design et la
   surface publique. **La refonte des surfaces produit en est explicitement
   exclue** et devient V4.3, informée par un audit UX indépendant.
@@ -179,10 +179,19 @@ Identiques à V4.1 : `DRAFT → NEEDS_ARBITRATION → READY → IN_PROGRESS → 
 ### V4.2-502 — Gate visuel bloquant en CI
 
 - Priorité : P2 · Owner : QA automation · Reviewer : Release engineering
-- Statut : **READY** — approuvé par le propriétaire
-- Les références actuelles sont générées sur macOS et ne peuvent pas servir de
-  gate sur un runner Linux. Générer les références Linux via une exécution CI
-  dédiée, les committer, puis rendre le job bloquant.
+- Statut : **DONE** — `.github/workflows/visual.yml` compare les 30 références
+  sur chaque pull request et chaque push sur `dev`, et les régénère sur
+  dispatch manuel. Les références committées sont produites sur Linux par ce
+  workflow (run `33255964089`).
+- Conséquence assumée : `pnpm test:visual` échoue désormais sur macOS, par
+  construction. Une seule série de références a été retenue plutôt qu'une par
+  plateforme, parce que deux séries devraient être régénérées ensemble à chaque
+  changement et que ce système existe précisément parce que des valeurs
+  dupliquées divergent.
+- **Reste à faire côté propriétaire** : ajouter `Visual baselines (required)`
+  aux checks requis de `dev` et de `main`. Le workflow est bloquant par son
+  échec, mais la protection de branche est un réglage GitHub que je ne peux pas
+  appliquer.
 - Justification : le filet a détecté un CTA totalement invisible qu'axe n'a pas
   vu, et a établi empiriquement quelle couche de tokens était réelle.
 - Ce gate doit exister **avant** la refonte produit de V4.3, dont il est la

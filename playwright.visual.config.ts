@@ -3,11 +3,20 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * Visual baselines for design work.
  *
- * Screenshots are platform-specific, and baselines here are generated on the
- * maintainer's machine, so this suite is a local pre-flight rather than a CI
- * gate: run it before and after a token, type or palette change and read the
- * diff. Enforcing it in CI additionally requires Linux baselines, produced by
- * running `--update-snapshots` on a Linux runner and committing the result.
+ * The committed baselines are generated on Linux by `.github/workflows/visual.yml`
+ * and the comparison is a blocking CI job. Screenshots are platform-specific, so
+ * **`pnpm test:visual` fails on macOS by design** — it is comparing Linux pixels
+ * against a macOS render, not reporting a regression.
+ *
+ * To see your own diff while working on design, run the workflow on your branch
+ * and read the `visual-diff` artifact it uploads on failure. To accept a change,
+ * dispatch the workflow with `update=true`, download `visual-baselines`, and
+ * commit it over `tests/visual/__screenshots__` — after reviewing why the pixels
+ * moved, never as a reflex.
+ *
+ * One source of truth was chosen over per-platform baselines: two sets would
+ * have to be regenerated together on every design change, and the system this
+ * suite protects exists because duplicated values drift apart.
  */
 export default defineConfig({
   testDir: './tests/visual',
