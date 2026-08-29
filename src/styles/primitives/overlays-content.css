@@ -21,7 +21,7 @@
   max-height: min(calc(100dvh - 2rem), 44rem);
   overflow: auto;
   border-radius: var(--radius-overlay);
-  padding: 1.25rem;
+  padding: var(--space-5);
   transform: translate(-50%, -50%);
 }
 
@@ -37,7 +37,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   border-width: 1px 0 0;
-  padding: 0.5rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  padding: var(--space-2) 1rem calc(1rem + env(safe-area-inset-bottom));
 }
 
 .ui-dialog-header {
@@ -45,24 +45,24 @@
   min-width: 0;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
   border-bottom: 1px solid var(--color-border);
-  padding-bottom: 0.75rem;
+  padding-bottom: var(--space-3);
   background: var(--color-canvas);
 }
 
 .ui-dialog-title {
   color: var(--color-text);
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
   font-weight: 500;
   line-height: 1.35;
 }
 
 .ui-dialog-description {
-  margin-top: 0.375rem;
+  margin-top: var(--space-1-5);
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-base);
   line-height: 1.5;
 }
 
@@ -86,7 +86,7 @@
     height: 100%;
     max-height: none;
     border-width: 0 0 0 1px;
-    padding: 1.5rem;
+    padding: var(--space-6);
   }
 
   .ui-drawer-panel {
@@ -115,13 +115,13 @@
 .ui-prose {
   max-width: var(--app-reading-max);
   color: var(--color-text);
-  font-size: 1rem;
+  font-size: var(--text-md);
   line-height: 1.75;
   overflow-wrap: break-word;
 }
 
 .ui-prose > * + * {
-  margin-top: 1rem;
+  margin-top: var(--space-4);
 }
 
 .ui-prose h2,
@@ -134,20 +134,20 @@
 }
 
 .ui-prose h2 {
-  font-size: 1.5rem;
+  font-size: var(--text-2xl);
 }
 .ui-prose h3 {
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
 }
 .ui-prose h4 {
-  font-size: 1.125rem;
+  font-size: var(--text-lg);
 }
 
 .ui-prose ul,
 .ui-prose ol {
   display: grid;
   gap: 0.65rem;
-  padding-left: 1.5rem;
+  padding-left: var(--space-6);
 }
 
 .ui-prose ul {
@@ -157,7 +157,7 @@
   list-style: decimal;
 }
 .ui-prose li {
-  padding-left: 0.25rem;
+  padding-left: var(--space-1);
 }
 
 .ui-prose a {
@@ -204,10 +204,10 @@
   width: max-content;
   min-width: 100%;
   border-bottom: 1px solid var(--color-border);
-  padding: 0.5rem 1rem;
+  padding: var(--space-2) 1rem;
   color: var(--color-text-muted);
   font-family: var(--font-interface);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -217,8 +217,8 @@
   width: max-content;
   min-width: 100%;
   margin: 0;
-  padding: 1rem;
-  font-size: 0.875rem;
+  padding: var(--space-4);
+  font-size: var(--text-base);
   line-height: 1.65;
   white-space: pre;
 }
@@ -256,7 +256,7 @@
 .ui-markdown-figure figcaption {
   margin-top: 0.65rem;
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--text-base);
   line-height: 1.5;
   text-align: center;
 }
@@ -265,14 +265,14 @@
   width: max-content;
   min-width: 100%;
   border-collapse: collapse;
-  font-size: 0.9375rem;
+  font-size: var(--text-base);
 }
 
 .ui-markdown-table th,
 .ui-markdown-table td {
   min-width: 11rem;
   border: 1px solid var(--color-border);
-  padding: 0.75rem;
+  padding: var(--space-3);
   text-align: left;
   vertical-align: top;
 }
@@ -295,7 +295,7 @@
   }
 
   .page-shell {
-    gap: 2rem;
+    gap: var(--space-8);
   }
 }
 
@@ -303,19 +303,19 @@
   .app-main-navigation {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 1.25rem 1rem;
+    gap: var(--space-6);
+    padding: var(--space-5) 1rem;
   }
 
   .app-main-navigation__brand {
     display: flex;
     min-height: 3.5rem;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
     border-radius: var(--radius-control);
-    padding-inline: 0.75rem;
+    padding-inline: var(--space-3);
     color: var(--color-text);
-    font-size: 1.125rem;
+    font-size: var(--text-lg);
     font-weight: 600;
   }
 
@@ -327,7 +327,7 @@
     border-radius: var(--radius-directional);
     background: var(--color-action);
     color: var(--color-on-action);
-    font-size: 0.6875rem;
+    font-size: var(--text-2xs);
     letter-spacing: 0.08em;
   }
 
