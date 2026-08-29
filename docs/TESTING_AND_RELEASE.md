@@ -101,6 +101,19 @@ Le contexte externe `Quality / V4.1 final (required)` doit être rendu
 obligatoire sur `dev` avant le GO. Le dépôt prouve le job, pas le réglage de
 protection de branche.
 
+### Seaux de limitation : secret obligatoire
+
+`LEARNX_BUCKET_HMAC_SECRET` doit être défini en production. Les seaux de
+limitation et d'anti-abus sont indexés sur une empreinte HMAC de l'adresse IP
+ou de l'e-mail : un SHA-256 nu d'une adresse IPv4 se retrouve par table sur les
+2^32 valeurs de l'espace, donc l'empreinte non salée rangeait l'adresse au lieu
+de la protéger.
+
+Aucun contrôle dédié n'est nécessaire : sans le secret, `readBucketHmacSecret`
+refuse en production, la connexion échoue avant l'authentification, et le
+contrôle de déploiement tombe — avant le trafic. Le défaut connu de
+développement est publié exprès et ne protège rien.
+
 ### Migrations : gardes de catalogue
 
 Toute garde `IF NOT EXISTS` interrogeant un catalogue système doit être

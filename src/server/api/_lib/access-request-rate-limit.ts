@@ -1,5 +1,4 @@
-import { createHash } from 'node:crypto';
-
+import { hashBucketKey } from './bucket-key.js';
 import { ApiError } from './errors.js';
 
 interface AccessRequestRateLimitInput {
@@ -89,10 +88,6 @@ const prismaRateLimitBucketRepository: RateLimitBucketRepository = {
     return records[0]?.failures ?? 1;
   },
 };
-
-function hashBucketKey(value: string): string {
-  return createHash('sha256').update(value).digest('hex');
-}
 
 function assertPositiveOptions(options: AccessRequestRateLimitOptions): void {
   if (
