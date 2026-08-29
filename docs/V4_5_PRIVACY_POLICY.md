@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (texte à intégrer tel quel par la voie C ;
   toute modification passe par ce document)
-- **Version** : 1.1.2 (empreinte IP et marqueur anti-abus ; publiable seulement après V4.5-147) · **Date** : 29 août 2026 (1.1.0 : sections paiement et
+- **Version** : 1.2.0 (adresse de contact support@learn-x.app, redirigée — décision Rayan 29 août 2026 ; publiable après V4.5-147) · **Date** : 29 août 2026 (1.1.0 : sections paiement et
   échantillonnage retirées tant que 160 et 141 ne sont pas livrés)
 - **Owner** : Head of AI · **Reviewer** : Rayan
 - **Source des faits** : `docs/V4_5_RGPD_AUDIT.md` 1.2.0 (registre,
@@ -29,7 +29,7 @@ Dernière mise à jour : 29 août 2026.
 
 **Qui est responsable.** LearnX est édité par [nom / statut / adresse du
 Propriétaire]. Pour toute question ou demande concernant vos données :
-[adresse e-mail de contact].
+support@learn-x.app.
 
 **Ce que nous collectons.**
 
@@ -71,7 +71,7 @@ sous un pseudonyme irréversible, pour améliorer le système, sans pouvoir
 vous être rattachée.
 
 **Vos droits.** Vous pouvez demander l'accès, la rectification ou la
-suppression de vos données à [adresse e-mail de contact]. La suppression de
+suppression de vos données à support@learn-x.app. La suppression de
 compte efface votre e-mail, votre nom, vos notes et vos sessions. Vos
 réponses et les retours produits sont conservés sous un pseudonyme
 irréversible : ils ne sont plus rattachés à votre compte, mais si vous y
@@ -95,7 +95,7 @@ Last updated: 29 August 2026.
 
 **Who is responsible.** LearnX is published by [Owner's name / legal status
 / address]. For any question or request about your data:
-[contact e-mail].
+support@learn-x.app.
 
 **What we collect.**
 
@@ -134,7 +134,7 @@ correction is detached from your account: it is kept under an irreversible
 pseudonym, to improve the system, and can no longer be linked to you.
 
 **Your rights.** You can request access to, rectification or deletion of
-your data at [contact e-mail]. Deleting your account erases your e-mail,
+your data at support@learn-x.app. Deleting your account erases your e-mail,
 name, notes and sessions. Your answers and the feedback produced are kept
 under an irreversible pseudonym: they are no longer linked to your account,
 but if you wrote things about yourself in them, they may remain personal
