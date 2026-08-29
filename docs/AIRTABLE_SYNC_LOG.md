@@ -298,3 +298,21 @@ l'autorisation.
   identité vérificateur jumelle, fail-closed, signaux `CHECKER_*`).
 - V4.5-131 : sous-item ajouté (colonne `status` PROVISIONAL vs payload FAILED).
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+
+## 29 août 2026 — merges du soir (111, 113, 150, 115) et tickets 114/115
+
+- V4.5-111 : `IN_PROGRESS` → `QA` → `DONE`, PR mergée dans `dev`
+  (`1d22796e`), owner Head of Development, revue Head of AI. Arbitrages
+  consignés : famille non Anthropic (`Rayan A`), résidence `mistral/eu`
+  (`Rayan B`).
+- V4.5-113 : `REVIEW` → `DONE` (`9cd2ad99`), parties 1 et 2, owner Head of
+  UX/UI ; push autorisé directement par Rayan.
+- V4.5-150 : `QA` → `DONE` (`db229010`), owner Head of UX/UI.
+- V4.5-114 créé (`DRAFT`, après 121) : sémantique tarifaire du vérificateur,
+  séparée de 111 sur objection Head of Development.
+- V4.5-115 créé (`READY` → `IN_PROGRESS` → `DONE`, `e29ab801`), owner Head
+  of AI ; sonde autorisée par Rayan (`Rayan A`, plafond 0,10 USD, coût réel
+  0,000306 USD) ; profil de requête primaire 2.1.0.
+- V4.5-112 : voie C démarre l'UI inerte ; voie A livre route et migration
+  après 131 et 130.
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
