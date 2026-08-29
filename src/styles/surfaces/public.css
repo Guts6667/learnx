@@ -19,7 +19,7 @@
   padding-inline: 1rem;
   background: var(--color-ink-surface);
   color: var(--color-surface);
-  font-weight: 650;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -224,7 +224,7 @@
   display: inline-flex;
   align-items: center;
   color: var(--color-action);
-  font-weight: 650;
+  font-weight: 600;
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.28em;
 }
@@ -330,7 +330,7 @@
   margin-top: 0.3rem;
   color: var(--color-surface);
   font-size: clamp(1.2rem, 2.4vw, 1.65rem);
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.2;
 }
 
@@ -383,7 +383,7 @@
 .landing-research-meta {
   color: var(--color-text-muted);
   font-size: 0.875rem !important;
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -432,7 +432,7 @@
 
 .landing-product-benefits strong {
   color: var(--color-text);
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .landing-product-benefits span {
@@ -795,7 +795,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-weight: 650;
+    font-weight: 600;
     list-style: none;
   }
 

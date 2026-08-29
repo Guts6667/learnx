@@ -238,7 +238,7 @@
   min-width: 0;
   font-size: clamp(2rem, 5vw, 3rem);
   font-family: var(--font-editorial);
-  font-weight: 650;
+  font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 1.08;
   overflow-wrap: break-word;
