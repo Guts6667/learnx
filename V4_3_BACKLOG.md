@@ -5,11 +5,12 @@
 - Version : 0.1.0
 - Date d'ouverture : 29 août 2026
 - Baseline : `origin/main` à `9c35e9db` (V4.2 released et clôturée)
-- Statut V4.3 : **DRAFT** — le périmètre du lot 100 attend la remise d'un audit
-  UX indépendant. Aucun ticket n'est activable avant que ce périmètre soit
-  arrêté par le propriétaire.
-- Autorité : ce fichier devient le backlog d'exécution V4.3 une fois le
-  périmètre arrêté.
+- Statut V4.3 : **PARQUÉ** — reporté par le propriétaire le 29 août 2026, au
+  profit de V4.5 (correction IA assistée et ouverture commerciale). Aucun
+  ticket n'est activable. Rien n'est commencé côté code : le report ne perd
+  aucun travail.
+- Reprise : ce fichier redevient le backlog d'exécution V4.3 lorsque le
+  propriétaire rouvre le chantier et arrête le périmètre du lot 100.
 - Autorité de design : `docs/DESIGN_SYSTEM.md`.
 
 ## Objet
@@ -26,7 +27,29 @@ avant d'ouvrir le cycle commercial et la nouvelle correction IA.
 ### V4.3-101 — Refonte des surfaces apprenant
 
 - Priorité : P0 · Owner : Frontend + Design · Reviewer : Produit
-- Statut : **DRAFT** — périmètre en attente de l'audit UX
+- Statut : **PARQUÉ**
+
+**Deux recommandations UX indépendantes ont été livrées et aucune ne fait
+autorité.** Elles ont été produites contre le même brief du propriétaire, l'une
+après l'autre, la seconde s'appuyant sur la première. Elles convergent sur
+l'essentiel et se contredisent sur un point ; l'arbitrage appartient au
+propriétaire et n'a pas eu lieu.
+
+- Audit initial : `https://claude.ai/code/artifact/743545e4-4b59-45c4-bc3c-7058b2b917fb`
+  — 9 problèmes d'usage, 6 problèmes visuels, 7 recommandations, maquettes
+  leçon et arrivée.
+- Recommandation « La boucle » :
+  `https://claude.ai/code/artifact/00cd2ffb-e057-4ab5-8afc-92fb912180c8`
+  — thèse : le produit n'a pas de boucle de retour. Écrans associés :
+  `https://claude.ai/code/artifact/eca6e670-5b48-4c85-b667-1dfe162a93c5`.
+- **Point de désaccord à trancher** : nombre de destinations en navigation
+  basse — quatre selon le premier audit, trois selon le second, qui considère
+  « Mes parcours » comme une section et non un onglet.
+
+Constat majeur du second audit, vérifié dans le code et **non résolu** : il n'y
+a pas de répétition espacée. Une notion échouée crée une révision à +1 jour et
+`intervalDays` n'est jamais incrémenté ; « Réviser » est une file de reprise.
+Corriger cela est une règle de progression, donc une décision du propriétaire.
 - Mandat donné par le propriétaire : ne pas se limiter à appliquer le système
   existant, mais remettre en cause l'expérience et proposer mieux. L'audit est
   explicitement autorisé à contredire `EMOTIONAL_DESIGN_CONTRACT.md`,
