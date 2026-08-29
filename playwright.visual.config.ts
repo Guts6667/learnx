@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+import { devServerPort } from './playwright.ports.js';
+
 /**
  * Visual baselines for design work.
  *
@@ -18,6 +20,9 @@ import { defineConfig, devices } from '@playwright/test';
  * have to be regenerated together on every design change, and the system this
  * suite protects exists because duplicated values drift apart.
  */
+const port = devServerPort(4174, 42000);
+const origin = `http://127.0.0.1:${port}`;
+
 export default defineConfig({
   testDir: './tests/visual',
   fullyParallel: true,
@@ -39,7 +44,7 @@ export default defineConfig({
     },
   },
   use: {
-    baseURL: 'http://127.0.0.1:4174',
+    baseURL: origin,
     locale: 'fr-FR',
     contextOptions: { reducedMotion: 'reduce' },
   },
@@ -67,8 +72,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev --host 127.0.0.1 --port 4174',
-    url: 'http://127.0.0.1:4174',
+    command: `pnpm dev --host 127.0.0.1 --port ${port} --strictPort`,
+    url: origin,
     reuseExistingServer: !process.env.CI,
   },
 });

@@ -1,5 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
+import { devServerPort } from './playwright.ports.js';
+
+const port = devServerPort(4173, 43000);
+const origin = `http://127.0.0.1:${port}`;
+
 export default defineConfig({
   testDir: './tests/e2e',
   // The design catalog is intentionally development-only and absent from dist.
@@ -16,7 +21,7 @@ export default defineConfig({
   ],
   outputDir: 'test-results-production',
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: origin,
     locale: 'fr-FR',
     // PWA lifecycle has dedicated deterministic tests. Blocking it here keeps
     // request mocks isolated while exercising the exact production bundle.
@@ -45,9 +50,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command:
-      'pnpm build && pnpm preview --host 127.0.0.1 --port 4173 --strictPort',
-    url: 'http://127.0.0.1:4173',
+    command: `pnpm build && pnpm preview --host 127.0.0.1 --port ${port} --strictPort`,
+    url: origin,
     reuseExistingServer: false,
   },
 });

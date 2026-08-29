@@ -157,6 +157,29 @@ force-push ou réécriture d'historique sans ordre explicite portant sur les
 cibles exactes. Une entrée `prunable` reste préservée jusqu'à un ticket de
 qualification revu.
 
+### Ports Playwright : un serveur par checkout
+
+Les suites Playwright dérivent leur port du répertoire de travail. Chaque
+worktree écoute donc sur le sien, et un `pnpm dev` laissé tourner dans un autre
+checkout ne peut plus capter la suite : c'est arrivé le 29 août 2026, et le
+symptôme est le pire qui soit — un run vert ou rouge sur un build qui n'est pas
+celui de la revue, sans rien dans le diff pour l'expliquer.
+
+Trois bandes de ports, pour que les suites d'un même worktree ne se marchent
+pas dessus non plus : `41xxx` pour `test:e2e`, `42xxx` pour `test:visual`,
+`43xxx` pour `test:e2e:production`. La logique tient dans
+`playwright.ports.ts`.
+
+En CI rien ne change : un checkout par runner, port fixe, et la variable `CI`
+court-circuite le calcul avant tout hachage. Pour forcer un port en local —
+débogage d'un proxy, navigateur attaché — `LEARNX_PLAYWRIGHT_PORT` a la
+priorité.
+
+La réutilisation d'un serveur à l'intérieur d'un même worktree reste active :
+c'est la boucle courte, et un serveur lancé depuis ce répertoire sert bien ce
+répertoire. Si le build testé paraît périmé, tuer le serveur du worktree
+courant suffit.
+
 ## 3. Périmètre et sources
 
 - lire `AGENTS.md`, puis `docs/INDEX.md`, puis uniquement les documents routés
