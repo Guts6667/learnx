@@ -1,145 +1,77 @@
 import { useQuery } from '@tanstack/react-query';
+import * as z from 'zod/mini';
 import { useCallback, useRef, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
+import {
+  type BreakerStatus,
+  correctionMonitoringResponseSchema,
+  correctionPreflightResponseSchema,
+  creditMemberResponseSchema,
+  creditMembersResponseSchema,
+  type CreditMemberDetail,
+  creditPoliciesResponseSchema,
+  ownCreditsResponseSchema,
+} from '@/features/credits/credits-contracts';
 
-interface CreditProjectionPart {
-  available: string;
-  consumed: string;
-  expired: string;
-  reserved: string;
-}
-
-interface CreditProjection {
-  free: CreditProjectionPart;
-  purchased: CreditProjectionPart;
-  totalAvailable: string;
-  totalReserved: string;
-}
-
-export interface CreditMemberSummary {
-  accountStatus: 'ACTIVE' | 'PSEUDONYMISED' | 'SUSPENDED';
-  displayName: string;
-  email: string;
-  projection: CreditProjection;
-  userId: string;
-}
-
-interface CreditHistoryItem {
-  actorUserId: string | null;
-  amount: string;
-  createdAt: string;
-  entryId: string;
-  provenance: 'FREE_ALLOCATION' | 'PURCHASED';
-  reason: string | null;
-  referenceId: string;
-  referenceType: string;
-  type: string;
-}
-
-export interface CreditMemberDetail extends CreditMemberSummary {
-  history: CreditHistoryItem[];
-  pendingIncreaseRequest: {
-    createdAt: string;
-    id: string;
-    reason: string;
-  } | null;
-}
-
-export interface CreditMemberPage {
-  items: CreditMemberSummary[];
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
-}
-
-export interface CreditPolicySummary {
-  id: string;
-  key: string;
-  status: 'ACTIVE' | 'DRAFT' | 'INACTIVE' | 'RETIRED';
-  version: string;
-}
-
-export type BreakerReason =
-  'CHECKER_DISAGREEMENT' | 'LEARNER_CONTRADICTION_AT_HIGH' | 'UNUSABLE_RATE';
-
-/** `null` signifie « pas assez de données », jamais zéro. */
-interface BreakerRates {
-  checkerDisagreement: number | null;
-  unusable: number | null;
-  wrongAtHigh: number | null;
-}
-
-export interface BreakerStatus {
-  /** Non nul quand la règle n'a pas pu être mesurée : le garde-fou est aveugle. */
-  evaluationError: string | null;
-  rates: BreakerRates;
-  reason: BreakerReason | null;
-  state: 'CLOSED' | 'OPEN';
-  thresholds: {
-    checkerDisagreement: number;
-    unusable: number;
-    wrongAtHigh: number;
-  };
-  trippedAt: string | null;
-  window: { observed: number; size: number };
-}
-
-export interface CorrectionMonitoringSummary {
-  breaker: BreakerStatus;
-  checker: { disagreed: number; unavailable: number };
-  confidence: {
-    high: number;
-    low: number;
-    medium: number;
-    scoreWithheld: number;
-  };
-  corrections: {
-    completed: number;
-    partial: number;
-    total: number;
-    unusable: number;
-  };
-  cost: {
-    p50Usd: string;
-    p90Usd: string;
-    totalUsd: string;
-    unknownCostAttempts: number;
-  };
-  /**
-   * Les seuls chiffres qui ne viennent pas de l'opinion du système sur
-   * lui-même. `wrongAtHigh` est un apprenant qui contredit un critère annoncé
-   * HIGH : la falsification directe d'une affirmation portée à l'écran.
-   */
-  learner: { helpful: number; wrong: number; wrongAtHigh: number };
-}
-
-export interface CorrectionReleasePreflight {
-  apiKeyPresent: boolean;
-  deploymentEnvironment: 'development' | 'preview' | 'production';
-  identityMatches: boolean;
-  killSwitch: boolean;
-  promotedBenchmarkId: string;
-  state: 'CONFIGURATION_BLOCKED' | 'CONFIGURED_CLOSED' | 'DISABLED' | 'READY';
-}
+/**
+ * Réexporté uniquement ce que les pages consomment : les types dérivés des
+ * schémas restent l'autorité, mais un type réexporté que personne n'importe
+ * est du bruit que knip signale à juste titre.
+ */
+export type {
+  BreakerReason,
+  BreakerStatus,
+  CreditMemberDetail,
+  CreditMemberSummary,
+} from '@/features/credits/credits-contracts';
 
 const ownCreditsKey = ['credits', 'own'] as const;
 const adminCreditsKey = ['admin', 'credits'] as const;
 
-function useObservedQuery<T>(path: string, queryKey: readonly unknown[]) {
+/**
+ * Lit une surface serveur en VÉRIFIANT sa forme au lieu de l'affirmer.
+ *
+ * Une réponse hors schéma devient une erreur de requête, donc un état
+ * d'erreur visible — jamais un rendu partiel. Voir credits-contracts.ts pour
+ * ce que cette bascule répare.
+ */
+function useObservedQuery<Schema extends z.ZodMiniType>(
+  path: string,
+  queryKey: readonly unknown[],
+  schema: Schema,
+) {
   return useQuery({
-    queryFn: () => apiRequest<T>(path),
+    queryFn: async (): Promise<z.infer<Schema>> => {
+      const payload = await apiRequest<unknown>(path);
+      const parsed = z.safeParse(schema, payload);
+      if (!parsed.success) {
+        throw new Error(
+          `La réponse de ${path} ne correspond pas au contrat attendu. ` +
+            'Le serveur a probablement changé de forme sans que le client ' +
+            'suive : ' +
+            parsed.error.issues
+              .slice(0, 3)
+              .map(
+                (issue) =>
+                  `${issue.path.join('.') || '(racine)'} ${issue.message}`,
+              )
+              .join(' · '),
+        );
+      }
+      return parsed.data;
+    },
     queryKey,
     staleTime: 10_000,
   });
 }
 
 export function useOwnCreditsQuery() {
-  const result = useObservedQuery<{ credits: CreditMemberDetail }>(
+  const result = useObservedQuery(
     '/api/credits',
     ownCreditsKey,
+    ownCreditsResponseSchema,
   );
   return {
     data: result.data?.credits,
@@ -211,13 +143,11 @@ export function useAdminCreditMembersQuery(input: {
   });
   if (input.search) parameters.set('search', input.search);
   const path = `/api/admin/credits/members?${parameters.toString()}`;
-  const result = useObservedQuery<{ page: CreditMemberPage }>(path, [
-    ...adminCreditsKey,
-    'members',
-    input.page,
-    input.pageSize,
-    input.search,
-  ]);
+  const result = useObservedQuery(
+    path,
+    [...adminCreditsKey, 'members', input.page, input.pageSize, input.search],
+    creditMembersResponseSchema,
+  );
   return {
     data: result.data?.page,
     error: result.error,
@@ -230,11 +160,11 @@ export function useAdminCreditMemberQuery(userId: string | undefined) {
   const path = userId
     ? `/api/admin/credits/members/${encodeURIComponent(userId)}`
     : '/api/admin/credits/members/00000000-0000-0000-0000-000000000000';
-  const result = useObservedQuery<{ member: CreditMemberDetail }>(path, [
-    ...adminCreditsKey,
-    'member',
-    userId,
-  ]);
+  const result = useObservedQuery(
+    path,
+    [...adminCreditsKey, 'member', userId],
+    creditMemberResponseSchema,
+  );
   return {
     data: userId ? result.data?.member : undefined,
     error: userId ? result.error : undefined,
@@ -244,12 +174,11 @@ export function useAdminCreditMemberQuery(userId: string | undefined) {
 }
 
 export function useAdminCreditPoliciesQuery() {
-  const result = useObservedQuery<{
-    policies: {
-      allocation: CreditPolicySummary[];
-      limits: CreditPolicySummary[];
-    };
-  }>('/api/admin/credits/policies', [...adminCreditsKey, 'policies']);
+  const result = useObservedQuery(
+    '/api/admin/credits/policies',
+    [...adminCreditsKey, 'policies'],
+    creditPoliciesResponseSchema,
+  );
   return {
     data: result.data?.policies,
     error: result.error,
@@ -259,9 +188,10 @@ export function useAdminCreditPoliciesQuery() {
 }
 
 export function useAdminCorrectionMonitoringQuery() {
-  const result = useObservedQuery<{ monitoring: CorrectionMonitoringSummary }>(
+  const result = useObservedQuery(
     '/api/admin/ai-corrections/monitoring',
     [...adminCreditsKey, 'correction-monitoring'],
+    correctionMonitoringResponseSchema,
   );
   return {
     data: result.data?.monitoring,
@@ -272,9 +202,10 @@ export function useAdminCorrectionMonitoringQuery() {
 }
 
 export function useAdminCorrectionPreflightQuery() {
-  const result = useObservedQuery<{ preflight: CorrectionReleasePreflight }>(
+  const result = useObservedQuery(
     '/api/admin/ai-corrections/preflight',
     [...adminCreditsKey, 'correction-preflight'],
+    correctionPreflightResponseSchema,
   );
   return {
     data: result.data?.preflight,

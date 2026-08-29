@@ -303,6 +303,75 @@ describe('AdminCreditsPage', () => {
     });
   }
 
+  it('rend un état d’erreur, jamais une page partielle, quand le serveur change de forme', async () => {
+    // Littéralement la forme que /monitoring renvoyait avant V4.5-140, et que
+    // le type client a continué d'affirmer après. La page affichait alors
+    // sept `undefined` sans que rien ne rougisse.
+    const legacy = vi.fn((path: string) => {
+      if (path === '/api/admin/ai-corrections/monitoring') {
+        return Promise.resolve(
+          jsonResponse({
+            monitoring: {
+              completed: 0,
+              hardConstraintLevelMismatchSuspected: 0,
+              partial: 0,
+              scoreGuardTriggered: 0,
+              totalCorrections: 12,
+              totalProviderCostUsd: '0.05200000',
+              unavailable: 0,
+              unknownCostAttempts: 0,
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/ai-corrections/preflight') {
+        return Promise.resolve(
+          jsonResponse({
+            preflight: {
+              apiKeyPresent: true,
+              deploymentEnvironment: 'preview',
+              identityMatches: true,
+              killSwitch: true,
+              promotedBenchmarkId: 'learnx-french-text-correction-v3-1',
+              state: 'CONFIGURED_CLOSED',
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/credits/policies') {
+        return Promise.resolve(
+          jsonResponse({ policies: { allocation: [], limits: [] } }),
+        );
+      }
+      if (path.startsWith('/api/admin/credits/members')) {
+        return Promise.resolve(
+          jsonResponse({
+            page: { items: [], page: 1, pageSize: 20, total: 0, totalPages: 0 },
+          }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', legacy);
+
+    render(
+      <AppProviders>
+        <AdminCreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText(
+        'Les mesures de correction n’ont pas pu être chargées.',
+      ),
+    ).toBeInTheDocument();
+
+    // Et surtout : aucune valeur n'est rendue à partir d'une forme inconnue.
+    expect(screen.queryByText('12')).not.toBeInTheDocument();
+    expect(screen.queryByText('0.05200000 USD')).not.toBeInTheDocument();
+    expect(screen.queryByText('Coupe-circuit')).not.toBeInTheDocument();
+  });
+
   it('rend un coupe-circuit ouvert avec son motif, et exige une confirmation pour rouvrir', async () => {
     const posts: Array<RequestInit | undefined> = [];
     vi.stubGlobal(
