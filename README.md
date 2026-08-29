@@ -102,13 +102,19 @@ The Vercel build runs, in order:
 
 ```bash
 pnpm prisma:generate
-pnpm prisma:deploy
+pnpm vercel:migrate
 pnpm build
 ```
 
-`prisma:deploy` applies already versioned migrations with
-`prisma migrate deploy`. It does not create migrations and never resets the
-database.
+`vercel:migrate` applies already versioned migrations with
+`prisma migrate deploy`, but **only when `VERCEL_ENV` is `production`**. On
+preview deployments it prints a skip line and exits successfully, so an
+unreviewed branch can never migrate a database during its build. It does not
+create migrations and never resets the database.
+
+A preview deployment therefore expects its schema to be already applied. When
+the staging tier gets its own Neon branch, its migrations must be applied
+deliberately rather than as a side effect of a build.
 
 Configure the following variables in the Preview and Production environments
 of the Vercel project:

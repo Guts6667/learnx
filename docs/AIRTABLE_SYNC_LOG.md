@@ -316,3 +316,223 @@ l'autorisation.
 - V4.5-112 : voie C démarre l'UI inerte ; voie A livre route et migration
   après 131 et 130.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+## 29 août 2026 — tickets d'exploitation DevOps V4.5-170…176
+
+- Autorisation : demande explicite de Rayan (« add your recommendations in
+  tickets in the V4.5 backlog ») après l'audit Head of DevOps du 29 août 2026,
+  session `learnx-e0`. Coordination préalable avec les sessions
+  `Head of AI (Fable 5)`, `Head of Development` et `Head of UX/UI` : aucune
+  n'écrivait dans Airtable ni dans ce journal ; base de travail imposée
+  `origin/dev@67a801ae`, branche dédiée `chore/v4-5-devops-airtable-sync`.
+- Base `app8IaHD1sJtI83WT`, table `tblpSbdB7K4MioyJq`, API REST, token
+  personnel. Création uniquement : aucun enregistrement existant modifié,
+  aucune suppression, aucune page d'interface créée ou publiée.
+- 7 enregistrements créés, `Release = V4.5`, `Statut = DRAFT`,
+  `Epic = V4.5-013 Exploitation DevOps (proposition)`,
+  `État de synchronisation = Proposition Airtable` (la définition Git dans
+  `V4_5_BACKLOG.md` reste à écrire, comme pour le lot V4.5-1xx) :
+  - `recL3BtE3hDGOdhPW` V4.5-170 — migrations Prisma hors des builds preview
+    (P0, `Arbitrage Rayan = À faire`) ;
+  - `recJFACuVNTMXxuYP` V4.5-171 — branches Neon `ci-*` et Integration requis (P1) ;
+  - `recLb4hF4nvLUH3DO` V4.5-172 — `/api/health`, stack dans `onError`, suivi
+    d'erreurs (P1) ;
+  - `reczMF60hUFIPkHht` V4.5-173 — smoke post-déploiement et purge planifiés (P2) ;
+  - `recLKyPSMTz5aQ1zN` V4.5-174 — modèle de branches et protection de `dev`
+    (P1, `Arbitrage Rayan = À faire`) ;
+  - `recwXlmCPqUK7kXYB` V4.5-175 — Dependabot, `.nvmrc`, hygiène des branches (P2) ;
+  - `recI0o4zDR5FFD7MQ` V4.5-176 — restauration Neon et SHA de rollback (P2).
+- Natures et statuts pris exclusivement dans les choix existants ; aucune
+  valeur de `Nature`, `Statut`, `Release` ou `Risque` ajoutée, donc
+  `docs/V4_1_AIRTABLE_CONTRACT.json` et `scripts/check-v4-1-airtable.ts`
+  restent inchangés.
+- Relecture : 7/7 enregistrements relus champ par champ après création
+  (16 champs chacun), aucun écart avec le dry-run.
+- Deux tickets attendent un arbitrage propriétaire avant exécution : V4.5-170
+  (valeurs `DATABASE_URL` des environnements Vercel Preview et Production,
+  non lisibles depuis le dépôt) et V4.5-174 (choix du modèle de branches).
+- Source de définition : rapport d'audit DevOps du 29 août 2026
+  (artefact `2014c4b7-c223-44d8-b1e8-c9f143886646`) → à transcrire dans
+  `V4_5_BACKLOG.md`.
+
+## 29 août 2026 — décision dev → staging → main, ticket V4.5-177
+
+- Autorisation : décision explicite de Rayan le 29 août 2026 (« Things must go
+  on dev, then staging then main ») et autorisation d'investigation.
+- 1 enregistrement créé, aucun enregistrement existant modifié, aucune
+  suppression, aucune page d'interface touchée :
+  - `recYphSi9FXqtNpmj` V4.5-177 — Créer le palier staging : branche,
+    environnement Vercel et base Neon dédiée (P0, `DRAFT`,
+    `Arbitrage Rayan = À faire`, `Proposition Airtable`).
+- Relecture : 16/16 champs conformes au dry-run.
+- Constats d'investigation (dépôt uniquement) : la branche `origin/staging`
+  existe déjà mais est morte — `2600b6ef` du 10 août 2026, 475 commits
+  derrière `dev`, 448 derrière `main`, entièrement contenue dans `main` ;
+  aucun workflow, `vercel.json` ni document ne la référence.
+  `AiDeploymentEnvironment` est une union fermée
+  `development | preview | production`
+  (`src/server/ai/openrouter-configuration.ts`) et la configuration échoue en
+  `CONFIGURATION_INVALID` si `LEARNX_AI_CONFIG_ENVIRONMENT` ne correspond pas
+  exactement à l'environnement déduit de `VERCEL_ENV`
+  (`src/server/api/corrections/app.ts:90`) : un palier staging vu comme
+  `preview` ne demande aucun changement de code, un environnement Vercel
+  personnalisé en demanderait un.
+- Écritures NON effectuées, à faire par le propriétaire : mise à jour de
+  `V4.5-174` (`Arbitrage Rayan = Rayan A`, modèle dev → staging → main,
+  `Risque = P0`) et de `V4.5-170` (`Blocage courant`). La modification
+  d'enregistrements existants a été refusée par le classifieur de permissions
+  de la session ; seule la création était autorisée.
+- Lecture des variables d'environnement Vercel (API REST et CLI) également
+  refusée par le classifieur : la question « Preview et Production
+  partagent-ils la même base Neon ? » reste ouverte et V4.5-170 reste bloqué
+  dessus.
+
+## 29 août 2026 — revue des variables Vercel, ticket V4.5-178
+
+- Autorisation : Rayan a exécuté `vercel env ls` lui-même le 29 août 2026 et
+  transmis la sortie (noms et cibles uniquement, aucune valeur divulguée).
+- 1 enregistrement créé, aucune modification, aucune suppression :
+  - `recLgWg5Jmshn3ymh` V4.5-178 — `LEARNX_PUBLIC_LEADS_ENABLED` échoue en
+    ouverture et n'est défini dans aucun environnement Vercel (P1, `DRAFT`,
+    `Arbitrage Rayan = À faire`).
+- Relecture : 16/16 champs conformes.
+- Constats de la revue :
+  - `DATABASE_URL` et `DIRECT_URL` ont des entrées distinctes pour Production
+    et pour Preview, plus des entrées propres à la branche `staging`
+    (`Preview (staging)`, 20 jours). La cible de base de données de V4.5-177
+    est donc déjà en place pour staging ; il reste à confirmer que les valeurs
+    Preview et Production diffèrent réellement (valeurs masquées).
+  - `LEARNX_PUBLIC_LEADS_ENABLED` absent des deux environnements alors que
+    `RESEND_API_KEY`, `APP_URL` et `LEARNX_EMAIL_FROM` y sont présents → voir
+    V4.5-178.
+  - `LEARNX_AI_CONFIG_ENVIRONMENT` est de type « Config » en Production
+    (valeur lisible) et « Secret » en Preview. À vérifier : la valeur doit
+    valoir exactement `production`, faute de quoi
+    `readOpenRouterConfiguration` lèverait `CONFIGURATION_INVALID` dès
+    l'activation de l'IA. Sans effet tant que le coupe-circuit est armé.
+  - Aucun `SESSION_SECRET` n'est requis par le code applicatif : la variable
+    n'existe que pour le serveur de tests d'intégration.
+  - `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` ne sont lus que par
+    `src/lib/ai-correction-benchmark-runner-preflight.ts` (outillage
+    benchmark, déjà visé par V4.5-132). Vérification faite : ces noms
+    n'apparaissent pas dans le bundle client construit.
+
+## 29 août 2026 — V4.5-170 : les URL de base sont illisibles par conception
+
+- Aucune écriture Airtable. Entrée de traçabilité uniquement.
+- `DATABASE_URL` et `DIRECT_URL` sont marquées « Sensitive » dans Vercel :
+  elles sont en écriture seule. `vercel env pull` écrit littéralement
+  `"[SENSITIVE]"` (13 caractères) à la place de la valeur, et ni l'API REST,
+  ni le tableau de bord, ni la CLI ne peuvent les relire. Bonne posture de
+  sécurité, mais la question « Preview et Production partagent-elles la même
+  base ? » ne peut être tranchée par lecture.
+- Fausse piste écartée : une première comparaison a répondu « SAME HOST » avec
+  quatre empreintes identiques `0d2c63a2`. Vérification faite, `0d2c63a2` est
+  l'empreinte de la chaîne littérale `(unparsed)` : les quatre lectures
+  avaient échoué et se comparaient entre elles. Aucune conclusion n'en a été
+  tirée et aucun ticket n'a été modifié sur cette base.
+- Conséquence pour V4.5-170 : ne plus chercher à vérifier, mais à établir.
+  (1) Conditionner `prisma:deploy` à `VERCEL_ENV=production`, ce qui rend la
+  question sans objet quel que soit l'état actuel ; (2) réécrire ensuite les
+  variables Preview avec une branche Neon dédiée, connue par construction.
+- Vérification restante, côté Neon et non Vercel : compter dans le projet
+  `dawn-cake-93662551` les branches autres que `ci-*`. S'il n'en existe
+  qu'une, Preview partageait nécessairement la base de production. Le même
+  écran renseigne aussi V4.5-171 (branches `ci-*` orphelines).
+
+## 29 août 2026 — correction du diagnostic V4.5-171 et état des checks requis
+
+- Aucune écriture Airtable (la modification d'enregistrements existants reste
+  refusée par le classifieur de permissions). Entrée de correction.
+- V4.5-171 attribuait l'échec du workflow Integration à des branches Neon
+  `ci-*` orphelines. Diagnostic incomplet. La cause première était l'absence
+  de groupe de concurrence : `integration.yml` était le seul workflow sans
+  `concurrency`, si bien que deux poussées rapprochées lançaient deux runs
+  simultanés créant chacun une branche Neon, au-delà du quota du projet.
+  Vérifié sur `origin/dev` : `concurrency.group` est désormais présent avec
+  `cancel-in-progress: false`, choix délibéré — annuler un run qui crée une
+  ressource externe risquerait d'orphaniser la branche. Le run de 14 h 07 est
+  vert après le correctif.
+- Reste valable dans V4.5-171 : le balayage périodique des branches `ci-*`
+  garde son intérêt en défense de second rang, un runner interrompu par
+  timeout pouvant encore orphaniser une branche. Devient en revanche
+  secondaire, et non plus la correction principale.
+- Checks requis sur `main` au 29 août 2026, 14 h 30 : uniquement
+  `V4.1 final (required)`. Ni `Integration / real-functions` ni le nouveau
+  workflow `Visual` ne sont exigés, alors que les deux échouent utilement.
+  Le réglage relève de la protection de branche et demande le propriétaire.
+- `required_linear_history` reste activé sur `main` tandis que `dev` accumule
+  des commits de fusion : la règle doit être levée puis rétablie à chaque
+  release. À trancher avec V4.5-174, d'autant que le modèle retenu par Rayan
+  insère `staging` entre les deux.
+
+## 29 août 2026 — mise à jour des tickets DevOps par leur auteur
+
+- Autorisation : Rayan, le 29 août 2026 — « I give you the right to modify the
+  tickets you made yourself ». Portée strictement limitée aux neuf
+  enregistrements créés par cette session (V4.5-170 à V4.5-178). Le script de
+  mutation refuse tout identifiant hors de cette liste ; les tickets
+  V4.5-100 à V4.5-164 de la session Head of AI et les cartes héritées n'ont
+  pas été touchés. Vérifié après coup : 29 autres enregistrements V4.5
+  inchangés, V4.5-100 toujours `DONE`.
+- `recLKyPSMTz5aQ1zN` V4.5-174 : `DRAFT` → `READY`, `Arbitrage Rayan = Rayan A`
+  (modèle dev → staging → main), `Risque = P2` → `P0`. Description refondue
+  avec l'état vérifié des protections (main : un seul check requis et
+  `required_linear_history` actif ; dev et staging : aucune protection, 404) et
+  les chaînes exactes des contextes de check — `V4.1 final (required)`,
+  `real-functions`, `Visual baselines (required)`. Le libellé `real-functions`
+  est celui de l'identifiant du job Integration, faute de `name:` : inscrire
+  « Integration » comme contexte requis ne correspondrait à rien et ne
+  bloquerait rien sans aucun signal.
+- `recL3BtE3hDGOdhPW` V4.5-170 : `DRAFT` → `REVIEW`, `Risque = P0` → `P1`,
+  `Branche`, `Commit source = f9921813`, `État de synchro = Commit local —
+  push en attente`, `Preuves QA` renseignées. `Arbitrage Rayan` ramené de
+  `À faire` à `Aucun` : la question posée au propriétaire — comparer les URL
+  Preview et Production — est sans objet, ces valeurs étant illisibles par
+  conception. Le reliquat (établir la base Preview) est porté par V4.5-177.
+- `recJFACuVNTMXxuYP` V4.5-171 : `Risque = P1` → `P2`, diagnostic corrigé
+  (groupe de concurrence absent, pas branches orphelines), périmètre réduit au
+  balayage préventif, le passage en check requis étant déplacé vers V4.5-174.
+- `recYphSi9FXqtNpmj` V4.5-177 : `DRAFT` → `READY`, description complétée avec
+  l'état exact de `origin/staging` (479 commits derrière `main`, aucun commit
+  unique, non protégée), l'existence des variables `Preview (staging)` côté
+  Vercel, et la règle de migration délibérée héritée de V4.5-170.
+- Relecture : chaque enregistrement relu champ par champ après mutation,
+  aucun écart. Aucune suppression, aucune page d'interface touchée.
+
+## 29 août 2026 — relevé Neon et plan Vercel : 170, 171 et 177 mis à jour
+
+- Autorisation : mise à jour limitée aux tickets créés par cette session.
+  Relevé fourni par le propriétaire (captures console Neon) et plan Vercel
+  confirmé Hobby.
+- Projet Neon LearnX (StudioPickles, plan **Free**), branches observées :
+  `production`, `staging`, `backup-pre-v4-release-20260826`,
+  `backup-pre-v3-release-20260810`,
+  `backup-pre-platform-apm-release-2026…`,
+  `backup-pre-v3-018-seed-20260806-074…`,
+  `backup-pre-officine-seed-20260806`, `backup-pre-v2-merge-20260804`.
+  Aucune branche `ci-*` résiduelle.
+- `recYphSi9FXqtNpmj` V4.5-177 : deux inconnues levées. Plan Hobby ⇒ voie (a),
+  staging reste un déploiement Preview, `VERCEL_ENV` y vaut `preview`, donc
+  l'union fermée `AiDeploymentEnvironment` reste inchangée et AUCUN changement
+  de code n'est requis. La branche Neon `staging` existe déjà. Reste une seule
+  décision propriétaire : réavancer `origin/staging` ou la recréer.
+- `recJFACuVNTMXxuYP` V4.5-171 : `P2` → `P1`. Cause structurelle identifiée en
+  plus de la cause première déjà corrigée : le plan Free plafonne le nombre de
+  branches et huit sont déjà permanentes, dont six sauvegardes `backup-pre-*`
+  du 4 au 26 août. La marge pour les branches de CI est donc très mince. Le
+  nettoyage exige un accord nominatif du propriétaire, branche par branche :
+  ce sont des sauvegardes de pré-release et aucune ne sera supprimée sans
+  autorisation explicite.
+- `recL3BtE3hDGOdhPW` V4.5-170 : le relevé confirme qu'AUCUNE branche Neon
+  n'est dédiée aux previews. Les variables Preview génériques pointent donc
+  nécessairement sur `production` ou sur `staging` : dans les deux cas, chaque
+  build preview appliquait des migrations sur une base partagée avec un autre
+  palier, depuis une branche non relue. La porte de migration était bien
+  nécessaire.
+- Relecture : les trois enregistrements relus champ par champ, aucun écart.
+- Hors périmètre Airtable, à signaler : l'installation des skills Neon
+  (`npx neon@latest skills`) a modifié le fichier suivi `skills-lock.json`
+  (empreintes amont mises à jour) et créé `.claude/skills/**`, qui n'est pas
+  couvert par `.gitignore` — seul `.claude/settings.local.json` l'est. Ces
+  changements sont dans le worktree principal, sur une autre branche, et n'ont
+  pas été committés par cette session.
