@@ -665,4 +665,152 @@ describe('AiCorrectionPanel', () => {
       ),
     ).toBeInTheDocument();
   });
+
+  const historyCorrection = {
+    criteria: [
+      {
+        confidence: 'MEDIUM',
+        evidenceQuotes: ['La décision est explicitement PICO.'],
+        evidenceStatus: 'FOUND',
+        feedback: 'Le choix est explicite et cohérent.',
+        key: 'decision-explicite',
+        label: 'Décision explicite',
+        levelKey: 'mastered',
+        levelLabel: 'Démontré dans la réponse',
+        weight: 34,
+      },
+    ],
+    id: 'f2a91c73-4d8e-4b21-9a55-6c0e2d7b8f31',
+    indicativeScore: 82,
+    overallConfidence: 'MEDIUM',
+    overallFeedback: null,
+    secondPassRequired: false,
+    status: 'COMPLETED',
+    unsureCriteria: [],
+    unsureCriterionDetails: [],
+  };
+
+  const historySettlement = {
+    releasedCredits: '0',
+    reservedCredits: '18',
+    settledCredits: '12',
+  };
+
+  function historyEntry(
+    criterionFeedback: Record<string, 'HELPFUL' | 'WRONG'> | undefined,
+  ) {
+    return {
+      action: 'STANDARD',
+      correction: historyCorrection,
+      createdAt: '2026-08-29T10:00:00.000Z',
+      settlement: historySettlement,
+      sourceCorrectionId: null,
+      ...(criterionFeedback ? { criterionFeedback } : {}),
+    };
+  }
+
+  function panelWithHistory(
+    criterionFeedback: Record<string, 'HELPFUL' | 'WRONG'> | undefined,
+  ) {
+    const fetchMock = vi.fn();
+    fetchMock.mockResolvedValueOnce(
+      jsonResponse({
+        resource: { corrections: [historyEntry(criterionFeedback)] },
+      }),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    render(
+      <AppProviders>
+        <AiCorrectionPanel submissionId="6a0d1c2e-9f83-4b17-8d55-2c7e1f4a9b60" />
+      </AppProviders>,
+    );
+    return fetchMock;
+  }
+
+  it('n’affiche aucune commande de retour tant que l’API n’expose pas le champ', async () => {
+    panelWithHistory(undefined);
+
+    expect(await screen.findByText('Décision explicite')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Utile' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Inexact' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('enregistre un verdict par critère et le laisse modifiable', async () => {
+    const fetchMock = panelWithHistory({});
+    fetchMock.mockResolvedValue(
+      jsonResponse({
+        resource: {
+          feedback: {
+            criterionKey: 'decision-explicite',
+            recordedAt: '2026-08-29T12:00:00.000Z',
+            verdict: 'WRONG',
+          },
+        },
+      }),
+    );
+
+    const wrong = await screen.findByRole('button', { name: 'Inexact' });
+    expect(wrong).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(wrong);
+
+    await waitFor(() =>
+      expect(
+        fetchMock.mock.calls.some(([url]) =>
+          String(url).endsWith(
+            '/api/ai-corrections/f2a91c73-4d8e-4b21-9a55-6c0e2d7b8f31/feedback',
+          ),
+        ),
+      ).toBe(true),
+    );
+    const call = fetchMock.mock.calls.find(([url]) =>
+      String(url).endsWith('/feedback'),
+    );
+    expect(call?.[1]?.method).toBe('POST');
+    expect(JSON.parse(String(call?.[1]?.body))).toEqual({
+      criterionKey: 'decision-explicite',
+      verdict: 'WRONG',
+    });
+
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Inexact' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      ),
+    );
+    expect(screen.getByRole('button', { name: 'Utile' })).toBeEnabled();
+    expect(
+      await screen.findByText(/Votre retour est enregistré/),
+    ).toBeInTheDocument();
+  });
+
+  it('restaure l’état serveur quand l’envoi échoue', async () => {
+    const fetchMock = panelWithHistory({ 'decision-explicite': 'HELPFUL' });
+    fetchMock.mockRejectedValue(new Error('offline'));
+
+    const wrong = await screen.findByRole('button', { name: 'Inexact' });
+    expect(screen.getByRole('button', { name: 'Utile' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+
+    fireEvent.click(wrong);
+
+    expect(
+      await screen.findByText(/n’a pas pu être enregistré/),
+    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'Utile' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      ),
+    );
+    expect(screen.getByRole('button', { name: 'Inexact' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
+  });
 });

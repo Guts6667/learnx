@@ -62,6 +62,13 @@ export const frenchCorrectionMessages = {
     'Le critère « {criterion} » est à retravailler avant une nouvelle soumission.',
   'aiCorrection.nextAction': 'Prochaine action',
   'aiCorrection.indicativeScore': 'Score indicatif : {score} %',
+  'aiCorrection.criterionFeedbackPrompt': 'Ce retour vous paraît-il juste ?',
+  'aiCorrection.criterionFeedbackHelpful': 'Utile',
+  'aiCorrection.criterionFeedbackWrong': 'Inexact',
+  'aiCorrection.criterionFeedbackRecorded':
+    'Votre retour est enregistré. Vous pouvez encore le modifier.',
+  'aiCorrection.criterionFeedbackFailed':
+    'Votre retour n’a pas pu être enregistré. Réessayez plus tard.',
   'aiCorrection.evidenceLabel': 'Extrait de votre réponse',
   'aiCorrection.appreciation': 'Appréciation LearnX',
   'aiCorrection.resultTitle': 'Votre retour critériel est prêt',
@@ -169,6 +176,13 @@ export const englishCorrectionMessages = {
     'The “{criterion}” criterion needs rework before a new submission.',
   'aiCorrection.nextAction': 'Next action',
   'aiCorrection.indicativeScore': 'Indicative score: {score}%',
+  'aiCorrection.criterionFeedbackPrompt': 'Does this feedback look right?',
+  'aiCorrection.criterionFeedbackHelpful': 'Helpful',
+  'aiCorrection.criterionFeedbackWrong': 'Inaccurate',
+  'aiCorrection.criterionFeedbackRecorded':
+    'Your feedback is recorded. You can still change it.',
+  'aiCorrection.criterionFeedbackFailed':
+    'Your feedback could not be recorded. Try again later.',
   'aiCorrection.evidenceLabel': 'Excerpt from your response',
   'aiCorrection.appreciation': 'LearnX assessment',
   'aiCorrection.resultTitle': 'Your criterion-based feedback is ready',

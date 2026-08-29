@@ -51,10 +51,45 @@ export interface CorrectionResult {
   };
 }
 
+/** Verdict de l'apprenant sur l'utilité d'un critère (V4.5-112). */
+export type CriterionFeedbackVerdict = 'HELPFUL' | 'WRONG';
+
 export interface CorrectionHistoryEntry extends CorrectionResult {
   action?: 'STANDARD' | 'RECONSIDERATION';
   createdAt: string;
+  /**
+   * Verdicts déjà enregistrés, par clé de critère. Le champ est absent tant que
+   * l'API ne l'expose pas : son absence masque entièrement les commandes de
+   * retour, plutôt que d'afficher des boutons qui n'aboutiraient pas.
+   */
+  criterionFeedback?: Record<string, CriterionFeedbackVerdict>;
   sourceCorrectionId?: string | null;
+}
+
+/**
+ * Idempotent par (utilisateur, correction, critère) : un second envoi remplace
+ * le verdict, il n'en ajoute pas un deuxième. L'apprenant peut se raviser.
+ */
+export async function submitCriterionFeedback(input: {
+  correctionId: string;
+  criterionKey: string;
+  verdict: CriterionFeedbackVerdict;
+}): Promise<void> {
+  await apiRequest<{
+    resource: {
+      feedback: {
+        criterionKey: string;
+        recordedAt: string;
+        verdict: CriterionFeedbackVerdict;
+      };
+    };
+  }>(`/api/ai-corrections/${encodeURIComponent(input.correctionId)}/feedback`, {
+    body: JSON.stringify({
+      criterionKey: input.criterionKey,
+      verdict: input.verdict,
+    }),
+    method: 'POST',
+  });
 }
 
 export async function requestCorrectionQuote(input: {

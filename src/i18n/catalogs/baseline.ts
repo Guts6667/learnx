@@ -1,7 +1,7 @@
 export const messageCatalogBaseline = {
-  keyCount: 1025,
+  keyCount: 1030,
   sha256: {
-    en: 'c3cbd70a2f6731f6591ac7df17cd9ec25bd05343423ebad6d5abaef929affe7c',
-    fr: '091c56e8905c69138874b08697c389d3d6f2ccef77d3924d2923513100b9f88b',
+    en: 'd0e25985101d0a2d19dfcec0df19f59fa04d9d92f8d73ceff783cfbaa7867221',
+    fr: 'fd5e1f476e007acf293f9f10c8aaea970fb87f08f69de1736510babf26b7db0b',
   },
 } as const;
