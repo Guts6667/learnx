@@ -1,5 +1,4 @@
-import { createHash } from 'node:crypto';
-
+import { hashBucketKey } from './bucket-key.js';
 import { ApiError } from './errors.js';
 
 interface AttemptWindow {
@@ -125,7 +124,9 @@ const prismaLoginRateLimitRepository: LoginRateLimitRepository = {
 };
 
 function hashRateLimitKey(key: string): string {
-  return createHash('sha256').update(key).digest('hex');
+  // Shared with the access-request buckets so both are keyed the same way and
+  // neither can drift back to a bare digest (V4.5-147).
+  return hashBucketKey(`login:${key}`);
 }
 
 export class SharedLoginRateLimiter implements LoginRateLimiter {
