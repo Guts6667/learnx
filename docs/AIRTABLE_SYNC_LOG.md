@@ -353,3 +353,35 @@ l'autorisation.
 - Source de définition : rapport d'audit DevOps du 29 août 2026
   (artefact `2014c4b7-c223-44d8-b1e8-c9f143886646`) → à transcrire dans
   `V4_5_BACKLOG.md`.
+
+## 29 août 2026 — décision dev → staging → main, ticket V4.5-177
+
+- Autorisation : décision explicite de Rayan le 29 août 2026 (« Things must go
+  on dev, then staging then main ») et autorisation d'investigation.
+- 1 enregistrement créé, aucun enregistrement existant modifié, aucune
+  suppression, aucune page d'interface touchée :
+  - `recYphSi9FXqtNpmj` V4.5-177 — Créer le palier staging : branche,
+    environnement Vercel et base Neon dédiée (P0, `DRAFT`,
+    `Arbitrage Rayan = À faire`, `Proposition Airtable`).
+- Relecture : 16/16 champs conformes au dry-run.
+- Constats d'investigation (dépôt uniquement) : la branche `origin/staging`
+  existe déjà mais est morte — `2600b6ef` du 10 août 2026, 475 commits
+  derrière `dev`, 448 derrière `main`, entièrement contenue dans `main` ;
+  aucun workflow, `vercel.json` ni document ne la référence.
+  `AiDeploymentEnvironment` est une union fermée
+  `development | preview | production`
+  (`src/server/ai/openrouter-configuration.ts`) et la configuration échoue en
+  `CONFIGURATION_INVALID` si `LEARNX_AI_CONFIG_ENVIRONMENT` ne correspond pas
+  exactement à l'environnement déduit de `VERCEL_ENV`
+  (`src/server/api/corrections/app.ts:90`) : un palier staging vu comme
+  `preview` ne demande aucun changement de code, un environnement Vercel
+  personnalisé en demanderait un.
+- Écritures NON effectuées, à faire par le propriétaire : mise à jour de
+  `V4.5-174` (`Arbitrage Rayan = Rayan A`, modèle dev → staging → main,
+  `Risque = P0`) et de `V4.5-170` (`Blocage courant`). La modification
+  d'enregistrements existants a été refusée par le classifieur de permissions
+  de la session ; seule la création était autorisée.
+- Lecture des variables d'environnement Vercel (API REST et CLI) également
+  refusée par le classifieur : la question « Preview et Production
+  partagent-ils la même base Neon ? » reste ouverte et V4.5-170 reste bloqué
+  dessus.
