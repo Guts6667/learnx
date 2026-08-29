@@ -385,3 +385,33 @@ l'autorisation.
   refusée par le classifieur : la question « Preview et Production
   partagent-ils la même base Neon ? » reste ouverte et V4.5-170 reste bloqué
   dessus.
+
+## 29 août 2026 — revue des variables Vercel, ticket V4.5-178
+
+- Autorisation : Rayan a exécuté `vercel env ls` lui-même le 29 août 2026 et
+  transmis la sortie (noms et cibles uniquement, aucune valeur divulguée).
+- 1 enregistrement créé, aucune modification, aucune suppression :
+  - `recLgWg5Jmshn3ymh` V4.5-178 — `LEARNX_PUBLIC_LEADS_ENABLED` échoue en
+    ouverture et n'est défini dans aucun environnement Vercel (P1, `DRAFT`,
+    `Arbitrage Rayan = À faire`).
+- Relecture : 16/16 champs conformes.
+- Constats de la revue :
+  - `DATABASE_URL` et `DIRECT_URL` ont des entrées distinctes pour Production
+    et pour Preview, plus des entrées propres à la branche `staging`
+    (`Preview (staging)`, 20 jours). La cible de base de données de V4.5-177
+    est donc déjà en place pour staging ; il reste à confirmer que les valeurs
+    Preview et Production diffèrent réellement (valeurs masquées).
+  - `LEARNX_PUBLIC_LEADS_ENABLED` absent des deux environnements alors que
+    `RESEND_API_KEY`, `APP_URL` et `LEARNX_EMAIL_FROM` y sont présents → voir
+    V4.5-178.
+  - `LEARNX_AI_CONFIG_ENVIRONMENT` est de type « Config » en Production
+    (valeur lisible) et « Secret » en Preview. À vérifier : la valeur doit
+    valoir exactement `production`, faute de quoi
+    `readOpenRouterConfiguration` lèverait `CONFIGURATION_INVALID` dès
+    l'activation de l'IA. Sans effet tant que le coupe-circuit est armé.
+  - Aucun `SESSION_SECRET` n'est requis par le code applicatif : la variable
+    n'existe que pour le serveur de tests d'intégration.
+  - `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` ne sont lus que par
+    `src/lib/ai-correction-benchmark-runner-preflight.ts` (outillage
+    benchmark, déjà visé par V4.5-132). Vérification faite : ces noms
+    n'apparaissent pas dans le bundle client construit.
