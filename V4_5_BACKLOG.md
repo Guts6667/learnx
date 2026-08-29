@@ -223,7 +223,9 @@ l'autorité de définition ; Airtable porte le statut.
   schéma, clé inconnue) → `UNAVAILABLE`, jamais `AGREED`, `overallConfidence`
   plafonnée `MEDIUM`, signaux `CHECKER_UNAVAILABLE` / `CHECKER_DISAGREED`. Le
   vérificateur reçoit uniquement la ligne de rubrique, le niveau et les
-  extraits cités — jamais la production complète. Le vérificateur est facturé
+  extraits cités — jamais la production complète ; route épinglée par
+  étiquette d'endpoint `mistral/eu` (décision Rayan
+  `owner-checker-residency-eu-2026-08-29`, ADR_003). Le vérificateur est facturé
   dans le plafond existant de seconde passe ; la sémantique tarifaire est
   V4.5-114.
 - Acceptation : tests fake-provider accord/désaccord/indisponible ; préflight
@@ -431,8 +433,8 @@ journal Airtable (append-only, point de merge F).
   Deps : V4.5-111 (destinataire Mistral), V4.5-160 (Revolut). Bloque la partie
   rétention/consentement de V4.5-151 et la partie paiement de V4.5-161.
 - Livrable : `docs/V4_5_RGPD_AUDIT.md` — registre des traitements et
-  sous-traitants (OpenRouter, Anthropic, Mistral, Revolut, Resend, Vercel,
-  Neon) ; rétention effective attestée et affichée (ADR_003 §7.2) ; textes
+  sous-traitants (OpenRouter, Anthropic, Mistral via endpoint `mistral/eu`,
+  Revolut, Resend, Vercel, Neon) ; rétention effective attestée et affichée (ADR_003 §7.2) ; textes
   d'information et ligne de consentement (141) ; droits d'accès/suppression
   cohérents avec le ledger append-only ; décisions nécessitant un conseil
   externe listées pour le Propriétaire.
