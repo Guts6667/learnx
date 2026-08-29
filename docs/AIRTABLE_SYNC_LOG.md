@@ -536,3 +536,25 @@ l'autorisation.
   couvert par `.gitignore` — seul `.claude/settings.local.json` l'est. Ces
   changements sont dans le worktree principal, sur une autre branche, et n'ont
   pas été committés par cette session.
+
+## 29 août 2026 — soirée : tickets 116–118, 130, 131, 112, UX-001/002
+
+- V4.5-116 créé et clos (`995ed402`) : transport factice réellement câblé
+  (défaut de 111 signalé par le Head of Development).
+- V4.5-117 créé (`DRAFT`) : clé stable des évaluations d'étape.
+- V4.5-118 créé, `READY` → `IN_PROGRESS` → `QA` → `DONE` (`9f4f9a5d`) :
+  table de confiance déplacée en `src/lib`.
+- V4.5-131 : `QA` → `DONE` (`764c027a`). V4.5-130 : `REVIEW` → `QA` → `DONE`
+  (`06456cdc`), note de sortie « plomberie seulement ».
+- V4.5-112 : `QA` → `IN_PROGRESS` (correction : UI seule livrée, `8c2f8a89`) ;
+  moitié API en revue (widening : critères « à vérifier » votables).
+- V4.5-150 : correctif e2e mergé (`f3a55e32`) après rouge sur `dev` ;
+  UX-001 : `DRAFT` → `DONE` (`aff1d445`), arbitrage densité `Rayan A` ;
+  UX-002 créé (`READY`).
+- V4.5-114 : rôle `CORRECTION_SECOND_PASS` ajouté au périmètre ; V4.5-122 :
+  cas ≥ 2 paragraphes ; V4.5-132 : note sur l'élargissement du motif
+  critical-domains.
+- Infra : `dev` protégé (check requis `V4.1 final (required)`) ; incident
+  Integration (Neon 422, quota de branches) escaladé à la voie D (171) ;
+  projet Neon passé au plan Launch par le Propriétaire.
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
