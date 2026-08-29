@@ -116,3 +116,20 @@ enum AiCorrectionFeedbackVerdict {
 
   @@map("ai_correction_feedback_verdict")
 }
+
+/// Sens d'un événement du coupe-circuit (V4.5-140).
+enum AiCorrectionBreakerAction {
+  TRIPPED  @map("tripped")
+  REOPENED @map("reopened")
+
+  @@map("ai_correction_breaker_action")
+}
+
+/// Cause du déclenchement, §6 du contrat qualité.
+enum AiCorrectionBreakerReason {
+  CHECKER_DISAGREEMENT          @map("checker_disagreement")
+  UNUSABLE_RATE                 @map("unusable_rate")
+  LEARNER_CONTRADICTION_AT_HIGH @map("learner_contradiction_at_high")
+
+  @@map("ai_correction_breaker_reason")
+}
