@@ -1,5 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
+import { devServerPort } from './playwright.ports.js';
+
+const port = devServerPort(4173, 41000);
+const origin = `http://127.0.0.1:${port}`;
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -7,7 +12,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: 'html',
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: origin,
     locale: 'fr-FR',
     trace: 'on-first-retry',
   },
@@ -33,8 +38,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev --host 127.0.0.1 --port 4173',
-    url: 'http://127.0.0.1:4173',
+    command: `pnpm dev --host 127.0.0.1 --port ${port} --strictPort`,
+    url: origin,
     reuseExistingServer: !process.env.CI,
   },
 });
