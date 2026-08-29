@@ -17,7 +17,11 @@ export interface CorrectionQuote {
   maximumReservedCredits: string;
 }
 
+type CorrectionConfidence = 'HIGH' | 'MEDIUM' | 'LOW';
+
 interface CorrectionCriterionResult {
+  /** Derived server-side from checkable facts, never the model's self-report. */
+  confidence: CorrectionConfidence;
   evidenceQuotes: string[];
   evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
   feedback: string;
@@ -33,6 +37,7 @@ export interface CorrectionResult {
     id: string;
     criteria: CorrectionCriterionResult[];
     indicativeScore: number | null;
+    overallConfidence: CorrectionConfidence;
     overallFeedback: string | null;
     secondPassRequired: boolean;
     status: 'COMPLETED' | 'COMPLETED_PARTIAL' | 'FAILED';

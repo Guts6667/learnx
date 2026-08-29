@@ -1,3 +1,4 @@
+import type { CriterionConfidence } from './correction-confidence.js';
 import type { CorrectionMonitoringSignal } from './correction-monitoring.js';
 
 export type CorrectionOrchestrationErrorCode =
@@ -147,10 +148,19 @@ export interface OrchestratedCorrectionResult {
       evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
       evidenceQuotes: string[];
       feedback: string;
+      /** Derived by the server from checkable facts, never self-reported. */
+      confidence: CriterionConfidence;
     }>;
     unsureCriteria: string[];
     unsureCriterionDetails: Array<{ key: string; label: string }>;
     overallFeedback: string | null;
+    /**
+     * The weakest delivered criterion, capped by the correction-wide rules of
+     * the quality contract. Not to be confused with the numeric
+     * `overallConfidence` on `Protocol3CorrectionArtifactOutput`, which is the
+     * model's own weighted self-report — the thing this label replaces.
+     */
+    overallConfidence: CriterionConfidence;
     indicativeScore: number | null;
     secondPassRequired: boolean;
     modelUsageCostUsd: number | null;

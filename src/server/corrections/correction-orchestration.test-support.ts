@@ -218,11 +218,13 @@ export interface Harness {
       correctionId: string;
     }) => Promise<void>;
   };
+  transport: CorrectionTransportPort;
   transportOutputs: unknown[];
 }
 
 export function buildHarness(options: {
   beforeTransport?: () => void;
+  quote?: AcceptedQuoteSnapshot;
   transport: () => unknown;
   replay?: unknown;
   replayLookup?: PersistedCorrectionLookup;
@@ -296,7 +298,7 @@ export function buildHarness(options: {
     }),
   };
   const quotes = {
-    loadAcceptedQuote: vi.fn(async () => buildQuote()),
+    loadAcceptedQuote: vi.fn(async () => options.quote ?? buildQuote()),
     markConsumed: vi.fn(async () => undefined),
   };
   const service = new CorrectionOrchestrationService(
@@ -306,5 +308,5 @@ export function buildHarness(options: {
     transport,
     { apiKey: 'test-key', now: () => new Date('2026-08-24T10:00:00Z') },
   );
-  return { service, quotes, credits, corrections, transportOutputs };
+  return { service, quotes, credits, corrections, transport, transportOutputs };
 }

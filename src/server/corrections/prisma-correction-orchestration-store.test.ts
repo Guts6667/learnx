@@ -41,6 +41,7 @@ function result(
     indicativeScore: status === 'COMPLETED' ? 92 : null,
     modelUsageCostUsd: 0.027993,
     monitoringSignals: [],
+    overallConfidence: 'MEDIUM',
     overallFeedback: null,
     secondPassRequired: false,
     status,

@@ -1,9 +1,10 @@
 import type { PrismaClient } from '../../../generated/prisma/client.js';
 import { resolveExerciseCorrectionContract } from '../../lib/exercise-correction-contracts.js';
-import type {
-  AcceptedQuoteSnapshot,
-  OrchestratedCorrectionResult,
-} from './correction-orchestration-contracts.js';
+import type { AcceptedQuoteSnapshot } from './correction-orchestration-contracts.js';
+import {
+  withStoredConfidence,
+  type StoredCorrection,
+} from './correction-outcome.js';
 
 export class PrismaCorrectionQuoteRepository {
   public constructor(private readonly prisma: PrismaClient) {}
@@ -58,7 +59,7 @@ export class PrismaCorrectionQuoteRepository {
       },
     });
     const structured = (source?.structuredResult ?? {}) as {
-      correction?: OrchestratedCorrectionResult['correction'];
+      correction?: StoredCorrection;
     };
     const sourceSubmission = (source?.submissionSnapshot ?? {}) as {
       text?: unknown;
@@ -105,7 +106,7 @@ export class PrismaCorrectionQuoteRepository {
       contract: source.contractSnapshot,
       reconsideration: {
         argument: quote.reconsiderationArgument,
-        previousCorrection: structured.correction,
+        previousCorrection: withStoredConfidence(structured.correction),
         sourceCorrectionId: source.id,
       },
     };
