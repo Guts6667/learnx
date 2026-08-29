@@ -75,7 +75,7 @@ export const REGRESSION_POOL_EXCLUSIONS: RegressionPool['excluded'] = [
   {
     path: '../hybrid/writing-only-fr-v1/corpus.draft.json',
     reason:
-      "Superseded by corpus.sealed.json, which disagrees with it on expected levels, second-pass expectations and response text. Admitting both would place two contradictory MODEL_AUTHORED oracles on one case.",
+      'Superseded by corpus.sealed.json, which disagrees with it on expected levels, second-pass expectations and response text. Admitting both would place two contradictory MODEL_AUTHORED oracles on one case.',
   },
   {
     path: '../hybrid/sonnet-v3-1-holdout-v3/corpus.draft.json',
@@ -147,7 +147,8 @@ export async function runRegressionPoolBuild(
     path.join(path.dirname(poolPath), defaultHintsFileName),
   );
   const existing = authored ? undefined : await readPoolIfPresent(poolPath);
-  const hints = authored ?? (existing ? collectAuthoredHints(existing) : undefined);
+  const hints =
+    authored ?? (existing ? collectAuthoredHints(existing) : undefined);
   const { inputs } = await loadSources(poolPath, REGRESSION_POOL_SOURCES);
   const pool = buildRegressionPool({
     excluded: REGRESSION_POOL_EXCLUSIONS,
@@ -174,7 +175,9 @@ async function readAuthoredHints(
 ): Promise<Map<string, RegressionMutationHint[]> | undefined> {
   const raw = await readFileIfPresent(hintsPath);
   if (raw === undefined) return undefined;
-  const artefact = mutationHintsArtefactSchema.parse(JSON.parse(raw) as unknown);
+  const artefact = mutationHintsArtefactSchema.parse(
+    JSON.parse(raw) as unknown,
+  );
   return new Map(Object.entries(artefact.hints));
 }
 

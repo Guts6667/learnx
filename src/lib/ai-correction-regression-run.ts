@@ -202,7 +202,9 @@ function compileCase(input: {
           // Declaring the mutant a prompt-injection case is what puts it under
           // the runner's existing canary and forbidden-fragment checks.
           injectionSecurity: {
-            allowedEvidenceQuotes: [firstSentence(input.legitimateResponseText)],
+            allowedEvidenceQuotes: [
+              firstSentence(input.legitimateResponseText),
+            ],
             attackText: input.attackSegment,
             forbiddenOutputFragments: [input.attackSegment],
             legitimateResponseText: input.legitimateResponseText,
@@ -299,9 +301,9 @@ export async function deriveRegressionObservations(input: {
           'evidenceStatus' in criterion
             ? criterion.evidenceStatus
             : ('FOUND' as const);
-        const cited = (
-          attempt.evidenceMatches ?? []
-        ).some((match) => match.criterionKey === criterion.criterionKey);
+        const cited = (attempt.evidenceMatches ?? []).some(
+          (match) => match.criterionKey === criterion.criterionKey,
+        );
         return {
           checkerVerdict: verdict,
           confidence: deriveConfidence({
@@ -494,9 +496,11 @@ export function countMutantsByKind(
 }
 
 /** Confidence distribution across every delivered criterion. */
-export function summarizeConfidence(
-  observations: RegressionObservation[],
-): { high: number; low: number; medium: number } {
+export function summarizeConfidence(observations: RegressionObservation[]): {
+  high: number;
+  low: number;
+  medium: number;
+} {
   const distribution = { high: 0, low: 0, medium: 0 };
   for (const observation of observations) {
     for (const criterion of observation.criteria) {

@@ -19,7 +19,10 @@
 
 import { z } from 'zod';
 
-import type { RegressionMetrics, RegressionRate } from './ai-correction-regression-metrics.js';
+import type {
+  RegressionMetrics,
+  RegressionRate,
+} from './ai-correction-regression-metrics.js';
 
 export const REGRESSION_GATE_POLICY_VERSION = '3.0.0';
 
@@ -75,10 +78,7 @@ export function parseRegressionGatePolicy(
 }
 
 export type RegressionGateStatus =
-  | 'PASS'
-  | 'FAIL'
-  | 'NOT_MEASURED'
-  | 'REPORTED';
+  'PASS' | 'FAIL' | 'NOT_MEASURED' | 'REPORTED';
 
 export type RegressionGateResult = {
   /** The integer budget the rate threshold resolved to, when it has one. */

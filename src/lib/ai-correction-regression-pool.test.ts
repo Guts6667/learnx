@@ -53,9 +53,7 @@ function buildFixture(
     ...(hints ? { hints } : {}),
     language: 'fr-FR',
     poolId: 'learnx-fr-regression-pool-v1',
-    sources: [
-      { path: CORPUS_PATH, role: 'DEVELOPMENT_HISTORICAL', source },
-    ],
+    sources: [{ path: CORPUS_PATH, role: 'DEVELOPMENT_HISTORICAL', source }],
   });
   return { pool, sources: new Map([[CORPUS_PATH, source]]) };
 }
@@ -81,9 +79,7 @@ describe('regression pool aggregation', () => {
     const corpus = requireSource(sources).corpus;
 
     expect(pool.cases).toHaveLength(corpus.cases.length);
-    expect(pool.sources[0]?.sha256).toBe(
-      sha256Hex(requireSource(sources).raw),
-    );
+    expect(pool.sources[0]?.sha256).toBe(sha256Hex(requireSource(sources).raw));
     for (const poolCase of pool.cases) {
       // The pool never carries the learner text, only a reference to it.
       expect(poolCase).not.toHaveProperty('responseText');

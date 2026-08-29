@@ -12,9 +12,7 @@ import {
   type RegressionObservation,
 } from './ai-correction-regression-metrics.js';
 
-function policy(
-  gates: RegressionGatePolicy['gates'],
-): RegressionGatePolicy {
+function policy(gates: RegressionGatePolicy['gates']): RegressionGatePolicy {
   return parseRegressionGatePolicy({
     gates,
     policyVersion: REGRESSION_GATE_POLICY_VERSION,
@@ -169,7 +167,11 @@ describe('gate budgets sized to the sample', () => {
   it('reads a minimum as the smallest acceptable count', () => {
     const evaluation = evaluateRegressionGates({
       metrics: {
-        checkerAgreementAtHigh: { denominator: 90, numerator: 80, rate: 80 / 90 },
+        checkerAgreementAtHigh: {
+          denominator: 90,
+          numerator: 80,
+          rate: 80 / 90,
+        },
       } as never,
       policy: policy([
         {
@@ -190,7 +192,11 @@ describe('gate budgets sized to the sample', () => {
   it('blocks promotion on an unmeasured blocking gate rather than passing it', () => {
     const evaluation = evaluateRegressionGates({
       metrics: {
-        mutationDirectionViolations: { denominator: 0, numerator: 0, rate: null },
+        mutationDirectionViolations: {
+          denominator: 0,
+          numerator: 0,
+          rate: null,
+        },
       } as never,
       policy: policy([
         {
@@ -257,7 +263,9 @@ describe('metric denominators', () => {
 
   it('counts a deletion that left the criterion mastered as a violation', () => {
     const metrics = computeRegressionMetrics({
-      baselines: [observation({ levels: { clarte: 'mastered', fidelite: 'mastered' } })],
+      baselines: [
+        observation({ levels: { clarte: 'mastered', fidelite: 'mastered' } }),
+      ],
       mutants: [
         observation({
           expectation: {
@@ -280,7 +288,9 @@ describe('metric denominators', () => {
 
   it('accepts a deletion that moved the criterion off the top level', () => {
     const metrics = computeRegressionMetrics({
-      baselines: [observation({ levels: { clarte: 'mastered', fidelite: 'mastered' } })],
+      baselines: [
+        observation({ levels: { clarte: 'mastered', fidelite: 'mastered' } }),
+      ],
       mutants: [
         observation({
           expectation: {
@@ -301,7 +311,9 @@ describe('metric denominators', () => {
 
   it('requires a fact inversion to move the criterion down, not merely off the top', () => {
     const metrics = computeRegressionMetrics({
-      baselines: [observation({ levels: { clarte: 'partial', fidelite: 'partial' } })],
+      baselines: [
+        observation({ levels: { clarte: 'partial', fidelite: 'partial' } }),
+      ],
       mutants: [
         observation({
           expectation: {

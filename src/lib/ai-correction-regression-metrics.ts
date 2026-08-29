@@ -13,7 +13,10 @@
  */
 
 import type { CriterionConfidence } from './ai-correction-confidence.js';
-import type { RegressionMutantExpectation, RegressionMutantKind } from './ai-correction-regression-mutants.js';
+import type {
+  RegressionMutantExpectation,
+  RegressionMutantKind,
+} from './ai-correction-regression-mutants.js';
 
 /** The independent verifier's answer, as recorded on an observation. */
 export type RegressionCheckerVerdict = 'AGREED' | 'DISAGREED' | 'UNAVAILABLE';
@@ -235,7 +238,11 @@ function mutationMetrics(input: {
       );
       if (baseline === undefined) continue;
       const before = levelIndex(scale, criterion.criterionKey, baseline);
-      const after = levelIndex(scale, criterion.criterionKey, criterion.levelKey);
+      const after = levelIndex(
+        scale,
+        criterion.criterionKey,
+        criterion.levelKey,
+      );
       if (before === undefined || after === undefined) continue;
       driftObserved += 1;
       // The contract counts a criterion as drifted past more than one step.
@@ -386,7 +393,11 @@ function stabilityMetrics(input: {
   for (const observation of input.baselines) {
     const scale = input.scalesByCase.get(observation.caseId);
     for (const criterion of observation.criteria) {
-      const index = levelIndex(scale, criterion.criterionKey, criterion.levelKey);
+      const index = levelIndex(
+        scale,
+        criterion.criterionKey,
+        criterion.levelKey,
+      );
       if (index === undefined) continue;
       const key = `${observation.caseId}|${criterion.criterionKey}`;
       const entry = byCriterion.get(key) ?? {

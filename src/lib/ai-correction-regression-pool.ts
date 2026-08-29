@@ -23,7 +23,10 @@ import {
   benchmarkResponseCategorySchema,
   type CorrectionBenchmarkCorpus,
 } from './ai-correction-benchmark-corpus.js';
-import { countOccurrences, segmentSentences } from './ai-correction-regression-text.js';
+import {
+  countOccurrences,
+  segmentSentences,
+} from './ai-correction-regression-text.js';
 
 /** Version of the pool contract; bumped when the shape below changes. */
 export const REGRESSION_POOL_SCHEMA_VERSION = 1;
@@ -276,7 +279,10 @@ function validatePoolCase(input: {
   language: string;
   poolCase: RegressionPoolCase;
   seenCaseIds: Set<string>;
-  sourcesByPath: Map<string, { corpus: CorrectionBenchmarkCorpus; role: string }>;
+  sourcesByPath: Map<
+    string,
+    { corpus: CorrectionBenchmarkCorpus; role: string }
+  >;
 }): void {
   const { index, issues, poolCase } = input;
   const at = (field: string): string => `cases[${index}].${field}`;
@@ -420,8 +426,7 @@ function validateAttackSegment(input: {
     if (input.poolCase.attackSegment !== undefined) {
       input.issues.push({
         code: 'CASE_ATTACK_SEGMENT_FORBIDDEN',
-        message:
-          'Only prompt injection cases carry an attack segment.',
+        message: 'Only prompt injection cases carry an attack segment.',
         path: input.at('attackSegment'),
       });
     }
@@ -437,7 +442,8 @@ function validateAttackSegment(input: {
     return;
   }
   if (
-    input.poolCase.attackSegment !== input.sourceCase.injectionSecurity?.attackText
+    input.poolCase.attackSegment !==
+    input.sourceCase.injectionSecurity?.attackText
   ) {
     input.issues.push({
       code: 'CASE_ATTACK_SEGMENT_MISMATCH',

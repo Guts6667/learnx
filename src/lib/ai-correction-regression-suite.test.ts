@@ -85,7 +85,10 @@ function loadConfiguration(
   corpus: CorrectionBenchmarkCorpus,
 ): CorrectionBenchmarkConfiguration {
   const source = JSON.parse(
-    readFileSync(path.resolve('benchmarks/ai-correction/benchmark.v1.json'), 'utf8'),
+    readFileSync(
+      path.resolve('benchmarks/ai-correction/benchmark.v1.json'),
+      'utf8',
+    ),
   ) as Record<string, unknown>;
   return parseCorrectionBenchmarkConfiguration({
     ...source,
@@ -113,7 +116,9 @@ function fakeExecutor(input: {
     benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
     corpus: CorrectionBenchmarkCorpus;
   }) => {
-    const unit = input.plan.unitsByBenchmarkCaseId.get(call.benchmarkCase.caseId);
+    const unit = input.plan.unitsByBenchmarkCaseId.get(
+      call.benchmarkCase.caseId,
+    );
     const contract = call.corpus.contracts.find(
       (candidate) =>
         candidate.contractKey === call.benchmarkCase.contractKey &&
@@ -195,7 +200,9 @@ function discerningChecker(plan: RegressionRunPlan): RegressionCheckerPort {
       Object.fromEntries(
         criteria.map((criterion) => [
           criterion.criterionKey,
-          mutantUnitIds.has(unitId) ? ('DISAGREED' as const) : ('AGREED' as const),
+          mutantUnitIds.has(unitId)
+            ? ('DISAGREED' as const)
+            : ('AGREED' as const),
         ]),
       ),
   };
@@ -370,7 +377,9 @@ describe('regression suite executed offline through the real runner', () => {
       policy: loadPolicy(),
     });
 
-    expect(evaluation.policyErrors.join(' ')).toContain('evidenceHallucination');
+    expect(evaluation.policyErrors.join(' ')).toContain(
+      'evidenceHallucination',
+    );
     expect(evaluation.promotionEligible).toBe(false);
   });
 

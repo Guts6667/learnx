@@ -15,7 +15,10 @@ import type {
   RegressionGateEvaluation,
   RegressionGateResult,
 } from './ai-correction-regression-gates.js';
-import type { RegressionMetrics, RegressionRate } from './ai-correction-regression-metrics.js';
+import type {
+  RegressionMetrics,
+  RegressionRate,
+} from './ai-correction-regression-metrics.js';
 
 /** Cost and latency figures the runner already computes. */
 export type RegressionRunCosts = {
@@ -84,9 +87,7 @@ export function renderRegressionReport(input: {
   lines.push(
     `| Générateur de mutants | \`${input.identity.generatorVersion}\` |`,
   );
-  lines.push(
-    `| Politique de gate | \`${input.identity.gatePolicyVersion}\` |`,
-  );
+  lines.push(`| Politique de gate | \`${input.identity.gatePolicyVersion}\` |`);
   lines.push(`| Identité primaire | \`${input.identity.primaryIdentity}\` |`);
   lines.push(`| Vérificateur | \`${input.identity.checkerIdentity}\` |`);
   lines.push(
@@ -113,7 +114,7 @@ export function renderRegressionReport(input: {
     lines.push('### Erreurs de politique');
     lines.push('');
     lines.push(
-      'Un seuil plus fin que la résolution de l\'échantillon est refusé : il faut le déclarer comme budget entier explicite.',
+      "Un seuil plus fin que la résolution de l'échantillon est refusé : il faut le déclarer comme budget entier explicite.",
     );
     lines.push('');
     for (const error of input.evaluation.policyErrors) {
@@ -202,7 +203,7 @@ export function renderRegressionReport(input: {
   lines.push('## Dix cas les moins stables');
   lines.push('');
   if (input.metrics.leastStableCases.length === 0) {
-    lines.push('Aucun critère n\'a bougé entre les répétitions.');
+    lines.push("Aucun critère n'a bougé entre les répétitions.");
   } else {
     lines.push('| Cas | Critère | Écart maximal (pas) |');
     lines.push('| --- | --- | --- |');
@@ -230,9 +231,7 @@ export function renderRegressionReport(input: {
   return `${lines.join('\n')}\n`;
 }
 
-function metricRows(
-  metrics: RegressionMetrics,
-): [string, RegressionRate][] {
+function metricRows(metrics: RegressionMetrics): [string, RegressionRate][] {
   return [
     ['mutationDirectionViolations', metrics.mutationDirectionViolations],
     ['unrelatedCriterionDrift', metrics.unrelatedCriterionDrift],
