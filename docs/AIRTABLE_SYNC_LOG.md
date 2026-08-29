@@ -595,3 +595,8 @@ l'autorisation.
 - Backlog : définitions 118, 170–179, UX-001/002/003 consignées (PR #54,
   `3320e332`) ; 142 et ligne de rollback 151 dans cette entrée.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+- V4.5-166, 167, 168 créés (`READY`, `recAv8JFD09VrSS1Z`, `recn4AgQSeVl2BB5T`,
+  `recUdTdyD55CJ7Z78`) : suppression par anonymisation, page de
+  confidentialité, détachement à 180 jours + information RAG — décisions
+  Rayan `owner-rgpd-2026-08-29` ; V4.5-165 : blocage mis à jour.
+- V4.5-140 : `REVIEW` → `DONE` (`fa1b2a5e`, PR #57).
