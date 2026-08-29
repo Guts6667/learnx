@@ -46,7 +46,13 @@ model AiCorrection {
   reconsiderationOf           AiCorrection?                   @relation("AiCorrectionReconsideration", fields: [reconsiderationOfId], references: [id], onDelete: Restrict)
   reconsideration             AiCorrection?                   @relation("AiCorrectionReconsideration")
   reconsiderationQuotes       AiPricingQuote[]                @relation("AiPricingQuoteReconsideration")
+  criterionFeedback           AiCorrectionCriterionFeedback[]
 
+  // Redundant against the primary key, and deliberately so: it is what lets
+  // the feedback table carry a compound foreign key on (correction, user), so
+  // a row pointing at someone else's correction is refused by the database
+  // rather than only by the route that happens to check.
+  @@unique([id, userId])
   @@unique([userId, idempotencyKey])
   @@unique([pricingQuoteId, userId])
   @@unique([creditReservationId, userId])
@@ -177,4 +183,26 @@ model AiCorrectionFinancialOperation {
   @@index([status, updatedAt])
   @@index([userId, createdAt])
   @@map("ai_correction_financial_operations")
+}
+
+/// Retour de l'apprenant sur un critère d'une correction (V4.5-112).
+///
+/// Une ligne par (correction, apprenant, critère) : renvoyer un verdict
+/// remplace le précédent, il n'en empile pas un second. L'apprenant peut se
+/// raviser, et le compte de « ce critère est faux » reste un compte de
+/// personnes, pas de clics.
+model AiCorrectionCriterionFeedback {
+  id           String                      @id @default(uuid()) @db.Uuid
+  correctionId String                      @map("correction_id") @db.Uuid
+  userId       String                      @map("user_id") @db.Uuid
+  criterionKey String                      @map("criterion_key")
+  verdict      AiCorrectionFeedbackVerdict
+  createdAt    DateTime                    @default(now()) @map("created_at")
+  updatedAt    DateTime                    @updatedAt @map("updated_at")
+  correction   AiCorrection                @relation(fields: [correctionId, userId], references: [id, userId], onDelete: Cascade)
+  user         User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([correctionId, userId, criterionKey])
+  @@index([correctionId])
+  @@map("ai_correction_criterion_feedback")
 }

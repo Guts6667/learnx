@@ -70,9 +70,19 @@ describe('corrections api (V4-009/V4-010)', () => {
     runAcceptedQuote.mockImplementation(async () => buildResult());
   });
 
-  function app(userId = 'user-1') {
+  const recordFeedback = vi.fn(async () => ({
+    recordedAt: new Date('2026-08-29T10:00:00.000Z'),
+    status: 'RECORDED' as const,
+  }));
+
+  function app(userId = 'user-1', feedbackOverrides = {}) {
     return createCorrectionsApp({
       authentication: authenticatedMiddleware(userId),
+      feedback: {
+        listForCorrections: vi.fn(async () => ({})),
+        record: recordFeedback,
+        ...feedbackOverrides,
+      },
       history: {
         findLatestForSubmission: vi.fn(async () => buildResult()),
         listForSubmission: vi.fn(async () => [
@@ -220,5 +230,93 @@ describe('corrections api (V4-009/V4-010)', () => {
       method: 'POST',
     });
     expect(response.status).toBe(503);
+  });
+});
+
+describe('retour apprenant par critère (V4.5-112)', () => {
+  const recordedAt = new Date('2026-08-29T10:00:00.000Z');
+
+  function post(
+    body: unknown,
+    correctionId = 'b1a4c0d2-3f77-4c0e-9c6b-2f9a1d4e5b60',
+    overrides: Record<string, unknown> = {},
+  ) {
+    const feedbackApp = createCorrectionsApp({
+      authentication: authenticatedMiddleware('user-1'),
+      feedback: {
+        listForCorrections: vi.fn(async () => ({})),
+        record: vi.fn(async () => ({
+          recordedAt,
+          status: 'RECORDED' as const,
+        })),
+        ...overrides,
+      },
+    });
+    return feedbackApp.request(`/api/ai-corrections/${correctionId}/feedback`, {
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    });
+  }
+
+  it('enregistre un verdict et renvoie ce qui a été retenu', async () => {
+    const response = await post({
+      criterionKey: 'decision-position',
+      verdict: 'WRONG',
+    });
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      resource: {
+        feedback: {
+          criterionKey: 'decision-position',
+          recordedAt: '2026-08-29T10:00:00.000Z',
+          verdict: 'WRONG',
+        },
+      },
+    });
+  });
+
+  it.each([
+    [{ criterionKey: 'decision-position', verdict: 'MAYBE' }],
+    [{ criterionKey: '', verdict: 'WRONG' }],
+    [{ criterionKey: 'decision-position' }],
+    [{ criterionKey: 'decision-position', verdict: 'WRONG', extra: 1 }],
+  ])('refuse un corps invalide (%o)', async (body) => {
+    expect((await post(body)).status).toBe(400);
+  });
+
+  it('refuse un identifiant de correction qui n’est pas un UUID', async () => {
+    const response = await post(
+      { criterionKey: 'decision-position', verdict: 'WRONG' },
+      'pas-un-uuid',
+    );
+    expect(response.status).toBe(400);
+  });
+
+  it('répond 422 sur un critère que la correction ne mentionne pas', async () => {
+    // Reachable only by the correction's owner, so distinguishing it from 404
+    // tells them what is wrong without telling a stranger anything.
+    const response = await post(
+      { criterionKey: 'critere-invente', verdict: 'WRONG' },
+      'b1a4c0d2-3f77-4c0e-9c6b-2f9a1d4e5b60',
+      { record: vi.fn(async () => ({ status: 'UNKNOWN_CRITERION' as const })) },
+    );
+    expect(response.status).toBe(422);
+    await expect(response.json()).resolves.toMatchObject({
+      error: { code: 'AI_CORRECTION_CRITERION_UNKNOWN' },
+    });
+  });
+
+  it('répond 404 sur la correction d’un autre apprenant', async () => {
+    // Not 403: a forbidden would confirm to a stranger that the correction
+    // exists. The store returns null for "not yours" and for "no such
+    // criterion" alike, and both surface the same way.
+    const response = await post(
+      { criterionKey: 'decision-position', verdict: 'WRONG' },
+      'b1a4c0d2-3f77-4c0e-9c6b-2f9a1d4e5b60',
+      { record: vi.fn(async () => ({ status: 'NOT_FOUND' as const })) },
+    );
+    expect(response.status).toBe(404);
   });
 });

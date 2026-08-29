@@ -22,6 +22,7 @@ model User {
   exerciseSubmissions             ExerciseSubmission[]
   stageAssessmentSubmissions      StageAssessmentSubmission[]
   aiCorrections                   AiCorrection[]
+  aiCorrectionCriterionFeedback   AiCorrectionCriterionFeedback[]
   creditAccounts                  CreditAccount[]               @relation("CreditAccountOwner")
   creditAdjustmentEntries         CreditLedgerEntry[]           @relation("CreditLedgerAdjustmentActor")
   creditGrantCycles               CreditGrantCycle[]

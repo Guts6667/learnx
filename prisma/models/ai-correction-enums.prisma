@@ -106,3 +106,13 @@ enum AiCorrectionCostSource {
 
   @@map("ai_correction_cost_source")
 }
+
+/// Verdict de l'apprenant sur un critère corrigé (V4.5-112). Deux valeurs
+/// seulement : l'échelle fine invite à la nuance, or ce signal sert à repérer
+/// les critères que la correction rate, pas à noter la correction.
+enum AiCorrectionFeedbackVerdict {
+  HELPFUL @map("helpful")
+  WRONG   @map("wrong")
+
+  @@map("ai_correction_feedback_verdict")
+}
