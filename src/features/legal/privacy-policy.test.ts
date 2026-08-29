@@ -34,6 +34,20 @@ function join(fragments: { text: string }[]): string {
   return fragments.map((fragment) => fragment.text).join('');
 }
 
+/**
+ * Ce que doit faire quelqu'un qui voit ce test rouge.
+ *
+ * L'échec ne signifie presque jamais que le document est faux : il signifie
+ * que le document a changé et que le module n'a pas suivi. La réparation est
+ * donc de régénérer le module, jamais de réécrire la page pour la faire
+ * correspondre — c'est exactement ce que ce test existe pour empêcher.
+ */
+const REMEDY =
+  'Le document a changé sans que le module suive. Régénérez ' +
+  'src/features/legal/privacy-policy.ts depuis ' +
+  'docs/V4_5_PRIVACY_POLICY.md (V4.5-169) — ne modifiez pas la page pour ' +
+  'la faire correspondre au document.';
+
 describe('privacy policy content', () => {
   it.each(['en', 'fr'] as const)(
     'ne contient aucune phrase absente du document (%s)',
@@ -52,7 +66,7 @@ describe('privacy policy content', () => {
       for (const fragment of fragments) {
         expect(
           flatDocument.includes(flatten(fragment)),
-          `Absent du document : « ${fragment.slice(0, 80)}… »`,
+          `Absent du document : « ${fragment.slice(0, 80)}… »\n${REMEDY}`,
         ).toBe(true);
       }
     },
@@ -73,9 +87,10 @@ describe('privacy policy content', () => {
       const headings = [
         ...(languageBlock ?? '').matchAll(/^\*\*(.+?)\*\*/gm),
       ].map((match) => match[1]);
-      expect(privacyPolicy[locale].sections.map((s) => s.heading)).toEqual(
-        headings,
-      );
+      expect(
+        privacyPolicy[locale].sections.map((s) => s.heading),
+        REMEDY,
+      ).toEqual(headings);
     },
   );
 
@@ -107,6 +122,12 @@ describe('privacy policy content', () => {
     // pas la lecture de la page, où un crochet oublié se confond avec une
     // tournure. S'il reverdit avec une entrée, c'est qu'une version du
     // document a réintroduit un champ vide.
-    expect([...new Set(brackets)].sort()).toEqual([]);
+    expect(
+      [...new Set(brackets)].sort(),
+      'Un champ entre crochets est réapparu dans le document : il doit être ' +
+        'renseigné par le Propriétaire avant publication, ou assumé comme ' +
+        'visible. ' +
+        REMEDY,
+    ).toEqual([]);
   });
 });
