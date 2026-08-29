@@ -250,17 +250,26 @@ export class PrismaCorrectionOrchestrationPorts {
       });
     },
     recordAttemptIntent: async (input): Promise<void> => {
+      // The identity is written on the row rather than assumed, so a checker
+      // call is not filed as corrector spend. V4.5-114 splits the ceiling by
+      // role, and a row that lies about which model ran would corrupt exactly
+      // the figure it needs.
+      const identity = input.identity ?? {
+        modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+        provider: PROMOTED_CORRECTION_IDENTITY.provider,
+        role: 'CORRECTION_PRIMARY',
+      };
       await this.prisma.aiCorrectionAttempt.create({
         data: {
           correctionId: input.correctionId,
           dispatchStatus: 'CALL_INTENT',
-          modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
-          modelRole: 'CORRECTION_PRIMARY',
-          provider: PROMOTED_CORRECTION_IDENTITY.provider,
-          providerIdempotencyKey: `correction:${input.correctionId}:attempt:${input.sequence}`,
+          modelId: identity.modelId,
+          modelRole: identity.role,
+          provider: identity.provider,
+          providerIdempotencyKey: `correction:${input.correctionId}:${identity.role}:${input.sequence}`,
           requestManifest: {
-            modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
-            provider: PROMOTED_CORRECTION_IDENTITY.provider,
+            modelId: identity.modelId,
+            provider: identity.provider,
             sequence: input.sequence,
           },
           retryable: false,

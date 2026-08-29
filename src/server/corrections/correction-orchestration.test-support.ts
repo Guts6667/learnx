@@ -224,6 +224,9 @@ export interface Harness {
 
 export function buildHarness(options: {
   beforeTransport?: () => void;
+  checker?: {
+    verify(input: unknown): Promise<unknown>;
+  };
   quote?: AcceptedQuoteSnapshot;
   transport: () => unknown;
   replay?: unknown;
@@ -306,7 +309,16 @@ export function buildHarness(options: {
     credits,
     corrections,
     transport,
-    { apiKey: 'test-key', now: () => new Date('2026-08-24T10:00:00Z') },
+    {
+      apiKey: 'test-key',
+      ...(options.checker
+        ? {
+            checker:
+              options.checker as unknown as import('./correction-checker').CorrectionCheckerPort,
+          }
+        : {}),
+      now: () => new Date('2026-08-24T10:00:00Z'),
+    },
   );
   return { service, quotes, credits, corrections, transport, transportOutputs };
 }
