@@ -498,3 +498,41 @@ l'autorisation.
   Vercel, et la règle de migration délibérée héritée de V4.5-170.
 - Relecture : chaque enregistrement relu champ par champ après mutation,
   aucun écart. Aucune suppression, aucune page d'interface touchée.
+
+## 29 août 2026 — relevé Neon et plan Vercel : 170, 171 et 177 mis à jour
+
+- Autorisation : mise à jour limitée aux tickets créés par cette session.
+  Relevé fourni par le propriétaire (captures console Neon) et plan Vercel
+  confirmé Hobby.
+- Projet Neon LearnX (StudioPickles, plan **Free**), branches observées :
+  `production`, `staging`, `backup-pre-v4-release-20260826`,
+  `backup-pre-v3-release-20260810`,
+  `backup-pre-platform-apm-release-2026…`,
+  `backup-pre-v3-018-seed-20260806-074…`,
+  `backup-pre-officine-seed-20260806`, `backup-pre-v2-merge-20260804`.
+  Aucune branche `ci-*` résiduelle.
+- `recYphSi9FXqtNpmj` V4.5-177 : deux inconnues levées. Plan Hobby ⇒ voie (a),
+  staging reste un déploiement Preview, `VERCEL_ENV` y vaut `preview`, donc
+  l'union fermée `AiDeploymentEnvironment` reste inchangée et AUCUN changement
+  de code n'est requis. La branche Neon `staging` existe déjà. Reste une seule
+  décision propriétaire : réavancer `origin/staging` ou la recréer.
+- `recJFACuVNTMXxuYP` V4.5-171 : `P2` → `P1`. Cause structurelle identifiée en
+  plus de la cause première déjà corrigée : le plan Free plafonne le nombre de
+  branches et huit sont déjà permanentes, dont six sauvegardes `backup-pre-*`
+  du 4 au 26 août. La marge pour les branches de CI est donc très mince. Le
+  nettoyage exige un accord nominatif du propriétaire, branche par branche :
+  ce sont des sauvegardes de pré-release et aucune ne sera supprimée sans
+  autorisation explicite.
+- `recL3BtE3hDGOdhPW` V4.5-170 : le relevé confirme qu'AUCUNE branche Neon
+  n'est dédiée aux previews. Les variables Preview génériques pointent donc
+  nécessairement sur `production` ou sur `staging` : dans les deux cas, chaque
+  build preview appliquait des migrations sur une base partagée avec un autre
+  palier, depuis une branche non relue. La porte de migration était bien
+  nécessaire.
+- Relecture : les trois enregistrements relus champ par champ, aucun écart.
+- Hors périmètre Airtable, à signaler : l'installation des skills Neon
+  (`npx neon@latest skills`) a modifié le fichier suivi `skills-lock.json`
+  (empreintes amont mises à jour) et créé `.claude/skills/**`, qui n'est pas
+  couvert par `.gitignore` — seul `.claude/settings.local.json` l'est. Ces
+  changements sont dans le worktree principal, sur une autre branche, et n'ont
+  pas été committés par cette session.
