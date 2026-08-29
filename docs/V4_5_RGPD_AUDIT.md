@@ -178,9 +178,9 @@ Conclusion pour la notice (§5) : la phrase « nous demandons à ces services de
 ne pas conserver ni entraîner sur vos données » reste exacte ; « ils ne
 conservent pas » serait faux. Formulation à retenir : « ces services les
 conservent au plus 30 jours (Anthropic, Mistral) et ne les utilisent pas pour
-entraîner leurs modèles ; OpenRouter ne publie pas de durée ». Point ouvert
-pour le Propriétaire : demander à OpenRouter une durée écrite, ou accepter
-l'absence de chiffre et l'écrire telle quelle.
+entraîner leurs modèles ; OpenRouter ne publie pas de durée ». Décision Rayan du 29 août 2026
+(`owner-openrouter-retention-2026-08-29`) : accepter l'absence de chiffre et
+l'écrire telle quelle dans la notice ; aucune demande contractuelle à OpenRouter.
 
 ## 8. Ce que ce document n'autorise pas
 
