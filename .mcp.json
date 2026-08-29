@@ -3,10 +3,7 @@
     "airtable": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "airtable-mcp-server"
-      ],
+      "args": ["-y", "airtable-mcp-server"],
       "env": {
         "AIRTABLE_API_KEY": "pat_XXXX"
       }

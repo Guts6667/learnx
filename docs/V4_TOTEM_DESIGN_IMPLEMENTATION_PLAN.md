@@ -52,15 +52,20 @@ modifié.
 LearnX adopte la direction **Totem modernisé** : sérieuse, aérée et
 identifiable.
 
-| Fondation | Valeur validée |
-| --- | --- |
-| Typographie d'interface | DM Sans |
-| Ardoise | `#17233B` |
-| Cobalt | `#3B5BD6` |
-| Brume | `#E7EDFF` |
-| Corail rare | `#CC6B57` |
-| Fond | `#F4F6FB` |
-| Papier | `#FFFFFF` |
+| Fondation | Valeur validée (V4.2) | Valeur V4.1 remplacée |
+| --- | --- | --- |
+| Typographie d'interface | DM Sans | — |
+| Typographie d'affichage | Plus Jakarta Sans | (aucune) |
+| Ardoise | `#101B33` | `#17233B` |
+| Cobalt | `#4F52D9` | `#3B5BD6` |
+| Brume | `#EEF0FD` | `#E7EDFF` |
+| Corail rare | `#D97757` | `#CC6B57` |
+| Fond | `#F6F7FB` | `#F4F6FB` |
+| Papier | `#FFFFFF` | — |
+
+Le corail ne porte jamais de texte sur fond clair : `#D97757` sur `#F6F7FB`
+mesure 2,92 et échoue AA. Il reste décoratif sur les surfaces claires et ne
+porte du texte que sur la bande encre, où il mesure 5,48.
 
 Sont exclus : vert, gradient associé à l'IA, esthétique fintech, gamification,
 personnification de l'IA et couleur utilisée comme seul signal. L'IA reste une

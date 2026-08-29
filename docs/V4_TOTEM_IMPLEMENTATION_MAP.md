@@ -79,14 +79,16 @@ des publications chronologiques.
 
 | Contrat | Valeur attendue | Cible principale |
 | --- | --- | --- |
-| Typographie | DM Sans | `src/styles/index.css` |
-| Canvas | `#F4F6FB` | tokens CSS |
+| Typographie d'interface | DM Sans 400/500/600/700 | `src/styles/tokens/fonts.css` |
+| Typographie d'affichage | Plus Jakarta Sans 600/700 | titres, via `--font-editorial` |
+| Canvas | `#F6F7FB` | tokens CSS |
 | Surface | `#FFFFFF` | tokens CSS |
-| Encre | `#17233B` | tokens CSS |
-| Texte secondaire | `#647087` | tokens CSS |
-| Cobalt | `#3B5BD6` | action, focus, progression |
-| Brume | `#E7EDFF` | surfaces secondaires |
-| Corail rare | `#CC6B57` | angle signature uniquement |
+| Encre | `#101B33` | tokens CSS |
+| Texte secondaire | `#5B6478` | tokens CSS |
+| Cobalt | `#4F52D9` | action, focus, progression |
+| Brume | `#EEF0FD` | surfaces secondaires |
+| Corail rare | `#D97757` | angle signature uniquement |
+| Rôles sur encre | `#E6ECF8`, `#A7AEC6`, `#7478E8`, `#F2B4A7` | bande encre |
 | Interdits | vert, gradient IA, fintech, gamification | revue globale |
 
 Les composants partagés à stabiliser avant les pages sont le shell, la

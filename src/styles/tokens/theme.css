@@ -27,45 +27,45 @@
 }
 
 :root {
-  --color-canvas: #f4f6fb;
+  --color-canvas: #f6f7fb;
   --color-surface: #ffffff;
-  --color-surface-raised: #e7edff;
-  --color-surface-subtle: #e7edff;
-  --color-text: #17233b;
-  --color-text-muted: #647087;
-  --color-border: #d6deeb;
-  --color-border-strong: #aebad2;
+  --color-surface-raised: #eef0fd;
+  --color-surface-subtle: #eef0fd;
+  --color-text: #101b33;
+  --color-text-muted: #5b6478;
+  --color-border: #e4e6f0;
+  --color-border-strong: #c3c7d8;
   --color-control-border: #8491a8;
-  --color-accent: #3b5bd6;
-  --color-accent-text: #314fbe;
-  --color-action: #3b5bd6;
-  --color-action-hover: #304db8;
-  --color-action-soft: #e7edff;
+  --color-accent: #4f52d9;
+  --color-accent-text: #3e41b8;
+  --color-action: #4f52d9;
+  --color-action-hover: #3e41b8;
+  --color-action-soft: #eef0fd;
   --color-on-action: #ffffff;
-  --color-direction: #cc6b57;
-  --color-focus: #2441a6;
-  --color-success: #3b5bd6;
+  --color-direction: #d97757;
+  --color-focus: #3e41b8;
+  --color-success: #4f52d9;
   --color-warning: #8a5a24;
   --color-danger: #9b3e32;
   --color-disabled: #7a8599;
-  --color-overlay: rgb(23 35 59 / 58%);
+  --color-overlay: rgb(16 27 51 / 58%);
   --color-ivory: #ffffff;
-  --color-coral: #cc6b57;
-  --color-coral-soft: #f9eae6;
+  --color-coral: #d97757;
+  --color-coral-soft: #f7e3da;
 
   /* Roles for content sitting on the ink band. Four surfaces previously
      invented their own on-dark values (#aebfff, #c8d0df, #c8d2e6, #e6ecf8)
      with no shared token; these replace them. */
   --color-ink-surface: var(--color-text);
   --color-on-ink: #e6ecf8;
-  --color-on-ink-muted: #c8d2e6;
+  --color-on-ink-muted: #a7aec6;
   --color-line-on-ink-soft: rgb(255 255 255 / 16%);
   --color-line-on-ink: rgb(255 255 255 / 18%);
   --color-line-on-ink-mark: rgb(255 255 255 / 24%);
   --color-line-on-ink-strong: rgb(255 255 255 / 28%);
   --color-fill-on-ink: rgb(255 255 255 / 8%);
   --color-fill-on-ink-active: rgb(255 255 255 / 14%);
-  --color-accent-on-ink: #aebfff;
+  --color-accent-on-ink: #7478e8;
   --color-coral-on-ink: #f2b4a7;
 
   /* shadcn Maia maps to LearnX tokens; it does not introduce a new brand. */
@@ -88,12 +88,15 @@
   --input: var(--color-control-border);
   --ring: var(--color-focus);
   --radius: 0.75rem;
-  --shadow-xs: 0 1px 2px rgb(23 35 59 / 6%);
-  --shadow-sm: 0 2px 8px rgb(23 35 59 / 8%);
-  --shadow-md: 0 8px 24px rgb(23 35 59 / 10%);
+  --shadow-xs: 0 1px 2px rgb(16 27 51 / 6%);
+  --shadow-sm: 0 2px 8px rgb(16 27 51 / 8%);
+  --shadow-md: 0 8px 24px rgb(16 27 51 / 10%);
 
   --font-interface: var(--font-sans);
-  --font-editorial: var(--font-sans);
+  /* Display face carries headings; DM Sans keeps body and UI text. */
+  --font-display:
+    'Plus Jakarta Sans', 'DM Sans', Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-editorial: var(--font-display);
   /* Type scale, derived from the sizes already dominant in the stylesheet:
      0.75, 0.8125, 0.875, 1, 1.125, 1.25 and 1.5 covered 82 of ~100
      declarations. The remaining values were one-off drift and round onto it. */

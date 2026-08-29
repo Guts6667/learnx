@@ -47,11 +47,11 @@ function contrast(first: string, second: string): number {
 describe('Totem visual foundations', () => {
   it('exposes the approved Totem palette alongside the migration aliases', () => {
     const palette = [
-      '#17233b',
-      '#3b5bd6',
-      '#e7edff',
-      '#cc6b57',
-      '#f4f6fb',
+      '#101b33',
+      '#4f52d9',
+      '#eef0fd',
+      '#d97757',
+      '#f6f7fb',
       '#ffffff',
     ];
 
@@ -97,19 +97,19 @@ describe('Totem visual foundations', () => {
   });
 
   it('keeps text and interactive boundaries above their WCAG thresholds', () => {
-    expect(contrast('#17233b', '#f4f6fb')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#647087', '#ffffff')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#ffffff', '#3b5bd6')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#314fbe', '#ffffff')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#101b33', '#f6f7fb')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#5b6478', '#ffffff')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#ffffff', '#4f52d9')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#3e41b8', '#ffffff')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#8491a8', '#ffffff')).toBeGreaterThanOrEqual(3);
-    expect(contrast('#8a5a24', '#f4f6fb')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#8a5a24', '#f6f7fb')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#9b3e32', '#ffffff')).toBeGreaterThanOrEqual(4.5);
     // Roles carried on the ink band. Four surfaces used to invent their own
     // on-dark values; these are the single set they collapsed into.
-    expect(contrast('#e6ecf8', '#17233b')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#c8d2e6', '#17233b')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#aebfff', '#17233b')).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#f2b4a7', '#17233b')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#e6ecf8', '#101b33')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#a7aec6', '#101b33')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#7478e8', '#101b33')).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#f2b4a7', '#101b33')).toBeGreaterThanOrEqual(4.5);
     expect(stylesheet).toMatch(
       /\.ui-action--danger \{[\s\S]*?color: color-mix\([\s\S]*?var\(--color-danger\) 90%[\s\S]*?var\(--color-ivory\) 10%/,
     );
