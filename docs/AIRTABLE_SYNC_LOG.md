@@ -638,3 +638,9 @@ l'autorisation.
   couplage documenté dans l'en-tête du document.
 - Règle de handoff « Symboles exportés et leurs appelants » remplace
   « Sorties et leur destination » (AGENT_WORKFLOW §7).
+- V4.5-117 `DONE` (`cd7c804b`) ; V4.5-182 `DONE` (`83cb5e77`) ; V4.5-160
+  `IN_PROGRESS` → `REVIEW` au merge (inerte, passe sandbox en attente) ;
+  V4.5-161 `REVIEW` au merge ; V4.5-182/183 créés ; V4.5-121 : smoke exécuté
+  (0,0199 USD réconcilié), run complète lancée sous 12,80 USD.
+- Question Propriétaire ouverte : fournisseur de paiement (Stripe sans compte
+  Business vs Revolut Business) — ADR_004 à amender selon la réponse.

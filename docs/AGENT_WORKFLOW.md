@@ -260,6 +260,13 @@ Avant chaque push (règle du 29 août 2026, après trois rouges évitables) :
    pas suffisant : les baselines visuelles et Integration ne s'exécutent
    qu'en CI et se lisent comme des signaux, jamais comme des flakes.
 
+3. conflit sur `prisma/multi-file-schema.test.ts` (compte des modèles,
+   énumérations, migrations) : **recompter depuis l'arbre, jamais ré-additionner
+   ni prendre un côté** — le test existe pour qu'ajouter un modèle soit un acte
+   délibéré ; un compte auto-dérivé ne prouverait rien, et un compte « choisi »
+   cesse silencieusement de correspondre à l'arbre (résolu quatre fois le
+   29 août 2026 : 117, 160, 161, 163).
+
 Le handoff minimal contient :
 
 ```text
