@@ -246,11 +246,12 @@ function paragraphShuffleMutants(
   const { paragraphs, separators } = segmentParagraphs(input.responseText);
   if (paragraphs.length < 2) return [];
 
-  const order = deterministicPermutation({
+  const order = nonIdentityPermutation({
     length: paragraphs.length,
     seed: input.poolCase.caseId,
   });
-  if (order.every((value, index) => value === index)) return [];
+  // Only reachable when the paragraph count admits no reordering at all.
+  if (!order) return [];
 
   const shuffled = order.flatMap((index) => {
     const paragraph = paragraphs[index];
@@ -281,6 +282,30 @@ function paragraphShuffleMutants(
       responseText,
     },
   ];
+}
+
+/**
+ * A permutation that actually reorders something, or `undefined` if none can be
+ * derived.
+ *
+ * A two-paragraph response has exactly one reordering, so a seed that happens
+ * to draw the identity would silently cost that case its shuffle mutant — half
+ * of them, on average. Re-deriving from a salted seed keeps the result a pure
+ * function of the case identifier while making the draw actually land on a
+ * reordering.
+ */
+function nonIdentityPermutation(input: {
+  length: number;
+  seed: string;
+}): number[] | undefined {
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const order = deterministicPermutation({
+      length: input.length,
+      seed: attempt === 0 ? input.seed : `${input.seed}#${attempt}`,
+    });
+    if (order.some((value, index) => value !== index)) return order;
+  }
+  return undefined;
 }
 
 /**

@@ -167,8 +167,9 @@ describe('regression pool validation', () => {
     );
 
     expect(validateRegressionPool({ pool, sources })).toEqual([]);
-    expect(pool.cases).toHaveLength(120);
-    expect(pool.sources).toHaveLength(5);
+    // 120 historical cases plus the 24 domain cases of V4.5-122.
+    expect(pool.cases).toHaveLength(144);
+    expect(pool.sources).toHaveLength(6);
   });
 
   it('rejects a pool whose source corpus changed under it', () => {

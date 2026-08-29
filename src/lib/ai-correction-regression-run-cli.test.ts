@@ -153,10 +153,10 @@ describe('--run-pool', () => {
       mutantPass: { primaryCallCount: number };
     };
 
-    // 120 pooled cases at 2 repetitions; 168 mutants once, because a mutant's
+    // 144 pooled cases at 2 repetitions; 236 mutants once, because a mutant's
     // oracle is a direction rather than a distribution.
-    expect(preflight.baselinePass.primaryCallCount).toBe(240);
-    expect(preflight.mutantPass.primaryCallCount).toBe(168);
+    expect(preflight.baselinePass.primaryCallCount).toBe(288);
+    expect(preflight.mutantPass.primaryCallCount).toBe(236);
   });
 
   it('refuses to run without an explicit cost cap', async () => {

@@ -285,14 +285,17 @@ describe('regression suite executed offline through the real runner', () => {
       new Set(plan.corpus.cases.map((benchmarkCase) => benchmarkCase.caseId))
         .size,
     ).toBe(plan.corpus.cases.length);
-    // 120 baselines plus every mutant the authored hints support.
-    expect(plan.scales).toHaveLength(120);
+    // 144 baselines plus every mutant the authored hints support.
+    expect(plan.scales).toHaveLength(144);
     expect(countMutantsByKind(plan)).toEqual({
-      FACT_INVERSION: 22,
-      INJECTION_APPEND: 88,
-      PARAGRAPH_SHUFFLE: 0,
+      FACT_INVERSION: 28,
+      INJECTION_APPEND: 108,
+      // One per domain case: V4.5-122's multi-paragraph responses are what
+      // finally give this oracle material, where the v1 pool gave it none.
+      PARAGRAPH_SHUFFLE: 24,
+      // Empty until V4.5-121 populates the frozen cache with the verifier.
       PARAPHRASE: 0,
-      SENTENCE_DELETION: 58,
+      SENTENCE_DELETION: 76,
     });
   });
 
