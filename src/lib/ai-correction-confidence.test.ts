@@ -3,7 +3,7 @@ import {
   deriveCorrectionConfidence,
   deriveCriterionConfidence,
   type CriterionConfidenceInput,
-} from './correction-confidence';
+} from './ai-correction-confidence';
 
 /** A criterion where every signal is clean: verified quote, verifier agreed. */
 function criterion(

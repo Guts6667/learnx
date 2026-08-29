@@ -10,7 +10,7 @@ import {
   type CorrectionConfidenceInput,
   type CriterionConfidence,
   type CriterionConfidenceInput,
-} from './correction-confidence.js';
+} from '../../lib/ai-correction-confidence.js';
 import type { CorrectionMonitoringSignal } from './correction-monitoring.js';
 import type { OrchestratedCorrectionResult } from './correction-orchestration-contracts.js';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
