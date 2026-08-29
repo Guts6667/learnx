@@ -1,6 +1,6 @@
 schema_version: 1
-manifest_version: '1.2.0'
-captured_on: '2026-08-28'
+manifest_version: '1.3.0'
+captured_on: '2026-08-29'
 baseline:
   ref: origin/dev
   sha: a02ecc3f307af36656fa5cb8a7b62954fdec73e9
@@ -132,8 +132,9 @@ documents:
 
   - path: V4_5_BACKLOG.md
     scope: v4_5_execution
-    status: gated_backlog
+    status: active_backlog
     activation_gate: V4.1-504_owner_go
+    activation_gate_evidence: 63c436d9 (GO V4.1-504, 29 août 2026)
     owner: Produit
     reviewer: Propriétaire
     supersession: reviewed_version_bump_preserving_git_history
@@ -159,6 +160,13 @@ documents:
     owner: Architecture / Produit
     reviewer: Propriétaire
     supersession: versioned_reviewed_update
+
+  - path: docs/V4_5_AI_QUALITY_CONTRACT.md
+    scope: v4_5_ai_correction_quality_contract
+    status: active_instruction
+    owner: Architecture / Produit
+    reviewer: Propriétaire
+    supersession: reviewed_version_bump_preserving_git_history
 
   - path: docs/V4_RESEARCH_FINDINGS.md
     scope: v4_ai_research_readable_status

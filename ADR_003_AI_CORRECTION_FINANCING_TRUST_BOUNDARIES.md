@@ -26,6 +26,37 @@
 > à réconcilier et aucun pipeline n'est promu. Toute remédiation est hors ligne
 > sous une nouvelle identité et exige ensuite Finance et un nouveau GO.
 
+> **Addendum du 29 août 2026 (V4.5-100).** Les frontières serveur, ledger,
+> réservation, idempotence, minimisation des données et kill switches restent
+> autoritaires. Trois points sont mis en cohérence avec le runtime réellement
+> livré et exploité :
+>
+> 1. **Pipeline actif.** Le runtime unique est le pipeline critériel épinglé
+>    par `src/server/corrections/promoted-identity.ts` : le modèle propose un
+>    niveau par critère avec citations vérifiées verbatim côté serveur, et le
+>    serveur calcule un score *indicatif* pondéré. Le protocole evidence-assist
+>    3.0 (relations candidates seulement) est `SUPERSEDED_HISTORICAL` : il n'a
+>    jamais franchi son gate, aucun chemin exécutable ne l'utilise et il ne
+>    décrit plus l'autorité sémantique active. Les phrases de la
+>    réconciliation du 22 août qui le désignent comme « unique autorité
+>    sémantique » sont donc historiques.
+> 2. **Ce que le score indicatif n'est pas.** Il n'écrit ni progression, ni
+>    maîtrise, ni `VALIDATED`. V4.5 lui adjoint un niveau de confiance par
+>    critère (`HIGH | MEDIUM | LOW`) dérivé de signaux décidables par le
+>    serveur ; un critère `LOW` n'affiche aucun niveau. Le contrat qualité
+>    `docs/V4_5_AI_QUALITY_CONTRACT.md` en est l'autorité.
+> 3. **Doctrine argent.** La règle du §6.2 est réaffirmée et prime sur la
+>    doctrine « prix plein en toutes circonstances » du 23 août : un résultat
+>    **inutilisable** (`FAILED`, aucun critère livrable) libère l'intégralité
+>    de la réservation utilisateur, même si LearnX a supporté un coût
+>    fournisseur. Une livraison partielle (`COMPLETED_PARTIAL`) reste débitée
+>    au prix du devis accepté, conformément au consentement préalable. La
+>    mise en œuvre est le ticket V4.5-101.
+>
+> Aucune validation humaine n'est revendiquée pour la correction assistée ; la
+> qualité est mesurée par des oracles machine, des signaux apprenants et un
+> coupe-circuit automatique (contrat qualité V4.5).
+
 ## 1. Contexte
 
 LearnX corrige aujourd'hui de manière déterministe les quiz et les
