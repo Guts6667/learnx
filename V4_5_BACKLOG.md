@@ -377,6 +377,16 @@ l'autorité de définition ; Airtable porte le statut.
   owner ; réouverture manuelle auditée.
 - Acceptation : tests unitaires du coupe-circuit ; page admin avec état et
   motif.
+- Décisions Head of AI du 29 août 2026 (`head-of-ai-breaker-2026-08-29`,
+  contrat §6) : le coupe-circuit **latche** (réouverture manuelle auditée,
+  aucune récupération automatique) ; il **refuse au devis** et laisse courir
+  les corrections déjà devisées ; s'il ne peut pas évaluer, il **reste fermé**
+  et expose `breaker.evaluationError` (garde-fou visiblement aveugle, jamais
+  vert) ; trois raisons : `CHECKER_DISAGREEMENT` (> 40 %), `UNUSABLE_RATE`
+  (> 5 %), `LEARNER_CONTRADICTION_AT_HIGH` (> 10 %, quorum de 20 critères
+  `HIGH` votés) ; seuils et taux **par raison**, taux `null` sous quorum
+  (« pas assez de données », jamais 0 %). Forme de lecture :
+  `GET /api/admin/ai-corrections/monitoring`, capacité `credit.admin.manage`.
 
 ### V4.5-141 — Échantillonnage de cohérence sur soumissions réelles
 
@@ -463,8 +473,8 @@ la fois ; les migrations Prisma atterrissent en série (A puis B).
 | --- | --- | --- | --- |
 | A — backend IA | Head of Development | `src/server/corrections/**`, `src/server/ai/**`, `src/server/api/corrections/**`, `src/server/api/exercises/eligibility.ts`, `src/lib/*-correction-contracts.ts`, migrations associées | 101 → 110 → 111 → 116 → 131 → 130 → 112 (API + migration) → 140 (backend + coupe-circuit) → 117 → 114 (après 121) |
 | B — backend commerce | Head of Development après la voie A (ou session dédiée) | `src/server/payments/**`, `src/server/credits/**`, `src/server/pricing/**`, `src/server/api/credits/**`, migrations associées | 160 → 161 → 163 → 162 ; démarre après le merge de 101 |
-| C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/**` (dont `ProgramsDirectoryPages.tsx`, `AdminCreditsPage.tsx`, `Credits*`), `src/styles/**`, `src/components/**`, `src/i18n/catalogs/**` (baseline régénérée par le script, jamais fusionnée à la main), `tests/e2e/**`, `tests/visual/**` | 113 → 112 (UI) → 150 → 140 (UI admin) → 162 (UI admin) → UX-001 |
-| D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub ; côté `src/` uniquement `src/server/api/app.ts` et `src/server/api/health/**` (172) et `src/server/api/public-leads/**` (178), avec leurs tests | 174 → 177 → 170 → 178 → 172 → 173 → 176 → 175 → 151 → 132 (après 120–122) |
+| C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/**` (dont `ProgramsDirectoryPages.tsx`, `AdminCreditsPage.tsx`, `Credits*`), `src/styles/**`, `src/components/**`, `src/i18n/catalogs/**` (baseline régénérée par le script, jamais fusionnée à la main), `tests/e2e/**`, `tests/visual/**` | 113 → 112 (UI) → 150 → UX-001 → UX-002 → UX-003 → 140 (UI admin) → 162 (UI admin) |
+| D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub ; côté `src/` uniquement `src/server/api/app.ts` et `src/server/api/health/**` (172) et `src/server/api/public-leads/**` (178), avec leurs tests | 174 → 170 → 171 → 177 → 179 → 176 → 178 → 172 → 173 → 175 → 151 → 132 (après 120–122) |
 | E — recherche IA | session « AI Research » (à ouvrir) | `src/lib/ai-correction-benchmark-*`, `benchmarks/**`, `scripts/run-ai-correction-benchmark.ts`, `docs/V4_5_REGRESSION_SUITE.md`, `public/research/**` | 120 → 122 → 121 → 141 |
 | F — direction IA | Head of AI | docs, ADR, backlog, Airtable, revues, `promoted-identity.ts` pour 115 seulement (coordonné avec A) | spec 120, 115, 165, 164, revue des voies A et E |
 
@@ -491,6 +501,28 @@ journal Airtable (append-only, point de merge F).
   avec source ; textes FR/EN livrés aux tickets 113/141 ; GO Rayan consigné.
 - Origine : carte Airtable « Faire un audit RGPD » (Archive V4) convertie le
   29 août 2026.
+
+### Tickets ajoutés en cours de V4.5 (définitions courtes)
+
+Créés dans Airtable entre le 29 août 2026 et aujourd'hui ; consignés ici pour
+que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.md`.
+
+| Ticket | Voie | Owner → Reviewer | Objet | Deps |
+| --- | --- | --- | --- | --- |
+| V4.5-118 | A | Backend/Data → IA/Recherche | Table de confiance déplacée en `src/lib/ai-correction-confidence.ts` (module pur, importable par le runner) | préalable à 121 |
+| V4.5-170 | D | DevOps → Backend/Data | Migrations Prisma hors des builds preview ; preview sur sa propre branche Neon | — |
+| V4.5-171 | D | DevOps → QA/Release | Nettoyage des branches Neon `ci-*` ; Integration fiable (422 quota) | — |
+| V4.5-172 | D | DevOps → Backend/Data | `/api/health`, stack dans `onError`, suivi d'incidents | — |
+| V4.5-173 | D | DevOps → QA/Release | Smoke post-déploiement et purge de rétention planifiés | 172 |
+| V4.5-174 | D | DevOps → Propriétaire | Modèle de branches et protection de `dev` (check requis `V4.1 final (required)`) | — |
+| V4.5-175 | D | DevOps → QA/Release | Dependabot, `.nvmrc`, suppression des branches mergées | — |
+| V4.5-176 | D | DevOps → Backend/Data | Restauration Neon documentée, SHA de rollback tenu à jour | 171 |
+| V4.5-177 | D | DevOps → Backend/Data | Palier `staging` : branche protégée, environnement Vercel, base Neon dédiée (décision Rayan dev → staging → main) | 174 |
+| V4.5-178 | D | DevOps → Sécurité | `LEARNX_PUBLIC_LEADS_ENABLED` fermé par défaut, défini par environnement | — |
+| V4.5-179 | D | DevOps → QA/Release | Playwright : port dérivé du worktree ou `reuseExistingServer: false` (un serveur dev d'un autre checkout capte les tests) | — |
+| UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
+| UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
+| UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
 
 ### Cartes closes le 29 août 2026 (nettoyage du tableau)
 
