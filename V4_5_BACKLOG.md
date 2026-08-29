@@ -544,6 +544,8 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-147 | A | Backend/Data → Sécurité | Empreintes IP en HMAC sous `LEARNX_BUCKET_HMAC_SECRET` (SHA-256 non salé = réversible) ; refus en production, previews compris — livré `87f6d020` | précède la publication de 167 |
 | V4.5-169 | C | Frontend → Head of AI | Page confidentialité finale : texte 1.3.0 (identité éditeur confirmée `owner-editor-identity-2026-08-29`), `<strong>` d'insistance, captures | 167 |
 | V4.5-180 | D | DevOps → Frontend | Gate visuel : plancher absolu `maxDiffPixels` en plus du ratio (un lien entier passe sous 0,05 % d'une page longue) | — |
+| V4.5-163C | A | Backend/Data → IA/Recherche | Déclencheurs de l'attribution d'essai : première période à l'activation (après commit, jamais bloquante), passe quotidienne idempotente `pnpm trial:grant-cycle` (hébergée par 173) — omission nommée, pas décision | 163 |
+| V4.5-181 | C | Frontend → Head of AI | Page confidentialité générée au build (supprimer le couplage document ↔ module surveillé par test) | après le pilote |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
