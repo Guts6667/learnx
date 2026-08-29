@@ -464,3 +464,37 @@ l'autorisation.
   des commits de fusion : la règle doit être levée puis rétablie à chaque
   release. À trancher avec V4.5-174, d'autant que le modèle retenu par Rayan
   insère `staging` entre les deux.
+
+## 29 août 2026 — mise à jour des tickets DevOps par leur auteur
+
+- Autorisation : Rayan, le 29 août 2026 — « I give you the right to modify the
+  tickets you made yourself ». Portée strictement limitée aux neuf
+  enregistrements créés par cette session (V4.5-170 à V4.5-178). Le script de
+  mutation refuse tout identifiant hors de cette liste ; les tickets
+  V4.5-100 à V4.5-164 de la session Head of AI et les cartes héritées n'ont
+  pas été touchés. Vérifié après coup : 29 autres enregistrements V4.5
+  inchangés, V4.5-100 toujours `DONE`.
+- `recLKyPSMTz5aQ1zN` V4.5-174 : `DRAFT` → `READY`, `Arbitrage Rayan = Rayan A`
+  (modèle dev → staging → main), `Risque = P2` → `P0`. Description refondue
+  avec l'état vérifié des protections (main : un seul check requis et
+  `required_linear_history` actif ; dev et staging : aucune protection, 404) et
+  les chaînes exactes des contextes de check — `V4.1 final (required)`,
+  `real-functions`, `Visual baselines (required)`. Le libellé `real-functions`
+  est celui de l'identifiant du job Integration, faute de `name:` : inscrire
+  « Integration » comme contexte requis ne correspondrait à rien et ne
+  bloquerait rien sans aucun signal.
+- `recL3BtE3hDGOdhPW` V4.5-170 : `DRAFT` → `REVIEW`, `Risque = P0` → `P1`,
+  `Branche`, `Commit source = f9921813`, `État de synchro = Commit local —
+  push en attente`, `Preuves QA` renseignées. `Arbitrage Rayan` ramené de
+  `À faire` à `Aucun` : la question posée au propriétaire — comparer les URL
+  Preview et Production — est sans objet, ces valeurs étant illisibles par
+  conception. Le reliquat (établir la base Preview) est porté par V4.5-177.
+- `recJFACuVNTMXxuYP` V4.5-171 : `Risque = P1` → `P2`, diagnostic corrigé
+  (groupe de concurrence absent, pas branches orphelines), périmètre réduit au
+  balayage préventif, le passage en check requis étant déplacé vers V4.5-174.
+- `recYphSi9FXqtNpmj` V4.5-177 : `DRAFT` → `READY`, description complétée avec
+  l'état exact de `origin/staging` (479 commits derrière `main`, aucun commit
+  unique, non protégée), l'existence des variables `Preview (staging)` côté
+  Vercel, et la règle de migration délibérée héritée de V4.5-170.
+- Relecture : chaque enregistrement relu champ par champ après mutation,
+  aucun écart. Aucune suppression, aucune page d'interface touchée.
