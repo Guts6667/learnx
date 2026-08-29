@@ -140,6 +140,7 @@ export function TotemProgramsPage() {
                         label={t('today.progress', {
                           count: Math.round(percent),
                         })}
+                        labelHidden
                         showValue={false}
                         value={percent}
                       />
