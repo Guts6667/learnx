@@ -76,7 +76,7 @@ jobs:
           LEARNX_INTEGRATION_DATABASE: ephemeral
           LEARNX_INTEGRATION_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
           NEON_BRANCH_ID: ${{ steps.neon.outputs.branch_id }}
-      - name: Replay complete migration history in isolated schema
+      - name: Replay migration history and prove the schema matches
         run: pnpm migration:rehearse -- replay-all ci_migration_replay_${{ github.run_id }}_${{ github.run_attempt }}
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}

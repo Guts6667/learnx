@@ -4,7 +4,10 @@ import {
   assertSafeReplaySchema,
   buildDigestBridgeSql,
   compareMigrationSnapshots,
+  diffSchemaFingerprints,
+  fingerprintSchemaObjects,
   migrationLedgerTable,
+  normalizeSchemaReferences,
   parseMigrationRehearsalArguments,
   resolveAppliedMigrationChecksums,
   type MigrationRow,
@@ -130,5 +133,122 @@ describe('migration rehearsal', () => {
     ).toThrow(
       'Migration activate_bounded_catalog has multiple applied checksums.',
     );
+  });
+});
+
+describe('replayed schema equality', () => {
+  const replaySchema = 'ci_migration_replay_1_1';
+
+  function objects(schema: string) {
+    return [
+      { kind: 'table', identity: 'Lesson', definition: 'BASE TABLE' },
+      {
+        kind: 'constraint',
+        identity: 'Lesson.Lesson_moduleId_fkey',
+        definition: `FOREIGN KEY ("moduleId") REFERENCES ${schema}."Module"(id)`,
+      },
+      {
+        kind: 'index',
+        identity: 'Lesson.Lesson_pkey',
+        definition: `CREATE UNIQUE INDEX "Lesson_pkey" ON ${schema}."Lesson" USING btree (id)`,
+      },
+    ];
+  }
+
+  it('rewrites each schema name to the same placeholder', () => {
+    expect(
+      normalizeSchemaReferences(
+        `REFERENCES ${replaySchema}."Module"(id)`,
+        replaySchema,
+      ),
+    ).toBe('REFERENCES <schema>."Module"(id)');
+    expect(
+      normalizeSchemaReferences('REFERENCES public."Module"(id)', 'public'),
+    ).toBe('REFERENCES <schema>."Module"(id)');
+  });
+
+  it('reports no difference when only the schema name differs', () => {
+    expect(
+      diffSchemaFingerprints(
+        fingerprintSchemaObjects(objects('public'), 'public'),
+        fingerprintSchemaObjects(objects(replaySchema), replaySchema),
+      ),
+    ).toEqual([]);
+  });
+
+  it('orders objects so row order cannot mask a match', () => {
+    const forward = fingerprintSchemaObjects(objects('public'), 'public');
+    const reversed = fingerprintSchemaObjects(
+      [...objects(replaySchema)].reverse(),
+      replaySchema,
+    );
+    expect(diffSchemaFingerprints(forward, reversed)).toEqual([]);
+  });
+
+  // The negative test the gate exists for: a replay that drops a constraint
+  // still exits zero, so the comparison is the only thing that catches it.
+  it('fails when the replay is missing a constraint', () => {
+    const replayed = objects(replaySchema).filter(
+      (object) => object.kind !== 'constraint',
+    );
+    const differences = diffSchemaFingerprints(
+      fingerprintSchemaObjects(objects('public'), 'public'),
+      fingerprintSchemaObjects(replayed, replaySchema),
+    );
+    expect(differences).toHaveLength(1);
+    expect(differences[0]).toContain('migrated only');
+    expect(differences[0]).toContain('Lesson_moduleId_fkey');
+  });
+
+  it('detects a changed column type, nullability or default', () => {
+    const migrated = fingerprintSchemaObjects(
+      [
+        {
+          kind: 'column',
+          identity: 'Lesson.title',
+          definition: 'text nullable=NO',
+        },
+      ],
+      'public',
+    );
+    const replayed = fingerprintSchemaObjects(
+      [
+        {
+          kind: 'column',
+          identity: 'Lesson.title',
+          definition: 'text nullable=YES',
+        },
+      ],
+      replaySchema,
+    );
+    expect(diffSchemaFingerprints(migrated, replayed)).toHaveLength(2);
+  });
+
+  it('detects an object the replay adds', () => {
+    const differences = diffSchemaFingerprints(
+      fingerprintSchemaObjects(objects('public'), 'public'),
+      fingerprintSchemaObjects(
+        [
+          ...objects(replaySchema),
+          { kind: 'table', identity: 'Ghost', definition: 'BASE TABLE' },
+        ],
+        replaySchema,
+      ),
+    );
+    expect(differences).toEqual(['+ replayed only : table\tGhost\tBASE TABLE']);
+  });
+
+  it('bounds the diff so a wholesale mismatch stays readable', () => {
+    const migrated = fingerprintSchemaObjects(
+      Array.from({ length: 60 }, (_, index) => ({
+        kind: 'table',
+        identity: `Table${index}`,
+        definition: 'BASE TABLE',
+      })),
+      'public',
+    );
+    const differences = diffSchemaFingerprints(migrated, []);
+    expect(differences).toHaveLength(41);
+    expect(differences.at(-1)).toBe('... and 20 further differences');
   });
 });
