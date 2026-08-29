@@ -1,3 +1,4 @@
+import type { AccountErasureResult } from '@/server/api/admin/account-erasure-service';
 import { Hono, type MiddlewareHandler } from 'hono';
 
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
@@ -1146,5 +1147,77 @@ describe('administration minimale', () => {
       accessRequestId,
       { expectedVersion: 3 },
     );
+  });
+});
+
+describe('effacement de compte (V4.5-166)', () => {
+  const erasureUserId = '6ce94140-7435-426a-9753-90faebc7695a';
+
+  type EraseInput = {
+    actorUserId: string;
+    expectedUpdatedAt: Date;
+    userId: string;
+  };
+  type Erase = (input: EraseInput) => Promise<AccountErasureResult>;
+
+  function appWith(erase: Erase, role?: 'USER') {
+    return createAdminApp({
+      accountErasureService: { erase },
+      authentication: authentication(ownerId, role ?? 'ADMIN'),
+      repository: createRepository().repository,
+    });
+  }
+
+  function request(app: ReturnType<typeof createAdminApp>) {
+    return app.request(`/api/admin/accounts/${erasureUserId}/erase`, {
+      body: JSON.stringify({
+        expectedUpdatedAt: '2026-08-29T10:00:00.000Z',
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }
+
+  it('efface un compte et nomme l’administrateur qui a agi', async () => {
+    const seen: EraseInput[] = [];
+    const erase = vi.fn(async (input: EraseInput) => {
+      seen.push(input);
+      return { kind: 'ERASED' as const };
+    });
+    const response = await request(appWith(erase));
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      erasure: { alreadyErased: false, erased: true },
+    });
+    expect(erase).toHaveBeenCalledWith(
+      expect.objectContaining({
+        expectedUpdatedAt: new Date('2026-08-29T10:00:00.000Z'),
+        userId: erasureUserId,
+      }),
+    );
+    expect(seen[0]).toHaveProperty('actorUserId', ownerId);
+  });
+
+  it('règle un effacement répété au lieu de le traiter en échec', async () => {
+    const erase = vi.fn(async () => ({ kind: 'ALREADY_ERASED' as const }));
+    const response = await request(appWith(erase));
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      erasure: { alreadyErased: true, erased: true },
+    });
+  });
+
+  it('refuse quand le compte a changé depuis sa lecture', async () => {
+    const erase = vi.fn(async () => ({ kind: 'CONFLICT' as const }));
+    expect((await request(appWith(erase))).status).toBe(409);
+  });
+
+  it('refuse un appelant sans la capacité d’effacement', async () => {
+    // Erasure is irreversible, so it takes its own capability rather than
+    // riding on the one that merely blocks an account.
+    const erase = vi.fn(async () => ({ kind: 'ERASED' as const }));
+    expect((await request(appWith(erase, 'USER'))).status).toBe(403);
+    expect(erase).not.toHaveBeenCalled();
   });
 });

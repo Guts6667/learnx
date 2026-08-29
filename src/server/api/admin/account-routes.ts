@@ -4,9 +4,11 @@ import type { AuthEnvironment } from '../_lib/auth.js';
 import { assertCapability } from '../_lib/authorization.js';
 import type { AdminDependencies } from './app-contracts.js';
 import {
+  accountErasureSchema,
   accountListSchema,
   accountRoleTransitionSchema,
   accountTransitionSchema,
+  handleAccountErasure,
   handleAccountTransition,
   parseBody,
   parseIdentifier,
@@ -50,6 +52,23 @@ export function registerAccountRoutes(
       expectedUpdatedAt: new Date(input.expectedUpdatedAt),
     });
     return context.json({ account: handleAccountTransition(result) });
+  });
+
+  app.post('/api/admin/accounts/:userId/erase', async (context) => {
+    // Erasure is not a suspension with a stronger adjective: it destroys the
+    // identity irreversibly, so it takes its own capability rather than
+    // riding on the one that merely blocks an account.
+    assertCapability(context.get('user').role, 'account.erase');
+    const userId = parseIdentifier(context.req.param('userId'));
+    const input = await parseBody(accountErasureSchema, context.req.raw);
+    const result = await (
+      await dependencies.accountErasure()
+    ).erase({
+      actorUserId: context.get('user').id,
+      expectedUpdatedAt: new Date(input.expectedUpdatedAt),
+      userId,
+    });
+    return context.json({ erasure: handleAccountErasure(result) });
   });
 
   app.post('/api/admin/accounts/:userId/role', async (context) => {

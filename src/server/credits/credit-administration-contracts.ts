@@ -32,7 +32,7 @@ interface CreditHistoryItem {
 }
 
 interface CreditMemberSummary {
-  accountStatus: 'ACTIVE' | 'SUSPENDED';
+  accountStatus: 'ACTIVE' | 'PSEUDONYMISED' | 'SUSPENDED';
   displayName: string;
   email: string;
   projection: CreditProjection;

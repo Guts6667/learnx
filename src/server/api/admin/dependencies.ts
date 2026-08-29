@@ -1,6 +1,7 @@
 import type { PrismaClient } from '../../../../generated/prisma/client.js';
 import { createAccessInvitationDelivery } from '../_lib/access-invitation.js';
 import { createPrismaAccountAdministrationService } from './account-administration-service.js';
+import { createAccountErasureService } from './account-erasure-service.js';
 import { createPrismaAccessRequestReviewService } from './access-request-review-service.js';
 import type {
   AdminAppOptions,
@@ -55,6 +56,10 @@ export function createAdminDependencies(
     accountAdministration: lazyPrismaDependency(
       options.accountAdministrationService,
       createPrismaAccountAdministrationService,
+    ),
+    accountErasure: lazyPrismaDependency(
+      options.accountErasureService,
+      createAccountErasureService,
     ),
     accessRequestReview: lazyPrismaDependency(
       options.accessRequestReviewService,

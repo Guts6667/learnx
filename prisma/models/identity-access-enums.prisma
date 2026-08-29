@@ -21,6 +21,7 @@ enum AuditAction {
   PROGRAM_TRANSLATION_WORKFLOW_UPDATE @map("program_translation_workflow_update")
   CREDIT_ADMIN_ADJUSTMENT             @map("credit_admin_adjustment")
   CREDIT_INCREASE_REQUEST_REVIEW      @map("credit_increase_request_review")
+  ACCOUNT_PSEUDONYMISE                @map("account_pseudonymise")
 
   @@map("audit_action")
 }
@@ -28,6 +29,11 @@ enum AuditAction {
 enum AccountStatus {
   ACTIVE    @map("active")
   SUSPENDED @map("suspended")
+  /// Droit à l'effacement exercé (art. 17). L'identité directe est détruite ;
+  /// la ligne survit parce que les écritures financières la référencent et que
+  /// le registre de crédits n'est jamais réécrit (ADR_003 §6). Irréversible :
+  /// aucune transition ne sort de cet état.
+  PSEUDONYMISED @map("pseudonymised")
 
   @@map("account_status")
 }
