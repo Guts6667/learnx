@@ -1,0 +1,45 @@
+# V4.5-160 — passe bac à sable Revolut
+
+**Statut** : en attente des identifiants bac à sable (ADR_004 §8.4). Tant qu'ils
+n'existent pas, l'intégration est développée et vérifiée contre des
+enregistrements figés ; cette passe est la dernière étape et n'a pas été jouée.
+
+## Ce qui est déjà prouvé sans compte
+
+Les propriétés que le fournisseur ne garantit pas sont testées hors ligne, en
+cassant chacune pour vérifier qu'un test tombe :
+
+- signature valide, falsifiée, absente, illisible, hors fenêtre ;
+- comparaison en temps constant (assertion structurelle — une mesure de durée
+  serait un test instable qui ne prouve rien) ;
+- rejeu du même identifiant d'événement : enregistré une fois, attribué zéro
+  fois ;
+- événement désordonné : `PAID` après `FULFILLED` ne fait pas régresser ;
+- encaissement coupé : rien n'est lu, rien n'est écrit.
+
+## Ce que la passe réelle doit ajouter
+
+Ce qu'un enregistrement figé ne peut pas montrer :
+
+1. **La forme réelle de la signature.** L'algorithme et le format d'en-tête sont
+   implémentés d'après la documentation ; seule une livraison authentique prouve
+   que la vérification accepte ce que Revolut envoie vraiment.
+2. **Les noms d'événements.** La table de correspondance vers les états
+   d'ADR_003 §6.3 est écrite d'après la documentation. Un nom d'événement
+   inconnu est traité sans être appliqué, donc une divergence ne casse rien —
+   elle laisse simplement des commandes bloquées, ce qu'il faut voir.
+3. **L'ordre et les reprises réels.** Combien de fois Revolut réessaie, à quel
+   rythme, et dans quel désordre.
+4. **Le retour de navigation.** Qu'il n'attribue rien, vérifié sur un vrai aller
+   -retour et pas seulement par lecture du code.
+
+## Déroulé
+
+1. Renseigner `LEARNX_REVOLUT_API_KEY`, `LEARNX_REVOLUT_WEBHOOK_SECRET` et
+   `LEARNX_PAYMENTS_ENABLED=true` dans l'environnement d'aperçu **uniquement**.
+2. Créer un ordre depuis l'application, payer avec une carte de test.
+3. Vérifier : un `payment_orders` en `FULFILLED`, une suite de `payment_events`
+   dont les identifiants sont distincts, aucun crédit attribué deux fois.
+4. Rejouer manuellement une livraison déjà reçue : attendue en `DUPLICATE`,
+   réponse 200, aucun crédit.
+5. Consigner ici la trace réelle des événements observés, y compris leur ordre.

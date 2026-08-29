@@ -1,0 +1,48 @@
+/// Ordre de paiement (V4.5-160).
+///
+/// Aucune donnée de carte n'y figure et aucune ne peut y figurer : le checkout
+/// est hébergé chez Revolut et LearnX ne voit jamais le moyen de paiement
+/// (ADR_004 §1).
+model PaymentOrder {
+  id                String              @id @default(uuid()) @db.Uuid
+  userId            String              @map("user_id") @db.Uuid
+  /// Référence de l'ordre chez Revolut. Unique : c'est la clé de rapprochement.
+  providerOrderId   String              @unique @map("provider_order_id")
+  status            PaymentOrderStatus  @default(CREATED)
+  /// En plus petite unité monétaire, jamais en flottant.
+  amountMinor       BigInt              @map("amount_minor")
+  currency          String              @db.VarChar(3)
+  packKey           String              @map("pack_key")
+  /// Attribution des crédits : renseignée par le webhook, jamais au retour de
+  /// navigation (ADR_004 §2).
+  fulfilledAt       DateTime?           @map("fulfilled_at")
+  creditLotId       String?             @unique @map("credit_lot_id") @db.Uuid
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  user              User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+  events            PaymentEvent[]
+
+  @@index([userId, createdAt])
+  @@index([status, updatedAt])
+  @@map("payment_orders")
+}
+
+/// Événement de webhook reçu, vérifié et conservé.
+///
+/// `providerEventId` est unique : un rejeu est enregistré une fois et
+/// n'attribue rien une seconde fois (ADR_004 §3).
+model PaymentEvent {
+  id              String              @id @default(uuid()) @db.Uuid
+  orderId         String?             @map("order_id") @db.Uuid
+  providerEventId String              @unique @map("provider_event_id")
+  eventType       String              @map("event_type")
+  outcome         PaymentEventOutcome
+  /// Corps brut, conservé après vérification de signature uniquement.
+  payload         Json                @map("payload_json")
+  receivedAt      DateTime            @default(now()) @map("received_at")
+  order           PaymentOrder?       @relation(fields: [orderId], references: [id], onDelete: Restrict)
+
+  @@index([orderId, receivedAt])
+  @@index([receivedAt])
+  @@map("payment_events")
+}
