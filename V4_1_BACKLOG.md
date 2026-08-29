@@ -7,7 +7,8 @@
 - Baseline : `origin/dev` à
   `a02ecc3f307af36656fa5cb8a7b62954fdec73e9`
 - État de la baseline : V4 **released et clôturée** à ce SHA.
-- Statut V4.1 : **actif**, avec ouverture ticket par ticket selon dépendances.
+- Statut V4.1 : **clôturée** — les 27 tickets sont `DONE`, release publiée le
+  29 août 2026 au SHA `63c436d9`.
 - Autorité : ce fichier est l'unique backlog d'exécution V4.1.
 - Identifiants : les IDs Airtable sont stables et ne doivent jamais être
   renumérotés, réutilisés ou interprétés avec un autre livrable.
@@ -633,15 +634,15 @@ neuvième statut.
 - Reviewer : Rayan
 - Dépendances : V4.1-503 et tous les tickets P0 V4.1 terminés
 - Source : handoff V4.1-503 ; preuves des 26 tickets précédents
-- Statut : **IN_PROGRESS** — Vercel confirme la preview au SHA exact
-  `1fcce21c`; les routes publiques, les breakpoints publics mesurables et la
-  reconstructibilité locale de la V4 de rollback sont prouvés dans
-  `docs/qa/V4_1_504_RELEASE_CANDIDATE.md`. La passe UI du 28 août corrige en
-  plus le lien français du rapport, la présentation Produit/Roadmap, les listes
-  admin, les surfaces de leçon et les largeurs de listes/navigation ; elle est
-  couverte par 1 371 tests, lint, typecheck et build. La recette authentifiée, le
-  basculement/restauration Vercel, la recette PWA sur appareil et le GO explicite
-  restent à exécuter.
+- Statut : **DONE** — publié le 29 août 2026 au SHA `63c436d9` sur GO explicite
+  de Rayan ; `main` avancé de `a02ecc3f` en avance rapide. Gates distants verts,
+  mise à jour PWA prouvée sur appareil réel, rollback analysé comme purement
+  applicatif (jeux de migrations identiques entre V4 et V4.1) et smoke public de
+  production vert. Dix cases de la recette authentifiée n'ont pas été exécutées
+  et sont consignées comme telles, non comme des succès, dans
+  `docs/qa/V4_1_504_RELEASE_CANDIDATE.md`. L'incompatibilité de politique entre
+  l'historique linéaire exigé par `main` et les fusions de lots présentes sur
+  `dev` reste ouverte.
 - Critères d'acceptation :
   - preview réelle rejoue la baseline V4 et les parcours critiques ;
   - rollback code/config/PWA est répété et les données restent compatibles ;
