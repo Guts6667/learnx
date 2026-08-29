@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/Textarea';
@@ -5,6 +7,8 @@ import { Textarea } from '@/components/ui/Textarea';
 import {
   type CorrectionHistoryEntry,
   type CorrectionResult,
+  type CriterionFeedbackVerdict,
+  submitCriterionFeedback,
 } from '@/features/exercises/ai-correction';
 import { useI18n } from '@/i18n';
 import { formatLocalizedDate } from '@/shared/locale';
@@ -52,6 +56,12 @@ export function AiCorrectionResult({
       </section>
     );
   }
+
+  // Absent tant que l'API n'expose pas le champ : aucune commande n'est rendue.
+  const feedbackContext: CriterionFeedbackContext | null =
+    result.criterionFeedback
+      ? { correctionId: correction.id, recorded: result.criterionFeedback }
+      : null;
 
   const unsureKeys = new Set(correction.unsureCriteria);
   const unsureLabels = new Map(
@@ -131,6 +141,7 @@ export function AiCorrectionResult({
       {acquired.length > 0 ? (
         <CriterionGroup
           criteria={acquired}
+          feedback={feedbackContext}
           title={t('aiCorrection.acquired')}
         />
       ) : null}
@@ -141,6 +152,7 @@ export function AiCorrectionResult({
           {toCheck.map((criterion) => (
             <LowConfidenceCriterionRow
               criterion={criterion}
+              feedback={feedbackContext}
               key={criterion.key}
             />
           ))}
@@ -151,7 +163,11 @@ export function AiCorrectionResult({
         <section className="correction-result__group">
           <h5>{t('aiCorrection.toReinforce')}</h5>
           {toReinforce.map((criterion) => (
-            <CriterionRow criterion={criterion} key={criterion.key} />
+            <CriterionRow
+              criterion={criterion}
+              feedback={feedbackContext}
+              key={criterion.key}
+            />
           ))}
           {correction.unsureCriteria.map((key) => (
             <article
@@ -245,16 +261,22 @@ export function AiCorrectionResult({
 
 function CriterionGroup({
   criteria,
+  feedback,
   title,
 }: {
   criteria: CorrectionResult['correction']['criteria'];
+  feedback: CriterionFeedbackContext | null;
   title: string;
 }) {
   return (
     <section className="correction-result__group">
       <h5>{title}</h5>
       {criteria.map((criterion) => (
-        <CriterionRow criterion={criterion} key={criterion.key} />
+        <CriterionRow
+          criterion={criterion}
+          feedback={feedback}
+          key={criterion.key}
+        />
       ))}
     </section>
   );
@@ -308,6 +330,99 @@ function CorrectionComparison({
   );
 }
 
+interface CriterionFeedbackContext {
+  correctionId: string;
+  recorded: Record<string, CriterionFeedbackVerdict>;
+}
+
+/**
+ * Retour apprenant par critère (V4.5-112).
+ *
+ * Les commandes n'apparaissent que si l'historique porte `criterionFeedback` :
+ * tant que l'API ne l'expose pas, aucun bouton n'est rendu. Un bouton visible
+ * mais inopérant — ou désactivé sans raison affichée — serait une commande sans
+ * conséquence, ce que le contrat émotionnel interdit au même titre qu'une
+ * métrique sans action.
+ *
+ * Le verdict reste modifiable : l'envoi est idempotent par critère, se raviser
+ * est un usage normal, pas une correction d'erreur.
+ */
+function CriterionFeedbackControls({
+  correctionId,
+  criterionKey,
+  recordedVerdict,
+}: {
+  correctionId: string;
+  criterionKey: string;
+  recordedVerdict: CriterionFeedbackVerdict | undefined;
+}) {
+  const { t } = useI18n();
+  const [verdict, setVerdict] = useState<CriterionFeedbackVerdict | null>(
+    recordedVerdict ?? null,
+  );
+  const [pending, setPending] = useState<CriterionFeedbackVerdict | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  async function vote(next: CriterionFeedbackVerdict) {
+    const previous = verdict;
+    setPending(next);
+    setFailed(false);
+    setVerdict(next);
+    try {
+      await submitCriterionFeedback({
+        correctionId,
+        criterionKey,
+        verdict: next,
+      });
+    } catch {
+      // Le serveur est seule autorité : on rend son état, pas notre optimisme.
+      setVerdict(previous);
+      setFailed(true);
+    } finally {
+      setPending(null);
+    }
+  }
+
+  return (
+    <div className="correction-criterion__feedback">
+      <p id={`feedback-prompt-${criterionKey}`}>
+        {t('aiCorrection.criterionFeedbackPrompt')}
+      </p>
+      <div
+        aria-labelledby={`feedback-prompt-${criterionKey}`}
+        className="correction-criterion__feedback-actions"
+        role="group"
+      >
+        <Button
+          aria-pressed={verdict === 'HELPFUL'}
+          isLoading={pending === 'HELPFUL'}
+          onClick={() => void vote('HELPFUL')}
+          size="sm"
+          variant={verdict === 'HELPFUL' ? 'secondary' : 'ghost'}
+        >
+          {t('aiCorrection.criterionFeedbackHelpful')}
+        </Button>
+        <Button
+          aria-pressed={verdict === 'WRONG'}
+          isLoading={pending === 'WRONG'}
+          onClick={() => void vote('WRONG')}
+          size="sm"
+          variant={verdict === 'WRONG' ? 'secondary' : 'ghost'}
+        >
+          {t('aiCorrection.criterionFeedbackWrong')}
+        </Button>
+      </div>
+      <p aria-live="polite" className="correction-criterion__feedback-status">
+        {failed
+          ? t('aiCorrection.criterionFeedbackFailed')
+          : verdict
+            ? t('aiCorrection.criterionFeedbackRecorded')
+            : ''}
+      </p>
+    </div>
+  );
+}
+
 /**
  * Confiance basse (V4.5-110/113) : on montre ce que l'apprenant a écrit et on
  * dit que le système ne conclut pas. Aucun niveau, et surtout aucun retour
@@ -316,8 +431,10 @@ function CorrectionComparison({
  */
 function LowConfidenceCriterionRow({
   criterion,
+  feedback,
 }: {
   criterion: CorrectionResult['correction']['criteria'][number];
+  feedback: CriterionFeedbackContext | null;
 }) {
   const { t } = useI18n();
   return (
@@ -335,14 +452,23 @@ function LowConfidenceCriterionRow({
           ))}
         </div>
       ) : null}
+      {feedback ? (
+        <CriterionFeedbackControls
+          correctionId={feedback.correctionId}
+          criterionKey={criterion.key}
+          recordedVerdict={feedback.recorded[criterion.key]}
+        />
+      ) : null}
     </article>
   );
 }
 
 function CriterionRow({
   criterion,
+  feedback,
 }: {
   criterion: CorrectionResult['correction']['criteria'][number];
+  feedback: CriterionFeedbackContext | null;
 }) {
   const { t } = useI18n();
   return (
@@ -361,6 +487,13 @@ function CriterionRow({
             <blockquote key={quote}>{quote}</blockquote>
           ))}
         </div>
+      ) : null}
+      {feedback ? (
+        <CriterionFeedbackControls
+          correctionId={feedback.correctionId}
+          criterionKey={criterion.key}
+          recordedVerdict={feedback.recorded[criterion.key]}
+        />
       ) : null}
     </article>
   );
