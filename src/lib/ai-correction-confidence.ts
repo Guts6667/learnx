@@ -1,6 +1,12 @@
 /**
  * Confidence label per delivered criterion, V4.5-110.
  *
+ * Lives in src/lib because the V4.5-120 regression runner needs it and src/lib
+ * may never import src/server. It depends on nothing: every input is a plain
+ * value the caller has already established, which is what makes it safe to
+ * share between the runtime and the benchmark harness without either of them
+ * reaching into the other.
+ *
  * Implements §2 of `docs/V4_5_AI_QUALITY_CONTRACT.md`. Every input is a fact
  * the server can decide on its own: whether the quoted evidence survived the
  * deterministic checker, whether the selected level sits at an extreme of the

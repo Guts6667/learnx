@@ -27,6 +27,7 @@
       "src/features/exercises/AiCorrectionPanel.tsx",
       "src/features/exercises/AiCorrectionResult.tsx",
       "src/features/exercises/ai-correction.ts",
+      "src/lib/ai-correction-confidence.ts",
       "src/lib/ai-correction-contracts.ts",
       "src/lib/ai-correction-provider-adapters.ts",
       "src/lib/ai-json-schema.ts",
@@ -46,7 +47,6 @@
       "src/server/api/exercises/types.ts",
       "src/server/api/exercises/validation.ts",
       "src/server/corrections/correction-checker.ts",
-      "src/server/corrections/correction-confidence.ts",
       "src/server/corrections/correction-execution-service.ts",
       "src/server/corrections/correction-monitoring.ts",
       "src/server/corrections/correction-orchestration-contracts.ts",
@@ -162,7 +162,7 @@
     "correction-pricing-credits-reconciliation": [
       "^src/features/credits/credits\\.ts$",
       "^src/features/exercises/(?:AiCorrectionPanel|AiCorrectionResult|ai-correction)\\.tsx?$",
-      "^src/lib/(?:ai-correction-contracts|ai-correction-provider-adapters|ai-json-schema|exercise-correction-contracts|stage-assessment-correction-contracts)\\.ts$",
+      "^src/lib/(?:ai-correction-confidence|ai-correction-contracts|ai-correction-provider-adapters|ai-json-schema|exercise-correction-contracts|stage-assessment-correction-contracts)\\.ts$",
       "^src/server/(?:ai/(?:openrouter-configuration|openrouter-provider|persistent-correction|prisma-correction-repository|structured-provider)|corrections/.+|credits/.+|pricing/.+)\\.ts$",
       "^src/server/api/(?:ai-pricing|corrections|credits|exercises)/.+\\.ts$"
     ],

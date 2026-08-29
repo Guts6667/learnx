@@ -1,4 +1,4 @@
-import type { CriterionConfidence } from './correction-confidence.js';
+import type { CriterionConfidence } from '../../lib/ai-correction-confidence.js';
 import type { CorrectionMonitoringSignal } from './correction-monitoring.js';
 
 export type CorrectionOrchestrationErrorCode =
