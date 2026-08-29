@@ -2,7 +2,7 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (ticket V4.5-165, partie IA) ·
   partie paiement `EN_ATTENTE` (V4.5-160)
-- **Version** : 1.1.0 (décisions Propriétaire du 29 août 2026, `owner-rgpd-2026-08-29`)
+- **Version** : 1.2.0 (attestations fournisseurs du 29 août 2026)
 - **Date** : 29 août 2026
 - **Owner** : Architecture/Produit (Head of AI) · **Reviewer** : Rayan
 - **Autorité supérieure** : `ADR_003` §7, `docs/V4_5_AI_QUALITY_CONTRACT.md`
@@ -162,6 +162,25 @@ Décisions prises le 29 août 2026 (`owner-rgpd-2026-08-29`) :
    sensibles) ; lecture à faire confirmer par un conseil si le pilote
    dépasse les early adopters.
 7. **Paiement (V4.5-160)** — §2–§3 complétés à la livraison de l'ADR Revolut.
+
+## 7.1 Attestation de rétention des fournisseurs IA (29 août 2026)
+
+Sources consultées le 29 août 2026 par le Head of AI (GO Rayan, décision 1).
+Citations traduites ; texte original en anglais aux URL indiquées.
+
+| Fournisseur | Source (date du document) | Ce qu'il dit | Ce qu'il ne dit pas |
+| --- | --- | --- | --- |
+| OpenRouter | `openrouter.ai/privacy` (mis à jour le 6 juillet 2026) ; `openrouter.ai/docs/features/privacy-and-logging` | « OpenRouter n'utilise pas vos entrées ou sorties pour entraîner des modèles. » Conserve « aussi longtemps que raisonnablement nécessaire » à ses obligations ; les fichiers image/audio/vidéo ne sont pas persistés au-delà du routage. Le réglage de collecte (`data_collection: deny`) restreint le routage aux fournisseurs qui ne collectent pas ; « ce réglage n'a aucune incidence sur les politiques propres d'OpenRouter ». | **Aucune durée chiffrée** de rétention des prompts/complétions texte par OpenRouter lui-même. |
+| Anthropic (via OpenRouter) | `privacy.claude.com` — « How long do you store personal data » (1er juillet 2026) | « Nous supprimons automatiquement les entrées et sorties sur notre backend dans les 30 jours suivant leur réception ou génération », sauf accord contraire (ZDR), application de la politique d'usage ou obligation légale. | Le ZDR est un accord contractuel direct ; LearnX passe par OpenRouter et n'en bénéficie pas. Rétention effective : **≤ 30 jours**. |
+| Mistral (endpoint `mistral/eu`) | `legal.mistral.ai/terms/data-processing-addendum` (en vigueur le 27 juillet 2026) | Données inaccessibles « à l'expiration d'un délai de trente (30) jours suivant la fin de l'accès du client » ; l'entraînement est possible « sauf si le client a opté pour l'exclusion » ; modération automatisée sauf « zero data retention activé ». | Le DPA **ne garantit pas** un traitement UE-only ; la résidence UE tient à l'endpoint `mistral/eu` choisi côté OpenRouter, pas au contrat. L'opt-out d'entraînement est porté par `data_collection: deny` côté OpenRouter (fournisseurs classés « ne collecte pas »). |
+
+Conclusion pour la notice (§5) : la phrase « nous demandons à ces services de
+ne pas conserver ni entraîner sur vos données » reste exacte ; « ils ne
+conservent pas » serait faux. Formulation à retenir : « ces services les
+conservent au plus 30 jours (Anthropic, Mistral) et ne les utilisent pas pour
+entraîner leurs modèles ; OpenRouter ne publie pas de durée ». Point ouvert
+pour le Propriétaire : demander à OpenRouter une durée écrite, ou accepter
+l'absence de chiffre et l'écrire telle quelle.
 
 ## 8. Ce que ce document n'autorise pas
 
