@@ -650,3 +650,16 @@ l'autorisation.
   Décision `owner-refund-policy-2026-08-29` : remboursement volontaire au
   prorata ; 162 `IN_PROGRESS`. V4.5-160 `REVIEW` (`1b6576a3`), V4.5-161
   `REVIEW` (`c285306e`).
+
+## 2026-08-30 (nuit) — Head of AI, base `app8IaHD1sJtI83WT`
+
+- V4.5-121 `IN_PROGRESS` → `REVIEW` → `DONE` (run partielle, PR #93
+  `3f8e389e`) ; V4.5-124 créé et clos (`67ff25b8`) ; V4.5-125 créé (`DRAFT`,
+  `rec8JHU6yyPbQAY8A`, budget Rayan à venir) ; V4.5-123 créé et clos
+  (`5cf38e28`) ; V4.5-184 créé, clos côté code (`f73a88d2`, `REVIEW` jusqu'à
+  la passe Stripe) ; V4.5-162 `DONE` (`59c2053e`) ; V4.5-182 `DONE`.
+- Incidents run 121 : deux lancements tués par l'environnement agent
+  (≈ 1 USD non enregistré), doublon de commande tué par le Head of AI
+  (0,64 USD), trois relances fantômes sans appel ; arrêt sur décision
+  Propriétaire ; décisions `owner-retry-policy-2026-08-29`.
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
