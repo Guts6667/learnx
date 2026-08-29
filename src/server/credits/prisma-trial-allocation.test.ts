@@ -225,3 +225,26 @@ describe('anti-abus des allocations d’essai', () => {
     expect(client.trialAllocationMarker.findUnique).not.toHaveBeenCalled();
   });
 });
+
+describe('câblage runtime (V4.5-163C)', () => {
+  it('est appelé quelque part en production, pas seulement en test', async () => {
+    // The gap the AI lane caught: 163 shipped a mechanism nothing invoked.
+    // This asserts a runtime call site exists, in the form of the composition
+    // helper the activation route and the scheduled run both use.
+    const { readFileSync } = await import('node:fs');
+    const wiring = readFileSync(
+      'src/server/credits/default-trial-allocation.ts',
+      'utf8',
+    );
+    expect(wiring).toContain('createPrismaTrialAllocation');
+
+    const activation = readFileSync(
+      'src/server/api/access-requests/app.ts',
+      'utf8',
+    );
+    expect(activation).toContain('createDefaultTrialAllocation');
+
+    const scheduled = readFileSync('scripts/trial-allocation-cycle.ts', 'utf8');
+    expect(scheduled).toContain('createDefaultTrialAllocation');
+  });
+});
