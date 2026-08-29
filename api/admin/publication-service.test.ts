@@ -85,15 +85,17 @@ function createModuleDatabase(
       update: vi.fn(),
     },
     programVersion: {
-      create: vi.fn(async ({ data }: { data: { checksum: string; version: number } }) => {
-        storedVersion = {
-          checksum: data.checksum,
-          id: 'version-1',
-          publishedAt: timestamp,
-          version: data.version,
-        };
-        return storedVersion;
-      }),
+      create: vi.fn(
+        async ({ data }: { data: { checksum: string; version: number } }) => {
+          storedVersion = {
+            checksum: data.checksum,
+            id: 'version-1',
+            publishedAt: timestamp,
+            version: data.version,
+          };
+          return storedVersion;
+        },
+      ),
       findFirst: vi.fn(async () =>
         storedVersion ? { version: storedVersion.version } : null,
       ),

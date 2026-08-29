@@ -245,7 +245,9 @@ describe('progress recalculation', () => {
 
     expect(lessonProgressUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
-        update: expect.not.objectContaining({ lastViewedAt: expect.anything() }),
+        update: expect.not.objectContaining({
+          lastViewedAt: expect.anything(),
+        }),
       }),
     );
     expect(lessonProgressUpsert).toHaveBeenCalledWith(

@@ -102,12 +102,14 @@ const contract: CorrectionContract = {
   version: '1.0.0',
 };
 
-function output(overrides: {
-  confidence?: number;
-  direction?: 'insufficient' | 'mastered' | 'partial';
-  ownership?: 'insufficient' | 'mastered' | 'partial';
-  reviewRequired?: boolean;
-} = {}) {
+function output(
+  overrides: {
+    confidence?: number;
+    direction?: 'insufficient' | 'mastered' | 'partial';
+    ownership?: 'insufficient' | 'mastered' | 'partial';
+    reviewRequired?: boolean;
+  } = {},
+) {
   const confidence = overrides.confidence ?? 0.9;
   const reviewRequired = overrides.reviewRequired ?? false;
   return {

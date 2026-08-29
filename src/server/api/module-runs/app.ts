@@ -73,10 +73,7 @@ export function createModuleRunsApp(options: ModuleRunsAppOptions = {}) {
     const programId = parseRestartIdentifier(context.req.param('programId'));
     const repository =
       options.programRepository ?? (await getProgramRepository());
-    const preview = await repository.preview(
-      programId,
-      context.get('user').id,
-    );
+    const preview = await repository.preview(programId, context.get('user').id);
     if (!preview) throw restartResourceNotFound();
     return context.json({ preview });
   });

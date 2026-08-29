@@ -171,7 +171,9 @@ describe('reviewed benchmark result runner', () => {
       const fixture = humanFixtures(status);
       fileSystem.files.set('/attempts.json', fixture.attemptsRaw);
       fileSystem.files.set('/review.json', JSON.stringify(fixture.review));
-      benchmarkMocks.applyHumanReview.mockReturnValue(fixture.artifact.runMetadata);
+      benchmarkMocks.applyHumanReview.mockReturnValue(
+        fixture.artifact.runMetadata,
+      );
       benchmarkMocks.summarize.mockReturnValue({
         models: [
           { candidateId: fixture.candidate.candidateId },
@@ -199,7 +201,9 @@ describe('reviewed benchmark result runner', () => {
     const fixture = humanFixtures();
     fileSystem.files.set('/attempts.json', fixture.attemptsRaw);
     fileSystem.files.set('/review.json', JSON.stringify(fixture.review));
-    benchmarkMocks.applyHumanReview.mockReturnValue(fixture.artifact.runMetadata);
+    benchmarkMocks.applyHumanReview.mockReturnValue(
+      fixture.artifact.runMetadata,
+    );
     benchmarkMocks.summarize.mockReturnValue({ models: [] });
 
     await expect(
@@ -233,8 +237,7 @@ describe('autonomous supplier cost reconciliation', () => {
             errorCode: 'SCORE_GUARD_SECOND_PASS_SKIPPED_BUDGET',
           } as CostAttempt,
           {
-            errorCode:
-              'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
+            errorCode: 'SCORE_GUARD_SECOND_PASS_SKIPPED_COST_RECONCILIATION',
           } as CostAttempt,
         ],
         supplierBudget: validBudget,
@@ -245,22 +248,35 @@ describe('autonomous supplier cost reconciliation', () => {
 
   it.each([
     ['budget absent', undefined, 1, [attempt]],
-    ['cap supérieur au préenregistrement', { ...validBudget, hardCapUsd: 2 }, 1, [attempt]],
+    [
+      'cap supérieur au préenregistrement',
+      { ...validBudget, hardCapUsd: 2 },
+      1,
+      [attempt],
+    ],
     ['cap absolu dépassé', { ...validBudget, hardCapUsd: 5 }, 5, [attempt]],
-    ['réconciliation demandée', { ...validBudget, reconciliationRequired: true }, 1, [attempt]],
+    [
+      'réconciliation demandée',
+      { ...validBudget, reconciliationRequired: true },
+      1,
+      [attempt],
+    ],
     ['coût estimé', validBudget, 1, [{ usage: { costSource: 'ESTIMATED' } }]],
     ['coût réel absent', validBudget, 1, [{ usage: { costSource: 'ACTUAL' } }]],
-  ] as const)('refuse %s', (_label, supplierBudget, supplierCostCapUsd, attempts) => {
-    expect(() =>
-      assertAutonomousSupplierCostReconciled({
-        attempts: attempts as unknown as Parameters<
-          typeof assertAutonomousSupplierCostReconciled
-        >[0]['attempts'],
-        supplierBudget,
-        supplierCostCapUsd,
-      }),
-    ).toThrow('BENCHMARK_AUTONOMOUS_SUPPLIER_COST_NOT_RECONCILED');
-  });
+  ] as const)(
+    'refuse %s',
+    (_label, supplierBudget, supplierCostCapUsd, attempts) => {
+      expect(() =>
+        assertAutonomousSupplierCostReconciled({
+          attempts: attempts as unknown as Parameters<
+            typeof assertAutonomousSupplierCostReconciled
+          >[0]['attempts'],
+          supplierBudget,
+          supplierCostCapUsd,
+        }),
+      ).toThrow('BENCHMARK_AUTONOMOUS_SUPPLIER_COST_NOT_RECONCILED');
+    },
+  );
 
   it.each([
     ['dépense au-dessus du cap', { ...validBudget, hardCapUsd: 0.05 }],
@@ -318,7 +334,10 @@ describe('autonomous reviewed result runner', () => {
       .digest('hex');
     fileSystem.files.set('/attempts.json', attemptsRaw);
     fileSystem.files.set('/blind.json', '{}');
-    fileSystem.files.set('/review.json', JSON.stringify(autonomousResultReviewArtifact()));
+    fileSystem.files.set(
+      '/review.json',
+      JSON.stringify(autonomousResultReviewArtifact()),
+    );
     blindReviewMocks.assertMatches.mockReturnValue({
       reviewProtocol: {
         sourceBinding: {
@@ -352,7 +371,10 @@ describe('autonomous reviewed result runner', () => {
     });
 
     const models = writtenJson().models as Array<Record<string, unknown>>;
-    expect(models.map((model) => model.promotionEligible)).toEqual([true, false]);
+    expect(models.map((model) => model.promotionEligible)).toEqual([
+      true,
+      false,
+    ]);
   });
 
   it.each([
@@ -369,7 +391,10 @@ describe('autonomous reviewed result runner', () => {
       .digest('hex');
     fileSystem.files.set('/attempts.json', attemptsRaw);
     fileSystem.files.set('/blind.json', '{}');
-    fileSystem.files.set('/review.json', JSON.stringify(autonomousResultReviewArtifact()));
+    fileSystem.files.set(
+      '/review.json',
+      JSON.stringify(autonomousResultReviewArtifact()),
+    );
     blindReviewMocks.assertMatches.mockReturnValue({
       reviewProtocol: {
         sourceBinding: {

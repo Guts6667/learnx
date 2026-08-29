@@ -30,38 +30,41 @@ function createContext() {
       ] satisfies Awaited<ReturnType<PublicLeadRepository['export']>>;
     }),
     issue: vi.fn(async () => 'lead-id'),
-    list: vi.fn(async () => ({
-      earlyAdopterApplications: 1,
-      items: [
-        {
-          createdAt: new Date('2026-08-10T09:00:00Z'),
-          emailNormalized: 'reader@example.com',
-          id: '00000000-0000-4000-8000-000000000004',
-          purposes: [
+    list: vi.fn(
+      async () =>
+        ({
+          earlyAdopterApplications: 1,
+          items: [
             {
-              confirmedAt: new Date('2026-08-10T10:00:00Z'),
               createdAt: new Date('2026-08-10T09:00:00Z'),
-              locale: 'fr',
-              motivation: null,
-              purpose: 'LAUNCH_UPDATES',
-              status: 'CONFIRMED',
-            },
-            {
-              confirmedAt: null,
-              createdAt: new Date('2026-08-10T09:30:00Z'),
-              locale: 'fr',
-              motivation: 'Je souhaite contribuer aux retours produit.',
-              purpose: 'EARLY_ADOPTER',
-              status: 'PENDING_CONFIRMATION',
+              emailNormalized: 'reader@example.com',
+              id: '00000000-0000-4000-8000-000000000004',
+              purposes: [
+                {
+                  confirmedAt: new Date('2026-08-10T10:00:00Z'),
+                  createdAt: new Date('2026-08-10T09:00:00Z'),
+                  locale: 'fr',
+                  motivation: null,
+                  purpose: 'LAUNCH_UPDATES',
+                  status: 'CONFIRMED',
+                },
+                {
+                  confirmedAt: null,
+                  createdAt: new Date('2026-08-10T09:30:00Z'),
+                  locale: 'fr',
+                  motivation: 'Je souhaite contribuer aux retours produit.',
+                  purpose: 'EARLY_ADOPTER',
+                  status: 'PENDING_CONFIRMATION',
+                },
+              ],
             },
           ],
-        },
-      ],
-      launchUpdatesConfirmed: 1,
-      limit: 25,
-      offset: 0,
-      total: 1,
-    }) satisfies Awaited<ReturnType<PublicLeadRepository['list']>>),
+          launchUpdatesConfirmed: 1,
+          limit: 25,
+          offset: 0,
+          total: 1,
+        }) satisfies Awaited<ReturnType<PublicLeadRepository['list']>>,
+    ),
     unsubscribe: vi.fn(async () => true),
   };
   const sent: Array<{ email: string; purpose: string }> = [];

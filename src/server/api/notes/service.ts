@@ -37,11 +37,9 @@ export function createNotesService(repository: NotesRepository) {
       return serializeNote(note);
     },
     async delete(noteId: string, userId: string) {
-      if (!await repository.deleteOwned(noteId, userId)) throw noteNotFound();
+      if (!(await repository.deleteOwned(noteId, userId))) throw noteNotFound();
     },
-    async list(
-      input: Parameters<NotesRepository['list']>[0],
-    ) {
+    async list(input: Parameters<NotesRepository['list']>[0]) {
       const page = await repository.list(input);
       return {
         nextCursor: page.nextCursor,
@@ -54,7 +52,7 @@ export function createNotesService(repository: NotesRepository) {
       return serializeNote(note);
     },
     async update(input: UpdateNoteInput, userId: string) {
-      if (!await repository.findOwned(input.id, userId)) throw noteNotFound();
+      if (!(await repository.findOwned(input.id, userId))) throw noteNotFound();
       return serializeNote(await repository.update(input));
     },
   };

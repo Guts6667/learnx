@@ -350,8 +350,7 @@
   text-transform: uppercase;
 }
 
-.landing-roadmap-timeline li[data-state='current']
-  .landing-roadmap-status {
+.landing-roadmap-timeline li[data-state='current'] .landing-roadmap-status {
   color: #f2b4a7;
 }
 

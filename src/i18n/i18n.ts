@@ -3,10 +3,7 @@ import {
   type MessageCatalog,
   type MessageKey,
 } from '@/i18n/catalogs';
-import {
-  normalizeLocale,
-  supportedLocales,
-} from '@/shared/locale';
+import { normalizeLocale, supportedLocales } from '@/shared/locale';
 
 export type UiLocale = (typeof supportedLocales)[number];
 export type TranslationParameters = Readonly<Record<string, string | number>>;

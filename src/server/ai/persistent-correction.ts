@@ -27,10 +27,7 @@ export type CorrectionStatus =
   | 'RETRY_PENDING'
   | 'FAILED_RELEASED';
 
-export type CorrectionDecision =
-  | 'PASSED'
-  | 'NOT_PASSED'
-  | 'REVIEW_REQUIRED';
+export type CorrectionDecision = 'PASSED' | 'NOT_PASSED' | 'REVIEW_REQUIRED';
 
 export type CorrectionTarget =
   | { exerciseSubmissionId: string; kind: 'EXERCISE' }
@@ -96,10 +93,14 @@ export interface CorrectionAttemptSuccess {
 
 export interface PersistentCorrectionRepository {
   claim(correctionId: string): Promise<ClaimedCorrection | null>;
-  complete(input: CorrectionAttemptSuccess): Promise<PersistentCorrectionRecord>;
+  complete(
+    input: CorrectionAttemptSuccess,
+  ): Promise<PersistentCorrectionRecord>;
   fail(input: CorrectionAttemptFailure): Promise<PersistentCorrectionRecord>;
   get(correctionId: string): Promise<PersistentCorrectionRecord>;
-  reserve(input: CorrectionReservationInput): Promise<PersistentCorrectionRecord>;
+  reserve(
+    input: CorrectionReservationInput,
+  ): Promise<PersistentCorrectionRecord>;
 }
 
 export class CorrectionEngineError extends Error {

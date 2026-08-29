@@ -329,12 +329,13 @@ export type Protocol3CorrectionArtifactOutput = z.infer<
   typeof protocol3CorrectionArtifactOutputSchema
 >;
 
-export function buildProtocol3CorrectionOutputSchema(
-  contractInput: unknown,
-) {
+export function buildProtocol3CorrectionOutputSchema(contractInput: unknown) {
   const contract = correctionContractSchema.parse(contractInput);
   const criteriaShape = Object.fromEntries(
-    contract.criteria.map((criterion) => [criterion.key, protocol3CriterionSchema]),
+    contract.criteria.map((criterion) => [
+      criterion.key,
+      protocol3CriterionSchema,
+    ]),
   );
   return z
     .object({
@@ -394,10 +395,7 @@ export function buildProtocol3TransportJsonSchema(
 }
 
 type Protocol3CorrectionOutput = {
-  criteria: Record<
-    string,
-    z.infer<typeof protocol3CriterionSchema>
-  >;
+  criteria: Record<string, z.infer<typeof protocol3CriterionSchema>>;
   overallFeedback: string;
 };
 
@@ -415,7 +413,9 @@ export function canonicalizeProtocol3CorrectionOutput(input: {
       throw new Error('PROTOCOL_3_CRITERION_MISSING');
     }
     if (
-      !criterion.performanceLevels.some((level) => level.key === result.levelKey)
+      !criterion.performanceLevels.some(
+        (level) => level.key === result.levelKey,
+      )
     ) {
       throw new Error('PROTOCOL_3_LEVEL_UNKNOWN');
     }
@@ -440,12 +440,13 @@ export function canonicalizeProtocol3CorrectionOutput(input: {
       levelKey: result.levelKey,
     };
   });
-  const overallConfidence = criteria.reduce((total, result) => {
-    const criterion = contract.criteria.find(
-      (item) => item.key === result.criterionKey,
-    );
-    return total + result.confidence * (criterion?.weight ?? 0);
-  }, 0) / 100;
+  const overallConfidence =
+    criteria.reduce((total, result) => {
+      const criterion = contract.criteria.find(
+        (item) => item.key === result.criterionKey,
+      );
+      return total + result.confidence * (criterion?.weight ?? 0);
+    }, 0) / 100;
   const base: Protocol3CorrectionArtifactOutput = {
     contractKey: contract.contractKey,
     contractVersion: contract.version,
@@ -464,9 +465,7 @@ export function canonicalizeProtocol3CorrectionOutput(input: {
 }
 
 type CorrectionSecondPassSignal =
-  | 'LOW_CONFIDENCE'
-  | 'CRITERION_DISAGREEMENT'
-  | 'OUTPUT_VALIDATION_WARNING';
+  'LOW_CONFIDENCE' | 'CRITERION_DISAGREEMENT' | 'OUTPUT_VALIDATION_WARNING';
 
 export type CorrectionSecondPassDecision = {
   reasons: CorrectionSecondPassSignal[];

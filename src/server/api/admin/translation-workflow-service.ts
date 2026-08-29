@@ -23,8 +23,7 @@ export const translationWorkflowActions = [
   'APPROVE',
 ] as const;
 
-type TranslationWorkflowAction =
-  (typeof translationWorkflowActions)[number];
+type TranslationWorkflowAction = (typeof translationWorkflowActions)[number];
 
 interface BaseTransitionInput {
   action: TranslationWorkflowAction;
@@ -63,7 +62,10 @@ type TranslationWorkflowTransitionResult =
   | { kind: 'NOT_FOUND' };
 
 export interface TranslationWorkflowService {
-  find(programId: string, ownerId: string): Promise<TranslationWorkflowRecord | null>;
+  find(
+    programId: string,
+    ownerId: string,
+  ): Promise<TranslationWorkflowRecord | null>;
   transition(
     actorUserId: string,
     programId: string,
@@ -175,15 +177,24 @@ function transitionData(
         : null;
     case 'APPROVE_LINGUISTIC':
       return isReviewable(workflow)
-        ? { linguisticReviewedAt: now, linguisticReviewer: { connect: { id: actorUserId } } }
+        ? {
+            linguisticReviewedAt: now,
+            linguisticReviewer: { connect: { id: actorUserId } },
+          }
         : null;
     case 'APPROVE_PEDAGOGICAL':
       return isReviewable(workflow)
-        ? { pedagogicalReviewedAt: now, pedagogicalReviewer: { connect: { id: actorUserId } } }
+        ? {
+            pedagogicalReviewedAt: now,
+            pedagogicalReviewer: { connect: { id: actorUserId } },
+          }
         : null;
     case 'APPROVE_CULTURAL_LEGAL':
       return isReviewable(workflow)
-        ? { culturalLegalReviewedAt: now, culturalLegalReviewer: { connect: { id: actorUserId } } }
+        ? {
+            culturalLegalReviewedAt: now,
+            culturalLegalReviewer: { connect: { id: actorUserId } },
+          }
         : null;
     case 'VALIDATE_QA':
       return isReviewable(workflow) && bilingualQaIsComplete(input.qaChecks)
@@ -192,7 +203,10 @@ function transitionData(
     case 'REQUEST_CHANGES':
       return workflow.status === TranslationWorkflowStatus.IN_REVIEW ||
         workflow.status === TranslationWorkflowStatus.APPROVED
-        ? { ...resetReviewData(), status: TranslationWorkflowStatus.CHANGES_REQUESTED }
+        ? {
+            ...resetReviewData(),
+            status: TranslationWorkflowStatus.CHANGES_REQUESTED,
+          }
         : null;
     case 'APPROVE':
       return canApprove(workflow)
@@ -221,83 +235,116 @@ export function createPrismaTranslationWorkflowService(
     },
 
     async transition(actorUserId, programId, input) {
-      return client.$transaction(async (transaction) => {
-        const program = await readOwnedProgram(transaction, actorUserId, programId);
-        if (!program) return { kind: 'NOT_FOUND' as const };
-        if (program.locale === 'fr') return { kind: 'INVALID_TRANSITION' as const };
-
-        const existing = await transaction.programTranslationWorkflow.findUnique({
-          where: { programId },
-          select: workflowSelect,
-        });
-
-        if (input.action === 'CONFIGURE') {
-          if (!input.sourceProgramVersionId || !input.glossaryVersion) {
+      return client.$transaction(
+        async (transaction) => {
+          const program = await readOwnedProgram(
+            transaction,
+            actorUserId,
+            programId,
+          );
+          if (!program) return { kind: 'NOT_FOUND' as const };
+          if (program.locale === 'fr')
             return { kind: 'INVALID_TRANSITION' as const };
-          }
-          if (existing ? existing.version !== input.expectedVersion : input.expectedVersion !== 0) {
-            return { kind: 'CONFLICT' as const };
-          }
-          if (
-            !(await sourceVersionIsValid(
-              transaction,
+
+          const existing =
+            await transaction.programTranslationWorkflow.findUnique({
+              where: { programId },
+              select: workflowSelect,
+            });
+
+          if (input.action === 'CONFIGURE') {
+            if (!input.sourceProgramVersionId || !input.glossaryVersion) {
+              return { kind: 'INVALID_TRANSITION' as const };
+            }
+            if (
+              existing
+                ? existing.version !== input.expectedVersion
+                : input.expectedVersion !== 0
+            ) {
+              return { kind: 'CONFLICT' as const };
+            }
+            if (
+              !(await sourceVersionIsValid(
+                transaction,
+                actorUserId,
+                program.canonicalProgramKey,
+                input.sourceProgramVersionId,
+              ))
+            ) {
+              return { kind: 'INVALID_SOURCE' as const };
+            }
+
+            const workflow = existing
+              ? await transaction.programTranslationWorkflow.update({
+                  where: { programId, version: input.expectedVersion },
+                  data: {
+                    glossaryVersion: input.glossaryVersion,
+                    sourceProgramVersion: {
+                      connect: { id: input.sourceProgramVersionId },
+                    },
+                    ...resetReviewData(),
+                    version: { increment: 1 },
+                  },
+                  select: workflowSelect,
+                })
+              : await transaction.programTranslationWorkflow.create({
+                  data: {
+                    glossaryVersion: input.glossaryVersion,
+                    program: { connect: { id: programId } },
+                    sourceProgramVersion: {
+                      connect: { id: input.sourceProgramVersionId },
+                    },
+                  },
+                  select: workflowSelect,
+                });
+            await writeAuditEvent(transaction, {
+              action: AuditAction.PROGRAM_TRANSLATION_WORKFLOW_UPDATE,
               actorUserId,
-              program.canonicalProgramKey,
-              input.sourceProgramVersionId,
-            ))
-          ) {
-            return { kind: 'INVALID_SOURCE' as const };
+              idempotencyKey: createAuditIdempotencyKey(
+                input.action,
+                programId,
+                { ...input },
+              ),
+              metadata: {
+                action: input.action,
+                workflowVersion: workflow.version,
+              },
+              targetId: programId,
+              targetType: 'program_translation_workflow',
+            });
+            return {
+              kind: 'APPLIED' as const,
+              workflow: mapWorkflow(workflow),
+            };
           }
 
-          const workflow = existing
-            ? await transaction.programTranslationWorkflow.update({
-                where: { programId, version: input.expectedVersion },
-                data: {
-                  glossaryVersion: input.glossaryVersion,
-                  sourceProgramVersion: { connect: { id: input.sourceProgramVersionId } },
-                  ...resetReviewData(),
-                  version: { increment: 1 },
-                },
-                select: workflowSelect,
-              })
-            : await transaction.programTranslationWorkflow.create({
-                data: {
-                  glossaryVersion: input.glossaryVersion,
-                  program: { connect: { id: programId } },
-                  sourceProgramVersion: { connect: { id: input.sourceProgramVersionId } },
-                },
-                select: workflowSelect,
-              });
+          if (!existing) return { kind: 'INVALID_TRANSITION' as const };
+          if (existing.version !== input.expectedVersion)
+            return { kind: 'CONFLICT' as const };
+          const data = transitionData(existing, actorUserId, input, now());
+          if (!data) return { kind: 'INVALID_TRANSITION' as const };
+          const workflow = await transaction.programTranslationWorkflow.update({
+            where: { programId, version: input.expectedVersion },
+            data: { ...data, version: { increment: 1 } },
+            select: workflowSelect,
+          });
           await writeAuditEvent(transaction, {
             action: AuditAction.PROGRAM_TRANSLATION_WORKFLOW_UPDATE,
             actorUserId,
-            idempotencyKey: createAuditIdempotencyKey(input.action, programId, { ...input }),
-            metadata: { action: input.action, workflowVersion: workflow.version },
+            idempotencyKey: createAuditIdempotencyKey(input.action, programId, {
+              ...input,
+            }),
+            metadata: {
+              action: input.action,
+              workflowVersion: workflow.version,
+            },
             targetId: programId,
             targetType: 'program_translation_workflow',
           });
           return { kind: 'APPLIED' as const, workflow: mapWorkflow(workflow) };
-        }
-
-        if (!existing) return { kind: 'INVALID_TRANSITION' as const };
-        if (existing.version !== input.expectedVersion) return { kind: 'CONFLICT' as const };
-        const data = transitionData(existing, actorUserId, input, now());
-        if (!data) return { kind: 'INVALID_TRANSITION' as const };
-        const workflow = await transaction.programTranslationWorkflow.update({
-          where: { programId, version: input.expectedVersion },
-          data: { ...data, version: { increment: 1 } },
-          select: workflowSelect,
-        });
-        await writeAuditEvent(transaction, {
-          action: AuditAction.PROGRAM_TRANSLATION_WORKFLOW_UPDATE,
-          actorUserId,
-          idempotencyKey: createAuditIdempotencyKey(input.action, programId, { ...input }),
-          metadata: { action: input.action, workflowVersion: workflow.version },
-          targetId: programId,
-          targetType: 'program_translation_workflow',
-        });
-        return { kind: 'APPLIED' as const, workflow: mapWorkflow(workflow) };
-      }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+        },
+        { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+      );
     },
   };
 }

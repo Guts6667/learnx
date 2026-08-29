@@ -20,9 +20,9 @@ export function registerAccountRoutes(
   app.get('/api/admin/accounts', async (context) => {
     assertCapability(context.get('user').role, 'account.suspend');
     const filters = parseQuery(accountListSchema, context.req.query());
-    const page = await (await dependencies.accountAdministration()).list(
-      filters,
-    );
+    const page = await (
+      await dependencies.accountAdministration()
+    ).list(filters);
     return context.json({ page });
   });
 

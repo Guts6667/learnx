@@ -21,7 +21,9 @@ function authentication(): MiddlewareHandler<AuthEnvironment> {
   };
 }
 
-function note(overrides: Partial<Awaited<ReturnType<NotesRepository['findOwned']>>> = {}) {
+function note(
+  overrides: Partial<Awaited<ReturnType<NotesRepository['findOwned']>>> = {},
+) {
   return {
     createdAt: new Date('2026-08-28T08:00:00.000Z'),
     id: noteId,
@@ -68,17 +70,21 @@ describe('Notes API contract', () => {
     }).request(`/api/notes?lessonId=${lessonId}&search=%20preuve%20`);
 
     expect(response.status).toBe(200);
-    expect(data.list).toHaveBeenCalledWith(expect.objectContaining({
-      lessonId,
-      search: 'preuve',
-      userId,
-    }));
+    expect(data.list).toHaveBeenCalledWith(
+      expect.objectContaining({
+        lessonId,
+        search: 'preuve',
+        userId,
+      }),
+    );
     await expect(response.json()).resolves.toEqual({
       nextCursor: null,
-      notes: [expect.objectContaining({
-        createdAt: '2026-08-28T08:00:00.000Z',
-        updatedAt: '2026-08-28T09:00:00.000Z',
-      })],
+      notes: [
+        expect.objectContaining({
+          createdAt: '2026-08-28T08:00:00.000Z',
+          updatedAt: '2026-08-28T09:00:00.000Z',
+        }),
+      ],
     });
   });
 

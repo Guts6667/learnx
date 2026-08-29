@@ -19,7 +19,9 @@ describe('current module run resolution', () => {
     const findFirst = vi.fn(async () => run);
     const client = { moduleRun: { findFirst } } as unknown as PrismaClient;
 
-    await expect(getCurrentModuleRun(client, moduleId, userId)).resolves.toBe(run);
+    await expect(getCurrentModuleRun(client, moduleId, userId)).resolves.toBe(
+      run,
+    );
     expect(findFirst).toHaveBeenCalledWith(
       expect.objectContaining({
         orderBy: { sequence: 'desc' },

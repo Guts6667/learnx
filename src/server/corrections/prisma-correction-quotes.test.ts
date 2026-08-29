@@ -124,16 +124,24 @@ describe('PrismaCorrectionQuoteRepository', () => {
       .mockResolvedValueOnce(submission());
 
     const input = { now, quoteId: 'quote-1', userId: 'user-1' };
-    await expect(repository.quotes.loadAcceptedQuote(input)).resolves.toBeNull();
-    await expect(repository.quotes.loadAcceptedQuote(input)).resolves.toBeNull();
+    await expect(
+      repository.quotes.loadAcceptedQuote(input),
+    ).resolves.toBeNull();
+    await expect(
+      repository.quotes.loadAcceptedQuote(input),
+    ).resolves.toBeNull();
 
     prisma.aiPricingQuote.findFirst.mockResolvedValueOnce(
       quote({ action: 'UNSUPPORTED' }),
     );
-    await expect(repository.quotes.loadAcceptedQuote(input)).resolves.toBeNull();
+    await expect(
+      repository.quotes.loadAcceptedQuote(input),
+    ).resolves.toBeNull();
 
     resolveExerciseCorrectionContract.mockReturnValueOnce({ eligible: false });
-    await expect(repository.quotes.loadAcceptedQuote(input)).resolves.toBeNull();
+    await expect(
+      repository.quotes.loadAcceptedQuote(input),
+    ).resolves.toBeNull();
   });
 
   it('returns a standard accepted snapshot with sanitized objectives', async () => {
@@ -188,8 +196,12 @@ describe('PrismaCorrectionQuoteRepository', () => {
       });
 
     const input = { now, quoteId: 'quote-1', userId: 'user-1' };
-    await expect(repository.quotes.loadAcceptedQuote(input)).resolves.toBeNull();
-    await expect(repository.quotes.loadAcceptedQuote(input)).resolves.toMatchObject({
+    await expect(
+      repository.quotes.loadAcceptedQuote(input),
+    ).resolves.toBeNull();
+    await expect(
+      repository.quotes.loadAcceptedQuote(input),
+    ).resolves.toMatchObject({
       action: 'RECONSIDERATION',
       exerciseInstructions: 'Instruction historique.',
       reconsideration: {

@@ -89,8 +89,7 @@ function createRepository() {
         .filter(([id]) => owners.get(id) === input.userId)
         .map(([, record]) => record)
         .filter(
-          (record) =>
-            !input.lessonId || record.lesson?.id === input.lessonId,
+          (record) => !input.lessonId || record.lesson?.id === input.lessonId,
         )
         .filter(
           (record) =>
@@ -397,9 +396,8 @@ describe('notes persistence', () => {
     };
     const client = {
       $transaction: vi.fn(
-        async (
-          operation: (input: typeof transaction) => Promise<unknown>,
-        ) => operation(transaction),
+        async (operation: (input: typeof transaction) => Promise<unknown>) =>
+          operation(transaction),
       ),
       note: { findUnique: vi.fn(async () => null) },
     } as unknown as PrismaClient;
@@ -436,9 +434,8 @@ describe('notes persistence', () => {
     };
     const client = {
       $transaction: vi.fn(
-        async (
-          operation: (input: typeof transaction) => Promise<unknown>,
-        ) => operation(transaction),
+        async (operation: (input: typeof transaction) => Promise<unknown>) =>
+          operation(transaction),
       ),
       note: { findUnique: vi.fn(async () => null) },
     } as unknown as PrismaClient;
@@ -491,9 +488,8 @@ describe('notes persistence', () => {
     const findUnique = vi.fn(async () => note);
     const client = {
       $transaction: vi.fn(
-        async (
-          operation: (input: typeof transaction) => Promise<unknown>,
-        ) => operation(transaction),
+        async (operation: (input: typeof transaction) => Promise<unknown>) =>
+          operation(transaction),
       ),
       note: { findUnique },
     } as unknown as PrismaClient;

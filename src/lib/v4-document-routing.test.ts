@@ -116,9 +116,7 @@ describe('V4 document routing', () => {
     }
 
     expect(
-      read(
-        'public/research/ai-correction/articles/complete-report.en.html',
-      ),
+      read('public/research/ai-correction/articles/complete-report.en.html'),
     ).toContain('href="./complete-report.html"');
   });
 

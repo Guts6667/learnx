@@ -7,10 +7,7 @@ import {
   getProgramStageIdsInclude,
 } from './query-shapes.js';
 import { getStageInclude } from './serialization.js';
-import {
-  getProgramAccessFilter,
-  getPublicationFilter,
-} from './validation.js';
+import { getProgramAccessFilter, getPublicationFilter } from './validation.js';
 
 class PrismaCurriculumRepository {
   constructor(private readonly client: PrismaClient) {}
@@ -34,11 +31,7 @@ class PrismaCurriculumRepository {
     });
   }
 
-  findProgramStageIds(
-    programSlug: string,
-    userId: string,
-    preview: boolean,
-  ) {
+  findProgramStageIds(programSlug: string, userId: string, preview: boolean) {
     return this.client.program.findMany({
       where: {
         ...getProgramAccessFilter(userId, preview),

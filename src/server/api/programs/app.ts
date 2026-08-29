@@ -34,8 +34,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
   const getService = async () =>
     createCurriculumService({
       client: await getClient(),
-      readProgramTimeline:
-        options.readProgramTimeline ?? getProgramTimeline,
+      readProgramTimeline: options.readProgramTimeline ?? getProgramTimeline,
       readProgramViewPreference:
         options.readProgramViewPreference ?? readProgramViewPreference,
       readStageTimeline: options.readStageTimeline ?? getStageTimeline,

@@ -14,10 +14,12 @@ import {
 } from '../../credits/credit-administration.js';
 
 async function defaultService(): Promise<CreditAdministrationService> {
-  const [{ PrismaCreditAdministrationService }, { prisma }] = await Promise.all([
-    import('../../credits/credit-administration.js'),
-    import('../../prisma.js'),
-  ]);
+  const [{ PrismaCreditAdministrationService }, { prisma }] = await Promise.all(
+    [
+      import('../../credits/credit-administration.js'),
+      import('../../prisma.js'),
+    ],
+  );
   return new PrismaCreditAdministrationService(prisma);
 }
 
@@ -62,11 +64,7 @@ const adjustmentSchema = z
     compensatesEntryId: z.uuid().optional(),
     expiresAt: z.iso.datetime({ offset: true }).optional(),
     idempotencyKey: z.string().regex(/^[a-zA-Z0-9._:-]{8,200}$/),
-    reason: z
-      .string()
-      .trim()
-      .min(CREDIT_OPERATION_REASON_MIN_LENGTH)
-      .max(500),
+    reason: z.string().trim().min(CREDIT_OPERATION_REASON_MIN_LENGTH).max(500),
   })
   .strict()
   .superRefine((input, context) => {
@@ -163,7 +161,11 @@ function serviceError(error: unknown): ApiError {
     code === 'CREDIT_MEMBER_NOT_FOUND' ||
     code === 'CREDIT_REQUEST_NOT_FOUND'
   ) {
-    return new ApiError('RESOURCE_NOT_FOUND', 'The requested resource was not found.', 404);
+    return new ApiError(
+      'RESOURCE_NOT_FOUND',
+      'The requested resource was not found.',
+      404,
+    );
   }
   if (code === 'CREDIT_REQUEST_STATE_CONFLICT') {
     return new ApiError(code, 'The request has already been reviewed.', 409);
@@ -171,7 +173,11 @@ function serviceError(error: unknown): ApiError {
   if (code === 'PURCHASED_CREDITS_PROTECTED') {
     return new ApiError(code, 'Purchased credits cannot be adjusted.', 403);
   }
-  return new ApiError('CREDIT_OPERATION_FAILED', 'The credit operation failed.', 409);
+  return new ApiError(
+    'CREDIT_OPERATION_FAILED',
+    'The credit operation failed.',
+    409,
+  );
 }
 
 export function createCreditsApp(options: CreditsAppOptions = {}) {
@@ -189,7 +195,8 @@ export function createCreditsApp(options: CreditsAppOptions = {}) {
 
   app.get('/api/credits', async (context) => {
     const detail = await service.getOwnCredits(context.get('user').id);
-    if (!detail) throw new ApiError('RESOURCE_NOT_FOUND', 'Credits were not found.', 404);
+    if (!detail)
+      throw new ApiError('RESOURCE_NOT_FOUND', 'Credits were not found.', 404);
     return context.json({ credits: member(detail) });
   });
 
@@ -229,32 +236,33 @@ export function createCreditsApp(options: CreditsAppOptions = {}) {
   app.get('/api/admin/credits/members/:userId', async (context) => {
     const userId = z.uuid().safeParse(context.req.param('userId'));
     if (!userId.success) throw invalidInput();
-    const detail = await service.getMember(
-      context.get('user').id,
-      userId.data,
-    );
-    if (!detail) throw new ApiError('RESOURCE_NOT_FOUND', 'Member not found.', 404);
+    const detail = await service.getMember(context.get('user').id, userId.data);
+    if (!detail)
+      throw new ApiError('RESOURCE_NOT_FOUND', 'Member not found.', 404);
     return context.json({ member: member(detail) });
   });
 
-  app.post('/api/admin/credits/members/:userId/adjustments', async (context) => {
-    const userId = z.uuid().safeParse(context.req.param('userId'));
-    const parsed = adjustmentSchema.safeParse(await context.req.json());
-    if (!userId.success || !parsed.success) throw invalidInput();
-    const detail = await service.adjustFreeAllocation({
-      actorUserId: context.get('user').id,
-      amount: BigInt(parsed.data.amount),
-      compensatesEntryId: parsed.data.compensatesEntryId,
-      expiresAt: parsed.data.expiresAt
-        ? new Date(parsed.data.expiresAt)
-        : undefined,
-      idempotencyKey: parsed.data.idempotencyKey,
-      provenance: 'FREE_ALLOCATION',
-      reason: parsed.data.reason,
-      userId: userId.data,
-    });
-    return context.json({ member: member(detail) });
-  });
+  app.post(
+    '/api/admin/credits/members/:userId/adjustments',
+    async (context) => {
+      const userId = z.uuid().safeParse(context.req.param('userId'));
+      const parsed = adjustmentSchema.safeParse(await context.req.json());
+      if (!userId.success || !parsed.success) throw invalidInput();
+      const detail = await service.adjustFreeAllocation({
+        actorUserId: context.get('user').id,
+        amount: BigInt(parsed.data.amount),
+        compensatesEntryId: parsed.data.compensatesEntryId,
+        expiresAt: parsed.data.expiresAt
+          ? new Date(parsed.data.expiresAt)
+          : undefined,
+        idempotencyKey: parsed.data.idempotencyKey,
+        provenance: 'FREE_ALLOCATION',
+        reason: parsed.data.reason,
+        userId: userId.data,
+      });
+      return context.json({ member: member(detail) });
+    },
+  );
 
   app.get('/api/admin/credits/policies', async (context) => {
     void context;

@@ -201,13 +201,7 @@ export class PrismaModuleRestartDataRepository {
     userId: string,
     now: Date,
   ) {
-    return refreshStageAndProgram(
-      this.client,
-      stageId,
-      programId,
-      userId,
-      now,
-    );
+    return refreshStageAndProgram(this.client, stageId, programId, userId, now);
   }
 
   runTransaction<T>(

@@ -113,14 +113,24 @@ async function updateLesson(
   audit: CurriculumAudit,
 ): Promise<AdminLesson | null> {
   return client.$transaction(async (transaction) => {
-    const owned = await findOwnedLesson(transaction, lessonId, audit.actorUserId);
+    const owned = await findOwnedLesson(
+      transaction,
+      lessonId,
+      audit.actorUserId,
+    );
     if (!owned) return null;
     const lesson = await transaction.lesson.update({
       data: input,
       select: lessonSelect,
       where: { id: lessonId },
     });
-    await writeCurriculumAudit(transaction, AuditAction.LESSON_UPDATE, lessonId, input, audit);
+    await writeCurriculumAudit(
+      transaction,
+      AuditAction.LESSON_UPDATE,
+      lessonId,
+      input,
+      audit,
+    );
     return lesson;
   });
 }
@@ -146,14 +156,24 @@ async function updateModule(
   audit: CurriculumAudit,
 ): Promise<AdminModule | null> {
   return client.$transaction(async (transaction) => {
-    const owned = await findOwnedModule(transaction, moduleId, audit.actorUserId);
+    const owned = await findOwnedModule(
+      transaction,
+      moduleId,
+      audit.actorUserId,
+    );
     if (!owned) return null;
     const module = await transaction.module.update({
       data: input,
       select: moduleSelect,
       where: { id: moduleId },
     });
-    await writeCurriculumAudit(transaction, AuditAction.MODULE_UPDATE, moduleId, input, audit);
+    await writeCurriculumAudit(
+      transaction,
+      AuditAction.MODULE_UPDATE,
+      moduleId,
+      input,
+      audit,
+    );
     return module;
   });
 }

@@ -101,7 +101,10 @@ describe('resolvePricingTarget', () => {
   it('resolves regular exercise submissions with normalized objectives and language', async () => {
     const first = repository();
     first.exerciseSubmissionFindFirst.mockResolvedValueOnce(exerciseSubmission);
-    const target = { id: 'exercise-submission-1', kind: 'EXERCISE_SUBMISSION' } as const;
+    const target = {
+      id: 'exercise-submission-1',
+      kind: 'EXERCISE_SUBMISSION',
+    } as const;
 
     await expect(
       resolvePricingTarget(first.prisma, 'user-1', target),
@@ -167,10 +170,19 @@ describe('resolvePricingTarget', () => {
     ).resolves.toBeNull();
 
     for (const source of [
-      { ...validSource, pricingQuote: { action: 'DETAILED', language: 'fr-FR' } },
+      {
+        ...validSource,
+        pricingQuote: { action: 'DETAILED', language: 'fr-FR' },
+      },
       { ...validSource, reconsideration: { id: 'existing' } },
-      { ...validSource, creditReservation: { settledAmount: 12n, status: 'RELEASED' } },
-      { ...validSource, creditReservation: { settledAmount: null, status: 'SETTLED' } },
+      {
+        ...validSource,
+        creditReservation: { settledAmount: 12n, status: 'RELEASED' },
+      },
+      {
+        ...validSource,
+        creditReservation: { settledAmount: null, status: 'SETTLED' },
+      },
       { ...validSource, submissionSnapshot: { text: 42 } },
     ]) {
       first.aiCorrectionFindFirst.mockResolvedValueOnce(source);

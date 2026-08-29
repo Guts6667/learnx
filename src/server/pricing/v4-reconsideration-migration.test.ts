@@ -12,9 +12,7 @@ describe('V4 reconsideration migration', () => {
   it('pins one bounded reconsideration to the offered-credit pilot catalog', async () => {
     const migration = await readFile(migrationPath, 'utf8');
 
-    expect(migration).toContain(
-      '"ai_corrections_reconsideration_of_id_key"',
-    );
+    expect(migration).toContain('"ai_corrections_reconsideration_of_id_key"');
     expect(migration).toContain(
       '"ai_pricing_quotes_reconsideration_context_check"',
     );
@@ -23,11 +21,9 @@ describe('V4 reconsideration migration', () => {
     );
     expect(migration).toContain("'reconsideration'");
     expect(migration).toContain(
-      "'[\"writing\", \"reflection\", \"practice\", \"project\"]'::jsonb",
+      '\'["writing", "reflection", "practice", "project"]\'::jsonb',
     );
-    expect(migration).toContain(
-      "'[\"writing\"]'::jsonb",
-    );
+    expect(migration).toContain('\'["writing"]\'::jsonb');
     expect(migration).toContain("'{reconsiderationPromptExtensionVersion}'");
     expect(migration).toContain("#- '{pilotScope,activityType}'");
     expect(migration).toContain("'4.0.1'");

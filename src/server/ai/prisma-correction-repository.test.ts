@@ -29,9 +29,7 @@ function storedCorrection(overrides: Record<string, unknown> = {}) {
   };
 }
 
-function reservation(
-  overrides: Record<string, unknown> = {},
-) {
+function reservation(overrides: Record<string, unknown> = {}) {
   return {
     contractSnapshot: { contractKey: 'writing' },
     idempotencyKey: 'correction:submission:1',

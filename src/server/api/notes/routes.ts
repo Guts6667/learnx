@@ -21,7 +21,9 @@ export function registerNoteCollectionRoutes(
   app.get('/api/notes', async (context) => {
     const parsed = noteListSchema.safeParse(context.req.query());
     if (!parsed.success) throw invalidNoteRequest();
-    const page = await (await getService()).list({
+    const page = await (
+      await getService()
+    ).list({
       ...parsed.data,
       search: parsed.data.search || undefined,
       userId: context.get('user').id,
@@ -35,7 +37,9 @@ export function registerNoteCollectionRoutes(
       await parseNoteJson(context.req.raw),
     );
     if (!parsed.success) throw invalidNoteRequest();
-    const note = await (await getService()).create(
+    const note = await (
+      await getService()
+    ).create(
       {
         creationKey: parsed.data.creationKey ?? null,
         lessonId: parsed.data.lessonId,
@@ -54,7 +58,9 @@ export function registerNoteMemberRoutes(
   getService: GetNotesService,
 ) {
   app.get('/api/notes/:noteId', async (context) => {
-    const note = await (await getService()).read(
+    const note = await (
+      await getService()
+    ).read(
       parseNoteIdentifier(context.req.param('noteId')),
       context.get('user').id,
     );
@@ -68,16 +74,17 @@ export function registerNoteMemberRoutes(
       await parseNoteJson(context.req.raw),
     );
     if (!parsed.success) throw invalidNoteRequest();
-    const note = await (await getService()).update(
-      { id: noteId, ...parsed.data },
-      context.get('user').id,
-    );
+    const note = await (
+      await getService()
+    ).update({ id: noteId, ...parsed.data }, context.get('user').id);
     return context.json({ note });
   });
 
   app.delete('/api/notes/:noteId', async (context) => {
     assertCapability(context.get('user').role, 'learning.write.own');
-    await (await getService()).delete(
+    await (
+      await getService()
+    ).delete(
       parseNoteIdentifier(context.req.param('noteId')),
       context.get('user').id,
     );

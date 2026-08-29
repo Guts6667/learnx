@@ -8,10 +8,7 @@ import {
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
-import {
-  assertCapability,
-  requireCapability,
-} from '../_lib/authorization.js';
+import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
   cursorPageQuerySchema,
@@ -300,7 +297,9 @@ export function createReviewsApp(options: ReviewsAppOptions = {}) {
     const query = cursorPageQuerySchema.safeParse(context.req.query());
     if (!query.success) throw invalidRequest();
     const user = context.get('user');
-    const page = await (await getRepository()).listPending({
+    const page = await (
+      await getRepository()
+    ).listPending({
       ...query.data,
       canPreview: true,
       userId: user.id,
@@ -320,12 +319,9 @@ export function createReviewsApp(options: ReviewsAppOptions = {}) {
     if (!reviewId.success || !input.success) throw invalidRequest();
 
     const user = context.get('user');
-    const review = await (await getRepository()).complete(
-      reviewId.data,
-      user.id,
-      now(),
-      true,
-    );
+    const review = await (
+      await getRepository()
+    ).complete(reviewId.data, user.id, now(), true);
 
     if (!review) throw notFound();
 

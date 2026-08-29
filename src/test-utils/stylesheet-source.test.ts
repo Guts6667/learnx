@@ -34,20 +34,22 @@ describe('stylesheet source graph', () => {
     ]);
     expect(graph.packageImports).toEqual(['tailwindcss']);
     expect(graph.source).not.toMatch(/@import\s+['"]\.\//u);
-    expect(graph.source.match(/@import\s+['"]tailwindcss['"]/gu)).toHaveLength(1);
+    expect(graph.source.match(/@import\s+['"]tailwindcss['"]/gu)).toHaveLength(
+      1,
+    );
   });
 
   it('keeps index.css as the only TypeScript stylesheet entry point', () => {
-    const imports = collectTypeScriptFiles(resolve(process.cwd(), 'src')).flatMap(
-      (path) => {
-        const source = readFileSync(path, 'utf8');
-        const matches = source.matchAll(/import\s+['"]([^'"]+\.css)['"]/gu);
-        return [...matches].map((match) => ({
-          file: relative(process.cwd(), path).split(sep).join('/'),
-          specifier: match[1],
-        }));
-      },
-    );
+    const imports = collectTypeScriptFiles(
+      resolve(process.cwd(), 'src'),
+    ).flatMap((path) => {
+      const source = readFileSync(path, 'utf8');
+      const matches = source.matchAll(/import\s+['"]([^'"]+\.css)['"]/gu);
+      return [...matches].map((match) => ({
+        file: relative(process.cwd(), path).split(sep).join('/'),
+        specifier: match[1],
+      }));
+    });
 
     expect(imports).toEqual([
       {

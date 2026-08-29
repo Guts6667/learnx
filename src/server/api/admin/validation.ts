@@ -101,7 +101,10 @@ export const translationWorkflowTransitionSchema = z
   .object({
     action: z.enum(translationWorkflowActions),
     expectedVersion: z.number().int().min(0),
-    glossaryVersion: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
+    glossaryVersion: z
+      .string()
+      .regex(/^\d+\.\d+\.\d+$/)
+      .optional(),
     qaChecks: bilingualQaChecksSchema.optional(),
     sourceProgramVersionId: identifierSchema.optional(),
   })

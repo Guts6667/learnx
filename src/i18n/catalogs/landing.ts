@@ -26,7 +26,8 @@ export const frenchLandingMessages = {
   'landing.product.benefitPracticeTitle': 'Des connaissances mises en pratique',
   'landing.product.benefitPractice':
     'Leçons, exercices et évaluations s’enchaînent pour passer de la compréhension à l’action.',
-  'landing.product.benefitContinuityTitle': 'Un apprentissage qui garde le contexte',
+  'landing.product.benefitContinuityTitle':
+    'Un apprentissage qui garde le contexte',
   'landing.product.benefitContinuity':
     'Progression, tentatives, notes et sources restent réunies dans votre espace personnel.',
   'landing.product.structuredTitle': 'Parcours structurés',
@@ -78,7 +79,8 @@ export const frenchLandingMessages = {
   'landing.roadmap.current': 'Pilote actuel',
   'landing.roadmap.next': 'Prochaine évolution',
   'landing.roadmap.exploration': 'Horizon V5',
-  'landing.roadmap.learningTitle': 'Parcours structurés et progression personnelle',
+  'landing.roadmap.learningTitle':
+    'Parcours structurés et progression personnelle',
   'landing.roadmap.learningDescription':
     'Apprendre, pratiquer, conserver ses tentatives et reprendre exactement là où l’on s’est arrêté.',
   'landing.roadmap.correctionTitle': 'Correction formative assistée par IA',

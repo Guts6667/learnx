@@ -24,8 +24,8 @@ async function getPrismaRepository(): Promise<NotesRepository> {
 function createNotesServiceAccessor(options: NotesAppOptions) {
   let defaultRepository: NotesRepository | undefined;
   return async () => {
-    const repository = options.repository
-      ?? (defaultRepository ??= await getPrismaRepository());
+    const repository =
+      options.repository ?? (defaultRepository ??= await getPrismaRepository());
     return createNotesService(repository);
   };
 }

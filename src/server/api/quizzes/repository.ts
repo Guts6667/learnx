@@ -14,10 +14,7 @@ import {
   recalculateLessonProgress,
   runSerializableProgressTransaction,
 } from '../_lib/progress-recalculation.js';
-import type {
-  QuizRepository,
-  RecordQuizAttemptInput,
-} from './types.js';
+import type { QuizRepository, RecordQuizAttemptInput } from './types.js';
 import { quizNotFound } from './validation.js';
 
 type RecalculateProgress = typeof recalculateLessonProgress;

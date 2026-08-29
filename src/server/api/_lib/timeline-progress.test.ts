@@ -47,7 +47,9 @@ describe('timeline progress persistence', () => {
       stage: { findFirst: vi.fn(async () => null) },
     } as unknown as PrismaClient;
 
-    await expect(getStageTimeline(client, stageId, userId, now)).resolves.toBeNull();
+    await expect(
+      getStageTimeline(client, stageId, userId, now),
+    ).resolves.toBeNull();
     await expect(
       getProgramTimeline(client, programId, userId, now),
     ).resolves.toBeNull();
@@ -73,7 +75,9 @@ describe('timeline progress persistence', () => {
       },
     } as unknown as PrismaClient;
 
-    await expect(getStageTimeline(client, stageId, userId, now)).resolves.toMatchObject({
+    await expect(
+      getStageTimeline(client, stageId, userId, now),
+    ).resolves.toMatchObject({
       actualPercent: 40,
       expectedPercent: 50,
       temporalStatus: 'behind',
@@ -133,67 +137,66 @@ describe('timeline progress persistence', () => {
       expectedStatus: StageProgressStatus.COMPLETED,
       expectedStartedAt: new Date('2026-08-20T09:00:00.000Z'),
     },
-  ])('refreshes stage and program atomically for existing progress $existing', async ({
-    existing,
-    expectedStartedAt,
-    expectedStatus,
-  }) => {
-    const stageProgressUpsert = vi.fn(async () => ({}));
-    const programProgressUpsert = vi.fn(async () => ({}));
-    const transaction = vi.fn(async (operations: Array<Promise<unknown>>) =>
-      Promise.all(operations),
-    );
-    const stageRecord = {
-      modules: [{ lessons: [{ progress: [{ percent: 75 }] }] }],
-      progress: existing ? [existing] : [],
-    };
-    const client = {
-      $transaction: transaction,
-      lesson: {
-        findFirst: vi.fn(async () => ({
-          module: {
-            stage: {
-              estimatedDurationDays: 10,
-              id: stageId,
-              programId,
-              progress: existing ? [existing] : [],
+  ])(
+    'refreshes stage and program atomically for existing progress $existing',
+    async ({ existing, expectedStartedAt, expectedStatus }) => {
+      const stageProgressUpsert = vi.fn(async () => ({}));
+      const programProgressUpsert = vi.fn(async () => ({}));
+      const transaction = vi.fn(async (operations: Array<Promise<unknown>>) =>
+        Promise.all(operations),
+      );
+      const stageRecord = {
+        modules: [{ lessons: [{ progress: [{ percent: 75 }] }] }],
+        progress: existing ? [existing] : [],
+      };
+      const client = {
+        $transaction: transaction,
+        lesson: {
+          findFirst: vi.fn(async () => ({
+            module: {
+              stage: {
+                estimatedDurationDays: 10,
+                id: stageId,
+                programId,
+                progress: existing ? [existing] : [],
+              },
             },
-          },
-        })),
-      },
-      program: {
-        findFirst: vi.fn(async () => ({
-          progress: [],
-          stages: [stageRecord],
-        })),
-      },
-      programProgress: { upsert: programProgressUpsert },
-      stage: { findFirst: vi.fn(async () => stageRecord) },
-      stageProgress: { upsert: stageProgressUpsert },
-    } as unknown as PrismaClient;
+          })),
+        },
+        program: {
+          findFirst: vi.fn(async () => ({
+            progress: [],
+            stages: [stageRecord],
+          })),
+        },
+        programProgress: { upsert: programProgressUpsert },
+        stage: { findFirst: vi.fn(async () => stageRecord) },
+        stageProgress: { upsert: stageProgressUpsert },
+      } as unknown as PrismaClient;
 
-    await expect(
-      refreshTimelineForLessonActivity(client, lessonId, userId, now),
-    ).resolves.toBe(stageId);
-    expect(transaction).toHaveBeenCalledOnce();
-    expect(stageProgressUpsert).toHaveBeenCalledWith(
-      expect.objectContaining({
-        create: expect.objectContaining({
-          percent: 75,
-          startedAt: expectedStartedAt,
-          status: StageProgressStatus.IN_PROGRESS,
+      await expect(
+        refreshTimelineForLessonActivity(client, lessonId, userId, now),
+      ).resolves.toBe(stageId);
+      expect(transaction).toHaveBeenCalledOnce();
+      expect(stageProgressUpsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          create: expect.objectContaining({
+            percent: 75,
+            startedAt: expectedStartedAt,
+            status: StageProgressStatus.IN_PROGRESS,
+          }),
+          update: expect.objectContaining({
+            percent: 75,
+            startedAt: expectedStartedAt,
+            status: expectedStatus,
+          }),
         }),
-        update: expect.objectContaining({
-          percent: 75,
-          startedAt: expectedStartedAt,
-          status: expectedStatus,
+      );
+      expect(programProgressUpsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          create: expect.objectContaining({ percent: 75, programId, userId }),
         }),
-      }),
-    );
-    expect(programProgressUpsert).toHaveBeenCalledWith(
-      expect.objectContaining({
-        create: expect.objectContaining({ percent: 75, programId, userId }),
-      }),
-    );
-  });
+      );
+    },
+  );
 });

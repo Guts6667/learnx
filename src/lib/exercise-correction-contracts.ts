@@ -100,9 +100,7 @@ function commonLevels(input: {
   ];
 }
 
-function familySpecificCriterion(
-  activityType: ProductiveExerciseActivityType,
-) {
+function familySpecificCriterion(activityType: ProductiveExerciseActivityType) {
   switch (activityType) {
     case 'reflection':
       return {

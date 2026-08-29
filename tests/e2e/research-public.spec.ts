@@ -20,7 +20,9 @@ async function expectNoHorizontalOverflow(
   ).toBe(true);
 }
 
-test('journal de recherche chronologique et responsive', async ({ page }, testInfo) => {
+test('journal de recherche chronologique et responsive', async ({
+  page,
+}, testInfo) => {
   test.skip(
     testInfo.project.name !== 'desktop-chromium',
     'La matrice multi-largeurs est exécutée une seule fois.',
@@ -44,7 +46,9 @@ test('journal de recherche chronologique et responsive', async ({ page }, testIn
     );
     await expect(publications.first()).toContainText('Résultat · Décision');
     await expect(publications.first()).toContainText('v1.0');
-    await expect(publications.last()).toContainText('Dossier technique continu');
+    await expect(publications.last()).toContainText(
+      'Dossier technique continu',
+    );
     await expectNoHorizontalOverflow(page);
 
     await testInfo.attach(
@@ -159,7 +163,9 @@ test('article de recherche garde ses métadonnées, son sommaire et son partage'
   await expectNoSeriousA11yViolations(page);
 });
 
-test('journal et article restent lisibles sous WebKit mobile', async ({ page }, testInfo) => {
+test('journal et article restent lisibles sous WebKit mobile', async ({
+  page,
+}, testInfo) => {
   test.skip(
     testInfo.project.name !== 'mobile-webkit',
     'Ce contrôle cible explicitement WebKit mobile.',

@@ -457,8 +457,7 @@ describe('administration minimale', () => {
   });
 
   it('liste les comptes avec pagination, statut et recherche', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     const app = createAdminApp({
       accountAdministrationService,
       authentication: authentication(),
@@ -483,8 +482,7 @@ describe('administration minimale', () => {
   it.each(['USER', 'CREATOR'] as const)(
     'interdit la gestion des comptes au rôle %s',
     async (role) => {
-      const accountAdministrationService =
-        createAccountAdministrationService();
+      const accountAdministrationService = createAccountAdministrationService();
       const app = createAdminApp({
         accountAdministrationService,
         authentication: authentication(ownerId, role),
@@ -499,8 +497,7 @@ describe('administration minimale', () => {
   );
 
   it('suspend un compte avec une précondition explicite', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     const app = createAdminApp({
       accountAdministrationService,
       authentication: authentication(),
@@ -533,8 +530,7 @@ describe('administration minimale', () => {
   });
 
   it('normalise la suspension du compte administrateur courant', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     accountAdministrationService.suspend = vi.fn(async () => ({
       kind: 'SELF_SUSPENSION' as const,
     }));
@@ -562,8 +558,7 @@ describe('administration minimale', () => {
   });
 
   it('réactive un compte suspendu sans créer de session', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     const app = createAdminApp({
       accountAdministrationService,
       authentication: authentication(),
@@ -593,8 +588,7 @@ describe('administration minimale', () => {
   });
 
   it('normalise un conflit de statut concurrent', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     accountAdministrationService.suspend = vi.fn(async () => ({
       kind: 'CONFLICT' as const,
     }));
@@ -622,8 +616,7 @@ describe('administration minimale', () => {
   });
 
   it('attribue le rôle Créateur avec une précondition explicite', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     const app = createAdminApp({
       accountAdministrationService,
       authentication: authentication(),
@@ -655,8 +648,7 @@ describe('administration minimale', () => {
   });
 
   it('refuse toute attribution du rôle Administrateur', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     const app = createAdminApp({
       accountAdministrationService,
       authentication: authentication(),
@@ -680,8 +672,7 @@ describe('administration minimale', () => {
   });
 
   it('interdit à Créateur de modifier directement un rôle', async () => {
-    const accountAdministrationService =
-      createAccountAdministrationService();
+    const accountAdministrationService = createAccountAdministrationService();
     const app = createAdminApp({
       accountAdministrationService,
       authentication: authentication(ownerId, 'CREATOR'),

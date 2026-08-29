@@ -15,7 +15,9 @@ const stageId = '11111111-1111-4111-8111-111111111111';
 const userId = '22222222-2222-4222-8222-222222222222';
 const now = new Date('2026-08-28T09:00:00.000Z');
 
-function stageState(options: { complete?: boolean; withProgress?: boolean } = {}) {
+function stageState(
+  options: { complete?: boolean; withProgress?: boolean } = {},
+) {
   const complete = options.complete === true;
   return {
     assessments: [
@@ -43,7 +45,11 @@ function stageState(options: { complete?: boolean; withProgress?: boolean } = {}
               },
             ],
             exercises: [
-              { id: 'exercise-direct', key: 'direct', title: 'Exercice direct' },
+              {
+                id: 'exercise-direct',
+                key: 'direct',
+                title: 'Exercice direct',
+              },
               {
                 id: 'exercise-carryover',
                 key: 'carryover',
@@ -135,7 +141,9 @@ function clientForStage(
 describe('stage validation persistence', () => {
   it('returns null without querying activities for an inaccessible stage', async () => {
     const client = clientForStage(null);
-    await expect(getStageValidation(client, stageId, userId)).resolves.toBeNull();
+    await expect(
+      getStageValidation(client, stageId, userId),
+    ).resolves.toBeNull();
     expect(client.moduleRun.findFirst).not.toHaveBeenCalled();
   });
 
@@ -150,7 +158,9 @@ describe('stage validation persistence', () => {
     expect(client.exerciseSubmission.findMany).not.toHaveBeenCalled();
     expect(client.activityCompletionCarryover.findMany).not.toHaveBeenCalled();
     expect(client.stage.findFirst).toHaveBeenCalledWith(
-      expect.objectContaining({ where: expect.not.objectContaining({ isPublished: true }) }),
+      expect.objectContaining({
+        where: expect.not.objectContaining({ isPublished: true }),
+      }),
     );
   });
 
@@ -158,7 +168,9 @@ describe('stage validation persistence', () => {
     const client = clientForStage(stageState({ complete: true }), {
       withRun: true,
     });
-    await expect(getStageValidation(client, stageId, userId)).resolves.toMatchObject({
+    await expect(
+      getStageValidation(client, stageId, userId),
+    ).resolves.toMatchObject({
       isValidated: true,
       requiredExercises: { total: 2, validated: 2 },
       requiredTasks: { total: 2, validated: 2 },
@@ -166,7 +178,9 @@ describe('stage validation persistence', () => {
     });
     expect(client.exerciseSubmission.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: expect.objectContaining({ moduleRunId: { in: ['module-run-id'] } }),
+        where: expect.objectContaining({
+          moduleRunId: { in: ['module-run-id'] },
+        }),
       }),
     );
   });

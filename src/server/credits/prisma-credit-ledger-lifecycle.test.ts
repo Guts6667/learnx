@@ -168,7 +168,9 @@ describe('Prisma credit reservation lifecycle', () => {
       }),
     ).rejects.toThrow('RESERVATION_EXPIRED');
 
-    transaction.creditReservation.findFirst.mockResolvedValueOnce(reservation());
+    transaction.creditReservation.findFirst.mockResolvedValueOnce(
+      reservation(),
+    );
     await expect(
       settleCredits(context, {
         amount: 11n,

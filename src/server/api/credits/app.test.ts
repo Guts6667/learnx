@@ -11,7 +11,9 @@ import { createCreditsApp } from './app.js';
 const userId = '11111111-1111-4111-8111-111111111111';
 const otherUserId = '22222222-2222-4222-8222-222222222222';
 
-function authentication(role: 'ADMIN' | 'USER'): MiddlewareHandler<AuthEnvironment> {
+function authentication(
+  role: 'ADMIN' | 'USER',
+): MiddlewareHandler<AuthEnvironment> {
   return async (context, next) => {
     context.set('user', {
       displayName: 'Test',
@@ -237,7 +239,9 @@ describe('V4-008 credits API', () => {
   it('lists policies and records an administrative review', async () => {
     const repository = service({
       listPolicies: vi.fn().mockResolvedValue({
-        allocation: [{ id: 'allocation-1', key: 'friends', status: 'DRAFT', version: 1 }],
+        allocation: [
+          { id: 'allocation-1', key: 'friends', status: 'DRAFT', version: 1 },
+        ],
         limits: [],
       }),
     });
@@ -323,16 +327,19 @@ describe('V4-008 credits API', () => {
     ['CREDIT_REQUEST_STATE_CONFLICT', 409],
     ['PURCHASED_CREDITS_PROTECTED', 403],
     ['unexpected', 409],
-  ] as const)('maps the %s service failure to HTTP %s', async (code, status) => {
-    const app = createCreditsApp({
-      authentication: authentication('USER'),
-      service: service({
-        getOwnCredits: vi.fn().mockRejectedValue(new Error(code)),
-      }),
-    });
+  ] as const)(
+    'maps the %s service failure to HTTP %s',
+    async (code, status) => {
+      const app = createCreditsApp({
+        authentication: authentication('USER'),
+        service: service({
+          getOwnCredits: vi.fn().mockRejectedValue(new Error(code)),
+        }),
+      });
 
-    expect((await app.request('/api/credits')).status).toBe(status);
-  });
+      expect((await app.request('/api/credits')).status).toBe(status);
+    },
+  );
 
   it('returns not found when no credit account detail exists', async () => {
     const app = createCreditsApp({

@@ -1,4 +1,7 @@
-import { Role, type PrismaClient } from '../../../../generated/prisma/client.js';
+import {
+  Role,
+  type PrismaClient,
+} from '../../../../generated/prisma/client.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const query = vi.hoisted(() => ({
@@ -36,8 +39,9 @@ function harness() {
     auditEvent: { upsert: vi.fn().mockResolvedValue(undefined) },
   };
   const client = {
-    $transaction: vi.fn(async (operation: (value: typeof transaction) => unknown) =>
-      operation(transaction),
+    $transaction: vi.fn(
+      async (operation: (value: typeof transaction) => unknown) =>
+        operation(transaction),
     ),
     accessInvitation: { updateMany: vi.fn().mockResolvedValue({ count: 1 }) },
   };
@@ -73,7 +77,12 @@ describe('PrismaAccessRequestReviewRepository', () => {
       const { repository, transaction } = harness();
       transaction.accessRequest.findUnique.mockResolvedValue(existing);
       await expect(
-        repository.approve('actor', 'request-1', { expectedVersion: 2, role: Role.USER }, invitation),
+        repository.approve(
+          'actor',
+          'request-1',
+          { expectedVersion: 2, role: Role.USER },
+          invitation,
+        ),
       ).resolves.toEqual({ kind: 'NOT_FOUND' });
     },
   );
@@ -86,29 +95,51 @@ describe('PrismaAccessRequestReviewRepository', () => {
         request('APPROVED', { invitations: [{ assignedRole: Role.ADMIN }] }),
       );
     await expect(
-      repository.approve('actor', 'request-1', { expectedVersion: 2, role: Role.USER }, invitation),
+      repository.approve(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, role: Role.USER },
+        invitation,
+      ),
     ).resolves.toEqual({ kind: 'IDEMPOTENT', request: { id: 'request-1' } });
     await expect(
-      repository.approve('actor', 'request-1', { expectedVersion: 2, role: Role.USER }, invitation),
+      repository.approve(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, role: Role.USER },
+        invitation,
+      ),
     ).resolves.toEqual({ kind: 'CONFLICT' });
   });
 
-  it.each([
-    request('REJECTED'),
-    request('PENDING_APPROVAL', { version: 3 }),
-  ])('rejects an approval transition with stale state', async (existing) => {
-    const { repository, transaction } = harness();
-    transaction.accessRequest.findUnique.mockResolvedValue(existing);
-    await expect(
-      repository.approve('actor', 'request-1', { expectedVersion: 2, role: Role.USER }, invitation),
-    ).resolves.toEqual({ kind: 'CONFLICT' });
-  });
+  it.each([request('REJECTED'), request('PENDING_APPROVAL', { version: 3 })])(
+    'rejects an approval transition with stale state',
+    async (existing) => {
+      const { repository, transaction } = harness();
+      transaction.accessRequest.findUnique.mockResolvedValue(existing);
+      await expect(
+        repository.approve(
+          'actor',
+          'request-1',
+          { expectedVersion: 2, role: Role.USER },
+          invitation,
+        ),
+      ).resolves.toEqual({ kind: 'CONFLICT' });
+    },
+  );
 
   it('applies an approval and writes its three audit records', async () => {
     const { repository, transaction } = harness();
-    transaction.accessRequest.findUnique.mockResolvedValue(request('PENDING_APPROVAL'));
+    transaction.accessRequest.findUnique.mockResolvedValue(
+      request('PENDING_APPROVAL'),
+    );
     await expect(
-      repository.approve('actor', 'request-1', { expectedVersion: 2, role: Role.USER }, invitation),
+      repository.approve(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, role: Role.USER },
+        invitation,
+      ),
     ).resolves.toEqual({ kind: 'APPLIED', request: { id: 'updated' } });
     expect(transaction.accessInvitation.create).toHaveBeenCalledOnce();
     expect(transaction.auditEvent.upsert).toHaveBeenCalledTimes(3);
@@ -116,10 +147,17 @@ describe('PrismaAccessRequestReviewRepository', () => {
 
   it('reports a raced approval update', async () => {
     const { repository, transaction } = harness();
-    transaction.accessRequest.findUnique.mockResolvedValue(request('PENDING_APPROVAL'));
+    transaction.accessRequest.findUnique.mockResolvedValue(
+      request('PENDING_APPROVAL'),
+    );
     transaction.accessRequest.updateMany.mockResolvedValue({ count: 0 });
     await expect(
-      repository.approve('actor', 'request-1', { expectedVersion: 2, role: Role.USER }, invitation),
+      repository.approve(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, role: Role.USER },
+        invitation,
+      ),
     ).resolves.toEqual({ kind: 'CONFLICT' });
   });
 
@@ -129,7 +167,12 @@ describe('PrismaAccessRequestReviewRepository', () => {
       const { repository, transaction } = harness();
       transaction.accessRequest.findUnique.mockResolvedValue(existing);
       await expect(
-        repository.reject('actor', 'request-1', { expectedVersion: 2, reason: 'No fit' }, createdAt),
+        repository.reject(
+          'actor',
+          'request-1',
+          { expectedVersion: 2, reason: 'No fit' },
+          createdAt,
+        ),
       ).resolves.toEqual({ kind: 'NOT_FOUND' });
     },
   );
@@ -140,29 +183,51 @@ describe('PrismaAccessRequestReviewRepository', () => {
       .mockResolvedValueOnce(request('REJECTED', { rejectionReason: 'No fit' }))
       .mockResolvedValueOnce(request('REJECTED', { rejectionReason: 'Other' }));
     await expect(
-      repository.reject('actor', 'request-1', { expectedVersion: 2, reason: 'No fit' }, createdAt),
+      repository.reject(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, reason: 'No fit' },
+        createdAt,
+      ),
     ).resolves.toEqual({ kind: 'IDEMPOTENT', request: { id: 'request-1' } });
     await expect(
-      repository.reject('actor', 'request-1', { expectedVersion: 2, reason: 'No fit' }, createdAt),
+      repository.reject(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, reason: 'No fit' },
+        createdAt,
+      ),
     ).resolves.toEqual({ kind: 'CONFLICT' });
   });
 
-  it.each([
-    request('APPROVED'),
-    request('PENDING_APPROVAL', { version: 3 }),
-  ])('rejects a stale rejection transition', async (existing) => {
-    const { repository, transaction } = harness();
-    transaction.accessRequest.findUnique.mockResolvedValue(existing);
-    await expect(
-      repository.reject('actor', 'request-1', { expectedVersion: 2, reason: 'No fit' }, createdAt),
-    ).resolves.toEqual({ kind: 'CONFLICT' });
-  });
+  it.each([request('APPROVED'), request('PENDING_APPROVAL', { version: 3 })])(
+    'rejects a stale rejection transition',
+    async (existing) => {
+      const { repository, transaction } = harness();
+      transaction.accessRequest.findUnique.mockResolvedValue(existing);
+      await expect(
+        repository.reject(
+          'actor',
+          'request-1',
+          { expectedVersion: 2, reason: 'No fit' },
+          createdAt,
+        ),
+      ).resolves.toEqual({ kind: 'CONFLICT' });
+    },
+  );
 
   it('applies a rejection, invalidates invitations and audits it', async () => {
     const { repository, transaction } = harness();
-    transaction.accessRequest.findUnique.mockResolvedValue(request('PENDING_APPROVAL'));
+    transaction.accessRequest.findUnique.mockResolvedValue(
+      request('PENDING_APPROVAL'),
+    );
     await expect(
-      repository.reject('actor', 'request-1', { expectedVersion: 2, reason: 'No fit' }, createdAt),
+      repository.reject(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, reason: 'No fit' },
+        createdAt,
+      ),
     ).resolves.toEqual({ kind: 'APPLIED', request: { id: 'updated' } });
     expect(transaction.accessInvitation.updateMany).toHaveBeenCalledOnce();
     expect(transaction.auditEvent.upsert).toHaveBeenCalledOnce();
@@ -170,10 +235,17 @@ describe('PrismaAccessRequestReviewRepository', () => {
 
   it('reports a raced rejection update', async () => {
     const { repository, transaction } = harness();
-    transaction.accessRequest.findUnique.mockResolvedValue(request('PENDING_APPROVAL'));
+    transaction.accessRequest.findUnique.mockResolvedValue(
+      request('PENDING_APPROVAL'),
+    );
     transaction.accessRequest.updateMany.mockResolvedValue({ count: 0 });
     await expect(
-      repository.reject('actor', 'request-1', { expectedVersion: 2, reason: 'No fit' }, createdAt),
+      repository.reject(
+        'actor',
+        'request-1',
+        { expectedVersion: 2, reason: 'No fit' },
+        createdAt,
+      ),
     ).resolves.toEqual({ kind: 'CONFLICT' });
   });
 
@@ -181,13 +253,21 @@ describe('PrismaAccessRequestReviewRepository', () => {
     null,
     request('PENDING_APPROVAL'),
     request('APPROVED', { invitations: [] }),
-  ])('reports a request that cannot receive a replacement invitation', async (existing) => {
-    const { repository, transaction } = harness();
-    transaction.accessRequest.findUnique.mockResolvedValue(existing);
-    await expect(
-      repository.resend('actor', 'request-1', { expectedVersion: 2 }, invitation),
-    ).resolves.toEqual({ kind: 'NOT_FOUND' });
-  });
+  ])(
+    'reports a request that cannot receive a replacement invitation',
+    async (existing) => {
+      const { repository, transaction } = harness();
+      transaction.accessRequest.findUnique.mockResolvedValue(existing);
+      await expect(
+        repository.resend(
+          'actor',
+          'request-1',
+          { expectedVersion: 2 },
+          invitation,
+        ),
+      ).resolves.toEqual({ kind: 'NOT_FOUND' });
+    },
+  );
 
   it('detects stale and raced invitation resends', async () => {
     const { repository, transaction } = harness();
@@ -195,11 +275,21 @@ describe('PrismaAccessRequestReviewRepository', () => {
       .mockResolvedValueOnce(request('APPROVED', { version: 3 }))
       .mockResolvedValueOnce(request('APPROVED'));
     await expect(
-      repository.resend('actor', 'request-1', { expectedVersion: 2 }, invitation),
+      repository.resend(
+        'actor',
+        'request-1',
+        { expectedVersion: 2 },
+        invitation,
+      ),
     ).resolves.toEqual({ kind: 'CONFLICT' });
     transaction.accessRequest.updateMany.mockResolvedValue({ count: 0 });
     await expect(
-      repository.resend('actor', 'request-1', { expectedVersion: 2 }, invitation),
+      repository.resend(
+        'actor',
+        'request-1',
+        { expectedVersion: 2 },
+        invitation,
+      ),
     ).resolves.toEqual({ kind: 'CONFLICT' });
   });
 
@@ -207,7 +297,12 @@ describe('PrismaAccessRequestReviewRepository', () => {
     const { client, repository, transaction } = harness();
     transaction.accessRequest.findUnique.mockResolvedValue(request('APPROVED'));
     await expect(
-      repository.resend('actor', 'request-1', { expectedVersion: 2 }, invitation),
+      repository.resend(
+        'actor',
+        'request-1',
+        { expectedVersion: 2 },
+        invitation,
+      ),
     ).resolves.toEqual({ kind: 'APPLIED', request: { id: 'updated' } });
     expect(transaction.accessInvitation.updateMany).toHaveBeenCalledOnce();
     expect(transaction.accessInvitation.create).toHaveBeenCalledOnce();
@@ -218,6 +313,8 @@ describe('PrismaAccessRequestReviewRepository', () => {
 
     const page = { items: [], page: 1, pageSize: 10, total: 0, totalPages: 1 };
     query.listReviewRequests.mockResolvedValue(page);
-    await expect(repository.list({ page: 1, pageSize: 10 })).resolves.toBe(page);
+    await expect(repository.list({ page: 1, pageSize: 10 })).resolves.toBe(
+      page,
+    );
   });
 });

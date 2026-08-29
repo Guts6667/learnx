@@ -36,7 +36,9 @@ async function readProgramResetCounts(
       client.taskCompletion.count({
         where: { task: { isCanonical: true, lesson }, userId },
       }),
-      client.resourceProgress.count({ where: { resource: { lesson }, userId } }),
+      client.resourceProgress.count({
+        where: { resource: { lesson }, userId },
+      }),
       client.conceptProgress.count({ where: { concept: { lesson }, userId } }),
       currentRunIds.length
         ? client.quizAttempt.findMany({
@@ -60,7 +62,14 @@ async function readProgramResetCounts(
           })
         : Promise.resolve(0),
     ]);
-  return { concepts, exercises, lessons, quizzes: quizzes.length, resources, tasks };
+  return {
+    concepts,
+    exercises,
+    lessons,
+    quizzes: quizzes.length,
+    resources,
+    tasks,
+  };
 }
 
 async function readProgramPreservedCounts(
@@ -75,7 +84,9 @@ async function readProgramPreservedCounts(
       client.conceptAssessmentAttempt.count({
         where: { assessment: { concept: { lesson } }, userId },
       }),
-      client.exerciseSubmission.count({ where: { exercise: { lesson }, userId } }),
+      client.exerciseSubmission.count({
+        where: { exercise: { lesson }, userId },
+      }),
       client.note.count({ where: { lesson, userId } }),
       client.stageAssessmentSubmission.count({
         where: { stageAssessment: { stage: { programId } }, userId },
@@ -145,7 +156,11 @@ export class PrismaProgramRestartDataRepository {
       programId,
       programTitle: program.title,
       preserved,
-      reset: { ...reset, modules: modules.length, stages: program.stages.length },
+      reset: {
+        ...reset,
+        modules: modules.length,
+        stages: program.stages.length,
+      },
     };
   }
 

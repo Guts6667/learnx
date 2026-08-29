@@ -37,8 +37,7 @@ function installQuizErrorHandling(app: Hono<AuthEnvironment>) {
 
 export function createQuizzesApp(options: QuizzesAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
-  const getRepository = async () => options.repository
-    ?? getPrismaRepository();
+  const getRepository = async () => options.repository ?? getPrismaRepository();
   app.use('*', options.authentication ?? requireUser);
   app.use('*', requireCapability('learning.read'));
   installQuizErrorHandling(app);

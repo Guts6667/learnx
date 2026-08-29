@@ -208,7 +208,9 @@ describe('stage assessment Prisma repository', () => {
     });
     expect(submissionFindFirst).toHaveBeenCalledTimes(2);
     expect(assessmentFindFirst).toHaveBeenCalledWith(
-      expect.objectContaining({ where: expect.objectContaining({ id: assessmentId }) }),
+      expect.objectContaining({
+        where: expect.objectContaining({ id: assessmentId }),
+      }),
     );
   });
 
@@ -217,7 +219,10 @@ describe('stage assessment Prisma repository', () => {
     const findFirst = vi.fn(async () => editable);
     const update = vi
       .fn()
-      .mockResolvedValueOnce({ ...editable, contentMarkdown: 'Réponse révisée' })
+      .mockResolvedValueOnce({
+        ...editable,
+        contentMarkdown: 'Réponse révisée',
+      })
       .mockResolvedValueOnce({
         ...editable,
         status: 'SUBMITTED',

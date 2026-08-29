@@ -17,7 +17,9 @@ export const bilingualQaChecksSchema = z
 
 export type BilingualQaChecks = z.infer<typeof bilingualQaChecksSchema>;
 
-export function bilingualQaIsComplete(value: unknown): value is BilingualQaChecks {
+export function bilingualQaIsComplete(
+  value: unknown,
+): value is BilingualQaChecks {
   const parsed = bilingualQaChecksSchema.safeParse(value);
   return parsed.success && Object.values(parsed.data).every(Boolean);
 }

@@ -293,7 +293,9 @@ describe('access invitation lifecycle', () => {
 
     await expect(service.activate(input)).resolves.toBeNull();
     await expect(service.activate(input)).resolves.toBeNull();
-    await expect(service.activate(input)).rejects.toThrow('database unavailable');
+    await expect(service.activate(input)).rejects.toThrow(
+      'database unavailable',
+    );
     expect(transaction).toHaveBeenCalledTimes(3);
   });
 });

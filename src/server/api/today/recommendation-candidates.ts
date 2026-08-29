@@ -58,37 +58,47 @@ function reviewCandidates(
   return reviews.flatMap((review, index) => {
     const kind = classifyReviewDate(review.dueAt, now, timeZone);
     if (kind === 'FUTURE_REVIEW') return [];
-    return [{
-      estimatedMinutes: review.lesson.estimatedMinutes,
-      href: `${lessonHref(review.program.slug, review.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(review.sourceId)}&activity=${encodeURIComponent(`concept_assessment:${review.sourceId}`)}`,
-      kind,
-      lessonTitle: review.lesson.title,
-      moduleTitle: review.lesson.module.title,
-      order: index,
-      programId: review.program.id,
-      programSlug: review.program.slug,
-      programTitle: review.program.title,
-      stageTitle: review.lesson.module.stage.title,
-      title: `Réviser : ${review.lesson.title}`,
-    }];
+    return [
+      {
+        estimatedMinutes: review.lesson.estimatedMinutes,
+        href: `${lessonHref(review.program.slug, review.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(review.sourceId)}&activity=${encodeURIComponent(`concept_assessment:${review.sourceId}`)}`,
+        kind,
+        lessonTitle: review.lesson.title,
+        moduleTitle: review.lesson.module.title,
+        order: index,
+        programId: review.program.id,
+        programSlug: review.program.slug,
+        programTitle: review.program.title,
+        stageTitle: review.lesson.module.stage.title,
+        title: `Réviser : ${review.lesson.title}`,
+      },
+    ];
   });
 }
 
 function taskCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
   const currentLesson = [...lessons]
-    .filter((lesson) =>
-      lesson.progress[0]?.status === LessonProgressStatus.IN_PROGRESS)
-    .sort((left, right) =>
-      (right.progress[0]?.lastViewedAt?.getTime() ?? 0) -
-      (left.progress[0]?.lastViewedAt?.getTime() ?? 0))[0];
+    .filter(
+      (lesson) =>
+        lesson.progress[0]?.status === LessonProgressStatus.IN_PROGRESS,
+    )
+    .sort(
+      (left, right) =>
+        (right.progress[0]?.lastViewedAt?.getTime() ?? 0) -
+        (left.progress[0]?.lastViewedAt?.getTime() ?? 0),
+    )[0];
   if (!currentLesson) return [];
 
   return currentLesson.tasks
-    .filter((task) =>
-      task.completions[0]?.status !== TaskCompletionStatus.DONE &&
-      !currentLesson.activityCompletionCarryovers.some((carryover) =>
-        carryover.kind === CanonicalActivityKind.TASK &&
-        carryover.activityKey === task.key))
+    .filter(
+      (task) =>
+        task.completions[0]?.status !== TaskCompletionStatus.DONE &&
+        !currentLesson.activityCompletionCarryovers.some(
+          (carryover) =>
+            carryover.kind === CanonicalActivityKind.TASK &&
+            carryover.activityKey === task.key,
+        ),
+    )
     .map((task) => ({
       estimatedMinutes: currentLesson.estimatedMinutes,
       href: lessonActivityHref(
@@ -117,93 +127,112 @@ function conceptAssessmentCandidates(
       const assessment = concept.assessments.find(
         (candidate) => candidate.questions.length > 0,
       );
-      if (!assessment ||
-        concept.progress[0]?.status === ConceptProgressStatus.VALIDATED) {
+      if (
+        !assessment ||
+        concept.progress[0]?.status === ConceptProgressStatus.VALIDATED
+      ) {
         return [];
       }
-      return [{
-        estimatedMinutes: lesson.estimatedMinutes,
-        href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/assessment?assessmentId=${encodeURIComponent(assessment.id)}&activity=${encodeURIComponent(`concept_assessment:${assessment.id}`)}`,
-        kind: 'REQUIRED_QUIZ' as const,
-        lessonTitle: lesson.title,
-        moduleTitle: lesson.module.title,
-        order: lessonSequenceOrder(lesson, assessment.id),
-        programId: lesson.module.stage.program.id,
-        programSlug: lesson.module.stage.program.slug,
-        programTitle: lesson.module.stage.program.title,
-        stageTitle: lesson.module.stage.title,
-        title: `Valider : ${concept.title}`,
-      }];
+      return [
+        {
+          estimatedMinutes: lesson.estimatedMinutes,
+          href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/assessment?assessmentId=${encodeURIComponent(assessment.id)}&activity=${encodeURIComponent(`concept_assessment:${assessment.id}`)}`,
+          kind: 'REQUIRED_QUIZ' as const,
+          lessonTitle: lesson.title,
+          moduleTitle: lesson.module.title,
+          order: lessonSequenceOrder(lesson, assessment.id),
+          programId: lesson.module.stage.program.id,
+          programSlug: lesson.module.stage.program.slug,
+          programTitle: lesson.module.stage.program.title,
+          stageTitle: lesson.module.stage.title,
+          title: `Valider : ${concept.title}`,
+        },
+      ];
     }),
   );
 }
 
 function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
-  return lessons.flatMap((lesson) => lesson.quizzes
-    .filter((quiz) => quiz.attempts[0]?.passed !== true)
-    .map((quiz) => ({
-      estimatedMinutes: lesson.estimatedMinutes,
-      href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/quiz?quizId=${encodeURIComponent(quiz.id)}&activity=${encodeURIComponent(`quiz:${quiz.id}`)}`,
-      kind: 'REQUIRED_QUIZ' as const,
-      lessonTitle: lesson.title,
-      moduleTitle: lesson.module.title,
-      order: lessonSequenceOrder(lesson, quiz.id),
-      programId: lesson.module.stage.program.id,
-      programSlug: lesson.module.stage.program.slug,
-      programTitle: lesson.module.stage.program.title,
-      stageTitle: lesson.module.stage.title,
-      title: quiz.title,
-    })),
+  return lessons.flatMap((lesson) =>
+    lesson.quizzes
+      .filter((quiz) => quiz.attempts[0]?.passed !== true)
+      .map((quiz) => ({
+        estimatedMinutes: lesson.estimatedMinutes,
+        href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/quiz?quizId=${encodeURIComponent(quiz.id)}&activity=${encodeURIComponent(`quiz:${quiz.id}`)}`,
+        kind: 'REQUIRED_QUIZ' as const,
+        lessonTitle: lesson.title,
+        moduleTitle: lesson.module.title,
+        order: lessonSequenceOrder(lesson, quiz.id),
+        programId: lesson.module.stage.program.id,
+        programSlug: lesson.module.stage.program.slug,
+        programTitle: lesson.module.stage.program.title,
+        stageTitle: lesson.module.stage.title,
+        title: quiz.title,
+      })),
   );
 }
 
 function exerciseCandidates(
   lessons: LessonRecord[],
 ): RecommendationCandidate[] {
-  return lessons.flatMap((lesson) => lesson.exercises
-    .filter((exercise) =>
-      exercise.submissions[0]?.status !== 'SUBMITTED' &&
-      !lesson.activityCompletionCarryovers.some((carryover) =>
-        carryover.kind === CanonicalActivityKind.EXERCISE &&
-        carryover.activityKey === exercise.key))
-    .map((exercise) => ({
-      estimatedMinutes: lesson.estimatedMinutes,
-      href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/exercise/${encodeURIComponent(exercise.id)}?activity=${encodeURIComponent(`exercise:${exercise.id}`)}`,
-      kind: 'REQUIRED_EXERCISE' as const,
-      lessonTitle: lesson.title,
-      moduleTitle: lesson.module.title,
-      order: lessonSequenceOrder(lesson, exercise.id),
-      programId: lesson.module.stage.program.id,
-      programSlug: lesson.module.stage.program.slug,
-      programTitle: lesson.module.stage.program.title,
-      stageTitle: lesson.module.stage.title,
-      title: exercise.title,
-    })),
+  return lessons.flatMap((lesson) =>
+    lesson.exercises
+      .filter(
+        (exercise) =>
+          exercise.submissions[0]?.status !== 'SUBMITTED' &&
+          !lesson.activityCompletionCarryovers.some(
+            (carryover) =>
+              carryover.kind === CanonicalActivityKind.EXERCISE &&
+              carryover.activityKey === exercise.key,
+          ),
+      )
+      .map((exercise) => ({
+        estimatedMinutes: lesson.estimatedMinutes,
+        href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/exercise/${encodeURIComponent(exercise.id)}?activity=${encodeURIComponent(`exercise:${exercise.id}`)}`,
+        kind: 'REQUIRED_EXERCISE' as const,
+        lessonTitle: lesson.title,
+        moduleTitle: lesson.module.title,
+        order: lessonSequenceOrder(lesson, exercise.id),
+        programId: lesson.module.stage.program.id,
+        programSlug: lesson.module.stage.program.slug,
+        programTitle: lesson.module.stage.program.title,
+        stageTitle: lesson.module.stage.title,
+        title: exercise.title,
+      })),
   );
 }
 
 function navigationCandidate(
   lessons: LessonRecord[],
 ): RecommendationCandidate | null {
-  const nextLesson = lessons.find((lesson) =>
-    lesson.progress[0]?.status !== LessonProgressStatus.COMPLETED &&
-    lesson.module.stage.progress?.[0]?.status !== StageProgressStatus.LOCKED);
+  const nextLesson = lessons.find(
+    (lesson) =>
+      lesson.progress[0]?.status !== LessonProgressStatus.COMPLETED &&
+      lesson.module.stage.progress?.[0]?.status !== StageProgressStatus.LOCKED,
+  );
   if (!nextLesson) return null;
 
-  const hasEarlierStage = lessons.some((lesson) =>
-    lesson.module.stage.program.id === nextLesson.module.stage.program.id &&
-    lesson.module.stage.position < nextLesson.module.stage.position);
-  const hasEarlierModule = lessons.some((lesson) =>
-    lesson.module.stage.id === nextLesson.module.stage.id &&
-    lesson.module.position < nextLesson.module.position);
+  const hasEarlierStage = lessons.some(
+    (lesson) =>
+      lesson.module.stage.program.id === nextLesson.module.stage.program.id &&
+      lesson.module.stage.position < nextLesson.module.stage.position,
+  );
+  const hasEarlierModule = lessons.some(
+    (lesson) =>
+      lesson.module.stage.id === nextLesson.module.stage.id &&
+      lesson.module.position < nextLesson.module.position,
+  );
   const kind = hasEarlierStage
     ? 'NEXT_STAGE'
-    : hasEarlierModule ? 'NEXT_MODULE' : 'NEXT_LESSON';
-  const title = kind === 'NEXT_STAGE'
-    ? `Découvrir : ${nextLesson.module.stage.title}`
-    : kind === 'NEXT_MODULE'
-      ? `Ouvrir : ${nextLesson.module.title}`
-      : `Continuer : ${nextLesson.title}`;
+    : hasEarlierModule
+      ? 'NEXT_MODULE'
+      : 'NEXT_LESSON';
+  const title =
+    kind === 'NEXT_STAGE'
+      ? `Découvrir : ${nextLesson.module.stage.title}`
+      : kind === 'NEXT_MODULE'
+        ? `Ouvrir : ${nextLesson.module.title}`
+        : `Continuer : ${nextLesson.title}`;
 
   return {
     estimatedMinutes: nextLesson.estimatedMinutes,
@@ -239,13 +268,17 @@ function finalAssessmentCandidates(
       const lessons = assessment.stage.modules.flatMap(
         (module) => module.lessons,
       );
-      return lessons.every((lesson) =>
-        lesson.progress[0]?.status === LessonProgressStatus.COMPLETED) &&
+      return (
+        lessons.every(
+          (lesson) =>
+            lesson.progress[0]?.status === LessonProgressStatus.COMPLETED,
+        ) &&
         assessment.stage.progress[0]?.status !== StageProgressStatus.LOCKED &&
         assessment.submissions[0]?.status !==
           StageAssessmentSubmissionStatus.VALIDATED &&
         assessment.submissions[0]?.status !==
-          StageAssessmentSubmissionStatus.SUBMITTED;
+          StageAssessmentSubmissionStatus.SUBMITTED
+      );
     })
     .map((assessment) => ({
       estimatedMinutes: null,
@@ -253,7 +286,8 @@ function finalAssessmentCandidates(
       kind: 'REQUIRED_EXERCISE' as const,
       lessonTitle: null,
       moduleTitle: null,
-      order: assessment.stage.program.position * 1_000_000 +
+      order:
+        assessment.stage.program.position * 1_000_000 +
         assessment.stage.position * 10_000,
       programId: assessment.stage.program.id,
       programSlug: assessment.stage.program.slug,

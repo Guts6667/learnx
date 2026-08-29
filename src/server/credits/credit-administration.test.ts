@@ -72,13 +72,41 @@ describe('V4-008 credit projections', () => {
   afterEach(() => vi.restoreAllMocks());
   it('reconciles available, reserved, consumed and expired values from the ledger', () => {
     const projection = deriveCreditProjection([
-      { amount: 100n, provenance: CreditProvenance.FREE_ALLOCATION, type: CreditLedgerEntryType.GRANT },
-      { amount: -30n, provenance: CreditProvenance.FREE_ALLOCATION, type: CreditLedgerEntryType.RESERVATION_HOLD },
-      { amount: 30n, provenance: CreditProvenance.FREE_ALLOCATION, type: CreditLedgerEntryType.RESERVATION_RELEASE },
-      { amount: -20n, provenance: CreditProvenance.FREE_ALLOCATION, type: CreditLedgerEntryType.SETTLEMENT },
-      { amount: -10n, provenance: CreditProvenance.FREE_ALLOCATION, type: CreditLedgerEntryType.EXPIRATION },
-      { amount: 50n, provenance: CreditProvenance.PURCHASED, type: CreditLedgerEntryType.GRANT },
-      { amount: -5n, provenance: CreditProvenance.PURCHASED, type: CreditLedgerEntryType.RESERVATION_HOLD },
+      {
+        amount: 100n,
+        provenance: CreditProvenance.FREE_ALLOCATION,
+        type: CreditLedgerEntryType.GRANT,
+      },
+      {
+        amount: -30n,
+        provenance: CreditProvenance.FREE_ALLOCATION,
+        type: CreditLedgerEntryType.RESERVATION_HOLD,
+      },
+      {
+        amount: 30n,
+        provenance: CreditProvenance.FREE_ALLOCATION,
+        type: CreditLedgerEntryType.RESERVATION_RELEASE,
+      },
+      {
+        amount: -20n,
+        provenance: CreditProvenance.FREE_ALLOCATION,
+        type: CreditLedgerEntryType.SETTLEMENT,
+      },
+      {
+        amount: -10n,
+        provenance: CreditProvenance.FREE_ALLOCATION,
+        type: CreditLedgerEntryType.EXPIRATION,
+      },
+      {
+        amount: 50n,
+        provenance: CreditProvenance.PURCHASED,
+        type: CreditLedgerEntryType.GRANT,
+      },
+      {
+        amount: -5n,
+        provenance: CreditProvenance.PURCHASED,
+        type: CreditLedgerEntryType.RESERVATION_HOLD,
+      },
     ]);
 
     expect(projection).toEqual({
@@ -92,7 +120,11 @@ describe('V4-008 credit projections', () => {
   it('rejects an inconsistent negative projection', () => {
     expect(() =>
       deriveCreditProjection([
-        { amount: -1n, provenance: CreditProvenance.PURCHASED, type: CreditLedgerEntryType.SETTLEMENT },
+        {
+          amount: -1n,
+          provenance: CreditProvenance.PURCHASED,
+          type: CreditLedgerEntryType.SETTLEMENT,
+        },
       ]),
     ).toThrow('CREDIT_LEDGER_INCONSISTENT');
   });
@@ -243,8 +275,8 @@ describe('V4-008 credit projections', () => {
       data: expect.objectContaining({ reason: 'Besoin ponctuel' }),
     });
 
-    const createdData = client.creditIncreaseRequest.create.mock.calls[0]?.[0]
-      ?.data;
+    const createdData =
+      client.creditIncreaseRequest.create.mock.calls[0]?.[0]?.data;
     client.creditIncreaseRequest.findUnique.mockResolvedValueOnce({
       id: 'request-1',
       requestFingerprint: createdData?.requestFingerprint,

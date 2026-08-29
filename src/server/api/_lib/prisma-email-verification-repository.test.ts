@@ -80,7 +80,9 @@ describe('prismaEmailVerificationRepository', () => {
     transaction.emailVerification.findUnique.mockResolvedValueOnce(
       verification(),
     );
-    transaction.emailVerification.updateMany.mockResolvedValueOnce({ count: 1 });
+    transaction.emailVerification.updateMany.mockResolvedValueOnce({
+      count: 1,
+    });
     transaction.accessRequest.updateMany.mockResolvedValueOnce({ count: 1 });
 
     await expect(
@@ -97,9 +99,7 @@ describe('prismaEmailVerificationRepository', () => {
   });
 
   it('maps both optimistic consume races to a safe false result', async () => {
-    transaction.emailVerification.findUnique.mockResolvedValue(
-      verification(),
-    );
+    transaction.emailVerification.findUnique.mockResolvedValue(verification());
     transaction.emailVerification.updateMany
       .mockResolvedValueOnce({ count: 0 })
       .mockResolvedValueOnce({ count: 1 });
@@ -114,7 +114,9 @@ describe('prismaEmailVerificationRepository', () => {
   });
 
   it('rethrows unexpected persistence failures', async () => {
-    prisma.$transaction.mockRejectedValueOnce(new Error('database unavailable'));
+    prisma.$transaction.mockRejectedValueOnce(
+      new Error('database unavailable'),
+    );
     await expect(
       prismaEmailVerificationRepository.consume({ now, tokenHash: 'hash' }),
     ).rejects.toThrow('database unavailable');
@@ -160,7 +162,9 @@ describe('prismaEmailVerificationRepository', () => {
       locale: 'fr',
       status: 'PENDING_EMAIL',
     });
-    transaction.emailVerification.updateMany.mockResolvedValueOnce({ count: 1 });
+    transaction.emailVerification.updateMany.mockResolvedValueOnce({
+      count: 1,
+    });
     transaction.emailVerification.create.mockResolvedValueOnce({
       id: 'verification-1',
     });
@@ -191,7 +195,9 @@ describe('prismaEmailVerificationRepository', () => {
       locale: 'en',
       status: 'PENDING_EMAIL',
     });
-    transaction.emailVerification.updateMany.mockResolvedValueOnce({ count: 0 });
+    transaction.emailVerification.updateMany.mockResolvedValueOnce({
+      count: 0,
+    });
     transaction.emailVerification.create.mockResolvedValueOnce({ id: 'new' });
 
     await expect(
