@@ -22,6 +22,7 @@ concurrency:
 
 jobs:
   real-functions:
+    name: Integration (required)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
