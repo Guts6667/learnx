@@ -337,6 +337,13 @@ l'autorité de définition ; Airtable porte le statut.
   rapport ; ordre de coupe : paraphrases, puis répétitions 3→2, jamais la
   passe complète, les mutants ni la sécurité. Article public FR/EN dans la
   même PR que les résultats (`owner-research-article-2026-08-29`).
+- Résultat (29 août 2026, run partielle arrêtée par le Propriétaire à 49
+  cellules) : inutilisables 3/49 = 6,1 % (> gate 3 %, > coupe-circuit 5 %) —
+  « échec de transport, pas de qualité », politique `maxRetries: 0` ; accord
+  étalon 126/138 = 91,3 % ; coût par correction P50 0,019 / P90 0,023 USD ;
+  oracles mutation/stabilité/vérificateur `NOT_MEASURED` ; dépense de la nuit
+  ≈ 2,61 USD dont ≈ 1 non enregistré et 0,64 en doublon. Journal §8.18.
+  Promotion : V4.5-125.
 - Acceptation : gates sécurité verts ; gates calibration rapportés sans
   retuning ; page publique via les tests journal existants.
 
@@ -563,6 +570,9 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-182 | C | Frontend → Backend/Data | Validation à la frontière client (`zod/mini`, +4,8 Ko, budget intact) ; forme inconnue ⇒ état d'erreur, jamais un rendu partiel — livré `83cb5e77` | — |
 | V4.5-183 | C | Frontend → DevOps | Instruire l'écart de bundle (252 Ko / seuil diagnostic 150 Ko) : rapport chiffré, proposition, aucun changement de seuil | 182 |
 | V4.5-184 | B | Backend/Data → Architecture/Produit | Stripe : ADR_004 amendé sur place, adaptateur Stripe derrière l'interface (`LEARNX_PAYMENTS_PROVIDER`, défaut `stripe`), passe test-mode réelle ; décision `owner-payment-provider-stripe-2026-08-29` | 162 |
+| V4.5-123 | E | IA/Recherche → Head of AI | Verrou de run, enveloppe `--envelope-usd` mesurée sur le delta d'usage fournisseur (non mesurable ⇒ rien n'est autorisé), verdicts vérificateur persistés par correction, journal unique — livré `5cf38e28` | 121 |
+| V4.5-124 | A | Backend/Data → IA/Recherche | Identité promue : profil 2.2.0, `maxRetries: 1` sur réponse inutilisable seulement (jamais sur erreur fournisseur ambiguë) ; livraison partielle non rejouée ; décision `owner-retry-policy-2026-08-29` — livré `67ff25b8`, aucune campagne ne l'a encore mesuré | 121 |
+| V4.5-125 | E | IA/Recherche → Rayan | Run de régression sur l'identité 2.2.0 = preuve de promotion ; borne reduced ≈ 23 USD (primaire ×2 au pire cas + vérificateur 2,01), réel attendu 6–8 ; article public avec cette run | 123, 124, budget Rayan |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
