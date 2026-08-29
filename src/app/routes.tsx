@@ -7,6 +7,7 @@ import {
   Routes,
   useLocation,
   useParams,
+  useSearchParams,
 } from 'react-router-dom';
 
 import { navigate } from '@/app/navigation';
@@ -313,6 +314,9 @@ function ConceptAssessmentRoute({
   programSlug,
 }: RouteParams) {
   void path;
+  const [searchParams] = useSearchParams();
+  const resolvedAssessmentId =
+    assessmentId ?? searchParams.get('assessmentId') ?? undefined;
 
   if (!lessonSlug || !programSlug) {
     return null;
@@ -321,7 +325,7 @@ function ConceptAssessmentRoute({
   return (
     <ProtectedRoute>
       <ConceptAssessmentPage
-        assessmentId={assessmentId}
+        assessmentId={resolvedAssessmentId}
         lessonSlug={lessonSlug}
         programSlug={programSlug}
       />
@@ -365,6 +369,8 @@ function ExerciseRoute({
 
 function QuizRoute({ lessonSlug, path, programSlug, quizId }: RouteParams) {
   void path;
+  const [searchParams] = useSearchParams();
+  const resolvedQuizId = quizId ?? searchParams.get('quizId') ?? undefined;
 
   if (!lessonSlug || !programSlug) {
     return null;
@@ -375,7 +381,7 @@ function QuizRoute({ lessonSlug, path, programSlug, quizId }: RouteParams) {
       <QuizPage
         lessonSlug={lessonSlug}
         programSlug={programSlug}
-        quizId={quizId}
+        quizId={resolvedQuizId}
       />
     </ProtectedRoute>
   );

@@ -226,6 +226,28 @@ describe('AppRoutes', () => {
   );
 
   it.each([
+    [
+      '/program/parcours/lesson/introduction/assessment?assessmentId=assessment-2',
+      'assessment',
+      { assessmentId: 'assessment-2' },
+    ],
+    [
+      '/program/parcours/lesson/introduction/quiz?quizId=quiz-2',
+      'quiz',
+      { quizId: 'quiz-2' },
+    ],
+  ])(
+    'transmet le sélecteur de recherche de %s à la page métier',
+    async (pathname, expectedPage, expectedProps) => {
+      await renderPath(pathname, expectedPage);
+      expect(routeSpies.page).toHaveBeenCalledWith(
+        expectedPage,
+        expect.objectContaining(expectedProps),
+      );
+    },
+  );
+
+  it.each([
     ['/admin/access-requests', 'admin-access-requests'],
     ['/admin/accounts', 'admin-accounts'],
     ['/admin/contacts', 'admin-contacts'],
