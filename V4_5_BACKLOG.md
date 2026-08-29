@@ -199,8 +199,9 @@ l'autorité de définition ; Airtable porte le statut.
 - Epic : V4.5-002 · Owner : Backend/Data · Reviewer : IA/Recherche · Deps : V4.5-110 ;
   arbitrage Rayan (seconde famille de modèle).
 - Livrable : `checkerIdentity` épinglée dans `promoted-identity.ts`
-  (famille **non Anthropic**, décision Rayan du 29 août 2026 pour réduire les
-  biais corrélés ; modèle exact à arbitrer, sans raisonnement, ≤ 400 tokens) ; prompt et schéma fermés oui/non par critère ; suppression de
+  (famille **non Anthropic** pour réduire les biais corrélés — décision Rayan
+  du 29 août 2026 : `mistralai/mistral-medium-3-5` via OpenRouter, route et
+  tarif à réattester dans le ticket ; sans raisonnement, ≤ 400 tokens) ; prompt et schéma fermés oui/non par critère ; suppression de
   `executeGuardedPass` et de la garde ±5 ; config `LEARNX_AI_CORRECTION_CHECKER_*` ;
   préflight et catalogue pricing mis à jour ; échec vérificateur →
   `overallConfidence` plafonnée `MEDIUM`, signal `CHECKER_UNAVAILABLE`.
@@ -297,8 +298,9 @@ l'autorité de définition ; Airtable porte le statut.
 ### V4.5-141 — Échantillonnage de cohérence sur soumissions réelles
 
 - Epic : V4.5-011 · Owner : IA/Recherche · Reviewer : Backend/Data ·
-  Deps : V4.5-120, V4.5-140 ; décision Rayan (ré-analyse anonymisée + ligne
-  de consentement).
+  Deps : V4.5-120, V4.5-140 ; décision Rayan du 29 août 2026 : ré-analyse
+  anonymisée autorisée, **plafond 2 USD/semaine** (arrêt automatique au
+  plafond), ligne de consentement ajoutée.
 - Livrable : job ≤ 10 %/semaine, anonymisé, `cost_source: ABSORBED_QA`,
   régressions ajoutées au pool en `LIVE_DERIVED`.
 - Acceptation : test « aucune PII » ; plafond de coût par run via env.

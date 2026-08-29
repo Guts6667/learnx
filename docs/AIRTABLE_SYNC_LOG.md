@@ -242,3 +242,14 @@ l'autorisation.
   local — push en attente`. Champs modifiés : Statut, Branche, Commit source,
   État de synchronisation, Preuves QA, Blocage courant. Relecture conforme ;
   aucun autre enregistrement modifié.
+
+## 29 août 2026 — arbitrages Rayan consignés
+
+- V4.5-100 : `REVIEW` conservé ; `PR` = #22 vers `dev`, `Commit source`
+  `d1cb28f1`, `État de synchro = Canonique Git`.
+- V4.5-111 : `Arbitrage Rayan = Rayan A` — vérificateur d'une famille non
+  Anthropic, `mistralai/mistral-medium-3-5` retenu ; statut `DRAFT` conservé.
+- V4.5-121 : `Arbitrage Rayan = Rayan A` — budget 3 USD ; statut `DRAFT`.
+- V4.5-141 : `Arbitrage Rayan = Rayan A` — ré-analyse anonymisée, plafond
+  2 USD/semaine ; statut `DRAFT`.
+- Chaque enregistrement a été relu après mutation ; aucun autre ticket modifié.
