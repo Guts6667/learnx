@@ -1,0 +1,88 @@
+name: Neon CI branch sweep
+
+# The integration workflow creates one Neon branch per run and deletes it in an
+# always() step. A runner killed by timeout, or a cancellation that lands
+# between creation and deletion, still leaves the branch behind. Those orphans
+# accumulate against a project-wide ceiling and eventually make branch creation
+# fail with a 422 for everyone.
+#
+# This sweep is second-line defence only: the primary control is the global
+# concurrency group in integration.yml. It deletes nothing but branches whose
+# name matches the exact shape the CI produces, and only once they are older
+# than the integration job could possibly still be running.
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      max_age_minutes:
+        description: 'Delete ci-* branches older than this many minutes'
+        required: false
+        default: '120'
+      dry_run:
+        description: 'List what would be deleted without deleting it'
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neon-sweep-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Delete stale CI branches
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ vars.NEON_PROJECT_ID }}
+          MAX_AGE_MINUTES: ${{ github.event.inputs.max_age_minutes || '120' }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run || 'false' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${NEON_API_KEY:-}" ] || [ -z "${NEON_PROJECT_ID:-}" ]; then
+            echo "NEON_API_KEY or NEON_PROJECT_ID is not configured." >&2
+            exit 1
+          fi
+          api="https://console.neon.tech/api/v2/projects/${NEON_PROJECT_ID}/branches"
+          body="$(curl -sS -f -H "Authorization: Bearer ${NEON_API_KEY}" "$api")"
+
+          total="$(echo "$body" | jq '.branches | length')"
+          echo "Project holds ${total} branches."
+          echo "$body" | jq -r '.branches[] | "  \(.name)\t\(.created_at)"'
+
+          # Only ever the exact shape integration.yml creates: ci-<runId>-<attempt>.
+          # production, staging and every backup-* branch are structurally excluded.
+          stale="$(echo "$body" | jq -r --argjson age "${MAX_AGE_MINUTES}" '
+            (now - ($age * 60)) as $cutoff
+            | .branches[]
+            | select(.name | test("^ci-[0-9]+-[0-9]+$"))
+            | select((.created_at | fromdateiso8601) < $cutoff)
+            | "\(.id) \(.name)"')"
+
+          if [ -z "$stale" ]; then
+            echo "No stale ci-* branch older than ${MAX_AGE_MINUTES} minutes."
+            exit 0
+          fi
+
+          echo "Stale branches:"; echo "$stale"
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "Dry run: nothing deleted."
+            exit 0
+          fi
+
+          echo "$stale" | while read -r id name; do
+            [ -n "$id" ] || continue
+            echo "Deleting ${name} (${id})"
+            curl -sS -f -X DELETE \
+              -H "Authorization: Bearer ${NEON_API_KEY}" \
+              "https://console.neon.tech/api/v2/projects/${NEON_PROJECT_ID}/branches/${id}" >/dev/null
+          done
+          echo "Sweep complete."
