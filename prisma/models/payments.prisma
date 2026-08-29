@@ -16,6 +16,13 @@ model PaymentOrder {
   /// Attribution des crédits : renseignée par le webhook, jamais au retour de
   /// navigation (ADR_004 §2).
   fulfilledAt       DateTime?           @map("fulfilled_at")
+  /// Crédits repris sur le lot acheté. Fait de crédits, doublé d'une écriture
+  /// REFUND au registre.
+  refundedCredits   BigInt              @default(0) @map("refunded_credits")
+  /// Valeur remboursée qu'aucun crédit n'a pu couvrir. Fait d'argent, et non
+  /// de crédits : l'inscrire au registre déplacerait le solde du montant même
+  /// qu'on déclare irrécupérable.
+  writtenOffCredits BigInt              @default(0) @map("written_off_credits")
   creditLotId       String?             @unique @map("credit_lot_id") @db.Uuid
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @updatedAt @map("updated_at")
