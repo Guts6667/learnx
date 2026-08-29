@@ -2,11 +2,17 @@
 
 - **Statut** : `ACTIVE_AUTHORITY` (texte à intégrer tel quel par la voie C ;
   toute modification passe par ce document)
-- **Version** : 1.0.0 · **Date** : 29 août 2026
+- **Version** : 1.1.0 · **Date** : 29 août 2026 (1.1.0 : sections paiement et
+  échantillonnage retirées tant que 160 et 141 ne sont pas livrés)
 - **Owner** : Head of AI · **Reviewer** : Rayan
 - **Source des faits** : `docs/V4_5_RGPD_AUDIT.md` 1.2.0 (registre,
   régions, attestations fournisseurs, décisions `owner-rgpd-2026-08-29`,
   `owner-openrouter-retention-2026-08-29`)
+
+Une politique décrit des traitements réels : les sections **paiement**
+(V4.5-160) et **échantillonnage qualité** (V4.5-141) sont absentes de ce
+texte et y seront ajoutées par une nouvelle version au merge de ces tickets,
+en même temps que la ligne `aiCorrection.reuseNotice`/141 dans la notice.
 
 Règles d'intégration : route publique `/confidentialite` (FR) et `/privacy`
 (EN), accessible sans compte ; lien dans le pied de page et dans la notice
@@ -49,8 +55,7 @@ Mistral hébergé dans l'Union européenne. Ces services conservent vos données
 au plus 30 jours (Anthropic, Mistral) et ne les utilisent pas pour entraîner
 leurs modèles ; OpenRouter ne publie pas de durée de conservation. Le retour
 est produit par une IA, n'est relu par personne, ne vaut pas validation et
-n'a aucun effet sur votre progression. Un échantillon anonymisé de
-corrections peut être ré-analysé pour contrôler la qualité du système.
+n'a aucun effet sur votre progression.
 
 **Où sont vos données.** Base de données : Neon, Francfort (Allemagne).
 Application : Vercel, Francfort. E-mails : Resend, Irlande. Seuls OpenRouter
@@ -69,9 +74,6 @@ compte efface votre e-mail, votre nom et vos sessions ; vos réponses sont
 conservées sous forme anonymisée et l'historique des crédits est conservé
 sans identifiant, comme la loi comptable l'exige. Vous pouvez introduire une
 réclamation auprès de la CNIL (cnil.fr).
-
-**Paiement.** [Section à compléter à la livraison de V4.5-160 : LearnX ne
-stocke aucune donnée de carte ; le paiement est traité par Revolut.]
 
 **Cookies.** LearnX utilise uniquement un cookie de session, nécessaire à la
 connexion. Aucun cookie de mesure d'audience ni de publicité.
@@ -110,9 +112,7 @@ quoted excerpts are then checked by a Mistral model hosted in the European
 Union. These services keep your data for at most 30 days (Anthropic,
 Mistral) and do not use it to train their models; OpenRouter does not
 publish a retention period. The feedback is produced by an AI, is reviewed
-by no one, is not a validation, and has no effect on your progression. An
-anonymised sample of corrections may be re-analysed to check the system's
-quality.
+by no one, is not a validation, and has no effect on your progression.
 
 **Where your data is.** Database: Neon, Frankfurt (Germany). Application:
 Vercel, Frankfurt. E-mails: Resend, Ireland. Only OpenRouter and Anthropic
@@ -130,9 +130,6 @@ name and sessions; your answers are kept in anonymised form and the credit
 history is kept without identifiers, as accounting law requires. You may
 lodge a complaint with the CNIL (cnil.fr) or your local supervisory
 authority.
-
-**Payment.** [Section to complete when V4.5-160 ships: LearnX stores no card
-data; payment is processed by Revolut.]
 
 **Cookies.** LearnX uses only a session cookie, required to sign in. No
 analytics or advertising cookies.
