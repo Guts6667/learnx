@@ -34,6 +34,17 @@ import {
 } from './promoted-identity.js';
 import { buildRuntimeCorrectionMessages } from './runtime-correction-prompt.js';
 
+/**
+ * Why a model call did not produce a usable generation, kept apart because the
+ * two answers differ in whether repeating is safe (V4.5-124).
+ */
+type CallOutcome =
+  | { generation: ResolvedGeneration; kind: 'RESOLVED' }
+  /** A response arrived and was unusable. Safe to ask again. */
+  | { kind: 'UNUSABLE_RESPONSE' }
+  /** The call failed ambiguously. It may have been billed. Never repeated. */
+  | { kind: 'CALL_FAILED' };
+
 interface ResolvedGeneration {
   output: Protocol3CorrectionArtifactOutput;
   unsureCriteria: string[];
@@ -191,10 +202,21 @@ export class CorrectionExecutionService {
   }) {
     const attempts: RuntimeCorrectionAttempt[] = [];
     const usage = createUsageTracker();
-    const primary = await this.callModel({ ...input, attempts, usage });
-    if (!primary) {
+    let outcome = await this.callModel({ ...input, attempts, usage });
+
+    // One retry, and only on a response we received and could not use. The
+    // 29 August run showed ~5 % of cells unusable that way; asking again costs
+    // a call the quote already reserves, because the catalogue prices two.
+    if (
+      outcome.kind === 'UNUSABLE_RESPONSE' &&
+      PROMOTED_CORRECTION_IDENTITY.maxRetries > 0
+    ) {
+      outcome = await this.callModel({ ...input, attempts, usage });
+    }
+    if (outcome.kind !== 'RESOLVED') {
       return { attempts, correction: failedCorrection(usage.value()) };
     }
+    const primary = outcome.generation;
 
     // The score guard used to fire here, asking the same model to answer again
     // near the pass mark and treating agreement as reassurance. It is replaced
@@ -292,7 +314,7 @@ export class CorrectionExecutionService {
     messages: Array<{ content: string; role: 'system' | 'user' }>;
     attempts: RuntimeCorrectionAttempt[];
     usage: UsageTracker;
-  }): Promise<ResolvedGeneration | null> {
+  }): Promise<CallOutcome> {
     const sequence = input.attempts.length + 1;
     await this.corrections.recordAttemptIntent({
       correctionId: input.correctionId,
@@ -314,7 +336,11 @@ export class CorrectionExecutionService {
         attempt,
         correctionId: input.correctionId,
       });
-      return null;
+      // The call itself failed, and ambiguously: a timeout or a 5xx may have
+      // been billed and may have produced a generation we never saw. Repeating
+      // it without a provider idempotency key would pay twice for two answers,
+      // one of them lost. Not retryable.
+      return { kind: 'CALL_FAILED' };
     }
     input.usage.add(generation.usage.actualCostUsd);
     const resolved = resolveGeneration({
@@ -335,6 +361,11 @@ export class CorrectionExecutionService {
       attempt,
       correctionId: input.correctionId,
     });
-    return resolved;
+    // A response arrived and could not be used — the evidence was not in it, or
+    // it did not satisfy the contract. Nothing is ambiguous about what we were
+    // billed for, so asking again is safe and is what V4.5-124 buys.
+    return resolved
+      ? { generation: resolved, kind: 'RESOLVED' }
+      : { kind: 'UNUSABLE_RESPONSE' };
   }
 }

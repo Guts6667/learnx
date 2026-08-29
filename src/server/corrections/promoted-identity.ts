@@ -29,7 +29,19 @@ export const PROMOTED_CORRECTION_IDENTITY = {
   requestProtocolVersion: '3.0.1',
   scoreGuardBandPoints: 5,
   deliveryPolicy: 'PARTIAL_CRITERION',
-  maxRetries: 0,
+  /**
+   * Une reprise, et une seule (V4.5-124,
+   * `owner-retry-policy-2026-08-29`). La campagne du 29 août a montré ~5 % de
+   * cellules inutilisables sur `MODEL_EVIDENCE_NOT_IN_RESPONSE` et
+   * `MODEL_OUTPUT_CONTRACT_INVALID` : des réponses reçues et inexploitables,
+   * pas des appels ratés.
+   *
+   * La reprise ne vaut que pour ce cas. Un appel qui échoue de façon ambiguë —
+   * délai, coupure réseau, 5xx — peut avoir été facturé et avoir produit une
+   * génération que nous n'avons pas vue ; le refaire sans clé d'idempotence
+   * fournisseur paierait deux fois pour deux réponses dont une est perdue.
+   */
+  maxRetries: 1,
   /**
    * Profil 2.1.0 (V4.5-115, 29 août 2026) : le corps runtime envoie désormais
    * `provider.only` (= routeProviders) et `data_collection: 'deny'`, et la
@@ -40,6 +52,12 @@ export const PROMOTED_CORRECTION_IDENTITY = {
    * ces paramètres : le point de terminaison ne change pas. Ce profil est
    * attesté par la sonde et re-promu par la suite de régression (V4.5-121) ;
    * le benchmark scellé v3.1 a été mesuré sous 2.0.0 / `['Anthropic']`.
+   *
+   * Profil 2.2.0 (V4.5-124) : `maxRetries` passe à 1. La constante dit ce qui a
+   * été mesuré — une politique de reprise change ce que le runtime fait d'une
+   * réponse, donc elle change le profil, donc elle change sa version. Aucune
+   * campagne n'a encore tourné sous 2.2.0 : c'est l'exécution V4.5-121 sur
+   * cette identité, et pas celle du 29 août, qui en constituera la preuve.
    */
   requestProfile: {
     adapter: 'OPENROUTER_CHAT',
@@ -48,7 +66,7 @@ export const PROMOTED_CORRECTION_IDENTITY = {
     temperature: null,
     timeoutMs: 60_000,
     totalOutputTokenLimit: 1_500,
-    version: '2.1.0',
+    version: '2.2.0',
     visibleOutputTokenTarget: 1_500,
   },
 } as const;

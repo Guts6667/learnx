@@ -39,6 +39,13 @@ export interface CorrectionReleasePreflight {
   identityMatches: boolean;
   killSwitch: boolean;
   promotedBenchmarkId: string;
+  /**
+   * The request profile the runtime will use. Reported because a profile is a
+   * version of what was measured, and an operator reading READY should be able
+   * to see which one is running — V4.5-124 moved it to 2.2.0 and no campaign
+   * has run under it yet.
+   */
+  promotedRequestProfileVersion: string;
   state: CorrectionReleasePreflightState;
   /** FAKE means verdicts are fabricated locally; never a production READY. */
   transport: 'REAL' | 'FAKE';
@@ -101,6 +108,8 @@ export function evaluateCorrectionReleasePreflight(
     identityMatches,
     killSwitch: configuration.killSwitch,
     promotedBenchmarkId: PROMOTED_CORRECTION_IDENTITY.benchmarkId,
+    promotedRequestProfileVersion:
+      PROMOTED_CORRECTION_IDENTITY.requestProfile.version,
     state,
     transport,
   };
