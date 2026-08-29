@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:vercel": "pnpm prisma:generate && pnpm prisma:deploy && pnpm build",
+    "build:vercel": "pnpm prisma:generate && pnpm vercel:migrate && pnpm build",
+    "vercel:migrate": "if [ \"$VERCEL_ENV\" = production ]; then pnpm prisma:deploy; else echo \"prisma migrate deploy skipped: VERCEL_ENV=${VERCEL_ENV:-unset}. Migrations are applied on production deployments only.\"; fi",
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc -b",
