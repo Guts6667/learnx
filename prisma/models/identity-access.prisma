@@ -27,6 +27,7 @@ model User {
   aiCorrections                   AiCorrection[]
   aiCorrectionCriterionFeedback   AiCorrectionCriterionFeedback[]
   aiCorrectionBreakerEvents       AiCorrectionBreakerEvent[]
+  paymentOrders                   PaymentOrder[]
   creditAccounts                  CreditAccount[]               @relation("CreditAccountOwner")
   creditAdjustmentEntries         CreditLedgerEntry[]           @relation("CreditLedgerAdjustmentActor")
   creditGrantCycles               CreditGrantCycle[]

@@ -1,0 +1,33 @@
+/// États d'un ordre de paiement (ADR_003 §6.3, repris sans modification).
+///
+/// L'ordre de cette énumération porte du sens : `paymentOrderRank` s'en sert
+/// pour rendre les transitions monotones, parce que Revolut ne garantit pas
+/// l'ordre de livraison des événements.
+enum PaymentOrderStatus {
+  CREATED         @map("created")
+  PENDING         @map("pending")
+  PAID            @map("paid")
+  FULFILLED       @map("fulfilled")
+  FAILED          @map("failed")
+  EXPIRED         @map("expired")
+  REFUND_PENDING  @map("refund_pending")
+  REFUNDED        @map("refunded")
+  DISPUTED        @map("disputed")
+  DISPUTE_WON     @map("dispute_won")
+  DISPUTE_LOST    @map("dispute_lost")
+
+  @@map("payment_order_status")
+}
+
+/// Ce que le récepteur a fait d'un événement, conservé pour réconciliation.
+enum PaymentEventOutcome {
+  APPLIED     @map("applied")
+  /// Déjà vu : même identifiant d'événement, enregistré une seule fois.
+  DUPLICATE   @map("duplicate")
+  /// Hors séquence : conservé sans être appliqué (ADR_003 §6.3).
+  OUT_OF_ORDER @map("out_of_order")
+  /// Reçu alors que l'encaissement était coupé.
+  DISABLED    @map("disabled")
+
+  @@map("payment_event_outcome")
+}
