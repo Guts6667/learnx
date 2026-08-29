@@ -304,6 +304,12 @@ export async function runRegressionPool(input: {
   configuration: CorrectionBenchmarkConfiguration;
   identities: RegressionPinnedIdentities;
   now?: () => Date;
+  /**
+   * Forwarded to the runner, which demands one before dispatching even when
+   * the executor is injected. Offline callers pass a placeholder; V4.5-121
+   * passes the real key from the environment.
+   */
+  providerApiKey?: string;
   regressionDirectory?: string;
 }): Promise<RegressionRunOutcome> {
   const dryRun = input.arguments.includes('--dry-run');
@@ -421,6 +427,7 @@ export async function runRegressionPool(input: {
       configuration: input.configuration,
       corpus: plan.corpus,
       executeCandidate: input.executeCandidate,
+      ...(input.providerApiKey ? { providerApiKey: input.providerApiKey } : {}),
       repetitions: input.configuration.repetitions,
       supplierBudget: guard,
     })),
@@ -430,6 +437,7 @@ export async function runRegressionPool(input: {
       configuration: input.configuration,
       corpus: plan.corpus,
       executeCandidate: input.executeCandidate,
+      ...(input.providerApiKey ? { providerApiKey: input.providerApiKey } : {}),
       repetitions: 1,
       supplierBudget: guard,
     })),
