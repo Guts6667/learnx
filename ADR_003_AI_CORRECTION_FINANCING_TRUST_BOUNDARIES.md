@@ -66,6 +66,22 @@
 > Identifiant de décision : `owner-checker-residency-eu-2026-08-29`. Le
 > registre des traitements (V4.5-165) déclare ce destinataire et sa résidence.
 
+> **Correction du 29 août 2026 (même jour).** La phrase « `data_collection:
+> deny` reste envoyé » ci-dessus est inexacte pour le chemin réellement
+> exécuté : l'adaptateur runtime V4.5
+> (`src/lib/ai-correction-provider-adapters.ts`, `buildOpenRouterRequestBody`)
+> n'envoie que `allow_fallbacks: false`, `order` et `require_parameters` ; ni
+> `only`, ni `data_collection`. Seul l'ancien adaptateur V4 hors chemin
+> (`src/server/ai/openrouter-provider.ts`) les envoyait. De plus, `order:
+> ['Anthropic']` utilise le nom d'affichage et non le slug documenté
+> (`anthropic`), de sorte que l'épinglage de route du modèle primaire n'est
+> pas attesté. Conséquences : l'épinglage `mistral/eu` est aujourd'hui la seule
+> contrainte de résidence du vérificateur ; le vérificateur (nouveau chemin)
+> envoie `only` et `data_collection: deny` dès V4.5-111 ; l'attestation du
+> profil primaire et l'ajout éventuel de ces paramètres (nouvelle version de
+> profil, re-promotion par la suite de régression) sont le ticket V4.5-115,
+> préalable à V4.5-121.
+
 ## 1. Contexte
 
 LearnX corrige aujourd'hui de manière déterministe les quiz et les
