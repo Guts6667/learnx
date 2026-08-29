@@ -13,8 +13,11 @@ describe('Prisma multi-file schema', () => {
     expect(mainSchema).toContain('generator client');
     expect(mainSchema).toContain('datasource db');
     expect(mainSchema).not.toMatch(/^(?:enum|model)\s+/m);
-    expect(fullSchema.match(/^enum\s+/gm)).toHaveLength(50);
-    expect(fullSchema.match(/^model\s+/gm)).toHaveLength(63);
+    // Counted, not approximated: adding a model or an enum is a schema
+    // decision and must be a deliberate edit here. +1 each in V4.5-112
+    // (AiCorrectionCriterionFeedback, AiCorrectionFeedbackVerdict).
+    expect(fullSchema.match(/^enum\s+/gm)).toHaveLength(51);
+    expect(fullSchema.match(/^model\s+/gm)).toHaveLength(64);
   });
 
   it('uses the supported schema directory without relocating migration history', () => {
@@ -25,6 +28,7 @@ describe('Prisma multi-file schema', () => {
 
     expect(config).toContain("schema: 'prisma'");
     expect(config).toContain("path: 'prisma/migrations'");
-    expect(migrationDirectories).toHaveLength(42);
+    // +1 in V4.5-112: the first V4.5 migration, additive and reversible.
+    expect(migrationDirectories).toHaveLength(43);
   });
 });

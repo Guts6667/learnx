@@ -19,6 +19,10 @@ import {
 } from '../../corrections/correction-orchestration.js';
 import { PrismaCorrectionOrchestrationPorts } from '../../corrections/prisma-correction-orchestration-store.js';
 import {
+  PrismaCorrectionFeedbackRepository,
+  type CorrectionFeedbackPort,
+} from '../../corrections/prisma-correction-feedback.js';
+import {
   PROMOTED_CHECKER_IDENTITY,
   PROMOTED_CORRECTION_IDENTITY,
 } from '../../corrections/promoted-identity.js';
@@ -87,6 +91,7 @@ export interface CorrectionsAppOptions {
       userId: string;
     }): Promise<CorrectionHistoryEntry[]>;
   };
+  feedback?: CorrectionFeedbackPort;
   monitoring?: { summary(): Promise<CorrectionMonitoringSummary> };
   preflight?: CorrectionReleasePreflight;
   resolveDefaultOrchestration?: () => Promise<Pick<
@@ -175,6 +180,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   // One decision, read by both the preflight and the orchestration, so the
   // reported transport is always the constructed transport.
+  let feedback = options.feedback;
   let selection: CorrectionTransportSelection | undefined;
   const transportSelection = (): CorrectionTransportSelection =>
     (selection ??= selectCorrectionTransport());
@@ -228,6 +234,57 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     },
   );
 
+  const criterionFeedbackSchema = z
+    .object({
+      criterionKey: z.string().trim().min(1).max(120),
+      verdict: z.enum(['HELPFUL', 'WRONG']),
+    })
+    .strict();
+
+  app.post('/api/ai-corrections/:correctionId/feedback', async (context) => {
+    const correctionId = z.uuid().safeParse(context.req.param('correctionId'));
+    if (!correctionId.success) {
+      throw new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
+    }
+    const body = criterionFeedbackSchema.safeParse(await context.req.json());
+    if (!body.success) {
+      throw new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
+    }
+    if (!feedback) {
+      const { prisma } = await import('../../prisma.js');
+      feedback = new PrismaCorrectionFeedbackRepository(prisma);
+    }
+    const recorded = await feedback.record({
+      correctionId: correctionId.data,
+      criterionKey: body.data.criterionKey,
+      userId: context.get('user').id,
+      verdict: body.data.verdict,
+    });
+    // A correction that is not the learner's answers 404: a forbidden would
+    // confirm to a stranger that the id is real. A criterion the correction
+    // never mentioned answers 422 instead — only its owner can ever reach that
+    // branch, so telling them apart leaks nothing and says which is wrong.
+    if (recorded.status === 'NOT_FOUND') {
+      throw new ApiError('RESOURCE_NOT_FOUND', 'Correction not found.', 404);
+    }
+    if (recorded.status === 'UNKNOWN_CRITERION') {
+      throw new ApiError(
+        'AI_CORRECTION_CRITERION_UNKNOWN',
+        'Unknown criterion for this correction.',
+        422,
+      );
+    }
+    return context.json({
+      resource: {
+        feedback: {
+          criterionKey: body.data.criterionKey,
+          recordedAt: recorded.recordedAt.toISOString(),
+          verdict: body.data.verdict,
+        },
+      },
+    });
+  });
+
   app.get(
     '/api/exercise-submissions/:submissionId/ai-corrections',
     async (context) => {
@@ -241,13 +298,29 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
         const { prisma } = await import('../../prisma.js');
         history = new PrismaCorrectionOrchestrationPorts(prisma);
       }
+      const userId = context.get('user').id;
       const corrections = await history.listForSubmission({
         submissionId: submissionId.data,
-        userId: context.get('user').id,
+        userId,
+      });
+      if (!feedback) {
+        const { prisma } = await import('../../prisma.js');
+        feedback = new PrismaCorrectionFeedbackRepository(prisma);
+      }
+      const recorded = await feedback.listForCorrections({
+        correctionIds: corrections.map((entry) => entry.result.correction.id),
+        userId,
       });
       return context.json({
         resource: {
-          corrections: corrections.map(serializeLearnerCorrectionHistoryEntry),
+          corrections: corrections.map((entry) => ({
+            ...serializeLearnerCorrectionHistoryEntry(entry),
+            // Always present, empty when nothing was recorded. Absent would
+            // mean "this API does not support feedback", which is what the
+            // client keys its controls on; present-and-empty means "supported,
+            // nothing said yet". The two must not look alike.
+            criterionFeedback: recorded[entry.result.correction.id] ?? {},
+          })),
         },
       });
     },
