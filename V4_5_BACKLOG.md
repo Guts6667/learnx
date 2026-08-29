@@ -262,6 +262,24 @@ l'autorité de définition ; Airtable porte le statut.
   test prouvant qu'un devis ancien et un devis nouveau se règlent chacun selon
   leur propre formule ; `quality:v4.1:final` vert.
 
+### V4.5-115 — Attestation du profil de requête runtime (route, `only`, `data_collection`)
+
+- Epic : V4.5-002/003 · Owner : Head of AI · Reviewer : Backend/Data ·
+  Deps : aucune ; préalable à V4.5-121. Autorisation Rayan : sonde
+  authentifiée ≤ 0,10 USD.
+- Constat (Head of Development, 29 août) : l'adaptateur runtime n'envoie ni
+  `only` ni `data_collection: deny` ; `order: ['Anthropic']` est un nom
+  d'affichage, pas le slug documenté.
+- Livrable : (1) sonde authentifiée `order: ['Anthropic']` vs `['anthropic']`
+  comparant les métadonnées fournisseur retournées, artefact append-only ;
+  (2) décision d'ajouter `only` + `data_collection: 'deny'` au profil
+  runtime primaire ; si oui, profil `2.1.0` dans `promoted-identity.ts`,
+  attestation par le préflight (endpoint observé = épinglé), et V4.5-121
+  s'exécute sous ce profil (re-promotion par la suite) ; (3) ADR_003 mis à
+  jour avec le résultat.
+- Acceptation : artefact de sonde committé avec coût réconcilié ; test
+  d'adaptateur figeant le corps de requête ; aucune modification du prompt.
+
 ### V4.5-120 — Suite de régression décidable par la machine
 
 - Epic : V4.5-003 · Owner : IA/Recherche · Reviewer : Architecture/Produit ·
@@ -419,7 +437,7 @@ la fois ; les migrations Prisma atterrissent en série (A puis B).
 | C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/AdminCreditsPage.tsx`, `src/pages/Credits*`, `src/i18n/catalogs/correction.ts`, `tests/e2e/**` | 113 → 112 (UI) → 150 → 140 (UI admin) → 162 (UI admin) → UX-001 |
 | D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub ; côté `src/` uniquement `src/server/api/app.ts` et `src/server/api/health/**` (172) et `src/server/api/public-leads/**` (178), avec leurs tests | 174 → 177 → 170 → 178 → 172 → 173 → 176 → 175 → 151 → 132 (après 120–122) |
 | E — recherche IA | session « AI Research » (à ouvrir) | `src/lib/ai-correction-benchmark-*`, `benchmarks/**`, `scripts/run-ai-correction-benchmark.ts`, `docs/V4_5_REGRESSION_SUITE.md`, `public/research/**` | 120 → 122 → 121 → 141 |
-| F — direction IA | Head of AI | docs, ADR, backlog, Airtable, revues | spec 120, 165, 164, revue des voies A et E |
+| F — direction IA | Head of AI | docs, ADR, backlog, Airtable, revues, `promoted-identity.ts` pour 115 seulement (coordonné avec A) | spec 120, 115, 165, 164, revue des voies A et E |
 
 Points de contact inter-voies : `prisma/migrations` (A-112 puis B-160, B-161) ;
 `src/server/credits` (A-101 puis B) ; `AdminCreditsPage.tsx` (C seulement) ;
