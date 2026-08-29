@@ -18,9 +18,7 @@ test('la landing ouvre le journal statique sans passer par la 404 applicative', 
   );
 
   await page.goto('/');
-  await page
-    .getByRole('link', { name: 'Explorer le journal de recherche' })
-    .click();
+  await page.getByRole('link', { name: 'Lire le verdict complet' }).click();
   await expect(page).toHaveURL(/\/research\/ai-correction\/index\.html$/);
   await expect(
     page.getByRole('heading', {
@@ -31,9 +29,7 @@ test('la landing ouvre le journal statique sans passer par la 404 applicative', 
 
   await page.goto('/');
   await page.getByRole('button', { name: 'EN', exact: true }).click();
-  await page
-    .getByRole('link', { name: 'Explore the research journal' })
-    .click();
+  await page.getByRole('link', { name: 'Read the full verdict' }).click();
   await expect(page).toHaveURL(/\/research\/ai-correction\/en\.html$/);
   await expect(
     page.getByRole('heading', {

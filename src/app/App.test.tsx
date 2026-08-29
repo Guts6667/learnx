@@ -83,7 +83,7 @@ describe('App', () => {
     render(<App />);
 
     const researchLink = await screen.findByRole('link', {
-      name: 'Explorer le journal de recherche',
+      name: 'Lire le verdict complet',
     });
     let routerPreventedNavigation: boolean | null = null;
     const observeThenCancelNativeNavigation = (event: MouseEvent) => {

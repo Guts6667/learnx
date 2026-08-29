@@ -76,27 +76,11 @@ export const frenchLandingMessages = {
   'landing.roadmap.description':
     'Chaque jalon est livré dans un périmètre mesurable avant d’élargir les usages de l’IA.',
   'landing.roadmap.available': 'Disponible',
-  'landing.roadmap.current': 'Pilote actuel',
   'landing.roadmap.next': 'Prochaine évolution',
-  'landing.roadmap.exploration': 'Horizon V5',
-  'landing.roadmap.learningTitle':
-    'Parcours structurés et progression personnelle',
-  'landing.roadmap.learningDescription':
-    'Apprendre, pratiquer, conserver ses tentatives et reprendre exactement là où l’on s’est arrêté.',
-  'landing.roadmap.correctionTitle': 'Correction formative assistée par IA',
-  'landing.roadmap.correctionDescription':
-    'Un retour critériel et borné sur les exercices textuels, sans effet automatique sur la progression.',
-  'landing.roadmap.improvedTitle': 'Correction enrichie et mieux calibrée',
-  'landing.roadmap.improvedDescription':
-    'Étendre les formats couverts, comparer les corrections et améliorer la qualité à partir des usages observés.',
-  'landing.roadmap.creationTitle': 'Création guidée de programmes par IA',
-  'landing.roadmap.creationDescription':
-    'Aider à concevoir des parcours sourcés tout en conservant les règles pédagogiques et la validation dans LearnX.',
   'landing.research.eyebrow': 'Recherche & transparence',
   'landing.research.title': 'Suivre nos recherches, décision après décision',
   'landing.research.description':
     'Notre journal conserve chaque benchmark, refus et arbitrage dans un article daté. Les anciennes recherches restent consultables et le verdict scientifique est toujours distingué de la décision produit.',
-  'landing.research.action': 'Explorer le journal de recherche',
   'landing.research.latestMeta':
     'Dernière publication · 24 août 2026 · Résultat',
   'landing.research.latestTitle':
@@ -137,6 +121,23 @@ export const frenchLandingMessages = {
   'landing.manage.error': 'Lien indisponible',
   'landing.manage.errorDescription':
     'Ce lien est invalide, expiré ou a déjà été utilisé.',
+  'landing.cta.apply': 'Candidater',
+  'landing.cta.howItWorks': 'Voir comment ça marche',
+  'landing.hero.trust':
+    'Aucune carte bancaire. Aucun compte créé avant votre acceptation.',
+  'landing.roadmap.availableTitle': 'Votre parcours, gardé et repris',
+  'landing.roadmap.availableDescription':
+    'Apprenez, pratiquez, et reprenez exactement là où vous vous êtes arrêté.',
+  'landing.roadmap.pilotLabel': 'Pilote en cours',
+  'landing.roadmap.pilotTitle': 'Retour immédiat sur vos écrits',
+  'landing.roadmap.pilotDescription':
+    'Une correction rapide et bornée, sans effet sur votre progression.',
+  'landing.roadmap.nextLabel': 'Prochainement',
+  'landing.roadmap.nextTitle':
+    'Correction élargie, puis parcours conçus par IA',
+  'landing.roadmap.nextDescription':
+    'Davantage de formats maintenant, des parcours sourcés ensuite — avec la même validation.',
+  'landing.research.readVerdict': 'Lire le verdict complet',
   'landing.manage.back': 'Retour à LearnX',
 } as const;
 
@@ -214,26 +215,11 @@ export const englishLandingMessages = {
   'landing.roadmap.description':
     'Each milestone is delivered within a measurable scope before AI capabilities are expanded.',
   'landing.roadmap.available': 'Available',
-  'landing.roadmap.current': 'Current pilot',
   'landing.roadmap.next': 'Next evolution',
-  'landing.roadmap.exploration': 'V5 horizon',
-  'landing.roadmap.learningTitle': 'Structured journeys and personal progress',
-  'landing.roadmap.learningDescription':
-    'Learn, practise, preserve attempts and resume exactly where you stopped.',
-  'landing.roadmap.correctionTitle': 'AI-assisted formative correction',
-  'landing.roadmap.correctionDescription':
-    'Bounded, criterion-based feedback on written exercises, with no automatic effect on progress.',
-  'landing.roadmap.improvedTitle': 'Richer, better-calibrated correction',
-  'landing.roadmap.improvedDescription':
-    'Cover more formats, compare corrections and improve quality from observed usage.',
-  'landing.roadmap.creationTitle': 'AI-assisted programme creation',
-  'landing.roadmap.creationDescription':
-    'Help design sourced learning journeys while LearnX retains pedagogical rules and validation.',
   'landing.research.eyebrow': 'Research & transparency',
   'landing.research.title': 'Follow our research, decision by decision',
   'landing.research.description':
     'Our journal preserves each benchmark, refusal and trade-off in a dated article. Earlier research remains available, and scientific verdicts stay separate from product decisions.',
-  'landing.research.action': 'Explore the research journal',
   'landing.research.latestMeta': 'Latest publication · 24 August 2026 · Result',
   'landing.research.latestTitle':
     'Sealed-protocol Writing evaluation: results and bounded deployment decision',
@@ -273,5 +259,21 @@ export const englishLandingMessages = {
   'landing.manage.error': 'Link unavailable',
   'landing.manage.errorDescription':
     'This link is invalid, expired or has already been used.',
+  'landing.cta.apply': 'Apply now',
+  'landing.cta.howItWorks': 'See how it works',
+  'landing.hero.trust':
+    'No credit card. No account created until you are accepted.',
+  'landing.roadmap.availableTitle': 'Your path, saved and resumable',
+  'landing.roadmap.availableDescription':
+    'Learn, practise, and pick up exactly where you left off.',
+  'landing.roadmap.pilotLabel': 'Live pilot',
+  'landing.roadmap.pilotTitle': 'Instant feedback on your writing',
+  'landing.roadmap.pilotDescription':
+    'Fast, bounded correction that never affects your progress.',
+  'landing.roadmap.nextLabel': 'Coming next',
+  'landing.roadmap.nextTitle': 'Broader correction, then AI-built paths',
+  'landing.roadmap.nextDescription':
+    'More formats now, fully sourced designed journeys after — same validation, every time.',
+  'landing.research.readVerdict': 'Read the full verdict',
   'landing.manage.back': 'Back to LearnX',
 } as const satisfies TranslationOf<typeof frenchLandingMessages>;

@@ -50,6 +50,18 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
         .first(),
     ).toBeVisible();
     await expect(page.getByText(/The Scrum Guide 2020/)).toBeVisible();
+    if (viewport.width >= 768) {
+      // A link colour rule once outranked the button primitive and rendered the
+      // persistent CTA as indigo on indigo. Axe did not flag it.
+      const cta = page.locator('.landing-utility a[href="#early-adopter"]');
+      await expect(cta).toBeVisible();
+      expect(
+        await cta.evaluate((element) => {
+          const style = getComputedStyle(element);
+          return style.color === style.backgroundColor;
+        }),
+      ).toBe(false);
+    }
     if (viewport.width >= 1024) {
       expect(
         await page.evaluate(() => {

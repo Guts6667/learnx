@@ -55,6 +55,12 @@ describe('LandingPage', () => {
     expect(
       screen.getAllByText('Être informé du lancement').length,
     ).toBeGreaterThan(0);
+    // The hero secondary scrolls to the product; it never competes with the
+    // single primary CTA.
+    const howItWorks = screen.getByRole('link', {
+      name: 'Voir comment ça marche',
+    });
+    expect(howItWorks).toHaveAttribute('href', '#product');
     expect(
       screen.getAllByRole('link', { name: 'Se connecter' })[0],
     ).toHaveAttribute('href', '/login');
@@ -74,17 +80,21 @@ describe('LandingPage', () => {
     expect(screen.getByText(/The Scrum Guide 2020/)).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
-        name: 'Correction formative assistée par IA',
+        name: 'Retour immédiat sur vos écrits',
       }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
-        name: 'Création guidée de programmes par IA',
+        name: 'Correction élargie, puis parcours conçus par IA',
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Pilote actuel')).toBeInTheDocument();
+    expect(screen.getByText('Pilote en cours')).toBeInTheDocument();
+    // One primary CTA, repeated in nav, hero and the application form.
+    expect(
+      screen.getAllByRole('link', { name: 'Candidater' }),
+    ).not.toHaveLength(0);
     const researchLink = screen.getByRole('link', {
-      name: 'Explorer le journal de recherche',
+      name: 'Lire le verdict complet',
     });
     expect(researchLink).toHaveAttribute(
       'href',
@@ -96,7 +106,7 @@ describe('LandingPage', () => {
       screen.getByText(/7 faux PASS et un écart ordinal de deux niveaux/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Être informé du lancement' }),
+      screen.getByRole('link', { name: 'Voir comment ça marche' }),
     ).not.toHaveClass('ui-action--secondary');
     expect(document.querySelector('.landing-brand img')).toHaveAttribute(
       'src',
@@ -139,7 +149,7 @@ describe('LandingPage', () => {
       screen.queryByText(/Piloter|Cadrer|Formuler|objectif unique/),
     ).not.toBeInTheDocument();
     const researchLink = screen.getByRole('link', {
-      name: 'Explore the research journal',
+      name: 'Read the full verdict',
     });
     expect(researchLink).toHaveAttribute(
       'href',
