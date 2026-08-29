@@ -352,17 +352,17 @@ export function LandingPage({ path }: { path?: string }) {
         </article>
       </section>
       <section className="landing-forms">
-        <article id="launch-updates">
-          <p className="page-eyebrow">{t('landing.updates.eyebrow')}</p>
-          <h2>{t('landing.updates.title')}</h2>
-          <p>{t('landing.updates.description')}</p>
-          <InterestForm purpose="LAUNCH_UPDATES" />
-        </article>
         <article id="early-adopter">
           <p className="page-eyebrow">{t('landing.early.eyebrow')}</p>
           <h2>{t('landing.early.title')}</h2>
           <p>{t('landing.early.description')}</p>
           <InterestForm purpose="EARLY_ADOPTER" />
+        </article>
+        <article id="launch-updates">
+          <p className="page-eyebrow">{t('landing.updates.eyebrow')}</p>
+          <h2>{t('landing.updates.title')}</h2>
+          <p>{t('landing.updates.description')}</p>
+          <InterestForm purpose="LAUNCH_UPDATES" />
         </article>
       </section>
     </TotemPublicShell>
