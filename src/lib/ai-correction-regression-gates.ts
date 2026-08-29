@@ -30,17 +30,13 @@ export const REGRESSION_GATE_POLICY_VERSION = '3.0.0';
  * `BLOCKING` forbids promotion when red. `WATCHED` is reported and reviewed but
  * does not block. `REPORTED` carries no threshold at all.
  */
-export const regressionGateKindSchema = z.enum([
-  'BLOCKING',
-  'WATCHED',
-  'REPORTED',
-]);
+const regressionGateKindSchema = z.enum(['BLOCKING', 'WATCHED', 'REPORTED']);
 
 /**
  * `MAX_RATE` caps a rate, `MIN_RATE` floors one, `MAX_COUNT` caps a raw count
  * (used where the contract says "0" and means zero events, not zero percent).
  */
-export const regressionGateComparisonSchema = z.enum([
+const regressionGateComparisonSchema = z.enum([
   'MAX_RATE',
   'MIN_RATE',
   'MAX_COUNT',
@@ -59,7 +55,7 @@ const regressionGateSchema = z
   })
   .strict();
 
-export const regressionGatePolicySchema = z
+const regressionGatePolicySchema = z
   .object({
     gates: z.array(regressionGateSchema).min(1),
     policyVersion: z.literal(REGRESSION_GATE_POLICY_VERSION),
@@ -69,7 +65,7 @@ export const regressionGatePolicySchema = z
   .strict();
 
 export type RegressionGatePolicy = z.infer<typeof regressionGatePolicySchema>;
-export type RegressionGate = z.infer<typeof regressionGateSchema>;
+type RegressionGate = z.infer<typeof regressionGateSchema>;
 
 export function parseRegressionGatePolicy(
   source: unknown,
@@ -77,8 +73,7 @@ export function parseRegressionGatePolicy(
   return regressionGatePolicySchema.parse(source);
 }
 
-export type RegressionGateStatus =
-  'PASS' | 'FAIL' | 'NOT_MEASURED' | 'REPORTED';
+type RegressionGateStatus = 'PASS' | 'FAIL' | 'NOT_MEASURED' | 'REPORTED';
 
 export type RegressionGateResult = {
   /** The integer budget the rate threshold resolved to, when it has one. */

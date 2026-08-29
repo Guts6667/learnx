@@ -35,14 +35,14 @@ export const REGRESSION_POOL_SCHEMA_VERSION = 1;
  * Where a case's gold standard comes from, and therefore how much it may be
  * trusted. `MODEL_AUTHORED` is the honest label for every historical corpus.
  */
-export const regressionOracleKindSchema = z.enum([
+const regressionOracleKindSchema = z.enum([
   'MODEL_AUTHORED',
   'LIVE_DERIVED',
   'MECHANICAL',
 ]);
 
 /** The role a source corpus played when it was authored. */
-export const regressionSourceRoleSchema = z.enum([
+const regressionSourceRoleSchema = z.enum([
   'DEVELOPMENT_HISTORICAL',
   'HOLDOUT_HISTORICAL',
   'WRITING_HOLDOUT_HISTORICAL',

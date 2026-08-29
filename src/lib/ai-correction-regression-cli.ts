@@ -28,10 +28,10 @@ import {
   type RegressionPool,
 } from './ai-correction-regression-pool.js';
 
-export const benchmarkDirectory = path.resolve('benchmarks/ai-correction');
-export const regressionDirectory = path.join(benchmarkDirectory, 'regression');
-export const defaultPoolFileName = 'regression-pool.v1.json';
-export const defaultHintsFileName = 'mutation-hints.v1.json';
+const benchmarkDirectory = path.resolve('benchmarks/ai-correction');
+const regressionDirectory = path.join(benchmarkDirectory, 'regression');
+const defaultPoolFileName = 'regression-pool.v1.json';
+const defaultHintsFileName = 'mutation-hints.v1.json';
 
 /**
  * The authored hints live in their own artefact rather than only inside the
@@ -46,8 +46,8 @@ const mutationHintsArtefactSchema = z
   .strict();
 
 /** The pool identity and membership, per V4.5-120 and the owner's Q1 ruling. */
-export const REGRESSION_POOL_ID = 'learnx-fr-regression-pool-v1';
-export const REGRESSION_POOL_LANGUAGE = 'fr-FR';
+const REGRESSION_POOL_ID = 'learnx-fr-regression-pool-v1';
+const REGRESSION_POOL_LANGUAGE = 'fr-FR';
 
 /**
  * The five sealed historical corpora, and only those.
@@ -57,7 +57,7 @@ export const REGRESSION_POOL_LANGUAGE = 'fr-FR';
  * so admitting both would put two contradicting `MODEL_AUTHORED` oracles on the
  * same case and make every drift measurement unreadable.
  */
-export const REGRESSION_POOL_SOURCES: {
+const REGRESSION_POOL_SOURCES: {
   path: string;
   role: RegressionPool['sources'][number]['role'];
 }[] = [
@@ -71,7 +71,7 @@ export const REGRESSION_POOL_SOURCES: {
   },
 ];
 
-export const REGRESSION_POOL_EXCLUSIONS: RegressionPool['excluded'] = [
+const REGRESSION_POOL_EXCLUSIONS: RegressionPool['excluded'] = [
   {
     path: '../hybrid/writing-only-fr-v1/corpus.draft.json',
     reason:
@@ -105,7 +105,7 @@ export function readCliOption(
 }
 
 /** Resolves a pool path given as a bare file name, or a real path. */
-export function resolvePoolPath(value: string): string {
+function resolvePoolPath(value: string): string {
   return value.includes('/') || path.isAbsolute(value)
     ? path.resolve(value)
     : path.join(regressionDirectory, value);

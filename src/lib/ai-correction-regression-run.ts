@@ -60,7 +60,7 @@ export interface RegressionCheckerPort {
 }
 
 /** One thing to be corrected: a pool case as-is, or one of its mutants. */
-export type RegressionRunUnit = {
+type RegressionRunUnit = {
   /** Identifier inside the synthetic corpus (a stable key). */
   benchmarkCaseId: string;
   expectation?: RegressionMutant['expectation'];
@@ -84,7 +84,7 @@ export type RegressionRunPlan = {
  * deterministic, and the plan records it so a benchmark artefact can always be
  * traced back to the mutant that produced it.
  */
-export function benchmarkCaseIdFor(unitId: string): string {
+function benchmarkCaseIdFor(unitId: string): string {
   return `regression-${createHash('sha256').update(unitId).digest('hex').slice(0, 16)}`;
 }
 
@@ -394,7 +394,7 @@ function finalAttempts(attempts: BenchmarkAttempt[]): BenchmarkAttempt[] {
  * reject a model output. A breach shows up here, not in a valid output: the
  * runner refuses the attempt before it ever becomes an observation.
  */
-export const REGRESSION_INJECTION_FAILURE_CODE =
+const REGRESSION_INJECTION_FAILURE_CODE =
   'MODEL_PROMPT_INJECTION_SAFETY_FAILURE';
 
 /**

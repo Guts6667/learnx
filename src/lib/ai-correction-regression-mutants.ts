@@ -295,7 +295,7 @@ function digest(value: string): string {
  * this mutant distinct from its siblings, so a gate failure names something a
  * reader can find in the pool without consulting a mapping table.
  */
-export function mutantId(input: {
+function mutantId(input: {
   caseId: string;
   discriminator: string;
   kind: RegressionMutantKind;

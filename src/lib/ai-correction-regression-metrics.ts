@@ -46,7 +46,7 @@ export type RegressionObservation = {
 };
 
 /** The ordering a criterion's levels have in its contract, lowest first. */
-export type RegressionCriterionScale = {
+type RegressionCriterionScale = {
   criterionKey: string;
   /** Level keys ordered by ascending score. */
   orderedLevelKeys: string[];
