@@ -9,6 +9,13 @@ on:
 permissions:
   contents: read
 
+# Each run creates a Neon branch and the project has a branch quota, so two
+# runs racing on the same ref exhaust it and the second fails with a 422 on
+# branch creation rather than on anything in the code. Serialise per ref.
+concurrency:
+  group: integration-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   real-functions:
     runs-on: ubuntu-latest
