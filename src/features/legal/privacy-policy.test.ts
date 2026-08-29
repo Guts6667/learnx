@@ -29,6 +29,11 @@ function flatten(markdown: string): string {
 
 const flatDocument = flatten(document);
 
+/** Une phrase du document est une suite de segments dans le module. */
+function join(fragments: { text: string }[]): string {
+  return fragments.map((fragment) => fragment.text).join('');
+}
+
 describe('privacy policy content', () => {
   it.each(['en', 'fr'] as const)(
     'ne contient aucune phrase absente du document (%s)',
@@ -39,8 +44,8 @@ describe('privacy policy content', () => {
         content.updated,
         ...content.sections.flatMap((section) => [
           section.heading,
-          ...(section.body ? [section.body] : []),
-          ...(section.bullets ?? []),
+          ...(section.body ? [join(section.body)] : []),
+          ...(section.bullets ?? []).map(join),
         ]),
       ];
 
@@ -92,14 +97,16 @@ describe('privacy policy content', () => {
     // n'en décide.
     const brackets = [privacyPolicy.en, privacyPolicy.fr].flatMap((content) =>
       content.sections.flatMap((section) =>
-        [...(section.body ?? '').matchAll(/\[([^\]]+)\]/g)].map((m) => m[1]),
+        [...join(section.body ?? []).matchAll(/\[([^\]]+)\]/g)].map(
+          (m) => m[1],
+        ),
       ),
     );
-    expect([...new Set(brackets)].sort()).toEqual([
-      "Owner's name / legal status / address",
-      'adresse e-mail de contact',
-      'contact e-mail',
-      'nom / statut / adresse du Propriétaire',
-    ]);
+    // Liste vide depuis la 1.3.0 : identité de l'éditeur et adresse de
+    // contact renseignées. Ce test devient donc la preuve de complétude —
+    // pas la lecture de la page, où un crochet oublié se confond avec une
+    // tournure. S'il reverdit avec une entrée, c'est qu'une version du
+    // document a réintroduit un champ vide.
+    expect([...new Set(brackets)].sort()).toEqual([]);
   });
 });
