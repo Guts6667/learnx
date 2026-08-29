@@ -280,6 +280,35 @@ l'autorité de définition ; Airtable porte le statut.
 - Acceptation : artefact de sonde committé avec coût réconcilié ; test
   d'adaptateur figeant le corps de requête ; aucune modification du prompt.
 
+### V4.5-116 — Transport factice réellement câblé (défaut de 111)
+
+- Epic : V4.5-002/012 · Owner : Backend/Data · Reviewer : Architecture/Produit ·
+  Statut : livré le 29 août (`995ed402`).
+- Défaut : `LEARNX_AI_TRANSPORT=fake` faisait rapporter `transport: FAKE` au
+  préflight alors que l'orchestration construisait toujours le transport
+  OpenRouter réel. Aucun environnement ne définissait la variable.
+- Livré : `selectCorrectionTransport()` renvoie mode et transport ensemble ;
+  l'orchestration et le préflight consomment le même objet ; tests : FAKE
+  n'atteint jamais `fetch`, le préflight rapporte le transport construit, refus
+  en production exercé via la racine de composition.
+
+### V4.5-117 — Clé stable des évaluations d'étape (rattachement des contrats)
+
+- Epic : V4.5-005/006 · Owner : Backend/Data · Reviewer : Architecture/Produit ·
+  Deps : V4.5-130, V4.5-112 (API), V4.5-140. Préalable à l'activation de
+  `STAGE_ASSESSMENT` dans le pin (décision Rayan, ticket ultérieur).
+- Constat (130) : `StageAssessment` n'a ni `key` ni contrat v3 ; rien ne
+  rattache un contrat à une évaluation précise ; aucun archétype n'est
+  synthétisé pour cette surface (décision du 29 août).
+- Livrable : colonne `key` symétrique à `Exercise` (migration additive + note
+  de rollback), backfill déterministe slug d'étape + position,
+  `@@unique([stageId, key])` ; règle de rattachement
+  `CONTRACT_BINDING_UNAVAILABLE` → comparaison de clé ; convention d'authoring
+  documentée.
+- Acceptation : migration rejouable en preview ; contrat rattaché à une autre
+  évaluation refusé, à la bonne clé accepté ; test zéro-écriture de 130
+  toujours vert ; aucune activation du pin.
+
 ### V4.5-120 — Suite de régression décidable par la machine
 
 - Epic : V4.5-003 · Owner : IA/Recherche · Reviewer : Architecture/Produit ·
@@ -432,12 +461,14 @@ la fois ; les migrations Prisma atterrissent en série (A puis B).
 
 | Voie | Session | Fichiers possédés | Tickets dans l'ordre |
 | --- | --- | --- | --- |
-| A — backend IA | Head of Development | `src/server/corrections/**`, `src/server/ai/**`, `src/server/api/corrections/**`, `src/server/api/exercises/eligibility.ts`, migrations associées | 101 → 110 → 111 → 131 → 130 → 112 (API + migration) → 140 (backend + coupe-circuit) → 114 (après 121) |
+| A — backend IA | Head of Development | `src/server/corrections/**`, `src/server/ai/**`, `src/server/api/corrections/**`, `src/server/api/exercises/eligibility.ts`, `src/lib/*-correction-contracts.ts`, migrations associées | 101 → 110 → 111 → 116 → 131 → 130 → 112 (API + migration) → 140 (backend + coupe-circuit) → 117 → 114 (après 121) |
 | B — backend commerce | Head of Development après la voie A (ou session dédiée) | `src/server/payments/**`, `src/server/credits/**`, `src/server/pricing/**`, `src/server/api/credits/**`, migrations associées | 160 → 161 → 163 → 162 ; démarre après le merge de 101 |
-| C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/AdminCreditsPage.tsx`, `src/pages/Credits*`, `src/i18n/catalogs/correction.ts`, `tests/e2e/**` | 113 → 112 (UI) → 150 → 140 (UI admin) → 162 (UI admin) → UX-001 |
+| C — frontend | Head of UX/UI | `src/features/exercises/**`, `src/pages/**` (dont `ProgramsDirectoryPages.tsx`, `AdminCreditsPage.tsx`, `Credits*`), `src/styles/**`, `src/components/**`, `src/i18n/catalogs/**` (baseline régénérée par le script, jamais fusionnée à la main), `tests/e2e/**`, `tests/visual/**` | 113 → 112 (UI) → 150 → 140 (UI admin) → 162 (UI admin) → UX-001 |
 | D — exploitation | DevOps (learnx-e0) | `.github/**`, `scripts/**` hors runner benchmark, `vercel.json`, scripts `package.json`, `quality/*.json`, `docs/TESTING_AND_RELEASE.md`, `docs/HANDOFF.md`, réglages Vercel/Neon/GitHub ; côté `src/` uniquement `src/server/api/app.ts` et `src/server/api/health/**` (172) et `src/server/api/public-leads/**` (178), avec leurs tests | 174 → 177 → 170 → 178 → 172 → 173 → 176 → 175 → 151 → 132 (après 120–122) |
 | E — recherche IA | session « AI Research » (à ouvrir) | `src/lib/ai-correction-benchmark-*`, `benchmarks/**`, `scripts/run-ai-correction-benchmark.ts`, `docs/V4_5_REGRESSION_SUITE.md`, `public/research/**` | 120 → 122 → 121 → 141 |
 | F — direction IA | Head of AI | docs, ADR, backlog, Airtable, revues, `promoted-identity.ts` pour 115 seulement (coordonné avec A) | spec 120, 115, 165, 164, revue des voies A et E |
+
+Règle produit (29 août, 112/113) : une surface conditionnée par un champ serveur est masquée tant que le champ est absent, jamais affichée désactivée sans raison.
 
 Points de contact inter-voies : `prisma/migrations` (A-112 puis B-160, B-161) ;
 `src/server/credits` (A-101 puis B) ; `AdminCreditsPage.tsx` (C seulement) ;
