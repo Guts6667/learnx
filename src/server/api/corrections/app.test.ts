@@ -80,7 +80,6 @@ describe('corrections API', () => {
         modelUsageCostUsd: 0.01,
         monitoringSignals: [],
         overallFeedback: 'Retour formatif.',
-        secondPassRequired: false,
         status: 'COMPLETED',
         unsureCriteria: [],
       },

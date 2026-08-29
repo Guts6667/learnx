@@ -79,7 +79,6 @@ describe('correction orchestration (V4-009)', () => {
 
       expect(harness.transportOutputs).toHaveLength(1);
       expect(result.correction).toMatchObject({
-        secondPassRequired: false,
         status: 'COMPLETED',
       });
       expect(result.correction.monitoringSignals).not.toContain(
@@ -224,7 +223,6 @@ describe('correction orchestration (V4-009)', () => {
         unsureCriteria: [],
         overallFeedback: null,
         indicativeScore: 80,
-        secondPassRequired: false,
         modelUsageCostUsd: 0.01,
         monitoringSignals: [],
       },
@@ -256,7 +254,6 @@ describe('correction orchestration (V4-009)', () => {
         monitoringSignals: [],
         overallConfidence: 'MEDIUM' as const,
         overallFeedback: null,
-        secondPassRequired: false,
         status: 'COMPLETED' as const,
         unsureCriteria: [],
         unsureCriterionDetails: [],
@@ -298,7 +295,6 @@ describe('correction orchestration (V4-009)', () => {
         monitoringSignals: [],
         overallConfidence: 'LOW' as const,
         overallFeedback: null,
-        secondPassRequired: false,
         status: 'FAILED' as const,
         unsureCriteria: [],
         unsureCriterionDetails: [],

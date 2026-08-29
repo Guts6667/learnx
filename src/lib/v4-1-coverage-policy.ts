@@ -10,7 +10,6 @@ export const V4_1_CRITICAL_LINES_MINIMUM_PERCENT = 90;
 
 export const V4_1_TEST_SUPPORT_COVERAGE_EXCLUDES = [
   '**/*.test-support.ts',
-  'src/server/ai/fake-structured-provider.ts',
   'src/test-utils/**',
 ] as const;
 
@@ -44,7 +43,6 @@ export function isV4_1TestSupportPath(path: string): boolean {
   const normalized = path.replaceAll('\\', '/');
   return (
     normalized.endsWith('.test-support.ts') ||
-    normalized === 'src/server/ai/fake-structured-provider.ts' ||
     normalized.startsWith('src/test-utils/')
   );
 }

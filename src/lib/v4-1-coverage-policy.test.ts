@@ -11,9 +11,11 @@ describe('V4.1 coverage policy', () => {
   it('pins the release minima and test-support exclusions', () => {
     expect(V4_1_GLOBAL_COVERAGE_MINIMUM_PERCENT).toBe(80);
     expect(V4_1_CRITICAL_LINES_MINIMUM_PERCENT).toBe(90);
+    // The named exception for fake-structured-provider went with the legacy
+    // stack in V4.5-131: the convention-based patterns are the whole policy
+    // again, with nothing carved out by name.
     expect(V4_1_TEST_SUPPORT_COVERAGE_EXCLUDES).toEqual([
       '**/*.test-support.ts',
-      'src/server/ai/fake-structured-provider.ts',
       'src/test-utils/**',
     ]);
   });
@@ -49,7 +51,6 @@ describe('V4.1 coverage policy', () => {
 
   it.each([
     'src/lib/example.test-support.ts',
-    'src/server/ai/fake-structured-provider.ts',
     'src/test-utils/stylesheet-source.ts',
   ])('recognizes test-only coverage support: %s', (path) => {
     expect(isV4_1TestSupportPath(path)).toBe(true);

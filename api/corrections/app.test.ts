@@ -45,7 +45,6 @@ function buildResult(): OrchestratedCorrectionResult {
       overallConfidence: 'MEDIUM',
       overallFeedback: 'Note claire.',
       indicativeScore: 100,
-      secondPassRequired: false,
       modelUsageCostUsd: 0.012,
       monitoringSignals: [],
     },
