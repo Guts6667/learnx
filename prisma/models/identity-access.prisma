@@ -6,6 +6,9 @@ model User {
   role                            Role                          @default(USER)
   accountStatus                   AccountStatus                 @default(ACTIVE) @map("account_status")
   locale                          String                        @default("fr") @db.VarChar(2)
+  /// Renseignée à l'activation depuis le chemin d'admission, modifiable par un
+  /// administrateur, jamais déduite au moment d'un octroi.
+  cohort                          CreditCohort                  @default(EARLY_ADOPTER)
   suspendedAt                     DateTime?                     @map("suspended_at")
   createdAt                       DateTime                      @default(now()) @map("created_at")
   updatedAt                       DateTime                      @updatedAt @map("updated_at")

@@ -82,3 +82,15 @@ enum AiPricingTargetKind {
 
   @@map("ai_pricing_target_kind")
 }
+
+/// Cohorte d'un compte (V4.5-163). Décide de l'allocation offerte à laquelle il
+/// a droit. Portée par le compte et estampillée sur chaque octroi : une
+/// correction de cohorte ne réécrit jamais l'historique des versements.
+enum CreditCohort {
+  EARLY_ADOPTER @map("early_adopter")
+  TRIAL         @map("trial")
+  FRIENDS_FAMILY @map("friends_family")
+  PURCHASED     @map("purchased")
+
+  @@map("credit_cohort")
+}

@@ -29,7 +29,20 @@ function rate(value: number | null): string {
   return value === null ? 'sous quorum' : `${(value * 100).toFixed(1)} %`;
 }
 
+/**
+ * Trial→purchase funnel (V4.5-163). Counted, never rated: with a handful of
+ * learners a percentage moves twenty points on one purchase and would read as a
+ * trend. The rate belongs in the report when the denominator can carry it.
+ */
+export interface TrialFunnel {
+  grantedThisWeek: number;
+  purchasedAfterTrial: number;
+  suspendedByBreaker: number;
+  trialAccounts: number;
+}
+
 export function formatWeeklyCorrectionReport(input: {
+  funnel?: TrialFunnel;
   journal: BreakerJournalEntry[];
   summary: CorrectionMonitoringSummary;
   week: { since: Date; until: Date };
@@ -63,6 +76,20 @@ export function formatWeeklyCorrectionReport(input: {
     lines.push(
       `  ${summary.cost.unknownCostAttempts} tentative(s) sans coût fournisseur — à rapprocher de la facturation.`,
     );
+  }
+
+  if (input.funnel) {
+    lines.push(
+      '',
+      `Essai : ${input.funnel.trialAccounts} compte(s) en cohorte essai · ${input.funnel.grantedThisWeek} allocation(s) cette semaine · ${input.funnel.purchasedAfterTrial} achat(s) après essai`,
+    );
+    if (input.funnel.suspendedByBreaker > 0) {
+      // Not a funnel loss: these learners were refused a grant because the
+      // feature was suspended, which is our doing and not their choice.
+      lines.push(
+        `  ${input.funnel.suspendedByBreaker} allocation(s) non versée(s) — coupe-circuit ouvert.`,
+      );
+    }
   }
 
   lines.push('', 'Journal du coupe-circuit :');

@@ -18,7 +18,7 @@ describe('Prisma multi-file schema', () => {
     // (AiCorrectionCriterionFeedback, AiCorrectionFeedbackVerdict); +1 model
     // and +2 enums in V4.5-140 (AiCorrectionBreakerEvent and its action and
     // reason).
-    expect(fullSchema.match(/^enum\s+/gm)).toHaveLength(53);
+    expect(fullSchema.match(/^enum\s+/gm)).toHaveLength(54);
     expect(fullSchema.match(/^model\s+/gm)).toHaveLength(65);
   });
 
@@ -31,6 +31,6 @@ describe('Prisma multi-file schema', () => {
     expect(config).toContain("schema: 'prisma'");
     expect(config).toContain("path: 'prisma/migrations'");
     // +1 each in V4.5-112, V4.5-140, V4.5-142 and V4.5-166; all additive.
-    expect(migrationDirectories).toHaveLength(46);
+    expect(migrationDirectories).toHaveLength(47);
   });
 });
