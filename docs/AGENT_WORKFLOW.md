@@ -249,6 +249,17 @@ branche, statut et liste des fichiers. Aucun push, merge, déploiement,
 publication, paiement, appel fournisseur payant ou modification de données
 réelles n'est inclus sans autorisation explicite.
 
+Avant chaque push (règle du 29 août 2026, après trois rouges évitables) :
+
+1. rebase sur `origin/dev`, puis `pnpm prisma:generate` — un client Prisma
+   généré est un artefact de build qui ne suit pas git et ment en silence
+   (une énumération ajoutée par une autre voie fait échouer vos tests chez
+   vous, pas sur `dev`) ;
+2. `pnpm quality:v4.1:final` — c'est le script exact du check requis ; un lot
+   de gates composé à la main omet toujours quelque chose. Il est nécessaire,
+   pas suffisant : les baselines visuelles et Integration ne s'exécutent
+   qu'en CI et se lisent comme des signaux, jamais comme des flakes.
+
 Le handoff minimal contient :
 
 ```text

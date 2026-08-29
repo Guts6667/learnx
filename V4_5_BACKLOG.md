@@ -331,6 +331,12 @@ l'autorité de définition ; Airtable porte le statut.
 - Livrable : un run complet, coût réconcilié, résultats append-only sous
   `benchmarks/ai-correction/regression/results/`, entrée FR/EN du journal
   public.
+- Budget (29 août 2026) : plafond final **13 USD** (`owner-121-budget-2026-08-29`),
+  borne prudente 12,51 USD (convention : un token par unité UTF-16 +
+  enveloppe, appliquée aux deux moitiés), dépense réelle réconciliée au
+  rapport ; ordre de coupe : paraphrases, puis répétitions 3→2, jamais la
+  passe complète, les mutants ni la sécurité. Article public FR/EN dans la
+  même PR que les résultats (`owner-research-article-2026-08-29`).
 - Acceptation : gates sécurité verts ; gates calibration rapportés sans
   retuning ; page publique via les tests journal existants.
 
@@ -532,6 +538,12 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-167 | C | Frontend → Head of AI | Page `/confidentialite` + `/privacy` depuis `docs/V4_5_PRIVACY_POLICY.md`, lien pied de page et notice IA, clé `aiCorrection.dataNotice` | 165, 166 ; bloque 151 |
 | V4.5-168 | A+C | Backend/Data → Head of AI | Détachement des corrections à 180 jours (pseudonyme, aucune suppression) et ligne d'information « réutilisation pour améliorer le système » | 166, 173 |
 | V4.5-142 | A | Backend/Data → IA/Recherche | Alerte owner du coupe-circuit (e-mail Resend, livraison journalisée `alertedAt`/`alertError`, jamais de texte apprenant), audit des coûts inconnus sur 24 h (`pnpm ai:cost-audit`, PROCESSING < 60 min exclus, au-delà `STUCK_PROCESSING`), rapport hebdomadaire (`pnpm ai:weekly-report`, lecture seule). Réconciliation = rapport seul (aucune écriture ; `CONSERVATIVE_WRITE_OFF` reste dormant). Planification par 173. | 140 ; bloque 151 |
+| V4.5-144 | A | Backend/Data → DevOps | Gardes `pg_type`/`pg_constraint` des migrations 112 et 140 qualifiées par schéma (Integration rouge : replay dans un schéma isolé) — livré, Integration verte sur `97a614b3` | — |
+| V4.5-145 | D | DevOps → Backend/Data | Integration : prouver l'égalité schéma rejoué / schéma migré (un replay qui sort 0 ne prouve rien) | 144 |
+| V4.5-146 | D | DevOps → Backend/Data | Domaines critiques : couvrir `account-erasure-service` et `account-administration-service` | 166 |
+| V4.5-147 | A | Backend/Data → Sécurité | Empreintes IP en HMAC sous `LEARNX_BUCKET_HMAC_SECRET` (SHA-256 non salé = réversible) ; refus en production, previews compris — livré `87f6d020` | précède la publication de 167 |
+| V4.5-169 | C | Frontend → Head of AI | Page confidentialité finale : texte 1.3.0 (identité éditeur confirmée `owner-editor-identity-2026-08-29`), `<strong>` d'insistance, captures | 167 |
+| V4.5-180 | D | DevOps → Frontend | Gate visuel : plancher absolu `maxDiffPixels` en plus du ratio (un lien entier passe sous 0,05 % d'une page longue) | — |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
