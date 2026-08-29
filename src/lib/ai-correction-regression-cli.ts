@@ -29,8 +29,8 @@ import {
 } from './ai-correction-regression-pool.js';
 
 const benchmarkDirectory = path.resolve('benchmarks/ai-correction');
-const regressionDirectory = path.join(benchmarkDirectory, 'regression');
-const defaultPoolFileName = 'regression-pool.v1.json';
+export const regressionDirectory = path.join(benchmarkDirectory, 'regression');
+export const defaultPoolFileName = 'regression-pool.v1.json';
 const defaultHintsFileName = 'mutation-hints.v1.json';
 
 /**
@@ -105,7 +105,7 @@ export function readCliOption(
 }
 
 /** Resolves a pool path given as a bare file name, or a real path. */
-function resolvePoolPath(value: string): string {
+export function resolvePoolPath(value: string): string {
   return value.includes('/') || path.isAbsolute(value)
     ? path.resolve(value)
     : path.join(regressionDirectory, value);

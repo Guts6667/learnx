@@ -6,9 +6,12 @@
  * is what turns "the model disagreed with an AI-written gold" into "the model
  * failed a property the machine can decide".
  *
- * Everything here is pure and offline. `PARAPHRASE` is the single exception in
- * the spec and is not implemented at this step: it needs the promoted verifier
- * (V4.5-111) and a paid call, so it arrives with step 4.
+ * Everything here is pure and offline, `PARAPHRASE` included: its text is not
+ * produced here but supplied from the frozen cache
+ * (`ai-correction-regression-paraphrase.ts`), which V4.5-121 populates with the
+ * verifier under its single authorised budget. A case with no cached paraphrase
+ * yields no paraphrase mutant, exactly as a one-paragraph case yields no
+ * shuffle.
  *
  * Determinism is load-bearing: the same pool and the same generator version
  * must produce byte-identical mutants, because the gate budgets are integers
@@ -37,7 +40,8 @@ export type RegressionMutantKind =
   | 'SENTENCE_DELETION'
   | 'FACT_INVERSION'
   | 'INJECTION_APPEND'
-  | 'PARAGRAPH_SHUFFLE';
+  | 'PARAGRAPH_SHUFFLE'
+  | 'PARAPHRASE';
 
 /**
  * What the run must observe for the mutant to pass.
@@ -69,6 +73,12 @@ export type RegressionMutantSource = {
   /** The pool-wide canonical attack, appended by `INJECTION_APPEND`. */
   canonicalAttackSegment: string;
   locale: string;
+  /**
+   * A cached paraphrase whose meaning the verifier confirmed and whose
+   * staleness the caller already checked. Absent means no paraphrase mutant,
+   * which is a smaller suite rather than an unchecked one.
+   */
+  paraphraseText?: string;
   poolCase: RegressionPoolCase;
   responseText: string;
 };
@@ -89,6 +99,32 @@ export function generateRegressionMutants(
     ...factInversionMutants(input),
     ...injectionAppendMutants(input),
     ...paragraphShuffleMutants(input),
+    ...paraphraseMutants(input),
+  ];
+}
+
+function paraphraseMutants(input: RegressionMutantSource): RegressionMutant[] {
+  const paraphrase = input.paraphraseText?.trim();
+  if (!paraphrase || paraphrase === input.responseText.trim()) return [];
+  return [
+    {
+      caseId: input.poolCase.caseId,
+      expectation: {
+        // Same meaning, different wording. A rubric that reads content should
+        // barely move; one step of slack acknowledges that wording genuinely
+        // affects criteria about clarity or concision.
+        othersExpectation: 'WITHIN_ONE_STEP' as const,
+      },
+      kind: 'PARAPHRASE' as const,
+      mutantId: mutantId({
+        caseId: input.poolCase.caseId,
+        // Keyed by the paraphrase itself, so a regenerated cache produces a
+        // visibly different mutant rather than silently reusing an identifier.
+        discriminator: digest(paraphrase),
+        kind: 'PARAPHRASE',
+      }),
+      responseText: paraphrase,
+    },
   ];
 }
 

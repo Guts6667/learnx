@@ -35,6 +35,15 @@ export async function runAiCorrectionBenchmarkCli(
     await runRegressionPoolValidation(arguments_);
     return;
   }
+  if (arguments_.some((argument) => argument.startsWith('--run-pool'))) {
+    // Executing the suite needs the promoted identities, which live under
+    // src/server; the runner script composes them and calls
+    // `runRegressionPool` directly. Reaching here means the command was typed
+    // without that composition, so it stops rather than running unpinned.
+    throw new Error(
+      'REGRESSION_RUN_REQUIRES_PINNED_IDENTITIES: lancez `pnpm ai:benchmark:run-pool`, qui épingle PROMOTED_CORRECTION_IDENTITY et PROMOTED_CHECKER_IDENTITY.',
+    );
+  }
 
   const loaded = await loadBenchmarkInputs(arguments_);
   const { configuration, corpus } = loaded;
