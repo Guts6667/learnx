@@ -514,12 +514,29 @@ export async function runRegressionPool(input: {
     profile,
     repetitions: input.configuration.repetitions,
   });
+  // Loaded before pricing, not after: a resumed run must be priced on the work
+  // it still owes. Charging the bound for cells already bought would refuse a
+  // resume that is in fact cheaper than the original run.
+  const resumeDirectory = readCliOption(input.arguments, 'resume');
+  const resumedAttempts = resumeDirectory
+    ? await readResumeAttempts(path.resolve(resumeDirectory))
+    : [];
+  const completedCells = new Set(
+    resumedAttempts.map((attempt) =>
+      cellKey({
+        candidateId: attempt.candidateId,
+        caseId: attempt.caseId,
+        repetition: attempt.repetition,
+      }),
+    ),
+  );
+
   const checkerPricing = await readCheckerPricing(directory);
   const checkerPromptCharacters = checkerPromptCharactersUpperBound(plan);
   const checkerCostFor = (passes: RegressionRunPass[]): number => {
     if (!checkerPricing) return 0;
     const corrections = passes.reduce(
-      (total, pass) => total + pass.cases.length * pass.repetitions,
+      (total, pass) => total + outstandingCases(pass).length * pass.repetitions,
       0,
     );
     return checkerWorstCaseUsd({
@@ -530,12 +547,39 @@ export async function runRegressionPool(input: {
     });
   };
 
+  const outstandingCases = (
+    pass: RegressionRunPass,
+  ): RegressionRunPass['cases'] =>
+    completedCells.size === 0
+      ? pass.cases
+      : pass.cases.filter((benchmarkCase) => {
+          for (
+            let repetition = 1;
+            repetition <= pass.repetitions;
+            repetition += 1
+          ) {
+            if (
+              !completedCells.has(
+                cellKey({
+                  candidateId: candidate.candidateId,
+                  caseId: benchmarkCase.caseId,
+                  repetition,
+                }),
+              )
+            ) {
+              return true;
+            }
+          }
+          return false;
+        });
+
   const pricePass = (pass: RegressionRunPass): number => {
-    if (pass.cases.length === 0) return 0;
+    const cases = outstandingCases(pass);
+    if (cases.length === 0) return 0;
     const passPreflight = buildBenchmarkSupplierBudgetPreflight({
       actualSpentUsd: 0,
       candidates: [candidate],
-      cases: pass.cases,
+      cases,
       configuration: input.configuration,
       corpus: plan.corpus,
       maxRetries: input.identities.maxRetries,
@@ -684,10 +728,7 @@ export async function runRegressionPool(input: {
   const guard = new SupplierBudgetGuard(supplierCostCapUsd);
   const attempts: BenchmarkAttempt[] = [];
 
-  const resumeDirectory = readCliOption(input.arguments, 'resume');
-  const resumed = resumeDirectory
-    ? await readResumeAttempts(path.resolve(resumeDirectory))
-    : [];
+  const resumed = resumedAttempts;
   // Spend already made is spend the cap has already absorbed. Reconciling it
   // into the guard stops a resumed run from quietly spending the whole cap a
   // second time.
