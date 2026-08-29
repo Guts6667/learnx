@@ -356,8 +356,11 @@ describe('--run-pool', () => {
 
   it('refuses to start while another run holds the lock', async () => {
     const directory = await scratchRegressionDirectory();
-    // This process is genuinely alive, so the run sees a live holder rather
-    // than a stale lock it may take over.
+    // The pid must be a process that is genuinely alive, and this test's own
+    // is the only one it can be sure of. An invented pid — 999999, say — is not
+    // alive, so the run takes its lock over as stale and starts perfectly
+    // happily: the test then passes while asserting nothing. That is how the
+    // first version of this test was written, and it was green.
     await acquireRunLock({
       directory,
       pid: process.pid,

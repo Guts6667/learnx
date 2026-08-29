@@ -54,6 +54,9 @@ describe('run lock', () => {
     );
   });
 
+  // Note for anyone extending these: a lock test that supplies an invented pid
+  // exercises the stale-takeover path, never the refusal, because an invented
+  // pid is not alive. Refusal tests must use a pid that genuinely exists.
   it('takes over a lock whose process is gone, and says it did', async () => {
     const directory = await scratch();
     await acquireRunLock({
