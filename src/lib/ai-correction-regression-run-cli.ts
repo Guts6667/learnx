@@ -42,6 +42,7 @@ import {
 } from './ai-correction-regression-gates.js';
 import {
   computeRegressionMetrics,
+  type RegressionCheckerVerdict,
   type RegressionMetrics,
 } from './ai-correction-regression-metrics.js';
 import {
@@ -51,14 +52,25 @@ import {
 } from './ai-correction-regression-mutants.js';
 import { renderRegressionReport } from './ai-correction-regression-report.js';
 import {
+  acquireRunLock,
+  capForRun,
+  envelopeState,
+  readSpendEnvelope,
+  RegressionEnvelopeError,
+  releaseRunLock,
+  writeSpendEnvelope,
+} from './ai-correction-regression-envelope.js';
+import {
   computeRunSecurityRates,
   countMutantsByKind,
   deriveRegressionObservations,
   partitionObservations,
   planRegressionRun,
   summarizeConfidence,
+  verdictKey,
   type RegressionCheckerPort,
   type RegressionRunPlan,
+  type RegressionVerdictRecord,
 } from './ai-correction-regression-run.js';
 
 /** What a `--run-pool` invocation produced, paid or dry. */
@@ -217,6 +229,25 @@ export async function loadParaphraseCache(input: {
   }
 
   return { paraphrases, refusals };
+}
+
+/**
+ * Verdicts persisted by an earlier run, so a resume never re-buys them.
+ */
+async function readPersistedVerdicts(
+  resultsDirectory: string,
+): Promise<RegressionVerdictRecord[]> {
+  try {
+    const raw = await readFile(
+      path.join(resultsDirectory, 'checker-verdicts.json'),
+      'utf8',
+    );
+    const parsed = JSON.parse(raw) as unknown;
+    return Array.isArray(parsed) ? (parsed as RegressionVerdictRecord[]) : [];
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') return [];
+    throw error;
+  }
 }
 
 /**
@@ -457,13 +488,52 @@ export async function runRegressionPool(input: {
   regressionDirectory?: string;
 }): Promise<RegressionRunOutcome> {
   const dryRun = input.arguments.includes('--dry-run');
-  const supplierCostCapUsd = parseSupplierCostCap(input.arguments);
+  const requestedCapUsd = parseSupplierCostCap(input.arguments);
   const candidate = selectPinnedCandidate({
     configuration: input.configuration,
     identities: input.identities,
   });
   const directory = input.regressionDirectory ?? regressionDirectory;
   const runStartedAt = (input.now?.() ?? new Date()).toISOString();
+
+  // The envelope is measured against the provider, not a local counter: a
+  // counter inside one process cannot see a second process, which is exactly
+  // how two concurrent runs each honoured a 12.60 USD cap and were together
+  // authorised to spend 25.20.
+  const envelopeUsd = readCliOption(input.arguments, 'envelope-usd');
+  let envelopeNote =
+    "Aucune enveloppe déclarée : seul le plafond du run s'applique.";
+  let supplierCostCapUsd = requestedCapUsd;
+  if (envelopeUsd !== undefined) {
+    const parsedEnvelope = Number.parseFloat(envelopeUsd);
+    if (!Number.isFinite(parsedEnvelope) || parsedEnvelope <= 0) {
+      throw new RegressionEnvelopeError(
+        `REGRESSION_ENVELOPE_INVALID: ${envelopeUsd}.`,
+      );
+    }
+    const existing = await readSpendEnvelope(directory);
+    const usageNow = await readProviderUsageUsd(input.providerApiKey);
+    const envelope = existing ?? {
+      decisionId:
+        readCliOption(input.arguments, 'envelope-decision') ?? 'undeclared',
+      envelopeUsd: parsedEnvelope,
+      openedAt: runStartedAt,
+      openingProviderUsageUsd: usageNow ?? 0,
+      schemaVersion: 1 as const,
+    };
+    if (!existing) {
+      if (usageNow === null) {
+        throw new RegressionEnvelopeError(
+          "REGRESSION_ENVELOPE_UNMEASURABLE: impossible de lire l'usage fournisseur pour ouvrir l'enveloppe.",
+        );
+      }
+      await writeSpendEnvelope({ directory, envelope });
+    }
+    const state = envelopeState({ envelope, providerUsageUsd: usageNow });
+    const resolved = capForRun({ requestedCapUsd, state });
+    supplierCostCapUsd = resolved.capUsd;
+    envelopeNote = resolved.reason;
+  }
 
   const { pool, poolSha256, sources } = await loadPoolForRun(input.arguments);
   const responseTextByCaseId = new Map<string, string>();
@@ -687,7 +757,9 @@ export async function runRegressionPool(input: {
         paraphraseWorstCaseUsd: budgeted.paraphrases ? paraphraseCostUsd : 0,
         paraphrasesIncluded: budgeted.paraphrases,
         passes: passBreakdown,
+        envelopeNote,
         profile,
+        requestedCapUsd,
         supplierCostCapUsd,
       },
       null,
@@ -723,6 +795,58 @@ export async function runRegressionPool(input: {
       runStartedAt,
     };
   }
+
+  // A second run must not start while a first is alive. Pasting a launch
+  // command twice is an ordinary thing to do; the system should survive it
+  // rather than depend on someone noticing two processes.
+  const lock = await acquireRunLock({ directory, resultsDirectory });
+  if (!lock.acquired) {
+    throw new RegressionRunError(
+      `REGRESSION_RUN_ALREADY_ACTIVE: un run est déjà en cours (pid ${lock.heldBy.pid}, démarré ${lock.heldBy.startedAt}, résultats ${lock.heldBy.resultsDirectory}).`,
+    );
+  }
+
+  // Verdicts already bought, so a resumed analysis reuses them rather than
+  // paying the checker a second time.
+  const verdicts = new Map<string, RegressionCheckerVerdict>();
+  if (resumeDirectory) {
+    for (const record of await readPersistedVerdicts(
+      path.resolve(resumeDirectory),
+    )) {
+      verdicts.set(
+        verdictKey({
+          criterionKey: record.criterionKey,
+          unitId: record.unitId,
+        }),
+        record.verdict,
+      );
+    }
+  }
+  const persistVerdicts = async (
+    records: RegressionVerdictRecord[],
+  ): Promise<void> => {
+    for (const record of records) {
+      verdicts.set(
+        verdictKey({
+          criterionKey: record.criterionKey,
+          unitId: record.unitId,
+        }),
+        record.verdict,
+      );
+    }
+    await writeRunArtifact({
+      content: `${JSON.stringify(
+        [...verdicts.entries()].map(([key, verdict]) => {
+          const [unitId, criterionKey] = key.split('::');
+          return { criterionKey, unitId, verdict };
+        }),
+        null,
+        2,
+      )}\n`,
+      directory: resultsDirectory,
+      fileName: 'checker-verdicts.json',
+    });
+  };
 
   // One guard across every pass: the cap is on the run, not on each slice.
   const guard = new SupplierBudgetGuard(supplierCostCapUsd);
@@ -809,6 +933,8 @@ export async function runRegressionPool(input: {
     budget: guard,
     ...(input.checker ? { checker: input.checker } : {}),
     familyScientificallyValidated: true,
+    onVerdicts: persistVerdicts,
+    persistedVerdicts: verdicts,
     plan,
   });
   const { baselines, mutants } = partitionObservations(observations);
@@ -929,6 +1055,8 @@ export async function runRegressionPool(input: {
     directory: resultsDirectory,
     fileName: 'REPORT.md',
   });
+
+  await releaseRunLock(directory);
 
   return {
     attempts,

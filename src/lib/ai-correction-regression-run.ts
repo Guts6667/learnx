@@ -286,6 +286,28 @@ function firstSentence(text: string): string {
  * (`deriveCriterionConfidence`), never recomputed here — the table is the
  * quality contract, and a second copy of it would be a second contract.
  */
+/**
+ * A checker verdict, recorded so an interrupted run keeps it.
+ *
+ * Keyed by the unit and criterion it answers about. Persisting these is what
+ * lets a stopped run report its checker oracles: before V4.5-123 the verdicts
+ * were produced at analysis time, after every primary call, so a run that
+ * stopped during dispatch lost all of them and recomputing meant paying twice.
+ */
+export type RegressionVerdictRecord = {
+  criterionKey: string;
+  unitId: string;
+  verdict: RegressionCheckerVerdict;
+};
+
+/** Key under which a verdict is stored and looked up. */
+export function verdictKey(input: {
+  criterionKey: string;
+  unitId: string;
+}): string {
+  return `${input.unitId}::${input.criterionKey}`;
+}
+
 export async function deriveRegressionObservations(input: {
   attempts: BenchmarkAttempt[];
   /**
@@ -297,7 +319,14 @@ export async function deriveRegressionObservations(input: {
   checker?: RegressionCheckerPort;
   /** Families inside the promoted identity's validated scope. */
   familyScientificallyValidated: boolean;
+  /** Called for each new verdict, so the caller can persist it immediately. */
+  onVerdicts?: (records: RegressionVerdictRecord[]) => Promise<void>;
   plan: RegressionRunPlan;
+  /**
+   * Verdicts already obtained and persisted. A verdict present here is reused
+   * rather than bought again: re-deriving an analysis must not re-spend.
+   */
+  persistedVerdicts?: Map<string, RegressionCheckerVerdict>;
 }): Promise<RegressionObservation[]> {
   const observations: RegressionObservation[] = [];
   const scalesByCase = new Map(
@@ -318,7 +347,22 @@ export async function deriveRegressionObservations(input: {
     }
 
     let verdicts: Record<string, RegressionCheckerVerdict> = {};
-    if (input.checker) {
+    const unitId = unit.mutantId ?? unit.poolCaseId;
+    const alreadyKnown = attempt.output.criteria.every((criterion) =>
+      input.persistedVerdicts?.has(
+        verdictKey({ criterionKey: criterion.criterionKey, unitId }),
+      ),
+    );
+    if (alreadyKnown && input.persistedVerdicts) {
+      verdicts = Object.fromEntries(
+        attempt.output.criteria.map((criterion) => [
+          criterion.criterionKey,
+          input.persistedVerdicts?.get(
+            verdictKey({ criterionKey: criterion.criterionKey, unitId }),
+          ) ?? 'UNAVAILABLE',
+        ]),
+      );
+    } else if (input.checker) {
       const contract = input.plan.corpus.contracts.find(
         (candidate) =>
           candidate.contractKey === attempt.output?.contractKey &&
@@ -344,6 +388,13 @@ export async function deriveRegressionObservations(input: {
         unitId: unit.mutantId ?? unit.poolCaseId,
       });
       verdicts = outcome.verdicts;
+      await input.onVerdicts?.(
+        Object.entries(outcome.verdicts).map(([criterionKey, verdict]) => ({
+          criterionKey,
+          unitId,
+          verdict,
+        })),
+      );
       // Reconciled after the fact rather than reserved before it: the checker
       // has no per-token price recorded anywhere in the repository, so there is
       // no defensible worst case to reserve. Reconciling still stops the run at
