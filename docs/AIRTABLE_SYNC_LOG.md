@@ -438,3 +438,29 @@ l'autorisation.
   `dawn-cake-93662551` les branches autres que `ci-*`. S'il n'en existe
   qu'une, Preview partageait nécessairement la base de production. Le même
   écran renseigne aussi V4.5-171 (branches `ci-*` orphelines).
+
+## 29 août 2026 — correction du diagnostic V4.5-171 et état des checks requis
+
+- Aucune écriture Airtable (la modification d'enregistrements existants reste
+  refusée par le classifieur de permissions). Entrée de correction.
+- V4.5-171 attribuait l'échec du workflow Integration à des branches Neon
+  `ci-*` orphelines. Diagnostic incomplet. La cause première était l'absence
+  de groupe de concurrence : `integration.yml` était le seul workflow sans
+  `concurrency`, si bien que deux poussées rapprochées lançaient deux runs
+  simultanés créant chacun une branche Neon, au-delà du quota du projet.
+  Vérifié sur `origin/dev` : `concurrency.group` est désormais présent avec
+  `cancel-in-progress: false`, choix délibéré — annuler un run qui crée une
+  ressource externe risquerait d'orphaniser la branche. Le run de 14 h 07 est
+  vert après le correctif.
+- Reste valable dans V4.5-171 : le balayage périodique des branches `ci-*`
+  garde son intérêt en défense de second rang, un runner interrompu par
+  timeout pouvant encore orphaniser une branche. Devient en revanche
+  secondaire, et non plus la correction principale.
+- Checks requis sur `main` au 29 août 2026, 14 h 30 : uniquement
+  `V4.1 final (required)`. Ni `Integration / real-functions` ni le nouveau
+  workflow `Visual` ne sont exigés, alors que les deux échouent utilement.
+  Le réglage relève de la protection de branche et demande le propriétaire.
+- `required_linear_history` reste activé sur `main` tandis que `dev` accumule
+  des commits de fusion : la règle doit être levée puis rétablie à chaque
+  release. À trancher avec V4.5-174, d'autant que le modèle retenu par Rayan
+  insère `staging` entre les deux.
