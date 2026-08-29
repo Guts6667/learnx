@@ -35,6 +35,7 @@ chemin de lecture actif.
 | `../ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md` | `ACTIVE_AUTHORITY` | Frontières de confiance ; l'addendum du 29 août 2026 fixe le pipeline critériel comme runtime actif, evidence-assist comme historique et la libération des crédits sur résultat inutilisable. |
 | `V4_5_REGRESSION_SUITE.md` | `ACTIVE_AUTHORITY` | Spécification d'implémentation de la suite de régression V4.5-120 (pool, mutants, métriques, gates v3, artefacts). |
 | `V4_5_RGPD_AUDIT.md` | `ACTIVE_AUTHORITY` | Registre des traitements IA (V4.5-165) : destinataires, rétention constatée, écarts E1–E3, textes d'information, décisions Propriétaire ; partie paiement en attente de V4.5-160. |
+| `V4_5_PRIVACY_POLICY.md` | `ACTIVE_AUTHORITY` | Texte FR/EN de la politique de confidentialité (V4.5-167), dérivé de l'audit RGPD ; champs Propriétaire entre crochets. |
 | `V4_5_AI_QUALITY_CONTRACT.md` | `ACTIVE_AUTHORITY` | Contrat qualité V4.5 : niveaux de confiance, vérificateur indépendant, oracles machine, gates v3, coupe-circuit ; aucune validation humaine revendiquée. |
 | `../V4_5_BACKLOG.md` | `ACTIVE_AUTHORITY` | Backlog d'exécution V4.5 ouvert le 29 août 2026 ; epics 001–012 et tickets `V4.5-1xx`. |
 | `V4_FREE_TEXT_CORRECTION_CONTRACTS.md` | `ACTIVE_AUTHORITY` | Portée produit, archétypes qualité, priorité des contrats spécialisés et limites tarifaires approuvées le 26 août. |
