@@ -9,6 +9,11 @@
 -- partially applied production attempt, following the precedent set by
 -- 20260826120000_add_correction_reconsideration.
 --
+-- The catalogue guards are qualified by the current schema. Without that, a
+-- replay into a second schema of the same database finds the type or the
+-- constraint in `public`, skips creating it, and either aborts on the
+-- CREATE TABLE that references it or diverges silently.
+--
 -- ROLLBACK
 -- ========
 -- Reverting the application code alone is safe and requires nothing here: the
@@ -31,7 +36,13 @@ BEGIN;
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ai_correction_feedback_verdict') THEN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'ai_correction_feedback_verdict'
+      AND n.nspname = current_schema()
+  ) THEN
     CREATE TYPE "ai_correction_feedback_verdict" AS ENUM ('helpful', 'wrong');
   END IF;
 END
@@ -68,6 +79,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint
     WHERE conname = 'ai_correction_criterion_feedback_correction_id_user_id_fkey'
+      AND conrelid = 'ai_correction_criterion_feedback'::regclass
   ) THEN
     ALTER TABLE "ai_correction_criterion_feedback"
     ADD CONSTRAINT "ai_correction_criterion_feedback_correction_id_user_id_fkey"
@@ -79,6 +91,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint
     WHERE conname = 'ai_correction_criterion_feedback_user_id_fkey'
+      AND conrelid = 'ai_correction_criterion_feedback'::regclass
   ) THEN
     ALTER TABLE "ai_correction_criterion_feedback"
     ADD CONSTRAINT "ai_correction_criterion_feedback_user_id_fkey"

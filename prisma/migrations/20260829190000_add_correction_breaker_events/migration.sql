@@ -5,6 +5,10 @@
 -- reads it or the code is rolled back after it. Statements are idempotent so
 -- the migration can be replayed after a partially applied attempt.
 --
+-- The catalogue guards are qualified by the current schema. Without that, a
+-- replay into a second schema of the same database finds the type in `public`,
+-- skips creating it, and aborts on the CREATE TABLE that references it.
+--
 -- The journal is append-only by design rather than a mutable state row. The
 -- current state is derived from the latest event, so closing the breaker means
 -- writing a line: a trip cannot be erased by flipping a flag back, and the
@@ -29,10 +33,22 @@ BEGIN;
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ai_correction_breaker_action') THEN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'ai_correction_breaker_action'
+      AND n.nspname = current_schema()
+  ) THEN
     CREATE TYPE "ai_correction_breaker_action" AS ENUM ('tripped', 'reopened');
   END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ai_correction_breaker_reason') THEN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'ai_correction_breaker_reason'
+      AND n.nspname = current_schema()
+  ) THEN
     CREATE TYPE "ai_correction_breaker_reason" AS ENUM (
       'checker_disagreement',
       'unusable_rate',
@@ -63,6 +79,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint
     WHERE conname = 'ai_correction_breaker_events_actor_id_fkey'
+      AND conrelid = 'ai_correction_breaker_events'::regclass
   ) THEN
     ALTER TABLE "ai_correction_breaker_events"
     ADD CONSTRAINT "ai_correction_breaker_events_actor_id_fkey"

@@ -101,6 +101,20 @@ Le contexte externe `Quality / V4.1 final (required)` doit être rendu
 obligatoire sur `dev` avant le GO. Le dépôt prouve le job, pas le réglage de
 protection de branche.
 
+### Migrations : gardes de catalogue
+
+Toute garde `IF NOT EXISTS` interrogeant un catalogue système doit être
+qualifiée par le schéma courant : `pg_type` par une jointure sur `pg_namespace`
+avec `n.nspname = current_schema()`, `pg_constraint` par
+`conrelid = '<table>'::regclass`.
+
+Sans cette qualification, l'étape « rejeu de l'historique complet dans un
+schéma isolé » d'Integration trouve l'objet dans `public`, saute sa création,
+et soit échoue sur l'instruction qui le référence, soit — pire — diverge en
+silence. Une garde non qualifiée passe l'application initiale et ne casse
+qu'au rejeu : le test qui l'attrape n'est pas celui qu'on regarde en écrivant
+la migration.
+
 ## Recette obligatoire V4.1-504
 
 1. Déployer le SHA candidat exact en preview et le consigner.
