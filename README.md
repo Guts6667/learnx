@@ -1,30 +1,36 @@
 # LearnX
 
-LearnX is a modular, mobile-first PWA for self-directed learning paths. V3
-evolves the product toward approved multi-user access and shareable published
-programs.
+LearnX is a modular, mobile-first PWA for self-directed learning paths. V4.1 is
+released: it rebuilt the front end on React 19 with shadcn "Maia" primitives over
+the LearnX design tokens, decomposed the API, Prisma schema, i18n catalogs and
+CSS, and raised the quality gates, all at constant product behaviour.
 
 The application is not limited to psychology. Each subject is organized as a
 program, which is divided into stages, modules, and lessons.
 
-V2 is closed. Current work is organized in `BACKLOG_V3.md`, and the documents
-to consult for each type of task are listed in `docs/INDEX.md`. V1 and V2
-backlogs and reports are preserved under `docs/archive/` as historical evidence
-only.
+V4.1 is closed. Start from `docs/HANDOFF.md`, then `docs/INDEX.md` for the
+document that matches your task. `V4_5_BACKLOG.md` holds the next tranche.
+Earlier backlogs (`BACKLOG_V3.md`, `BACKLOG_V3_5.md`, `BACKLOG_V4.md`,
+`V4_1_BACKLOG.md`) and the reports under `docs/archive/` are historical evidence,
+never active instructions.
 
 ## Required stack
 
-- Preact
+- React 19 — the only UI runtime; Preact was removed in V4.1 and a
+  `quality:imports` gate fails the build if any Preact import returns
+- React Router
+- TanStack Query
+- shadcn primitives on the "Maia" style, bound to the LearnX design tokens
 - Vite
 - Strict TypeScript
 - PostgreSQL
-- Prisma ORM
+- Prisma ORM, multi-file schema under `prisma/models/`
 - Tailwind CSS
 - Vercel
 - Vercel Functions
 - PWA with `vite-plugin-pwa`
 - Vitest
-- Preact Testing Library
+- React Testing Library
 - Playwright
 
 ## Learning architecture
@@ -54,13 +60,16 @@ routes preserve the breadcrumb and lesson outline; the canonical route for an
 exercise is
 `/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId`.
 
-## Working with Codex
+## Working on a ticket
 
-1. Read `AGENTS.md` and `docs/INDEX.md`.
-2. Identify the active ticket in `BACKLOG_V3.md`.
-3. Load only the relevant ADR, specification, and files.
-4. Handle a single ticket and a single scope per commit.
-5. Never use the V1/V2 archives as active instructions.
+1. Read `AGENTS.md`, then `docs/HANDOFF.md` and `docs/INDEX.md`.
+2. Identify the active ticket in the current backlog.
+3. Read `docs/ENGINEERING_CONVENTIONS.md` before writing code, and
+   `docs/TESTING_AND_RELEASE.md` before a preview or a promotion.
+4. Load only the ADR, specification, and files that ticket names.
+5. Handle a single ticket and a single scope per commit.
+6. Never treat an archived backlog as an active instruction. An older document
+   naming Preact or a closed backlog cannot reintroduce those choices.
 
 ## Database
 
@@ -293,8 +302,17 @@ validation.
 
 ## Documents
 
-- `docs/INDEX.md`
-- `BACKLOG_V3.md`
+Start here:
+
+- `docs/HANDOFF.md` — current state, operation, debt and rollback
+- `docs/INDEX.md` — routing to every other document
+- `docs/ARCHITECTURE.md`, `docs/DOMAIN_MODEL.md`
+- `docs/ENGINEERING_CONVENTIONS.md`, `docs/TESTING_AND_RELEASE.md`
+- `docs/AGENT_WORKFLOW.md` — ticket assignment, isolation, review, promotion
+- `V4_5_BACKLOG.md` — the next tranche
+
+Reference:
+
 - `ADR_001_MULTI_USER_ACCESS.md`
 - `PRODUCT_REQUIREMENTS.md`
 - `TECHNICAL_ARCHITECTURE.md`
@@ -308,7 +326,7 @@ validation.
 - `PEDAGOGY_CHANGE_POLICY.md`
 - `content/fondamentaux-psychologie/CURRICULUM_BLUEPRINT.md`
 - `content/fondamentaux-psychologie/README.md`
-- `LEARNING_FLOW_V3_SPEC.md`
+- `LEARNING_FLOW_V3_SPEC.md` (behavioural baseline, still current)
 - `SCIENTIFIC_REVIEW_SPEC.md`
 - `CODEX_MASTER_PROMPT.md`
 - `AGENTS.md`
