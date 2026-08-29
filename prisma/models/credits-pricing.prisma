@@ -325,3 +325,21 @@ model AiPricingQuote {
   @@index([reconsiderationOfCorrectionId, createdAt])
   @@map("ai_pricing_quotes")
 }
+
+/// Marqueur anti-abus des allocations d'essai (V4.5-163).
+///
+/// Indexé sur une empreinte HMAC de l'adresse IP : sans le secret serveur, la
+/// ligne ne désigne personne. Elle survit volontairement à la suppression du
+/// compte — sinon effacer son compte remettrait le compteur à zéro et
+/// l'effacement deviendrait le contournement que cette limite existe pour
+/// fermer. Intérêt légitime, conservation 12 mois depuis le dernier contact,
+/// purge par `cleanup-expired-data`.
+model TrialAllocationMarker {
+  keyHash     String   @id @map("key_hash")
+  grants      Int      @default(0)
+  firstSeenAt DateTime @default(now()) @map("first_seen_at")
+  lastSeenAt  DateTime @updatedAt @map("last_seen_at")
+
+  @@index([lastSeenAt])
+  @@map("trial_allocation_markers")
+}

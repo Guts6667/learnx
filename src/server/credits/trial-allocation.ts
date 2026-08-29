@@ -34,7 +34,13 @@ export type TrialGrantOutcome =
    */
   | { kind: 'SUSPENDED'; cycleKey: string }
   /** No active policy serves this cohort. */
-  | { kind: 'NO_POLICY'; cycleKey: string };
+  | { kind: 'NO_POLICY'; cycleKey: string }
+  /**
+   * An anti-abuse rule refused it. The verdict is recorded for the weekly
+   * report; the learner is told the trial is unavailable, never which rule
+   * caught them, because naming the rule is a map for working around it.
+   */
+  | { kind: 'REFUSED'; cycleKey: string; verdict: 'CAP_REACHED' | 'TOO_FAST' };
 
 export interface TrialAllocationPolicy {
   allocationAmount: bigint;

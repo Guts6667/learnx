@@ -128,3 +128,100 @@ describe('allocation d’essai mensuelle', () => {
     expect(grants).toEqual([]);
   });
 });
+
+describe('anti-abus des allocations d’essai', () => {
+  function withMarker(options: { address?: string | null; marker?: unknown }) {
+    const lookedUp: string[] = [];
+    const upserted: Record<string, unknown>[] = [];
+    const grants: { idempotencyKey: string }[] = [];
+    const client = {
+      creditAccount: {
+        findFirstOrThrow: vi.fn(async () => ({ id: 'account-1' })),
+      },
+      creditAllocationPolicyVersion: {
+        findMany: vi.fn(async () => [
+          { allocationAmount: 100n, cohort: null, id: 'policy-general' },
+        ]),
+      },
+      creditGrantCycle: {
+        findUnique: vi.fn(async () => null),
+        upsert: vi.fn(async () => ({})),
+      },
+      trialAllocationMarker: {
+        findUnique: vi.fn(async (input: { where: { keyHash: string } }) => {
+          lookedUp.push(input.where.keyHash);
+          return options.marker ?? null;
+        }),
+        upsert: vi.fn(async (input: Record<string, unknown>) => {
+          upserted.push(input);
+          return {};
+        }),
+      },
+      user: { findUnique: vi.fn(async () => ({ cohort: 'TRIAL' })) },
+    };
+    const service = createPrismaTrialAllocation(client as never, {
+      breakerIsOpen: vi.fn(async () => false),
+      clientAddress:
+        options.address === undefined ? '203.0.113.7' : options.address,
+      grant: vi.fn(async (input: { idempotencyKey: string }) => {
+        grants.push(input);
+        return { lotId: 'lot-1' };
+      }),
+      now: () => NOW,
+    });
+    return { client, grants, lookedUp, service, upserted };
+  }
+
+  it('compte le versement sous une empreinte, jamais sous l’adresse', async () => {
+    const { lookedUp, service } = withMarker({});
+    await service.grantForCycle(USER_ID);
+    const key = lookedUp[0] ?? '';
+    // Without the server secret the row identifies nobody; the address itself
+    // never reaches the database.
+    expect(key).not.toContain('203.0.113.7');
+    expect(key).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it('refuse au plafond sans rien créditer', async () => {
+    const { grants, service } = withMarker({
+      marker: {
+        firstSeenAt: new Date('2026-01-01T00:00:00Z'),
+        grants: 3,
+        lastSeenAt: new Date('2026-01-02T00:00:00Z'),
+      },
+    });
+    await expect(service.grantForCycle(USER_ID)).resolves.toEqual({
+      cycleKey: '2026-03',
+      kind: 'REFUSED',
+      verdict: 'CAP_REACHED',
+    });
+    expect(grants).toEqual([]);
+  });
+
+  it('ne consomme l’allocation qu’après un versement réussi', async () => {
+    // A refusal upstream must never spend an allowance the learner did not
+    // receive.
+    const { service, upserted } = withMarker({});
+    await service.grantForCycle(USER_ID);
+    expect(upserted).toHaveLength(1);
+
+    const refused = withMarker({
+      marker: {
+        firstSeenAt: new Date('2026-01-01T00:00:00Z'),
+        grants: 3,
+        lastSeenAt: new Date('2026-01-02T00:00:00Z'),
+      },
+    });
+    await refused.service.grantForCycle(USER_ID);
+    expect(refused.upserted).toEqual([]);
+  });
+
+  it('verse quand aucune adresse n’est attribuable', async () => {
+    // Refusing every grant we cannot attribute would punish learners for a
+    // proxy's behaviour.
+    const { client, grants, service } = withMarker({ address: null });
+    await service.grantForCycle(USER_ID);
+    expect(grants).toHaveLength(1);
+    expect(client.trialAllocationMarker.findUnique).not.toHaveBeenCalled();
+  });
+});

@@ -1,4 +1,9 @@
 import type { PrismaClient } from '../../../generated/prisma/client.js';
+import { hashBucketKey } from '../api/_lib/bucket-key.js';
+import {
+  evaluateTrialAbuse,
+  type TrialAbuseLimits,
+} from './trial-abuse-limit.js';
 import {
   monthlyCycleKey,
   policyForCohort,
@@ -24,6 +29,13 @@ import {
  */
 
 export interface TrialAllocationDeps {
+  /**
+   * The caller's address, or null where none is available. Null means the
+   * anti-abuse rules cannot apply, which is allowed: refusing every grant we
+   * cannot attribute would punish learners for a proxy's behaviour.
+   */
+  clientAddress?: string | null;
+  limits?: TrialAbuseLimits;
   /** Open ⇒ no grant this cycle. A product rule, confirmed, not a fallback. */
   breakerIsOpen(): Promise<boolean>;
   grant(input: {
@@ -84,6 +96,22 @@ export function createPrismaTrialAllocation(
       // be paid for with credits the learner cannot spend this cycle.
       if (await deps.breakerIsOpen()) return { cycleKey, kind: 'SUSPENDED' };
 
+      const markerKey = deps.clientAddress
+        ? hashBucketKey(`trial-allocation:ip:${deps.clientAddress}`)
+        : null;
+      if (markerKey) {
+        const marker = await client.trialAllocationMarker.findUnique({
+          where: { keyHash: markerKey },
+        });
+        const verdict = evaluateTrialAbuse({
+          ...(deps.limits ? { limits: deps.limits } : {}),
+          marker,
+          now: deps.now(),
+        });
+        if (verdict !== 'ALLOWED')
+          return { cycleKey, kind: 'REFUSED', verdict };
+      }
+
       const idempotencyKey = `trial:${policy.id}:${cycleKey}:${userId}`;
       const { lotId } = await deps.grant({
         amount: policy.allocationAmount,
@@ -111,6 +139,15 @@ export function createPrismaTrialAllocation(
         update: {},
         where: { userId_idempotencyKey: { idempotencyKey, userId } },
       });
+      if (markerKey) {
+        // Counted after the grant succeeds, so a refusal upstream never
+        // consumes an allowance the learner did not receive.
+        await client.trialAllocationMarker.upsert({
+          create: { grants: 1, keyHash: markerKey, lastSeenAt: deps.now() },
+          update: { grants: { increment: 1 }, lastSeenAt: deps.now() },
+          where: { keyHash: markerKey },
+        });
+      }
       return { amount: policy.allocationAmount, cycleKey, kind: 'GRANTED' };
     },
   };

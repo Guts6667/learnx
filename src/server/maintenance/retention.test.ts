@@ -14,6 +14,7 @@ function createRepository(
     rateLimits: 4,
     publicLeads: 6,
     sessions: 5,
+    trialMarkers: 7,
   },
 ): RetentionRepository {
   return {
@@ -26,11 +27,13 @@ function createRepository(
     countExpiredRateLimits: vi.fn(async () => candidates.rateLimits),
     countExpiredPublicLeads: vi.fn(async () => candidates.publicLeads),
     countExpiredSessions: vi.fn(async () => candidates.sessions),
+    countExpiredTrialMarkers: vi.fn(async () => candidates.trialMarkers),
     deleteExpiredAccessInvitations: vi.fn(async () => 2),
     deleteExpiredEmailVerifications: vi.fn(async () => 3),
     deleteExpiredRateLimits: vi.fn(async () => 4),
     deleteExpiredPublicLeads: vi.fn(async () => 6),
     deleteExpiredSessions: vi.fn(async () => 5),
+    deleteExpiredTrialMarkers: vi.fn(async () => 7),
   };
 }
 
@@ -65,6 +68,7 @@ describe('retention cleanup', () => {
       rateLimits: 0,
       publicLeads: 0,
       sessions: 0,
+      trialMarkers: 0,
     });
     const now = new Date('2026-08-09T12:00:00.000Z');
 
@@ -94,6 +98,7 @@ describe('retention cleanup', () => {
       rateLimits: 0,
       publicLeads: 0,
       sessions: 12,
+      trialMarkers: 0,
     });
     vi.mocked(repository.deleteExpiredSessions)
       .mockResolvedValueOnce(5)
@@ -121,5 +126,38 @@ describe('retention cleanup', () => {
     expect(() =>
       getRetentionPolicy({ LEARNX_RETENTION_BATCH_SIZE: '0' }),
     ).toThrow('LEARNX_RETENTION_BATCH_SIZE must be a positive safe integer.');
+  });
+});
+
+describe('rétention des marqueurs anti-abus (V4.5-163)', () => {
+  it('les purge à douze mois, bien après les seaux de limitation', async () => {
+    // A marker that never expires is a permanent record about someone we
+    // cannot name and who may have left; twelve months is the deterrent
+    // bounded.
+    const repository = createRepository({
+      accessInvitations: 0,
+      emailVerifications: 0,
+      rateLimits: 0,
+      publicLeads: 0,
+      sessions: 0,
+      trialMarkers: 3,
+    });
+    const now = new Date('2027-01-01T00:00:00.000Z');
+
+    await runRetentionCleanup(repository, { apply: false, now });
+
+    const markerCutoff = vi.mocked(repository.countExpiredTrialMarkers).mock
+      .calls[0]?.[0] as Date;
+    const rateLimitCutoff = vi.mocked(repository.countExpiredRateLimits).mock
+      .calls[0]?.[0] as Date;
+    expect(markerCutoff.toISOString()).toBe('2026-01-01T00:00:00.000Z');
+    expect(markerCutoff.getTime()).toBeLessThan(rateLimitCutoff.getTime());
+  });
+
+  it('compte sans supprimer en simulation', async () => {
+    const repository = createRepository();
+    const result = await runRetentionCleanup(repository, { apply: false });
+    expect(result.trialMarkers).toMatchObject({ candidates: 7, deleted: 0 });
+    expect(repository.deleteExpiredTrialMarkers).not.toHaveBeenCalled();
   });
 });
