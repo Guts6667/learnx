@@ -64,7 +64,10 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
           <pre>{submission.contentMarkdown}</pre>
         </section>
         {exercise.aiCorrectionEligible ? (
-          <AiCorrectionPanel submissionId={submission.id} />
+          <AiCorrectionPanel
+            submissionId={submission.id}
+            validationScope={exercise.aiCorrectionValidationScope ?? null}
+          />
         ) : null}
       </div>
     );

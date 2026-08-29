@@ -82,13 +82,6 @@ export const frenchActivitiesMessages = {
     '{current} / {maximum} caractères. Cette limite permet de calculer et d’afficher le devis de correction avant l’envoi.',
   'exercise.answerTooLong':
     '{current} / {maximum} caractères. Réduisez votre réponse avant de l’enregistrer ou de l’envoyer.',
-  'exercise.formativeDescription':
-    'Votre réponse sera évaluée selon les critères annoncés avant l’envoi.',
-  'exercise.instruction': 'Consigne',
-  'exercise.announcedCriteria': 'Critères annoncés',
-  'exercise.criteriaAvailableWithPrompt':
-    'Les critères publiés avec cet exercice s’appliquent à votre réponse.',
-  'exercise.reviewLesson': 'Relire la notion',
   'exercise.markdownHelp':
     'Vous pouvez utiliser la syntaxe Markdown. Le brouillon est conservé comme texte brut.',
   'exercise.saveDraft': 'Enregistrer le brouillon',
@@ -213,13 +206,6 @@ export const englishActivitiesMessages = {
     '{current} / {maximum} characters. This limit lets LearnX calculate and display the correction quote before submission.',
   'exercise.answerTooLong':
     '{current} / {maximum} characters. Shorten your answer before saving or submitting it.',
-  'exercise.formativeDescription':
-    'Your answer will be assessed against the criteria shown before submission.',
-  'exercise.instruction': 'Instructions',
-  'exercise.announcedCriteria': 'Published criteria',
-  'exercise.criteriaAvailableWithPrompt':
-    'The criteria published with this exercise apply to your answer.',
-  'exercise.reviewLesson': 'Review the concept',
   'exercise.markdownHelp':
     'You can use Markdown syntax. The draft is stored as plain text.',
   'exercise.saveDraft': 'Save draft',

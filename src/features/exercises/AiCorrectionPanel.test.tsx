@@ -475,4 +475,200 @@ describe('AiCorrectionPanel', () => {
     ).not.toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(4);
   });
+
+  it.each([
+    ['practice' as const],
+    ['project' as const],
+    ['reflection' as const],
+  ])(
+    'annonce la phase de collecte avant tout lancement pour la famille %s',
+    async (family) => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(jsonResponse({ resource: { corrections: [] } }));
+      vi.stubGlobal('fetch', fetchMock);
+
+      render(
+        <AppProviders>
+          <AiCorrectionPanel
+            submissionId="7bd1e5a6-1f6c-4a2e-9c1e-1a1f4f4a2e10"
+            validationScope={{ family, validated: false }}
+          />
+        </AppProviders>,
+      );
+
+      expect(
+        await screen.findByText(
+          'Correction en phase de collecte — fiabilité non démontrée',
+        ),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/n’est pas encore démontrée pour ce type d’exercice/),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Corriger' }),
+      ).toBeInTheDocument();
+    },
+  );
+
+  it('n’annonce rien quand la famille est validée', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(jsonResponse({ resource: { corrections: [] } }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AiCorrectionPanel
+          submissionId="7bd1e5a6-1f6c-4a2e-9c1e-1a1f4f4a2e11"
+          validationScope={{ family: 'writing', validated: true }}
+        />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('button', { name: 'Corriger' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        'Correction en phase de collecte — fiabilité non démontrée',
+      ),
+    ).not.toBeInTheDocument();
+  });
+
+  it('n’annonce rien quand l’API n’expose pas encore le périmètre', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(jsonResponse({ resource: { corrections: [] } }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AiCorrectionPanel submissionId="7bd1e5a6-1f6c-4a2e-9c1e-1a1f4f4a2e12" />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('button', { name: 'Corriger' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        'Correction en phase de collecte — fiabilité non démontrée',
+      ),
+    ).not.toBeInTheDocument();
+  });
+  it('rend un critère en confiance basse sans niveau ni retour prescriptif', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }))
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resource: {
+            quote: {
+              action: 'STANDARD',
+              estimatedCredits: '12',
+              expiresAt: '2026-08-24T19:00:00.000Z',
+              id: '89c42047-5133-4ef0-b2df-a6a39092f02f',
+              includesAutomaticSecondPass: false,
+              maximumReservedCredits: '18',
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse(
+          {
+            resource: {
+              correction: {
+                correction: {
+                  criteria: [
+                    {
+                      confidence: 'MEDIUM',
+                      evidenceQuotes: ['La décision est explicitement PICO.'],
+                      evidenceStatus: 'FOUND',
+                      feedback: 'Le choix est explicite et cohérent.',
+                      key: 'decision-explicite',
+                      label: 'Décision explicite',
+                      levelKey: 'mastered',
+                      levelLabel: 'Démontré dans la réponse',
+                      weight: 34,
+                    },
+                    {
+                      confidence: 'LOW',
+                      evidenceQuotes: ['je laisse ouvert le volet comparaison'],
+                      evidenceStatus: 'FOUND',
+                      feedback: 'RETOUR PRESCRIPTIF À NE PAS AFFICHER.',
+                      key: 'choice-rationale',
+                      label: 'Justification du lien',
+                      levelKey: 'partial',
+                      levelLabel: 'Partiel',
+                      weight: 33,
+                    },
+                  ],
+                  id: 'a14cbe99-31dd-48f1-9fb3-4549a2d88bc2',
+                  indicativeScore: null,
+                  overallConfidence: 'LOW',
+                  overallFeedback: 'Clarifiez la justification.',
+                  secondPassRequired: false,
+                  status: 'COMPLETED',
+                  unsureCriteria: [],
+                  unsureCriterionDetails: [],
+                },
+                replay: false,
+                settlement: {
+                  releasedCredits: '6',
+                  reservedCredits: '18',
+                  settledCredits: '12',
+                },
+              },
+            },
+          },
+          201,
+        ),
+      )
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AiCorrectionPanel submissionId="1f0f6f6a-1d5c-4f2e-9a44-9c1f3f5b7d21" />
+      </AppProviders>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Corriger' }));
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Confirmer et lancer la correction',
+      }),
+    );
+
+    // Le critère MEDIUM garde son niveau : la confiance moyenne ne se dit pas.
+    expect(await screen.findByText('Décision explicite')).toBeInTheDocument();
+    expect(screen.getByText('Démontré dans la réponse')).toBeInTheDocument();
+
+    // Le critère LOW perd son niveau et gagne « À vérifier ».
+    const lowCriterion = screen
+      .getByText('Justification du lien')
+      .closest('article');
+    expect(lowCriterion).toHaveClass('correction-criterion--unsure');
+    expect(lowCriterion).toHaveTextContent('À vérifier');
+    expect(lowCriterion).not.toHaveTextContent('Partiel');
+
+    // Le retour du modèle sur ce critère n'est jamais présenté comme une consigne.
+    expect(
+      screen.queryByText('RETOUR PRESCRIPTIF À NE PAS AFFICHER.'),
+    ).not.toBeInTheDocument();
+
+    // La preuve verbatim reste affichée : c'est ce que l'apprenant a écrit.
+    expect(lowCriterion).toHaveTextContent(
+      'je laisse ouvert le volet comparaison',
+    );
+
+    // L'absence de score est expliquée, pas laissée vide.
+    expect(
+      screen.getByText(
+        /Aucun score indicatif tant qu’un critère reste à vérifier/,
+      ),
+    ).toBeInTheDocument();
+  });
 });

@@ -17,8 +17,20 @@ export interface ExerciseSubmission {
   userId: string;
 }
 
+/**
+ * Périmètre de validation de la correction assistée (V4.5-113).
+ * `validated: false` signifie que la fiabilité n'est pas encore démontrée pour
+ * cette famille d'activité : l'interface doit le dire avant le lancement.
+ * Optionnel tant que l'API ne l'expose pas — l'absence n'affiche aucun bandeau.
+ */
+export interface AiCorrectionValidationScope {
+  family: 'practice' | 'project' | 'reflection' | 'writing';
+  validated: boolean;
+}
+
 export interface ExerciseDetail {
   aiCorrectionEligible: boolean;
+  aiCorrectionValidationScope?: AiCorrectionValidationScope | null;
   id: string;
   instructions: string;
   isRequired: boolean;
