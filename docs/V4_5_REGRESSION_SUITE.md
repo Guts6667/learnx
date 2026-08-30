@@ -193,7 +193,7 @@ vérificateur), latences, et la distribution des confiances.
 
 ## 6. Politique de gate v4
 
-Fichier : `benchmarks/ai-correction/regression/gate-policy.v4.json`, budgets
+Fichier : `benchmarks/ai-correction/regression/gate-policy.v5.json`, budgets
 entiers calculés à partir des dénominateurs réels du run (aucun seuil < 1/n).
 Seuils : contrat qualité §5. Le résumé produit `gateFailures[]` et
 `promotionEligible` ; un run avec un gate bloquant rouge ne peut pas mettre à

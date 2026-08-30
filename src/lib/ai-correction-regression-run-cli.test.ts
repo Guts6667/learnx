@@ -48,8 +48,8 @@ const IDENTITIES = {
 async function scratchRegressionDirectory(): Promise<string> {
   const directory = await mkdtemp(path.join(tmpdir(), 'regression-run-'));
   await copyFile(
-    path.join(REGRESSION_SOURCE, 'gate-policy.v4.json'),
-    path.join(directory, 'gate-policy.v4.json'),
+    path.join(REGRESSION_SOURCE, 'gate-policy.v5.json'),
+    path.join(directory, 'gate-policy.v5.json'),
   );
   return directory;
 }

@@ -673,7 +673,7 @@ export async function runRegressionPool(input: {
 
   const policy = parseRegressionGatePolicy(
     JSON.parse(
-      await readFile(path.join(directory, 'gate-policy.v4.json'), 'utf8'),
+      await readFile(path.join(directory, 'gate-policy.v5.json'), 'utf8'),
     ) as unknown,
   );
 
@@ -1953,7 +1953,7 @@ export async function runRegressionAnalysis(input: {
   });
 
   const analysis = await analyseRunOffline({
-    gatePolicyPath: path.join(directory, 'gate-policy.v4.json'),
+    gatePolicyPath: path.join(directory, 'gate-policy.v5.json'),
     plan: planRegressionRun({
       paraphrases: cache.paraphrases,
       pool,
