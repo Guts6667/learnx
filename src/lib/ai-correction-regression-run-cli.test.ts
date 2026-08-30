@@ -24,6 +24,7 @@ import {
 import {
   pendingCellsFor,
   runCheckerMeasurement,
+  runRegressionAnalysis,
   runRegressionPool,
 } from './ai-correction-regression-run-cli.js';
 import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
@@ -755,5 +756,154 @@ describe('one convention, one verdict', () => {
     // A refusal must cost nothing: the point of refusing before the first call
     // is that a half-executed run spends real money and measures nothing.
     expect(dispatched).toBe(0);
+  });
+});
+
+describe('repetition offset (V4.5-127)', () => {
+  it('produces observation 2 rather than re-running observation 1', () => {
+    // The defect this fixes: repetitions are numbered from 1, so a pass given a
+    // count where an offset was meant re-buys the cells an earlier pass already
+    // covered. On 30 August that cost 24 duplicate cells (~0.50 USD) and left
+    // the stability oracle with no second observation of anything.
+    const pending = pendingCellsFor({
+      candidateId: 'cand',
+      cases: [{ caseId: 'a' }, { caseId: 'b' }],
+      completed: new Set(),
+      repetitionOffset: 2,
+      repetitions: 1,
+    });
+
+    expect(pending.map((cell) => cell.repetition)).toEqual([2, 2]);
+    expect(pending.some((cell) => cell.repetition === 1)).toBe(false);
+  });
+
+  it('covers 2..n when a pass asks for several further observations', () => {
+    const pending = pendingCellsFor({
+      candidateId: 'cand',
+      cases: [{ caseId: 'a' }],
+      completed: new Set(),
+      repetitionOffset: 2,
+      repetitions: 2,
+    });
+
+    expect(pending.map((cell) => cell.repetition)).toEqual([2, 3]);
+  });
+
+  it('still starts at 1 when no offset is given', () => {
+    const pending = pendingCellsFor({
+      candidateId: 'cand',
+      cases: [{ caseId: 'a' }],
+      completed: new Set(),
+      repetitions: 2,
+    });
+
+    expect(pending.map((cell) => cell.repetition)).toEqual([1, 2]);
+  });
+
+  it('dispatches the subset at repetition 2 and never at 1', async () => {
+    const directory = await scratchRegressionDirectory();
+    const seen: number[] = [];
+
+    await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=reduced',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: (() => {
+        const inner = fakeExecutor();
+        return async (call: Parameters<ReturnType<typeof fakeExecutor>>[0]) =>
+          inner(call);
+      })(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T06:00:00.000Z'),
+      onPassStart: (pass) => {
+        if (pass.label === 'répétitions du sous-ensemble') {
+          seen.push(pass.repetitionOffset ?? 1);
+        }
+      },
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    expect(seen).toEqual([2]);
+  }, 60_000);
+});
+
+describe('--analyse (V4.5-127)', () => {
+  /**
+   * The recovery path has to be a flag, not a script someone wrote once.
+   *
+   * On 30 August a run bought all 200 cells and died before writing a summary.
+   * The analysis existed as a module, so recovering the measurement meant an
+   * ad-hoc script in a scratch directory — fine that night, useless the next
+   * time. These tests hold the flag to the two properties that matter: it
+   * measures without dispatching, and it refuses a pool that is not the pool
+   * the run used.
+   */
+  it('measures a results directory without dispatching anything', async () => {
+    const directory = await scratchRegressionDirectory();
+    let dispatches = 0;
+    const inner = fakeExecutor();
+
+    const run = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: async (call: Parameters<typeof inner>[0]) => {
+        dispatches += 1;
+        return inner(call);
+      },
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T07:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    expect(dispatches).toBeGreaterThan(0);
+    const dispatchesAfterRun = dispatches;
+
+    const { analysis } = await runRegressionAnalysis({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        `--analyse=${run.resultsDirectory}`,
+      ],
+      regressionDirectory: directory,
+    });
+
+    // The whole point: analysing costs nothing.
+    expect(dispatches).toBe(dispatchesAfterRun);
+    expect(analysis.attempts.length).toBe(dispatchesAfterRun);
+    expect(analysis.cellsObserved).toBeGreaterThan(0);
+  }, 60_000);
+
+  it('refuses a pool whose digest is not the one the run recorded', async () => {
+    const directory = await scratchRegressionDirectory();
+    const resultsDirectory = path.join(directory, 'results', 'fixture');
+    await mkdir(resultsDirectory, { recursive: true });
+    await writeFile(path.join(resultsDirectory, 'attempts.json'), '[]');
+    await writeFile(
+      path.join(resultsDirectory, 'summary.json'),
+      JSON.stringify({ poolSha256Prefix: 'deadbeefdead' }),
+    );
+
+    await expect(
+      runRegressionAnalysis({
+        arguments: [`--run-pool=${POOL_PATH}`, '--analyse=fixture'],
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow('REGRESSION_ANALYSE_POOL_MISMATCH');
+  });
+
+  it('names the missing argument rather than reading an arbitrary directory', async () => {
+    await expect(
+      runRegressionAnalysis({ arguments: [`--run-pool=${POOL_PATH}`] }),
+    ).rejects.toThrow('REGRESSION_ANALYSE_DIRECTORY_REQUIRED');
   });
 });

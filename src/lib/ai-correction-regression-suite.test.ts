@@ -560,3 +560,72 @@ describe('regression report', () => {
     expect(report).not.toContain('Je recommande le pilote');
   });
 });
+
+describe('repetition offset at the runner (V4.5-127)', () => {
+  /**
+   * The 30 August run bought 24 cells that measured nothing.
+   *
+   * The reduced profile's second pass exists to observe a subset twice, so the
+   * stability oracle has two observations to compare. It passed `runBenchmark` a
+   * repetitions *count*, and the runner numbers repetitions from 1 — so the pass
+   * re-ran observation 1 on cells the pool pass had already bought. Every one of
+   * the 216 attempts carried `repetition: 1`, the stability gate had a zero
+   * denominator, and roughly 0.50 USD bought duplicate work.
+   *
+   * This asserts the property that was missing: a pass told to start at 2
+   * produces observation 2, and produces no observation 1 at all.
+   */
+  it('produces only repetition 2 when told to start there', async () => {
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitionOffset: 2,
+      repetitions: 1,
+    });
+
+    const repetitions = new Set(attempts.map((attempt) => attempt.repetition));
+    expect([...repetitions]).toEqual([2]);
+    expect(repetitions.has(1)).toBe(false);
+
+    // One cell per case, at that single repetition — not a second copy of the
+    // work the pool pass already paid for.
+    const cells = new Set(
+      attempts.map((attempt) => `${attempt.caseId}|${attempt.repetition}`),
+    );
+    expect(cells.size).toBe(plan.corpus.cases.length);
+  });
+
+  it('still numbers from 1 when no offset is given', async () => {
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitions: 2,
+    });
+
+    expect(
+      [...new Set(attempts.map((attempt) => attempt.repetition))].sort(),
+    ).toEqual([1, 2]);
+  });
+});

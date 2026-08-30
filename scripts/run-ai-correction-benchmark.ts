@@ -6,6 +6,7 @@ import { loadBenchmarkInputs as loadInputsForRegression } from '../src/lib/ai-co
 import { callCandidate } from '../src/lib/ai-correction-benchmark-runner.ts';
 import {
   runCheckerMeasurement,
+  runRegressionAnalysis,
   runRegressionPool,
 } from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
@@ -104,6 +105,32 @@ async function runAiCorrectionRegressionCli(
     console.log(
       `Mesure du vérificateur : ${measurement.callsMade} appels, ${measurement.spentUsd.toFixed(6)} USD, ${measurement.resultsDirectory}`,
     );
+    return;
+  }
+
+  // `--analyse` never dispatches and never needs a key: it measures artefacts
+  // a paid run already bought. It is checked before the key is required so a
+  // dead run stays analysable on a machine with no credentials.
+  if (arguments_.some((argument) => argument.startsWith('--analyse'))) {
+    const { analysis, resultsDirectory } = await runRegressionAnalysis({
+      arguments: arguments_,
+    });
+    console.log(`Analyse hors ligne de ${resultsDirectory} — aucun appel.`);
+    console.log(
+      `${analysis.attempts.length} tentatives, ${analysis.cellsObserved} cellules, ${analysis.cellsUnusable} inexploitables, ${analysis.verdictCount} verdicts réutilisés, ${analysis.ledgerSpentUsd.toFixed(4)} USD au registre.`,
+    );
+    console.log(
+      `Répétitions distinctes : ${analysis.distinctRepetitions.join(', ') || 'aucune'}.`,
+    );
+    for (const gate of analysis.evaluation.gates) {
+      console.log(
+        `  ${gate.status.padEnd(12)} ${gate.kind.padEnd(10)} ${gate.key} — ${gate.numerator}/${gate.denominator}${
+          gate.observedRate === null
+            ? ' (non mesuré)'
+            : ` = ${(gate.observedRate * 100).toFixed(2)} %`
+        }`,
+      );
+    }
     return;
   }
 
