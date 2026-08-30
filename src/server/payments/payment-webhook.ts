@@ -14,13 +14,25 @@ import { verifyStripeSignature } from './stripe-webhook-signature.js';
  * waiting state and nothing else.
  */
 
+/**
+ * `providerEventId` is present only once the signature has been verified.
+ * A rejected delivery deliberately carries none: the id would come from a
+ * payload nobody has authenticated, and reading it — even to write a log line
+ * — is how an unverified body starts influencing the system. Correlate a
+ * rejection with the provider's dashboard by time and request id instead.
+ */
 export type WebhookResult =
-  | { kind: 'APPLIED'; status: PaymentOrderStatus; attributed: boolean }
-  | { kind: 'DUPLICATE' }
-  | { kind: 'OUT_OF_ORDER' }
+  | {
+      attributed: boolean;
+      kind: 'APPLIED';
+      providerEventId: string;
+      status: PaymentOrderStatus;
+    }
   | { kind: 'DISABLED' }
-  | { kind: 'UNKNOWN_ORDER' }
-  | { kind: 'REJECTED'; reason: string };
+  | { kind: 'DUPLICATE'; providerEventId: string }
+  | { kind: 'OUT_OF_ORDER'; providerEventId: string }
+  | { kind: 'REJECTED'; reason: string }
+  | { kind: 'UNKNOWN_ORDER'; providerEventId: string };
 
 export interface WebhookPorts {
   /** Records the event and returns false when the id was already stored. */
@@ -104,12 +116,15 @@ export async function handleRevolutWebhook(input: {
     payload: JSON.parse(input.rawPayload),
     providerEventId: envelope.event_id,
   });
-  if (!stored) return { kind: 'DUPLICATE' };
-  if (!order) return { kind: 'UNKNOWN_ORDER' };
-  if (!status) return { kind: 'OUT_OF_ORDER' };
+  const providerEventId = envelope.event_id;
+  if (!stored) return { kind: 'DUPLICATE', providerEventId };
+  if (!order) return { kind: 'UNKNOWN_ORDER', providerEventId };
+  if (!status) return { kind: 'OUT_OF_ORDER', providerEventId };
 
   const decision = decideTransition(order.status, status);
-  if (decision.kind === 'OUT_OF_ORDER') return { kind: 'OUT_OF_ORDER' };
+  if (decision.kind === 'OUT_OF_ORDER') {
+    return { kind: 'OUT_OF_ORDER', providerEventId };
+  }
 
   const attributeCredits = shouldAttributeCredits({
     current: order.status,
@@ -124,5 +139,10 @@ export async function handleRevolutWebhook(input: {
     orderId: order.id,
     status: applied,
   });
-  return { attributed: attributeCredits, kind: 'APPLIED', status: applied };
+  return {
+    attributed: attributeCredits,
+    kind: 'APPLIED',
+    providerEventId,
+    status: applied,
+  };
 }

@@ -71,6 +71,7 @@ describe('réception d’un webhook de paiement', () => {
     await expect(run(harness)).resolves.toEqual({
       attributed: true,
       kind: 'APPLIED',
+      providerEventId: 'evt_1',
       status: 'FULFILLED',
     });
   });
@@ -78,13 +79,19 @@ describe('réception d’un webhook de paiement', () => {
   it('n’attribue rien deux fois sur un événement rejeué', async () => {
     // The provider retries; the unique event id is what makes that harmless.
     const harness = build({ stored: false });
-    await expect(run(harness)).resolves.toEqual({ kind: 'DUPLICATE' });
+    await expect(run(harness)).resolves.toEqual({
+      kind: 'DUPLICATE',
+      providerEventId: 'evt_1',
+    });
     expect(harness.applied).toEqual([]);
   });
 
   it('ne fait pas régresser une commande déjà honorée', async () => {
     const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
-    await expect(run(harness)).resolves.toEqual({ kind: 'OUT_OF_ORDER' });
+    await expect(run(harness)).resolves.toEqual({
+      kind: 'OUT_OF_ORDER',
+      providerEventId: 'evt_1',
+    });
     expect(harness.applied).toEqual([]);
   });
 
@@ -121,7 +128,10 @@ describe('réception d’un webhook de paiement', () => {
 
   it('enregistre un événement pour une commande inconnue sans l’appliquer', async () => {
     const harness = build({ order: null });
-    await expect(run(harness)).resolves.toEqual({ kind: 'UNKNOWN_ORDER' });
+    await expect(run(harness)).resolves.toEqual({
+      kind: 'UNKNOWN_ORDER',
+      providerEventId: 'evt_1',
+    });
     expect(harness.recorded[0]).toMatchObject({ orderId: null });
     expect(harness.applied).toEqual([]);
   });
@@ -132,7 +142,11 @@ describe('réception d’un webhook de paiement', () => {
     const harness = build();
     await expect(
       run(harness, payloadFor({ id: 'evt_2', type: 'invoice.upcoming' })),
-    ).resolves.toEqual({ kind: 'OUT_OF_ORDER' });
+    ).resolves.toEqual({
+      kind: 'OUT_OF_ORDER',
+      // The id travels with the result so a log line can name the delivery.
+      providerEventId: 'evt_2',
+    });
     expect(harness.applied).toEqual([]);
   });
 
