@@ -765,6 +765,151 @@ describe('one convention, one verdict', () => {
   });
 });
 
+describe('a resume is priced against what the cap has left', () => {
+  async function measuredDirectoryWithPriorSpend(
+    priorSpendUsd: number,
+  ): Promise<{
+    directory: string;
+    resumeDirectory: string;
+  }> {
+    const directory = await scratchRegressionDirectory();
+    await copyFile(
+      path.join(REGRESSION_SOURCE, 'measured-costs.v1.json'),
+      path.join(directory, 'measured-costs.v1.json'),
+    );
+    await copyFile(
+      path.join(REGRESSION_SOURCE, 'checker-pricing.v1.json'),
+      path.join(directory, 'checker-pricing.v1.json'),
+    );
+    const first = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T06:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+    // The spend is real but the cells are not the ones the resumed profile
+    // owes: this fixture is about inherited money, not inherited coverage.
+    const attempts = JSON.parse(
+      await readFile(
+        path.join(first.resultsDirectory, 'attempts.json'),
+        'utf8',
+      ),
+    ) as { caseId: string; usage: { actualCostUsd: number } }[];
+    for (const [index, attempt] of attempts.entries()) {
+      attempt.caseId = `spent-elsewhere-${index}`;
+      attempt.usage.actualCostUsd = priorSpendUsd / attempts.length;
+    }
+    await writeFile(
+      path.join(first.resultsDirectory, 'attempts.json'),
+      `${JSON.stringify(attempts, null, 2)}\n`,
+    );
+    return { directory, resumeDirectory: first.resultsDirectory };
+  }
+
+  it('refuses before dispatch when the plan fits the cap but not the remainder', async () => {
+    // The 30 August top-up: bound 3.3555 USD, cap 7 USD, and the plan declared
+    // itself affordable — because the drop order weighed it against the whole
+    // cap while the dispatch guard had already absorbed 4.6854 USD of resumed
+    // spend. The run then died inside `runBenchmark` on
+    // BENCHMARK_SUPPLIER_BUDGET_CONTINGENCY_REQUIRED, after the preflight had
+    // said it fits. Two numbers, one cap, and the refusal arrived at the wrong
+    // layer.
+    const { directory, resumeDirectory } =
+      await measuredDirectoryWithPriorSpend(0.05);
+    let dispatched = 0;
+    const counting = () => {
+      const inner = fakeExecutor();
+      return async (call: Parameters<ReturnType<typeof fakeExecutor>>[0]) => {
+        dispatched += 1;
+        return inner(call);
+      };
+    };
+
+    // Smoke's bound is 0.0699 USD: under the cap of 0.10, over the 0.05 left.
+    await expect(
+      runRegressionPool({
+        arguments: [
+          `--run-pool=${POOL_PATH}`,
+          '--profile=smoke',
+          '--supplier-cost-cap-usd=0.10',
+          `--resume=${resumeDirectory}`,
+        ],
+        checker: CHECKER,
+        configuration: configuration(),
+        executeCandidate: counting(),
+        identities: IDENTITIES,
+        now: () => new Date('2026-08-29T06:10:00.000Z'),
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow(/EXCEEDS_CAP/);
+
+    expect(dispatched).toBe(0);
+  });
+
+  it('states the inherited spend and the remaining cap in the preflight', async () => {
+    const { directory, resumeDirectory } =
+      await measuredDirectoryWithPriorSpend(0.05);
+
+    const outcome = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+        `--resume=${resumeDirectory}`,
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T06:20:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    expect(outcome.priorActualSpendUsd).toBeCloseTo(0.05, 6);
+    expect(outcome.remainingCapUsd).toBeCloseTo(99.95, 6);
+
+    const preflight = JSON.parse(
+      await readFile(
+        path.join(outcome.resultsDirectory, 'budget-preflight.json'),
+        'utf8',
+      ),
+    ) as { priorActualSpendUsd: number; remainingCapUsd: number };
+    expect(preflight.priorActualSpendUsd).toBeCloseTo(0.05, 6);
+    expect(preflight.remainingCapUsd).toBeCloseTo(99.95, 6);
+  });
+
+  it('leaves a fresh run judged against the whole cap', async () => {
+    const directory = await scratchRegressionDirectory();
+    const outcome = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T06:30:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    expect(outcome.priorActualSpendUsd).toBe(0);
+    expect(outcome.remainingCapUsd).toBe(100);
+  });
+});
+
 describe('repetition offset (V4.5-127)', () => {
   it('produces observation 2 rather than re-running observation 1', () => {
     // The defect this fixes: repetitions are numbered from 1, so a pass given a
