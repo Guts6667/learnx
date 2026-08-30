@@ -168,6 +168,13 @@ documents:
     reviewer: Propriétaire
     supersession: reviewed_version_bump_preserving_git_history
 
+  - path: docs/V4_5_PRICING_CALIBRATION.md
+    scope: v4_5_credit_pricing_calibration
+    status: current_status
+    owner: Finance & Pricing
+    reviewer: Propriétaire
+    supersession: recalculated_on_identity_or_rate_change
+
   - path: docs/V4_RESEARCH_FINDINGS.md
     scope: v4_ai_research_readable_status
     status: current_status
