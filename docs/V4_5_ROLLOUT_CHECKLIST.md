@@ -16,28 +16,47 @@
 | `SENTRY_DSN` | ✅ posée | ✅ posée | **fait** | — |
 | `VITE_SENTRY_DSN` | ✅ posée | ✅ posée | **fait** | — |
 | `APP_URL` | ✅ posée | ✅ posée | **fait** | — |
-| `LEARNX_PUBLIC_LEADS_ENABLED` | ✅ posée | absente | **sans effet**, voir ci-dessous | Rayan, confort |
+| `LEARNX_PUBLIC_LEADS_ENABLED` | ✅ posée, valeur non vérifiable | **absente → collecte fermée** | **à poser sur Preview** | Rayan |
 | `LEARNX_PAYMENTS_ENABLED` | absente | ✅ posée | **état voulu** | ne rien faire |
 | `STRIPE_LIVE_*` | absentes | absentes | **état voulu** | après GO packs |
 | `DATABASE_URL` / `DIRECT_URL` | ✅ posées, 28 jours | ✅ posées | **décision propriétaire : pas de rotation** | ne rien faire, §2 |
 
-### Le piège : les deux drapeaux n'ont pas le même défaut
+### Les deux drapeaux s'ouvrent par décision, jamais par défaut
 
-C'est la seule chose de cette section qu'il faut retenir, parce qu'elle se lit à
-l'envers de l'intuition.
+Depuis #156 (V4.5-178, fusionnée le 31 août à 01 h), les deux lisent
+`=== 'true'`. **Une variable absente signifie fermé**, dans les deux cas.
 
-- `payments-configuration.ts` teste `=== 'true'`. **Absente signifie
-  désactivé.** Les paiements sont donc éteints en production parce que la
-  variable n'y est pas — c'est bien l'état voulu jusqu'au GO packs, et il ne
-  faut *rien* poser pour l'obtenir.
-- `public-leads/configuration.ts` teste `=== 'false'`. **Absente signifie
-  activé.** Le formulaire public est donc déjà actif sur Preview sans variable.
-  La poser à `true` sur Preview ne change rien au comportement ; cela rend
-  seulement l'intention lisible, ce qui reste souhaitable.
+- `payments-configuration.ts` : absente → paiements éteints. C'est l'état voulu
+  en production jusqu'au GO packs, et il s'obtient en ne posant **rien**.
+- `public-leads/configuration.ts` : absente → collecte fermée. Auparavant ce
+  code refusait la seule chaîne exacte `false`, si bien que l'absence — comme
+  `FALSE`, `0`, `no`, ou une valeur avec une espace — valait *activé*. La
+  collecte d'adresses e-mail sur la page publique était donc ouverte parce que
+  personne ne l'avait fermée. Une fonctionnalité qui touche aux données
+  personnelles d'inconnus s'ouvre par une décision, pas par l'absence de
+  décision.
 
-Un drapeau qui s'active par défaut et un drapeau qui se désactive par défaut
-dans le même produit est une source d'erreur permanente. À unifier un jour, sur
-un ticket dédié — pas dans une fenêtre de mise en production.
+**Ce que cela impose avant la promotion.** `LEARNX_PUBLIC_LEADS_ENABLED` est
+posée en Production mais **absente de Preview** : la collecte y est donc fermée.
+À poser sur Preview si l'on veut pouvoir l'y tester.
+
+**Et une vérification qui ne peut pas se faire d'ici.** La variable est
+`Secret` : `vercel env ls` en donne le nom et l'environnement, jamais la valeur.
+Sa seule présence en Production ne prouve donc rien — il faut qu'elle vaille
+**exactement** `true`. `True`, `TRUE`, `1` ou `true ` avec une espace ferment la
+collecte aussi sûrement que son absence. Seul Rayan peut le confirmer, depuis le
+dashboard.
+
+Le service exige en outre `RESEND_API_KEY`, `APP_URL` et `LEARNX_EMAIL_FROM` :
+les trois sont présentes dans les deux environnements.
+
+> Note de méthode, parce que l'erreur est instructive. Ce document a affirmé
+> que les deux drapeaux avaient des défauts **opposés**. C'était faux au moment
+> où je l'ai écrit : #156 était déjà fusionnée, et le fichier corrigé était déjà
+> dans le répertoire de travail d'où j'écrivais. J'avais lu la sémantique du
+> drapeau dans un **autre** worktree, plus ancien, puis rédigé ici sans relire.
+> Une constatation ne voyage pas d'un worktree à l'autre : elle se relit là où
+> on écrit, au moment où on écrit.
 
 ## 2. Rotation des identifiants Neon — **décision propriétaire : abandonnée**
 
@@ -167,7 +186,8 @@ marqueur**, au moment où elle décide que le résultat doit être servi.
 - [ ] décider si `Integration (required)` doit aussi devenir requise sur `dev`
       (proposition argumentée dans la PR V4.5-201 : oui, mais après une journée
       d'observation sans annulation) ;
-- [ ] `LEARNX_PUBLIC_LEADS_ENABLED` sur Preview, pour l'explicite (§1) — sans effet fonctionnel.
+- [ ] `LEARNX_PUBLIC_LEADS_ENABLED` sur **Preview** — absente, donc la collecte y est fermée (§1) ;
+- [ ] confirmer depuis le dashboard que sa valeur en Production vaut **exactement** `true` (§1).
 
 **Voie D**
 
