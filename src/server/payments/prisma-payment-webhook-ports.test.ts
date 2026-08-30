@@ -18,7 +18,10 @@ const state = {
    * was indistinguishable from a lookup on the right one — which is how a bug
    * that made every purchase unfulfillable passed a full suite.
    */
+  eventInsertFails: false,
+  events: 0,
   queries: [] as Record<string, unknown>[],
+  transitionFails: false,
   /** What the database holds; anything else resolves to nothing. */
   stored: {} as Record<string, unknown>,
   updates: [] as Record<string, unknown>[],
@@ -41,19 +44,35 @@ function lookup(where: Record<string, unknown>) {
     : null;
 }
 
+const models = {
+  creditPack: { findUniqueOrThrow: async () => ({ credits: 500n }) },
+  paymentEvent: {
+    create: async () => {
+      state.events += 1;
+      if (state.eventInsertFails) throw new Error('unique violation');
+      return {};
+    },
+  },
+  paymentOrder: {
+    findUnique: async (input: { where: Record<string, unknown> }) =>
+      lookup(input.where),
+    findUniqueOrThrow: async () => state.order,
+    update: async (input: { data: Record<string, unknown> }) => {
+      if (state.transitionFails) throw new Error('transition failed');
+      state.updates.push(input.data);
+      return {};
+    },
+  },
+};
+
 vi.mock('../prisma.js', () => ({
   prisma: {
-    creditPack: { findUniqueOrThrow: async () => ({ credits: 500n }) },
-    paymentEvent: { create: async () => ({}) },
-    paymentOrder: {
-      findUnique: async (input: { where: Record<string, unknown> }) =>
-        lookup(input.where),
-      findUniqueOrThrow: async () => state.order,
-      update: async (input: { data: Record<string, unknown> }) => {
-        state.updates.push(input.data);
-        return {};
-      },
-    },
+    ...models,
+    // Runs the callback on the same models, and lets a thrown error out, which
+    // is the whole property V4.5-199 relies on.
+    $transaction: async <T>(
+      run: (client: typeof models) => Promise<T>,
+    ): Promise<T> => run(models),
   },
 }));
 
@@ -67,18 +86,28 @@ describe('attribution des crédits achetés', () => {
   beforeEach(() => {
     grant.mockClear();
     state.order.creditLotId = null;
+    state.eventInsertFails = false;
+    state.events = 0;
     state.queries = [];
+    state.transitionFails = false;
     state.updates = [];
     state.stored = { id: ORDER_ID };
   });
 
   it('crédite un lot ACHETÉ et honore la commande en un geste', async () => {
     const ports = await createPrismaPaymentWebhookPorts();
-    await ports.applyTransition({
-      attributeCredits: true,
+    await ports.recordDelivery({
+      eventType: 'checkout.session.completed',
       orderId: ORDER_ID,
-      paymentIntentId: null,
-      status: 'FULFILLED',
+      outcome: 'APPLIED',
+      payload: {},
+      providerEventId: `evt_${state.events}`,
+      transition: {
+        attributeCredits: true,
+        orderId: ORDER_ID,
+        paymentIntentId: null,
+        status: 'FULFILLED',
+      },
     });
 
     expect(grant).toHaveBeenCalledWith(
@@ -102,11 +131,18 @@ describe('attribution des crédits achetés', () => {
     // concurrent redelivery.
     state.order.creditLotId = 'lot-1';
     const ports = await createPrismaPaymentWebhookPorts();
-    await ports.applyTransition({
-      attributeCredits: true,
+    await ports.recordDelivery({
+      eventType: 'checkout.session.completed',
       orderId: ORDER_ID,
-      paymentIntentId: null,
-      status: 'FULFILLED',
+      outcome: 'APPLIED',
+      payload: {},
+      providerEventId: `evt_${state.events}`,
+      transition: {
+        attributeCredits: true,
+        orderId: ORDER_ID,
+        paymentIntentId: null,
+        status: 'FULFILLED',
+      },
     });
 
     expect(grant).not.toHaveBeenCalled();
@@ -115,11 +151,18 @@ describe('attribution des crédits achetés', () => {
 
   it('n’appelle pas le registre sur une transition sans attribution', async () => {
     const ports = await createPrismaPaymentWebhookPorts();
-    await ports.applyTransition({
-      attributeCredits: false,
+    await ports.recordDelivery({
+      eventType: 'checkout.session.completed',
       orderId: ORDER_ID,
-      paymentIntentId: null,
-      status: 'PENDING',
+      outcome: 'APPLIED',
+      payload: {},
+      providerEventId: `evt_${state.events}`,
+      transition: {
+        attributeCredits: false,
+        orderId: ORDER_ID,
+        paymentIntentId: null,
+        status: 'PENDING',
+      },
     });
 
     expect(grant).not.toHaveBeenCalled();
@@ -248,5 +291,84 @@ describe('une référence qui n’est pas la nôtre', () => {
         providerOrderId: 'cs_other',
       }),
     ).resolves.toBeNull();
+  });
+});
+
+describe('un seul acte : enregistrer et appliquer (V4.5-199)', () => {
+  beforeEach(() => {
+    state.eventInsertFails = false;
+    state.events = 0;
+    state.transitionFails = false;
+    state.updates = [];
+    state.stored = { id: ORDER_ID };
+  });
+
+  it('ne laisse aucune trace de l’événement quand la transition échoue', async () => {
+    // The defect this closes: the insert committed, the transition threw, and
+    // Stripe's retry was refused as a duplicate by the very uniqueness that
+    // makes a replay harmless. The order stayed paid and uncredited, with
+    // nothing failing loudly. Now the throw takes the row with it.
+    state.transitionFails = true;
+    const ports = await createPrismaPaymentWebhookPorts();
+
+    await expect(
+      ports.recordDelivery({
+        eventType: 'checkout.session.completed',
+        orderId: ORDER_ID,
+        outcome: 'APPLIED',
+        payload: {},
+        providerEventId: 'evt_fail',
+        transition: {
+          attributeCredits: false,
+          orderId: ORDER_ID,
+          paymentIntentId: null,
+          status: 'PAID',
+        },
+      }),
+    ).rejects.toThrow('transition failed');
+    // Nothing was applied, and the caller is not told the delivery was stored.
+    expect(state.updates).toEqual([]);
+  });
+
+  it('enregistre sans rien appliquer quand il n’y a pas de transition', async () => {
+    // An event we act on in no way still has to leave a record: that is what
+    // reconciliation reads.
+    const ports = await createPrismaPaymentWebhookPorts();
+
+    await expect(
+      ports.recordDelivery({
+        eventType: 'invoice.upcoming',
+        orderId: null,
+        outcome: 'UNKNOWN_EVENT',
+        payload: {},
+        providerEventId: 'evt_none',
+      }),
+    ).resolves.toBe(true);
+    expect(state.events).toBe(1);
+    expect(state.updates).toEqual([]);
+  });
+
+  it('applique la transition dans la même transaction que l’insertion', async () => {
+    const ports = await createPrismaPaymentWebhookPorts();
+
+    await ports.recordDelivery({
+      eventType: 'checkout.session.completed',
+      orderId: ORDER_ID,
+      outcome: 'APPLIED',
+      payload: {},
+      providerEventId: 'evt_ok',
+      transition: {
+        attributeCredits: false,
+        orderId: ORDER_ID,
+        paymentIntentId: 'pi_1',
+        status: 'PAID',
+      },
+    });
+
+    expect(state.events).toBe(1);
+    expect(state.updates[0]).toMatchObject({
+      providerPaymentIntentId: 'pi_1',
+      status: 'PAID',
+    });
   });
 });

@@ -25,19 +25,24 @@ function build(
   const applied: Record<string, unknown>[] = [];
   const recorded: Record<string, unknown>[] = [];
   const ports = {
-    applyTransition: vi.fn(async (input: Record<string, unknown>) => {
-      applied.push(input);
-    }),
     findOrder: vi.fn(async () =>
       options.order === undefined
         ? { id: 'order-1', status: 'PENDING' as const }
         : options.order,
     ),
     compensateRefund: vi.fn(async () => true),
-    recordEvent: vi.fn(async (input: Record<string, unknown>) => {
-      recorded.push(input);
-      return options.stored ?? true;
-    }),
+    recordDelivery: vi.fn(
+      async (input: Record<string, unknown> & { transition?: unknown }) => {
+        recorded.push(input);
+        const stored = options.stored ?? true;
+        // One call now carries both (V4.5-199); the harness still separates
+        // them so the assertions keep saying what they meant. A rejected
+        // insert applies nothing — the transaction rolls back, and modelling
+        // it otherwise would let a test pass over a double attribution.
+        if (stored && input.transition) applied.push(input.transition as never);
+        return stored;
+      },
+    ),
   };
   return { applied, options, ports, recorded };
 }
@@ -194,25 +199,18 @@ describe('réception d’un webhook de paiement', () => {
       expect(harness.recorded[0]).toMatchObject({ outcome: 'APPLIED' });
       expect(harness.applied).toHaveLength(1);
     });
+  });
 
-    it('consigne avant d’appliquer, pour que rien d’arrivé ne soit perdu', async () => {
-      // Deciding first must not have moved the write: the insert is what makes
-      // a replay harmless, so it stays ahead of any transition.
-      const harness = build();
-      const order: string[] = [];
-      harness.ports.recordEvent.mockImplementation(
-        async (input: Record<string, unknown>) => {
-          order.push('record');
-          harness.recorded.push(input);
-          return true;
-        },
-      );
-      harness.ports.applyTransition.mockImplementation(async () => {
-        order.push('apply');
-      });
-      await run(harness);
-      expect(order).toEqual(['record', 'apply']);
-    });
+  it('n’applique rien quand l’enregistrement est refusé', async () => {
+    // Since V4.5-199 the insert and the transition are one transaction, so a
+    // duplicate does not merely skip the apply — it cannot reach it. The
+    // earlier version of this test watched the two calls happen in order;
+    // there is only one call now, and the property it was guarding is proven
+    // where the transaction lives, in the ports test.
+    const harness = build({ stored: false });
+
+    await expect(run(harness)).resolves.toMatchObject({ kind: 'DUPLICATE' });
+    expect(harness.applied).toEqual([]);
   });
 
   it('refuse une enveloppe sans référence de commande', async () => {

@@ -52,13 +52,28 @@ type StoredWebhookOutcome =
   | 'UNKNOWN_ORDER';
 
 export interface WebhookPorts {
-  /** Records the event and returns false when the id was already stored. */
-  recordEvent(input: {
+  /**
+   * Records the delivery and, when there is one, applies its transition — in a
+   * single transaction (V4.5-199). Returns false when the id was already
+   * stored.
+   *
+   * The two are one act because separating them loses money quietly: the
+   * insert committed, the transition threw, and Stripe's retry was refused as
+   * a duplicate by the very uniqueness that makes a replay harmless. The order
+   * stayed paid and uncredited, with nothing failing.
+   */
+  recordDelivery(input: {
     eventType: string;
     orderId: string | null;
     outcome: StoredWebhookOutcome;
     payload: unknown;
     providerEventId: string;
+    transition?: {
+      attributeCredits: boolean;
+      orderId: string;
+      paymentIntentId: string | null;
+      status: PaymentOrderStatus;
+    };
   }): Promise<boolean>;
   /**
    * Resolves an event to an order. The payment intent is tried first because
@@ -77,21 +92,16 @@ export interface WebhookPorts {
    * the order's figures, together. Returns false when the order had already
    * been settled — two deliveries, or an administrator who got there first.
    *
-   * Separate from `applyTransition` because it is not a status change that
-   * happens to write a ledger entry: the entry is the point, and the status is
-   * what the refund service sets while writing it.
+   * Not folded into `recordDelivery` like the other transitions: it is not a
+   * status change that happens to write a ledger entry — the entry is the
+   * point, and the refund service sets the status while writing it, in its
+   * own transaction. Joining ours would mean parameterising that service,
+   * which is the path an administrator uses too (V4.5-211). Until then this
+   * one write still outlives a failed record; it is safe because the refund
+   * path is idempotent three times over — conditional status update, ledger
+   * key `refund:<order>`, and the `creditLotId` guard.
    */
   compensateRefund(input: { orderId: string }): Promise<boolean>;
-  applyTransition(input: {
-    attributeCredits: boolean;
-    orderId: string;
-    /**
-     * Recorded the first time Stripe names it, so every later charge and
-     * dispute can be resolved. Null on events that do not carry one.
-     */
-    paymentIntentId: string | null;
-    status: PaymentOrderStatus;
-  }): Promise<void>;
 }
 
 interface WebhookEnvelope {
@@ -227,18 +237,46 @@ export async function handlePaymentWebhook(input: {
   // event name into OUT_OF_ORDER, which reads as a harmless late duplicate and
   // hid the one failure this receiver cannot detect on its own.
   const resolution = resolveEvent(order, status, envelope.refund_is_full);
+  const providerEventId = envelope.event_id;
 
-  // Still the first write, and still before anything is applied: the insert is
-  // what makes a replay harmless, and the record of what arrived must exist
-  // even for events we act on in no way.
-  const stored = await input.ports.recordEvent({
+  // What this delivery does to the order, decided before anything is written
+  // and handed to the same call that records it. A refund is excluded: it goes
+  // through the refund service below, which writes its own.
+  const transition =
+    resolution.outcome === 'APPLIED' && resolution.incoming !== 'REFUNDED'
+      ? {
+          attributeCredits: shouldAttributeCredits({
+            current: resolution.order.status,
+            incoming: resolution.incoming,
+          }),
+          orderId: resolution.order.id,
+          paymentIntentId: envelope.payment_intent_id,
+          status: resolution.decided,
+        }
+      : undefined;
+
+  // On PAID the grant and the FULFILLED transition are one act. An order that
+  // reached PAID and stopped would be money taken with nothing given, waiting
+  // on an event the provider has no reason to send.
+  const applied =
+    transition && transition.attributeCredits
+      ? 'FULFILLED'
+      : transition?.status;
+
+  // One transaction (V4.5-199). The insert is still what makes a replay
+  // harmless, and the record of what arrived still exists for events we act on
+  // in no way — but the transition no longer outlives a failed insert, nor the
+  // insert a failed transition.
+  const stored = await input.ports.recordDelivery({
     eventType: envelope.event,
     orderId: order?.id ?? null,
     outcome: resolution.outcome,
     payload: JSON.parse(input.rawPayload),
     providerEventId: envelope.event_id,
+    ...(transition && applied
+      ? { transition: { ...transition, status: applied } }
+      : {}),
   });
-  const providerEventId = envelope.event_id;
   if (!stored) return { kind: 'DUPLICATE', providerEventId };
   if (resolution.outcome !== 'APPLIED') {
     return { kind: resolution.outcome, providerEventId };
@@ -264,24 +302,11 @@ export async function handlePaymentWebhook(input: {
     };
   }
 
-  const attributeCredits = shouldAttributeCredits({
-    current: resolution.order.status,
-    incoming: resolution.incoming,
-  });
-  // On PAID the grant and the FULFILLED transition are one act. An order that
-  // reached PAID and stopped would be money taken with nothing given, waiting
-  // on an event the provider has no reason to send.
-  const applied = attributeCredits ? 'FULFILLED' : resolution.decided;
-  await input.ports.applyTransition({
-    attributeCredits,
-    orderId: resolution.order.id,
-    paymentIntentId: envelope.payment_intent_id,
-    status: applied,
-  });
+  // Already applied, inside the transaction above.
   return {
-    attributed: attributeCredits,
+    attributed: transition?.attributeCredits ?? false,
     kind: 'APPLIED',
     providerEventId,
-    status: applied,
+    status: applied ?? resolution.decided,
   };
 }

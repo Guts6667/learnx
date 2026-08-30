@@ -1,3 +1,8 @@
+import type {
+  PaymentOrderStatus,
+  Prisma,
+  PrismaClient,
+} from '../../../generated/prisma/client.js';
 import { ensureSystemActor } from '../system-actor.js';
 import type { WebhookPorts } from './payment-webhook.js';
 
@@ -17,62 +22,86 @@ import type { WebhookPorts } from './payment-webhook.js';
 const CANONICAL_UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+/**
+ * The transition, on whatever client it is handed (V4.5-199).
+ *
+ * Parameterised so it can run inside the same transaction as the event insert.
+ * It used to open its own writes after that insert had already committed: when
+ * it threw, the event row survived, and Stripe's retry was deduplicated away by
+ * the very uniqueness that makes a replay harmless. Money taken, credits never
+ * granted, nothing failing loudly.
+ */
+async function applyTransitionOn(
+  client: Prisma.TransactionClient,
+  input: {
+    attributeCredits: boolean;
+    orderId: string;
+    paymentIntentId: string | null;
+    status: PaymentOrderStatus;
+  },
+): Promise<void> {
+  // Written on every transition that names one, not only on the grant:
+  // `checkout.session.expired` carries no intent, `charge.dispute.created`
+  // does, and an order first seen through a dispute still has to become
+  // resolvable afterwards.
+  const intent = input.paymentIntentId
+    ? { providerPaymentIntentId: input.paymentIntentId }
+    : {};
+
+  if (!input.attributeCredits) {
+    await client.paymentOrder.update({
+      data: { ...intent, status: input.status },
+      where: { id: input.orderId },
+    });
+    return;
+  }
+
+  const order = await client.paymentOrder.findUniqueOrThrow({
+    select: { creditLotId: true, packKey: true, userId: true },
+    where: { id: input.orderId },
+  });
+  // Already granted: the lot id on the order is the first of two guards,
+  // and the ledger's own idempotency below is the second. Neither alone
+  // would be enough under a concurrent redelivery.
+  if (order.creditLotId) return;
+
+  const pack = await client.creditPack.findUniqueOrThrow({
+    select: { credits: true },
+    where: { key: order.packKey },
+  });
+  const { PrismaCreditLedger } =
+    await import('../credits/prisma-credit-ledger.js');
+  // The ledger asks for a `PrismaClient` and uses only model access — it opens
+  // no transaction of its own, which is what lets the grant join ours. The
+  // cast is that fact, written down; a ledger that started calling
+  // `$transaction` would need this reconsidered, not re-cast.
+  const result = await new PrismaCreditLedger(
+    client as unknown as PrismaClient,
+  ).grant({
+    amount: pack.credits,
+    // Derived from the order, so a redelivery computes the same key and
+    // the ledger returns the original lot instead of creating a second.
+    idempotencyKey: `purchase:${input.orderId}`,
+    provenance: 'PURCHASED',
+    reference: { id: input.orderId, type: 'PAYMENT_ORDER' },
+    userId: order.userId,
+  });
+  await client.paymentOrder.update({
+    data: {
+      ...intent,
+      creditLotId: result.lotId,
+      fulfilledAt: new Date(),
+      status: input.status,
+    },
+    where: { id: input.orderId },
+  });
+}
+
 export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
   const { prisma } = await import('../prisma.js');
   const { Prisma } = await import('../../../generated/prisma/client.js');
 
   return {
-    async applyTransition(input) {
-      // Written on every transition that names one, not only on the grant:
-      // `checkout.session.expired` carries no intent, `charge.dispute.created`
-      // does, and an order first seen through a dispute still has to become
-      // resolvable afterwards.
-      const intent = input.paymentIntentId
-        ? { providerPaymentIntentId: input.paymentIntentId }
-        : {};
-
-      if (!input.attributeCredits) {
-        await prisma.paymentOrder.update({
-          data: { ...intent, status: input.status },
-          where: { id: input.orderId },
-        });
-        return;
-      }
-
-      const order = await prisma.paymentOrder.findUniqueOrThrow({
-        select: { creditLotId: true, packKey: true, userId: true },
-        where: { id: input.orderId },
-      });
-      // Already granted: the lot id on the order is the first of two guards,
-      // and the ledger's own idempotency below is the second. Neither alone
-      // would be enough under a concurrent redelivery.
-      if (order.creditLotId) return;
-
-      const pack = await prisma.creditPack.findUniqueOrThrow({
-        select: { credits: true },
-        where: { key: order.packKey },
-      });
-      const { PrismaCreditLedger } =
-        await import('../credits/prisma-credit-ledger.js');
-      const result = await new PrismaCreditLedger(prisma).grant({
-        amount: pack.credits,
-        // Derived from the order, so a redelivery computes the same key and
-        // the ledger returns the original lot instead of creating a second.
-        idempotencyKey: `purchase:${input.orderId}`,
-        provenance: 'PURCHASED',
-        reference: { id: input.orderId, type: 'PAYMENT_ORDER' },
-        userId: order.userId,
-      });
-      await prisma.paymentOrder.update({
-        data: {
-          ...intent,
-          creditLotId: result.lotId,
-          fulfilledAt: new Date(),
-          status: input.status,
-        },
-        where: { id: input.orderId },
-      });
-    },
     async compensateRefund(input) {
       // Delegated to the refund service so the pro-rata rule, the append-only
       // ledger and the conditional status write stay in one place — the same
@@ -143,16 +172,26 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
         where: { providerOrderId: input.providerOrderId },
       });
     },
-    async recordEvent(input) {
+    async recordDelivery(input) {
       try {
-        await prisma.paymentEvent.create({
-          data: {
-            eventType: input.eventType,
-            orderId: input.orderId,
-            outcome: input.outcome,
-            payload: input.payload as never,
-            providerEventId: input.providerEventId,
-          },
+        // One transaction (V4.5-199). The insert is still what makes a replay
+        // harmless, and the transition no longer outlives it: if applying
+        // throws, the event row goes with it and Stripe's retry finds nothing
+        // recorded, so it applies. Before, the row survived and deduplicated
+        // the retry away.
+        await prisma.$transaction(async (transaction) => {
+          await transaction.paymentEvent.create({
+            data: {
+              eventType: input.eventType,
+              orderId: input.orderId,
+              outcome: input.outcome,
+              payload: input.payload as never,
+              providerEventId: input.providerEventId,
+            },
+          });
+          if (input.transition) {
+            await applyTransitionOn(transaction, input.transition);
+          }
         });
         return true;
       } catch (error) {
