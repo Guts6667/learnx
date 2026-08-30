@@ -663,3 +663,21 @@ l'autorisation.
   (0,64 USD), trois relances fantômes sans appel ; arrêt sur décision
   Propriétaire ; décisions `owner-retry-policy-2026-08-29`.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+
+## 2026-08-30 (journée) — Head of AI, base `app8IaHD1sJtI83WT`
+
+- V4.5-125 : run exécutée (`results/2026-08-30T00-44-57-975Z`, 4,69 USD) ;
+  carte `IN_PROGRESS` avec le tableau des gates ; complément stabilité à
+  venir (127 puis 24 cellules dans l'enveloppe de 14 USD).
+- V4.5-126 `DONE` (`71b92e8e` + `6f56f8b0` unification des préflights) ;
+  V4.5-127 créé (`IN_PROGRESS`) ; V4.5-145 `DONE` (`95f2a257`) ; V4.5-146
+  `DONE` (`7a326124`) ; V4.5-180 `DONE` (`103630f1`) ; correctifs Integration
+  #102/#103/#104 mergés.
+- **Incident 186** (production) : créé `IN_PROGRESS` ; hotfix dev
+  `eb8f42c9` ; PR main #108 en attente du swap de contexte requis
+  (`Integration (required)` → `real-functions`) et du GO Rayan ; V4.5-187
+  créé ; V4.5-185 (quota Vercel) et V4.5-188 (test instable) créés.
+- Décisions Rayan : enveloppe 125 = 14 USD sous convention mesurée
+  (`owner-125-budget-2026-08-30`) ; protection Vercel Preview désactivée ;
+  `LEARNX_PAYMENTS_ENABLED=true` en Preview.
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
