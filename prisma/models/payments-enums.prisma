@@ -28,6 +28,11 @@ enum PaymentEventOutcome {
   OUT_OF_ORDER @map("out_of_order")
   /// Reçu alors que l'encaissement était coupé.
   DISABLED    @map("disabled")
+  /// Aucune commande ne correspond : ni `payment_intent`, ni référence.
+  UNKNOWN_ORDER @map("unknown_order")
+  /// Nom d'événement absent de `STRIPE_EVENT_STATUS` : la table de
+  /// correspondance est incomplète et la commande restera en attente.
+  UNKNOWN_EVENT @map("unknown_event")
 
   @@map("payment_event_outcome")
 }
