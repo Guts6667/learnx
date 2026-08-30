@@ -428,6 +428,11 @@ l'autorité de définition ; Airtable porte le statut.
 - Latence du garde-fou : tant que 173 n'a pas planifié `evaluate()`, un
   déclenchement n'a lieu qu'au prochain devis — un trip peut sembler arriver
   des heures après le franchissement ; à vérifier et à documenter.
+- Environnement Preview (30 août) : le `DATABASE_URL` Preview (3 août) visait une
+  branche Neon disparue/en retard ⇒ 500 sur toute requête base des previews ;
+  correctif : branche Neon `preview` **vide** (jamais un clone de production :
+  registre RGPD §3), `migrate deploy`, seed compte de test + pack placeholder
+  (`pnpm seed:preview`), `DIRECT_URL` posée ; `preview` ≠ `staging` (177).
 - Rollback : V4.4→V4.5 reste **code seul** — trois migrations additives
   (112, 140, 142), aucune n'altère un objet existant ; la checklist le
   vérifie à chaque migration ajoutée.
@@ -579,6 +584,8 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | V4.5-187 | A | Backend/Data → DevOps | Aucun garde wildcard : 13 apps restreintes à leurs préfixes ; test d'énumération sur 103 routes dans les deux sens + sonde en isolation (un voisin ne peut plus répondre à la place d'une app) ; décision : route inconnue ⇒ 404 | 186 |
 | V4.5-188 | C | Frontend → QA/Release | Test instable App.test.tsx:687 (`lang` fr/en selon l'ordre) | — |
 | V4.5-127 | E | IA/Recherche → Head of AI | Décalage de répétition (la passe rejouait la répétition 1), `--analyse`, gate preuves inventées branché (0/152 présentées, 12/152 brutes interceptées), coût vérificateur absent = ligne rapportée | 125 |
+| V4.5-191 | C | Frontend → Backend/Data | Écran admin remboursements/litiges (UI de 162) : calcul serveur affiché avant confirmation en deux temps, montants en chaînes, jamais de montant saisi | 162B |
+| V4.5-162B | A | Backend/Data → Frontend | Défaut : second remboursement écrase `refundedCredits`/`writtenOffCredits` à 0 (ledger juste, commande fausse) → 409 + update idempotent + test du second appel ; lectures `refund-preview` et commandes par membre | 162 |
 | UX-001 | C | Frontend → Design + QA/Release | Cartes de parcours responsives (densité arbitrée `Rayan A`) | — |
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
