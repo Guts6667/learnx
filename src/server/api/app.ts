@@ -48,11 +48,21 @@ function createApiApp() {
   app.route('/', accessRequestsApp);
   app.route('/', adminApp);
   app.route('/', aiPricingApp);
+  // Mounted before correctionsApp deliberately. Thirteen apps here guard every
+  // one of their routes with `app.use('*', requireUser)`, and Hono runs that
+  // middleware for any request reaching the app, not only for the paths it
+  // serves. Anything mounted after such an app therefore inherits its guard.
+  //
+  // The landing funnel's only endpoint has never once answered in production.
+  // catalogApp took its wildcard guard on 5 August 2026 (bb424544);
+  // publicLeadsApp was mounted below it on 10 August (a60ba17f). The form was
+  // therefore behind a session check from the moment it went live — not a
+  // regression that broke something previously working. Public routes go first.
+  app.route('/', publicLeadsApp);
   app.route('/', correctionsApp);
   app.route('/', catalogApp);
   app.route('/', curriculumApp);
   app.route('/', progressApp);
-  app.route('/', publicLeadsApp);
   app.route('/', conceptsApp);
   app.route('/', conceptAssessmentsApp);
   app.route('/', creditsApp);
