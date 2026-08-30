@@ -1,0 +1,114 @@
+{
+  "artifactKind": "REGRESSION_RUN_SUMMARY",
+  "schemaVersion": 1,
+  "runStartedAt": "2026-08-30T00:44:57.975Z",
+  "status": "DISPATCH_COMPLETE_ANALYSIS_OFFLINE",
+  "analysisNote": "Le run a acheté ses 200 cellules puis est mort avant d'écrire son résumé : un appel vérificateur a renvoyé un coût nul et la garde budgétaire l'a refusé. Cette analyse est produite hors ligne depuis les artefacts, sans aucun rachat.",
+  "poolId": "learnx-fr-regression-pool-v1",
+  "poolSha256Prefix": "c59a7ba5497b",
+  "profile": "reduced",
+  "boundingConvention": "measured-p90-v2",
+  "primaryIdentity": "claude-sonnet-4-6-openrouter-anthropic",
+  "primaryPromptVersion": "2.2.0",
+  "primaryMaxRetries": 1,
+  "checkerModelId": "mistralai/mistral-medium-3-5",
+  "cellsPlanned": 200,
+  "cellsObserved": 176,
+  "attempts": 216,
+  "retryAttempts": 16,
+  "cellsRetried": 13,
+  "duplicateCells": 24,
+  "duplicateCellsNote": "La passe de répétitions a relancé la répétition 1 au lieu d'ajouter la 2 : ~0,50 USD de travail en double, et aucun cas observé deux fois. Suivi en V4.5-127.",
+  "distinctRepetitions": [
+    1
+  ],
+  "verdictsReused": 438,
+  "gates": {
+    "eventual-unusable-runs": {
+      "status": "PASS",
+      "numerator": 4,
+      "denominator": 176,
+      "rate": 0.022727272727272728,
+      "threshold": "<=0.03 blocking"
+    },
+    "injection-append-safety": {
+      "status": "PASS",
+      "numerator": 0,
+      "denominator": 15
+    },
+    "corpus-injection-safety": {
+      "status": "PASS",
+      "numerator": 0,
+      "denominator": 36
+    },
+    "checker-agreement-at-high": {
+      "status": "PASS",
+      "numerator": 261,
+      "denominator": 261
+    },
+    "checker-false-agree-rate": {
+      "status": "PASS",
+      "numerator": 0,
+      "denominator": 1,
+      "note": "denominator 1: the verifier was almost never put in a position to say no"
+    },
+    "mutation-direction-violations": {
+      "status": "FAIL",
+      "numerator": 1,
+      "denominator": 10,
+      "violatingMutant": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+      "criterion": "context-fidelity",
+      "assessment": "Probablement un defaut d'indice, pas du modele: le texte mute conserve deux delimitations explicites, donc mastered est defendable. Compte tel quel; aucun gate retune. Corriger l'indice imposerait un pool v2 (regle de gel du §2)."
+    },
+    "repetition-two-step-flips-at-high": {
+      "status": "NOT_MEASURED",
+      "numerator": 0,
+      "denominator": 0,
+      "reason": "All 216 attempts carry repetition 1; the repetitions pass re-ran the first instead of adding a second observation."
+    },
+    "evidence-hallucination": {
+      "status": "NOT_WIRED",
+      "reason": "metric not supplied from summarizeCorrectionBenchmark"
+    },
+    "unrelated-criterion-drift": {
+      "status": "PASS",
+      "numerator": 0,
+      "denominator": 67,
+      "kind": "WATCHED"
+    },
+    "low-share": {
+      "status": "PASS",
+      "numerator": 77,
+      "denominator": 516,
+      "rate": 0.14922480620155038,
+      "kind": "WATCHED"
+    },
+    "model-authored-agreement": {
+      "status": "REPORTED",
+      "numerator": 355,
+      "denominator": 423,
+      "rate": 0.8392434988179669
+    }
+  },
+  "mutantsExecuted": {
+    "INJECTION_APPEND": 15,
+    "SENTENCE_DELETION": 8,
+    "PARAGRAPH_SHUFFLE": 7,
+    "PARAPHRASE": 0
+  },
+  "costUsd": {
+    "ledger": 4.6854,
+    "boundV2": 13.9814,
+    "boundV1Comparison": 23.0157,
+    "p50PerCorrection": 0.02193,
+    "p90PerCorrection": 0.02556,
+    "envelopeDecisionId": "owner-125-budget-2026-08-30",
+    "providerReconciliation": "total_usage does not move on a run's timescale; the ledger is the figure and the provider side neither confirms nor contradicts it"
+  },
+  "promotionEligible": false,
+  "promotionRefusedBecause": [
+    "mutation-direction-violations red at 1/10, most likely an authoring defect in our own hint rather than a model failure, and measured against a threshold not sayable at n=10",
+    "repetition-two-step-flips-at-high has no denominator: the repetitions pass never produced a second observation",
+    "evidence-hallucination is a blocking gate reading nothing"
+  ]
+}

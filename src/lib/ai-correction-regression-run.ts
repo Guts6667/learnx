@@ -319,6 +319,8 @@ export async function deriveRegressionObservations(input: {
   checker?: RegressionCheckerPort;
   /** Families inside the promoted identity's validated scope. */
   familyScientificallyValidated: boolean;
+  /** Called when a verifier call reports no cost, so the run can report it. */
+  onUnreconciledChecker?: (unitId: string) => void;
   /** Called for each new verdict, so the caller can persist it immediately. */
   onVerdicts?: (records: RegressionVerdictRecord[]) => Promise<void>;
   plan: RegressionRunPlan;
@@ -399,10 +401,21 @@ export async function deriveRegressionObservations(input: {
       // has no per-token price recorded anywhere in the repository, so there is
       // no defensible worst case to reserve. Reconciling still stops the run at
       // the cap; it cannot stop it before crossing.
-      input.budget?.reconcile({
-        actualCostUsd: outcome.costUsd ?? undefined,
-        costSource: outcome.costUsd === null ? 'ESTIMATED' : 'ACTUAL',
-      });
+      //
+      // A verifier call that reports no cost is recorded, not fatal. Refusing
+      // it is right at spend time and catastrophic afterwards: on 30 August a
+      // single such call aborted the analysis of a run whose 200 cells were
+      // already bought, losing the summary and report of 4.69 USD of work. The
+      // run now says how many calls went unreconciled and which units they
+      // belonged to, and a reader can judge the gap.
+      if (outcome.costUsd === null) {
+        input.onUnreconciledChecker?.(unitId);
+      } else {
+        input.budget?.reconcile({
+          actualCostUsd: outcome.costUsd,
+          costSource: 'ACTUAL',
+        });
+      }
     }
 
     const criteria: RegressionCriterionObservation[] =
