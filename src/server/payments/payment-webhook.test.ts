@@ -1,4 +1,4 @@
-import { handleRevolutWebhook } from './payment-webhook';
+import { handlePaymentWebhook } from './payment-webhook';
 import { signStripePayload } from './stripe-webhook-signature';
 
 const SECRET = 'whsec_test';
@@ -46,7 +46,7 @@ function run(
   payload = payloadFor(),
   signingSecret = SECRET,
 ) {
-  return handleRevolutWebhook({
+  return handlePaymentWebhook({
     configuration: {
       enabled: harness.options.enabled ?? true,
       webhookSecret:

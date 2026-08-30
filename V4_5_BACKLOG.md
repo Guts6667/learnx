@@ -441,7 +441,8 @@ l'autorité de définition ; Airtable porte le statut.
 ### V4.5-160 — ADR Revolut Merchant et intégration sandbox
 
 - Epic : V4.5-009 (ex V4-013) · Owner : Backend/Data · Reviewer : Architecture/Produit · Deps : V4.5-100
-- Livrable : `ADR_004_PAYMENT_REVOLUT.md` ; adaptateur
+- Livrable : `ADR_004_PAYMENT_HOSTED_CHECKOUT.md` (livré sous le nom
+  `ADR_004_PAYMENT_REVOLUT.md`, renommé au passage à Stripe, V4.5-184) ; adaptateur
   `src/server/payments/revolut-*.ts` derrière une interface ;
   `LEARNX_PAYMENTS_ENABLED=false` par défaut + kill switch ; tables
   `payment_order`, `payment_event` (migration additive, états ADR_003 §6.3).

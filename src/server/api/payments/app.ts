@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 
-import { handleRevolutWebhook } from '../../payments/payment-webhook.js';
+import { handlePaymentWebhook } from '../../payments/payment-webhook.js';
 import { readPaymentsConfiguration } from '../../payments/payments-configuration.js';
 import { createPrismaPaymentWebhookPorts } from '../../payments/prisma-payment-webhook-ports.js';
 
@@ -28,7 +28,7 @@ const defaultWrite = (event: PaymentWebhookLogEvent) => {
 export function createPaymentsApp(
   options: {
     now?: () => Date;
-    ports?: Parameters<typeof handleRevolutWebhook>[0]['ports'];
+    ports?: Parameters<typeof handlePaymentWebhook>[0]['ports'];
     write?: (event: PaymentWebhookLogEvent) => void;
   } = {},
 ) {
@@ -43,7 +43,7 @@ export function createPaymentsApp(
     // and JSON.stringify of a parsed body changes key order and whitespace.
     const rawPayload = await context.req.text();
     const ports = options.ports ?? (await createPrismaPaymentWebhookPorts());
-    const result = await handleRevolutWebhook({
+    const result = await handlePaymentWebhook({
       configuration: readPaymentsConfiguration(),
       now: options.now?.() ?? new Date(),
       ports,

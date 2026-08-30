@@ -1,7 +1,7 @@
 /// Ordre de paiement (V4.5-160).
 ///
 /// Aucune donnée de carte n'y figure et aucune ne peut y figurer : le checkout
-/// est hébergé chez Revolut et LearnX ne voit jamais le moyen de paiement
+/// est hébergé chez Stripe et LearnX ne voit jamais le moyen de paiement
 /// (ADR_004 §1).
 model PaymentOrder {
   id                String              @id @default(uuid()) @db.Uuid
