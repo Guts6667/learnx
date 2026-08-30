@@ -13,6 +13,10 @@ describe('App', () => {
       configurable: true,
       value: true,
     });
+    // `document` survit à tous les tests du fichier. Sans cette remise à zéro,
+    // un test qui attend `lang === 'fr'` peut passer sur le reliquat d'un
+    // voisin au lieu de prouver que l'application l'a écrit (V4.5-188).
+    document.documentElement.lang = '';
   });
 
   afterEach(() => {
@@ -140,7 +144,12 @@ describe('App', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('affiche un état de chargement pendant la vérification de session', () => {
+  // `/today` est une route chargée à la demande : tant que son module n'est pas
+  // résolu, seul le repli de Suspense est monté. Une assertion synchrone après
+  // `render` ne passait donc que si un test précédent avait déjà chargé ce
+  // module — le fichier était vert dans son ordre habituel et rouge dès qu'on
+  // le mélangeait (V4.5-188). On attend le rendu, on ne suppose plus l'ordre.
+  it('affiche un état de chargement pendant la vérification de session', async () => {
     window.history.pushState({}, '', '/today');
     vi.stubGlobal(
       'fetch',
@@ -150,14 +159,16 @@ describe('App', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('status', { name: 'Vérification de la session' }),
+      await screen.findByRole('status', {
+        name: 'Vérification de la session',
+      }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('navigation', { name: 'Navigation principale' }),
     ).not.toBeInTheDocument();
   });
 
-  it('affiche un état neutre hors ligne sans rediriger vers la connexion', () => {
+  it('affiche un état neutre hors ligne sans rediriger vers la connexion', async () => {
     window.history.pushState({}, '', '/today');
     Object.defineProperty(navigator, 'onLine', {
       configurable: true,
@@ -171,7 +182,7 @@ describe('App', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+      await screen.findByRole('heading', { level: 1, name: 'Mode hors ligne' }),
     ).toBeInTheDocument();
     expect(window.location.pathname).toBe('/today');
     expect(
@@ -202,7 +213,7 @@ describe('App', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+      await screen.findByRole('heading', { level: 1, name: 'Mode hors ligne' }),
     ).toBeInTheDocument();
     expect(window.location.pathname).toBe('/today');
     expect(fetchMock).not.toHaveBeenCalled();

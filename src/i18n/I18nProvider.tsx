@@ -1,6 +1,12 @@
 import { createContext } from 'react';
 import type { ReactNode } from 'react';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import type { MessageKey } from '@/i18n/catalogs';
 import {
@@ -27,8 +33,22 @@ export function I18nProvider({ children, locale = 'fr' }: I18nProviderProps) {
 
   useEffect(() => setActiveLocale(locale), [locale]);
 
-  useEffect(() => {
+  /**
+   * `lang` est écrit pendant le commit, pas après (V4.5-188). Un effet passif
+   * est planifié par l'ordonnanceur : entre le commit qui affiche la nouvelle
+   * langue et cette tâche, le document en annonce une et en affiche une autre.
+   * Les lecteurs d'écran et la césure lisent cet attribut ; il ne doit jamais
+   * contredire ce qui est à l'écran, même un instant.
+   *
+   * Le titre, la description et le manifeste restent dans un effet passif :
+   * eux ne sont lus par personne dans cet intervalle, et les écrire pendant le
+   * commit retarderait l'affichage sans rien garantir de plus.
+   */
+  useLayoutEffect(() => {
     document.documentElement.lang = activeLocale;
+  }, [activeLocale]);
+
+  useEffect(() => {
     const description =
       document.querySelector<HTMLMetaElement>('meta[name="description"]') ??
       document.head.appendChild(document.createElement('meta'));
