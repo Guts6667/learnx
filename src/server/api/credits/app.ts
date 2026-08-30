@@ -6,6 +6,11 @@ import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '../../../shared/credit-rules
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import type {
+  CreditsCatalogueReader,
+  OwnPaymentOrder,
+  PurchasablePack,
+} from '../../payments/credits-catalogue-reader.js';
 import {
   type CreditAdministrationService,
   type CreditMemberDetail,
@@ -40,7 +45,20 @@ const lazyCreditAdministrationService: CreditAdministrationService = {
 
 interface CreditsAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
+  catalogue?: CreditsCatalogueReader;
   service?: CreditAdministrationService;
+}
+
+const lazyCatalogue: CreditsCatalogueReader = {
+  listActivePacks: async () => (await defaultCatalogue()).listActivePacks(),
+  listOwnOrders: async (userId) =>
+    (await defaultCatalogue()).listOwnOrders(userId),
+};
+
+async function defaultCatalogue(): Promise<CreditsCatalogueReader> {
+  const { createPrismaCreditsCatalogueReader } =
+    await import('../../payments/prisma-credits-catalogue-reader.js');
+  return createPrismaCreditsCatalogueReader();
 }
 
 const listSchema = z.object({
@@ -114,6 +132,28 @@ function projection(value: CreditProjection) {
   };
 }
 
+function pack(value: PurchasablePack) {
+  return {
+    credits: amount(value.credits),
+    currency: value.currency,
+    key: value.key,
+    label: value.label,
+    priceMinor: amount(value.priceMinor),
+  };
+}
+
+function order(value: OwnPaymentOrder) {
+  return {
+    amountMinor: amount(value.amountMinor),
+    createdAt: value.createdAt.toISOString(),
+    currency: value.currency,
+    fulfilledAt: value.fulfilledAt?.toISOString() ?? null,
+    id: value.id,
+    packKey: value.packKey,
+    status: value.status,
+  };
+}
+
 function member(value: CreditMemberDetail) {
   return {
     accountStatus: value.accountStatus,
@@ -182,6 +222,7 @@ function serviceError(error: unknown): ApiError {
 
 export function createCreditsApp(options: CreditsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
+  const catalogue = options.catalogue ?? lazyCatalogue;
   const service = options.service ?? lazyCreditAdministrationService;
   const authentication = options.authentication ?? requireUser;
 
@@ -198,6 +239,20 @@ export function createCreditsApp(options: CreditsAppOptions = {}) {
     if (!detail)
       throw new ApiError('RESOURCE_NOT_FOUND', 'Credits were not found.', 404);
     return context.json({ credits: member(detail) });
+  });
+
+  // Under `/api/credits/*`, so authenticated by the guard above. Both are
+  // reads and neither takes a parameter: the caller is the session, never a
+  // path or a query, so there is no id to tamper with (V4.5-205).
+  app.get('/api/credits/packs', async (context) => {
+    return context.json({
+      packs: (await catalogue.listActivePacks()).map(pack),
+    });
+  });
+
+  app.get('/api/credits/orders', async (context) => {
+    const orders = await catalogue.listOwnOrders(context.get('user').id);
+    return context.json({ orders: orders.map(order) });
   });
 
   app.post('/api/credits/increase-requests', async (context) => {

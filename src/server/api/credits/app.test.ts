@@ -350,3 +350,115 @@ describe('V4-008 credits API', () => {
     expect((await app.request('/api/credits')).status).toBe(404);
   });
 });
+
+describe('V4.5-205 contrat de l’écran d’achat', () => {
+  const catalogue = {
+    listActivePacks: vi.fn(async () => [
+      {
+        credits: 10n,
+        currency: 'EUR',
+        key: 'starter',
+        label: 'Découverte',
+        priceMinor: 1500n,
+      },
+    ]),
+    listOwnOrders: vi.fn(async () => [
+      {
+        amountMinor: 1500n,
+        createdAt: new Date('2026-08-30T17:49:00.000Z'),
+        currency: 'EUR',
+        fulfilledAt: new Date('2026-08-30T17:49:29.000Z'),
+        id: 'c725ed24-0000-4000-8000-000000000001',
+        packKey: 'starter',
+        status: 'FULFILLED' as const,
+      },
+    ]),
+  };
+
+  it('liste les packs actifs, montants en chaînes décimales', async () => {
+    // Money through a JSON number is a rounding bug waiting for a large enough
+    // amount, so amounts cross the boundary as strings, as everywhere else.
+    const app = createCreditsApp({
+      authentication: authentication('USER'),
+      catalogue,
+    });
+
+    const response = await app.request('/api/credits/packs');
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({
+      packs: [
+        {
+          credits: '10',
+          currency: 'EUR',
+          key: 'starter',
+          label: 'Découverte',
+          priceMinor: '1500',
+        },
+      ],
+    });
+  });
+
+  it('ne rend que les commandes de l’appelant, et les demande par sa session', async () => {
+    // The caller is the session, never a path or a query: there is no id to
+    // tamper with.
+    const app = createCreditsApp({
+      authentication: authentication('USER'),
+      catalogue,
+    });
+
+    const response = await app.request('/api/credits/orders');
+
+    expect(response.status).toBe(200);
+    expect(catalogue.listOwnOrders).toHaveBeenCalledWith(userId);
+  });
+
+  it('ne divulgue aucun identifiant Stripe ni donnée personnelle', async () => {
+    // The order row carries the session id and the payment intent. Neither is
+    // a purchase the learner needs to see, and a screen that never receives
+    // them cannot leak them into a URL, a log or a support screenshot.
+    const app = createCreditsApp({
+      authentication: authentication('USER'),
+      catalogue,
+    });
+
+    const body = await (await app.request('/api/credits/orders')).text();
+
+    expect(body).not.toMatch(/cs_|pi_|provider/i);
+    expect(JSON.parse(body).orders[0]).toEqual({
+      amountMinor: '1500',
+      createdAt: '2026-08-30T17:49:00.000Z',
+      currency: 'EUR',
+      fulfilledAt: '2026-08-30T17:49:29.000Z',
+      id: 'c725ed24-0000-4000-8000-000000000001',
+      packKey: 'starter',
+      status: 'FULFILLED',
+    });
+  });
+
+  it('rend une commande non honorée avec fulfilledAt nul', async () => {
+    const app = createCreditsApp({
+      authentication: authentication('USER'),
+      catalogue: {
+        ...catalogue,
+        listOwnOrders: vi.fn(async () => [
+          {
+            amountMinor: 1500n,
+            createdAt: new Date('2026-08-30T17:11:00.000Z'),
+            currency: 'EUR',
+            fulfilledAt: null,
+            id: 'e0206f7f-0000-4000-8000-000000000001',
+            packKey: 'starter',
+            status: 'PENDING' as const,
+          },
+        ]),
+      },
+    });
+
+    const response = await app.request('/api/credits/orders');
+
+    await expect(response.json()).resolves.toMatchObject({
+      orders: [{ fulfilledAt: null, status: 'PENDING' }],
+    });
+  });
+});
