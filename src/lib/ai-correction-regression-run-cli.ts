@@ -55,6 +55,7 @@ import {
   acquireRunLock,
   capForRun,
   envelopeState,
+  ledgerSpendSince,
   readSpendEnvelope,
   RegressionEnvelopeError,
   releaseRunLock,
@@ -529,7 +530,14 @@ export async function runRegressionPool(input: {
       }
       await writeSpendEnvelope({ directory, envelope });
     }
-    const state = envelopeState({ envelope, providerUsageUsd: usageNow });
+    const state = envelopeState({
+      envelope,
+      ledgerSpentUsd: await ledgerSpendSince({
+        directory,
+        openedAt: envelope.openedAt,
+      }),
+      providerUsageUsd: usageNow,
+    });
     const resolved = capForRun({ requestedCapUsd, state });
     supplierCostCapUsd = resolved.capUsd;
     envelopeNote = resolved.reason;
@@ -1359,4 +1367,148 @@ function checkerPromptCharactersUpperBound(plan: RegressionRunPlan): number {
     }
   }
   return widest + longestResponse;
+}
+
+/**
+ * `--measure-checker` — buys a measured cost distribution for the verifier
+ * without paying for a single primary call (V4.5-126).
+ *
+ * The bounding convention v2 may only use a measured distribution, and the
+ * verifier had none: V4.5-121 never reached it, and the smoke called it once,
+ * a figure obtained by subtracting the primary ledger from the reconciled
+ * total. One derived observation is not a distribution.
+ *
+ * Rather than re-run corrections to obtain verifier costs, this replays
+ * **already-recorded attempts** through the verifier. The corrections were paid
+ * for once; asking the verifier about them costs only the verifier.
+ */
+export async function runCheckerMeasurement(input: {
+  arguments: string[];
+  checker: RegressionCheckerPort;
+  identities: RegressionPinnedIdentities;
+  now?: () => Date;
+  providerApiKey?: string;
+  regressionDirectory?: string;
+}): Promise<{
+  callsMade: number;
+  observations: number;
+  resultsDirectory: string;
+  spentUsd: number;
+}> {
+  const sourceDirectory = readCliOption(input.arguments, 'measure-checker');
+  if (!sourceDirectory) {
+    throw new RegressionRunError(
+      'REGRESSION_MEASURE_SOURCE_REQUIRED: --measure-checker=<répertoire de résultats> est obligatoire.',
+    );
+  }
+  const limitRaw = readCliOption(input.arguments, 'limit');
+  const limit = limitRaw ? Number.parseInt(limitRaw, 10) : 15;
+  if (!Number.isInteger(limit) || limit <= 0) {
+    throw new RegressionRunError(
+      `REGRESSION_MEASURE_LIMIT_INVALID: ${limitRaw}.`,
+    );
+  }
+  const capUsd = parseSupplierCostCap(input.arguments);
+  const directory = input.regressionDirectory ?? regressionDirectory;
+  const runStartedAt = (input.now?.() ?? new Date()).toISOString();
+
+  const { pool, poolSha256, sources } = await loadPoolForRun(input.arguments);
+  const plan = planRegressionRun({ pool, sources });
+  const recorded = await readResumeAttempts(path.resolve(sourceDirectory));
+  // Only corrections that actually produced criteria can be verified.
+  const usable = recorded
+    .filter((attempt) => attempt.status === 'VALID' && attempt.output)
+    .slice(0, limit);
+  if (usable.length === 0) {
+    throw new RegressionRunError(
+      `REGRESSION_MEASURE_NO_ATTEMPTS: aucune tentative valide dans ${sourceDirectory}.`,
+    );
+  }
+
+  const lock = await acquireRunLock({
+    directory,
+    resultsDirectory: runStartedAt,
+  });
+  if (!lock.acquired) {
+    throw new RegressionRunError(
+      `REGRESSION_RUN_ALREADY_ACTIVE: pid ${lock.heldBy.pid}.`,
+    );
+  }
+
+  const resultsDirectory = await createResultsDirectory({
+    regressionDirectory: directory,
+    runStartedAt,
+  });
+  const guard = new SupplierBudgetGuard(capUsd);
+  const providerUsageBeforeUsd = await readProviderUsageUsd(
+    input.providerApiKey,
+  );
+
+  let callsMade = 0;
+  const verdicts: RegressionVerdictRecord[] = [];
+  const observations = await deriveRegressionObservations({
+    attempts: usable,
+    budget: guard,
+    checker: {
+      async verify(question) {
+        callsMade += 1;
+        return input.checker.verify(question);
+      },
+    },
+    familyScientificallyValidated: true,
+    onVerdicts: async (records) => {
+      verdicts.push(...records);
+      await writeRunArtifact({
+        content: `${JSON.stringify(verdicts, null, 2)}\n`,
+        directory: resultsDirectory,
+        fileName: 'checker-verdicts.json',
+      });
+    },
+    plan,
+  });
+
+  const providerUsageAfterUsd = await readProviderUsageUsd(
+    input.providerApiKey,
+  );
+  const providerDeltaUsd =
+    providerUsageBeforeUsd !== null && providerUsageAfterUsd !== null
+      ? providerUsageAfterUsd - providerUsageBeforeUsd
+      : null;
+  const perCallUsd = callsMade === 0 ? null : guard.actualSpentUsd / callsMade;
+
+  await writeRunArtifact({
+    content: `${JSON.stringify(
+      {
+        artifactKind: 'CHECKER_COST_MEASUREMENT',
+        callsMade,
+        checkerModelId: input.identities.checkerModelId,
+        // The verifier reports one cost per call, so a per-call mean over a
+        // small sample is what there is. It is labelled a mean, not a P90:
+        // calling it a percentile would claim a distribution this sample is
+        // too small to describe.
+        meanCostUsdPerCall: perCallUsd,
+        observations: observations.length,
+        poolSha256,
+        providerDeltaUsd,
+        providerUsageAfterUsd,
+        providerUsageBeforeUsd,
+        schemaVersion: 1,
+        sourceAttemptsDirectory: sourceDirectory,
+        spentUsd: guard.actualSpentUsd,
+        startedAt: runStartedAt,
+      },
+      null,
+      2,
+    )}\n`,
+    directory: resultsDirectory,
+    fileName: 'checker-cost-measurement.json',
+  });
+
+  await releaseRunLock(directory);
+  return {
+    callsMade,
+    observations: observations.length,
+    resultsDirectory,
+    spentUsd: guard.actualSpentUsd,
+  };
 }

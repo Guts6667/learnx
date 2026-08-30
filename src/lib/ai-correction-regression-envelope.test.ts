@@ -118,6 +118,34 @@ describe('spend envelope', () => {
     // A local counter cannot see another process; the provider's total can.
     expect(state.spentUsd).toBeCloseTo(2.61, 2);
     expect(state.remainingUsd).toBeCloseTo(10.39, 2);
+    expect(state.spentSource).toBe('PROVIDER_DELTA');
+  });
+
+  it('falls back to the local ledger when the provider figure has not moved', () => {
+    // Observed on 30 August 2026: OpenRouter's total_usage did not move at all
+    // in the minutes after fifteen paid calls. A provider delta alone would
+    // have reported zero spend however much a run bought — an envelope that
+    // always looks empty is worse than none, because it reassures.
+    const state = envelopeState({
+      envelope: ENVELOPE,
+      ledgerSpentUsd: 0.9375,
+      providerUsageUsd: ENVELOPE.openingProviderUsageUsd,
+    });
+
+    expect(state.spentUsd).toBeCloseTo(0.9375, 4);
+    expect(state.spentSource).toBe('LEDGER');
+  });
+
+  it('prefers the provider figure when it exceeds the local ledger', () => {
+    // The provider sees other machines; the ledger sees only this one.
+    const state = envelopeState({
+      envelope: ENVELOPE,
+      ledgerSpentUsd: 0.5,
+      providerUsageUsd: 31.06,
+    });
+
+    expect(state.spentUsd).toBeCloseTo(2.61, 2);
+    expect(state.spentSource).toBe('PROVIDER_DELTA');
   });
 
   it('reports nothing measurable when the provider cannot be read', () => {
@@ -128,11 +156,17 @@ describe('spend envelope', () => {
   });
 
   it('refuses to authorise anything against an unmeasurable envelope', () => {
-    // An envelope that cannot be measured is not an envelope with room.
+    // An envelope that cannot be measured is not an envelope with room — and
+    // the local ledger does not rescue it, because a ledger cannot see another
+    // machine. A floor is not a measurement.
     expect(() =>
       capForRun({
         requestedCapUsd: 5,
-        state: envelopeState({ envelope: ENVELOPE, providerUsageUsd: null }),
+        state: envelopeState({
+          envelope: ENVELOPE,
+          ledgerSpentUsd: 0.5,
+          providerUsageUsd: null,
+        }),
       }),
     ).toThrow(RegressionEnvelopeError);
   });
