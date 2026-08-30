@@ -7,6 +7,15 @@ import type { WebhookPorts } from './payment-webhook.js';
  * uniqueness of `provider_event_id` is what makes a replayed delivery harmless,
  * so a collision is the mechanism working, not an error.
  */
+/**
+ * The canonical form Prisma's `uuid()` mints and the only one our own ids take.
+ * Deliberately stricter than Postgres, which also accepts braces and a
+ * dashless form: a valid-but-unusual uuid is skipped rather than crashed on,
+ * and skipping costs nothing more than a miss.
+ */
+const CANONICAL_UUID =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
   const { prisma } = await import('../prisma.js');
   const { Prisma } = await import('../../../generated/prisma/client.js');
@@ -66,7 +75,9 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
     async findOrder(input) {
       // Payment intent first: it is what a charge or a dispute carries, and
       // the only handle shared by the whole lifecycle. A session id resolves
-      // the purchase and nothing after it (V4.5-195).
+      // the purchase and nothing after it (V4.5-195). It is empty until the
+      // first completed delivery writes it, which is why the two handles below
+      // have to work on their own for a first purchase.
       if (input.paymentIntentId) {
         const byIntent = await prisma.paymentOrder.findUnique({
           select: { id: true, status: true },
@@ -74,11 +85,39 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
         });
         if (byIntent) return byIntent;
       }
-      if (!input.reference) return null;
+
+      // Then our own id, which we put on the session as `client_reference_id`
+      // and which comes back on every `checkout.session.*`. It is a primary
+      // key, not a provider identifier; looking it up as one is what V4.5-202
+      // fixes, and it meant no purchase could ever be fulfilled.
+      //
+      // Shape-checked first, and this guard is not defensive padding. `id` is
+      // a Postgres `uuid` column, so asking it for a value that is not one is
+      // not a miss but a driver error (P2023) — and `findOrder` runs before
+      // the event is recorded, so it would surface as a 500 with no trace of
+      // the delivery anywhere. Any signed session we did not create carries
+      // whatever reference its author chose: `stripe trigger` with a
+      // `--override`, a future provider change, a colleague's experiment.
+      // Skipping the lookup lets those fall through to the session id, which
+      // is a plain miss.
+      if (input.orderId && CANONICAL_UUID.test(input.orderId)) {
+        const byId = await prisma.paymentOrder.findUnique({
+          select: { id: true, status: true },
+          where: { id: input.orderId },
+        });
+        if (byId) return byId;
+      }
+
+      // Last, the session id we stored when we created the order. Reached only
+      // when the reference above is absent or names nothing — a session
+      // created outside this code path, say. A charge id lands here too and
+      // matches nothing, which is correct: Stripe's id namespaces do not
+      // overlap, so it cannot resolve to somebody else's order.
+      if (!input.providerOrderId) return null;
 
       return prisma.paymentOrder.findUnique({
         select: { id: true, status: true },
-        where: { providerOrderId: input.reference },
+        where: { providerOrderId: input.providerOrderId },
       });
     },
     async recordEvent(input) {
