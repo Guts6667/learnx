@@ -1,0 +1,1 @@
+{"attempt": 1, "candidateId": "checker-measurement", "caseId": "checker-measurement", "costSource": "ACTUAL", "costUsd": 0.013868249999999999, "errorCode": null, "latencyMs": 0, "modelId": "mistralai/mistral-medium-3-5", "providerRoute": null, "repetition": 1, "status": "VALID"}

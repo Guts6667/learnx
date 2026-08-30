@@ -55,6 +55,7 @@ import {
   acquireRunLock,
   capForRun,
   envelopeState,
+  ledgerSpendSince,
   readSpendEnvelope,
   RegressionEnvelopeError,
   releaseRunLock,
@@ -246,6 +247,32 @@ async function readPersistedVerdicts(
     return Array.isArray(parsed) ? (parsed as RegressionVerdictRecord[]) : [];
   } catch (error) {
     if ((error as { code?: string }).code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
+/**
+ * The profile family a run belongs to, for matching a measured entry.
+ */
+function profileFamilyFor(arguments_: string[]): string {
+  const requested = readCliOption(arguments_, 'profile');
+  return requested === 'reduced' || requested === 'smoke' ? 'reduced' : 'full';
+}
+
+/**
+ * Reads the measured cost distributions, if any have been recorded.
+ */
+async function readMeasuredCosts(
+  directory: string,
+): Promise<MeasuredCosts | undefined> {
+  try {
+    return measuredCostsSchema.parse(
+      JSON.parse(
+        await readFile(path.join(directory, 'measured-costs.v1.json'), 'utf8'),
+      ) as unknown,
+    );
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') return undefined;
     throw error;
   }
 }
@@ -500,6 +527,11 @@ export async function runRegressionPool(input: {
   // counter inside one process cannot see a second process, which is exactly
   // how two concurrent runs each honoured a 12.60 USD cap and were together
   // authorised to spend 25.20.
+  // The envelope guards spending, not planning. A dry run buys nothing, so it
+  // must be able to price a plan without credentials; enforcing an unreadable
+  // envelope there would make the preflight impossible to consult before a run
+  // is authorised, which is exactly when it is most useful.
+  const willSpend = !dryRun && input.executeCandidate !== undefined;
   const envelopeUsd = readCliOption(input.arguments, 'envelope-usd');
   let envelopeNote =
     "Aucune enveloppe déclarée : seul le plafond du run s'applique.";
@@ -523,16 +555,31 @@ export async function runRegressionPool(input: {
     };
     if (!existing) {
       if (usageNow === null) {
-        throw new RegressionEnvelopeError(
-          "REGRESSION_ENVELOPE_UNMEASURABLE: impossible de lire l'usage fournisseur pour ouvrir l'enveloppe.",
-        );
+        if (willSpend) {
+          throw new RegressionEnvelopeError(
+            "REGRESSION_ENVELOPE_UNMEASURABLE: impossible de lire l'usage fournisseur pour ouvrir l'enveloppe.",
+          );
+        }
+        // Planning only: the envelope is not opened, and the note says so
+        // rather than implying a budget was checked.
+        envelopeNote = `Enveloppe de ${parsedEnvelope} USD non ouverte : usage fournisseur illisible sans clé. Aucune dépense n'est autorisée par ce préflight.`;
+      } else {
+        await writeSpendEnvelope({ directory, envelope });
       }
-      await writeSpendEnvelope({ directory, envelope });
     }
-    const state = envelopeState({ envelope, providerUsageUsd: usageNow });
-    const resolved = capForRun({ requestedCapUsd, state });
-    supplierCostCapUsd = resolved.capUsd;
-    envelopeNote = resolved.reason;
+    if (usageNow !== null || willSpend) {
+      const state = envelopeState({
+        envelope,
+        ledgerSpentUsd: await ledgerSpendSince({
+          directory,
+          openedAt: envelope.openedAt,
+        }),
+        providerUsageUsd: usageNow,
+      });
+      const resolved = capForRun({ requestedCapUsd, state });
+      supplierCostCapUsd = resolved.capUsd;
+      envelopeNote = resolved.reason;
+    }
   }
 
   const { pool, poolSha256, sources } = await loadPoolForRun(input.arguments);
@@ -601,6 +648,14 @@ export async function runRegressionPool(input: {
     ),
   );
 
+  const measured = await readMeasuredCosts(directory);
+  const conventionChoice = selectBoundingConvention({
+    checkerModelId: input.identities.checkerModelId,
+    measured,
+    primaryModelId: input.identities.primaryModelId,
+    profileFamily: profileFamilyFor(input.arguments),
+  });
+
   const checkerPricing = await readCheckerPricing(directory);
   const checkerPromptCharacters = checkerPromptCharactersUpperBound(plan);
   const checkerCostFor = (passes: RegressionRunPass[]): number => {
@@ -664,9 +719,39 @@ export async function runRegressionPool(input: {
   };
   // One bill, not two: the cap governs the run, so the checker's share is
   // inside the number the drop order works against rather than beside it.
-  const priceAll = (passes: RegressionRunPass[]): number =>
+  const cellsIn = (passes: RegressionRunPass[]): number =>
+    passes.reduce(
+      (total, pass) => total + outstandingCases(pass).length * pass.repetitions,
+      0,
+    );
+
+  const priceV1 = (passes: RegressionRunPass[]): number =>
     passes.reduce((total, pass) => total + pricePass(pass), 0) +
     checkerCostFor(passes);
+
+  // v2 prices a cell from what cells actually cost, rather than from a
+  // character count and a fixed envelope. It applies only where a measurement
+  // exists for this model and profile family; the other half falls back.
+  const priceV2 = (passes: RegressionRunPass[]): number => {
+    if (!conventionChoice.primary || !measured) return priceV1(passes);
+    const calls = cellsIn(passes);
+    const primaryBound = measuredBoundUsd({
+      calls,
+      entry: conventionChoice.primary,
+      safetyFactor: measured.safetyFactor,
+    });
+    const checkerBound = conventionChoice.checker
+      ? measuredBoundUsd({
+          calls,
+          entry: conventionChoice.checker,
+          safetyFactor: measured.safetyFactor,
+        })
+      : checkerCostFor(passes);
+    return primaryBound + checkerBound;
+  };
+
+  const priceAll =
+    conventionChoice.convention === 'measured-p90-v2' ? priceV2 : priceV1;
 
   // Two checker calls per case in scope: one to rewrite, one to confirm the
   // meaning survived. Priced with the checker's own recorded rate.
@@ -739,7 +824,30 @@ export async function runRegressionPool(input: {
               note: "Aucun prix par jeton n'est enregistré pour le vérificateur promu : la borne ne couvre que le modèle primaire. Ses appels restent réconciliés contre le même plafond pendant l'exécution, ce qui arrête le run au plafond sans l'empêcher de l'atteindre.",
               pricedInThisPreflight: false,
             },
+        // Both conventions are printed so a reader knows which bound authorised
+        // the run, and what the other one would have said.
+        boundingConvention: conventionChoice.convention,
+        boundingSources: {
+          checker: conventionChoice.checker
+            ? {
+                observations: conventionChoice.checker.observations,
+                sourceDirectory: conventionChoice.checker.sourceDirectory,
+                statistic: conventionChoice.checker.statistic,
+                usdPerCall: conventionChoice.checker.usdPerCall,
+              }
+            : null,
+          primary: conventionChoice.primary
+            ? {
+                observations: conventionChoice.primary.observations,
+                sourceDirectory: conventionChoice.primary.sourceDirectory,
+                statistic: conventionChoice.primary.statistic,
+                usdPerCall: conventionChoice.primary.usdPerCall,
+              }
+            : null,
+          safetyFactor: measured?.safetyFactor ?? null,
+        },
         combinedWorstCaseUsd: budgeted.pricedUsd,
+        comparisonConservativeV1Usd: priceV1(passes),
         primaryWorstCaseUsd: passes.reduce(
           (total, pass) => total + pricePass(pass),
           0,
@@ -1359,4 +1467,259 @@ function checkerPromptCharactersUpperBound(plan: RegressionRunPlan): number {
     }
   }
   return widest + longestResponse;
+}
+
+/**
+ * `--measure-checker` — buys a measured cost distribution for the verifier
+ * without paying for a single primary call (V4.5-126).
+ *
+ * The bounding convention v2 may only use a measured distribution, and the
+ * verifier had none: V4.5-121 never reached it, and the smoke called it once,
+ * a figure obtained by subtracting the primary ledger from the reconciled
+ * total. One derived observation is not a distribution.
+ *
+ * Rather than re-run corrections to obtain verifier costs, this replays
+ * **already-recorded attempts** through the verifier. The corrections were paid
+ * for once; asking the verifier about them costs only the verifier.
+ */
+export async function runCheckerMeasurement(input: {
+  arguments: string[];
+  checker: RegressionCheckerPort;
+  identities: RegressionPinnedIdentities;
+  now?: () => Date;
+  providerApiKey?: string;
+  regressionDirectory?: string;
+}): Promise<{
+  callsMade: number;
+  observations: number;
+  resultsDirectory: string;
+  spentUsd: number;
+}> {
+  const sourceDirectory = readCliOption(input.arguments, 'measure-checker');
+  if (!sourceDirectory) {
+    throw new RegressionRunError(
+      'REGRESSION_MEASURE_SOURCE_REQUIRED: --measure-checker=<répertoire de résultats> est obligatoire.',
+    );
+  }
+  const limitRaw = readCliOption(input.arguments, 'limit');
+  const limit = limitRaw ? Number.parseInt(limitRaw, 10) : 15;
+  if (!Number.isInteger(limit) || limit <= 0) {
+    throw new RegressionRunError(
+      `REGRESSION_MEASURE_LIMIT_INVALID: ${limitRaw}.`,
+    );
+  }
+  const capUsd = parseSupplierCostCap(input.arguments);
+  const directory = input.regressionDirectory ?? regressionDirectory;
+  const runStartedAt = (input.now?.() ?? new Date()).toISOString();
+
+  const { pool, poolSha256, sources } = await loadPoolForRun(input.arguments);
+  const plan = planRegressionRun({ pool, sources });
+  const recorded = await readResumeAttempts(path.resolve(sourceDirectory));
+  // Only corrections that actually produced criteria can be verified.
+  const usable = recorded
+    .filter((attempt) => attempt.status === 'VALID' && attempt.output)
+    .slice(0, limit);
+  if (usable.length === 0) {
+    throw new RegressionRunError(
+      `REGRESSION_MEASURE_NO_ATTEMPTS: aucune tentative valide dans ${sourceDirectory}.`,
+    );
+  }
+
+  const lock = await acquireRunLock({
+    directory,
+    resultsDirectory: runStartedAt,
+  });
+  if (!lock.acquired) {
+    throw new RegressionRunError(
+      `REGRESSION_RUN_ALREADY_ACTIVE: pid ${lock.heldBy.pid}.`,
+    );
+  }
+
+  const resultsDirectory = await createResultsDirectory({
+    regressionDirectory: directory,
+    runStartedAt,
+  });
+  const guard = new SupplierBudgetGuard(capUsd);
+  const providerUsageBeforeUsd = await readProviderUsageUsd(
+    input.providerApiKey,
+  );
+
+  let callsMade = 0;
+  const verdicts: RegressionVerdictRecord[] = [];
+  const observations = await deriveRegressionObservations({
+    attempts: usable,
+    budget: guard,
+    checker: {
+      async verify(question) {
+        callsMade += 1;
+        return input.checker.verify(question);
+      },
+    },
+    familyScientificallyValidated: true,
+    onVerdicts: async (records) => {
+      verdicts.push(...records);
+      await writeRunArtifact({
+        content: `${JSON.stringify(verdicts, null, 2)}\n`,
+        directory: resultsDirectory,
+        fileName: 'checker-verdicts.json',
+      });
+    },
+    plan,
+  });
+
+  const providerUsageAfterUsd = await readProviderUsageUsd(
+    input.providerApiKey,
+  );
+  const providerDeltaUsd =
+    providerUsageBeforeUsd !== null && providerUsageAfterUsd !== null
+      ? providerUsageAfterUsd - providerUsageBeforeUsd
+      : null;
+  const perCallUsd = callsMade === 0 ? null : guard.actualSpentUsd / callsMade;
+
+  await writeRunArtifact({
+    content: `${JSON.stringify(
+      {
+        artifactKind: 'CHECKER_COST_MEASUREMENT',
+        callsMade,
+        checkerModelId: input.identities.checkerModelId,
+        // The verifier reports one cost per call, so a per-call mean over a
+        // small sample is what there is. It is labelled a mean, not a P90:
+        // calling it a percentile would claim a distribution this sample is
+        // too small to describe.
+        meanCostUsdPerCall: perCallUsd,
+        observations: observations.length,
+        poolSha256,
+        providerDeltaUsd,
+        providerUsageAfterUsd,
+        providerUsageBeforeUsd,
+        schemaVersion: 1,
+        sourceAttemptsDirectory: sourceDirectory,
+        spentUsd: guard.actualSpentUsd,
+        startedAt: runStartedAt,
+      },
+      null,
+      2,
+    )}\n`,
+    directory: resultsDirectory,
+    fileName: 'checker-cost-measurement.json',
+  });
+
+  // A measurement spends real money, so it writes a ledger like any run. Without
+  // one, envelope accounting cannot see the spend at all: the cost lives only in
+  // a bespoke artefact nothing else reads.
+  await writeRunArtifact({
+    content: `${JSON.stringify({
+      attempt: 1,
+      candidateId: 'checker-measurement',
+      caseId: 'checker-measurement',
+      costSource: 'ACTUAL',
+      costUsd: guard.actualSpentUsd,
+      errorCode: null,
+      latencyMs: 0,
+      modelId: input.identities.checkerModelId,
+      providerRoute: null,
+      repetition: 1,
+      status: 'VALID',
+    })}\n`,
+    directory: resultsDirectory,
+    fileName: 'ledger.jsonl',
+  });
+
+  await releaseRunLock(directory);
+  return {
+    callsMade,
+    observations: observations.length,
+    resultsDirectory,
+    spentUsd: guard.actualSpentUsd,
+  };
+}
+
+export const measuredCostsSchema = z
+  .object({
+    entries: z
+      .array(
+        z
+          .object({
+            modelId: z.string().trim().min(1),
+            observations: z.number().int().positive(),
+            profileFamily: z.string().trim().min(1),
+            retryFactor: z.number().positive(),
+            retryFactorNote: z.string().trim().min(1),
+            role: z.enum(['PRIMARY', 'CHECKER']),
+            sourceDirectory: z.string().trim().min(1),
+            sourceNote: z.string().trim().min(1),
+            statistic: z.enum(['P90', 'MEAN']),
+            statisticNote: z.string().trim().min(1).optional(),
+            usdPerCall: z.number().positive(),
+          })
+          .strict(),
+      )
+      .min(1),
+    note: z.string().trim().min(1),
+    safetyFactor: z.number().positive(),
+    schemaVersion: z.literal(1),
+  })
+  .strict();
+
+export type MeasuredCosts = z.infer<typeof measuredCostsSchema>;
+
+/**
+ * The bound a measured distribution supports for one half of the bill.
+ *
+ * `calls × usdPerCall × retryFactor × safetyFactor`. The safety factor is what
+ * keeps a bound a bound: a measured P90 is a description of what happened, not
+ * a promise about what will.
+ */
+export function measuredBoundUsd(input: {
+  calls: number;
+  entry: MeasuredCosts['entries'][number];
+  safetyFactor: number;
+}): number {
+  return (
+    input.calls *
+    input.entry.usdPerCall *
+    input.entry.retryFactor *
+    input.safetyFactor
+  );
+}
+
+/**
+ * Chooses the convention for a run.
+ *
+ * v2 applies only where a measured entry exists for **this** model and profile
+ * family — spec §4. A distribution measured on one model says nothing about
+ * another, and a bound borrowed across models would be a guess wearing the
+ * costume of a measurement. Where no entry matches, the half falls back to v1,
+ * and the artefact says which half used what.
+ */
+export function selectBoundingConvention(input: {
+  checkerModelId: string;
+  measured: MeasuredCosts | undefined;
+  primaryModelId: string;
+  profileFamily: string;
+}): {
+  checker: MeasuredCosts['entries'][number] | undefined;
+  convention: 'measured-p90-v2' | 'conservative-v1';
+  primary: MeasuredCosts['entries'][number] | undefined;
+} {
+  const find = (
+    role: 'PRIMARY' | 'CHECKER',
+    modelId: string,
+  ): MeasuredCosts['entries'][number] | undefined =>
+    input.measured?.entries.find(
+      (entry) =>
+        entry.role === role &&
+        entry.modelId === modelId &&
+        entry.profileFamily === input.profileFamily,
+    );
+
+  const primary = find('PRIMARY', input.primaryModelId);
+  const checker = find('CHECKER', input.checkerModelId);
+  return {
+    checker,
+    // The primary is the bulk of the bill: without a measurement for it, the
+    // run is bounded conservatively whatever the checker has.
+    convention: primary ? 'measured-p90-v2' : 'conservative-v1',
+    primary,
+  };
 }

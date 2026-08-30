@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "note": "Distributions de coût réellement mesurées, utilisées par la convention de bornage v2 (V4.5-126). Une entrée n'autorise v2 que pour le modèle et la famille de profil qu'elle décrit ; sans entrée correspondante, la borne retombe sur la convention conservatrice v1. La statistique employée est nommée dans chaque entrée : un P90 quand la distribution le permet, une moyenne quand l'échantillon est trop petit pour décrire un percentile. Le facteur de sécurité absorbe cet écart, il ne le dissimule pas.",
+  "safetyFactor": 1.5,
+  "entries": [
+    {
+      "role": "PRIMARY",
+      "modelId": "anthropic/claude-sonnet-4.6",
+      "profileFamily": "reduced",
+      "statistic": "P90",
+      "usdPerCall": 0.02284,
+      "observations": 49,
+      "retryFactor": 2,
+      "retryFactorNote": "Profil promu 2.2.0 : maxRetries 1, donc jusqu'à deux appels par cellule. Une borne suppose le pire cas ; la mesure réelle de V4.5-121 montre ~6 % de cellules effectivement reprises.",
+      "sourceDirectory": "benchmarks/ai-correction/regression/results/2026-08-29T20-49-50-434Z",
+      "sourceNote": "Run partiel V4.5-121, 49 cellules exécutées avant arrêt du Propriétaire. P50 0,01904 ; P90 0,02284 ; maximum observé 0,02546."
+    },
+    {
+      "role": "CHECKER",
+      "modelId": "mistralai/mistral-medium-3-5",
+      "profileFamily": "reduced",
+      "statistic": "MEAN",
+      "statisticNote": "Moyenne et non P90 : quinze observations ne décrivent pas une distribution assez finement pour en tirer un percentile, et l'appeler ainsi revendiquerait une précision que l'échantillon n'a pas. La mesure n'a enregistré que le total et le nombre d'appels ; les coûts par appel sont désormais consignés pour que la prochaine mesure fournisse un vrai P90.",
+      "usdPerCall": 0.0009245499999999999,
+      "observations": 15,
+      "retryFactor": 1,
+      "retryFactorNote": "PROMOTED_CHECKER_IDENTITY.maxRetries = 0 : une seconde tentative serait une seconde chance de se tromper, pas une preuve.",
+      "sourceDirectory": "benchmarks/ai-correction/regression/results/2026-08-30T00-11-39-046Z",
+      "sourceNote": "Mesure dédiée du 30 août 2026 : quinze corrections déjà enregistrées rejouées auprès du vérificateur, 0,013868 USD au total. Aucun appel primaire payé."
+    }
+  ]
+}

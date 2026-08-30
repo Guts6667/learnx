@@ -9,6 +9,9 @@ import {
 } from './ai-benchmark-supplier-budget.js';
 import {
   applyDropOrder,
+  measuredBoundUsd,
+  measuredCostsSchema,
+  selectBoundingConvention,
   checkerPricingSchema,
   checkerWorstCaseUsd,
   reducedProfileSubset,
@@ -238,5 +241,84 @@ describe('checker calls under the budget guard', () => {
     expect(() =>
       guard.reconcile({ actualCostUsd: 0.6, costSource: 'ACTUAL' }),
     ).toThrow(SupplierBudgetError);
+  });
+});
+
+describe('bounding convention v2 (V4.5-126)', () => {
+  const MEASURED = measuredCostsSchema.parse(
+    JSON.parse(
+      readFileSync(
+        path.resolve(
+          'benchmarks/ai-correction/regression/measured-costs.v1.json',
+        ),
+        'utf8',
+      ),
+    ),
+  );
+  const primary = MEASURED.entries.find((entry) => entry.role === 'PRIMARY');
+  const checker = MEASURED.entries.find((entry) => entry.role === 'CHECKER');
+
+  it('lands where the arithmetic says for the reduced profile', () => {
+    // 200 cells x 0.02284 measured P90 x 2 (retry, profile 2.2.0) x 1.5 safety.
+    const primaryBound = measuredBoundUsd({
+      calls: 200,
+      entry: primary as NonNullable<typeof primary>,
+      safetyFactor: MEASURED.safetyFactor,
+    });
+    const checkerBound = measuredBoundUsd({
+      calls: 200,
+      entry: checker as NonNullable<typeof checker>,
+      safetyFactor: MEASURED.safetyFactor,
+    });
+
+    expect(primaryBound).toBeCloseTo(13.704, 3);
+    expect(checkerBound).toBeCloseTo(0.277, 3);
+    expect(primaryBound + checkerBound).toBeCloseTo(13.981, 3);
+  });
+
+  it('names the statistic rather than calling a mean a percentile', () => {
+    // Fifteen observations do not describe a distribution finely enough to
+    // support a percentile; claiming one would be the overreach the convention
+    // exists to prevent.
+    expect(primary?.statistic).toBe('P90');
+    expect(checker?.statistic).toBe('MEAN');
+    expect(checker?.observations).toBeLessThan(primary?.observations ?? 0);
+  });
+
+  it('falls back to v1 when no measurement matches the model', () => {
+    // A distribution measured on one model says nothing about another.
+    const choice = selectBoundingConvention({
+      checkerModelId: 'mistralai/mistral-medium-3-5',
+      measured: MEASURED,
+      primaryModelId: 'anthropic/claude-some-other-model',
+      profileFamily: 'reduced',
+    });
+
+    expect(choice.convention).toBe('conservative-v1');
+    expect(choice.primary).toBeUndefined();
+  });
+
+  it('falls back to v1 when no measurement matches the profile family', () => {
+    const choice = selectBoundingConvention({
+      checkerModelId: 'mistralai/mistral-medium-3-5',
+      measured: MEASURED,
+      primaryModelId: 'anthropic/claude-sonnet-4.6',
+      profileFamily: 'full',
+    });
+
+    expect(choice.convention).toBe('conservative-v1');
+  });
+
+  it('uses v2 when both halves are measured for this model and family', () => {
+    const choice = selectBoundingConvention({
+      checkerModelId: 'mistralai/mistral-medium-3-5',
+      measured: MEASURED,
+      primaryModelId: 'anthropic/claude-sonnet-4.6',
+      profileFamily: 'reduced',
+    });
+
+    expect(choice.convention).toBe('measured-p90-v2');
+    expect(choice.primary?.usdPerCall).toBeCloseTo(0.02284, 5);
+    expect(choice.checker?.retryFactor).toBe(1);
   });
 });

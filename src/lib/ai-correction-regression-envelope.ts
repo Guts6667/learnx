@@ -19,7 +19,7 @@
  *   machines.
  */
 
-import { readFile, unlink, writeFile } from 'node:fs/promises';
+import { readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
 
@@ -139,6 +139,8 @@ export type EnvelopeState = {
   /** Provider usage now, or null when it could not be read. */
   providerUsageUsd: number | null;
   remainingUsd: number | null;
+  /** Which side of the reconciliation the figure came from. */
+  spentSource: 'PROVIDER_DELTA' | 'LEDGER' | 'UNMEASURED';
   spentUsd: number | null;
 };
 
@@ -151,26 +153,100 @@ export type EnvelopeState = {
  */
 export function envelopeState(input: {
   envelope: SpendEnvelope;
+  /**
+   * Spend this machine recorded in its own ledgers since the envelope opened.
+   *
+   * Load-bearing, not a fallback. OpenRouter's `total_usage` was observed not
+   * to move at all in the minutes after fifteen paid calls on 30 August 2026,
+   * so a provider delta alone reports zero spend however much a run buys — an
+   * envelope that always looks empty is worse than no envelope, because it
+   * reassures. The two sources are combined by taking the larger: the provider
+   * sees other machines, the ledger sees the present instant, and neither alone
+   * sees both.
+   */
+  ledgerSpentUsd?: number;
   providerUsageUsd: number | null;
 }): EnvelopeState {
+  const ledger = Math.max(0, input.ledgerSpentUsd ?? 0);
   if (input.providerUsageUsd === null) {
+    // The local ledger cannot see another machine, so it is a floor and never a
+    // measurement. Authorising against a floor would defeat the point of an
+    // envelope, which exists precisely for the spend this process cannot see.
+    // Unmeasurable therefore still authorises nothing.
     return {
       envelopeUsd: input.envelope.envelopeUsd,
       providerUsageUsd: null,
       remainingUsd: null,
+      spentSource: 'UNMEASURED',
       spentUsd: null,
     };
   }
-  const spentUsd = Math.max(
+  const providerDelta = Math.max(
     0,
     input.providerUsageUsd - input.envelope.openingProviderUsageUsd,
   );
+  const spentUsd = Math.max(providerDelta, ledger);
   return {
     envelopeUsd: input.envelope.envelopeUsd,
     providerUsageUsd: input.providerUsageUsd,
     remainingUsd: input.envelope.envelopeUsd - spentUsd,
     spentUsd,
+    spentSource: providerDelta >= ledger ? 'PROVIDER_DELTA' : 'LEDGER',
   };
+}
+
+/**
+ * Spend this machine has recorded since the envelope opened.
+ *
+ * Sums every results ledger written at or after the envelope's opening
+ * instant. Directory names are ISO timestamps, so the comparison is a string
+ * comparison on a sortable format rather than a parse.
+ */
+export async function ledgerSpendSince(input: {
+  directory: string;
+  openedAt: string;
+  readDirectory?: (path: string) => Promise<string[]>;
+  readLedger?: (path: string) => Promise<string>;
+}): Promise<number> {
+  const resultsRoot = path.join(input.directory, 'results');
+  const list = input.readDirectory ?? ((target) => readdir(target));
+  const read = input.readLedger ?? ((target) => readFile(target, 'utf8'));
+
+  let entries: string[];
+  try {
+    entries = await list(resultsRoot);
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') return 0;
+    throw error;
+  }
+
+  const opened = input.openedAt.replace(/[:.]/g, '-');
+  let total = 0;
+  for (const entry of entries) {
+    if (entry < opened) continue;
+    let raw: string;
+    try {
+      raw = await read(path.join(resultsRoot, entry, 'ledger.jsonl'));
+    } catch {
+      continue;
+    }
+    for (const line of raw.split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const parsed = JSON.parse(line) as { costUsd?: unknown };
+        if (
+          typeof parsed.costUsd === 'number' &&
+          Number.isFinite(parsed.costUsd)
+        ) {
+          total += parsed.costUsd;
+        }
+      } catch {
+        // A truncated final line in an interrupted run is not a reason to
+        // abandon the whole sum.
+      }
+    }
+  }
+  return total;
 }
 
 /** Reads the recorded envelope, if one has been opened. */
@@ -214,7 +290,7 @@ export function capForRun(input: {
 }): { capUsd: number; reason: string } {
   if (input.state.remainingUsd === null) {
     throw new RegressionEnvelopeError(
-      "REGRESSION_ENVELOPE_UNMEASURABLE: l'usage fournisseur n'a pas pu être lu ; une enveloppe non mesurable n'autorise aucune dépense.",
+      "REGRESSION_ENVELOPE_UNMEASURABLE: ni l'usage fournisseur ni un registre local n'ont pu être lus ; une enveloppe non mesurable n'autorise aucune dépense.",
     );
   }
   if (input.state.remainingUsd <= 0) {

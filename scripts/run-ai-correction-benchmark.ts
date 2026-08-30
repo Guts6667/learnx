@@ -4,7 +4,10 @@ import { pathToFileURL } from 'node:url';
 import { runAiCorrectionBenchmarkCli } from '../src/lib/ai-correction-benchmark-cli.ts';
 import { loadBenchmarkInputs as loadInputsForRegression } from '../src/lib/ai-correction-benchmark-runner.ts';
 import { callCandidate } from '../src/lib/ai-correction-benchmark-runner.ts';
-import { runRegressionPool } from '../src/lib/ai-correction-regression-run-cli.ts';
+import {
+  runCheckerMeasurement,
+  runRegressionPool,
+} from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
 import { createRuntimeCorrectionChecker } from '../src/server/corrections/correction-checker.ts';
 import {
@@ -82,6 +85,26 @@ async function runAiCorrectionRegressionCli(
     throw new Error(
       'REGRESSION_RUN_API_KEY_REQUIRED: --execute demande OPENROUTER_API_KEY dans l’environnement.',
     );
+  }
+
+  // Measuring the verifier's cost replays already-recorded corrections through
+  // it: the corrections were paid for once, so this buys only the verifier.
+  if (arguments_.some((argument) => argument.startsWith('--measure-checker'))) {
+    if (!apiKey) {
+      throw new Error(
+        'REGRESSION_RUN_API_KEY_REQUIRED: la mesure du vérificateur demande OPENROUTER_API_KEY.',
+      );
+    }
+    const measurement = await runCheckerMeasurement({
+      arguments: arguments_,
+      checker: buildRegressionChecker(apiKey),
+      identities: REGRESSION_PINNED_IDENTITIES,
+      providerApiKey: apiKey,
+    });
+    console.log(
+      `Mesure du vérificateur : ${measurement.callsMade} appels, ${measurement.spentUsd.toFixed(6)} USD, ${measurement.resultsDirectory}`,
+    );
+    return;
   }
 
   const outcome = await runRegressionPool({

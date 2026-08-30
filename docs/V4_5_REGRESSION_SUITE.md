@@ -1,7 +1,7 @@
 # Spécification V4.5-120 — suite de régression décidable par la machine
 
 - **Statut** : `ACTIVE_AUTHORITY` (spécification d'implémentation, voie E)
-- **Version** : 1.1.0
+- **Version** : 1.2.0
 - **Date** : 29 août 2026 (amendée le 29 août 2026 : §2, §3 et §6 en 1.0.1 ;
   §9 en 1.0.2 après livraison de V4.5-122)
 - **Owner** : Head of AI (design) · **Exécutant** : session « AI Research »
@@ -140,7 +140,33 @@ toutes les sorties. Profil `reduced` (budget 3 USD, V4.5-121) : pool complet
 
 Le préflight budgétaire existant (`ai-benchmark-supplier-budget.ts`) calcule
 la borne à partir des tailles réelles et refuse l'exécution si la borne dépasse
-le plafond autorisé. Un run interrompu reprend par `--resume` sans rejouer les
+le plafond autorisé.
+
+**Conventions de bornage (V4.5-126).** Deux conventions coexistent et le
+répertoire de résultats nomme celle qui a autorisé le run
+(`boundingConvention`), avec l'autre affichée à côté pour comparaison
+(`comparisonConservativeV1Usd`).
+
+- `conservative-v1` : un jeton par unité de code UTF-16 du prompt, plus une
+  enveloppe fixe de 2 048 jetons, plus la limite de sortie du profil. Ne suppose
+  aucune mesure. Sur le run partiel du 29 août elle a surestimé d'un facteur
+  2,8.
+- `measured-p90-v2` : `appels × coût mesuré par appel × facteur de reprise ×
+  1,5`. Le coût par appel provient d'une distribution réellement observée, dont
+  le répertoire source, le nombre d'observations et la statistique employée sont
+  inscrits dans `budget-preflight.json`.
+
+**Règle d'admissibilité.** `measured-p90-v2` n'est utilisable que s'il existe une
+mesure pour **ce modèle et cette famille de profil**. Une distribution mesurée
+sur un modèle ne dit rien d'un autre : une borne empruntée serait une estimation
+déguisée en mesure. À défaut, la moitié concernée retombe sur `conservative-v1`,
+et l'artefact indique quelle moitié a utilisé quoi. La statistique est nommée
+telle qu'elle est — un P90 quand l'échantillon décrit une distribution, une
+moyenne sinon — et le facteur de sécurité absorbe l'écart plutôt que de le
+masquer.
+
+Une borne n'est pas une prévision : elle autorise un run, elle ne le prédit
+pas. Le rapport affiche borne et réconcilié côte à côte pour cette raison. Un run interrompu reprend par `--resume` sans rejouer les
 cellules déjà réconciliées.
 
 Identités : primaire = `PROMOTED_CORRECTION_IDENTITY`, vérificateur =

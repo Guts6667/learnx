@@ -4,8 +4,11 @@ import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
+import { mkdir } from 'node:fs/promises';
+
 import {
   acquireRunLock,
+  ledgerSpendSince,
   capForRun,
   envelopeState,
   processIsAlive,
@@ -118,6 +121,34 @@ describe('spend envelope', () => {
     // A local counter cannot see another process; the provider's total can.
     expect(state.spentUsd).toBeCloseTo(2.61, 2);
     expect(state.remainingUsd).toBeCloseTo(10.39, 2);
+    expect(state.spentSource).toBe('PROVIDER_DELTA');
+  });
+
+  it('falls back to the local ledger when the provider figure has not moved', () => {
+    // Observed on 30 August 2026: OpenRouter's total_usage did not move at all
+    // in the minutes after fifteen paid calls. A provider delta alone would
+    // have reported zero spend however much a run bought — an envelope that
+    // always looks empty is worse than none, because it reassures.
+    const state = envelopeState({
+      envelope: ENVELOPE,
+      ledgerSpentUsd: 0.9375,
+      providerUsageUsd: ENVELOPE.openingProviderUsageUsd,
+    });
+
+    expect(state.spentUsd).toBeCloseTo(0.9375, 4);
+    expect(state.spentSource).toBe('LEDGER');
+  });
+
+  it('prefers the provider figure when it exceeds the local ledger', () => {
+    // The provider sees other machines; the ledger sees only this one.
+    const state = envelopeState({
+      envelope: ENVELOPE,
+      ledgerSpentUsd: 0.5,
+      providerUsageUsd: 31.06,
+    });
+
+    expect(state.spentUsd).toBeCloseTo(2.61, 2);
+    expect(state.spentSource).toBe('PROVIDER_DELTA');
   });
 
   it('reports nothing measurable when the provider cannot be read', () => {
@@ -128,11 +159,17 @@ describe('spend envelope', () => {
   });
 
   it('refuses to authorise anything against an unmeasurable envelope', () => {
-    // An envelope that cannot be measured is not an envelope with room.
+    // An envelope that cannot be measured is not an envelope with room — and
+    // the local ledger does not rescue it, because a ledger cannot see another
+    // machine. A floor is not a measurement.
     expect(() =>
       capForRun({
         requestedCapUsd: 5,
-        state: envelopeState({ envelope: ENVELOPE, providerUsageUsd: null }),
+        state: envelopeState({
+          envelope: ENVELOPE,
+          ledgerSpentUsd: 0.5,
+          providerUsageUsd: null,
+        }),
       }),
     ).toThrow(RegressionEnvelopeError);
   });
@@ -192,5 +229,83 @@ describe('spend envelope', () => {
     );
 
     await expect(readSpendEnvelope(directory)).rejects.toThrow();
+  });
+});
+
+describe('ledger spend since the envelope opened', () => {
+  async function withLedgers(
+    entries: { costs: number[]; name: string }[],
+  ): Promise<string> {
+    const directory = await scratch();
+    for (const entry of entries) {
+      const target = path.join(directory, 'results', entry.name);
+      await mkdir(target, { recursive: true });
+      await writeFile(
+        path.join(target, 'ledger.jsonl'),
+        entry.costs
+          .map((costUsd) => JSON.stringify({ costUsd, status: 'VALID' }))
+          .join('\n'),
+        'utf8',
+      );
+    }
+    return directory;
+  }
+
+  it('sums only the runs at or after the opening instant', async () => {
+    const directory = await withLedgers([
+      { costs: [1.5], name: '2026-08-29T10-00-00-000Z' },
+      { costs: [0.25, 0.25], name: '2026-08-30T10-00-00-000Z' },
+    ]);
+
+    // Directory names are sortable ISO stamps, so the comparison is a string
+    // comparison rather than a parse.
+    const total = await ledgerSpendSince({
+      directory,
+      openedAt: '2026-08-30T00:00:00.000Z',
+    });
+
+    expect(total).toBeCloseTo(0.5, 6);
+  });
+
+  it('reports nothing when no run has happened yet', async () => {
+    expect(
+      await ledgerSpendSince({
+        directory: await scratch(),
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBe(0);
+  });
+
+  it('keeps the sum when an interrupted run left a truncated final line', async () => {
+    const directory = await scratch();
+    const target = path.join(directory, 'results', '2026-08-30T10-00-00-000Z');
+    await mkdir(target, { recursive: true });
+    await writeFile(
+      path.join(target, 'ledger.jsonl'),
+      `${JSON.stringify({ costUsd: 0.4 })}\n{"costUsd":0.3`,
+      'utf8',
+    );
+
+    // A run killed mid-write must not cost the accounting every line before it.
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBeCloseTo(0.4, 6);
+  });
+
+  it('ignores a results directory that never wrote a ledger', async () => {
+    const directory = await scratch();
+    await mkdir(path.join(directory, 'results', '2026-08-30T11-00-00-000Z'), {
+      recursive: true,
+    });
+
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBe(0);
   });
 });
