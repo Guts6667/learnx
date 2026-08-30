@@ -13,7 +13,7 @@ describe('decideTransition', () => {
   });
 
   it('ne fait pas régresser une commande déjà attribuée', () => {
-    // Revolut delivers out of order; a late PAID after FULFILLED is expected,
+    // The processor delivers out of order; a late PAID after FULFILLED is expected,
     // not exceptional.
     expect(decideTransition('FULFILLED', 'PAID')).toEqual({
       kind: 'OUT_OF_ORDER',
@@ -73,7 +73,7 @@ describe('shouldAttributeCredits', () => {
   });
 
   it('n’attribue rien sur un FULFILLED venu du fournisseur', () => {
-    // FULFILLED is our own transition. If Revolut ever emits something like
+    // FULFILLED is our own transition. If the processor ever emits something like
     // it, it arrives after we granted and must change nothing.
     expect(
       shouldAttributeCredits({ current: 'PAID', incoming: 'FULFILLED' }),

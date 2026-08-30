@@ -3,7 +3,7 @@ import type { PaymentOrderStatus } from '../../../generated/prisma/client.js';
 /**
  * Ordering-tolerant state for payment orders (ADR_004 §3).
  *
- * Revolut guarantees neither uniqueness nor ordering of webhook deliveries, so
+ * No processor guarantees uniqueness or ordering of webhook deliveries, so
  * an order's state is the most advanced state observed and never the last one
  * received. Without that, a `PAID` arriving after `FULFILLED` — which happens —
  * would walk a fulfilled purchase backwards and, worse, invite a second
@@ -58,7 +58,7 @@ export function decideTransition(
 /**
  * Credits are attributed exactly once, when an order first reaches PAID.
  *
- * PAID is the provider's last word: Revolut knows the money arrived and has no
+ * PAID is the provider's last word: the processor knows the money arrived and has no
  * reason to emit anything about fulfilment, because whether a learner received
  * credits is a fact only LearnX holds. So FULFILLED is our own transition,
  * written in the same breath as the grant, and it means "we have granted" —

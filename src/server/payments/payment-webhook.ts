@@ -90,7 +90,7 @@ function stripeEnvelope(rawPayload: string): WebhookEnvelope | null {
   };
 }
 
-export async function handleRevolutWebhook(input: {
+export async function handlePaymentWebhook(input: {
   configuration: { enabled: boolean; webhookSecret: string | null };
   now: Date;
   ports: WebhookPorts;

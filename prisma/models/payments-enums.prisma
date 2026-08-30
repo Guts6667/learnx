@@ -1,8 +1,8 @@
 /// États d'un ordre de paiement (ADR_003 §6.3, repris sans modification).
 ///
 /// L'ordre de cette énumération porte du sens : `paymentOrderRank` s'en sert
-/// pour rendre les transitions monotones, parce que Revolut ne garantit pas
-/// l'ordre de livraison des événements.
+/// pour rendre les transitions monotones, parce qu'aucun fournisseur ne
+/// garantit l'ordre de livraison des événements.
 enum PaymentOrderStatus {
   CREATED         @map("created")
   PENDING         @map("pending")

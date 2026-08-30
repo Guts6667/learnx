@@ -61,7 +61,7 @@ pour Revolut, et il ne dépend pas du fournisseur.
 
 **Autorité supérieure** : `ADR_003` §6.3 (états de paiement) et §7.3
 (frontières de données). Cette ADR ne les redéfinit pas ; elle décrit comment
-Revolut s'y branche.
+le fournisseur s'y branche.
 
 ## 1. Décision
 
@@ -80,14 +80,16 @@ Le retour de navigation après paiement **n'attribue jamais de crédits**. Il ne
 prouve rien : un apprenant peut fermer l'onglet avant la redirection, la
 rejouer, ou la fabriquer.
 
-Les crédits sont attribués par le **webhook signé** de Revolut, et par lui seul.
+Les crédits sont attribués par le **webhook signé** du fournisseur, et par lui
+seul.
 Le retour de navigation sert uniquement à afficher un état d'attente, et cet
 écart — payé mais pas encore crédité — doit être une chose que l'interface sait
 dire, pas un cas qu'elle traite comme une erreur.
 
 ## 3. Idempotence et désordre
 
-Revolut ne garantit ni l'unicité ni l'ordre de livraison des événements. Deux
+Aucun fournisseur ne garantit l'unicité ou l'ordre de livraison des
+événements. Deux
 propriétés sont donc exigées du récepteur, et testées :
 
 - **Idempotence par identifiant d'événement.** `payment_event.provider_event_id`
@@ -143,7 +145,8 @@ l'inverse.
 Référence d'ordre, montant, devise, pack acheté, identifiants d'événement,
 horodatages, et le corps brut de l'événement **après vérification de signature**,
 pour réconciliation. Jamais : numéro de carte, cryptogramme, nom du porteur,
-empreinte de carte, ni aucune donnée transmise par Revolut qui les approcherait.
+empreinte de carte, ni aucune donnée transmise par le fournisseur qui les
+approcherait.
 
 ## 7bis. Remboursements et litiges (V4.5-162)
 
