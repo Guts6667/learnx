@@ -221,6 +221,18 @@ export async function ledgerSpendSince(input: {
   }
 
   const opened = input.openedAt.replace(/[:.]/g, '-');
+  // One provider call is one charge, however many ledgers record it. A resumed
+  // run writes the attempts it inherited into its own ledger, so summing files
+  // charged the same money twice: on 30 August that read 8.4777 USD spent when
+  // 4.6854 had been, and refused a 1.6778 USD top-up the envelope could afford.
+  //
+  // The key is the whole entry, and only for entries that name the call they
+  // charge for. Two records agreeing on candidate, case, repetition, attempt,
+  // cost, latency, route and error are one call recorded twice — across every
+  // ledger this repository holds, no directory contains two identical entries,
+  // so nothing distinct is merged away. The 24 cells whose attempts are both
+  // numbered 1 stay separate on their differing cost and latency.
+  const charged = new Set<string>();
   let total = 0;
   for (const entry of entries) {
     if (entry < opened) continue;
@@ -235,11 +247,20 @@ export async function ledgerSpendSince(input: {
       try {
         const parsed = JSON.parse(line) as { costUsd?: unknown };
         if (
-          typeof parsed.costUsd === 'number' &&
-          Number.isFinite(parsed.costUsd)
+          typeof parsed.costUsd !== 'number' ||
+          !Number.isFinite(parsed.costUsd)
         ) {
-          total += parsed.costUsd;
+          continue;
         }
+        const identity = ledgerEntryIdentity(parsed as Record<string, unknown>);
+        // An entry that does not name the call it charges for cannot be shown
+        // to be a duplicate, so it is counted. Undercounting a budget is the
+        // dangerous direction; counting an unidentifiable line twice is not.
+        if (identity !== null) {
+          if (charged.has(identity)) continue;
+          charged.add(identity);
+        }
+        total += parsed.costUsd;
       } catch {
         // A truncated final line in an interrupted run is not a reason to
         // abandon the whole sum.
@@ -247,6 +268,29 @@ export async function ledgerSpendSince(input: {
     }
   }
   return total;
+}
+
+/**
+ * Identity of the provider call a ledger entry charges for, or null when the
+ * entry does not name one.
+ *
+ * Serialised with sorted keys, so key order in a file cannot make one charge
+ * look like two.
+ */
+function ledgerEntryIdentity(entry: Record<string, unknown>): string | null {
+  const named =
+    typeof entry.candidateId === 'string' &&
+    typeof entry.caseId === 'string' &&
+    typeof entry.repetition === 'number' &&
+    typeof entry.attempt === 'number';
+  if (!named) return null;
+  return JSON.stringify(
+    Object.fromEntries(
+      Object.entries(entry).sort(([left], [right]) =>
+        left.localeCompare(right),
+      ),
+    ),
+  );
 }
 
 /** Reads the recorded envelope, if one has been opened. */
