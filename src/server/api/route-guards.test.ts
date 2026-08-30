@@ -53,6 +53,11 @@ import { todayApp } from './today/app';
  */
 const PUBLIC_ROUTES = [
   {
+    path: '/api/health',
+    method: 'GET',
+    why: 'Liveness probe. Whatever watches the API from outside has no session by definition, and a probe that requires one reports nothing at the moment it is most needed. It returns no host, role, count or driver message — only reachable or not.',
+  },
+  {
     path: '/api/auth/session',
     method: 'GET',
     why: 'Reports whether a session exists. Answering 401 would make "logged out" indistinguishable from "broken".',

@@ -6,7 +6,12 @@ import { correctionsApp } from './corrections/app.js';
 import { accessRequestsApp } from './access-requests/app.js';
 import { ApiError, toApiErrorBody } from './_lib/errors.js';
 import { createRequestObservability } from './_lib/observability.js';
+import {
+  normalizeLoggedPath,
+  reportUnexpectedError,
+} from './_lib/error-reporting.js';
 import { authApp } from './auth/app.js';
+import { healthApp } from './health/app.js';
 import { catalogApp } from './catalog/app.js';
 import { conceptAssessmentsApp } from './concept-assessments/app.js';
 import { creditsApp } from './credits/app.js';
@@ -38,6 +43,21 @@ function createApiApp() {
       return context.json(toApiErrorBody(error), error.status);
     }
 
+    // An unknown error used to become a bare 500 and nothing else: no stack, no
+    // message, no way to tell one cause from another after the fact. The reply
+    // stays deliberately opaque to the caller, but the cause is now written
+    // down, correlated to the request by the same identifier the response
+    // carries in X-Request-Id.
+    //
+    // What is logged is the error's own shape, never the request: no body, no
+    // headers, no query string, no session. A stack can name a file and a line;
+    // it must not name a person.
+    reportUnexpectedError(error, {
+      method: context.req.method,
+      path: normalizeLoggedPath(context.req.url),
+      requestId: context.res.headers.get('X-Request-Id'),
+    });
+
     return context.json(
       toApiErrorBody(
         new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 500),
@@ -57,6 +77,9 @@ function createApiApp() {
   // Ordering is the hotfix, not the cure: the next public route added at the
   // bottom would break the same way and just as silently. V4.5-187 scopes those
   // middlewares to their own prefixes so the trap stops existing.
+  // First of all, and public: a probe must answer even when everything that
+  // needs a session is failing, which is exactly when it is being read.
+  app.route('/', healthApp);
   app.route('/', authApp);
   app.route('/', publicLeadsApp);
   app.route('/', paymentsApp);
