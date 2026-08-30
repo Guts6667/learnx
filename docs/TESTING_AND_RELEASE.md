@@ -175,6 +175,35 @@ dans la revue, jamais par réflexe pour faire passer une suite rouge.
 - 0 vulnérabilité haute/critique ;
 - 0 dette P0/P1 ; chaque P2 a owner, impact et cible.
 
+## Cibler une base autre que celle du `.env`
+
+Règle mécanique, née de l'effacement de la base de production du 30 août 2026
+(post-mortem : `docs/qa/V4_5_192_POSTMORTEM_BASE_PRODUCTION.md`).
+
+`prisma.config.ts` compose sa source de données ainsi :
+
+```ts
+url: process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? fallback
+```
+
+**`DIRECT_URL` gagne.** Surcharger la seule `DATABASE_URL` ne change donc pas
+la cible des commandes destructrices — `db execute`, `migrate deploy`,
+`migrate reset` — qui continuent d'utiliser la `DIRECT_URL` du `.env` courant.
+C'est ainsi qu'une commande destinée à `preview` a supprimé le schéma de
+production, sans erreur ni avertissement.
+
+Poser les deux variables, ou aucune. Jamais une seule :
+
+```bash
+env -i PATH="$PATH" HOME="$HOME" \
+  DATABASE_URL='<url poolée de la cible>' \
+  DIRECT_URL='<url directe de la cible>' \
+  pnpm prisma migrate deploy
+```
+
+`env -i` repart d'un environnement vide, ce qui empêche le `.env` du worktree
+de fournir la variable oubliée.
+
 ## Rollback
 
 V4.1 ne requiert pas de migration de données pour React/shadcn ou le découpage
