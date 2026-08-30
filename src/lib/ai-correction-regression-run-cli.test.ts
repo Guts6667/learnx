@@ -1,5 +1,12 @@
 import { readFileSync } from 'node:fs';
-import { copyFile, mkdtemp, readFile, readdir } from 'node:fs/promises';
+import {
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -16,6 +23,7 @@ import {
 } from './ai-correction-regression-envelope.js';
 import {
   pendingCellsFor,
+  runCheckerMeasurement,
   runRegressionPool,
 } from './ai-correction-regression-run-cli.js';
 import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
@@ -544,5 +552,127 @@ describe('--run-pool', () => {
     );
     expect(outcome.report).toContain('**Promotion : refusée.**');
     expect(outcome.report).toContain('PARAGRAPH_SHUFFLE');
+  });
+});
+
+describe('--measure-checker', () => {
+  it('buys only the verifier, replaying corrections already paid for', async () => {
+    const directory = await scratchRegressionDirectory();
+
+    // A completed run supplies the corrections; measuring the verifier must not
+    // dispatch a single new primary call.
+    const source = await runRegressionPool({
+      arguments: EXECUTING_ARGUMENTS,
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T02:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    let checkerCalls = 0;
+    const measurement = await runCheckerMeasurement({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        `--measure-checker=${source.resultsDirectory}`,
+        '--limit=5',
+        '--supplier-cost-cap-usd=1',
+      ],
+      checker: {
+        verify: async ({ criteria }) => {
+          checkerCalls += 1;
+          return {
+            costUsd: 0.001,
+            verdicts: Object.fromEntries(
+              criteria.map((criterion) => [
+                criterion.criterionKey,
+                'AGREED' as const,
+              ]),
+            ),
+          };
+        },
+      },
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T02:30:00.000Z'),
+      regressionDirectory: directory,
+    });
+
+    expect(checkerCalls).toBeGreaterThan(0);
+    expect(measurement.callsMade).toBe(checkerCalls);
+    expect(measurement.spentUsd).toBeCloseTo(checkerCalls * 0.001, 6);
+
+    // The real property: no primary call was bought. A counter would have been
+    // vacuous — nothing in this path can increment one — so the evidence is
+    // that the measurement wrote no attempts of its own, and the corrections it
+    // replayed are still exactly the ones the source run paid for.
+    const produced = await readdir(measurement.resultsDirectory);
+    expect(produced).not.toContain('attempts.json');
+    expect(produced.sort()).toEqual([
+      'checker-cost-measurement.json',
+      'checker-verdicts.json',
+      'ledger.jsonl',
+    ]);
+  });
+
+  it('writes a ledger so envelope accounting can see what it spent', async () => {
+    const directory = await scratchRegressionDirectory();
+    const source = await runRegressionPool({
+      arguments: EXECUTING_ARGUMENTS,
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T03:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    const measurement = await runCheckerMeasurement({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        `--measure-checker=${source.resultsDirectory}`,
+        '--limit=3',
+        '--supplier-cost-cap-usd=1',
+      ],
+      checker: CHECKER,
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T03:30:00.000Z'),
+      regressionDirectory: directory,
+    });
+
+    // Without a ledger the spend lives only in a bespoke artefact nothing else
+    // reads, and the envelope guard cannot see money it actually spent.
+    const ledger = await readFile(
+      path.join(measurement.resultsDirectory, 'ledger.jsonl'),
+      'utf8',
+    );
+    const line = JSON.parse(ledger.trim()) as {
+      costSource: string;
+      costUsd: number;
+    };
+    expect(line.costSource).toBe('ACTUAL');
+    expect(line.costUsd).toBeCloseTo(measurement.spentUsd, 6);
+  });
+
+  it('refuses a source directory with no usable correction', async () => {
+    const directory = await scratchRegressionDirectory();
+    const empty = path.join(directory, 'results', '2026-08-30T04-00-00-000Z');
+    await mkdir(empty, { recursive: true });
+    await writeFile(path.join(empty, 'attempts.json'), '[]', 'utf8');
+
+    await expect(
+      runCheckerMeasurement({
+        arguments: [
+          `--run-pool=${POOL_PATH}`,
+          `--measure-checker=${empty}`,
+          '--supplier-cost-cap-usd=1',
+        ],
+        checker: CHECKER,
+        identities: IDENTITIES,
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow(/NO_ATTEMPTS/);
   });
 });

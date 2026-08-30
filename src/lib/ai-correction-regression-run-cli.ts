@@ -252,6 +252,32 @@ async function readPersistedVerdicts(
 }
 
 /**
+ * The profile family a run belongs to, for matching a measured entry.
+ */
+function profileFamilyFor(arguments_: string[]): string {
+  const requested = readCliOption(arguments_, 'profile');
+  return requested === 'reduced' || requested === 'smoke' ? 'reduced' : 'full';
+}
+
+/**
+ * Reads the measured cost distributions, if any have been recorded.
+ */
+async function readMeasuredCosts(
+  directory: string,
+): Promise<MeasuredCosts | undefined> {
+  try {
+    return measuredCostsSchema.parse(
+      JSON.parse(
+        await readFile(path.join(directory, 'measured-costs.v1.json'), 'utf8'),
+      ) as unknown,
+    );
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') return undefined;
+    throw error;
+  }
+}
+
+/**
  * Reads the recorded checker price, if one has been recorded yet.
  *
  * Absent is a legitimate state, not an error: it means the run's bound covers
@@ -609,6 +635,14 @@ export async function runRegressionPool(input: {
     ),
   );
 
+  const measured = await readMeasuredCosts(directory);
+  const conventionChoice = selectBoundingConvention({
+    checkerModelId: input.identities.checkerModelId,
+    measured,
+    primaryModelId: input.identities.primaryModelId,
+    profileFamily: profileFamilyFor(input.arguments),
+  });
+
   const checkerPricing = await readCheckerPricing(directory);
   const checkerPromptCharacters = checkerPromptCharactersUpperBound(plan);
   const checkerCostFor = (passes: RegressionRunPass[]): number => {
@@ -672,9 +706,39 @@ export async function runRegressionPool(input: {
   };
   // One bill, not two: the cap governs the run, so the checker's share is
   // inside the number the drop order works against rather than beside it.
-  const priceAll = (passes: RegressionRunPass[]): number =>
+  const cellsIn = (passes: RegressionRunPass[]): number =>
+    passes.reduce(
+      (total, pass) => total + outstandingCases(pass).length * pass.repetitions,
+      0,
+    );
+
+  const priceV1 = (passes: RegressionRunPass[]): number =>
     passes.reduce((total, pass) => total + pricePass(pass), 0) +
     checkerCostFor(passes);
+
+  // v2 prices a cell from what cells actually cost, rather than from a
+  // character count and a fixed envelope. It applies only where a measurement
+  // exists for this model and profile family; the other half falls back.
+  const priceV2 = (passes: RegressionRunPass[]): number => {
+    if (!conventionChoice.primary || !measured) return priceV1(passes);
+    const calls = cellsIn(passes);
+    const primaryBound = measuredBoundUsd({
+      calls,
+      entry: conventionChoice.primary,
+      safetyFactor: measured.safetyFactor,
+    });
+    const checkerBound = conventionChoice.checker
+      ? measuredBoundUsd({
+          calls,
+          entry: conventionChoice.checker,
+          safetyFactor: measured.safetyFactor,
+        })
+      : checkerCostFor(passes);
+    return primaryBound + checkerBound;
+  };
+
+  const priceAll =
+    conventionChoice.convention === 'measured-p90-v2' ? priceV2 : priceV1;
 
   // Two checker calls per case in scope: one to rewrite, one to confirm the
   // meaning survived. Priced with the checker's own recorded rate.
@@ -747,7 +811,30 @@ export async function runRegressionPool(input: {
               note: "Aucun prix par jeton n'est enregistré pour le vérificateur promu : la borne ne couvre que le modèle primaire. Ses appels restent réconciliés contre le même plafond pendant l'exécution, ce qui arrête le run au plafond sans l'empêcher de l'atteindre.",
               pricedInThisPreflight: false,
             },
+        // Both conventions are printed so a reader knows which bound authorised
+        // the run, and what the other one would have said.
+        boundingConvention: conventionChoice.convention,
+        boundingSources: {
+          checker: conventionChoice.checker
+            ? {
+                observations: conventionChoice.checker.observations,
+                sourceDirectory: conventionChoice.checker.sourceDirectory,
+                statistic: conventionChoice.checker.statistic,
+                usdPerCall: conventionChoice.checker.usdPerCall,
+              }
+            : null,
+          primary: conventionChoice.primary
+            ? {
+                observations: conventionChoice.primary.observations,
+                sourceDirectory: conventionChoice.primary.sourceDirectory,
+                statistic: conventionChoice.primary.statistic,
+                usdPerCall: conventionChoice.primary.usdPerCall,
+              }
+            : null,
+          safetyFactor: measured?.safetyFactor ?? null,
+        },
         combinedWorstCaseUsd: budgeted.pricedUsd,
+        comparisonConservativeV1Usd: priceV1(passes),
         primaryWorstCaseUsd: passes.reduce(
           (total, pass) => total + pricePass(pass),
           0,
@@ -1504,11 +1591,122 @@ export async function runCheckerMeasurement(input: {
     fileName: 'checker-cost-measurement.json',
   });
 
+  // A measurement spends real money, so it writes a ledger like any run. Without
+  // one, envelope accounting cannot see the spend at all: the cost lives only in
+  // a bespoke artefact nothing else reads.
+  await writeRunArtifact({
+    content: `${JSON.stringify({
+      attempt: 1,
+      candidateId: 'checker-measurement',
+      caseId: 'checker-measurement',
+      costSource: 'ACTUAL',
+      costUsd: guard.actualSpentUsd,
+      errorCode: null,
+      latencyMs: 0,
+      modelId: input.identities.checkerModelId,
+      providerRoute: null,
+      repetition: 1,
+      status: 'VALID',
+    })}\n`,
+    directory: resultsDirectory,
+    fileName: 'ledger.jsonl',
+  });
+
   await releaseRunLock(directory);
   return {
     callsMade,
     observations: observations.length,
     resultsDirectory,
     spentUsd: guard.actualSpentUsd,
+  };
+}
+
+export const measuredCostsSchema = z
+  .object({
+    entries: z
+      .array(
+        z
+          .object({
+            modelId: z.string().trim().min(1),
+            observations: z.number().int().positive(),
+            profileFamily: z.string().trim().min(1),
+            retryFactor: z.number().positive(),
+            retryFactorNote: z.string().trim().min(1),
+            role: z.enum(['PRIMARY', 'CHECKER']),
+            sourceDirectory: z.string().trim().min(1),
+            sourceNote: z.string().trim().min(1),
+            statistic: z.enum(['P90', 'MEAN']),
+            statisticNote: z.string().trim().min(1).optional(),
+            usdPerCall: z.number().positive(),
+          })
+          .strict(),
+      )
+      .min(1),
+    note: z.string().trim().min(1),
+    safetyFactor: z.number().positive(),
+    schemaVersion: z.literal(1),
+  })
+  .strict();
+
+export type MeasuredCosts = z.infer<typeof measuredCostsSchema>;
+
+/**
+ * The bound a measured distribution supports for one half of the bill.
+ *
+ * `calls × usdPerCall × retryFactor × safetyFactor`. The safety factor is what
+ * keeps a bound a bound: a measured P90 is a description of what happened, not
+ * a promise about what will.
+ */
+export function measuredBoundUsd(input: {
+  calls: number;
+  entry: MeasuredCosts['entries'][number];
+  safetyFactor: number;
+}): number {
+  return (
+    input.calls *
+    input.entry.usdPerCall *
+    input.entry.retryFactor *
+    input.safetyFactor
+  );
+}
+
+/**
+ * Chooses the convention for a run.
+ *
+ * v2 applies only where a measured entry exists for **this** model and profile
+ * family — spec §4. A distribution measured on one model says nothing about
+ * another, and a bound borrowed across models would be a guess wearing the
+ * costume of a measurement. Where no entry matches, the half falls back to v1,
+ * and the artefact says which half used what.
+ */
+export function selectBoundingConvention(input: {
+  checkerModelId: string;
+  measured: MeasuredCosts | undefined;
+  primaryModelId: string;
+  profileFamily: string;
+}): {
+  checker: MeasuredCosts['entries'][number] | undefined;
+  convention: 'measured-p90-v2' | 'conservative-v1';
+  primary: MeasuredCosts['entries'][number] | undefined;
+} {
+  const find = (
+    role: 'PRIMARY' | 'CHECKER',
+    modelId: string,
+  ): MeasuredCosts['entries'][number] | undefined =>
+    input.measured?.entries.find(
+      (entry) =>
+        entry.role === role &&
+        entry.modelId === modelId &&
+        entry.profileFamily === input.profileFamily,
+    );
+
+  const primary = find('PRIMARY', input.primaryModelId);
+  const checker = find('CHECKER', input.checkerModelId);
+  return {
+    checker,
+    // The primary is the bulk of the bill: without a measurement for it, the
+    // run is bounded conservatively whatever the checker has.
+    convention: primary ? 'measured-p90-v2' : 'conservative-v1',
+    primary,
   };
 }

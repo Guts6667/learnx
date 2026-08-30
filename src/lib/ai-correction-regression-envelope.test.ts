@@ -4,8 +4,11 @@ import path from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
+import { mkdir } from 'node:fs/promises';
+
 import {
   acquireRunLock,
+  ledgerSpendSince,
   capForRun,
   envelopeState,
   processIsAlive,
@@ -226,5 +229,83 @@ describe('spend envelope', () => {
     );
 
     await expect(readSpendEnvelope(directory)).rejects.toThrow();
+  });
+});
+
+describe('ledger spend since the envelope opened', () => {
+  async function withLedgers(
+    entries: { costs: number[]; name: string }[],
+  ): Promise<string> {
+    const directory = await scratch();
+    for (const entry of entries) {
+      const target = path.join(directory, 'results', entry.name);
+      await mkdir(target, { recursive: true });
+      await writeFile(
+        path.join(target, 'ledger.jsonl'),
+        entry.costs
+          .map((costUsd) => JSON.stringify({ costUsd, status: 'VALID' }))
+          .join('\n'),
+        'utf8',
+      );
+    }
+    return directory;
+  }
+
+  it('sums only the runs at or after the opening instant', async () => {
+    const directory = await withLedgers([
+      { costs: [1.5], name: '2026-08-29T10-00-00-000Z' },
+      { costs: [0.25, 0.25], name: '2026-08-30T10-00-00-000Z' },
+    ]);
+
+    // Directory names are sortable ISO stamps, so the comparison is a string
+    // comparison rather than a parse.
+    const total = await ledgerSpendSince({
+      directory,
+      openedAt: '2026-08-30T00:00:00.000Z',
+    });
+
+    expect(total).toBeCloseTo(0.5, 6);
+  });
+
+  it('reports nothing when no run has happened yet', async () => {
+    expect(
+      await ledgerSpendSince({
+        directory: await scratch(),
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBe(0);
+  });
+
+  it('keeps the sum when an interrupted run left a truncated final line', async () => {
+    const directory = await scratch();
+    const target = path.join(directory, 'results', '2026-08-30T10-00-00-000Z');
+    await mkdir(target, { recursive: true });
+    await writeFile(
+      path.join(target, 'ledger.jsonl'),
+      `${JSON.stringify({ costUsd: 0.4 })}\n{"costUsd":0.3`,
+      'utf8',
+    );
+
+    // A run killed mid-write must not cost the accounting every line before it.
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBeCloseTo(0.4, 6);
+  });
+
+  it('ignores a results directory that never wrote a ledger', async () => {
+    const directory = await scratch();
+    await mkdir(path.join(directory, 'results', '2026-08-30T11-00-00-000Z'), {
+      recursive: true,
+    });
+
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBe(0);
   });
 });

@@ -1,0 +1,227 @@
+[
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-erroneous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-off-topic",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-off-topic",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-off-topic",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-prompt-injection",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-prompt-injection",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-prompt-injection",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "learning-insight",
+    "unitId": "corpus-v1-3/benchmark-reflection-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "concrete-situation",
+    "unitId": "corpus-v1-3/benchmark-reflection-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflective-link",
+    "unitId": "corpus-v1-3/benchmark-reflection-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "learning-insight",
+    "unitId": "corpus-v1-3/benchmark-reflection-partial",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "concrete-situation",
+    "unitId": "corpus-v1-3/benchmark-reflection-partial",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "reflective-link",
+    "unitId": "corpus-v1-3/benchmark-reflection-partial",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "learning-insight",
+    "unitId": "corpus-v1-3/benchmark-reflection-erroneous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "concrete-situation",
+    "unitId": "corpus-v1-3/benchmark-reflection-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflective-link",
+    "unitId": "corpus-v1-3/benchmark-reflection-erroneous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "learning-insight",
+    "unitId": "corpus-v1-3/benchmark-reflection-ambiguous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "concrete-situation",
+    "unitId": "corpus-v1-3/benchmark-reflection-ambiguous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "reflective-link",
+    "unitId": "corpus-v1-3/benchmark-reflection-ambiguous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "learning-insight",
+    "unitId": "corpus-v1-3/benchmark-reflection-off-topic",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "concrete-situation",
+    "unitId": "corpus-v1-3/benchmark-reflection-off-topic",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "reflective-link",
+    "unitId": "corpus-v1-3/benchmark-reflection-off-topic",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "learning-insight",
+    "unitId": "corpus-v1-3/benchmark-reflection-prompt-injection",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "concrete-situation",
+    "unitId": "corpus-v1-3/benchmark-reflection-prompt-injection",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "reflective-link",
+    "unitId": "corpus-v1-3/benchmark-reflection-prompt-injection",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "priority-order",
+    "unitId": "corpus-v1-3/benchmark-practice-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "priority-rationale",
+    "unitId": "corpus-v1-3/benchmark-practice-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "context-use",
+    "unitId": "corpus-v1-3/benchmark-practice-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "priority-order",
+    "unitId": "corpus-v1-3/benchmark-practice-partial",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "priority-rationale",
+    "unitId": "corpus-v1-3/benchmark-practice-partial",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "context-use",
+    "unitId": "corpus-v1-3/benchmark-practice-partial",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "priority-order",
+    "unitId": "corpus-v1-3/benchmark-practice-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "priority-rationale",
+    "unitId": "corpus-v1-3/benchmark-practice-erroneous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "context-use",
+    "unitId": "corpus-v1-3/benchmark-practice-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "priority-order",
+    "unitId": "corpus-v1-3/benchmark-practice-ambiguous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "priority-rationale",
+    "unitId": "corpus-v1-3/benchmark-practice-ambiguous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "context-use",
+    "unitId": "corpus-v1-3/benchmark-practice-ambiguous",
+    "verdict": "AGREED"
+  }
+]
