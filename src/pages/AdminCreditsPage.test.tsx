@@ -22,6 +22,9 @@ describe('AdminCreditsPage', () => {
   it('permet de relancer uniquement la liste des membres après une erreur serveur', async () => {
     let memberAttempts = 0;
     const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/admin/ai-corrections/breaker/events') {
+        return Promise.resolve(jsonResponse({ resource: { events: [] } }));
+      }
       if (path === '/api/admin/ai-corrections/preflight') {
         return Promise.resolve(
           jsonResponse({
@@ -55,6 +58,11 @@ describe('AdminCreditsPage', () => {
                   wrongAtHigh: 0.1,
                 },
                 trippedAt: null,
+                trippedRates: {
+                  checkerDisagreement: null,
+                  unusable: null,
+                  wrongAtHigh: null,
+                },
                 window: { observed: 0, size: 50 },
               },
               checker: { disagreed: 0, unavailable: 0 },
@@ -116,6 +124,9 @@ describe('AdminCreditsPage', () => {
     vi.stubGlobal(
       'fetch',
       vi.fn((path: string) => {
+        if (path === '/api/admin/ai-corrections/breaker/events') {
+          return Promise.resolve(jsonResponse({ resource: { events: [] } }));
+        }
         if (path === '/api/admin/ai-corrections/preflight') {
           return Promise.resolve(
             jsonResponse({
@@ -149,6 +160,11 @@ describe('AdminCreditsPage', () => {
                     wrongAtHigh: 0.1,
                   },
                   trippedAt: null,
+                  trippedRates: {
+                    checkerDisagreement: null,
+                    unusable: null,
+                    wrongAtHigh: null,
+                  },
                   window: { observed: 12, size: 50 },
                 },
                 checker: { disagreed: 2, unavailable: 1 },
@@ -249,6 +265,9 @@ describe('AdminCreditsPage', () => {
           }),
         );
       }
+      if (path === '/api/admin/ai-corrections/breaker/events') {
+        return Promise.resolve(jsonResponse({ resource: { events: [] } }));
+      }
       if (path === '/api/admin/ai-corrections/preflight') {
         return Promise.resolve(
           jsonResponse({
@@ -330,6 +349,9 @@ describe('AdminCreditsPage', () => {
           }),
         );
       }
+      if (path === '/api/admin/ai-corrections/breaker/events') {
+        return Promise.resolve(jsonResponse({ resource: { events: [] } }));
+      }
       if (path === '/api/admin/ai-corrections/preflight') {
         return Promise.resolve(
           jsonResponse({
@@ -398,6 +420,11 @@ describe('AdminCreditsPage', () => {
             wrongAtHigh: 0.1,
           },
           trippedAt: '2026-08-29T14:31:00.000Z',
+          trippedRates: {
+            checkerDisagreement: null,
+            unusable: 0.24,
+            wrongAtHigh: null,
+          },
           window: { observed: 50, size: 50 },
         },
         (init) => posts.push(init),
@@ -416,9 +443,21 @@ describe('AdminCreditsPage', () => {
     expect(
       screen.getByText(/Corrections sans résultat exploitable · suspendu le/),
     ).toBeInTheDocument();
-    // Les taux ne sont pas mesurés quand le coupe-circuit est verrouillé :
-    // l'écran le dit au lieu d'afficher trois zéros.
-    expect(screen.getAllByText('Pas assez de données')).toHaveLength(3);
+    // V4.5-193. L'écran affichait « Pas assez de données » sur les trois
+    // règles dès que le coupe-circuit était verrouillé — précisément au
+    // moment où le chiffre compte. Le serveur ne re-mesure pas une fenêtre
+    // qui a bougé depuis, mais il a gardé le relevé du déclenchement : c'est
+    // lui qu'on affiche, pour la règle qui a déclenché.
+    expect(screen.getByText('24.0 %')).toBeInTheDocument();
+    expect(screen.getAllByText('au déclenchement')).toHaveLength(1);
+    // Les deux autres règles n'ont pas de relevé gelé. « Non mesuré depuis le
+    // déclenchement » et « pas assez de données » ne disent pas la même
+    // chose : la première décrit une mesure suspendue, la seconde une mesure
+    // impossible.
+    expect(
+      screen.getAllByText('non mesuré depuis le déclenchement'),
+    ).toHaveLength(2);
+    expect(screen.queryByText('Pas assez de données')).not.toBeInTheDocument();
 
     // La réouverture ne part pas au premier clic.
     fireEvent.click(
@@ -458,6 +497,11 @@ describe('AdminCreditsPage', () => {
           wrongAtHigh: 0.1,
         },
         trippedAt: null,
+        trippedRates: {
+          checkerDisagreement: null,
+          unusable: null,
+          wrongAtHigh: null,
+        },
         window: { observed: 0, size: 50 },
       }),
     );
@@ -503,6 +547,9 @@ describe('AdminCreditsPage', () => {
       'fetch',
       vi.fn((path: string, init?: RequestInit) => {
         requests.push({ init, path });
+        if (path === '/api/admin/ai-corrections/breaker/events') {
+          return Promise.resolve(jsonResponse({ resource: { events: [] } }));
+        }
         if (path === '/api/admin/ai-corrections/preflight') {
           return Promise.resolve(
             jsonResponse({
@@ -536,6 +583,11 @@ describe('AdminCreditsPage', () => {
                     wrongAtHigh: 0.1,
                   },
                   trippedAt: null,
+                  trippedRates: {
+                    checkerDisagreement: null,
+                    unusable: null,
+                    wrongAtHigh: null,
+                  },
                   window: { observed: 0, size: 50 },
                 },
                 checker: { disagreed: 0, unavailable: 0 },
@@ -688,6 +740,9 @@ describe('AdminCreditsPage', () => {
     };
 
     return vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/admin/ai-corrections/breaker/events') {
+        return Promise.resolve(jsonResponse({ resource: { events: [] } }));
+      }
       if (path === '/api/admin/ai-corrections/preflight') {
         return Promise.resolve(
           jsonResponse({
@@ -721,6 +776,11 @@ describe('AdminCreditsPage', () => {
                   wrongAtHigh: 0.1,
                 },
                 trippedAt: null,
+                trippedRates: {
+                  checkerDisagreement: null,
+                  unusable: null,
+                  wrongAtHigh: null,
+                },
                 window: { observed: 0, size: 50 },
               },
               checker: { disagreed: 0, unavailable: 0 },
@@ -922,5 +982,90 @@ describe('AdminCreditsPage', () => {
     expect(
       screen.queryByRole('button', { name: 'Confirmer le remboursement' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('dit qu’un déclenchement n’a prévenu personne, au lieu de le noter en passant', async () => {
+    // V4.5-193. Le coupe-circuit déclenche de façon durable AVANT que
+    // quiconque soit prévenu : une panne du canal d'alerte ne peut pas
+    // empêcher le verrouillage. La conséquence est qu'un déclenchement peut
+    // être resté muet, et c'est la seule ligne du journal sur laquelle il
+    // reste quelque chose à faire — donc elle est annoncée, pas journalisée.
+    const events = [
+      {
+        actorId: null,
+        actorName: null,
+        alertError: 'SMTP timeout',
+        alertedAt: null,
+        at: '2026-08-29T14:31:00.000Z',
+        id: 'event-1',
+        kind: 'TRIPPED',
+        note: null,
+        rate: 0.24,
+        reason: 'UNUSABLE_RATE',
+        threshold: 0.05,
+        windowSize: 50,
+      },
+      {
+        actorId: 'user-admin',
+        actorName: 'Rayan',
+        alertError: null,
+        alertedAt: null,
+        at: '2026-08-28T09:00:00.000Z',
+        id: 'event-0',
+        kind: 'REOPENED',
+        note: 'Faux positif après incident fournisseur.',
+        rate: null,
+        reason: null,
+        threshold: null,
+        windowSize: null,
+      },
+    ];
+
+    const base = breakerMock({
+      evaluationError: null,
+      rates: { checkerDisagreement: null, unusable: null, wrongAtHigh: null },
+      reason: null,
+      state: 'CLOSED',
+      thresholds: {
+        checkerDisagreement: 0.4,
+        unusable: 0.05,
+        wrongAtHigh: 0.1,
+      },
+      trippedAt: null,
+      trippedRates: {
+        checkerDisagreement: null,
+        unusable: null,
+        wrongAtHigh: null,
+      },
+      window: { observed: 12, size: 50 },
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((path: string, init?: RequestInit) => {
+        if (path === '/api/admin/ai-corrections/breaker/events') {
+          return Promise.resolve(jsonResponse({ resource: { events } }));
+        }
+        return base(path, init);
+      }),
+    );
+
+    render(
+      <AppProviders>
+        <AdminCreditsPage />
+      </AppProviders>,
+    );
+
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent(/Propriétaire NON prévenu/);
+    expect(alert).toHaveTextContent(/SMTP timeout/);
+    // Le déclenchement lui-même reste vrai : l'alerte a échoué, pas le
+    // garde-fou. L'écran doit dire les deux.
+    expect(alert).toHaveTextContent(/Le coupe-circuit a bien déclenché/);
+
+    expect(screen.getByText('24.0 % relevés, seuil 5 %')).toBeInTheDocument();
+    expect(screen.getByText('par Rayan')).toBeInTheDocument();
+    expect(
+      screen.getByText('Faux positif après incident fournisseur.'),
+    ).toBeInTheDocument();
   });
 });

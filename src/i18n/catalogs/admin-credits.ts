@@ -61,6 +61,20 @@ export const frenchAdminCreditsMessages = {
     'Apprenants contredisant un critère annoncé fiable',
   'admin.breaker.reasonUnknown': 'Motif non enregistré',
   'admin.breaker.trippedAt': 'suspendu le {date}',
+  'admin.breaker.atTrip': 'au déclenchement',
+  'admin.breaker.rateNotMeasuredSinceTrip':
+    'non mesuré depuis le déclenchement',
+  'admin.breaker.historyTitle': 'Historique du coupe-circuit',
+  'admin.breaker.historyEmpty':
+    'Aucun déclenchement enregistré. Le coupe-circuit n’a jamais suspendu la correction.',
+  'admin.breaker.historyError': 'L’historique n’a pas pu être chargé.',
+  'admin.breaker.eventTripped': 'Correction suspendue',
+  'admin.breaker.eventReopened': 'Correction rouverte',
+  'admin.breaker.eventRate': '{rate} % relevés, seuil {threshold} %',
+  'admin.breaker.eventActor': 'par {name}',
+  'admin.breaker.eventAlerted': 'Propriétaire prévenu.',
+  'admin.breaker.eventAlertFailed':
+    'Propriétaire NON prévenu : {reason}. Le coupe-circuit a bien déclenché ; l’alerte, elle, n’est pas partie.',
   'admin.breaker.threshold': '(seuil {value} %)',
   'admin.breaker.rateUnknown': 'Pas assez de données',
   'admin.breaker.suspendsAtNextQuote':
@@ -207,6 +221,19 @@ export const englishAdminCreditsMessages = {
     'Learners contradicting a criterion labelled reliable',
   'admin.breaker.reasonUnknown': 'Reason not recorded',
   'admin.breaker.trippedAt': 'suspended on {date}',
+  'admin.breaker.atTrip': 'at the trip',
+  'admin.breaker.rateNotMeasuredSinceTrip': 'not measured since the trip',
+  'admin.breaker.historyTitle': 'Breaker history',
+  'admin.breaker.historyEmpty':
+    'No trip recorded. The breaker has never suspended correction.',
+  'admin.breaker.historyError': 'The history could not be loaded.',
+  'admin.breaker.eventTripped': 'Correction suspended',
+  'admin.breaker.eventReopened': 'Correction reopened',
+  'admin.breaker.eventRate': '{rate}% measured, threshold {threshold}%',
+  'admin.breaker.eventActor': 'by {name}',
+  'admin.breaker.eventAlerted': 'Owner notified.',
+  'admin.breaker.eventAlertFailed':
+    'Owner NOT notified: {reason}. The breaker did trip; the alert did not go out.',
   'admin.breaker.threshold': '(threshold {value} %)',
   'admin.breaker.rateUnknown': 'Not enough data',
   'admin.breaker.suspendsAtNextQuote':

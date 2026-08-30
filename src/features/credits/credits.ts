@@ -4,6 +4,7 @@ import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 import { useObservedQuery } from '@/lib/observed-query';
 import {
+  breakerEventsResponseSchema,
   type BreakerStatus,
   correctionMonitoringResponseSchema,
   correctionPreflightResponseSchema,
@@ -157,6 +158,26 @@ export function useAdminCorrectionMonitoringQuery() {
   );
   return {
     data: result.data?.monitoring,
+    error: result.error,
+    isPending: result.isPending,
+    retry: result.refetch,
+  };
+}
+
+/**
+ * Le journal du coupe-circuit (V4.5-143 côté serveur, branché en V4.5-193).
+ * L'état courant dit qu'un garde-fou est ouvert ; le journal dit quand il a
+ * déclenché, sur quel chiffre, si le propriétaire a été prévenu, et qui a
+ * rouvert la dernière fois.
+ */
+export function useAdminCorrectionBreakerEventsQuery() {
+  const result = useObservedQuery(
+    '/api/admin/ai-corrections/breaker/events',
+    [...adminCreditsKey, 'breaker-events'],
+    breakerEventsResponseSchema,
+  );
+  return {
+    data: result.data?.resource.events,
     error: result.error,
     isPending: result.isPending,
     retry: result.refetch,
