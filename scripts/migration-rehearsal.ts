@@ -108,11 +108,17 @@ function assertQueryableSchema(schema: string): void {
 }
 
 /**
- * A replayed schema is structurally identical to the migrated one but says its
- * own name everywhere PostgreSQL qualifies an object — constraint bodies,
- * column defaults, index definitions. Comparing raw text would report those as
- * differences and drown the real ones, so both sides are rewritten to the same
- * placeholder before comparison.
+ * A replayed schema is structurally identical to the migrated one but qualifies
+ * objects with its own name — and does so asymmetrically. PostgreSQL omits the
+ * qualifier for whatever is on the search_path, so an enum default reads
+ * `'user'::user_role` in `public` and `'user'::ci_migration_replay_x.user_role`
+ * in the replay schema. Substituting a marker for the schema name therefore
+ * normalised only one side and reported 192 identical objects as different.
+ *
+ * Each side has its own qualifier removed instead, leaving both unqualified and
+ * genuinely comparable. This is deliberately schema-relative: a reference that
+ * points at a third schema keeps its qualifier and still shows up as a
+ * difference.
  */
 export function normalizeSchemaReferences(
   definition: string,
@@ -121,8 +127,8 @@ export function normalizeSchemaReferences(
   assertQueryableSchema(schema);
   const escaped = schema.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return definition
-    .replace(new RegExp(`"${escaped}"`, 'g'), `"${schemaPlaceholder}"`)
-    .replace(new RegExp(`\\b${escaped}\\b`, 'g'), schemaPlaceholder);
+    .replace(new RegExp(`"${escaped}"\\.`, 'g'), '')
+    .replace(new RegExp(`\\b${escaped}\\.`, 'g'), '');
 }
 
 export function fingerprintSchemaObjects(
@@ -149,20 +155,27 @@ export function diffSchemaFingerprints(
 ): string[] {
   const inReplayed = new Set(replayed);
   const inMigrated = new Set(migrated);
-  const differences = [
-    ...migrated
-      .filter((line) => !inReplayed.has(line))
-      .map((line) => `- migrated only : ${line}`),
-    ...replayed
-      .filter((line) => !inMigrated.has(line))
-      .map((line) => `+ replayed only : ${line}`),
+  const migratedOnly = migrated
+    .filter((line) => !inReplayed.has(line))
+    .map((line) => `- migrated only : ${line}`);
+  const replayedOnly = replayed
+    .filter((line) => !inMigrated.has(line))
+    .map((line) => `+ replayed only : ${line}`);
+  const total = migratedOnly.length + replayedOnly.length;
+
+  // Both sides must survive truncation. Concatenating and slicing kept only the
+  // first side, so a fully paired difference looked one-sided — which reads as
+  // "the two sides were not read the same way" and sends the reader hunting the
+  // wrong fault. Each side gets half the budget.
+  const half = Math.max(1, Math.floor(limit / 2));
+  const shown = [
+    ...migratedOnly.slice(0, half),
+    ...replayedOnly.slice(0, half),
   ];
-  return differences.length > limit
-    ? [
-        ...differences.slice(0, limit),
-        `... and ${differences.length - limit} further differences`,
-      ]
-    : differences;
+  const hidden = total - shown.length;
+  return hidden > 0
+    ? [...shown, `... and ${hidden} further differences`]
+    : shown;
 }
 
 /**
