@@ -47,7 +47,7 @@ const POOL_PATH = path.resolve(
   'benchmarks/ai-correction/regression/regression-pool.v1.json',
 );
 const POLICY_PATH = path.resolve(
-  'benchmarks/ai-correction/regression/gate-policy.v4.json',
+  'benchmarks/ai-correction/regression/gate-policy.v5.json',
 );
 
 /** Two writing cases with authored hints of both kinds, plus an injection case. */
@@ -409,8 +409,14 @@ describe('regression suite executed offline through the real runner', () => {
     );
     expect(blocking?.kind).toBe('BLOCKING');
     expect(watched?.kind).toBe('WATCHED');
-    // Every declared gate evaluates. Nothing is skipped into a policy error.
-    expect(evaluation.gates).toHaveLength(loadPolicy().gates.length);
+    // Policy v5 declares `checker-false-agree-designed` before the probe that
+    // feeds it exists: the gate is declared ahead of the purchase, on purpose,
+    // and its metric is therefore absent. One declared gate is not evaluated,
+    // and it says so as a policy error rather than passing quietly.
+    expect(evaluation.gates).toHaveLength(loadPolicy().gates.length - 1);
+    expect(evaluation.policyErrors).toContain(
+      'checker-false-agree-designed : la métrique checkerFalseAgreeDesigned est absente du résumé.',
+    );
   });
 
   it('fails the mutation gate when the model ignores the damage', async () => {
@@ -447,12 +453,17 @@ describe('regression suite executed offline through the real runner', () => {
     // checkerAgreementAtHigh.
     expect(metrics.checkerFalseAgreeRate.denominator).toBeGreaterThan(0);
     expect(metrics.checkerFalseAgreeRate.rate).toBe(1);
+    // The measurement still stands and is still reported. Policy v5 stops
+    // gating on it: its denominator counts only the occasions a mutant made the
+    // corrector fail, so it is fed by failures rather than by design, shrinks as
+    // the corrector improves, and stood at 1 on 30 August. The replacement,
+    // `checker-false-agree-designed`, builds its own denominator.
     expect(
       evaluateRegressionGates({
         metrics: withEvidenceHallucination(gateInputs),
         policy: loadPolicy(),
-      }).gates.find((gate) => gate.key === 'checker-false-agree-rate')?.status,
-    ).toBe('FAIL');
+      }).gates.find((gate) => gate.key === 'checker-false-agree-rate')?.kind,
+    ).toBe('REPORTED');
   });
 
   it('detects an appended payload the model repeated, however it surfaced', async () => {

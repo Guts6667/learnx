@@ -24,7 +24,7 @@ import type {
   RegressionRate,
 } from './ai-correction-regression-metrics.js';
 
-export const REGRESSION_GATE_POLICY_VERSION = '4.0.0';
+export const REGRESSION_GATE_POLICY_VERSION = '5.0.0';
 
 /**
  * `BLOCKING` forbids promotion when red. `WATCHED` is reported and reviewed but
@@ -51,6 +51,17 @@ const regressionGateSchema = z
     kind: regressionGateKindSchema,
     /** The metric this gate reads. */
     metric: z.string().trim().min(1),
+    /**
+     * Smallest denominator at which this gate's threshold means anything.
+     *
+     * A rate threshold below 1/n resolves to a whole budget of zero, so the
+     * gate silently becomes "no event at all" on a small sample — which is how
+     * `mutation-direction-violations` came to fail on 1/10 under a 2 % rule,
+     * and `checker-false-agree-rate` on 1/1. Declaring the minimum makes the
+     * sample size a stated requirement rather than something a reader has to
+     * derive from the threshold.
+     */
+    minimumDenominator: z.number().int().positive().optional(),
     threshold: z.number().nonnegative(),
   })
   .strict();
@@ -148,6 +159,18 @@ export function evaluateRegressionGates(input: {
       // event, so it must be declared MAX_COUNT 0 and reviewed as such.
       policyErrors.push(
         `${gate.key} : seuil ${gate.threshold} inférieur à 1/${measured.denominator} ; déclarer un budget entier explicite.`,
+      );
+    }
+
+    if (
+      gate.minimumDenominator !== undefined &&
+      measured.denominator < gate.minimumDenominator
+    ) {
+      // Stated by the policy rather than inferred: the gate declares the
+      // coverage its threshold needs, and a run below it says so instead of
+      // reporting a verdict the sample cannot support.
+      policyErrors.push(
+        `${gate.key} : ${measured.denominator} observations pour un minimum déclaré de ${gate.minimumDenominator} ; le seuil ${gate.threshold} n'est pas énonçable sur cet échantillon.`,
       );
     }
 

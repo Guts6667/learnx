@@ -111,6 +111,69 @@ describe('gate budgets sized to the sample', () => {
     expect(evaluation.promotionEligible).toBe(false);
   });
 
+  it('refuses a verdict below the coverage the policy declared', () => {
+    // Policy v5 states the sample each threshold needs instead of leaving a
+    // reader to derive it. 2 % over 30 mutants still resolves to a whole budget
+    // of zero — n = 30 was proposed and does not make the threshold sayable;
+    // 50 does. The gate passes on the numbers and the run is still refused.
+    const evaluation = evaluateRegressionGates({
+      metrics: {
+        mutationDirectionViolations: { denominator: 30, numerator: 0, rate: 0 },
+      } as never,
+      policy: policy([
+        {
+          comparison: 'MAX_RATE',
+          intent: 'test',
+          key: 'mutation-direction-violations',
+          kind: 'BLOCKING',
+          metric: 'mutationDirectionViolations',
+          minimumDenominator: 50,
+          threshold: 0.02,
+        },
+      ]),
+    });
+
+    expect(evaluation.gates[0]?.status).toBe('PASS');
+    // Two errors, deliberately: the derived one (2 % is finer than 1/30) and
+    // the declared one. The declaration is what a reader can act on — it names
+    // the coverage to buy instead of leaving them to invert a threshold.
+    expect(evaluation.policyErrors).toContain(
+      "mutation-direction-violations : 30 observations pour un minimum déclaré de 50 ; le seuil 0.02 n'est pas énonçable sur cet échantillon.",
+    );
+    expect(evaluation.policyErrors).toHaveLength(2);
+    expect(evaluation.promotionEligible).toBe(false);
+  });
+
+  it('accepts the same gate once the declared coverage is reached', () => {
+    const evaluation = evaluateRegressionGates({
+      metrics: {
+        mutationDirectionViolations: {
+          denominator: 50,
+          numerator: 1,
+          rate: 0.02,
+        },
+      } as never,
+      policy: policy([
+        {
+          comparison: 'MAX_RATE',
+          intent: 'test',
+          key: 'mutation-direction-violations',
+          kind: 'BLOCKING',
+          metric: 'mutationDirectionViolations',
+          minimumDenominator: 50,
+          threshold: 0.02,
+        },
+      ]),
+    });
+
+    // At 50 the budget is a whole 1, so one violation is inside it and the
+    // threshold finally says something the sample can support.
+    expect(evaluation.gates[0]?.budget).toBe(1);
+    expect(evaluation.gates[0]?.status).toBe('PASS');
+    expect(evaluation.policyErrors).toEqual([]);
+    expect(evaluation.promotionEligible).toBe(true);
+  });
+
   it('rejects a blocking rate finer than one observation', () => {
     const evaluation = evaluateRegressionGates({
       metrics: {
