@@ -156,16 +156,55 @@ describe('replayed schema equality', () => {
     ];
   }
 
-  it('rewrites each schema name to the same placeholder', () => {
+  it('removes each side own qualifier so both read unqualified', () => {
     expect(
       normalizeSchemaReferences(
         `REFERENCES ${replaySchema}."Module"(id)`,
         replaySchema,
       ),
-    ).toBe('REFERENCES <schema>."Module"(id)');
+    ).toBe('REFERENCES "Module"(id)');
     expect(
       normalizeSchemaReferences('REFERENCES public."Module"(id)', 'public'),
-    ).toBe('REFERENCES <schema>."Module"(id)');
+    ).toBe('REFERENCES "Module"(id)');
+  });
+
+  // The defect that made 192 identical objects look different on dev.
+  // PostgreSQL omits the qualifier for whatever sits on the search_path, so the
+  // two sides are not merely differently named — they are differently shaped.
+  it('matches an enum default that only one side qualifies', () => {
+    const migrated = fingerprintSchemaObjects(
+      [
+        {
+          kind: 'column',
+          identity: 'access_invitations.assigned_role',
+          definition: "USER-DEFINED nullable=NO default='user'::user_role",
+        },
+      ],
+      'public',
+    );
+    const replayed = fingerprintSchemaObjects(
+      [
+        {
+          kind: 'column',
+          identity: 'access_invitations.assigned_role',
+          definition: `USER-DEFINED nullable=NO default='user'::${replaySchema}.user_role`,
+        },
+      ],
+      replaySchema,
+    );
+    expect(diffSchemaFingerprints(migrated, replayed)).toEqual([]);
+  });
+
+  it('still reports a reference pointing at a third schema', () => {
+    const migrated = fingerprintSchemaObjects(
+      [{ kind: 'column', identity: 'a.b', definition: 'default=other.thing' }],
+      'public',
+    );
+    const replayed = fingerprintSchemaObjects(
+      [{ kind: 'column', identity: 'a.b', definition: 'default=thing' }],
+      replaySchema,
+    );
+    expect(diffSchemaFingerprints(migrated, replayed)).toHaveLength(2);
   });
 
   it('reports no difference when only the schema name differs', () => {
@@ -249,8 +288,37 @@ describe('replayed schema equality', () => {
       'public',
     );
     const differences = diffSchemaFingerprints(migrated, []);
-    expect(differences).toHaveLength(41);
-    expect(differences.at(-1)).toBe('... and 20 further differences');
+    expect(differences).toHaveLength(21);
+    expect(differences.at(-1)).toBe('... and 40 further differences');
+  });
+
+  // Truncation kept only the first side, so a fully paired difference read as
+  // one-sided and pointed the reader at a reading fault that did not exist.
+  it('keeps both sides visible when the diff is truncated', () => {
+    const migrated = fingerprintSchemaObjects(
+      Array.from({ length: 100 }, (_, index) => ({
+        kind: 'column',
+        identity: `Table${index}.value`,
+        definition: 'text nullable=NO',
+      })),
+      'public',
+    );
+    const replayed = fingerprintSchemaObjects(
+      Array.from({ length: 100 }, (_, index) => ({
+        kind: 'column',
+        identity: `Table${index}.value`,
+        definition: 'text nullable=YES',
+      })),
+      replaySchema,
+    );
+    const differences = diffSchemaFingerprints(migrated, replayed);
+    expect(
+      differences.filter((line) => line.startsWith('- migrated only')).length,
+    ).toBeGreaterThan(0);
+    expect(
+      differences.filter((line) => line.startsWith('+ replayed only')).length,
+    ).toBeGreaterThan(0);
+    expect(differences.at(-1)).toContain('further differences');
   });
 });
 
