@@ -45,6 +45,13 @@ interface StripeEnvelope {
    * id elsewhere, which matches nothing and is meant not to.
    */
   objectId: string | null;
+  /**
+   * What a charge was worth and how much of it came back (V4.5-203). Present
+   * only on charge events; `null` everywhere else, and the caller must not read
+   * absence as "nothing was refunded".
+   */
+  chargeAmountMinor: number | null;
+  refundedAmountMinor: number | null;
 }
 
 /**
@@ -82,11 +89,20 @@ export function readStripeEnvelope(rawPayload: string): StripeEnvelope | null {
   const objectId = typeof record.id === 'string' ? record.id : null;
   if (!paymentIntentId && !clientReferenceId && !objectId) return null;
 
+  // Read as they arrive, compared by the caller. A partial refund carries the
+  // same event name as a full one, and only these two numbers separate them.
+  const chargeAmountMinor =
+    typeof record.amount === 'number' ? record.amount : null;
+  const refundedAmountMinor =
+    typeof record.amount_refunded === 'number' ? record.amount_refunded : null;
+
   return {
+    chargeAmountMinor,
     clientReferenceId,
     eventId: id,
     eventType: type,
     objectId,
     paymentIntentId,
+    refundedAmountMinor,
   };
 }

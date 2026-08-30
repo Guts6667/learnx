@@ -28,6 +28,10 @@ enum PaymentEventOutcome {
   OUT_OF_ORDER @map("out_of_order")
   /// Reçu alors que l'encaissement était coupé.
   DISABLED    @map("disabled")
+  /// Remboursement partiel : enregistré, jamais compensé automatiquement
+  /// (V4.5-203). La règle de prorata répond à « tout ce qui reste » et
+  /// reprendrait donc plus de crédits que l'argent rendu.
+  PARTIAL_REFUND @map("partial_refund")
   /// Aucune commande ne correspond : ni `payment_intent`, ni référence.
   UNKNOWN_ORDER @map("unknown_order")
   /// Nom d'événement absent de `STRIPE_EVENT_STATUS` : la table de

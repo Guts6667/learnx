@@ -1,3 +1,4 @@
+import { SYSTEM_ACTOR_ID } from '../system-actor';
 import {
   CreditLedgerEntryType,
   CreditProvenance,
@@ -195,6 +196,8 @@ describe('V4-008 credit projections', () => {
         skip: 2,
         take: 2,
         where: {
+          // The technical account is never a member (V4.5-203).
+          id: { not: SYSTEM_ACTOR_ID },
           OR: [
             {
               displayName: { contains: 'learner', mode: 'insensitive' },

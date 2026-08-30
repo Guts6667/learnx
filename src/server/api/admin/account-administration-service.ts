@@ -1,3 +1,4 @@
+import { SYSTEM_ACTOR_ID } from '../../system-actor.js';
 import {
   AccountStatus,
   AuditAction,
@@ -253,6 +254,10 @@ export function createPrismaAccountAdministrationService(
     async list(filters) {
       const where = {
         accountStatus: filters.status,
+        // The technical account is not a learner and must never be listed as
+        // one, nor be reachable by a role change or an erasure from this page
+        // (V4.5-203).
+        id: { not: SYSTEM_ACTOR_ID },
         OR: filters.search
           ? [
               {

@@ -33,6 +33,7 @@ function build(
         ? { id: 'order-1', status: 'PENDING' as const }
         : options.order,
     ),
+    compensateRefund: vi.fn(async () => true),
     recordEvent: vi.fn(async (input: Record<string, unknown>) => {
       recorded.push(input);
       return options.stored ?? true;
@@ -342,13 +343,39 @@ describe('résolution d’une commande à travers le cycle de vie (V4.5-195)', (
     const result = await run(
       harness,
       JSON.stringify({
-        data: { object: { payment_intent: 'pi_test_1' } },
+        data: {
+          object: {
+            amount: 2000,
+            amount_refunded: 2000,
+            payment_intent: 'pi_test_1',
+          },
+        },
         id: 'evt_bare',
         type: 'charge.refunded',
       }),
     );
 
     expect(result).toMatchObject({ kind: 'APPLIED' });
+  });
+
+  it('ne compense pas un remboursement dont on ignore les montants', async () => {
+    // Unknown amounts read as *not* full, deliberately (V4.5-203). Not
+    // compensating leaves a person to settle it; compensating wrongly takes
+    // credits the learner still paid for, and the ledger is never rewritten.
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+
+    const result = await run(
+      harness,
+      JSON.stringify({
+        data: { object: { payment_intent: 'pi_test_1' } },
+        id: 'evt_bare_amounts',
+        type: 'charge.refunded',
+      }),
+    );
+
+    expect(result).toMatchObject({ kind: 'PARTIAL_REFUND' });
+    expect(harness.ports.compensateRefund).not.toHaveBeenCalled();
+    expect(harness.recorded[0]).toMatchObject({ outcome: 'PARTIAL_REFUND' });
   });
 
   it('refuse une enveloppe sans aucun des deux', async () => {
@@ -366,5 +393,75 @@ describe('résolution d’une commande à travers le cycle de vie (V4.5-195)', (
     // Guessing here would attach a refund to the wrong order.
     expect(result).toMatchObject({ kind: 'REJECTED' });
     expect(harness.recorded).toEqual([]);
+  });
+});
+
+describe('remboursement émis chez le fournisseur (V4.5-203)', () => {
+  function refundPayload(overrides: Record<string, unknown> = {}) {
+    return JSON.stringify({
+      data: {
+        object: {
+          amount: 2000,
+          amount_refunded: 2000,
+          payment_intent: 'pi_test_1',
+          ...overrides,
+        },
+      },
+      id: 'evt_refund_1',
+      type: 'charge.refunded',
+    });
+  }
+
+  it('compense un remboursement complet, sans passer par applyTransition', async () => {
+    // The compensating entry is the point, not the status change. The refund
+    // service writes both, conditionally, so a redelivery settles nothing
+    // twice.
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+
+    await expect(run(harness, refundPayload())).resolves.toMatchObject({
+      attributed: false,
+      kind: 'APPLIED',
+      status: 'REFUNDED',
+    });
+    expect(harness.ports.compensateRefund).toHaveBeenCalledWith({
+      orderId: 'order-1',
+    });
+    expect(harness.applied).toEqual([]);
+  });
+
+  it('enregistre un remboursement partiel et n’applique rien', async () => {
+    // `voluntaryRefundMinor` answers "everything unspent". On 5 € of a 20 €
+    // order it would reclaim every remaining credit and book a refund larger
+    // than the money that left, so a partial refund is recorded and left to a
+    // person.
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+
+    await expect(
+      run(harness, refundPayload({ amount_refunded: 500 })),
+    ).resolves.toMatchObject({ kind: 'PARTIAL_REFUND' });
+    expect(harness.ports.compensateRefund).not.toHaveBeenCalled();
+    expect(harness.applied).toEqual([]);
+  });
+
+  it('consigne le remboursement partiel sous son propre nom', async () => {
+    // Not `applied`, which would be false, and not `out_of_order`, which would
+    // dress the one case needing a human as the harmless one (V4.5-198).
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+
+    await run(harness, refundPayload({ amount_refunded: 500 }));
+
+    expect(harness.recorded[0]).toMatchObject({
+      eventType: 'charge.refunded',
+      outcome: 'PARTIAL_REFUND',
+    });
+  });
+
+  it('ne compense pas deux fois quand la commande était déjà réglée', async () => {
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+    harness.ports.compensateRefund.mockResolvedValue(false);
+
+    await expect(run(harness, refundPayload())).resolves.toMatchObject({
+      kind: 'OUT_OF_ORDER',
+    });
   });
 });

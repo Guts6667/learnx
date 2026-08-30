@@ -1,3 +1,4 @@
+import { SYSTEM_ACTOR_ID } from '../../system-actor.js';
 import {
   AccountStatus,
   AuditAction,
@@ -65,6 +66,12 @@ export function createAccountErasureService(client: PrismaClient) {
           where: { id: input.userId },
         });
         if (!existing) return { kind: 'NOT_FOUND' } as const;
+        // The technical account is not a person and has no right to erasure to
+        // exercise. Pseudonymising it would break the audit trail of every
+        // refund it ever recorded, for nobody's benefit (V4.5-203).
+        if (input.userId === SYSTEM_ACTOR_ID) {
+          return { kind: 'NOT_FOUND' } as const;
+        }
         // Irreversible, so repeating it is a no-op rather than a second
         // erasure that would overwrite the first audit trail.
         if (existing.accountStatus === AccountStatus.PSEUDONYMISED) {

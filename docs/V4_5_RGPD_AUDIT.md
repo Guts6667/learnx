@@ -180,6 +180,33 @@ et **aucun parcours de suppression de compte n'existe** dans le code serveur
   pseudonymisation. Une demande d'effacement ne peut pas se voir répondre
   « dans trente jours ».
 
+### Compte technique (V4.5-203)
+
+Une ligne de `users` n'est pas une personne :
+`00000000-0000-4000-8000-000000000001`, `system@accounts.invalid`, affichée
+« LearnX (système) ». Elle existe parce que `audit_events.actor_user_id` n'est
+pas nullable et référence `users` : un remboursement émis depuis le tableau de
+bord du fournisseur n'a aucun auteur humain, et nommer l'apprenant serait faux
+— il n'a rien fait.
+
+Ce que ce compte est, et ce qu'il n'est pas :
+
+- **il ne peut pas se connecter** : son statut est `suspended`, et toute
+  recherche de session exige `active` — la garantie est celle qui existait
+  déjà, pas une promesse ajoutée pour l'occasion ;
+- **il n'apparaît ni dans la liste des comptes ni dans celle des membres
+  crédités**, exclu par identifiant dans les deux requêtes ;
+- **il ne peut pas être pseudonymisé** : le service d'effacement le refuse.
+  Il n'a pas de droit à l'effacement à exercer, et le pseudonymiser détruirait
+  la piste d'audit des remboursements qu'il a enregistrés ;
+- **il ne contient aucune donnée personnelle** : ni e-mail routable, ni nom de
+  personne, ni empreinte de mot de passe valide.
+
+Le registre de crédits n'a pas besoin de lui : `credit_ledger_entries
+.actor_user_id` est déjà nullable, donc une écriture compensatoire automatique
+dit simplement qu'aucun humain n'a agi. Ce compte n'existe que pour la piste
+d'audit, qui ne sait pas le dire.
+
 ## 5. Information et consentement — écart principal
 
 ADR_003 §7.4 exige, avant confirmation : IA sans validation humaine ;
