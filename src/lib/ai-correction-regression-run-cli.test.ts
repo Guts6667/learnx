@@ -526,7 +526,19 @@ describe('--run-pool', () => {
       path.join(outcome.resultsDirectory, 'ledger.jsonl'),
       'utf8',
     );
-    expect(ledger.trim().split('\n')).toHaveLength(outcome.attempts.length);
+    // One line per primary attempt, plus the verifier's own priced calls: the
+    // ledger is the run's bill, and the run pays two models. It used to hold
+    // only the primary, which is how the envelope came to undercount.
+    const ledgerLines = ledger
+      .trim()
+      .split('\n')
+      .map((line) => JSON.parse(line) as { role: string });
+    expect(ledgerLines.filter((line) => line.role === 'PRIMARY')).toHaveLength(
+      outcome.attempts.length,
+    );
+    expect(
+      ledgerLines.filter((line) => line.role === 'CHECKER').length,
+    ).toBeGreaterThan(0);
   });
 
   it('reports a green run as promotion-eligible only once every gate is wired', async () => {
@@ -855,6 +867,49 @@ describe('the repetition pass dispatches at its offset', () => {
     // above it. The default 5 s is a limit on this file's fast unit tests, not
     // a budget this one was ever inside.
   }, 60_000);
+});
+
+describe('the ledger carries both models (V4.5-127)', () => {
+  it('writes the verifier\u2019s priced calls beside the primary\u2019s', async () => {
+    // The verifier reconciled into the cap and reached no artefact the envelope
+    // reads. `cost-reconciliation.json` said 5.4986 USD where `ledger.jsonl`
+    // summed 5.3080: the 0.1906 difference was the verifier, tracked nowhere
+    // the 14 USD envelope could see it.
+    const directory = await scratchRegressionDirectory();
+    const outcome = await runRegressionPool({
+      arguments: EXECUTING_ARGUMENTS,
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T09:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    const lines = (
+      await readFile(
+        path.join(outcome.resultsDirectory, 'ledger.jsonl'),
+        'utf8',
+      )
+    )
+      .split('\n')
+      .filter((line) => line.trim())
+      .map((line) => JSON.parse(line) as { costUsd: number; role: string });
+
+    const checker = lines.filter((line) => line.role === 'CHECKER');
+    expect(checker.length).toBeGreaterThan(0);
+    expect(lines.filter((line) => line.role === 'PRIMARY').length).toBe(
+      outcome.attempts.length,
+    );
+    // And the file now sums to what the run actually paid.
+    const ledgerTotal = lines.reduce((total, line) => total + line.costUsd, 0);
+    const primaryTotal = outcome.attempts.reduce(
+      (total, attempt) => total + (attempt.usage?.actualCostUsd ?? 0),
+      0,
+    );
+    expect(ledgerTotal).toBeGreaterThan(primaryTotal);
+  });
 });
 
 describe('overlapping passes carry a resumed attempt once', () => {

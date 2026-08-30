@@ -274,23 +274,41 @@ export async function ledgerSpendSince(input: {
  * Identity of the provider call a ledger entry charges for, or null when the
  * entry does not name one.
  *
- * Serialised with sorted keys, so key order in a file cannot make one charge
- * look like two.
+ * Built from the identifying fields rather than the whole record, so adding a
+ * field to the ledger cannot make one charge look like two. That is not
+ * hypothetical: writing the verifier's calls into the ledger added a `role` to
+ * every line, and a whole-record key would have stopped matching the entries a
+ * resumed run inherits — reinstating the double count it was written to stop.
+ *
+ * Cost and latency stay in the key. The 24 cells left by the repetition-offset
+ * defect carry two attempts both numbered 1, and they are two real charges.
  */
 function ledgerEntryIdentity(entry: Record<string, unknown>): string | null {
+  const cost = entry.costUsd;
+  if (typeof cost !== 'number') return null;
+  const latency = typeof entry.latencyMs === 'number' ? entry.latencyMs : null;
+
+  if (entry.role === 'CHECKER' || typeof entry.unitId === 'string') {
+    if (typeof entry.unitId !== 'string') return null;
+    const call = typeof entry.call === 'number' ? entry.call : null;
+    return JSON.stringify(['CHECKER', entry.unitId, call, cost, latency]);
+  }
+
   const named =
     typeof entry.candidateId === 'string' &&
     typeof entry.caseId === 'string' &&
     typeof entry.repetition === 'number' &&
     typeof entry.attempt === 'number';
   if (!named) return null;
-  return JSON.stringify(
-    Object.fromEntries(
-      Object.entries(entry).sort(([left], [right]) =>
-        left.localeCompare(right),
-      ),
-    ),
-  );
+  return JSON.stringify([
+    'PRIMARY',
+    entry.candidateId,
+    entry.caseId,
+    entry.repetition,
+    entry.attempt,
+    cost,
+    latency,
+  ]);
 }
 
 /** Reads the recorded envelope, if one has been opened. */

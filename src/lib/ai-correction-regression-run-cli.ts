@@ -501,25 +501,52 @@ async function readProviderUsageUsd(
 }
 
 /** Serialises attempts as the run's append-only ledger, one JSON per line. */
-export function renderLedger(attempts: BenchmarkAttempt[]): string {
-  return attempts
-    .map((attempt) =>
+/** One verifier call, priced. */
+export type CheckerLedgerEntry = {
+  /** Position in this run's sequence of verifier calls, so two calls on the
+   * same unit at the same price stay two charges. */
+  call: number;
+  costUsd: number;
+  modelId: string;
+  unitId: string;
+};
+
+export function renderLedger(
+  attempts: BenchmarkAttempt[],
+  checkerCalls: CheckerLedgerEntry[] = [],
+): string {
+  const lines = attempts.map((attempt) =>
+    JSON.stringify({
+      attempt: attempt.attempt,
+      candidateId: attempt.candidateId,
+      caseId: attempt.caseId,
+      costUsd: attempt.usage?.actualCostUsd ?? null,
+      costSource: attempt.usage?.costSource ?? null,
+      errorCode: attempt.errorCode ?? null,
+      latencyMs: attempt.latencyMs,
+      modelId: attempt.modelId,
+      providerRoute: attempt.providerRoute ?? null,
+      repetition: attempt.repetition,
+      role: 'PRIMARY',
+      status: attempt.status,
+    }),
+  );
+  // The verifier's calls belong in the same file as the primary's. They were
+  // reconciled into the cap and then written nowhere the envelope could read,
+  // so the envelope's total was the primary's bill while the run's was both.
+  for (const call of checkerCalls) {
+    lines.push(
       JSON.stringify({
-        attempt: attempt.attempt,
-        candidateId: attempt.candidateId,
-        caseId: attempt.caseId,
-        costUsd: attempt.usage?.actualCostUsd ?? null,
-        costSource: attempt.usage?.costSource ?? null,
-        errorCode: attempt.errorCode ?? null,
-        latencyMs: attempt.latencyMs,
-        modelId: attempt.modelId,
-        providerRoute: attempt.providerRoute ?? null,
-        repetition: attempt.repetition,
-        status: attempt.status,
+        call: call.call,
+        costSource: 'ACTUAL',
+        costUsd: call.costUsd,
+        modelId: call.modelId,
+        role: 'CHECKER',
+        unitId: call.unitId,
       }),
-    )
-    .join('\n')
-    .concat('\n');
+    );
+  }
+  return lines.join('\n').concat('\n');
 }
 
 /**
@@ -1034,6 +1061,8 @@ export async function runRegressionPool(input: {
 
   /** Verifier calls that reported no cost; reported, never fatal. */
   const unreconciledChecker: string[] = [];
+  /** Verifier calls that reported one, so the ledger carries both models. */
+  const checkerCalls: CheckerLedgerEntry[] = [];
 
   // One guard across every pass: the cap is on the run, not on each slice.
   const guard = new SupplierBudgetGuard(supplierCostCapUsd);
@@ -1087,7 +1116,7 @@ export async function runRegressionPool(input: {
       fileName: 'attempts.json',
     });
     await writeRunArtifact({
-      content: renderLedger([...attempts, ...passAttempts]),
+      content: renderLedger([...attempts, ...passAttempts], checkerCalls),
       directory: resultsDirectory,
       fileName: 'ledger.jsonl',
     });
@@ -1148,6 +1177,13 @@ export async function runRegressionPool(input: {
     budget: guard,
     ...(input.checker ? { checker: input.checker } : {}),
     familyScientificallyValidated: true,
+    onCheckerCost: (entry) =>
+      checkerCalls.push({
+        call: checkerCalls.length + 1,
+        costUsd: entry.costUsd,
+        modelId: input.identities.checkerModelId,
+        unitId: entry.unitId,
+      }),
     onUnreconciledChecker: (unitId) => unreconciledChecker.push(unitId),
     onVerdicts: persistVerdicts,
     persistedVerdicts: verdicts,
@@ -1267,7 +1303,7 @@ export async function runRegressionPool(input: {
     fileName: 'cost-reconciliation.json',
   });
   await writeRunArtifact({
-    content: renderLedger(attempts),
+    content: renderLedger(attempts, checkerCalls),
     directory: resultsDirectory,
     fileName: 'ledger.jsonl',
   });

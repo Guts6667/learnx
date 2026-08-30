@@ -359,6 +359,73 @@ describe('ledger spend since the envelope opened', () => {
     ).toBeCloseTo(0.05, 6);
   });
 
+  it('still matches a carried-over call after the ledger gains a field', async () => {
+    // Writing the verifier's calls into the ledger added `role` to every line.
+    // A whole-record key would have stopped matching the entries a resumed run
+    // inherits from a directory written before the change, and the envelope
+    // would have charged them a second time — the exact defect the dedupe was
+    // written to stop, reintroduced by a field.
+    const directory = await scratch();
+    const before = {
+      attempt: 1,
+      candidateId: 'primary',
+      caseId: 'case-a',
+      costSource: 'ACTUAL',
+      costUsd: 2,
+      latencyMs: 1200,
+      repetition: 1,
+    };
+    const after = { ...before, role: 'PRIMARY', status: 'VALID' };
+    for (const [name, entry] of [
+      ['2026-08-30T00-00-00-000Z', before],
+      ['2026-08-30T14-00-00-000Z', after],
+    ] as const) {
+      const target = path.join(directory, 'results', name);
+      await mkdir(target, { recursive: true });
+      await writeFile(
+        path.join(target, 'ledger.jsonl'),
+        `${JSON.stringify(entry)}\n`,
+        'utf8',
+      );
+    }
+
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-29T00:00:00.000Z',
+      }),
+    ).toBeCloseTo(2, 6);
+  });
+
+  it('counts a verifier call, and counts it once', async () => {
+    // The verifier's spend reconciled into the cap and reached no artefact the
+    // envelope reads, so the envelope tracked the primary's bill while the run
+    // paid both. 0.1906 USD unrecorded on the 30 August top-up.
+    const directory = await scratch();
+    const target = path.join(directory, 'results', '2026-08-30T10-00-00-000Z');
+    await mkdir(target, { recursive: true });
+    const call = {
+      call: 1,
+      costSource: 'ACTUAL',
+      costUsd: 0.0012,
+      modelId: 'mistralai/mistral-medium-3-5',
+      role: 'CHECKER',
+      unitId: 'unit-a',
+    };
+    await writeFile(
+      path.join(target, 'ledger.jsonl'),
+      `${JSON.stringify(call)}\n${JSON.stringify(call)}\n${JSON.stringify({ ...call, unitId: 'unit-b' })}\n`,
+      'utf8',
+    );
+
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBeCloseTo(0.0024, 6);
+  });
+
   it('ignores a results directory that never wrote a ledger', async () => {
     const directory = await scratch();
     await mkdir(path.join(directory, 'results', '2026-08-30T11-00-00-000Z'), {
