@@ -10,6 +10,7 @@ import {
   normalizeLoggedPath,
   reportUnexpectedError,
 } from './_lib/error-reporting.js';
+import { captureUnexpectedError } from './_lib/sentry.js';
 import { authApp } from './auth/app.js';
 import { healthApp } from './health/app.js';
 import { catalogApp } from './catalog/app.js';
@@ -38,7 +39,7 @@ function createApiApp() {
     context.header('Cache-Control', 'private, no-store');
   });
 
-  app.onError((error, context) => {
+  app.onError(async (error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
     }
@@ -52,11 +53,16 @@ function createApiApp() {
     // What is logged is the error's own shape, never the request: no body, no
     // headers, no query string, no session. A stack can name a file and a line;
     // it must not name a person.
-    reportUnexpectedError(error, {
+    const event = reportUnexpectedError(error, {
       method: context.req.method,
       path: normalizeLoggedPath(context.req.url),
       requestId: context.res.headers.get('X-Request-Id'),
     });
+
+    // Awaited, not fired and forgotten: a serverless invocation is frozen the
+    // moment it answers, so an unflushed event never leaves. It is bounded and
+    // it cannot reject, so the caller still gets its 500 either way.
+    await captureUnexpectedError(error, event);
 
     return context.json(
       toApiErrorBody(
