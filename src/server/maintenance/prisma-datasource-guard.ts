@@ -23,6 +23,38 @@ function hostOf(url: string | undefined): string | null {
   }
 }
 
+/**
+ * The same Neon endpoint is reachable under two hostnames, and a correct
+ * configuration uses both at once: `DATABASE_URL` goes through the connection
+ * pooler, `DIRECT_URL` bypasses it, because migrations cannot run pooled. Neon
+ * spells the difference as a `-pooler` suffix on the first label —
+ * `ep-bold-rain-as6nh8m7-pooler.c-4.eu-central-1.aws.neon.tech` against
+ * `ep-bold-rain-as6nh8m7.c-4.eu-central-1.aws.neon.tech`.
+ *
+ * Comparing raw hostnames therefore rejected the recommended setup as if the
+ * two URLs named different databases, and every Vercel build died at
+ * `prisma generate`.
+ *
+ * What the guard means to detect is two different *databases*. For a Neon host
+ * the endpoint id in the first label is that identity, and it is the only part
+ * worth comparing: the labels after it also differ between spellings of the
+ * same endpoint — `c-4` appears on some and not on others — so comparing the
+ * whole hostname would still refuse a legitimate pair.
+ *
+ * Anything that is not a Neon endpoint is compared whole, unchanged. Reducing
+ * every host to its first label would make `db.example.com` and
+ * `db.other.com` look like one database, which is the opposite of the point.
+ */
+function endpointIdentityOf(url: string | undefined): string | null {
+  const host = hostOf(url);
+  if (!host) return null;
+
+  const [first] = host.split('.');
+  if (!first.startsWith('ep-')) return host;
+
+  return first.endsWith('-pooler') ? first.slice(0, -'-pooler'.length) : first;
+}
+
 export function resolveDatasourceUrl(input: {
   /** True only for a deliberate production deploy. */
   allowProtected: boolean;
@@ -71,7 +103,14 @@ export function resolveDatasourceUrl(input: {
     );
   }
 
-  if (directHost && databaseHost && directHost !== databaseHost) {
+  const directEndpoint = endpointIdentityOf(direct);
+  const databaseEndpoint = endpointIdentityOf(database);
+
+  if (
+    directEndpoint &&
+    databaseEndpoint &&
+    directEndpoint !== databaseEndpoint
+  ) {
     throw new Error(
       [
         'Refus : DATABASE_URL et DIRECT_URL désignent deux hôtes différents.',

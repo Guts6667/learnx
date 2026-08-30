@@ -103,6 +103,102 @@ describe('resolveDatasourceUrl', () => {
     ).toBe(PREVIEW);
   });
 
+  // Endpoint identity, the matrix. Neon exposes one endpoint under two
+  // hostnames and a correct configuration uses both: DATABASE_URL pooled,
+  // DIRECT_URL not, because a migration cannot run pooled.
+  describe('identité d’endpoint', () => {
+    // (e) The exact strings Vercel passed to the build that failed on
+    // 30 August 2026, read from its log. Hostnames only.
+    const PREVIEW_POOLED =
+      'postgresql://u:p@ep-bold-rain-as6nh8m7-pooler.c-4.eu-central-1.aws.neon.tech/neondb';
+    const PREVIEW_DIRECT =
+      'postgresql://u:p@ep-bold-rain-as6nh8m7.c-4.eu-central-1.aws.neon.tech/neondb';
+    // Read from the production build log of the same day.
+    const PRODUCTION_DIRECT =
+      'postgresql://u:p@ep-rapid-brook-asq9rq6r.c-4.eu-central-1.aws.neon.tech/neondb';
+
+    it('(a) accepte le jumeau poolé/direct — chaînes Vercel réelles', () => {
+      expect(
+        resolve({
+          merged: {
+            DATABASE_URL: PREVIEW_POOLED,
+            DIRECT_URL: PREVIEW_DIRECT,
+          },
+        }),
+      ).toBe(PREVIEW_DIRECT);
+    });
+
+    it('(a bis) accepte le jumeau quand `c-4` n’est présent que d’un côté', () => {
+      // The labels after the endpoint id are not a pooling marker: some Neon
+      // hosts carry `c-4` and others do not, so comparing whole hostnames
+      // would still refuse a legitimate pair.
+      expect(
+        resolve({
+          merged: {
+            DATABASE_URL:
+              'postgresql://u:p@ep-bold-rain-as6nh8m7-pooler.c-4.eu-central-1.aws.neon.tech/neondb',
+            DIRECT_URL:
+              'postgresql://u:p@ep-bold-rain-as6nh8m7.eu-central-1.aws.neon.tech/neondb',
+          },
+        }),
+      ).toContain('ep-bold-rain-as6nh8m7.eu-central-1');
+    });
+
+    it('(b) refuse deux endpoints différents, message inchangé', () => {
+      expect(() =>
+        resolve({
+          merged: {
+            DATABASE_URL: PREVIEW_POOLED,
+            DIRECT_URL: PRODUCTION_DIRECT,
+          },
+        }),
+      ).toThrow(/deux hôtes différents/);
+    });
+
+    it('(c) refuse l’endpoint protégé via son alias poolé, sans le drapeau', () => {
+      expect(() =>
+        resolve({
+          merged: {
+            DATABASE_URL:
+              'postgresql://u:p@ep-rapid-brook-asq9rq6r-pooler.c-4.eu-central-1.aws.neon.tech/neondb',
+          },
+        }),
+      ).toThrow(/hôte protégé/);
+    });
+
+    it('(c bis) refuse l’endpoint protégé sous son nom direct', () => {
+      expect(() =>
+        resolve({ merged: { DATABASE_URL: PRODUCTION_DIRECT } }),
+      ).toThrow(/hôte protégé/);
+    });
+
+    it('(d) garde le refus fichier-vs-commande sur un jumeau poolé/direct', () => {
+      // The relaxation must not reach the incident's own shape. Same endpoint
+      // this time, so only the provenance rule can catch it — and it must.
+      expect(() =>
+        resolve({
+          fromProcess: { DATABASE_URL: PREVIEW_POOLED },
+          merged: {
+            DATABASE_URL: PREVIEW_POOLED,
+            DIRECT_URL: PREVIEW_DIRECT,
+          },
+        }),
+      ).toThrow(/DIRECT_URL vient d’un fichier/);
+    });
+
+    it('ne réduit pas un hôte non-Neon à son premier label', () => {
+      // Reducing every host to its first label would make these one database.
+      expect(() =>
+        resolve({
+          merged: {
+            DATABASE_URL: 'postgresql://u:p@db.example.com/learnx',
+            DIRECT_URL: 'postgresql://u:p@db.other.com/learnx',
+          },
+        }),
+      ).toThrow(/deux hôtes différents/);
+    });
+  });
+
   it('refuse quand aucune cible n’est donnée et qu’il n’y a pas de repli', () => {
     expect(() => resolve({})).toThrow(/Aucune base cible/);
   });
