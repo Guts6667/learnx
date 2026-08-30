@@ -151,9 +151,16 @@ produit chacun un déploiement, et les previews qui comptent — `dev`, et la
 passe de paiement — n'ont plus pu se construire. Le volume vient des branches
 de travail ; la valeur est sur la ligne de promotion.
 
-Seules `dev`, `staging` et `main` déclenchent donc un build, via l'« Ignored
-Build Step » de Vercel. Un déploiement de production construit toujours, quelle
-que soit la branche.
+**Aucune branche ne construit d'elle-même.** Un build a lieu dans deux cas
+seulement : le déploiement est une production, ou le message de commit contient
+`[deploy]`. Le nom de la branche n'entre plus dans la règle — ni `dev`, ni
+`staging`, ni `main`.
+
+La version précédente listait ces trois branches. Elle a été remplacée le
+30 août 2026 parce que la ligne de promotion elle-même produisait plus de
+déploiements que le quota ne pouvait en absorber. Le marqueur déplace la
+décision là où l'information se trouve : la personne qui fusionne sait si le
+résultat doit être servi quelque part, la branche ne le sait pas.
 
 **La règle vit dans le réglage du projet Vercel**, Settings → Git → Ignored
 Build Step → Custom, et nulle part ailleurs. C'est la seule source de vérité :
@@ -170,16 +177,54 @@ les vieilles branches de travail qu'il devait arrêter. Un réglage de projet n'
 pas cet angle mort : il s'applique à toutes les branches, y compris celles
 créées avant lui, parce qu'aucune branche ne le transporte.
 
-Une branche de travail qui a réellement besoin d'un preview le demande en
-mettant `[preview]` dans son message de commit. L'échappatoire vit ainsi dans
-le commit qui en a besoin, et non dans un réglage que quelqu'un devra penser à
-remettre.
+**Le marqueur est cherché dans le message de commit entier**, corps compris. Un
+commit qui *parle* du marqueur le déclenche donc, et c'est arrivé dès le premier
+jour de la règle précédente : un commit qui documentait `[pre` + `view]` s'est
+inscrit lui-même à la construction. Écrire le marqueur dans un fichier est sans
+effet ; l'écrire dans un message de commit est une demande de déploiement.
 
-Les checks GitHub sont inchangés : ne pas construire de preview ne retire ni
-Quality, ni Integration, ni le gate visuel.
+Les checks GitHub sont inchangés : ne pas construire ne retire ni Quality, ni
+Integration, ni le gate visuel.
 
 Rappel de polarité, qui se trompe facilement : dans un « Ignored Build Step »,
 sortir **1** signifie « construire » et sortir **0** signifie « ignorer ».
+
+## Migrations appliquées par un build
+
+`pnpm build:vercel` appelle `pnpm vercel:migrate`, qui décide seul s'il lance
+`prisma migrate deploy`. La décision est dans
+`src/server/maintenance/vercel-migrate.ts` et elle est testée.
+
+Deux cas migrent, et deux seulement :
+
+| `VERCEL_ENV` | `VERCEL_GIT_COMMIT_REF` | |
+|---|---|---|
+| `production` | n'importe laquelle | migre |
+| `preview` | `dev` | migre |
+| tout le reste | | ignore, en disant ce qu'il a vu |
+
+Le second cas a été ajouté le 30 août 2026 (V4.5-200). Auparavant seule la
+production migrait — ce qui était juste au moment où ce fut écrit, puisque cela
+empêchait chaque preview de migrer une base partagée — mais la branche Neon
+`preview` dérivait alors du schéma. Un renvoi Stripe a répondu 500 parce que la
+migration 195 n'y était jamais arrivée : la colonne existait dans le dépôt et
+pas dans la base à laquelle le preview parlait.
+
+Les **deux** conditions sont exigées, et non l'une ou l'autre. `VERCEL_ENV` seul
+laisserait un déploiement de production construit depuis `dev` emprunter le
+chemin du preview le jour où quelqu'un change la branche de production. Le ref
+seul ferait migrer depuis n'importe quel environnement se trouvant sur `dev`.
+
+Une branche de travail ne migre jamais. Deux branches portant des migrations
+différentes les appliqueraient à la même base dans l'ordre où elles se
+construisent, ce qui est un ordre que personne ne choisit.
+
+Le script **refuse de tourner à côté d'un `.env`**, avant même de regarder
+l'environnement. `prisma.config.ts` résout `DIRECT_URL` avant `DATABASE_URL`,
+donc un fichier posé à côté de la commande peut décider de la cible pendant que
+la commande semble la nommer. C'est le mécanisme de l'effacement du 30 août
+(V4.5-192). Un build Vercel n'a jamais de tel fichier, donc ce refus n'y coûte
+rien ; il protège quiconque lance le script à la main.
 
 ## Gate visuel : ratio et plancher absolu
 
