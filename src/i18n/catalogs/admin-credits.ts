@@ -97,6 +97,55 @@ export const frenchAdminCreditsMessages = {
   'admin.credits.preflight.READY': 'Correction configurée et ouverte',
   'admin.credits.preflightIdentity':
     'Environnement {environment} · identité {identity}',
+  'admin.refunds.section': 'Commandes et remboursements',
+  'admin.refunds.empty': 'Aucune commande',
+  'admin.refunds.emptyHelp':
+    'Ce membre n’a encore acheté aucun pack de crédits.',
+  'admin.refunds.ordersError': 'Les commandes n’ont pas pu être chargées.',
+  'admin.refunds.pagination': 'Page {page} sur {totalPages}',
+  'admin.refunds.refundAction': 'Rembourser',
+  'admin.refunds.refundedCredits': '{credits} crédits repris',
+  'admin.refunds.writtenOffCredits': '{credits} crédits non repris',
+  'admin.refunds.previewTitle': 'Remboursement volontaire',
+  'admin.refunds.previewError':
+    'Le calcul du remboursement n’a pas pu être chargé.',
+  'admin.refunds.reclaimed': 'Crédits repris',
+  'admin.refunds.amount': 'Montant remboursé',
+  'admin.refunds.projectedWriteOff': 'Crédits déjà consommés, non repris',
+  'admin.refunds.noteLabel': 'Note facultative',
+  'admin.refunds.noteHelp':
+    'Elle est conservée au journal d’audit avec votre nom : c’est le seul endroit où « pourquoi » subsiste.',
+  'admin.refunds.confirm': 'Confirmer le remboursement',
+  'admin.refunds.audit':
+    'Le montant est calculé par le serveur au prorata des crédits non consommés. Il ne peut pas être saisi.',
+  'admin.refunds.refundError':
+    'Le remboursement n’a pas pu être effectué. Rien n’a été débité.',
+  'admin.refunds.conflictStale':
+    'Le solde de crédits a changé depuis l’affichage. Rien n’a été remboursé — voici le calcul à jour.',
+  'admin.refunds.conflictSuperseded': 'Rien n’a été remboursé : {reason}',
+  'admin.refunds.disputeWonNotice':
+    'Litige gagné : l’argent nous est acquis. Un remboursement reste possible, c’est une décision commerciale.',
+  'admin.refunds.refusal.NOT_FULFILLED':
+    'cette commande n’a jamais été honorée, il n’y a aucun crédit à reprendre.',
+  'admin.refunds.refusal.ALREADY_REFUNDED':
+    'cette commande a déjà été remboursée.',
+  'admin.refunds.refusal.DISPUTE_LOST':
+    'le litige a été perdu, la banque a déjà repris le montant.',
+  'admin.refunds.refusal.UNDER_DISPUTE':
+    'un litige est en cours ; rembourser maintenant reviendrait à payer deux fois.',
+  'admin.refunds.refusal.REFUND_PENDING':
+    'un remboursement est déjà en cours sur cette commande.',
+  'admin.refunds.status.CREATED': 'Créée',
+  'admin.refunds.status.PENDING': 'En attente',
+  'admin.refunds.status.PAID': 'Payée',
+  'admin.refunds.status.FULFILLED': 'Crédits attribués',
+  'admin.refunds.status.FAILED': 'Échouée',
+  'admin.refunds.status.EXPIRED': 'Expirée',
+  'admin.refunds.status.REFUND_PENDING': 'Remboursement en cours',
+  'admin.refunds.status.REFUNDED': 'Remboursée',
+  'admin.refunds.status.DISPUTED': 'Litige en cours',
+  'admin.refunds.status.DISPUTE_WON': 'Litige gagné',
+  'admin.refunds.status.DISPUTE_LOST': 'Litige perdu',
 } as const;
 
 export const englishAdminCreditsMessages = {
@@ -193,4 +242,52 @@ export const englishAdminCreditsMessages = {
   'admin.credits.preflight.READY': 'Correction configured and open',
   'admin.credits.preflightIdentity':
     'Environment {environment} · identity {identity}',
+  'admin.refunds.section': 'Orders and refunds',
+  'admin.refunds.empty': 'No orders',
+  'admin.refunds.emptyHelp':
+    'This member has not purchased any credit pack yet.',
+  'admin.refunds.ordersError': 'Orders could not be loaded.',
+  'admin.refunds.pagination': 'Page {page} of {totalPages}',
+  'admin.refunds.refundAction': 'Refund',
+  'admin.refunds.refundedCredits': '{credits} credits reclaimed',
+  'admin.refunds.writtenOffCredits': '{credits} credits not reclaimed',
+  'admin.refunds.previewTitle': 'Voluntary refund',
+  'admin.refunds.previewError': 'The refund calculation could not be loaded.',
+  'admin.refunds.reclaimed': 'Credits reclaimed',
+  'admin.refunds.amount': 'Amount refunded',
+  'admin.refunds.projectedWriteOff': 'Credits already spent, not reclaimed',
+  'admin.refunds.noteLabel': 'Optional note',
+  'admin.refunds.noteHelp':
+    'Kept in the audit log under your name: it is the only place where the reason survives.',
+  'admin.refunds.confirm': 'Confirm refund',
+  'admin.refunds.audit':
+    'The amount is computed by the server, pro rata to the unspent credits. It cannot be typed in.',
+  'admin.refunds.refundError':
+    'The refund could not be completed. Nothing was charged back.',
+  'admin.refunds.conflictStale':
+    'The credit balance changed since this was displayed. Nothing was refunded — here is the up-to-date calculation.',
+  'admin.refunds.conflictSuperseded': 'Nothing was refunded: {reason}',
+  'admin.refunds.disputeWonNotice':
+    'Dispute won: the money is ours. A refund is still possible — that is a commercial decision.',
+  'admin.refunds.refusal.NOT_FULFILLED':
+    'this order was never fulfilled, so there are no credits to reclaim.',
+  'admin.refunds.refusal.ALREADY_REFUNDED':
+    'this order has already been refunded.',
+  'admin.refunds.refusal.DISPUTE_LOST':
+    'the dispute was lost, and the bank has already taken the amount back.',
+  'admin.refunds.refusal.UNDER_DISPUTE':
+    'a dispute is open; refunding now would mean paying twice.',
+  'admin.refunds.refusal.REFUND_PENDING':
+    'a refund is already under way on this order.',
+  'admin.refunds.status.CREATED': 'Created',
+  'admin.refunds.status.PENDING': 'Pending',
+  'admin.refunds.status.PAID': 'Paid',
+  'admin.refunds.status.FULFILLED': 'Credits granted',
+  'admin.refunds.status.FAILED': 'Failed',
+  'admin.refunds.status.EXPIRED': 'Expired',
+  'admin.refunds.status.REFUND_PENDING': 'Refund in progress',
+  'admin.refunds.status.REFUNDED': 'Refunded',
+  'admin.refunds.status.DISPUTED': 'Dispute open',
+  'admin.refunds.status.DISPUTE_WON': 'Dispute won',
+  'admin.refunds.status.DISPUTE_LOST': 'Dispute lost',
 } as const satisfies TranslationOf<typeof frenchAdminCreditsMessages>;

@@ -22,6 +22,12 @@ import {
   useAdminCreditMembersQuery,
   useAdminCreditPoliciesQuery,
 } from '@/features/credits/credits';
+import {
+  type PaymentOrderLine,
+  useAdminMemberOrdersQuery,
+  useAdminPaymentRefundMutation,
+  useAdminRefundPreviewQuery,
+} from '@/features/payments/payments';
 import { useI18n } from '@/i18n';
 import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '@/shared/credit-rules';
 import { formatLocalizedDate } from '@/shared/locale';
@@ -487,9 +493,268 @@ function AdjustmentDrawer({
               ) : null}
             </section>
           )}
+          <MemberOrdersPanel userId={member.userId} />
         </div>
       ) : null}
     </Drawer>
+  );
+}
+
+/**
+ * Montant en plus petite unité, rendu sans jamais passer par un nombre
+ * flottant. `Intl.NumberFormat` accepte une chaîne décimale depuis Intl v3 ;
+ * on la construit à la main pour que « 1900 » devienne « 19,00 » sans qu'une
+ * division binaire ait son mot à dire sur un centime.
+ */
+function money(minor: string, currency: string, locale: 'en' | 'fr'): string {
+  const negative = minor.startsWith('-');
+  const digits = (negative ? minor.slice(1) : minor).padStart(3, '0');
+  const decimal = `${negative ? '-' : ''}${digits.slice(0, -2)}.${digits.slice(-2)}`;
+  return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-US', {
+    currency,
+    style: 'currency',
+  }).format(decimal as unknown as number);
+}
+
+/**
+ * Le remboursement, en deux temps comme la réouverture du coupe-circuit : on
+ * montre d'abord ce qui va partir, on confirme ensuite. Le montant n'est jamais
+ * saisi — il est calculé par le serveur, au prorata des crédits non consommés
+ * (décision `owner-refund-policy-2026-08-29`).
+ */
+function RefundPanel({
+  onDone,
+  orderId,
+}: {
+  onDone: () => void;
+  orderId: string;
+}) {
+  const { locale, t } = useI18n();
+  const preview = useAdminRefundPreviewQuery(orderId);
+  const refund = useAdminPaymentRefundMutation();
+  const [note, setNote] = useState('');
+
+  if (preview.isPending) return <Skeleton className="h-40" />;
+  if (preview.error || !preview.data) {
+    return (
+      <ErrorState
+        action={
+          <Button onClick={() => void preview.retry()} variant="secondary">
+            {t('common.retry')}
+          </Button>
+        }
+        description={t('admin.refunds.previewError')}
+      />
+    );
+  }
+
+  const { computation, order, refundable, refusal } = preview.data;
+
+  return (
+    <section aria-label={t('admin.refunds.previewTitle')} className="space-y-4">
+      <h3 className="font-medium">{t('admin.refunds.previewTitle')}</h3>
+
+      {order.status === 'DISPUTE_WON' ? (
+        <p className="ui-text-muted text-sm leading-6">
+          {t('admin.refunds.disputeWonNotice')}
+        </p>
+      ) : null}
+
+      {refundable && computation ? (
+        <>
+          <dl className="admin-refund-figures">
+            <div>
+              <dt>{t('admin.refunds.reclaimed')}</dt>
+              <dd>{value(computation.reclaimedCredits, locale)}</dd>
+            </div>
+            <div>
+              <dt>{t('admin.refunds.amount')}</dt>
+              <dd>
+                <strong>
+                  {money(computation.refundedMinor, order.currency, locale)}
+                </strong>
+              </dd>
+            </div>
+            {computation.projectedWriteOffCredits === '0' ? null : (
+              <div>
+                <dt>{t('admin.refunds.projectedWriteOff')}</dt>
+                <dd>{value(computation.projectedWriteOffCredits, locale)}</dd>
+              </div>
+            )}
+          </dl>
+
+          <Textarea
+            description={t('admin.refunds.noteHelp')}
+            id="refund-note"
+            label={t('admin.refunds.noteLabel')}
+            maxLength={500}
+            onInput={(event) => setNote(event.currentTarget.value)}
+            rows={3}
+            value={note}
+          />
+
+          <div className="flex flex-wrap gap-3">
+            <Button
+              isLoading={refund.isPending}
+              onClick={() => {
+                void refund
+                  .execute(order.id, {
+                    expectedRemainingOnLot: computation.expectedRemainingOnLot,
+                    note,
+                  })
+                  .then(onDone, () => undefined);
+              }}
+            >
+              {t('admin.refunds.confirm')}
+            </Button>
+            <Button onClick={onDone} variant="ghost">
+              {t('common.cancel')}
+            </Button>
+          </div>
+        </>
+      ) : (
+        <p className="ui-text-muted leading-6">
+          {t(`admin.refunds.refusal.${refusal?.code ?? 'NOT_FULFILLED'}`)}
+        </p>
+      )}
+
+      {refund.conflict ? (
+        <p className="ui-text-danger leading-6" role="alert">
+          {refund.conflict.kind === 'STALE'
+            ? t('admin.refunds.conflictStale')
+            : t('admin.refunds.conflictSuperseded', {
+                reason: t(`admin.refunds.refusal.${refund.conflict.refusal}`),
+              })}
+        </p>
+      ) : null}
+      {refund.error ? (
+        <p className="ui-text-danger" role="alert">
+          {t('admin.refunds.refundError')}
+        </p>
+      ) : null}
+
+      <p className="ui-text-muted text-sm leading-6">
+        {t('admin.refunds.audit')}
+      </p>
+    </section>
+  );
+}
+
+function OrderLine({
+  onRefund,
+  order,
+}: {
+  onRefund: (orderId: string) => void;
+  order: PaymentOrderLine;
+}) {
+  const { locale, t } = useI18n();
+  const settled =
+    order.status === 'REFUNDED' || order.status === 'DISPUTE_LOST';
+  return (
+    <li className="admin-order-row">
+      <div>
+        <h4 className="font-medium">{order.packKey}</h4>
+        <p className="ui-text-muted mt-1 text-sm">
+          {formatLocalizedDate(order.createdAt, locale, {
+            dateStyle: 'medium',
+          })}
+        </p>
+      </div>
+      <strong>{money(order.amountMinor, order.currency, locale)}</strong>
+      <Badge tone={settled ? 'warning' : 'success'}>
+        {t(`admin.refunds.status.${order.status}`)}
+      </Badge>
+      {order.refundedCredits === '0' ? null : (
+        <span className="ui-text-muted text-sm">
+          {t('admin.refunds.refundedCredits', {
+            credits: value(order.refundedCredits, locale),
+          })}
+        </span>
+      )}
+      {order.writtenOffCredits === '0' ? null : (
+        <span className="ui-text-muted text-sm">
+          {t('admin.refunds.writtenOffCredits', {
+            credits: value(order.writtenOffCredits, locale),
+          })}
+        </span>
+      )}
+      <Button onClick={() => onRefund(order.id)} variant="secondary">
+        {t('admin.refunds.refundAction')}
+      </Button>
+    </li>
+  );
+}
+
+/**
+ * Les commandes d'un membre. Une route séparée et paginée : le détail membre
+ * est déjà lourd, et l'historique de paiement n'a pas à le charger.
+ */
+function MemberOrdersPanel({ userId }: { userId: string }) {
+  const { t } = useI18n();
+  const [page, setPage] = useState(1);
+  const [refunding, setRefunding] = useState<string | null>(null);
+  const orders = useAdminMemberOrdersQuery(userId, page);
+
+  return (
+    <section className="admin-orders space-y-4">
+      <h3 className="font-medium">{t('admin.refunds.section')}</h3>
+
+      {orders.isPending ? <Skeleton className="h-32" /> : null}
+      {orders.error ? (
+        <ErrorState
+          action={
+            <Button onClick={() => void orders.retry()} variant="secondary">
+              {t('common.retry')}
+            </Button>
+          }
+          description={t('admin.refunds.ordersError')}
+        />
+      ) : null}
+      {orders.data && orders.data.items.length === 0 ? (
+        <EmptyState
+          description={t('admin.refunds.emptyHelp')}
+          title={t('admin.refunds.empty')}
+        />
+      ) : null}
+
+      {orders.data && orders.data.items.length > 0 ? (
+        <>
+          <ul className="admin-order-list">
+            {orders.data.items.map((order) => (
+              <OrderLine key={order.id} onRefund={setRefunding} order={order} />
+            ))}
+          </ul>
+          {orders.data.totalPages > 1 ? (
+            <div className="flex flex-wrap items-center gap-3">
+              <Button
+                disabled={page <= 1}
+                onClick={() => setPage((current) => current - 1)}
+                variant="ghost"
+              >
+                {t('common.previous')}
+              </Button>
+              <span className="ui-text-muted text-sm">
+                {t('admin.refunds.pagination', {
+                  page: orders.data.page,
+                  totalPages: orders.data.totalPages,
+                })}
+              </span>
+              <Button
+                disabled={page >= orders.data.totalPages}
+                onClick={() => setPage((current) => current + 1)}
+                variant="ghost"
+              >
+                {t('common.next')}
+              </Button>
+            </div>
+          ) : null}
+        </>
+      ) : null}
+
+      {refunding ? (
+        <RefundPanel onDone={() => setRefunding(null)} orderId={refunding} />
+      ) : null}
+    </section>
   );
 }
 
