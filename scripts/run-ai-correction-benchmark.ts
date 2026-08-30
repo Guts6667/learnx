@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -10,6 +11,10 @@ import {
   runRegressionPool,
 } from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
+import {
+  parseFalseAgreeProbe,
+  runFalseAgreeProbe,
+} from '../src/lib/ai-correction-false-agree-probe.ts';
 import { createRuntimeCorrectionChecker } from '../src/server/corrections/correction-checker.ts';
 import {
   PROMOTED_CHECKER_IDENTITY,
@@ -108,6 +113,66 @@ async function runAiCorrectionRegressionCli(
     return;
   }
 
+  // The designed false-agreement probe. Verifier only: no primary call, no
+  // learner response graded. `--dry-run` prices it and validates the cases
+  // without contacting anyone, so the bound is known before the spend.
+  if (
+    arguments_.some((argument) => argument.startsWith('--false-agree-probe'))
+  ) {
+    const probePath = path.resolve(
+      'benchmarks/ai-correction/regression/false-agree-probe.v1.json',
+    );
+    const probe = parseFalseAgreeProbe(
+      JSON.parse(await readFile(probePath, 'utf8')) as unknown,
+    );
+
+    if (!arguments_.includes('--execute')) {
+      // Priced under the recorded rate, never a guess: a candidate with no
+      // recorded rate cannot be bounded, and is refused rather than estimated.
+      const pricing = JSON.parse(
+        await readFile(
+          path.resolve(
+            'benchmarks/ai-correction/regression/checker-pricing.v1.json',
+          ),
+          'utf8',
+        ),
+      ) as { modelId: string };
+      console.log(
+        `Sonde faux accord, à sec — ${probe.cases.length} cas, ${probe.cases.length} appels vérificateur, aucun appel primaire.`,
+      );
+      console.log(
+        `Vérificateur tarifé : ${pricing.modelId}. Coût mesuré par appel sur la run du 30 août : 0,0011075 USD, soit ${(probe.cases.length * 0.0011075).toFixed(4)} USD pour cette sonde.`,
+      );
+      console.log(
+        `Verdict attendu sur les ${probe.cases.length} : ${probe.expectedVerdict}. Chaque accord est un faux accord.`,
+      );
+      return;
+    }
+
+    if (!apiKey) {
+      throw new Error(
+        'REGRESSION_RUN_API_KEY_REQUIRED: la sonde demande OPENROUTER_API_KEY.',
+      );
+    }
+    const result = await runFalseAgreeProbe({
+      checker: buildRegressionChecker(apiKey),
+      probe,
+    });
+    const { denominator, numerator, rate } = result.checkerFalseAgreeDesigned;
+    console.log(
+      `Sonde faux accord — ${numerator}/${denominator} faux accords${rate === null ? '' : ` = ${(rate * 100).toFixed(2)} %`}, ${result.costUsd.toFixed(6)} USD.`,
+    );
+    for (const agreement of result.falseAgreements) {
+      console.log(`  accord sur ${agreement.id} — ${agreement.falseBecause}`);
+    }
+    if (result.unavailable.length > 0) {
+      console.log(
+        `  ${result.unavailable.length} cas sans verdict, exclus du dénominateur : ${result.unavailable.join(', ')}`,
+      );
+    }
+    return;
+  }
+
   // `--analyse` never dispatches and never needs a key: it measures artefacts
   // a paid run already bought. It is checked before the key is required so a
   // dead run stays analysable on a machine with no credentials.
@@ -200,7 +265,18 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href
 ) {
-  await (process.argv.some((argument) => argument.startsWith('--run-pool'))
+  // Every regression-suite entry point routes to the regression CLI. A flag
+  // that falls through to the legacy benchmark CLI runs a different command
+  // than the one that was typed, which is worse than an unknown-flag error.
+  const REGRESSION_FLAGS = [
+    '--run-pool',
+    '--analyse',
+    '--measure-checker',
+    '--false-agree-probe',
+  ];
+  await (process.argv.some((argument) =>
+    REGRESSION_FLAGS.some((flag) => argument.startsWith(flag)),
+  )
     ? runAiCorrectionRegressionCli()
     : runAiCorrectionBenchmarkCli());
 }
