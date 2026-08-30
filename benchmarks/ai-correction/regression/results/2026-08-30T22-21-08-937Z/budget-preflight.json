@@ -1,0 +1,80 @@
+{
+  "checkerCost": {
+    "corrections": 240,
+    "modelId": "mistralai/mistral-medium-3-5",
+    "outputTokenLimit": 400,
+    "pricedInThisPreflight": true,
+    "promptCharactersPerCall": 2659,
+    "source": {
+      "consultedAt": "2026-08-29",
+      "consultedBy": "Head of AI (voie F)",
+      "publishedRates": "entrée 1,50 USD / M jetons ; sortie 7,50 USD / M jetons",
+      "url": "https://openrouter.ai/mistralai/mistral-medium-3-5"
+    },
+    "worstCaseUsd": 0.40242
+  },
+  "boundingConvention": "measured-p90-v2",
+  "boundingSources": {
+    "checker": {
+      "observations": 15,
+      "sourceDirectory": "benchmarks/ai-correction/regression/results/2026-08-30T00-11-39-046Z",
+      "statistic": "MEAN",
+      "usdPerCall": 0.0009245499999999999
+    },
+    "primary": {
+      "observations": 49,
+      "sourceDirectory": "benchmarks/ai-correction/regression/results/2026-08-29T20-49-50-434Z",
+      "statistic": "P90",
+      "usdPerCall": 0.02284
+    },
+    "safetyFactor": 1.5
+  },
+  "combinedWorstCaseUsd": 2.7962730000000002,
+  "comparisonConservativeV1Usd": 4.577694,
+  "primaryWorstCaseUsd": 4.175274,
+  "singlePassLegacyDecision": "CONTINGENCY_REQUIRED",
+  "dropped": [
+    "répétitions du sous-ensemble ramenées de 3 à 2 : la stabilité perd un point de mesure, la couverture n’en perd aucun"
+  ],
+  "fitsWithinCap": true,
+  "paraphraseWorstCaseUsd": 0,
+  "paraphrasesIncluded": false,
+  "passes": [
+    {
+      "cases": 144,
+      "cells": 144,
+      "label": "pool complet × 1",
+      "pendingCases": 0,
+      "pendingCells": 0,
+      "primaryWorstCaseUsd": 0,
+      "repetitionOffset": 1,
+      "repetitions": 1
+    },
+    {
+      "cases": 24,
+      "cells": 24,
+      "label": "répétitions du sous-ensemble",
+      "pendingCases": 0,
+      "pendingCells": 0,
+      "primaryWorstCaseUsd": 0,
+      "repetitionOffset": 2,
+      "repetitions": 1
+    },
+    {
+      "cases": 72,
+      "cells": 72,
+      "label": "mutants du sous-ensemble",
+      "pendingCases": 40,
+      "pendingCells": 40,
+      "primaryWorstCaseUsd": 4.175274,
+      "repetitionOffset": 1,
+      "repetitions": 1
+    }
+  ],
+  "envelopeNote": "Plafond ramené de 8.5 à 8.1666 USD : c'est ce qu'il reste de l'enveloppe.",
+  "priorActualSpendUsd": 5.307956999999998,
+  "profile": "reduced",
+  "remainingCapUsd": 2.858692999999999,
+  "requestedCapUsd": 8.5,
+  "supplierCostCapUsd": 8.166649999999997
+}
