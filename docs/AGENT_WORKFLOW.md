@@ -159,14 +159,31 @@ qualification revu.
 
 ### Lire le code de sortie, pas la fin du journal
 
-Une porte qualité se juge sur son code de sortie. Deux façons de le perdre,
-observées le 30 août 2026 sur la voie D :
+La règle est mécanique, pas disciplinaire :
 
-- `pnpm quality:v4.1:final; echo "EXIT=$?"` suivi de `&& git push` pousse même
-  après un échec, parce que `echo` a réussi et a remplacé le statut. Capturer
-  d'abord dans une variable, tester ensuite : `cmd > log; status=$?`.
-- Lire la fin du journal ne suffit pas : la dernière étape d'une chaîne peut
-  afficher un succès alors qu'une étape antérieure a échoué.
+```bash
+pnpm quality:v4.1:final && git push
+```
+
+Une seule ligne, un seul `&&`. Jamais deux commandes séparées, jamais une
+variable de statut relue plus bas.
+
+La version « capturer le statut puis le tester » figurait d'abord ici, écrite
+après un premier push effectué malgré une porte rouge. Le même push a été
+refait dans l'heure, par le même agent, parce qu'un `git push` en fin de chaîne
+n'était de nouveau pas conditionné au statut. Une règle qui demande de se
+souvenir échoue au moment précis où l'on est pressé ; le `&&` ne se souvient de
+rien.
+
+Deux corollaires, du même incident :
+
+- lire la fin du journal ne suffit pas : la dernière étape d'une chaîne peut
+  afficher un succès alors qu'une étape antérieure a échoué ;
+- un échec de porte se qualifie avant d'être imputé. Un test rouge a d'abord
+  semblé venir du changement en cours ; il passait isolément sur la branche
+  comme sur `main`, et la suite complète passait deux fois de chaque côté.
+  C'était un test instable préexistant, et l'imputer au changement aurait fait
+  corriger le mauvais fichier.
 
 Même règle pour les scripts d'essai : vérifier que le cas que l'on croit
 tester est bien celui qui s'exécute. Un harnais qui découpe ses arguments sur
