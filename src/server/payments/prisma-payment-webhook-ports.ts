@@ -66,7 +66,9 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
     async findOrder(input) {
       // Payment intent first: it is what a charge or a dispute carries, and
       // the only handle shared by the whole lifecycle. A session id resolves
-      // the purchase and nothing after it (V4.5-195).
+      // the purchase and nothing after it (V4.5-195). It is empty until the
+      // first completed delivery writes it, which is why the two handles below
+      // have to work on their own for a first purchase.
       if (input.paymentIntentId) {
         const byIntent = await prisma.paymentOrder.findUnique({
           select: { id: true, status: true },
@@ -74,11 +76,29 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
         });
         if (byIntent) return byIntent;
       }
-      if (!input.reference) return null;
+
+      // Then our own id, which we put on the session as `client_reference_id`
+      // and which comes back on every `checkout.session.*`. It is a primary
+      // key, not a provider identifier; looking it up as one is what V4.5-202
+      // fixes, and it meant no purchase could ever be fulfilled.
+      if (input.orderId) {
+        const byId = await prisma.paymentOrder.findUnique({
+          select: { id: true, status: true },
+          where: { id: input.orderId },
+        });
+        if (byId) return byId;
+      }
+
+      // Last, the session id we stored when we created the order. Reached only
+      // when the reference above is absent or names nothing — a session
+      // created outside this code path, say. A charge id lands here too and
+      // matches nothing, which is correct: Stripe's id namespaces do not
+      // overlap, so it cannot resolve to somebody else's order.
+      if (!input.providerOrderId) return null;
 
       return prisma.paymentOrder.findUnique({
         select: { id: true, status: true },
-        where: { providerOrderId: input.reference },
+        where: { providerOrderId: input.providerOrderId },
       });
     },
     async recordEvent(input) {

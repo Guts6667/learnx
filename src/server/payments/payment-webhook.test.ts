@@ -283,8 +283,41 @@ describe('résolution d’une commande à travers le cycle de vie (V4.5-195)', (
     // A charge carries neither the session id nor `client_reference_id`. If
     // the receiver looked those up it would find nothing.
     expect(harness.ports.findOrder).toHaveBeenCalledWith({
+      orderId: null,
       paymentIntentId: 'pi_test_1',
-      reference: 'ch_test_1',
+      providerOrderId: 'ch_test_1',
+    });
+  });
+
+  it('sépare notre identifiant de celui de Stripe sur un achat réel', async () => {
+    // The shape a real Checkout produces: `client_reference_id` is the
+    // PaymentOrder id we put on the session, `id` is Stripe's session id, and
+    // `payment_intent` appears for the first time. Until V4.5-202 the last two
+    // were collapsed, ours won, and the caller looked it up as a provider
+    // identifier — so no purchase could ever be fulfilled.
+    const harness = build();
+    const completed = JSON.stringify({
+      data: {
+        object: {
+          client_reference_id: 'b1a4c0d2-3f77-4c0e-9c6b-2f9a1d4e5b60',
+          id: 'cs_test_a1b2c3',
+          payment_intent: 'pi_test_a1b2c3',
+        },
+      },
+      id: 'evt_real_1',
+      type: 'checkout.session.completed',
+    });
+
+    await run(harness, completed);
+
+    expect(harness.ports.findOrder).toHaveBeenCalledWith({
+      orderId: 'b1a4c0d2-3f77-4c0e-9c6b-2f9a1d4e5b60',
+      paymentIntentId: 'pi_test_a1b2c3',
+      providerOrderId: 'cs_test_a1b2c3',
+    });
+    // And the intent is carried through, so a later refund can resolve.
+    expect(harness.applied[0]).toMatchObject({
+      paymentIntentId: 'pi_test_a1b2c3',
     });
   });
 
@@ -294,8 +327,9 @@ describe('résolution d’une commande à travers le cycle de vie (V4.5-195)', (
     await run(harness, disputeCreated);
 
     expect(harness.ports.findOrder).toHaveBeenCalledWith({
+      orderId: null,
       paymentIntentId: 'pi_test_1',
-      reference: 'dp_test_1',
+      providerOrderId: 'dp_test_1',
     });
     expect(harness.applied[0]).toMatchObject({ status: 'DISPUTED' });
   });

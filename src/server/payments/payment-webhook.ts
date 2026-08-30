@@ -61,8 +61,11 @@ export interface WebhookPorts {
    * session id only ever appear on `checkout.session.*` (V4.5-195).
    */
   findOrder(input: {
+    /** Ours: a `PaymentOrder.id`, looked up by primary key. */
+    orderId: string | null;
     paymentIntentId: string | null;
-    reference: string | null;
+    /** Theirs: what `providerOrderId` holds, a Checkout session id. */
+    providerOrderId: string | null;
   }): Promise<{ id: string; status: PaymentOrderStatus } | null>;
   applyTransition(input: {
     attributeCredits: boolean;
@@ -79,9 +82,12 @@ export interface WebhookPorts {
 interface WebhookEnvelope {
   event: string;
   event_id: string;
-  /** Either handle may be absent; the parser refuses only when both are. */
+  /** Ours, carried back by the provider. Any handle may be absent; the
+   * parser refuses only when all three are. */
   order_id: string | null;
   payment_intent_id: string | null;
+  /** Theirs, for the object this event is about. */
+  provider_order_id: string | null;
 }
 
 /**
@@ -97,8 +103,9 @@ function stripeEnvelope(rawPayload: string): WebhookEnvelope | null {
   return {
     event: parsed.eventType,
     event_id: parsed.eventId,
-    order_id: parsed.orderReference,
+    order_id: parsed.clientReferenceId,
     payment_intent_id: parsed.paymentIntentId,
+    provider_order_id: parsed.objectId,
   };
 }
 
@@ -164,8 +171,9 @@ export async function handlePaymentWebhook(input: {
   if (!envelope) return { kind: 'REJECTED', reason: 'MALFORMED_PAYLOAD' };
 
   const order = await input.ports.findOrder({
+    orderId: envelope.order_id,
     paymentIntentId: envelope.payment_intent_id,
-    reference: envelope.order_id,
+    providerOrderId: envelope.provider_order_id,
   });
   const status = STRIPE_EVENT_STATUS[envelope.event];
 

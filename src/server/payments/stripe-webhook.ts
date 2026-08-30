@@ -33,7 +33,18 @@ interface StripeEnvelope {
   paymentIntentId: string | null;
   eventId: string;
   eventType: string;
-  orderReference: string | null;
+  /**
+   * Ours. `client_reference_id` is the `PaymentOrder.id` we put on the session
+   * when we created it, so it is looked up by primary key — never as a
+   * provider identifier (V4.5-202).
+   */
+  clientReferenceId: string | null;
+  /**
+   * Stripe's. The id of the object the event carries: a session id on
+   * `checkout.session.*`, which is what `providerOrderId` holds, and a charge
+   * id elsewhere, which matches nothing and is meant not to.
+   */
+  objectId: string | null;
 }
 
 /**
@@ -56,26 +67,26 @@ export function readStripeEnvelope(rawPayload: string): StripeEnvelope | null {
   if (typeof object !== 'object' || object === null) return null;
   const record = object as Record<string, unknown>;
 
-  // Both candidates are returned rather than collapsed into one, because the
-  // caller resolves them in a deliberate order: the payment intent first,
-  // since it is what a charge or a dispute carries, then the reference we put
-  // on the session, then the session's own id. Collapsing them here would hide
-  // which one matched, and a refund attaching to the wrong order is the worst
-  // failure this file can produce.
+  // Three candidates, kept apart. They are read three different ways, and
+  // until V4.5-202 the last two were collapsed into one field: our own order
+  // id won, and the caller then looked it up as a *provider* identifier, so a
+  // paid order was never found and no purchase could ever be fulfilled.
+  // Collapsing also hides which handle matched, and a refund attaching to the
+  // wrong order is the worst failure this file can produce.
   const paymentIntentId =
     typeof record.payment_intent === 'string' ? record.payment_intent : null;
-  const reference =
+  const clientReferenceId =
     typeof record.client_reference_id === 'string'
       ? record.client_reference_id
-      : typeof record.id === 'string'
-        ? record.id
-        : null;
-  if (!paymentIntentId && !reference) return null;
+      : null;
+  const objectId = typeof record.id === 'string' ? record.id : null;
+  if (!paymentIntentId && !clientReferenceId && !objectId) return null;
 
   return {
+    clientReferenceId,
     eventId: id,
     eventType: type,
-    orderReference: reference,
+    objectId,
     paymentIntentId,
   };
 }
