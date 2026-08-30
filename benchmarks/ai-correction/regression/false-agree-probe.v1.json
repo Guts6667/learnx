@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "probeId": "learnx-fr-false-agree-probe-v1",
+  "language": "fr-FR",
+  "note": "Vingt niveaux faux par construction de l'énoncé, soumis au vérificateur seul. Aucun appel au modèle primaire : chaque cas est une correction fabriquée, pas une correction mesurée. « Faux par construction » veut dire qu'un lecteur peut établir la fausseté à partir des seules citations fournies, sans juger la qualité de la réponse de l'apprenant — contradiction arithmétique, affirmation absente des citations, ou citation qui affirme le contraire. Chaque cas porte son `falseBecause` pour que la revendication soit auditable et non crue sur parole. Le vérificateur doit répondre non aux vingt ; chaque oui est un faux accord.",
+  "expectedVerdict": "DISAGREED",
+  "cases": [
+    {
+      "id": "arith-01",
+      "criterionKey": "comparative-arithmetic",
+      "criterionLabel": "Arithmétique comparative",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Les calculs posés sont exacts et la comparaison chiffrée est correcte.",
+      "quotes": ["L'offre A revient à 7 × 6 € + 12 € = 44 € ; l'offre B à 7 × 5 € + 10 € = 45 €."],
+      "falseBecause": "7 × 6 + 12 = 54, pas 44. Les opérandes sont dans la citation ; le résultat la contredit."
+    },
+    {
+      "id": "arith-02",
+      "criterionKey": "budget-arithmetic",
+      "criterionLabel": "Arithmétique budgétaire",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Le total annoncé correspond à la somme des postes cités.",
+      "quotes": ["Trois postes : 1 200 €, 850 € et 400 €, soit un total de 2 000 €."],
+      "falseBecause": "1200 + 850 + 400 = 2450, pas 2000."
+    },
+    {
+      "id": "arith-03",
+      "criterionKey": "rate-computation",
+      "criterionLabel": "Calcul de taux",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Le pourcentage annoncé découle exactement des effectifs cités.",
+      "quotes": ["Sur 40 dossiers traités, 12 ont été refusés, soit un taux de refus de 25 %."],
+      "falseBecause": "12/40 = 30 %, pas 25 %."
+    },
+    {
+      "id": "arith-04",
+      "criterionKey": "duration-arithmetic",
+      "criterionLabel": "Arithmétique des durées",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Les durées cumulées sont correctement additionnées.",
+      "quotes": ["Trois étapes de 45 minutes chacune, soit 2 heures au total."],
+      "falseBecause": "3 × 45 min = 135 min = 2 h 15, pas 2 h."
+    },
+    {
+      "id": "arith-05",
+      "criterionKey": "unit-consistency",
+      "criterionLabel": "Cohérence des unités",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Les unités sont homogènes d'un bout à l'autre du calcul.",
+      "quotes": ["Le débit est de 3 litres par minute, donc 180 litres par jour."],
+      "falseBecause": "3 L/min font 180 L par heure, pas par jour ; l'unité de temps change sans conversion."
+    },
+    {
+      "id": "absent-01",
+      "criterionKey": "source-citation",
+      "criterionLabel": "Citation des sources",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Les chiffres avancés sont attribués à une source nommée.",
+      "quotes": ["Le nombre d'incidents a nettement diminué cette année."],
+      "falseBecause": "Aucune source n'est nommée dans la citation, et aucun chiffre n'y figure."
+    },
+    {
+      "id": "absent-02",
+      "criterionKey": "residual-risk-surfacing",
+      "criterionLabel": "Explicitation du risque résiduel",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "L'incertitude principale est nommée et une précaution concrète est proposée.",
+      "quotes": ["Je recommande de retenir l'offre A, qui répond à tous les critères."],
+      "falseBecause": "Ni incertitude nommée ni précaution proposée dans la citation."
+    },
+    {
+      "id": "absent-03",
+      "criterionKey": "bounded-test-design",
+      "criterionLabel": "Test borné",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Le test précise sa durée, sa population et son périmètre.",
+      "quotes": ["Nous ferons un essai avant de généraliser."],
+      "falseBecause": "Ni durée, ni population, ni périmètre dans la citation."
+    },
+    {
+      "id": "absent-04",
+      "criterionKey": "mechanism-link",
+      "criterionLabel": "Lien de mécanisme",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Le mécanisme reliant la cause à l'effet est explicité.",
+      "quotes": ["Les erreurs ont baissé après le changement de disposition."],
+      "falseBecause": "La citation énonce une succession, jamais un mécanisme."
+    },
+    {
+      "id": "absent-05",
+      "criterionKey": "committed-choice-boundary",
+      "criterionLabel": "Limite du choix engagé",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La condition qui ferait rouvrir la décision est énoncée.",
+      "quotes": ["Je retiens l'offre A et je confirme la commande aujourd'hui."],
+      "falseBecause": "Aucune condition de réouverture n'apparaît dans la citation."
+    },
+    {
+      "id": "contra-01",
+      "criterionKey": "context-fidelity",
+      "criterionLabel": "Fidélité au contexte",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La réponse s'appuie sur une mesure existante du dossier.",
+      "quotes": ["Aucune mesure de durée n'existe aujourd'hui, donc la baseline reste à établir."],
+      "falseBecause": "La citation affirme l'absence de la mesure que le niveau suppose existante."
+    },
+    {
+      "id": "contra-02",
+      "criterionKey": "generalisation-caution",
+      "criterionLabel": "Prudence de généralisation",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La réponse établit que le résultat se généralise au-delà du groupe testé.",
+      "quotes": ["Sans essai sur un nouveau groupe, la généralisation reste inconnue."],
+      "falseBecause": "La citation dit l'inverse de ce que le niveau affirme."
+    },
+    {
+      "id": "contra-03",
+      "criterionKey": "causal-claim",
+      "criterionLabel": "Affirmation causale",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La causalité est établie et énoncée comme telle.",
+      "quotes": ["Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse."],
+      "falseBecause": "La citation refuse explicitement la causalité que le niveau revendique."
+    },
+    {
+      "id": "contra-04",
+      "criterionKey": "constraint-received",
+      "criterionLabel": "Contrainte reçue",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La contrainte appliquée est une exigence reçue du donneur d'ordre.",
+      "quotes": ["Le plafond proposé ci-dessus est une proposition à valider et non une exigence reçue."],
+      "falseBecause": "La citation qualifie la contrainte de proposition, le niveau la qualifie d'exigence reçue."
+    },
+    {
+      "id": "contra-05",
+      "criterionKey": "deadline-fit",
+      "criterionLabel": "Respect de l'échéance",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La solution retenue respecte l'échéance annoncée.",
+      "quotes": ["L'offre retenue livre le mercredi, alors que l'échéance était fixée au lundi 18 h."],
+      "falseBecause": "La citation établit un dépassement de l'échéance que le niveau déclare respectée."
+    },
+    {
+      "id": "scope-01",
+      "criterionKey": "population-scope",
+      "criterionLabel": "Périmètre de population",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La conclusion porte sur l'ensemble du service.",
+      "quotes": ["L'observation porte sur les deux agents du poste de nuit."],
+      "falseBecause": "Le périmètre cité est deux agents ; le niveau prétend couvrir l'ensemble du service."
+    },
+    {
+      "id": "scope-02",
+      "criterionKey": "measure-definition",
+      "criterionLabel": "Définition de la mesure",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "La mesure utilisée est la durée médiane, comme demandé.",
+      "quotes": ["Nous suivons la durée moyenne de traitement d'une demande."],
+      "falseBecause": "La citation nomme une moyenne ; le niveau exige une médiane."
+    },
+    {
+      "id": "scope-03",
+      "criterionKey": "period-coverage",
+      "criterionLabel": "Couverture de la période",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "L'analyse couvre l'année entière.",
+      "quotes": ["Les données disponibles vont de janvier à mars."],
+      "falseBecause": "Trois mois cités contre une année revendiquée."
+    },
+    {
+      "id": "scope-04",
+      "criterionKey": "comparison-basis",
+      "criterionLabel": "Base de comparaison",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "Les deux offres sont comparées sur le même périmètre.",
+      "quotes": ["L'offre A est chiffrée frais inclus ; l'offre B hors frais de livraison."],
+      "falseBecause": "Les périmètres cités diffèrent ; le niveau les déclare identiques."
+    },
+    {
+      "id": "scope-05",
+      "criterionKey": "sample-adequacy",
+      "criterionLabel": "Suffisance de l'échantillon",
+      "levelKey": "mastered",
+      "levelLabel": "Maîtrisé",
+      "levelDescription": "L'échantillon est suffisant pour conclure.",
+      "quotes": ["Un seul dossier a pu être examiné dans le délai imparti."],
+      "falseBecause": "Un dossier unique ne soutient pas la suffisance que le niveau affirme."
+    }
+  ]
+}
