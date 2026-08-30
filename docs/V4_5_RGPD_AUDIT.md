@@ -1,15 +1,21 @@
 # Audit RGPD V4.5 — correction IA et paiement
 
-- **Statut** : `ACTIVE_AUTHORITY` (ticket V4.5-165, partie IA) ·
-  partie paiement `EN_ATTENTE` (V4.5-160)
-- **Version** : 1.4.1 (noms réels du marqueur anti-abus, V4.5-163 livré)
+- **Statut** : `ACTIVE_AUTHORITY` (ticket V4.5-165) — partie IA et
+  partie paiement
+- **Version** : 1.5.0 (registre du paiement au code livré, V4.5-160/184)
 - **Date** : 29 août 2026
 - **Owner** : Architecture/Produit (Head of AI) · **Reviewer** : Rayan
 - **Autorité supérieure** : `ADR_003` §7, `docs/V4_5_AI_QUALITY_CONTRACT.md`
 - **Méthode** : lecture du schéma Prisma (`prisma/models/*.prisma`), du code
-  serveur (`src/server/corrections/**`, `src/server/maintenance/retention.ts`,
-  `src/lib/ai-correction-provider-adapters.ts`) et des catalogues i18n, au
-  SHA `dev` du 29 août 2026. Aucune donnée réelle consultée.
+  serveur (`src/server/corrections/**`, `src/server/payments/**`,
+  `src/server/maintenance/retention.ts`,
+  `src/lib/ai-correction-provider-adapters.ts`), des migrations
+  `20260829250000_add_payment_orders` et `20260829260000_add_credit_packs`
+  et des catalogues i18n, au SHA `dev` du 30 août 2026. Aucune donnée réelle
+  consultée. La partie paiement décrit le code livré ; ce que Stripe **envoie
+  réellement** n'est pas encore observé (passe bac à sable
+  `docs/qa/V4_5_160_SANDBOX.md`, en attente du compte). Les deux sont
+  distingués ligne à ligne.
 
 ## 1. Ce que ce document est
 
@@ -51,6 +57,24 @@ d'« empreinte non réversible » qu'à partir de là.
 
 User-agent : non collecté.
 
+## 2bis. Registre des traitements — paiement (V4.5-160/184)
+
+| # | Traitement | Données | Base envisagée | Destinataires | Rétention constatée |
+| --- | --- | --- | --- | --- | --- |
+| P1 | Création d'une commande | `payment_orders` : `user_id`, `provider_order_id`, `pack_key`, `amount_minor`, `currency`, statut, horodatages | Exécution du contrat | LearnX (Neon) | **Illimitée** — aucune purge (§4) |
+| P2 | Redirection vers le paiement | `reference` = `<userId>:<packKey>`, montant, devise (`checkout.ts:60`) | Exécution du contrat | Stripe | Chez Stripe : politique Stripe (§3) |
+| P3 | Réception des événements | `payment_events` : `provider_event_id`, `event_type`, `outcome`, **`payload_json` = le corps de l'événement tel que reçu** (`payment-webhook.ts:104`), horodatage | Exécution du contrat ; obligation comptable | LearnX | **Illimitée** — aucune purge, aucune rédaction (§4) |
+| P4 | Attribution et remboursement | écritures `PURCHASE` / `REFUND` du ledger, `written_off_credits` sur la commande | Exécution du contrat | LearnX | Illimitée (ledger append-only, ADR_003 §6) |
+
+Ce que LearnX **ne voit jamais** : le numéro de carte, le cryptogramme, la
+date d'expiration. Le paiement est hébergé chez Stripe et l'instrument ne
+transite pas par nos serveurs (ADR_004 §1, §7).
+
+**Ce que LearnX transmet à Stripe** : l'identifiant interne de l'utilisateur
+(UUID), dans `reference`. C'est un pseudonyme, pas un identifiant direct,
+mais c'est une donnée personnelle : il relie durablement une transaction
+Stripe à un compte LearnX.
+
 ## 3. Sous-traitants et destinataires
 
 | Destinataire | Rôle | Données | Localisation | Paramètres LearnX | Attestation |
@@ -61,7 +85,7 @@ User-agent : non collecté.
 | Anthropic | modèle primaire (Sonnet 4.6) | T2 | via OpenRouter, route `anthropic` | idem | rétention **à attester** |
 | Mistral | vérificateur (Medium 3.5) | T3 (extraits) | endpoint `mistral/eu` | idem | rétention **à attester** |
 | Resend | e-mails transactionnels | e-mail, contenu d'invitation/vérification ; alertes owner (142) | eu-west-1 (Irlande), domaine `send.learn-x.app`, attesté 29 août 2026 (console) | — | §7 |
-| Revolut Merchant | paiement (V4.5-160) | référence d'ordre, montant, devise, pack | — | jamais de données de carte chez LearnX (ADR_003 §7.3) | partie paiement `EN_ATTENTE` |
+| Stripe | paiement (V4.5-160/184) | P2 : `reference` (UUID interne), montant, devise ; puis, côté Stripe, ce que le payeur saisit sur la page hébergée (carte, e-mail, nom, adresse de facturation selon configuration) | Stripe Payments Europe (Irlande) ; groupe Stripe aux États-Unis | jamais de données de carte chez LearnX (ADR_003 §7.3, ADR_004 §1) ; page de paiement hébergée | politique Stripe **à consigner** comme l'ont été les fournisseurs IA (§7, décision 8) |
 
 ## 4. Rétention — état réel et écarts
 
@@ -92,6 +116,41 @@ et **aucun parcours de suppression de compte n'existe** dans le code serveur
 - **E3** — Le snapshot de la production (`submission_snapshot_json`) duplique
   la soumission d'exercice ; nécessaire à l'idempotence et à la
   reconsidération. Conserver tant que la correction existe ; suivre E1.
+- **E4 — le corps des événements de paiement est conservé intégralement, sans
+  limite, et l'effacement ne le touche pas.** Constat au code, pas une
+  hypothèse : `payment-webhook.ts:104` écrit `payload: JSON.parse(rawPayload)`
+  et `prisma-payment-webhook-ports.ts:70` le passe tel quel à Prisma. Aucune
+  rédaction, aucun filtrage, aucun champ retenu ou écarté. `retention.ts` ne
+  connaît ni `payment_events` ni `payment_orders` : aucune purge n'existe.
+  `account-erasure-service.ts` pseudonymise le compte, supprime sessions et
+  notes, et **ne touche à aucune table de paiement**.
+
+  Conséquence : après une demande d'effacement, ce que le fournisseur nous a
+  envoyé sur cette personne reste en base, indéfiniment, rattaché à une
+  commande qui porte encore son `user_id`.
+
+  Ce que contient ce corps n'est pas encore observé — c'est le premier objet
+  de la passe bac à sable. D'après la documentation Stripe,
+  `checkout.session.completed` porte `customer_details` (e-mail, nom,
+  téléphone, adresse de facturation) et `charge.refunded` porte
+  `billing_details` ainsi que les métadonnées de l'instrument (réseau,
+  quatre derniers chiffres, pays). Si c'est bien le cas, alors **des
+  identifiants directs entrent en base par ce chemin**, alors que l'ensemble
+  du dispositif est construit pour qu'ils n'y entrent pas.
+
+  À noter, sans corriger le fichier : l'en-tête de la migration
+  `20260829250000_add_payment_orders` affirme « aucune colonne ici ne peut
+  contenir de données de carte, et aucune ne devrait jamais être ajoutée qui
+  le pourrait ». C'est exact des colonnes déclarées et démenti par
+  `payload_json`, qui accueille ce que le fournisseur veut bien y mettre. La
+  migration est appliquée : la modifier casserait sa somme de contrôle. Le
+  démenti est consigné ici, et l'en-tête cite encore Revolut.
+
+  Correction proposée, à décider (§7, décision 9) : ne persister du corps que
+  ce que la réconciliation lit réellement — identifiant d'événement, type,
+  identifiant de commande, montant, devise, statut — et écarter le reste à
+  l'écriture plutôt qu'à la lecture. Le corps intégral n'est nécessaire qu'au
+  moment de la vérification de signature, qui a déjà eu lieu.
 
 ## 5. Information et consentement — écart principal
 
@@ -139,7 +198,7 @@ peut être écrite qu'après la décision E2 et l'attestation des fournisseurs.
 | --- | --- | --- |
 | Accès / portabilité | Historique des corrections visible dans l'app ; pas d'export | Export JSON des corrections d'un utilisateur : ticket (voie A, P2) |
 | Rectification | E-mail modifiable ? **à vérifier** | — |
-| Effacement | Non outillé (E1) | Ticket E1 |
+| Effacement | Outillé côté administration : `POST /api/admin/accounts/:userId/erase` (`account-routes.ts:57`), pseudonymisation irréversible. **Pas de parcours en libre-service** : la personne écrit, le Propriétaire exécute — tenable en exploitation solo, à revoir si le volume grandit. **Ne couvre pas le paiement** (E4) | Décision 9, puis ticket |
 | Opposition (141) | Non applicable tant que 141 n'est pas livré | Ligne de consentement §5 |
 | Réclamation | Adresse de contact : `PublicContact` existe ; à publier | §7 |
 
@@ -175,7 +234,35 @@ Décisions prises le 29 août 2026 (`owner-rgpd-2026-08-29`) :
    (exploitation solo, pas de suivi à grande échelle ni de données
    sensibles) ; lecture à faire confirmer par un conseil si le pilote
    dépasse les early adopters.
-7. **Paiement (V4.5-160)** — §2–§3 complétés à la livraison de l'ADR Revolut.
+7. **Paiement (V4.5-160/184)** — §2bis et §3 sont écrits au code livré. Le
+   fournisseur est Stripe et non Revolut ; `ADR_004` a été amendé en place,
+   ce document suit.
+
+Décisions ouvertes, ajoutées le 30 août 2026 — aucune n'est supposée :
+
+8. **Politique de rétention de Stripe** — à consulter et consigner comme
+   l'ont été OpenRouter, Anthropic et Mistral au §7.1, avec URL et date.
+   Tant que ce n'est pas fait, aucune durée ne peut être affichée pour le
+   paiement, exactement comme pour l'IA.
+9. **Que garder du corps des événements (E4)** — trois options, et elles ne
+   s'équivalent pas :
+   (a) ne persister que les champs lus par la réconciliation, et écarter le
+   reste à l'écriture — l'écart disparaît, mais un litige futur ne peut plus
+   être tranché sur ce que le fournisseur avait envoyé ;
+   (b) tout garder et purger après un délai — il faut alors choisir ce délai
+   en connaissance de l'obligation comptable ;
+   (c) tout garder indéfiniment, et l'écrire dans la politique de
+   confidentialité plutôt que de le laisser tacite.
+   Le choix est celui du Propriétaire ; c'est un arbitrage entre preuve
+   commerciale et minimisation, pas une question technique.
+10. **Durée de conservation comptable** — les pièces justificatives d'un
+    achat doivent être conservées (droit commercial français : dix ans pour
+    les livres et pièces comptables). Cela **impose** de garder
+    `payment_orders` et les écritures du ledger malgré une demande
+    d'effacement, et **n'impose pas** de garder l'e-mail, le nom et l'adresse
+    reçus dans `payload_json`. Le point mérite d'être confirmé par le conseil
+    qui tranchera aussi le statut fiscal et la TVA (ADR_004 §8) : ce sont les
+    mêmes obligations et le même interlocuteur.
 
 ## 7.1 Attestation de rétention des fournisseurs IA (29 août 2026)
 
@@ -201,4 +288,7 @@ l'écrire telle quelle dans la notice ; aucune demande contractuelle à OpenRout
 - afficher une durée de rétention non attestée ;
 - envoyer un texte d'apprenant dans un e-mail d'alerte ou un artefact de
   recherche ;
-- supprimer ou réécrire une écriture du ledger au titre de l'effacement.
+- supprimer ou réécrire une écriture du ledger au titre de l'effacement ;
+- affirmer que l'effacement d'un compte retire toutes ses données tant que
+  E4 n'est pas tranché — c'est faux du corps des événements de paiement ;
+- afficher une durée de rétention pour le paiement avant la décision 8.
