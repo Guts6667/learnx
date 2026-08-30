@@ -25,9 +25,20 @@ describe('V4-008 credit surfaces', () => {
     expect(styles).toContain('.credit-adjustment-summary');
   });
 
-  it('does not expose a fabricated policy or mutate purchased credits', () => {
+  it('does not expose a fabricated policy, and never derives an amount itself', () => {
     expect(admin).toContain("t('admin.credits.policiesInactive')");
     expect(admin).not.toContain('PURCHASED');
-    expect(admin).not.toMatch(/price|pack|payment/i);
+
+    // V4-008 banned the words price/pack/payment from this screen, because it
+    // only handled complimentary allocations: naming money there would have
+    // invented a commercial notion the product did not have. V4.5-162 gives it
+    // real refunds (owner decision `owner-refund-policy-2026-08-29`), so the
+    // vocabulary ban no longer describes the surface — but what it protected
+    // still holds, and is asserted here instead: the screen displays the
+    // amount the server computed and derives none of its own. The pro-rata
+    // rule lives once, in `voluntaryRefundMinor`, server-side.
+    expect(admin).toContain('computation.refundedMinor');
+    expect(admin).not.toMatch(/packPriceMinor\s*[*/]/u);
+    expect(admin).not.toContain('voluntaryRefundMinor');
   });
 });

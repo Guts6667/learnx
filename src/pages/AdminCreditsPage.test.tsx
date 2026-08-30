@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 
 import { AppProviders } from '@/app/providers';
 import { AdminCreditsPage } from '@/pages/AdminCreditsPage';
@@ -622,5 +628,299 @@ describe('AdminCreditsPage', () => {
         ),
       ).toBe(true),
     );
+  });
+
+  /**
+   * Remboursements (V4.5-162). Le montant n'est jamais saisi : il est calculé
+   * par le serveur au prorata des crédits non consommés, et l'écran ne fait
+   * que l'afficher avant de le faire confirmer.
+   */
+  function refundMock(options: {
+    onRefund?: (init?: RequestInit) => Response | undefined;
+    preview?: Record<string, unknown>;
+  }) {
+    const projection = {
+      free: { available: '0', consumed: '0', expired: '0', reserved: '0' },
+      purchased: {
+        available: '40',
+        consumed: '60',
+        expired: '0',
+        reserved: '0',
+      },
+      totalAvailable: '40',
+      totalReserved: '0',
+    };
+    const member = {
+      accountStatus: 'ACTIVE',
+      displayName: 'Apprenant',
+      email: 'learner@example.com',
+      projection,
+      userId: 'user-1',
+    };
+    const preview = options.preview ?? {
+      computation: {
+        expectedRemainingOnLot: '40',
+        packCredits: '100',
+        packPriceMinor: '1900',
+        projectedWriteOffCredits: '0',
+        reclaimedCredits: '40',
+        refundedMinor: '760',
+        remainingOnLot: '40',
+      },
+      order: {
+        amountMinor: '1900',
+        createdAt: '2026-08-01T10:00:00.000Z',
+        currency: 'EUR',
+        fulfilledAt: '2026-08-01T10:00:05.000Z',
+        id: 'order-1',
+        learner: {
+          displayName: 'Apprenant',
+          email: 'learner@example.com',
+          userId: 'user-1',
+        },
+        packKey: 'pack-100',
+        refundedCredits: '0',
+        status: 'FULFILLED',
+        writtenOffCredits: '0',
+      },
+      refundable: true,
+      refusal: null,
+    };
+
+    return vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/admin/ai-corrections/preflight') {
+        return Promise.resolve(
+          jsonResponse({
+            preflight: {
+              apiKeyPresent: true,
+              deploymentEnvironment: 'preview',
+              identityMatches: true,
+              killSwitch: true,
+              promotedBenchmarkId: 'learnx-french-text-correction-v3-1',
+              state: 'CONFIGURED_CLOSED',
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/ai-corrections/monitoring') {
+        return Promise.resolve(
+          jsonResponse({
+            monitoring: {
+              breaker: {
+                evaluationError: null,
+                rates: {
+                  checkerDisagreement: null,
+                  unusable: null,
+                  wrongAtHigh: null,
+                },
+                reason: null,
+                state: 'CLOSED',
+                thresholds: {
+                  checkerDisagreement: 0.4,
+                  unusable: 0.05,
+                  wrongAtHigh: 0.1,
+                },
+                trippedAt: null,
+                window: { observed: 0, size: 50 },
+              },
+              checker: { disagreed: 0, unavailable: 0 },
+              confidence: { high: 0, low: 0, medium: 0, scoreWithheld: 0 },
+              corrections: { completed: 0, partial: 0, total: 0, unusable: 0 },
+              cost: {
+                p50Usd: '0.00000000',
+                p90Usd: '0.00000000',
+                totalUsd: '0.00000000',
+                unknownCostAttempts: 0,
+              },
+              learner: { helpful: 0, wrong: 0, wrongAtHigh: 0 },
+            },
+          }),
+        );
+      }
+      if (path === '/api/admin/credits/policies') {
+        return Promise.resolve(
+          jsonResponse({ policies: { allocation: [], limits: [] } }),
+        );
+      }
+      if (path.includes('/orders')) {
+        return Promise.resolve(
+          jsonResponse({
+            page: {
+              items: [
+                {
+                  amountMinor: '1900',
+                  createdAt: '2026-08-01T10:00:00.000Z',
+                  currency: 'EUR',
+                  fulfilledAt: '2026-08-01T10:00:05.000Z',
+                  id: 'order-1',
+                  packKey: 'pack-100',
+                  refundedCredits: '0',
+                  status: 'FULFILLED',
+                  writtenOffCredits: '0',
+                },
+              ],
+              page: 1,
+              pageSize: 20,
+              total: 1,
+              totalPages: 1,
+            },
+          }),
+        );
+      }
+      if (path.includes('/refund-preview')) {
+        return Promise.resolve(jsonResponse({ resource: preview }));
+      }
+      if (path.endsWith('/refund')) {
+        const response = options.onRefund?.(init);
+        return Promise.resolve(
+          response ?? jsonResponse({ resource: { refund: {} } }),
+        );
+      }
+      if (path.startsWith('/api/admin/credits/members?')) {
+        return Promise.resolve(
+          jsonResponse({
+            page: {
+              items: [member],
+              page: 1,
+              pageSize: 20,
+              total: 1,
+              totalPages: 1,
+            },
+          }),
+        );
+      }
+      if (path.startsWith('/api/admin/credits/members/')) {
+        return Promise.resolve(
+          jsonResponse({
+            member: { ...member, history: [], pendingIncreaseRequest: null },
+          }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+  }
+
+  async function openRefund() {
+    render(
+      <AppProviders>
+        <AdminCreditsPage />
+      </AppProviders>,
+    );
+    fireEvent.click(await screen.findByRole('button', { name: 'Ajuster' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Rembourser' }));
+  }
+
+  it('montre le calcul du serveur et n’offre aucune saisie de montant', async () => {
+    vi.stubGlobal('fetch', refundMock({}));
+
+    await openRefund();
+
+    // 40 crédits non consommés sur un pack de 100 à 19,00 € : 7,60 €. Le
+    // chiffre vient du serveur ; l'écran ne le recalcule pas.
+    expect(await screen.findByText(/7,60/)).toBeInTheDocument();
+    // Ciblé sur la ligne « Crédits repris » : « 40 » apparaît aussi dans le
+    // solde du membre, et l'assertion doit porter sur le chiffre du calcul.
+    expect(screen.getByText('Crédits repris').closest('div')).toHaveTextContent(
+      '40',
+    );
+
+    // Dans la section remboursement, le seul champ est la note : le montant
+    // n'y est saisissable nulle part. C'est la garde qui empêche qu'on
+    // « corrige » un jour le calcul à la main. (Le tiroir contient par
+    // ailleurs le formulaire d'ajustement, qui a son propre champ montant —
+    // d'où la restriction à cette section.)
+    const section = within(
+      screen.getByRole('region', { name: 'Remboursement volontaire' }),
+    );
+    expect(section.getAllByRole('textbox')).toHaveLength(1);
+    expect(
+      section.getByRole('textbox', { name: /Note facultative/ }),
+    ).toBeInTheDocument();
+    expect(section.queryByRole('spinbutton')).not.toBeInTheDocument();
+  });
+
+  it('envoie le jeton de l’aperçu avec la confirmation', async () => {
+    let sent: unknown;
+    vi.stubGlobal(
+      'fetch',
+      refundMock({
+        onRefund: (init) => {
+          sent = JSON.parse(String(init?.body));
+          return undefined;
+        },
+      }),
+    );
+
+    await openRefund();
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Confirmer le remboursement' }),
+    );
+
+    // Sans ce jeton, le serveur ne peut pas savoir que l'administrateur a
+    // approuvé CE montant-là et pas un autre.
+    await waitFor(() => expect(sent).toEqual({ expectedRemainingOnLot: '40' }));
+  });
+
+  it('ne prétend jamais avoir remboursé quand le solde a bougé entre les deux temps', async () => {
+    vi.stubGlobal(
+      'fetch',
+      refundMock({
+        onRefund: () =>
+          jsonResponse(
+            {
+              error: {
+                code: 'PAYMENT_REFUND_PREVIEW_STALE',
+                message: 'Preview is stale.',
+              },
+            },
+            409,
+          ),
+      }),
+    );
+
+    await openRefund();
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Confirmer le remboursement' }),
+    );
+
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent(/Rien n’a été remboursé/);
+    expect(alert).toHaveTextContent(/calcul à jour/);
+  });
+
+  it('dit pourquoi un remboursement est refusé au lieu d’offrir zéro euro', async () => {
+    vi.stubGlobal(
+      'fetch',
+      refundMock({
+        preview: {
+          computation: null,
+          order: {
+            amountMinor: '1900',
+            createdAt: '2026-08-01T10:00:00.000Z',
+            currency: 'EUR',
+            fulfilledAt: '2026-08-01T10:00:05.000Z',
+            id: 'order-1',
+            learner: {
+              displayName: 'Apprenant',
+              email: 'learner@example.com',
+              userId: 'user-1',
+            },
+            packKey: 'pack-100',
+            refundedCredits: '0',
+            status: 'DISPUTED',
+            writtenOffCredits: '0',
+          },
+          refundable: false,
+          refusal: { code: 'UNDER_DISPUTE', message: 'Dispute open.' },
+        },
+      }),
+    );
+
+    await openRefund();
+
+    expect(await screen.findByText(/payer deux fois/)).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Confirmer le remboursement' }),
+    ).not.toBeInTheDocument();
   });
 });

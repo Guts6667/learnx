@@ -1,9 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
-import * as z from 'zod/mini';
 import { useCallback, useRef, useState } from 'react';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
+import { useObservedQuery } from '@/lib/observed-query';
 import {
   type BreakerStatus,
   correctionMonitoringResponseSchema,
@@ -29,43 +28,6 @@ export type {
 
 const ownCreditsKey = ['credits', 'own'] as const;
 const adminCreditsKey = ['admin', 'credits'] as const;
-
-/**
- * Lit une surface serveur en VÉRIFIANT sa forme au lieu de l'affirmer.
- *
- * Une réponse hors schéma devient une erreur de requête, donc un état
- * d'erreur visible — jamais un rendu partiel. Voir credits-contracts.ts pour
- * ce que cette bascule répare.
- */
-function useObservedQuery<Schema extends z.ZodMiniType>(
-  path: string,
-  queryKey: readonly unknown[],
-  schema: Schema,
-) {
-  return useQuery({
-    queryFn: async (): Promise<z.infer<Schema>> => {
-      const payload = await apiRequest<unknown>(path);
-      const parsed = z.safeParse(schema, payload);
-      if (!parsed.success) {
-        throw new Error(
-          `La réponse de ${path} ne correspond pas au contrat attendu. ` +
-            'Le serveur a probablement changé de forme sans que le client ' +
-            'suive : ' +
-            parsed.error.issues
-              .slice(0, 3)
-              .map(
-                (issue) =>
-                  `${issue.path.join('.') || '(racine)'} ${issue.message}`,
-              )
-              .join(' · '),
-        );
-      }
-      return parsed.data;
-    },
-    queryKey,
-    staleTime: 10_000,
-  });
-}
 
 export function useOwnCreditsQuery() {
   const result = useObservedQuery(

@@ -231,3 +231,52 @@
   flex-wrap: wrap;
   gap: var(--space-2);
 }
+
+/* Commandes et remboursements (V4.5-162). */
+.admin-orders {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.admin-order-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.admin-order-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-group);
+  background: var(--color-surface);
+}
+
+.admin-order-row > :first-child {
+  flex: 1 1 12rem;
+}
+
+/*
+ * Le montant remboursé est ce que l'administrateur approuve : il est le seul
+ * chiffre mis en avant, pour qu'on ne confirme pas en lisant la mauvaise ligne.
+ */
+.admin-refund-figures {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-group);
+}
+
+.admin-refund-figures dt {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.admin-refund-figures dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
