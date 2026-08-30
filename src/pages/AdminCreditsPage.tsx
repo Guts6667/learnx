@@ -14,6 +14,7 @@ import {
   type BreakerReason,
   type BreakerStatus,
   type CreditMemberSummary,
+  useAdminCorrectionBreakerEventsQuery,
   useAdminCorrectionBreakerReopenMutation,
   useAdminCreditAdjustmentMutation,
   useAdminCorrectionMonitoringQuery,
@@ -45,19 +46,38 @@ function value(amount: string, locale: 'en' | 'fr'): string {
  * à la place d'une absence de mesure est précisément le mensonge que cet écran
  * doit rendre impossible.
  */
+/**
+ * Une règle du coupe-circuit.
+ *
+ * Quand l'état est OPEN, `rates` vaut `NO_RATES` : le serveur ne re-mesure
+ * pas une fenêtre qui a bougé depuis le déclenchement. L'écran affichait donc
+ * « pas assez de données » précisément au moment où le chiffre compte
+ * (V4.5-193). Le relevé du déclenchement vit dans `trippedRates`, et n'existe
+ * que pour la règle qui a déclenché.
+ *
+ * Les trois phrases sont distinctes à dessein : « 12,4 % au déclenchement »,
+ * « non mesuré depuis le déclenchement » et « pas assez de données » ne disent
+ * pas la même chose, et les confondre ferait croire à une mesure absente là où
+ * il y a une mesure gelée.
+ */
 function BreakerRule({
+  isOpen,
   rate,
   reason,
   threshold,
   tripped,
+  trippedRate,
 }: {
+  isOpen: boolean;
   rate: number | null;
   reason: string;
   threshold: number;
   tripped: boolean;
+  trippedRate: number | null;
 }) {
   const { t } = useI18n();
-  const crossed = rate !== null && rate > threshold;
+  const shown = isOpen ? trippedRate : rate;
+  const crossed = shown !== null && shown > threshold;
   return (
     <div className="admin-breaker-rule">
       <dt>{reason}</dt>
@@ -65,10 +85,15 @@ function BreakerRule({
         <span
           className={crossed ? 'admin-breaker-rule__rate--crossed' : undefined}
         >
-          {rate === null
-            ? t('admin.breaker.rateUnknown')
-            : `${(rate * 100).toFixed(1)} %`}
+          {shown !== null
+            ? `${(shown * 100).toFixed(1)} %`
+            : isOpen
+              ? t('admin.breaker.rateNotMeasuredSinceTrip')
+              : t('admin.breaker.rateUnknown')}
         </span>
+        {shown !== null && isOpen ? (
+          <span className="ui-text-muted"> {t('admin.breaker.atTrip')}</span>
+        ) : null}
         <span className="ui-text-muted">
           {' '}
           {t('admin.breaker.threshold', {
@@ -81,6 +106,102 @@ function BreakerRule({
           </span>
         ) : null}
       </dd>
+    </div>
+  );
+}
+
+/**
+ * Le journal du coupe-circuit (V4.5-193).
+ *
+ * L'état courant dit qu'un garde-fou est ouvert. Le journal dit quand il a
+ * déclenché, sur quel chiffre, si le propriétaire a été prévenu, et qui a
+ * rouvert la fois d'avant — un état sans historique ne peut pas répondre à
+ * « est-ce déjà arrivé ».
+ *
+ * `alertError` non nul est traité comme un état à traiter et non comme un
+ * détail de journalisation : le coupe-circuit a bien déclenché, mais personne
+ * n'a été prévenu. C'est la seule ligne du journal sur laquelle il reste
+ * quelque chose à faire.
+ */
+function BreakerHistory() {
+  const { locale, t } = useI18n();
+  const events = useAdminCorrectionBreakerEventsQuery();
+
+  if (events.isPending) return <Skeleton className="h-24" />;
+  if (events.error) {
+    return (
+      <ErrorState
+        action={
+          <Button onClick={() => void events.retry()} variant="secondary">
+            {t('common.retry')}
+          </Button>
+        }
+        description={t('admin.breaker.historyError')}
+      />
+    );
+  }
+  if (!events.data || events.data.length === 0) {
+    return (
+      <p className="ui-text-muted text-sm">{t('admin.breaker.historyEmpty')}</p>
+    );
+  }
+
+  return (
+    <div className="admin-breaker-history">
+      <h3 className="font-medium">{t('admin.breaker.historyTitle')}</h3>
+      <ol>
+        {events.data.map((event) => (
+          <li key={event.id}>
+            <p>
+              <strong>
+                {t(
+                  event.kind === 'TRIPPED'
+                    ? 'admin.breaker.eventTripped'
+                    : 'admin.breaker.eventReopened',
+                )}
+              </strong>{' '}
+              <span className="ui-text-muted">
+                {formatLocalizedDate(event.at, locale, {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}
+              </span>
+            </p>
+            {event.kind === 'TRIPPED' && event.rate !== null ? (
+              <p className="ui-text-muted text-sm">
+                {t('admin.breaker.eventRate', {
+                  rate: (event.rate * 100).toFixed(1),
+                  threshold:
+                    event.threshold === null
+                      ? '—'
+                      : (event.threshold * 100).toFixed(0),
+                })}
+              </p>
+            ) : null}
+            {event.actorName ? (
+              <p className="ui-text-muted text-sm">
+                {t('admin.breaker.eventActor', { name: event.actorName })}
+              </p>
+            ) : null}
+            {event.note ? <p className="text-sm">{event.note}</p> : null}
+            {event.kind === 'TRIPPED' ? (
+              event.alertError === null ? (
+                event.alertedAt === null ? null : (
+                  <p className="ui-text-muted text-sm">
+                    {t('admin.breaker.eventAlerted')}
+                  </p>
+                )
+              ) : (
+                <p className="ui-text-danger text-sm" role="alert">
+                  {t('admin.breaker.eventAlertFailed', {
+                    reason: event.alertError,
+                  })}
+                </p>
+              )
+            ) : null}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
@@ -141,22 +262,28 @@ function BreakerPanel({ breaker }: { breaker: BreakerStatus }) {
 
       <dl className="admin-breaker-rules">
         <BreakerRule
+          isOpen={isOpen}
           rate={breaker.rates.wrongAtHigh}
           reason={reasonLabels.LEARNER_CONTRADICTION_AT_HIGH}
           threshold={breaker.thresholds.wrongAtHigh}
           tripped={isOpen}
+          trippedRate={breaker.trippedRates.wrongAtHigh}
         />
         <BreakerRule
+          isOpen={isOpen}
           rate={breaker.rates.checkerDisagreement}
           reason={reasonLabels.CHECKER_DISAGREEMENT}
           threshold={breaker.thresholds.checkerDisagreement}
           tripped={isOpen}
+          trippedRate={breaker.trippedRates.checkerDisagreement}
         />
         <BreakerRule
+          isOpen={isOpen}
           rate={breaker.rates.unusable}
           reason={reasonLabels.UNUSABLE_RATE}
           threshold={breaker.thresholds.unusable}
           tripped={isOpen}
+          trippedRate={breaker.trippedRates.unusable}
         />
       </dl>
 
@@ -215,6 +342,8 @@ function BreakerPanel({ breaker }: { breaker: BreakerStatus }) {
           </p>
         </div>
       ) : null}
+
+      <BreakerHistory />
     </section>
   );
 }

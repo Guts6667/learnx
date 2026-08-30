@@ -102,7 +102,39 @@ const breakerStatusSchema = z.object({
     wrongAtHigh: z.number(),
   }),
   trippedAt: z.nullable(z.string()),
+  /**
+   * Les taux relevés AU déclenchement, pour la règle qui a déclenché. Jamais
+   * re-mesurés : la fenêtre a bougé depuis. Quand le coupe-circuit est OPEN,
+   * `rates` vaut `NO_RATES` — l'écran dirait « pas assez de données »
+   * précisément au moment où le chiffre compte (V4.5-193). Les autres règles
+   * restent nulles plutôt que d'être remplies par une mesure d'aujourd'hui.
+   */
+  trippedRates: breakerRates,
   window: z.object({ observed: z.number(), size: z.number() }),
+});
+
+/**
+ * Le journal du coupe-circuit. Un état sans historique ne peut pas répondre à
+ * « est-ce déjà arrivé ». `alertError` non nul dit que le propriétaire n'a PAS
+ * été prévenu : c'est un état à traiter, pas un détail de journalisation.
+ */
+const breakerJournalEventSchema = z.object({
+  actorId: z.nullable(z.string()),
+  actorName: z.nullable(z.string()),
+  alertError: z.nullable(z.string()),
+  alertedAt: z.nullable(z.string()),
+  at: z.string(),
+  id: z.string(),
+  kind: z.enum(['REOPENED', 'TRIPPED']),
+  note: z.nullable(z.string()),
+  rate: z.nullable(z.number()),
+  reason: z.nullable(breakerReason),
+  threshold: z.nullable(z.number()),
+  windowSize: z.nullable(z.number()),
+});
+
+export const breakerEventsResponseSchema = z.object({
+  resource: z.object({ events: z.array(breakerJournalEventSchema) }),
 });
 
 export const correctionMonitoringSummarySchema = z.object({

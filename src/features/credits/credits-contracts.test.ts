@@ -25,6 +25,13 @@ const monitoring = {
     state: 'CLOSED',
     thresholds: { checkerDisagreement: 0.4, unusable: 0.05, wrongAtHigh: 0.1 },
     trippedAt: null,
+    // Nuls tant que rien n'a déclenché ; renseignés au déclenchement pour la
+    // seule règle en cause (V4.5-193).
+    trippedRates: {
+      checkerDisagreement: null,
+      unusable: null,
+      wrongAtHigh: null,
+    },
     window: { observed: 12, size: 50 },
   },
   checker: { disagreed: 2, unavailable: 1 },
