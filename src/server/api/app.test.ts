@@ -16,3 +16,42 @@ describe('consolidated Vercel API', () => {
     expect(response.headers.get('cache-control')).toBe('private, no-store');
   });
 });
+
+describe('routes publiques à travers l’application assemblée (V4.5-186)', () => {
+  it('laisse la capture de contacts publics répondre sans session', async () => {
+    // The landing funnel's only endpoint. A visitor has no account by
+    // definition, so a 401 here is the funnel closed. It answered 401 in
+    // production from the day it shipped, because a wildcard `requireUser`
+    // from an app mounted earlier reached every route mounted after it.
+    //
+    // The assertion is "not 401", deliberately. What the endpoint answers
+    // instead depends on configuration — 400 for a bad body where e-mail is
+    // configured, 503 where it is not, as in this test environment. Pinning a
+    // concrete code would tie this test to unrelated settings and hide the one
+    // property that matters: it is reached without a session.
+    const response = await apiApp.request('/api/public-leads', {
+      body: JSON.stringify({}),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+
+    expect(response.status).not.toBe(401);
+    await expect(response.json()).resolves.not.toMatchObject({
+      error: { code: 'AUTHENTICATION_REQUIRED' },
+    });
+  });
+
+  it('n’a pas ouvert les routes qui exigent une session', async () => {
+    // The fix is an ordering change; it must not have made anything public
+    // that was not.
+    const response = await apiApp.request('/api/today');
+
+    expect(response.status).toBe(401);
+  });
+
+  it('laisse la session d’authentification inchangée', async () => {
+    const response = await apiApp.request('/api/auth/session');
+
+    expect(response.status).toBe(200);
+  });
+});
