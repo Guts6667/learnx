@@ -191,13 +191,41 @@ dénominateur explicites :
 Le résumé conserve aussi coûts P50/P90 par appel et par correction (primaire +
 vérificateur), latences, et la distribution des confiances.
 
-## 6. Politique de gate v3
+## 6. Politique de gate v4
 
-Fichier : `benchmarks/ai-correction/regression/gate-policy.v3.json`, budgets
+Fichier : `benchmarks/ai-correction/regression/gate-policy.v4.json`, budgets
 entiers calculés à partir des dénominateurs réels du run (aucun seuil < 1/n).
 Seuils : contrat qualité §5. Le résumé produit `gateFailures[]` et
 `promotionEligible` ; un run avec un gate bloquant rouge ne peut pas mettre à
 jour `PROMOTED_*_IDENTITY.promotion.evidence`.
+
+`gate-policy.v3.json` reste sur disque, inchangé : les runs déjà payés ont été
+jugés sous cette version, et `benchmarks/**` est en ajout seul.
+
+**Ce que v4 change, et rien d'autre.** Le gate `evidence-hallucination` de v3
+nommait une métrique unique alors que la quantité en admet deux lectures. v4 les
+nomme séparément :
+
+| Gate | Type | Question |
+| --- | --- | --- |
+| `evidence-hallucination-delivered` | bloquant, budget 0 | une preuve inventée a-t-elle été **présentée** à un apprenant ? |
+| `evidence-hallucination-any-attempt` | surveillé, seuil 0,01 | le modèle en a-t-il inventé une, même dans une tentative rejetée ? |
+
+Le bloquant porte sur ce qui est présenté : c'est la formulation du contrat §5,
+et la raison d'être du vérificateur déterministe — une tentative rejetée
+n'atteint personne. Le surveillé mesure le travail que fournit le vérificateur,
+et c'est le chiffre qui bougerait le premier si le modèle se dégradait pendant
+que la garde tient encore.
+
+Le seuil surveillé de 0,01 est repris de `benchmark.v1.json`
+(`evidenceHallucinationMaximum`), seuil préexistant pour cette même quantité. Il
+n'a pas été calibré sur le run qui l'a mesurée pour la première fois — et il est
+rouge sur ce run (7,89 %), ce qui est le résultat honnête.
+
+Une convention choisie à l'exécution a été essayée puis retirée : un commutateur
+qui change le sens d'un gate fait dire à la même clé des choses différentes
+d'un run à l'autre. Deux métriques, deux noms, un choix inscrit dans la
+politique.
 
 Jeu tenu à l'écart : 12 mutants régénérés par le runner ; leurs résultats sont
 rapportés séparément (`heldOutMutants`) et comptent dans les gates.

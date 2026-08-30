@@ -132,12 +132,6 @@ export function percentileOf(
  * purchased during analysis.
  */
 export async function analyseRunOffline(input: {
-  /**
-   * The delivered-attempt convention the run used. Omitting it leaves the
-   * evidence gate NOT_MEASURED rather than guessing a convention that changes
-   * the numerator.
-   */
-  gatePolicyV2?: boolean;
   gatePolicyPath: string;
   plan: RegressionRunPlan;
   resultsDirectory: string;
@@ -169,14 +163,7 @@ export async function analyseRunOffline(input: {
   // appended-injection mutants, and a placeholder would have thrown their
   // result away and understated what was bought.
   const security = {
-    ...computeRunSecurityRates({
-      attempts,
-      ...(input.gatePolicyV2 === undefined
-        ? {}
-        : { gatePolicyV2: input.gatePolicyV2 }),
-      observations,
-      plan: input.plan,
-    }),
+    ...computeRunSecurityRates({ attempts, observations, plan: input.plan }),
     eventualUnusableRuns: {
       denominator: cells.length,
       numerator: unusable.length,

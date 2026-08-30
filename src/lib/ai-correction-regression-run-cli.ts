@@ -50,7 +50,6 @@ import {
   deterministicPermutation,
   REGRESSION_MUTANT_GENERATOR_VERSION,
 } from './ai-correction-regression-mutants.js';
-import { getBenchmarkGatePolicyV2Thresholds } from './ai-correction-benchmark-configuration.js';
 import { analyseRunOffline } from './ai-correction-regression-analyse.js';
 import { renderRegressionReport } from './ai-correction-regression-report.js';
 import {
@@ -643,7 +642,7 @@ export async function runRegressionPool(input: {
 
   const policy = parseRegressionGatePolicy(
     JSON.parse(
-      await readFile(path.join(directory, 'gate-policy.v3.json'), 'utf8'),
+      await readFile(path.join(directory, 'gate-policy.v4.json'), 'utf8'),
     ) as unknown,
   );
 
@@ -1115,14 +1114,7 @@ export async function runRegressionPool(input: {
     mutants,
     scales: plan.scales,
   });
-  const security = computeRunSecurityRates({
-    attempts,
-    gatePolicyV2: Boolean(
-      getBenchmarkGatePolicyV2Thresholds(input.configuration.thresholds),
-    ),
-    observations,
-    plan,
-  });
+  const security = computeRunSecurityRates({ attempts, observations, plan });
   const evaluation = evaluateRegressionGates({
     metrics: { ...metrics, ...security },
     policy,
@@ -1825,12 +1817,6 @@ export function selectBoundingConvention(input: {
  */
 export async function runRegressionAnalysis(input: {
   arguments: string[];
-  /**
-   * The configuration the run used, which decides the delivered-attempt
-   * convention. Without it the evidence gate stays NOT_MEASURED rather than
-   * being counted under a convention nobody chose.
-   */
-  configuration?: CorrectionBenchmarkConfiguration;
   regressionDirectory?: string;
 }): Promise<{
   analysis: Awaited<ReturnType<typeof analyseRunOffline>>;
@@ -1883,37 +1869,8 @@ export async function runRegressionAnalysis(input: {
     responseTextByCaseId,
   });
 
-  // `--evidence-convention` overrides what the configuration implies, because
-  // the two conventions answer different questions and a reader is entitled to
-  // both. `delivered` counts what the learner actually received; `any` counts
-  // any attempt, including one the evidence guard rejected before a successful
-  // retry. With maxRetries: 1 in the promoted identity the gap between them is
-  // the guard's own work, and reporting only one of the two hides it.
-  const conventionArgument = readCliOption(
-    input.arguments,
-    'evidence-convention',
-  );
-  if (
-    conventionArgument !== undefined &&
-    conventionArgument !== 'delivered' &&
-    conventionArgument !== 'any'
-  ) {
-    throw new Error(
-      `REGRESSION_ANALYSE_EVIDENCE_CONVENTION_INVALID: ${conventionArgument} ; attendu « delivered » ou « any ».`,
-    );
-  }
-  const gatePolicyV2 =
-    conventionArgument === undefined
-      ? input.configuration
-        ? Boolean(
-            getBenchmarkGatePolicyV2Thresholds(input.configuration.thresholds),
-          )
-        : undefined
-      : conventionArgument === 'delivered';
-
   const analysis = await analyseRunOffline({
-    ...(gatePolicyV2 === undefined ? {} : { gatePolicyV2 }),
-    gatePolicyPath: path.join(directory, 'gate-policy.v3.json'),
+    gatePolicyPath: path.join(directory, 'gate-policy.v4.json'),
     plan: planRegressionRun({
       paraphrases: cache.paraphrases,
       pool,

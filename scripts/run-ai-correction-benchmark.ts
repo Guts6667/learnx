@@ -114,7 +114,6 @@ async function runAiCorrectionRegressionCli(
   if (arguments_.some((argument) => argument.startsWith('--analyse'))) {
     const { analysis, resultsDirectory } = await runRegressionAnalysis({
       arguments: arguments_,
-      configuration,
     });
     console.log(`Analyse hors ligne de ${resultsDirectory} — aucun appel.`);
     console.log(

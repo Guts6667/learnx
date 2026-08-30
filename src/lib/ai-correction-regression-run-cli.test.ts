@@ -48,8 +48,8 @@ const IDENTITIES = {
 async function scratchRegressionDirectory(): Promise<string> {
   const directory = await mkdtemp(path.join(tmpdir(), 'regression-run-'));
   await copyFile(
-    path.join(REGRESSION_SOURCE, 'gate-policy.v3.json'),
-    path.join(directory, 'gate-policy.v3.json'),
+    path.join(REGRESSION_SOURCE, 'gate-policy.v4.json'),
+    path.join(directory, 'gate-policy.v4.json'),
   );
   return directory;
 }
@@ -547,10 +547,14 @@ describe('--run-pool', () => {
     // mutation gate is red and the run cannot be eligible. The report says so
     // rather than implying success by omission.
     expect(outcome.evaluation?.promotionEligible).toBe(false);
-    // Every declared gate reaches the table. Since V4.5-127 the evidence gate
-    // is wired, so it is measured here rather than dropped as a policy error;
-    // a gate missing from the table is a gate nobody can see was skipped.
-    expect(outcome.evaluation?.gates.map((gate) => gate.metric)).toContain(
+    // Every declared gate reaches the table. Both evidence metrics are wired
+    // (V4.5-127), so both are measured here rather than dropped as policy
+    // errors; a gate missing from the table is a gate nobody can see was
+    // skipped, which is how this one survived a whole paid run.
+    const metrics = outcome.evaluation?.gates.map((gate) => gate.metric) ?? [];
+    expect(metrics).toContain('evidenceHallucinationDelivered');
+    expect(metrics).toContain('evidenceHallucinationAnyAttempt');
+    expect(outcome.evaluation?.policyErrors.join(' ')).not.toContain(
       'evidenceHallucination',
     );
     expect(outcome.report).toContain('**Promotion : refusée.**');

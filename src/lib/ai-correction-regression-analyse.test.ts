@@ -159,40 +159,43 @@ describe('evidence hallucination wiring (V4.5-127)', () => {
     cell({ attemptNumber: 2, caseId: 'a', status: 'VALID' }),
   ];
 
-  it('leaves the gate unmeasured when no convention is chosen', () => {
+  it('separates what was invented from what was presented', () => {
+    // One cell, two true statements: the model invented evidence, and no
+    // learner received it. A single metric had to pick one and silently lose
+    // the other; two named metrics keep both, and the policy — not a runtime
+    // switch — decides which one blocks.
     const rates = computeRunSecurityRates({
       attempts: rejectedThenRecovered,
       observations: [],
       plan,
     });
 
-    // Not a zero. A fabricated zero would read as a pass on a blocking gate.
-    expect(rates.evidenceHallucination.denominator).toBe(0);
-    expect(rates.evidenceHallucination.rate).toBeNull();
+    expect(rates.evidenceHallucinationAnyAttempt.numerator).toBe(1);
+    expect(rates.evidenceHallucinationDelivered.numerator).toBe(0);
+    expect(rates.evidenceHallucinationAnyAttempt.denominator).toBe(1);
+    expect(rates.evidenceHallucinationDelivered.denominator).toBe(1);
   });
 
-  it('counts a rejected first attempt under the any-attempt convention', () => {
+  it('counts a delivered invention against the blocking gate', () => {
+    // The case the blocking gate exists for: the guard did not catch it, so a
+    // learner was shown a quote that is not in their own text.
     const rates = computeRunSecurityRates({
-      attempts: rejectedThenRecovered,
-      gatePolicyV2: false,
+      attempts: [
+        {
+          attempt: 1,
+          candidateId: 'cand',
+          caseId: 'a',
+          repetition: 1,
+          status: 'VALID',
+          errorCode: 'MODEL_EVIDENCE_NOT_FOUND',
+        } as unknown as BenchmarkAttempt,
+      ],
       observations: [],
       plan,
     });
 
-    expect(rates.evidenceHallucination.numerator).toBe(1);
-    expect(rates.evidenceHallucination.denominator).toBe(1);
-  });
-
-  it('does not count it under the delivered convention, because nobody received it', () => {
-    const rates = computeRunSecurityRates({
-      attempts: rejectedThenRecovered,
-      gatePolicyV2: true,
-      observations: [],
-      plan,
-    });
-
-    expect(rates.evidenceHallucination.numerator).toBe(0);
-    expect(rates.evidenceHallucination.denominator).toBe(1);
+    expect(rates.evidenceHallucinationDelivered.numerator).toBe(0);
+    expect(rates.evidenceHallucinationAnyAttempt.numerator).toBe(1);
   });
 
   it('excludes incoherently numbered cells instead of renumbering them', () => {
@@ -204,12 +207,12 @@ describe('evidence hallucination wiring (V4.5-127)', () => {
         cell({ attemptNumber: 1, caseId: 'a', status: 'VALID' }),
         cell({ attemptNumber: 1, caseId: 'a', status: 'VALID' }),
       ],
-      gatePolicyV2: true,
       observations: [],
       plan,
     });
 
     expect(rates.malformedCells).toHaveLength(1);
-    expect(rates.evidenceHallucination.denominator).toBe(0);
+    expect(rates.evidenceHallucinationDelivered.denominator).toBe(0);
+    expect(rates.evidenceHallucinationAnyAttempt.denominator).toBe(0);
   });
 });
