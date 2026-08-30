@@ -98,9 +98,6 @@ interface SchemaObjectRow {
   kind: string;
 }
 
-/** Placeholder standing in for whichever schema a definition was read from. */
-const schemaPlaceholder = '<schema>';
-
 function assertQueryableSchema(schema: string): void {
   if (!/^[a-z_][a-z0-9_]*$/.test(schema)) {
     throw new Error(`Unsafe PostgreSQL schema name: ${schema}`);
