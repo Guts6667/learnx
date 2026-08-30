@@ -1,0 +1,160 @@
+name: Repair and certify SourceLab delivery
+
+on:
+  push:
+    branches:
+      - agent/sourcelab-programs
+    paths:
+      - .github/workflows/repair-sourcelab-delivery.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Enforce one-based resource positions
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const path = 'scripts/sourcelab-programs/lib.mjs';
+          const before = readFileSync(path, 'utf8');
+          const oldMapping = 'const resources = lesson.resources.map(makeResource);';
+          const fixedMapping = 'const resources = lesson.resources.map((resource, index) => makeResource(resource, index + 1));';
+          if (!before.includes(oldMapping) && !before.includes(fixedMapping)) {
+            throw new Error('Resource mapping anchor not found.');
+          }
+          writeFileSync(path, before.replace(oldMapping, fixedMapping), 'utf8');
+          NODE
+      - name: Ignore deterministic generated bundles in generic Prettier pass
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const path = '.prettierignore';
+          const entries = [
+            'content/sourcelab-ingenierie-production/',
+            'content/sourcelab-ia-rag/',
+            'seed/sourcelab-production-engineering-program.json',
+            'seed/sourcelab-ai-rag-program.json',
+          ];
+          const before = readFileSync(path, 'utf8').trimEnd();
+          const lines = new Set(before.split('\n'));
+          const missing = entries.filter((entry) => !lines.has(entry));
+          writeFileSync(path, `${before}\n${missing.join('\n')}${missing.length ? '\n' : ''}`, 'utf8');
+          NODE
+      - name: Format generator sources and integration points
+        run: |
+          pnpm exec prettier --write \
+            scripts/generate-sourcelab-programs.mjs \
+            scripts/sourcelab-programs/*.mjs \
+            prisma/seed.ts \
+            docs/INDEX.md \
+            package.json \
+            .prettierignore \
+            .github/workflows/integration.yml \
+            .github/workflows/materialize-sourcelab-programs.yml
+      - name: Materialize current bundles
+        run: node scripts/generate-sourcelab-programs.mjs
+      - name: Update explicit seed slug expectations when present
+        run: |
+          node --input-type=module <<'NODE'
+          import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const roots = ['prisma', 'scripts', 'src', 'tests'].filter((path) => {
+            try { return statSync(path).isDirectory(); } catch { return false; }
+          });
+          const files = [];
+          function walk(directory) {
+            for (const name of readdirSync(directory)) {
+              const path = join(directory, name);
+              const stat = statSync(path);
+              if (stat.isDirectory()) walk(path);
+              else if (/\.(test|spec)\.ts$/.test(name)) files.push(path);
+            }
+          }
+          roots.forEach(walk);
+          for (const path of files) {
+            const before = readFileSync(path, 'utf8');
+            if (!before.includes('getSelectedSeedSlugs') || !before.includes("'psychology-foundations-pilot'")) continue;
+            if (before.includes("'sourcelab-ingenierie-production'")) continue;
+            const after = before.replace(
+              /^(\s*)'psychology-foundations-pilot',\n/m,
+              (_, indent) => `${indent}'psychology-foundations-pilot',\n${indent}'sourcelab-ingenierie-production',\n${indent}'sourcelab-ia-rag',\n`,
+            );
+            if (after === before) throw new Error(`Unable to update seed slug expectation in ${path}`);
+            writeFileSync(path, after, 'utf8');
+            console.info(`Updated ${path}`);
+          }
+          NODE
+          pnpm exec prettier --write prisma/**/*.test.ts scripts/**/*.test.ts src/**/*.test.ts tests/**/*.test.ts 2>/dev/null || true
+      - name: Validate SourceLab bundles
+        run: pnpm content:sourcelab:check
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Unit and repository tests
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+      - name: Generic format check
+        run: pnpm format:check
+      - name: Write certification report
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const bundles = [
+            'seed/sourcelab-production-engineering-program.json',
+            'seed/sourcelab-ai-rag-program.json',
+          ].map((path) => JSON.parse(readFileSync(path, 'utf8')));
+          const rows = bundles.map((seed) => {
+            const lessons = seed.program.stages.flatMap((stage) => stage.modules.flatMap((module) => module.lessons));
+            const exercises = lessons.reduce(
+              (sum, lesson) => sum + lesson.tasks.filter((task) => ['writing', 'practice', 'reflection', 'project'].includes(task.type)).length,
+              0,
+            );
+            return {
+              title: seed.program.title,
+              status: seed.program.status,
+              stages: seed.program.stages.length,
+              lessons: lessons.length,
+              exercises,
+              quizzes: lessons.reduce((sum, lesson) => sum + lesson.quizzes.length, 0),
+              banks: seed.conceptAssessmentBanks.length,
+            };
+          });
+          const table = rows
+            .map((row) => `| ${row.title} | ${row.status} | ${row.stages} | ${row.lessons} | ${row.exercises} | ${row.quizzes} | ${row.banks} |`)
+            .join('\n');
+          const report = `# Validation des programmes SourceLab\n\nDate : 19 août 2026.\n\n| Programme | Statut | Étapes | Leçons | Exercices | Quiz | Banques de notion |\n| --- | --- | ---: | ---: | ---: | ---: | ---: |\n${table}\n\n## Matrice réussie sur ce commit\n\n- \`pnpm content:sourcelab:check\`\n- \`pnpm lint\`\n- \`pnpm typecheck\`\n- \`pnpm test\`\n- \`pnpm build\`\n- \`pnpm format:check\`\n\nLe contrôle SourceLab vérifie notamment les comptes, positions, URLs HTTPS, sources des blocs, relations de ressources, clés, séquences, quiz, banques de notions et enregistrement des seeds.\n\n## Porte éditoriale restante\n\nLes deux programmes restent volontairement en \`draft\`. Une revue humaine doit encore rouvrir les liens, confirmer les versions et localisateurs, relire les formulations et approuver les choix pédagogiques avant publication. SourceLab reste un projet autonome : aucun accès direct à la base LearnX et aucun code du projet fil rouge dans ce dépôt.\n`;
+          writeFileSync('docs/SOURCELAB_PROGRAM_VALIDATION.md', report, 'utf8');
+          NODE
+          pnpm exec prettier --write docs/SOURCELAB_PROGRAM_VALIDATION.md
+      - name: Remove one-shot workflows and marker
+        run: |
+          rm -f .github/workflows/finalize-sourcelab-programs.yml
+          rm -f .github/workflows/fix-materialize-sourcelab-programs.yml
+          rm -f .github/workflows/cleanup-sourcelab-bootstrap.yml
+          rm -f .github/workflows/repair-sourcelab-delivery.yml
+          rm -f scripts/sourcelab-programs/MATERIALIZATION_VERSION
+          rm -rf .source-packages scripts/.sourcelab-payload
+      - name: Commit certified delivery
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "content(sourcelab): certify LearnX programs [skip ci]"
+          git push origin HEAD:${GITHUB_REF_NAME}
