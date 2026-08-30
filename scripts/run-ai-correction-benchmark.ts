@@ -171,8 +171,15 @@ async function runAiCorrectionRegressionCli(
       ? `Plan de régression écrit sans aucun appel : ${outcome.resultsDirectory}`
       : `Run de régression terminé : ${outcome.resultsDirectory}`,
   );
+  // A resume is judged against what the cap has left, not against the cap: the
+  // dispatch guard already carries the inherited spend, so printing the whole
+  // cap here would state a headroom the run does not have.
+  const capClause =
+    outcome.priorActualSpendUsd > 0
+      ? `plafond restant ${outcome.remainingCapUsd.toFixed(4)} USD (${outcome.preflight.supplierCostCapUsd} USD moins ${outcome.priorActualSpendUsd.toFixed(4)} USD déjà dépensés)`
+      : `plafond ${outcome.preflight.supplierCostCapUsd} USD`;
   console.log(
-    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; ${outcome.pendingCells} cellules à acheter ; borne totale ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous plafond ${outcome.preflight.supplierCostCapUsd} USD — ${outcome.fitsWithinCap ? 'tient dans le plafond' : 'NE TIENT PAS dans le plafond'}.`,
+    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; ${outcome.pendingCells} cellules à acheter ; borne totale ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous ${capClause} — ${outcome.fitsWithinCap ? 'tient dans le plafond' : 'NE TIENT PAS dans le plafond'}.`,
   );
   for (const refusal of outcome.paraphraseRefusals) {
     console.warn(`Paraphrase écartée — ${refusal.caseId} : ${refusal.reason}`);

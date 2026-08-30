@@ -83,6 +83,10 @@ export type RegressionRunOutcome = {
   estimatedPrimaryUsd: number;
   /** Cells this invocation will actually dispatch, after any resume. */
   pendingCells: number;
+  /** Spend inherited from a resumed directory, already seeded into the guard. */
+  priorActualSpendUsd: number;
+  /** Cap left for new work: the cap minus that inherited spend. */
+  remainingCapUsd: number;
   /** Whether that bound fits the authorised cap. Authoritative. */
   fitsWithinCap: boolean;
   evaluation?: RegressionGateEvaluation;
@@ -684,6 +688,19 @@ export async function runRegressionPool(input: {
       }),
     ),
   );
+  // Spend a resume inherits. The dispatch guard is seeded with it, so the cap
+  // left for new work is the cap minus this — and the drop order has to shrink
+  // the plan against that remainder, not against the whole cap. Judged against
+  // the whole cap it declares a plan affordable that the guard then refuses,
+  // which is how the 30 August top-up died: bound 3.3555 under a cap of 7,
+  // refused because 4.6854 was already spent.
+  const priorActualSpendUsd = resumedAttempts.reduce(
+    (total, attempt) =>
+      attempt.usage?.costSource === 'ACTUAL'
+        ? total + (attempt.usage.actualCostUsd ?? 0)
+        : total,
+    0,
+  );
 
   const measured = await readMeasuredCosts(directory);
   const conventionChoice = selectBoundingConvention({
@@ -805,8 +822,10 @@ export async function runRegressionPool(input: {
         promptCharactersPerCall: checkerPromptCharacters,
       })
     : 0;
+  // What this invocation may still spend, not what the run was ever allowed.
+  const remainingCapUsd = Math.max(0, supplierCostCapUsd - priorActualSpendUsd);
   const budgeted = applyDropOrder({
-    capUsd: supplierCostCapUsd,
+    capUsd: remainingCapUsd,
     paraphraseCostUsd,
     paraphrasesRequested: input.arguments.includes('--with-paraphrases'),
     passes: requestedPasses,
@@ -918,7 +937,9 @@ export async function runRegressionPool(input: {
         paraphrasesIncluded: budgeted.paraphrases,
         passes: passBreakdown,
         envelopeNote,
+        priorActualSpendUsd,
         profile,
+        remainingCapUsd,
         requestedCapUsd,
         supplierCostCapUsd,
       },
@@ -935,7 +956,7 @@ export async function runRegressionPool(input: {
   // first call, not during it.
   if (!dryRun && input.executeCandidate && !budgeted.fits) {
     throw new RegressionRunError(
-      `REGRESSION_RUN_EXCEEDS_CAP: borne ${budgeted.pricedUsd.toFixed(4)} USD > plafond ${supplierCostCapUsd} USD après application de l'ordre de retrait. Préflight écrit dans ${resultsDirectory}.`,
+      `REGRESSION_RUN_EXCEEDS_CAP: borne ${budgeted.pricedUsd.toFixed(4)} USD > plafond restant ${remainingCapUsd.toFixed(4)} USD (plafond ${supplierCostCapUsd} USD moins ${priorActualSpendUsd.toFixed(4)} USD déjà dépensés) après application de l'ordre de retrait. Préflight écrit dans ${resultsDirectory}.`,
     );
   }
 
@@ -952,6 +973,8 @@ export async function runRegressionPool(input: {
       plan,
       poolSha256,
       preflight,
+      priorActualSpendUsd,
+      remainingCapUsd,
       resultsDirectory,
       runStartedAt,
     };
@@ -1246,6 +1269,8 @@ export async function runRegressionPool(input: {
     plan,
     poolSha256,
     preflight,
+    priorActualSpendUsd,
+    remainingCapUsd,
     report,
     resultsDirectory,
     runStartedAt,
