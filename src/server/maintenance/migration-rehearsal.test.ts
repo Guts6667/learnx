@@ -8,6 +8,7 @@ import {
   fingerprintSchemaObjects,
   migrationLedgerTable,
   normalizeSchemaReferences,
+  schemaObjectsQuery,
   parseMigrationRehearsalArguments,
   resolveAppliedMigrationChecksums,
   type MigrationRow,
@@ -250,5 +251,34 @@ describe('replayed schema equality', () => {
     const differences = diffSchemaFingerprints(migrated, []);
     expect(differences).toHaveLength(41);
     expect(differences.at(-1)).toBe('... and 20 further differences');
+  });
+});
+
+describe('schema fingerprint query', () => {
+  // The driver adapter rejects PostgreSQL `name` and `sql_identifier` columns
+  // with UnsupportedNativeDataType. Every projected column must therefore be
+  // cast, and only a real database catches it — hence this structural guard.
+  it('casts every projected column of every branch to text', () => {
+    const branches = schemaObjectsQuery('public').split('UNION ALL');
+    expect(branches).toHaveLength(4);
+    for (const branch of branches) {
+      expect(branch.match(/::text/g)?.length ?? 0).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('projects no bare identifier column', () => {
+    const query = schemaObjectsQuery('public');
+    expect(query).not.toMatch(/SELECT\s+'table'\s+AS/u);
+    expect(query).not.toMatch(/,\s*table_name\s+AS/u);
+    expect(query).not.toMatch(/,\s*indexdef\s/u);
+  });
+
+  it('refuses a schema name it cannot safely inline', () => {
+    expect(() => schemaObjectsQuery("public'; DROP SCHEMA public; --")).toThrow(
+      'Unsafe PostgreSQL schema name',
+    );
+    expect(() => schemaObjectsQuery('Public')).toThrow(
+      'Unsafe PostgreSQL schema name',
+    );
   });
 });

@@ -165,31 +165,43 @@ export function diffSchemaFingerprints(
     : differences;
 }
 
-function schemaObjectsQuery(schema: string): string {
+/**
+ * Every identifier column read here is a PostgreSQL `name` or
+ * `information_schema.sql_identifier`, not `text`. The Neon driver adapter
+ * refuses those with UnsupportedNativeDataType, so each returned column is cast
+ * explicitly — including the literal `kind`, which arrives as `unknown`.
+ */
+export function schemaObjectsQuery(schema: string): string {
   assertQueryableSchema(schema);
   const literal = `'${schema}'`;
   return `
-    SELECT 'table' AS kind, table_name AS identity, table_type AS definition
+    SELECT 'table'::text AS kind,
+           table_name::text AS identity,
+           table_type::text AS definition
       FROM information_schema.tables WHERE table_schema = ${literal}
     UNION ALL
-    SELECT 'column', table_name || '.' || column_name,
-           data_type
+    SELECT 'column'::text,
+           (table_name || '.' || column_name)::text,
+           (data_type
              || ' nullable=' || is_nullable
              || ' default=' || coalesce(column_default, '-')
              || ' length=' || coalesce(character_maximum_length::text, '-')
              || ' numeric=' || coalesce(numeric_precision::text, '-')
              || ',' || coalesce(numeric_scale::text, '-')
-             || ' position=' || ordinal_position::text
+             || ' position=' || ordinal_position::text)::text
       FROM information_schema.columns WHERE table_schema = ${literal}
     UNION ALL
-    SELECT 'constraint', rel.relname || '.' || con.conname,
-           pg_get_constraintdef(con.oid)
+    SELECT 'constraint'::text,
+           (rel.relname || '.' || con.conname)::text,
+           pg_get_constraintdef(con.oid)::text
       FROM pg_constraint con
       JOIN pg_class rel ON rel.oid = con.conrelid
       JOIN pg_namespace ns ON ns.oid = rel.relnamespace
      WHERE ns.nspname = ${literal}
     UNION ALL
-    SELECT 'index', tablename || '.' || indexname, indexdef
+    SELECT 'index'::text,
+           (tablename || '.' || indexname)::text,
+           indexdef::text
       FROM pg_indexes WHERE schemaname = ${literal}
   `;
 }
