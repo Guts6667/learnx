@@ -43,8 +43,23 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         options.saveProgramViewPreference ?? saveProgramViewPreference,
     });
 
-  app.use('*', options.authentication ?? requireUser);
-  app.use('*', requireCapability('learning.read'));
+  // Scoped to the routes this app serves, never `*`: a wildcard guard runs for
+  // every request reaching the app and so authenticates whatever is mounted
+  // after it (V4.5-186). A route missing from this list is unguarded, and
+  // `route-guards.test.ts` names it.
+  const guardedPaths = [
+    '/api/lessons/:lessonSlug',
+    '/api/modules/:moduleSlug',
+    '/api/programs',
+    '/api/programs/:programSlug',
+    '/api/programs/:programSlug/stages/:stageSlug',
+    '/api/programs/:programSlug/view-preference',
+  ] as const;
+
+  for (const path of guardedPaths) {
+    app.use(path, options.authentication ?? requireUser);
+    app.use(path, requireCapability('learning.read'));
+  }
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);

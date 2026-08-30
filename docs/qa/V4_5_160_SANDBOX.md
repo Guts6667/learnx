@@ -40,7 +40,7 @@ Ce qu'un enregistrement figé ne peut pas montrer :
    d'ADR_003 §6.3 est écrite d'après la documentation. Un nom d'événement
    inconnu est traité sans être appliqué, donc une divergence ne casse rien —
    elle laisse simplement des commandes bloquées, ce qu'il faut voir.
-3. **L'ordre et les reprises réels.** Combien de fois Revolut réessaie, à quel
+3. **L'ordre et les reprises réels.** Combien de fois Stripe réessaie, à quel
    rythme, et dans quel désordre.
 4. **Le retour de navigation.** Qu'il n'attribue rien, vérifié sur un vrai aller
    -retour et pas seulement par lecture du code.

@@ -9,10 +9,25 @@ describe('consolidated Vercel API', () => {
     await expect(response.json()).resolves.toEqual({ user: null });
   });
 
-  it('keeps unknown protected routes behind authentication', async () => {
+  it('answers 404 for a path the API does not serve (V4.5-187)', async () => {
+    // This assertion read 401 until V4.5-187, and that 401 was not a decision.
+    // Thirteen apps guarded `*`, so a wildcard `requireUser` matched any path
+    // at all — including paths no route serves — and answered before the router
+    // could conclude there was nothing there. The same leak closed the landing
+    // funnel for its entire life (V4.5-186); this test was pinning the other
+    // face of it.
+    //
+    // With the guards scoped to the routes their apps actually serve, an
+    // unserved path reaches the end of the router and 404 is the truthful
+    // answer. The change is deliberate and it is a real one: an anonymous
+    // caller can now tell "exists but needs a session" from "does not exist".
+    // That distinction was worth nothing here — the client bundle is public and
+    // already names every endpoint it calls, so a blanket 401 hid the API's
+    // shape from nobody while making it lie to authenticated callers who
+    // mistyped a path.
     const response = await apiApp.request('/api/unknown');
 
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(404);
     expect(response.headers.get('cache-control')).toBe('private, no-store');
   });
 });
