@@ -19,7 +19,7 @@
 | `LEARNX_PUBLIC_LEADS_ENABLED` | ✅ posée | absente | **sans effet**, voir ci-dessous | Rayan, confort |
 | `LEARNX_PAYMENTS_ENABLED` | absente | ✅ posée | **état voulu** | ne rien faire |
 | `STRIPE_LIVE_*` | absentes | absentes | **état voulu** | après GO packs |
-| `DATABASE_URL` / `DIRECT_URL` | ✅ posées, **28 jours** | ✅ posées | rotation **à faire** | Rayan, §2 |
+| `DATABASE_URL` / `DIRECT_URL` | ✅ posées, 28 jours | ✅ posées | **décision propriétaire : pas de rotation** | ne rien faire, §2 |
 
 ### Le piège : les deux drapeaux n'ont pas le même défaut
 
@@ -39,13 +39,22 @@ Un drapeau qui s'active par défaut et un drapeau qui se désactive par défaut
 dans le même produit est une source d'erreur permanente. À unifier un jour, sur
 un ticket dédié — pas dans une fenêtre de mise en production.
 
-## 2. Rotation des identifiants Neon — **à faire**
+## 2. Rotation des identifiants Neon — **décision propriétaire : abandonnée**
 
-`DATABASE_URL` et `DIRECT_URL` de Production datent de 28 jours et n'ont pas été
-tournés depuis l'incident du 30 août. C'est la dernière action de sécurité
-ouverte.
+Rayan a décidé le **31 août 2026 à 02 h 50** de ne pas tourner les identifiants
+de production. Les identifiants actuels sont conservés. Cette ligne n'est donc
+plus une action ouverte, et ne doit pas être réinscrite comme telle à la
+prochaine relecture.
 
-Procédure **« nouveau rôle d'abord »**, dans cet ordre exact :
+Ce que la décision suppose, écrit ici pour qu'elle reste révisable sur des faits
+plutôt que sur un souvenir : aucune fuite des chaînes de connexion de production
+n'a été constatée. L'incident du 30 août était une erreur de ciblage — un
+`DIRECT_URL` de fichier qui l'emportait sur la ligne de commande — et non une
+divulgation. La fuite du 30 août au soir concernait le mot de passe du compte de
+test `preview-test@learn-x.app`, déjà tourné, et jamais la base de production.
+
+Si l'une de ces deux suppositions cesse d'être vraie, la décision doit être
+reprise, et la procédure est celle-ci, dans cet ordre exact :
 
 1. créer un **nouveau rôle** dans Neon, sans toucher à l'ancien ;
 2. poser ses chaînes dans Vercel Production (`DATABASE_URL` poolée,
@@ -55,6 +64,19 @@ Procédure **« nouveau rôle d'abord »**, dans cet ordre exact :
 
 L'ordre est ce qui compte : réinitialiser d'abord couperait la production entre
 la révocation et le redéploiement.
+
+### Conséquence à traiter : un fichier qui décrit un rôle inexistant
+
+`~/.config/learnx/vercel-values.txt` contient, sous son en-tête PRODUCTION, les
+chaînes du **nouveau** rôle préparé pour cette rotation. Ce rôle n'a jamais été
+créé dans Neon — une tentative de lecture le 30 août a répondu
+`28P01 password authentication failed`.
+
+La rotation étant abandonnée, ces lignes décrivent désormais un rôle qui
+n'existera jamais, à côté d'un en-tête qui dit « PRODUCTION ». C'est exactement
+la forme d'ambiguïté qui a vidé la base : un fichier qui a l'air de nommer la
+production. **À supprimer ou à annoter** (Rayan), pour que personne — humain ou
+agent — ne les prenne un jour pour les identifiants en service.
 
 ## 3. `staging` — poussée, déploiement **non prouvé**
 
@@ -138,7 +160,8 @@ marqueur**, au moment où elle décide que le résultat doit être servi.
 
 **Rayan**
 
-- [ ] rotation des identifiants Neon (§2) — dernière action de sécurité ouverte ;
+- [x] rotation des identifiants Neon — **abandonnée**, décision du 31 août 02 h 50 (§2) ;
+- [ ] supprimer ou annoter les lignes PRODUCTION de `vercel-values.txt`, qui décrivent un rôle jamais créé (§2) ;
 - [ ] relever le commit servi par `staging` (§3), ou acter qu'elle n'est pas servie ;
 - [ ] remplacer `real-functions` par `Integration (required)` sur `main` à la promotion (§4) ;
 - [ ] décider si `Integration (required)` doit aussi devenir requise sur `dev`
