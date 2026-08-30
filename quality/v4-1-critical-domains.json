@@ -170,6 +170,8 @@
       "src/server/api/_lib/capabilities.ts",
       "src/server/api/_lib/program-access-policy.ts",
       "src/server/api/admin/access-request-routes.ts",
+      "src/server/api/admin/account-administration-service.ts",
+      "src/server/api/admin/account-erasure-service.ts",
       "src/server/api/admin/account-routes.ts",
       "src/server/api/admin/app.ts",
       "src/server/api/admin/curriculum-edit-routes.ts",
@@ -202,7 +204,7 @@
     "admin-authorization": [
       "^src/features/auth/AdminRoute\\.tsx$",
       "^src/server/api/_lib/(?:authorization|capabilities|program-access-policy)\\.ts$",
-      "^src/server/api/admin/(?:app|.+-routes)\\.ts$"
+      "^src/server/api/admin/(?:app|.+-routes|account-(?:administration|erasure)-service)\\.ts$"
     ]
   }
 }
