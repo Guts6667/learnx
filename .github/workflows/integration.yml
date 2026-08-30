@@ -9,28 +9,30 @@ on:
 permissions:
   contents: read
 
-# Each run creates a Neon branch against a project-wide quota that is shared by
-# every branch and every pull request. The group must therefore be GLOBAL, not
-# per-ref: keying it on the PR number or the ref gives each pull request its own
-# group, which serialises a pull request against itself and not at all against
-# the others. On 29 August 2026 four pull requests started within two minutes,
-# each created a branch, and the project hit its ten-branch ceiling — a 422 on
-# branch creation that reads like a database fault and is really a scheduling
-# one. One constant group means one Neon branch in flight at a time.
+# No concurrency group, deliberately, and the reason is worth keeping.
 #
-# Queued rather than cancelled: this workflow creates an external resource and
-# deletes it in an always() step, so cancelling a run mid-flight risks leaving
-# an orphaned branch behind and making the quota problem permanent. The cost is
-# a queue when several lanes are active; the alternative is a red pipeline.
-concurrency:
-  group: integration-neon-${{ github.repository }}
-  cancel-in-progress: false
+# This workflow creates one Neon branch per run against a project-wide ceiling,
+# so the constraint is "at most N branches in the project" — never "one run at a
+# time". Expressing it as a global concurrency group with
+# `cancel-in-progress: false` looked like queuing and was not: GitHub keeps
+# exactly ONE pending run per group, so every newly queued run cancels the one
+# already waiting. On 30 August 2026 seven of ten Integration runs ended
+# `cancelled`, including the runs for two merges into `dev`, and nothing went
+# red — Integration is not a required check on `dev`, so the pipeline quietly
+# stopped testing while every report stayed green. A guard that fails silently
+# is worse than no guard, because it is believed.
+#
+# The waiting now happens inside the job, in "Wait for Neon branch capacity",
+# where it is visible in the log, cannot be cancelled by the next arrival, and
+# fails loudly if capacity never comes.
 
 jobs:
   real-functions:
     name: Integration (required)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Raised from 30: the job may now spend up to 15 minutes waiting for a free
+    # Neon branch before its own work starts.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
@@ -42,6 +44,12 @@ jobs:
       - name: Validate i18n catalogs
         run: pnpm i18n:check
       - run: pnpm exec playwright install --with-deps chromium webkit
+      - name: Wait for Neon branch capacity
+        run: pnpm exec tsx scripts/neon-wait-capacity.ts
+        env:
+          LEARNX_NEON_WAIT_MINUTES: '15'
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ vars.NEON_PROJECT_ID }}
       - name: Create isolated Neon branch
         id: neon
         uses: neondatabase/create-branch-action@fb620d43d4c565abaf088b848a4e28e5c4ea4d9c # v6
