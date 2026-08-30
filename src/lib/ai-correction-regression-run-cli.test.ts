@@ -765,6 +765,150 @@ describe('one convention, one verdict', () => {
   });
 });
 
+describe('the repetition pass dispatches at its offset', () => {
+  it('buys observation 2 on a resume, not observation 1 again', async () => {
+    // The 30 August top-up, third attempt. `repetitionOffset` reached
+    // `pendingCellsFor`, which correctly reported 24 cells owing at repetition
+    // 2, and never reached `runBenchmark`, which starts at 1. It dispatched 51
+    // attempts on cells already bought, added no new cell, and cost 1.1307 USD.
+    //
+    // Both halves of V4.5-127 were tested and both were right. Nothing tested
+    // the wire between them, so this test drives the whole CLI and looks at the
+    // repetitions actually dispatched.
+    const directory = await scratchRegressionDirectory();
+    const dispatchedRepetitions: number[] = [];
+    const recording = () => {
+      const inner = fakeExecutor();
+      return async (call: Parameters<ReturnType<typeof fakeExecutor>>[0]) => {
+        dispatchedRepetitions.push(
+          (call as unknown as { repetition: number }).repetition,
+        );
+        return inner(call);
+      };
+    };
+
+    const first = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=reduced',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: recording(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T07:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    // Production's starting state, reproduced: a directory holding repetition 1
+    // and nothing else. Resuming a run that already bought every repetition
+    // leaves nothing to dispatch, and an assertion over an empty list passes
+    // whether the offset is wired or not — that is exactly the vacuous test
+    // that let this defect reach a paid run.
+    const firstAttempts = JSON.parse(
+      await readFile(
+        path.join(first.resultsDirectory, 'attempts.json'),
+        'utf8',
+      ),
+    ) as { repetition: number }[];
+    await writeFile(
+      path.join(first.resultsDirectory, 'attempts.json'),
+      `${JSON.stringify(
+        firstAttempts.filter((attempt) => attempt.repetition === 1),
+        null,
+        2,
+      )}\n`,
+    );
+
+    dispatchedRepetitions.length = 0;
+    const resumed = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=reduced',
+        '--supplier-cost-cap-usd=100',
+        `--resume=${first.resultsDirectory}`,
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: recording(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T07:30:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    // It must buy something, or the assertion below is vacuous.
+    expect(dispatchedRepetitions.length).toBeGreaterThan(0);
+    // None of it may be repetition 1: the pool pass bought that.
+    expect(dispatchedRepetitions).not.toContain(1);
+    // And it must buy everything the preflight said it owed. Without the offset
+    // reaching the runner, the runner iterates from 1 and the pending cells at
+    // the offset are simply never reached — the pass dispatches short, or in
+    // production, where the budget had reduced it to a single repetition, not
+    // at all. Counting what was bought against what was owed is what catches
+    // that; asserting only "never repetition 1" passes on a pass that buys
+    // nothing.
+    expect(dispatchedRepetitions.length).toBe(resumed.pendingCells);
+    // Drives the whole CLI twice over the 380-unit pool, like the heavier tests
+    // above it. The default 5 s is a limit on this file's fast unit tests, not
+    // a budget this one was ever inside.
+  }, 60_000);
+});
+
+describe('overlapping passes carry a resumed attempt once', () => {
+  it('carries a resumed attempt forward once, not once per overlapping pass', async () => {
+    // The repetition pass draws its cases from the pool pass, so both carried
+    // the same resumed attempts forward and both pushed them. On 30 August that
+    // wrote the 24 subset cases twice into attempts.json and the ledger, and
+    // the ledger read 5.8161 USD where 4.6854 had been charged — money the
+    // envelope would then have refused a later run over.
+    const directory = await scratchRegressionDirectory();
+    const first = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=reduced',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T08:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    const resumed = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=reduced',
+        '--supplier-cost-cap-usd=100',
+        `--resume=${first.resultsDirectory}`,
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: fakeExecutor(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-29T08:30:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    const persisted = JSON.parse(
+      await readFile(
+        path.join(resumed.resultsDirectory, 'attempts.json'),
+        'utf8',
+      ),
+    ) as unknown[];
+    const distinct = new Set(persisted.map((item) => JSON.stringify(item)));
+
+    expect(persisted.length).toBe(distinct.size);
+    expect(persisted.length).toBe(first.attempts.length);
+  }, 60_000);
+});
+
 describe('a resume is priced against what the cap has left', () => {
   async function measuredDirectoryWithPriorSpend(
     priorSpendUsd: number,
