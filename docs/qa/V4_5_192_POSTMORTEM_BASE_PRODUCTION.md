@@ -98,10 +98,27 @@ Neon n'est faite sans accord nominatif.
 
 ## Procédure preview réécrite
 
-La règle est mécanique.
+La règle est mécanique, et depuis le 30 août elle est outillée.
 
-**Jamais de surcharge partielle d'environnement.** Une commande Prisma visant
-une base autre que celle du `.env` courant pose les deux variables, ou aucune.
+**Toute commande base passe par `pnpm db:target`** (`scripts/db-target.ts`,
+livré par la voie A, commit `8425e3f4`).
+
+```bash
+pnpm db:target -- --url '<chaîne de connexion de la cible>' migrate-deploy --yes
+pnpm db:target -- --url '<chaîne de connexion de la cible>' seed-preview
+```
+
+L'enveloppeur ferme les trois portes de l'incident. Il n'importe délibérément
+pas `dotenv/config` : lire un `.env` était exactement la faute. Il pose
+`DATABASE_URL` **et** `DIRECT_URL` depuis la même `--url`, ce qui supprime la
+question de la précédence. Il refuse de démarrer sans `--url`, une cible omise
+signifiant « ce que le shell contient ». Et il refuse tout hôte protégé, ainsi
+que tout `.env` local qui en nomme un, la liste vivant dans
+`quality/protected-db-hosts.json` — où figure aujourd'hui l'hôte de production.
+
+Le principe sous-jacent reste vrai si l'on doit un jour s'en passer : **poser
+les deux variables, ou aucune, jamais une seule**, et repartir d'un
+environnement vide.
 
 ```bash
 env -i PATH="$PATH" HOME="$HOME" \
@@ -110,21 +127,15 @@ env -i PATH="$PATH" HOME="$HOME" \
   pnpm prisma migrate deploy
 ```
 
-`env -i` repart d'un environnement vide, ce qui empêche le `.env` du worktree
-de fournir la variable qu'on a oublié de poser. Poser les deux variables
-supprime la question de la précédence.
-
-La voie A livre un enveloppeur qui applique cette règle et refuse de démarrer
-si les deux variables désignent des hôtes différents. **Tant qu'il n'est pas
-disponible, aucune opération n'est menée sur la branche Neon `preview`**, qui
-existe aujourd'hui vide et sans migration appliquée.
+La branche Neon `preview` existe, vide et sans migration appliquée. Elle peut
+désormais être migrée et semée, l'enveloppeur étant disponible.
 
 ## Actions préventives
 
 | # | Action | Propriétaire |
 | --- | --- | --- |
-| 1 | Enveloppeur de commande Prisma refusant une cible ambiguë ou partielle | voie A |
-| 2 | Garde dans `prisma.config.ts` : échouer si `DATABASE_URL` et `DIRECT_URL` désignent des hôtes différents, plutôt que de préférer silencieusement l'une des deux | à attribuer — le fichier n'appartient à aucune voie |
+| 1 | Enveloppeur de commande Prisma refusant une cible ambiguë ou partielle | voie A — **fait**, `pnpm db:target`, commit `8425e3f4` |
+| 2 | Garde dans `prisma.config.ts` : échouer si `DATABASE_URL` et `DIRECT_URL` désignent des hôtes différents, plutôt que de préférer silencieusement l'une des deux | à attribuer — le fichier n'appartient à aucune voie. L'enveloppeur protège le chemin outillé ; cette garde protège un `pnpm prisma` tapé à la main |
 | 3 | Retirer les identifiants de production des `.env` des worktrees de travail | Propriétaire |
 | 4 | Décision de rétention sur `production_old_*` | Propriétaire |
 | 5 | Réexaminer la fenêtre de six heures, seule défense en profondeur du projet (V4.5-176) | Propriétaire |
