@@ -681,3 +681,14 @@ l'autorisation.
   (`owner-125-budget-2026-08-30`) ; protection Vercel Preview désactivée ;
   `LEARNX_PAYMENTS_ENABLED=true` en Preview.
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+- V4.5-186 : hotfix main #108 mergé sur GO Rayan (`194e57e9`, 11 h 24 UTC) ;
+  production vérifiée (`POST /api/public-leads` → 400) ; carte `REVIEW`
+  jusqu'à l'inscription réelle de Rayan et la restauration du check.
+  V4.5-187 `DONE` (`4d884485`, route inconnue ⇒ 404 consigné) ; V4.5-188
+  `DONE` (`c6d5ff2e`, deux causes) ; V4.5-183 `DONE` (`a4932bb3`) ;
+  V4.5-165 partie paiement (`1e5c0a4b`, E4 à trancher) ; V4.5-189, 190, 191
+  créés ; 162 rouvert (162B).
+- Incident Preview (base injoignable) attribué à la voie D + Rayan ; consigne
+  corrigée en cours de route : branche `preview` vide, jamais clonée depuis
+  production (arrêt demandé par la voie A).
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
