@@ -1,9 +1,9 @@
 # V4.5-160 / 184 — passe en mode test Stripe
 
-**Statut** : étape 1 jouée le 30 août 2026 — transport et signature prouvés sur
-une livraison Stripe authentique (voir plus bas). L'étape 2, l'achat réel, reste
-à jouer : tant qu'elle ne l'est pas, **l'attribution des crédits n'a jamais été
-exercée de bout en bout** et E4 reste ouvert.
+**Statut** : passe jouée le 30 août 2026, étapes 1 à 3. L'attribution des
+crédits a été exercée de bout en bout pour la première fois, et E4 est mesuré.
+Un écart demeure, hors du récepteur : un remboursement émis depuis le tableau
+de bord du fournisseur ne rend pas les crédits (étape 3, V4.5-203).
 
 ## Ce que cette passe doit établir en premier
 
@@ -112,9 +112,73 @@ Conséquence à retenir : **une erreur avant `recordEvent` ne laisse aucune
 trace en base.** La reprise de Stripe est le seul filet, et le diagnostic passe
 alors par les journaux applicatifs, pas par `payment_events`.
 
-### Étape 2 — ce qui reste à faire
+## Étape 2 — achat réel (30 août 2026)
 
-Un achat réel depuis le compte d'aperçu, seul moyen d'exercer l'attribution,
-le retour de navigation, et de répondre à E4 (§ audit RGPD) — voir ci-dessous.
-À jouer sur un aperçu portant V4.5-198, pour que la colonne `outcome` dise la
-vérité sur la première commande réelle.
+**Passée.** Deuxième Checkout réel, carte de test `4242`, adresse saisie, sur
+un aperçu portant V4.5-198 et V4.5-202. Lu en base d'aperçu, pas déduit :
+
+| | |
+| --- | --- |
+| `checkout.session.completed` | 17:49:29 UTC, `outcome` **`applied`** |
+| commande `c725ed24` | **`fulfilled`**, `provider_payment_intent_id` renseigné |
+| `credit_lots` | provenance `purchased`, 10/10, référence `PAYMENT_ORDER` |
+| `credit_ledger_entries` | une écriture `grant` `purchased` de 10 |
+
+**C'est la première attribution de crédits réellement exercée du projet.**
+Jusqu'ici le chemin `PAID → FULFILLED` n'avait jamais été parcouru par une
+livraison authentique — il était couvert par des tests et par rien d'autre.
+
+Le premier achat, lui, avait échoué : V4.5-202 (l'adaptateur envoyait notre
+identifiant de commande et le récepteur le cherchait dans la colonne de
+l'identifiant fournisseur, donc aucune commande n'était jamais retrouvée).
+
+**Un renvoi ne répare pas une commande ratée**, et c'est voulu. Rejouer
+l'événement du 17:11 après le correctif n'a rien produit : même identifiant
+d'événement, donc `DUPLICATE`, par la garantie d'idempotence même. Un
+événement mal enregistré ne peut pas être rejoué contre du code corrigé ;
+seule une **nouvelle session** le peut. Les trois commandes antérieures
+restent `pending` et leurs sessions expireront — ce qui donnera l'occasion
+d'observer `checkout.session.expired`.
+
+## Étape 3 — remboursement (30 août 2026)
+
+**Passée, et elle a mis au jour un écart de conception.** Remboursement émis
+depuis le tableau de bord Stripe :
+
+| | |
+| --- | --- |
+| `charge.refunded` | 17:53:38 UTC, `outcome` **`applied`** |
+| commande `c725ed24` | **`refunded`** |
+| `refunded_credits` | **0** |
+| lot de crédits | toujours **10/10**, aucune écriture `REFUND` |
+
+La résolution par intention de paiement fonctionne : l'événement a retrouvé sa
+commande alors qu'un remboursement ne porte ni référence ni identifiant de
+session. C'est exactement ce que V4.5-202 rendait possible.
+
+Mais **l'argent est rendu et les crédits restent**. Ce n'est pas un défaut du
+récepteur : l'écriture compensatoire appartient au parcours d'administration
+(`voluntaryRefundMinor`, ADR_004 §7bis), et le registre de crédits n'est
+jamais réécrit. Le récepteur fait donc ce que l'ADR décrit. L'écart est que
+**rien n'empêche un remboursement côté fournisseur**, et qu'un remboursement
+émis là ne déclenche aucune compensation.
+
+Tranché par le Propriétaire sous **V4.5-203** : soit compenser
+automatiquement sur `charge.refunded`, soit poser la règle d'exploitation
+« ne jamais rembourser depuis le tableau de bord ». Une règle d'exploitation
+non outillée reste un écart, ce qui est le sens de la ligne ci-dessus.
+
+## Ce que la passe a établi en tout
+
+1. **Transport et signature** (étape 1) — prouvés contre le fournisseur.
+2. **Vocabulaire** — `checkout.session.completed` et `charge.refunded`
+   observés, tous deux dans `STRIPE_EVENT_STATUS`.
+3. **Attribution** (étape 2) — exercée de bout en bout, une seule fois, sans
+   double crédit.
+4. **Résolution sur tout le cycle de vie** (étape 3) — par intention de
+   paiement, sur un événement qui ne porte rien d'autre.
+
+Restent non observés : l'ordre et le rythme réels des reprises de Stripe, le
+cas de plusieurs signatures `v1` pendant une rotation de secret, et
+`checkout.session.expired` — attendu sans action de notre part quand les trois
+commandes en attente arriveront à échéance.
