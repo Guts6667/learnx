@@ -143,6 +143,30 @@ la migration.
 9. Répéter un rollback vers `a02ecc3f…`, puis restaurer la preview candidate.
 10. Enregistrer preuves, divergences et décision propriétaire.
 
+## Gate visuel : ratio et plancher absolu
+
+La comparaison de captures cumule deux plafonds, et Playwright retient le plus
+strict des deux (`Math.min`).
+
+- `maxDiffPixelRatio: 0.0005` suit l'aire de la capture. Il gouverne les
+  petites captures.
+- `maxDiffPixels: 300` est un plancher absolu. Il gouverne les grandes.
+
+Le ratio seul rendait le gate d'autant plus aveugle que la page est longue.
+Mesuré sur les références versionnées : `landing.png` en desktop-1440 fait
+1440x4146, donc le ratio y tolérait 2 985 pixels différents — davantage qu'un
+lien de pied de page entier, de l'ordre de 2 000 pixels — quand la plus petite
+capture n'en tolérait que 164. Un facteur dix-huit d'écart de sévérité, décidé
+par la seule hauteur de page.
+
+Le symptôme observé sur V4.5-167 : l'ajout du lien « Confidentialité » au pied
+de la landing ne faisait rougir que `mobile-390`. Desktop et tablette
+absorbaient le changement sans rien signaler.
+
+Le plancher ne peut que resserrer : il ne relâche jamais ce que le ratio
+interdit déjà. Toute modification de ces deux valeurs se justifie par écrit
+dans la revue, jamais par réflexe pour faire passer une suite rouge.
+
 ## Budgets
 
 - JavaScript initial ≤ 125 kB gzip ;

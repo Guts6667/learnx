@@ -39,7 +39,21 @@ export default defineConfig({
       // tight or a palette change hides in it — accent-coloured pixels are a
       // small fraction of a full-page capture.
       threshold: 0.01,
+      // A ratio alone scales the tolerance with the page, so the gate is
+      // weakest exactly where pages are longest and carry the most content.
+      // Measured on the committed baselines: `landing.png` at desktop-1440 is
+      // 1440x4146, so 0.0005 tolerated 2985 differing pixels — more than an
+      // entire footer link — while the smallest capture tolerated only 164.
+      // An eighteen-fold spread in strictness, decided by nothing but height.
+      //
+      // Playwright takes `Math.min` of the two ceilings, so the absolute floor
+      // can only tighten and never loosens what the ratio already forbids: the
+      // ratio still governs small captures, and this caps tall ones. Three
+      // hundred pixels is below any block of text — a footer link is of the
+      // order of two thousand — and far above the per-pixel noise `threshold`
+      // already absorbs on a fixed Linux runner.
       maxDiffPixelRatio: 0.0005,
+      maxDiffPixels: 300,
       scale: 'css',
     },
   },
