@@ -5,6 +5,11 @@ import { gzipSync } from 'node:zlib';
 interface BundleBaseline {
   bundle: {
     asyncChunk: RegressionBudget & {
+      exempt?: {
+        filePrefixes: string[];
+        maxGzipBytes: number;
+        reason: string;
+      };
       maiaFoundationObservedMaxGzipBytes?: number;
       observedMaxGzipBytes: number;
     };
@@ -206,7 +211,24 @@ const initialJavaScriptTotal = totalGzipBytes(initialJavaScriptAssets);
 const initialCssTotal = totalGzipBytes(initialCssAssets);
 const totalJavaScript = totalGzipBytes(totalJavaScriptAssets);
 const totalCss = totalGzipBytes(totalCssAssets);
-const largestAsyncJavaScript = [...asyncJavaScriptAssets].sort(
+// A chunk may be exempt from the route budget without being unmeasured: the
+// exemption exists because the budget below asks "is a route getting fat?",
+// and a chunk that is not a route cannot answer it. Exempt chunks get their
+// own explicit ceiling instead, so the exemption is a different question, not
+// the absence of one.
+const exemptAsyncChunks = baseline.bundle.asyncChunk.exempt;
+const isExempt = (file: string): boolean =>
+  (exemptAsyncChunks?.filePrefixes ?? []).some((prefix) =>
+    file.split(sep).pop()?.startsWith(prefix),
+  );
+
+const routeAsyncJavaScriptAssets = asyncJavaScriptAssets.filter(
+  (asset) => !isExempt(asset.path),
+);
+const exemptAsyncJavaScriptAssets = asyncJavaScriptAssets.filter((asset) =>
+  isExempt(asset.path),
+);
+const largestAsyncJavaScript = [...routeAsyncJavaScriptAssets].sort(
   (left, right) => right.gzipBytes - left.gzipBytes,
 )[0];
 const pwaPrecache = measurePwaPrecache();
@@ -247,6 +269,11 @@ console.log(
 console.log(
   `Largest lazy JavaScript: ${largestAsyncJavaScript?.gzipBytes ?? 0}/${asyncChunkBudget} bytes gzip`,
 );
+for (const asset of exemptAsyncJavaScriptAssets) {
+  console.log(
+    `Exempt lazy JavaScript: ${asset.path} ${asset.gzipBytes}/${exemptAsyncChunks?.maxGzipBytes ?? 0} bytes gzip`,
+  );
+}
 console.log(`PWA precache entries: ${pwaPrecache.entries}/${pwaEntryBudget}`);
 console.log(`PWA precache bytes: ${pwaPrecache.bytes}/${pwaByteBudget}`);
 
@@ -265,6 +292,13 @@ if ((largestAsyncJavaScript?.gzipBytes ?? 0) > asyncChunkBudget) {
   failures.push(
     `Largest lazy JavaScript chunk exceeds its regression budget by ${(largestAsyncJavaScript?.gzipBytes ?? 0) - asyncChunkBudget} bytes.`,
   );
+}
+for (const asset of exemptAsyncJavaScriptAssets) {
+  if (asset.gzipBytes > (exemptAsyncChunks?.maxGzipBytes ?? 0)) {
+    failures.push(
+      `Exempt lazy chunk ${asset.path} exceeds its own ceiling by ${asset.gzipBytes - (exemptAsyncChunks?.maxGzipBytes ?? 0)} bytes.`,
+    );
+  }
 }
 if (pwaPrecache.entries > pwaEntryBudget) {
   failures.push(
