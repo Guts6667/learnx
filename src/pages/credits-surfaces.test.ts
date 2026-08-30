@@ -55,5 +55,12 @@ describe('V4-008 credit surfaces', () => {
     // Coming back from the payment page proves a session ended, not that the
     // credits exist: only a FULFILLED order lets the screen say they do.
     expect(learner).toContain("order?.status === 'FULFILLED'");
+
+    // And whether anything is on sale is read from the catalogue, not guessed
+    // and not learned from the failure of a purchase already offered
+    // (V4.5-207). The 503 stays read, for the sale that closes between the
+    // page load and the click.
+    expect(learner).toContain('paymentsEnabled === false');
+    expect(learner).toContain("checkout.refusal === 'PAYMENTS_DISABLED'");
   });
 });

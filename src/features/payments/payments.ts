@@ -150,7 +150,15 @@ export function useAdminPaymentRefundMutation() {
   return { conflict, dismissConflict, error, execute, isPending };
 }
 
-/** Le catalogue d'achat (V4.5-204), dans l'ordre où le serveur le rend. */
+/**
+ * Le catalogue d'achat (V4.5-204), dans l'ordre où le serveur le rend, avec
+ * l'état de la vente (V4.5-205).
+ *
+ * Les deux voyagent ensemble parce que l'écran a besoin des deux ensemble : un
+ * catalogue sans son état ne dit pas si ce qu'il montre est achetable, et
+ * l'écran devrait le deviner — en devinant « ouverte », donc en proposant un
+ * achat qui échoue.
+ */
 export function useCreditPacksQuery() {
   const result = useObservedQuery(
     '/api/credits/packs',
@@ -158,7 +166,7 @@ export function useCreditPacksQuery() {
     creditPacksResponseSchema,
   );
   return {
-    data: result.data?.packs,
+    data: result.data,
     error: result.error,
     isPending: result.isPending,
     retry: result.refetch,
@@ -231,8 +239,13 @@ export function useCreditCheckoutMutation() {
                 requestError.code as keyof typeof refusalByCheckoutErrorCode
               ]
             : undefined;
-        if (code) setRefusal(code);
-        else setError(requestError);
+        if (code) {
+          setRefusal(code);
+          // Le serveur vient de contredire le catalogue affiché — la vente a
+          // fermé, ou le palier a disparu. On le relit plutôt que de garder à
+          // l'écran un état que le serveur a démenti (V4.5-207).
+          await queryClient.invalidateQueries({ queryKey: ownPaymentsKey });
+        } else setError(requestError);
         throw requestError;
       } finally {
         setIsPending(false);

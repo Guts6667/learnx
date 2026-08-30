@@ -583,10 +583,42 @@ describe('CreditsPage — achat de crédits', () => {
     ).toBeInTheDocument();
   });
 
-  it('retire les paliers quand le serveur dit que la vente est fermée', async () => {
+  it('sait la vente fermée avant le clic, garde les paliers et retire les boutons', async () => {
+    // Le catalogue porte l'état de la vente (V4.5-205) : l'écran n'a plus à
+    // l'apprendre du 503 d'un achat qu'il vient de proposer. Les paliers
+    // restent visibles — les faire disparaître donnerait une page vide, qui
+    // ressemble à une panne — et aucun bouton n'invite à un achat impossible.
     stub({
-      '/api/credits/checkout': () =>
-        jsonResponse(
+      '/api/credits/packs': () =>
+        jsonResponse({ packs: [pack], paymentsEnabled: false }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', {
+        name: 'L’achat de crédits est fermé',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Découverte' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(amount('15,00€'))).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Acheter/u }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('relit le catalogue quand le serveur dit que la vente vient de fermer', async () => {
+    let saleOpen = true;
+    const fetchMock = stub({
+      '/api/credits/checkout': () => {
+        saleOpen = false;
+        return jsonResponse(
           {
             error: {
               code: 'PRICING_UNAVAILABLE',
@@ -594,9 +626,10 @@ describe('CreditsPage — achat de crédits', () => {
             },
           },
           503,
-        ),
+        );
+      },
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: true }),
+        jsonResponse({ packs: [pack], paymentsEnabled: saleOpen }),
     });
 
     render(
@@ -615,8 +648,14 @@ describe('CreditsPage — achat de crédits', () => {
       ),
     ).toBeInTheDocument();
     expect(navigate).not.toHaveBeenCalled();
-    // Le catalogue ne porte pas l'état de la vente ; une fois que le serveur
-    // l'a dit, laisser le bouton serait promettre un achat impossible.
+    // Le serveur vient de contredire le catalogue affiché : on le relit, plutôt
+    // que de garder à l'écran un état qu'il a démenti.
+    await waitFor(() =>
+      expect(
+        fetchMock.mock.calls.filter(([path]) => path === '/api/credits/packs')
+          .length,
+      ).toBeGreaterThan(1),
+    );
     expect(
       screen.queryByRole('button', { name: 'Acheter Découverte' }),
     ).not.toBeInTheDocument();

@@ -129,6 +129,9 @@ export const frenchCorrectionMessages = {
   'credits.purchase.buy': 'Acheter',
   'credits.purchase.buyPack': 'Acheter {label}',
   'credits.purchase.error': 'Le paiement n’a pas pu être démarré.',
+  'credits.purchase.saleClosedTitle': 'L’achat de crédits est fermé',
+  'credits.purchase.saleClosedDescription':
+    'Aucun achat n’est possible pour le moment. Les paliers restent affichés à titre indicatif ; vous pouvez demander une augmentation exceptionnelle ci-dessous.',
   'credits.purchase.refusalPaymentsDisabled':
     'La vente de crédits vient d’être fermée. Aucun montant n’a été prélevé.',
   'credits.purchase.refusalPackUnavailable':
@@ -296,6 +299,9 @@ export const englishCorrectionMessages = {
   'credits.purchase.buy': 'Buy',
   'credits.purchase.buyPack': 'Buy {label}',
   'credits.purchase.error': 'The payment could not be started.',
+  'credits.purchase.saleClosedTitle': 'Buying credits is closed',
+  'credits.purchase.saleClosedDescription':
+    'No purchase is possible at the moment. The tiers stay listed for information; you can request an exceptional increase below.',
   'credits.purchase.refusalPaymentsDisabled':
     'Credit sales have just closed. Nothing was charged.',
   'credits.purchase.refusalPackUnavailable':

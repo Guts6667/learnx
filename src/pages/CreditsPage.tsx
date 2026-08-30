@@ -104,11 +104,14 @@ function PackCard({
   isLoading,
   onBuy,
   pack,
+  saleClosed,
 }: {
   disabled: boolean;
   isLoading: boolean;
   onBuy: (packKey: string) => void;
   pack: CreditPack;
+  /** Vente fermée : la carte reste, le bouton part. */
+  saleClosed: boolean;
 }) {
   const { locale, t } = useI18n();
 
@@ -126,14 +129,16 @@ function PackCard({
       <strong className="credit-pack__price">
         {formatMinorAmount(pack.priceMinor, pack.currency, locale)}
       </strong>
-      <Button
-        aria-label={t('credits.purchase.buyPack', { label: pack.label })}
-        disabled={disabled}
-        isLoading={isLoading}
-        onClick={() => onBuy(pack.key)}
-      >
-        {t('credits.purchase.buy')}
-      </Button>
+      {saleClosed ? null : (
+        <Button
+          aria-label={t('credits.purchase.buyPack', { label: pack.label })}
+          disabled={disabled}
+          isLoading={isLoading}
+          onClick={() => onBuy(pack.key)}
+        >
+          {t('credits.purchase.buy')}
+        </Button>
+      )}
     </li>
   );
 }
@@ -170,18 +175,26 @@ function PurchasePanel() {
     }
   }
 
-  // Le catalogue ne porte pas l'état de la vente : quand les paiements sont
-  // coupés, le serveur ne le dit qu'au moment du POST, par un 503. On retire
-  // donc les boutons dès qu'il l'a dit, plutôt que de laisser cliquer sur un
-  // achat dont on sait maintenant qu'il échouera.
-  const closed = checkout.refusal === 'PAYMENTS_DISABLED';
-  const offered = closed ? [] : (packs.data ?? []);
+  /**
+   * La vente fermée se sait AVANT le clic (V4.5-207) : le catalogue porte son
+   * état. Le refus 503 reste lu, parce que la vente peut fermer entre le
+   * chargement de la page et le clic, et parce qu'il vaut à cet instant même,
+   * avant que la relecture du catalogue soit revenue.
+   *
+   * Les paliers restent affichés dans ce cas, sans bouton. Les faire
+   * disparaître donnerait une page vide, qui ressemble à une panne : on montre
+   * ce qui se vendra, et on dit que ce n'est pas achetable maintenant.
+   */
+  const saleClosed =
+    packs.data?.paymentsEnabled === false ||
+    checkout.refusal === 'PAYMENTS_DISABLED';
+  const offered = packs.data?.packs ?? [];
 
   return (
     <Section className="credit-purchase ui-card space-y-4 p-5 sm:p-6">
       <div>
         <h2 className="text-xl font-medium">{t('credits.purchase.title')}</h2>
-        {offered.length > 0 ? (
+        {offered.length > 0 && !saleClosed ? (
           <p className="ui-text-muted mt-2 leading-7">
             {t('credits.purchase.description')}
           </p>
@@ -206,6 +219,11 @@ function PurchasePanel() {
           title={t('credits.purchase.closedTitle')}
         />
       ) : null}
+      {saleClosed && offered.length > 0 ? (
+        <Notice tone="attention" title={t('credits.purchase.saleClosedTitle')}>
+          <p>{t('credits.purchase.saleClosedDescription')}</p>
+        </Notice>
+      ) : null}
 
       {suspendedUrl === null ? (
         offered.length > 0 ? (
@@ -217,6 +235,7 @@ function PurchasePanel() {
                 key={pack.key}
                 onBuy={(packKey) => void buy(packKey)}
                 pack={pack}
+                saleClosed={saleClosed}
               />
             ))}
           </ul>
