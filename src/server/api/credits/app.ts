@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '../../../shared/credit-rules.js';
 
+import { readPaymentsConfiguration } from '../../payments/payments-configuration.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
@@ -46,6 +47,8 @@ const lazyCreditAdministrationService: CreditAdministrationService = {
 interface CreditsAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
   catalogue?: CreditsCatalogueReader;
+  /** Injected in tests; production reads the environment. */
+  paymentsEnabled?: () => boolean;
   service?: CreditAdministrationService;
 }
 
@@ -223,6 +226,8 @@ function serviceError(error: unknown): ApiError {
 export function createCreditsApp(options: CreditsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   const catalogue = options.catalogue ?? lazyCatalogue;
+  const paymentsEnabled =
+    options.paymentsEnabled ?? (() => readPaymentsConfiguration().enabled);
   const service = options.service ?? lazyCreditAdministrationService;
   const authentication = options.authentication ?? requireUser;
 
@@ -245,8 +250,14 @@ export function createCreditsApp(options: CreditsAppOptions = {}) {
   // reads and neither takes a parameter: the caller is the session, never a
   // path or a query, so there is no id to tamper with (V4.5-205).
   app.get('/api/credits/packs', async (context) => {
+    // The packs and whether they can be bought are two different facts, and the
+    // screen needs both at once: without this it learns a closed sale only from
+    // the 503 on the purchase it already asked someone to make. Packs are still
+    // listed when the sale is shut, so the screen can explain rather than show
+    // an empty page (V4.5-205).
     return context.json({
       packs: (await catalogue.listActivePacks()).map(pack),
+      paymentsEnabled: paymentsEnabled(),
     });
   });
 

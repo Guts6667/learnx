@@ -63,7 +63,8 @@ function creditsResponse(pending = false) {
  * répond par chemin, et ne remplace que ce qu'il veut éprouver.
  */
 function defaultResponse(path: string): Response {
-  if (path === '/api/credits/packs') return jsonResponse({ packs: [] });
+  if (path === '/api/credits/packs')
+    return jsonResponse({ packs: [], paymentsEnabled: true });
   if (path === '/api/credits/orders') return jsonResponse({ orders: [] });
   return jsonResponse(creditsResponse());
 }
@@ -459,7 +460,8 @@ describe('CreditsPage — achat de crédits', () => {
             },
           },
         }),
-      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+      '/api/credits/packs': () =>
+        jsonResponse({ packs: [pack], paymentsEnabled: true }),
     });
 
     render(
@@ -499,7 +501,8 @@ describe('CreditsPage — achat de crédits', () => {
             },
           },
         }),
-      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+      '/api/credits/packs': () =>
+        jsonResponse({ packs: [pack], paymentsEnabled: true }),
     });
 
     render(
@@ -592,7 +595,8 @@ describe('CreditsPage — achat de crédits', () => {
           },
           503,
         ),
-      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+      '/api/credits/packs': () =>
+        jsonResponse({ packs: [pack], paymentsEnabled: true }),
     });
 
     render(
@@ -625,7 +629,8 @@ describe('CreditsPage — achat de crédits', () => {
           { error: { code: 'RESOURCE_NOT_FOUND', message: 'Pack not found.' } },
           404,
         ),
-      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+      '/api/credits/packs': () =>
+        jsonResponse({ packs: [pack], paymentsEnabled: true }),
     });
 
     render(
@@ -655,7 +660,8 @@ describe('CreditsPage — achat de crédits', () => {
           { error: { code: 'INTERNAL_ERROR', message: 'Boom.' } },
           500,
         ),
-      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+      '/api/credits/packs': () =>
+        jsonResponse({ packs: [pack], paymentsEnabled: true }),
     });
 
     render(
@@ -732,7 +738,8 @@ describe('CreditsPage — achat de crédits', () => {
         jsonResponse({
           resource: { checkout: { correctionSuspended: false, orderId: 'o' } },
         }),
-      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+      '/api/credits/packs': () =>
+        jsonResponse({ packs: [pack], paymentsEnabled: true }),
     });
 
     render(

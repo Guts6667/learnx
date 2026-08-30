@@ -375,6 +375,37 @@ describe('V4.5-205 contrat de l’écran d’achat', () => {
     ]),
   };
 
+  it('dit si la vente est ouverte, en même temps que les packs', async () => {
+    // Two different facts, needed together: without this the screen learns a
+    // closed sale only from the 503 on a purchase it already invited.
+    const app = createCreditsApp({
+      authentication: authentication('USER'),
+      catalogue,
+      paymentsEnabled: () => false,
+    });
+
+    const response = await app.request('/api/credits/packs');
+
+    await expect(response.json()).resolves.toMatchObject({
+      paymentsEnabled: false,
+    });
+  });
+
+  it('liste quand même les packs quand la vente est fermée', async () => {
+    // So the screen can explain, instead of showing an empty page that looks
+    // like a fault.
+    const app = createCreditsApp({
+      authentication: authentication('USER'),
+      catalogue,
+      paymentsEnabled: () => false,
+    });
+
+    const response = await app.request('/api/credits/packs');
+    const body = (await response.json()) as { packs: unknown[] };
+
+    expect(body.packs).toHaveLength(1);
+  });
+
   it('liste les packs actifs, montants en chaînes décimales', async () => {
     // Money through a JSON number is a rounding bug waiting for a large enough
     // amount, so amounts cross the boundary as strings, as everywhere else.
@@ -396,6 +427,7 @@ describe('V4.5-205 contrat de l’écran d’achat', () => {
           priceMinor: '1500',
         },
       ],
+      paymentsEnabled: false,
     });
   });
 

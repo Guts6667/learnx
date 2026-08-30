@@ -168,6 +168,13 @@ const creditPackSchema = z.object({
 
 export const creditPacksResponseSchema = z.object({
   packs: z.array(creditPackSchema),
+  /**
+   * L'état de la vente, servi avec le catalogue parce que l'écran a besoin des
+   * deux ensemble (V4.5-205). Sans lui, une vente fermée ne s'apprend qu'au 503
+   * d'un achat déjà proposé. Les packs restent listés dans ce cas : l'écran
+   * explique, au lieu d'afficher une page vide qui ressemble à une panne.
+   */
+  paymentsEnabled: z.boolean(),
 });
 
 /**

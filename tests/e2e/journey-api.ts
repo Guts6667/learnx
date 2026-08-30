@@ -611,7 +611,10 @@ export async function installJourneyApi(page: Page) {
     }
 
     if (method === 'GET' && path === '/api/credits/packs') {
-      await respond({ packs: creditPacks });
+      // `paymentsEnabled` is not optional (V4.5-205): the screen would have to
+      // guess when it is absent, and guessing "open" offers a purchase that
+      // fails. A stub without it is not a response the server can produce.
+      await respond({ packs: creditPacks, paymentsEnabled: true });
       return;
     }
 
