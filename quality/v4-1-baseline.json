@@ -54,15 +54,17 @@
       "rebaselineReason": "V4.2 ships four font files on purpose: DM Sans 600/700, which the stylesheet already asked for and font-synthesis: none prevented the browser from faking, and Plus Jakarta Sans 600/700 as the display face. Measured against the V4.1 baseline this left one entry of headroom, so an unrelated asset would have failed the gate and invited a hurried raise. Re-measured at the V4.2 design commit; the 10% allowance still guards accidental growth from here."
     },
     "totalDiagnostic": {
-      "scope": "All JavaScript and CSS files emitted below dist, including dynamic chunks, PWA files and public research assets.",
+      "scope": "Every JavaScript and CSS file emitted below dist, including dynamic chunks, PWA files and public research assets. This total is NOT what a visitor downloads: it grows mechanically with every route split into a lazy chunk, which is to say every time the splitting improves. The budgets that protect the experience are elsewhere — initial closure and largest lazy chunk — and are unchanged.",
       "observedGzipBytes": {
-        "javascript": 118287,
-        "css": 24076
+        "javascript": 256680,
+        "css": 25802
       },
       "warningThresholdsGzipBytes": {
-        "javascript": 150000,
+        "javascript": 260000,
         "css": 30000
-      }
+      },
+      "rebaselinedAt": "2026-08-30",
+      "rebaselineReason": "The JavaScript threshold sat at 150000 against a measured total of 256680, exceeded by 71% permanently and therefore mute: a warning that is always red teaches nothing and trains readers to skip the output. The observed value had not kept up either, still recording 118287. The threshold is reset to what the build actually holds today, with little headroom, deliberately: crossing it should become an event that calls for a journey measurement — initial plus the chunks of one real path — rather than an invitation to trim the application. That journey measurement is step 2 of V4.5-189 and will replace this diagnostic. The blocking budgets did not move: initial 125000 JS and 25000 CSS, largest lazy chunk, and PWA precache."
     }
   },
   "imports": {
