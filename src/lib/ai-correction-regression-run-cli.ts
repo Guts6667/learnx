@@ -527,6 +527,11 @@ export async function runRegressionPool(input: {
   // counter inside one process cannot see a second process, which is exactly
   // how two concurrent runs each honoured a 12.60 USD cap and were together
   // authorised to spend 25.20.
+  // The envelope guards spending, not planning. A dry run buys nothing, so it
+  // must be able to price a plan without credentials; enforcing an unreadable
+  // envelope there would make the preflight impossible to consult before a run
+  // is authorised, which is exactly when it is most useful.
+  const willSpend = !dryRun && input.executeCandidate !== undefined;
   const envelopeUsd = readCliOption(input.arguments, 'envelope-usd');
   let envelopeNote =
     "Aucune enveloppe déclarée : seul le plafond du run s'applique.";
@@ -550,23 +555,31 @@ export async function runRegressionPool(input: {
     };
     if (!existing) {
       if (usageNow === null) {
-        throw new RegressionEnvelopeError(
-          "REGRESSION_ENVELOPE_UNMEASURABLE: impossible de lire l'usage fournisseur pour ouvrir l'enveloppe.",
-        );
+        if (willSpend) {
+          throw new RegressionEnvelopeError(
+            "REGRESSION_ENVELOPE_UNMEASURABLE: impossible de lire l'usage fournisseur pour ouvrir l'enveloppe.",
+          );
+        }
+        // Planning only: the envelope is not opened, and the note says so
+        // rather than implying a budget was checked.
+        envelopeNote = `Enveloppe de ${parsedEnvelope} USD non ouverte : usage fournisseur illisible sans clé. Aucune dépense n'est autorisée par ce préflight.`;
+      } else {
+        await writeSpendEnvelope({ directory, envelope });
       }
-      await writeSpendEnvelope({ directory, envelope });
     }
-    const state = envelopeState({
-      envelope,
-      ledgerSpentUsd: await ledgerSpendSince({
-        directory,
-        openedAt: envelope.openedAt,
-      }),
-      providerUsageUsd: usageNow,
-    });
-    const resolved = capForRun({ requestedCapUsd, state });
-    supplierCostCapUsd = resolved.capUsd;
-    envelopeNote = resolved.reason;
+    if (usageNow !== null || willSpend) {
+      const state = envelopeState({
+        envelope,
+        ledgerSpentUsd: await ledgerSpendSince({
+          directory,
+          openedAt: envelope.openedAt,
+        }),
+        providerUsageUsd: usageNow,
+      });
+      const resolved = capForRun({ requestedCapUsd, state });
+      supplierCostCapUsd = resolved.capUsd;
+      envelopeNote = resolved.reason;
+    }
   }
 
   const { pool, poolSha256, sources } = await loadPoolForRun(input.arguments);
