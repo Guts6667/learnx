@@ -11,6 +11,7 @@ function createRepository(
   candidates = {
     accessInvitations: 2,
     emailVerifications: 3,
+    paymentPayloads: 8,
     rateLimits: 4,
     publicLeads: 6,
     sessions: 5,
@@ -24,6 +25,7 @@ function createRepository(
     countExpiredEmailVerifications: vi.fn(
       async () => candidates.emailVerifications,
     ),
+    countExpiredPaymentPayloads: vi.fn(async () => candidates.paymentPayloads),
     countExpiredRateLimits: vi.fn(async () => candidates.rateLimits),
     countExpiredPublicLeads: vi.fn(async () => candidates.publicLeads),
     countExpiredSessions: vi.fn(async () => candidates.sessions),
@@ -34,6 +36,7 @@ function createRepository(
     deleteExpiredPublicLeads: vi.fn(async () => 6),
     deleteExpiredSessions: vi.fn(async () => 5),
     deleteExpiredTrialMarkers: vi.fn(async () => 7),
+    purgeExpiredPaymentPayloads: vi.fn(async () => 8),
   };
 }
 
@@ -50,10 +53,13 @@ describe('retention cleanup', () => {
       accessInvitations: { candidates: 2, deleted: 0, hasMore: true },
       applied: false,
       emailVerifications: { candidates: 3, deleted: 0, hasMore: true },
+      // Kept and emptied, so it reports `purged`, never `deleted`.
+      paymentPayloads: { candidates: 8, hasMore: true, purged: 0 },
       rateLimits: { candidates: 4, deleted: 0, hasMore: true },
       publicLeads: { candidates: 6, deleted: 0, hasMore: true },
       sessions: { candidates: 5, deleted: 0, hasMore: true },
     });
+    expect(repository.purgeExpiredPaymentPayloads).not.toHaveBeenCalled();
     expect(repository.deleteExpiredSessions).not.toHaveBeenCalled();
     expect(repository.deleteExpiredRateLimits).not.toHaveBeenCalled();
     expect(repository.deleteExpiredPublicLeads).not.toHaveBeenCalled();
@@ -65,6 +71,7 @@ describe('retention cleanup', () => {
     const repository = createRepository({
       accessInvitations: 0,
       emailVerifications: 0,
+      paymentPayloads: 0,
       rateLimits: 0,
       publicLeads: 0,
       sessions: 0,
@@ -95,6 +102,7 @@ describe('retention cleanup', () => {
     const repository = createRepository({
       accessInvitations: 0,
       emailVerifications: 0,
+      paymentPayloads: 0,
       rateLimits: 0,
       publicLeads: 0,
       sessions: 12,
@@ -137,6 +145,7 @@ describe('rétention des marqueurs anti-abus (V4.5-163)', () => {
     const repository = createRepository({
       accessInvitations: 0,
       emailVerifications: 0,
+      paymentPayloads: 0,
       rateLimits: 0,
       publicLeads: 0,
       sessions: 0,
@@ -159,5 +168,76 @@ describe('rétention des marqueurs anti-abus (V4.5-163)', () => {
     const result = await runRetentionCleanup(repository, { apply: false });
     expect(result.trialMarkers).toMatchObject({ candidates: 7, deleted: 0 });
     expect(repository.deleteExpiredTrialMarkers).not.toHaveBeenCalled();
+  });
+});
+
+describe('purge du corps des événements de paiement (V4.5-197)', () => {
+  const NOW = new Date('2026-08-30T12:00:00.000Z');
+
+  it('garde la ligne et vide le corps, et le dit dans ces mots-là', async () => {
+    // `owner-e4-2026-08-30`: the accounting trace survives its own purge, so
+    // the result reports `purged` and never `deleted`. A count of rows that
+    // went away would be false — they are all still there.
+    const repository = createRepository();
+
+    const result = await runRetentionCleanup(repository, {
+      apply: true,
+      now: NOW,
+    });
+
+    expect(result.paymentPayloads).toEqual({
+      candidates: 8,
+      hasMore: false,
+      purged: 8,
+    });
+    expect(repository.purgeExpiredPaymentPayloads).toHaveBeenCalled();
+  });
+
+  it('coupe à trente jours après réception', async () => {
+    const repository = createRepository();
+
+    await runRetentionCleanup(repository, { apply: true, now: NOW });
+
+    const [cutoff] = vi.mocked(repository.countExpiredPaymentPayloads).mock
+      .calls[0];
+    expect(cutoff).toEqual(new Date('2026-07-31T12:00:00.000Z'));
+  });
+
+  it('respecte le plafond de lots comme les autres cibles', async () => {
+    // A purge that runs unbounded is a purge that locks a table it shares
+    // with the webhook receiver.
+    const repository = createRepository({
+      accessInvitations: 0,
+      emailVerifications: 0,
+      // More than maxBatches × batchSize, so the ceiling actually bites.
+      paymentPayloads: 12_000,
+      rateLimits: 0,
+      publicLeads: 0,
+      sessions: 0,
+      trialMarkers: 0,
+    });
+    vi.mocked(repository.purgeExpiredPaymentPayloads).mockResolvedValue(
+      defaultRetentionPolicy.batchSize,
+    );
+
+    const result = await runRetentionCleanup(repository, {
+      apply: true,
+      now: NOW,
+    });
+
+    expect(repository.purgeExpiredPaymentPayloads).toHaveBeenCalledTimes(
+      defaultRetentionPolicy.maxBatches,
+    );
+    expect(result.paymentPayloads.hasMore).toBe(true);
+  });
+
+  it('se règle par variable d’environnement comme les autres rétentions', () => {
+    expect(
+      getRetentionPolicy({ LEARNX_RETENTION_PAYMENT_PAYLOAD_MS: '86400000' })
+        .paymentPayloadRetentionMs,
+    ).toBe(86_400_000);
+    expect(getRetentionPolicy({}).paymentPayloadRetentionMs).toBe(
+      30 * 24 * 60 * 60 * 1000,
+    );
   });
 });

@@ -1,3 +1,5 @@
+import { Prisma } from '../../../../generated/prisma/client';
+
 import { createAccountErasureService } from './account-erasure-service';
 
 const USER_ID = '6ce94140-7435-426a-9753-90faebc7695a';
@@ -19,6 +21,9 @@ function build(user: unknown, updateCount = 1) {
       updateMany: vi.fn(record('exerciseSubmission.updateMany', { count: 0 })),
     },
     note: { deleteMany: vi.fn(record('note.deleteMany', { count: 2 })) },
+    paymentEvent: {
+      updateMany: vi.fn(record('paymentEvent.updateMany', { count: 3 })),
+    },
     session: { deleteMany: vi.fn(record('session.deleteMany', { count: 1 })) },
     stageAssessmentSubmission: {
       updateMany: vi.fn(
@@ -97,6 +102,38 @@ describe('effacement de compte par pseudonymisation', () => {
     expect(transaction.note.deleteMany).toHaveBeenCalledWith({
       where: { userId: USER_ID },
     });
+  });
+
+  it('vide le corps des événements de paiement de cette personne', async () => {
+    // V4.5-197, `owner-e4-2026-08-30`. Pseudonymising the account does not
+    // reach the provider's raw bodies, and those carry `customer_details` —
+    // e-mail, name, phone, billing address — exactly the direct identity this
+    // service exists to destroy. Retention gets there at thirty days; an
+    // erasure request cannot be asked to wait out that window.
+    const { service, transaction } = build(active);
+    await erase(service);
+    expect(transaction.paymentEvent.updateMany).toHaveBeenCalledWith({
+      data: { payload: Prisma.DbNull },
+      where: {
+        order: { userId: USER_ID },
+        payload: { not: Prisma.DbNull },
+      },
+    });
+  });
+
+  it('vide sans supprimer : la trace comptable survit à l’effacement', async () => {
+    // The rows stay, attached to an order whose user no longer names anyone.
+    const { calls, service } = build(active);
+    await erase(service);
+    expect(calls).toContain('paymentEvent.updateMany');
+    expect(calls).not.toContain('paymentEvent.deleteMany');
+    expect(calls).not.toContain('paymentOrder.deleteMany');
+  });
+
+  it('ne touche à rien quand le compte a changé sous nous', async () => {
+    const { calls, service } = build(active, 0);
+    await expect(erase(service)).resolves.toEqual({ kind: 'CONFLICT' });
+    expect(calls).not.toContain('paymentEvent.updateMany');
   });
 
   it('conserve les réponses de l’apprenant, décision du propriétaire', async () => {

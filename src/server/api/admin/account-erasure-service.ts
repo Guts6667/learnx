@@ -1,6 +1,7 @@
 import {
   AccountStatus,
   AuditAction,
+  Prisma,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
@@ -93,6 +94,23 @@ export function createAccountErasureService(client: PrismaClient) {
         // Private notes serve neither accounting nor research. They are the one
         // kind of learner text with no reason to survive under any reading.
         await transaction.note.deleteMany({ where: { userId: input.userId } });
+
+        // The provider's raw event bodies (V4.5-197, `owner-e4-2026-08-30`).
+        // Pseudonymising the account does not reach them: they carry
+        // `customer_details` — e-mail, name, phone, billing address — as the
+        // provider sent it, which is a direct identity this service exists to
+        // destroy. Retention purges them at thirty days; erasure cannot wait
+        // out that window.
+        //
+        // Emptied, not deleted. The rows are the accounting trace, and they
+        // stay attached to an order whose user no longer names anyone.
+        await transaction.paymentEvent.updateMany({
+          data: { payload: Prisma.DbNull },
+          where: {
+            order: { userId: input.userId },
+            payload: { not: Prisma.DbNull },
+          },
+        });
         const auditValues = {
           fromStatus: existing.accountStatus,
           learnerTextPolicy: LEARNER_TEXT_POLICY,

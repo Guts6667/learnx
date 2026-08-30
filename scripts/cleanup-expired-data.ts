@@ -5,6 +5,7 @@ import {
   runRetentionCleanup,
   type RetentionRepository,
 } from '../src/server/maintenance/retention';
+import { Prisma } from '../generated/prisma/client';
 import { prisma } from '../src/server/prisma';
 
 const expiredTokenWhere = (cutoff: Date) => ({
@@ -25,6 +26,11 @@ const repository: RetentionRepository = {
   countExpiredRateLimits(cutoff) {
     return prisma.loginRateLimit.count({
       where: { windowStartedAt: { lt: cutoff } },
+    });
+  },
+  countExpiredPaymentPayloads(cutoff) {
+    return prisma.paymentEvent.count({
+      where: { payload: { not: Prisma.DbNull }, receivedAt: { lt: cutoff } },
     });
   },
   countExpiredPublicLeads(cutoff) {
@@ -67,6 +73,24 @@ const repository: RetentionRepository = {
     if (records.length === 0) return 0;
 
     const result = await prisma.emailVerification.deleteMany({
+      where: { id: { in: records.map(({ id }) => id) } },
+    });
+    return result.count;
+  },
+  async purgeExpiredPaymentPayloads(cutoff, limit) {
+    // The row stays: event id, type, order, status and timestamps are the
+    // accounting trace (`owner-e4-2026-08-30`). Only the provider body goes,
+    // and it is the only part carrying `customer_details`.
+    const records = await prisma.paymentEvent.findMany({
+      orderBy: { receivedAt: 'asc' },
+      select: { id: true },
+      take: limit,
+      where: { payload: { not: Prisma.DbNull }, receivedAt: { lt: cutoff } },
+    });
+    if (records.length === 0) return 0;
+
+    const result = await prisma.paymentEvent.updateMany({
+      data: { payload: Prisma.DbNull },
       where: { id: { in: records.map(({ id }) => id) } },
     });
     return result.count;
