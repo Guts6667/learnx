@@ -851,7 +851,10 @@ describe('the repetition pass dispatches at its offset', () => {
     // that; asserting only "never repetition 1" passes on a pass that buys
     // nothing.
     expect(dispatchedRepetitions.length).toBe(resumed.pendingCells);
-  });
+    // Drives the whole CLI twice over the 380-unit pool, like the heavier tests
+    // above it. The default 5 s is a limit on this file's fast unit tests, not
+    // a budget this one was ever inside.
+  }, 60_000);
 });
 
 describe('overlapping passes carry a resumed attempt once', () => {
@@ -903,7 +906,7 @@ describe('overlapping passes carry a resumed attempt once', () => {
 
     expect(persisted.length).toBe(distinct.size);
     expect(persisted.length).toBe(first.attempts.length);
-  });
+  }, 60_000);
 });
 
 describe('a resume is priced against what the cap has left', () => {
