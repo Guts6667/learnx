@@ -152,9 +152,23 @@ passe de paiement — n'ont plus pu se construire. Le volume vient des branches
 de travail ; la valeur est sur la ligne de promotion.
 
 Seules `dev`, `staging` et `main` déclenchent donc un build, via l'« Ignored
-Build Step » de Vercel (`ignoreCommand` dans `vercel.json`, script
-`scripts/vercel-ignore-build.sh`). Un déploiement de production construit
-toujours, quelle que soit la branche.
+Build Step » de Vercel. Un déploiement de production construit toujours, quelle
+que soit la branche.
+
+**La règle vit dans le réglage du projet Vercel**, Settings → Git → Ignored
+Build Step → Custom, et nulle part ailleurs. C'est la seule source de vérité :
+`vercel.json` ne porte plus d'`ignoreCommand`, et `scripts/vercel-ignore-build.sh`
+n'est plus qu'une copie de référence, lisible et exécutable, que rien n'appelle.
+
+La première version faisait l'inverse — `ignoreCommand` pointait sur le script.
+Cela ne pouvait pas fonctionner, et la raison mérite d'être retenue : une règle
+portée par un fichier du dépôt ne gouverne pas une branche antérieure à ce
+fichier. Sur une telle branche la commande s'exécute quand même, bash ne trouve
+pas le script, sort en non-zéro — et dans cette convention inversée, non-zéro
+veut dire **construire**. Le mécanisme échouait en s'ouvrant, précisément sur
+les vieilles branches de travail qu'il devait arrêter. Un réglage de projet n'a
+pas cet angle mort : il s'applique à toutes les branches, y compris celles
+créées avant lui, parce qu'aucune branche ne le transporte.
 
 Une branche de travail qui a réellement besoin d'un preview le demande en
 mettant `[preview]` dans son message de commit. L'échappatoire vit ainsi dans
