@@ -24,9 +24,18 @@ const state = {
   updates: [] as Record<string, unknown>[],
 };
 
+const CANONICAL_UUID =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 function lookup(where: Record<string, unknown>) {
   state.queries.push(where);
   const [[column, value]] = Object.entries(where);
+  // `id` is a Postgres `uuid` column: a malformed value is a driver error
+  // (P2023), never a miss. Modelled here so a test of the guard cannot pass
+  // without the guard.
+  if (column === 'id' && !CANONICAL_UUID.test(String(value))) {
+    throw new Error('P2023: Inconsistent column data: Error creating UUID');
+  }
   return state.stored[column] === value
     ? { id: ORDER_ID, status: 'PENDING' as const }
     : null;
@@ -200,5 +209,44 @@ describe('résolution de la commande derrière un événement', () => {
       }),
     ).resolves.toBeNull();
     expect(state.queries).toEqual([]);
+  });
+});
+
+describe('une référence qui n’est pas la nôtre', () => {
+  beforeEach(() => {
+    state.queries = [];
+    state.stored = {};
+  });
+
+  it('ne cherche pas par identifiant quand la référence n’est pas un UUID', async () => {
+    // Any signed session we did not create carries whatever reference its
+    // author chose. `PaymentOrder.id` is a `uuid` column, so asking it for
+    // `order-42` raises P2023 — and `findOrder` runs before `recordEvent`, so
+    // it would be a 500 with no trace of the delivery at all.
+    state.stored = { providerOrderId: SESSION_ID };
+    const ports = await createPrismaPaymentWebhookPorts();
+
+    await expect(
+      ports.findOrder({
+        orderId: 'order-42',
+        paymentIntentId: null,
+        providerOrderId: SESSION_ID,
+      }),
+    ).resolves.toEqual({ id: ORDER_ID, status: 'PENDING' });
+    // The point is not that it survived: it is that the question was never
+    // asked. It falls through to the session id, which is a plain miss.
+    expect(state.queries).toEqual([{ providerOrderId: SESSION_ID }]);
+  });
+
+  it('ne rattache rien quand la référence est illisible et la session inconnue', async () => {
+    const ports = await createPrismaPaymentWebhookPorts();
+
+    await expect(
+      ports.findOrder({
+        orderId: 'order-42',
+        paymentIntentId: null,
+        providerOrderId: 'cs_other',
+      }),
+    ).resolves.toBeNull();
   });
 });
