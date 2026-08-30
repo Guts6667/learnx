@@ -92,6 +92,118 @@ export function buildDigestBridgeSql(schema: string): string {
           AS 'SELECT public.digest(data, algorithm)'`;
 }
 
+interface SchemaObjectRow {
+  definition: string;
+  identity: string;
+  kind: string;
+}
+
+/** Placeholder standing in for whichever schema a definition was read from. */
+const schemaPlaceholder = '<schema>';
+
+function assertQueryableSchema(schema: string): void {
+  if (!/^[a-z_][a-z0-9_]*$/.test(schema)) {
+    throw new Error(`Unsafe PostgreSQL schema name: ${schema}`);
+  }
+}
+
+/**
+ * A replayed schema is structurally identical to the migrated one but says its
+ * own name everywhere PostgreSQL qualifies an object — constraint bodies,
+ * column defaults, index definitions. Comparing raw text would report those as
+ * differences and drown the real ones, so both sides are rewritten to the same
+ * placeholder before comparison.
+ */
+export function normalizeSchemaReferences(
+  definition: string,
+  schema: string,
+): string {
+  assertQueryableSchema(schema);
+  const escaped = schema.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return definition
+    .replace(new RegExp(`"${escaped}"`, 'g'), `"${schemaPlaceholder}"`)
+    .replace(new RegExp(`\\b${escaped}\\b`, 'g'), schemaPlaceholder);
+}
+
+export function fingerprintSchemaObjects(
+  rows: SchemaObjectRow[],
+  schema: string,
+): string[] {
+  return rows
+    .map(
+      ({ kind, identity, definition }) =>
+        `${kind}\t${identity}\t${normalizeSchemaReferences(definition, schema)}`,
+    )
+    .sort((left, right) => (left < right ? -1 : left > right ? 1 : 0));
+}
+
+/**
+ * Readable, bounded diff. A replay that exits zero proves only that every
+ * migration ran; it says nothing about the shape it produced. This is what
+ * turns "it ran" into "it matches".
+ */
+export function diffSchemaFingerprints(
+  migrated: string[],
+  replayed: string[],
+  limit = 40,
+): string[] {
+  const inReplayed = new Set(replayed);
+  const inMigrated = new Set(migrated);
+  const differences = [
+    ...migrated
+      .filter((line) => !inReplayed.has(line))
+      .map((line) => `- migrated only : ${line}`),
+    ...replayed
+      .filter((line) => !inMigrated.has(line))
+      .map((line) => `+ replayed only : ${line}`),
+  ];
+  return differences.length > limit
+    ? [
+        ...differences.slice(0, limit),
+        `... and ${differences.length - limit} further differences`,
+      ]
+    : differences;
+}
+
+function schemaObjectsQuery(schema: string): string {
+  assertQueryableSchema(schema);
+  const literal = `'${schema}'`;
+  return `
+    SELECT 'table' AS kind, table_name AS identity, table_type AS definition
+      FROM information_schema.tables WHERE table_schema = ${literal}
+    UNION ALL
+    SELECT 'column', table_name || '.' || column_name,
+           data_type
+             || ' nullable=' || is_nullable
+             || ' default=' || coalesce(column_default, '-')
+             || ' length=' || coalesce(character_maximum_length::text, '-')
+             || ' numeric=' || coalesce(numeric_precision::text, '-')
+             || ',' || coalesce(numeric_scale::text, '-')
+             || ' position=' || ordinal_position::text
+      FROM information_schema.columns WHERE table_schema = ${literal}
+    UNION ALL
+    SELECT 'constraint', rel.relname || '.' || con.conname,
+           pg_get_constraintdef(con.oid)
+      FROM pg_constraint con
+      JOIN pg_class rel ON rel.oid = con.conrelid
+      JOIN pg_namespace ns ON ns.oid = rel.relnamespace
+     WHERE ns.nspname = ${literal}
+    UNION ALL
+    SELECT 'index', tablename || '.' || indexname, indexdef
+      FROM pg_indexes WHERE schemaname = ${literal}
+  `;
+}
+
+async function schemaFingerprint(
+  client: RawClient,
+  schema: string,
+): Promise<string[]> {
+  const rows = await client.$queryRawUnsafe<SchemaObjectRow[]>(
+    schemaObjectsQuery(schema),
+  );
+  return fingerprintSchemaObjects(rows, schema);
+}
+
 export function migrationLedgerTable(schema?: string): string {
   if (!schema) return '"_prisma_migrations"';
   assertSafeReplaySchema(schema);
@@ -366,6 +478,31 @@ async function replayAllMigrations(schema: string): Promise<void> {
     }
     console.info(
       `Replayed all ${Object.keys(local).length} migrations in isolated schema ${schema}.`,
+    );
+
+    // The ledger check above proves every migration ran. It does not prove the
+    // shape they produced: a guard that silently skipped would still exit zero
+    // on a schema that differs from production. Compare the two structures
+    // while the replay schema still exists — the finally below drops it.
+    const migratedFingerprint = await schemaFingerprint(
+      primaryClient,
+      'public',
+    );
+    const replayedFingerprint = await schemaFingerprint(replayClient, schema);
+    const differences = diffSchemaFingerprints(
+      migratedFingerprint,
+      replayedFingerprint,
+    );
+    if (differences.length > 0) {
+      console.error(
+        `Replayed schema differs from the migrated schema:\n${differences.join('\n')}`,
+      );
+      throw new Error(
+        `Replayed schema differs from the migrated schema in ${differences.length} place(s).`,
+      );
+    }
+    console.info(
+      `Replayed schema matches the migrated schema across ${migratedFingerprint.length} objects.`,
     );
   } finally {
     await replayClient?.$disconnect();
