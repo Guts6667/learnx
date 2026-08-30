@@ -506,6 +506,18 @@ async function replayAllMigrations(schema: string): Promise<void> {
       replayedFingerprint,
     );
     if (differences.length > 0) {
+      // Counts first: a one-sided diff means the two sides were not read the
+      // same way, which is a different problem from two schemas disagreeing.
+      console.error(
+        `Migrated schema: ${migratedFingerprint.length} objects. ` +
+          `Replayed schema: ${replayedFingerprint.length} objects.`,
+      );
+      if (replayedFingerprint.length === 0) {
+        console.error(
+          `Read no object at all in schema ${schema}. The replay reported success, ` +
+            'so this is a reading fault, not a schema difference.',
+        );
+      }
       console.error(
         `Replayed schema differs from the migrated schema:\n${differences.join('\n')}`,
       );
