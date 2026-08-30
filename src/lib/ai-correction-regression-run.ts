@@ -321,6 +321,17 @@ export async function deriveRegressionObservations(input: {
   checker?: RegressionCheckerPort;
   /** Families inside the promoted identity's validated scope. */
   familyScientificallyValidated: boolean;
+  /**
+   * Called for each verifier call that reported a cost.
+   *
+   * The verifier's spend reconciles into the budget guard, so the cap has
+   * always covered both models. It never reached `ledger.jsonl`, which the
+   * envelope reads: the envelope therefore undercounted the verifier by
+   * 0.1906 USD on the 30 August top-up and roughly 0.40 on the run before it.
+   * Recording the cost per call also gives V4.5-114 the distribution it needs;
+   * a mean over fifteen observations was all that existed.
+   */
+  onCheckerCost?: (entry: { costUsd: number; unitId: string }) => void;
   /** Called when a verifier call reports no cost, so the run can report it. */
   onUnreconciledChecker?: (unitId: string) => void;
   /** Called for each new verdict, so the caller can persist it immediately. */
@@ -417,6 +428,7 @@ export async function deriveRegressionObservations(input: {
           actualCostUsd: outcome.costUsd,
           costSource: 'ACTUAL',
         });
+        input.onCheckerCost?.({ costUsd: outcome.costUsd, unitId });
       }
     }
 
