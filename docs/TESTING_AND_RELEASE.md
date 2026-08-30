@@ -226,6 +226,48 @@ la commande semble la nommer. C'est le mécanisme de l'effacement du 30 août
 (V4.5-192). Un build Vercel n'a jamais de tel fichier, donc ce refus n'y coûte
 rien ; il protège quiconque lance le script à la main.
 
+## Integration : capacité Neon, et pourquoi il n'y a pas de groupe de concurrence
+
+Chaque run d'Integration crée une branche Neon et la supprime dans une étape
+`always()`. La contrainte réelle est donc « au plus N branches dans le projet »,
+et **non** « un run à la fois ». Les deux ne sont pas la même chose, et la
+confusion a coûté la visibilité du pipeline.
+
+La première tentative exprimait la contrainte par un groupe de concurrence
+global avec `cancel-in-progress: false`, en croyant que cela mettait les runs en
+file. Ce n'est pas ce que fait GitHub : il ne garde qu'**un seul** run en
+attente par groupe, donc chaque nouveau run mis en file annule celui qui
+attendait déjà.
+
+Le 30 août 2026, **sept des dix derniers runs** d'Integration se sont terminés
+`cancelled`, dont ceux de deux fusions dans `dev`. Rien n'est passé au rouge :
+Integration n'est pas un check requis sur `dev`, donc le pipeline a cessé de
+tester en silence pendant que tous les rapports restaient verts. Un garde qui
+échoue silencieusement est pire que pas de garde, parce qu'on y croit.
+
+L'attente a donc été déplacée **à l'intérieur du job**, dans l'étape « Wait for
+Neon branch capacity » : elle est visible dans le journal, aucun run suivant ne
+peut l'annuler, et elle échoue bruyamment si la capacité ne vient jamais.
+
+À chaque sondage, la décision — `src/server/maintenance/neon-capacity.ts`,
+testée — est l'une de trois :
+
+- il reste une place → on continue ;
+- le projet est plein et des branches `ci-*` traînent, plus vieilles que le
+  job ne peut durer → on les supprime et on regarde à nouveau ;
+- plein et rien à balayer → on attend qu'un run en vol rende sa branche.
+
+Le balayage y est volontairement redondant avec `neon-cleanup.yml`. Ce dernier
+est planifié, or **un workflow planifié ne s'enregistre que depuis la branche
+par défaut** : il vit sur `dev`, `main` ne l'a jamais vu, et il n'a donc jamais
+tourné une seule fois. Un garde qui dépend d'un workflow que personne n'a
+enregistré n'est pas un garde. Celui-ci s'exécute là où le besoin apparaît.
+
+Seule la forme exacte produite par `integration.yml` est balayable — `ci-<run>-<tentative>` —
+et seulement au-delà de l'âge que le job peut atteindre. `preview`,
+`production` et `staging` sont vieilles de plusieurs semaines et ne doivent
+jamais correspondre.
+
 ## Gate visuel : ratio et plancher absolu
 
 La comparaison de captures cumule deux plafonds, et Playwright retient le plus
