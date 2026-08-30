@@ -267,6 +267,13 @@ Avant chaque push (règle du 29 août 2026, après trois rouges évitables) :
    cesse silencieusement de correspondre à l'arbre (résolu quatre fois le
    29 août 2026 : 117, 160, 161, 163).
 
+4. **aucune commande base de données avec un override partiel** : `prisma.config.ts`
+   résout `DIRECT_URL ?? DATABASE_URL` et les `.env` de worktree pointent sur la
+   production — un `DATABASE_URL='…' pnpm prisma …` a vidé la production le
+   30 août 2026 (V4.5-192, restaurée). Toute cible non-production passe par le
+   wrapper `db:target --url` (ou `env -i` avec les deux variables explicites) ;
+   lire `prisma.config.ts` avant toute commande destructive.
+
 Le handoff minimal contient :
 
 ```text

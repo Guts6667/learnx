@@ -692,3 +692,11 @@ l'autorisation.
   corrigée en cours de route : branche `preview` vide, jamais clonée depuis
   production (arrêt demandé par la voie A).
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+- **Incident V4.5-192** (créé `IN_PROGRESS`, `recASkufqQIiR8A6o`) : production
+  vidée par une commande fournie par le Head of AI, restaurée par Rayan (Neon
+  PITR, 5 utilisateurs) ; règle ajoutée à AGENT_WORKFLOW §7 ; wrapper demandé
+  à la voie A, post-mortem à la voie D.
+- V4.5-162 `DONE` (162B, `1492e002`) ; V4.5-191 (UI) PR #119 en brouillon ;
+  seed preview mergé (`4f081295`) ; branche Neon `preview` créée vide, non
+  migrée (procédure suspendue jusqu'au wrapper).
+- Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
