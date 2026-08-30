@@ -1,0 +1,9 @@
+{
+  "ledgerUsd": 5.498606249999997,
+  "unreconciledCheckerCalls": 0,
+  "unreconciledCheckerUnits": [],
+  "note": "total_usage est cumulatif sur la clé, pas propre à ce run ; seul le delta est imputable.",
+  "providerDeltaUsd": 0.7478486999999987,
+  "providerUsageAfterUsd": 35.897580247,
+  "providerUsageBeforeUsd": 35.149731547
+}
