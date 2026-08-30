@@ -27,12 +27,17 @@ export interface CheckoutPorts {
   createProviderOrder(input: {
     amountMinor: bigint;
     currency: string;
-    reference: string;
+    /** Ours, chosen before the call so the session can carry it. */
+    orderId: string;
+    packLabel: string;
   }): Promise<{ checkoutUrl: string; providerOrderId: string }>;
+  /** Injected rather than called inline so a test can pin the id. */
+  newOrderId(): string;
   listPacks(): Promise<CreditPack[]>;
   recordOrder(input: {
     amountMinor: bigint;
     currency: string;
+    id: string;
     packKey: string;
     providerOrderId: string;
     userId: string;
@@ -51,17 +56,25 @@ export async function startCheckout(input: {
   if (selection.kind !== 'SELECTED') return { kind: 'PACK_UNAVAILABLE' };
   const { pack } = selection;
 
-  // The provider order is created before ours is recorded, so an order in our
-  // table always has a counterpart to reconcile against. The reverse would
-  // leave rows referring to nothing if the provider call failed.
+  // The id is ours and is chosen first, so the Checkout Session can carry it
+  // as `client_reference_id`. Letting the database mint it would mean the
+  // session had to be created before the row existed, and then the row could
+  // not be named in the session at all.
+  //
+  // The provider order is still created before ours is recorded, so an order
+  // in our table always has a counterpart to reconcile against. The reverse
+  // would leave rows referring to nothing if the provider call failed.
+  const orderId = input.ports.newOrderId();
   const provider = await input.ports.createProviderOrder({
     amountMinor: pack.priceMinor,
     currency: pack.currency,
-    reference: `${input.userId}:${pack.key}`,
+    orderId,
+    packLabel: pack.label,
   });
   const order = await input.ports.recordOrder({
     amountMinor: pack.priceMinor,
     currency: pack.currency,
+    id: orderId,
     packKey: pack.key,
     providerOrderId: provider.providerOrderId,
     userId: input.userId,

@@ -95,6 +95,7 @@
       "src/server/payments/refund-preview.ts",
       "src/server/payments/refund-service.ts",
       "src/server/payments/refund-split.ts",
+      "src/server/payments/stripe-checkout-session.ts",
       "src/server/payments/stripe-webhook-signature.ts",
       "src/server/payments/stripe-webhook.ts",
       "src/server/payments/voluntary-refund.ts",

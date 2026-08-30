@@ -43,13 +43,23 @@ export interface WebhookPorts {
     payload: unknown;
     providerEventId: string;
   }): Promise<boolean>;
-  findOrder(providerOrderId: string): Promise<{
-    id: string;
-    status: PaymentOrderStatus;
-  } | null>;
+  /**
+   * Resolves an event to an order. The payment intent is tried first because
+   * it is the handle a charge or a dispute carries; the reference and the
+   * session id only ever appear on `checkout.session.*` (V4.5-195).
+   */
+  findOrder(input: {
+    paymentIntentId: string | null;
+    reference: string | null;
+  }): Promise<{ id: string; status: PaymentOrderStatus } | null>;
   applyTransition(input: {
     attributeCredits: boolean;
     orderId: string;
+    /**
+     * Recorded the first time Stripe names it, so every later charge and
+     * dispute can be resolved. Null on events that do not carry one.
+     */
+    paymentIntentId: string | null;
     status: PaymentOrderStatus;
   }): Promise<void>;
 }
@@ -57,7 +67,9 @@ export interface WebhookPorts {
 interface WebhookEnvelope {
   event: string;
   event_id: string;
-  order_id: string;
+  /** Either handle may be absent; the parser refuses only when both are. */
+  order_id: string | null;
+  payment_intent_id: string | null;
 }
 
 /**
@@ -74,6 +86,7 @@ function stripeEnvelope(rawPayload: string): WebhookEnvelope | null {
     event: parsed.eventType,
     event_id: parsed.eventId,
     order_id: parsed.orderReference,
+    payment_intent_id: parsed.paymentIntentId,
   };
 }
 
@@ -104,7 +117,10 @@ export async function handleRevolutWebhook(input: {
   const envelope = stripeEnvelope(input.rawPayload);
   if (!envelope) return { kind: 'REJECTED', reason: 'MALFORMED_PAYLOAD' };
 
-  const order = await input.ports.findOrder(envelope.order_id);
+  const order = await input.ports.findOrder({
+    paymentIntentId: envelope.payment_intent_id,
+    reference: envelope.order_id,
+  });
   const status = STRIPE_EVENT_STATUS[envelope.event];
 
   // Stored before anything is applied, so the record of what arrived exists
@@ -137,6 +153,7 @@ export async function handleRevolutWebhook(input: {
   await input.ports.applyTransition({
     attributeCredits,
     orderId: order.id,
+    paymentIntentId: envelope.payment_intent_id,
     status: applied,
   });
   return {

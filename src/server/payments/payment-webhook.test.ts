@@ -169,3 +169,104 @@ describe('réception d’un webhook de paiement', () => {
     });
   });
 });
+
+describe('résolution d’une commande à travers le cycle de vie (V4.5-195)', () => {
+  /** A completed session: the id is the session, and it names its intent. */
+  const sessionCompleted = JSON.stringify({
+    data: {
+      object: {
+        client_reference_id: 'order-1',
+        id: 'cs_test_1',
+        payment_intent: 'pi_test_1',
+      },
+    },
+    id: 'evt_session',
+    type: 'checkout.session.completed',
+  });
+
+  /** A refund: a charge object. No session id, no client_reference_id. */
+  const chargeRefunded = JSON.stringify({
+    data: { object: { id: 'ch_test_1', payment_intent: 'pi_test_1' } },
+    id: 'evt_refund',
+    type: 'charge.refunded',
+  });
+
+  const disputeCreated = JSON.stringify({
+    data: { object: { id: 'dp_test_1', payment_intent: 'pi_test_1' } },
+    id: 'evt_dispute',
+    type: 'charge.dispute.created',
+  });
+
+  it('enregistre l’identifiant de paiement dès que Stripe le nomme', async () => {
+    const harness = build();
+
+    await run(harness, sessionCompleted);
+
+    // Without this, every later charge event arrives as an unknown order:
+    // recorded, never applied, the order left FULFILLED while the money went
+    // back.
+    expect(harness.applied[0]).toMatchObject({
+      paymentIntentId: 'pi_test_1',
+      status: 'FULFILLED',
+    });
+  });
+
+  it('cherche par identifiant de paiement d’abord, sur un remboursement', async () => {
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+
+    await run(harness, chargeRefunded);
+
+    // A charge carries neither the session id nor `client_reference_id`. If
+    // the receiver looked those up it would find nothing.
+    expect(harness.ports.findOrder).toHaveBeenCalledWith({
+      paymentIntentId: 'pi_test_1',
+      reference: 'ch_test_1',
+    });
+  });
+
+  it('résout un litige par le même identifiant', async () => {
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+
+    await run(harness, disputeCreated);
+
+    expect(harness.ports.findOrder).toHaveBeenCalledWith({
+      paymentIntentId: 'pi_test_1',
+      reference: 'dp_test_1',
+    });
+    expect(harness.applied[0]).toMatchObject({ status: 'DISPUTED' });
+  });
+
+  it('accepte une enveloppe qui n’a qu’un identifiant de paiement', async () => {
+    // Some charge payloads carry no usable `id` for us; the intent alone must
+    // be enough, or a refund would be refused as malformed.
+    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+
+    const result = await run(
+      harness,
+      JSON.stringify({
+        data: { object: { payment_intent: 'pi_test_1' } },
+        id: 'evt_bare',
+        type: 'charge.refunded',
+      }),
+    );
+
+    expect(result).toMatchObject({ kind: 'APPLIED' });
+  });
+
+  it('refuse une enveloppe sans aucun des deux', async () => {
+    const harness = build();
+
+    const result = await run(
+      harness,
+      JSON.stringify({
+        data: { object: {} },
+        id: 'evt_empty',
+        type: 'charge.refunded',
+      }),
+    );
+
+    // Guessing here would attach a refund to the wrong order.
+    expect(result).toMatchObject({ kind: 'REJECTED' });
+    expect(harness.recorded).toEqual([]);
+  });
+});
