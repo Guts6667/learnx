@@ -50,7 +50,11 @@ model PaymentEvent {
   eventType       String              @map("event_type")
   outcome         PaymentEventOutcome
   /// Corps brut, conservé après vérification de signature uniquement.
-  payload         Json                @map("payload_json")
+  ///
+  /// Nullable depuis V4.5-197 : `NULL` signifie **purgé**, jamais « reçu
+  /// vide ». Tout événement enregistré a un corps à l'écriture, donc l'absence
+  /// ne peut venir que de la purge à 30 jours ou d'un effacement de compte.
+  payload         Json?               @map("payload_json")
   receivedAt      DateTime            @default(now()) @map("received_at")
   order           PaymentOrder?       @relation(fields: [orderId], references: [id], onDelete: Restrict)
 

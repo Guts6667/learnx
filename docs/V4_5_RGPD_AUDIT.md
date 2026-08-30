@@ -116,8 +116,10 @@ et **aucun parcours de suppression de compte n'existe** dans le code serveur
 - **E3** — Le snapshot de la production (`submission_snapshot_json`) duplique
   la soumission d'exercice ; nécessaire à l'idempotence et à la
   reconsidération. Conserver tant que la correction existe ; suivre E1.
-- **E4 — le corps des événements de paiement est conservé intégralement, sans
-  limite, et l'effacement ne le touche pas.** Constat au code, pas une
+- **E4 — le corps des événements de paiement était conservé intégralement,
+  sans limite, et l'effacement ne le touchait pas.** *Tranché
+  (`owner-e4-2026-08-30`), livré par V4.5-197 ; le constat ci-dessous décrit
+  l'état d'avant.* Constat au code, pas une
   hypothèse : `payment-webhook.ts:104` écrit `payload: JSON.parse(rawPayload)`
   et `prisma-payment-webhook-ports.ts:70` le passe tel quel à Prisma. Aucune
   rédaction, aucun filtrage, aucun champ retenu ou écarté. `retention.ts` ne
@@ -161,11 +163,26 @@ et **aucun parcours de suppression de compte n'existe** dans le code serveur
   migration est appliquée : la modifier casserait sa somme de contrôle. Le
   démenti est consigné ici, et l'en-tête cite encore Revolut.
 
-  Correction proposée, à décider (§7, décision 9) : ne persister du corps que
-  ce que la réconciliation lit réellement — identifiant d'événement, type,
-  identifiant de commande, montant, devise, statut — et écarter le reste à
-  l'écriture plutôt qu'à la lecture. Le corps intégral n'est nécessaire qu'au
-  moment de la vérification de signature, qui a déjà eu lieu.
+  **Décision du Propriétaire (`owner-e4-2026-08-30`)** : garder la trace
+  comptable en colonnes — identifiant d'événement, type, commande, montants,
+  devise, statut, horodatages — et purger le corps **30 jours après
+  réception**. Trente jours parce qu'un litige se rapproche à la main du
+  tableau de bord du fournisseur pendant cette fenêtre, et que la comptabilité
+  ne dépend pas du corps.
+
+  **Mise en œuvre (V4.5-197)** : `payload_json` devient nullable, `NULL`
+  signifiant purgé et jamais « reçu vide » — tout événement enregistré a un
+  corps à l'écriture, donc l'absence atteste la purge sans colonne
+  supplémentaire. `retention.ts` porte la cible, en mode constat par défaut
+  comme les autres, réglable par `LEARNX_RETENTION_PAYMENT_PAYLOAD_MS`, et
+  V4.5-173 la planifie. Le résultat rapporte `purged` et non `deleted` : la
+  ligne survit à la purge de son corps, et dire l'inverse affirmerait une
+  suppression qui n'a pas eu lieu.
+
+  L'effacement de compte n'attend pas la fenêtre : il vide les corps des
+  événements rattachés aux commandes de la personne, dans la transaction de
+  pseudonymisation. Une demande d'effacement ne peut pas se voir répondre
+  « dans trente jours ».
 
 ## 5. Information et consentement — écart principal
 
@@ -213,7 +230,7 @@ peut être écrite qu'après la décision E2 et l'attestation des fournisseurs.
 | --- | --- | --- |
 | Accès / portabilité | Historique des corrections visible dans l'app ; pas d'export | Export JSON des corrections d'un utilisateur : ticket (voie A, P2) |
 | Rectification | E-mail modifiable ? **à vérifier** | — |
-| Effacement | Outillé côté administration : `POST /api/admin/accounts/:userId/erase` (`account-routes.ts:57`), pseudonymisation irréversible. **Pas de parcours en libre-service** : la personne écrit, le Propriétaire exécute — tenable en exploitation solo, à revoir si le volume grandit. **Ne couvre pas le paiement** (E4) | Décision 9, puis ticket |
+| Effacement | Outillé côté administration : `POST /api/admin/accounts/:userId/erase` (`account-routes.ts:57`), pseudonymisation irréversible. **Pas de parcours en libre-service** : la personne écrit, le Propriétaire exécute — tenable en exploitation solo, à revoir si le volume grandit. **Couvre le paiement depuis V4.5-197** : les corps d'événements rattachés aux commandes de la personne sont vidés dans la même transaction (E4) | Fait |
 | Opposition (141) | Non applicable tant que 141 n'est pas livré | Ligne de consentement §5 |
 | Réclamation | Adresse de contact : `PublicContact` existe ; à publier | §7 |
 
@@ -259,17 +276,13 @@ Décisions ouvertes, ajoutées le 30 août 2026 — aucune n'est supposée :
    l'ont été OpenRouter, Anthropic et Mistral au §7.1, avec URL et date.
    Tant que ce n'est pas fait, aucune durée ne peut être affichée pour le
    paiement, exactement comme pour l'IA.
-9. **Que garder du corps des événements (E4)** — trois options, et elles ne
-   s'équivalent pas :
-   (a) ne persister que les champs lus par la réconciliation, et écarter le
-   reste à l'écriture — l'écart disparaît, mais un litige futur ne peut plus
-   être tranché sur ce que le fournisseur avait envoyé ;
-   (b) tout garder et purger après un délai — il faut alors choisir ce délai
-   en connaissance de l'obligation comptable ;
-   (c) tout garder indéfiniment, et l'écrire dans la politique de
-   confidentialité plutôt que de le laisser tacite.
-   Le choix est celui du Propriétaire ; c'est un arbitrage entre preuve
-   commerciale et minimisation, pas une question technique.
+9. **Que garder du corps des événements (E4)** — **tranché le 30 août 2026
+   (`owner-e4-2026-08-30`) : option (b)**, tout garder et purger à 30 jours,
+   la trace comptable étant tenue par des colonnes qui survivent à la purge.
+   Livré par V4.5-197 ; §4 E4 porte la mise en œuvre. Écartées : (a) ne
+   persister que les champs lus par la réconciliation — l'écart disparaissait
+   mais un litige ne pouvait plus être tranché sur ce que le fournisseur avait
+   envoyé — et (c) tout garder indéfiniment en l'écrivant dans la politique.
 10. **Durée de conservation comptable** — les pièces justificatives d'un
     achat doivent être conservées (droit commercial français : dix ans pour
     les livres et pièces comptables). Cela **impose** de garder
@@ -304,6 +317,8 @@ l'écrire telle quelle dans la notice ; aucune demande contractuelle à OpenRout
 - envoyer un texte d'apprenant dans un e-mail d'alerte ou un artefact de
   recherche ;
 - supprimer ou réécrire une écriture du ledger au titre de l'effacement ;
-- affirmer que l'effacement d'un compte retire toutes ses données tant que
-  E4 n'est pas tranché — c'est faux du corps des événements de paiement ;
+- affirmer que l'effacement d'un compte retire **toutes** ses données : il
+  pseudonymise, vide les corps d'événements de paiement et supprime notes et
+  sessions, mais les textes d'apprenant et les écritures du ledger survivent
+  sous le pseudonyme (E1, décision 2) ;
 - afficher une durée de rétention pour le paiement avant la décision 8.

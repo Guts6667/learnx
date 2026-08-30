@@ -3,6 +3,14 @@ const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 export interface RetentionPolicy {
   batchSize: number;
   maxBatches: number;
+  /**
+   * The raw provider body on a payment event (V4.5-197,
+   * `owner-e4-2026-08-30`). Thirty days is long enough for a human to
+   * reconcile a disputed charge against the provider's dashboard, and the
+   * accounting trace does not depend on it: event id, type, order, amounts,
+   * currency, status and timestamps are columns of their own and are kept.
+   */
+  paymentPayloadRetentionMs: number;
   publicLeadRetentionMs: number;
   rateLimitRetentionMs: number;
   sessionGraceMs: number;
@@ -20,6 +28,7 @@ export interface RetentionRepository {
   countExpiredAccessInvitations(cutoff: Date): Promise<number>;
   countExpiredEmailVerifications(cutoff: Date): Promise<number>;
   countExpiredRateLimits(cutoff: Date): Promise<number>;
+  countExpiredPaymentPayloads(cutoff: Date): Promise<number>;
   countExpiredPublicLeads(cutoff: Date): Promise<number>;
   countExpiredSessions(cutoff: Date): Promise<number>;
   countExpiredTrialMarkers(cutoff: Date): Promise<number>;
@@ -27,6 +36,11 @@ export interface RetentionRepository {
   deleteExpiredEmailVerifications(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredRateLimits(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredPublicLeads(cutoff: Date, limit: number): Promise<number>;
+  /**
+   * Strips the body and keeps the row. Not a delete, and named so: the
+   * accounting trace must survive its own purge.
+   */
+  purgeExpiredPaymentPayloads(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredSessions(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredTrialMarkers(cutoff: Date, limit: number): Promise<number>;
 }
@@ -37,10 +51,22 @@ interface RetentionTargetResult {
   hasMore: boolean;
 }
 
+/**
+ * A target whose rows are kept and emptied. Reporting it as `deleted` would
+ * say rows went away that are still there — and this result is what the RGPD
+ * register cites as evidence the purge ran.
+ */
+interface RetentionPurgeResult {
+  candidates: number;
+  hasMore: boolean;
+  purged: number;
+}
+
 export interface RetentionCleanupResult {
   accessInvitations: RetentionTargetResult;
   applied: boolean;
   emailVerifications: RetentionTargetResult;
+  paymentPayloads: RetentionPurgeResult;
   rateLimits: RetentionTargetResult;
   publicLeads: RetentionTargetResult;
   sessions: RetentionTargetResult;
@@ -50,6 +76,7 @@ export interface RetentionCleanupResult {
 export const defaultRetentionPolicy: RetentionPolicy = {
   batchSize: 500,
   maxBatches: 20,
+  paymentPayloadRetentionMs: 30 * DAY_IN_MILLISECONDS,
   publicLeadRetentionMs: 730 * DAY_IN_MILLISECONDS,
   rateLimitRetentionMs: DAY_IN_MILLISECONDS,
   sessionGraceMs: 7 * DAY_IN_MILLISECONDS,
@@ -92,6 +119,11 @@ export function getRetentionPolicy(
       'LEARNX_RETENTION_PUBLIC_LEAD_MS',
       defaultRetentionPolicy.publicLeadRetentionMs,
     ),
+    paymentPayloadRetentionMs: readPositiveInteger(
+      environment,
+      'LEARNX_RETENTION_PAYMENT_PAYLOAD_MS',
+      defaultRetentionPolicy.paymentPayloadRetentionMs,
+    ),
     rateLimitRetentionMs: readPositiveInteger(
       environment,
       'LEARNX_RETENTION_RATE_LIMIT_MS',
@@ -121,27 +153,58 @@ interface CleanupTarget {
   deleteBatch(cutoff: Date, limit: number): Promise<number>;
 }
 
+/**
+ * Counts, then works in bounded batches. Shared by the targets that delete and
+ * the one that only empties a column, so the two cannot drift apart in how
+ * they honour `apply`, the batch size or the batch ceiling.
+ */
+async function runTarget(
+  target: CleanupTarget,
+  apply: boolean,
+  policy: RetentionPolicy,
+): Promise<{ affected: number; candidates: number; hasMore: boolean }> {
+  const candidates = await target.count(target.cutoff);
+  if (!apply || candidates === 0) {
+    return { affected: 0, candidates, hasMore: candidates > 0 };
+  }
+
+  let affected = 0;
+  for (let batch = 0; batch < policy.maxBatches; batch += 1) {
+    const batchAffected = await target.deleteBatch(
+      target.cutoff,
+      policy.batchSize,
+    );
+    affected += batchAffected;
+    if (batchAffected < policy.batchSize) break;
+  }
+
+  return { affected, candidates, hasMore: affected < candidates };
+}
+
 async function cleanupTarget(
   target: CleanupTarget,
   apply: boolean,
   policy: RetentionPolicy,
 ): Promise<RetentionTargetResult> {
-  const candidates = await target.count(target.cutoff);
-  if (!apply || candidates === 0) {
-    return { candidates, deleted: 0, hasMore: candidates > 0 };
-  }
+  const { affected, candidates, hasMore } = await runTarget(
+    target,
+    apply,
+    policy,
+  );
+  return { candidates, deleted: affected, hasMore };
+}
 
-  let deleted = 0;
-  for (let batch = 0; batch < policy.maxBatches; batch += 1) {
-    const batchDeleted = await target.deleteBatch(
-      target.cutoff,
-      policy.batchSize,
-    );
-    deleted += batchDeleted;
-    if (batchDeleted < policy.batchSize) break;
-  }
-
-  return { candidates, deleted, hasMore: deleted < candidates };
+async function purgeTarget(
+  target: CleanupTarget,
+  apply: boolean,
+  policy: RetentionPolicy,
+): Promise<RetentionPurgeResult> {
+  const { affected, candidates, hasMore } = await runTarget(
+    target,
+    apply,
+    policy,
+  );
+  return { candidates, hasMore, purged: affected };
 }
 
 export async function runRetentionCleanup(
@@ -162,6 +225,21 @@ export async function runRetentionCleanup(
   );
   const trialMarkerCutoff = new Date(
     now.getTime() - policy.trialMarkerRetentionMs,
+  );
+  const paymentPayloadCutoff = new Date(
+    now.getTime() - policy.paymentPayloadRetentionMs,
+  );
+
+  // Kept, emptied. The row is the accounting trace and outlives its body.
+  const paymentPayloads = await purgeTarget(
+    {
+      count: (cutoff) => repository.countExpiredPaymentPayloads(cutoff),
+      cutoff: paymentPayloadCutoff,
+      deleteBatch: (cutoff, limit) =>
+        repository.purgeExpiredPaymentPayloads(cutoff, limit),
+    },
+    options.apply,
+    policy,
   );
 
   const sessions = await cleanupTarget(
@@ -230,6 +308,7 @@ export async function runRetentionCleanup(
     accessInvitations,
     applied: options.apply,
     emailVerifications,
+    paymentPayloads,
     publicLeads,
     rateLimits,
     sessions,
