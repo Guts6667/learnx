@@ -914,5 +914,16 @@ reproduire — persistance incrémentale des tentatives et réconciliation
 bilatérale contre l'usage fournisseur — ont été livrés le même soir, et le run
 suivant a laissé une trace exploitable là où celui-ci n'avait rien laissé.
 
+**Amendement du 30 août 2026 — la réconciliation bilatérale n'a pas
+corroboré.** Les totaux de registre ci-dessus tiennent : ce sont les coûts que
+chaque réponse du fournisseur a déclarés. En revanche, le champ
+`providerDeltaUsd` des fichiers `cost-reconciliation.json` du 29 août vaut 0.
+L'usage cumulé exposé par OpenRouter (`total_usage`) ne bouge pas à l'échelle de
+temps d'un run : mesuré le 30 août, il est resté identique à neuf décimales
+avant et après quinze appels payants, et encore plusieurs minutes plus tard. Le
+côté fournisseur ne confirme donc pas les chiffres de registre sur cette
+échelle ; il ne les contredit pas non plus. Toute citation de ces montants doit
+s'appuyer sur le registre, en sachant que la seconde source n'a rien corroboré.
+
 Un run partiel donne cette entrée de journal, pas d'article public : la page
 publique attend le run sur l'identité corrigée.
