@@ -700,3 +700,48 @@ l'autorisation.
   seed preview mergé (`4f081295`) ; branche Neon `preview` créée vide, non
   migrée (procédure suspendue jusqu'au wrapper).
 - Chaque enregistrement relu après mutation ; aucun autre ticket modifié.
+## 30 août 2026 — voie D : mutations Airtable non encore journalisées
+
+Rattrapage. Les mutations ci-dessous ont été appliquées le 29 août au soir et
+le 30 août, toutes sur des enregistrements créés par cette session, et
+n'avaient pas encore d'entrée. Chaque enregistrement a été relu champ par
+champ après mutation ; aucun écart, aucune suppression, aucune page
+d'interface touchée.
+
+- `recJFACuVNTMXxuYP` V4.5-171 : `P2` → `P1` → `P0` puis `DRAFT` → `READY`,
+  après le relevé Neon du propriétaire ; puis `REVIEW`, PR #46, commit
+  `0ec4c397`, `État de synchro = Canonique Git`, `Preuves QA` renseignées, et
+  retour à `P1` une fois la cause première corrigée.
+- `recI0o4zDR5FFD7MQ` V4.5-176 : `P2` → `P1`, `DRAFT` → `READY`, description
+  refondue autour de la fenêtre de restauration de 6 h relevée par le
+  propriétaire, et de sa tension avec les suppressions de branches de V4.5-171.
+- `recLKyPSMTz5aQ1zN` V4.5-174 : description complétée avec les noms exacts des
+  contextes de check, puis `DONE` après application des protections par le
+  propriétaire, `Preuves QA` renseignées.
+- `recL3BtE3hDGOdhPW` V4.5-170 : `REVIEW` → `DONE`, PR #28, commit `cc956e55`,
+  `Arbitrage Rayan` ramené à `Aucun` — la question posée était sans objet, les
+  URL de base étant illisibles par conception.
+- `recYphSi9FXqtNpmj` V4.5-177 : `Blocage courant` réduit à la seule décision
+  restante, plan Hobby et base Neon `staging` étant confirmés.
+
+## 30 août 2026 — voie D : erreur de contexte de check requis sur `main`
+
+Consignée parce qu'elle a bloqué une promotion d'urgence et que la leçon vaut
+au-delà de l'incident.
+
+Les checks requis de `main` nomment `Integration (required)`. Or le workflow
+d'Integration **sur `main`** ne porte pas de `name:` : le renommage n'est parti
+que sur `dev`. Le job publie donc son contexte sous `real-functions`, et
+`Integration (required)` ne peut pas apparaître. Une PR vers `main` reste
+indéfiniment en « Expected — waiting for status to be reported », et
+`enforce_admins` étant actif, personne ne passe outre.
+
+Origine : les noms de contextes ont été relevés sur une PR issue de `dev`
+après le renommage, puis transmis pour réglage sur `main`, sans vérifier que
+`main` produisait les mêmes. **Un contexte requis se vérifie sur la branche qui
+porte la protection, pas sur celle que l'on regarde.**
+
+Contournement demandé au propriétaire : remplacer temporairement le contexte
+par `real-functions`, et rétablir `Integration (required)` à la première
+promotion normale `dev` → `main`, celle qui emportera le renommage. L'étape de
+rétablissement est inscrite dans V4.5-174 pour que le provisoire ne dure pas.
