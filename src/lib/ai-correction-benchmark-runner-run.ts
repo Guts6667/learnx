@@ -24,6 +24,19 @@ import {
 import { executeBenchmarkWorkflowPass } from './ai-correction-benchmark-runner-pass.js';
 
 export async function runBenchmark(input: {
+  /**
+   * The bound the caller already computed and had authorised, under whichever
+   * bounding convention it declared.
+   *
+   * When supplied, this guard checks *that* figure against the cap instead of
+   * deriving a second one of its own. Two preflights that each compute a bound
+   * can disagree — and did, on 30 August 2026: the outer preflight authorised a
+   * plan under the measured convention at 13.98 USD while this one refused it
+   * under the conservative convention at 23, so a run that had been authorised
+   * could not start. One convention, one verdict; this stays the spend-time
+   * guard, not a second opinion on the bound.
+   */
+  authorisedBoundUsd?: number;
   candidates?: CorrectionBenchmarkConfiguration['candidates'];
   cases?: CorrectionBenchmarkCorpus['cases'];
   configuration: CorrectionBenchmarkConfiguration;
@@ -78,12 +91,16 @@ export async function runBenchmark(input: {
     // This is the only dispatch guard for the mandatory primary/retry phase.
     // A failure happens after the preflight is persisted but before the first
     // provider request, never mid-exam.
-    if (preflight.decision === 'CONTINGENCY_REQUIRED') {
+    const bound =
+      input.authorisedBoundUsd ??
+      preflight.primaryWorstCaseUsd + preflight.retryWorstCaseUsd;
+    if (
+      input.supplierBudget.actualSpentUsd + bound >
+      input.supplierBudget.hardCapUsd + 1e-12
+    ) {
       throw new Error('BENCHMARK_SUPPLIER_BUDGET_CONTINGENCY_REQUIRED');
     }
-    input.supplierBudget.assertCanDispatch(
-      preflight.primaryWorstCaseUsd + preflight.retryWorstCaseUsd,
-    );
+    input.supplierBudget.assertCanDispatch(bound);
   }
   const dispatch = async (dispatchInput: {
     attemptNumber: number;

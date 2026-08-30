@@ -676,3 +676,84 @@ describe('--measure-checker', () => {
     ).rejects.toThrow(/NO_ATTEMPTS/);
   });
 });
+
+describe('one convention, one verdict', () => {
+  async function measuredDirectory(): Promise<string> {
+    const directory = await scratchRegressionDirectory();
+    await copyFile(
+      path.join(REGRESSION_SOURCE, 'measured-costs.v1.json'),
+      path.join(directory, 'measured-costs.v1.json'),
+    );
+    await copyFile(
+      path.join(REGRESSION_SOURCE, 'checker-pricing.v1.json'),
+      path.join(directory, 'checker-pricing.v1.json'),
+    );
+    return directory;
+  }
+
+  it('reaches the first dispatch when the authorised bound fits', async () => {
+    const directory = await measuredDirectory();
+    let dispatched = 0;
+    const counting = () => {
+      const inner = fakeExecutor();
+      return async (call: Parameters<ReturnType<typeof fakeExecutor>>[0]) => {
+        dispatched += 1;
+        return inner(call);
+      };
+    };
+
+    // Before this fix the runner derived a second bound under the conservative
+    // convention and refused a plan the preflight had just authorised under the
+    // measured one: two preflights, two verdicts, and a run that could not
+    // start. Rayan hit it twice on 30 August, at 02:35 and 02:38.
+    await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=0.20',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: counting(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T05:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    expect(dispatched).toBeGreaterThan(0);
+  });
+
+  it('refuses before any dispatch when the authorised bound does not fit', async () => {
+    const directory = await measuredDirectory();
+    let dispatched = 0;
+    const counting = () => {
+      const inner = fakeExecutor();
+      return async (call: Parameters<ReturnType<typeof fakeExecutor>>[0]) => {
+        dispatched += 1;
+        return inner(call);
+      };
+    };
+
+    await expect(
+      runRegressionPool({
+        arguments: [
+          `--run-pool=${POOL_PATH}`,
+          '--profile=reduced',
+          '--supplier-cost-cap-usd=1',
+        ],
+        checker: CHECKER,
+        configuration: configuration(),
+        executeCandidate: counting(),
+        identities: IDENTITIES,
+        now: () => new Date('2026-08-30T05:30:00.000Z'),
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow(/EXCEEDS_CAP/);
+
+    // A refusal must cost nothing: the point of refusing before the first call
+    // is that a half-executed run spends real money and measures nothing.
+    expect(dispatched).toBe(0);
+  });
+});
