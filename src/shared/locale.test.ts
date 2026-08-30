@@ -2,6 +2,7 @@ import {
   formatLocalizedDate,
   formatLocalizedNumber,
   formatMinorAmount,
+  formatWholeNumber,
   normalizeLocale,
 } from '@/shared/locale';
 
@@ -31,6 +32,18 @@ describe('account locale helpers', () => {
    * porte sur ce point précis : aucun `Number` n'est fabriqué en chemin, donc
    * aucun centime ne peut disparaître dans un arrondi binaire.
    */
+  it('groupe un entier venu en chaîne sans le convertir en nombre', () => {
+    const normalize = (value: string) => value.replace(/\s/gu, ' ');
+
+    expect(normalize(formatWholeNumber('1200', 'fr'))).toBe('1 200');
+    expect(formatWholeNumber('1200', 'en')).toBe('1,200');
+    // Au-delà de l'entier exact de JavaScript : `Number` rendrait ici un autre
+    // nombre, en silence, et c'est un nombre de crédits.
+    expect(formatWholeNumber('9007199254740993', 'en')).toBe(
+      '9,007,199,254,740,993',
+    );
+  });
+
   it('rend un montant en centimes sans jamais passer par un flottant', () => {
     const normalize = (value: string) => value.replace(/\s/gu, '');
 

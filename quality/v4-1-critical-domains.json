@@ -49,6 +49,7 @@
       "src/server/api/exercises/types.ts",
       "src/server/api/exercises/validation.ts",
       "src/server/api/payments/app.ts",
+      "src/server/api/public-catalogue/app.ts",
       "src/server/corrections/correction-breaker.ts",
       "src/server/corrections/correction-checker.ts",
       "src/server/corrections/correction-cost-audit.ts",
@@ -197,7 +198,8 @@
       "^src/features/exercises/(?:AiCorrectionPanel|AiCorrectionResult|ai-correction)\\.tsx?$",
       "^src/lib/(?:ai-correction-breaker|ai-correction-confidence|ai-correction-contracts|ai-correction-provider-adapters|ai-json-schema|exercise-correction-contracts|stage-assessment-correction-contracts)\\.ts$",
       "^src/server/(?:ai/(?:openrouter-configuration|openrouter-provider|persistent-correction|prisma-correction-repository|structured-provider)|corrections/.+|credits/.+|payments/.+|pricing/.+)\\.ts$",
-      "^src/server/api/(?:ai-pricing|corrections|credits|exercises|payments)/.+\\.ts$"
+      "^src/server/api/(?:ai-pricing|corrections|credits|exercises|payments)/.+\\.ts$",
+      "^src/server/api/public-catalogue/.+\\.ts$"
     ],
     "progress-and-assessments": [
       "^src/features/(?:assessments|concept-assessments|quizzes|stage-assessments)/",

@@ -13,6 +13,7 @@ export const frenchLandingMessages = {
   'landing.navigation.product': 'Le produit',
   'landing.navigation.research': 'Recherche',
   'landing.navigation.roadmap': 'Feuille de route',
+  'landing.navigation.pricing': 'Tarifs',
   'landing.eyebrow': 'Apprendre avec une direction',
   'landing.title': 'Votre chemin vers la connaissance.',
   'landing.lead':
@@ -129,6 +130,20 @@ export const frenchLandingMessages = {
     'Ce lien est invalide, expiré ou a déjà été utilisé.',
   'landing.cta.apply': 'Candidater',
   'landing.cta.howItWorks': 'Voir comment ça marche',
+  'landing.pricing.eyebrow': 'Tarifs',
+  'landing.pricing.title': 'Des crédits, à l’usage',
+  'landing.pricing.description':
+    'Les corrections par IA sont payées en crédits. Une allocation offerte vous est attribuée chaque mois ; les crédits achetés s’y ajoutent et ne sont pas repris par un changement de rôle.',
+  'landing.pricing.packCredits': {
+    one: '{credits} crédit',
+    other: '{credits} crédits',
+  },
+  'landing.pricing.soon':
+    'Les paliers ne sont pas encore ouverts. Ils seront publiés ici, avec leur prix, dès qu’ils seront arrêtés.',
+  'landing.pricing.unavailable':
+    'Les paliers n’ont pas pu être chargés. Réessayez dans un instant.',
+  'landing.pricing.cta': 'Demander un accès',
+
   'landing.hero.trust':
     'Aucune carte bancaire. Aucun compte créé avant votre acceptation.',
   'landing.roadmap.availableTitle': 'Votre parcours, gardé et repris',
@@ -160,6 +175,7 @@ export const englishLandingMessages = {
   'landing.navigation.product': 'Product',
   'landing.navigation.research': 'Research',
   'landing.navigation.roadmap': 'Roadmap',
+  'landing.navigation.pricing': 'Pricing',
   'landing.eyebrow': 'Learn with direction',
   'landing.title': 'Your path to knowledge.',
   'landing.lead':
@@ -272,6 +288,20 @@ export const englishLandingMessages = {
     'This link is invalid, expired or has already been used.',
   'landing.cta.apply': 'Apply now',
   'landing.cta.howItWorks': 'See how it works',
+  'landing.pricing.eyebrow': 'Pricing',
+  'landing.pricing.title': 'Credits, used as you go',
+  'landing.pricing.description':
+    'AI corrections are paid for in credits. A complimentary allocation is granted every month; purchased credits add to it and are never taken back by a change of role.',
+  'landing.pricing.packCredits': {
+    one: '{credits} credit',
+    other: '{credits} credits',
+  },
+  'landing.pricing.soon':
+    'Tiers are not open yet. They will be published here, with their price, as soon as they are settled.',
+  'landing.pricing.unavailable':
+    'The tiers could not be loaded. Try again in a moment.',
+  'landing.pricing.cta': 'Request access',
+
   'landing.hero.trust':
     'No credit card. No account created until you are accepted.',
   'landing.roadmap.availableTitle': 'Your path, saved and resumable',

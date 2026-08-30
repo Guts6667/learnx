@@ -1,11 +1,39 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { I18nProvider } from '@/i18n/I18nProvider';
 import { LandingPage } from '@/pages/LandingPage';
 
 const routeMock = vi.hoisted(() => vi.fn());
 vi.mock('@/app/navigation', () => ({ navigate: routeMock }));
+
+function jsonResponse(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    headers: { 'content-type': 'application/json' },
+    status,
+  });
+}
+
+/**
+ * La page lit le catalogue public au montage (V4.5-206). Les tests ci-dessous
+ * ne portent pas sur lui : il répond un catalogue vide, et chacun n'observe
+ * que les appels de la route qui l'intéresse. Sans ce routage par chemin, la
+ * première réponse d'un test de formulaire irait au catalogue.
+ */
+function stubFetch(
+  handler: (path: string, init?: RequestInit) => Promise<Response>,
+) {
+  return vi
+    .spyOn(globalThis, 'fetch')
+    .mockImplementation(((path: string, init?: RequestInit) =>
+      String(path) === '/api/public/credit-packs'
+        ? Promise.resolve(jsonResponse({ packs: [] }))
+        : handler(String(path), init)) as typeof globalThis.fetch);
+}
+
+beforeEach(() => {
+  stubFetch(() => Promise.resolve(jsonResponse({ message: 'ok' }, 202)));
+});
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -157,11 +185,8 @@ describe('LandingPage', () => {
   });
 
   it('submits updates without creating an access request', async () => {
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(JSON.stringify({ message: 'ok' }), {
-        status: 202,
-        headers: { 'content-type': 'application/json' },
-      }),
+    const fetchMock = stubFetch(() =>
+      Promise.resolve(jsonResponse({ message: 'ok' }, 202)),
     );
     render(
       <I18nProvider locale="en">
@@ -183,8 +208,13 @@ describe('LandingPage', () => {
     });
     fireEvent.click(consentInput);
     fireEvent.submit(interestForm);
-    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
-    const [path, request] = fetchMock.mock.calls[0] ?? [];
+    await waitFor(() =>
+      expect(
+        fetchMock.mock.calls.some(([path]) => path === '/api/public-leads'),
+      ).toBe(true),
+    );
+    const [path, request] =
+      fetchMock.mock.calls.find(([call]) => call === '/api/public-leads') ?? [];
     expect(path).toBe('/api/public-leads');
     expect(String(request?.body)).toContain('LAUNCH_UPDATES');
     expect(String(request?.body)).not.toContain('EARLY_ADOPTER');
@@ -196,15 +226,13 @@ describe('LandingPage', () => {
   });
 
   it('conserve une candidature après une erreur et permet une reprise explicite', async () => {
-    const fetchMock = vi
-      .spyOn(globalThis, 'fetch')
-      .mockRejectedValueOnce(new TypeError('Network unavailable'))
-      .mockResolvedValueOnce(
-        new Response(JSON.stringify({ message: 'ok' }), {
-          status: 202,
-          headers: { 'content-type': 'application/json' },
-        }),
-      );
+    let leadAttempts = 0;
+    stubFetch(() => {
+      leadAttempts += 1;
+      return leadAttempts === 1
+        ? Promise.reject(new TypeError('Network unavailable'))
+        : Promise.resolve(jsonResponse({ message: 'ok' }, 202));
+    });
     render(
       <I18nProvider locale="fr">
         <LandingPage />
@@ -246,6 +274,6 @@ describe('LandingPage', () => {
     expect(
       await screen.findByText(/confirmer votre candidature early adopter/i),
     ).toBeInTheDocument();
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(leadAttempts).toBe(2);
   });
 });

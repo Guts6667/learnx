@@ -14,6 +14,7 @@ import { notesApp } from './notes/app';
 import { paymentsApp } from './payments/app';
 import { curriculumApp } from './programs/app';
 import { progressApp } from './progress/app';
+import { publicCatalogueApp } from './public-catalogue/app';
 import { publicLeadsApp } from './public-leads/app';
 import { quizzesApp } from './quizzes/app';
 import { reviewsApp } from './reviews/app';
@@ -113,6 +114,11 @@ const PUBLIC_ROUTES = [
     why: 'Erasure request from a mailed link. A GDPR obligation that cannot be gated on a session.',
   },
   {
+    path: '/api/public/credit-packs',
+    method: 'GET',
+    why: 'The price list the landing page shows. A visitor reading what LearnX sells has no session by definition, and the alternative — reading the authenticated catalogue — would mean putting a hole in the guard on /api/credits/*. It publishes only packs an owner has activated, and no identifier.',
+  },
+  {
     path: '/api/payments/webhook',
     method: 'POST',
     why: 'Stripe cannot hold a session. The signature is the authentication, verified inside the handler.',
@@ -140,6 +146,7 @@ const MOUNTED_APPS = [
   ['access-requests', accessRequestsApp],
   ['admin', adminApp],
   ['ai-pricing', aiPricingApp],
+  ['public-catalogue', publicCatalogueApp],
   ['public-leads', publicLeadsApp],
   ['payments', paymentsApp],
   ['corrections', correctionsApp],

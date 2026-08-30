@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import { expectNoSeriousA11yViolations } from './accessibility';
+import { installPublicCatalogue } from './journey-api';
 
 const viewports = [
   { height: 720, width: 320 },
@@ -18,10 +19,24 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
     testInfo.project.name !== 'desktop-chromium',
     'La matrice déterministe est exécutée une fois.',
   );
-  const privateRequests: string[] = [];
+  /**
+   * La page publique ne doit dépendre d'aucune route qui demande une session.
+   * C'est la propriété que V4.5-186 a rendue coûteuse : la landing appelait une
+   * route devenue privée et répondait 401 en production sans qu'un test bronche.
+   *
+   * La section tarifs (V4.5-206) ajoute une lecture, et une seule : le
+   * catalogue public, sans cookie, sous un préfixe qui dit qu'il est public.
+   * Elle est donc exclue nommément — l'exemption est étroite et visible —
+   * pendant que toute autre requête `/api/` reste interdite.
+   */
+  const sessionRequests: string[] = [];
   page.on('request', (request) => {
-    if (request.url().includes('/api/')) privateRequests.push(request.url());
+    const url = request.url();
+    if (!url.includes('/api/')) return;
+    if (url.includes('/api/public/credit-packs')) return;
+    sessionRequests.push(url);
   });
+  await installPublicCatalogue(page);
 
   for (const viewport of viewports) {
     await page.setViewportSize(viewport);
@@ -123,7 +138,7 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   ).toBeVisible();
   await expect(page.getByText(/Fondamentaux|psychologie/i)).toHaveCount(0);
   await expectNoSeriousA11yViolations(page);
-  expect(privateRequests).toEqual([]);
+  expect(sessionRequests).toEqual([]);
 
   const manifest = await page.request.get('/manifest-en.webmanifest');
   expect(manifest.ok()).toBe(true);
@@ -144,4 +159,62 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   await expect(
     page.getByRole('link', { name: 'Sign in' }).first(),
   ).toHaveAttribute('href', '/login');
+});
+
+/**
+ * La section tarifs (V4.5-206), dans ses trois états.
+ *
+ * Un palier est inactif jusqu'à une décision du propriétaire (V4.5-161,
+ * V4.5-164) : un catalogue actif vide est la façon dont le produit dit qu'il
+ * n'a pas encore de prix. Ce que ce test protège est la frontière entre cela
+ * et « nous n'avons pas su lire la liste » — les confondre ferait annoncer
+ * « bientôt » le jour où les prix existent.
+ */
+test('publie les paliers du catalogue, dit « bientôt » quand il est vide et l’avoue quand il est illisible', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'desktop-chromium',
+    'La matrice déterministe est exécutée une fois.',
+  );
+
+  await installPublicCatalogue(page);
+  await page.goto('/');
+
+  await expect(
+    page.getByRole('heading', { name: 'Des crédits, à l’usage' }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/Les paliers ne sont pas encore ouverts/u),
+  ).toBeVisible();
+  await expect(page.locator('.landing-pricing-tiers')).toHaveCount(0);
+  await expect(
+    page.locator('.landing-pricing a[href="#early-adopter"]'),
+  ).toBeVisible();
+
+  await installPublicCatalogue(page, [
+    {
+      credits: '100',
+      currency: 'EUR',
+      key: 'starter',
+      label: 'Découverte',
+      priceMinor: '1500',
+    },
+  ]);
+  await page.reload();
+
+  await expect(page.getByRole('heading', { name: 'Découverte' })).toBeVisible();
+  await expect(page.getByText('100 crédits')).toBeVisible();
+  await expect(page.locator('.landing-pricing-amount')).toHaveText(/15,00/u);
+  await expect(
+    page.getByText(/Les paliers ne sont pas encore ouverts/u),
+  ).toBeHidden();
+
+  await page.route('**/api/public/credit-packs', (route) => route.abort());
+  await page.reload();
+
+  await expect(page.getByText(/n’ont pas pu être chargés/u)).toBeVisible();
+  await expect(
+    page.getByText(/Les paliers ne sont pas encore ouverts/u),
+  ).toBeHidden();
 });
