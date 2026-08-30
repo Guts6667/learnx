@@ -32,11 +32,19 @@ le DNS validé. Un futur domaine marketing séparé nécessitera un nouvel ADR.
 - `APP_URL` doit correspondre à l'origine de l'environnement pour produire les
   liens e-mail. `RESEND_API_KEY`, `LEARNX_EMAIL_FROM` et
   `LEARNX_PUBLIC_LEADS_ENABLED` configurent la collecte.
+- **`LEARNX_PUBLIC_LEADS_ENABLED` est fermé sauf ouverture explicite**
+  (V4.5-178) : seul `true` exact ouvre la collecte, et la variable doit être
+  définie dans **chaque** environnement, y compris pour fermer. Auparavant seule
+  la chaîne `false` exacte fermait : la variable était absente des deux
+  environnements Vercel pendant que les trois dont elle dépend y étaient, donc
+  la collecte tournait faute d'avoir été éteinte. Une variable absente n'est pas
+  une décision, et celle-ci porte sur les données personnelles de visiteurs.
 
 ## Déploiement et rollback
 
 La migration `public_leads` est additive. Le rollback fonctionnel consiste à
-mettre `LEARNX_PUBLIC_LEADS_ENABLED=false` et à restaurer l'ancienne route `/`
+mettre `LEARNX_PUBLIC_LEADS_ENABLED=false` — ou à retirer la variable, ce qui
+ferme désormais aussi — et à restaurer l'ancienne route `/`
 et les anciens manifests. La table est conservée pendant le rollback afin de ne
 pas supprimer silencieusement des consentements ou demandes de suppression.
 La migration ne doit être promue qu'après répétition sur clone Neon.
