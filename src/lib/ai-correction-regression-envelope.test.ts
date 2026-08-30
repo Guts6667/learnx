@@ -295,6 +295,70 @@ describe('ledger spend since the envelope opened', () => {
     ).toBeCloseTo(0.4, 6);
   });
 
+  it('charges a call once when a resumed run copies it into its own ledger', async () => {
+    // The 30 August top-up. A resumed run writes the attempts it inherited into
+    // its own ledger, so summing files charged the same provider calls twice:
+    // the envelope read 8.4777 USD spent when 4.6854 had been, cut the cap from
+    // 7 to 5.5223, and refused a 1.6778 USD top-up it could in fact afford.
+    const directory = await scratch();
+    const call = {
+      attempt: 1,
+      candidateId: 'primary',
+      caseId: 'case-a',
+      costSource: 'ACTUAL',
+      costUsd: 2,
+      latencyMs: 1200,
+      repetition: 1,
+    };
+    for (const name of [
+      '2026-08-30T00-00-00-000Z',
+      '2026-08-30T14-00-00-000Z',
+    ]) {
+      const target = path.join(directory, 'results', name);
+      await mkdir(target, { recursive: true });
+      await writeFile(
+        path.join(target, 'ledger.jsonl'),
+        `${JSON.stringify(call)}\n`,
+        'utf8',
+      );
+    }
+
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-29T00:00:00.000Z',
+      }),
+    ).toBeCloseTo(2, 6);
+  });
+
+  it('keeps two real calls that share a cell but differ in what they cost', async () => {
+    // The repetition-offset defect left 24 cells carrying two attempts both
+    // numbered 1. They are two provider calls and two charges; merging them
+    // would understate the spend, which is the dangerous direction for a cap.
+    const directory = await scratch();
+    const target = path.join(directory, 'results', '2026-08-30T10-00-00-000Z');
+    await mkdir(target, { recursive: true });
+    const base = {
+      attempt: 1,
+      candidateId: 'primary',
+      caseId: 'case-a',
+      costSource: 'ACTUAL',
+      repetition: 1,
+    };
+    await writeFile(
+      path.join(target, 'ledger.jsonl'),
+      `${JSON.stringify({ ...base, costUsd: 0.02, latencyMs: 900 })}\n${JSON.stringify({ ...base, costUsd: 0.03, latencyMs: 1500 })}\n`,
+      'utf8',
+    );
+
+    expect(
+      await ledgerSpendSince({
+        directory,
+        openedAt: '2026-08-30T00:00:00.000Z',
+      }),
+    ).toBeCloseTo(0.05, 6);
+  });
+
   it('ignores a results directory that never wrote a ledger', async () => {
     const directory = await scratch();
     await mkdir(path.join(directory, 'results', '2026-08-30T11-00-00-000Z'), {
