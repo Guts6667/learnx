@@ -753,6 +753,9 @@ export async function runRegressionPool(input: {
   const priceAll =
     conventionChoice.convention === 'measured-p90-v2' ? priceV2 : priceV1;
 
+  /** One pass, priced under the same convention as the whole plan. */
+  const priceOnePass = (pass: RegressionRunPass): number => priceAll([pass]);
+
   // Two checker calls per case in scope: one to rewrite, one to confirm the
   // meaning survived. Priced with the checker's own recorded rate.
   const paraphraseCandidates = requestedPasses[0]?.cases.length ?? 0;
@@ -1019,6 +1022,10 @@ export async function runRegressionPool(input: {
       continue;
     }
     const passAttempts = await runBenchmark({
+      // The bound this run was authorised on, under the convention the
+      // preflight declared. Without it the runner derives its own and can
+      // refuse a plan the preflight had just approved.
+      authorisedBoundUsd: priceOnePass(pass),
       candidates: [candidate],
       cases: pass.cases,
       configuration: input.configuration,
