@@ -81,6 +81,8 @@ export type RegressionRunOutcome = {
   dryRun: boolean;
   /** Worst-case spend for the whole plan, primary and checker together. */
   estimatedPrimaryUsd: number;
+  /** Cells this invocation will actually dispatch, after any resume. */
+  pendingCells: number;
   /** Whether that bound fits the authorised cap. Authoritative. */
   fitsWithinCap: boolean;
   evaluation?: RegressionGateEvaluation;
@@ -360,6 +362,26 @@ async function writeRunArtifact(input: {
   const filePath = path.join(input.directory, input.fileName);
   await writeFile(filePath, input.content, 'utf8');
   return filePath;
+}
+
+/**
+ * Resolves a results directory named on the command line.
+ *
+ * A bare name is read as a directory under `results/`, which is how a run
+ * names itself and how anyone reading the repository refers to one. Resolving
+ * it against the working directory instead — as `--resume` originally did —
+ * fails with ENOENT on the obvious spelling of a paid command, which is the
+ * worst possible moment to discover a path convention.
+ */
+function resolveResultsDirectory(input: {
+  regressionDirectory: string;
+  requested: string;
+}): string {
+  return path.isAbsolute(input.requested) ||
+    input.requested.startsWith('.') ||
+    input.requested.includes(path.sep)
+    ? path.resolve(input.requested)
+    : path.resolve(input.regressionDirectory, 'results', input.requested);
 }
 
 /**
@@ -646,7 +668,12 @@ export async function runRegressionPool(input: {
   // resume that is in fact cheaper than the original run.
   const resumeDirectory = readCliOption(input.arguments, 'resume');
   const resumedAttempts = resumeDirectory
-    ? await readResumeAttempts(path.resolve(resumeDirectory))
+    ? await readResumeAttempts(
+        resolveResultsDirectory({
+          regressionDirectory: directory,
+          requested: resumeDirectory,
+        }),
+      )
     : [];
   const completedCells = new Set(
     resumedAttempts.map((attempt) =>
@@ -811,11 +838,22 @@ export async function runRegressionPool(input: {
   const executedCaseIds = new Set(
     passes.flatMap((pass) => pass.cases.map((item) => item.caseId)),
   );
+  // Pending counts sit beside nominal ones because pricing uses the pending
+  // figure and the artefact previously showed only the nominal one. A resumed
+  // top-up then read as 200 cells bounded at 1.68 USD — two numbers that cannot
+  // both be right, on the one artefact whose job is to justify a spend.
+  const pendingCellTotal = passes.reduce(
+    (total, pass) => total + outstandingCases(pass).length * pass.repetitions,
+    0,
+  );
   const passBreakdown = passes.map((pass) => ({
     cases: pass.cases.length,
     cells: pass.cases.length * pass.repetitions,
     label: pass.label,
+    pendingCases: outstandingCases(pass).length,
+    pendingCells: outstandingCases(pass).length * pass.repetitions,
     primaryWorstCaseUsd: pricePass(pass),
+    repetitionOffset: pass.repetitionOffset ?? 1,
     repetitions: pass.repetitions,
   }));
   await writeRunArtifact({
@@ -909,6 +947,7 @@ export async function runRegressionPool(input: {
       dryRun: true,
       estimatedPrimaryUsd: budgeted.pricedUsd,
       fitsWithinCap: budgeted.fits,
+      pendingCells: pendingCellTotal,
       paraphraseRefusals: cache.refusals,
       plan,
       poolSha256,
@@ -1200,6 +1239,7 @@ export async function runRegressionPool(input: {
     dryRun: false,
     estimatedPrimaryUsd: budgeted.pricedUsd,
     fitsWithinCap: budgeted.fits,
+    pendingCells: pendingCellTotal,
     evaluation,
     metrics,
     paraphraseRefusals: cache.refusals,
@@ -1789,9 +1829,10 @@ export async function runRegressionAnalysis(input: {
       'REGRESSION_ANALYSE_DIRECTORY_REQUIRED: --analyse=<répertoire de résultats>.',
     );
   }
-  const resultsDirectory = path.isAbsolute(requested)
-    ? requested
-    : path.resolve(directory, 'results', requested);
+  const resultsDirectory = resolveResultsDirectory({
+    regressionDirectory: directory,
+    requested,
+  });
 
   const { pool, poolSha256, sources } = await loadPoolForRun(input.arguments);
 

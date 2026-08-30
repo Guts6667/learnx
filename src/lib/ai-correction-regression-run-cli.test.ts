@@ -907,3 +907,84 @@ describe('--analyse (V4.5-127)', () => {
     ).rejects.toThrow('REGRESSION_ANALYSE_DIRECTORY_REQUIRED');
   });
 });
+
+describe('results-directory resolution (V4.5-127)', () => {
+  /**
+   * `--resume` resolved a bare name against the working directory while
+   * `--analyse` resolved it under `results/`. The obvious spelling of the
+   * top-up command — the one naming the run directory as the repository names
+   * it — therefore died with ENOENT. Discovering a path convention is cheap in
+   * a dry run and expensive in a command someone pastes to spend money.
+   */
+  it('resumes from a bare run name, as the repository spells it', async () => {
+    const directory = await scratchRegressionDirectory();
+    const inner = fakeExecutor();
+    let dispatches = 0;
+
+    const first = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: async (call: Parameters<typeof inner>[0]) => {
+        dispatches += 1;
+        return inner(call);
+      },
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T08:00:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    const dispatchesAfterFirst = dispatches;
+    expect(dispatchesAfterFirst).toBeGreaterThan(0);
+
+    const resumed = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=smoke',
+        '--supplier-cost-cap-usd=100',
+        // The bare name, not a path.
+        `--resume=${path.basename(first.resultsDirectory)}`,
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      executeCandidate: async (call: Parameters<typeof inner>[0]) => {
+        dispatches += 1;
+        return inner(call);
+      },
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T08:30:00.000Z'),
+      providerApiKey: 'offline-test-key',
+      regressionDirectory: directory,
+    });
+
+    // It found the attempts, so it owes nothing and buys nothing. Had the bare
+    // name failed to resolve, this would have thrown ENOENT; had it resolved to
+    // an empty directory, it would have re-bought every cell.
+    expect(resumed.pendingCells).toBe(0);
+    expect(dispatches).toBe(dispatchesAfterFirst);
+  }, 90_000);
+
+  it('still honours an explicit path', async () => {
+    const directory = await scratchRegressionDirectory();
+    const missing = path.join(directory, 'nowhere');
+
+    await expect(
+      runRegressionPool({
+        arguments: [
+          `--run-pool=${POOL_PATH}`,
+          '--profile=smoke',
+          '--supplier-cost-cap-usd=100',
+          `--resume=${missing}`,
+        ],
+        configuration: configuration(),
+        identities: IDENTITIES,
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow(/ENOENT|attempts\.json/);
+  });
+});

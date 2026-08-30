@@ -153,7 +153,7 @@ async function runAiCorrectionRegressionCli(
       : `Run de régression terminé : ${outcome.resultsDirectory}`,
   );
   console.log(
-    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; borne totale ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous plafond ${outcome.preflight.supplierCostCapUsd} USD — ${outcome.fitsWithinCap ? 'tient dans le plafond' : 'NE TIENT PAS dans le plafond'}.`,
+    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; ${outcome.pendingCells} cellules à acheter ; borne totale ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous plafond ${outcome.preflight.supplierCostCapUsd} USD — ${outcome.fitsWithinCap ? 'tient dans le plafond' : 'NE TIENT PAS dans le plafond'}.`,
   );
   for (const refusal of outcome.paraphraseRefusals) {
     console.warn(`Paraphrase écartée — ${refusal.caseId} : ${refusal.reason}`);
