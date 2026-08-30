@@ -1,3 +1,4 @@
+import { SYSTEM_ACTOR_ID } from '../system-actor.js';
 import {
   AuditAction,
   CreditIncreaseRequestStatus,
@@ -179,14 +180,16 @@ export class PrismaCreditAdministrationService implements CreditAdministrationSe
     search?: string;
   }): Promise<CreditMemberPage> {
     void input.actorUserId;
+    // The technical account holds no credits and is not a member (V4.5-203).
     const where: Prisma.UserWhereInput = input.search
       ? {
           OR: [
             { displayName: { contains: input.search, mode: 'insensitive' } },
             { email: { contains: input.search, mode: 'insensitive' } },
           ],
+          id: { not: SYSTEM_ACTOR_ID },
         }
-      : {};
+      : { id: { not: SYSTEM_ACTOR_ID } };
     const [users, total] = await this.client.$transaction([
       this.client.user.findMany({
         orderBy: [{ displayName: 'asc' }, { id: 'asc' }],

@@ -1,0 +1,47 @@
+-- V4.5-203 — compenser un remboursement émis chez le fournisseur.
+--
+-- Deux ajouts, tous deux additifs, pour un même besoin : jusqu'ici un
+-- remboursement émis depuis le tableau de bord Stripe rendait l'argent et
+-- laissait les crédits en place (étape 3 de la passe, 30 août 2026). La
+-- compensation automatique demande deux choses que le schéma ne permettait
+-- pas.
+--
+-- 1. UN AUTEUR QUI N'EST PAS UNE PERSONNE (hors migration, volontairement)
+--
+-- `audit_events.actor_user_id` n'est pas nullable et référence `users`, parce
+-- que tout acte audité avait jusqu'ici un humain derrière lui. Un
+-- remboursement fournisseur n'en a pas. Nommer l'apprenant serait faux : il
+-- n'a rien fait. On insère donc une ligne qui n'est pas une personne, à
+-- identifiant fixe pour que ce soit la même dans tous les environnements.
+--
+-- Cette ligne n'est **pas** insérée ici. Une migration qui écrit dans `users`
+-- fait échouer la répétition sur clone de production — « row count changed
+-- from 5 to 6, protected row checksum changed » — et ce garde-fou a raison :
+-- une migration décrit une forme, elle ne peuple pas une table de comptes.
+-- Le compte est donc créé à la première compensation, par un upsert
+-- idempotent sur identifiant fixe (`src/server/system-actor.ts`).
+--
+-- Le registre de crédits n'a besoin de rien de tout cela :
+-- `credit_ledger_entries.actor_user_id` est déjà nullable, donc une écriture
+-- compensatoire dit simplement qu'aucun humain n'a agi. Ce compte existe pour
+-- la piste d'audit, qui ne sait pas le dire.
+--
+-- 2. UNE ISSUE POUR LE REMBOURSEMENT PARTIEL
+--
+-- `charge.refunded` est émis aussi pour un remboursement partiel. La règle de
+-- prorata (`voluntaryRefundMinor`) répond à « l'apprenant rend tout ce qu'il
+-- n'a pas consommé » : appliquée à un remboursement de 5 € sur 20 €, elle
+-- reprendrait la totalité des crédits restants et inscrirait un remboursement
+-- plus grand que l'argent réellement sorti. Décision : seuls les
+-- remboursements complets compensent automatiquement ; un partiel est
+-- enregistré, n'applique rien, et se voit. Il lui faut donc son propre nom —
+-- `applied` serait faux, `out_of_order` le déguiserait en cas anodin
+-- (V4.5-198).
+--
+-- ROLLBACK
+-- ========
+-- Le retour de code seul ne demande rien : la valeur cesse d'être écrite.
+-- PostgreSQL ne sait pas retirer une valeur d'un type énuméré ; voir la
+-- migration 20260830180000 pour la procédure. Délibérément non automatisé.
+
+ALTER TYPE "payment_event_outcome" ADD VALUE IF NOT EXISTS 'partial_refund';

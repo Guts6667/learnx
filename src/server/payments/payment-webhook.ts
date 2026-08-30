@@ -31,6 +31,7 @@ export type WebhookResult =
   | { kind: 'DISABLED' }
   | { kind: 'DUPLICATE'; providerEventId: string }
   | { kind: 'OUT_OF_ORDER'; providerEventId: string }
+  | { kind: 'PARTIAL_REFUND'; providerEventId: string }
   | { kind: 'REJECTED'; reason: string }
   | { kind: 'UNKNOWN_EVENT'; providerEventId: string }
   | { kind: 'UNKNOWN_ORDER'; providerEventId: string };
@@ -44,7 +45,11 @@ export type WebhookResult =
  * exist to be queried.
  */
 type StoredWebhookOutcome =
-  'APPLIED' | 'OUT_OF_ORDER' | 'UNKNOWN_EVENT' | 'UNKNOWN_ORDER';
+  | 'APPLIED'
+  | 'OUT_OF_ORDER'
+  | 'PARTIAL_REFUND'
+  | 'UNKNOWN_EVENT'
+  | 'UNKNOWN_ORDER';
 
 export interface WebhookPorts {
   /** Records the event and returns false when the id was already stored. */
@@ -67,6 +72,16 @@ export interface WebhookPorts {
     /** Theirs: what `providerOrderId` holds, a Checkout session id. */
     providerOrderId: string | null;
   }): Promise<{ id: string; status: PaymentOrderStatus } | null>;
+  /**
+   * Compensates a fully refunded order (V4.5-203): the REFUND ledger entry and
+   * the order's figures, together. Returns false when the order had already
+   * been settled — two deliveries, or an administrator who got there first.
+   *
+   * Separate from `applyTransition` because it is not a status change that
+   * happens to write a ledger entry: the entry is the point, and the status is
+   * what the refund service sets while writing it.
+   */
+  compensateRefund(input: { orderId: string }): Promise<boolean>;
   applyTransition(input: {
     attributeCredits: boolean;
     orderId: string;
@@ -88,6 +103,13 @@ interface WebhookEnvelope {
   payment_intent_id: string | null;
   /** Theirs, for the object this event is about. */
   provider_order_id: string | null;
+  /**
+   * True only when the provider returned the whole charge (V4.5-203). Null on
+   * anything that is not a refund. Unknown amounts read as *not* full: not
+   * compensating leaves a human to settle it, while compensating wrongly takes
+   * credits the learner still paid for.
+   */
+  refund_is_full: boolean | null;
 }
 
 /**
@@ -106,11 +128,18 @@ function stripeEnvelope(rawPayload: string): WebhookEnvelope | null {
     order_id: parsed.clientReferenceId,
     payment_intent_id: parsed.paymentIntentId,
     provider_order_id: parsed.objectId,
+    refund_is_full:
+      parsed.chargeAmountMinor === null || parsed.refundedAmountMinor === null
+        ? null
+        : parsed.refundedAmountMinor >= parsed.chargeAmountMinor,
   };
 }
 
 type ResolvedEvent =
-  | { outcome: 'OUT_OF_ORDER' | 'UNKNOWN_EVENT' | 'UNKNOWN_ORDER' }
+  | {
+      outcome:
+        'OUT_OF_ORDER' | 'PARTIAL_REFUND' | 'UNKNOWN_EVENT' | 'UNKNOWN_ORDER';
+    }
   | {
       decided: PaymentOrderStatus;
       incoming: PaymentOrderStatus;
@@ -133,9 +162,20 @@ type ResolvedEvent =
 function resolveEvent(
   order: { id: string; status: PaymentOrderStatus } | null,
   incoming: PaymentOrderStatus | undefined,
+  refundIsFull: boolean | null,
 ): ResolvedEvent {
   if (!order) return { outcome: 'UNKNOWN_ORDER' };
   if (!incoming) return { outcome: 'UNKNOWN_EVENT' };
+
+  // A partial refund arrives under the same event name as a full one, and the
+  // compensation rule cannot express it: `voluntaryRefundMinor` answers "the
+  // learner returns everything unspent", so applied to 5 € of a 20 € order it
+  // would reclaim every remaining credit and book a refund larger than the
+  // money that actually left. Recorded, applied to nothing, and named so a
+  // person settles it through the admin flow (V4.5-203).
+  if (incoming === 'REFUNDED' && refundIsFull !== true) {
+    return { outcome: 'PARTIAL_REFUND' };
+  }
 
   const decision = decideTransition(order.status, incoming);
   return decision.kind === 'OUT_OF_ORDER'
@@ -186,7 +226,7 @@ export async function handlePaymentWebhook(input: {
   // asserting an attribution that never occurred — and folded an unrecognised
   // event name into OUT_OF_ORDER, which reads as a harmless late duplicate and
   // hid the one failure this receiver cannot detect on its own.
-  const resolution = resolveEvent(order, status);
+  const resolution = resolveEvent(order, status, envelope.refund_is_full);
 
   // Still the first write, and still before anything is applied: the insert is
   // what makes a replay harmless, and the record of what arrived must exist
@@ -202,6 +242,26 @@ export async function handlePaymentWebhook(input: {
   if (!stored) return { kind: 'DUPLICATE', providerEventId };
   if (resolution.outcome !== 'APPLIED') {
     return { kind: resolution.outcome, providerEventId };
+  }
+
+  // A full refund is not a status change that happens to write a ledger entry:
+  // the compensating entry is the point, and the refund service sets the status
+  // while writing it, conditionally, so a second delivery settles nothing twice
+  // (V4.5-203).
+  if (resolution.incoming === 'REFUNDED') {
+    const compensated = await input.ports.compensateRefund({
+      orderId: resolution.order.id,
+    });
+    // Already settled — an administrator got there first, or a redelivery did.
+    // Not an error, and nothing more to do.
+    if (!compensated) return { kind: 'OUT_OF_ORDER', providerEventId };
+
+    return {
+      attributed: false,
+      kind: 'APPLIED',
+      providerEventId,
+      status: 'REFUNDED',
+    };
   }
 
   const attributeCredits = shouldAttributeCredits({

@@ -1,3 +1,4 @@
+import { ensureSystemActor } from '../system-actor.js';
 import type { WebhookPorts } from './payment-webhook.js';
 
 /**
@@ -71,6 +72,28 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
         },
         where: { id: input.orderId },
       });
+    },
+    async compensateRefund(input) {
+      // Delegated to the refund service so the pro-rata rule, the append-only
+      // ledger and the conditional status write stay in one place — the same
+      // path an administrator takes, with the same guards. All that differs is
+      // who acted (V4.5-203).
+      const { refundOrder } = await import('./refund-service.js');
+      const { createPrismaRefundPorts } =
+        await import('./prisma-refund-ports.js');
+
+      // Created on first use: a migration may not write into `users`, and a
+      // seed may not have run wherever a refund lands.
+      const actorUserId = await ensureSystemActor(prisma);
+
+      const result = await refundOrder({
+        actorUserId,
+        kind: 'VOLUNTARY',
+        note: 'Remboursement émis chez le fournisseur',
+        orderId: input.orderId,
+        ports: await createPrismaRefundPorts(),
+      });
+      return result.kind === 'REFUNDED';
     },
     async findOrder(input) {
       // Payment intent first: it is what a charge or a dispute carries, and

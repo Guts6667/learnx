@@ -27,7 +27,12 @@ export interface RefundLedgerResult {
 export async function refundPurchasedCredits(
   prisma: PrismaClient,
   input: {
-    actorUserId: string;
+    /**
+     * Null when no person acted: a refund issued from the provider's dashboard
+     * reaches us as a webhook (V4.5-203). The column has always been nullable;
+     * this signature was tighter than the schema.
+     */
+    actorUserId: string | null;
     amount: bigint;
     lotId: string;
     orderId: string;
