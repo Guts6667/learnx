@@ -93,6 +93,54 @@ En cas de coût de correction inconnu, de tentative orpheline ou de doute sur
 un règlement, ne jamais traiter la valeur comme zéro : conserver la
 réservation et passer en `RECONCILIATION_REQUIRED`.
 
+## Surveillance et astreinte
+
+`GET /api/health` répond publiquement, sans session, et dit trois choses : si
+la base répond, le commit déployé, la région. **200** quand la base répond,
+**503** quand elle est injoignable ou ne répond pas dans les deux secondes. Un
+sondage qui pend ne rapporte rien, ce qui est pire que rapporter une panne.
+
+```bash
+curl -s https://learn-x.app/api/health | jq
+```
+
+La réponse ne nomme jamais l'hôte, le rôle ni le message du pilote : un
+inconnu peut l'appeler, il n'y apprend rien d'exploitable. Le détail vit dans
+le journal, corrélé par `X-Request-Id`.
+
+Toute erreur inattendue écrit désormais une ligne JSON `api_unexpected_error`
+avec son nom, son message, sa pile et l'identifiant de requête. Rien de la
+requête n'y est joint — ni corps, ni en-têtes, ni session — et le chemin voit
+ses identifiants d'enregistrement remplacés par `:id`, comme dans le journal de
+requêtes. L'identifiant retourné au client dans `X-Request-Id` permet de passer
+d'un « ça a échoué » à la panne exacte.
+
+Lecture des journaux : tableau de bord Vercel → projet learnx → Observability →
+Logs, filtre sur `api_unexpected_error` ou sur un `requestId`. **La rétention
+du plan Hobby se compte en heures, pas en jours** : un incident vieux d'une
+journée n'y est plus. C'est la raison d'être du suivi d'incidents ci-dessous.
+
+### Astreinte, en solo
+
+Il n'y a pas d'équipe d'astreinte. Ce qui remplace une rotation :
+
+1. `pnpm deployment:check` après chaque promotion en production ;
+2. le contrôle planifié de V4.5-173, qui appelle `/api/health` et alerte sans
+   attendre qu'un utilisateur écrive ;
+3. un outil de suivi d'incidents, **encore à choisir** — voir ci-dessous.
+
+### Suivi d'incidents : décision ouverte
+
+L'étape 3 de V4.5-172 demande de brancher un outil de suivi d'erreurs, DSN en
+variable Vercel, désactivé hors production. Elle **n'est pas faite** : elle
+suppose de choisir un fournisseur, d'ouvrir un compte et d'accepter une
+dépendance de plus. Le point d'accroche existe — `reportUnexpectedError`
+accepte une fonction d'écriture — donc brancher un outil se réduira à fournir
+cette fonction, sans toucher au reste.
+
+Tant que ce choix n'est pas fait, la seule mémoire des erreurs est le journal
+Vercel, dont la rétention est de quelques heures.
+
 ## Handoff d'un futur ticket
 
 Toujours transmettre : ticket, branche/worktree, base exacte, SHA, fichiers,
