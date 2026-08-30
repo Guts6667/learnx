@@ -32,14 +32,26 @@ export type WebhookResult =
   | { kind: 'DUPLICATE'; providerEventId: string }
   | { kind: 'OUT_OF_ORDER'; providerEventId: string }
   | { kind: 'REJECTED'; reason: string }
+  | { kind: 'UNKNOWN_EVENT'; providerEventId: string }
   | { kind: 'UNKNOWN_ORDER'; providerEventId: string };
+
+/**
+ * What can actually be written to `payment_events.outcome`, which is narrower
+ * than the database enum. `DUPLICATE` and `DISABLED` exist in the type since
+ * V4.5-160 but no row can carry them: a duplicate is never inserted at all —
+ * that is what returning false means — and a disabled receiver answers before
+ * any port is called. Listing them here would tell a reader that such rows
+ * exist to be queried.
+ */
+type StoredWebhookOutcome =
+  'APPLIED' | 'OUT_OF_ORDER' | 'UNKNOWN_EVENT' | 'UNKNOWN_ORDER';
 
 export interface WebhookPorts {
   /** Records the event and returns false when the id was already stored. */
   recordEvent(input: {
     eventType: string;
     orderId: string | null;
-    outcome: 'APPLIED' | 'DUPLICATE' | 'OUT_OF_ORDER' | 'DISABLED';
+    outcome: StoredWebhookOutcome;
     payload: unknown;
     providerEventId: string;
   }): Promise<boolean>;
@@ -90,6 +102,40 @@ function stripeEnvelope(rawPayload: string): WebhookEnvelope | null {
   };
 }
 
+type ResolvedEvent =
+  | { outcome: 'OUT_OF_ORDER' | 'UNKNOWN_EVENT' | 'UNKNOWN_ORDER' }
+  | {
+      decided: PaymentOrderStatus;
+      incoming: PaymentOrderStatus;
+      order: { id: string; status: PaymentOrderStatus };
+      outcome: 'APPLIED';
+    };
+
+/**
+ * What a verified delivery amounts to, worked out from pure inputs so that it
+ * can be recorded before it is acted on.
+ *
+ * The three refusals are kept apart because only one of them is benign. An
+ * order we cannot resolve may be another environment's traffic reaching this
+ * one. An event name absent from `STRIPE_EVENT_STATUS` means the mapping table
+ * is wrong, and orders will sit unfulfilled with the money taken — the single
+ * failure this receiver cannot detect for itself, which is why it must not be
+ * spelled like the harmless one. A genuine out-of-order delivery is neither: it
+ * is the case the state machine exists to absorb.
+ */
+function resolveEvent(
+  order: { id: string; status: PaymentOrderStatus } | null,
+  incoming: PaymentOrderStatus | undefined,
+): ResolvedEvent {
+  if (!order) return { outcome: 'UNKNOWN_ORDER' };
+  if (!incoming) return { outcome: 'UNKNOWN_EVENT' };
+
+  const decision = decideTransition(order.status, incoming);
+  return decision.kind === 'OUT_OF_ORDER'
+    ? { outcome: 'OUT_OF_ORDER' }
+    : { decided: decision.status, incoming, order, outcome: 'APPLIED' };
+}
+
 export async function handlePaymentWebhook(input: {
   configuration: { enabled: boolean; webhookSecret: string | null };
   now: Date;
@@ -125,34 +171,42 @@ export async function handlePaymentWebhook(input: {
 
   // Stored before anything is applied, so the record of what arrived exists
   // even for events we do not act on — that is what reconciliation reads.
+  // Decided before anything is written (V4.5-198). `decideTransition` is pure,
+  // so moving it above the insert changes no behaviour and makes the stored
+  // outcome what happened rather than what we expected to happen. Recording
+  // first, it said APPLIED for a transition it then refused — an audit trail
+  // asserting an attribution that never occurred — and folded an unrecognised
+  // event name into OUT_OF_ORDER, which reads as a harmless late duplicate and
+  // hid the one failure this receiver cannot detect on its own.
+  const resolution = resolveEvent(order, status);
+
+  // Still the first write, and still before anything is applied: the insert is
+  // what makes a replay harmless, and the record of what arrived must exist
+  // even for events we act on in no way.
   const stored = await input.ports.recordEvent({
     eventType: envelope.event,
     orderId: order?.id ?? null,
-    outcome: !order || !status ? 'OUT_OF_ORDER' : 'APPLIED',
+    outcome: resolution.outcome,
     payload: JSON.parse(input.rawPayload),
     providerEventId: envelope.event_id,
   });
   const providerEventId = envelope.event_id;
   if (!stored) return { kind: 'DUPLICATE', providerEventId };
-  if (!order) return { kind: 'UNKNOWN_ORDER', providerEventId };
-  if (!status) return { kind: 'OUT_OF_ORDER', providerEventId };
-
-  const decision = decideTransition(order.status, status);
-  if (decision.kind === 'OUT_OF_ORDER') {
-    return { kind: 'OUT_OF_ORDER', providerEventId };
+  if (resolution.outcome !== 'APPLIED') {
+    return { kind: resolution.outcome, providerEventId };
   }
 
   const attributeCredits = shouldAttributeCredits({
-    current: order.status,
-    incoming: status,
+    current: resolution.order.status,
+    incoming: resolution.incoming,
   });
   // On PAID the grant and the FULFILLED transition are one act. An order that
   // reached PAID and stopped would be money taken with nothing given, waiting
   // on an event the provider has no reason to send.
-  const applied = attributeCredits ? 'FULFILLED' : decision.status;
+  const applied = attributeCredits ? 'FULFILLED' : resolution.decided;
   await input.ports.applyTransition({
     attributeCredits,
-    orderId: order.id,
+    orderId: resolution.order.id,
     paymentIntentId: envelope.payment_intent_id,
     status: applied,
   });

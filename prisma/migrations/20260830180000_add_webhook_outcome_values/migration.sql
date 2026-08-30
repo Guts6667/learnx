@@ -1,0 +1,51 @@
+-- V4.5-198 — distinguer ce que le récepteur a réellement fait d'un événement.
+--
+-- `outcome` collapsait trois situations en une. Il était calculé avant que la
+-- transition ne soit décidée, donc un événement refusé — un `PAID` tardif
+-- après `FULFILLED`, le cas même que la tolérance au désordre existe pour
+-- absorber — était consigné `applied` : une trace d'audit affirmant une
+-- attribution qui n'a pas eu lieu. Et un nom d'événement inconnu était
+-- consigné `out_of_order`, c'est-à-dire sous l'apparence du cas anodin, alors
+-- que c'est la seule panne que ce récepteur ne peut pas détecter seul :
+-- argent encaissé, commande jamais honorée, rien qui échoue bruyamment.
+--
+-- Deux valeurs sont ajoutées. `duplicate` et `disabled` restent dans le type
+-- sans qu'aucune ligne ne puisse les porter — un doublon n'est jamais inséré,
+-- et un encaissement coupé répond avant tout appel — mais les retirer
+-- détruirait un type dont dépendent des lignes existantes pour un gain nul.
+--
+-- Additif et rejouable : aucune ligne n'est modifiée, aucune valeur existante
+-- n'est renommée. Les lignes écrites avant cette migration gardent leur
+-- `applied` ou `out_of_order` d'origine, qui peuvent être faux au sens
+-- ci-dessus ; elles ne sont pas réinterprétées, parce qu'on ne peut pas
+-- reconstruire après coup ce que le récepteur avait décidé.
+--
+-- Pas de bloc de transaction, délibérément. `ALTER TYPE ... ADD VALUE` est
+-- interdit dans une transaction avant PostgreSQL 12 et n'a rien à y gagner
+-- ici : les deux ajouts sont indépendants et idempotents, donc un échec
+-- partiel se répare en rejouant.
+--
+-- ROLLBACK
+-- ========
+-- Le retour de code seul ne demande rien : les valeurs cessent d'être
+-- écrites. PostgreSQL ne sait pas retirer une valeur d'un type énuméré ; il
+-- faut recréer le type, ce qui suppose qu'aucune ligne ne la porte :
+--
+--   BEGIN;
+--   ALTER TYPE "payment_event_outcome" RENAME TO "payment_event_outcome_old";
+--   CREATE TYPE "payment_event_outcome" AS ENUM (
+--     'applied', 'duplicate', 'out_of_order', 'disabled'
+--   );
+--   ALTER TABLE "payment_events" ALTER COLUMN "outcome"
+--     TYPE "payment_event_outcome"
+--     USING "outcome"::text::"payment_event_outcome";
+--   DROP TYPE "payment_event_outcome_old";
+--   COMMIT;
+--
+-- Cela échoue si une seule ligne porte `unknown_order` ou `unknown_event`, et
+-- c'est le comportement voulu : ces lignes sont la trace de ce que Stripe a
+-- envoyé. Délibérément non automatisé.
+
+ALTER TYPE "payment_event_outcome" ADD VALUE IF NOT EXISTS 'unknown_order';
+
+ALTER TYPE "payment_event_outcome" ADD VALUE IF NOT EXISTS 'unknown_event';

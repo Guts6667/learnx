@@ -143,11 +143,75 @@ describe('réception d’un webhook de paiement', () => {
     await expect(
       run(harness, payloadFor({ id: 'evt_2', type: 'invoice.upcoming' })),
     ).resolves.toEqual({
-      kind: 'OUT_OF_ORDER',
+      kind: 'UNKNOWN_EVENT',
       // The id travels with the result so a log line can name the delivery.
       providerEventId: 'evt_2',
     });
     expect(harness.applied).toEqual([]);
+  });
+
+  describe('ce qui est consigné, et non ce qu’on espérait consigner', () => {
+    // Until V4.5-198 the outcome was computed before the transition was
+    // decided, and no test read it — the assertions above check that nothing
+    // is *applied*, which stayed true while the record said it had been.
+
+    it('consigne OUT_OF_ORDER pour un PAID tardif, et non APPLIED', async () => {
+      // The case the ordering-tolerant design exists to absorb. Recorded as
+      // APPLIED, it was an audit trail asserting an attribution that never
+      // happened — and reconciliation reads that trail.
+      const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
+      await run(harness);
+      expect(harness.recorded[0]).toMatchObject({ outcome: 'OUT_OF_ORDER' });
+      expect(harness.applied).toEqual([]);
+    });
+
+    it('consigne UNKNOWN_EVENT pour un nom absent de la table', async () => {
+      // The one failure this receiver cannot detect for itself: money taken,
+      // order never fulfilled, nothing failing loudly. Spelled OUT_OF_ORDER it
+      // was indistinguishable from the benign case above.
+      const harness = build();
+      await run(harness, payloadFor({ id: 'evt_2', type: 'invoice.upcoming' }));
+      expect(harness.recorded[0]).toMatchObject({
+        eventType: 'invoice.upcoming',
+        outcome: 'UNKNOWN_EVENT',
+      });
+      expect(harness.applied).toEqual([]);
+    });
+
+    it('consigne UNKNOWN_ORDER quand aucune commande ne correspond', async () => {
+      const harness = build({ order: null });
+      await run(harness);
+      expect(harness.recorded[0]).toMatchObject({
+        orderId: null,
+        outcome: 'UNKNOWN_ORDER',
+      });
+    });
+
+    it('consigne APPLIED quand la transition est bien acceptée', async () => {
+      const harness = build();
+      await run(harness);
+      expect(harness.recorded[0]).toMatchObject({ outcome: 'APPLIED' });
+      expect(harness.applied).toHaveLength(1);
+    });
+
+    it('consigne avant d’appliquer, pour que rien d’arrivé ne soit perdu', async () => {
+      // Deciding first must not have moved the write: the insert is what makes
+      // a replay harmless, so it stays ahead of any transition.
+      const harness = build();
+      const order: string[] = [];
+      harness.ports.recordEvent.mockImplementation(
+        async (input: Record<string, unknown>) => {
+          order.push('record');
+          harness.recorded.push(input);
+          return true;
+        },
+      );
+      harness.ports.applyTransition.mockImplementation(async () => {
+        order.push('apply');
+      });
+      await run(harness);
+      expect(order).toEqual(['record', 'apply']);
+    });
   });
 
   it('refuse une enveloppe sans référence de commande', async () => {
