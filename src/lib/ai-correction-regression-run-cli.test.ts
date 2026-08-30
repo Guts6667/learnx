@@ -22,6 +22,7 @@ import {
   releaseRunLock,
 } from './ai-correction-regression-envelope.js';
 import {
+  buildRunPasses,
   pendingCellsFor,
   runCheckerMeasurement,
   runRegressionAnalysis,
@@ -866,6 +867,61 @@ describe('the repetition pass dispatches at its offset', () => {
     // Drives the whole CLI twice over the 380-unit pool, like the heavier tests
     // above it. The default 5 s is a limit on this file's fast unit tests, not
     // a budget this one was ever inside.
+  }, 60_000);
+});
+
+describe('mutation coverage matches what the policy declares', () => {
+  it('plans at least the direction-bearing mutants the threshold needs', async () => {
+    // The reduced profile drew mutants only from the 24 baseline cases it
+    // repeats, so 10 carried a direction where `mutation-hints.v1.json` holds
+    // 104 — 76 deletions and 28 inversions, frozen and paid for with the pool.
+    // The gap was the selection, never a missing pool, and a 2 % threshold over
+    // 10 observations resolves to a whole budget of zero.
+    //
+    // The target is read from the policy rather than from the constant beside
+    // the selection, so the two cannot drift apart in silence.
+    const directory = await scratchRegressionDirectory();
+    const planned = await runRegressionPool({
+      arguments: [
+        `--run-pool=${POOL_PATH}`,
+        '--profile=reduced',
+        '--supplier-cost-cap-usd=100',
+      ],
+      checker: CHECKER,
+      configuration: configuration(),
+      identities: IDENTITIES,
+      now: () => new Date('2026-08-30T21:00:00.000Z'),
+      regressionDirectory: directory,
+    });
+
+    const policy = JSON.parse(
+      await readFile(
+        path.join(REGRESSION_SOURCE, 'gate-policy.v5.json'),
+        'utf8',
+      ),
+    ) as { gates: { key: string; minimumDenominator?: number }[] };
+    const declared = policy.gates.find(
+      (gate) => gate.key === 'mutation-direction-violations',
+    )?.minimumDenominator;
+    expect(declared).toBeGreaterThan(0);
+
+    const passes = buildRunPasses({
+      plan: planned.plan,
+      poolSha256: planned.poolSha256,
+      profile: 'reduced',
+      repetitions: 1,
+    });
+    const mutants = passes.find((pass) => pass.label.startsWith('mutants'));
+    const directionBearing = (mutants?.cases ?? []).filter((benchmarkCase) => {
+      const expectation = planned.plan.unitsByBenchmarkCaseId.get(
+        benchmarkCase.caseId,
+      )?.expectation;
+      return Boolean(
+        expectation?.targetCriterionKey && expectation.targetDirection,
+      );
+    });
+
+    expect(directionBearing.length).toBeGreaterThanOrEqual(declared as number);
   }, 60_000);
 });
 
