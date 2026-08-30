@@ -768,7 +768,7 @@ describe('AdminCreditsPage', () => {
         );
       }
       if (path.includes('/refund-preview')) {
-        return Promise.resolve(jsonResponse(preview));
+        return Promise.resolve(jsonResponse({ resource: preview }));
       }
       if (path.endsWith('/refund')) {
         const response = options.onRefund?.(init);

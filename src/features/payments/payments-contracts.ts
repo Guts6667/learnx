@@ -121,13 +121,20 @@ const refundComputationSchema = z.object({
   remainingOnLot: z.string(),
 });
 
+/**
+ * L'aperçu est enveloppé dans `resource`, là où la liste l'est dans `page` :
+ * c'est la forme que la route renvoie réellement (vérifiée contre
+ * `payment-refund-routes.ts` après fusion, pas supposée d'après la spec).
+ */
 export const refundPreviewResponseSchema = z.object({
-  computation: z.nullable(refundComputationSchema),
-  order: refundOrderSchema,
-  refundable: z.boolean(),
-  refusal: z.nullable(
-    z.object({ code: refundRefusalCodeSchema, message: z.string() }),
-  ),
+  resource: z.object({
+    computation: z.nullable(refundComputationSchema),
+    order: refundOrderSchema,
+    refundable: z.boolean(),
+    refusal: z.nullable(
+      z.object({ code: refundRefusalCodeSchema, message: z.string() }),
+    ),
+  }),
 });
 
 export const memberOrdersResponseSchema = z.object({

@@ -39,7 +39,7 @@ export function useAdminRefundPreviewQuery(orderId: string | null) {
     { enabled: orderId !== null },
   );
   return {
-    data: result.data,
+    data: result.data?.resource,
     error: result.error,
     isPending: result.isPending,
     retry: result.refetch,

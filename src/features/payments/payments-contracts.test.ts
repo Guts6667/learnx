@@ -43,7 +43,9 @@ const order = {
   writtenOffCredits: '0',
 };
 
-const preview = { computation, order, refundable: true, refusal: null };
+const preview = {
+  resource: { computation, order, refundable: true, refusal: null },
+};
 
 describe('contrats de paiement', () => {
   it('accepte la forme gelée de l’aperçu', () => {
@@ -57,10 +59,12 @@ describe('contrats de paiement', () => {
     // la fausse valeur du défaut. Les chiffres du passé restent sous `order`.
     expect(
       z.safeParse(refundPreviewResponseSchema, {
-        computation: null,
-        order: { ...order, refundedCredits: '40', status: 'REFUNDED' },
-        refundable: false,
-        refusal: { code: 'ALREADY_REFUNDED', message: 'Already refunded.' },
+        resource: {
+          computation: null,
+          order: { ...order, refundedCredits: '40', status: 'REFUNDED' },
+          refundable: false,
+          refusal: { code: 'ALREADY_REFUNDED', message: 'Already refunded.' },
+        },
       }).success,
     ).toBe(true);
   });
@@ -70,14 +74,18 @@ describe('contrats de paiement', () => {
     // centime qui disparaît un jour dans un arrondi que personne n'a demandé.
     expect(
       z.safeParse(refundPreviewResponseSchema, {
-        ...preview,
-        order: { ...order, amountMinor: 1900 },
+        resource: {
+          ...preview.resource,
+          order: { ...order, amountMinor: 1900 },
+        },
       }).success,
     ).toBe(false);
     expect(
       z.safeParse(refundPreviewResponseSchema, {
-        ...preview,
-        computation: { ...computation, refundedMinor: 760 },
+        resource: {
+          ...preview.resource,
+          computation: { ...computation, refundedMinor: 760 },
+        },
       }).success,
     ).toBe(false);
   });
@@ -87,8 +95,10 @@ describe('contrats de paiement', () => {
     // traverser jusqu'à un libellé vide sur un écran qui parle d'argent.
     expect(
       z.safeParse(refundPreviewResponseSchema, {
-        ...preview,
-        order: { ...order, status: 'CHARGEBACK' },
+        resource: {
+          ...preview.resource,
+          order: { ...order, status: 'CHARGEBACK' },
+        },
       }).success,
     ).toBe(false);
   });
@@ -99,16 +109,20 @@ describe('contrats de paiement', () => {
     // l'écran les rendrait différemment.
     expect(
       z.safeParse(refundPreviewResponseSchema, {
-        ...preview,
-        order: { ...order, learner: { userId: 'user-1' } },
+        resource: {
+          ...preview.resource,
+          order: { ...order, learner: { userId: 'user-1' } },
+        },
       }).success,
     ).toBe(false);
     expect(
       z.safeParse(refundPreviewResponseSchema, {
-        ...preview,
-        order: {
-          ...order,
-          learner: { displayName: null, email: null, userId: 'user-1' },
+        resource: {
+          ...preview.resource,
+          order: {
+            ...order,
+            learner: { displayName: null, email: null, userId: 'user-1' },
+          },
         },
       }).success,
     ).toBe(true);
