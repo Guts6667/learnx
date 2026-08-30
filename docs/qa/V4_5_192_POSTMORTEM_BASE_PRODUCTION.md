@@ -158,3 +158,64 @@ par une passe de paiement, et cet effacement découvert par celui qui l'a causé
 Aucun n'a été signalé par un dispositif. V4.5-172 — route de santé,
 journalisation des erreurs, suivi d'incidents — et V4.5-173 — contrôles
 planifiés — restent ouverts et non commencés.
+
+## Suites, 30 août 2026
+
+### La branche de restauration a été supprimée
+
+`production_old_*`, créée par la restauration à un point dans le temps, a été
+supprimée par le propriétaire le 30 août 2026. Elle avait été conservée le temps
+de vérifier que la production restaurée se comportait normalement. Le projet
+Neon retrouve ainsi une place sous le plafond de dix branches du plan gratuit —
+plafond qui est, lui, la cause du 422 d'Integration traité en V4.5-171.
+
+### Le garde issu de l'action 2 a cassé tous les builds
+
+C'est la partie de ce post-mortem qui mérite le plus d'être lue, parce qu'elle
+s'est produite après lui.
+
+L'action 2 demandait « une garde de trois lignes » refusant une configuration
+ambiguë. Elle a été écrite. Elle refusait, entre autres, deux URL désignant
+« deux hôtes différents ». Or Neon expose chaque endpoint sous deux noms — l'un
+passant par le pooler de connexions, l'autre le contournant — et une
+configuration correcte utilise **les deux à la fois** : `DATABASE_URL` poolée,
+`DIRECT_URL` directe, parce qu'une migration ne peut pas s'exécuter en poolé.
+
+Le garde comparait les noms. Il a donc lu la configuration recommandée comme
+l'incident qu'il devait empêcher, et **tous les builds Vercel de `dev` sont
+morts à `prisma generate`** :
+
+```
+Refus : DATABASE_URL et DIRECT_URL désignent deux hôtes différents.
+  DIRECT_URL   → ep-bold-rain-as6nh8m7.c-4.eu-central-1.aws.neon.tech
+  DATABASE_URL → ep-bold-rain-as6nh8m7-pooler.c-4.eu-central-1.aws.neon.tech
+```
+
+La production a tenu par accident de calendrier : `main` ne portait pas encore
+le garde. La première promotion l'aurait emportée, et le build de production
+aurait échoué au moment précis où l'on déploie.
+
+Le garde compare maintenant l'identité d'endpoint — le premier label, suffixe
+`-pooler` retiré — et non le nom d'hôte. Le refus reste entier pour deux
+endpoints réellement différents, c'est-à-dire pour la forme de l'incident du
+30 août.
+
+**Ce que cela ajoute au post-mortem.** Un correctif de sécurité qui refuse trop
+large ne se contente pas d'être gênant : il déplace la panne au lieu de la
+supprimer, et il la déplace vers un moment — le déploiement — où elle coûte plus
+cher. Un garde doit être éprouvé contre la configuration *normale* autant que
+contre la configuration fautive. Celui-ci ne l'avait été que contre la seconde,
+et ses tests utilisaient des fixtures inventées plutôt que les chaînes réelles
+de l'environnement. Les tests portent désormais les hostnames relevés dans les
+journaux de build.
+
+### Découvert par un déploiement accidentel
+
+Le garde a été trouvé parce qu'une branche a déployé alors qu'elle n'aurait pas
+dû : son message de commit citait la règle d'exclusion de build et contenait
+donc les caractères `[preview]`, qui sont testés sur le message entier. Une
+erreur en a révélé une autre.
+
+Cela ne rachète pas l'erreur, mais cela confirme la conclusion ci-dessus : rien
+dans le dispositif ne surveillait l'échec des builds. Sans ce déploiement
+fortuit, le garde aurait été découvert à la promotion suivante, en production.
