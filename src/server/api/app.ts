@@ -23,6 +23,7 @@ import { notesApp } from './notes/app.js';
 import { curriculumApp } from './programs/app.js';
 import { progressApp } from './progress/app.js';
 import { createCheckoutRoute } from './credits/checkout-route.js';
+import { publicCatalogueApp } from './public-catalogue/app.js';
 import { paymentsApp } from './payments/app.js';
 import { publicLeadsApp } from './public-leads/app.js';
 import { quizzesApp } from './quizzes/app.js';
@@ -88,6 +89,9 @@ function createApiApp() {
   app.route('/', healthApp);
   app.route('/', authApp);
   app.route('/', publicLeadsApp);
+  // Public too, and read-only: the price list the landing page shows. It reads
+  // the same catalogue as the authenticated screen, through the same reader.
+  app.route('/', publicCatalogueApp);
   app.route('/', paymentsApp);
   app.route('/', accessRequestsApp);
   app.route('/', adminApp);

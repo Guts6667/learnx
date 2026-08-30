@@ -50,7 +50,7 @@ describe('V4-008 credit surfaces', () => {
     expect(learner).toContain('pack.priceMinor');
     expect(learner).not.toMatch(/[\d\s]€|EUR/u);
     expect(learner).not.toMatch(/priceMinor\s*[*/]/u);
-    expect(learner).not.toMatch(/Number\(|parseFloat\(/u);
+    expect(learner).not.toMatch(/(?<![\w])Number\(|parseFloat\(/u);
 
     // Coming back from the payment page proves a session ended, not that the
     // credits exist: only a FULFILLED order lets the screen say they do.

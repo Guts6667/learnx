@@ -245,6 +245,75 @@
   letter-spacing: -0.035em;
 }
 
+/*
+ * Tarifs (V4.5-206). La grille est `auto-fit` avec une colonne bornée : le
+ * catalogue est une donnée, pas une constante de maquette, et il peut contenir
+ * un palier comme quatre. Bornée en haut, parce qu'un unique palier étiré sur
+ * toute la largeur ne se lit plus comme une carte de prix.
+ */
+.landing-pricing-heading {
+  min-width: 0;
+}
+
+/*
+ * La colonne de droite d'une section en deux colonnes. Elle porte l'offre —
+ * les paliers, ou la phrase qui explique qu'il n'y en a pas encore — pendant
+ * que la gauche porte le titre et l'appel à l'action.
+ */
+.landing-pricing-offer {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+  min-width: 0;
+}
+
+.landing-pricing-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 22rem));
+  justify-content: start;
+  gap: var(--space-5);
+}
+
+.landing-pricing-tier {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.landing-pricing-tier h3 {
+  font-family: var(--font-interface);
+  font-weight: 500;
+  font-size: var(--text-lg);
+}
+
+.landing-pricing-credits {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.landing-pricing-amount {
+  font-family: var(--font-editorial);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.landing-pricing-notice {
+  max-width: 60ch;
+}
+
+.landing-pricing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  margin-top: var(--space-6);
+}
+
 .landing-roadmap {
   align-items: start;
   border-top: 0;

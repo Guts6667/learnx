@@ -31,6 +31,21 @@ export function formatLocalizedNumber(
 }
 
 /**
+ * Un entier arrivé sous forme de chaîne — un nombre de crédits — groupé selon
+ * la locale sans passer par un `number`.
+ *
+ * Ces valeurs sont des `BigInt` côté serveur : `Number('9007199254740993')`
+ * rendrait un autre nombre, en silence. Écrit trois fois dans trois écrans
+ * avant d'être posé ici (V4.5-206).
+ */
+export function formatWholeNumber(
+  value: string,
+  locale: SupportedLocale,
+): string {
+  return BigInt(value).toLocaleString(toIntlLocale(locale));
+}
+
+/**
  * Un montant en plus petite unité monétaire, rendu sans jamais passer par un
  * nombre flottant.
  *

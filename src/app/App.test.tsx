@@ -31,6 +31,22 @@ describe('App', () => {
     });
   }
 
+  /**
+   * La page publique lit une seule route, et elle est publique : le catalogue
+   * tarifaire (V4.5-206). Le mock la sert vide — l'état du produit tant
+   * qu'aucun palier n'est activé — pour que les tests puissent continuer
+   * d'affirmer que rien d'autre n'est demandé sans session.
+   */
+  function mockPublicCatalogue() {
+    const fetchMock = vi.fn((path: string) =>
+      path === '/api/public/credit-packs'
+        ? Promise.resolve(jsonResponse({ packs: [] }))
+        : Promise.reject(new Error(`Requête inattendue : ${path}`)),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    return fetchMock;
+  }
+
   function mockSession(user: unknown) {
     vi.stubGlobal(
       'fetch',
@@ -40,8 +56,7 @@ describe('App', () => {
 
   it('affiche la landing sans requête privée ni navigation applicative', async () => {
     window.history.pushState({}, '', '/');
-    const fetchMock = vi.fn();
-    vi.stubGlobal('fetch', fetchMock);
+    const fetchMock = mockPublicCatalogue();
 
     render(<App />);
 
@@ -54,7 +69,11 @@ describe('App', () => {
     expect(
       screen.queryByRole('navigation', { name: 'Navigation principale' }),
     ).not.toBeInTheDocument();
-    expect(fetchMock).not.toHaveBeenCalled();
+    // La session n'est pas lue, et rien d'autre non plus : la seule requête
+    // tolérée est le catalogue public, nommée ici plutôt que comptée.
+    expect(fetchMock.mock.calls.map(([path]) => path)).toEqual([
+      '/api/public/credit-packs',
+    ]);
   });
 
   it('rend la page 404 dans un shell public sans lire la session', async () => {
@@ -82,7 +101,7 @@ describe('App', () => {
 
   it('laisse le navigateur charger les documents publics marqués data-native', async () => {
     window.history.pushState({}, '', '/');
-    vi.stubGlobal('fetch', vi.fn());
+    mockPublicCatalogue();
 
     render(<App />);
 

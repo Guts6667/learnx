@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { navigate as route } from '@/app/navigation';
 
 import { TotemPublicShell } from '@/components/layout/TotemShell';
+import { LandingPricing } from '@/components/landing/LandingPricing';
 import {
   LessonPreview,
   ProgramPreview,
@@ -162,6 +163,7 @@ export function LandingPage({ path }: { path?: string }) {
           >
             <div className="landing-primary-navigation">
               <a href="#product">{t('landing.navigation.product')}</a>
+              <a href="#pricing">{t('landing.navigation.pricing')}</a>
               <a href="#research">{t('landing.navigation.research')}</a>
               <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
             </div>
@@ -196,6 +198,7 @@ export function LandingPage({ path }: { path?: string }) {
             <summary>{t('landing.menu')}</summary>
             <nav aria-label={t('landing.utilityNavigation')}>
               <a href="#product">{t('landing.navigation.product')}</a>
+              <a href="#pricing">{t('landing.navigation.pricing')}</a>
               <a href="#research">{t('landing.navigation.research')}</a>
               <a href="#roadmap">{t('landing.navigation.roadmap')}</a>
               <button
@@ -276,6 +279,7 @@ export function LandingPage({ path }: { path?: string }) {
         </div>
         <LessonPreview />
       </section>
+      <LandingPricing />
       <section
         aria-labelledby="landing-roadmap"
         className="landing-section landing-roadmap"

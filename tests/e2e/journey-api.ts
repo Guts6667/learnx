@@ -659,6 +659,28 @@ export async function installFulfilledCreditsOrder(page: Page) {
   });
 }
 
+/**
+ * Le catalogue public (V4.5-206), la seule route que la page publique lit.
+ *
+ * Par défaut vide : c'est l'état réel du produit tant qu'aucun palier n'est
+ * activé, et l'état que la landing doit rendre — « bientôt », jamais un prix
+ * d'attente.
+ */
+export async function installPublicCatalogue(
+  page: Page,
+  packs: readonly {
+    credits: string;
+    currency: string;
+    key: string;
+    label: string;
+    priceMinor: string;
+  }[] = [],
+) {
+  await page.route('**/api/public/credit-packs', async (route) => {
+    await route.fulfill({ contentType: 'application/json', json: { packs } });
+  });
+}
+
 export async function openCriticalLesson(page: Page) {
   await page.goto('/program');
   await expect(page.locator('[data-visual-system="totem"]')).toBeVisible();

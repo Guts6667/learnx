@@ -31,11 +31,11 @@ import {
 } from '@/features/payments/payments';
 import { useI18n } from '@/i18n';
 import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '@/shared/credit-rules';
-import { formatLocalizedDate, formatMinorAmount } from '@/shared/locale';
-
-function value(amount: string, locale: 'en' | 'fr'): string {
-  return BigInt(amount).toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-US');
-}
+import {
+  formatLocalizedDate,
+  formatMinorAmount,
+  formatWholeNumber,
+} from '@/shared/locale';
 
 /**
  * Coupe-circuit de la correction assistée (V4.5-140).
@@ -366,11 +366,15 @@ function MemberRow({
       </div>
       <div>
         <span className="admin-credit-label">{t('credits.free')}</span>
-        <strong>{value(member.projection.free.available, locale)}</strong>
+        <strong>
+          {formatWholeNumber(member.projection.free.available, locale)}
+        </strong>
       </div>
       <div>
         <span className="admin-credit-label">{t('credits.purchased')}</span>
-        <strong>{value(member.projection.purchased.available, locale)}</strong>
+        <strong>
+          {formatWholeNumber(member.projection.purchased.available, locale)}
+        </strong>
       </div>
       <Badge tone={member.accountStatus === 'ACTIVE' ? 'success' : 'warning'}>
         {t(
@@ -448,13 +452,19 @@ function AdjustmentDrawer({
               <div>
                 <span>{t('credits.free')}</span>
                 <strong>
-                  {value(detail.data.projection.free.available, locale)}
+                  {formatWholeNumber(
+                    detail.data.projection.free.available,
+                    locale,
+                  )}
                 </strong>
               </div>
               <div>
                 <span>{t('credits.purchased')}</span>
                 <strong>
-                  {value(detail.data.projection.purchased.available, locale)}
+                  {formatWholeNumber(
+                    detail.data.projection.purchased.available,
+                    locale,
+                  )}
                 </strong>
               </div>
             </div>
@@ -530,7 +540,7 @@ function AdjustmentDrawer({
                       )
                       .map((entry) => (
                         <option key={entry.entryId} value={entry.entryId}>
-                          {value(entry.amount, locale)} ·{' '}
+                          {formatWholeNumber(entry.amount, locale)} ·{' '}
                           {formatLocalizedDate(entry.createdAt, locale, {
                             dateStyle: 'medium',
                           })}
@@ -573,7 +583,7 @@ function AdjustmentDrawer({
                 <div>
                   <dt>{t('admin.credits.amount')}</dt>
                   <dd>
-                    {value(
+                    {formatWholeNumber(
                       operation === 'REDUCE' ? `-${amount}` : amount,
                       locale,
                     )}
@@ -678,7 +688,7 @@ function RefundPanel({
           <dl className="admin-refund-figures">
             <div>
               <dt>{t('admin.refunds.reclaimed')}</dt>
-              <dd>{value(computation.reclaimedCredits, locale)}</dd>
+              <dd>{formatWholeNumber(computation.reclaimedCredits, locale)}</dd>
             </div>
             <div>
               <dt>{t('admin.refunds.amount')}</dt>
@@ -695,7 +705,12 @@ function RefundPanel({
             {computation.projectedWriteOffCredits === '0' ? null : (
               <div>
                 <dt>{t('admin.refunds.projectedWriteOff')}</dt>
-                <dd>{value(computation.projectedWriteOffCredits, locale)}</dd>
+                <dd>
+                  {formatWholeNumber(
+                    computation.projectedWriteOffCredits,
+                    locale,
+                  )}
+                </dd>
               </div>
             )}
           </dl>
@@ -786,14 +801,14 @@ function OrderLine({
       {order.refundedCredits === '0' ? null : (
         <span className="ui-text-muted text-sm">
           {t('admin.refunds.refundedCredits', {
-            credits: value(order.refundedCredits, locale),
+            credits: formatWholeNumber(order.refundedCredits, locale),
           })}
         </span>
       )}
       {order.writtenOffCredits === '0' ? null : (
         <span className="ui-text-muted text-sm">
           {t('admin.refunds.writtenOffCredits', {
-            credits: value(order.writtenOffCredits, locale),
+            credits: formatWholeNumber(order.writtenOffCredits, locale),
           })}
         </span>
       )}

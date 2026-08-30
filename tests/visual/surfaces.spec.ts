@@ -3,6 +3,7 @@ import { expect, type Page, test } from '@playwright/test';
 import {
   credentials,
   installJourneyApi,
+  installPublicCatalogue,
   lessonSummary,
   moduleSummary,
   program,
@@ -45,6 +46,10 @@ const publicSurfaces = [
 
 for (const surface of publicSurfaces) {
   test(`public — ${surface.name}`, async ({ page }) => {
+    // La seule lecture d'une page publique (V4.5-206). Vide : c'est l'état du
+    // produit tant qu'aucun palier n'est activé, et le serveur de test n'a de
+    // toute façon pas d'API à interroger.
+    await installPublicCatalogue(page);
     await page.goto(surface.path);
     await settle(page);
     await expect(page).toHaveScreenshot(`${surface.name}.png`, {

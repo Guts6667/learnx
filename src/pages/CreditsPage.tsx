@@ -26,17 +26,17 @@ import {
 } from '@/features/payments/payments';
 import { useI18n } from '@/i18n';
 import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '@/shared/credit-rules';
-import { formatLocalizedDate, formatMinorAmount } from '@/shared/locale';
+import {
+  formatLocalizedDate,
+  formatMinorAmount,
+  formatWholeNumber,
+} from '@/shared/locale';
 
 interface CreditsPageProps {
   /** Le retour de la page de paiement, lu dans l'URL par la route. */
   checkout?: 'cancelled' | 'success';
   /** L'identifiant de commande que `success_url` rapporte. */
   orderId?: string;
-}
-
-function credits(value: string, locale: 'en' | 'fr'): string {
-  return BigInt(value).toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-US');
 }
 
 /**
@@ -120,7 +120,7 @@ function PackCard({
           // Le pluriel se choisit sur un et non-un ; convertir un `BigInt` de
           // crédits en nombre flottant pour cela n'apprendrait rien de plus.
           count: pack.credits === '1' ? 1 : 2,
-          credits: credits(pack.credits, locale),
+          credits: formatWholeNumber(pack.credits, locale),
         })}
       </p>
       <strong className="credit-pack__price">
@@ -376,7 +376,7 @@ export function CreditsPage({ checkout, orderId }: CreditsPageProps) {
               </p>
             </div>
             <strong>
-              {credits(query.data.projection.free.available, locale)}
+              {formatWholeNumber(query.data.projection.free.available, locale)}
             </strong>
           </div>
           <div className="credit-balance-row">
@@ -387,7 +387,10 @@ export function CreditsPage({ checkout, orderId }: CreditsPageProps) {
               </p>
             </div>
             <strong>
-              {credits(query.data.projection.purchased.available, locale)}
+              {formatWholeNumber(
+                query.data.projection.purchased.available,
+                locale,
+              )}
             </strong>
           </div>
           <div className="credit-balance-row credit-balance-row--secondary">
@@ -398,7 +401,7 @@ export function CreditsPage({ checkout, orderId }: CreditsPageProps) {
               </p>
             </div>
             <strong>
-              {credits(query.data.projection.totalAvailable, locale)}
+              {formatWholeNumber(query.data.projection.totalAvailable, locale)}
             </strong>
           </div>
           <div className="credit-balance-row credit-balance-row--secondary">
@@ -409,7 +412,7 @@ export function CreditsPage({ checkout, orderId }: CreditsPageProps) {
               </p>
             </div>
             <strong>
-              {credits(query.data.projection.totalReserved, locale)}
+              {formatWholeNumber(query.data.projection.totalReserved, locale)}
             </strong>
           </div>
         </Card>
