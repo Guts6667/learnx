@@ -99,3 +99,40 @@ test('dit l’abandon sans rien prélever ni rien promettre', async ({ page }) =
     page.getByText('Aucun crédit n’a été ajouté à votre solde.'),
   ).toBeVisible();
 });
+
+test('n’offre aucun achat quand la vente est fermée, et le dit', async ({
+  page,
+}) => {
+  await signIn(page);
+  // L'état de la vente voyage avec le catalogue (V4.5-205) : l'écran le sait
+  // avant le clic, au lieu de l'apprendre de l'échec d'un achat qu'il vient de
+  // proposer.
+  await page.route('**/api/credits/packs', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      json: {
+        packs: [
+          {
+            credits: '100',
+            currency: 'EUR',
+            key: 'starter',
+            label: 'Découverte',
+            priceMinor: '1500',
+          },
+        ],
+        paymentsEnabled: false,
+      },
+    });
+  });
+
+  await page.goto('/credits');
+
+  await expect(
+    page.getByRole('heading', { name: 'L’achat de crédits est fermé' }),
+  ).toBeVisible();
+  // Les paliers restent : une page vide ressemblerait à une panne.
+  await expect(page.getByRole('heading', { name: 'Découverte' })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Acheter Découverte' }),
+  ).toHaveCount(0);
+});
