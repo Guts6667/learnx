@@ -183,8 +183,16 @@ describe('contrats d’achat de crédits', () => {
 
   it('accepte la forme livrée du catalogue et des commandes', () => {
     expect(
-      z.safeParse(creditPacksResponseSchema, { packs: [pack] }).success,
+      z.safeParse(creditPacksResponseSchema, {
+        packs: [pack],
+        paymentsEnabled: true,
+      }).success,
     ).toBe(true);
+    // L'état de la vente n'est pas optionnel : un écran qui le devine quand il
+    // manque devinerait « ouverte », et proposerait un achat qui échoue.
+    expect(
+      z.safeParse(creditPacksResponseSchema, { packs: [pack] }).success,
+    ).toBe(false);
     expect(
       z.safeParse(ownOrdersResponseSchema, { orders: [order] }).success,
     ).toBe(true);
