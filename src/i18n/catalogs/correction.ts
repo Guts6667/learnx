@@ -114,6 +114,56 @@ export const frenchCorrectionMessages = {
   'credits.increase.submit': 'Envoyer la demande',
   'credits.increase.success': 'Votre demande a été transmise.',
   'credits.increase.error': 'La demande n’a pas pu être envoyée.',
+  'credits.purchase.title': 'Acheter des crédits',
+  'credits.purchase.description':
+    'Choisissez un palier. Le paiement est traité par notre prestataire : LearnX ne voit jamais votre numéro de carte.',
+  'credits.purchase.loadError':
+    'Les paliers d’achat n’ont pas pu être chargés.',
+  'credits.purchase.closedTitle': 'L’achat de crédits n’est pas encore ouvert',
+  'credits.purchase.closedDescription':
+    'Aucun palier n’est en vente pour le moment. Vous pouvez demander une augmentation exceptionnelle ci-dessous.',
+  'credits.purchase.packCredits': {
+    one: '{credits} crédit',
+    other: '{credits} crédits',
+  },
+  'credits.purchase.buy': 'Acheter',
+  'credits.purchase.buyPack': 'Acheter {label}',
+  'credits.purchase.error': 'Le paiement n’a pas pu être démarré.',
+  'credits.purchase.refusalPaymentsDisabled':
+    'La vente de crédits vient d’être fermée. Aucun montant n’a été prélevé.',
+  'credits.purchase.refusalPackUnavailable':
+    'Ce palier n’est plus disponible. Aucun montant n’a été prélevé.',
+  'credits.purchase.suspendedTitle': 'Corrections IA suspendues',
+  'credits.purchase.suspendedDescription':
+    'La correction par IA est suspendue en ce moment. Les crédits achetés gardent leur valeur et resteront utilisables à sa reprise.',
+  'credits.purchase.suspendedContinue': 'Continuer vers le paiement',
+  'credits.purchase.suspendedCancel': 'Ne pas acheter maintenant',
+  'credits.checkout.successTitle': 'Paiement reçu',
+  'credits.checkout.successDescription':
+    'Vos crédits seront attribués dès que notre prestataire aura confirmé le paiement. Cette page l’indiquera à ce moment-là.',
+  'credits.checkout.settledTitle': 'Crédits attribués',
+  'credits.checkout.settledDescription':
+    'Votre commande est réglée et ses crédits figurent sur votre solde.',
+  'credits.checkout.refresh': 'Actualiser',
+  'credits.checkout.cancelledTitle': 'Achat abandonné',
+  'credits.checkout.cancelledDescription':
+    'Aucun crédit n’a été ajouté à votre solde.',
+  'credits.orders.title': 'Historique de commandes',
+  'credits.orders.loadError': 'Vos commandes n’ont pas pu être chargées.',
+  'credits.orders.empty': 'Aucune commande',
+  'credits.orders.emptyDescription':
+    'Vos achats de crédits apparaîtront ici, avec leur état.',
+  'credits.orders.status.CREATED': 'Commande créée',
+  'credits.orders.status.PENDING': 'Paiement en cours',
+  'credits.orders.status.PAID': 'Paiement reçu, attribution en cours',
+  'credits.orders.status.FULFILLED': 'Crédits attribués',
+  'credits.orders.status.FAILED': 'Paiement refusé',
+  'credits.orders.status.EXPIRED': 'Paiement abandonné',
+  'credits.orders.status.REFUND_PENDING': 'Remboursement en cours',
+  'credits.orders.status.REFUNDED': 'Remboursée',
+  'credits.orders.status.DISPUTED': 'Contestation bancaire en cours',
+  'credits.orders.status.DISPUTE_WON': 'Contestation rejetée par votre banque',
+  'credits.orders.status.DISPUTE_LOST': 'Remboursée par votre banque',
 } as const;
 
 export const englishCorrectionMessages = {
@@ -232,4 +282,53 @@ export const englishCorrectionMessages = {
   'credits.increase.submit': 'Send request',
   'credits.increase.success': 'Your request was sent.',
   'credits.increase.error': 'The request could not be sent.',
+  'credits.purchase.title': 'Buy credits',
+  'credits.purchase.description':
+    'Pick a tier. Payment is handled by our provider: LearnX never sees your card number.',
+  'credits.purchase.loadError': 'The purchase tiers could not be loaded.',
+  'credits.purchase.closedTitle': 'Buying credits is not open yet',
+  'credits.purchase.closedDescription':
+    'No tier is on sale at the moment. You can request an exceptional increase below.',
+  'credits.purchase.packCredits': {
+    one: '{credits} credit',
+    other: '{credits} credits',
+  },
+  'credits.purchase.buy': 'Buy',
+  'credits.purchase.buyPack': 'Buy {label}',
+  'credits.purchase.error': 'The payment could not be started.',
+  'credits.purchase.refusalPaymentsDisabled':
+    'Credit sales have just closed. Nothing was charged.',
+  'credits.purchase.refusalPackUnavailable':
+    'This tier is no longer available. Nothing was charged.',
+  'credits.purchase.suspendedTitle': 'AI corrections are suspended',
+  'credits.purchase.suspendedDescription':
+    'AI correction is suspended right now. Purchased credits keep their value and will still be usable when it resumes.',
+  'credits.purchase.suspendedContinue': 'Continue to payment',
+  'credits.purchase.suspendedCancel': 'Do not buy now',
+  'credits.checkout.successTitle': 'Payment received',
+  'credits.checkout.successDescription':
+    'Your credits will be granted as soon as our provider confirms the payment. This page will say so then.',
+  'credits.checkout.settledTitle': 'Credits granted',
+  'credits.checkout.settledDescription':
+    'Your order is settled and its credits are on your balance.',
+  'credits.checkout.refresh': 'Refresh',
+  'credits.checkout.cancelledTitle': 'Purchase abandoned',
+  'credits.checkout.cancelledDescription':
+    'No credits were added to your balance.',
+  'credits.orders.title': 'Order history',
+  'credits.orders.loadError': 'Your orders could not be loaded.',
+  'credits.orders.empty': 'No orders',
+  'credits.orders.emptyDescription':
+    'Your credit purchases will appear here, with their state.',
+  'credits.orders.status.CREATED': 'Order created',
+  'credits.orders.status.PENDING': 'Payment in progress',
+  'credits.orders.status.PAID': 'Payment received, credits being granted',
+  'credits.orders.status.FULFILLED': 'Credits granted',
+  'credits.orders.status.FAILED': 'Payment declined',
+  'credits.orders.status.EXPIRED': 'Payment abandoned',
+  'credits.orders.status.REFUND_PENDING': 'Refund in progress',
+  'credits.orders.status.REFUNDED': 'Refunded',
+  'credits.orders.status.DISPUTED': 'Bank dispute in progress',
+  'credits.orders.status.DISPUTE_WON': 'Dispute rejected by your bank',
+  'credits.orders.status.DISPUTE_LOST': 'Refunded by your bank',
 } as const satisfies TranslationOf<typeof frenchCorrectionMessages>;

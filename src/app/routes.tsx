@@ -300,6 +300,30 @@ function AdminCreditsRoute({ path }: RouteParams) {
   );
 }
 
+/**
+ * `/credits` est aussi la page de retour du paiement : Stripe y renvoie avec
+ * `?checkout=success&order=…` ou `?checkout=cancelled`. Les deux paramètres
+ * sont lus ici et passés en propriétés, comme pour les autres routes qui en
+ * dépendent : la page reste rendable sans routeur, et une valeur inattendue
+ * dans l'URL ne devient pas un état de plus dans l'écran.
+ */
+function CreditsRoute({ path }: RouteParams) {
+  void path;
+  const [searchParams] = useSearchParams();
+  const outcome = searchParams.get('checkout');
+
+  return (
+    <ProtectedRoute>
+      <CreditsPage
+        checkout={
+          outcome === 'success' || outcome === 'cancelled' ? outcome : undefined
+        }
+        orderId={searchParams.get('order') ?? undefined}
+      />
+    </ProtectedRoute>
+  );
+}
+
 function NoteRoute({ noteId, path }: RouteParams) {
   void path;
 
@@ -628,11 +652,7 @@ function AppRouteTree() {
             path="/profile"
           />
           <Route
-            element={
-              <ProtectedRoute>
-                <CreditsPage />
-              </ProtectedRoute>
-            }
+            element={<RouteElement component={CreditsRoute} />}
             path="/credits"
           />
           <Route

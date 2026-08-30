@@ -1,6 +1,7 @@
 import {
   formatLocalizedDate,
   formatLocalizedNumber,
+  formatMinorAmount,
   normalizeLocale,
 } from '@/shared/locale';
 
@@ -23,5 +24,25 @@ describe('account locale helpers', () => {
     );
     expect(formatLocalizedNumber(1234.5, 'fr')).toContain(',');
     expect(formatLocalizedNumber(1234.5, 'en')).toContain('.');
+  });
+
+  /**
+   * Les montants restent des chaînes de centimes de bout en bout. Le test
+   * porte sur ce point précis : aucun `Number` n'est fabriqué en chemin, donc
+   * aucun centime ne peut disparaître dans un arrondi binaire.
+   */
+  it('rend un montant en centimes sans jamais passer par un flottant', () => {
+    const normalize = (value: string) => value.replace(/\s/gu, '');
+
+    expect(normalize(formatMinorAmount('1900', 'EUR', 'fr'))).toBe('19,00€');
+    expect(normalize(formatMinorAmount('1900', 'EUR', 'en'))).toBe('€19.00');
+    // Moins d'un euro : les centimes seuls doivent garder leur zéro de tête.
+    expect(normalize(formatMinorAmount('7', 'EUR', 'fr'))).toBe('0,07€');
+    expect(normalize(formatMinorAmount('-760', 'EUR', 'fr'))).toBe('-7,60€');
+    // Au-delà de ce qu'un entier JavaScript représente exactement : c'est le
+    // cas que la conversion en nombre perdrait en silence.
+    expect(
+      normalize(formatMinorAmount('900719925474099100', 'EUR', 'fr')),
+    ).toBe('9007199254740991,00€');
   });
 });

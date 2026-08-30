@@ -81,10 +81,67 @@ export const program = {
 
 interface JourneyState {
   authenticated: boolean;
+  /** Aucune commande tant que l'apprenant n'a pas lancé un achat. */
+  order: 'FULFILLED' | 'NONE' | 'PENDING';
   quizPassed: boolean;
   registered: boolean;
   started: boolean;
   taskDone: boolean;
+}
+
+/**
+ * L'achat de crédits (V4.5-204). Le catalogue et la commande sont figés ici
+ * pour que le parcours soit reproductible ; le faux prestataire de paiement,
+ * lui, vit dans le test qui s'en sert.
+ */
+const creditPacks = [
+  {
+    credits: '100',
+    currency: 'EUR',
+    key: 'starter',
+    label: 'Découverte',
+    priceMinor: '1500',
+  },
+  {
+    credits: '500',
+    currency: 'EUR',
+    key: 'regular',
+    label: 'Régulier',
+    priceMinor: '5900',
+  },
+];
+
+export const creditOrderId = 'b4b0f4d2-0000-4000-8000-000000000001';
+
+export const fakeProviderOrigin = 'https://paiement.exemple.test';
+
+function creditOrder(status: 'FULFILLED' | 'PENDING') {
+  return {
+    amountMinor: '1500',
+    createdAt: '2026-08-30T09:00:00.000Z',
+    currency: 'EUR',
+    fulfilledAt: status === 'FULFILLED' ? '2026-08-30T09:00:12.000Z' : null,
+    id: creditOrderId,
+    packKey: 'starter',
+    status,
+  };
+}
+
+function ownCredits() {
+  return {
+    accountStatus: 'ACTIVE',
+    displayName: credentials.displayName,
+    email: credentials.email,
+    history: [],
+    pendingIncreaseRequest: null,
+    projection: {
+      free: { available: '20', consumed: '0', expired: '0', reserved: '0' },
+      purchased: { available: '0', consumed: '0', expired: '0', reserved: '0' },
+      totalAvailable: '20',
+      totalReserved: '0',
+    },
+    userId: user.id,
+  };
 }
 
 function lessonProgress(state: JourneyState) {
@@ -109,6 +166,7 @@ function lessonProgress(state: JourneyState) {
 export async function installJourneyApi(page: Page) {
   const state: JourneyState = {
     authenticated: false,
+    order: 'NONE',
     quizPassed: false,
     registered: false,
     started: false,
@@ -547,7 +605,57 @@ export async function installJourneyApi(page: Page) {
       return;
     }
 
+    if (method === 'GET' && path === '/api/credits') {
+      await respond({ credits: ownCredits() });
+      return;
+    }
+
+    if (method === 'GET' && path === '/api/credits/packs') {
+      await respond({ packs: creditPacks });
+      return;
+    }
+
+    if (method === 'GET' && path === '/api/credits/orders') {
+      await respond({
+        orders: state.order === 'NONE' ? [] : [creditOrder(state.order)],
+      });
+      return;
+    }
+
+    if (method === 'POST' && path === '/api/credits/checkout') {
+      const input = request.postDataJSON() as { packKey?: string };
+      expect(creditPacks.map((pack) => pack.key)).toContain(input.packKey);
+      // La commande existe dès que la session de paiement est créée, et elle
+      // reste en attente : c'est le webhook qui l'honore, jamais le retour du
+      // navigateur.
+      state.order = 'PENDING';
+      await respond({
+        resource: {
+          checkout: {
+            correctionSuspended: false,
+            orderId: creditOrderId,
+            url: `${fakeProviderOrigin}/pay/${creditOrderId}`,
+          },
+        },
+      });
+      return;
+    }
+
     throw new Error(`Requête API E2E non simulée : ${method} ${path}`);
+  });
+}
+
+/**
+ * Ce que le webhook a fait, vu depuis l'écran : la commande est honorée.
+ * Enregistrée APRÈS `installJourneyApi` — Playwright fait gagner la dernière
+ * route — parce que rien, côté navigateur, ne peut honorer une commande.
+ */
+export async function installFulfilledCreditsOrder(page: Page) {
+  await page.route('**/api/credits/orders', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      json: { orders: [creditOrder('FULFILLED')] },
+    });
   });
 }
 

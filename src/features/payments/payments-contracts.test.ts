@@ -1,7 +1,10 @@
 import * as z from 'zod/mini';
 
 import {
+  checkoutResponseSchema,
+  creditPacksResponseSchema,
   memberOrdersResponseSchema,
+  ownOrdersResponseSchema,
   refundPreviewResponseSchema,
 } from '@/features/payments/payments-contracts';
 
@@ -152,5 +155,93 @@ describe('contrats de paiement', () => {
         },
       }).success,
     ).toBe(true);
+  });
+});
+
+/**
+ * Les surfaces d'achat (V4.5-204), relevées sur les routes livrées par
+ * V4.5-205 et non sur ce qu'on croyait qu'elles renverraient. Les fixtures
+ * ci-dessous reprennent exactement celles de `src/server/api/credits/app.test`.
+ */
+describe('contrats d’achat de crédits', () => {
+  const pack = {
+    credits: '10',
+    currency: 'EUR',
+    key: 'starter',
+    label: 'Découverte',
+    priceMinor: '1500',
+  };
+  const order = {
+    amountMinor: '1500',
+    createdAt: '2026-08-30T17:49:00.000Z',
+    currency: 'EUR',
+    fulfilledAt: '2026-08-30T17:49:29.000Z',
+    id: 'c725ed24-0000-4000-8000-000000000001',
+    packKey: 'starter',
+    status: 'FULFILLED',
+  };
+
+  it('accepte la forme livrée du catalogue et des commandes', () => {
+    expect(
+      z.safeParse(creditPacksResponseSchema, { packs: [pack] }).success,
+    ).toBe(true);
+    expect(
+      z.safeParse(ownOrdersResponseSchema, { orders: [order] }).success,
+    ).toBe(true);
+    // Une commande non honorée n'a pas de date d'attribution ; `null` et
+    // « champ absent » ne disent pas la même chose et le schéma les sépare.
+    expect(
+      z.safeParse(ownOrdersResponseSchema, {
+        orders: [{ ...order, fulfilledAt: null, status: 'PENDING' }],
+      }).success,
+    ).toBe(true);
+  });
+
+  it('refuse un prix ou un nombre de crédits envoyé comme nombre', () => {
+    expect(
+      z.safeParse(creditPacksResponseSchema, {
+        packs: [{ ...pack, priceMinor: 1500 }],
+      }).success,
+    ).toBe(false);
+    expect(
+      z.safeParse(creditPacksResponseSchema, {
+        packs: [{ ...pack, credits: 10 }],
+      }).success,
+    ).toBe(false);
+  });
+
+  it('refuse un état de commande hors énumération côté apprenant aussi', () => {
+    expect(
+      z.safeParse(ownOrdersResponseSchema, {
+        orders: [{ ...order, status: 'CHARGEBACK' }],
+      }).success,
+    ).toBe(false);
+  });
+
+  it('exige une URL de paiement avant toute redirection', () => {
+    expect(
+      z.safeParse(checkoutResponseSchema, {
+        resource: {
+          checkout: {
+            correctionSuspended: false,
+            orderId: 'order-1',
+            url: 'https://checkout.stripe.com/c/pay/cs_test_1',
+          },
+        },
+      }).success,
+    ).toBe(true);
+    // Rediriger sans URL n'enverrait nulle part ; ne pas savoir si la
+    // correction est suspendue ferait vendre en silence. Ni l'un ni l'autre
+    // ne passe.
+    expect(
+      z.safeParse(checkoutResponseSchema, {
+        resource: { checkout: { correctionSuspended: false, orderId: 'o' } },
+      }).success,
+    ).toBe(false);
+    expect(
+      z.safeParse(checkoutResponseSchema, {
+        resource: { checkout: { orderId: 'o', url: 'https://example.test' } },
+      }).success,
+    ).toBe(false);
   });
 });

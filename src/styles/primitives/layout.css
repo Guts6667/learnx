@@ -106,6 +106,72 @@
   color: var(--color-text-muted);
 }
 
+.credit-checkout-return {
+  margin-block: 0;
+}
+
+/*
+ * Les paliers d'achat (V4.5-204). `auto-fit` plutôt qu'un nombre de colonnes :
+ * le catalogue est une donnée, pas une constante de maquette, et une grille
+ * fixée à trois se casse le jour où le propriétaire en active deux ou quatre.
+ *
+ * La colonne est bornée en haut et alignée à gauche : sans cela, deux paliers
+ * s'étirent sur toute la largeur en grand écran et le bouton d'achat devient
+ * une barre de cinq cents pixels. Une carte de prix se lit d'un coup d'œil ou
+ * ne se lit pas.
+ */
+.credit-pack-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 22rem));
+  justify-content: start;
+  gap: var(--space-4);
+}
+
+.credit-pack {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.credit-pack__label {
+  font-weight: 500;
+}
+
+.credit-pack__credits {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.credit-pack__price {
+  margin-block-end: var(--space-3);
+  font-family: var(--font-editorial);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+}
+
+.credit-order-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.credit-order-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.credit-order-row:last-child {
+  border-bottom: 0;
+}
+
 .admin-credit-members {
   display: grid;
   gap: var(--space-3);

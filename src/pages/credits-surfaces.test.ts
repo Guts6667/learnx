@@ -41,4 +41,19 @@ describe('V4-008 credit surfaces', () => {
     expect(admin).not.toMatch(/packPriceMinor\s*[*/]/u);
     expect(admin).not.toContain('voluntaryRefundMinor');
   });
+
+  it('never prices anything itself, and never claims a grant the server has not made', () => {
+    // V4.5-164 requires that no price appear that an owner has not arbitrated.
+    // The learner screen therefore renders `priceMinor` from the catalogue and
+    // holds no figure of its own — not a literal amount, not a multiplication,
+    // and not a float conversion on the way to the screen.
+    expect(learner).toContain('pack.priceMinor');
+    expect(learner).not.toMatch(/[\d\s]€|EUR/u);
+    expect(learner).not.toMatch(/priceMinor\s*[*/]/u);
+    expect(learner).not.toMatch(/Number\(|parseFloat\(/u);
+
+    // Coming back from the payment page proves a session ended, not that the
+    // credits exist: only a FULFILLED order lets the screen say they do.
+    expect(learner).toContain("order?.status === 'FULFILLED'");
+  });
 });
