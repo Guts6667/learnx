@@ -927,3 +927,49 @@ s'appuyer sur le registre, en sachant que la seconde source n'a rien corroboré.
 
 Un run partiel donne cette entrée de journal, pas d'article public : la page
 publique attend le run sur l'identité corrigée.
+
+### 8.19 V4.5-125 — l'identité reprise mesurée : 6,12 % → 2,27 %
+
+Run du 30 août 2026 sur l'identité promue 2.2.0 (`maxRetries: 1`, V4.5-124),
+enveloppe `owner-125-budget-2026-08-30`. Artefacts append-only sous
+`benchmarks/ai-correction/regression/results/2026-08-30T00-44-57-975Z/`.
+
+**Le résultat.** Les corrections finalement inexploitables passent de **6,12 %**
+(3/49, identité sans reprise) à **2,27 %** (4/176), sous le gate bloquant de
+3 %. Treize cellules ont échoué puis abouti à la reprise. La décision prise la
+veille sur un taux mesuré une fois est désormais mesurée dans les deux états :
+V4.5-124 est constaté, non supposé. Sécurité intacte — aucune fuite d'injection
+sur 51 occasions ; accord du vérificateur complet aux niveaux HIGH (261/261) ;
+part LOW à 14,9 % ; dérive de critères non liés nulle sur 67 ; accord avec
+l'étalon `MODEL_AUTHORED` à 83,9 %, rapporté et jamais bloquant. Coût par
+correction P50 0,02193 USD, P90 0,02556.
+
+**La promotion est refusée pour trois raisons, dont une seule concerne le
+modèle — et probablement pas lui.** Le gate de direction de mutation est rouge à
+1/10 : le mutant en cause supprimait une phrase que notre indice supposait
+porteuse à elle seule du critère de fidélité, alors que le texte muté conserve
+deux autres délimitations explicites. Le niveau maximal était défendable ; c'est
+l'indice de V4.5-122 qui a tort. La violation est comptée telle quelle, aucun
+gate n'est retuné, et corriger l'indice imposera un pool `v2` puisque la règle du
+§2 gèle une version de pool à son premier run payant — ce run l'a été. La
+politique signale par ailleurs qu'un seuil de 2 % n'est pas énonçable sur dix
+mutants. Les deux autres refus sont l'oracle de stabilité sans dénominateur et
+la métrique `evidenceHallucination` non branchée.
+
+**Quatre défauts trouvés par le run, tous invisibles sans dépense réelle.** Le
+run a acheté ses 200 cellules puis est mort avant son résumé, parce qu'un appel
+vérificateur au coût nul était transmis à la garde budgétaire comme `ESTIMATED`,
+qui refuse : juste au moment de dépenser, désastreux après. Deux préflights
+calculaient deux bornes et se contredisaient, ce qui a fait échouer deux
+lancements avant tout appel. La passe de répétitions relançait la répétition 1
+au lieu d'ajouter la seconde, achetant environ 0,50 USD de travail en double et
+privant la suite de son oracle de stabilité (V4.5-127). Et un indice de mutation
+supposait qu'une phrase portait seule son critère.
+
+**Coût : 4,6854 USD** pour une borne mesurée de 13,98 — surestimation d'un
+facteur 3, soit le facteur de sécurité appliqué à un P90. Le côté fournisseur ne
+corrobore toujours pas : `total_usage` ne bouge pas à l'échelle d'un run, donc le
+registre est le chiffre et l'enveloppe retient le plus grand des deux sources.
+
+L'analyse a été produite hors ligne depuis le répertoire de résultats : rien n'a
+été racheté pour l'obtenir.

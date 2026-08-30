@@ -38,6 +38,17 @@ export async function runBenchmark(input: {
    */
   authorisedBoundUsd?: number;
   candidates?: CorrectionBenchmarkConfiguration['candidates'];
+  /**
+   * First repetition number to run, when a pass adds observations to cells a
+   * previous pass already covered.
+   *
+   * Without it a "repetitions pass" re-runs repetition 1: repetitions are
+   * numbered from 1, so passing a *count* where an *offset* is meant buys the
+   * same cell twice. That happened on 30 August — 24 cells of duplicate work,
+   * about 0.50 USD, and a stability oracle left with no second observation
+   * because no case was ever seen twice.
+   */
+  repetitionOffset?: number;
   cases?: CorrectionBenchmarkCorpus['cases'];
   configuration: CorrectionBenchmarkConfiguration;
   corpus: CorrectionBenchmarkCorpus;
@@ -63,6 +74,7 @@ export async function runBenchmark(input: {
   const selectedCandidates = input.candidates ?? input.configuration.candidates;
   const selectedCases = input.cases ?? input.corpus.cases;
   const repetitions = input.repetitions ?? input.configuration.repetitions;
+  const repetitionStart = input.repetitionOffset ?? 1;
   const pendingCells = input.pendingCells
     ? new Map(
         input.pendingCells.map((cell) => [
@@ -217,7 +229,11 @@ export async function runBenchmark(input: {
         benchmarkCase.contractKey,
         benchmarkCase.contractVersion,
       );
-      for (let repetition = 1; repetition <= repetitions; repetition += 1) {
+      for (
+        let repetition = repetitionStart;
+        repetition < repetitionStart + repetitions;
+        repetition += 1
+      ) {
         const runAttempts = initialAttemptsByCell.get(
           `${candidate.candidateId}|${benchmarkCase.caseId}|${repetition}`,
         );
@@ -259,7 +275,11 @@ export async function runBenchmark(input: {
         benchmarkCase.contractKey,
         benchmarkCase.contractVersion,
       );
-      for (let repetition = 1; repetition <= repetitions; repetition += 1) {
+      for (
+        let repetition = repetitionStart;
+        repetition < repetitionStart + repetitions;
+        repetition += 1
+      ) {
         if (
           pendingCells &&
           !pendingCells.has(

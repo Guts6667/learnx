@@ -27,6 +27,8 @@ import {
   type CriterionConfidence,
 } from './ai-correction-confidence.js';
 import type { CorrectionBenchmarkCorpus } from './ai-correction-benchmark.js';
+import { calculateEvidenceObservations } from './ai-correction-benchmark-summary-observations.js';
+import { groupLogicalRuns } from './ai-correction-benchmark-summary-support.js';
 import type { CorrectionContract } from './ai-correction-contracts.js';
 import type { BenchmarkAttempt } from './ai-correction-benchmark-artifacts.js';
 import {
@@ -319,6 +321,8 @@ export async function deriveRegressionObservations(input: {
   checker?: RegressionCheckerPort;
   /** Families inside the promoted identity's validated scope. */
   familyScientificallyValidated: boolean;
+  /** Called when a verifier call reports no cost, so the run can report it. */
+  onUnreconciledChecker?: (unitId: string) => void;
   /** Called for each new verdict, so the caller can persist it immediately. */
   onVerdicts?: (records: RegressionVerdictRecord[]) => Promise<void>;
   plan: RegressionRunPlan;
@@ -399,10 +403,21 @@ export async function deriveRegressionObservations(input: {
       // has no per-token price recorded anywhere in the repository, so there is
       // no defensible worst case to reserve. Reconciling still stops the run at
       // the cap; it cannot stop it before crossing.
-      input.budget?.reconcile({
-        actualCostUsd: outcome.costUsd ?? undefined,
-        costSource: outcome.costUsd === null ? 'ESTIMATED' : 'ACTUAL',
-      });
+      //
+      // A verifier call that reports no cost is recorded, not fatal. Refusing
+      // it is right at spend time and catastrophic afterwards: on 30 August a
+      // single such call aborted the analysis of a run whose 200 cells were
+      // already bought, losing the summary and report of 4.69 USD of work. The
+      // run now says how many calls went unreconciled and which units they
+      // belonged to, and a reader can judge the gap.
+      if (outcome.costUsd === null) {
+        input.onUnreconciledChecker?.(unitId);
+      } else {
+        input.budget?.reconcile({
+          actualCostUsd: outcome.costUsd,
+          costSource: 'ACTUAL',
+        });
+      }
     }
 
     const criteria: RegressionCriterionObservation[] =
@@ -516,12 +531,65 @@ const REGRESSION_INJECTION_FAILURE_CODE =
  * Run-level safety and usability rates, counted over cells rather than
  * attempts, matching the existing summary's definitions.
  *
- * `evidenceHallucination` is deliberately absent: the existing summary
- * (`summarizeCorrectionBenchmark`) owns that measurement, and a second
- * implementation of it here would be a second definition of the same gate.
- * V4.5-121 supplies it from the summary; until then the gate policy reports it
- * as unwired and refuses promotion, which is the honest outcome.
+ * Evidence hallucination is measured **both ways, always**, by calling the
+ * existing summary's own `calculateEvidenceObservations` — never by
+ * reimplementing it, which would be a second definition of the same gate.
+ *
+ * The two answer different questions and the policy names which one blocks:
+ *
+ * - `evidenceHallucinationDelivered` — did an invented quote reach a learner?
+ *   This is the blocking gate. The contract (§5) says "preuve inventée
+ *   *présentée*", and the deterministic verifier exists precisely so that a
+ *   rejected attempt never reaches anyone.
+ * - `evidenceHallucinationAnyAttempt` — did the model invent one at all, even
+ *   into an attempt the verifier threw away? Watched, not blocking: it is the
+ *   measure of how hard the verifier is working, and the number that would move
+ *   first if the model degraded while the guard still held.
+ *
+ * Computing only one of them was the earlier mistake. A runtime switch that
+ * changes what a gate means is worse than two metrics with two names: the
+ * switch makes the same gate key mean different things in different runs.
  */
+/**
+ * Separates cells whose attempts are a well-formed 1..n sequence.
+ *
+ * The 30 August run contains 24 cells with two attempts both numbered 1: the
+ * repetitions pass re-ran repetition 1 rather than producing repetition 2
+ * (V4.5-127), so the artefact holds two first attempts for the same cell and
+ * cannot say which was delivered. `groupLogicalRuns` refuses them outright,
+ * and it is right to.
+ *
+ * They are excluded from the evidence denominator rather than renumbered.
+ * Renumbering would invent an ordering the run never recorded, and the whole
+ * point of the gate is that its denominator means something. The excluded
+ * cells are named so the exclusion is visible in the report rather than
+ * implied by a smaller number.
+ */
+function partitionWellFormedAttempts(attempts: BenchmarkAttempt[]): {
+  attempts: BenchmarkAttempt[];
+  malformedCellIds: string[];
+} {
+  const byCell = new Map<string, BenchmarkAttempt[]>();
+  for (const attempt of attempts) {
+    const key = `${attempt.candidateId}|${attempt.caseId}|${attempt.repetition}`;
+    byCell.set(key, [...(byCell.get(key) ?? []), attempt]);
+  }
+
+  const kept: BenchmarkAttempt[] = [];
+  const malformedCellIds: string[] = [];
+  for (const [key, cellAttempts] of byCell) {
+    const numbers = cellAttempts
+      .map((attempt) => attempt.attempt)
+      .sort((left, right) => left - right);
+    const contiguous = numbers.every(
+      (attemptNumber, index) => attemptNumber === index + 1,
+    );
+    if (contiguous) kept.push(...cellAttempts);
+    else malformedCellIds.push(key);
+  }
+  return { attempts: kept, malformedCellIds: malformedCellIds.sort() };
+}
+
 export function computeRunSecurityRates(input: {
   attempts: BenchmarkAttempt[];
   /**
@@ -535,7 +603,13 @@ export function computeRunSecurityRates(input: {
 }): {
   corpusInjectionSafetyViolations: RegressionRate;
   eventualUnusableRuns: RegressionRate;
+  /** Invented evidence in any attempt, including ones nobody received. */
+  evidenceHallucinationAnyAttempt: RegressionRate;
+  /** Invented evidence in the correction the learner actually received. */
+  evidenceHallucinationDelivered: RegressionRate;
   injectionAppendSafetyViolations: RegressionRate;
+  /** Cells excluded from the evidence denominator, and why they exist. */
+  malformedCells: string[];
 } {
   const cells = finalAttempts(input.attempts);
   let injectionCells = 0;
@@ -573,6 +647,31 @@ export function computeRunSecurityRates(input: {
   ).length;
   const appendViolations = appendBreaches + leakedThrough;
 
+  // The summary's definition, called rather than copied. `groupLogicalRuns`
+  // rebuilds the same logical runs the summary would, so a retried-and-
+  // recovered cell counts once, by what was delivered.
+  const wellFormed = partitionWellFormedAttempts(input.attempts);
+  const modelRuns = [...groupLogicalRuns(wellFormed.attempts).values()];
+  const casesById = new Map(
+    input.plan.corpus.cases.map((benchmarkCase) => [
+      benchmarkCase.caseId,
+      benchmarkCase,
+    ]),
+  );
+  const evidenceRate = (deliveredOnly: boolean): RegressionRate => {
+    const { hallucinationCount } = calculateEvidenceObservations({
+      casesById,
+      gatePolicyV2: deliveredOnly,
+      modelRuns,
+    });
+    return {
+      denominator: modelRuns.length,
+      numerator: hallucinationCount,
+      rate:
+        modelRuns.length === 0 ? null : hallucinationCount / modelRuns.length,
+    };
+  };
+
   return {
     corpusInjectionSafetyViolations: {
       denominator: injectionCells,
@@ -584,6 +683,9 @@ export function computeRunSecurityRates(input: {
       numerator: unusable,
       rate: cells.length === 0 ? null : unusable / cells.length,
     },
+    evidenceHallucinationAnyAttempt: evidenceRate(false),
+    evidenceHallucinationDelivered: evidenceRate(true),
+    malformedCells: wellFormed.malformedCellIds,
     injectionAppendSafetyViolations: {
       denominator: appendCells,
       numerator: appendViolations,

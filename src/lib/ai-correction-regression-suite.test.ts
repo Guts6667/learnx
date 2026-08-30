@@ -47,7 +47,7 @@ const POOL_PATH = path.resolve(
   'benchmarks/ai-correction/regression/regression-pool.v1.json',
 );
 const POLICY_PATH = path.resolve(
-  'benchmarks/ai-correction/regression/gate-policy.v3.json',
+  'benchmarks/ai-correction/regression/gate-policy.v4.json',
 );
 
 /** Two writing cases with authored hints of both kinds, plus an injection case. */
@@ -267,9 +267,9 @@ async function runSuite(input: {
 }
 
 /**
- * `evidenceHallucination` is owned by the existing benchmark summary and is
- * wired in by V4.5-121. Supplying it here keeps these tests about the gates
- * they exercise rather than about the one that is not wired yet.
+ * Pins the evidence metrics to chosen numerators so the other gates' tests are
+ * about the gates they exercise. The metrics themselves are wired (V4.5-127)
+ * and are measured on their own in `ai-correction-regression-analyse.test.ts`.
  */
 function withEvidenceHallucination(
   gateInputs: RegressionGateInputs,
@@ -277,7 +277,16 @@ function withEvidenceHallucination(
 ): RegressionGateInputs {
   return {
     ...gateInputs,
-    evidenceHallucination: { denominator: 24, numerator, rate: numerator / 24 },
+    evidenceHallucinationAnyAttempt: {
+      denominator: 24,
+      numerator,
+      rate: numerator / 24,
+    },
+    evidenceHallucinationDelivered: {
+      denominator: 24,
+      numerator,
+      rate: numerator / 24,
+    },
   };
 }
 
@@ -375,7 +384,13 @@ describe('regression suite executed offline through the real runner', () => {
     expect(evaluation.promotionEligible).toBe(false);
   });
 
-  it('refuses promotion when a blocking gate reads an unwired metric', async () => {
+  it('puts both evidence gates in the table rather than dropping either', async () => {
+    // Before V4.5-127 this metric was missing entirely: the evaluator filed a
+    // policy error and dropped the gate, so the table showed eleven gates
+    // against a twelve-gate policy with nothing saying one had been skipped.
+    // Promotion was refused either way, which is why it went unnoticed for a
+    // whole paid run. The gate is now always present; without a convention it
+    // reads NOT_MEASURED, which refuses promotion *and* says so in the table.
     const { gateInputs } = await runSuite({
       behaviour: 'ATTENTIVE',
       checker: AGREEABLE_CHECKER,
@@ -386,10 +401,16 @@ describe('regression suite executed offline through the real runner', () => {
       policy: loadPolicy(),
     });
 
-    expect(evaluation.policyErrors.join(' ')).toContain(
-      'evidenceHallucination',
+    const blocking = evaluation.gates.find(
+      (gate) => gate.metric === 'evidenceHallucinationDelivered',
     );
-    expect(evaluation.promotionEligible).toBe(false);
+    const watched = evaluation.gates.find(
+      (gate) => gate.metric === 'evidenceHallucinationAnyAttempt',
+    );
+    expect(blocking?.kind).toBe('BLOCKING');
+    expect(watched?.kind).toBe('WATCHED');
+    // Every declared gate evaluates. Nothing is skipped into a policy error.
+    expect(evaluation.gates).toHaveLength(loadPolicy().gates.length);
   });
 
   it('fails the mutation gate when the model ignores the damage', async () => {
@@ -558,5 +579,74 @@ describe('regression report', () => {
     expect(report).toContain('non mesuré');
     // The report never carries learner prose.
     expect(report).not.toContain('Je recommande le pilote');
+  });
+});
+
+describe('repetition offset at the runner (V4.5-127)', () => {
+  /**
+   * The 30 August run bought 24 cells that measured nothing.
+   *
+   * The reduced profile's second pass exists to observe a subset twice, so the
+   * stability oracle has two observations to compare. It passed `runBenchmark` a
+   * repetitions *count*, and the runner numbers repetitions from 1 — so the pass
+   * re-ran observation 1 on cells the pool pass had already bought. Every one of
+   * the 216 attempts carried `repetition: 1`, the stability gate had a zero
+   * denominator, and roughly 0.50 USD bought duplicate work.
+   *
+   * This asserts the property that was missing: a pass told to start at 2
+   * produces observation 2, and produces no observation 1 at all.
+   */
+  it('produces only repetition 2 when told to start there', async () => {
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitionOffset: 2,
+      repetitions: 1,
+    });
+
+    const repetitions = new Set(attempts.map((attempt) => attempt.repetition));
+    expect([...repetitions]).toEqual([2]);
+    expect(repetitions.has(1)).toBe(false);
+
+    // One cell per case, at that single repetition — not a second copy of the
+    // work the pool pass already paid for.
+    const cells = new Set(
+      attempts.map((attempt) => `${attempt.caseId}|${attempt.repetition}`),
+    );
+    expect(cells.size).toBe(plan.corpus.cases.length);
+  });
+
+  it('still numbers from 1 when no offset is given', async () => {
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitions: 2,
+    });
+
+    expect(
+      [...new Set(attempts.map((attempt) => attempt.repetition))].sort(),
+    ).toEqual([1, 2]);
   });
 });

@@ -1,0 +1,10 @@
+{
+  "artifactKind": "COST_RECONCILIATION",
+  "schemaVersion": 1,
+  "ledgerUsd": 4.6854,
+  "providerDeltaUsd": null,
+  "providerNote": "OpenRouter total_usage does not move on the timescale of a run: verified 30 August, identical to nine decimals before and after fifteen paid calls. The ledger is the figure; the provider side neither confirms nor contradicts it. The envelope guard therefore takes the larger of the provider delta and the local ledger.",
+  "unreconciledCheckerCalls": "at least one; the run died on the first verifier call reporting no cost, before the count could be written",
+  "envelopeDecisionId": "owner-125-budget-2026-08-30",
+  "envelopeUsd": 14
+}

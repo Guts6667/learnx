@@ -6,6 +6,7 @@ import { loadBenchmarkInputs as loadInputsForRegression } from '../src/lib/ai-co
 import { callCandidate } from '../src/lib/ai-correction-benchmark-runner.ts';
 import {
   runCheckerMeasurement,
+  runRegressionAnalysis,
   runRegressionPool,
 } from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
@@ -107,6 +108,51 @@ async function runAiCorrectionRegressionCli(
     return;
   }
 
+  // `--analyse` never dispatches and never needs a key: it measures artefacts
+  // a paid run already bought. It is checked before the key is required so a
+  // dead run stays analysable on a machine with no credentials.
+  if (arguments_.some((argument) => argument.startsWith('--analyse'))) {
+    const { analysis, resultsDirectory } = await runRegressionAnalysis({
+      arguments: arguments_,
+    });
+    console.log(`Analyse hors ligne de ${resultsDirectory} — aucun appel.`);
+    console.log(
+      `${analysis.attempts.length} tentatives, ${analysis.cellsObserved} cellules, ${analysis.cellsUnusable} inexploitables, ${analysis.verdictCount} verdicts réutilisés, ${analysis.ledgerSpentUsd.toFixed(4)} USD au registre.`,
+    );
+    console.log(
+      `Répétitions distinctes : ${analysis.distinctRepetitions.join(', ') || 'aucune'}.`,
+    );
+    // Printed before the table, not after it. A gate whose metric is missing
+    // never reaches the table at all — it is a policy error — so a reader of
+    // the table alone would count eleven gates against a twelve-gate policy and
+    // see nothing telling them one was skipped.
+    if (analysis.malformedCells.length > 0) {
+      console.warn(
+        `  ${analysis.malformedCells.length} cellules à numérotation incohérente, exclues du dénominateur des preuves (jamais renumérotées) : ${analysis.malformedCells.slice(0, 3).join(', ')}${analysis.malformedCells.length > 3 ? ' …' : ''}`,
+      );
+    }
+    for (const problem of analysis.evaluation.policyErrors) {
+      console.warn(`  PROBLÈME DE POLITIQUE  ${problem}`);
+    }
+    // Declared, not derived: a gate whose metric is missing never reaches the
+    // table, so counting the table plus the policy errors would double-count a
+    // threshold complaint about a gate that did evaluate. The gap between these
+    // two numbers is the thing worth seeing.
+    console.log(
+      `${analysis.evaluation.gates.length} gates évaluées sur ${analysis.gatesDeclared} déclarées ; promotion ${analysis.evaluation.promotionEligible ? 'éligible' : 'refusée'}.`,
+    );
+    for (const gate of analysis.evaluation.gates) {
+      console.log(
+        `  ${gate.status.padEnd(12)} ${gate.kind.padEnd(10)} ${gate.key} — ${gate.numerator}/${gate.denominator}${
+          gate.observedRate === null
+            ? ' (non mesuré)'
+            : ` = ${(gate.observedRate * 100).toFixed(2)} %`
+        }`,
+      );
+    }
+    return;
+  }
+
   const outcome = await runRegressionPool({
     arguments: arguments_,
     ...(execute && apiKey
@@ -126,7 +172,7 @@ async function runAiCorrectionRegressionCli(
       : `Run de régression terminé : ${outcome.resultsDirectory}`,
   );
   console.log(
-    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; borne totale ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous plafond ${outcome.preflight.supplierCostCapUsd} USD — ${outcome.fitsWithinCap ? 'tient dans le plafond' : 'NE TIENT PAS dans le plafond'}.`,
+    `Pool ${outcome.poolSha256.slice(0, 12)}… — ${outcome.plan.corpus.cases.length} unités ; ${outcome.pendingCells} cellules à acheter ; borne totale ${outcome.estimatedPrimaryUsd.toFixed(4)} USD sous plafond ${outcome.preflight.supplierCostCapUsd} USD — ${outcome.fitsWithinCap ? 'tient dans le plafond' : 'NE TIENT PAS dans le plafond'}.`,
   );
   for (const refusal of outcome.paraphraseRefusals) {
     console.warn(`Paraphrase écartée — ${refusal.caseId} : ${refusal.reason}`);

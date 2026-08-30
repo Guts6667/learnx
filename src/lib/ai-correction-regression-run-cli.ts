@@ -50,6 +50,7 @@ import {
   deterministicPermutation,
   REGRESSION_MUTANT_GENERATOR_VERSION,
 } from './ai-correction-regression-mutants.js';
+import { analyseRunOffline } from './ai-correction-regression-analyse.js';
 import { renderRegressionReport } from './ai-correction-regression-report.js';
 import {
   acquireRunLock,
@@ -80,6 +81,8 @@ export type RegressionRunOutcome = {
   dryRun: boolean;
   /** Worst-case spend for the whole plan, primary and checker together. */
   estimatedPrimaryUsd: number;
+  /** Cells this invocation will actually dispatch, after any resume. */
+  pendingCells: number;
   /** Whether that bound fits the authorised cap. Authoritative. */
   fitsWithinCap: boolean;
   evaluation?: RegressionGateEvaluation;
@@ -362,6 +365,26 @@ async function writeRunArtifact(input: {
 }
 
 /**
+ * Resolves a results directory named on the command line.
+ *
+ * A bare name is read as a directory under `results/`, which is how a run
+ * names itself and how anyone reading the repository refers to one. Resolving
+ * it against the working directory instead — as `--resume` originally did —
+ * fails with ENOENT on the obvious spelling of a paid command, which is the
+ * worst possible moment to discover a path convention.
+ */
+function resolveResultsDirectory(input: {
+  regressionDirectory: string;
+  requested: string;
+}): string {
+  return path.isAbsolute(input.requested) ||
+    input.requested.startsWith('.') ||
+    input.requested.includes(path.sep)
+    ? path.resolve(input.requested)
+    : path.resolve(input.regressionDirectory, 'results', input.requested);
+}
+
+/**
  * Reads the attempts of an interrupted run, given its results directory.
  *
  * `--resume` points at a directory, not a file: spec §7 names the artefact
@@ -406,6 +429,8 @@ export function pendingCellsFor(input: {
   candidateId: string;
   cases: { caseId: string }[];
   completed: Set<string>;
+  /** First repetition of the pass, matching the runner's own offset. */
+  repetitionOffset?: number;
   repetitions: number;
 }): {
   attemptStart: number;
@@ -419,8 +444,13 @@ export function pendingCellsFor(input: {
     caseId: string;
     repetition: number;
   }[] = [];
+  const start = input.repetitionOffset ?? 1;
   for (const benchmarkCase of input.cases) {
-    for (let repetition = 1; repetition <= input.repetitions; repetition += 1) {
+    for (
+      let repetition = start;
+      repetition < start + input.repetitions;
+      repetition += 1
+    ) {
       const key = cellKey({
         candidateId: input.candidateId,
         caseId: benchmarkCase.caseId,
@@ -506,6 +536,8 @@ export async function runRegressionPool(input: {
   checkerOutputTokenLimit?: number;
   identities: RegressionPinnedIdentities;
   now?: () => Date;
+  /** Observability hook for tests: called as each pass begins. */
+  onPassStart?: (pass: RegressionRunPass) => void;
   /**
    * Forwarded to the runner, which demands one before dispatching even when
    * the executor is injected. Offline callers pass a placeholder; V4.5-121
@@ -610,7 +642,7 @@ export async function runRegressionPool(input: {
 
   const policy = parseRegressionGatePolicy(
     JSON.parse(
-      await readFile(path.join(directory, 'gate-policy.v3.json'), 'utf8'),
+      await readFile(path.join(directory, 'gate-policy.v4.json'), 'utf8'),
     ) as unknown,
   );
 
@@ -636,7 +668,12 @@ export async function runRegressionPool(input: {
   // resume that is in fact cheaper than the original run.
   const resumeDirectory = readCliOption(input.arguments, 'resume');
   const resumedAttempts = resumeDirectory
-    ? await readResumeAttempts(path.resolve(resumeDirectory))
+    ? await readResumeAttempts(
+        resolveResultsDirectory({
+          regressionDirectory: directory,
+          requested: resumeDirectory,
+        }),
+      )
     : [];
   const completedCells = new Set(
     resumedAttempts.map((attempt) =>
@@ -678,9 +715,10 @@ export async function runRegressionPool(input: {
     completedCells.size === 0
       ? pass.cases
       : pass.cases.filter((benchmarkCase) => {
+          const start = pass.repetitionOffset ?? 1;
           for (
-            let repetition = 1;
-            repetition <= pass.repetitions;
+            let repetition = start;
+            repetition < start + pass.repetitions;
             repetition += 1
           ) {
             if (
@@ -800,11 +838,22 @@ export async function runRegressionPool(input: {
   const executedCaseIds = new Set(
     passes.flatMap((pass) => pass.cases.map((item) => item.caseId)),
   );
+  // Pending counts sit beside nominal ones because pricing uses the pending
+  // figure and the artefact previously showed only the nominal one. A resumed
+  // top-up then read as 200 cells bounded at 1.68 USD — two numbers that cannot
+  // both be right, on the one artefact whose job is to justify a spend.
+  const pendingCellTotal = passes.reduce(
+    (total, pass) => total + outstandingCases(pass).length * pass.repetitions,
+    0,
+  );
   const passBreakdown = passes.map((pass) => ({
     cases: pass.cases.length,
     cells: pass.cases.length * pass.repetitions,
     label: pass.label,
+    pendingCases: outstandingCases(pass).length,
+    pendingCells: outstandingCases(pass).length * pass.repetitions,
     primaryWorstCaseUsd: pricePass(pass),
+    repetitionOffset: pass.repetitionOffset ?? 1,
     repetitions: pass.repetitions,
   }));
   await writeRunArtifact({
@@ -898,6 +947,7 @@ export async function runRegressionPool(input: {
       dryRun: true,
       estimatedPrimaryUsd: budgeted.pricedUsd,
       fitsWithinCap: budgeted.fits,
+      pendingCells: pendingCellTotal,
       paraphraseRefusals: cache.refusals,
       plan,
       poolSha256,
@@ -959,6 +1009,9 @@ export async function runRegressionPool(input: {
     });
   };
 
+  /** Verifier calls that reported no cost; reported, never fatal. */
+  const unreconciledChecker: string[] = [];
+
   // One guard across every pass: the cap is on the run, not on each slice.
   const guard = new SupplierBudgetGuard(supplierCostCapUsd);
   const attempts: BenchmarkAttempt[] = [];
@@ -1002,6 +1055,7 @@ export async function runRegressionPool(input: {
   };
 
   for (const pass of passes) {
+    input.onPassStart?.(pass);
     const passCaseIds = new Set(
       pass.cases.map((benchmarkCase) => benchmarkCase.caseId),
     );
@@ -1012,6 +1066,7 @@ export async function runRegressionPool(input: {
       candidateId: candidate.candidateId,
       cases: pass.cases,
       completed,
+      repetitionOffset: pass.repetitionOffset ?? 1,
       repetitions: pass.repetitions,
     });
     if (pendingCells.length === 0) {
@@ -1048,6 +1103,7 @@ export async function runRegressionPool(input: {
     budget: guard,
     ...(input.checker ? { checker: input.checker } : {}),
     familyScientificallyValidated: true,
+    onUnreconciledChecker: (unitId) => unreconciledChecker.push(unitId),
     onVerdicts: persistVerdicts,
     persistedVerdicts: verdicts,
     plan,
@@ -1146,6 +1202,11 @@ export async function runRegressionPool(input: {
         // They should agree; recording both means a disagreement is visible
         // rather than assumed away.
         ledgerUsd: guard.actualSpentUsd,
+        unreconciledCheckerCalls: unreconciledChecker.length,
+        unreconciledCheckerUnits: [...new Set(unreconciledChecker)].slice(
+          0,
+          20,
+        ),
         note: 'total_usage est cumulatif sur la clé, pas propre à ce run ; seul le delta est imputable.',
         providerDeltaUsd:
           providerUsageBeforeUsd !== null && providerUsageAfterUsd !== null
@@ -1178,6 +1239,7 @@ export async function runRegressionPool(input: {
     dryRun: false,
     estimatedPrimaryUsd: budgeted.pricedUsd,
     fitsWithinCap: budgeted.fits,
+    pendingCells: pendingCellTotal,
     evaluation,
     metrics,
     paraphraseRefusals: cache.refusals,
@@ -1226,6 +1288,12 @@ export type RegressionRunPass = {
   cases: RegressionRunPlan['corpus']['cases'];
   /** Why this slice exists, for the report. */
   label: string;
+  /**
+   * First repetition this pass produces. A pass that adds observations to cells
+   * an earlier pass already covered must start above them, or it re-buys the
+   * same cell — which is exactly what happened on 30 August.
+   */
+  repetitionOffset?: number;
   repetitions: number;
 };
 
@@ -1318,6 +1386,8 @@ function buildRunPasses(input: {
         inSubset(benchmarkCase.caseId),
       ),
       label: 'répétitions du sous-ensemble',
+      // Observations 2 and 3: the pool pass already bought repetition 1.
+      repetitionOffset: 2,
       repetitions: 2,
     },
     {
@@ -1494,6 +1564,8 @@ export async function runCheckerMeasurement(input: {
   checker: RegressionCheckerPort;
   identities: RegressionPinnedIdentities;
   now?: () => Date;
+  /** Observability hook for tests: called as each pass begins. */
+  onPassStart?: (pass: RegressionRunPass) => void;
   providerApiKey?: string;
   regressionDirectory?: string;
 }): Promise<{
@@ -1729,4 +1801,82 @@ export function selectBoundingConvention(input: {
     convention: primary ? 'measured-p90-v2' : 'conservative-v1',
     primary,
   };
+}
+
+/**
+ * `--analyse=<répertoire>` — measures a results directory, buying nothing.
+ *
+ * This existed as a module before it existed as a flag, which meant the only
+ * way to analyse the 30 August run was an ad-hoc script. A recovery path that
+ * lives in someone's scratch file is not a recovery path.
+ *
+ * The plan is re-derived from the pool rather than read back, because no run
+ * persists one. That is safe only if the pool is the same pool: a different
+ * pool would re-key the oracles and quietly measure the wrong thing, so the
+ * digest recorded by the run is checked and a mismatch refuses.
+ */
+export async function runRegressionAnalysis(input: {
+  arguments: string[];
+  regressionDirectory?: string;
+}): Promise<{
+  analysis: Awaited<ReturnType<typeof analyseRunOffline>>;
+  resultsDirectory: string;
+}> {
+  const directory = input.regressionDirectory ?? regressionDirectory;
+  const requested = readCliOption(input.arguments, 'analyse');
+  if (!requested) {
+    throw new Error(
+      'REGRESSION_ANALYSE_DIRECTORY_REQUIRED: --analyse=<répertoire de résultats>.',
+    );
+  }
+  const resultsDirectory = resolveResultsDirectory({
+    regressionDirectory: directory,
+    requested,
+  });
+
+  const { pool, poolSha256, sources } = await loadPoolForRun(input.arguments);
+
+  // A run records only the digest prefix, so compare on the prefix rather than
+  // pretend to a stronger check than the artefact supports.
+  const summaryPath = path.join(resultsDirectory, 'summary.json');
+  const recordedPrefix = await readFile(summaryPath, 'utf8')
+    .then(
+      (raw) =>
+        (JSON.parse(raw) as { poolSha256Prefix?: string }).poolSha256Prefix,
+    )
+    .catch(() => undefined);
+  if (recordedPrefix && !poolSha256.startsWith(recordedPrefix)) {
+    throw new Error(
+      `REGRESSION_ANALYSE_POOL_MISMATCH: le run porte ${recordedPrefix}…, le pool chargé porte ${poolSha256.slice(0, 12)}….`,
+    );
+  }
+
+  const responseTextByCaseId = new Map<string, string>();
+  for (const poolCase of pool.cases) {
+    const sourceCase = sources
+      .get(poolCase.sourcePath)
+      ?.corpus.cases.find(
+        (candidateCase) => candidateCase.caseId === poolCase.sourceCaseId,
+      );
+    if (sourceCase) {
+      responseTextByCaseId.set(poolCase.caseId, sourceCase.responseText);
+    }
+  }
+  const cache = await loadParaphraseCache({
+    caseIds: pool.cases.map((poolCase) => poolCase.caseId),
+    poolId: pool.poolId,
+    regressionDirectory: directory,
+    responseTextByCaseId,
+  });
+
+  const analysis = await analyseRunOffline({
+    gatePolicyPath: path.join(directory, 'gate-policy.v4.json'),
+    plan: planRegressionRun({
+      paraphrases: cache.paraphrases,
+      pool,
+      sources,
+    }),
+    resultsDirectory,
+  });
+  return { analysis, resultsDirectory };
 }

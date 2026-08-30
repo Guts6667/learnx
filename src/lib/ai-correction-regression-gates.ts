@@ -24,7 +24,7 @@ import type {
   RegressionRate,
 } from './ai-correction-regression-metrics.js';
 
-export const REGRESSION_GATE_POLICY_VERSION = '3.0.0';
+export const REGRESSION_GATE_POLICY_VERSION = '4.0.0';
 
 /**
  * `BLOCKING` forbids promotion when red. `WATCHED` is reported and reviewed but
