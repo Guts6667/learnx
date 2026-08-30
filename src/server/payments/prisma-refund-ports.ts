@@ -7,6 +7,10 @@ import {
   writeAuditEvent,
 } from '../api/_lib/audit.js';
 import { refundPurchasedCredits } from '../credits/prisma-credit-ledger-refund.js';
+import type {
+  PaymentReadPorts,
+  RefundPreviewSource,
+} from './refund-preview.js';
 import type { RefundPorts } from './refund-service.js';
 
 export async function createPrismaRefundPorts(): Promise<RefundPorts> {
@@ -31,15 +35,25 @@ export async function createPrismaRefundPorts(): Promise<RefundPorts> {
         }
       }
 
-      await prisma.$transaction(async (transaction) => {
-        await transaction.paymentOrder.update({
+      return prisma.$transaction(async (transaction) => {
+        // Conditional on the state, not merely ordered after a check: the
+        // service read the status earlier, and two administrators clicking
+        // together would both have passed that read. Whoever writes second
+        // matches no row and is told so, rather than overwriting the first
+        // refund's figures with the zeroes a second computation produces from
+        // an already-emptied lot.
+        const settled = await transaction.paymentOrder.updateMany({
           data: {
             refundedCredits: input.reclaimed,
             status: input.kind === 'DISPUTE_LOST' ? 'DISPUTE_LOST' : 'REFUNDED',
             writtenOffCredits: input.writtenOff,
           },
-          where: { id: input.orderId },
+          where: {
+            id: input.orderId,
+            status: { notIn: ['REFUNDED', 'DISPUTE_LOST'] },
+          },
         });
+        if (settled.count !== 1) return false;
         // Audited like the breaker reopen: who acted on someone's money, and
         // why, has to be recoverable afterwards.
         const values = {
@@ -61,6 +75,8 @@ export async function createPrismaRefundPorts(): Promise<RefundPorts> {
           targetId: input.orderId,
           targetType: 'payment_order',
         });
+
+        return true;
       });
     },
     async loadOrder(orderId) {
@@ -68,6 +84,7 @@ export async function createPrismaRefundPorts(): Promise<RefundPorts> {
         select: {
           creditLotId: true,
           packKey: true,
+          status: true,
           userId: true,
         },
         where: { id: orderId },
@@ -97,7 +114,108 @@ export async function createPrismaRefundPorts(): Promise<RefundPorts> {
           (total, entry) => total + entry.amount,
           0n,
         ),
+        status: order.status,
         userId: order.userId,
+      };
+    },
+  };
+}
+
+export async function createPrismaPaymentReadPorts(): Promise<PaymentReadPorts> {
+  const { prisma }: { prisma: PrismaClient } = await import('../prisma.js');
+
+  return {
+    async listOrders(input) {
+      const where = { userId: input.userId };
+      const [rows, total] = await Promise.all([
+        prisma.paymentOrder.findMany({
+          orderBy: { createdAt: 'desc' },
+          select: {
+            amountMinor: true,
+            createdAt: true,
+            currency: true,
+            fulfilledAt: true,
+            id: true,
+            packKey: true,
+            refundedCredits: true,
+            status: true,
+            writtenOffCredits: true,
+          },
+          skip: (input.page - 1) * input.pageSize,
+          take: input.pageSize,
+          where,
+        }),
+        prisma.paymentOrder.count({ where }),
+      ]);
+
+      return { rows, total };
+    },
+    async loadPreview(orderId): Promise<RefundPreviewSource | null> {
+      const order = await prisma.paymentOrder.findUnique({
+        select: {
+          amountMinor: true,
+          createdAt: true,
+          creditLotId: true,
+          currency: true,
+          fulfilledAt: true,
+          id: true,
+          packKey: true,
+          refundedCredits: true,
+          status: true,
+          user: {
+            select: {
+              accountStatus: true,
+              displayName: true,
+              email: true,
+              id: true,
+            },
+          },
+          writtenOffCredits: true,
+        },
+        where: { id: orderId },
+      });
+      if (!order) return null;
+
+      const [pack, lot] = await Promise.all([
+        prisma.creditPack.findUnique({
+          select: { credits: true, priceMinor: true },
+          where: { key: order.packKey },
+        }),
+        order.creditLotId
+          ? prisma.creditLot.findUnique({
+              select: { ledgerEntries: { select: { amount: true } } },
+              where: { id: order.creditLotId },
+            })
+          : null,
+      ]);
+      if (!pack) return null;
+
+      return {
+        amountMinor: order.amountMinor,
+        createdAt: order.createdAt,
+        creditLotId: order.creditLotId,
+        currency: order.currency,
+        fulfilledAt: order.fulfilledAt,
+        id: order.id,
+        learner: {
+          accountStatus: order.user.accountStatus,
+          displayName: order.user.displayName,
+          email: order.user.email,
+          userId: order.user.id,
+        },
+        packCredits: pack.credits,
+        packKey: order.packKey,
+        packPriceMinor: pack.priceMinor,
+        refundedCredits: order.refundedCredits,
+        // Derived from the entries, like `loadOrder`: the ledger is the
+        // record, and a cached remaining amount is one more thing that can
+        // disagree with it.
+        remainingOnLot: (lot?.ledgerEntries ?? []).reduce(
+          (total, entry) => total + entry.amount,
+          0n,
+        ),
+        status: order.status,
+        writtenOffCredits: order.writtenOffCredits,
       };
     },
   };
