@@ -63,8 +63,21 @@ export function createStageAssessmentsApp(
       repository: await getRepository(),
     });
 
-  app.use('*', options.authentication ?? requireUser);
-  app.use('*', requireCapability('learning.read'));
+  // Scoped to the routes this app serves, never `*`: a wildcard guard runs for
+  // every request reaching the app and so authenticates whatever is mounted
+  // after it (V4.5-186). A route missing from this list is unguarded, and
+  // `route-guards.test.ts` names it.
+  const guardedPaths = [
+    '/api/stage-assessment-submissions/:submissionId',
+    '/api/stage-assessment-submissions/:submissionId/submit',
+    '/api/stage-assessments/:assessmentId/submissions',
+    '/api/stages/:stageId/assessment',
+  ] as const;
+
+  for (const path of guardedPaths) {
+    app.use(path, options.authentication ?? requireUser);
+    app.use(path, requireCapability('learning.read'));
+  }
   registerErrorHandler(app);
   registerStageAssessmentRoutes(app, getService);
   return app;

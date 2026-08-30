@@ -198,11 +198,28 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     | Promise<Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null>
     | undefined;
 
-  app.use('*', options.authentication ?? requireUser);
-  app.use(
-    '*',
-    options.authorization ?? requireCapability('ai.assessment.correct'),
-  );
+  // Scoped to the routes this app serves, never `*`: a wildcard guard runs for
+  // every request reaching the app and so authenticates whatever is mounted
+  // after it (V4.5-186). A route missing from this list is unguarded, and
+  // `route-guards.test.ts` names it.
+  const guardedPaths = [
+    '/api/admin/ai-corrections/breaker/events',
+    '/api/admin/ai-corrections/breaker/reopen',
+    '/api/admin/ai-corrections/monitoring',
+    '/api/admin/ai-corrections/preflight',
+    '/api/ai-corrections',
+    '/api/ai-corrections/:correctionId/feedback',
+    '/api/exercise-submissions/:submissionId/ai-corrections',
+    '/api/exercise-submissions/:submissionId/ai-corrections/latest',
+  ] as const;
+
+  for (const path of guardedPaths) {
+    app.use(path, options.authentication ?? requireUser);
+    app.use(
+      path,
+      options.authorization ?? requireCapability('ai.assessment.correct'),
+    );
+  }
 
   app.get(
     '/api/admin/ai-corrections/preflight',

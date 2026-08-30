@@ -27,8 +27,16 @@ export function createTodayApp(options: TodayAppOptions = {}) {
     return defaultRepository;
   };
 
-  app.use('*', options.authentication ?? requireUser);
-  app.use('*', requireCapability('learning.read'));
+  // Scoped to the routes this app serves, never `*`: a wildcard guard runs for
+  // every request reaching the app and so authenticates whatever is mounted
+  // after it (V4.5-186). A route missing from this list is unguarded, and
+  // `route-guards.test.ts` names it.
+  const guardedPaths = ['/api/today'] as const;
+
+  for (const path of guardedPaths) {
+    app.use(path, options.authentication ?? requireUser);
+    app.use(path, requireCapability('learning.read'));
+  }
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);

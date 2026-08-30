@@ -36,8 +36,21 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
   const getService = async () =>
     createExerciseService(await getRepository(), now);
 
-  app.use('*', options.authentication ?? requireUser);
-  app.use('*', requireCapability('learning.read'));
+  // Scoped to the routes this app serves, never `*`: a wildcard guard runs for
+  // every request reaching the app and so authenticates whatever is mounted
+  // after it (V4.5-186). A route missing from this list is unguarded, and
+  // `route-guards.test.ts` names it.
+  const guardedPaths = [
+    '/api/exercise-submissions/:submissionId',
+    '/api/exercise-submissions/:submissionId/submit',
+    '/api/exercises/:exerciseId',
+    '/api/exercises/:exerciseId/submissions',
+  ] as const;
+
+  for (const path of guardedPaths) {
+    app.use(path, options.authentication ?? requireUser);
+    app.use(path, requireCapability('learning.read'));
+  }
   app.onError((error, context) => {
     const apiError = normalizeExerciseError(error);
     return context.json(toApiErrorBody(apiError), apiError.status);

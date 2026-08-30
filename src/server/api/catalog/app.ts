@@ -83,7 +83,19 @@ export function createCatalogApp(options: CatalogAppOptions = {}) {
     return enrollmentService;
   };
 
-  app.use('*', options.authentication ?? requireUser);
+  // Scoped to the routes this app serves, never `*`: a wildcard guard runs for
+  // every request reaching the app and so authenticates whatever is mounted
+  // after it (V4.5-186). A route missing from this list is unguarded, and
+  // `route-guards.test.ts` names it.
+  const guardedPaths = [
+    '/api/catalog/programs',
+    '/api/me/programs',
+    '/api/programs/:programId/enrollment',
+  ] as const;
+
+  for (const path of guardedPaths) {
+    app.use(path, options.authentication ?? requireUser);
+  }
   app.onError((error, context) => {
     const apiError =
       error instanceof InvalidProgramDirectoryCursorError
