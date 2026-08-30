@@ -22,3 +22,7 @@ generated/
 benchmarks/ai-correction/results/
 .mcp.json
 .claude/settings.local.json
+
+# Console output redirected to a file. Five such logs reached dev in 981b661e,
+# carrying the absolute paths of the worktree that produced them.
+*.log
