@@ -8,7 +8,7 @@ import type { CorrectionContract } from '../../lib/ai-correction-contracts.js';
  * du canari qui est propre au banc d'essai. Toute modification crée une
  * nouvelle version de prompt et exige une nouvelle promotion.
  */
-const RUNTIME_CORRECTION_PROMPT_VERSION = '2.2.0';
+export const RUNTIME_CORRECTION_PROMPT_VERSION = '2.2.0';
 export const RUNTIME_RECONSIDERATION_PROMPT_VERSION = '1.0.0';
 
 const RUNTIME_CORRECTION_PROMPT_INSTRUCTIONS = [

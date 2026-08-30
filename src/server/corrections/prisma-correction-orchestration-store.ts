@@ -256,6 +256,7 @@ export class PrismaCorrectionOrchestrationPorts {
       // the figure it needs.
       const identity = input.identity ?? {
         modelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+        promptVersion: PROMOTED_CORRECTION_IDENTITY.promptVersion,
         provider: PROMOTED_CORRECTION_IDENTITY.provider,
         role: 'CORRECTION_PRIMARY',
       };
@@ -269,6 +270,10 @@ export class PrismaCorrectionOrchestrationPorts {
           providerIdempotencyKey: `correction:${input.correctionId}:${identity.role}:${input.sequence}`,
           requestManifest: {
             modelId: identity.modelId,
+            // Stamped, not assumed (V4.5-207). A row that records the model but
+            // not the wording cannot say what produced its verdict once either
+            // one moves, and both are about to.
+            promptVersion: identity.promptVersion,
             provider: identity.provider,
             sequence: input.sequence,
           },

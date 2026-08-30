@@ -25,6 +25,18 @@ export const PROMOTED_CORRECTION_IDENTITY = {
   candidateId: 'claude-sonnet-4-6-openrouter-anthropic',
   modelId: 'anthropic/claude-sonnet-4.6',
   provider: 'Anthropic',
+  /**
+   * The wording sent to the corrector. Distinct from `requestProfile.version`
+   * below, which happens to read `2.2.0` too but versions something else — how
+   * the request is routed and bounded, not what it says. Two different facts
+   * that have shared a number since V4.5-124, which is exactly when a reader
+   * starts assuming they move together. They do not.
+   *
+   * Pinned against `RUNTIME_CORRECTION_PROMPT_VERSION` by a test: nothing else
+   * connected them, and a drift is silent — the runtime would send one version
+   * while this claims another, and `correction-orchestration.ts` would quietly
+   * stop matching cached quotes instead of failing.
+   */
   promptVersion: '2.2.0',
   requestProtocolVersion: '3.0.1',
   scoreGuardBandPoints: 5,
@@ -104,6 +116,19 @@ export const PROMOTED_CHECKER_IDENTITY = {
   modelId: 'mistralai/mistral-medium-3-5',
   provider: 'Mistral',
   routeDecisionId: 'owner-checker-residency-eu-2026-08-29',
+  /**
+   * The checker prompt this identity was measured under (V4.5-207).
+   *
+   * It had none: the prompt is built inline in `buildCheckerMessages`, so
+   * nothing recorded which wording produced a verdict, and a measurement could
+   * not be attributed to it afterwards. The primary has carried
+   * `promptVersion` since the start; the checker was measured, trusted and
+   * unversioned.
+   *
+   * `1.0.0` names the wording as it stands today, not a rewrite. Any change to
+   * that text is a new version here, on the same rule as the primary's.
+   */
+  promptVersion: '1.0.0',
   promotion: {
     scientific: false,
     decisionId: 'owner-checker-family-2026-08-29',

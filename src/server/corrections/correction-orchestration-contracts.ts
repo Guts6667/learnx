@@ -132,7 +132,13 @@ export interface CorrectionPersistencePort {
      * the checker passes its own so its spend is attributable rather than
      * filed under the primary's identity.
      */
-    identity?: { modelId: string; provider: string; role: string };
+    identity?: {
+      modelId: string;
+      /** Which wording produced this attempt, so a verdict stays attributable. */
+      promptVersion: string;
+      provider: string;
+      role: string;
+    };
     sequence: number;
   }): Promise<void>;
   recordAttemptOutcome(input: {

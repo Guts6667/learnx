@@ -40,6 +40,9 @@ describe('coût du vérificateur enregistré (défaut de V4.5-111)', () => {
       expect.objectContaining({
         identity: {
           modelId: PROMOTED_CHECKER_IDENTITY.modelId,
+          // Its own wording too, since V4.5-207: a row that names the model but
+          // not the prompt cannot say what produced its verdict.
+          promptVersion: PROMOTED_CHECKER_IDENTITY.promptVersion,
           provider: PROMOTED_CHECKER_IDENTITY.provider,
           role: 'CORRECTION_CHECKER',
         },
