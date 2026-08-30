@@ -129,14 +129,29 @@ et **aucun parcours de suppression de compte n'existe** dans le code serveur
   envoyé sur cette personne reste en base, indéfiniment, rattaché à une
   commande qui porte encore son `user_id`.
 
-  Ce que contient ce corps n'est pas encore observé — c'est le premier objet
-  de la passe bac à sable. D'après la documentation Stripe,
-  `checkout.session.completed` porte `customer_details` (e-mail, nom,
-  téléphone, adresse de facturation) et `charge.refunded` porte
-  `billing_details` ainsi que les métadonnées de l'instrument (réseau,
-  quatre derniers chiffres, pays). Si c'est bien le cas, alors **des
-  identifiants directs entrent en base par ce chemin**, alors que l'ensemble
-  du dispositif est construit pour qu'ils n'y entrent pas.
+  **Mesure du 30 août 2026, partielle.** Une livraison authentique a été
+  reçue en aperçu (`checkout.session.completed`, voir
+  `docs/qa/V4_5_160_SANDBOX.md` étape 1) et ses **noms de champs** ont été
+  relevés sans aucune valeur. Enveloppe : `id`, `data`, `type`, `object`,
+  `created`, `request`, `livemode`, `api_version`, `pending_webhooks`.
+
+  **Cela ne répond pas encore à la question**, et il faut le dire nettement
+  plutôt que de compter l'étape comme faite : les identifiants directs
+  attendus ne sont pas à ce niveau mais **sous `data.object`**, et la
+  livraison mesurée provient d'un `stripe trigger` — une session synthétique,
+  sans acheteur, dont les champs de facturation sont vides par construction.
+  Une session déclenchée ainsi ne peut ni confirmer ni infirmer la présence
+  de `customer_details`.
+
+  D'après la documentation Stripe, `checkout.session.completed` porte
+  `customer_details` (e-mail, nom, téléphone, adresse de facturation) et
+  `charge.refunded` porte `billing_details` ainsi que les métadonnées de
+  l'instrument (réseau, quatre derniers chiffres, pays). Si c'est bien le
+  cas, alors **des identifiants directs entrent en base par ce chemin**,
+  alors que l'ensemble du dispositif est construit pour qu'ils n'y entrent
+  pas. C'est l'étape 2 — un achat réel avec une adresse saisie — qui
+  tranchera, par la même extraction limitée aux noms de champs, cette fois
+  sous `data.object`.
 
   À noter, sans corriger le fichier : l'en-tête de la migration
   `20260829250000_add_payment_orders` affirme « aucune colonne ici ne peut
