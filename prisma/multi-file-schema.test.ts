@@ -30,8 +30,9 @@ describe('Prisma multi-file schema', () => {
 
     expect(config).toContain("schema: 'prisma'");
     expect(config).toContain("path: 'prisma/migrations'");
-    // +1 each in V4.5-112, V4.5-140, V4.5-142, V4.5-166, V4.5-163 and
-    // V4.5-117; all additive.
-    expect(migrationDirectories).toHaveLength(52);
+    // +1 each in V4.5-112, V4.5-140, V4.5-142, V4.5-166, V4.5-163, V4.5-117
+    // and V4.5-195; all additive. Recounted from the directory, never
+    // incremented by hand.
+    expect(migrationDirectories).toHaveLength(53);
   });
 });

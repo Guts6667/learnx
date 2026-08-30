@@ -45,6 +45,7 @@ describe('attribution des crédits achetés', () => {
     await ports.applyTransition({
       attributeCredits: true,
       orderId: ORDER_ID,
+      paymentIntentId: null,
       status: 'FULFILLED',
     });
 
@@ -72,6 +73,7 @@ describe('attribution des crédits achetés', () => {
     await ports.applyTransition({
       attributeCredits: true,
       orderId: ORDER_ID,
+      paymentIntentId: null,
       status: 'FULFILLED',
     });
 
@@ -84,6 +86,7 @@ describe('attribution des crédits achetés', () => {
     await ports.applyTransition({
       attributeCredits: false,
       orderId: ORDER_ID,
+      paymentIntentId: null,
       status: 'PENDING',
     });
 

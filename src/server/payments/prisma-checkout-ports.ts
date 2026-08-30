@@ -3,10 +3,9 @@ import type { CheckoutPorts } from './checkout.js';
 /**
  * The database and provider side of checkout.
  *
- * The provider adapter is a placeholder until the sandbox credentials exist
- * (ADR_004 §8.4): it throws rather than inventing a URL, because a checkout
- * that looked like it worked and led nowhere would be worse than one that
- * plainly refuses.
+ * The adapter refuses rather than inventing a URL when it is unconfigured: a
+ * checkout that looked like it worked and led nowhere would be worse than one
+ * that plainly refuses.
  */
 export async function createPrismaCheckoutPorts(): Promise<CheckoutPorts> {
   const { prisma } = await import('../prisma.js');
@@ -18,8 +17,20 @@ export async function createPrismaCheckoutPorts(): Promise<CheckoutPorts> {
     async correctionSuspended() {
       return (await breaker.status()).state === 'OPEN';
     },
-    async createProviderOrder() {
-      throw new Error('REVOLUT_ADAPTER_NOT_CONFIGURED');
+    async createProviderOrder(input) {
+      const secretKey = process.env.STRIPE_TEST_SECRET_KEY?.trim();
+      const appUrl = process.env.APP_URL?.trim();
+      if (!secretKey || !appUrl) {
+        throw new Error('STRIPE_CHECKOUT_NOT_CONFIGURED');
+      }
+
+      const { createStripeCheckoutSession } =
+        await import('./stripe-checkout-session.js');
+
+      return createStripeCheckoutSession({ ...input, appUrl, secretKey });
+    },
+    newOrderId() {
+      return crypto.randomUUID();
     },
     async listPacks() {
       const packs = await prisma.creditPack.findMany({
@@ -40,6 +51,7 @@ export async function createPrismaCheckoutPorts(): Promise<CheckoutPorts> {
         data: {
           amountMinor: input.amountMinor,
           currency: input.currency,
+          id: input.id,
           packKey: input.packKey,
           providerOrderId: input.providerOrderId,
           status: 'PENDING',

@@ -6,8 +6,13 @@
 model PaymentOrder {
   id                String              @id @default(uuid()) @db.Uuid
   userId            String              @map("user_id") @db.Uuid
-  /// Référence de l'ordre chez Revolut. Unique : c'est la clé de rapprochement.
+  /// Identifiant de session Checkout chez Stripe. Unique : c'est la clé de
+  /// rapprochement, et ce que Stripe appelle la commande.
   providerOrderId   String              @unique @map("provider_order_id")
+  /// Identifiant du PaymentIntent, renseigné dès que Stripe le nomme. Seul
+  /// identifiant que tout le cycle de vie partage : un remboursement et un
+  /// litige portent une « charge », qui ne connaît pas la session (V4.5-195).
+  providerPaymentIntentId String?       @unique @map("provider_payment_intent_id")
   status            PaymentOrderStatus  @default(CREATED)
   /// En plus petite unité monétaire, jamais en flottant.
   amountMinor       BigInt              @map("amount_minor")

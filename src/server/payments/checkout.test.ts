@@ -22,9 +22,10 @@ function build(options: { packs?: unknown[]; suspended?: boolean } = {}) {
       };
     }),
     listPacks: vi.fn(async () => options.packs ?? [PACK]),
-    recordOrder: vi.fn(async (input: unknown) => {
+    newOrderId: vi.fn(() => 'order-1'),
+    recordOrder: vi.fn(async (input: { id: string }) => {
       recorded.push(input);
-      return { id: 'order-1' };
+      return { id: input.id };
     }),
   };
   return { created, ports, recorded };

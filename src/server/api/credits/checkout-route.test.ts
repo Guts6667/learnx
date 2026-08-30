@@ -38,6 +38,7 @@ function app(
         providerOrderId: 'ord_1',
       })),
       listPacks: vi.fn(async () => [PACK]),
+      newOrderId: vi.fn(() => 'order-1'),
       recordOrder: vi.fn(async () => ({ id: 'order-1' })),
       ...ports,
     } as never,

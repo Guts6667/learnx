@@ -13,9 +13,17 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
 
   return {
     async applyTransition(input) {
+      // Written on every transition that names one, not only on the grant:
+      // `checkout.session.expired` carries no intent, `charge.dispute.created`
+      // does, and an order first seen through a dispute still has to become
+      // resolvable afterwards.
+      const intent = input.paymentIntentId
+        ? { providerPaymentIntentId: input.paymentIntentId }
+        : {};
+
       if (!input.attributeCredits) {
         await prisma.paymentOrder.update({
-          data: { status: input.status },
+          data: { ...intent, status: input.status },
           where: { id: input.orderId },
         });
         return;
@@ -47,6 +55,7 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
       });
       await prisma.paymentOrder.update({
         data: {
+          ...intent,
           creditLotId: result.lotId,
           fulfilledAt: new Date(),
           status: input.status,
@@ -54,10 +63,22 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
         where: { id: input.orderId },
       });
     },
-    async findOrder(providerOrderId) {
+    async findOrder(input) {
+      // Payment intent first: it is what a charge or a dispute carries, and
+      // the only handle shared by the whole lifecycle. A session id resolves
+      // the purchase and nothing after it (V4.5-195).
+      if (input.paymentIntentId) {
+        const byIntent = await prisma.paymentOrder.findUnique({
+          select: { id: true, status: true },
+          where: { providerPaymentIntentId: input.paymentIntentId },
+        });
+        if (byIntent) return byIntent;
+      }
+      if (!input.reference) return null;
+
       return prisma.paymentOrder.findUnique({
         select: { id: true, status: true },
-        where: { providerOrderId },
+        where: { providerOrderId: input.reference },
       });
     },
     async recordEvent(input) {
