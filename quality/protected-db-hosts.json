@@ -1,0 +1,4 @@
+{
+  "comment": "Database hosts no non-production tooling may touch. V4.5-192: production was emptied because `prisma.config.ts` resolves DIRECT_URL ?? DATABASE_URL, a worktree .env set DIRECT_URL to production, and a command aimed at the preview branch reached production instead. Restored by point-in-time restore. Add a host here the day it starts holding real data, not the day someone drops it.",
+  "hosts": ["ep-rapid-brook-asq9rq6r"]
+}

@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { hashPassword } from '../src/server/api/_lib/password';
 import {
   seedPreview,
@@ -11,9 +9,12 @@ import { prisma } from '../src/server/prisma';
 /**
  * Seeds an empty preview database for the Stripe sandbox pass.
  *
- *   SEED_PREVIEW_PASSWORD='…' pnpm seed:preview
+ *   SEED_PREVIEW_PASSWORD='…' pnpm db:target -- --url '<…>' seed-preview
  *
- * Run after `prisma migrate deploy` against the preview branch. It refuses any
+ * Reached only through `db:target`, which names the database explicitly and
+ * sets both connection variables from that one name. This file no longer
+ * imports `dotenv/config`: reading `.env` is what sent a preview command to
+ * production on 30 August 2026 (V4.5-192). It refuses any
  * database that already holds an account, so pointing it at production or at a
  * populated branch does nothing but print why.
  */

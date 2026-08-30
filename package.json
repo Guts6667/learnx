@@ -11,6 +11,7 @@
     "ai:weekly-report": "tsx scripts/ai-weekly-report.ts",
     "build": "tsc -b && vite build",
     "build:vercel": "pnpm prisma:generate && pnpm vercel:migrate && pnpm build",
+    "db:target": "tsx scripts/db-target.ts",
     "deployment:check": "tsx scripts/check-deployment.ts",
     "dev": "vite",
     "editorial:bilingual:check": "tsx scripts/validate-bilingual-editorial.ts",
