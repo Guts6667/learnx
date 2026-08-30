@@ -1,4 +1,4 @@
-import { SYSTEM_ACTOR_ID } from '../system-actor.js';
+import { ensureSystemActor } from '../system-actor.js';
 import type { WebhookPorts } from './payment-webhook.js';
 
 /**
@@ -82,8 +82,12 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
       const { createPrismaRefundPorts } =
         await import('./prisma-refund-ports.js');
 
+      // Created on first use: a migration may not write into `users`, and a
+      // seed may not have run wherever a refund lands.
+      const actorUserId = await ensureSystemActor(prisma);
+
       const result = await refundOrder({
-        actorUserId: SYSTEM_ACTOR_ID,
+        actorUserId,
         kind: 'VOLUNTARY',
         note: 'Remboursement émis chez le fournisseur',
         orderId: input.orderId,

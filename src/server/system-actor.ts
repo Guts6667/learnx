@@ -1,3 +1,5 @@
+import type { PrismaClient } from '../../generated/prisma/client.js';
+
 /**
  * The account actions take when no person took them (V4.5-203).
  *
@@ -19,10 +21,45 @@
  * already nullable, so a compensating entry says plainly that nobody human
  * acted. This account exists for the audit trail, which cannot say that.
  *
- * The row itself is inserted by the migration that introduced it, not seeded:
- * the refund path would fail on a foreign key without it, so its existence is a
- * schema fact rather than something a seed script might not have run. Its
- * e-mail, `system@accounts.invalid`, is unroutable on purpose and lives only
- * there — nothing in the code needs to read it.
+ * The row is created on first use, not by a migration and not by a seed. A
+ * migration that writes into `users` fails the production-clone rehearsal —
+ * "row count changed from 5 to 6, protected row checksum changed" — and that
+ * guard is right: a migration describes a shape, it does not populate an
+ * accounts table. A seed would be worse, because nothing guarantees it ran
+ * wherever a refund arrives.
  */
 export const SYSTEM_ACTOR_ID = '00000000-0000-4000-8000-000000000001';
+
+/** Unroutable on purpose: nothing should ever send to it. */
+const SYSTEM_ACTOR_EMAIL = 'system@accounts.invalid';
+
+/**
+ * Creates the account if it is missing, and does nothing at all if it is not.
+ *
+ * `update: {}` rather than a no-op write: an upsert that touched the row on
+ * every refund would move `updatedAt` and make an inert account look active.
+ *
+ * Called before the refund transaction rather than inside it. Threading a
+ * transaction client through the refund service to gain atomicity here would
+ * buy little: the upsert is idempotent, it commits before the audit event needs
+ * the foreign key, and a refund that then fails leaves one unused row that is
+ * already excluded from every listing.
+ */
+export async function ensureSystemActor(
+  client: Pick<PrismaClient, 'user'>,
+): Promise<string> {
+  await client.user.upsert({
+    create: {
+      accountStatus: 'SUSPENDED',
+      displayName: 'LearnX (système)',
+      email: SYSTEM_ACTOR_EMAIL,
+      id: SYSTEM_ACTOR_ID,
+      // A value nothing hashes to, the same device account erasure uses.
+      passwordHash: 'system:no-password-hashes-to-this-value',
+      suspendedAt: new Date(),
+    },
+    update: {},
+    where: { id: SYSTEM_ACTOR_ID },
+  });
+  return SYSTEM_ACTOR_ID;
+}

@@ -189,6 +189,11 @@ pas nullable et référence `users` : un remboursement émis depuis le tableau d
 bord du fournisseur n'a aucun auteur humain, et nommer l'apprenant serait faux
 — il n'a rien fait.
 
+Elle est créée **à la première compensation**, par un upsert idempotent, et non
+par une migration : une migration qui écrit dans `users` fait échouer la
+répétition sur clone de production, et ce garde-fou a raison. Tant qu'aucun
+remboursement fournisseur n'a lieu, la ligne n'existe pas.
+
 Ce que ce compte est, et ce qu'il n'est pas :
 
 - **il ne peut pas se connecter** : son statut est `suspended`, et toute
