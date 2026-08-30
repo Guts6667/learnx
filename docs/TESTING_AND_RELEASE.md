@@ -228,6 +228,50 @@ env -i PATH="$PATH" HOME="$HOME" \
 `env -i` repart d'un environnement vide, ce qui empêche le `.env` du worktree
 de fournir la variable oubliée.
 
+## Contrôles planifiés
+
+`.github/workflows/scheduled.yml`.
+
+**Attention, et c'est le piège qui coûte une semaine :** GitHub n'enregistre
+`schedule` et `workflow_dispatch` que depuis la **branche par défaut**. Ce
+fichier ne fait strictement rien tant qu'il n'est pas sur `main` — il
+n'apparaît même pas dans la liste des workflows et ne peut pas être déclenché à
+la main. Ce n'est pas une erreur d'expression cron. Le balayage Neon de
+V4.5-171 est resté inerte pour cette raison exacte.
+
+### Smoke de production
+
+Quatre fois par jour, et **après chaque déploiement de production**, parce que
+« est-ce que ce déploiement a vraiment marché » est la question que personne ne
+pense à poser. Deux étapes : `GET /api/health`, public et sans identifiants,
+puis `pnpm deployment:check` authentifié. Si la première échoue, il est inutile
+de s'authentifier pour en apprendre davantage.
+
+C'est le seul travail planifié qui ne demande aucun identifiant de base.
+
+### Opérations quotidiennes, fermées par défaut
+
+`ai:cost-audit`, `trial:grant-cycle` et une simulation de `maintenance:cleanup`
+tournent une fois par jour — **mais seulement si le propriétaire les ouvre**,
+en posant la variable `LEARNX_SCHEDULED_DB_JOBS` à `true` **et** le secret
+`LEARNX_PRODUCTION_DATABASE_URL`. L'un sans l'autre laisse le travail fermé
+plutôt qu'à moitié exécuté, selon la même règle que les drapeaux applicatifs.
+
+Cette fermeture par défaut est délibérée : ouvrir ces travaux revient à placer
+un identifiant de production capable d'écrire dans GitHub Actions, le lendemain
+du jour où une commande mal ciblée a vidé la base de production. C'est une
+décision, pas un réglage.
+
+Une alternative existe et mérite d'être pesée avant d'ouvrir : exposer ces
+opérations comme des routes authentifiées appelées par un cron Vercel, ce qui
+éviterait tout identifiant de base hors de Vercel. Le plan Hobby limite
+fortement le nombre de crons, et les routes n'existent pas ; c'est un chantier,
+pas un réglage.
+
+`maintenance:cleanup` reste **en simulation** sur planification. Supprimer sur
+minuterie est la façon dont une politique de rétention que personne ne relit
+finit par retirer plus que prévu ; `--apply` demeure un acte délibéré.
+
 ## Rollback
 
 V4.1 ne requiert pas de migration de données pour React/shadcn ou le découpage

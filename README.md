@@ -89,6 +89,20 @@ pnpm prisma:check
 not run the seed against a shared database without first verifying the target
 and import plan.
 
+## Scheduled operations
+
+`.github/workflows/scheduled.yml` runs a production smoke check four times a
+day and after every production deployment: `GET /api/health` first, then the
+authenticated `pnpm deployment:check`.
+
+Daily database operations — `ai:cost-audit`, `trial:grant-cycle` and a dry run
+of `maintenance:cleanup` — are **closed by default**. They require both the
+`LEARNX_SCHEDULED_DB_JOBS` variable set to `true` and the
+`LEARNX_PRODUCTION_DATABASE_URL` secret; either one alone leaves them closed.
+
+Scheduled workflows only run from the default branch, so this file does nothing
+until it is on `main`. See `docs/TESTING_AND_RELEASE.md` for the reasoning.
+
 ## Vercel deployment
 
 The project is configured with the Vite preset, static output in `dist`, and a
