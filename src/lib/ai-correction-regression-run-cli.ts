@@ -1038,6 +1038,22 @@ export async function runRegressionPool(input: {
   // One guard across every pass: the cap is on the run, not on each slice.
   const guard = new SupplierBudgetGuard(supplierCostCapUsd);
   const attempts: BenchmarkAttempt[] = [];
+  // Passes overlap: the repetition pass draws its cases from the pool pass, so
+  // both carry the same resumed attempts forward and both pushed them. That
+  // wrote each of the 24 subset cases twice into attempts.json and the ledger,
+  // inflating the recorded spend by 1.1307 USD that was never charged.
+  //
+  // A run's own records are distinct — 216 attempts, 216 distinct records — so
+  // an exact repeat is a second copy of one call, not a second call.
+  const recorded = new Set<string>();
+  const pushAttempts = (incoming: BenchmarkAttempt[]): void => {
+    for (const attempt of incoming) {
+      const identity = JSON.stringify(attempt);
+      if (recorded.has(identity)) continue;
+      recorded.add(identity);
+      attempts.push(attempt);
+    }
+  };
 
   const resumed = resumedAttempts;
   // Spend already made is spend the cap has already absorbed. Reconciling it
@@ -1095,7 +1111,7 @@ export async function runRegressionPool(input: {
     if (pendingCells.length === 0) {
       // Nothing left to buy in this pass; keep what the interrupted run paid
       // for and move on.
-      attempts.push(...passResumed);
+      pushAttempts(passResumed);
       await persistProgress([]);
       continue;
     }
@@ -1114,10 +1130,16 @@ export async function runRegressionPool(input: {
       onProgress: persistProgress,
       ...(resumed.length > 0 ? { pendingCells } : {}),
       ...(input.providerApiKey ? { providerApiKey: input.providerApiKey } : {}),
+      // The offset the pending-cell arithmetic just used, handed to the runner
+      // that dispatches. Computing pending cells at repetition 2 and then
+      // letting the runner start at 1 is how the 30 August top-up bought 51
+      // attempts on cells it already owned: the two halves of the fix were
+      // each correct and were never connected.
+      repetitionOffset: pass.repetitionOffset ?? 1,
       repetitions: pass.repetitions,
       supplierBudget: guard,
     });
-    attempts.push(...passAttempts);
+    pushAttempts(passAttempts);
     await persistProgress([]);
   }
 
