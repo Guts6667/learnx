@@ -745,3 +745,51 @@ Contournement demandé au propriétaire : remplacer temporairement le contexte
 par `real-functions`, et rétablir `Integration (required)` à la première
 promotion normale `dev` → `main`, celle qui emportera le renommage. L'étape de
 rétablissement est inscrite dans V4.5-174 pour que le provisoire ne dure pas.
+
+## 30 août 2026 — voie D : exclusion de build, garde Prisma, Sentry
+
+Mutations Airtable de la journée, table `tblpSbdB7K4MioyJq`.
+
+- `recOysSUJWU1sijWA` V4.5-196 créée, puis `Statut` DRAFT → REVIEW quand la
+  PR #129 est devenue verte. Passée DONE à la fusion.
+- `recLb4hF4nvLUH3DO` V4.5-172 : `Blocage courant` réduit à la seule saisie
+  propriétaire restante, les deux variables Sentry dans Vercel.
+
+Une tentative d'écriture sur `Arbitrage Rayan` a été refusée en 422 : le champ
+est une liste de choix, pas du texte libre. Le contenu a été porté dans
+`Blocage courant`. À retenir avant d'écrire dans un champ non encore utilisé.
+
+### Ce que la journée a appris, hors Airtable
+
+**Une règle portée par un fichier du dépôt ne gouverne pas une branche
+antérieure à ce fichier.** L'« Ignored Build Step » vivait dans `vercel.json` et
+pointait sur un script. Sur une branche créée avant la fusion qui l'a introduit,
+la commande s'exécute quand même, bash ne trouve pas le script, sort en
+non-zéro — et dans cette convention inversée, non-zéro veut dire *construire*.
+Le mécanisme échouait en s'ouvrant, précisément sur les vieilles branches qu'il
+devait arrêter. Constaté sur `codex/v4-5-162-ui` et `codex/seed-preview`. La
+règle vit désormais dans le réglage du projet Vercel, que nulle branche ne
+transporte.
+
+**Le marqueur `[preview]` est testé sur le message de commit entier.** Mon
+propre commit d'alignement citait la règle, contenait donc les caractères
+`[preview]`, et s'est auto-inscrit à la construction. Premier commit après la
+mise en service. Le déploiement qui en est né a d'ailleurs révélé le point
+suivant, ce qui ne rachète pas l'erreur mais la rend utile. À restreindre à la
+première ligne.
+
+**Un garde qui compare des noms ne détecte pas ce qu'il croit détecter.** Le
+garde de V4.5-192 refusait `DATABASE_URL` et `DIRECT_URL` comme « deux hôtes
+différents » alors qu'il s'agissait du même endpoint Neon sous ses deux
+écritures, poolée et directe — la configuration recommandée. Tous les builds de
+`dev` mouraient à `prisma generate` ; `main` ne portant pas encore le garde, la
+production tenait, et la prochaine promotion l'aurait cassée. Il compare
+maintenant l'identité d'endpoint.
+
+**Une mesure de bundle mesure le montage autant que la bibliothèque.** J'ai
+annoncé le SDK Sentry navigateur à 154 402 octets gzip et recommandé de
+l'écarter sur ce chiffre. Il valait 26 832 : j'importais l'espace de noms entier
+derrière un import dynamique, ce qui annule le tree-shaking, et je laissais les
+intégrations par défaut. Le propriétaire a demandé une seconde mesure plutôt que
+d'accepter la première, et il avait raison. Avant de recommander d'abandonner
+quelque chose sur un chiffre, vérifier que le chiffre mesure la chose.
