@@ -59,7 +59,7 @@
     "test:watch": "vitest",
     "trial:grant-cycle": "tsx scripts/trial-allocation-cycle.ts",
     "typecheck": "tsc -b",
-    "vercel:migrate": "if [ \"$VERCEL_ENV\" = production ]; then pnpm prisma:deploy; else echo \"prisma migrate deploy skipped: VERCEL_ENV=${VERCEL_ENV:-unset}. Migrations are applied on production deployments only.\"; fi"
+    "vercel:migrate": "tsx scripts/vercel-migrate.ts"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {
