@@ -272,6 +272,7 @@ export class CorrectionExecutionService {
       correctionId: input.correctionId,
       identity: {
         modelId: PROMOTED_CHECKER_IDENTITY.modelId,
+        promptVersion: PROMOTED_CHECKER_IDENTITY.promptVersion,
         provider: PROMOTED_CHECKER_IDENTITY.provider,
         role: 'CORRECTION_CHECKER',
       },
