@@ -1414,11 +1414,13 @@ export function reducedProfileSubset(input: {
  * mutant once. `reduced` is the budgeted variant: the whole pool once — so no
  * case goes unseen — plus repetitions and mutants on a fixed subset.
  */
-function buildRunPasses(input: {
+export function buildRunPasses(input: {
   plan: RegressionRunPlan;
   poolSha256: string;
   profile: RegressionProfileName;
   repetitions: number;
+  /** Overridable so a test can assert the shape without buying 50 mutants. */
+  directionMutantTarget?: number;
   subsetSize?: number;
 }): RegressionRunPass[] {
   const { baselineCases, mutantCases } = splitPlanCases(input.plan);
@@ -1474,13 +1476,79 @@ function buildRunPasses(input: {
       repetitions: 2,
     },
     {
-      cases: mutantCases.filter((benchmarkCase) =>
-        inSubset(benchmarkCase.caseId),
-      ),
+      cases: directionCoveredMutants({
+        inSubset,
+        mutantCases,
+        plan: input.plan,
+        target: input.directionMutantTarget ?? DIRECTION_MUTANT_TARGET,
+      }),
       label: 'mutants du sous-ensemble',
       repetitions: 1,
     },
   ];
+}
+
+/**
+ * Direction-bearing mutants the run must reach for its threshold to mean
+ * anything.
+ *
+ * `gate-policy.v5.json` declares `minimumDenominator: 50` on
+ * `mutation-direction-violations`: below 50, a 2 % rate resolves to a whole
+ * budget of zero and one violation fails necessarily. The two numbers are the
+ * same requirement seen from the policy and from the plan, and the test that
+ * pins them reads the policy rather than trusting this constant.
+ */
+const DIRECTION_MUTANT_TARGET = 50;
+
+/**
+ * The subset's mutants, plus enough direction-bearing ones to reach the target.
+ *
+ * The reduced profile drew mutants only from the 24 baseline cases it repeats,
+ * which left 10 mutants carrying a direction where the pool holds 104. The gap
+ * was never a missing pool: `mutation-hints.v1.json` already declares 76
+ * deletions and 28 inversions, frozen and paid for with the pool. It was the
+ * selection.
+ *
+ * Order is deterministic — a stable sort on the corpus identifier, itself a
+ * hash of the unit id — so the same pool yields the same mutants on every run
+ * and a resume finds the cells it left owing.
+ */
+function directionCoveredMutants(input: {
+  inSubset: (caseId: string) => boolean;
+  mutantCases: RegressionRunPlan['corpus']['cases'];
+  plan: RegressionRunPlan;
+  target: number;
+}): RegressionRunPlan['corpus']['cases'] {
+  const carriesDirection = (caseId: string): boolean => {
+    const expectation =
+      input.plan.unitsByBenchmarkCaseId.get(caseId)?.expectation;
+    return Boolean(
+      expectation?.targetCriterionKey && expectation.targetDirection,
+    );
+  };
+
+  const selected = input.mutantCases.filter((benchmarkCase) =>
+    input.inSubset(benchmarkCase.caseId),
+  );
+  const chosen = new Set(selected.map((benchmarkCase) => benchmarkCase.caseId));
+  let covered = selected.filter((benchmarkCase) =>
+    carriesDirection(benchmarkCase.caseId),
+  ).length;
+
+  const candidates = input.mutantCases
+    .filter(
+      (benchmarkCase) =>
+        !chosen.has(benchmarkCase.caseId) &&
+        carriesDirection(benchmarkCase.caseId),
+    )
+    .sort((left, right) => left.caseId.localeCompare(right.caseId));
+
+  for (const benchmarkCase of candidates) {
+    if (covered >= input.target) break;
+    selected.push(benchmarkCase);
+    covered += 1;
+  }
+  return selected;
 }
 
 /**
