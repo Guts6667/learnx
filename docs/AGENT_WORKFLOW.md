@@ -157,6 +157,39 @@ force-push ou réécriture d'historique sans ordre explicite portant sur les
 cibles exactes. Une entrée `prunable` reste préservée jusqu'à un ticket de
 qualification revu.
 
+### Lire le code de sortie, pas la fin du journal
+
+La règle est mécanique, pas disciplinaire :
+
+```bash
+pnpm quality:v4.1:final && git push
+```
+
+Une seule ligne, un seul `&&`. Jamais deux commandes séparées, jamais une
+variable de statut relue plus bas.
+
+La version « capturer le statut puis le tester » figurait d'abord ici, écrite
+après un premier push effectué malgré une porte rouge. Le même push a été
+refait dans l'heure, par le même agent, parce qu'un `git push` en fin de chaîne
+n'était de nouveau pas conditionné au statut. Une règle qui demande de se
+souvenir échoue au moment précis où l'on est pressé ; le `&&` ne se souvient de
+rien.
+
+Deux corollaires, du même incident :
+
+- lire la fin du journal ne suffit pas : la dernière étape d'une chaîne peut
+  afficher un succès alors qu'une étape antérieure a échoué ;
+- un échec de porte se qualifie avant d'être imputé. Un test rouge a d'abord
+  semblé venir du changement en cours ; il passait isolément sur la branche
+  comme sur `main`, et la suite complète passait deux fois de chaque côté.
+  C'était un test instable préexistant, et l'imputer au changement aurait fait
+  corriger le mauvais fichier.
+
+Même règle pour les scripts d'essai : vérifier que le cas que l'on croit
+tester est bien celui qui s'exécute. Un harnais qui découpe ses arguments sur
+`:` casse silencieusement sur un message de commit `feat: x`, et le cas réputé
+couvert ne l'est pas.
+
 ### Ports Playwright : un serveur par checkout
 
 Les suites Playwright dérivent leur port du répertoire de travail. Chaque

@@ -3,6 +3,7 @@
   "framework": "vite",
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm build:vercel",
+  "ignoreCommand": "bash scripts/vercel-ignore-build.sh",
   "outputDirectory": "dist",
   "regions": ["fra1"],
   "functions": {
