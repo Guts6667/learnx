@@ -10,6 +10,7 @@ import {
   percentileOf,
   readRunArtifacts,
 } from './ai-correction-regression-analyse.js';
+import { computeRunSecurityRates } from './ai-correction-regression-run.js';
 
 function attempt(
   overrides: Partial<BenchmarkAttempt> & {
@@ -110,5 +111,105 @@ describe('readRunArtifacts', () => {
     const { attempts, verdicts } = await readRunArtifacts(directory);
     expect(attempts).toEqual([]);
     expect(verdicts.size).toBe(0);
+  });
+});
+
+describe('evidence hallucination wiring (V4.5-127)', () => {
+  /**
+   * The gate was declared BLOCKING and never reached the table: its metric was
+   * absent, so the evaluator filed a policy error and skipped it. Promotion was
+   * correctly refused, but the printed table showed eleven gates against a
+   * twelve-gate policy and said nothing about the twelfth. A blocking gate that
+   * vanishes is worse than one that reads red.
+   *
+   * These tests hold the two properties the wiring has to keep: an omitted
+   * convention leaves the gate unmeasured rather than passing it on a
+   * fabricated zero, and the two conventions are genuinely different questions.
+   */
+  const CASE_TEXT = 'Le rapport mesure la durée réelle des trajets.';
+
+  function cell(input: {
+    attemptNumber: number;
+    caseId: string;
+    errorCode?: string;
+    status: 'VALID' | 'INVALID';
+  }): BenchmarkAttempt {
+    return {
+      attempt: input.attemptNumber,
+      candidateId: 'cand',
+      caseId: input.caseId,
+      repetition: 1,
+      status: input.status,
+      ...(input.errorCode === undefined ? {} : { errorCode: input.errorCode }),
+    } as BenchmarkAttempt;
+  }
+
+  const plan = {
+    corpus: { cases: [{ caseId: 'a', responseText: CASE_TEXT }] },
+    unitsByBenchmarkCaseId: new Map(),
+  } as unknown as Parameters<typeof computeRunSecurityRates>[0]['plan'];
+
+  const rejectedThenRecovered = [
+    cell({
+      attemptNumber: 1,
+      caseId: 'a',
+      errorCode: 'MODEL_EVIDENCE_NOT_FOUND',
+      status: 'INVALID',
+    }),
+    cell({ attemptNumber: 2, caseId: 'a', status: 'VALID' }),
+  ];
+
+  it('leaves the gate unmeasured when no convention is chosen', () => {
+    const rates = computeRunSecurityRates({
+      attempts: rejectedThenRecovered,
+      observations: [],
+      plan,
+    });
+
+    // Not a zero. A fabricated zero would read as a pass on a blocking gate.
+    expect(rates.evidenceHallucination.denominator).toBe(0);
+    expect(rates.evidenceHallucination.rate).toBeNull();
+  });
+
+  it('counts a rejected first attempt under the any-attempt convention', () => {
+    const rates = computeRunSecurityRates({
+      attempts: rejectedThenRecovered,
+      gatePolicyV2: false,
+      observations: [],
+      plan,
+    });
+
+    expect(rates.evidenceHallucination.numerator).toBe(1);
+    expect(rates.evidenceHallucination.denominator).toBe(1);
+  });
+
+  it('does not count it under the delivered convention, because nobody received it', () => {
+    const rates = computeRunSecurityRates({
+      attempts: rejectedThenRecovered,
+      gatePolicyV2: true,
+      observations: [],
+      plan,
+    });
+
+    expect(rates.evidenceHallucination.numerator).toBe(0);
+    expect(rates.evidenceHallucination.denominator).toBe(1);
+  });
+
+  it('excludes incoherently numbered cells instead of renumbering them', () => {
+    // Two attempts both numbered 1: the V4.5-127 defect's signature. The
+    // artefact cannot say which came first, so it cannot say what was
+    // delivered — and inventing an order would invent the answer.
+    const rates = computeRunSecurityRates({
+      attempts: [
+        cell({ attemptNumber: 1, caseId: 'a', status: 'VALID' }),
+        cell({ attemptNumber: 1, caseId: 'a', status: 'VALID' }),
+      ],
+      gatePolicyV2: true,
+      observations: [],
+      plan,
+    });
+
+    expect(rates.malformedCells).toHaveLength(1);
+    expect(rates.evidenceHallucination.denominator).toBe(0);
   });
 });

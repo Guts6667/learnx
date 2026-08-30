@@ -267,9 +267,9 @@ async function runSuite(input: {
 }
 
 /**
- * `evidenceHallucination` is owned by the existing benchmark summary and is
- * wired in by V4.5-121. Supplying it here keeps these tests about the gates
- * they exercise rather than about the one that is not wired yet.
+ * Pins `evidenceHallucination` to a chosen numerator so the other gates' tests
+ * are about the gates they exercise. The metric itself is wired (V4.5-127) and
+ * is measured on its own in `ai-correction-regression-analyse.test.ts`.
  */
 function withEvidenceHallucination(
   gateInputs: RegressionGateInputs,
@@ -375,7 +375,13 @@ describe('regression suite executed offline through the real runner', () => {
     expect(evaluation.promotionEligible).toBe(false);
   });
 
-  it('refuses promotion when a blocking gate reads an unwired metric', async () => {
+  it('reads the evidence gate as unmeasured, not as absent, when no convention is chosen', async () => {
+    // Before V4.5-127 this metric was missing entirely: the evaluator filed a
+    // policy error and dropped the gate, so the table showed eleven gates
+    // against a twelve-gate policy with nothing saying one had been skipped.
+    // Promotion was refused either way, which is why it went unnoticed for a
+    // whole paid run. The gate is now always present; without a convention it
+    // reads NOT_MEASURED, which refuses promotion *and* says so in the table.
     const { gateInputs } = await runSuite({
       behaviour: 'ATTENTIVE',
       checker: AGREEABLE_CHECKER,
@@ -386,9 +392,12 @@ describe('regression suite executed offline through the real runner', () => {
       policy: loadPolicy(),
     });
 
-    expect(evaluation.policyErrors.join(' ')).toContain(
-      'evidenceHallucination',
+    const evidence = evaluation.gates.find(
+      (gate) => gate.metric === 'evidenceHallucination',
     );
+    expect(evidence).toBeDefined();
+    expect(evidence?.status).toBe('NOT_MEASURED');
+    expect(evaluation.gates).toHaveLength(loadPolicy().gates.length);
     expect(evaluation.promotionEligible).toBe(false);
   });
 

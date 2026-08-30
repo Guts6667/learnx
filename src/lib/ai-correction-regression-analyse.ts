@@ -44,9 +44,13 @@ export type OfflineAnalysis = {
   /** Distinct repetitions seen, which the stability oracle depends on. */
   distinctRepetitions: number[];
   evaluation: RegressionGateEvaluation;
+  /** Gates the policy declares, against which the evaluated count is read. */
+  gatesDeclared: number;
   ledgerSpentUsd: number;
   metrics: RegressionMetrics;
   mutantCounts: Record<string, number>;
+  /** Cells whose attempt numbering the run never recorded coherently. */
+  malformedCells: string[];
   /** Attempts carrying no reconciled provider cost. */
   unreconciledAttempts: string[];
   verdictCount: number;
@@ -128,6 +132,12 @@ export function percentileOf(
  * purchased during analysis.
  */
 export async function analyseRunOffline(input: {
+  /**
+   * The delivered-attempt convention the run used. Omitting it leaves the
+   * evidence gate NOT_MEASURED rather than guessing a convention that changes
+   * the numerator.
+   */
+  gatePolicyV2?: boolean;
   gatePolicyPath: string;
   plan: RegressionRunPlan;
   resultsDirectory: string;
@@ -159,7 +169,14 @@ export async function analyseRunOffline(input: {
   // appended-injection mutants, and a placeholder would have thrown their
   // result away and understated what was bought.
   const security = {
-    ...computeRunSecurityRates({ attempts, observations, plan: input.plan }),
+    ...computeRunSecurityRates({
+      attempts,
+      ...(input.gatePolicyV2 === undefined
+        ? {}
+        : { gatePolicyV2: input.gatePolicyV2 }),
+      observations,
+      plan: input.plan,
+    }),
     eventualUnusableRuns: {
       denominator: cells.length,
       numerator: unusable.length,
@@ -178,10 +195,12 @@ export async function analyseRunOffline(input: {
       metrics: { ...metrics, ...security },
       policy,
     }),
+    gatesDeclared: policy.gates.length,
     ledgerSpentUsd: attempts.reduce(
       (total, attempt) => total + (attempt.usage?.actualCostUsd ?? 0),
       0,
     ),
+    malformedCells: security.malformedCells,
     metrics,
     mutantCounts: countMutantsByKind(input.plan, executedCaseIds),
     unreconciledAttempts: attempts

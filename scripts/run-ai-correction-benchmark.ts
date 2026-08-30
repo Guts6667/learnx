@@ -114,6 +114,7 @@ async function runAiCorrectionRegressionCli(
   if (arguments_.some((argument) => argument.startsWith('--analyse'))) {
     const { analysis, resultsDirectory } = await runRegressionAnalysis({
       arguments: arguments_,
+      configuration,
     });
     console.log(`Analyse hors ligne de ${resultsDirectory} — aucun appel.`);
     console.log(
@@ -121,6 +122,25 @@ async function runAiCorrectionRegressionCli(
     );
     console.log(
       `Répétitions distinctes : ${analysis.distinctRepetitions.join(', ') || 'aucune'}.`,
+    );
+    // Printed before the table, not after it. A gate whose metric is missing
+    // never reaches the table at all — it is a policy error — so a reader of
+    // the table alone would count eleven gates against a twelve-gate policy and
+    // see nothing telling them one was skipped.
+    if (analysis.malformedCells.length > 0) {
+      console.warn(
+        `  ${analysis.malformedCells.length} cellules à numérotation incohérente, exclues du dénominateur des preuves (jamais renumérotées) : ${analysis.malformedCells.slice(0, 3).join(', ')}${analysis.malformedCells.length > 3 ? ' …' : ''}`,
+      );
+    }
+    for (const problem of analysis.evaluation.policyErrors) {
+      console.warn(`  PROBLÈME DE POLITIQUE  ${problem}`);
+    }
+    // Declared, not derived: a gate whose metric is missing never reaches the
+    // table, so counting the table plus the policy errors would double-count a
+    // threshold complaint about a gate that did evaluate. The gap between these
+    // two numbers is the thing worth seeing.
+    console.log(
+      `${analysis.evaluation.gates.length} gates évaluées sur ${analysis.gatesDeclared} déclarées ; promotion ${analysis.evaluation.promotionEligible ? 'éligible' : 'refusée'}.`,
     );
     for (const gate of analysis.evaluation.gates) {
       console.log(

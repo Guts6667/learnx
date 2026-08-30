@@ -544,11 +544,13 @@ describe('--run-pool', () => {
     });
 
     // The model graded every mutant at the unmutated expected level, so the
-    // mutation gate is red — and evidenceHallucination is still unwired, which
-    // on its own forbids promotion. A run today cannot be eligible, and the
-    // report says so rather than implying success by omission.
+    // mutation gate is red and the run cannot be eligible. The report says so
+    // rather than implying success by omission.
     expect(outcome.evaluation?.promotionEligible).toBe(false);
-    expect(outcome.evaluation?.policyErrors.join(' ')).toContain(
+    // Every declared gate reaches the table. Since V4.5-127 the evidence gate
+    // is wired, so it is measured here rather than dropped as a policy error;
+    // a gate missing from the table is a gate nobody can see was skipped.
+    expect(outcome.evaluation?.gates.map((gate) => gate.metric)).toContain(
       'evidenceHallucination',
     );
     expect(outcome.report).toContain('**Promotion : refusée.**');
