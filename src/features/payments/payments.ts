@@ -1,17 +1,26 @@
 import { useCallback, useState } from 'react';
+import * as z from 'zod/mini';
 
 import { useAppQueryClient } from '@/app/providers';
 import {
+  checkoutResponseSchema,
+  creditPacksResponseSchema,
   memberOrdersResponseSchema,
+  ownOrdersResponseSchema,
   refundPreviewResponseSchema,
 } from '@/features/payments/payments-contracts';
 import { ApiClientError, apiRequest } from '@/lib/api-client';
 import { useObservedQuery } from '@/lib/observed-query';
 
-export type { PaymentOrderLine } from '@/features/payments/payments-contracts';
+export type {
+  CreditPack,
+  OwnPaymentOrder,
+  PaymentOrderLine,
+} from '@/features/payments/payments-contracts';
 
 const adminPaymentsKey = ['admin', 'payments'] as const;
 const adminCreditsKey = ['admin', 'credits'] as const;
+const ownPaymentsKey = ['credits', 'payments'] as const;
 
 export function useAdminMemberOrdersQuery(userId: string, page: number) {
   const result = useObservedQuery(
@@ -139,4 +148,98 @@ export function useAdminPaymentRefundMutation() {
   const dismissConflict = useCallback(() => setConflict(null), []);
 
   return { conflict, dismissConflict, error, execute, isPending };
+}
+
+/** Le catalogue d'achat (V4.5-204), dans l'ordre où le serveur le rend. */
+export function useCreditPacksQuery() {
+  const result = useObservedQuery(
+    '/api/credits/packs',
+    [...ownPaymentsKey, 'packs'],
+    creditPacksResponseSchema,
+  );
+  return {
+    data: result.data?.packs,
+    error: result.error,
+    isPending: result.isPending,
+    retry: result.refetch,
+  };
+}
+
+/** Les commandes de l'apprenant lui-même, la plus récente en tête. */
+export function useOwnOrdersQuery() {
+  const result = useObservedQuery(
+    '/api/credits/orders',
+    [...ownPaymentsKey, 'orders'],
+    ownOrdersResponseSchema,
+  );
+  return {
+    data: result.data?.orders,
+    error: result.error,
+    isPending: result.isPending,
+    retry: result.refetch,
+  };
+}
+
+/**
+ * Pourquoi le paiement n'a pas démarré, quand le serveur l'a refusé pour une
+ * raison qui se dit à l'apprenant. Tout le reste est une erreur, et une erreur
+ * s'affiche comme telle plutôt que déguisée en refus explicable.
+ */
+export type CheckoutRefusal = 'PACK_UNAVAILABLE' | 'PAYMENTS_DISABLED';
+
+const refusalByCheckoutErrorCode = {
+  // 503 : la vente a été fermée entre le chargement de la page et le clic.
+  PRICING_UNAVAILABLE: 'PAYMENTS_DISABLED',
+  // 404 : inconnu et inactif répondent pareil, pour qu'un appelant ne puisse
+  // pas énumérer les clés en observant la différence (`selectPack`).
+  RESOURCE_NOT_FOUND: 'PACK_UNAVAILABLE',
+} as const;
+
+export function useCreditCheckoutMutation() {
+  const queryClient = useAppQueryClient();
+  const [error, setError] = useState<unknown>();
+  const [isPending, setIsPending] = useState(false);
+  const [refusal, setRefusal] = useState<CheckoutRefusal | null>(null);
+
+  const execute = useCallback(
+    async (packKey: string) => {
+      setError(undefined);
+      setIsPending(true);
+      setRefusal(null);
+      try {
+        const payload = await apiRequest<unknown>('/api/credits/checkout', {
+          body: JSON.stringify({ packKey }),
+          headers: { 'content-type': 'application/json' },
+          method: 'POST',
+        });
+        const parsed = z.safeParse(checkoutResponseSchema, payload);
+        if (!parsed.success) {
+          // Une URL qu'on n'a pas vérifiée est une redirection à l'aveugle,
+          // et celle-ci mène à une page de paiement.
+          throw new Error(
+            'La réponse de /api/credits/checkout ne correspond pas au contrat attendu.',
+          );
+        }
+        // La commande vient d'être créée côté serveur : l'historique affiché
+        // est déjà périmé, qu'on redirige ou non.
+        await queryClient.invalidateQueries({ queryKey: ownPaymentsKey });
+        return parsed.data.resource.checkout;
+      } catch (requestError) {
+        const code =
+          requestError instanceof ApiClientError
+            ? refusalByCheckoutErrorCode[
+                requestError.code as keyof typeof refusalByCheckoutErrorCode
+              ]
+            : undefined;
+        if (code) setRefusal(code);
+        else setError(requestError);
+        throw requestError;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [queryClient],
+  );
+
+  return { error, execute, isPending, refusal };
 }

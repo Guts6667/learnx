@@ -148,10 +148,78 @@ export const memberOrdersResponseSchema = z.object({
 });
 
 /**
+ * Un palier achetable, relevé sur `GET /api/credits/packs` (V4.5-205).
+ *
+ * Seuls les paliers actifs y figurent, et le serveur les rend dans l'ordre que
+ * le propriétaire a arrangé (`position` puis `key`). Cette colonne n'est pas
+ * exposée, et c'est cohérent : l'ordre est une décision, pas une donnée que
+ * l'écran aurait à réappliquer. On rend donc la liste telle qu'elle arrive.
+ *
+ * Inactif veut dire invisible ET inachetable côté serveur : un palier montré
+ * puis refusé au clic serait un prix affiché que personne n'a arbitré.
+ */
+const creditPackSchema = z.object({
+  credits: z.string(),
+  currency: z.string(),
+  key: z.string(),
+  label: z.string(),
+  priceMinor: z.string(),
+});
+
+export const creditPacksResponseSchema = z.object({
+  packs: z.array(creditPackSchema),
+});
+
+/**
+ * Les commandes de l'apprenant, relevées sur `GET /api/credits/orders`.
+ *
+ * Volontairement plus étroit que la ligne d'administration : ni identifiant de
+ * session Stripe, ni crédits repris. Ce n'est pas un oubli de la voie A mais
+ * une décision — un écran qui ne reçoit jamais l'identifiant du prestataire ne
+ * peut pas le laisser fuir dans une URL, un journal ou une capture d'écran de
+ * support. Le schéma dit donc la même chose : ces champs ne sont pas attendus.
+ *
+ * Pas de pagination : la liste arrive entière, la plus récente en tête.
+ */
+const ownPaymentOrderSchema = z.object({
+  amountMinor: z.string(),
+  createdAt: z.string(),
+  currency: z.string(),
+  fulfilledAt: z.nullable(z.string()),
+  id: z.string(),
+  packKey: z.string(),
+  status: paymentOrderStatusSchema,
+});
+
+export const ownOrdersResponseSchema = z.object({
+  orders: z.array(ownPaymentOrderSchema),
+});
+
+/**
+ * La réponse de `POST /api/credits/checkout`, relevée sur `checkout-route.ts`.
+ *
+ * `correctionSuspended` est le fait que l'API tient à dire elle-même plutôt
+ * que de compter sur un écran pour le dire : la correction peut être suspendue
+ * au moment de l'achat, et les crédits achetés gardent leur valeur pour sa
+ * reprise. L'écran s'arrête donc avant la redirection quand il est vrai.
+ */
+export const checkoutResponseSchema = z.object({
+  resource: z.object({
+    checkout: z.object({
+      correctionSuspended: z.boolean(),
+      orderId: z.string(),
+      url: z.string(),
+    }),
+  }),
+});
+
+/**
  * Le POST ne rend pas de schéma ici, volontairement. Sa réponse répète des
  * chiffres que l'aperçu et la ligne de commande portent déjà ; après un
  * remboursement on relit les deux au lieu d'afficher l'écho. Une seule forme
  * de la vérité à l'écran, et une de moins à tenir alignée avec le serveur.
  */
 
+export type CreditPack = z.infer<typeof creditPackSchema>;
+export type OwnPaymentOrder = z.infer<typeof ownPaymentOrderSchema>;
 export type PaymentOrderLine = z.infer<typeof paymentOrderLineSchema>;

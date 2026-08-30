@@ -31,7 +31,7 @@ import {
 } from '@/features/payments/payments';
 import { useI18n } from '@/i18n';
 import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '@/shared/credit-rules';
-import { formatLocalizedDate } from '@/shared/locale';
+import { formatLocalizedDate, formatMinorAmount } from '@/shared/locale';
 
 function value(amount: string, locale: 'en' | 'fr'): string {
   return BigInt(amount).toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-US');
@@ -630,22 +630,6 @@ function AdjustmentDrawer({
 }
 
 /**
- * Montant en plus petite unité, rendu sans jamais passer par un nombre
- * flottant. `Intl.NumberFormat` accepte une chaîne décimale depuis Intl v3 ;
- * on la construit à la main pour que « 1900 » devienne « 19,00 » sans qu'une
- * division binaire ait son mot à dire sur un centime.
- */
-function money(minor: string, currency: string, locale: 'en' | 'fr'): string {
-  const negative = minor.startsWith('-');
-  const digits = (negative ? minor.slice(1) : minor).padStart(3, '0');
-  const decimal = `${negative ? '-' : ''}${digits.slice(0, -2)}.${digits.slice(-2)}`;
-  return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-US', {
-    currency,
-    style: 'currency',
-  }).format(decimal as unknown as number);
-}
-
-/**
  * Le remboursement, en deux temps comme la réouverture du coupe-circuit : on
  * montre d'abord ce qui va partir, on confirme ensuite. Le montant n'est jamais
  * saisi — il est calculé par le serveur, au prorata des crédits non consommés
@@ -700,7 +684,11 @@ function RefundPanel({
               <dt>{t('admin.refunds.amount')}</dt>
               <dd>
                 <strong>
-                  {money(computation.refundedMinor, order.currency, locale)}
+                  {formatMinorAmount(
+                    computation.refundedMinor,
+                    order.currency,
+                    locale,
+                  )}
                 </strong>
               </dd>
             </div>
@@ -789,7 +777,9 @@ function OrderLine({
           })}
         </p>
       </div>
-      <strong>{money(order.amountMinor, order.currency, locale)}</strong>
+      <strong>
+        {formatMinorAmount(order.amountMinor, order.currency, locale)}
+      </strong>
       <Badge tone={settled ? 'warning' : 'success'}>
         {t(`admin.refunds.status.${order.status}`)}
       </Badge>

@@ -128,6 +128,23 @@ test('app — lesson', async ({ page }) => {
   await expect(page).toHaveScreenshot('lesson.png', { fullPage: true });
 });
 
+/**
+ * L'écran d'achat (V4.5-204) : cartes de paliers, historique de commandes et
+ * demande exceptionnelle sur la même page. C'est la surface la plus dense de
+ * l'espace apprenant, et la grille de paliers est `auto-fit` — trois largeurs
+ * la cassent différemment.
+ */
+test('app — credits', async ({ page }) => {
+  await signIn(page);
+  await page.goto('/credits');
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Mes crédits' }),
+  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Découverte' })).toBeVisible();
+  await settle(page);
+  await expect(page).toHaveScreenshot('credits.png', { fullPage: true });
+});
+
 test('app — notes', async ({ page }) => {
   await signIn(page);
   await page.goto('/notes');

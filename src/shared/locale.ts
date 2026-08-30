@@ -29,3 +29,31 @@ export function formatLocalizedNumber(
 ): string {
   return new Intl.NumberFormat(toIntlLocale(locale), options).format(value);
 }
+
+/**
+ * Un montant en plus petite unité monétaire, rendu sans jamais passer par un
+ * nombre flottant.
+ *
+ * Les montants voyagent en chaînes parce que ce sont des `BigInt` de centimes
+ * côté serveur ; les convertir en `number` pour les diviser par cent, c'est
+ * accepter qu'un jour un centime disparaisse dans un arrondi binaire que
+ * personne n'a demandé. On insère donc la virgule à la main et on passe la
+ * chaîne décimale à `Intl.NumberFormat`, qui l'accepte depuis Intl v3.
+ *
+ * Écrit pour l'écran de remboursement (V4.5-162), partagé ici avec l'écran
+ * d'achat (V4.5-204) : deux copies de cette règle seraient deux copies à
+ * garder justes.
+ */
+export function formatMinorAmount(
+  minor: string,
+  currency: string,
+  locale: SupportedLocale,
+): string {
+  const negative = minor.startsWith('-');
+  const digits = (negative ? minor.slice(1) : minor).padStart(3, '0');
+  const decimal = `${negative ? '-' : ''}${digits.slice(0, -2)}.${digits.slice(-2)}`;
+  return new Intl.NumberFormat(toIntlLocale(locale), {
+    currency,
+    style: 'currency',
+  }).format(decimal as unknown as number);
+}

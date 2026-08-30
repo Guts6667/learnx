@@ -1,8 +1,17 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 
+import { navigate } from '@/app/navigation';
 import { AppProviders } from '@/app/providers';
 import { useCreditIncreaseRequestMutation } from '@/features/credits/credits';
 import { CreditsPage } from '@/pages/CreditsPage';
+
+vi.mock('@/app/navigation', () => ({ navigate: vi.fn() }));
 
 function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -46,6 +55,19 @@ function creditsResponse(pending = false) {
   };
 }
 
+/**
+ * L'écran lit trois surfaces : ses soldes, le catalogue et ses commandes. Un
+ * mock qui répond la même chose à tout rendrait vertes des pages qui n'ont
+ * jamais reçu la bonne forme — c'est exactement ce que `useObservedQuery`
+ * existe pour empêcher (V4.5-182). Chaque test part donc d'un routeur qui
+ * répond par chemin, et ne remplace que ce qu'il veut éprouver.
+ */
+function defaultResponse(path: string): Response {
+  if (path === '/api/credits/packs') return jsonResponse({ packs: [] });
+  if (path === '/api/credits/orders') return jsonResponse({ orders: [] });
+  return jsonResponse(creditsResponse());
+}
+
 function CreditMutationHarness() {
   const mutation = useCreditIncreaseRequestMutation();
 
@@ -73,7 +95,7 @@ describe('CreditsPage', () => {
   it('conserve des soldes offerts, achetés, totaux et réservés distincts', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() => Promise.resolve(jsonResponse(creditsResponse()))),
+      vi.fn((path: string) => Promise.resolve(defaultResponse(path))),
     );
 
     render(
@@ -105,7 +127,10 @@ describe('CreditsPage', () => {
 
   it('réessaie explicitement le chargement sans masquer l’erreur', async () => {
     let attempt = 0;
-    const fetchMock = vi.fn(() => {
+    const fetchMock = vi.fn((path: string) => {
+      if (path !== '/api/credits') {
+        return Promise.resolve(defaultResponse(path));
+      }
       attempt += 1;
       return Promise.resolve(
         attempt === 1
@@ -133,7 +158,7 @@ describe('CreditsPage', () => {
           content.replace(/\s/g, '') === '1200',
       ),
     ).toBeInTheDocument();
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(attempt).toBe(2);
   });
 
   it('crée une demande exceptionnelle sans créditer le compte', async () => {
@@ -144,7 +169,7 @@ describe('CreditsPage', () => {
       ) {
         return Promise.resolve(jsonResponse({ request: { id: 'request-2' } }));
       }
-      return Promise.resolve(jsonResponse(creditsResponse()));
+      return Promise.resolve(defaultResponse(path));
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -198,7 +223,7 @@ describe('CreditsPage', () => {
             : jsonResponse({ request: { id: 'request-2' } }),
         );
       }
-      return Promise.resolve(jsonResponse(creditsResponse()));
+      return Promise.resolve(defaultResponse(path));
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -248,7 +273,7 @@ describe('CreditsPage', () => {
             : jsonResponse({ request: { id: 'request-2' } }),
         );
       }
-      return Promise.resolve(jsonResponse(creditsResponse()));
+      return Promise.resolve(defaultResponse(path));
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -290,7 +315,7 @@ describe('CreditsPage', () => {
         idempotencyKeys.push(body.idempotencyKey);
         return Promise.resolve(jsonResponse({ request: { id: 'request-2' } }));
       }
-      return Promise.resolve(jsonResponse(creditsResponse()));
+      return Promise.resolve(defaultResponse(path));
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -330,7 +355,7 @@ describe('CreditsPage', () => {
             : jsonResponse({ request: { id: 'request-2' } }),
         );
       }
-      return Promise.resolve(jsonResponse(creditsResponse()));
+      return Promise.resolve(defaultResponse(path));
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -352,7 +377,13 @@ describe('CreditsPage', () => {
   it('n’affiche aucun formulaire lorsqu’une demande est déjà en attente', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() => Promise.resolve(jsonResponse(creditsResponse(true)))),
+      vi.fn((path: string) =>
+        Promise.resolve(
+          path === '/api/credits'
+            ? jsonResponse(creditsResponse(true))
+            : defaultResponse(path),
+        ),
+      ),
     );
 
     render(
@@ -367,5 +398,356 @@ describe('CreditsPage', () => {
     expect(
       screen.queryByRole('button', { name: 'Envoyer la demande' }),
     ).not.toBeInTheDocument();
+  });
+});
+
+/**
+ * L'achat de crédits (V4.5-204).
+ *
+ * Deux choses sont éprouvées ici plutôt que relues : que l'écran n'écrit
+ * jamais un prix ni un montant de son cru, et qu'il n'affirme l'attribution
+ * des crédits qu'au moment où le serveur la dit. Revenir de la page de
+ * paiement ne prouve que la fin d'une session : c'est le webhook qui fait foi.
+ */
+describe('CreditsPage — achat de crédits', () => {
+  const pack = {
+    credits: '100',
+    currency: 'EUR',
+    key: 'starter',
+    label: 'Découverte',
+    priceMinor: '1500',
+  };
+  const fulfilledOrder = {
+    amountMinor: '1500',
+    createdAt: '2026-08-30T10:00:00.000Z',
+    currency: 'EUR',
+    fulfilledAt: '2026-08-30T10:00:20.000Z',
+    id: 'order-1',
+    packKey: 'starter',
+    status: 'FULFILLED',
+  };
+  const checkoutUrl = 'https://checkout.example.test/session';
+
+  function stub(
+    routes: Record<string, (init?: RequestInit) => Response>,
+  ): ReturnType<typeof vi.fn> {
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      const handler = routes[path];
+      return Promise.resolve(handler ? handler(init) : defaultResponse(path));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    return fetchMock;
+  }
+
+  /** « 15,00 € » sans dépendre de l'espace qu'Intl place avant le symbole. */
+  function amount(text: string) {
+    return (content: string) => content.replace(/\s/gu, '') === text;
+  }
+
+  beforeEach(() => vi.mocked(navigate).mockClear());
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('affiche les paliers du catalogue et part vers la page de paiement', async () => {
+    const fetchMock = stub({
+      '/api/credits/checkout': () =>
+        jsonResponse({
+          resource: {
+            checkout: {
+              correctionSuspended: false,
+              orderId: 'order-1',
+              url: checkoutUrl,
+            },
+          },
+        }),
+      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Découverte' }),
+    ).toBeInTheDocument();
+    // Le prix vient du catalogue et n'est mis en forme qu'ici : aucun montant
+    // n'est écrit dans l'écran, et aucun n'est recalculé à partir des crédits.
+    expect(screen.getByText(amount('15,00€'))).toBeInTheDocument();
+    expect(screen.getByText('100 crédits')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Acheter Découverte' }));
+
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith(checkoutUrl));
+    const started = fetchMock.mock.calls.find(
+      ([path]) => path === '/api/credits/checkout',
+    );
+    expect(JSON.parse(String(started?.[1]?.body))).toEqual({
+      packKey: 'starter',
+    });
+  });
+
+  it('ne redirige pas avant d’avoir dit que la correction est suspendue', async () => {
+    stub({
+      '/api/credits/checkout': () =>
+        jsonResponse({
+          resource: {
+            checkout: {
+              correctionSuspended: true,
+              orderId: 'order-1',
+              url: checkoutUrl,
+            },
+          },
+        }),
+      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Acheter Découverte' }),
+    );
+
+    expect(
+      await screen.findByText(
+        'La correction par IA est suspendue en ce moment. Les crédits achetés gardent leur valeur et resteront utilisables à sa reprise.',
+      ),
+    ).toBeInTheDocument();
+    // Le fait est vrai à cet instant précis, et c'est le dernier où l'apprenant
+    // peut encore renoncer : la redirection attend qu'il ait répondu.
+    expect(navigate).not.toHaveBeenCalled();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Continuer vers le paiement' }),
+    );
+    expect(navigate).toHaveBeenCalledWith(checkoutUrl);
+  });
+
+  it('n’affirme l’attribution des crédits que lorsque la commande la porte', async () => {
+    let settled = false;
+    stub({
+      '/api/credits/orders': () =>
+        jsonResponse({ orders: settled ? [fulfilledOrder] : [] }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage checkout="success" orderId="order-1" />
+      </AppProviders>,
+    );
+
+    // Être renvoyé ici ne prouve rien sur l'attribution : la commande n'est pas
+    // encore lisible, donc l'écran dit l'attente et rien de plus.
+    expect(
+      await screen.findByRole('heading', { name: 'Paiement reçu' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Crédits attribués' }),
+    ).not.toBeInTheDocument();
+
+    settled = true;
+    fireEvent.click(screen.getByRole('button', { name: 'Actualiser' }));
+
+    // Le titre de l'avis, pas l'état de la ligne de commande : la commande
+    // apparaît aussi dans l'historique, et c'est bien deux fois la même
+    // information, dite au bon endroit.
+    expect(
+      await screen.findByRole('heading', { name: 'Crédits attribués' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Actualiser' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('dit l’abandon sans rien affirmer d’autre', async () => {
+    stub({});
+
+    render(
+      <AppProviders>
+        <CreditsPage checkout="cancelled" />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Achat abandonné' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Aucun crédit n’a été ajouté à votre solde.'),
+    ).toBeInTheDocument();
+  });
+
+  it('retire les paliers quand le serveur dit que la vente est fermée', async () => {
+    stub({
+      '/api/credits/checkout': () =>
+        jsonResponse(
+          {
+            error: {
+              code: 'PRICING_UNAVAILABLE',
+              message: 'Purchases are unavailable.',
+            },
+          },
+          503,
+        ),
+      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Acheter Découverte' }),
+    );
+
+    expect(
+      await screen.findByText(
+        'La vente de crédits vient d’être fermée. Aucun montant n’a été prélevé.',
+      ),
+    ).toBeInTheDocument();
+    expect(navigate).not.toHaveBeenCalled();
+    // Le catalogue ne porte pas l'état de la vente ; une fois que le serveur
+    // l'a dit, laisser le bouton serait promettre un achat impossible.
+    expect(
+      screen.queryByRole('button', { name: 'Acheter Découverte' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('dit qu’un palier a disparu sans le confondre avec une panne', async () => {
+    stub({
+      '/api/credits/checkout': () =>
+        jsonResponse(
+          { error: { code: 'RESOURCE_NOT_FOUND', message: 'Pack not found.' } },
+          404,
+        ),
+      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Acheter Découverte' }),
+    );
+
+    expect(
+      await screen.findByText(
+        'Ce palier n’est plus disponible. Aucun montant n’a été prélevé.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('Le paiement n’a pas pu être démarré.'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('rend une erreur inattendue comme une erreur, jamais comme un refus', async () => {
+    stub({
+      '/api/credits/checkout': () =>
+        jsonResponse(
+          { error: { code: 'INTERNAL_ERROR', message: 'Boom.' } },
+          500,
+        ),
+      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Acheter Découverte' }),
+    );
+
+    expect(
+      await screen.findByText('Le paiement n’a pas pu être démarré.'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Acheter Découverte' }),
+    ).toBeInTheDocument();
+  });
+
+  it('propose un écran explicite quand aucun palier n’est en vente', async () => {
+    stub({});
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('L’achat de crédits n’est pas encore ouvert'),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Acheter/u }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('liste les commandes de l’apprenant avec leur état', async () => {
+    stub({
+      '/api/credits/orders': () =>
+        jsonResponse({
+          orders: [
+            fulfilledOrder,
+            {
+              amountMinor: '1500',
+              createdAt: '2026-08-29T10:00:00.000Z',
+              currency: 'EUR',
+              fulfilledAt: null,
+              id: 'order-2',
+              packKey: 'starter',
+              status: 'REFUNDED',
+            },
+          ],
+        }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    const history = await screen.findByRole('list');
+    expect(within(history).getByText('Crédits attribués')).toBeInTheDocument();
+    expect(within(history).getByText('Remboursée')).toBeInTheDocument();
+    expect(within(history).getAllByText(amount('15,00€'))).toHaveLength(2);
+  });
+
+  it('refuse une réponse de paiement hors contrat plutôt que de rediriger', async () => {
+    stub({
+      // `url` manquante : une redirection à l'aveugle vaudrait mieux que rien
+      // partout ailleurs, pas ici — celle-ci mène à une page de paiement.
+      '/api/credits/checkout': () =>
+        jsonResponse({
+          resource: { checkout: { correctionSuspended: false, orderId: 'o' } },
+        }),
+      '/api/credits/packs': () => jsonResponse({ packs: [pack] }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Acheter Découverte' }),
+    );
+
+    expect(
+      await screen.findByText('Le paiement n’a pas pu être démarré.'),
+    ).toBeInTheDocument();
+    expect(navigate).not.toHaveBeenCalled();
   });
 });
