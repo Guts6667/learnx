@@ -44,6 +44,7 @@
     "quality:security": "pnpm audit --audit-level=high --prod",
     "quality:v4.1:baseline": "pnpm quality:prepare && pnpm i18n:check && pnpm format:check && pnpm lint && pnpm quality:imports:baseline && pnpm test:coverage:baseline && pnpm quality:coverage:critical:report && pnpm build && pnpm quality:bundle && pnpm quality:security",
     "quality:v4.1:final": "pnpm quality:prepare && pnpm i18n:check && pnpm format:check && pnpm lint && pnpm quality:imports:v4.1 && pnpm test:coverage:v4.1 && pnpm quality:coverage:critical && pnpm quality:dead-code && pnpm quality:dead-css && pnpm build && pnpm quality:bundle && pnpm quality:security",
+    "seed:preview": "tsx scripts/seed-preview.ts",
     "sourcelab:replacement:plan": "tsx scripts/plan-sourcelab-v2-replacement.ts",
     "test": "vitest run",
     "test:coverage:baseline": "NODE_OPTIONS=--no-experimental-webstorage LEARNX_V4_1_QUALITY_MODE=baseline vitest run --coverage",
