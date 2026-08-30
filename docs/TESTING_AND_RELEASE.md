@@ -143,6 +143,30 @@ la migration.
 9. Répéter un rollback vers `a02ecc3f…`, puis restaurer la preview candidate.
 10. Enregistrer preuves, divergences et décision propriétaire.
 
+## Quota de déploiements Vercel
+
+Le plan Hobby autorise **100 déploiements par jour**. Le 29 août 2026 la limite
+a été atteinte : environ cinquante pull requests et quarante-cinq merges ont
+produit chacun un déploiement, et les previews qui comptent — `dev`, et la
+passe de paiement — n'ont plus pu se construire. Le volume vient des branches
+de travail ; la valeur est sur la ligne de promotion.
+
+Seules `dev`, `staging` et `main` déclenchent donc un build, via l'« Ignored
+Build Step » de Vercel (`ignoreCommand` dans `vercel.json`, script
+`scripts/vercel-ignore-build.sh`). Un déploiement de production construit
+toujours, quelle que soit la branche.
+
+Une branche de travail qui a réellement besoin d'un preview le demande en
+mettant `[preview]` dans son message de commit. L'échappatoire vit ainsi dans
+le commit qui en a besoin, et non dans un réglage que quelqu'un devra penser à
+remettre.
+
+Les checks GitHub sont inchangés : ne pas construire de preview ne retire ni
+Quality, ni Integration, ni le gate visuel.
+
+Rappel de polarité, qui se trompe facilement : dans un « Ignored Build Step »,
+sortir **1** signifie « construire » et sortir **0** signifie « ignorer ».
+
 ## Gate visuel : ratio et plancher absolu
 
 La comparaison de captures cumule deux plafonds, et Playwright retient le plus

@@ -157,6 +157,22 @@ force-push ou réécriture d'historique sans ordre explicite portant sur les
 cibles exactes. Une entrée `prunable` reste préservée jusqu'à un ticket de
 qualification revu.
 
+### Lire le code de sortie, pas la fin du journal
+
+Une porte qualité se juge sur son code de sortie. Deux façons de le perdre,
+observées le 30 août 2026 sur la voie D :
+
+- `pnpm quality:v4.1:final; echo "EXIT=$?"` suivi de `&& git push` pousse même
+  après un échec, parce que `echo` a réussi et a remplacé le statut. Capturer
+  d'abord dans une variable, tester ensuite : `cmd > log; status=$?`.
+- Lire la fin du journal ne suffit pas : la dernière étape d'une chaîne peut
+  afficher un succès alors qu'une étape antérieure a échoué.
+
+Même règle pour les scripts d'essai : vérifier que le cas que l'on croit
+tester est bien celui qui s'exécute. Un harnais qui découpe ses arguments sur
+`:` casse silencieusement sur un message de commit `feat: x`, et le cas réputé
+couvert ne l'est pas.
+
 ### Ports Playwright : un serveur par checkout
 
 Les suites Playwright dérivent leur port du répertoire de travail. Chaque
