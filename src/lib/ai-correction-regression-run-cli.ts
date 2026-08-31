@@ -195,8 +195,14 @@ export type ParaphraseCacheLoad = {
  * a corpus or the generator moved under a cached rewrite, and using it would
  * compare the run against a paraphrase of text that no longer exists.
  */
-/** Refusal to run without an explicitly chosen benchmark configuration. */
-export class RegressionRunConfigurationError extends Error {}
+/**
+ * Refusal to run without an explicitly chosen benchmark configuration.
+ *
+ * Module-local: it is thrown and read here, and the tests assert on the message
+ * rather than the constructor, so exporting it would widen the surface for
+ * nobody.
+ */
+class RegressionRunConfigurationError extends Error {}
 
 export async function loadParaphraseCache(input: {
   caseIds: string[];
