@@ -24,5 +24,5 @@
 
 @import './surfaces/correction-assessment-reviews.css';
 
-/* Keep the landing treatment last so shared surfaces stay canonical. */
+/* Keep landing-specific treatment last so shared surfaces stay canonical. */
 @import './surfaces/landing-path.css';
