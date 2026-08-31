@@ -1,5 +1,5 @@
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
-import { extname, join, relative, resolve, sep } from 'node:path';
+import { existsSync, readFileSync, statSync } from 'node:fs';
+import { extname, relative, resolve, sep } from 'node:path';
 import { gzipSync } from 'node:zlib';
 
 interface BundleBaseline {
@@ -20,8 +20,10 @@ interface BundleBaseline {
       observedBytes: number;
       observedEntries: number;
     };
-    totalDiagnostic: {
-      warningThresholdsGzipBytes: BundleSizes;
+    journey: {
+      budgetsGzipBytes: BundleSizes;
+      modules: string[];
+      name: string;
     };
   };
 }
@@ -54,13 +56,6 @@ const distRoot = resolve(projectRoot, 'dist');
 const manifestPath = resolve(distRoot, '.vite/manifest.json');
 const baselinePath = resolve(projectRoot, 'quality/v4-1-baseline.json');
 
-function collectFiles(directory: string): string[] {
-  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    const path = join(directory, entry.name);
-    return entry.isDirectory() ? collectFiles(path) : [path];
-  });
-}
-
 function measureAssets(
   files: string[],
   extension: '.css' | '.js',
@@ -89,7 +84,7 @@ function resolveEmittedFile(relativePath: string): string {
   return path;
 }
 
-function collectInitialFiles(manifest: ViteManifest): string[] {
+function entryKeysOf(manifest: ViteManifest): string[] {
   const entryKeys = Object.entries(manifest)
     .filter(([, chunk]) => chunk.isEntry === true)
     .map(([key]) => key)
@@ -97,7 +92,18 @@ function collectInitialFiles(manifest: ViteManifest): string[] {
   if (entryKeys.length === 0) {
     throw new Error('The Vite manifest has no initial entry.');
   }
+  return entryKeys;
+}
 
+/**
+ * Every file the browser must have once it has loaded `keys` and everything
+ * they import, transitively. Used for the initial closure and for a journey
+ * alike — the question is the same, only the starting points differ.
+ */
+function collectClosureFiles(
+  manifest: ViteManifest,
+  keys: readonly string[],
+): string[] {
   const visitedChunks = new Set<string>();
   const emittedFiles = new Set<string>();
 
@@ -119,12 +125,48 @@ function collectInitialFiles(manifest: ViteManifest): string[] {
     }
   }
 
-  for (const entryKey of entryKeys) {
-    visitChunk(entryKey);
+  for (const key of keys) {
+    visitChunk(key);
   }
 
-  console.log(`Vite initial entries: ${entryKeys.join(', ')}`);
   return [...emittedFiles].sort();
+}
+
+function collectInitialFiles(manifest: ViteManifest): string[] {
+  const entryKeys = entryKeysOf(manifest);
+  console.log(`Vite initial entries: ${entryKeys.join(', ')}`);
+  return collectClosureFiles(manifest, entryKeys);
+}
+
+/**
+ * What one real visit downloads: the initial closure plus the chunks of the
+ * pages actually walked through, counted once each.
+ *
+ * This replaces the old "total JavaScript" diagnostic, which summed every file
+ * the build emitted. That number grew every time a route was split into its own
+ * chunk — that is, every time the splitting improved — so it punished the work
+ * it was supposed to encourage, and it counted pages no single visitor ever
+ * loads. It was permanently red for exactly that reason, and a permanently red
+ * number stops being read.
+ */
+function collectJourneyFiles(
+  manifest: ViteManifest,
+  modules: readonly string[],
+): string[] {
+  for (const module of modules) {
+    if (!manifest[module]) {
+      throw new Error(
+        [
+          `The journey names ${module}, which this build does not emit.`,
+          'Either the module moved, or it was inlined into another chunk.',
+          'Update bundle.journey.modules in quality/v4-1-baseline.json — a',
+          'journey that silently skips a page measures the wrong thing.',
+        ].join('\n'),
+      );
+    }
+  }
+
+  return collectClosureFiles(manifest, [...entryKeysOf(manifest), ...modules]);
 }
 
 function allowedRegression(
@@ -196,7 +238,6 @@ const baseline = JSON.parse(
   readFileSync(baselinePath, 'utf8'),
 ) as BundleBaseline;
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as ViteManifest;
-const emittedFiles = collectFiles(distRoot);
 const initialFiles = collectInitialFiles(manifest);
 const asyncJavaScriptFiles = collectAsyncJavaScriptFiles(
   manifest,
@@ -205,12 +246,16 @@ const asyncJavaScriptFiles = collectAsyncJavaScriptFiles(
 const initialJavaScriptAssets = measureAssets(initialFiles, '.js');
 const initialCssAssets = measureAssets(initialFiles, '.css');
 const asyncJavaScriptAssets = measureAssets(asyncJavaScriptFiles, '.js');
-const totalJavaScriptAssets = measureAssets(emittedFiles, '.js');
-const totalCssAssets = measureAssets(emittedFiles, '.css');
+const journeyFiles = collectJourneyFiles(
+  manifest,
+  baseline.bundle.journey.modules,
+);
+const journeyJavaScriptAssets = measureAssets(journeyFiles, '.js');
+const journeyCssAssets = measureAssets(journeyFiles, '.css');
 const initialJavaScriptTotal = totalGzipBytes(initialJavaScriptAssets);
 const initialCssTotal = totalGzipBytes(initialCssAssets);
-const totalJavaScript = totalGzipBytes(totalJavaScriptAssets);
-const totalCss = totalGzipBytes(totalCssAssets);
+const journeyJavaScript = totalGzipBytes(journeyJavaScriptAssets);
+const journeyCss = totalGzipBytes(journeyCssAssets);
 // A chunk may be exempt from the route budget without being unmeasured: the
 // exemption exists because the budget below asks "is a route getting fat?",
 // and a chunk that is not a route cannot answer it. Exempt chunks get their
@@ -249,7 +294,7 @@ const pwaByteBudget = allowedRegression(
   baseline.bundle.pwaPrecache.observedBytes,
   baseline.bundle.pwaPrecache.maxRegressionPercent,
 );
-const { warningThresholdsGzipBytes } = baseline.bundle.totalDiagnostic;
+const journeyBudgets = baseline.bundle.journey.budgetsGzipBytes;
 
 printAssets('Initial JavaScript assets', initialJavaScriptAssets);
 printAssets('Initial CSS assets', initialCssAssets);
@@ -261,10 +306,10 @@ console.log(
   `Initial CSS: ${initialCssTotal}/${budgetsGzipBytes.css} bytes gzip`,
 );
 console.log(
-  `Total JavaScript diagnostic: ${totalJavaScript}/${warningThresholdsGzipBytes.javascript} bytes gzip`,
+  `Journey (${baseline.bundle.journey.name}) JavaScript: ${journeyJavaScript}/${journeyBudgets.javascript} bytes gzip`,
 );
 console.log(
-  `Total CSS diagnostic: ${totalCss}/${warningThresholdsGzipBytes.css} bytes gzip`,
+  `Journey (${baseline.bundle.journey.name}) CSS: ${journeyCss}/${journeyBudgets.css} bytes gzip`,
 );
 console.log(
   `Largest lazy JavaScript: ${largestAsyncJavaScript?.gzipBytes ?? 0}/${asyncChunkBudget} bytes gzip`,
@@ -311,14 +356,14 @@ if (pwaPrecache.bytes > pwaByteBudget) {
   );
 }
 
-if (totalJavaScript > warningThresholdsGzipBytes.javascript) {
-  console.warn(
-    `Total JavaScript exceeds its non-blocking diagnostic threshold by ${totalJavaScript - warningThresholdsGzipBytes.javascript} bytes.`,
+if (journeyJavaScript > journeyBudgets.javascript) {
+  failures.push(
+    `Journey JavaScript exceeds its budget by ${journeyJavaScript - journeyBudgets.javascript} bytes.`,
   );
 }
-if (totalCss > warningThresholdsGzipBytes.css) {
-  console.warn(
-    `Total CSS exceeds its non-blocking diagnostic threshold by ${totalCss - warningThresholdsGzipBytes.css} bytes.`,
+if (journeyCss > journeyBudgets.css) {
+  failures.push(
+    `Journey CSS exceeds its budget by ${journeyCss - journeyBudgets.css} bytes.`,
   );
 }
 
