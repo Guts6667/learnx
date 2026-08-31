@@ -1,0 +1,75 @@
+name: Update landing visual baselines
+
+on:
+  push:
+    branches:
+      - design/landing-v2
+    paths:
+      - .github/workflows/update-landing-baselines.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out the branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+
+      - name: Regenerate visual references
+        run: pnpm test:visual:update
+
+      - name: Verify the visual diff is limited to the redesigned surfaces
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          allowed = {
+              f'tests/visual/__screenshots__/{viewport}/surfaces.spec.ts/{name}.png'
+              for viewport in ('mobile-390', 'tablet-768', 'desktop-1440')
+              for name in ('landing', 'landing-pricing-tiers')
+          }
+          changed = {
+              line.strip()
+              for line in subprocess.check_output(
+                  ['git', 'diff', '--name-only'], text=True
+              ).splitlines()
+              if line.strip()
+          }
+          unexpected = changed - allowed
+          missing = allowed - changed
+          if unexpected:
+              raise SystemExit(f'Unexpected visual files changed: {sorted(unexpected)}')
+          if missing:
+              raise SystemExit(f'Expected visual files did not change: {sorted(missing)}')
+          print('\n'.join(sorted(changed)))
+          PY
+
+      - name: Commit the reviewed landing references
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/visual/__screenshots__
+          git commit -m "test(landing): accept redesigned visual references"
+          git push
