@@ -35,9 +35,21 @@ function createApiApp() {
   const app = new Hono();
 
   app.use('*', createRequestObservability());
+  // The default, and only the default. It runs after the handler, so setting it
+  // unconditionally overwrote whatever the handler had decided — which is what
+  // it did to `/api/public/credit-packs`: that route asks for
+  // `public, max-age=300` so the landing does not hit the database on every
+  // visit, and served `private, no-store` instead. The five-minute shared cache
+  // designed in V4.5-206 never existed.
+  //
+  // `private, no-store` stays the answer for everything that does not decide
+  // for itself, which is every authenticated route: a default that has to be
+  // remembered is not a default.
   app.use('*', async (context, next) => {
     await next();
-    context.header('Cache-Control', 'private, no-store');
+    if (!context.res.headers.has('cache-control')) {
+      context.header('Cache-Control', 'private, no-store');
+    }
   });
 
   app.onError(async (error, context) => {
