@@ -7,6 +7,11 @@ import { readPaymentsConfiguration } from '../../payments/payments-configuration
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  CORRECTION_QUOTE_CREDITS,
+  CORRECTION_RESERVATION_CREDITS,
+  packFigures,
+} from '../../maintenance/credit-pack-seed.js';
 import type {
   CreditsCatalogueReader,
   OwnPaymentOrder,
@@ -56,6 +61,8 @@ const lazyCatalogue: CreditsCatalogueReader = {
   listActivePacks: async () => (await defaultCatalogue()).listActivePacks(),
   listOwnOrders: async (userId) =>
     (await defaultCatalogue()).listOwnOrders(userId),
+  purchasableByUser: async (input) =>
+    (await defaultCatalogue()).purchasableByUser(input),
 };
 
 async function defaultCatalogue(): Promise<CreditsCatalogueReader> {
@@ -135,13 +142,23 @@ function projection(value: CreditProjection) {
   };
 }
 
-function pack(value: PurchasablePack) {
+function pack(value: PurchasablePack, purchasable?: boolean) {
+  const figures = packFigures(value);
   return {
+    // Derived on the server, never on the screen: `credits-surfaces.test.ts`
+    // forbids the learner surface arithmetic on `priceMinor`, and a figure
+    // about money derived in two places eventually disagrees with itself
+    // (V4.5-212).
+    approximateCorrections: amount(figures.approximateCorrections),
+    bonusCredits: amount(figures.bonusCredits),
     credits: amount(value.credits),
+    creditsPerEuro: amount(figures.creditsPerEuro),
     currency: value.currency,
     key: value.key,
     label: value.label,
+    labelEn: value.labelEn,
     priceMinor: amount(value.priceMinor),
+    ...(purchasable === undefined ? {} : { purchasable }),
   };
 }
 
@@ -255,8 +272,21 @@ export function createCreditsApp(options: CreditsAppOptions = {}) {
     // the 503 on the purchase it already asked someone to make. Packs are still
     // listed when the sale is shut, so the screen can explain rather than show
     // an empty page (V4.5-205).
+    const packs = await catalogue.listActivePacks();
+    // Asked once for every key, so the screen renders "Déjà acheté" on the
+    // right card without re-deriving the rule the 409 enforces.
+    const purchasable = await catalogue.purchasableByUser({
+      keys: packs.map((entry) => entry.key),
+      userId: context.get('user').id,
+    });
+
     return context.json({
-      packs: (await catalogue.listActivePacks()).map(pack),
+      // Stated once beneath the grid rather than on every card: a correction
+      // is quoted at 30 credits and reserves 45, which is why the capacity
+      // above is approximate.
+      correctionQuoteCredits: amount(CORRECTION_QUOTE_CREDITS),
+      correctionReservationCredits: amount(CORRECTION_RESERVATION_CREDITS),
+      packs: packs.map((entry) => pack(entry, purchasable[entry.key] ?? true)),
       paymentsEnabled: paymentsEnabled(),
     });
   });

@@ -9,11 +9,18 @@ const PACK = {
   priceMinor: 900n,
 };
 
-function build(options: { packs?: unknown[]; suspended?: boolean } = {}) {
+function build(
+  options: {
+    fulfilled?: boolean;
+    packs?: unknown[];
+    suspended?: boolean;
+  } = {},
+) {
   const created: unknown[] = [];
   const recorded: unknown[] = [];
   const ports = {
     correctionSuspended: vi.fn(async () => options.suspended ?? false),
+    hasFulfilledPack: vi.fn(async () => options.fulfilled ?? false),
     createProviderOrder: vi.fn(async (input: unknown) => {
       created.push(input);
       return {
@@ -91,5 +98,88 @@ describe('startCheckout', () => {
     const harness = build();
     await run(harness);
     expect(harness.recorded[0]).toMatchObject({ providerOrderId: 'ord_1' });
+  });
+});
+
+describe('palier d’entrée, un achat par compte (V4.5-212)', () => {
+  it('refuse un second achat du palier d’entrée', async () => {
+    const harness = build({ fulfilled: true });
+
+    await expect(
+      startCheckout({
+        enabled: true,
+        entryTierPackKey: 'starter',
+        packKey: 'starter',
+        ports: harness.ports as never,
+        userId: 'user-1',
+      }),
+    ).resolves.toEqual({ kind: 'ENTRY_TIER_ALREADY_PURCHASED' });
+  });
+
+  it('refuse avant d’appeler le fournisseur, jamais après', async () => {
+    // Laisser Stripe ouvrir une session et encaisser, puis échouer de notre
+    // côté, obligerait à rembourser pour appliquer une règle qui coûtait zéro
+    // à appliquer — et un remboursement sur 3 € coûte plus en frais que
+    // l'achat ne rapporte.
+    const harness = build({ fulfilled: true });
+
+    await startCheckout({
+      enabled: true,
+      entryTierPackKey: 'starter',
+      packKey: 'starter',
+      ports: harness.ports as never,
+      userId: 'user-1',
+    });
+
+    expect(harness.ports.createProviderOrder).not.toHaveBeenCalled();
+    expect(harness.ports.recordOrder).not.toHaveBeenCalled();
+  });
+
+  it('laisse acheter les autres paliers autant de fois qu’on veut', async () => {
+    const harness = build({ fulfilled: true });
+
+    const result = await startCheckout({
+      enabled: true,
+      entryTierPackKey: 'un-autre-palier',
+      packKey: 'starter',
+      ports: harness.ports as never,
+      userId: 'user-1',
+    });
+
+    expect(result.kind).toBe('STARTED');
+  });
+
+  it('n’interroge rien quand aucun palier n’est limité', async () => {
+    const harness = build();
+
+    await startCheckout({
+      enabled: true,
+      packKey: 'starter',
+      ports: harness.ports as never,
+      userId: 'user-1',
+    });
+
+    expect(harness.ports.hasFulfilledPack).not.toHaveBeenCalled();
+  });
+
+  it('demande bien « déjà honoré », pas « honoré en ce moment »', async () => {
+    // La distinction est toute la règle : un remboursement fait passer la
+    // commande à REFUNDED sans toucher `fulfilledAt`, donc interroger le
+    // statut rendrait le droit d'acheter au premier remboursement — et
+    // rembourser-puis-racheter est exactement ce que la limite empêche.
+    const harness = build({ fulfilled: false });
+
+    await startCheckout({
+      enabled: true,
+      entryTierPackKey: 'starter',
+      packKey: 'starter',
+      ports: harness.ports as never,
+      userId: 'user-1',
+    });
+
+    expect(harness.ports.hasFulfilledPack).toHaveBeenCalledWith({
+      packKey: 'starter',
+      userId: 'user-1',
+    });
   });
 });

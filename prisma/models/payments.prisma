@@ -72,7 +72,14 @@ model PaymentEvent {
 model CreditPack {
   id          String   @id @default(uuid()) @db.Uuid
   key         String   @unique
+  /// Libellé français, la langue par défaut du produit.
   label       String
+  /// Libellé anglais (V4.5-212). Servi à côté du français plutôt que résolu
+  /// côté serveur : `/api/public/credit-packs` est mis en cache « le même pour
+  /// tout le monde », et une réponse qui dépend de la langue demanderait un
+  /// `Vary` qui diviserait ce cache. L'écran choisit, il connaît déjà sa
+  /// langue.
+  labelEn     String   @map("label_en")
   credits     BigInt
   /// En plus petite unité monétaire, jamais en flottant.
   priceMinor  BigInt   @map("price_minor")

@@ -14,14 +14,26 @@
  * anything happens.
  */
 
-type DbTargetVerb = 'execute' | 'migrate-deploy' | 'seed-preview';
+type DbTargetVerb =
+  'execute' | 'migrate-deploy' | 'seed-packs' | 'seed-preview';
 
-/** Verbs that can destroy or rewrite data, and so need `--yes`. */
-const DESTRUCTIVE: readonly DbTargetVerb[] = ['execute', 'migrate-deploy'];
+/**
+ * Verbs that can destroy or rewrite data, and so need `--yes`.
+ *
+ * `seed-packs` is here and `seed-preview` is not: the pack grid upserts into a
+ * populated database and changes what learners can buy, while the preview seed
+ * refuses any database that already holds an account.
+ */
+const DESTRUCTIVE: readonly DbTargetVerb[] = [
+  'execute',
+  'migrate-deploy',
+  'seed-packs',
+];
 
 const VERBS: readonly DbTargetVerb[] = [
   'execute',
   'migrate-deploy',
+  'seed-packs',
   'seed-preview',
 ];
 

@@ -111,13 +111,22 @@ test('n’offre aucun achat quand la vente est fermée, et le dit', async ({
     await route.fulfill({
       contentType: 'application/json',
       json: {
+        // La réponse porte la forme entière du contrat (V4.5-212) : l'écran
+        // VÉRIFIE le catalogue, donc un palier amputé d'un champ dérivé ne
+        // rend pas « vente fermée », il rend l'état d'erreur.
+        correctionQuoteCredits: '30',
+        correctionReservationCredits: '45',
         packs: [
           {
             credits: '100',
             currency: 'EUR',
             key: 'starter',
             label: 'Découverte',
+            labelEn: 'Starter',
             priceMinor: '1500',
+            approximateCorrections: '3',
+            bonusCredits: '-1400',
+            creditsPerEuro: '6',
           },
         ],
         paymentsEnabled: false,

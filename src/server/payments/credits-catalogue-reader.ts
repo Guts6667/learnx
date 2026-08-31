@@ -19,6 +19,8 @@ export interface PurchasablePack {
   currency: string;
   key: string;
   label: string;
+  /** English, served alongside French so one cached body serves everyone. */
+  labelEn: string;
   priceMinor: bigint;
 }
 
@@ -33,6 +35,20 @@ export interface OwnPaymentOrder {
 }
 
 export interface CreditsCatalogueReader {
+  /**
+   * Whether this account may still buy this pack (V4.5-212).
+   *
+   * Per pack rather than a single `entryTierAvailable`, on the Head of UX/UI's
+   * argument: a flag that says the state without saying which pack it concerns
+   * forces `pack.key === 'entry'` into the screen — a hard-coded identity that
+   * fails silently the day the key changes, leaving the 409 as the only
+   * protection. This says it on the card it belongs to, and generalises to any
+   * later per-account rule.
+   */
+  purchasableByUser(input: {
+    keys: readonly string[];
+    userId: string;
+  }): Promise<Record<string, boolean>>;
   /** Active packs only, in the order an owner arranged them. */
   listActivePacks(): Promise<PurchasablePack[]>;
   /** The caller's own orders, newest first. Never anybody else's. */

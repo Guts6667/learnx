@@ -163,10 +163,31 @@ const creditPackSchema = z.object({
   currency: z.string(),
   key: z.string(),
   label: z.string(),
+  /**
+   * Servi à côté du français plutôt que résolu côté serveur (V4.5-212) :
+   * `/api/public/credit-packs` est mis en cache « le même pour tout le monde »,
+   * et une réponse qui dépend de la langue demanderait un `Vary`. L'écran
+   * choisit — il connaît déjà sa langue.
+   */
+  labelEn: z.string(),
   priceMinor: z.string(),
+  /**
+   * Chiffres dérivés côté serveur (V4.5-212) : `credits-surfaces.test.ts`
+   * interdit à l'écran apprenant toute arithmétique sur `priceMinor`, et un
+   * chiffre sur de l'argent dérivé à deux endroits finit par se contredire.
+   * `approximateCorrections` est une médiane — l'écran doit dire « environ ».
+   */
+  approximateCorrections: z.string(),
+  bonusCredits: z.string(),
+  creditsPerEuro: z.string(),
+  /** Absent de la réponse publique : il n'y a pas de compte pour l'évaluer. */
+  purchasable: z.optional(z.boolean()),
 });
 
 export const creditPacksResponseSchema = z.object({
+  /** Énoncés une fois sous la grille, pas répétés sur chaque carte. */
+  correctionQuoteCredits: z.string(),
+  correctionReservationCredits: z.string(),
   packs: z.array(creditPackSchema),
   /**
    * L'état de la vente, servi avec le catalogue parce que l'écran a besoin des

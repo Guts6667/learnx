@@ -100,14 +100,22 @@ const creditPacks = [
     currency: 'EUR',
     key: 'starter',
     label: 'Découverte',
+    labelEn: 'Starter',
     priceMinor: '1500',
+    approximateCorrections: '3',
+    bonusCredits: '-1400',
+    creditsPerEuro: '6',
   },
   {
     credits: '500',
     currency: 'EUR',
     key: 'regular',
     label: 'Régulier',
+    labelEn: 'Regular',
     priceMinor: '5900',
+    approximateCorrections: '16',
+    bonusCredits: '-5400',
+    creditsPerEuro: '8',
   },
 ];
 
@@ -614,7 +622,12 @@ export async function installJourneyApi(page: Page) {
       // `paymentsEnabled` is not optional (V4.5-205): the screen would have to
       // guess when it is absent, and guessing "open" offers a purchase that
       // fails. A stub without it is not a response the server can produce.
-      await respond({ packs: creditPacks, paymentsEnabled: true });
+      await respond({
+        correctionQuoteCredits: '30',
+        correctionReservationCredits: '45',
+        packs: creditPacks,
+        paymentsEnabled: true,
+      });
       return;
     }
 

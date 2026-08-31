@@ -353,12 +353,14 @@ describe('V4-008 credits API', () => {
 
 describe('V4.5-205 contrat de l’écran d’achat', () => {
   const catalogue = {
+    purchasableByUser: vi.fn(async () => ({ entry: true })),
     listActivePacks: vi.fn(async () => [
       {
         credits: 10n,
         currency: 'EUR',
         key: 'starter',
         label: 'Découverte',
+        labelEn: 'Starter',
         priceMinor: 1500n,
       },
     ]),
@@ -418,13 +420,23 @@ describe('V4.5-205 contrat de l’écran d’achat', () => {
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({
+      // Derived once on the server (V4.5-212): the screen may not do
+      // arithmetic on `priceMinor`, so the rate, the bonus and the capacity
+      // arrive already worked out.
+      correctionQuoteCredits: '30',
+      correctionReservationCredits: '45',
       packs: [
         {
+          approximateCorrections: '0',
+          bonusCredits: '-1490',
           credits: '10',
+          creditsPerEuro: '0',
           currency: 'EUR',
           key: 'starter',
           label: 'Découverte',
+          labelEn: 'Starter',
           priceMinor: '1500',
+          purchasable: true,
         },
       ],
       paymentsEnabled: false,

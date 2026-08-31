@@ -32,6 +32,21 @@ export async function createPrismaCheckoutPorts(): Promise<CheckoutPorts> {
     newOrderId() {
       return crypto.randomUUID();
     },
+    async hasFulfilledPack(input) {
+      // `fulfilledAt`, never `status` (V4.5-212). A refund sets the status to
+      // REFUNDED and leaves this column alone, so asking about the status
+      // would restore the right the moment someone refunded — which is the
+      // pattern the limit exists to stop.
+      const fulfilled = await prisma.paymentOrder.findFirst({
+        select: { id: true },
+        where: {
+          fulfilledAt: { not: null },
+          packKey: input.packKey,
+          userId: input.userId,
+        },
+      });
+      return fulfilled !== null;
+    },
     async listPacks() {
       const packs = await prisma.creditPack.findMany({
         orderBy: { position: 'asc' },

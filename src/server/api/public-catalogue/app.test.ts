@@ -9,12 +9,14 @@ import { createPublicCatalogueApp } from './app';
  */
 describe('catalogue public', () => {
   const catalogue = {
+    purchasableByUser: vi.fn(async () => ({ entry: true })),
     listActivePacks: vi.fn(async () => [
       {
         credits: 100n,
         currency: 'EUR',
         key: 'starter',
         label: 'Découverte',
+        labelEn: 'Starter',
         priceMinor: 1500n,
       },
     ]),
@@ -28,12 +30,22 @@ describe('catalogue public', () => {
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({
+      // The same derived figures as the authenticated route, from the same
+      // source: the price seen before signing up is the price met after,
+      // including the rate and the bonus (V4.5-212). No `purchasable` — there
+      // is no account here to evaluate it against.
+      correctionQuoteCredits: '30',
+      correctionReservationCredits: '45',
       packs: [
         {
+          approximateCorrections: '3',
+          bonusCredits: '-1400',
           credits: '100',
+          creditsPerEuro: '6',
           currency: 'EUR',
           key: 'starter',
           label: 'Découverte',
+          labelEn: 'Starter',
           priceMinor: '1500',
         },
       ],
@@ -60,7 +72,11 @@ describe('catalogue public', () => {
 
     const response = await app.request('/api/public/credit-packs');
 
-    await expect(response.json()).resolves.toEqual({ packs: [] });
+    await expect(response.json()).resolves.toEqual({
+      correctionQuoteCredits: '30',
+      correctionReservationCredits: '45',
+      packs: [],
+    });
   });
 
   it('ne divulgue aucun identifiant interne', async () => {

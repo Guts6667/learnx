@@ -70,13 +70,14 @@ function report(plan: DbTargetPlan): string {
         'Relancez avec --yes si c’est bien cette base.',
       ].join('\n');
     case 'REFUSED_UNKNOWN_VERB':
-      return `Refus : verbe inconnu « ${plan.verb} ». Attendu : execute, migrate-deploy, seed-preview.`;
+      return `Refus : verbe inconnu « ${plan.verb} ». Attendu : execute, migrate-deploy, seed-packs, seed-preview.`;
   }
 }
 
 const COMMANDS: Record<string, readonly string[]> = {
   execute: ['prisma', 'db', 'execute', '--stdin'],
   'migrate-deploy': ['prisma', 'migrate', 'deploy'],
+  'seed-packs': ['tsx', 'scripts/seed-credit-packs.ts'],
   'seed-preview': ['tsx', 'scripts/seed-preview.ts'],
 };
 
