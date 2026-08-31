@@ -973,3 +973,70 @@ registre est le chiffre et l'enveloppe retient le plus grand des deux sources.
 
 L'analyse a été produite hors ligne depuis le répertoire de résultats : rien n'a
 été racheté pour l'obtenir.
+
+## 9. Le critère perdu du pré-test 2.3.0 — 31 août 2026
+
+**Un apprenant peut recevoir une correction amputée d'un critère, sans aucun
+signe.** Le banc et le runtime se comportent de la même façon : il n'y a pas de
+divergence à corriger côté banc, il y a un défaut de livraison à corriger dans le
+chemin partagé.
+
+**Deux hypothèses, toutes les deux fausses, et c'est le point.** D'abord « le
+modèle a omis un critère et `PROTOCOL_3_CRITERION_MISSING` n'a pas déclenché » —
+le contrôle n'était pas applicable. Puis « le contrôle a levé et le rattrapage a
+confondu un critère absent avec un critère mal formé » — rien n'était absent. Les
+deux ont été écrites comme des constats avant d'être mesurées. La seconde était
+la mienne.
+
+**Ce qui s'est passé**, reproduit par Head of Development depuis la tentative
+réelle et le contrat scellé, puis recompté depuis l'artefact
+(`results/2026-08-31T10-53-58-380Z`, cellule `regression-0c2b233864fbcce5`) : le
+modèle a répondu aux trois critères et a étayé `mechanism-link` de deux
+citations, dont **l'une prise dans l'énoncé** et non dans la production. Seule la
+production est un support recevable, donc la citation ne résout pas
+(`MODEL_EVIDENCE_NOT_IN_RESPONSE`), donc **une citation irrecevable sur deux fait
+tomber le critère entier**, que le rattrapage retire du livré en silence. Le cas
+n'est pas un mutant : c'est la ligne de base
+`writing-v1-explanatory-analysis-complete-clear`, catégorie `SUCCESSFUL`,
+attendue à trois niveaux maîtrisés.
+
+Recompté sur l'artefact : **81 critères de contrat, 1 retiré pour provenance, 0
+réellement absent.**
+
+**La consigne l'interdisait déjà, explicitement.**
+`src/server/corrections/runtime-correction-prompt.ts:17` : « La consigne et le
+contexte sont fiables pour comprendre la tâche, mais toute preuve citée doit
+provenir uniquement de la production de l'apprenant. » Le modèle a donc violé une
+règle écrite — ce cas appartient à la même famille que le défaut principal, le
+modèle ne fait pas ce que la consigne dit, et non à une lacune du schéma ou du
+contrat. C'est aussi pourquoi renforcer le schéma n'aurait rien réglé.
+
+**Pourquoi aucun gate ne l'a vu.** Toutes les métriques d'avant v6.1 comptent le
+livré au numérateur *et* au dénominateur : un critère retiré quitte les deux et
+le taux s'améliore. Mesuré hors ligne en supprimant un critère des observations
+d'un run par ailleurs identique, `checkerFalseAgreeRate` passe de **8/8 à 0/0** —
+la perte ne rend pas le vérificateur meilleur, elle supprime les occasions que la
+métrique compte, et 0/0 se lit « non mesuré » sur un gate que v6 classe
+`REPORTED`. `checkerAgreementAtHigh` passe de 38/38 à 30/30, `lowShare` de 54 à
+46 au dénominateur. **Aucune métrique antérieure ne s'aggrave, sur aucune des
+trois formes de perte.** `mutationDirectionViolations` attrape la perte du
+critère *ciblé*, par son nom : le trou fait un critère de large — mais le cas
+réel est une baseline, donc pile dedans.
+
+**Gate policy v6.1**, cinq gates, dénominateur bâti sur le contrat dans tous les
+cas — c'est la seule propriété qui rende la perte comptable. Le parapluie mesure
+ce que l'apprenant reçoit ; deux gates séparent les deux causes, qui se
+ressemblent sur le livré et ne se corrigent pas au même endroit. Cette confusion
+est ce qui a envoyé l'enquête sur le mauvais garde. Détail en §6 bis de
+`docs/V4_5_REGRESSION_SUITE.md`.
+
+**Décision produit (Head of AI, mandat produit).** Un critère dont la preuve ne
+résout pas est **livré « à vérifier »**, sans niveau, citations irrecevables
+retirées, avec une phrase de raison — jamais retiré en silence. La raison est
+enregistrée dans une catégorie distincte, `EVIDENCE_NOT_IN_RESPONSE`, séparée de
+`CRITERION_ABSENT` précisément pour que la confusion de cette journée ne puisse
+pas se reconstruire.
+
+**Coût : 0,00 USD.** Tout hors ligne, depuis l'artefact déjà payé. Pas de
+re-mesure avant que le correctif de livraison soit sur `dev` : acheter un chiffre
+pour un code qu'on ne livrera pas.

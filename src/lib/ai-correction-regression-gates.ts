@@ -1,5 +1,5 @@
 /**
- * Gate policy v3 for the regression suite (V4.5-120).
+ * Gate policy for the regression suite (V4.5-120), at v6.1.
  *
  * Implements §6 of `docs/V4_5_REGRESSION_SUITE.md` against the thresholds of
  * `docs/V4_5_AI_QUALITY_CONTRACT.md` §5.
@@ -15,6 +15,12 @@
  * A gate whose metric was never measured (empty denominator) does not pass. It
  * reports `NOT_MEASURED`, which blocks promotion for a blocking gate: a suite
  * that measured nothing has proven nothing.
+ *
+ * v6.1 adds `omitted-criteria-delivered`. Every earlier gate counts delivered
+ * criteria on both sides of its rate, so a criterion the model simply does not
+ * write leaves the numerator and the denominator together and the gate improves
+ * — a model can pass by going quiet. That gate's denominator comes from the
+ * contract instead, which is what makes silence countable.
  */
 
 import { z } from 'zod';
@@ -24,7 +30,7 @@ import type {
   RegressionRate,
 } from './ai-correction-regression-metrics.js';
 
-export const REGRESSION_GATE_POLICY_VERSION = '6.0.0';
+export const REGRESSION_GATE_POLICY_VERSION = '6.1.0';
 
 /**
  * `BLOCKING` forbids promotion when red. `WATCHED` is reported and reviewed but
@@ -116,6 +122,8 @@ export type RegressionGateInputs = Pick<
   | 'lowShare'
   | 'modelAuthoredAgreement'
   | 'mutationDirectionViolations'
+  | 'omittedContractCriteriaDelivered'
+  | 'omittedCriterionCorrections'
   | 'repetitionTwoStepFlips'
   | 'repetitionTwoStepFlipsAtHigh'
   | 'unrelatedCriterionDrift'

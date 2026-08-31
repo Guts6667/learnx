@@ -673,7 +673,7 @@ export async function runRegressionPool(input: {
 
   const policy = parseRegressionGatePolicy(
     JSON.parse(
-      await readFile(path.join(directory, 'gate-policy.v6.json'), 'utf8'),
+      await readFile(path.join(directory, 'gate-policy.v6-1.json'), 'utf8'),
     ) as unknown,
   );
 
@@ -1202,7 +1202,6 @@ export async function runRegressionPool(input: {
   });
 
   const heldOutSeed = deriveHeldOutSeed({
-    gatePolicyVersion: policy.policyVersion,
     generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
     poolSha256,
   });
@@ -1492,7 +1491,7 @@ export function buildRunPasses(input: {
  * Direction-bearing mutants the run plans, to reach the observations the policy
  * declares.
  *
- * `gate-policy.v6.json` declares `minimumDenominator: 50` on
+ * `gate-policy.v6-1.json` declares `minimumDenominator: 50` on
  * `mutation-direction-violations`: below 50, a 2 % rate resolves to a whole
  * budget of zero and one violation fails necessarily.
  *
@@ -2026,7 +2025,7 @@ export async function runRegressionAnalysis(input: {
   });
 
   const analysis = await analyseRunOffline({
-    gatePolicyPath: path.join(directory, 'gate-policy.v6.json'),
+    gatePolicyPath: path.join(directory, 'gate-policy.v6-1.json'),
     plan: planRegressionRun({
       paraphrases: cache.paraphrases,
       pool,
