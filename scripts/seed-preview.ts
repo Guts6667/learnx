@@ -78,7 +78,9 @@ async function main() {
       countUsers: () => transaction.user.count(),
       createPack: async (input) => {
         const pack = await transaction.creditPack.create({
-          data: { ...input, position: 0 },
+          // The placeholder is French-only and about to be retired by the
+          // pack grid (V4.5-212); it needs a value, not a translation.
+          data: { ...input, labelEn: input.label, position: 0 },
           select: { key: true },
         });
 

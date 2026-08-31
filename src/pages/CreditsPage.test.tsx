@@ -416,6 +416,7 @@ describe('CreditsPage — achat de crédits', () => {
     currency: 'EUR',
     key: 'starter',
     label: 'Découverte',
+    labelEn: 'Starter',
     priceMinor: '1500',
   };
   const fulfilledOrder = {

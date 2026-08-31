@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { ENTRY_TIER_PACK_KEY } from '../../maintenance/credit-pack-seed.js';
 import { startCheckout, type CheckoutPorts } from '../../payments/checkout.js';
 import { readPaymentsConfiguration } from '../../payments/payments-configuration.js';
 
@@ -51,6 +52,7 @@ export function createCheckoutRoute(
       }
       const result = await startCheckout({
         enabled: readPaymentsConfiguration().enabled,
+        entryTierPackKey: ENTRY_TIER_PACK_KEY,
         packKey: body.data.packKey,
         ports,
         userId: context.get('user').id,
@@ -67,6 +69,16 @@ export function createCheckoutRoute(
       // exist by watching the difference.
       if (result.kind === 'PACK_UNAVAILABLE') {
         throw new ApiError('RESOURCE_NOT_FOUND', 'Pack not found.', 404);
+      }
+      // 409 and a code of its own: the learner asked for something reasonable
+      // that their account is not entitled to twice, which is neither a
+      // missing resource nor a fault. The screen has something true to say.
+      if (result.kind === 'ENTRY_TIER_ALREADY_PURCHASED') {
+        throw new ApiError(
+          'ENTRY_TIER_ALREADY_PURCHASED',
+          'The entry tier can only be purchased once per account.',
+          409,
+        );
       }
 
       return context.json({

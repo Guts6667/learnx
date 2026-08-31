@@ -169,6 +169,7 @@ describe('contrats d’achat de crédits', () => {
     currency: 'EUR',
     key: 'starter',
     label: 'Découverte',
+    labelEn: 'Starter',
     priceMinor: '1500',
   };
   const order = {
@@ -192,6 +193,19 @@ describe('contrats d’achat de crédits', () => {
     // manque devinerait « ouverte », et proposerait un achat qui échoue.
     expect(
       z.safeParse(creditPacksResponseSchema, { packs: [pack] }).success,
+    ).toBe(false);
+
+    // Le libellé anglais non plus : servi à côté du français pour qu'un seul
+    // corps mis en cache serve tout le monde, il manquerait silencieusement à
+    // l'écran anglais si le schéma le tolérait absent.
+    const frenchOnly = Object.fromEntries(
+      Object.entries(pack).filter(([key]) => key !== 'labelEn'),
+    );
+    expect(
+      z.safeParse(creditPacksResponseSchema, {
+        packs: [frenchOnly],
+        paymentsEnabled: true,
+      }).success,
     ).toBe(false);
     expect(
       z.safeParse(ownOrdersResponseSchema, { orders: [order] }).success,

@@ -65,6 +65,9 @@ export function createPublicCatalogueApp(
         currency: pack.currency,
         key: pack.key,
         label: pack.label,
+        // Both, so one cached body serves every visitor: resolving the
+        // language here would need a `Vary` and halve that cache.
+        labelEn: pack.labelEn,
         priceMinor: pack.priceMinor.toString(),
       })),
     });

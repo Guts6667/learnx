@@ -163,6 +163,13 @@ const creditPackSchema = z.object({
   currency: z.string(),
   key: z.string(),
   label: z.string(),
+  /**
+   * Servi à côté du français plutôt que résolu côté serveur (V4.5-212) :
+   * `/api/public/credit-packs` est mis en cache « le même pour tout le monde »,
+   * et une réponse qui dépend de la langue demanderait un `Vary`. L'écran
+   * choisit — il connaît déjà sa langue.
+   */
+  labelEn: z.string(),
   priceMinor: z.string(),
 });
 

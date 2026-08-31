@@ -100,6 +100,7 @@ const creditPacks = [
     currency: 'EUR',
     key: 'starter',
     label: 'Découverte',
+    labelEn: 'Starter',
     priceMinor: '1500',
   },
   {
@@ -107,6 +108,7 @@ const creditPacks = [
     currency: 'EUR',
     key: 'regular',
     label: 'Régulier',
+    labelEn: 'Regular',
     priceMinor: '5900',
   },
 ];

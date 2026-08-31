@@ -141,6 +141,7 @@ function pack(value: PurchasablePack) {
     currency: value.currency,
     key: value.key,
     label: value.label,
+    labelEn: value.labelEn,
     priceMinor: amount(value.priceMinor),
   };
 }

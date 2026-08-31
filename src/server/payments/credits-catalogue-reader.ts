@@ -19,6 +19,8 @@ export interface PurchasablePack {
   currency: string;
   key: string;
   label: string;
+  /** English, served alongside French so one cached body serves everyone. */
+  labelEn: string;
   priceMinor: bigint;
 }
 

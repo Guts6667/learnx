@@ -18,6 +18,12 @@ export type CheckoutResult =
       orderId: string;
       providerOrderId: string;
     }
+  /**
+   * The entry tier is one per account (V4.5-212). Named rather than collapsed
+   * into PACK_UNAVAILABLE: the learner did nothing wrong and the screen has
+   * something true to tell them, unlike a key that does not exist.
+   */
+  | { kind: 'ENTRY_TIER_ALREADY_PURCHASED' }
   /** Unknown and inactive collapse here: a caller must not enumerate keys. */
   | { kind: 'PACK_UNAVAILABLE' }
   | { kind: 'PAYMENTS_DISABLED' };
@@ -31,6 +37,20 @@ export interface CheckoutPorts {
     orderId: string;
     packLabel: string;
   }): Promise<{ checkoutUrl: string; providerOrderId: string }>;
+  /**
+   * Whether this account has ever had this pack fulfilled (V4.5-212).
+   *
+   * *Ever*, deliberately: the question is `fulfilledAt IS NOT NULL`, never
+   * `status = 'FULFILLED'`. A refund moves the status to REFUNDED and leaves
+   * `fulfilledAt` untouched, so asking about the status would hand the right
+   * back the moment someone refunded — and refund-then-rebuy is precisely the
+   * pattern the limit exists to stop, since the fixed provider fee is paid
+   * again each time.
+   */
+  hasFulfilledPack(input: {
+    packKey: string;
+    userId: string;
+  }): Promise<boolean>;
   /** Injected rather than called inline so a test can pin the id. */
   newOrderId(): string;
   listPacks(): Promise<CreditPack[]>;
@@ -46,6 +66,8 @@ export interface CheckoutPorts {
 
 export async function startCheckout(input: {
   enabled: boolean;
+  /** The key limited to one purchase per account, or null to limit none. */
+  entryTierPackKey?: string | null;
   packKey: string;
   ports: CheckoutPorts;
   userId: string;
@@ -55,6 +77,21 @@ export async function startCheckout(input: {
   const selection = selectPack(await input.ports.listPacks(), input.packKey);
   if (selection.kind !== 'SELECTED') return { kind: 'PACK_UNAVAILABLE' };
   const { pack } = selection;
+
+  // Refused before the provider is called, not after. Letting Stripe open a
+  // session and take the money, then failing on our side, would mean refunding
+  // to enforce a rule we could have applied for free — and a refund on a 3 €
+  // purchase costs more in fees than the purchase earns.
+  if (
+    input.entryTierPackKey &&
+    pack.key === input.entryTierPackKey &&
+    (await input.ports.hasFulfilledPack({
+      packKey: pack.key,
+      userId: input.userId,
+    }))
+  ) {
+    return { kind: 'ENTRY_TIER_ALREADY_PURCHASED' };
+  }
 
   // The id is ours and is chosen first, so the Checkout Session can carry it
   // as `client_reference_id`. Letting the database mint it would mean the

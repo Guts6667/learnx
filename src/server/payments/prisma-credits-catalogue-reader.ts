@@ -16,6 +16,7 @@ export async function createPrismaCreditsCatalogueReader(): Promise<CreditsCatal
           currency: true,
           key: true,
           label: true,
+          labelEn: true,
           priceMinor: true,
         },
         where: { active: true },
