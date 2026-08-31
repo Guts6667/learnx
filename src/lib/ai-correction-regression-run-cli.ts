@@ -1202,7 +1202,6 @@ export async function runRegressionPool(input: {
   });
 
   const heldOutSeed = deriveHeldOutSeed({
-    gatePolicyVersion: policy.policyVersion,
     generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
     poolSha256,
   });

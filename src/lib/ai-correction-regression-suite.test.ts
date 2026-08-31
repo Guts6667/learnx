@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
@@ -506,7 +507,6 @@ describe('regression suite executed offline through the real runner', () => {
 describe('held-out mutant set', () => {
   it('derives its seed from artefacts a reader actually has', () => {
     const seed = deriveHeldOutSeed({
-      gatePolicyVersion: '3.0.0',
       generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
       poolSha256: 'a'.repeat(64),
     });
@@ -514,18 +514,48 @@ describe('held-out mutant set', () => {
     expect(seed).toMatch(/^[0-9a-f]{64}$/);
     expect(
       deriveHeldOutSeed({
-        gatePolicyVersion: '3.0.0',
         generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
         poolSha256: 'a'.repeat(64),
       }),
     ).toBe(seed);
+    // A different pool is a different sample, and must be.
     expect(
       deriveHeldOutSeed({
-        gatePolicyVersion: '3.0.1',
         generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
-        poolSha256: 'a'.repeat(64),
+        poolSha256: 'b'.repeat(64),
       }),
     ).not.toBe(seed);
+  });
+
+  it('does not let the gate policy version choose the sample', () => {
+    // The v6.1 amendment, asserted as a property. A first version of this test
+    // checked the function's arity and key list, and passed happily with the
+    // policy version put back as an optional parameter — it proved nothing. It
+    // now pins the hashed material itself, and shows that no policy value can
+    // reach it.
+    const poolSha256 = 'a'.repeat(64);
+    const seed = deriveHeldOutSeed({
+      generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+      poolSha256,
+    });
+
+    // The formula, pinned: pool digest and generator version, nothing else.
+    // Reintroducing any third term into the hash changes this and fails here.
+    expect(seed).toBe(
+      createHash('sha256')
+        .update(`${poolSha256} ${REGRESSION_MUTANT_GENERATOR_VERSION}`)
+        .digest('hex'),
+    );
+
+    // And a policy version handed in anyway cannot reach the sample. The cast
+    // is the point: it is how the argument would come back, and the seed must
+    // not move when it does.
+    const withPolicy = deriveHeldOutSeed({
+      gatePolicyVersion: '9.9.9',
+      generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+      poolSha256,
+    } as unknown as Parameters<typeof deriveHeldOutSeed>[0]);
+    expect(withPolicy).toBe(seed);
   });
 
   it('selects a stable subset of twelve mutants', () => {
@@ -544,7 +574,6 @@ describe('held-out mutant set', () => {
       });
     });
     const seed = deriveHeldOutSeed({
-      gatePolicyVersion: '3.0.0',
       generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
       poolSha256: 'b'.repeat(64),
     });
@@ -1002,9 +1031,25 @@ describe('omitted-criteria oracle', () => {
     );
 
     // All three land in the unusable count, which is exactly why that count
-    // cannot stand in for this one.
+    // cannot stand in for this one. Evaluated against the run's real metrics,
+    // not the safety rates alone: a gate table built from half the inputs would
+    // drop the other gates as policy errors and prove nothing about this one.
+    const observations = await deriveRegressionObservations({
+      attempts: refused,
+      checker: AGREEABLE_CHECKER,
+      familyScientificallyValidated: true,
+      plan,
+    });
+    const { baselines, mutants } = partitionObservations(observations);
     const evaluation = evaluateRegressionGates({
-      metrics: withEvidenceHallucination({ ...dirty }),
+      metrics: withEvidenceHallucination({
+        ...computeRegressionMetrics({
+          baselines,
+          mutants,
+          scales: plan.scales,
+        }),
+        ...dirty,
+      }),
       policy: loadPolicy(),
     });
     const gate = evaluation.gates.find(
@@ -1017,6 +1062,150 @@ describe('omitted-criteria oracle', () => {
     // by evidence-hallucination-any-attempt.
     expect(evaluation.gateFailures.join(' ')).not.toContain(
       'omitted-criteria-refused',
+    );
+  });
+
+  it('splits a lost criterion into "withdrawn" and "never written"', async () => {
+    // Two causes that look identical on the delivered correction and are fixed
+    // in different places: the model skipped a criterion, or the pipeline took
+    // one away. The 2.3.0 pre-test was read as the first and is the second.
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitions: configuration.repetitions,
+    });
+
+    const complete = computeRunSecurityRates({
+      attempts,
+      observations: [],
+      plan,
+    });
+    expect(complete.criteriaWithdrawnAfterSalvage.numerator).toBe(0);
+    expect(complete.criteriaAbsentFromModelOutput.numerator).toBe(0);
+    expect(complete.criteriaWithdrawnAfterSalvage.denominator).toBeGreaterThan(
+      0,
+    );
+
+    const victim = attempts.find(
+      (attempt) => (attempt.output?.criteria.length ?? 0) > 1,
+    );
+    expect(victim).toBeDefined();
+    const dropped = victim?.output?.criteria[0]?.criterionKey ?? '';
+    expect(dropped).not.toBe('');
+
+    // The shape the 31 August artefact actually holds, reproduced: the model
+    // wrote every criterion, the salvage withdrew one, the attempt stayed VALID.
+    const withdrawnAttempts = attempts.map((attempt) => {
+      if (attempt !== victim || !attempt.output) return attempt;
+      return {
+        ...attempt,
+        output: {
+          ...attempt.output,
+          criteria: attempt.output.criteria.filter(
+            (criterion) => criterion.criterionKey !== dropped,
+          ),
+        },
+        rawModelOutput: JSON.stringify({
+          criteria: Object.fromEntries(
+            attempt.output.criteria.map((criterion) => [
+              criterion.criterionKey,
+              {},
+            ]),
+          ),
+        }),
+        unsureCriteria: [dropped],
+      };
+    });
+    const withdrawn = computeRunSecurityRates({
+      attempts: withdrawnAttempts,
+      observations: [],
+      plan,
+    });
+
+    expect(withdrawn.criteriaWithdrawnAfterSalvage.numerator).toBe(1);
+    // The model wrote it; only the pipeline lost it. Reading these two the same
+    // way is what sent a day of investigation at the wrong guard.
+    expect(withdrawn.criteriaAbsentFromModelOutput.numerator).toBe(0);
+    // And the denominator does not move when a criterion leaves the output.
+    expect(withdrawn.criteriaWithdrawnAfterSalvage.denominator).toBe(
+      complete.criteriaWithdrawnAfterSalvage.denominator,
+    );
+
+    // The other cause, same delivered shape: the model never wrote it.
+    const silentAttempts = attempts.map((attempt) => {
+      if (attempt !== victim || !attempt.output) return attempt;
+      return {
+        ...attempt,
+        output: {
+          ...attempt.output,
+          criteria: attempt.output.criteria.filter(
+            (criterion) => criterion.criterionKey !== dropped,
+          ),
+        },
+        rawModelOutput: JSON.stringify({
+          criteria: Object.fromEntries(
+            attempt.output.criteria
+              .filter((criterion) => criterion.criterionKey !== dropped)
+              .map((criterion) => [criterion.criterionKey, {}]),
+          ),
+        }),
+        unsureCriteria: [dropped],
+      };
+    });
+    const silent = computeRunSecurityRates({
+      attempts: silentAttempts,
+      observations: [],
+      plan,
+    });
+    expect(silent.criteriaAbsentFromModelOutput.numerator).toBe(1);
+  });
+
+  it('names a cell whose raw output cannot be read instead of counting it clean', async () => {
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitions: configuration.repetitions,
+    });
+
+    const readable = computeRunSecurityRates({
+      attempts,
+      observations: [],
+      plan,
+    });
+    const blinded = attempts.map((attempt, index) =>
+      index === 0 ? { ...attempt, rawModelOutput: 'not json' } : attempt,
+    );
+    const result = computeRunSecurityRates({
+      attempts: blinded,
+      observations: [],
+      plan,
+    });
+
+    // An unreadable raw output cannot testify that the model wrote everything.
+    // The cell leaves the denominator and is named, rather than passing quietly.
+    expect(result.criteriaAbsenceUnreadableCells).toHaveLength(1);
+    expect(result.criteriaAbsentFromModelOutput.denominator).toBeLessThan(
+      readable.criteriaAbsentFromModelOutput.denominator,
     );
   });
 });

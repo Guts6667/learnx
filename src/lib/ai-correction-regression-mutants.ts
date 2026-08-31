@@ -365,23 +365,28 @@ function mutantId(input: {
 }
 
 /**
- * Seed of the held-out mutant set (spec §6, as amended for V4.5-120).
+ * Seed of the held-out mutant set (spec §6, amended twice).
  *
- * Derived from the pool digest, the generator version and the gate policy
- * version — the three things that decide what a mutant is. The commit SHA was
- * the original proposal but is not recoverable from the artefacts alone, so a
- * reader could not reproduce the held-out set from a results directory. These
- * three are all recorded in the summary, so they can.
+ * Derived from the pool digest and the generator version — the two things that
+ * decide what a mutant *is*. The commit SHA was the original proposal but is not
+ * recoverable from the artefacts alone, so a reader could not reproduce the
+ * held-out set from a results directory. Both of these are recorded in the
+ * summary, so they can.
+ *
+ * The gate policy version was part of this seed until v6.1 and is deliberately
+ * gone: **a sample must never depend on the rules used to judge it.** While it
+ * was in, no threshold could be adjusted without reshuffling the very cases the
+ * threshold was measured on — which destroys comparison over time and, worse,
+ * gives the appearance of changing the sample by changing the rule. The held-out
+ * set now moves only when the pool or the generator moves, which is the only
+ * thing that should move it.
  */
 export function deriveHeldOutSeed(input: {
-  gatePolicyVersion: string;
   generatorVersion: string;
   poolSha256: string;
 }): string {
   return createHash('sha256')
-    .update(
-      `${input.poolSha256} ${input.generatorVersion} ${input.gatePolicyVersion}`,
-    )
+    .update(`${input.poolSha256} ${input.generatorVersion}`)
     .digest('hex');
 }
 

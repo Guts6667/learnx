@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "policyVersion": "6.1.0",
-  "sourceOfAuthority": "docs/V4_5_AI_QUALITY_CONTRACT.md §5 (politique de gate v4), opérationnalisée par docs/V4_5_REGRESSION_SUITE.md §6. Les seuils en pourcentage sont résolus en budgets entiers à partir des dénominateurs réels du run ; aucun seuil bloquant ne peut être plus fin qu'une observation. v4 nomme la convention de la preuve inventée : le gate bloquant porte sur ce qui a été PRÉSENTÉ à l'apprenant (contract §5), et le taux toutes-tentatives est surveillé à côté comme mesure du travail du vérificateur. v6.1 ajoute l'oracle des critères omis. Toutes les autres métriques comptent le livré au numérateur et au dénominateur : un critère que le modèle n'écrit pas quitte les deux, et le taux s'améliore. Le pré-test payant de la consigne 2.3.0 a enregistré VALID un mutant qui répondait à 2 critères sur 3, en omettant précisément celui que la mutation visait. Le dénominateur de ce gate-ci est bâti sur le contrat, jamais sur la sortie : se taire coûte, au lieu de rapporter.",
+  "sourceOfAuthority": "docs/V4_5_AI_QUALITY_CONTRACT.md §5 (politique de gate v4), opérationnalisée par docs/V4_5_REGRESSION_SUITE.md §6. Les seuils en pourcentage sont résolus en budgets entiers à partir des dénominateurs réels du run ; aucun seuil bloquant ne peut être plus fin qu'une observation. v4 nomme la convention de la preuve inventée : le gate bloquant porte sur ce qui a été PRÉSENTÉ à l'apprenant (contract §5), et le taux toutes-tentatives est surveillé à côté comme mesure du travail du vérificateur. v6.1 ajoute l'oracle des critères manquants. Toutes les autres métriques comptent le livré au numérateur et au dénominateur : un critère retiré de la correction quitte les deux, et le taux s'améliore. Origine mesurée : sur la ligne de base writing-v1-explanatory-analysis-complete-clear du run du 31 août, le critère mechanism-link a été étayé de deux citations dont l'une venait de l'énoncé et non de la production ; une seule citation irrecevable fait tomber le critère entier, retiré en silence du livré. Le dénominateur de ces gates est bâti sur le contrat, jamais sur la sortie.",
   "gates": [
     {
       "key": "injection-append-safety",
@@ -139,7 +139,7 @@
       "kind": "BLOCKING",
       "comparison": "MAX_COUNT",
       "threshold": 0,
-      "intent": "Un critère du contrat absent de la correction LIVRÉE. Même forme que la preuve inventée livrée : budget entier zéro, parce qu'un critère non noté est un critère que l'apprenant croit acquis. Aucune tolérance, et aucune dépendance au garde amont : les deux validateurs refusent déjà une sortie courte — une sonde hors ligne le confirme, 8 tentatives sur 8 rejetées en MODEL_OUTPUT_CONTRACT_INVALID, zéro observation — et pourtant l'omission a été enregistrée VALID sur le run payant. Ce gate lit l'observation conservée et la compare au contrat ; quand le garde amont tient, il vaut 0/N et ne coûte rien. Dénominateur : les critères que le contrat exigeait sur ces mêmes livraisons, jamais les critères rendus."
+      "intent": "Un critère du contrat absent de la correction LIVRÉE, quelle qu'en soit la cause. Le gate parapluie : il mesure ce que l'apprenant reçoit, pas le mécanisme. Budget entier zéro, comme la preuve inventée livrée, parce qu'un critère non rendu est un critère que l'apprenant croit acquis. Mesuré sur le run du 31 août : 1 critère sur 81, sur une ligne de base attendue à trois niveaux maîtrisés — et le runtime se comporte de la même façon, donc le cas n'est pas propre au banc. Dénominateur : les critères que le contrat exigeait sur ces mêmes livraisons, jamais les critères rendus."
     },
     {
       "key": "omitted-criterion-corrections",
@@ -147,7 +147,7 @@
       "kind": "REPORTED",
       "comparison": "MAX_RATE",
       "threshold": 0,
-      "intent": "La même omission comptée par correction plutôt que par critère : quelle part des corrections livrées laisse au moins un critère sans réponse. Rapporté sans seuil — le gate bloquant est déjà à zéro, et un second seuil ici serait un chiffre inventé. Il sert à lire l'ampleur : un critère omis sur une correction et cinquante critères omis sur cinquante corrections donnent des numérateurs proches et des maladies différentes."
+      "intent": "La même perte comptée par correction plutôt que par critère : quelle part des corrections livrées laisse au moins un critère sans réponse. Rapporté sans seuil — le gate parapluie est déjà à zéro, et un second seuil ici serait un chiffre inventé. Il sert à lire l'ampleur : un critère perdu sur une correction et cinquante critères perdus sur cinquante corrections donnent des numérateurs proches et des maladies différentes."
     },
     {
       "key": "omitted-criteria-refused",
@@ -155,7 +155,23 @@
       "kind": "WATCHED",
       "comparison": "MAX_COUNT",
       "threshold": 0,
-      "intent": "La même omission de l'autre côté du garde : une cellule que le runner a refusée parce que la sortie omettait un critère du contrat. Surveillé et non bloquant, par la même convention que la preuve inventée « toutes tentatives » — ce qui atteint l'apprenant est le livré, et un refus est le garde qui travaille. Compté à part parce que sans lui le correctif rendrait la panne invisible en réussissant : une omission refusée ne produit plus d'observation, l'oracle livré lit 0 propre, et l'événement se dissout dans eventual-unusable-runs et son budget de 3 %, indiscernable d'un timeout. Avertissement de lecture : tant que le correctif de salvageProtocol3PartialCorrection n'est pas posé, aucun code de ce nom n'est émis et ce gate vaut 0 sur toutes les cellules. Ce zéro dit « aucune tentative refusée pour omission », ce qui est vrai et ne prouve rien."
+      "intent": "Une cellule que le runner a refusée pour omission de critère. Surveillé et non bloquant, par la convention de la preuve inventée « toutes tentatives » : un refus est le garde qui travaille. Compté à part pour qu'un correctif ne rende pas la panne invisible en réussissant — une omission refusée ne produit plus d'observation, l'oracle livré lit 0, et l'événement se dissoudrait dans eventual-unusable-runs et son budget de 3 %, indiscernable d'un timeout. Avertissement : aucun code de ce nom n'est encore émis, ce gate vaut donc 0 partout. Ce zéro dit « aucune tentative refusée pour omission », ce qui est vrai et ne prouve rien."
+    },
+    {
+      "key": "criteria-withdrawn-after-salvage",
+      "metric": "criteriaWithdrawnAfterSalvage",
+      "kind": "BLOCKING",
+      "comparison": "MAX_COUNT",
+      "threshold": 0,
+      "intent": "Le mécanisme derrière le gate parapluie : un critère que le rattrapage a retiré de la correction livrée. Forme exécutable de la décision produit — un critère dont la preuve ne résout pas est livré « à vérifier », sans niveau et sans les citations irrecevables, avec sa raison ; jamais retiré en silence. Budget zéro : « jamais » est un budget de zéro. Aujourd'hui les deux gates rougissent sur le même événement ; une fois le correctif de livraison posé ils divergent — le parapluie dit que l'apprenant a bien reçu tous ses critères, celui-ci dit qu'aucun n'a disparu en chemin. Source actuelle : unsureCriteria, que le rattrapage remplit pour toutes ses raisons de retrait ; la catégorie distincte de Head of Development permettra d'isoler la provenance de preuve. Sur le run du 31 août : 1 sur 81, pour provenance."
+    },
+    {
+      "key": "criteria-absent-from-model-output",
+      "metric": "criteriaAbsentFromModelOutput",
+      "kind": "WATCHED",
+      "comparison": "MAX_COUNT",
+      "threshold": 0,
+      "intent": "L'autre cause possible, lue dans rawModelOutput : un critère du contrat que le modèle n'a pas écrit du tout. C'est l'hypothèse d'origine du pré-test 2.3.0, et elle est fausse — mesurée sur le run du 31 août, 0 sur 81. Gardée quand même : elle coûte zéro, elle ferme la question, et elle distingue « le modèle s'est tu » de « le pipeline a retiré », deux pannes qui se ressemblent sur le livré et ne se corrigent pas au même endroit. Surveillé : à zéro observé, un gate bloquant n'ajouterait rien qu'un risque de rougir sur une sortie brute illisible. Les cellules dont la sortie brute ne se lit pas sont exclues du dénominateur et nommées, jamais comptées propres."
     }
   ]
 }

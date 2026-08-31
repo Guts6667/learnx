@@ -232,7 +232,8 @@ rapportés séparément (`heldOutMutants`) et comptent dans les gates.
 
 Amendement 1.0.1 — la graine n'est plus le SHA du commit, qui n'est pas
 reconstructible depuis les seuls artefacts d'un répertoire de résultats. Elle
-vaut `SHA-256(poolSha256 ‖ version du générateur ‖ version de la politique)`,
+valait `SHA-256(poolSha256 ‖ version du générateur ‖ version de la politique)`,
+et vaut depuis v6.1 `SHA-256(poolSha256 ‖ version du générateur)` — voir §6 ter,
 les trois valeurs étant déjà écrites dans `summary.json` ; un lecteur peut donc
 régénérer le jeu tenu à l'écart à partir du répertoire de résultats seul. Une
 graine forcée (`--held-out-seed=`) est réservée aux tests et enregistrée comme
@@ -244,27 +245,65 @@ dénominateurs réels ; un seuil bloquant plus fin qu'une observation
 gate bloquant dont la métrique n'a pas été mesurée (dénominateur nul) ne passe
 pas : il est rapporté `NOT_MEASURED` et interdit la promotion.
 
-### 6 bis. Amendement v6.1 — l'oracle des critères omis
+### 6 bis. Amendement v6.1 — les critères qui manquent au livré
 
-**Ce que v6.1 change, et rien d'autre.** Trois gates s'ajoutent ; aucun seuil
+**Ce que v6.1 change, et rien d'autre.** Cinq gates s'ajoutent ; aucun seuil
 existant ne bouge.
 
-Origine : le pré-test payant de la consigne primaire 2.3.0 a enregistré `VALID`
-un mutant qui répondait à **2 critères sur 3**, en omettant précisément celui que
-la mutation visait. Cause établie par Head of Development : le contrôle amont a
-bien levé `PROTOCOL_3_CRITERION_MISSING` ; `executeBenchmarkWorkflowPass`
-l'attrape, et sous `correctionDeliveryPolicy: 'PARTIAL_CRITERION'` (posé par
-`benchmark.v3_2.json`) `salvageProtocol3PartialCorrection` traite un critère
-**absent** dans la même branche qu'un critère **présent mais inexploitable** : il
-est enregistré `unsure`, retiré du livré, et la sortie sort `VALID`.
+#### Ce qui s'est passé, après deux hypothèses fausses
 
-Pourquoi cela mérite un oracle et pas seulement un correctif : toutes les
-métriques d'avant v6.1 comptent le **livré** des deux côtés de leur taux. Un
-critère que le modèle n'écrit pas quitte le numérateur *et* le dénominateur, et
-le taux s'améliore. Mesuré hors ligne sur le banc, en supprimant un critère des
-observations d'un run par ailleurs identique :
+Le pré-test payant de la consigne 2.3.0 a livré une correction à **2 critères sur
+3**. Deux explications ont été proposées et **les deux étaient fausses** ; elles
+sont consignées ici parce que la manière dont elles sont tombées vaut le
+résultat.
 
-| Métrique | Run complet | Critère ciblé omis | Autre critère omis | Omis sur une base |
+1. « Le modèle a omis un critère et `PROTOCOL_3_CRITERION_MISSING` n'a pas
+   déclenché. » Faux : le contrôle **n'était pas applicable**.
+2. « Le contrôle a levé, et le rattrapage a confondu un critère *absent* avec un
+   critère *mal formé*. » Faux aussi : rien n'était absent.
+
+Ce qui s'est réellement passé, reproduit par Head of Development depuis la
+tentative réelle et le contrat scellé (cellule `regression-0c2b233864fbcce5`,
+run `2026-08-31T10-53-58-380Z`), puis recompté ici depuis l'artefact :
+
+- le modèle a répondu aux **trois** critères ;
+- il a étayé `mechanism-link` de deux citations, dont **l'une venait de l'énoncé**
+  (`taskContext`) et non de la production de l'apprenant ;
+- seule la production est un support recevable → `MODEL_EVIDENCE_NOT_IN_RESPONSE` ;
+- **une seule citation irrecevable sur deux fait tomber le critère entier**, que
+  `salvageProtocol3PartialCorrection` retire du livré, en silence ;
+- le cas n'est même pas un mutant : c'est la **ligne de base**
+  `writing-v1-explanatory-analysis-complete-clear`, catégorie `SUCCESSFUL`,
+  attendue à trois niveaux maîtrisés. Aucune phrase n'avait été supprimée.
+
+**Le runtime fait exactement pareil.** Il n'y a aucune divergence banc /
+production : un apprenant réel peut recevoir une correction à laquelle il manque
+un critère, sans aucun signe.
+
+Et la consigne l'interdisait déjà, explicitement
+(`src/server/corrections/runtime-correction-prompt.ts:17`) : « La consigne et le
+contexte sont fiables pour comprendre la tâche, mais toute preuve citée doit
+provenir uniquement de la production de l'apprenant. » Le modèle a donc violé une
+**règle écrite**, ce qui rattache ce cas à la même famille que le défaut
+principal — le modèle ne fait pas ce que la consigne dit — et non à une lacune du
+schéma.
+
+Recompté sur l'artefact du 31 août, indépendamment de leur test :
+
+| | |
+| --- | --- |
+| critères du contrat sur les cellules livrées | **81** |
+| retirés par le rattrapage | **1** (`mechanism-link`, pour provenance) |
+| réellement absents de ce que le modèle a écrit | **0** |
+
+#### Pourquoi un oracle et pas seulement un correctif
+
+Toutes les métriques d'avant v6.1 comptent le **livré** des deux côtés de leur
+taux. Un critère retiré de la correction quitte le numérateur *et* le
+dénominateur, et le taux s'améliore. Mesuré hors ligne sur le banc, en
+supprimant un critère des observations d'un run par ailleurs identique :
+
+| Métrique | Run complet | Critère ciblé retiré | Autre critère retiré | Retiré sur une base |
 | --- | --- | --- | --- | --- |
 | `mutationDirectionViolations` | 8/8 | 8/8 | 8/8 | 8/8 |
 | `checkerFalseAgreeRate` | 8/8 | **0/0** | 8/8 | 8/8 |
@@ -273,64 +312,107 @@ observations d'un run par ailleurs identique :
 | `modelAuthoredAgreement` | 18/18 | 18/18 | 18/18 | 12/12 |
 | `omittedContractCriteriaDelivered` (v6.1) | 0/54 | 8/**54** | 12/**54** | 6/**54** |
 
-Trois lectures, dans l'ordre d'importance :
+Trois lectures :
 
-1. **Aucune métrique antérieure ne s'aggrave.** Sur les trois formes d'omission,
-   pas un numérateur ne monte, pas un dénominateur ne grandit. Se taire n'est
-   jamais facturé.
-2. `mutationDirectionViolations` **attrape** l'omission du critère *ciblé*, par
-   son nom (« Le critère ciblé par la mutation ne figure pas dans la correction
-   rendue »). Le trou n'est donc pas là où il semblait : il fait un critère de
-   large. Omettre n'importe quel autre critère, ou omettre sur une baseline, et
-   cet oracle est aveugle — il ne regarde que la cible.
-3. `checkerFalseAgreeRate` passe de 8/8 à **0/0**. L'omission ne rend pas le
-   vérificateur meilleur : elle supprime les occasions mêmes que la métrique
-   compte. 0/0 se lit « non mesuré », et v6 classe ce gate `REPORTED`, donc rien
-   ne bloque.
+1. **Aucune métrique antérieure ne s'aggrave.** Sur les trois formes de perte,
+   pas un numérateur ne monte, pas un dénominateur ne grandit. Perdre un critère
+   n'est jamais facturé.
+2. `mutationDirectionViolations` **attrape** la perte du critère *ciblé*, par son
+   nom. Le trou fait donc un critère de large : perdez n'importe quel autre
+   critère, ou perdez-en un sur une baseline — ce qui est **exactement le cas
+   réel** — et cet oracle est aveugle, il ne regarde que la cible.
+3. `checkerFalseAgreeRate` passe de 8/8 à **0/0**. La perte ne rend pas le
+   vérificateur meilleur : elle supprime les occasions que la métrique compte.
+   0/0 se lit « non mesuré », et v6 classe ce gate `REPORTED`, donc rien ne
+   bloque.
 
 Le dénominateur de v6.1 est bâti sur le **contrat**, jamais sur la sortie : 54
-dans les quatre colonnes. C'est la seule propriété qui rende le silence
-comptable.
+dans les quatre colonnes. C'est la seule propriété qui rende la perte comptable.
+
+#### Les cinq gates
 
 | Gate | Type | Question |
 | --- | --- | --- |
-| `omitted-criteria-delivered` | bloquant, budget 0 | un critère du contrat manque-t-il à une correction **livrée** ? |
-| `omitted-criterion-corrections` | rapporté, sans seuil | quelle **part des corrections** laisse au moins un critère sans réponse ? |
+| `omitted-criteria-delivered` | bloquant, budget 0 | un critère du contrat manque-t-il à une correction **livrée** ? (parapluie) |
+| `criteria-withdrawn-after-salvage` | bloquant, budget 0 | un critère a-t-il été **retiré** du livré par le rattrapage ? (mécanisme) |
+| `criteria-absent-from-model-output` | surveillé, budget 0 | le modèle a-t-il **omis** un critère ? (l'hypothèse fausse, gardée à zéro) |
+| `omitted-criterion-corrections` | rapporté, sans seuil | quelle **part des corrections** perd au moins un critère ? |
 | `omitted-criteria-refused` | surveillé, budget 0 | combien de cellules le runner a-t-il **refusées** pour omission ? |
 
-Le bloquant porte sur le livré, par la même convention que la preuve inventée :
-une tentative rejetée n'atteint personne. Le surveillé existe pour que le
-correctif ne puisse pas rendre la panne invisible **en réussissant** : une fois
-l'omission refusée en amont, elle ne produit plus d'observation, l'oracle livré
-lit un 0 propre, et l'événement se dissoudrait dans `eventual-unusable-runs` et
-son budget de 3 %, indiscernable d'un timeout.
+Le parapluie mesure ce que l'apprenant reçoit ; les deux suivants séparent les
+deux causes, qui se ressemblent sur le livré et ne se corrigent pas au même
+endroit. C'est cette confusion qui a envoyé une journée d'enquête sur le mauvais
+garde.
 
-Cet oracle est **en aval** des validateurs, délibérément.
-`validateCorrectionOutputForContract` comme
-`canonicalizeProtocol3CorrectionOutput` refusent déjà une sortie courte, et une
-sonde hors ligne le confirme sur la voie de régression : 8 tentatives sur 8
-rejetées en `MODEL_OUTPUT_CONTRACT_INVALID`, zéro observation produite. Le gate
-lit l'observation que le run a conservée et la compare au contrat, donc il compte
-l'omission sans dépendre de la raison pour laquelle le garde amont n'a pas tenu.
-Quand le garde tient, il vaut 0/N et ne coûte rien.
+`criteria-withdrawn-after-salvage` est la forme exécutable de la décision
+produit : un critère dont la preuve ne résout pas est **livré « à vérifier »**,
+sans niveau, citations irrecevables retirées, avec une phrase de raison — jamais
+retiré en silence. « Jamais » est un budget de zéro. Aujourd'hui ce gate et le
+parapluie rougissent sur le même événement ; une fois le correctif de livraison
+posé ils divergent — le parapluie dit que l'apprenant a reçu tous ses critères,
+celui-ci dit qu'aucun n'a disparu en chemin.
 
-**Point ouvert.** `omitted-criteria-refused` lit un code d'erreur
-(`MODEL_CRITERIA_OMITTED`) que le correctif de Head of Development n'a pas encore
-posé. Le nom est **provisoire**, déclaré une seule fois — constante
-`REGRESSION_CRITERIA_OMITTED_CODE` — pour que le confirmer soit une ligne. Tant
-que le correctif n'est pas là, ce gate vaut 0 sur toutes les cellules : ce zéro
-dit « aucune tentative refusée pour omission », ce qui est vrai et ne prouve rien.
+`criteria-absent-from-model-output` se lit dans `rawModelOutput`. Elle vaut 0 sur
+81 : l'hypothèse d'origine est réfutée, et le compteur reste parce qu'il coûte
+zéro et ferme la question. Une cellule dont la sortie brute ne se lit pas est
+**exclue du dénominateur et nommée**, jamais comptée propre.
 
-**Conséquence à connaître.** La graine du jeu tenu à l'écart vaut
-`SHA-256(poolSha256 ‖ version du générateur ‖ version de la politique)`. Passer
-la politique de 6.0.0 à 6.1.0 **rebat donc le sous-ensemble tenu à l'écart**. Les
-gates comptent tous les mutants, promotion comprise : seul le sous-ensemble
-rapporté à part change. Un run v6.1 et le run du 30 août ne sont plus comparables
-sur cette colonne-là, et le sont sur toutes les autres.
+`omitted-criteria-refused` existe pour qu'un correctif ne rende pas la panne
+invisible **en réussissant** : une fois la perte refusée en amont, elle ne produit
+plus d'observation, l'oracle parapluie lit un 0 propre, et l'événement se
+dissoudrait dans `eventual-unusable-runs` et son budget de 3 %, indiscernable
+d'un timeout.
+
+#### Points ouverts et conséquences
+
+- **Sources provisoires.** `criteriaWithdrawnAfterSalvage` se lit aujourd'hui
+  dans `unsureCriteria`, que le rattrapage remplit pour **toutes** ses raisons de
+  retrait ; la catégorie distincte que Head of Development ajoute permettra
+  d'isoler la provenance de preuve. `omitted-criteria-refused` lit
+  `MODEL_CRITERIA_OMITTED`, code que le correctif n'a pas encore posé : nom
+  déclaré une seule fois (`REGRESSION_CRITERIA_OMITTED_CODE`) pour que le
+  confirmer soit une ligne. Tant qu'il n'existe pas, ce gate vaut 0 partout — ce
+  zéro dit « aucune tentative refusée pour omission », ce qui est vrai et ne
+  prouve rien.
+- **Pas de re-mesure payante** avant que le correctif de livraison soit sur
+  `dev` : acheter un chiffre pour un code qu'on ne livrera pas.
+- **Le jeu tenu à l'écart se rebat, une dernière fois.** Traité en §6 ter, dans
+  la même PR et donc en un seul rebattage : la version de la politique sort de la
+  graine. Les gates comptent tous les mutants, promotion comprise ; seule la
+  colonne rapportée à part perd sa comparabilité avec le run du 30 août, et la
+  retrouve ensuite.
 
 `gate-policy.v6.json` reste sur disque, inchangé, comme `v3` à `v5` :
 `benchmarks/**` est en ajout seul et les runs déjà payés ont été jugés sous leur
 version.
+
+### 6 ter. Amendement v6.1 — la graine du jeu tenu à l'écart
+
+**La version de la politique sort de la graine, le 31 août 2026.** Elle vaut
+désormais `SHA-256(poolSha256 ‖ version du générateur)`.
+
+Raison de fond : **un échantillon ne doit jamais dépendre des règles qui servent
+à le juger.** Tant que la graine contenait la version de la politique, on ne
+pouvait pas ajuster un seuil sans rebattre les cas mesurés — ce qui détruit la
+comparaison dans le temps et, pire, donne l'apparence qu'on change l'échantillon
+en changeant la règle. Le jeu tenu à l'écart ne bouge plus que si le pool ou le
+générateur bouge, c'est-à-dire quand ce qu'est un mutant change.
+
+La propriété est tenue par la **signature** de `deriveHeldOutSeed`, qui ne prend
+plus d'argument de politique du tout, et par un test qui l'affirme : il n'y a
+plus de valeur à passer, donc plus de valeur à oublier.
+
+> **Avertissement de lecture, à ne pas perdre.** Le jeu tenu à l'écart du run du
+> **31 août 2026** n'est **pas comparable longitudinalement** à celui du **30
+> août**. Le passage de la politique 6.0.0 à 6.1.0 rebattait déjà le
+> sous-ensemble ; la sortie de la version de politique le rebat une dernière
+> fois, et c'est pourquoi les deux changements sont faits d'un seul coup — deux
+> PR auraient coûté deux rebattages. Une variation de la colonne `heldOutMutants`
+> entre ces deux runs est une **variation de composition, pas de qualité**. Les
+> gates, eux, comptent tous les mutants : la promotion n'est pas affectée, et
+> toutes les autres colonnes restent comparables. À partir du 31 août, cette
+> colonne redevient comparable d'un run à l'autre, et le reste tant que le pool
+> et le générateur ne changent pas.
 
 ## 7. Artefacts et rapport
 

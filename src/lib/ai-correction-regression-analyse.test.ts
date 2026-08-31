@@ -146,6 +146,10 @@ describe('evidence hallucination wiring (V4.5-127)', () => {
 
   const plan = {
     corpus: { cases: [{ caseId: 'a', responseText: CASE_TEXT }] },
+    // No contract scales: this fixture is about the evidence metrics, and the
+    // criteria-withdrawal metrics correctly report an empty denominator — not
+    // measured — rather than a clean zero, on a plan that declares no contract.
+    scales: [],
     unitsByBenchmarkCaseId: new Map(),
   } as unknown as Parameters<typeof computeRunSecurityRates>[0]['plan'];
 
