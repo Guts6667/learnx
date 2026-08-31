@@ -32,7 +32,7 @@
 | `SENTRY_DSN` | ✅ posée | ✅ posée | **fait** | — |
 | `VITE_SENTRY_DSN` | ✅ posée | ✅ posée | **fait** | — |
 | `APP_URL` | ✅ posée | ✅ posée | **fait** | — |
-| `LEARNX_PUBLIC_LEADS_ENABLED` | ✅ posée, valeur non vérifiable | **absente → collecte fermée** | **à poser sur Preview** | Rayan |
+| `LEARNX_PUBLIC_LEADS_ENABLED` | ✅ posée en **Config**, valeur `true` | **absente → collecte fermée** | **collecte ouverte, décision du 31 août** | Rayan, §1 |
 | `LEARNX_ALLOW_PROTECTED_DB` | ✅ posée en **Config**, valeur `1` | absente | **fait le 31 août** | —, §9.1 |
 | `LEARNX_PAYMENTS_ENABLED` | absente | ✅ posée | **état voulu** | ne rien faire |
 | `STRIPE_LIVE_*` | absentes | absentes | **état voulu** | après GO packs |
@@ -57,12 +57,42 @@ Depuis #156 (V4.5-178, fusionnée le 31 août à 01 h), les deux lisent
 posée en Production mais **absente de Preview** : la collecte y est donc fermée.
 À poser sur Preview si l'on veut pouvoir l'y tester.
 
-**Et une vérification qui ne peut pas se faire d'ici.** La variable est
-`Secret` : `vercel env ls` en donne le nom et l'environnement, jamais la valeur.
-Sa seule présence en Production ne prouve donc rien — il faut qu'elle vaille
-**exactement** `true`. `True`, `TRUE`, `1` ou `true ` avec une espace ferment la
-collecte aussi sûrement que son absence. Seul Rayan peut le confirmer, depuis le
-dashboard.
+**Et une vérification qui ne pouvait pas se faire d'ici — désormais faite.** La
+variable était `Secret` : `vercel env ls` en donnait le nom et l'environnement,
+jamais la valeur. Sa seule présence ne prouvait donc rien, puisqu'il fallait
+qu'elle vaille **exactement** `true` — `True`, `TRUE`, `1` ou `true ` avec une
+espace ferment la collecte aussi sûrement que son absence.
+
+> **Fait le 31 août 2026.** Rayan l'a repassée en **Config** avec la valeur
+> `true`. Source : son relevé sur le dashboard Vercel, rapporté ici — ce n'est
+> pas une lecture de ma part, je n'ai pas la CLI Vercel. Étant en Config, la
+> valeur est maintenant lisible, donc revérifiable par quiconque ouvre l'écran.
+> Les deux drapeaux qui avaient chacun coûté une vérification impossible à ce
+> document sont désormais en Config ; la règle énoncée au §9.1 est appliquée.
+
+**La collecte publique est donc ouverte, et c'est une décision, pas un défaut.**
+C'est exactement ce que cette section demandait — une fonctionnalité qui touche
+aux données personnelles d'inconnus doit être ouverte par quelqu'un, pas par
+l'absence de quelqu'un.
+
+Ce que cela rend concret, et qui ne l'était pas tant que rien n'était collecté :
+des adresses réelles vont désormais arriver en production. La règle de
+conservation existe déjà en code — `src/server/maintenance/retention.ts` donne
+**730 jours** aux `publicLeads`, et `deleteExpiredPublicLeads` sait les
+supprimer. Ce qui n'existe pas, c'est son exécution. Trois raisons, toutes
+vérifiées le 31 août :
+
+1. `scheduled.yml`, qui porte le job `Daily operations`, **n'est pas sur `main`**
+   — un workflow planifié ne s'enregistre que depuis la branche par défaut (§6) ;
+2. son garde exige `vars.LEARNX_SCHEDULED_DB_JOBS` et
+   `secrets.LEARNX_PRODUCTION_DATABASE_URL`, **absents** l'un et l'autre ;
+3. et même une fois ouvert, le pas de nettoyage est un **essai à blanc**
+   délibéré : `--apply` reste un geste volontaire.
+
+**Ce n'est pas une urgence, et il vaut mieux le dire que l'insinuer :** avec 730
+jours de conservation, la première suppression due ne l'est pas avant deux ans.
+C'est donc à traiter posément — mais à traiter, parce que la promotion emporte
+justement `scheduled.yml` sur `main` et lève la première des trois raisons.
 
 Le service exige en outre `RESEND_API_KEY`, `APP_URL` et `LEARNX_EMAIL_FROM` :
 les trois sont présentes dans les deux environnements.
@@ -204,7 +234,7 @@ marqueur**, au moment où elle décide que le résultat doit être servi.
 - [x] comptage `public_leads` sur la production — Rayan rapporte **0** (§11.9) ;
 - [x] `LEARNX_ALLOW_PROTECTED_DB` recréée en **Config**, valeur `1`, Production — le 31 août, écran Vercel, par Rayan (§9.1) ;
 - [x] `real-functions` remplacé par `Integration (required)` sur `main` — vérifié par moi le 31 août à 11 h 57 UTC via l'API GitHub (§9.2) ;
-- [ ] confirmer depuis le dashboard que `LEARNX_PUBLIC_LEADS_ENABLED` vaut en Production **exactement** `true` (§1) ;
+- [x] `LEARNX_PUBLIC_LEADS_ENABLED` repassée en **Config**, valeur `true` — le 31 août, écran Vercel, par Rayan ; la collecte publique est ouverte par décision (§1) ;
 - [ ] poser les trois réglages du smoke planifié — sans eux, aucune alerte ne préviendra d'une panne de production (§9.3) ;
 - [ ] relever le commit servi par `staging` — la procédure du §10.2 le fait au passage ;
 - [ ] confirmer que `main` est la *Production Branch* du projet Vercel (§9.4) ;
@@ -672,7 +702,7 @@ Rassemblées ici une fois pour toutes. Chacune tient en un écran ; aucune ne pe
 être faite par un agent, parce qu'elles vivent dans des dashboards ou dans des
 réglages GitHub.
 
-**Bloquantes pour la promotion**
+**Bloquantes pour la promotion — les trois sont levées**
 
 1. ~~`LEARNX_ALLOW_PROTECTED_DB`~~ — **fait le 31 août.** Supprimée et recréée
    en **Config**, valeur `1`, Production. Source : écran Vercel, par Rayan,
@@ -681,15 +711,10 @@ réglages GitHub.
    11 h 57 UTC : `gh api repos/:owner/:repo/branches/main/protection` rend
    `V4.1 final (required)`, `Visual baselines (required)` et
    `Integration (required)` ; `real-functions` a disparu (§9.2).
-3. **`LEARNX_PUBLIC_LEADS_ENABLED` en Production vaut-elle *exactement*
-   `true` ?** Vercel → `learnx` → Settings → Environment Variables → la ligne
-   `LEARNX_PUBLIC_LEADS_ENABLED`, environnement Production → l'œil pour révéler
-   la valeur. `True`, `TRUE`, `1`, ou `true ` avec une espace ferment la
-   collecte aussi sûrement que l'absence. C'est une fonctionnalité qui touche
-   aux données personnelles d'inconnus : elle doit être ouverte par décision.
-   **Profiter de l'écran pour la repasser en Config**, comme
-   `LEARNX_ALLOW_PROTECTED_DB` : c'est un drapeau, pas un secret, et tant qu'il
-   est en `Secret` la question se reposera à chaque relecture.
+3. ~~`LEARNX_PUBLIC_LEADS_ENABLED` en Production~~ — **fait le 31 août.**
+   Repassée en **Config**, valeur `true` : la collecte publique est ouverte, par
+   décision. Source : écran Vercel, par Rayan (§1). Les deux drapeaux sont
+   désormais lisibles, et la question ne se reposera plus à chaque relecture.
 
 **Non bloquantes, à traiter le jour même**
 
