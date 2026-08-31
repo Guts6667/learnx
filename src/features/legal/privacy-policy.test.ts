@@ -39,14 +39,20 @@ function join(fragments: { text: string }[]): string {
  *
  * L'échec ne signifie presque jamais que le document est faux : il signifie
  * que le document a changé et que le module n'a pas suivi. La réparation est
- * donc de régénérer le module, jamais de réécrire la page pour la faire
- * correspondre — c'est exactement ce que ce test existe pour empêcher.
+ * donc de reporter le document dans le module, jamais de réécrire la page pour
+ * la faire correspondre — c'est exactement ce que ce test existe pour empêcher.
+ *
+ * Le mot compte, et il a déjà coûté : « régénérez » envoie chercher une
+ * commande qui n'existe pas. Il n'y a pas de générateur — le report est
+ * manuel, à la main, dans la même PR. Quelqu'un lira ce message devant un
+ * `dev` rouge, sous pression : c'est le pire moment pour partir en quête d'un
+ * script imaginaire.
  */
 const REMEDY =
-  'Le document a changé sans que le module suive. Régénérez ' +
-  'src/features/legal/privacy-policy.ts depuis ' +
-  'docs/V4_5_PRIVACY_POLICY.md (V4.5-169) — ne modifiez pas la page pour ' +
-  'la faire correspondre au document.';
+  'Le document a changé sans que le module suive. Reportez le texte de ' +
+  'docs/V4_5_PRIVACY_POLICY.md dans src/features/legal/privacy-policy.ts — ' +
+  'à la main, il n’existe pas de générateur (V4.5-169). Ne modifiez pas la ' +
+  'page pour la faire correspondre au document : le document fait autorité.';
 
 describe('privacy policy content', () => {
   it.each(['en', 'fr'] as const)(
