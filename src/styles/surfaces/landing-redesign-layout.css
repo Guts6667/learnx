@@ -41,6 +41,63 @@
   position: relative;
 }
 
+.totem-public-landing .landing-roadmap h2 {
+  color: var(--color-surface);
+}
+
+.totem-public-landing .landing-roadmap .page-eyebrow {
+  color: var(--color-accent-on-ink);
+}
+
+.totem-public-landing .landing-roadmap-heading > p:last-child {
+  color: var(--color-on-ink-muted);
+}
+
+/*
+ * The public header and footer are shared with legal and error pages. Restore
+ * their stable chrome outside the redesigned landing so this visual layer does
+ * not alter unrelated public surfaces.
+ */
+.totem-public-shell:not(.totem-public-landing) .landing-header {
+  width: 100%;
+  min-height: 0;
+  margin-inline: 0;
+  padding: var(--space-4) clamp(1rem, 4vw, 3.5rem);
+  padding-top: calc(1.25rem + env(safe-area-inset-top));
+}
+
+.totem-public-shell:not(.totem-public-landing) .landing-brand {
+  gap: 0.65rem;
+  font-family: var(--font-interface);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  letter-spacing: normal;
+}
+
+.totem-public-shell:not(.totem-public-landing) .landing-brand img {
+  width: 2rem;
+  height: 2rem;
+  filter: none;
+}
+
+.totem-public-shell:not(.totem-public-landing) .landing-footer {
+  width: 100%;
+  margin-inline: 0;
+  padding: var(--space-4) clamp(1rem, 4vw, 3.5rem);
+  color: inherit;
+  font-size: inherit;
+}
+
+.totem-public-shell:not(.totem-public-landing) .landing-footer nav {
+  gap: var(--space-4);
+}
+
+.totem-public-shell:not(.totem-public-landing) .landing-footer a,
+.totem-public-shell:not(.totem-public-landing) .landing-footer a:hover {
+  color: var(--color-action);
+  text-decoration-color: currentcolor;
+}
+
 @media (min-width: 48rem) {
   .landing-hero {
     width: min(calc(100% - 3rem), var(--landing-wide));
