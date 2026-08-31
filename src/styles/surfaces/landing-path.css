@@ -86,12 +86,15 @@
 }
 
 .landing-page .landing-program-preview {
-  border-color: color-mix(in srgb, var(--color-action) 18%, var(--color-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-action) 18%,
+    var(--color-border)
+  );
   border-radius: calc(var(--radius-surface) + 0.625rem);
   padding: 0.75rem;
   background: var(--color-surface);
-  box-shadow: 0 2rem 5rem
-    color-mix(in srgb, var(--color-text) 13%, transparent);
+  box-shadow: 0 2rem 5rem color-mix(in srgb, var(--color-text) 13%, transparent);
 }
 
 .landing-page .landing-program-preview .landing-preview-header {
@@ -189,14 +192,12 @@
   background: var(--color-surface);
 }
 
-.landing-preview-path li[data-state='context']
-  .landing-preview-path-marker {
+.landing-preview-path li[data-state='context'] .landing-preview-path-marker {
   background: var(--color-action);
   box-shadow: inset 0 0 0 0.25rem var(--color-action);
 }
 
-.landing-preview-path li[data-state='current']
-  .landing-preview-path-marker {
+.landing-preview-path li[data-state='current'] .landing-preview-path-marker {
   border-color: var(--color-surface);
   background: var(--color-coral);
   box-shadow: 0 0 0 2px var(--color-coral);
@@ -220,7 +221,11 @@
 
 .landing-page .landing-program-preview .landing-next-card {
   margin: 0;
-  border-color: color-mix(in srgb, var(--color-action) 24%, var(--color-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-action) 24%,
+    var(--color-border)
+  );
   padding: clamp(1rem, 2.5vw, 1.4rem);
   background: var(--color-surface);
   box-shadow: 0 0.875rem 2.25rem
@@ -330,7 +335,11 @@
 }
 
 .landing-page .landing-feature-proof .landing-lesson-preview {
-  border-color: color-mix(in srgb, var(--color-action) 16%, var(--color-border));
+  border-color: color-mix(
+    in srgb,
+    var(--color-action) 16%,
+    var(--color-border)
+  );
   box-shadow: 0 1.5rem 4rem
     color-mix(in srgb, var(--color-text) 9%, transparent);
 }
