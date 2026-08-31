@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -180,9 +180,34 @@ async function runAiCorrectionRegressionCli(
       checker: buildRegressionChecker(apiKey, variant.instructions),
       probe,
     });
+    // A measurement that lives only in a terminal cannot be cited later. The
+    // first run of this probe had to be transcribed from stdout; this is so the
+    // next one is not.
+    const probeDirectory = path.resolve(
+      'benchmarks/ai-correction/regression/probes',
+      new Date().toISOString().replace(/[:.]/g, '-'),
+    );
+    await mkdir(probeDirectory, { recursive: true });
+    await writeFile(
+      path.join(probeDirectory, `probe-${variant.id}.json`),
+      `${JSON.stringify(
+        {
+          checkerModelId: PROMOTED_CHECKER_IDENTITY.modelId,
+          checkerPromptId: variant.id,
+          checkerPromptLabel: variant.label,
+          instructions: variant.instructions,
+          probeId: probe.probeId,
+          result,
+        },
+        null,
+        2,
+      )}\n`,
+      'utf8',
+    );
+
     const { denominator, numerator, rate } = result.checkerFalseAgreeDesigned;
     console.log(
-      `Sonde faux accord, consigne ${variant.id} — ${numerator}/${denominator} faux accords${rate === null ? '' : ` = ${(rate * 100).toFixed(2)} %`}, ${result.costUsd.toFixed(6)} USD.`,
+      `Sonde faux accord, consigne ${variant.id} — ${numerator}/${denominator} faux accords${rate === null ? '' : ` = ${(rate * 100).toFixed(2)} %`}, ${result.costUsd.toFixed(6)} USD — ${probeDirectory}.`,
     );
     for (const agreement of result.falseAgreements) {
       console.log(`  accord sur ${agreement.id} — ${agreement.falseBecause}`);
