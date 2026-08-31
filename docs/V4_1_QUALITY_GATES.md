@@ -99,9 +99,20 @@ suivants. Ce recalage unique ne modifie pas les budgets initiaux de 125 000
 octets JS et 25 000 octets CSS. Le précache reste borné à 140 entrées et
 1 371 224 octets émis.
 
-Les parcours Recherche data-native possèdent en plus un gate Playwright dédié
-avec `pnpm test:e2e:research`. La matrice fonctionnelle complète et les trous
-d'intégration réels restent dans `docs/V4_1_FUNCTIONAL_PARITY_BASELINE.md`.
+La suite Playwright de `tests/e2e` tourne en entier dans Quality, avec
+`pnpm test:e2e:ci` : 105 tests sur les trois projets Chromium, en moins d'une
+minute. Elle n'exige aucune base — l'API est simulée par
+`tests/e2e/journey-api.ts` — et c'est pourquoi elle vit ici plutôt que dans
+Integration, dont les branches Neon sont la ressource rare.
+
+Jusqu'au 31 août 2026, un seul fichier de cette suite était lancé
+(`test:e2e:research`) ; les neuf autres ne tournaient nulle part, la
+configuration d'Integration visant `tests/integration` et celle du visuel
+`tests/visual`. `mobile-webkit` reste hors du lot : ce job n'installe que
+Chromium.
+
+La matrice fonctionnelle complète et les trous d'intégration réels restent dans
+`docs/V4_1_FUNCTIONAL_PARITY_BASELINE.md`.
 
 ## Signaux d'arrêt
 

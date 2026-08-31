@@ -53,8 +53,22 @@ jobs:
         run: pnpm quality:dead-css
       - name: Build
         run: pnpm build
-      - name: Critical public research navigation
-        run: pnpm test:e2e:research
+      # Ran a single spec until 31 August 2026. The other nine files under
+      # tests/e2e ran nowhere at all: the Integration config points at
+      # tests/integration and the visual one at tests/visual, so nothing
+      # selected them. They cover the landing page, the credit purchase, the
+      # admin surfaces and the AI correction — the surfaces that broke twice
+      # this week — and they were green the whole time, unread.
+      #
+      # They need no database: the API is mocked through tests/e2e/journey-api.
+      # That is why they belong here rather than in Integration, whose Neon
+      # branches are the scarce resource. 105 tests, under a minute.
+      #
+      # mobile-webkit is left out because this job installs chromium only;
+      # adding it means downloading a second browser on every run, which is a
+      # separate decision with its own cost.
+      - name: End-to-end suite
+        run: pnpm test:e2e:ci
       - name: Bundle budgets
         run: pnpm quality:bundle
       - name: High and critical production dependency audit
