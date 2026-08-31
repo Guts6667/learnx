@@ -1144,3 +1144,59 @@ en substance, en citant des chiffres sans opération.
 
 **Coût de cette analyse : 0,00 USD.** Entièrement hors ligne, depuis les
 artefacts du run.
+
+### 10 bis. Une piste, consignée comme option et non comme décision
+
+Les deux instructions de 2.3.0 qui échouent — (1) ne pas créditer l'adjacent,
+(3) les citations suffisent-elles à elles seules — demandent au modèle **de se
+vérifier lui-même sans rien rendre d'observable**. Celle qui tient, (4), est
+étroite : elle s'applique quand une citation contient un calcul, et sur
+`fact-fidelity` le correcteur a cité des chiffres **sans opération**, donc la
+règle ne s'appliquait pas. Elle a été respectée à la lettre et contournée en
+substance.
+
+Cela désigne une direction qui n'est pas « exhorter plus fort ».
+
+**Option A — rendre le test de suffisance observable.** Plutôt qu'une
+vérification interne dont rien ne prouve qu'elle a eu lieu, exiger un champ de
+sortie par critère : **quel énoncé explicite de la production établit ce
+niveau**, ou la déclaration qu'il n'y en a aucun. Le serveur peut alors vérifier
+de façon déterministe deux choses — que l'énoncé nommé **se résout** dans la
+production de l'apprenant, par le même résolveur que les citations ; et que si
+l'absence est déclarée, le niveau retenu est bien le **plancher**.
+
+C'est la doctrine du dépôt appliquée à la consigne elle-même : ne jamais croire
+l'auto-déclaration du modèle, la rendre vérifiable. Le mécanisme existe déjà en
+plus petit — `evidenceStatus: NO_RELEVANT_EVIDENCE` **impose** le niveau
+plancher, et l'oracle arithmétique déterministe recalcule au lieu de demander.
+L'option étend cette forme de « as-tu trouvé une preuve » à « ta preuve
+suffit-elle ».
+
+**Ce que l'option A ne ferait pas, et il faut le dire d'emblée :**
+
+- **Elle n'empêche pas la substitution.** Le modèle pourrait nommer la phrase
+  adjacente comme étant l'énoncé explicite. Ce qui change est que la revendication
+  devient **visible et auditable** — l'énoncé nommé est dans l'artefact, donc un
+  second juge, humain ou vérificateur, peut demander s'il établit réellement le
+  niveau. Aujourd'hui ce raisonnement n'existe nulle part.
+- **La suffisance n'est pas décidable par machine.** Le serveur peut contrôler la
+  **résolution** et la **cohérence avec le plancher**, pas la suffisance. Annoncer
+  autre chose serait exactement l'erreur que ce journal documente depuis deux
+  jours.
+- **Elle coûte des jetons de sortie sur chaque critère**, donc un prix par
+  correction à mesurer, pas à supposer.
+- **Elle ajoute une façon d'être mal formé.** Un champ requis de plus est une
+  branche de rejet de plus : le risque porte sur `eventual-unusable-runs`, que le
+  brouillon 2.3.0 avait déjà nommé comme son propre risque.
+
+**Option B — élargir plutôt qu'approfondir.** L'instruction (4) n'a pas échoué :
+elle n'a pas été déclenchée. Son défaut est l'**étroitesse**, pas la faiblesse.
+Étendre son domaine — toute citation portant un chiffre, une quantité, une date
+ou une comparaison, et pas seulement un calcul — est un levier différent, et
+moins cher que l'option A puisqu'il ne change pas le schéma de sortie. Il ne
+traite pas les cas non chiffrés, qui sont quatre des cinq.
+
+**Aucune des deux n'est recommandée ici, et aucune 2.4.0 n'est écrite.** Une
+itération de consigne se décide par le Propriétaire, se mesure avant d'être
+promue, et son gain se lit sur `mutation-direction-violations` avec un
+dénominateur suffisant — la règle qui a coûté 7/63 à 2.3.0 vaudra pour sa suite.
