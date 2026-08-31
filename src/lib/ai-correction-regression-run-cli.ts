@@ -1575,12 +1575,27 @@ export function buildRunPasses(input: {
       plan: input.plan,
       target: input.directionMutantTarget ?? DIRECTION_MUTANT_TARGET,
     });
-    const inversionCaseIds = new Set(
+    // The baselines of every case a selected mutant comes from — not only the
+    // inversions that need one arithmetically (V4.5-210).
+    //
+    // The inversions need a reference level or they cannot violate at all, and
+    // that alone justified buying fourteen of them. But a profile that buys only
+    // damaged texts can only answer "does the grader lower a grade it should
+    // lower". A prompt that became harsh would score perfectly here and punish
+    // real students, and nothing in the run would say so — the risk the 2.3.0
+    // draft named for itself. The undamaged baselines are what
+    // `modelAuthoredAgreement` reads, so buying them turns an unmeasurable risk
+    // into a number in the same report. Fifty baselines against sixty-three
+    // mutants costs about 0.87 USD more.
+    //
+    // Not a flag, on purpose: an option to run this blind is an option someone
+    // takes on the day the budget is tight.
+    const selectedCaseIds = new Set(
       selected.flatMap((benchmarkCase) => {
         const unit = input.plan.unitsByBenchmarkCaseId.get(
           benchmarkCase.caseId,
         );
-        return unit?.kind === 'FACT_INVERSION' ? [unit.poolCaseId] : [];
+        return unit ? [unit.poolCaseId] : [];
       }),
     );
 
@@ -1590,9 +1605,9 @@ export function buildRunPasses(input: {
           const unit = input.plan.unitsByBenchmarkCaseId.get(
             benchmarkCase.caseId,
           );
-          return unit ? inversionCaseIds.has(unit.poolCaseId) : false;
+          return unit ? selectedCaseIds.has(unit.poolCaseId) : false;
         }),
-        label: 'lignes de base des inversions',
+        label: 'lignes de base des cas mutés',
         repetitions: 1,
       },
       { cases: selected, label: 'mutants à direction', repetitions: 1 },
