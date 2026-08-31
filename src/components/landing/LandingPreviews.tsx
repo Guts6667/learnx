@@ -1,5 +1,15 @@
 import { useI18n } from '@/i18n';
 
+function PreviewWindowControls() {
+  return (
+    <span aria-hidden="true" className="landing-preview-window-controls">
+      <span />
+      <span />
+      <span />
+    </span>
+  );
+}
+
 export function ProgramPreview() {
   const { t } = useI18n();
 
@@ -8,10 +18,19 @@ export function ProgramPreview() {
       aria-label={t('landing.preview.program.ariaLabel')}
       className="landing-product-preview landing-program-preview"
     >
-      <header className="landing-preview-header">
-        <h2>{t('landing.preview.program.title')}</h2>
-        <span>{t('landing.preview.program.activity')}</span>
+      <header className="landing-preview-header landing-preview-header--program">
+        <PreviewWindowControls />
+        <span className="landing-preview-brand">
+          <span aria-hidden="true" className="landing-preview-brand-mark">
+            X
+          </span>
+          <strong>LearnX</strong>
+        </span>
+        <span className="landing-preview-activity">
+          {t('landing.preview.program.activity')}
+        </span>
       </header>
+
       <div className="landing-preview-body">
         <nav
           aria-label={t('landing.preview.productNavigation')}
@@ -24,25 +43,71 @@ export function ProgramPreview() {
           <span aria-hidden="true">↻</span>
           <span aria-hidden="true">▤</span>
         </nav>
+
         <div className="landing-preview-content">
-          <p className="landing-preview-kicker">
-            {t('landing.preview.program.nextStep')}
-          </p>
-          <h3>{t('landing.preview.program.greeting')}</h3>
-          <article className="landing-next-card">
+          <div className="landing-preview-topline">
             <p className="landing-preview-kicker">
-              {t('landing.preview.program.stage')}
+              {t('landing.preview.program.nextStep')}
             </p>
-            <h4>{t('landing.preview.lesson.title')}</h4>
-            <p>{t('landing.preview.program.saved')}</p>
-            <div aria-hidden="true" className="landing-preview-progress">
-              <span />
-            </div>
-            <span className="landing-preview-next-action">
-              {t('landing.preview.program.resume')}
-              <span aria-hidden="true">→</span>
+            <span className="landing-preview-greeting">
+              {t('landing.preview.program.greeting')}
             </span>
-          </article>
+          </div>
+
+          <h2>{t('landing.preview.program.title')}</h2>
+
+          <div className="landing-preview-route-summary">
+            <span>{t('landing.preview.program.stage')}</span>
+            <strong>{t('landing.preview.program.module')}</strong>
+          </div>
+
+          <div aria-hidden="true" className="landing-preview-progress">
+            <span />
+          </div>
+
+          <ol className="landing-preview-path">
+            <li data-state="complete">
+              <span aria-hidden="true" className="landing-preview-path-marker">
+                ✓
+              </span>
+              <div>
+                <span>{t('landing.preview.program.stage')}</span>
+                <strong>{t('landing.preview.program.module')}</strong>
+              </div>
+            </li>
+
+            <li data-state="current">
+              <span aria-hidden="true" className="landing-preview-path-marker">
+                2
+              </span>
+              <article className="landing-next-card">
+                <p className="landing-preview-kicker">
+                  {t('landing.preview.program.nextStep')}
+                </p>
+                <h3>{t('landing.preview.lesson.title')}</h3>
+                <p>{t('landing.preview.program.saved')}</p>
+                <span className="landing-preview-next-action">
+                  {t('landing.preview.program.resume')}
+                  <span aria-hidden="true">→</span>
+                </span>
+              </article>
+            </li>
+
+            <li data-state="next">
+              <span aria-hidden="true" className="landing-preview-path-marker">
+                3
+              </span>
+              <div>
+                <span>{t('landing.preview.program.nextStep')}</span>
+                <strong>{t('landing.preview.program.nextLesson')}</strong>
+              </div>
+            </li>
+          </ol>
+
+          <footer className="landing-preview-caption">
+            <strong>{t('landing.preview.program.heading')}</strong>
+            <span>{t('landing.preview.program.description')}</span>
+          </footer>
         </div>
       </div>
     </section>
@@ -58,15 +123,25 @@ export function LessonPreview() {
       className="landing-product-preview landing-lesson-preview"
     >
       <header className="landing-preview-header">
-        <span>{t('landing.preview.lesson.type')}</span>
+        <span className="landing-preview-header-label">
+          <PreviewWindowControls />
+          {t('landing.preview.lesson.type')}
+        </span>
         <span>{t('landing.preview.realContent')}</span>
       </header>
+
       <div className="landing-preview-body">
-        <p className="landing-preview-kicker">
-          {t('landing.preview.lesson.module')}
-        </p>
+        <div className="landing-lesson-context">
+          <p className="landing-preview-kicker">
+            {t('landing.preview.lesson.module')}
+          </p>
+          <span aria-hidden="true">01</span>
+        </div>
+
         <h2>{t('landing.preview.lesson.title')}</h2>
+
         <article>
+          <span aria-hidden="true" className="landing-lesson-reading-rule" />
           <h3>{t('landing.preview.lesson.section')}</h3>
           <p>{t('landing.preview.lesson.excerpt')}</p>
           <footer>
