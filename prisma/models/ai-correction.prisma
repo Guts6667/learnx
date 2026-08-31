@@ -8,9 +8,13 @@ model AiCorrection {
   decision                    AiCorrectionDecision?
   idempotencyKey              String                          @map("idempotency_key")
   requestFingerprint          String                          @map("request_fingerprint") @db.Char(64)
-  submissionSnapshot          Json                            @map("submission_snapshot_json")
+  /// Nullable depuis V4.5-168 : `NULL` signifie **détachée**, jamais « reçue
+  /// vide ». Toute correction en a une à l'écriture, donc l'absence ne peut
+  /// venir que du détachement à 180 jours.
+  submissionSnapshot          Json?                           @map("submission_snapshot_json")
   contractSnapshot            Json                            @map("contract_snapshot_json")
-  promptSnapshot              Json                            @map("prompt_snapshot_json")
+  /// Nullable pour la même raison : il contient la production.
+  promptSnapshot              Json?                           @map("prompt_snapshot_json")
   promptVersion               String                          @map("prompt_version")
   modelRole                   String                          @map("model_role")
   provider                    String?
@@ -32,6 +36,11 @@ model AiCorrection {
   orchestrationFingerprint    String?                         @map("orchestration_fingerprint") @db.Char(64)
   startedAt                   DateTime?                       @map("started_at")
   completedAt                 DateTime?                       @map("completed_at")
+  /// Quand la correction a cessé d'être rattachable à son auteur (V4.5-168).
+  /// Renseigné plutôt que déduit de l'absence de production : le registre RGPD
+  /// doit pouvoir attester que la purge a tourné, pas seulement constater un
+  /// vide.
+  detachedAt                  DateTime?                       @map("detached_at")
   createdAt                   DateTime                        @default(now()) @map("created_at")
   updatedAt                   DateTime                        @updatedAt @map("updated_at")
   user                        User                            @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -234,4 +243,43 @@ model AiCorrectionBreakerEvent {
 
   @@index([createdAt])
   @@map("ai_correction_breaker_events")
+}
+
+/// Ce qui reste d'une correction après le détachement à 180 jours (V4.5-168,
+/// décision `owner-rgpd-2026-08-29` §2).
+///
+/// La ligne n'a **aucun lien** vers la correction ni vers le compte : ni
+/// `correction_id`, ni `user_id`, ni horodatage plus fin que le jour. Le seul
+/// identifiant est un pseudonyme tiré au hasard, dont aucune correspondance
+/// n'est conservée nulle part — c'est ce qui rend le détachement
+/// irréversible, et non une promesse tenue par du code qui pourrait être
+/// réécrit.
+///
+/// Pseudonymisation, pas anonymisation : les textes conservés ici sont ceux de
+/// l'apprenant, et un texte libre peut nommer son auteur. L'audit le dit
+/// (§7 décision 3) et la politique de confidentialité doit le dire aussi.
+///
+/// Écrite **uniquement** si le compte portait le consentement de réutilisation
+/// au moment du détachement. Sans consentement, les mêmes textes sont
+/// simplement supprimés : l'apprenant est détaché dans les deux cas.
+model AiCorrectionResearchSample {
+  /// Tiré au hasard, sans rapport avec l'identifiant de la correction.
+  pseudonym          String   @id @db.Uuid
+  /// Le jour, pas l'instant : une seconde précise rapprochée d'un journal
+  /// suffirait à retrouver qui écrivait à ce moment-là.
+  detachedOn         DateTime @map("detached_on") @db.Date
+  activityType       String   @map("activity_type")
+  promptVersion      String   @map("prompt_version")
+  modelId            String?  @map("model_id")
+  /// La production de l'apprenant, déplacée depuis `ai_corrections`.
+  submissionSnapshot Json     @map("submission_snapshot_json")
+  /// Le prompt tel qu'envoyé, qui contient cette production.
+  promptSnapshot     Json     @map("prompt_snapshot_json")
+  /// Les extraits cités par la correction, retirés de son résultat structuré.
+  evidenceQuotes     Json     @map("evidence_quotes_json")
+  /// Les sorties brutes des tentatives, déplacées depuis `ai_correction_attempts`.
+  rawOutputs         Json     @map("raw_outputs_json")
+
+  @@index([detachedOn])
+  @@map("ai_correction_research_samples")
 }

@@ -53,6 +53,7 @@
       "src/server/corrections/correction-breaker.ts",
       "src/server/corrections/correction-checker.ts",
       "src/server/corrections/correction-cost-audit.ts",
+      "src/server/corrections/correction-detachment.ts",
       "src/server/corrections/correction-execution-service.ts",
       "src/server/corrections/correction-monitoring.ts",
       "src/server/corrections/correction-orchestration-contracts.ts",
