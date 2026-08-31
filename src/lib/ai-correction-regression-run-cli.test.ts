@@ -129,6 +129,16 @@ const CHECKER: RegressionCheckerPort = {
   }),
 };
 
+/**
+ * The configuration an executing test chooses (V4.5-210).
+ *
+ * A paid run refuses to start without one, because the fallback is silent and
+ * lands on prompt 2.0.0. Which file is chosen does not matter to the guard; that
+ * a choice was made does.
+ */
+const CHOSEN_CONFIGURATION =
+  '--benchmark-configuration=benchmarks/ai-correction/benchmark.v1.json';
+
 const SAMPLE_ARGUMENTS = [
   `--run-pool=${POOL_PATH}`,
   '--supplier-cost-cap-usd=100',
@@ -143,7 +153,17 @@ const SAMPLE_ARGUMENTS = [
  * gates evaluated, not how many cells ran, so the smallest executing profile
  * asserts the same thing without the flake.
  */
-const EXECUTING_ARGUMENTS = [...SAMPLE_ARGUMENTS, '--profile=smoke'];
+/**
+ * Executing tests name their configuration, because a paid run must (V4.5-210).
+ *
+ * The guard checks that a choice was made, not which file was chosen: without
+ * one, a run falls back to `benchmark.v1.json` and its 2.0.0 prompt in silence.
+ */
+const EXECUTING_ARGUMENTS = [
+  ...SAMPLE_ARGUMENTS,
+  '--profile=smoke',
+  '--benchmark-configuration=benchmarks/ai-correction/benchmark.v1.json',
+];
 
 describe('--run-pool', () => {
   it('plans and prices a run without contacting a provider', async () => {
@@ -303,6 +323,7 @@ describe('--run-pool', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -331,6 +352,7 @@ describe('--run-pool', () => {
     const second = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
         `--resume=${first.resultsDirectory}`,
@@ -596,6 +618,7 @@ describe('--measure-checker', () => {
     const measurement = await runCheckerMeasurement({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         `--measure-checker=${source.resultsDirectory}`,
         '--limit=5',
         '--supplier-cost-cap-usd=1',
@@ -652,6 +675,7 @@ describe('--measure-checker', () => {
     const measurement = await runCheckerMeasurement({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         `--measure-checker=${source.resultsDirectory}`,
         '--limit=3',
         '--supplier-cost-cap-usd=1',
@@ -686,6 +710,7 @@ describe('--measure-checker', () => {
       runCheckerMeasurement({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           `--measure-checker=${empty}`,
           '--supplier-cost-cap-usd=1',
         ],
@@ -729,6 +754,7 @@ describe('one convention, one verdict', () => {
     await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=0.20',
       ],
@@ -759,6 +785,7 @@ describe('one convention, one verdict', () => {
       runRegressionPool({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           '--profile=reduced',
           '--supplier-cost-cap-usd=1',
         ],
@@ -803,6 +830,7 @@ describe('the repetition pass dispatches at its offset', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -839,6 +867,7 @@ describe('the repetition pass dispatches at its offset', () => {
     const resumed = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
         `--resume=${first.resultsDirectory}`,
@@ -884,6 +913,7 @@ describe('mutation coverage matches what the policy declares', () => {
     const planned = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -993,6 +1023,7 @@ describe('overlapping passes carry a resumed attempt once', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1008,6 +1039,7 @@ describe('overlapping passes carry a resumed attempt once', () => {
     const resumed = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
         `--resume=${first.resultsDirectory}`,
@@ -1053,6 +1085,7 @@ describe('a resume is priced against what the cap has left', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1107,6 +1140,7 @@ describe('a resume is priced against what the cap has left', () => {
       runRegressionPool({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           '--profile=smoke',
           '--supplier-cost-cap-usd=0.10',
           `--resume=${resumeDirectory}`,
@@ -1131,6 +1165,7 @@ describe('a resume is priced against what the cap has left', () => {
     const outcome = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
         `--resume=${resumeDirectory}`,
@@ -1162,6 +1197,7 @@ describe('a resume is priced against what the cap has left', () => {
     const outcome = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1227,6 +1263,7 @@ describe('repetition offset (V4.5-127)', () => {
     await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1271,6 +1308,7 @@ describe('--analyse (V4.5-127)', () => {
     const run = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1292,6 +1330,7 @@ describe('--analyse (V4.5-127)', () => {
     const { analysis } = await runRegressionAnalysis({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         `--analyse=${run.resultsDirectory}`,
       ],
       regressionDirectory: directory,
@@ -1344,6 +1383,7 @@ describe('results-directory resolution (V4.5-127)', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1365,6 +1405,7 @@ describe('results-directory resolution (V4.5-127)', () => {
     const resumed = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
         // The bare name, not a path.
@@ -1397,6 +1438,7 @@ describe('results-directory resolution (V4.5-127)', () => {
       runRegressionPool({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           '--profile=smoke',
           '--supplier-cost-cap-usd=100',
           `--resume=${missing}`,
@@ -1406,5 +1448,94 @@ describe('results-directory resolution (V4.5-127)', () => {
         regressionDirectory: directory,
       }),
     ).rejects.toThrow(/ENOENT|attempts\.json/);
+  });
+});
+
+/**
+ * A paid run must not start under a configuration nobody chose (V4.5-210).
+ *
+ * With no configuration flag, `loadBenchmarkInputs` falls back to
+ * `benchmark.v1.json` — prompt 2.0.0, neither the promoted 2.2.0 nor the
+ * candidate 2.3.0. The fallback is silent, so a 253-cell run costing 6 to 8 USD
+ * would answer the wrong question at full price and read like a verdict on a
+ * prompt that never ran. This is the same family as every other defect of the
+ * day: a default that decides something nobody decided.
+ */
+describe('explicit configuration before spending', () => {
+  it('refuses to execute without a configuration flag', async () => {
+    const directory = await scratchRegressionDirectory();
+
+    await expect(
+      runRegressionPool({
+        // SAMPLE_ARGUMENTS deliberately names no configuration.
+        arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke'],
+        checker: CHECKER,
+        configuration: configuration(),
+        executeCandidate: fakeExecutor(),
+        identities: IDENTITIES,
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow(/REGRESSION_RUN_CONFIGURATION_REQUIRED/);
+  });
+
+  it('names the flag and the file it expects', async () => {
+    const directory = await scratchRegressionDirectory();
+    let message = '';
+    try {
+      await runRegressionPool({
+        arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke'],
+        checker: CHECKER,
+        configuration: configuration(),
+        executeCandidate: fakeExecutor(),
+        identities: IDENTITIES,
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+      });
+    } catch (error) {
+      message = (error as Error).message;
+    }
+
+    // An error saying only "configuration required" sends the reader back to
+    // the source to learn which of two flags it meant, and the two are not
+    // interchangeable: --configuration= wants an overlay, not a full file.
+    expect(message).toContain('--benchmark-configuration=');
+    expect(message).toContain('benchmark.v3_2.json');
+    expect(message).toContain('2.0.0');
+  });
+
+  it('accepts either configuration flag', async () => {
+    for (const flag of [
+      '--benchmark-configuration=benchmarks/ai-correction/benchmark.v1.json',
+      '--configuration=benchmarks/ai-correction/holdout.benchmark.v3.json',
+    ]) {
+      const directory = await scratchRegressionDirectory();
+      await expect(
+        runRegressionPool({
+          arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke', flag],
+          checker: CHECKER,
+          configuration: configuration(),
+          executeCandidate: fakeExecutor(),
+          identities: IDENTITIES,
+          providerApiKey: 'offline-test-key',
+          regressionDirectory: directory,
+        }),
+      ).resolves.toBeDefined();
+    }
+  }, 30_000);
+
+  it('still prices a plan with no configuration, because a dry run buys nothing', async () => {
+    // The refusal is on the spending path only. A preflight is most useful
+    // before anyone has decided anything, so it must stay free to consult.
+    const directory = await scratchRegressionDirectory();
+
+    await expect(
+      runRegressionPool({
+        arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
+        configuration: configuration(),
+        identities: IDENTITIES,
+        regressionDirectory: directory,
+      }),
+    ).resolves.toBeDefined();
   });
 });

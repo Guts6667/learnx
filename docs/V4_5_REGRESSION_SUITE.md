@@ -432,6 +432,46 @@ plus de valeur à passer, donc plus de valeur à oublier.
 > colonne redevient comparable d'un run à l'autre, et le reste tant que le pool
 > et le générateur ne changent pas.
 
+### 6 quater. La configuration doit être choisie avant de dépenser
+
+**`--execute` sans drapeau de configuration est refusé** (V4.5-210).
+
+Sans `--benchmark-configuration=` ni `--configuration=`, `loadBenchmarkInputs`
+retombe sur `benchmarks/ai-correction/benchmark.v1.json`, c'est-à-dire la
+consigne **2.0.0** — ni l'identité promue **2.2.0**, ni la candidate **2.3.0**.
+Le repli est silencieux : les artefacts enregistrent la consigne qui a tourné, et
+non celle qu'on voulait mesurer, si bien que le résultat se lit comme un verdict
+sur une consigne qui n'a jamais été exercée. Sur un run de 253 cellules, cela
+revient à payer 6 à 8 USD pour répondre à la mauvaise question, au prix fort.
+
+Le refus ne porte que sur le chemin **payant** : un `--dry-run` doit rester libre
+de chiffrer un plan, puisque le préflight est le plus utile avant qu'une décision
+soit prise. Ce qui ne doit jamais arriver en silence, c'est de **payer** sous un
+défaut.
+
+Le message nomme le drapeau **et** le fichier attendu. Les deux drapeaux ne sont
+pas interchangeables :
+
+| drapeau | attend |
+| --- | --- |
+| `--benchmark-configuration=` | un fichier de configuration complet, p. ex. `benchmarks/ai-correction/benchmark.v3_2.json` (consigne 2.3.0) |
+| `--configuration=` | un **overlay** portant `artifactKind` et `extends` ; un fichier complet y échoue sur une `ZodError` |
+
+**Ligne de référence du run complet**, corrigée en conséquence — sans le drapeau
+de configuration elle aurait mesuré 2.0.0 :
+
+```
+pnpm ai:benchmark --run-pool --execute \
+  --benchmark-configuration=benchmarks/ai-correction/benchmark.v3_2.json \
+  --profile=reduced --supplier-cost-cap-usd=17.70 \
+  --envelope-usd=<montant> --envelope-decision=<id> \
+  --envelope-supersedes=<décision remplacée>
+```
+
+`--profile=reduced` est aussi obligatoire : sans lui le plan passe à 668 cellules
+et la borne à 76,77 USD, les entrées de `measured-costs.v1.json` ne décrivant que
+la famille `reduced`.
+
 ## 7. Artefacts et rapport
 
 Répertoire append-only : `benchmarks/ai-correction/regression/results/<ISO>/`

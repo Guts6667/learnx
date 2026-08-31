@@ -195,6 +195,9 @@ export type ParaphraseCacheLoad = {
  * a corpus or the generator moved under a cached rewrite, and using it would
  * compare the run against a paraphrase of text that no longer exists.
  */
+/** Refusal to run without an explicitly chosen benchmark configuration. */
+export class RegressionRunConfigurationError extends Error {}
+
 export async function loadParaphraseCache(input: {
   caseIds: string[];
   poolId: string;
@@ -560,6 +563,59 @@ export function renderLedger(
  * and lets V4.5-121 be "swap the executor" rather than "discover the wiring
  * under a 3 USD cap".
  */
+/**
+ * The flags that name a benchmark configuration explicitly.
+ *
+ * `--benchmark-configuration=` takes a whole configuration file;
+ * `--configuration=` takes an overlay that `extends` one. Either is a choice.
+ * Passing neither is not.
+ */
+const CONFIGURATION_FLAGS = [
+  '--benchmark-configuration=',
+  '--configuration=',
+] as const;
+
+/**
+ * Refuses to spend under a configuration nobody chose.
+ *
+ * With no configuration flag, `loadBenchmarkInputs` falls back to
+ * `benchmark.v1.json`, which pins prompt **2.0.0** — neither the promoted
+ * identity (2.2.0) nor the candidate a run is usually bought to measure
+ * (2.3.0). The fallback is silent, the artefacts record the prompt that ran and
+ * not the one that was meant to, and the result reads like a verdict on a
+ * prompt that was never exercised. A 253-cell run costs 6 to 8 USD and would
+ * have answered the wrong question at full price.
+ *
+ * So the refusal is on the spending path only. A dry run must still price a
+ * plan freely — that is what it is for, and the preflight is most useful before
+ * anyone has decided anything. What must never happen silently is *paying*
+ * under a default.
+ *
+ * Naming the flag and the file in the message is the point: an error that says
+ * only "configuration required" sends the reader back to the source to find out
+ * which of two flags it meant.
+ */
+function assertConfigurationWasChosen(input: {
+  arguments: string[];
+  willSpend: boolean;
+}): void {
+  if (!input.willSpend) return;
+  if (
+    input.arguments.some((argument) =>
+      CONFIGURATION_FLAGS.some((flag) => argument.startsWith(flag)),
+    )
+  ) {
+    return;
+  }
+  throw new RegressionRunConfigurationError(
+    'REGRESSION_RUN_CONFIGURATION_REQUIRED: --execute demande une configuration explicite. ' +
+      'Sans elle le run retombe en silence sur benchmarks/ai-correction/benchmark.v1.json, ' +
+      'soit la consigne 2.0.0 — ni l’identité promue 2.2.0, ni la candidate 2.3.0. ' +
+      'Ajouter --benchmark-configuration=benchmarks/ai-correction/benchmark.v3_2.json ' +
+      '(consigne 2.3.0) ou le fichier voulu ; --configuration= attend un overlay avec extends.',
+  );
+}
+
 export async function runRegressionPool(input: {
   arguments: string[];
   checker?: RegressionCheckerPort;
@@ -598,6 +654,10 @@ export async function runRegressionPool(input: {
   // envelope there would make the preflight impossible to consult before a run
   // is authorised, which is exactly when it is most useful.
   const willSpend = !dryRun && input.executeCandidate !== undefined;
+  assertConfigurationWasChosen({
+    arguments: input.arguments,
+    willSpend,
+  });
   const envelopeUsd = readCliOption(input.arguments, 'envelope-usd');
   let envelopeNote =
     "Aucune enveloppe déclarée : seul le plafond du run s'applique.";
