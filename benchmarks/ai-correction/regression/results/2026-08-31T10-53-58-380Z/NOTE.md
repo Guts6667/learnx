@@ -57,30 +57,43 @@ n'a pas baissé le niveau : il a **supprimé le critère**.
 
 ### Pourquoi c'est plus grave que le défaut qu'on corrige
 
-`validateBenchmarkProtocol3ModelOutputWithEvidence`, le validateur du banc, ne
-vérifie **pas** que chaque critère du contrat est traité. Le runtime, lui, le
-vérifie : `validateCorrectionOutputForContract` lève « Correction output must
-assess every criterion exactly once ».
+Un critère omis **quitte le numérateur et le dénominateur de tous les gates**.
+`mutation-direction-violations` compterait donc moins de violations parce que le
+modèle a cessé de répondre : le gate s'améliore quand le modèle se tait.
 
-Conséquence : une sortie que la production **rejetterait** est enregistrée
-`VALID` par le banc. Et un critère omis disparaît du numérateur comme du
-dénominateur de tous les gates. `mutation-direction-violations` compterait donc
-**moins de violations parce que le modèle a cessé de répondre** — le gate
-s'améliore quand le modèle se tait.
+C'est l'angle mort annoncé avant le pré-test — la suite sait détecter un
+correcteur trop généreux, pas un correcteur qui se dérobe — en pire, puisqu'elle
+compterait la dérobade comme un progrès.
 
-C'est exactement l'angle mort annoncé avant le pré-test : la suite sait détecter
-un correcteur trop généreux, pas un correcteur qui se dérobe. Ici elle ferait
-mieux que ça — elle compterait la dérobade comme un progrès.
+### La question ouverte, et une hypothèse que je retire
+
+`canonicalizeProtocol3CorrectionOutput` lève déjà `PROTOCOL_3_CRITERION_MISSING`
+quand un critère du contrat manque à la sortie. **Le contrôle existe, en amont
+du validateur du banc, et il n'a pas déclenché sur cette tentative.**
+
+J'avais d'abord écrit que le banc ne contrôlait pas la complétude, et que c'était
+là le défaut. C'est faux, et je le retire : c'était une hypothèse présentée comme
+un constat. Le contrat scellé `writing-v1-explanatory-analysis 1.0.0` déclare
+bien les trois critères ; la sortie en portait deux ; le statut est VALID. Les
+trois faits tiennent ensemble et je ne sais pas encore comment.
+
+**La question à instruire est donc : pourquoi `PROTOCOL_3_CRITERION_MISSING`
+n'a-t-il pas déclenché ici ?** Ajouter un second contrôle avant de le savoir
+traiterait le symptôme, et un garde dont le test ne l'atteint pas ne vaut pas
+mieux que pas de garde — j'en ai écrit un, son test mourait sur la forme
+d'entrée, je l'ai retiré plutôt que de le livrer.
 
 ### Ce qu'il faut avant la mesure complète
 
-1. **Aligner le validateur du banc sur celui du runtime** : un critère manquant
-   doit rendre la tentative invalide, comme en production. Sinon le banc mesure
-   un système que la production refuserait.
+1. **Comprendre pourquoi le contrôle amont n'a pas déclenché.** Instruit par un
+   regard neuf : `src/lib` est partagé, et je me suis trompé deux fois de suite
+   sur le mécanisme.
 2. **Un oracle de critères omis**, rapporté, pour que le cas se voie même quand
-   il ne casse rien.
-3. Seulement ensuite, la mesure complète de 2.3.0 — sinon 6 USD achètent un
-   chiffre dont on sait déjà qu'il peut flatter.
+   il ne casse rien — et, une fois le point 1 compris, bloquant à zéro livré :
+   une omission livrée à l'apprenant est une note manquante.
+3. Seulement ensuite, les 245 cellules. Le chiffrage est inchangé — borne
+   17,1272 USD, réel attendu ~6,21, ~92 min — mais je ne le recommande pas tant
+   que le point 1 n'est pas répondu.
 
-Le pré-test a coûté **0,6194 USD** et a trouvé une façon dont 2.3.0 pouvait
-paraître réussir tout en régressant. C'était le but.
+Le pré-test a coûté **0,6194 USD** et a arrêté une mesure à 6 USD d'une consigne
+dont un comportement reste inexpliqué. C'était son but.
