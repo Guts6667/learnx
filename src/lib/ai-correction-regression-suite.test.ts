@@ -18,9 +18,14 @@ import {
 } from './ai-correction-regression-gates.js';
 import {
   computeRegressionMetrics,
+  type RegressionCheckerVerdict,
   type RegressionMetrics,
   type RegressionObservation,
 } from './ai-correction-regression-metrics.js';
+import {
+  deriveCriterionConfidence,
+  type CriterionConfidence,
+} from './ai-correction-confidence.js';
 import {
   deriveHeldOutSeed,
   selectHeldOutMutants,
@@ -1462,5 +1467,144 @@ describe('the direction profile reports its own narrowness', () => {
     });
 
     expect(report).not.toContain("Ce run n'achète qu'un oracle");
+  });
+});
+
+/**
+ * A blocking gate must be able to go red (V4.5-210).
+ *
+ * `checker-agreement-at-high` was BLOCKING with a floor of 0.9 and read 1 in
+ * every run — not because the verifier was good, but because it could not read
+ * anything else. `deriveCriterionConfidence` returns LOW as soon as the verifier
+ * disagreed and MEDIUM when it is unavailable, so HIGH implies AGREED and the
+ * metric counts the same criteria on both sides.
+ *
+ * A gate that cannot fail is worse than no gate: it is read as evidence. These
+ * tests pin the tautology so nobody re-promotes it, and pin the comparison that
+ * replaces it.
+ */
+describe('the verifier metrics say what they can say', () => {
+  function observation(input: {
+    confidence: CriterionConfidence;
+    verdict: RegressionCheckerVerdict;
+  }): RegressionObservation {
+    return {
+      caseId: 'c',
+      criteria: [
+        {
+          checkerVerdict: input.verdict,
+          confidence: input.confidence,
+          criterionKey: 'k',
+          levelKey: 'mastered',
+        },
+      ],
+      repetition: 1,
+    };
+  }
+
+  const scales = [
+    {
+      caseId: 'c',
+      criteria: [
+        { criterionKey: 'k', orderedLevelKeys: ['low', 'mid', 'mastered'] },
+      ],
+      expectedCriteria: [{ criterionKey: 'k', levelKey: 'mastered' }],
+    },
+  ];
+
+  it('cannot produce a HIGH criterion the verifier refused', () => {
+    // The tautology, asserted at its source rather than at the metric. Every
+    // input that would make a HIGH criterion carry a DISAGREED verdict returns
+    // LOW instead, so the pair simply cannot occur.
+    for (const isMastered of [true, false]) {
+      expect(
+        deriveCriterionConfidence({
+          citation: 'VERIFIED',
+          evidenceStatus: 'FOUND',
+          hardConstraintMismatch: false,
+          isFloorLevel: false,
+          isMasteredLevel: isMastered,
+          verifier: 'DISAGREED',
+        }),
+      ).toBe('LOW');
+    }
+  });
+
+  it('never produces a HIGH criterion the verifier refused, in a real run', async () => {
+    // The tautology as it actually bites: not in the metric, which would report
+    // less than 1 if fed a hand-made HIGH+DISAGREED pair, but in the pipeline
+    // that can never produce that pair. So on any observation set the runner
+    // built, agreement-at-high is 1 — and reports 1 whatever the verifier did.
+    const { baselines, mutants, metrics } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      // A verifier that refuses everything. If the metric could fall, this run
+      // would make it fall.
+      checker: {
+        verify: async ({ criteria }) => ({
+          costUsd: 0.00002,
+          verdicts: Object.fromEntries(
+            criteria.map((criterion) => [
+              criterion.criterionKey,
+              'DISAGREED' as const,
+            ]),
+          ),
+        }),
+      },
+    });
+
+    for (const observation of [...baselines, ...mutants]) {
+      for (const criterion of observation.criteria) {
+        if (criterion.confidence !== 'HIGH') continue;
+        expect(criterion.checkerVerdict).toBe('AGREED');
+      }
+    }
+
+    // Either every criterion fell to LOW, or the ones that stayed HIGH were
+    // agreed. Both readings say the same thing: this gate cannot go red.
+    const measured = metrics.checkerAgreementAtHigh;
+    if (measured.denominator > 0) expect(measured.rate).toBe(1);
+  });
+
+  it('measures the refusal rate on criteria that are not known wrong', () => {
+    // The baseline that makes the false-agreement rate readable. Without it,
+    // "the verifier disagreed 87 times" reads as vigilance rather than noise.
+    const metrics = computeRegressionMetrics({
+      baselines: [
+        observation({ confidence: 'MEDIUM', verdict: 'DISAGREED' }),
+        observation({ confidence: 'MEDIUM', verdict: 'AGREED' }),
+        observation({ confidence: 'MEDIUM', verdict: 'AGREED' }),
+        observation({ confidence: 'MEDIUM', verdict: 'AGREED' }),
+      ],
+      mutants: [],
+      scales,
+    });
+
+    expect(metrics.checkerRefusalOnOtherCriteria.numerator).toBe(1);
+    expect(metrics.checkerRefusalOnOtherCriteria.denominator).toBe(4);
+  });
+
+  it('excludes the known-wrong criteria from that baseline', async () => {
+    // Otherwise the two rates would share observations, and the false-agreement
+    // rate would be compared against a set containing the very cases it exists
+    // to contrast with.
+    const { baselines, mutants, plan } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      checker: AGREEABLE_CHECKER,
+    });
+    const metrics = computeRegressionMetrics({
+      baselines,
+      mutants,
+      scales: plan.scales,
+    });
+    const delivered = [...baselines, ...mutants].reduce(
+      (total, item) => total + item.criteria.length,
+      0,
+    );
+
+    expect(metrics.checkerFalseAgreeRate.denominator).toBeGreaterThan(0);
+    expect(
+      metrics.checkerRefusalOnOtherCriteria.denominator +
+        metrics.checkerFalseAgreeRate.denominator,
+    ).toBe(delivered);
   });
 });
