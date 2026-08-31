@@ -16,6 +16,8 @@ function payloadFor(overrides: Record<string, unknown> = {}) {
 
 function build(
   options: {
+    /** Ce que le remboursement, désormais dans la transaction, a répondu. */
+    compensated?: boolean;
     enabled?: boolean;
     order?: { id: string; status: string } | null;
     secret?: string | null;
@@ -23,6 +25,7 @@ function build(
   } = {},
 ) {
   const applied: Record<string, unknown>[] = [];
+  const compensated: string[] = [];
   const recorded: Record<string, unknown>[] = [];
   const ports = {
     findOrder: vi.fn(async () =>
@@ -30,21 +33,34 @@ function build(
         ? { id: 'order-1', status: 'PENDING' as const }
         : options.order,
     ),
-    compensateRefund: vi.fn(async () => true),
     recordDelivery: vi.fn(
-      async (input: Record<string, unknown> & { transition?: unknown }) => {
+      async (
+        input: Record<string, unknown> & {
+          compensateRefundForOrderId?: string;
+          transition?: unknown;
+        },
+      ) => {
         recorded.push(input);
         const stored = options.stored ?? true;
-        // One call now carries both (V4.5-199); the harness still separates
-        // them so the assertions keep saying what they meant. A rejected
-        // insert applies nothing — the transaction rolls back, and modelling
-        // it otherwise would let a test pass over a double attribution.
+        // One call now carries all three (V4.5-199, puis V4.5-211 pour le
+        // remboursement) ; le harnais les sépare encore pour que les
+        // assertions disent ce qu'elles voulaient dire. Un insert refusé
+        // n'applique rien — la transaction est annulée, et modéliser
+        // autrement laisserait passer une double attribution.
         if (stored && input.transition) applied.push(input.transition as never);
-        return stored;
+        if (stored && input.compensateRefundForOrderId) {
+          compensated.push(input.compensateRefundForOrderId);
+        }
+        return {
+          stored,
+          ...(input.compensateRefundForOrderId
+            ? { compensated: options.compensated ?? true }
+            : {}),
+        };
       },
     ),
   };
-  return { applied, options, ports, recorded };
+  return { applied, compensated, options, ports, recorded };
 }
 
 function run(
@@ -372,7 +388,7 @@ describe('résolution d’une commande à travers le cycle de vie (V4.5-195)', (
     );
 
     expect(result).toMatchObject({ kind: 'PARTIAL_REFUND' });
-    expect(harness.ports.compensateRefund).not.toHaveBeenCalled();
+    expect(harness.compensated).toEqual([]);
     expect(harness.recorded[0]).toMatchObject({ outcome: 'PARTIAL_REFUND' });
   });
 
@@ -421,10 +437,28 @@ describe('remboursement émis chez le fournisseur (V4.5-203)', () => {
       kind: 'APPLIED',
       status: 'REFUNDED',
     });
-    expect(harness.ports.compensateRefund).toHaveBeenCalledWith({
-      orderId: 'order-1',
+    // Demandé DANS l'enregistrement, pas après lui (V4.5-211) : c'est ce qui
+    // fait tomber le remboursement avec l'événement quand l'un des deux échoue.
+    expect(harness.recorded[0]).toMatchObject({
+      compensateRefundForOrderId: 'order-1',
     });
+    expect(harness.compensated).toEqual(['order-1']);
     expect(harness.applied).toEqual([]);
+  });
+
+  it('ne rembourse rien quand l’enregistrement de l’événement est refusé', async () => {
+    // V4.5-211. Le doublon n'écrit pas l'événement ; il ne doit pas non plus
+    // reprendre des crédits. Avant, le remboursement vivait après la
+    // transaction et pouvait s'exécuter seul.
+    const harness = build({
+      order: { id: 'order-1', status: 'FULFILLED' },
+      stored: false,
+    });
+
+    await expect(run(harness, refundPayload())).resolves.toMatchObject({
+      kind: 'DUPLICATE',
+    });
+    expect(harness.compensated).toEqual([]);
   });
 
   it('enregistre un remboursement partiel et n’applique rien', async () => {
@@ -437,7 +471,7 @@ describe('remboursement émis chez le fournisseur (V4.5-203)', () => {
     await expect(
       run(harness, refundPayload({ amount_refunded: 500 })),
     ).resolves.toMatchObject({ kind: 'PARTIAL_REFUND' });
-    expect(harness.ports.compensateRefund).not.toHaveBeenCalled();
+    expect(harness.compensated).toEqual([]);
     expect(harness.applied).toEqual([]);
   });
 
@@ -455,8 +489,10 @@ describe('remboursement émis chez le fournisseur (V4.5-203)', () => {
   });
 
   it('ne compense pas deux fois quand la commande était déjà réglée', async () => {
-    const harness = build({ order: { id: 'order-1', status: 'FULFILLED' } });
-    harness.ports.compensateRefund.mockResolvedValue(false);
+    const harness = build({
+      compensated: false,
+      order: { id: 'order-1', status: 'FULFILLED' },
+    });
 
     await expect(run(harness, refundPayload())).resolves.toMatchObject({
       kind: 'OUT_OF_ORDER',

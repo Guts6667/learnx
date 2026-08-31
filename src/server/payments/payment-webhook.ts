@@ -63,6 +63,13 @@ export interface WebhookPorts {
    * stayed paid and uncredited, with nothing failing.
    */
   recordDelivery(input: {
+    /**
+     * Rembourse la commande dans CETTE transaction (V4.5-211), au lieu de la
+     * rembourser après coup. `compensated` dit ce qui s'est passé : false
+     * quand la commande était déjà réglée — un administrateur a devancé la
+     * livraison, ou une réémission.
+     */
+    compensateRefundForOrderId?: string;
     eventType: string;
     orderId: string | null;
     outcome: StoredWebhookOutcome;
@@ -74,7 +81,7 @@ export interface WebhookPorts {
       paymentIntentId: string | null;
       status: PaymentOrderStatus;
     };
-  }): Promise<boolean>;
+  }): Promise<{ compensated?: boolean; stored: boolean }>;
   /**
    * Resolves an event to an order. The payment intent is tried first because
    * it is the handle a charge or a dispute carries; the reference and the
@@ -87,21 +94,6 @@ export interface WebhookPorts {
     /** Theirs: what `providerOrderId` holds, a Checkout session id. */
     providerOrderId: string | null;
   }): Promise<{ id: string; status: PaymentOrderStatus } | null>;
-  /**
-   * Compensates a fully refunded order (V4.5-203): the REFUND ledger entry and
-   * the order's figures, together. Returns false when the order had already
-   * been settled — two deliveries, or an administrator who got there first.
-   *
-   * Not folded into `recordDelivery` like the other transitions: it is not a
-   * status change that happens to write a ledger entry — the entry is the
-   * point, and the refund service sets the status while writing it, in its
-   * own transaction. Joining ours would mean parameterising that service,
-   * which is the path an administrator uses too (V4.5-211). Until then this
-   * one write still outlives a failed record; it is safe because the refund
-   * path is idempotent three times over — conditional status update, ledger
-   * key `refund:<order>`, and the `creditLotId` guard.
-   */
-  compensateRefund(input: { orderId: string }): Promise<boolean>;
 }
 
 interface WebhookEnvelope {
@@ -267,17 +259,25 @@ export async function handlePaymentWebhook(input: {
   // harmless, and the record of what arrived still exists for events we act on
   // in no way — but the transition no longer outlives a failed insert, nor the
   // insert a failed transition.
+  //
+  // Le remboursement rejoint cette transaction (V4.5-211). Il s'exécutait
+  // après elle : quand il échouait, l'événement restait enregistré et la
+  // réémission de Stripe était écartée comme doublon. Argent rendu chez le
+  // fournisseur, crédits jamais repris, rien qui échoue bruyamment.
+  const refunding =
+    resolution.outcome === 'APPLIED' && resolution.incoming === 'REFUNDED';
   const stored = await input.ports.recordDelivery({
     eventType: envelope.event,
     orderId: order?.id ?? null,
     outcome: resolution.outcome,
     payload: JSON.parse(input.rawPayload),
     providerEventId: envelope.event_id,
+    ...(refunding ? { compensateRefundForOrderId: resolution.order.id } : {}),
     ...(transition && applied
       ? { transition: { ...transition, status: applied } }
       : {}),
   });
-  if (!stored) return { kind: 'DUPLICATE', providerEventId };
+  if (!stored.stored) return { kind: 'DUPLICATE', providerEventId };
   if (resolution.outcome !== 'APPLIED') {
     return { kind: resolution.outcome, providerEventId };
   }
@@ -287,12 +287,9 @@ export async function handlePaymentWebhook(input: {
   // while writing it, conditionally, so a second delivery settles nothing twice
   // (V4.5-203).
   if (resolution.incoming === 'REFUNDED') {
-    const compensated = await input.ports.compensateRefund({
-      orderId: resolution.order.id,
-    });
     // Already settled — an administrator got there first, or a redelivery did.
     // Not an error, and nothing more to do.
-    if (!compensated) return { kind: 'OUT_OF_ORDER', providerEventId };
+    if (!stored.compensated) return { kind: 'OUT_OF_ORDER', providerEventId };
 
     return {
       attributed: false,
