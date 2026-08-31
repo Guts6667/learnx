@@ -211,6 +211,41 @@ test('app — credits', async ({ page }) => {
   await expect(page).toHaveScreenshot('credits.png', { fullPage: true });
 });
 
+/**
+ * L'écran Profil (V4.5-168).
+ *
+ * Il n'avait aucune référence visuelle, et il porte depuis peu la case de
+ * consentement à la réutilisation — un élément à portée RGPD. Quatre tests
+ * unitaires vérifient ce qu'il fait ; aucun ne dit à quoi il ressemble, et
+ * « Visual baselines au vert » ne voulait donc rien dire pour cette surface.
+ *
+ * Capturée décochée, l'état par défaut : c'est celui qu'un apprenant voit sans
+ * rien faire, et le défaut est ici la décision — un consentement se donne, il
+ * ne se déduit pas d'un silence. La description est la même dans les deux
+ * états, donc une seconde capture cochée n'ajouterait que la coche.
+ *
+ * Pleine page plutôt que cadrée sur la case : le reste de l'écran n'a pas
+ * davantage de référence, et une capture qui s'arrête au bloc consentement
+ * laisserait le voisinage — c'est-à-dire ce qui peut le pousser hors de l'écran
+ * — sans surveillance.
+ */
+test('app — profile', async ({ page }) => {
+  await signIn(page);
+  await page.goto('/profile');
+  // Le titre de niveau 1 est le nom affiché du compte, pas un libellé fixe :
+  // on l'attend par son rôle, sans figer un nom que la fixture décide.
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  // La case, nommée : sans cette attente la capture pourrait partir avant que
+  // la session porte le consentement, et figer un écran incomplet en référence.
+  await expect(
+    page.getByLabel(
+      'Autoriser la conservation de mes textes après le détachement',
+    ),
+  ).toBeVisible();
+  await settle(page);
+  await expect(page).toHaveScreenshot('profile.png', { fullPage: true });
+});
+
 test('app — notes', async ({ page }) => {
   await signIn(page);
   await page.goto('/notes');
