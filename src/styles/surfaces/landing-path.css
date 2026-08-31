@@ -7,10 +7,6 @@
  * receives the approved V4.2 visual treatment.
  */
 
-.landing-page {
-  background: var(--color-canvas);
-}
-
 .landing-page .landing-header {
   background: color-mix(in srgb, var(--color-surface) 92%, transparent);
   backdrop-filter: blur(1rem);
