@@ -27,8 +27,13 @@ const benchmarkAttemptOutputSchema = z.union([
 /**
  * Les motifs de retrait d'un critère, un par branche de rejet du rattrapage
  * (V4.5-177). Nommés séparément à dessein : voir `withdrawnCriteria`.
+ *
+ * Le schéma reste privé au module : seul le type sort, parce que c'est tout ce
+ * que le rattrapage a besoin de nommer. Les gates de la Recherche liront la
+ * valeur depuis l'artefact déjà validé ; le jour où l'un d'eux a besoin du
+ * schéma lui-même, il l'exportera avec son usage plutôt qu'en avance.
  */
-export const criterionWithdrawalReasonSchema = z.enum([
+const criterionWithdrawalReasonSchema = z.enum([
   /** Le critère est absent de la sortie du modèle. */
   'CRITERION_ABSENT',
   /** Champs mal typés, ou `levelKey` / `evidenceStatus` inconnu. */
