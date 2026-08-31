@@ -63,7 +63,7 @@ describe('ProfilePage — consentement de réutilisation', () => {
     });
 
     const checkbox = await screen.findByRole('checkbox', {
-      name: /Autoriser la réutilisation de mes corrections détachées/,
+      name: /Autoriser la conservation de mes textes après le détachement/,
     });
     expect(checkbox).not.toBeChecked();
   });
@@ -76,12 +76,12 @@ describe('ProfilePage — consentement de réutilisation', () => {
     });
 
     expect(
-      await screen.findByText(/Sans cette autorisation, ils sont supprimés/),
+      await screen.findByText(/Case décochée : ils sont supprimés/),
     ).toBeInTheDocument();
     // Pseudonymisation, jamais anonymat : un texte libre peut désigner son
     // auteur, et le dire est une obligation, pas une nuance.
     expect(
-      screen.getByText(/c’est une pseudonymisation, pas un anonymat/),
+      screen.getByText(/C’est une pseudonymisation, pas un anonymat/),
     ).toBeInTheDocument();
   });
 
@@ -94,7 +94,7 @@ describe('ProfilePage — consentement de réutilisation', () => {
 
     fireEvent.click(
       await screen.findByRole('checkbox', {
-        name: /Autoriser la réutilisation de mes corrections détachées/,
+        name: /Autoriser la conservation de mes textes après le détachement/,
       }),
     );
 
@@ -112,7 +112,7 @@ describe('ProfilePage — consentement de réutilisation', () => {
     // La case suit désormais l'état que le SERVEUR a renvoyé.
     expect(
       screen.getByRole('checkbox', {
-        name: /Autoriser la réutilisation de mes corrections détachées/,
+        name: /Autoriser la conservation de mes textes après le détachement/,
       }),
     ).toBeChecked();
   });
@@ -128,7 +128,7 @@ describe('ProfilePage — consentement de réutilisation', () => {
 
     fireEvent.click(
       await screen.findByRole('checkbox', {
-        name: /Autoriser la réutilisation de mes corrections détachées/,
+        name: /Autoriser la conservation de mes textes après le détachement/,
       }),
     );
 
@@ -140,7 +140,7 @@ describe('ProfilePage — consentement de réutilisation', () => {
     expect(screen.queryByText('Choix enregistré.')).not.toBeInTheDocument();
     expect(
       screen.getByRole('checkbox', {
-        name: /Autoriser la réutilisation de mes corrections détachées/,
+        name: /Autoriser la conservation de mes textes après le détachement/,
       }),
     ).not.toBeChecked();
   });

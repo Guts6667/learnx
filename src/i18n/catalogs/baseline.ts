@@ -15,11 +15,17 @@
  * le REFUS entraîne — les textes supprimés plutôt que conservés sous
  * pseudonyme — parce qu'un défaut silencieux se lirait comme une absence de
  * décision. 1156 → 1161 clés.
+ *
+ * Libellé et description réécrits par le Head of UX/UI avant fusion : l'ancien
+ * intitulé nommait la mauvaise chose. Le détachement a lieu dans les deux cas ;
+ * la case ne commande que la survie des textes. Un consentement dont
+ * l'intitulé désigne autre chose que ce qu'il autorise est fragile. Aucune clé
+ * ajoutée — seules les empreintes bougent.
  */
 export const messageCatalogBaseline = {
   keyCount: 1161,
   sha256: {
-    en: 'b520b751ac973986f80914e26f950bbba078c74f4f7e2cad971137a5b6ab5cb4',
-    fr: '10d70a250f817d58a0ad8edcb30791691ddaf6b394ab84fa61ef08dad51d8fad',
+    en: '37e65a3b4fca1cbe98f83f393a80cb7485a946c9784d0241bc173f57bbcac71d',
+    fr: 'e828e2d2c894ea1bd329dad5e9321a01a8ae6970f2ef7935ef31067a4eabe317',
   },
 } as const;
