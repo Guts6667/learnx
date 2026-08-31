@@ -35,7 +35,7 @@ describe('catalogue public', () => {
       // including the rate and the bonus (V4.5-212). No `purchasable` — there
       // is no account here to evaluate it against.
       correctionQuoteCredits: '30',
-      correctionReservationCredits: '45',
+      correctionReservationCredits: '41',
       packs: [
         {
           approximateCorrections: '3',
@@ -74,7 +74,7 @@ describe('catalogue public', () => {
 
     await expect(response.json()).resolves.toEqual({
       correctionQuoteCredits: '30',
-      correctionReservationCredits: '45',
+      correctionReservationCredits: '41',
       packs: [],
     });
   });

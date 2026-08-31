@@ -66,7 +66,7 @@ function defaultResponse(path: string): Response {
   if (path === '/api/credits/packs')
     return jsonResponse({
       correctionQuoteCredits: '30',
-      correctionReservationCredits: '45',
+      correctionReservationCredits: '41',
       packs: [],
       paymentsEnabled: true,
     });
@@ -472,7 +472,7 @@ describe('CreditsPage — achat de crédits', () => {
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
-          correctionReservationCredits: '45',
+          correctionReservationCredits: '41',
           packs: [pack],
           paymentsEnabled: true,
         }),
@@ -518,7 +518,7 @@ describe('CreditsPage — achat de crédits', () => {
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
-          correctionReservationCredits: '45',
+          correctionReservationCredits: '41',
           packs: [pack],
           paymentsEnabled: true,
         }),
@@ -611,7 +611,7 @@ describe('CreditsPage — achat de crédits', () => {
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
-          correctionReservationCredits: '45',
+          correctionReservationCredits: '41',
           packs: [pack],
           paymentsEnabled: false,
         }),
@@ -655,7 +655,7 @@ describe('CreditsPage — achat de crédits', () => {
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
-          correctionReservationCredits: '45',
+          correctionReservationCredits: '41',
           packs: [pack],
           paymentsEnabled: saleOpen,
         }),
@@ -700,7 +700,7 @@ describe('CreditsPage — achat de crédits', () => {
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
-          correctionReservationCredits: '45',
+          correctionReservationCredits: '41',
           packs: [pack],
           paymentsEnabled: true,
         }),
@@ -736,7 +736,7 @@ describe('CreditsPage — achat de crédits', () => {
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
-          correctionReservationCredits: '45',
+          correctionReservationCredits: '41',
           packs: [pack],
           paymentsEnabled: true,
         }),
@@ -819,7 +819,7 @@ describe('CreditsPage — achat de crédits', () => {
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
-          correctionReservationCredits: '45',
+          correctionReservationCredits: '41',
           packs: [pack],
           paymentsEnabled: true,
         }),

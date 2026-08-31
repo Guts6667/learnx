@@ -115,7 +115,7 @@ test('n’offre aucun achat quand la vente est fermée, et le dit', async ({
         // VÉRIFIE le catalogue, donc un palier amputé d'un champ dérivé ne
         // rend pas « vente fermée », il rend l'état d'erreur.
         correctionQuoteCredits: '30',
-        correctionReservationCredits: '45',
+        correctionReservationCredits: '41',
         packs: [
           {
             credits: '100',

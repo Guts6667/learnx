@@ -138,6 +138,25 @@ describe('chiffres servis plutôt que calculés par l’écran (V4.5-212)', () =
   it('énonce le devis et la réservation une seule fois', () => {
     // La note partagée sous la grille les cite littéralement.
     expect(CORRECTION_QUOTE_CREDITS).toBe(30n);
-    expect(CORRECTION_RESERVATION_CREDITS).toBe(45n);
+    expect(CORRECTION_RESERVATION_CREDITS).toBe(41n);
+  });
+
+  it('dérive le plafond de réservation de la méthode publiée, pas d’un chiffre choisi', () => {
+    // 45 et 41 venaient du même registre : l'écart était deux définitions de
+    // percentile non déclarées, pas une erreur de calcul (V4.5-164). Le
+    // rapport publié dans `measured-costs.v2.json` sous nearest-rank, doublons
+    // exclus, est le seul chemin vers ce plafond — et ce test échoue si
+    // quelqu'un ramène le nombre sans ramener la méthode.
+    const ratioP90OverP50 = 1.3645;
+    const derived = BigInt(
+      Math.ceil(Number(CORRECTION_QUOTE_CREDITS) * ratioP90OverP50),
+    );
+
+    expect(derived).toBe(CORRECTION_RESERVATION_CREDITS);
+    // Et le plafond retenu reste au-dessus du devis : réserver moins que ce
+    // qu'on annonce laisserait une correction commencer sans pouvoir se payer.
+    expect(CORRECTION_RESERVATION_CREDITS).toBeGreaterThan(
+      CORRECTION_QUOTE_CREDITS,
+    );
   });
 });
