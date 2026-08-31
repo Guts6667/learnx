@@ -85,7 +85,8 @@ const modelOutput = {
         quoteFromTaskContext,
       ],
       evidenceStatus: 'FOUND',
-      feedback: 'La production relie la proximité de la légende à la réduction des erreurs.',
+      feedback:
+        'La production relie la proximité de la légende à la réduction des erreurs.',
       levelKey: 'mastered',
     },
     'uncertainty-boundary': {
@@ -95,7 +96,8 @@ const modelOutput = {
         'Sans essai sur un nouveau groupe, la généralisation reste inconnue.',
       ],
       evidenceStatus: 'FOUND',
-      feedback: 'La réponse sépare observation, inférence et généralisation non testée.',
+      feedback:
+        'La réponse sépare observation, inférence et généralisation non testée.',
       levelKey: 'mastered',
     },
   },
@@ -120,11 +122,9 @@ describe('V4.5-177 — le critère perdu du pré-test 2.3.0', () => {
       contract,
       output: modelOutput,
     });
-    expect(canonical.criteria.map((criterion) => criterion.criterionKey)).toEqual([
-      'source-fidelity',
-      'mechanism-link',
-      'uncertainty-boundary',
-    ]);
+    expect(
+      canonical.criteria.map((criterion) => criterion.criterionKey),
+    ).toEqual(['source-fidelity', 'mechanism-link', 'uncertainty-boundary']);
   });
 
   it('la validation stricte rejette sur la citation, pas sur une absence', () => {
