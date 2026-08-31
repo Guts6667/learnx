@@ -1,11 +1,15 @@
 # Calibration économique et proposition tarifaire V4.5
 
 - **Statut** : `OWNER_VALIDATED_PRICES_NOT_ACTIVATED` (V4.5-007 / ticket V4.5-164)
-- **Version** : 1.1.0
+- **Version** : 1.2.0
 - **Date** : 31 août 2026
 - **Révision 1.1.0** : qualification fiscale arbitrée (BNC), ACRE et versement
   libératoire écartés, taux de prélèvements porté de 28,00 % à 33,06 %. Les prix,
   la parité et le plafond de réservation sont inchangés.
+- **Révision 1.2.0** : plafond de réservation ramené de 45 à **41 crédits** après
+  réconciliation avec la voie AI Research. La distribution de coût provient
+  désormais de `measured-costs.v2`, source unique, avec sa méthode de percentile
+  déclarée. Les prix et la parité sont inchangés.
 - **Owner** : Finance & Pricing
 - **Reviewer** : Rayan
 - **Portée** : achat ponctuel de crédits par les early adopters, correction
@@ -82,22 +86,34 @@ enregistrements tous en `costSource: ACTUAL`, dont 288 appels primaires et 209
 appels vérificateur, pour `6,481027649999997 USD` au total et zéro appel non
 réconcilié.
 
-La distribution par correction est reconstruite en regroupant les
-enregistrements primaires par cellule et en ne conservant qu'un enregistrement
-par numéro de tentative — une correction ne peut porter qu'une tentative
-initiale et au plus une reprise ; tout enregistrement supplémentaire est une
-relance en double de l'outillage de répétitions, et n'est pas un coût de
-production.
+La distribution est celle arrêtée avec la voie AI Research le 31 août 2026 et
+publiée par `benchmarks/ai-correction/regression/measured-costs.v2.json`, qui en
+devient la **source unique** dès la fusion de la PR #177. La méthode est
+reproduite ci-dessous pour que ce document reste vérifiable seul, mais elle n'est
+plus recalculée ici : en cas d'écart, c'est `measured-costs.v2` qui fait foi.
 
-| Distribution                | Médiane      | P75      | P90      | Maximum  |
-| --------------------------- | ------------ | -------- | -------- | -------- |
-| Primaire, par correction    | 0,021828     | 0,023998 | 0,032591 | 0,056868 |
-| Vérificateur, par appel     | 0,0010972    | —        | 0,0012771 | 0,0015807 |
-| **Workflow logique complet** | **0,022925** | 0,025105 | 0,033868 | 0,058449 |
+**Méthode, déclarée.** Une correction est une cellule
+`(caseId, candidateId, repetition)` ; son coût est la somme de ses tentatives,
+une tentative initiale et au plus une reprise. Un même numéro de tentative
+apparaissant deux fois dans une cellule est une relance en double de
+l'outillage de répétitions : le second enregistrement est un appel réel, mais il
+n'appartient pas à la correction livrée, et il est exclu. Le percentile est pris
+en **rang le plus proche** — sur l'échantillon trié, le percentile `p` est la
+valeur de rang `plafond(p × n)`, sans interpolation. Un percentile sans méthode
+déclarée n'est pas un chiffre : c'est ce qui a produit la divergence corrigée en
+1.2.0.
 
-En dollars, sur 216 corrections primaires et 209 appels vérificateur. Le
-vérificateur pèse **5,07 %** du coût primaire. Le P90 du workflow additionne le
-P90 primaire et le P90 vérificateur : l'approximation va dans le sens prudent.
+| Distribution                 | Médiane      | P75      | P90      | Maximum  |
+| ---------------------------- | ------------ | -------- | -------- | -------- |
+| Primaire, par correction     | 0,021801     | 0,024129 | 0,029748 | 0,056868 |
+| Vérificateur, par appel      | 0,0011075    | —        | —        | —        |
+| **Workflow logique complet** | **0,022908** | 0,025236 | 0,030855 | 0,057975 |
+
+En dollars, sur **240 corrections** et 209 appels vérificateur. Le vérificateur
+pèse **5,08 %** de la médiane primaire par correction. Il est ajouté à sa moyenne
+par appel, une correction neuve en appelant exactement un ; ce n'est pas le
+rapport des dépenses totales du run, qui vaut 3,70 %, 209 appels ayant servi
+240 corrections par réutilisation de verdicts déjà achetés.
 
 ### Chargement
 
@@ -105,16 +121,16 @@ Les paramètres économiques déjà retenus par LearnX sont appliqués séparém
 approvisionnement OpenRouter `×1,055`, TVA non récupérable `×1,20`, coussin de
 change `×1,03`, facteur cumulé `×1,30398`.
 
-| Poste                          | Médiane      |
-| ------------------------------ | ------------ |
-| Coût fournisseur du workflow   | 0,022925     |
-| + approvisionnement 5,5 %      | +0,001261    |
-| + TVA non récupérable 20 %     | +0,004837    |
-| + coussin de change 3 %        | +0,000871    |
-| **Coût chargé final**          | **0,029894** |
+| Poste                         | Médiane      |
+| ----------------------------- | ------------ |
+| Coût fournisseur du workflow  | 0,022908     |
+| + approvisionnement 5,5 %     | +0,001260    |
+| + TVA non récupérable 20 %    | +0,004834    |
+| + coussin de change 3 %       | +0,000870    |
+| **Coût chargé final**         | **0,029872** |
 
-Coût chargé au P75 : `0,032737`. Au P90 : `0,044163`. Maximum observé :
-`0,076216`.
+Coût chargé au P75 : `0,032908`. Au P90 : `0,040235`. Maximum observé :
+`0,075599`.
 
 Aucune conversion USD/EUR datée n'est appliquée : les montants sont des
 USD-équivalents à la parité prudente `1 USD = 1 EUR`. Sur une plage de change
@@ -263,20 +279,48 @@ grossière, la différence entre le plafond réservé et le prix réglé dispara
 dans l'arrondi.
 
 - **Prix d'une correction : 30 crédits**, soit 0,30 €.
-- **Plafond de réservation : 45 crédits**, soit 0,45 €.
+- **Plafond de réservation : 41 crédits**, soit 0,41 €.
 
-Le plafond n'est pas un arrondi de confort. Le rapport entre le P90 et la
-médiane du coût chargé par correction vaut `0,044163 / 0,029894 = 1,4773` ;
-`30 × 1,4773 = 44,3`, arrondi au crédit supérieur.
+Le plafond dérive du rapport entre le P90 et la médiane du coût chargé par
+correction. Sur les 240 cellules du run, ce rapport vaut
+`0,040235 / 0,029872 = 1,3469`, et `30 × 1,3469 = 40,4`, arrondi au crédit
+supérieur : **41 crédits**.
+
+Il est **stable sous trois constructions**, ce qui est la raison de le figer :
+1,3645 sur le modèle primaire seul, 1,3469 sur le workflow avec le vérificateur
+à sa moyenne, 1,3471 avec le vérificateur à sa médiane. Les trois donnent 41.
+Ajouter au primaire une quasi-constante — le vérificateur — comprime le rapport,
+de sorte que sa prise en compte ne peut que faire baisser le plafond, jamais le
+monter.
+
+### 41 contient un choix, pas seulement une mesure
+
+Les 240 cellules incluent celles qui n'ont produit aucun résultat exploitable.
+Or une correction ratée n'est jamais réglée : la doctrine de libération rend
+l'intégralité de la réservation. Le plafond gouverne donc **les corrections
+livrées**, et la série principielle est celle des 231 cellules ayant produit une
+tentative valide. Sur cette série le rapport vaut 1,2195 et le plafond
+**37 crédits**.
+
+**41 est retenu : c'est 37 plus une marge délibérée de 4 crédits.** Cette marge
+a un bénéficiaire, et il faut l'écrire. Elle protège LearnX du transfert de coût
+que provoquerait un plafond trop étroit, et elle est payée par l'apprenant, dont
+le solde est retenu à hauteur de 41 crédits au lieu de 37 pendant l'exécution.
+Sur un devis de 30 crédits, l'écart est de quatre centimes, immobilisés le temps
+d'une correction et libérés au règlement. Le choix est défendable ; il n'est pas
+neutre, et il ne doit pas être relu comme une nécessité technique.
+
+Chiffres et méthode arrêtés avec la voie AI Research le 31 août 2026 ; les deux
+documents publient la même distribution et la même dérivation.
 
 Mécanique de règlement :
 
 ```
-devis affiché          : 30 crédits — plafond : 45 crédits
-réservation            : 45 crédits
-règlement              : min(45, arrondi_supérieur(30 × coût_réel / coût_médian))
-libération             : 45 − règlement, immédiatement
-résultat inutilisable  : règlement 0, libération 45, coût fournisseur absorbé
+devis affiché          : 30 crédits — plafond : 41 crédits
+réservation            : 41 crédits
+règlement              : min(41, arrondi_supérieur(30 × coût_réel / coût_médian))
+libération             : 41 − règlement, immédiatement
+résultat inutilisable  : règlement 0, libération 41, coût fournisseur absorbé
 ```
 
 La dernière ligne applique la doctrine argent réaffirmée par l'addendum du
@@ -296,17 +340,17 @@ Validés par le Propriétaire le 31 août 2026. Non activés.
 | Crédits par euro               | 100       | 110      | 125      |
 | Prix affiché par correction    | 0,30 €    | 0,27 €   | 0,24 €   |
 | Capacité médiane annoncée      | 10        | 29       | 66       |
-| Capacité prudente au plafond   | 6         | 19       | 44       |
+| Capacité prudente au plafond   | 7         | 21       | 48       |
 | Frais Stripe, carte EEE        | 0,295 €   | 0,370 €  | 0,490 €  |
 | Prélèvements micro, 33,06 %    | 0,992 €   | 2,645 €  | 5,290 €  |
-| Coût d'exécution couvert       | 0,359 €   | 1,052 €  | 2,392 €  |
+| Coût d'exécution couvert       | 0,358 €   | 1,051 €  | 2,390 €  |
 | Provisions, 3 %                | 0,090 €   | 0,240 €  | 0,480 €  |
-| **Contribution disponible**    | **1,264 €** | **3,693 €** | **7,348 €** |
+| **Contribution disponible**    | **1,265 €** | **3,694 €** | **7,351 €** |
 
 Coût d'exécution et contribution calculés bonus early adopter inclus et
 consommation intégrale supposée, au taux de prélèvements retenu de 33,06 %
-(§6). Le coût d'exécution du palier Parcours corrige une erreur de la version
-1.0.0, qui portait 1,036 € au lieu de 1 056 crédits / 30 × 0,029894 = 1,052 €.
+(§6), et sur le coût chargé médian de 0,029872 € du §4. La capacité prudente est
+calculée au plafond de 41 crédits.
 
 Deux règles accompagnent la grille :
 
@@ -323,7 +367,7 @@ Un **bonus unique de 20 % en crédits**, jamais une remise sur le prix. Les deux
 manières d'accorder le même avantage sur le palier Parcours ne coûtent pas la
 même chose :
 
-- **bonus** : 176 crédits supplémentaires, soit 5,87 corrections à 0,029894 € de
+- **bonus** : 176 crédits supplémentaires, soit 5,87 corrections à 0,029872 € de
   coût chargé, donc **0,175 €** ;
 - **remise** : pour porter la contrepartie à 132 crédits par euro sans donner de
   crédits, il faut vendre les 880 crédits 6,67 € au lieu de 8,00 €, donc
@@ -353,9 +397,9 @@ conditions générales de vente et être affichées avant l'achat.
 | Favorable                         | 54,1 %    | 58,4 %   | 58,8 % |
 | Probable à court terme            | 51,4 %    | 55,6 %   | 55,7 % |
 | **Retenu**                        | **44,1 %** | **48,4 %** | **48,4 %** |
-| Défavorable                       | 36,5 %    | 40,7 %   | 40,6 % |
-| Retenu, bonus early adopter inclus | 42,1 %   | 46,2 %   | 45,9 % |
-| Défavorable, bonus inclus         | 34,4 %    | 38,3 %   | 37,9 % |
+| Défavorable                       | 36,5 %    | 40,6 %   | 40,5 % |
+| Retenu, bonus early adopter inclus | 42,2 %   | 46,2 %   | 45,9 % |
+| Défavorable, bonus inclus         | 34,3 %    | 38,2 %   | 37,8 % |
 
 Définition des scénarios :
 
@@ -388,7 +432,7 @@ recalcul.
 
 La cible nominale de 40 % est tenue partout en scénario retenu, bonus early
 adopter compris, et sur les deux paliers hauts en scénario défavorable. Le
-palier Démarrage descend à 36,5 % dans le pire cas, 34,4 % avec le bonus — c'est
+palier Démarrage descend à 36,5 % dans le pire cas, 34,3 % avec le bonus — c'est
 le coût assumé d'un ticket d'entrée accessible, et il reste très au-dessus du
 minimum acceptable de 25 %.
 
@@ -498,7 +542,7 @@ Montants arrondis au millième.
 | ------------------------------- | ----------- | --------------------- |
 | Frais Stripe                    | 0,046 €     | non, déjà prélevé     |
 | Réserve sociale et fiscale      | 0,331 €     | non, dette exigible   |
-| Réserve d'exécution             | 0,132 €     | non, service à livrer |
+| Réserve d'exécution             | 0,131 €     | non, service à livrer |
 | Réserve d'incidents             | 0,030 €     | non, aléa provisionné |
 | **Marge réellement disponible** | **0,461 €** | oui                   |
 
@@ -548,11 +592,21 @@ base de TVA, ou changement du traitement de la TVA sur les achats OpenRouter.
 
 ## 16. Reproductibilité
 
-Tous les chiffres du §4 se recalculent depuis
+Les chiffres du §4 se recalculent depuis
 `benchmarks/ai-correction/regression/results/2026-08-30T22-21-08-937Z/ledger.jsonl`
-en regroupant les enregistrements du modèle primaire par `caseId` et en ne
-conservant qu'un enregistrement par valeur de `attempt`. Les artefacts de
+selon la méthode déclarée au §4 : cellule `(caseId, candidateId, repetition)`,
+un enregistrement par valeur d'`attempt`, coût de la correction égal à la somme
+de ses tentatives, percentile en rang le plus proche. Ils sont identiques à ceux
+de `measured-costs.v2`, qui porte la même méthode. Les artefacts de
 `benchmarks/` sont en ajout seul et ne doivent pas être modifiés.
+
+La version 1.1.0 publiait une distribution primaire différente — P90 0,032591
+sur 216 corrections — qui n'est reproductible sous **aucune** des six
+définitions testées contre ce registre. Le n de 216 correspond aux cellules
+exemptes de doublon, mais cette série donne 0,029982, et non 0,032591. Elle est
+retirée, pas corrigée : elle faisait autorité sans méthode déclarée, ce qui est
+exactement le défaut que la voie AI Research a mis au jour. Un percentile sans
+méthode n'est pas un chiffre.
 
 Les tarifs Stripe et les taux sociaux et fiscaux proviennent de sources
 publiques externes, datées au §5 et au §6, et ne sont pas reproductibles depuis
