@@ -1,13 +1,15 @@
 import { navigate as route } from '@/app/navigation';
-import type { FormEvent } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Checkbox } from '@/components/ui/Checkbox';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SelectField } from '@/components/ui/SelectField';
 import { Section } from '@/components/ui/Section';
 import {
+  useCorrectionReuseConsentMutation,
   useLocaleMutation,
   useLogoutMutation,
   useSessionQuery,
@@ -19,8 +21,10 @@ export function ProfilePage() {
   const sessionQuery = useSessionQuery();
   const logoutMutation = useLogoutMutation();
   const localeMutation = useLocaleMutation();
+  const reuseConsentMutation = useCorrectionReuseConsentMutation();
   const { locale, setLocale, t } = useI18n();
   const [savedLocale, setSavedLocale] = useState<UiLocale>();
+  const [consentSaved, setConsentSaved] = useState(false);
   const user = sessionQuery.data?.user;
 
   async function handleLogout() {
@@ -45,6 +49,20 @@ export function ProfilePage() {
       }
     } catch {
       setLocale(previousLocale);
+    }
+  }
+
+  async function handleReuseConsentChange(
+    event: ChangeEvent<HTMLInputElement>,
+  ) {
+    const consent = event.currentTarget.checked;
+    setConsentSaved(false);
+    try {
+      await reuseConsentMutation.mutateAsync(consent);
+      setConsentSaved(true);
+    } catch {
+      // La session n'est pas modifiée : la case reprend la valeur enregistrée,
+      // jamais celle que le clic espérait.
     }
   }
 
@@ -96,6 +114,35 @@ export function ProfilePage() {
             {savedLocale === locale ? (
               <p className="ui-text-success mt-2 text-sm" role="status">
                 {t('profile.languageSaved')}
+              </p>
+            ) : null}
+          </Section>
+          <Section className="px-5 sm:px-6">
+            <h3 className="mb-3 text-base font-medium">
+              {t('profile.reuseConsentTitle')}
+            </h3>
+            {/*
+              V4.5-168. Décoché par défaut, et le défaut EST la décision : un
+              consentement se donne, il ne se déduit pas d'un silence. La
+              description dit ce que « non » entraîne, parce qu'un refus a lui
+              aussi une conséquence — le texte est supprimé plutôt que gardé.
+            */}
+            <Checkbox
+              checked={user.correctionReuseConsent ?? false}
+              description={t('profile.reuseConsentDescription')}
+              disabled={reuseConsentMutation.isPending}
+              error={
+                reuseConsentMutation.error
+                  ? t('profile.reuseConsentError')
+                  : undefined
+              }
+              id="profile-reuse-consent"
+              label={t('profile.reuseConsentLabel')}
+              onChange={handleReuseConsentChange}
+            />
+            {consentSaved ? (
+              <p className="ui-text-success mt-2 text-sm" role="status">
+                {t('profile.reuseConsentSaved')}
               </p>
             ) : null}
           </Section>

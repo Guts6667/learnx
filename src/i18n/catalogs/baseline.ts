@@ -4,6 +4,10 @@
  * Elle ne se met à jour qu'avec la raison du changement, pour qu'une clé
  * ajoutée reste une décision lisible et non un chiffre qu'on réaligne.
  *
+ * Piège à connaître : le message d'échec de `pnpm i18n:check` interpole
+ * l'empreinte qu'il vient de CALCULER, pas celle qui est stockée ici. Le
+ * chiffre qu'il affiche est donc la nouvelle valeur, pas la référence.
+ *
  * 31 août 2026 (V4.5-177) — une clé ajoutée, `aiCorrection.toCheckEvidenceOutsideAnswer`.
  * Un critère dont l'extrait cité ne provenait pas de la copie de l'apprenant
  * est désormais livré en « à vérifier » au lieu d'être retiré en silence, et
@@ -21,11 +25,22 @@
  * septième, `credits.purchase.refusalEntryTierAlreadyPurchased`, dit le refus
  * 409 du palier limité à un achat par compte.
  * 1157 → 1164 clés.
+ *
+ * 31 août 2026 (V4.5-168) — cinq clés ajoutées, `profile.reuseConsent*`.
+ * Seconde moitié du consentement de réutilisation : le schéma et la règle de
+ * détachement existaient déjà, mais rien ne permettait à l'apprenant de donner
+ * ou de retirer le consentement qu'ils lisent. La description dit aussi ce que
+ * le REFUS entraîne — les textes supprimés plutôt que conservés sous
+ * pseudonyme — parce qu'un défaut silencieux se lirait comme une absence de
+ * décision. Libellé et description réécrits par le Head of UX/UI avant
+ * fusion : l'ancien intitulé nommait la mauvaise chose, le détachement ayant
+ * lieu dans les deux cas.
+ * 1164 → 1169 clés.
  */
 export const messageCatalogBaseline = {
-  keyCount: 1164,
+  keyCount: 1169,
   sha256: {
-    en: '6920c4eba55a505a8f8b6fe059b762523f4b3ac7a7607498f25ae73b6c3a1ffb',
-    fr: '3646bf9fd45bd3d3aa185f1cecf0a43b7ea1b08a7d2b6501e668c385cfeb8b16',
+    en: '9c486feac31518353313f5f545c9b527a3aeda9f2365f8b10baf29b5abe9150c',
+    fr: '23378ae21a11f03537f3168036c41c25a48f74f6ebafb26e6bed424f70a1880f',
   },
 } as const;

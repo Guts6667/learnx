@@ -48,3 +48,12 @@ export const accessInvitationActivationInputSchema = z
 export const localePreferenceInputSchema = z
   .object({ locale: localeSchema })
   .strict();
+
+/**
+ * Le consentement est un booléen explicite, jamais un champ qu'on peut omettre
+ * (V4.5-168). Une absence serait lue comme « laisse tel quel » par le serveur
+ * et comme « j'ai choisi » par l'apprenant.
+ */
+export const correctionReuseConsentInputSchema = z
+  .object({ consent: z.boolean() })
+  .strict();

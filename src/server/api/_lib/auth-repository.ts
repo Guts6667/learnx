@@ -24,6 +24,7 @@ function toStoredUser(user: {
   displayName: string;
   locale: string;
   role: StoredUser['role'];
+  correctionReuseConsent: boolean;
 }): StoredUser {
   return { ...user, locale: normalizeLocale(user.locale) };
 }
@@ -101,6 +102,20 @@ export const prismaAuthRepository: AuthRepository = {
     return prisma.$transaction(async (transaction) => {
       const updated = await transaction.user.updateMany({
         data: { locale },
+        where: { accountStatus: 'ACTIVE', id: userId },
+      });
+      if (updated.count !== 1) return null;
+
+      const user = await transaction.user.findUnique({ where: { id: userId } });
+      return user ? toStoredUser(user) : null;
+    });
+  },
+  async updateUserCorrectionReuseConsent(userId, consent) {
+    const prisma = await getPrismaClient();
+
+    return prisma.$transaction(async (transaction) => {
+      const updated = await transaction.user.updateMany({
+        data: { correctionReuseConsent: consent },
         where: { accountStatus: 'ACTIVE', id: userId },
       });
       if (updated.count !== 1) return null;

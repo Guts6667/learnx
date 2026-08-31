@@ -13,6 +13,12 @@ interface SessionUser {
   id: string;
   locale: UiLocale;
   role: 'USER' | 'CREATOR' | 'ADMIN';
+  /**
+   * Réutilisation des corrections détachées (V4.5-168). Optionnel côté client
+   * parce qu'une session servie par une version antérieure ne le porte pas :
+   * l'écran affiche alors « non », qui est aussi le défaut du serveur.
+   */
+  correctionReuseConsent?: boolean;
 }
 
 export interface SessionResponse {
@@ -130,6 +136,48 @@ export function useLocaleMutation() {
           headers: { 'content-type': 'application/json' },
           method: 'PATCH',
         });
+        queryClient.setQueryData(sessionQueryKey, session);
+        return session;
+      } catch (requestError) {
+        setError(requestError);
+        throw requestError;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [queryClient],
+  );
+
+  return { error, isPending, mutateAsync };
+}
+
+/**
+ * Enregistre le consentement de réutilisation (V4.5-168).
+ *
+ * La session est remplacée par celle que le serveur renvoie, jamais par la
+ * valeur qu'on vient d'envoyer : c'est l'état enregistré qui fait foi, et un
+ * écran qui s'avance risquerait d'afficher un consentement qui n'a pas été
+ * écrit.
+ */
+export function useCorrectionReuseConsentMutation() {
+  const queryClient = useAppQueryClient();
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<unknown>();
+
+  const mutateAsync = useCallback(
+    async (consent: boolean) => {
+      setIsPending(true);
+      setError(undefined);
+      try {
+        await queryClient.cancelQueries({ queryKey: sessionQueryKey });
+        const session = await apiRequest<SessionResponse>(
+          '/api/auth/correction-reuse-consent',
+          {
+            body: JSON.stringify({ consent }),
+            headers: { 'content-type': 'application/json' },
+            method: 'PATCH',
+          },
+        );
         queryClient.setQueryData(sessionQueryKey, session);
         return session;
       } catch (requestError) {
