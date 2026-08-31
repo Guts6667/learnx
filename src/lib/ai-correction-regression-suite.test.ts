@@ -18,6 +18,7 @@ import {
 import {
   computeRegressionMetrics,
   type RegressionMetrics,
+  type RegressionObservation,
 } from './ai-correction-regression-metrics.js';
 import {
   deriveHeldOutSeed,
@@ -39,6 +40,7 @@ import {
   partitionObservations,
   planRegressionRun,
   summarizeConfidence,
+  REGRESSION_CRITERIA_OMITTED_CODE,
   type RegressionCheckerPort,
   type RegressionRunPlan,
 } from './ai-correction-regression-run.js';
@@ -47,7 +49,7 @@ const POOL_PATH = path.resolve(
   'benchmarks/ai-correction/regression/regression-pool.v1.json',
 );
 const POLICY_PATH = path.resolve(
-  'benchmarks/ai-correction/regression/gate-policy.v6.json',
+  'benchmarks/ai-correction/regression/gate-policy.v6-1.json',
 );
 
 /** Two writing cases with authored hints of both kinds, plus an injection case. */
@@ -218,8 +220,10 @@ async function runSuite(input: {
   behaviour: FakeBehaviour;
   checker: RegressionCheckerPort;
 }): Promise<{
+  baselines: RegressionObservation[];
   gateInputs: RegressionGateInputs;
   metrics: RegressionMetrics;
+  mutants: RegressionObservation[];
   plan: RegressionRunPlan;
 }> {
   const { pool, sources } = loadPool();
@@ -258,10 +262,12 @@ async function runSuite(input: {
   const security = computeRunSecurityRates({ attempts, observations, plan });
 
   return {
+    baselines,
     // What the gate policy actually reads: the regression metrics merged with
     // the run-level safety rates, which only the attempts can supply.
     gateInputs: { ...metrics, ...security },
     metrics,
+    mutants,
     plan,
   };
 }
@@ -666,5 +672,351 @@ describe('repetition offset at the runner (V4.5-127)', () => {
     expect(
       [...new Set(attempts.map((attempt) => attempt.repetition))].sort(),
     ).toEqual([1, 2]);
+  });
+});
+
+/**
+ * The omitted-criteria oracle of gate policy v6.1.
+ *
+ * The paid 2.3.0 pre-test recorded a mutant that answered 2 criteria of 3 —
+ * omitting precisely the one the mutation targeted — and the bench filed it
+ * `VALID`. These tests reproduce that artefact's shape offline and for nothing,
+ * and assert the property that made it dangerous: under every gate that existed
+ * before v6.1, going quiet is an improvement.
+ *
+ * They deliberately build the quiet run by editing observations rather than by
+ * scripting a quiet model. A probe of the offline path showed the runner's own
+ * validator refuses a short output — 8 attempts of 8 came back `INVALID` /
+ * `MODEL_OUTPUT_CONTRACT_INVALID`, producing no observation at all — so a quiet
+ * fake model would never reach the metrics and would test nothing. What reached
+ * the metrics on the paid run was an observation missing a criterion, and that
+ * is what is reconstructed here. Why the guard did not stop it upstream is a
+ * separate question, under investigation; this oracle is downstream of it on
+ * purpose and does not depend on the answer.
+ */
+describe('omitted-criteria oracle', () => {
+  /** Drops the mutation's target criterion from every mutant observation. */
+  function goQuietOnTarget(
+    mutants: RegressionObservation[],
+  ): RegressionObservation[] {
+    return mutants.map((mutant) => {
+      const target = mutant.expectation?.targetCriterionKey;
+      if (!target) return mutant;
+      return {
+        ...mutant,
+        criteria: mutant.criteria.filter(
+          (criterion) => criterion.criterionKey !== target,
+        ),
+      };
+    });
+  }
+
+  async function bothRuns() {
+    const { baselines, gateInputs, mutants, plan } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      checker: AGREEABLE_CHECKER,
+    });
+    const quietMutants = goQuietOnTarget(mutants);
+    expect(
+      quietMutants.reduce((total, mutant) => total + mutant.criteria.length, 0),
+    ).toBeLessThan(
+      mutants.reduce((total, mutant) => total + mutant.criteria.length, 0),
+    );
+
+    return {
+      gateInputs,
+      loud: computeRegressionMetrics({
+        baselines,
+        mutants,
+        scales: plan.scales,
+      }),
+      quiet: computeRegressionMetrics({
+        baselines,
+        mutants: quietMutants,
+        scales: plan.scales,
+      }),
+    };
+  }
+
+  /** Drops one criterion the mutation did *not* target. */
+  function goQuietElsewhere(
+    mutants: RegressionObservation[],
+  ): RegressionObservation[] {
+    return mutants.map((mutant) => {
+      const target = mutant.expectation?.targetCriterionKey;
+      const victim = mutant.criteria.find(
+        (criterion) => criterion.criterionKey !== target,
+      );
+      if (!victim) return mutant;
+      return {
+        ...mutant,
+        criteria: mutant.criteria.filter(
+          (criterion) => criterion.criterionKey !== victim.criterionKey,
+        ),
+      };
+    });
+  }
+
+  async function untargetedRun() {
+    const { baselines, mutants, plan } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      checker: AGREEABLE_CHECKER,
+    });
+    return {
+      loud: computeRegressionMetrics({
+        baselines,
+        mutants,
+        scales: plan.scales,
+      }),
+      plan,
+      untargeted: computeRegressionMetrics({
+        baselines,
+        mutants: goQuietElsewhere(mutants),
+        scales: plan.scales,
+      }),
+    };
+  }
+
+  it('counts a contract criterion the delivered correction never mentions', async () => {
+    const { loud, quiet } = await bothRuns();
+
+    // A model that answers everything owes this oracle nothing.
+    expect(loud.omittedContractCriteriaDelivered.numerator).toBe(0);
+    expect(loud.omittedContractCriteriaDelivered.denominator).toBeGreaterThan(
+      0,
+    );
+    expect(loud.omittedCriterionCorrections.numerator).toBe(0);
+
+    // A model that goes quiet owes it one per criterion it skipped.
+    expect(quiet.omittedContractCriteriaDelivered.numerator).toBeGreaterThan(0);
+    expect(quiet.omittedCriterionDetails.length).toBe(
+      quiet.omittedContractCriteriaDelivered.numerator,
+    );
+    for (const detail of quiet.omittedCriterionDetails) {
+      expect(detail.criterionKey).not.toBe('');
+      expect(detail.caseId).not.toBe('');
+    }
+  });
+
+  it('builds its denominator from the contract, so silence cannot shrink it', async () => {
+    const { loud, quiet } = await bothRuns();
+
+    // The one property the other metrics lack. Every gate below counts
+    // delivered criteria on both sides, so an omission leaves the numerator and
+    // the denominator together; this denominator is the contract's criteria and
+    // does not move when the output does.
+    expect(quiet.omittedContractCriteriaDelivered.denominator).toBe(
+      loud.omittedContractCriteriaDelivered.denominator,
+    );
+    expect(quiet.omittedCriterionCorrections.denominator).toBe(
+      loud.omittedCriterionCorrections.denominator,
+    );
+  });
+
+  it('never lets an omission worsen a metric that predates it', async () => {
+    const { loud, quiet } = await bothRuns();
+
+    // The finding, asserted rather than described, and measured on all three
+    // shapes an omission can take. Not one pre-v6.1 numerator rises and not one
+    // denominator grows: whatever the model stops writing, every earlier gate
+    // reads the same or better. Silence is never charged.
+    expect(quiet.checkerAgreementAtHigh.denominator).toBeLessThan(
+      loud.checkerAgreementAtHigh.denominator,
+    );
+    expect(quiet.lowShare.denominator).toBeLessThan(loud.lowShare.denominator);
+    expect(quiet.unrelatedCriterionDrift.numerator).toBeLessThanOrEqual(
+      loud.unrelatedCriterionDrift.numerator,
+    );
+  });
+
+  it('collapses the false-agreement denominator the omission was hiding in', async () => {
+    const { loud, quiet } = await bothRuns();
+
+    // The sharpest instance. `checkerFalseAgreeRate` counts the occasions a
+    // verifier agreed with a level the mutated text no longer supports, and it
+    // finds those occasions by looking the targeted criterion up in the output.
+    // Omit the criterion and there is no occasion to count: 8 false agreements
+    // out of 8 becomes 0 out of 0 — not "measured and clean", but "not measured
+    // at all", reported as such and blocking nothing, because v6 files this
+    // gate as REPORTED.
+    expect(loud.checkerFalseAgreeRate.numerator).toBeGreaterThan(0);
+    expect(loud.checkerFalseAgreeRate.rate).not.toBeNull();
+    expect(quiet.checkerFalseAgreeRate.denominator).toBe(0);
+    expect(quiet.checkerFalseAgreeRate.rate).toBeNull();
+  });
+
+  it('agrees with the delivered-criteria count until something is omitted', async () => {
+    const { loud, quiet } = await bothRuns();
+
+    // `lowShare` counts delivered criteria; this oracle counts the criteria the
+    // contract asked for. On a complete run they are the same number, which is
+    // what makes the divergence legible: when they part, the gap is exactly
+    // what the model did not write.
+    expect(loud.omittedContractCriteriaDelivered.denominator).toBe(
+      loud.lowShare.denominator,
+    );
+    expect(quiet.omittedContractCriteriaDelivered.denominator).toBeGreaterThan(
+      quiet.lowShare.denominator,
+    );
+    expect(
+      quiet.omittedContractCriteriaDelivered.denominator -
+        quiet.lowShare.denominator,
+    ).toBe(quiet.omittedContractCriteriaDelivered.numerator);
+  });
+
+  it('counts an omission the direction oracle cannot see', async () => {
+    const { loud, plan, untargeted } = await untargetedRun();
+
+    // `mutationDirectionViolations` does catch an omitted *targeted* criterion,
+    // by name — so the hole is not where it first appeared. It is one criterion
+    // wide: omit any criterion the mutation did not target and that oracle is
+    // blind, because it only ever looks up the target. Measured here: the
+    // direction figure is identical either way, while the omission is real.
+    expect(untargeted.mutationDirectionViolations.numerator).toBe(
+      loud.mutationDirectionViolations.numerator,
+    );
+    expect(untargeted.mutationDirectionViolations.denominator).toBe(
+      loud.mutationDirectionViolations.denominator,
+    );
+
+    expect(
+      untargeted.omittedContractCriteriaDelivered.numerator,
+    ).toBeGreaterThan(0);
+    expect(untargeted.omittedContractCriteriaDelivered.denominator).toBe(
+      loud.omittedContractCriteriaDelivered.denominator,
+    );
+    expect(plan.scales.length).toBeGreaterThan(0);
+  });
+
+  it('blocks promotion on a single omitted criterion under v6.1', async () => {
+    const { gateInputs, quiet } = await bothRuns();
+
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination({ ...gateInputs, ...quiet }),
+      policy: loadPolicy(),
+    });
+    const gate = evaluation.gates.find(
+      (candidate) => candidate.key === 'omitted-criteria-delivered',
+    );
+
+    expect(gate?.kind).toBe('BLOCKING');
+    expect(gate?.status).toBe('FAIL');
+    expect(gate?.budget).toBe(0);
+    expect(evaluation.promotionEligible).toBe(false);
+    expect(evaluation.gateFailures.join(' ')).toContain(
+      'omitted-criteria-delivered',
+    );
+  });
+
+  it('reports the per-correction share without inventing a threshold', async () => {
+    const { gateInputs, quiet } = await bothRuns();
+
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination({ ...gateInputs, ...quiet }),
+      policy: loadPolicy(),
+    });
+    const gate = evaluation.gates.find(
+      (candidate) => candidate.key === 'omitted-criterion-corrections',
+    );
+
+    // Reported, never blocking: the zero-tolerance gate above already decides
+    // promotion, and a second threshold here would be a number nobody measured.
+    expect(gate?.kind).toBe('REPORTED');
+    expect(gate?.status).toBe('REPORTED');
+    expect(gate?.budget).toBeNull();
+    // Counted per correction, not per criterion: fewer corrections than
+    // criteria when a single correction skips more than one.
+    expect(gate?.numerator).toBeGreaterThan(0);
+    expect(gate?.numerator).toBeLessThanOrEqual(
+      quiet.omittedContractCriteriaDelivered.numerator,
+    );
+  });
+
+  it('stays green, and measured, when the model answers every criterion', async () => {
+    const { gateInputs, loud } = await bothRuns();
+
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination({ ...gateInputs, ...loud }),
+      policy: loadPolicy(),
+    });
+    const gate = evaluation.gates.find(
+      (candidate) => candidate.key === 'omitted-criteria-delivered',
+    );
+
+    // Green and measured, not green and absent: a NOT_MEASURED here would mean
+    // the oracle never ran, which is the failure the v6 report was built to
+    // make visible.
+    expect(gate?.status).toBe('PASS');
+    expect(gate?.denominator).toBeGreaterThan(0);
+  });
+
+  it('counts an omission the runner refused, apart from every other refusal', async () => {
+    // The other side of the guard, and the reason it needs its own count.
+    // Head of Development's fix makes an omitted criterion a contract violation
+    // rather than something to salvage, so after it lands the omission never
+    // becomes an observation and the delivered oracle reads a clean zero. If
+    // nothing counted the refusal, the fix would hide the failure by working:
+    // the event would land in `eventualUnusableRuns` beside timeouts, under a
+    // 3 % budget rather than a zero one.
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitions: configuration.repetitions,
+    });
+
+    const clean = computeRunSecurityRates({ attempts, observations: [], plan });
+    expect(clean.omittedCriteriaRefusedCells.numerator).toBe(0);
+    expect(clean.omittedCriteriaRefusedCells.denominator).toBeGreaterThan(0);
+
+    // Two cells refused for omission, and one refused for something else, so
+    // the assertion cannot pass by counting refusals in general.
+    const refused = attempts.map((attempt, index) => {
+      if (index > 2) return attempt;
+      return {
+        ...attempt,
+        errorCode:
+          index === 2 ? 'MODEL_TIMEOUT' : REGRESSION_CRITERIA_OMITTED_CODE,
+        output: undefined,
+        status: 'INVALID' as const,
+      };
+    });
+    const dirty = computeRunSecurityRates({
+      attempts: refused,
+      observations: [],
+      plan,
+    });
+
+    expect(dirty.omittedCriteriaRefusedCells.numerator).toBe(2);
+    expect(dirty.omittedCriteriaRefusedCells.denominator).toBe(
+      clean.omittedCriteriaRefusedCells.denominator,
+    );
+
+    // All three land in the unusable count, which is exactly why that count
+    // cannot stand in for this one.
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination({ ...dirty }),
+      policy: loadPolicy(),
+    });
+    const gate = evaluation.gates.find(
+      (candidate) => candidate.key === 'omitted-criteria-refused',
+    );
+    expect(gate?.kind).toBe('WATCHED');
+    expect(gate?.status).toBe('FAIL');
+    // Watched, not blocking: a refusal is the guard doing its job, and the
+    // convention for "the model did it but nobody received it" is already set
+    // by evidence-hallucination-any-attempt.
+    expect(evaluation.gateFailures.join(' ')).not.toContain(
+      'omitted-criteria-refused',
+    );
   });
 });

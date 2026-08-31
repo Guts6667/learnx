@@ -193,7 +193,7 @@ vérificateur), latences, et la distribution des confiances.
 
 ## 6. Politique de gate v4
 
-Fichier : `benchmarks/ai-correction/regression/gate-policy.v6.json`, budgets
+Fichier : `benchmarks/ai-correction/regression/gate-policy.v6-1.json`, budgets
 entiers calculés à partir des dénominateurs réels du run (aucun seuil < 1/n).
 Seuils : contrat qualité §5. Le résumé produit `gateFailures[]` et
 `promotionEligible` ; un run avec un gate bloquant rouge ne peut pas mettre à
@@ -243,6 +243,94 @@ dénominateurs réels ; un seuil bloquant plus fin qu'une observation
 (`p < 1/n`) est refusé et doit être déclaré comme budget entier explicite. Un
 gate bloquant dont la métrique n'a pas été mesurée (dénominateur nul) ne passe
 pas : il est rapporté `NOT_MEASURED` et interdit la promotion.
+
+### 6 bis. Amendement v6.1 — l'oracle des critères omis
+
+**Ce que v6.1 change, et rien d'autre.** Trois gates s'ajoutent ; aucun seuil
+existant ne bouge.
+
+Origine : le pré-test payant de la consigne primaire 2.3.0 a enregistré `VALID`
+un mutant qui répondait à **2 critères sur 3**, en omettant précisément celui que
+la mutation visait. Cause établie par Head of Development : le contrôle amont a
+bien levé `PROTOCOL_3_CRITERION_MISSING` ; `executeBenchmarkWorkflowPass`
+l'attrape, et sous `correctionDeliveryPolicy: 'PARTIAL_CRITERION'` (posé par
+`benchmark.v3_2.json`) `salvageProtocol3PartialCorrection` traite un critère
+**absent** dans la même branche qu'un critère **présent mais inexploitable** : il
+est enregistré `unsure`, retiré du livré, et la sortie sort `VALID`.
+
+Pourquoi cela mérite un oracle et pas seulement un correctif : toutes les
+métriques d'avant v6.1 comptent le **livré** des deux côtés de leur taux. Un
+critère que le modèle n'écrit pas quitte le numérateur *et* le dénominateur, et
+le taux s'améliore. Mesuré hors ligne sur le banc, en supprimant un critère des
+observations d'un run par ailleurs identique :
+
+| Métrique | Run complet | Critère ciblé omis | Autre critère omis | Omis sur une base |
+| --- | --- | --- | --- | --- |
+| `mutationDirectionViolations` | 8/8 | 8/8 | 8/8 | 8/8 |
+| `checkerFalseAgreeRate` | 8/8 | **0/0** | 8/8 | 8/8 |
+| `checkerAgreementAtHigh` | 38/38 | 30/30 | 32/32 | 34/34 |
+| `lowShare` | 0/54 | 0/46 | 0/42 | 0/48 |
+| `modelAuthoredAgreement` | 18/18 | 18/18 | 18/18 | 12/12 |
+| `omittedContractCriteriaDelivered` (v6.1) | 0/54 | 8/**54** | 12/**54** | 6/**54** |
+
+Trois lectures, dans l'ordre d'importance :
+
+1. **Aucune métrique antérieure ne s'aggrave.** Sur les trois formes d'omission,
+   pas un numérateur ne monte, pas un dénominateur ne grandit. Se taire n'est
+   jamais facturé.
+2. `mutationDirectionViolations` **attrape** l'omission du critère *ciblé*, par
+   son nom (« Le critère ciblé par la mutation ne figure pas dans la correction
+   rendue »). Le trou n'est donc pas là où il semblait : il fait un critère de
+   large. Omettre n'importe quel autre critère, ou omettre sur une baseline, et
+   cet oracle est aveugle — il ne regarde que la cible.
+3. `checkerFalseAgreeRate` passe de 8/8 à **0/0**. L'omission ne rend pas le
+   vérificateur meilleur : elle supprime les occasions mêmes que la métrique
+   compte. 0/0 se lit « non mesuré », et v6 classe ce gate `REPORTED`, donc rien
+   ne bloque.
+
+Le dénominateur de v6.1 est bâti sur le **contrat**, jamais sur la sortie : 54
+dans les quatre colonnes. C'est la seule propriété qui rende le silence
+comptable.
+
+| Gate | Type | Question |
+| --- | --- | --- |
+| `omitted-criteria-delivered` | bloquant, budget 0 | un critère du contrat manque-t-il à une correction **livrée** ? |
+| `omitted-criterion-corrections` | rapporté, sans seuil | quelle **part des corrections** laisse au moins un critère sans réponse ? |
+| `omitted-criteria-refused` | surveillé, budget 0 | combien de cellules le runner a-t-il **refusées** pour omission ? |
+
+Le bloquant porte sur le livré, par la même convention que la preuve inventée :
+une tentative rejetée n'atteint personne. Le surveillé existe pour que le
+correctif ne puisse pas rendre la panne invisible **en réussissant** : une fois
+l'omission refusée en amont, elle ne produit plus d'observation, l'oracle livré
+lit un 0 propre, et l'événement se dissoudrait dans `eventual-unusable-runs` et
+son budget de 3 %, indiscernable d'un timeout.
+
+Cet oracle est **en aval** des validateurs, délibérément.
+`validateCorrectionOutputForContract` comme
+`canonicalizeProtocol3CorrectionOutput` refusent déjà une sortie courte, et une
+sonde hors ligne le confirme sur la voie de régression : 8 tentatives sur 8
+rejetées en `MODEL_OUTPUT_CONTRACT_INVALID`, zéro observation produite. Le gate
+lit l'observation que le run a conservée et la compare au contrat, donc il compte
+l'omission sans dépendre de la raison pour laquelle le garde amont n'a pas tenu.
+Quand le garde tient, il vaut 0/N et ne coûte rien.
+
+**Point ouvert.** `omitted-criteria-refused` lit un code d'erreur
+(`MODEL_CRITERIA_OMITTED`) que le correctif de Head of Development n'a pas encore
+posé. Le nom est **provisoire**, déclaré une seule fois — constante
+`REGRESSION_CRITERIA_OMITTED_CODE` — pour que le confirmer soit une ligne. Tant
+que le correctif n'est pas là, ce gate vaut 0 sur toutes les cellules : ce zéro
+dit « aucune tentative refusée pour omission », ce qui est vrai et ne prouve rien.
+
+**Conséquence à connaître.** La graine du jeu tenu à l'écart vaut
+`SHA-256(poolSha256 ‖ version du générateur ‖ version de la politique)`. Passer
+la politique de 6.0.0 à 6.1.0 **rebat donc le sous-ensemble tenu à l'écart**. Les
+gates comptent tous les mutants, promotion comprise : seul le sous-ensemble
+rapporté à part change. Un run v6.1 et le run du 30 août ne sont plus comparables
+sur cette colonne-là, et le sont sur toutes les autres.
+
+`gate-policy.v6.json` reste sur disque, inchangé, comme `v3` à `v5` :
+`benchmarks/**` est en ajout seul et les runs déjà payés ont été jugés sous leur
+version.
 
 ## 7. Artefacts et rapport
 

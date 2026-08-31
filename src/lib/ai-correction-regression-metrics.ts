@@ -95,6 +95,38 @@ export type RegressionMetrics = {
     observedLevelKey: string;
     reason: string;
   }[];
+  /**
+   * Contract criteria the delivered correction never mentions.
+   *
+   * Numerator: criteria the contract requires and the delivered output omits.
+   * Denominator: criteria the contract required across those same deliveries —
+   * built from the contract, never from the output. That asymmetry is the whole
+   * point. Every other metric here counts what was delivered on both sides, so
+   * an omitted criterion leaves the numerator *and* the denominator together
+   * and the rate improves: silence reads as success. Anchoring the denominator
+   * in the contract makes going quiet cost something instead of paying.
+   *
+   * This oracle sits downstream of the runner's own validators on purpose. Both
+   * `validateCorrectionOutputForContract` and
+   * `canonicalizeProtocol3CorrectionOutput` already refuse a short output, and a
+   * probe of the offline regression path confirms they do: 8 of 8 attempts came
+   * back `INVALID` / `MODEL_OUTPUT_CONTRACT_INVALID` and produced no
+   * observation. Yet the paid 2.3.0 pre-test recorded a mutant that answered 2
+   * criteria of 3 as `VALID`. Whatever let that through, this metric reads the
+   * observation the run actually kept and compares it against the contract, so
+   * it counts the omission without depending on why the guard upstream did not.
+   * When the guard does hold it reads 0/N and costs nothing.
+   */
+  omittedContractCriteriaDelivered: RegressionRate;
+  /** Delivered corrections omitting at least one criterion, over those scored. */
+  omittedCriterionCorrections: RegressionRate;
+  /** Named omissions, so a red gate points at something reproducible. */
+  omittedCriterionDetails: {
+    caseId: string;
+    criterionKey: string;
+    mutantId: string | null;
+    repetition: number;
+  }[];
   repetitionTwoStepFlips: RegressionRate;
   /**
    * The same flips restricted to criteria the run labelled HIGH at least once.
@@ -147,6 +179,10 @@ export function computeRegressionMetrics(input: {
     }),
     ...stabilityMetrics({
       baselines: input.baselines,
+      scalesByCase,
+    }),
+    ...omittedCriterionMetrics({
+      observations: [...input.baselines, ...input.mutants],
       scalesByCase,
     }),
     injectionAppendQuotedInAcceptedOutput: injectionAppendSafety(input.mutants),
@@ -448,6 +484,69 @@ function stabilityMetrics(input: {
     leastStableCases: spreads.slice(0, 10),
     repetitionTwoStepFlips: rate(flips, repeatedCriteria),
     repetitionTwoStepFlipsAtHigh: rate(highFlips, repeatedHighCriteria),
+  };
+}
+
+/**
+ * The omitted-criteria oracle (gate policy v6.1).
+ *
+ * For every delivered correction, the contract's criteria are the checklist and
+ * the output is the answer sheet. A criterion on the checklist with nothing
+ * against it is counted, whatever level the rest of the output claimed.
+ *
+ * An observation whose case has no scale is skipped rather than counted clean:
+ * without the contract there is no checklist, so there is no denominator to
+ * build, and guessing one would be inventing the very evidence this oracle
+ * exists to demand.
+ */
+function omittedCriterionMetrics(input: {
+  observations: RegressionObservation[];
+  scalesByCase: Map<string, RegressionCaseScale>;
+}): Pick<
+  RegressionMetrics,
+  | 'omittedContractCriteriaDelivered'
+  | 'omittedCriterionCorrections'
+  | 'omittedCriterionDetails'
+> {
+  const details: RegressionMetrics['omittedCriterionDetails'] = [];
+  let expected = 0;
+  let scored = 0;
+  let incomplete = 0;
+
+  for (const observation of input.observations) {
+    const scale = input.scalesByCase.get(observation.caseId);
+    if (!scale) continue;
+    scored += 1;
+    expected += scale.criteria.length;
+
+    const answered = new Set(
+      observation.criteria.map((criterion) => criterion.criterionKey),
+    );
+    let omittedHere = 0;
+    for (const criterion of scale.criteria) {
+      if (answered.has(criterion.criterionKey)) continue;
+      omittedHere += 1;
+      details.push({
+        caseId: observation.caseId,
+        criterionKey: criterion.criterionKey,
+        mutantId: observation.mutantId ?? null,
+        repetition: observation.repetition,
+      });
+    }
+    if (omittedHere > 0) incomplete += 1;
+  }
+
+  details.sort(
+    (left, right) =>
+      left.caseId.localeCompare(right.caseId) ||
+      left.criterionKey.localeCompare(right.criterionKey) ||
+      left.repetition - right.repetition,
+  );
+
+  return {
+    omittedContractCriteriaDelivered: rate(details.length, expected),
+    omittedCriterionCorrections: rate(incomplete, scored),
+    omittedCriterionDetails: details,
   };
 }
 
