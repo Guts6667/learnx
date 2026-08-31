@@ -16,6 +16,16 @@ function build(user: unknown, updateCount = 1) {
   const updates: Record<string, unknown>[] = [];
   const wheres: unknown[] = [];
   const transaction = {
+    aiCorrection: {
+      findMany: vi.fn(record('aiCorrection.findMany', [])),
+      update: vi.fn(record('aiCorrection.update', {})),
+      updateMany: vi.fn(record('aiCorrection.updateMany', { count: 0 })),
+    },
+    aiCorrectionAttempt: {
+      findMany: vi.fn(record('aiCorrectionAttempt.findMany', [])),
+      update: vi.fn(record('aiCorrectionAttempt.update', {})),
+      updateMany: vi.fn(record('aiCorrectionAttempt.updateMany', { count: 0 })),
+    },
     auditEvent: { upsert: vi.fn(record('auditEvent.upsert', {})) },
     exerciseSubmission: {
       updateMany: vi.fn(record('exerciseSubmission.updateMany', { count: 0 })),
@@ -54,11 +64,16 @@ function build(user: unknown, updateCount = 1) {
   };
 }
 
+/** A consenti à la conservation : le comportement d'origine s'applique. */
 const active = {
   accountStatus: 'ACTIVE',
+  correctionReuseConsent: true,
   id: USER_ID,
   updatedAt: UPDATED_AT,
 };
+
+/** N'a rien autorisé — le réglage par défaut (V4.5-216). */
+const activeWithoutConsent = { ...active, correctionReuseConsent: false };
 
 function erase(service: ReturnType<typeof build>['service']) {
   return service.erase({
@@ -136,16 +151,115 @@ describe('effacement de compte par pseudonymisation', () => {
     expect(calls).not.toContain('paymentEvent.updateMany');
   });
 
-  it('conserve les réponses de l’apprenant, décision du propriétaire', async () => {
+  it('conserve les réponses quand l’apprenant a autorisé la conservation', async () => {
     // owner-erasure-2026-08-29. The texts survive under the pseudonym, which
     // is why the word everywhere is pseudonymisation: they may still identify
-    // the person who wrote them.
+    // the person who wrote them. Inchangé par V4.5-216 : seul le cas SANS
+    // consentement change.
     const { service, transaction } = build(active);
     await erase(service);
     expect(transaction.exerciseSubmission.updateMany).not.toHaveBeenCalled();
     expect(
       transaction.stageAssessmentSubmission.updateMany,
     ).not.toHaveBeenCalled();
+    expect(transaction.aiCorrection.updateMany).not.toHaveBeenCalled();
+    expect(transaction.aiCorrectionAttempt.updateMany).not.toHaveBeenCalled();
+  });
+
+  it('supprime les textes quand l’apprenant n’a rien autorisé', async () => {
+    // V4.5-216. Un apprenant qui a refusé la réutilisation voyait ses textes
+    // conservés s'il supprimait son compte, alors que le détachement à 180
+    // jours les aurait supprimés : le chemin le plus explicite était le moins
+    // respectueux du choix exprimé.
+    const { service, transaction } = build(activeWithoutConsent);
+
+    await expect(erase(service)).resolves.toEqual({ kind: 'ERASED' });
+
+    expect(transaction.exerciseSubmission.updateMany).toHaveBeenCalled();
+    expect(transaction.stageAssessmentSubmission.updateMany).toHaveBeenCalled();
+    expect(transaction.aiCorrection.updateMany).toHaveBeenCalled();
+    expect(transaction.aiCorrectionAttempt.updateMany).toHaveBeenCalled();
+  });
+
+  it('ne touche à aucune ligne d’argent en supprimant les textes', async () => {
+    // Le grand livre n'est jamais réécrit (ADR_003 §6). Les événements de
+    // paiement sont vidés par l'effacement lui-même, pas par cette branche,
+    // et rien d'autre du côté argent ne bouge.
+    const { service, calls } = build(activeWithoutConsent);
+
+    await erase(service);
+
+    expect(
+      calls.filter((name) => name.startsWith('creditLedgerEntry')),
+    ).toEqual([]);
+    expect(calls.filter((name) => name.startsWith('paymentOrder'))).toEqual([]);
+  });
+
+  it('retire les citations au milieu du jugement, sans détruire la note', async () => {
+    // Le cas qui compte vraiment : `structuredResult` porte les mots de
+    // l'apprenant AU MILIEU du jugement. L'annuler effacerait la note avec la
+    // citation ; il faut le parcourir. Niveaux et confiances survivent, les
+    // citations partent.
+    const { service, transaction } = build(activeWithoutConsent);
+    transaction.aiCorrection.findMany.mockResolvedValueOnce([
+      {
+        id: 'correction-1',
+        structuredResult: {
+          criteria: [
+            {
+              criterionKey: 'source-fidelity',
+              evidenceQuotes: ['une phrase que l’apprenant a écrite'],
+              levelKey: 'mastered',
+            },
+          ],
+          overallConfidence: 0.9,
+        },
+      },
+    ]);
+    transaction.aiCorrectionAttempt.findMany.mockResolvedValueOnce([
+      {
+        id: 'attempt-1',
+        structuredResult: {
+          criteria: [{ evidenceQuotes: ['la même phrase, recopiée'] }],
+        },
+      },
+    ]);
+
+    await erase(service);
+
+    const correctionWrite = transaction.aiCorrection.update.mock
+      .calls[0]?.[0] as { data: { structuredResult: unknown } };
+    expect(correctionWrite.data.structuredResult).toEqual({
+      criteria: [
+        {
+          criterionKey: 'source-fidelity',
+          evidenceQuotes: [],
+          levelKey: 'mastered',
+        },
+      ],
+      overallConfidence: 0.9,
+    });
+
+    // La tentative porte sa propre copie du jugement : la laisser garderait
+    // les mots que ce chemin existe pour retirer.
+    const attemptWrite = transaction.aiCorrectionAttempt.update.mock
+      .calls[0]?.[0] as { data: { structuredResult: unknown } };
+    expect(attemptWrite.data.structuredResult).toEqual({
+      criteria: [{ evidenceQuotes: [] }],
+    });
+  });
+
+  it('inscrit la suppression des textes dans l’audit', async () => {
+    // La politique appliquée est celle qui a réellement tourné, pas celle du
+    // service : deux comptes effacés le même jour peuvent différer.
+    const { service, transaction } = build(activeWithoutConsent);
+    await erase(service);
+    const audit = transaction.auditEvent.upsert.mock.calls[0]?.[0] as {
+      create: { metadata: Record<string, unknown> };
+    };
+    expect(audit.create.metadata).toMatchObject({
+      learnerTextPolicy: 'DELETED_NO_REUSE_CONSENT',
+    });
   });
 
   it('inscrit la politique appliquée dans l’audit', async () => {
