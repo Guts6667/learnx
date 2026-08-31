@@ -54,13 +54,16 @@ import { analyseRunOffline } from './ai-correction-regression-analyse.js';
 import { renderRegressionReport } from './ai-correction-regression-report.js';
 import {
   acquireRunLock,
+  appendSpendEnvelope,
   capForRun,
   envelopeState,
   ledgerSpendSince,
-  readSpendEnvelope,
+  readSpendEnvelopeChain,
+  reconcileEnvelopeDeclaration,
   RegressionEnvelopeError,
   releaseRunLock,
-  writeSpendEnvelope,
+  resolveEnvelopeHead,
+  type SpendEnvelope,
 } from './ai-correction-regression-envelope.js';
 import {
   computeRunSecurityRates,
@@ -606,17 +609,42 @@ export async function runRegressionPool(input: {
         `REGRESSION_ENVELOPE_INVALID: ${envelopeUsd}.`,
       );
     }
-    const existing = await readSpendEnvelope(directory);
+    // The envelope in force is the head of the supersession chain, and the
+    // command line is reconciled against it rather than quietly losing to it.
+    // `spend-envelope.v1.json` from a 30 August decision used to pre-empt any
+    // later one: the flags were parsed, discarded, and the owner's decision
+    // authorised nothing while appearing to.
+    const head = resolveEnvelopeHead(await readSpendEnvelopeChain(directory));
+    const declaredDecisionId = readCliOption(
+      input.arguments,
+      'envelope-decision',
+    );
+    const declaredSupersedes = readCliOption(
+      input.arguments,
+      'envelope-supersedes',
+    );
+    const reconciliation = reconcileEnvelopeDeclaration({
+      declared: {
+        decisionId: declaredDecisionId,
+        envelopeUsd: parsedEnvelope,
+        supersedes: declaredSupersedes,
+      },
+      head,
+    });
     const usageNow = await readProviderUsageUsd(input.providerApiKey);
-    const envelope = existing ?? {
-      decisionId:
-        readCliOption(input.arguments, 'envelope-decision') ?? 'undeclared',
-      envelopeUsd: parsedEnvelope,
-      openedAt: runStartedAt,
-      openingProviderUsageUsd: usageNow ?? 0,
-      schemaVersion: 1 as const,
-    };
-    if (!existing) {
+    const envelope =
+      reconciliation.envelope ??
+      ({
+        decisionId: declaredDecisionId ?? 'undeclared',
+        envelopeUsd: parsedEnvelope,
+        openedAt: runStartedAt,
+        openingProviderUsageUsd: usageNow ?? 0,
+        schemaVersion: 1 as const,
+        ...(declaredSupersedes === undefined
+          ? {}
+          : { supersedes: declaredSupersedes }),
+      } satisfies SpendEnvelope);
+    if (reconciliation.action !== 'REUSE') {
       if (usageNow === null) {
         if (willSpend) {
           throw new RegressionEnvelopeError(
@@ -627,7 +655,9 @@ export async function runRegressionPool(input: {
         // rather than implying a budget was checked.
         envelopeNote = `Enveloppe de ${parsedEnvelope} USD non ouverte : usage fournisseur illisible sans clé. Aucune dépense n'est autorisée par ce préflight.`;
       } else {
-        await writeSpendEnvelope({ directory, envelope });
+        // A new file, never over the old one: the superseded envelope stays on
+        // disk as the record of what was authorised then.
+        await appendSpendEnvelope({ directory, envelope });
       }
     }
     if (usageNow !== null || willSpend) {
