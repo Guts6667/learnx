@@ -35,22 +35,130 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # `git merge-base` against the PR base needs real history. With the
+          # default shallow clone the scope decision below cannot be made, and
+          # a scope decision that cannot be made must not be guessed.
+          fetch-depth: 0
+
+      # Which changes actually need a database, decided here rather than in the
+      # trigger (V4.5-201).
+      #
+      # Every run of this job creates one Neon branch against a project ceiling
+      # of ten. On 31 August 2026 seven pull requests were in flight at once,
+      # all ten branches were alive, and the run for the one PR that carried a
+      # migration failed after fifteen minutes of waiting. Most of those runs
+      # had nothing to prove: a documentation change does not need a database.
+      #
+      # WHY THIS IS NOT `on.pull_request.paths`, which is the obvious way and is
+      # a trap. A workflow filtered out by `paths` does not run, so it creates
+      # no check run, so a REQUIRED context is never reported and the pull
+      # request blocks for ever waiting on something nothing will ever send.
+      # `main` requires `Integration (required)` today, and making it required
+      # on `dev` is already proposed. That is exactly the `real-functions`
+      # failure of this morning, reintroduced from the other side.
+      #
+      # A second job of the same name is worse still: two check runs share one
+      # context, and which of them satisfies the branch protection depends on
+      # which reports last. An intermittent trap costs more than a deterministic
+      # one, because it is believed in between.
+      #
+      # So the job always runs and always reports. Only the expensive half is
+      # conditional, and a run that skips it costs a checkout and a diff.
+      - name: Decide whether this change needs a database
+        id: scope
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        # Deliberately no `set -e`: every failure below has to fall through to
+        # "run it", never abort into a skip.
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          # Anything that can talk to a database, plus this file — a change to
+          # the job itself must still exercise the job.
+          relevant='^(prisma/|src/server/|api/|scripts/|\.github/workflows/integration\.yml$)'
+
+          decide() {
+            echo "run=$1" >> "$GITHUB_OUTPUT"
+            {
+              if [ "$1" = 'true' ]; then
+                echo "### Integration: full run"
+              else
+                echo "### Integration: nothing to prove against a database"
+              fi
+              echo
+              echo "$2"
+            } | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          }
+
+          # A promotion always runs in full, whatever it touches.
+          case "${BASE_REF:-}" in
+            main | staging)
+              decide true "Pull request targets \`${BASE_REF}\` — a promotion is never scoped down."
+              ;;
+          esac
+
+          # The diff base. For a pull request it is the merge base, never
+          # HEAD~1: a pull request of several commits compared to its own last
+          # commit would declare itself irrelevant on the strength of a typo fix.
+          base=''
+          if [ -n "${BASE_REF:-}" ]; then
+            if git fetch --no-tags --quiet origin \
+                 "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}" 2>/dev/null; then
+              base="$(git merge-base "origin/${BASE_REF}" HEAD 2>/dev/null || true)"
+            fi
+          elif [ -n "${BEFORE:-}" ] && [ "${BEFORE}" != '0000000000000000000000000000000000000000' ]; then
+            # A push: compare against the tip before it, so a push of several
+            # commits is judged whole.
+            git cat-file -e "${BEFORE}^{commit}" 2>/dev/null && base="${BEFORE}"
+          fi
+
+          # Every uncertainty resolves the same way, and this is the point of
+          # the step: a shallow clone, a first commit, a base that no longer
+          # exists, an empty diff. Being unsure has to cost twenty minutes of
+          # CI, never an unrehearsed migration.
+          if [ -z "$base" ]; then
+            decide true "No diff base could be established (shallow clone, first commit, or a missing base ref). Running in full deliberately rather than guessing."
+          fi
+
+          changed="$(git diff --name-only "$base" HEAD 2>/dev/null)"
+          if [ -z "$changed" ]; then
+            decide true "The diff against \`${base}\` came back empty, which should not happen for a real change. Running in full rather than trusting it."
+          fi
+
+          hits="$(echo "$changed" | grep -E "$relevant" || true)"
+          if [ -n "$hits" ]; then
+            decide true "$(printf 'Paths that can reach a database changed:\n\n```\n%s\n```' "$hits")"
+          fi
+
+          decide false "$(printf 'No path that can reach a database changed, so no Neon branch is taken. Files in this change:\n\n```\n%s\n```' "$changed")"
+
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        if: steps.scope.outputs.run == 'true'
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        if: steps.scope.outputs.run == 'true'
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+        if: steps.scope.outputs.run == 'true'
       - name: Validate i18n catalogs
+        if: steps.scope.outputs.run == 'true'
         run: pnpm i18n:check
       - run: pnpm exec playwright install --with-deps chromium webkit
+        if: steps.scope.outputs.run == 'true'
       - name: Wait for Neon branch capacity
+        if: steps.scope.outputs.run == 'true'
         run: pnpm exec tsx scripts/neon-wait-capacity.ts
         env:
           LEARNX_NEON_WAIT_MINUTES: '15'
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
           NEON_PROJECT_ID: ${{ vars.NEON_PROJECT_ID }}
       - name: Create isolated Neon branch
+        if: steps.scope.outputs.run == 'true'
         id: neon
         uses: neondatabase/create-branch-action@fb620d43d4c565abaf088b848a4e28e5c4ea4d9c # v6
         with:
@@ -59,11 +167,13 @@ jobs:
           prisma: true
           project_id: ${{ vars.NEON_PROJECT_ID }}
       - name: Generate Prisma client
+        if: steps.scope.outputs.run == 'true'
         run: pnpm prisma:generate
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
           DIRECT_URL: ${{ steps.neon.outputs.db_url }}
       - name: Snapshot Production clone before migrations
+        if: steps.scope.outputs.run == 'true'
         run: pnpm migration:rehearse -- snapshot migration-before.json
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
@@ -72,11 +182,13 @@ jobs:
           LEARNX_INTEGRATION_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
           NEON_BRANCH_ID: ${{ steps.neon.outputs.branch_id }}
       - name: Apply migrations
+        if: steps.scope.outputs.run == 'true'
         run: pnpm prisma:deploy
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
           DIRECT_URL: ${{ steps.neon.outputs.db_url }}
       - name: Verify Production clone after migrations
+        if: steps.scope.outputs.run == 'true'
         run: pnpm migration:rehearse -- compare migration-before.json migration-after.json
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
@@ -85,6 +197,7 @@ jobs:
           LEARNX_INTEGRATION_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
           NEON_BRANCH_ID: ${{ steps.neon.outputs.branch_id }}
       - name: Replay migration history and prove the schema matches
+        if: steps.scope.outputs.run == 'true'
         run: pnpm migration:rehearse -- replay-all ci_migration_replay_${{ github.run_id }}_${{ github.run_attempt }}
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
@@ -93,12 +206,14 @@ jobs:
           LEARNX_INTEGRATION_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
           NEON_BRANCH_ID: ${{ steps.neon.outputs.branch_id }}
       - name: Measure bounded database reads on isolated clone
+        if: steps.scope.outputs.run == 'true'
         run: pnpm performance:measure -- --output performance-report.json
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
           DIRECT_URL: ${{ steps.neon.outputs.db_url }}
           LEARNX_PERFORMANCE_DATABASE: isolated
       - name: Run real Functions and browser integration tests
+        if: steps.scope.outputs.run == 'true'
         run: pnpm test:integration
         env:
           CI: 'true'
@@ -109,10 +224,12 @@ jobs:
           NEON_BRANCH_ID: ${{ steps.neon.outputs.branch_id }}
           SESSION_SECRET: integration-session-secret-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Create isolated seed owner
+        if: steps.scope.outputs.run == 'true'
         run: pnpm exec tsx scripts/validate-targeted-program-seed.ts prepare-owner
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
       - name: Validate targeted Platform APM seed twice
+        if: steps.scope.outputs.run == 'true'
         shell: bash
         run: |
           pnpm prisma:seed
@@ -128,10 +245,12 @@ jobs:
           ADMIN_EMAIL: platform-seed-ci@example.invalid
           LEARNX_SEED_PROGRAM_SLUG: platform-apm-entretien-tryhackme
       - name: Create isolated English psychology pilot seed owner
+        if: steps.scope.outputs.run == 'true'
         run: pnpm exec tsx scripts/validate-psychology-pilot-seed.ts prepare-owner
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
       - name: Validate targeted English psychology pilot seed twice
+        if: steps.scope.outputs.run == 'true'
         shell: bash
         run: |
           pnpm prisma:seed
@@ -147,21 +266,21 @@ jobs:
           ADMIN_EMAIL: psychology-pilot-seed-ci@example.invalid
           LEARNX_SEED_PROGRAM_SLUG: psychology-foundations-pilot
       - name: Upload Playwright report
-        if: always()
+        if: always() && steps.scope.outputs.run == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           if-no-files-found: ignore
           name: integration-playwright-${{ github.run_id }}
           path: playwright-report-integration
       - name: Upload performance report
-        if: always()
+        if: always() && steps.scope.outputs.run == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           if-no-files-found: ignore
           name: database-performance-${{ github.run_id }}
           path: performance-report.json
       - name: Upload migration rehearsal report
-        if: always()
+        if: always() && steps.scope.outputs.run == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           if-no-files-found: ignore
@@ -170,7 +289,7 @@ jobs:
             migration-before.json
             migration-after.json
       - name: Delete isolated Neon branch
-        if: always() && steps.neon.outputs.branch_id != ''
+        if: always() && steps.scope.outputs.run == 'true' && steps.neon.outputs.branch_id != ''
         uses: neondatabase/delete-branch-action@4468d825d5a88ef4012f1705a82f02ec3072f776 # v3
         with:
           api_key: ${{ secrets.NEON_API_KEY }}
