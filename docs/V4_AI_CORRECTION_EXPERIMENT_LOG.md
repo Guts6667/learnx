@@ -1040,3 +1040,163 @@ pas se reconstruire.
 **Coût : 0,00 USD.** Tout hors ligne, depuis l'artefact déjà payé. Pas de
 re-mesure avant que le correctif de livraison soit sur `dev` : acheter un chiffre
 pour un code qu'on ne livrera pas.
+
+## 10. 2.3.0 mesurée sur la direction — 31 août 2026 (soir)
+
+**Verdict : `mutation-direction-violations` = 7/63 = 11,11 %, rouge, budget 1.**
+Il en aurait fallu au plus une ; il y en a sept. **2.3.0 ne corrige pas le défaut
+de direction** au niveau que le gate exige.
+
+**Le chiffre honnête, dans les deux sens.** Sous 2.2.0 le 30 août : **7/47 =
+14,89 %**. Sous 2.3.0 : **7/63 = 11,11 %**. Le taux baisse de presque quatre
+points, et **le nombre absolu de violations ne bouge pas** : sept avant, sept
+après. Le dénominateur a grandi parce que la sélection de mutants porteurs de
+direction est passée de 47 à 63 observations ; la baisse du taux est donc un
+effet de couverture au moins autant qu'un effet de consigne. Présenter les
+11,11 % seuls serait un progrès qui n'a pas eu lieu.
+
+Mesuré par le profil `direction` : 77 cellules, **1,8444 USD** (réconcilié
+fournisseur 1,7400), aucune cellule inexploitable. Le run complet aurait coûté
+6 à 8 USD pour le même verdict sur cette question.
+
+### Ce qui a été acheté, et ce qui ne l'a pas été
+
+Le profil `direction` achète les mutants porteurs de direction plus les seules
+lignes de base dont les inversions ont besoin. **Ne sont pas mesurés** : la
+stabilité, la dérive des critères non ciblés, la part de LOW, l'accord avec
+l'étalon. Le rapport le dit lui-même. Ce run tranche **une** question.
+
+### Les sept violations
+
+| forme | n |
+| --- | --- |
+| suppression de phrase | **6** |
+| inversion de fait | 1 |
+
+Six sur sept sont des suppressions : la phrase portant le critère est retirée et
+le correcteur maintient le niveau maximal.
+
+### Caractérisation des six suppressions
+
+**Cinq sur six suivent le même mécanisme : la substitution par un voisin
+plausible.** Le correcteur ne cite pas la phrase supprimée — elle n'existe plus —
+il cite une phrase *survivante, topiquement adjacente*, qui n'établit pas ce que
+le niveau affirme, et il crédite le niveau maximal.
+
+| critère | phrase supprimée (ce qu'elle énonçait) | cité à la place (ce que ça énonce) |
+| --- | --- | --- |
+| `decision-position` | « Je recommande de signer immédiatement pour un an » — **la position** | « la remise de 18 % rend toute autre option irrationnelle » — **l'argument pour** la position |
+| `fact-fidelity` | le rapprochement chiffré : 27 900 €, 31 h × 900 €, écart 5 500 € | « le contrat Préventel à 21 000 euros par an », « 5 immobilisations de 2025 » — **des chiffres survivants isolés** |
+| `residual-risk-surfacing` | « L'inconnue majeure reste la cause des pannes » — **l'inconnue nommée** | « Je propose de documenter la cause de chaque arrêt dès 2026 » — **une action qui la présuppose** |
+| `context-fidelity` | « Aucune mesure de durée n'existe aujourd'hui, donc la baseline reste à établir » | « Deux hypothèses restent ouvertes et conditionnent cet objectif » — **une incertitude générique** |
+| `reflection-link` | « Mon erreur a été… et la pratique que j'en retire est… » — **le lien erreur → pratique** | « J'en tire une méthode de mission en six actions » — **la méthode sans l'erreur qui la fonde** |
+
+La sixième n'est pas du même ordre : sur
+`scanner-repair#uncertainty-bounds@2`, le critère **n'a pas été livré du tout**
+— retiré par le rattrapage pour `EVIDENCE_STATUS_INCONSISTENT` — et il est donc
+compté comme violation par la branche « le critère ciblé ne figure pas dans la
+correction rendue ». C'est une panne de pipeline comptée dans le même gate, pas
+un échec de la consigne. **Cinq échecs de consigne, pas six.**
+
+### Ce que les cinq ont en commun
+
+- **Une famille de critère unique** : tous exigent un **énoncé explicite** —
+  une position, un lien, une inconnue, un rapprochement chiffré. Aucun ne porte
+  sur le style ou la cohérence générale.
+- **Un voisin plausible survit, dans les cinq cas.** Le texte muté conserve
+  toujours une phrase que l'on peut lire, de bonne foi, comme satisfaisant le
+  critère — l'argument sans la position, l'action sans l'inconnue, la méthode
+  sans l'erreur.
+- **Le texte survivant reste substantiel** : 437 à 675 caractères, 3 ou
+  4 phrases, la suppression n'emportant que 10 à 36 % du texte. Le correcteur
+  n'a jamais affaire à un texte appauvri au point que le manque saute aux yeux.
+- **Le correcteur cite** : 1 à 3 citations par critère. Il ne s'abstient pas, il
+  ne signale pas l'absence — il produit une preuve qui ne prouve pas.
+
+### Quelle ligne de 2.3.0 chacune met en échec
+
+2.3.0 ajoute quatre instructions à 2.2.0. Les cinq échecs se répartissent ainsi :
+
+| instruction ajoutée | mise en échec par |
+| --- | --- |
+| **(1)** « Un niveau n'est crédité que de ce que la production énonce explicitement pour CE critère. Si la production dit quelque chose de plus faible, de plus étroit ou d'**adjacent**, retiens le niveau qui correspond à ce qu'elle dit » | **les 5** — c'est la définition même du mécanisme observé |
+| **(2)** « Ne complète jamais la production… ne le déduis pas du reste du texte » | `residual-risk-surfacing`, `reflection-link`, `context-fidelity` — l'élément absent est déduit d'un voisin |
+| **(3)** « Avant de retenir un niveau, relis les citations que tu vas produire et demande-toi si elles suffisent, **à elles seules**, à établir ce que ce niveau affirme » | **les 5** — et c'est la plus instructive : dans les cinq cas les citations produites, relues seules, n'établissent visiblement pas le niveau |
+| **(4)** « Si une citation contient un calcul… refais l'opération toi-même » | aucune. Sur `fact-fidelity` le correcteur a cité des chiffres **sans calcul**, donc la règle ne s'applique pas — et c'est précisément comment il l'a contournée sans la violer |
+
+**L'observation la plus actionnable** : l'instruction (3) est un **test de
+suffisance**, et c'est celle qui échoue le plus nettement. Le modèle produit bien
+des citations — il ne saute pas l'étape de citer — mais rien n'indique qu'il
+applique le test à ce qu'il vient de citer. Une instruction qui demande une
+vérification interne n'a laissé aucune trace vérifiable de cette vérification.
+
+Et l'instruction (4) montre le complément : une règle **étroitement définie**
+(« si une citation contient un calcul ») est respectée à la lettre et contournée
+en substance, en citant des chiffres sans opération.
+
+### Ce que cette analyse n'établit pas
+
+- **Rien sur la fréquence.** Cinq cas décrivent un mécanisme, pas un taux.
+- **Rien sur la cause.** « Le modèle n'applique pas le test de suffisance » décrit
+  ce qu'on observe dans les sorties, pas ce qui se passe dans le modèle.
+- **Aucune consigne nouvelle n'est proposée ici.** Une itération 2.4.0 se décide
+  par le Propriétaire et se mesure avant d'être promue, comme 2.3.0 l'a été.
+
+**Coût de cette analyse : 0,00 USD.** Entièrement hors ligne, depuis les
+artefacts du run.
+
+### 10 bis. Une piste, consignée comme option et non comme décision
+
+Les deux instructions de 2.3.0 qui échouent — (1) ne pas créditer l'adjacent,
+(3) les citations suffisent-elles à elles seules — demandent au modèle **de se
+vérifier lui-même sans rien rendre d'observable**. Celle qui tient, (4), est
+étroite : elle s'applique quand une citation contient un calcul, et sur
+`fact-fidelity` le correcteur a cité des chiffres **sans opération**, donc la
+règle ne s'appliquait pas. Elle a été respectée à la lettre et contournée en
+substance.
+
+Cela désigne une direction qui n'est pas « exhorter plus fort ».
+
+**Option A — rendre le test de suffisance observable.** Plutôt qu'une
+vérification interne dont rien ne prouve qu'elle a eu lieu, exiger un champ de
+sortie par critère : **quel énoncé explicite de la production établit ce
+niveau**, ou la déclaration qu'il n'y en a aucun. Le serveur peut alors vérifier
+de façon déterministe deux choses — que l'énoncé nommé **se résout** dans la
+production de l'apprenant, par le même résolveur que les citations ; et que si
+l'absence est déclarée, le niveau retenu est bien le **plancher**.
+
+C'est la doctrine du dépôt appliquée à la consigne elle-même : ne jamais croire
+l'auto-déclaration du modèle, la rendre vérifiable. Le mécanisme existe déjà en
+plus petit — `evidenceStatus: NO_RELEVANT_EVIDENCE` **impose** le niveau
+plancher, et l'oracle arithmétique déterministe recalcule au lieu de demander.
+L'option étend cette forme de « as-tu trouvé une preuve » à « ta preuve
+suffit-elle ».
+
+**Ce que l'option A ne ferait pas, et il faut le dire d'emblée :**
+
+- **Elle n'empêche pas la substitution.** Le modèle pourrait nommer la phrase
+  adjacente comme étant l'énoncé explicite. Ce qui change est que la revendication
+  devient **visible et auditable** — l'énoncé nommé est dans l'artefact, donc un
+  second juge, humain ou vérificateur, peut demander s'il établit réellement le
+  niveau. Aujourd'hui ce raisonnement n'existe nulle part.
+- **La suffisance n'est pas décidable par machine.** Le serveur peut contrôler la
+  **résolution** et la **cohérence avec le plancher**, pas la suffisance. Annoncer
+  autre chose serait exactement l'erreur que ce journal documente depuis deux
+  jours.
+- **Elle coûte des jetons de sortie sur chaque critère**, donc un prix par
+  correction à mesurer, pas à supposer.
+- **Elle ajoute une façon d'être mal formé.** Un champ requis de plus est une
+  branche de rejet de plus : le risque porte sur `eventual-unusable-runs`, que le
+  brouillon 2.3.0 avait déjà nommé comme son propre risque.
+
+**Option B — élargir plutôt qu'approfondir.** L'instruction (4) n'a pas échoué :
+elle n'a pas été déclenchée. Son défaut est l'**étroitesse**, pas la faiblesse.
+Étendre son domaine — toute citation portant un chiffre, une quantité, une date
+ou une comparaison, et pas seulement un calcul — est un levier différent, et
+moins cher que l'option A puisqu'il ne change pas le schéma de sortie. Il ne
+traite pas les cas non chiffrés, qui sont quatre des cinq.
+
+**Aucune des deux n'est recommandée ici, et aucune 2.4.0 n'est écrite.** Une
+itération de consigne se décide par le Propriétaire, se mesure avant d'être
+promue, et son gain se lit sur `mutation-direction-violations` avec un
+dénominateur suffisant — la règle qui a coûté 7/63 à 2.3.0 vaudra pour sa suite.
