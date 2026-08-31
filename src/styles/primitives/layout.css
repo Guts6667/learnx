@@ -127,14 +127,26 @@
   gap: var(--space-4);
 }
 
+/*
+ * En colonne flexible plutôt qu'en grille : l'action est poussée en bas
+ * (`.credit-pack__action`), et les trois boutons s'alignent quelle que soit la
+ * hauteur du contenu au-dessus. Seul le palier d'entrée porte une condition
+ * d'achat, donc sans cela son bouton descendrait de plusieurs lignes sous ses
+ * voisins — ce qui démentirait le choix écrit juste à côté : trois paliers de
+ * même poids, pas un entonnoir.
+ */
 .credit-pack {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-2);
-  align-content: start;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
+}
+
+.credit-pack__action {
+  margin-block-start: auto;
 }
 
 /*

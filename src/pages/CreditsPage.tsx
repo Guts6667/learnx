@@ -200,6 +200,7 @@ function PackCard({
       {saleClosed || alreadyPurchased ? null : (
         <Button
           aria-label={t('credits.purchase.buyPack', { label })}
+          className="credit-pack__action"
           disabled={disabled}
           isLoading={isLoading}
           onClick={() => onBuy(pack.key)}
