@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": "2.4.0-draft",
+  "basedOn": "2.3.0",
+  "status": "BROUILLON — non promu. Mesuré avant toute promotion, comme 2.3.0 l'a été.",
+  "change": "Un seul changement mesurable depuis 2.3.0 : l'instruction 11 est REMPLACÉE, non complétée. C'est la première version qui retire quelque chose au lieu d'empiler. 2.3.0 avait ajouté quatre instructions d'un coup et n'a donc rien appris quand elle a échoué à 7/63 — le même nombre absolu de violations que 2.2.0.",
+  "whatIsRemoved": {
+    "instruction": "Avant de retenir un niveau, relis les citations que tu vas produire et demande-toi si elles suffisent, à elles seules, à établir ce que ce niveau affirme. Si elles n'établissent qu'une partie, descends au niveau que cette partie soutient.",
+    "why": "Elle demande au modèle de détecter l'insuffisance de sa propre preuve, c'est-à-dire exactement la capacité que la littérature décrit comme son point faible : les modèles corrigent une erreur qu'on leur désigne, ils ne la trouvent pas seuls (« verification bottleneck », arXiv 2310.01798). Mesuré chez nous : le modèle produit bien 1 à 3 citations par critère — il ne saute pas l'étape — mais rien dans la sortie n'indique qu'il applique le test à ce qu'il vient d'écrire."
+  },
+  "whatIsAdded": {
+    "instruction": "Avant de retenir un niveau, cherche d'abord une raison pour laquelle il serait faux, au regard des seules citations que tu vas produire. Le doute n'est pas un crédit : si ces citations n'établissent pas le niveau, retiens celui du dessous. Ne prends jamais pour l'énoncé demandé un énoncé qui l'entoure — l'argument en faveur d'une position n'est pas la position, l'action qui suppose une inconnue n'est pas l'inconnue nommée, la méthode tirée d'une erreur n'est pas le lien à cette erreur.",
+    "why": "Portée depuis notre propre expérience gagnante sur le VÉRIFICATEUR, pas inventée. Consigne A (« la citation soutient-elle le niveau ? ») : 3 faux accords sur 20. Consigne B, qui ajoute exactement deux choses — chercher d'abord la raison de refuser, et « le doute n'est pas un accord » — : 2 sur 20. Consigne D, B plus le recalcul explicite : 1 sur 20. Le correcteur primaire n'a jamais reçu l'inversion de la charge de la preuve que le vérificateur a reçue et sur laquelle il s'est amélioré.",
+    "namedAntiPattern": "Les trois exemples nommés ne sont pas illustratifs : ce sont les trois formes exactes mesurées le 31 août sur cinq violations de suppression. Nommer l'échec précis fait mieux que le conseil générique — et le conseil générique est précisément ce qui a échoué en 2.3.0."
+  },
+  "acknowledgedImpurity": "L'instruction ajoutée porte trois éléments (recherche adverse, défaut vers le bas, anti-motif nommé). Si 2.4.0 réussit, nous ne saurons pas lequel des trois a agi. Le choix est assumé : les séparer coûterait trois mesures à ~2,54 USD au lieu d'une, pour une information que nous n'utiliserions pas — nous ne retirerions pas un élément qui marche.",
+  "defectAddressed": "Substitution par un voisin plausible. Le correcteur ne peut pas citer la phrase supprimée, alors il cite une phrase survivante topiquement adjacente qui n'établit pas ce que le niveau affirme, et crédite le niveau maximal. Cinq cas sur cinq partagent ce mécanisme ; dans les cinq, un voisin plausible survit, le texte restant fait 437 à 675 caractères, et le correcteur produit des citations sans jamais signaler l'absence.",
+  "measurementBeforePromotion": {
+    "mustMove": [
+      "mutation-direction-violations : 7/63 = 11,11 % sous 2.3.0 — c'est le gate que ce brouillon vise. Cible : au plus 1."
+    ],
+    "mustNotRegress": [
+      "accord avec l'étalon sur les productions NON mutées : 84,3 % sous 2.2.0 (pool complet). Canari de sur-correction, pas verdict — le dénominateur diffère.",
+      "part de LOW : 31,7 % sous 2.3.0 sur le même profil. Une règle qui descend les niveaux peut la faire monter.",
+      "eventual-unusable-runs : 0 sur 77. Une exigence supplémentaire peut produire des sorties refusées.",
+      "critères manquants au livré : doit rester 0."
+    ],
+    "risk": "Le risque principal est la sur-correction : une consigne plus sévère note brillamment les textes abîmés et punit les productions correctes. Le profil `direction` achète désormais les lignes de base des cas mutés précisément pour que ce risque soit un chiffre dans le même rapport, et non une inconnue."
+  },
+  "notPromoted": "runtime-correction-prompt.ts reste à 2.2.0. Rien n'atteint un apprenant tant qu'une mesure n'a pas été achetée et lue."
+}
