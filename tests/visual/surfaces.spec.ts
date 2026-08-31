@@ -211,6 +211,53 @@ test('app — credits', async ({ page }) => {
   await expect(page).toHaveScreenshot('credits.png', { fullPage: true });
 });
 
+/**
+ * L'écran Profil (V4.5-168).
+ *
+ * Il n'avait aucune référence visuelle, et il porte depuis peu la case de
+ * consentement à la réutilisation — un élément à portée RGPD. Quatre tests
+ * unitaires vérifient ce qu'il fait ; aucun ne dit à quoi il ressemble, et
+ * « Visual baselines au vert » ne voulait donc rien dire pour cette surface.
+ *
+ * Capturée décochée, l'état par défaut : c'est celui qu'un apprenant voit sans
+ * rien faire, et le défaut est ici la décision — un consentement se donne, il
+ * ne se déduit pas d'un silence. La description est la même dans les deux
+ * états, donc une seconde capture cochée n'ajouterait que la coche.
+ *
+ * Cadrée sur `.profile-groups`, et non en pleine page. La première version
+ * l'était : en 390 px, la barre de navigation — `position: fixed` — se pose au
+ * milieu d'une capture pleine page et recouvre deux lignes de la description
+ * du consentement. La page n'est pas cassée, c'est un artefact de cadrage ;
+ * mais une référence qui masque justement le texte RGPD ne surveille pas ce
+ * qu'on l'a créée pour surveiller. Le cadre retenu porte les quatre cartes de
+ * l'écran, et la barre reste couverte par les autres références de l'espace
+ * apprenant.
+ */
+test('app — profile', async ({ page }) => {
+  await signIn(page);
+  await page.goto('/profile');
+  // Le titre de niveau 1 est le nom affiché du compte, pas un libellé fixe :
+  // on l'attend par son rôle, sans figer un nom que la fixture décide.
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  // La case, nommée : sans cette attente la capture pourrait partir avant que
+  // la session porte le consentement, et figer un écran incomplet en référence.
+  await expect(
+    page.getByLabel(
+      'Autoriser la conservation de mes textes après le détachement',
+    ),
+  ).toBeVisible();
+  await settle(page);
+  // En 390 px, la barre de navigation — `position: fixed` — se pose sur cette
+  // capture et recouvre le haut de la carte « Accès ». Ce n'est pas un défaut
+  // de la page : c'est ce que fait un élément fixe dans une capture plus haute
+  // que la fenêtre. `mask` a été essayé et ne l'enlève pas — l'image obtenue
+  // est identique au bit près, donc n'y revenez pas sans preuve. Ce qui
+  // comptait est acquis : le bloc de consentement et sa description entière
+  // sont dégagés aux trois largeurs, et la barre est surveillée par les autres
+  // références de l'espace apprenant.
+  await expect(page.locator('.profile-groups')).toHaveScreenshot('profile.png');
+});
+
 test('app — notes', async ({ page }) => {
   await signIn(page);
   await page.goto('/notes');
