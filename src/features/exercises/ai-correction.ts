@@ -23,7 +23,7 @@ interface CorrectionCriterionResult {
   /** Derived server-side from checkable facts, never the model's self-report. */
   confidence: CorrectionConfidence;
   evidenceQuotes: string[];
-  evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
+  evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE' | 'EVIDENCE_WITHDRAWN';
   feedback: string;
   key: string;
   label: string;

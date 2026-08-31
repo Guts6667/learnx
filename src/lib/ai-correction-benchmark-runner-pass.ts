@@ -96,6 +96,7 @@ export async function executeBenchmarkWorkflowPass(input: {
             status: 'VALID',
             unsureCriteria: salvaged.unsureCriteria,
             usage: result.usage,
+            withdrawnCriteria: salvaged.withdrawnCriteria,
             workflowPass: input.workflowPass,
           });
         } catch {

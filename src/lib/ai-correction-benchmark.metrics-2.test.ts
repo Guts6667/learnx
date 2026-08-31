@@ -190,23 +190,28 @@ describe('correction benchmark metrics — part 2', () => {
     );
 
     // One run: one criterion with a wrong-case first quote letter (salvageable
-    // via the bounded tolerance), one criterion with a fabricated quote
-    // (unsure), one clean criterion — delivered criteria stay in the output.
+    // via the bounded tolerance), one criterion whose level is not in the
+    // rubric (unsure), one clean criterion — delivered criteria stay in the
+    // output.
+    //
+    // Le troisième critère portait une citation fabriquée jusqu'à V4.5-177.
+    // Ce cas-là n'est plus « incertain » : il est livré sans extrait
+    // (`EVIDENCE_WITHDRAWN`) et testé à part, plus bas. Un niveau hors barème
+    // le remplace ici pour que le taux de critères incertains garde un cas
+    // réel à mesurer.
     const cleanQuote = benchmarkCase.responseText.slice(0, 25);
     const caseSlippedQuote =
       benchmarkCase.responseText.charAt(0).toLowerCase() +
       benchmarkCase.responseText.slice(1, 25);
     const criteria = contract.criteria.map((criterion, index) => ({
       confidence: 0.9,
-      evidenceQuotes:
-        index === 2
-          ? ['citation fabriquee pour le test']
-          : index === 1
-            ? [caseSlippedQuote]
-            : [cleanQuote],
+      evidenceQuotes: index === 1 ? [caseSlippedQuote] : [cleanQuote],
       evidenceStatus: 'FOUND',
       feedback: `Feedback de test pour ${criterion.key}.`,
-      levelKey: criterion.performanceLevels[0]?.key ?? '',
+      levelKey:
+        index === 2
+          ? 'niveau-absent-du-bareme'
+          : (criterion.performanceLevels[0]?.key ?? ''),
     }));
     const rawOutput = {
       criteria: Object.fromEntries(

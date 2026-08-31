@@ -156,6 +156,21 @@ export function strictOutput() {
   };
 }
 
+/**
+ * Une sortie dont un critère est réellement inexploitable : son niveau n'existe
+ * pas au barème. Depuis V4.5-177 c'est ce cas-là — et non une citation hors
+ * copie — qui produit une livraison partielle, `COMPLETED_PARTIAL`.
+ */
+export function undeliverableCriterionOutput() {
+  const output = partialOutput();
+  output.criteria['evidence-selection'] = {
+    ...output.criteria['evidence-selection'],
+    evidenceQuotes: ['Je retiens l’option locale ce trimestre.'],
+    levelKey: 'niveau-absent-du-bareme',
+  };
+  return output;
+}
+
 export function partialOutput() {
   return {
     criteria: {

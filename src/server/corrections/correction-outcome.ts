@@ -100,13 +100,20 @@ function confidenceSignalsFor(
   verdict: CheckerVerdict,
 ): CriterionConfidenceInput {
   const position = levelPosition(contract, item);
+  /**
+   * Depuis V4.5-177, un critère livré n'est plus forcément un critère dont la
+   * citation a été vérifiée. `EVIDENCE_WITHDRAWN` dit exactement le contraire :
+   * le modèle a affirmé `FOUND`, et l'extrait ne se retrouvait pas dans la
+   * copie. On le déclare donc `REJECTED` en gardant `FOUND` comme statut
+   * d'origine — c'est ce couple que la table de V4.5-110 fait déjà retomber en
+   * LOW, sans qu'aucune règle de confiance ait besoin de changer.
+   */
+  const withdrawn = item.evidenceStatus === 'EVIDENCE_WITHDRAWN';
   return {
-    // Delivered criteria are exactly those the deterministic evidence checker
-    // accepted: a quote it could not tie to the production sends its criterion
-    // to `unsureCriteria` instead, never to `criteria`
-    // (ai-correction-benchmark-evidence-delivery.ts).
-    citation: 'VERIFIED',
-    evidenceStatus: item.evidenceStatus,
+    // Hors de ce cas, un critère livré est un critère dont l'extrait a passé le
+    // vérificateur déterministe (ai-correction-benchmark-evidence-delivery.ts).
+    citation: withdrawn ? 'REJECTED' : 'VERIFIED',
+    evidenceStatus: withdrawn ? 'FOUND' : item.evidenceStatus,
     // The feedback names a hard-constraint violation while the level sits above
     // the floor: the model contradicting itself inside one criterion.
     hardConstraintMismatch:

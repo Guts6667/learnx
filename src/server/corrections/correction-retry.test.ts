@@ -1,6 +1,7 @@
 import {
   buildHarness,
   partialOutput,
+  undeliverableCriterionOutput,
   strictOutput,
 } from './correction-orchestration.test-support';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity';
@@ -71,7 +72,7 @@ describe('reprise sur réponse inutilisable (V4.5-124)', () => {
   it('ne reprend pas une livraison partielle, qui est utilisable', async () => {
     // A criterion sent back as « à retravailler » is a delivered correction,
     // not a failed one. Retrying it would pay again for an answer we accepted.
-    const harness = buildHarness({ transport: partialOutput });
+    const harness = buildHarness({ transport: undeliverableCriterionOutput });
 
     const result = await harness.service.runAcceptedQuote({
       quoteId: 'quote-1',
@@ -79,6 +80,21 @@ describe('reprise sur réponse inutilisable (V4.5-124)', () => {
     });
 
     expect(result.correction.status).toBe('COMPLETED_PARTIAL');
+    expect(harness.transportOutputs).toHaveLength(1);
+  });
+
+  it('ne reprend pas non plus une citation écartée pour provenance', async () => {
+    // V4.5-177 : le critère est livré en « à vérifier ». La réponse a été
+    // reçue et reste exploitable, donc la reprise paierait deux fois pour une
+    // correction que nous avons acceptée.
+    const harness = buildHarness({ transport: partialOutput });
+
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(result.correction.status).toBe('COMPLETED');
     expect(harness.transportOutputs).toHaveLength(1);
   });
 

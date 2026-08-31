@@ -9,6 +9,10 @@ import {
   salvageProtocol3PartialCorrection,
   validateBenchmarkProtocol3ModelOutputWithEvidence,
 } from './ai-correction-benchmark.ts';
+import {
+  allowsIndicativeScore,
+  deriveCriterionConfidence,
+} from './ai-correction-confidence.ts';
 
 /**
  * V4.5-177 — pourquoi une correction à deux critères sur trois a été notée
@@ -137,10 +141,12 @@ describe('V4.5-177 — le critère perdu du pré-test 2.3.0', () => {
     ).toThrow('MODEL_EVIDENCE_NOT_IN_RESPONSE');
   });
 
-  it('le rattrapage laisse tomber le critère entier et rend deux notes sur trois', () => {
-    // Le comportement d'aujourd'hui, épinglé tel quel. Une seule citation
-    // irrecevable sur deux suffit à faire disparaître un critère que le modèle
-    // avait pourtant noté `mastered`, et que la ligne de base attend `mastered`.
+  it('le rattrapage livre le critère sans citation ni niveau montré', () => {
+    // V4.5-177. Avant le correctif, une seule citation irrecevable sur deux
+    // faisait disparaître le critère et la tentative restait VALID à deux
+    // notes sur trois : le critère quittait numérateur ET dénominateur, si
+    // bien qu'un gabarit qui se tait paraissait meilleur qu'un gabarit qui se
+    // trompe. Il est désormais livré, sans extrait, et son retrait est nommé.
     const salvaged = salvageProtocol3PartialCorrection({
       benchmarkCase: { responseText },
       contract,
@@ -149,25 +155,68 @@ describe('V4.5-177 — le critère perdu du pré-test 2.3.0', () => {
 
     expect(salvaged.output.criteria.map((c) => c.criterionKey)).toEqual([
       'source-fidelity',
+      'mechanism-link',
       'uncertainty-boundary',
     ]);
-    expect(salvaged.unsureCriteria).toEqual(['mechanism-link']);
+    // Livré ne veut pas dire retenu comme sûr : le critère ne va pas dans
+    // `unsureCriteria` — sinon l'écran ne l'afficherait pas — mais son motif
+    // de retrait est enregistré.
+    expect(salvaged.unsureCriteria).toEqual([]);
+    expect(salvaged.withdrawnCriteria).toEqual([
+      { criterionKey: 'mechanism-link', reason: 'EVIDENCE_NOT_IN_RESPONSE' },
+    ]);
+
+    const withdrawn = salvaged.output.criteria.find(
+      (c) => c.criterionKey === 'mechanism-link',
+    );
+    expect(withdrawn?.evidenceStatus).toBe('EVIDENCE_WITHDRAWN');
+    expect(withdrawn?.evidenceQuotes).toEqual([]);
+    // Le niveau que le modèle a prononcé est conservé dans l'artefact — c'est
+    // la trace de ce qui a été affirmé. L'écran ne le montre pas.
+    expect(withdrawn?.levelKey).toBe('mastered');
   });
 
-  it('le rattrapage laisse une preuve derrière lui pour un critère non livré', () => {
-    // Défaut secondaire : les citations résolues AVANT l'échec sont déjà
-    // poussées dans `evidenceMatches` et ne sont pas retirées. L'artefact
-    // atteste donc une preuve pour un critère qu'il ne livre pas.
+  it('n’atteste plus de preuve pour le critère dont la citation est retirée', () => {
+    // Défaut secondaire de l'enquête : la citation résolue AVANT l'échec
+    // restait dans `evidenceMatches`. L'artefact attestait donc une preuve
+    // pour un critère qu'il ne justifiait plus.
     const salvaged = salvageProtocol3PartialCorrection({
       benchmarkCase: { responseText },
       contract,
       output: modelOutput,
     });
 
-    const orphans = salvaged.evidenceMatches.filter((match) =>
-      salvaged.unsureCriteria.includes(match.criterionKey),
+    expect(
+      salvaged.evidenceMatches.filter(
+        (match) => match.criterionKey === 'mechanism-link',
+      ),
+    ).toEqual([]);
+    // Les autres critères gardent les leurs.
+    expect(salvaged.evidenceMatches.map((match) => match.criterionKey)).toEqual(
+      ['source-fidelity', 'uncertainty-boundary', 'uncertainty-boundary'],
     );
-    expect(orphans).toHaveLength(1);
-    expect(orphans[0]?.criterionKey).toBe('mechanism-link');
+  });
+
+  it('fait retomber la confiance du critère retiré, donc supprime le score', () => {
+    // La table de V4.5-110 traite déjà « citation non vérifiée + FOUND » comme
+    // LOW ; aucune règle de confiance n'a eu à changer. Un LOW suffit à retenir
+    // le score indicatif, donc la note d'ensemble ne peut pas être publiée sur
+    // une preuve qu'on vient de retirer.
+    const withdrawnSignals = {
+      citation: 'REJECTED' as const,
+      evidenceStatus: 'FOUND' as const,
+      hardConstraintMismatch: false,
+      isFloorLevel: false,
+      isMasteredLevel: true,
+      verifier: 'AGREED' as const,
+    };
+
+    expect(deriveCriterionConfidence(withdrawnSignals)).toBe('LOW');
+    expect(
+      allowsIndicativeScore({
+        criteria: [withdrawnSignals],
+        familyScientificallyValidated: true,
+      }),
+    ).toBe(false);
   });
 });

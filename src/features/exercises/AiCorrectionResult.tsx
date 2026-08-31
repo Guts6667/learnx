@@ -443,7 +443,18 @@ function LowConfidenceCriterionRow({
         <strong>{criterion.label}</strong>
         <Badge tone="warning">{t('aiCorrection.toCheckLabel')}</Badge>
       </div>
-      <p>{t('aiCorrection.toCheckExplanation')}</p>
+      {/*
+        V4.5-177 : deux raisons distinctes mènent à « à vérifier » — une
+        vérification indépendante non concluante, ou une citation qui ne venait
+        pas de la copie. L'apprenant doit lire la bonne, et une seule : deux
+        explications sur le même critère se lisent comme une hésitation. La
+        provenance l'emporte, arbitrage Head of AI / Head of UX-UI.
+      */}
+      <p>
+        {criterion.evidenceStatus === 'EVIDENCE_WITHDRAWN'
+          ? t('aiCorrection.toCheckEvidenceOutsideAnswer')
+          : t('aiCorrection.toCheckExplanation')}
+      </p>
       {criterion.evidenceQuotes.length > 0 ? (
         <div className="correction-criterion__evidence">
           <p>{t('aiCorrection.evidenceLabel')}</p>

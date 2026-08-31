@@ -157,7 +157,7 @@ export interface OrchestratedCorrectionResult {
       weight: number;
       levelKey: string;
       levelLabel: string;
-      evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
+      evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE' | 'EVIDENCE_WITHDRAWN';
       evidenceQuotes: string[];
       feedback: string;
       /** Derived by the server from checkable facts, never self-reported. */
