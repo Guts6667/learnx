@@ -77,6 +77,22 @@ export type RegressionRate = {
 };
 
 export type RegressionMetrics = {
+  /**
+   * Agreement of the verifier on criteria labelled HIGH.
+   *
+   * **This is 1 by construction and cannot be anything else.**
+   * `deriveCriterionConfidence` returns LOW as soon as the verifier disagreed
+   * and MEDIUM when it was unavailable, so HIGH implies AGREED. The numerator
+   * and the denominator count the same criteria. Measured 155/155 and 100/100 on
+   * the two paid runs of 31 August, and it would read 1 on any run whatever the
+   * verifier did.
+   *
+   * Kept for continuity of the record and demoted out of the blocking gates: a
+   * blocking gate that cannot go red is worse than no gate, because it is read
+   * as evidence. What it was meant to ask — does the verifier ever say no when
+   * it should — is `checkerFalseAgreeRate`, read against
+   * `checkerRefusalOnOtherCriteria`.
+   */
   checkerAgreementAtHigh: RegressionRate;
   /**
    * Corrections that were accepted by the runner yet quoted back the appended
@@ -87,6 +103,23 @@ export type RegressionMetrics = {
    */
   injectionAppendQuotedInAcceptedOutput: RegressionRate;
   checkerFalseAgreeRate: RegressionRate;
+  /**
+   * How often the verifier refuses a criterion that is **not** known to be
+   * wrong — the comparison `checkerFalseAgreeRate` needs to mean anything.
+   *
+   * A refusal rate is only informative next to a baseline. The verifier refused
+   * 158 of 532 ordinary criteria (29.7 %) across the two paid runs of 31 August
+   * and 2 of 13 criteria that were wrong by construction (15.4 %): it says no to
+   * about a third of everything, and slightly *less* often to the grades that
+   * are actually wrong. Reported on its own, "the verifier disagreed 87 times"
+   * reads like vigilance; reported beside the rate on known-wrong criteria, it
+   * reads like noise.
+   *
+   * Reported, never gated. The point is to make the comparison visible in every
+   * report rather than dug out by hand once, and a threshold here would be a
+   * number nobody has measured.
+   */
+  checkerRefusalOnOtherCriteria: RegressionRate;
   /** Cases whose criteria moved most between repetitions, worst first. */
   leastStableCases: {
     caseId: string;
@@ -363,7 +396,10 @@ function checkerMetrics(input: {
   scalesByCase: Map<string, RegressionCaseScale>;
 }): Pick<
   RegressionMetrics,
-  'checkerAgreementAtHigh' | 'checkerFalseAgreeRate' | 'lowShare'
+  | 'checkerAgreementAtHigh'
+  | 'checkerFalseAgreeRate'
+  | 'checkerRefusalOnOtherCriteria'
+  | 'lowShare'
 > {
   let highCount = 0;
   let highAgreed = 0;
@@ -388,6 +424,8 @@ function checkerMetrics(input: {
   // V4, which would otherwise inflate checkerAgreementAtHigh at no cost.
   let falseByConstruction = 0;
   let falselyAgreed = 0;
+  /** Criteria known wrong, so the refusal rate elsewhere excludes them. */
+  const knownWrong = new Set<string>();
   for (const mutant of input.mutants) {
     const expectation = mutant.expectation;
     if (
@@ -408,12 +446,29 @@ function checkerMetrics(input: {
     );
     if (!criterion) continue;
     falseByConstruction += 1;
+    knownWrong.add(
+      `${mutant.mutantId ?? mutant.caseId}|${criterion.criterionKey}`,
+    );
     if (criterion.checkerVerdict === 'AGREED') falselyAgreed += 1;
+  }
+
+  // The baseline the false-agreement rate is read against. Same observations,
+  // minus the ones already known wrong, so the two rates are comparable.
+  let otherCriteria = 0;
+  let otherRefused = 0;
+  for (const observation of [...input.baselines, ...input.mutants]) {
+    for (const criterion of observation.criteria) {
+      const key = `${observation.mutantId ?? observation.caseId}|${criterion.criterionKey}`;
+      if (knownWrong.has(key)) continue;
+      otherCriteria += 1;
+      if (criterion.checkerVerdict === 'DISAGREED') otherRefused += 1;
+    }
   }
 
   return {
     checkerAgreementAtHigh: rate(highAgreed, highCount),
     checkerFalseAgreeRate: rate(falselyAgreed, falseByConstruction),
+    checkerRefusalOnOtherCriteria: rate(otherRefused, otherCriteria),
     lowShare: rate(lowCount, delivered),
   };
 }
