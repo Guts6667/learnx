@@ -194,7 +194,7 @@ marqueur**, au moment où elle décide que le résultat doit être servi.
 - [ ] **poser `LEARNX_ALLOW_PROTECTED_DB=1` en Production** — bloquant, sans quoi le build de production s'arrête au premier pas (§9.1) ;
 - [ ] **remplacer `real-functions` par `Integration (required)` sur `main`, avant d'ouvrir la PR de promotion** (§9.2, et non §4 tel qu'il était écrit) ;
 - [ ] confirmer depuis le dashboard que `LEARNX_PUBLIC_LEADS_ENABLED` vaut en Production **exactement** `true` (§1) ;
-- [ ] poser les trois réglages du smoke planifié, sinon il échouera quatre fois par jour dès qu'il touchera `main` (§9.3) ;
+- [ ] poser les trois réglages du smoke planifié — sans eux, aucune alerte ne préviendra d'une panne de production (§9.3) ;
 - [ ] relever le commit servi par `staging` — la procédure du §10.2 le fait au passage ;
 - [ ] confirmer que `main` est la *Production Branch* du projet Vercel (§9.4) ;
 - [ ] `LEARNX_PUBLIC_LEADS_ENABLED` sur **Preview** — absente, donc la collecte y est fermée (§1) ;
@@ -312,7 +312,7 @@ Les deux autres contextes requis, `V4.1 final (required)` et
 `Visual baselines (required)`, portent déjà le même nom sur les deux branches :
 ils n'ont rien à changer.
 
-### 9.3 Le smoke planifié n'a pas ses réglages — il virera au rouge
+### 9.3 Le smoke planifié n'a pas ses réglages
 
 `scheduled.yml` arrive sur `main` avec la promotion, et c'est là seulement qu'il
 commencera à tourner : GitHub n'enregistre un workflow planifié que depuis la
@@ -328,17 +328,22 @@ Relevé : `gh variable list` ne rend que `NEON_PROJECT_ID`, `gh secret list` que
 `NEON_API_KEY`, et les environnements `Preview` et `Production` n'ont ni
 variable ni secret propre.
 
-À la différence des jobs de base de données du même fichier, qui se **ferment
-proprement** quand ils ne sont pas configurés, le smoke fait `exit 1` en
-l'absence de l'URL — c'est délibéré, il est écrit pour être configuré. Il se
-déclenche quatre fois par jour **et** à chaque déploiement de production : sans
-ces trois réglages, il échouera à chaque fois.
+Le smoke faisait `exit 1` en l'absence de l'URL, et se déclenche quatre fois
+par jour **et** à chaque déploiement de production : il aurait donc été rouge
+plusieurs fois par jour dès son arrivée sur `main`, pour une raison qui n'est
+pas une panne. **La PR #188 (V4.5-173) corrige ce point** : le job se ferme
+désormais proprement, comme les jobs de base de données du même fichier, en
+écrivant dans le résumé du run qu'il n'a rien vérifié et en nommant les trois
+réglages manquants. Vert, mais jamais silencieux.
 
-Ce n'est pas bloquant pour la promotion elle-même — la production sera servie —
-mais un contrôle rouge en permanence est un contrôle que plus personne ne
-regarde, ce qui est exactement le silence que ce fichier existe pour rompre.
+Ce qui reste vrai après #188, et qui est le vrai enjeu : **la surveillance n'est
+pas allumée**. Tant que les trois réglages ne sont pas posés, personne ne
+saura par une alerte que la production est tombée. Non bloquant pour la
+promotion — la production sera servie — mais à traiter le jour même.
 
-À poser avant, ou à accepter en connaissance de cause et à traiter le jour même.
+Avec l'URL seule, le run vaut déjà la peine : la liveness plus tous les
+contrôles anonymes de `deployment:check`. Les deux identifiants n'ajoutent que
+la passe authentifiée.
 
 **Bonne nouvelle du même relevé :** `neon-cleanup.yml`, lui, a tout ce qu'il
 faut — `NEON_API_KEY` (secret) et `NEON_PROJECT_ID` (variable) existent. Il
@@ -537,8 +542,10 @@ réglages GitHub.
 4. **Les trois réglages du smoke planifié.** GitHub → Settings → Secrets and
    variables → Actions. Onglet *Variables* : `LEARNX_DEPLOYMENT_URL` =
    l'URL de production. Onglet *Secrets* : `LEARNX_DEPLOYMENT_EMAIL` et
-   `LEARNX_DEPLOYMENT_PASSWORD` d'un compte de test. *Sans eux, le smoke échoue
-   quatre fois par jour (§9.3).*
+   `LEARNX_DEPLOYMENT_PASSWORD` d'un compte de test. L'URL seule suffit à
+   allumer la surveillance ; les deux secrets n'ajoutent que la passe
+   authentifiée. *Sans eux, le smoke se ferme proprement depuis #188 — donc pas
+   de rouge, mais aucune alerte non plus si la production tombe (§9.3).*
 5. **`LEARNX_PUBLIC_LEADS_ENABLED` sur Preview.** Même écran qu'au point 3, à
    poser si l'on veut pouvoir tester la collecte en préproduction. Absente
    aujourd'hui, donc fermée.
