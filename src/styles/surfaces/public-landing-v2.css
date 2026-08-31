@@ -14,7 +14,8 @@
   overflow-x: clip;
 }
 
-.landing-page :is(
+.landing-page
+  :is(
     #product,
     #pricing,
     #roadmap,
@@ -503,7 +504,8 @@
   align-self: stretch;
 }
 
-.landing-page .landing-pricing-offer
+.landing-page
+  .landing-pricing-offer
   > :is(.landing-pricing-notice, .landing-pricing-note) {
   position: relative;
   margin: 0;
