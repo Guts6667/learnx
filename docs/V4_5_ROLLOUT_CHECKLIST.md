@@ -89,10 +89,47 @@ vérifiées le 31 août :
 3. et même une fois ouvert, le pas de nettoyage est un **essai à blanc**
    délibéré : `--apply` reste un geste volontaire.
 
-**Ce n'est pas une urgence, et il vaut mieux le dire que l'insinuer :** avec 730
-jours de conservation, la première suppression due ne l'est pas avant deux ans.
-C'est donc à traiter posément — mais à traiter, parce que la promotion emporte
-justement `scheduled.yml` sur `main` et lève la première des trois raisons.
+**Les échéances réelles, relevées dans `defaultRetentionPolicy`** — et elles ne
+disent pas ce qu'on croit :
+
+| Donnée | Conservation | Court depuis |
+|---|---|---|
+| Enregistrements de limitation de débit | **1 jour** | maintenant |
+| Grâce de session | **7 jours** | maintenant |
+| Charges utiles de paiement | 30 jours | la première vente en production |
+| Jetons | 30 jours | maintenant |
+| Détachement de correction | 180 jours | maintenant |
+| Marqueurs d'essai | 365 jours | maintenant |
+| Prospects publics | 730 jours | l'ouverture du drapeau, aujourd'hui |
+
+**La plus proche n'est pas celle des paiements.** Elle est à **un jour**, et elle
+ne dépend d'aucune première vente : la production sert déjà, donc les
+enregistrements de limitation de débit, la grâce de session et les jetons
+dépassent leur durée en continu **depuis aujourd'hui**, et rien ne les élague.
+Les 730 jours des prospects sont au contraire l'échéance la plus **lointaine** :
+c'est la seule qui laisse deux ans.
+
+Ce qui reste vrai : rien de tout cela n'est un incident, et le volume est
+minuscule sur un service qui démarre. Ce qui change, c'est la conclusion — ce
+n'est pas « on a deux ans », c'est « c'est déjà dû, pour des données peu
+sensibles et peu nombreuses ».
+
+**Et la promotion ne lève que la _première_ des trois raisons.** Porter
+`scheduled.yml` sur `main` fait enfin exister le planifié ; le garde fermé et
+l'essai à blanc restent entiers après. Ne pas lire la promotion comme réglant la
+rétention.
+
+> **Ticket V4.5-214, après la promotion.** Le principe est arrêté par le Head of
+> AI et reste à confirmer par Rayan : **la CI ne reçoit pas d'identifiant de base
+> de production**, ni maintenant ni plus tard — élargir le rayon d'action de
+> GitHub Actions jusqu'à la production, au lendemain d'une commande qui l'a
+> vidée, paierait une commodité du seul garde-fou qui reste. L'application est la
+> seule chose qui parle légitimement à la production : la rétention est donc
+> **déclenchée** de l'extérieur (tâche planifiée Vercel) et **exécutée** par
+> l'application, derrière une route admin authentifiée, essai à blanc par défaut,
+> application explicite et tracée. Ce qui referme du même coup la question du §9.3
+> — les jobs de base de `scheduled.yml` restent fermés, et c'est leur état
+> définitif, non un réglage en attente.
 
 Le service exige en outre `RESEND_API_KEY`, `APP_URL` et `LEARNX_EMAIL_FROM` :
 les trois sont présentes dans les deux environnements.
