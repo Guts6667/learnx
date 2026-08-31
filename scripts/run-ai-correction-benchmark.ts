@@ -12,6 +12,7 @@ import {
 } from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
 import {
+  parseCheckerPromptVariant,
   parseFalseAgreeProbe,
   runFalseAgreeProbe,
 } from '../src/lib/ai-correction-false-agree-probe.ts';
@@ -56,10 +57,14 @@ const REGRESSION_PINNED_IDENTITIES = {
  * interprets. Cost passes through untouched so the budget guard reconciles the
  * checker like any other paid call.
  */
-function buildRegressionChecker(apiKey: string): RegressionCheckerPort {
+function buildRegressionChecker(
+  apiKey: string,
+  instructions?: readonly string[],
+): RegressionCheckerPort {
   const runtime = createRuntimeCorrectionChecker({
     apiKey,
     appUrl: process.env.LEARNX_APP_URL ?? 'https://learnx.local',
+    ...(instructions ? { instructions } : {}),
   });
   return {
     async verify({ criteria }) {
@@ -125,6 +130,23 @@ async function runAiCorrectionRegressionCli(
     const probe = parseFalseAgreeProbe(
       JSON.parse(await readFile(probePath, 'utf8')) as unknown,
     );
+    // Which instructions the verifier is measured under. Default A: the
+    // promoted runtime prompt, so the reference measurement is the system as
+    // it ships rather than a variant nobody runs.
+    const promptId =
+      arguments_
+        .find((argument) => argument.startsWith('--checker-prompt='))
+        ?.split('=')[1] ?? 'A';
+    const variant = parseCheckerPromptVariant(
+      JSON.parse(
+        await readFile(
+          path.resolve(
+            `benchmarks/ai-correction/regression/checker-prompts/${promptId}.json`,
+          ),
+          'utf8',
+        ),
+      ) as unknown,
+    );
 
     if (!arguments_.includes('--execute')) {
       // Priced under the recorded rate, never a guess: a candidate with no
@@ -138,7 +160,7 @@ async function runAiCorrectionRegressionCli(
         ),
       ) as { modelId: string };
       console.log(
-        `Sonde faux accord, à sec — ${probe.cases.length} cas, ${probe.cases.length} appels vérificateur, aucun appel primaire.`,
+        `Sonde faux accord, à sec — consigne ${variant.id} (${variant.label}) — ${probe.cases.length} cas, ${probe.cases.length} appels vérificateur, aucun appel primaire.`,
       );
       console.log(
         `Vérificateur tarifé : ${pricing.modelId}. Coût mesuré par appel sur la run du 30 août : 0,0011075 USD, soit ${(probe.cases.length * 0.0011075).toFixed(4)} USD pour cette sonde.`,
@@ -155,12 +177,12 @@ async function runAiCorrectionRegressionCli(
       );
     }
     const result = await runFalseAgreeProbe({
-      checker: buildRegressionChecker(apiKey),
+      checker: buildRegressionChecker(apiKey, variant.instructions),
       probe,
     });
     const { denominator, numerator, rate } = result.checkerFalseAgreeDesigned;
     console.log(
-      `Sonde faux accord — ${numerator}/${denominator} faux accords${rate === null ? '' : ` = ${(rate * 100).toFixed(2)} %`}, ${result.costUsd.toFixed(6)} USD.`,
+      `Sonde faux accord, consigne ${variant.id} — ${numerator}/${denominator} faux accords${rate === null ? '' : ` = ${(rate * 100).toFixed(2)} %`}, ${result.costUsd.toFixed(6)} USD.`,
     );
     for (const agreement of result.falseAgreements) {
       console.log(`  accord sur ${agreement.id} — ${agreement.falseBecause}`);

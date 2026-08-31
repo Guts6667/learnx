@@ -144,3 +144,22 @@ export async function runFalseAgreeProbe(input: {
     unpricedCalls,
   };
 }
+
+const checkerPromptVariantSchema = z
+  .object({
+    id: z.string().trim().min(1),
+    /** Every line the verifier is instructed with, in order. */
+    instructions: z.array(z.string().trim().min(1)).min(1),
+    label: z.string().trim().min(1),
+    note: z.string().trim().min(1),
+    schemaVersion: z.literal(1),
+  })
+  .strict();
+
+export type CheckerPromptVariant = z.infer<typeof checkerPromptVariantSchema>;
+
+export function parseCheckerPromptVariant(
+  source: unknown,
+): CheckerPromptVariant {
+  return checkerPromptVariantSchema.parse(source);
+}
