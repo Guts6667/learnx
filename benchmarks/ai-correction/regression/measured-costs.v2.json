@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "supersedes": "measured-costs.v1.json",
+  "status": "PUBLIÉ pour consommation par la voie A (V4.5-114 / 212). Non câblé : la convention de bornage lit toujours measured-costs.v1.json par son nom, et v1 reste l'artefact qui autorise une dépense. v2 publie les métriques par correction, que v1 ne portait pas.",
+  "sourceRun": "benchmarks/ai-correction/regression/results/2026-08-30T22-21-08-937Z",
+  "percentileMethod": {
+    "name": "nearest-rank",
+    "definition": "Sur l'échantillon trié par ordre croissant, le percentile p est la valeur de rang ceil(p × n), en base 1. Aucune interpolation.",
+    "why": "La méthode devait être nommée : la voie Finance et la voie E ont publié des P90 différents sur le même registre — 0,032591 contre 0,029748 — et l'écart n'était pas une erreur mais deux définitions non déclarées. Un percentile sans méthode n'est pas un chiffre."
+  },
+  "perCorrection": {
+    "unit": "USD par correction livrée, modèle primaire seul",
+    "duplicatePolicy": "EXCLUS",
+    "duplicatePolicyNote": "Une cellule porte parfois deux enregistrements du même numéro de tentative — séquelle du défaut de décalage de répétition du 30 août. Ce sont deux appels réels, mais le second n'appartient pas à la correction livrée : l'inclure gonfle la queue et fait passer le P90 de 0,029748 à 0,044364, soit un plafond de réservation surévalué de moitié.",
+    "n": 240,
+    "p50": 0.021801,
+    "p75": 0.024129,
+    "p90": 0.029748,
+    "max": 0.056868
+  },
+  "duplicates": {
+    "cells": 24,
+    "records": 25,
+    "markerField": "duplicateOfAttempt",
+    "markerStatus": "NON ÉMIS — les doublons sont aujourd'hui déduits en comparant les numéros de tentative d'une même cellule. Le marqueur demandé par la voie A n'est pas encore écrit par le runner ; tant qu'il ne l'est pas, tout consommateur doit appliquer la même déduction, et ce fichier donne les comptes pour la vérifier."
+  },
+  "checker": {
+    "modelId": "mistralai/mistral-medium-3-5",
+    "calls": 209,
+    "callsPerCorrection": 1,
+    "criteriaPerCall": 3,
+    "meanPerCallUsd": 0.0011075,
+    "alphaOfMedianPerCorrection": 0.0508,
+    "alphaNote": "Rapport du coût vérificateur par appel à la médiane primaire par correction : 0,0011075 / 0,021801. Ce n'est PAS le rapport des dépenses totales du run, qui vaut 3,70 % — 209 appels ont servi 240 corrections, les cellules reprises ayant réutilisé des verdicts déjà achetés. Pour tarifer une correction neuve, 5,08 % est la bonne base ; pour reconstituer la dépense d'un run repris, ce n'est pas celle-là."
+  },
+  "reservationCap": {
+    "ratioP90OverP50": 1.3645,
+    "creditsForAThirtyCreditQuote": 41,
+    "divergence": "La voie Finance propose 45 crédits, à partir d'un P90 de 0,032591 que je ne reproduis pas : je lis 0,029748 sans doublons et 0,044364 avec, sous la méthode nearest-rank déclarée ci-dessus. L'écart n'est pas académique — 41 contre 45 crédits retenus sur un devis de 30. La méthode de percentile de la voie Finance doit être déclarée avant qu'un plafond ne soit figé ; ce fichier ne tranche pas à sa place."
+  }
+}
