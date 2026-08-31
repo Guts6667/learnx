@@ -28,7 +28,15 @@ import {
   runRegressionAnalysis,
   runRegressionPool,
 } from './ai-correction-regression-run-cli.js';
-import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
+import {
+  planRegressionRun,
+  type RegressionCheckerPort,
+} from './ai-correction-regression-run.js';
+import { computeRegressionMetrics } from './ai-correction-regression-metrics.js';
+import {
+  loadRegressionSource,
+  parseRegressionPool,
+} from './ai-correction-regression-pool.js';
 
 const REGRESSION_SOURCE = path.resolve('benchmarks/ai-correction/regression');
 const POOL_PATH = path.join(REGRESSION_SOURCE, 'regression-pool.v1.json');
@@ -1537,5 +1545,147 @@ describe('explicit configuration before spending', () => {
         regressionDirectory: directory,
       }),
     ).resolves.toBeDefined();
+  });
+});
+
+/**
+ * The `direction` profile buys the baselines its inversions depend on
+ * (V4.5-210).
+ *
+ * The defect this guards against was measured on the whole pool: with baselines
+ * present, 104 of 104 direction-bearing mutants can violate; with them absent,
+ * 76 of 104 — the `FACT_INVERSION` mutants keep their place in the denominator
+ * and silently lose the ability to violate, because `directionViolation` reads
+ * their reference level from `baselineLevels` and returns `undefined` when it is
+ * missing. No error, no `NOT_MEASURED`, twenty-seven points of improvement
+ * bought by removing the reference — in the direction that favours promotion.
+ *
+ * A profile that trims baselines to save money is exactly how that would come
+ * back, so this asserts the arithmetic rather than the shape: every inversion
+ * this profile selects must actually be counted.
+ */
+describe('direction profile', () => {
+  function directionPlan() {
+    const pool = parseRegressionPool(
+      JSON.parse(readFileSync(POOL_PATH, 'utf8')) as unknown,
+    );
+    const sources = new Map(
+      pool.sources.map((source) => [
+        source.path,
+        loadRegressionSource(
+          readFileSync(path.resolve(path.dirname(POOL_PATH), source.path)),
+        ),
+      ]),
+    );
+    const plan = planRegressionRun({ pool, sources });
+    const passes = buildRunPasses({
+      plan,
+      poolSha256: 'e'.repeat(64),
+      profile: 'direction',
+      repetitions: 3,
+    });
+    return { passes, plan };
+  }
+
+  it('buys no repetition pass and no untargeted mutants', () => {
+    const { passes } = directionPlan();
+
+    expect(passes.map((pass) => pass.label)).toEqual([
+      'lignes de base des inversions',
+      'mutants à direction',
+    ]);
+    for (const pass of passes) expect(pass.repetitions).toBe(1);
+  });
+
+  it('selects every mutant with a direction, and only those', () => {
+    const { passes, plan } = directionPlan();
+    const mutantPass = passes.find(
+      (pass) => pass.label === 'mutants à direction',
+    );
+
+    for (const benchmarkCase of mutantPass?.cases ?? []) {
+      const expectation = plan.unitsByBenchmarkCaseId.get(
+        benchmarkCase.caseId,
+      )?.expectation;
+      expect(expectation?.targetCriterionKey).toBeDefined();
+      expect(expectation?.targetDirection).toBeDefined();
+    }
+  });
+
+  it('counts its inversions, which is what a missing baseline would break', () => {
+    const { passes, plan } = directionPlan();
+    const baselinePass = passes.find(
+      (pass) => pass.label === 'lignes de base des inversions',
+    );
+    const mutantPass = passes.find(
+      (pass) => pass.label === 'mutants à direction',
+    );
+    const scales = plan.scales;
+    const scaleFor = new Map(scales.map((scale) => [scale.caseId, scale]));
+
+    // Every cell answers at the top level, so every direction-bearing mutant
+    // ought to violate. Anything that does not is a mutant the run cannot judge.
+    const observationFor = (benchmarkCaseId: string) => {
+      const unit = plan.unitsByBenchmarkCaseId.get(benchmarkCaseId);
+      const scale = unit ? scaleFor.get(unit.poolCaseId) : undefined;
+      if (!unit || !scale) return undefined;
+      return {
+        caseId: unit.poolCaseId,
+        criteria: scale.criteria.map((criterion) => ({
+          checkerVerdict: 'AGREED' as const,
+          confidence: 'HIGH' as const,
+          criterionKey: criterion.criterionKey,
+          levelKey: criterion.orderedLevelKeys.at(-1) ?? '',
+        })),
+        ...(unit.expectation ? { expectation: unit.expectation } : {}),
+        ...(unit.kind ? { kind: unit.kind } : {}),
+        ...(unit.mutantId ? { mutantId: unit.mutantId } : {}),
+        repetition: 1,
+      };
+    };
+
+    const baselines = (baselinePass?.cases ?? []).flatMap((benchmarkCase) => {
+      const observation = observationFor(benchmarkCase.caseId);
+      return observation ? [observation] : [];
+    });
+    const mutants = (mutantPass?.cases ?? []).flatMap((benchmarkCase) => {
+      const observation = observationFor(benchmarkCase.caseId);
+      return observation ? [observation] : [];
+    });
+
+    const inversions = mutants.filter(
+      (mutant) => mutant.kind === 'FACT_INVERSION',
+    ).length;
+    expect(inversions).toBeGreaterThan(0);
+    // The baselines bought are exactly the ones the inversions need.
+    expect(baselines.length).toBe(
+      new Set(
+        mutants
+          .filter((mutant) => mutant.kind === 'FACT_INVERSION')
+          .map((mutant) => mutant.caseId),
+      ).size,
+    );
+
+    const measured = computeRegressionMetrics({ baselines, mutants, scales });
+
+    // Every selected mutant counted, inversions included. Drop the baselines
+    // and this falls by exactly `inversions` while the denominator holds — the
+    // silent improvement, asserted as the number it would become.
+    expect(measured.mutationDirectionViolations.denominator).toBe(
+      mutants.length,
+    );
+    expect(measured.mutationDirectionViolations.numerator).toBe(mutants.length);
+
+    const withoutBaselines = computeRegressionMetrics({
+      baselines: [],
+      mutants,
+      scales,
+    });
+    expect(withoutBaselines.mutationDirectionViolations.numerator).toBe(
+      mutants.length - inversions,
+    );
+    expect(withoutBaselines.mutationDirectionViolations.denominator).toBe(
+      mutants.length,
+    );
   });
 });

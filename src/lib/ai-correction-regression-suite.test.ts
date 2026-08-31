@@ -1364,3 +1364,103 @@ describe('omitted-criteria oracle', () => {
     );
   });
 });
+
+/**
+ * A run that measures one oracle must say so in its own artefact (V4.5-210).
+ *
+ * Otherwise a green table reads as a verdict on the system, when stability,
+ * drift, the LOW share and gold agreement were never bought at all. The gates
+ * that read them stay unmeasured and therefore blocking, so nothing can be
+ * promoted by accident — but a reader skimming the green rows would not know
+ * that, and saying it in the report is the difference between a narrow result
+ * and a misread one.
+ */
+describe('the direction profile reports its own narrowness', () => {
+  it('names what it did not buy, and what a green run does not authorise', async () => {
+    const { gateInputs, metrics, plan } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      checker: AGREEABLE_CHECKER,
+    });
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination(gateInputs),
+      policy: loadPolicy(),
+    });
+
+    const report = renderRegressionReport({
+      confidence: summarizeConfidence([]),
+      costs: {
+        actualCostUsd: 0.01,
+        estimatedCostUsd: 0.012,
+        p50CostUsdPerCorrection: 0.0004,
+        p50LatencyMs: 12,
+        p90CostUsdPerCorrection: 0.0006,
+        p90LatencyMs: 20,
+      },
+      evaluation,
+      identity: {
+        checkerIdentity: 'PROMOTED_CHECKER_IDENTITY',
+        gatePolicyVersion: '6.1.0',
+        generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+        heldOutSeed: 'c'.repeat(64),
+        heldOutSeedSource: 'DERIVED',
+        poolId: 'learnx-fr-regression-pool-v1',
+        poolSha256: 'd'.repeat(64),
+        primaryIdentity: 'PROMOTED_CORRECTION_IDENTITY',
+        profile: 'direction',
+        repetitions: 1,
+        runStartedAt: '2026-08-31T00:00:00.000Z',
+      },
+      metrics,
+      mutantCounts: countMutantsByKind(plan),
+    });
+
+    expect(report).toContain("Ce run n'achète qu'un oracle");
+    expect(report).toContain(
+      'autorise à acheter la suite, jamais à promouvoir',
+    );
+    expect(report).toContain('stabilité');
+  });
+
+  it('says nothing of the sort on a profile that buys the pool', async () => {
+    // The warning must be tied to the narrow profile, not printed always: a
+    // caveat that appears on every run is one nobody reads on the run it means.
+    const { gateInputs, metrics, plan } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      checker: AGREEABLE_CHECKER,
+    });
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination(gateInputs),
+      policy: loadPolicy(),
+    });
+
+    const report = renderRegressionReport({
+      confidence: summarizeConfidence([]),
+      costs: {
+        actualCostUsd: 0.01,
+        estimatedCostUsd: 0.012,
+        p50CostUsdPerCorrection: 0.0004,
+        p50LatencyMs: 12,
+        p90CostUsdPerCorrection: 0.0006,
+        p90LatencyMs: 20,
+      },
+      evaluation,
+      identity: {
+        checkerIdentity: 'PROMOTED_CHECKER_IDENTITY',
+        gatePolicyVersion: '6.1.0',
+        generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+        heldOutSeed: 'c'.repeat(64),
+        heldOutSeedSource: 'DERIVED',
+        poolId: 'learnx-fr-regression-pool-v1',
+        poolSha256: 'd'.repeat(64),
+        primaryIdentity: 'PROMOTED_CORRECTION_IDENTITY',
+        profile: 'reduced',
+        repetitions: 2,
+        runStartedAt: '2026-08-31T00:00:00.000Z',
+      },
+      metrics,
+      mutantCounts: countMutantsByKind(plan),
+    });
+
+    expect(report).not.toContain("Ce run n'achète qu'un oracle");
+  });
+});

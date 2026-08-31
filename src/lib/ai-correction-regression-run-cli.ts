@@ -275,7 +275,11 @@ async function readPersistedVerdicts(
  */
 function profileFamilyFor(arguments_: string[]): string {
   const requested = readCliOption(arguments_, 'profile');
-  return requested === 'reduced' || requested === 'smoke' ? 'reduced' : 'full';
+  return requested === 'reduced' ||
+    requested === 'smoke' ||
+    requested === 'direction'
+    ? 'reduced'
+    : 'full';
 }
 
 /**
@@ -783,7 +787,9 @@ export async function runRegressionPool(input: {
       ? 'reduced'
       : requestedProfile === 'smoke'
         ? 'smoke'
-        : 'full';
+        : requestedProfile === 'direction'
+          ? 'direction'
+          : 'full';
   const requestedPasses = buildRunPasses({
     plan,
     poolSha256,
@@ -1475,7 +1481,7 @@ export type RegressionRunPass = {
   repetitions: number;
 };
 
-type RegressionProfileName = 'full' | 'reduced' | 'smoke';
+type RegressionProfileName = 'direction' | 'full' | 'reduced' | 'smoke';
 
 /**
  * The deterministic 24-case subset the reduced profile repeats.
@@ -1541,6 +1547,55 @@ export function buildRunPasses(input: {
         repetitions: input.repetitions,
       },
       { cases: mutantCases, label: 'mutants', repetitions: 1 },
+    ];
+  }
+
+  if (input.profile === 'direction') {
+    // Mutants that carry a direction, plus the baselines the inversions need to
+    // resolve a reference level — and nothing else.
+    //
+    // The economy is real and the trap is precise. `SENTENCE_DELETION` compares
+    // against the contract's top level and needs no baseline at all;
+    // `FACT_INVERSION` reads its reference from `baselineLevels`, built from the
+    // baselines **of the same run**. Drop those and `directionViolation` returns
+    // `undefined` — no error, no `NOT_MEASURED`, just a violation that cannot be
+    // counted while its mutant stays in the denominator. Measured on the whole
+    // pool: 104 of 104 violations become 76 of 104, twenty-seven points of
+    // improvement bought by removing the reference, in the direction that
+    // favours promotion. This profile therefore buys exactly the baselines the
+    // inversions it selected depend on, and the suite test asserts that every
+    // one of them resolves.
+    //
+    // No repetition pass: stability is a distribution and this profile measures
+    // a direction. What it does not buy is named in the report rather than left
+    // for a reader to notice.
+    const selected = directionCoveredMutants({
+      inSubset: () => false,
+      mutantCases,
+      plan: input.plan,
+      target: input.directionMutantTarget ?? DIRECTION_MUTANT_TARGET,
+    });
+    const inversionCaseIds = new Set(
+      selected.flatMap((benchmarkCase) => {
+        const unit = input.plan.unitsByBenchmarkCaseId.get(
+          benchmarkCase.caseId,
+        );
+        return unit?.kind === 'FACT_INVERSION' ? [unit.poolCaseId] : [];
+      }),
+    );
+
+    return [
+      {
+        cases: baselineCases.filter((benchmarkCase) => {
+          const unit = input.plan.unitsByBenchmarkCaseId.get(
+            benchmarkCase.caseId,
+          );
+          return unit ? inversionCaseIds.has(unit.poolCaseId) : false;
+        }),
+        label: 'lignes de base des inversions',
+        repetitions: 1,
+      },
+      { cases: selected, label: 'mutants à direction', repetitions: 1 },
     ];
   }
 

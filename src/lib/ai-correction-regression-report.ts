@@ -98,6 +98,20 @@ export function renderRegressionReport(input: {
   lines.push(`| Politique de gate | \`${input.identity.gatePolicyVersion}\` |`);
   lines.push(`| Identité primaire | \`${input.identity.primaryIdentity}\` |`);
   lines.push(`| Vérificateur | \`${input.identity.checkerIdentity}\` |`);
+  if (input.identity.profile === 'direction') {
+    lines.push('');
+    lines.push(
+      "> **Ce run n'achète qu'un oracle.** Profil `direction` : les mutants " +
+        'porteurs de direction, plus les seules lignes de base dont les ' +
+        'inversions ont besoin pour résoudre leur niveau de référence. ' +
+        '**Ne sont pas achetés** : le pool complet, la passe de répétitions, ' +
+        'les mutants de mélange de paragraphes et de paraphrase. Donc **ni la ' +
+        'stabilité, ni la dérive des critères non ciblés, ni la part de LOW, ni ' +
+        "l'accord avec l'étalon** ne sont mesurés ici, et les gates qui les " +
+        'lisent restent non mesurés — donc bloquants. ' +
+        '**Un vert sur ce run autorise à acheter la suite, jamais à promouvoir.**',
+    );
+  }
   lines.push(
     `| Graine du jeu tenu à l'écart | \`${input.identity.heldOutSeed}\` (${input.identity.heldOutSeedSource}) |`,
   );
