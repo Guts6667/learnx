@@ -1200,3 +1200,97 @@ traite pas les cas non chiffrés, qui sont quatre des cinq.
 itération de consigne se décide par le Propriétaire, se mesure avant d'être
 promue, et son gain se lit sur `mutation-direction-violations` avec un
 dénominateur suffisant — la règle qui a coûté 7/63 à 2.3.0 vaudra pour sa suite.
+
+## 11. 2.4.0 mesurée — inefficace, inoffensive, et une découverte sur la mesure
+
+**Verdict : `mutation-direction-violations` = 7/63 = 11,11 %, identique à 2.3.0.**
+Le levier ne fonctionne pas. 105 cellules, **2,5636 USD**, aucune cellule
+inexploitable.
+
+### Le total est identique, les cas ne le sont pas
+
+| | n |
+| --- | --- |
+| corrigées par 2.4.0 | **2** |
+| apparues sous 2.4.0 | **2** |
+| **inchangées** | **5** |
+
+Les cinq inchangées sont le noyau dur, et ce sont exactement les substitutions
+caractérisées en §10 : `decision-position`, `residual-risk-surfacing`,
+`reflection-link`, `context-fidelity@2`, plus l'inversion `fact-fidelity`.
+**L'instruction ajoutée ne les a pas touchées.** Elle a corrigé
+`maintenance-contract#fact-fidelity` et `scanner-repair#uncertainty-bounds`, et
+cassé `domaine-ecrit-objectif-ambigu#context-fidelity` et
+`explanatory-analysis#mechanism-link`.
+
+### Ce que la consigne n'a pas cassé
+
+Le risque principal était la sur-correction : une consigne plus sévère qui note
+brillamment les textes abîmés et punit les productions correctes. **Il ne s'est
+pas produit**, et c'est mesuré et non supposé, parce que le profil achète
+désormais les lignes de base des cas mutés.
+
+| garde-fou | 2.2.0 / 2.3.0 | 2.4.0 |
+| --- | --- | --- |
+| accord avec l'étalon, productions **non mutées** | 84,3 % | **88,1 %** (111/126) |
+| part de LOW | 31,7 % | **27,6 %** (87/315) |
+| cellules inexploitables | 0 | **0** (0/105) |
+| critères manquants au livré | 1 | **0** (0/315) |
+| accord vérificateur sur HIGH | — | 100 % (155/155) |
+
+La consigne est donc **inoffensive et inefficace**. Les deux méritent d'être
+écrits : un changement qui ne casse rien reste un changement qui n'apporte rien.
+
+### La découverte la plus utile : notre mesure a un bruit de ±2
+
+Deux cas basculent dans chaque sens sans qu'aucun effet réel ne soit
+démontrable. **À 63 observations et 7 événements, une consigne qui ferait passer
+7 à 5 serait indiscernable de la chance** — et nous l'aurions crue.
+
+Conséquence directe pour la suite : toute revendication d'amélioration sur ce
+gate exige désormais soit un échantillon plus grand, soit des répétitions, avant
+d'être présentée comme un gain. Ce plancher de preuve n'existait pas avant ce
+run ; il aurait pu nous faire promouvoir une consigne inutile.
+
+### Ce que trois versions disent ensemble
+
+| version | violations | ce qu'elle ajoutait |
+| --- | --- | --- |
+| 2.2.0 | 7/47 (14,89 %) | notation critère par critère |
+| 2.3.0 | 7/63 (11,11 %) | quatre instructions, dont l'auto-vérification |
+| 2.4.0 | 7/63 (11,11 %) | inversion de la charge de la preuve + anti-motif nommé |
+
+**Sept violations à chaque fois.** Trois formulations, dont deux conçues
+spécifiquement contre ce défaut, et l'une portée depuis une expérience gagnante
+sur le vérificateur. Le nombre absolu n'a jamais bougé.
+
+La lecture honnête n'est pas « il faut mieux formuler » : c'est que **la voie de
+la consigne est épuisée pour ce défaut**. Trois essais, dont un fondé sur nos
+propres données, ne déplacent rien. Ce qui reste est structurel — l'option A de
+§10 bis : rendre le test de suffisance **observable** plutôt que demandé, avec un
+champ de sortie que le serveur vérifie, au lieu d'une vérification interne dont
+rien ne prouve qu'elle a eu lieu.
+
+### Ce que ce run n'établit pas
+
+- **Rien sur la cause.** Nous savons que trois formulations échouent, pas
+  pourquoi le modèle substitue.
+- **Rien sur l'option A.** Elle reste non mesurée, et son propre risque —
+  un champ requis de plus, donc une branche de rejet de plus — est réel.
+- **Le noyau dur n'est pas prouvé irréductible**, seulement insensible à trois
+  consignes. Le bruit de ±2 interdit d'ailleurs de conclure sur des mouvements
+  de cette taille.
+
+### Méthode
+
+Les quatre règles du plan ont tenu : une seule variable changée, le levier porté
+depuis une mesure existante plutôt qu'inventé, le verdict obtenu pour **2,56 USD**
+au lieu de 6 à 8, et l'arrêt décidé d'avance en cas de rouge — appliqué.
+
+**Un échec de résultat, pas un échec de méthode :** nous savons que ce levier ne
+marche pas, pour le prix d'un dixième de ce qu'une promotion ratée aurait coûté,
+et nous repartons avec un plancher de preuve que nous n'avions pas.
+
+**Dépense de la journée : 4,5685 USD** (0,1605 + 1,8444 + 2,5636). Enveloppe
+`owner-210-budget-2026-08-31`, ouverte en remplaçant celle du 30 août : ~20,4 USD
+restants.

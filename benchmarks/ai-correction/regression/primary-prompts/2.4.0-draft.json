@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "promptVersion": "2.4.0-draft",
   "basedOn": "2.3.0",
-  "status": "BROUILLON — non promu. Mesuré avant toute promotion, comme 2.3.0 l'a été.",
+  "status": "MESURÉE — NON PROMUE. 7/63 = 11,11 %, identique à 2.3.0. Le levier ne fonctionne pas ; la consigne reste sur disque comme trace de l'essai.",
   "change": "Un seul changement mesurable depuis 2.3.0 : l'instruction 11 est REMPLACÉE, non complétée. C'est la première version qui retire quelque chose au lieu d'empiler. 2.3.0 avait ajouté quatre instructions d'un coup et n'a donc rien appris quand elle a échoué à 7/63 — le même nombre absolu de violations que 2.2.0.",
   "whatIsRemoved": {
     "instruction": "Avant de retenir un niveau, relis les citations que tu vas produire et demande-toi si elles suffisent, à elles seules, à établir ce que ce niveau affirme. Si elles n'établissent qu'une partie, descends au niveau que cette partie soutient.",
@@ -27,5 +27,18 @@
     ],
     "risk": "Le risque principal est la sur-correction : une consigne plus sévère note brillamment les textes abîmés et punit les productions correctes. Le profil `direction` achète désormais les lignes de base des cas mutés précisément pour que ce risque soit un chiffre dans le même rapport, et non une inconnue."
   },
-  "notPromoted": "runtime-correction-prompt.ts reste à 2.2.0. Rien n'atteint un apprenant tant qu'une mesure n'a pas été achetée et lue."
+  "notPromoted": "runtime-correction-prompt.ts reste à 2.2.0. Rien n'atteint un apprenant tant qu'une mesure n'a pas été achetée et lue.",
+  "measured": {
+    "run": "benchmarks/ai-correction/regression/results/2026-08-31T21-12-58-892Z",
+    "costUsd": 2.5636,
+    "mutationDirectionViolations": "7/63 = 11,11 % — identique à 2.3.0",
+    "breakdown": "2 corrigées, 2 apparues, 5 inchangées : le noyau dur des substitutions n a pas bougé",
+    "guardrailsHeld": {
+      "accordEtalonNonMute": "88,1 % (111/126) contre 84,3 % sous 2.2.0 — aucune sur-correction",
+      "lowShare": "27,6 % contre 31,7 % sous 2.3.0",
+      "eventualUnusableRuns": "0/105",
+      "criteresManquantsAuLivre": "0/315"
+    },
+    "conclusion": "Inoffensive et inefficace. Le bruit mesuré du banc est de ±2 sur ce gate : une consigne faisant passer 7 à 5 serait indiscernable de la chance. Trois versions consécutives laissent le nombre absolu à 7 ; la voie de la consigne est épuisée pour ce défaut, et ce qui reste est structurel (option A, §10 bis)."
+  }
 }
