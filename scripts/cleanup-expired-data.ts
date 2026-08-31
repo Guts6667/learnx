@@ -5,6 +5,8 @@ import {
   runRetentionCleanup,
   type RetentionRepository,
 } from '../src/server/maintenance/retention';
+import { randomUUID } from 'node:crypto';
+
 import { Prisma } from '../generated/prisma/client';
 import { prisma } from '../src/server/prisma';
 
@@ -26,6 +28,11 @@ const repository: RetentionRepository = {
   countExpiredRateLimits(cutoff) {
     return prisma.loginRateLimit.count({
       where: { windowStartedAt: { lt: cutoff } },
+    });
+  },
+  countAttachedCorrections(cutoff) {
+    return prisma.aiCorrection.count({
+      where: { createdAt: { lt: cutoff }, detachedAt: null },
     });
   },
   countExpiredPaymentPayloads(cutoff) {
@@ -76,6 +83,92 @@ const repository: RetentionRepository = {
       where: { id: { in: records.map(({ id }) => id) } },
     });
     return result.count;
+  },
+  async detachAttachedCorrections(cutoff, limit) {
+    // V4.5-168. One transaction per correction rather than one for the batch:
+    // a batch that fails halfway would leave some corrections stripped with
+    // their words neither kept nor deleted, and there is no way back to tell
+    // which. Per row, a failure loses one correction's detachment and the next
+    // run picks it up — `detachedAt` is what says it was done.
+    const candidates = await prisma.aiCorrection.findMany({
+      orderBy: { createdAt: 'asc' },
+      select: {
+        activityType: true,
+        attempts: { select: { id: true, rawOutput: true } },
+        id: true,
+        modelId: true,
+        promptSnapshot: true,
+        promptVersion: true,
+        structuredResult: true,
+        submissionSnapshot: true,
+        user: { select: { correctionReuseConsent: true } },
+      },
+      take: limit,
+      where: { createdAt: { lt: cutoff }, detachedAt: null },
+    });
+    if (candidates.length === 0) return 0;
+
+    const { planDetachment } =
+      await import('../src/server/corrections/correction-detachment.js');
+    const now = new Date();
+    let detached = 0;
+
+    for (const candidate of candidates) {
+      const plan = planDetachment(
+        {
+          activityType: candidate.activityType,
+          attempts: candidate.attempts,
+          id: candidate.id,
+          modelId: candidate.modelId,
+          promptSnapshot: candidate.promptSnapshot,
+          promptVersion: candidate.promptVersion,
+          reuseConsent: candidate.user.correctionReuseConsent,
+          structuredResult: candidate.structuredResult,
+          submissionSnapshot: candidate.submissionSnapshot,
+        },
+        randomUUID,
+        now,
+      );
+
+      await prisma.$transaction(async (transaction) => {
+        // Written first, inside the same transaction: if anything below fails,
+        // the sample goes with it rather than surviving as an orphan nobody
+        // can trace back to decide whether it should exist.
+        if (plan.sample) {
+          await transaction.aiCorrectionResearchSample.create({
+            data: {
+              activityType: plan.sample.activityType,
+              detachedOn: plan.sample.detachedOn,
+              evidenceQuotes: plan.sample.evidenceQuotes as never,
+              modelId: plan.sample.modelId,
+              promptSnapshot: plan.sample.promptSnapshot as never,
+              promptVersion: plan.sample.promptVersion,
+              pseudonym: plan.sample.pseudonym,
+              rawOutputs: plan.sample.rawOutputs as never,
+              submissionSnapshot: plan.sample.submissionSnapshot as never,
+            },
+          });
+        }
+        if (plan.attemptIds.length > 0) {
+          await transaction.aiCorrectionAttempt.updateMany({
+            data: { rawOutput: Prisma.DbNull },
+            where: { id: { in: plan.attemptIds } },
+          });
+        }
+        await transaction.aiCorrection.update({
+          data: {
+            detachedAt: now,
+            promptSnapshot: Prisma.DbNull,
+            structuredResult: plan.structuredResult as never,
+            submissionSnapshot: Prisma.DbNull,
+          },
+          where: { id: plan.correctionId },
+        });
+      });
+      detached += 1;
+    }
+
+    return detached;
   },
   async purgeExpiredPaymentPayloads(cutoff, limit) {
     // The row stays: event id, type, order, status and timestamps are the
