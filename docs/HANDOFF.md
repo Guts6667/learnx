@@ -85,9 +85,15 @@ recherche, seuil, corpus ou verdict historique.
 ## Exploitation et rollback
 
 V4 reste disponible pendant toute la recette. V4.1 est promue en une seule
-release après GO explicite de Rayan. Le rollback consiste à redéployer le SHA
-V4 `a02ecc3f…` ; aucune migration de données n'est nécessaire pour annuler la
-seule migration UI ou le découpage Prisma multi-file.
+release après GO explicite de Rayan. Le rollback consiste à redéployer le
+déploiement de production précédent ; aucune migration de données n'est
+nécessaire pour annuler la seule migration UI ou le découpage Prisma
+multi-file.
+
+**La cible n'est plus écrite ici.** Elle périme à chaque promotion, et elle a
+déjà pointé pendant des semaines sur une release dépassée. Elle vit désormais
+dans `docs/RUNBOOK_RESTORE.md` §3, seul endroit à tenir à jour, avec la liste
+de ce que le retour arrière annule.
 
 En cas de coût de correction inconnu, de tentative orpheline ou de doute sur
 un règlement, ne jamais traiter la valeur comme zéro : conserver la

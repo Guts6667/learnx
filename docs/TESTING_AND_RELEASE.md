@@ -94,7 +94,7 @@ flowchart LR
   G -->|oui| R["Release unique V4.1"]
   G -->|non| K["V4 reste en production"]
   R --> X["Smoke puis surveillance"]
-  X -->|incident| Z["Rollback a02ecc3f"]
+  X -->|incident| Z["Rollback: déploiement production précédent"]
 ```
 
 Le contexte externe `Quality / V4.1 final (required)` doit être rendu
@@ -140,8 +140,16 @@ la migration.
 7. Installer la PWA sur appareil, tester offline/update.
 8. Contrôler 320/390/720/1440/1920, zoom navigateur 200 %, clavier et lecteur
    d'écran ; aucune couleur comme seul signal.
-9. Répéter un rollback vers `a02ecc3f…`, puis restaurer la preview candidate.
+9. Répéter un rollback vers la cible du moment (`docs/RUNBOOK_RESTORE.md` §3),
+   puis restaurer la preview candidate.
 10. Enregistrer preuves, divergences et décision propriétaire.
+11. **Mettre à jour la cible de retour arrière** dans `docs/RUNBOOK_RESTORE.md`
+    §3 : le SHA qui vient d'être promu devient le servi, et le précédent devient
+    la cible. Relevé sur les déploiements réels (`vercel ls --prod`), jamais sur
+    l'historique de `main` — un commit sur `main` n'a pas forcément été servi.
+    Cette étape est la dernière parce qu'elle ne peut être faite qu'après la
+    promotion ; elle a été oubliée assez longtemps pour que la cible désigne une
+    release vieille de deux lignes.
 
 ## Quota de déploiements Vercel
 
@@ -376,9 +384,14 @@ finit par retirer plus que prévu ; `--apply` demeure un acte délibéré.
 ## Rollback
 
 V4.1 ne requiert pas de migration de données pour React/shadcn ou le découpage
-Prisma. Le rollback applicatif redéploie la release V4
-`a02ecc3f307af36656fa5cb8a7b62954fdec73e9`. Ne jamais utiliser un rollback
-Git destructif sur un worktree local ; le déploiement cible un SHA immuable.
+Prisma. Le rollback applicatif redéploie le **déploiement de production
+précédent**. Ne jamais utiliser un rollback Git destructif sur un worktree
+local ; le déploiement cible un SHA immuable.
+
+La procédure complète, la cible du moment et — surtout — **ce que ce retour
+arrière annule** sont dans `docs/RUNBOOK_RESTORE.md`. Le SHA n'est plus répété
+ici : il l'était à cinq endroits, il y est resté périmé pendant deux lignes de
+release, et un retour arrière l'aurait appliqué.
 
 Pour la correction, suspendre les nouveaux dispatchs avant toute opération de
 rollback si des tentatives restent `SENT`, `ORPHANED` ou sans coût. Réconcilier
