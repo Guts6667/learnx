@@ -10,11 +10,20 @@ export interface AuthenticatedUser {
   displayName: string;
   locale?: SupportedLocale;
   role: Role;
+  /**
+   * Réutilisation des corrections détachées pour la recherche (V4.5-168).
+   *
+   * Servi avec la session parce que l'écran doit montrer l'état AVANT que
+   * l'apprenant y touche : une case dont on ignore la valeur se dessine
+   * décochée, ce qui donnerait à lire un refus qui n'a jamais été exprimé.
+   */
+  correctionReuseConsent?: boolean;
 }
 
 export interface StoredAccountUser extends AuthenticatedUser {
   accountStatus: AccountStatus;
   locale: SupportedLocale;
+  correctionReuseConsent: boolean;
 }
 
 export interface StoredUser extends StoredAccountUser {
@@ -52,5 +61,9 @@ export interface AuthRepository {
   updateUserLocale(
     userId: string,
     locale: SupportedLocale,
+  ): Promise<StoredAccountUser | null>;
+  updateUserCorrectionReuseConsent(
+    userId: string,
+    consent: boolean,
   ): Promise<StoredAccountUser | null>;
 }

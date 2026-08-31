@@ -69,6 +69,7 @@ function toAuthenticatedUser(user: StoredAccountUser): AuthenticatedUser {
     displayName: user.displayName,
     locale: user.locale,
     role: user.role,
+    correctionReuseConsent: user.correctionReuseConsent,
   };
 }
 
@@ -163,6 +164,26 @@ export async function updateUserLocale(
   dependencies = defaultDependencies,
 ): Promise<AuthenticatedUser | null> {
   const user = await dependencies.repository.updateUserLocale(userId, locale);
+  return user ? toAuthenticatedUser(user) : null;
+}
+
+/**
+ * Enregistre le consentement de réutilisation (V4.5-168).
+ *
+ * Sans consentement, le texte de l'apprenant est SUPPRIMÉ au détachement à
+ * 180 jours plutôt que conservé sous pseudonyme. C'est la version prudente et
+ * elle est volontaire : le détachement a lieu dans les deux cas, le
+ * consentement ne décide que de ce qui survit pour la recherche.
+ */
+export async function updateUserCorrectionReuseConsent(
+  userId: string,
+  consent: boolean,
+  dependencies = defaultDependencies,
+): Promise<AuthenticatedUser | null> {
+  const user = await dependencies.repository.updateUserCorrectionReuseConsent(
+    userId,
+    consent,
+  );
   return user ? toAuthenticatedUser(user) : null;
 }
 

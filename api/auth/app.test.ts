@@ -53,6 +53,7 @@ function createTestDependencies() {
         displayName: input.displayName,
         locale: input.locale,
         role: 'USER',
+        correctionReuseConsent: false,
       };
 
       users.set(user.email, user);
@@ -85,6 +86,7 @@ function createTestDependencies() {
           displayName: user.displayName,
           locale: user.locale,
           role: user.role,
+          correctionReuseConsent: user.correctionReuseConsent,
         },
       };
     },
@@ -109,6 +111,14 @@ function createTestDependencies() {
       );
       if (!user || user.accountStatus !== 'ACTIVE') return null;
       user.locale = locale;
+      return user;
+    },
+    async updateUserCorrectionReuseConsent(userId, consent) {
+      const user = [...users.values()].find(
+        (candidate) => candidate.id === userId,
+      );
+      if (!user || user.accountStatus !== 'ACTIVE') return null;
+      user.correctionReuseConsent = consent;
       return user;
     },
   };
@@ -230,6 +240,8 @@ describe('auth API', () => {
         displayName: 'Learner',
         locale: 'fr',
         role: 'USER',
+        // Un compte neuf n'a consenti à rien (V4.5-168).
+        correctionReuseConsent: false,
       },
     });
     expect(users.get('learner@example.com')?.passwordHash).toBe(
@@ -313,6 +325,118 @@ describe('auth API', () => {
     expect(await sessionResponse.json()).toMatchObject({
       user: { email: 'locale@example.com', locale: 'en' },
     });
+  });
+
+  it('enregistre le consentement de réutilisation, refusé par défaut', async () => {
+    // V4.5-168. Le défaut EST la décision : un consentement se donne, il ne se
+    // déduit pas d'un silence. Sans lui, les textes sont supprimés au
+    // détachement plutôt que conservés sous pseudonyme.
+    const { dependencies } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    const registerResponse = await app.request(
+      'http://localhost/api/auth/register',
+      {
+        body: JSON.stringify({
+          displayName: 'Learner',
+          email: 'consent@example.com',
+          locale: 'fr',
+          password: 'correct-horse-battery-staple',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+    const cookie = getSessionCookie(registerResponse);
+
+    expect(await registerResponse.json()).toMatchObject({
+      user: { correctionReuseConsent: false },
+    });
+
+    const grant = await app.request(
+      'http://localhost/api/auth/correction-reuse-consent',
+      {
+        body: JSON.stringify({ consent: true }),
+        headers: { 'content-type': 'application/json', cookie },
+        method: 'PATCH',
+      },
+    );
+
+    expect(grant.status).toBe(200);
+    expect(grant.headers.get('cache-control')).toBe('private, no-store');
+    expect(await grant.json()).toMatchObject({
+      user: { email: 'consent@example.com', correctionReuseConsent: true },
+    });
+
+    // Le retrait compte autant que l'octroi : un consentement qu'on ne peut
+    // pas reprendre n'en est pas un.
+    const withdraw = await app.request(
+      'http://localhost/api/auth/correction-reuse-consent',
+      {
+        body: JSON.stringify({ consent: false }),
+        headers: { 'content-type': 'application/json', cookie },
+        method: 'PATCH',
+      },
+    );
+    const sessionResponse = await app.request(
+      'http://localhost/api/auth/session',
+      { headers: { cookie } },
+    );
+
+    expect(await withdraw.json()).toMatchObject({
+      user: { correctionReuseConsent: false },
+    });
+    expect(await sessionResponse.json()).toMatchObject({
+      user: { correctionReuseConsent: false },
+    });
+  });
+
+  it('refuse un consentement non authentifié ou non booléen', async () => {
+    const { dependencies } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    const unauthenticated = await app.request(
+      'http://localhost/api/auth/correction-reuse-consent',
+      {
+        body: JSON.stringify({ consent: true }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+    const registerResponse = await app.request(
+      'http://localhost/api/auth/register',
+      {
+        body: JSON.stringify({
+          displayName: 'Learner',
+          email: 'invalid-consent@example.com',
+          locale: 'fr',
+          password: 'correct-horse-battery-staple',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+    const cookie = getSessionCookie(registerResponse);
+    // Une absence serait lue « laisse tel quel » par le serveur et « j'ai
+    // choisi » par l'apprenant : elle est refusée.
+    const missing = await app.request(
+      'http://localhost/api/auth/correction-reuse-consent',
+      {
+        body: JSON.stringify({}),
+        headers: { 'content-type': 'application/json', cookie },
+        method: 'PATCH',
+      },
+    );
+    const notBoolean = await app.request(
+      'http://localhost/api/auth/correction-reuse-consent',
+      {
+        body: JSON.stringify({ consent: 'oui' }),
+        headers: { 'content-type': 'application/json', cookie },
+        method: 'PATCH',
+      },
+    );
+
+    expect(unauthenticated.status).toBe(401);
+    expect(missing.status).toBe(400);
+    expect(notBoolean.status).toBe(400);
   });
 
   it('rejects unauthenticated or unsupported locale changes', async () => {

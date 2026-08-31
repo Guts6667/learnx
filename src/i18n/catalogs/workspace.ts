@@ -11,6 +11,14 @@ export const frenchWorkspaceMessages = {
   'profile.languageEnglish': 'English',
   'profile.languageSaved': 'Langue enregistrée.',
   'profile.languageError': 'La langue n’a pas pu être enregistrée. Réessayez.',
+  'profile.reuseConsentTitle': 'Réutilisation pour la recherche',
+  'profile.reuseConsentLabel':
+    'Autoriser la réutilisation de mes corrections détachées',
+  'profile.reuseConsentDescription':
+    'Au bout de 180 jours, une correction est détachée de votre compte : dans tous les cas, elle cesse d’y être rattachée. Si vous l’autorisez, vos textes sont alors conservés sous un pseudonyme irréversible pour améliorer le système ; c’est une pseudonymisation, pas un anonymat — un texte libre peut désigner celui qui l’a écrit. Sans cette autorisation, ils sont supprimés. Vous pouvez revenir sur ce choix à tout moment.',
+  'profile.reuseConsentSaved': 'Choix enregistré.',
+  'profile.reuseConsentError':
+    'Votre choix n’a pas pu être enregistré. Réessayez.',
   'profile.actions': 'Actions',
   'profile.group.account': 'Compte',
   'profile.group.access': 'Accès',
@@ -154,6 +162,13 @@ export const englishWorkspaceMessages = {
   'profile.languageEnglish': 'English',
   'profile.languageSaved': 'Language saved.',
   'profile.languageError': 'The language could not be saved. Please try again.',
+  'profile.reuseConsentTitle': 'Reuse for research',
+  'profile.reuseConsentLabel': 'Allow my detached corrections to be reused',
+  'profile.reuseConsentDescription':
+    'After 180 days, a correction is detached from your account: either way, it stops being linked to it. If you allow this, your texts are then kept under an irreversible pseudonym to improve the system; this is pseudonymisation, not anonymity — free text can identify whoever wrote it. Without this permission, they are deleted. You can change this choice at any time.',
+  'profile.reuseConsentSaved': 'Choice saved.',
+  'profile.reuseConsentError':
+    'Your choice could not be saved. Please try again.',
   'profile.actions': 'Actions',
   'profile.group.account': 'Account',
   'profile.group.access': 'Access',
