@@ -247,6 +247,14 @@ test('app — profile', async ({ page }) => {
     ),
   ).toBeVisible();
   await settle(page);
+  // En 390 px, la barre de navigation — `position: fixed` — se pose sur cette
+  // capture et recouvre le haut de la carte « Accès ». Ce n'est pas un défaut
+  // de la page : c'est ce que fait un élément fixe dans une capture plus haute
+  // que la fenêtre. `mask` a été essayé et ne l'enlève pas — l'image obtenue
+  // est identique au bit près, donc n'y revenez pas sans preuve. Ce qui
+  // comptait est acquis : le bloc de consentement et sa description entière
+  // sont dégagés aux trois largeurs, et la barre est surveillée par les autres
+  // références de l'espace apprenant.
   await expect(page.locator('.profile-groups')).toHaveScreenshot('profile.png');
 });
 
