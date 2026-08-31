@@ -9,6 +9,14 @@
 > `Secret` et illisibles par construction. Ce document ne contient donc aucune
 > valeur, et ne doit jamais en contenir.
 >
+> **Le tableau ci-dessous est daté du 30 août 2026, relevé par le Head of DevOps
+> avec `vercel env ls --project learnx`. Il est incomplet.** Il a déjà induit
+> une erreur : `LEARNX_ALLOW_PROTECTED_DB` y manque et existe pourtant en
+> Production (§9.1). Un tableau recopié d'un rapport à l'autre cesse d'être un
+> relevé et devient un souvenir. **Ne pas conclure d'une absence ici qu'une
+> variable est absente de Vercel** — relancer la commande, et redater cette
+> ligne le jour où on le fait.
+>
 > Les §9 à §11 ont été ajoutés le 31 août : le pré-vol de la promotion, la
 > procédure `dev` → `staging` → `main` pas à pas, et les vérifications qui ne
 > peuvent être faites que par Rayan, chacune avec son écran. Deux d'entre elles
@@ -23,6 +31,7 @@
 | `VITE_SENTRY_DSN` | ✅ posée | ✅ posée | **fait** | — |
 | `APP_URL` | ✅ posée | ✅ posée | **fait** | — |
 | `LEARNX_PUBLIC_LEADS_ENABLED` | ✅ posée, valeur non vérifiable | **absente → collecte fermée** | **à poser sur Preview** | Rayan |
+| `LEARNX_ALLOW_PROTECTED_DB` | ✅ posée, valeur non vérifiable | absente | **à repasser en Config, valeur `1`** | Rayan, §9.1 |
 | `LEARNX_PAYMENTS_ENABLED` | absente | ✅ posée | **état voulu** | ne rien faire |
 | `STRIPE_LIVE_*` | absentes | absentes | **état voulu** | après GO packs |
 | `DATABASE_URL` / `DIRECT_URL` | ✅ posées, 28 jours | ✅ posées | **décision propriétaire : pas de rotation** | ne rien faire, §2 |
@@ -191,7 +200,7 @@ marqueur**, au moment où elle décide que le résultat doit être servi.
 - [x] rotation des identifiants Neon — **abandonnée**, décision du 31 août 02 h 50 (§2) ;
 - [x] supprimer ou annoter les lignes PRODUCTION de `vercel-values.txt` — le Head of AI rapporte l'avoir fait le 31 août (§11.8) ;
 - [x] comptage `public_leads` sur la production — Rayan rapporte **0** (§11.9) ;
-- [ ] **poser `LEARNX_ALLOW_PROTECTED_DB=1` en Production** — bloquant, sans quoi le build de production s'arrête au premier pas (§9.1) ;
+- [ ] **repasser `LEARNX_ALLOW_PROTECTED_DB` en Config avec la valeur `1`** — elle est posée en Production, mais en `Secret` donc invérifiable, et le garde teste `=== '1'` (§9.1) ;
 - [ ] **remplacer `real-functions` par `Integration (required)` sur `main`, avant d'ouvrir la PR de promotion** (§9.2, et non §4 tel qu'il était écrit) ;
 - [ ] confirmer depuis le dashboard que `LEARNX_PUBLIC_LEADS_ENABLED` vaut en Production **exactement** `true` (§1) ;
 - [ ] poser les trois réglages du smoke planifié — sans eux, aucune alerte ne préviendra d'une panne de production (§9.3) ;
@@ -223,7 +232,7 @@ Trois conditions bloquent la promotion. Aucune ne se voit sur une branche : la
 promotion est la première fois que ce code rencontre la production, et ces
 trois-là sont précisément ce que `staging` ne peut pas répéter.
 
-### 9.1 `LEARNX_ALLOW_PROTECTED_DB=1` en **Production** Vercel — bloquant, vérifié
+### 9.1 `LEARNX_ALLOW_PROTECTED_DB` — posée, mais sa valeur reste à confirmer
 
 > **Vocabulaire.** Le *garde* est le bout de code, dans `prisma.config.ts`, qui
 > regarde quelle base une commande s'apprête à toucher et refuse si c'est la
@@ -236,8 +245,23 @@ variable `LEARNX_ALLOW_PROTECTED_DB` valant `1`.
 
 **Rien dans le dépôt ne pose cette variable** — `git grep` ne la trouve qu'à
 deux endroits, le garde qui la lit et le message d'erreur qui la nomme. Elle ne
-peut donc venir que de Vercel, et elle **n'apparaît pas** dans le tableau du §1,
-qui a été construit à partir de `vercel env ls`.
+peut donc venir que de Vercel.
+
+> **Correction, et l'erreur est de moi.** J'ai d'abord écrit ici qu'elle
+> *manquait* en Production, au motif qu'elle n'apparaissait pas dans le tableau
+> du §1. Elle y est. Rayan a ouvert l'écran pour la créer, et Vercel a répondu
+> « A variable with the name `LEARNX_ALLOW_PROTECTED_DB` already exists for the
+> target production ».
+>
+> Le tableau du §1 n'était pas un relevé du jour : c'est un instantané ancien et
+> incomplet, recopié de rapport en rapport. Je n'avais pas la CLI Vercel ici, je
+> n'ai donc rien pu relever moi-même — et au lieu d'écrire « invérifiable
+> d'ici », j'ai lu l'absence dans un tableau comme une absence dans Vercel. Une
+> absence dans un document n'est pas une absence dans le système ; c'est au
+> mieux une absence dans le document. C'est la même erreur que celle déjà notée
+> au §1 sous une autre forme : une constatation ne voyage pas, elle se relève là
+> où l'on écrit, au moment où l'on écrit. D'où la datation et la source
+> désormais portées en tête du §1.
 
 Mesuré ici, pas déduit, en simulant le premier pas d'un build de production
 (hôte protégé, nom de domaine volontairement irrésolvable en `.invalid`, donc
@@ -272,10 +296,26 @@ un hôte protégé. Le garde y passe sans rien dire. La seule chose que la
 promotion risque vraiment est donc exactement la seule que la répétition ne
 teste pas.
 
-**À faire (Rayan), une seule vérification :** Vercel → projet `learnx` →
-Settings → Environment Variables → chercher `LEARNX_ALLOW_PROTECTED_DB`. Si elle
-est absente de **Production**, l'ajouter avec la valeur `1`, cochée uniquement
-pour Production.
+**Ce qui reste ouvert, et qui est réel :** sa **valeur**. Le garde teste
+`=== '1'`. La variable est de type `Secret`, donc illisible — ni la CLI ni le
+dashboard ne la rendent. Sa seule présence ne prouve donc rien, exactement comme
+pour `LEARNX_PUBLIC_LEADS_ENABLED` au §1 : `01`, `true`, ou `1 ` avec une espace
+ferment la porte aussi sûrement que l'absence, et le build de production
+s'arrête.
+
+**À faire (Rayan) :** Vercel → projet `learnx` → Settings → Environment
+Variables → `LEARNX_ALLOW_PROTECTED_DB` → la repasser en type **Config** avec la
+valeur `1`, Production uniquement.
+
+> **Règle qui en découle, et qui vaut au-delà de cette variable.** Un drapeau de
+> configuration se pose en **Config**, jamais en **Secret**. Un secret protège
+> une valeur que personne ne doit lire ; un drapeau est une décision que
+> quelqu'un doit pouvoir relire. Poser un drapeau en Secret ne protège rien — sa
+> valeur est `1` ou `true`, elle n'a aucun intérêt pour un attaquant — et coûte
+> la seule chose qui compte : la possibilité de vérifier. Les deux drapeaux qui
+> ont chacun coûté une vérification impossible dans ce document,
+> `LEARNX_ALLOW_PROTECTED_DB` et `LEARNX_PUBLIC_LEADS_ENABLED`, sont tous deux
+> en Secret. Les deux doivent passer en Config.
 
 ### 9.2 Le check requis de `main` doit changer **avant** la PR, pas après
 
@@ -523,10 +563,12 @@ réglages GitHub.
 
 **Bloquantes pour la promotion**
 
-1. **`LEARNX_ALLOW_PROTECTED_DB` = `1` en Production.** Vercel → `learnx` →
-   Settings → Environment Variables. Si absente de Production : l'ajouter,
-   valeur `1`, environnement Production uniquement. *Sans elle, le build de
-   production s'arrête au premier pas (§9.1).*
+1. **`LEARNX_ALLOW_PROTECTED_DB` : la repasser en Config, valeur `1`.** Vercel →
+   `learnx` → Settings → Environment Variables. Elle **existe** en Production —
+   Vercel refuse de la recréer — mais elle est de type `Secret`, donc sa valeur
+   est illisible, et le garde teste `=== '1'`. La repasser en **Config** avec la
+   valeur `1` ferme le doute définitivement. *Si elle ne vaut pas exactement `1`,
+   le build de production s'arrête au premier pas (§9.1).*
 2. **Le check requis de `main`.** GitHub → Settings → Branches → règle de
    `main` → *Require status checks* : retirer `real-functions`, ajouter
    `Integration (required)`. **Avant** d'ouvrir la PR de promotion (§9.2).
