@@ -11,14 +11,27 @@
  * `pnpm db:target`, never from a `.env`.
  */
 
-/** Parity is 100 credits per euro; the two larger tiers pay a bonus. */
+/**
+ * Parity is 100 credits per euro; the two larger tiers pay a bonus.
+ *
+ * The names are the Head of UX/UI's, and they say only size (V4.5-212).
+ * "Régulier" and "Intensif" qualified the learner rather than the pack —
+ * someone modest buying the large one has no business being told they are
+ * intensive. Finance's own names could not be reused: "Parcours" is the domain
+ * word for a programme (`navigation.programs`), and "Année" would announce a
+ * validity the product does not grant, since purchased credits carry no
+ * `expiresAt` and never expire.
+ *
+ * "Premier pack" does real work: it puts the one-per-account limit in the name,
+ * so the rule surprises nobody later.
+ */
 export const CREDIT_PACK_GRID = [
   {
     credits: 300n,
     currency: 'EUR',
     key: 'entry',
-    label: 'Découverte',
-    labelEn: 'Starter',
+    label: 'Premier pack',
+    labelEn: 'First pack',
     position: 1,
     priceMinor: 300n,
   },
@@ -26,8 +39,8 @@ export const CREDIT_PACK_GRID = [
     credits: 880n,
     currency: 'EUR',
     key: 'regular',
-    label: 'Régulier',
-    labelEn: 'Regular',
+    label: 'Pack standard',
+    labelEn: 'Standard pack',
     position: 2,
     priceMinor: 800n,
   },
@@ -35,8 +48,8 @@ export const CREDIT_PACK_GRID = [
     credits: 2000n,
     currency: 'EUR',
     key: 'intensive',
-    label: 'Intensif',
-    labelEn: 'Intensive',
+    label: 'Grand pack',
+    labelEn: 'Large pack',
     position: 3,
     priceMinor: 1600n,
   },
