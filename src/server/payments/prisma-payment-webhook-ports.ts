@@ -97,33 +97,46 @@ async function applyTransitionOn(
   });
 }
 
+/**
+ * Le remboursement, sur la transaction qu'on lui donne (V4.5-211).
+ *
+ * Il s'exécutait après que l'événement eut été validé, dans une transaction à
+ * lui : quand il échouait, la ligne d'événement survivait et la réémission de
+ * Stripe était écartée comme doublon par l'unicité même qui rend un rejeu
+ * inoffensif. Argent rendu chez le fournisseur, crédits jamais repris, et rien
+ * qui échoue bruyamment — exactement le défaut que V4.5-199 avait corrigé pour
+ * les autres transitions.
+ *
+ * Passe par le service de remboursement, donc par les mêmes gardes que le
+ * chemin d'un administrateur : règle du prorata, grand livre en ajout seul,
+ * écriture de statut conditionnelle. Seul l'acteur diffère.
+ */
+async function compensateRefundOn(
+  client: Prisma.TransactionClient,
+  orderId: string,
+): Promise<boolean> {
+  const { refundOrder } = await import('./refund-service.js');
+  const { createPrismaRefundPorts } = await import('./prisma-refund-ports.js');
+
+  // Créé à la première utilisation : une migration n'écrit pas dans `users`,
+  // et un seed peut ne pas avoir tourné là où un remboursement atterrit.
+  const actorUserId = await ensureSystemActor(client);
+
+  const result = await refundOrder({
+    actorUserId,
+    kind: 'VOLUNTARY',
+    note: 'Remboursement émis chez le fournisseur',
+    orderId,
+    ports: await createPrismaRefundPorts(client),
+  });
+  return result.kind === 'REFUNDED';
+}
+
 export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
   const { prisma } = await import('../prisma.js');
   const { Prisma } = await import('../../../generated/prisma/client.js');
 
   return {
-    async compensateRefund(input) {
-      // Delegated to the refund service so the pro-rata rule, the append-only
-      // ledger and the conditional status write stay in one place — the same
-      // path an administrator takes, with the same guards. All that differs is
-      // who acted (V4.5-203).
-      const { refundOrder } = await import('./refund-service.js');
-      const { createPrismaRefundPorts } =
-        await import('./prisma-refund-ports.js');
-
-      // Created on first use: a migration may not write into `users`, and a
-      // seed may not have run wherever a refund lands.
-      const actorUserId = await ensureSystemActor(prisma);
-
-      const result = await refundOrder({
-        actorUserId,
-        kind: 'VOLUNTARY',
-        note: 'Remboursement émis chez le fournisseur',
-        orderId: input.orderId,
-        ports: await createPrismaRefundPorts(),
-      });
-      return result.kind === 'REFUNDED';
-    },
     async findOrder(input) {
       // Payment intent first: it is what a charge or a dispute carries, and
       // the only handle shared by the whole lifecycle. A session id resolves
@@ -179,6 +192,7 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
         // throws, the event row goes with it and Stripe's retry finds nothing
         // recorded, so it applies. Before, the row survived and deduplicated
         // the retry away.
+        let compensated: boolean | undefined;
         await prisma.$transaction(async (transaction) => {
           await transaction.paymentEvent.create({
             data: {
@@ -192,14 +206,20 @@ export async function createPrismaPaymentWebhookPorts(): Promise<WebhookPorts> {
           if (input.transition) {
             await applyTransitionOn(transaction, input.transition);
           }
+          if (input.compensateRefundForOrderId) {
+            compensated = await compensateRefundOn(
+              transaction,
+              input.compensateRefundForOrderId,
+            );
+          }
         });
-        return true;
+        return { compensated, stored: true };
       } catch (error) {
         if (
           error instanceof Prisma.PrismaClientKnownRequestError &&
           error.code === 'P2002'
         ) {
-          return false;
+          return { stored: false };
         }
         throw error;
       }

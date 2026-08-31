@@ -1,5 +1,6 @@
 import {
   AuditAction,
+  type Prisma,
   type PrismaClient,
 } from '../../../generated/prisma/client.js';
 import {
@@ -13,29 +14,31 @@ import type {
 } from './refund-preview.js';
 import type { RefundPorts } from './refund-service.js';
 
-export async function createPrismaRefundPorts(): Promise<RefundPorts> {
+/**
+ * @param client Transaction de l'appelant, quand il en tient une (V4.5-211).
+ *   Le webhook rembourse dans la même transaction que l'enregistrement de
+ *   l'événement ; l'administration n'en a pas et laisse ces ports ouvrir la
+ *   leur. Le service de remboursement, lui, ne connaît pas Prisma et n'a pas
+ *   à l'apprendre : c'est la fabrique de ports qui décide où l'on écrit.
+ */
+export async function createPrismaRefundPorts(
+  client?: Prisma.TransactionClient,
+): Promise<RefundPorts> {
   const { prisma }: { prisma: PrismaClient } = await import('../prisma.js');
+  const db: Prisma.TransactionClient = client ?? prisma;
 
   return {
     async applyRefund(input) {
-      if (input.reclaimed > 0n) {
-        const order = await prisma.paymentOrder.findUniqueOrThrow({
-          select: { creditLotId: true },
-          where: { id: input.orderId },
-        });
-        if (order.creditLotId) {
-          await refundPurchasedCredits(prisma, {
-            actorUserId: input.actorUserId,
-            amount: input.reclaimed,
-            lotId: order.creditLotId,
-            orderId: input.orderId,
-            reason: input.note ?? `Remboursement ${input.kind}`,
-            userId: input.userId,
-          });
-        }
-      }
-
-      return prisma.$transaction(async (transaction) => {
+      // Une seule transaction, celle de l'appelant s'il en a une (V4.5-211).
+      //
+      // L'entrée de grand livre s'écrivait auparavant AVANT la transaction qui
+      // change le statut de la commande, et dans une transaction à elle : un
+      // échec entre les deux laissait des crédits repris sur une commande
+      // toujours honorée, et le webhook, lui, écrivait tout cela après avoir
+      // déjà validé l'événement — sa réémission était alors écartée comme
+      // doublon. Les trois écritures — reprise des crédits, figures de la
+      // commande, audit — tombent ou tiennent désormais ensemble.
+      const run = async (transaction: Prisma.TransactionClient) => {
         // Conditional on the state, not merely ordered after a check: the
         // service read the status earlier, and two administrators clicking
         // together would both have passed that read. Whoever writes second
@@ -54,6 +57,29 @@ export async function createPrismaRefundPorts(): Promise<RefundPorts> {
           },
         });
         if (settled.count !== 1) return false;
+
+        // La reprise des crédits vient APRÈS la garde, et c'est délibéré :
+        // rendre `false` depuis un rappel de transaction n'annule rien, cela
+        // valide. Écrire le grand livre avant la garde laisserait donc, à
+        // celui qui perd la course entre deux administrateurs, une reprise
+        // de crédits validée sur un remboursement qu'il n'a pas fait.
+        if (input.reclaimed > 0n) {
+          const order = await transaction.paymentOrder.findUniqueOrThrow({
+            select: { creditLotId: true },
+            where: { id: input.orderId },
+          });
+          if (order.creditLotId) {
+            await refundPurchasedCredits(transaction, {
+              actorUserId: input.actorUserId,
+              amount: input.reclaimed,
+              lotId: order.creditLotId,
+              orderId: input.orderId,
+              reason: input.note ?? `Remboursement ${input.kind}`,
+              userId: input.userId,
+            });
+          }
+        }
+
         // Audited like the breaker reopen: who acted on someone's money, and
         // why, has to be recoverable afterwards.
         const values = {
@@ -77,10 +103,12 @@ export async function createPrismaRefundPorts(): Promise<RefundPorts> {
         });
 
         return true;
-      });
+      };
+
+      return client ? run(client) : prisma.$transaction(run);
     },
     async loadOrder(orderId) {
-      const order = await prisma.paymentOrder.findUnique({
+      const order = await db.paymentOrder.findUnique({
         select: {
           creditLotId: true,
           packKey: true,
@@ -91,12 +119,12 @@ export async function createPrismaRefundPorts(): Promise<RefundPorts> {
       });
       if (!order) return null;
       const [pack, lot] = await Promise.all([
-        prisma.creditPack.findUnique({
+        db.creditPack.findUnique({
           select: { credits: true, priceMinor: true },
           where: { key: order.packKey },
         }),
         order.creditLotId
-          ? prisma.creditLot.findUnique({
+          ? db.creditLot.findUnique({
               select: { ledgerEntries: { select: { amount: true } } },
               where: { id: order.creditLotId },
             })

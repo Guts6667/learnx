@@ -23,13 +23,17 @@ function build(options: { existing?: unknown; lot?: unknown } = {}) {
     },
   };
   const prisma = {
-    $transaction: async (fn: (t: unknown) => unknown) => fn(transaction),
+    $transaction: vi.fn(async (fn: (t: unknown) => unknown) => fn(transaction)),
   };
   return { created, lotWheres, prisma, transaction };
 }
 
-function refund(prisma: unknown, amount = 250n) {
-  return refundPurchasedCredits(prisma as never, {
+/**
+ * Appelé avec le client de transaction directement (V4.5-211) : la fonction
+ * n'ouvre plus la sienne, c'est l'appelant qui possède la transaction.
+ */
+function refund(client: unknown, amount = 250n) {
+  return refundPurchasedCredits(client as never, {
     actorUserId: 'admin-1',
     amount,
     lotId: 'lot-1',
@@ -42,7 +46,7 @@ function refund(prisma: unknown, amount = 250n) {
 describe('refundPurchasedCredits', () => {
   it('écrit une écriture REFUND négative contre le lot acheté', async () => {
     const harness = build();
-    await expect(refund(harness.prisma)).resolves.toMatchObject({
+    await expect(refund(harness.transaction)).resolves.toMatchObject({
       entryId: expect.any(String),
     });
     expect(harness.created[0]).toMatchObject({
@@ -57,7 +61,7 @@ describe('refundPurchasedCredits', () => {
   it('n’écrit qu’une fois pour une même commande', async () => {
     // A redelivered dispute outcome, or an administrator clicking twice.
     const harness = build({ existing: { id: 'entry-1' } });
-    await expect(refund(harness.prisma)).resolves.toEqual({
+    await expect(refund(harness.transaction)).resolves.toEqual({
       entryId: 'entry-1',
     });
     expect(harness.created).toEqual([]);
@@ -68,7 +72,7 @@ describe('refundPurchasedCredits', () => {
     // it a mis-referenced order would quietly reverse a free allocation, which
     // no refund ever pays back.
     const harness = build();
-    await refund(harness.prisma);
+    await refund(harness.transaction);
     expect(harness.lotWheres).toEqual([
       { id: 'lot-1', provenance: 'PURCHASED' },
     ]);
@@ -76,21 +80,34 @@ describe('refundPurchasedCredits', () => {
 
   it('refuse quand aucun lot acheté ne correspond', async () => {
     const harness = build({ lot: null });
-    await expect(refund(harness.prisma)).resolves.toBeNull();
+    await expect(refund(harness.transaction)).resolves.toBeNull();
     expect(harness.created).toEqual([]);
   });
 
   it('ne fait rien pour un montant nul', async () => {
     const harness = build();
-    await expect(refund(harness.prisma, 0n)).resolves.toBeNull();
+    await expect(refund(harness.transaction, 0n)).resolves.toBeNull();
     expect(harness.created).toEqual([]);
+  });
+
+  it('n’ouvre aucune transaction à lui', async () => {
+    // V4.5-211 : c'est ce qui permet au webhook de rembourser dans la même
+    // transaction que l'enregistrement de l'événement. Tant que cette fonction
+    // en ouvrait une, l'entrée de grand livre était validée séparément, et un
+    // échec ensuite laissait des crédits repris sur une commande honorée.
+    const harness = build();
+
+    await refund(harness.transaction);
+
+    expect(harness.prisma.$transaction).not.toHaveBeenCalled();
+    expect(harness.created).toHaveLength(1);
   });
 
   it('ne touche jamais l’attribution qu’il compense', async () => {
     // Append-only: the GRANT stays exactly as written, which is what keeps the
     // history readable when what happened was a mistake.
     const harness = build();
-    await refund(harness.prisma);
+    await refund(harness.transaction);
     expect(harness.created).toHaveLength(1);
     expect(harness.created[0]?.type).toBe('REFUND');
   });
