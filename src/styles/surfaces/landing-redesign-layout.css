@@ -1,0 +1,64 @@
+/*
+ * Layout compatibility for the landing redesign.
+ *
+ * Keep viewport gutters expressed with broadly supported calc() syntax. The
+ * visual layer uses the gutter token for spacing, but multiplying a custom
+ * property inside calc() is not consistently supported by deployed browsers.
+ */
+
+.landing-hero,
+.landing-principles,
+.landing-section,
+.landing-forms,
+.landing-forms-head,
+.landing-pricing,
+.landing-roadmap,
+.landing-research {
+  box-sizing: border-box;
+}
+
+.landing-hero {
+  width: min(calc(100% - 1.5rem), var(--landing-wide));
+}
+
+.landing-principles {
+  width: min(calc(100% - 1.5rem), 84rem);
+}
+
+.landing-section,
+.landing-forms,
+.landing-forms-head,
+.landing-research {
+  width: min(calc(100% - 1.5rem), var(--landing-content));
+}
+
+.landing-pricing,
+.landing-roadmap {
+  width: min(calc(100% - 1.5rem), 86rem);
+}
+
+.landing-roadmap {
+  position: relative;
+}
+
+@media (min-width: 48rem) {
+  .landing-hero {
+    width: min(calc(100% - 3rem), var(--landing-wide));
+  }
+
+  .landing-principles {
+    width: min(calc(100% - 3rem), 84rem);
+  }
+
+  .landing-section,
+  .landing-forms,
+  .landing-forms-head,
+  .landing-research {
+    width: min(calc(100% - 3rem), var(--landing-content));
+  }
+
+  .landing-pricing,
+  .landing-roadmap {
+    width: min(calc(100% - 3rem), 86rem);
+  }
+}
