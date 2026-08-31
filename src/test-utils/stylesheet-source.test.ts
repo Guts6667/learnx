@@ -31,6 +31,7 @@ describe('stylesheet source graph', () => {
       'src/styles/primitives/overlays-content.css',
       'src/styles/accessibility.css',
       'src/styles/surfaces/correction-assessment-reviews.css',
+      'src/styles/surfaces/landing-path.css',
     ]);
     expect(graph.packageImports).toEqual(['tailwindcss']);
     expect(graph.source).not.toMatch(/@import\s+['"]\.\//u);
