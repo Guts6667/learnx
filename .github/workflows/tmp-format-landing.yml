@@ -5,10 +5,11 @@ on:
     branches: [design/landing-path-redesign]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   format:
+    if: github.event.head_commit.message != 'chore(landing): apply repository formatting'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -26,13 +27,13 @@ jobs:
           src/styles/index.css
           src/styles/surfaces/landing-redesign.css
           src/styles/surfaces/landing-redesign-layout.css
-      - name: Upload formatted landing files
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: formatted-landing
-          path: |
-            src/components/landing/LandingPreviews.tsx
-            src/styles/index.css
-            src/styles/surfaces/landing-redesign.css
-            src/styles/surfaces/landing-redesign-layout.css
-          if-no-files-found: error
+      - name: Commit formatted output
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/components/landing/LandingPreviews.tsx src/styles/index.css src/styles/surfaces/landing-redesign.css src/styles/surfaces/landing-redesign-layout.css
+          git commit -m "chore(landing): apply repository formatting"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
