@@ -94,14 +94,27 @@ const CHECKER_OUTPUT_JSON_SCHEMA = {
  * already relied on. That keeps what leaves LearnX to the minimum the question
  * needs (ADR §7.2) and makes the recipient register entry a short one.
  */
+/**
+ * The promoted verifier's instructions, exported so a research probe can copy
+ * them verbatim and prove the copy has not drifted.
+ *
+ * The regression suite compares a candidate prompt against the one production
+ * actually sends; a measurement attributed to "the current prompt" is worth
+ * nothing if the two have quietly diverged.
+ */
+export const DEFAULT_CHECKER_INSTRUCTIONS: readonly string[] = [
+  'Tu vérifies une correction déjà produite. Tu ne corriges pas.',
+  'Pour chaque critère, réponds à une seule question fermée : la citation fournie soutient-elle le niveau retenu ?',
+  'Réponds true si la citation soutient le niveau, false sinon.',
+  'Tu ne disposes pas de la production complète : ne suppose rien au-delà des citations fournies.',
+];
+
 function buildCheckerMessages(
   questions: CheckerQuestion[],
+  instructions: readonly string[] = DEFAULT_CHECKER_INSTRUCTIONS,
 ): Array<{ content: string; role: 'system' }> {
   const lines = [
-    'Tu vérifies une correction déjà produite. Tu ne corriges pas.',
-    'Pour chaque critère, réponds à une seule question fermée : la citation fournie soutient-elle le niveau retenu ?',
-    'Réponds true si la citation soutient le niveau, false sinon.',
-    'Tu ne disposes pas de la production complète : ne suppose rien au-delà des citations fournies.',
+    ...instructions,
     '',
     ...questions.flatMap((question) => [
       `<critere key="${question.criterionKey}">`,
@@ -118,11 +131,12 @@ function buildCheckerMessages(
 
 export function buildCheckerRequestBody(
   questions: CheckerQuestion[],
+  instructions?: readonly string[],
 ): Record<string, unknown> {
   const route = [...PROMOTED_CHECKER_IDENTITY.requestProfile.routeProviders];
   return {
     max_tokens: PROMOTED_CHECKER_IDENTITY.requestProfile.totalOutputTokenLimit,
-    messages: buildCheckerMessages(questions),
+    messages: buildCheckerMessages(questions, instructions),
     model: PROMOTED_CHECKER_IDENTITY.modelId,
     provider: {
       allow_fallbacks: false,
@@ -168,6 +182,11 @@ export interface RuntimeCheckerOptions {
   apiKey: string | null;
   appUrl: string;
   fetchImplementation?: typeof fetch;
+  /**
+   * Instructions to send instead of the promoted ones. Research only: the
+   * runtime passes nothing here, so production keeps the default byte for byte.
+   */
+  instructions?: readonly string[];
   now?: () => number;
 }
 
@@ -197,7 +216,9 @@ export function createRuntimeCorrectionChecker(
       let response: Response;
       try {
         response = await fetchImplementation(CHECKER_URL, {
-          body: JSON.stringify(buildCheckerRequestBody(questions)),
+          body: JSON.stringify(
+            buildCheckerRequestBody(questions, options.instructions),
+          ),
           headers: {
             Authorization: `Bearer ${options.apiKey}`,
             'Content-Type': 'application/json',

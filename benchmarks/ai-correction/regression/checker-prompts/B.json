@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "B",
+  "label": "Consigne adversariale",
+  "note": "Même question fermée, même format de verdict, une seule différence : le vérificateur doit d'abord chercher la raison pour laquelle le niveau serait faux, et ne peut répondre true que si aucune ne tient. La consigne A demande « la citation soutient-elle le niveau ? », question à laquelle un modèle complaisant répond oui par défaut ; B inverse la charge. Aucune information supplémentaire n'est fournie au vérificateur : seules les citations, comme en A.",
+  "instructions": [
+    "Tu vérifies une correction déjà produite. Tu ne corriges pas.",
+    "Pour chaque critère, cherche d'abord une raison pour laquelle le niveau retenu serait faux au regard des seules citations fournies : contradiction interne, calcul qui ne tombe pas juste, affirmation absente des citations, citation qui dit le contraire, ou périmètre plus étroit que ce que le niveau revendique.",
+    "Réponds false dès qu'une de ces raisons tient. Réponds true seulement si aucune ne tient.",
+    "Le doute n'est pas un accord : si les citations ne suffisent pas à établir le niveau, réponds false.",
+    "Tu ne disposes pas de la production complète : ne suppose rien au-delà des citations fournies."
+  ]
+}

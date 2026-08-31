@@ -4,9 +4,11 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
+  parseCheckerPromptVariant,
   parseFalseAgreeProbe,
   runFalseAgreeProbe,
 } from './ai-correction-false-agree-probe.js';
+import { DEFAULT_CHECKER_INSTRUCTIONS } from '../server/corrections/correction-checker.js';
 import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
 import type { RegressionCheckerVerdict } from './ai-correction-regression-metrics.js';
 
@@ -137,5 +139,43 @@ describe('the designed false-agreement probe', () => {
         schemaVersion: 1,
       }),
     ).toThrow(/dupliqué/);
+  });
+});
+
+describe('the checker prompt variants', () => {
+  async function loadVariant(id: string) {
+    return parseCheckerPromptVariant(
+      JSON.parse(
+        await readFile(
+          path.resolve(
+            `benchmarks/ai-correction/regression/checker-prompts/${id}.json`,
+          ),
+          'utf8',
+        ),
+      ) as unknown,
+    );
+  }
+
+  it('keeps variant A byte-identical to the instructions production sends', async () => {
+    // A is the reference the others are compared against. If it drifts from the
+    // runtime prompt, every measurement attributed to "the current prompt"
+    // silently describes a prompt nobody runs — the failure this test exists
+    // to make impossible.
+    const variantA = await loadVariant('A');
+    expect(variantA.instructions).toEqual([...DEFAULT_CHECKER_INSTRUCTIONS]);
+  });
+
+  it('makes B refuse by default where A accepts by default', async () => {
+    const variantB = await loadVariant('B');
+    const text = variantB.instructions.join(' ');
+
+    // The whole difference: A asks whether the quote supports the level, which
+    // a lenient model answers yes to. B asks for the reason it would be false
+    // and only allows yes when none holds.
+    expect(text).toMatch(/raison pour laquelle le niveau retenu serait faux/);
+    expect(text).toMatch(/true seulement si aucune ne tient/);
+    expect(text).toMatch(/Le doute n'est pas un accord/);
+    // And it still withholds the learner's production, like A.
+    expect(text).toMatch(/ne suppose rien au-delà des citations fournies/);
   });
 });
