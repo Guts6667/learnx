@@ -20,8 +20,10 @@
 > Les §9 à §11 ont été ajoutés le 31 août : le pré-vol de la promotion, la
 > procédure `dev` → `staging` → `main` pas à pas, et les vérifications qui ne
 > peuvent être faites que par Rayan, chacune avec son écran. Deux d'entre elles
-> sont nouvelles et bloquantes, et n'étaient dans aucune version précédente de
-> ce document.
+> étaient nouvelles et bloquantes — elles n'étaient dans aucune version
+> précédente de ce document — et **toutes deux ont été levées le 31 août**
+> (§9.1, §9.2). Le §12 dit ce que `dev` exige réellement, ce qui n'est pas ce
+> qu'on croit en regardant la liste des contrôles.
 
 ## 1. Variables d'environnement Vercel
 
@@ -31,7 +33,7 @@
 | `VITE_SENTRY_DSN` | ✅ posée | ✅ posée | **fait** | — |
 | `APP_URL` | ✅ posée | ✅ posée | **fait** | — |
 | `LEARNX_PUBLIC_LEADS_ENABLED` | ✅ posée, valeur non vérifiable | **absente → collecte fermée** | **à poser sur Preview** | Rayan |
-| `LEARNX_ALLOW_PROTECTED_DB` | ✅ posée, valeur non vérifiable | absente | **à repasser en Config, valeur `1`** | Rayan, §9.1 |
+| `LEARNX_ALLOW_PROTECTED_DB` | ✅ posée en **Config**, valeur `1` | absente | **fait le 31 août** | —, §9.1 |
 | `LEARNX_PAYMENTS_ENABLED` | absente | ✅ posée | **état voulu** | ne rien faire |
 | `STRIPE_LIVE_*` | absentes | absentes | **état voulu** | après GO packs |
 | `DATABASE_URL` / `DIRECT_URL` | ✅ posées, 28 jours | ✅ posées | **décision propriétaire : pas de rotation** | ne rien faire, §2 |
@@ -200,8 +202,8 @@ marqueur**, au moment où elle décide que le résultat doit être servi.
 - [x] rotation des identifiants Neon — **abandonnée**, décision du 31 août 02 h 50 (§2) ;
 - [x] supprimer ou annoter les lignes PRODUCTION de `vercel-values.txt` — le Head of AI rapporte l'avoir fait le 31 août (§11.8) ;
 - [x] comptage `public_leads` sur la production — Rayan rapporte **0** (§11.9) ;
-- [ ] **repasser `LEARNX_ALLOW_PROTECTED_DB` en Config avec la valeur `1`** — elle est posée en Production, mais en `Secret` donc invérifiable, et le garde teste `=== '1'` (§9.1) ;
-- [ ] **remplacer `real-functions` par `Integration (required)` sur `main`, avant d'ouvrir la PR de promotion** (§9.2, et non §4 tel qu'il était écrit) ;
+- [x] `LEARNX_ALLOW_PROTECTED_DB` recréée en **Config**, valeur `1`, Production — le 31 août, écran Vercel, par Rayan (§9.1) ;
+- [x] `real-functions` remplacé par `Integration (required)` sur `main` — vérifié par moi le 31 août à 11 h 57 UTC via l'API GitHub (§9.2) ;
 - [ ] confirmer depuis le dashboard que `LEARNX_PUBLIC_LEADS_ENABLED` vaut en Production **exactement** `true` (§1) ;
 - [ ] poser les trois réglages du smoke planifié — sans eux, aucune alerte ne préviendra d'une panne de production (§9.3) ;
 - [ ] relever le commit servi par `staging` — la procédure du §10.2 le fait au passage ;
@@ -232,7 +234,7 @@ Trois conditions bloquent la promotion. Aucune ne se voit sur une branche : la
 promotion est la première fois que ce code rencontre la production, et ces
 trois-là sont précisément ce que `staging` ne peut pas répéter.
 
-### 9.1 `LEARNX_ALLOW_PROTECTED_DB` — posée, mais sa valeur reste à confirmer
+### 9.1 `LEARNX_ALLOW_PROTECTED_DB` — **levé le 31 août**
 
 > **Vocabulaire.** Le *garde* est le bout de code, dans `prisma.config.ts`, qui
 > regarde quelle base une commande s'apprête à toucher et refuse si c'est la
@@ -296,16 +298,26 @@ un hôte protégé. Le garde y passe sans rien dire. La seule chose que la
 promotion risque vraiment est donc exactement la seule que la répétition ne
 teste pas.
 
-**Ce qui reste ouvert, et qui est réel :** sa **valeur**. Le garde teste
+> **Levé.** Rayan a **supprimé puis recréé** la variable en type **Config**,
+> valeur `1`, Production. Source : l'écran Vercel → `learnx` → Settings →
+> Environment Variables, le 31 août 2026, rapporté par le Head of AI. Ce n'est
+> pas un relevé de ma part — je n'ai pas la CLI Vercel ici — mais un fait dont
+> la source et la date sont nommées. Étant désormais en Config, la valeur est
+> **lisible**, donc revérifiable par quiconque ouvre cet écran : c'est
+> précisément ce que le type `Secret` rendait impossible.
+>
+> Le reste de cette section est conservé : la mesure ci-dessous explique
+> *pourquoi* cette variable est critique, et le paragraphe sur `staging` reste
+> la raison pour laquelle la répétition ne l'aurait pas attrapée.
+
+**Ce qui était ouvert, et qui est maintenant fermé :** sa **valeur**. Le garde teste
 `=== '1'`. La variable est de type `Secret`, donc illisible — ni la CLI ni le
 dashboard ne la rendent. Sa seule présence ne prouve donc rien, exactement comme
 pour `LEARNX_PUBLIC_LEADS_ENABLED` au §1 : `01`, `true`, ou `1 ` avec une espace
 ferment la porte aussi sûrement que l'absence, et le build de production
 s'arrête.
 
-**À faire (Rayan) :** Vercel → projet `learnx` → Settings → Environment
-Variables → `LEARNX_ALLOW_PROTECTED_DB` → la repasser en type **Config** avec la
-valeur `1`, Production uniquement.
+C'est ce doute que la recréation en Config a fermé.
 
 > **Règle qui en découle, et qui vaut au-delà de cette variable.** Un drapeau de
 > configuration se pose en **Config**, jamais en **Secret**. Un secret protège
@@ -317,19 +329,31 @@ valeur `1`, Production uniquement.
 > `LEARNX_ALLOW_PROTECTED_DB` et `LEARNX_PUBLIC_LEADS_ENABLED`, sont tous deux
 > en Secret. Les deux doivent passer en Config.
 
-### 9.2 Le check requis de `main` doit changer **avant** la PR, pas après
+### 9.2 Le check requis de `main` — **levé le 31 août**, et l'ordre importait
 
 > **Vocabulaire.** Un *check requis* est un nom de contrôle que GitHub exige de
 > voir passer au vert avant d'autoriser une fusion. Le nom compte : GitHub
 > attend celui-là, exactement.
 
-Relevé aujourd'hui sur la protection de `main` :
+Relevé le 31 août au matin sur la protection de `main` :
 
 ```
 $ gh api repos/:owner/:repo/branches/main/protection
   contexts: ["V4.1 final (required)", "Visual baselines (required)", "real-functions"]
   strict:   true
 ```
+
+> **Levé.** Relevé de nouveau, par moi, avec la même commande, le **31 août 2026
+> à 11 h 57 UTC** :
+>
+> ```
+> contexts: ["V4.1 final (required)", "Visual baselines (required)", "Integration (required)"]
+> strict:   true
+> ```
+>
+> `real-functions` a disparu, `Integration (required)` est en place. Le
+> renommage a donc bien été fait **avant** l'ouverture de la PR de promotion,
+> qui est l'ordre qu'exige le raisonnement ci-dessous.
 
 Sur `main`, le job d'Integration n'a pas de `name:`, donc son contrôle s'appelle
 `real-functions`, l'identifiant du job. Sur `dev`, le même job porte
@@ -343,6 +367,12 @@ branche source**, pas ceux de la cible. La PR `staging` → `main` produira donc
 pour changer le check requis, la PR reste bloquée pour toujours sur un contrôle
 que plus personne ne produit. Le renommage doit être fait sur la protection de
 `main` **avant** d'ouvrir la PR de promotion.
+
+Observé plutôt que seulement raisonné : les PR #13 et #14, ouvertes vers `main`
+depuis des branches antérieures au renommage, portent le contrôle
+`real-functions` ; les PR #185 et #188, ouvertes depuis des branches qui portent
+le fichier renommé, portent `Integration (required)`. C'est bien la branche
+**source** qui décide du nom.
 
 Le faire tôt ne coûte rien : ni `quality.yml` ni `integration.yml` ne se
 déclenchent sur un `push` vers `main` — uniquement sur `dev` et sur les pull
@@ -563,21 +593,22 @@ réglages GitHub.
 
 **Bloquantes pour la promotion**
 
-1. **`LEARNX_ALLOW_PROTECTED_DB` : la repasser en Config, valeur `1`.** Vercel →
-   `learnx` → Settings → Environment Variables. Elle **existe** en Production —
-   Vercel refuse de la recréer — mais elle est de type `Secret`, donc sa valeur
-   est illisible, et le garde teste `=== '1'`. La repasser en **Config** avec la
-   valeur `1` ferme le doute définitivement. *Si elle ne vaut pas exactement `1`,
-   le build de production s'arrête au premier pas (§9.1).*
-2. **Le check requis de `main`.** GitHub → Settings → Branches → règle de
-   `main` → *Require status checks* : retirer `real-functions`, ajouter
-   `Integration (required)`. **Avant** d'ouvrir la PR de promotion (§9.2).
+1. ~~`LEARNX_ALLOW_PROTECTED_DB`~~ — **fait le 31 août.** Supprimée et recréée
+   en **Config**, valeur `1`, Production. Source : écran Vercel, par Rayan,
+   rapporté par le Head of AI (§9.1).
+2. ~~Le check requis de `main`~~ — **fait le 31 août.** Vérifié par moi à
+   11 h 57 UTC : `gh api repos/:owner/:repo/branches/main/protection` rend
+   `V4.1 final (required)`, `Visual baselines (required)` et
+   `Integration (required)` ; `real-functions` a disparu (§9.2).
 3. **`LEARNX_PUBLIC_LEADS_ENABLED` en Production vaut-elle *exactement*
    `true` ?** Vercel → `learnx` → Settings → Environment Variables → la ligne
    `LEARNX_PUBLIC_LEADS_ENABLED`, environnement Production → l'œil pour révéler
    la valeur. `True`, `TRUE`, `1`, ou `true ` avec une espace ferment la
    collecte aussi sûrement que l'absence. C'est une fonctionnalité qui touche
    aux données personnelles d'inconnus : elle doit être ouverte par décision.
+   **Profiter de l'écran pour la repasser en Config**, comme
+   `LEARNX_ALLOW_PROTECTED_DB` : c'est un drapeau, pas un secret, et tant qu'il
+   est en `Secret` la question se reposera à chaque relecture.
 
 **Non bloquantes, à traiter le jour même**
 
@@ -611,3 +642,54 @@ réglages GitHub.
     `neon-cleanup.yml`. Un secret de dépôt n'est pas lisible, donc il ne
     déverrouille pas un exercice fait à la main ; mais il rend possible de mener
     l'exercice depuis un workflow. À arbitrer par Rayan, avec le runbook.
+
+## 12. Ce que `dev` exige, et ce qu'elle n'exige pas
+
+Relevé par moi le 31 août 2026 à 11 h 57 UTC :
+
+```
+$ gh api repos/:owner/:repo/branches/dev/protection --jq '.required_status_checks.contexts'
+["V4.1 final (required)"]
+```
+
+**`dev` n'exige qu'un seul contrôle.** `Integration (required)` porte « required »
+dans son nom parce que c'est celui qu'exige `main` — sur `dev`, elle est
+informative. Écrit ici parce que la confusion coûte cher dans les deux sens.
+
+**Une PR qui ne touche pas au schéma n'a pas à attendre `Integration`.** Elle
+peut être fusionnée sur `V4.1 final (required)` seule. C'est la décision prise
+le 31 août pour dégonfler une file de sept PR quand la capacité Neon était
+saturée, et c'est une décision légitime, pas un contournement.
+
+**Une PR qui porte une migration doit l'attendre pour de bon.** C'est le seul
+travail qu'`Integration` fait et que personne d'autre ne fait : elle crée une
+branche Neon isolée, y rejoue les migrations sur un clone de la structure de
+production, et compare l'avant et l'après. Fusionner une migration sans elle,
+c'est découvrir le problème en production.
+
+### La capacité Neon, et pourquoi le balayage ne la résout pas
+
+Le projet Neon plafonne à **dix branches**. Chaque run d'`Integration` en crée
+une, `ci-<runId>-<attempt>`, et **la supprime lui-même** dans une étape
+`always()`. Les branches ne s'accumulent donc pas après coup : elles ne
+s'accumulent que **pendant**.
+
+C'est ce qui s'est produit le 31 août — sept PR en vol, `Integration` de #175 en
+échec après quinze minutes d'attente, journal « 10/10, rien à balayer ». Il n'y
+avait effectivement rien à balayer : les dix branches étaient **vivantes**.
+
+Deux conséquences pour qui voudrait corriger ça :
+
+- **Abaisser le seuil d'ancienneté du balayage (`max_age_minutes`, 120 par
+  défaut) n'y changerait rien**, et serait dangereux. Rien de vieux n'existait à
+  supprimer. Et une branche appartenant à un run vivant peut avoir jusqu'à une
+  trentaine de minutes — elle est créée *après* une attente de capacité qui peut
+  durer quinze minutes, dans un job dont le délai est de quarante-cinq. Tout
+  plancher sous ~45 minutes risque de supprimer la base d'un run en cours, ce
+  qui transforme une file d'attente en échec inexplicable.
+- **Le levier est le nombre de runs simultanés**, pas l'âge des branches. Voir
+  la note de la voie DevOps : c'est une proposition à arbitrer, pas un correctif
+  déjà écrit.
+
+Et rappel du §6 : le balayage `ci-*` **n'a jamais tourné**, faute d'être sur
+`main`. Il n'aurait donc de toute façon rien balayé ce jour-là.
