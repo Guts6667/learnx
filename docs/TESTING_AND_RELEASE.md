@@ -343,6 +343,60 @@ plutôt que de mesurer un trajet amputé en silence.
 Les budgets initial et plus-gros-morceau sont inchangés : V4.5-182 a prouvé leur
 valeur, et ce sont eux qui protègent le premier affichage.
 
+## Dépendances et hygiène des branches
+
+### Version de Node
+
+`.nvmrc` porte **24**, la version déjà fixée dans les six workflows et sur
+Vercel. Le fichier ne change rien à la CI ; il évite qu'une machine locale
+travaille sur une autre version que celle qui construit la production, ce qui
+produit des écarts qu'on impute ensuite au code.
+
+### Mises à jour automatiques
+
+`.github/dependabot.yml` suit npm et les actions GitHub, chaque lundi.
+
+Le groupement n'est pas cosmétique. **Chaque pull request de dépendance
+déclenche Integration, qui crée une branche Neon contre un plafond de dix.**
+Des mises à jour non groupées ouvriraient une douzaine de pull requests d'un
+coup et affameraient le pipeline de la capacité dont le travail de
+fonctionnalité a besoin — soit la panne du 29 août 2026, atteinte par un autre
+chemin.
+
+D'où la forme retenue : mineures et correctifs voyagent ensemble en deux pull
+requests — production d'un côté, développement de l'autre — les majeures
+arrivent seules parce qu'elles demandent lecture de toute façon, et trois pull
+requests npm au maximum restent ouvertes à la fois.
+
+### Branches distantes
+
+Au 31 août 2026 : **180 branches distantes, dont 161 déjà fusionnées dans
+`dev`.** Elles s'accumulent parce que le dépôt ne supprime pas la branche source
+à la fusion.
+
+Deux réglages GitHub, à poser par le propriétaire, dans Settings → General :
+
+- **Automatically delete head branches** — actuellement **désactivé**. C'est la
+  cause ; l'activer arrête l'accumulation sans rien supprimer de ce qui existe.
+- **Allow auto-merge** — actuellement désactivé, à considérer séparément.
+
+Pour le stock existant, la règle de sûreté est de ne supprimer que ce qui est
+**fusionné dans `dev`**, et jamais sur la seule foi d'un préfixe :
+
+```bash
+git branch -r --merged origin/dev \
+  | grep -v -E 'origin/(dev|main|staging|HEAD)' \
+  | sed 's|origin/||'
+```
+
+Vérifié le 31 août : les trois branches `agent/*` ne sont **pas** fusionnées et
+survivent donc à ce filtre, de même que `hotfix/v4-5-186`, fusionnée dans `main`
+mais pas dans `dev`. Le critère « fusionné » est ce qui rend la suppression sûre
+— un filtre par nom ne l'aurait pas été.
+
+Aucune suppression n'a été faite : elle demande l'accord nominal du
+propriétaire.
+
 ## Cibler une base autre que celle du `.env`
 
 Règle mécanique, née de l'effacement de la base de production du 30 août 2026
