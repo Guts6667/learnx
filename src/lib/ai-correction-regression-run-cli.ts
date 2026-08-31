@@ -1489,16 +1489,21 @@ export function buildRunPasses(input: {
 }
 
 /**
- * Direction-bearing mutants the run must reach for its threshold to mean
- * anything.
+ * Direction-bearing mutants the run plans, to reach the observations the policy
+ * declares.
  *
  * `gate-policy.v6.json` declares `minimumDenominator: 50` on
  * `mutation-direction-violations`: below 50, a 2 % rate resolves to a whole
- * budget of zero and one violation fails necessarily. The two numbers are the
- * same requirement seen from the policy and from the plan, and the test that
- * pins them reads the policy rather than trusting this constant.
+ * budget of zero and one violation fails necessarily.
+ *
+ * Planned is not observed. The 30 August run planned 50 and observed 47 — three
+ * mutants produced nothing usable — so the policy error stood anyway and the
+ * money bought a run that could not clear it. Reaching n observations means
+ * planning more than n, and five is the margin the measured unusable rate
+ * implies. The test still reads the minimum from the policy rather than
+ * trusting this constant.
  */
-const DIRECTION_MUTANT_TARGET = 50;
+const DIRECTION_MUTANT_TARGET = 55;
 
 /**
  * The subset's mutants, plus enough direction-bearing ones to reach the target.
