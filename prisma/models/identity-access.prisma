@@ -10,6 +10,12 @@ model User {
   /// administrateur, jamais déduite au moment d'un octroi.
   cohort                          CreditCohort                  @default(EARLY_ADOPTER)
   suspendedAt                     DateTime?                     @map("suspended_at")
+  /// Réutilisation des corrections détachées pour améliorer le système
+  /// (V4.5-168). Faux par défaut, et le défaut est la décision : un
+  /// consentement se donne, il ne se déduit pas d'un silence. Sans lui, les
+  /// textes sont supprimés à 180 jours au lieu d'être conservés sous
+  /// pseudonyme — le détachement a lieu dans les deux cas.
+  correctionReuseConsent          Boolean                       @default(false) @map("correction_reuse_consent")
   createdAt                       DateTime                      @default(now()) @map("created_at")
   updatedAt                       DateTime                      @updatedAt @map("updated_at")
   sessions                        Session[]

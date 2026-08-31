@@ -10,6 +10,15 @@ export interface RetentionPolicy {
    * accounting trace does not depend on it: event id, type, order, amounts,
    * currency, status and timestamps are columns of their own and are kept.
    */
+  /**
+   * How long a correction stays attached to the learner who wrote it
+   * (V4.5-168, `owner-rgpd-2026-08-29` §2). After this, their words leave the
+   * correction: the judgement stays, the production, the prompt carrying it,
+   * the quotes and the raw output do not. The privacy policy promises exactly
+   * this, which is why the figure lives where it can be read rather than in a
+   * comment.
+   */
+  correctionDetachRetentionMs: number;
   paymentPayloadRetentionMs: number;
   publicLeadRetentionMs: number;
   rateLimitRetentionMs: number;
@@ -28,6 +37,7 @@ export interface RetentionRepository {
   countExpiredAccessInvitations(cutoff: Date): Promise<number>;
   countExpiredEmailVerifications(cutoff: Date): Promise<number>;
   countExpiredRateLimits(cutoff: Date): Promise<number>;
+  countAttachedCorrections(cutoff: Date): Promise<number>;
   countExpiredPaymentPayloads(cutoff: Date): Promise<number>;
   countExpiredPublicLeads(cutoff: Date): Promise<number>;
   countExpiredSessions(cutoff: Date): Promise<number>;
@@ -41,6 +51,12 @@ export interface RetentionRepository {
    * accounting trace must survive its own purge.
    */
   purgeExpiredPaymentPayloads(cutoff: Date, limit: number): Promise<number>;
+  /**
+   * Detaches a batch. Not a delete either: the correction survives without the
+   * learner in it, and with consent their words survive without the learner
+   * around them.
+   */
+  detachAttachedCorrections(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredSessions(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredTrialMarkers(cutoff: Date, limit: number): Promise<number>;
 }
@@ -65,6 +81,7 @@ interface RetentionPurgeResult {
 export interface RetentionCleanupResult {
   accessInvitations: RetentionTargetResult;
   applied: boolean;
+  corrections: RetentionPurgeResult;
   emailVerifications: RetentionTargetResult;
   paymentPayloads: RetentionPurgeResult;
   rateLimits: RetentionTargetResult;
@@ -76,6 +93,7 @@ export interface RetentionCleanupResult {
 export const defaultRetentionPolicy: RetentionPolicy = {
   batchSize: 500,
   maxBatches: 20,
+  correctionDetachRetentionMs: 180 * DAY_IN_MILLISECONDS,
   paymentPayloadRetentionMs: 30 * DAY_IN_MILLISECONDS,
   publicLeadRetentionMs: 730 * DAY_IN_MILLISECONDS,
   rateLimitRetentionMs: DAY_IN_MILLISECONDS,
@@ -118,6 +136,11 @@ export function getRetentionPolicy(
       environment,
       'LEARNX_RETENTION_PUBLIC_LEAD_MS',
       defaultRetentionPolicy.publicLeadRetentionMs,
+    ),
+    correctionDetachRetentionMs: readPositiveInteger(
+      environment,
+      'LEARNX_RETENTION_CORRECTION_DETACH_MS',
+      defaultRetentionPolicy.correctionDetachRetentionMs,
     ),
     paymentPayloadRetentionMs: readPositiveInteger(
       environment,
@@ -230,6 +253,26 @@ export async function runRetentionCleanup(
     now.getTime() - policy.paymentPayloadRetentionMs,
   );
 
+  const correctionCutoff = new Date(
+    now.getTime() - policy.correctionDetachRetentionMs,
+  );
+
+  // Kept, detached. The correction survives without the learner in it; with
+  // consent their words survive without the learner around them. Reported as
+  // `purged` rather than `deleted` because nothing is deleted on this path
+  // when consent was given — and where consent was withheld, what goes is the
+  // words, never the correction.
+  const corrections = await purgeTarget(
+    {
+      count: (cutoff) => repository.countAttachedCorrections(cutoff),
+      cutoff: correctionCutoff,
+      deleteBatch: (cutoff, limit) =>
+        repository.detachAttachedCorrections(cutoff, limit),
+    },
+    options.apply,
+    policy,
+  );
+
   // Kept, emptied. The row is the accounting trace and outlives its body.
   const paymentPayloads = await purgeTarget(
     {
@@ -307,6 +350,7 @@ export async function runRetentionCleanup(
   return {
     accessInvitations,
     applied: options.apply,
+    corrections,
     emailVerifications,
     paymentPayloads,
     publicLeads,

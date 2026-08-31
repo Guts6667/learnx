@@ -10,6 +10,7 @@ import {
 function createRepository(
   candidates = {
     accessInvitations: 2,
+    corrections: 9,
     emailVerifications: 3,
     paymentPayloads: 8,
     rateLimits: 4,
@@ -25,6 +26,7 @@ function createRepository(
     countExpiredEmailVerifications: vi.fn(
       async () => candidates.emailVerifications,
     ),
+    countAttachedCorrections: vi.fn(async () => candidates.corrections),
     countExpiredPaymentPayloads: vi.fn(async () => candidates.paymentPayloads),
     countExpiredRateLimits: vi.fn(async () => candidates.rateLimits),
     countExpiredPublicLeads: vi.fn(async () => candidates.publicLeads),
@@ -36,6 +38,7 @@ function createRepository(
     deleteExpiredPublicLeads: vi.fn(async () => 6),
     deleteExpiredSessions: vi.fn(async () => 5),
     deleteExpiredTrialMarkers: vi.fn(async () => 7),
+    detachAttachedCorrections: vi.fn(async () => 9),
     purgeExpiredPaymentPayloads: vi.fn(async () => 8),
   };
 }
@@ -59,6 +62,7 @@ describe('retention cleanup', () => {
       publicLeads: { candidates: 6, deleted: 0, hasMore: true },
       sessions: { candidates: 5, deleted: 0, hasMore: true },
     });
+    expect(repository.detachAttachedCorrections).not.toHaveBeenCalled();
     expect(repository.purgeExpiredPaymentPayloads).not.toHaveBeenCalled();
     expect(repository.deleteExpiredSessions).not.toHaveBeenCalled();
     expect(repository.deleteExpiredRateLimits).not.toHaveBeenCalled();
@@ -71,6 +75,7 @@ describe('retention cleanup', () => {
     const repository = createRepository({
       accessInvitations: 0,
       emailVerifications: 0,
+      corrections: 0,
       paymentPayloads: 0,
       rateLimits: 0,
       publicLeads: 0,
@@ -102,6 +107,7 @@ describe('retention cleanup', () => {
     const repository = createRepository({
       accessInvitations: 0,
       emailVerifications: 0,
+      corrections: 0,
       paymentPayloads: 0,
       rateLimits: 0,
       publicLeads: 0,
@@ -145,6 +151,7 @@ describe('rétention des marqueurs anti-abus (V4.5-163)', () => {
     const repository = createRepository({
       accessInvitations: 0,
       emailVerifications: 0,
+      corrections: 0,
       paymentPayloads: 0,
       rateLimits: 0,
       publicLeads: 0,
@@ -208,6 +215,7 @@ describe('purge du corps des événements de paiement (V4.5-197)', () => {
     // with the webhook receiver.
     const repository = createRepository({
       accessInvitations: 0,
+      corrections: 0,
       emailVerifications: 0,
       // More than maxBatches × batchSize, so the ceiling actually bites.
       paymentPayloads: 12_000,
@@ -239,5 +247,53 @@ describe('purge du corps des événements de paiement (V4.5-197)', () => {
     expect(getRetentionPolicy({}).paymentPayloadRetentionMs).toBe(
       30 * 24 * 60 * 60 * 1000,
     );
+  });
+});
+
+describe('détachement des corrections à 180 jours (V4.5-168)', () => {
+  const NOW = new Date('2026-08-31T12:00:00.000Z');
+
+  it('coupe à cent quatre-vingts jours après la création', () => {
+    // The figure the privacy policy states to learners. It lives here so it
+    // can be read, not in a comment.
+    expect(defaultRetentionPolicy.correctionDetachRetentionMs).toBe(
+      180 * 24 * 60 * 60 * 1000,
+    );
+  });
+
+  it('détache et le dit dans ces mots-là', async () => {
+    // `purged`, never `deleted`: with consent nothing is deleted at all, and
+    // without it what goes is the learner's words, never the correction.
+    const repository = createRepository();
+
+    const result = await runRetentionCleanup(repository, {
+      apply: true,
+      now: NOW,
+    });
+
+    expect(result.corrections).toEqual({
+      candidates: 9,
+      hasMore: false,
+      purged: 9,
+    });
+  });
+
+  it('ne détache rien en mode constat', async () => {
+    const repository = createRepository();
+
+    const result = await runRetentionCleanup(repository, {
+      apply: false,
+      now: NOW,
+    });
+
+    expect(result.corrections).toMatchObject({ candidates: 9, purged: 0 });
+    expect(repository.detachAttachedCorrections).not.toHaveBeenCalled();
+  });
+
+  it('se règle par variable d’environnement comme les autres', () => {
+    expect(
+      getRetentionPolicy({ LEARNX_RETENTION_CORRECTION_DETACH_MS: '86400000' })
+        .correctionDetachRetentionMs,
+    ).toBe(86_400_000);
   });
 });

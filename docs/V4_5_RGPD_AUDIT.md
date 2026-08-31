@@ -270,12 +270,34 @@ Décisions prises le 29 août 2026 (`owner-rgpd-2026-08-29`) :
    consigne les politiques d'OpenRouter, d'Anthropic et de Mistral avec URL et
    date. **En cours** ; tant que ce n'est pas fait, le §5 dit « nous
    demandons », pas « ils ne conservent pas ».
-2. **Sortie brute du modèle** — pas de purge : à 180 jours, la correction est
-   **détachée de l'identité** (pseudonyme de recherche) et conservée, sortie
-   brute comprise, en vue d'une réutilisation ultérieure (RAG). Cette
-   réutilisation est une **nouvelle finalité** : information préalable dans
-   la notice IA, aucun export tant que le ticket dédié n'existe pas.
-   → V4.5-168.
+2. **Sortie brute du modèle** — à 180 jours, la correction est **détachée de
+   l'identité** et conservée, sortie brute comprise, en vue d'une réutilisation
+   ultérieure (RAG). Cette réutilisation est une **nouvelle finalité** :
+   information préalable dans la notice IA, aucun export tant que le ticket
+   dédié n'existe pas. → V4.5-168.
+
+   **Précision apportée par la mise en œuvre (V4.5-168)** : « pas de purge »
+   décrivait l'intention, pas ce qui se passe. Il y a bien retrait, et il faut
+   dire lequel. Quittent la ligne `ai_corrections` : la production de
+   l'apprenant, le prompt qui la contient, les extraits cités, et les sorties
+   brutes portées par les tentatives. Restent : niveaux, confiances, coûts,
+   horodatages et **toutes** les clés étrangères, y compris celle qui empêche
+   un retour d'apprenant de pointer sur la correction d'un autre. Aucune ligne
+   financière n'est touchée.
+
+   Ce qui est retiré est **déplacé** vers `ai_correction_research_samples`,
+   sous un pseudonyme tiré au hasard dont aucune correspondance n'est
+   conservée — c'est le tirage qui rend le détachement irréversible, pas une
+   règle de code qu'une modification ultérieure pourrait défaire.
+
+   **Et uniquement si le compte porte le consentement de réutilisation**
+   (`users.correction_reuse_consent`, faux par défaut). Sans lui, les mêmes
+   textes sont **supprimés**. L'apprenant est détaché dans les deux cas : le
+   consentement décide de ce qui survit à la recherche, jamais du détachement.
+
+   Pseudonymisation et non anonymisation, comme en décision 3 : un texte libre
+   peut nommer son auteur. La politique de confidentialité le dit désormais
+   dans les deux langues (`fix/v4-5-168-privacy-wording`).
 3. **Suppression de compte** — parcours à créer (V4.5-166). Décision
    complémentaire du 29 août (`owner-erasure-2026-08-29`), après constat de
    la voie A qu'un texte libre reste une donnée personnelle même détaché du
