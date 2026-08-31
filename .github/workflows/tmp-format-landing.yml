@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   format:
-    if: github.event.head_commit.message != 'chore(landing): apply repository formatting'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
