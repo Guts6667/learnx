@@ -10,10 +10,7 @@ export function ProgramPreview() {
     >
       <header className="landing-preview-header">
         <div className="landing-preview-program-title">
-          <span
-            aria-hidden="true"
-            className="landing-preview-program-mark"
-          />
+          <span aria-hidden="true" className="landing-preview-program-mark" />
           <h2>{t('landing.preview.program.title')}</h2>
         </div>
         <span>{t('landing.preview.program.activity')}</span>
