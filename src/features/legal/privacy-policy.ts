@@ -105,7 +105,7 @@ export const privacyPolicy: Record<'en' | 'fr', PrivacyPolicyContent> = {
         heading: 'For how long.',
         body: [
           {
-            text: 'As long as your account exists. Sessions expire and are purged within 7 days, login links within 30 days. After 180 days, an AI correction is detached from your account: it is kept under an irreversible pseudonym, to improve the system, and can no longer be linked to you.',
+            text: 'As long as your account exists. Sessions expire and are purged within 7 days, login links within 30 days. After 180 days, an AI correction is detached from your account: it is kept under an irreversible pseudonym, to improve the system. It is no longer linked to your account, but if you wrote things about yourself in it, it may remain personal data under the GDPR.',
           },
         ],
       },
@@ -196,7 +196,7 @@ export const privacyPolicy: Record<'en' | 'fr', PrivacyPolicyContent> = {
         heading: 'Combien de temps.',
         body: [
           {
-            text: 'Tant que votre compte existe. Les sessions expirent et sont purgées sous 7 jours, les liens de connexion sous 30 jours. Après 180 jours, une correction IA est détachée de votre compte : elle est conservée sous un pseudonyme irréversible, pour améliorer le système, sans pouvoir vous être rattachée.',
+            text: "Tant que votre compte existe. Les sessions expirent et sont purgées sous 7 jours, les liens de connexion sous 30 jours. Après 180 jours, une correction IA est détachée de votre compte : elle est conservée sous un pseudonyme irréversible, pour améliorer le système. Elle n'est plus rattachée à votre compte, mais si vous y avez écrit des éléments vous concernant, elle peut rester une donnée personnelle au sens du RGPD.",
           },
         ],
       },
