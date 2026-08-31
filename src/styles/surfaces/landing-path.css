@@ -7,7 +7,7 @@
  * receives the approved V4.2 visual treatment.
  */
 
-.landing-page .landing-header {
+.landing-page .landing-header:not(.landing-header--minimal) {
   background: color-mix(in srgb, var(--color-surface) 92%, transparent);
   backdrop-filter: blur(1rem);
 }
@@ -435,7 +435,7 @@
     display: none;
   }
 
-  .landing-page .landing-header {
+  .landing-page .landing-header:not(.landing-header--minimal) {
     padding-inline: clamp(1.5rem, 4vw, 2.5rem);
   }
 
