@@ -73,8 +73,9 @@ la correction IA, dans les conditions ci-dessus.
 **Combien de temps.** Tant que votre compte existe. Les sessions expirent et
 sont purgées sous 7 jours, les liens de connexion sous 30 jours. Après 180
 jours, une correction IA est détachée de votre compte : elle est conservée
-sous un pseudonyme irréversible, pour améliorer le système, sans pouvoir
-vous être rattachée.
+sous un pseudonyme irréversible, pour améliorer le système. Elle n'est plus
+rattachée à votre compte, mais si vous y avez écrit des éléments vous
+concernant, elle peut rester une donnée personnelle au sens du RGPD.
 
 **Vos droits.** Vous pouvez demander l'accès, la rectification ou la
 suppression de vos données à support@learn-x.app. La suppression de
@@ -137,7 +138,9 @@ conditions above.
 **For how long.** As long as your account exists. Sessions expire and are
 purged within 7 days, login links within 30 days. After 180 days, an AI
 correction is detached from your account: it is kept under an irreversible
-pseudonym, to improve the system, and can no longer be linked to you.
+pseudonym, to improve the system. It is no longer linked to your account, but
+if you wrote things about yourself in it, it may remain personal data under
+the GDPR.
 
 **Your rights.** You can request access to, rectification or deletion of
 your data at support@learn-x.app. Deleting your account erases your e-mail,
