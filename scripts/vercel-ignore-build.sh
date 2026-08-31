@@ -17,6 +17,22 @@
 # Exit 1 tells Vercel to build, exit 0 tells it to skip. The polarity is
 # inverted from the usual shell convention, so the explicit exits say which.
 #
+# TWO LAYERS, and they are often confused. This file is the second one.
+#
+#   1. `vercel.json` -> `git.deploymentEnabled` decides which branches may
+#      CREATE a deployment at all. Since V4.5-185 only `dev`, `staging` and
+#      `main` may; `"**": false` blocks the rest. This is the layer that
+#      protects the daily deployment quota, because the quota counts creations
+#      — including the ones this script immediately cancels. On 31 August 2026
+#      the account hit its limit while GitHub's deployments API recorded a
+#      single deployment that day: the difference was made of builds cancelled
+#      right here, which cost a unit each and left no GitHub record.
+#   2. This script decides whether an already-created deployment BUILDS. It
+#      protects build minutes, not the quota.
+#
+# So a branch outside the allowlist never reaches this file at all, and putting
+# the marker on one of its commits now does nothing.
+#
 # No branch builds by itself. Two cases build: the deployment is a production
 # one, or the commit message carries the marker. Branch names left the rule on
 # 30 August 2026, when the promotion line alone outran the Hobby plan's 100
