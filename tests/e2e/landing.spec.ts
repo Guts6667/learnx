@@ -194,10 +194,15 @@ test('publie les paliers du catalogue, dit « bientôt » quand il est vide et l
 
   await installPublicCatalogue(page, [
     {
+      approximateCorrections: '29',
+      bonusCredits: '80',
       credits: '100',
+      creditsPerEuro: '110',
       currency: 'EUR',
       key: 'starter',
       label: 'Découverte',
+      labelEn: 'Starter',
+      oncePerAccount: true,
       priceMinor: '1500',
     },
   ]);
@@ -206,6 +211,20 @@ test('publie les paliers du catalogue, dit « bientôt » quand il est vide et l
   await expect(page.getByRole('heading', { name: 'Découverte' })).toBeVisible();
   await expect(page.getByText('100 crédits')).toBeVisible();
   await expect(page.locator('.landing-pricing-amount')).toHaveText(/15,00/u);
+  // Les chiffres sont servis, pas dérivés (V4.5-212) : la fixture les donne
+  // volontairement incohérents avec le prix, et la page les affiche tels
+  // quels. Un calcul côté écran les corrigerait — et se trahirait ici.
+  await expect(page.getByText('110 crédits par euro')).toBeVisible();
+  await expect(page.getByText('80 crédits en plus')).toBeVisible();
+  await expect(page.getByText('environ 29 corrections')).toBeVisible();
+  // La condition d'achat se lit sur la page publique aussi : la découvrir
+  // après inscription coûterait un achat (décision de Rayan, 31 août 2026).
+  await expect(
+    page.getByText(/Un remboursement ne rouvre pas ce droit/u),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/en réserve 41 ; ce qui n’est pas utilisé/u),
+  ).toBeVisible();
   await expect(
     page.getByText(/Les paliers ne sont pas encore ouverts/u),
   ).toBeHidden();

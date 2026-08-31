@@ -10,6 +10,7 @@ import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
   CORRECTION_QUOTE_CREDITS,
   CORRECTION_RESERVATION_CREDITS,
+  ENTRY_TIER_PACK_KEY,
   packFigures,
 } from '../../maintenance/credit-pack-seed.js';
 import type {
@@ -157,6 +158,14 @@ function pack(value: PurchasablePack, purchasable?: boolean) {
     key: value.key,
     label: value.label,
     labelEn: value.labelEn,
+    // Which tier carries the one-per-account limit, said by the server rather
+    // than recognised by the screen (V4.5-213). `purchasable` answers "may
+    // THIS account buy it now" and is true for every other tier, so it cannot
+    // tell a card that the limit exists BEFORE the first purchase — which is
+    // exactly when the learner needs to read it (owner decision, 31 Aug 2026).
+    // A screen matching on the key would be a second home for the rule the
+    // 409 already enforces, and the two would drift the day a tier is renamed.
+    oncePerAccount: value.key === ENTRY_TIER_PACK_KEY,
     priceMinor: amount(value.priceMinor),
     ...(purchasable === undefined ? {} : { purchasable }),
   };

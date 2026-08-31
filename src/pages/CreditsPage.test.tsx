@@ -422,10 +422,31 @@ describe('CreditsPage — achat de crédits', () => {
     key: 'starter',
     label: 'Découverte',
     labelEn: 'Starter',
+    oncePerAccount: false,
     priceMinor: '1500',
     approximateCorrections: '3',
     bonusCredits: '-1400',
     creditsPerEuro: '6',
+  };
+  /**
+   * Le palier d'entrée, tel que le serveur le désigne (V4.5-213).
+   *
+   * `oncePerAccount` vient du serveur, jamais d'une reconnaissance de clé côté
+   * écran : c'est `ENTRY_TIER_PACK_KEY` qui porte la règle, et le 409 qui
+   * l'applique.
+   */
+  const entryPack = {
+    approximateCorrections: '10',
+    bonusCredits: '0',
+    credits: '300',
+    creditsPerEuro: '100',
+    currency: 'EUR',
+    key: 'entry',
+    label: 'Premier pack',
+    labelEn: 'First pack',
+    oncePerAccount: true,
+    priceMinor: '300',
+    purchasable: true,
   };
   const fulfilledOrder = {
     amountMinor: '1500',
@@ -839,5 +860,193 @@ describe('CreditsPage — achat de crédits', () => {
       await screen.findByText('Le paiement n’a pas pu être démarré.'),
     ).toBeInTheDocument();
     expect(navigate).not.toHaveBeenCalled();
+  });
+  it('sert les chiffres de la carte sans en dériver aucun', async () => {
+    // Le taux, le bonus et la capacité viennent du serveur (V4.5-212). Ce test
+    // les prend volontairement incohérents avec le prix — 100 crédits à 3 €
+    // ne font pas 100 crédits par euro — pour qu'un écran qui recalculerait au
+    // lieu d'afficher soit pris en défaut ici, et pas en production.
+    stub({
+      '/api/credits/packs': () =>
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '41',
+          packs: [
+            {
+              ...pack,
+              approximateCorrections: '29',
+              bonusCredits: '80',
+              creditsPerEuro: '110',
+            },
+          ],
+          paymentsEnabled: true,
+        }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('110 crédits par euro')).toBeInTheDocument();
+    expect(screen.getByText('80 crédits en plus')).toBeInTheDocument();
+    expect(screen.getByText('environ 29 corrections')).toBeInTheDocument();
+    // Le devis et la réserve sont dits une fois, sous la grille, et servis eux
+    // aussi : 41 est le plafond redérivé (V4.5-114), pas le 45 d'origine.
+    expect(
+      screen.getByText(
+        'Une correction est devisée à 30 crédits et en réserve 41 ; ce qui n’est pas utilisé vous est rendu aussitôt.',
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it('tait le bonus du palier à parité plutôt que d’annoncer zéro', async () => {
+    // « 0 crédits en plus » se lirait comme un manque. Le palier d'entrée est
+    // à parité : il n'a pas de bonus, ce n'est pas un bonus nul.
+    stub({
+      '/api/credits/packs': () =>
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '41',
+          packs: [entryPack],
+          paymentsEnabled: true,
+        }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('100 crédits par euro')).toBeInTheDocument();
+    expect(screen.queryByText(/crédits en plus/u)).not.toBeInTheDocument();
+  });
+
+  it('dit la limite du palier d’entrée AVANT l’achat, remboursement compris', async () => {
+    // Décision écrite de Rayan, 31 août 2026 : un pack remboursé ne rouvre pas
+    // le droit. À ce montant, l'apprendre au refus coûterait un achat — la
+    // phrase se lit donc sur la carte, à côté du bouton.
+    stub({
+      '/api/credits/packs': () =>
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '41',
+          packs: [entryPack],
+          paymentsEnabled: true,
+        }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText(
+        'Un seul achat par compte : à ce montant, les frais fixes du paiement absorbent une part disproportionnée. Un remboursement ne rouvre pas ce droit.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Acheter Premier pack' }),
+    ).toBeInTheDocument();
+  });
+
+  it('ne propose pas deux fois un palier que le catalogue dit consommé', async () => {
+    // `purchasable` vient du catalogue : l'écran ne le déduit pas de
+    // l'historique des commandes, qui dirait la même chose un jour et autre
+    // chose le jour d'un remboursement.
+    stub({
+      '/api/credits/packs': () =>
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '41',
+          packs: [{ ...entryPack, purchasable: false }],
+          paymentsEnabled: true,
+        }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText(
+        'Déjà acheté. Ce pack est limité à un achat par compte. Les autres paliers restent disponibles.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Acheter Premier pack' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('explique le refus 409 sans laisser croire à un prélèvement', async () => {
+    // Le catalogue peut avoir été chargé avant l'achat qui a consommé le
+    // droit : le refus reste lu, et il a sa propre phrase.
+    stub({
+      '/api/credits/checkout': () =>
+        jsonResponse(
+          {
+            error: {
+              code: 'ENTRY_TIER_ALREADY_PURCHASED',
+              message: 'The entry tier can only be purchased once per account.',
+            },
+          },
+          409,
+        ),
+      '/api/credits/packs': () =>
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '41',
+          packs: [entryPack],
+          paymentsEnabled: true,
+        }),
+    });
+
+    render(
+      <AppProviders>
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Acheter Premier pack' }),
+    );
+
+    expect(
+      await screen.findByText(
+        'Ce pack est limité à un achat par compte, et le vôtre a déjà été utilisé. Aucun montant n’a été prélevé.',
+      ),
+    ).toBeInTheDocument();
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('affiche le libellé anglais sur un écran anglais', async () => {
+    // Les deux libellés arrivent ensemble pour qu'un seul corps mis en cache
+    // serve tout le monde (V4.5-212) ; c'est l'écran qui choisit.
+    stub({
+      '/api/credits/packs': () =>
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '41',
+          packs: [entryPack],
+          paymentsEnabled: true,
+        }),
+    });
+
+    render(
+      <AppProviders locale="en">
+        <CreditsPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'First pack' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Premier pack')).not.toBeInTheDocument();
   });
 });

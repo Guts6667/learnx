@@ -12,11 +12,20 @@
  * concluante, ce qui n'est pas ce qui s'est passé. Deux causes distinctes,
  * deux phrases, jamais les deux ensemble sur un même critère.
  * 1156 → 1157 clés.
+ *
+ * 31 août 2026 (V4.5-213) — sept clés ajoutées. Six forment le fragment
+ * `creditPack.*` : la carte d'un palier est affichée par deux surfaces,
+ * l'écran d'achat et la section tarifs publique, qui n'ont ni la même mise en
+ * page ni la même action mais disent les mêmes chiffres sur le même produit.
+ * Un seul jeu de phrases, sinon celui qu'on ne relit pas devient faux. La
+ * septième, `credits.purchase.refusalEntryTierAlreadyPurchased`, dit le refus
+ * 409 du palier limité à un achat par compte.
+ * 1157 → 1164 clés.
  */
 export const messageCatalogBaseline = {
-  keyCount: 1157,
+  keyCount: 1164,
   sha256: {
-    en: 'e9ad40267d48a3ce7489fb29253e2c880bb011f68af907a61ad624cb795e7caf',
-    fr: '856ef3c222a73b522f03ed96a75b71692dda0dfa2e26c89494035333ce9da21b',
+    en: '6920c4eba55a505a8f8b6fe059b762523f4b3ac7a7607498f25ae73b6c3a1ffb',
+    fr: '3646bf9fd45bd3d3aa185f1cecf0a43b7ea1b08a7d2b6501e668c385cfeb8b16',
   },
 } as const;

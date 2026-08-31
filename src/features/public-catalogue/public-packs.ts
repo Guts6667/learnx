@@ -10,18 +10,40 @@ import * as z from 'zod/mini';
  * visible et non une carte de prix à moitié rendue (V4.5-182).
  */
 const publicCreditPackSchema = z.object({
+  /**
+   * Les chiffres dérivés arrivent servis (V4.5-212) : la section publique
+   * affiche le même taux, le même bonus et la même capacité que l'écran
+   * authentifié parce qu'ils viennent de la même source, pas parce que deux
+   * calculs sont tombés d'accord.
+   */
+  approximateCorrections: z.string(),
+  bonusCredits: z.string(),
   credits: z.string(),
+  creditsPerEuro: z.string(),
   currency: z.string(),
   key: z.string(),
   label: z.string(),
+  /** Les deux libellés voyagent ensemble : un seul corps mis en cache. */
+  labelEn: z.string(),
+  oncePerAccount: z.boolean(),
   priceMinor: z.string(),
 });
 
+/**
+ * Exigés, jamais optionnels.
+ *
+ * Un champ toléré absent devient un champ qu'on affiche à moitié : la carte
+ * rendrait le prix sans sa condition d'achat, et c'est précisément la ligne
+ * qu'un visiteur doit lire avant de se décider. Une réponse incomplète est
+ * donc un état visible — `UNAVAILABLE` — pas une carte amputée (V4.5-182).
+ */
 const publicCreditPacksResponseSchema = z.object({
+  correctionQuoteCredits: z.string(),
+  correctionReservationCredits: z.string(),
   packs: z.array(publicCreditPackSchema),
 });
 
-type PublicCreditPack = z.infer<typeof publicCreditPackSchema>;
+export type PublicCreditPack = z.infer<typeof publicCreditPackSchema>;
 
 /**
  * Les quatre états de la section, distincts à dessein.
@@ -34,7 +56,12 @@ type PublicCreditPack = z.infer<typeof publicCreditPackSchema>;
  */
 export type PublicPacksState =
   | { kind: 'LOADING' }
-  | { kind: 'PACKS'; packs: PublicCreditPack[] }
+  | {
+      kind: 'PACKS';
+      correctionQuoteCredits: string;
+      correctionReservationCredits: string;
+      packs: PublicCreditPack[];
+    }
   | { kind: 'SOON' }
   | { kind: 'UNAVAILABLE' };
 
@@ -66,7 +93,13 @@ export function usePublicCreditPacks(): PublicPacksState {
         setState(
           parsed.data.packs.length === 0
             ? { kind: 'SOON' }
-            : { kind: 'PACKS', packs: parsed.data.packs },
+            : {
+                kind: 'PACKS',
+                correctionQuoteCredits: parsed.data.correctionQuoteCredits,
+                correctionReservationCredits:
+                  parsed.data.correctionReservationCredits,
+                packs: parsed.data.packs,
+              },
         );
       })
       .catch(() => {

@@ -101,6 +101,10 @@ const creditPacks = [
     key: 'starter',
     label: 'Découverte',
     labelEn: 'Starter',
+    // Le moins cher des deux porte la limite, comme le palier d'entrée de la
+    // vraie grille : c'est ce qui fait passer la condition d'achat sous les
+    // yeux du parcours et de la capture (V4.5-213).
+    oncePerAccount: true,
     priceMinor: '1500',
     approximateCorrections: '3',
     bonusCredits: '-1400',
@@ -112,6 +116,7 @@ const creditPacks = [
     key: 'regular',
     label: 'Régulier',
     labelEn: 'Regular',
+    oncePerAccount: false,
     priceMinor: '5900',
     approximateCorrections: '16',
     bonusCredits: '-5400',
@@ -685,15 +690,30 @@ export async function installFulfilledCreditsOrder(page: Page) {
 export async function installPublicCatalogue(
   page: Page,
   packs: readonly {
+    approximateCorrections: string;
+    bonusCredits: string;
     credits: string;
+    creditsPerEuro: string;
     currency: string;
     key: string;
     label: string;
+    labelEn: string;
+    oncePerAccount: boolean;
     priceMinor: string;
   }[] = [],
 ) {
   await page.route('**/api/public/credit-packs', async (route) => {
-    await route.fulfill({ contentType: 'application/json', json: { packs } });
+    // Le devis et la réserve accompagnent toujours la liste, même vide : ils
+    // ne dépendent d'aucun palier, et le contrat public les exige (V4.5-213).
+    // Une réponse privée de ces deux champs est illisible, pas « bientôt ».
+    await route.fulfill({
+      contentType: 'application/json',
+      json: {
+        correctionQuoteCredits: '30',
+        correctionReservationCredits: '41',
+        packs,
+      },
+    });
   });
 }
 
