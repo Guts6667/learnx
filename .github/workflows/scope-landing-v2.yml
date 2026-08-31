@@ -1,0 +1,53 @@
+name: Scope landing prototype
+
+on:
+  push:
+    branches:
+      - design/landing-v2
+    paths:
+      - .github/workflows/scope-landing-v2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  scope:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Restrict the redesign to the marketing landing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('src/styles/surfaces/public-landing-v2.css')
+          source = path.read_text()
+          count = source.count('.landing-page')
+          if count == 0:
+              raise SystemExit('No landing-page selectors found')
+          path.write_text(source.replace('.landing-page', '.totem-public-landing'))
+          print(f'Rescoped {count} selectors')
+          PY
+          pnpm exec prettier --write src/styles/surfaces/public-landing-v2.css
+
+      - name: Commit the scoped stylesheet
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/styles/surfaces/public-landing-v2.css
+          git commit -m "fix(landing): isolate the marketing redesign"
+          git push
