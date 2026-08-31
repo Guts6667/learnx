@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": "2.3.0-draft",
+  "basedOn": "2.2.0",
+  "status": "DRAFT — non câblé, non mesuré, non promu",
+  "note": "Brouillon pour relecture de la voie A. Il n'entre dans aucun runtime avant d'avoir été mesuré : la règle de la suite est qu'une identité se mesure avant d'être promue, et rien ici ne fait exception. 2.2.0 est conservée mot pour mot ; 2.3.0 n'ajoute que les lignes ci-dessous.",
+  "defectAddressed": "Sur les quatre violations par suppression revues le 31 août, le correcteur fournit depuis son propre raisonnement ce que le texte a cessé de dire, puis en crédite le texte : il invente l'inconnue que la phrase supprimée nommait, accepte une inconnue « en creux », prend une prudence causale pour un mécanisme. Même famille que le raté arithmétique : affirmer ce qui n'est pas là. La ligne 18 de 2.2.0 couvre l'absence totale de preuve ; elle ne couvre pas la preuve présente mais insuffisante pour le niveau retenu, qui est le cas des quatre.",
+  "addedInstructions": [
+    "Un niveau n'est crédité que de ce que la production énonce explicitement pour CE critère. Si la production dit quelque chose de plus faible, de plus étroit ou d'adjacent, retiens le niveau qui correspond à ce qu'elle dit, jamais celui qui correspond à ce qu'elle aurait pu dire.",
+    "Ne complète jamais la production. Si un élément que le niveau exige est absent, il est absent : ne le déduis pas du reste du texte, ne le reconstitue pas depuis le contexte, ne l'apporte pas depuis tes propres connaissances. Un élément que tu as fourni toi-même ne peut pas servir de preuve.",
+    "Avant de retenir un niveau, relis les citations que tu vas produire et demande-toi si elles suffisent, à elles seules, à établir ce que ce niveau affirme. Si elles n'établissent qu'une partie, descends au niveau que cette partie soutient.",
+    "Si une citation contient un calcul, une somme, un pourcentage, une conversion d'unité ou une durée, refais l'opération toi-même, chiffre par chiffre, avant de juger le critère qui en dépend. Ne te fie jamais au résultat annoncé : c'est ce résultat qui est à vérifier. Cela vaut aussi pour les opérations écrites en toutes lettres."
+  ],
+  "measurementBeforePromotion": {
+    "mustMove": [
+      "mutation-direction-violations : 7/47 = 14,89 % — c'est le gate que ce brouillon vise",
+      "eventual-unusable-runs : 9/240 = 3,75 % — à surveiller, une consigne plus exigeante peut l'aggraver"
+    ],
+    "risk": "Une règle de suffisance descend les niveaux. Elle peut faire baisser l'accord avec l'étalon MODEL_AUTHORED (84,25 %), qui est lui-même écrit par un modèle et rapporté, jamais bloquant. Une baisse de cet accord n'est pas en soi une régression ; il faudra le dire dans le rapport plutôt que de la lire comme telle."
+  }
+}

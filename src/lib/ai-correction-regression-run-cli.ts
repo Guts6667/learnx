@@ -673,7 +673,7 @@ export async function runRegressionPool(input: {
 
   const policy = parseRegressionGatePolicy(
     JSON.parse(
-      await readFile(path.join(directory, 'gate-policy.v5.json'), 'utf8'),
+      await readFile(path.join(directory, 'gate-policy.v6.json'), 'utf8'),
     ) as unknown,
   );
 
@@ -1492,7 +1492,7 @@ export function buildRunPasses(input: {
  * Direction-bearing mutants the run must reach for its threshold to mean
  * anything.
  *
- * `gate-policy.v5.json` declares `minimumDenominator: 50` on
+ * `gate-policy.v6.json` declares `minimumDenominator: 50` on
  * `mutation-direction-violations`: below 50, a 2 % rate resolves to a whole
  * budget of zero and one violation fails necessarily. The two numbers are the
  * same requirement seen from the policy and from the plan, and the test that
@@ -2021,7 +2021,7 @@ export async function runRegressionAnalysis(input: {
   });
 
   const analysis = await analyseRunOffline({
-    gatePolicyPath: path.join(directory, 'gate-policy.v5.json'),
+    gatePolicyPath: path.join(directory, 'gate-policy.v6.json'),
     plan: planRegressionRun({
       paraphrases: cache.paraphrases,
       pool,
