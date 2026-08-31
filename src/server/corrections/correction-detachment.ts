@@ -24,7 +24,15 @@
 
 export interface DetachableCorrection {
   activityType: string;
-  attempts: Array<{ id: string; rawOutput: unknown }>;
+  attempts: Array<{
+    id: string;
+    rawOutput: unknown;
+    /**
+     * La tentative porte sa PROPRE copie du jugement, citations comprises
+     * (V4.5-217). Le détachement ne la lisait pas.
+     */
+    structuredResult: unknown;
+  }>;
   id: string;
   modelId: string | null;
   promptSnapshot: unknown;
@@ -48,8 +56,14 @@ interface ResearchSample {
 }
 
 export interface DetachmentPlan {
-  /** Attempts whose `rawOutput` is cleared. */
-  attemptIds: string[];
+  /**
+   * Ce que devient chaque tentative qui portait des mots : `rawOutput` vidé,
+   * citations retirées de son propre jugement (V4.5-217).
+   *
+   * Une tentative sans sortie brute ni jugement n'y figure pas — il n'y aurait
+   * rien à y écrire.
+   */
+  attempts: Array<{ id: string; structuredResult: unknown }>;
   correctionId: string;
   /** Null when the account gave no consent: the words are dropped instead. */
   sample: ResearchSample | null;
@@ -94,12 +108,23 @@ export function planDetachment(
   makePseudonym: () => string,
   detachedOn: Date,
 ): DetachmentPlan {
-  const attemptIds = correction.attempts
-    .filter((attempt) => attempt.rawOutput !== null)
-    .map((attempt) => attempt.id);
+  // V4.5-217 : une tentative entre dans le plan dès qu'elle porte quelque
+  // chose à retirer — sa sortie brute, ou son propre jugement. Ne regarder que
+  // `rawOutput`, comme avant, laissait les citations dans
+  // `AiCorrectionAttempt.structuredResult` : la correction était détachée, et
+  // les mots de l'apprenant restaient à côté, dans la ligne qui l'a produite.
+  const attempts = correction.attempts
+    .filter(
+      (attempt) =>
+        attempt.rawOutput !== null || attempt.structuredResult !== null,
+    )
+    .map((attempt) => ({
+      id: attempt.id,
+      structuredResult: stripEvidenceQuotes(attempt.structuredResult),
+    }));
 
   const plan = {
-    attemptIds,
+    attempts,
     correctionId: correction.id,
     structuredResult: stripEvidenceQuotes(correction.structuredResult),
   };
