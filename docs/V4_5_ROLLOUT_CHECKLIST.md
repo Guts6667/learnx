@@ -452,10 +452,34 @@ Ce que l'épisode a appris, et qui change une croyance sur la règle du marqueur
 poussée coûte une unité de quota même quand rien ne se construit. **Grouper les
 poussées** — une par PR quand elle est prête, pas une par correction.
 
-**À observer après la fusion de #190**, et à écrire ici comme un relevé plutôt
-qu'à supposer : une poussée sur une branche à slash (`codex/…`, `docs/…`) ne
-doit créer **aucun** déploiement, et une poussée sur `dev` doit en créer un. La
-mesure faite dans cette PR porte sur minimatch, pas sur le résolveur de Vercel.
+**À observer après la fusion de #190**, et à écrire ici comme un relevé daté
+plutôt qu'à supposer : une poussée sur une branche à slash (`codex/…`, `docs/…`)
+ne doit créer **aucun** déploiement — noter l'absence constatée — et une fusion
+vers `dev` doit en créer un — noter son identifiant. La mesure faite dans cette
+PR porte sur minimatch, pas sur le résolveur de Vercel. **Ne pas provoquer de
+poussée pour observer** : chacune coûte une unité de quota, donc on observe
+celles qui ont lieu de toute façon.
+
+> **Et une précaution sur l'interprétation, qui décide du sens du relevé.**
+> `vercel.json` est un fichier du dépôt, donc il est lu sur une *branche*. La
+> question à laquelle je n'ai pas de réponse : laquelle. Si Vercel lit le
+> fichier du commit poussé, alors une branche **antérieure** à la fusion de #190
+> ne porte pas la règle et continuera de créer des déploiements — le correctif
+> ne vaudrait que pour les branches créées ensuite, et le quota ne se
+> détendrait qu'au fil du renouvellement des branches.
+>
+> Ce n'est pas une inquiétude en l'air : c'est exactement le mécanisme déjà
+> documenté en tête de `scripts/vercel-ignore-build.sh`, où une règle vivant
+> dans un fichier du dépôt s'est révélée incapable de gouverner les branches qui
+> précédaient ce fichier — et avait échoué en s'ouvrant, sur précisément les
+> vieilles branches qu'elle devait arrêter.
+>
+> Donc le relevé négatif n'est concluant que sur une branche qui **porte** la
+> règle, c'est-à-dire créée ou rebasée après la fusion de #190. Observé sur une
+> branche plus ancienne, il ne mesure pas la même chose — et s'il crée quand
+> même un déploiement, ce n'est pas que la règle est fausse, c'est qu'elle est
+> lue ailleurs qu'on ne croyait. Noter laquelle des deux situations on observe,
+> sans quoi le relevé ne veut rien dire.
 
 ## 10. La promotion, pas à pas
 
