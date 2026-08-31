@@ -194,8 +194,8 @@ marqueur**, au moment où elle décide que le résultat doit être servi.
 - [x] Sentry serveur et navigateur ;
 - [x] migrations appliquées sur le preview de `dev` (V4.5-200) ;
 - [x] attente de capacité Neon, fin des annulations silencieuses (V4.5-201) ;
-- [ ] runbook de restauration Neon (V4.5-176) ;
-- [ ] tests e2e qui ne tournent nulle part (V4.5-208).
+- [x] runbook de restauration Neon (V4.5-176), fusionné le 31 août ;
+- [x] tests e2e qui ne tournaient nulle part (V4.5-208), fusionné le 31 août.
 
 **Après GO packs uniquement**
 
