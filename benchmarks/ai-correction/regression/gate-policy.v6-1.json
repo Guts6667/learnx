@@ -139,7 +139,7 @@
       "kind": "BLOCKING",
       "comparison": "MAX_COUNT",
       "threshold": 0,
-      "intent": "Un critère du contrat absent de la correction LIVRÉE, quelle qu'en soit la cause. Le gate parapluie : il mesure ce que l'apprenant reçoit, pas le mécanisme. Budget entier zéro, comme la preuve inventée livrée, parce qu'un critère non rendu est un critère que l'apprenant croit acquis. Mesuré sur le run du 31 août : 1 critère sur 81, sur une ligne de base attendue à trois niveaux maîtrisés — et le runtime se comporte de la même façon, donc le cas n'est pas propre au banc. Dénominateur : les critères que le contrat exigeait sur ces mêmes livraisons, jamais les critères rendus."
+      "intent": "Le gate parapluie : un critère du contrat absent de la correction LIVRÉE, quelle qu'en soit la cause. Il mesure ce que l'apprenant reçoit, pas le mécanisme. Budget entier zéro, comme la preuve inventée livrée. Vérifié sur le run du 31 août rejoué hors ligne : 1 critère sur 3 avant le correctif de livraison, 0 sur 3 après — rouge sur l'ancien enregistrement, propre une fois le critère livré « à vérifier ». Dénominateur : les critères que le contrat exigeait sur ces mêmes livraisons."
     },
     {
       "key": "omitted-criterion-corrections",
@@ -158,12 +158,12 @@
       "intent": "Une cellule que le runner a refusée pour omission de critère. Surveillé et non bloquant, par la convention de la preuve inventée « toutes tentatives » : un refus est le garde qui travaille. Compté à part pour qu'un correctif ne rende pas la panne invisible en réussissant — une omission refusée ne produit plus d'observation, l'oracle livré lit 0, et l'événement se dissoudrait dans eventual-unusable-runs et son budget de 3 %, indiscernable d'un timeout. Avertissement : aucun code de ce nom n'est encore émis, ce gate vaut donc 0 partout. Ce zéro dit « aucune tentative refusée pour omission », ce qui est vrai et ne prouve rien."
     },
     {
-      "key": "criteria-withdrawn-after-salvage",
-      "metric": "criteriaWithdrawnAfterSalvage",
+      "key": "criteria-withdrawn-undelivered",
+      "metric": "criteriaWithdrawnUndelivered",
       "kind": "BLOCKING",
       "comparison": "MAX_COUNT",
       "threshold": 0,
-      "intent": "Le mécanisme derrière le gate parapluie : un critère que le rattrapage a retiré de la correction livrée. Forme exécutable de la décision produit — un critère dont la preuve ne résout pas est livré « à vérifier », sans niveau et sans les citations irrecevables, avec sa raison ; jamais retiré en silence. Budget zéro : « jamais » est un budget de zéro. Aujourd'hui les deux gates rougissent sur le même événement ; une fois le correctif de livraison posé ils divergent — le parapluie dit que l'apprenant a bien reçu tous ses critères, celui-ci dit qu'aucun n'a disparu en chemin. Source actuelle : unsureCriteria, que le rattrapage remplit pour toutes ses raisons de retrait ; la catégorie distincte de Head of Development permettra d'isoler la provenance de preuve. Sur le run du 31 août : 1 sur 81, pour provenance."
+      "intent": "Un critère du contrat que le rattrapage a gardé HORS de la correction livrée. Bloquant, budget zéro : l'apprenant est privé d'un critère, quel que soit le motif — absent, mal formé, statut de preuve incohérent, contenu interdit, citation prise dans l'attaque injectée. Jugé sur la sortie livrée et non sur le drapeau de retrait : depuis V4.5-177 un critère peut être retiré ET livré quand même, et un critère qui atteint l'apprenant n'est pas perdu. Dénominateur : les critères que le contrat exigeait, jamais les critères rendus."
     },
     {
       "key": "criteria-absent-from-model-output",
@@ -172,6 +172,14 @@
       "comparison": "MAX_COUNT",
       "threshold": 0,
       "intent": "L'autre cause possible, lue dans rawModelOutput : un critère du contrat que le modèle n'a pas écrit du tout. C'est l'hypothèse d'origine du pré-test 2.3.0, et elle est fausse — mesurée sur le run du 31 août, 0 sur 81. Gardée quand même : elle coûte zéro, elle ferme la question, et elle distingue « le modèle s'est tu » de « le pipeline a retiré », deux pannes qui se ressemblent sur le livré et ne se corrigent pas au même endroit. Surveillé : à zéro observé, un gate bloquant n'ajouterait rien qu'un risque de rougir sur une sortie brute illisible. Les cellules dont la sortie brute ne se lit pas sont exclues du dénominateur et nommées, jamais comptées propres."
+    },
+    {
+      "key": "criteria-dropped-for-evidence-provenance",
+      "metric": "criteriaDroppedForEvidenceProvenance",
+      "kind": "WATCHED",
+      "comparison": "MAX_COUNT",
+      "threshold": 0,
+      "intent": "Un critère dont la preuve a été refusée parce qu'elle ne venait pas de la production de l'apprenant. Surveillé, jamais bloquant : depuis V4.5-177 le critère est livré quand même — `EVIDENCE_WITHDRAWN`, rangé « à vérifier », sans niveau montré — donc l'apprenant ne perd rien et le gate parapluie a raison de lire zéro. Ce qui est compté ici, c'est que le modèle a cité hors de la production, ce que la consigne interdit par écrit (`runtime-correction-prompt.ts:17`) : même famille que le défaut principal, donc un chiffre qui doit rester visible. Le rendre bloquant serait une faute : un gate qui rougit PARCE QUE le correctif fonctionne apprend à le contourner plutôt qu'à réparer quoi que ce soit. Mesuré sur le run du 31 août : 1 sur 81, sur une ligne de base attendue à trois niveaux maîtrisés."
     }
   ]
 }

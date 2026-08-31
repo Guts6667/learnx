@@ -334,10 +334,28 @@ dans les quatre colonnes. C'est la seule propriété qui rende la perte comptabl
 | Gate | Type | Question |
 | --- | --- | --- |
 | `omitted-criteria-delivered` | bloquant, budget 0 | un critère du contrat manque-t-il à une correction **livrée** ? (parapluie) |
-| `criteria-withdrawn-after-salvage` | bloquant, budget 0 | un critère a-t-il été **retiré** du livré par le rattrapage ? (mécanisme) |
+| `criteria-withdrawn-undelivered` | bloquant, budget 0 | un critère a-t-il été gardé **hors** du livré ? (les 5 motifs qui retirent) |
+| `criteria-dropped-for-evidence-provenance` | **surveillé**, budget 0 | le modèle a-t-il cité **hors de la production** ? (livré quand même) |
 | `criteria-absent-from-model-output` | surveillé, budget 0 | le modèle a-t-il **omis** un critère ? (l'hypothèse fausse, gardée à zéro) |
 | `omitted-criterion-corrections` | rapporté, sans seuil | quelle **part des corrections** perd au moins un critère ? |
 | `omitted-criteria-refused` | surveillé, budget 0 | combien de cellules le runner a-t-il **refusées** pour omission ? |
+
+**Pourquoi la provenance est surveillée et non bloquante.** Depuis V4.5-177 le
+critère dont la citation est refusée est **livré quand même** — `EVIDENCE_WITHDRAWN`,
+rangé « à vérifier », sans niveau montré. L'apprenant ne perd rien, donc le
+parapluie a raison de lire zéro. Ce que ce gate compte, c'est que le modèle a
+cité hors de la production, ce que la consigne interdit par écrit
+(`runtime-correction-prompt.ts:17`) : même famille que le défaut principal, un
+chiffre qui doit rester visible. Le rendre bloquant serait une faute — **un gate
+qui rougit parce que le correctif fonctionne apprend à le contourner** plutôt
+qu'à réparer quoi que ce soit.
+
+**`modelAuthoredAgreement` : ni exclu, ni crédité.** Un critère dont la preuve a
+été retirée **reste au dénominateur** et **ne compte jamais comme accord**.
+L'exclure ferait rétrécir le dénominateur quand le modèle échoue — le défaut
+exact que v6.1 supprime — et le créditer noterait un niveau dont l'unique appui
+était une citation que le banc a refusée. Le niveau prononcé reste dans
+l'artefact (`levelKey` conservé) pour qui veut refaire la comparaison.
 
 Le parapluie mesure ce que l'apprenant reçoit ; les deux suivants séparent les
 deux causes, qui se ressemblent sur le livré et ne se corrigent pas au même
