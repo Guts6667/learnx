@@ -290,16 +290,45 @@
   font-size: var(--text-lg);
 }
 
+/*
+ * Même hiérarchie que la carte de l'écran d'achat (V4.5-213) : les crédits
+ * d'abord, à la taille éditoriale, le prix ensuite. Les deux surfaces montrent
+ * le même produit ; les lire différemment ferait douter que ce soit le même.
+ */
 .landing-pricing-credits {
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-}
-
-.landing-pricing-amount {
   font-family: var(--font-editorial);
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 500;
   line-height: 1.1;
+}
+
+.landing-pricing-amount {
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.landing-pricing-figures {
+  display: grid;
+  gap: var(--space-1);
+  margin-block-start: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.landing-pricing-bonus {
+  color: var(--color-text);
+}
+
+.landing-pricing-condition {
+  margin-block-start: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.landing-pricing-note {
+  max-width: 60ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
 }
 
 .landing-pricing-notice {

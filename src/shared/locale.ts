@@ -31,6 +31,23 @@ export function formatLocalizedNumber(
 }
 
 /**
+ * Le libellé d'un palier dans la langue de l'écran (V4.5-213).
+ *
+ * Les deux libellés arrivent côté à côté plutôt que résolus par le serveur :
+ * `/api/public/credit-packs` est mis en cache « le même pour tout le monde »,
+ * et une réponse qui dépend de la langue demanderait un `Vary` (V4.5-212).
+ * C'est donc à l'écran de choisir, et il le fait au même endroit sur les deux
+ * surfaces — sans quoi la section publique afficherait « Premier pack » à un
+ * visiteur anglophone, comme elle le faisait avant que `labelEn` existe.
+ */
+export function packLabel(
+  pack: { label: string; labelEn: string },
+  locale: SupportedLocale,
+): string {
+  return locale === 'en' ? pack.labelEn : pack.label;
+}
+
+/**
  * Un entier arrivé sous forme de chaîne — un nombre de crédits — groupé selon
  * la locale sans passer par un `number`.
  *

@@ -138,6 +138,8 @@ export const frenchCorrectionMessages = {
     'La vente de crédits vient d’être fermée. Aucun montant n’a été prélevé.',
   'credits.purchase.refusalPackUnavailable':
     'Ce palier n’est plus disponible. Aucun montant n’a été prélevé.',
+  'credits.purchase.refusalEntryTierAlreadyPurchased':
+    'Ce pack est limité à un achat par compte, et le vôtre a déjà été utilisé. Aucun montant n’a été prélevé.',
   'credits.purchase.suspendedTitle': 'Corrections IA suspendues',
   'credits.purchase.suspendedDescription':
     'La correction par IA est suspendue en ce moment. Les crédits achetés gardent leur valeur et resteront utilisables à sa reprise.',
@@ -310,6 +312,8 @@ export const englishCorrectionMessages = {
     'Credit sales have just closed. Nothing was charged.',
   'credits.purchase.refusalPackUnavailable':
     'This tier is no longer available. Nothing was charged.',
+  'credits.purchase.refusalEntryTierAlreadyPurchased':
+    'This pack is limited to one purchase per account, and yours has already been used. Nothing was charged.',
   'credits.purchase.suspendedTitle': 'AI corrections are suspended',
   'credits.purchase.suspendedDescription':
     'AI correction is suspended right now. Purchased credits keep their value and will still be usable when it resumes.',

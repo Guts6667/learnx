@@ -5,6 +5,10 @@ import { describe, expect, it } from 'vitest';
 import { readStylesheetSourceGraph } from '@/test-utils/stylesheet-source';
 
 const learner = readFileSync(resolve('src/pages/CreditsPage.tsx'), 'utf8');
+const publicPricing = readFileSync(
+  resolve('src/components/landing/LandingPricing.tsx'),
+  'utf8',
+);
 const admin = readFileSync(resolve('src/pages/AdminCreditsPage.tsx'), 'utf8');
 const styles = readStylesheetSourceGraph(
   resolve('src/styles/index.css'),
@@ -62,5 +66,41 @@ describe('V4-008 credit surfaces', () => {
     // page load and the click.
     expect(learner).toContain('paymentsEnabled === false');
     expect(learner).toContain("checkout.refusal === 'PAYMENTS_DISABLED'");
+  });
+
+  it('affiche les chiffres de la carte tels que servis, sur les deux surfaces', () => {
+    // V4.5-213 ajoute quatre chiffres à la carte. Ils sont dérivés une fois,
+    // côté serveur (V4.5-212) : un taux ou une capacité recalculés à l'écran
+    // survivraient à un changement de grille sans rien faire rougir, et trois
+    // surfaces annonceraient une capacité que plus rien ne justifie.
+    for (const surface of [learner, publicPricing]) {
+      expect(surface).toContain('pack.creditsPerEuro');
+      expect(surface).toContain('pack.bonusCredits');
+      expect(surface).toContain('pack.approximateCorrections');
+      // Aucun opérateur sur les chiffres servis : ni sur eux, ni sur les
+      // crédits dont on pourrait les rederiver.
+      expect(surface).not.toMatch(
+        /(creditsPerEuro|bonusCredits|approximateCorrections)\s*[*/+-]/u,
+      );
+      expect(surface).not.toMatch(/pack\.credits\s*[*/+-]/u);
+      expect(surface).not.toMatch(/(?<![\w])Number\(|parseFloat\(/u);
+    }
+  });
+
+  it('lit la limite d’achat sur le serveur au lieu de reconnaître une clé', () => {
+    // La règle « un seul achat par compte » appartient au serveur :
+    // `ENTRY_TIER_PACK_KEY` la porte et le 409 l'applique. Un écran qui
+    // comparerait la clé lui-même en serait un second dépositaire, et un
+    // renommage de palier ferait taire la phrase sans casser un test.
+    for (const surface of [learner, publicPricing]) {
+      expect(surface).toContain('pack.oncePerAccount');
+      expect(surface).not.toMatch(/['"`]entry['"`]/u);
+    }
+
+    // Et « déjà acheté » se lit sur le catalogue, jamais déduit de
+    // l'historique des commandes : un remboursement change le statut d'une
+    // commande sans rouvrir le droit (décision de Rayan, 31 août 2026), et
+    // c'est `purchasable` — bâti sur `fulfilledAt` — qui porte cette règle.
+    expect(learner).toContain('pack.purchasable === false');
   });
 });

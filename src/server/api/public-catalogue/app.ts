@@ -1,6 +1,7 @@
 import {
   CORRECTION_QUOTE_CREDITS,
   CORRECTION_RESERVATION_CREDITS,
+  ENTRY_TIER_PACK_KEY,
   packFigures,
 } from '../../maintenance/credit-pack-seed.js';
 import { Hono } from 'hono';
@@ -82,6 +83,11 @@ export function createPublicCatalogueApp(
         // Both, so one cached body serves every visitor: resolving the
         // language here would need a `Vary` and halve that cache.
         labelEn: pack.labelEn,
+        // A property of the tier, not of a visitor, so it is the same in every
+        // cached body (V4.5-213). Published here for the same reason the rate
+        // and the bonus are: the condition met after signing up is the one
+        // read before, and this one costs a refund to discover late.
+        oncePerAccount: pack.key === ENTRY_TIER_PACK_KEY,
         priceMinor: pack.priceMinor.toString(),
       })),
     });

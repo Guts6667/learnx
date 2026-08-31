@@ -46,10 +46,43 @@ describe('catalogue public', () => {
           key: 'starter',
           label: 'Découverte',
           labelEn: 'Starter',
+          // Une propriété du palier, pas du visiteur : elle est la même dans
+          // tous les corps mis en cache, et la condition lue avant l'accès est
+          // celle rencontrée après (V4.5-213).
+          oncePerAccount: false,
           priceMinor: '1500',
         },
       ],
     });
+  });
+
+  it('désigne le palier limité à un achat par compte', async () => {
+    // La règle appartient au serveur : `ENTRY_TIER_PACK_KEY` la porte, le 409
+    // l'applique, et la carte la lit. Un écran qui reconnaîtrait la clé
+    // lui-même en serait un second dépositaire, et le jour d'un renommage les
+    // deux ne diraient plus la même chose.
+    const app = createPublicCatalogueApp({
+      catalogue: {
+        ...catalogue,
+        listActivePacks: async () => [
+          {
+            credits: 300n,
+            currency: 'EUR',
+            key: 'entry',
+            label: 'Premier pack',
+            labelEn: 'First pack',
+            priceMinor: 300n,
+          },
+        ],
+      },
+    });
+
+    const response = await app.request('/api/public/credit-packs');
+    const body = (await response.json()) as {
+      packs: { oncePerAccount: boolean }[];
+    };
+
+    expect(body.packs[0].oncePerAccount).toBe(true);
   });
 
   it('lit le catalogue par le même lecteur que l’écran authentifié', async () => {

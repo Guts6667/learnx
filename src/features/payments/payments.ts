@@ -193,9 +193,14 @@ export function useOwnOrdersQuery() {
  * raison qui se dit à l'apprenant. Tout le reste est une erreur, et une erreur
  * s'affiche comme telle plutôt que déguisée en refus explicable.
  */
-export type CheckoutRefusal = 'PACK_UNAVAILABLE' | 'PAYMENTS_DISABLED';
+export type CheckoutRefusal =
+  'ENTRY_TIER_ALREADY_PURCHASED' | 'PACK_UNAVAILABLE' | 'PAYMENTS_DISABLED';
 
 const refusalByCheckoutErrorCode = {
+  // 409 : le palier d'entrée est limité à un achat par compte, et celui-ci a
+  // servi. La carte le dit déjà avant le clic (V4.5-213) ; ce refus reste lu
+  // pour l'achat parti d'une page chargée avant, et pour l'appel direct.
+  ENTRY_TIER_ALREADY_PURCHASED: 'ENTRY_TIER_ALREADY_PURCHASED',
   // 503 : la vente a été fermée entre le chargement de la page et le clic.
   PRICING_UNAVAILABLE: 'PAYMENTS_DISABLED',
   // 404 : inconnu et inactif répondent pareil, pour qu'un appelant ne puisse

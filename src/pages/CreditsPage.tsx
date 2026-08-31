@@ -18,18 +18,21 @@ import {
   useOwnCreditsQuery,
 } from '@/features/credits/credits';
 import {
+  type CheckoutRefusal,
   type CreditPack,
   type OwnPaymentOrder,
   useCreditCheckoutMutation,
   useCreditPacksQuery,
   useOwnOrdersQuery,
 } from '@/features/payments/payments';
+import type { MessageKey } from '@/i18n/catalogs';
 import { useI18n } from '@/i18n';
 import { CREDIT_OPERATION_REASON_MIN_LENGTH } from '@/shared/credit-rules';
 import {
   formatLocalizedDate,
   formatMinorAmount,
   formatWholeNumber,
+  packLabel,
 } from '@/shared/locale';
 
 interface CreditsPageProps {
@@ -99,6 +102,34 @@ function CheckoutReturn({
   );
 }
 
+/**
+ * Ce que l'écran dit de chaque refus que le serveur explique.
+ *
+ * Une table plutôt qu'une chaîne de ternaires : le jour où un quatrième refus
+ * arrive, le type de `CheckoutRefusal` fait rougir cette table, là où un
+ * `else` final l'aurait absorbé en affichant le mauvais message.
+ */
+const refusalMessageKey = {
+  ENTRY_TIER_ALREADY_PURCHASED:
+    'credits.purchase.refusalEntryTierAlreadyPurchased',
+  PACK_UNAVAILABLE: 'credits.purchase.refusalPackUnavailable',
+  PAYMENTS_DISABLED: 'credits.purchase.refusalPaymentsDisabled',
+} as const satisfies Record<CheckoutRefusal, MessageKey>;
+
+/**
+ * La carte d'un palier (V4.5-213), dans l'ordre où elle se lit : le nom, les
+ * crédits, le prix, puis ce qu'ils valent — le taux, le bonus s'il existe, la
+ * capacité approximative — puis la condition d'achat, puis l'action.
+ *
+ * Les crédits passent devant le prix parce que c'est ce qu'on achète ; le prix
+ * suit, à sa taille, pour rester comparable d'une carte à l'autre.
+ *
+ * Aucun chiffre n'est calculé ici. Le taux, le bonus et la capacité sont
+ * dérivés côté serveur (V4.5-212) et `credits-surfaces.test.ts` interdit à cet
+ * écran toute arithmétique sur `priceMinor` : un chiffre sur de l'argent
+ * dérivé à deux endroits finit par se contredire, et c'est le prix affiché qui
+ * aurait tort.
+ */
 function PackCard({
   disabled,
   isLoading,
@@ -114,24 +145,61 @@ function PackCard({
   saleClosed: boolean;
 }) {
   const { locale, t } = useI18n();
+  const label = packLabel(pack, locale);
+  // Comparé en `BigInt`, jamais converti en flottant : c'est une décision
+  // d'affichage sur un nombre servi, pas un calcul sur de l'argent. Le palier
+  // d'entrée est à parité, donc sans bonus, et une ligne « 0 crédits en plus »
+  // se lirait comme un manque au lieu d'une absence.
+  const hasBonus = BigInt(pack.bonusCredits) > 0n;
+  // Déjà acheté : le catalogue le dit, l'écran ne le déduit pas de son
+  // historique. `purchasable` est absent des réponses sans compte, et son
+  // absence ne vaut donc pas « non ».
+  const alreadyPurchased = pack.purchasable === false;
 
   return (
     <li className="credit-pack">
-      <h3 className="credit-pack__label">{pack.label}</h3>
-      <p className="credit-pack__credits">
+      <h3 className="credit-pack__label">{label}</h3>
+      <strong className="credit-pack__credits">
         {t('credits.purchase.packCredits', {
           // Le pluriel se choisit sur un et non-un ; convertir un `BigInt` de
           // crédits en nombre flottant pour cela n'apprendrait rien de plus.
           count: pack.credits === '1' ? 1 : 2,
           credits: formatWholeNumber(pack.credits, locale),
         })}
-      </p>
-      <strong className="credit-pack__price">
-        {formatMinorAmount(pack.priceMinor, pack.currency, locale)}
       </strong>
-      {saleClosed ? null : (
+      <p className="credit-pack__price">
+        {formatMinorAmount(pack.priceMinor, pack.currency, locale)}
+      </p>
+      <ul className="credit-pack__figures">
+        <li>
+          {t('creditPack.rate', {
+            rate: formatWholeNumber(pack.creditsPerEuro, locale),
+          })}
+        </li>
+        {hasBonus ? (
+          <li className="credit-pack__bonus">
+            {t('creditPack.bonus', {
+              bonus: formatWholeNumber(pack.bonusCredits, locale),
+            })}
+          </li>
+        ) : null}
+        <li>
+          {t('creditPack.approximateCorrections', {
+            corrections: formatWholeNumber(pack.approximateCorrections, locale),
+            count: pack.approximateCorrections === '1' ? 1 : 2,
+          })}
+        </li>
+      </ul>
+      {pack.oncePerAccount ? (
+        <p className="credit-pack__condition">
+          {alreadyPurchased
+            ? t('creditPack.alreadyPurchased')
+            : t('creditPack.oncePerAccount')}
+        </p>
+      ) : null}
+      {saleClosed || alreadyPurchased ? null : (
         <Button
-          aria-label={t('credits.purchase.buyPack', { label: pack.label })}
+          aria-label={t('credits.purchase.buyPack', { label })}
           disabled={disabled}
           isLoading={isLoading}
           onClick={() => onBuy(pack.key)}
@@ -150,7 +218,7 @@ function PackCard({
  * en dur serait un prix que personne n'a arbitré (V4.5-164).
  */
 function PurchasePanel() {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const packs = useCreditPacksQuery();
   const checkout = useCreditCheckoutMutation();
   const [buying, setBuying] = useState<string | null>(null);
@@ -227,18 +295,50 @@ function PurchasePanel() {
 
       {suspendedUrl === null ? (
         offered.length > 0 ? (
-          <ul className="credit-pack-list">
-            {offered.map((pack) => (
-              <PackCard
-                disabled={checkout.isPending && buying !== pack.key}
-                isLoading={checkout.isPending && buying === pack.key}
-                key={pack.key}
-                onBuy={(packKey) => void buy(packKey)}
-                pack={pack}
-                saleClosed={saleClosed}
-              />
-            ))}
-          </ul>
+          <>
+            {/*
+              Trois boutons de même poids, et c'est un choix (V4.5-213).
+              Cette zone est un choix entre égaux, pas un entonnoir : mettre en
+              avant le plus gros palier pousserait vers la dépense la plus
+              élevée, et un « le plus populaire » inventerait une popularité que
+              personne n'a mesurée. La marque interdit les deux. C'est un écart
+              assumé à la règle « une action dominante par zone » — sans cette
+              raison écrite, quelqu'un le « corrigera » plus tard sans savoir
+              que c'en était un.
+            */}
+            <ul className="credit-pack-list">
+              {offered.map((pack) => (
+                <PackCard
+                  disabled={checkout.isPending && buying !== pack.key}
+                  isLoading={checkout.isPending && buying === pack.key}
+                  key={pack.key}
+                  onBuy={(packKey) => void buy(packKey)}
+                  pack={pack}
+                  saleClosed={saleClosed}
+                />
+              ))}
+            </ul>
+            {/*
+              Sous la grille, une fois : le devis et la réserve portent sur la
+              correction, pas sur un palier. C'est aussi ce qui rend la capacité
+              annoncée approximative — une correction réserve plus qu'elle ne
+              coûte d'ordinaire, et rend la différence tout de suite.
+            */}
+            {packs.data ? (
+              <p className="credit-pack-note ui-text-muted">
+                {t('creditPack.correctionNote', {
+                  quote: formatWholeNumber(
+                    packs.data.correctionQuoteCredits,
+                    locale,
+                  ),
+                  reservation: formatWholeNumber(
+                    packs.data.correctionReservationCredits,
+                    locale,
+                  ),
+                })}
+              </p>
+            ) : null}
+          </>
         ) : null
       ) : (
         <Notice tone="attention" title={t('credits.purchase.suspendedTitle')}>
@@ -256,9 +356,7 @@ function PurchasePanel() {
 
       {checkout.refusal ? (
         <p className="ui-status-notice" role="status">
-          {checkout.refusal === 'PAYMENTS_DISABLED'
-            ? t('credits.purchase.refusalPaymentsDisabled')
-            : t('credits.purchase.refusalPackUnavailable')}
+          {t(refusalMessageKey[checkout.refusal])}
         </p>
       ) : null}
       {checkout.error ? (

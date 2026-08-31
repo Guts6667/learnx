@@ -17,6 +17,10 @@ import {
 import { englishAuthMessages, frenchAuthMessages } from '@/i18n/catalogs/auth';
 import { englishCoreMessages, frenchCoreMessages } from '@/i18n/catalogs/core';
 import {
+  englishCreditPackMessages,
+  frenchCreditPackMessages,
+} from '@/i18n/catalogs/credit-packs';
+import {
   englishCorrectionMessages,
   frenchCorrectionMessages,
 } from '@/i18n/catalogs/correction';
@@ -53,6 +57,7 @@ export const frenchMessages = mergeCatalogFragments(
   frenchActivitiesMessages,
   frenchWorkspaceMessages,
   frenchCorrectionMessages,
+  frenchCreditPackMessages,
   frenchAdminAccessMessages,
   frenchAdminCreditsMessages,
   frenchAdminCatalogMessages,
@@ -72,6 +77,7 @@ export const englishMessages = mergeCatalogFragments(
   englishActivitiesMessages,
   englishWorkspaceMessages,
   englishCorrectionMessages,
+  englishCreditPackMessages,
   englishAdminAccessMessages,
   englishAdminCreditsMessages,
   englishAdminCatalogMessages,
