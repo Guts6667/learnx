@@ -922,6 +922,20 @@ describe('mutation coverage matches what the policy declares', () => {
     });
 
     expect(directionBearing.length).toBeGreaterThanOrEqual(declared as number);
+
+    // Clearing the minimum before the run is not clearing it after (V4.5-210).
+    // Cells on the mutant passes came back unusable at 7.5 % and 8.3 % on 30
+    // and 31 August — measured, not assumed. A target of 55 satisfies the
+    // assertion above and yields about 50.6 usable against a minimum of 50: one
+    // further lost cell decides whether a paid run can state its gate at all,
+    // and a gate below its minimum is not a failure but an absence of verdict.
+    // The margin is sized for losses concentrating on this pass rather than
+    // spreading evenly, because that is how the two measured runs lost them.
+    const survivorsAtObservedLoss = Math.floor(directionBearing.length * 0.917);
+    expect(survivorsAtObservedLoss).toBeGreaterThanOrEqual(declared as number);
+
+    const survivorsAtTwentyPercent = Math.floor(directionBearing.length * 0.8);
+    expect(survivorsAtTwentyPercent).toBeGreaterThanOrEqual(declared as number);
   }, 60_000);
 });
 
