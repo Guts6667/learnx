@@ -127,7 +127,21 @@ const PARITY_CREDITS_PER_EURO = 100n;
 
 /** What a correction is quoted at, and what it reserves (§7). */
 export const CORRECTION_QUOTE_CREDITS = 30n;
-export const CORRECTION_RESERVATION_CREDITS = 45n;
+
+/**
+ * Ramené de 45 à 41 (V4.5-164) une fois la méthode de percentile déclarée.
+ *
+ * Les deux chiffres venaient du même registre et d'un désaccord non dit : la
+ * voie Finance lisait un P90 de 0,032591, la voie Recherche 0,029748. L'écart
+ * n'était pas une erreur de calcul mais deux définitions de percentile, dont
+ * aucune n'était écrite. `measured-costs.v2.json` déclare la méthode retenue —
+ * nearest-rank, sans interpolation, doublons exclus — et le plafond en découle
+ * : P90/P50 = 1,3645, appliqué à un devis de 30 crédits, donne 40,9 → 41.
+ *
+ * Retenir 45 sur un devis de 30 immobilisait la moitié d'une correction de plus
+ * que la mesure ne le justifie, sur le solde d'un apprenant.
+ */
+export const CORRECTION_RESERVATION_CREDITS = 41n;
 
 export interface PackFigures {
   /** Credits beyond parity for this price. Zero at the entry tier. */
@@ -138,7 +152,7 @@ export interface PackFigures {
    * Corrections at the *quoted* price, floored.
    *
    * Approximate on purpose, and the screens must say so: a correction reserves
-   * 45 and settles somewhere below it, so this is a median-shaped figure. The
+   * 41 and settles somewhere below it, so this is a median-shaped figure. The
    * calibration document publishes the same number as "capacité médiane
    * annoncée" beside a "capacité prudente" of roughly two thirds.
    */

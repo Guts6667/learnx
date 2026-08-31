@@ -282,7 +282,7 @@ export function createCreditsApp(options: CreditsAppOptions = {}) {
 
     return context.json({
       // Stated once beneath the grid rather than on every card: a correction
-      // is quoted at 30 credits and reserves 45, which is why the capacity
+      // is quoted at 30 credits and reserves 41, which is why the capacity
       // above is approximate.
       correctionQuoteCredits: amount(CORRECTION_QUOTE_CREDITS),
       correctionReservationCredits: amount(CORRECTION_RESERVATION_CREDITS),

@@ -177,7 +177,7 @@ describe('contrats d’achat de crédits', () => {
   };
   const shared = {
     correctionQuoteCredits: '30',
-    correctionReservationCredits: '45',
+    correctionReservationCredits: '41',
   };
   const order = {
     amountMinor: '1500',

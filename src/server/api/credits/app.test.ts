@@ -424,7 +424,7 @@ describe('V4.5-205 contrat de l’écran d’achat', () => {
       // arithmetic on `priceMinor`, so the rate, the bonus and the capacity
       // arrive already worked out.
       correctionQuoteCredits: '30',
-      correctionReservationCredits: '45',
+      correctionReservationCredits: '41',
       packs: [
         {
           approximateCorrections: '0',

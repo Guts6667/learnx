@@ -624,7 +624,7 @@ export async function installJourneyApi(page: Page) {
       // fails. A stub without it is not a response the server can produce.
       await respond({
         correctionQuoteCredits: '30',
-        correctionReservationCredits: '45',
+        correctionReservationCredits: '41',
         packs: creditPacks,
         paymentsEnabled: true,
       });
