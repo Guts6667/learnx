@@ -6,15 +6,15 @@
  * no second palette, no gradient, and no information carried by colour alone.
  */
 
-.landing-page {
+.totem-public-landing {
   background: var(--color-canvas);
 }
 
-.landing-page main {
+.totem-public-landing main {
   overflow-x: clip;
 }
 
-.landing-page
+.totem-public-landing
   :is(
     #product,
     #pricing,
@@ -28,7 +28,7 @@
 
 /* Navigation */
 
-.landing-page .totem-public-shell__navigation {
+.totem-public-landing .totem-public-shell__navigation {
   position: sticky;
   z-index: 40;
   top: 0;
@@ -38,14 +38,14 @@
   backdrop-filter: blur(1rem);
 }
 
-.landing-page .landing-header {
+.totem-public-landing .landing-header {
   width: min(100%, 92rem);
   margin-inline: auto;
   padding-inline: clamp(1rem, 4vw, 3rem);
   padding-block: calc(0.75rem + env(safe-area-inset-top)) 0.75rem;
 }
 
-.landing-page .landing-brand {
+.totem-public-landing .landing-brand {
   gap: var(--space-3);
   color: var(--color-text);
   font-family: var(--font-editorial);
@@ -54,23 +54,23 @@
   letter-spacing: -0.02em;
 }
 
-.landing-page .landing-brand img {
+.totem-public-landing .landing-brand img {
   width: 2.25rem;
   height: 2.25rem;
 }
 
-.landing-page .landing-primary-navigation {
+.totem-public-landing .landing-primary-navigation {
   gap: clamp(var(--space-3), 2vw, var(--space-6));
 }
 
-.landing-page .landing-primary-navigation a,
-.landing-page .landing-signin {
+.totem-public-landing .landing-primary-navigation a,
+.totem-public-landing .landing-signin {
   position: relative;
   color: var(--color-text-muted);
   text-decoration: none;
 }
 
-.landing-page .landing-primary-navigation a::after {
+.totem-public-landing .landing-primary-navigation a::after {
   position: absolute;
   right: 0;
   bottom: 0.45rem;
@@ -83,19 +83,19 @@
   transition: transform var(--motion-standard) var(--motion-easing);
 }
 
-.landing-page .landing-primary-navigation a:hover,
-.landing-page .landing-signin:hover {
+.totem-public-landing .landing-primary-navigation a:hover,
+.totem-public-landing .landing-signin:hover {
   color: var(--color-text);
 }
 
-.landing-page .landing-primary-navigation a:hover::after,
-.landing-page .landing-primary-navigation a:focus-visible::after {
+.totem-public-landing .landing-primary-navigation a:hover::after,
+.totem-public-landing .landing-primary-navigation a:focus-visible::after {
   transform: scaleX(1);
 }
 
 /* Hero */
 
-.landing-page .landing-hero {
+.totem-public-landing .landing-hero {
   isolation: isolate;
   width: min(calc(100% - 2rem), 92rem);
   margin: clamp(1rem, 2vw, 2rem) auto 0;
@@ -106,7 +106,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-.landing-page .landing-hero::before {
+.totem-public-landing .landing-hero::before {
   position: absolute;
   z-index: 0;
   top: 0;
@@ -117,7 +117,7 @@
   content: '';
 }
 
-.landing-page .landing-hero::after {
+.totem-public-landing .landing-hero::after {
   z-index: 0;
   top: clamp(1.5rem, 6vw, 5rem);
   right: clamp(-4rem, -2vw, -1rem);
@@ -129,13 +129,13 @@
   opacity: 1;
 }
 
-.landing-page .landing-hero-copy {
+.totem-public-landing .landing-hero-copy {
   position: relative;
   z-index: 2;
   max-width: 42rem;
 }
 
-.landing-page .landing-hero .page-eyebrow {
+.totem-public-landing .landing-hero .page-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
@@ -143,7 +143,7 @@
   color: var(--color-action-hover);
 }
 
-.landing-page .landing-hero .page-eyebrow::before {
+.totem-public-landing .landing-hero .page-eyebrow::before {
   width: 0.625rem;
   height: 0.625rem;
   flex: 0 0 auto;
@@ -152,7 +152,7 @@
   content: '';
 }
 
-.landing-page .landing-hero h1 {
+.totem-public-landing .landing-hero h1 {
   max-width: 11ch;
   margin-top: var(--space-5);
   font-size: clamp(2.65rem, 5.7vw, 4.5rem);
@@ -161,7 +161,7 @@
   text-wrap: balance;
 }
 
-.landing-page .landing-lead {
+.totem-public-landing .landing-lead {
   max-width: 38ch;
   margin-top: var(--space-6);
   color: var(--color-text-muted);
@@ -169,7 +169,7 @@
   line-height: 1.65;
 }
 
-.landing-page .landing-actions {
+.totem-public-landing .landing-actions {
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
@@ -177,29 +177,29 @@
   margin-top: var(--space-8);
 }
 
-.landing-page .landing-actions .ui-action {
+.totem-public-landing .landing-actions .ui-action {
   min-height: 3.25rem;
   padding-inline: var(--space-6);
   box-shadow: 0 0.5rem 1.25rem
     color-mix(in srgb, var(--color-action) 18%, transparent);
 }
 
-.landing-page .landing-updates-action {
+.totem-public-landing .landing-updates-action {
   gap: var(--space-2);
   color: var(--color-text);
   text-decoration: none;
 }
 
-.landing-page .landing-updates-action::after {
+.totem-public-landing .landing-updates-action::after {
   content: '→';
   transition: transform var(--motion-fast) var(--motion-easing);
 }
 
-.landing-page .landing-updates-action:hover::after {
+.totem-public-landing .landing-updates-action:hover::after {
   transform: translateX(0.2rem);
 }
 
-.landing-page .landing-hero-trust {
+.totem-public-landing .landing-hero-trust {
   position: relative;
   max-width: 42ch;
   margin-top: var(--space-5);
@@ -209,7 +209,7 @@
   line-height: 1.55;
 }
 
-.landing-page .landing-hero-trust::before {
+.totem-public-landing .landing-hero-trust::before {
   position: absolute;
   top: 0.55em;
   left: 0;
@@ -220,7 +220,7 @@
   content: '';
 }
 
-.landing-page .landing-hero-visual {
+.totem-public-landing .landing-hero-visual {
   position: relative;
   z-index: 1;
   min-width: 0;
@@ -230,7 +230,7 @@
   background: var(--color-surface-subtle);
 }
 
-.landing-page .landing-hero-visual::before {
+.totem-public-landing .landing-hero-visual::before {
   position: absolute;
   z-index: 0;
   inset: 0.75rem -0.5rem -0.5rem 0.75rem;
@@ -240,7 +240,7 @@
   content: '';
 }
 
-.landing-page .landing-hero-visual .landing-product-preview {
+.totem-public-landing .landing-hero-visual .landing-product-preview {
   position: relative;
   z-index: 1;
   width: 100%;
@@ -248,7 +248,7 @@
 
 /* Three product truths, attached to the hero rather than floating as claims. */
 
-.landing-page .landing-principles {
+.totem-public-landing .landing-principles {
   width: min(calc(100% - 2rem), 92rem);
   margin: -1px auto clamp(3rem, 6vw, 6rem);
   overflow: hidden;
@@ -257,7 +257,7 @@
   counter-reset: landing-principle;
 }
 
-.landing-page .landing-principles > div {
+.totem-public-landing .landing-principles > div {
   position: relative;
   grid-template-columns: 2.75rem minmax(0, 1fr);
   grid-template-rows: auto auto;
@@ -267,7 +267,7 @@
   counter-increment: landing-principle;
 }
 
-.landing-page .landing-principles > div::before {
+.totem-public-landing .landing-principles > div::before {
   grid-row: 1 / span 2;
   align-self: start;
   color: var(--color-coral-on-ink);
@@ -278,19 +278,19 @@
   letter-spacing: 0.08em;
 }
 
-.landing-page .landing-principles strong,
-.landing-page .landing-principles span {
+.totem-public-landing .landing-principles strong,
+.totem-public-landing .landing-principles span {
   grid-column: 2;
 }
 
-.landing-page .landing-principles strong {
+.totem-public-landing .landing-principles strong {
   color: var(--color-on-ink);
   font-family: var(--font-editorial);
   font-size: var(--text-lg);
   line-height: 1.25;
 }
 
-.landing-page .landing-principles span {
+.totem-public-landing .landing-principles span {
   margin-top: var(--space-2);
   color: var(--color-on-ink-muted);
   font-size: var(--text-base);
@@ -299,22 +299,22 @@
 
 /* Shared public section frame */
 
-.landing-page .landing-section,
-.landing-page .landing-forms,
-.landing-page .landing-forms-head {
+.totem-public-landing .landing-section,
+.totem-public-landing .landing-forms,
+.totem-public-landing .landing-forms-head {
   width: min(calc(100% - 2rem), 92rem);
   margin-inline: auto;
 }
 
-.landing-page .landing-section {
+.totem-public-landing .landing-section {
   position: relative;
   gap: clamp(2.5rem, 6vw, 6rem);
   padding: clamp(4.5rem, 8vw, 7.5rem) clamp(1.25rem, 5vw, 4.75rem);
   border-top: 0;
 }
 
-.landing-page .landing-section .page-eyebrow,
-.landing-page .landing-forms-head .page-eyebrow {
+.totem-public-landing .landing-section .page-eyebrow,
+.totem-public-landing .landing-forms-head .page-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
@@ -322,8 +322,8 @@
   color: var(--color-action-hover);
 }
 
-.landing-page .landing-section .page-eyebrow::before,
-.landing-page .landing-forms-head .page-eyebrow::before {
+.totem-public-landing .landing-section .page-eyebrow::before,
+.totem-public-landing .landing-forms-head .page-eyebrow::before {
   width: 1.5rem;
   height: 2px;
   flex: 0 0 auto;
@@ -331,19 +331,19 @@
   content: '';
 }
 
-.landing-page :is(.landing-section, .landing-forms-head) h2 {
+.totem-public-landing :is(.landing-section, .landing-forms-head) h2 {
   margin-top: var(--space-4);
   text-wrap: balance;
 }
 
-.landing-page .landing-section > div > p,
-.landing-page .landing-research > p {
+.totem-public-landing .landing-section > div > p,
+.totem-public-landing .landing-research > p {
   margin-top: var(--space-5);
 }
 
 /* Product proof */
 
-.landing-page .landing-feature-proof {
+.totem-public-landing .landing-feature-proof {
   align-items: center;
   margin-bottom: clamp(2rem, 5vw, 4rem);
   border: 1px solid var(--color-border);
@@ -352,9 +352,9 @@
   box-shadow: var(--shadow-xs);
 }
 
-.landing-page .landing-product-copy::before,
-.landing-page .landing-pricing-heading::before,
-.landing-page .landing-roadmap-heading::before {
+.totem-public-landing .landing-product-copy::before,
+.totem-public-landing .landing-pricing-heading::before,
+.totem-public-landing .landing-roadmap-heading::before {
   display: block;
   margin-bottom: var(--space-5);
   color: var(--color-text-muted);
@@ -365,26 +365,26 @@
   letter-spacing: 0.12em;
 }
 
-.landing-page .landing-product-copy::before {
+.totem-public-landing .landing-product-copy::before {
   content: '01';
 }
 
-.landing-page .landing-pricing-heading::before {
+.totem-public-landing .landing-pricing-heading::before {
   content: '02';
 }
 
-.landing-page .landing-roadmap-heading::before {
+.totem-public-landing .landing-roadmap-heading::before {
   color: var(--color-on-ink-muted);
   content: '03';
 }
 
-.landing-page .landing-product-benefits {
+.totem-public-landing .landing-product-benefits {
   margin-top: var(--space-8);
   border-block: 0;
   counter-reset: product-benefit;
 }
 
-.landing-page .landing-product-benefits li {
+.totem-public-landing .landing-product-benefits li {
   grid-template-columns: 2.5rem minmax(0, 1fr);
   grid-template-rows: auto auto;
   column-gap: var(--space-4);
@@ -392,7 +392,7 @@
   counter-increment: product-benefit;
 }
 
-.landing-page .landing-product-benefits li::before {
+.totem-public-landing .landing-product-benefits li::before {
   grid-row: 1 / span 2;
   align-self: start;
   display: grid;
@@ -408,18 +408,18 @@
   font-weight: 700;
 }
 
-.landing-page .landing-product-benefits strong,
-.landing-page .landing-product-benefits span {
+.totem-public-landing .landing-product-benefits strong,
+.totem-public-landing .landing-product-benefits span {
   grid-column: 2;
 }
 
-.landing-page .landing-product-benefits span {
+.totem-public-landing .landing-product-benefits span {
   margin-top: var(--space-2);
 }
 
 /* Product previews become evidence panels rather than detached mockups. */
 
-.landing-page .landing-product-preview {
+.totem-public-landing .landing-product-preview {
   padding: 0.75rem;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-surface);
@@ -427,33 +427,33 @@
   box-shadow: 0 1.5rem 3.5rem rgb(16 27 51 / 12%);
 }
 
-.landing-page .landing-preview-header {
+.totem-public-landing .landing-preview-header {
   min-height: 3rem;
   padding-inline: var(--space-4);
   border-radius: var(--radius-group) var(--radius-group) 0 0;
 }
 
-.landing-page .landing-preview-body {
+.totem-public-landing .landing-preview-body {
   border-radius: 0 0 var(--radius-group) var(--radius-group);
 }
 
-.landing-page .landing-preview-mini-nav {
+.totem-public-landing .landing-preview-mini-nav {
   background: var(--color-canvas);
 }
 
-.landing-page .landing-next-card {
+.totem-public-landing .landing-next-card {
   border-radius: var(--radius-group);
   background: var(--color-surface);
   box-shadow: var(--shadow-xs);
 }
 
-.landing-page .landing-next-card::after {
+.totem-public-landing .landing-next-card::after {
   width: 3rem;
   height: 3rem;
   background: var(--color-coral-soft);
 }
 
-.landing-page .landing-preview-caption {
+.totem-public-landing .landing-preview-caption {
   display: grid;
   grid-template-columns: 2.75rem minmax(0, 1fr);
   gap: var(--space-4);
@@ -463,7 +463,7 @@
   border-top: 1px solid var(--color-border);
 }
 
-.landing-page .landing-preview-caption::before {
+.totem-public-landing .landing-preview-caption::before {
   color: var(--color-action-hover);
   content: '01';
   font-family: var(--font-editorial);
@@ -472,11 +472,11 @@
   letter-spacing: 0.08em;
 }
 
-.landing-page .landing-lesson-preview .landing-preview-caption::before {
+.totem-public-landing .landing-lesson-preview .landing-preview-caption::before {
   content: '02';
 }
 
-.landing-page .landing-preview-caption h3 {
+.totem-public-landing .landing-preview-caption h3 {
   color: var(--color-text);
   font-family: var(--font-editorial);
   font-size: var(--text-lg);
@@ -484,7 +484,7 @@
   line-height: 1.25;
 }
 
-.landing-page .landing-preview-caption p {
+.totem-public-landing .landing-preview-caption p {
   margin-top: var(--space-2);
   color: var(--color-text-muted);
   font-size: var(--text-base);
@@ -493,18 +493,18 @@
 
 /* Pricing */
 
-.landing-page .landing-pricing {
+.totem-public-landing .landing-pricing {
   align-items: start;
   background: var(--color-surface-subtle);
   box-shadow: 0 0 0 100vmax var(--color-surface-subtle);
   clip-path: inset(0 -100vmax);
 }
 
-.landing-page .landing-pricing-offer {
+.totem-public-landing .landing-pricing-offer {
   align-self: stretch;
 }
 
-.landing-page
+.totem-public-landing
   .landing-pricing-offer
   > :is(.landing-pricing-notice, .landing-pricing-note) {
   position: relative;
@@ -516,7 +516,7 @@
   box-shadow: var(--shadow-xs);
 }
 
-.landing-page .landing-pricing-notice::before {
+.totem-public-landing .landing-pricing-notice::before {
   display: block;
   width: 2.25rem;
   height: 0.25rem;
@@ -525,12 +525,12 @@
   content: '';
 }
 
-.landing-page .landing-pricing-tiers {
+.totem-public-landing .landing-pricing-tiers {
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: var(--space-4);
 }
 
-.landing-page .landing-pricing-tier {
+.totem-public-landing .landing-pricing-tier {
   position: relative;
   overflow: hidden;
   min-height: 100%;
@@ -540,7 +540,7 @@
   box-shadow: var(--shadow-xs);
 }
 
-.landing-page .landing-pricing-tier::before {
+.totem-public-landing .landing-pricing-tier::before {
   position: absolute;
   top: 0;
   right: 0;
@@ -550,23 +550,23 @@
   content: '';
 }
 
-.landing-page .landing-pricing-credits {
+.totem-public-landing .landing-pricing-credits {
   margin-top: var(--space-4);
 }
 
-.landing-page .landing-pricing-figures {
+.totem-public-landing .landing-pricing-figures {
   margin-top: var(--space-4);
   padding-top: var(--space-4);
   border-top: 1px solid var(--color-border);
 }
 
-.landing-page .landing-pricing-actions .ui-action {
+.totem-public-landing .landing-pricing-actions .ui-action {
   min-height: 3rem;
 }
 
 /* Roadmap */
 
-.landing-page .landing-roadmap {
+.totem-public-landing .landing-roadmap {
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(3rem, 6vw, 5rem);
   width: min(calc(100% - 2rem), 92rem);
@@ -575,43 +575,43 @@
   box-shadow: 0 0 0 100vmax var(--color-ink-surface);
 }
 
-.landing-page .landing-roadmap-heading {
+.totem-public-landing .landing-roadmap-heading {
   max-width: 52rem;
 }
 
-.landing-page .landing-roadmap-timeline {
+.totem-public-landing .landing-roadmap-timeline {
   gap: 0;
 }
 
-.landing-page .landing-roadmap-timeline li > div {
+.totem-public-landing .landing-roadmap-timeline li > div {
   min-width: 0;
 }
 
-.landing-page .landing-roadmap-timeline li[data-state='current'] > div {
+.totem-public-landing .landing-roadmap-timeline li[data-state='current'] > div {
   border: 1px solid var(--color-line-on-ink);
   border-radius: var(--radius-surface);
   padding: var(--space-5);
   background: var(--color-fill-on-ink);
 }
 
-.landing-page .landing-roadmap-timeline h3 {
+.totem-public-landing .landing-roadmap-timeline h3 {
   max-width: 24ch;
   margin-top: var(--space-2);
 }
 
-.landing-page .landing-roadmap-timeline p {
+.totem-public-landing .landing-roadmap-timeline p {
   max-width: 38ch;
 }
 
 /* Research reads as a publication, with the evidence card beside the claim. */
 
-.landing-page .landing-research {
+.totem-public-landing .landing-research {
   position: relative;
   border-top: 0;
   background: var(--color-surface);
 }
 
-.landing-page .landing-research::before {
+.totem-public-landing .landing-research::before {
   position: absolute;
   top: 0;
   right: clamp(1.25rem, 5vw, 4.75rem);
@@ -621,7 +621,7 @@
   content: '';
 }
 
-.landing-page .landing-research-latest {
+.totem-public-landing .landing-research-latest {
   position: relative;
   overflow: hidden;
   max-width: none;
@@ -633,7 +633,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-.landing-page .landing-research-latest::before {
+.totem-public-landing .landing-research-latest::before {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -643,12 +643,12 @@
   content: '';
 }
 
-.landing-page .landing-research-meta {
+.totem-public-landing .landing-research-meta {
   color: var(--color-action-hover);
   font-size: var(--text-xs) !important;
 }
 
-.landing-page .landing-research-finding {
+.totem-public-landing .landing-research-finding {
   gap: var(--space-3);
   margin-top: var(--space-6);
   border-left-color: var(--color-action);
@@ -656,40 +656,40 @@
   background: var(--color-surface);
 }
 
-.landing-page .landing-research-finding strong,
-.landing-page .landing-research-finding span {
+.totem-public-landing .landing-research-finding strong,
+.totem-public-landing .landing-research-finding span {
   display: block;
 }
 
-.landing-page .landing-research-action {
+.totem-public-landing .landing-research-action {
   gap: var(--space-2);
   justify-self: start;
   text-decoration: none;
 }
 
-.landing-page .landing-research-action::after {
+.totem-public-landing .landing-research-action::after {
   content: '→';
   transition: transform var(--motion-fast) var(--motion-easing);
 }
 
-.landing-page .landing-research-action:hover::after {
+.totem-public-landing .landing-research-action:hover::after {
   transform: translateX(0.2rem);
 }
 
 /* Application */
 
-.landing-page .landing-forms-head {
+.totem-public-landing .landing-forms-head {
   padding: clamp(4.5rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4.75rem) 0;
   background: transparent;
   text-align: left;
 }
 
-.landing-page .landing-forms-head h2 {
+.totem-public-landing .landing-forms-head h2 {
   max-width: 20ch;
   margin-inline: 0;
 }
 
-.landing-page .landing-forms-head + .landing-forms {
+.totem-public-landing .landing-forms-head + .landing-forms {
   gap: clamp(1.5rem, 4vw, 3rem);
   padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4.75rem)
     clamp(5rem, 9vw, 8rem);
@@ -697,7 +697,7 @@
   background: transparent;
 }
 
-.landing-page .landing-form-card {
+.totem-public-landing .landing-form-card {
   position: relative;
   overflow: hidden;
   padding: clamp(1.5rem, 4vw, 2.5rem);
@@ -705,11 +705,11 @@
   box-shadow: var(--shadow-xs);
 }
 
-.landing-page .landing-form-card--primary {
+.totem-public-landing .landing-form-card--primary {
   border: 1px solid var(--color-ink-surface);
 }
 
-.landing-page .landing-form-card--primary::before {
+.totem-public-landing .landing-form-card--primary::before {
   position: absolute;
   top: 0;
   right: 0;
@@ -719,31 +719,31 @@
   content: '';
 }
 
-.landing-page .landing-form-card--secondary {
+.totem-public-landing .landing-form-card--secondary {
   border-color: var(--color-border-strong);
   background: var(--color-surface);
 }
 
-.landing-page .landing-form {
+.totem-public-landing .landing-form {
   margin-top: var(--space-8);
 }
 
-.landing-page .landing-form-card--primary :is(input, textarea) {
+.totem-public-landing .landing-form-card--primary :is(input, textarea) {
   background: var(--color-fill-on-ink);
 }
 
-.landing-page .landing-privacy {
+.totem-public-landing .landing-privacy {
   max-width: 58ch;
 }
 
 /* Footer */
 
-.landing-page .totem-public-shell__footer {
+.totem-public-landing .totem-public-shell__footer {
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
 }
 
-.landing-page .landing-footer {
+.totem-public-landing .landing-footer {
   width: min(100%, 92rem);
   margin-inline: auto;
   padding-inline: clamp(1rem, 4vw, 3rem);
@@ -752,36 +752,36 @@
 /* Responsive composition */
 
 @media (min-width: 48rem) {
-  .landing-page .landing-feature-proof {
+  .totem-public-landing .landing-feature-proof {
     grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   }
 
-  .landing-page .landing-pricing:not(.landing-pricing--tiers) {
+  .totem-public-landing .landing-pricing:not(.landing-pricing--tiers) {
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   }
 
-  .landing-page .landing-forms {
+  .totem-public-landing .landing-forms {
     grid-template-columns: minmax(0, 1.18fr) minmax(19rem, 0.82fr);
   }
 }
 
 @media (min-width: 64rem) {
-  .landing-page .landing-hero {
+  .totem-public-landing .landing-hero {
     grid-template-columns: minmax(0, 0.96fr) minmax(31.5rem, 1.04fr);
     gap: clamp(4rem, 6vw, 5.5rem);
   }
 
-  .landing-page .landing-hero-visual {
+  .totem-public-landing .landing-hero-visual {
     padding: clamp(1.5rem, 2.5vw, 2rem);
   }
 
-  .landing-page .landing-roadmap-timeline {
+  .totem-public-landing .landing-roadmap-timeline {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     column-gap: clamp(1.5rem, 3vw, 3rem);
     padding-top: 0.25rem;
   }
 
-  .landing-page .landing-roadmap-timeline::before {
+  .totem-public-landing .landing-roadmap-timeline::before {
     top: 0.7rem;
     right: calc(16.666% - 0.5rem);
     bottom: auto;
@@ -790,7 +790,7 @@
     height: 1px;
   }
 
-  .landing-page .landing-roadmap-timeline li {
+  .totem-public-landing .landing-roadmap-timeline li {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 1.25rem minmax(0, 1fr);
@@ -798,19 +798,22 @@
     padding: 0;
   }
 
-  .landing-page .landing-roadmap-marker {
+  .totem-public-landing .landing-roadmap-marker {
     margin: 0;
   }
 
-  .landing-page .landing-roadmap-timeline li > div {
+  .totem-public-landing .landing-roadmap-timeline li > div {
     padding-right: var(--space-5);
   }
 
-  .landing-page .landing-roadmap-timeline li[data-state='current'] > div {
+  .totem-public-landing
+    .landing-roadmap-timeline
+    li[data-state='current']
+    > div {
     padding: var(--space-5);
   }
 
-  .landing-page .landing-research {
+  .totem-public-landing .landing-research {
     grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
     grid-template-rows: auto auto auto 1fr;
     column-gap: clamp(3.5rem, 7vw, 7rem);
@@ -818,22 +821,22 @@
     align-items: start;
   }
 
-  .landing-page .landing-research > .page-eyebrow {
+  .totem-public-landing .landing-research > .page-eyebrow {
     grid-column: 1;
     grid-row: 1;
   }
 
-  .landing-page .landing-research > h2 {
+  .totem-public-landing .landing-research > h2 {
     grid-column: 1;
     grid-row: 2;
   }
 
-  .landing-page .landing-research > p {
+  .totem-public-landing .landing-research > p {
     grid-column: 1;
     grid-row: 3;
   }
 
-  .landing-page .landing-research-rule {
+  .totem-public-landing .landing-research-rule {
     grid-column: 1;
     grid-row: 4;
     align-self: start;
@@ -841,166 +844,166 @@
     margin-block: var(--space-8) 0;
   }
 
-  .landing-page .landing-research-latest {
+  .totem-public-landing .landing-research-latest {
     grid-column: 2;
     grid-row: 1 / span 4;
   }
 }
 
 @media (max-width: 63.99rem) {
-  .landing-page .landing-roadmap {
+  .totem-public-landing .landing-roadmap {
     width: 100%;
     padding-inline: clamp(1.25rem, 5vw, 4.75rem);
   }
 }
 
 @media (max-width: 47.99rem) {
-  .landing-page .totem-public-shell__navigation {
+  .totem-public-landing .totem-public-shell__navigation {
     background: var(--color-surface);
     backdrop-filter: none;
   }
 
-  .landing-page .landing-header {
+  .totem-public-landing .landing-header {
     padding-inline: var(--space-4);
   }
 
-  .landing-page .landing-brand {
+  .totem-public-landing .landing-brand {
     font-size: var(--text-lg);
   }
 
-  .landing-page .landing-brand img {
+  .totem-public-landing .landing-brand img {
     width: 2rem;
     height: 2rem;
   }
 
-  .landing-page .landing-mobile-navigation nav {
+  .totem-public-landing .landing-mobile-navigation nav {
     right: var(--space-3);
     left: var(--space-3);
     box-shadow: var(--shadow-md);
   }
 
-  .landing-page .landing-hero,
-  .landing-page .landing-principles,
-  .landing-page .landing-section,
-  .landing-page .landing-forms,
-  .landing-page .landing-forms-head {
+  .totem-public-landing .landing-hero,
+  .totem-public-landing .landing-principles,
+  .totem-public-landing .landing-section,
+  .totem-public-landing .landing-forms,
+  .totem-public-landing .landing-forms-head {
     width: min(calc(100% - 1rem), 92rem);
   }
 
-  .landing-page .landing-hero {
+  .totem-public-landing .landing-hero {
     padding: 3rem var(--space-5);
   }
 
-  .landing-page .landing-hero::before {
+  .totem-public-landing .landing-hero::before {
     left: var(--space-5);
   }
 
-  .landing-page .landing-hero h1 {
+  .totem-public-landing .landing-hero h1 {
     font-size: clamp(2.45rem, 13vw, 3.35rem);
   }
 
-  .landing-page .landing-actions {
+  .totem-public-landing .landing-actions {
     align-items: stretch;
     flex-direction: column;
     gap: var(--space-3);
   }
 
-  .landing-page .landing-updates-action {
+  .totem-public-landing .landing-updates-action {
     justify-content: center;
   }
 
-  .landing-page .landing-hero-visual {
+  .totem-public-landing .landing-hero-visual {
     padding: var(--space-3);
   }
 
-  .landing-page .landing-hero-visual::before {
+  .totem-public-landing .landing-hero-visual::before {
     display: none;
   }
 
-  .landing-page .landing-principles {
+  .totem-public-landing .landing-principles {
     margin-bottom: var(--space-10);
   }
 
-  .landing-page .landing-principles > div {
+  .totem-public-landing .landing-principles > div {
     min-height: auto;
     padding: var(--space-6) var(--space-5);
   }
 
-  .landing-page .landing-section {
+  .totem-public-landing .landing-section {
     padding: 4rem var(--space-5);
   }
 
-  .landing-page .landing-feature-proof {
+  .totem-public-landing .landing-feature-proof {
     margin-bottom: var(--space-5);
   }
 
-  .landing-page .landing-product-preview {
+  .totem-public-landing .landing-product-preview {
     padding: var(--space-2);
   }
 
-  .landing-page .landing-preview-header {
+  .totem-public-landing .landing-preview-header {
     align-items: flex-start;
     flex-direction: column;
     gap: var(--space-2);
     padding-block: var(--space-3);
   }
 
-  .landing-page .landing-preview-header > span:last-child {
+  .totem-public-landing .landing-preview-header > span:last-child {
     align-self: flex-start;
   }
 
-  .landing-page .landing-preview-body {
+  .totem-public-landing .landing-preview-body {
     grid-template-columns: 2.5rem minmax(0, 1fr);
   }
 
-  .landing-page .landing-preview-content,
-  .landing-page .landing-lesson-preview .landing-preview-body {
+  .totem-public-landing .landing-preview-content,
+  .totem-public-landing .landing-lesson-preview .landing-preview-body {
     padding: var(--space-4);
   }
 
-  .landing-page .landing-preview-caption {
+  .totem-public-landing .landing-preview-caption {
     grid-template-columns: 2rem minmax(0, 1fr);
     gap: var(--space-3);
     padding-inline: var(--space-3);
   }
 
-  .landing-page .landing-pricing-tiers {
+  .totem-public-landing .landing-pricing-tiers {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .landing-page .landing-roadmap {
+  .totem-public-landing .landing-roadmap {
     width: 100%;
     padding: 4.5rem var(--space-5);
   }
 
-  .landing-page .landing-research::before {
+  .totem-public-landing .landing-research::before {
     right: var(--space-5);
     left: var(--space-5);
   }
 
-  .landing-page .landing-forms-head {
+  .totem-public-landing .landing-forms-head {
     padding: 4rem var(--space-5) 0;
   }
 
-  .landing-page .landing-forms-head + .landing-forms {
+  .totem-public-landing .landing-forms-head + .landing-forms {
     padding: var(--space-8) var(--space-5) 4.5rem;
   }
 }
 
 @media (max-width: 23rem) {
-  .landing-page .landing-preview-mini-nav {
+  .totem-public-landing .landing-preview-mini-nav {
     display: none;
   }
 
-  .landing-page .landing-preview-body {
+  .totem-public-landing .landing-preview-body {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .landing-page .landing-primary-navigation a::after,
-  .landing-page .landing-updates-action::after,
-  .landing-page .landing-research-action::after {
+  .totem-public-landing .landing-primary-navigation a::after,
+  .totem-public-landing .landing-updates-action::after,
+  .totem-public-landing .landing-research-action::after {
     transition: none;
   }
 }
