@@ -1502,7 +1502,7 @@ export function buildRunPasses(input: {
  * implies. The test still reads the minimum from the policy rather than
  * trusting this constant.
  */
-const DIRECTION_MUTANT_TARGET = 55;
+const DIRECTION_MUTANT_TARGET = 63;
 
 /**
  * The subset's mutants, plus enough direction-bearing ones to reach the target.
@@ -1512,6 +1512,21 @@ const DIRECTION_MUTANT_TARGET = 55;
  * was never a missing pool: `mutation-hints.v1.json` already declares 76
  * deletions and 28 inversions, frozen and paid for with the pool. It was the
  * selection.
+ *
+ * The target is 62 rather than 55 because the number that matters is not how
+ * many cells are *bought* but how many *report*. `mutation-direction-violations`
+ * declares `minimumDenominator: 50`, and a run below it does not fail the gate —
+ * it cannot state it, which is a paid run with no verdict. Unusable cells on the
+ * mutant passes measured 7.5 % and 8.3 % on 30 and 31 August, so 55 selected
+ * yields about 50.6 usable: the exact edge, where losing one more cell decides
+ * the verdict.
+ *
+ * 63, not 62: the margin is stated as "still 50 after losing a fifth of the
+ * pass", and 62 x 0.8 = 49.6, which floors to 49. One cell short of the
+ * property it was chosen for. 63 x 0.8 = 50.4 holds. The eight extra cells cost
+ * roughly 0.2 USD of real spend, against a run of about 6 that would otherwise
+ * risk concluding nothing — and the test below reads the minimum from the
+ * policy, so this cannot drift back without saying so.
  *
  * Order is deterministic — a stable sort on the corpus identifier, itself a
  * hash of the unit id — so the same pool yields the same mutants on every run
