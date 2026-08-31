@@ -224,10 +224,14 @@ test('app — credits', async ({ page }) => {
  * ne se déduit pas d'un silence. La description est la même dans les deux
  * états, donc une seconde capture cochée n'ajouterait que la coche.
  *
- * Pleine page plutôt que cadrée sur la case : le reste de l'écran n'a pas
- * davantage de référence, et une capture qui s'arrête au bloc consentement
- * laisserait le voisinage — c'est-à-dire ce qui peut le pousser hors de l'écran
- * — sans surveillance.
+ * Cadrée sur `.profile-groups`, et non en pleine page. La première version
+ * l'était : en 390 px, la barre de navigation — `position: fixed` — se pose au
+ * milieu d'une capture pleine page et recouvre deux lignes de la description
+ * du consentement. La page n'est pas cassée, c'est un artefact de cadrage ;
+ * mais une référence qui masque justement le texte RGPD ne surveille pas ce
+ * qu'on l'a créée pour surveiller. Le cadre retenu porte les quatre cartes de
+ * l'écran, et la barre reste couverte par les autres références de l'espace
+ * apprenant.
  */
 test('app — profile', async ({ page }) => {
   await signIn(page);
@@ -243,7 +247,7 @@ test('app — profile', async ({ page }) => {
     ),
   ).toBeVisible();
   await settle(page);
-  await expect(page).toHaveScreenshot('profile.png', { fullPage: true });
+  await expect(page.locator('.profile-groups')).toHaveScreenshot('profile.png');
 });
 
 test('app — notes', async ({ page }) => {
