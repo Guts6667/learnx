@@ -1591,7 +1591,7 @@ describe('direction profile', () => {
     const { passes } = directionPlan();
 
     expect(passes.map((pass) => pass.label)).toEqual([
-      'lignes de base des inversions',
+      'lignes de base des cas mutés',
       'mutants à direction',
     ]);
     for (const pass of passes) expect(pass.repetitions).toBe(1);
@@ -1615,7 +1615,7 @@ describe('direction profile', () => {
   it('counts its inversions, which is what a missing baseline would break', () => {
     const { passes, plan } = directionPlan();
     const baselinePass = passes.find(
-      (pass) => pass.label === 'lignes de base des inversions',
+      (pass) => pass.label === 'lignes de base des cas mutés',
     );
     const mutantPass = passes.find(
       (pass) => pass.label === 'mutants à direction',
@@ -1657,8 +1657,20 @@ describe('direction profile', () => {
       (mutant) => mutant.kind === 'FACT_INVERSION',
     ).length;
     expect(inversions).toBeGreaterThan(0);
-    // The baselines bought are exactly the ones the inversions need.
+
+    // Two requirements on the same set, and both matter for a different reason.
+    // The inversions need a reference level or they cannot violate at all; every
+    // other selected case needs one so the run can also see whether the grader
+    // became harsh on undamaged work. Buying only the first set is how a prompt
+    // that punishes real students would pass this run unnoticed.
+    const baselineCaseIds = new Set(baselines.map((b) => b.caseId));
+    for (const mutant of mutants) {
+      expect(baselineCaseIds.has(mutant.caseId)).toBe(true);
+    }
     expect(baselines.length).toBe(
+      new Set(mutants.map((mutant) => mutant.caseId)).size,
+    );
+    expect(baselines.length).toBeGreaterThan(
       new Set(
         mutants
           .filter((mutant) => mutant.kind === 'FACT_INVERSION')
