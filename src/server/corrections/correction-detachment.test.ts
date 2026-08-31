@@ -15,8 +15,15 @@ function correction(
   return {
     activityType: 'writing',
     attempts: [
-      { id: 'attempt-1', rawOutput: { content: 'brut' } },
-      { id: 'attempt-2', rawOutput: null },
+      {
+        id: 'attempt-1',
+        rawOutput: { content: 'brut' },
+        // La tentative porte sa propre copie du jugement (V4.5-217).
+        structuredResult: {
+          criteria: [{ evidenceQuotes: ['j’ai écrit ceci'], key: 'clarity' }],
+        },
+      },
+      { id: 'attempt-2', rawOutput: null, structuredResult: null },
     ],
     id: 'correction-1',
     modelId: 'anthropic/claude-sonnet-4.6',
@@ -111,7 +118,7 @@ describe('détachement d’une correction (V4.5-168)', () => {
         { confidence: 0.4, evidenceQuotes: [], key: 'facts', level: 'ABSENT' },
       ],
     });
-    expect(plan.attemptIds).toEqual(['attempt-1']);
+    expect(plan.attempts.map((attempt) => attempt.id)).toEqual(['attempt-1']);
   });
 
   it('ne porte aucun lien vers la correction ni vers le compte', () => {
@@ -124,8 +131,62 @@ describe('détachement d’une correction (V4.5-168)', () => {
     expect(JSON.stringify(plan.sample)).not.toContain('correction-1');
   });
 
-  it('ne réécrit que les tentatives qui portent encore une sortie brute', () => {
+  it('ne réécrit que les tentatives qui portent encore quelque chose', () => {
     const plan = planDetachment(correction(), () => 'pseudo-1', AT);
-    expect(plan.attemptIds).toEqual(['attempt-1']);
+    expect(plan.attempts.map((attempt) => attempt.id)).toEqual(['attempt-1']);
+  });
+
+  it('retire aussi les citations du jugement propre à la tentative', () => {
+    // V4.5-217. La correction était détachée et les mots de l'apprenant
+    // restaient à côté, dans la ligne qui l'a produite : le détachement ne
+    // lisait que `rawOutput`. Une correction dont on a retiré les citations
+    // pendant que sa tentative les garde n'est pas détachée, elle en a l'air.
+    const plan = planDetachment(correction(), () => 'pseudo-1', AT);
+
+    expect(plan.attempts[0]?.structuredResult).toEqual({
+      criteria: [{ evidenceQuotes: [], key: 'clarity' }],
+    });
+  });
+
+  it('retire les citations de la tentative même sans consentement', () => {
+    // Le consentement décide de ce qui SURVIT dans l'échantillon, jamais de ce
+    // qui est retiré de la correction : les deux branches retirent les mêmes
+    // mots des mêmes lignes.
+    const plan = planDetachment(
+      correction({ reuseConsent: false }),
+      () => 'pseudo-1',
+      AT,
+    );
+
+    expect(plan.sample).toBeNull();
+    expect(plan.attempts[0]?.structuredResult).toEqual({
+      criteria: [{ evidenceQuotes: [], key: 'clarity' }],
+    });
+  });
+
+  it('inclut une tentative qui n’a qu’un jugement, sans sortie brute', () => {
+    // Filtrer sur `rawOutput` seul la laissait dehors avec ses citations.
+    const plan = planDetachment(
+      correction({
+        attempts: [
+          {
+            id: 'attempt-3',
+            rawOutput: null,
+            structuredResult: {
+              criteria: [{ evidenceQuotes: ['encore mes mots'] }],
+            },
+          },
+        ],
+      }),
+      () => 'pseudo-1',
+      AT,
+    );
+
+    expect(plan.attempts).toEqual([
+      {
+        id: 'attempt-3',
+        structuredResult: { criteria: [{ evidenceQuotes: [] }] },
+      },
+    ]);
   });
 });

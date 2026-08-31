@@ -94,7 +94,9 @@ const repository: RetentionRepository = {
       orderBy: { createdAt: 'asc' },
       select: {
         activityType: true,
-        attempts: { select: { id: true, rawOutput: true } },
+        attempts: {
+          select: { id: true, rawOutput: true, structuredResult: true },
+        },
         id: true,
         modelId: true,
         promptSnapshot: true,
@@ -149,10 +151,21 @@ const repository: RetentionRepository = {
             },
           });
         }
-        if (plan.attemptIds.length > 0) {
-          await transaction.aiCorrectionAttempt.updateMany({
-            data: { rawOutput: Prisma.DbNull },
-            where: { id: { in: plan.attemptIds } },
+        // Une écriture par tentative, et non un `updateMany` : chacune porte
+        // son propre jugement, donc sa propre valeur à écrire (V4.5-217).
+        // Vider `rawOutput` en lot laissait les citations dans
+        // `structuredResult`, à côté d'une correction qu'on venait de
+        // détacher.
+        for (const attempt of plan.attempts) {
+          await transaction.aiCorrectionAttempt.update({
+            data: {
+              rawOutput: Prisma.DbNull,
+              structuredResult:
+                attempt.structuredResult === null
+                  ? Prisma.DbNull
+                  : (attempt.structuredResult as never),
+            },
+            where: { id: attempt.id },
           });
         }
         await transaction.aiCorrection.update({
