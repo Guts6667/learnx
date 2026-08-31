@@ -478,8 +478,37 @@ celles qui ont lieu de toute façon.
 > règle, c'est-à-dire créée ou rebasée après la fusion de #190. Observé sur une
 > branche plus ancienne, il ne mesure pas la même chose — et s'il crée quand
 > même un déploiement, ce n'est pas que la règle est fausse, c'est qu'elle est
-> lue ailleurs qu'on ne croyait. Noter laquelle des deux situations on observe,
-> sans quoi le relevé ne veut rien dire.
+> lue ailleurs qu'on ne croyait.
+
+**Trois lectures possibles, et ce qui les distingue.** La décision
+`deploymentEnabled` se prend **avant** la création du déploiement. Vercel peut
+donc lire `vercel.json` sur la branche poussée, ou sur la branche de production,
+ou ne pas appliquer la règle du tout — et les trois se ressemblent si l'on
+n'observe qu'un seul cas.
+
+| | Branche antérieure à #190 | Branche postérieure à #190 |
+|---|---|---|
+| **Avant** la promotion | A : déploie · B : déploie · C : déploie | A : **ne déploie pas** · B : déploie · C : déploie |
+| **Après** la promotion | A : déploie · B : **ne déploie pas** · C : déploie | A, B : **ne déploient pas** · C : déploie |
+
+- **A — la règle est lue sur la branche poussée.** Signature : dès maintenant,
+  une branche fraîche cesse de déployer pendant qu'une ancienne continue. Le
+  quota se détend au fil du renouvellement des branches.
+- **B — la règle est lue sur `main`, la branche de production.** Signature :
+  aucune différence entre branche ancienne et fraîche aujourd'hui, et **tout**
+  s'arrête d'un coup à la promotion. Conséquence à ne pas rater : le quota reste
+  tendu jusqu'à la promotion, quelle que soit la fraîcheur des branches, donc la
+  consigne de grouper les poussées reste entière jusque-là.
+- **C — la règle n'est pas appliquée.** Signature : une branche fraîche déploie
+  encore **après** la promotion. À investiguer alors, dans cet ordre : la clé
+  est-elle acceptée par le projet, un réglage du dashboard la surcharge-t-il, et
+  le résolveur de Vercel traite-t-il `**` comme minimatch le fait.
+
+**Le relevé discriminant est donc gratuit et immédiat** : comparer, sur les
+poussées qui auront lieu de toute façon, une branche antérieure à #190 et une
+branche postérieure. Si elles se comportent différemment, c'est A et c'est réglé.
+Si elles se comportent pareil, il faut attendre la promotion pour séparer B de C
+— et d'ici là, ne pas conclure que le correctif ne fonctionne pas.
 
 ## 10. La promotion, pas à pas
 
