@@ -64,7 +64,12 @@ function creditsResponse(pending = false) {
  */
 function defaultResponse(path: string): Response {
   if (path === '/api/credits/packs')
-    return jsonResponse({ packs: [], paymentsEnabled: true });
+    return jsonResponse({
+      correctionQuoteCredits: '30',
+      correctionReservationCredits: '45',
+      packs: [],
+      paymentsEnabled: true,
+    });
   if (path === '/api/credits/orders') return jsonResponse({ orders: [] });
   return jsonResponse(creditsResponse());
 }
@@ -418,6 +423,9 @@ describe('CreditsPage — achat de crédits', () => {
     label: 'Découverte',
     labelEn: 'Starter',
     priceMinor: '1500',
+    approximateCorrections: '3',
+    bonusCredits: '-1400',
+    creditsPerEuro: '6',
   };
   const fulfilledOrder = {
     amountMinor: '1500',
@@ -462,7 +470,12 @@ describe('CreditsPage — achat de crédits', () => {
           },
         }),
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: true }),
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '45',
+          packs: [pack],
+          paymentsEnabled: true,
+        }),
     });
 
     render(
@@ -503,7 +516,12 @@ describe('CreditsPage — achat de crédits', () => {
           },
         }),
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: true }),
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '45',
+          packs: [pack],
+          paymentsEnabled: true,
+        }),
     });
 
     render(
@@ -591,7 +609,12 @@ describe('CreditsPage — achat de crédits', () => {
     // ressemble à une panne — et aucun bouton n'invite à un achat impossible.
     stub({
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: false }),
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '45',
+          packs: [pack],
+          paymentsEnabled: false,
+        }),
     });
 
     render(
@@ -630,7 +653,12 @@ describe('CreditsPage — achat de crédits', () => {
         );
       },
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: saleOpen }),
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '45',
+          packs: [pack],
+          paymentsEnabled: saleOpen,
+        }),
     });
 
     render(
@@ -670,7 +698,12 @@ describe('CreditsPage — achat de crédits', () => {
           404,
         ),
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: true }),
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '45',
+          packs: [pack],
+          paymentsEnabled: true,
+        }),
     });
 
     render(
@@ -701,7 +734,12 @@ describe('CreditsPage — achat de crédits', () => {
           500,
         ),
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: true }),
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '45',
+          packs: [pack],
+          paymentsEnabled: true,
+        }),
     });
 
     render(
@@ -779,7 +817,12 @@ describe('CreditsPage — achat de crédits', () => {
           resource: { checkout: { correctionSuspended: false, orderId: 'o' } },
         }),
       '/api/credits/packs': () =>
-        jsonResponse({ packs: [pack], paymentsEnabled: true }),
+        jsonResponse({
+          correctionQuoteCredits: '30',
+          correctionReservationCredits: '45',
+          packs: [pack],
+          paymentsEnabled: true,
+        }),
     });
 
     render(

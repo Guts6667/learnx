@@ -1,3 +1,8 @@
+import {
+  CORRECTION_QUOTE_CREDITS,
+  CORRECTION_RESERVATION_CREDITS,
+  packFigures,
+} from '../../maintenance/credit-pack-seed.js';
 import { Hono } from 'hono';
 
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
@@ -57,7 +62,16 @@ export function createPublicCatalogueApp(
     context.header('cache-control', 'public, max-age=300');
 
     return context.json({
+      // The same figures as the authenticated route, from the same source, so
+      // the price seen before signing up is the price met after — including
+      // the rate and the bonus, not only the amount (V4.5-212).
+      correctionQuoteCredits: CORRECTION_QUOTE_CREDITS.toString(),
+      correctionReservationCredits: CORRECTION_RESERVATION_CREDITS.toString(),
       packs: packs.map((pack) => ({
+        approximateCorrections:
+          packFigures(pack).approximateCorrections.toString(),
+        bonusCredits: packFigures(pack).bonusCredits.toString(),
+        creditsPerEuro: packFigures(pack).creditsPerEuro.toString(),
         // Minor units as decimal strings, as everywhere else in this API: a
         // price through a JSON number is a rounding bug waiting for a large
         // enough amount.

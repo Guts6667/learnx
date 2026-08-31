@@ -165,12 +165,19 @@ describe('contrats de paiement', () => {
  */
 describe('contrats d’achat de crédits', () => {
   const pack = {
+    approximateCorrections: '0',
+    bonusCredits: '-1490',
     credits: '10',
+    creditsPerEuro: '0',
     currency: 'EUR',
     key: 'starter',
     label: 'Découverte',
     labelEn: 'Starter',
     priceMinor: '1500',
+  };
+  const shared = {
+    correctionQuoteCredits: '30',
+    correctionReservationCredits: '45',
   };
   const order = {
     amountMinor: '1500',
@@ -185,6 +192,7 @@ describe('contrats d’achat de crédits', () => {
   it('accepte la forme livrée du catalogue et des commandes', () => {
     expect(
       z.safeParse(creditPacksResponseSchema, {
+        ...shared,
         packs: [pack],
         paymentsEnabled: true,
       }).success,
@@ -192,7 +200,8 @@ describe('contrats d’achat de crédits', () => {
     // L'état de la vente n'est pas optionnel : un écran qui le devine quand il
     // manque devinerait « ouverte », et proposerait un achat qui échoue.
     expect(
-      z.safeParse(creditPacksResponseSchema, { packs: [pack] }).success,
+      z.safeParse(creditPacksResponseSchema, { ...shared, packs: [pack] })
+        .success,
     ).toBe(false);
 
     // Le libellé anglais non plus : servi à côté du français pour qu'un seul
@@ -203,6 +212,7 @@ describe('contrats d’achat de crédits', () => {
     );
     expect(
       z.safeParse(creditPacksResponseSchema, {
+        ...shared,
         packs: [frenchOnly],
         paymentsEnabled: true,
       }).success,

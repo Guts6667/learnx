@@ -106,3 +106,53 @@ export async function seedCreditPacks(
 
   return { deactivated, seeded };
 }
+
+/**
+ * The policy constants the screens need, derived here and served rather than
+ * computed client-side (V4.5-212).
+ *
+ * `credits-surfaces.test.ts` forbids the learner screen any arithmetic on
+ * `priceMinor` — a figure about money derived in two places is a figure that
+ * disagrees with itself eventually. So the rate, the bonus and the capacity
+ * are worked out once, on the server, from the same numbers the grid is made
+ * of.
+ *
+ * The calibration document is already at version 1.1.0. The day a correction
+ * stops costing 30 credits, a divisor living in the screen would leave three
+ * surfaces announcing "environ 29 corrections" with nothing going red.
+ */
+
+/** Credits per euro at parity; the larger tiers pay more (§7). */
+const PARITY_CREDITS_PER_EURO = 100n;
+
+/** What a correction is quoted at, and what it reserves (§7). */
+export const CORRECTION_QUOTE_CREDITS = 30n;
+export const CORRECTION_RESERVATION_CREDITS = 45n;
+
+export interface PackFigures {
+  /** Credits beyond parity for this price. Zero at the entry tier. */
+  bonusCredits: bigint;
+  /** Credits per euro: 100, 110, 125. Exact, and checkable on the card. */
+  creditsPerEuro: bigint;
+  /**
+   * Corrections at the *quoted* price, floored.
+   *
+   * Approximate on purpose, and the screens must say so: a correction reserves
+   * 45 and settles somewhere below it, so this is a median-shaped figure. The
+   * calibration document publishes the same number as "capacité médiane
+   * annoncée" beside a "capacité prudente" of roughly two thirds.
+   */
+  approximateCorrections: bigint;
+}
+
+export function packFigures(pack: {
+  credits: bigint;
+  priceMinor: bigint;
+}): PackFigures {
+  const euros = pack.priceMinor / 100n;
+  return {
+    approximateCorrections: pack.credits / CORRECTION_QUOTE_CREDITS,
+    bonusCredits: pack.credits - euros * PARITY_CREDITS_PER_EURO,
+    creditsPerEuro: pack.credits / euros,
+  };
+}

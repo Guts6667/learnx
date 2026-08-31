@@ -1,8 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import {
+  CORRECTION_QUOTE_CREDITS,
+  CORRECTION_RESERVATION_CREDITS,
   CREDIT_PACK_GRID,
   ENTRY_TIER_PACK_KEY,
+  packFigures,
   seedCreditPacks,
   type CreditPackSeedPorts,
 } from './credit-pack-seed';
@@ -105,5 +108,36 @@ describe('grille des paliers (V4.5-212)', () => {
     expect(entry?.priceMinor).toBe(
       prices.reduce((lowest, price) => (price < lowest ? price : lowest)),
     );
+  });
+});
+
+describe('chiffres servis plutôt que calculés par l’écran (V4.5-212)', () => {
+  it('donne le taux exact des trois paliers', () => {
+    // Vérifiable sur la carte : 880 crédits pour 8 €, c'est 110 par euro.
+    // Jamais une remise — le prix unitaire ne bouge pas.
+    expect(
+      CREDIT_PACK_GRID.map((pack) => packFigures(pack).creditsPerEuro),
+    ).toEqual([100n, 110n, 125n]);
+  });
+
+  it('donne le bonus comme un écart à la parité, nul au palier d’entrée', () => {
+    expect(
+      CREDIT_PACK_GRID.map((pack) => packFigures(pack).bonusCredits),
+    ).toEqual([0n, 80n, 400n]);
+  });
+
+  it('donne une capacité approchée, jamais arrondie vers le haut', () => {
+    // 2000 / 30 = 66,67 → 66. Annoncer 67 promettrait une correction que le
+    // solde ne paie pas, et la capacité est déjà une médiane : arrondir dans
+    // le sens généreux ajoute une promesse à une estimation.
+    expect(
+      CREDIT_PACK_GRID.map((pack) => packFigures(pack).approximateCorrections),
+    ).toEqual([10n, 29n, 66n]);
+  });
+
+  it('énonce le devis et la réservation une seule fois', () => {
+    // La note partagée sous la grille les cite littéralement.
+    expect(CORRECTION_QUOTE_CREDITS).toBe(30n);
+    expect(CORRECTION_RESERVATION_CREDITS).toBe(45n);
   });
 });
