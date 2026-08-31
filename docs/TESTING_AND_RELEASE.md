@@ -304,9 +304,44 @@ dans la revue, jamais par réflexe pour faire passer une suite rouge.
 
 - JavaScript initial ≤ 125 kB gzip ;
 - CSS initial ≤ 25 kB gzip ;
+- **trajet ≤ 190 kB gzip de JavaScript, 24 kB de CSS** (voir ci-dessous) ;
 - plus gros chunk lazy et précache sous les seuils versionnés du script bundle ;
 - 0 vulnérabilité haute/critique ;
 - 0 dette P0/P1 ; chaque P2 a owner, impact et cible.
+
+### Le budget de trajet, et ce qu'il remplace
+
+Le gate mesure **ce qu'une visite réelle télécharge** : la fermeture initiale,
+plus les morceaux des pages effectivement traversées — arrivée, leçon, exercice
+— comptés une seule fois. Mesuré à 178 796 octets gzip le 31 août 2026, plafond
+à 190 000, soit environ 6 % : de quoi loger une fonctionnalité sans repasser par
+un arbitrage, trop peu pour qu'une page entière s'y glisse sans qu'on le
+remarque.
+
+Il remplace l'ancien diagnostic « Total JavaScript », qui additionnait **tout**
+ce que le build émet. Ce nombre-là grossissait à chaque route découpée en
+morceau différé — c'est-à-dire chaque fois que le découpage s'améliorait — et
+comptait des pages qu'aucun visiteur ne charge. Il punissait le travail qu'il
+était censé encourager, il était rouge en permanence, et un nombre rouge en
+permanence cesse d'être lu.
+
+La différence se voit dans les chiffres : l'ancien total dépassait 300 kB, le
+trajet réel en fait 179.
+
+Deux propriétés valent d'être connues :
+
+- **découper une route ne bouge pas ce nombre** tant que la route n'est pas sur
+  le trajet. Le budget ne s'oppose donc plus au découpage ;
+- **il bloque**, là où le total ne faisait qu'avertir. Un avertissement que
+  personne ne lit n'est pas un budget.
+
+Le trajet est décrit dans `quality/v4-1-baseline.json`, sous
+`bundle.journey.modules`. Si l'un de ces modules disparaît du manifeste — page
+renommée, ou repliée dans un autre morceau — **le gate échoue en le disant**
+plutôt que de mesurer un trajet amputé en silence.
+
+Les budgets initial et plus-gros-morceau sont inchangés : V4.5-182 a prouvé leur
+valeur, et ce sont eux qui protègent le premier affichage.
 
 ## Cibler une base autre que celle du `.env`
 

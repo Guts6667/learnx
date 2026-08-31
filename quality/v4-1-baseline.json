@@ -58,18 +58,26 @@
       "rebaselinedAt": "2026-08-29",
       "rebaselineReason": "V4.2 ships four font files on purpose: DM Sans 600/700, which the stylesheet already asked for and font-synthesis: none prevented the browser from faking, and Plus Jakarta Sans 600/700 as the display face. Measured against the V4.1 baseline this left one entry of headroom, so an unrelated asset would have failed the gate and invited a hurried raise. Re-measured at the V4.2 design commit; the 10% allowance still guards accidental growth from here."
     },
-    "totalDiagnostic": {
-      "scope": "Every JavaScript and CSS file emitted below dist, including dynamic chunks, PWA files and public research assets. This total is NOT what a visitor downloads: it grows mechanically with every route split into a lazy chunk, which is to say every time the splitting improves. The budgets that protect the experience are elsewhere — initial closure and largest lazy chunk — and are unchanged.",
+    "journey": {
+      "name": "arrivée → leçon → exercice",
+      "scope": "Ce qu'une visite réelle télécharge : la fermeture initiale, plus les morceaux des pages effectivement traversées, comptés une seule fois. Remplace l'ancien « total JavaScript », qui additionnait tout ce que le build émet — un nombre qui grossissait à chaque route découpée en morceau différé, donc à chaque fois que le découpage s'améliorait, et qui comptait des pages qu'aucun visiteur ne charge. Il était rouge en permanence pour cette raison, et un nombre rouge en permanence cesse d'être lu.",
+      "modules": [
+        "src/components/layout/MobileLayout.tsx",
+        "src/features/auth/ProtectedRoute.tsx",
+        "src/pages/LandingPage.tsx",
+        "src/pages/LessonPage.tsx",
+        "src/pages/ExercisePage.tsx"
+      ],
+      "budgetsGzipBytes": {
+        "css": 24000,
+        "javascript": 190000
+      },
       "observedGzipBytes": {
-        "javascript": 287646,
-        "css": 25802
+        "css": 20245,
+        "javascript": 178796
       },
-      "warningThresholdsGzipBytes": {
-        "javascript": 300000,
-        "css": 30000
-      },
-      "rebaselinedAt": "2026-08-30",
-      "rebaselineReason": "Raised from 260 000 to 300 000 for two additions, kept separate because they are not the same kind of thing. 877 bytes come from the Stripe checkout merge (#128), which had already put this diagnostic 877 bytes over before any Sentry work. 26 769 bytes are the Sentry reporter chunk, which this total counts because it counts everything emitted — while the budgets that protect the experience do not: the reporter is excluded from the offline precache and never enters the initial closure, which moved by 465 bytes. A diagnostic that is permanently red stops being read, so it is re-set rather than left to shout; the headroom above 287 646 is deliberately small so the next growth still shows."
+      "measuredAt": "2026-08-31",
+      "budgetRationale": "Mesuré à 178 796 octets gzip pour le JavaScript le 31 août 2026. Le plafond à 190 000 laisse environ 6 % — de quoi loger une fonctionnalité sans repasser par un arbitrage, trop peu pour qu'une page entière s'y glisse sans qu'on le remarque. Contrairement à l'ancien total, ce nombre ne grossit pas quand le découpage s'améliore : découper une route en morceau différé ne change rien tant que ce morceau n'est pas sur le trajet. Il monte quand une visite réelle télécharge davantage, ce qui est précisément la question."
     }
   },
   "imports": {
