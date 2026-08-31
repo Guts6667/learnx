@@ -1,8 +1,11 @@
 # Calibration économique et proposition tarifaire V4.5
 
 - **Statut** : `OWNER_VALIDATED_PRICES_NOT_ACTIVATED` (V4.5-007 / ticket V4.5-164)
-- **Version** : 1.0.0
+- **Version** : 1.1.0
 - **Date** : 31 août 2026
+- **Révision 1.1.0** : qualification fiscale arbitrée (BNC), ACRE et versement
+  libératoire écartés, taux de prélèvements porté de 28,00 % à 33,06 %. Les prix,
+  la parité et le plafond de réservation sont inchangés.
 - **Owner** : Finance & Pricing
 - **Reviewer** : Rayan
 - **Portée** : achat ponctuel de crédits par les early adopters, correction
@@ -22,8 +25,9 @@ publié. Deux conditions cumulatives restent à lever avant activation :
 1. un GO explicite du Propriétaire sur l'activation elle-même ;
 2. une promotion de l'identité de correction, aujourd'hui refusée (§3).
 
-Les questions fiscales et juridiques sont listées au §11 comme **décisions du
-Propriétaire**, jamais comme hypothèses retenues par Finance.
+Les questions fiscales et juridiques restent des **décisions du Propriétaire**,
+jamais des hypothèses retenues par Finance. Le §11 distingue celles qui ont été
+rendues le 31 août 2026 de celles qui restent ouvertes.
 
 ## 2. Vocabulaire
 
@@ -147,29 +151,107 @@ Le frais fixe est le facteur dimensionnant des petits paniers : il représente
 
 ## 6. Prélèvements micro-entreprise
 
-Taux 2026, issus de sources publiques secondaires consultées le 30 août 2026.
-**Ils doivent être confirmés auprès de l'Urssaf ou d'un professionnel avant
-activation** (§11).
+Taux 2026 **vérifiés le 31 août 2026** auprès de l'Urssaf, de la direction
+générale des finances publiques et de Bpifrance Création. Ce ne sont plus des
+hypothèses à confirmer.
 
-| Régime                                    | Cotisations | CFP    | VFL    | Total sur CA |
-| ----------------------------------------- | ----------- | ------ | ------ | ------------ |
-| micro-BIC prestations de services, VFL    | 21,20 %     | 0,10 % | 1,70 % | 23,00 %      |
-| micro-BNC, VFL                            | 25,60 %     | 0,20 % | 2,20 % | 28,00 %      |
-| micro-BNC, sans VFL, TMI 11 %             | 25,60 %     | 0,20 % | 7,26 % | 33,06 %      |
-| micro-BIC + VFL + ACRE, première année    | 15,90 %     | 0,10 % | 1,70 % | 17,70 %      |
+### Qualification retenue : BNC
+
+L'activité est à la frontière des deux catégories. Le caractère commercial
+plaide pour les bénéfices industriels et commerciaux : un service standardisé,
+vendu en libre-service, sans intervention personnalisée, dont l'économie
+consiste à acheter de l'inférence pour la revendre enrichie. Le caractère
+intellectuel plaide pour les bénéfices non commerciaux : la valeur tient aux
+barèmes et au contenu pédagogique, exploités par leur auteur.
+
+Aucune des deux lectures n'est infondée. Le **BNC est retenu**, sur arbitrage du
+Propriétaire du 31 août 2026, pour deux raisons :
+
+1. il est le plus coûteux sur les quatre paramètres à la fois — cotisations
+   25,6 % contre 21,2 %, abattement fiscal 34 % contre 50 %, versement
+   libératoire 2,2 % contre 1,7 %, formation professionnelle 0,2 % contre
+   0,1 % ;
+2. l'erreur n'est pas symétrique. Provisionner en BNC ce qui s'avère BIC laisse
+   un excédent disponible. Provisionner en BIC ce qui s'avère BNC crée une dette
+   de régularisation.
+
+Une confirmation auprès de l'Urssaf reste utile, mais elle ne conditionne plus
+la tarification : le §9 montre que la grille tient dans les deux qualifications.
+
+### Situation établie au 31 août 2026
+
+- Micro-entreprise créée en **début d'année 2026**, déclaration Urssaf
+  **mensuelle**. Cette déclaration est due même à chiffre d'affaires nul ; une
+  échéance omise déclenche une pénalité forfaitaire par déclaration.
+- **Pas d'ACRE.** Depuis le 1er janvier 2026 elle n'est plus automatique et se
+  demande à l'Urssaf dans les 60 jours suivant le début d'activité ; le délai
+  est écoulé. Elle est donc exclue de toute projection. Pour mémoire, depuis le
+  1er juillet 2026 elle ne vaut plus que 25 % d'exonération, et non 50 %.
+- **Pas de versement libératoire.** La fenêtre d'option ouverte à la création —
+  trois mois — est close. La suivante expire le **30 septembre 2026**, pour un
+  effet au 1er janvier 2027.
+- **Cotisation foncière des entreprises** exonérée l'année de création. La
+  première échéance tombe en **décembre 2027**. C'est un coût fixe, hors marge
+  de contribution, à provisionner séparément.
+
+| Régime                                    | Cotisations | CFP        | Impôt sur le revenu | Total sur CA |
+| ----------------------------------------- | ----------- | ---------- | ------------------- | ------------ |
+| micro-BNC, impôt nul (CA sous 17 600 €)   | 25,60 %     | 0,20 %     | 0,00 %              | 25,80 %      |
+| micro-BNC avec versement libératoire      | 25,60 %     | 0,20 %     | 2,20 %              | 28,00 %      |
+| **micro-BNC, tranche à 11 % — retenu**    | **25,60 %** | **0,20 %** | **7,26 %**          | **33,06 %**  |
+| micro-BNC, tranche à 30 %                 | 25,60 %     | 0,20 %     | 19,80 %             | 45,60 %      |
+| micro-BIC prestations de services, VFL    | 21,20 %     | 0,10 %     | 1,70 %              | 23,00 %      |
+
+Hors versement libératoire, l'impôt porte sur 66 % des recettes, après
+l'abattement forfaitaire de 34 % du micro-BNC : une tranche marginale de 11 %
+coûte donc 7,26 % du chiffre d'affaires, et une tranche de 30 % en coûte
+19,80 %.
+
+**Le taux retenu pour toute la calibration est 33,06 %.** Il est délibérément
+prudent. La première tranche du barème 2026 s'ouvre à 11 600 € de revenu
+imposable, soit environ **17 600 € de chiffre d'affaires** compte tenu de
+l'abattement. En deçà de ce seuil, aucun impôt n'est dû et le taux réel est de
+25,80 %. C'est la situation la plus probable sur l'exercice de lancement.
+
+### Arbitrage du versement libératoire
+
+Il remplace l'impôt sur le revenu par 2,2 % du chiffre d'affaires, et devient
+gagnant dès que la tranche marginale dépasse 3,3 %. La règle de décision est
+donc binaire : opter si le foyer est imposable, ne pas opter s'il ne l'est pas —
+payer 2,2 % pour remplacer un impôt nul est une perte sèche. L'option suppose un
+revenu fiscal de référence inférieur à environ 29 300 € par part, et la fenêtre
+revient chaque 30 septembre. Ne pas opter n'expose donc jamais à plus d'un
+exercice de retard.
+
+### TVA
+
+La franchise en base s'applique jusqu'à 37 500 € de chiffre d'affaires de
+services, avec un seuil majoré à 41 250 € : le prix affiché est le prix
+encaissé, sans TVA à reverser.
+
+En contrepartie, l'achat de services à un prestataire établi hors de France —
+OpenRouter — rend l'entreprise redevable de la TVA par autoliquidation, sans
+seuil de déclenchement et dès le premier euro. Trois conséquences :
+
+1. un **numéro de TVA intracommunautaire** doit être demandé au service des
+   impôts des entreprises. Cette demande **ne fait pas perdre la franchise en
+   base** : les deux régimes sont distincts ;
+2. la taxe se déclare sur le formulaire 3310-CA3, ligne A3 ;
+3. elle **n'est pas déductible**, ce qui justifie le facteur `×1,20` du §4 comme
+   scénario réaliste et non pessimiste.
+
+Le numéro n'était pas détenu au 31 août 2026, alors que l'obligation court
+depuis le premier achat OpenRouter réalisé par l'entreprise. Les montants en jeu
+sur la période de calibration sont de l'ordre de quelques dizaines d'euros, mais
+la régularisation doit précéder l'ouverture commerciale.
+
+Les frais de traitement des cartes facturés par Stripe relèvent des services
+financiers exonérés de TVA : rien à autoliquider dessus. Cela changerait avec
+l'activation de Stripe Billing pour un abonnement.
 
 En micro-entreprise, les dépenses Stripe, OpenRouter et infrastructure **ne
 réduisent pas** le chiffre d'affaires servant d'assiette aux cotisations. Un
 pack encaissé 8 € est déclaré 8 €.
-
-La franchise en base de TVA s'applique jusqu'à 37 500 € de chiffre d'affaires
-de services : le prix affiché est le prix encaissé, sans TVA à reverser. En
-contrepartie, l'achat de services B2B auprès d'un prestataire étranger relève
-de l'autoliquidation, à 20 % non déductibles — ce qui justifie le facteur
-`×1,20` du §4 comme scénario réaliste et non pessimiste.
-
-La CFE est exonérée l'année de création ; c'est ensuite un coût fixe, hors
-marge de contribution, à provisionner séparément.
 
 ## 7. Parité, prix unitaire et plafond
 
@@ -212,17 +294,19 @@ Validés par le Propriétaire le 31 août 2026. Non activés.
 | Prix payé                      | 3,00 €    | 8,00 €   | 16,00 €  |
 | Crédits                        | 300       | 880      | 2 000    |
 | Crédits par euro               | 100       | 110      | 125      |
-| Prix affiché par correction    | 0,30 €    | 0,28 €   | 0,24 €   |
+| Prix affiché par correction    | 0,30 €    | 0,27 €   | 0,24 €   |
 | Capacité médiane annoncée      | 10        | 29       | 66       |
 | Capacité prudente au plafond   | 6         | 19       | 44       |
 | Frais Stripe, carte EEE        | 0,295 €   | 0,370 €  | 0,490 €  |
-| Prélèvements micro, BNC + VFL  | 0,840 €   | 2,240 €  | 4,480 €  |
-| Coût d'exécution couvert       | 0,359 €   | 1,036 €  | 2,392 €  |
+| Prélèvements micro, 33,06 %    | 0,992 €   | 2,645 €  | 5,290 €  |
+| Coût d'exécution couvert       | 0,359 €   | 1,052 €  | 2,392 €  |
 | Provisions, 3 %                | 0,090 €   | 0,240 €  | 0,480 €  |
-| **Contribution disponible**    | **1,416 €** | **4,114 €** | **8,158 €** |
+| **Contribution disponible**    | **1,264 €** | **3,693 €** | **7,348 €** |
 
 Coût d'exécution et contribution calculés bonus early adopter inclus et
-consommation intégrale supposée.
+consommation intégrale supposée, au taux de prélèvements retenu de 33,06 %
+(§6). Le coût d'exécution du palier Parcours corrige une erreur de la version
+1.0.0, qui portait 1,036 € au lieu de 1 056 crédits / 30 × 0,029894 = 1,052 €.
 
 Deux règles accompagnent la grille :
 
@@ -235,90 +319,142 @@ Deux règles accompagnent la grille :
 
 ### Avantage early adopter
 
-Un **bonus unique de 20 % en crédits**, jamais une remise sur le prix. Pour un
-avantage affiché identique sur le palier Parcours, la remise coûte 1,215 € de
-chiffre d'affaires abandonné contre 0,178 € de coût d'exécution supplémentaire,
-soit **6,8 fois plus cher**. Le bonus n'est de surcroît consommé que s'il est
-utilisé.
+Un **bonus unique de 20 % en crédits**, jamais une remise sur le prix. Les deux
+manières d'accorder le même avantage sur le palier Parcours ne coûtent pas la
+même chose :
+
+- **bonus** : 176 crédits supplémentaires, soit 5,87 corrections à 0,029894 € de
+  coût chargé, donc **0,175 €** ;
+- **remise** : pour porter la contrepartie à 132 crédits par euro sans donner de
+  crédits, il faut vendre les 880 crédits 6,67 € au lieu de 8,00 €, donc
+  **1,333 €** de chiffre d'affaires abandonné.
+
+La remise coûte **7,6 fois plus cher** pour un avantage identique. Le bonus n'est
+de surcroît consommé que s'il est utilisé, alors que la remise est perdue dès
+l'encaissement. Ces deux montants remplacent ceux de la version 1.0.0, dont la
+dérivation n'était pas reproductible.
 
 L'avantage doit être borné par une période, un nombre maximal de bénéficiaires,
 un bonus unique par compte, une date de fin affichée avant l'achat, et l'absence
 de renouvellement automatique sauf décision explicite. Aucun crédit illimité,
 aucune garantie tarifaire perpétuelle.
 
+Bornes retenues par défaut, modifiables tant qu'aucun prix n'est activé : les
+**100 premiers comptes ou le 31 octobre 2026**, au premier des deux atteint, un
+bonus unique par compte, sans reconduction. Ces bornes doivent figurer dans les
+conditions générales de vente et être affichées avant l'achat.
+
 ## 9. Marges de contribution
 
 `contribution = prix − Stripe − prélèvements_CA − coût_exécution − provisions`
 
-| Scénario                            | Démarrage | Parcours | Année  |
-| ----------------------------------- | --------- | -------- | ------ |
-| Favorable                           | 62,2 %    | 66,5 %   | 66,9 % |
-| Central                             | 49,2 %    | 53,4 %   | 53,5 % |
-| Défavorable                         | 36,5 %    | 40,7 %   | 40,6 % |
-| Central, bonus early adopter inclus | 47,2 %    | 51,4 %   | 51,0 % |
-| Défavorable, bonus inclus           | 34,4 %    | 38,5 %   | 37,9 % |
+| Scénario                          | Démarrage | Parcours | Année  |
+| --------------------------------- | --------- | -------- | ------ |
+| Favorable                         | 54,1 %    | 58,4 %   | 58,8 % |
+| Probable à court terme            | 51,4 %    | 55,6 %   | 55,7 % |
+| **Retenu**                        | **44,1 %** | **48,4 %** | **48,4 %** |
+| Défavorable                       | 36,5 %    | 40,7 %   | 40,6 % |
+| Retenu, bonus early adopter inclus | 42,1 %   | 46,2 %   | 45,9 % |
+| Défavorable, bonus inclus         | 34,4 %    | 38,3 %   | 37,9 % |
 
 Définition des scénarios :
 
-| Paramètre               | Favorable        | Central       | Défavorable            |
-| ----------------------- | ---------------- | ------------- | ---------------------- |
-| Carte                   | EEE standard     | EEE standard  | internationale         |
-| Régime                  | BIC + VFL + ACRE | BNC + VFL     | BNC sans VFL, TMI 11 % |
-| Taux sur CA             | 17,70 %          | 28,00 %       | 33,06 %                |
-| TVA fournisseur         | hors champ       | 20 % non déd. | 20 % non déd.          |
-| Chargement              | ×1,08665         | ×1,30398      | ×1,30398               |
-| Point de la distribution | médiane         | médiane       | P75                    |
-| Provisions              | 2 %              | 3 %           | 6 %                    |
+| Paramètre                | Favorable  | Probable      | Retenu        | Défavorable       |
+| ------------------------ | ---------- | ------------- | ------------- | ----------------- |
+| Carte                    | EEE        | EEE           | EEE           | hors EEE + change |
+| Taux carte               | 1,50 %     | 1,50 %        | 1,50 %        | 5,15 %            |
+| Régime                   | BNC        | BNC           | BNC           | BNC               |
+| Impôt sur le revenu      | nul        | nul           | tranche 11 %  | tranche 11 %      |
+| Taux sur CA              | 25,80 %    | 25,80 %       | 33,06 %       | 33,06 %           |
+| TVA fournisseur          | hors champ | 20 % non déd. | 20 % non déd. | 20 % non déd.     |
+| Chargement               | ×1,08665   | ×1,30398      | ×1,30398      | ×1,30398          |
+| Point de la distribution | médiane    | médiane       | médiane       | P75               |
+| Provisions               | 2 %        | 3 %           | 3 %           | 6 %               |
 
-La cible nominale de 40 % est tenue partout en scénario central, et sur les
-deux paliers hauts en scénario défavorable. Le palier Démarrage descend à
-36,5 % dans le pire cas — c'est le coût assumé d'un ticket d'entrée accessible,
-et il reste très au-dessus du minimum acceptable de 25 %.
+Les quatre scénarios partagent désormais la même qualification fiscale, le BNC
+étant arbitré (§6). Ce qui les sépare est l'impôt sur le revenu, la TVA
+fournisseur, l'origine de la carte et le point de la distribution de coût.
 
-`prix_minimal = (coûts_fixes + coût_exécution + provisions) / (1 − taux_Stripe − taux_micro − taux_CFP − taux_VFL − marge_cible)`
+Le scénario **probable à court terme** est celui de l'exercice de lancement :
+chiffre d'affaires sous 17 600 €, donc aucun impôt sur le revenu, mais TVA
+fournisseur bien due. Le scénario **retenu** ajoute l'impôt à la tranche de
+11 % : c'est la base de toute la planification, y compris des réserves du §13.
+
+Une tranche marginale de 30 % ferait tomber les marges à 31,6 / 35,8 / 35,9 %.
+Ce cas n'est pas traité comme un scénario de lancement : il suppose plus de
+50 000 € de chiffre d'affaires, niveau auquel le versement libératoire devient
+nettement gagnant et restitue 17,6 points. Il figure au §15 comme condition de
+recalcul.
+
+La cible nominale de 40 % est tenue partout en scénario retenu, bonus early
+adopter compris, et sur les deux paliers hauts en scénario défavorable. Le
+palier Démarrage descend à 36,5 % dans le pire cas, 34,4 % avec le bonus — c'est
+le coût assumé d'un ticket d'entrée accessible, et il reste très au-dessus du
+minimum acceptable de 25 %.
+
+Le durcissement de l'hypothèse fiscale coûte 5,06 points de marge par rapport à
+la version 1.0.0 et ne remet en cause aucun prix.
+
+`prix_minimal = (coûts_fixes + coût_exécution + provisions) / (1 − taux_Stripe − taux_cotisations − taux_CFP − taux_impôt − marge_cible)`
 
 Si le dénominateur devient nul ou négatif, le palier est économiquement
 impossible dans ce scénario.
 
 ## 10. Seuils, alertes et marge de manœuvre
 
-| Seuil                          | Marge | Déclencheur observable                 |
-| ------------------------------ | ----- | -------------------------------------- |
-| Cible nominale                 | 40 %  | —                                      |
-| Minimum acceptable             | 25 %  | coût chargé médian > 0,1074 € (× 3,6)  |
-| Alerte et révision tarifaire   | 20 %  | coût chargé médian > 0,1210 € (× 4,0)  |
-| Suspension ou recalcul immédiat | 10 % | coût chargé médian > 0,1483 € (× 5,0)  |
+| Seuil                           | Marge | Déclencheur observable                |
+| ------------------------------- | ----- | ------------------------------------- |
+| Cible nominale                  | 40 %  | coût chargé médian > 0,0527 € (× 1,8) |
+| Minimum acceptable              | 25 %  | coût chargé médian > 0,0936 € (× 3,1) |
+| Alerte et révision tarifaire    | 20 %  | coût chargé médian > 0,1072 € (× 3,6) |
+| Suspension ou recalcul immédiat | 10 %  | coût chargé médian > 0,1345 € (× 4,5) |
 
-Sur le palier Parcours, hors bonus. À câbler dans le rapport hebdomadaire du
-ticket V4.5-140.
+Sur le palier Parcours, hors bonus, au taux de prélèvements retenu de 33,06 %.
+À câbler dans le rapport hebdomadaire du ticket V4.5-140. Ces seuils sont plus
+serrés que ceux de la version 1.0.0, qui les calculait à 28,00 % de
+prélèvements.
 
 **Marge de manœuvre sur le vérificateur.** La réparation de la complaisance
-constatée au §3 passera par un autre prompt ou un autre modèle, donc par un
-coût différent. La marge du palier Parcours resterait au-dessus de 40 % même si
-le vérificateur coûtait **31 fois** son prix actuel, et au-dessus du minimum de
-25 % jusqu'à **65 fois** — soit un vérificateur aussi cher que trois modèles
-primaires. Le choix d'un vérificateur fiable n'a donc pas à être arbitré contre
-la tarification.
+constatée au §3 passera par un autre prompt ou un autre modèle, donc par un coût
+différent. Le vérificateur coûte aujourd'hui 0,0014307 € chargé par correction.
+La marge du palier Parcours resterait au-dessus de 40 % même s'il coûtait
+**17 fois** ce prix, et au-dessus du minimum de 25 % jusqu'à **45 fois** — soit
+un vérificateur deux fois plus cher que le modèle primaire lui-même. Le choix
+d'un vérificateur fiable n'a donc pas à être arbitré contre la tarification.
+
+Ces multiples remplacent les 31× et 65× de la version 1.0.0, qui les calculaient
+avant le durcissement de l'hypothèse fiscale. La conclusion est inchangée.
 
 ## 11. Décisions du Propriétaire
 
-Ces points ne sont pas des hypothèses de Finance. Ils restent ouverts et
-conditionnent l'activation.
+### Rendues le 31 août 2026
 
-1. **Qualification BIC ou BNC**, à confirmer avec l'Urssaf ou un professionnel.
-   L'écart est de 5 points de chiffre d'affaires, soit plus que le coût IA
-   complet d'un palier. Le BNC avec versement libératoire est retenu comme
-   hypothèse prudente de planification, pas comme qualification établie.
-2. **Éligibilité à l'ACRE** et date de création de la micro-entreprise.
-3. **Traitement de la TVA sur les achats OpenRouter** (autoliquidation,
-   identification, non-déductibilité), à confirmer auprès du service des
-   impôts des entreprises.
-4. **Conditions générales de vente** : report des crédits, non-transférabilité,
-   non-convertibilité en espèces, usage limité à LearnX, procédure de
-   remboursement et de clôture de compte.
-5. **Mentions de l'avantage early adopter** : période, plafond de
-   bénéficiaires, date de fin, absence de reconduction.
-6. **GO d'activation** des paliers, distinct de la validation des montants.
+1. **Qualification BIC ou BNC** : le **BNC** est retenu, comme choix
+   conservateur sur une frontière réellement ambiguë (§6). La grille tient dans
+   les deux qualifications, donc cet arbitrage ne conditionne plus l'activation ;
+   il fixe le montant à provisionner.
+2. **ACRE** : écartée. La micro-entreprise a été créée en début d'année 2026 et
+   le délai de demande de 60 jours est écoulé. Aucune projection ne s'appuie
+   dessus.
+3. **Versement libératoire** : non détenu, non retenu. La règle de décision pour
+   la fenêtre du 30 septembre 2026 est au §6 : opter si le foyer est imposable,
+   ne pas opter sinon.
+4. **TVA sur les achats OpenRouter** : autoliquidation à 20 % non déductible,
+   déjà portée par le facteur `×1,20` du §4. La demande de numéro de TVA
+   intracommunautaire auprès du service des impôts des entreprises reste à faire
+   et doit précéder l'ouverture commerciale.
+5. **Bornes de l'avantage early adopter** : 100 premiers comptes ou 31 octobre
+   2026, au premier des deux atteint, bonus unique par compte, sans reconduction
+   (§8). Modifiables tant qu'aucun prix n'est activé.
+
+### Restantes
+
+6. **Conditions générales de vente** : report des crédits,
+   non-transférabilité, non-convertibilité en espèces, usage limité à LearnX,
+   procédure de remboursement et de clôture de compte, et affichage des bornes
+   de l'avantage early adopter avant l'achat.
+7. **GO d'activation** des paliers, distinct de la validation des montants et
+   subordonné à la promotion de l'identité de correction (§3).
 
 ## 12. Ce qui n'est pas chiffrable en l'état
 
@@ -355,21 +491,26 @@ allocation d'abonnement expirante, crédits achetés reportables.
 
 ## 13. Réserves de trésorerie
 
-Pour 1 € encaissé sur le palier Parcours, scénario central, bonus inclus.
+Pour 1 € encaissé sur le palier Parcours, scénario retenu, bonus inclus.
+Montants arrondis au millième.
 
-| Poche                         | Part    | Disponible ?         |
-| ----------------------------- | ------- | -------------------- |
-| Frais Stripe                  | 0,043 € | non, déjà prélevé    |
-| Réserve sociale et fiscale    | 0,280 € | non, dette exigible  |
-| Réserve d'exécution           | 0,130 € | non, service à livrer |
-| Réserve d'incidents           | 0,030 € | non, aléa provisionné |
-| **Marge réellement disponible** | **0,517 €** | oui              |
+| Poche                           | Part        | Disponible ?          |
+| ------------------------------- | ----------- | --------------------- |
+| Frais Stripe                    | 0,046 €     | non, déjà prélevé     |
+| Réserve sociale et fiscale      | 0,331 €     | non, dette exigible   |
+| Réserve d'exécution             | 0,132 €     | non, service à livrer |
+| Réserve d'incidents             | 0,030 €     | non, aléa provisionné |
+| **Marge réellement disponible** | **0,461 €** | oui                   |
 
 Les crédits vendus et non consommés ne sont pas de la marge disponible. Sur
-1 000 € de packs encaissés, environ 440 € doivent rester immobilisés tant que
-les crédits n'ont pas été consommés et les échéances Urssaf payées.
+1 000 € de packs encaissés, environ **492 €** doivent rester immobilisés tant
+que les crédits n'ont pas été consommés et les échéances Urssaf payées — contre
+440 € en version 1.0.0, l'écart venant du durcissement fiscal. La cotisation
+foncière des entreprises, due à partir de décembre 2027, se provisionne en
+dehors de ce partage : c'est un coût fixe, il n'appartient pas à la marge de
+contribution.
 
-La dette d'exécution se valorise au coût médian pour la projection centrale et
+La dette d'exécution se valorise au coût médian pour la projection retenue et
 au P90 pour la réserve prudente. Sous règlement au prorata du coût, les deux
 valeurs sont proches : si le coût réel monte, le prix débité monte
 proportionnellement et le nombre de corrections finançables baisse. Ce qui varie
@@ -390,11 +531,20 @@ d'annoncer une capacité médiane et jamais un nombre garanti.
 ## 15. Conditions de recalcul
 
 Ce document devient caduc et doit être recalculé si l'un des événements suivants
-survient : changement du modèle primaire ou du vérificateur, changement de leur
-prompt ou de leur profil de requête, changement du tarif fournisseur, fixation
-d'un taux de change USD/EUR, qualification fiscale différente de l'hypothèse du
-§9, ou ouverture de la correction aux évaluations d'étape (ticket V4.5-130), qui
-ajoutera 33 exercices facturables au contenu publié.
+survient.
+
+**Exécution** : changement du modèle primaire ou du vérificateur, changement de
+leur prompt ou de leur profil de requête, changement du tarif fournisseur,
+fixation d'un taux de change USD/EUR, ou ouverture de la correction aux
+évaluations d'étape (ticket V4.5-130), qui ajoutera 33 exercices facturables au
+contenu publié.
+
+**Fiscalité** : requalification en BIC par l'Urssaf, franchissement de 17 600 €
+de chiffre d'affaires annuel — au-delà, l'impôt sur le revenu devient
+effectivement dû et le taux retenu de 33,06 % cesse d'être prudent —, entrée
+dans la tranche marginale de 30 %, option pour le versement libératoire,
+franchissement de 37 500 € de chiffre d'affaires qui met fin à la franchise en
+base de TVA, ou changement du traitement de la TVA sur les achats OpenRouter.
 
 ## 16. Reproductibilité
 
