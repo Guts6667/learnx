@@ -1,4 +1,4 @@
-name: Update landing visual baselines
+name: Finalize landing redesign branch
 
 on:
   push:
@@ -10,70 +10,25 @@ permissions:
   contents: write
 
 jobs:
-  baselines:
+  finalize:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Refine the tablet navigation
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path('src/styles/surfaces/landing-path.css')
-          source = path.read_text()
-          anchor = '@media (prefers-reduced-motion: reduce)'
-          rule = """@media (min-width: 48rem) and (max-width: 72rem) {
-            .landing-page .landing-primary-navigation {
-              display: none;
-            }
-
-            .landing-page .landing-header {
-              padding-inline: clamp(1.5rem, 4vw, 2.5rem);
-            }
-
-            .landing-page .landing-utility {
-              flex-wrap: nowrap;
-              margin-left: auto;
-            }
-
-            .landing-page .landing-signin {
-              white-space: nowrap;
-            }
-          }
-
-          """
-          if rule not in source:
-              source = source.replace(anchor, rule + anchor)
-              path.write_text(source)
-          PY
-          pnpm exec prettier --write src/styles/surfaces/landing-path.css
-      - name: Install the visual browser
-        run: pnpm exec playwright install --with-deps chromium
-      - name: Generate Prisma client
-        run: pnpm prisma:generate
-      - name: Regenerate visual baselines
-        run: pnpm test:visual:update
-      - name: Commit the reviewed source and baselines
+          fetch-depth: 0
+      - name: Sync dev and keep only scoped visual changes
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add src/styles/surfaces/landing-path.css tests/visual/__screenshots__
-          if git diff --cached --quiet; then
-            echo 'No source or baseline changes to commit.'
-          else
-            git commit -m 'style(landing): refine tablet navigation and refresh baselines'
-            git push origin HEAD:design/landing-your-path
-          fi
-      - name: Upload visual baselines
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: landing-visual-baselines-refined
-          path: tests/visual/__screenshots__
-          if-no-files-found: error
+          git fetch origin dev
+          git merge --no-ff --no-commit origin/dev
+          git checkout origin/dev -- \
+            tests/visual/__screenshots__/desktop-1440/surfaces.spec.ts/landing-pricing-tiers.png \
+            tests/visual/__screenshots__/desktop-1440/surfaces.spec.ts/not-found.png \
+            tests/visual/__screenshots__/tablet-768/surfaces.spec.ts/landing-pricing-tiers.png \
+            tests/visual/__screenshots__/tablet-768/surfaces.spec.ts/not-found.png \
+            tests/visual/__screenshots__/mobile-390/surfaces.spec.ts/landing-pricing-tiers.png \
+            tests/visual/__screenshots__/mobile-390/surfaces.spec.ts/not-found.png
+          git rm .github/workflows/visual-update-landing.yml
+          git commit -m 'chore(landing): sync dev and keep scoped visual baselines'
+          git push origin HEAD:design/landing-your-path
