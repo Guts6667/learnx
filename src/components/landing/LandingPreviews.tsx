@@ -45,6 +45,12 @@ export function ProgramPreview() {
           </article>
         </div>
       </div>
+      <div className="landing-preview-caption">
+        <div>
+          <h3>{t('landing.preview.program.heading')}</h3>
+          <p>{t('landing.preview.program.description')}</p>
+        </div>
+      </div>
     </section>
   );
 }
@@ -74,6 +80,12 @@ export function LessonPreview() {
             <cite>{t('landing.preview.lesson.source')}</cite>
           </footer>
         </article>
+      </div>
+      <div className="landing-preview-caption">
+        <div>
+          <h3>{t('landing.preview.lesson.heading')}</h3>
+          <p>{t('landing.preview.lesson.description')}</p>
+        </div>
       </div>
     </section>
   );
