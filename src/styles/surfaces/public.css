@@ -251,6 +251,21 @@
  * un palier comme quatre. Bornée en haut, parce qu'un unique palier étiré sur
  * toute la largeur ne se lit plus comme une carte de prix.
  */
+/*
+ * Trois paliers ne tiennent pas dans une demi-largeur (V4.5-213).
+ *
+ * La section est en deux colonnes — titre à gauche, offre à droite — et cela
+ * convient à son état d'attente, où l'offre est une phrase. Dès qu'il y a des
+ * cartes, la colonne de droite les empile en une seule file haute à côté d'une
+ * moitié vide. La grille reprend donc toute la largeur, et le titre passe
+ * au-dessus. Porté par une classe posée quand les paliers existent, plutôt que
+ * deviné : le CSS ne peut pas voir combien de cartes le catalogue a rendues.
+ */
+.landing-section.landing-pricing--tiers {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
+}
+
 .landing-pricing-heading {
   min-width: 0;
 }
@@ -302,9 +317,19 @@
   line-height: 1.1;
 }
 
-.landing-pricing-amount {
+/*
+ * Sélecteurs descendants, et c'est nécessaire : `.landing-section p` pose la
+ * taille de lecture des paragraphes de la page publique, et sa spécificité
+ * (0,1,1) l'emporte sur une classe seule. Le prix, la condition et la note
+ * sont des `<p>` depuis que les crédits ont pris la place éditoriale — sans
+ * cette portée, la condition d'achat s'afficherait au corps du texte et
+ * écraserait la carte. La capture de référence l'a montré avant la relecture.
+ */
+.landing-pricing-tier .landing-pricing-amount {
+  color: var(--color-text);
   font-size: var(--text-lg);
   font-weight: 500;
+  line-height: 1.4;
 }
 
 .landing-pricing-figures {
@@ -319,16 +344,18 @@
   color: var(--color-text);
 }
 
-.landing-pricing-condition {
+.landing-pricing-tier .landing-pricing-condition {
   margin-block-start: var(--space-2);
   color: var(--color-text-muted);
   font-size: var(--text-sm);
+  line-height: 1.5;
 }
 
-.landing-pricing-note {
+.landing-pricing-offer .landing-pricing-note {
   max-width: 60ch;
   color: var(--color-text-muted);
   font-size: var(--text-sm);
+  line-height: 1.5;
 }
 
 .landing-pricing-notice {

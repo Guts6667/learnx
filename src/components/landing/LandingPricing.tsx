@@ -91,7 +91,14 @@ export function LandingPricing() {
   return (
     <section
       aria-labelledby="landing-pricing"
-      className="landing-section landing-pricing"
+      className={
+        // Les cartes prennent toute la largeur ; la phrase d'attente reste en
+        // colonne de droite. Le CSS ne peut pas voir ce que le catalogue a
+        // rendu, donc l'état le dit.
+        state.kind === 'PACKS'
+          ? 'landing-section landing-pricing landing-pricing--tiers'
+          : 'landing-section landing-pricing'
+      }
       id="pricing"
     >
       <div className="landing-pricing-heading">
