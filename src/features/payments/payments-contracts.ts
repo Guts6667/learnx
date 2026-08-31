@@ -180,6 +180,18 @@ const creditPackSchema = z.object({
   approximateCorrections: z.string(),
   bonusCredits: z.string(),
   creditsPerEuro: z.string(),
+  /**
+   * Le palier limité à un achat par compte (V4.5-213), désigné par le serveur.
+   *
+   * Non optionnel, et distinct de `purchasable` : celui-ci dit « ce compte
+   * peut-il acheter maintenant » et vaut `true` sur tous les autres paliers,
+   * donc il ne peut pas signaler la limite AVANT le premier achat. C'est
+   * pourtant là qu'elle doit se lire — un remboursement ne la rouvre pas
+   * (décision de Rayan, 31 août 2026), et l'apprendre après coup coûterait un
+   * achat. Reconnaître la clé côté écran remettrait la règle du 409 à un
+   * second endroit.
+   */
+  oncePerAccount: z.boolean(),
   /** Absent de la réponse publique : il n'y a pas de compte pour l'évaluer. */
   purchasable: z.optional(z.boolean()),
 });

@@ -22,6 +22,8 @@ export const frenchCorrectionMessages = {
   'aiCorrection.toCheckLabel': 'À vérifier',
   'aiCorrection.toCheckExplanation':
     'La vérification indépendante ne confirme pas l’analyse de ce critère. Aucun niveau n’est affiché : relisez ce point à partir de l’énoncé de l’exercice.',
+  'aiCorrection.toCheckEvidenceOutsideAnswer':
+    'L’extrait retenu pour justifier ce critère ne provenait pas de votre réponse : il a été retiré, aucun niveau n’est affiché, et vous pouvez demander un réexamen comme pour tout autre critère.',
   'aiCorrection.scoreWithheld':
     'Aucun score indicatif tant qu’un critère reste à vérifier ou à retravailler.',
   'aiCorrection.contractCostLabel': 'Coût avant confirmation',
@@ -136,6 +138,8 @@ export const frenchCorrectionMessages = {
     'La vente de crédits vient d’être fermée. Aucun montant n’a été prélevé.',
   'credits.purchase.refusalPackUnavailable':
     'Ce palier n’est plus disponible. Aucun montant n’a été prélevé.',
+  'credits.purchase.refusalEntryTierAlreadyPurchased':
+    'Ce pack est limité à un achat par compte, et le vôtre a déjà été utilisé. Aucun montant n’a été prélevé.',
   'credits.purchase.suspendedTitle': 'Corrections IA suspendues',
   'credits.purchase.suspendedDescription':
     'La correction par IA est suspendue en ce moment. Les crédits achetés gardent leur valeur et resteront utilisables à sa reprise.',
@@ -190,6 +194,8 @@ export const englishCorrectionMessages = {
   'aiCorrection.toCheckLabel': 'Needs checking',
   'aiCorrection.toCheckExplanation':
     'The independent check does not confirm the analysis of this criterion. No level is shown: review this point against the exercise brief.',
+  'aiCorrection.toCheckEvidenceOutsideAnswer':
+    'The excerpt used to justify this criterion did not come from your response: it has been removed, no level is shown, and you can request a reconsideration as for any other criterion.',
   'aiCorrection.scoreWithheld':
     'No indicative score while a criterion still needs checking or rework.',
   'aiCorrection.contractCostLabel': 'Cost before confirmation',
@@ -306,6 +312,8 @@ export const englishCorrectionMessages = {
     'Credit sales have just closed. Nothing was charged.',
   'credits.purchase.refusalPackUnavailable':
     'This tier is no longer available. Nothing was charged.',
+  'credits.purchase.refusalEntryTierAlreadyPurchased':
+    'This pack is limited to one purchase per account, and yours has already been used. Nothing was charged.',
   'credits.purchase.suspendedTitle': 'AI corrections are suspended',
   'credits.purchase.suspendedDescription':
     'AI correction is suspended right now. Purchased credits keep their value and will still be usable when it resumes.',

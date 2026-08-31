@@ -8,24 +8,39 @@
  * l'empreinte qu'il vient de CALCULER, pas celle qui est stockée ici. Le
  * chiffre qu'il affiche est donc la nouvelle valeur, pas la référence.
  *
+ * 31 août 2026 (V4.5-177) — une clé ajoutée, `aiCorrection.toCheckEvidenceOutsideAnswer`.
+ * Un critère dont l'extrait cité ne provenait pas de la copie de l'apprenant
+ * est désormais livré en « à vérifier » au lieu d'être retiré en silence, et
+ * il lui faut sa propre phrase : la formulation existante
+ * (`toCheckExplanation`) parle d'une vérification indépendante non
+ * concluante, ce qui n'est pas ce qui s'est passé. Deux causes distinctes,
+ * deux phrases, jamais les deux ensemble sur un même critère.
+ * 1156 → 1157 clés.
+ *
+ * 31 août 2026 (V4.5-213) — sept clés ajoutées. Six forment le fragment
+ * `creditPack.*` : la carte d'un palier est affichée par deux surfaces,
+ * l'écran d'achat et la section tarifs publique, qui n'ont ni la même mise en
+ * page ni la même action mais disent les mêmes chiffres sur le même produit.
+ * Un seul jeu de phrases, sinon celui qu'on ne relit pas devient faux. La
+ * septième, `credits.purchase.refusalEntryTierAlreadyPurchased`, dit le refus
+ * 409 du palier limité à un achat par compte.
+ * 1157 → 1164 clés.
+ *
  * 31 août 2026 (V4.5-168) — cinq clés ajoutées, `profile.reuseConsent*`.
  * Seconde moitié du consentement de réutilisation : le schéma et la règle de
  * détachement existaient déjà, mais rien ne permettait à l'apprenant de donner
  * ou de retirer le consentement qu'ils lisent. La description dit aussi ce que
  * le REFUS entraîne — les textes supprimés plutôt que conservés sous
  * pseudonyme — parce qu'un défaut silencieux se lirait comme une absence de
- * décision. 1156 → 1161 clés.
- *
- * Libellé et description réécrits par le Head of UX/UI avant fusion : l'ancien
- * intitulé nommait la mauvaise chose. Le détachement a lieu dans les deux cas ;
- * la case ne commande que la survie des textes. Un consentement dont
- * l'intitulé désigne autre chose que ce qu'il autorise est fragile. Aucune clé
- * ajoutée — seules les empreintes bougent.
+ * décision. Libellé et description réécrits par le Head of UX/UI avant
+ * fusion : l'ancien intitulé nommait la mauvaise chose, le détachement ayant
+ * lieu dans les deux cas.
+ * 1164 → 1169 clés.
  */
 export const messageCatalogBaseline = {
-  keyCount: 1161,
+  keyCount: 1169,
   sha256: {
-    en: '37e65a3b4fca1cbe98f83f393a80cb7485a946c9784d0241bc173f57bbcac71d',
-    fr: 'e828e2d2c894ea1bd329dad5e9321a01a8ae6970f2ef7935ef31067a4eabe317',
+    en: '9c486feac31518353313f5f545c9b527a3aeda9f2365f8b10baf29b5abe9150c',
+    fr: '23378ae21a11f03537f3168036c41c25a48f74f6ebafb26e6bed424f70a1880f',
   },
 } as const;

@@ -1,3 +1,4 @@
+import { stripEvidenceQuotes } from '../../corrections/correction-detachment.js';
 import { SYSTEM_ACTOR_ID } from '../../system-actor.js';
 import {
   AccountStatus,
@@ -28,6 +29,17 @@ import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
  * so they are the one kind of learner text with no reason to outlive the
  * account. Each erasure records the policy it ran under, so a later change of
  * policy does not make the older records ambiguous.
+ *
+ * **Cette rétention est désormais conditionnée au consentement** (V4.5-216).
+ * Elle ne l'était pas, et c'était une incohérence entre deux chemins : un
+ * apprenant qui avait REFUSÉ la réutilisation voyait ses textes conservés
+ * s'il supprimait son compte, alors que la voie du détachement à 180 jours les
+ * aurait supprimés. Le chemin le plus explicite — demander soi-même
+ * l'effacement — était le moins respectueux du choix exprimé.
+ *
+ * Sans consentement, les textes sont donc **supprimés** plutôt que conservés
+ * sous pseudonyme. Avec, rien ne change. Aucune ligne d'argent n'est touchée
+ * dans les deux cas : le grand livre n'est jamais réécrit.
  */
 
 export type AccountErasureResult =
@@ -41,7 +53,10 @@ export type AccountErasureResult =
  * record made under one policy is never read as though it were made under a
  * later one.
  */
-const LEARNER_TEXT_POLICY = 'RETAINED_UNDER_PSEUDONYM' as const;
+const LEARNER_TEXT_POLICY = {
+  DELETED: 'DELETED_NO_REUSE_CONSENT',
+  RETAINED: 'RETAINED_UNDER_PSEUDONYM',
+} as const;
 
 /** A pseudonym derived from the account id: stable, unique, and meaningless. */
 function pseudonym(userId: string): { displayName: string; email: string } {
@@ -53,6 +68,82 @@ function pseudonym(userId: string): { displayName: string; email: string } {
   };
 }
 
+/**
+ * Les mots de l'apprenant, retirés (V4.5-216).
+ *
+ * Ce qui part est exactement ce que le détachement à 180 jours retire : sa
+ * production, l'instantané de soumission, l'invite qui la transporte, les
+ * citations qu'on lui a renvoyées, et la sortie brute du modèle. Ce qui reste
+ * est la forme du jugement — niveaux, confiances, coûts, horodatages — et
+ * toutes les clés étrangères. Aucune ligne d'argent n'est touchée.
+ *
+ * Vidé plutôt que supprimé en lignes, pour la même raison qu'au détachement :
+ * une correction doit se lire comme une correction qui ne cite rien, pas comme
+ * une ligne à laquelle il manque un champ.
+ */
+async function deleteLearnerText(
+  client: Prisma.TransactionClient,
+  userId: string,
+): Promise<void> {
+  await client.exerciseSubmission.updateMany({
+    data: { contentMarkdown: '' },
+    where: { userId },
+  });
+  await client.stageAssessmentSubmission.updateMany({
+    data: { contentMarkdown: null },
+    where: { userId },
+  });
+  await client.aiCorrection.updateMany({
+    data: { promptSnapshot: Prisma.DbNull, submissionSnapshot: Prisma.DbNull },
+    where: { userId },
+  });
+
+  // `structuredResult` porte les citations au milieu du jugement : il faut le
+  // parcourir, pas l'annuler. Les corrections d'un compte se comptent en
+  // dizaines et un effacement est rare, donc une écriture par ligne est le
+  // prix acceptable de ne pas détruire la note avec la citation.
+  const corrections = await client.aiCorrection.findMany({
+    select: { id: true, structuredResult: true },
+    where: { structuredResult: { not: Prisma.DbNull }, userId },
+  });
+  for (const correction of corrections) {
+    await client.aiCorrection.update({
+      data: {
+        structuredResult: stripEvidenceQuotes(
+          correction.structuredResult,
+        ) as Prisma.InputJsonValue,
+      },
+      where: { id: correction.id },
+    });
+  }
+
+  await client.aiCorrectionAttempt.updateMany({
+    data: { rawOutput: Prisma.DbNull },
+    where: { correction: { userId } },
+  });
+
+  // La tentative porte sa propre copie du jugement, citations comprises. Le
+  // détachement ne la parcourt pas — il vide seulement `rawOutput` — mais la
+  // laisser ici garderait les mots que ce chemin existe pour retirer.
+  const attempts = await client.aiCorrectionAttempt.findMany({
+    select: { id: true, structuredResult: true },
+    where: {
+      correction: { userId },
+      structuredResult: { not: Prisma.DbNull },
+    },
+  });
+  for (const attempt of attempts) {
+    await client.aiCorrectionAttempt.update({
+      data: {
+        structuredResult: stripEvidenceQuotes(
+          attempt.structuredResult,
+        ) as Prisma.InputJsonValue,
+      },
+      where: { id: attempt.id },
+    });
+  }
+}
+
 export function createAccountErasureService(client: PrismaClient) {
   return {
     async erase(input: {
@@ -62,7 +153,13 @@ export function createAccountErasureService(client: PrismaClient) {
     }): Promise<AccountErasureResult> {
       return client.$transaction(async (transaction) => {
         const existing = await transaction.user.findUnique({
-          select: { accountStatus: true, id: true, updatedAt: true },
+          select: {
+            accountStatus: true,
+            // Lu au moment de l'effacement, jamais supposé (V4.5-216).
+            correctionReuseConsent: true,
+            id: true,
+            updatedAt: true,
+          },
           where: { id: input.userId },
         });
         if (!existing) return { kind: 'NOT_FOUND' } as const;
@@ -118,9 +215,20 @@ export function createAccountErasureService(client: PrismaClient) {
             payload: { not: Prisma.DbNull },
           },
         });
+        // Sans consentement, les textes de l'apprenant s'en vont (V4.5-216).
+        // Vidés et non supprimés en lignes : les lignes portent des clés
+        // étrangères et la forme du jugement, que le détachement conserve
+        // aussi. Ce qui part, ce sont les mots — les siens, et ceux qu'on lui
+        // a cités.
+        if (!existing.correctionReuseConsent) {
+          await deleteLearnerText(transaction, input.userId);
+        }
+
         const auditValues = {
           fromStatus: existing.accountStatus,
-          learnerTextPolicy: LEARNER_TEXT_POLICY,
+          learnerTextPolicy: existing.correctionReuseConsent
+            ? LEARNER_TEXT_POLICY.RETAINED
+            : LEARNER_TEXT_POLICY.DELETED,
           previousUpdatedAt: existing.updatedAt.toISOString(),
         };
         await writeAuditEvent(transaction, {

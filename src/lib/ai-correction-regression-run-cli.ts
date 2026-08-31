@@ -54,13 +54,16 @@ import { analyseRunOffline } from './ai-correction-regression-analyse.js';
 import { renderRegressionReport } from './ai-correction-regression-report.js';
 import {
   acquireRunLock,
+  appendSpendEnvelope,
   capForRun,
   envelopeState,
   ledgerSpendSince,
-  readSpendEnvelope,
+  readSpendEnvelopeChain,
+  reconcileEnvelopeDeclaration,
   RegressionEnvelopeError,
   releaseRunLock,
-  writeSpendEnvelope,
+  resolveEnvelopeHead,
+  type SpendEnvelope,
 } from './ai-correction-regression-envelope.js';
 import {
   computeRunSecurityRates,
@@ -192,6 +195,15 @@ export type ParaphraseCacheLoad = {
  * a corpus or the generator moved under a cached rewrite, and using it would
  * compare the run against a paraphrase of text that no longer exists.
  */
+/**
+ * Refusal to run without an explicitly chosen benchmark configuration.
+ *
+ * Module-local: it is thrown and read here, and the tests assert on the message
+ * rather than the constructor, so exporting it would widen the surface for
+ * nobody.
+ */
+class RegressionRunConfigurationError extends Error {}
+
 export async function loadParaphraseCache(input: {
   caseIds: string[];
   poolId: string;
@@ -263,7 +275,11 @@ async function readPersistedVerdicts(
  */
 function profileFamilyFor(arguments_: string[]): string {
   const requested = readCliOption(arguments_, 'profile');
-  return requested === 'reduced' || requested === 'smoke' ? 'reduced' : 'full';
+  return requested === 'reduced' ||
+    requested === 'smoke' ||
+    requested === 'direction'
+    ? 'reduced'
+    : 'full';
 }
 
 /**
@@ -557,6 +573,59 @@ export function renderLedger(
  * and lets V4.5-121 be "swap the executor" rather than "discover the wiring
  * under a 3 USD cap".
  */
+/**
+ * The flags that name a benchmark configuration explicitly.
+ *
+ * `--benchmark-configuration=` takes a whole configuration file;
+ * `--configuration=` takes an overlay that `extends` one. Either is a choice.
+ * Passing neither is not.
+ */
+const CONFIGURATION_FLAGS = [
+  '--benchmark-configuration=',
+  '--configuration=',
+] as const;
+
+/**
+ * Refuses to spend under a configuration nobody chose.
+ *
+ * With no configuration flag, `loadBenchmarkInputs` falls back to
+ * `benchmark.v1.json`, which pins prompt **2.0.0** — neither the promoted
+ * identity (2.2.0) nor the candidate a run is usually bought to measure
+ * (2.3.0). The fallback is silent, the artefacts record the prompt that ran and
+ * not the one that was meant to, and the result reads like a verdict on a
+ * prompt that was never exercised. A 253-cell run costs 6 to 8 USD and would
+ * have answered the wrong question at full price.
+ *
+ * So the refusal is on the spending path only. A dry run must still price a
+ * plan freely — that is what it is for, and the preflight is most useful before
+ * anyone has decided anything. What must never happen silently is *paying*
+ * under a default.
+ *
+ * Naming the flag and the file in the message is the point: an error that says
+ * only "configuration required" sends the reader back to the source to find out
+ * which of two flags it meant.
+ */
+function assertConfigurationWasChosen(input: {
+  arguments: string[];
+  willSpend: boolean;
+}): void {
+  if (!input.willSpend) return;
+  if (
+    input.arguments.some((argument) =>
+      CONFIGURATION_FLAGS.some((flag) => argument.startsWith(flag)),
+    )
+  ) {
+    return;
+  }
+  throw new RegressionRunConfigurationError(
+    'REGRESSION_RUN_CONFIGURATION_REQUIRED: --execute demande une configuration explicite. ' +
+      'Sans elle le run retombe en silence sur benchmarks/ai-correction/benchmark.v1.json, ' +
+      'soit la consigne 2.0.0 — ni l’identité promue 2.2.0, ni la candidate 2.3.0. ' +
+      'Ajouter --benchmark-configuration=benchmarks/ai-correction/benchmark.v3_2.json ' +
+      '(consigne 2.3.0) ou le fichier voulu ; --configuration= attend un overlay avec extends.',
+  );
+}
+
 export async function runRegressionPool(input: {
   arguments: string[];
   checker?: RegressionCheckerPort;
@@ -595,6 +664,10 @@ export async function runRegressionPool(input: {
   // envelope there would make the preflight impossible to consult before a run
   // is authorised, which is exactly when it is most useful.
   const willSpend = !dryRun && input.executeCandidate !== undefined;
+  assertConfigurationWasChosen({
+    arguments: input.arguments,
+    willSpend,
+  });
   const envelopeUsd = readCliOption(input.arguments, 'envelope-usd');
   let envelopeNote =
     "Aucune enveloppe déclarée : seul le plafond du run s'applique.";
@@ -606,17 +679,42 @@ export async function runRegressionPool(input: {
         `REGRESSION_ENVELOPE_INVALID: ${envelopeUsd}.`,
       );
     }
-    const existing = await readSpendEnvelope(directory);
+    // The envelope in force is the head of the supersession chain, and the
+    // command line is reconciled against it rather than quietly losing to it.
+    // `spend-envelope.v1.json` from a 30 August decision used to pre-empt any
+    // later one: the flags were parsed, discarded, and the owner's decision
+    // authorised nothing while appearing to.
+    const head = resolveEnvelopeHead(await readSpendEnvelopeChain(directory));
+    const declaredDecisionId = readCliOption(
+      input.arguments,
+      'envelope-decision',
+    );
+    const declaredSupersedes = readCliOption(
+      input.arguments,
+      'envelope-supersedes',
+    );
+    const reconciliation = reconcileEnvelopeDeclaration({
+      declared: {
+        decisionId: declaredDecisionId,
+        envelopeUsd: parsedEnvelope,
+        supersedes: declaredSupersedes,
+      },
+      head,
+    });
     const usageNow = await readProviderUsageUsd(input.providerApiKey);
-    const envelope = existing ?? {
-      decisionId:
-        readCliOption(input.arguments, 'envelope-decision') ?? 'undeclared',
-      envelopeUsd: parsedEnvelope,
-      openedAt: runStartedAt,
-      openingProviderUsageUsd: usageNow ?? 0,
-      schemaVersion: 1 as const,
-    };
-    if (!existing) {
+    const envelope =
+      reconciliation.envelope ??
+      ({
+        decisionId: declaredDecisionId ?? 'undeclared',
+        envelopeUsd: parsedEnvelope,
+        openedAt: runStartedAt,
+        openingProviderUsageUsd: usageNow ?? 0,
+        schemaVersion: 1 as const,
+        ...(declaredSupersedes === undefined
+          ? {}
+          : { supersedes: declaredSupersedes }),
+      } satisfies SpendEnvelope);
+    if (reconciliation.action !== 'REUSE') {
       if (usageNow === null) {
         if (willSpend) {
           throw new RegressionEnvelopeError(
@@ -627,7 +725,9 @@ export async function runRegressionPool(input: {
         // rather than implying a budget was checked.
         envelopeNote = `Enveloppe de ${parsedEnvelope} USD non ouverte : usage fournisseur illisible sans clé. Aucune dépense n'est autorisée par ce préflight.`;
       } else {
-        await writeSpendEnvelope({ directory, envelope });
+        // A new file, never over the old one: the superseded envelope stays on
+        // disk as the record of what was authorised then.
+        await appendSpendEnvelope({ directory, envelope });
       }
     }
     if (usageNow !== null || willSpend) {
@@ -687,7 +787,9 @@ export async function runRegressionPool(input: {
       ? 'reduced'
       : requestedProfile === 'smoke'
         ? 'smoke'
-        : 'full';
+        : requestedProfile === 'direction'
+          ? 'direction'
+          : 'full';
   const requestedPasses = buildRunPasses({
     plan,
     poolSha256,
@@ -1379,7 +1481,7 @@ export type RegressionRunPass = {
   repetitions: number;
 };
 
-type RegressionProfileName = 'full' | 'reduced' | 'smoke';
+type RegressionProfileName = 'direction' | 'full' | 'reduced' | 'smoke';
 
 /**
  * The deterministic 24-case subset the reduced profile repeats.
@@ -1448,6 +1550,55 @@ export function buildRunPasses(input: {
     ];
   }
 
+  if (input.profile === 'direction') {
+    // Mutants that carry a direction, plus the baselines the inversions need to
+    // resolve a reference level — and nothing else.
+    //
+    // The economy is real and the trap is precise. `SENTENCE_DELETION` compares
+    // against the contract's top level and needs no baseline at all;
+    // `FACT_INVERSION` reads its reference from `baselineLevels`, built from the
+    // baselines **of the same run**. Drop those and `directionViolation` returns
+    // `undefined` — no error, no `NOT_MEASURED`, just a violation that cannot be
+    // counted while its mutant stays in the denominator. Measured on the whole
+    // pool: 104 of 104 violations become 76 of 104, twenty-seven points of
+    // improvement bought by removing the reference, in the direction that
+    // favours promotion. This profile therefore buys exactly the baselines the
+    // inversions it selected depend on, and the suite test asserts that every
+    // one of them resolves.
+    //
+    // No repetition pass: stability is a distribution and this profile measures
+    // a direction. What it does not buy is named in the report rather than left
+    // for a reader to notice.
+    const selected = directionCoveredMutants({
+      inSubset: () => false,
+      mutantCases,
+      plan: input.plan,
+      target: input.directionMutantTarget ?? DIRECTION_MUTANT_TARGET,
+    });
+    const inversionCaseIds = new Set(
+      selected.flatMap((benchmarkCase) => {
+        const unit = input.plan.unitsByBenchmarkCaseId.get(
+          benchmarkCase.caseId,
+        );
+        return unit?.kind === 'FACT_INVERSION' ? [unit.poolCaseId] : [];
+      }),
+    );
+
+    return [
+      {
+        cases: baselineCases.filter((benchmarkCase) => {
+          const unit = input.plan.unitsByBenchmarkCaseId.get(
+            benchmarkCase.caseId,
+          );
+          return unit ? inversionCaseIds.has(unit.poolCaseId) : false;
+        }),
+        label: 'lignes de base des inversions',
+        repetitions: 1,
+      },
+      { cases: selected, label: 'mutants à direction', repetitions: 1 },
+    ];
+  }
+
   const poolCaseIds = [...input.plan.unitsByBenchmarkCaseId.values()]
     .filter((unit) => unit.mutantId === undefined)
     .map((unit) => unit.poolCaseId);
@@ -1502,7 +1653,7 @@ export function buildRunPasses(input: {
  * implies. The test still reads the minimum from the policy rather than
  * trusting this constant.
  */
-const DIRECTION_MUTANT_TARGET = 55;
+const DIRECTION_MUTANT_TARGET = 63;
 
 /**
  * The subset's mutants, plus enough direction-bearing ones to reach the target.
@@ -1512,6 +1663,21 @@ const DIRECTION_MUTANT_TARGET = 55;
  * was never a missing pool: `mutation-hints.v1.json` already declares 76
  * deletions and 28 inversions, frozen and paid for with the pool. It was the
  * selection.
+ *
+ * The target is 62 rather than 55 because the number that matters is not how
+ * many cells are *bought* but how many *report*. `mutation-direction-violations`
+ * declares `minimumDenominator: 50`, and a run below it does not fail the gate —
+ * it cannot state it, which is a paid run with no verdict. Unusable cells on the
+ * mutant passes measured 7.5 % and 8.3 % on 30 and 31 August, so 55 selected
+ * yields about 50.6 usable: the exact edge, where losing one more cell decides
+ * the verdict.
+ *
+ * 63, not 62: the margin is stated as "still 50 after losing a fifth of the
+ * pass", and 62 x 0.8 = 49.6, which floors to 49. One cell short of the
+ * property it was chosen for. 63 x 0.8 = 50.4 holds. The eight extra cells cost
+ * roughly 0.2 USD of real spend, against a run of about 6 that would otherwise
+ * risk concluding nothing — and the test below reads the minimum from the
+ * policy, so this cannot drift back without saying so.
  *
  * Order is deterministic — a stable sort on the corpus identifier, itself a
  * hash of the unit id — so the same pool yields the same mutants on every run

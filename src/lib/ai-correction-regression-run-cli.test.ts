@@ -28,7 +28,15 @@ import {
   runRegressionAnalysis,
   runRegressionPool,
 } from './ai-correction-regression-run-cli.js';
-import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
+import {
+  planRegressionRun,
+  type RegressionCheckerPort,
+} from './ai-correction-regression-run.js';
+import { computeRegressionMetrics } from './ai-correction-regression-metrics.js';
+import {
+  loadRegressionSource,
+  parseRegressionPool,
+} from './ai-correction-regression-pool.js';
 
 const REGRESSION_SOURCE = path.resolve('benchmarks/ai-correction/regression');
 const POOL_PATH = path.join(REGRESSION_SOURCE, 'regression-pool.v1.json');
@@ -129,6 +137,16 @@ const CHECKER: RegressionCheckerPort = {
   }),
 };
 
+/**
+ * The configuration an executing test chooses (V4.5-210).
+ *
+ * A paid run refuses to start without one, because the fallback is silent and
+ * lands on prompt 2.0.0. Which file is chosen does not matter to the guard; that
+ * a choice was made does.
+ */
+const CHOSEN_CONFIGURATION =
+  '--benchmark-configuration=benchmarks/ai-correction/benchmark.v1.json';
+
 const SAMPLE_ARGUMENTS = [
   `--run-pool=${POOL_PATH}`,
   '--supplier-cost-cap-usd=100',
@@ -143,7 +161,17 @@ const SAMPLE_ARGUMENTS = [
  * gates evaluated, not how many cells ran, so the smallest executing profile
  * asserts the same thing without the flake.
  */
-const EXECUTING_ARGUMENTS = [...SAMPLE_ARGUMENTS, '--profile=smoke'];
+/**
+ * Executing tests name their configuration, because a paid run must (V4.5-210).
+ *
+ * The guard checks that a choice was made, not which file was chosen: without
+ * one, a run falls back to `benchmark.v1.json` and its 2.0.0 prompt in silence.
+ */
+const EXECUTING_ARGUMENTS = [
+  ...SAMPLE_ARGUMENTS,
+  '--profile=smoke',
+  '--benchmark-configuration=benchmarks/ai-correction/benchmark.v1.json',
+];
 
 describe('--run-pool', () => {
   it('plans and prices a run without contacting a provider', async () => {
@@ -303,6 +331,7 @@ describe('--run-pool', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -331,6 +360,7 @@ describe('--run-pool', () => {
     const second = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
         `--resume=${first.resultsDirectory}`,
@@ -596,6 +626,7 @@ describe('--measure-checker', () => {
     const measurement = await runCheckerMeasurement({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         `--measure-checker=${source.resultsDirectory}`,
         '--limit=5',
         '--supplier-cost-cap-usd=1',
@@ -652,6 +683,7 @@ describe('--measure-checker', () => {
     const measurement = await runCheckerMeasurement({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         `--measure-checker=${source.resultsDirectory}`,
         '--limit=3',
         '--supplier-cost-cap-usd=1',
@@ -686,6 +718,7 @@ describe('--measure-checker', () => {
       runCheckerMeasurement({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           `--measure-checker=${empty}`,
           '--supplier-cost-cap-usd=1',
         ],
@@ -729,6 +762,7 @@ describe('one convention, one verdict', () => {
     await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=0.20',
       ],
@@ -759,6 +793,7 @@ describe('one convention, one verdict', () => {
       runRegressionPool({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           '--profile=reduced',
           '--supplier-cost-cap-usd=1',
         ],
@@ -803,6 +838,7 @@ describe('the repetition pass dispatches at its offset', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -839,6 +875,7 @@ describe('the repetition pass dispatches at its offset', () => {
     const resumed = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
         `--resume=${first.resultsDirectory}`,
@@ -884,6 +921,7 @@ describe('mutation coverage matches what the policy declares', () => {
     const planned = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -922,6 +960,20 @@ describe('mutation coverage matches what the policy declares', () => {
     });
 
     expect(directionBearing.length).toBeGreaterThanOrEqual(declared as number);
+
+    // Clearing the minimum before the run is not clearing it after (V4.5-210).
+    // Cells on the mutant passes came back unusable at 7.5 % and 8.3 % on 30
+    // and 31 August — measured, not assumed. A target of 55 satisfies the
+    // assertion above and yields about 50.6 usable against a minimum of 50: one
+    // further lost cell decides whether a paid run can state its gate at all,
+    // and a gate below its minimum is not a failure but an absence of verdict.
+    // The margin is sized for losses concentrating on this pass rather than
+    // spreading evenly, because that is how the two measured runs lost them.
+    const survivorsAtObservedLoss = Math.floor(directionBearing.length * 0.917);
+    expect(survivorsAtObservedLoss).toBeGreaterThanOrEqual(declared as number);
+
+    const survivorsAtTwentyPercent = Math.floor(directionBearing.length * 0.8);
+    expect(survivorsAtTwentyPercent).toBeGreaterThanOrEqual(declared as number);
   }, 60_000);
 });
 
@@ -979,6 +1031,7 @@ describe('overlapping passes carry a resumed attempt once', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -994,6 +1047,7 @@ describe('overlapping passes carry a resumed attempt once', () => {
     const resumed = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
         `--resume=${first.resultsDirectory}`,
@@ -1039,6 +1093,7 @@ describe('a resume is priced against what the cap has left', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1093,6 +1148,7 @@ describe('a resume is priced against what the cap has left', () => {
       runRegressionPool({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           '--profile=smoke',
           '--supplier-cost-cap-usd=0.10',
           `--resume=${resumeDirectory}`,
@@ -1117,6 +1173,7 @@ describe('a resume is priced against what the cap has left', () => {
     const outcome = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
         `--resume=${resumeDirectory}`,
@@ -1148,6 +1205,7 @@ describe('a resume is priced against what the cap has left', () => {
     const outcome = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1213,6 +1271,7 @@ describe('repetition offset (V4.5-127)', () => {
     await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=reduced',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1257,6 +1316,7 @@ describe('--analyse (V4.5-127)', () => {
     const run = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1278,6 +1338,7 @@ describe('--analyse (V4.5-127)', () => {
     const { analysis } = await runRegressionAnalysis({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         `--analyse=${run.resultsDirectory}`,
       ],
       regressionDirectory: directory,
@@ -1330,6 +1391,7 @@ describe('results-directory resolution (V4.5-127)', () => {
     const first = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
       ],
@@ -1351,6 +1413,7 @@ describe('results-directory resolution (V4.5-127)', () => {
     const resumed = await runRegressionPool({
       arguments: [
         `--run-pool=${POOL_PATH}`,
+        CHOSEN_CONFIGURATION,
         '--profile=smoke',
         '--supplier-cost-cap-usd=100',
         // The bare name, not a path.
@@ -1383,6 +1446,7 @@ describe('results-directory resolution (V4.5-127)', () => {
       runRegressionPool({
         arguments: [
           `--run-pool=${POOL_PATH}`,
+          CHOSEN_CONFIGURATION,
           '--profile=smoke',
           '--supplier-cost-cap-usd=100',
           `--resume=${missing}`,
@@ -1392,5 +1456,236 @@ describe('results-directory resolution (V4.5-127)', () => {
         regressionDirectory: directory,
       }),
     ).rejects.toThrow(/ENOENT|attempts\.json/);
+  });
+});
+
+/**
+ * A paid run must not start under a configuration nobody chose (V4.5-210).
+ *
+ * With no configuration flag, `loadBenchmarkInputs` falls back to
+ * `benchmark.v1.json` — prompt 2.0.0, neither the promoted 2.2.0 nor the
+ * candidate 2.3.0. The fallback is silent, so a 253-cell run costing 6 to 8 USD
+ * would answer the wrong question at full price and read like a verdict on a
+ * prompt that never ran. This is the same family as every other defect of the
+ * day: a default that decides something nobody decided.
+ */
+describe('explicit configuration before spending', () => {
+  it('refuses to execute without a configuration flag', async () => {
+    const directory = await scratchRegressionDirectory();
+
+    await expect(
+      runRegressionPool({
+        // SAMPLE_ARGUMENTS deliberately names no configuration.
+        arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke'],
+        checker: CHECKER,
+        configuration: configuration(),
+        executeCandidate: fakeExecutor(),
+        identities: IDENTITIES,
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+      }),
+    ).rejects.toThrow(/REGRESSION_RUN_CONFIGURATION_REQUIRED/);
+  });
+
+  it('names the flag and the file it expects', async () => {
+    const directory = await scratchRegressionDirectory();
+    let message = '';
+    try {
+      await runRegressionPool({
+        arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke'],
+        checker: CHECKER,
+        configuration: configuration(),
+        executeCandidate: fakeExecutor(),
+        identities: IDENTITIES,
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+      });
+    } catch (error) {
+      message = (error as Error).message;
+    }
+
+    // An error saying only "configuration required" sends the reader back to
+    // the source to learn which of two flags it meant, and the two are not
+    // interchangeable: --configuration= wants an overlay, not a full file.
+    expect(message).toContain('--benchmark-configuration=');
+    expect(message).toContain('benchmark.v3_2.json');
+    expect(message).toContain('2.0.0');
+  });
+
+  it('accepts either configuration flag', async () => {
+    for (const flag of [
+      '--benchmark-configuration=benchmarks/ai-correction/benchmark.v1.json',
+      '--configuration=benchmarks/ai-correction/holdout.benchmark.v3.json',
+    ]) {
+      const directory = await scratchRegressionDirectory();
+      await expect(
+        runRegressionPool({
+          arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke', flag],
+          checker: CHECKER,
+          configuration: configuration(),
+          executeCandidate: fakeExecutor(),
+          identities: IDENTITIES,
+          providerApiKey: 'offline-test-key',
+          regressionDirectory: directory,
+        }),
+      ).resolves.toBeDefined();
+    }
+  }, 30_000);
+
+  it('still prices a plan with no configuration, because a dry run buys nothing', async () => {
+    // The refusal is on the spending path only. A preflight is most useful
+    // before anyone has decided anything, so it must stay free to consult.
+    const directory = await scratchRegressionDirectory();
+
+    await expect(
+      runRegressionPool({
+        arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
+        configuration: configuration(),
+        identities: IDENTITIES,
+        regressionDirectory: directory,
+      }),
+    ).resolves.toBeDefined();
+  });
+});
+
+/**
+ * The `direction` profile buys the baselines its inversions depend on
+ * (V4.5-210).
+ *
+ * The defect this guards against was measured on the whole pool: with baselines
+ * present, 104 of 104 direction-bearing mutants can violate; with them absent,
+ * 76 of 104 — the `FACT_INVERSION` mutants keep their place in the denominator
+ * and silently lose the ability to violate, because `directionViolation` reads
+ * their reference level from `baselineLevels` and returns `undefined` when it is
+ * missing. No error, no `NOT_MEASURED`, twenty-seven points of improvement
+ * bought by removing the reference — in the direction that favours promotion.
+ *
+ * A profile that trims baselines to save money is exactly how that would come
+ * back, so this asserts the arithmetic rather than the shape: every inversion
+ * this profile selects must actually be counted.
+ */
+describe('direction profile', () => {
+  function directionPlan() {
+    const pool = parseRegressionPool(
+      JSON.parse(readFileSync(POOL_PATH, 'utf8')) as unknown,
+    );
+    const sources = new Map(
+      pool.sources.map((source) => [
+        source.path,
+        loadRegressionSource(
+          readFileSync(path.resolve(path.dirname(POOL_PATH), source.path)),
+        ),
+      ]),
+    );
+    const plan = planRegressionRun({ pool, sources });
+    const passes = buildRunPasses({
+      plan,
+      poolSha256: 'e'.repeat(64),
+      profile: 'direction',
+      repetitions: 3,
+    });
+    return { passes, plan };
+  }
+
+  it('buys no repetition pass and no untargeted mutants', () => {
+    const { passes } = directionPlan();
+
+    expect(passes.map((pass) => pass.label)).toEqual([
+      'lignes de base des inversions',
+      'mutants à direction',
+    ]);
+    for (const pass of passes) expect(pass.repetitions).toBe(1);
+  });
+
+  it('selects every mutant with a direction, and only those', () => {
+    const { passes, plan } = directionPlan();
+    const mutantPass = passes.find(
+      (pass) => pass.label === 'mutants à direction',
+    );
+
+    for (const benchmarkCase of mutantPass?.cases ?? []) {
+      const expectation = plan.unitsByBenchmarkCaseId.get(
+        benchmarkCase.caseId,
+      )?.expectation;
+      expect(expectation?.targetCriterionKey).toBeDefined();
+      expect(expectation?.targetDirection).toBeDefined();
+    }
+  });
+
+  it('counts its inversions, which is what a missing baseline would break', () => {
+    const { passes, plan } = directionPlan();
+    const baselinePass = passes.find(
+      (pass) => pass.label === 'lignes de base des inversions',
+    );
+    const mutantPass = passes.find(
+      (pass) => pass.label === 'mutants à direction',
+    );
+    const scales = plan.scales;
+    const scaleFor = new Map(scales.map((scale) => [scale.caseId, scale]));
+
+    // Every cell answers at the top level, so every direction-bearing mutant
+    // ought to violate. Anything that does not is a mutant the run cannot judge.
+    const observationFor = (benchmarkCaseId: string) => {
+      const unit = plan.unitsByBenchmarkCaseId.get(benchmarkCaseId);
+      const scale = unit ? scaleFor.get(unit.poolCaseId) : undefined;
+      if (!unit || !scale) return undefined;
+      return {
+        caseId: unit.poolCaseId,
+        criteria: scale.criteria.map((criterion) => ({
+          checkerVerdict: 'AGREED' as const,
+          confidence: 'HIGH' as const,
+          criterionKey: criterion.criterionKey,
+          levelKey: criterion.orderedLevelKeys.at(-1) ?? '',
+        })),
+        ...(unit.expectation ? { expectation: unit.expectation } : {}),
+        ...(unit.kind ? { kind: unit.kind } : {}),
+        ...(unit.mutantId ? { mutantId: unit.mutantId } : {}),
+        repetition: 1,
+      };
+    };
+
+    const baselines = (baselinePass?.cases ?? []).flatMap((benchmarkCase) => {
+      const observation = observationFor(benchmarkCase.caseId);
+      return observation ? [observation] : [];
+    });
+    const mutants = (mutantPass?.cases ?? []).flatMap((benchmarkCase) => {
+      const observation = observationFor(benchmarkCase.caseId);
+      return observation ? [observation] : [];
+    });
+
+    const inversions = mutants.filter(
+      (mutant) => mutant.kind === 'FACT_INVERSION',
+    ).length;
+    expect(inversions).toBeGreaterThan(0);
+    // The baselines bought are exactly the ones the inversions need.
+    expect(baselines.length).toBe(
+      new Set(
+        mutants
+          .filter((mutant) => mutant.kind === 'FACT_INVERSION')
+          .map((mutant) => mutant.caseId),
+      ).size,
+    );
+
+    const measured = computeRegressionMetrics({ baselines, mutants, scales });
+
+    // Every selected mutant counted, inversions included. Drop the baselines
+    // and this falls by exactly `inversions` while the denominator holds — the
+    // silent improvement, asserted as the number it would become.
+    expect(measured.mutationDirectionViolations.denominator).toBe(
+      mutants.length,
+    );
+    expect(measured.mutationDirectionViolations.numerator).toBe(mutants.length);
+
+    const withoutBaselines = computeRegressionMetrics({
+      baselines: [],
+      mutants,
+      scales,
+    });
+    expect(withoutBaselines.mutationDirectionViolations.numerator).toBe(
+      mutants.length - inversions,
+    );
+    expect(withoutBaselines.mutationDirectionViolations.denominator).toBe(
+      mutants.length,
+    );
   });
 });

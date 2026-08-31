@@ -1065,6 +1065,29 @@ describe('omitted-criteria oracle', () => {
     );
   });
 
+  async function attemptsWithOneVictim() {
+    const { pool, sources } = loadPool();
+    const plan = planRegressionRun({
+      pool,
+      poolCaseIds: SAMPLE_CASE_IDS,
+      sources,
+    });
+    const configuration = loadConfiguration(plan.corpus);
+    const attempts = await runBenchmark({
+      candidates: configuration.candidates.slice(0, 1),
+      configuration,
+      corpus: plan.corpus,
+      executeCandidate: fakeExecutor({ behaviour: 'ATTENTIVE', plan }),
+      providerApiKey: 'offline-test-key',
+      repetitions: configuration.repetitions,
+    });
+    const victim = attempts.find(
+      (attempt) => (attempt.output?.criteria.length ?? 0) > 1,
+    );
+    expect(victim).toBeDefined();
+    return { attempts, plan, victim };
+  }
+
   it('splits a lost criterion into "withdrawn" and "never written"', async () => {
     // Two causes that look identical on the delivered correction and are fixed
     // in different places: the model skipped a criterion, or the pipeline took
@@ -1090,9 +1113,9 @@ describe('omitted-criteria oracle', () => {
       observations: [],
       plan,
     });
-    expect(complete.criteriaWithdrawnAfterSalvage.numerator).toBe(0);
+    expect(complete.criteriaWithdrawnUndelivered.numerator).toBe(0);
     expect(complete.criteriaAbsentFromModelOutput.numerator).toBe(0);
-    expect(complete.criteriaWithdrawnAfterSalvage.denominator).toBeGreaterThan(
+    expect(complete.criteriaWithdrawnUndelivered.denominator).toBeGreaterThan(
       0,
     );
 
@@ -1132,13 +1155,13 @@ describe('omitted-criteria oracle', () => {
       plan,
     });
 
-    expect(withdrawn.criteriaWithdrawnAfterSalvage.numerator).toBe(1);
+    expect(withdrawn.criteriaWithdrawnUndelivered.numerator).toBe(1);
     // The model wrote it; only the pipeline lost it. Reading these two the same
     // way is what sent a day of investigation at the wrong guard.
     expect(withdrawn.criteriaAbsentFromModelOutput.numerator).toBe(0);
     // And the denominator does not move when a criterion leaves the output.
-    expect(withdrawn.criteriaWithdrawnAfterSalvage.denominator).toBe(
-      complete.criteriaWithdrawnAfterSalvage.denominator,
+    expect(withdrawn.criteriaWithdrawnUndelivered.denominator).toBe(
+      complete.criteriaWithdrawnUndelivered.denominator,
     );
 
     // The other cause, same delivered shape: the model never wrote it.
@@ -1168,6 +1191,138 @@ describe('omitted-criteria oracle', () => {
       plan,
     });
     expect(silent.criteriaAbsentFromModelOutput.numerator).toBe(1);
+  });
+
+  it('does not count a withdrawn criterion as lost once it is still delivered', async () => {
+    // The shape after V4.5-177, replayed from the real cell: the model cited
+    // the task statement instead of the learner's answer, the quote was
+    // refused, and the criterion is delivered anyway — EVIDENCE_WITHDRAWN, no
+    // level shown. Nothing reached the learner short, so the blocking count
+    // must read zero while the provenance count reads one.
+    //
+    // Wiring the blocking gate to the withdrawal flag instead of to the
+    // delivered output would turn it red here — red *because the fix works*,
+    // which teaches people to route around the gate rather than fix anything.
+    const { attempts, plan, victim } = await attemptsWithOneVictim();
+    const target = victim?.output?.criteria[0]?.criterionKey ?? '';
+
+    const provenanceAttempts = attempts.map((attempt) => {
+      if (attempt !== victim || !attempt.output) return attempt;
+      return {
+        ...attempt,
+        // Delivered, with the level the model pronounced and no quotes.
+        output: attempt.output,
+        rawModelOutput: JSON.stringify({
+          criteria: Object.fromEntries(
+            attempt.output.criteria.map((criterion) => [
+              criterion.criterionKey,
+              {},
+            ]),
+          ),
+        }),
+        withdrawnCriteria: [
+          { criterionKey: target, reason: 'EVIDENCE_NOT_IN_RESPONSE' as const },
+        ],
+      };
+    });
+
+    const rates = computeRunSecurityRates({
+      attempts: provenanceAttempts,
+      observations: [],
+      plan,
+    });
+
+    expect(rates.criteriaWithdrawnUndelivered.numerator).toBe(0);
+    expect(rates.criteriaDroppedForEvidenceProvenance.numerator).toBe(1);
+    expect(rates.criteriaAbsentFromModelOutput.numerator).toBe(0);
+    // Contract-built on both counts, so neither shrinks when a level does.
+    expect(rates.criteriaDroppedForEvidenceProvenance.denominator).toBe(
+      rates.criteriaWithdrawnUndelivered.denominator,
+    );
+  });
+
+  it('still blocks when a withdrawal keeps the criterion out of the correction', async () => {
+    // The five other reasons remove the criterion outright, and those must stay
+    // blocking: the learner is short a criterion however well-named the reason.
+    const { attempts, plan, victim } = await attemptsWithOneVictim();
+    const target = victim?.output?.criteria[0]?.criterionKey ?? '';
+
+    const removedAttempts = attempts.map((attempt) => {
+      if (attempt !== victim || !attempt.output) return attempt;
+      return {
+        ...attempt,
+        output: {
+          ...attempt.output,
+          criteria: attempt.output.criteria.filter(
+            (criterion) => criterion.criterionKey !== target,
+          ),
+        },
+        rawModelOutput: JSON.stringify({
+          criteria: Object.fromEntries(
+            attempt.output.criteria.map((criterion) => [
+              criterion.criterionKey,
+              {},
+            ]),
+          ),
+        }),
+        withdrawnCriteria: [
+          { criterionKey: target, reason: 'CRITERION_MALFORMED' as const },
+        ],
+      };
+    });
+
+    const rates = computeRunSecurityRates({
+      attempts: removedAttempts,
+      observations: [],
+      plan,
+    });
+
+    expect(rates.criteriaWithdrawnUndelivered.numerator).toBe(1);
+    // A malformed criterion is not a provenance failure; naming them the same
+    // is how two different repairs get confused for one.
+    expect(rates.criteriaDroppedForEvidenceProvenance.numerator).toBe(0);
+  });
+
+  it('keeps a withdrawn criterion in the gold denominator without crediting it', async () => {
+    // Neither exclusion nor credit. Dropping it from the denominator would
+    // shrink the denominator when the model fails — the exact defect v6.1
+    // removes — and counting it would score a level whose only support was a
+    // quote the pipeline refused.
+    const { baselines, mutants, plan } = await runSuite({
+      behaviour: 'ATTENTIVE',
+      checker: AGREEABLE_CHECKER,
+    });
+    const loud = computeRegressionMetrics({
+      baselines,
+      mutants,
+      scales: plan.scales,
+    });
+
+    const withdrawnBaselines = baselines.map((observation, index) =>
+      index === 0
+        ? {
+            ...observation,
+            criteria: observation.criteria.map((criterion, position) =>
+              position === 0
+                ? { ...criterion, evidenceWithdrawn: true }
+                : criterion,
+            ),
+          }
+        : observation,
+    );
+    const withheld = computeRegressionMetrics({
+      baselines: withdrawnBaselines,
+      mutants,
+      scales: plan.scales,
+    });
+
+    expect(loud.modelAuthoredAgreement.numerator).toBeGreaterThan(0);
+    expect(withheld.modelAuthoredAgreement.denominator).toBe(
+      loud.modelAuthoredAgreement.denominator,
+    );
+    expect(withheld.modelAuthoredAgreement.numerator).toBe(
+      loud.modelAuthoredAgreement.numerator - 1,
+    );
   });
 
   it('names a cell whose raw output cannot be read instead of counting it clean', async () => {
@@ -1207,5 +1362,105 @@ describe('omitted-criteria oracle', () => {
     expect(result.criteriaAbsentFromModelOutput.denominator).toBeLessThan(
       readable.criteriaAbsentFromModelOutput.denominator,
     );
+  });
+});
+
+/**
+ * A run that measures one oracle must say so in its own artefact (V4.5-210).
+ *
+ * Otherwise a green table reads as a verdict on the system, when stability,
+ * drift, the LOW share and gold agreement were never bought at all. The gates
+ * that read them stay unmeasured and therefore blocking, so nothing can be
+ * promoted by accident — but a reader skimming the green rows would not know
+ * that, and saying it in the report is the difference between a narrow result
+ * and a misread one.
+ */
+describe('the direction profile reports its own narrowness', () => {
+  it('names what it did not buy, and what a green run does not authorise', async () => {
+    const { gateInputs, metrics, plan } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      checker: AGREEABLE_CHECKER,
+    });
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination(gateInputs),
+      policy: loadPolicy(),
+    });
+
+    const report = renderRegressionReport({
+      confidence: summarizeConfidence([]),
+      costs: {
+        actualCostUsd: 0.01,
+        estimatedCostUsd: 0.012,
+        p50CostUsdPerCorrection: 0.0004,
+        p50LatencyMs: 12,
+        p90CostUsdPerCorrection: 0.0006,
+        p90LatencyMs: 20,
+      },
+      evaluation,
+      identity: {
+        checkerIdentity: 'PROMOTED_CHECKER_IDENTITY',
+        gatePolicyVersion: '6.1.0',
+        generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+        heldOutSeed: 'c'.repeat(64),
+        heldOutSeedSource: 'DERIVED',
+        poolId: 'learnx-fr-regression-pool-v1',
+        poolSha256: 'd'.repeat(64),
+        primaryIdentity: 'PROMOTED_CORRECTION_IDENTITY',
+        profile: 'direction',
+        repetitions: 1,
+        runStartedAt: '2026-08-31T00:00:00.000Z',
+      },
+      metrics,
+      mutantCounts: countMutantsByKind(plan),
+    });
+
+    expect(report).toContain("Ce run n'achète qu'un oracle");
+    expect(report).toContain(
+      'autorise à acheter la suite, jamais à promouvoir',
+    );
+    expect(report).toContain('stabilité');
+  });
+
+  it('says nothing of the sort on a profile that buys the pool', async () => {
+    // The warning must be tied to the narrow profile, not printed always: a
+    // caveat that appears on every run is one nobody reads on the run it means.
+    const { gateInputs, metrics, plan } = await runSuite({
+      behaviour: 'BLIND_TO_MUTATIONS',
+      checker: AGREEABLE_CHECKER,
+    });
+    const evaluation = evaluateRegressionGates({
+      metrics: withEvidenceHallucination(gateInputs),
+      policy: loadPolicy(),
+    });
+
+    const report = renderRegressionReport({
+      confidence: summarizeConfidence([]),
+      costs: {
+        actualCostUsd: 0.01,
+        estimatedCostUsd: 0.012,
+        p50CostUsdPerCorrection: 0.0004,
+        p50LatencyMs: 12,
+        p90CostUsdPerCorrection: 0.0006,
+        p90LatencyMs: 20,
+      },
+      evaluation,
+      identity: {
+        checkerIdentity: 'PROMOTED_CHECKER_IDENTITY',
+        gatePolicyVersion: '6.1.0',
+        generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+        heldOutSeed: 'c'.repeat(64),
+        heldOutSeedSource: 'DERIVED',
+        poolId: 'learnx-fr-regression-pool-v1',
+        poolSha256: 'd'.repeat(64),
+        primaryIdentity: 'PROMOTED_CORRECTION_IDENTITY',
+        profile: 'reduced',
+        repetitions: 2,
+        runStartedAt: '2026-08-31T00:00:00.000Z',
+      },
+      metrics,
+      mutantCounts: countMutantsByKind(plan),
+    });
+
+    expect(report).not.toContain("Ce run n'achète qu'un oracle");
   });
 });

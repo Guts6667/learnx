@@ -58,6 +58,67 @@ for (const surface of publicSurfaces) {
   });
 }
 
+/**
+ * La section tarifs avec des paliers (V4.5-213).
+ *
+ * La capture de `landing` la montre vide — c'est l'état du produit tant
+ * qu'aucun palier n'est activé, et il faut le garder. Mais un catalogue vide
+ * ne montre aucune carte, donc rien de ce que cette version ajoute : le taux,
+ * le bonus, la capacité et la condition d'achat. La grille est `auto-fit` et
+ * les trois largeurs la cassent différemment.
+ *
+ * Cadrée sur la section plutôt que sur la page entière : une seconde capture
+ * pleine page ferait trois fichiers de plus à relire pour un seul bloc changé.
+ */
+test('public — landing pricing tiers', async ({ page }) => {
+  await installPublicCatalogue(page, [
+    {
+      approximateCorrections: '10',
+      bonusCredits: '0',
+      credits: '300',
+      creditsPerEuro: '100',
+      currency: 'EUR',
+      key: 'entry',
+      label: 'Premier pack',
+      labelEn: 'First pack',
+      oncePerAccount: true,
+      priceMinor: '300',
+    },
+    {
+      approximateCorrections: '29',
+      bonusCredits: '80',
+      credits: '880',
+      creditsPerEuro: '110',
+      currency: 'EUR',
+      key: 'regular',
+      label: 'Pack standard',
+      labelEn: 'Standard pack',
+      oncePerAccount: false,
+      priceMinor: '800',
+    },
+    {
+      approximateCorrections: '66',
+      bonusCredits: '400',
+      credits: '2000',
+      creditsPerEuro: '125',
+      currency: 'EUR',
+      key: 'intensive',
+      label: 'Grand pack',
+      labelEn: 'Large pack',
+      oncePerAccount: false,
+      priceMinor: '1600',
+    },
+  ]);
+  await page.goto('/');
+  await expect(
+    page.getByRole('heading', { name: 'Premier pack' }),
+  ).toBeVisible();
+  await settle(page);
+  await expect(page.locator('.landing-pricing')).toHaveScreenshot(
+    'landing-pricing-tiers.png',
+  );
+});
+
 test('app — today', async ({ page }) => {
   await signIn(page);
   await expect(

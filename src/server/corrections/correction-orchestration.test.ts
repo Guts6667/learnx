@@ -11,6 +11,7 @@ import {
   buildQuote,
   contractRaw,
   partialOutput,
+  undeliverableCriterionOutput,
   strictOutput,
   strictOutputWithLevels,
 } from './correction-orchestration.test-support';
@@ -110,8 +111,45 @@ describe('correction orchestration (V4-009)', () => {
     );
   });
 
-  it('delivers a partial correction without exact score and still settles the full quote price', async () => {
+  it('delivers the criterion whose quote was not in the answer, without a score, and still settles the full quote price', async () => {
+    // V4.5-177. `partialOutput` cite « un chiffre inventé hors dossier » : une
+    // preuve absente de la copie. Le critère n'est plus retiré de la
+    // correction — le retirer ferait disparaître une note sans que l'apprenant
+    // l'apprenne — il est livré sans extrait ni niveau montré.
     const harness = buildHarness({ transport: partialOutput });
+    const result = await harness.service.runAcceptedQuote({
+      quoteId: 'quote-1',
+      userId: 'user-1',
+    });
+
+    expect(result.correction.status).toBe('COMPLETED');
+    expect(result.correction.unsureCriteria).toEqual([]);
+    expect(result.correction.criteria.map((item) => item.key)).toEqual([
+      'decision-position',
+      'evidence-selection',
+    ]);
+
+    const withdrawn = result.correction.criteria.find(
+      (item) => item.key === 'evidence-selection',
+    );
+    expect(withdrawn?.evidenceStatus).toBe('EVIDENCE_WITHDRAWN');
+    expect(withdrawn?.evidenceQuotes).toEqual([]);
+    // La citation retirée fait retomber le critère en LOW, et un seul LOW
+    // retient le score : la note d'ensemble n'est pas publiée sur une preuve
+    // qu'on vient d'écarter.
+    expect(withdrawn?.confidence).toBe('LOW');
+    expect(result.correction.indicativeScore).toBeNull();
+
+    // Le prix ne bouge pas : la correction a bien été produite et livrée.
+    expect(result.settlement.settledCredits).toBe('12');
+    expect(harness.credits.calls).toEqual(['reserve', 'settle']);
+  });
+
+  it('delivers a partial correction without exact score and still settles the full quote price', async () => {
+    // Une livraison partielle reste possible, mais pour un critère réellement
+    // inexploitable — ici un niveau hors barème — et non pour une citation
+    // dont la provenance est en cause.
+    const harness = buildHarness({ transport: undeliverableCriterionOutput });
     const result = await harness.service.runAcceptedQuote({
       quoteId: 'quote-1',
       userId: 'user-1',

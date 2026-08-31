@@ -36,24 +36,27 @@ function renderSection(locale: 'en' | 'fr' = 'fr') {
 }
 
 describe('LandingPricing', () => {
+  const pack = {
+    approximateCorrections: '3',
+    bonusCredits: '0',
+    credits: '100',
+    creditsPerEuro: '6',
+    currency: 'EUR',
+    key: 'starter',
+    label: 'Découverte',
+    labelEn: 'Starter',
+    oncePerAccount: false,
+    priceMinor: '1500',
+  };
+  const shared = {
+    correctionQuoteCredits: '30',
+    correctionReservationCredits: '41',
+  };
+
   afterEach(() => vi.unstubAllGlobals());
 
   it('publie les paliers que le catalogue donne, et rien de plus', async () => {
-    stub(() =>
-      Promise.resolve(
-        jsonResponse({
-          packs: [
-            {
-              credits: '100',
-              currency: 'EUR',
-              key: 'starter',
-              label: 'Découverte',
-              priceMinor: '1500',
-            },
-          ],
-        }),
-      ),
-    );
+    stub(() => Promise.resolve(jsonResponse({ ...shared, packs: [pack] })));
 
     renderSection();
 
@@ -70,7 +73,7 @@ describe('LandingPricing', () => {
     // Un palier est inactif jusqu'à une décision du propriétaire (V4.5-161,
     // V4.5-164) : un catalogue actif vide est la façon dont le produit dit
     // qu'il n'y a pas encore de prix. Aucun tarif d'attente n'est inventé.
-    stub(() => Promise.resolve(jsonResponse({ packs: [] })));
+    stub(() => Promise.resolve(jsonResponse({ ...shared, packs: [] })));
 
     renderSection();
 
@@ -99,17 +102,7 @@ describe('LandingPricing', () => {
     // Un prix arrivé en nombre est un prix qui a déjà traversé un flottant.
     stub(() =>
       Promise.resolve(
-        jsonResponse({
-          packs: [
-            {
-              credits: '100',
-              currency: 'EUR',
-              key: 'starter',
-              label: 'Découverte',
-              priceMinor: 1500,
-            },
-          ],
-        }),
+        jsonResponse({ ...shared, packs: [{ ...pack, priceMinor: 1500 }] }),
       ),
     );
 
@@ -122,12 +115,81 @@ describe('LandingPricing', () => {
   });
 
   it('mène à la candidature, seule porte d’entrée aujourd’hui', async () => {
-    stub(() => Promise.resolve(jsonResponse({ packs: [] })));
+    stub(() => Promise.resolve(jsonResponse({ ...shared, packs: [] })));
 
     renderSection();
 
     expect(
       await screen.findByRole('link', { name: 'Demander un accès' }),
     ).toHaveAttribute('href', '#early-adopter');
+  });
+  it('dit la même chose que l’écran d’achat, sans bouton d’achat', async () => {
+    // Un visiteur anonyme ne peut pas acheter : l'action de la section reste
+    // la demande d'accès, une fois, à côté du titre. Les chiffres, eux, sont
+    // les mêmes qu'après inscription — ils viennent de la même source.
+    stub(() =>
+      Promise.resolve(
+        jsonResponse({
+          ...shared,
+          packs: [
+            {
+              ...pack,
+              approximateCorrections: '29',
+              bonusCredits: '80',
+              creditsPerEuro: '110',
+              key: 'entry',
+              label: 'Premier pack',
+              labelEn: 'First pack',
+              oncePerAccount: true,
+            },
+          ],
+        }),
+      ),
+    );
+
+    renderSection();
+
+    expect(await screen.findByText('110 crédits par euro')).toBeInTheDocument();
+    expect(screen.getByText('80 crédits en plus')).toBeInTheDocument();
+    expect(screen.getByText('environ 29 corrections')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Un seul achat par compte : à ce montant, les frais fixes du paiement absorbent une part disproportionnée. Un remboursement ne rouvre pas ce droit.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Une correction est devisée à 30 crédits et en réserve 41 ; ce qui n’est pas utilisé vous est rendu aussitôt.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Acheter/u })).toBeNull();
+  });
+
+  it('rend le libellé anglais à un visiteur anglophone', async () => {
+    // Avant `labelEn`, cette section affichait « Premier pack » en anglais :
+    // le corps est mis en cache pour tout le monde, donc c'est l'écran qui
+    // choisit la langue (V4.5-212).
+    stub(() => Promise.resolve(jsonResponse({ ...shared, packs: [pack] })));
+
+    renderSection('en');
+
+    expect(
+      await screen.findByRole('heading', { name: 'Starter' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Découverte')).not.toBeInTheDocument();
+  });
+
+  it('refuse une réponse privée des chiffres partagés', async () => {
+    // Le devis et la réserve ne sont pas décoratifs : sans eux la carte
+    // annoncerait une capacité approximative sans dire pourquoi elle l'est.
+    // Une réponse incomplète est un état visible, pas une carte amputée.
+    stub(() => Promise.resolve(jsonResponse({ packs: [pack] })));
+
+    renderSection();
+
+    expect(
+      await screen.findByText(/n’ont pas pu être chargés/u),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Découverte')).not.toBeInTheDocument();
   });
 });

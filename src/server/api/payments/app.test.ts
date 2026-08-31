@@ -33,7 +33,7 @@ function build(ports: Record<string, unknown> = {}) {
     now: () => NOW,
     ports: {
       findOrder: vi.fn(async () => ({ id: 'order-1', status: 'PENDING' })),
-      recordDelivery: vi.fn(async () => true),
+      recordDelivery: vi.fn(async () => ({ stored: true })),
       ...ports,
     } as never,
   });
@@ -66,7 +66,7 @@ describe('webhook de paiement', () => {
 
   it('répond 200 sur un rejeu pour que le fournisseur cesse de réessayer', async () => {
     const response = await post(
-      build({ recordDelivery: vi.fn(async () => false) }),
+      build({ recordDelivery: vi.fn(async () => ({ stored: false })) }),
       stripeHeader(),
     );
     expect(response.status).toBe(200);
@@ -100,7 +100,7 @@ describe('journal du récepteur (V4.5-194)', () => {
       now: () => NOW,
       ports: {
         findOrder: vi.fn(async () => ({ id: 'order-1', status: 'PENDING' })),
-        recordDelivery: vi.fn(async () => true),
+        recordDelivery: vi.fn(async () => ({ stored: true })),
         ...ports,
       } as never,
       write: (event) => written.push(event),

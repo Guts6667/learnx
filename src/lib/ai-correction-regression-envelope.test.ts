@@ -8,13 +8,18 @@ import { mkdir } from 'node:fs/promises';
 
 import {
   acquireRunLock,
+  appendSpendEnvelope,
   ledgerSpendSince,
   capForRun,
   envelopeState,
+  nextSpendEnvelopeFile,
   processIsAlive,
   readSpendEnvelope,
+  readSpendEnvelopeChain,
+  reconcileEnvelopeDeclaration,
   RegressionEnvelopeError,
   releaseRunLock,
+  resolveEnvelopeHead,
   RUN_LOCK_FILE,
   writeSpendEnvelope,
   type SpendEnvelope,
@@ -438,5 +443,188 @@ describe('ledger spend since the envelope opened', () => {
         openedAt: '2026-08-30T00:00:00.000Z',
       }),
     ).toBe(0);
+  });
+});
+
+/**
+ * Replacing an envelope (V4.5-210).
+ *
+ * The bug these cover: `spend-envelope.v1.json` from a 30 August decision
+ * pre-empted whatever the command line declared, so `--envelope-usd` and
+ * `--envelope-decision` were parsed and discarded and a fresh owner decision
+ * governed nothing. A control that quietly loses its input is not a control —
+ * it is the 29 August failure again, wearing the shape of a safeguard.
+ */
+describe('envelope supersession', () => {
+  const FIRST: SpendEnvelope = {
+    decisionId: 'owner-125-budget-2026-08-30',
+    envelopeUsd: 14,
+    openedAt: '2026-08-30T00:33:25.311Z',
+    openingProviderUsageUsd: 30.129581797,
+    schemaVersion: 1,
+  };
+  const SECOND: SpendEnvelope = {
+    decisionId: 'owner-210-budget-2026-08-31',
+    envelopeUsd: 25,
+    openedAt: '2026-08-31T12:00:00.000Z',
+    openingProviderUsageUsd: 36.5,
+    schemaVersion: 1,
+    supersedes: 'owner-125-budget-2026-08-30',
+  };
+
+  async function directoryWith(envelopes: SpendEnvelope[]): Promise<string> {
+    const directory = await scratch();
+    for (const envelope of envelopes) {
+      await appendSpendEnvelope({ directory, envelope });
+    }
+    return directory;
+  }
+
+  it('takes the head of the chain, not the first file on disk', async () => {
+    const directory = await directoryWith([FIRST, SECOND]);
+    const chain = await readSpendEnvelopeChain(directory);
+
+    expect(chain).toHaveLength(2);
+    // The one nobody supersedes, whatever order the files were written in.
+    expect(resolveEnvelopeHead(chain)?.decisionId).toBe(SECOND.decisionId);
+    expect(resolveEnvelopeHead(chain)?.envelopeUsd).toBe(25);
+  });
+
+  it('keeps the superseded envelope readable as the record of what was authorised', async () => {
+    const directory = await directoryWith([FIRST, SECOND]);
+
+    // Append-only: replacing an authorisation must not erase it. The old file
+    // is still there and still parses; it is simply never applied again.
+    expect(await readSpendEnvelope(directory)).toEqual(FIRST);
+    expect(
+      (await readSpendEnvelopeChain(directory)).map(
+        (envelope) => envelope.decisionId,
+      ),
+    ).toEqual([FIRST.decisionId, SECOND.decisionId]);
+  });
+
+  it('writes a new file rather than over the old one', async () => {
+    expect(nextSpendEnvelopeFile([])).toBe('spend-envelope.v1.json');
+    expect(nextSpendEnvelopeFile(['spend-envelope.v1.json'])).toBe(
+      'spend-envelope.v2.json',
+    );
+    // Gaps and unrelated names do not confuse it: the next version is one past
+    // the highest, so nothing already written can be landed on.
+    expect(
+      nextSpendEnvelopeFile([
+        'spend-envelope.v1.json',
+        'spend-envelope.v7.json',
+        'ledger.jsonl',
+      ]),
+    ).toBe('spend-envelope.v8.json');
+  });
+
+  it('reuses the envelope in force when the command line agrees with it', () => {
+    expect(
+      reconcileEnvelopeDeclaration({
+        declared: {
+          decisionId: SECOND.decisionId,
+          envelopeUsd: 25,
+          supersedes: undefined,
+        },
+        head: SECOND,
+      }),
+    ).toEqual({ action: 'REUSE', envelope: SECOND });
+  });
+
+  it('opens one when nothing is on disk', () => {
+    expect(
+      reconcileEnvelopeDeclaration({
+        declared: {
+          decisionId: FIRST.decisionId,
+          envelopeUsd: 14,
+          supersedes: undefined,
+        },
+        head: undefined,
+      }).action,
+    ).toBe('OPEN');
+  });
+
+  it('supersedes only on a new decision that names the one it replaces', () => {
+    expect(
+      reconcileEnvelopeDeclaration({
+        declared: {
+          decisionId: SECOND.decisionId,
+          envelopeUsd: 25,
+          supersedes: FIRST.decisionId,
+        },
+        head: FIRST,
+      }).action,
+    ).toBe('SUPERSEDE');
+  });
+
+  it('refuses a disagreement instead of preferring either side', () => {
+    // The heart of it. Silently keeping the stored envelope is the bug being
+    // fixed; silently taking the flags would be worse, since a typo would then
+    // raise the ceiling. The refusal names both so the reader can see what it
+    // is choosing between.
+    let thrown: unknown;
+    try {
+      reconcileEnvelopeDeclaration({
+        declared: {
+          decisionId: 'owner-210-budget-2026-08-31',
+          envelopeUsd: 25,
+          supersedes: undefined,
+        },
+        head: FIRST,
+      });
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBeInstanceOf(RegressionEnvelopeError);
+    const message = (thrown as Error).message;
+    expect(message).toContain('owner-125-budget-2026-08-30');
+    expect(message).toContain('owner-210-budget-2026-08-31');
+    expect(message).toContain('14');
+    expect(message).toContain('25');
+    expect(message).toContain('--envelope-supersedes');
+  });
+
+  it('refuses one decision carrying two amounts', () => {
+    // Same identifier, different ceiling: one of the two is not the owner's
+    // decision, and there is no way to tell which from here.
+    expect(() =>
+      reconcileEnvelopeDeclaration({
+        declared: {
+          decisionId: FIRST.decisionId,
+          envelopeUsd: 40,
+          supersedes: undefined,
+        },
+        head: FIRST,
+      }),
+    ).toThrow(/AMOUNT_CONFLICT/);
+  });
+
+  it('refuses a chain that does not resolve to one head', async () => {
+    // Two envelopes replacing the same one, or a reference to something absent:
+    // both are an authorisation history nobody can read, so neither is applied.
+    const forked: SpendEnvelope = {
+      ...SECOND,
+      decisionId: 'owner-210-bis',
+      openedAt: '2026-08-31T13:00:00.000Z',
+    };
+    const directory = await directoryWith([FIRST, SECOND, forked]);
+    await expect(
+      readSpendEnvelopeChain(directory).then(resolveEnvelopeHead),
+    ).rejects.toThrow(/SUPERSEDES_FORKED/);
+
+    const dangling = await directoryWith([
+      { ...SECOND, supersedes: 'owner-nobody-ever-decided' },
+    ]);
+    await expect(
+      readSpendEnvelopeChain(dangling).then(resolveEnvelopeHead),
+    ).rejects.toThrow(/SUPERSEDES_UNKNOWN/);
+  });
+
+  it('reports no envelope at all when the directory holds none', async () => {
+    expect(
+      resolveEnvelopeHead(await readSpendEnvelopeChain(await scratch())),
+    ).toBeUndefined();
   });
 });

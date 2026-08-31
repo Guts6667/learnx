@@ -127,30 +127,82 @@
   gap: var(--space-4);
 }
 
+/*
+ * En colonne flexible plutôt qu'en grille : l'action est poussée en bas
+ * (`.credit-pack__action`), et les trois boutons s'alignent quelle que soit la
+ * hauteur du contenu au-dessus. Seul le palier d'entrée porte une condition
+ * d'achat, donc sans cela son bouton descendrait de plusieurs lignes sous ses
+ * voisins — ce qui démentirait le choix écrit juste à côté : trois paliers de
+ * même poids, pas un entonnoir.
+ */
 .credit-pack {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-2);
-  align-content: start;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
 }
 
+.credit-pack__action {
+  margin-block-start: auto;
+}
+
+/*
+ * Le nom passe en petit et les crédits prennent la taille éditoriale
+ * (V4.5-213) : ce qu'on achète est un nombre de crédits, le prix est ce qu'il
+ * coûte. Le prix garde le poids d'un chiffre lisible, sous les crédits, pour
+ * rester comparable d'une carte à l'autre.
+ */
 .credit-pack__label {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
   font-weight: 500;
 }
 
 .credit-pack__credits {
+  font-family: var(--font-editorial);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.credit-pack__price {
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+/*
+ * Les chiffres dérivés : le taux, le bonus s'il existe, la capacité. Une liste
+ * plutôt que trois paragraphes — c'est une énumération, et un lecteur d'écran
+ * annonce alors combien d'éléments il reste à lire.
+ */
+.credit-pack__figures {
+  display: grid;
+  gap: var(--space-1);
+  margin-block-start: var(--space-1);
   color: var(--color-text-muted);
   font-size: var(--text-sm);
 }
 
-.credit-pack__price {
-  margin-block-end: var(--space-3);
-  font-family: var(--font-editorial);
-  font-size: var(--text-2xl);
-  font-weight: 500;
+.credit-pack__bonus {
+  color: var(--color-text);
+}
+
+/*
+ * La condition d'achat, entre les chiffres et l'action : elle se lit avant le
+ * clic ou elle ne sert à rien.
+ */
+.credit-pack__condition {
+  margin-block: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.credit-pack-note {
+  max-width: 60ch;
+  font-size: var(--text-sm);
 }
 
 .credit-order-list {

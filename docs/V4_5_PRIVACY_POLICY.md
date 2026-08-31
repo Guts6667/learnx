@@ -15,9 +15,10 @@ texte et y seront ajoutées par une nouvelle version au merge de ces tickets,
 en même temps que la ligne `aiCorrection.reuseNotice`/141 dans la notice.
 
 **Couplage à connaître** : la page publique est un module committé
-(`src/features/legal/**`) généré depuis ce document et gardé par un test de
-fidélité. Toute modification de ce document **doit** être accompagnée de la
-régénération du module dans la même PR, sinon `dev` rougit pour tout le
+(`src/features/legal/**`) tenu à la main d'après ce document, qui en est
+l'autorité, et gardé par un test de fidélité. **Il n'existe aucun générateur :
+le report est manuel.** Toute modification de ce document **doit** donc être
+reportée dans le module au sein de la même PR, sinon `dev` rougit pour tout le
 monde (constaté le 29 août 2026 ; V4.5-181 supprimera le couplage).
 
 Règles d'intégration : route publique `/confidentialite` (FR) et `/privacy`

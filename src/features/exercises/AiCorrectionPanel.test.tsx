@@ -666,6 +666,103 @@ describe('AiCorrectionPanel', () => {
     ).toBeInTheDocument();
   });
 
+  it('dit pourquoi un critère est à vérifier quand la citation ne venait pas de la réponse', async () => {
+    // V4.5-177. Deux raisons mènent à « à vérifier ». L'apprenant doit lire
+    // celle qui s'applique, et une seule : deux explications sur un même
+    // critère se lisent comme une hésitation.
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }))
+      .mockResolvedValueOnce(
+        jsonResponse({
+          resource: {
+            quote: {
+              action: 'STANDARD',
+              estimatedCredits: '12',
+              expiresAt: '2026-08-24T19:00:00.000Z',
+              id: '89c42047-5133-4ef0-b2df-a6a39092f02f',
+              includesAutomaticSecondPass: false,
+              maximumReservedCredits: '18',
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonResponse(
+          {
+            resource: {
+              correction: {
+                correction: {
+                  criteria: [
+                    {
+                      confidence: 'LOW',
+                      // L'extrait a été retiré : il n'y en a plus à montrer.
+                      evidenceQuotes: [],
+                      evidenceStatus: 'EVIDENCE_WITHDRAWN',
+                      feedback: 'Le mécanisme est relié.',
+                      key: 'mechanism-link',
+                      label: 'Lien de mécanisme',
+                      levelKey: 'mastered',
+                      levelLabel: 'Démontré dans la réponse',
+                      weight: 100,
+                    },
+                  ],
+                  id: 'c2a1d4e6-77bb-4a10-9c3f-2f8b6d5e1a04',
+                  indicativeScore: null,
+                  overallConfidence: 'LOW',
+                  overallFeedback: 'Analyse à revoir sur un point.',
+                  status: 'COMPLETED',
+                  unsureCriteria: [],
+                  unsureCriterionDetails: [],
+                },
+                replay: false,
+                settlement: {
+                  releasedCredits: '6',
+                  reservedCredits: '18',
+                  settledCredits: '12',
+                },
+              },
+            },
+          },
+          201,
+        ),
+      )
+      .mockResolvedValueOnce(jsonResponse({ resource: { corrections: [] } }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AiCorrectionPanel submissionId="1f0f6f6a-1d5c-4f2e-9a44-9c1f3f5b7d21" />
+      </AppProviders>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Corriger' }));
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Confirmer et lancer la correction',
+      }),
+    );
+
+    const criterion = (await screen.findByText('Lien de mécanisme')).closest(
+      'article',
+    );
+    expect(criterion).toHaveTextContent('À vérifier');
+    // Le niveau que le modèle avait prononcé n'est pas montré.
+    expect(criterion).not.toHaveTextContent('Démontré dans la réponse');
+
+    // La phrase de provenance s'affiche…
+    expect(criterion).toHaveTextContent(
+      /L’extrait retenu pour justifier ce critère ne provenait pas de votre réponse/,
+    );
+    // …et celle de la vérification indépendante ne s'affiche pas avec elle.
+    expect(
+      screen.queryByText(/La vérification indépendante ne confirme pas/),
+    ).not.toBeInTheDocument();
+
+    // Plus d'extrait, donc pas d'intitulé « Extrait de votre réponse ».
+    expect(criterion).not.toHaveTextContent('Extrait de votre réponse');
+  });
+
   const historyCorrection = {
     criteria: [
       {

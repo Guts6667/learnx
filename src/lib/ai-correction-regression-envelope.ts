@@ -127,12 +127,25 @@ const spendEnvelopeSchema = z
     /** Provider lifetime usage when the envelope was opened. */
     openingProviderUsageUsd: z.number().nonnegative(),
     schemaVersion: z.literal(1),
+    /**
+     * The `decisionId` this envelope replaces, when it replaces one.
+     *
+     * `benchmarks/**` is append-only, so an envelope is never rewritten: a new
+     * decision arrives as a new file naming the one it supersedes, and the old
+     * file stays on disk as the record of what was authorised at the time. The
+     * head of that chain is the envelope in force; a superseded one is readable
+     * for ever and applied never.
+     */
+    supersedes: z.string().trim().min(1).optional(),
   })
   .strict();
 
 export type SpendEnvelope = z.infer<typeof spendEnvelopeSchema>;
 
 const SPEND_ENVELOPE_FILE = 'spend-envelope.v1.json';
+
+/** Matches every envelope file, whatever its version suffix. */
+const SPEND_ENVELOPE_PATTERN = /^spend-envelope\.v(\d+)\.json$/;
 
 export type EnvelopeState = {
   envelopeUsd: number;
@@ -325,6 +338,187 @@ export async function readSpendEnvelope(
     if ((error as { code?: string }).code === 'ENOENT') return undefined;
     throw error;
   }
+}
+
+/** Every envelope on disk, oldest file version first. */
+export async function readSpendEnvelopeChain(
+  directory: string,
+): Promise<SpendEnvelope[]> {
+  let names: string[];
+  try {
+    names = await readdir(directory);
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') return [];
+    throw error;
+  }
+
+  const numbered = names
+    .map((name) => ({ match: SPEND_ENVELOPE_PATTERN.exec(name), name }))
+    .flatMap((entry) =>
+      entry.match
+        ? [{ name: entry.name, version: Number(entry.match[1]) }]
+        : [],
+    )
+    .sort((left, right) => left.version - right.version);
+
+  const envelopes: SpendEnvelope[] = [];
+  for (const entry of numbered) {
+    envelopes.push(
+      spendEnvelopeSchema.parse(
+        JSON.parse(
+          await readFile(path.join(directory, entry.name), 'utf8'),
+        ) as unknown,
+      ),
+    );
+  }
+  return envelopes;
+}
+
+/**
+ * The envelope in force: the head of the supersession chain.
+ *
+ * Not "the first file that exists". That was the bug: `spend-envelope.v1.json`
+ * from a 30 August decision silently pre-empted a later one, so a fresh owner
+ * decision governed nothing while appearing to. A control that quietly loses
+ * its input is not a control.
+ *
+ * The head is the envelope no other envelope supersedes. Anything ambiguous —
+ * two heads, a dangling reference, a cycle — refuses rather than picking, for
+ * the same reason: choosing between two authorisations is not this function's
+ * business.
+ */
+export function resolveEnvelopeHead(
+  envelopes: SpendEnvelope[],
+): SpendEnvelope | undefined {
+  if (envelopes.length === 0) return undefined;
+
+  const byDecision = new Map<string, SpendEnvelope>();
+  for (const envelope of envelopes) {
+    if (byDecision.has(envelope.decisionId)) {
+      throw new RegressionEnvelopeError(
+        `REGRESSION_ENVELOPE_DUPLICATE_DECISION: deux enveloppes portent la décision ${envelope.decisionId}.`,
+      );
+    }
+    byDecision.set(envelope.decisionId, envelope);
+  }
+
+  const superseded = new Set<string>();
+  for (const envelope of envelopes) {
+    if (envelope.supersedes === undefined) continue;
+    if (!byDecision.has(envelope.supersedes)) {
+      throw new RegressionEnvelopeError(
+        `REGRESSION_ENVELOPE_SUPERSEDES_UNKNOWN: ${envelope.decisionId} remplace ${envelope.supersedes}, qui n'est sur le disque nulle part.`,
+      );
+    }
+    if (superseded.has(envelope.supersedes)) {
+      throw new RegressionEnvelopeError(
+        `REGRESSION_ENVELOPE_SUPERSEDES_FORKED: ${envelope.supersedes} est remplacée par deux enveloppes.`,
+      );
+    }
+    superseded.add(envelope.supersedes);
+  }
+
+  const heads = envelopes.filter(
+    (envelope) => !superseded.has(envelope.decisionId),
+  );
+  if (heads.length !== 1 || heads[0] === undefined) {
+    throw new RegressionEnvelopeError(
+      `REGRESSION_ENVELOPE_CHAIN_AMBIGUOUS: ${heads.length} enveloppes en tête (${heads
+        .map((envelope) => envelope.decisionId)
+        .sort()
+        .join(
+          ', ',
+        )}) ; une chaîne de supersession doit en avoir exactement une.`,
+    );
+  }
+  return heads[0];
+}
+
+/**
+ * Reconciles what the command line declares against the envelope in force.
+ *
+ * Three outcomes and no fourth. The flags agree with the head, and the run
+ * proceeds on it. The flags declare a genuinely new decision — new identifier,
+ * its own amount, and `supersedes` naming the head — and a new envelope is
+ * written. Or they disagree, and the run **refuses**, naming both sides.
+ *
+ * Refusing the disagreement is the whole point. Preferring either side silently
+ * is how an owner's decision came to authorise nothing while looking like it
+ * did, and picking the larger would be worse still: a typo would raise the
+ * ceiling.
+ */
+export function reconcileEnvelopeDeclaration(input: {
+  declared: {
+    decisionId: string | undefined;
+    envelopeUsd: number;
+    supersedes: string | undefined;
+  };
+  head: SpendEnvelope | undefined;
+}): { action: 'OPEN' | 'REUSE' | 'SUPERSEDE'; envelope?: SpendEnvelope } {
+  const { declared, head } = input;
+
+  if (!head) {
+    if (declared.supersedes !== undefined) {
+      throw new RegressionEnvelopeError(
+        `REGRESSION_ENVELOPE_SUPERSEDES_UNKNOWN: la décision déclarée remplace ${declared.supersedes}, mais aucune enveloppe n'est ouverte.`,
+      );
+    }
+    return { action: 'OPEN' };
+  }
+
+  const declaredId = declared.decisionId ?? 'undeclared';
+
+  if (declaredId === head.decisionId) {
+    if (declared.envelopeUsd !== head.envelopeUsd) {
+      throw new RegressionEnvelopeError(
+        `REGRESSION_ENVELOPE_AMOUNT_CONFLICT: la décision ${head.decisionId} vaut ${head.envelopeUsd} USD sur le disque et ${declared.envelopeUsd} USD sur la ligne de commande ; une même décision ne peut pas porter deux montants.`,
+      );
+    }
+    return { action: 'REUSE', envelope: head };
+  }
+
+  if (declared.supersedes === head.decisionId) {
+    return { action: 'SUPERSEDE' };
+  }
+
+  throw new RegressionEnvelopeError(
+    `REGRESSION_ENVELOPE_DECISION_CONFLICT: l'enveloppe en vigueur est ${head.decisionId} (${head.envelopeUsd} USD) et la ligne de commande déclare ${declaredId} (${declared.envelopeUsd} USD). Pour la remplacer, déclarer --envelope-supersedes=${head.decisionId} ; sinon reprendre la décision en vigueur. Aucune des deux n'est choisie à votre place.`,
+  );
+}
+
+/** The file name a new envelope takes, after the highest already on disk. */
+export function nextSpendEnvelopeFile(existingNames: string[]): string {
+  const highest = existingNames
+    .map((name) => SPEND_ENVELOPE_PATTERN.exec(name))
+    .flatMap((match) => (match ? [Number(match[1])] : []))
+    .reduce((maximum, version) => Math.max(maximum, version), 0);
+  return `spend-envelope.v${highest + 1}.json`;
+}
+
+/**
+ * Writes a new envelope as a new file, never over an existing one.
+ *
+ * `benchmarks/**` is append-only, and an envelope is the record of what an
+ * owner authorised: overwriting one would erase the authorisation it replaces.
+ */
+export async function appendSpendEnvelope(input: {
+  directory: string;
+  envelope: SpendEnvelope;
+}): Promise<string> {
+  let names: string[];
+  try {
+    names = await readdir(input.directory);
+  } catch (error) {
+    if ((error as { code?: string }).code !== 'ENOENT') throw error;
+    names = [];
+  }
+  const fileName = nextSpendEnvelopeFile(names);
+  await writeFile(
+    path.join(input.directory, fileName),
+    `${JSON.stringify(input.envelope, null, 2)}\n`,
+    'utf8',
+  );
+  return fileName;
 }
 
 /** Opens an envelope against the provider's usage at this instant. */

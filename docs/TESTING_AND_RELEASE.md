@@ -128,6 +128,27 @@ silence. Une garde non qualifiée passe l'application initiale et ne casse
 qu'au rejeu : le test qui l'attrape n'est pas celui qu'on regarde en écrivant
 la migration.
 
+### Transactions : `return false` n'annule pas, il valide
+
+Une garde qui **retourne `false` depuis un rappel de transaction ne l'annule
+pas** — elle la valide, avec tout ce qui a déjà été écrit avant elle. Seule une
+exception annule. C'est **la forme** qui est dangereuse, et elle se lit comme
+sûre : `if (garde échouée) return false;` ressemble à un refus, et c'en est un
+pour l'appelant, jamais pour la base.
+
+Conséquence pratique : dans une transaction, **toute garde de concurrence doit
+précéder les écritures qu'elle protège**. L'ordre inverse ne se voit pas tant
+que les écritures vivent dans des transactions séparées ; il devient un défaut
+le jour où quelqu'un les réunit, ce qui est précisément ce qu'on fait en
+corrigeant une écriture qui survivait à son contexte.
+
+Exemple travaillé : `src/server/payments/prisma-refund-ports.ts` (V4.5-211). La
+reprise de crédits y passe **après** la garde `settled.count !== 1`. Placée
+avant, elle laisserait à l'administrateur qui perd la course entre deux
+remboursements simultanés une reprise de crédits validée sur un remboursement
+qu'il n'a pas fait. Un audit des gardes de cette forme est suivi sous
+**V4.5-215**.
+
 ## Recette obligatoire V4.1-504
 
 1. Déployer le SHA candidat exact en preview et le consigner.

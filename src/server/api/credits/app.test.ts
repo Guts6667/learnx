@@ -435,6 +435,10 @@ describe('V4.5-205 contrat de l’écran d’achat', () => {
           key: 'starter',
           label: 'Découverte',
           labelEn: 'Starter',
+          // Faux ici : la fixture n'est pas le palier d'entrée. Servi quand
+          // même, et non omis, pour que la carte n'ait jamais à décider ce que
+          // veut dire un champ absent (V4.5-213).
+          oncePerAccount: false,
           priceMinor: '1500',
           purchasable: true,
         },

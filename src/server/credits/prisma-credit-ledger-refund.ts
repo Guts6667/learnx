@@ -4,7 +4,7 @@ import {
   CreditCurrency,
   CreditLedgerEntryType,
   CreditProvenance,
-  type PrismaClient,
+  type Prisma,
 } from '../../../generated/prisma/client.js';
 
 /**
@@ -18,6 +18,13 @@ import {
  *
  * Append-only: this writes a REFUND entry against the purchased lot and never
  * touches the GRANT it compensates.
+ *
+ * Écrit sur le client qu'on lui donne, jamais sur une transaction à lui
+ * (V4.5-211). Il en ouvrait une : l'entrée de grand livre était donc validée
+ * avant que l'ordre ne change de statut, et un échec entre les deux laissait
+ * des crédits repris sur une commande toujours honorée. L'appelant possède
+ * désormais la transaction, et les deux écritures tombent ou tiennent
+ * ensemble.
  */
 
 export interface RefundLedgerResult {
@@ -25,7 +32,7 @@ export interface RefundLedgerResult {
 }
 
 export async function refundPurchasedCredits(
-  prisma: PrismaClient,
+  client: Prisma.TransactionClient,
   input: {
     /**
      * Null when no person acted: a refund issued from the provider's dashboard
@@ -43,43 +50,41 @@ export async function refundPurchasedCredits(
   if (input.amount <= 0n) return null;
   const operationKey = `refund:${input.orderId}`;
 
-  return prisma.$transaction(async (transaction) => {
-    const lot = await transaction.creditLot.findFirst({
-      select: { accountId: true, id: true },
-      where: { id: input.lotId, provenance: CreditProvenance.PURCHASED },
-    });
-    // A lot that is not a purchase is not refundable here. Silence would let a
-    // mis-referenced order quietly reverse a free allocation.
-    if (!lot) return null;
-
-    // Idempotent on the order: a redelivered dispute outcome, or an
-    // administrator clicking twice, writes one entry.
-    const existing = await transaction.creditLedgerEntry.findFirst({
-      select: { id: true },
-      where: { accountId: lot.accountId, operationKey },
-    });
-    if (existing) return { entryId: existing.id };
-
-    const id = randomUUID();
-    await transaction.creditLedgerEntry.create({
-      data: {
-        accountId: lot.accountId,
-        actorUserId: input.actorUserId,
-        amount: -input.amount,
-        currency: CreditCurrency.LEARNX_CREDIT,
-        id,
-        lotId: lot.id,
-        operationKey,
-        operationSequence: 1,
-        provenance: CreditProvenance.PURCHASED,
-        reason: input.reason.trim(),
-        referenceId: input.orderId,
-        referenceType: 'PAYMENT_ORDER',
-        requestFingerprint: operationKey,
-        type: CreditLedgerEntryType.REFUND,
-        userId: input.userId,
-      },
-    });
-    return { entryId: id };
+  const lot = await client.creditLot.findFirst({
+    select: { accountId: true, id: true },
+    where: { id: input.lotId, provenance: CreditProvenance.PURCHASED },
   });
+  // A lot that is not a purchase is not refundable here. Silence would let a
+  // mis-referenced order quietly reverse a free allocation.
+  if (!lot) return null;
+
+  // Idempotent on the order: a redelivered dispute outcome, or an
+  // administrator clicking twice, writes one entry.
+  const existing = await client.creditLedgerEntry.findFirst({
+    select: { id: true },
+    where: { accountId: lot.accountId, operationKey },
+  });
+  if (existing) return { entryId: existing.id };
+
+  const id = randomUUID();
+  await client.creditLedgerEntry.create({
+    data: {
+      accountId: lot.accountId,
+      actorUserId: input.actorUserId,
+      amount: -input.amount,
+      currency: CreditCurrency.LEARNX_CREDIT,
+      id,
+      lotId: lot.id,
+      operationKey,
+      operationSequence: 1,
+      provenance: CreditProvenance.PURCHASED,
+      reason: input.reason.trim(),
+      referenceId: input.orderId,
+      referenceType: 'PAYMENT_ORDER',
+      requestFingerprint: operationKey,
+      type: CreditLedgerEntryType.REFUND,
+      userId: input.userId,
+    },
+  });
+  return { entryId: id };
 }

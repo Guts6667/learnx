@@ -55,6 +55,53 @@ Règles de restitution :
   (`src/server/corrections/correction-confidence.ts`, V4.5-110). Toute
   modification de la table est une nouvelle version de ce contrat.
 
+### 2.1 Doctrine de livraison — jamais de disparition silencieuse
+
+**Un critère n'est jamais retiré en silence.** C'est la règle, et elle est
+plus forte que le principe du §1 : se tromper en silence est interdit, se
+taire aussi.
+
+Quand la preuve d'un critère ne se résout pas dans la production de
+l'apprenant, le critère est **livré**, en « à vérifier » :
+
+- les citations irrecevables sont **retirées** — un extrait qui ne vient pas
+  de la copie n'est pas une preuve ;
+- **aucun niveau n'est affiché** — la confiance retombe à `LOW` par la table
+  du §2, et la règle du score indicatif suit d'elle-même ;
+- le niveau que le modèle a prononcé **reste dans l'artefact** sans jamais
+  être montré : c'est la trace de ce qui a été affirmé, et l'effacer
+  reviendrait à juger à sa place ;
+- la **raison du retrait est enregistrée dans sa propre catégorie**, distincte
+  de tout autre motif.
+
+Même principe du côté des oracles (§4) : un contrôle **rapporte sa portée**, et
+ce qui en sort produit le **silence, jamais une accusation**. Le vérificateur
+arithmétique en est le cas travaillé — `coverage` dit combien de citations
+portaient une expression explicite, et une arithmétique écrite en prose est
+hors portée plutôt qu'à moitié traitée. Un contrôle dont la portée est de 0,6 %
+des citations ne doit pas se lire comme un verdict sur les 99,4 % restantes.
+
+#### Pourquoi les trois autres options ont été refusées
+
+Cette section existe parce que la règle seule invite à la « simplifier », et
+qu'en la simplifiant on réintroduit la disparition silencieuse. **La raison
+compte davantage que la règle.**
+
+- **Rejeter toute la tentative** jette du bon travail : deux critères
+  correctement établis disparaissent pour une citation irrecevable sur un
+  troisième.
+- **Imposer le niveau plancher** revient à **juger à la place du modèle**. Il a
+  prononcé un niveau ; en lui en substituant un autre, nous inventons un
+  verdict que personne n'a rendu, et nous le présentons comme le sien.
+- **Retirer la citation en gardant le niveau affiché** est le pire des trois :
+  cela **masque l'erreur avec autorité**. L'apprenant lit un niveau qui semble
+  établi, dont le seul appui a été retiré sans qu'il l'apprenne.
+
+Le défaut d'origine (V4.5-177) était réel et mesuré : un critère retiré quitte
+le numérateur **et** le dénominateur de tous les gates. Un gabarit qui se tait
+paraît donc meilleur qu'un gabarit qui se trompe, et la mesure enregistre la
+dérobade comme un progrès. C'est ce que cette doctrine interdit.
+
 ## 3. Garde indépendante
 
 La seconde passe par le même modèle dans la bande ±5 est retirée : elle

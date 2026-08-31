@@ -343,7 +343,9 @@ describe('un seul acte : enregistrer et appliquer (V4.5-199)', () => {
         payload: {},
         providerEventId: 'evt_none',
       }),
-    ).resolves.toBe(true);
+      // `compensated` reste absent : aucun remboursement n'a été demandé
+      // (V4.5-211).
+    ).resolves.toEqual({ compensated: undefined, stored: true });
     expect(state.events).toBe(1);
     expect(state.updates).toEqual([]);
   });

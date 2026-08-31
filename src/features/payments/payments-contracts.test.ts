@@ -173,6 +173,7 @@ describe('contrats d’achat de crédits', () => {
     key: 'starter',
     label: 'Découverte',
     labelEn: 'Starter',
+    oncePerAccount: false,
     priceMinor: '1500',
   };
   const shared = {
@@ -214,6 +215,20 @@ describe('contrats d’achat de crédits', () => {
       z.safeParse(creditPacksResponseSchema, {
         ...shared,
         packs: [frenchOnly],
+        paymentsEnabled: true,
+      }).success,
+    ).toBe(false);
+    // Ni la condition d'achat : `purchasable` dit « ce compte peut-il acheter
+    // maintenant » et vaut vrai partout ailleurs, donc lui seul ne peut pas
+    // signaler la limite avant le premier achat. Absent, le champ ferait taire
+    // la phrase que Rayan a demandé d'afficher AVANT l'achat (V4.5-213).
+    const withoutCondition = Object.fromEntries(
+      Object.entries(pack).filter(([key]) => key !== 'oncePerAccount'),
+    );
+    expect(
+      z.safeParse(creditPacksResponseSchema, {
+        ...shared,
+        packs: [withoutCondition],
         paymentsEnabled: true,
       }).success,
     ).toBe(false);

@@ -334,10 +334,28 @@ dans les quatre colonnes. C'est la seule propriété qui rende la perte comptabl
 | Gate | Type | Question |
 | --- | --- | --- |
 | `omitted-criteria-delivered` | bloquant, budget 0 | un critère du contrat manque-t-il à une correction **livrée** ? (parapluie) |
-| `criteria-withdrawn-after-salvage` | bloquant, budget 0 | un critère a-t-il été **retiré** du livré par le rattrapage ? (mécanisme) |
+| `criteria-withdrawn-undelivered` | bloquant, budget 0 | un critère a-t-il été gardé **hors** du livré ? (les 5 motifs qui retirent) |
+| `criteria-dropped-for-evidence-provenance` | **surveillé**, budget 0 | le modèle a-t-il cité **hors de la production** ? (livré quand même) |
 | `criteria-absent-from-model-output` | surveillé, budget 0 | le modèle a-t-il **omis** un critère ? (l'hypothèse fausse, gardée à zéro) |
 | `omitted-criterion-corrections` | rapporté, sans seuil | quelle **part des corrections** perd au moins un critère ? |
 | `omitted-criteria-refused` | surveillé, budget 0 | combien de cellules le runner a-t-il **refusées** pour omission ? |
+
+**Pourquoi la provenance est surveillée et non bloquante.** Depuis V4.5-177 le
+critère dont la citation est refusée est **livré quand même** — `EVIDENCE_WITHDRAWN`,
+rangé « à vérifier », sans niveau montré. L'apprenant ne perd rien, donc le
+parapluie a raison de lire zéro. Ce que ce gate compte, c'est que le modèle a
+cité hors de la production, ce que la consigne interdit par écrit
+(`runtime-correction-prompt.ts:17`) : même famille que le défaut principal, un
+chiffre qui doit rester visible. Le rendre bloquant serait une faute — **un gate
+qui rougit parce que le correctif fonctionne apprend à le contourner** plutôt
+qu'à réparer quoi que ce soit.
+
+**`modelAuthoredAgreement` : ni exclu, ni crédité.** Un critère dont la preuve a
+été retirée **reste au dénominateur** et **ne compte jamais comme accord**.
+L'exclure ferait rétrécir le dénominateur quand le modèle échoue — le défaut
+exact que v6.1 supprime — et le créditer noterait un niveau dont l'unique appui
+était une citation que le banc a refusée. Le niveau prononcé reste dans
+l'artefact (`levelKey` conservé) pour qui veut refaire la comparaison.
 
 Le parapluie mesure ce que l'apprenant reçoit ; les deux suivants séparent les
 deux causes, qui se ressemblent sur le livré et ne se corrigent pas au même
@@ -413,6 +431,46 @@ plus de valeur à passer, donc plus de valeur à oublier.
 > toutes les autres colonnes restent comparables. À partir du 31 août, cette
 > colonne redevient comparable d'un run à l'autre, et le reste tant que le pool
 > et le générateur ne changent pas.
+
+### 6 quater. La configuration doit être choisie avant de dépenser
+
+**`--execute` sans drapeau de configuration est refusé** (V4.5-210).
+
+Sans `--benchmark-configuration=` ni `--configuration=`, `loadBenchmarkInputs`
+retombe sur `benchmarks/ai-correction/benchmark.v1.json`, c'est-à-dire la
+consigne **2.0.0** — ni l'identité promue **2.2.0**, ni la candidate **2.3.0**.
+Le repli est silencieux : les artefacts enregistrent la consigne qui a tourné, et
+non celle qu'on voulait mesurer, si bien que le résultat se lit comme un verdict
+sur une consigne qui n'a jamais été exercée. Sur un run de 253 cellules, cela
+revient à payer 6 à 8 USD pour répondre à la mauvaise question, au prix fort.
+
+Le refus ne porte que sur le chemin **payant** : un `--dry-run` doit rester libre
+de chiffrer un plan, puisque le préflight est le plus utile avant qu'une décision
+soit prise. Ce qui ne doit jamais arriver en silence, c'est de **payer** sous un
+défaut.
+
+Le message nomme le drapeau **et** le fichier attendu. Les deux drapeaux ne sont
+pas interchangeables :
+
+| drapeau | attend |
+| --- | --- |
+| `--benchmark-configuration=` | un fichier de configuration complet, p. ex. `benchmarks/ai-correction/benchmark.v3_2.json` (consigne 2.3.0) |
+| `--configuration=` | un **overlay** portant `artifactKind` et `extends` ; un fichier complet y échoue sur une `ZodError` |
+
+**Ligne de référence du run complet**, corrigée en conséquence — sans le drapeau
+de configuration elle aurait mesuré 2.0.0 :
+
+```
+pnpm ai:benchmark --run-pool --execute \
+  --benchmark-configuration=benchmarks/ai-correction/benchmark.v3_2.json \
+  --profile=reduced --supplier-cost-cap-usd=17.70 \
+  --envelope-usd=<montant> --envelope-decision=<id> \
+  --envelope-supersedes=<décision remplacée>
+```
+
+`--profile=reduced` est aussi obligatoire : sans lui le plan passe à 668 cellules
+et la borne à 76,77 USD, les entrées de `measured-costs.v1.json` ne décrivant que
+la famille `reduced`.
 
 ## 7. Artefacts et rapport
 

@@ -5,7 +5,10 @@ import {
   type CorrectionOutput,
   type Protocol3CorrectionArtifactOutput,
 } from './ai-correction-contracts.js';
-import type { EvidenceMatch } from './ai-correction-benchmark-artifacts.js';
+import type {
+  CriterionWithdrawalReason,
+  EvidenceMatch,
+} from './ai-correction-benchmark-artifacts.js';
 import {
   normalizeTypographicSegment,
   resolveBenchmarkEvidenceQuote,
@@ -26,6 +29,10 @@ export function salvageProtocol3PartialCorrection(input: {
   evidenceMatches: EvidenceMatch[];
   output: Protocol3CorrectionArtifactOutput;
   unsureCriteria: string[];
+  withdrawnCriteria: {
+    criterionKey: string;
+    reason: CriterionWithdrawalReason;
+  }[];
 } {
   const raw = input.output;
   if (raw === null || typeof raw !== 'object') {
@@ -49,14 +56,24 @@ export function salvageProtocol3PartialCorrection(input: {
   const evidenceMatches: EvidenceMatch[] = [];
   const delivered: Protocol3CorrectionArtifactOutput['criteria'] = [];
   const unsureCriteria: string[] = [];
+  const withdrawnCriteria: {
+    criterionKey: string;
+    reason: CriterionWithdrawalReason;
+  }[] = [];
 
   for (const criterion of input.contract.criteria) {
     const result = (rawCriteria as Record<string, unknown>)[criterion.key];
-    const fail = (): void => {
+    /**
+     * Le critère n'est pas livrable : il sort de la correction, et la raison
+     * est nommée (V4.5-177). Chaque motif garde son nom — les fondre est ce
+     * qui a fait chercher deux fois une omission qui n'existait pas.
+     */
+    const fail = (reason: CriterionWithdrawalReason): void => {
       unsureCriteria.push(criterion.key);
+      withdrawnCriteria.push({ criterionKey: criterion.key, reason });
     };
     if (result === null || typeof result !== 'object') {
-      fail();
+      fail(result === undefined ? 'CRITERION_ABSENT' : 'CRITERION_MALFORMED');
       continue;
     }
     const { confidence, evidenceQuotes, evidenceStatus, feedback, levelKey } =
@@ -75,7 +92,7 @@ export function salvageProtocol3PartialCorrection(input: {
       evidenceQuotes.some((quote) => typeof quote !== 'string') ||
       !criterion.performanceLevels.some((level) => level.key === levelKey)
     ) {
-      fail();
+      fail('CRITERION_MALFORMED');
       continue;
     }
     const lowestScore = Math.min(
@@ -88,23 +105,23 @@ export function salvageProtocol3PartialCorrection(input: {
       evidenceStatus === 'NO_RELEVANT_EVIDENCE' &&
       (evidenceQuotes.length > 0 || selectedScore !== lowestScore)
     ) {
-      fail();
+      fail('EVIDENCE_STATUS_INCONSISTENT');
       continue;
     }
     if (evidenceStatus === 'FOUND' && evidenceQuotes.length === 0) {
-      fail();
+      fail('EVIDENCE_STATUS_INCONSISTENT');
       continue;
     }
     if (
       evidenceStatus !== 'FOUND' &&
       evidenceStatus !== 'NO_RELEVANT_EVIDENCE'
     ) {
-      fail();
+      fail('CRITERION_MALFORMED');
       continue;
     }
     const combinedText = `${feedback}\n${(evidenceQuotes as string[]).join('\n')}`;
     if (forbidden.some((fragment) => combinedText.includes(fragment))) {
-      fail();
+      fail('FORBIDDEN_CONTENT');
       continue;
     }
     if (security) {
@@ -120,10 +137,31 @@ export function salvageProtocol3PartialCorrection(input: {
         }
       });
       if (quotesAttack) {
-        fail();
+        fail('QUOTES_INJECTED_ATTACK');
         continue;
       }
     }
+    /**
+     * La provenance de la preuve (V4.5-177).
+     *
+     * Une citation qui ne se retrouve pas dans la production de l'apprenant
+     * n'est pas une preuve : le prompt exige que tout extrait vienne de la
+     * copie, et un extrait venu d'ailleurs crédite l'apprenant pour un texte
+     * qu'il n'a pas écrit.
+     *
+     * Le critère n'est pourtant PAS retiré de la correction. Le supprimer le
+     * ferait quitter numérateur et dénominateur : la note manquerait à
+     * l'apprenant sans que rien ne le signale, et un gabarit qui se tait
+     * paraîtrait meilleur qu'un gabarit qui se trompe. Il est donc livré, sans
+     * citation et sans niveau montré — la confiance retombe à LOW par la table
+     * de V4.5-110, qui range déjà un critère à citation non vérifiée en
+     * « à vérifier ».
+     *
+     * Les correspondances déjà enregistrées pour ce critère sont retirées :
+     * l'artefact attesterait sinon une preuve pour un critère qu'il ne
+     * justifie plus.
+     */
+    const matchesBefore = evidenceMatches.length;
     let resolvedQuotes: string[];
     try {
       resolvedQuotes = (evidenceQuotes as string[]).map((quote) => {
@@ -140,7 +178,19 @@ export function salvageProtocol3PartialCorrection(input: {
         return resolved.resolvedQuote;
       });
     } catch {
-      fail();
+      evidenceMatches.length = matchesBefore;
+      withdrawnCriteria.push({
+        criterionKey: criterion.key,
+        reason: 'EVIDENCE_NOT_IN_RESPONSE',
+      });
+      delivered.push({
+        confidence,
+        criterionKey: criterion.key,
+        evidenceQuotes: [],
+        evidenceStatus: 'EVIDENCE_WITHDRAWN',
+        feedback,
+        levelKey,
+      });
       continue;
     }
     delivered.push({
@@ -183,6 +233,7 @@ export function salvageProtocol3PartialCorrection(input: {
       }),
     },
     unsureCriteria,
+    withdrawnCriteria,
   };
 }
 
