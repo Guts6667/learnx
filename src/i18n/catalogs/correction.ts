@@ -22,6 +22,8 @@ export const frenchCorrectionMessages = {
   'aiCorrection.toCheckLabel': 'À vérifier',
   'aiCorrection.toCheckExplanation':
     'La vérification indépendante ne confirme pas l’analyse de ce critère. Aucun niveau n’est affiché : relisez ce point à partir de l’énoncé de l’exercice.',
+  'aiCorrection.toCheckEvidenceOutsideAnswer':
+    'L’extrait retenu pour justifier ce critère ne provenait pas de votre réponse : il a été retiré, aucun niveau n’est affiché, et vous pouvez demander un réexamen comme pour tout autre critère.',
   'aiCorrection.scoreWithheld':
     'Aucun score indicatif tant qu’un critère reste à vérifier ou à retravailler.',
   'aiCorrection.contractCostLabel': 'Coût avant confirmation',
@@ -190,6 +192,8 @@ export const englishCorrectionMessages = {
   'aiCorrection.toCheckLabel': 'Needs checking',
   'aiCorrection.toCheckExplanation':
     'The independent check does not confirm the analysis of this criterion. No level is shown: review this point against the exercise brief.',
+  'aiCorrection.toCheckEvidenceOutsideAnswer':
+    'The excerpt used to justify this criterion did not come from your response: it has been removed, no level is shown, and you can request a reconsideration as for any other criterion.',
   'aiCorrection.scoreWithheld':
     'No indicative score while a criterion still needs checking or rework.',
   'aiCorrection.contractCostLabel': 'Cost before confirmation',

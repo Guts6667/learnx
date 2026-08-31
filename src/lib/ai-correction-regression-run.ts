@@ -439,10 +439,21 @@ export async function deriveRegressionObservations(input: {
             (candidate) => candidate.criterionKey === criterion.criterionKey,
           )?.orderedLevelKeys ?? [];
         const verdict = verdicts[criterion.criterionKey] ?? 'UNAVAILABLE';
-        const evidenceStatus =
+        /**
+         * `EVIDENCE_WITHDRAWN` (V4.5-177) se lit comme le `FOUND` qu'il était :
+         * le modèle a bien affirmé avoir trouvé un extrait. Comme le retrait a
+         * aussi supprimé la correspondance de preuve, `cited` vaut false juste
+         * en dessous, et le couple retombe en LOW par la table de V4.5-110 —
+         * exactement ce que ce critère mérite.
+         */
+        const rawEvidenceStatus =
           'evidenceStatus' in criterion
             ? criterion.evidenceStatus
             : ('FOUND' as const);
+        const evidenceStatus =
+          rawEvidenceStatus === 'EVIDENCE_WITHDRAWN'
+            ? ('FOUND' as const)
+            : rawEvidenceStatus;
         const cited = (attempt.evidenceMatches ?? []).some(
           (match) => match.criterionKey === criterion.criterionKey,
         );

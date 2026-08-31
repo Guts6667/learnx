@@ -307,6 +307,36 @@ const protocol3ArtifactNoEvidenceCriterionSchema =
     .extend({ criterionKey: stableKeySchema })
     .strict();
 
+/**
+ * Un critère livré dont la citation a été retirée (V4.5-177).
+ *
+ * Cet état n'existe QUE sur l'artefact : le modèle ne l'émet jamais, il ne
+ * connaît que `FOUND` et `NO_RELEVANT_EVIDENCE`. C'est nous qui le posons
+ * quand le modèle a dit `FOUND` mais que la citation ne se retrouve pas dans
+ * la production de l'apprenant.
+ *
+ * Pourquoi un troisième état plutôt qu'un des deux existants : `FOUND` exige
+ * au moins une citation, et nous n'en avons plus de recevable ;
+ * `NO_RELEVANT_EVIDENCE` affirmerait que le modèle n'a rien trouvé et impose
+ * le niveau plancher, alors qu'il a bel et bien affirmé un niveau. Réutiliser
+ * l'un ou l'autre écrirait dans l'artefact quelque chose qui n'a pas eu lieu.
+ *
+ * `levelKey` conserve le niveau que le modèle a prononcé. Il n'est pas montré
+ * à l'apprenant — la confiance retombe à LOW, donc l'écran range le critère en
+ * « à vérifier », sans niveau — mais le garder est la seule trace de ce qui a
+ * été affirmé, et le supprimer nous ferait juger à la place du modèle.
+ */
+const protocol3ArtifactWithdrawnCriterionSchema = z
+  .object({
+    confidence: z.number().min(0).max(1),
+    criterionKey: stableKeySchema,
+    evidenceQuotes: z.array(z.string()).length(0),
+    evidenceStatus: z.literal('EVIDENCE_WITHDRAWN'),
+    feedback: z.string().trim().min(1),
+    levelKey: stableKeySchema,
+  })
+  .strict();
+
 export const protocol3CorrectionArtifactOutputSchema = z
   .object({
     contractKey: stableKeySchema,
@@ -316,6 +346,7 @@ export const protocol3CorrectionArtifactOutputSchema = z
         z.discriminatedUnion('evidenceStatus', [
           protocol3ArtifactFoundCriterionSchema,
           protocol3ArtifactNoEvidenceCriterionSchema,
+          protocol3ArtifactWithdrawnCriterionSchema,
         ]),
       )
       .min(1),
