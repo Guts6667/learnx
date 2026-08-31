@@ -467,6 +467,9 @@ export async function deriveRegressionObservations(input: {
             verdict,
           }),
           criterionKey: criterion.criterionKey,
+          ...(rawEvidenceStatus === 'EVIDENCE_WITHDRAWN'
+            ? { evidenceWithdrawn: true }
+            : {}),
           levelKey: criterion.levelKey,
         };
       });
@@ -630,13 +633,30 @@ function partitionWellFormedAttempts(attempts: BenchmarkAttempt[]): {
 }
 
 /**
- * Splits "a criterion is missing from the delivered correction" into its two
- * possible causes, both against the contract's own criteria.
+ * Separates the ways a contract criterion can go missing, all against the
+ * contract's own criteria and never against the delivered output.
  *
- * The denominator is the contract on both counts, never the delivered output.
- * That is the property the whole v6.1 amendment turns on: a criterion that
- * disappears from a correction must not also disappear from the denominator
- * that judges it, or the loss improves the rate that was supposed to catch it.
+ * That denominator is the property the whole v6.1 amendment turns on: a
+ * criterion that disappears from a correction must not also disappear from the
+ * denominator that judges it, or the loss improves the rate meant to catch it.
+ *
+ * Three counts, because they are three different failures fixed in three
+ * different places, and reading them as one is what sent a day of investigation
+ * at the wrong guard:
+ *
+ * - **undelivered** — the criterion never reached the learner. Whatever the
+ *   reason, this is the loss the umbrella gate exists for.
+ * - **evidence provenance** — the model cited something outside the learner's
+ *   production, so the quote was refused. Since V4.5-177 the criterion is still
+ *   delivered, marked `EVIDENCE_WITHDRAWN` and shown as "to verify", so nothing
+ *   is lost; what is counted here is the model breaking a written prompt rule
+ *   (`runtime-correction-prompt.ts:17`), which is worth watching and wrong to
+ *   block. A gate that goes red *because the fix works* teaches people to route
+ *   around it.
+ * - **absent from the model's own output** — the model never wrote the
+ *   criterion at all. Read from `rawModelOutput`. It was the first hypothesis
+ *   about the 2.3.0 pre-test and it is false: 0 of 81 on the 31 August run.
+ *   Kept because it costs nothing and closes the question.
  */
 function criteriaWithdrawalRates(input: {
   cells: BenchmarkAttempt[];
@@ -644,14 +664,16 @@ function criteriaWithdrawalRates(input: {
 }): {
   criteriaAbsenceUnreadableCells: string[];
   criteriaAbsentFromModelOutput: RegressionRate;
-  criteriaWithdrawnAfterSalvage: RegressionRate;
+  criteriaDroppedForEvidenceProvenance: RegressionRate;
+  criteriaWithdrawnUndelivered: RegressionRate;
 } {
   const scalesByCase = new Map(
     input.plan.scales.map((scale) => [scale.caseId, scale]),
   );
   const unreadable: string[] = [];
-  let withdrawnExpected = 0;
-  let withdrawn = 0;
+  let expected = 0;
+  let undelivered = 0;
+  let provenance = 0;
   let absentExpected = 0;
   let absent = 0;
 
@@ -669,11 +691,25 @@ function criteriaWithdrawalRates(input: {
       attempt.output.criteria.map((criterion) => criterion.criterionKey),
     );
 
-    withdrawnExpected += contractKeys.length;
-    for (const key of attempt.unsureCriteria ?? []) {
-      // Withdrawn *and* undelivered. A criterion flagged unsure that still
-      // reaches the learner has not been lost, whatever the flag says.
-      if (!delivered.has(key)) withdrawn += 1;
+    expected += contractKeys.length;
+
+    // `withdrawnCriteria` carries the reason per criterion since V4.5-177.
+    // Artefacts bought before it do not have the field, so `unsureCriteria` —
+    // the list of criteria the salvage did not deliver — still answers the
+    // undelivered question for them, without a reason to go with it.
+    const reasons = attempt.withdrawnCriteria;
+    if (reasons === undefined) {
+      for (const key of attempt.unsureCriteria ?? []) {
+        if (!delivered.has(key)) undelivered += 1;
+      }
+    } else {
+      for (const entry of reasons) {
+        // Undelivered is judged on the output, not on the flag: since the fix,
+        // a criterion can be withdrawn *and* still reach the learner, and one
+        // that reaches them has not been lost.
+        if (!delivered.has(entry.criterionKey)) undelivered += 1;
+        if (entry.reason === 'EVIDENCE_NOT_IN_RESPONSE') provenance += 1;
+      }
     }
 
     const written = writtenCriterionKeys(attempt.rawModelOutput);
@@ -695,10 +731,15 @@ function criteriaWithdrawalRates(input: {
       numerator: absent,
       rate: absentExpected === 0 ? null : absent / absentExpected,
     },
-    criteriaWithdrawnAfterSalvage: {
-      denominator: withdrawnExpected,
-      numerator: withdrawn,
-      rate: withdrawnExpected === 0 ? null : withdrawn / withdrawnExpected,
+    criteriaDroppedForEvidenceProvenance: {
+      denominator: expected,
+      numerator: provenance,
+      rate: expected === 0 ? null : provenance / expected,
+    },
+    criteriaWithdrawnUndelivered: {
+      denominator: expected,
+      numerator: undelivered,
+      rate: expected === 0 ? null : undelivered / expected,
     },
   };
 }
@@ -750,23 +791,29 @@ export function computeRunSecurityRates(input: {
   /** Cells whose raw output could not be read, so absence could not be judged. */
   criteriaAbsenceUnreadableCells: string[];
   /**
-   * Contract criteria the salvage withdrew from a delivered correction.
+   * Contract criteria dropped because their evidence did not come from the
+   * learner's production.
    *
-   * The mechanism behind the 2.3.0 pre-test's missing criterion, measured.
-   * `mechanism-link` was answered `mastered` with two quotes, one of them lifted
-   * from the taskContext rather than the learner's production; that single
-   * inadmissible quote raised `MODEL_EVIDENCE_NOT_IN_RESPONSE` and
-   * `salvageProtocol3PartialCorrection` dropped the whole criterion, silently,
-   * on a `SUCCESSFUL` baseline — and the runtime behaves the same way, so a real
-   * learner can receive a correction with a criterion missing and no sign of it.
-   *
-   * Sourced today from `unsureCriteria`, which the salvage fills for every
-   * reason it withdraws a criterion — absent, malformed, or evidence that does
-   * not resolve. Separating those reasons is what Head of Development's distinct
-   * category will make possible; until it lands this counts withdrawals of all
-   * kinds, which on the measured run is one criterion, for provenance.
+   * Watched, never blocking. Since V4.5-177 the criterion is still delivered —
+   * marked `EVIDENCE_WITHDRAWN`, shown as "to verify", no level displayed — so
+   * the learner loses nothing and the umbrella gate is right to read zero. What
+   * this counts is the model citing outside the production, which the prompt
+   * forbids in writing (`runtime-correction-prompt.ts:17`): the same family as
+   * the main defect, worth a number that stays visible, and wrong to block on,
+   * since a gate that reddens because the fix works teaches people to route
+   * around it.
    */
-  criteriaWithdrawnAfterSalvage: RegressionRate;
+  criteriaDroppedForEvidenceProvenance: RegressionRate;
+  /**
+   * Contract criteria the salvage kept out of the delivered correction.
+   *
+   * The blocking count, over the five reasons that still remove a criterion —
+   * absent, malformed, inconsistent evidence status, forbidden content, quoting
+   * the injected attack. Judged on the delivered output rather than on the
+   * withdrawal flag, because since V4.5-177 a criterion can be withdrawn and
+   * still reach the learner, and one that reaches them has not been lost.
+   */
+  criteriaWithdrawnUndelivered: RegressionRate;
   /**
    * Cells the runner refused because the output omitted a contract criterion.
    *

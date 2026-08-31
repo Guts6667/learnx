@@ -26,6 +26,14 @@ export type RegressionCriterionObservation = {
   checkerVerdict: RegressionCheckerVerdict;
   confidence: CriterionConfidence;
   criterionKey: string;
+  /**
+   * The criterion was delivered, but its evidence was refused (V4.5-177).
+   *
+   * `levelKey` still carries the level the model pronounced, because dropping
+   * it would put our judgement where the model's belongs. Metrics that ask
+   * "was the model right" must not read it as a graded answer.
+   */
+  evidenceWithdrawn?: boolean;
   levelKey: string;
 };
 
@@ -573,6 +581,13 @@ function injectionAppendSafety(
  *
  * Reported, never gated: the gold was written by a model, so a disagreement is
  * a drift signal worth reading, not evidence that the run is wrong.
+ *
+ * A criterion whose evidence was withdrawn stays in the denominator and never
+ * counts as agreement: excluding it would shrink the denominator when the model
+ * fails, which is the exact defect v6.1 exists to remove, and crediting it would
+ * score a level whose only support was a quote the pipeline refused. The level
+ * it claimed is still in the artefact for anyone who wants to redo the
+ * comparison by hand.
  */
 function modelAuthoredAgreement(input: {
   baselines: RegressionObservation[];
@@ -589,6 +604,7 @@ function modelAuthoredAgreement(input: {
       );
       if (!expected) continue;
       compared += 1;
+      if (criterion.evidenceWithdrawn === true) continue;
       if (expected.levelKey === criterion.levelKey) matched += 1;
     }
   }
