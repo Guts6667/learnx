@@ -429,6 +429,34 @@ déploiement de production. Vercel → projet `learnx` → Settings → Git →
 *Production Branch*. Le smoke du §10.4 le confirmera de toute façon, en lisant
 `environment` dans `/api/health`.
 
+### 9.5 Le quota de déploiements — une fenêtre glissante, pas un gel
+
+Le 31 août, Vercel a refusé les déploiements : « Deployment rate limited — retry
+in 24 hours ». **Ce n'est pas un gel de 24 heures**, et je l'ai d'abord dit trop
+fort : une poussée plus tard le même jour a produit un déploiement réussi. La
+limite se réarme au fil de l'eau. La promotion n'attend donc pas Vercel.
+
+Ce que l'épisode a appris, et qui change une croyance sur la règle du marqueur :
+
+- l'API `deployments` de GitHub n'enregistrait **qu'un seul** déploiement ce
+  jour-là, alors que le quota était épuisé ;
+- parce qu'une poussée sur n'importe quelle branche fait **créer** un
+  déploiement, que l'Ignored Build Step **annule** ensuite — visible comme
+  `Vercel | success | Canceled by Ignored Build Step`, sur un déploiement qui
+  porte un identifiant réel, et dont GitHub ne garde aucune trace ;
+- donc **le marqueur protège les minutes de build, pas le quota**. Seul le refus
+  de création le protège : c'est la PR #190 (V4.5-185), qui n'autorise la
+  création qu'à `dev`, `staging` et `main`.
+
+**Conséquence pour toutes les voies, à appliquer dès maintenant :** chaque
+poussée coûte une unité de quota même quand rien ne se construit. **Grouper les
+poussées** — une par PR quand elle est prête, pas une par correction.
+
+**À observer après la fusion de #190**, et à écrire ici comme un relevé plutôt
+qu'à supposer : une poussée sur une branche à slash (`codex/…`, `docs/…`) ne
+doit créer **aucun** déploiement, et une poussée sur `dev` doit en créer un. La
+mesure faite dans cette PR porte sur minimatch, pas sur le résolveur de Vercel.
+
 ## 10. La promotion, pas à pas
 
 État de départ relevé aujourd'hui :
