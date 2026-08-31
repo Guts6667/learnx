@@ -1,0 +1,433 @@
+/*
+ * Landing path treatment.
+ *
+ * The promise is not explained with another slogan: the composition itself
+ * shows a route, a current activity and what comes next. This file is imported
+ * last so the public surface keeps its existing contracts while this landing
+ * receives the approved V4.2 visual treatment.
+ */
+
+.landing-page {
+  background: var(--color-canvas);
+}
+
+.landing-page .landing-header {
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  backdrop-filter: blur(1rem);
+}
+
+.landing-page .landing-hero {
+  isolation: isolate;
+  background: var(--color-canvas);
+}
+
+.landing-page .landing-hero::after {
+  display: none;
+}
+
+.landing-page .landing-hero-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.landing-page .landing-hero-copy::before {
+  width: 3.5rem;
+  height: 2px;
+  display: block;
+  margin-bottom: var(--space-6);
+  border-radius: 999px;
+  background: var(--color-action);
+  content: '';
+}
+
+.landing-page .landing-hero h1 {
+  max-width: 10ch;
+  font-size: clamp(2.75rem, 6vw, 5.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.landing-page .landing-lead {
+  max-width: 38ch;
+}
+
+.landing-page .landing-hero-visual {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  isolation: isolate;
+}
+
+.landing-page .landing-hero-visual::before {
+  position: absolute;
+  z-index: -2;
+  inset: 8% -1% -3% 7%;
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--radius-surface) + 0.75rem);
+  background: var(--color-surface-subtle);
+  content: '';
+  transform: rotate(2deg);
+  transform-origin: center;
+}
+
+.landing-page .landing-hero-visual::after {
+  position: absolute;
+  z-index: 3;
+  top: 0.25rem;
+  right: 4%;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 0.25rem solid var(--color-canvas);
+  border-radius: 999px;
+  background: var(--color-coral);
+  box-sizing: content-box;
+  content: '';
+}
+
+.landing-page .landing-program-preview {
+  border-color: color-mix(in srgb, var(--color-action) 18%, var(--color-border));
+  border-radius: calc(var(--radius-surface) + 0.625rem);
+  padding: 0.75rem;
+  background: var(--color-surface);
+  box-shadow: 0 2rem 5rem
+    color-mix(in srgb, var(--color-text) 13%, transparent);
+}
+
+.landing-page .landing-program-preview .landing-preview-header {
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.landing-preview-program-title {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.landing-preview-program-mark {
+  width: 0.625rem;
+  height: 0.625rem;
+  flex: 0 0 auto;
+  border: 2px solid var(--color-action);
+  border-radius: 999px;
+  background: var(--color-surface);
+  box-shadow: 0 0 0 0.25rem var(--color-surface-subtle);
+}
+
+.landing-preview-program-title h2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.landing-page .landing-program-preview .landing-preview-body {
+  min-height: 25rem;
+}
+
+.landing-page .landing-program-preview .landing-preview-content {
+  align-content: start;
+  display: grid;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.landing-preview-route-heading {
+  min-width: 0;
+}
+
+.landing-preview-route-heading h3 {
+  max-width: 17ch;
+  margin-top: var(--space-1);
+  font-family: var(--font-editorial);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.landing-preview-path {
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.landing-preview-path::before {
+  position: absolute;
+  top: 0.625rem;
+  bottom: 0.625rem;
+  left: 0.5rem;
+  width: 2px;
+  background: var(--color-border);
+  content: '';
+}
+
+.landing-preview-path li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.125rem minmax(0, 1fr);
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+}
+
+.landing-preview-path li:last-child {
+  padding-bottom: 0;
+}
+
+.landing-preview-path-marker {
+  position: relative;
+  z-index: 1;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.125rem;
+  border: 2px solid var(--color-action);
+  border-radius: 999px;
+  background: var(--color-surface);
+}
+
+.landing-preview-path li[data-state='context']
+  .landing-preview-path-marker {
+  background: var(--color-action);
+  box-shadow: inset 0 0 0 0.25rem var(--color-action);
+}
+
+.landing-preview-path li[data-state='current']
+  .landing-preview-path-marker {
+  border-color: var(--color-surface);
+  background: var(--color-coral);
+  box-shadow: 0 0 0 2px var(--color-coral);
+}
+
+.landing-preview-path li[data-state='next'] .landing-preview-path-marker {
+  border-color: var(--color-control-border);
+}
+
+.landing-preview-path-copy {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.landing-preview-path-copy strong {
+  color: var(--color-text);
+  font-size: var(--text-md);
+  line-height: 1.4;
+}
+
+.landing-page .landing-program-preview .landing-next-card {
+  margin: 0;
+  border-color: color-mix(in srgb, var(--color-action) 24%, var(--color-border));
+  padding: clamp(1rem, 2.5vw, 1.4rem);
+  background: var(--color-surface);
+  box-shadow: 0 0.875rem 2.25rem
+    color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.landing-page .landing-program-preview .landing-next-card::after {
+  display: none;
+}
+
+.landing-page .landing-program-preview .landing-next-card h4 {
+  max-width: 22ch;
+  margin-top: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.landing-preview-path-next {
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.landing-preview-path-next > span {
+  color: var(--color-action);
+}
+
+.landing-preview-path-next strong {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.landing-page .landing-actions {
+  align-items: center;
+}
+
+/* The three benefits read as connected milestones, not isolated feature cards. */
+.landing-page .landing-principles {
+  position: relative;
+  z-index: 2;
+  gap: var(--space-3);
+  margin-top: -1.5rem;
+  padding: 0 clamp(1.2rem, 6vw, 6rem) clamp(3.5rem, 7vw, 6rem);
+  background: var(--color-canvas);
+}
+
+.landing-page .landing-principles::before {
+  position: absolute;
+  z-index: 1;
+  top: 1.75rem;
+  bottom: 1.75rem;
+  left: calc(clamp(1.2rem, 6vw, 6rem) + 1.875rem);
+  width: 2px;
+  background: var(--color-border);
+  content: '';
+}
+
+.landing-page .landing-principles > div {
+  position: relative;
+  z-index: 2;
+  min-height: 0;
+  gap: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  padding: var(--space-6) var(--space-5) var(--space-6) 4.25rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 0.75rem 2rem
+    color-mix(in srgb, var(--color-text) 5%, transparent);
+}
+
+.landing-page .landing-principles > div::before {
+  position: absolute;
+  z-index: 2;
+  top: 1.7rem;
+  left: 1.5rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 0.25rem solid var(--color-surface-subtle);
+  border-radius: 999px;
+  background: var(--color-action);
+  box-sizing: content-box;
+  content: '';
+}
+
+.landing-page .landing-principles > div + div {
+  border: 1px solid var(--color-border);
+}
+
+.landing-page .landing-principles strong {
+  color: var(--color-text);
+}
+
+.landing-page .landing-principles span {
+  color: var(--color-text-muted);
+}
+
+.landing-page .landing-feature-proof {
+  background: var(--color-surface);
+}
+
+.landing-page .landing-feature-proof .landing-lesson-preview {
+  border-color: color-mix(in srgb, var(--color-action) 16%, var(--color-border));
+  box-shadow: 0 1.5rem 4rem
+    color-mix(in srgb, var(--color-text) 9%, transparent);
+}
+
+@media (min-width: 48rem) {
+  .landing-page .landing-actions {
+    flex-direction: row;
+  }
+
+  .landing-page .landing-principles {
+    gap: var(--space-4);
+    margin-top: -2rem;
+  }
+
+  .landing-page .landing-principles::before {
+    top: 2rem;
+    right: 17%;
+    bottom: auto;
+    left: 17%;
+    width: auto;
+    height: 2px;
+  }
+
+  .landing-page .landing-principles > div {
+    min-height: 10.5rem;
+    align-content: start;
+    padding: 4.25rem var(--space-5) var(--space-6);
+    text-align: center;
+  }
+
+  .landing-page .landing-principles > div::before {
+    top: 1.55rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (min-width: 64rem) {
+  .landing-page .landing-hero {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(3.5rem, 6vw, 6rem);
+    min-height: min(52rem, calc(100dvh - 5rem));
+  }
+
+  .landing-page .landing-hero-visual {
+    transform: translateY(0.75rem);
+  }
+}
+
+@media (max-width: 35rem) {
+  .landing-page .landing-hero h1 {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+  }
+
+  .landing-page .landing-hero-visual {
+    padding-inline: 0;
+  }
+
+  .landing-page .landing-hero-visual::before {
+    inset: 5% -4% -2% 4%;
+  }
+
+  .landing-page .landing-program-preview {
+    border-radius: var(--radius-surface);
+    padding: 0.5rem;
+  }
+
+  .landing-page .landing-program-preview .landing-preview-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .landing-page .landing-program-preview .landing-preview-body {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .landing-page .landing-program-preview .landing-preview-mini-nav {
+    display: none;
+  }
+
+  .landing-page .landing-program-preview .landing-preview-content {
+    padding: var(--space-4);
+  }
+
+  .landing-preview-route-heading h3 {
+    font-size: var(--text-2xl);
+  }
+
+  .landing-preview-path {
+    margin-top: var(--space-6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page .landing-hero-visual,
+  .landing-page .landing-hero-visual::before {
+    transform: none;
+  }
+}
