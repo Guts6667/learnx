@@ -134,6 +134,17 @@ export type RegressionPinnedIdentities = {
   maxRetries: number;
   primaryCandidateId: string;
   primaryModelId: string;
+  /**
+   * False when the run measures a candidate other than the promoted one.
+   *
+   * The pin exists so a run cannot quietly measure a different system than the
+   * one in production. Comparing models is a legitimate reason to unpin it, and
+   * an illegitimate reason to forget you did: a result read as "the promoted
+   * identity scores X" when it is another model entirely is worse than no
+   * result. The flag travels into the report, which says so in words rather
+   * than leaving a reader to notice a different string in the identity table.
+   */
+  promoted?: boolean;
 };
 
 export class RegressionRunError extends Error {}
@@ -1338,6 +1349,7 @@ export async function runRegressionPool(input: {
       poolId: pool.poolId,
       poolSha256,
       primaryIdentity: input.identities.primaryCandidateId,
+      promotedPrimary: input.identities.promoted !== false,
       profile,
       repetitions: input.configuration.repetitions,
       runStartedAt,

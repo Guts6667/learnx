@@ -34,6 +34,7 @@ import {
   type RegressionPool,
 } from './ai-correction-regression-pool.js';
 import { renderRegressionReport } from './ai-correction-regression-report.js';
+import { selectPinnedCandidate } from './ai-correction-regression-run-cli.js';
 import {
   computeRunSecurityRates,
   countMutantsByKind,
@@ -1462,5 +1463,131 @@ describe('the direction profile reports its own narrowness', () => {
     });
 
     expect(report).not.toContain("Ce run n'achète qu'un oracle");
+  });
+});
+
+/**
+ * A run that measures another model must say so (V4.5-210).
+ *
+ * The identity pin stops a run quietly measuring a different system than the one
+ * in production. Comparing models is a legitimate reason to unpin it — four
+ * prompt versions failed while the model was held constant, so whether the
+ * defect belongs to the model or to the task is unanswerable without changing it
+ * — and an illegitimate reason to forget you did. A comparison misread as a
+ * promotion measurement is worse than no comparison.
+ */
+describe('an unpinned primary declares itself in the report', () => {
+  let cached: Awaited<ReturnType<typeof runSuite>> | undefined;
+  async function suiteOnce() {
+    cached ??= await runSuite({
+      behaviour: 'ATTENTIVE',
+      checker: AGREEABLE_CHECKER,
+    });
+    return cached;
+  }
+
+  async function reportFor(identity: Record<string, unknown>): Promise<string> {
+    const { metrics, plan } = await suiteOnce();
+    return renderRegressionReport({
+      confidence: summarizeConfidence([]),
+      costs: {
+        actualCostUsd: 0.01,
+        estimatedCostUsd: 0.012,
+        p50CostUsdPerCorrection: 0.0004,
+        p50LatencyMs: 12,
+        p90CostUsdPerCorrection: 0.0006,
+        p90LatencyMs: 20,
+      },
+      evaluation: {
+        gateFailures: [],
+        gates: [],
+        policyErrors: [],
+        promotionEligible: false,
+      },
+      identity: {
+        checkerIdentity: 'PROMOTED_CHECKER_IDENTITY',
+        gatePolicyVersion: '6.1.0',
+        generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+        heldOutSeed: 'c'.repeat(64),
+        heldOutSeedSource: 'DERIVED',
+        poolId: 'learnx-fr-regression-pool-v1',
+        poolSha256: 'd'.repeat(64),
+        primaryIdentity: 'claude-sonnet-4-6-openrouter-anthropic',
+        profile: 'direction',
+        repetitions: 1,
+        runStartedAt: '2026-09-01T00:00:00.000Z',
+        ...identity,
+      },
+      metrics,
+      mutantCounts: countMutantsByKind(plan),
+    } as unknown as Parameters<typeof renderRegressionReport>[0]);
+  }
+
+  it('warns, and names the model, when the primary is not the promoted one', async () => {
+    const report = await reportFor({
+      primaryIdentity: 'gpt-5-6-terra-openrouter',
+      promotedPrimary: false,
+    });
+
+    expect(report).toContain("ne mesure PAS l'identité promue");
+    expect(report).toContain('gpt-5-6-terra-openrouter');
+    expect(report).toContain('preuve de promotion');
+  });
+
+  it('says nothing of the sort on a promoted run', async () => {
+    // The warning must be tied to the unpinned case. A caveat printed on every
+    // run is one nobody reads on the run it means.
+    expect(await reportFor({ promotedPrimary: true })).not.toContain(
+      "ne mesure PAS l'identité promue",
+    );
+    expect(await reportFor({})).not.toContain(
+      "ne mesure PAS l'identité promue",
+    );
+  });
+
+  it('still refuses a candidate whose model does not match its identity', () => {
+    // Unpinning names a candidate; it does not disable the consistency check.
+    // A candidateId pointing at a different modelId than the identity claims is
+    // still a run measuring something other than what it says.
+    expect(() =>
+      selectPinnedCandidate({
+        configuration: {
+          candidates: [
+            {
+              candidateId: 'gpt-5-6-terra-openrouter',
+              modelId: 'openai/gpt-5.6-terra',
+            },
+          ],
+        } as unknown as Parameters<
+          typeof selectPinnedCandidate
+        >[0]['configuration'],
+        identities: {
+          checkerModelId: 'mistralai/mistral-medium-3-5',
+          maxRetries: 1,
+          primaryCandidateId: 'gpt-5-6-terra-openrouter',
+          primaryModelId: 'openai/gpt-5.6-sol',
+          promoted: false,
+        },
+      }),
+    ).toThrow(/IDENTITY_MISMATCH/);
+  });
+
+  it('still refuses a candidate absent from the configuration', () => {
+    expect(() =>
+      selectPinnedCandidate({
+        configuration: {
+          candidates: [],
+        } as unknown as Parameters<
+          typeof selectPinnedCandidate
+        >[0]['configuration'],
+        identities: {
+          checkerModelId: 'mistralai/mistral-medium-3-5',
+          maxRetries: 1,
+          primaryCandidateId: 'gpt-5-6-terra-openrouter',
+          primaryModelId: 'openai/gpt-5.6-terra',
+          promoted: false,
+        },
+      }),
+    ).toThrow(/IDENTITY_ABSENT/);
   });
 });

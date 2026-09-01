@@ -3,12 +3,15 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { runAiCorrectionBenchmarkCli } from '../src/lib/ai-correction-benchmark-cli.ts';
+import { readCliOption } from '../src/lib/ai-correction-regression-cli.ts';
+import type { CorrectionBenchmarkConfiguration } from '../src/lib/ai-correction-benchmark.ts';
 import { loadBenchmarkInputs as loadInputsForRegression } from '../src/lib/ai-correction-benchmark-runner.ts';
 import { callCandidate } from '../src/lib/ai-correction-benchmark-runner.ts';
 import {
   runCheckerMeasurement,
   runRegressionAnalysis,
   runRegressionPool,
+  type RegressionPinnedIdentities,
 } from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
 import {
@@ -34,12 +37,55 @@ import {
  * pinned by `ai-correction-benchmark-runner-parity.test.ts`, and a new entry
  * point is no reason to widen a surface other code was promised.
  */
-const REGRESSION_PINNED_IDENTITIES = {
+const REGRESSION_PINNED_IDENTITIES: RegressionPinnedIdentities = {
   checkerModelId: PROMOTED_CHECKER_IDENTITY.modelId,
   maxRetries: PROMOTED_CORRECTION_IDENTITY.maxRetries,
   primaryCandidateId: PROMOTED_CORRECTION_IDENTITY.candidateId,
   primaryModelId: PROMOTED_CORRECTION_IDENTITY.modelId,
+  promoted: true,
 };
+
+/**
+ * `--primary-candidate=<candidateId>` — measure a candidate that is not the
+ * promoted one (V4.5-210).
+ *
+ * Four prompt versions have failed on the same defect while the model was held
+ * constant every time. Whether the defect belongs to this model or to the task
+ * is not answerable without changing the model, and the pin exists precisely to
+ * stop that happening by accident.
+ *
+ * So it is unpinned only by naming a candidate explicitly, the candidate must
+ * exist in the configuration — `selectPinnedCandidate` still refuses a
+ * candidate whose model does not match — and the resulting identity carries
+ * `promoted: false` into the report, which then says in words that the run
+ * measures something other than production. A comparison misread as a promotion
+ * measurement would be worse than no comparison.
+ */
+function regressionIdentitiesFor(
+  arguments_: string[],
+  configuration: CorrectionBenchmarkConfiguration,
+): RegressionPinnedIdentities {
+  const requested = readCliOption(arguments_, 'primary-candidate');
+  if (requested === undefined) return REGRESSION_PINNED_IDENTITIES;
+
+  const candidate = configuration.candidates.find(
+    (item) => item.candidateId === requested,
+  );
+  if (!candidate) {
+    throw new Error(
+      `REGRESSION_RUN_CANDIDATE_UNKNOWN: ${requested} n'est pas dans la configuration. ` +
+        `Candidats disponibles : ${configuration.candidates
+          .map((item) => item.candidateId)
+          .join(', ')}.`,
+    );
+  }
+  return {
+    ...REGRESSION_PINNED_IDENTITIES,
+    primaryCandidateId: candidate.candidateId,
+    primaryModelId: candidate.modelId,
+    promoted: false,
+  };
+}
 
 /**
  * `--run-pool` — plan, price and lay out a regression run.
@@ -109,7 +155,7 @@ async function runAiCorrectionRegressionCli(
     const measurement = await runCheckerMeasurement({
       arguments: arguments_,
       checker: buildRegressionChecker(apiKey),
-      identities: REGRESSION_PINNED_IDENTITIES,
+      identities: regressionIdentitiesFor(arguments_, configuration),
       providerApiKey: apiKey,
     });
     console.log(
@@ -275,7 +321,7 @@ async function runAiCorrectionRegressionCli(
         }
       : {}),
     configuration,
-    identities: REGRESSION_PINNED_IDENTITIES,
+    identities: regressionIdentitiesFor(arguments_, configuration),
   });
 
   console.log(

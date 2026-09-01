@@ -49,6 +49,8 @@ export type RegressionRunIdentity = {
   poolSha256: string;
   primaryIdentity: string;
   profile: string;
+  /** False when the primary is not the promoted identity. */
+  promotedPrimary?: boolean;
   repetitions: number;
   runStartedAt: string;
 };
@@ -98,6 +100,16 @@ export function renderRegressionReport(input: {
   lines.push(`| Politique de gate | \`${input.identity.gatePolicyVersion}\` |`);
   lines.push(`| Identité primaire | \`${input.identity.primaryIdentity}\` |`);
   lines.push(`| Vérificateur | \`${input.identity.checkerIdentity}\` |`);
+  if (input.identity.promotedPrimary === false) {
+    lines.push('');
+    lines.push(
+      "> **Ce run ne mesure PAS l'identité promue.** Le correcteur primaire est " +
+        `\`${input.identity.primaryIdentity}\`, choisi explicitement pour cette ` +
+        'mesure. Aucun résultat de ce rapport ne dit quoi que ce soit du système ' +
+        'en production, et aucun ne peut servir de preuve de promotion : la ' +
+        "promotion se mesure sur l'identité promue, pas sur une autre.",
+    );
+  }
   if (input.identity.profile === 'direction') {
     lines.push('');
     lines.push(
