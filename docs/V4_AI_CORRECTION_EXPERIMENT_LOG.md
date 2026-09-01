@@ -1582,3 +1582,116 @@ DOM et la pilote : neuf tests. Six mutants de la page rougissent. Le premier jeu
 de tests **laissait passer** la réintroduction du bug v1, parce qu'il n'exerçait
 que le clavier et pas le clic — deux gestionnaires différents. Le test manquant a
 été ajouté, et le mutant rougit.
+
+### Paquet v3 — l'enveloppe de phrase devient le contrat, et le dénominateur se corrige
+
+Verdict du relecteur sur v2 : **BLOCK avant la passe 1**. Six points, tous
+fondés. Le paquet v3 (`sha256:53a2defc…`, 106 cartes) et la page les traitent.
+
+#### L'enveloppe de phrase est l'unité d'entrée, pas un correctif d'AUC
+
+v2 adjugeait la phrase entière pendant que la répétition à blanc envoyait encore
+le fragment brut. L'étiquette de référence aurait répondu à une autre question
+que la mesure. Un module partagé, `src/lib/ai-correction-adjudication-text.ts`,
+définit désormais l'unité :
+
+| strate | ce que le vérificateur reçoit |
+|---|---|
+| S1–S3 | l'enveloppe minimale de phrases contenant la citation |
+| S4–S6 | le tuple des phrases liées aux rôles de l'atome |
+| S7 | la réponse entière |
+| — | le fragment exactement cité : **endpoint secondaire de fidélité** |
+
+Segmenteur, offsets, empreintes et identifiants de phrases sont gelés dans le
+paquet (`segmenterVersion: fr/segmentSentences@1`). La répétition à blanc
+reconstruit l'entrée par ce module et **vérifie qu'elle est identique** au texte
+adjugé — 106 cartes sur 106.
+
+#### Un témoin peut être absent
+
+v2 exigeait au moins une phrase pour chaque rôle, y compris sur un `NOT_DIRECT`.
+Or c'est souvent **parce que** le rôle est absent qu'une carte n'est pas directe :
+la page fabriquait de faux témoins. Chaque rôle porte maintenant
+
+```
+roleAssessments[roleId] = { status: BOUND | ABSENT | AMBIGUOUS, sentenceIds: [] }
+```
+
+validé contre le verdict, le quantificateur et la cardinalité (`1`, `>=1`,
+`>=2`, `>=0`). Un `DIRECT` exige les rôles liés — sauf sur `not_exists`, où il
+exige au contraire l'absence.
+
+#### Plus aucun défaut, même visuel
+
+v2 gardait les deux contrôles à `null` mais pré-sélectionnait « non » et « oui »,
+et une seule touche confirmait les deux. C'était un défaut en tout sauf en
+stockage, et il ancrait « autre soutien = non ». Les propositions et la touche
+`C` sont supprimées : deux choix indépendants, rien de pressé tant que rien n'est
+répondu.
+
+#### L'espacement reposait sur un chiffre périmé — et sur une concentration
+
+La plus grosse grappe comptait bien **18** cartes, pas 27 : mon 27 venait d'une
+attribution de contrôles antérieure. Écart de grappe porté à **6**, atteint.
+
+Mais en desserrant la protection des contrôles pour qu'ils raccourcissent
+vraiment, **les seize se sont concentrés sur une seule copie**, la portant à 27
+cartes et rendant l'ordre infaisable — la recherche a stagné à un écart de 1. Un
+plafond calculé, `floor(105/6)+1 = 18`, et deux contrôles par grappe au plus.
+Écarts obtenus : paire 9, réponse 8, grappe 6.
+
+#### Classes de phrases à polarité pure : équilibrées puis isolées
+
+Le relecteur en signalait une ; il y en avait **quatre**, soit 24 cartes.
+Viser aussi le nombre de phrases des négatifs a fermé les classes courtes.
+Restent trois classes — 5, 6 et 7 phrases, **15 cartes** — qu'aucun contrôle ne
+peut fermer : un négatif à cinq ou sept phrases exigerait une copie d'origine qui
+n'existe pas. Elles sont marquées `lengthDiagnostic` **dans la clé, jamais sur la
+carte**, et sortent de l'endpoint principal.
+
+#### Le dénominateur, corrigé deux fois
+
+| population | grappes | borne basse 95 % d'un sans-faute |
+|---|---|---|
+| toutes paires | 14 | 80,74 % |
+| paires primaires | **11** | **76,16 %** |
+| primaires hors strate diagnostique | **9** | **71,69 %** |
+
+Le relecteur avait raison sur 11. En comptant au niveau **paire** — une paire
+dont un membre est diagnostique est contaminée entière — il en reste **9**, et
+25 paires primaires sur 37. Isoler la fuite coûte deux grappes et 4,5 points de
+borne. C'est le prix de l'honnêteté du protocole, et il doit être dit avant la
+passe, pas après.
+
+#### Ce que les AUC directionnelles révèlent
+
+Rapportées avec leur direction, comme demandé : `0,403` n'est pas « meilleur que
+0,597 », c'est la même distance au hasard dans l'autre sens.
+
+| population | n | visible | span | phrases |
+|---|---|---|---|---|
+| tout le paquet | 106 | 0,537 **+0,537** | 0,403 **−0,597** | 0,597 **+0,597** |
+| fenêtre pleine | 26 | 0,455 −0,545 | 0,461 −0,539 | 0,624 +0,624 |
+| réponse plus courte que la fenêtre | 19 | 0,693 +0,693 | 0,580 +0,580 | 0,682 +0,682 |
+| intégrales S4–S7 | 61 | 0,586 +0,586 | 0,331 **−0,669** | 0,605 +0,605 |
+| **hors strate diagnostique** | 91 | **0,501** | 0,321 **−0,679** | 0,547 |
+
+La longueur de réponse est neutralisée hors strate diagnostique : **0,501**,
+le hasard. Mais **la longueur du span ne l'est pas** : séparabilité **0,679**,
+inversée. Le signal n'a pas été supprimé, il a changé de sens et il est
+marginalement **plus fort** qu'au départ (0,666). La phrase que le correcteur
+cite est simplement plus longue que la phrase porteuse.
+
+Je ne sais pas corriger cela sans toucher au phénomène. Deux suites possibles :
+l'accepter comme résidu déclaré sur une strate déjà nommée, ou ajouter le second
+bras de substitutions fluides à longueur appariée — la mesure propre de
+discrimination sémantique que le relecteur a proposée.
+
+#### D0 est une vraie porte
+
+`checkEvidenceGuards` n'avait aucun appel hors tests. Elle est maintenant
+appelée dans `deriveRegressionObservations`, sur le texte réellement corrigé ;
+les violations voyagent sur l'observation et `computeRegressionMetrics` en fait
+un taux avec un dénominateur réel, `null` quand rien n'a pu être vérifié. Trois
+tests pilotent ce chemin de bout en bout ; retirer le rattachement en fait
+rougir deux.

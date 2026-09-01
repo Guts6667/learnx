@@ -12,7 +12,13 @@ import path from 'node:path';
 const REG = 'benchmarks/ai-correction/regression';
 
 type Card = Record<string, unknown> & {
-  argumentRoles: { bindable: boolean; description: string; roleId: string }[];
+  argumentRoles: {
+    bindable: boolean;
+    cardinality: string;
+    description: string;
+    roleId: string;
+  }[];
+  sentences: { id: string }[];
   candidateSpan: string;
   cardId: string;
   response: string;
@@ -22,6 +28,7 @@ type Card = Record<string, unknown> & {
 type KeyEntry = {
   cardId: string;
   clusterId: string;
+  lengthDiagnostic?: boolean;
   member: 'control_positive' | 'negative' | 'positive';
   pairId: string | null;
   responseHash: string;
@@ -53,7 +60,13 @@ const FORBIDDEN_VERDICTS = [
   /"(?:member|isPositive|isNegative|control)"/,
 ];
 
-/** P(a random positive is longer than a random negative); 0.5 is no signal. */
+/**
+ * P(a random positive is longer than a random negative); 0.5 is no signal.
+ *
+ * Reported with its direction and its separability. 0.406 is not "better than
+ * 0.594" — it is the same distance from chance, pointing the other way, and a
+ * reviewer can learn an inverted rule just as easily as a direct one.
+ */
 function auc(positives: number[], negatives: number[]): number {
   if (positives.length === 0 || negatives.length === 0) return Number.NaN;
   let wins = 0;
@@ -70,7 +83,7 @@ function auc(positives: number[], negatives: number[]): number {
 function main(): void {
   const deckPath = process.env.ADJUDICATION_DECK
     ? path.resolve(process.env.ADJUDICATION_DECK)
-    : path.resolve(REG, 'adjudication-deck.v2.json');
+    : path.resolve(REG, 'adjudication-deck.v3.json');
   const deck = JSON.parse(readFileSync(deckPath, 'utf8')) as {
     cards: Card[];
     minimumGapTarget: { cluster: number; pair: number; response: number };
@@ -78,7 +91,7 @@ function main(): void {
   };
   const key = (
     JSON.parse(
-      readFileSync(path.resolve(REG, 'adjudication-deck.v2.key.json'), 'utf8'),
+      readFileSync(path.resolve(REG, 'adjudication-deck.v3.key.json'), 'utf8'),
     ) as { key: KeyEntry[] }
   ).key;
 
@@ -198,17 +211,27 @@ function main(): void {
     entryOf.get(card.cardId)?.member === 'negative';
   const visible = (card: Card) =>
     card.window ? card.window.end - card.window.start : card.response.length;
+  /**
+   * An AUC is reported with its direction and its separability. 0.406 is not
+   * "better than 0.594": it is the same distance from chance pointing the other
+   * way, and an inverted rule is as learnable as a direct one.
+   */
+  const directional = (value: number): string => {
+    if (Number.isNaN(value)) return '   —   ';
+    const separability = Math.max(value, 1 - value);
+    return `${value.toFixed(3)}${value >= 0.5 ? '+' : '-'}${separability.toFixed(3)}`;
+  };
   const report = (label: string, cards: Card[]) => {
     const positives = cards.filter((card) => !isNegative(card));
     const negatives = cards.filter(isNegative);
     if (positives.length === 0 || negatives.length === 0) return;
+    const column = (values: (card: Card) => number): string =>
+      directional(auc(positives.map(values), negatives.map(values)));
     console.log(
-      `  ${label.padEnd(34)} n=${String(cards.length).padStart(3)}  ` +
-        `visible ${auc(positives.map(visible), negatives.map(visible)).toFixed(3)}  ` +
-        `span ${auc(
-          positives.map((c) => c.candidateSpan.length),
-          negatives.map((c) => c.candidateSpan.length),
-        ).toFixed(3)}`,
+      `  ${label.padEnd(30)} n=${String(cards.length).padStart(3)}  ` +
+        `visible ${column(visible)}  ` +
+        `span ${column((card) => card.candidateSpan.length)}  ` +
+        `phrases ${column((card) => card.sentences.length)}`,
     );
   };
 
@@ -217,7 +240,16 @@ function main(): void {
     `écarts atteints : paire ${achieved.pair}, réponse ${achieved.response}, grappe ${achieved.cluster}`,
   );
   console.log('');
-  console.log('AUC de longueur — 0,500 = aucun signal :');
+  const diagnostic = deck.cards.filter(
+    (card) => entryOf.get(card.cardId)?.lengthDiagnostic === true,
+  );
+  console.log(
+    `strate diagnostique : ${diagnostic.length} cartes en classe de phrases à polarité pure`,
+  );
+  console.log('');
+  console.log(
+    'AUC, avec sa direction et sa séparabilité — 0,500 = aucun signal :',
+  );
   report('tout le paquet', deck.cards);
   report(
     'fenêtrées (S1–S3)',
@@ -238,6 +270,12 @@ function main(): void {
   report(
     'intégrales (S4–S7)',
     deck.cards.filter((card) => !card.window),
+  );
+  report(
+    'hors strate diagnostique',
+    deck.cards.filter(
+      (card) => entryOf.get(card.cardId)?.lengthDiagnostic !== true,
+    ),
   );
   console.log('');
 

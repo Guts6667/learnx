@@ -25,28 +25,32 @@ import {
   parseRegressionPool,
 } from '../src/lib/ai-correction-regression-pool.ts';
 import { planRegressionRun } from '../src/lib/ai-correction-regression-run.ts';
+import {
+  ADJUDICATION_SEGMENTER_VERSION,
+  envelopeFor,
+  segmentForAdjudication,
+} from '../src/lib/ai-correction-adjudication-text.ts';
 import { segmentSentences } from '../src/lib/ai-correction-regression-text.ts';
 
 const REG = 'benchmarks/ai-correction/regression';
 const POOL = path.resolve(REG, 'regression-pool.v1.json');
 const TAXONOMY = path.resolve(REG, 'criterion-atoms.v3_2_2.json');
 const MANIFEST = path.resolve(REG, 'atom-pair-manifest.v2.json');
-const OUT = path.resolve(REG, 'adjudication-deck.v2.json');
-const KEY_OUT = path.resolve(REG, 'adjudication-deck.v2.key.json');
+const OUT = path.resolve(REG, 'adjudication-deck.v3.json');
+const KEY_OUT = path.resolve(REG, 'adjudication-deck.v3.key.json');
 
 /** Recorded so the order is reproducible and was not chosen after seeing it. */
-const SHUFFLE_SEED = 'v4.5-210/adjudication-deck/pass-1/v2';
+const SHUFFLE_SEED = 'v4.5-210/adjudication-deck/pass-1/v3';
 /**
  * Minimum cards between two cards that share something a reviewer could learn.
  *
- * The cluster target is 3, not 5, because 5 is provably impossible: one authored
- * answer carries 27 of the 106 cards, and spacing 27 cards five apart needs 131
- * positions. The largest gap any arrangement could reach for that cluster is 4,
- * and that would leave no slack for the other two constraints. A target that
- * cannot be met is worse than a lower one that can: it hides which constraint
- * actually bound.
+ * The v2 comment justified a cluster target of 3 with a largest cluster of 27
+ * cards. That number was stale — it came from an earlier control assignment.
+ * The largest cluster carries 18 of the 106 cards, which needs 103 positions at
+ * a gap of 6 and leaves room for the other two constraints. Measured, not
+ * assumed: the builder prints the achieved gaps and the audit recomputes them.
  */
-const MIN_GAP = { cluster: 3, pair: 8, response: 8 };
+const MIN_GAP = { cluster: 6, pair: 8, response: 8 };
 /** Fixed window, in characters, for the strata that judge one local span. */
 const WINDOW = 340;
 /** Strata whose response is withheld until the reviewer asks for it. */
@@ -89,9 +93,11 @@ type Criterion = {
   witnessRoles: WitnessRole[];
 };
 
-type Sentence = { end: number; id: string; start: number };
+type Sentence = { end: number; id: string; sha: string; start: number };
 type Role = {
   bindable: boolean;
+  /** '1' | '>=1' | '>=2' | '>=0' — how many sentences may instantiate it. */
+  cardinality: string;
   description: string;
   roleId: string;
   source: string;
@@ -112,6 +118,8 @@ type Card = {
   quantifier: string;
   response: string;
   responseArity: string;
+  responseSha: string;
+  segmenterVersion: string;
   sentences: Sentence[];
   sourcePhrase: string;
   stratum: string;
@@ -120,8 +128,19 @@ type Card = {
 };
 type KeyEntry = {
   cardId: string;
-  /** What the grader actually quoted, before expansion to sentences. */
+  /**
+   * What the grader actually quoted, before expansion to its sentence
+   * envelope. Never the verifier's input; measured on its own as a citation
+   * fidelity endpoint.
+   */
   citedFragment: string;
+  /**
+   * Set when the card sits in a sentence-count class carried by one member
+   * only. Such a class is separable without reading anything, so these cards
+   * are reported as a diagnostic stratum rather than counted in the primary
+   * endpoint. The flag lives here, never on the card.
+   */
+  lengthDiagnostic?: boolean;
   clusterId: string;
   inPrimaryEndpoint: boolean;
   member: 'control_positive' | 'negative' | 'positive';
@@ -151,10 +170,12 @@ function shuffled<T>(items: T[], next: () => number): T[] {
   return copy;
 }
 
+/** The one segmenter the runner also uses. Never a private copy. */
 function sentencesOf(text: string): Sentence[] {
-  return segmentSentences({ locale: 'fr', text }).map((sentence, index) => ({
+  return segmentForAdjudication(text).sentences.map((sentence) => ({
     end: sentence.end,
-    id: `s${index}`,
+    id: sentence.id,
+    sha: sentence.sha,
     start: sentence.start,
   }));
 }
@@ -234,6 +255,7 @@ function main(): void {
       if (declared) {
         return {
           bindable: declared.source === 'response',
+          cardinality: declared.cardinality,
           description: declared.description,
           roleId,
           source: declared.source,
@@ -242,6 +264,7 @@ function main(): void {
       if (roleId === 'task_frame') {
         return {
           bindable: false,
+          cardinality: '1',
           description: 'la consigne',
           roleId,
           source: 'task_frame',
@@ -250,6 +273,7 @@ function main(): void {
       if (roleId === 'dossier') {
         return {
           bindable: false,
+          cardinality: '1',
           description: 'le dossier',
           roleId,
           source: 'dossier',
@@ -258,6 +282,7 @@ function main(): void {
       // `response` as an argument means the whole answer, which needs no choice.
       return {
         bindable: false,
+        cardinality: '1',
         description: 'la réponse entière',
         roleId,
         source: 'response_whole',
@@ -283,20 +308,15 @@ function main(): void {
     response: string;
     span: string;
   }): { card: Card; citedFragment: string } | null {
-    const rawStart = input.response.indexOf(input.span);
-    if (rawStart < 0) return null;
+    const segmentation = segmentForAdjudication(input.response);
+    const envelope = envelopeFor({
+      fragment: input.span,
+      segmentation,
+      text: input.response,
+    });
+    if (!envelope) return null;
     const sentences = sentencesOf(input.response);
-    const covering = sentences.filter(
-      (sentence) =>
-        sentence.start < rawStart + input.span.length &&
-        sentence.end > rawStart,
-    );
-    const highlight = covering.length
-      ? {
-          end: Math.max(...covering.map((sentence) => sentence.end)),
-          start: Math.min(...covering.map((sentence) => sentence.start)),
-        }
-      : { end: rawStart + input.span.length, start: rawStart };
+    const highlight = { end: envelope.end, start: envelope.start };
     const grounding = STRATUM_GROUNDING[input.atom.stratum] ?? [];
     const context = frames.get(input.clusterId) ?? { dossier: '', frame: '' };
     const card: Card = {
@@ -322,6 +342,8 @@ function main(): void {
       quantifier: input.atom.quantifier,
       response: input.response,
       responseArity: input.atom.responseArity,
+      responseSha: segmentation.responseSha,
+      segmenterVersion: segmentation.segmenterVersion,
       sentences,
       sourcePhrase: input.atom.sourcePhrase,
       stratum: input.atom.stratum,
@@ -460,38 +482,84 @@ function main(): void {
   // controls with a median of 679 characters — longer than the positives, so
   // they made the length signal worse instead of breaking it. The target is
   // now drawn from the observed negative lengths.
-  const negativeLengths = key
+  const negativeCards = key
     .filter((entry) => entry.member === 'negative')
-    .map(
-      (entry) =>
-        cards.find((card) => card.cardId === entry.cardId)?.response.length ??
-        0,
-    )
+    .map((entry) => cards.find((card) => card.cardId === entry.cardId))
+    .filter((card): card is Card => card !== undefined);
+  const negativeLengths = negativeCards
+    .map((card) => card.response.length)
+    .sort((a, b) => a - b);
+  // Sentence count separated the members on its own (AUC 0.614), with whole
+  // counts carried by one member only. Controls therefore aim at a drawn
+  // sentence count too, not just a drawn character length.
+  const negativeSentenceCounts = negativeCards
+    .map((card) => card.sentences.length)
     .sort((a, b) => a - b);
   const controls: Card[] = [];
   const seenControl = new Set<string>();
   const controlNext = rng(`${SHUFFLE_SEED}/controls`);
+  /**
+   * A control may not push its cluster past what the ordering can space out.
+   *
+   * With 106 cards and a cluster gap of 6, no cluster may exceed
+   * floor(105 / 6) + 1 = 18 cards. Left unbounded, all sixteen controls landed
+   * on the one cluster with the most carriers, taking it to 27 and making the
+   * order infeasible — the search then stalled at a gap of 1. Two per cluster,
+   * never above the ceiling.
+   */
+  const clusterLoad = new Map<string, number>();
+  for (const entry of key) {
+    clusterLoad.set(
+      entry.clusterId,
+      (clusterLoad.get(entry.clusterId) ?? 0) + 1,
+    );
+  }
+  const clusterCeiling =
+    Math.floor((cards.length + 16 - 1) / MIN_GAP.cluster) + 1;
+  const controlsPerCluster = new Map<string, number>();
   for (const carrier of carriers) {
     if (controls.length >= 16) break;
     const signature = `${carrier.clusterId}::${carrier.atom.atomId}`;
     if (seenControl.has(signature)) continue;
+    if ((controlsPerCluster.get(carrier.clusterId) ?? 0) >= 2) continue;
+    if ((clusterLoad.get(carrier.clusterId) ?? 0) + 1 > clusterCeiling)
+      continue;
     const baseline = [...plan.unitsByBenchmarkCaseId.values()].find(
       (unit) =>
         unit.poolCaseId === carrier.clusterId && unit.mutantId === undefined,
     );
     if (!baseline) continue;
-    const guarded = protectedSpans.get(carrier.clusterId) ?? new Set<string>();
+    // Only this atom's own carrier is protected. v2 protected every span of the
+    // cluster, which on a busy cluster left almost nothing removable and kept
+    // the controls long. The other criteria's carriers are not being judged on
+    // this card; removing them leaves a response no more damaged than a
+    // negative's, which is the point.
+    const guarded = new Set<string>([carrier.span]);
     const target =
       negativeLengths[Math.floor(controlNext() * negativeLengths.length)] ??
       negativeLengths[0] ??
       0;
+    const targetSentences =
+      negativeSentenceCounts[
+        Math.floor(controlNext() * negativeSentenceCounts.length)
+      ] ??
+      negativeSentenceCounts[0] ??
+      1;
 
     // Remove the longest sentence that carries nothing anyone is judging,
-    // repeatedly, until the response is no longer than the drawn target.
+    // repeatedly, until both the drawn length and the drawn sentence count are
+    // reached.
     let response = baseline.responseText;
-    for (let pass = 0; pass < 6 && response.length > target; pass += 1) {
+    for (
+      let pass = 0;
+      pass < 12 &&
+      (response.length > target ||
+        segmentSentences({ locale: 'fr', text: response }).length >
+          targetSentences);
+      pass += 1
+    ) {
       const sentences = segmentSentences({ locale: 'fr', text: response });
-      if (sentences.length < 3) break;
+      if (sentences.length < 2) break;
       const removable = sentences
         .map((sentence) => ({
           ...sentence,
@@ -523,6 +591,14 @@ function main(): void {
     });
     if (!built) continue;
     seenControl.add(signature);
+    controlsPerCluster.set(
+      carrier.clusterId,
+      (controlsPerCluster.get(carrier.clusterId) ?? 0) + 1,
+    );
+    clusterLoad.set(
+      carrier.clusterId,
+      (clusterLoad.get(carrier.clusterId) ?? 0) + 1,
+    );
     controls.push(built.card);
     key.push({
       cardId: built.card.cardId,
@@ -629,6 +705,40 @@ function main(): void {
     }
   }
 
+  /**
+   * Sentence-count classes carried by one member only.
+   *
+   * A card in such a class is separable without reading a word, so it cannot
+   * count towards the primary endpoint. Controls closed the short classes; the
+   * long ones cannot be closed at all, because a negative with five or seven
+   * sentences would require a baseline that does not exist. They are named here
+   * and reported as a diagnostic stratum. The flag lives in the key: on the
+   * card it would be the very marker this deck removes.
+   */
+  const byCount = new Map<number, KeyEntry[]>();
+  for (const entry of key) {
+    const card = cards.find((candidate) => candidate.cardId === entry.cardId);
+    if (!card) continue;
+    const bucket = byCount.get(card.sentences.length) ?? [];
+    bucket.push(entry);
+    byCount.set(card.sentences.length, bucket);
+  }
+  const pureClasses: { count: number; member: string; cards: number }[] = [];
+  for (const [count, entries] of byCount) {
+    const polarities = new Set(
+      entries.map((entry) =>
+        entry.member === 'negative' ? 'negative' : 'positive',
+      ),
+    );
+    if (polarities.size > 1) continue;
+    pureClasses.push({
+      cards: entries.length,
+      count,
+      member: [...polarities][0] ?? '?',
+    });
+    for (const entry of entries) entry.lengthDiagnostic = true;
+  }
+
   const deck = {
     atomTaxonomyHash: taxonomy.contentHash,
     cards: order,
@@ -646,6 +756,7 @@ function main(): void {
       reason:
         "v1 gardait les membres d'une paire éloignés mais laissait la même réponse réapparaître à moins de huit cartes, en groupes de polarité pure ; la longueur séparait les membres à elle seule ; la signature rendait les rôles comme objets ; rien ne permettait de dire quel passage instancie quel témoin.",
     },
+    segmenterVersion: ADJUDICATION_SEGMENTER_VERSION,
     windowCharacters: WINDOW,
     windowedStrata: [...WINDOWED].sort(),
   };
@@ -681,6 +792,14 @@ function main(): void {
   console.log(
     `  dont réponse plus courte que la fenêtre : ${order.filter((c) => c.window && c.response.length <= WINDOW).length}`,
   );
+  console.log(
+    `classes de phrases à polarité pure : ${pureClasses.length} (${pureClasses.reduce((sum, entry) => sum + entry.cards, 0)} cartes en strate diagnostique)`,
+  );
+  for (const entry of [...pureClasses].sort((a, b) => a.count - b.count)) {
+    console.log(
+      `   ${entry.count} phrases : ${entry.cards} cartes, toutes ${entry.member}`,
+    );
+  }
   console.log(
     `rôles liables — cartes avec 0/1/2 : ${[0, 1, 2].map((n) => order.filter((c) => c.argumentRoles.filter((r) => r.bindable).length === n).length).join(' / ')}`,
   );

@@ -41,7 +41,7 @@ const press = (key: string): void => {
 };
 const stored = (): Record<string, Record<string, unknown>> => {
   const raw = Object.keys(localStorage)
-    .filter((key) => key.startsWith('adj-v2-'))
+    .filter((key) => key.startsWith('adj-v3-'))
     .map((key) => localStorage.getItem(key) ?? '{}')[0];
   return (
     (
@@ -50,6 +50,25 @@ const stored = (): Record<string, Record<string, unknown>> => {
       }
     ).decisions ?? {}
   );
+};
+type DeckCard = {
+  argumentRoles: { bindable: boolean; cardinality: string; roleId: string }[];
+  cardId: string;
+  quantifier: string;
+  window: unknown;
+};
+const deckCards = (): DeckCard[] =>
+  (
+    JSON.parse(document.getElementById('deck')?.textContent ?? '{}') as {
+      cards: DeckCard[];
+    }
+  ).cards;
+/** Navigates to the first card matching, and returns it. */
+const firstCardWith = (predicate: (card: DeckCard) => boolean): DeckCard => {
+  const index = deckCards().findIndex(predicate);
+  if (index < 0) throw new Error('aucune carte ne correspond');
+  (document.querySelectorAll('#rail button')[index] as HTMLElement).click();
+  return deckCards()[index] as DeckCard;
 };
 const firstCardId = (): string => {
   const deck = JSON.parse(
@@ -95,11 +114,80 @@ describe('the blind adjudication page', () => {
     expect(stored()[firstCardId()]?.evidenceViewComplete).toBe('no');
   });
 
-  it('confirms both proposals with a single keystroke', () => {
-    press('c');
-    const decision = stored()[firstCardId()];
-    expect(decision?.alternativeSupport).toBe('no');
-    expect(decision?.evidenceViewComplete).toBe('yes');
+  it('offers no pre-selected answer on either control', () => {
+    // v2 kept the value null but pressed « non » and « oui » visually, and one
+    // key confirmed both. That is a default in everything but storage.
+    for (const id of ['#altTri', '#viewTri']) {
+      const pressed = document.querySelectorAll(
+        `${id} button[aria-pressed="true"]`,
+      );
+      expect(pressed).toHaveLength(0);
+      expect(document.querySelector(id)?.textContent ?? '').toContain(
+        'sans réponse',
+      );
+    }
+    expect(document.getElementById('confirm')).toBeNull();
+  });
+
+  it('lets a witness be ABSENT without inventing a binding', () => {
+    // One bindable role, so the todo list can be checked for that role alone.
+    const card = firstCardWith(
+      (c) => c.argumentRoles.filter((r) => r.bindable).length === 1,
+    );
+    const absent = [
+      ...document.querySelectorAll('.role-row button.status'),
+    ].find(
+      (button) => (button as HTMLElement).dataset.status === 'ABSENT',
+    ) as HTMLElement;
+    absent.click();
+    press('n');
+    const roles = stored()[card.cardId]?.roleAssessments as Record<
+      string,
+      { sentenceIds: string[]; status: string }
+    >;
+    const first = Object.values(roles)[0];
+    expect(first?.status).toBe('ABSENT');
+    expect(first?.sentenceIds).toEqual([]);
+    expect(document.getElementById('todo')?.textContent ?? '').not.toContain(
+      'témoin',
+    );
+  });
+
+  it('refuses a DIRECT whose witness is not bound', () => {
+    firstCardWith(
+      (c) =>
+        c.argumentRoles.some((r) => r.bindable) &&
+        c.quantifier !== 'not_exists',
+    );
+    const absent = [
+      ...document.querySelectorAll('.role-row button.status'),
+    ].find(
+      (button) => (button as HTMLElement).dataset.status === 'ABSENT',
+    ) as HTMLElement;
+    absent.click();
+    press('d');
+    expect(document.getElementById('todo')?.textContent ?? '').toContain(
+      'un DIRECT exige le témoin',
+    );
+  });
+
+  it('enforces the role cardinality on a bound witness', () => {
+    const card = firstCardWith((c) =>
+      c.argumentRoles.some((r) => r.bindable && r.cardinality === '>=2'),
+    );
+    const roleId = card.argumentRoles.find(
+      (role) => role.bindable && role.cardinality === '>=2',
+    )?.roleId;
+    const bound = [
+      ...document.querySelectorAll('.role-row button.status'),
+    ].find(
+      (button) =>
+        (button as HTMLElement).dataset.status === 'BOUND' &&
+        (button as HTMLElement).dataset.for === roleId,
+    ) as HTMLElement;
+    bound.click();
+    (document.querySelector('#resp .s') as HTMLElement).click();
+    expect(document.getElementById('todo')?.textContent ?? '').toContain('>=2');
   });
 
   it('names every reason a card does not count yet', () => {
@@ -119,10 +207,22 @@ describe('the blind adjudication page', () => {
   });
 
   it('withholds the full response on a windowed card until asked', () => {
-    const deck = JSON.parse(
-      document.getElementById('deck')?.textContent ?? '{}',
-    ) as { cards: { cardId: string; window: unknown }[] };
-    const index = deck.cards.findIndex((card) => card.window);
+    // A windowed card whose window really does hide something: 19 of the 45
+    // have a response shorter than the window, where there is nothing to hide.
+    const cards = deckCards() as (DeckCard & {
+      response: string;
+      sentences: { end: number; start: number }[];
+      window: { end: number; start: number } | null;
+    })[];
+    const index = cards.findIndex(
+      (card) =>
+        card.window !== null &&
+        card.sentences.some(
+          (sentence) =>
+            sentence.start >= (card.window as { end: number }).end ||
+            sentence.end <= (card.window as { start: number }).start,
+        ),
+    );
     expect(index).toBeGreaterThanOrEqual(0);
     (document.querySelectorAll('#rail button')[index] as HTMLElement).click();
     expect(document.querySelectorAll('#resp .s.hidden').length).toBeGreaterThan(
@@ -131,9 +231,9 @@ describe('the blind adjudication page', () => {
     expect(document.getElementById('reveal')).not.toBeNull();
     document.getElementById('reveal')?.click();
     expect(document.querySelectorAll('#resp .s.hidden')).toHaveLength(0);
-    expect(
-      stored()[deck.cards[index]?.cardId ?? '']?.revealedBeforeVerdict,
-    ).toBe(true);
+    expect(stored()[cards[index]?.cardId ?? '']?.revealedBeforeVerdict).toBe(
+      true,
+    );
   });
 
   it('refuses to export without a reviewer', () => {

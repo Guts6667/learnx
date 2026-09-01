@@ -14,7 +14,7 @@ const template = readFileSync(
   'utf8',
 );
 const deck = readFileSync(
-  path.resolve(REG, 'adjudication-deck.v2.json'),
+  path.resolve(REG, 'adjudication-deck.v3.json'),
   'utf8',
 );
 
@@ -22,7 +22,7 @@ if (!template.includes('/*__DECK__*/')) {
   throw new Error('ADJUDICATION_TEMPLATE_MISSING_DECK_SLOT');
 }
 const page = template.replace('/*__DECK__*/', deck.replace(/<\//g, '<\\/'));
-if (page.includes('adjudication-deck.v2.key')) {
+if (page.includes('adjudication-deck.v3.key')) {
   throw new Error('ADJUDICATION_PAGE_CARRIES_THE_KEY');
 }
 const out = path.resolve(REG, 'adjudication-pass1.html');

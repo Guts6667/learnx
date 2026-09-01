@@ -469,7 +469,6 @@
       <div class="todo" id="todo" style="margin-top: 6px"></div>
     </div>
     <div style="align-self: center">
-      <button class="ghost" id="confirm"><kbd>C</kbd>confirmer</button>
       <button class="ghost" id="prev">◀</button>
       <button class="ghost" id="next">▶</button>
     </div>
@@ -482,9 +481,15 @@
 <script>
   const DECK = JSON.parse(document.getElementById('deck').textContent);
   const CARDS = DECK.cards;
-  const STORE = 'adj-v2-' + DECK.manifestHash.slice(-12);
-  /** Shown as a suggestion; the stored value stays null until confirmed. */
-  const PROPOSED = { alternativeSupport: 'no', evidenceViewComplete: 'yes' };
+  const STORE = 'adj-v3-' + DECK.manifestHash.slice(-12);
+  /**
+   * There is no proposed value.
+   *
+   * v2 kept both controls technically null but pre-selected « non » and « oui »
+   * visually, and let one keystroke confirm both together. That anchors the
+   * answer to « autre soutien = non » — a default in everything but storage.
+   * Each control is now an independent, unprompted choice.
+   */
 
   const state = { decisions: {}, index: 0, reviewer: '' };
   try {
@@ -512,14 +517,29 @@
         rationale: '',
         revealedBeforeVerdict: false,
         reviewerId: '',
+        roleAssessments: {},
         verdict: null,
-        witnessBindings: {},
       };
     }
     return state.decisions[card.cardId];
   }
 
   const bindable = (card) => card.argumentRoles.filter((role) => role.bindable);
+
+  function assessment(decision, roleId) {
+    if (!decision.roleAssessments[roleId]) {
+      decision.roleAssessments[roleId] = { sentenceIds: [], status: null };
+    }
+    return decision.roleAssessments[roleId];
+  }
+
+  /** How many sentences a BOUND role needs, from the atom's own cardinality. */
+  function cardinalityMet(cardinality, count) {
+    if (cardinality === '1') return count === 1;
+    if (cardinality === '>=2') return count >= 2;
+    if (cardinality === '>=0') return true;
+    return count >= 1;
+  }
 
   /** Everything that keeps a card from counting. Shown, never guessed at. */
   function blockers(card) {
@@ -531,14 +551,47 @@
     if (decision.evidenceViewComplete === null)
       list.push('contrôle « vue complète »');
     for (const role of bindable(card)) {
-      if (!(decision.witnessBindings[role.roleId] || []).length) {
-        list.push('témoin ' + role.roleId);
+      const entry = assessment(decision, role.roleId);
+      if (entry.status === null) {
+        list.push('statut du témoin ' + role.roleId);
+        continue;
+      }
+      if (
+        entry.status === 'BOUND' &&
+        !cardinalityMet(role.cardinality, entry.sentenceIds.length)
+      ) {
+        list.push(
+          'témoin ' +
+            role.roleId +
+            ' : ' +
+            role.cardinality +
+            ' phrase(s) attendues',
+        );
+      }
+      // A role can be genuinely absent — that is often WHY a card is not
+      // direct. Requiring a binding there would manufacture a false witness.
+      // The one place absence is compatible with DIRECT is a not_exists
+      // quantifier, where absence is exactly what the atom asserts.
+      if (
+        decision.verdict === 'DIRECT' &&
+        entry.status !== 'BOUND' &&
+        card.quantifier !== 'not_exists'
+      ) {
+        list.push('un DIRECT exige le témoin ' + role.roleId + ' lié');
+      }
+      if (
+        decision.verdict === 'DIRECT' &&
+        card.quantifier === 'not_exists' &&
+        entry.status === 'BOUND'
+      ) {
+        list.push('un DIRECT sur not_exists exige ' + role.roleId + ' absent');
       }
     }
     if (decision.verdict === 'AMBIGUOUS' && !decision.rationale)
       list.push('justification');
     return list;
   }
+
   const complete = (card) => blockers(card).length === 0;
 
   const escapeHtml = (value) =>
@@ -559,8 +612,8 @@
   function renderResponse(card) {
     const decision = decisionFor(card);
     const bound = new Map();
-    for (const [roleId, ids] of Object.entries(decision.witnessBindings)) {
-      for (const id of ids) bound.set(id, roleId);
+    for (const [roleId, entry] of Object.entries(decision.roleAssessments)) {
+      for (const id of entry.sentenceIds || []) bound.set(id, roleId);
     }
     const revealed = decision.revealed === true || !card.window;
     let html = '';
@@ -618,27 +671,25 @@
   }
 
   function tri(container, field) {
-    const card = CARDS[state.index];
-    const decision = decisionFor(card);
+    const decision = decisionFor(CARDS[state.index]);
     const value = decision[field];
-    const proposed = value === null;
-    container.className = 'tri' + (proposed ? ' proposed' : '');
+    container.className = 'tri';
     container.innerHTML = '';
     for (const option of ['yes', 'no']) {
       const button = document.createElement('button');
       button.textContent = option === 'yes' ? 'oui' : 'non';
-      const shown = proposed ? PROPOSED[field] : value;
-      button.setAttribute('aria-pressed', String(shown === option));
+      // Nothing is pressed while the answer is unset: no anchor, no proposal.
+      button.setAttribute('aria-pressed', String(value === option));
       button.onclick = () => {
         decision[field] = option;
         touch();
       };
       container.appendChild(button);
     }
-    if (proposed) {
+    if (value === null) {
       const tag = document.createElement('span');
       tag.className = 'chip';
-      tag.textContent = 'proposé — non confirmé';
+      tag.textContent = 'sans réponse';
       container.appendChild(tag);
     }
   }
@@ -653,7 +704,6 @@
     const decision = decisionFor(card);
     const roleRows = card.argumentRoles
       .map((role) => {
-        const ids = decision.witnessBindings[role.roleId] || [];
         if (!role.bindable) {
           return (
             '<div class="role-row"><button disabled>' +
@@ -663,9 +713,30 @@
             ' — hors réponse</span></div>'
           );
         }
-        const status = ids.length
-          ? '<span class="bound">' + ids.join(', ') + '</span>'
-          : '<span class="unbound">à lier — clique le rôle puis une phrase</span>';
+        const entry = assessment(decision, role.roleId);
+        const labels = { ABSENT: 'absent', AMBIGUOUS: 'ambigu', BOUND: 'lié' };
+        const states = ['BOUND', 'ABSENT', 'AMBIGUOUS']
+          .map(
+            (status) =>
+              '<button class="status" data-status="' +
+              status +
+              '" data-for="' +
+              escapeHtml(role.roleId) +
+              '" aria-pressed="' +
+              String(entry.status === status) +
+              '">' +
+              labels[status] +
+              '</button>',
+          )
+          .join('');
+        const bound =
+          entry.status === 'BOUND'
+            ? entry.sentenceIds.length
+              ? '<span class="bound">' +
+                entry.sentenceIds.join(', ') +
+                '</span>'
+              : '<span class="unbound">clique une phrase</span>'
+            : '';
         return (
           '<div class="role-row"><button data-role="' +
           escapeHtml(role.roleId) +
@@ -674,9 +745,12 @@
           '">' +
           escapeHtml(role.roleId) +
           '</button>' +
-          status +
+          states +
+          bound +
           '<span class="external">' +
           escapeHtml(role.description) +
+          ' · ' +
+          escapeHtml(role.cardinality) +
           '</span></div>'
         );
       })
@@ -741,6 +815,16 @@
       `carte ${state.index + 1} / ${CARDS.length} · ${done} complètes`;
     document.getElementById('who').textContent = state.reviewer || 'relecteur…';
 
+    for (const button of document.querySelectorAll('.role-row button.status')) {
+      button.onclick = () => {
+        const entry = assessment(decision, button.dataset.for);
+        entry.status =
+          entry.status === button.dataset.status ? null : button.dataset.status;
+        if (entry.status !== 'BOUND') entry.sentenceIds = [];
+        if (entry.status === 'BOUND') armedRole = button.dataset.for;
+        touch();
+      };
+    }
     for (const button of document.querySelectorAll(
       '.role-row button[data-role]',
     )) {
@@ -753,11 +837,12 @@
     for (const sentence of document.querySelectorAll('#resp .s')) {
       sentence.onclick = () => {
         if (!armedRole) return;
-        const ids = decision.witnessBindings[armedRole] || [];
+        const entry = assessment(decision, armedRole);
         const id = sentence.dataset.s;
-        decision.witnessBindings[armedRole] = ids.includes(id)
-          ? ids.filter((x) => x !== id)
-          : [...ids, id];
+        entry.sentenceIds = entry.sentenceIds.includes(id)
+          ? entry.sentenceIds.filter((x) => x !== id)
+          : [...entry.sentenceIds, id];
+        entry.status = entry.sentenceIds.length ? 'BOUND' : null;
         touch();
       };
     }
@@ -790,24 +875,11 @@
     render();
   }
 
-  /** C accepts the two proposals exactly as displayed, and nothing else. */
-  function confirmProposals() {
-    const decision = decisionFor(CARDS[state.index]);
-    if (decision.alternativeSupport === null) {
-      decision.alternativeSupport = PROPOSED.alternativeSupport;
-    }
-    if (decision.evidenceViewComplete === null) {
-      decision.evidenceViewComplete = PROPOSED.evidenceViewComplete;
-    }
-    touch();
-  }
-
   for (const button of document.querySelectorAll('#verdicts button')) {
     button.onclick = () => record(button.dataset.v);
   }
   document.getElementById('prev').onclick = () => advance(-1);
   document.getElementById('next').onclick = () => advance(1);
-  document.getElementById('confirm').onclick = confirmProposals;
   document.getElementById('why').oninput = () => {
     decisionFor(CARDS[state.index]).rationale = document
       .getElementById('why')
@@ -852,7 +924,6 @@
     else if (key === 'a') record('AMBIGUOUS');
     else if (key === 's') cycle('alternativeSupport');
     else if (key === 'v') cycle('evidenceViewComplete');
-    else if (key === 'c') confirmProposals();
     else if (key === 'j') {
       event.preventDefault();
       document.getElementById('why').focus();
@@ -927,15 +998,15 @@
           rationale: d.rationale,
           revealedBeforeVerdict: d.revealedBeforeVerdict === true,
           reviewerId: d.reviewerId || state.reviewer,
+          roleAssessments: d.roleAssessments,
           verdict: d.verdict,
-          witnessBindings: d.witnessBindings,
         };
       }).sort((a, b) => a.cardId.localeCompare(b.cardId)),
       deckHash: DECK.contentHash,
       deckSeed: DECK.shuffleSeed,
       manifestHash: DECK.manifestHash,
       pass: 1,
-      schemaVersion: 2,
+      schemaVersion: 3,
     };
     const text = canonical(payload);
     let digest = 'indisponible hors https';

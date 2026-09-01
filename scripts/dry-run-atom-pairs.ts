@@ -1,124 +1,162 @@
 /**
- * Zero-cost dummy run over the pair manifest (V4.5-210).
+ * Zero-cost dummy run over the adjudication deck (V4.5-210).
  *
- * Proves the machinery before any key is exported: every pair materialises,
- * every pair scores exactly once per member, no duplicate identity, aggregation
- * resolves to clusters, AMBIGUOUS earns no primary credit. Contacts nobody —
- * the verifier is a stub.
+ * Proves the machinery before a key is exported: every card materialises, every
+ * card is scored exactly once, no duplicate identity, aggregation resolves to
+ * clusters, AMBIGUOUS earns no primary credit. Contacts nobody — the verifier is
+ * a stub.
  *
- * Real gold labels are still PENDING. So the run injects fixture adjudications
- * IN MEMORY ONLY; nothing is written back to the manifest. Without them every
- * check would pass vacuously over zero materialised pairs, which is exactly the
- * kind of green this project has been removing.
+ * It reads the deck rather than the raw manifest so that it uses the same
+ * preprocessing the page adjudicated under. v1 of this script sent the bare
+ * quoted fragment while the page showed its sentence envelope: the gold label
+ * would have answered a different question from the measurement. The check
+ * below is that the input rebuilt here is byte-identical to what the card
+ * carried.
+ *
+ * Real gold labels are still PENDING, so the run injects fixture decisions IN
+ * MEMORY ONLY. Without them every check would pass over zero materialised
+ * cards, which is exactly the kind of green this project keeps removing.
  */
-import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
+import {
+  type AdjudicationSegmentation,
+  verifierInputFor,
+} from '../src/lib/ai-correction-adjudication-text.ts';
+
 const REG = 'benchmarks/ai-correction/regression';
-const MANIFEST = process.env.PAIR_MANIFEST
-  ? path.resolve(process.env.PAIR_MANIFEST)
-  : path.resolve(REG, 'atom-pair-manifest.v2.json');
+
+type Card = {
+  argumentRoles: { bindable: boolean; cardinality: string; roleId: string }[];
+  candidateSentenceIds: string[];
+  candidateSpan: string;
+  cardId: string;
+  quantifier: string;
+  response: string;
+  responseSha: string;
+  segmenterVersion: string;
+  sentences: { end: number; id: string; sha: string; start: number }[];
+  stratum: string;
+};
+type KeyEntry = {
+  cardId: string;
+  citedFragment: string;
+  clusterId: string;
+  inPrimaryEndpoint: boolean;
+  lengthDiagnostic?: boolean;
+  member: 'control_positive' | 'negative' | 'positive';
+  pairId: string | null;
+};
 
 type Verdict =
   'AMBIGUOUS' | 'CONTRADICTED' | 'DIRECT' | 'PARTIAL' | 'UNSUPPORTED';
 type Decision = 'ABSTAIN' | 'ACCEPT' | 'REJECT';
-
-type Pair = {
-  adjudication: { positiveSpan: string | null; status: string };
-  atomId: string;
-  authoredAnswerId: string;
-  criterionKey: string;
-  inPrimaryEndpoint: boolean;
-  negativeSpans: string[];
-  stratum: string;
-};
-
-type Manifest = {
-  atomTaxonomyHash: string;
-  contentHash: string;
-  deterministicallyCatchable: { failures: unknown[] };
-  pairs: Pair[];
-  verdictMapping: Record<string, { decision: Decision; note: string }>;
-};
-
-/**
- * The inputs one verifier call needs, decided by the stratum alone.
- *
- * Enumerated, not inferred from the name. Substring matching let an unknown
- * stratum fall through to the weakest input set — fewer inputs, silently.
- */
-const STRATUM_INPUTS: Record<string, string[]> = {
-  S1_span_local: ['atomText', 'span'],
-  S2_span_frame: ['atomText', 'span', 'taskFrame'],
-  S3_span_dossier: ['atomText', 'span', 'referencePacket'],
-  S4_multi_local: ['atomText', 'span', 'secondSpan'],
-  S5_multi_frame: ['atomText', 'span', 'secondSpan', 'taskFrame'],
-  S6_multi_dossier: ['atomText', 'span', 'secondSpan', 'referencePacket'],
-  S7_full_dossier: ['atomText', 'span', 'fullResponse', 'referencePacket'],
+const DECISION_OF: Record<Verdict, Decision> = {
+  AMBIGUOUS: 'ABSTAIN',
+  CONTRADICTED: 'REJECT',
+  DIRECT: 'ACCEPT',
+  PARTIAL: 'REJECT',
+  UNSUPPORTED: 'REJECT',
 };
 
 /** Stub verifier. Deterministic, contacts nobody, costs nothing. */
-function stubVerifier(member: 'negative' | 'positive', index: number): Verdict {
+function stubVerifier(member: KeyEntry['member'], index: number): Verdict {
   if (index % 17 === 0) return 'AMBIGUOUS';
-  return member === 'positive' ? 'DIRECT' : 'UNSUPPORTED';
+  return member === 'negative' ? 'UNSUPPORTED' : 'DIRECT';
 }
 
 function main(): void {
-  const manifest = JSON.parse(readFileSync(MANIFEST, 'utf8')) as Manifest;
+  const deckPath = process.env.ADJUDICATION_DECK
+    ? path.resolve(process.env.ADJUDICATION_DECK)
+    : path.resolve(REG, 'adjudication-deck.v3.json');
+  const deck = JSON.parse(readFileSync(deckPath, 'utf8')) as {
+    cards: Card[];
+    contentHash: string;
+    manifestHash: string;
+    segmenterVersion: string;
+  };
+  const key = (
+    JSON.parse(
+      readFileSync(path.resolve(REG, 'adjudication-deck.v3.key.json'), 'utf8'),
+    ) as { key: KeyEntry[] }
+  ).key;
   const useFixtures = process.argv.includes('--fixture-adjudication');
+  const entryOf = new Map(key.map((entry) => [entry.cardId, entry]));
 
   const identities = new Set<string>();
   const calls = new Map<string, number>();
   const blocked = new Map<string, number>();
   const decisions: {
     cluster: string;
-    member: 'negative' | 'positive';
+    diagnostic: boolean;
+    member: KeyEntry['member'];
+    pairId: string | null;
     primary: boolean;
     verdict: Verdict;
   }[] = [];
   let materialised = 0;
-  let missingInput = 0;
-  const unknownStrata = new Set<string>();
+  const mismatches: string[] = [];
+  const unbuildable: string[] = [];
 
-  manifest.pairs.forEach((pair, index) => {
-    const identity = createHash('sha256')
-      .update(
-        [
-          pair.authoredAnswerId,
-          pair.criterionKey,
-          pair.atomId,
-          pair.negativeSpans
-            .map((s) => s.trim().toLowerCase())
-            .sort()
-            .join('|'),
-        ].join('::'),
-      )
-      .digest('hex')
-      .slice(0, 20);
-    if (identities.has(identity)) {
+  deck.cards.forEach((card, index) => {
+    const entry = entryOf.get(card.cardId);
+    if (!entry) {
+      blocked.set('carte hors clé', (blocked.get('carte hors clé') ?? 0) + 1);
+      return;
+    }
+    if (identities.has(card.cardId)) {
       blocked.set(
         'IDENTITÉ EN DOUBLE',
         (blocked.get('IDENTITÉ EN DOUBLE') ?? 0) + 1,
       );
       return;
     }
-    identities.add(identity);
+    identities.add(card.cardId);
 
-    if (pair.negativeSpans.length === 0) {
-      blocked.set(
-        'aucun span négatif',
-        (blocked.get('aucun span négatif') ?? 0) + 1,
-      );
+    // The verifier's input, rebuilt from the same contract the page used.
+    const segmentation: AdjudicationSegmentation = {
+      responseSha: card.responseSha,
+      segmenterVersion: card.segmenterVersion,
+      sentences: card.sentences,
+    };
+    const input = verifierInputFor({
+      fragment: entry.citedFragment,
+      responseText: card.response,
+      // Before adjudication the bound tuple does not exist; the fixture uses the
+      // candidate sentences so the path is exercised rather than skipped.
+      roleSentenceIds: useFixtures ? card.candidateSentenceIds : undefined,
+      segmentation,
+      stratum: card.stratum,
+    });
+    if (!input) {
+      // Before adjudication a tuple stratum has no bound sentences yet. That is
+      // the gate working, not a broken input; only an envelope or full-response
+      // card that cannot be built is a defect.
+      const pending =
+        (!useFixtures && card.stratum.startsWith('S4')) ||
+        (!useFixtures && card.stratum.startsWith('S5')) ||
+        (!useFixtures && card.stratum.startsWith('S6'));
+      if (pending) {
+        blocked.set(
+          'témoins non encore liés',
+          (blocked.get('témoins non encore liés') ?? 0) + 1,
+        );
+      } else {
+        unbuildable.push(`${card.cardId} (${card.stratum})`);
+        blocked.set(
+          'entrée non constructible',
+          (blocked.get('entrée non constructible') ?? 0) + 1,
+        );
+      }
       return;
     }
+    // What the page showed and what the runner would send must be the same text.
+    if (input.kind === 'ENVELOPE' && input.text !== card.candidateSpan) {
+      mismatches.push(card.cardId);
+    }
 
-    const positiveSpan =
-      pair.adjudication.positiveSpan ??
-      (useFixtures ? `FIXTURE::${identity}` : null);
-    const adjudicated =
-      pair.adjudication.status === 'ADJUDICATED' || useFixtures;
-    if (!adjudicated || positiveSpan === null) {
+    if (!useFixtures) {
       blocked.set(
         'adjudication en attente',
         (blocked.get('adjudication en attente') ?? 0) + 1,
@@ -126,105 +164,108 @@ function main(): void {
       return;
     }
 
-    // Members are submitted independently and paired only at analysis.
-    for (const member of ['negative', 'positive'] as const) {
-      const available: Record<string, unknown> = {
-        atomText: pair.atomId,
-        fullResponse: 'FIXTURE',
-        referencePacket: 'FIXTURE',
-        secondSpan: 'FIXTURE',
-        span: member === 'positive' ? positiveSpan : pair.negativeSpans[0],
-        taskFrame: 'FIXTURE',
-      };
-      const required = STRATUM_INPUTS[pair.stratum];
-      if (required === undefined) {
-        unknownStrata.add(pair.stratum);
-      } else {
-        for (const input of required) {
-          if (available[input] === undefined) missingInput += 1;
-        }
-      }
-      const key = `${identity}::${member}`;
-      calls.set(key, (calls.get(key) ?? 0) + 1);
-      decisions.push({
-        cluster: pair.authoredAnswerId,
-        member,
-        primary: pair.inPrimaryEndpoint,
-        verdict: stubVerifier(member, index),
-      });
-    }
+    calls.set(card.cardId, (calls.get(card.cardId) ?? 0) + 1);
+    decisions.push({
+      cluster: entry.clusterId,
+      diagnostic: entry.lengthDiagnostic === true,
+      member: entry.member,
+      pairId: entry.pairId,
+      primary: entry.inPrimaryEndpoint,
+      verdict: stubVerifier(entry.member, index),
+    });
     materialised += 1;
   });
 
-  const map = manifest.verdictMapping;
-  const decide = (verdict: Verdict): Decision =>
-    map[verdict]?.decision ?? 'ABSTAIN';
   const ambiguousPrimaryCredit = decisions.filter(
-    (d) => d.verdict === 'AMBIGUOUS' && decide(d.verdict) !== 'ABSTAIN',
+    (decision) =>
+      decision.verdict === 'AMBIGUOUS' &&
+      DECISION_OF[decision.verdict] !== 'ABSTAIN',
   ).length;
-  const duplicated = [...calls.values()].filter((n) => n !== 1).length;
-  const clusters = new Set(decisions.map((d) => d.cluster));
+  const duplicated = [...calls.values()].filter((count) => count !== 1).length;
+  /**
+   * The primary unit is the pair, not the card: a pair whose other member sits
+   * in the diagnostic stratum is contaminated whole. Counting clean cards
+   * instead of clean pairs overstates the denominator — it reported 10 clusters
+   * where the pair-level count is 9.
+   */
+  const pairMembers = new Map<string, typeof decisions>();
+  for (const decision of decisions) {
+    if (!decision.pairId) continue;
+    pairMembers.set(decision.pairId, [
+      ...(pairMembers.get(decision.pairId) ?? []),
+      decision,
+    ]);
+  }
+  const primaryPairs = [...pairMembers.values()].filter(
+    (members) =>
+      members.length === 2 &&
+      members.every((member) => member.primary && !member.diagnostic),
+  );
+  const primaryClusters = new Set(
+    primaryPairs.map((members) => members[0]?.cluster),
+  );
+  const allClusters = new Set(decisions.map((d) => d.cluster));
 
-  console.log(`manifeste       : ${path.basename(MANIFEST)}`);
-  console.log(`hash manifeste  : ${manifest.contentHash}`);
-  console.log(`hash taxonomie  : ${manifest.atomTaxonomyHash}`);
+  console.log(`paquet          : ${path.basename(deckPath)}`);
+  console.log(`hash paquet     : ${deck.contentHash}`);
+  console.log(`segmenteur      : ${deck.segmenterVersion}`);
   console.log(
     `mode            : ${useFixtures ? 'ADJUDICATION FICTIVE (mémoire seule)' : 'réel'}`,
   );
   console.log('');
-  console.log(`paires du manifeste : ${manifest.pairs.length}`);
-  console.log(`identités uniques   : ${identities.size}`);
-  console.log(`matérialisées       : ${materialised}`);
+  console.log(`cartes          : ${deck.cards.length}`);
+  console.log(`matérialisées   : ${materialised}`);
+  console.log(`appels          : ${calls.size}`);
+  console.log(`grappes         : ${allClusters.size} — toutes paires`);
   console.log(
-    `appels vérificateur : ${calls.size} (${decisions.length} soumissions)`,
+    `   paires primaires hors strate diagnostique : ${primaryPairs.length} sur ${primaryClusters.size} grappes`,
   );
-  console.log(`grappes couvertes   : ${clusters.size}`);
   console.log(
-    `échecs à règle déterministe (hors paires) : ${manifest.deterministicallyCatchable.failures.length}`,
+    `cartes en strate diagnostique : ${decisions.filter((d) => d.diagnostic).length}`,
   );
   for (const [reason, count] of [...blocked].sort()) {
-    console.log(`bloquées — ${reason.padEnd(24)} ${count}`);
+    console.log(`bloquées — ${reason.padEnd(26)} ${count}`);
   }
   console.log('');
   console.log(
-    `chaque membre scoré exactement une fois : ${duplicated === 0 ? 'oui' : `NON — ${duplicated}`}`,
+    `entrée du vérificateur identique à la carte : ${mismatches.length === 0 ? 'oui' : `NON — ${mismatches.length}`}`,
   );
-  console.log(`entrées manquantes par strate           : ${missingInput}`);
   console.log(
-    `AMBIGUOUS créditant le principal        : ${ambiguousPrimaryCredit}`,
+    `chaque carte appelée exactement une fois    : ${duplicated === 0 ? 'oui' : `NON — ${duplicated}`}`,
   );
-  console.log(`coût                                    : 0.00 USD`);
+  console.log(
+    `AMBIGUOUS créditant le principal            : ${ambiguousPrimaryCredit}`,
+  );
+  console.log(`coût                                        : 0.00 USD`);
 
-  // Guards. A dummy run that passes over nothing proves nothing.
   const failures: string[] = [];
-  if (materialised === 0)
+  if (materialised === 0) {
     failures.push(
-      'VACUITÉ — aucune paire matérialisée, les contrôles ne prouvent rien',
+      'VACUITÉ — aucune carte matérialisée, les contrôles ne prouvent rien',
     );
-  if (useFixtures && materialised !== manifest.pairs.length) {
+  }
+  if (useFixtures && materialised !== deck.cards.length) {
     failures.push(
-      `COUVERTURE — ${manifest.pairs.length - materialised} paires non matérialisées sous fixtures`,
+      `COUVERTURE — ${deck.cards.length - materialised} cartes non matérialisées`,
+    );
+  }
+  if (mismatches.length > 0) {
+    failures.push(
+      `PRÉTRAITEMENT — ${mismatches.length} cartes dont l'entrée diffère de ce qui a été adjugé`,
+    );
+  }
+  if (unbuildable.length > 0) {
+    failures.push(
+      `ENTRÉE — non constructible : ${unbuildable.slice(0, 3).join(', ')}`,
     );
   }
   if (duplicated !== 0)
-    failures.push('DOUBLON — un membre scoré plus d’une fois');
-  const duplicateIdentities = blocked.get('IDENTITÉ EN DOUBLE') ?? 0;
-  if (duplicateIdentities !== 0) {
-    failures.push(
-      `IDENTITÉ EN DOUBLE — ${duplicateIdentities} paires partagent une identité`,
-    );
-  }
-  if (unknownStrata.size > 0) {
-    failures.push(
-      `STRATE INCONNUE — ${[...unknownStrata].sort().join(', ')} : aucun jeu d’entrées déclaré`,
-    );
-  }
-  if (missingInput !== 0)
-    failures.push('ENTRÉE MANQUANTE — une strate exige une entrée absente');
+    failures.push('DOUBLON — une carte appelée plus d’une fois');
   if (ambiguousPrimaryCredit !== 0)
     failures.push('AMBIGUOUS crédite l’endpoint principal');
-  if (useFixtures && clusters.size !== 14)
-    failures.push(`GRAPPES — ${clusters.size} au lieu de 14`);
+  if (useFixtures && primaryClusters.size !== 9) {
+    failures.push(`GRAPPES PRIMAIRES — ${primaryClusters.size} au lieu de 9`);
+  }
   if (failures.length > 0) {
     console.log('');
     for (const failure of failures) console.log(`ÉCHEC : ${failure}`);
@@ -233,7 +274,7 @@ function main(): void {
   }
   console.log('');
   console.log(
-    'Tous les contrôles passent sur des paires réellement matérialisées.',
+    'Tous les contrôles passent sur des cartes réellement matérialisées.',
   );
 }
 

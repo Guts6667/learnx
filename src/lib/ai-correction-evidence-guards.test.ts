@@ -11,7 +11,11 @@ import {
   loadRegressionSource,
   parseRegressionPool,
 } from './ai-correction-regression-pool.ts';
-import { planRegressionRun } from './ai-correction-regression-run.ts';
+import { computeRegressionMetrics } from './ai-correction-regression-metrics.ts';
+import {
+  deriveRegressionObservations,
+  planRegressionRun,
+} from './ai-correction-regression-run.ts';
 
 const RESPONSE =
   'Je recommande le pilote étendu. Le délai médian passe de 18 à 13 heures. ' +
@@ -238,5 +242,78 @@ describe('checkEvidenceGuards against the archived failures', () => {
       checked += grounded.length;
     }
     expect(checked).toBeGreaterThan(20);
+  });
+});
+
+/**
+ * D0 must be a gate the run actually passes through, not a function that only
+ * tests call. These drive the real observation path and the real metric.
+ */
+describe('D0 as an end-to-end gate', () => {
+  const REG = path.resolve('benchmarks/ai-correction/regression');
+  const pool = parseRegressionPool(
+    JSON.parse(
+      readFileSync(path.join(REG, 'regression-pool.v1.json'), 'utf8'),
+    ) as unknown,
+  );
+  const sources = new Map(
+    pool.sources.map((source) => [
+      source.path,
+      loadRegressionSource(readFileSync(path.resolve(REG, source.path))),
+    ]),
+  );
+  const plan = planRegressionRun({ pool, sources });
+
+  /** The archived attempt whose output omits a criterion the contract requires. */
+  const caseId = 'regression-7981b5b0cc526343';
+  const archived = (
+    JSON.parse(
+      readFileSync(
+        path.join(REG, 'results/2026-08-31T16-42-09-070Z/attempts.json'),
+        'utf8',
+      ),
+    ) as { caseId: string; output?: { criteria: unknown[] } }[]
+  ).find((attempt) => attempt.caseId === caseId);
+
+  it('carries the violations out of deriveRegressionObservations', async () => {
+    const observations = await deriveRegressionObservations({
+      attempts: [archived as never],
+      familyScientificallyValidated: true,
+      plan,
+    });
+    expect(observations).toHaveLength(1);
+    const violations = observations[0]?.evidenceGuardViolations ?? [];
+    expect(violations.map((violation) => violation.criterionKey)).toContain(
+      'uncertainty-bounds',
+    );
+    expect(violations.map((violation) => violation.code)).toContain(
+      'CRITERION_ABSENT_FROM_OUTPUT',
+    );
+  });
+
+  it('surfaces them as a rate with a real denominator', async () => {
+    const observations = await deriveRegressionObservations({
+      attempts: [archived as never],
+      familyScientificallyValidated: true,
+      plan,
+    });
+    const metrics = computeRegressionMetrics({
+      baselines: [],
+      mutants: observations,
+      scales: plan.scales,
+    });
+    expect(metrics.evidenceGuardViolations.denominator).toBe(1);
+    expect(metrics.evidenceGuardViolations.numerator).toBe(1);
+    expect(metrics.evidenceGuardViolationDetails.length).toBeGreaterThan(0);
+  });
+
+  it('reports NOT MEASURED rather than perfect when nothing was checked', () => {
+    const metrics = computeRegressionMetrics({
+      baselines: [{ caseId: 'x', criteria: [], repetition: 1 }],
+      mutants: [],
+      scales: plan.scales,
+    });
+    expect(metrics.evidenceGuardViolations.denominator).toBe(0);
+    expect(metrics.evidenceGuardViolations.rate).toBeNull();
   });
 });
