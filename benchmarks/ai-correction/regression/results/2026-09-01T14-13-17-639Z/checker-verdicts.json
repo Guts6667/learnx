@@ -1,0 +1,1547 @@
+[
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-successful",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-position",
+    "unitId": "holdout-v1/holdout-writing-scanner-repair-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "evidence-selection",
+    "unitId": "holdout-v1/holdout-writing-scanner-repair-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-bounds",
+    "unitId": "holdout-v1/holdout-writing-scanner-repair-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-position",
+    "unitId": "holdout-v1/holdout-writing-vendor-renewal-erroneous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "evidence-selection",
+    "unitId": "holdout-v1/holdout-writing-vendor-renewal-erroneous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "uncertainty-bounds",
+    "unitId": "holdout-v1/holdout-writing-vendor-renewal-erroneous",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "decision-position",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "evidence-selection",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-bounds",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-pump-report-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-pump-report-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-pump-report-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-oven-revision-ambiguous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-oven-revision-ambiguous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-oven-revision-ambiguous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-roof-tender-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-roof-tender-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-roof-tender-successful",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-elevator-modernization-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-elevator-modernization-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-elevator-modernization-erroneous",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-clear",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "project-coherence",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "project-coherence",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-errone",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflection-link",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflection-link",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-partiel",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-ambigu",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-ambigu",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflection-link",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-ambigu",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#instruction-coverage@5",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#instruction-coverage@5",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#instruction-coverage@5",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous#SENTENCE_DELETION#source-fact-use@0",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous#SENTENCE_DELETION#source-fact-use@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-ambiguous#SENTENCE_DELETION#source-fact-use@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#FACT_INVERSION#source-fidelity@880b448bd3c4",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#FACT_INVERSION#source-fidelity@880b448bd3c4",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#FACT_INVERSION#source-fidelity@880b448bd3c4",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-erroneous-decidable#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#practice-evidence@6",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#practice-evidence@6",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#practice-evidence@6",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflection-link",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#SENTENCE_DELETION#residual-risk-coverage@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#SENTENCE_DELETION#residual-risk-coverage@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#SENTENCE_DELETION#residual-risk-coverage@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline#SENTENCE_DELETION#observable-transfer@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline#SENTENCE_DELETION#observable-transfer@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-ambiguous-borderline#SENTENCE_DELETION#observable-transfer@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#SENTENCE_DELETION#comparative-arithmetic@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#SENTENCE_DELETION#comparative-arithmetic@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#SENTENCE_DELETION#comparative-arithmetic@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-partial-omission#SENTENCE_DELETION#observable-transfer@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-partial-omission#SENTENCE_DELETION#observable-transfer@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-partial-omission#SENTENCE_DELETION#observable-transfer@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-errone#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-errone#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "project-coherence",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-errone#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial#FACT_INVERSION#fact-fidelity@33c3b01e163d",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial#FACT_INVERSION#fact-fidelity@33c3b01e163d",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial#FACT_INVERSION#fact-fidelity@33c3b01e163d",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel#SENTENCE_DELETION#context-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel#SENTENCE_DELETION#context-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel#SENTENCE_DELETION#context-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu#SENTENCE_DELETION#context-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu#SENTENCE_DELETION#context-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu#SENTENCE_DELETION#context-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-errone#SENTENCE_DELETION#instruction-coverage@5",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-errone#SENTENCE_DELETION#instruction-coverage@5",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-errone#SENTENCE_DELETION#instruction-coverage@5",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#FACT_INVERSION#context-fidelity@4accb0568078",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#FACT_INVERSION#context-fidelity@4accb0568078",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#FACT_INVERSION#context-fidelity@4accb0568078",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-spare-stock-partial#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-position",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary#FACT_INVERSION#evidence-selection@be6d8c26f2de",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "evidence-selection",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary#FACT_INVERSION#evidence-selection@be6d8c26f2de",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-bounds",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary#FACT_INVERSION#evidence-selection@be6d8c26f2de",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable#SENTENCE_DELETION#uncertainty-boundary@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable#SENTENCE_DELETION#uncertainty-boundary@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-erroneous-decidable#SENTENCE_DELETION#uncertainty-boundary@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-elevator-modernization-erroneous#SENTENCE_DELETION#decision-stance@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-elevator-modernization-erroneous#SENTENCE_DELETION#decision-stance@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-elevator-modernization-erroneous#SENTENCE_DELETION#decision-stance@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#SENTENCE_DELETION#committed-choice-boundary@3",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#SENTENCE_DELETION#committed-choice-boundary@3",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#SENTENCE_DELETION#committed-choice-boundary@3",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#FACT_INVERSION#context-fidelity@1a8fd0e6a966",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#FACT_INVERSION#context-fidelity@1a8fd0e6a966",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-complet#FACT_INVERSION#context-fidelity@1a8fd0e6a966",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-oven-revision-ambiguous#SENTENCE_DELETION#arbitration-choice@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-oven-revision-ambiguous#SENTENCE_DELETION#arbitration-choice@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-oven-revision-ambiguous#SENTENCE_DELETION#arbitration-choice@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#metric-and-decision-rule@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#metric-and-decision-rule@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#metric-and-decision-rule@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#FACT_INVERSION#feasible-allocation@e60ff43957c0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#FACT_INVERSION#feasible-allocation@e60ff43957c0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#FACT_INVERSION#feasible-allocation@e60ff43957c0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-ambiguous-borderline#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#FACT_INVERSION#fact-fidelity@197e1ab77b37",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#FACT_INVERSION#fact-fidelity@197e1ab77b37",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-water-damage-partial#FACT_INVERSION#fact-fidelity@197e1ab77b37",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-partiel#SENTENCE_DELETION#project-coherence@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-partiel#SENTENCE_DELETION#project-coherence@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "project-coherence",
+    "unitId": "domain-archetypes-v1/domaine-projet-worker-partiel#SENTENCE_DELETION#project-coherence@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-partiel#SENTENCE_DELETION#reflection-link@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-partiel#SENTENCE_DELETION#reflection-link@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflection-link",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-partiel#SENTENCE_DELETION#reflection-link@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise#SENTENCE_DELETION#uncertainty-boundary@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise#SENTENCE_DELETION#uncertainty-boundary@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise#SENTENCE_DELETION#uncertainty-boundary@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission#FACT_INVERSION#source-fidelity@609c78e4fa34",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission#FACT_INVERSION#source-fidelity@609c78e4fa34",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-partial-omission#FACT_INVERSION#source-fidelity@609c78e4fa34",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-clear#SENTENCE_DELETION#event-sequence-grounding@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-clear#SENTENCE_DELETION#event-sequence-grounding@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-clear#SENTENCE_DELETION#event-sequence-grounding@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-stance",
+    "unitId": "holdout-v3/holdout3-writing-roof-tender-successful#SENTENCE_DELETION#residual-risk-coverage@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v3/holdout3-writing-roof-tender-successful#SENTENCE_DELETION#residual-risk-coverage@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-coverage",
+    "unitId": "holdout-v3/holdout3-writing-roof-tender-successful#SENTENCE_DELETION#residual-risk-coverage@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#reflection-link@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#reflection-link@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflection-link",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#reflection-link@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#FACT_INVERSION#comparative-arithmetic@9aeabcf50599",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#FACT_INVERSION#comparative-arithmetic@9aeabcf50599",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-complete-clear#FACT_INVERSION#comparative-arithmetic@9aeabcf50599",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-position",
+    "unitId": "holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "evidence-selection",
+    "unitId": "holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-bounds",
+    "unitId": "holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#FACT_INVERSION#fact-fidelity@b351a1f25f5c",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#FACT_INVERSION#fact-fidelity@b351a1f25f5c",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-maintenance-contract-successful#FACT_INVERSION#fact-fidelity@b351a1f25f5c",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-ambigu#SENTENCE_DELETION#reflection-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-ambigu#SENTENCE_DELETION#reflection-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reflection-link",
+    "unitId": "domain-archetypes-v1/domaine-reflexion-mission-ambigu#SENTENCE_DELETION#reflection-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "decision-position",
+    "unitId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "evidence-selection",
+    "unitId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-bounds",
+    "unitId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission#SENTENCE_DELETION#metric-and-decision-rule@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission#SENTENCE_DELETION#metric-and-decision-rule@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-partial-omission#SENTENCE_DELETION#metric-and-decision-rule@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "comparative-arithmetic",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline#SENTENCE_DELETION#comparative-arithmetic@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "hard-constraint-fit",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline#SENTENCE_DELETION#comparative-arithmetic@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "committed-choice-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline#SENTENCE_DELETION#comparative-arithmetic@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-errone#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-errone#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "written-reasoning",
+    "unitId": "domain-archetypes-v1/domaine-ecrit-objectif-errone#SENTENCE_DELETION#instruction-coverage@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-clear#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-clear#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-clear#SENTENCE_DELETION#feasible-allocation@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#FACT_INVERSION#source-fidelity@547bac7bd925",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#FACT_INVERSION#source-fidelity@547bac7bd925",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#FACT_INVERSION#source-fidelity@547bac7bd925",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise#FACT_INVERSION#source-fidelity@502b1a1a0f10",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise#FACT_INVERSION#source-fidelity@502b1a1a0f10",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-concise#FACT_INVERSION#source-fidelity@502b1a1a0f10",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "arbitration-choice",
+    "unitId": "holdout-v2/holdout2-writing-pump-report-erroneous#SENTENCE_DELETION#arbitration-choice@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "fact-fidelity",
+    "unitId": "holdout-v2/holdout2-writing-pump-report-erroneous#SENTENCE_DELETION#arbitration-choice@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "residual-risk-surfacing",
+    "unitId": "holdout-v2/holdout2-writing-pump-report-erroneous#SENTENCE_DELETION#arbitration-choice@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "recommendation-clarity",
+    "unitId": "corpus-v1-3/benchmark-writing-successful#SENTENCE_DELETION#source-fact-use@1",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fact-use",
+    "unitId": "corpus-v1-3/benchmark-writing-successful#SENTENCE_DELETION#source-fact-use@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "reasoning-coherence",
+    "unitId": "corpus-v1-3/benchmark-writing-successful#SENTENCE_DELETION#source-fact-use@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "instruction-coverage",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-partiel#FACT_INVERSION#context-fidelity@1dd00a4669e0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "context-fidelity",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-partiel#FACT_INVERSION#context-fidelity@1dd00a4669e0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "practice-evidence",
+    "unitId": "domain-archetypes-v1/domaine-pratique-update-partiel#FACT_INVERSION#context-fidelity@1dd00a4669e0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#SENTENCE_DELETION#event-sequence-grounding@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#SENTENCE_DELETION#event-sequence-grounding@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#SENTENCE_DELETION#event-sequence-grounding@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "feasible-allocation",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "metric-and-decision-rule",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "harm-stop-control",
+    "unitId": "writing-holdout-v1/writing-v1-action-plan-complete-concise#SENTENCE_DELETION#harm-stop-control@2",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "event-sequence-grounding",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#FACT_INVERSION#event-sequence-grounding@6e5c5caaf96d",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "bounded-causal-agency",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#FACT_INVERSION#event-sequence-grounding@6e5c5caaf96d",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "observable-transfer",
+    "unitId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#FACT_INVERSION#event-sequence-grounding@6e5c5caaf96d",
+    "verdict": "DISAGREED"
+  }
+]

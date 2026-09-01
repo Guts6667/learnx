@@ -1,0 +1,408 @@
+[
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 19,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 16,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 16,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 2,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 17,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 2,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 46,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 3,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 15,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 3,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0c2b233864fbcce5",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 16,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0c2b233864fbcce5",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 15,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-4192c5710c20109b",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 15,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-4192c5710c20109b",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 15,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-8c79c1cc9dbf1f44",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 16,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-8c79c1cc9dbf1f44",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 15,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-f8885dcce7cc01e9",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 15,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-f8885dcce7cc01e9",
+    "errorCode": "PROVIDER_HTTP_401",
+    "latencyMs": 16,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "provider": "Anthropic",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  }
+]
