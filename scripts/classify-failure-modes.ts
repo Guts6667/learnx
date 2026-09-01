@@ -25,7 +25,10 @@ function walk(node: unknown): { criterionKey: string; mutantId: string }[] {
   if (Array.isArray(node)) return node.flatMap(walk);
   if (node && typeof node === 'object') {
     const rec = node as Record<string, unknown>;
-    if (typeof rec.mutantId === 'string' && typeof rec.criterionKey === 'string') {
+    if (
+      typeof rec.mutantId === 'string' &&
+      typeof rec.criterionKey === 'string'
+    ) {
       return [{ criterionKey: rec.criterionKey, mutantId: rec.mutantId }];
     }
     return Object.values(rec).flatMap(walk);
@@ -33,17 +36,24 @@ function walk(node: unknown): { criterionKey: string; mutantId: string }[] {
   return [];
 }
 
-const pool = parseRegressionPool(JSON.parse(readFileSync(POOL, 'utf8')) as unknown);
+const pool = parseRegressionPool(
+  JSON.parse(readFileSync(POOL, 'utf8')) as unknown,
+);
 const sources = new Map(
   pool.sources.map((s) => [
     s.path,
-    loadRegressionSource(readFileSync(path.resolve(path.dirname(POOL), s.path))),
+    loadRegressionSource(
+      readFileSync(path.resolve(path.dirname(POOL), s.path)),
+    ),
   ]),
 );
 const plan = planRegressionRun({ pool, sources });
 
 type Mode = 'ABSENT' | 'ILLISIBLE' | 'SANS_CITATION' | 'AVEC_CITATION';
-const byFailure = new Map<string, { criterionKey: string; mode: Mode; mutantId: string }>();
+const byFailure = new Map<
+  string,
+  { criterionKey: string; mode: Mode; mutantId: string }
+>();
 
 for (const run of RUNS) {
   const base = path.join(path.resolve(REG, 'results'), run);
@@ -55,7 +65,12 @@ for (const run of RUNS) {
   }
   const attempts = JSON.parse(
     readFileSync(path.join(base, 'attempts.json'), 'utf8'),
-  ) as { caseId: string; output?: { criteria: { criterionKey: string; evidenceQuotes?: string[] }[] } }[];
+  ) as {
+    caseId: string;
+    output?: {
+      criteria: { criterionKey: string; evidenceQuotes?: string[] }[];
+    };
+  }[];
 
   for (const detail of walk(summary)) {
     const key = `${detail.mutantId}::${detail.criterionKey}`;
@@ -76,14 +91,22 @@ for (const run of RUNS) {
     }
     const prior = byFailure.get(key);
     // A failure counts as testable if any run cited a span for it.
-    if (!prior || (prior.mode !== 'AVEC_CITATION' && mode === 'AVEC_CITATION')) {
-      byFailure.set(key, { criterionKey: detail.criterionKey, mode, mutantId: detail.mutantId });
+    if (
+      !prior ||
+      (prior.mode !== 'AVEC_CITATION' && mode === 'AVEC_CITATION')
+    ) {
+      byFailure.set(key, {
+        criterionKey: detail.criterionKey,
+        mode,
+        mutantId: detail.mutantId,
+      });
     }
   }
 }
 
 const counts = new Map<Mode, number>();
-for (const f of byFailure.values()) counts.set(f.mode, (counts.get(f.mode) ?? 0) + 1);
+for (const f of byFailure.values())
+  counts.set(f.mode, (counts.get(f.mode) ?? 0) + 1);
 const clusters = new Map<Mode, Set<string>>();
 for (const f of byFailure.values()) {
   const c = clusters.get(f.mode) ?? new Set<string>();
@@ -92,13 +115,22 @@ for (const f of byFailure.values()) {
 }
 
 console.log(`échecs observés (base de revue) : ${byFailure.size}`);
-for (const mode of ['AVEC_CITATION', 'SANS_CITATION', 'ABSENT', 'ILLISIBLE'] as Mode[]) {
+for (const mode of [
+  'AVEC_CITATION',
+  'SANS_CITATION',
+  'ABSENT',
+  'ILLISIBLE',
+] as Mode[]) {
   const n = counts.get(mode) ?? 0;
   if (n === 0) continue;
-  console.log(`  ${mode.padEnd(15)} ${String(n).padStart(2)} échecs, ${clusters.get(mode)?.size ?? 0} grappes`);
+  console.log(
+    `  ${mode.padEnd(15)} ${String(n).padStart(2)} échecs, ${clusters.get(mode)?.size ?? 0} grappes`,
+  );
 }
 console.log('\ndétail des échecs non testables par un vérificateur :');
 for (const f of byFailure.values()) {
   if (f.mode === 'AVEC_CITATION') continue;
-  console.log(`  ${f.mode.padEnd(15)} ${f.criterionKey.padEnd(24)} ${f.mutantId.split('/').pop()?.slice(0, 70)}`);
+  console.log(
+    `  ${f.mode.padEnd(15)} ${f.criterionKey.padEnd(24)} ${f.mutantId.split('/').pop()?.slice(0, 70)}`,
+  );
 }

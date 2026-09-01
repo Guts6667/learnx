@@ -1402,3 +1402,89 @@ sont à conserver dans une strate rapportée à part, pas à supprimer.
 Rien ne part vers un fournisseur avant. Aucune clé n'est exportée.
 
 **Dépense de cette section : 0,00 USD.**
+
+### Conséquence statistique de la reclassification
+
+La **grappe** est l'unité indépendante : une réponse rédigée. Plusieurs paires
+issues de la même copie ne sont pas des observations séparées, elles partagent le
+texte, l'auteur et le sujet.
+
+Passer de 16 à 14 grappes déplace ce qu'un résultat parfait peut certifier. Avec
+un résultat binaire pré-déclaré par grappe, la **borne basse unilatérale à 95 %**
+d'un sans-faute vaut `0,05^(1/n)` :
+
+| grappes réussies | borne basse à 95 % |
+|---|---|
+| 14 / 14 (notre situation) | **80,74 %** |
+| 16 / 16 (ce que le plan supposait) | 82,93 % |
+| 20 / 20 | 86,09 % |
+| 29 / 29 | 90,19 % |
+
+Le plan avait fixé un plancher de **86 %** sur le rejet des négatifs. **Cette
+expérience ne peut pas le certifier**, même parfaite : il faudrait 20 grappes
+toutes réussies pour que la borne atteigne 86 %, et 29 pour 90 %.
+
+C'est exactement pourquoi le relecteur l'a qualifiée de *screening spike* et non
+de test de faisabilité décisif. Ce qu'elle peut faire reste utile et
+asymétrique :
+
+- **réfuter** — un vérificateur qui échoue sur 14 grappes ferme la route pour
+  quelques dollars ;
+- **filtrer** — un sans-faute ne prouve pas 86 %, mais justifie de payer
+  l'écriture des copies supplémentaires qui, elles, le prouveraient.
+
+Ce que la borne ne dit pas, et qu'il faut redire : elle ne vaut **que si chaque
+grappe produit un résultat binaire déclaré à l'avance**. Agréger 45 paires comme
+45 observations donnerait 93,6 % — un chiffre faux, obtenu en comptant plusieurs
+fois la même copie.
+
+### La passe aveugle — 90 cartes, et ce que l'aveuglement ne couvre pas
+
+Le paquet : `adjudication-deck.v1.json`, `sha256:f1f25fc9…`. 90 cartes, une par
+membre de paire. La correspondance carte → membre vit dans un **fichier
+séparé**, `adjudication-deck.v1.key.json`, `sha256:99ea277a…`, qui n'est ni
+embarqué dans la page ni remis au relecteur.
+
+Le **span positif** n'est pas inventé : c'est la phrase que la mutation a
+supprimée (`SENTENCE_DELETION`, 40 paires) ou altérée (`FACT_INVERSION`, 5
+paires) dans la copie d'origine — le porteur contre lequel le barème a été écrit.
+
+**L'ordre.** Le rejet pur ne peut pas produire 45 écarts simultanés : 500 tirages
+n'ont rien donné. L'ordre est donc obtenu par une marche sous contrainte —
+arrangement valide de départ, puis 143 241 transpositions acceptées sur 200 000
+tentées, chacune refusée si elle rapproche deux membres à moins de 8 cartes.
+Aucune construction ne place les membres par position : ce serait la position
+elle-même qui trahirait le membre. Les positifs se répartissent 8, 6, 10, 7, 4,
+10 sur les six sixièmes du paquet.
+
+**L'audit d'aveuglement** (`scripts/audit-adjudication-blinding.ts`) vérifie
+mécaniquement qu'aucune carte ne porte de marque, que positifs et négatifs ont
+exactement la même forme, que chaque span est localisable dans sa propre
+réponse, et recalcule l'écart minimum. Ses quatre gardes ont été testées en
+cassant le paquet : jeton interdit, membres adjacents, champ propre aux
+positifs, span absent — les quatre rougissent, le paquet réel passe.
+
+Un faux positif a été corrigé plutôt qu'ignoré : l'audit signalait « DIRECT »
+dans la phrase de barème « directement actionnable ». Les jetons de verdict sont
+désormais appariés sur frontière de mot et à la casse exacte. Une alerte qui crie
+à tort apprend à ignorer l'audit.
+
+#### Deux fuites que l'aveuglement ne supprime pas
+
+| fuite | mesure |
+|---|---|
+| longueur de la réponse | positifs 232/**559**/856 caractères, négatifs 65/**437**/675 (min/médiane/max) |
+| longueur du span | positifs 46/**129**/274, négatifs 39/**113**/178 |
+
+La première est structurelle : une carte négative issue d'une suppression de
+phrase montre une réponse **plus courte d'une phrase** que sa jumelle. Un
+relecteur attentif sur 90 cartes peut apprendre la règle « plus court = négatif »
+sans reconnaître aucune copie. L'écart de 8 cartes atténue, il ne supprime pas.
+
+Je ne sais pas la corriger sans casser l'énoncé : le positif exige que la phrase
+porteuse soit présente, le négatif exige qu'elle ne le soit pas. La déclarer est
+la seule réponse honnête ; c'est au relecteur de dire si elle invalide la passe
+aveugle ou si elle est acceptable comme biais résiduel connu.
+
+La seconde est plus faible : les longueurs de span se recouvrent largement
+(médianes 129 contre 113), donc le span seul ne trahit pas le membre.

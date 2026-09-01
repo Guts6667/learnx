@@ -20,7 +20,8 @@ const MANIFEST = process.env.PAIR_MANIFEST
   ? path.resolve(process.env.PAIR_MANIFEST)
   : path.resolve(REG, 'atom-pair-manifest.v2.json');
 
-type Verdict = 'AMBIGUOUS' | 'CONTRADICTED' | 'DIRECT' | 'PARTIAL' | 'UNSUPPORTED';
+type Verdict =
+  'AMBIGUOUS' | 'CONTRADICTED' | 'DIRECT' | 'PARTIAL' | 'UNSUPPORTED';
 type Decision = 'ABSTAIN' | 'ACCEPT' | 'REJECT';
 
 type Pair = {
@@ -87,28 +88,41 @@ function main(): void {
           pair.authoredAnswerId,
           pair.criterionKey,
           pair.atomId,
-          pair.negativeSpans.map((s) => s.trim().toLowerCase()).sort().join('|'),
+          pair.negativeSpans
+            .map((s) => s.trim().toLowerCase())
+            .sort()
+            .join('|'),
         ].join('::'),
       )
       .digest('hex')
       .slice(0, 20);
     if (identities.has(identity)) {
-      blocked.set('IDENTITÉ EN DOUBLE', (blocked.get('IDENTITÉ EN DOUBLE') ?? 0) + 1);
+      blocked.set(
+        'IDENTITÉ EN DOUBLE',
+        (blocked.get('IDENTITÉ EN DOUBLE') ?? 0) + 1,
+      );
       return;
     }
     identities.add(identity);
 
     if (pair.negativeSpans.length === 0) {
-      blocked.set('aucun span négatif', (blocked.get('aucun span négatif') ?? 0) + 1);
+      blocked.set(
+        'aucun span négatif',
+        (blocked.get('aucun span négatif') ?? 0) + 1,
+      );
       return;
     }
 
     const positiveSpan =
       pair.adjudication.positiveSpan ??
       (useFixtures ? `FIXTURE::${identity}` : null);
-    const adjudicated = pair.adjudication.status === 'ADJUDICATED' || useFixtures;
+    const adjudicated =
+      pair.adjudication.status === 'ADJUDICATED' || useFixtures;
     if (!adjudicated || positiveSpan === null) {
-      blocked.set('adjudication en attente', (blocked.get('adjudication en attente') ?? 0) + 1);
+      blocked.set(
+        'adjudication en attente',
+        (blocked.get('adjudication en attente') ?? 0) + 1,
+      );
       return;
     }
 
@@ -143,7 +157,8 @@ function main(): void {
   });
 
   const map = manifest.verdictMapping;
-  const decide = (verdict: Verdict): Decision => map[verdict]?.decision ?? 'ABSTAIN';
+  const decide = (verdict: Verdict): Decision =>
+    map[verdict]?.decision ?? 'ABSTAIN';
   const ambiguousPrimaryCredit = decisions.filter(
     (d) => d.verdict === 'AMBIGUOUS' && decide(d.verdict) !== 'ABSTAIN',
   ).length;
@@ -153,40 +168,63 @@ function main(): void {
   console.log(`manifeste       : ${path.basename(MANIFEST)}`);
   console.log(`hash manifeste  : ${manifest.contentHash}`);
   console.log(`hash taxonomie  : ${manifest.atomTaxonomyHash}`);
-  console.log(`mode            : ${useFixtures ? 'ADJUDICATION FICTIVE (mémoire seule)' : 'réel'}`);
+  console.log(
+    `mode            : ${useFixtures ? 'ADJUDICATION FICTIVE (mémoire seule)' : 'réel'}`,
+  );
   console.log('');
   console.log(`paires du manifeste : ${manifest.pairs.length}`);
   console.log(`identités uniques   : ${identities.size}`);
   console.log(`matérialisées       : ${materialised}`);
-  console.log(`appels vérificateur : ${calls.size} (${decisions.length} soumissions)`);
+  console.log(
+    `appels vérificateur : ${calls.size} (${decisions.length} soumissions)`,
+  );
   console.log(`grappes couvertes   : ${clusters.size}`);
-  console.log(`échecs à règle déterministe (hors paires) : ${manifest.deterministicallyCatchable.failures.length}`);
+  console.log(
+    `échecs à règle déterministe (hors paires) : ${manifest.deterministicallyCatchable.failures.length}`,
+  );
   for (const [reason, count] of [...blocked].sort()) {
     console.log(`bloquées — ${reason.padEnd(24)} ${count}`);
   }
   console.log('');
-  console.log(`chaque membre scoré exactement une fois : ${duplicated === 0 ? 'oui' : `NON — ${duplicated}`}`);
+  console.log(
+    `chaque membre scoré exactement une fois : ${duplicated === 0 ? 'oui' : `NON — ${duplicated}`}`,
+  );
   console.log(`entrées manquantes par strate           : ${missingInput}`);
-  console.log(`AMBIGUOUS créditant le principal        : ${ambiguousPrimaryCredit}`);
+  console.log(
+    `AMBIGUOUS créditant le principal        : ${ambiguousPrimaryCredit}`,
+  );
   console.log(`coût                                    : 0.00 USD`);
 
   // Guards. A dummy run that passes over nothing proves nothing.
   const failures: string[] = [];
-  if (materialised === 0) failures.push('VACUITÉ — aucune paire matérialisée, les contrôles ne prouvent rien');
+  if (materialised === 0)
+    failures.push(
+      'VACUITÉ — aucune paire matérialisée, les contrôles ne prouvent rien',
+    );
   if (useFixtures && materialised !== manifest.pairs.length) {
-    failures.push(`COUVERTURE — ${manifest.pairs.length - materialised} paires non matérialisées sous fixtures`);
+    failures.push(
+      `COUVERTURE — ${manifest.pairs.length - materialised} paires non matérialisées sous fixtures`,
+    );
   }
-  if (duplicated !== 0) failures.push('DOUBLON — un membre scoré plus d’une fois');
+  if (duplicated !== 0)
+    failures.push('DOUBLON — un membre scoré plus d’une fois');
   const duplicateIdentities = blocked.get('IDENTITÉ EN DOUBLE') ?? 0;
   if (duplicateIdentities !== 0) {
-    failures.push(`IDENTITÉ EN DOUBLE — ${duplicateIdentities} paires partagent une identité`);
+    failures.push(
+      `IDENTITÉ EN DOUBLE — ${duplicateIdentities} paires partagent une identité`,
+    );
   }
   if (unknownStrata.size > 0) {
-    failures.push(`STRATE INCONNUE — ${[...unknownStrata].sort().join(', ')} : aucun jeu d’entrées déclaré`);
+    failures.push(
+      `STRATE INCONNUE — ${[...unknownStrata].sort().join(', ')} : aucun jeu d’entrées déclaré`,
+    );
   }
-  if (missingInput !== 0) failures.push('ENTRÉE MANQUANTE — une strate exige une entrée absente');
-  if (ambiguousPrimaryCredit !== 0) failures.push('AMBIGUOUS crédite l’endpoint principal');
-  if (useFixtures && clusters.size !== 14) failures.push(`GRAPPES — ${clusters.size} au lieu de 14`);
+  if (missingInput !== 0)
+    failures.push('ENTRÉE MANQUANTE — une strate exige une entrée absente');
+  if (ambiguousPrimaryCredit !== 0)
+    failures.push('AMBIGUOUS crédite l’endpoint principal');
+  if (useFixtures && clusters.size !== 14)
+    failures.push(`GRAPPES — ${clusters.size} au lieu de 14`);
   if (failures.length > 0) {
     console.log('');
     for (const failure of failures) console.log(`ÉCHEC : ${failure}`);
@@ -194,7 +232,9 @@ function main(): void {
     return;
   }
   console.log('');
-  console.log('Tous les contrôles passent sur des paires réellement matérialisées.');
+  console.log(
+    'Tous les contrôles passent sur des paires réellement matérialisées.',
+  );
 }
 
 main();

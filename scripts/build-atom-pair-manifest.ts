@@ -40,7 +40,12 @@ const RUN_SCOPE = new Set([
   '2026-09-01T15-38-20-436Z',
 ]);
 
-type Atom = { atomId: string; atom: string; stratum: string; evaluator: string };
+type Atom = {
+  atomId: string;
+  atom: string;
+  stratum: string;
+  evaluator: string;
+};
 type Taxonomy = {
   contentHash: string;
   criteria: Record<string, { inPrimaryEndpoint: boolean; atoms: Atom[] }>;
@@ -88,7 +93,9 @@ function main(): void {
     const base = path.join(resultsDir, run);
     let summary: unknown;
     try {
-      summary = JSON.parse(readFileSync(path.join(base, 'summary.json'), 'utf8'));
+      summary = JSON.parse(
+        readFileSync(path.join(base, 'summary.json'), 'utf8'),
+      );
     } catch {
       continue;
     }
@@ -96,7 +103,12 @@ function main(): void {
     if (details.length === 0) continue;
     const attempts = JSON.parse(
       readFileSync(path.join(base, 'attempts.json'), 'utf8'),
-    ) as { caseId: string; output?: { criteria: { criterionKey: string; evidenceQuotes?: string[] }[] } }[];
+    ) as {
+      caseId: string;
+      output?: {
+        criteria: { criterionKey: string; evidenceQuotes?: string[] }[];
+      };
+    }[];
 
     for (const detail of details) {
       const key = `${detail.mutantId}::${detail.criterionKey}`;
@@ -118,7 +130,8 @@ function main(): void {
         spans: [],
       };
       entry.runs.push(run);
-      for (const span of spans) if (!entry.spans.includes(span)) entry.spans.push(span);
+      for (const span of spans)
+        if (!entry.spans.includes(span)) entry.spans.push(span);
 
       // What the grader actually emitted decides whether a verifier can be
       // asked anything at all. A criterion absent from the output, or awarded
@@ -142,7 +155,12 @@ function main(): void {
 
   // Candidate pairs, one per (observed failure × atom of that criterion).
   const pairs: unknown[] = [];
-  const untestable: { criterionKey: string; mode: string; mutantId: string; rule: string }[] = [];
+  const untestable: {
+    criterionKey: string;
+    mode: string;
+    mutantId: string;
+    rule: string;
+  }[] = [];
   for (const entry of observed.values()) {
     const criterion = taxonomy.criteria[entry.criterionKey];
     if (!criterion) continue;
@@ -153,8 +171,8 @@ function main(): void {
         mutantId: entry.mutantId,
         rule:
           entry.mode === 'ABSENT'
-            ? "critère absent de la sortie : un critère non rendu ne peut pas être noté"
-            : "niveau haut sans aucune citation : le haut exige au moins une citation résolue",
+            ? 'critère absent de la sortie : un critère non rendu ne peut pas être noté'
+            : 'niveau haut sans aucune citation : le haut exige au moins une citation résolue',
       });
       continue;
     }
@@ -194,12 +212,14 @@ function main(): void {
     atomTaxonomyHash: taxonomy.contentHash,
     deterministicallyCatchable: {
       failures: untestable.sort((a, b) => a.mutantId.localeCompare(b.mutantId)),
-      note:
-        "Ces échecs ne posent aucune question à un vérificateur : il n'y a rien à vérifier. Ils relèvent d'une règle déterministe, sans appel de modèle. Ils restent des échecs réels et comptent dans la population de 18.",
+      note: "Ces échecs ne posent aucune question à un vérificateur : il n'y a rien à vérifier. Ils relèvent d'une règle déterministe, sans appel de modèle. Ils restent des échecs réels et comptent dans la population de 18.",
     },
     normalisationTables: {
       numeric: JSON.parse(
-        readFileSync(path.resolve(REG, 'normalisation/numeric.v1.json'), 'utf8'),
+        readFileSync(
+          path.resolve(REG, 'normalisation/numeric.v1.json'),
+          'utf8',
+        ),
       ).contentHash as string,
       unit: JSON.parse(
         readFileSync(path.resolve(REG, 'normalisation/unit.v1.json'), 'utf8'),
@@ -220,16 +240,20 @@ function main(): void {
     pairSuccess:
       "Succès de paire = positif DIRECT ET négatif apparié REJETÉ. Un AMBIGUOUS d'un côté ou de l'autre annule le crédit primaire et la paire est comptée dans la strate d'ambiguïté. Les deux membres sont soumis INDÉPENDAMMENT au vérificateur ; l'appariement n'existe qu'à l'analyse.",
     schemaVersion: 2,
-    status: 'PENDING_ADJUDICATION — aucun appel fournisseur autorisé avant adjudication complète.',
+    status:
+      'PENDING_ADJUDICATION — aucun appel fournisseur autorisé avant adjudication complète.',
     // Machine-readable in v2. v1 carried prose only, which code cannot apply
     // without guessing.
     verdictMapping: {
       AMBIGUOUS: {
         decision: 'ABSTAIN',
-        note: "aucun crédit de discrimination primaire, rapporté en strate distincte",
+        note: 'aucun crédit de discrimination primaire, rapporté en strate distincte',
       },
       CONTRADICTED: { decision: 'REJECT', note: 'rejet sémantique' },
-      DIRECT: { decision: 'ACCEPT', note: 'seul verdict qui autorise le niveau TOP' },
+      DIRECT: {
+        decision: 'ACCEPT',
+        note: 'seul verdict qui autorise le niveau TOP',
+      },
       PARTIAL: { decision: 'REJECT', note: 'rejet sémantique' },
       UNSUPPORTED: { decision: 'REJECT', note: 'rejet sémantique' },
     },
@@ -254,7 +278,9 @@ function main(): void {
     (pairs as { authoredAnswerId: string }[]).map((p) => p.authoredAnswerId),
   );
   console.log(`échecs observés distincts : ${observed.size}`);
-  console.log(`   dont testables par vérificateur : ${observed.size - untestable.length}`);
+  console.log(
+    `   dont testables par vérificateur : ${observed.size - untestable.length}`,
+  );
   console.log(`   dont règle déterministe         : ${untestable.length}`);
   console.log(`paires candidates          : ${pairs.length}`);
   console.log(`grappes (réponses rédigées): ${clusters.size}`);

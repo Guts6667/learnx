@@ -1,0 +1,546 @@
+<title>Adjudication aveugle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper: #f3f5f4;
+    --card: #fdfdfc;
+    --ink: #1e2a33;
+    --muted: #5e6d74;
+    --rule: #d6dcda;
+    --rule-soft: #e6eae8;
+    --mark: #a8690c;
+    --mark-wash: rgba(201, 130, 30, 0.26);
+    --direct: #2f7a5b;
+    --notdirect: #a33b32;
+    --ambiguous: #6a5f83;
+    --shadow: rgba(30, 42, 51, 0.09);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --paper: #121a1f;
+      --card: #1a242a;
+      --ink: #e2e9e7;
+      --muted: #92a3aa;
+      --rule: #2c383f;
+      --rule-soft: #232f36;
+      --mark: #e0a44a;
+      --mark-wash: rgba(224, 164, 74, 0.24);
+      --direct: #5cb98f;
+      --notdirect: #e07d72;
+      --ambiguous: #a99ac6;
+      --shadow: rgba(0, 0, 0, 0.4);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme='dark'] {
+    --paper: #121a1f;
+    --card: #1a242a;
+    --ink: #e2e9e7;
+    --muted: #92a3aa;
+    --rule: #2c383f;
+    --rule-soft: #232f36;
+    --mark: #e0a44a;
+    --mark-wash: rgba(224, 164, 74, 0.24);
+    --direct: #5cb98f;
+    --notdirect: #e07d72;
+    --ambiguous: #a99ac6;
+    --shadow: rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+    padding-bottom: 200px;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+
+  /* The rail is the tally: one segment per card, coloured by its decision. */
+  .rail {
+    background: var(--card);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    gap: 1px;
+    height: 26px;
+    left: 0;
+    padding: 6px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .rail button {
+    background: var(--rule-soft);
+    border: 0;
+    border-radius: 1px;
+    cursor: pointer;
+    flex: 1;
+    min-width: 2px;
+    padding: 0;
+    transition: transform 0.1s;
+  }
+  .rail button:hover { transform: scaleY(1.35); }
+  .rail button[data-d='DIRECT'] { background: var(--direct); }
+  .rail button[data-d='NOT_DIRECT'] { background: var(--notdirect); }
+  .rail button[data-d='AMBIGUOUS'] { background: var(--ambiguous); }
+  .rail button[data-current='true'] { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+  header.bar {
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 20px;
+  }
+  .eyebrow {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .count { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+  .grow { flex: 1; }
+
+  main {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: minmax(320px, 5fr) minmax(340px, 6fr);
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 20px;
+  }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+
+  section.panel {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px var(--shadow);
+    padding: 18px 20px;
+  }
+  section.panel + section.panel { margin-top: 20px; }
+
+  .atom {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 21px;
+    line-height: 1.35;
+    margin: 6px 0 14px;
+  }
+  .signature {
+    border-top: 1px solid var(--rule-soft);
+    display: grid;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    gap: 2px 14px;
+    grid-template-columns: auto 1fr;
+    padding-top: 12px;
+  }
+  .signature dt { color: var(--muted); }
+  .signature dd { margin: 0; }
+
+  .chip {
+    background: var(--rule-soft);
+    border-radius: 2px;
+    color: var(--muted);
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    padding: 2px 7px;
+  }
+
+  blockquote.candidate {
+    border-left: 3px solid var(--mark);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.45;
+    margin: 0;
+    padding: 4px 0 4px 14px;
+  }
+
+  .response {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16.5px;
+    line-height: 1.65;
+    max-height: 46vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  .response mark {
+    background: var(--mark-wash);
+    box-shadow: 0 1px 0 var(--mark);
+    color: inherit;
+  }
+  .context {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-top: 4px;
+  }
+
+  footer.dock {
+    background: var(--card);
+    border-top: 1px solid var(--rule);
+    bottom: 0;
+    box-shadow: 0 -2px 10px var(--shadow);
+    left: 0;
+    padding: 12px 20px 14px;
+    position: fixed;
+    right: 0;
+    z-index: 15;
+  }
+  .dock-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    margin: 0 auto;
+    max-width: 1280px;
+  }
+  .verdicts { display: flex; gap: 8px; }
+  .verdicts button {
+    background: transparent;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 500;
+    padding: 8px 14px;
+  }
+  .verdicts button kbd {
+    background: var(--rule-soft);
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    margin-right: 7px;
+    padding: 1px 5px;
+  }
+  .verdicts button[data-v='DIRECT'][aria-pressed='true'] { background: var(--direct); border-color: var(--direct); color: #fff; }
+  .verdicts button[data-v='NOT_DIRECT'][aria-pressed='true'] { background: var(--notdirect); border-color: var(--notdirect); color: #fff; }
+  .verdicts button[data-v='AMBIGUOUS'][aria-pressed='true'] { background: var(--ambiguous); border-color: var(--ambiguous); color: #fff; }
+  .verdicts button[aria-pressed='true'] kbd { background: rgba(255, 255, 255, 0.22); color: inherit; }
+
+  .toggles { display: flex; flex-direction: column; gap: 5px; font-size: 13px; }
+  .toggles label { cursor: pointer; display: flex; gap: 7px; align-items: center; }
+  .toggles .defaulted { color: var(--muted); font-size: 11.5px; }
+  input[type='text'] {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    font: inherit;
+    padding: 8px 10px;
+    width: 100%;
+  }
+  :focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+  .ghost {
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    padding: 6px 11px;
+  }
+  .warn { color: var(--notdirect); font-size: 13px; }
+  textarea {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.45;
+    min-height: 190px;
+    padding: 10px;
+    width: 100%;
+  }
+  .hash { font-family: 'IBM Plex Mono', monospace; font-size: 12px; word-break: break-all; }
+  .note { color: var(--muted); font-size: 13px; line-height: 1.55; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="rail" id="rail" role="navigation" aria-label="Progression"></div>
+
+<header class="bar">
+  <div>
+    <div class="eyebrow">Passe 1 — aveugle</div>
+    <strong>Adjudication des paires atome / passage</strong>
+  </div>
+  <div class="grow"></div>
+  <div class="count" id="progress">0 / 0</div>
+  <button class="ghost" id="who">relecteur…</button>
+  <button class="ghost" id="toExport">export</button>
+</header>
+
+<main id="app"></main>
+
+<footer class="dock" hidden id="dock">
+  <div class="dock-inner">
+    <div>
+      <div class="eyebrow">Ce passage établit-il exactement l’atome&nbsp;?</div>
+      <div class="verdicts" id="verdicts">
+        <button data-v="DIRECT" aria-pressed="false"><kbd>D</kbd>direct</button>
+        <button data-v="NOT_DIRECT" aria-pressed="false"><kbd>N</kbd>pas direct</button>
+        <button data-v="AMBIGUOUS" aria-pressed="false"><kbd>A</kbd>ambigu</button>
+      </div>
+    </div>
+    <div class="toggles">
+      <label><input type="checkbox" id="alt"> <span><kbd>S</kbd> un autre passage soutient l’atome</span></label>
+      <label><input type="checkbox" id="view" checked> <span><kbd>V</kbd> vue de preuve complète</span></label>
+      <span class="defaulted" id="defaulted"></span>
+    </div>
+    <div class="grow" style="min-width: 240px">
+      <input id="why" type="text" placeholder="justification courte (obligatoire si ambigu)" autocomplete="off">
+      <div class="warn" hidden id="whyWarn">Une ambiguïté doit être justifiée.</div>
+    </div>
+    <div style="align-self: center">
+      <button class="ghost" id="prev">◀</button>
+      <button class="ghost" id="next">▶</button>
+    </div>
+  </div>
+</footer>
+
+<script id="deck" type="application/json">/*__DECK__*/</script>
+<script>
+  const DECK = JSON.parse(document.getElementById('deck').textContent);
+  const CARDS = DECK.cards;
+  const STORE = 'adj-v1-' + DECK.manifestHash.slice(-12);
+
+  const state = {
+    decisions: {},
+    index: 0,
+    reviewer: '',
+  };
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || '{}');
+    Object.assign(state, saved);
+  } catch (error) {
+    /* a private window or blocked storage: start clean rather than fail */
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(state));
+    } catch (error) {
+      /* nothing to do: the export panel is the durable path */
+    }
+  }
+
+  const escapeHtml = (value) =>
+    value.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+
+  function renderResponse(card) {
+    if (!card.highlight) return escapeHtml(card.response);
+    const { start, end } = card.highlight;
+    return (
+      escapeHtml(card.response.slice(0, start)) +
+      '<mark>' + escapeHtml(card.response.slice(start, end)) + '</mark>' +
+      escapeHtml(card.response.slice(end))
+    );
+  }
+
+  function renderRail() {
+    const rail = document.getElementById('rail');
+    rail.innerHTML = '';
+    CARDS.forEach((card, index) => {
+      const button = document.createElement('button');
+      const decision = state.decisions[card.cardId];
+      if (decision) button.dataset.d = decision.verdict;
+      if (index === state.index) button.dataset.current = 'true';
+      button.title = 'carte ' + (index + 1);
+      button.setAttribute('aria-label', 'carte ' + (index + 1));
+      button.onclick = () => {
+        state.index = index;
+        render();
+      };
+      rail.appendChild(button);
+    });
+  }
+
+  function render() {
+    const card = CARDS[state.index];
+    const decision = state.decisions[card.cardId] || {};
+    document.getElementById('app').innerHTML = `
+      <div>
+        <section class="panel">
+          <div class="eyebrow">Atome à établir</div>
+          <p class="atom">${escapeHtml(card.atom)}</p>
+          <dl class="signature">
+            <dt>prédicat</dt><dd>${escapeHtml(card.predicate)}(${escapeHtml(card.witnessRoles.join(', '))})</dd>
+            <dt>quantificateur</dt><dd>${escapeHtml(card.quantifier)}</dd>
+            <dt>opérateur</dt><dd>${escapeHtml(card.logicalOperator)}</dd>
+            <dt>arité</dt><dd>${card.responseArity}</dd>
+            <dt>témoins</dt><dd>${escapeHtml(card.witnessGroupId)}</dd>
+          </dl>
+          <p class="note" style="margin-bottom:0">Phrase du barème&nbsp;: «&nbsp;${escapeHtml(card.sourcePhrase)}&nbsp;» — critère ${escapeHtml(card.criterionLabel)}</p>
+        </section>
+        <section class="panel">
+          <div class="eyebrow">Passage candidat</div>
+          <blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote>
+        </section>
+        ${card.frame ? `<section class="panel"><div class="eyebrow">Consigne</div><p class="context">${escapeHtml(card.frame)}</p></section>` : ''}
+        ${card.dossier ? `<section class="panel"><div class="eyebrow">Dossier</div><p class="context">${escapeHtml(card.dossier)}</p></section>` : ''}
+      </div>
+      <div>
+        <section class="panel">
+          <div class="eyebrow">Réponse complète <span class="chip">${escapeHtml(card.stratum)}</span> <span class="chip">${escapeHtml(card.cardId)}</span></div>
+          <div class="response">${renderResponse(card)}</div>
+        </section>
+      </div>`;
+
+    document.getElementById('dock').hidden = false;
+    for (const button of document.querySelectorAll('#verdicts button')) {
+      button.setAttribute('aria-pressed', String(button.dataset.v === decision.verdict));
+    }
+    document.getElementById('alt').checked = decision.alternativeSupport === true;
+    document.getElementById('view').checked = decision.completeEvidenceView !== false;
+    document.getElementById('why').value = decision.rationale || '';
+    document.getElementById('whyWarn').hidden = !(decision.verdict === 'AMBIGUOUS' && !decision.rationale);
+    document.getElementById('defaulted').textContent = decision.touchedControls
+      ? 'contrôles réglés à la main'
+      : 'contrôles laissés par défaut';
+    const done = Object.keys(state.decisions).length;
+    document.getElementById('progress').textContent =
+      `carte ${state.index + 1} / ${CARDS.length} · ${done} décidées`;
+    document.getElementById('who').textContent = state.reviewer || 'relecteur…';
+    renderRail();
+  }
+
+  function record(verdict) {
+    const card = CARDS[state.index];
+    const previous = state.decisions[card.cardId] || {};
+    state.decisions[card.cardId] = {
+      alternativeSupport: document.getElementById('alt').checked,
+      cardId: card.cardId,
+      completeEvidenceView: document.getElementById('view').checked,
+      decidedAt: new Date().toISOString(),
+      rationale: document.getElementById('why').value.trim(),
+      reviewerId: state.reviewer,
+      touchedControls: previous.touchedControls === true,
+      verdict,
+    };
+    persist();
+    render();
+    if (verdict !== 'AMBIGUOUS' || state.decisions[card.cardId].rationale) advance(1);
+  }
+
+  function advance(step) {
+    state.index = Math.min(CARDS.length - 1, Math.max(0, state.index + step));
+    persist();
+    render();
+  }
+
+  for (const button of document.querySelectorAll('#verdicts button')) {
+    button.onclick = () => record(button.dataset.v);
+  }
+  document.getElementById('prev').onclick = () => advance(-1);
+  document.getElementById('next').onclick = () => advance(1);
+  for (const id of ['alt', 'view']) {
+    document.getElementById(id).onchange = () => {
+      const card = CARDS[state.index];
+      const decision = state.decisions[card.cardId];
+      if (decision) {
+        decision.alternativeSupport = document.getElementById('alt').checked;
+        decision.completeEvidenceView = document.getElementById('view').checked;
+        decision.touchedControls = true;
+        persist();
+        render();
+      }
+    };
+  }
+  document.getElementById('why').oninput = () => {
+    const decision = state.decisions[CARDS[state.index].cardId];
+    if (decision) {
+      decision.rationale = document.getElementById('why').value.trim();
+      persist();
+    }
+  };
+  document.getElementById('who').onclick = () => {
+    const value = prompt('Identifiant du relecteur (il est enregistré avec chaque décision)', state.reviewer);
+    if (value !== null) {
+      state.reviewer = value.trim();
+      persist();
+      render();
+    }
+  };
+
+  addEventListener('keydown', (event) => {
+    if (event.target.matches('input, textarea')) {
+      if (event.key === 'Escape') event.target.blur();
+      return;
+    }
+    const key = event.key.toLowerCase();
+    if (key === 'd') record('DIRECT');
+    else if (key === 'n') record('NOT_DIRECT');
+    else if (key === 'a') record('AMBIGUOUS');
+    else if (key === 's') { document.getElementById('alt').click(); }
+    else if (key === 'v') { document.getElementById('view').click(); }
+    else if (key === 'j') { event.preventDefault(); document.getElementById('why').focus(); }
+    else if (event.key === 'ArrowLeft') advance(-1);
+    else if (event.key === 'ArrowRight') advance(1);
+  });
+
+  /** Canonical JSON: sorted keys, compact separators — the repo's recipe. */
+  function canonical(value) {
+    if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+    if (value && typeof value === 'object') {
+      return '{' + Object.keys(value).sort().map((k) => JSON.stringify(k) + ':' + canonical(value[k])).join(',') + '}';
+    }
+    return JSON.stringify(value);
+  }
+
+  document.getElementById('toExport').onclick = async () => {
+    const decisions = CARDS.map((card) => state.decisions[card.cardId]).filter(Boolean);
+    const payload = {
+      atomTaxonomyHash: DECK.atomTaxonomyHash,
+      decisions: decisions.sort((a, b) => a.cardId.localeCompare(b.cardId)),
+      deckSeed: DECK.shuffleSeed,
+      manifestHash: DECK.manifestHash,
+      pass: 1,
+      schemaVersion: 1,
+    };
+    const text = canonical(payload);
+    let digest = 'indisponible hors https';
+    if (globalThis.crypto && crypto.subtle) {
+      const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+      digest = 'sha256:' + [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('');
+    }
+    document.getElementById('app').innerHTML = `
+      <div style="grid-column: 1 / -1">
+        <section class="panel">
+          <div class="eyebrow">Export de la passe 1</div>
+          <p class="note">${decisions.length} décisions sur ${CARDS.length}. Copie ce JSON dans
+            <code>benchmarks/ai-correction/regression/adjudication-pass1.v1.json</code>.
+            Toute modification ultérieure produit une nouvelle version, jamais une réécriture.</p>
+          <p class="hash"><strong>empreinte&nbsp;:</strong> ${digest}</p>
+          <p><button class="ghost" id="copy">copier</button>
+             <button class="ghost" id="back">retour aux cartes</button></p>
+          <textarea readonly id="out">${escapeHtml(JSON.stringify(payload, null, 2))}</textarea>
+        </section>
+      </div>`;
+    document.getElementById('copy').onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+        document.getElementById('copy').textContent = 'copié';
+      } catch (error) {
+        document.getElementById('out').select();
+        document.getElementById('copy').textContent = 'sélectionné — ⌘C';
+      }
+    };
+    document.getElementById('back').onclick = render;
+    document.getElementById('dock').hidden = true;
+  };
+
+  render();
+</script>
