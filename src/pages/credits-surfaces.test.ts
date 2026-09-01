@@ -75,8 +75,11 @@ describe('V4-008 credit surfaces', () => {
     // surfaces annonceraient une capacité que plus rien ne justifie.
     for (const surface of [learner, publicPricing]) {
       expect(surface).toContain('pack.creditsPerEuro');
-      expect(surface).toContain('pack.bonusCredits');
       expect(surface).toContain('pack.approximateCorrections');
+      // `bonusCredits` n'est plus affiché : avec des totaux fusionnés, le
+      // surplus au-dessus de la parité et le bonus early adopter en pourcentage
+      // se lisaient mal côte à côte. Il reste servi et testé côté grille.
+      expect(surface).not.toContain('pack.bonusCredits');
       // Aucun opérateur sur les chiffres servis : ni sur eux, ni sur les
       // crédits dont on pourrait les rederiver.
       expect(surface).not.toMatch(
@@ -94,7 +97,10 @@ describe('V4-008 credit surfaces', () => {
     // renommage de palier ferait taire la phrase sans casser un test.
     for (const surface of [learner, publicPricing]) {
       expect(surface).toContain('pack.oncePerAccount');
+      // Et la mise en avant vient du serveur pour la même raison.
+      expect(surface).toContain('pack.recommended');
       expect(surface).not.toMatch(/['"`]entry['"`]/u);
+      expect(surface).not.toMatch(/['"`]regular['"`]/u);
     }
 
     // Et « déjà acheté » se lit sur le catalogue, jamais déduit de

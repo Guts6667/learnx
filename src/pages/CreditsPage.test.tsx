@@ -423,6 +423,7 @@ describe('CreditsPage — achat de crédits', () => {
     label: 'Découverte',
     labelEn: 'Starter',
     oncePerAccount: false,
+    recommended: false,
     priceMinor: '1500',
     approximateCorrections: '3',
     bonusCredits: '-1400',
@@ -445,6 +446,7 @@ describe('CreditsPage — achat de crédits', () => {
     label: 'Premier pack',
     labelEn: 'First pack',
     oncePerAccount: true,
+    recommended: false,
     priceMinor: '300',
     purchasable: true,
   };
@@ -890,7 +892,6 @@ describe('CreditsPage — achat de crédits', () => {
     );
 
     expect(await screen.findByText('110 crédits par euro')).toBeInTheDocument();
-    expect(screen.getByText('80 crédits en plus')).toBeInTheDocument();
     expect(screen.getByText('environ 29 corrections')).toBeInTheDocument();
     // Le devis et la réserve sont dits une fois, sous la grille, et servis eux
     // aussi : 41 est le plafond redérivé (V4.5-114), pas le 45 d'origine.
@@ -901,15 +902,16 @@ describe('CreditsPage — achat de crédits', () => {
     ).toBeInTheDocument();
   });
 
-  it('tait le bonus du palier à parité plutôt que d’annoncer zéro', async () => {
-    // « 0 crédits en plus » se lirait comme un manque. Le palier d'entrée est
-    // à parité : il n'a pas de bonus, ce n'est pas un bonus nul.
+  it('met en avant le palier que le serveur recommande, et lui seul', async () => {
+    // La mise en avant vient du catalogue (arbitrage du 2 septembre 2026) :
+    // l'écran ne reconnaît aucune clé, donc renommer un palier ne déplace pas
+    // la recommandation par accident.
     stub({
       '/api/credits/packs': () =>
         jsonResponse({
           correctionQuoteCredits: '30',
           correctionReservationCredits: '41',
-          packs: [entryPack],
+          packs: [entryPack, { ...pack, recommended: true }],
           paymentsEnabled: true,
         }),
     });
@@ -920,8 +922,15 @@ describe('CreditsPage — achat de crédits', () => {
       </AppProviders>,
     );
 
-    expect(await screen.findByText('100 crédits par euro')).toBeInTheDocument();
-    expect(screen.queryByText(/crédits en plus/u)).not.toBeInTheDocument();
+    // Un seul badge, et sur la bonne carte : compter les badges ne dirait pas
+    // s'il s'est posé sur le palier d'entrée.
+    const badge = await screen.findByText('Notre choix');
+    const card = badge.closest('.credit-pack');
+    expect(card).not.toBeNull();
+    expect(
+      within(card as HTMLElement).getByRole('heading', { name: 'Découverte' }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('Notre choix')).toHaveLength(1);
   });
 
   it('dit la limite du palier d’entrée AVANT l’achat, remboursement compris', async () => {

@@ -105,6 +105,7 @@ const creditPacks = [
     // vraie grille : c'est ce qui fait passer la condition d'achat sous les
     // yeux du parcours et de la capture (V4.5-213).
     oncePerAccount: true,
+    recommended: false,
     priceMinor: '1500',
     approximateCorrections: '3',
     bonusCredits: '-1400',
@@ -117,6 +118,7 @@ const creditPacks = [
     label: 'Régulier',
     labelEn: 'Regular',
     oncePerAccount: false,
+    recommended: false,
     priceMinor: '5900',
     approximateCorrections: '16',
     bonusCredits: '-5400',

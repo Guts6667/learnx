@@ -203,6 +203,7 @@ test('publie les paliers du catalogue, dit « bientôt » quand il est vide et l
       label: 'Découverte',
       labelEn: 'Starter',
       oncePerAccount: true,
+      recommended: false,
       priceMinor: '1500',
     },
   ]);

@@ -174,6 +174,7 @@ describe('contrats d’achat de crédits', () => {
     label: 'Découverte',
     labelEn: 'Starter',
     oncePerAccount: false,
+    recommended: false,
     priceMinor: '1500',
   };
   const shared = {

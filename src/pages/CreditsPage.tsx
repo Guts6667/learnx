@@ -146,18 +146,22 @@ function PackCard({
 }) {
   const { locale, t } = useI18n();
   const label = packLabel(pack, locale);
-  // Comparé en `BigInt`, jamais converti en flottant : c'est une décision
-  // d'affichage sur un nombre servi, pas un calcul sur de l'argent. Le palier
-  // d'entrée est à parité, donc sans bonus, et une ligne « 0 crédits en plus »
-  // se lirait comme un manque au lieu d'une absence.
-  const hasBonus = BigInt(pack.bonusCredits) > 0n;
   // Déjà acheté : le catalogue le dit, l'écran ne le déduit pas de son
   // historique. `purchasable` est absent des réponses sans compte, et son
   // absence ne vaut donc pas « non ».
   const alreadyPurchased = pack.purchasable === false;
 
   return (
-    <li className="credit-pack">
+    <li
+      className={
+        pack.recommended
+          ? 'credit-pack credit-pack--recommended'
+          : 'credit-pack'
+      }
+    >
+      {pack.recommended ? (
+        <p className="credit-pack__badge">{t('creditPack.recommended')}</p>
+      ) : null}
       <h3 className="credit-pack__label">{label}</h3>
       <strong className="credit-pack__credits">
         {t('credits.purchase.packCredits', {
@@ -176,13 +180,6 @@ function PackCard({
             rate: formatWholeNumber(pack.creditsPerEuro, locale),
           })}
         </li>
-        {hasBonus ? (
-          <li className="credit-pack__bonus">
-            {t('creditPack.bonus', {
-              bonus: formatWholeNumber(pack.bonusCredits, locale),
-            })}
-          </li>
-        ) : null}
         <li>
           {t('creditPack.approximateCorrections', {
             corrections: formatWholeNumber(pack.approximateCorrections, locale),
@@ -298,14 +295,18 @@ function PurchasePanel() {
         offered.length > 0 ? (
           <>
             {/*
-              Trois boutons de même poids, et c'est un choix (V4.5-213).
-              Cette zone est un choix entre égaux, pas un entonnoir : mettre en
-              avant le plus gros palier pousserait vers la dépense la plus
-              élevée, et un « le plus populaire » inventerait une popularité que
-              personne n'a mesurée. La marque interdit les deux. C'est un écart
-              assumé à la règle « une action dominante par zone » — sans cette
-              raison écrite, quelqu'un le « corrigera » plus tard sans savoir
-              que c'en était un.
+              Un palier est mis en avant, et c'est un choix (arbitrage de
+              Rayan, 2 septembre 2026). Il remplace la règle inverse de
+              V4.5-213 — « un choix entre égaux, pas un entonnoir » — qui est
+              retirée avec sa justification pour que personne ne la rétablisse
+              à partir d'un commentaire orphelin.
+
+              Ce qui rend la recommandation défendable est arithmétique : le
+              palier mis en avant porte les +20 % early adopter, donc il rend
+              le plus de crédits par euro des trois, et la carte d'à côté
+              permet de le vérifier. Nous recommandons ; nous n'inventons pas
+              une popularité que personne n'a mesurée. Le serveur désigne le
+              palier — l'écran ne reconnaît aucune clé.
             */}
             <ul className="credit-pack-list">
               {offered.map((pack) => (

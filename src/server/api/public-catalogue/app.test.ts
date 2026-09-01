@@ -50,6 +50,7 @@ describe('catalogue public', () => {
           // tous les corps mis en cache, et la condition lue avant l'accès est
           // celle rencontrée après (V4.5-213).
           oncePerAccount: false,
+          recommended: false,
           priceMinor: '1500',
         },
       ],

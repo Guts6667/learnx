@@ -234,3 +234,38 @@ et les expériences A/B restent hors MVP jusqu'à arbitrage dédié.
 - Plan de migration sans faux historique et mécanisme de désactivation.
 - Aucun événement analytics ne modifie progression, score, correction ou
   facturation.
+
+## Palier choisi avant la demande d'accès
+
+Origine : maquette « Conversion Edition » de la landing, arbitrage de Rayan du
+2 septembre 2026. La maquette fait choisir un palier sur la page publique
+(« Choose Journey ») puis reporte ce choix dans la demande d'accès
+(« Apply with Journey selected · Your selection is a preference, not a
+purchase »). C'est meilleur que la version livrée en V4.5, où les cartes
+publiques sont informatives et l'action unique est la demande d'accès : le
+visiteur exprime une intention sans qu'on lui vende quoi que ce soit, et
+l'équipe sait quel palier attire avant d'ouvrir la vente.
+
+Reporté hors V4.5 parce que rien ne transporte aujourd'hui ce choix : ni le
+formulaire de demande d'accès, ni `GET /api/public/credit-packs`, ni la
+demande côté administration n'ont de notion de palier souhaité. Ce n'est pas
+un ajustement de maquette mais un développement de bout en bout.
+
+### Portée à chiffrer
+
+- Champ « palier souhaité » sur la demande d'accès, facultatif et sans
+  engagement — une préférence, jamais une commande.
+- Transport du choix depuis la page publique jusqu'au formulaire, sans cookie :
+  la landing est la seule surface tarifaire lisible sans session (V4.5-206) et
+  doit le rester.
+- Affichage du palier souhaité dans la revue des demandes, côté administration.
+- Copie qui distingue explicitement préférence et achat, aux trois endroits.
+
+### Critères avant promotion en backlog V5 activable
+
+- La préférence n'ouvre aucun droit et ne pré-remplit aucun paiement : un
+  palier choisi puis retiré du catalogue ne doit rien casser.
+- Le palier retenu à l'acceptation reste celui que l'apprenant confirme
+  lui-même sur `/credits`, jamais celui que le formulaire a mémorisé.
+- La limite d'un achat par compte sur le palier d'entrée, remboursement
+  compris, s'affiche aussi sur la surface publique qui propose ce choix.

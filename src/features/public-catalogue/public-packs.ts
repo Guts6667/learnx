@@ -27,6 +27,7 @@ const publicCreditPackSchema = z.object({
   labelEn: z.string(),
   oncePerAccount: z.boolean(),
   priceMinor: z.string(),
+  recommended: z.boolean(),
 });
 
 /**
