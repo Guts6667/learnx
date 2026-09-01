@@ -1294,3 +1294,111 @@ et nous repartons avec un plancher de preuve que nous n'avions pas.
 **Dépense de la journée : 4,5685 USD** (0,1605 + 1,8444 + 2,5636). Enveloppe
 `owner-210-budget-2026-08-31`, ouverte en remplaçant celle du 30 août : ~20,4 USD
 restants.
+
+## 14. Le manifeste de paires, et deux échecs qu'aucun vérificateur ne peut juger — 1er septembre 2026
+
+### Ce qui a été construit
+
+Un **manifeste de paires** : la liste des cas que l'expérience de vérificateur
+devra trancher. Une *paire* associe un même **atome** (une exigence élémentaire
+tirée d'un critère de barème, par exemple « une option est explicitement
+retenue ») à deux extraits : le **span négatif**, c'est-à-dire le passage que le
+correcteur a cité quand il a attribué le haut à tort, et le **span positif**, le
+passage qui porte réellement l'exigence dans la copie non abîmée.
+
+Les deux membres sont soumis **séparément** au vérificateur ; l'appariement
+n'existe qu'au moment de l'analyse. Sinon le modèle verrait qu'on lui présente un
+bon et un mauvais cas, et choisirait par élimination.
+
+Fichiers, tous nouveaux — `benchmarks/**` reste en ajout seul :
+
+| fichier | rôle |
+|---|---|
+| `atom-pair-manifest.v2.json` | le manifeste, `sha256:b3a021bf…` |
+| `normalisation/numeric.v1.json` | tolérance sur les nombres, `sha256:154ac56d…` |
+| `normalisation/unit.v1.json` | équivalences d'unités, `sha256:59c69aa6…` |
+| `scripts/build-atom-pair-manifest.ts` | le construit à partir des runs payés |
+| `scripts/classify-failure-modes.ts` | contrôle indépendant du classement |
+| `scripts/dry-run-atom-pairs.ts` | la répétition à blanc |
+| `scripts/seal-benchmark-artifact.py` | calcule et vérifie les empreintes |
+
+### La découverte : deux échecs sur dix-huit n'ont rien à vérifier
+
+En construisant les paires, sept d'entre elles se sont retrouvées **sans aucun
+span négatif**. Ce n'était pas un défaut du script. En remontant aux réponses
+brutes des correcteurs, les dix-huit échecs de la base de revue se répartissent
+ainsi :
+
+| ce que le correcteur a rendu | échecs | grappes |
+|---|---|---|
+| le critère, au niveau haut, **avec** au moins une citation | **16** | **14** |
+| le critère, au niveau haut, **sans aucune citation** | 1 | 1 |
+| **pas le critère du tout** — absent de la sortie | 1 | 1 |
+
+Les deux derniers ne posent aucune question à un vérificateur : **il n'y a rien à
+vérifier**. On ne peut pas demander « ce passage établit-il l'exigence ? » quand
+aucun passage n'a été cité. Ils relèvent de deux règles déterministes, du code
+sans appel de modèle :
+
+- un critère absent de la sortie ne peut pas être noté ;
+- un niveau haut sans aucune citation résolue ne peut pas être attribué.
+
+C'est une bonne nouvelle pour l'architecture, et une correction pour le plan :
+**la population du vérificateur est de 16 échecs sur 14 grappes**, pas 18 sur 16.
+Le plan supposait 18. Les deux échecs restent réels et comptent dans la
+population totale ; ils sont conservés dans le manifeste sous
+`deterministicallyCatchable`, pas supprimés.
+
+`v2` **supersède** `v1` — `sha256:3593b4e6…` — au lieu de le réécrire, sur le
+modèle des enveloppes de dépense. `v1` comptait 52 paires dont 7 sans span.
+
+### La répétition à blanc, et ce qu'elle a trouvé chez moi
+
+La consigne du relecteur était : « une répétition à blanc, à coût nul, prouvant
+que chaque paire se matérialise et n'est scorée qu'une fois ». Premier passage :
+**45 paires bloquées sur 45**, adjudication en attente — et tous les contrôles au
+vert, sur zéro paire. Un vert qui ne prouve rien : exactement le motif que ce
+projet passe sa semaine à retirer.
+
+Deux corrections :
+
+1. Une **garde de vacuité** : si aucune paire ne se matérialise, la répétition
+   échoue au lieu de se féliciter.
+2. Un mode `--fixture-adjudication` qui injecte des adjudications **fictives, en
+   mémoire seule**, jamais écrites dans le manifeste. Les vraies étiquettes
+   restent à faire par un humain.
+
+Puis j'ai cassé le manifeste exprès, pour vérifier que les gardes rougissent —
+la règle maison : ne jamais déduire qu'un garde-fou fonctionne en le lisant.
+
+| mutant | résultat |
+|---|---|
+| une paire dupliquée | rouge — identité en double |
+| `AMBIGUOUS` remappé sur `ACCEPT` | rouge — crédite l'endpoint principal |
+| une strate inconnue | **vert au premier essai** |
+| 20 paires sur 45 | rouge — 5 grappes au lieu de 14 |
+
+Le troisième était un vrai trou **dans mon harnais** : les entrées requises
+étaient déduites du *nom* de la strate par correspondance de sous-chaîne, donc
+une strate non reconnue retombait silencieusement sur le jeu d'entrées le plus
+pauvre. Les sept strates sont désormais énumérées explicitement et une strate
+inconnue est une erreur. Après correction, les quatre mutants rougissent et le
+manifeste réel passe.
+
+### Empreintes reproductibles
+
+Les empreintes publiées la veille avaient été apposées à la main. Une empreinte
+que personne ne peut recalculer ne prouve rien. La recette est maintenant un
+script — JSON trié par clés, séparateurs compacts, UTF-8, `contentHash` exclu de
+sa propre préimage — et elle **reproduit les quatre empreintes déjà publiées**
+(taxonomie, deux tables de normalisation, manifeste v1) au bit près.
+
+### Ce qui reste bloqué
+
+L'**adjudication** : pour chacune des 45 paires, un humain doit fixer le span
+positif et l'étiquette de référence. Les cas ambigus ou dépendants du contexte
+sont à conserver dans une strate rapportée à part, pas à supprimer.
+
+Rien ne part vers un fournisseur avant. Aucune clé n'est exportée.
+
+**Dépense de cette section : 0,00 USD.**
