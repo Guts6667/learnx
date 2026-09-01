@@ -702,6 +702,7 @@ export async function installPublicCatalogue(
     labelEn: string;
     oncePerAccount: boolean;
     priceMinor: string;
+    recommended: boolean;
   }[] = [],
 ) {
   await page.route('**/api/public/credit-packs', async (route) => {
