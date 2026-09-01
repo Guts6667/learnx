@@ -1,7 +1,10 @@
 <title>Adjudication aveugle</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+/>
 <style>
   :root {
     --paper: #f3f5f4;
@@ -12,6 +15,8 @@
     --rule-soft: #e6eae8;
     --mark: #a8690c;
     --mark-wash: rgba(201, 130, 30, 0.26);
+    --bind: #2b6b8f;
+    --bind-wash: rgba(43, 107, 143, 0.16);
     --direct: #2f7a5b;
     --notdirect: #a33b32;
     --ambiguous: #6a5f83;
@@ -28,6 +33,8 @@
       --rule-soft: #232f36;
       --mark: #e0a44a;
       --mark-wash: rgba(224, 164, 74, 0.24);
+      --bind: #6fb6db;
+      --bind-wash: rgba(111, 182, 219, 0.18);
       --direct: #5cb98f;
       --notdirect: #e07d72;
       --ambiguous: #a99ac6;
@@ -44,6 +51,8 @@
     --rule-soft: #232f36;
     --mark: #e0a44a;
     --mark-wash: rgba(224, 164, 74, 0.24);
+    --bind: #6fb6db;
+    --bind-wash: rgba(111, 182, 219, 0.18);
     --direct: #5cb98f;
     --notdirect: #e07d72;
     --ambiguous: #a99ac6;
@@ -51,26 +60,34 @@
     color-scheme: dark;
   }
 
-  * { box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
   body {
     background: var(--paper);
     color: var(--ink);
-    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    font-family:
+      'IBM Plex Sans',
+      system-ui,
+      -apple-system,
+      sans-serif;
     font-size: 15px;
     line-height: 1.5;
     margin: 0;
-    padding-bottom: 200px;
+    padding-bottom: 230px;
   }
-  h1, h2, h3 { text-wrap: balance; }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
 
-  /* The rail is the tally: one segment per card, coloured by its decision. */
   .rail {
     background: var(--card);
     border-bottom: 1px solid var(--rule);
     display: flex;
     gap: 1px;
     height: 26px;
-    left: 0;
     padding: 6px 12px;
     position: sticky;
     top: 0;
@@ -86,11 +103,25 @@
     padding: 0;
     transition: transform 0.1s;
   }
-  .rail button:hover { transform: scaleY(1.35); }
-  .rail button[data-d='DIRECT'] { background: var(--direct); }
-  .rail button[data-d='NOT_DIRECT'] { background: var(--notdirect); }
-  .rail button[data-d='AMBIGUOUS'] { background: var(--ambiguous); }
-  .rail button[data-current='true'] { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .rail button:hover {
+    transform: scaleY(1.35);
+  }
+  .rail button[data-d='DIRECT'] {
+    background: var(--direct);
+  }
+  .rail button[data-d='NOT_DIRECT'] {
+    background: var(--notdirect);
+  }
+  .rail button[data-d='AMBIGUOUS'] {
+    background: var(--ambiguous);
+  }
+  .rail button[data-incomplete='true'] {
+    opacity: 0.45;
+  }
+  .rail button[data-current='true'] {
+    outline: 2px solid var(--ink);
+    outline-offset: 1px;
+  }
 
   header.bar {
     align-items: baseline;
@@ -107,18 +138,27 @@
     letter-spacing: 0.09em;
     text-transform: uppercase;
   }
-  .count { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
-  .grow { flex: 1; }
+  .count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .grow {
+    flex: 1;
+  }
 
   main {
     display: grid;
     gap: 20px;
     grid-template-columns: minmax(320px, 5fr) minmax(340px, 6fr);
     margin: 0 auto;
-    max-width: 1280px;
+    max-width: 1320px;
     padding: 20px;
   }
-  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  @media (max-width: 940px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+  }
 
   section.panel {
     background: var(--card);
@@ -127,7 +167,9 @@
     box-shadow: 0 1px 2px var(--shadow);
     padding: 18px 20px;
   }
-  section.panel + section.panel { margin-top: 20px; }
+  section.panel + section.panel {
+    margin-top: 20px;
+  }
 
   .atom {
     font-family: 'Source Serif 4', Georgia, serif;
@@ -135,17 +177,56 @@
     line-height: 1.35;
     margin: 6px 0 14px;
   }
-  .signature {
-    border-top: 1px solid var(--rule-soft);
-    display: grid;
+  .sig {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12.5px;
-    gap: 2px 14px;
-    grid-template-columns: auto 1fr;
+    font-size: 14px;
+    margin: 0 0 10px;
+    word-break: break-word;
+  }
+  .sig .role {
+    color: var(--bind);
+  }
+  .roles {
+    border-top: 1px solid var(--rule-soft);
+    margin-top: 12px;
     padding-top: 12px;
   }
-  .signature dt { color: var(--muted); }
-  .signature dd { margin: 0; }
+  .role-row {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .role-row button {
+    background: transparent;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    padding: 3px 9px;
+  }
+  .role-row button[aria-pressed='true'] {
+    background: var(--bind);
+    border-color: var(--bind);
+    color: #fff;
+  }
+  .role-row .bound {
+    color: var(--bind);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+  .role-row .unbound {
+    color: var(--notdirect);
+    font-size: 12.5px;
+  }
+  .role-row .external {
+    color: var(--muted);
+    font-size: 12.5px;
+  }
 
   .chip {
     background: var(--rule-soft);
@@ -156,7 +237,6 @@
     font-size: 11.5px;
     padding: 2px 7px;
   }
-
   blockquote.candidate {
     border-left: 3px solid var(--mark);
     font-family: 'Source Serif 4', Georgia, serif;
@@ -165,19 +245,31 @@
     margin: 0;
     padding: 4px 0 4px 14px;
   }
-
   .response {
     font-family: 'Source Serif 4', Georgia, serif;
     font-size: 16.5px;
-    line-height: 1.65;
-    max-height: 46vh;
+    line-height: 1.7;
+    max-height: 44vh;
     overflow-y: auto;
-    white-space: pre-wrap;
   }
-  .response mark {
+  .response .s {
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 1px 0;
+  }
+  .response .s:hover {
+    background: var(--rule-soft);
+  }
+  .response .s.cand {
     background: var(--mark-wash);
     box-shadow: 0 1px 0 var(--mark);
-    color: inherit;
+  }
+  .response .s.bound {
+    background: var(--bind-wash);
+    box-shadow: 0 1px 0 var(--bind);
+  }
+  .response .s.hidden {
+    display: none;
   }
   .context {
     color: var(--muted);
@@ -192,7 +284,7 @@
     bottom: 0;
     box-shadow: 0 -2px 10px var(--shadow);
     left: 0;
-    padding: 12px 20px 14px;
+    padding: 11px 20px 13px;
     position: fixed;
     right: 0;
     z-index: 15;
@@ -200,22 +292,30 @@
   .dock-inner {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px 18px;
+    gap: 10px 18px;
     margin: 0 auto;
-    max-width: 1280px;
+    max-width: 1320px;
   }
-  .verdicts { display: flex; gap: 8px; }
-  .verdicts button {
+  .verdicts {
+    display: flex;
+    gap: 8px;
+  }
+  .verdicts button,
+  .tri button,
+  .ghost {
     background: transparent;
     border: 1.5px solid var(--rule);
     border-radius: 3px;
     color: var(--ink);
     cursor: pointer;
     font: inherit;
-    font-weight: 500;
-    padding: 8px 14px;
+    padding: 7px 13px;
   }
-  .verdicts button kbd {
+  .ghost {
+    font-size: 13px;
+    padding: 6px 11px;
+  }
+  kbd {
     background: var(--rule-soft);
     border-radius: 2px;
     font-family: 'IBM Plex Mono', monospace;
@@ -223,14 +323,55 @@
     margin-right: 7px;
     padding: 1px 5px;
   }
-  .verdicts button[data-v='DIRECT'][aria-pressed='true'] { background: var(--direct); border-color: var(--direct); color: #fff; }
-  .verdicts button[data-v='NOT_DIRECT'][aria-pressed='true'] { background: var(--notdirect); border-color: var(--notdirect); color: #fff; }
-  .verdicts button[data-v='AMBIGUOUS'][aria-pressed='true'] { background: var(--ambiguous); border-color: var(--ambiguous); color: #fff; }
-  .verdicts button[aria-pressed='true'] kbd { background: rgba(255, 255, 255, 0.22); color: inherit; }
+  .verdicts button[data-v='DIRECT'][aria-pressed='true'] {
+    background: var(--direct);
+    border-color: var(--direct);
+    color: #fff;
+  }
+  .verdicts button[data-v='NOT_DIRECT'][aria-pressed='true'] {
+    background: var(--notdirect);
+    border-color: var(--notdirect);
+    color: #fff;
+  }
+  .verdicts button[data-v='AMBIGUOUS'][aria-pressed='true'] {
+    background: var(--ambiguous);
+    border-color: var(--ambiguous);
+    color: #fff;
+  }
+  .verdicts button[aria-pressed='true'] kbd {
+    background: rgba(255, 255, 255, 0.22);
+  }
 
-  .toggles { display: flex; flex-direction: column; gap: 5px; font-size: 13px; }
-  .toggles label { cursor: pointer; display: flex; gap: 7px; align-items: center; }
-  .toggles .defaulted { color: var(--muted); font-size: 11.5px; }
+  .tri {
+    display: flex;
+    gap: 6px;
+  }
+  .tri button {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+  .tri button[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--card);
+  }
+  .tri.proposed button[aria-pressed='true'] {
+    background: transparent;
+    border-style: dashed;
+    color: var(--muted);
+  }
+  .ctl-label {
+    font-size: 12.5px;
+    margin-bottom: 3px;
+  }
+  .todo {
+    color: var(--notdirect);
+    font-size: 12.5px;
+  }
+  .todo.ok {
+    color: var(--direct);
+  }
+
   input[type='text'] {
     background: var(--paper);
     border: 1px solid var(--rule);
@@ -240,19 +381,10 @@
     padding: 8px 10px;
     width: 100%;
   }
-  :focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
-
-  .ghost {
-    background: transparent;
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    color: var(--ink);
-    cursor: pointer;
-    font: inherit;
-    font-size: 13px;
-    padding: 6px 11px;
+  :focus-visible {
+    outline: 2px solid var(--mark);
+    outline-offset: 2px;
   }
-  .warn { color: var(--notdirect); font-size: 13px; }
   textarea {
     background: var(--paper);
     border: 1px solid var(--rule);
@@ -261,13 +393,31 @@
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11.5px;
     line-height: 1.45;
-    min-height: 190px;
+    min-height: 200px;
     padding: 10px;
     width: 100%;
   }
-  .hash { font-family: 'IBM Plex Mono', monospace; font-size: 12px; word-break: break-all; }
-  .note { color: var(--muted); font-size: 13px; line-height: 1.55; }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  .hash {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    word-break: break-all;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  ul.blockers {
+    color: var(--notdirect);
+    font-size: 13.5px;
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+    }
+  }
 </style>
 
 <div class="rail" id="rail" role="navigation" aria-label="Progression"></div>
@@ -278,7 +428,7 @@
     <strong>Adjudication des paires atome / passage</strong>
   </div>
   <div class="grow"></div>
-  <div class="count" id="progress">0 / 0</div>
+  <div class="count" id="progress">—</div>
   <button class="ghost" id="who">relecteur…</button>
   <button class="ghost" id="toExport">export</button>
 </header>
@@ -291,63 +441,158 @@
       <div class="eyebrow">Ce passage établit-il exactement l’atome&nbsp;?</div>
       <div class="verdicts" id="verdicts">
         <button data-v="DIRECT" aria-pressed="false"><kbd>D</kbd>direct</button>
-        <button data-v="NOT_DIRECT" aria-pressed="false"><kbd>N</kbd>pas direct</button>
-        <button data-v="AMBIGUOUS" aria-pressed="false"><kbd>A</kbd>ambigu</button>
+        <button data-v="NOT_DIRECT" aria-pressed="false">
+          <kbd>N</kbd>pas direct
+        </button>
+        <button data-v="AMBIGUOUS" aria-pressed="false">
+          <kbd>A</kbd>ambigu
+        </button>
       </div>
     </div>
-    <div class="toggles">
-      <label><input type="checkbox" id="alt"> <span><kbd>S</kbd> un autre passage soutient l’atome</span></label>
-      <label><input type="checkbox" id="view" checked> <span><kbd>V</kbd> vue de preuve complète</span></label>
-      <span class="defaulted" id="defaulted"></span>
+    <div>
+      <div class="ctl-label">
+        <kbd>S</kbd> un autre passage soutient l’atome
+      </div>
+      <div class="tri" id="altTri"></div>
+      <div class="ctl-label" style="margin-top: 6px">
+        <kbd>V</kbd> vue de preuve complète
+      </div>
+      <div class="tri" id="viewTri"></div>
     </div>
-    <div class="grow" style="min-width: 240px">
-      <input id="why" type="text" placeholder="justification courte (obligatoire si ambigu)" autocomplete="off">
-      <div class="warn" hidden id="whyWarn">Une ambiguïté doit être justifiée.</div>
+    <div class="grow" style="min-width: 230px">
+      <input
+        id="why"
+        type="text"
+        placeholder="justification courte (obligatoire si ambigu)"
+        autocomplete="off"
+      />
+      <div class="todo" id="todo" style="margin-top: 6px"></div>
     </div>
     <div style="align-self: center">
+      <button class="ghost" id="confirm"><kbd>C</kbd>confirmer</button>
       <button class="ghost" id="prev">◀</button>
       <button class="ghost" id="next">▶</button>
     </div>
   </div>
 </footer>
 
-<script id="deck" type="application/json">/*__DECK__*/</script>
+<script id="deck" type="application/json">
+  /*__DECK__*/
+</script>
 <script>
   const DECK = JSON.parse(document.getElementById('deck').textContent);
   const CARDS = DECK.cards;
-  const STORE = 'adj-v1-' + DECK.manifestHash.slice(-12);
+  const STORE = 'adj-v2-' + DECK.manifestHash.slice(-12);
+  /** Shown as a suggestion; the stored value stays null until confirmed. */
+  const PROPOSED = { alternativeSupport: 'no', evidenceViewComplete: 'yes' };
 
-  const state = {
-    decisions: {},
-    index: 0,
-    reviewer: '',
-  };
+  const state = { decisions: {}, index: 0, reviewer: '' };
   try {
-    const saved = JSON.parse(localStorage.getItem(STORE) || '{}');
-    Object.assign(state, saved);
+    Object.assign(state, JSON.parse(localStorage.getItem(STORE) || '{}'));
   } catch (error) {
-    /* a private window or blocked storage: start clean rather than fail */
+    /* private window or blocked storage: start clean rather than fail */
   }
+  let armedRole = null;
 
   function persist() {
     try {
       localStorage.setItem(STORE, JSON.stringify(state));
     } catch (error) {
-      /* nothing to do: the export panel is the durable path */
+      /* the export panel is the durable path */
     }
   }
 
+  function decisionFor(card) {
+    if (!state.decisions[card.cardId]) {
+      state.decisions[card.cardId] = {
+        alternativeSupport: null,
+        cardId: card.cardId,
+        decidedAt: null,
+        evidenceViewComplete: null,
+        rationale: '',
+        revealedBeforeVerdict: false,
+        reviewerId: '',
+        verdict: null,
+        witnessBindings: {},
+      };
+    }
+    return state.decisions[card.cardId];
+  }
+
+  const bindable = (card) => card.argumentRoles.filter((role) => role.bindable);
+
+  /** Everything that keeps a card from counting. Shown, never guessed at. */
+  function blockers(card) {
+    const decision = decisionFor(card);
+    const list = [];
+    if (!decision.verdict) list.push('verdict');
+    if (decision.alternativeSupport === null)
+      list.push('contrôle « autre soutien »');
+    if (decision.evidenceViewComplete === null)
+      list.push('contrôle « vue complète »');
+    for (const role of bindable(card)) {
+      if (!(decision.witnessBindings[role.roleId] || []).length) {
+        list.push('témoin ' + role.roleId);
+      }
+    }
+    if (decision.verdict === 'AMBIGUOUS' && !decision.rationale)
+      list.push('justification');
+    return list;
+  }
+  const complete = (card) => blockers(card).length === 0;
+
   const escapeHtml = (value) =>
-    value.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+    value.replace(
+      /[&<>]/g,
+      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c],
+    );
+
+  function renderSignature(card) {
+    const args = card.argumentRoles
+      .map(
+        (role) => '<span class="role">' + escapeHtml(role.roleId) + '</span>',
+      )
+      .join(', ');
+    return escapeHtml(card.predicate) + '(' + args + ')';
+  }
 
   function renderResponse(card) {
-    if (!card.highlight) return escapeHtml(card.response);
-    const { start, end } = card.highlight;
-    return (
-      escapeHtml(card.response.slice(0, start)) +
-      '<mark>' + escapeHtml(card.response.slice(start, end)) + '</mark>' +
-      escapeHtml(card.response.slice(end))
-    );
+    const decision = decisionFor(card);
+    const bound = new Map();
+    for (const [roleId, ids] of Object.entries(decision.witnessBindings)) {
+      for (const id of ids) bound.set(id, roleId);
+    }
+    const revealed = decision.revealed === true || !card.window;
+    let html = '';
+    let cursor = 0;
+    for (const sentence of card.sentences) {
+      if (sentence.start > cursor) {
+        html += escapeHtml(card.response.slice(cursor, sentence.start));
+      }
+      const inWindow =
+        !card.window ||
+        (sentence.start < card.window.end && sentence.end > card.window.start);
+      const classes = ['s'];
+      if (card.candidateSentenceIds.includes(sentence.id)) classes.push('cand');
+      if (bound.has(sentence.id)) classes.push('bound');
+      if (!inWindow && !revealed) classes.push('hidden');
+      const label = bound.has(sentence.id)
+        ? ' [' + escapeHtml(bound.get(sentence.id)) + ']'
+        : '';
+      html +=
+        '<span class="' +
+        classes.join(' ') +
+        '" data-s="' +
+        sentence.id +
+        '">' +
+        escapeHtml(card.response.slice(sentence.start, sentence.end)) +
+        label +
+        '</span>';
+      cursor = sentence.end;
+    }
+    if (cursor < card.response.length)
+      html += escapeHtml(card.response.slice(cursor));
+    return html;
   }
 
   function renderRail() {
@@ -356,33 +601,97 @@
     CARDS.forEach((card, index) => {
       const button = document.createElement('button');
       const decision = state.decisions[card.cardId];
-      if (decision) button.dataset.d = decision.verdict;
+      if (decision && decision.verdict) {
+        button.dataset.d = decision.verdict;
+        button.dataset.incomplete = String(!complete(card));
+      }
       if (index === state.index) button.dataset.current = 'true';
       button.title = 'carte ' + (index + 1);
       button.setAttribute('aria-label', 'carte ' + (index + 1));
       button.onclick = () => {
         state.index = index;
+        armedRole = null;
         render();
       };
       rail.appendChild(button);
     });
   }
 
+  function tri(container, field) {
+    const card = CARDS[state.index];
+    const decision = decisionFor(card);
+    const value = decision[field];
+    const proposed = value === null;
+    container.className = 'tri' + (proposed ? ' proposed' : '');
+    container.innerHTML = '';
+    for (const option of ['yes', 'no']) {
+      const button = document.createElement('button');
+      button.textContent = option === 'yes' ? 'oui' : 'non';
+      const shown = proposed ? PROPOSED[field] : value;
+      button.setAttribute('aria-pressed', String(shown === option));
+      button.onclick = () => {
+        decision[field] = option;
+        touch();
+      };
+      container.appendChild(button);
+    }
+    if (proposed) {
+      const tag = document.createElement('span');
+      tag.className = 'chip';
+      tag.textContent = 'proposé — non confirmé';
+      container.appendChild(tag);
+    }
+  }
+
+  function touch() {
+    persist();
+    render();
+  }
+
   function render() {
     const card = CARDS[state.index];
-    const decision = state.decisions[card.cardId] || {};
+    const decision = decisionFor(card);
+    const roleRows = card.argumentRoles
+      .map((role) => {
+        const ids = decision.witnessBindings[role.roleId] || [];
+        if (!role.bindable) {
+          return (
+            '<div class="role-row"><button disabled>' +
+            escapeHtml(role.roleId) +
+            '</button><span class="external">' +
+            escapeHtml(role.description) +
+            ' — hors réponse</span></div>'
+          );
+        }
+        const status = ids.length
+          ? '<span class="bound">' + ids.join(', ') + '</span>'
+          : '<span class="unbound">à lier — clique le rôle puis une phrase</span>';
+        return (
+          '<div class="role-row"><button data-role="' +
+          escapeHtml(role.roleId) +
+          '" aria-pressed="' +
+          String(armedRole === role.roleId) +
+          '">' +
+          escapeHtml(role.roleId) +
+          '</button>' +
+          status +
+          '<span class="external">' +
+          escapeHtml(role.description) +
+          '</span></div>'
+        );
+      })
+      .join('');
+
     document.getElementById('app').innerHTML = `
       <div>
         <section class="panel">
           <div class="eyebrow">Atome à établir</div>
           <p class="atom">${escapeHtml(card.atom)}</p>
-          <dl class="signature">
-            <dt>prédicat</dt><dd>${escapeHtml(card.predicate)}(${escapeHtml(card.witnessRoles.join(', '))})</dd>
-            <dt>quantificateur</dt><dd>${escapeHtml(card.quantifier)}</dd>
-            <dt>opérateur</dt><dd>${escapeHtml(card.logicalOperator)}</dd>
-            <dt>arité</dt><dd>${card.responseArity}</dd>
-            <dt>témoins</dt><dd>${escapeHtml(card.witnessGroupId)}</dd>
-          </dl>
+          <p class="sig">${renderSignature(card)} · ${escapeHtml(card.quantifier)}${card.logicalOperator === 'none' ? '' : ' · ' + escapeHtml(card.logicalOperator)}</p>
+          <div class="roles">
+            <div class="eyebrow" style="margin-bottom:8px">Témoins</div>
+            ${roleRows}
+          </div>
           <p class="note" style="margin-bottom:0">Phrase du barème&nbsp;: «&nbsp;${escapeHtml(card.sourcePhrase)}&nbsp;» — critère ${escapeHtml(card.criterionLabel)}</p>
         </section>
         <section class="panel">
@@ -394,51 +703,103 @@
       </div>
       <div>
         <section class="panel">
-          <div class="eyebrow">Réponse complète <span class="chip">${escapeHtml(card.stratum)}</span> <span class="chip">${escapeHtml(card.cardId)}</span></div>
-          <div class="response">${renderResponse(card)}</div>
+          <div class="eyebrow">
+            ${card.window && decision.revealed !== true ? 'Extrait autour du passage' : 'Réponse complète'}
+            <span class="chip">${escapeHtml(card.stratum)}</span>
+            <span class="chip">${escapeHtml(card.cardId)}</span>
+          </div>
+          <div class="response" id="resp">${renderResponse(card)}</div>
+          ${
+            card.window && decision.revealed !== true
+              ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la réponse complète</button> <span class="note">l’ouverture est journalisée</span></p>'
+              : ''
+          }
         </section>
       </div>`;
 
-    document.getElementById('dock').hidden = false;
     for (const button of document.querySelectorAll('#verdicts button')) {
-      button.setAttribute('aria-pressed', String(button.dataset.v === decision.verdict));
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.v === decision.verdict),
+      );
     }
-    document.getElementById('alt').checked = decision.alternativeSupport === true;
-    document.getElementById('view').checked = decision.completeEvidenceView !== false;
+    tri(document.getElementById('altTri'), 'alternativeSupport');
+    tri(document.getElementById('viewTri'), 'evidenceViewComplete');
     document.getElementById('why').value = decision.rationale || '';
-    document.getElementById('whyWarn').hidden = !(decision.verdict === 'AMBIGUOUS' && !decision.rationale);
-    document.getElementById('defaulted').textContent = decision.touchedControls
-      ? 'contrôles réglés à la main'
-      : 'contrôles laissés par défaut';
-    const done = Object.keys(state.decisions).length;
+    const missing = blockers(card);
+    const todo = document.getElementById('todo');
+    todo.className = 'todo' + (missing.length ? '' : ' ok');
+    todo.textContent = missing.length
+      ? 'manque : ' + missing.join(', ')
+      : 'carte complète';
+    document.getElementById('dock').hidden = false;
+
+    const done = CARDS.filter(
+      (c) => state.decisions[c.cardId] && complete(c),
+    ).length;
     document.getElementById('progress').textContent =
-      `carte ${state.index + 1} / ${CARDS.length} · ${done} décidées`;
+      `carte ${state.index + 1} / ${CARDS.length} · ${done} complètes`;
     document.getElementById('who').textContent = state.reviewer || 'relecteur…';
+
+    for (const button of document.querySelectorAll(
+      '.role-row button[data-role]',
+    )) {
+      button.onclick = () => {
+        armedRole =
+          armedRole === button.dataset.role ? null : button.dataset.role;
+        render();
+      };
+    }
+    for (const sentence of document.querySelectorAll('#resp .s')) {
+      sentence.onclick = () => {
+        if (!armedRole) return;
+        const ids = decision.witnessBindings[armedRole] || [];
+        const id = sentence.dataset.s;
+        decision.witnessBindings[armedRole] = ids.includes(id)
+          ? ids.filter((x) => x !== id)
+          : [...ids, id];
+        touch();
+      };
+    }
+    const reveal = document.getElementById('reveal');
+    if (reveal) {
+      reveal.onclick = () => {
+        decision.revealed = true;
+        if (!decision.verdict) decision.revealedBeforeVerdict = true;
+        touch();
+      };
+    }
     renderRail();
   }
 
   function record(verdict) {
     const card = CARDS[state.index];
-    const previous = state.decisions[card.cardId] || {};
-    state.decisions[card.cardId] = {
-      alternativeSupport: document.getElementById('alt').checked,
-      cardId: card.cardId,
-      completeEvidenceView: document.getElementById('view').checked,
-      decidedAt: new Date().toISOString(),
-      rationale: document.getElementById('why').value.trim(),
-      reviewerId: state.reviewer,
-      touchedControls: previous.touchedControls === true,
-      verdict,
-    };
+    const decision = decisionFor(card);
+    decision.verdict = verdict;
+    decision.decidedAt = new Date().toISOString();
+    decision.reviewerId = state.reviewer;
     persist();
     render();
-    if (verdict !== 'AMBIGUOUS' || state.decisions[card.cardId].rationale) advance(1);
+    if (complete(card)) advance(1);
   }
 
   function advance(step) {
     state.index = Math.min(CARDS.length - 1, Math.max(0, state.index + step));
+    armedRole = null;
     persist();
     render();
+  }
+
+  /** C accepts the two proposals exactly as displayed, and nothing else. */
+  function confirmProposals() {
+    const decision = decisionFor(CARDS[state.index]);
+    if (decision.alternativeSupport === null) {
+      decision.alternativeSupport = PROPOSED.alternativeSupport;
+    }
+    if (decision.evidenceViewComplete === null) {
+      decision.evidenceViewComplete = PROPOSED.evidenceViewComplete;
+    }
+    touch();
   }
 
   for (const button of document.querySelectorAll('#verdicts button')) {
@@ -446,48 +807,56 @@
   }
   document.getElementById('prev').onclick = () => advance(-1);
   document.getElementById('next').onclick = () => advance(1);
-  for (const id of ['alt', 'view']) {
-    document.getElementById(id).onchange = () => {
-      const card = CARDS[state.index];
-      const decision = state.decisions[card.cardId];
-      if (decision) {
-        decision.alternativeSupport = document.getElementById('alt').checked;
-        decision.completeEvidenceView = document.getElementById('view').checked;
-        decision.touchedControls = true;
-        persist();
-        render();
-      }
-    };
-  }
+  document.getElementById('confirm').onclick = confirmProposals;
   document.getElementById('why').oninput = () => {
-    const decision = state.decisions[CARDS[state.index].cardId];
-    if (decision) {
-      decision.rationale = document.getElementById('why').value.trim();
-      persist();
-    }
+    decisionFor(CARDS[state.index]).rationale = document
+      .getElementById('why')
+      .value.trim();
+    persist();
+    const missing = blockers(CARDS[state.index]);
+    const todo = document.getElementById('todo');
+    todo.className = 'todo' + (missing.length ? '' : ' ok');
+    todo.textContent = missing.length
+      ? 'manque : ' + missing.join(', ')
+      : 'carte complète';
   };
   document.getElementById('who').onclick = () => {
-    const value = prompt('Identifiant du relecteur (il est enregistré avec chaque décision)', state.reviewer);
+    const value = prompt(
+      'Identifiant du relecteur (enregistré avec chaque décision)',
+      state.reviewer,
+    );
     if (value !== null) {
       state.reviewer = value.trim();
-      persist();
-      render();
+      touch();
     }
   };
 
+  const cycle = (field) => {
+    const decision = decisionFor(CARDS[state.index]);
+    const order = [null, 'yes', 'no'];
+    decision[field] =
+      order[(order.indexOf(decision[field]) + 1) % order.length];
+    touch();
+  };
+
   addEventListener('keydown', (event) => {
-    if (event.target.matches('input, textarea')) {
-      if (event.key === 'Escape') event.target.blur();
+    const target = event.target;
+    if (target instanceof Element && target.matches('input, textarea')) {
+      if (event.key === 'Escape' && target instanceof HTMLElement)
+        target.blur();
       return;
     }
     const key = event.key.toLowerCase();
     if (key === 'd') record('DIRECT');
     else if (key === 'n') record('NOT_DIRECT');
     else if (key === 'a') record('AMBIGUOUS');
-    else if (key === 's') { document.getElementById('alt').click(); }
-    else if (key === 'v') { document.getElementById('view').click(); }
-    else if (key === 'j') { event.preventDefault(); document.getElementById('why').focus(); }
-    else if (event.key === 'ArrowLeft') advance(-1);
+    else if (key === 's') cycle('alternativeSupport');
+    else if (key === 'v') cycle('evidenceViewComplete');
+    else if (key === 'c') confirmProposals();
+    else if (key === 'j') {
+      event.preventDefault();
+      document.getElementById('why').focus();
+    } else if (event.key === 'ArrowLeft') advance(-1);
     else if (event.key === 'ArrowRight') advance(1);
   });
 
@@ -495,51 +864,116 @@
   function canonical(value) {
     if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
     if (value && typeof value === 'object') {
-      return '{' + Object.keys(value).sort().map((k) => JSON.stringify(k) + ':' + canonical(value[k])).join(',') + '}';
+      return (
+        '{' +
+        Object.keys(value)
+          .sort()
+          .map((k) => JSON.stringify(k) + ':' + canonical(value[k]))
+          .join(',') +
+        '}'
+      );
     }
     return JSON.stringify(value);
   }
 
   document.getElementById('toExport').onclick = async () => {
-    const decisions = CARDS.map((card) => state.decisions[card.cardId]).filter(Boolean);
+    const refusals = [];
+    if (!state.reviewer) refusals.push('aucun identifiant de relecteur');
+    const incomplete = CARDS.filter((card) => !complete(card));
+    if (incomplete.length) {
+      refusals.push(
+        incomplete.length + ' cartes incomplètes sur ' + CARDS.length,
+      );
+    }
+    document.getElementById('dock').hidden = true;
+
+    if (refusals.length) {
+      const detail = incomplete
+        .slice(0, 12)
+        .map(
+          (card) =>
+            '<li>' +
+            escapeHtml(card.cardId) +
+            ' — ' +
+            escapeHtml(blockers(card).join(', ')) +
+            '</li>',
+        )
+        .join('');
+      document.getElementById('app').innerHTML = `
+        <div style="grid-column: 1 / -1"><section class="panel">
+          <div class="eyebrow">Export refusé</div>
+          <p class="note">Une adjudication partielle exportée devient une adjudication citée.
+             La passe 1 ne s’exporte que complète.</p>
+          <ul class="blockers">${refusals.map((r) => '<li>' + escapeHtml(r) + '</li>').join('')}</ul>
+          ${detail ? '<div class="eyebrow" style="margin-top:14px">Premières cartes en cause</div><ul class="blockers">' + detail + '</ul>' : ''}
+          <p><button class="ghost" id="back">retour aux cartes</button></p>
+        </section></div>`;
+      document.getElementById('back').onclick = () => {
+        document.getElementById('dock').hidden = false;
+        render();
+      };
+      return;
+    }
+
     const payload = {
       atomTaxonomyHash: DECK.atomTaxonomyHash,
-      decisions: decisions.sort((a, b) => a.cardId.localeCompare(b.cardId)),
+      decisions: CARDS.map((card) => {
+        const d = state.decisions[card.cardId];
+        return {
+          alternativeSupport: d.alternativeSupport,
+          cardId: d.cardId,
+          decidedAt: d.decidedAt,
+          evidenceViewComplete: d.evidenceViewComplete,
+          rationale: d.rationale,
+          revealedBeforeVerdict: d.revealedBeforeVerdict === true,
+          reviewerId: d.reviewerId || state.reviewer,
+          verdict: d.verdict,
+          witnessBindings: d.witnessBindings,
+        };
+      }).sort((a, b) => a.cardId.localeCompare(b.cardId)),
+      deckHash: DECK.contentHash,
       deckSeed: DECK.shuffleSeed,
       manifestHash: DECK.manifestHash,
       pass: 1,
-      schemaVersion: 1,
+      schemaVersion: 2,
     };
     const text = canonical(payload);
     let digest = 'indisponible hors https';
     if (globalThis.crypto && crypto.subtle) {
-      const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-      digest = 'sha256:' + [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('');
+      const bytes = await crypto.subtle.digest(
+        'SHA-256',
+        new TextEncoder().encode(text),
+      );
+      digest =
+        'sha256:' +
+        [...new Uint8Array(bytes)]
+          .map((b) => b.toString(16).padStart(2, '0'))
+          .join('');
     }
     document.getElementById('app').innerHTML = `
-      <div style="grid-column: 1 / -1">
-        <section class="panel">
-          <div class="eyebrow">Export de la passe 1</div>
-          <p class="note">${decisions.length} décisions sur ${CARDS.length}. Copie ce JSON dans
-            <code>benchmarks/ai-correction/regression/adjudication-pass1.v1.json</code>.
-            Toute modification ultérieure produit une nouvelle version, jamais une réécriture.</p>
-          <p class="hash"><strong>empreinte&nbsp;:</strong> ${digest}</p>
-          <p><button class="ghost" id="copy">copier</button>
-             <button class="ghost" id="back">retour aux cartes</button></p>
-          <textarea readonly id="out">${escapeHtml(JSON.stringify(payload, null, 2))}</textarea>
-        </section>
-      </div>`;
+      <div style="grid-column: 1 / -1"><section class="panel">
+        <div class="eyebrow">Export de la passe 1</div>
+        <p class="note">${payload.decisions.length} décisions complètes. Enregistre ce texte tel quel dans
+          <code>benchmarks/ai-correction/regression/adjudication-pass1.v1.json</code>.
+          Toute modification ultérieure produit une nouvelle version, jamais une réécriture.</p>
+        <p class="hash"><strong>empreinte du texte ci-dessous&nbsp;:</strong> ${digest}</p>
+        <p><button class="ghost" id="copy">copier</button>
+           <button class="ghost" id="back">retour aux cartes</button></p>
+        <textarea readonly id="out">${escapeHtml(text)}</textarea>
+      </section></div>`;
     document.getElementById('copy').onclick = async () => {
       try {
-        await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+        await navigator.clipboard.writeText(text);
         document.getElementById('copy').textContent = 'copié';
       } catch (error) {
         document.getElementById('out').select();
         document.getElementById('copy').textContent = 'sélectionné — ⌘C';
       }
     };
-    document.getElementById('back').onclick = render;
-    document.getElementById('dock').hidden = true;
+    document.getElementById('back').onclick = () => {
+      document.getElementById('dock').hidden = false;
+      render();
+    };
   };
 
   render();

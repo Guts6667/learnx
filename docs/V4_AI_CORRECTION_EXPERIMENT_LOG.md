@@ -1488,3 +1488,97 @@ aveugle ou si elle est acceptable comme biais résiduel connu.
 
 La seconde est plus faible : les longueurs de span se recouvrent largement
 (médianes 129 contre 113), donc le span seul ne trahit pas le membre.
+
+### Paquet v2 — quatre défauts corrigés, et la fuite de longueur traitée sans toucher aux suppressions
+
+L'inspection du relecteur a trouvé quatre blocages dans la page v1 et une fuite
+de reconnaissance que ma contrainte d'ordre ne couvrait pas. Le paquet v2
+(`sha256:c81997a9…`, 106 cartes) et la page les traitent.
+
+#### Les quatre défauts
+
+1. **Les contrôles n'étaient pas tracés.** Régler « autre soutien » avant le
+   verdict n'écrivait rien : le gestionnaire cherchait une décision qui n'existait
+   pas encore, et la valeur repartait ensuite en `touchedControls: false`. Les
+   deux contrôles sont désormais **tri-valués** — `null | yes | no` — et partent à
+   `null`. La touche `C` confirme explicitement les deux valeurs proposées. Un
+   contrôle non confirmé laisse la carte **inéligible**, et la page nomme ce qui
+   manque.
+
+2. **La signature s'affichait `correct_limit([object Object], [object Object])`.**
+   Elle rendait les `witnessRoles` du critère au lieu des `arguments` de l'atome,
+   et les rendait comme objets. Elle affiche maintenant
+   `scope_match(choice, task_frame)`, avec la description de chaque rôle.
+
+3. **Les témoins liés n'étaient pas exportés.** Pour les atomes d'arité `n`, un
+   `DIRECT` n'était pas reproductible : rien ne disait quel passage instancie
+   `choice`, `limit` ou `claim`. La réponse est découpée en phrases adressables ;
+   on arme un rôle, on clique une phrase, la liaison s'affiche et part dans
+   l'export. **42 cartes ont deux rôles à lier, 60 en ont un, 4 aucun.** Une carte
+   dont un rôle liable n'est pas lié ne compte pas.
+
+4. **L'export était trop permissif.** Il refuse maintenant, en nommant les
+   cartes en cause : identifiant de relecteur vide, moins de 106 décisions
+   complètes, un contrôle resté `null`, un témoin non lié, un `AMBIGUOUS` sans
+   justification. Et il copie **le texte canonique lui-même**, celui dont
+   l'empreinte est affichée — pas une version indentée qui hacherait autrement.
+
+#### La fuite de longueur
+
+Mesures du relecteur, reproduites : AUC de la longueur de réponse **0,687**,
+AUC de la longueur du span **0,666**, positif plus long dans **40/45** paires,
+**30 réponses distinctes** sur 90 cartes en groupes de polarité pure, et **35
+cartes** dont la réponse réapparaît à moins de huit positions. La contrainte v1
+protégeait le `pairId` et rien d'autre.
+
+Quatre changements, aucun ne touche aux 45 suppressions :
+
+| changement | effet mesuré |
+|---|---|
+| ordre contraint aussi par empreinte de réponse et par grappe | réapparitions à moins de 8 positions : **18 → 0** |
+| fenêtre fixe de 340 caractères sur S1–S3, réponse complète sur demande et journalisée | AUC visible **0,687 → 0,592** |
+| passages étendus à la phrase entière **des deux côtés** | AUC de span **0,666 → 0,406** |
+| 16 contrôles positifs raccourcis, hors endpoint | AUC de réponse **0,687 → 0,640** |
+
+L'extension à la phrase est symétrique et **conservatrice** : elle donne au
+négatif *plus* de texte pour être jugé suffisant, jamais moins. Le fragment
+exactement cité par le correcteur est conservé dans le fichier de clé.
+
+Les contrôles ont d'abord échoué. En ne retirant qu'une phrase, ils sortaient à
+679 caractères de médiane — **plus longs que les positifs** — et faisaient
+monter l'AUC à 0,727 au lieu de la baisser. Ils retirent maintenant des phrases
+jusqu'à retomber dans la bande des négatifs (médiane 450 contre 437).
+
+#### Ce qui reste, par strate
+
+| strate | n | AUC visible | AUC span |
+|---|---|---|---|
+| fenêtre pleine | 30 | **0,455** | 0,440 |
+| réponse plus courte que la fenêtre | 14 | **0,833** | 0,625 |
+| intégrales S4–S7 | 62 | 0,629 | **0,334** |
+
+Là où la fenêtre est pleine, la longueur ne dit plus rien. Le résidu se
+concentre sur deux populations nommées : 14 cartes dont la réponse est plus
+courte que la fenêtre — rien à masquer avec —, et S4–S7 où la phrase citée par
+le correcteur est **plus longue** que la phrase porteuse, donc un signal inversé
+de même ampleur. Aucun des deux ne se corrige sans changer le phénomène étudié.
+
+#### D0 — les deux gardes déterministes, testées
+
+`src/lib/ai-correction-evidence-guards.ts` : un critère absent de la sortie ne
+peut pas être noté ; un niveau haut dont aucune citation ne se retrouve dans la
+copie ne peut pas être attribué. Neuf tests, dont **trois sur les artefacts
+payés eux-mêmes** — les deux vrais échecs, plus un contrôle inverse sur 20+
+critères correctement cités, sans lequel une réponse vide aurait fait passer les
+deux premiers pour la mauvaise raison. Quatre mutants de la garde rougissent.
+
+Ces deux échecs restent **2/2 dans l'évaluation end-to-end et hors du
+dénominateur du vérificateur**.
+
+#### La page est testée, pas seulement relue
+
+`src/lib/ai-correction-adjudication-page.test.ts` charge la page publiée dans un
+DOM et la pilote : neuf tests. Six mutants de la page rougissent. Le premier jeu
+de tests **laissait passer** la réintroduction du bug v1, parce qu'il n'exerçait
+que le clavier et pas le clic — deux gestionnaires différents. Le test manquant a
+été ajouté, et le mutant rougit.

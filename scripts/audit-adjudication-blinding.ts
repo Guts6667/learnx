@@ -1,9 +1,10 @@
 /**
- * Audits the blind adjudication deck (V4.5-210, pass 1).
+ * Audits the blind adjudication deck (V4.5-210, pass 1, v2).
  *
- * A blind pass is only blind if nothing on a card says which member it is.
- * This asserts that mechanically rather than by reading the builder, and
- * reports the leaks it cannot remove instead of leaving them unstated.
+ * A blind pass is only blind if nothing on a card says which member it is, and
+ * if nothing about the deck's shape says it either. This asserts both
+ * mechanically, and measures the leaks it cannot remove instead of leaving them
+ * unstated.
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -11,20 +12,21 @@ import path from 'node:path';
 const REG = 'benchmarks/ai-correction/regression';
 
 type Card = Record<string, unknown> & {
+  argumentRoles: { bindable: boolean; description: string; roleId: string }[];
   candidateSpan: string;
   cardId: string;
   response: string;
+  stratum: string;
+  window: { end: number; start: number } | null;
+};
+type KeyEntry = {
+  cardId: string;
+  clusterId: string;
+  member: 'control_positive' | 'negative' | 'positive';
+  pairId: string | null;
+  responseHash: string;
 };
 
-/**
- * Anything that would name the member, the model, or the expected outcome.
- *
- * Two lists, because they need different matching. Identifiers are machine
- * tokens and never appear in rubric French, so a substring match is right.
- * Verdict labels are matched on word boundaries and in their exact case: the
- * rubric legitimately says « directement actionnable », and treating that as a
- * leak would be a false alarm that teaches us to ignore the audit.
- */
 const FORBIDDEN_IDENTIFIERS = [
   'SENTENCE_DELETION',
   'FACT_INVERSION',
@@ -33,6 +35,9 @@ const FORBIDDEN_IDENTIFIERS = [
   'mutantId',
   'goldRationale',
   'expectedCriteria',
+  'citedFragment',
+  'responseHash',
+  'clusterId',
   'openrouter',
   'sonnet',
   'kimi',
@@ -45,63 +50,72 @@ const FORBIDDEN_VERDICTS = [
   /\bNOT_DIRECT\b/,
   /\bAMBIGUOUS\b/,
   /\bmastered\b/,
-  /\bnot_mastered\b/,
-  /"(?:member|isPositive|isNegative)"/,
+  /"(?:member|isPositive|isNegative|control)"/,
 ];
+
+/** P(a random positive is longer than a random negative); 0.5 is no signal. */
+function auc(positives: number[], negatives: number[]): number {
+  if (positives.length === 0 || negatives.length === 0) return Number.NaN;
+  let wins = 0;
+  let ties = 0;
+  for (const a of positives) {
+    for (const b of negatives) {
+      if (a > b) wins += 1;
+      else if (a === b) ties += 1;
+    }
+  }
+  return (wins + 0.5 * ties) / (positives.length * negatives.length);
+}
 
 function main(): void {
   const deckPath = process.env.ADJUDICATION_DECK
     ? path.resolve(process.env.ADJUDICATION_DECK)
-    : path.resolve(REG, 'adjudication-deck.v1.json');
+    : path.resolve(REG, 'adjudication-deck.v2.json');
   const deck = JSON.parse(readFileSync(deckPath, 'utf8')) as {
     cards: Card[];
-    minimumGap: number;
+    minimumGapTarget: { cluster: number; pair: number; response: number };
+    windowCharacters: number;
   };
-  const key = JSON.parse(
-    readFileSync(path.resolve(REG, 'adjudication-deck.v1.key.json'), 'utf8'),
-  ) as {
-    key: { cardId: string; member: 'negative' | 'positive'; pairId: string }[];
-  };
+  const key = (
+    JSON.parse(
+      readFileSync(path.resolve(REG, 'adjudication-deck.v2.key.json'), 'utf8'),
+    ) as { key: KeyEntry[] }
+  ).key;
 
-  const memberOf = new Map(key.key.map((k) => [k.cardId, k.member]));
-  const pairOf = new Map(key.key.map((k) => [k.cardId, k.pairId]));
+  const entryOf = new Map(key.map((entry) => [entry.cardId, entry]));
   const failures: string[] = [];
-
-  // 1. The deck must not contain the key.
   const deckText = JSON.stringify(deck);
-  for (const entry of key.key) {
-    if (deckText.includes(entry.pairId)) {
+
+  // 1. The deck must not contain the key's linking fields.
+  for (const entry of key) {
+    if (entry.pairId && deckText.includes(entry.pairId)) {
       failures.push(`la paire ${entry.pairId} apparaît dans le paquet`);
       break;
     }
   }
 
-  // 2. Forbidden tokens, ignoring the response and dossier — those are learner
-  //    and task text, where a word like "positive" can legitimately occur.
+  // 2. Forbidden tokens in metadata — learner and task text excepted, where a
+  //    word like "direct" legitimately occurs.
+  const CONTENT = [
+    'candidateSpan',
+    'dossier',
+    'frame',
+    'response',
+    'sentences',
+  ];
   for (const card of deck.cards) {
     const metadata = JSON.stringify(
       Object.fromEntries(
-        Object.entries(card).filter(
-          ([field]) =>
-            !['dossier', 'frame', 'response', 'candidateSpan'].includes(field),
-        ),
+        Object.entries(card).filter(([field]) => !CONTENT.includes(field)),
       ),
-    ).toLowerCase();
+    );
     for (const token of FORBIDDEN_IDENTIFIERS) {
-      if (metadata.includes(token.toLowerCase())) {
+      if (metadata.toLowerCase().includes(token.toLowerCase())) {
         failures.push(`${card.cardId} porte « ${token} » dans ses métadonnées`);
       }
     }
-    const rawMetadata = JSON.stringify(
-      Object.fromEntries(
-        Object.entries(card).filter(
-          ([field]) =>
-            !['dossier', 'frame', 'response', 'candidateSpan'].includes(field),
-        ),
-      ),
-    );
     for (const pattern of FORBIDDEN_VERDICTS) {
-      if (pattern.test(rawMetadata)) {
+      if (pattern.test(metadata)) {
         failures.push(
           `${card.cardId} porte ${pattern.source} dans ses métadonnées`,
         );
@@ -109,92 +123,121 @@ function main(): void {
     }
   }
 
-  // 3. Positive and negative cards must be structurally indistinguishable.
+  // 3. Positive, negative and control cards must be indistinguishable in shape.
+  //    The property is: knowing a card's field set must not narrow down which
+  //    member it is. So every shape present must be carried by more than one
+  //    member class — unless the whole deck shares one shape, which tells
+  //    nothing either.
   const shape = (card: Card): string => Object.keys(card).sort().join(',');
-  const shapesByMember = new Map<string, Set<string>>();
+  const membersByShape = new Map<string, Set<string>>();
   for (const card of deck.cards) {
-    const member = memberOf.get(card.cardId) ?? '?';
-    const set = shapesByMember.get(member) ?? new Set<string>();
-    set.add(shape(card));
-    shapesByMember.set(member, set);
+    const set = membersByShape.get(shape(card)) ?? new Set<string>();
+    set.add(entryOf.get(card.cardId)?.member ?? '?');
+    membersByShape.set(shape(card), set);
   }
-  const positiveShapes = [...(shapesByMember.get('positive') ?? [])].sort();
-  const negativeShapes = [...(shapesByMember.get('negative') ?? [])].sort();
-  const onlyPositive = positiveShapes.filter(
-    (s) => !negativeShapes.includes(s),
-  );
-  const onlyNegative = negativeShapes.filter(
-    (s) => !positiveShapes.includes(s),
-  );
-  if (onlyPositive.length > 0 || onlyNegative.length > 0) {
-    failures.push(
-      `forme de carte distinctive : ${onlyPositive.length} propre aux positifs, ${onlyNegative.length} propre aux négatifs`,
-    );
+  if (membersByShape.size > 1) {
+    for (const [fields, members] of membersByShape) {
+      if (members.size === 1) {
+        failures.push(
+          `forme propre à « ${[...members][0]} » : ${fields.slice(0, 60)}…`,
+        );
+      }
+    }
   }
 
-  // 4. Every card's span must be locatable in its own response.
-  const unlocatable = deck.cards.filter(
-    (card) => !card.response.includes(card.candidateSpan),
-  );
-  if (unlocatable.length > 0) {
-    failures.push(
-      `${unlocatable.length} cartes dont le span est absent de leur réponse`,
-    );
-  }
-
-  // 5. Minimum gap, recomputed rather than trusted.
-  const position = new Map(
-    deck.cards.map((card, index) => [card.cardId, index]),
-  );
-  let minimumGap = Number.POSITIVE_INFINITY;
+  // 4. Roles must render as identifiers, not as objects.
   for (const card of deck.cards) {
-    const twin = deck.cards.find(
-      (other) =>
-        other.cardId !== card.cardId &&
-        pairOf.get(other.cardId) === pairOf.get(card.cardId),
-    );
-    if (!twin) continue;
-    minimumGap = Math.min(
-      minimumGap,
-      Math.abs(
-        (position.get(card.cardId) ?? 0) - (position.get(twin.cardId) ?? 0),
-      ),
-    );
-  }
-  if (minimumGap < deck.minimumGap) {
-    failures.push(
-      `écart minimum ${minimumGap} sous le seuil ${deck.minimumGap}`,
-    );
+    for (const role of card.argumentRoles) {
+      if (typeof role.roleId !== 'string' || role.roleId.length === 0) {
+        failures.push(`${card.cardId} porte un rôle sans identifiant`);
+      }
+    }
   }
 
-  // Residual, reported not asserted: how far apart the two members read.
-  const positives = deck.cards.filter(
-    (c) => memberOf.get(c.cardId) === 'positive',
-  );
-  const negatives = deck.cards.filter(
-    (c) => memberOf.get(c.cardId) === 'negative',
-  );
-  const stat = (values: number[]) => {
-    const sorted = [...values].sort((a, b) => a - b);
-    return {
-      max: sorted.at(-1) ?? 0,
-      median: sorted[Math.floor(sorted.length / 2)] ?? 0,
-      min: sorted[0] ?? 0,
-    };
+  // 5. Every span locatable, every window containing its own span.
+  for (const card of deck.cards) {
+    if (!card.response.includes(card.candidateSpan)) {
+      failures.push(`${card.cardId} : span absent de sa réponse`);
+    }
+    const start = card.response.indexOf(card.candidateSpan);
+    if (
+      card.window &&
+      (card.window.start > start ||
+        card.window.end < start + card.candidateSpan.length)
+    ) {
+      failures.push(`${card.cardId} : la fenêtre coupe son propre passage`);
+    }
+  }
+
+  // 6. Gaps, recomputed from the delivered order rather than trusted.
+  const achieved = { cluster: Infinity, pair: Infinity, response: Infinity };
+  for (let i = 0; i < deck.cards.length; i += 1) {
+    const a = entryOf.get(deck.cards[i]?.cardId ?? '');
+    if (!a) continue;
+    for (let j = i + 1; j < deck.cards.length; j += 1) {
+      const b = entryOf.get(deck.cards[j]?.cardId ?? '');
+      if (!b) continue;
+      const gap = j - i;
+      if (a.pairId !== null && a.pairId === b.pairId)
+        achieved.pair = Math.min(achieved.pair, gap);
+      if (a.responseHash === b.responseHash)
+        achieved.response = Math.min(achieved.response, gap);
+      if (a.clusterId === b.clusterId)
+        achieved.cluster = Math.min(achieved.cluster, gap);
+    }
+  }
+  for (const field of ['cluster', 'pair', 'response'] as const) {
+    if (achieved[field] < deck.minimumGapTarget[field]) {
+      failures.push(
+        `écart ${field} ${achieved[field]} sous la cible ${deck.minimumGapTarget[field]}`,
+      );
+    }
+  }
+
+  const isNegative = (card: Card) =>
+    entryOf.get(card.cardId)?.member === 'negative';
+  const visible = (card: Card) =>
+    card.window ? card.window.end - card.window.start : card.response.length;
+  const report = (label: string, cards: Card[]) => {
+    const positives = cards.filter((card) => !isNegative(card));
+    const negatives = cards.filter(isNegative);
+    if (positives.length === 0 || negatives.length === 0) return;
+    console.log(
+      `  ${label.padEnd(34)} n=${String(cards.length).padStart(3)}  ` +
+        `visible ${auc(positives.map(visible), negatives.map(visible)).toFixed(3)}  ` +
+        `span ${auc(
+          positives.map((c) => c.candidateSpan.length),
+          negatives.map((c) => c.candidateSpan.length),
+        ).toFixed(3)}`,
+    );
   };
-  const spanP = stat(positives.map((c) => c.candidateSpan.length));
-  const spanN = stat(negatives.map((c) => c.candidateSpan.length));
-  const respP = stat(positives.map((c) => c.response.length));
-  const respN = stat(negatives.map((c) => c.response.length));
 
+  console.log(`cartes : ${deck.cards.length}`);
   console.log(
-    `cartes : ${deck.cards.length}  écart minimum recalculé : ${minimumGap}`,
+    `écarts atteints : paire ${achieved.pair}, réponse ${achieved.response}, grappe ${achieved.cluster}`,
   );
-  console.log(
-    `longueur du span      — positifs ${spanP.min}/${spanP.median}/${spanP.max}, négatifs ${spanN.min}/${spanN.median}/${spanN.max}  (min/médiane/max)`,
+  console.log('');
+  console.log('AUC de longueur — 0,500 = aucun signal :');
+  report('tout le paquet', deck.cards);
+  report(
+    'fenêtrées (S1–S3)',
+    deck.cards.filter((card) => card.window),
   );
-  console.log(
-    `longueur de la réponse — positifs ${respP.min}/${respP.median}/${respP.max}, négatifs ${respN.min}/${respN.median}/${respN.max}`,
+  report(
+    '  dont fenêtre pleine',
+    deck.cards.filter(
+      (card) => card.window && visible(card) >= deck.windowCharacters,
+    ),
+  );
+  report(
+    '  dont réponse plus courte',
+    deck.cards.filter(
+      (card) => card.window && visible(card) < deck.windowCharacters,
+    ),
+  );
+  report(
+    'intégrales (S4–S7)',
+    deck.cards.filter((card) => !card.window),
   );
   console.log('');
 
@@ -206,23 +249,21 @@ function main(): void {
   }
   console.log('Aucune carte ne porte de marque de son membre.');
   console.log('');
-  console.log('Fuites résiduelles, déclarées et non corrigées :');
+  console.log('Fuites résiduelles, déclarées :');
   console.log(
-    '  — la réponse d’une carte négative issue d’une suppression de phrase est',
+    '  — la réponse complète d’une carte négative issue d’une suppression reste',
   );
   console.log(
-    '    plus courte d’une phrase que celle de sa jumelle. Un relecteur qui',
+    '    plus courte. La fenêtre l’annule là où elle est pleine ; ailleurs elle',
   );
+  console.log('    subsiste, et l’ouverture volontaire est journalisée.');
   console.log(
-    '    reconnaît la copie et se souvient de l’autre carte peut le remarquer.',
+    '  — sur S4–S7 la phrase citée par le correcteur est en moyenne plus longue',
   );
+  console.log('    que la phrase porteuse : le signal existe, inversé.');
   console.log(
-    `    L’écart minimum de ${deck.minimumGap} cartes atténue sans supprimer.`,
+    '  — l’ordre est tiré d’une graine enregistrée : reproductible, pas secret.',
   );
-  console.log(
-    '  — l’ordre est tiré d’une graine enregistrée, donc reproductible : il',
-  );
-  console.log('    n’a pas été choisi après coup, mais il n’est pas secret.');
 }
 
 main();
