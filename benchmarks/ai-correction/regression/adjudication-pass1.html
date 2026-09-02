@@ -7513,9 +7513,13 @@
 
   function renderResponse(card) {
     const decision = decisionFor(card);
+    // Every role a sentence is bound to, not just the last one. One label per
+    // sentence hid half of a reviewer's own choice on the very first card.
     const bound = new Map();
     for (const [roleId, entry] of Object.entries(decision.roleAssessments)) {
-      for (const id of entry.sentenceIds || []) bound.set(id, roleId);
+      for (const id of entry.sentenceIds || []) {
+        bound.set(id, [...(bound.get(id) || []), roleId]);
+      }
     }
     const revealed = decision.revealed === true || !card.window;
     let html = '';
@@ -7532,7 +7536,7 @@
       if (bound.has(sentence.id)) classes.push('bound');
       if (!inWindow && !revealed) classes.push('hidden');
       const label = bound.has(sentence.id)
-        ? ' [' + escapeHtml(bound.get(sentence.id)) + ']'
+        ? ' [' + escapeHtml(bound.get(sentence.id).join(' + ')) + ']'
         : '';
       html +=
         '<span class="' +

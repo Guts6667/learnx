@@ -236,6 +236,31 @@ describe('the blind adjudication page', () => {
     );
   });
 
+  it('labels a sentence with every role it is bound to', () => {
+    // On the first real card a sentence bound to two roles showed one label,
+    // hiding half of the reviewer's own choice.
+    firstCardWith(
+      (c) => c.argumentRoles.filter((r) => r.bindable).length === 2,
+    );
+    const roles = [
+      ...document.querySelectorAll('.role-row button[data-role]'),
+    ] as HTMLElement[];
+    for (const role of roles) {
+      const bound = [
+        ...document.querySelectorAll('.role-row button.status'),
+      ].find(
+        (b) =>
+          (b as HTMLElement).dataset.status === 'BOUND' &&
+          (b as HTMLElement).dataset.for === role.dataset.role,
+      ) as HTMLElement;
+      bound.click();
+      (document.querySelector('#resp .s') as HTMLElement).click();
+    }
+    const first = document.querySelector('#resp .s')?.textContent ?? '';
+    for (const role of roles) expect(first).toContain(role.dataset.role ?? '');
+    expect(first).toContain(' + ');
+  });
+
   it('refuses to export without a reviewer', () => {
     document.getElementById('toExport')?.click();
     const text = document.getElementById('app')?.textContent ?? '';
