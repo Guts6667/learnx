@@ -397,6 +397,49 @@
     padding: 10px;
     width: 100%;
   }
+  .hint {
+    border-left: 2px solid var(--rule);
+    color: var(--muted);
+    display: none;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 8px 0 12px;
+    padding: 2px 0 2px 10px;
+  }
+  body[data-help='on'] .hint {
+    display: block;
+  }
+  .guide {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    display: none;
+    grid-column: 1 / -1;
+    padding: 16px 20px;
+  }
+  body[data-help='on'] .guide {
+    display: block;
+  }
+  .guide ol {
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  .guide li {
+    margin-bottom: 4px;
+  }
+  .guide dl {
+    display: grid;
+    gap: 4px 12px;
+    grid-template-columns: auto 1fr;
+    margin: 10px 0 0;
+  }
+  .guide dt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+  }
+  .guide dd {
+    margin: 0;
+  }
   .hash {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
@@ -429,6 +472,7 @@
   </div>
   <div class="grow"></div>
   <div class="count" id="progress">—</div>
+  <button class="ghost" id="help"><kbd>?</kbd>aide</button>
   <button class="ghost" id="who">relecteur…</button>
   <button class="ghost" id="toExport">export</button>
 </header>
@@ -7401,6 +7445,39 @@
   }
   let armedRole = null;
 
+  /** Plain-language help, off by default for a reviewer who knows the grid. */
+  const HELP_STORE = 'adj-help';
+  try {
+    document.body.dataset.help = localStorage.getItem(HELP_STORE) || 'off';
+  } catch (error) {
+    document.body.dataset.help = 'off';
+  }
+  function toggleHelp() {
+    document.body.dataset.help =
+      document.body.dataset.help === 'on' ? 'off' : 'on';
+    try {
+      localStorage.setItem(HELP_STORE, document.body.dataset.help);
+    } catch (error) {
+      /* preference only */
+    }
+  }
+
+  /** What the quantifier means for this card, in one sentence. */
+  function quantifierHint(quantifier) {
+    return (
+      {
+        exists: 'Il suffit qu’UNE occurrence le fasse.',
+        forall:
+          'Pour TOUTES les occurrences : une seule hors sujet, et la réponse est non.',
+        forall_exists:
+          'Pour CHAQUE élément du premier rôle, il doit exister un élément du second qui lui répond.',
+        not_exists:
+          'Il ne doit y en avoir AUCUNE : ici, l’absence est ce qui établit l’atome.',
+      }[quantifier] || 'Voir la formule ci-dessus.'
+    );
+  }
+  const hint = (text) => '<p class="hint">' + text + '</p>';
+
   function persist() {
     try {
       localStorage.setItem(STORE, JSON.stringify(state));
@@ -7663,23 +7740,48 @@
       .join('');
 
     document.getElementById('app').innerHTML = `
+      <section class="guide">
+        <div class="eyebrow">Comment traiter une carte</div>
+        <ol>
+          <li>Lis la question en haut à gauche, puis la phrase surlignée.</li>
+          <li>Pour chaque témoin, dis où il est : <strong>lié</strong> puis clique la phrase, ou <strong>absent</strong>, ou <strong>ambigu</strong>.</li>
+          <li>Réponds : la phrase surlignée prouve-t-elle à elle seule la question ? <strong>D</strong> direct, <strong>N</strong> pas direct, <strong>A</strong> ambigu.</li>
+          <li>Les deux contrôles, sans valeur par défaut : <strong>S</strong> une autre phrase de la copie le prouverait-elle ? <strong>V</strong> avais-tu tout ce qu’il fallait pour juger ?</li>
+          <li>Quand la ligne du bas dit « carte complète », flèche droite.</li>
+        </ol>
+        <dl>
+          <dt>direct</dt><dd>La phrase établit exactement la question, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
+          <dt>pas direct</dt><dd>Partiel, seulement voisin, implicite, mauvais témoin, ou absent. Une phrase vraie et bien écrite peut être « pas direct ».</dd>
+          <dt>ambigu</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
+          <dt>autre soutien</dt><dd>Sert surtout quand la phrase surlignée ne suffit pas : y a-t-il ailleurs dans la copie de quoi cocher la case ?</dd>
+          <dt>vue complète</dt><dd>Répondre « non » est une information utile, pas un aveu : ça dit que la carte t’a fait juger avec un manque.</dd>
+          <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
+          <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
+        </dl>
+        <p class="note" style="margin:12px 0 0">Tu ne sais jamais d’où vient une carte, c’est voulu. Ne cherche pas à le deviner, ne te fie ni à la longueur ni au style : lis la phrase et juge-la contre la question.</p>
+      </section>
       <div>
         <section class="panel">
           <div class="eyebrow">Atome à établir</div>
           <p class="atom">${escapeHtml(card.atom)}</p>
+          ${hint('La question de cette carte. C’est une case du barème découpée assez fin pour qu’on y réponde par oui ou non. Tout ce que tu décides ici parle de cette case et d’elle seule.')}
           <p class="sig">${renderSignature(card)} · ${escapeHtml(card.quantifier)}${card.logicalOperator === 'none' ? '' : ' · ' + escapeHtml(card.logicalOperator)}</p>
+          ${hint('La même question écrite en formule, pour qu’il n’y ait pas d’interprétation : la relation, puis entre parenthèses les rôles qu’elle relie. ' + quantifierHint(card.quantifier))}
           <div class="roles">
             <div class="eyebrow" style="margin-bottom:8px">Témoins</div>
+            ${hint('Un témoin est la phrase de la copie qui joue un rôle. Pour chacun : <strong>lié</strong> = je peux la montrer, clique le bouton puis la ou les phrases à droite. <strong>absent</strong> = il n’y en a pas dans la copie, réponse normale et souvent la raison d’un « pas direct ». <strong>ambigu</strong> = je n’arrive pas à décider. Le nombre à droite dit combien de phrases un rôle lié attend : 1 = exactement une, &gt;=2 = au moins deux. « Hors réponse » = ce rôle est rempli par la consigne ou le dossier, rien à cliquer.')}
             ${roleRows}
           </div>
           <p class="note" style="margin-bottom:0">Phrase du barème&nbsp;: «&nbsp;${escapeHtml(card.sourcePhrase)}&nbsp;» — critère ${escapeHtml(card.criterionLabel)}</p>
+          ${hint('D’où vient la question : le mot du barème qu’on a transformé en case, et le critère qui le contient.')}
         </section>
         <section class="panel">
           <div class="eyebrow">Passage candidat</div>
           <blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote>
+          ${hint('La phrase que tu juges. Ta réponse direct / pas direct / ambigu parle de cette phrase, à elle seule.')}
         </section>
-        ${card.frame ? `<section class="panel"><div class="eyebrow">Consigne</div><p class="context">${escapeHtml(card.frame)}</p></section>` : ''}
-        ${card.dossier ? `<section class="panel"><div class="eyebrow">Dossier</div><p class="context">${escapeHtml(card.dossier)}</p></section>` : ''}
+        ${card.frame ? `<section class="panel"><div class="eyebrow">Consigne</div><p class="context">${escapeHtml(card.frame)}</p>${hint('Ce qui était demandé à l’élève. « Pertinent », « adapté », « répond à » se jugent par rapport à ça.')}</section>` : ''}
+        ${card.dossier ? `<section class="panel"><div class="eyebrow">Dossier</div><p class="context">${escapeHtml(card.dossier)}</p>${hint('Les faits fournis à l’élève. Sers-t’en pour vérifier ce qu’il avance quand la question le demande.')}</section>` : ''}
       </div>
       <div>
         <section class="panel">
@@ -7688,6 +7790,7 @@
             <span class="chip">${escapeHtml(card.stratum)}</span>
             <span class="chip">${escapeHtml(card.cardId)}</span>
           </div>
+          ${hint('La copie de l’élève. Les phrases sont numérotées à partir de s0 (la première). Elles deviennent cliquables quand un rôle est sur « lié » : cliquer une phrase l’attribue à ce rôle, recliquer la détache. Le surlignage doré est le passage candidat.' + (card.window && decision.revealed !== true ? ' Tu ne vois qu’un extrait : ouvrir la copie entière est permis, et simplement noté.' : ''))}
           <div class="response" id="resp">${renderResponse(card)}</div>
           ${
             card.window && decision.revealed !== true
@@ -7784,6 +7887,7 @@
   for (const button of document.querySelectorAll('#verdicts button')) {
     button.onclick = () => record(button.dataset.v);
   }
+  document.getElementById('help').onclick = toggleHelp;
   document.getElementById('prev').onclick = () => advance(-1);
   document.getElementById('next').onclick = () => advance(1);
   document.getElementById('why').oninput = () => {
@@ -7817,7 +7921,13 @@
     touch();
   };
 
-  addEventListener('keydown', (event) => {
+  // One keyboard handler, whatever happens. Running this script twice on the
+  // same window (a hot reload, a test harness) must replace the previous
+  // handler, not stack a second one that toggles everything twice.
+  if (window.__adjudicationKeydown) {
+    removeEventListener('keydown', window.__adjudicationKeydown);
+  }
+  window.__adjudicationKeydown = (event) => {
     const target = event.target;
     if (target instanceof Element && target.matches('input, textarea')) {
       if (event.key === 'Escape' && target instanceof HTMLElement)
@@ -7830,12 +7940,14 @@
     else if (key === 'a') record('AMBIGUOUS');
     else if (key === 's') cycle('alternativeSupport');
     else if (key === 'v') cycle('evidenceViewComplete');
+    else if (event.key === '?') toggleHelp();
     else if (key === 'j') {
       event.preventDefault();
       document.getElementById('why').focus();
     } else if (event.key === 'ArrowLeft') advance(-1);
     else if (event.key === 'ArrowRight') advance(1);
-  });
+  };
+  addEventListener('keydown', window.__adjudicationKeydown);
 
   /** Canonical JSON: sorted keys, compact separators — the repo's recipe. */
   function canonical(value) {

@@ -261,6 +261,29 @@ describe('the blind adjudication page', () => {
     expect(first).toContain(' + ');
   });
 
+  it('shows plain-language help on demand, with the quantifier explained', () => {
+    expect(document.body.dataset.help).toBe('off');
+    // Visibility is a CSS rule on body[data-help]; jsdom does not resolve that
+    // cascade, so the test asserts the state the page controls.
+    const guide = document.querySelector('.guide') as HTMLElement;
+    press('?');
+    expect(document.body.dataset.help).toBe('on');
+    expect(guide.textContent ?? '').toContain('Comment traiter une carte');
+    const card = deckCards()[0] as DeckCard;
+    const hints = [...document.querySelectorAll('.hint')].map(
+      (h) => h.textContent ?? '',
+    );
+    const expected = {
+      exists: 'UNE occurrence',
+      forall: 'TOUTES',
+      forall_exists: 'CHAQUE élément',
+      not_exists: 'AUCUNE',
+    }[card.quantifier];
+    expect(hints.some((text) => text.includes(expected ?? '∅'))).toBe(true);
+    press('?');
+    expect(document.body.dataset.help).toBe('off');
+  });
+
   it('refuses to export without a reviewer', () => {
     document.getElementById('toExport')?.click();
     const text = document.getElementById('app')?.textContent ?? '';
