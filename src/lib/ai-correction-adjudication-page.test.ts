@@ -72,10 +72,12 @@ const goTo = (predicate: (card: DeckCard) => boolean): DeckCard => {
 };
 /** A « non » that satisfies every family: one clicked sentence where required. */
 const answerNo = (): void => {
-  const clickable = document.querySelector(
-    '#resp .s.clickable',
-  ) as HTMLElement | null;
-  if (clickable) clickable.click();
+  // Two-role cards need one sentence per related thing: click up to two.
+  const clickable = [...document.querySelectorAll('#resp .s.clickable')].slice(
+    0,
+    2,
+  ) as HTMLElement[];
+  for (const c of clickable) c.click();
   press('n');
 };
 const setControls = (): void => {
@@ -123,13 +125,17 @@ describe('the blind adjudication page, real deck', () => {
     expect(document.getElementById('todo')?.textContent ?? '').toContain(
       'surligne',
     );
-    (document.querySelector('#resp .s.clickable') as HTMLElement).click();
+    for (const c of [...document.querySelectorAll('#resp .s.clickable')].slice(
+      0,
+      2,
+    ))
+      (c as HTMLElement).click();
     expect(document.getElementById('todo')?.textContent ?? '').not.toContain(
       'surligne',
     );
     expect(
       (stored()[multi.cardId]?.evidenceSentenceIds as string[]).length,
-    ).toBe(1);
+    ).toBeGreaterThanOrEqual(1);
     goTo((c) => /^S[123]_/.test(c.stratum));
     expect(document.querySelectorAll('#resp .s.clickable')).toHaveLength(0);
     press('o');
@@ -249,6 +255,7 @@ describe('the warm-up before the real deck', () => {
 
   it('shows the mistake and, on E2, expects the irrelevant sentence highlighted', () => {
     (document.querySelectorAll('#rail button')[1] as HTMLElement).click();
+    (document.querySelector('#resp .s[data-s="s0"]') as HTMLElement).click();
     (document.querySelector('#resp .s[data-s="s1"]') as HTMLElement).click();
     press('n');
     setControls();
@@ -262,7 +269,7 @@ describe('the warm-up before the real deck', () => {
   it('unlocks the real deck after the eighth card', () => {
     const verdicts = ['n', 'n', 'o', 'n', 'o', 'o', 'o', 'n'];
     const evidence: Record<number, string[]> = {
-      1: ['s2'],
+      1: ['s0', 's2'],
       5: ['s1', 's2'],
       7: ['s0', 's1'],
     };

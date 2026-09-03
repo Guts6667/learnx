@@ -7557,6 +7557,35 @@
   const singleSpan = (card) => /^S[123]_/.test(card.stratum);
   const wholeCopy = (card) => card.stratum.startsWith('S7');
   const bindableRoles = (card) => card.argumentRoles.filter((r) => r.bindable);
+  const ROLE_WORDS = {
+    choice: 'l’option que l’élève retient',
+    claim: 'ce que l’élève affirme',
+    datum: 'les faits, chiffres ou dates que l’élève avance',
+    fact: 'les faits que l’élève utilise',
+    limit: 'la limite que l’élève énonce',
+    mitigation: 'la parade que l’élève propose',
+    position: 'la position que l’élève prend',
+    precaution: 'la précaution que l’élève propose',
+    risk: 'le risque que l’élève nomme',
+    uncertainty: 'l’incertitude que l’élève nomme',
+    sequence: 'la séquence que l’élève décrit',
+    mechanism: 'le mécanisme ou la conclusion que l’élève énonce',
+    proof: 'la preuve que l’élève produit',
+    link: 'le lien réflexif que l’élève énonce',
+    element: 'l’élément concret de la réponse',
+    action: 'l’action proposée',
+    decision: 'la décision prise',
+    operation: 'le calcul',
+    comparison: 'la comparaison',
+    interpretation: 'l’interprétation de la preuve',
+    material_claim: 'une affirmation importante',
+    practice: 'la pratique demandée',
+  };
+  const roleWords = (r) =>
+    ROLE_WORDS[r.roleId] || (r.description || r.roleId).split(' — ')[0];
+  /** How many sentences a multi-sentence card needs: one per thing the question relates. */
+  const neededEvidence = (card) =>
+    Math.max(1, Math.min(bindableRoles(card).length, card.sentences.length));
   const questionFor = (card) =>
     card.plainQuestion || QUESTIONS.questions[card.atomId] || card.atom;
   function familyWords(stratum) {
@@ -7638,7 +7667,7 @@
       expected: {
         verdict: 'NOT_DIRECT',
         evidenceIncludes: ['s2'],
-        evidenceWords: 'la phrase hors sujet, s2 (le parking)',
+        evidenceWords: 'la phrase hors sujet, s2 (le parking), ET le choix, s0',
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
@@ -7918,9 +7947,15 @@
       (d.verdict === 'DIRECT' || d.verdict === 'NOT_DIRECT') &&
       !singleSpan(card) &&
       !wholeCopy(card) &&
-      d.evidenceSentenceIds.length === 0
+      d.evidenceSentenceIds.length < neededEvidence(card)
     )
-      list.push('surligne au moins une phrase qui te fait répondre');
+      list.push(
+        neededEvidence(card) > 1
+          ? 'surligne une phrase pour chaque chose reliée (' +
+              neededEvidence(card) +
+              ' attendues)'
+          : 'surligne au moins une phrase qui te fait répondre',
+      );
     if (d.alternativeSupport === null && !wholeCopy(card))
       list.push('S · autre phrase');
     if (d.evidenceViewComplete === null) list.push('V · rien ne m’a manqué');
@@ -8125,7 +8160,16 @@
           ? 'Phrases surlignées : <strong>' +
             d.evidenceSentenceIds.join(', ') +
             '</strong> · clique une phrase de la copie pour l’ajouter, reclique pour la retirer.'
-          : 'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie. Clique, à droite, tout ce qu’il faut pour voir que ta réponse est juste. Quand la question relie deux choses, il faut les deux phrases : le risque et sa parade, la donnée et le choix, la limite et l’option retenue. Obligatoire pour oui comme pour non.') +
+          : 'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie. ' +
+            (neededEvidence(card) > 1
+              ? '<strong>Cette question relie ' +
+                neededEvidence(card) +
+                ' choses : ' +
+                bindableRoles(card)
+                  .map((r) => '« ' + escapeHtml(roleWords(r)) + ' »')
+                  .join(' et ') +
+                '. Surligne une phrase pour chacune</strong>, que tu répondes oui ou non.'
+              : 'Clique, à droite, la ou les phrases qui te font répondre, que ce soit oui ou non.')) +
         '</p>';
     document.getElementById('app').innerHTML =
       banner +
