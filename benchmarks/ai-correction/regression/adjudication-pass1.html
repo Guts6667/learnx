@@ -372,6 +372,18 @@
     right: 0;
     z-index: 15;
   }
+  #verdictQuestion {
+    max-width: 520px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12.5px;
+  }
+  #verdictQuestion em {
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14px;
+    font-style: normal;
+  }
   .dock-inner {
     display: flex;
     flex-wrap: wrap;
@@ -570,7 +582,7 @@
 <footer class="dock" hidden id="dock">
   <div class="dock-inner">
     <div>
-      <div class="eyebrow">
+      <div class="eyebrow" id="verdictQuestion">
         6 · La phrase examinée prouve-t-elle l’affirmation&nbsp;?
       </div>
       <div class="verdicts" id="verdicts">
@@ -7949,6 +7961,14 @@
         String(button.dataset.v === decision.verdict),
       );
     }
+    // The verdict question restates the affirmation, so the word that decides
+    // it — fidèle, pertinent, explicite — is under the reviewer's eyes at the
+    // moment of deciding. A justification about another word answers another
+    // card.
+    document.getElementById('verdictQuestion').innerHTML =
+      '6 · La phrase examinée prouve-t-elle que&nbsp;: <em>«&nbsp;' +
+      escapeHtml(card.atom) +
+      '&nbsp;»</em>&nbsp;?';
     tri(document.getElementById('altTri'), 'alternativeSupport');
     tri(document.getElementById('viewTri'), 'evidenceViewComplete');
     document.getElementById('why').value = decision.rationale || '';
