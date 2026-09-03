@@ -397,6 +397,11 @@
     padding: 10px;
     width: 100%;
   }
+  .sticky {
+    align-self: start;
+    position: sticky;
+    top: 40px;
+  }
   .hint {
     border-left: 2px solid var(--rule);
     color: var(--muted);
@@ -482,7 +487,7 @@
 <footer class="dock" hidden id="dock">
   <div class="dock-inner">
     <div>
-      <div class="eyebrow">Ce passage établit-il exactement l’atome&nbsp;?</div>
+      <div class="eyebrow">6 · La phrase prouve-t-elle la case&nbsp;?</div>
       <div class="verdicts" id="verdicts">
         <button data-v="DIRECT" aria-pressed="false"><kbd>D</kbd>direct</button>
         <button data-v="NOT_DIRECT" aria-pressed="false">
@@ -494,8 +499,9 @@
       </div>
     </div>
     <div>
+      <div class="eyebrow" style="margin-bottom: 4px">7 · Contrôles</div>
       <div class="ctl-label">
-        <kbd>S</kbd> un autre passage soutient l’atome
+        <kbd>S</kbd> une autre phrase de la copie prouverait la case
       </div>
       <div class="tri" id="altTri"></div>
       <div class="ctl-label" style="margin-top: 6px">
@@ -7743,14 +7749,16 @@
       <section class="guide">
         <div class="eyebrow">Comment traiter une carte</div>
         <ol>
-          <li>Lis la question en haut à gauche, puis la phrase surlignée.</li>
-          <li>Pour chaque témoin, dis où il est : <strong>lié</strong> puis clique la phrase, ou <strong>absent</strong>, ou <strong>ambigu</strong>.</li>
-          <li>Réponds : la phrase surlignée prouve-t-elle à elle seule la question ? <strong>D</strong> direct, <strong>N</strong> pas direct, <strong>A</strong> ambigu.</li>
-          <li>Les deux contrôles, sans valeur par défaut : <strong>S</strong> une autre phrase de la copie le prouverait-elle ? <strong>V</strong> avais-tu tout ce qu’il fallait pour juger ?</li>
-          <li>Quand la ligne du bas dit « carte complète », flèche droite.</li>
+          <li><strong>Ce qui était demandé</strong> : lis la consigne, et le dossier s’il est là.</li>
+          <li><strong>La copie</strong> : lis-la d’un trait, pour comprendre ce que l’élève a choisi.</li>
+          <li><strong>La case à cocher</strong> : la question posée à toi, le correcteur. Le dernier mot de la formule fixe la sévérité.</li>
+          <li><strong>La phrase à juger</strong> : relis-la seule, avec la case en tête.</li>
+          <li><strong>Les témoins</strong> : pour chaque rôle, <strong>lié</strong> puis clique la phrase dans la copie, ou <strong>absent</strong>, ou <strong>ambigu</strong>.</li>
+          <li><strong>Le verdict</strong> : la phrase prouve-t-elle à elle seule la case ? <strong>D</strong> direct, <strong>N</strong> pas direct, <strong>A</strong> ambigu.</li>
+          <li><strong>Les contrôles</strong>, sans valeur par défaut : <strong>S</strong> une autre phrase le prouverait-elle ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
         </ol>
         <dl>
-          <dt>direct</dt><dd>La phrase établit exactement la question, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
+          <dt>direct</dt><dd>La phrase établit exactement la case, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
           <dt>pas direct</dt><dd>Partiel, seulement voisin, implicite, mauvais témoin, ou absent. Une phrase vraie et bien écrite peut être « pas direct ».</dd>
           <dt>ambigu</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
           <dt>autre soutien</dt><dd>Sert surtout quand la phrase surlignée ne suffit pas : y a-t-il ailleurs dans la copie de quoi cocher la case ?</dd>
@@ -7758,45 +7766,48 @@
           <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
           <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
         </dl>
-        <p class="note" style="margin:12px 0 0">Tu ne sais jamais d’où vient une carte, c’est voulu. Ne cherche pas à le deviner, ne te fie ni à la longueur ni au style : lis la phrase et juge-la contre la question.</p>
+        <p class="note" style="margin:12px 0 0">Tu ne sais jamais d’où vient une carte, c’est voulu. Ne cherche pas à le deviner, ne te fie ni à la longueur ni au style : lis la phrase et juge-la contre la case.</p>
       </section>
       <div>
         <section class="panel">
-          <div class="eyebrow">Atome à établir</div>
+          <div class="eyebrow">1 · Ce qui était demandé</div>
+          ${card.frame ? `<p class="context"><strong>Consigne.</strong> ${escapeHtml(card.frame)}</p>` : ''}
+          ${card.dossier ? `<p class="context"><strong>Dossier.</strong> ${escapeHtml(card.dossier)}</p>` : ''}
+          ${!card.frame && !card.dossier ? '<p class="context">Sur cette famille de cartes, ni la consigne ni le dossier ne sont montrés : la case se juge sur la copie seule.</p>' : ''}
+          ${hint('Le sujet donné à l’élève, et les faits qu’on lui a fournis. Tu n’y réponds pas : c’est le contexte qui donne leur sens à « pertinent », « adapté », « répond à ».')}
+        </section>
+        <section class="panel">
+          <div class="eyebrow">3 · La case à cocher</div>
           <p class="atom">${escapeHtml(card.atom)}</p>
-          ${hint('La question de cette carte. C’est une case du barème découpée assez fin pour qu’on y réponde par oui ou non. Tout ce que tu décides ici parle de cette case et d’elle seule.')}
+          ${hint('La question posée à toi, le correcteur. C’est une case du barème découpée assez fin pour qu’on y réponde par oui ou non. Tout ce que tu décides ici parle de cette case et d’elle seule.')}
           <p class="sig">${renderSignature(card)} · ${escapeHtml(card.quantifier)}${card.logicalOperator === 'none' ? '' : ' · ' + escapeHtml(card.logicalOperator)}</p>
           ${hint('La même question écrite en formule, pour qu’il n’y ait pas d’interprétation : la relation, puis entre parenthèses les rôles qu’elle relie. ' + quantifierHint(card.quantifier))}
-          <div class="roles">
-            <div class="eyebrow" style="margin-bottom:8px">Témoins</div>
-            ${hint('Un témoin est la phrase de la copie qui joue un rôle. Pour chacun : <strong>lié</strong> = je peux la montrer, clique le bouton puis la ou les phrases à droite. <strong>absent</strong> = il n’y en a pas dans la copie, réponse normale et souvent la raison d’un « pas direct ». <strong>ambigu</strong> = je n’arrive pas à décider. Le nombre à droite dit combien de phrases un rôle lié attend : 1 = exactement une, &gt;=2 = au moins deux. « Hors réponse » = ce rôle est rempli par la consigne ou le dossier, rien à cliquer.')}
+          <p class="note" style="margin-bottom:0">Phrase du barème&nbsp;: «&nbsp;${escapeHtml(card.sourcePhrase)}&nbsp;» — critère ${escapeHtml(card.criterionLabel)}</p>
+          ${hint('D’où vient la case : le mot du barème qu’on a transformé en question, et le critère qui le contient.')}
+        </section>
+        <section class="panel">
+          <div class="eyebrow">4 · La phrase à juger</div>
+          <blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote>
+          ${hint('La phrase surlignée dans la copie, reprise seule. Ta réponse direct / pas direct / ambigu parle d’elle, à elle seule.')}
+        </section>
+        <section class="panel">
+          <div class="eyebrow">5 · Les témoins</div>
+          ${hint('Un témoin est la phrase de la copie qui joue un rôle. Pour chacun : <strong>lié</strong> = je peux la montrer, clique le bouton puis la ou les phrases dans la copie à droite. <strong>absent</strong> = il n’y en a pas dans la copie, réponse normale et souvent la raison d’un « pas direct ». <strong>ambigu</strong> = je n’arrive pas à décider. Le nombre à droite dit combien de phrases un rôle lié attend : 1 = exactement une, &gt;=2 = au moins deux. « Hors réponse » = ce rôle est rempli par la consigne ou le dossier, rien à cliquer.')}
+          <div class="roles" style="border-top:0;margin-top:0;padding-top:0">
             ${roleRows}
           </div>
-          <p class="note" style="margin-bottom:0">Phrase du barème&nbsp;: «&nbsp;${escapeHtml(card.sourcePhrase)}&nbsp;» — critère ${escapeHtml(card.criterionLabel)}</p>
-          ${hint('D’où vient la question : le mot du barème qu’on a transformé en case, et le critère qui le contient.')}
         </section>
-        <section class="panel">
-          <div class="eyebrow">Passage candidat</div>
-          <blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote>
-          ${hint('La phrase que tu juges. Ta réponse direct / pas direct / ambigu parle de cette phrase, à elle seule.')}
-        </section>
-        ${card.frame ? `<section class="panel"><div class="eyebrow">Consigne</div><p class="context">${escapeHtml(card.frame)}</p>${hint('Ce qui était demandé à l’élève. « Pertinent », « adapté », « répond à » se jugent par rapport à ça.')}</section>` : ''}
-        ${card.dossier ? `<section class="panel"><div class="eyebrow">Dossier</div><p class="context">${escapeHtml(card.dossier)}</p>${hint('Les faits fournis à l’élève. Sers-t’en pour vérifier ce qu’il avance quand la question le demande.')}</section>` : ''}
       </div>
-      <div>
+      <div class="sticky">
         <section class="panel">
           <div class="eyebrow">
-            ${card.window && decision.revealed !== true ? 'Extrait autour du passage' : 'Réponse complète'}
+            2 · ${card.window && decision.revealed !== true ? 'La copie, extrait autour de la phrase' : 'La copie de l’élève'}
             <span class="chip">${escapeHtml(card.stratum)}</span>
             <span class="chip">${escapeHtml(card.cardId)}</span>
           </div>
-          ${hint('La copie de l’élève. Les phrases sont numérotées à partir de s0 (la première). Elles deviennent cliquables quand un rôle est sur « lié » : cliquer une phrase l’attribue à ce rôle, recliquer la détache. Le surlignage doré est le passage candidat.' + (card.window && decision.revealed !== true ? ' Tu ne vois qu’un extrait : ouvrir la copie entière est permis, et simplement noté.' : ''))}
+          ${hint('Lis-la d’un trait. Les phrases sont numérotées à partir de s0 (la première). Elles deviennent cliquables quand un rôle est sur « lié » : cliquer une phrase l’attribue à ce rôle, recliquer la détache. Le surlignage doré est la phrase à juger.' + (card.window && decision.revealed !== true ? ' Tu ne vois qu’un extrait : ouvrir la copie entière est permis, et simplement noté.' : ''))}
           <div class="response" id="resp">${renderResponse(card)}</div>
-          ${
-            card.window && decision.revealed !== true
-              ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la réponse complète</button> <span class="note">l’ouverture est journalisée</span></p>'
-              : ''
-          }
+          ${card.window && decision.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la copie entière</button> <span class="note">l’ouverture est notée</span></p>' : ''}
         </section>
       </div>`;
 
