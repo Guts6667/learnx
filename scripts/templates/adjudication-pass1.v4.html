@@ -1221,7 +1221,7 @@
                 bindableRoles(card)
                   .map((r) => '« ' + escapeHtml(roleWords(r)) + ' »')
                   .join(' et ') +
-                '. Surligne une phrase pour chacune</strong>, que tu répondes oui ou non.'
+                '. Surligne une phrase pour chacune</strong>, que tu répondes oui ou non. S’il y a plusieurs phrases possibles pour une chose, prends <strong>celle qui te fait répondre</strong> : pour un non, celle qui casse le CHAQUE ; pour un oui, celle qui le prouve. Tu peux en surligner davantage.'
               : 'Clique, à droite, la ou les phrases qui te font répondre, que ce soit oui ou non.')) +
         '</p>';
     document.getElementById('app').innerHTML =
