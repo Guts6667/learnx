@@ -1,0 +1,1486 @@
+<title>Adjudication aveugle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+/>
+<style>
+  :root {
+    --paper: #f3f5f4;
+    --card: #fdfdfc;
+    --ink: #1e2a33;
+    --muted: #5e6d74;
+    --rule: #d6dcda;
+    --rule-soft: #e6eae8;
+    --mark: #a8690c;
+    --mark-wash: rgba(201, 130, 30, 0.26);
+    --bind: #2b6b8f;
+    --bind-wash: rgba(43, 107, 143, 0.16);
+    --direct: #2f7a5b;
+    --notdirect: #a33b32;
+    --ambiguous: #6a5f83;
+    --shadow: rgba(30, 42, 51, 0.09);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --paper: #121a1f;
+      --card: #1a242a;
+      --ink: #e2e9e7;
+      --muted: #92a3aa;
+      --rule: #2c383f;
+      --rule-soft: #232f36;
+      --mark: #e0a44a;
+      --mark-wash: rgba(224, 164, 74, 0.24);
+      --bind: #6fb6db;
+      --bind-wash: rgba(111, 182, 219, 0.18);
+      --direct: #5cb98f;
+      --notdirect: #e07d72;
+      --ambiguous: #a99ac6;
+      --shadow: rgba(0, 0, 0, 0.4);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme='dark'] {
+    --paper: #121a1f;
+    --card: #1a242a;
+    --ink: #e2e9e7;
+    --muted: #92a3aa;
+    --rule: #2c383f;
+    --rule-soft: #232f36;
+    --mark: #e0a44a;
+    --mark-wash: rgba(224, 164, 74, 0.24);
+    --bind: #6fb6db;
+    --bind-wash: rgba(111, 182, 219, 0.18);
+    --direct: #5cb98f;
+    --notdirect: #e07d72;
+    --ambiguous: #a99ac6;
+    --shadow: rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+    padding-bottom: 230px;
+  }
+  .rail {
+    background: var(--card);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    gap: 1px;
+    height: 26px;
+    padding: 6px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .rail button {
+    background: var(--rule-soft);
+    border: 0;
+    border-radius: 1px;
+    cursor: pointer;
+    flex: 1;
+    min-width: 2px;
+    padding: 0;
+  }
+  .rail button[data-d='DIRECT'] {
+    background: var(--direct);
+  }
+  .rail button[data-d='NOT_DIRECT'] {
+    background: var(--notdirect);
+  }
+  .rail button[data-d='AMBIGUOUS'] {
+    background: var(--ambiguous);
+  }
+  .rail button[data-g='ok'] {
+    background: var(--direct);
+  }
+  .rail button[data-g='ko'] {
+    background: var(--notdirect);
+  }
+  .rail button[data-incomplete='true'] {
+    opacity: 0.45;
+  }
+  .rail button[data-current='true'] {
+    outline: 2px solid var(--ink);
+    outline-offset: 1px;
+  }
+  header.bar {
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 20px;
+  }
+  .eyebrow {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .grow {
+    flex: 1;
+  }
+  main {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: minmax(320px, 5fr) minmax(340px, 6fr);
+    margin: 0 auto;
+    max-width: 1320px;
+    padding: 20px;
+  }
+  @media (max-width: 940px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+  }
+  section.panel {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px var(--shadow);
+    padding: 18px 20px;
+  }
+  section.panel + section.panel {
+    margin-top: 20px;
+  }
+  .sticky {
+    align-self: start;
+    position: sticky;
+    top: 40px;
+  }
+  .question {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px;
+    line-height: 1.35;
+    margin: 6px 0 10px;
+    text-wrap: balance;
+  }
+  .machine {
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    margin: 8px 0 0;
+  }
+  .chip {
+    background: var(--rule-soft);
+    border-radius: 2px;
+    color: var(--muted);
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    padding: 2px 7px;
+  }
+  blockquote.candidate {
+    border-left: 3px solid var(--mark);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.45;
+    margin: 0;
+    padding: 4px 0 4px 14px;
+  }
+  .response {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16.5px;
+    line-height: 1.7;
+    max-height: 44vh;
+    overflow-y: auto;
+  }
+  .response .s {
+    border-radius: 2px;
+    padding: 1px 0;
+  }
+  .response .s.clickable {
+    cursor: pointer;
+  }
+  .response .s.clickable:hover {
+    background: var(--rule-soft);
+  }
+  .response .s.cand {
+    background: var(--mark-wash);
+    box-shadow: 0 1px 0 var(--mark);
+  }
+  .response .s.evidence {
+    background: var(--bind-wash);
+    box-shadow: 0 1px 0 var(--bind);
+  }
+  .response .s.hidden {
+    display: none;
+  }
+  .response sup.sid {
+    color: var(--bind);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    margin-right: 3px;
+  }
+  .context {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-top: 4px;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .hint {
+    border-left: 2px solid var(--rule);
+    color: var(--muted);
+    display: none;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 8px 0 12px;
+    padding: 2px 0 2px 10px;
+  }
+  body[data-help='on'] .hint {
+    display: block;
+  }
+  .guide {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    display: none;
+    grid-column: 1 / -1;
+    padding: 16px 20px;
+  }
+  body[data-help='on'] .guide {
+    display: block;
+  }
+  body[data-guide='yes'] .guide > :not(.eyebrow) {
+    display: none;
+  }
+  .guide ol {
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  .guide li {
+    margin-bottom: 4px;
+  }
+  .guide dl {
+    display: grid;
+    gap: 4px 12px;
+    grid-template-columns: auto 1fr;
+    margin: 10px 0 0;
+  }
+  .guide dt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+  }
+  .guide dd {
+    margin: 0;
+  }
+  .training {
+    background: var(--card);
+    border: 1px solid var(--mark);
+    border-radius: 3px;
+    grid-column: 1 / -1;
+    padding: 14px 20px;
+  }
+  table.grade {
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 12px 0 0;
+    width: 100%;
+  }
+  table.grade th,
+  table.grade td {
+    border-top: 1px solid var(--rule-soft);
+    padding: 6px 10px 6px 0;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.grade th {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  table.grade tr.ok td:last-child {
+    color: var(--direct);
+  }
+  table.grade tr.ko td:last-child,
+  table.grade tr.ko td:nth-child(2) {
+    color: var(--notdirect);
+  }
+  .lesson {
+    border-left: 3px solid var(--mark);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 12px 0 0;
+    padding: 4px 0 4px 12px;
+  }
+  footer.dock {
+    background: var(--card);
+    border-top: 1px solid var(--rule);
+    bottom: 0;
+    box-shadow: 0 -2px 10px var(--shadow);
+    left: 0;
+    padding: 11px 20px 13px;
+    position: fixed;
+    right: 0;
+    z-index: 15;
+  }
+  .dock-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin: 0 auto;
+    max-width: 1320px;
+  }
+  .verdicts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .verdicts button,
+  .tri button,
+  .ghost {
+    background: transparent;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    padding: 7px 13px;
+  }
+  .ghost {
+    font-size: 13px;
+    padding: 6px 11px;
+  }
+  kbd {
+    background: var(--rule-soft);
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    margin-right: 7px;
+    padding: 1px 5px;
+  }
+  .verdicts button[data-v='DIRECT'][aria-pressed='true'] {
+    background: var(--direct);
+    border-color: var(--direct);
+    color: #fff;
+  }
+  .verdicts button[data-v='NOT_DIRECT'][aria-pressed='true'] {
+    background: var(--notdirect);
+    border-color: var(--notdirect);
+    color: #fff;
+  }
+  .verdicts button[data-v='AMBIGUOUS'][aria-pressed='true'] {
+    background: var(--ambiguous);
+    border-color: var(--ambiguous);
+    color: #fff;
+  }
+  .verdicts button[aria-pressed='true'] kbd {
+    background: rgba(255, 255, 255, 0.22);
+  }
+  .tri {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tri button {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+  .tri button[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--card);
+  }
+  .ctl-label {
+    font-size: 12.5px;
+    margin-bottom: 3px;
+  }
+  #verdictQuestion {
+    font-size: 12.5px;
+    letter-spacing: 0;
+    max-width: 560px;
+    text-transform: none;
+  }
+  #verdictQuestion em {
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14px;
+    font-style: normal;
+  }
+  .todo {
+    color: var(--notdirect);
+    font-size: 12.5px;
+  }
+  .todo.ok {
+    color: var(--direct);
+  }
+  input[type='text'] {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    font: inherit;
+    padding: 8px 10px;
+    width: 100%;
+  }
+  textarea {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.45;
+    min-height: 200px;
+    padding: 10px;
+    width: 100%;
+  }
+  .hash {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    word-break: break-all;
+  }
+  ul.blockers {
+    color: var(--notdirect);
+    font-size: 13.5px;
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  button.link {
+    background: none;
+    border: 0;
+    color: var(--bind);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    padding: 0;
+    text-decoration: underline;
+  }
+  :focus-visible {
+    outline: 2px solid var(--mark);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+    }
+  }
+</style>
+
+<div class="rail" id="rail" role="navigation" aria-label="Progression"></div>
+<header class="bar">
+  <div>
+    <div class="eyebrow">Relecture à l’aveugle</div>
+    <strong
+      >Pour chaque carte : une question, et ce qui te fait répondre.</strong
+    >
+  </div>
+  <div class="grow"></div>
+  <div class="count" id="progress">—</div>
+  <button class="ghost" id="train">entraînement</button>
+  <button class="ghost" id="help"><kbd>?</kbd>aide</button>
+  <button class="ghost" id="who">relecteur…</button>
+  <button class="ghost" id="toExport">export</button>
+</header>
+<main id="app"></main>
+<footer class="dock" hidden id="dock">
+  <div class="dock-inner">
+    <div>
+      <div class="eyebrow" id="verdictQuestion">La question</div>
+      <div class="verdicts" id="verdicts">
+        <button data-v="DIRECT" aria-pressed="false"><kbd>D</kbd>oui</button>
+        <button data-v="NOT_DIRECT" aria-pressed="false">
+          <kbd>N</kbd>non
+        </button>
+        <button data-v="AMBIGUOUS" aria-pressed="false">
+          <kbd>A</kbd>je ne peux pas dire
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="ctl-label">
+        <kbd>S</kbd> Si on retirait la phrase examinée, une autre phrase de la
+        copie suffirait-elle, seule, à répondre oui&nbsp;?
+      </div>
+      <div class="tri" id="altTri"></div>
+      <div class="ctl-label" style="margin-top: 6px">
+        <kbd>V</kbd> Avais-tu tout ce qu’il fallait pour répondre&nbsp;?
+      </div>
+      <div class="tri" id="viewTri"></div>
+    </div>
+    <div class="grow" style="min-width: 300px">
+      <input
+        id="why"
+        type="text"
+        placeholder="pourquoi ? (obligatoire si « je ne peux pas dire »)"
+        autocomplete="off"
+      />
+      <div class="todo" id="todo" style="margin-top: 6px"></div>
+    </div>
+    <div style="align-self: center">
+      <button class="ghost" id="prev">◀</button>
+      <button class="ghost" id="next">▶</button>
+    </div>
+  </div>
+</footer>
+
+<script id="deck" type="application/json">
+  /*__DECK__*/
+</script>
+<script id="questions" type="application/json">
+  /*__QUESTIONS__*/
+</script>
+<script>
+  const DECK = JSON.parse(document.getElementById('deck').textContent);
+  const QUESTIONS = JSON.parse(
+    document.getElementById('questions').textContent,
+  );
+  const CARDS = DECK.cards;
+  const STORE = 'adj-v4-' + DECK.manifestHash.slice(-12);
+  const ABSTENTION_CAP = 0.2; // pre-declared: above this share of « je ne peux pas dire », the pass is suspended
+
+  const escapeHtml = (v) =>
+    v.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+  const singleSpan = (card) => /^S[123]_/.test(card.stratum);
+  const wholeCopy = (card) => card.stratum.startsWith('S7');
+  const bindableRoles = (card) => card.argumentRoles.filter((r) => r.bindable);
+  const questionFor = (card) =>
+    card.plainQuestion || QUESTIONS.questions[card.atomId] || card.atom;
+  function familyWords(stratum) {
+    const ctx = stratum.includes('dossier')
+      ? 'consigne et dossier'
+      : stratum.includes('frame')
+        ? 'consigne seule'
+        : 'copie seule';
+    return (
+      (singleSpan({ stratum })
+        ? 'une phrase'
+        : wholeCopy({ stratum })
+          ? 'copie entière'
+          : 'plusieurs phrases') +
+      ' · ' +
+      ctx
+    );
+  }
+
+  /* ---------- warm-up: eight invented cards, one trap each, unambiguous ---------- */
+  function splitSentences(text) {
+    const out = [];
+    const re = /[^.!?]+[.!?]+/g;
+    let m;
+    let i = 0;
+    while ((m = re.exec(text))) {
+      const lead = m[0].length - m[0].trimStart().length;
+      out.push({
+        end: m.index + m[0].length,
+        id: 's' + i,
+        start: m.index + lead,
+      });
+      i += 1;
+    }
+    return out;
+  }
+  const role = (roleId, cardinality, source) => ({
+    bindable: (source || 'response') === 'response',
+    cardinality,
+    description: roleId,
+    roleId,
+    source: source || 'response',
+  });
+  const TRAINING_SPECS = [
+    {
+      id: 'E1',
+      stratum: 'S1_span_local',
+      atom: 'un choix est explicitement énoncé',
+      question: 'L’élève dit-il clairement quelle option il retient ?',
+      roles: [role('choice', '1')],
+      response:
+        'Le fournisseur B livre en 2 jours et n’a eu aucun retard en 2025. Le fournisseur A coûte 2 500 euros de moins par an. Les deux ont été audités en mars.',
+      candidate: 0,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'La phrase parle des délais de B ; elle ne dit pas ce que l’élève retient. On ne devine pas : non. Aucune autre phrase ne le dit non plus, donc S : non.',
+    },
+    {
+      id: 'E2',
+      stratum: 'S5_multi_frame',
+      atom: 'CHAQUE donnée de l’ensemble est pertinente pour CE choix',
+      question:
+        'CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?',
+      roles: [
+        role('datum', '>=2'),
+        role('choice', '1'),
+        role('task_frame', '1', 'task_frame'),
+      ],
+      frame:
+        'Choisis l’un des deux fournisseurs pour 2026 et justifie avec des chiffres.',
+      response:
+        'Je retiens le fournisseur A. Il livre en 5 jours et n’a eu que 2 retards en 2025, ce qui reste acceptable pour nous. Notre parking compte 40 places.',
+      candidate: 1,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: ['s2'],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'La question dit CHAQUE. Les chiffres de s1 ont un rapport avec le choix ; « 40 places de parking » n’en a aucun. Un seul hors sujet, et la réponse est non. Ce qui te fait dire non, c’est s2 : c’est elle que tu surlignes.',
+    },
+    {
+      id: 'E3',
+      stratum: 'S3_span_dossier',
+      atom: 'CHAQUE affirmation utile est fidèle au contexte',
+      question:
+        'CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?',
+      roles: [role('claim', '>=1'), role('dossier', '1', 'dossier')],
+      frame:
+        'Rédige un objectif de 80 à 120 mots précisant population, processus, résultat, horizon et hypothèses.',
+      dossier:
+        'Le processus visé est le tri des tickets du support de niveau 1. L’équipe compte 12 personnes. Aucune mesure de durée n’existe encore.',
+      response:
+        'L’équipe compte 12 personnes. Le processus visé est le tri des tickets du support de niveau 1.',
+      candidate: 0,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'yes',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'La copie est très incomplète au regard de la consigne, et la question ne parle pas de ça : elle parle de conformité au dossier. « L’équipe compte 12 personnes » est dans le dossier mot pour mot : oui. Et s1 est conforme aussi, donc si on retirait s0, s1 suffirait seule : S oui.',
+    },
+    {
+      id: 'E4',
+      stratum: 'S3_span_dossier',
+      atom: 'CHAQUE donnée reprise est exacte',
+      question:
+        'CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?',
+      roles: [role('datum', '>=1'), role('dossier', '1', 'dossier')],
+      frame: 'Résume les coûts du dossier.',
+      dossier:
+        'Le contrat Préventel coûte 12 500 euros par an. Le contrat Vigil coûte 18 000 euros par an.',
+      response:
+        'Préventel coûte 14 500 euros par an, contre 18 000 pour Vigil. L’écart est donc de 3 500 euros.',
+      candidate: 0,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Ici la vérité des chiffres compte, et le dossier est là pour ça : 14 500 n’est pas 12 500. Un seul chiffre faux, et CHAQUE tombe : non.',
+    },
+    {
+      id: 'E5',
+      stratum: 'S7_full_dossier',
+      atom: 'IL N’EXISTE aucune affirmation matérielle qui ne soit pas attribuable au dossier',
+      question:
+        'Est-il vrai qu’AUCUNE affirmation importante de la réponse ne sort du dossier ?',
+      roles: [role('material_claim', '>=0'), role('dossier', '1', 'dossier')],
+      frame: 'Présente la situation.',
+      dossier: 'L’équipe compte 12 personnes. Le pilote a duré deux semaines.',
+      response:
+        'L’équipe de 12 personnes a mené un pilote de deux semaines. Les résultats seront présentés en comité.',
+      candidate: 0,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'La question dit AUCUNE : elle est vraie quand rien ne sort du dossier. Les 12 personnes et les deux semaines y sont ; « présentés en comité » n’est pas un fait matériel qui contredit quoi que ce soit. Ici, ne rien trouver, c’est répondre oui.',
+    },
+    {
+      id: 'E6',
+      stratum: 'S4_multi_local',
+      atom: 'CHAQUE risque nommé est accompagné d’une parade',
+      question: 'Pour CHAQUE risque nommé, l’élève propose-t-il une parade ?',
+      roles: [role('risk', '>=1'), role('mitigation', '>=1')],
+      response:
+        'Je recommande le déploiement immédiat. Le risque principal est la surcharge du support la première semaine. Pour y répondre, deux agents seront détachés en renfort du lundi au vendredi. Le budget reste inchangé.',
+      candidate: 1,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: ['s1', 's2'],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Un risque en s1, sa parade en s2. La parade n’est pas dans la phrase examinée : sur cette famille tu vas la chercher dans la copie, et tu la surlignes, parce que c’est elle qui te fait dire oui.',
+    },
+    {
+      id: 'E7',
+      stratum: 'S1_span_local',
+      window: true,
+      atom: 'un choix est explicitement énoncé',
+      question: 'L’élève dit-il clairement quelle option il retient ?',
+      roles: [role('choice', '1')],
+      response:
+        'Le comité a examiné les trois options pendant deux réunions. Les coûts ont été comparés sur cinq ans, avec une hypothèse d’inflation de 2 %. Je retiens l’option de maintenance préventive, malgré son coût initial plus élevé. Cette option réduit le nombre d’arrêts non planifiés. Une revue sera faite en juin. Les fournisseurs seront informés la semaine prochaine.',
+      candidate: 2,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Tu ne vois qu’un extrait, et il suffit : la phrase dit elle-même ce qui est retenu. Pour S : « cette option réduit le nombre d’arrêts » appuie le choix mais ne dit pas lequel ; appuyer n’est pas suffire seule : non.',
+    },
+    {
+      id: 'E8',
+      stratum: 'S2_span_frame',
+      atom: 'la limite énoncée porte sur le choix retenu',
+      question:
+        'La limite que l’élève énonce porte-t-elle sur l’option qu’il a retenue ?',
+      roles: [
+        role('limit', '1'),
+        role('choice', '1'),
+        role('task_frame', '1', 'task_frame'),
+      ],
+      frame:
+        'Choisis une des deux options et indique la principale limite de ton choix.',
+      response:
+        'Je retiens l’option A. L’option B présente le défaut d’exiger une formation de trois jours. Le calendrier sera précisé plus tard.',
+      candidate: 1,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'La consigne, c’est ce qu’on a demandé à l’élève ; la question, c’est ce que tu vérifies. L’élève énonce bien une limite, mais celle de l’option B, qu’il n’a pas retenue : non.',
+    },
+  ];
+  const TRAINING = TRAINING_SPECS.map((t) => {
+    const sentences = splitSentences(t.response);
+    const cs = sentences[t.candidate];
+    const window = t.window
+      ? {
+          end: Math.min(
+            t.response.length,
+            Math.max(cs.end, Math.round((cs.start + cs.end) / 2 + 120)),
+          ),
+          start: Math.max(
+            0,
+            Math.min(cs.start, Math.round((cs.start + cs.end) / 2 - 120)),
+          ),
+        }
+      : null;
+    return {
+      card: {
+        argumentRoles: t.roles,
+        atom: t.atom,
+        atomId: 'train.' + t.id,
+        candidateSentenceIds: [cs.id],
+        candidateSpan: t.response.slice(cs.start, cs.end).trim(),
+        cardId: t.id,
+        criterionLabel: 'entraînement',
+        ...(t.dossier ? { dossier: t.dossier } : {}),
+        ...(t.frame ? { frame: t.frame } : {}),
+        highlight: { end: cs.end, start: cs.start },
+        plainQuestion: t.question,
+        predicate: '',
+        quantifier: '',
+        response: t.response,
+        sentences,
+        stratum: t.stratum,
+        window,
+      },
+      expected: t.expected,
+      lesson: t.lesson,
+    };
+  });
+
+  /* ---------- state ---------- */
+  const state = { decisions: {}, index: 0, reviewer: '' };
+  const training = { decisions: {}, done: false, index: 0 };
+  const TRAINING_STORE = 'adj-training-v4';
+  try {
+    Object.assign(state, JSON.parse(localStorage.getItem(STORE) || '{}'));
+  } catch (e) {
+    /* clean start */
+  }
+  try {
+    Object.assign(
+      training,
+      JSON.parse(localStorage.getItem(TRAINING_STORE) || '{}'),
+    );
+  } catch (e) {
+    /* warm-up first */
+  }
+  const inTraining = () => !training.done;
+  const activeCards = () =>
+    inTraining() ? TRAINING.map((t) => t.card) : CARDS;
+  const activeDecisions = () =>
+    inTraining() ? training.decisions : state.decisions;
+  const getIndex = () => (inTraining() ? training.index : state.index);
+  const setIndex = (v) => {
+    if (inTraining()) training.index = v;
+    else state.index = v;
+  };
+  function persist() {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(state));
+      localStorage.setItem(TRAINING_STORE, JSON.stringify(training));
+    } catch (e) {
+      /* export is the durable path */
+    }
+  }
+
+  const HELP_STORE = 'adj-help';
+  try {
+    document.body.dataset.help = localStorage.getItem(HELP_STORE) || 'off';
+  } catch (e) {
+    document.body.dataset.help = 'off';
+  }
+  function toggleHelp() {
+    document.body.dataset.help =
+      document.body.dataset.help === 'on' ? 'off' : 'on';
+    try {
+      localStorage.setItem(HELP_STORE, document.body.dataset.help);
+    } catch (e) {
+      /* preference */
+    }
+  }
+  const GUIDE_STORE = 'adj-guide';
+  try {
+    document.body.dataset.guide = localStorage.getItem(GUIDE_STORE) || 'no';
+  } catch (e) {
+    document.body.dataset.guide = 'no';
+  }
+
+  /* Time on card: the audit asks for order and seconds per card in the export. */
+  let enteredAt = Date.now();
+  function leaveCurrent() {
+    const card = activeCards()[getIndex()];
+    if (!card) return;
+    const d = activeDecisions()[card.cardId];
+    if (!d) return;
+    d.secondsOnCard =
+      (d.secondsOnCard || 0) + Math.round((Date.now() - enteredAt) / 1000);
+    enteredAt = Date.now();
+  }
+
+  function decisionFor(card) {
+    const bag = activeDecisions();
+    if (!bag[card.cardId]) {
+      bag[card.cardId] = {
+        alternativeSupport: null,
+        cardId: card.cardId,
+        decidedAt: null,
+        evidenceSentenceIds: [],
+        evidenceViewComplete: null,
+        firstSeenAt: new Date().toISOString(),
+        orderIndex: Object.keys(bag).length,
+        rationale: '',
+        revealedBeforeVerdict: false,
+        reviewerId: '',
+        secondsOnCard: 0,
+        verdict: null,
+      };
+    }
+    return bag[card.cardId];
+  }
+  /* On a single-sentence family the evidence is the examined sentence itself. */
+  const effectiveEvidence = (card, d) =>
+    singleSpan(card) ? card.candidateSentenceIds : d.evidenceSentenceIds;
+
+  function blockers(card) {
+    const d = decisionFor(card);
+    const list = [];
+    if (!d.verdict) list.push('réponse');
+    if (
+      d.verdict === 'DIRECT' &&
+      !singleSpan(card) &&
+      !wholeCopy(card) &&
+      d.evidenceSentenceIds.length === 0
+    )
+      list.push('surligne au moins une phrase qui te fait dire oui');
+    if (d.alternativeSupport === null) list.push('S · autre phrase');
+    if (d.evidenceViewComplete === null) list.push('V · rien ne m’a manqué');
+    if (d.verdict === 'AMBIGUOUS' && !d.rationale) list.push('pourquoi');
+    return list;
+  }
+  const complete = (card) => blockers(card).length === 0;
+
+  /* ---------- warm-up grading ---------- */
+  function grade(card, d) {
+    const spec = TRAINING.find((t) => t.card.cardId === card.cardId);
+    if (!spec) return null;
+    const words = {
+      AMBIGUOUS: 'je ne peux pas dire',
+      DIRECT: 'oui',
+      NOT_DIRECT: 'non',
+    };
+    const yn = (v) => (v === 'yes' ? 'oui' : v === 'no' ? 'non' : '—');
+    const rows = [
+      {
+        expected: words[spec.expected.verdict],
+        field: 'réponse',
+        ok: d.verdict === spec.expected.verdict,
+        yours: words[d.verdict] || '—',
+      },
+    ];
+    if (!singleSpan(card)) {
+      const got = d.evidenceSentenceIds;
+      const need = spec.expected.evidenceIncludes;
+      const ok = need.every((id) => got.includes(id));
+      rows.push({
+        expected: need.length ? 'au moins ' + need.join(', ') : 'libre',
+        field: 'phrases surlignées',
+        ok,
+        yours: got.length ? got.join(', ') : 'aucune',
+      });
+    }
+    rows.push({
+      expected: yn(spec.expected.alternativeSupport),
+      field: 'S · autre phrase',
+      ok: d.alternativeSupport === spec.expected.alternativeSupport,
+      yours: yn(d.alternativeSupport),
+    });
+    rows.push({
+      expected: yn(spec.expected.evidenceViewComplete),
+      field: 'V · rien ne manquait',
+      ok: d.evidenceViewComplete === spec.expected.evidenceViewComplete,
+      yours: yn(d.evidenceViewComplete),
+    });
+    return { lesson: spec.lesson, rows };
+  }
+
+  /* ---------- rendering ---------- */
+  const hint = (t) => '<p class="hint">' + t + '</p>';
+  function renderResponse(card, d) {
+    const revealed = d.revealed === true || !card.window;
+    const clickable = !singleSpan(card);
+    let html = '';
+    let cursor = 0;
+    for (const s of card.sentences) {
+      if (s.start > cursor)
+        html += escapeHtml(card.response.slice(cursor, s.start));
+      const inWindow =
+        !card.window ||
+        (s.start < card.window.end && s.end > card.window.start);
+      const cls = ['s'];
+      if (clickable) cls.push('clickable');
+      if (card.candidateSentenceIds.includes(s.id)) cls.push('cand');
+      if (d.evidenceSentenceIds.includes(s.id)) cls.push('evidence');
+      if (!inWindow && !revealed) cls.push('hidden');
+      html +=
+        '<span class="' +
+        cls.join(' ') +
+        '" data-s="' +
+        s.id +
+        '">' +
+        (clickable ? '<sup class="sid">' + s.id + '</sup>' : '') +
+        escapeHtml(card.response.slice(s.start, s.end)) +
+        '</span>';
+      cursor = s.end;
+    }
+    if (cursor < card.response.length)
+      html += escapeHtml(card.response.slice(cursor));
+    return html;
+  }
+  function renderRail() {
+    const rail = document.getElementById('rail');
+    rail.innerHTML = '';
+    activeCards().forEach((card, index) => {
+      const b = document.createElement('button');
+      const d = activeDecisions()[card.cardId];
+      if (d && d.verdict) {
+        if (inTraining()) {
+          const g = complete(card) ? grade(card, d) : null;
+          if (g) b.dataset.g = g.rows.every((r) => r.ok) ? 'ok' : 'ko';
+          else b.dataset.incomplete = 'true';
+        } else {
+          b.dataset.d = d.verdict;
+          b.dataset.incomplete = String(!complete(card));
+        }
+      }
+      if (index === getIndex()) b.dataset.current = 'true';
+      b.title = 'carte ' + (index + 1);
+      b.setAttribute('aria-label', 'carte ' + (index + 1));
+      b.onclick = () => {
+        leaveCurrent();
+        setIndex(index);
+        render();
+      };
+      rail.appendChild(b);
+    });
+  }
+  function tri(container, field) {
+    const d = decisionFor(activeCards()[getIndex()]);
+    container.innerHTML = '';
+    const words = {
+      alternativeSupport: {
+        no: 'non, aucune ne suffirait seule',
+        yes: 'oui, une autre suffirait seule',
+      },
+      evidenceViewComplete: {
+        no: 'non, quelque chose m’a manqué',
+        yes: 'oui, rien ne m’a manqué',
+      },
+    }[field];
+    for (const option of ['yes', 'no']) {
+      const b = document.createElement('button');
+      b.textContent = words[option];
+      b.setAttribute('aria-pressed', String(d[field] === option));
+      b.onclick = () => {
+        d[field] = option;
+        touch();
+      };
+      container.appendChild(b);
+    }
+    if (d[field] === null) {
+      const tag = document.createElement('span');
+      tag.className = 'chip';
+      tag.textContent = 'sans réponse';
+      container.appendChild(tag);
+    }
+  }
+  function touch() {
+    persist();
+    render();
+  }
+  function todoText(card) {
+    const m = blockers(card);
+    return m.length ? 'manque : ' + m.join(', ') : 'carte complète';
+  }
+
+  function render() {
+    const card = activeCards()[getIndex()];
+    const d = decisionFor(card);
+    const q = questionFor(card);
+    const scope = singleSpan(card)
+      ? 'En lisant la phrase surlignée, prise seule'
+      : wholeCopy(card)
+        ? 'En lisant la copie entière'
+        : 'En lisant la copie';
+    const feedback = inTraining() && complete(card) ? grade(card, d) : null;
+    const banner = inTraining()
+      ? '<section class="training"><div class="eyebrow">Échauffement · carte ' +
+        (getIndex() + 1) +
+        ' sur ' +
+        TRAINING.length +
+        '</div><p class="note" style="margin:6px 0 0">Huit cartes inventées. Réponds comme pour une vraie carte ; dès qu’elle est complète, la correction s’affiche ici. Barre du haut : vert = tout juste, rouge = à revoir. Rien n’est enregistré pour la vraie passe.</p>' +
+        (feedback
+          ? '<table class="grade">' +
+            feedback.rows
+              .map(
+                (r) =>
+                  '<tr class="' +
+                  (r.ok ? 'ok' : 'ko') +
+                  '"><th>' +
+                  escapeHtml(r.field) +
+                  '</th><td>' +
+                  escapeHtml(r.yours) +
+                  '</td><td>' +
+                  escapeHtml(r.expected) +
+                  '</td><td>' +
+                  (r.ok ? '✓' : '✗') +
+                  '</td></tr>',
+              )
+              .join('') +
+            '</table><p class="lesson">' +
+            escapeHtml(feedback.lesson) +
+            '</p>' +
+            (getIndex() + 1 < TRAINING.length
+              ? '<p><button class="ghost" id="trainNext">carte d’entraînement suivante ▶</button></p>'
+              : '<p><button class="ghost" id="trainDone">Échauffement terminé — commencer la vraie passe</button></p>')
+          : '') +
+        '</section>'
+      : '';
+    const evidenceBlock = singleSpan(card)
+      ? '<p class="note">Sur cette carte, ce qui compte comme preuve, c’est la phrase surlignée elle-même. Rien à surligner.</p>'
+      : '<p class="note">' +
+        (d.evidenceSentenceIds.length
+          ? 'Phrases surlignées : <strong>' +
+            d.evidenceSentenceIds.join(', ') +
+            '</strong> · clique une phrase de la copie pour l’ajouter, reclique pour la retirer.'
+          : 'Clique, dans la copie à droite, la ou les phrases qui te font répondre. Obligatoire si tu réponds oui.') +
+        '</p>';
+    document.getElementById('app').innerHTML =
+      banner +
+      `
+      <section class="guide"><div class="eyebrow" style="display:flex;gap:10px;align-items:baseline">Comment traiter une carte <button class="link" id="guideToggle">replier</button></div>
+        <ol>
+          <li><strong>Ce qui était demandé</strong> : lis la consigne, et le dossier s’il est là.</li>
+          <li><strong>La copie</strong> : lis-la d’un trait. Sur les familles « une phrase », tu ne vois qu’un extrait ; ouvrir le reste est permis et simplement noté.</li>
+          <li><strong>La question</strong> : une seule, en français. Les mots en capitales (CHAQUE, AUCUNE) disent à quel point il faut être strict : CHAQUE = un seul raté et c’est non ; AUCUNE = un seul cas et c’est non.</li>
+          <li><strong>La phrase examinée</strong> : relis-la avec la question en tête.</li>
+          <li><strong>Ce qui te fait répondre</strong> : sur les familles « plusieurs phrases », clique les phrases de la copie qui te font dire oui ou non. Sur « une phrase », c’est la phrase surlignée, rien à faire.</li>
+          <li><strong>La réponse</strong> : <strong>D</strong> oui, <strong>N</strong> non, <strong>A</strong> je ne peux pas dire (justification obligatoire).</li>
+          <li><strong>Les deux contrôles</strong> : <strong>S</strong> si on retirait la phrase examinée, une autre suffirait-elle seule à répondre oui ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
+        </ol>
+        <dl>
+          <dt>oui</dt><dd>Ce que tu lis répond oui à la question, sans deviner ni compléter.</dd>
+          <dt>non</dt><dd>Ce que tu lis répond non, ou ne permet pas de répondre oui : à moitié, à côté, sous-entendu, ou il manque l’élément demandé. Une phrase vraie et bien écrite peut être un non.</dd>
+          <dt>je ne peux pas dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Dis pourquoi. Au-delà d’une carte sur cinq, la passe est suspendue : ce n’est pas une échappatoire.</dd>
+          <dt>S</dt><dd>Appuyer n’est pas suffire : il faut qu’une autre phrase, seule, réponde oui.</dd>
+          <dt>V</dt><dd>Pour CETTE question. Un dossier non montré n’est un manque que si la question en avait besoin.</dd>
+          <dt>barre du haut</dt><dd>Échauffement : vert = juste, rouge = à revoir. Vraies cartes : ta réponse, vert oui, rouge non, mauve je ne peux pas dire. Ce n’est pas une note.</dd>
+        </dl>
+        <div class="eyebrow" style="margin-top:14px">Les mots des questions</div>
+        <dl>${Object.entries(QUESTIONS.glossary || {})
+          .map(
+            ([k, v]) =>
+              '<dt style="font-family:inherit;font-weight:500">' +
+              escapeHtml(k) +
+              '</dt><dd>' +
+              escapeHtml(v) +
+              '</dd>',
+          )
+          .join('')}</dl>
+        <p class="note" style="margin:12px 0 0">On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.</p>
+      </section>
+      <div>
+        <section class="panel"><div class="eyebrow">1 · Ce qui était demandé</div>
+          ${card.frame ? '<p class="context"><strong>Consigne.</strong> ' + escapeHtml(card.frame) + '</p>' : ''}
+          ${card.dossier ? '<p class="context"><strong>Dossier.</strong> ' + escapeHtml(card.dossier) + '</p>' : ''}
+          ${!card.frame && !card.dossier ? '<p class="context">Sur cette famille de cartes, ni la consigne ni le dossier ne sont montrés : la question se juge sur la copie seule.</p>' : ''}
+        </section>
+        <section class="panel"><div class="eyebrow">3 · La question</div>
+          <p class="question">${escapeHtml(q)}</p>
+          ${hint('Une seule question, en français. Réponds avec ce que la carte te laisse regarder : ' + scope.toLowerCase() + '.')}
+          <p class="machine">écriture pour la machine : ${escapeHtml(card.atom)}${card.predicate ? ' · ' + escapeHtml(card.predicate) + ' · ' + escapeHtml(card.quantifier) : ''}</p>
+        </section>
+        <section class="panel"><div class="eyebrow">4 · La phrase examinée</div><blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote></section>
+        <section class="panel"><div class="eyebrow">5 · Ce qui te fait répondre</div>${evidenceBlock}</section>
+      </div>
+      <div class="sticky"><section class="panel">
+        <div class="eyebrow">2 · ${card.window && d.revealed !== true ? 'La copie, extrait autour de la phrase' : 'La copie de l’élève'} <span class="chip">${familyWords(card.stratum)}</span> <span class="chip" title="${escapeHtml(card.stratum)}">${escapeHtml(card.cardId)}</span></div>
+        <div class="response" id="resp">${renderResponse(card, d)}</div>
+        ${card.window && d.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la copie entière</button> <span class="note">l’ouverture est notée</span></p>' : ''}
+      </section></div>`;
+
+    document.getElementById('verdictQuestion').innerHTML =
+      scope + ' : <em>' + escapeHtml(q) + '</em>';
+    for (const b of document.querySelectorAll('#verdicts button'))
+      b.setAttribute('aria-pressed', String(b.dataset.v === d.verdict));
+    tri(document.getElementById('altTri'), 'alternativeSupport');
+    tri(document.getElementById('viewTri'), 'evidenceViewComplete');
+    document.getElementById('why').value = d.rationale || '';
+    const todo = document.getElementById('todo');
+    const missing = blockers(card);
+    todo.className = 'todo' + (missing.length ? '' : ' ok');
+    todo.textContent = todoText(card);
+    document.getElementById('dock').hidden = false;
+    const done = activeCards().filter(
+      (c) => activeDecisions()[c.cardId] && complete(c),
+    ).length;
+    document.getElementById('progress').textContent =
+      (inTraining() ? 'entraînement ' : 'carte ') +
+      (getIndex() + 1) +
+      ' / ' +
+      activeCards().length +
+      ' · ' +
+      done +
+      ' complètes';
+    document.getElementById('who').textContent = state.reviewer || 'relecteur…';
+    for (const s of document.querySelectorAll('#resp .s.clickable')) {
+      s.onclick = () => {
+        const id = s.dataset.s;
+        d.evidenceSentenceIds = d.evidenceSentenceIds.includes(id)
+          ? d.evidenceSentenceIds.filter((x) => x !== id)
+          : [...d.evidenceSentenceIds, id];
+        touch();
+      };
+    }
+    const reveal = document.getElementById('reveal');
+    if (reveal)
+      reveal.onclick = () => {
+        d.revealed = true;
+        if (!d.verdict) d.revealedBeforeVerdict = true;
+        touch();
+      };
+    const gt = document.getElementById('guideToggle');
+    if (gt) {
+      gt.textContent =
+        document.body.dataset.guide === 'yes' ? 'déplier' : 'replier';
+      gt.onclick = () => {
+        document.body.dataset.guide =
+          document.body.dataset.guide === 'yes' ? 'no' : 'yes';
+        try {
+          localStorage.setItem(GUIDE_STORE, document.body.dataset.guide);
+        } catch (e) {
+          /* preference */
+        }
+        render();
+      };
+    }
+    const tn = document.getElementById('trainNext');
+    if (tn) tn.onclick = () => advance(1);
+    const td = document.getElementById('trainDone');
+    if (td)
+      td.onclick = () => {
+        leaveCurrent();
+        training.done = true;
+        state.index = 0;
+        enteredAt = Date.now();
+        persist();
+        render();
+      };
+    renderRail();
+  }
+
+  function record(verdict) {
+    const card = activeCards()[getIndex()];
+    const d = decisionFor(card);
+    d.verdict = verdict;
+    d.decidedAt = new Date().toISOString();
+    d.reviewerId = state.reviewer;
+    persist();
+    render();
+    if (complete(card) && !inTraining()) advance(1);
+  }
+  function advance(step) {
+    leaveCurrent();
+    setIndex(
+      Math.min(activeCards().length - 1, Math.max(0, getIndex() + step)),
+    );
+    persist();
+    render();
+  }
+
+  for (const b of document.querySelectorAll('#verdicts button'))
+    b.onclick = () => record(b.dataset.v);
+  document.getElementById('prev').onclick = () => advance(-1);
+  document.getElementById('next').onclick = () => advance(1);
+  document.getElementById('help').onclick = toggleHelp;
+  document.getElementById('train').onclick = () => {
+    if (
+      inTraining() ||
+      confirm(
+        'Refaire l’échauffement ? Tes décisions de la vraie passe sont conservées.',
+      )
+    ) {
+      training.done = false;
+      training.decisions = {};
+      training.index = 0;
+      persist();
+      render();
+    }
+  };
+  document.getElementById('why').oninput = () => {
+    const card = activeCards()[getIndex()];
+    decisionFor(card).rationale = document.getElementById('why').value.trim();
+    persist();
+    const todo = document.getElementById('todo');
+    const m = blockers(card);
+    todo.className = 'todo' + (m.length ? '' : ' ok');
+    todo.textContent = todoText(card);
+  };
+  document.getElementById('who').onclick = () => {
+    const v = prompt(
+      'Identifiant du relecteur (enregistré avec chaque décision)',
+      state.reviewer,
+    );
+    if (v !== null) {
+      state.reviewer = v.trim();
+      touch();
+    }
+  };
+  const cycle = (field) => {
+    const d = decisionFor(activeCards()[getIndex()]);
+    const order = [null, 'yes', 'no'];
+    d[field] = order[(order.indexOf(d[field]) + 1) % order.length];
+    touch();
+  };
+  if (window.__adjudicationKeydown)
+    removeEventListener('keydown', window.__adjudicationKeydown);
+  window.__adjudicationKeydown = (event) => {
+    const t = event.target;
+    if (t instanceof Element && t.matches('input, textarea')) {
+      if (event.key === 'Escape' && t instanceof HTMLElement) t.blur();
+      return;
+    }
+    const k = event.key.toLowerCase();
+    if (k === 'd') record('DIRECT');
+    else if (k === 'n') record('NOT_DIRECT');
+    else if (k === 'a') record('AMBIGUOUS');
+    else if (k === 's') cycle('alternativeSupport');
+    else if (k === 'v') cycle('evidenceViewComplete');
+    else if (event.key === '?') {
+      toggleHelp();
+      render();
+    } else if (k === 'j') {
+      event.preventDefault();
+      document.getElementById('why').focus();
+    } else if (event.key === 'ArrowLeft') advance(-1);
+    else if (event.key === 'ArrowRight') advance(1);
+  };
+  addEventListener('keydown', window.__adjudicationKeydown);
+
+  /* ---------- export: same contract; the schema is derived, not asked ---------- */
+  function canonical(v) {
+    if (Array.isArray(v)) return '[' + v.map(canonical).join(',') + ']';
+    if (v && typeof v === 'object')
+      return (
+        '{' +
+        Object.keys(v)
+          .sort()
+          .map((k) => JSON.stringify(k) + ':' + canonical(v[k]))
+          .join(',') +
+        '}'
+      );
+    return JSON.stringify(v);
+  }
+  function derivedRoles(card, d) {
+    const roles = bindableRoles(card);
+    const evidence = effectiveEvidence(card, d);
+    const out = {};
+    if (roles.length === 1) {
+      out[roles[0].roleId] = {
+        derivation: 'single-role',
+        sentenceIds: evidence,
+        status: evidence.length ? 'BOUND' : 'ABSENT',
+      };
+    } else
+      for (const r of roles)
+        out[r.roleId] = {
+          derivation: 'pass-2',
+          sentenceIds: evidence,
+          status: 'PENDING_PASS2',
+        };
+    return out;
+  }
+  document.getElementById('toExport').onclick = async () => {
+    document.getElementById('dock').hidden = true;
+    const back = () => {
+      document.getElementById('dock').hidden = false;
+      render();
+    };
+    if (inTraining()) {
+      document.getElementById('app').innerHTML =
+        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export indisponible</div><p class="note">L’échauffement n’est pas terminé.</p><p><button class="ghost" id="back">retour</button></p></section></div>';
+      document.getElementById('back').onclick = back;
+      return;
+    }
+    leaveCurrent();
+    const refusals = [];
+    if (!state.reviewer) refusals.push('aucun identifiant de relecteur');
+    const incomplete = CARDS.filter((c) => !complete(c));
+    if (incomplete.length)
+      refusals.push(
+        incomplete.length + ' cartes incomplètes sur ' + CARDS.length,
+      );
+    const abstentions = CARDS.filter(
+      (c) =>
+        state.decisions[c.cardId] &&
+        state.decisions[c.cardId].verdict === 'AMBIGUOUS',
+    ).length;
+    const share = abstentions / CARDS.length;
+    if (incomplete.length === 0 && share > ABSTENTION_CAP)
+      refusals.push(
+        'passe suspendue : ' +
+          abstentions +
+          ' « je ne peux pas dire » sur ' +
+          CARDS.length +
+          ' (' +
+          Math.round(share * 100) +
+          ' %), au-delà du plafond pré-déclaré de 20 %',
+      );
+    if (refusals.length) {
+      document.getElementById('app').innerHTML =
+        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export refusé</div><ul class="blockers">' +
+        refusals.map((r) => '<li>' + escapeHtml(r) + '</li>').join('') +
+        '</ul>' +
+        (incomplete.length
+          ? '<ul class="blockers">' +
+            incomplete
+              .slice(0, 12)
+              .map(
+                (c) =>
+                  '<li>' +
+                  escapeHtml(c.cardId) +
+                  ' — ' +
+                  escapeHtml(blockers(c).join(', ')) +
+                  '</li>',
+              )
+              .join('') +
+            '</ul>'
+          : '') +
+        '<p><button class="ghost" id="back">retour aux cartes</button></p></section></div>';
+      document.getElementById('back').onclick = back;
+      return;
+    }
+    const payload = {
+      abstentionShare: share,
+      atomTaxonomyHash: DECK.atomTaxonomyHash,
+      deckHash: DECK.contentHash,
+      deckSeed: DECK.shuffleSeed,
+      decisions: CARDS.map((c) => {
+        const d = state.decisions[c.cardId];
+        return {
+          alternativeSupport: d.alternativeSupport,
+          cardId: c.cardId,
+          decidedAt: d.decidedAt,
+          evidenceSentenceIds: effectiveEvidence(c, d),
+          evidenceViewComplete: d.evidenceViewComplete,
+          firstSeenAt: d.firstSeenAt,
+          orderIndex: d.orderIndex,
+          rationale: d.rationale,
+          revealedBeforeVerdict: d.revealedBeforeVerdict === true,
+          reviewerId: d.reviewerId || state.reviewer,
+          roleAssessments: derivedRoles(c, d),
+          secondsOnCard: d.secondsOnCard || 0,
+          verdict: d.verdict,
+        };
+      }).sort((a, b) => a.cardId.localeCompare(b.cardId)),
+      manifestHash: DECK.manifestHash,
+      pass: 1,
+      questionsHash: QUESTIONS.contentHash || null,
+      schemaVersion: 4,
+    };
+    const text = canonical(payload);
+    let digest = 'indisponible hors https';
+    if (globalThis.crypto && crypto.subtle) {
+      const bytes = await crypto.subtle.digest(
+        'SHA-256',
+        new TextEncoder().encode(text),
+      );
+      digest =
+        'sha256:' +
+        [...new Uint8Array(bytes)]
+          .map((b) => b.toString(16).padStart(2, '0'))
+          .join('');
+    }
+    document.getElementById('app').innerHTML =
+      '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export de la passe 1</div><p class="note">' +
+      payload.decisions.length +
+      ' décisions. Enregistre ce texte tel quel dans <code>benchmarks/ai-correction/regression/adjudication-pass1.v1.json</code>. Toute modification ultérieure produit une nouvelle version.</p><p class="hash"><strong>empreinte du texte ci-dessous :</strong> ' +
+      digest +
+      '</p><p><button class="ghost" id="copy">copier</button> <button class="ghost" id="back">retour aux cartes</button></p><textarea readonly id="out">' +
+      escapeHtml(text) +
+      '</textarea></section></div>';
+    document.getElementById('copy').onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(text);
+        document.getElementById('copy').textContent = 'copié';
+      } catch (e) {
+        document.getElementById('out').select();
+        document.getElementById('copy').textContent = 'sélectionné — ⌘C';
+      }
+    };
+    document.getElementById('back').onclick = back;
+  };
+
+  render();
+</script>

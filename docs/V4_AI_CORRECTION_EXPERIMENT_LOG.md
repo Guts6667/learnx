@@ -1800,3 +1800,44 @@ laisse le schéma au code et à la passe 2.
   clé publiée avant l'export.
 
 Dépense de ce pivot : 0,00 USD.
+
+### Le pivot exécuté : questions gelées, page v4, échauffement refait
+
+**Les 39 questions** (un atome sur les 40 est décidé par le code, pas par le
+vérificateur) ont suivi l'ordre imposé par l'audit : brouillon → validation du
+propriétaire → deux lectures de non-orientation par des agents sans contexte →
+gel → scellement. `plain-questions.v1.json`, **`sha256:6b25f4e9…`**.
+
+- Lecteur B : quatre mots orientant vers oui retirés (« bien » ×3,
+  « effectivement »), la double négation de sf.a2 simplifiée, ff.a3 et sfu.a3
+  rendues distinguables par leur ancrage (choix de l'élève / sujet posé), et un
+  **glossaire** pour les huit questions qui disaient « d'après le dossier » sans
+  le définir.
+- Lecteur A, sur la version corrigée : **aucune question orientée** ; sept
+  entrées de glossaire ajoutées, cf.a2 et cf.a3 réalignées sur « affirmation
+  utile ». rr.a3 garde ses deux conditions parce que la grille n'a qu'un atome :
+  la règle « oui seulement si les deux » est dans le glossaire.
+- `scripts/check-plain-questions.ts` : une question par atome vérificateur, le
+  mot du quantificateur présent (CHAQUE, AUCUNE, ou aucun des deux pour
+  `exists`), aucune réponse soufflée. Vert.
+
+**La page v4** demande ce qu'un humain fait bien : une question en français,
+oui / non / je ne peux pas dire, et **les phrases qui font répondre**, cliquées
+dans la copie. Sur les 62 cartes à un rôle liable, le témoin est dérivé ; sur
+les 39 à deux rôles, il est marqué `PENDING_PASS2` avec les phrases surlignées
+comme point de départ ; les 5 sans rôle liable n'ont rien à dériver. La
+**fenêtre de 340 caractères est conservée** sur S1–S3. L'export porte l'ordre
+et le temps par carte, refuse au-delà de **20 % de « je ne peux pas dire »**
+(passe suspendue, règle pré-déclarée), et garde le même contrat.
+
+**L'audit d'aveuglement relancé sur cette présentation** donne les mêmes
+chiffres que sur la v3 (paquet inchangé, fenêtre inchangée) : hors strate
+diagnostique, longueur visible **0,501**, span 0,321 (séparabilité 0,679,
+inversée). Le dénominateur reste 25 / 9 / 71,69 %.
+
+**L'échauffement** est refait sur huit cas dont la réponse ne se discute pas,
+E2 et E3 compris, avec la question en français de l'atome. 11 tests de page,
+dont un export complet de 106 cartes et une suspension à 25 abstentions.
+
+Reste avant la passe 1 : validation de l'échauffement par deux agents sans
+contexte, puis 8/8 par le propriétaire. Dépense : 0,00 USD.
