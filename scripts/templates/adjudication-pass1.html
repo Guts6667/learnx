@@ -487,21 +487,25 @@
 <footer class="dock" hidden id="dock">
   <div class="dock-inner">
     <div>
-      <div class="eyebrow">6 · La phrase prouve-t-elle la case&nbsp;?</div>
+      <div class="eyebrow">
+        6 · La phrase examinée prouve-t-elle l’affirmation&nbsp;?
+      </div>
       <div class="verdicts" id="verdicts">
-        <button data-v="DIRECT" aria-pressed="false"><kbd>D</kbd>direct</button>
+        <button data-v="DIRECT" aria-pressed="false">
+          <kbd>D</kbd>oui, elle la prouve
+        </button>
         <button data-v="NOT_DIRECT" aria-pressed="false">
-          <kbd>N</kbd>pas direct
+          <kbd>N</kbd>non
         </button>
         <button data-v="AMBIGUOUS" aria-pressed="false">
-          <kbd>A</kbd>ambigu
+          <kbd>A</kbd>impossible à dire
         </button>
       </div>
     </div>
     <div>
       <div class="eyebrow" style="margin-bottom: 4px">7 · Contrôles</div>
       <div class="ctl-label">
-        <kbd>S</kbd> une autre phrase de la copie prouverait la case
+        <kbd>S</kbd> une autre phrase de la copie prouverait l’affirmation
       </div>
       <div class="tri" id="altTri"></div>
       <div class="ctl-label" style="margin-top: 6px">
@@ -849,22 +853,22 @@
         <ol>
           <li><strong>Ce qui était demandé</strong> : lis la consigne, et le dossier s’il est là.</li>
           <li><strong>La copie</strong> : lis-la d’un trait, pour comprendre ce que l’élève a choisi.</li>
-          <li><strong>La case à cocher</strong> : la question posée à toi, le correcteur. Le dernier mot de la formule fixe la sévérité.</li>
-          <li><strong>La phrase à juger</strong> : relis-la seule, avec la case en tête.</li>
+          <li><strong>L’affirmation à vérifier</strong> : une phrase qui affirme quelque chose sur la copie. Ton travail : dire si elle est vraie. Le dernier mot de la formule fixe la sévérité.</li>
+          <li><strong>La phrase examinée</strong> : relis-la seule, avec l’affirmation en tête.</li>
           <li><strong>Les témoins</strong> : pour chaque rôle, <strong>lié</strong> puis clique la phrase dans la copie, ou <strong>absent</strong>, ou <strong>ambigu</strong>.</li>
-          <li><strong>Le verdict</strong> : la phrase prouve-t-elle à elle seule la case ? <strong>D</strong> direct, <strong>N</strong> pas direct, <strong>A</strong> ambigu.</li>
+          <li><strong>Le verdict</strong> : la phrase examinée prouve-t-elle, à elle seule, que l’affirmation est vraie ? <strong>D</strong> oui, elle la prouve ; <strong>N</strong> non ; <strong>A</strong> impossible à dire.</li>
           <li><strong>Les contrôles</strong>, sans valeur par défaut : <strong>S</strong> une autre phrase le prouverait-elle ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
         </ol>
         <dl>
-          <dt>direct</dt><dd>La phrase établit exactement la case, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
-          <dt>pas direct</dt><dd>Partiel, seulement voisin, implicite, mauvais témoin, ou absent. Une phrase vraie et bien écrite peut être « pas direct ».</dd>
-          <dt>ambigu</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
-          <dt>autre soutien</dt><dd>Sert surtout quand la phrase surlignée ne suffit pas : y a-t-il ailleurs dans la copie de quoi cocher la case ?</dd>
+          <dt>D · oui</dt><dd>La phrase prouve exactement l’affirmation, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
+          <dt>N · non</dt><dd>Elle ne prouve l’affirmation qu’à moitié, ou parle d’autre chose, ou le sous-entend sans le dire, ou s’appuie sur un mauvais témoin, ou le témoin manque. Une phrase vraie et bien écrite peut être un « non ».</dd>
+          <dt>A · impossible à dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
+          <dt>autre soutien</dt><dd>Sert surtout quand la phrase examinée ne suffit pas : y a-t-il ailleurs dans la copie une phrase qui prouverait l’affirmation ?</dd>
           <dt>vue complète</dt><dd>Répondre « non » est une information utile, pas un aveu : ça dit que la carte t’a fait juger avec un manque.</dd>
           <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
           <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
         </dl>
-        <p class="note" style="margin:12px 0 0">Tu ne sais jamais d’où vient une carte, c’est voulu. Ne cherche pas à le deviner, ne te fie ni à la longueur ni au style : lis la phrase et juge-la contre la case.</p>
+        <p class="note" style="margin:12px 0 0">Tu ne sais jamais d’où vient une carte, c’est voulu. Ne cherche pas à le deviner, ne te fie ni à la longueur ni au style : lis la phrase et demande-toi si elle prouve l’affirmation.</p>
       </section>
       <div>
         <section class="panel">
@@ -875,18 +879,18 @@
           ${hint('Le sujet donné à l’élève, et les faits qu’on lui a fournis. Tu n’y réponds pas : c’est le contexte qui donne leur sens à « pertinent », « adapté », « répond à ».')}
         </section>
         <section class="panel">
-          <div class="eyebrow">3 · La case à cocher</div>
+          <div class="eyebrow">3 · L’affirmation à vérifier</div>
           <p class="atom">${escapeHtml(card.atom)}</p>
-          ${hint('La question posée à toi, le correcteur. C’est une case du barème découpée assez fin pour qu’on y réponde par oui ou non. Tout ce que tu décides ici parle de cette case et d’elle seule.')}
+          ${hint('Une affirmation sur la copie, tirée du barème et découpée assez fin pour qu’on puisse dire vrai ou faux. Ton travail sur cette carte : dire si la phrase examinée la prouve. Tout ce que tu décides ici parle de cette affirmation et d’elle seule.')}
           <p class="sig">${renderSignature(card)} · ${escapeHtml(card.quantifier)}${card.logicalOperator === 'none' ? '' : ' · ' + escapeHtml(card.logicalOperator)}</p>
           ${hint('La même question écrite en formule, pour qu’il n’y ait pas d’interprétation : la relation, puis entre parenthèses les rôles qu’elle relie. ' + quantifierHint(card.quantifier))}
           <p class="note" style="margin-bottom:0">Phrase du barème&nbsp;: «&nbsp;${escapeHtml(card.sourcePhrase)}&nbsp;» — critère ${escapeHtml(card.criterionLabel)}</p>
-          ${hint('D’où vient la case : le mot du barème qu’on a transformé en question, et le critère qui le contient.')}
+          ${hint('D’où vient l’affirmation : le mot du barème qu’on a transformé en phrase vérifiable, et le critère qui le contient.')}
         </section>
         <section class="panel">
-          <div class="eyebrow">4 · La phrase à juger</div>
+          <div class="eyebrow">4 · La phrase examinée</div>
           <blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote>
-          ${hint('La phrase surlignée dans la copie, reprise seule. Ta réponse direct / pas direct / ambigu parle d’elle, à elle seule.')}
+          ${hint('La phrase surlignée dans la copie, reprise seule. Ta réponse oui / non / impossible à dire parle d’elle, à elle seule : prouve-t-elle l’affirmation ?')}
         </section>
         <section class="panel">
           <div class="eyebrow">5 · Les témoins</div>
@@ -903,7 +907,7 @@
             <span class="chip">${escapeHtml(card.stratum)}</span>
             <span class="chip">${escapeHtml(card.cardId)}</span>
           </div>
-          ${hint('Lis-la d’un trait. Les phrases sont numérotées à partir de s0 (la première). Elles deviennent cliquables quand un rôle est sur « lié » : cliquer une phrase l’attribue à ce rôle, recliquer la détache. Le surlignage doré est la phrase à juger.' + (card.window && decision.revealed !== true ? ' Tu ne vois qu’un extrait : ouvrir la copie entière est permis, et simplement noté.' : ''))}
+          ${hint('Lis-la d’un trait. Les phrases sont numérotées à partir de s0 (la première). Elles deviennent cliquables quand un rôle est sur « lié » : cliquer une phrase l’attribue à ce rôle, recliquer la détache. Le surlignage doré est la phrase examinée.' + (card.window && decision.revealed !== true ? ' Tu ne vois qu’un extrait : ouvrir la copie entière est permis, et simplement noté.' : ''))}
           <div class="response" id="resp">${renderResponse(card)}</div>
           ${card.window && decision.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la copie entière</button> <span class="note">l’ouverture est notée</span></p>' : ''}
         </section>
