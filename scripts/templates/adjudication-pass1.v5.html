@@ -330,6 +330,71 @@
     grid-column: 1 / -1;
     padding: 14px 20px;
   }
+  .chooser[hidden] {
+    display: none;
+  }
+  .chooser {
+    align-items: center;
+    background: var(--paper);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 24px;
+    position: fixed;
+    z-index: 40;
+  }
+  .chooser-box {
+    background: var(--card);
+    border: 1px solid var(--mark);
+    border-radius: 3px;
+    max-width: 560px;
+    padding: 22px 26px;
+    width: 100%;
+  }
+  .chooser-box h2 {
+    font-size: 20px;
+    margin: 6px 0 14px;
+  }
+  .chooser-box .en {
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .chooser-box button.go .en {
+    color: var(--paper);
+    opacity: 0.7;
+  }
+  .chooser-box label.opt {
+    align-items: baseline;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .chooser-box .sub {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 4px 0 6px 26px;
+  }
+  .chooser-box .sub label {
+    align-items: center;
+    display: inline-flex;
+    gap: 8px;
+  }
+  .chooser-box select {
+    font: inherit;
+    padding: 4px 6px;
+  }
+  .chooser-box button.go {
+    background: var(--ink);
+    border: 0;
+    border-radius: 3px;
+    color: var(--paper);
+    cursor: pointer;
+    font: inherit;
+    margin-top: 8px;
+    padding: 8px 16px;
+  }
   table.grade {
     border-collapse: collapse;
     font-size: 13.5px;
@@ -516,6 +581,59 @@
 </style>
 
 <div class="rail" id="rail" role="navigation" aria-label="Progression"></div>
+<div class="chooser" id="chooser" hidden>
+  <div class="chooser-box">
+    <div class="eyebrow">Relecture à l’aveugle · Blind review</div>
+    <h2>
+      Comment arrives-tu ici&nbsp;?
+      <span class="en">/ How did you get here?</span>
+    </h2>
+    <label class="opt"
+      ><input type="radio" name="chooserMode" value="slice" checked />
+      <span
+        >On m’a donné un numéro de tranche (7 ou 8 cartes).
+        <span class="en"
+          >/ I was given a slice number (7 or 8 cards).</span
+        ></span
+      ></label
+    >
+    <div class="sub">
+      <label
+        >Tranche <span class="en">/ slice</span>
+        <select id="chooserSlice"></select
+      ></label>
+      <label
+        >Langue <span class="en">/ language</span>
+        <select id="chooserLang">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select></label
+      >
+    </div>
+    <label class="opt"
+      ><input type="radio" name="chooserMode" value="full" />
+      <span
+        >Je fais la série complète (relecteur principal).
+        <span class="en"
+          >/ I am doing the full series (main reviewer).</span
+        ></span
+      ></label
+    >
+    <p>
+      <button class="go" id="chooserGo">
+        Commencer <span class="en">/ Start</span>
+      </button>
+    </p>
+    <p class="note" style="margin: 10px 0 0">
+      Ce choix est mémorisé sur cet appareil. Pour en changer plus tard, utilise
+      « changer de tranche » en haut de page.
+      <span class="en"
+        >/ This choice is remembered on this device. To change it later, use
+        “change slice” at the top of the page.</span
+      >
+    </p>
+  </div>
+</div>
 <div class="legend" id="legend"></div>
 <header class="bar">
   <div>
@@ -593,7 +711,25 @@
 </script>
 <script>
   const DECK = JSON.parse(document.getElementById('deck').textContent);
-  const PARAMS = new URLSearchParams(location.hash.replace(/^#/, ''));
+  /* Mode = slice + language. Three sources, in order: the address after '#'
+     (e.g. #s=1-01&lang=en), then the choice saved on this device by the
+     start screen, then the start screen itself. A mode given by the address
+     is never saved, so opening a slice link never changes the main pass. */
+  const MODE_STORE = 'adj-mode-' + DECK.manifestHash.slice(-12);
+  const HASH_PARAMS = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const HASH_MODE = HASH_PARAMS.has('s') || HASH_PARAMS.has('lang');
+  const readSavedMode = () => {
+    try {
+      const raw = localStorage.getItem(MODE_STORE);
+      return raw === null ? null : new URLSearchParams(raw);
+    } catch (e) {
+      return null;
+    }
+  };
+  const SAVED_MODE = HASH_MODE ? null : readSavedMode();
+  const PARAMS = HASH_MODE
+    ? HASH_PARAMS
+    : SAVED_MODE || new URLSearchParams('');
   const LANG = PARAMS.get('lang') === 'en' ? 'en' : 'fr';
   const SLICE_ID = PARAMS.get('s') || null;
   const readJson = (id) => {
@@ -754,6 +890,7 @@
         'Les cartes d’entraînement sont corrigées. Il reste à valider l’échauffement pour ouvrir les vraies cartes ; l’export viendra après.',
       xTrainNot:
         'L’échauffement n’est pas terminé : finis les cartes d’entraînement.',
+      changeMode: 'changer de tranche',
       sliceNote: (id, n) =>
         'Tu as une tranche de ' +
         n +
@@ -918,6 +1055,7 @@
       xTrainDone:
         'The warm-up cards are corrected. Validate the warm-up to open the real cards; the export comes after.',
       xTrainNot: 'The warm-up is not finished: complete the warm-up cards.',
+      changeMode: 'change slice',
       sliceNote: (id, n) =>
         'You have a slice of ' +
         n +
@@ -1631,6 +1769,7 @@
         t('trainNote') +
         (SLICE ? ' ' + t('sliceNote', SLICE.sliceId, CARDS.length) : '') +
         '</p>' +
+        modeButton() +
         (feedback
           ? '<table class="grade">' +
             feedback.rows
@@ -1664,7 +1803,9 @@
       : SLICE
         ? '<section class="training"><p class="note" style="margin:0">' +
           t('sliceNote', SLICE.sliceId, CARDS.length) +
-          '</p></section>'
+          '</p>' +
+          modeButton() +
+          '</section>'
         : '';
     const evidenceBlock = singleSpan(card)
       ? '<p class="note">' + t('ev1') + '</p>'
@@ -1803,6 +1944,8 @@
         render();
       };
     }
+    const cm = document.getElementById('changeMode');
+    if (cm) cm.onclick = changeMode;
     const tn = document.getElementById('trainNext');
     if (tn) tn.onclick = () => advance(1);
     const td = document.getElementById('trainDone');
@@ -2115,6 +2258,74 @@
     document.getElementById('back').onclick = back;
   };
 
+  const modeButton = () =>
+    SLICE
+      ? '<p style="margin:8px 0 0"><button class="ghost" id="changeMode">' +
+        t('changeMode') +
+        '</button></p>'
+      : '';
+  /* ---------- start screen ---------- */
+  const mainPassStarted = () => {
+    try {
+      const raw = localStorage.getItem(
+        'adj-v4-' + DECK.manifestHash.slice(-12),
+      );
+      const saved = raw ? JSON.parse(raw) : null;
+      return !!(
+        saved &&
+        saved.decisions &&
+        Object.keys(saved.decisions).length
+      );
+    } catch (e) {
+      return false;
+    }
+  };
+  const chooserNeeded = !HASH_MODE && !SAVED_MODE && !mainPassStarted();
+  function openChooser() {
+    const box = document.getElementById('chooser');
+    const select = document.getElementById('chooserSlice');
+    select.innerHTML = (SLICES ? SLICES.slices : [])
+      .map(
+        (x) =>
+          '<option value="' +
+          escapeHtml(x.sliceId) +
+          '">' +
+          escapeHtml(x.sliceId) +
+          ' (' +
+          x.cards.length +
+          ')</option>',
+      )
+      .join('');
+    box.hidden = false;
+    document.getElementById('chooserGo').onclick = () => {
+      const mode = document.querySelector(
+        'input[name="chooserMode"]:checked',
+      ).value;
+      const chosen = new URLSearchParams('');
+      if (mode === 'slice') {
+        chosen.set('s', select.value);
+        chosen.set('lang', document.getElementById('chooserLang').value);
+      }
+      try {
+        localStorage.setItem(MODE_STORE, chosen.toString());
+      } catch (e) {
+        /* the address still works: #s=…&lang=… */
+      }
+      box.hidden = true;
+      if (mode === 'slice') location.reload();
+    };
+  }
+  function changeMode() {
+    try {
+      localStorage.removeItem(MODE_STORE);
+    } catch (e) {
+      /* nothing saved */
+    }
+    location.hash = '';
+    location.reload();
+  }
+
   renderStatic();
   render();
+  if (chooserNeeded) openChooser();
 </script>

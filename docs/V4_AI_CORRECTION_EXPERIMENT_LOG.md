@@ -1870,5 +1870,18 @@ propriétaire, qui continue.
 - **Page v5** : même contrat, mêmes règles, avec la langue et la tranche
   lues dans l'adresse. 13 tests DOM, dont un volontaire anglophone et une
   tranche exportée de bout en bout.
+- **Écran de départ** (3 septembre) : le propriétaire a ouvert
+  `…#s=1-01` et a vu sa propre passe. Le visualiseur ne transmet pas la
+  partie de l'adresse après `#`, donc un lien ne suffit pas. La page demande
+  désormais à l'écran, au premier chargement, « tranche + langue » ou « série
+  complète », et mémorise le choix sur l'appareil. Trois sources, dans
+  l'ordre : l'adresse, le choix mémorisé, l'écran. Un mode venu de l'adresse
+  n'est jamais mémorisé, et l'écran ne s'affiche pas si la série principale a
+  déjà une décision : la passe du propriétaire ne change pas. Un bouton
+  « changer de tranche » efface le choix. 4 tests DOM de plus (17), et deux
+  captures en navigateur sans tête : l'écran, puis la tranche 1-01 avec ses 3
+  cartes d'échauffement. Le premier jet ne cachait pas l'écran après le
+  rechargement (`display: flex` battait `hidden`) : vu à l'écran, pas par les
+  tests.
 
 Dépense : 0,00 USD.

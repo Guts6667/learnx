@@ -360,3 +360,85 @@ describe('language and slice modes', () => {
     expect(payload.decisions).toHaveLength(slice?.cards.length ?? -1);
   });
 });
+
+describe('écran de départ (tranche + langue sans dépendre de l’adresse)', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('s’affiche quand rien ne dit le mode, avec les 14 tranches', () => {
+    boot('');
+    const chooser = document.getElementById('chooser') as HTMLElement;
+    expect(chooser.hidden).toBe(false);
+    const options = document.querySelectorAll('#chooserSlice option');
+    expect(options.length).toBe(14);
+    expect(options[0]?.textContent).toMatch(/^1-01 \(\d\)$/u);
+  });
+
+  it('reste caché quand l’adresse donne la tranche ou quand la série principale est commencée', () => {
+    boot('#s=1-01');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    localStorage.clear();
+    const key = Object.keys(localStorage).find((k) => k.startsWith('adj-v4-'));
+    expect(key).toBeUndefined();
+    boot('');
+    // Main pass with one decision saved → the owner never sees the screen.
+    localStorage.clear();
+    localStorage.setItem(
+      'adj-v4-' +
+        (
+          JSON.parse(document.getElementById('deck')?.textContent ?? '{}') as {
+            manifestHash: string;
+          }
+        ).manifestHash.slice(-12),
+      JSON.stringify({ decisions: { x: {} }, index: 0, reviewer: 'r' }),
+    );
+    boot('');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+  });
+
+  it('mémorise la tranche et la langue choisies, puis les rejoue sans adresse', () => {
+    boot('');
+    (document.getElementById('chooserSlice') as HTMLSelectElement).value =
+      '2-03';
+    (document.getElementById('chooserLang') as HTMLSelectElement).value = 'en';
+    (document.getElementById('chooserGo') as HTMLElement).click();
+    const modeKey = Object.keys(localStorage).find((k) =>
+      k.startsWith('adj-mode-'),
+    );
+    expect(modeKey).toBeDefined();
+    expect(localStorage.getItem(modeKey ?? '')).toBe('s=2-03&lang=en');
+    boot('');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    expect(document.querySelectorAll('#rail button').length).toBe(3);
+    expect(document.body.textContent).toContain('slice 2-03');
+    expect(document.getElementById('changeMode')?.textContent).toBe(
+      'change slice',
+    );
+  });
+
+  it('« série complète » ferme l’écran sans rien changer à la série principale', () => {
+    boot('');
+    (
+      document.querySelector(
+        'input[name="chooserMode"][value="full"]',
+      ) as HTMLInputElement
+    ).checked = true;
+    (document.getElementById('chooserGo') as HTMLElement).click();
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    expect(document.querySelectorAll('#rail button').length).toBe(8);
+    boot('');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    expect(document.querySelectorAll('#rail button').length).toBe(8);
+  });
+});
