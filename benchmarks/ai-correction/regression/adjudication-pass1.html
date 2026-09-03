@@ -7684,7 +7684,7 @@
       frame: 'Présente la situation.',
       dossier: 'L’équipe compte 12 personnes. Le pilote a duré deux semaines.',
       response:
-        'L’équipe de 12 personnes a mené un pilote de deux semaines. Les résultats seront présentés en comité.',
+        'L’équipe de 12 personnes a mené un pilote de deux semaines. Ce pilote de deux semaines a donc mobilisé les 12 personnes.',
       candidate: 0,
       expected: {
         verdict: 'DIRECT',
@@ -7693,7 +7693,7 @@
         evidenceViewComplete: 'yes',
       },
       lesson:
-        'La question dit AUCUNE : elle est vraie quand rien ne sort du dossier. Les 12 personnes et les deux semaines y sont ; « présentés en comité » n’est pas un fait matériel qui contredit quoi que ce soit. Ici, ne rien trouver, c’est répondre oui.',
+        'La question dit AUCUNE : elle est vraie quand rien ne sort du dossier. Les 12 personnes et les deux semaines y sont ; et la seconde phrase ne fait que les redire. Ici, ne rien trouver, c’est répondre oui. Si une phrase avait annoncé un fait absent du dossier, par exemple un coût, la réponse aurait été non.',
     },
     {
       id: 'E6',
@@ -7734,7 +7734,7 @@
     },
     {
       id: 'E8',
-      stratum: 'S2_span_frame',
+      stratum: 'S5_multi_frame',
       atom: 'la limite énoncée porte sur le choix retenu',
       question:
         'La limite que l’élève énonce porte-t-elle sur l’option qu’il a retenue ?',
@@ -7750,12 +7750,12 @@
       candidate: 1,
       expected: {
         verdict: 'NOT_DIRECT',
-        evidenceIncludes: [],
+        evidenceIncludes: ['s0', 's1'],
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
       lesson:
-        'La consigne, c’est ce qu’on a demandé à l’élève ; la question, c’est ce que tu vérifies. L’élève énonce bien une limite, mais celle de l’option B, qu’il n’a pas retenue : non.',
+        'La consigne, c’est ce qu’on a demandé à l’élève ; la question, c’est ce que tu vérifies. L’élève énonce bien une limite, mais celle de l’option B, qu’il n’a pas retenue : non. Pour le voir il faut deux phrases, celle du choix (s0) et celle de la limite (s1) ; sur cette famille tu as le droit de les lire toutes les deux, et tu les surlignes : c’est elles qui te font dire non.',
     },
   ];
   const TRAINING = TRAINING_SPECS.map((t) => {
@@ -7897,12 +7897,12 @@
     const list = [];
     if (!d.verdict) list.push('réponse');
     if (
-      d.verdict === 'DIRECT' &&
+      (d.verdict === 'DIRECT' || d.verdict === 'NOT_DIRECT') &&
       !singleSpan(card) &&
       !wholeCopy(card) &&
       d.evidenceSentenceIds.length === 0
     )
-      list.push('surligne au moins une phrase qui te fait dire oui');
+      list.push('surligne au moins une phrase qui te fait répondre');
     if (d.alternativeSupport === null) list.push('S · autre phrase');
     if (d.evidenceViewComplete === null) list.push('V · rien ne m’a manqué');
     if (d.verdict === 'AMBIGUOUS' && !d.rationale) list.push('pourquoi');
@@ -8097,13 +8097,13 @@
         '</section>'
       : '';
     const evidenceBlock = singleSpan(card)
-      ? '<p class="note">Sur cette carte, ce qui compte comme preuve, c’est la phrase surlignée elle-même. Rien à surligner.</p>'
+      ? '<p class="note">Sur cette carte, ce qui compte comme preuve, c’est la phrase surlignée elle-même. Rien à surligner. Le reste de l’extrait est là pour comprendre, il ne compte pas : si ta réponse dépendait d’une autre phrase, réponds non ou « je ne peux pas dire », et dis-le en S.</p>'
       : '<p class="note">' +
         (d.evidenceSentenceIds.length
           ? 'Phrases surlignées : <strong>' +
             d.evidenceSentenceIds.join(', ') +
             '</strong> · clique une phrase de la copie pour l’ajouter, reclique pour la retirer.'
-          : 'Clique, dans la copie à droite, la ou les phrases qui te font répondre. Obligatoire si tu réponds oui.') +
+          : 'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie. Clique, à droite, la ou les phrases qui te font répondre oui ou non. Obligatoire dans les deux cas.') +
         '</p>';
     document.getElementById('app').innerHTML =
       banner +
@@ -8126,6 +8126,8 @@
           <dt>V</dt><dd>Pour CETTE question. Un dossier non montré n’est un manque que si la question en avait besoin.</dd>
           <dt>barre du haut</dt><dd>Échauffement : vert = juste, rouge = à revoir. Vraies cartes : ta réponse, vert oui, rouge non, mauve je ne peux pas dire. Ce n’est pas une note.</dd>
         </dl>
+        <div class="eyebrow" style="margin-top:14px">Un exemple déjà corrigé</div>
+        <p class="note">Consigne : « Choisis un fournisseur et justifie. » Copie : « Je retiens A. Il livre en 5 jours. Notre parking compte 40 places. » Question : « CHAQUE fait avancé a-t-il un rapport avec le choix ? » Réponse : <strong>non</strong>, parce que les 40 places n’ont aucun rapport ; on surligne cette phrase-là. S : non, aucune autre phrase ne suffirait seule à un oui. V : oui, rien ne manquait.</p>
         <div class="eyebrow" style="margin-top:14px">Les mots des questions</div>
         <dl>${Object.entries(QUESTIONS.glossary || {})
           .map(
