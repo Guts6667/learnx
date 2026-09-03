@@ -1,0 +1,2120 @@
+<title>Adjudication aveugle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+/>
+<style>
+  :root {
+    --paper: #f3f5f4;
+    --card: #fdfdfc;
+    --ink: #1e2a33;
+    --muted: #5e6d74;
+    --rule: #d6dcda;
+    --rule-soft: #e6eae8;
+    --mark: #a8690c;
+    --mark-wash: rgba(201, 130, 30, 0.26);
+    --bind: #2b6b8f;
+    --bind-wash: rgba(43, 107, 143, 0.16);
+    --direct: #2f7a5b;
+    --notdirect: #a33b32;
+    --ambiguous: #6a5f83;
+    --shadow: rgba(30, 42, 51, 0.09);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --paper: #121a1f;
+      --card: #1a242a;
+      --ink: #e2e9e7;
+      --muted: #92a3aa;
+      --rule: #2c383f;
+      --rule-soft: #232f36;
+      --mark: #e0a44a;
+      --mark-wash: rgba(224, 164, 74, 0.24);
+      --bind: #6fb6db;
+      --bind-wash: rgba(111, 182, 219, 0.18);
+      --direct: #5cb98f;
+      --notdirect: #e07d72;
+      --ambiguous: #a99ac6;
+      --shadow: rgba(0, 0, 0, 0.4);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme='dark'] {
+    --paper: #121a1f;
+    --card: #1a242a;
+    --ink: #e2e9e7;
+    --muted: #92a3aa;
+    --rule: #2c383f;
+    --rule-soft: #232f36;
+    --mark: #e0a44a;
+    --mark-wash: rgba(224, 164, 74, 0.24);
+    --bind: #6fb6db;
+    --bind-wash: rgba(111, 182, 219, 0.18);
+    --direct: #5cb98f;
+    --notdirect: #e07d72;
+    --ambiguous: #a99ac6;
+    --shadow: rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+    padding-bottom: 230px;
+  }
+  .rail {
+    background: var(--card);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    gap: 1px;
+    height: 26px;
+    padding: 6px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .rail button {
+    background: var(--rule-soft);
+    border: 0;
+    border-radius: 1px;
+    cursor: pointer;
+    flex: 1;
+    min-width: 2px;
+    padding: 0;
+  }
+  .rail button[data-d='DIRECT'] {
+    background: var(--direct);
+  }
+  .rail button[data-d='NOT_DIRECT'] {
+    background: var(--notdirect);
+  }
+  .rail button[data-d='AMBIGUOUS'] {
+    background: var(--ambiguous);
+  }
+  .rail button[data-g='ok'] {
+    background: var(--direct);
+  }
+  .rail button[data-g='ko'] {
+    background: var(--notdirect);
+  }
+  .rail button[data-incomplete='true'] {
+    opacity: 0.45;
+  }
+  .rail button[data-current='true'] {
+    outline: 2px solid var(--ink);
+    outline-offset: 1px;
+  }
+  ul.roles-todo {
+    margin: 8px 0 0;
+    padding-left: 20px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  ul.roles-todo li {
+    margin-bottom: 4px;
+  }
+  .legend {
+    align-items: center;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    gap: 4px 14px;
+    padding: 4px 14px 0;
+  }
+  .legend i {
+    border-radius: 2px;
+    display: inline-block;
+    height: 9px;
+    margin-right: 5px;
+    vertical-align: middle;
+    width: 14px;
+  }
+  header.bar {
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 20px;
+  }
+  .eyebrow {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .grow {
+    flex: 1;
+  }
+  main {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: minmax(320px, 5fr) minmax(340px, 6fr);
+    margin: 0 auto;
+    max-width: 1320px;
+    padding: 20px;
+  }
+  @media (max-width: 940px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+  }
+  section.panel {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px var(--shadow);
+    padding: 18px 20px;
+  }
+  section.panel + section.panel {
+    margin-top: 20px;
+  }
+  main > section.col1 {
+    grid-column: 1;
+  }
+  main > section.col2 {
+    grid-column: 2;
+    grid-row: 2 / span 4;
+    align-self: start;
+    position: sticky;
+    top: 40px;
+  }
+  @media (max-width: 940px) {
+    main > section.col1,
+    main > section.col2 {
+      grid-column: 1;
+      grid-row: auto;
+      position: static;
+    }
+  }
+  .question {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px;
+    line-height: 1.35;
+    margin: 6px 0 10px;
+    text-wrap: balance;
+  }
+  .machine {
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    margin: 8px 0 0;
+  }
+  .chip {
+    background: var(--rule-soft);
+    border-radius: 2px;
+    color: var(--muted);
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    padding: 2px 7px;
+  }
+  blockquote.candidate {
+    border-left: 3px solid var(--mark);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.45;
+    margin: 0;
+    padding: 4px 0 4px 14px;
+  }
+  .response {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16.5px;
+    line-height: 1.7;
+    max-height: 44vh;
+    overflow-y: auto;
+  }
+  .response .s {
+    border-radius: 2px;
+    padding: 1px 0;
+  }
+  .response .s.clickable {
+    cursor: pointer;
+  }
+  .response .s.clickable:hover {
+    background: var(--rule-soft);
+  }
+  .response .s.cand {
+    background: var(--mark-wash);
+    box-shadow: 0 1px 0 var(--mark);
+  }
+  .response .s.evidence {
+    background: var(--bind-wash);
+    box-shadow: 0 1px 0 var(--bind);
+  }
+  .response .s.hidden {
+    display: none;
+  }
+  .response sup.sid {
+    color: var(--bind);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    margin-right: 3px;
+  }
+  .context {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-top: 4px;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .hint {
+    border-left: 2px solid var(--rule);
+    color: var(--muted);
+    display: none;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 8px 0 12px;
+    padding: 2px 0 2px 10px;
+  }
+  body[data-help='on'] .hint {
+    display: block;
+  }
+  .guide {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    display: none;
+    grid-column: 1 / -1;
+    padding: 16px 20px;
+  }
+  body[data-help='on'] .guide {
+    display: block;
+  }
+  body[data-guide='yes'] .guide > :not(.eyebrow) {
+    display: none;
+  }
+  .guide ol {
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  .guide li {
+    margin-bottom: 4px;
+  }
+  .guide dl {
+    display: grid;
+    gap: 4px 12px;
+    grid-template-columns: auto 1fr;
+    margin: 10px 0 0;
+  }
+  .guide dt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+  }
+  .guide dd {
+    margin: 0;
+  }
+  .training {
+    background: var(--card);
+    border: 1px solid var(--mark);
+    border-radius: 3px;
+    grid-column: 1 / -1;
+    padding: 14px 20px;
+  }
+  table.grade {
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 12px 0 0;
+    width: 100%;
+  }
+  table.grade th,
+  table.grade td {
+    border-top: 1px solid var(--rule-soft);
+    padding: 6px 10px 6px 0;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.grade th {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  table.grade tr.ok td:last-child {
+    color: var(--direct);
+  }
+  table.grade tr.ko td:last-child,
+  table.grade tr.ko td:nth-child(2) {
+    color: var(--notdirect);
+  }
+  .lesson {
+    border-left: 3px solid var(--mark);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 12px 0 0;
+    padding: 4px 0 4px 12px;
+  }
+  footer.dock {
+    background: var(--card);
+    border-top: 1px solid var(--rule);
+    bottom: 0;
+    box-shadow: 0 -2px 10px var(--shadow);
+    left: 0;
+    padding: 11px 20px 13px;
+    position: fixed;
+    right: 0;
+    z-index: 15;
+  }
+  .dock-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin: 0 auto;
+    max-width: 1320px;
+  }
+  .verdicts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .verdicts button,
+  .tri button,
+  .ghost {
+    background: transparent;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    padding: 7px 13px;
+  }
+  .ghost {
+    font-size: 13px;
+    padding: 6px 11px;
+  }
+  kbd {
+    background: var(--rule-soft);
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    margin-right: 7px;
+    padding: 1px 5px;
+  }
+  .verdicts button[data-v='DIRECT'][aria-pressed='true'] {
+    background: var(--direct);
+    border-color: var(--direct);
+    color: #fff;
+  }
+  .verdicts button[data-v='NOT_DIRECT'][aria-pressed='true'] {
+    background: var(--notdirect);
+    border-color: var(--notdirect);
+    color: #fff;
+  }
+  .verdicts button[data-v='AMBIGUOUS'][aria-pressed='true'] {
+    background: var(--ambiguous);
+    border-color: var(--ambiguous);
+    color: #fff;
+  }
+  .verdicts button[aria-pressed='true'] kbd {
+    background: rgba(255, 255, 255, 0.22);
+  }
+  .tri {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tri button {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+  .tri button[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--card);
+  }
+  .ctl-label {
+    font-size: 12.5px;
+    margin-bottom: 3px;
+  }
+  #verdictQuestion {
+    font-size: 12.5px;
+    letter-spacing: 0;
+    max-width: 560px;
+    text-transform: none;
+  }
+  #verdictQuestion em {
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14px;
+    font-style: normal;
+  }
+  .todo {
+    color: var(--notdirect);
+    font-size: 12.5px;
+  }
+  .todo.ok {
+    color: var(--direct);
+  }
+  input[type='text'] {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    font: inherit;
+    padding: 8px 10px;
+    width: 100%;
+  }
+  textarea {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.45;
+    min-height: 200px;
+    padding: 10px;
+    width: 100%;
+  }
+  .hash {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    word-break: break-all;
+  }
+  ul.blockers {
+    color: var(--notdirect);
+    font-size: 13.5px;
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  button.link {
+    background: none;
+    border: 0;
+    color: var(--bind);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    padding: 0;
+    text-decoration: underline;
+  }
+  :focus-visible {
+    outline: 2px solid var(--mark);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+    }
+  }
+</style>
+
+<div class="rail" id="rail" role="navigation" aria-label="Progression"></div>
+<div class="legend" id="legend"></div>
+<header class="bar">
+  <div>
+    <div class="eyebrow" id="hTitle"></div>
+    <strong id="hSubtitle"></strong>
+  </div>
+  <div class="grow"></div>
+  <div class="count" id="progress">—</div>
+  <button class="ghost" id="train"></button>
+  <button class="ghost" id="help">
+    <kbd>H</kbd><span id="helpWord"></span>
+  </button>
+  <span id="whoBox" style="display: inline-flex; gap: 6px; align-items: center"
+    ><button class="ghost" id="who"></button
+    ><input
+      id="whoInput"
+      type="text"
+      autocomplete="off"
+      hidden
+      style="width: 160px; padding: 5px 8px" /><button
+      class="ghost"
+      id="whoSave"
+      hidden
+    ></button
+  ></span>
+  <button class="ghost" id="toExport"></button>
+</header>
+<main id="app"></main>
+<footer class="dock" hidden id="dock">
+  <div class="dock-inner">
+    <div>
+      <div class="eyebrow" id="verdictQuestion"></div>
+      <div class="verdicts" id="verdicts">
+        <button data-v="DIRECT" aria-pressed="false">
+          <kbd>O</kbd><span id="wYes"></span>
+        </button>
+        <button data-v="NOT_DIRECT" aria-pressed="false">
+          <kbd>N</kbd><span id="wNo"></span>
+        </button>
+        <button data-v="AMBIGUOUS" aria-pressed="false">
+          <kbd>?</kbd><span id="wCannot"></span>
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="ctl-label"><kbd>S</kbd> <span id="sLabel"></span></div>
+      <div class="tri" id="altTri"></div>
+      <div class="ctl-label" style="margin-top: 6px">
+        <kbd>V</kbd> <span id="vLabel"></span>
+      </div>
+      <div class="tri" id="viewTri"></div>
+    </div>
+    <div class="grow" style="min-width: 300px">
+      <input id="why" type="text" placeholder="" autocomplete="off" />
+      <div class="todo" id="todo" style="margin-top: 6px"></div>
+    </div>
+    <div style="align-self: center">
+      <button class="ghost" id="prev">◀</button>
+      <button class="ghost" id="next">▶</button>
+    </div>
+  </div>
+</footer>
+
+<script id="deck" type="application/json">
+  /*__DECK__*/
+</script>
+<script id="questions" type="application/json">
+  /*__QUESTIONS__*/
+</script>
+<script id="questionsEn" type="application/json">
+  /*__QUESTIONS_EN__*/
+</script>
+<script id="slices" type="application/json">
+  /*__SLICES__*/
+</script>
+<script>
+  const DECK = JSON.parse(document.getElementById('deck').textContent);
+  const PARAMS = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const LANG = PARAMS.get('lang') === 'en' ? 'en' : 'fr';
+  const SLICE_ID = PARAMS.get('s') || null;
+  const readJson = (id) => {
+    const el = document.getElementById(id);
+    const raw = el ? el.textContent.trim() : '';
+    return raw && !raw.startsWith('/*') ? JSON.parse(raw) : null;
+  };
+  const QUESTIONS_FR = readJson('questions');
+  const QUESTIONS_EN = readJson('questionsEn');
+  const QUESTIONS = LANG === 'en' && QUESTIONS_EN ? QUESTIONS_EN : QUESTIONS_FR;
+  const SLICES = readJson('slices');
+  const SLICE =
+    SLICE_ID && SLICES
+      ? SLICES.slices.find((x) => x.sliceId === SLICE_ID) || null
+      : null;
+  const CARDS = SLICE
+    ? SLICE.cards
+        .map((id) => DECK.cards.find((c) => c.cardId === id))
+        .filter(Boolean)
+    : DECK.cards;
+  const STORE =
+    'adj-v4-' +
+    DECK.manifestHash.slice(-12) +
+    (SLICE ? '-s' + SLICE.sliceId : '') +
+    (LANG === 'en' ? '-en' : '');
+  const ABSTENTION_CAP = 0.2;
+
+  /* ---------- the two languages of everything that is not the copy ---------- */
+  const T = {
+    fr: {
+      title: 'Relecture à l’aveugle',
+      subtitle: 'Pour chaque carte : une question, et ce qui te fait répondre.',
+      train: 'entraînement',
+      help: 'aide',
+      who: 'relecteur…',
+      whoPh: 'ton identifiant',
+      save: 'enregistrer',
+      export: 'export',
+      yes: 'oui',
+      no: 'non',
+      cannot: 'je ne peux pas dire',
+      sLabel:
+        '<strong>Autre phrase.</strong> Si on retirait la phrase examinée, une autre phrase de la copie suffirait-elle, seule, à répondre oui&nbsp;?',
+      vLabel:
+        '<strong>Informations.</strong> Avais-tu tout ce qu’il fallait pour répondre&nbsp;?',
+      sYes: 'oui, une autre suffirait seule',
+      sNo: 'non, aucune ne suffirait seule',
+      vYes: 'oui, rien ne m’a manqué',
+      vNo: 'non, quelque chose m’a manqué',
+      unset: 'sans réponse',
+      sNa: 'sans objet : la question porte déjà sur toute la copie',
+      why: 'pourquoi ? (obligatoire si « je ne peux pas dire »)',
+      missing: 'manque : ',
+      complete: 'carte complète',
+      mAnswer: 'réponse',
+      mEvidence1: 'surligne au moins une phrase qui te fait répondre',
+      mEvidenceN: (k) =>
+        'surligne une phrase pour chaque chose reliée (' + k + ' attendues)',
+      mS: 'S · autre phrase',
+      mV: 'V · rien ne m’a manqué',
+      mWhy: 'pourquoi',
+      b1: '1 · Ce qui était demandé',
+      b2: '2 · La copie de l’élève',
+      b2w: '2 · La copie, extrait autour de la phrase',
+      b3: '3 · La question',
+      b4: '4 · La phrase examinée',
+      b5: '5 · Ce qui te fait répondre',
+      consigne: 'Consigne.',
+      dossier: 'Dossier.',
+      noContext:
+        'Sur cette famille de cartes, ni la consigne ni le dossier ne sont montrés : la question se juge sur la copie seule.',
+      hintQ:
+        'Une seule question, en français. Réponds avec ce que la carte te laisse regarder : ',
+      machine: 'écriture pour la machine : ',
+      scope1: 'En lisant la phrase surlignée, prise seule',
+      scopeAll: 'En lisant la copie entière',
+      scopeMulti: 'En lisant la copie',
+      example: 'voir l’exemple corrigé',
+      reveal: 'révéler la copie entière',
+      revealNote: 'l’ouverture est notée',
+      ev1: 'Sur cette carte, ce qui compte comme preuve, c’est la phrase surlignée elle-même. Rien à surligner. Le reste de l’extrait est là pour comprendre, il ne compte pas : si ta réponse dépendait d’une autre phrase, réponds non ou « je ne peux pas dire », et dis-le en S.',
+      evStart:
+        'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie.',
+      evOne:
+        ' Clique, à droite, la ou les phrases qui te font répondre, que ce soit oui ou non.',
+      evTotal: (k) =>
+        'Une phrase par ligne, ' + k + ' au total. Pas plus n’est demandé.',
+      evChosen: (ids, have, k) =>
+        'Phrases surlignées : <strong>' +
+        ids +
+        '</strong> (' +
+        have +
+        ' sur ' +
+        k +
+        ' attendues) · clique une phrase pour l’ajouter, reclique pour la retirer.',
+      evNone:
+        'Clique, dans la copie à droite, la ou les phrases qui te font répondre.',
+      hintSet:
+        'une seule phrase : pour un non, celle qui fait tomber ta réponse ; pour un oui, n’importe laquelle qui la prouve',
+      hintAnchor: 'la phrase où l’élève le dit',
+      fam: (one, all) =>
+        one ? 'une phrase' : all ? 'copie entière' : 'plusieurs phrases',
+      ctxDossier: 'consigne et dossier',
+      ctxFrame: 'consigne seule',
+      ctxNone: 'copie seule',
+      progress: (tr, i, n, done) =>
+        (tr ? 'entraînement ' : 'carte ') +
+        i +
+        ' / ' +
+        n +
+        ' · ' +
+        done +
+        ' complètes',
+      trainTitle: (i, n) => 'Échauffement · carte ' + i + ' sur ' + n,
+      trainNote:
+        'Cartes inventées. Réponds comme pour une vraie carte ; dès qu’elle est complète, la correction s’affiche ici. Barre du haut : vert = tout juste, rouge = à revoir. Rien n’est enregistré pour la vraie passe.',
+      trainNext: 'carte d’entraînement suivante ▶',
+      trainDone: 'Échauffement terminé — commencer la vraie passe',
+      gAnswer: 'réponse',
+      gEvidence: 'phrases surlignées',
+      gS: 'S · autre phrase',
+      gV: 'V · rien ne manquait',
+      gFree: 'libre',
+      gAtLeast: 'au moins ',
+      gNone: 'aucune',
+      legendTrain: ['tout juste', 'à revoir', 'pas encore fait'],
+      legendReal: [
+        'tu as répondu oui',
+        'non',
+        'je ne peux pas dire',
+        'pas encore fait',
+        'pâle = réponse donnée mais carte incomplète (il manque S, V, une phrase ou le pourquoi)',
+      ],
+      trainRedo:
+        'reclique pour refaire l’échauffement (tes vraies décisions sont gardées)',
+      xTitle: 'Export de la passe 1',
+      xNote: (n) =>
+        n +
+        ' décisions. Enregistre ce texte tel quel et envoie-le au propriétaire de l’étude avec l’empreinte. Toute modification ultérieure produit une nouvelle version.',
+      xHash: 'empreinte du texte ci-dessous :',
+      copy: 'copier',
+      copied: 'copié',
+      selected: 'sélectionné — ⌘C',
+      back: 'retour aux cartes',
+      xRefused: 'Export refusé',
+      xNoReviewer: 'aucun identifiant de relecteur',
+      xIncomplete: (k, n) => k + ' cartes incomplètes sur ' + n,
+      xSuspended: (a, n, pct) =>
+        'passe suspendue : ' +
+        a +
+        ' « je ne peux pas dire » sur ' +
+        n +
+        ' (' +
+        pct +
+        ' %), au-delà du plafond pré-déclaré de 20 %',
+      xUnavailable: 'Export indisponible',
+      xTrainDone:
+        'Les cartes d’entraînement sont corrigées. Il reste à valider l’échauffement pour ouvrir les vraies cartes ; l’export viendra après.',
+      xTrainNot:
+        'L’échauffement n’est pas terminé : finis les cartes d’entraînement.',
+      sliceNote: (id, n) =>
+        'Tu as une tranche de ' +
+        n +
+        ' cartes (tranche ' +
+        id +
+        '). Fais-les seul, sans en parler à personne avant d’avoir exporté. Répondre « je ne peux pas dire » avec une raison est une réponse acceptable.',
+      guide: `
+        <ol>
+          <li><strong>Ce qui était demandé</strong> : lis la consigne, et le dossier s’il est là.</li>
+          <li><strong>La copie</strong> : lis-la d’un trait. Sur les familles « une phrase », tu ne vois qu’un extrait ; ouvrir le reste est permis et simplement noté.</li>
+          <li><strong>La question</strong> : une seule, en français. Les mots en capitales (CHAQUE, AUCUNE) disent à quel point il faut être strict : CHAQUE = un seul raté et c’est non ; AUCUNE = un seul cas et c’est non.</li>
+          <li><strong>La phrase examinée</strong> : relis-la avec la question en tête.</li>
+          <li><strong>Ce qui te fait répondre</strong> : sur les familles « plusieurs phrases », clique une phrase par chose que la question relie, jamais toutes. Sur « une phrase », c’est la phrase surlignée, rien à faire.</li>
+          <li><strong>La réponse</strong> : <strong>O</strong> oui, <strong>N</strong> non, <strong>?</strong> je ne peux pas dire (justification obligatoire).</li>
+          <li><strong>Les deux contrôles</strong> : <strong>S</strong> si on retirait la phrase examinée, une autre suffirait-elle seule à répondre oui ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
+        </ol>
+        <dl>
+          <dt>oui</dt><dd>Ce que tu lis répond oui à la question, sans deviner ni compléter.</dd>
+          <dt>non</dt><dd>Ce que tu lis répond non, ou ne permet pas de répondre oui : à moitié, à côté, sous-entendu, ou il manque l’élément demandé. Une phrase vraie et bien écrite peut être un non.</dd>
+          <dt>je ne peux pas dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Dis pourquoi.</dd>
+          <dt>S</dt><dd>Appuyer n’est pas suffire : il faut qu’une autre phrase, seule, réponde oui.</dd>
+          <dt>V</dt><dd>Pour CETTE question. Un dossier non montré n’est un manque que si la question en avait besoin.</dd>
+          <dt>barre du haut</dt><dd>Échauffement : vert = juste, rouge = à revoir. Vraies cartes : ta réponse, vert oui, rouge non, mauve je ne peux pas dire. Ce n’est pas une note.</dd>
+        </dl>
+        <div class="eyebrow" style="margin-top:14px">Un exemple déjà corrigé</div>
+        <p class="note">Consigne : « Choisis un fournisseur et justifie. » Copie : « Je retiens A. Il livre en 5 jours. Notre parking compte 40 places. » Question : « CHAQUE fait avancé a-t-il un rapport avec le choix ? » Réponse : <strong>non</strong>, parce que les 40 places n’ont aucun rapport ; on surligne cette phrase-là et celle du choix. S : non, aucune autre phrase ne suffirait seule à un oui. V : oui, rien ne manquait.</p>`,
+      guideTitle: 'Comment traiter une carte',
+      fold: 'replier',
+      unfold: 'déplier',
+      glossaryTitle: 'Les mots des questions',
+      pauses:
+        'Fais des pauses : tout est sauvegardé dans ce navigateur, tu peux fermer et reprendre. Les mots CHAQUE et AUCUNE se ratent surtout quand on est fatigué.',
+      origin:
+        'On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.',
+    },
+    en: {
+      title: 'Blind review',
+      subtitle: 'For each card: one question, and what makes you answer.',
+      train: 'warm-up',
+      help: 'help',
+      who: 'reviewer…',
+      whoPh: 'your identifier',
+      save: 'save',
+      export: 'export',
+      yes: 'yes',
+      no: 'no',
+      cannot: 'cannot tell',
+      sLabel:
+        '<strong>Other sentence.</strong> If the examined sentence were removed, would another sentence of the answer suffice, on its own, to answer yes?',
+      vLabel:
+        '<strong>Information.</strong> Did you have everything you needed to answer?',
+      sYes: 'yes, another would suffice alone',
+      sNo: 'no, none would suffice alone',
+      vYes: 'yes, nothing was missing',
+      vNo: 'no, something was missing',
+      unset: 'unanswered',
+      sNa: 'not applicable: the question already covers the whole answer',
+      why: 'why? (required for « cannot tell »)',
+      missing: 'missing: ',
+      complete: 'card complete',
+      mAnswer: 'answer',
+      mEvidence1: 'highlight at least one sentence that makes you answer',
+      mEvidenceN: (k) =>
+        'highlight one sentence per related thing (' + k + ' expected)',
+      mS: 'S · other sentence',
+      mV: 'V · nothing missing',
+      mWhy: 'why',
+      b1: '1 · What was asked',
+      b2: '2 · The student’s answer',
+      b2w: '2 · The answer, excerpt around the sentence',
+      b3: '3 · The question',
+      b4: '4 · The examined sentence',
+      b5: '5 · What makes you answer',
+      consigne: 'Assignment.',
+      dossier: 'File.',
+      noContext:
+        'On this family of cards neither the assignment nor the file is shown: the question is judged on the answer alone.',
+      hintQ: 'One question only. Answer with what the card lets you look at: ',
+      machine: 'machine form: ',
+      scope1: 'Reading the highlighted sentence on its own',
+      scopeAll: 'Reading the whole answer',
+      scopeMulti: 'Reading the answer',
+      example: 'see the worked example',
+      reveal: 'reveal the whole answer',
+      revealNote: 'opening it is recorded',
+      ev1: 'On this card, what counts as evidence is the highlighted sentence itself. Nothing to highlight. The rest of the excerpt is context and does not count: if your answer depended on another sentence, answer no or « cannot tell », and say so in S.',
+      evStart:
+        'The highlighted sentence is the starting point; on this family you judge with the whole answer.',
+      evOne:
+        ' Click, on the right, the sentence(s) that make you answer, yes or no.',
+      evTotal: (k) =>
+        'One sentence per line, ' + k + ' in total. No more is asked.',
+      evChosen: (ids, have, k) =>
+        'Highlighted sentences: <strong>' +
+        ids +
+        '</strong> (' +
+        have +
+        ' of ' +
+        k +
+        ' expected) · click a sentence to add it, click again to remove it.',
+      evNone:
+        'Click, in the answer on the right, the sentence(s) that make you answer.',
+      hintSet:
+        'one sentence only: for a no, the one that makes your answer fall; for a yes, any that proves it',
+      hintAnchor: 'the sentence where the student says it',
+      fam: (one, all) =>
+        one ? 'one sentence' : all ? 'whole answer' : 'several sentences',
+      ctxDossier: 'assignment and file',
+      ctxFrame: 'assignment only',
+      ctxNone: 'answer only',
+      progress: (tr, i, n, done) =>
+        (tr ? 'warm-up ' : 'card ') +
+        i +
+        ' / ' +
+        n +
+        ' · ' +
+        done +
+        ' complete',
+      trainTitle: (i, n) => 'Warm-up · card ' + i + ' of ' + n,
+      trainNote:
+        'Invented cards. Answer as for a real card; as soon as it is complete, the correction appears here. Top bar: green = all right, red = to review. Nothing is recorded for the real pass. The answers are in French; the questions and this interface are in English.',
+      trainNext: 'next warm-up card ▶',
+      trainDone: 'Warm-up done — start the real pass',
+      gAnswer: 'answer',
+      gEvidence: 'highlighted sentences',
+      gS: 'S · other sentence',
+      gV: 'V · nothing missing',
+      gFree: 'free',
+      gAtLeast: 'at least ',
+      gNone: 'none',
+      legendTrain: ['all right', 'to review', 'not done yet'],
+      legendReal: [
+        'you answered yes',
+        'no',
+        'cannot tell',
+        'not done yet',
+        'pale = answered but incomplete (S, V, a sentence or the why is missing)',
+      ],
+      trainRedo:
+        'click again to redo the warm-up (your real decisions are kept)',
+      xTitle: 'Pass 1 export',
+      xNote: (n) =>
+        n +
+        ' decisions. Send this text as is to the study owner, with the hash. Any later change produces a new version.',
+      xHash: 'hash of the text below:',
+      copy: 'copy',
+      copied: 'copied',
+      selected: 'selected — ⌘C',
+      back: 'back to the cards',
+      xRefused: 'Export refused',
+      xNoReviewer: 'no reviewer identifier',
+      xIncomplete: (k, n) => k + ' incomplete cards out of ' + n,
+      xSuspended: (a, n, pct) =>
+        'pass suspended: ' +
+        a +
+        ' « cannot tell » out of ' +
+        n +
+        ' (' +
+        pct +
+        ' %), above the pre-declared 20 % cap',
+      xUnavailable: 'Export unavailable',
+      xTrainDone:
+        'The warm-up cards are corrected. Validate the warm-up to open the real cards; the export comes after.',
+      xTrainNot: 'The warm-up is not finished: complete the warm-up cards.',
+      sliceNote: (id, n) =>
+        'You have a slice of ' +
+        n +
+        ' cards (slice ' +
+        id +
+        '). Do them alone, without discussing them with anyone before exporting. Answering « cannot tell » with a reason is acceptable. The answers are in French.',
+      guide: `
+        <ol>
+          <li><strong>What was asked</strong>: read the assignment, and the file if shown.</li>
+          <li><strong>The answer</strong>: read it through. On « one sentence » families you see an excerpt; opening the rest is allowed and simply recorded.</li>
+          <li><strong>The question</strong>: one only. Capitalised words (EVERY, NO) say how strict to be: EVERY = one miss and it is no; NO = one case and it is no.</li>
+          <li><strong>The examined sentence</strong>: re-read it with the question in mind.</li>
+          <li><strong>What makes you answer</strong>: on « several sentences » families, click one sentence per thing the question relates, never all. On « one sentence », it is the highlighted sentence, nothing to do.</li>
+          <li><strong>The answer</strong>: <strong>O</strong> yes, <strong>N</strong> no, <strong>?</strong> cannot tell (reason required).</li>
+          <li><strong>The two checks</strong>: <strong>S</strong> if the examined sentence were removed, would another suffice alone to answer yes? <strong>V</strong> did you have everything you needed?</li>
+        </ol>
+        <dl>
+          <dt>yes</dt><dd>What you read answers yes, without guessing or filling in.</dd>
+          <dt>no</dt><dd>What you read answers no, or does not allow a yes: half, beside the point, implied, or the requested element is missing. A true, well-written sentence can be a no.</dd>
+          <dt>cannot tell</dt><dd>What you have does not allow a reliable call. Say why.</dd>
+          <dt>S</dt><dd>Supporting is not sufficing: another sentence must answer yes on its own.</dd>
+          <dt>V</dt><dd>For THIS question. A file not shown is a lack only if the question needed it.</dd>
+          <dt>top bar</dt><dd>Warm-up: green = right, red = to review. Real cards: your answer, green yes, red no, purple cannot tell. It is not a score.</dd>
+        </dl>
+        <div class="eyebrow" style="margin-top:14px">A worked example</div>
+        <p class="note">Assignment: « Choose a supplier and justify. » Answer: « I choose A. It delivers in 5 days. Our car park has 40 spaces. » Question: « Is EVERY fact put forward related to the choice? » Answer: <strong>no</strong>, because the 40 spaces are unrelated; highlight that sentence and the one with the choice. S: no, no other sentence would suffice alone for a yes. V: yes, nothing was missing.</p>`,
+      guideTitle: 'How to handle a card',
+      fold: 'fold',
+      unfold: 'unfold',
+      glossaryTitle: 'The words in the questions',
+      pauses:
+        'Take breaks: everything is saved in this browser, you can close and resume. EVERY and NO are missed mostly when tired.',
+      origin:
+        'You are not told where each answer comes from nor what it is worth, on purpose: do not go by length or style, judge only what is written.',
+    },
+  }[LANG];
+  const t = (key, ...args) => {
+    const v = T[key];
+    return typeof v === 'function' ? v(...args) : v;
+  };
+
+  const escapeHtml = (v) =>
+    v.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+  const singleSpan = (card) => /^S[123]_/.test(card.stratum);
+  const wholeCopy = (card) => card.stratum.startsWith('S7');
+  const bindableRoles = (card) => card.argumentRoles.filter((r) => r.bindable);
+  const questionFor = (card) =>
+    (LANG === 'en' && card.plainQuestionEn) ||
+    card.plainQuestion ||
+    QUESTIONS.questions[card.atomId] ||
+    card.atom;
+  const familyWords = (stratum) =>
+    t('fam', /^S[123]_/.test(stratum), stratum.startsWith('S7')) +
+    ' · ' +
+    (stratum.includes('dossier')
+      ? t('ctxDossier')
+      : stratum.includes('frame')
+        ? t('ctxFrame')
+        : t('ctxNone'));
+  const ROLE_WORDS = {
+    fr: {
+      choice: 'l’option que l’élève retient',
+      claim: 'ce que l’élève affirme',
+      datum: 'les faits, chiffres ou dates que l’élève avance',
+      fact: 'les faits que l’élève utilise',
+      limit: 'la limite que l’élève énonce',
+      mitigation: 'la parade que l’élève propose',
+      position: 'la position que l’élève prend',
+      precaution: 'la précaution que l’élève propose',
+      risk: 'le risque que l’élève nomme',
+      uncertainty: 'l’incertitude que l’élève nomme',
+      sequence: 'la séquence que l’élève décrit',
+      mechanism: 'le mécanisme ou la conclusion que l’élève énonce',
+      proof: 'la preuve que l’élève produit',
+      link: 'le lien réflexif que l’élève énonce',
+      element: 'l’élément concret de la réponse',
+      action: 'l’action proposée',
+      decision: 'la décision prise',
+      operation: 'le calcul',
+      comparison: 'la comparaison',
+      interpretation: 'l’interprétation de la preuve',
+      material_claim: 'une affirmation importante',
+      practice: 'la pratique demandée',
+    },
+    en: {
+      choice: 'the option the student chooses',
+      claim: 'what the student claims',
+      datum: 'the facts, figures or dates the student puts forward',
+      fact: 'the facts the student uses',
+      limit: 'the limit the student states',
+      mitigation: 'the countermeasure the student proposes',
+      position: 'the position the student takes',
+      precaution: 'the precaution the student proposes',
+      risk: 'the risk the student names',
+      uncertainty: 'the uncertainty the student names',
+      sequence: 'the sequence the student describes',
+      mechanism: 'the mechanism or conclusion the student states',
+      proof: 'the evidence the student produces',
+      link: 'the reflective link the student states',
+      element: 'the concrete element of the answer',
+      action: 'the proposed action',
+      decision: 'the decision taken',
+      operation: 'the calculation',
+      comparison: 'the comparison',
+      interpretation: 'the reading of the evidence',
+      material_claim: 'an important claim',
+      practice: 'the requested practice',
+    },
+  }[LANG];
+  const roleWords = (r) =>
+    ROLE_WORDS[r.roleId] || (r.description || r.roleId).split(' — ')[0];
+  const SET_ROLES = new Set([
+    'datum',
+    'fact',
+    'claim',
+    'operation',
+    'material_claim',
+  ]);
+  const roleHint = (r) =>
+    SET_ROLES.has(r.roleId) ? t('hintSet') : t('hintAnchor');
+  const neededEvidence = (card) =>
+    Math.max(1, Math.min(bindableRoles(card).length, card.sentences.length));
+
+  /* ---------- warm-up: invented cards, one trap each ---------- */
+  function splitSentences(text) {
+    const out = [];
+    const re = /[^.!?]+[.!?]+/g;
+    let m;
+    let i = 0;
+    while ((m = re.exec(text))) {
+      const lead = m[0].length - m[0].trimStart().length;
+      out.push({
+        end: m.index + m[0].length,
+        id: 's' + i,
+        start: m.index + lead,
+      });
+      i += 1;
+    }
+    return out;
+  }
+  const role = (roleId, cardinality, source) => ({
+    bindable: (source || 'response') === 'response',
+    cardinality,
+    description: roleId,
+    roleId,
+    source: source || 'response',
+  });
+  const L = (fr, en) => (LANG === 'en' ? en : fr);
+  const TRAINING_SPECS = [
+    {
+      id: 'E1',
+      stratum: 'S1_span_local',
+      atom: 'un choix est explicitement énoncé',
+      question: L(
+        'L’élève dit-il clairement quelle option il retient ?',
+        'Does the student say clearly which option they choose?',
+      ),
+      roles: [role('choice', '1')],
+      response:
+        'Le fournisseur B livre en 2 jours et n’a eu aucun retard en 2025. Le fournisseur A coûte 2 500 euros de moins par an. Les deux ont été audités en mars.',
+      candidate: 0,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'La phrase parle des délais de B ; elle ne dit pas ce que l’élève retient. On ne devine pas : non. Aucune autre phrase ne le dit non plus, donc S : non.',
+        'The sentence is about B’s delivery times; it does not say what the student chooses. No guessing: no. No other sentence says it either, so S: no.',
+      ),
+    },
+    {
+      id: 'E2',
+      stratum: 'S5_multi_frame',
+      atom: 'CHAQUE donnée de l’ensemble est pertinente pour CE choix',
+      question: L(
+        'CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?',
+        'Is EVERY fact or figure put forward related to the choice the student made, given the assignment?',
+      ),
+      roles: [
+        role('datum', '>=2'),
+        role('choice', '1'),
+        role('task_frame', '1', 'task_frame'),
+      ],
+      frame:
+        'Choisis l’un des deux fournisseurs pour 2026 et justifie avec des chiffres.',
+      response:
+        'Je retiens le fournisseur A. Il livre en 5 jours et n’a eu que 2 retards en 2025, ce qui reste acceptable pour nous. Notre parking compte 40 places.',
+      candidate: 1,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: ['s2'],
+        evidenceWords: L(
+          'la phrase hors sujet, s2 (le parking), ET le choix, s0',
+          'the off-topic sentence, s2 (the car park), AND the choice, s0',
+        ),
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'La question dit CHAQUE. Les chiffres de s1 ont un rapport avec le choix ; « 40 places de parking » n’en a aucun. Un seul hors sujet, et la réponse est non. Ce qui te fait dire non, c’est s2 : c’est elle que tu surlignes, avec s0 pour le choix.',
+        'The question says EVERY. The figures in s1 relate to the choice; « 40 parking spaces » does not. One off-topic fact and the answer is no. What makes you say no is s2: highlight it, with s0 for the choice.',
+      ),
+    },
+    {
+      id: 'E3',
+      stratum: 'S3_span_dossier',
+      atom: 'CHAQUE affirmation utile est fidèle au contexte',
+      question: L(
+        'CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?',
+        'Is EVERY useful claim in this passage consistent with the file?',
+      ),
+      roles: [role('claim', '>=1'), role('dossier', '1', 'dossier')],
+      frame:
+        'Rédige un objectif de 80 à 120 mots précisant population, processus, résultat, horizon et hypothèses.',
+      dossier:
+        'Le processus visé est le tri des tickets du support de niveau 1. L’équipe compte 12 personnes. Aucune mesure de durée n’existe encore.',
+      response:
+        'L’équipe compte 12 personnes. Le processus visé est le tri des tickets du support de niveau 1.',
+      candidate: 0,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'yes',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'La copie est très incomplète au regard de la consigne, et la question ne parle pas de ça : elle parle de conformité au dossier. « L’équipe compte 12 personnes » est dans le dossier mot pour mot : oui. Et s1 est conforme aussi, donc si on retirait s0, s1 suffirait seule : S oui.',
+        'The answer is very incomplete for the assignment, and the question is not about that: it is about consistency with the file. « The team has 12 people » is in the file word for word: yes. And s1 is consistent too, so if s0 were removed, s1 would suffice alone: S yes.',
+      ),
+    },
+    {
+      id: 'E4',
+      stratum: 'S3_span_dossier',
+      atom: 'CHAQUE donnée reprise est exacte',
+      question: L(
+        'CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?',
+        'Is EVERY fact or figure put forward accurate, according to the file?',
+      ),
+      roles: [role('datum', '>=1'), role('dossier', '1', 'dossier')],
+      frame: 'Résume les coûts du dossier.',
+      dossier:
+        'Le contrat Préventel coûte 12 500 euros par an. Le contrat Vigil coûte 18 000 euros par an.',
+      response:
+        'Préventel coûte 14 500 euros par an, contre 18 000 pour Vigil. L’écart est donc de 3 500 euros.',
+      candidate: 0,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'Ici la vérité des chiffres compte, et le dossier est là pour ça : 14 500 n’est pas 12 500. Un seul chiffre faux, et CHAQUE tombe : non.',
+        'Here the truth of the figures matters, and the file is there for that: 14 500 is not 12 500. One wrong figure and EVERY falls: no.',
+      ),
+    },
+    {
+      id: 'E5',
+      stratum: 'S7_full_dossier',
+      atom: 'IL N’EXISTE aucune affirmation matérielle qui ne soit pas attribuable au dossier',
+      question: L(
+        'AUCUNE affirmation importante de la réponse ne sort-elle du dossier ?',
+        'Is it true that NO important claim in the answer goes beyond the file?',
+      ),
+      roles: [role('material_claim', '>=0'), role('dossier', '1', 'dossier')],
+      frame: 'Présente la situation.',
+      dossier: 'L’équipe compte 12 personnes. Le pilote a duré deux semaines.',
+      response:
+        'L’équipe de 12 personnes a mené un pilote de deux semaines. Ce pilote de deux semaines a donc mobilisé les 12 personnes.',
+      candidate: 0,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'La question dit AUCUNE : elle est vraie quand rien ne sort du dossier. Les 12 personnes et les deux semaines y sont, et la seconde phrase ne fait que les redire. Ici, ne rien trouver, c’est répondre oui. Si une phrase avait annoncé un fait absent du dossier, par exemple un coût, la réponse aurait été non.',
+        'The question says NO: it is true when nothing goes beyond the file. The 12 people and the two weeks are in it, and the second sentence only restates them. Here, finding nothing means answering yes. Had a sentence announced a fact absent from the file, a cost for instance, the answer would have been no.',
+      ),
+    },
+    {
+      id: 'E6',
+      stratum: 'S4_multi_local',
+      atom: 'CHAQUE risque nommé est accompagné d’une parade',
+      question: L(
+        'Pour CHAQUE risque nommé, l’élève propose-t-il une parade ?',
+        'For EVERY risk named, does the student propose a countermeasure?',
+      ),
+      roles: [role('risk', '>=1'), role('mitigation', '>=1')],
+      response:
+        'Je recommande le déploiement immédiat. Le risque principal est la surcharge du support la première semaine. Pour y répondre, deux agents seront détachés en renfort du lundi au vendredi. Le budget reste inchangé.',
+      candidate: 1,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: ['s1', 's2'],
+        evidenceWords: L(
+          'le risque, s1, ET sa parade, s2',
+          'the risk, s1, AND its countermeasure, s2',
+        ),
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'Un risque en s1, sa parade en s2. La parade n’est pas dans la phrase examinée : sur cette famille tu vas la chercher dans la copie, et tu la surlignes, parce que c’est elle qui te fait dire oui.',
+        'A risk in s1, its countermeasure in s2. The countermeasure is not in the examined sentence: on this family you look for it in the answer, and you highlight it, because it is what makes you say yes.',
+      ),
+    },
+    {
+      id: 'E7',
+      stratum: 'S1_span_local',
+      window: true,
+      atom: 'un choix est explicitement énoncé',
+      question: L(
+        'L’élève dit-il clairement quelle option il retient ?',
+        'Does the student say clearly which option they choose?',
+      ),
+      roles: [role('choice', '1')],
+      response:
+        'Le comité a examiné les trois options pendant deux réunions. Les coûts ont été comparés sur cinq ans, avec une hypothèse d’inflation de 2 %. Je retiens l’option de maintenance préventive, malgré son coût initial plus élevé. Cette option réduit le nombre d’arrêts non planifiés. Une revue sera faite en juin. Les fournisseurs seront informés la semaine prochaine.',
+      candidate: 2,
+      expected: {
+        verdict: 'DIRECT',
+        evidenceIncludes: [],
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'Tu ne vois qu’un extrait, et il suffit : la phrase dit elle-même ce qui est retenu. Pour S : « cette option réduit le nombre d’arrêts » appuie le choix mais ne dit pas lequel ; appuyer n’est pas suffire seule : non.',
+        'You only see an excerpt, and it suffices: the sentence itself says what is chosen. For S: « this option reduces the number of stoppages » supports the choice but does not say which; supporting is not sufficing alone: no.',
+      ),
+    },
+    {
+      id: 'E8',
+      stratum: 'S5_multi_frame',
+      atom: 'la limite énoncée porte sur le choix retenu',
+      question: L(
+        'La limite que l’élève énonce porte-t-elle sur l’option qu’il a retenue ?',
+        'Does the limit the student states bear on the option they chose?',
+      ),
+      roles: [
+        role('limit', '1'),
+        role('choice', '1'),
+        role('task_frame', '1', 'task_frame'),
+      ],
+      frame:
+        'Choisis une des deux options et indique la principale limite de ton choix.',
+      response:
+        'Je retiens l’option A. L’option B présente le défaut d’exiger une formation de trois jours. Le calendrier sera précisé plus tard.',
+      candidate: 1,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        evidenceIncludes: ['s0', 's1'],
+        evidenceWords: L(
+          'le choix, s0, ET la limite, s1',
+          'the choice, s0, AND the limit, s1',
+        ),
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson: L(
+        'La consigne, c’est ce qu’on a demandé à l’élève ; la question, c’est ce que tu vérifies. L’élève énonce bien une limite, mais celle de l’option B, qu’il n’a pas retenue : non. Pour le voir il faut deux phrases, celle du choix (s0) et celle de la limite (s1) : tu les surlignes.',
+        'The assignment is what the student was asked; the question is what you check. The student does state a limit, but B’s, which they did not choose: no. Seeing it takes two sentences, the choice (s0) and the limit (s1): highlight both.',
+      ),
+    },
+  ];
+  const SHORT_WARMUP = ['E1', 'E2', 'E6'];
+  const TRAINING = TRAINING_SPECS.filter(
+    (t0) => !SLICE || SHORT_WARMUP.includes(t0.id),
+  ).map((t0) => {
+    const sentences = splitSentences(t0.response);
+    const cs = sentences[t0.candidate];
+    const window = t0.window
+      ? {
+          end: Math.min(
+            t0.response.length,
+            Math.max(cs.end, Math.round((cs.start + cs.end) / 2 + 120)),
+          ),
+          start: Math.max(
+            0,
+            Math.min(cs.start, Math.round((cs.start + cs.end) / 2 - 120)),
+          ),
+        }
+      : null;
+    return {
+      card: {
+        argumentRoles: t0.roles,
+        atom: t0.atom,
+        atomId: 'train.' + t0.id,
+        candidateSentenceIds: [cs.id],
+        candidateSpan: t0.response.slice(cs.start, cs.end).trim(),
+        cardId: t0.id,
+        criterionLabel: 'warm-up',
+        ...(t0.dossier ? { dossier: t0.dossier } : {}),
+        ...(t0.frame ? { frame: t0.frame } : {}),
+        highlight: { end: cs.end, start: cs.start },
+        plainQuestion: t0.question,
+        predicate: '',
+        quantifier: '',
+        response: t0.response,
+        sentences,
+        stratum: t0.stratum,
+        window,
+      },
+      expected: t0.expected,
+      lesson: t0.lesson,
+    };
+  });
+
+  /* ---------- state ---------- */
+  const state = { decisions: {}, index: 0, reviewer: '' };
+  const training = { decisions: {}, done: false, index: 0 };
+  const TRAINING_STORE =
+    'adj-training-v4' +
+    (SLICE ? '-s' + SLICE.sliceId : '') +
+    (LANG === 'en' ? '-en' : '');
+  try {
+    Object.assign(state, JSON.parse(localStorage.getItem(STORE) || '{}'));
+  } catch (e) {
+    /* clean start */
+  }
+  try {
+    Object.assign(
+      training,
+      JSON.parse(localStorage.getItem(TRAINING_STORE) || '{}'),
+    );
+  } catch (e) {
+    /* warm-up first */
+  }
+  const inTraining = () => !training.done;
+  const activeCards = () =>
+    inTraining() ? TRAINING.map((x) => x.card) : CARDS;
+  const activeDecisions = () =>
+    inTraining() ? training.decisions : state.decisions;
+  const getIndex = () => (inTraining() ? training.index : state.index);
+  const setIndex = (v) => {
+    if (inTraining()) training.index = v;
+    else state.index = v;
+  };
+  function persist() {
+    try {
+      localStorage.setItem(STORE, JSON.stringify(state));
+      localStorage.setItem(TRAINING_STORE, JSON.stringify(training));
+    } catch (e) {
+      /* export is the durable path */
+    }
+  }
+  const HELP_STORE = 'adj-help';
+  const GUIDE_STORE = 'adj-guide';
+  try {
+    document.body.dataset.help = localStorage.getItem(HELP_STORE) || 'off';
+  } catch (e) {
+    document.body.dataset.help = 'off';
+  }
+  try {
+    document.body.dataset.guide = localStorage.getItem(GUIDE_STORE) || 'no';
+  } catch (e) {
+    document.body.dataset.guide = 'no';
+  }
+  function toggleHelp() {
+    document.body.dataset.help =
+      document.body.dataset.help === 'on' ? 'off' : 'on';
+    try {
+      localStorage.setItem(HELP_STORE, document.body.dataset.help);
+    } catch (e) {
+      /* preference */
+    }
+  }
+  let enteredAt = Date.now();
+  function leaveCurrent() {
+    const card = activeCards()[getIndex()];
+    if (!card) return;
+    const d = activeDecisions()[card.cardId];
+    if (!d) return;
+    d.secondsOnCard =
+      (d.secondsOnCard || 0) + Math.round((Date.now() - enteredAt) / 1000);
+    enteredAt = Date.now();
+  }
+  function decisionFor(card) {
+    const bag = activeDecisions();
+    if (!bag[card.cardId])
+      bag[card.cardId] = {
+        alternativeSupport: null,
+        cardId: card.cardId,
+        decidedAt: null,
+        evidenceSentenceIds: [],
+        evidenceViewComplete: null,
+        firstSeenAt: new Date().toISOString(),
+        orderIndex: Object.keys(bag).length,
+        rationale: '',
+        revealedBeforeVerdict: false,
+        reviewerId: '',
+        secondsOnCard: 0,
+        verdict: null,
+      };
+    return bag[card.cardId];
+  }
+  const effectiveEvidence = (card, d) =>
+    singleSpan(card) ? card.candidateSentenceIds : d.evidenceSentenceIds;
+  function blockers(card) {
+    const d = decisionFor(card);
+    const list = [];
+    if (!d.verdict) list.push(t('mAnswer'));
+    if (
+      (d.verdict === 'DIRECT' || d.verdict === 'NOT_DIRECT') &&
+      !singleSpan(card) &&
+      !wholeCopy(card) &&
+      d.evidenceSentenceIds.length < neededEvidence(card)
+    )
+      list.push(
+        neededEvidence(card) > 1
+          ? t('mEvidenceN', neededEvidence(card))
+          : t('mEvidence1'),
+      );
+    if (d.alternativeSupport === null && !wholeCopy(card)) list.push(t('mS'));
+    if (d.evidenceViewComplete === null) list.push(t('mV'));
+    if (d.verdict === 'AMBIGUOUS' && !d.rationale) list.push(t('mWhy'));
+    return list;
+  }
+  const complete = (card) => blockers(card).length === 0;
+  function grade(card, d) {
+    const spec = TRAINING.find((x) => x.card.cardId === card.cardId);
+    if (!spec) return null;
+    const words = {
+      AMBIGUOUS: t('cannot'),
+      DIRECT: t('yes'),
+      NOT_DIRECT: t('no'),
+    };
+    const yn = (v) => (v === 'yes' ? t('yes') : v === 'no' ? t('no') : '—');
+    const rows = [
+      {
+        expected: words[spec.expected.verdict],
+        field: t('gAnswer'),
+        ok: d.verdict === spec.expected.verdict,
+        yours: words[d.verdict] || '—',
+      },
+    ];
+    if (!singleSpan(card)) {
+      const got = d.evidenceSentenceIds;
+      const need = spec.expected.evidenceIncludes;
+      rows.push({
+        expected: need.length
+          ? spec.expected.evidenceWords || t('gAtLeast') + need.join(', ')
+          : t('gFree'),
+        field: t('gEvidence'),
+        ok: need.every((id) => got.includes(id)),
+        yours: got.length ? got.join(', ') : t('gNone'),
+      });
+    }
+    if (!wholeCopy(card))
+      rows.push({
+        expected: yn(spec.expected.alternativeSupport),
+        field: t('gS'),
+        ok: d.alternativeSupport === spec.expected.alternativeSupport,
+        yours: yn(d.alternativeSupport),
+      });
+    rows.push({
+      expected: yn(spec.expected.evidenceViewComplete),
+      field: t('gV'),
+      ok: d.evidenceViewComplete === spec.expected.evidenceViewComplete,
+      yours: yn(d.evidenceViewComplete),
+    });
+    return { lesson: spec.lesson, rows };
+  }
+
+  /* ---------- rendering ---------- */
+  const hint = (x) => '<p class="hint">' + x + '</p>';
+  function renderResponse(card, d) {
+    const revealed = d.revealed === true || !card.window;
+    const clickable = !singleSpan(card);
+    let html = '';
+    let cursor = 0;
+    for (const s of card.sentences) {
+      if (s.start > cursor)
+        html += escapeHtml(card.response.slice(cursor, s.start));
+      const inWindow =
+        !card.window ||
+        (s.start < card.window.end && s.end > card.window.start);
+      const cls = ['s'];
+      if (clickable) cls.push('clickable');
+      if (card.candidateSentenceIds.includes(s.id)) cls.push('cand');
+      if (d.evidenceSentenceIds.includes(s.id)) cls.push('evidence');
+      if (!inWindow && !revealed) cls.push('hidden');
+      html +=
+        '<span class="' +
+        cls.join(' ') +
+        '" data-s="' +
+        s.id +
+        '">' +
+        (clickable ? '<sup class="sid">' + s.id + '</sup>' : '') +
+        escapeHtml(card.response.slice(s.start, s.end)) +
+        '</span>';
+      cursor = s.end;
+    }
+    if (cursor < card.response.length)
+      html += escapeHtml(card.response.slice(cursor));
+    return html;
+  }
+  function renderLegend() {
+    const sw = (color, label, extra) =>
+      '<span><i style="background:' +
+      color +
+      (extra || '') +
+      '"></i>' +
+      label +
+      '</span>';
+    const lt = t('legendTrain');
+    const lr = t('legendReal');
+    document.getElementById('legend').innerHTML = inTraining()
+      ? sw('var(--direct)', lt[0]) +
+        sw('var(--notdirect)', lt[1]) +
+        sw('var(--rule-soft)', lt[2])
+      : sw('var(--direct)', lr[0]) +
+        sw('var(--notdirect)', lr[1]) +
+        sw('var(--ambiguous)', lr[2]) +
+        sw('var(--rule-soft)', lr[3]) +
+        sw('var(--notdirect)', lr[4], ';opacity:0.45');
+  }
+  function renderRail() {
+    renderLegend();
+    const rail = document.getElementById('rail');
+    rail.innerHTML = '';
+    activeCards().forEach((card, index) => {
+      const b = document.createElement('button');
+      const d = activeDecisions()[card.cardId];
+      if (d && d.verdict) {
+        if (inTraining()) {
+          const g = complete(card) ? grade(card, d) : null;
+          if (g) b.dataset.g = g.rows.every((r) => r.ok) ? 'ok' : 'ko';
+          else b.dataset.incomplete = 'true';
+        } else {
+          b.dataset.d = d.verdict;
+          b.dataset.incomplete = String(!complete(card));
+        }
+      }
+      if (index === getIndex()) b.dataset.current = 'true';
+      b.title = 'carte ' + (index + 1);
+      b.setAttribute('aria-label', 'carte ' + (index + 1));
+      b.onclick = () => {
+        leaveCurrent();
+        setIndex(index);
+        render();
+      };
+      rail.appendChild(b);
+    });
+  }
+  function tri(container, field) {
+    const d = decisionFor(activeCards()[getIndex()]);
+    container.innerHTML = '';
+    const words =
+      field === 'alternativeSupport'
+        ? { no: t('sNo'), yes: t('sYes') }
+        : { no: t('vNo'), yes: t('vYes') };
+    for (const option of ['yes', 'no']) {
+      const b = document.createElement('button');
+      b.textContent = words[option];
+      b.setAttribute('aria-pressed', String(d[field] === option));
+      b.onclick = () => {
+        d[field] = option;
+        touch();
+      };
+      container.appendChild(b);
+    }
+    if (d[field] === null) {
+      const tag = document.createElement('span');
+      tag.className = 'chip';
+      tag.textContent = t('unset');
+      container.appendChild(tag);
+    }
+  }
+  function touch() {
+    persist();
+    render();
+  }
+  const todoText = (card) => {
+    const m = blockers(card);
+    return m.length ? t('missing') + m.join(', ') : t('complete');
+  };
+  function renderStatic() {
+    document.getElementById('hTitle').textContent = t('title');
+    document.getElementById('hSubtitle').textContent = t('subtitle');
+    document.getElementById('train').textContent = t('train');
+    document.getElementById('helpWord').textContent = t('help');
+    document.getElementById('toExport').textContent = t('export');
+    document.getElementById('whoSave').textContent = t('save');
+    document.getElementById('whoInput').placeholder = t('whoPh');
+    document.getElementById('why').placeholder = t('why');
+    document.getElementById('wYes').textContent = t('yes');
+    document.getElementById('wNo').textContent = t('no');
+    document.getElementById('wCannot').textContent = t('cannot');
+    document.getElementById('sLabel').innerHTML = t('sLabel');
+    document.getElementById('vLabel').innerHTML = t('vLabel');
+  }
+
+  function render() {
+    const card = activeCards()[getIndex()];
+    const d = decisionFor(card);
+    const q = questionFor(card);
+    const scope = singleSpan(card)
+      ? t('scope1')
+      : wholeCopy(card)
+        ? t('scopeAll')
+        : t('scopeMulti');
+    const feedback = inTraining() && complete(card) ? grade(card, d) : null;
+    const banner = inTraining()
+      ? '<section class="training"><div class="eyebrow">' +
+        t('trainTitle', getIndex() + 1, TRAINING.length) +
+        '</div><p class="note" style="margin:6px 0 0">' +
+        t('trainNote') +
+        (SLICE ? ' ' + t('sliceNote', SLICE.sliceId, CARDS.length) : '') +
+        '</p>' +
+        (feedback
+          ? '<table class="grade">' +
+            feedback.rows
+              .map(
+                (r) =>
+                  '<tr class="' +
+                  (r.ok ? 'ok' : 'ko') +
+                  '"><th>' +
+                  escapeHtml(r.field) +
+                  '</th><td>' +
+                  escapeHtml(r.yours) +
+                  '</td><td>' +
+                  escapeHtml(r.expected) +
+                  '</td><td>' +
+                  (r.ok ? '✓' : '✗') +
+                  '</td></tr>',
+              )
+              .join('') +
+            '</table><p class="lesson">' +
+            escapeHtml(feedback.lesson) +
+            '</p>' +
+            (getIndex() + 1 < TRAINING.length
+              ? '<p><button class="ghost" id="trainNext">' +
+                t('trainNext') +
+                '</button></p>'
+              : '<p><button class="ghost" id="trainDone">' +
+                t('trainDone') +
+                '</button></p>')
+          : '') +
+        '</section>'
+      : SLICE
+        ? '<section class="training"><p class="note" style="margin:0">' +
+          t('sliceNote', SLICE.sliceId, CARDS.length) +
+          '</p></section>'
+        : '';
+    const evidenceBlock = singleSpan(card)
+      ? '<p class="note">' + t('ev1') + '</p>'
+      : '<p class="note">' +
+        t('evStart') +
+        (neededEvidence(card) > 1
+          ? '<ul class="roles-todo">' +
+            bindableRoles(card)
+              .map(
+                (r) =>
+                  '<li><strong>« ' +
+                  escapeHtml(roleWords(r)) +
+                  ' »</strong> → ' +
+                  roleHint(r) +
+                  '</li>',
+              )
+              .join('') +
+            '</ul><span class="note">' +
+            t('evTotal', neededEvidence(card)) +
+            '</span>'
+          : t('evOne')) +
+        '</p><p class="note">' +
+        (d.evidenceSentenceIds.length
+          ? t(
+              'evChosen',
+              d.evidenceSentenceIds.join(', '),
+              d.evidenceSentenceIds.length,
+              neededEvidence(card),
+            )
+          : t('evNone')) +
+        '</p>';
+    const glossary = Object.entries(QUESTIONS.glossary || {})
+      .map(
+        ([k, v]) =>
+          '<dt style="font-family:inherit;font-weight:500">' +
+          escapeHtml(k) +
+          '</dt><dd>' +
+          escapeHtml(v.replace(/\s*\([a-z]+\.a\d\)/g, '')) +
+          '</dd>',
+      )
+      .join('');
+    document.getElementById('app').innerHTML =
+      banner +
+      `
+      <section class="guide"><div class="eyebrow" style="display:flex;gap:10px;align-items:baseline">${t('guideTitle')} <button class="link" id="guideToggle"></button></div>${t('guide')}
+        <div class="eyebrow" style="margin-top:14px">${t('glossaryTitle')}</div><dl>${glossary}</dl>
+        <p class="note" style="margin:12px 0 0">${t('pauses')}</p><p class="note" style="margin:8px 0 0">${t('origin')}</p>
+      </section>
+      <section class="panel col1"><div class="eyebrow">${t('b1')}</div>
+        ${card.frame ? '<p class="context"><strong>' + t('consigne') + '</strong> ' + escapeHtml(card.frame) + '</p>' : ''}
+        ${card.dossier ? '<p class="context"><strong>' + t('dossier') + '</strong> ' + escapeHtml(card.dossier) + '</p>' : ''}
+        ${!card.frame && !card.dossier ? '<p class="context">' + t('noContext') + '</p>' : ''}
+      </section>
+      <section class="panel col2">
+        <div class="eyebrow">${card.window && d.revealed !== true ? t('b2w') : t('b2')} <span class="chip">${familyWords(card.stratum)}</span> <span class="chip" title="${escapeHtml(card.stratum)}">${escapeHtml(card.cardId)}</span></div>
+        <div class="response" id="resp">${renderResponse(card, d)}</div>
+        ${card.window && d.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">' + t('reveal') + '</button> <span class="note">' + t('revealNote') + '</span></p>' : ''}
+      </section>
+      <section class="panel col1"><div class="eyebrow">${t('b3')}</div><p class="question">${escapeHtml(q)}</p>${hint(t('hintQ') + scope.toLowerCase() + '.')}<p class="machine">${t('machine')}${escapeHtml(card.atom)}${card.predicate ? ' · ' + escapeHtml(card.predicate) + ' · ' + escapeHtml(card.quantifier) : ''}</p></section>
+      <section class="panel col1"><div class="eyebrow">${t('b4')}</div><blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote></section>
+      <section class="panel col1"><div class="eyebrow">${t('b5')}</div>${evidenceBlock}</section>`;
+    document.getElementById('verdictQuestion').innerHTML =
+      scope +
+      ' : <em>' +
+      escapeHtml(q) +
+      '</em> <button class="link" id="seeExample">' +
+      t('example') +
+      '</button>';
+    document.getElementById('seeExample').onclick = () => {
+      document.body.dataset.help = 'on';
+      document.body.dataset.guide = 'no';
+      try {
+        localStorage.setItem(HELP_STORE, 'on');
+        localStorage.setItem(GUIDE_STORE, 'no');
+      } catch (e) {
+        /* preference */
+      }
+      render();
+      window.scrollTo({ top: 0 });
+    };
+    for (const b of document.querySelectorAll('#verdicts button'))
+      b.setAttribute('aria-pressed', String(b.dataset.v === d.verdict));
+    if (wholeCopy(card)) {
+      d.alternativeSupport = 'not_applicable';
+      document.getElementById('altTri').innerHTML =
+        '<span class="chip">' + t('sNa') + '</span>';
+    } else {
+      if (d.alternativeSupport === 'not_applicable')
+        d.alternativeSupport = null;
+      tri(document.getElementById('altTri'), 'alternativeSupport');
+    }
+    tri(document.getElementById('viewTri'), 'evidenceViewComplete');
+    document.getElementById('why').value = d.rationale || '';
+    const todo = document.getElementById('todo');
+    todo.className = 'todo' + (blockers(card).length ? '' : ' ok');
+    todo.textContent = todoText(card);
+    document.getElementById('dock').hidden = false;
+    const done = activeCards().filter(
+      (c) => activeDecisions()[c.cardId] && complete(c),
+    ).length;
+    document.getElementById('progress').textContent = t(
+      'progress',
+      inTraining(),
+      getIndex() + 1,
+      activeCards().length,
+      done,
+    );
+    document.getElementById('who').textContent = state.reviewer || t('who');
+    for (const s of document.querySelectorAll('#resp .s.clickable'))
+      s.onclick = () => {
+        const id = s.dataset.s;
+        d.evidenceSentenceIds = d.evidenceSentenceIds.includes(id)
+          ? d.evidenceSentenceIds.filter((x) => x !== id)
+          : [...d.evidenceSentenceIds, id];
+        touch();
+      };
+    const reveal = document.getElementById('reveal');
+    if (reveal)
+      reveal.onclick = () => {
+        d.revealed = true;
+        if (!d.verdict) d.revealedBeforeVerdict = true;
+        touch();
+      };
+    const gt = document.getElementById('guideToggle');
+    if (gt) {
+      gt.textContent =
+        document.body.dataset.guide === 'yes' ? t('unfold') : t('fold');
+      gt.onclick = () => {
+        document.body.dataset.guide =
+          document.body.dataset.guide === 'yes' ? 'no' : 'yes';
+        try {
+          localStorage.setItem(GUIDE_STORE, document.body.dataset.guide);
+        } catch (e) {
+          /* preference */
+        }
+        render();
+      };
+    }
+    const tn = document.getElementById('trainNext');
+    if (tn) tn.onclick = () => advance(1);
+    const td = document.getElementById('trainDone');
+    if (td)
+      td.onclick = () => {
+        leaveCurrent();
+        training.done = true;
+        state.index = 0;
+        enteredAt = Date.now();
+        persist();
+        render();
+      };
+    renderRail();
+  }
+  function record(verdict) {
+    const card = activeCards()[getIndex()];
+    const d = decisionFor(card);
+    d.verdict = verdict;
+    d.decidedAt = new Date().toISOString();
+    d.reviewerId = state.reviewer;
+    persist();
+    render();
+    if (complete(card) && !inTraining()) advance(1);
+  }
+  function advance(step) {
+    leaveCurrent();
+    setIndex(
+      Math.min(activeCards().length - 1, Math.max(0, getIndex() + step)),
+    );
+    persist();
+    render();
+  }
+
+  for (const b of document.querySelectorAll('#verdicts button'))
+    b.onclick = () => record(b.dataset.v);
+  document.getElementById('prev').onclick = () => advance(-1);
+  document.getElementById('next').onclick = () => advance(1);
+  document.getElementById('help').onclick = () => {
+    toggleHelp();
+    render();
+  };
+  let trainArmedAt = 0;
+  document.getElementById('train').onclick = () => {
+    const button = document.getElementById('train');
+    if (!inTraining() && Date.now() - trainArmedAt > 5000) {
+      trainArmedAt = Date.now();
+      button.textContent = t('trainRedo');
+      setTimeout(() => {
+        button.textContent = t('train');
+      }, 5000);
+      return;
+    }
+    training.done = false;
+    training.decisions = {};
+    training.index = 0;
+    button.textContent = t('train');
+    persist();
+    render();
+  };
+  document.getElementById('why').oninput = () => {
+    const card = activeCards()[getIndex()];
+    decisionFor(card).rationale = document.getElementById('why').value.trim();
+    persist();
+    const todo = document.getElementById('todo');
+    todo.className = 'todo' + (blockers(card).length ? '' : ' ok');
+    todo.textContent = todoText(card);
+  };
+  document.getElementById('who').onclick = () => {
+    const input = document.getElementById('whoInput');
+    const save = document.getElementById('whoSave');
+    input.hidden = false;
+    save.hidden = false;
+    input.value = state.reviewer;
+    input.focus();
+  };
+  const saveReviewer = () => {
+    const input = document.getElementById('whoInput');
+    state.reviewer = input.value.trim();
+    input.hidden = true;
+    document.getElementById('whoSave').hidden = true;
+    touch();
+  };
+  document.getElementById('whoSave').onclick = saveReviewer;
+  document.getElementById('whoInput').onkeydown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      saveReviewer();
+    }
+    if (event.key === 'Escape') {
+      document.getElementById('whoInput').hidden = true;
+      document.getElementById('whoSave').hidden = true;
+    }
+  };
+  const cycle = (field) => {
+    const d = decisionFor(activeCards()[getIndex()]);
+    const order = [null, 'yes', 'no'];
+    d[field] = order[(order.indexOf(d[field]) + 1) % order.length];
+    touch();
+  };
+  if (window.__adjudicationKeydown)
+    removeEventListener('keydown', window.__adjudicationKeydown);
+  window.__adjudicationKeydown = (event) => {
+    const tg = event.target;
+    if (tg instanceof Element && tg.matches('input, textarea')) {
+      if (event.key === 'Escape' && tg instanceof HTMLElement) tg.blur();
+      return;
+    }
+    const k = event.key.toLowerCase();
+    if (k === 'o') record('DIRECT');
+    else if (k === 'n') record('NOT_DIRECT');
+    else if (event.key === '?') record('AMBIGUOUS');
+    else if (k === 's') {
+      const card = activeCards()[getIndex()];
+      if (!wholeCopy(card)) cycle('alternativeSupport');
+    } else if (k === 'v') cycle('evidenceViewComplete');
+    else if (k === 'h') {
+      toggleHelp();
+      render();
+    } else if (k === 'j') {
+      event.preventDefault();
+      document.getElementById('why').focus();
+    } else if (event.key === 'ArrowLeft') advance(-1);
+    else if (event.key === 'ArrowRight') advance(1);
+  };
+  addEventListener('keydown', window.__adjudicationKeydown);
+
+  /* ---------- export ---------- */
+  function canonical(v) {
+    if (Array.isArray(v)) return '[' + v.map(canonical).join(',') + ']';
+    if (v && typeof v === 'object')
+      return (
+        '{' +
+        Object.keys(v)
+          .sort()
+          .map((k) => JSON.stringify(k) + ':' + canonical(v[k]))
+          .join(',') +
+        '}'
+      );
+    return JSON.stringify(v);
+  }
+  function derivedRoles(card, d) {
+    const roles = bindableRoles(card);
+    const evidence = effectiveEvidence(card, d);
+    const out = {};
+    if (roles.length === 1)
+      out[roles[0].roleId] = {
+        derivation: 'single-role',
+        sentenceIds: evidence,
+        status: evidence.length ? 'BOUND' : 'ABSENT',
+      };
+    else
+      for (const r of roles)
+        out[r.roleId] = {
+          derivation: 'pass-2',
+          sentenceIds: evidence,
+          status: 'PENDING_PASS2',
+        };
+    return out;
+  }
+  document.getElementById('toExport').onclick = async () => {
+    document.getElementById('dock').hidden = true;
+    const back = () => {
+      document.getElementById('dock').hidden = false;
+      render();
+    };
+    if (inTraining()) {
+      const allDone = TRAINING.every(
+        (x) => training.decisions[x.card.cardId] && complete(x.card),
+      );
+      document.getElementById('app').innerHTML =
+        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">' +
+        t('xUnavailable') +
+        '</div><p class="note">' +
+        (allDone ? t('xTrainDone') : t('xTrainNot')) +
+        '</p><p>' +
+        (allDone
+          ? '<button class="ghost" id="trainDone2">' +
+            t('trainDone') +
+            '</button> '
+          : '') +
+        '<button class="ghost" id="back">' +
+        t('back') +
+        '</button></p></section></div>';
+      document.getElementById('back').onclick = back;
+      const td2 = document.getElementById('trainDone2');
+      if (td2)
+        td2.onclick = () => {
+          leaveCurrent();
+          training.done = true;
+          state.index = 0;
+          enteredAt = Date.now();
+          persist();
+          back();
+        };
+      return;
+    }
+    leaveCurrent();
+    const refusals = [];
+    if (!state.reviewer) refusals.push(t('xNoReviewer'));
+    const incomplete = CARDS.filter((c) => !complete(c));
+    if (incomplete.length)
+      refusals.push(t('xIncomplete', incomplete.length, CARDS.length));
+    const abstentions = CARDS.filter(
+      (c) =>
+        state.decisions[c.cardId] &&
+        state.decisions[c.cardId].verdict === 'AMBIGUOUS',
+    ).length;
+    const share = abstentions / CARDS.length;
+    if (!SLICE && incomplete.length === 0 && share > ABSTENTION_CAP)
+      refusals.push(
+        t('xSuspended', abstentions, CARDS.length, Math.round(share * 100)),
+      );
+    if (refusals.length) {
+      document.getElementById('app').innerHTML =
+        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">' +
+        t('xRefused') +
+        '</div><ul class="blockers">' +
+        refusals.map((r) => '<li>' + escapeHtml(r) + '</li>').join('') +
+        '</ul>' +
+        (incomplete.length
+          ? '<ul class="blockers">' +
+            incomplete
+              .slice(0, 12)
+              .map(
+                (c) =>
+                  '<li>' +
+                  escapeHtml(c.cardId) +
+                  ' — ' +
+                  escapeHtml(blockers(c).join(', ')) +
+                  '</li>',
+              )
+              .join('') +
+            '</ul>'
+          : '') +
+        '<p><button class="ghost" id="back">' +
+        t('back') +
+        '</button></p></section></div>';
+      document.getElementById('back').onclick = back;
+      return;
+    }
+    const payload = {
+      abstentionShare: share,
+      atomTaxonomyHash: DECK.atomTaxonomyHash,
+      deckHash: DECK.contentHash,
+      deckSeed: DECK.shuffleSeed,
+      decisions: CARDS.map((c) => {
+        const d = state.decisions[c.cardId];
+        return {
+          alternativeSupport: d.alternativeSupport,
+          cardId: c.cardId,
+          decidedAt: d.decidedAt,
+          evidenceSentenceIds: effectiveEvidence(c, d),
+          evidenceViewComplete: d.evidenceViewComplete,
+          firstSeenAt: d.firstSeenAt,
+          orderIndex: d.orderIndex,
+          rationale: d.rationale,
+          revealedBeforeVerdict: d.revealedBeforeVerdict === true,
+          reviewerId: d.reviewerId || state.reviewer,
+          roleAssessments: derivedRoles(c, d),
+          secondsOnCard: d.secondsOnCard || 0,
+          verdict: d.verdict,
+        };
+      }).sort((a, b) => a.cardId.localeCompare(b.cardId)),
+      language: LANG,
+      manifestHash: DECK.manifestHash,
+      pass: 1,
+      questionsHash: QUESTIONS.contentHash || null,
+      schemaVersion: 5,
+      sliceHash: SLICES ? SLICES.contentHash || null : null,
+      sliceId: SLICE ? SLICE.sliceId : null,
+    };
+    const text = canonical(payload);
+    let digest = 'n/a';
+    if (globalThis.crypto && crypto.subtle) {
+      const bytes = await crypto.subtle.digest(
+        'SHA-256',
+        new TextEncoder().encode(text),
+      );
+      digest =
+        'sha256:' +
+        [...new Uint8Array(bytes)]
+          .map((b) => b.toString(16).padStart(2, '0'))
+          .join('');
+    }
+    document.getElementById('app').innerHTML =
+      '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">' +
+      t('xTitle') +
+      '</div><p class="note">' +
+      t('xNote', payload.decisions.length) +
+      '</p><p class="hash"><strong>' +
+      t('xHash') +
+      '</strong> ' +
+      digest +
+      '</p><p><button class="ghost" id="copy">' +
+      t('copy') +
+      '</button> <button class="ghost" id="back">' +
+      t('back') +
+      '</button></p><textarea readonly id="out">' +
+      escapeHtml(text) +
+      '</textarea></section></div>';
+    document.getElementById('copy').onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(text);
+        document.getElementById('copy').textContent = t('copied');
+      } catch (e) {
+        document.getElementById('out').select();
+        document.getElementById('copy').textContent = t('selected');
+      }
+    };
+    document.getElementById('back').onclick = back;
+  };
+
+  renderStatic();
+  render();
+</script>

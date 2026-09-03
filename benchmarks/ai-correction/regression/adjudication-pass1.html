@@ -519,63 +519,57 @@
 <div class="legend" id="legend"></div>
 <header class="bar">
   <div>
-    <div class="eyebrow">Relecture à l’aveugle</div>
-    <strong
-      >Pour chaque carte : une question, et ce qui te fait répondre.</strong
-    >
+    <div class="eyebrow" id="hTitle"></div>
+    <strong id="hSubtitle"></strong>
   </div>
   <div class="grow"></div>
   <div class="count" id="progress">—</div>
-  <button class="ghost" id="train">entraînement</button>
-  <button class="ghost" id="help"><kbd>H</kbd>aide</button>
+  <button class="ghost" id="train"></button>
+  <button class="ghost" id="help">
+    <kbd>H</kbd><span id="helpWord"></span>
+  </button>
   <span id="whoBox" style="display: inline-flex; gap: 6px; align-items: center"
-    ><button class="ghost" id="who">relecteur…</button
+    ><button class="ghost" id="who"></button
     ><input
       id="whoInput"
       type="text"
-      placeholder="ton identifiant"
       autocomplete="off"
       hidden
-      style="width: 160px; padding: 5px 8px"
-    /><button class="ghost" id="whoSave" hidden>enregistrer</button></span
-  >
-  <button class="ghost" id="toExport">export</button>
+      style="width: 160px; padding: 5px 8px" /><button
+      class="ghost"
+      id="whoSave"
+      hidden
+    ></button
+  ></span>
+  <button class="ghost" id="toExport"></button>
 </header>
 <main id="app"></main>
 <footer class="dock" hidden id="dock">
   <div class="dock-inner">
     <div>
-      <div class="eyebrow" id="verdictQuestion">La question</div>
+      <div class="eyebrow" id="verdictQuestion"></div>
       <div class="verdicts" id="verdicts">
-        <button data-v="DIRECT" aria-pressed="false"><kbd>O</kbd>oui</button>
+        <button data-v="DIRECT" aria-pressed="false">
+          <kbd>O</kbd><span id="wYes"></span>
+        </button>
         <button data-v="NOT_DIRECT" aria-pressed="false">
-          <kbd>N</kbd>non
+          <kbd>N</kbd><span id="wNo"></span>
         </button>
         <button data-v="AMBIGUOUS" aria-pressed="false">
-          <kbd>?</kbd>je ne peux pas dire
+          <kbd>?</kbd><span id="wCannot"></span>
         </button>
       </div>
     </div>
     <div>
-      <div class="ctl-label">
-        <kbd>S</kbd> <strong>Autre phrase.</strong> Si on retirait la phrase
-        examinée, une autre phrase de la copie suffirait-elle, seule, à répondre
-        oui&nbsp;?
-      </div>
+      <div class="ctl-label"><kbd>S</kbd> <span id="sLabel"></span></div>
       <div class="tri" id="altTri"></div>
       <div class="ctl-label" style="margin-top: 6px">
-        <kbd>V</kbd> <strong>Informations.</strong> Avais-tu tout ce qu’il
-        fallait pour répondre&nbsp;?
+        <kbd>V</kbd> <span id="vLabel"></span>
       </div>
       <div class="tri" id="viewTri"></div>
     </div>
     <div class="grow" style="min-width: 300px">
-      <input
-        id="why"
-        type="text"
-        placeholder="pourquoi ? (obligatoire si « je ne peux pas dire »)"
-        autocomplete="off"
-      />
+      <input id="why" type="text" placeholder="" autocomplete="off" />
       <div class="todo" id="todo" style="margin-top: 6px"></div>
     </div>
     <div style="align-self: center">
@@ -7580,48 +7574,726 @@
 }
 
 </script>
+<script id="questionsEn" type="application/json">
+  {
+  "schemaVersion": 1,
+  "language": "en",
+  "status": "DRAFT — English rendering of the sealed French questions (plain-questions.v1.json). Same atoms, same quantifier words. To be read by a context-free English reader for leading wording before use; results from English-speaking raters are tagged by language and reported separately.",
+  "atomTaxonomyHash": "sha256:e9a1b39e0651998cbb19427882edda6347aeda7228cdb06136eb967cc26134c5",
+  "sourceQuestionsHash": "sha256:6b25f4e95aaaf6751b8215da638dc855d289965b493c8db694dfc482c1a480df",
+  "answerMapping": {
+    "yes": "DIRECT",
+    "no": "NOT_DIRECT",
+    "cannot tell": "AMBIGUOUS"
+  },
+  "rule": "One question per atom the verifier evaluates. The quantifier word is in the question: EVERY for forall and forall_exists, NO for not_exists, singular wording for exists. A question never names the expected answer.",
+  "questions": {
+    "ac.a1": "Does the student say clearly which option they choose?",
+    "ac.a2": "Does the chosen option fit what the assignment asked for: the right people, the right target, the right situation, the right time frame?",
+    "ac.a3": "Does the answer tell the intended person what to choose or do, without having to guess between materially different actions?",
+    "ca.a1": "Is EVERY calculation in the comparison correct?",
+    "ca.a2": "In EVERY calculation, are the units consistent with each other?",
+    "ca.a3": "Do the things being compared cover the same scope, according to the file?",
+    "cf.a1": "Is EVERY useful claim in this passage consistent with the file?",
+    "cf.a2": "For EVERY useful claim in this passage, does the student state a limit that bounds it?",
+    "cf.a3": "For EVERY useful claim, is the stated limit correct, according to the file?",
+    "dp.a1": "Does the student clearly state a position?",
+    "dp.a2": "Does the position tell the intended person what to choose or do, without having to guess between materially different actions?",
+    "dp.a3": "Does the position fit what the assignment asked for: the right people, the right object, the right situation, the right time frame?",
+    "esg.a1": "Does the student describe a sequence, that is, a chain of steps or events?",
+    "esg.a2": "Does that sequence rest on observations from the file?",
+    "ff.a2": "Is EVERY fact or figure put forward accurate, according to the file?",
+    "ff.a3": "Is EVERY fact or figure put forward related to the choice the student made, given the assignment?",
+    "ff.a4": "Does EVERY fact or figure put forward support the choice the student made?",
+    "ml.a1": "Does the student state a mechanism or a conclusion?",
+    "ml.a2": "Is EVERY fact cited explicitly linked to that mechanism or conclusion?",
+    "pe.a1": "Does the student produce evidence that can be checked?",
+    "pe.a2": "Does that evidence demonstrate the practice the assignment asked for?",
+    "pe.a3": "Is the student’s reading of that evidence correct, according to the file?",
+    "rl.a1": "Does the student clearly state the reflective link the assignment asked for?",
+    "rl.a2": "Does that link rest on a concrete element of the answer?",
+    "rr.a1": "Does the student name a risk?",
+    "rr.a2": "Does that risk remain after the proposed action?",
+    "rr.a3": "Is that risk both accurate AND relevant, according to the file?",
+    "rr.a4": "Does the student propose a precaution?",
+    "rr.a5": "Does that precaution reduce that risk?",
+    "rr.a6": "Is that precaution proportionate to that risk, according to the file?",
+    "sfu.a1": "Does EVERY fact used come from the scenario in the file?",
+    "sfu.a2": "Is EVERY fact used accurate, according to the file?",
+    "sfu.a3": "Does EVERY fact used serve to answer what the assignment asked?",
+    "sf.a1": "Is EVERY fact from the file that the explanation needs restated in the answer?",
+    "sf.a2": "Is it true that NO important claim in the answer goes beyond the file?",
+    "ub.a1": "Does the student name an uncertainty?",
+    "ub.a2": "Is that uncertainty related to what the assignment asked?",
+    "ub.a3": "Is that uncertainty correctly delimited, according to the file?",
+    "ub.a4": "Despite that uncertainty, does the student take a proportionate decision?"
+  },
+  "glossary": {
+    "according to the file / consistent with the file": "consistent with what the file says or reasonably lets you infer; not a word-for-word quote, and never judged against knowledge from outside the file.",
+    "goes beyond the file": "adds to the given facts, whether wrong or merely unverifiable.",
+    "comes from the scenario": "written in the file as such, or clearly inferable; not a plausible guess.",
+    "useful / important claim": "a claim that carries weight in the reasoning, not a linking sentence.",
+    "related to the choice": "speaks about the decision the student made, even without proving it. « Serves to answer the assignment » and « related to the assignment » point at the task set, with the same latitude: a real link, not merely the same topic.",
+    "supports the choice": "actually backs the decision taken; a fact can be on topic without proving anything, or even cut against it.",
+    "reflective link": "the student connects their answer to their own process or experience, as the assignment asks.",
+    "proportionate": "neither too weak nor excessive for the seriousness of what is at stake.",
+    "time frame": "the period concerned: short or long term.",
+    "scope": "what each compared item includes: same elements, same period.",
+    "intended person": "who the advice is addressed to in the task, not the student.",
+    "correct (calculation)": "right in the mathematical sense, not fair.",
+    "units": "units of measurement: euros, percentages, hours…",
+    "a limit that bounds a claim": "a caveat or condition: « true unless… », « only in this case… ».",
+    "delimited (uncertainty)": "its outline is framed: neither too vague nor more precise than the file allows.",
+    "target / object": "what the option or position is about: the thing to decide; the « intended person » is who the advice is for.",
+    "option / position": "two words for two exercises: « option » when the student picks among proposed solutions, « position » when they take a stand. Same demand for clarity.",
+    "relevant": "counts for what is at stake: the choice, the assignment or the file depending on the question. Same latitude everywhere: a real link, not merely the same topic.",
+    "accurate AND relevant (risk)": "yes only if both hold; no as soon as one fails, and say which in « why ».",
+    "evidence that can be checked": "something a third party could verify against the file: a fact, a figure, a precise reference; not a general statement.",
+    "concrete element of the answer": "a precise detail present in the student’s answer, not in the file: a fact, an example, a step.",
+    "mechanism": "an explained chain of cause and consequence, not a physical device.",
+    "needed by the explanation": "a fact from the file without which the explanation does not hold; judged by you, not by the student.",
+    "rests on observations from the file": "drawn from what the file says or reasonably lets you infer; not a word-for-word quote."
+  }
+}
+
+</script>
+<script id="slices" type="application/json">
+  {
+  "contentHash": "sha256:ebd164037cb20a73bffb7a746b20d6568e09c99262dd641008f06e01df7c8daf",
+  "coverings": 2,
+  "deckHash": "sha256:53a2defc420c34180069bfa689f5273bef6490328451a892ba5e023f9215f6c5",
+  "primaryCards": 50,
+  "rule": "Une tranche ne contient jamais deux cartes de la même paire, de la même réponse ni de la même copie. Chaque carte primaire figure dans une tranche par couverture.",
+  "schemaVersion": 1,
+  "seed": "v4.5-210/slices/v1",
+  "sliceSize": 8,
+  "slices": [
+    {
+      "cards": [
+        "C-5a5b6cc636",
+        "C-7309c167f8",
+        "C-302b9df321",
+        "C-eecdd08b93",
+        "C-10d03a23e2",
+        "C-1cff16763a",
+        "C-858f89a8ff"
+      ],
+      "covering": 1,
+      "sliceId": "1-01"
+    },
+    {
+      "cards": [
+        "C-23cb79db39",
+        "C-28c8a6d628",
+        "C-b41bdb6098",
+        "C-bda12db6d2",
+        "C-bb87d23759",
+        "C-e707d9669d",
+        "C-aef2458e05"
+      ],
+      "covering": 1,
+      "sliceId": "1-02"
+    },
+    {
+      "cards": [
+        "C-6f02478fc2",
+        "C-92d4b25574",
+        "C-0dafed656a",
+        "C-c8c0bafb00",
+        "C-3a2fdb767e",
+        "C-46c2f075a1",
+        "C-de2289c819",
+        "C-5773c296c7"
+      ],
+      "covering": 1,
+      "sliceId": "1-03"
+    },
+    {
+      "cards": [
+        "C-ef06893724",
+        "C-02c2ddf742",
+        "C-699470f303",
+        "C-c2e812b133",
+        "C-5219f94743",
+        "C-00b4a1c0a0",
+        "C-73a8c98c78"
+      ],
+      "covering": 1,
+      "sliceId": "1-04"
+    },
+    {
+      "cards": [
+        "C-4d3ebe4339",
+        "C-20ae278814",
+        "C-d00dec227b",
+        "C-94ea93741f",
+        "C-a0ade8b88e",
+        "C-1b10dad05d",
+        "C-5d8f0447b1"
+      ],
+      "covering": 1,
+      "sliceId": "1-05"
+    },
+    {
+      "cards": [
+        "C-47402cc097",
+        "C-55f08a077c",
+        "C-272f41aa34",
+        "C-7591e7e2ed",
+        "C-ccc2405200",
+        "C-7a57652d93",
+        "C-e32060b658"
+      ],
+      "covering": 1,
+      "sliceId": "1-06"
+    },
+    {
+      "cards": [
+        "C-25ca3b32bc",
+        "C-e10e009b7f",
+        "C-636e218ca9",
+        "C-643773bcd3",
+        "C-4b88718a20",
+        "C-03ff752bb0",
+        "C-1e1d5034dc"
+      ],
+      "covering": 1,
+      "sliceId": "1-07"
+    },
+    {
+      "cards": [
+        "C-23cb79db39",
+        "C-28c8a6d628",
+        "C-636e218ca9",
+        "C-643773bcd3",
+        "C-d00dec227b",
+        "C-302b9df321",
+        "C-4b88718a20"
+      ],
+      "covering": 2,
+      "sliceId": "2-01"
+    },
+    {
+      "cards": [
+        "C-47402cc097",
+        "C-92d4b25574",
+        "C-3a2fdb767e",
+        "C-46c2f075a1",
+        "C-a0ade8b88e",
+        "C-10d03a23e2",
+        "C-5773c296c7",
+        "C-858f89a8ff"
+      ],
+      "covering": 2,
+      "sliceId": "2-02"
+    },
+    {
+      "cards": [
+        "C-272f41aa34",
+        "C-b41bdb6098",
+        "C-bda12db6d2",
+        "C-bb87d23759",
+        "C-de2289c819",
+        "C-00b4a1c0a0",
+        "C-7a57652d93"
+      ],
+      "covering": 2,
+      "sliceId": "2-03"
+    },
+    {
+      "cards": [
+        "C-ef06893724",
+        "C-0dafed656a",
+        "C-7309c167f8",
+        "C-1b10dad05d",
+        "C-e32060b658",
+        "C-1e1d5034dc",
+        "C-5d8f0447b1"
+      ],
+      "covering": 2,
+      "sliceId": "2-04"
+    },
+    {
+      "cards": [
+        "C-6f02478fc2",
+        "C-e10e009b7f",
+        "C-c8c0bafb00",
+        "C-94ea93741f",
+        "C-eecdd08b93",
+        "C-e707d9669d",
+        "C-aef2458e05"
+      ],
+      "covering": 2,
+      "sliceId": "2-05"
+    },
+    {
+      "cards": [
+        "C-4d3ebe4339",
+        "C-5a5b6cc636",
+        "C-20ae278814",
+        "C-02c2ddf742",
+        "C-25ca3b32bc",
+        "C-ccc2405200",
+        "C-03ff752bb0"
+      ],
+      "covering": 2,
+      "sliceId": "2-06"
+    },
+    {
+      "cards": [
+        "C-55f08a077c",
+        "C-7591e7e2ed",
+        "C-699470f303",
+        "C-c2e812b133",
+        "C-5219f94743",
+        "C-1cff16763a",
+        "C-73a8c98c78"
+      ],
+      "covering": 2,
+      "sliceId": "2-07"
+    }
+  ]
+}
+
+</script>
 <script>
   const DECK = JSON.parse(document.getElementById('deck').textContent);
-  const QUESTIONS = JSON.parse(
-    document.getElementById('questions').textContent,
-  );
-  const CARDS = DECK.cards;
-  const STORE = 'adj-v4-' + DECK.manifestHash.slice(-12);
-  const ABSTENTION_CAP = 0.2; // pre-declared: above this share of « je ne peux pas dire », the pass is suspended
+  const PARAMS = new URLSearchParams(location.hash.replace(/^#/, ''));
+  const LANG = PARAMS.get('lang') === 'en' ? 'en' : 'fr';
+  const SLICE_ID = PARAMS.get('s') || null;
+  const readJson = (id) => {
+    const el = document.getElementById(id);
+    const raw = el ? el.textContent.trim() : '';
+    return raw && !raw.startsWith('/*') ? JSON.parse(raw) : null;
+  };
+  const QUESTIONS_FR = readJson('questions');
+  const QUESTIONS_EN = readJson('questionsEn');
+  const QUESTIONS = LANG === 'en' && QUESTIONS_EN ? QUESTIONS_EN : QUESTIONS_FR;
+  const SLICES = readJson('slices');
+  const SLICE =
+    SLICE_ID && SLICES
+      ? SLICES.slices.find((x) => x.sliceId === SLICE_ID) || null
+      : null;
+  const CARDS = SLICE
+    ? SLICE.cards
+        .map((id) => DECK.cards.find((c) => c.cardId === id))
+        .filter(Boolean)
+    : DECK.cards;
+  const STORE =
+    'adj-v4-' +
+    DECK.manifestHash.slice(-12) +
+    (SLICE ? '-s' + SLICE.sliceId : '') +
+    (LANG === 'en' ? '-en' : '');
+  const ABSTENTION_CAP = 0.2;
+
+  /* ---------- the two languages of everything that is not the copy ---------- */
+  const T = {
+    fr: {
+      title: 'Relecture à l’aveugle',
+      subtitle: 'Pour chaque carte : une question, et ce qui te fait répondre.',
+      train: 'entraînement',
+      help: 'aide',
+      who: 'relecteur…',
+      whoPh: 'ton identifiant',
+      save: 'enregistrer',
+      export: 'export',
+      yes: 'oui',
+      no: 'non',
+      cannot: 'je ne peux pas dire',
+      sLabel:
+        '<strong>Autre phrase.</strong> Si on retirait la phrase examinée, une autre phrase de la copie suffirait-elle, seule, à répondre oui&nbsp;?',
+      vLabel:
+        '<strong>Informations.</strong> Avais-tu tout ce qu’il fallait pour répondre&nbsp;?',
+      sYes: 'oui, une autre suffirait seule',
+      sNo: 'non, aucune ne suffirait seule',
+      vYes: 'oui, rien ne m’a manqué',
+      vNo: 'non, quelque chose m’a manqué',
+      unset: 'sans réponse',
+      sNa: 'sans objet : la question porte déjà sur toute la copie',
+      why: 'pourquoi ? (obligatoire si « je ne peux pas dire »)',
+      missing: 'manque : ',
+      complete: 'carte complète',
+      mAnswer: 'réponse',
+      mEvidence1: 'surligne au moins une phrase qui te fait répondre',
+      mEvidenceN: (k) =>
+        'surligne une phrase pour chaque chose reliée (' + k + ' attendues)',
+      mS: 'S · autre phrase',
+      mV: 'V · rien ne m’a manqué',
+      mWhy: 'pourquoi',
+      b1: '1 · Ce qui était demandé',
+      b2: '2 · La copie de l’élève',
+      b2w: '2 · La copie, extrait autour de la phrase',
+      b3: '3 · La question',
+      b4: '4 · La phrase examinée',
+      b5: '5 · Ce qui te fait répondre',
+      consigne: 'Consigne.',
+      dossier: 'Dossier.',
+      noContext:
+        'Sur cette famille de cartes, ni la consigne ni le dossier ne sont montrés : la question se juge sur la copie seule.',
+      hintQ:
+        'Une seule question, en français. Réponds avec ce que la carte te laisse regarder : ',
+      machine: 'écriture pour la machine : ',
+      scope1: 'En lisant la phrase surlignée, prise seule',
+      scopeAll: 'En lisant la copie entière',
+      scopeMulti: 'En lisant la copie',
+      example: 'voir l’exemple corrigé',
+      reveal: 'révéler la copie entière',
+      revealNote: 'l’ouverture est notée',
+      ev1: 'Sur cette carte, ce qui compte comme preuve, c’est la phrase surlignée elle-même. Rien à surligner. Le reste de l’extrait est là pour comprendre, il ne compte pas : si ta réponse dépendait d’une autre phrase, réponds non ou « je ne peux pas dire », et dis-le en S.',
+      evStart:
+        'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie.',
+      evOne:
+        ' Clique, à droite, la ou les phrases qui te font répondre, que ce soit oui ou non.',
+      evTotal: (k) =>
+        'Une phrase par ligne, ' + k + ' au total. Pas plus n’est demandé.',
+      evChosen: (ids, have, k) =>
+        'Phrases surlignées : <strong>' +
+        ids +
+        '</strong> (' +
+        have +
+        ' sur ' +
+        k +
+        ' attendues) · clique une phrase pour l’ajouter, reclique pour la retirer.',
+      evNone:
+        'Clique, dans la copie à droite, la ou les phrases qui te font répondre.',
+      hintSet:
+        'une seule phrase : pour un non, celle qui fait tomber ta réponse ; pour un oui, n’importe laquelle qui la prouve',
+      hintAnchor: 'la phrase où l’élève le dit',
+      fam: (one, all) =>
+        one ? 'une phrase' : all ? 'copie entière' : 'plusieurs phrases',
+      ctxDossier: 'consigne et dossier',
+      ctxFrame: 'consigne seule',
+      ctxNone: 'copie seule',
+      progress: (tr, i, n, done) =>
+        (tr ? 'entraînement ' : 'carte ') +
+        i +
+        ' / ' +
+        n +
+        ' · ' +
+        done +
+        ' complètes',
+      trainTitle: (i, n) => 'Échauffement · carte ' + i + ' sur ' + n,
+      trainNote:
+        'Cartes inventées. Réponds comme pour une vraie carte ; dès qu’elle est complète, la correction s’affiche ici. Barre du haut : vert = tout juste, rouge = à revoir. Rien n’est enregistré pour la vraie passe.',
+      trainNext: 'carte d’entraînement suivante ▶',
+      trainDone: 'Échauffement terminé — commencer la vraie passe',
+      gAnswer: 'réponse',
+      gEvidence: 'phrases surlignées',
+      gS: 'S · autre phrase',
+      gV: 'V · rien ne manquait',
+      gFree: 'libre',
+      gAtLeast: 'au moins ',
+      gNone: 'aucune',
+      legendTrain: ['tout juste', 'à revoir', 'pas encore fait'],
+      legendReal: [
+        'tu as répondu oui',
+        'non',
+        'je ne peux pas dire',
+        'pas encore fait',
+        'pâle = réponse donnée mais carte incomplète (il manque S, V, une phrase ou le pourquoi)',
+      ],
+      trainRedo:
+        'reclique pour refaire l’échauffement (tes vraies décisions sont gardées)',
+      xTitle: 'Export de la passe 1',
+      xNote: (n) =>
+        n +
+        ' décisions. Enregistre ce texte tel quel et envoie-le au propriétaire de l’étude avec l’empreinte. Toute modification ultérieure produit une nouvelle version.',
+      xHash: 'empreinte du texte ci-dessous :',
+      copy: 'copier',
+      copied: 'copié',
+      selected: 'sélectionné — ⌘C',
+      back: 'retour aux cartes',
+      xRefused: 'Export refusé',
+      xNoReviewer: 'aucun identifiant de relecteur',
+      xIncomplete: (k, n) => k + ' cartes incomplètes sur ' + n,
+      xSuspended: (a, n, pct) =>
+        'passe suspendue : ' +
+        a +
+        ' « je ne peux pas dire » sur ' +
+        n +
+        ' (' +
+        pct +
+        ' %), au-delà du plafond pré-déclaré de 20 %',
+      xUnavailable: 'Export indisponible',
+      xTrainDone:
+        'Les cartes d’entraînement sont corrigées. Il reste à valider l’échauffement pour ouvrir les vraies cartes ; l’export viendra après.',
+      xTrainNot:
+        'L’échauffement n’est pas terminé : finis les cartes d’entraînement.',
+      sliceNote: (id, n) =>
+        'Tu as une tranche de ' +
+        n +
+        ' cartes (tranche ' +
+        id +
+        '). Fais-les seul, sans en parler à personne avant d’avoir exporté. Répondre « je ne peux pas dire » avec une raison est une réponse acceptable.',
+      guide: `
+        <ol>
+          <li><strong>Ce qui était demandé</strong> : lis la consigne, et le dossier s’il est là.</li>
+          <li><strong>La copie</strong> : lis-la d’un trait. Sur les familles « une phrase », tu ne vois qu’un extrait ; ouvrir le reste est permis et simplement noté.</li>
+          <li><strong>La question</strong> : une seule, en français. Les mots en capitales (CHAQUE, AUCUNE) disent à quel point il faut être strict : CHAQUE = un seul raté et c’est non ; AUCUNE = un seul cas et c’est non.</li>
+          <li><strong>La phrase examinée</strong> : relis-la avec la question en tête.</li>
+          <li><strong>Ce qui te fait répondre</strong> : sur les familles « plusieurs phrases », clique une phrase par chose que la question relie, jamais toutes. Sur « une phrase », c’est la phrase surlignée, rien à faire.</li>
+          <li><strong>La réponse</strong> : <strong>O</strong> oui, <strong>N</strong> non, <strong>?</strong> je ne peux pas dire (justification obligatoire).</li>
+          <li><strong>Les deux contrôles</strong> : <strong>S</strong> si on retirait la phrase examinée, une autre suffirait-elle seule à répondre oui ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
+        </ol>
+        <dl>
+          <dt>oui</dt><dd>Ce que tu lis répond oui à la question, sans deviner ni compléter.</dd>
+          <dt>non</dt><dd>Ce que tu lis répond non, ou ne permet pas de répondre oui : à moitié, à côté, sous-entendu, ou il manque l’élément demandé. Une phrase vraie et bien écrite peut être un non.</dd>
+          <dt>je ne peux pas dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Dis pourquoi.</dd>
+          <dt>S</dt><dd>Appuyer n’est pas suffire : il faut qu’une autre phrase, seule, réponde oui.</dd>
+          <dt>V</dt><dd>Pour CETTE question. Un dossier non montré n’est un manque que si la question en avait besoin.</dd>
+          <dt>barre du haut</dt><dd>Échauffement : vert = juste, rouge = à revoir. Vraies cartes : ta réponse, vert oui, rouge non, mauve je ne peux pas dire. Ce n’est pas une note.</dd>
+        </dl>
+        <div class="eyebrow" style="margin-top:14px">Un exemple déjà corrigé</div>
+        <p class="note">Consigne : « Choisis un fournisseur et justifie. » Copie : « Je retiens A. Il livre en 5 jours. Notre parking compte 40 places. » Question : « CHAQUE fait avancé a-t-il un rapport avec le choix ? » Réponse : <strong>non</strong>, parce que les 40 places n’ont aucun rapport ; on surligne cette phrase-là et celle du choix. S : non, aucune autre phrase ne suffirait seule à un oui. V : oui, rien ne manquait.</p>`,
+      guideTitle: 'Comment traiter une carte',
+      fold: 'replier',
+      unfold: 'déplier',
+      glossaryTitle: 'Les mots des questions',
+      pauses:
+        'Fais des pauses : tout est sauvegardé dans ce navigateur, tu peux fermer et reprendre. Les mots CHAQUE et AUCUNE se ratent surtout quand on est fatigué.',
+      origin:
+        'On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.',
+    },
+    en: {
+      title: 'Blind review',
+      subtitle: 'For each card: one question, and what makes you answer.',
+      train: 'warm-up',
+      help: 'help',
+      who: 'reviewer…',
+      whoPh: 'your identifier',
+      save: 'save',
+      export: 'export',
+      yes: 'yes',
+      no: 'no',
+      cannot: 'cannot tell',
+      sLabel:
+        '<strong>Other sentence.</strong> If the examined sentence were removed, would another sentence of the answer suffice, on its own, to answer yes?',
+      vLabel:
+        '<strong>Information.</strong> Did you have everything you needed to answer?',
+      sYes: 'yes, another would suffice alone',
+      sNo: 'no, none would suffice alone',
+      vYes: 'yes, nothing was missing',
+      vNo: 'no, something was missing',
+      unset: 'unanswered',
+      sNa: 'not applicable: the question already covers the whole answer',
+      why: 'why? (required for « cannot tell »)',
+      missing: 'missing: ',
+      complete: 'card complete',
+      mAnswer: 'answer',
+      mEvidence1: 'highlight at least one sentence that makes you answer',
+      mEvidenceN: (k) =>
+        'highlight one sentence per related thing (' + k + ' expected)',
+      mS: 'S · other sentence',
+      mV: 'V · nothing missing',
+      mWhy: 'why',
+      b1: '1 · What was asked',
+      b2: '2 · The student’s answer',
+      b2w: '2 · The answer, excerpt around the sentence',
+      b3: '3 · The question',
+      b4: '4 · The examined sentence',
+      b5: '5 · What makes you answer',
+      consigne: 'Assignment.',
+      dossier: 'File.',
+      noContext:
+        'On this family of cards neither the assignment nor the file is shown: the question is judged on the answer alone.',
+      hintQ: 'One question only. Answer with what the card lets you look at: ',
+      machine: 'machine form: ',
+      scope1: 'Reading the highlighted sentence on its own',
+      scopeAll: 'Reading the whole answer',
+      scopeMulti: 'Reading the answer',
+      example: 'see the worked example',
+      reveal: 'reveal the whole answer',
+      revealNote: 'opening it is recorded',
+      ev1: 'On this card, what counts as evidence is the highlighted sentence itself. Nothing to highlight. The rest of the excerpt is context and does not count: if your answer depended on another sentence, answer no or « cannot tell », and say so in S.',
+      evStart:
+        'The highlighted sentence is the starting point; on this family you judge with the whole answer.',
+      evOne:
+        ' Click, on the right, the sentence(s) that make you answer, yes or no.',
+      evTotal: (k) =>
+        'One sentence per line, ' + k + ' in total. No more is asked.',
+      evChosen: (ids, have, k) =>
+        'Highlighted sentences: <strong>' +
+        ids +
+        '</strong> (' +
+        have +
+        ' of ' +
+        k +
+        ' expected) · click a sentence to add it, click again to remove it.',
+      evNone:
+        'Click, in the answer on the right, the sentence(s) that make you answer.',
+      hintSet:
+        'one sentence only: for a no, the one that makes your answer fall; for a yes, any that proves it',
+      hintAnchor: 'the sentence where the student says it',
+      fam: (one, all) =>
+        one ? 'one sentence' : all ? 'whole answer' : 'several sentences',
+      ctxDossier: 'assignment and file',
+      ctxFrame: 'assignment only',
+      ctxNone: 'answer only',
+      progress: (tr, i, n, done) =>
+        (tr ? 'warm-up ' : 'card ') +
+        i +
+        ' / ' +
+        n +
+        ' · ' +
+        done +
+        ' complete',
+      trainTitle: (i, n) => 'Warm-up · card ' + i + ' of ' + n,
+      trainNote:
+        'Invented cards. Answer as for a real card; as soon as it is complete, the correction appears here. Top bar: green = all right, red = to review. Nothing is recorded for the real pass. The answers are in French; the questions and this interface are in English.',
+      trainNext: 'next warm-up card ▶',
+      trainDone: 'Warm-up done — start the real pass',
+      gAnswer: 'answer',
+      gEvidence: 'highlighted sentences',
+      gS: 'S · other sentence',
+      gV: 'V · nothing missing',
+      gFree: 'free',
+      gAtLeast: 'at least ',
+      gNone: 'none',
+      legendTrain: ['all right', 'to review', 'not done yet'],
+      legendReal: [
+        'you answered yes',
+        'no',
+        'cannot tell',
+        'not done yet',
+        'pale = answered but incomplete (S, V, a sentence or the why is missing)',
+      ],
+      trainRedo:
+        'click again to redo the warm-up (your real decisions are kept)',
+      xTitle: 'Pass 1 export',
+      xNote: (n) =>
+        n +
+        ' decisions. Send this text as is to the study owner, with the hash. Any later change produces a new version.',
+      xHash: 'hash of the text below:',
+      copy: 'copy',
+      copied: 'copied',
+      selected: 'selected — ⌘C',
+      back: 'back to the cards',
+      xRefused: 'Export refused',
+      xNoReviewer: 'no reviewer identifier',
+      xIncomplete: (k, n) => k + ' incomplete cards out of ' + n,
+      xSuspended: (a, n, pct) =>
+        'pass suspended: ' +
+        a +
+        ' « cannot tell » out of ' +
+        n +
+        ' (' +
+        pct +
+        ' %), above the pre-declared 20 % cap',
+      xUnavailable: 'Export unavailable',
+      xTrainDone:
+        'The warm-up cards are corrected. Validate the warm-up to open the real cards; the export comes after.',
+      xTrainNot: 'The warm-up is not finished: complete the warm-up cards.',
+      sliceNote: (id, n) =>
+        'You have a slice of ' +
+        n +
+        ' cards (slice ' +
+        id +
+        '). Do them alone, without discussing them with anyone before exporting. Answering « cannot tell » with a reason is acceptable. The answers are in French.',
+      guide: `
+        <ol>
+          <li><strong>What was asked</strong>: read the assignment, and the file if shown.</li>
+          <li><strong>The answer</strong>: read it through. On « one sentence » families you see an excerpt; opening the rest is allowed and simply recorded.</li>
+          <li><strong>The question</strong>: one only. Capitalised words (EVERY, NO) say how strict to be: EVERY = one miss and it is no; NO = one case and it is no.</li>
+          <li><strong>The examined sentence</strong>: re-read it with the question in mind.</li>
+          <li><strong>What makes you answer</strong>: on « several sentences » families, click one sentence per thing the question relates, never all. On « one sentence », it is the highlighted sentence, nothing to do.</li>
+          <li><strong>The answer</strong>: <strong>O</strong> yes, <strong>N</strong> no, <strong>?</strong> cannot tell (reason required).</li>
+          <li><strong>The two checks</strong>: <strong>S</strong> if the examined sentence were removed, would another suffice alone to answer yes? <strong>V</strong> did you have everything you needed?</li>
+        </ol>
+        <dl>
+          <dt>yes</dt><dd>What you read answers yes, without guessing or filling in.</dd>
+          <dt>no</dt><dd>What you read answers no, or does not allow a yes: half, beside the point, implied, or the requested element is missing. A true, well-written sentence can be a no.</dd>
+          <dt>cannot tell</dt><dd>What you have does not allow a reliable call. Say why.</dd>
+          <dt>S</dt><dd>Supporting is not sufficing: another sentence must answer yes on its own.</dd>
+          <dt>V</dt><dd>For THIS question. A file not shown is a lack only if the question needed it.</dd>
+          <dt>top bar</dt><dd>Warm-up: green = right, red = to review. Real cards: your answer, green yes, red no, purple cannot tell. It is not a score.</dd>
+        </dl>
+        <div class="eyebrow" style="margin-top:14px">A worked example</div>
+        <p class="note">Assignment: « Choose a supplier and justify. » Answer: « I choose A. It delivers in 5 days. Our car park has 40 spaces. » Question: « Is EVERY fact put forward related to the choice? » Answer: <strong>no</strong>, because the 40 spaces are unrelated; highlight that sentence and the one with the choice. S: no, no other sentence would suffice alone for a yes. V: yes, nothing was missing.</p>`,
+      guideTitle: 'How to handle a card',
+      fold: 'fold',
+      unfold: 'unfold',
+      glossaryTitle: 'The words in the questions',
+      pauses:
+        'Take breaks: everything is saved in this browser, you can close and resume. EVERY and NO are missed mostly when tired.',
+      origin:
+        'You are not told where each answer comes from nor what it is worth, on purpose: do not go by length or style, judge only what is written.',
+    },
+  }[LANG];
+  const t = (key, ...args) => {
+    const v = T[key];
+    return typeof v === 'function' ? v(...args) : v;
+  };
 
   const escapeHtml = (v) =>
     v.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
   const singleSpan = (card) => /^S[123]_/.test(card.stratum);
   const wholeCopy = (card) => card.stratum.startsWith('S7');
   const bindableRoles = (card) => card.argumentRoles.filter((r) => r.bindable);
+  const questionFor = (card) =>
+    (LANG === 'en' && card.plainQuestionEn) ||
+    card.plainQuestion ||
+    QUESTIONS.questions[card.atomId] ||
+    card.atom;
+  const familyWords = (stratum) =>
+    t('fam', /^S[123]_/.test(stratum), stratum.startsWith('S7')) +
+    ' · ' +
+    (stratum.includes('dossier')
+      ? t('ctxDossier')
+      : stratum.includes('frame')
+        ? t('ctxFrame')
+        : t('ctxNone'));
   const ROLE_WORDS = {
-    choice: 'l’option que l’élève retient',
-    claim: 'ce que l’élève affirme',
-    datum: 'les faits, chiffres ou dates que l’élève avance',
-    fact: 'les faits que l’élève utilise',
-    limit: 'la limite que l’élève énonce',
-    mitigation: 'la parade que l’élève propose',
-    position: 'la position que l’élève prend',
-    precaution: 'la précaution que l’élève propose',
-    risk: 'le risque que l’élève nomme',
-    uncertainty: 'l’incertitude que l’élève nomme',
-    sequence: 'la séquence que l’élève décrit',
-    mechanism: 'le mécanisme ou la conclusion que l’élève énonce',
-    proof: 'la preuve que l’élève produit',
-    link: 'le lien réflexif que l’élève énonce',
-    element: 'l’élément concret de la réponse',
-    action: 'l’action proposée',
-    decision: 'la décision prise',
-    operation: 'le calcul',
-    comparison: 'la comparaison',
-    interpretation: 'l’interprétation de la preuve',
-    material_claim: 'une affirmation importante',
-    practice: 'la pratique demandée',
-  };
+    fr: {
+      choice: 'l’option que l’élève retient',
+      claim: 'ce que l’élève affirme',
+      datum: 'les faits, chiffres ou dates que l’élève avance',
+      fact: 'les faits que l’élève utilise',
+      limit: 'la limite que l’élève énonce',
+      mitigation: 'la parade que l’élève propose',
+      position: 'la position que l’élève prend',
+      precaution: 'la précaution que l’élève propose',
+      risk: 'le risque que l’élève nomme',
+      uncertainty: 'l’incertitude que l’élève nomme',
+      sequence: 'la séquence que l’élève décrit',
+      mechanism: 'le mécanisme ou la conclusion que l’élève énonce',
+      proof: 'la preuve que l’élève produit',
+      link: 'le lien réflexif que l’élève énonce',
+      element: 'l’élément concret de la réponse',
+      action: 'l’action proposée',
+      decision: 'la décision prise',
+      operation: 'le calcul',
+      comparison: 'la comparaison',
+      interpretation: 'l’interprétation de la preuve',
+      material_claim: 'une affirmation importante',
+      practice: 'la pratique demandée',
+    },
+    en: {
+      choice: 'the option the student chooses',
+      claim: 'what the student claims',
+      datum: 'the facts, figures or dates the student puts forward',
+      fact: 'the facts the student uses',
+      limit: 'the limit the student states',
+      mitigation: 'the countermeasure the student proposes',
+      position: 'the position the student takes',
+      precaution: 'the precaution the student proposes',
+      risk: 'the risk the student names',
+      uncertainty: 'the uncertainty the student names',
+      sequence: 'the sequence the student describes',
+      mechanism: 'the mechanism or conclusion the student states',
+      proof: 'the evidence the student produces',
+      link: 'the reflective link the student states',
+      element: 'the concrete element of the answer',
+      action: 'the proposed action',
+      decision: 'the decision taken',
+      operation: 'the calculation',
+      comparison: 'the comparison',
+      interpretation: 'the reading of the evidence',
+      material_claim: 'an important claim',
+      practice: 'the requested practice',
+    },
+  }[LANG];
   const roleWords = (r) =>
     ROLE_WORDS[r.roleId] || (r.description || r.roleId).split(' — ')[0];
-  /** How many sentences a multi-sentence card needs: one per thing the question relates. */
-  /** What to highlight for a role, in one line: anchors are « where it is said »; quantified sets take the sentence that decides. */
   const SET_ROLES = new Set([
     'datum',
     'fact',
@@ -7630,31 +8302,11 @@
     'material_claim',
   ]);
   const roleHint = (r) =>
-    SET_ROLES.has(r.roleId)
-      ? 'une seule phrase : pour un non, celle qui fait tomber ta réponse ; pour un oui, n’importe laquelle qui la prouve'
-      : 'la phrase où l’élève le dit';
+    SET_ROLES.has(r.roleId) ? t('hintSet') : t('hintAnchor');
   const neededEvidence = (card) =>
     Math.max(1, Math.min(bindableRoles(card).length, card.sentences.length));
-  const questionFor = (card) =>
-    card.plainQuestion || QUESTIONS.questions[card.atomId] || card.atom;
-  function familyWords(stratum) {
-    const ctx = stratum.includes('dossier')
-      ? 'consigne et dossier'
-      : stratum.includes('frame')
-        ? 'consigne seule'
-        : 'copie seule';
-    return (
-      (singleSpan({ stratum })
-        ? 'une phrase'
-        : wholeCopy({ stratum })
-          ? 'copie entière'
-          : 'plusieurs phrases') +
-      ' · ' +
-      ctx
-    );
-  }
 
-  /* ---------- warm-up: eight invented cards, one trap each, unambiguous ---------- */
+  /* ---------- warm-up: invented cards, one trap each ---------- */
   function splitSentences(text) {
     const out = [];
     const re = /[^.!?]+[.!?]+/g;
@@ -7678,12 +8330,16 @@
     roleId,
     source: source || 'response',
   });
+  const L = (fr, en) => (LANG === 'en' ? en : fr);
   const TRAINING_SPECS = [
     {
       id: 'E1',
       stratum: 'S1_span_local',
       atom: 'un choix est explicitement énoncé',
-      question: 'L’élève dit-il clairement quelle option il retient ?',
+      question: L(
+        'L’élève dit-il clairement quelle option il retient ?',
+        'Does the student say clearly which option they choose?',
+      ),
       roles: [role('choice', '1')],
       response:
         'Le fournisseur B livre en 2 jours et n’a eu aucun retard en 2025. Le fournisseur A coûte 2 500 euros de moins par an. Les deux ont été audités en mars.',
@@ -7694,15 +8350,19 @@
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
-      lesson:
+      lesson: L(
         'La phrase parle des délais de B ; elle ne dit pas ce que l’élève retient. On ne devine pas : non. Aucune autre phrase ne le dit non plus, donc S : non.',
+        'The sentence is about B’s delivery times; it does not say what the student chooses. No guessing: no. No other sentence says it either, so S: no.',
+      ),
     },
     {
       id: 'E2',
       stratum: 'S5_multi_frame',
       atom: 'CHAQUE donnée de l’ensemble est pertinente pour CE choix',
-      question:
+      question: L(
         'CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?',
+        'Is EVERY fact or figure put forward related to the choice the student made, given the assignment?',
+      ),
       roles: [
         role('datum', '>=2'),
         role('choice', '1'),
@@ -7716,19 +8376,26 @@
       expected: {
         verdict: 'NOT_DIRECT',
         evidenceIncludes: ['s2'],
-        evidenceWords: 'la phrase hors sujet, s2 (le parking), ET le choix, s0',
+        evidenceWords: L(
+          'la phrase hors sujet, s2 (le parking), ET le choix, s0',
+          'the off-topic sentence, s2 (the car park), AND the choice, s0',
+        ),
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
-      lesson:
-        'La question dit CHAQUE. Les chiffres de s1 ont un rapport avec le choix ; « 40 places de parking » n’en a aucun. Un seul hors sujet, et la réponse est non. Ce qui te fait dire non, c’est s2 : c’est elle que tu surlignes.',
+      lesson: L(
+        'La question dit CHAQUE. Les chiffres de s1 ont un rapport avec le choix ; « 40 places de parking » n’en a aucun. Un seul hors sujet, et la réponse est non. Ce qui te fait dire non, c’est s2 : c’est elle que tu surlignes, avec s0 pour le choix.',
+        'The question says EVERY. The figures in s1 relate to the choice; « 40 parking spaces » does not. One off-topic fact and the answer is no. What makes you say no is s2: highlight it, with s0 for the choice.',
+      ),
     },
     {
       id: 'E3',
       stratum: 'S3_span_dossier',
       atom: 'CHAQUE affirmation utile est fidèle au contexte',
-      question:
+      question: L(
         'CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?',
+        'Is EVERY useful claim in this passage consistent with the file?',
+      ),
       roles: [role('claim', '>=1'), role('dossier', '1', 'dossier')],
       frame:
         'Rédige un objectif de 80 à 120 mots précisant population, processus, résultat, horizon et hypothèses.',
@@ -7743,15 +8410,19 @@
         alternativeSupport: 'yes',
         evidenceViewComplete: 'yes',
       },
-      lesson:
+      lesson: L(
         'La copie est très incomplète au regard de la consigne, et la question ne parle pas de ça : elle parle de conformité au dossier. « L’équipe compte 12 personnes » est dans le dossier mot pour mot : oui. Et s1 est conforme aussi, donc si on retirait s0, s1 suffirait seule : S oui.',
+        'The answer is very incomplete for the assignment, and the question is not about that: it is about consistency with the file. « The team has 12 people » is in the file word for word: yes. And s1 is consistent too, so if s0 were removed, s1 would suffice alone: S yes.',
+      ),
     },
     {
       id: 'E4',
       stratum: 'S3_span_dossier',
       atom: 'CHAQUE donnée reprise est exacte',
-      question:
+      question: L(
         'CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?',
+        'Is EVERY fact or figure put forward accurate, according to the file?',
+      ),
       roles: [role('datum', '>=1'), role('dossier', '1', 'dossier')],
       frame: 'Résume les coûts du dossier.',
       dossier:
@@ -7765,15 +8436,19 @@
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
-      lesson:
+      lesson: L(
         'Ici la vérité des chiffres compte, et le dossier est là pour ça : 14 500 n’est pas 12 500. Un seul chiffre faux, et CHAQUE tombe : non.',
+        'Here the truth of the figures matters, and the file is there for that: 14 500 is not 12 500. One wrong figure and EVERY falls: no.',
+      ),
     },
     {
       id: 'E5',
       stratum: 'S7_full_dossier',
       atom: 'IL N’EXISTE aucune affirmation matérielle qui ne soit pas attribuable au dossier',
-      question:
-        'Est-il vrai qu’AUCUNE affirmation importante de la réponse ne sort du dossier ?',
+      question: L(
+        'AUCUNE affirmation importante de la réponse ne sort-elle du dossier ?',
+        'Is it true that NO important claim in the answer goes beyond the file?',
+      ),
       roles: [role('material_claim', '>=0'), role('dossier', '1', 'dossier')],
       frame: 'Présente la situation.',
       dossier: 'L’équipe compte 12 personnes. Le pilote a duré deux semaines.',
@@ -7786,14 +8461,19 @@
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
-      lesson:
-        'La question dit AUCUNE : elle est vraie quand rien ne sort du dossier. Les 12 personnes et les deux semaines y sont ; et la seconde phrase ne fait que les redire. Ici, ne rien trouver, c’est répondre oui. Si une phrase avait annoncé un fait absent du dossier, par exemple un coût, la réponse aurait été non.',
+      lesson: L(
+        'La question dit AUCUNE : elle est vraie quand rien ne sort du dossier. Les 12 personnes et les deux semaines y sont, et la seconde phrase ne fait que les redire. Ici, ne rien trouver, c’est répondre oui. Si une phrase avait annoncé un fait absent du dossier, par exemple un coût, la réponse aurait été non.',
+        'The question says NO: it is true when nothing goes beyond the file. The 12 people and the two weeks are in it, and the second sentence only restates them. Here, finding nothing means answering yes. Had a sentence announced a fact absent from the file, a cost for instance, the answer would have been no.',
+      ),
     },
     {
       id: 'E6',
       stratum: 'S4_multi_local',
       atom: 'CHAQUE risque nommé est accompagné d’une parade',
-      question: 'Pour CHAQUE risque nommé, l’élève propose-t-il une parade ?',
+      question: L(
+        'Pour CHAQUE risque nommé, l’élève propose-t-il une parade ?',
+        'For EVERY risk named, does the student propose a countermeasure?',
+      ),
       roles: [role('risk', '>=1'), role('mitigation', '>=1')],
       response:
         'Je recommande le déploiement immédiat. Le risque principal est la surcharge du support la première semaine. Pour y répondre, deux agents seront détachés en renfort du lundi au vendredi. Le budget reste inchangé.',
@@ -7801,19 +8481,27 @@
       expected: {
         verdict: 'DIRECT',
         evidenceIncludes: ['s1', 's2'],
-        evidenceWords: 'le risque, s1, ET sa parade, s2',
+        evidenceWords: L(
+          'le risque, s1, ET sa parade, s2',
+          'the risk, s1, AND its countermeasure, s2',
+        ),
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
-      lesson:
+      lesson: L(
         'Un risque en s1, sa parade en s2. La parade n’est pas dans la phrase examinée : sur cette famille tu vas la chercher dans la copie, et tu la surlignes, parce que c’est elle qui te fait dire oui.',
+        'A risk in s1, its countermeasure in s2. The countermeasure is not in the examined sentence: on this family you look for it in the answer, and you highlight it, because it is what makes you say yes.',
+      ),
     },
     {
       id: 'E7',
       stratum: 'S1_span_local',
       window: true,
       atom: 'un choix est explicitement énoncé',
-      question: 'L’élève dit-il clairement quelle option il retient ?',
+      question: L(
+        'L’élève dit-il clairement quelle option il retient ?',
+        'Does the student say clearly which option they choose?',
+      ),
       roles: [role('choice', '1')],
       response:
         'Le comité a examiné les trois options pendant deux réunions. Les coûts ont été comparés sur cinq ans, avec une hypothèse d’inflation de 2 %. Je retiens l’option de maintenance préventive, malgré son coût initial plus élevé. Cette option réduit le nombre d’arrêts non planifiés. Une revue sera faite en juin. Les fournisseurs seront informés la semaine prochaine.',
@@ -7824,15 +8512,19 @@
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
-      lesson:
+      lesson: L(
         'Tu ne vois qu’un extrait, et il suffit : la phrase dit elle-même ce qui est retenu. Pour S : « cette option réduit le nombre d’arrêts » appuie le choix mais ne dit pas lequel ; appuyer n’est pas suffire seule : non.',
+        'You only see an excerpt, and it suffices: the sentence itself says what is chosen. For S: « this option reduces the number of stoppages » supports the choice but does not say which; supporting is not sufficing alone: no.',
+      ),
     },
     {
       id: 'E8',
       stratum: 'S5_multi_frame',
       atom: 'la limite énoncée porte sur le choix retenu',
-      question:
+      question: L(
         'La limite que l’élève énonce porte-t-elle sur l’option qu’il a retenue ?',
+        'Does the limit the student states bear on the option they chose?',
+      ),
       roles: [
         role('limit', '1'),
         role('choice', '1'),
@@ -7846,21 +8538,29 @@
       expected: {
         verdict: 'NOT_DIRECT',
         evidenceIncludes: ['s0', 's1'],
-        evidenceWords: 'le choix, s0, ET la limite, s1',
+        evidenceWords: L(
+          'le choix, s0, ET la limite, s1',
+          'the choice, s0, AND the limit, s1',
+        ),
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
-      lesson:
-        'La consigne, c’est ce qu’on a demandé à l’élève ; la question, c’est ce que tu vérifies. L’élève énonce bien une limite, mais celle de l’option B, qu’il n’a pas retenue : non. Pour le voir il faut deux phrases, celle du choix (s0) et celle de la limite (s1) ; sur cette famille tu as le droit de les lire toutes les deux, et tu les surlignes : c’est elles qui te font dire non.',
+      lesson: L(
+        'La consigne, c’est ce qu’on a demandé à l’élève ; la question, c’est ce que tu vérifies. L’élève énonce bien une limite, mais celle de l’option B, qu’il n’a pas retenue : non. Pour le voir il faut deux phrases, celle du choix (s0) et celle de la limite (s1) : tu les surlignes.',
+        'The assignment is what the student was asked; the question is what you check. The student does state a limit, but B’s, which they did not choose: no. Seeing it takes two sentences, the choice (s0) and the limit (s1): highlight both.',
+      ),
     },
   ];
-  const TRAINING = TRAINING_SPECS.map((t) => {
-    const sentences = splitSentences(t.response);
-    const cs = sentences[t.candidate];
-    const window = t.window
+  const SHORT_WARMUP = ['E1', 'E2', 'E6'];
+  const TRAINING = TRAINING_SPECS.filter(
+    (t0) => !SLICE || SHORT_WARMUP.includes(t0.id),
+  ).map((t0) => {
+    const sentences = splitSentences(t0.response);
+    const cs = sentences[t0.candidate];
+    const window = t0.window
       ? {
           end: Math.min(
-            t.response.length,
+            t0.response.length,
             Math.max(cs.end, Math.round((cs.start + cs.end) / 2 + 120)),
           ),
           start: Math.max(
@@ -7871,33 +8571,36 @@
       : null;
     return {
       card: {
-        argumentRoles: t.roles,
-        atom: t.atom,
-        atomId: 'train.' + t.id,
+        argumentRoles: t0.roles,
+        atom: t0.atom,
+        atomId: 'train.' + t0.id,
         candidateSentenceIds: [cs.id],
-        candidateSpan: t.response.slice(cs.start, cs.end).trim(),
-        cardId: t.id,
-        criterionLabel: 'entraînement',
-        ...(t.dossier ? { dossier: t.dossier } : {}),
-        ...(t.frame ? { frame: t.frame } : {}),
+        candidateSpan: t0.response.slice(cs.start, cs.end).trim(),
+        cardId: t0.id,
+        criterionLabel: 'warm-up',
+        ...(t0.dossier ? { dossier: t0.dossier } : {}),
+        ...(t0.frame ? { frame: t0.frame } : {}),
         highlight: { end: cs.end, start: cs.start },
-        plainQuestion: t.question,
+        plainQuestion: t0.question,
         predicate: '',
         quantifier: '',
-        response: t.response,
+        response: t0.response,
         sentences,
-        stratum: t.stratum,
+        stratum: t0.stratum,
         window,
       },
-      expected: t.expected,
-      lesson: t.lesson,
+      expected: t0.expected,
+      lesson: t0.lesson,
     };
   });
 
   /* ---------- state ---------- */
   const state = { decisions: {}, index: 0, reviewer: '' };
   const training = { decisions: {}, done: false, index: 0 };
-  const TRAINING_STORE = 'adj-training-v4';
+  const TRAINING_STORE =
+    'adj-training-v4' +
+    (SLICE ? '-s' + SLICE.sliceId : '') +
+    (LANG === 'en' ? '-en' : '');
   try {
     Object.assign(state, JSON.parse(localStorage.getItem(STORE) || '{}'));
   } catch (e) {
@@ -7913,7 +8616,7 @@
   }
   const inTraining = () => !training.done;
   const activeCards = () =>
-    inTraining() ? TRAINING.map((t) => t.card) : CARDS;
+    inTraining() ? TRAINING.map((x) => x.card) : CARDS;
   const activeDecisions = () =>
     inTraining() ? training.decisions : state.decisions;
   const getIndex = () => (inTraining() ? training.index : state.index);
@@ -7929,12 +8632,17 @@
       /* export is the durable path */
     }
   }
-
   const HELP_STORE = 'adj-help';
+  const GUIDE_STORE = 'adj-guide';
   try {
     document.body.dataset.help = localStorage.getItem(HELP_STORE) || 'off';
   } catch (e) {
     document.body.dataset.help = 'off';
+  }
+  try {
+    document.body.dataset.guide = localStorage.getItem(GUIDE_STORE) || 'no';
+  } catch (e) {
+    document.body.dataset.guide = 'no';
   }
   function toggleHelp() {
     document.body.dataset.help =
@@ -7945,14 +8653,6 @@
       /* preference */
     }
   }
-  const GUIDE_STORE = 'adj-guide';
-  try {
-    document.body.dataset.guide = localStorage.getItem(GUIDE_STORE) || 'no';
-  } catch (e) {
-    document.body.dataset.guide = 'no';
-  }
-
-  /* Time on card: the audit asks for order and seconds per card in the export. */
   let enteredAt = Date.now();
   function leaveCurrent() {
     const card = activeCards()[getIndex()];
@@ -7963,10 +8663,9 @@
       (d.secondsOnCard || 0) + Math.round((Date.now() - enteredAt) / 1000);
     enteredAt = Date.now();
   }
-
   function decisionFor(card) {
     const bag = activeDecisions();
-    if (!bag[card.cardId]) {
+    if (!bag[card.cardId])
       bag[card.cardId] = {
         alternativeSupport: null,
         cardId: card.cardId,
@@ -7981,17 +8680,14 @@
         secondsOnCard: 0,
         verdict: null,
       };
-    }
     return bag[card.cardId];
   }
-  /* On a single-sentence family the evidence is the examined sentence itself. */
   const effectiveEvidence = (card, d) =>
     singleSpan(card) ? card.candidateSentenceIds : d.evidenceSentenceIds;
-
   function blockers(card) {
     const d = decisionFor(card);
     const list = [];
-    if (!d.verdict) list.push('réponse');
+    if (!d.verdict) list.push(t('mAnswer'));
     if (
       (d.verdict === 'DIRECT' || d.verdict === 'NOT_DIRECT') &&
       !singleSpan(card) &&
@@ -8000,33 +8696,28 @@
     )
       list.push(
         neededEvidence(card) > 1
-          ? 'surligne une phrase pour chaque chose reliée (' +
-              neededEvidence(card) +
-              ' attendues)'
-          : 'surligne au moins une phrase qui te fait répondre',
+          ? t('mEvidenceN', neededEvidence(card))
+          : t('mEvidence1'),
       );
-    if (d.alternativeSupport === null && !wholeCopy(card))
-      list.push('S · autre phrase');
-    if (d.evidenceViewComplete === null) list.push('V · rien ne m’a manqué');
-    if (d.verdict === 'AMBIGUOUS' && !d.rationale) list.push('pourquoi');
+    if (d.alternativeSupport === null && !wholeCopy(card)) list.push(t('mS'));
+    if (d.evidenceViewComplete === null) list.push(t('mV'));
+    if (d.verdict === 'AMBIGUOUS' && !d.rationale) list.push(t('mWhy'));
     return list;
   }
   const complete = (card) => blockers(card).length === 0;
-
-  /* ---------- warm-up grading ---------- */
   function grade(card, d) {
-    const spec = TRAINING.find((t) => t.card.cardId === card.cardId);
+    const spec = TRAINING.find((x) => x.card.cardId === card.cardId);
     if (!spec) return null;
     const words = {
-      AMBIGUOUS: 'je ne peux pas dire',
-      DIRECT: 'oui',
-      NOT_DIRECT: 'non',
+      AMBIGUOUS: t('cannot'),
+      DIRECT: t('yes'),
+      NOT_DIRECT: t('no'),
     };
-    const yn = (v) => (v === 'yes' ? 'oui' : v === 'no' ? 'non' : '—');
+    const yn = (v) => (v === 'yes' ? t('yes') : v === 'no' ? t('no') : '—');
     const rows = [
       {
         expected: words[spec.expected.verdict],
-        field: 'réponse',
+        field: t('gAnswer'),
         ok: d.verdict === spec.expected.verdict,
         yours: words[d.verdict] || '—',
       },
@@ -8034,26 +8725,25 @@
     if (!singleSpan(card)) {
       const got = d.evidenceSentenceIds;
       const need = spec.expected.evidenceIncludes;
-      const ok = need.every((id) => got.includes(id));
       rows.push({
         expected: need.length
-          ? spec.expected.evidenceWords || 'au moins ' + need.join(', ')
-          : 'libre',
-        field: 'phrases surlignées',
-        ok,
-        yours: got.length ? got.join(', ') : 'aucune',
+          ? spec.expected.evidenceWords || t('gAtLeast') + need.join(', ')
+          : t('gFree'),
+        field: t('gEvidence'),
+        ok: need.every((id) => got.includes(id)),
+        yours: got.length ? got.join(', ') : t('gNone'),
       });
     }
     if (!wholeCopy(card))
       rows.push({
         expected: yn(spec.expected.alternativeSupport),
-        field: 'S · autre phrase',
+        field: t('gS'),
         ok: d.alternativeSupport === spec.expected.alternativeSupport,
         yours: yn(d.alternativeSupport),
       });
     rows.push({
       expected: yn(spec.expected.evidenceViewComplete),
-      field: 'V · rien ne manquait',
+      field: t('gV'),
       ok: d.evidenceViewComplete === spec.expected.evidenceViewComplete,
       yours: yn(d.evidenceViewComplete),
     });
@@ -8061,7 +8751,7 @@
   }
 
   /* ---------- rendering ---------- */
-  const hint = (t) => '<p class="hint">' + t + '</p>';
+  const hint = (x) => '<p class="hint">' + x + '</p>';
   function renderResponse(card, d) {
     const revealed = d.revealed === true || !card.window;
     const clickable = !singleSpan(card);
@@ -8094,17 +8784,24 @@
     return html;
   }
   function renderLegend() {
-    const sw = (color, label) =>
-      '<span><i style="background:' + color + '"></i>' + label + '</span>';
+    const sw = (color, label, extra) =>
+      '<span><i style="background:' +
+      color +
+      (extra || '') +
+      '"></i>' +
+      label +
+      '</span>';
+    const lt = t('legendTrain');
+    const lr = t('legendReal');
     document.getElementById('legend').innerHTML = inTraining()
-      ? sw('var(--direct)', 'tout juste') +
-        sw('var(--notdirect)', 'à revoir') +
-        sw('var(--rule-soft)', 'pas encore fait')
-      : sw('var(--direct)', 'tu as répondu oui') +
-        sw('var(--notdirect)', 'non') +
-        sw('var(--ambiguous)', 'je ne peux pas dire') +
-        sw('var(--rule-soft)', 'pas encore fait') +
-        '<span><i style="background:var(--notdirect);opacity:0.45"></i>pâle = réponse donnée mais carte incomplète (il manque S, V, une phrase ou le pourquoi)</span>';
+      ? sw('var(--direct)', lt[0]) +
+        sw('var(--notdirect)', lt[1]) +
+        sw('var(--rule-soft)', lt[2])
+      : sw('var(--direct)', lr[0]) +
+        sw('var(--notdirect)', lr[1]) +
+        sw('var(--ambiguous)', lr[2]) +
+        sw('var(--rule-soft)', lr[3]) +
+        sw('var(--notdirect)', lr[4], ';opacity:0.45');
   }
   function renderRail() {
     renderLegend();
@@ -8137,16 +8834,10 @@
   function tri(container, field) {
     const d = decisionFor(activeCards()[getIndex()]);
     container.innerHTML = '';
-    const words = {
-      alternativeSupport: {
-        no: 'non, aucune ne suffirait seule',
-        yes: 'oui, une autre suffirait seule',
-      },
-      evidenceViewComplete: {
-        no: 'non, quelque chose m’a manqué',
-        yes: 'oui, rien ne m’a manqué',
-      },
-    }[field];
+    const words =
+      field === 'alternativeSupport'
+        ? { no: t('sNo'), yes: t('sYes') }
+        : { no: t('vNo'), yes: t('vYes') };
     for (const option of ['yes', 'no']) {
       const b = document.createElement('button');
       b.textContent = words[option];
@@ -8160,7 +8851,7 @@
     if (d[field] === null) {
       const tag = document.createElement('span');
       tag.className = 'chip';
-      tag.textContent = 'sans réponse';
+      tag.textContent = t('unset');
       container.appendChild(tag);
     }
   }
@@ -8168,9 +8859,24 @@
     persist();
     render();
   }
-  function todoText(card) {
+  const todoText = (card) => {
     const m = blockers(card);
-    return m.length ? 'manque : ' + m.join(', ') : 'carte complète';
+    return m.length ? t('missing') + m.join(', ') : t('complete');
+  };
+  function renderStatic() {
+    document.getElementById('hTitle').textContent = t('title');
+    document.getElementById('hSubtitle').textContent = t('subtitle');
+    document.getElementById('train').textContent = t('train');
+    document.getElementById('helpWord').textContent = t('help');
+    document.getElementById('toExport').textContent = t('export');
+    document.getElementById('whoSave').textContent = t('save');
+    document.getElementById('whoInput').placeholder = t('whoPh');
+    document.getElementById('why').placeholder = t('why');
+    document.getElementById('wYes').textContent = t('yes');
+    document.getElementById('wNo').textContent = t('no');
+    document.getElementById('wCannot').textContent = t('cannot');
+    document.getElementById('sLabel').innerHTML = t('sLabel');
+    document.getElementById('vLabel').innerHTML = t('vLabel');
   }
 
   function render() {
@@ -8178,17 +8884,18 @@
     const d = decisionFor(card);
     const q = questionFor(card);
     const scope = singleSpan(card)
-      ? 'En lisant la phrase surlignée, prise seule'
+      ? t('scope1')
       : wholeCopy(card)
-        ? 'En lisant la copie entière'
-        : 'En lisant la copie';
+        ? t('scopeAll')
+        : t('scopeMulti');
     const feedback = inTraining() && complete(card) ? grade(card, d) : null;
     const banner = inTraining()
-      ? '<section class="training"><div class="eyebrow">Échauffement · carte ' +
-        (getIndex() + 1) +
-        ' sur ' +
-        TRAINING.length +
-        '</div><p class="note" style="margin:6px 0 0">Huit cartes inventées. Réponds comme pour une vraie carte ; dès qu’elle est complète, la correction s’affiche ici. Barre du haut : vert = tout juste, rouge = à revoir. Rien n’est enregistré pour la vraie passe.</p>' +
+      ? '<section class="training"><div class="eyebrow">' +
+        t('trainTitle', getIndex() + 1, TRAINING.length) +
+        '</div><p class="note" style="margin:6px 0 0">' +
+        t('trainNote') +
+        (SLICE ? ' ' + t('sliceNote', SLICE.sliceId, CARDS.length) : '') +
+        '</p>' +
         (feedback
           ? '<table class="grade">' +
             feedback.rows
@@ -8211,101 +8918,86 @@
             escapeHtml(feedback.lesson) +
             '</p>' +
             (getIndex() + 1 < TRAINING.length
-              ? '<p><button class="ghost" id="trainNext">carte d’entraînement suivante ▶</button></p>'
-              : '<p><button class="ghost" id="trainDone">Échauffement terminé — commencer la vraie passe</button></p>')
+              ? '<p><button class="ghost" id="trainNext">' +
+                t('trainNext') +
+                '</button></p>'
+              : '<p><button class="ghost" id="trainDone">' +
+                t('trainDone') +
+                '</button></p>')
           : '') +
         '</section>'
-      : '';
+      : SLICE
+        ? '<section class="training"><p class="note" style="margin:0">' +
+          t('sliceNote', SLICE.sliceId, CARDS.length) +
+          '</p></section>'
+        : '';
     const evidenceBlock = singleSpan(card)
-      ? '<p class="note">Sur cette carte, ce qui compte comme preuve, c’est la phrase surlignée elle-même. Rien à surligner. Le reste de l’extrait est là pour comprendre, il ne compte pas : si ta réponse dépendait d’une autre phrase, réponds non ou « je ne peux pas dire », et dis-le en S.</p>'
+      ? '<p class="note">' + t('ev1') + '</p>'
       : '<p class="note">' +
+        t('evStart') +
+        (neededEvidence(card) > 1
+          ? '<ul class="roles-todo">' +
+            bindableRoles(card)
+              .map(
+                (r) =>
+                  '<li><strong>« ' +
+                  escapeHtml(roleWords(r)) +
+                  ' »</strong> → ' +
+                  roleHint(r) +
+                  '</li>',
+              )
+              .join('') +
+            '</ul><span class="note">' +
+            t('evTotal', neededEvidence(card)) +
+            '</span>'
+          : t('evOne')) +
+        '</p><p class="note">' +
         (d.evidenceSentenceIds.length
-          ? 'Phrases surlignées : <strong>' +
-            d.evidenceSentenceIds.join(', ') +
-            '</strong> (' +
-            d.evidenceSentenceIds.length +
-            ' sur ' +
-            neededEvidence(card) +
-            ' attendues) · clique une phrase pour l’ajouter, reclique pour la retirer.'
-          : 'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie.' +
-            (neededEvidence(card) > 1
-              ? '<ul class="roles-todo">' +
-                bindableRoles(card)
-                  .map(
-                    (r) =>
-                      '<li><strong>« ' +
-                      escapeHtml(roleWords(r)) +
-                      ' »</strong> → ' +
-                      roleHint(r) +
-                      '</li>',
-                  )
-                  .join('') +
-                '</ul><p class="note" style="margin:6px 0 0">Une phrase par ligne, ' +
-                neededEvidence(card) +
-                ' au total. Pas plus n’est demandé.</p>'
-              : ' Clique, à droite, la ou les phrases qui te font répondre, que ce soit oui ou non.')) +
+          ? t(
+              'evChosen',
+              d.evidenceSentenceIds.join(', '),
+              d.evidenceSentenceIds.length,
+              neededEvidence(card),
+            )
+          : t('evNone')) +
         '</p>';
+    const glossary = Object.entries(QUESTIONS.glossary || {})
+      .map(
+        ([k, v]) =>
+          '<dt style="font-family:inherit;font-weight:500">' +
+          escapeHtml(k) +
+          '</dt><dd>' +
+          escapeHtml(v.replace(/\s*\([a-z]+\.a\d\)/g, '')) +
+          '</dd>',
+      )
+      .join('');
     document.getElementById('app').innerHTML =
       banner +
       `
-      <section class="guide"><div class="eyebrow" style="display:flex;gap:10px;align-items:baseline">Comment traiter une carte <button class="link" id="guideToggle">replier</button></div>
-        <ol>
-          <li><strong>Ce qui était demandé</strong> : lis la consigne, et le dossier s’il est là.</li>
-          <li><strong>La copie</strong> : lis-la d’un trait. Sur les familles « une phrase », tu ne vois qu’un extrait ; ouvrir le reste est permis et simplement noté.</li>
-          <li><strong>La question</strong> : une seule, en français. Les mots en capitales (CHAQUE, AUCUNE) disent à quel point il faut être strict : CHAQUE = un seul raté et c’est non ; AUCUNE = un seul cas et c’est non.</li>
-          <li><strong>La phrase examinée</strong> : relis-la avec la question en tête.</li>
-          <li><strong>Ce qui te fait répondre</strong> : sur les familles « plusieurs phrases », clique tout ce qu’il faut pour voir que ta réponse est juste ; quand la question relie deux choses, les deux phrases. Sur « une phrase », c’est la phrase surlignée, rien à faire.</li>
-          <li><strong>La réponse</strong> : <strong>O</strong> oui, <strong>N</strong> non, <strong>?</strong> je ne peux pas dire (justification obligatoire).</li>
-          <li><strong>Les deux contrôles</strong> : <strong>S</strong> si on retirait la phrase examinée, une autre suffirait-elle seule à répondre oui ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
-        </ol>
-        <dl>
-          <dt>oui</dt><dd>Ce que tu lis répond oui à la question, sans deviner ni compléter.</dd>
-          <dt>non</dt><dd>Ce que tu lis répond non, ou ne permet pas de répondre oui : à moitié, à côté, sous-entendu, ou il manque l’élément demandé. Une phrase vraie et bien écrite peut être un non.</dd>
-          <dt>je ne peux pas dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Dis pourquoi. Au-delà d’une carte sur cinq, la passe est suspendue : ce n’est pas une échappatoire.</dd>
-          <dt>S</dt><dd>Appuyer n’est pas suffire : il faut qu’une autre phrase, seule, réponde oui.</dd>
-          <dt>V</dt><dd>Pour CETTE question. Un dossier non montré n’est un manque que si la question en avait besoin.</dd>
-          <dt>barre du haut</dt><dd>Échauffement : vert = juste, rouge = à revoir. Vraies cartes : ta réponse, vert oui, rouge non, mauve je ne peux pas dire. Ce n’est pas une note.</dd>
-        </dl>
-        <div class="eyebrow" style="margin-top:14px">Un exemple déjà corrigé</div>
-        <p class="note">Consigne : « Choisis un fournisseur et justifie. » Copie : « Je retiens A. Il livre en 5 jours. Notre parking compte 40 places. » Question : « CHAQUE fait avancé a-t-il un rapport avec le choix ? » Réponse : <strong>non</strong>, parce que les 40 places n’ont aucun rapport ; on surligne cette phrase-là. S : non, aucune autre phrase ne suffirait seule à un oui. V : oui, rien ne manquait.</p>
-        <div class="eyebrow" style="margin-top:14px">Les mots des questions</div>
-        <dl>${Object.entries(QUESTIONS.glossary || {})
-          .map(
-            ([k, v]) =>
-              '<dt style="font-family:inherit;font-weight:500">' +
-              escapeHtml(k) +
-              '</dt><dd>' +
-              escapeHtml(v.replace(/\s*\([a-z]+\.a\d\)/g, '')) +
-              '</dd>',
-          )
-          .join('')}</dl>
-        <p class="note" style="margin:12px 0 0">Fais des pauses : tout est sauvegardé dans ce navigateur, tu peux fermer et reprendre. Les mots CHAQUE et AUCUNE se ratent surtout quand on est fatigué.</p>
-        <p class="note" style="margin:8px 0 0">On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.</p>
+      <section class="guide"><div class="eyebrow" style="display:flex;gap:10px;align-items:baseline">${t('guideTitle')} <button class="link" id="guideToggle"></button></div>${t('guide')}
+        <div class="eyebrow" style="margin-top:14px">${t('glossaryTitle')}</div><dl>${glossary}</dl>
+        <p class="note" style="margin:12px 0 0">${t('pauses')}</p><p class="note" style="margin:8px 0 0">${t('origin')}</p>
       </section>
-        <section class="panel col1"><div class="eyebrow">1 · Ce qui était demandé</div>
-          ${card.frame ? '<p class="context"><strong>Consigne.</strong> ' + escapeHtml(card.frame) + '</p>' : ''}
-          ${card.dossier ? '<p class="context"><strong>Dossier.</strong> ' + escapeHtml(card.dossier) + '</p>' : ''}
-          ${!card.frame && !card.dossier ? '<p class="context">Sur cette famille de cartes, ni la consigne ni le dossier ne sont montrés : la question se juge sur la copie seule.</p>' : ''}
-        </section>
+      <section class="panel col1"><div class="eyebrow">${t('b1')}</div>
+        ${card.frame ? '<p class="context"><strong>' + t('consigne') + '</strong> ' + escapeHtml(card.frame) + '</p>' : ''}
+        ${card.dossier ? '<p class="context"><strong>' + t('dossier') + '</strong> ' + escapeHtml(card.dossier) + '</p>' : ''}
+        ${!card.frame && !card.dossier ? '<p class="context">' + t('noContext') + '</p>' : ''}
+      </section>
       <section class="panel col2">
-        <div class="eyebrow">2 · ${card.window && d.revealed !== true ? 'La copie, extrait autour de la phrase' : 'La copie de l’élève'} <span class="chip">${familyWords(card.stratum)}</span> <span class="chip" title="${escapeHtml(card.stratum)}">${escapeHtml(card.cardId)}</span></div>
+        <div class="eyebrow">${card.window && d.revealed !== true ? t('b2w') : t('b2')} <span class="chip">${familyWords(card.stratum)}</span> <span class="chip" title="${escapeHtml(card.stratum)}">${escapeHtml(card.cardId)}</span></div>
         <div class="response" id="resp">${renderResponse(card, d)}</div>
-        ${card.window && d.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la copie entière</button> <span class="note">l’ouverture est notée</span></p>' : ''}
+        ${card.window && d.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">' + t('reveal') + '</button> <span class="note">' + t('revealNote') + '</span></p>' : ''}
       </section>
-        <section class="panel col1"><div class="eyebrow">3 · La question</div>
-          <p class="question">${escapeHtml(q)}</p>
-          ${hint('Une seule question, en français. Réponds avec ce que la carte te laisse regarder : ' + scope.toLowerCase() + '.')}
-          <p class="machine">écriture pour la machine : ${escapeHtml(card.atom)}${card.predicate ? ' · ' + escapeHtml(card.predicate) + ' · ' + escapeHtml(card.quantifier) : ''}</p>
-        </section>
-        <section class="panel col1"><div class="eyebrow">4 · La phrase examinée</div><blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote></section>
-        <section class="panel col1"><div class="eyebrow">5 · Ce qui te fait répondre</div>${evidenceBlock}</section>
-`;
-
+      <section class="panel col1"><div class="eyebrow">${t('b3')}</div><p class="question">${escapeHtml(q)}</p>${hint(t('hintQ') + scope.toLowerCase() + '.')}<p class="machine">${t('machine')}${escapeHtml(card.atom)}${card.predicate ? ' · ' + escapeHtml(card.predicate) + ' · ' + escapeHtml(card.quantifier) : ''}</p></section>
+      <section class="panel col1"><div class="eyebrow">${t('b4')}</div><blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote></section>
+      <section class="panel col1"><div class="eyebrow">${t('b5')}</div>${evidenceBlock}</section>`;
     document.getElementById('verdictQuestion').innerHTML =
       scope +
       ' : <em>' +
       escapeHtml(q) +
-      '</em> <button class="link" id="seeExample">voir l’exemple corrigé</button>';
+      '</em> <button class="link" id="seeExample">' +
+      t('example') +
+      '</button>';
     document.getElementById('seeExample').onclick = () => {
       document.body.dataset.help = 'on';
       document.body.dataset.guide = 'no';
@@ -8323,7 +9015,7 @@
     if (wholeCopy(card)) {
       d.alternativeSupport = 'not_applicable';
       document.getElementById('altTri').innerHTML =
-        '<span class="chip">sans objet : la question porte déjà sur toute la copie</span>';
+        '<span class="chip">' + t('sNa') + '</span>';
     } else {
       if (d.alternativeSupport === 'not_applicable')
         d.alternativeSupport = null;
@@ -8332,23 +9024,21 @@
     tri(document.getElementById('viewTri'), 'evidenceViewComplete');
     document.getElementById('why').value = d.rationale || '';
     const todo = document.getElementById('todo');
-    const missing = blockers(card);
-    todo.className = 'todo' + (missing.length ? '' : ' ok');
+    todo.className = 'todo' + (blockers(card).length ? '' : ' ok');
     todo.textContent = todoText(card);
     document.getElementById('dock').hidden = false;
     const done = activeCards().filter(
       (c) => activeDecisions()[c.cardId] && complete(c),
     ).length;
-    document.getElementById('progress').textContent =
-      (inTraining() ? 'entraînement ' : 'carte ') +
-      (getIndex() + 1) +
-      ' / ' +
-      activeCards().length +
-      ' · ' +
-      done +
-      ' complètes';
-    document.getElementById('who').textContent = state.reviewer || 'relecteur…';
-    for (const s of document.querySelectorAll('#resp .s.clickable')) {
+    document.getElementById('progress').textContent = t(
+      'progress',
+      inTraining(),
+      getIndex() + 1,
+      activeCards().length,
+      done,
+    );
+    document.getElementById('who').textContent = state.reviewer || t('who');
+    for (const s of document.querySelectorAll('#resp .s.clickable'))
       s.onclick = () => {
         const id = s.dataset.s;
         d.evidenceSentenceIds = d.evidenceSentenceIds.includes(id)
@@ -8356,7 +9046,6 @@
           : [...d.evidenceSentenceIds, id];
         touch();
       };
-    }
     const reveal = document.getElementById('reveal');
     if (reveal)
       reveal.onclick = () => {
@@ -8367,7 +9056,7 @@
     const gt = document.getElementById('guideToggle');
     if (gt) {
       gt.textContent =
-        document.body.dataset.guide === 'yes' ? 'déplier' : 'replier';
+        document.body.dataset.guide === 'yes' ? t('unfold') : t('fold');
       gt.onclick = () => {
         document.body.dataset.guide =
           document.body.dataset.guide === 'yes' ? 'no' : 'yes';
@@ -8393,7 +9082,6 @@
       };
     renderRail();
   }
-
   function record(verdict) {
     const card = activeCards()[getIndex()];
     const d = decisionFor(card);
@@ -8417,25 +9105,25 @@
     b.onclick = () => record(b.dataset.v);
   document.getElementById('prev').onclick = () => advance(-1);
   document.getElementById('next').onclick = () => advance(1);
-  document.getElementById('help').onclick = toggleHelp;
-  // A system confirm() is blocked where this page is hosted, like prompt():
-  // the second click within five seconds is the confirmation.
+  document.getElementById('help').onclick = () => {
+    toggleHelp();
+    render();
+  };
   let trainArmedAt = 0;
   document.getElementById('train').onclick = () => {
     const button = document.getElementById('train');
     if (!inTraining() && Date.now() - trainArmedAt > 5000) {
       trainArmedAt = Date.now();
-      button.textContent =
-        'reclique pour refaire l’échauffement (tes vraies décisions sont gardées)';
+      button.textContent = t('trainRedo');
       setTimeout(() => {
-        button.textContent = 'entraînement';
+        button.textContent = t('train');
       }, 5000);
       return;
     }
     training.done = false;
     training.decisions = {};
     training.index = 0;
-    button.textContent = 'entraînement';
+    button.textContent = t('train');
     persist();
     render();
   };
@@ -8444,8 +9132,7 @@
     decisionFor(card).rationale = document.getElementById('why').value.trim();
     persist();
     const todo = document.getElementById('todo');
-    const m = blockers(card);
-    todo.className = 'todo' + (m.length ? '' : ' ok');
+    todo.className = 'todo' + (blockers(card).length ? '' : ' ok');
     todo.textContent = todoText(card);
   };
   document.getElementById('who').onclick = () => {
@@ -8483,17 +9170,19 @@
   if (window.__adjudicationKeydown)
     removeEventListener('keydown', window.__adjudicationKeydown);
   window.__adjudicationKeydown = (event) => {
-    const t = event.target;
-    if (t instanceof Element && t.matches('input, textarea')) {
-      if (event.key === 'Escape' && t instanceof HTMLElement) t.blur();
+    const tg = event.target;
+    if (tg instanceof Element && tg.matches('input, textarea')) {
+      if (event.key === 'Escape' && tg instanceof HTMLElement) tg.blur();
       return;
     }
     const k = event.key.toLowerCase();
     if (k === 'o') record('DIRECT');
     else if (k === 'n') record('NOT_DIRECT');
     else if (event.key === '?') record('AMBIGUOUS');
-    else if (k === 's') cycle('alternativeSupport');
-    else if (k === 'v') cycle('evidenceViewComplete');
+    else if (k === 's') {
+      const card = activeCards()[getIndex()];
+      if (!wholeCopy(card)) cycle('alternativeSupport');
+    } else if (k === 'v') cycle('evidenceViewComplete');
     else if (k === 'h') {
       toggleHelp();
       render();
@@ -8505,7 +9194,7 @@
   };
   addEventListener('keydown', window.__adjudicationKeydown);
 
-  /* ---------- export: same contract; the schema is derived, not asked ---------- */
+  /* ---------- export ---------- */
   function canonical(v) {
     if (Array.isArray(v)) return '[' + v.map(canonical).join(',') + ']';
     if (v && typeof v === 'object')
@@ -8523,13 +9212,13 @@
     const roles = bindableRoles(card);
     const evidence = effectiveEvidence(card, d);
     const out = {};
-    if (roles.length === 1) {
+    if (roles.length === 1)
       out[roles[0].roleId] = {
         derivation: 'single-role',
         sentenceIds: evidence,
         status: evidence.length ? 'BOUND' : 'ABSENT',
       };
-    } else
+    else
       for (const r of roles)
         out[r.roleId] = {
           derivation: 'pass-2',
@@ -8546,18 +9235,22 @@
     };
     if (inTraining()) {
       const allDone = TRAINING.every(
-        (t) => training.decisions[t.card.cardId] && complete(t.card),
+        (x) => training.decisions[x.card.cardId] && complete(x.card),
       );
       document.getElementById('app').innerHTML =
-        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export indisponible</div><p class="note">' +
-        (allDone
-          ? 'Les huit cartes d’entraînement sont corrigées. Il reste à valider l’échauffement pour ouvrir les 106 vraies cartes ; l’export viendra après.'
-          : 'L’échauffement n’est pas terminé : finis les huit cartes d’entraînement.') +
+        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">' +
+        t('xUnavailable') +
+        '</div><p class="note">' +
+        (allDone ? t('xTrainDone') : t('xTrainNot')) +
         '</p><p>' +
         (allDone
-          ? '<button class="ghost" id="trainDone2">Échauffement terminé — commencer la vraie passe</button> '
+          ? '<button class="ghost" id="trainDone2">' +
+            t('trainDone') +
+            '</button> '
           : '') +
-        '<button class="ghost" id="back">retour</button></p></section></div>';
+        '<button class="ghost" id="back">' +
+        t('back') +
+        '</button></p></section></div>';
       document.getElementById('back').onclick = back;
       const td2 = document.getElementById('trainDone2');
       if (td2)
@@ -8573,31 +9266,25 @@
     }
     leaveCurrent();
     const refusals = [];
-    if (!state.reviewer) refusals.push('aucun identifiant de relecteur');
+    if (!state.reviewer) refusals.push(t('xNoReviewer'));
     const incomplete = CARDS.filter((c) => !complete(c));
     if (incomplete.length)
-      refusals.push(
-        incomplete.length + ' cartes incomplètes sur ' + CARDS.length,
-      );
+      refusals.push(t('xIncomplete', incomplete.length, CARDS.length));
     const abstentions = CARDS.filter(
       (c) =>
         state.decisions[c.cardId] &&
         state.decisions[c.cardId].verdict === 'AMBIGUOUS',
     ).length;
     const share = abstentions / CARDS.length;
-    if (incomplete.length === 0 && share > ABSTENTION_CAP)
+    if (!SLICE && incomplete.length === 0 && share > ABSTENTION_CAP)
       refusals.push(
-        'passe suspendue : ' +
-          abstentions +
-          ' « je ne peux pas dire » sur ' +
-          CARDS.length +
-          ' (' +
-          Math.round(share * 100) +
-          ' %), au-delà du plafond pré-déclaré de 20 %',
+        t('xSuspended', abstentions, CARDS.length, Math.round(share * 100)),
       );
     if (refusals.length) {
       document.getElementById('app').innerHTML =
-        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export refusé</div><ul class="blockers">' +
+        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">' +
+        t('xRefused') +
+        '</div><ul class="blockers">' +
         refusals.map((r) => '<li>' + escapeHtml(r) + '</li>').join('') +
         '</ul>' +
         (incomplete.length
@@ -8615,7 +9302,9 @@
               .join('') +
             '</ul>'
           : '') +
-        '<p><button class="ghost" id="back">retour aux cartes</button></p></section></div>';
+        '<p><button class="ghost" id="back">' +
+        t('back') +
+        '</button></p></section></div>';
       document.getElementById('back').onclick = back;
       return;
     }
@@ -8642,13 +9331,16 @@
           verdict: d.verdict,
         };
       }).sort((a, b) => a.cardId.localeCompare(b.cardId)),
+      language: LANG,
       manifestHash: DECK.manifestHash,
       pass: 1,
       questionsHash: QUESTIONS.contentHash || null,
-      schemaVersion: 4,
+      schemaVersion: 5,
+      sliceHash: SLICES ? SLICES.contentHash || null : null,
+      sliceId: SLICE ? SLICE.sliceId : null,
     };
     const text = canonical(payload);
-    let digest = 'indisponible hors https';
+    let digest = 'n/a';
     if (globalThis.crypto && crypto.subtle) {
       const bytes = await crypto.subtle.digest(
         'SHA-256',
@@ -8661,24 +9353,33 @@
           .join('');
     }
     document.getElementById('app').innerHTML =
-      '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export de la passe 1</div><p class="note">' +
-      payload.decisions.length +
-      ' décisions. Enregistre ce texte tel quel dans <code>benchmarks/ai-correction/regression/adjudication-pass1.v1.json</code>. Toute modification ultérieure produit une nouvelle version.</p><p class="hash"><strong>empreinte du texte ci-dessous :</strong> ' +
+      '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">' +
+      t('xTitle') +
+      '</div><p class="note">' +
+      t('xNote', payload.decisions.length) +
+      '</p><p class="hash"><strong>' +
+      t('xHash') +
+      '</strong> ' +
       digest +
-      '</p><p><button class="ghost" id="copy">copier</button> <button class="ghost" id="back">retour aux cartes</button></p><textarea readonly id="out">' +
+      '</p><p><button class="ghost" id="copy">' +
+      t('copy') +
+      '</button> <button class="ghost" id="back">' +
+      t('back') +
+      '</button></p><textarea readonly id="out">' +
       escapeHtml(text) +
       '</textarea></section></div>';
     document.getElementById('copy').onclick = async () => {
       try {
         await navigator.clipboard.writeText(text);
-        document.getElementById('copy').textContent = 'copié';
+        document.getElementById('copy').textContent = t('copied');
       } catch (e) {
         document.getElementById('out').select();
-        document.getElementById('copy').textContent = 'sélectionné — ⌘C';
+        document.getElementById('copy').textContent = t('selected');
       }
     };
     document.getElementById('back').onclick = back;
   };
 
+  renderStatic();
   render();
 </script>

@@ -15,22 +15,20 @@ const PAGE = path.resolve(
   'benchmarks/ai-correction/regression/adjudication-pass1.html',
 );
 
-function boot(): void {
+function boot(hash = ''): void {
   const html = readFileSync(PAGE, 'utf8');
+  window.location.hash = hash;
   document.body.innerHTML = html
     .slice(html.indexOf('<div class="rail"'))
     .replace(/<script[\s\S]*$/u, '');
-  for (const id of ['deck', 'questions']) {
-    const m = html.match(
-      new RegExp(
-        `<script id="${id}" type="application\\/json">([\\s\\S]*?)<\\/script>`,
-        'u',
-      ),
-    );
+  const jsonScripts = html.matchAll(
+    /<script id="([a-zA-Z]+)" type="application\/json">([\s\S]*?)<\/script>/gu,
+  );
+  for (const m of jsonScripts) {
     const el = document.createElement('script');
-    el.id = id;
+    el.id = m[1] ?? '';
     el.type = 'application/json';
-    el.textContent = m?.[1] ?? '';
+    el.textContent = m[2] ?? '';
     document.body.appendChild(el);
   }
   const logic = html.slice(html.lastIndexOf('<script>') + '<script>'.length);
@@ -293,5 +291,73 @@ describe('the warm-up before the real deck', () => {
     }
     expect(document.querySelector('.training')).toBeNull();
     expect(document.querySelectorAll('#rail button')).toHaveLength(106);
+  });
+});
+
+describe('language and slice modes', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('serves the English interface and questions on #lang=en, the copy staying French', () => {
+    localStorage.setItem(
+      'adj-training-v4-en',
+      JSON.stringify({ decisions: {}, done: true, index: 0 }),
+    );
+    boot('#lang=en');
+    expect(document.getElementById('hTitle')?.textContent).toBe('Blind review');
+    expect(document.getElementById('wYes')?.textContent).toBe('yes');
+    const card = deckCards()[0] as DeckCard;
+    const en = JSON.parse(
+      document.getElementById('questionsEn')?.textContent ?? '{}',
+    ) as { questions: Record<string, string> };
+    expect(document.querySelector('.question')?.textContent).toBe(
+      en.questions[card.atomId],
+    );
+    expect(document.querySelector('#resp')?.textContent ?? '').toMatch(
+      /[éèà]/u,
+    );
+  });
+
+  it('restricts a volunteer to their slice with a three-card warm-up and tags the export', async () => {
+    boot('#s=1-01');
+    expect(document.querySelectorAll('#rail button')).toHaveLength(3);
+    localStorage.setItem(
+      'adj-training-v4-s1-01',
+      JSON.stringify({ decisions: {}, done: true, index: 0 }),
+    );
+    boot('#s=1-01');
+    const slices = JSON.parse(
+      document.getElementById('slices')?.textContent ?? '{}',
+    ) as { slices: { sliceId: string; cards: string[] }[] };
+    const slice = slices.slices.find((s) => s.sliceId === '1-01');
+    expect(document.querySelectorAll('#rail button')).toHaveLength(
+      slice?.cards.length ?? -1,
+    );
+    document.getElementById('who')?.click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'vol';
+    document.getElementById('whoSave')?.click();
+    for (let i = 0; i < (slice?.cards.length ?? 0); i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      answerNo();
+      setControls();
+    }
+    document.getElementById('toExport')?.click();
+    let out = '';
+    for (let i = 0; i < 40 && !out; i += 1) {
+      // eslint-disable-next-line no-await-in-loop -- polling the async digest
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      out =
+        (document.getElementById('out') as HTMLTextAreaElement | null)?.value ??
+        '';
+    }
+    const payload = JSON.parse(out) as {
+      sliceId: string;
+      language: string;
+      decisions: unknown[];
+    };
+    expect(payload.sliceId).toBe('1-01');
+    expect(payload.language).toBe('fr');
+    expect(payload.decisions).toHaveLength(slice?.cards.length ?? -1);
   });
 });

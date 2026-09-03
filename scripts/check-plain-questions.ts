@@ -41,30 +41,27 @@ for (const atom of atoms) {
     continue;
   }
   const upper = q;
+  const forallWord = upper.includes('CHAQUE') || upper.includes('EVERY');
+  const noneWord = upper.includes('AUCUN') || /\bNO\b/u.test(upper);
   if (
     (atom.quantifier === 'forall' || atom.quantifier === 'forall_exists') &&
-    !upper.includes('CHAQUE')
+    !forallWord
   ) {
-    failures.push(`${atom.atomId} (${atom.quantifier}) : « CHAQUE » absent`);
+    failures.push(
+      `${atom.atomId} (${atom.quantifier}) : « CHAQUE » / « EVERY » absent`,
+    );
   }
-  if (
-    atom.quantifier === 'not_exists' &&
-    !upper.includes('AUCUNE') &&
-    !upper.includes('AUCUN')
-  ) {
-    failures.push(`${atom.atomId} (not_exists) : « AUCUNE » absent`);
+  if (atom.quantifier === 'not_exists' && !noneWord) {
+    failures.push(`${atom.atomId} (not_exists) : « AUCUNE » / « NO » absent`);
   }
-  if (
-    atom.quantifier === 'exists' &&
-    (upper.includes('CHAQUE') || upper.includes('AUCUN'))
-  ) {
+  if (atom.quantifier === 'exists' && (forallWord || noneWord)) {
     failures.push(
       `${atom.atomId} (exists) : porte un mot de forall / not_exists`,
     );
   }
   if (!q.trim().endsWith('?'))
     failures.push(`${atom.atomId} : pas une question`);
-  if (/\b(oui|non)\b/iu.test(q.replace(/n[’']/gu, ''))) {
+  if (/\b(oui|non|yes)\b/iu.test(q.replace(/n[’']/gu, ''))) {
     failures.push(`${atom.atomId} : contient « oui » ou « non »`);
   }
 }

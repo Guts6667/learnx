@@ -1841,3 +1841,34 @@ dont un export complet de 106 cartes et une suspension à 25 abstentions.
 
 Reste avant la passe 1 : validation de l'échauffement par deux agents sans
 contexte, puis 8/8 par le propriétaire. Dépense : 0,00 USD.
+
+### Relecteurs extérieurs : tranches de huit cartes, et une version anglaise de tout sauf la copie
+
+Le propriétaire a fait la remarque juste : avec un seul relecteur, un biais
+devient la vérité. Personne ne fera 106 cartes ; des volontaires en feront
+cinq à dix. Le dispositif s'adapte sans rien changer à la passe du
+propriétaire, qui continue.
+
+- **Tranches** : `adjudication-slices.v1.json`, `sha256:ebd16403…`. Les 50
+  cartes des 25 paires primaires, découpées en **14 tranches de 7 ou 8**, deux
+  couvertures, chaque carte vue par deux volontaires ; une tranche ne contient
+  jamais deux cartes de la même paire, de la même réponse ni de la même
+  copie. Un volontaire reçoit un lien `#s=1-03`, ne voit que ses cartes, fait
+  un échauffement réduit à trois cartes, et son export porte `sliceId`,
+  `language` et l'empreinte des tranches. Le plafond d'abstention ne s'applique
+  pas aux tranches : leurs données sont un enrichissement, rapporté à part.
+- **Anglais** : `#lang=en` traduit l'interface, l'échauffement, le glossaire
+  et les 39 questions (`plain-questions.en.v1.draft.json`, brouillon vérifié
+  par le script un-à-un / EVERY / NO, à faire relire par un lecteur anglophone
+  sans contexte avant usage). **Les copies restent en français** : elles sont
+  scellées et les traduire changerait l'objet jugé. Un relecteur anglophone
+  doit lire le français ; l'accord se calcule par langue.
+- **Fusion** : `scripts/merge-adjudication-exports.ts` prend N exports, refuse
+  des paquets différents, calcule l'accord brut et le kappa de Cohen par paire
+  de relecteurs sur les cartes partagées, la majorité par carte, et liste les
+  cartes sans majorité pour la passe 2. Il ne tranche rien.
+- **Page v5** : même contrat, mêmes règles, avec la langue et la tranche
+  lues dans l'adresse. 13 tests DOM, dont un volontaire anglophone et une
+  tranche exportée de bout en bout.
+
+Dépense : 0,00 USD.
