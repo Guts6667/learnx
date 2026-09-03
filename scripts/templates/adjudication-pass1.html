@@ -664,8 +664,8 @@
     <div>
       <div class="eyebrow" style="margin-bottom: 4px">7 · Contrôles</div>
       <div class="ctl-label">
-        <kbd>S</kbd> Ailleurs dans la copie, une autre phrase prouve-t-elle
-        l’affirmation&nbsp;?
+        <kbd>S</kbd> Si on retirait la phrase examinée, une autre phrase de la
+        copie prouverait-elle l’affirmation à elle seule&nbsp;?
       </div>
       <div class="tri" id="altTri"></div>
       <div class="ctl-label" style="margin-top: 6px">
@@ -1360,8 +1360,8 @@
       const button = document.createElement('button');
       const words = {
         alternativeSupport: {
-          no: 'non, aucune autre',
-          yes: 'oui, une autre la prouve aussi',
+          no: 'non, aucune ne suffirait seule',
+          yes: 'oui, une autre suffirait seule',
         },
         evidenceViewComplete: {
           no: 'non, quelque chose m’a manqué',
@@ -1524,13 +1524,13 @@
           <li><strong>La phrase examinée</strong> : relis-la seule, avec l’affirmation en tête.</li>
           <li><strong>Les témoins</strong> : un témoin est le bout de copie qui montre la chose (le choix, la donnée, la limite). Pour chacun, clique « je peux la montrer » puis la phrase, ou « il n’y en a pas », ou « je n’arrive pas à décider ». La carte te dit si tu cherches dans la phrase examinée seule ou dans toute la copie.</li>
           <li><strong>Le verdict</strong> : avec ce que la carte te laisse regarder (la phrase examinée seule sur les familles « une phrase », les témoins désignés sur les autres), l’affirmation est-elle prouvée ? <strong>D</strong> oui, c’est prouvé ; <strong>N</strong> non, ce n’est pas prouvé ; <strong>A</strong> impossible à dire.</li>
-          <li><strong>Les deux contrôles</strong>, à remplir obligatoirement : <strong>S · autre phrase</strong> : en dehors de la phrase examinée, une autre phrase prouve-t-elle l’affirmation à elle seule ? <strong>V · rien ne m’a manqué</strong> : avais-tu tout ce qu’il fallait pour juger ?</li>
+          <li><strong>Les deux contrôles</strong>, à remplir obligatoirement : <strong>S · autre phrase</strong> : si on retirait la phrase examinée, une autre prouverait-elle l’affirmation à elle seule ? <strong>V · rien ne m’a manqué</strong> : avais-tu tout ce qu’il fallait pour juger ?</li>
         </ol>
         <dl>
           <dt>D · prouvé</dt><dd>Ce que tu regardes prouve exactement l’affirmation, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
           <dt>N · pas prouvé</dt><dd>Ça ne la prouve qu’à moitié, ou parle d’autre chose, ou la sous-entend sans le dire, ou s’appuie sur un mauvais témoin, ou le témoin manque, ou la contredit. Une phrase vraie et bien écrite peut être un « pas prouvé ». Exception : quand l’affirmation dit AUCUNE, c’est l’absence du témoin qui prouve, et « il n’y en a pas » va avec « oui ».</dd>
           <dt>A · impossible à dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
-          <dt>S · autre phrase</dt><dd>Après ton verdict, regarde le reste de la copie, hors de la phrase examinée : une autre phrase prouve-t-elle l’affirmation à elle seule ? Si oui, la copie mérite le point même quand la phrase examinée ne le prouve pas ; ces cas sont analysés à part.</dd>
+          <dt>S · autre phrase</dt><dd>Imagine la phrase examinée retirée : une autre phrase de la copie prouverait-elle l’affirmation à elle seule ? « Appuyer » ne suffit pas : il faut qu’elle la prouve seule. Si oui, la copie mérite le point même quand la phrase examinée ne le prouve pas ; ces cas sont analysés à part.</dd>
           <dt>V · rien ne m’a manqué</dt><dd>Pour répondre à CETTE affirmation, avais-tu tout ce qu’il fallait ? Un dossier non montré n’est un manque que si l’affirmation en avait besoin ; quand la carte dit « la copie seule suffit », ce n’est pas un manque. Répondre « non » est une information utile, pas un aveu.</dd>
           <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
           <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
