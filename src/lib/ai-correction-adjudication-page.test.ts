@@ -172,7 +172,7 @@ describe('the blind adjudication page', () => {
     absent.click();
     press('d');
     expect(document.getElementById('todo')?.textContent ?? '').toContain(
-      'un DIRECT exige le témoin',
+      'un « oui » exige le témoin',
     );
   });
 
@@ -200,14 +200,14 @@ describe('the blind adjudication page', () => {
   it('names every reason a card does not count yet', () => {
     press('d');
     const todo = document.getElementById('todo')?.textContent ?? '';
-    expect(todo).toContain('autre soutien');
-    expect(todo).toContain('vue complète');
+    expect(todo).toContain('autre phrase');
+    expect(todo).toContain('rien ne m’a manqué');
   });
 
   it('renders role identifiers, never object placeholders', () => {
     const signature = document.querySelector('.sig')?.textContent ?? '';
     expect(signature).not.toContain('[object Object]');
-    expect(signature).toMatch(/^[a-z_]+\(/u);
+    expect(signature).toMatch(/[a-z_]+\(/u);
     for (const row of document.querySelectorAll('.role-card')) {
       expect(row.textContent ?? '').not.toContain('[object Object]');
     }

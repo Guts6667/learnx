@@ -266,6 +266,13 @@
   }
   .role-desc {
     font-weight: 500;
+    order: -1;
+  }
+  .role-head button[data-role],
+  .role-head button[data-role-static] {
+    font-size: 11.5px;
+    opacity: 0.85;
+    padding: 2px 7px;
   }
   .role-card-n {
     color: var(--muted);
@@ -350,6 +357,12 @@
   .response .s.bound {
     background: var(--bind-wash);
     box-shadow: 0 1px 0 var(--bind);
+  }
+  .response sup.sid {
+    color: var(--bind);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    margin-right: 3px;
   }
   .response .s.nobind {
     cursor: not-allowed;
@@ -564,6 +577,9 @@
   body[data-help='on'] .guide {
     display: block;
   }
+  body[data-guide='yes'] .guide > :not(.eyebrow) {
+    display: none;
+  }
   .guide ol {
     margin: 8px 0 0;
     padding-left: 20px;
@@ -611,8 +627,11 @@
 
 <header class="bar">
   <div>
-    <div class="eyebrow">Passe 1 — aveugle</div>
-    <strong>Adjudication des paires atome / passage</strong>
+    <div class="eyebrow">Relecture à l’aveugle</div>
+    <strong
+      >Pour chaque carte : l’affirmation est-elle prouvée par ce que tu
+      regardes&nbsp;?</strong
+    >
   </div>
   <div class="grow"></div>
   <div class="count" id="progress">—</div>
@@ -632,10 +651,10 @@
       </div>
       <div class="verdicts" id="verdicts">
         <button data-v="DIRECT" aria-pressed="false">
-          <kbd>D</kbd>oui, elle la prouve
+          <kbd>D</kbd>oui, c’est prouvé
         </button>
         <button data-v="NOT_DIRECT" aria-pressed="false">
-          <kbd>N</kbd>non
+          <kbd>N</kbd>non, ce n’est pas prouvé
         </button>
         <button data-v="AMBIGUOUS" aria-pressed="false">
           <kbd>A</kbd>impossible à dire
@@ -654,11 +673,11 @@
       </div>
       <div class="tri" id="viewTri"></div>
     </div>
-    <div class="grow" style="min-width: 230px">
+    <div class="grow" style="min-width: 300px">
       <input
         id="why"
         type="text"
-        placeholder="justification courte (obligatoire si ambigu)"
+        placeholder="pourquoi ? (obligatoire si « impossible à dire »)"
         autocomplete="off"
       />
       <div class="todo" id="todo" style="margin-top: 6px"></div>
@@ -7900,8 +7919,8 @@
     const rows = [];
     const words = {
       AMBIGUOUS: 'impossible à dire',
-      DIRECT: 'oui, elle la prouve',
-      NOT_DIRECT: 'non',
+      DIRECT: 'oui, c’est prouvé',
+      NOT_DIRECT: 'non, ce n’est pas prouvé',
     };
     rows.push({
       expected: words[spec.expected.verdict],
@@ -8001,6 +8020,24 @@
     );
   }
   const hint = (text) => '<p class="hint">' + text + '</p>';
+  /** The family in words: what it lets the reviewer look at. */
+  function familyWords(stratum) {
+    const one = /^S[123]_/.test(stratum);
+    const ctx = stratum.includes('dossier')
+      ? 'consigne et dossier'
+      : stratum.includes('frame')
+        ? 'consigne seule'
+        : 'copie seule';
+    return (
+      (one
+        ? 'une phrase'
+        : stratum.startsWith('S7')
+          ? 'copie entière'
+          : 'plusieurs phrases') +
+      ' · ' +
+      ctx
+    );
+  }
 
   /** Cardinality as a reviewer reads it. */
   function cardinalityWords(cardinality) {
@@ -8079,14 +8116,13 @@
     const decision = decisionFor(card);
     const list = [];
     if (!decision.verdict) list.push('verdict');
-    if (decision.alternativeSupport === null)
-      list.push('contrôle « autre soutien »');
+    if (decision.alternativeSupport === null) list.push('S · autre phrase');
     if (decision.evidenceViewComplete === null)
-      list.push('contrôle « vue complète »');
+      list.push('V · rien ne m’a manqué');
     for (const role of bindable(card)) {
       const entry = assessment(decision, role.roleId);
       if (entry.status === null) {
-        list.push('statut du témoin ' + role.roleId);
+        list.push('témoin « ' + plainDescription(role) + ' »');
         continue;
       }
       if (
@@ -8094,9 +8130,9 @@
         !cardinalityMet(role.cardinality, entry.sentenceIds.length)
       ) {
         list.push(
-          'témoin ' +
-            role.roleId +
-            ' : ' +
+          'témoin « ' +
+            plainDescription(role) +
+            ' » : ' +
             cardinalityWords(role.cardinality) +
             ' attendue(s)',
         );
@@ -8110,14 +8146,22 @@
         entry.status !== 'BOUND' &&
         card.quantifier !== 'not_exists'
       ) {
-        list.push('un DIRECT exige le témoin ' + role.roleId + ' lié');
+        list.push(
+          'un « oui » exige le témoin « ' +
+            plainDescription(role) +
+            ' » montré',
+        );
       }
       if (
         decision.verdict === 'DIRECT' &&
         card.quantifier === 'not_exists' &&
         entry.status === 'BOUND'
       ) {
-        list.push('un DIRECT sur not_exists exige ' + role.roleId + ' absent');
+        list.push(
+          'quand l’affirmation dit AUCUNE, un « oui » exige que « ' +
+            plainDescription(role) +
+            ' » n’y soit pas',
+        );
       }
     }
     if (decision.verdict === 'AMBIGUOUS' && !decision.rationale)
@@ -8176,6 +8220,7 @@
         '" data-s="' +
         sentence.id +
         '">' +
+        (armedRole ? '<sup class="sid">' + sentence.id + '</sup>' : '') +
         escapeHtml(card.response.slice(sentence.start, sentence.end)) +
         label +
         '</span>';
@@ -8257,16 +8302,18 @@
             '<div class="role-card external-role"><div class="role-head"><button disabled data-role-static="' +
             escapeHtml(role.roleId) +
             '">' +
-            escapeHtml(role.roleId) +
-            '</button><span class="role-desc">' +
             escapeHtml(plainDescription(role)) +
+            '</button><span class="role-desc chip">' +
+            escapeHtml(role.roleId) +
             '</span></div><p class="role-line">Déjà fourni plus haut. Rien à faire.</p></div>'
           );
         }
         const entry = assessment(decision, role.roleId);
         const armed = armedRole === role.roleId;
         const labels = {
-          ABSENT: 'il n’y en a pas dans la copie',
+          ABSENT: singleSpan(card)
+            ? 'il n’y en a pas dans la phrase'
+            : 'il n’y en a pas dans la copie',
           AMBIGUOUS: 'je n’arrive pas à décider',
           BOUND: 'je peux la montrer',
         };
@@ -8302,7 +8349,7 @@
               '</span>';
         } else if (entry.status === null) {
           line =
-            '<span class="unbound">Réponds à la question ci-dessus.</span>';
+            '<span class="unbound">À faire : réponds à la question ci-dessus.</span>';
         }
         return (
           '<div class="role-card' +
@@ -8371,27 +8418,26 @@
       : '';
     document.getElementById('app').innerHTML = `
       ${trainingBanner}
-      <section class="guide">
-        <div class="eyebrow">Comment traiter une carte</div>
+      <section class="guide"><div class="eyebrow" style="display:flex;gap:10px;align-items:baseline">Comment traiter une carte <button class="link" id="guideToggle">replier</button></div>
         <ol>
           <li><strong>Ce qui était demandé</strong> : lis la consigne, et le dossier s’il est là.</li>
           <li><strong>La copie</strong> : lis-la d’un trait, pour comprendre ce que l’élève a choisi.</li>
-          <li><strong>L’affirmation à vérifier</strong> : une phrase qui affirme quelque chose sur la copie. Ton travail : dire si elle est vraie. Le dernier mot de la formule fixe la sévérité.</li>
+          <li><strong>L’affirmation à vérifier</strong> : une phrase qui affirme quelque chose sur la copie. Ton travail : dire si c’est prouvé. Les mots en capitales (CHAQUE, AUCUNE, UNE) disent à quel point il faut être strict.</li>
           <li><strong>La phrase examinée</strong> : relis-la seule, avec l’affirmation en tête.</li>
-          <li><strong>Les témoins</strong> : pour chaque rôle, <strong>lié</strong> puis clique la phrase, ou <strong>absent</strong>, ou <strong>ambigu</strong>. Sur les familles « une phrase » (S1–S3) le témoin se cherche dans la phrase examinée ; sur les familles « plusieurs phrases » (S4–S7), n’importe où dans la copie.</li>
-          <li><strong>Le verdict</strong> : la phrase examinée prouve-t-elle, à elle seule, que l’affirmation est vraie ? <strong>D</strong> oui, elle la prouve ; <strong>N</strong> non ; <strong>A</strong> impossible à dire.</li>
-          <li><strong>Les deux contrôles</strong>, sans valeur par défaut : <strong>S</strong> ailleurs dans la copie, une autre phrase prouve-t-elle l’affirmation ? <strong>V</strong> avais-tu tout ce qu’il fallait pour juger ?</li>
+          <li><strong>Les témoins</strong> : un témoin est le bout de copie qui montre la chose (le choix, la donnée, la limite). Pour chacun, clique « je peux la montrer » puis la phrase, ou « il n’y en a pas », ou « je n’arrive pas à décider ». La carte te dit si tu cherches dans la phrase examinée seule ou dans toute la copie.</li>
+          <li><strong>Le verdict</strong> : avec ce que la carte te laisse regarder (la phrase examinée seule sur les familles « une phrase », les témoins désignés sur les autres), l’affirmation est-elle prouvée ? <strong>D</strong> oui, c’est prouvé ; <strong>N</strong> non, ce n’est pas prouvé ; <strong>A</strong> impossible à dire.</li>
+          <li><strong>Les deux contrôles</strong>, à remplir obligatoirement : <strong>S · autre phrase</strong> : en dehors de la phrase examinée, une autre phrase prouve-t-elle l’affirmation à elle seule ? <strong>V · rien ne m’a manqué</strong> : avais-tu tout ce qu’il fallait pour juger ?</li>
         </ol>
         <dl>
-          <dt>D · oui</dt><dd>La phrase prouve exactement l’affirmation, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
-          <dt>N · non</dt><dd>Elle ne prouve l’affirmation qu’à moitié, ou parle d’autre chose, ou le sous-entend sans le dire, ou s’appuie sur un mauvais témoin, ou le témoin manque. Une phrase vraie et bien écrite peut être un « non ».</dd>
+          <dt>D · prouvé</dt><dd>Ce que tu regardes prouve exactement l’affirmation, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
+          <dt>N · pas prouvé</dt><dd>Ça ne la prouve qu’à moitié, ou parle d’autre chose, ou la sous-entend sans le dire, ou s’appuie sur un mauvais témoin, ou le témoin manque, ou la contredit. Une phrase vraie et bien écrite peut être un « pas prouvé ». Exception : quand l’affirmation dit AUCUNE, c’est l’absence du témoin qui prouve, et « il n’y en a pas » va avec « oui ».</dd>
           <dt>A · impossible à dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
           <dt>S · autre phrase</dt><dd>Après ton verdict, regarde le reste de la copie, hors de la phrase examinée : une autre phrase prouve-t-elle l’affirmation à elle seule ? Si oui, la copie mérite le point même quand la phrase examinée ne le prouve pas ; ces cas sont analysés à part.</dd>
-          <dt>V · manque</dt><dd>Avais-tu tout ce qu’il fallait ? « Non » veut dire que quelque chose t’a manqué (dossier non montré, extrait trop court) et que tu as jugé malgré ça. C’est une information utile, pas un aveu.</dd>
+          <dt>V · rien ne m’a manqué</dt><dd>Pour répondre à CETTE affirmation, avais-tu tout ce qu’il fallait ? Un dossier non montré n’est un manque que si l’affirmation en avait besoin ; quand la carte dit « la copie seule suffit », ce n’est pas un manque. Répondre « non » est une information utile, pas un aveu.</dd>
           <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
           <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
         </dl>
-        <p class="note" style="margin:12px 0 0">Tu ne sais jamais d’où vient une carte, c’est voulu. Ne cherche pas à le deviner, ne te fie ni à la longueur ni au style : lis la phrase et demande-toi si elle prouve l’affirmation.</p>
+        <p class="note" style="margin:12px 0 0">On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.</p>
       </section>
       <div>
         <section class="panel">
@@ -8405,7 +8451,7 @@
           <div class="eyebrow">3 · L’affirmation à vérifier</div>
           <p class="atom">${escapeHtml(card.atom)}</p>
           ${hint('Une affirmation sur la copie, tirée du barème et découpée assez fin pour qu’on puisse dire vrai ou faux. Ton travail sur cette carte : dire si la phrase examinée la prouve. Tout ce que tu décides ici parle de cette affirmation et d’elle seule.')}
-          <p class="sig">${renderSignature(card)} · ${escapeHtml(card.quantifier)}${card.logicalOperator === 'none' ? '' : ' · ' + escapeHtml(card.logicalOperator)}</p>
+          <p class="sig"><span class="note">écriture pour la machine :</span> ${renderSignature(card)} · ${escapeHtml(card.quantifier)}${card.logicalOperator === 'none' ? '' : ' · ' + escapeHtml(card.logicalOperator)}</p>
           ${hint('La même question écrite en formule, pour qu’il n’y ait pas d’interprétation : la relation, puis entre parenthèses les rôles qu’elle relie. ' + quantifierHint(card.quantifier))}
           <p class="note" style="margin-bottom:0">Phrase du barème&nbsp;: «&nbsp;${escapeHtml(card.sourcePhrase)}&nbsp;» — critère ${escapeHtml(card.criterionLabel)}</p>
           ${hint('D’où vient l’affirmation : le mot du barème qu’on a transformé en phrase vérifiable, et le critère qui le contient.')}
@@ -8427,8 +8473,7 @@
         <section class="panel">
           <div class="eyebrow">
             2 · ${card.window && decision.revealed !== true ? 'La copie, extrait autour de la phrase' : 'La copie de l’élève'}
-            <span class="chip">${escapeHtml(card.stratum)}</span>
-            <span class="chip">${escapeHtml(card.cardId)}</span>
+            <span class="chip">${familyWords(card.stratum)}</span> <span class="chip" title="${escapeHtml(card.stratum)}">${escapeHtml(card.cardId)}</span>
           </div>
           ${hint('Lis-la d’un trait. Les phrases sont numérotées à partir de s0 (la première). Elles deviennent cliquables quand un rôle est sur « lié » : cliquer une phrase l’attribue à ce rôle, recliquer la détache. Le surlignage doré est la phrase examinée.' + (card.window && decision.revealed !== true ? ' Tu ne vois qu’un extrait : ouvrir la copie entière est permis, et simplement noté.' : ''))}
           <div class="response" id="resp">${renderResponse(card)}</div>
@@ -8446,8 +8491,18 @@
     // it — fidèle, pertinent, explicite — is under the reviewer's eyes at the
     // moment of deciding. A justification about another word answers another
     // card.
+    // One sentence cannot prove a « CHAQUE » over the whole copy. The question
+    // names the scope the family gives it: the examined sentence alone on
+    // S1–S3, the designated witnesses on S4–S6, the whole copy on S7.
+    const scope = singleSpan(card)
+      ? 'Dans la phrase examinée, prise seule'
+      : card.stratum.startsWith('S7')
+        ? 'Dans la copie entière'
+        : 'Avec les phrases que tu as désignées comme témoins';
     document.getElementById('verdictQuestion').innerHTML =
-      '6 · La phrase examinée prouve-t-elle que&nbsp;: <em>«&nbsp;' +
+      '6 · ' +
+      scope +
+      ', est-ce prouvé que&nbsp;: <em>«&nbsp;' +
       escapeHtml(card.atom) +
       '&nbsp;»</em>&nbsp;?';
     tri(document.getElementById('altTri'), 'alternativeSupport');
@@ -8517,6 +8572,21 @@
         touch();
       };
     }
+    const guideToggle = document.getElementById('guideToggle');
+    if (guideToggle) {
+      guideToggle.textContent =
+        document.body.dataset.guide === 'yes' ? 'déplier' : 'replier';
+      guideToggle.onclick = () => {
+        const next = document.body.dataset.guide === 'yes' ? 'no' : 'yes';
+        try {
+          localStorage.setItem(GUIDE_STORE, next);
+        } catch (error) {
+          /* preference only */
+        }
+        document.body.dataset.guide = next;
+        render();
+      };
+    }
     const trainNext = document.getElementById('trainNext');
     if (trainNext) trainNext.onclick = () => advance(1);
     const trainDone = document.getElementById('trainDone');
@@ -8556,6 +8626,17 @@
     button.onclick = () => record(button.dataset.v);
   }
   document.getElementById('help').onclick = toggleHelp;
+  const GUIDE_STORE = 'adj-guide';
+  function applyGuide() {
+    let folded = 'no';
+    try {
+      folded = localStorage.getItem(GUIDE_STORE) || 'no';
+    } catch (error) {
+      /* default */
+    }
+    document.body.dataset.guide = folded;
+  }
+  applyGuide();
   document.getElementById('train').onclick = () => {
     if (
       inTraining() ||
