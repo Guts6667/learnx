@@ -8481,9 +8481,30 @@
       render();
     };
     if (inTraining()) {
+      const allDone = TRAINING.every(
+        (t) => training.decisions[t.card.cardId] && complete(t.card),
+      );
       document.getElementById('app').innerHTML =
-        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export indisponible</div><p class="note">L’échauffement n’est pas terminé.</p><p><button class="ghost" id="back">retour</button></p></section></div>';
+        '<div style="grid-column:1 / -1"><section class="panel"><div class="eyebrow">Export indisponible</div><p class="note">' +
+        (allDone
+          ? 'Les huit cartes d’entraînement sont corrigées. Il reste à valider l’échauffement pour ouvrir les 106 vraies cartes ; l’export viendra après.'
+          : 'L’échauffement n’est pas terminé : finis les huit cartes d’entraînement.') +
+        '</p><p>' +
+        (allDone
+          ? '<button class="ghost" id="trainDone2">Échauffement terminé — commencer la vraie passe</button> '
+          : '') +
+        '<button class="ghost" id="back">retour</button></p></section></div>';
       document.getElementById('back').onclick = back;
+      const td2 = document.getElementById('trainDone2');
+      if (td2)
+        td2.onclick = () => {
+          leaveCurrent();
+          training.done = true;
+          state.index = 0;
+          enteredAt = Date.now();
+          persist();
+          back();
+        };
       return;
     }
     leaveCurrent();
