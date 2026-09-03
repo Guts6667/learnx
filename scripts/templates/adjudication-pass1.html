@@ -586,6 +586,20 @@
   }
   const hint = (text) => '<p class="hint">' + text + '</p>';
 
+  /** Cardinality as a reviewer reads it. */
+  function cardinalityWords(cardinality) {
+    return (
+      {
+        1: '1 phrase, exactement',
+        '>=0': 'aucune ou plusieurs phrases',
+        '>=1': 'au moins 1 phrase',
+        '>=2': 'au moins 2 phrases',
+      }[cardinality] || cardinality
+    );
+  }
+  /** The role's meaning, without the taxonomy's technical annotation. */
+  const plainDescription = (role) => role.description.split(' — ')[0];
+
   function persist() {
     try {
       localStorage.setItem(STORE, JSON.stringify(state));
@@ -651,8 +665,8 @@
           'témoin ' +
             role.roleId +
             ' : ' +
-            role.cardinality +
-            ' phrase(s) attendues',
+            cardinalityWords(role.cardinality) +
+            ' attendue(s)',
         );
       }
       // A role can be genuinely absent — that is often WHY a card is not
@@ -797,15 +811,22 @@
       .map((role) => {
         if (!role.bindable) {
           return (
-            '<div class="role-row"><button disabled>' +
+            '<div class="role-card external-role"><div class="role-head"><button disabled data-role-static="' +
             escapeHtml(role.roleId) +
-            '</button><span class="external">' +
-            escapeHtml(role.description) +
-            ' — hors réponse</span></div>'
+            '">' +
+            escapeHtml(role.roleId) +
+            '</button><span class="role-desc">' +
+            escapeHtml(plainDescription(role)) +
+            '</span></div><p class="role-line">Déjà fourni plus haut. Rien à faire.</p></div>'
           );
         }
         const entry = assessment(decision, role.roleId);
-        const labels = { ABSENT: 'absent', AMBIGUOUS: 'ambigu', BOUND: 'lié' };
+        const armed = armedRole === role.roleId;
+        const labels = {
+          ABSENT: 'il n’y en a pas dans la copie',
+          AMBIGUOUS: 'je n’arrive pas à décider',
+          BOUND: 'je peux la montrer',
+        };
         const states = ['BOUND', 'ABSENT', 'AMBIGUOUS']
           .map(
             (status) =>
@@ -820,29 +841,42 @@
               '</button>',
           )
           .join('');
-        const bound =
-          entry.status === 'BOUND'
-            ? entry.sentenceIds.length
-              ? '<span class="bound">' +
-                entry.sentenceIds.join(', ') +
-                '</span>'
-              : '<span class="unbound">clique une phrase</span>'
-            : '';
+        let line = '';
+        if (entry.status === 'BOUND') {
+          line = entry.sentenceIds.length
+            ? 'Phrases désignées : <span class="bound">' +
+              entry.sentenceIds.join(', ') +
+              '</span>' +
+              (armed
+                ? ' · clique une phrase dans la copie pour l’ajouter, reclique pour la retirer'
+                : ' · <button class="link" data-role="' +
+                  escapeHtml(role.roleId) +
+                  '">modifier</button>')
+            : '<span class="unbound">Clique maintenant la ou les phrases dans la copie, à droite.</span>';
+        } else if (entry.status === null) {
+          line =
+            '<span class="unbound">Réponds à la question ci-dessus.</span>';
+        }
         return (
-          '<div class="role-row"><button data-role="' +
+          '<div class="role-card' +
+          (armed ? ' armed' : '') +
+          '"><div class="role-head"><button data-role="' +
           escapeHtml(role.roleId) +
           '" aria-pressed="' +
-          String(armedRole === role.roleId) +
+          String(armed) +
           '">' +
           escapeHtml(role.roleId) +
-          '</button>' +
+          '</button><span class="role-desc">' +
+          escapeHtml(plainDescription(role)) +
+          '</span><span class="role-card-n">' +
+          cardinalityWords(role.cardinality) +
+          '</span></div>' +
+          '<p class="role-q">Où est-ce dans la copie ?</p>' +
+          '<div class="role-states">' +
           states +
-          bound +
-          '<span class="external">' +
-          escapeHtml(role.description) +
-          ' · ' +
-          escapeHtml(role.cardinality) +
-          '</span></div>'
+          '</div>' +
+          (line ? '<p class="role-line">' + line + '</p>' : '') +
+          '</div>'
         );
       })
       .join('');
@@ -894,7 +928,7 @@
         </section>
         <section class="panel">
           <div class="eyebrow">5 · Les témoins</div>
-          ${hint('Un témoin est la phrase de la copie qui joue un rôle. Pour chacun : <strong>lié</strong> = je peux la montrer, clique le bouton puis la ou les phrases dans la copie à droite. <strong>absent</strong> = il n’y en a pas dans la copie, réponse normale et souvent la raison d’un « pas direct ». <strong>ambigu</strong> = je n’arrive pas à décider. Le nombre à droite dit combien de phrases un rôle lié attend : 1 = exactement une, &gt;=2 = au moins deux. « Hors réponse » = ce rôle est rempli par la consigne ou le dossier, rien à cliquer.')}
+          ${hint('Pour chaque témoin, dis où il se trouve dans la copie. Si tu peux le montrer, clique la ou les phrases à droite. S’il n’y en a pas, dis-le : c’est une réponse normale, et souvent la raison d’un « non ».')}
           <div class="roles" style="border-top:0;margin-top:0;padding-top:0">
             ${roleRows}
           </div>
@@ -937,7 +971,9 @@
       `carte ${state.index + 1} / ${CARDS.length} · ${done} complètes`;
     document.getElementById('who').textContent = state.reviewer || 'relecteur…';
 
-    for (const button of document.querySelectorAll('.role-row button.status')) {
+    for (const button of document.querySelectorAll(
+      '.role-card button.status',
+    )) {
       button.onclick = () => {
         const entry = assessment(decision, button.dataset.for);
         entry.status =
@@ -948,7 +984,7 @@
       };
     }
     for (const button of document.querySelectorAll(
-      '.role-row button[data-role]',
+      '.role-card button[data-role]',
     )) {
       button.onclick = () => {
         armedRole =

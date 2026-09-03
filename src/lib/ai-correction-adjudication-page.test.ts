@@ -135,7 +135,7 @@ describe('the blind adjudication page', () => {
       (c) => c.argumentRoles.filter((r) => r.bindable).length === 1,
     );
     const absent = [
-      ...document.querySelectorAll('.role-row button.status'),
+      ...document.querySelectorAll('.role-card button.status'),
     ].find(
       (button) => (button as HTMLElement).dataset.status === 'ABSENT',
     ) as HTMLElement;
@@ -160,7 +160,7 @@ describe('the blind adjudication page', () => {
         c.quantifier !== 'not_exists',
     );
     const absent = [
-      ...document.querySelectorAll('.role-row button.status'),
+      ...document.querySelectorAll('.role-card button.status'),
     ].find(
       (button) => (button as HTMLElement).dataset.status === 'ABSENT',
     ) as HTMLElement;
@@ -179,7 +179,7 @@ describe('the blind adjudication page', () => {
       (role) => role.bindable && role.cardinality === '>=2',
     )?.roleId;
     const bound = [
-      ...document.querySelectorAll('.role-row button.status'),
+      ...document.querySelectorAll('.role-card button.status'),
     ].find(
       (button) =>
         (button as HTMLElement).dataset.status === 'BOUND' &&
@@ -187,7 +187,9 @@ describe('the blind adjudication page', () => {
     ) as HTMLElement;
     bound.click();
     (document.querySelector('#resp .s') as HTMLElement).click();
-    expect(document.getElementById('todo')?.textContent ?? '').toContain('>=2');
+    expect(document.getElementById('todo')?.textContent ?? '').toContain(
+      'au moins 2 phrases',
+    );
   });
 
   it('names every reason a card does not count yet', () => {
@@ -201,7 +203,7 @@ describe('the blind adjudication page', () => {
     const signature = document.querySelector('.sig')?.textContent ?? '';
     expect(signature).not.toContain('[object Object]');
     expect(signature).toMatch(/^[a-z_]+\(/u);
-    for (const row of document.querySelectorAll('.role-row')) {
+    for (const row of document.querySelectorAll('.role-card')) {
       expect(row.textContent ?? '').not.toContain('[object Object]');
     }
   });
@@ -243,11 +245,11 @@ describe('the blind adjudication page', () => {
       (c) => c.argumentRoles.filter((r) => r.bindable).length === 2,
     );
     const roles = [
-      ...document.querySelectorAll('.role-row button[data-role]'),
+      ...document.querySelectorAll('.role-card button[data-role]'),
     ] as HTMLElement[];
     for (const role of roles) {
       const bound = [
-        ...document.querySelectorAll('.role-row button.status'),
+        ...document.querySelectorAll('.role-card button.status'),
       ].find(
         (b) =>
           (b as HTMLElement).dataset.status === 'BOUND' &&
