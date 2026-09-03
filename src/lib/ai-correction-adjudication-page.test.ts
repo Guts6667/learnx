@@ -80,6 +80,11 @@ const firstCardId = (): string => {
 describe('the blind adjudication page', () => {
   beforeEach(() => {
     localStorage.clear();
+    // The warm-up is done: these tests exercise the real deck.
+    localStorage.setItem(
+      'adj-training',
+      JSON.stringify({ decisions: {}, done: true, index: 0 }),
+    );
     boot();
   });
 
@@ -300,5 +305,127 @@ describe('the blind adjudication page', () => {
     const text = document.getElementById('app')?.textContent ?? '';
     expect(text).toContain('Export refusé');
     expect(text).toMatch(/cartes incomplètes sur 106/u);
+  });
+});
+
+describe('the warm-up before the real deck', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    boot();
+  });
+
+  it('opens on the warm-up, not the real deck, and never on a real card', () => {
+    expect(document.querySelector('.training')).not.toBeNull();
+    expect(document.querySelectorAll('#rail button')).toHaveLength(8);
+    const shown =
+      document.querySelector('.chip:nth-of-type(2)')?.textContent ?? '';
+    expect(shown.startsWith('E')).toBe(true);
+    expect(document.getElementById('progress')?.textContent ?? '').toContain(
+      'entraînement 1 / 8',
+    );
+  });
+
+  it('corrects a warm-up card once complete, without touching the real store', () => {
+    // E1: no choice is stated → choice ABSENT, verdict N, S no, V yes.
+    const absent = [
+      ...document.querySelectorAll('.role-card button.status'),
+    ].find(
+      (b) => (b as HTMLElement).dataset.status === 'ABSENT',
+    ) as HTMLElement;
+    absent.click();
+    press('n');
+    (document.querySelectorAll('#altTri button')[1] as HTMLElement).click();
+    (document.querySelectorAll('#viewTri button')[0] as HTMLElement).click();
+    const rows = [...document.querySelectorAll('table.grade tr')];
+    expect(rows.length).toBeGreaterThanOrEqual(4);
+    expect(rows.every((row) => row.classList.contains('ok'))).toBe(true);
+    expect(document.querySelector('.lesson')?.textContent ?? '').toContain(
+      'absent',
+    );
+    expect(document.getElementById('trainNext')).not.toBeNull();
+    expect(Object.keys(stored())).toHaveLength(0);
+  });
+
+  it('shows the mistake when the answer is wrong', () => {
+    press('d');
+    const bound = [
+      ...document.querySelectorAll('.role-card button.status'),
+    ].find((b) => (b as HTMLElement).dataset.status === 'BOUND') as HTMLElement;
+    bound.click();
+    (document.querySelector('#resp .s') as HTMLElement).click();
+    (document.querySelectorAll('#altTri button')[1] as HTMLElement).click();
+    (document.querySelectorAll('#viewTri button')[0] as HTMLElement).click();
+    const ko = document.querySelectorAll('table.grade tr.ko');
+    expect(ko.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('refuses the export while the warm-up is running', () => {
+    document.getElementById('toExport')?.click();
+    expect(document.getElementById('app')?.textContent ?? '').toContain(
+      'Export indisponible',
+    );
+  });
+
+  it('unlocks the real deck once the last warm-up card is corrected', () => {
+    const specs = [
+      { s: 'ABSENT', v: 'n', alt: 1 },
+      { s: null, v: 'n', alt: 1 },
+      { s: null, v: 'd', alt: 0 },
+      { s: null, v: 'n', alt: 1 },
+      { s: 'ABSENT', v: 'd', alt: 1 },
+      { s: null, v: 'd', alt: 1 },
+      { s: null, v: 'd', alt: 1 },
+      { s: null, v: 'n', alt: 1 },
+    ];
+    for (let i = 0; i < 8; i += 1) {
+      // Bind every bindable role to the first sentence, or mark it absent: the
+      // point here is completion, not correctness.
+      const statuses = [
+        ...document.querySelectorAll('.role-card button.status'),
+      ] as HTMLElement[];
+      const roles = [...new Set(statuses.map((b) => b.dataset.for))];
+      for (const roleId of roles) {
+        const wanted = specs[i]?.s ?? 'BOUND';
+        (
+          statuses.find(
+            (b) => b.dataset.for === roleId && b.dataset.status === wanted,
+          ) as HTMLElement
+        ).click();
+        if (wanted === 'BOUND') {
+          const sentences = document.querySelectorAll('#resp .s:not(.hidden)');
+          (
+            sentences[
+              Math.min(sentences.length - 1, roles.indexOf(roleId) + 1)
+            ] as HTMLElement
+          ).click();
+          // A role that wants at least two sentences gets a second one.
+          if (
+            (document.getElementById('todo')?.textContent ?? '').includes(
+              'au moins 2',
+            )
+          ) {
+            (
+              document.querySelectorAll(
+                '#resp .s:not(.hidden)',
+              )[0] as HTMLElement
+            ).click();
+          }
+        }
+      }
+      press(specs[i]?.v ?? 'n');
+      (
+        document.querySelectorAll('#altTri button')[
+          specs[i]?.alt ?? 1
+        ] as HTMLElement
+      ).click();
+      (document.querySelectorAll('#viewTri button')[0] as HTMLElement).click();
+      const next =
+        document.getElementById('trainNext') ??
+        document.getElementById('trainDone');
+      expect(next).not.toBeNull();
+      next?.click();
+    }
+    expect(document.querySelector('.training')).toBeNull();
+    expect(document.querySelectorAll('#rail button')).toHaveLength(106);
   });
 });

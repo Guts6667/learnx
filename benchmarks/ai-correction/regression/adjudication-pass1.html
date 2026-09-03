@@ -497,6 +497,46 @@
     position: sticky;
     top: 40px;
   }
+  .training {
+    background: var(--card);
+    border: 1px solid var(--mark);
+    border-radius: 3px;
+    grid-column: 1 / -1;
+    padding: 14px 20px;
+  }
+  table.grade {
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 12px 0 0;
+    width: 100%;
+  }
+  table.grade th,
+  table.grade td {
+    border-top: 1px solid var(--rule-soft);
+    padding: 6px 10px 6px 0;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.grade th {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  table.grade tr.ok td:last-child {
+    color: var(--direct);
+  }
+  table.grade tr.ko td:last-child {
+    color: var(--notdirect);
+  }
+  table.grade tr.ko td:nth-child(2) {
+    color: var(--notdirect);
+  }
+  .lesson {
+    border-left: 3px solid var(--mark);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 12px 0 0;
+    padding: 4px 0 4px 12px;
+  }
   .hint {
     border-left: 2px solid var(--rule);
     color: var(--muted);
@@ -572,6 +612,7 @@
   </div>
   <div class="grow"></div>
   <div class="count" id="progress">—</div>
+  <button class="ghost" id="train">entraînement</button>
   <button class="ghost" id="help"><kbd>?</kbd>aide</button>
   <button class="ghost" id="who">relecteur…</button>
   <button class="ghost" id="toExport">export</button>
@@ -7533,6 +7574,379 @@
 <script>
   const DECK = JSON.parse(document.getElementById('deck').textContent);
   const CARDS = DECK.cards;
+
+  /* ------------------------------------------------------------------ *
+   * Échauffement : huit cartes inventées, une par piège, avec correction
+   * immédiate. Rien ici ne vient du paquet réel et rien n'en sort : les
+   * décisions d'entraînement vivent sous leur propre clé et ne sont jamais
+   * exportées. La vraie passe reste verrouillée tant qu'il n'est pas fini.
+   * ------------------------------------------------------------------ */
+  function splitSentences(text) {
+    const out = [];
+    const re = /[^.!?]+[.!?]+/g;
+    let m;
+    let index = 0;
+    while ((m = re.exec(text))) {
+      const raw = m[0];
+      const lead = raw.length - raw.trimStart().length;
+      out.push({
+        end: m.index + raw.length,
+        id: 's' + index,
+        start: m.index + lead,
+      });
+      index += 1;
+    }
+    return out;
+  }
+  const role = (roleId, description, cardinality, source) => ({
+    bindable: (source || 'response') === 'response',
+    cardinality,
+    description,
+    roleId,
+    source: source || 'response',
+  });
+  const TRAINING_SPECS = [
+    {
+      id: 'E1',
+      atom: 'un choix est explicitement énoncé',
+      predicate: 'stated',
+      quantifier: 'exists',
+      criterion: 'Position de décision',
+      sourcePhrase: 'Le choix est explicite',
+      stratum: 'S1_span_local',
+      arity: '1',
+      roles: [role('choice', 'choix retenu', '1')],
+      response:
+        'Le fournisseur B livre en 2 jours et n’a eu aucun retard en 2025. Le fournisseur A coûte 2 500 euros de moins par an. Les deux ont été audités en mars.',
+      candidate: 0,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        roles: { choice: { status: 'ABSENT' } },
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Aucune phrase ne dit ce que l’élève retient. Le témoin « choice » n’existe pas dans la copie : on le marque absent, on ne l’invente pas. Et sans choix énoncé, la phrase ne peut pas prouver qu’un choix est explicitement énoncé : non.',
+    },
+    {
+      id: 'E2',
+      atom: 'CHAQUE donnée de l’ensemble est pertinente pour CE choix',
+      predicate: 'relevant',
+      quantifier: 'forall',
+      criterion: 'Fidélité aux faits du dossier',
+      sourcePhrase: 'pertinentes',
+      stratum: 'S5_multi_frame',
+      arity: 'n',
+      roles: [
+        role('datum', 'donnée mobilisée', '>=2'),
+        role('choice', 'choix retenu', '1'),
+        role('task_frame', 'la consigne', '1', 'task_frame'),
+      ],
+      frame:
+        'Choisis l’un des deux fournisseurs pour 2026 et justifie avec des chiffres.',
+      response:
+        'Je retiens le fournisseur A. Le fournisseur B livre en 2 jours et n’a eu aucun retard, ce qui est remarquable. Notre entrepôt a été repeint en mars.',
+      candidate: 1,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        roles: {
+          choice: { status: 'BOUND', sentenceIds: ['s0'] },
+          datum: { status: 'BOUND', sentenceIds: ['s1', 's2'] },
+        },
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Tout est vrai, et rien ne sert le choix de A : les données de s1 plaident pour B, celle de s2 ne plaide pour rien. « forall » casse dès la première donnée hors sujet. Une phrase vraie, chiffrée et bien écrite peut être un non.',
+    },
+    {
+      id: 'E3',
+      atom: 'CHAQUE affirmation utile est fidèle au contexte',
+      predicate: 'faithful',
+      quantifier: 'forall',
+      criterion: 'Fidélité et limites',
+      sourcePhrase: 'Les affirmations utiles sont fidèles au contexte',
+      stratum: 'S3_span_dossier',
+      arity: '1',
+      roles: [
+        role('claim', 'affirmation utile', '>=1'),
+        role('dossier', 'le dossier', '1', 'dossier'),
+      ],
+      frame:
+        'Rédige un objectif de 80 à 120 mots précisant population, processus, résultat, horizon et hypothèses.',
+      dossier:
+        'Le processus visé est le tri des tickets du support de niveau 1. L’équipe compte 12 personnes. Aucune mesure de durée n’existe encore.',
+      response:
+        'Le tri des tickets du support de niveau 1 est assuré par les 12 personnes de l’équipe. Aucune durée n’a encore été mesurée.',
+      candidate: 0,
+      expected: {
+        verdict: 'DIRECT',
+        roles: { claim: { status: 'BOUND', sentenceIds: ['s0'] } },
+        alternativeSupport: 'yes',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'La copie est très incomplète au regard de la consigne, et ça ne compte pas ici : l’affirmation parle de fidélité. Tout ce que s0 avance est dans le dossier, mot pour mot : oui. L’incomplétude est une autre affirmation, sur une autre carte. Et s1 est fidèle aussi, donc « une autre phrase la prouve » : oui.',
+    },
+    {
+      id: 'E4',
+      atom: 'CHAQUE donnée reprise est exacte',
+      predicate: 'exact',
+      quantifier: 'forall',
+      criterion: 'Fidélité aux faits du dossier',
+      sourcePhrase: 'exactes',
+      stratum: 'S3_span_dossier',
+      arity: '1',
+      roles: [
+        role('datum', 'donnée reprise', '>=1'),
+        role('dossier', 'le dossier', '1', 'dossier'),
+      ],
+      frame: 'Résume les coûts du dossier.',
+      dossier:
+        'Le contrat Préventel coûte 12 500 euros par an. Le contrat Vigil coûte 18 000 euros par an.',
+      response:
+        'Préventel coûte 14 500 euros par an, contre 18 000 pour Vigil. L’écart est donc de 3 500 euros.',
+      candidate: 0,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        roles: { datum: { status: 'BOUND', sentenceIds: ['s0'] } },
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Ici la véracité compte, et le dossier est affiché pour ça : 14 500 n’est pas 12 500. Une seule donnée fausse, « forall » casse : non. C’est sur cette sorte d’affirmation qu’on vérifie les chiffres, pas sur « pertinent ».',
+    },
+    {
+      id: 'E5',
+      atom: 'AUCUNE affirmation ne contredit le dossier',
+      predicate: 'contradicts',
+      quantifier: 'not_exists',
+      criterion: 'Fidélité et limites',
+      sourcePhrase: 'sans contredire le dossier',
+      stratum: 'S3_span_dossier',
+      arity: '1',
+      roles: [
+        role('claim', 'affirmation contradictoire', '>=0'),
+        role('dossier', 'le dossier', '1', 'dossier'),
+      ],
+      frame: 'Présente la situation.',
+      dossier: 'L’équipe compte 12 personnes. Le pilote a duré deux semaines.',
+      response:
+        'L’équipe de 12 personnes a mené un pilote de deux semaines. Les résultats seront présentés en comité.',
+      candidate: 0,
+      expected: {
+        verdict: 'DIRECT',
+        roles: { claim: { status: 'ABSENT' } },
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Le quantificateur est « not_exists » : l’affirmation est vraie quand il n’y a AUCUNE contradiction. Le témoin « claim » désigne une affirmation contradictoire ; il n’y en a pas, donc absent. Et ici, absent est précisément ce qui rend le oui possible.',
+    },
+    {
+      id: 'E6',
+      atom: 'CHAQUE risque nommé est accompagné d’une parade',
+      predicate: 'mitigated',
+      quantifier: 'forall_exists',
+      criterion: 'Couverture des risques',
+      sourcePhrase: 'chaque risque a sa parade',
+      stratum: 'S4_multi_local',
+      arity: 'n',
+      roles: [
+        role('risk', 'risque nommé', '>=1'),
+        role('mitigation', 'parade proposée', '>=1'),
+      ],
+      response:
+        'Je recommande le déploiement immédiat. Le risque principal est la surcharge du support la première semaine. Pour y répondre, deux agents seront détachés en renfort du lundi au vendredi. Le budget reste inchangé.',
+      candidate: 1,
+      expected: {
+        verdict: 'DIRECT',
+        roles: {
+          risk: { status: 'BOUND', sentenceIds: ['s1'] },
+          mitigation: { status: 'BOUND', sentenceIds: ['s2'] },
+        },
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Un rôle par phrase : le risque est en s1, la parade en s2. Pour un oui, les deux doivent être liés, et la parade n’est pas dans la phrase examinée : tu la cherches dans la copie. Sans elle, la page refuse le oui, et c’est voulu : sinon on ne saurait pas sur quoi il repose.',
+    },
+    {
+      id: 'E7',
+      atom: 'un choix est explicitement énoncé',
+      predicate: 'stated',
+      quantifier: 'exists',
+      criterion: 'Position de décision',
+      sourcePhrase: 'Le choix est explicite',
+      stratum: 'S1_span_local',
+      arity: '1',
+      window: true,
+      roles: [role('choice', 'choix retenu', '1')],
+      response:
+        'Le comité a examiné les trois options pendant deux réunions. Les coûts ont été comparés sur cinq ans, avec une hypothèse d’inflation de 2 %. Je retiens l’option de maintenance préventive, malgré son coût initial plus élevé. Cette option réduit le nombre d’arrêts non planifiés. Une revue sera faite en juin. Les fournisseurs seront informés la semaine prochaine.',
+      candidate: 2,
+      expected: {
+        verdict: 'DIRECT',
+        roles: { choice: { status: 'BOUND', sentenceIds: ['s2'] } },
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'Tu ne vois qu’un extrait, et il suffit : la phrase dit elle-même ce qui est retenu. Rien à vérifier dans un dossier pour « explicitement énoncé ». Ouvrir la copie entière est permis et n’aurait rien changé.',
+    },
+    {
+      id: 'E8',
+      atom: 'la limite énoncée porte sur le choix retenu',
+      predicate: 'about',
+      quantifier: 'exists',
+      criterion: 'Limites du choix',
+      sourcePhrase: 'une limite de son choix',
+      stratum: 'S2_span_frame',
+      arity: '1',
+      roles: [
+        role('limit', 'limite énoncée', '1'),
+        role('choice', 'choix retenu', '1'),
+        role('task_frame', 'la consigne', '1', 'task_frame'),
+      ],
+      frame:
+        'Choisis une des deux options et indique la principale limite de ton choix.',
+      response:
+        'Je retiens l’option A. L’option B présente le défaut d’exiger une formation de trois jours. Le calendrier sera précisé plus tard.',
+      candidate: 1,
+      expected: {
+        verdict: 'NOT_DIRECT',
+        roles: {
+          choice: { status: 'BOUND', sentenceIds: ['s0'] },
+          limit: { status: 'BOUND', sentenceIds: ['s1'] },
+        },
+        alternativeSupport: 'no',
+        evidenceViewComplete: 'yes',
+      },
+      lesson:
+        'La consigne demande une limite du choix retenu. L’élève énonce bien une limite, mais celle de l’option B, qu’il n’a pas retenue. La consigne te dit ce qu’on lui a demandé ; l’affirmation te dit ce que tu dois vérifier. Ce sont deux questions.',
+    },
+  ];
+  const TRAINING = TRAINING_SPECS.map((t) => {
+    const sentences = splitSentences(t.response);
+    const cs = sentences[t.candidate];
+    let window = null;
+    if (t.window) {
+      const centre = (cs.start + cs.end) / 2;
+      window = {
+        end: Math.min(
+          t.response.length,
+          Math.max(cs.end, Math.round(centre + 120)),
+        ),
+        start: Math.max(0, Math.min(cs.start, Math.round(centre - 120))),
+      };
+    }
+    return {
+      card: {
+        argumentRoles: t.roles,
+        atom: t.atom,
+        atomId: 'train.' + t.id,
+        candidateSentenceIds: [cs.id],
+        candidateSpan: t.response.slice(cs.start, cs.end).trim(),
+        cardId: t.id,
+        criterionLabel: t.criterion,
+        ...(t.dossier ? { dossier: t.dossier } : {}),
+        ...(t.frame ? { frame: t.frame } : {}),
+        highlight: { end: cs.end, start: cs.start },
+        logicalOperator: 'none',
+        predicate: t.predicate,
+        quantifier: t.quantifier,
+        response: t.response,
+        responseArity: t.arity,
+        sentences,
+        sourcePhrase: t.sourcePhrase,
+        stratum: t.stratum,
+        window,
+        witnessGroupId: 'entraînement',
+      },
+      expected: t.expected,
+      lesson: t.lesson,
+    };
+  });
+
+  const TRAINING_STORE = 'adj-training';
+  const training = { decisions: {}, done: false, index: 0 };
+  try {
+    Object.assign(
+      training,
+      JSON.parse(localStorage.getItem(TRAINING_STORE) || '{}'),
+    );
+  } catch (error) {
+    /* start with the warm-up */
+  }
+  const inTraining = () => !training.done;
+  const activeCards = () =>
+    inTraining() ? TRAINING.map((t) => t.card) : CARDS;
+  const activeDecisions = () =>
+    inTraining() ? training.decisions : state.decisions;
+  const getIndex = () => (inTraining() ? training.index : state.index);
+  const setIndex = (value) => {
+    if (inTraining()) training.index = value;
+    else state.index = value;
+  };
+
+  /** Compares a warm-up decision with what the card was built to teach. */
+  function grade(card, decision) {
+    const spec = TRAINING.find((t) => t.card.cardId === card.cardId);
+    if (!spec) return null;
+    const rows = [];
+    const words = {
+      AMBIGUOUS: 'impossible à dire',
+      DIRECT: 'oui, elle la prouve',
+      NOT_DIRECT: 'non',
+    };
+    rows.push({
+      expected: words[spec.expected.verdict],
+      field: 'verdict',
+      ok: decision.verdict === spec.expected.verdict,
+      yours: words[decision.verdict] || '—',
+    });
+    for (const r of card.argumentRoles.filter((x) => x.bindable)) {
+      const want = spec.expected.roles[r.roleId] || { status: 'ABSENT' };
+      const got = decision.roleAssessments[r.roleId] || {
+        sentenceIds: [],
+        status: null,
+      };
+      const same = (a, b) =>
+        JSON.stringify([...a].sort()) === JSON.stringify([...b].sort());
+      const ok =
+        got.status === want.status &&
+        (want.status !== 'BOUND' ||
+          same(got.sentenceIds, want.sentenceIds || []));
+      const show = (x) =>
+        x.status === 'BOUND'
+          ? 'lié : ' + (x.sentenceIds || []).join(', ')
+          : x.status === 'ABSENT'
+            ? 'absent'
+            : x.status === 'AMBIGUOUS'
+              ? 'ambigu'
+              : '—';
+      rows.push({
+        expected: show(want),
+        field: 'témoin ' + r.roleId,
+        ok,
+        yours: show(got),
+      });
+    }
+    const yn = (v) => (v === 'yes' ? 'oui' : v === 'no' ? 'non' : '—');
+    rows.push({
+      expected: yn(spec.expected.alternativeSupport),
+      field: 'S · autre phrase',
+      ok: decision.alternativeSupport === spec.expected.alternativeSupport,
+      yours: yn(decision.alternativeSupport),
+    });
+    rows.push({
+      expected: yn(spec.expected.evidenceViewComplete),
+      field: 'V · rien ne manquait',
+      ok: decision.evidenceViewComplete === spec.expected.evidenceViewComplete,
+      yours: yn(decision.evidenceViewComplete),
+    });
+    return { lesson: spec.lesson, rows };
+  }
   const STORE = 'adj-v3-' + DECK.manifestHash.slice(-12);
   /**
    * There is no proposed value.
@@ -7601,14 +8015,16 @@
   function persist() {
     try {
       localStorage.setItem(STORE, JSON.stringify(state));
+      localStorage.setItem(TRAINING_STORE, JSON.stringify(training));
     } catch (error) {
       /* the export panel is the durable path */
     }
   }
 
   function decisionFor(card) {
-    if (!state.decisions[card.cardId]) {
-      state.decisions[card.cardId] = {
+    const bag = activeDecisions();
+    if (!bag[card.cardId]) {
+      bag[card.cardId] = {
         alternativeSupport: null,
         cardId: card.cardId,
         decidedAt: null,
@@ -7620,7 +8036,7 @@
         verdict: null,
       };
     }
-    return state.decisions[card.cardId];
+    return bag[card.cardId];
   }
 
   const bindable = (card) => card.argumentRoles.filter((role) => role.bindable);
@@ -7754,18 +8170,18 @@
   function renderRail() {
     const rail = document.getElementById('rail');
     rail.innerHTML = '';
-    CARDS.forEach((card, index) => {
+    activeCards().forEach((card, index) => {
       const button = document.createElement('button');
-      const decision = state.decisions[card.cardId];
+      const decision = activeDecisions()[card.cardId];
       if (decision && decision.verdict) {
         button.dataset.d = decision.verdict;
         button.dataset.incomplete = String(!complete(card));
       }
-      if (index === state.index) button.dataset.current = 'true';
+      if (index === getIndex()) button.dataset.current = 'true';
       button.title = 'carte ' + (index + 1);
       button.setAttribute('aria-label', 'carte ' + (index + 1));
       button.onclick = () => {
-        state.index = index;
+        setIndex(index);
         armedRole = null;
         render();
       };
@@ -7774,7 +8190,7 @@
   }
 
   function tri(container, field) {
-    const decision = decisionFor(CARDS[state.index]);
+    const decision = decisionFor(activeCards()[getIndex()]);
     const value = decision[field];
     container.className = 'tri';
     container.innerHTML = '';
@@ -7813,7 +8229,7 @@
   }
 
   function render() {
-    const card = CARDS[state.index];
+    const card = activeCards()[getIndex()];
     const decision = decisionFor(card);
     const roleRows = card.argumentRoles
       .map((role) => {
@@ -7889,7 +8305,45 @@
       })
       .join('');
 
+    const feedback =
+      inTraining() && complete(card) ? grade(card, decision) : null;
+    const trainingBanner = inTraining()
+      ? '<section class="training">' +
+        '<div class="eyebrow">Échauffement · carte ' +
+        (getIndex() + 1) +
+        ' sur ' +
+        TRAINING.length +
+        '</div>' +
+        '<p class="note" style="margin:6px 0 0">Ces huit cartes sont inventées. Réponds comme pour une vraie carte ; dès qu’elle est complète, la correction s’affiche ici. Rien de ce que tu fais ici n’est enregistré pour la vraie passe.</p>' +
+        (feedback
+          ? '<table class="grade">' +
+            feedback.rows
+              .map(
+                (r) =>
+                  '<tr class="' +
+                  (r.ok ? 'ok' : 'ko') +
+                  '"><th>' +
+                  escapeHtml(r.field) +
+                  '</th><td>' +
+                  escapeHtml(r.yours) +
+                  '</td><td>' +
+                  escapeHtml(r.expected) +
+                  '</td><td>' +
+                  (r.ok ? '✓' : '✗') +
+                  '</td></tr>',
+              )
+              .join('') +
+            '</table><p class="lesson">' +
+            escapeHtml(feedback.lesson) +
+            '</p>' +
+            (getIndex() + 1 < TRAINING.length
+              ? '<p><button class="ghost" id="trainNext">carte d’entraînement suivante ▶</button></p>'
+              : '<p><button class="ghost" id="trainDone">Échauffement terminé — commencer la vraie passe</button></p>')
+          : '') +
+        '</section>'
+      : '';
     document.getElementById('app').innerHTML = `
+      ${trainingBanner}
       <section class="guide">
         <div class="eyebrow">Comment traiter une carte</div>
         <ol>
@@ -7980,11 +8434,11 @@
       : 'carte complète';
     document.getElementById('dock').hidden = false;
 
-    const done = CARDS.filter(
-      (c) => state.decisions[c.cardId] && complete(c),
+    const done = activeCards().filter(
+      (c) => activeDecisions()[c.cardId] && complete(c),
     ).length;
     document.getElementById('progress').textContent =
-      `carte ${state.index + 1} / ${CARDS.length} · ${done} complètes`;
+      `${inTraining() ? 'entraînement ' : 'carte '}${getIndex() + 1} / ${activeCards().length} · ${done} complètes`;
     document.getElementById('who').textContent = state.reviewer || 'relecteur…';
 
     for (const button of document.querySelectorAll(
@@ -8028,22 +8482,36 @@
         touch();
       };
     }
+    const trainNext = document.getElementById('trainNext');
+    if (trainNext) trainNext.onclick = () => advance(1);
+    const trainDone = document.getElementById('trainDone');
+    if (trainDone) {
+      trainDone.onclick = () => {
+        training.done = true;
+        state.index = 0;
+        armedRole = null;
+        persist();
+        render();
+      };
+    }
     renderRail();
   }
 
   function record(verdict) {
-    const card = CARDS[state.index];
+    const card = activeCards()[getIndex()];
     const decision = decisionFor(card);
     decision.verdict = verdict;
     decision.decidedAt = new Date().toISOString();
     decision.reviewerId = state.reviewer;
     persist();
     render();
-    if (complete(card)) advance(1);
+    if (complete(card) && !inTraining()) advance(1);
   }
 
   function advance(step) {
-    state.index = Math.min(CARDS.length - 1, Math.max(0, state.index + step));
+    setIndex(
+      Math.min(activeCards().length - 1, Math.max(0, getIndex() + step)),
+    );
     armedRole = null;
     persist();
     render();
@@ -8053,14 +8521,29 @@
     button.onclick = () => record(button.dataset.v);
   }
   document.getElementById('help').onclick = toggleHelp;
+  document.getElementById('train').onclick = () => {
+    if (
+      inTraining() ||
+      confirm(
+        'Refaire l’échauffement ? Tes décisions de la vraie passe sont conservées.',
+      )
+    ) {
+      training.done = false;
+      training.decisions = {};
+      training.index = 0;
+      armedRole = null;
+      persist();
+      render();
+    }
+  };
   document.getElementById('prev').onclick = () => advance(-1);
   document.getElementById('next').onclick = () => advance(1);
   document.getElementById('why').oninput = () => {
-    decisionFor(CARDS[state.index]).rationale = document
+    decisionFor(activeCards()[getIndex()]).rationale = document
       .getElementById('why')
       .value.trim();
     persist();
-    const missing = blockers(CARDS[state.index]);
+    const missing = blockers(activeCards()[getIndex()]);
     const todo = document.getElementById('todo');
     todo.className = 'todo' + (missing.length ? '' : ' ok');
     todo.textContent = missing.length
@@ -8079,7 +8562,7 @@
   };
 
   const cycle = (field) => {
-    const decision = decisionFor(CARDS[state.index]);
+    const decision = decisionFor(activeCards()[getIndex()]);
     const order = [null, 'yes', 'no'];
     decision[field] =
       order[(order.indexOf(decision[field]) + 1) % order.length];
@@ -8131,6 +8614,16 @@
   }
 
   document.getElementById('toExport').onclick = async () => {
+    if (inTraining()) {
+      document.getElementById('dock').hidden = true;
+      document.getElementById('app').innerHTML =
+        '<div style="grid-column: 1 / -1"><section class="panel"><div class="eyebrow">Export indisponible</div><p class="note">L’échauffement n’est pas terminé. L’export ne concerne que la vraie passe.</p><p><button class="ghost" id="back">retour</button></p></section></div>';
+      document.getElementById('back').onclick = () => {
+        document.getElementById('dock').hidden = false;
+        render();
+      };
+      return;
+    }
     const refusals = [];
     if (!state.reviewer) refusals.push('aucun identifiant de relecteur');
     const incomplete = CARDS.filter((card) => !complete(card));
