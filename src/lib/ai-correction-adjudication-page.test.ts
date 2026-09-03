@@ -345,7 +345,6 @@ describe('language and slice modes', () => {
     document.getElementById('toExport')?.click();
     let out = '';
     for (let i = 0; i < 40 && !out; i += 1) {
-      // eslint-disable-next-line no-await-in-loop -- polling the async digest
       await new Promise((resolve) => setTimeout(resolve, 25));
       out =
         (document.getElementById('out') as HTMLTextAreaElement | null)?.value ??
