@@ -113,6 +113,23 @@
     outline: 2px solid var(--ink);
     outline-offset: 1px;
   }
+  .legend {
+    align-items: center;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    gap: 4px 14px;
+    padding: 4px 14px 0;
+  }
+  .legend i {
+    border-radius: 2px;
+    display: inline-block;
+    height: 9px;
+    margin-right: 5px;
+    vertical-align: middle;
+    width: 14px;
+  }
   header.bar {
     align-items: baseline;
     border-bottom: 1px solid var(--rule-soft);
@@ -490,6 +507,7 @@
 </style>
 
 <div class="rail" id="rail" role="navigation" aria-label="Progression"></div>
+<div class="legend" id="legend"></div>
 <header class="bar">
   <div>
     <div class="eyebrow">Relecture à l’aveugle</div>
@@ -8054,7 +8072,21 @@
       html += escapeHtml(card.response.slice(cursor));
     return html;
   }
+  function renderLegend() {
+    const sw = (color, label) =>
+      '<span><i style="background:' + color + '"></i>' + label + '</span>';
+    document.getElementById('legend').innerHTML = inTraining()
+      ? sw('var(--direct)', 'tout juste') +
+        sw('var(--notdirect)', 'à revoir') +
+        sw('var(--rule-soft)', 'pas encore fait')
+      : sw('var(--direct)', 'tu as répondu oui') +
+        sw('var(--notdirect)', 'non') +
+        sw('var(--ambiguous)', 'je ne peux pas dire') +
+        sw('var(--rule-soft)', 'pas encore fait') +
+        '<span><i style="background:var(--notdirect);opacity:0.45"></i>pâle = réponse donnée mais carte incomplète (il manque S, V, une phrase ou le pourquoi)</span>';
+  }
   function renderRail() {
+    renderLegend();
     const rail = document.getElementById('rail');
     rail.innerHTML = '';
     activeCards().forEach((card, index) => {
