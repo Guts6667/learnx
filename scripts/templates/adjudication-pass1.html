@@ -772,7 +772,7 @@
       frame:
         'Choisis l’un des deux fournisseurs pour 2026 et justifie avec des chiffres.',
       response:
-        'Je retiens le fournisseur A. Le fournisseur B livre en 2 jours et n’a eu aucun retard, ce qui est remarquable. Notre entrepôt a été repeint en mars.',
+        'Je retiens le fournisseur A. Il livre en 5 jours et n’a eu que 2 retards en 2025, ce qui reste acceptable pour nous. Notre parking compte 40 places.',
       candidate: 1,
       expected: {
         verdict: 'NOT_DIRECT',
@@ -784,7 +784,7 @@
         evidenceViewComplete: 'yes',
       },
       lesson:
-        'Tout est vrai, et rien ne sert le choix de A : les données de s1 plaident pour B, celle de s2 ne plaide pour rien. « forall » casse dès la première donnée hors sujet. Une phrase vraie, chiffrée et bien écrite peut être un non. Piège fréquent sur le témoin : les données existent (s1, s2), donc on les désigne, même si elles ne conviennent pas. « Il n’y en a pas » serait pour une copie sans aucune donnée. Dire qu’elles ne servent pas le choix, c’est le rôle du verdict, et c’est ce que ton non fait.',
+        'Le témoin « données » se désigne pour ce qui existe : l’élève avance des faits et des chiffres en s1 (5 jours, 2 retards) et en s2 (40 places), donc s1 et s2, même si l’un des deux ne convient pas. Ensuite le verdict : les données de s1 servent le choix de A, mais « 40 places de parking » ne sert à rien. L’affirmation dit CHAQUE donnée, et une seule hors sujet suffit : non. La phrase examinée était bonne ; c’est l’ensemble qui ne l’est pas, et sur cette famille tu juges l’ensemble des témoins.',
     },
     {
       id: 'E3',
@@ -1154,8 +1154,21 @@
       }[cardinality] || cardinality
     );
   }
-  /** The role's meaning, without the taxonomy's technical annotation. */
-  const plainDescription = (role) => role.description.split(' — ')[0];
+  /**
+   * The role's meaning in words a reviewer can act on. The taxonomy says
+   * « donnée mobilisée »; a reviewer needs to know that a delivery time, a
+   * count or a date is one. Unknown roles fall back to the taxonomy's text.
+   */
+  const ROLE_WORDS = {
+    choice: 'l’option que l’élève retient',
+    claim: 'ce que l’élève affirme',
+    datum: 'les faits, chiffres ou dates que l’élève avance',
+    limit: 'la limite que l’élève énonce',
+    mitigation: 'la parade que l’élève propose',
+    risk: 'le risque que l’élève nomme',
+  };
+  const plainDescription = (role) =>
+    ROLE_WORDS[role.roleId] || role.description.split(' — ')[0];
 
   function persist() {
     try {
@@ -1579,6 +1592,7 @@
         </section>
         <section class="panel">
           <div class="eyebrow">5 · Les témoins</div>
+          <p class="note" style="margin:4px 0 10px">Désigne ce que l’élève a écrit, <strong>même si ça ne convient pas</strong> ; dire si ça convient, c’est le verdict. Sur cette carte, cherche ${singleSpan(card) ? '<strong>dans la phrase examinée seule</strong>' : '<strong>dans toute la copie</strong>'}.</p>
           ${hint((singleSpan(card) ? 'Sur cette famille, l’affirmation porte sur la phrase examinée seule : ses témoins se désignent dans cette phrase. Si le témoin n’y est pas, dis-le, même s’il existe ailleurs dans la copie : c’est le contrôle S qui s’en occupe. ' : 'Sur cette famille, l’affirmation relie plusieurs choses : un témoin peut être n’importe où dans la copie. ') + '<strong>Un témoin se désigne pour ce qui existe, pas pour ce qui convient</strong> : si l’élève a écrit des données, désigne-les même si elles sont hors sujet. Dire si elles conviennent, c’est le verdict. « Il n’y en a pas » veut dire : l’élève n’en a écrit aucune.')}
           <div class="roles" style="border-top:0;margin-top:0;padding-top:0">
             ${roleRows}
