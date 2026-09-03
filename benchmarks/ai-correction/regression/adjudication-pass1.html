@@ -8227,16 +8227,23 @@
             ' sur ' +
             neededEvidence(card) +
             ' attendues) · clique une phrase pour l’ajouter, reclique pour la retirer.'
-          : 'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie. ' +
+          : 'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie.' +
             (neededEvidence(card) > 1
-              ? '<strong>Cette question relie ' +
-                neededEvidence(card) +
-                ' choses : ' +
+              ? '<ul class="roles-todo">' +
                 bindableRoles(card)
-                  .map((r) => '« ' + escapeHtml(roleWords(r)) + ' »')
-                  .join(' et ') +
-                '. Il suffit d’une phrase pour chacune</strong>, jamais toutes : pour un non, une phrase qui fait tomber la réponse ; pour un oui, n’importe laquelle qui la prouve.'
-              : 'Clique, à droite, la ou les phrases qui te font répondre, que ce soit oui ou non.')) +
+                  .map(
+                    (r) =>
+                      '<li><strong>« ' +
+                      escapeHtml(roleWords(r)) +
+                      ' »</strong> → ' +
+                      roleHint(r) +
+                      '</li>',
+                  )
+                  .join('') +
+                '</ul><p class="note" style="margin:6px 0 0">Une phrase par ligne, ' +
+                neededEvidence(card) +
+                ' au total. Pas plus n’est demandé.</p>'
+              : ' Clique, à droite, la ou les phrases qui te font répondre, que ce soit oui ou non.')) +
         '</p>';
     document.getElementById('app').innerHTML =
       banner +
