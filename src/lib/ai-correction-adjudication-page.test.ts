@@ -79,7 +79,8 @@ const answerNo = (): void => {
   press('n');
 };
 const setControls = (): void => {
-  (document.querySelectorAll('#altTri button')[1] as HTMLElement).click();
+  const alt = document.querySelectorAll('#altTri button');
+  if (alt.length) (alt[1] as HTMLElement).click();
   (document.querySelectorAll('#viewTri button')[0] as HTMLElement).click();
 };
 
@@ -111,14 +112,14 @@ describe('the blind adjudication page, real deck', () => {
     (document.querySelector('#altTri button') as HTMLElement).click();
     expect(stored()[id]?.alternativeSupport).toBe('yes');
     expect(stored()[id]?.evidenceViewComplete).toBeNull();
-    press('d');
+    press('o');
     expect(stored()[id]?.verdict).toBe('DIRECT');
     expect(stored()[id]?.alternativeSupport).toBe('yes');
   });
 
   it('requires highlighted evidence for a yes on a multi-sentence card, none on a single-sentence one', () => {
     const multi = goTo((c) => /^S[456]_/.test(c.stratum));
-    press('d');
+    press('o');
     expect(document.getElementById('todo')?.textContent ?? '').toContain(
       'surligne',
     );
@@ -131,7 +132,7 @@ describe('the blind adjudication page, real deck', () => {
     ).toBe(1);
     goTo((c) => /^S[123]_/.test(c.stratum));
     expect(document.querySelectorAll('#resp .s.clickable')).toHaveLength(0);
-    press('d');
+    press('o');
     expect(document.getElementById('todo')?.textContent ?? '').not.toContain(
       'surligne',
     );
@@ -205,7 +206,7 @@ describe('the blind adjudication page, real deck', () => {
     for (let i = 0; i < 106; i += 1) {
       (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
       if (i < 25) {
-        press('a');
+        press('?');
         const why = document.getElementById('why') as HTMLInputElement;
         why.value = 'test';
         why.dispatchEvent(new Event('input'));
@@ -259,7 +260,7 @@ describe('the warm-up before the real deck', () => {
   });
 
   it('unlocks the real deck after the eighth card', () => {
-    const verdicts = ['n', 'n', 'd', 'n', 'd', 'd', 'd', 'n'];
+    const verdicts = ['n', 'n', 'o', 'n', 'o', 'o', 'o', 'n'];
     const evidence: Record<number, string[]> = {
       1: ['s2'],
       5: ['s1', 's2'],
@@ -272,11 +273,8 @@ describe('the warm-up before the real deck', () => {
           document.querySelector(`#resp .s[data-s="${id}"]`) as HTMLElement
         ).click();
       press(verdicts[i] ?? 'n');
-      (
-        document.querySelectorAll('#altTri button')[
-          i === 2 ? 0 : 1
-        ] as HTMLElement
-      ).click();
+      const alt = document.querySelectorAll('#altTri button');
+      if (alt.length) (alt[i === 2 ? 0 : 1] as HTMLElement).click();
       (document.querySelectorAll('#viewTri button')[0] as HTMLElement).click();
       const next =
         document.getElementById('trainNext') ??

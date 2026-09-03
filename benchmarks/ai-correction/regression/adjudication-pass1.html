@@ -158,10 +158,23 @@
   section.panel + section.panel {
     margin-top: 20px;
   }
-  .sticky {
+  main > section.col1 {
+    grid-column: 1;
+  }
+  main > section.col2 {
+    grid-column: 2;
+    grid-row: 2 / span 4;
     align-self: start;
     position: sticky;
     top: 40px;
+  }
+  @media (max-width: 940px) {
+    main > section.col1,
+    main > section.col2 {
+      grid-column: 1;
+      grid-row: auto;
+      position: static;
+    }
   }
   .question {
     font-family: 'Source Serif 4', Georgia, serif;
@@ -487,7 +500,7 @@
   <div class="grow"></div>
   <div class="count" id="progress">—</div>
   <button class="ghost" id="train">entraînement</button>
-  <button class="ghost" id="help"><kbd>?</kbd>aide</button>
+  <button class="ghost" id="help"><kbd>H</kbd>aide</button>
   <button class="ghost" id="who">relecteur…</button>
   <button class="ghost" id="toExport">export</button>
 </header>
@@ -497,23 +510,25 @@
     <div>
       <div class="eyebrow" id="verdictQuestion">La question</div>
       <div class="verdicts" id="verdicts">
-        <button data-v="DIRECT" aria-pressed="false"><kbd>D</kbd>oui</button>
+        <button data-v="DIRECT" aria-pressed="false"><kbd>O</kbd>oui</button>
         <button data-v="NOT_DIRECT" aria-pressed="false">
           <kbd>N</kbd>non
         </button>
         <button data-v="AMBIGUOUS" aria-pressed="false">
-          <kbd>A</kbd>je ne peux pas dire
+          <kbd>?</kbd>je ne peux pas dire
         </button>
       </div>
     </div>
     <div>
       <div class="ctl-label">
-        <kbd>S</kbd> Si on retirait la phrase examinée, une autre phrase de la
-        copie suffirait-elle, seule, à répondre oui&nbsp;?
+        <kbd>S</kbd> <strong>Autre phrase.</strong> Si on retirait la phrase
+        examinée, une autre phrase de la copie suffirait-elle, seule, à répondre
+        oui&nbsp;?
       </div>
       <div class="tri" id="altTri"></div>
       <div class="ctl-label" style="margin-top: 6px">
-        <kbd>V</kbd> Avais-tu tout ce qu’il fallait pour répondre&nbsp;?
+        <kbd>V</kbd> <strong>Informations.</strong> Avais-tu tout ce qu’il
+        fallait pour répondre&nbsp;?
       </div>
       <div class="tri" id="viewTri"></div>
     </div>
@@ -7903,7 +7918,8 @@
       d.evidenceSentenceIds.length === 0
     )
       list.push('surligne au moins une phrase qui te fait répondre');
-    if (d.alternativeSupport === null) list.push('S · autre phrase');
+    if (d.alternativeSupport === null && !wholeCopy(card))
+      list.push('S · autre phrase');
     if (d.evidenceViewComplete === null) list.push('V · rien ne m’a manqué');
     if (d.verdict === 'AMBIGUOUS' && !d.rationale) list.push('pourquoi');
     return list;
@@ -7939,12 +7955,13 @@
         yours: got.length ? got.join(', ') : 'aucune',
       });
     }
-    rows.push({
-      expected: yn(spec.expected.alternativeSupport),
-      field: 'S · autre phrase',
-      ok: d.alternativeSupport === spec.expected.alternativeSupport,
-      yours: yn(d.alternativeSupport),
-    });
+    if (!wholeCopy(card))
+      rows.push({
+        expected: yn(spec.expected.alternativeSupport),
+        field: 'S · autre phrase',
+        ok: d.alternativeSupport === spec.expected.alternativeSupport,
+        yours: yn(d.alternativeSupport),
+      });
     rows.push({
       expected: yn(spec.expected.evidenceViewComplete),
       field: 'V · rien ne manquait',
@@ -8115,7 +8132,7 @@
           <li><strong>La question</strong> : une seule, en français. Les mots en capitales (CHAQUE, AUCUNE) disent à quel point il faut être strict : CHAQUE = un seul raté et c’est non ; AUCUNE = un seul cas et c’est non.</li>
           <li><strong>La phrase examinée</strong> : relis-la avec la question en tête.</li>
           <li><strong>Ce qui te fait répondre</strong> : sur les familles « plusieurs phrases », clique les phrases de la copie qui te font dire oui ou non. Sur « une phrase », c’est la phrase surlignée, rien à faire.</li>
-          <li><strong>La réponse</strong> : <strong>D</strong> oui, <strong>N</strong> non, <strong>A</strong> je ne peux pas dire (justification obligatoire).</li>
+          <li><strong>La réponse</strong> : <strong>O</strong> oui, <strong>N</strong> non, <strong>?</strong> je ne peux pas dire (justification obligatoire).</li>
           <li><strong>Les deux contrôles</strong> : <strong>S</strong> si on retirait la phrase examinée, une autre suffirait-elle seule à répondre oui ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
         </ol>
         <dl>
@@ -8135,37 +8152,60 @@
               '<dt style="font-family:inherit;font-weight:500">' +
               escapeHtml(k) +
               '</dt><dd>' +
-              escapeHtml(v) +
+              escapeHtml(v.replace(/\s*\([a-z]+\.a\d\)/g, '')) +
               '</dd>',
           )
           .join('')}</dl>
-        <p class="note" style="margin:12px 0 0">On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.</p>
+        <p class="note" style="margin:12px 0 0">Fais des pauses : tout est sauvegardé dans ce navigateur, tu peux fermer et reprendre. Les mots CHAQUE et AUCUNE se ratent surtout quand on est fatigué.</p>
+        <p class="note" style="margin:8px 0 0">On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.</p>
       </section>
-      <div>
-        <section class="panel"><div class="eyebrow">1 · Ce qui était demandé</div>
+        <section class="panel col1"><div class="eyebrow">1 · Ce qui était demandé</div>
           ${card.frame ? '<p class="context"><strong>Consigne.</strong> ' + escapeHtml(card.frame) + '</p>' : ''}
           ${card.dossier ? '<p class="context"><strong>Dossier.</strong> ' + escapeHtml(card.dossier) + '</p>' : ''}
           ${!card.frame && !card.dossier ? '<p class="context">Sur cette famille de cartes, ni la consigne ni le dossier ne sont montrés : la question se juge sur la copie seule.</p>' : ''}
         </section>
-        <section class="panel"><div class="eyebrow">3 · La question</div>
+      <section class="panel col2">
+        <div class="eyebrow">2 · ${card.window && d.revealed !== true ? 'La copie, extrait autour de la phrase' : 'La copie de l’élève'} <span class="chip">${familyWords(card.stratum)}</span> <span class="chip" title="${escapeHtml(card.stratum)}">${escapeHtml(card.cardId)}</span></div>
+        <div class="response" id="resp">${renderResponse(card, d)}</div>
+        ${card.window && d.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la copie entière</button> <span class="note">l’ouverture est notée</span></p>' : ''}
+      </section>
+        <section class="panel col1"><div class="eyebrow">3 · La question</div>
           <p class="question">${escapeHtml(q)}</p>
           ${hint('Une seule question, en français. Réponds avec ce que la carte te laisse regarder : ' + scope.toLowerCase() + '.')}
           <p class="machine">écriture pour la machine : ${escapeHtml(card.atom)}${card.predicate ? ' · ' + escapeHtml(card.predicate) + ' · ' + escapeHtml(card.quantifier) : ''}</p>
         </section>
-        <section class="panel"><div class="eyebrow">4 · La phrase examinée</div><blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote></section>
-        <section class="panel"><div class="eyebrow">5 · Ce qui te fait répondre</div>${evidenceBlock}</section>
-      </div>
-      <div class="sticky"><section class="panel">
-        <div class="eyebrow">2 · ${card.window && d.revealed !== true ? 'La copie, extrait autour de la phrase' : 'La copie de l’élève'} <span class="chip">${familyWords(card.stratum)}</span> <span class="chip" title="${escapeHtml(card.stratum)}">${escapeHtml(card.cardId)}</span></div>
-        <div class="response" id="resp">${renderResponse(card, d)}</div>
-        ${card.window && d.revealed !== true ? '<p style="margin:12px 0 0"><button class="ghost" id="reveal">révéler la copie entière</button> <span class="note">l’ouverture est notée</span></p>' : ''}
-      </section></div>`;
+        <section class="panel col1"><div class="eyebrow">4 · La phrase examinée</div><blockquote class="candidate">${escapeHtml(card.candidateSpan)}</blockquote></section>
+        <section class="panel col1"><div class="eyebrow">5 · Ce qui te fait répondre</div>${evidenceBlock}</section>
+`;
 
     document.getElementById('verdictQuestion').innerHTML =
-      scope + ' : <em>' + escapeHtml(q) + '</em>';
+      scope +
+      ' : <em>' +
+      escapeHtml(q) +
+      '</em> <button class="link" id="seeExample">voir l’exemple corrigé</button>';
+    document.getElementById('seeExample').onclick = () => {
+      document.body.dataset.help = 'on';
+      document.body.dataset.guide = 'no';
+      try {
+        localStorage.setItem(HELP_STORE, 'on');
+        localStorage.setItem(GUIDE_STORE, 'no');
+      } catch (e) {
+        /* preference */
+      }
+      render();
+      window.scrollTo({ top: 0 });
+    };
     for (const b of document.querySelectorAll('#verdicts button'))
       b.setAttribute('aria-pressed', String(b.dataset.v === d.verdict));
-    tri(document.getElementById('altTri'), 'alternativeSupport');
+    if (wholeCopy(card)) {
+      d.alternativeSupport = 'not_applicable';
+      document.getElementById('altTri').innerHTML =
+        '<span class="chip">sans objet : la question porte déjà sur toute la copie</span>';
+    } else {
+      if (d.alternativeSupport === 'not_applicable')
+        d.alternativeSupport = null;
+      tri(document.getElementById('altTri'), 'alternativeSupport');
+    }
     tri(document.getElementById('viewTri'), 'evidenceViewComplete');
     document.getElementById('why').value = d.rationale || '';
     const todo = document.getElementById('todo');
@@ -8303,12 +8343,12 @@
       return;
     }
     const k = event.key.toLowerCase();
-    if (k === 'd') record('DIRECT');
+    if (k === 'o') record('DIRECT');
     else if (k === 'n') record('NOT_DIRECT');
-    else if (k === 'a') record('AMBIGUOUS');
+    else if (event.key === '?') record('AMBIGUOUS');
     else if (k === 's') cycle('alternativeSupport');
     else if (k === 'v') cycle('evidenceViewComplete');
-    else if (event.key === '?') {
+    else if (k === 'h') {
       toggleHelp();
       render();
     } else if (k === 'j') {
