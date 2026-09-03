@@ -351,6 +351,10 @@
     background: var(--bind-wash);
     box-shadow: 0 1px 0 var(--bind);
   }
+  .response .s.nobind {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
   .response .s.hidden {
     display: none;
   }
@@ -8041,6 +8045,20 @@
 
   const bindable = (card) => card.argumentRoles.filter((role) => role.bindable);
 
+  /**
+   * Where a witness may be designated depends on the card's family.
+   *
+   * On the single-sentence families (S1–S3) the affirmation is about the
+   * examined sentence alone, so its witnesses live inside that sentence. On
+   * the multi-sentence families (S4–S7) the affirmation relates several
+   * things, and a witness may be anywhere in the copy. The page used to give
+   * the same instruction in both cases, and a reviewer who bound a second
+   * faithful sentence on a single-sentence card had followed it faithfully.
+   */
+  const singleSpan = (card) => /^S[123]_/.test(card.stratum);
+  const mayBind = (card, sentenceId) =>
+    !singleSpan(card) || card.candidateSentenceIds.includes(sentenceId);
+
   function assessment(decision, roleId) {
     if (!decision.roleAssessments[roleId]) {
       decision.roleAssessments[roleId] = { sentenceIds: [], status: null };
@@ -8148,6 +8166,7 @@
       if (card.candidateSentenceIds.includes(sentence.id)) classes.push('cand');
       if (bound.has(sentence.id)) classes.push('bound');
       if (!inWindow && !revealed) classes.push('hidden');
+      if (armedRole && !mayBind(card, sentence.id)) classes.push('nobind');
       const label = bound.has(sentence.id)
         ? ' [' + escapeHtml(bound.get(sentence.id).join(' + ')) + ']'
         : '';
@@ -8276,7 +8295,11 @@
                 : ' · <button class="link" data-role="' +
                   escapeHtml(role.roleId) +
                   '">modifier</button>')
-            : '<span class="unbound">Clique maintenant la ou les phrases dans la copie, à droite.</span>';
+            : '<span class="unbound">' +
+              (singleSpan(card)
+                ? 'Clique la phrase examinée, surlignée à droite.'
+                : 'Clique maintenant la ou les phrases dans la copie, à droite.') +
+              '</span>';
         } else if (entry.status === null) {
           line =
             '<span class="unbound">Réponds à la question ci-dessus.</span>';
@@ -8295,7 +8318,11 @@
           '</span><span class="role-card-n">' +
           cardinalityWords(role.cardinality) +
           '</span></div>' +
-          '<p class="role-q">Où est-ce dans la copie ?</p>' +
+          '<p class="role-q">' +
+          (singleSpan(card)
+            ? 'Où est-ce dans la phrase examinée ?'
+            : 'Où est-ce dans la copie ?') +
+          '</p>' +
           '<div class="role-states">' +
           states +
           '</div>' +
@@ -8351,7 +8378,7 @@
           <li><strong>La copie</strong> : lis-la d’un trait, pour comprendre ce que l’élève a choisi.</li>
           <li><strong>L’affirmation à vérifier</strong> : une phrase qui affirme quelque chose sur la copie. Ton travail : dire si elle est vraie. Le dernier mot de la formule fixe la sévérité.</li>
           <li><strong>La phrase examinée</strong> : relis-la seule, avec l’affirmation en tête.</li>
-          <li><strong>Les témoins</strong> : pour chaque rôle, <strong>lié</strong> puis clique la phrase dans la copie, ou <strong>absent</strong>, ou <strong>ambigu</strong>.</li>
+          <li><strong>Les témoins</strong> : pour chaque rôle, <strong>lié</strong> puis clique la phrase, ou <strong>absent</strong>, ou <strong>ambigu</strong>. Sur les familles « une phrase » (S1–S3) le témoin se cherche dans la phrase examinée ; sur les familles « plusieurs phrases » (S4–S7), n’importe où dans la copie.</li>
           <li><strong>Le verdict</strong> : la phrase examinée prouve-t-elle, à elle seule, que l’affirmation est vraie ? <strong>D</strong> oui, elle la prouve ; <strong>N</strong> non ; <strong>A</strong> impossible à dire.</li>
           <li><strong>Les deux contrôles</strong>, sans valeur par défaut : <strong>S</strong> ailleurs dans la copie, une autre phrase prouve-t-elle l’affirmation ? <strong>V</strong> avais-tu tout ce qu’il fallait pour juger ?</li>
         </ol>
@@ -8359,7 +8386,7 @@
           <dt>D · oui</dt><dd>La phrase prouve exactement l’affirmation, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
           <dt>N · non</dt><dd>Elle ne prouve l’affirmation qu’à moitié, ou parle d’autre chose, ou le sous-entend sans le dire, ou s’appuie sur un mauvais témoin, ou le témoin manque. Une phrase vraie et bien écrite peut être un « non ».</dd>
           <dt>A · impossible à dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
-          <dt>S · autre phrase</dt><dd>Après ton verdict, regarde le reste de la copie : une autre phrase prouve-t-elle l’affirmation à elle seule ? Si oui, la copie mérite le point même quand la phrase examinée ne le prouve pas ; ces cas sont analysés à part.</dd>
+          <dt>S · autre phrase</dt><dd>Après ton verdict, regarde le reste de la copie, hors de la phrase examinée : une autre phrase prouve-t-elle l’affirmation à elle seule ? Si oui, la copie mérite le point même quand la phrase examinée ne le prouve pas ; ces cas sont analysés à part.</dd>
           <dt>V · manque</dt><dd>Avais-tu tout ce qu’il fallait ? « Non » veut dire que quelque chose t’a manqué (dossier non montré, extrait trop court) et que tu as jugé malgré ça. C’est une information utile, pas un aveu.</dd>
           <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
           <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
@@ -8390,7 +8417,7 @@
         </section>
         <section class="panel">
           <div class="eyebrow">5 · Les témoins</div>
-          ${hint('Pour chaque témoin, dis où il se trouve dans la copie. Si tu peux le montrer, clique la ou les phrases à droite. S’il n’y en a pas, dis-le : c’est une réponse normale, et souvent la raison d’un « non ».')}
+          ${hint(singleSpan(card) ? 'Sur cette famille, l’affirmation porte sur la phrase examinée seule : ses témoins se désignent dans cette phrase. Si le témoin n’y est pas, dis-le, même s’il existe ailleurs dans la copie : c’est le contrôle S qui s’en occupe.' : 'Sur cette famille, l’affirmation relie plusieurs choses : un témoin peut être n’importe où dans la copie. Pour chacun, dis où il se trouve, ou dis qu’il n’y en a pas.')}
           <div class="roles" style="border-top:0;margin-top:0;padding-top:0">
             ${roleRows}
           </div>
@@ -8465,6 +8492,14 @@
     for (const sentence of document.querySelectorAll('#resp .s')) {
       sentence.onclick = () => {
         if (!armedRole) return;
+        if (!mayBind(card, sentence.dataset.s)) {
+          const line = document.querySelector('.role-card.armed .role-line');
+          if (line) {
+            line.innerHTML =
+              '<span class="unbound">Sur cette famille de cartes, le témoin se désigne dans la phrase examinée, pas ailleurs.</span>';
+          }
+          return;
+        }
         const entry = assessment(decision, armedRole);
         const id = sentence.dataset.s;
         entry.sentenceIds = entry.sentenceIds.includes(id)

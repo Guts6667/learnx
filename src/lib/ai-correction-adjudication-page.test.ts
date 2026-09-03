@@ -392,13 +392,20 @@ describe('the warm-up before the real deck', () => {
           ) as HTMLElement
         ).click();
         if (wanted === 'BOUND') {
-          const sentences = document.querySelectorAll('#resp .s:not(.hidden)');
+          // Single-sentence families only accept the examined sentence; the
+          // others take any sentence. Pick accordingly.
+          const single = (
+            document.querySelector('.role-card.armed .role-q')?.textContent ??
+            ''
+          ).includes('phrase examinée');
+          const sentences = document.querySelectorAll(
+            single ? '#resp .s.cand' : '#resp .s:not(.hidden)',
+          );
           (
             sentences[
               Math.min(sentences.length - 1, roles.indexOf(roleId) + 1)
             ] as HTMLElement
           ).click();
-          // A role that wants at least two sentences gets a second one.
           if (
             (document.getElementById('todo')?.textContent ?? '').includes(
               'au moins 2',
