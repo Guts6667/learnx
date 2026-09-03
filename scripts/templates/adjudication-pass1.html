@@ -784,7 +784,7 @@
         evidenceViewComplete: 'yes',
       },
       lesson:
-        'Tout est vrai, et rien ne sert le choix de A : les données de s1 plaident pour B, celle de s2 ne plaide pour rien. « forall » casse dès la première donnée hors sujet. Une phrase vraie, chiffrée et bien écrite peut être un non.',
+        'Tout est vrai, et rien ne sert le choix de A : les données de s1 plaident pour B, celle de s2 ne plaide pour rien. « forall » casse dès la première donnée hors sujet. Une phrase vraie, chiffrée et bien écrite peut être un non. Piège fréquent sur le témoin : les données existent (s1, s2), donc on les désigne, même si elles ne conviennent pas. « Il n’y en a pas » serait pour une copie sans aucune donnée. Dire qu’elles ne servent pas le choix, c’est le rôle du verdict, et c’est ce que ton non fait.',
     },
     {
       id: 'E3',
@@ -1539,7 +1539,7 @@
           <li><strong>La copie</strong> : lis-la d’un trait, pour comprendre ce que l’élève a choisi.</li>
           <li><strong>L’affirmation à vérifier</strong> : une phrase qui affirme quelque chose sur la copie. Ton travail : dire si c’est prouvé. Les mots en capitales (CHAQUE, AUCUNE, UNE) disent à quel point il faut être strict.</li>
           <li><strong>La phrase examinée</strong> : relis-la seule, avec l’affirmation en tête.</li>
-          <li><strong>Les témoins</strong> : un témoin est le bout de copie qui montre la chose (le choix, la donnée, la limite). Pour chacun, clique « je peux la montrer » puis la phrase, ou « il n’y en a pas », ou « je n’arrive pas à décider ». La carte te dit si tu cherches dans la phrase examinée seule ou dans toute la copie.</li>
+          <li><strong>Les témoins</strong> : un témoin est le bout de copie qui montre la chose (le choix, la donnée, la limite). On le désigne pour ce qui existe, pas pour ce qui convient : des données hors sujet se désignent quand même, et c’est le verdict qui dira qu’elles ne conviennent pas. Pour chacun, clique « je peux la montrer » puis la phrase, ou « il n’y en a pas », ou « je n’arrive pas à décider ». La carte te dit si tu cherches dans la phrase examinée seule ou dans toute la copie.</li>
           <li><strong>Le verdict</strong> : avec ce que la carte te laisse regarder (la phrase examinée seule sur les familles « une phrase », les témoins désignés sur les autres), l’affirmation est-elle prouvée ? <strong>D</strong> oui, c’est prouvé ; <strong>N</strong> non, ce n’est pas prouvé ; <strong>A</strong> impossible à dire.</li>
           <li><strong>Les deux contrôles</strong>, à remplir obligatoirement : <strong>S · autre phrase</strong> : si on retirait la phrase examinée, une autre prouverait-elle l’affirmation à elle seule ? <strong>V · rien ne m’a manqué</strong> : avais-tu tout ce qu’il fallait pour juger ?</li>
         </ol>
@@ -1579,7 +1579,7 @@
         </section>
         <section class="panel">
           <div class="eyebrow">5 · Les témoins</div>
-          ${hint(singleSpan(card) ? 'Sur cette famille, l’affirmation porte sur la phrase examinée seule : ses témoins se désignent dans cette phrase. Si le témoin n’y est pas, dis-le, même s’il existe ailleurs dans la copie : c’est le contrôle S qui s’en occupe.' : 'Sur cette famille, l’affirmation relie plusieurs choses : un témoin peut être n’importe où dans la copie. Pour chacun, dis où il se trouve, ou dis qu’il n’y en a pas.')}
+          ${hint((singleSpan(card) ? 'Sur cette famille, l’affirmation porte sur la phrase examinée seule : ses témoins se désignent dans cette phrase. Si le témoin n’y est pas, dis-le, même s’il existe ailleurs dans la copie : c’est le contrôle S qui s’en occupe. ' : 'Sur cette famille, l’affirmation relie plusieurs choses : un témoin peut être n’importe où dans la copie. ') + '<strong>Un témoin se désigne pour ce qui existe, pas pour ce qui convient</strong> : si l’élève a écrit des données, désigne-les même si elles sont hors sujet. Dire si elles conviennent, c’est le verdict. « Il n’y en a pas » veut dire : l’élève n’en a écrit aucune.')}
           <div class="roles" style="border-top:0;margin-top:0;padding-top:0">
             ${roleRows}
           </div>
