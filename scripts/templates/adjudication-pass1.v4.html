@@ -649,6 +649,7 @@
       expected: {
         verdict: 'NOT_DIRECT',
         evidenceIncludes: ['s2'],
+        evidenceWords: 'la phrase hors sujet, s2 (le parking)',
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
@@ -733,6 +734,7 @@
       expected: {
         verdict: 'DIRECT',
         evidenceIncludes: ['s1', 's2'],
+        evidenceWords: 'le risque, s1, ET sa parade, s2',
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
@@ -777,6 +779,7 @@
       expected: {
         verdict: 'NOT_DIRECT',
         evidenceIncludes: ['s0', 's1'],
+        evidenceWords: 'le choix, s0, ET la limite, s1',
         alternativeSupport: 'no',
         evidenceViewComplete: 'yes',
       },
@@ -960,7 +963,9 @@
       const need = spec.expected.evidenceIncludes;
       const ok = need.every((id) => got.includes(id));
       rows.push({
-        expected: need.length ? 'au moins ' + need.join(', ') : 'libre',
+        expected: need.length
+          ? spec.expected.evidenceWords || 'au moins ' + need.join(', ')
+          : 'libre',
         field: 'phrases surlignées',
         ok,
         yours: got.length ? got.join(', ') : 'aucune',
