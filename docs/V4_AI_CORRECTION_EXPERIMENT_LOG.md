@@ -1695,3 +1695,108 @@ les violations voyagent sur l'observation et `computeRegressionMetrics` en fait
 un taux avec un dénominateur réel, `null` quand rien n'a pu être vérifié. Trois
 tests pilotent ce chemin de bout en bout ; retirer le rattachement en fait
 rougir deux.
+
+### État courant au 3 septembre 2026, et audit externe
+
+Un audit externe en lecture seule (mandaté par le propriétaire, SHA `0a1d212b`)
+a reproduit les sept empreintes au bit près, rejoué la répétition à blanc, les
+43 tests, et vérifié que D0 est réellement appelée. Il a relevé cinq écarts
+administratifs, tous fondés, corrigés ici, et approuvé le pivot de protocole
+décrit plus bas.
+
+#### Les chiffres en vigueur, qui remplacent ceux des sous-sections précédentes
+
+| quoi | valeur |
+|---|---|
+| échecs observés | 18 = 16 testables par vérificateur + 2 à règle déterministe (D0) |
+| paires | 45 sur 14 grappes ; 37 primaires sur 11 grappes |
+| primaires hors strate diagnostique | **25 paires sur 9 grappes** → borne 95 % d'un sans-faute **71,69 %** |
+| paquet v3 | `sha256:53a2defc…`, 106 cartes = 45 + 45 + 16 contrôles |
+| **clé v3** | `sha256:c27ed87a43f050a561bf482db729af786d65f0e2d67c025f8543003ba3b6b44e` |
+| rôles par carte, tous rôles | 14 × 1, 74 × 2, 18 × 3 |
+| rôles par carte, **liables dans la copie** | 5 × 0, 62 × 1, 39 × 2 |
+| `grounding` des 40 atomes | 16 « copie seule », 10 consigne, 14 dossier |
+
+Le message de handoff disait « 62 à un rôle, 39 à deux » sans les 5 cartes
+sans rôle liable : l'audit a raison, les comptes doivent porter la définition.
+
+#### Dépenses, périmètre qualifié
+
+L'audit a raison : « 8,97 USD » est le périmètre du ticket V4.5-210 (31 août
+soir 4,5685 + 1er septembre 4,4057), pas le total. Les grands livres de
+`regression/results/` totalisent **37,30 USD sur 18 runs payés**, dont ~26 le
+30 août sous l'enveloppe `owner-125`. Un filtre par date sur les grands livres
+donne 9,59 USD pour la même fenêtre : l'écart de 0,62 avec le journal reste à
+réconcilier ligne à ligne avant le prochain achat, et il est dit ici plutôt que
+choisi.
+
+#### Ce que l'audit a tranché
+
+1. **Fuite inversée des spans (0,679)** : résidu déclaré, pas de bras apparié
+   avant la course. Mitigation gratuite adoptée : rapporter les verdicts **par
+   tercile de longueur de span**.
+2. **Dénominateur 25 / 9 / 71,69 %** : correct et conservateur. À 9 grappes,
+   une grappe déplace la borne de ~11 points : la course se lit en grappes,
+   jamais en pourcentage.
+3. **Relecteur unique** : trois garde-fous pré-déclarés, gratuits, adoptés :
+   plafond d'abstention **20 % d'AMBIGUOUS, au-delà la passe est suspendue** ;
+   test-retest de 10 cartes à J+2 ; ordre et temps par carte dans l'export.
+   Plus un échantillon d'accord inter-juges : 15 cartes par les deux humains.
+4. **Grounding** : pour un atome que la passe montre injugeable sans dossier,
+   deux issues et deux seulement, déclarées avant : ré-annotation vers la
+   famille avec dossier, ou retrait vers la strate rapportée. Jamais après
+   avoir vu un verdict du vérificateur.
+5. **Préregistration** : le plan directeur entre dans le dépôt,
+   `docs/V4_5_210_PREREGISTRATION.md`, copie conforme du plan validé.
+
+#### Numérotation
+
+Les sections 12 et 13 existent sur deux branches non fusionnées
+(`ai-research/checker-signal`, `ai-research/model-comparison`) ; cette
+section 14 a été numérotée pour ne pas les écraser à la fusion.
+
+### Pivot de protocole : la passe 1 refaite autour du jugement humain
+
+**Preuve** : quatre lectures indépendantes de la page, un agent sans contexte,
+un rapport externe, le propriétaire, une seconde personne, ont échoué aux
+mêmes endroits. Le même geste qu'au §14 pour le modèle : quand tout le monde
+échoue pareil, le défaut appartient à la tâche. Deux cartes d'entraînement sur
+huit se sont en outre révélées discutables (E2, E3). Une étiquette de référence
+produite par un relecteur qui décode mal la grille contamine la course entière.
+
+**Décision** : la passe 1 demande à l'humain ce qu'un humain fait bien, et
+laisse le schéma au code et à la passe 2.
+
+- Le relecteur voit : consigne et dossier selon la famille, la copie **dans
+  la fenêtre de 340 caractères sur S1–S3** (la fenêtre reste : c'est elle qui
+  a neutralisé la fuite de longueur), la phrase surlignée, et **une question
+  en français courant**, une par atome, quarante en tout.
+- Il répond oui / non / je ne peux pas dire, **surligne les phrases qui lui
+  font dire ça**, puis S et V inchangés.
+- Sur les 62 cartes à un seul rôle liable, le témoin est dérivé de la phrase
+  surlignée. Sur les 39 cartes à deux rôles, la liaison rôle → phrase est
+  demandée en **passe 2**, côte à côte, réponse déjà donnée. C'est l'option
+  « étiquettes seulement, puis passe de liaison obligatoire » que le relecteur
+  du protocole avait lui-même prévue. Les 5 cartes sans rôle liable n'ont rien
+  à dériver.
+- L'export garde le même format ; les contrôles et les deux questions de
+  vérification survivent.
+
+**Conditions posées par l'audit, acceptées** :
+
+- relancer l'audit d'aveuglement sur la nouvelle présentation **avant** la
+  passe, et annoncer que 25 / 9 / 71,69 % peut bouger une troisième fois ;
+- les 40 questions sont un artefact **préenregistré et scellé** : brouillon →
+  validation propriétaire → gel → scellement ; une question retouchée après un
+  verdict est du retuning ;
+- test de non-orientation des 40 questions par deux agents sans contexte ;
+- table question ↔ atome vérifiée par script : un-à-un, et le quantificateur
+  de l'atome (CHAQUE / UNE / AUCUNE) présent dans la question ;
+- l'échauffement refait avec des réponses indiscutables, validé par deux
+  agents sans contexte, puis **8/8 sans hésitation par le propriétaire** avant
+  le lancement ;
+- paquet v3 et page actuelle conservés comme preuve superseded ; nouveaux
+  scellés, répétition à blanc et tests pour la v4 ; empreinte de la nouvelle
+  clé publiée avant l'export.
+
+Dépense de ce pivot : 0,00 USD.
