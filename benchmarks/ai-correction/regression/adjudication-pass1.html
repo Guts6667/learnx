@@ -228,6 +228,89 @@
     font-size: 12.5px;
   }
 
+  .role-card {
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  .role-card.armed {
+    border-color: var(--bind);
+    box-shadow: 0 0 0 1px var(--bind) inset;
+  }
+  .role-card.external-role {
+    border-style: dashed;
+    color: var(--muted);
+  }
+  .role-head {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+  .role-head button {
+    background: transparent;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    padding: 3px 9px;
+  }
+  .role-head button[aria-pressed='true'] {
+    background: var(--bind);
+    border-color: var(--bind);
+    color: #fff;
+  }
+  .role-desc {
+    font-weight: 500;
+  }
+  .role-card-n {
+    color: var(--muted);
+    font-size: 12.5px;
+    margin-left: auto;
+  }
+  .role-q {
+    color: var(--muted);
+    font-size: 12.5px;
+    margin: 8px 0 4px;
+  }
+  .role-states {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .role-card button.status {
+    background: transparent;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+  .role-card button.status[aria-pressed='true'] {
+    background: var(--bind);
+    border-color: var(--bind);
+    color: #fff;
+  }
+  .role-line {
+    font-size: 13px;
+    margin: 8px 0 0;
+  }
+  button.link {
+    background: none;
+    border: 0;
+    color: var(--bind);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    padding: 0;
+    text-decoration: underline;
+  }
   .chip {
     background: var(--rule-soft);
     border-radius: 2px;
