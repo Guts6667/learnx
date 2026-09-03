@@ -115,6 +115,12 @@
   .rail button[data-d='AMBIGUOUS'] {
     background: var(--ambiguous);
   }
+  .rail button[data-g='ok'] {
+    background: var(--direct);
+  }
+  .rail button[data-g='ko'] {
+    background: var(--notdirect);
+  }
   .rail button[data-incomplete='true'] {
     opacity: 0.45;
   }
@@ -1336,8 +1342,19 @@
       const button = document.createElement('button');
       const decision = activeDecisions()[card.cardId];
       if (decision && decision.verdict) {
-        button.dataset.d = decision.verdict;
-        button.dataset.incomplete = String(!complete(card));
+        if (inTraining()) {
+          // During the warm-up the bar means correct / to review, not the
+          // verdict: a right « non » shown in red read as a mistake.
+          const result = complete(card) ? grade(card, decision) : null;
+          if (result) {
+            button.dataset.g = result.rows.every((row) => row.ok) ? 'ok' : 'ko';
+          } else {
+            button.dataset.incomplete = 'true';
+          }
+        } else {
+          button.dataset.d = decision.verdict;
+          button.dataset.incomplete = String(!complete(card));
+        }
       }
       if (index === getIndex()) button.dataset.current = 'true';
       button.title = 'carte ' + (index + 1);
@@ -1486,7 +1503,7 @@
         ' sur ' +
         TRAINING.length +
         '</div>' +
-        '<p class="note" style="margin:6px 0 0">Ces huit cartes sont inventées. Réponds comme pour une vraie carte ; dès qu’elle est complète, la correction s’affiche ici. Rien de ce que tu fais ici n’est enregistré pour la vraie passe.</p>' +
+        '<p class="note" style="margin:6px 0 0">Ces huit cartes sont inventées. Réponds comme pour une vraie carte ; dès qu’elle est complète, la correction s’affiche ici. Dans la barre du haut : vert = tout juste, rouge = au moins une réponse à revoir. Rien de ce que tu fais ici n’est enregistré pour la vraie passe.</p>' +
         (feedback
           ? '<table class="grade">' +
             feedback.rows
@@ -1534,6 +1551,7 @@
           <dt>V · rien ne m’a manqué</dt><dd>Pour répondre à CETTE affirmation, avais-tu tout ce qu’il fallait ? Un dossier non montré n’est un manque que si l’affirmation en avait besoin ; quand la carte dit « la copie seule suffit », ce n’est pas un manque. Répondre « non » est une information utile, pas un aveu.</dd>
           <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
           <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
+          <dt>barre du haut</dt><dd>Pendant l’échauffement : vert = tout juste, rouge = à revoir. Sur les vraies cartes, la couleur est ton verdict : vert = oui, rouge = non, mauve = impossible à dire. Ce n’est pas une note.</dd>
         </dl>
         <p class="note" style="margin:12px 0 0">On ne te dit pas d’où vient chaque copie ni ce qu’elle vaut, et c’est voulu : ne te fie ni à la longueur ni au style, juge seulement ce qui est écrit.</p>
       </section>

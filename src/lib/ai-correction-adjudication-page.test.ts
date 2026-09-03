@@ -344,6 +344,11 @@ describe('the warm-up before the real deck', () => {
     );
     expect(document.getElementById('trainNext')).not.toBeNull();
     expect(Object.keys(stored())).toHaveLength(0);
+    // A correct « non » must not show as red: in the warm-up the bar means
+    // correct / to review.
+    expect(
+      (document.querySelector('#rail button') as HTMLElement).dataset.g,
+    ).toBe('ok');
   });
 
   it('shows the mistake when the answer is wrong', () => {
