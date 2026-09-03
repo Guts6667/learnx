@@ -588,11 +588,12 @@
     <div>
       <div class="eyebrow" style="margin-bottom: 4px">7 · Contrôles</div>
       <div class="ctl-label">
-        <kbd>S</kbd> une autre phrase de la copie prouverait l’affirmation
+        <kbd>S</kbd> Ailleurs dans la copie, une autre phrase prouve-t-elle
+        l’affirmation&nbsp;?
       </div>
       <div class="tri" id="altTri"></div>
       <div class="ctl-label" style="margin-top: 6px">
-        <kbd>V</kbd> vue de preuve complète
+        <kbd>V</kbd> Avais-tu tout ce qu’il fallait pour juger&nbsp;?
       </div>
       <div class="tri" id="viewTri"></div>
     </div>
@@ -7767,7 +7768,17 @@
     container.innerHTML = '';
     for (const option of ['yes', 'no']) {
       const button = document.createElement('button');
-      button.textContent = option === 'yes' ? 'oui' : 'non';
+      const words = {
+        alternativeSupport: {
+          no: 'non, aucune autre',
+          yes: 'oui, une autre la prouve aussi',
+        },
+        evidenceViewComplete: {
+          no: 'non, quelque chose m’a manqué',
+          yes: 'oui, rien ne m’a manqué',
+        },
+      }[field];
+      button.textContent = words[option];
       // Nothing is pressed while the answer is unset: no anchor, no proposal.
       button.setAttribute('aria-pressed', String(value === option));
       button.onclick = () => {
@@ -7876,14 +7887,14 @@
           <li><strong>La phrase examinée</strong> : relis-la seule, avec l’affirmation en tête.</li>
           <li><strong>Les témoins</strong> : pour chaque rôle, <strong>lié</strong> puis clique la phrase dans la copie, ou <strong>absent</strong>, ou <strong>ambigu</strong>.</li>
           <li><strong>Le verdict</strong> : la phrase examinée prouve-t-elle, à elle seule, que l’affirmation est vraie ? <strong>D</strong> oui, elle la prouve ; <strong>N</strong> non ; <strong>A</strong> impossible à dire.</li>
-          <li><strong>Les contrôles</strong>, sans valeur par défaut : <strong>S</strong> une autre phrase le prouverait-elle ? <strong>V</strong> avais-tu tout ce qu’il fallait ?</li>
+          <li><strong>Les deux contrôles</strong>, sans valeur par défaut : <strong>S</strong> ailleurs dans la copie, une autre phrase prouve-t-elle l’affirmation ? <strong>V</strong> avais-tu tout ce qu’il fallait pour juger ?</li>
         </ol>
         <dl>
           <dt>D · oui</dt><dd>La phrase prouve exactement l’affirmation, avec les témoins qu’elle nomme. Pas « on comprend que », pas « c’est à côté ».</dd>
           <dt>N · non</dt><dd>Elle ne prouve l’affirmation qu’à moitié, ou parle d’autre chose, ou le sous-entend sans le dire, ou s’appuie sur un mauvais témoin, ou le témoin manque. Une phrase vraie et bien écrite peut être un « non ».</dd>
           <dt>A · impossible à dire</dt><dd>Ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Justification obligatoire.</dd>
-          <dt>autre soutien</dt><dd>Sert surtout quand la phrase examinée ne suffit pas : y a-t-il ailleurs dans la copie une phrase qui prouverait l’affirmation ?</dd>
-          <dt>vue complète</dt><dd>Répondre « non » est une information utile, pas un aveu : ça dit que la carte t’a fait juger avec un manque.</dd>
+          <dt>S · autre phrase</dt><dd>Après ton verdict, regarde le reste de la copie : une autre phrase prouve-t-elle l’affirmation à elle seule ? Si oui, la copie mérite le point même quand la phrase examinée ne le prouve pas ; ces cas sont analysés à part.</dd>
+          <dt>V · manque</dt><dd>Avais-tu tout ce qu’il fallait ? « Non » veut dire que quelque chose t’a manqué (dossier non montré, extrait trop court) et que tu as jugé malgré ça. C’est une information utile, pas un aveu.</dd>
           <dt>J</dt><dd>Aller à la justification. Échap pour en sortir.</dd>
           <dt>← →</dt><dd>Carte précédente, carte suivante. La barre du haut est cliquable.</dd>
         </dl>
