@@ -113,6 +113,15 @@
     outline: 2px solid var(--ink);
     outline-offset: 1px;
   }
+  ul.roles-todo {
+    margin: 8px 0 0;
+    padding-left: 20px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  ul.roles-todo li {
+    margin-bottom: 4px;
+  }
   .legend {
     align-items: center;
     color: var(--muted);
@@ -7612,6 +7621,18 @@
   const roleWords = (r) =>
     ROLE_WORDS[r.roleId] || (r.description || r.roleId).split(' — ')[0];
   /** How many sentences a multi-sentence card needs: one per thing the question relates. */
+  /** What to highlight for a role, in one line: anchors are « where it is said »; quantified sets take the sentence that decides. */
+  const SET_ROLES = new Set([
+    'datum',
+    'fact',
+    'claim',
+    'operation',
+    'material_claim',
+  ]);
+  const roleHint = (r) =>
+    SET_ROLES.has(r.roleId)
+      ? 'une seule phrase : pour un non, celle qui fait tomber ta réponse ; pour un oui, n’importe laquelle qui la prouve'
+      : 'la phrase où l’élève le dit';
   const neededEvidence = (card) =>
     Math.max(1, Math.min(bindableRoles(card).length, card.sentences.length));
   const questionFor = (card) =>
@@ -8201,7 +8222,11 @@
         (d.evidenceSentenceIds.length
           ? 'Phrases surlignées : <strong>' +
             d.evidenceSentenceIds.join(', ') +
-            '</strong> · clique une phrase de la copie pour l’ajouter, reclique pour la retirer.'
+            '</strong> (' +
+            d.evidenceSentenceIds.length +
+            ' sur ' +
+            neededEvidence(card) +
+            ' attendues) · clique une phrase pour l’ajouter, reclique pour la retirer.'
           : 'La phrase surlignée est le point de départ ; sur cette famille tu juges avec toute la copie. ' +
             (neededEvidence(card) > 1
               ? '<strong>Cette question relie ' +
