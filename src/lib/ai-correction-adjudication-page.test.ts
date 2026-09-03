@@ -163,8 +163,9 @@ describe('the blind adjudication page, real deck', () => {
 
   it('derives the witness on a single-role card and defers two-role cards to pass 2', async () => {
     // Complete every card with a « non », then export and inspect the derivation.
-    (window as unknown as { prompt: () => string }).prompt = () => 'test';
     document.getElementById('who')?.click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'test';
+    document.getElementById('whoSave')?.click();
     for (let i = 0; i < 106; i += 1) {
       (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
       answerNo();
@@ -207,8 +208,9 @@ describe('the blind adjudication page, real deck', () => {
   });
 
   it('suspends the pass above the pre-declared abstention cap', () => {
-    (window as unknown as { prompt: () => string }).prompt = () => 'test';
     document.getElementById('who')?.click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'test';
+    document.getElementById('whoSave')?.click();
     for (let i = 0; i < 106; i += 1) {
       (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
       if (i < 25) {

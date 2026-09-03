@@ -501,7 +501,17 @@
   <div class="count" id="progress">—</div>
   <button class="ghost" id="train">entraînement</button>
   <button class="ghost" id="help"><kbd>H</kbd>aide</button>
-  <button class="ghost" id="who">relecteur…</button>
+  <span id="whoBox" style="display: inline-flex; gap: 6px; align-items: center"
+    ><button class="ghost" id="who">relecteur…</button
+    ><input
+      id="whoInput"
+      type="text"
+      placeholder="ton identifiant"
+      autocomplete="off"
+      hidden
+      style="width: 160px; padding: 5px 8px"
+    /><button class="ghost" id="whoSave" hidden>enregistrer</button></span
+  >
   <button class="ghost" id="toExport">export</button>
 </header>
 <main id="app"></main>
@@ -8344,19 +8354,26 @@
   document.getElementById('prev').onclick = () => advance(-1);
   document.getElementById('next').onclick = () => advance(1);
   document.getElementById('help').onclick = toggleHelp;
+  // A system confirm() is blocked where this page is hosted, like prompt():
+  // the second click within five seconds is the confirmation.
+  let trainArmedAt = 0;
   document.getElementById('train').onclick = () => {
-    if (
-      inTraining() ||
-      confirm(
-        'Refaire l’échauffement ? Tes décisions de la vraie passe sont conservées.',
-      )
-    ) {
-      training.done = false;
-      training.decisions = {};
-      training.index = 0;
-      persist();
-      render();
+    const button = document.getElementById('train');
+    if (!inTraining() && Date.now() - trainArmedAt > 5000) {
+      trainArmedAt = Date.now();
+      button.textContent =
+        'reclique pour refaire l’échauffement (tes vraies décisions sont gardées)';
+      setTimeout(() => {
+        button.textContent = 'entraînement';
+      }, 5000);
+      return;
     }
+    training.done = false;
+    training.decisions = {};
+    training.index = 0;
+    button.textContent = 'entraînement';
+    persist();
+    render();
   };
   document.getElementById('why').oninput = () => {
     const card = activeCards()[getIndex()];
@@ -8368,13 +8385,29 @@
     todo.textContent = todoText(card);
   };
   document.getElementById('who').onclick = () => {
-    const v = prompt(
-      'Identifiant du relecteur (enregistré avec chaque décision)',
-      state.reviewer,
-    );
-    if (v !== null) {
-      state.reviewer = v.trim();
-      touch();
+    const input = document.getElementById('whoInput');
+    const save = document.getElementById('whoSave');
+    input.hidden = false;
+    save.hidden = false;
+    input.value = state.reviewer;
+    input.focus();
+  };
+  const saveReviewer = () => {
+    const input = document.getElementById('whoInput');
+    state.reviewer = input.value.trim();
+    input.hidden = true;
+    document.getElementById('whoSave').hidden = true;
+    touch();
+  };
+  document.getElementById('whoSave').onclick = saveReviewer;
+  document.getElementById('whoInput').onkeydown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      saveReviewer();
+    }
+    if (event.key === 'Escape') {
+      document.getElementById('whoInput').hidden = true;
+      document.getElementById('whoSave').hidden = true;
     }
   };
   const cycle = (field) => {
