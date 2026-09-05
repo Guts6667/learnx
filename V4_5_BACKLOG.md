@@ -592,6 +592,93 @@ que Git reste l'autorité de définition. Détail dans `docs/AIRTABLE_SYNC_LOG.m
 | UX-002 | C | Frontend → QA/Release | Fixture visuelle « contenu le plus long » (trois parcours, titres longs, progression non nulle) | UX-001 |
 | UX-003 | C | Frontend → QA/Release | Pourcentage chiffré retiré de la carte (`ProgressBar` `labelHidden`, valeur en `aria-label` seulement) — défaut attrapé par UX-002 | UX-002 |
 
+### Landing « Conversion Edition » (maquette Paper) — tickets V4.5-219 → 229
+
+Objectif fixé par Rayan le 5 septembre 2026 : la nouvelle landing publique
+(`/`) est livrée pour la release V4.5 et reproduit **précisément** la maquette
+Paper. Source de vérité visuelle : fichier Paper « LearnX », page
+**New Landing** (`https://app.paper.design/file/01M1C69P0MXA9639D60AEZSP8Y/2-2`),
+artboards **« LearnX — Conversion Edition · Refined »** (1440) et
+**« LearnX — Conversion Edition · Mobile · Aligned »** → calque
+**« LearnX — Mobile Landing · Desktop-aligned »** (390 ; les deux autres calques
+de cet artboard sont masqués et ne font pas foi).
+
+Règles communes à tous les tickets de ce lot :
+
+- **Valeurs lues dans Paper, jamais dans une capture** : `get_jsx`,
+  `get_computed_styles`, `get_fill_image` sur le calque nommé dans le ticket.
+  Le desktop est écrit en hex littéral, le mobile en tokens ; le code utilise
+  les tokens (`--color-canvas #F4F4EE`, `--color-paper #FFFEFB`,
+  `--color-ink #111A31`, `--color-muted #5E6576`, `--color-line #DCDDD5`,
+  `--color-indigo #5557D9`, `--color-indigo-soft #E8E8FF`,
+  `--color-coral #D97858`, `--color-mint #C9E7D7`, rayons 10/18/28 px).
+- **Chiffres, noms de packs et palier recommandé viennent du catalogue**
+  (`GET /api/public-catalogue`, V4.5-206/212/213 et PR #214). La maquette
+  affiche 360 / 1 056 / 2 400 : ce sont des placeholders ; la grille arbitrée
+  le 2 septembre est 300 / 1 056 / 2 000. Aucun prix ni crédit codé en dur.
+- **Aucune sélection de pack avant la candidature** (arbitrage Rayan du
+  2 septembre, idée reportée en V5) : aucun bouton, texte ou paramètre ne peut
+  laisser croire qu'un choix est transmis avec la demande d'accès.
+- **Bilingue** : le site est FR par défaut, EN au bascule. La maquette est en
+  anglais seulement ; chaque section livre ses deux langues (ticket 220).
+- **Une PR par ticket**, capture Paper et capture Playwright côte à côte
+  (1440 et 390) dans la PR, écarts listés explicitement. Pas de `[deploy]`
+  avant 229.
+- **Voie** : Head of UX/UI (Frontend) pour 219–227 et 229, dans l'ordre ;
+  Head of Development (Backend/Data) pour 228 seulement. Deux voies au plus.
+
+Préalables : merger la PR #214 (grille, noms, `recommended`) avant 223 ;
+fermer les PR #202, #204 et #205 (explorations du 31 août sur l'ancienne
+promesse « Your path to knowledge », remplacées par la maquette Paper) —
+décision D0 ci-dessous.
+
+| Ticket | Voie | Owner → Reviewer | Objet | Deps |
+| --- | --- | --- | --- | --- |
+| V4.5-219 | C | Frontend → Design | Socle visuel : tokens Paper, Plus Jakarta Sans 800 et DM Sans 800 ajoutés à `public/fonts`, fonds décoratifs (disques coral/mint/indigo, débordement `overflow: clip`), rythme des sections (1440 : padding 80 px, sections 74–92 px ; 390 : padding 20 px), navigation (calque « Navigation ») et pied de page (calque « Footer ») desktop + mobile, suppression de la bande `landing-principles`, tablette 768 dérivée | — |
+| V4.5-220 | C | Frontend → Rayan | Jeu de copie FR + EN de toute la page (tous les textes de la maquette traduits, y compris libellés de formulaire, états d'erreur et de succès), validé par Rayan avant intégration ; catalogue `src/i18n/catalogs/landing.ts` réécrit, clés mortes retirées | D2, D3, D4 |
+| V4.5-221 | C | Frontend → QA/Release | Hero « Know what to learn next. » (calque « Hero · Momentum ») : eyebrow, H1 82 px / −4.8 px / 800 (48 px sur mobile), lead 21 px, CTA primaire → formulaire, CTA secondaire → `#product`, ligne de preuve, aperçu produit statique « Hello, Maya » (barre latérale, progression 7 sur 17 / 68 %, prochaine étape, notes 12 / tentatives 8, toast « Always saved ») ; mobile : calque « Hero » | 219, 220 |
+| V4.5-222 | C | Frontend → QA/Release | Preuve produit « Open LearnX. Keep moving. » (calque « Product proof · Resume Learn Improve », fond ink) : trois étapes numérotées et trois cartes (programme « Lead a team project », leçon « Write a sprint goal » avec source Scrum Guide 2020, retour « Writing practice » relu) construites sur `LandingPreviews` avec le contenu réel déjà testé par `landing.spec.ts` ; mobile : calque « Product proof » (liste des étapes + carte combinée « Connected app moments ») | 219, 220 |
+| V4.5-223 | C | Frontend → QA/Release | Tarifs « Choose your momentum. » (calque « Pricing · Early adopter ») : trois cartes depuis le catalogue, carte `recommended` en indigo avec badge « OUR PICK », chip « +20 % early-adopter bonus included » seulement si `bonusCredits > 0`, bandeau de bas de section, CTA de carte → formulaire **sans sélection** ; mobile : calque « Pricing » (cartes empilées, Journey en ink) ; réécrit `LandingPricing.tsx` et retire le commentaire « trois boutons égaux » de 213 | 219, 220, #214 mergée |
+| V4.5-224 | C | Frontend → QA/Release | Feuille de route (calque « Product roadmap ») : titre trois lignes, chronologie à trois jalons (Available ✓ / 02 Bounded pilot / 03 Next) dans une carte canvas, sans le lien « View the full roadmap → » (D3) ; mobile : calque « Roadmap » | 219, 220 |
+| V4.5-225 | C | Frontend → QA/Release | Recherche & transparence « Trust deserves receipts. » (calque « Research & transparency », fond indigo-soft) : bouton ink « Explore our research » → `/research/ai-correction/…` (existant, bilingue), carte « Research library » avec une note réelle (D4), trois mini-cartes Sourced / Limits included / Dated ; mobile : calque « Research » | 219, 220 |
+| V4.5-226 | C | Frontend → QA/Release | « Your next step » (calque « Momentum CTA ») : construite à l'identique (carte Journey, CTA « Apply with Journey selected → », note « Your selection is a preference, not a purchase »), mais **masquée en V4.5** derrière un interrupteur de code (D5) ; tests des deux états ; affichage prévu en V5 avec la sélection de pack ; mobile : calque « Momentum CTA » | 220, 223 |
+| V4.5-227 | C | Frontend → Backend/Data | Formulaire d'accès anticipé (calque « Limited early access ») : panneau ink (bénéfices, « How it works » 01/02/03) + carte formulaire (prénom, e-mail, « What do you want to learn? », « What usually slows you down? » optionnel, case d'abonnement aux nouvelles **décochée**, bouton, encart « No account created. No payment taken. », mention légale) + bloc « Not ready to apply? » ; une soumission = candidature EARLY_ADOPTER (+ LAUNCH_UPDATES si la case est cochée) ; états chargement/erreur/succès de la maquette ; mobile : calque « Early access » (champ objectif en zone de texte) | 219, 220, 228 selon D6 |
+| V4.5-228 | A | Backend/Data → Head of AI | Prospects : champs `firstName` et `friction` (migration additive `public_leads`), validation Zod, e-mails de confirmation qui utilisent le prénom, export/écran admin contacts, registre RGPD (V4.5-165) et politique de confidentialité mis à jour, purge alignée sur la rétention existante | D6 |
+| V4.5-229 | C+D | QA/Release → DevOps | Recette de la landing : `landing.spec.ts` et `LandingPage.test.tsx` réécrits sur la nouvelle copie (H1 EN « Know what to learn next. »), a11y sans violation sérieuse (contraste des textes muted sur canvas, eyebrows 13 px), reduced-motion, PWA standalone inchangée, budget JS du trajet (189) tenu malgré les deux graisses ajoutées, baselines visuelles régénérées **sur Linux via `visual.yml` (update: true)** pour 1440/768/390, puis merge `[deploy]` sur preview et validation Rayan sur téléphone réel | 219 → 227 |
+
+Arbitrages de Rayan du 5 septembre 2026 :
+
+- **D0 — PR #202/#204/#205** : fermées sans merge le 5 septembre.
+- **D1 — Bascule de langue et menu mobile** : bascule FR/EN à droite de la
+  navigation desktop et dans le pied de page mobile ; pas de menu hamburger,
+  les ancres vivent dans le pied de page ; le lien Confidentialité y reste.
+- **D2 — Bonus « +20 % »** : tranché le 5 septembre (« on prend ta reco ») —
+  la grille du 2 septembre reste **300 / 1 056 / 2 000** (100 / 132 / 125
+  crédits par euro), le bonus est réservé à Journey, la PR #214 ne change pas.
+  La cohérence offre/design tient par les puces des cartes : seule Journey
+  porte « +20 % early-adopter bonus included », Deep Dive porte « One-time
+  credit pack ». Les deux textes qui généralisaient le bonus sont corrigés :
+  hero « +20 % de crédits sur Journey après acceptation », eyebrow tarifs
+  « EARLY ADOPTER · JOURNEY +20 % ». Le 2 400 de la maquette est un
+  placeholder ; le catalogue affiche 2 000.
+- **D3 — « View the full roadmap → »** : lien retiré en V4.5.
+- **D4 — Note de recherche** : le dernier article réel de
+  `public/research/ai-correction/articles`, vrai titre, vraie date, vrai
+  nombre de sources.
+- **D5 — Section « Your next step »** : tranché le 5 septembre après
+  envoi des captures — la section est **conçue fidèlement à la maquette puis
+  masquée** en V4.5 (interrupteur de code, aucun rendu dans le DOM public,
+  exclue des baselines visuelles et de l'a11y de la page publiée) ; elle sera
+  affichée en V5 avec la sélection de pack avant candidature. Aucune sélection
+  n'est transmise en V4.5.
+- **D6 — Champs du formulaire** : (b), prénom et frein stockés ; 228 activé.
+- **D7 — Tablette 768** : composition mobile élargie jusqu'à 1023 px,
+  desktop à partir de 1024 px.
+
+Séquence : #214 → 219 ∥ 220 → 221 → 222 → 223 → 224 → 225 → 226 → 227 (228 en
+parallèle si D6 = b) → 229. Une seule voie frontend, un ticket `IN_PROGRESS`
+à la fois.
+
 ### Cartes closes le 29 août 2026 (nettoyage du tableau)
 
 Remplacées par des tickets V4.5 : V4-011 (→ 130), V4-013 (→ 160), V4-014
