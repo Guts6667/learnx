@@ -1,3 +1,31 @@
+/*
+ * La palette de la maquette « Conversion Edition » (V4.5-219).
+ *
+ * Portée par la racine publique, pas par `:root`, et c'est une contrainte
+ * plutôt qu'un goût : `--color-canvas`, `--color-coral` et `--color-muted`
+ * existent déjà avec d'autres valeurs dans `tokens/theme.css`, où toute
+ * l'application les lit. Les redéfinir globalement repeindrait l'espace
+ * apprenant pour livrer une landing. Elles ne valent donc qu'ici, et la
+ * cascade fait le reste : une section publique qui lit `--color-canvas`
+ * obtient la valeur Paper, la même variable ailleurs garde la sienne.
+ *
+ * Rayons 10 / 18 / 28 : petits éléments, cartes, panneaux.
+ */
+.landing-page {
+  --color-canvas: #f4f4ee;
+  --color-paper: #fffefb;
+  --color-ink: #111a31;
+  --color-muted: #5e6576;
+  --color-line: #dcddd5;
+  --color-indigo: #5557d9;
+  --color-indigo-soft: #e8e8ff;
+  --color-coral: #d97858;
+  --color-mint: #c9e7d7;
+  --radius-paper-sm: 10px;
+  --radius-paper-md: 18px;
+  --radius-paper-lg: 28px;
+}
+
 .landing-page {
   min-height: 100dvh;
   background: var(--color-surface);
@@ -143,38 +171,6 @@
   transform: rotate(13deg);
 }
 
-.landing-principles {
-  width: 100%;
-  display: grid;
-  gap: 0;
-  background: var(--color-ink-surface);
-}
-
-.landing-principles > div {
-  display: grid;
-  gap: 0.35rem;
-  margin: 0;
-  min-height: 7.75rem;
-  padding: var(--space-6) clamp(1rem, 4vw, 3rem);
-  color: var(--color-surface);
-}
-
-.landing-principles > div + div {
-  border-top: 1px solid var(--color-line-on-ink);
-}
-
-.landing-principles strong {
-  color: var(--color-surface);
-  font-size: var(--text-lg);
-}
-
-.landing-principles span {
-  max-width: 34ch;
-  color: var(--color-accent-on-ink);
-  font-size: var(--text-sm);
-  line-height: 1.5;
-}
-
 .landing-hero-copy {
   align-self: center;
   min-width: 0;
@@ -227,10 +223,18 @@
   text-decoration-thickness: 0.14em;
 }
 
+/*
+ * Le rythme de la maquette (V4.5-219) : 20 px de marge latérale en 390,
+ * 80 px en 1440. Les valeurs verticales propres à chaque section — hero
+ * 86/74, preuve produit 78/72, tarifs 92/86 — arrivent avec le ticket de
+ * chaque section ; ce défaut tient la bande 74–92 en attendant, plutôt
+ * qu'une échelle fluide qui ne tomberait juste à aucune des deux largeurs
+ * de référence.
+ */
 .landing-section {
   display: grid;
   gap: var(--space-10);
-  padding: clamp(3.5rem, 7vw, 7rem) clamp(1.2rem, 6vw, 6rem);
+  padding: 32px 20px;
   border-top: 1px solid var(--color-border);
 }
 
@@ -835,26 +839,19 @@
   color: var(--color-text-muted);
 }
 
-@media (min-width: 48rem) {
-  .landing-principles {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .landing-principles > div {
-    padding-inline: clamp(1rem, 4vw, 3rem);
-  }
-
-  .landing-principles > div:first-child {
-    padding-left: clamp(1rem, 4vw, 3rem);
-  }
-
-  .landing-principles > div + div {
-    border-top: 0;
-    border-left: 1px solid var(--color-line-on-ink);
-  }
-
+/*
+ * La composition passe en deux colonnes à 1024 px et non à 768 px (D7,
+ * 5 septembre 2026) : la tablette reçoit la composition mobile jusqu'à
+ * 1023 px. Ces règles vivaient dans un palier à 48rem, qui n'existe plus.
+ *
+ * Les media queries de la navigation et du pied de page gardent leur palier
+ * de 47.99rem : elles appartiennent aux calques « Navigation » et « Footer »,
+ * qui ne sont pas dans cette livraison.
+ */
+@media (min-width: 64rem) {
   .landing-section {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 80px;
   }
 
   /* Deliberately unequal: the application leads, updates follow. */
@@ -867,9 +864,7 @@
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-10);
   }
-}
 
-@media (min-width: 64rem) {
   .landing-hero {
     grid-template-columns: minmax(0, 1.05fr) minmax(26.25rem, 0.95fr);
     align-items: center;
@@ -1079,13 +1074,11 @@
 }
 
 .landing-page .landing-product-benefits span,
-.landing-page .landing-principles span,
 .landing-page .landing-roadmap-timeline p {
   font-size: var(--text-base);
   line-height: 1.55;
 }
 
-.landing-page .landing-principles strong,
 .landing-page .landing-roadmap-timeline h3 {
   font-size: var(--text-lg);
 }
@@ -1188,11 +1181,6 @@
   font-weight: 700;
   line-height: 1.12;
   letter-spacing: -0.015em;
-}
-
-.landing-page .landing-principles strong {
-  font-size: var(--text-lg);
-  font-weight: 700;
 }
 
 .landing-page .landing-product-benefits strong {
