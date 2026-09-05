@@ -71,6 +71,10 @@ for (const surface of publicSurfaces) {
  * pleine page ferait trois fichiers de plus à relire pour un seul bloc changé.
  */
 test('public — landing pricing tiers', async ({ page }) => {
+  // La vraie grille du 2 septembre 2026 : le bonus early adopter est fondu
+  // dans les crédits du seul palier du milieu, qui est aussi celui que le
+  // produit recommande. La capture existe pour qu'on voie que la mise en avant
+  // ne noie pas les deux autres cartes.
   await installPublicCatalogue(page, [
     {
       approximateCorrections: '10',
@@ -79,22 +83,24 @@ test('public — landing pricing tiers', async ({ page }) => {
       creditsPerEuro: '100',
       currency: 'EUR',
       key: 'entry',
-      label: 'Premier pack',
-      labelEn: 'First pack',
+      label: 'Starter',
+      labelEn: 'Starter',
       oncePerAccount: true,
       priceMinor: '300',
+      recommended: false,
     },
     {
-      approximateCorrections: '29',
-      bonusCredits: '80',
-      credits: '880',
-      creditsPerEuro: '110',
+      approximateCorrections: '35',
+      bonusCredits: '256',
+      credits: '1056',
+      creditsPerEuro: '132',
       currency: 'EUR',
       key: 'regular',
-      label: 'Pack standard',
-      labelEn: 'Standard pack',
+      label: 'Journey',
+      labelEn: 'Journey',
       oncePerAccount: false,
       priceMinor: '800',
+      recommended: true,
     },
     {
       approximateCorrections: '66',
@@ -103,16 +109,15 @@ test('public — landing pricing tiers', async ({ page }) => {
       creditsPerEuro: '125',
       currency: 'EUR',
       key: 'intensive',
-      label: 'Grand pack',
-      labelEn: 'Large pack',
+      label: 'Deep Dive',
+      labelEn: 'Deep Dive',
       oncePerAccount: false,
       priceMinor: '1600',
+      recommended: false,
     },
   ]);
   await page.goto('/');
-  await expect(
-    page.getByRole('heading', { name: 'Premier pack' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Journey' })).toBeVisible();
   await settle(page);
   await expect(page.locator('.landing-pricing')).toHaveScreenshot(
     'landing-pricing-tiers.png',

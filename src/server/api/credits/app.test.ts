@@ -439,6 +439,7 @@ describe('V4.5-205 contrat de l’écran d’achat', () => {
           // même, et non omis, pour que la carte n'ait jamais à décider ce que
           // veut dire un champ absent (V4.5-213).
           oncePerAccount: false,
+          recommended: false,
           priceMinor: '1500',
           purchasable: true,
         },

@@ -26,10 +26,19 @@ import {
  */
 function PricingTier({ pack }: { pack: PublicCreditPack }) {
   const { locale, t } = useI18n();
-  const hasBonus = BigInt(pack.bonusCredits) > 0n;
 
   return (
-    <li className="landing-pricing-tier" key={pack.key}>
+    <li
+      className={
+        pack.recommended
+          ? 'landing-pricing-tier landing-pricing-tier--recommended'
+          : 'landing-pricing-tier'
+      }
+      key={pack.key}
+    >
+      {pack.recommended ? (
+        <p className="landing-pricing-badge">{t('creditPack.recommended')}</p>
+      ) : null}
       <h3>{packLabel(pack, locale)}</h3>
       <strong className="landing-pricing-credits">
         {t('landing.pricing.packCredits', {
@@ -48,13 +57,6 @@ function PricingTier({ pack }: { pack: PublicCreditPack }) {
             rate: formatWholeNumber(pack.creditsPerEuro, locale),
           })}
         </li>
-        {hasBonus ? (
-          <li className="landing-pricing-bonus">
-            {t('creditPack.bonus', {
-              bonus: formatWholeNumber(pack.bonusCredits, locale),
-            })}
-          </li>
-        ) : null}
         <li>
           {t('creditPack.approximateCorrections', {
             corrections: formatWholeNumber(pack.approximateCorrections, locale),

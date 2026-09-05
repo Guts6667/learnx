@@ -793,3 +793,59 @@ derrière un import dynamique, ce qui annule le tree-shaking, et je laissais les
 intégrations par défaut. Le propriétaire a demandé une seconde mesure plutôt que
 d'accepter la première, et il avait raison. Avant de recommander d'abandonner
 quelque chose sur un chiffre, vérifier que le chiffre mesure la chose.
+
+## 5 septembre 2026 — V4.5-230, déblocage de l'audit de dépendances
+
+- Base `app8IaHD1sJtI83WT`, table `tblpSbdB7K4MioyJq`, API REST, token
+  personnel. **Création uniquement** : un enregistrement, aucun existant
+  modifié, aucune suppression, aucune page d'interface créée ou publiée.
+  Dry-run imprimé avant l'appel, conformément à `docs/AGENT_WORKFLOW.md` §0.1.
+- `recNAkqsJOAdDz9V8` V4.5-230 — audit des dépendances de production rouge sur
+  toutes les PR : Prisma 7.10.0 et deux overrides ciblés (P0,
+  `Owner = DevOps`, `Reviewer = Sécurité`,
+  `Epic = V4.5-013 Exploitation DevOps (proposition)`,
+  `Statut = REVIEW`, `État de synchronisation = Proposition Airtable`,
+  `Branche = chore/v4-5-230-audit-unblock`).
+- Valeurs prises exclusivement dans les choix existants — aucune valeur de
+  `Nature`, `Statut`, `Release`, `Risque`, `Owner`, `Reviewer` ou `Epic`
+  ajoutée, donc `pnpm quality:airtable` n'est pas affecté.
+- Numéro attribué après relevé : 194 enregistrements lus, plus haut `V4.5-`
+  existant = 229.
+
+**Ce que le relevé a corrigé du signalement.** La voie learnx-e1 rapportait deux
+avis « high ». L'audit en donne **cinq** : un `mysql2` et **quatre** `fast-uri`,
+plus un « moderate » qui ne fait pas échouer le gate. Le compte importe parce
+qu'il change le correctif — une exception justifiée sur le seul `mysql2`, telle
+qu'envisagée, aurait laissé le gate rouge sur les quatre autres.
+
+**Et ce que la correction a révélé.** Corriger les cinq en fait apparaître un
+sixième : `deepmerge-ts <8.0.0` via `@prisma/config`, invisible tant que les
+autres masquaient la sortie. Un audit ne montre pas toujours tout ce qu'il
+reste à faire — il montre ce qu'il voit à cet instant, et le corriger déplace
+l'horizon. À se rappeler avant d'annoncer « il reste N avis ».
+
+## 5 septembre 2026 — lot landing « Conversion Edition » (V4.5-219 → 229)
+
+- Autorisation : décisions D0–D7 de Rayan (5 septembre 2026) ; dry-run relu
+  avant création.
+- Créés (11) : V4.5-219 `recDbJJVtpbAwXcL0`, V4.5-220 `recmEuXIj8mtubrKR`,
+  V4.5-221 `recpfqtAKpCqFdDB0`, V4.5-222 `recR71wlki9hBcPoG`,
+  V4.5-223 `recdOmQvcPZPkBfIz`, V4.5-224 `recIvKKjHtTrRk9tD`,
+  V4.5-225 `rechJxeKa6966NBfx`, V4.5-226 `rech0F6mB1kyJfPsI`,
+  V4.5-227 `recRdluhWj0sI4KWb`, V4.5-228 `rec7pygR2lNETBHw9`,
+  V4.5-229 `recfgBV4S6C18cl65`.
+- Statuts : 219, 220, 228 `READY` ; 223, 226 `NEEDS_ARBITRATION` (D2, D5 à
+  confirmer) ; les autres `DRAFT`. Risque `P1`, `État de synchronisation =
+  Commit local — push en attente`, branche `docs/v4-5-landing-conversion-edition`.
+- Définition : `V4_5_BACKLOG.md` § « Landing « Conversion Edition » (maquette
+  Paper) ».
+- PR #202, #204, #205 fermées sans merge (D0).
+- Relecture : 11/11 enregistrements relus après création ; aucun autre
+  enregistrement modifié ; aucune suppression, aucune page d'interface ajoutée.
+- 5 septembre, suite : V4.5-226 `NEEDS_ARBITRATION` → `DRAFT`, `Arbitrage
+  Rayan = Rayan A` (section conçue et masquée en V4.5, affichée en V5) ;
+  titre, résumé et dépendances mis à jour ; enregistrement relu.
+- 5 septembre, suite : V4.5-223 `NEEDS_ARBITRATION` → `DRAFT`, `Arbitrage
+  Rayan = Rayan A` (grille du 2 septembre conservée, bonus sur Journey seul,
+  #214 inchangée) ; V4.5-220 `Arbitrage Rayan = Rayan A` (formulation du
+  +20 % figée). Les deux enregistrements relus.

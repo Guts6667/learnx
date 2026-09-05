@@ -203,6 +203,7 @@ test('publie les paliers du catalogue, dit « bientôt » quand il est vide et l
       label: 'Découverte',
       labelEn: 'Starter',
       oncePerAccount: true,
+      recommended: true,
       priceMinor: '1500',
     },
   ]);
@@ -215,8 +216,12 @@ test('publie les paliers du catalogue, dit « bientôt » quand il est vide et l
   // volontairement incohérents avec le prix, et la page les affiche tels
   // quels. Un calcul côté écran les corrigerait — et se trahirait ici.
   await expect(page.getByText('110 crédits par euro')).toBeVisible();
-  await expect(page.getByText('80 crédits en plus')).toBeVisible();
   await expect(page.getByText('environ 29 corrections')).toBeVisible();
+  // La mise en avant vient du catalogue et de rien d'autre : la fixture est
+  // le palier d'entrée, que le produit ne recommande pas en réalité. Si un
+  // écran reconnaissait la clé au lieu de lire `recommended`, le badge
+  // n'apparaîtrait pas ici.
+  await expect(page.getByText('Notre choix')).toBeVisible();
   // La condition d'achat se lit sur la page publique aussi : la découvrir
   // après inscription coûterait un achat (décision de Rayan, 31 août 2026).
   await expect(

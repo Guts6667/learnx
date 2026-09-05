@@ -46,6 +46,7 @@ describe('LandingPricing', () => {
     label: 'Découverte',
     labelEn: 'Starter',
     oncePerAccount: false,
+    recommended: false,
     priceMinor: '1500',
   };
   const shared = {
@@ -141,6 +142,7 @@ describe('LandingPricing', () => {
               label: 'Premier pack',
               labelEn: 'First pack',
               oncePerAccount: true,
+              recommended: false,
             },
           ],
         }),
@@ -150,7 +152,6 @@ describe('LandingPricing', () => {
     renderSection();
 
     expect(await screen.findByText('110 crédits par euro')).toBeInTheDocument();
-    expect(screen.getByText('80 crédits en plus')).toBeInTheDocument();
     expect(screen.getByText('environ 29 corrections')).toBeInTheDocument();
     expect(
       screen.getByText(

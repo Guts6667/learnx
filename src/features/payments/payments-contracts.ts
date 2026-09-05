@@ -194,6 +194,15 @@ const creditPackSchema = z.object({
   oncePerAccount: z.boolean(),
   /** Absent de la réponse publique : il n'y a pas de compte pour l'évaluer. */
   purchasable: z.optional(z.boolean()),
+  /**
+   * Le palier que le produit recommande (arbitrage de Rayan, 2 sept 2026).
+   *
+   * Servi, jamais déduit : c'est une propriété de la grille, et la reconnaître
+   * à la clé côté écran en ferait un second dépositaire. Non optionnel — un
+   * champ absent laisserait l'écran choisir entre « aucun » et « le premier »,
+   * et les deux réponses seraient inventées.
+   */
+  recommended: z.boolean(),
 });
 
 export const creditPacksResponseSchema = z.object({
