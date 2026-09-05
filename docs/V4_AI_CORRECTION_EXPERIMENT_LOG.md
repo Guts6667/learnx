@@ -1989,4 +1989,24 @@ passe 2** plutôt que 15 cartes de la passe 1, puisque c'est l'étiquette de
 paire qui sert de corrigé ; ce changement est décidé ici, avant qu'elle
 commence.
 
+#### Le lot 1 des modèles contre l'étiquette de paire
+
+24 passages (12 modèles et réglages, Mistral Think et Fast ajoutés, soit le
+vérificateur actuel de la production). Sur les 8 cartes du lot dont la paire
+a reconnu l'original en passe 2, la **majorité des modèles a raison 5 fois
+et tort 3 fois** ; les trois erreurs sont des copies abîmées auxquelles la
+majorité dit « oui » (cartes 2, 3, 4 : 20, 19 et 15 passages sur 24). C'est
+le défaut étudié, reproduit par la majorité en interface de discussion. La
+passe 1 du propriétaire, jugement absolu, se trompe sur 3 de ces 8 cartes
+aussi (2, 4, 7) ; la passe 2 les corrige toutes. La carte 5 n'a pas
+d'étiquette (paire « aucune des deux »).
+
+**Carte 10, contrôle raccourci** : 24 passages sur 24 et le propriétaire
+disent « non » à un original raccourci. La question est un « CHAQUE fait
+nécessaire est-il repris ? » : raccourcir la copie a retiré un fait
+nécessaire, donc le contrôle n'est plus un positif pour cet atome. Les 16
+contrôles raccourcis portant un atome « chaque … de la copie » sont à
+réexaminer avant de servir de diagnostic ; le propriétaire en a refusé 4
+sur 16. Déclaré ici, non corrigé.
+
 Dépense : 0,00 USD.
