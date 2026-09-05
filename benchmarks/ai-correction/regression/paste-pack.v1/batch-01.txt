@@ -1,0 +1,131 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 1 · C-ca1ef61e53
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Question : CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est pertinente pour CE choix · ff.a3 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.
+[s1] Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.
+[s2] La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.
+[s3] L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.
+[s4] Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.
+
+### Carte 2 · C-47402cc097
+Consigne : Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.
+Question : CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est pertinente pour CE choix · ff.a3 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je penche pour la réparation complète immédiate, sans la trancher.
+[s1] La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.
+[s2] Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.
+
+### Carte 3 · C-55f08a077c
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?
+Écriture pour la machine : CHAQUE affirmation utile est fidèle au contexte · cf.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.⟧
+
+### Carte 4 · C-23cb79db39
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : Pour CHAQUE affirmation utile, la limite donnée est-elle correcte, d’après le dossier ?
+Écriture pour la machine : CETTE limite est correcte pour CETTE affirmation · cf.a3 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.
+
+### Carte 5 · C-6f02478fc2
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : Pour CHAQUE affirmation utile, la limite donnée est-elle correcte, d’après le dossier ?
+Écriture pour la machine : CETTE limite est correcte pour CETTE affirmation · cf.a3 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.
+[s1] Deux hypothèses restent ouvertes et conditionnent cet objectif.
+[s2] Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré.
+[s3] Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.
+
+### Carte 6 · C-4d3ebe4339
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève énonce-t-il clairement une position ?
+Écriture pour la machine : une position est explicitement énoncée · dp.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Je recommande de signer immédiatement pour un an.⟧ Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. Il n’existe donc plus d’incerti …
+
+### Carte 7 · C-d5dff02d07
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Question : Cette preuve démontre-t-elle la pratique que la consigne demandait ?
+Écriture pour la machine : CETTE preuve démontre CETTE pratique · pe.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sprint Goal : rendre la recherche de cours utilisable sur mobile.
+[s1] Progrès : 2 des 5 tickets sont terminés.
+[s2] Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.
+[s3] Risque : la coupure tombe sur la fenêtre de test de la recherche connectée.
+[s4] Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté.
+[s5] Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir.
+
+### Carte 8 · C-b24221cac5
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Dossier : Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.
+Question : Ce risque est-il à la fois exact ET pertinent, d’après le dossier ?
+Écriture pour la machine : CE risque est exact ET pertinent au regard du dossier · rr.a3 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… e plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.⟧
+
+### Carte 9 · C-5a5b6cc636
+Contexte : aucun, la question se juge sur la copie seule.
+Question : CHAQUE fait ou chiffre avancé appuie-t-il le choix que l’élève a fait ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble soutient CE choix · ff.a4 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je penche pour la réparation complète immédiate, sans la trancher.
+[s1] La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.
+[s2] Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.
+
+### Carte 10 · C-2d0f0c9620
+Consigne : Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.
+Dossier : Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.
+Question : CHAQUE fait du dossier nécessaire à l’explication est-il repris dans la réponse ?
+Écriture pour la machine : CHAQUE fait nécessaire du dossier est restitué dans la réponse · sf.a1 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Les mauvais embranchements passent de 9/16 à 5/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes.
+[s1] Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.
+
+Fin du lot 01 : 10 cartes. Réponds maintenant, 10 lignes.

@@ -1,0 +1,445 @@
+/**
+ * Drives the blind adjudication page (v4) in a DOM (V4.5-210, pass 1).
+ *
+ * The page is the instrument the gold labels come from, so its rules are
+ * tested like any other guard: one plain question per card, evidence
+ * sentences instead of role binding, controls with no default, an export that
+ * refuses partial or over-abstaining passes, and a warm-up that gates the deck.
+ */
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
+import { beforeEach, describe, expect, it } from 'vitest';
+
+const PAGE = path.resolve(
+  'benchmarks/ai-correction/regression/adjudication-pass1.html',
+);
+
+function boot(hash = ''): void {
+  const html = readFileSync(PAGE, 'utf8');
+  window.location.hash = hash;
+  document.body.innerHTML = html
+    .slice(html.indexOf('<div class="rail"'))
+    .replace(/<script[\s\S]*$/u, '');
+  const jsonScripts = html.matchAll(
+    /<script id="([a-zA-Z]+)" type="application\/json">([\s\S]*?)<\/script>/gu,
+  );
+  for (const m of jsonScripts) {
+    const el = document.createElement('script');
+    el.id = m[1] ?? '';
+    el.type = 'application/json';
+    el.textContent = m[2] ?? '';
+    document.body.appendChild(el);
+  }
+  const logic = html.slice(html.lastIndexOf('<script>') + '<script>'.length);
+  new Function(logic.replace(/<\/script>[\s\S]*$/u, ''))();
+}
+const press = (key: string): void => {
+  document.body.dispatchEvent(
+    new KeyboardEvent('keydown', { bubbles: true, key }),
+  );
+};
+type DeckCard = {
+  cardId: string;
+  stratum: string;
+  window: unknown;
+  atomId: string;
+  argumentRoles: { bindable: boolean }[];
+};
+const deckCards = (): DeckCard[] =>
+  (
+    JSON.parse(document.getElementById('deck')?.textContent ?? '{}') as {
+      cards: DeckCard[];
+    }
+  ).cards;
+const stored = (): Record<string, Record<string, unknown>> => {
+  const key = Object.keys(localStorage).find((k) => k.startsWith('adj-v4-'));
+  return (
+    (
+      JSON.parse((key && localStorage.getItem(key)) || '{}') as {
+        decisions?: Record<string, Record<string, unknown>>;
+      }
+    ).decisions ?? {}
+  );
+};
+const goTo = (predicate: (card: DeckCard) => boolean): DeckCard => {
+  const index = deckCards().findIndex(predicate);
+  if (index < 0) throw new Error('aucune carte ne correspond');
+  (document.querySelectorAll('#rail button')[index] as HTMLElement).click();
+  return deckCards()[index] as DeckCard;
+};
+/**
+ * The export hashes its text with crypto.subtle, so the panel appears
+ * asynchronously; under a full-suite load that takes more than the second a
+ * short poll allows. Wait up to 10 s and fail with a message, never by timing.
+ */
+const exportedText = async (): Promise<string> => {
+  for (let i = 0; i < 400; i += 1) {
+    const value = (document.getElementById('out') as HTMLTextAreaElement | null)
+      ?.value;
+    if (value) return value;
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  throw new Error('le panneau d’export n’est jamais apparu');
+};
+/** A « non » that satisfies every family: one clicked sentence where required. */
+const answerNo = (): void => {
+  // Two-role cards need one sentence per related thing: click up to two.
+  const clickable = [...document.querySelectorAll('#resp .s.clickable')].slice(
+    0,
+    2,
+  ) as HTMLElement[];
+  for (const c of clickable) c.click();
+  press('n');
+};
+const setControls = (): void => {
+  const alt = document.querySelectorAll('#altTri button');
+  if (alt.length) (alt[1] as HTMLElement).click();
+  (document.querySelectorAll('#viewTri button')[0] as HTMLElement).click();
+};
+
+describe('the blind adjudication page, real deck', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    localStorage.setItem(
+      'adj-training-v4',
+      JSON.stringify({ decisions: {}, done: true, index: 0 }),
+    );
+    boot();
+  });
+
+  it('shows one plain French question per card, from the sealed question file', () => {
+    const card = deckCards()[0] as DeckCard;
+    const questions = JSON.parse(
+      document.getElementById('questions')?.textContent ?? '{}',
+    ) as { questions: Record<string, string> };
+    expect(document.querySelector('.question')?.textContent).toBe(
+      questions.questions[card.atomId],
+    );
+    expect(
+      document.getElementById('verdictQuestion')?.textContent ?? '',
+    ).toContain(questions.questions[card.atomId] ?? '∅');
+  });
+
+  it('starts both controls unset and records a control clicked before any verdict', () => {
+    const id = (deckCards()[0] as DeckCard).cardId;
+    (document.querySelector('#altTri button') as HTMLElement).click();
+    expect(stored()[id]?.alternativeSupport).toBe('yes');
+    expect(stored()[id]?.evidenceViewComplete).toBeNull();
+    press('o');
+    expect(stored()[id]?.verdict).toBe('DIRECT');
+    expect(stored()[id]?.alternativeSupport).toBe('yes');
+  });
+
+  it('requires highlighted evidence for a yes on a multi-sentence card, none on a single-sentence one', () => {
+    const multi = goTo((c) => /^S[456]_/.test(c.stratum));
+    press('o');
+    expect(document.getElementById('todo')?.textContent ?? '').toContain(
+      'surligne',
+    );
+    for (const c of [...document.querySelectorAll('#resp .s.clickable')].slice(
+      0,
+      2,
+    ))
+      (c as HTMLElement).click();
+    expect(document.getElementById('todo')?.textContent ?? '').not.toContain(
+      'surligne',
+    );
+    expect(
+      (stored()[multi.cardId]?.evidenceSentenceIds as string[]).length,
+    ).toBeGreaterThanOrEqual(1);
+    goTo((c) => /^S[123]_/.test(c.stratum));
+    expect(document.querySelectorAll('#resp .s.clickable')).toHaveLength(0);
+    press('o');
+    expect(document.getElementById('todo')?.textContent ?? '').not.toContain(
+      'surligne',
+    );
+  });
+
+  it('withholds the copy outside the window on a single-sentence card until asked', () => {
+    goTo((c) => c.window !== null);
+    const hidden = document.querySelectorAll('#resp .s.hidden').length;
+    if (hidden > 0) {
+      document.getElementById('reveal')?.click();
+      expect(document.querySelectorAll('#resp .s.hidden')).toHaveLength(0);
+    }
+  });
+
+  it('refuses to export without a reviewer or with incomplete cards', () => {
+    document.getElementById('toExport')?.click();
+    const text = document.getElementById('app')?.textContent ?? '';
+    expect(text).toContain('Export refusé');
+    expect(text).toContain('aucun identifiant de relecteur');
+    expect(text).toMatch(/cartes incomplètes sur 106/u);
+  });
+
+  it('derives the witness on a single-role card and defers two-role cards to pass 2', async () => {
+    // Complete every card with a « non », then export and inspect the derivation.
+    document.getElementById('who')?.click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'test';
+    document.getElementById('whoSave')?.click();
+    for (let i = 0; i < 106; i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      answerNo();
+      setControls();
+    }
+    document.getElementById('toExport')?.click();
+    const out = await exportedText();
+    expect(out.length).toBeGreaterThan(0);
+    const payload = JSON.parse(out) as {
+      decisions: {
+        cardId: string;
+        roleAssessments: Record<string, { derivation: string; status: string }>;
+        secondsOnCard: number;
+        orderIndex: number;
+      }[];
+      abstentionShare: number;
+    };
+    expect(payload.abstentionShare).toBe(0);
+    const byId = new Map(payload.decisions.map((d) => [d.cardId, d]));
+    for (const card of deckCards()) {
+      const roles = card.argumentRoles.filter((r) => r.bindable).length;
+      const derived = Object.values(
+        byId.get(card.cardId)?.roleAssessments ?? {},
+      );
+      if (roles === 1) expect(derived[0]?.derivation).toBe('single-role');
+      if (roles === 2)
+        expect(derived.every((r) => r.status === 'PENDING_PASS2')).toBe(true);
+      if (roles === 0) expect(derived).toHaveLength(0);
+    }
+    expect(
+      payload.decisions.every((d) => typeof d.orderIndex === 'number'),
+    ).toBe(true);
+  });
+
+  it('suspends the pass above the pre-declared abstention cap', () => {
+    document.getElementById('who')?.click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'test';
+    document.getElementById('whoSave')?.click();
+    for (let i = 0; i < 106; i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      if (i < 25) {
+        press('?');
+        const why = document.getElementById('why') as HTMLInputElement;
+        why.value = 'test';
+        why.dispatchEvent(new Event('input'));
+      } else answerNo();
+      setControls();
+    }
+    document.getElementById('toExport')?.click();
+    expect(document.getElementById('app')?.textContent ?? '').toContain(
+      'passe suspendue',
+    );
+  });
+});
+
+describe('the warm-up before the real deck', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    boot();
+  });
+
+  it('opens on the warm-up with eight cards and refuses the export', () => {
+    expect(document.querySelector('.training')).not.toBeNull();
+    expect(document.querySelectorAll('#rail button')).toHaveLength(8);
+    document.getElementById('toExport')?.click();
+    expect(document.getElementById('app')?.textContent ?? '').toContain(
+      'Export indisponible',
+    );
+  });
+
+  it('corrects E1 and colours the bar by correctness', () => {
+    press('n');
+    setControls();
+    const rows = [...document.querySelectorAll('table.grade tr')];
+    expect(rows.length).toBeGreaterThanOrEqual(3);
+    expect(rows.every((r) => r.classList.contains('ok'))).toBe(true);
+    expect(
+      (document.querySelector('#rail button') as HTMLElement).dataset.g,
+    ).toBe('ok');
+    expect(Object.keys(stored())).toHaveLength(0);
+  });
+
+  it('shows the mistake and, on E2, expects the irrelevant sentence highlighted', () => {
+    (document.querySelectorAll('#rail button')[1] as HTMLElement).click();
+    (document.querySelector('#resp .s[data-s="s0"]') as HTMLElement).click();
+    (document.querySelector('#resp .s[data-s="s1"]') as HTMLElement).click();
+    press('n');
+    setControls();
+    let rows = [...document.querySelectorAll('table.grade tr')];
+    expect(rows.some((r) => r.classList.contains('ko'))).toBe(true);
+    (document.querySelector('#resp .s[data-s="s2"]') as HTMLElement).click();
+    rows = [...document.querySelectorAll('table.grade tr')];
+    expect(rows.every((r) => r.classList.contains('ok'))).toBe(true);
+  });
+
+  it('unlocks the real deck after the eighth card', () => {
+    const verdicts = ['n', 'n', 'o', 'n', 'o', 'o', 'o', 'n'];
+    const evidence: Record<number, string[]> = {
+      1: ['s0', 's2'],
+      5: ['s1', 's2'],
+      7: ['s0', 's1'],
+    };
+    for (let i = 0; i < 8; i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      for (const id of evidence[i] ?? [])
+        (
+          document.querySelector(`#resp .s[data-s="${id}"]`) as HTMLElement
+        ).click();
+      press(verdicts[i] ?? 'n');
+      const alt = document.querySelectorAll('#altTri button');
+      if (alt.length) (alt[i === 2 ? 0 : 1] as HTMLElement).click();
+      (document.querySelectorAll('#viewTri button')[0] as HTMLElement).click();
+      const next =
+        document.getElementById('trainNext') ??
+        document.getElementById('trainDone');
+      expect(next).not.toBeNull();
+      next?.click();
+    }
+    expect(document.querySelector('.training')).toBeNull();
+    expect(document.querySelectorAll('#rail button')).toHaveLength(106);
+  });
+});
+
+describe('language and slice modes', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('serves the English interface and questions on #lang=en, the copy staying French', () => {
+    localStorage.setItem(
+      'adj-training-v4-en',
+      JSON.stringify({ decisions: {}, done: true, index: 0 }),
+    );
+    boot('#lang=en');
+    expect(document.getElementById('hTitle')?.textContent).toBe('Blind review');
+    expect(document.getElementById('wYes')?.textContent).toBe('yes');
+    const card = deckCards()[0] as DeckCard;
+    const en = JSON.parse(
+      document.getElementById('questionsEn')?.textContent ?? '{}',
+    ) as { questions: Record<string, string> };
+    expect(document.querySelector('.question')?.textContent).toBe(
+      en.questions[card.atomId],
+    );
+    expect(document.querySelector('#resp')?.textContent ?? '').toMatch(
+      /[éèà]/u,
+    );
+  });
+
+  it('restricts a volunteer to their slice with a three-card warm-up and tags the export', async () => {
+    boot('#s=1-01');
+    expect(document.querySelectorAll('#rail button')).toHaveLength(3);
+    localStorage.setItem(
+      'adj-training-v4-s1-01',
+      JSON.stringify({ decisions: {}, done: true, index: 0 }),
+    );
+    boot('#s=1-01');
+    const slices = JSON.parse(
+      document.getElementById('slices')?.textContent ?? '{}',
+    ) as { slices: { sliceId: string; cards: string[] }[] };
+    const slice = slices.slices.find((s) => s.sliceId === '1-01');
+    expect(document.querySelectorAll('#rail button')).toHaveLength(
+      slice?.cards.length ?? -1,
+    );
+    document.getElementById('who')?.click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'vol';
+    document.getElementById('whoSave')?.click();
+    for (let i = 0; i < (slice?.cards.length ?? 0); i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      answerNo();
+      setControls();
+    }
+    document.getElementById('toExport')?.click();
+    const out = await exportedText();
+    const payload = JSON.parse(out) as {
+      sliceId: string;
+      language: string;
+      decisions: unknown[];
+    };
+    expect(payload.sliceId).toBe('1-01');
+    expect(payload.language).toBe('fr');
+    expect(payload.decisions).toHaveLength(slice?.cards.length ?? -1);
+  });
+});
+
+describe('écran de départ (tranche + langue sans dépendre de l’adresse)', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('s’affiche quand rien ne dit le mode, avec les 14 tranches', () => {
+    boot('');
+    const chooser = document.getElementById('chooser') as HTMLElement;
+    expect(chooser.hidden).toBe(false);
+    const options = document.querySelectorAll('#chooserSlice option');
+    expect(options.length).toBe(14);
+    expect(options[0]?.textContent).toMatch(/^1-01 \(\d\)$/u);
+  });
+
+  it('reste caché quand l’adresse donne la tranche ou quand la série principale est commencée', () => {
+    boot('#s=1-01');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    localStorage.clear();
+    const key = Object.keys(localStorage).find((k) => k.startsWith('adj-v4-'));
+    expect(key).toBeUndefined();
+    boot('');
+    // Main pass with one decision saved → the owner never sees the screen.
+    localStorage.clear();
+    localStorage.setItem(
+      'adj-v4-' +
+        (
+          JSON.parse(document.getElementById('deck')?.textContent ?? '{}') as {
+            manifestHash: string;
+          }
+        ).manifestHash.slice(-12),
+      JSON.stringify({ decisions: { x: {} }, index: 0, reviewer: 'r' }),
+    );
+    boot('');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+  });
+
+  it('mémorise la tranche et la langue choisies, puis les rejoue sans adresse', () => {
+    boot('');
+    (document.getElementById('chooserSlice') as HTMLSelectElement).value =
+      '2-03';
+    (document.getElementById('chooserLang') as HTMLSelectElement).value = 'en';
+    (document.getElementById('chooserGo') as HTMLElement).click();
+    const modeKey = Object.keys(localStorage).find((k) =>
+      k.startsWith('adj-mode-'),
+    );
+    expect(modeKey).toBeDefined();
+    expect(localStorage.getItem(modeKey ?? '')).toBe('s=2-03&lang=en');
+    boot('');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    expect(document.querySelectorAll('#rail button').length).toBe(3);
+    expect(document.body.textContent).toContain('slice 2-03');
+    expect(document.getElementById('changeMode')?.textContent).toBe(
+      'change slice',
+    );
+  });
+
+  it('« série complète » ferme l’écran sans rien changer à la série principale', () => {
+    boot('');
+    (
+      document.querySelector(
+        'input[name="chooserMode"][value="full"]',
+      ) as HTMLInputElement
+    ).checked = true;
+    (document.getElementById('chooserGo') as HTMLElement).click();
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    expect(document.querySelectorAll('#rail button').length).toBe(8);
+    boot('');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    expect(document.querySelectorAll('#rail button').length).toBe(8);
+  });
+});

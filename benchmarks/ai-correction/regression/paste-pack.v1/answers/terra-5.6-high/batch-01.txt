@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s0,s1 | autre: - | raison: le coût des arrêts et l’écart de prix éclairent le choix de Préventel.
+C-47402cc097 | OUI | phrases: s0,s1 | autre: - | raison: le calcul et l’incertitude sur la subvention concernent la préférence pour la réparation complète.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: le processus, l’équipe et la cible de 30 % correspondent au dossier.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: le seuil de 30 % est présenté comme dépendant de la mesure encore absente.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: la baseline est ouverte et le plafond de qualité est explicitement présenté comme une proposition.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la recommandation de signer immédiatement énonce directement une position.
+C-d5dff02d07 | NON | phrases: s3 | autre: - | raison: le risque est indiqué, mais aucun rituel pour le traiter n’est précisé.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: le seuil de deux arrêts n’est pas établi par le dossier et la phrase n’énonce pas clairement le risque.
+C-5a5b6cc636 | NON | phrases: s0,s2 | autre: - | raison: la phrase s2 affirme qu’aucune stratégie ne peut être écartée, ce qui ne soutient pas le choix.
+C-2d0f0c9620 | NON | phrases: s0 | autre: - | raison: la réponse omet que les flèches rendent l’embranchement visible avant le déplacement.

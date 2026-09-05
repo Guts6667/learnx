@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s0,s1 | autre: - | raison: chaque donnée avancée (coûts, date de visite, inconnue, seuil de suivi) se rattache au contrat choisi ou à ses conséquences directes.
+C-47402cc097 | INDÉCIS | phrases: s0 | autre: - | raison: l'élève dit lui-même n'avoir pas tranché, donc on ne sait pas à quel choix rattacher les données citées.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: la phrase reprend fidèlement processus, population et objectif de 30 % annoncés, sans rien affirmer que le dossier contredise.
+C-23cb79db39 | INDÉCIS | phrases: s0 | autre: - | raison: tout est formulé au conditionnel ("pourrait", "peut-être un autre seuil"), aucune limite ferme n'est réellement avancée à vérifier.
+C-6f02478fc2 | NON | phrases: s0,s3 | autre: - | raison: l'horizon de six mois est affirmé sans réserve alors qu'aucun élément du dossier ne le fonde, contrairement au plafond de réaffectation explicitement signalé comme simple proposition en s3.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase marquée énonce clairement une décision ; le reste de l'extrait ne contient que des justifications, pas de position.
+C-d5dff02d07 | NON | phrases: s3 | autre: - | raison: le risque est identifié mais aucune phrase n'indique le rituel où le traiter, pourtant demandé explicitement par la consigne.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée propose une action de suivi et non l'énoncé d'un risque, elle ne peut donc être ni exacte ni pertinente comme risque.
+C-5a5b6cc636 | INDÉCIS | phrases: s0 | autre: - | raison: l'élève précise n'avoir pas tranché son choix, donc impossible de vérifier si les données appuient "le choix fait".
+C-2d0f0c9620 | NON | phrases: s1 | autre: - | raison: le fait du dossier imposant un rapport signé confirmant le respect des 6 W (absent) n'est pas repris ; s1 suppose au contraire une conformité probable non consignée.

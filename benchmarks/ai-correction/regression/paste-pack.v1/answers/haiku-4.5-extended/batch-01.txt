@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2,s3 | autre: - | raison: chaque fait soutient le choix (coût réel justifie Préventel) ou établit l'inconnue annoncée (cause des pannes)
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: s1 justifie le choix par le coût net; s2 établit l'inconnue declarée
+C-55f08a077c | NON | phrases: - | autre: NON | raison: la « durée médiane » de traitement n'est pas dans le dossier; c'est une spécification du student
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: le 30% annoncé par le sponsor figure au dossier; l'incertitude proposée sur un « autre seuil » est justifiée par l'absence de mesure
+C-6f02478fc2 | NON | phrases: s0 | autre: - | raison: l'horizon de 6 mois et le plafond de réaffectation ne figurent pas au dossier
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase énonce clairement « Je recommande »; les suivantes apportent du contexte, non une position
+C-d5dff02d07 | OUI | phrases: s0,s1,s2,s3,s4,s5 | autre: - | raison: tous les 6 éléments de la consigne sont présents et distincts
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marque une action future, non un risque énoncé comme tel
+C-5a5b6cc636 | OUI | phrases: s1,s2 | autre: - | raison: s1 appuie le choix (réparation complète moins chère); s2 justifie le « sans la trancher »
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: s1 affirme « probablement 6W » mais le dossier exige un rapport signé; l'absence de rapport attesté n'est pas restituée

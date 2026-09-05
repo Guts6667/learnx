@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s0,s1,s2 | autre: - | raison: le choix est Préventel (s0) ; le coût des arrêts (s1) et la visite pendant l'arrêt du 14 octobre (s2) concernent tous deux ce contrat à visites.
+C-47402cc097 | OUI | phrases: s0,s1,s2 | autre: - | raison: la subvention et les coûts nets (s1) et l'incertitude sur son maintien (s2) portent tous sur la réparation complète retenue en s0.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: processus, effectif de 12 et taux de 30 % correspondent au dossier ; aucune autre phrase n'existe dans l'extrait.
+C-23cb79db39 | NON | phrases: s0 | autre: - | raison: l'effectif de 12 et le processus visé sont des faits établis du dossier, mais la copie les met au conditionnel comme s'ils étaient incertains.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: l'absence de baseline (s2) et le statut de proposition du plafond qualité (s3) sont exactement les limites que le dossier impose.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase marquée recommande explicitement de signer un an ; les autres phrases argumentent sans formuler la position elle-même.
+C-d5dff02d07 | NON | phrases: s3,s5 | autre: - | raison: les six rubriques sont présentes mais le rituel où traiter le risque, exigé par la consigne, n'est indiqué nulle part.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée propose une action de suivi, elle n'énonce aucun risque ; aucune autre phrase de l'extrait n'en énonce un non plus.
+C-5a5b6cc636 | OUI | phrases: s0,s1,s2 | autre: - | raison: s1 appuie le penchant pour la complète et s2 appuie le fait de ne pas trancher, les deux volets du choix formulé en s0.
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: s0 omet que les flèches rendent l'embranchement visible avant le déplacement, et s1 ignore l'exigence d'un rapport signé absent, remplacée par un « probablement ».

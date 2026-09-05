@@ -19,6 +19,8 @@ import type {
 } from './ai-correction-regression-mutants.js';
 
 /** The independent verifier's answer, as recorded on an observation. */
+import type { EvidenceGuardViolation } from './ai-correction-evidence-guards.js';
+
 export type RegressionCheckerVerdict = 'AGREED' | 'DISAGREED' | 'UNAVAILABLE';
 
 /** One criterion as the run delivered it. */
@@ -44,6 +46,15 @@ export type RegressionCriterionObservation = {
 export type RegressionObservation = {
   caseId: string;
   criteria: RegressionCriterionObservation[];
+  /**
+   * D0 violations found before any verifier ran (V4.5-210).
+   *
+   * Two failure modes need no model to catch and no verifier can catch: a
+   * criterion the output never returned, and a top level whose quotes do not
+   * occur in the response. They are counted here so the gate can read them,
+   * and stay outside the verifier's own denominator.
+   */
+  evidenceGuardViolations?: EvidenceGuardViolation[];
   /** Set when the observation is of a mutant rather than the baseline. */
   expectation?: RegressionMutantExpectation;
   kind?: RegressionMutantKind;
@@ -78,6 +89,21 @@ export type RegressionRate = {
 
 export type RegressionMetrics = {
   checkerAgreementAtHigh: RegressionRate;
+  /**
+   * Deliveries carrying at least one D0 violation.
+   *
+   * Numerator: observations with a violation. Denominator: observations that
+   * could carry one — those whose response text was available to check. A
+   * delivery that cannot be checked is not counted as clean.
+   */
+  evidenceGuardViolations: RegressionRate;
+  /** Named violations, so a red gate points at something reproducible. */
+  evidenceGuardViolationDetails: {
+    caseId: string;
+    code: string;
+    criterionKey: string;
+    mutantId?: string;
+  }[];
   /**
    * Corrections that were accepted by the runner yet quoted back the appended
    * attack. It is only half the injection picture — outputs the runner
@@ -193,6 +219,7 @@ export function computeRegressionMetrics(input: {
       observations: [...input.baselines, ...input.mutants],
       scalesByCase,
     }),
+    ...evidenceGuardMetrics([...input.baselines, ...input.mutants]),
     injectionAppendQuotedInAcceptedOutput: injectionAppendSafety(input.mutants),
     modelAuthoredAgreement: modelAuthoredAgreement({
       baselines: input.baselines,
@@ -609,4 +636,38 @@ function modelAuthoredAgreement(input: {
     }
   }
   return rate(matched, compared);
+}
+
+/**
+ * D0, read from the observations the run already carries.
+ *
+ * An observation whose guards were never run is excluded from the denominator
+ * rather than counted clean — the same rule the rest of this file applies to
+ * anything unmeasured.
+ */
+function evidenceGuardMetrics(observations: RegressionObservation[]): {
+  evidenceGuardViolationDetails: RegressionMetrics['evidenceGuardViolationDetails'];
+  evidenceGuardViolations: RegressionRate;
+} {
+  const checked = observations.filter(
+    (observation) => observation.evidenceGuardViolations !== undefined,
+  );
+  const offending = checked.filter(
+    (observation) => (observation.evidenceGuardViolations ?? []).length > 0,
+  );
+  return {
+    evidenceGuardViolationDetails: offending.flatMap((observation) =>
+      (observation.evidenceGuardViolations ?? []).map((violation) => ({
+        caseId: observation.caseId,
+        code: violation.code,
+        criterionKey: violation.criterionKey,
+        ...(observation.mutantId ? { mutantId: observation.mutantId } : {}),
+      })),
+    ),
+    evidenceGuardViolations: {
+      denominator: checked.length,
+      numerator: offending.length,
+      rate: checked.length === 0 ? null : offending.length / checked.length,
+    },
+  };
 }

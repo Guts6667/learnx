@@ -1,0 +1,77 @@
+[
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#FACT_INVERSION#source-fidelity@547bac7bd925",
+    "verdict": "DISAGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#FACT_INVERSION#source-fidelity@547bac7bd925",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#FACT_INVERSION#source-fidelity@547bac7bd925",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "source-fidelity",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#INJECTION_APPEND#f83413221889",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "mechanism-link",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#INJECTION_APPEND#f83413221889",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "uncertainty-boundary",
+    "unitId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#INJECTION_APPEND#f83413221889",
+    "verdict": "AGREED"
+  }
+]

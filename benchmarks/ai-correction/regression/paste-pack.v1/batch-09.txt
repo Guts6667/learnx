@@ -1,0 +1,128 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 81 · C-e32060b658
+Consigne : Décide quand faire réviser le four F3 et délimite la portée de ta décision.
+Question : La réponse dit-elle à la personne visée quoi choisir ou quoi faire, sans qu’elle ait à deviner entre plusieurs actions différentes ?
+Écriture pour la machine : action_resolved — la réponse dit à l'acteur visé quoi choisir ou faire sans inférence entre actions matériellement différentes · ac.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je programme la révision immédiate du four F3.
+[s1] Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche.
+[s2] Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars.
+[s3] Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.
+
+### Carte 82 · C-888b279e11
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève nomme-t-il un risque ?
+Écriture pour la machine : un risque est nommé · rr.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… e plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.⟧
+
+### Carte 83 · C-1e1d5034dc
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : Pour CHAQUE affirmation utile, la limite donnée est-elle correcte, d’après le dossier ?
+Écriture pour la machine : CETTE limite est correcte pour CETTE affirmation · cf.a3 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.
+[s1] Deux hypothèses restent ouvertes et conditionnent cet objectif.
+[s2] Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.
+
+### Carte 84 · C-1efa1fc4b7
+Consigne : Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.
+Question : L’élève énonce-t-il clairement le lien réflexif que la consigne demandait ?
+Écriture pour la machine : le lien réflexif demandé est explicitement énoncé · rl.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Mon erreur a été de valider un périmètre sans le confronter aux données d’usage, et la pratique que j’en retire est de vérifier la population concernée avant d’écrire un objectif.⟧
+
+### Carte 85 · C-5d8f0447b1
+Consigne : Recommande l’une des deux options et justifie ton choix avec les informations du scénario.
+Dossier : Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.
+Question : CHAQUE fait utilisé provient-il du scénario du dossier ?
+Écriture pour la machine : CHAQUE fait mobilisé est attribuable au scénario · sfu.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+Je recommande le pilote étendu de quatre semaines avec formation. ⟦Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.⟧
+
+### Carte 86 · C-c01d16d9cb
+Consigne : Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.
+Dossier : Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.
+Question : CHAQUE fait du dossier nécessaire à l’explication est-il repris dans la réponse ?
+Écriture pour la machine : CHAQUE fait nécessaire du dossier est restitué dans la réponse · sf.a1 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Les mauvais embranchements passent de 9/16 à 5/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes.
+[s1] En montrant l'embranchement avant le déplacement, les flèches peuvent réduire les choix tardifs ; la charge non consignée empêche toutefois d'isoler complètement l'effet.
+[s2] Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.
+
+### Carte 87 · C-e1d1a198c6
+Contexte : aucun, la question se juge sur la copie seule.
+Question : CHAQUE fait cité est-il explicitement relié à ce mécanisme ou à cette conclusion ?
+Écriture pour la machine : CHAQUE fait est explicitement relié à CE mécanisme · ml.a2 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.
+[s1] Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.
+[s2] Sans essai sur un nouveau groupe, la généralisation reste inconnue.
+
+### Carte 88 · C-27abbe4a11
+Contexte : aucun, la question se juge sur la copie seule.
+Question : CHAQUE fait ou chiffre avancé appuie-t-il le choix que l’élève a fait ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble soutient CE choix · ff.a4 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.
+[s1] La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.
+[s2] L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.
+[s3] Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.
+
+### Carte 89 · C-1f0112ce2c
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Dossier : Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.
+Question : L’élève produit-il une preuve que l’on peut vérifier ?
+Écriture pour la machine : une preuve vérifiable est produite · pe.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés. ⟦Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.⟧
+
+### Carte 90 · C-5773c296c7
+Consigne : Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.
+Question : La position correspond-elle à ce que la consigne demandait : la bonne personne, le bon objet, la bonne situation, le bon horizon ?
+Écriture pour la machine : la position s'applique à l'acteur, l'objet, la situation et l'horizon demandés · dp.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande de signer immédiatement pour un an.
+[s1] Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur.
+[s2] La remise de 18 % rend toute autre option irrationnelle.
+[s3] Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.
+
+Fin du lot 09 : 10 cartes. Réponds maintenant, 10 lignes.

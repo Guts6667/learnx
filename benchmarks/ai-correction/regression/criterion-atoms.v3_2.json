@@ -1,0 +1,1033 @@
+{
+  "schemaVersion": "3.2",
+  "status": "VERROUILLÉ après hachage. Sémantique close ; le manifeste de paires et le scoring relèvent de l artefact suivant.",
+  "stratumDefinition": "Une strate décrit UNE invocation du vérificateur sur UN tuple lié. Les agrégations forall / count sont déterministes et se font HORS du vérificateur.",
+  "contextFidelityQuantifier": "∀ affirmation utile c : faithful(c, dossier) ET ∃ limite l : delimits(l, c) ET correct_limit(l, c, dossier). Décision explicite : une même limite PEUT couvrir plusieurs affirmations ; les limites ne sont pas exigées distinctes.",
+  "strata": {
+    "S1_span_local": "un span, aucun ancrage",
+    "S2_span_frame": "un span + cadre",
+    "S3_span_dossier": "un span + dossier",
+    "S4_multi_local": "plusieurs spans, relation interne",
+    "S5_multi_frame": "plusieurs spans + cadre",
+    "S6_multi_dossier": "plusieurs spans + dossier",
+    "S7_full_dossier": "réponse entière + dossier",
+    "S0_deterministic": "évalué en code, aucun appel au vérificateur"
+  },
+  "dimensions": {
+    "response_arity": "0 | 1 | n | full_response — nombre de témoins de réponse liés dans UNE invocation",
+    "logical_operator": "none | and | not_exists",
+    "grounding": "[] | [task_frame] | [dossier] | [task_frame, dossier]",
+    "evaluator": "verifier | deterministic"
+  },
+  "criteria": {
+    "arbitration-choice": {
+      "label": "Choix d’arbitrage",
+      "topLevelDescription": "Le choix est explicite, appliqué au bon périmètre et directement actionnable.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::arbitration-choice",
+      "witnessRoles": [
+        {
+          "roleId": "choice",
+          "description": "choix retenu",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "ac.a1",
+          "atom": "un choix est explicitement énoncé",
+          "sourcePhrase": "Le choix est explicite",
+          "predicate": "stated",
+          "arguments": [
+            "choice"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "ac.a2",
+          "atom": "scope_match — l'action retenue s'applique à l'acteur, la cible, la situation et l'horizon demandés",
+          "sourcePhrase": "appliqué au bon périmètre",
+          "predicate": "scope_match",
+          "arguments": [
+            "choice",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S5_multi_frame"
+        },
+        {
+          "atomId": "ac.a3",
+          "atom": "action_resolved — la réponse dit à l'acteur visé quoi choisir ou faire sans inférence entre actions matériellement différentes",
+          "sourcePhrase": "directement actionnable",
+          "predicate": "action_resolved",
+          "arguments": [
+            "choice",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S5_multi_frame"
+        }
+      ]
+    },
+    "comparative-arithmetic": {
+      "label": "Vérifier les opérations, unités et périmètres chiffrés nécessaires à la comparaison.",
+      "topLevelDescription": "Toutes les exigences du critère sont démontrées sans erreur matérielle.",
+      "topDescriptionIsGeneric": true,
+      "inPrimaryEndpoint": false,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::comparative-arithmetic",
+      "witnessRoles": [
+        {
+          "roleId": "comparison",
+          "description": "comparaison chiffrée",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "operation",
+          "description": "opération — TOUTES celles de la comparaison liée",
+          "source": "response",
+          "selection": "exhaustive",
+          "cardinality": ">=1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "ca.a1",
+          "atom": "CHAQUE opération de la comparaison est exacte",
+          "sourcePhrase": "[intitulé] Vérifier les opérations",
+          "predicate": "exact",
+          "arguments": [
+            "operation"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "ca.a2",
+          "atom": "les unités sont cohérentes dans CHAQUE opération",
+          "sourcePhrase": "[intitulé] unités",
+          "predicate": "units_consistent",
+          "arguments": [
+            "operation"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "ca.a3",
+          "atom": "les périmètres comparés sont identiques",
+          "sourcePhrase": "[intitulé] périmètres chiffrés",
+          "predicate": "same_scope",
+          "arguments": [
+            "comparison",
+            "dossier"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S6_multi_dossier"
+        }
+      ]
+    },
+    "context-fidelity": {
+      "label": "Fidélité et limites",
+      "topLevelDescription": "Les affirmations utiles sont fidèles au contexte et leurs limites sont correctement délimitées.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "roleId": "claim",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "source": "response",
+          "selection": "exhaustive",
+          "cardinality": ">=1"
+        },
+        {
+          "roleId": "limit",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": ">=1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "cf.a1",
+          "atom": "CHAQUE affirmation utile est fidèle au contexte",
+          "sourcePhrase": "Les affirmations utiles sont fidèles au contexte",
+          "predicate": "faithful",
+          "arguments": [
+            "claim",
+            "dossier"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        },
+        {
+          "atomId": "cf.a2",
+          "atom": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+          "sourcePhrase": "leurs limites sont … délimitées",
+          "predicate": "delimits",
+          "arguments": [
+            "limit",
+            "claim"
+          ],
+          "quantifier": "forall_exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S4_multi_local"
+        },
+        {
+          "atomId": "cf.a3",
+          "atom": "CETTE limite est correcte pour CETTE affirmation",
+          "sourcePhrase": "correctement délimitées",
+          "predicate": "correct_limit",
+          "arguments": [
+            "limit",
+            "claim",
+            "dossier"
+          ],
+          "quantifier": "forall_exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S6_multi_dossier"
+        }
+      ]
+    },
+    "decision-position": {
+      "label": "Position décisionnelle",
+      "topLevelDescription": "La position est explicite et peut guider l’action dans le cadre demandé.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::decision-position",
+      "witnessRoles": [
+        {
+          "roleId": "position",
+          "description": "position retenue",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "dp.a1",
+          "atom": "une position est explicitement énoncée",
+          "sourcePhrase": "La position est explicite",
+          "predicate": "stated",
+          "arguments": [
+            "position"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "dp.a2",
+          "atom": "la réponse dit à l'acteur visé quoi choisir ou faire, sans inférence entre actions matériellement différentes",
+          "sourcePhrase": "peut guider l'action",
+          "predicate": "action_resolved",
+          "arguments": [
+            "position",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S5_multi_frame"
+        },
+        {
+          "atomId": "dp.a3",
+          "atom": "la position s'applique à l'acteur, l'objet, la situation et l'horizon demandés",
+          "sourcePhrase": "dans le cadre demandé",
+          "predicate": "scope_match",
+          "arguments": [
+            "position",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S5_multi_frame"
+        }
+      ]
+    },
+    "event-sequence-grounding": {
+      "label": "Ancrer la réflexion dans une séquence et des observations présentes dans le dossier.",
+      "topLevelDescription": "Toutes les exigences du critère sont démontrées sans erreur matérielle.",
+      "topDescriptionIsGeneric": true,
+      "inPrimaryEndpoint": false,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::event-sequence-grounding",
+      "witnessRoles": [
+        {
+          "roleId": "sequence",
+          "description": "séquence énoncée",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "esg.a1",
+          "atom": "une séquence est énoncée",
+          "sourcePhrase": "[intitulé] Ancrer … dans une séquence",
+          "predicate": "stated",
+          "arguments": [
+            "sequence"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "esg.a2",
+          "atom": "CETTE séquence est ancrée sur des observations du dossier",
+          "sourcePhrase": "[intitulé] observations du dossier",
+          "predicate": "grounded",
+          "arguments": [
+            "sequence",
+            "dossier"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        }
+      ]
+    },
+    "fact-fidelity": {
+      "label": "Fidélité aux faits du dossier",
+      "topLevelDescription": "Au moins deux données exactes et pertinentes soutiennent effectivement le choix retenu.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "roleId": "choice",
+          "description": "choix retenu",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "datum",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": ">=2"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "ff.a1",
+          "atom": "l'ensemble partagé compte au moins deux données distinctes",
+          "sourcePhrase": "Au moins deux données",
+          "predicate": "count_at_least",
+          "arguments": [
+            "datum_set",
+            "2"
+          ],
+          "quantifier": "count_at_least",
+          "evaluator": "deterministic",
+          "responseArity": 0,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S0_deterministic"
+        },
+        {
+          "atomId": "ff.a2",
+          "atom": "CHAQUE donnée de l'ensemble est exacte",
+          "sourcePhrase": "exactes",
+          "predicate": "exact",
+          "arguments": [
+            "datum",
+            "dossier"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        },
+        {
+          "atomId": "ff.a3",
+          "atom": "CHAQUE donnée de l'ensemble est pertinente pour CE choix",
+          "sourcePhrase": "pertinentes",
+          "predicate": "relevant",
+          "arguments": [
+            "datum",
+            "choice",
+            "task_frame"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S5_multi_frame"
+        },
+        {
+          "atomId": "ff.a4",
+          "atom": "CHAQUE donnée de l'ensemble soutient CE choix",
+          "sourcePhrase": "soutiennent effectivement le choix retenu",
+          "predicate": "supports",
+          "arguments": [
+            "datum",
+            "choice"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S4_multi_local"
+        }
+      ]
+    },
+    "mechanism-link": {
+      "label": "Relier explicitement les faits au mécanisme ou à la conclusion expliquée.",
+      "topLevelDescription": "Toutes les exigences du critère sont démontrées sans erreur matérielle.",
+      "topDescriptionIsGeneric": true,
+      "inPrimaryEndpoint": false,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::mechanism-link",
+      "witnessRoles": [
+        {
+          "roleId": "mechanism",
+          "description": "mécanisme ou conclusion",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "fact",
+          "description": "fait mobilisé — TOUS",
+          "source": "response",
+          "selection": "exhaustive",
+          "cardinality": ">=1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "ml.a1",
+          "atom": "un mécanisme ou une conclusion est énoncé",
+          "sourcePhrase": "[intitulé] mécanisme ou conclusion",
+          "predicate": "stated",
+          "arguments": [
+            "mechanism"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "ml.a2",
+          "atom": "CHAQUE fait est explicitement relié à CE mécanisme",
+          "sourcePhrase": "[intitulé] Relier explicitement les faits",
+          "predicate": "links",
+          "arguments": [
+            "fact",
+            "mechanism"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S4_multi_local"
+        }
+      ]
+    },
+    "practice-evidence": {
+      "label": "Preuve de pratique",
+      "topLevelDescription": "La pratique demandée est démontrée par une preuve vérifiable et correctement interprétée.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::practice-evidence",
+      "witnessRoles": [
+        {
+          "roleId": "practice",
+          "description": "pratique demandée",
+          "source": "task_frame",
+          "selection": "canonical",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "proof",
+          "description": "preuve produite",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "interpretation",
+          "description": "interprétation de la preuve, énoncée dans la réponse",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "pe.a1",
+          "atom": "une preuve vérifiable est produite",
+          "sourcePhrase": "une preuve vérifiable",
+          "predicate": "verifiable",
+          "arguments": [
+            "proof",
+            "dossier"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        },
+        {
+          "atomId": "pe.a2",
+          "atom": "CETTE preuve démontre CETTE pratique",
+          "sourcePhrase": "La pratique demandée est démontrée",
+          "predicate": "demonstrates",
+          "arguments": [
+            "proof",
+            "practice",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S5_multi_frame"
+        },
+        {
+          "atomId": "pe.a3",
+          "atom": "CETTE interprétation de CETTE preuve est correcte",
+          "sourcePhrase": "correctement interprétée",
+          "predicate": "correct_interpretation",
+          "arguments": [
+            "interpretation",
+            "proof",
+            "dossier"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S6_multi_dossier"
+        }
+      ]
+    },
+    "reflection-link": {
+      "label": "Lien réflexif explicite",
+      "topLevelDescription": "Le lien réflexif demandé est explicite et appuyé sur un élément concret de la réponse.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "roleId": "link",
+          "description": "lien réflexif",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "element",
+          "description": "élément concret",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "rl.a1",
+          "atom": "le lien réflexif demandé est explicitement énoncé",
+          "sourcePhrase": "Le lien réflexif demandé est explicite",
+          "predicate": "stated",
+          "arguments": [
+            "link",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S2_span_frame"
+        },
+        {
+          "atomId": "rl.a2",
+          "atom": "CE lien s'appuie sur CET élément de la réponse",
+          "sourcePhrase": "appuyé sur un élément concret de la réponse",
+          "predicate": "grounded_in",
+          "arguments": [
+            "link",
+            "element"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S4_multi_local"
+        }
+      ]
+    },
+    "residual-risk-surfacing": {
+      "label": "Bornage du risque restant",
+      "topLevelDescription": "Le risque résiduel pertinent est nommé avec exactitude et couvert par une précaution proportionnée.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "roleId": "action",
+          "description": "action retenue",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "risk",
+          "description": "risque nommé",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "precaution",
+          "description": "précaution proposée",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "rr.a1",
+          "atom": "un risque est nommé",
+          "sourcePhrase": "Le risque … est nommé",
+          "predicate": "named",
+          "arguments": [
+            "risk"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "rr.a2",
+          "atom": "CE risque subsiste après CETTE action",
+          "sourcePhrase": "Le risque résiduel",
+          "predicate": "residual_to",
+          "arguments": [
+            "risk",
+            "action"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S4_multi_local"
+        },
+        {
+          "atomId": "rr.a3",
+          "atom": "CE risque est exact ET pertinent au regard du dossier",
+          "sourcePhrase": "pertinent … avec exactitude",
+          "predicate": "accurate_and_relevant",
+          "arguments": [
+            "risk",
+            "dossier"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "and",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        },
+        {
+          "atomId": "rr.a4",
+          "atom": "une précaution est proposée",
+          "sourcePhrase": "couvert par une précaution",
+          "predicate": "proposed",
+          "arguments": [
+            "precaution"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "rr.a5",
+          "atom": "CETTE précaution atténue CE risque",
+          "sourcePhrase": "couvert par une précaution",
+          "predicate": "mitigates",
+          "arguments": [
+            "precaution",
+            "risk"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S4_multi_local"
+        },
+        {
+          "atomId": "rr.a6",
+          "atom": "CETTE précaution est proportionnée à CE risque",
+          "sourcePhrase": "précaution proportionnée",
+          "predicate": "proportionate",
+          "arguments": [
+            "precaution",
+            "risk",
+            "dossier"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S6_multi_dossier"
+        }
+      ]
+    },
+    "source-fact-use": {
+      "label": "Utilisation exacte des faits",
+      "topLevelDescription": "Les faits mobilisés sont pertinents, exacts et attribuables au scénario.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::source-fact-use",
+      "witnessRoles": [
+        {
+          "roleId": "fact",
+          "description": "fait de scénario mobilisé — TOUS ceux mobilisés",
+          "source": "response",
+          "selection": "exhaustive",
+          "cardinality": ">=1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "sfu.a1",
+          "atom": "CHAQUE fait mobilisé est attribuable au scénario",
+          "sourcePhrase": "attribuables au scénario",
+          "predicate": "attributable",
+          "arguments": [
+            "fact",
+            "dossier"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        },
+        {
+          "atomId": "sfu.a2",
+          "atom": "CHAQUE fait mobilisé est exact",
+          "sourcePhrase": "exacts",
+          "predicate": "exact",
+          "arguments": [
+            "fact",
+            "dossier"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        },
+        {
+          "atomId": "sfu.a3",
+          "atom": "CHAQUE fait mobilisé est pertinent",
+          "sourcePhrase": "pertinents",
+          "predicate": "relevant",
+          "arguments": [
+            "fact",
+            "task_frame"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S2_span_frame"
+        }
+      ]
+    },
+    "source-fidelity": {
+      "label": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "topLevelDescription": "Toutes les exigences du critère sont démontrées sans erreur matérielle.",
+      "topDescriptionIsGeneric": true,
+      "inPrimaryEndpoint": false,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "roleId": "fact",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "source": "dossier",
+          "selection": "canonical",
+          "cardinality": ">=1"
+        },
+        {
+          "roleId": "material_addition",
+          "description": "ajout matériel absent du dossier",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "0"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "sf.a1",
+          "atom": "CHAQUE fait nécessaire du dossier est restitué dans la réponse",
+          "sourcePhrase": "[intitulé] Restituer … faits nécessaires",
+          "predicate": "restituted",
+          "arguments": [
+            "fact",
+            "response"
+          ],
+          "quantifier": "forall",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S6_multi_dossier"
+        },
+        {
+          "atomId": "sf.a2",
+          "atom": "IL N'EXISTE aucun ajout matériel absent du dossier",
+          "sourcePhrase": "[intitulé] sans ajout matériel",
+          "predicate": "not_exists",
+          "arguments": [
+            "material_addition"
+          ],
+          "quantifier": "not_exists",
+          "evaluator": "verifier",
+          "responseArity": "full_response",
+          "logicalOperator": "not_exists",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S7_full_dossier"
+        }
+      ]
+    },
+    "uncertainty-bounds": {
+      "label": "Bornage de l’incertitude",
+      "topLevelDescription": "L’incertitude pertinente est nommée et correctement délimitée sans empêcher une décision proportionnée.",
+      "topDescriptionIsGeneric": false,
+      "inPrimaryEndpoint": true,
+      "missingRequirementCap": "partial",
+      "witnessGroupId": "wg::uncertainty-bounds",
+      "witnessRoles": [
+        {
+          "roleId": "uncertainty",
+          "description": "incertitude nommée",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        },
+        {
+          "roleId": "decision",
+          "description": "décision prise",
+          "source": "response",
+          "selection": "existential",
+          "cardinality": "1"
+        }
+      ],
+      "atoms": [
+        {
+          "atomId": "ub.a1",
+          "atom": "une incertitude est nommée",
+          "sourcePhrase": "L'incertitude … est nommée",
+          "predicate": "named",
+          "arguments": [
+            "uncertainty"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [],
+          "stratum": "S1_span_local"
+        },
+        {
+          "atomId": "ub.a2",
+          "atom": "CETTE incertitude est pertinente",
+          "sourcePhrase": "L'incertitude pertinente",
+          "predicate": "relevant",
+          "arguments": [
+            "uncertainty",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S2_span_frame"
+        },
+        {
+          "atomId": "ub.a3",
+          "atom": "CETTE incertitude est correctement délimitée",
+          "sourcePhrase": "correctement délimitée",
+          "predicate": "correctly_delimited",
+          "arguments": [
+            "uncertainty",
+            "dossier"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": 1,
+          "logicalOperator": "none",
+          "grounding": [
+            "dossier"
+          ],
+          "stratum": "S3_span_dossier"
+        },
+        {
+          "atomId": "ub.a4",
+          "atom": "CETTE incertitude n'empêche pas une décision PROPORTIONNÉE",
+          "sourcePhrase": "sans empêcher une décision proportionnée",
+          "predicate": "permits_proportionate_decision",
+          "arguments": [
+            "uncertainty",
+            "decision",
+            "task_frame"
+          ],
+          "quantifier": "exists",
+          "evaluator": "verifier",
+          "responseArity": "n",
+          "logicalOperator": "none",
+          "grounding": [
+            "task_frame"
+          ],
+          "stratum": "S5_multi_frame"
+        }
+      ]
+    }
+  },
+  "contentHash": "sha256:771599e3280058c107243c4b28d1b74d2546924aa47d827462ba54c54b13afdb"
+}

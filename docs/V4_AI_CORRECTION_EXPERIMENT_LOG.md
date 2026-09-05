@@ -1294,3 +1294,719 @@ et nous repartons avec un plancher de preuve que nous n'avions pas.
 **Dépense de la journée : 4,5685 USD** (0,1605 + 1,8444 + 2,5636). Enveloppe
 `owner-210-budget-2026-08-31`, ouverte en remplaçant celle du 30 août : ~20,4 USD
 restants.
+
+## 14. Le manifeste de paires, et deux échecs qu'aucun vérificateur ne peut juger — 1er septembre 2026
+
+### Ce qui a été construit
+
+Un **manifeste de paires** : la liste des cas que l'expérience de vérificateur
+devra trancher. Une *paire* associe un même **atome** (une exigence élémentaire
+tirée d'un critère de barème, par exemple « une option est explicitement
+retenue ») à deux extraits : le **span négatif**, c'est-à-dire le passage que le
+correcteur a cité quand il a attribué le haut à tort, et le **span positif**, le
+passage qui porte réellement l'exigence dans la copie non abîmée.
+
+Les deux membres sont soumis **séparément** au vérificateur ; l'appariement
+n'existe qu'au moment de l'analyse. Sinon le modèle verrait qu'on lui présente un
+bon et un mauvais cas, et choisirait par élimination.
+
+Fichiers, tous nouveaux — `benchmarks/**` reste en ajout seul :
+
+| fichier | rôle |
+|---|---|
+| `atom-pair-manifest.v2.json` | le manifeste, `sha256:b3a021bf…` |
+| `normalisation/numeric.v1.json` | tolérance sur les nombres, `sha256:154ac56d…` |
+| `normalisation/unit.v1.json` | équivalences d'unités, `sha256:59c69aa6…` |
+| `scripts/build-atom-pair-manifest.ts` | le construit à partir des runs payés |
+| `scripts/classify-failure-modes.ts` | contrôle indépendant du classement |
+| `scripts/dry-run-atom-pairs.ts` | la répétition à blanc |
+| `scripts/seal-benchmark-artifact.py` | calcule et vérifie les empreintes |
+
+### La découverte : deux échecs sur dix-huit n'ont rien à vérifier
+
+En construisant les paires, sept d'entre elles se sont retrouvées **sans aucun
+span négatif**. Ce n'était pas un défaut du script. En remontant aux réponses
+brutes des correcteurs, les dix-huit échecs de la base de revue se répartissent
+ainsi :
+
+| ce que le correcteur a rendu | échecs | grappes |
+|---|---|---|
+| le critère, au niveau haut, **avec** au moins une citation | **16** | **14** |
+| le critère, au niveau haut, **sans aucune citation** | 1 | 1 |
+| **pas le critère du tout** — absent de la sortie | 1 | 1 |
+
+Les deux derniers ne posent aucune question à un vérificateur : **il n'y a rien à
+vérifier**. On ne peut pas demander « ce passage établit-il l'exigence ? » quand
+aucun passage n'a été cité. Ils relèvent de deux règles déterministes, du code
+sans appel de modèle :
+
+- un critère absent de la sortie ne peut pas être noté ;
+- un niveau haut sans aucune citation résolue ne peut pas être attribué.
+
+C'est une bonne nouvelle pour l'architecture, et une correction pour le plan :
+**la population du vérificateur est de 16 échecs sur 14 grappes**, pas 18 sur 16.
+Le plan supposait 18. Les deux échecs restent réels et comptent dans la
+population totale ; ils sont conservés dans le manifeste sous
+`deterministicallyCatchable`, pas supprimés.
+
+`v2` **supersède** `v1` — `sha256:3593b4e6…` — au lieu de le réécrire, sur le
+modèle des enveloppes de dépense. `v1` comptait 52 paires dont 7 sans span.
+
+### La répétition à blanc, et ce qu'elle a trouvé chez moi
+
+La consigne du relecteur était : « une répétition à blanc, à coût nul, prouvant
+que chaque paire se matérialise et n'est scorée qu'une fois ». Premier passage :
+**45 paires bloquées sur 45**, adjudication en attente — et tous les contrôles au
+vert, sur zéro paire. Un vert qui ne prouve rien : exactement le motif que ce
+projet passe sa semaine à retirer.
+
+Deux corrections :
+
+1. Une **garde de vacuité** : si aucune paire ne se matérialise, la répétition
+   échoue au lieu de se féliciter.
+2. Un mode `--fixture-adjudication` qui injecte des adjudications **fictives, en
+   mémoire seule**, jamais écrites dans le manifeste. Les vraies étiquettes
+   restent à faire par un humain.
+
+Puis j'ai cassé le manifeste exprès, pour vérifier que les gardes rougissent —
+la règle maison : ne jamais déduire qu'un garde-fou fonctionne en le lisant.
+
+| mutant | résultat |
+|---|---|
+| une paire dupliquée | rouge — identité en double |
+| `AMBIGUOUS` remappé sur `ACCEPT` | rouge — crédite l'endpoint principal |
+| une strate inconnue | **vert au premier essai** |
+| 20 paires sur 45 | rouge — 5 grappes au lieu de 14 |
+
+Le troisième était un vrai trou **dans mon harnais** : les entrées requises
+étaient déduites du *nom* de la strate par correspondance de sous-chaîne, donc
+une strate non reconnue retombait silencieusement sur le jeu d'entrées le plus
+pauvre. Les sept strates sont désormais énumérées explicitement et une strate
+inconnue est une erreur. Après correction, les quatre mutants rougissent et le
+manifeste réel passe.
+
+### Empreintes reproductibles
+
+Les empreintes publiées la veille avaient été apposées à la main. Une empreinte
+que personne ne peut recalculer ne prouve rien. La recette est maintenant un
+script — JSON trié par clés, séparateurs compacts, UTF-8, `contentHash` exclu de
+sa propre préimage — et elle **reproduit les quatre empreintes déjà publiées**
+(taxonomie, deux tables de normalisation, manifeste v1) au bit près.
+
+### Ce qui reste bloqué
+
+L'**adjudication** : pour chacune des 45 paires, un humain doit fixer le span
+positif et l'étiquette de référence. Les cas ambigus ou dépendants du contexte
+sont à conserver dans une strate rapportée à part, pas à supprimer.
+
+Rien ne part vers un fournisseur avant. Aucune clé n'est exportée.
+
+**Dépense de cette section : 0,00 USD.**
+
+### Conséquence statistique de la reclassification
+
+La **grappe** est l'unité indépendante : une réponse rédigée. Plusieurs paires
+issues de la même copie ne sont pas des observations séparées, elles partagent le
+texte, l'auteur et le sujet.
+
+Passer de 16 à 14 grappes déplace ce qu'un résultat parfait peut certifier. Avec
+un résultat binaire pré-déclaré par grappe, la **borne basse unilatérale à 95 %**
+d'un sans-faute vaut `0,05^(1/n)` :
+
+| grappes réussies | borne basse à 95 % |
+|---|---|
+| 14 / 14 (notre situation) | **80,74 %** |
+| 16 / 16 (ce que le plan supposait) | 82,93 % |
+| 20 / 20 | 86,09 % |
+| 29 / 29 | 90,19 % |
+
+Le plan avait fixé un plancher de **86 %** sur le rejet des négatifs. **Cette
+expérience ne peut pas le certifier**, même parfaite : il faudrait 20 grappes
+toutes réussies pour que la borne atteigne 86 %, et 29 pour 90 %.
+
+C'est exactement pourquoi le relecteur l'a qualifiée de *screening spike* et non
+de test de faisabilité décisif. Ce qu'elle peut faire reste utile et
+asymétrique :
+
+- **réfuter** — un vérificateur qui échoue sur 14 grappes ferme la route pour
+  quelques dollars ;
+- **filtrer** — un sans-faute ne prouve pas 86 %, mais justifie de payer
+  l'écriture des copies supplémentaires qui, elles, le prouveraient.
+
+Ce que la borne ne dit pas, et qu'il faut redire : elle ne vaut **que si chaque
+grappe produit un résultat binaire déclaré à l'avance**. Agréger 45 paires comme
+45 observations donnerait 93,6 % — un chiffre faux, obtenu en comptant plusieurs
+fois la même copie.
+
+### La passe aveugle — 90 cartes, et ce que l'aveuglement ne couvre pas
+
+Le paquet : `adjudication-deck.v1.json`, `sha256:f1f25fc9…`. 90 cartes, une par
+membre de paire. La correspondance carte → membre vit dans un **fichier
+séparé**, `adjudication-deck.v1.key.json`, `sha256:99ea277a…`, qui n'est ni
+embarqué dans la page ni remis au relecteur.
+
+Le **span positif** n'est pas inventé : c'est la phrase que la mutation a
+supprimée (`SENTENCE_DELETION`, 40 paires) ou altérée (`FACT_INVERSION`, 5
+paires) dans la copie d'origine — le porteur contre lequel le barème a été écrit.
+
+**L'ordre.** Le rejet pur ne peut pas produire 45 écarts simultanés : 500 tirages
+n'ont rien donné. L'ordre est donc obtenu par une marche sous contrainte —
+arrangement valide de départ, puis 143 241 transpositions acceptées sur 200 000
+tentées, chacune refusée si elle rapproche deux membres à moins de 8 cartes.
+Aucune construction ne place les membres par position : ce serait la position
+elle-même qui trahirait le membre. Les positifs se répartissent 8, 6, 10, 7, 4,
+10 sur les six sixièmes du paquet.
+
+**L'audit d'aveuglement** (`scripts/audit-adjudication-blinding.ts`) vérifie
+mécaniquement qu'aucune carte ne porte de marque, que positifs et négatifs ont
+exactement la même forme, que chaque span est localisable dans sa propre
+réponse, et recalcule l'écart minimum. Ses quatre gardes ont été testées en
+cassant le paquet : jeton interdit, membres adjacents, champ propre aux
+positifs, span absent — les quatre rougissent, le paquet réel passe.
+
+Un faux positif a été corrigé plutôt qu'ignoré : l'audit signalait « DIRECT »
+dans la phrase de barème « directement actionnable ». Les jetons de verdict sont
+désormais appariés sur frontière de mot et à la casse exacte. Une alerte qui crie
+à tort apprend à ignorer l'audit.
+
+#### Deux fuites que l'aveuglement ne supprime pas
+
+| fuite | mesure |
+|---|---|
+| longueur de la réponse | positifs 232/**559**/856 caractères, négatifs 65/**437**/675 (min/médiane/max) |
+| longueur du span | positifs 46/**129**/274, négatifs 39/**113**/178 |
+
+La première est structurelle : une carte négative issue d'une suppression de
+phrase montre une réponse **plus courte d'une phrase** que sa jumelle. Un
+relecteur attentif sur 90 cartes peut apprendre la règle « plus court = négatif »
+sans reconnaître aucune copie. L'écart de 8 cartes atténue, il ne supprime pas.
+
+Je ne sais pas la corriger sans casser l'énoncé : le positif exige que la phrase
+porteuse soit présente, le négatif exige qu'elle ne le soit pas. La déclarer est
+la seule réponse honnête ; c'est au relecteur de dire si elle invalide la passe
+aveugle ou si elle est acceptable comme biais résiduel connu.
+
+La seconde est plus faible : les longueurs de span se recouvrent largement
+(médianes 129 contre 113), donc le span seul ne trahit pas le membre.
+
+### Paquet v2 — quatre défauts corrigés, et la fuite de longueur traitée sans toucher aux suppressions
+
+L'inspection du relecteur a trouvé quatre blocages dans la page v1 et une fuite
+de reconnaissance que ma contrainte d'ordre ne couvrait pas. Le paquet v2
+(`sha256:c81997a9…`, 106 cartes) et la page les traitent.
+
+#### Les quatre défauts
+
+1. **Les contrôles n'étaient pas tracés.** Régler « autre soutien » avant le
+   verdict n'écrivait rien : le gestionnaire cherchait une décision qui n'existait
+   pas encore, et la valeur repartait ensuite en `touchedControls: false`. Les
+   deux contrôles sont désormais **tri-valués** — `null | yes | no` — et partent à
+   `null`. La touche `C` confirme explicitement les deux valeurs proposées. Un
+   contrôle non confirmé laisse la carte **inéligible**, et la page nomme ce qui
+   manque.
+
+2. **La signature s'affichait `correct_limit([object Object], [object Object])`.**
+   Elle rendait les `witnessRoles` du critère au lieu des `arguments` de l'atome,
+   et les rendait comme objets. Elle affiche maintenant
+   `scope_match(choice, task_frame)`, avec la description de chaque rôle.
+
+3. **Les témoins liés n'étaient pas exportés.** Pour les atomes d'arité `n`, un
+   `DIRECT` n'était pas reproductible : rien ne disait quel passage instancie
+   `choice`, `limit` ou `claim`. La réponse est découpée en phrases adressables ;
+   on arme un rôle, on clique une phrase, la liaison s'affiche et part dans
+   l'export. **42 cartes ont deux rôles à lier, 60 en ont un, 4 aucun.** Une carte
+   dont un rôle liable n'est pas lié ne compte pas.
+
+4. **L'export était trop permissif.** Il refuse maintenant, en nommant les
+   cartes en cause : identifiant de relecteur vide, moins de 106 décisions
+   complètes, un contrôle resté `null`, un témoin non lié, un `AMBIGUOUS` sans
+   justification. Et il copie **le texte canonique lui-même**, celui dont
+   l'empreinte est affichée — pas une version indentée qui hacherait autrement.
+
+#### La fuite de longueur
+
+Mesures du relecteur, reproduites : AUC de la longueur de réponse **0,687**,
+AUC de la longueur du span **0,666**, positif plus long dans **40/45** paires,
+**30 réponses distinctes** sur 90 cartes en groupes de polarité pure, et **35
+cartes** dont la réponse réapparaît à moins de huit positions. La contrainte v1
+protégeait le `pairId` et rien d'autre.
+
+Quatre changements, aucun ne touche aux 45 suppressions :
+
+| changement | effet mesuré |
+|---|---|
+| ordre contraint aussi par empreinte de réponse et par grappe | réapparitions à moins de 8 positions : **18 → 0** |
+| fenêtre fixe de 340 caractères sur S1–S3, réponse complète sur demande et journalisée | AUC visible **0,687 → 0,592** |
+| passages étendus à la phrase entière **des deux côtés** | AUC de span **0,666 → 0,406** |
+| 16 contrôles positifs raccourcis, hors endpoint | AUC de réponse **0,687 → 0,640** |
+
+L'extension à la phrase est symétrique et **conservatrice** : elle donne au
+négatif *plus* de texte pour être jugé suffisant, jamais moins. Le fragment
+exactement cité par le correcteur est conservé dans le fichier de clé.
+
+Les contrôles ont d'abord échoué. En ne retirant qu'une phrase, ils sortaient à
+679 caractères de médiane — **plus longs que les positifs** — et faisaient
+monter l'AUC à 0,727 au lieu de la baisser. Ils retirent maintenant des phrases
+jusqu'à retomber dans la bande des négatifs (médiane 450 contre 437).
+
+#### Ce qui reste, par strate
+
+| strate | n | AUC visible | AUC span |
+|---|---|---|---|
+| fenêtre pleine | 30 | **0,455** | 0,440 |
+| réponse plus courte que la fenêtre | 14 | **0,833** | 0,625 |
+| intégrales S4–S7 | 62 | 0,629 | **0,334** |
+
+Là où la fenêtre est pleine, la longueur ne dit plus rien. Le résidu se
+concentre sur deux populations nommées : 14 cartes dont la réponse est plus
+courte que la fenêtre — rien à masquer avec —, et S4–S7 où la phrase citée par
+le correcteur est **plus longue** que la phrase porteuse, donc un signal inversé
+de même ampleur. Aucun des deux ne se corrige sans changer le phénomène étudié.
+
+#### D0 — les deux gardes déterministes, testées
+
+`src/lib/ai-correction-evidence-guards.ts` : un critère absent de la sortie ne
+peut pas être noté ; un niveau haut dont aucune citation ne se retrouve dans la
+copie ne peut pas être attribué. Neuf tests, dont **trois sur les artefacts
+payés eux-mêmes** — les deux vrais échecs, plus un contrôle inverse sur 20+
+critères correctement cités, sans lequel une réponse vide aurait fait passer les
+deux premiers pour la mauvaise raison. Quatre mutants de la garde rougissent.
+
+Ces deux échecs restent **2/2 dans l'évaluation end-to-end et hors du
+dénominateur du vérificateur**.
+
+#### La page est testée, pas seulement relue
+
+`src/lib/ai-correction-adjudication-page.test.ts` charge la page publiée dans un
+DOM et la pilote : neuf tests. Six mutants de la page rougissent. Le premier jeu
+de tests **laissait passer** la réintroduction du bug v1, parce qu'il n'exerçait
+que le clavier et pas le clic — deux gestionnaires différents. Le test manquant a
+été ajouté, et le mutant rougit.
+
+### Paquet v3 — l'enveloppe de phrase devient le contrat, et le dénominateur se corrige
+
+Verdict du relecteur sur v2 : **BLOCK avant la passe 1**. Six points, tous
+fondés. Le paquet v3 (`sha256:53a2defc…`, 106 cartes) et la page les traitent.
+
+#### L'enveloppe de phrase est l'unité d'entrée, pas un correctif d'AUC
+
+v2 adjugeait la phrase entière pendant que la répétition à blanc envoyait encore
+le fragment brut. L'étiquette de référence aurait répondu à une autre question
+que la mesure. Un module partagé, `src/lib/ai-correction-adjudication-text.ts`,
+définit désormais l'unité :
+
+| strate | ce que le vérificateur reçoit |
+|---|---|
+| S1–S3 | l'enveloppe minimale de phrases contenant la citation |
+| S4–S6 | le tuple des phrases liées aux rôles de l'atome |
+| S7 | la réponse entière |
+| — | le fragment exactement cité : **endpoint secondaire de fidélité** |
+
+Segmenteur, offsets, empreintes et identifiants de phrases sont gelés dans le
+paquet (`segmenterVersion: fr/segmentSentences@1`). La répétition à blanc
+reconstruit l'entrée par ce module et **vérifie qu'elle est identique** au texte
+adjugé — 106 cartes sur 106.
+
+#### Un témoin peut être absent
+
+v2 exigeait au moins une phrase pour chaque rôle, y compris sur un `NOT_DIRECT`.
+Or c'est souvent **parce que** le rôle est absent qu'une carte n'est pas directe :
+la page fabriquait de faux témoins. Chaque rôle porte maintenant
+
+```
+roleAssessments[roleId] = { status: BOUND | ABSENT | AMBIGUOUS, sentenceIds: [] }
+```
+
+validé contre le verdict, le quantificateur et la cardinalité (`1`, `>=1`,
+`>=2`, `>=0`). Un `DIRECT` exige les rôles liés — sauf sur `not_exists`, où il
+exige au contraire l'absence.
+
+#### Plus aucun défaut, même visuel
+
+v2 gardait les deux contrôles à `null` mais pré-sélectionnait « non » et « oui »,
+et une seule touche confirmait les deux. C'était un défaut en tout sauf en
+stockage, et il ancrait « autre soutien = non ». Les propositions et la touche
+`C` sont supprimées : deux choix indépendants, rien de pressé tant que rien n'est
+répondu.
+
+#### L'espacement reposait sur un chiffre périmé — et sur une concentration
+
+La plus grosse grappe comptait bien **18** cartes, pas 27 : mon 27 venait d'une
+attribution de contrôles antérieure. Écart de grappe porté à **6**, atteint.
+
+Mais en desserrant la protection des contrôles pour qu'ils raccourcissent
+vraiment, **les seize se sont concentrés sur une seule copie**, la portant à 27
+cartes et rendant l'ordre infaisable — la recherche a stagné à un écart de 1. Un
+plafond calculé, `floor(105/6)+1 = 18`, et deux contrôles par grappe au plus.
+Écarts obtenus : paire 9, réponse 8, grappe 6.
+
+#### Classes de phrases à polarité pure : équilibrées puis isolées
+
+Le relecteur en signalait une ; il y en avait **quatre**, soit 24 cartes.
+Viser aussi le nombre de phrases des négatifs a fermé les classes courtes.
+Restent trois classes — 5, 6 et 7 phrases, **15 cartes** — qu'aucun contrôle ne
+peut fermer : un négatif à cinq ou sept phrases exigerait une copie d'origine qui
+n'existe pas. Elles sont marquées `lengthDiagnostic` **dans la clé, jamais sur la
+carte**, et sortent de l'endpoint principal.
+
+#### Le dénominateur, corrigé deux fois
+
+| population | grappes | borne basse 95 % d'un sans-faute |
+|---|---|---|
+| toutes paires | 14 | 80,74 % |
+| paires primaires | **11** | **76,16 %** |
+| primaires hors strate diagnostique | **9** | **71,69 %** |
+
+Le relecteur avait raison sur 11. En comptant au niveau **paire** — une paire
+dont un membre est diagnostique est contaminée entière — il en reste **9**, et
+25 paires primaires sur 37. Isoler la fuite coûte deux grappes et 4,5 points de
+borne. C'est le prix de l'honnêteté du protocole, et il doit être dit avant la
+passe, pas après.
+
+#### Ce que les AUC directionnelles révèlent
+
+Rapportées avec leur direction, comme demandé : `0,403` n'est pas « meilleur que
+0,597 », c'est la même distance au hasard dans l'autre sens.
+
+| population | n | visible | span | phrases |
+|---|---|---|---|---|
+| tout le paquet | 106 | 0,537 **+0,537** | 0,403 **−0,597** | 0,597 **+0,597** |
+| fenêtre pleine | 26 | 0,455 −0,545 | 0,461 −0,539 | 0,624 +0,624 |
+| réponse plus courte que la fenêtre | 19 | 0,693 +0,693 | 0,580 +0,580 | 0,682 +0,682 |
+| intégrales S4–S7 | 61 | 0,586 +0,586 | 0,331 **−0,669** | 0,605 +0,605 |
+| **hors strate diagnostique** | 91 | **0,501** | 0,321 **−0,679** | 0,547 |
+
+La longueur de réponse est neutralisée hors strate diagnostique : **0,501**,
+le hasard. Mais **la longueur du span ne l'est pas** : séparabilité **0,679**,
+inversée. Le signal n'a pas été supprimé, il a changé de sens et il est
+marginalement **plus fort** qu'au départ (0,666). La phrase que le correcteur
+cite est simplement plus longue que la phrase porteuse.
+
+Je ne sais pas corriger cela sans toucher au phénomène. Deux suites possibles :
+l'accepter comme résidu déclaré sur une strate déjà nommée, ou ajouter le second
+bras de substitutions fluides à longueur appariée — la mesure propre de
+discrimination sémantique que le relecteur a proposée.
+
+#### D0 est une vraie porte
+
+`checkEvidenceGuards` n'avait aucun appel hors tests. Elle est maintenant
+appelée dans `deriveRegressionObservations`, sur le texte réellement corrigé ;
+les violations voyagent sur l'observation et `computeRegressionMetrics` en fait
+un taux avec un dénominateur réel, `null` quand rien n'a pu être vérifié. Trois
+tests pilotent ce chemin de bout en bout ; retirer le rattachement en fait
+rougir deux.
+
+### État courant au 3 septembre 2026, et audit externe
+
+Un audit externe en lecture seule (mandaté par le propriétaire, SHA `0a1d212b`)
+a reproduit les sept empreintes au bit près, rejoué la répétition à blanc, les
+43 tests, et vérifié que D0 est réellement appelée. Il a relevé cinq écarts
+administratifs, tous fondés, corrigés ici, et approuvé le pivot de protocole
+décrit plus bas.
+
+#### Les chiffres en vigueur, qui remplacent ceux des sous-sections précédentes
+
+| quoi | valeur |
+|---|---|
+| échecs observés | 18 = 16 testables par vérificateur + 2 à règle déterministe (D0) |
+| paires | 45 sur 14 grappes ; 37 primaires sur 11 grappes |
+| primaires hors strate diagnostique | **25 paires sur 9 grappes** → borne 95 % d'un sans-faute **71,69 %** |
+| paquet v3 | `sha256:53a2defc…`, 106 cartes = 45 + 45 + 16 contrôles |
+| **clé v3** | `sha256:c27ed87a43f050a561bf482db729af786d65f0e2d67c025f8543003ba3b6b44e` |
+| rôles par carte, tous rôles | 14 × 1, 74 × 2, 18 × 3 |
+| rôles par carte, **liables dans la copie** | 5 × 0, 62 × 1, 39 × 2 |
+| `grounding` des 40 atomes | 16 « copie seule », 10 consigne, 14 dossier |
+
+Le message de handoff disait « 62 à un rôle, 39 à deux » sans les 5 cartes
+sans rôle liable : l'audit a raison, les comptes doivent porter la définition.
+
+#### Dépenses, périmètre qualifié
+
+L'audit a raison : « 8,97 USD » est le périmètre du ticket V4.5-210 (31 août
+soir 4,5685 + 1er septembre 4,4057), pas le total. Les grands livres de
+`regression/results/` totalisent **37,30 USD sur 18 runs payés**, dont ~26 le
+30 août sous l'enveloppe `owner-125`. Un filtre par date sur les grands livres
+donne 9,59 USD pour la même fenêtre : l'écart de 0,62 avec le journal reste à
+réconcilier ligne à ligne avant le prochain achat, et il est dit ici plutôt que
+choisi.
+
+#### Ce que l'audit a tranché
+
+1. **Fuite inversée des spans (0,679)** : résidu déclaré, pas de bras apparié
+   avant la course. Mitigation gratuite adoptée : rapporter les verdicts **par
+   tercile de longueur de span**.
+2. **Dénominateur 25 / 9 / 71,69 %** : correct et conservateur. À 9 grappes,
+   une grappe déplace la borne de ~11 points : la course se lit en grappes,
+   jamais en pourcentage.
+3. **Relecteur unique** : trois garde-fous pré-déclarés, gratuits, adoptés :
+   plafond d'abstention **20 % d'AMBIGUOUS, au-delà la passe est suspendue** ;
+   test-retest de 10 cartes à J+2 ; ordre et temps par carte dans l'export.
+   Plus un échantillon d'accord inter-juges : 15 cartes par les deux humains.
+4. **Grounding** : pour un atome que la passe montre injugeable sans dossier,
+   deux issues et deux seulement, déclarées avant : ré-annotation vers la
+   famille avec dossier, ou retrait vers la strate rapportée. Jamais après
+   avoir vu un verdict du vérificateur.
+5. **Préregistration** : le plan directeur entre dans le dépôt,
+   `docs/V4_5_210_PREREGISTRATION.md`, copie conforme du plan validé.
+
+#### Numérotation
+
+Les sections 12 et 13 existent sur deux branches non fusionnées
+(`ai-research/checker-signal`, `ai-research/model-comparison`) ; cette
+section 14 a été numérotée pour ne pas les écraser à la fusion.
+
+### Pivot de protocole : la passe 1 refaite autour du jugement humain
+
+**Preuve** : quatre lectures indépendantes de la page, un agent sans contexte,
+un rapport externe, le propriétaire, une seconde personne, ont échoué aux
+mêmes endroits. Le même geste qu'au §14 pour le modèle : quand tout le monde
+échoue pareil, le défaut appartient à la tâche. Deux cartes d'entraînement sur
+huit se sont en outre révélées discutables (E2, E3). Une étiquette de référence
+produite par un relecteur qui décode mal la grille contamine la course entière.
+
+**Décision** : la passe 1 demande à l'humain ce qu'un humain fait bien, et
+laisse le schéma au code et à la passe 2.
+
+- Le relecteur voit : consigne et dossier selon la famille, la copie **dans
+  la fenêtre de 340 caractères sur S1–S3** (la fenêtre reste : c'est elle qui
+  a neutralisé la fuite de longueur), la phrase surlignée, et **une question
+  en français courant**, une par atome, quarante en tout.
+- Il répond oui / non / je ne peux pas dire, **surligne les phrases qui lui
+  font dire ça**, puis S et V inchangés.
+- Sur les 62 cartes à un seul rôle liable, le témoin est dérivé de la phrase
+  surlignée. Sur les 39 cartes à deux rôles, la liaison rôle → phrase est
+  demandée en **passe 2**, côte à côte, réponse déjà donnée. C'est l'option
+  « étiquettes seulement, puis passe de liaison obligatoire » que le relecteur
+  du protocole avait lui-même prévue. Les 5 cartes sans rôle liable n'ont rien
+  à dériver.
+- L'export garde le même format ; les contrôles et les deux questions de
+  vérification survivent.
+
+**Conditions posées par l'audit, acceptées** :
+
+- relancer l'audit d'aveuglement sur la nouvelle présentation **avant** la
+  passe, et annoncer que 25 / 9 / 71,69 % peut bouger une troisième fois ;
+- les 40 questions sont un artefact **préenregistré et scellé** : brouillon →
+  validation propriétaire → gel → scellement ; une question retouchée après un
+  verdict est du retuning ;
+- test de non-orientation des 40 questions par deux agents sans contexte ;
+- table question ↔ atome vérifiée par script : un-à-un, et le quantificateur
+  de l'atome (CHAQUE / UNE / AUCUNE) présent dans la question ;
+- l'échauffement refait avec des réponses indiscutables, validé par deux
+  agents sans contexte, puis **8/8 sans hésitation par le propriétaire** avant
+  le lancement ;
+- paquet v3 et page actuelle conservés comme preuve superseded ; nouveaux
+  scellés, répétition à blanc et tests pour la v4 ; empreinte de la nouvelle
+  clé publiée avant l'export.
+
+Dépense de ce pivot : 0,00 USD.
+
+### Le pivot exécuté : questions gelées, page v4, échauffement refait
+
+**Les 39 questions** (un atome sur les 40 est décidé par le code, pas par le
+vérificateur) ont suivi l'ordre imposé par l'audit : brouillon → validation du
+propriétaire → deux lectures de non-orientation par des agents sans contexte →
+gel → scellement. `plain-questions.v1.json`, **`sha256:6b25f4e9…`**.
+
+- Lecteur B : quatre mots orientant vers oui retirés (« bien » ×3,
+  « effectivement »), la double négation de sf.a2 simplifiée, ff.a3 et sfu.a3
+  rendues distinguables par leur ancrage (choix de l'élève / sujet posé), et un
+  **glossaire** pour les huit questions qui disaient « d'après le dossier » sans
+  le définir.
+- Lecteur A, sur la version corrigée : **aucune question orientée** ; sept
+  entrées de glossaire ajoutées, cf.a2 et cf.a3 réalignées sur « affirmation
+  utile ». rr.a3 garde ses deux conditions parce que la grille n'a qu'un atome :
+  la règle « oui seulement si les deux » est dans le glossaire.
+- `scripts/check-plain-questions.ts` : une question par atome vérificateur, le
+  mot du quantificateur présent (CHAQUE, AUCUNE, ou aucun des deux pour
+  `exists`), aucune réponse soufflée. Vert.
+
+**La page v4** demande ce qu'un humain fait bien : une question en français,
+oui / non / je ne peux pas dire, et **les phrases qui font répondre**, cliquées
+dans la copie. Sur les 62 cartes à un rôle liable, le témoin est dérivé ; sur
+les 39 à deux rôles, il est marqué `PENDING_PASS2` avec les phrases surlignées
+comme point de départ ; les 5 sans rôle liable n'ont rien à dériver. La
+**fenêtre de 340 caractères est conservée** sur S1–S3. L'export porte l'ordre
+et le temps par carte, refuse au-delà de **20 % de « je ne peux pas dire »**
+(passe suspendue, règle pré-déclarée), et garde le même contrat.
+
+**L'audit d'aveuglement relancé sur cette présentation** donne les mêmes
+chiffres que sur la v3 (paquet inchangé, fenêtre inchangée) : hors strate
+diagnostique, longueur visible **0,501**, span 0,321 (séparabilité 0,679,
+inversée). Le dénominateur reste 25 / 9 / 71,69 %.
+
+**L'échauffement** est refait sur huit cas dont la réponse ne se discute pas,
+E2 et E3 compris, avec la question en français de l'atome. 11 tests de page,
+dont un export complet de 106 cartes et une suspension à 25 abstentions.
+
+Reste avant la passe 1 : validation de l'échauffement par deux agents sans
+contexte, puis 8/8 par le propriétaire. Dépense : 0,00 USD.
+
+### Relecteurs extérieurs : tranches de huit cartes, et une version anglaise de tout sauf la copie
+
+Le propriétaire a fait la remarque juste : avec un seul relecteur, un biais
+devient la vérité. Personne ne fera 106 cartes ; des volontaires en feront
+cinq à dix. Le dispositif s'adapte sans rien changer à la passe du
+propriétaire, qui continue.
+
+- **Tranches** : `adjudication-slices.v1.json`, `sha256:ebd16403…`. Les 50
+  cartes des 25 paires primaires, découpées en **14 tranches de 7 ou 8**, deux
+  couvertures, chaque carte vue par deux volontaires ; une tranche ne contient
+  jamais deux cartes de la même paire, de la même réponse ni de la même
+  copie. Un volontaire reçoit un lien `#s=1-03`, ne voit que ses cartes, fait
+  un échauffement réduit à trois cartes, et son export porte `sliceId`,
+  `language` et l'empreinte des tranches. Le plafond d'abstention ne s'applique
+  pas aux tranches : leurs données sont un enrichissement, rapporté à part.
+- **Anglais** : `#lang=en` traduit l'interface, l'échauffement, le glossaire
+  et les 39 questions (`plain-questions.en.v1.draft.json`, brouillon vérifié
+  par le script un-à-un / EVERY / NO, à faire relire par un lecteur anglophone
+  sans contexte avant usage). **Les copies restent en français** : elles sont
+  scellées et les traduire changerait l'objet jugé. Un relecteur anglophone
+  doit lire le français ; l'accord se calcule par langue.
+- **Fusion** : `scripts/merge-adjudication-exports.ts` prend N exports, refuse
+  des paquets différents, calcule l'accord brut et le kappa de Cohen par paire
+  de relecteurs sur les cartes partagées, la majorité par carte, et liste les
+  cartes sans majorité pour la passe 2. Il ne tranche rien.
+- **Page v5** : même contrat, mêmes règles, avec la langue et la tranche
+  lues dans l'adresse. 13 tests DOM, dont un volontaire anglophone et une
+  tranche exportée de bout en bout.
+- **Écran de départ** (3 septembre) : le propriétaire a ouvert
+  `…#s=1-01` et a vu sa propre passe. Le visualiseur ne transmet pas la
+  partie de l'adresse après `#`, donc un lien ne suffit pas. La page demande
+  désormais à l'écran, au premier chargement, « tranche + langue » ou « série
+  complète », et mémorise le choix sur l'appareil. Trois sources, dans
+  l'ordre : l'adresse, le choix mémorisé, l'écran. Un mode venu de l'adresse
+  n'est jamais mémorisé, et l'écran ne s'affiche pas si la série principale a
+  déjà une décision : la passe du propriétaire ne change pas. Un bouton
+  « changer de tranche » efface le choix. 4 tests DOM de plus (17), et deux
+  captures en navigateur sans tête : l'écran, puis la tranche 1-01 avec ses 3
+  cartes d'échauffement. Le premier jet ne cachait pas l'écran après le
+  rechargement (`display: flex` battait `hidden`) : vu à l'écran, pas par les
+  tests.
+- **Paquet à coller, exploratoire** (5 septembre) : le propriétaire veut faire
+  passer les mêmes cartes à des IA de discussion, à la main.
+  `scripts/build-adjudication-paste-pack.ts` écrit
+  `paste-pack.v1/` : 11 lots de 10 cartes en texte, chacun précédé de la
+  consigne (règles, portée, trois réponses, contrôle « autre », format de
+  réponse strict d'une ligne par carte), plus `manifest.json` avec
+  l'empreinte de chaque lot et de la consigne, et un `README.md` qui dit
+  comment faire passer un lot (conversation neuve par lot, première réponse
+  gardée, réponse enregistrée mot pour mot avec le nom du modèle et
+  l'interface). Une carte y montre exactement ce que la page montre à
+  l'humain : question, phrase marquée entre ⟦ ⟧ dans sa fenêtre, ou copie
+  entière numérotée, consigne et dossier quand la carte en a. Jamais la clé :
+  le script refuse si elle apparaît. **Ce format ne vaut pas comme mesure** :
+  une interface de discussion ajoute ses propres instructions et ses réglages
+  ne sont ni connus ni rejouables. Ses réponses seront rapportées à part de
+  la mesure par accès direct, à trois répétitions.
+
+### La passe 1 du propriétaire est exportée, et elle ne confirme pas le paquet
+
+5 septembre 2026. Export reçu par copier-coller, forme canonique intacte,
+sha256 `d5f75f92…`, toutes les empreintes conformes ; enregistré tel quel
+dans `adjudication-pass1.owner.2026-09-05.json`, lecture dans le fichier
+`.reading.md` voisin. 65 oui, 29 non, 12 « je ne peux pas dire »
+(11,3 %, sous le plafond de 20 %).
+
+**Le résultat qui compte** : confrontées à la clé, que ni le relecteur ni
+la page n'ont vue, les réponses ne séparent pas les positifs des négatifs.
+Sur 37 paires primaires, 4 seulement sont discriminées ; 19 reçoivent
+« oui » des deux côtés ; 20 négatifs sur 37 reçoivent « oui ». Deux
+explications restent ouvertes et cette passe seule ne les départage pas :
+les négatifs ne sont pas des négatifs sous la question posée (la frontière
+« à côté / établit » n'est pas où le paquet l'a mise), ou le relecteur lit
+large. Le lot 1 des modèles donne un exemple de chaque : cartes 2 et 4,
+relecteur et majorité des modèles contre la clé ; carte 7, relecteur seul
+contre 21 passages sur 22, pour une raison précise.
+
+**Conséquences, décidées avant toute dépense** : la mesure du vérificateur
+n'est pas lancée sur ce corrigé ; ni la clé ni les réponses humaines ne
+valent seules ; la seconde personne et le test-retest deviennent
+nécessaires ; la passe 2 change de forme : au lieu de réconcilier les 39
+cartes à deux témoins, elle doit d'abord juger les paires côte à côte, en
+choix forcé, pour savoir si la construction du paquet tient. Rien n'est
+retiré, rien n'est modifié, et le mot « échec » n'est pas prononcé : on ne
+sait pas encore qui a raison, et c'est écrit tel quel.
+
+Une abstention dit « je ne vois pas le dossier » sur une carte qui en porte
+un : à vérifier en passe 2, pas un défaut connu de la page.
+
+### Passe 2 en choix forcé : seuils fixés avant la première réponse
+
+Même jour, avant qu'une seule paire soit jugée. La passe 2 n'est plus la
+réconciliation des 39 cartes à deux témoins ; c'est d'abord une épreuve du
+paquet lui-même.
+
+- **Instrument** : `adjudication-pass2.html`, construite par
+  `scripts/build-adjudication-pass2-page.ts` à partir de
+  `adjudication-pairs.v1.json` (`sha256:3af565ca…`, 45 paires, 37
+  primaires), fichier produit par `scripts/build-adjudication-pairs.ts` à
+  partir de la clé **en retirant le membre** : gauche/droite tiré au sort par
+  graine (`v4.5-210/adjudication-pairs/v1`, original à gauche 23 fois sur
+  45, jamais dit par paire), ordre des paires retiré aussi. La page et le
+  fichier refusent tout mot de la clé. 4 tests DOM ; deux captures en
+  navigateur sans tête.
+- **Tâche** : les deux copies d'une paire côte à côte, même consigne, même
+  dossier, même question ; le relecteur dit laquelle répond le mieux à la
+  question par ce qui est écrit : A, B, « les deux autant », « aucune des
+  deux » (les deux derniers avec un pourquoi). Il ne cherche pas l'originale.
+- **Seuils, sur les 37 paires primaires, paires tranchées seulement** (A ou
+  B) : l'original choisi **27 fois ou plus sur 37** vaut « le paquet tient »
+  (au hasard, p = 0,0038, unilatéral) ; 24 à 26, « faible » (p < 0,05) ;
+  moins de 24, « pour ce lecteur, les négatifs ne sont pas des négatifs ».
+  Si des paires sont non tranchées, le même test binomial unilatéral à 1 %
+  est recalculé sur les paires tranchées, avec la même règle. Plus de 12
+  paires non tranchées sur 37 : « indéterminé ». Les 8 paires du diagnostic
+  de longueur sont rapportées à part et ne comptent pas.
+- **Ce que le résultat fera de la passe 1** : si le paquet tient, les
+  « oui » de la passe 1 sur des négatifs se lisent comme un seuil absolu
+  généreux, et l'étiquette or du vérificateur devient l'étiquette relative
+  de la paire (l'original établit, l'abîmé n'établit pas), pour les paires
+  où l'original a été choisi ; les autres paires vont à une troisième
+  lecture avec la seconde personne. Si le paquet ne tient pas, la mesure du
+  vérificateur n'a pas de corrigé, et le rapport le dit.
+- **Prochaine dépense** : aucune avant ce résultat.
+
+### Passe 2 : le paquet tient
+
+Même jour, export reçu, sha256 `9c899259…`, 45 paires, lecture dans
+`adjudication-pass2.owner.2026-09-05.reading.md`. Sur les 37 paires
+primaires : **30 originaux choisis**, 3 abîmés, 4 non tranchées. Le seuil
+déclaré est dépassé (27 demandés ; au hasard, moins de 1 chance sur
+100 000). Les cartes abîmées sont bien abîmées pour ce lecteur dès qu'il
+compare : la lecture large de la passe 1 était un seuil absolu généreux,
+pas un défaut de discrimination (18 des 22 paires « oui/oui » de la passe 1
+choisissent l'original en passe 2).
+
+Conséquences, telles que déclarées : l'étiquette or du vérificateur est
+l'étiquette de paire sur les 30 paires primaires où l'original a été choisi
+(l'original établit, l'abîmé n'établit pas) ; les 7 autres paires
+primaires attendent la troisième lecture avec la seconde personne ; les 8
+paires du diagnostic (6 originaux, 2 « aucune ») restent à part. Reste à
+mesurer avant toute dépense : la stabilité du relecteur (10 cartes à J+2)
+et une seconde personne, à qui l'on proposera désormais **15 paires de la
+passe 2** plutôt que 15 cartes de la passe 1, puisque c'est l'étiquette de
+paire qui sert de corrigé ; ce changement est décidé ici, avant qu'elle
+commence.
+
+#### Le lot 1 des modèles contre l'étiquette de paire
+
+24 passages (12 modèles et réglages, Mistral Think et Fast ajoutés, soit le
+vérificateur actuel de la production). Sur les 8 cartes du lot dont la paire
+a reconnu l'original en passe 2, la **majorité des modèles a raison 5 fois
+et tort 3 fois** ; les trois erreurs sont des copies abîmées auxquelles la
+majorité dit « oui » (cartes 2, 3, 4 : 20, 19 et 15 passages sur 24). C'est
+le défaut étudié, reproduit par la majorité en interface de discussion. La
+passe 1 du propriétaire, jugement absolu, se trompe sur 3 de ces 8 cartes
+aussi (2, 4, 7) ; la passe 2 les corrige toutes. La carte 5 n'a pas
+d'étiquette (paire « aucune des deux »).
+
+**Carte 10, contrôle raccourci** : 24 passages sur 24 et le propriétaire
+disent « non » à un original raccourci. La question est un « CHAQUE fait
+nécessaire est-il repris ? » : raccourcir la copie a retiré un fait
+nécessaire, donc le contrôle n'est plus un positif pour cet atome. Les 16
+contrôles raccourcis portant un atome « chaque … de la copie » sont à
+réexaminer avant de servir de diagnostic ; le propriétaire en a refusé 4
+sur 16. Déclaré ici, non corrigé.
+
+Dépense : 0,00 USD.

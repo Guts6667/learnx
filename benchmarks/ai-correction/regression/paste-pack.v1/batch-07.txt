@@ -1,0 +1,128 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 61 · C-a0ade8b88e
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Pour CHAQUE affirmation utile de ce passage, l’élève énonce-t-il une limite qui la borne ?
+Écriture pour la machine : pour CHAQUE affirmation, IL EXISTE une limite qui la borne · cf.a2 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.
+[s1] Deux hypothèses restent ouvertes et conditionnent cet objectif.
+[s2] Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré.
+[s3] Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.
+
+### Carte 62 · C-a84630a559
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Ce lien s’appuie-t-il sur un élément concret de la réponse ?
+Écriture pour la machine : CE lien s'appuie sur CET élément de la réponse · rl.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur les huit étapes, la décision que je retiens est d’avoir refait l’étape 5 après avoir constaté que le périmètre incluait une population non concernée.
+[s1] Mon erreur a été de valider un périmètre sans le confronter aux données d’usage, et la pratique que j’en retire est de vérifier la population concernée avant d’écrire un objectif.
+
+### Carte 63 · C-b1314b53e4
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Cette précaution atténue-t-elle ce risque ?
+Écriture pour la machine : CETTE précaution atténue CE risque · rr.a5 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.
+[s1] Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.
+[s2] La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.
+[s3] L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.
+[s4] Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.
+
+### Carte 64 · C-1d67f3a1ad
+Contexte : aucun, la question se juge sur la copie seule.
+Question : CHAQUE fait cité est-il explicitement relié à ce mécanisme ou à cette conclusion ?
+Écriture pour la machine : CHAQUE fait est explicitement relié à CE mécanisme · ml.a2 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.
+[s1] Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.
+[s2] Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.
+[s3] Sans essai sur un nouveau groupe, la généralisation reste inconnue.
+
+### Carte 65 · C-44babe8c67
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève énonce-t-il une séquence, c’est-à-dire un enchaînement d’étapes ou d’événements ?
+Écriture pour la machine : une séquence est énoncée · esg.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Les reprises passent de 5/9 quand j'annonce les symboles après la distribution à 1/9 quand je les annonce avant.⟧ Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri. Au prochain tour, j'annoncerai avant, sans prétri, et compterai les reprises sur 9 joueurs ; au-delà d …
+
+### Carte 66 · C-c8d6f44b37
+Consigne : Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.
+Question : CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est pertinente pour CE choix · ff.a3 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je penche pour la réparation complète immédiate, sans la trancher.
+[s1] La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.
+[s2] Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.
+
+### Carte 67 · C-bda12db6d2
+Consigne : Recommande l’une des deux options et justifie ton choix avec les informations du scénario.
+Question : CHAQUE fait utilisé sert-il à répondre à ce que la consigne demandait ?
+Écriture pour la machine : CHAQUE fait mobilisé est pertinent · sfu.a3 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Je recommande le pilote étendu de quatre semaines avec formation.⟧
+
+### Carte 68 · C-ef72c295bb
+Consigne : Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.
+Dossier : Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.
+Question : CHAQUE fait du dossier nécessaire à l’explication est-il repris dans la réponse ?
+Écriture pour la machine : CHAQUE fait nécessaire du dossier est restitué dans la réponse · sf.a1 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Les mauvais embranchements passent de 5/16 à 9/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes.
+[s1] En montrant l'embranchement avant le déplacement, les flèches peuvent réduire les choix tardifs ; la charge non consignée empêche toutefois d'isoler complètement l'effet.
+[s2] Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.
+
+### Carte 69 · C-6b33c1e066
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Question : CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est pertinente pour CE choix · ff.a3 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.
+[s1] La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.
+[s2] L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.
+[s3] Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.
+
+### Carte 70 · C-1b10dad05d
+Consigne : Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.
+Question : L’élève énonce-t-il clairement le lien réflexif que la consigne demandait ?
+Écriture pour la machine : le lien réflexif demandé est explicitement énoncé · rl.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre, et la production associée est la note de cadrage corrigée.⟧ Deux étapes seulement ont produit une preuve datée.
+
+Fin du lot 07 : 10 cartes. Réponds maintenant, 10 lignes.

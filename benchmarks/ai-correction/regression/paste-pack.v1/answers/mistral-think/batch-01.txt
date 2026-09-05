@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2 | autre: - | raison: les faits et chiffres de s1 et s2 justifient le choix de s0
+C-47402cc097 | OUI | phrases: s1 | autre: - | raison: les données de s1 appuient directement le choix de s0
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: la phrase est conforme au dossier
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: les limites mentionnées sont alignées avec le dossier
+C-6f02478fc2 | NON | phrases: s0 | autre: - | raison: la contrainte de qualité ajoutée n’est pas dans le dossier
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase exprime une position explicite
+C-d5dff02d07 | NON | phrases: s0,s1,s2,s3,s4,s5 | autre: - | raison: le rituel pour traiter le risque n’est pas mentionné
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: le risque dépend d’une hypothèse non validée par le dossier
+C-5a5b6cc636 | NON | phrases: s1 | autre: - | raison: s1 contient une erreur de chiffre (9 600 € au lieu de 6 600 €)
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: le fait sur le rapport signé manque dans s1
