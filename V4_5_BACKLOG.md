@@ -638,7 +638,7 @@ décision D0 ci-dessous.
 | V4.5-220 | C | Frontend → Rayan | Jeu de copie FR + EN de toute la page (tous les textes de la maquette traduits, y compris libellés de formulaire, états d'erreur et de succès), validé par Rayan avant intégration ; catalogue `src/i18n/catalogs/landing.ts` réécrit, clés mortes retirées | D2, D3, D4 |
 | V4.5-221 | C | Frontend → QA/Release | Hero « Know what to learn next. » (calque « Hero · Momentum ») : eyebrow, H1 82 px / −4.8 px / 800 (48 px sur mobile), lead 21 px, CTA primaire → formulaire, CTA secondaire → `#product`, ligne de preuve, aperçu produit statique « Hello, Maya » (barre latérale, progression 7 sur 17 / 68 %, prochaine étape, notes 12 / tentatives 8, toast « Always saved ») ; mobile : calque « Hero » | 219, 220 |
 | V4.5-222 | C | Frontend → QA/Release | Preuve produit « Open LearnX. Keep moving. » (calque « Product proof · Resume Learn Improve », fond ink) : trois étapes numérotées et trois cartes (programme « Lead a team project », leçon « Write a sprint goal » avec source Scrum Guide 2020, retour « Writing practice » relu) construites sur `LandingPreviews` avec le contenu réel déjà testé par `landing.spec.ts` ; mobile : calque « Product proof » (liste des étapes + carte combinée « Connected app moments ») | 219, 220 |
-| V4.5-223 | C | Frontend → QA/Release | Tarifs « Choose your momentum. » (calque « Pricing · Early adopter ») : trois cartes depuis le catalogue, carte `recommended` en indigo avec badge « OUR PICK », chip « +20 % early-adopter bonus included » seulement si `bonusCredits > 0`, bandeau de bas de section, CTA de carte → formulaire **sans sélection** ; mobile : calque « Pricing » (cartes empilées, Journey en ink) ; réécrit `LandingPricing.tsx` et retire le commentaire « trois boutons égaux » de 213 | 219, 220, #214 amendée selon D2 |
+| V4.5-223 | C | Frontend → QA/Release | Tarifs « Choose your momentum. » (calque « Pricing · Early adopter ») : trois cartes depuis le catalogue, carte `recommended` en indigo avec badge « OUR PICK », chip « +20 % early-adopter bonus included » seulement si `bonusCredits > 0`, bandeau de bas de section, CTA de carte → formulaire **sans sélection** ; mobile : calque « Pricing » (cartes empilées, Journey en ink) ; réécrit `LandingPricing.tsx` et retire le commentaire « trois boutons égaux » de 213 | 219, 220, #214 mergée |
 | V4.5-224 | C | Frontend → QA/Release | Feuille de route (calque « Product roadmap ») : titre trois lignes, chronologie à trois jalons (Available ✓ / 02 Bounded pilot / 03 Next) dans une carte canvas, sans le lien « View the full roadmap → » (D3) ; mobile : calque « Roadmap » | 219, 220 |
 | V4.5-225 | C | Frontend → QA/Release | Recherche & transparence « Trust deserves receipts. » (calque « Research & transparency », fond indigo-soft) : bouton ink « Explore our research » → `/research/ai-correction/…` (existant, bilingue), carte « Research library » avec une note réelle (D4), trois mini-cartes Sourced / Limits included / Dated ; mobile : calque « Research » | 219, 220 |
 | V4.5-226 | C | Frontend → QA/Release | « Your next step » (calque « Momentum CTA ») : construite à l'identique (carte Journey, CTA « Apply with Journey selected → », note « Your selection is a preference, not a purchase »), mais **masquée en V4.5** derrière un interrupteur de code (D5) ; tests des deux états ; affichage prévu en V5 avec la sélection de pack ; mobile : calque « Momentum CTA » | 220, 223 |
@@ -652,19 +652,15 @@ Arbitrages de Rayan du 5 septembre 2026 :
 - **D1 — Bascule de langue et menu mobile** : bascule FR/EN à droite de la
   navigation desktop et dans le pied de page mobile ; pas de menu hamburger,
   les ancres vivent dans le pied de page ; le lien Confidentialité y reste.
-- **D2 — Bonus « +20 % »** : Rayan répond « Journey + Deep Dive ». Lu comme :
-  le bonus early adopter porte sur les paliers à 8 € **et** à 16 €, donc la
-  grille devient **300 / 1 056 / 2 400** (celle de la maquette) et le
-  rendement 100 / 132 / 150 crédits par euro. **Conséquences à confirmer avant
-  223** : (1) cela remplace le point 1 de l'arbitrage du 2 septembre et la
-  règle « le palier recommandé est aussi le meilleur taux » — Deep Dive rend
-  désormais le plus par euro tandis que « OUR PICK » reste sur Journey ;
-  (2) la PR #214 doit être amendée (graine 2 400, tests du rendement
-  `[100, 132, 125]` et « palier recommandé au meilleur rendement », texte de
-  PR) ; (3) la marge du palier à 16 € avec 2 400 crédits n'a pas été
-  recalculée par Finance. Copie : hero « +20 % de crédits sur Journey et Deep
-  Dive après acceptation », eyebrow tarifs « EARLY ADOPTER · +20 % CREDITS »
-  conservée, chip « +20 % included » sur les deux cartes.
+- **D2 — Bonus « +20 % »** : tranché le 5 septembre (« on prend ta reco ») —
+  la grille du 2 septembre reste **300 / 1 056 / 2 000** (100 / 132 / 125
+  crédits par euro), le bonus est réservé à Journey, la PR #214 ne change pas.
+  La cohérence offre/design tient par les puces des cartes : seule Journey
+  porte « +20 % early-adopter bonus included », Deep Dive porte « One-time
+  credit pack ». Les deux textes qui généralisaient le bonus sont corrigés :
+  hero « +20 % de crédits sur Journey après acceptation », eyebrow tarifs
+  « EARLY ADOPTER · JOURNEY +20 % ». Le 2 400 de la maquette est un
+  placeholder ; le catalogue affiche 2 000.
 - **D3 — « View the full roadmap → »** : lien retiré en V4.5.
 - **D4 — Note de recherche** : le dernier article réel de
   `public/research/ai-correction/articles`, vrai titre, vraie date, vrai

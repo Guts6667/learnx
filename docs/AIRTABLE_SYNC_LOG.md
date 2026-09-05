@@ -845,3 +845,7 @@ l'horizon. À se rappeler avant d'annoncer « il reste N avis ».
 - 5 septembre, suite : V4.5-226 `NEEDS_ARBITRATION` → `DRAFT`, `Arbitrage
   Rayan = Rayan A` (section conçue et masquée en V4.5, affichée en V5) ;
   titre, résumé et dépendances mis à jour ; enregistrement relu.
+- 5 septembre, suite : V4.5-223 `NEEDS_ARBITRATION` → `DRAFT`, `Arbitrage
+  Rayan = Rayan A` (grille du 2 septembre conservée, bonus sur Journey seul,
+  #214 inchangée) ; V4.5-220 `Arbitrage Rayan = Rayan A` (formulation du
+  +20 % figée). Les deux enregistrements relus.
