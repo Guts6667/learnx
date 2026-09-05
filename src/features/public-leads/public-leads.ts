@@ -15,7 +15,23 @@ export function usePublicLeadMutation() {
     async (input: {
       consent: true;
       email: string;
+      /**
+       * Requis pour `EARLY_ADOPTER`, facultatif pour `LAUNCH_UPDATES` où il
+       * ne sert qu'à saluer la personne. 1 à 80 caractères après trim.
+       */
+      firstName?: string;
+      /**
+       * « What usually slows you down? », facultatif. Question de
+       * candidature : refusée sur un simple abonnement. 1 à 2 000 caractères.
+       */
+      friction?: string;
+      /**
+       * La case « launch updates », décochée par défaut. Abonne EN PLUS de la
+       * candidature, dans la même requête — jamais un second appel.
+       */
+      launchUpdates?: boolean;
       locale: UiLocale;
+      /** Requis pour `EARLY_ADOPTER`, refusé sinon. 20 à 2 000 caractères. */
       motivation?: string;
       purpose: PublicLeadPurpose;
     }) => {
