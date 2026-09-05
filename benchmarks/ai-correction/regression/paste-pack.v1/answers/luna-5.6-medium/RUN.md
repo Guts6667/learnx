@@ -10,4 +10,5 @@
 ## Second passage, même lot
 
 - Fichier : `batch-01.run2.txt`, collé mot pour mot par le propriétaire le 5 septembre 2026, étiqueté par lui « Luna 5.6 Medium » comme le premier.
-- À confirmer par le propriétaire : même modèle et même réglage, conversation neuve. Si oui, c'est une répétition ; sinon, dire ce qui a changé.
+- Confirmé par le propriétaire le 5 septembre 2026 : même modèle, même réglage, conversation neuve. Il avait demandé un autre modèle, obsolète ; l'application l'a remplacé par Luna 5.6 Medium sans le dire. C'est donc une répétition, involontaire mais valable.
+- Écart entre les deux passages : 3 cartes sur 10 (cartes 2, 3 et 9 du lot).
