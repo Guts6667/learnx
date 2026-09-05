@@ -823,3 +823,33 @@ sixième : `deepmerge-ts <8.0.0` via `@prisma/config`, invisible tant que les
 autres masquaient la sortie. Un audit ne montre pas toujours tout ce qu'il
 reste à faire — il montre ce qu'il voit à cet instant, et le corriger déplace
 l'horizon. À se rappeler avant d'annoncer « il reste N avis ».
+## 5 septembre 2026 — V4.5-231, trous du filtre de portée d'Integration
+
+- Base `app8IaHD1sJtI83WT`, table `tblpSbdB7K4MioyJq`, API REST, token
+  personnel. **Création uniquement** : un enregistrement, aucun existant
+  modifié, aucune suppression, aucune page d'interface. Dry-run imprimé avant
+  l'appel.
+- `recr5nsCZPIWNJfjS` V4.5-231 — le filtre de portée d'Integration laissait
+  échapper cinq chemins critiques (P1, `Owner = DevOps`,
+  `Reviewer = Sécurité`, `Epic = V4.5-013 Exploitation DevOps (proposition)`,
+  `Statut = REVIEW`, `État de synchronisation = Proposition Airtable`,
+  `Branche = fix/v4-5-231-scope-gaps`).
+- Valeurs prises exclusivement dans les choix existants ; `pnpm quality:airtable`
+  n'est pas affecté.
+
+**Comment le défaut s'est vu.** En vérifiant l'état de mes propres PR, j'ai
+constaté que V4.5-201 était fusionnée — donc que mon filtre s'appliquait à
+V4.5-230, qui monte Prisma. Le journal du run 33977766880 dit
+« Integration: nothing to prove against a database » : le contexte requis est
+passé au vert **sans créer la moindre branche Neon**, sur la PR qui change la
+version de Prisma. J'avais annoncé l'inverse dans mon rapport une minute plus
+tôt.
+
+**La leçon, qui n'est pas celle qu'on croit.** Le filtre n'était pas trop
+étroit par distraction : `prisma/` exige une barre oblique, si bien que
+`prisma.config.ts` — le fichier qui porte le garde de base de données —
+échappait au filtre écrit pour protéger la base. Un motif de répertoire ne
+couvre pas le fichier de même nom à la racine, et c'est exactement là que vit
+la configuration la plus sensible. Vérifier un filtre sur les chemins qu'il
+doit retenir ne suffit pas : il faut le vérifier sur ceux qu'il doit **ne pas**
+laisser passer.
