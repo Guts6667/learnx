@@ -849,3 +849,32 @@ l'horizon. À se rappeler avant d'annoncer « il reste N avis ».
   Rayan = Rayan A` (grille du 2 septembre conservée, bonus sur Journey seul,
   #214 inchangée) ; V4.5-220 `Arbitrage Rayan = Rayan A` (formulation du
   +20 % figée). Les deux enregistrements relus.
+
+## 5 septembre 2026 — lot landing « Conversion Edition », tickets 219 et 220
+
+- Autorisation : affectation du lot par la session de coordination, sur
+  décision de Rayan du 5 septembre 2026 (`V4_5_BACKLOG.md` § lot landing).
+- Base : `app8IaHD1sJtI83WT` — Table : `tblpSbdB7K4MioyJq`
+- Mutations unitaires par id, aucun bulk update, aucune suppression.
+
+**V4.5-219** (`recDbJJVtpbAwXcL0`) — `READY` → `REVIEW`
+
+- Branche : `docs/v4-5-landing-conversion-edition` → `feat/v4-5-219-landing-foundations`
+- PR : #215 (branche de définition) → #219
+- Blocage courant renseigné : quota MCP Paper épuisé pour six jours ;
+  navigation, pied de page et disques décoratifs restent hors de la PR.
+- Relecture : livraison partielle assumée et décrite dans la PR ; les trois
+  gates ne sont pas tous verts au moment de la synchronisation.
+
+**V4.5-220** (`recmEuXIj8mtubrKR`) — `READY` → `REVIEW`
+
+- Branche : `docs/v4-5-landing-conversion-edition` → `feat/v4-5-220-landing-copy`
+- PR : #215 → #220
+- Blocage courant renseigné : attend la validation de Rayan sur
+  `docs/V4_5_LANDING_COPY.md` — trois points ouverts (nombre de sources de la
+  carte recherche, cohabitation « achat unique » et limite par compte sur
+  Starter, six passages marqués à confirmer dans Paper).
+- Relecture : le ticket demande une validation avant intégration ; le
+  catalogue `landing.ts` n'est donc pas encore réécrit.
+
+Aucun statut manuel écrasé. Aucun `NEEDS_ARBITRATION` déclenché.
