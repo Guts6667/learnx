@@ -1931,4 +1931,40 @@ sait pas encore qui a raison, et c'est écrit tel quel.
 Une abstention dit « je ne vois pas le dossier » sur une carte qui en porte
 un : à vérifier en passe 2, pas un défaut connu de la page.
 
+### Passe 2 en choix forcé : seuils fixés avant la première réponse
+
+Même jour, avant qu'une seule paire soit jugée. La passe 2 n'est plus la
+réconciliation des 39 cartes à deux témoins ; c'est d'abord une épreuve du
+paquet lui-même.
+
+- **Instrument** : `adjudication-pass2.html`, construite par
+  `scripts/build-adjudication-pass2-page.ts` à partir de
+  `adjudication-pairs.v1.json` (`sha256:3af565ca…`, 45 paires, 37
+  primaires), fichier produit par `scripts/build-adjudication-pairs.ts` à
+  partir de la clé **en retirant le membre** : gauche/droite tiré au sort par
+  graine (`v4.5-210/adjudication-pairs/v1`, original à gauche 23 fois sur
+  45, jamais dit par paire), ordre des paires retiré aussi. La page et le
+  fichier refusent tout mot de la clé. 4 tests DOM ; deux captures en
+  navigateur sans tête.
+- **Tâche** : les deux copies d'une paire côte à côte, même consigne, même
+  dossier, même question ; le relecteur dit laquelle répond le mieux à la
+  question par ce qui est écrit : A, B, « les deux autant », « aucune des
+  deux » (les deux derniers avec un pourquoi). Il ne cherche pas l'originale.
+- **Seuils, sur les 37 paires primaires, paires tranchées seulement** (A ou
+  B) : l'original choisi **27 fois ou plus sur 37** vaut « le paquet tient »
+  (au hasard, p = 0,0038, unilatéral) ; 24 à 26, « faible » (p < 0,05) ;
+  moins de 24, « pour ce lecteur, les négatifs ne sont pas des négatifs ».
+  Si des paires sont non tranchées, le même test binomial unilatéral à 1 %
+  est recalculé sur les paires tranchées, avec la même règle. Plus de 12
+  paires non tranchées sur 37 : « indéterminé ». Les 8 paires du diagnostic
+  de longueur sont rapportées à part et ne comptent pas.
+- **Ce que le résultat fera de la passe 1** : si le paquet tient, les
+  « oui » de la passe 1 sur des négatifs se lisent comme un seuil absolu
+  généreux, et l'étiquette or du vérificateur devient l'étiquette relative
+  de la paire (l'original établit, l'abîmé n'établit pas), pour les paires
+  où l'original a été choisi ; les autres paires vont à une troisième
+  lecture avec la seconde personne. Si le paquet ne tient pas, la mesure du
+  vérificateur n'a pas de corrigé, et le rapport le dit.
+- **Prochaine dépense** : aucune avant ce résultat.
+
 Dépense : 0,00 USD.

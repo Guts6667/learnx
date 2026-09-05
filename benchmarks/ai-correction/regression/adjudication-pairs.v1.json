@@ -1,0 +1,460 @@
+{
+  "deckHash": "sha256:b3a021bfe81bd6c26690f6ebc79d754750d3db4e7821af51380a9853c28a9879",
+  "keyHash": "sha256:c27ed87a43f050a561bf482db729af786d65f0e2d67c025f8543003ba3b6b44e",
+  "pairs": [
+    {
+      "atomId": "rr.a1",
+      "cards": [
+        "C-03c7a0d6cb",
+        "C-888b279e11"
+      ],
+      "pairId": "965653f474fef49a",
+      "primary": true,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "dp.a3",
+      "cards": [
+        "C-5219f94743",
+        "C-5773c296c7"
+      ],
+      "pairId": "651113e54b8be912",
+      "primary": true,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "pe.a3",
+      "cards": [
+        "C-d6444cb6e3",
+        "C-6db59abd7e"
+      ],
+      "pairId": "50eacd8edb5dac8a",
+      "primary": true,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "cards": [
+        "C-eecdd08b93",
+        "C-03ff752bb0"
+      ],
+      "pairId": "536c3545804e363b",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ac.a2",
+      "cards": [
+        "C-46c2f075a1",
+        "C-20ae278814"
+      ],
+      "pairId": "381042a84bfdeb6a",
+      "primary": true,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "rr.a5",
+      "cards": [
+        "C-322d813ef5",
+        "C-b1314b53e4"
+      ],
+      "pairId": "664b5da19fa2b929",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "pe.a2",
+      "cards": [
+        "C-479e0a1393",
+        "C-d5dff02d07"
+      ],
+      "pairId": "8c5568d09218d3f3",
+      "primary": true,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "sfu.a1",
+      "cards": [
+        "C-636e218ca9",
+        "C-5d8f0447b1"
+      ],
+      "pairId": "690759fa14fcc104",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a2",
+      "cards": [
+        "C-3138b8a152",
+        "C-b83afbc8ff"
+      ],
+      "pairId": "11c34eb000e5ad70",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "rl.a2",
+      "cards": [
+        "C-00b4a1c0a0",
+        "C-25ca3b32bc"
+      ],
+      "pairId": "ed1a2e5a77bb7e0c",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ff.a3",
+      "cards": [
+        "C-6b33c1e066",
+        "C-ca1ef61e53"
+      ],
+      "pairId": "0d41424e5b2e78d2",
+      "primary": true,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "rr.a2",
+      "cards": [
+        "C-5f647249ab",
+        "C-6116a3b51a"
+      ],
+      "pairId": "28fea339dfeb6081",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ac.a1",
+      "cards": [
+        "C-e10e009b7f",
+        "C-28c8a6d628"
+      ],
+      "pairId": "c6c4093c2176871b",
+      "primary": true,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "rr.a4",
+      "cards": [
+        "C-c1ee19ec29",
+        "C-fad07ea455"
+      ],
+      "pairId": "3be9a87e6c494fa8",
+      "primary": true,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "cf.a2",
+      "cards": [
+        "C-ccc2405200",
+        "C-94ea93741f"
+      ],
+      "pairId": "94926acad5ec4953",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ff.a4",
+      "cards": [
+        "C-5a5b6cc636",
+        "C-e707d9669d"
+      ],
+      "pairId": "dd2757218eda899a",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "dp.a1",
+      "cards": [
+        "C-4d3ebe4339",
+        "C-643773bcd3"
+      ],
+      "pairId": "a316678eff813bf0",
+      "primary": true,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ff.a4",
+      "cards": [
+        "C-27abbe4a11",
+        "C-8272b59189"
+      ],
+      "pairId": "d477c8fe7429db5f",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rl.a2",
+      "cards": [
+        "C-d00dec227b",
+        "C-272f41aa34"
+      ],
+      "pairId": "271d1c6130c5cc14",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "sf.a1",
+      "cards": [
+        "C-6cacbee4ed",
+        "C-ff8dfc4c82"
+      ],
+      "pairId": "31ce9c098c457c18",
+      "primary": false,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "rl.a1",
+      "cards": [
+        "C-92d4b25574",
+        "C-1b10dad05d"
+      ],
+      "pairId": "22ec794dc9b36fe4",
+      "primary": true,
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "ac.a3",
+      "cards": [
+        "C-e32060b658",
+        "C-1cff16763a"
+      ],
+      "pairId": "6f7a727eed826752",
+      "primary": true,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "cf.a3",
+      "cards": [
+        "C-3a2fdb767e",
+        "C-b41bdb6098"
+      ],
+      "pairId": "023ad8a58eb3623c",
+      "primary": true,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "sfu.a3",
+      "cards": [
+        "C-bda12db6d2",
+        "C-858f89a8ff"
+      ],
+      "pairId": "6eaba0b666564546",
+      "primary": true,
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "cf.a2",
+      "cards": [
+        "C-02c2ddf742",
+        "C-a0ade8b88e"
+      ],
+      "pairId": "fa6124c14eedb0a8",
+      "primary": true,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "pe.a1",
+      "cards": [
+        "C-d0eceec16b",
+        "C-6c9dac45b2"
+      ],
+      "pairId": "307bf26ab7987a9c",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a2",
+      "cards": [
+        "C-c2e812b133",
+        "C-de2289c819"
+      ],
+      "pairId": "f01e7e88b3aed7cc",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sf.a1",
+      "cards": [
+        "C-ef72c295bb",
+        "C-c01d16d9cb"
+      ],
+      "pairId": "8982828f509794c3",
+      "primary": false,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a3",
+      "cards": [
+        "C-1e1d5034dc",
+        "C-6f02478fc2"
+      ],
+      "pairId": "455d34eeddf02fc4",
+      "primary": true,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a1",
+      "cards": [
+        "C-699470f303",
+        "C-0dafed656a"
+      ],
+      "pairId": "254f951761b2a6c9",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sf.a2",
+      "cards": [
+        "C-f043ae3ad1",
+        "C-de9cc56ac2"
+      ],
+      "pairId": "81f79095218d75d8",
+      "primary": false,
+      "stratum": "S7_full_dossier"
+    },
+    {
+      "atomId": "cf.a1",
+      "cards": [
+        "C-bb87d23759",
+        "C-302b9df321"
+      ],
+      "pairId": "41e1cdefa03da5e4",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ml.a1",
+      "cards": [
+        "C-8ea663253d",
+        "C-703a9d2d5d"
+      ],
+      "pairId": "1ab865af2214ccff",
+      "primary": false,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "sf.a2",
+      "cards": [
+        "C-986a43099d",
+        "C-1e68d9227a"
+      ],
+      "pairId": "a9f2670373f29c10",
+      "primary": false,
+      "stratum": "S7_full_dossier"
+    },
+    {
+      "atomId": "rr.a3",
+      "cards": [
+        "C-b24221cac5",
+        "C-753f693c0e"
+      ],
+      "pairId": "acfdac8a5bb59f7e",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ml.a2",
+      "cards": [
+        "C-1d67f3a1ad",
+        "C-e1d1a198c6"
+      ],
+      "pairId": "dc8474f4dfd96ab4",
+      "primary": false,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "dp.a2",
+      "cards": [
+        "C-aef2458e05",
+        "C-7a57652d93"
+      ],
+      "pairId": "b38b67062120166b",
+      "primary": true,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "sfu.a2",
+      "cards": [
+        "C-7591e7e2ed",
+        "C-c8c0bafb00"
+      ],
+      "pairId": "df8fad9cb825a3ca",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a3",
+      "cards": [
+        "C-47402cc097",
+        "C-4b88718a20"
+      ],
+      "pairId": "7881f88cc87c82ec",
+      "primary": true,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "esg.a1",
+      "cards": [
+        "C-44babe8c67",
+        "C-cb002a52ae"
+      ],
+      "pairId": "a704247b42822618",
+      "primary": false,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "rr.a6",
+      "cards": [
+        "C-070decd3a2",
+        "C-8aeb3c797d"
+      ],
+      "pairId": "ac147a22b6bbbcf6",
+      "primary": true,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a3",
+      "cards": [
+        "C-23cb79db39",
+        "C-10d03a23e2"
+      ],
+      "pairId": "1b4765e3c4542304",
+      "primary": true,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "esg.a2",
+      "cards": [
+        "C-411668afb4",
+        "C-744ce508eb"
+      ],
+      "pairId": "8d6c4df97deecb35",
+      "primary": false,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a1",
+      "cards": [
+        "C-55f08a077c",
+        "C-ef06893724"
+      ],
+      "pairId": "d521d6003cc53151",
+      "primary": true,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "rl.a1",
+      "cards": [
+        "C-7309c167f8",
+        "C-73a8c98c78"
+      ],
+      "pairId": "b511c99c9075af19",
+      "primary": true,
+      "stratum": "S2_span_frame"
+    }
+  ],
+  "schemaVersion": 1,
+  "seed": "v4.5-210/adjudication-pairs/v1",
+  "status": "sealed",
+  "contentHash": "sha256:3af565ca64517ef95c2f53ab9ddd93166e946e67341b7eac95fe18e49fb43338"
+}

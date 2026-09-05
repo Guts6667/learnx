@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Passe 2 · paires</title>
+    <style>
+      :root {
+        --paper: #f3f5f4;
+        --card: #fdfdfc;
+        --ink: #1e2a33;
+        --muted: #5e6d74;
+        --rule: #d6dcda;
+        --rule-soft: #e6eae8;
+        --mark: #a8690c;
+        --mark-wash: rgba(201, 130, 30, 0.26);
+        --bind: #2b6b8f;
+        --bind-wash: rgba(43, 107, 143, 0.16);
+        --direct: #2f7a5b;
+        --notdirect: #a33b32;
+        --ambiguous: #6a5f83;
+        --shadow: rgba(30, 42, 51, 0.09);
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --paper: #121a1f;
+          --card: #1a242a;
+          --ink: #e2e9e7;
+          --muted: #92a3aa;
+          --rule: #2c383f;
+          --rule-soft: #232f36;
+          --mark: #e0a44a;
+          --mark-wash: rgba(224, 164, 74, 0.24);
+          --bind: #6fb6db;
+          --bind-wash: rgba(111, 182, 219, 0.18);
+          --direct: #5cb98f;
+          --notdirect: #e07d72;
+          --ambiguous: #a99ac6;
+          --shadow: rgba(0, 0, 0, 0.4);
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme='dark'] {
+        --paper: #121a1f;
+        --card: #1a242a;
+        --ink: #e2e9e7;
+        --muted: #92a3aa;
+        --rule: #2c383f;
+        --rule-soft: #232f36;
+        --mark: #e0a44a;
+        --mark-wash: rgba(224, 164, 74, 0.24);
+        --bind: #6fb6db;
+        --bind-wash: rgba(111, 182, 219, 0.18);
+        --direct: #5cb98f;
+        --notdirect: #e07d72;
+        --ambiguous: #a99ac6;
+        --shadow: rgba(0, 0, 0, 0.4);
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: 'IBM Plex Sans', system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        margin: 0;
+        padding-bottom: 230px;
+      }
+      .rail {
+        background: var(--card);
+        border-bottom: 1px solid var(--rule);
+        display: flex;
+        gap: 1px;
+        height: 26px;
+        padding: 6px 12px;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      .rail button {
+        background: var(--rule-soft);
+        border: 0;
+        border-radius: 1px;
+        cursor: pointer;
+        flex: 1;
+        min-width: 2px;
+        padding: 0;
+      }
+      .rail button[data-d='DIRECT'] {
+        background: var(--direct);
+      }
+      .rail button[data-d='NOT_DIRECT'] {
+        background: var(--notdirect);
+      }
+      .rail button[data-d='AMBIGUOUS'] {
+        background: var(--ambiguous);
+      }
+      .rail button[data-g='ok'] {
+        background: var(--direct);
+      }
+      .rail button[data-g='ko'] {
+        background: var(--notdirect);
+      }
+      .rail button[data-incomplete='true'] {
+        opacity: 0.45;
+      }
+      .rail button[data-current='true'] {
+        outline: 2px solid var(--ink);
+        outline-offset: 1px;
+      }
+      ul.roles-todo {
+        margin: 8px 0 0;
+        padding-left: 20px;
+        font-size: 13.5px;
+        line-height: 1.5;
+      }
+      ul.roles-todo li {
+        margin-bottom: 4px;
+      }
+      .legend {
+        align-items: center;
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 11.5px;
+        gap: 4px 14px;
+        padding: 4px 14px 0;
+      }
+      .legend i {
+        border-radius: 2px;
+        display: inline-block;
+        height: 9px;
+        margin-right: 5px;
+        vertical-align: middle;
+        width: 14px;
+      }
+      header.bar {
+        align-items: baseline;
+        border-bottom: 1px solid var(--rule-soft);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 12px 20px;
+      }
+      .eyebrow {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+      .count {
+        font-family: 'IBM Plex Mono', monospace;
+        font-variant-numeric: tabular-nums;
+      }
+      .grow {
+        flex: 1;
+      }
+      main {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: minmax(320px, 5fr) minmax(340px, 6fr);
+        margin: 0 auto;
+        max-width: 1320px;
+        padding: 20px;
+      }
+      @media (max-width: 940px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+      }
+      section.panel {
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-radius: 3px;
+        box-shadow: 0 1px 2px var(--shadow);
+        padding: 18px 20px;
+      }
+      section.panel + section.panel {
+        margin-top: 20px;
+      }
+      main > section.col1 {
+        grid-column: 1;
+      }
+      main > section.col2 {
+        grid-column: 2;
+        grid-row: 2 / span 4;
+        align-self: start;
+        position: sticky;
+        top: 40px;
+      }
+      @media (max-width: 940px) {
+        main > section.col1,
+        main > section.col2 {
+          grid-column: 1;
+          grid-row: auto;
+          position: static;
+        }
+      }
+      .question {
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 22px;
+        line-height: 1.35;
+        margin: 6px 0 10px;
+        text-wrap: balance;
+      }
+      .machine {
+        color: var(--muted);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11.5px;
+        margin: 8px 0 0;
+      }
+      .chip {
+        background: var(--rule-soft);
+        border-radius: 2px;
+        color: var(--muted);
+        display: inline-block;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11.5px;
+        padding: 2px 7px;
+      }
+      blockquote.candidate {
+        border-left: 3px solid var(--mark);
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 18px;
+        line-height: 1.45;
+        margin: 0;
+        padding: 4px 0 4px 14px;
+      }
+      .response {
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 16.5px;
+        line-height: 1.7;
+        max-height: 44vh;
+        overflow-y: auto;
+      }
+      .response .s {
+        border-radius: 2px;
+        padding: 1px 0;
+      }
+      .response .s.clickable {
+        cursor: pointer;
+      }
+      .response .s.clickable:hover {
+        background: var(--rule-soft);
+      }
+      .response .s.cand {
+        background: var(--mark-wash);
+        box-shadow: 0 1px 0 var(--mark);
+      }
+      .response .s.evidence {
+        background: var(--bind-wash);
+        box-shadow: 0 1px 0 var(--bind);
+      }
+      .response .s.hidden {
+        display: none;
+      }
+      .response sup.sid {
+        color: var(--bind);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 10px;
+        margin-right: 3px;
+      }
+      .context {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+        margin-top: 4px;
+      }
+      .note {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .hint {
+        border-left: 2px solid var(--rule);
+        color: var(--muted);
+        display: none;
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 8px 0 12px;
+        padding: 2px 0 2px 10px;
+      }
+      body[data-help='on'] .hint {
+        display: block;
+      }
+      .guide {
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-radius: 3px;
+        display: none;
+        grid-column: 1 / -1;
+        padding: 16px 20px;
+      }
+      body[data-help='on'] .guide {
+        display: block;
+      }
+      body[data-guide='yes'] .guide > :not(.eyebrow) {
+        display: none;
+      }
+      .guide ol {
+        margin: 8px 0 0;
+        padding-left: 20px;
+      }
+      .guide li {
+        margin-bottom: 4px;
+      }
+      .guide dl {
+        display: grid;
+        gap: 4px 12px;
+        grid-template-columns: auto 1fr;
+        margin: 10px 0 0;
+      }
+      .guide dt {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 12.5px;
+      }
+      .guide dd {
+        margin: 0;
+      }
+      .training {
+        background: var(--card);
+        border: 1px solid var(--mark);
+        border-radius: 3px;
+        grid-column: 1 / -1;
+        padding: 14px 20px;
+      }
+      .chooser[hidden] {
+        display: none;
+      }
+      .chooser {
+        align-items: center;
+        background: var(--paper);
+        display: flex;
+        inset: 0;
+        justify-content: center;
+        padding: 24px;
+        position: fixed;
+        z-index: 40;
+      }
+      .chooser-box {
+        background: var(--card);
+        border: 1px solid var(--mark);
+        border-radius: 3px;
+        max-width: 560px;
+        padding: 22px 26px;
+        width: 100%;
+      }
+      .chooser-box h2 {
+        font-size: 20px;
+        margin: 6px 0 14px;
+      }
+      .chooser-box .en {
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .chooser-box button.go .en {
+        color: var(--paper);
+        opacity: 0.7;
+      }
+      .chooser-box label.opt {
+        align-items: baseline;
+        cursor: pointer;
+        display: flex;
+        gap: 10px;
+        margin: 10px 0;
+      }
+      .chooser-box .sub {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin: 4px 0 6px 26px;
+      }
+      .chooser-box .sub label {
+        align-items: center;
+        display: inline-flex;
+        gap: 8px;
+      }
+      .chooser-box select {
+        font: inherit;
+        padding: 4px 6px;
+      }
+      .chooser-box button.go {
+        background: var(--ink);
+        border: 0;
+        border-radius: 3px;
+        color: var(--paper);
+        cursor: pointer;
+        font: inherit;
+        margin-top: 8px;
+        padding: 8px 16px;
+      }
+      table.grade {
+        border-collapse: collapse;
+        font-size: 13.5px;
+        margin: 12px 0 0;
+        width: 100%;
+      }
+      table.grade th,
+      table.grade td {
+        border-top: 1px solid var(--rule-soft);
+        padding: 6px 10px 6px 0;
+        text-align: left;
+        vertical-align: top;
+      }
+      table.grade th {
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      table.grade tr.ok td:last-child {
+        color: var(--direct);
+      }
+      table.grade tr.ko td:last-child,
+      table.grade tr.ko td:nth-child(2) {
+        color: var(--notdirect);
+      }
+      .lesson {
+        border-left: 3px solid var(--mark);
+        font-size: 14px;
+        line-height: 1.55;
+        margin: 12px 0 0;
+        padding: 4px 0 4px 12px;
+      }
+      footer.dock {
+        background: var(--card);
+        border-top: 1px solid var(--rule);
+        bottom: 0;
+        box-shadow: 0 -2px 10px var(--shadow);
+        left: 0;
+        padding: 11px 20px 13px;
+        position: fixed;
+        right: 0;
+        z-index: 15;
+      }
+      .dock-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        margin: 0 auto;
+        max-width: 1320px;
+      }
+      .verdicts {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .verdicts button,
+      .tri button,
+      .ghost {
+        background: transparent;
+        border: 1.5px solid var(--rule);
+        border-radius: 3px;
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        padding: 7px 13px;
+      }
+      .ghost {
+        font-size: 13px;
+        padding: 6px 11px;
+      }
+      kbd {
+        background: var(--rule-soft);
+        border-radius: 2px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11px;
+        margin-right: 7px;
+        padding: 1px 5px;
+      }
+      .verdicts button[data-v='DIRECT'][aria-pressed='true'] {
+        background: var(--direct);
+        border-color: var(--direct);
+        color: #fff;
+      }
+      .verdicts button[data-v='NOT_DIRECT'][aria-pressed='true'] {
+        background: var(--notdirect);
+        border-color: var(--notdirect);
+        color: #fff;
+      }
+      .verdicts button[data-v='AMBIGUOUS'][aria-pressed='true'] {
+        background: var(--ambiguous);
+        border-color: var(--ambiguous);
+        color: #fff;
+      }
+      .verdicts button[aria-pressed='true'] kbd {
+        background: rgba(255, 255, 255, 0.22);
+      }
+      .tri {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .tri button {
+        font-size: 13px;
+        padding: 4px 10px;
+      }
+      .tri button[aria-pressed='true'] {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--card);
+      }
+      .ctl-label {
+        font-size: 12.5px;
+        margin-bottom: 3px;
+      }
+      #verdictQuestion {
+        font-size: 12.5px;
+        letter-spacing: 0;
+        max-width: 560px;
+        text-transform: none;
+      }
+      #verdictQuestion em {
+        color: var(--ink);
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 14px;
+        font-style: normal;
+      }
+      .todo {
+        color: var(--notdirect);
+        font-size: 12.5px;
+      }
+      .todo.ok {
+        color: var(--direct);
+      }
+      input[type='text'] {
+        background: var(--paper);
+        border: 1px solid var(--rule);
+        border-radius: 3px;
+        color: var(--ink);
+        font: inherit;
+        padding: 8px 10px;
+        width: 100%;
+      }
+      textarea {
+        background: var(--paper);
+        border: 1px solid var(--rule);
+        border-radius: 3px;
+        color: var(--ink);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11.5px;
+        line-height: 1.45;
+        min-height: 200px;
+        padding: 10px;
+        width: 100%;
+      }
+      .hash {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 12px;
+        word-break: break-all;
+      }
+      ul.blockers {
+        color: var(--notdirect);
+        font-size: 13.5px;
+        margin: 8px 0 0;
+        padding-left: 20px;
+      }
+      button.link {
+        background: none;
+        border: 0;
+        color: var(--bind);
+        cursor: pointer;
+        font: inherit;
+        font-size: 13px;
+        padding: 0;
+        text-decoration: underline;
+      }
+      :focus-visible {
+        outline: 2px solid var(--mark);
+        outline-offset: 2px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+    <style>
+      .pair {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 1fr 1fr;
+        grid-column: 1 / -1;
+      }
+      .pair .copy {
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-radius: 3px;
+        padding: 14px 18px;
+      }
+      .pair .copy.chosen {
+        border-color: var(--bind);
+        box-shadow: 0 0 0 2px var(--bind-wash);
+      }
+      .pair .copy .eyebrow {
+        margin-bottom: 8px;
+      }
+      .pair .copy .s {
+        display: block;
+        margin: 4px 0;
+      }
+      .pair .copy .s .n {
+        color: var(--muted);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 12px;
+        margin-right: 6px;
+      }
+      .pair mark.hl {
+        background: var(--mark-wash);
+        color: inherit;
+        padding: 0 2px;
+      }
+      #rationale {
+        height: 46px;
+        margin-top: 8px;
+        min-height: 46px;
+        resize: vertical;
+      }
+      main {
+        padding-bottom: 220px;
+      }
+      .choice button {
+        font: inherit;
+        padding: 8px 14px;
+      }
+      .choice button[aria-pressed='true'] {
+        background: var(--bind);
+        border-color: var(--bind);
+        color: var(--paper);
+      }
+      @media (max-width: 900px) {
+        .pair {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="rail"
+      id="rail"
+      role="navigation"
+      aria-label="Progression"
+    ></div>
+    <div class="legend" id="legend">
+      <span><i style="background: var(--bind)"></i> décidée</span>
+      <span><i style="background: var(--rule)"></i> pas encore</span>
+    </div>
+    <header class="bar">
+      <div>
+        <div class="eyebrow">Passe 2 · paires côte à côte</div>
+        <strong
+          >Deux copies, une question : laquelle y répond le mieux, par ce qui
+          est écrit&nbsp;?</strong
+        >
+      </div>
+      <div class="grow"></div>
+      <div class="count" id="progress">—</div>
+      <button class="ghost" id="help"><kbd>H</kbd> aide</button>
+      <span
+        id="whoBox"
+        style="display: inline-flex; gap: 6px; align-items: center"
+        ><button class="ghost" id="who"></button
+        ><input
+          id="whoInput"
+          type="text"
+          autocomplete="off"
+          hidden
+          style="width: 160px; padding: 5px 8px"
+        /><button class="ghost" id="whoSave" hidden>enregistrer</button></span
+      >
+      <button class="ghost" id="toExport">export</button>
+    </header>
+    <main id="app"></main>
+    <footer class="dock" hidden id="dock">
+      <div class="dock-inner">
+        <div>
+          <div class="eyebrow" id="dockQuestion"></div>
+          <div class="verdicts choice" id="choice">
+            <button data-c="A" aria-pressed="false">
+              <kbd>A</kbd> la copie A
+            </button>
+            <button data-c="B" aria-pressed="false">
+              <kbd>B</kbd> la copie B
+            </button>
+            <button data-c="both" aria-pressed="false">
+              <kbd>=</kbd> les deux autant
+            </button>
+            <button data-c="neither" aria-pressed="false">
+              <kbd>0</kbd> aucune des deux
+            </button>
+          </div>
+          <textarea
+            id="rationale"
+            rows="2"
+            placeholder="pourquoi ? (obligatoire pour « les deux autant » et « aucune des deux »)"
+          ></textarea>
+          <div class="note" id="status"></div>
+        </div>
+        <div class="nav">
+          <button class="ghost" id="prev" title="précédente">◀</button>
+          <button class="ghost" id="next" title="suivante">▶</button>
+        </div>
+      </div>
+    </footer>
+
+    <script id="deck" type="application/json">
+      /*__DECK__*/
+    </script>
+    <script id="pairs" type="application/json">
+      /*__PAIRS__*/
+    </script>
+    <script id="questions" type="application/json">
+      /*__QUESTIONS__*/
+    </script>
+    <script>
+      const DECK = JSON.parse(document.getElementById('deck').textContent);
+      const PAIRS = JSON.parse(document.getElementById('pairs').textContent);
+      const QUESTIONS = JSON.parse(
+        document.getElementById('questions').textContent,
+      );
+      const CARDS = new Map(DECK.cards.map((c) => [c.cardId, c]));
+      const STORE = 'adj-p2-' + PAIRS.contentHash.slice(-12);
+      const HELP_STORE = 'adj-p2-help';
+      const escapeHtml = (v) =>
+        String(v)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      const singleSpan = (card) => /^S[123]_/.test(card.stratum);
+      const wholeCopy = (card) => card.stratum.startsWith('S7');
+
+      /* ---------- state ---------- */
+      const state = { decisions: {}, index: 0, reviewer: '' };
+      try {
+        Object.assign(state, JSON.parse(localStorage.getItem(STORE) || '{}'));
+      } catch (e) {
+        /* clean start */
+      }
+      function persist() {
+        try {
+          localStorage.setItem(STORE, JSON.stringify(state));
+        } catch (e) {
+          /* export is the durable path */
+        }
+      }
+      let enteredAt = Date.now();
+      const current = () => PAIRS.pairs[state.index];
+      const decisionOf = (pair) => state.decisions[pair.pairId] || null;
+      const complete = (pair) => {
+        const d = decisionOf(pair);
+        if (!d || !d.choice) return false;
+        if (
+          (d.choice === 'both' || d.choice === 'neither') &&
+          !(d.rationale || '').trim()
+        )
+          return false;
+        return true;
+      };
+      const decidedCount = () => PAIRS.pairs.filter(complete).length;
+      function leaveCurrent() {
+        const pair = current();
+        if (!pair) return;
+        const d = decisionOf(pair);
+        if (d) {
+          d.secondsOnPair =
+            (d.secondsOnPair || 0) +
+            Math.round((Date.now() - enteredAt) / 1000);
+          persist();
+        }
+        enteredAt = Date.now();
+      }
+      function touch(pair) {
+        if (!state.decisions[pair.pairId]) {
+          state.decisions[pair.pairId] = {
+            choice: null,
+            decidedAt: null,
+            firstSeenAt: new Date().toISOString(),
+            leftCardId: pair.cards[0],
+            orderIndex: state.index,
+            pairId: pair.pairId,
+            rationale: '',
+            rightCardId: pair.cards[1],
+            secondsOnPair: 0,
+          };
+        }
+        return state.decisions[pair.pairId];
+      }
+
+      /* ---------- rendering ---------- */
+      function copyHtml(card, label) {
+        let body;
+        if (singleSpan(card)) {
+          const w = card.window || { end: card.response.length, start: 0 };
+          const h = card.highlight;
+          body =
+            '<p class="excerpt">' +
+            (w.start > 0 ? '… ' : '') +
+            escapeHtml(card.response.slice(w.start, h.start)) +
+            '<mark class="hl">' +
+            escapeHtml(card.response.slice(h.start, h.end).trim()) +
+            '</mark> ' +
+            escapeHtml(card.response.slice(h.end, w.end)) +
+            (w.end < card.response.length ? ' …' : '') +
+            '</p>';
+        } else {
+          body = card.sentences
+            .map(
+              (s) =>
+                '<span class="s"><span class="n">' +
+                escapeHtml(s.id) +
+                '</span>' +
+                escapeHtml(card.response.slice(s.start, s.end).trim()) +
+                '</span>',
+            )
+            .join('');
+        }
+        return (
+          '<section class="copy" data-side="' +
+          label +
+          '"><div class="eyebrow">Copie ' +
+          label +
+          '</div>' +
+          body +
+          '</section>'
+        );
+      }
+      function render() {
+        const pair = current();
+        const app = document.getElementById('app');
+        if (!pair) {
+          app.innerHTML = '';
+          return;
+        }
+        const left = CARDS.get(pair.cards[0]);
+        const right = CARDS.get(pair.cards[1]);
+        const d = decisionOf(pair);
+        const question = QUESTIONS.questions[left.atomId] || left.atom;
+        const scope = singleSpan(left)
+          ? 'Sur ces cartes, seule la phrase surlignée de chaque copie compte ; le reste de l’extrait est là pour comprendre.'
+          : wholeCopy(left)
+            ? 'Sur ces cartes, la copie entière compte.'
+            : 'Sur ces cartes, la copie entière compte ; les numéros de phrase servent à t’y retrouver dans « pourquoi ».';
+        app.innerHTML =
+          '<section class="card"><div class="eyebrow">1 · Ce qui était demandé</div>' +
+          (left.frame
+            ? '<p class="context"><strong>Consigne.</strong> ' +
+              escapeHtml(left.frame) +
+              '</p>'
+            : '') +
+          (left.dossier
+            ? '<p class="context"><strong>Dossier.</strong> ' +
+              escapeHtml(left.dossier) +
+              '</p>'
+            : '') +
+          (!left.frame && !left.dossier
+            ? '<p class="context">Ni consigne ni dossier : la question se juge sur les copies seules.</p>'
+            : '') +
+          '</section>' +
+          '<section class="card"><div class="eyebrow">2 · La question</div><h2 class="q">' +
+          escapeHtml(question) +
+          '</h2><p class="note">' +
+          scope +
+          ' Ne cherche pas laquelle est « l’originale » : dis seulement laquelle répond le mieux à la question, par ce qui est écrit.</p></section>' +
+          '<div class="pair">' +
+          copyHtml(left, 'A') +
+          copyHtml(right, 'B') +
+          '</div>';
+        for (const el of app.querySelectorAll('.copy')) {
+          el.classList.toggle('chosen', !!d && d.choice === el.dataset.side);
+        }
+        document.getElementById('dock').hidden = false;
+        document.getElementById('dockQuestion').textContent =
+          'Laquelle des deux répond le mieux : ' + question;
+        for (const b of document.querySelectorAll('#choice button')) {
+          b.setAttribute(
+            'aria-pressed',
+            String(!!d && d.choice === b.dataset.c),
+          );
+        }
+        document.getElementById('rationale').value = d ? d.rationale || '' : '';
+        document.getElementById('status').textContent = complete(pair)
+          ? 'paire complète'
+          : d && (d.choice === 'both' || d.choice === 'neither')
+            ? 'manque : pourquoi'
+            : 'manque : ton choix';
+        document.getElementById('status').className =
+          'note ' + (complete(pair) ? 'ok' : 'ko');
+        renderRail();
+        document.getElementById('progress').textContent =
+          state.index +
+          1 +
+          ' / ' +
+          PAIRS.pairs.length +
+          ' · ' +
+          decidedCount() +
+          ' complètes';
+        window.scrollTo(0, 0);
+      }
+      function renderRail() {
+        const rail = document.getElementById('rail');
+        rail.innerHTML = PAIRS.pairs
+          .map(
+            (p, i) =>
+              '<button data-i="' +
+              i +
+              '" class="' +
+              (complete(p) ? 'done' : '') +
+              (i === state.index ? ' current' : '') +
+              '" title="paire ' +
+              (i + 1) +
+              '"></button>',
+          )
+          .join('');
+        for (const b of rail.querySelectorAll('button')) {
+          b.onclick = () => goTo(Number(b.dataset.i));
+        }
+      }
+      function goTo(i) {
+        if (i < 0 || i >= PAIRS.pairs.length) return;
+        leaveCurrent();
+        state.index = i;
+        persist();
+        render();
+      }
+      function choose(c) {
+        const pair = current();
+        if (!pair) return;
+        const d = touch(pair);
+        d.choice = c;
+        d.decidedAt = new Date().toISOString();
+        persist();
+        render();
+      }
+      document.getElementById('choice').onclick = (ev) => {
+        const b = ev.target.closest('button');
+        if (b) choose(b.dataset.c);
+      };
+      document.getElementById('rationale').oninput = (ev) => {
+        const pair = current();
+        if (!pair) return;
+        const d = touch(pair);
+        d.rationale = ev.target.value;
+        persist();
+        document.getElementById('status').textContent = complete(pair)
+          ? 'paire complète'
+          : d.choice
+            ? 'manque : pourquoi'
+            : 'manque : ton choix';
+        document.getElementById('status').className =
+          'note ' + (complete(pair) ? 'ok' : 'ko');
+        renderRail();
+      };
+      document.getElementById('prev').onclick = () => goTo(state.index - 1);
+      document.getElementById('next').onclick = () => goTo(state.index + 1);
+      document.body.addEventListener('keydown', (ev) => {
+        if (ev.target && /^(INPUT|TEXTAREA)$/.test(ev.target.tagName)) return;
+        const k = ev.key.toLowerCase();
+        if (k === 'a') choose('A');
+        else if (k === 'b') choose('B');
+        else if (k === '=') choose('both');
+        else if (k === '0') choose('neither');
+        else if (k === 'arrowright') goTo(state.index + 1);
+        else if (k === 'arrowleft') goTo(state.index - 1);
+        else if (k === 'h') toggleHelp();
+      });
+
+      /* ---------- reviewer ---------- */
+      const whoBtn = document.getElementById('who');
+      const whoInput = document.getElementById('whoInput');
+      const whoSave = document.getElementById('whoSave');
+      const renderWho = () => {
+        whoBtn.textContent = state.reviewer || 'relecteur…';
+      };
+      whoBtn.onclick = () => {
+        whoInput.hidden = false;
+        whoSave.hidden = false;
+        whoInput.value = state.reviewer;
+        whoInput.focus();
+      };
+      const saveWho = () => {
+        state.reviewer = whoInput.value.trim();
+        persist();
+        whoInput.hidden = true;
+        whoSave.hidden = true;
+        renderWho();
+      };
+      whoSave.onclick = saveWho;
+      whoInput.onkeydown = (ev) => {
+        if (ev.key === 'Enter') saveWho();
+      };
+      renderWho();
+
+      /* ---------- help ---------- */
+      function toggleHelp() {
+        const on = document.body.dataset.help === 'on' ? 'off' : 'on';
+        document.body.dataset.help = on;
+        try {
+          localStorage.setItem(HELP_STORE, on);
+        } catch (e) {
+          /* fine */
+        }
+        renderHelp();
+      }
+      function renderHelp() {
+        let box = document.getElementById('helpBox');
+        if (document.body.dataset.help !== 'on') {
+          if (box) box.remove();
+          return;
+        }
+        if (!box) {
+          box = document.createElement('section');
+          box.id = 'helpBox';
+          box.className = 'training';
+          document.getElementById('app').before(box);
+        }
+        box.innerHTML =
+          '<div class="eyebrow">Comment faire</div><ol>' +
+          '<li>Deux copies pour la même consigne, la même question. Elles se ressemblent : c’est voulu.</li>' +
+          '<li>Lis la question, puis les deux copies. Sur les cartes « une phrase », seule la phrase surlignée de chaque copie compte.</li>' +
+          '<li>Réponds : <strong>A</strong> ou <strong>B</strong> si l’une répond mieux à la question par ce qui est écrit ; <strong>les deux autant</strong> si elles y répondent aussi bien, ou aussi mal, l’une que l’autre ; <strong>aucune des deux</strong> si ni l’une ni l’autre n’y répond. Les deux derniers demandent un « pourquoi ».</li>' +
+          '<li>Ne cherche pas laquelle est l’originale. Il n’y a pas de piège à deviner : il y a une question à trancher.</li>' +
+          '<li>Touches : A, B, =, 0, flèches pour naviguer, H pour cette aide.</li>' +
+          '</ol>';
+      }
+      document.getElementById('help').onclick = toggleHelp;
+      try {
+        document.body.dataset.help =
+          localStorage.getItem(HELP_STORE) ||
+          (Object.keys(state.decisions).length ? 'off' : 'on');
+      } catch (e) {
+        document.body.dataset.help = 'on';
+      }
+
+      /* ---------- export ---------- */
+      const canon = (v) =>
+        Array.isArray(v)
+          ? v.map(canon)
+          : v && typeof v === 'object'
+            ? Object.fromEntries(
+                Object.keys(v)
+                  .sort()
+                  .map((k) => [k, canon(v[k])]),
+              )
+            : v;
+      async function sha256(text) {
+        try {
+          const buf = await crypto.subtle.digest(
+            'SHA-256',
+            new TextEncoder().encode(text),
+          );
+          return (
+            'sha256:' +
+            [...new Uint8Array(buf)]
+              .map((b) => b.toString(16).padStart(2, '0'))
+              .join('')
+          );
+        } catch (e) {
+          return 'n/a (calculée à la réception)';
+        }
+      }
+      document.getElementById('toExport').onclick = async () => {
+        leaveCurrent();
+        const app = document.getElementById('app');
+        document.getElementById('dock').hidden = true;
+        const missing = PAIRS.pairs.filter((p) => !complete(p));
+        if (!state.reviewer) {
+          app.innerHTML =
+            '<section class="card"><div class="eyebrow">Export indisponible</div><p>Indique d’abord ton identifiant de relecteur (bouton « relecteur… » en haut).</p><p><button class="ghost" id="back">retour</button></p></section>';
+          document.getElementById('back').onclick = () => render();
+          return;
+        }
+        if (missing.length) {
+          app.innerHTML =
+            '<section class="card"><div class="eyebrow">Export indisponible</div><p>' +
+            missing.length +
+            ' paire(s) incomplète(s). La première : paire ' +
+            (PAIRS.pairs.indexOf(missing[0]) + 1) +
+            '.</p><p><button class="ghost" id="back">y aller</button></p></section>';
+          document.getElementById('back').onclick = () =>
+            goTo(PAIRS.pairs.indexOf(missing[0]));
+          return;
+        }
+        const decisions = PAIRS.pairs.map((p) => ({
+          ...state.decisions[p.pairId],
+          reviewerId: state.reviewer,
+        }));
+        const payload = {
+          deckHash: PAIRS.deckHash,
+          decisions,
+          pairsHash: PAIRS.contentHash,
+          pass: 2,
+          reviewerId: state.reviewer,
+          schemaVersion: 1,
+          ties: decisions.filter(
+            (d) => d.choice === 'both' || d.choice === 'neither',
+          ).length,
+        };
+        const text = JSON.stringify(canon(payload));
+        const digest = await sha256(text);
+        app.innerHTML =
+          '<section class="card"><div class="eyebrow">Export · passe 2</div><p>' +
+          decisions.length +
+          ' paires. Copie tout le texte ci-dessous et envoie-le tel quel.</p><p class="hash"><strong>Empreinte :</strong> ' +
+          digest +
+          '</p><p><button class="ghost" id="copy">copier</button> <button class="ghost" id="back">retour</button></p><textarea readonly id="out">' +
+          escapeHtml(text) +
+          '</textarea></section>';
+        document.getElementById('copy').onclick = async () => {
+          try {
+            await navigator.clipboard.writeText(text);
+            document.getElementById('copy').textContent = 'copié';
+          } catch (e) {
+            document.getElementById('out').select();
+            document.getElementById('copy').textContent =
+              'sélectionné, fais Cmd+C';
+          }
+        };
+        document.getElementById('back').onclick = () => render();
+      };
+
+      renderHelp();
+      render();
+    </script>
+  </body>
+</html>
