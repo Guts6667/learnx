@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2,s3 | autre: - | raison: les coûts, la visite et l’incertitude éclairent tous le choix de Préventel.  
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: le calcul soutient la préférence et l’incertitude explique l’absence de décision définitive.  
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: le processus, l’équipe et le gain de 30 % reprennent les éléments du dossier.  
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: le seuil de 30 % est présenté comme adaptable faute de mesure disponible.  
+C-6f02478fc2 | NON | phrases: s0 | autre: - | raison: l’horizon de six mois est affirmé sans être donné ni présenté comme une hypothèse ouverte.  
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la recommandation de signer immédiatement énonce explicitement une position.  
+C-d5dff02d07 | NON | phrases: s3 | autre: - | raison: le risque est identifié, mais aucun rituel pour le traiter n’est indiqué.  
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase propose un suivi et un réexamen sans énoncer clairement un risque.  
+C-5a5b6cc636 | OUI | phrases: s1,s2 | autre: - | raison: le calcul soutient la préférence et l’incertitude justifie qu’elle ne soit pas tranchée.  
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: la réponse omet la visibilité anticipée des flèches et suppose sans preuve le respect des 6 W.
