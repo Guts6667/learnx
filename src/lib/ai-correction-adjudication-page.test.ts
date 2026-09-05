@@ -68,6 +68,20 @@ const goTo = (predicate: (card: DeckCard) => boolean): DeckCard => {
   (document.querySelectorAll('#rail button')[index] as HTMLElement).click();
   return deckCards()[index] as DeckCard;
 };
+/**
+ * The export hashes its text with crypto.subtle, so the panel appears
+ * asynchronously; under a full-suite load that takes more than the second a
+ * short poll allows. Wait up to 10 s and fail with a message, never by timing.
+ */
+const exportedText = async (): Promise<string> => {
+  for (let i = 0; i < 400; i += 1) {
+    const value = (document.getElementById('out') as HTMLTextAreaElement | null)
+      ?.value;
+    if (value) return value;
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  throw new Error('le panneau d’export n’est jamais apparu');
+};
 /** A « non » that satisfies every family: one clicked sentence where required. */
 const answerNo = (): void => {
   // Two-role cards need one sentence per related thing: click up to two.
@@ -170,14 +184,7 @@ describe('the blind adjudication page, real deck', () => {
       setControls();
     }
     document.getElementById('toExport')?.click();
-    // The export hashes its text with crypto.subtle: the panel appears asynchronously.
-    let out = '';
-    for (let i = 0; i < 40 && !out; i += 1) {
-      await new Promise((resolve) => setTimeout(resolve, 25));
-      out =
-        (document.getElementById('out') as HTMLTextAreaElement | null)?.value ??
-        '';
-    }
+    const out = await exportedText();
     expect(out.length).toBeGreaterThan(0);
     const payload = JSON.parse(out) as {
       decisions: {
@@ -343,13 +350,7 @@ describe('language and slice modes', () => {
       setControls();
     }
     document.getElementById('toExport')?.click();
-    let out = '';
-    for (let i = 0; i < 40 && !out; i += 1) {
-      await new Promise((resolve) => setTimeout(resolve, 25));
-      out =
-        (document.getElementById('out') as HTMLTextAreaElement | null)?.value ??
-        '';
-    }
+    const out = await exportedText();
     const payload = JSON.parse(out) as {
       sliceId: string;
       language: string;
