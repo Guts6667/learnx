@@ -1900,4 +1900,35 @@ propriétaire, qui continue.
   ne sont ni connus ni rejouables. Ses réponses seront rapportées à part de
   la mesure par accès direct, à trois répétitions.
 
+### La passe 1 du propriétaire est exportée, et elle ne confirme pas le paquet
+
+5 septembre 2026. Export reçu par copier-coller, forme canonique intacte,
+sha256 `d5f75f92…`, toutes les empreintes conformes ; enregistré tel quel
+dans `adjudication-pass1.owner.2026-09-05.json`, lecture dans le fichier
+`.reading.md` voisin. 65 oui, 29 non, 12 « je ne peux pas dire »
+(11,3 %, sous le plafond de 20 %).
+
+**Le résultat qui compte** : confrontées à la clé, que ni le relecteur ni
+la page n'ont vue, les réponses ne séparent pas les positifs des négatifs.
+Sur 37 paires primaires, 4 seulement sont discriminées ; 19 reçoivent
+« oui » des deux côtés ; 20 négatifs sur 37 reçoivent « oui ». Deux
+explications restent ouvertes et cette passe seule ne les départage pas :
+les négatifs ne sont pas des négatifs sous la question posée (la frontière
+« à côté / établit » n'est pas où le paquet l'a mise), ou le relecteur lit
+large. Le lot 1 des modèles donne un exemple de chaque : cartes 2 et 4,
+relecteur et majorité des modèles contre la clé ; carte 7, relecteur seul
+contre 21 passages sur 22, pour une raison précise.
+
+**Conséquences, décidées avant toute dépense** : la mesure du vérificateur
+n'est pas lancée sur ce corrigé ; ni la clé ni les réponses humaines ne
+valent seules ; la seconde personne et le test-retest deviennent
+nécessaires ; la passe 2 change de forme : au lieu de réconcilier les 39
+cartes à deux témoins, elle doit d'abord juger les paires côte à côte, en
+choix forcé, pour savoir si la construction du paquet tient. Rien n'est
+retiré, rien n'est modifié, et le mot « échec » n'est pas prononcé : on ne
+sait pas encore qui a raison, et c'est écrit tel quel.
+
+Une abstention dit « je ne vois pas le dossier » sur une carte qui en porte
+un : à vérifier en passe 2, pas un défaut connu de la page.
+
 Dépense : 0,00 USD.
