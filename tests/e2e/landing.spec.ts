@@ -47,7 +47,11 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
         name: 'Votre chemin vers la connaissance.',
       }),
     ).toBeVisible();
-    if (viewport.width < 768) {
+    // 1024 et non 768 (D7, 5 septembre 2026) : la tablette reçoit la
+    // composition mobile, en-tête compris. Ce test décidait « desktop » au
+    // seuil de l'ancienne grille et attendait donc la navigation desktop sur
+    // une page qui rend désormais la mobile.
+    if (viewport.width < 1024) {
       await expect(page.locator('.landing-utility')).toBeHidden();
       await expect(page.locator('.landing-mobile-navigation')).toBeVisible();
     } else {
@@ -65,7 +69,7 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
         .first(),
     ).toBeVisible();
     await expect(page.getByText(/The Scrum Guide 2020/)).toBeVisible();
-    if (viewport.width >= 768) {
+    if (viewport.width >= 1024) {
       // A link colour rule once outranked the button primitive and rendered the
       // persistent CTA as indigo on indigo. Axe did not flag it.
       const cta = page.locator('.landing-utility a[href="#early-adopter"]');
