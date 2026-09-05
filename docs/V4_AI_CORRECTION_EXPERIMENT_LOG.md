@@ -1967,4 +1967,26 @@ paquet lui-même.
   vérificateur n'a pas de corrigé, et le rapport le dit.
 - **Prochaine dépense** : aucune avant ce résultat.
 
+### Passe 2 : le paquet tient
+
+Même jour, export reçu, sha256 `9c899259…`, 45 paires, lecture dans
+`adjudication-pass2.owner.2026-09-05.reading.md`. Sur les 37 paires
+primaires : **30 originaux choisis**, 3 abîmés, 4 non tranchées. Le seuil
+déclaré est dépassé (27 demandés ; au hasard, moins de 1 chance sur
+100 000). Les cartes abîmées sont bien abîmées pour ce lecteur dès qu'il
+compare : la lecture large de la passe 1 était un seuil absolu généreux,
+pas un défaut de discrimination (18 des 22 paires « oui/oui » de la passe 1
+choisissent l'original en passe 2).
+
+Conséquences, telles que déclarées : l'étiquette or du vérificateur est
+l'étiquette de paire sur les 30 paires primaires où l'original a été choisi
+(l'original établit, l'abîmé n'établit pas) ; les 7 autres paires
+primaires attendent la troisième lecture avec la seconde personne ; les 8
+paires du diagnostic (6 originaux, 2 « aucune ») restent à part. Reste à
+mesurer avant toute dépense : la stabilité du relecteur (10 cartes à J+2)
+et une seconde personne, à qui l'on proposera désormais **15 paires de la
+passe 2** plutôt que 15 cartes de la passe 1, puisque c'est l'étiquette de
+paire qui sert de corrigé ; ce changement est décidé ici, avant qu'elle
+commence.
+
 Dépense : 0,00 USD.
