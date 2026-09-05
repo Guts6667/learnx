@@ -797,14 +797,25 @@
         if (singleSpan(card)) {
           const w = card.window || { end: card.response.length, start: 0 };
           const h = card.highlight;
+          // The window is cut by character count; for reading, drop the partial word at each end.
+          let before = card.response.slice(w.start, h.start);
+          if (w.start > 0 && before.length && !/^\s/.test(before))
+            before = before.replace(/^\S+\s*/, '');
+          let after = card.response.slice(h.end, w.end);
+          if (
+            w.end < card.response.length &&
+            after.length &&
+            !/\s$/.test(after)
+          )
+            after = after.replace(/\s*\S+$/, '');
           body =
             '<p class="excerpt">' +
             (w.start > 0 ? '… ' : '') +
-            escapeHtml(card.response.slice(w.start, h.start)) +
+            escapeHtml(before) +
             '<mark class="hl">' +
             escapeHtml(card.response.slice(h.start, h.end).trim()) +
             '</mark> ' +
-            escapeHtml(card.response.slice(h.end, w.end)) +
+            escapeHtml(after) +
             (w.end < card.response.length ? ' …' : '') +
             '</p>';
         } else {
