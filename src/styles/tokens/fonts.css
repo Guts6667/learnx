@@ -47,3 +47,29 @@
   src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-700-normal.woff2')
     format('woff2');
 }
+
+/*
+ * Graisse 800 des deux familles (V4.5-219).
+ *
+ * La maquette « Conversion Edition » écrit ses titres et ses eyebrows en 800 ;
+ * la 700 chargée jusqu'ici les rendait plus légers que la maquette sans que
+ * rien ne le signale — un navigateur qui n'a pas la graisse demandée en
+ * synthétise une approchante au lieu d'échouer. Deux fichiers, pesés dans le
+ * budget du trajet public par V4.5-229.
+ */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url('/fonts/dm-sans/dm-sans-latin-800-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url('/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-800-normal.woff2')
+    format('woff2');
+}

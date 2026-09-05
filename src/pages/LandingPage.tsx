@@ -237,23 +237,6 @@ export function LandingPage({ path }: { path?: string }) {
         </div>
       </section>
       <section
-        aria-label={t('landing.product.eyebrow')}
-        className="landing-principles"
-      >
-        <div>
-          <strong>{t('landing.product.structuredTitle')}</strong>
-          <span>{t('landing.product.structured')}</span>
-        </div>
-        <div>
-          <strong>{t('landing.product.practiceTitle')}</strong>
-          <span>{t('landing.product.practice')}</span>
-        </div>
-        <div>
-          <strong>{t('landing.product.evidenceTitle')}</strong>
-          <span>{t('landing.product.evidence')}</span>
-        </div>
-      </section>
-      <section
         aria-labelledby="landing-product"
         className="landing-section landing-feature-proof"
         id="product"
