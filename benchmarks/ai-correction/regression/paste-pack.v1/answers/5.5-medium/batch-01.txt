@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s0,s1,s2,s3,s4 | autre: - | raison: les chiffres, la date et l’inconnue servent tous le choix de Préventel ou son suivi.
+C-47402cc097 | OUI | phrases: s0,s1,s2 | autre: - | raison: les données comparent les stratégies et l’incertitude porte sur ce qui peut inverser le choix.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: la phrase reprend le processus, l’équipe et le gain de 30 % sans contredire le dossier.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: la limite sur le seuil dépend bien de la mesure absente signalée par le dossier.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: la baseline absente et la contrainte qualité proposée comme à valider limitent correctement les affirmations.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase énonce explicitement une recommandation.
+C-d5dff02d07 | INDÉCIS | phrases: s3 | autre: - | raison: le risque est bien formulé, mais le rituel où le traiter n’est pas indiqué.
+C-b24221cac5 | INDÉCIS | phrases: - | autre: OUI | raison: la phrase propose un suivi mais n’établit pas seule le risque sur la cause des arrêts.
+C-5a5b6cc636 | OUI | phrases: s0,s1,s2 | autre: - | raison: les chiffres appuient la réparation complète et l’incertitude explique pourquoi le choix n’est pas tranché.
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: la réponse reprend la baisse contrôlée mais oublie le fait nécessaire de l’absence de rapport signé.
