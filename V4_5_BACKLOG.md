@@ -641,7 +641,7 @@ décision D0 ci-dessous.
 | V4.5-223 | C | Frontend → QA/Release | Tarifs « Choose your momentum. » (calque « Pricing · Early adopter ») : trois cartes depuis le catalogue, carte `recommended` en indigo avec badge « OUR PICK », chip « +20 % early-adopter bonus included » seulement si `bonusCredits > 0`, bandeau de bas de section, CTA de carte → formulaire **sans sélection** ; mobile : calque « Pricing » (cartes empilées, Journey en ink) ; réécrit `LandingPricing.tsx` et retire le commentaire « trois boutons égaux » de 213 | 219, 220, #214 amendée selon D2 |
 | V4.5-224 | C | Frontend → QA/Release | Feuille de route (calque « Product roadmap ») : titre trois lignes, chronologie à trois jalons (Available ✓ / 02 Bounded pilot / 03 Next) dans une carte canvas, sans le lien « View the full roadmap → » (D3) ; mobile : calque « Roadmap » | 219, 220 |
 | V4.5-225 | C | Frontend → QA/Release | Recherche & transparence « Trust deserves receipts. » (calque « Research & transparency », fond indigo-soft) : bouton ink « Explore our research » → `/research/ai-correction/…` (existant, bilingue), carte « Research library » avec une note réelle (D4), trois mini-cartes Sourced / Limits included / Dated ; mobile : calque « Research » | 219, 220 |
-| V4.5-226 | C | Frontend → Rayan | « Your next step » (calque « Momentum CTA ») : la maquette repose sur la sélection de pack (« Apply with Journey selected », « Your selection is a preference ») reportée en V5 ; à livrer avec la copie de remplacement D5 (carte Journey = rappel du palier recommandé, CTA « Request early access → » sans sélection) ou à retirer si Rayan tranche ainsi ; mobile : calque « Momentum CTA » | 220, 223, D5 |
+| V4.5-226 | C | Frontend → QA/Release | « Your next step » (calque « Momentum CTA ») : construite à l'identique (carte Journey, CTA « Apply with Journey selected → », note « Your selection is a preference, not a purchase »), mais **masquée en V4.5** derrière un interrupteur de code (D5) ; tests des deux états ; affichage prévu en V5 avec la sélection de pack ; mobile : calque « Momentum CTA » | 220, 223 |
 | V4.5-227 | C | Frontend → Backend/Data | Formulaire d'accès anticipé (calque « Limited early access ») : panneau ink (bénéfices, « How it works » 01/02/03) + carte formulaire (prénom, e-mail, « What do you want to learn? », « What usually slows you down? » optionnel, case d'abonnement aux nouvelles **décochée**, bouton, encart « No account created. No payment taken. », mention légale) + bloc « Not ready to apply? » ; une soumission = candidature EARLY_ADOPTER (+ LAUNCH_UPDATES si la case est cochée) ; états chargement/erreur/succès de la maquette ; mobile : calque « Early access » (champ objectif en zone de texte) | 219, 220, 228 selon D6 |
 | V4.5-228 | A | Backend/Data → Head of AI | Prospects : champs `firstName` et `friction` (migration additive `public_leads`), validation Zod, e-mails de confirmation qui utilisent le prénom, export/écran admin contacts, registre RGPD (V4.5-165) et politique de confidentialité mis à jour, purge alignée sur la rétention existante | D6 |
 | V4.5-229 | C+D | QA/Release → DevOps | Recette de la landing : `landing.spec.ts` et `LandingPage.test.tsx` réécrits sur la nouvelle copie (H1 EN « Know what to learn next. »), a11y sans violation sérieuse (contraste des textes muted sur canvas, eyebrows 13 px), reduced-motion, PWA standalone inchangée, budget JS du trajet (189) tenu malgré les deux graisses ajoutées, baselines visuelles régénérées **sur Linux via `visual.yml` (update: true)** pour 1440/768/390, puis merge `[deploy]` sur preview et validation Rayan sur téléphone réel | 219 → 227 |
@@ -669,16 +669,12 @@ Arbitrages de Rayan du 5 septembre 2026 :
 - **D4 — Note de recherche** : le dernier article réel de
   `public/research/ai-correction/articles`, vrai titre, vraie date, vrai
   nombre de sources.
-- **D5 — Section « Your next step »** : Rayan ne l'a pas vue dans la maquette
-  et répond que « Choose your momentum » avec sélection de pack est conservé
-  en V4.5. La section « Your next step » (calque « Momentum CTA », entre
-  « Trust deserves receipts. » et le formulaire : « Choose your pack. Apply
-  before you buy. », bouton « Apply with Journey selected → ») lui a été
-  envoyée en capture. **À confirmer** : (a) garder ou retirer cette section ;
-  (b) si « sélection de pack » signifie que le choix est transmis avec la
-  candidature, c'est l'inverse du 2 septembre (reporté en V5) et cela ajoute
-  un champ au prospect (228) et à l'écran admin. Tant que ce n'est pas
-  confirmé, 223 et 226 ne transmettent aucune sélection.
+- **D5 — Section « Your next step »** : tranché le 5 septembre après
+  envoi des captures — la section est **conçue fidèlement à la maquette puis
+  masquée** en V4.5 (interrupteur de code, aucun rendu dans le DOM public,
+  exclue des baselines visuelles et de l'a11y de la page publiée) ; elle sera
+  affichée en V5 avec la sélection de pack avant candidature. Aucune sélection
+  n'est transmise en V4.5.
 - **D6 — Champs du formulaire** : (b), prénom et frein stockés ; 228 activé.
 - **D7 — Tablette 768** : composition mobile élargie jusqu'à 1023 px,
   desktop à partir de 1024 px.

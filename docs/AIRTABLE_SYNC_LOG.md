@@ -842,3 +842,6 @@ l'horizon. À se rappeler avant d'annoncer « il reste N avis ».
 - PR #202, #204, #205 fermées sans merge (D0).
 - Relecture : 11/11 enregistrements relus après création ; aucun autre
   enregistrement modifié ; aucune suppression, aucune page d'interface ajoutée.
+- 5 septembre, suite : V4.5-226 `NEEDS_ARBITRATION` → `DRAFT`, `Arbitrage
+  Rayan = Rayan A` (section conçue et masquée en V4.5, affichée en V5) ;
+  titre, résumé et dépendances mis à jour ; enregistrement relu.
