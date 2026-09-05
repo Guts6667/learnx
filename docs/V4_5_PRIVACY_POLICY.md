@@ -47,6 +47,10 @@ support@learn-x.app.
 - Si vous utilisez la correction assistée par IA : le texte que vous
   soumettez, le retour produit, vos votes « utile / faux » sur chaque
   critère, et les crédits utilisés.
+- Si vous demandez un accès anticipé ou les nouvelles du lancement : votre
+  prénom, votre adresse e-mail, ce que vous voulez apprendre et — si vous
+  choisissez de le dire — ce qui vous ralentit d'habitude. Chaque courriel
+  porte un lien pour vous désinscrire et un lien pour supprimer ces réponses.
 - Les journaux techniques nécessaires au fonctionnement du service (erreurs,
   limitation des tentatives). Pour limiter les abus, nous conservons une
   **empreinte non réversible** de votre adresse IP pendant 24 heures, et un
@@ -116,6 +120,10 @@ support@learn-x.app.
 - If you use AI-assisted correction: the text you submit, the feedback
   produced, your "helpful / wrong" votes on each criterion, and the credits
   used.
+- If you request early access or launch updates: your first name, your e-mail
+  address, what you want to learn, and — if you choose to say so — what
+  usually slows you down. Every e-mail carries a link to unsubscribe and a
+  link to delete those answers.
 - The technical logs needed to run the service (errors, rate limiting). To
   limit abuse, we keep a **non-reversible fingerprint** of your IP address
   for 24 hours, and an anti-abuse marker tied to the free trial for 12

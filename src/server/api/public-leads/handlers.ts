@@ -193,13 +193,18 @@ export function createPublicLeadListHandler(repository: PublicLeadRepository) {
 function serializeExport(
   repositoryRows: Awaited<ReturnType<PublicLeadRepository['export']>>,
 ) {
+  // `first_name` et `friction` suivent `email` et `motivation` : l'export sert
+  // à lire des candidatures, et une colonne ajoutée en fin de ligne se lirait
+  // moins bien qu'à côté de ce qu'elle complète (V4.5-228).
   const header = [
     'id',
     'email',
+    'first_name',
     'purpose',
     'status',
     'locale',
     'motivation',
+    'friction',
     'created_at',
     'confirmed_at',
   ];
@@ -209,10 +214,12 @@ function serializeExport(
       [
         row.id,
         row.emailNormalized,
+        row.firstName ?? '',
         row.purpose,
         row.status,
         row.locale,
         row.motivation ?? '',
+        row.friction ?? '',
         row.createdAt.toISOString(),
         row.confirmedAt?.toISOString() ?? '',
       ]

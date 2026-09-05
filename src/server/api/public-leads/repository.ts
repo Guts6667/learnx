@@ -70,6 +70,8 @@ function buildLeadCreate(contactId: string, input: PublicLeadIssueInput) {
     confirmationExpiresAt: input.confirmationExpiresAt,
     confirmationTokenHash: input.confirmationTokenHash,
     consentVersion: input.consentVersion,
+    firstName: input.firstName,
+    friction: input.friction,
     id: randomUUID(),
     locale: input.locale,
     managementTokenHash: input.managementTokenHash,
@@ -85,6 +87,8 @@ function buildLeadUpdate(input: PublicLeadIssueInput) {
     confirmationTokenHash: input.confirmationTokenHash,
     consentVersion: input.consentVersion,
     deletedAt: null,
+    firstName: input.firstName,
+    friction: input.friction,
     locale: input.locale,
     managementTokenHash: input.managementTokenHash,
     motivation: input.motivation,
@@ -144,6 +148,11 @@ async function deleteLead(client: PrismaClient, tokenHash: string, now: Date) {
         confirmationExpiresAt: null,
         confirmationTokenHash: null,
         deletedAt: now,
+        // Le prénom et le frein sont du texte de la personne, au même titre
+        // que la motivation : une suppression qui en laisserait un derrière
+        // elle ne serait pas une suppression (V4.5-228).
+        firstName: null,
+        friction: null,
         managementTokenHash: null,
         motivation: null,
         status: 'DELETED',
@@ -172,6 +181,8 @@ async function exportLeads(
       contact: { select: { emailNormalized: true } },
       confirmedAt: true,
       createdAt: true,
+      firstName: true,
+      friction: true,
       id: true,
       locale: true,
       motivation: true,
@@ -219,6 +230,8 @@ async function listContacts(
             select: {
               confirmedAt: true,
               createdAt: true,
+              firstName: true,
+              friction: true,
               locale: true,
               motivation: true,
               purpose: true,

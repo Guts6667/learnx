@@ -11,6 +11,8 @@ export type PublicLeadStatus =
 export interface PublicContactPurpose {
   confirmedAt: string | null;
   createdAt: string;
+  firstName: string | null;
+  friction: string | null;
   locale: string;
   motivation: string | null;
   purpose: PublicLeadPurpose;

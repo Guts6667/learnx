@@ -123,6 +123,8 @@ export const frenchAdminAccessMessages = {
   'admin.contacts.status.unsubscribed': 'Désinscrit',
   'admin.contacts.status.deleted': 'Supprimé',
   'admin.contacts.date': 'Reçue le {date}',
+  'admin.contacts.firstName': 'Prénom : {firstName}',
+  'admin.contacts.friction': 'Ce qui la ralentit : {friction}',
   'admin.contacts.locale': 'Langue : {locale}',
   'admin.contacts.loading': 'Chargement des contacts…',
   'admin.contacts.loadError':
@@ -256,6 +258,8 @@ export const englishAdminAccessMessages = {
   'admin.contacts.status.unsubscribed': 'Unsubscribed',
   'admin.contacts.status.deleted': 'Deleted',
   'admin.contacts.date': 'Received on {date}',
+  'admin.contacts.firstName': 'First name: {firstName}',
+  'admin.contacts.friction': 'What slows them down: {friction}',
   'admin.contacts.locale': 'Language: {locale}',
   'admin.contacts.loading': 'Loading contacts…',
   'admin.contacts.loadError':

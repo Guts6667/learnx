@@ -36,11 +36,19 @@
  * fusion : l'ancien intitulé nommait la mauvaise chose, le détachement ayant
  * lieu dans les deux cas.
  * 1164 → 1169 clés.
+ *
+ * 5 septembre 2026 (V4.5-228) — deux clés ajoutées,
+ * `admin.contacts.firstName` et `admin.contacts.friction`. Le formulaire
+ * d'accès anticipé de la nouvelle landing collecte un prénom et, en option,
+ * ce qui ralentit la personne ; l'écran admin les affiche étiquetés plutôt
+ * que posés à la suite de la motivation, où deux paragraphes libres se
+ * liraient comme un seul texte.
+ * 1169 → 1171 clés.
  */
 export const messageCatalogBaseline = {
-  keyCount: 1169,
+  keyCount: 1171,
   sha256: {
-    en: '9c486feac31518353313f5f545c9b527a3aeda9f2365f8b10baf29b5abe9150c',
-    fr: '23378ae21a11f03537f3168036c41c25a48f74f6ebafb26e6bed424f70a1880f',
+    en: '6bb0ff9d422c6c7a210627241d62a4491d4d5bd38a2836ad8edd333e2987a9ee',
+    fr: 'ba87a38aa3d0b1782b9c58f6ee827864cee41da3c7fb20cf4d1c9bd89eb3b25c',
   },
 } as const;

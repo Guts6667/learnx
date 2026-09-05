@@ -11,6 +11,8 @@ interface PublicContactListItem {
   purposes: Array<{
     confirmedAt: Date | null;
     createdAt: Date;
+    firstName: string | null;
+    friction: string | null;
     locale: string;
     motivation: string | null;
     purpose: PublicLeadPurpose;
@@ -47,6 +49,8 @@ export interface PublicLeadExportRow {
   confirmedAt: Date | null;
   createdAt: Date;
   emailNormalized: string;
+  firstName: string | null;
+  friction: string | null;
   id: string;
   locale: string;
   motivation: string | null;
@@ -59,6 +63,8 @@ export interface PublicLeadIssueInput {
   confirmationTokenHash: string;
   consentVersion: string;
   email: string;
+  firstName?: string;
+  friction?: string;
   id: string;
   locale: SupportedLocale;
   managementTokenHash: string;
@@ -82,7 +88,11 @@ export interface PublicLeadEmailInput {
   confirmationUrl: string;
   deletionUrl: string;
   email: string;
+  /** Pour saluer la personne quand elle l'a donné (V4.5-228). */
+  firstName?: string;
   idempotencyKey: string;
+  /** Vrai quand la même soumission a aussi abonné aux nouvelles. */
+  includesLaunchUpdates?: boolean;
   locale: SupportedLocale;
   purpose: PublicLeadPurpose;
   unsubscribeUrl: string;
@@ -100,6 +110,10 @@ export interface PublicLeadServiceDependencies {
 
 export interface PublicLeadRequest {
   email: string;
+  firstName?: string;
+  friction?: string;
+  /** La case « launch updates » : abonne en plus de la candidature. */
+  launchUpdates?: boolean;
   locale: SupportedLocale;
   motivation?: string;
   purpose: PublicLeadPurpose;

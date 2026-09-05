@@ -67,6 +67,11 @@ export const privacyPolicy: Record<'en' | 'fr', PrivacyPolicyContent> = {
           ],
           [
             {
+              text: 'If you request early access or launch updates: your first name, your e-mail address, what you want to learn, and — if you choose to say so — what usually slows you down. Every e-mail carries a link to unsubscribe and a link to delete those answers.',
+            },
+          ],
+          [
+            {
               text: 'The technical logs needed to run the service (errors, rate limiting). To limit abuse, we keep a ',
             },
             { strong: true, text: 'non-reversible fingerprint' },
@@ -154,6 +159,11 @@ export const privacyPolicy: Record<'en' | 'fr', PrivacyPolicyContent> = {
           [
             {
               text: 'Si vous utilisez la correction assistée par IA : le texte que vous soumettez, le retour produit, vos votes « utile / faux » sur chaque critère, et les crédits utilisés.',
+            },
+          ],
+          [
+            {
+              text: "Si vous demandez un accès anticipé ou les nouvelles du lancement : votre prénom, votre adresse e-mail, ce que vous voulez apprendre et — si vous choisissez de le dire — ce qui vous ralentit d'habitude. Chaque courriel porte un lien pour vous désinscrire et un lien pour supprimer ces réponses.",
             },
           ],
           [

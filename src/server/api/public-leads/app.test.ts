@@ -7,6 +7,7 @@ import type {
 } from './service';
 
 function createContext() {
+  let tokenSequence = 0;
   const rows: Parameters<PublicLeadRepository['export']>[0][] = [];
   const repository: PublicLeadRepository = {
     convertToAccessRequest: vi.fn(
@@ -21,6 +22,8 @@ function createContext() {
           confirmedAt: new Date('2026-08-10T10:00:00Z'),
           createdAt: new Date('2026-08-10T09:00:00Z'),
           emailNormalized: 'reader@example.com',
+          firstName: null,
+          friction: null,
           id: '00000000-0000-4000-8000-000000000004',
           locale: 'fr',
           motivation: null,
@@ -43,6 +46,8 @@ function createContext() {
                 {
                   confirmedAt: new Date('2026-08-10T10:00:00Z'),
                   createdAt: new Date('2026-08-10T09:00:00Z'),
+                  firstName: null,
+                  friction: null,
                   locale: 'fr',
                   motivation: null,
                   purpose: 'LAUNCH_UPDATES',
@@ -51,6 +56,8 @@ function createContext() {
                 {
                   confirmedAt: null,
                   createdAt: new Date('2026-08-10T09:30:00Z'),
+                  firstName: 'Maya',
+                  friction: 'Je manque de temps en semaine.',
                   locale: 'fr',
                   motivation: 'Je souhaite contribuer aux retours produit.',
                   purpose: 'EARLY_ADOPTER',
@@ -71,10 +78,12 @@ function createContext() {
   const dependencies: PublicLeadServiceDependencies = {
     appUrl: 'https://learn-x.app',
     createId: () => '00000000-0000-4000-8000-000000000001',
+    // Un jeton distinct par appel : une soumission qui abonne aussi en
+    // demande quatre, et un harnais qui n'en sert que deux ferait échouer
+    // l'abonnement pour une raison qui n'existe qu'ici (V4.5-228).
     createToken: vi
       .fn()
-      .mockReturnValueOnce('confirmation-token-that-is-long-enough')
-      .mockReturnValueOnce('management-token-that-is-long-enough'),
+      .mockImplementation(() => `token-that-is-long-enough-${tokenSequence++}`),
     emailProvider: {
       send: vi.fn(async (input) => {
         sent.push({ email: input.email, purpose: input.purpose });
@@ -116,6 +125,162 @@ describe('public leads API', () => {
     expect(context.sent).toEqual([
       { email: 'reader@example.com', purpose: 'LAUNCH_UPDATES' },
     ]);
+  });
+
+  it('enregistre la candidature et l’abonnement en une seule requête', async () => {
+    // V4.5-228. Une soumission du formulaire = un appel. Deux appels
+    // laisseraient la personne candidate sans être abonnée quand le second
+    // échoue, et lui enverraient deux courriels pour un seul geste.
+    const context = createContext();
+    const app = createPublicLeadsApp({
+      dependencies: context.dependencies,
+      rateLimiter: { consume: vi.fn(async () => undefined) },
+      repository: context.repository,
+    });
+
+    const response = await app.request('/api/public-leads', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        consent: true,
+        email: 'Maya@Example.com',
+        firstName: 'Maya',
+        friction: 'Je manque de temps en semaine.',
+        launchUpdates: true,
+        locale: 'fr',
+        motivation: 'Je veux apprendre à cadrer un sprint correctement.',
+        purpose: 'EARLY_ADOPTER',
+      }),
+    });
+
+    expect(response.status).toBe(202);
+    // Deux lignes — la contrainte d'unicité est (contact, motif) — écrites par
+    // le même appel.
+    expect(context.repository.issue).toHaveBeenCalledTimes(2);
+    expect(context.repository.issue).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        email: 'maya@example.com',
+        firstName: 'Maya',
+        friction: 'Je manque de temps en semaine.',
+        purpose: 'EARLY_ADOPTER',
+      }),
+    );
+    // L'abonnement ne porte pas le frein : c'est une question de candidature.
+    // Le champ est ABSENT, pas présent à `undefined` — la minimisation se lit
+    // dans ce qui n'est pas écrit.
+    const subscription = vi.mocked(context.repository.issue).mock
+      .calls[1]?.[0] as unknown as Record<string, unknown>;
+    expect(subscription).toMatchObject({
+      email: 'maya@example.com',
+      firstName: 'Maya',
+      purpose: 'LAUNCH_UPDATES',
+    });
+    expect('friction' in subscription).toBe(false);
+    expect('motivation' in subscription).toBe(false);
+    // Un seul courriel : deux donneraient à lire deux inscriptions.
+    expect(context.sent).toEqual([
+      { email: 'maya@example.com', purpose: 'EARLY_ADOPTER' },
+    ]);
+  });
+
+  it('n’abonne pas quand la case est laissée décochée', async () => {
+    // La case est décochée par défaut dans la maquette, et le défaut est la
+    // décision : rien ne s'ajoute sans un geste.
+    const context = createContext();
+    const app = createPublicLeadsApp({
+      dependencies: context.dependencies,
+      rateLimiter: { consume: vi.fn(async () => undefined) },
+      repository: context.repository,
+    });
+
+    await app.request('/api/public-leads', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        consent: true,
+        email: 'solo@example.com',
+        firstName: 'Sol',
+        locale: 'fr',
+        motivation: 'Je veux apprendre à cadrer un sprint correctement.',
+        purpose: 'EARLY_ADOPTER',
+      }),
+    });
+
+    expect(context.repository.issue).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    [
+      'friction sur un abonnement',
+      {
+        friction: 'Trop de réunions.',
+        purpose: 'LAUNCH_UPDATES',
+      },
+    ],
+    [
+      'launchUpdates sur un abonnement',
+      {
+        launchUpdates: true,
+        purpose: 'LAUNCH_UPDATES',
+      },
+    ],
+    [
+      'prénom vide',
+      { firstName: '   ', motivation: 'Je veux apprendre à cadrer.' },
+    ],
+  ])('refuse : %s', async (_label, overrides) => {
+    // Refusés plutôt qu'ignorés : accepter en silence laisserait croire qu'un
+    // enregistrement a eu lieu.
+    const context = createContext();
+    const app = createPublicLeadsApp({
+      dependencies: context.dependencies,
+      rateLimiter: { consume: vi.fn(async () => undefined) },
+      repository: context.repository,
+    });
+
+    const response = await app.request('/api/public-leads', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        consent: true,
+        email: 'refused@example.com',
+        firstName: 'Maya',
+        locale: 'fr',
+        purpose: 'EARLY_ADOPTER',
+        ...overrides,
+      }),
+    });
+
+    expect(response.status).toBe(400);
+    expect(context.repository.issue).not.toHaveBeenCalled();
+  });
+
+  it('refuse une candidature sans prénom', async () => {
+    // Le prénom sert à saluer la personne dans les courriels ; une
+    // candidature sans lui produirait un courriel impersonnel qu'on ne
+    // pourrait plus corriger après coup.
+    const context = createContext();
+    const app = createPublicLeadsApp({
+      dependencies: context.dependencies,
+      rateLimiter: { consume: vi.fn(async () => undefined) },
+      repository: context.repository,
+    });
+
+    const response = await app.request('/api/public-leads', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        consent: true,
+        email: 'noname@example.com',
+        locale: 'fr',
+        motivation: 'Je veux apprendre à cadrer un sprint correctement.',
+        purpose: 'EARLY_ADOPTER',
+      }),
+    });
+
+    expect(response.status).toBe(400);
+    expect(context.repository.issue).not.toHaveBeenCalled();
   });
 
   it('requires consent and motivation for early adopters', async () => {
