@@ -12,35 +12,46 @@
  */
 
 /**
- * Parity is 100 credits per euro; the two larger tiers pay a bonus.
+ * Parity is 100 credits per euro; the credits shown are the totals, bonus in.
  *
- * The names are the Head of UX/UI's, and they say only size (V4.5-212).
- * "Régulier" and "Intensif" qualified the learner rather than the pack —
- * someone modest buying the large one has no business being told they are
- * intensive. Finance's own names could not be reused: "Parcours" is the domain
- * word for a programme (`navigation.programs`), and "Année" would announce a
- * validity the product does not grant, since purchased credits carry no
- * `expiresAt` and never expire.
+ * Rayan arbitrated this grid on 2 Sept 2026 against the Conversion Edition
+ * landing. The early-adopter +20 % goes to the **8 € tier only**, and it is
+ * folded into `credits` rather than added at purchase time: what the card says
+ * is what the ledger grants, with nothing to reconcile later.
  *
- * "Premier pack" does real work: it puts the one-per-account limit in the name,
- * so the rule surprises nobody later.
+ * The consequence is deliberate, not an oversight: credits per euro run
+ * 100 / 132 / 125, so the recommended tier is also the best rate and the 16 €
+ * pack is worse value per euro than the 8 €. That is what makes the
+ * recommendation honest — a buyer who does the arithmetic finds we meant it.
+ *
+ * The names are the mockup's, adopted over two objections of mine that Rayan
+ * heard and overruled: "Deep Dive" qualifies the learner rather than the pack,
+ * and "Journey" is the English of *Parcours*, already the domain word for a
+ * programme (`navigation.programs`). They are therefore kept **untranslated in
+ * both locales** — as product names they never become "Parcours" in the French
+ * interface, which is what would have made the collision real.
+ *
+ * The one-per-account limit no longer lives in the name, as it did in "Premier
+ * pack". It is served instead — `oncePerAccount` (V4.5-213) — and the card
+ * states it before the purchase, refund clause included.
  */
 export const CREDIT_PACK_GRID = [
   {
     credits: 300n,
     currency: 'EUR',
     key: 'entry',
-    label: 'Premier pack',
-    labelEn: 'First pack',
+    label: 'Starter',
+    labelEn: 'Starter',
     position: 1,
     priceMinor: 300n,
   },
   {
-    credits: 880n,
+    // 880 at parity plus the early-adopter 20 % (176), folded in.
+    credits: 1056n,
     currency: 'EUR',
     key: 'regular',
-    label: 'Pack standard',
-    labelEn: 'Standard pack',
+    label: 'Journey',
+    labelEn: 'Journey',
     position: 2,
     priceMinor: 800n,
   },
@@ -48,8 +59,8 @@ export const CREDIT_PACK_GRID = [
     credits: 2000n,
     currency: 'EUR',
     key: 'intensive',
-    label: 'Grand pack',
-    labelEn: 'Large pack',
+    label: 'Deep Dive',
+    labelEn: 'Deep Dive',
     position: 3,
     priceMinor: 1600n,
   },
@@ -64,6 +75,23 @@ export const CREDIT_PACK_GRID = [
  * right — see `hasFulfilledPack`.
  */
 export const ENTRY_TIER_PACK_KEY = 'entry';
+
+/**
+ * The tier the product recommends (Rayan, 2 Sept 2026).
+ *
+ * This reverses V4.5-213, which gave the three tiers equal weight and wrote
+ * the reason into the screen: "a choice between equals, not a funnel". That
+ * rule is gone, and this comment replaces it so nobody restores it from the
+ * old rationale alone.
+ *
+ * What makes the recommendation defensible is arithmetic, not persuasion: this
+ * tier carries the early-adopter 20 %, so it returns the most credits per euro
+ * of the three. We are not inventing a popularity nobody measured — we are
+ * pointing at the best rate and saying we chose it. If the grid ever changes
+ * so that another tier pays better, this key moves with it; the seed test
+ * `garde le palier recommandé au meilleur rendement` fails until it does.
+ */
+export const RECOMMENDED_PACK_KEY = 'regular';
 
 /** Superseded by the grid; it was one euro for ten credits, for a smoke test. */
 const RETIRED_PACK_KEYS = ['preview-placeholder'] as const;

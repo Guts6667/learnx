@@ -24,15 +24,32 @@ function ports(deactivated = 1): CreditPackSeedPorts & {
 }
 
 describe('grille des paliers (V4.5-212)', () => {
-  it('respecte la parité et les deux bonus de la calibration', () => {
-    // 100 crédits par euro au palier d'entrée, 110 puis 125 ensuite. La
-    // décision vit dans un document ; ce test est ce qui empêche le code de
-    // s'en écarter en silence.
+  it('respecte la parité et le bonus early adopter du palier du milieu', () => {
+    // 100 crédits par euro à l'entrée, 132 sur Journey, 125 sur Deep Dive.
+    // Journey porte seul les +20 % early adopter (arbitrage de Rayan, 2 sept
+    // 2026) : 880 à parité deviennent 1 056. La décision vit dans un document ;
+    // ce test est ce qui empêche le code de s'en écarter en silence.
     const rates = CREDIT_PACK_GRID.map(
       (pack) => Number(pack.credits) / (Number(pack.priceMinor) / 100),
     );
 
-    expect(rates).toEqual([100, 110, 125]);
+    expect(rates).toEqual([100, 132, 125]);
+  });
+
+  it('garde le palier recommandé au meilleur rendement', () => {
+    // C'est ce qui rend « notre choix » honnête plutôt que commercial : le
+    // palier mis en avant est celui qui rend le plus par euro, et un acheteur
+    // qui fait le calcul le vérifie. Le rendement n'est donc PAS croissant —
+    // Deep Dive rend moins que Journey, délibérément. Quelqu'un qui verrait
+    // cette inversion comme une erreur et la « corrigerait » transformerait la
+    // recommandation en argument de vente sans fondement ; d'où ce test.
+    const rates = CREDIT_PACK_GRID.map(
+      (pack) => Number(pack.credits) / (Number(pack.priceMinor) / 100),
+    );
+    const best = Math.max(...rates);
+
+    expect(rates.indexOf(best)).toBe(1);
+    expect(CREDIT_PACK_GRID[1].key).toBe('regular');
   });
 
   it('n’avantage jamais par une remise, seulement par des crédits', () => {
@@ -113,17 +130,24 @@ describe('grille des paliers (V4.5-212)', () => {
 
 describe('chiffres servis plutôt que calculés par l’écran (V4.5-212)', () => {
   it('donne le taux exact des trois paliers', () => {
-    // Vérifiable sur la carte : 880 crédits pour 8 €, c'est 110 par euro.
-    // Jamais une remise — le prix unitaire ne bouge pas.
+    // Vérifiable sur la carte : 1 056 crédits pour 8 €, c'est 132 par euro.
+    // Jamais une remise — le prix unitaire ne bouge pas, l'avantage est en
+    // crédits.
     expect(
       CREDIT_PACK_GRID.map((pack) => packFigures(pack).creditsPerEuro),
-    ).toEqual([100n, 110n, 125n]);
+    ).toEqual([100n, 132n, 125n]);
   });
 
   it('donne le bonus comme un écart à la parité, nul au palier d’entrée', () => {
+    // 256 sur Journey : les 80 au-dessus de la parité PLUS les 176 du bonus
+    // early adopter, puisque celui-ci est fondu dans `credits`. Ce chiffre
+    // n'est plus affiché sur la carte — deux unités pour une même idée, le
+    // surplus en crédits et le bonus en pourcentage, se lisaient mal ensemble.
+    // Il reste dérivé et testé : le jour où l'offre early adopter s'arrête,
+    // c'est ici qu'on voit ce qui doit revenir à 80.
     expect(
       CREDIT_PACK_GRID.map((pack) => packFigures(pack).bonusCredits),
-    ).toEqual([0n, 80n, 400n]);
+    ).toEqual([0n, 256n, 400n]);
   });
 
   it('donne une capacité approchée, jamais arrondie vers le haut', () => {
@@ -132,7 +156,7 @@ describe('chiffres servis plutôt que calculés par l’écran (V4.5-212)', () =
     // le sens généreux ajoute une promesse à une estimation.
     expect(
       CREDIT_PACK_GRID.map((pack) => packFigures(pack).approximateCorrections),
-    ).toEqual([10n, 29n, 66n]);
+    ).toEqual([10n, 35n, 66n]);
   });
 
   it('énonce le devis et la réservation une seule fois', () => {

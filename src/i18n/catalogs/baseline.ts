@@ -36,11 +36,18 @@
  * fusion : l'ancien intitulé nommait la mauvaise chose, le détachement ayant
  * lieu dans les deux cas.
  * 1164 → 1169 clés.
+ *
+ * 2 septembre 2026 (landing v2) — nombre de clés inchangé, deux empreintes
+ * nouvelles. `creditPack.bonus` disparaît et `creditPack.recommended` le
+ * remplace : les totaux de crédits incluent désormais le bonus early adopter,
+ * donc le surplus au-dessus de la parité n'est plus une ligne de carte, et un
+ * palier est mis en avant (arbitrage de Rayan).
+ * 1169 clés, inchangé.
  */
 export const messageCatalogBaseline = {
   keyCount: 1169,
   sha256: {
-    en: '9c486feac31518353313f5f545c9b527a3aeda9f2365f8b10baf29b5abe9150c',
-    fr: '23378ae21a11f03537f3168036c41c25a48f74f6ebafb26e6bed424f70a1880f',
+    en: '5a3fd8d65c27c062d91db8c30d1f9f704d25b150b7d4651fa078cf9fc61edd7f',
+    fr: '4ed34281723aa76b5acb546047cc76cd768f01076d5a371911b41dc4ee7caf1f',
   },
 } as const;

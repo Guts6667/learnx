@@ -17,7 +17,13 @@ import type { TranslationOf } from '@/i18n/catalogs/types';
  */
 export const frenchCreditPackMessages = {
   'creditPack.rate': '{rate} crédits par euro',
-  'creditPack.bonus': '{bonus} crédits en plus',
+  /**
+   * « Notre choix », pas « le plus populaire » : nous recommandons, nous
+   * n'inventons pas une popularité que personne n'a mesurée. Ce que la phrase
+   * affirme est vérifiable sur la carte d'à côté — ce palier rend le plus de
+   * crédits par euro.
+   */
+  'creditPack.recommended': 'Notre choix',
   'creditPack.approximateCorrections': {
     one: 'environ {corrections} correction',
     other: 'environ {corrections} corrections',
@@ -42,7 +48,7 @@ export const frenchCreditPackMessages = {
 
 export const englishCreditPackMessages = {
   'creditPack.rate': '{rate} credits per euro',
-  'creditPack.bonus': '{bonus} extra credits',
+  'creditPack.recommended': 'Our pick',
   'creditPack.approximateCorrections': {
     one: 'about {corrections} correction',
     other: 'about {corrections} corrections',

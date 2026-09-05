@@ -3,6 +3,7 @@ import {
   CORRECTION_RESERVATION_CREDITS,
   ENTRY_TIER_PACK_KEY,
   packFigures,
+  RECOMMENDED_PACK_KEY,
 } from '../../maintenance/credit-pack-seed.js';
 import { Hono } from 'hono';
 
@@ -89,6 +90,10 @@ export function createPublicCatalogueApp(
         // read before, and this one costs a refund to discover late.
         oncePerAccount: pack.key === ENTRY_TIER_PACK_KEY,
         priceMinor: pack.priceMinor.toString(),
+        // A property of the grid, not of a visitor: identical in every cached
+        // body, and the tier recommended before signing up is the one
+        // recommended after.
+        recommended: pack.key === RECOMMENDED_PACK_KEY,
       })),
     });
   });

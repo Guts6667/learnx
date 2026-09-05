@@ -12,6 +12,7 @@ import {
   CORRECTION_RESERVATION_CREDITS,
   ENTRY_TIER_PACK_KEY,
   packFigures,
+  RECOMMENDED_PACK_KEY,
 } from '../../maintenance/credit-pack-seed.js';
 import type {
   CreditsCatalogueReader,
@@ -167,6 +168,10 @@ function pack(value: PurchasablePack, purchasable?: boolean) {
     // 409 already enforces, and the two would drift the day a tier is renamed.
     oncePerAccount: value.key === ENTRY_TIER_PACK_KEY,
     priceMinor: amount(value.priceMinor),
+    // Which tier the product recommends, said by the server for the same
+    // reason as `oncePerAccount`: a screen recognising the key would be a
+    // second home for a decision that belongs to the grid.
+    recommended: value.key === RECOMMENDED_PACK_KEY,
     ...(purchasable === undefined ? {} : { purchasable }),
   };
 }

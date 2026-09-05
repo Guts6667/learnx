@@ -124,6 +124,7 @@ test('n’offre aucun achat quand la vente est fermée, et le dit', async ({
             label: 'Découverte',
             labelEn: 'Starter',
             oncePerAccount: false,
+            recommended: false,
             priceMinor: '1500',
             approximateCorrections: '3',
             bonusCredits: '-1400',
