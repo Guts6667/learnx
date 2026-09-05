@@ -78,7 +78,22 @@ jobs:
 
           # Anything that can talk to a database, plus this file — a change to
           # the job itself must still exercise the job.
-          relevant='^(prisma/|src/server/|api/|scripts/|\.github/workflows/integration\.yml$)'
+          #
+          # The five entries after `scripts/` were missing when this gate landed
+          # (V4.5-201) and each one is a way to change the database layer
+          # without touching a directory named after it:
+          #
+          #   prisma.config.ts   the datasource guard itself. `prisma/` needs a
+          #                      slash, so the root file escaped the very filter
+          #                      meant to protect the database.
+          #   package.json       the Prisma version. V4.5-230 upgraded Prisma and
+          #   pnpm-lock.yaml     overrode two of its transitive dependencies, and
+          #                      this gate skipped the job: `Integration` went
+          #                      green having created no Neon branch at all.
+          #   protected-db-hosts the list the guard reads to decide what it
+          #                      refuses to touch.
+          #   vercel.json        the build command that runs the migrations.
+          relevant='^(prisma/|prisma\.config\.ts$|src/server/|api/|scripts/|quality/protected-db-hosts\.json$|package\.json$|pnpm-lock\.yaml$|vercel\.json$|\.github/workflows/integration\.yml$)'
 
           decide() {
             echo "run=$1" >> "$GITHUB_OUTPUT"
