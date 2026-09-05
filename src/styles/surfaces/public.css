@@ -878,7 +878,13 @@
   }
 }
 
-@media (max-width: 47.99rem) {
+/*
+ * D7 s'applique aussi à l'en-tête : à 768 px la navigation desktop se serrait
+ * sur une composition mobile, et le logo passait sous les liens. Seul le
+ * palier bouge — le dessin de la navigation et du pied de page vient des
+ * calques Paper, avec le reste de 219.
+ */
+@media (max-width: 63.99rem) {
   .landing-header {
     position: relative;
   }
