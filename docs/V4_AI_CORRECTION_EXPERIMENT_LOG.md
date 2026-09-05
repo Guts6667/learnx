@@ -1883,5 +1883,21 @@ propriétaire, qui continue.
   cartes d'échauffement. Le premier jet ne cachait pas l'écran après le
   rechargement (`display: flex` battait `hidden`) : vu à l'écran, pas par les
   tests.
+- **Paquet à coller, exploratoire** (5 septembre) : le propriétaire veut faire
+  passer les mêmes cartes à des IA de discussion, à la main.
+  `scripts/build-adjudication-paste-pack.ts` écrit
+  `paste-pack.v1/` : 11 lots de 10 cartes en texte, chacun précédé de la
+  consigne (règles, portée, trois réponses, contrôle « autre », format de
+  réponse strict d'une ligne par carte), plus `manifest.json` avec
+  l'empreinte de chaque lot et de la consigne, et un `README.md` qui dit
+  comment faire passer un lot (conversation neuve par lot, première réponse
+  gardée, réponse enregistrée mot pour mot avec le nom du modèle et
+  l'interface). Une carte y montre exactement ce que la page montre à
+  l'humain : question, phrase marquée entre ⟦ ⟧ dans sa fenêtre, ou copie
+  entière numérotée, consigne et dossier quand la carte en a. Jamais la clé :
+  le script refuse si elle apparaît. **Ce format ne vaut pas comme mesure** :
+  une interface de discussion ajoute ses propres instructions et ses réglages
+  ne sont ni connus ni rejouables. Ses réponses seront rapportées à part de
+  la mesure par accès direct, à trois répétitions.
 
 Dépense : 0,00 USD.
