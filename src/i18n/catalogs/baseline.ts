@@ -43,11 +43,19 @@
  * donc le surplus au-dessus de la parité n'est plus une ligne de carte, et un
  * palier est mis en avant (arbitrage de Rayan).
  * 1169 clés, inchangé.
+ *
+ * 5 septembre 2026 (V4.5-228) — deux clés ajoutées,
+ * `admin.contacts.firstName` et `admin.contacts.friction`. Le formulaire
+ * d'accès anticipé de la nouvelle landing collecte un prénom et, en option,
+ * ce qui ralentit la personne ; l'écran admin les affiche étiquetés plutôt
+ * que posés à la suite de la motivation, où deux paragraphes libres se
+ * liraient comme un seul texte.
+ * 1169 → 1171 clés.
  */
 export const messageCatalogBaseline = {
-  keyCount: 1169,
+  keyCount: 1171,
   sha256: {
-    en: '5a3fd8d65c27c062d91db8c30d1f9f704d25b150b7d4651fa078cf9fc61edd7f',
-    fr: '4ed34281723aa76b5acb546047cc76cd768f01076d5a371911b41dc4ee7caf1f',
+    en: '225db1bf2c139a1fbc9cef116245496cf5c05335cdf00e81c9cd204f36669872',
+    fr: '830e646ce2d592cfc1fee54d7b2a51558dc604ccfefff2ca185988aa84a8341c',
   },
 } as const;

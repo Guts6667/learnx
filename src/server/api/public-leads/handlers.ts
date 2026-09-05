@@ -13,10 +13,29 @@ import type {
   PublicLeadServiceDependencies,
 } from './types.js';
 
+/**
+ * Le corps d'une candidature ou d'un abonnement (V4.5-228).
+ *
+ * Une seule requête porte la soumission entière du formulaire de la landing :
+ * la candidature EARLY_ADOPTER et, si la case est cochée, l'abonnement
+ * LAUNCH_UPDATES. Deux appels laisseraient l'apprenant candidat sans être
+ * abonné — ou l'inverse — quand le second échoue, et lui enverraient deux
+ * courriels de confirmation pour un seul geste.
+ *
+ * `friction` suit la règle de minimisation déjà appliquée à `motivation` :
+ * c'est une question de candidature, elle n'est pas acceptée sur un simple
+ * abonnement. `firstName` échappe à cette règle — il sert à saluer la
+ * personne dans le courriel, quel que soit le motif — mais il n'est exigé que
+ * pour une candidature.
+ */
 const requestSchema = z
   .object({
     consent: z.literal(true),
     email: z.email().trim().toLowerCase().max(320),
+    firstName: z.string().trim().min(1).max(80).optional(),
+    friction: z.string().trim().min(1).max(2_000).optional(),
+    /** Coche « launch updates » : abonne EN PLUS de la candidature. */
+    launchUpdates: z.boolean().optional(),
     locale: z.enum(['fr', 'en']),
     motivation: z.string().trim().min(20).max(2_000).optional(),
     purpose: z.enum(['LAUNCH_UPDATES', 'EARLY_ADOPTER']),
@@ -30,11 +49,34 @@ const requestSchema = z
         path: ['motivation'],
       });
     }
+    if (input.purpose === 'EARLY_ADOPTER' && !input.firstName) {
+      context.addIssue({
+        code: 'custom',
+        message: 'First name is required.',
+        path: ['firstName'],
+      });
+    }
     if (input.purpose === 'LAUNCH_UPDATES' && input.motivation) {
       context.addIssue({
         code: 'custom',
         message: 'Motivation is not accepted.',
         path: ['motivation'],
+      });
+    }
+    if (input.purpose === 'LAUNCH_UPDATES' && input.friction) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Friction is not accepted.',
+        path: ['friction'],
+      });
+    }
+    // S'abonner en plus d'un abonnement ne veut rien dire, et l'accepter en
+    // silence laisserait croire qu'un second enregistrement a eu lieu.
+    if (input.purpose === 'LAUNCH_UPDATES' && input.launchUpdates) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Launch updates is not accepted for this purpose.',
+        path: ['launchUpdates'],
       });
     }
   });
@@ -151,13 +193,18 @@ export function createPublicLeadListHandler(repository: PublicLeadRepository) {
 function serializeExport(
   repositoryRows: Awaited<ReturnType<PublicLeadRepository['export']>>,
 ) {
+  // `first_name` et `friction` suivent `email` et `motivation` : l'export sert
+  // à lire des candidatures, et une colonne ajoutée en fin de ligne se lirait
+  // moins bien qu'à côté de ce qu'elle complète (V4.5-228).
   const header = [
     'id',
     'email',
+    'first_name',
     'purpose',
     'status',
     'locale',
     'motivation',
+    'friction',
     'created_at',
     'confirmed_at',
   ];
@@ -167,10 +214,12 @@ function serializeExport(
       [
         row.id,
         row.emailNormalized,
+        row.firstName ?? '',
         row.purpose,
         row.status,
         row.locale,
         row.motivation ?? '',
+        row.friction ?? '',
         row.createdAt.toISOString(),
         row.confirmedAt?.toISOString() ?? '',
       ]

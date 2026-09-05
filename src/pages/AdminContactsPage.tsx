@@ -56,9 +56,25 @@ function PurposeDetails({ item }: { item: PublicContactPurpose }) {
         {' · '}
         {t('admin.contacts.locale', { locale: item.locale.toUpperCase() })}
       </p>
+      {item.firstName ? (
+        <p className="ui-text break-words text-sm">
+          {t('admin.contacts.firstName', { firstName: item.firstName })}
+        </p>
+      ) : null}
       {item.motivation ? (
         <p className="ui-text-muted break-words text-sm leading-6">
           {item.motivation}
+        </p>
+      ) : null}
+      {/*
+        Le frein est étiqueté, pas juste posé sous la motivation : deux
+        paragraphes libres à la suite se liraient comme un seul texte, et la
+        réponse à « ce qui vous ralentit » n'est pas la suite de « ce que vous
+        voulez apprendre » (V4.5-228).
+      */}
+      {item.friction ? (
+        <p className="ui-text-muted break-words text-sm leading-6">
+          {t('admin.contacts.friction', { friction: item.friction })}
         </p>
       ) : null}
     </div>

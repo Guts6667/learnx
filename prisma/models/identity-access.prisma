@@ -112,7 +112,13 @@ model PublicLead {
   purpose                  PublicLeadPurpose
   status                   PublicLeadStatus  @default(PENDING_CONFIRMATION)
   locale                   String            @default("fr") @db.VarChar(2)
+  /// Prénom (V4.5-228). Nullable en base : un abonnement aux nouvelles peut
+  /// ne pas en porter. Exigé par la validation pour une candidature.
+  firstName                String?           @map("first_name")
   motivation               String?
+  /// « Ce qui vous ralentit d'habitude » (V4.5-228). Toujours facultatif, et
+  /// refusé sur un abonnement : c'est une question de candidature.
+  friction                 String?
   consentVersion           String            @map("consent_version") @db.VarChar(32)
   confirmationTokenHash    String?           @unique @map("confirmation_token_hash")
   confirmationExpiresAt    DateTime?         @map("confirmation_expires_at")

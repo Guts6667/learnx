@@ -75,6 +75,25 @@ transite pas par nos serveurs (ADR_004 §1, §7).
 mais c'est une donnée personnelle : il relie durablement une transaction
 Stripe à un compte LearnX.
 
+## 2ter. Registre des traitements — prospects publics (V4.5-165/228)
+
+| # | Traitement | Données | Base envisagée | Destinataires | Rétention constatée |
+| --- | --- | --- | --- | --- | --- |
+| L1 | Abonnement aux nouvelles du lancement | `public_contacts.email_normalized`, `public_leads` : motif `LAUNCH_UPDATES`, langue, version du consentement, jetons de confirmation et de gestion (hachés), horodatages ; `first_name` si la personne l'a donné | Consentement (case décochée par défaut, double opt-in) | LearnX (Neon) ; envoi via Resend | 730 j depuis `updated_at` pour les lignes non confirmées, désabonnées ou supprimées (`cleanup-expired-data`) |
+| L2 | Candidature accès anticipé | idem L1 avec motif `EARLY_ADOPTER`, plus `first_name` (**requis**), `motivation` (« ce que vous voulez apprendre », requis) et `friction` (« ce qui vous ralentit d'habitude », **facultatif**) | Consentement ; mesures précontractuelles à la demande de la personne | LearnX ; envoi via Resend | Idem L1 ; une candidature confirmée est conservée jusqu'à sa conversion ou sa suppression |
+| L3 | Suppression à la demande | le lien « supprimer mes données » de chaque courriel efface le texte libre (`first_name`, `motivation`, `friction`) et neutralise les jetons ; l'adresse est anonymisée quand il ne reste aucun motif | Droit à l'effacement (art. 17) | LearnX | Immédiate |
+
+`first_name` et `friction` sont ajoutés le 5 septembre 2026 (V4.5-228,
+décision D6 = b). Ce sont des **champs de formulaire en texte libre**, donc
+susceptibles de contenir plus que ce qu'on demande : ils suivent exactement le
+sort de `motivation` — effacés par le lien de suppression, retirés par la
+purge en même temps que la ligne, jamais transmis à un tiers autre que
+l'acheminement du courriel.
+
+`friction` est **refusé** sur un simple abonnement : un abonnement n'a aucune
+raison de porter une réponse de candidature (minimisation). `first_name` reste
+accepté sur les deux, parce qu'il ne sert qu'à saluer la personne.
+
 ## 3. Sous-traitants et destinataires
 
 | Destinataire | Rôle | Données | Localisation | Paramètres LearnX | Attestation |

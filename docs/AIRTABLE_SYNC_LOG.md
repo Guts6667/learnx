@@ -849,3 +849,8 @@ l'horizon. À se rappeler avant d'annoncer « il reste N avis ».
   Rayan = Rayan A` (grille du 2 septembre conservée, bonus sur Journey seul,
   #214 inchangée) ; V4.5-220 `Arbitrage Rayan = Rayan A` (formulation du
   +20 % figée). Les deux enregistrements relus.
+- 5 septembre, suite : V4.5-228 `READY` → `REVIEW`, `Branche` =
+  `feat/v4-5-228-lead-first-name-friction`, `PR` = #216 — le ticket portait
+  encore la branche docs du lot et la PR #215. Trois champs sur un seul
+  enregistrement, relu après écriture ; aucun autre enregistrement touché,
+  aucune suppression, aucune page d'interface.
