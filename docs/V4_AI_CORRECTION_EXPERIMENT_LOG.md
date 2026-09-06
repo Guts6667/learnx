@@ -1294,3 +1294,76 @@ et nous repartons avec un plancher de preuve que nous n'avions pas.
 **Dépense de la journée : 4,5685 USD** (0,1605 + 1,8444 + 2,5636). Enveloppe
 `owner-210-budget-2026-08-31`, ouverte en remplaçant celle du 30 août : ~20,4 USD
 restants.
+
+## 12. Le vérificateur ne discrimine pas — et un gate bloquant ne pouvait pas rougir
+
+Cherché en répondant à une question du Propriétaire — les sept violations
+étaient-elles les mêmes, et y avait-il quelque chose de particulier à ces sept ?
+Les deux réponses sont non, et la recherche a trouvé deux choses plus graves.
+
+### Un gate bloquant mathématiquement incapable d'échouer
+
+`checker-agreement-at-high` était **BLOQUANT** avec un plancher de 0,9. Il mesure,
+parmi les critères étiquetés HIGH, ceux que le vérificateur a approuvés.
+
+Or `deriveCriterionConfidence` renvoie LOW dès que le vérificateur a refusé, et
+MEDIUM quand il est indisponible. Donc **HIGH implique AGREED**, et le numérateur
+compte exactement les mêmes critères que le dénominateur. Mesuré **100/100** puis
+**155/155** : il aurait affiché 1 quoi qu'ait fait le vérificateur.
+
+**Un gate qui ne peut pas rougir est pire que pas de gate : il se lit comme une
+preuve.** Celui-ci était vert dans tous les rapports depuis sa création, et n'a
+jamais rien testé. Retiré des bloquants, conservé en `REPORTED` pour la
+continuité du registre, avec la raison écrite dans son intention.
+
+La tautologie ne vit pas dans la métrique mais dans le **pipeline** : alimentée à
+la main d'un couple HIGH + DISAGREED, la métrique descendrait sous 1. C'est la
+dérivation de confiance qui rend ce couple impossible. Le test le vérifie donc à
+sa source, puis sur un run réel dont le vérificateur refuse **tout** — si la
+métrique pouvait tomber, ce run la ferait tomber.
+
+### Le verdict du vérificateur ne suit pas la justesse
+
+Il n'est pas endormi : 87 refus sur 315. Mais comparé à sa propre ligne de base :
+
+| run | faux accords sur critères faux | refus sur les autres critères |
+| --- | --- | --- |
+| 2.3.0 | 4/6 = 66,7 % | 71/224 = **31,7 %** |
+| 2.4.0 | **7/7 = 100 %** | 87/308 = **28,3 %** |
+
+Il refuse environ **trois critères sur dix, quels qu'ils soient**, et il a approuvé
+**tous** les niveaux faux par construction du second run. Cumulé sur les deux
+runs : 2 refus sur 13 critères faux (15,4 %) contre 158 sur 532 ailleurs (29,7 %)
+— il refuse les notes fausses **moins souvent** que les autres.
+
+Treize cas ne suffisent pas à conclure et l'écart n'est pas significatif. Mais
+**rien n'établit que ce verdict porte un signal sur la justesse**, et
+l'estimation ponctuelle pointe à l'envers.
+
+### Pourquoi un taux de refus seul ne veut rien dire
+
+`checker-refusal-on-other-criteria` est ajouté pour cela, et rapporté sans seuil :
+la comparaison **est** le résultat, pas un budget. Lu seul, « le vérificateur a
+refusé 87 fois » se lit comme de la vigilance. Lu contre les 15,4 % sur les
+critères faux, il se lit comme du bruit.
+
+### Ce que ça change
+
+La piste envisagée — réveiller le vérificateur en améliorant sa consigne — est
+suspendue avant d'avoir coûté quoi que ce soit. On ne règle pas la formulation
+d'un composant dont on n'a pas établi qu'il porte un signal. La question à
+trancher d'abord est **le vérificateur sait-il distinguer une note juste d'une
+note fausse**, et la réponse actuelle est : pas de preuve qu'il le sache.
+
+Ce constat a coûté **0,00 USD** : entièrement recalculé sur deux runs déjà payés.
+
+### Ce que ça n'établit pas
+
+- **Rien sur la cause.** On observe des taux, pas un mécanisme.
+- **Treize cas.** L'écart n'est pas significatif ; c'est l'absence de preuve d'un
+  signal, pas la preuve d'une absence.
+- **Rien sur la sonde de faux accord.** Elle mesure le vérificateur sur des cas
+  faux *par construction et évidents* ; A, B et D n'y échouaient que sur
+  l'arithmétique et réussissaient toutes les substitutions. Elle sur-estime donc
+  le vérificateur sur exactement le défaut qui nous occupe, et une sonde bâtie
+  sur les cas réels reste à faire si la piste est reprise.

@@ -63,10 +63,10 @@
     {
       "key": "checker-agreement-at-high",
       "metric": "checkerAgreementAtHigh",
-      "kind": "BLOCKING",
+      "kind": "REPORTED",
       "comparison": "MIN_RATE",
       "threshold": 0.9,
-      "intent": "Le label HIGH n'est accordé qu'avec l'accord du vérificateur indépendant ; un accord faible signifie que HIGH ne veut rien dire."
+      "intent": "RETIRÉ DES GATES BLOQUANTS (V4.5-210) : cette mesure vaut 1 par construction et ne peut pas valoir autre chose. `deriveCriterionConfidence` renvoie LOW dès que le vérificateur a refusé et MEDIUM quand il est indisponible, donc HIGH implique AGREED : le numérateur et le dénominateur comptent les mêmes critères. Mesurée 155/155 puis 100/100 les 31 août ; elle aurait affiché 1 quoi qu'ait fait le vérificateur. Elle était déclarée bloquante avec un plancher de 0,9 — un gate mathématiquement incapable de rougir, donc pire que pas de gate, puisqu'il se lit comme une preuve. Conservée pour la continuité du registre. La question qu'elle prétendait poser — le vérificateur sait-il dire non quand il le faut — est celle de `checker-false-agree-rate`, à lire contre `checker-refusal-on-other-criteria`."
     },
     {
       "key": "checker-false-agree-rate",
@@ -74,7 +74,7 @@
       "kind": "REPORTED",
       "comparison": "MAX_RATE",
       "threshold": 0.2,
-      "intent": "Conservé pour la continuité, retiré des gates. Son dénominateur ne compte que les occasions où un mutant de suppression ou d'inversion a effectivement produit une violation de direction : il est alimenté par les échecs du correcteur, pas par la conception des cas. Un meilleur correcteur le rétrécit, et il valait 1 au 30 août. Un dénominateur qu'on ne peut pas construire ne porte pas un seuil."
+      "intent": "Accords du vérificateur sur des critères faux par construction. Rapporté et non bloquant : son dénominateur n'est alimenté que par les échecs du correcteur, donc un meilleur correcteur le rétrécit, et un dénominateur qu'on ne peut pas construire ne porte pas un seuil. Mais c'est la vraie question, et le chiffre est mauvais : 4/6 puis 7/7 sur les deux runs payés du 31 août. À lire systématiquement contre `checker-refusal-on-other-criteria` — un taux de refus ne veut rien dire sans sa ligne de base."
     },
     {
       "key": "checker-false-agree-designed",
@@ -180,6 +180,14 @@
       "comparison": "MAX_COUNT",
       "threshold": 0,
       "intent": "Un critère dont la preuve a été refusée parce qu'elle ne venait pas de la production de l'apprenant. Surveillé, jamais bloquant : depuis V4.5-177 le critère est livré quand même — `EVIDENCE_WITHDRAWN`, rangé « à vérifier », sans niveau montré — donc l'apprenant ne perd rien et le gate parapluie a raison de lire zéro. Ce qui est compté ici, c'est que le modèle a cité hors de la production, ce que la consigne interdit par écrit (`runtime-correction-prompt.ts:17`) : même famille que le défaut principal, donc un chiffre qui doit rester visible. Le rendre bloquant serait une faute : un gate qui rougit PARCE QUE le correctif fonctionne apprend à le contourner plutôt qu'à réparer quoi que ce soit. Mesuré sur le run du 31 août : 1 sur 81, sur une ligne de base attendue à trois niveaux maîtrisés."
+    },
+    {
+      "key": "checker-refusal-on-other-criteria",
+      "metric": "checkerRefusalOnOtherCriteria",
+      "kind": "REPORTED",
+      "comparison": "MAX_RATE",
+      "threshold": 0,
+      "intent": "Taux de refus du vérificateur sur les critères qui ne sont PAS connus faux — la ligne de base sans laquelle `checker-false-agree-rate` ne veut rien dire. Sur les deux runs payés du 31 août : 158 refus sur 532 critères ordinaires (29,7 %) contre 2 sur 13 critères faux par construction (15,4 %). Le vérificateur refuse environ un tiers de tout, et un peu MOINS souvent les notes qui sont réellement fausses. Treize cas ne suffisent pas à conclure, et l'estimation ponctuelle pointe à l'envers : rien n'établit que son verdict porte un signal sur la justesse. Rapporté sans seuil — la comparaison est le résultat, pas un budget. Elle existe pour qu'un lecteur ne prenne plus « le vérificateur a refusé 87 fois » pour de la vigilance."
     }
   ]
 }
