@@ -1294,3 +1294,75 @@ et nous repartons avec un plancher de preuve que nous n'avions pas.
 **Dépense de la journée : 4,5685 USD** (0,1605 + 1,8444 + 2,5636). Enveloppe
 `owner-210-budget-2026-08-31`, ouverte en remplaçant celle du 30 août : ~20,4 USD
 restants.
+
+## 13. Le défaut n'appartient pas au modèle — deux laboratoires, même panne
+
+Quatre versions de consigne ont échoué sur le même défaut, la consigne changeant
+à chaque fois et **le modèle jamais**. La question restée sans réponse était
+donc : la sur-attribution appartient-elle à Claude Sonnet 4.6, ou à la tâche ?
+
+**Réponse : à la tâche.** Et Sonnet est le meilleur des deux modèles utilisables.
+
+| modèle | laboratoire | violations de direction | accord avec l'étalon | citations qui résolvent |
+| --- | --- | --- | --- | --- |
+| `claude-sonnet-4.6` | Anthropic | **7/63 = 11,1 %** | 88,1 % | ~toutes |
+| `moonshotai/kimi-k3` | Moonshot | **14/62 = 22,6 %** | 85,7 % | **312/312** |
+| `openai/gpt-5.6-terra` | OpenAI | *non comparable* | **3,2 %** | **7/309** |
+
+### Kimi : une comparaison valide, et deux fois pire
+
+Kimi note de façon compétente — accord avec l'étalon 85,7 % contre 88,1 % pour
+Sonnet, part de LOW 28,8 % contre 27,6 %, une seule cellule inexploitable sur
+105, et **zéro citation non résolue sur 312**, là où Sonnet en avait trois. Sur
+tous les axes sauf un, les deux modèles se comportent pareil.
+
+Sur l'axe qui nous occupe, Kimi fait **deux fois pire** : 14 violations contre 7.
+L'écart est de sept événements, contre un bruit mesuré de ±2 : c'est un vrai
+écart, pas du bruit.
+
+Deux laboratoires indépendants, deux modèles capables sur la tâche, et **les deux
+sur-attribuent** quand la phrase porteuse est supprimée. Ce n'est pas une
+particularité de Sonnet.
+
+### GPT-5.6 : échec d'un contrat plus élémentaire
+
+283 citations sur 309 (**91,6 %**) ne figurent pas dans la production de
+l'apprenant. Le modèle paraphrase au lieu de citer. Conséquences en chaîne :
+97,7 % des critères en confiance LOW, accord avec l'étalon à **3,2 %**, et 2,3 %
+seulement des critères montrables à un apprenant.
+
+Ses 8 violations sur 61 ne sont donc **pas comparables** : on ne lit pas « ce
+modèle sur-attribue-t-il » sur un modèle dont la notation est inexploitable pour
+une autre raison. Ce que le run établit, proprement, c'est que **GPT-5.6 est
+disqualifié pour cette tâche** — il ne satisfait pas le contrat de citation
+verbatim, et c'est ce contrat qui rend les notes vérifiables.
+
+### Ce que trois modèles et quatre consignes disent ensemble
+
+| levier | essais | résultat |
+| --- | --- | --- |
+| formulation de la consigne | 4 versions | 7 violations à chaque fois |
+| changement de modèle | 2 modèles | pire (14/62), ou inexploitable |
+| vérificateur | mesuré | son verdict ne suit pas la justesse |
+
+**La voie de la consigne et la voie du modèle sont toutes deux épuisées.** Ce qui
+reste est structurel : rendre le test de suffisance observable et vérifiable par
+la machine, plutôt que demandé au modèle (option A, §10 bis).
+
+### Deux leçons d'instrument, encore
+
+**Un candidat non essayé n'est pas un candidat disponible.** Le premier run
+GPT-5.6 a échoué à 105 cellules sur 105 en `PROVIDER_HTTP_404`, pour 0,00 USD.
+Cause : GPT-5.6 refuse `temperature`, et `require_parameters: true` — garde-fou
+délibéré de V4.5-115 — élimine alors tous les points de service. L'identité
+promue envoie déjà `temperature: null`, ce qui explique que Sonnet n'ait jamais
+rencontré ce mur. Le banc déclare douze candidats et un seul avait jamais tourné.
+Diagnostiqué en interrogeant le fournisseur, pas en supposant, pour un dixième de
+centime.
+
+**Une cellule avant cent cinq.** Avant d'engager Kimi, une sonde d'une seule
+cellule à **0,0296 USD** a vérifié qu'il citait verbatim — ce que GPT-5.6 ne
+faisait pas. Trois centimes pour dé-risquer trois dollars.
+
+**Dépense du jour : 4,4056 USD** — GPT-5.6 1,0845, sonde Kimi 0,0296, Kimi 3,2915,
+et 0,00 pour le run GPT-5.6 avorté. Enveloppe `owner-210-budget-2026-08-31`.
