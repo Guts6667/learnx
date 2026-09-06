@@ -367,12 +367,13 @@ describe('écran de départ (tranche + langue sans dépendre de l’adresse)', (
     localStorage.clear();
   });
 
-  it('s’affiche quand rien ne dit le mode, avec les 14 tranches', () => {
+  it('s’affiche quand rien ne dit le mode, avec les 14 tranches et la relecture', () => {
     boot('');
     const chooser = document.getElementById('chooser') as HTMLElement;
     expect(chooser.hidden).toBe(false);
     const options = document.querySelectorAll('#chooserSlice option');
-    expect(options.length).toBe(14);
+    expect(options.length).toBe(15);
+    expect(options[14]?.textContent).toMatch(/^R-01 \(10\)$/u);
     expect(options[0]?.textContent).toMatch(/^1-01 \(\d\)$/u);
   });
 
@@ -441,5 +442,44 @@ describe('écran de départ (tranche + langue sans dépendre de l’adresse)', (
       true,
     );
     expect(document.querySelectorAll('#rail button').length).toBe(8);
+  });
+});
+
+describe('relecture (test-retest, tranche R-01)', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('montre les 10 cartes tirées, la note de relecture, et exporte la source de la tranche', async () => {
+    boot('#s=R-01');
+    (document.getElementById('who') as HTMLElement).click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'r';
+    (document.getElementById('whoSave') as HTMLElement).click();
+    // Warm-up first: 3 cards in slice mode.
+    expect(document.querySelectorAll('#rail button').length).toBe(3);
+    expect(document.body.textContent).toContain(
+      'Relecture : ce sont des cartes',
+    );
+    for (let i = 0; i < 3; i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      answerNo();
+      setControls();
+    }
+    (document.getElementById('trainDone') as HTMLElement | null)?.click();
+    expect(document.querySelectorAll('#rail button').length).toBe(10);
+    for (let i = 0; i < 10; i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      answerNo();
+      setControls();
+    }
+    document.getElementById('toExport')?.click();
+    const payload = JSON.parse(await exportedText()) as {
+      decisions: unknown[];
+      sliceId: string;
+      sliceSourceHash: string;
+    };
+    expect(payload.sliceId).toBe('R-01');
+    expect(payload.decisions.length).toBe(10);
+    expect(payload.sliceSourceHash).toMatch(/^sha256:/u);
   });
 });

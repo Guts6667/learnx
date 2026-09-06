@@ -5,7 +5,7 @@
  * it claims to carry. The key file is deliberately not injected — a page that
  * knows which member a card is would not be blind.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const REG = 'benchmarks/ai-correction/regression';
@@ -33,10 +33,27 @@ const questionsEn = readFileSync(
   ),
   'utf8',
 );
-const slices = readFileSync(
-  path.resolve(REG, 'adjudication-slices.v1.json'),
-  'utf8',
-);
+const slicesV1 = JSON.parse(
+  readFileSync(path.resolve(REG, 'adjudication-slices.v1.json'), 'utf8'),
+) as { contentHash: string; slices: Record<string, unknown>[] };
+// Extra slices (test-retest) live in their own sealed file; each carries the
+// hash of the file it comes from, so an export says where its slice came from.
+const retestPath = path.resolve(REG, 'adjudication-retest.v1.json');
+const retest = existsSync(retestPath)
+  ? (JSON.parse(readFileSync(retestPath, 'utf8')) as {
+      contentHash: string;
+      slices: Record<string, unknown>[];
+    })
+  : null;
+const slices = JSON.stringify({
+  ...slicesV1,
+  slices: [
+    ...slicesV1.slices.map((x) => ({ ...x, sourceHash: slicesV1.contentHash })),
+    ...(retest
+      ? retest.slices.map((x) => ({ ...x, sourceHash: retest.contentHash }))
+      : []),
+  ],
+});
 const safe = (text: string) => text.replace(/<\//g, '<\\/');
 const page = template
   .replace('/*__DECK__*/', safe(deck))

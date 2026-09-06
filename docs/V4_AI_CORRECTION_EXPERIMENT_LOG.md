@@ -2009,4 +2009,19 @@ contrôles raccourcis portant un atome « chaque … de la copie » sont à
 réexaminer avant de servir de diagnostic ; le propriétaire en a refusé 4
 sur 16. Déclaré ici, non corrigé.
 
+### Test-retest : la tranche R-01, tirée avant que le relecteur la voie
+
+6 septembre 2026. `adjudication-retest.v1.json` (`sha256:8f1d31a55…`),
+graine `v4.5-210/retest/v1` : 10 cartes primaires, une par paire au plus,
+**hors des 10 cartes du lot 1** dont le propriétaire a appris le membre en
+lisant les passages de modèles. Cartes : `C-272f41aa34 C-02c2ddf742 C-e10e009b7f C-ccc2405200 C-d0eceec16b C-3138b8a152 C-00b4a1c0a0 C-e32060b658 C-03c7a0d6cb C-d6444cb6e3`.
+La page de passe 1 les sert comme une tranche (`#s=R-01`, ou par l'écran de
+départ), avec son propre stockage, un échauffement de 3 cartes, et une note
+« réponds comme la première fois, sans chercher à te souvenir ». L'export
+porte `sliceSourceHash`, l'empreinte du fichier d'où vient la tranche. Ce qui
+sera lu : l'accord carte à carte entre les deux passages du même relecteur,
+oui/non/abstention, sur 10 cartes ; la référence de bruit est Luna relancé
+deux fois, 3 changements sur 10. Aucun seuil : c'est une mesure de
+stabilité, rapportée telle quelle. 18 tests DOM.
+
 Dépense : 0,00 USD.

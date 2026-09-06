@@ -891,6 +891,8 @@
       xTrainNot:
         'L’échauffement n’est pas terminé : finis les cartes d’entraînement.',
       changeMode: 'changer de tranche',
+      retestNote:
+        'Relecture : ce sont des cartes que tu as déjà vues. Réponds comme la première fois, à ce qui est écrit, sans chercher à te souvenir de ta réponse.',
       sliceNote: (id, n) =>
         'Tu as une tranche de ' +
         n +
@@ -1056,6 +1058,8 @@
         'The warm-up cards are corrected. Validate the warm-up to open the real cards; the export comes after.',
       xTrainNot: 'The warm-up is not finished: complete the warm-up cards.',
       changeMode: 'change slice',
+      retestNote:
+        'Re-read: you have seen these cards before. Answer as the first time, from what is written, without trying to recall your earlier answer.',
       sliceNote: (id, n) =>
         'You have a slice of ' +
         n +
@@ -1767,7 +1771,9 @@
         t('trainTitle', getIndex() + 1, TRAINING.length) +
         '</div><p class="note" style="margin:6px 0 0">' +
         t('trainNote') +
-        (SLICE ? ' ' + t('sliceNote', SLICE.sliceId, CARDS.length) : '') +
+        (SLICE
+          ? ' ' + t('sliceNote', SLICE.sliceId, CARDS.length) + retestNote()
+          : '') +
         '</p>' +
         modeButton() +
         (feedback
@@ -1803,6 +1809,7 @@
       : SLICE
         ? '<section class="training"><p class="note" style="margin:0">' +
           t('sliceNote', SLICE.sliceId, CARDS.length) +
+          retestNote() +
           '</p>' +
           modeButton() +
           '</section>'
@@ -2216,6 +2223,7 @@
       schemaVersion: 5,
       sliceHash: SLICES ? SLICES.contentHash || null : null,
       sliceId: SLICE ? SLICE.sliceId : null,
+      sliceSourceHash: SLICE && SLICE.sourceHash ? SLICE.sourceHash : null,
     };
     const text = canonical(payload);
     let digest = 'n/a';
@@ -2258,6 +2266,10 @@
     document.getElementById('back').onclick = back;
   };
 
+  const retestNote = () =>
+    SLICE && SLICE.purpose === 'test-retest'
+      ? ' <strong>' + t('retestNote') + '</strong>'
+      : '';
   const modeButton = () =>
     SLICE
       ? '<p style="margin:8px 0 0"><button class="ghost" id="changeMode">' +
