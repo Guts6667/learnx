@@ -579,6 +579,54 @@
       }
     </style>
     <style>
+      .chooser[hidden] {
+        display: none;
+      }
+      .chooser {
+        align-items: center;
+        background: var(--paper);
+        display: flex;
+        inset: 0;
+        justify-content: center;
+        padding: 24px;
+        position: fixed;
+        z-index: 40;
+      }
+      .chooser-box {
+        background: var(--card);
+        border: 1px solid var(--mark);
+        border-radius: 3px;
+        max-width: 520px;
+        padding: 22px 26px;
+        width: 100%;
+      }
+      .chooser-box h2 {
+        font-size: 20px;
+        margin: 6px 0 14px;
+      }
+      .chooser-box label.opt {
+        cursor: pointer;
+        display: flex;
+        gap: 10px;
+        margin: 10px 0;
+      }
+      .chooser-box .sub {
+        margin: 4px 0 6px 26px;
+      }
+      .chooser-box select {
+        font: inherit;
+        padding: 4px 6px;
+      }
+      .chooser-box button.go {
+        background: var(--ink);
+        border: 0;
+        border-radius: 3px;
+        color: var(--paper);
+        cursor: pointer;
+        font: inherit;
+        margin-top: 8px;
+        padding: 8px 16px;
+      }
       .pair {
         display: grid;
         gap: 16px;
@@ -651,6 +699,30 @@
       role="navigation"
       aria-label="Progression"
     ></div>
+    <div class="chooser" id="chooser" hidden>
+      <div class="chooser-box">
+        <div class="eyebrow">Passe 2 · paires</div>
+        <h2>Comment arrives-tu ici&nbsp;?</h2>
+        <label class="opt"
+          ><input type="radio" name="chooserMode" value="slice" checked />
+          <span>On m’a donné un numéro de tranche (15 paires).</span></label
+        >
+        <div class="sub">
+          <label
+            >Tranche
+            <select id="chooserSlice"></select
+          ></label>
+        </div>
+        <label class="opt"
+          ><input type="radio" name="chooserMode" value="full" />
+          <span>Je fais les 45 paires (relecteur principal).</span></label
+        >
+        <p><button class="go" id="chooserGo">Commencer</button></p>
+        <p class="note" style="margin: 10px 0 0">
+          Ce choix est mémorisé sur cet appareil.
+        </p>
+      </div>
+    </div>
     <div class="legend" id="legend">
       <span><i style="background: var(--bind)"></i> décidée</span>
       <span><i style="background: var(--rule)"></i> pas encore</span>
@@ -719,6 +791,9 @@
     <script id="pairs" type="application/json">
       /*__PAIRS__*/
     </script>
+    <script id="pairSlices" type="application/json">
+      /*__PAIR_SLICES__*/
+    </script>
     <script id="questions" type="application/json">
       /*__QUESTIONS__*/
     </script>
@@ -729,7 +804,44 @@
         document.getElementById('questions').textContent,
       );
       const CARDS = new Map(DECK.cards.map((c) => [c.cardId, c]));
-      const STORE = 'adj-p2-' + PAIRS.contentHash.slice(-12);
+      const readJson = (id) => {
+        const el = document.getElementById(id);
+        const raw = el ? el.textContent.trim() : '';
+        return raw && !raw.startsWith('/*') ? JSON.parse(raw) : null;
+      };
+      const PAIR_SLICES = readJson('pairSlices');
+      /* Mode = which pairs. Address after '#' first (#s=P-01), then the choice
+         saved by the start screen, then the start screen. An address mode is
+         never saved, so a slice link never changes the owner's full pass. */
+      const MODE_STORE = 'adj-p2-mode-' + PAIRS.contentHash.slice(-12);
+      const HASH_PARAMS = new URLSearchParams(location.hash.replace(/^#/, ''));
+      const HASH_MODE = HASH_PARAMS.has('s');
+      const readSavedMode = () => {
+        try {
+          const raw = localStorage.getItem(MODE_STORE);
+          return raw === null ? null : new URLSearchParams(raw);
+        } catch (e) {
+          return null;
+        }
+      };
+      const SAVED_MODE = HASH_MODE ? null : readSavedMode();
+      const PARAMS = HASH_MODE
+        ? HASH_PARAMS
+        : SAVED_MODE || new URLSearchParams('');
+      const SLICE_ID = PARAMS.get('s') || null;
+      const SLICE =
+        SLICE_ID && PAIR_SLICES
+          ? PAIR_SLICES.slices.find((x) => x.sliceId === SLICE_ID) || null
+          : null;
+      const ACTIVE = SLICE
+        ? SLICE.pairIds
+            .map((id) => PAIRS.pairs.find((p) => p.pairId === id))
+            .filter(Boolean)
+        : PAIRS.pairs;
+      const STORE =
+        'adj-p2-' +
+        PAIRS.contentHash.slice(-12) +
+        (SLICE ? '-s' + SLICE.sliceId : '');
       const HELP_STORE = 'adj-p2-help';
       const escapeHtml = (v) =>
         String(v)
@@ -755,7 +867,7 @@
         }
       }
       let enteredAt = Date.now();
-      const current = () => PAIRS.pairs[state.index];
+      const current = () => ACTIVE[state.index];
       const decisionOf = (pair) => state.decisions[pair.pairId] || null;
       const complete = (pair) => {
         const d = decisionOf(pair);
@@ -767,7 +879,7 @@
           return false;
         return true;
       };
-      const decidedCount = () => PAIRS.pairs.filter(complete).length;
+      const decidedCount = () => ACTIVE.filter(complete).length;
       function leaveCurrent() {
         const pair = current();
         if (!pair) return;
@@ -912,7 +1024,7 @@
           state.index +
           1 +
           ' / ' +
-          PAIRS.pairs.length +
+          ACTIVE.length +
           ' · ' +
           decidedCount() +
           ' complètes';
@@ -920,25 +1032,23 @@
       }
       function renderRail() {
         const rail = document.getElementById('rail');
-        rail.innerHTML = PAIRS.pairs
-          .map(
-            (p, i) =>
-              '<button data-i="' +
-              i +
-              '" class="' +
-              (complete(p) ? 'done' : '') +
-              (i === state.index ? ' current' : '') +
-              '" title="paire ' +
-              (i + 1) +
-              '"></button>',
-          )
-          .join('');
+        rail.innerHTML = ACTIVE.map(
+          (p, i) =>
+            '<button data-i="' +
+            i +
+            '" class="' +
+            (complete(p) ? 'done' : '') +
+            (i === state.index ? ' current' : '') +
+            '" title="paire ' +
+            (i + 1) +
+            '"></button>',
+        ).join('');
         for (const b of rail.querySelectorAll('button')) {
           b.onclick = () => goTo(Number(b.dataset.i));
         }
       }
       function goTo(i) {
-        if (i < 0 || i >= PAIRS.pairs.length) return;
+        if (i < 0 || i >= ACTIVE.length) return;
         leaveCurrent();
         state.index = i;
         persist();
@@ -1042,6 +1152,13 @@
           '<li>Réponds : <strong>A</strong> ou <strong>B</strong> si l’une répond mieux à la question par ce qui est écrit ; <strong>les deux autant</strong> si elles y répondent aussi bien, ou aussi mal, l’une que l’autre ; <strong>aucune des deux</strong> si ni l’une ni l’autre n’y répond. Les deux derniers demandent un « pourquoi ».</li>' +
           '<li>Ne cherche pas laquelle est l’originale. Il n’y a pas de piège à deviner : il y a une question à trancher.</li>' +
           '<li>Touches : A, B, =, 0, flèches pour naviguer, H pour cette aide.</li>' +
+          (SLICE
+            ? '<li><strong>Tu as une tranche de ' +
+              ACTIVE.length +
+              ' paires (tranche ' +
+              escapeHtml(SLICE.sliceId) +
+              ').</strong> Fais-les seul, sans en parler à personne avant d’avoir exporté.</li>'
+            : '') +
           '</ol>';
       }
       document.getElementById('help').onclick = toggleHelp;
@@ -1084,7 +1201,7 @@
         leaveCurrent();
         const app = document.getElementById('app');
         document.getElementById('dock').hidden = true;
-        const missing = PAIRS.pairs.filter((p) => !complete(p));
+        const missing = ACTIVE.filter((p) => !complete(p));
         if (!state.reviewer) {
           app.innerHTML =
             '<section class="card"><div class="eyebrow">Export indisponible</div><p>Indique d’abord ton identifiant de relecteur (bouton « relecteur… » en haut).</p><p><button class="ghost" id="back">retour</button></p></section>';
@@ -1096,13 +1213,13 @@
             '<section class="card"><div class="eyebrow">Export indisponible</div><p>' +
             missing.length +
             ' paire(s) incomplète(s). La première : paire ' +
-            (PAIRS.pairs.indexOf(missing[0]) + 1) +
+            (ACTIVE.indexOf(missing[0]) + 1) +
             '.</p><p><button class="ghost" id="back">y aller</button></p></section>';
           document.getElementById('back').onclick = () =>
-            goTo(PAIRS.pairs.indexOf(missing[0]));
+            goTo(ACTIVE.indexOf(missing[0]));
           return;
         }
-        const decisions = PAIRS.pairs.map((p) => ({
+        const decisions = ACTIVE.map((p) => ({
           ...state.decisions[p.pairId],
           reviewerId: state.reviewer,
         }));
@@ -1110,6 +1227,9 @@
           deckHash: PAIRS.deckHash,
           decisions,
           pairsHash: PAIRS.contentHash,
+          sliceId: SLICE ? SLICE.sliceId : null,
+          sliceSourceHash:
+            SLICE && PAIR_SLICES ? PAIR_SLICES.contentHash : null,
           pass: 2,
           reviewerId: state.reviewer,
           schemaVersion: 1,
@@ -1140,8 +1260,57 @@
         document.getElementById('back').onclick = () => render();
       };
 
+      const mainPassStarted = () => {
+        try {
+          const raw = localStorage.getItem(
+            'adj-p2-' + PAIRS.contentHash.slice(-12),
+          );
+          const saved = raw ? JSON.parse(raw) : null;
+          return !!(
+            saved &&
+            saved.decisions &&
+            Object.keys(saved.decisions).length
+          );
+        } catch (e) {
+          return false;
+        }
+      };
+      const chooserNeeded =
+        !HASH_MODE && !SAVED_MODE && !mainPassStarted() && !!PAIR_SLICES;
+      function openChooser() {
+        const box = document.getElementById('chooser');
+        const select = document.getElementById('chooserSlice');
+        select.innerHTML = PAIR_SLICES.slices
+          .map(
+            (x) =>
+              '<option value="' +
+              escapeHtml(x.sliceId) +
+              '">' +
+              escapeHtml(x.sliceId) +
+              ' (' +
+              x.pairIds.length +
+              ')</option>',
+          )
+          .join('');
+        box.hidden = false;
+        document.getElementById('chooserGo').onclick = () => {
+          const mode = document.querySelector(
+            'input[name="chooserMode"]:checked',
+          ).value;
+          const chosen = new URLSearchParams('');
+          if (mode === 'slice') chosen.set('s', select.value);
+          try {
+            localStorage.setItem(MODE_STORE, chosen.toString());
+          } catch (e) {
+            /* the address still works: #s=… */
+          }
+          box.hidden = true;
+          if (mode === 'slice') location.reload();
+        };
+      }
       renderHelp();
       render();
+      if (chooserNeeded) openChooser();
     </script>
   </body>
 </html>

@@ -122,3 +122,66 @@ describe('page de passe 2 (paires en choix forcé)', () => {
     expect(new Set(payload.decisions.map((d) => d.pairId)).size).toBe(45);
   });
 });
+
+describe('tranche de paires pour une seconde personne', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('#s=P-01 sert 15 paires, un stockage à part, et un export marqué', async () => {
+    window.location.hash = '#s=P-01';
+    boot();
+    expect(document.querySelectorAll('#rail button').length).toBe(15);
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    click('#who');
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'r2';
+    click('#whoSave');
+    for (let i = 0; i < 15; i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      press('a');
+    }
+    expect(Object.keys(localStorage).some((k) => k.endsWith('-sP-01'))).toBe(
+      true,
+    );
+    click('#toExport');
+    const out = (await waitFor('out')) as HTMLTextAreaElement;
+    const payload = JSON.parse(out.value) as {
+      decisions: unknown[];
+      sliceId: string;
+      sliceSourceHash: string;
+    };
+    expect(payload.decisions.length).toBe(15);
+    expect(payload.sliceId).toBe('P-01');
+    expect(payload.sliceSourceHash).toMatch(/^sha256:/u);
+    window.location.hash = '';
+  });
+
+  it('sans adresse ni passe commencée, l’écran de départ propose la tranche', () => {
+    window.location.hash = '';
+    boot();
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      false,
+    );
+    expect(document.querySelector('#chooserSlice option')?.textContent).toBe(
+      'P-01 (15)',
+    );
+    // The owner's full pass has decisions: no start screen for him.
+    localStorage.clear();
+    localStorage.setItem(
+      'adj-p2-' +
+        (
+          JSON.parse(document.getElementById('pairs')?.textContent ?? '{}') as {
+            contentHash: string;
+          }
+        ).contentHash.slice(-12),
+      JSON.stringify({ decisions: { x: { choice: 'A' } }, index: 0 }),
+    );
+    boot();
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    expect(document.querySelectorAll('#rail button').length).toBe(45);
+  });
+});

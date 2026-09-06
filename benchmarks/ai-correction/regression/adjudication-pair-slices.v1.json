@@ -1,0 +1,31 @@
+{
+  "pairsHash": "sha256:3af565ca64517ef95c2f53ab9ddd93166e946e67341b7eac95fe18e49fb43338",
+  "purpose": "second-rater",
+  "schemaVersion": 1,
+  "seed": "v4.5-210/pair-slices/v1",
+  "slices": [
+    {
+      "pairIds": [
+        "536c3545804e363b",
+        "664b5da19fa2b929",
+        "8c5568d09218d3f3",
+        "690759fa14fcc104",
+        "11c34eb000e5ad70",
+        "28fea339dfeb6081",
+        "3be9a87e6c494fa8",
+        "d477c8fe7429db5f",
+        "22ec794dc9b36fe4",
+        "fa6124c14eedb0a8",
+        "307bf26ab7987a9c",
+        "f01e7e88b3aed7cc",
+        "455d34eeddf02fc4",
+        "254f951761b2a6c9",
+        "41e1cdefa03da5e4"
+      ],
+      "purpose": "second-rater",
+      "sliceId": "P-01"
+    }
+  ],
+  "status": "sealed",
+  "contentHash": "sha256:0f452d61605754e5210a6b356847c6e068270639341bc40cc9fed5f2760b24d3"
+}

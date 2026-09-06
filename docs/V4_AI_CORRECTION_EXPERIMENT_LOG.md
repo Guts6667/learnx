@@ -2024,4 +2024,19 @@ oui/non/abstention, sur 10 cartes ; la référence de bruit est Luna relancé
 deux fois, 3 changements sur 10. Aucun seuil : c'est une mesure de
 stabilité, rapportée telle quelle. 18 tests DOM.
 
+### Seconde personne : la tranche P-01, 15 paires
+
+Même jour. `adjudication-pair-slices.v1.json` (`sha256:0f452d616…`),
+graine `v4.5-210/pair-slices/v1` : les **7 paires primaires sans étiquette**
+(abîmé choisi ou non tranchées par le propriétaire) plus **8 paires tirées**
+parmi les 30 étiquetées. Le fichier ne porte que des identifiants de paire,
+ni membre ni choix. La page de passe 2 les sert par `#s=P-01` ou par un
+écran de départ, avec un stockage à part ; l'export porte `sliceId` et
+`sliceSourceHash`. Ce qui sera lu, déclaré maintenant : sur les 8 paires
+étiquetées, l'accord de la seconde personne avec l'étiquette (original
+reconnu ou non) ; sur les 7 sans étiquette, son choix, qui déclenche la
+troisième lecture à trois voix (propriétaire, seconde personne, raisons
+écrites) ; l'accord brut et le kappa de Cohen entre les deux personnes sur
+les 15 paires, rapportés sans seuil. 6 tests DOM sur la page de passe 2.
+
 Dépense : 0,00 USD.

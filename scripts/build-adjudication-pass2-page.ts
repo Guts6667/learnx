@@ -13,14 +13,23 @@ const template = readFileSync(
 );
 const read = (f: string): string => readFileSync(path.resolve(REG, f), 'utf8');
 const safe = (text: string): string => text.replace(/<\//g, '<\\/');
-for (const slot of ['/*__DECK__*/', '/*__PAIRS__*/', '/*__QUESTIONS__*/']) {
+for (const slot of [
+  '/*__DECK__*/',
+  '/*__PAIRS__*/',
+  '/*__QUESTIONS__*/',
+  '/*__PAIR_SLICES__*/',
+]) {
   if (!template.includes(slot))
     throw new Error(`PASS2_TEMPLATE_MISSING ${slot}`);
 }
 const page = template
   .replace('/*__DECK__*/', safe(read('adjudication-deck.v3.json')))
   .replace('/*__PAIRS__*/', safe(read('adjudication-pairs.v1.json')))
-  .replace('/*__QUESTIONS__*/', safe(read('plain-questions.v1.json')));
+  .replace('/*__QUESTIONS__*/', safe(read('plain-questions.v1.json')))
+  .replace(
+    '/*__PAIR_SLICES__*/',
+    safe(read('adjudication-pair-slices.v1.json')),
+  );
 if (
   /adjudication-deck\.v3\.key|"member"|control_positive|citedFragment/u.test(
     page,
