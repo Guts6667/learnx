@@ -512,3 +512,31 @@ describe('bouton « tranche… »', () => {
     expect(document.querySelectorAll('#chooserSlice option').length).toBe(15);
   });
 });
+
+describe('échauffement déjà validé sur l’appareil', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('une tranche ne le redemande pas, et l’export dit d’où il vient', async () => {
+    localStorage.setItem(
+      'adj-training-v4',
+      JSON.stringify({ decisions: {}, done: true, index: 0 }),
+    );
+    boot('#s=R-01');
+    expect(document.querySelectorAll('#rail button').length).toBe(10);
+    (document.getElementById('who') as HTMLElement).click();
+    (document.getElementById('whoInput') as HTMLInputElement).value = 'r';
+    (document.getElementById('whoSave') as HTMLElement).click();
+    for (let i = 0; i < 10; i += 1) {
+      (document.querySelectorAll('#rail button')[i] as HTMLElement).click();
+      answerNo();
+      setControls();
+    }
+    document.getElementById('toExport')?.click();
+    const payload = JSON.parse(await exportedText()) as {
+      warmupSource: string;
+    };
+    expect(payload.warmupSource).toBe('main-pass');
+  });
+});

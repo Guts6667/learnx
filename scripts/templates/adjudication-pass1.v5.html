@@ -1494,6 +1494,24 @@
   } catch (e) {
     /* warm-up first */
   }
+  // A slice on a device where the main pass's warm-up is validated does not
+  // ask for it again: same person, already trained. The export says so.
+  let warmupSource = 'this-slice';
+  if (SLICE && !training.done) {
+    try {
+      const main = JSON.parse(
+        localStorage.getItem(
+          'adj-training-v4' + (LANG === 'en' ? '-en' : ''),
+        ) || '{}',
+      );
+      if (main && main.done) {
+        training.done = true;
+        warmupSource = 'main-pass';
+      }
+    } catch (e) {
+      /* keep the slice's own warm-up */
+    }
+  }
   const inTraining = () => !training.done;
   const activeCards = () =>
     inTraining() ? TRAINING.map((x) => x.card) : CARDS;
@@ -2227,6 +2245,7 @@
       sliceHash: SLICES ? SLICES.contentHash || null : null,
       sliceId: SLICE ? SLICE.sliceId : null,
       sliceSourceHash: SLICE && SLICE.sourceHash ? SLICE.sourceHash : null,
+      warmupSource,
     };
     const text = canonical(payload);
     let digest = 'n/a';
