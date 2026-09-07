@@ -483,3 +483,32 @@ describe('relecture (test-retest, tranche R-01)', () => {
     expect(payload.sliceSourceHash).toMatch(/^sha256:/u);
   });
 });
+
+describe('bouton « tranche… »', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('ouvre l’écran de départ même quand la série principale est commencée', () => {
+    boot('');
+    const hash12 = (
+      JSON.parse(document.getElementById('deck')?.textContent ?? '{}') as {
+        manifestHash: string;
+      }
+    ).manifestHash.slice(-12);
+    localStorage.clear();
+    localStorage.setItem(
+      'adj-v4-' + hash12,
+      JSON.stringify({ decisions: { x: {} }, index: 0, reviewer: 'r' }),
+    );
+    boot('');
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      true,
+    );
+    (document.getElementById('pickSlice') as HTMLElement).click();
+    expect((document.getElementById('chooser') as HTMLElement).hidden).toBe(
+      false,
+    );
+    expect(document.querySelectorAll('#chooserSlice option').length).toBe(15);
+  });
+});

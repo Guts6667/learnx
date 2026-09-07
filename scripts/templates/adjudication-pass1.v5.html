@@ -643,6 +643,7 @@
   <div class="grow"></div>
   <div class="count" id="progress">—</div>
   <button class="ghost" id="train"></button>
+  <button class="ghost" id="pickSlice"></button>
   <button class="ghost" id="help">
     <kbd>H</kbd><span id="helpWord"></span>
   </button>
@@ -891,6 +892,7 @@
       xTrainNot:
         'L’échauffement n’est pas terminé : finis les cartes d’entraînement.',
       changeMode: 'changer de tranche',
+      pickSlice: 'tranche…',
       retestNote:
         'Relecture : ce sont des cartes que tu as déjà vues. Réponds comme la première fois, à ce qui est écrit, sans chercher à te souvenir de ta réponse.',
       sliceNote: (id, n) =>
@@ -1058,6 +1060,7 @@
         'The warm-up cards are corrected. Validate the warm-up to open the real cards; the export comes after.',
       xTrainNot: 'The warm-up is not finished: complete the warm-up cards.',
       changeMode: 'change slice',
+      pickSlice: 'slice…',
       retestNote:
         'Re-read: you have seen these cards before. Answer as the first time, from what is written, without trying to recall your earlier answer.',
       sliceNote: (id, n) =>
@@ -2337,6 +2340,9 @@
     location.reload();
   }
 
+  const pick = document.getElementById('pickSlice');
+  pick.textContent = t('pickSlice');
+  pick.onclick = () => openChooser();
   renderStatic();
   render();
   if (chooserNeeded) openChooser();
