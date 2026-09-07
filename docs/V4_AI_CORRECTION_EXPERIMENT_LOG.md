@@ -2039,4 +2039,28 @@ troisième lecture à trois voix (propriétaire, seconde personne, raisons
 écrites) ; l'accord brut et le kappa de Cohen entre les deux personnes sur
 les 15 paires, rapportés sans seuil. 6 tests DOM sur la page de passe 2.
 
+### Test-retest : 7 cartes sur 10, et trois changements vers la clé
+
+7 septembre 2026. Export de la tranche R-01 reçu, sha256 `ceaf6cac…`,
+lecture dans `adjudication-retest.owner.2026-09-07.reading.md`. Verdict
+identique sur **7 cartes sur 10**, preuves identiques sur 8 ; médiane 57 s
+contre 204 s. Les trois changements (rl.a2 non→oui, cf.a2 oui→abstention,
+pe.a3 abstention→oui) vont tous dans le sens de la clé, que le relecteur n'a
+pas vue pour ces cartes : l'effet le plus plausible est l'entraînement à la
+comparaison par la passe 2. Même stabilité que Luna 5.6 relancé deux fois.
+Aucun seuil n'était déclaré ; le corrigé reste l'étiquette de paire.
+
+Deux ajouts à la page de passe 1 le même jour, pour que la tranche soit
+atteignable : un bouton « tranche… » permanent (l'écran de départ ne
+s'affiche pas quand la passe principale existe), et l'échauffement d'une
+tranche repris de la passe principale quand il y est validé, noté
+`warmupSource` dans l'export. 20 tests DOM.
+
+Réponses aux huit questions de l'audit : `docs/V4_5_210_AUDIT_RESPONSE_2026-09-07.md`.
+Deux amendements y sont déclarés avant toute mesure : métrique principale
+**par paire** pour le vérificateur (l'étiquette de paire est un classement,
+pas deux verdicts absolus), et porte d'entrée de la seconde personne (plus
+de 2 désaccords sur les 8 paires étiquetées de sa tranche : le corrigé n'est
+pas prêt).
+
 Dépense : 0,00 USD.
