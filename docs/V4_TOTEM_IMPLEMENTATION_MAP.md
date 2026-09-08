@@ -86,13 +86,13 @@ des publications chronologiques.
 | --- | --- | --- |
 | Typographie d'interface | DM Sans 400/500/600/700 | `src/styles/tokens/fonts.css` |
 | Typographie d'affichage | Plus Jakarta Sans 600/700 | titres, via `--font-editorial` |
-| Canvas | `#F6F7FB` | tokens CSS |
+| Canvas | `#F4F4EE` | tokens CSS |
 | Surface | `#FFFFFF` | tokens CSS |
-| Encre | `#101B33` | tokens CSS |
-| Texte secondaire | `#5B6478` | tokens CSS |
-| Cobalt | `#4F52D9` | action, focus, progression |
-| Brume | `#EEF0FD` | surfaces secondaires |
-| Corail rare | `#D97757` | angle signature uniquement |
+| Encre | `#111A31` | tokens CSS |
+| Texte secondaire | `#5E6576` | tokens CSS |
+| Cobalt | `#5557D9` | action, focus, progression |
+| Brume | `#E8E8FF` | surfaces secondaires |
+| Corail rare | `#D97858` | angle signature uniquement |
 | Rôles sur encre | `#E6ECF8`, `#A7AEC6`, `#7478E8`, `#F2B4A7` | bande encre |
 | Interdits | vert, gradient IA, fintech, gamification | revue globale |
 

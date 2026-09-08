@@ -27,39 +27,44 @@
 }
 
 :root {
-  --color-canvas: #f6f7fb;
-  --color-surface: #ffffff;
+  /* Colour, radius and type-face values follow the Paper file "LearnX" (tokens
+     set, page "Needs improvement", v3.1). Paper is the reference for the next
+     version; change it there first, then mirror it here. */
+  --color-canvas: #f4f4ee;
+  --color-surface: #fffefb;
   --color-surface-raised: var(--color-surface-subtle);
-  --color-surface-subtle: #eef0fd;
-  --color-text: #101b33;
-  --color-text-muted: #5b6478;
-  --color-border: #e4e6f0;
-  --color-border-strong: #c3c7d8;
+  --color-surface-subtle: #e8e8ff;
+  --color-text: #111a31;
+  --color-text-muted: #5e6576;
+  --color-border: #dcddd5;
+  --color-border-strong: #c9cbd8;
   --color-control-border: #8491a8;
   --color-accent: var(--color-action);
   --color-accent-text: var(--color-action-hover);
-  --color-action: #4f52d9;
-  --color-action-hover: #3e41b8;
+  --color-action: #5557d9;
+  --color-action-hover: #4345c2;
   --color-action-soft: var(--color-surface-subtle);
   --color-on-action: var(--color-surface);
   --color-focus: var(--color-action-hover);
-  /* Un état de réussite partage aujourd'hui la couleur de l'action.
-     C'est une question de design ouverte, reportée en V4.3. */
-  --color-success: var(--color-action);
+  /* Paper v3.1 settles the open V4.3 question: success is the mint green
+     used for COMPLETE / SYNCED states, no longer the action colour. */
+  --color-success: #23725a;
+  --color-mint: #c9e7d7;
+  --color-mint-soft: #edf8f2;
   --color-warning: #8a5a24;
   --color-danger: #9b3e32;
   --color-disabled: #7a8599;
-  --color-overlay: rgb(16 27 51 / 58%);
+  --color-overlay: rgb(17 26 49 / 62%);
   --color-ivory: var(--color-surface);
-  --color-coral: #d97757;
-  --color-coral-soft: #f7e3da;
+  --color-coral: #d97858;
+  --color-coral-soft: #f6e9e4;
 
   /* Roles for content sitting on the ink band. Four surfaces previously
      invented their own on-dark values (#aebfff, #c8d0df, #c8d2e6, #e6ecf8)
      with no shared token; these replace them. */
   --color-ink-surface: var(--color-text);
-  --color-on-ink: #e6ecf8;
-  --color-on-ink-muted: #a7aec6;
+  --color-on-ink: #ffffff;
+  --color-on-ink-muted: #aab3c6;
   --color-line-on-ink-soft: rgb(255 255 255 / 16%);
   --color-line-on-ink: rgb(255 255 255 / 18%);
   --color-line-on-ink-mark: rgb(255 255 255 / 24%);
@@ -130,11 +135,11 @@
   --space-10: 2.5rem;
   --space-12: 3rem;
   --radius-directional: 0.25rem;
-  --radius-control: 0.4375rem;
+  --radius-control: 0.625rem;
   --radius-group: 0.75rem;
-  --radius-overlay: 0.75rem;
-  --radius-surface: 1rem;
-  --radius-mobile-frame: 1.25rem;
+  --radius-overlay: 1.125rem;
+  --radius-surface: 1.125rem;
+  --radius-mobile-frame: 1.75rem;
   --motion-fast: 120ms;
   --motion-standard: 180ms;
   --motion-overlay: 240ms;
