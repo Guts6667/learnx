@@ -29,16 +29,18 @@ d'en réintroduire une.
 
 | Rôle | Token | Valeur |
 | --- | --- | --- |
-| Fond de page | `--color-canvas` | `#F6F7FB` |
-| Surface | `--color-surface` | `#FFFFFF` |
-| Surface secondaire | `--color-surface-subtle` | `#EEF0FD` |
-| Encre (texte) | `--color-text` | `#101B33` |
-| Texte secondaire | `--color-text-muted` | `#5B6478` |
-| Action, focus, progression | `--color-action` | `#4F52D9` |
-| Action au survol | `--color-action-hover` | `#3E41B8` |
-| Bordure décorative | `--color-border` | `#E4E6F0` |
+| Fond de page | `--color-canvas` | `#F4F4EE` |
+| Surface | `--color-surface` | `#FFFEFB` |
+| Surface secondaire | `--color-surface-subtle` | `#E8E8FF` |
+| Encre (texte) | `--color-text` | `#111A31` |
+| Texte secondaire | `--color-text-muted` | `#5E6576` |
+| Action, focus, progression | `--color-action` | `#5557D9` |
+| Action au survol | `--color-action-hover` | `#4345C2` |
+| Bordure décorative | `--color-border` | `#DCDDD5` |
 | Bordure de contrôle | `--color-control-border` | `#8491A8` |
-| Corail — signature rare | `--color-coral` | `#D97757` |
+| Corail — signature rare | `--color-coral` | `#D97858` |
+| Réussite (texte, marqueur) | `--color-success` | `#23725A` |
+| Menthe (marqueur, surface de réussite) | `--color-mint` / `--color-mint-soft` | `#C9E7D7` / `#EDF8F2` |
 
 Sur la bande encre, les rôles sont nommés et ne doivent jamais être réinventés
 localement : `--color-ink-surface`, `--color-on-ink`, `--color-on-ink-muted`,
@@ -48,11 +50,12 @@ localement : `--color-ink-surface`, `--color-on-ink`, `--color-on-ink-muted`,
 **Discipline du corail.** Accent de signature uniquement : angle décoratif,
 point de statut, filet à gauche d'un bloc. Jamais une deuxième couleur d'action,
 jamais une réussite, jamais un prix. **Et jamais du texte sur fond clair** :
-`#D97757` sur `#F6F7FB` mesure 2,92 et échoue AA. Sur la bande encre il mesure
-5,48 et reste autorisé.
+`#D97858` sur `#F4F4EE` mesure 2,81 et échoue AA. Sur la bande encre il mesure
+5,57 et reste autorisé.
 
-**Interdits** : vert, gradient « IA », esthétique fintech, gamification,
-couleur portant seule une information.
+**Interdits** : tout vert hors des jetons de réussite menthe (`--color-success`,
+`--color-mint`, `--color-mint-soft`, alignés sur Paper v3.1), gradient « IA »,
+esthétique fintech, gamification, couleur portant seule une information.
 
 ### Typographie
 

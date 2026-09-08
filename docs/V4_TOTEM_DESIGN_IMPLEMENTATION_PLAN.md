@@ -56,16 +56,17 @@ identifiable.
 | --- | --- | --- |
 | Typographie d'interface | DM Sans | — |
 | Typographie d'affichage | Plus Jakarta Sans | (aucune) |
-| Ardoise | `#101B33` | `#17233B` |
-| Cobalt | `#4F52D9` | `#3B5BD6` |
-| Brume | `#EEF0FD` | `#E7EDFF` |
-| Corail rare | `#D97757` | `#CC6B57` |
-| Fond | `#F6F7FB` | `#F4F6FB` |
-| Papier | `#FFFFFF` | — |
+| Ardoise | `#111A31` | `#17233B` |
+| Cobalt | `#5557D9` | `#3B5BD6` |
+| Brume | `#E8E8FF` | `#E7EDFF` |
+| Corail rare | `#D97858` | `#CC6B57` |
+| Fond | `#F4F4EE` | `#F4F6FB` |
+| Papier | `#FFFEFB` | — |
+| Menthe | `#C9E7D7` | — |
 
-Le corail ne porte jamais de texte sur fond clair : `#D97757` sur `#F6F7FB`
-mesure 2,92 et échoue AA. Il reste décoratif sur les surfaces claires et ne
-porte du texte que sur la bande encre, où il mesure 5,48.
+Le corail ne porte jamais de texte sur fond clair : `#D97858` sur `#F4F4EE`
+mesure 2,81 et échoue AA. Il reste décoratif sur les surfaces claires et ne
+porte du texte que sur la bande encre, où il mesure 5,57.
 
 Sont exclus : vert, gradient associé à l'IA, esthétique fintech, gamification,
 personnification de l'IA et couleur utilisée comme seul signal. L'IA reste une
