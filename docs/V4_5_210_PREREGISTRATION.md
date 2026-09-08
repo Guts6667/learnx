@@ -207,3 +207,67 @@ for weeks and discovering the same thing.
 - No model clears both floors → report and stop
 - A model clears the rejection floor by rejecting nearly everything → caught by
   the acceptance floor, which is why both are mandatory
+
+## Amendments, 8 September 2026 — written before the first call
+
+Declared in `docs/V4_5_210_AUDIT_RESPONSE_2026-09-07.md` §2 and §8, and
+copied here as the plan of record. Nothing above is deleted; where the two
+disagree, this section wins. Implemented in
+`src/lib/ai-correction-atom-verifier.ts` (`THRESHOLDS`, `VERDICT_RANK`) and
+`scripts/run-atom-verifier.ts`; the dry run of 8 September wrote
+`benchmarks/ai-correction/regression/atom-verifier/plan.v1/` with every
+prompt, the scoring key and the estimate. 0.00 USD spent.
+
+**Gold.** The sentinel set of the original plan is replaced by the deck's
+30 labelled primary pairs: the pairs where the owner's blind forced choice
+(pass 2, 5 September) fell on the original. 60 cards. The 7 contested
+primary pairs and the 16 shortened controls are out. The gold is a
+**ranking** (original above damaged), not two absolute verdicts.
+
+**Primary metric — pairwise.** Each card is judged alone, blind, three
+times, in a seeded order that differs per model and per repetition. Per
+card, the majority of the three verdicts (two identical out of three;
+otherwise undecided). Per pair, the original wins when its majority verdict
+ranks strictly above the damaged member's on the declared scale
+`direct 3 > partial 2 > ambiguous 1 > unsupported 0 > contradicted −1`.
+A pair whose outcome differs between repetitions counts as **unstable**.
+
+**Secondary metrics — absolute, always reported together.** Hard-negative
+rejection: share of damaged cards whose majority verdict is `partial`,
+`unsupported` or `contradicted` (floor 86 %). True-evidence acceptance:
+share of originals whose majority verdict is `direct` (floor 90 %).
+Abstentions (`ambiguous`) are counted apart in both. A third column
+compares each majority verdict to the owner's pass-1 absolute verdict on the
+same card.
+
+**Readings, per model.**
+
+| reading | condition |
+|---|---|
+| proceed | ≥ 27 / 30 pairs won, ≤ 2 unstable, both absolute floors met |
+| narrow | ≥ 27 / 30 pairs won, ≤ 2 unstable, an absolute floor missed: the component discriminates relatively, not absolutely; the architecture is redesigned around comparative or calibrated verification before anything else |
+| stop | < 24 / 30 pairs won, or > 5 unstable |
+| indeterminate | anything else: the sample cannot choose |
+
+The tail probability of the wins among decided pairs is reported next to the
+count (one-sided binomial at 1/2), as in pass 2.
+
+**Second rater.** Not a gate on the paid run any more: the retest of
+7 September (7 / 10 identical, changes toward the key) and the deck's
+construction support the 30 pairs on their own, and the run is repeatable
+for cents. The second rater's 15 pairs (slice P-01) become a **post-hoc
+check**: if she disagrees with the pair label on more than 2 of the
+8 labelled pairs in her slice, the contested pairs are removed from the
+gold and the run is re-read on the remaining pairs; the report says
+"single rater, second reading pending" until then. The gold can shrink,
+never grow.
+
+**Candidates, budget, guards.** `mistralai/mistral-medium-3-5` (baseline),
+`anthropic/claude-haiku-4.5`, `moonshotai/kimi-k3`,
+`anthropic/claude-sonnet-4.6`; 720 calls; temperature 0; strict JSON
+schema; `data_collection: deny`, no fallbacks. Estimate ≈ 1.65 USD
+(Mistral from the sealed pricing file, the others read from openrouter.ai
+on 8 September and replaced by `usage.cost` at run time). Cap 3 USD,
+enforced before every call; a stopped run is reported as incomplete and
+never read against the thresholds. The run starts only on the owner's word
+(`--run --confirm=mesure`).

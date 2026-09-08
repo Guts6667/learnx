@@ -2064,3 +2064,38 @@ de 2 désaccords sur les 8 paires étiquetées de sa tranche : le corrigé n'est
 pas prêt).
 
 Dépense : 0,00 USD.
+
+### Le script de mesure, à blanc : 30 paires, 720 appels, ≈ 1,65 USD, 0 dépensé
+
+8 septembre 2026. Décision de méthode, sur la question « peut-on avancer
+sans la seconde personne ? » : oui, en le disant. Les 30 paires étiquetées
+sont soutenues trois fois (construction du paquet, choix forcé aveugle,
+relecture qui dérive vers la clé) ; la seconde personne devient un contrôle
+a posteriori qui peut retirer des paires, jamais en ajouter. Amendements
+copiés dans `docs/V4_5_210_PREREGISTRATION.md` (section du 8 septembre)
+avant le premier appel : métrique principale par paire sur l'échelle
+`direct > partial > ambiguous > unsupported > contradicted`, majorité de
+trois, paires instables comptées, taux absolus secondaires toujours
+ensemble, lectures proceed / narrow / stop / indeterminate.
+
+Code : `src/lib/ai-correction-atom-verifier.ts` (parties pures : sélection
+des 30 paires depuis l'export de passe 2 et la clé, rendu de la carte sans
+aucun champ de la clé, lecture des réponses, majorité, score de paire,
+résumé, seuils), 14 tests ; `scripts/run-atom-verifier.ts` (fichiers,
+réseau, argent). Par défaut le script n'appelle rien : il écrit
+`benchmarks/ai-correction/regression/atom-verifier/plan.v1/` — les 60
+consignes exactes, la clé de correction à part, l'estimation. Le run payant
+exige `--run --confirm=mesure` et la clé OpenRouter exportée seule ; plafond
+3 USD vérifié avant chaque appel ; un run arrêté est rapporté incomplet.
+
+Vérifié à l'écran sur le plan écrit : aucune consigne ne contient un champ
+de la clé (0 fichier sur 60), la fenêtre des strates S1–S3 est coupée à des
+mots entiers comme sur la page de passe 2, et les 60 cartes se répartissent
+S1 6 / S2 4 / S3 14 / S4 14 / S5 14 / S6 8.
+
+Estimation : Mistral medium 0,41 USD (tarif scellé), Haiku 4.5 0,27, Kimi K3
+0,15, Sonnet 4.6 0,82 ; total ≈ 1,65 USD sur 720 appels. Les trois derniers
+tarifs sont des lectures d'openrouter.ai du jour, remplacées par le coût
+réel renvoyé par l'API pendant le run.
+
+Dépense : 0,00 USD. La mesure attend le mot du propriétaire.
