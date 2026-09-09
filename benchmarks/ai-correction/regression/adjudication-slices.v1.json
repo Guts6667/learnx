@@ -1,0 +1,196 @@
+{
+  "contentHash": "sha256:ebd164037cb20a73bffb7a746b20d6568e09c99262dd641008f06e01df7c8daf",
+  "coverings": 2,
+  "deckHash": "sha256:53a2defc420c34180069bfa689f5273bef6490328451a892ba5e023f9215f6c5",
+  "primaryCards": 50,
+  "rule": "Une tranche ne contient jamais deux cartes de la même paire, de la même réponse ni de la même copie. Chaque carte primaire figure dans une tranche par couverture.",
+  "schemaVersion": 1,
+  "seed": "v4.5-210/slices/v1",
+  "sliceSize": 8,
+  "slices": [
+    {
+      "cards": [
+        "C-5a5b6cc636",
+        "C-7309c167f8",
+        "C-302b9df321",
+        "C-eecdd08b93",
+        "C-10d03a23e2",
+        "C-1cff16763a",
+        "C-858f89a8ff"
+      ],
+      "covering": 1,
+      "sliceId": "1-01"
+    },
+    {
+      "cards": [
+        "C-23cb79db39",
+        "C-28c8a6d628",
+        "C-b41bdb6098",
+        "C-bda12db6d2",
+        "C-bb87d23759",
+        "C-e707d9669d",
+        "C-aef2458e05"
+      ],
+      "covering": 1,
+      "sliceId": "1-02"
+    },
+    {
+      "cards": [
+        "C-6f02478fc2",
+        "C-92d4b25574",
+        "C-0dafed656a",
+        "C-c8c0bafb00",
+        "C-3a2fdb767e",
+        "C-46c2f075a1",
+        "C-de2289c819",
+        "C-5773c296c7"
+      ],
+      "covering": 1,
+      "sliceId": "1-03"
+    },
+    {
+      "cards": [
+        "C-ef06893724",
+        "C-02c2ddf742",
+        "C-699470f303",
+        "C-c2e812b133",
+        "C-5219f94743",
+        "C-00b4a1c0a0",
+        "C-73a8c98c78"
+      ],
+      "covering": 1,
+      "sliceId": "1-04"
+    },
+    {
+      "cards": [
+        "C-4d3ebe4339",
+        "C-20ae278814",
+        "C-d00dec227b",
+        "C-94ea93741f",
+        "C-a0ade8b88e",
+        "C-1b10dad05d",
+        "C-5d8f0447b1"
+      ],
+      "covering": 1,
+      "sliceId": "1-05"
+    },
+    {
+      "cards": [
+        "C-47402cc097",
+        "C-55f08a077c",
+        "C-272f41aa34",
+        "C-7591e7e2ed",
+        "C-ccc2405200",
+        "C-7a57652d93",
+        "C-e32060b658"
+      ],
+      "covering": 1,
+      "sliceId": "1-06"
+    },
+    {
+      "cards": [
+        "C-25ca3b32bc",
+        "C-e10e009b7f",
+        "C-636e218ca9",
+        "C-643773bcd3",
+        "C-4b88718a20",
+        "C-03ff752bb0",
+        "C-1e1d5034dc"
+      ],
+      "covering": 1,
+      "sliceId": "1-07"
+    },
+    {
+      "cards": [
+        "C-23cb79db39",
+        "C-28c8a6d628",
+        "C-636e218ca9",
+        "C-643773bcd3",
+        "C-d00dec227b",
+        "C-302b9df321",
+        "C-4b88718a20"
+      ],
+      "covering": 2,
+      "sliceId": "2-01"
+    },
+    {
+      "cards": [
+        "C-47402cc097",
+        "C-92d4b25574",
+        "C-3a2fdb767e",
+        "C-46c2f075a1",
+        "C-a0ade8b88e",
+        "C-10d03a23e2",
+        "C-5773c296c7",
+        "C-858f89a8ff"
+      ],
+      "covering": 2,
+      "sliceId": "2-02"
+    },
+    {
+      "cards": [
+        "C-272f41aa34",
+        "C-b41bdb6098",
+        "C-bda12db6d2",
+        "C-bb87d23759",
+        "C-de2289c819",
+        "C-00b4a1c0a0",
+        "C-7a57652d93"
+      ],
+      "covering": 2,
+      "sliceId": "2-03"
+    },
+    {
+      "cards": [
+        "C-ef06893724",
+        "C-0dafed656a",
+        "C-7309c167f8",
+        "C-1b10dad05d",
+        "C-e32060b658",
+        "C-1e1d5034dc",
+        "C-5d8f0447b1"
+      ],
+      "covering": 2,
+      "sliceId": "2-04"
+    },
+    {
+      "cards": [
+        "C-6f02478fc2",
+        "C-e10e009b7f",
+        "C-c8c0bafb00",
+        "C-94ea93741f",
+        "C-eecdd08b93",
+        "C-e707d9669d",
+        "C-aef2458e05"
+      ],
+      "covering": 2,
+      "sliceId": "2-05"
+    },
+    {
+      "cards": [
+        "C-4d3ebe4339",
+        "C-5a5b6cc636",
+        "C-20ae278814",
+        "C-02c2ddf742",
+        "C-25ca3b32bc",
+        "C-ccc2405200",
+        "C-03ff752bb0"
+      ],
+      "covering": 2,
+      "sliceId": "2-06"
+    },
+    {
+      "cards": [
+        "C-55f08a077c",
+        "C-7591e7e2ed",
+        "C-699470f303",
+        "C-c2e812b133",
+        "C-5219f94743",
+        "C-1cff16763a",
+        "C-73a8c98c78"
+      ],
+      "covering": 2,
+      "sliceId": "2-07"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2,s3 | autre: - | raison: les coûts, la date de visite et l'inconnue citée se rattachent tous au choix de Préventel.
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: le calcul chiffré et l'incertitude sur la subvention concernent tous deux la stratégie envisagée.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: processus et effectif correspondent au dossier, rien ne contredit les éléments donnés.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: la phrase reflète bien l'absence de mesure du dossier en laissant le seuil ouvert.
+C-6f02478fc2 | OUI | phrases: s0,s3 | autre: - | raison: le plafond posé est explicitement qualifié de proposition à valider, conforme à l'absence de contrainte du dossier.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: aucune autre phrase de l'extrait n'énonce seule une position claire.
+C-d5dff02d07 | NON | phrases: - | autre: - | raison: le rituel où traiter le risque, demandé par la consigne, n'est pas indiqué.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase propose une action de suivi, elle ne formule pas de risque à évaluer.
+C-5a5b6cc636 | NON | phrases: s2 | autre: - | raison: cette phrase indique que la donnée peut inverser le calcul, donc ne soutient pas le choix.
+C-2d0f0c9620 | NON | phrases: s1 | autre: - | raison: elle omet l'exigence du rapport signé et l'absence de ce rapport prévues par le dossier.

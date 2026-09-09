@@ -1,0 +1,842 @@
+[
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "evidenceMatches": [
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+        "resolvedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance."
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement."
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+      }
+    ],
+    "latencyMs": 2468,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les chiffres clés sont restitués avec exactitude : 10 erreurs puis 4 erreurs sur 24 étoiles, même groupe, même ordre, même durée. Aucun ajout matériel n'est introduit. La production ne mentionne pas explicitement les 20 minutes allouées, mais cette omission est circonscrite et ne fausse pas le raisonnement. Niveau partiel écarté : l'omission de la durée est mineure et ne constitue pas une violation d'une contrainte dure ; l'essentiel des faits déterminants est présent et exact.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fidelity"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le lien cause-effet est explicitement articulé : la proximité de la légende maintient le repère visible, ce qui réduit les allers-retours, lesquels sont identifiés comme vecteur de perte de correspondance. La formulation « rend plausible » évite de présenter la corrélation comme causalité certaine. Le mécanisme est compatible avec les faits du contexte. Niveau maîtrisé justifié.",
+          "levelKey": "mastered",
+          "criterionKey": "mechanism-link"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Deux inconnues matérielles sont nommées avec précision : l'effet d'entraînement possible lié au second passage, et l'absence de généralisation faute de nouveau groupe. La conclusion est bien présentée comme conditionnelle (« soutient une contribution… sans prouver qu'elle cause seule »). Aucune valeur n'est inventée pour combler ces lacunes. Tous les éléments exigés par ce critère sont présents et correctement bornés.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-boundary"
+        }
+      ],
+      "overallConfidence": 0.95,
+      "overallFeedback": "Réponse de très bonne qualité : les faits sont restitués fidèlement, le mécanisme est explicitement relié aux observations via un enchaînement causal plausible, et les limites sont clairement bornées (effet d'entraînement, absence de nouveau groupe). La seule légère omission — la durée de 20 minutes — n'affecte pas la cohérence de l'explication. Pour aller encore plus loin, vous pourriez envisager une condition de contrôle qui permettrait de démêler l'effet de proximité de l'effet d'entraînement, ce qui renforcerait la portée de votre conclusion.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788191837-Y62MWX8UJTVu5siWvqZL",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"source-fidelity\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les chiffres clés sont restitués avec exactitude : 10 erreurs puis 4 erreurs sur 24 étoiles, même groupe, même ordre, même durée. Aucun ajout matériel n'est introduit. La production ne mentionne pas explicitement les 20 minutes allouées, mais cette omission est circonscrite et ne fausse pas le raisonnement. Niveau partiel écarté : l'omission de la durée est mineure et ne constitue pas une violation d'une contrainte dure ; l'essentiel des faits déterminants est présent et exact.\",\"levelKey\":\"mastered\"},\"mechanism-link\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le lien cause-effet est explicitement articulé : la proximité de la légende maintient le repère visible, ce qui réduit les allers-retours, lesquels sont identifiés comme vecteur de perte de correspondance. La formulation « rend plausible » évite de présenter la corrélation comme causalité certaine. Le mécanisme est compatible avec les faits du contexte. Niveau maîtrisé justifié.\",\"levelKey\":\"mastered\"},\"uncertainty-boundary\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Deux inconnues matérielles sont nommées avec précision : l'effet d'entraînement possible lié au second passage, et l'absence de généralisation faute de nouveau groupe. La conclusion est bien présentée comme conditionnelle (« soutient une contribution… sans prouver qu'elle cause seule »). Aucune valeur n'est inventée pour combler ces lacunes. Tous les éléments exigés par ce critère sont présents et correctement bornés.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Réponse de très bonne qualité : les faits sont restitués fidèlement, le mécanisme est explicitement relié aux observations via un enchaînement causal plausible, et les limites sont clairement bornées (effet d'entraînement, absence de nouveau groupe). La seule légère omission — la durée de 20 minutes — n'affecte pas la cohérence de l'explication. Pour aller encore plus loin, vous pourriez envisager une condition de contrôle qui permettrait de démêler l'effet de proximité de l'effet d'entraînement, ce qui renforcerait la portée de votre conclusion.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.022572,
+      "costSource": "ACTUAL",
+      "inputTokens": 3389,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 827
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "evidenceMatches": [
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+        "resolvedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance."
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement."
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+      }
+    ],
+    "latencyMs": 1209,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les chiffres clés sont exacts (10/24, 4/24), les conditions contrôlées (même groupe, même ordre, même durée) sont correctement restituées. Aucun ajout matériel ni déformation n'est détectable. La restitution est complète et fidèle.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fidelity"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le lien entre la proximité de la légende, la réduction des déplacements du regard et la baisse des erreurs est rendu explicite et articulé en chaîne causale. La prudence est bien marquée par « rend plausible » et « susceptibles de », évitant de présenter une corrélation comme une causalité certaine. Le mécanisme est compatible avec les faits fournis.",
+          "levelKey": "mastered",
+          "criterionKey": "mechanism-link"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Deux inconnues matérielles distinctes sont nommées : la part de l'effet d'entraînement dans la baisse, et l'absence de généralisation faute de nouveau groupe. La conclusion est correctement conditionnée (« sans prouver »), et aucune valeur n'est inventée pour combler ces lacunes. La frontière entre ce qui est établi et ce qui reste incertain est clairement tracée.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-boundary"
+        }
+      ],
+      "overallConfidence": 0.95,
+      "overallFeedback": "Réponse très solide sur les trois dimensions attendues. Les faits sont restitués sans distorsion, le mécanisme est explicitement articulé avec la prudence appropriée, et les deux principales sources d'incertitude (entraînement, absence de nouveau groupe) sont nommées et correctement bornées. Pour aller plus loin, vous pourriez préciser comment un essai avec un nouveau groupe permettrait précisément de dissocier l'effet de la proximité de celui de l'entraînement, renforçant ainsi la portée opérationnelle de la conclusion.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788191853-I7S2d7GFWxdZ99YNl7Ru",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"source-fidelity\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les chiffres clés sont exacts (10/24, 4/24), les conditions contrôlées (même groupe, même ordre, même durée) sont correctement restituées. Aucun ajout matériel ni déformation n'est détectable. La restitution est complète et fidèle.\",\"levelKey\":\"mastered\"},\"mechanism-link\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le lien entre la proximité de la légende, la réduction des déplacements du regard et la baisse des erreurs est rendu explicite et articulé en chaîne causale. La prudence est bien marquée par « rend plausible » et « susceptibles de », évitant de présenter une corrélation comme une causalité certaine. Le mécanisme est compatible avec les faits fournis.\",\"levelKey\":\"mastered\"},\"uncertainty-boundary\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Deux inconnues matérielles distinctes sont nommées : la part de l'effet d'entraînement dans la baisse, et l'absence de généralisation faute de nouveau groupe. La conclusion est correctement conditionnée (« sans prouver »), et aucune valeur n'est inventée pour combler ces lacunes. La frontière entre ce qui est établi et ce qui reste incertain est clairement tracée.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Réponse très solide sur les trois dimensions attendues. Les faits sont restitués sans distorsion, le mécanisme est explicitement articulé avec la prudence appropriée, et les deux principales sources d'incertitude (entraînement, absence de nouveau groupe) sont nommées et correctement bornées. Pour aller plus loin, vous pourriez préciser comment un essai avec un nouveau groupe permettrait précisément de dissocier l'effet de la proximité de celui de l'entraînement, renforçant ainsi la portée opérationnelle de la conclusion.\"}",
+    "repetition": 2,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.020667,
+      "costSource": "ACTUAL",
+      "inputTokens": 3389,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 700
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "evidenceMatches": [
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+        "resolvedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard"
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance",
+        "resolvedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement."
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+      }
+    ],
+    "latencyMs": 1316,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+            "Le fait que les participants détournent moins le regard"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les chiffres clés sont restitués avec exactitude : 10 erreurs puis 4 erreurs sur 24 étoiles, même groupe, même ordre, même durée. La mention des regards détournés en moins correspond fidèlement à l'observation de l'observateur. Aucun ajout matériel ni déformation du sens n'est constaté. Niveau maîtrisé.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fidelity"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le mécanisme est explicité de façon articulée : la proximité de la légende maintient le repère visuel disponible, ce qui réduit les allers-retours oculaires, lesquels sont la cause plausible des erreurs de correspondance. Le lien cause-condition-effet est nommé de manière explicite et reste compatible avec les faits. Le niveau maîtrisé est atteint.",
+          "levelKey": "mastered",
+          "criterionKey": "mechanism-link"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La production distingue clairement ce qui est établi (baisse des erreurs), ce qui est inféré (rôle de la proximité), et deux inconnues matérielles correctement bornées : l'effet d'entraînement comme cause concurrente possible, et l'absence de nouveau groupe qui limite la généralisation. Aucune inconnue n'est inventée ni résolue prématurément. Niveau maîtrisé.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-boundary"
+        }
+      ],
+      "overallConfidence": 0.95,
+      "overallFeedback": "La production répond pleinement aux trois critères. Les faits sont restitués sans erreur ni ajout, le mécanisme est enchaîné de façon explicite depuis l'observation jusqu'à la conclusion, et les limites de l'inférence sont distinguées avec précision. Pour aller plus loin, vous pourriez proposer un dispositif concret permettant de dissocier effet d'entraînement et effet de proximité (par exemple, inverser l'ordre des conditions entre deux sous-groupes indépendants), ce qui renforcerait la portée explicative de votre analyse.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788191866-po6L4tPkQtS4aTGdEbYW",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"source-fidelity\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.\",\"Le fait que les participants détournent moins le regard\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les chiffres clés sont restitués avec exactitude : 10 erreurs puis 4 erreurs sur 24 étoiles, même groupe, même ordre, même durée. La mention des regards détournés en moins correspond fidèlement à l'observation de l'observateur. Aucun ajout matériel ni déformation du sens n'est constaté. Niveau maîtrisé.\",\"levelKey\":\"mastered\"},\"mechanism-link\":{\"confidence\":0.95,\"evidenceQuotes\":[\"la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le mécanisme est explicité de façon articulée : la proximité de la légende maintient le repère visuel disponible, ce qui réduit les allers-retours oculaires, lesquels sont la cause plausible des erreurs de correspondance. Le lien cause-condition-effet est nommé de manière explicite et reste compatible avec les faits. Le niveau maîtrisé est atteint.\",\"levelKey\":\"mastered\"},\"uncertainty-boundary\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La production distingue clairement ce qui est établi (baisse des erreurs), ce qui est inféré (rôle de la proximité), et deux inconnues matérielles correctement bornées : l'effet d'entraînement comme cause concurrente possible, et l'absence de nouveau groupe qui limite la généralisation. Aucune inconnue n'est inventée ni résolue prématurément. Niveau maîtrisé.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"La production répond pleinement aux trois critères. Les faits sont restitués sans erreur ni ajout, le mécanisme est enchaîné de façon explicite depuis l'observation jusqu'à la conclusion, et les limites de l'inférence sont distinguées avec précision. Pour aller plus loin, vous pourriez proposer un dispositif concret permettant de dissocier effet d'entraînement et effet de proximité (par exemple, inverser l'ordre des conditions entre deux sous-groupes indépendants), ce qui renforcerait la portée explicative de votre analyse.\"}",
+    "repetition": 3,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.020997,
+      "costSource": "ACTUAL",
+      "inputTokens": 3389,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 722
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-0c2b233864fbcce5",
+    "evidenceMatches": [
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+        "resolvedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "le second passage peut aussi bénéficier de l'entraînement",
+        "resolvedQuote": "le second passage peut aussi bénéficier de l'entraînement"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "le second passage peut aussi bénéficier de l'entraînement",
+        "resolvedQuote": "le second passage peut aussi bénéficier de l'entraînement"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+      }
+    ],
+    "latencyMs": 1274,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les chiffres clés sont exactement restitués (10/24 → 4/24), la variable modifiée (proximité de la légende) est correctement identifiée, et les constantes (même groupe, même ordre, même durée de 20 minutes — implicitement, la durée n'est pas chiffrée mais les constantes essentielles sont mentionnées) sont signalées. Aucune donnée inventée ou déformée n'est détectée. Niveau maîtrisé.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fidelity"
+        },
+        {
+          "confidence": 0.92,
+          "evidenceQuotes": [
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse",
+            "le second passage peut aussi bénéficier de l'entraînement"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le lien mécanistique est explicitement posé : la proximité de la légende réduit la charge de mémorisation et les allers-regards (implicite mais articulé via 'contribution de la proximité'). L'apprenant distingue bien corrélation et causalité certaine en refusant d'attribuer la totalité de la baisse à un seul facteur. Le mécanisme reste compatible avec les faits. Niveau maîtrisé.",
+          "levelKey": "mastered",
+          "criterionKey": "mechanism-link"
+        },
+        {
+          "confidence": 0.93,
+          "evidenceQuotes": [
+            "le second passage peut aussi bénéficier de l'entraînement",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L'apprenant nomme deux inconnues distinctes et bien bornées : l'effet d'entraînement lié à l'ordre des passages, et la limite de généralisation faute d'un groupe indépendant. Ces deux incertitudes correspondent précisément aux inconnues matérielles signalées dans le contexte. Aucune valeur n'est inventée, aucun fallback hors contrainte n'est proposé. Niveau maîtrisé.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-boundary"
+        }
+      ],
+      "overallConfidence": 0.9335000000000001,
+      "overallFeedback": "Réponse très solide sur les trois critères. Les faits sont restitués fidèlement avec les bons chiffres et les bonnes constantes. Le mécanisme est relié aux faits de manière explicite et prudente, sans sur-affirmer la causalité. Les deux incertitudes majeures (entraînement, absence de nouveau groupe) sont nommées et correctement bornées. Pour enrichir encore la réponse, vous pourriez préciser le mécanisme cognitif sous-jacent à la proximité de la légende (réduction de la charge de mémoire de travail ou du nombre de déplacements oculaires), ce qui renforcerait l'explication sans dépasser ce que les faits permettent d'affirmer.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788191880-uzgK2MPaWDmHGx3qV6I2",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"source-fidelity\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les chiffres clés sont exactement restitués (10/24 → 4/24), la variable modifiée (proximité de la légende) est correctement identifiée, et les constantes (même groupe, même ordre, même durée de 20 minutes — implicitement, la durée n'est pas chiffrée mais les constantes essentielles sont mentionnées) sont signalées. Aucune donnée inventée ou déformée n'est détectée. Niveau maîtrisé.\",\"levelKey\":\"mastered\"},\"mechanism-link\":{\"confidence\":0.92,\"evidenceQuotes\":[\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse\",\"le second passage peut aussi bénéficier de l'entraînement\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le lien mécanistique est explicitement posé : la proximité de la légende réduit la charge de mémorisation et les allers-regards (implicite mais articulé via 'contribution de la proximité'). L'apprenant distingue bien corrélation et causalité certaine en refusant d'attribuer la totalité de la baisse à un seul facteur. Le mécanisme reste compatible avec les faits. Niveau maîtrisé.\",\"levelKey\":\"mastered\"},\"uncertainty-boundary\":{\"confidence\":0.93,\"evidenceQuotes\":[\"le second passage peut aussi bénéficier de l'entraînement\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L'apprenant nomme deux inconnues distinctes et bien bornées : l'effet d'entraînement lié à l'ordre des passages, et la limite de généralisation faute d'un groupe indépendant. Ces deux incertitudes correspondent précisément aux inconnues matérielles signalées dans le contexte. Aucune valeur n'est inventée, aucun fallback hors contrainte n'est proposé. Niveau maîtrisé.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Réponse très solide sur les trois critères. Les faits sont restitués fidèlement avec les bons chiffres et les bonnes constantes. Le mécanisme est relié aux faits de manière explicite et prudente, sans sur-affirmer la causalité. Les deux incertitudes majeures (entraînement, absence de nouveau groupe) sont nommées et correctement bornées. Pour enrichir encore la réponse, vous pourriez préciser le mécanisme cognitif sous-jacent à la proximité de la légende (réduction de la charge de mémoire de travail ou du nombre de déplacements oculaires), ce qui renforcerait l'explication sans dépasser ce que les faits permettent d'affirmer.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.021681,
+      "costSource": "ACTUAL",
+      "inputTokens": 3332,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 779
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-4192c5710c20109b",
+    "evidenceMatches": [
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard"
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance",
+        "resolvedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance"
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "car le second passage peut aussi bénéficier de l'entraînement",
+        "resolvedQuote": "car le second passage peut aussi bénéficier de l'entraînement"
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue"
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance",
+        "resolvedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance"
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple"
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "car le second passage peut aussi bénéficier de l'entraînement",
+        "resolvedQuote": "car le second passage peut aussi bénéficier de l'entraînement"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+      }
+    ],
+    "latencyMs": 1382,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.82,
+          "evidenceQuotes": [
+            "Le fait que les participants détournent moins le regard",
+            "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance",
+            "car le second passage peut aussi bénéficier de l'entraînement",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les faits clés du contexte sont restitués de manière fidèle : la réduction des regards vers la table distante est mentionnée, la proximité de la légende est correctement identifiée comme variable modifiée, et l'effet d'entraînement potentiel est bien relevé. Cependant, les chiffres précis (24 étoiles, 10 erreurs puis 4 erreurs, 20 minutes) ne sont jamais mentionnés explicitement dans la production. Cette omission est notable mais circonscrite : la baisse est bien évoquée sans être chiffrée, ce qui constitue une imprécision unique plutôt qu'une erreur matérielle. Niveau partiel retenu.",
+          "levelKey": "partial",
+          "criterionKey": "source-fidelity"
+        },
+        {
+          "confidence": 0.88,
+          "evidenceQuotes": [
+            "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance",
+            "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple",
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le lien causal est explicitement articulé : la proximité de la légende → maintien du repère visuel → réduction des allers-retours → moins d'erreurs de correspondance. La formulation est prudente (« rend plausible », « sans prouver qu'elle cause seule »), ce qui évite de présenter une corrélation comme causalité certaine. Le mécanisme reste compatible avec les faits du contexte. Toutes les exigences du critère sont satisfaites.",
+          "levelKey": "mastered",
+          "criterionKey": "mechanism-link"
+        },
+        {
+          "confidence": 0.85,
+          "evidenceQuotes": [
+            "car le second passage peut aussi bénéficier de l'entraînement",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue",
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les deux inconnues majeures sont nommées explicitement : l'effet d'entraînement comme facteur concurrent non isolé, et l'absence d'un nouveau groupe qui limite la généralisation. La distinction entre ce qui est établi (la baisse, la réduction des regards), ce qui est inféré (le mécanisme de proximité) et ce qui reste inconnu (l'attribution causale exclusive, la portée générale) est clairement posée. Aucune valeur n'est inventée pour ces inconnues. Toutes les exigences du critère sont satisfaites.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-boundary"
+        }
+      ],
+      "overallConfidence": 0.85,
+      "overallFeedback": "La production répond bien à la consigne en structurant faits, mécanisme et inconnues de façon cohérente et rigoureuse. Le mécanisme explicatif est bien construit et les limites sont correctement bornées. Le seul point d'amélioration notable concerne la restitution des faits chiffrés : mentionner explicitement les 10 puis 4 erreurs (sur 24 étoiles) aurait ancré l'explication dans les données concrètes du contexte et renforcé la démonstration. Pensez à toujours citer les données quantitatives fournies lorsqu'elles sont disponibles.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788191894-mSENhwIaSXQXJqpZyyoB",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"source-fidelity\":{\"confidence\":0.82,\"evidenceQuotes\":[\"Le fait que les participants détournent moins le regard\",\"la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance\",\"car le second passage peut aussi bénéficier de l'entraînement\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les faits clés du contexte sont restitués de manière fidèle : la réduction des regards vers la table distante est mentionnée, la proximité de la légende est correctement identifiée comme variable modifiée, et l'effet d'entraînement potentiel est bien relevé. Cependant, les chiffres précis (24 étoiles, 10 erreurs puis 4 erreurs, 20 minutes) ne sont jamais mentionnés explicitement dans la production. Cette omission est notable mais circonscrite : la baisse est bien évoquée sans être chiffrée, ce qui constitue une imprécision unique plutôt qu'une erreur matérielle. Niveau partiel retenu.\",\"levelKey\":\"partial\"},\"mechanism-link\":{\"confidence\":0.88,\"evidenceQuotes\":[\"la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance\",\"Le fait que les participants détournent moins le regard rend plausible un mécanisme simple\",\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le lien causal est explicitement articulé : la proximité de la légende → maintien du repère visuel → réduction des allers-retours → moins d'erreurs de correspondance. La formulation est prudente (« rend plausible », « sans prouver qu'elle cause seule »), ce qui évite de présenter une corrélation comme causalité certaine. Le mécanisme reste compatible avec les faits du contexte. Toutes les exigences du critère sont satisfaites.\",\"levelKey\":\"mastered\"},\"uncertainty-boundary\":{\"confidence\":0.85,\"evidenceQuotes\":[\"car le second passage peut aussi bénéficier de l'entraînement\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue\",\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les deux inconnues majeures sont nommées explicitement : l'effet d'entraînement comme facteur concurrent non isolé, et l'absence d'un nouveau groupe qui limite la généralisation. La distinction entre ce qui est établi (la baisse, la réduction des regards), ce qui est inféré (le mécanisme de proximité) et ce qui reste inconnu (l'attribution causale exclusive, la portée générale) est clairement posée. Aucune valeur n'est inventée pour ces inconnues. Toutes les exigences du critère sont satisfaites.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"La production répond bien à la consigne en structurant faits, mécanisme et inconnues de façon cohérente et rigoureuse. Le mécanisme explicatif est bien construit et les limites sont correctement bornées. Le seul point d'amélioration notable concerne la restitution des faits chiffrés : mentionner explicitement les 10 puis 4 erreurs (sur 24 étoiles) aurait ancré l'explication dans les données concrètes du contexte et renforcé la démonstration. Pensez à toujours citer les données quantitatives fournies lorsqu'elles sont disponibles.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.024189,
+      "costSource": "ACTUAL",
+      "inputTokens": 3343,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 944
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-8c79c1cc9dbf1f44",
+    "evidenceMatches": [
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Les erreurs passent de 4 sur 24 à 10 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+        "resolvedQuote": "Les erreurs passent de 4 sur 24 à 10 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance."
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "le second passage peut aussi bénéficier de l'entraînement",
+        "resolvedQuote": "le second passage peut aussi bénéficier de l'entraînement"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+      }
+    ],
+    "latencyMs": 1233,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.82,
+          "evidenceQuotes": [
+            "Les erreurs passent de 4 sur 24 à 10 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L'apprenant inverse les chiffres : dans le contexte, c'est lors du premier tri (légende éloignée) que l'on compte 10 erreurs, et lors du second tri (légende rapprochée) que l'on en compte 4. La production présente la situation en sens contraire (4 erreurs associées à la légende éloignée, 10 à la légende rapprochée), ce qui constitue une erreur matérielle importante sur les faits déterminants. Les autres éléments — même groupe, même ordre, même durée — sont correctement restitués, ainsi que la mention des regards vers la table distante. L'erreur d'inversion est unique mais porte sur les chiffres centraux de l'exercice ; elle réduit fortement la valeur factuelle de la réponse.",
+          "levelKey": "limited",
+          "criterionKey": "source-fidelity"
+        },
+        {
+          "confidence": 0.85,
+          "evidenceQuotes": [
+            "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.",
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le lien entre la proximité de la légende, la réduction des regards détournés et la meilleure conservation du repère est explicitement formulé. L'apprenant évite de présenter la corrélation comme une causalité certaine en employant 'rend plausible' et 'sans prouver qu'elle cause seule'. Le mécanisme est cohérent avec les faits du contexte et relie clairement cause, condition et effet. Ce critère est bien maîtrisé.",
+          "levelKey": "mastered",
+          "criterionKey": "mechanism-link"
+        },
+        {
+          "confidence": 0.88,
+          "evidenceQuotes": [
+            "le second passage peut aussi bénéficier de l'entraînement",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L'apprenant identifie deux inconnues matérielles distinctes : l'effet d'entraînement lié au second passage du même groupe, et l'impossibilité de généraliser sans nouveau groupe. Ces inconnues sont nommées sans que leur valeur soit inventée, et la conclusion sur la proximité est présentée de manière conditionnelle. Les deux exigences principales du critère sont couvertes de façon explicite et correctement bornée.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-boundary"
+        }
+      ],
+      "overallConfidence": 0.8484999999999999,
+      "overallFeedback": "La réponse montre une bonne maîtrise du raisonnement mécaniste et de la gestion des incertitudes, mais elle souffre d'une erreur d'inversion des chiffres clés : la production attribue 4 erreurs à la légende éloignée et 10 à la légende rapprochée, alors que c'est l'inverse dans le contexte. Cette inversion fragilise l'ensemble de la démonstration factuelle. Pour progresser, relisez attentivement les données numériques avant de rédiger, et vérifiez que l'ordre tri 1 / tri 2 correspond bien à l'ordre légende éloignée / légende rapprochée tel que présenté dans l'énoncé.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788191911-fVzxK9wGEdFqosnN90ho",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"source-fidelity\":{\"confidence\":0.82,\"evidenceQuotes\":[\"Les erreurs passent de 4 sur 24 à 10 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L'apprenant inverse les chiffres : dans le contexte, c'est lors du premier tri (légende éloignée) que l'on compte 10 erreurs, et lors du second tri (légende rapprochée) que l'on en compte 4. La production présente la situation en sens contraire (4 erreurs associées à la légende éloignée, 10 à la légende rapprochée), ce qui constitue une erreur matérielle importante sur les faits déterminants. Les autres éléments — même groupe, même ordre, même durée — sont correctement restitués, ainsi que la mention des regards vers la table distante. L'erreur d'inversion est unique mais porte sur les chiffres centraux de l'exercice ; elle réduit fortement la valeur factuelle de la réponse.\",\"levelKey\":\"limited\"},\"mechanism-link\":{\"confidence\":0.85,\"evidenceQuotes\":[\"Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.\",\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le lien entre la proximité de la légende, la réduction des regards détournés et la meilleure conservation du repère est explicitement formulé. L'apprenant évite de présenter la corrélation comme une causalité certaine en employant 'rend plausible' et 'sans prouver qu'elle cause seule'. Le mécanisme est cohérent avec les faits du contexte et relie clairement cause, condition et effet. Ce critère est bien maîtrisé.\",\"levelKey\":\"mastered\"},\"uncertainty-boundary\":{\"confidence\":0.88,\"evidenceQuotes\":[\"le second passage peut aussi bénéficier de l'entraînement\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L'apprenant identifie deux inconnues matérielles distinctes : l'effet d'entraînement lié au second passage du même groupe, et l'impossibilité de généraliser sans nouveau groupe. Ces inconnues sont nommées sans que leur valeur soit inventée, et la conclusion sur la proximité est présentée de manière conditionnelle. Les deux exigences principales du critère sont couvertes de façon explicite et correctement bornée.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"La réponse montre une bonne maîtrise du raisonnement mécaniste et de la gestion des incertitudes, mais elle souffre d'une erreur d'inversion des chiffres clés : la production attribue 4 erreurs à la légende éloignée et 10 à la légende rapprochée, alors que c'est l'inverse dans le contexte. Cette inversion fragilise l'ensemble de la démonstration factuelle. Pour progresser, relisez attentivement les données numériques avant de rédiger, et vérifiez que l'ordre tri 1 / tri 2 correspond bien à l'ordre légende éloignée / légende rapprochée tel que présenté dans l'énoncé.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.023667,
+      "costSource": "ACTUAL",
+      "inputTokens": 3389,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 900
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+    "caseId": "regression-f8885dcce7cc01e9",
+    "evidenceMatches": [
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+        "resolvedQuote": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée."
+      },
+      {
+        "criterionKey": "source-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard"
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance",
+        "resolvedQuote": "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance"
+      },
+      {
+        "criterionKey": "mechanism-link",
+        "matchType": "EXACT",
+        "requestedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple",
+        "resolvedQuote": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "car le second passage peut aussi bénéficier de l'entraînement",
+        "resolvedQuote": "car le second passage peut aussi bénéficier de l'entraînement"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue",
+        "resolvedQuote": "Sans essai sur un nouveau groupe, la généralisation reste inconnue"
+      },
+      {
+        "criterionKey": "uncertainty-boundary",
+        "matchType": "EXACT",
+        "requestedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse",
+        "resolvedQuote": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+      }
+    ],
+    "latencyMs": 1215,
+    "modelId": "anthropic/claude-sonnet-4.6",
+    "modelSnapshot": "anthropic/claude-sonnet-4.6",
+    "output": {
+      "contractKey": "writing-v1-explanatory-analysis",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+            "Le fait que les participants détournent moins le regard"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les faits essentiels sont restitués avec précision : le nombre d'erreurs (10 puis 4 sur 24), le maintien des mêmes variables (groupe, ordre, durée) et l'observation des regards sont correctement mentionnés. Aucun ajout matériel problématique n'est détecté. La production est fidèle au contexte fourni.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fidelity"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance",
+            "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le lien causal est explicitement articulé : la proximité de la légende réduit les allers-retours visuels, ce qui maintient la correspondance et diminue les erreurs. L'apprenant prend soin de présenter ce lien comme plausible plutôt que comme une causalité certaine, ce qui est approprié. Le mécanisme est cohérent avec les faits fiables.",
+          "levelKey": "mastered",
+          "criterionKey": "mechanism-link"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "car le second passage peut aussi bénéficier de l'entraînement",
+            "Sans essai sur un nouveau groupe, la généralisation reste inconnue",
+            "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L'apprenant distingue clairement ce qui est établi (la baisse observée), ce qui est inféré (la contribution de la proximité), et les inconnues matérielles (effet d'entraînement, absence de nouveau groupe limitant la généralisation). Les incertitudes sont correctement bornées sans en inventer la résolution. Travail complet sur ce critère.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-boundary"
+        }
+      ],
+      "overallConfidence": 0.95,
+      "overallFeedback": "Réponse bien construite qui satisfait les trois critères de la rubrique. Les faits sont restitués fidèlement, le mécanisme est explicitement relié aux observations avec la prudence causale requise, et les inconnues (effet d'entraînement, généralisation) sont nommées et bornées avec précision. Pour aller plus loin, vous pourriez envisager de proposer un dispositif concret (nouveau groupe de contrôle) pour lever ces incertitudes, ce qui renforcerait encore la rigueur de l'analyse.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "Anthropic",
+    "providerRequestId": "gen-1788191928-JFpCbnOtyOmcU0DtSDa9",
+    "providerRoute": "Anthropic",
+    "rawModelOutput": "{\"criteria\":{\"source-fidelity\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.\",\"Le fait que les participants détournent moins le regard\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les faits essentiels sont restitués avec précision : le nombre d'erreurs (10 puis 4 sur 24), le maintien des mêmes variables (groupe, ordre, durée) et l'observation des regards sont correctement mentionnés. Aucun ajout matériel problématique n'est détecté. La production est fidèle au contexte fourni.\",\"levelKey\":\"mastered\"},\"mechanism-link\":{\"confidence\":0.95,\"evidenceQuotes\":[\"la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance\",\"Le fait que les participants détournent moins le regard rend plausible un mécanisme simple\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le lien causal est explicitement articulé : la proximité de la légende réduit les allers-retours visuels, ce qui maintient la correspondance et diminue les erreurs. L'apprenant prend soin de présenter ce lien comme plausible plutôt que comme une causalité certaine, ce qui est approprié. Le mécanisme est cohérent avec les faits fiables.\",\"levelKey\":\"mastered\"},\"uncertainty-boundary\":{\"confidence\":0.95,\"evidenceQuotes\":[\"car le second passage peut aussi bénéficier de l'entraînement\",\"Sans essai sur un nouveau groupe, la généralisation reste inconnue\",\"Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L'apprenant distingue clairement ce qui est établi (la baisse observée), ce qui est inféré (la contribution de la proximité), et les inconnues matérielles (effet d'entraînement, absence de nouveau groupe limitant la généralisation). Les incertitudes sont correctement bornées sans en inventer la résolution. Travail complet sur ce critère.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Réponse bien construite qui satisfait les trois critères de la rubrique. Les faits sont restitués fidèlement, le mécanisme est explicitement relié aux observations avec la prudence causale requise, et les inconnues (effet d'entraînement, généralisation) sont nommées et bornées avec précision. Pour aller plus loin, vous pourriez envisager de proposer un dispositif concret (nouveau groupe de contrôle) pour lever ces incertitudes, ce qui renforcerait encore la rigueur de l'analyse.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Anthropic"
+      ],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.021012,
+      "costSource": "ACTUAL",
+      "inputTokens": 3434,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 714
+    },
+    "workflowPass": "PRIMARY"
+  }
+]

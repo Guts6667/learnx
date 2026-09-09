@@ -36,6 +36,7 @@ import {
   type RegressionMutant,
   type RegressionMutantKind,
 } from './ai-correction-regression-mutants.js';
+import { checkEvidenceGuards } from './ai-correction-evidence-guards.js';
 import type {
   RegressionCheckerVerdict,
   RegressionCriterionObservation,
@@ -474,9 +475,24 @@ export async function deriveRegressionObservations(input: {
         };
       });
 
+    // D0 runs before anything a verifier could say, on the text actually graded.
+    const evidenceGuardViolations = checkEvidenceGuards({
+      expectedCriterionKeys: scale.criteria.map((entry) => entry.criterionKey),
+      responseText: unit.responseText,
+      returnedCriteria: attempt.output.criteria.map((criterion) => ({
+        criterionKey: criterion.criterionKey,
+        evidenceQuotes: criterion.evidenceQuotes ?? [],
+        levelKey: criterion.levelKey,
+      })),
+      topLevelKeys: scale.criteria
+        .map((entry) => entry.orderedLevelKeys.at(-1))
+        .filter((levelKey): levelKey is string => typeof levelKey === 'string'),
+    });
+
     observations.push({
       caseId: unit.poolCaseId,
       criteria,
+      evidenceGuardViolations,
       ...(unit.expectation ? { expectation: unit.expectation } : {}),
       ...(unit.kind ? { kind: unit.kind } : {}),
       ...(unit.mutantId ? { mutantId: unit.mutantId } : {}),

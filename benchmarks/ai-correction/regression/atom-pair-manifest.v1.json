@@ -1,0 +1,1418 @@
+{
+  "atomTaxonomyHash": "sha256:e9a1b39e0651998cbb19427882edda6347aeda7228cdb06136eb967cc26134c5",
+  "normalisationTables": {
+    "numeric": "sha256:154ac56dc18580abdbda86f2b6b9e3a0ebead205ae757d1c4db8bfbe0ec35f73",
+    "unit": "sha256:59c69aa6d43d0ceaf4541262f383678af95a3085e90ea8193fcb157f056344e4"
+  },
+  "pairs": [
+    {
+      "atomId": "cf.a1",
+      "atomText": "CHAQUE affirmation utile est fidèle au contexte",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-complet",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+      "negativeSpans": [
+        "assuré par les 12 personnes de l’équipe",
+        "Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+        "Deux hypothèses restent ouvertes et conditionnent cet objectif.",
+        "Deux hypothèses restent ouvertes et conditionnent cet objectif"
+      ],
+      "originalTextSha": "sha256:a7942dddcff3bb86",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "atomText": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-complet",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+      "negativeSpans": [
+        "assuré par les 12 personnes de l’équipe",
+        "Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+        "Deux hypothèses restent ouvertes et conditionnent cet objectif.",
+        "Deux hypothèses restent ouvertes et conditionnent cet objectif"
+      ],
+      "originalTextSha": "sha256:a7942dddcff3bb86",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a3",
+      "atomText": "CETTE limite est correcte pour CETTE affirmation",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-complet",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+      "negativeSpans": [
+        "assuré par les 12 personnes de l’équipe",
+        "Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+        "Deux hypothèses restent ouvertes et conditionnent cet objectif.",
+        "Deux hypothèses restent ouvertes et conditionnent cet objectif"
+      ],
+      "originalTextSha": "sha256:a7942dddcff3bb86",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "ff.a2",
+      "atomText": "CHAQUE donnée de l'ensemble est exacte",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "fact-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1",
+      "negativeSpans": [
+        "le contrat Préventel à 21 000 euros par an",
+        "5 immobilisations de 2025",
+        "l’arrêt technique du 14 octobre",
+        "le dossier ne renseigne aucune des 5 immobilisations de 2025"
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a3",
+      "atomText": "CHAQUE donnée de l'ensemble est pertinente pour CE choix",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "fact-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1",
+      "negativeSpans": [
+        "le contrat Préventel à 21 000 euros par an",
+        "5 immobilisations de 2025",
+        "l’arrêt technique du 14 octobre",
+        "le dossier ne renseigne aucune des 5 immobilisations de 2025"
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a4",
+      "atomText": "CHAQUE donnée de l'ensemble soutient CE choix",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "fact-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1",
+      "negativeSpans": [
+        "le contrat Préventel à 21 000 euros par an",
+        "5 immobilisations de 2025",
+        "l’arrêt technique du 14 octobre",
+        "le dossier ne renseigne aucune des 5 immobilisations de 2025"
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ff.a2",
+      "atomText": "CHAQUE donnée de l'ensemble est exacte",
+      "authoredAnswerId": "holdout-v3/holdout3-writing-water-damage-partial",
+      "criterionKey": "fact-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v3/holdout3-writing-water-damage-partial#FACT_INVERSION#fact-fidelity@197e1ab77b37",
+      "negativeSpans": [
+        "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.",
+        "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets",
+        "20 200 euros au total pour la partielle"
+      ],
+      "originalTextSha": "sha256:df41a419c27161f6",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a3",
+      "atomText": "CHAQUE donnée de l'ensemble est pertinente pour CE choix",
+      "authoredAnswerId": "holdout-v3/holdout3-writing-water-damage-partial",
+      "criterionKey": "fact-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v3/holdout3-writing-water-damage-partial#FACT_INVERSION#fact-fidelity@197e1ab77b37",
+      "negativeSpans": [
+        "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.",
+        "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets",
+        "20 200 euros au total pour la partielle"
+      ],
+      "originalTextSha": "sha256:df41a419c27161f6",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a4",
+      "atomText": "CHAQUE donnée de l'ensemble soutient CE choix",
+      "authoredAnswerId": "holdout-v3/holdout3-writing-water-damage-partial",
+      "criterionKey": "fact-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v3/holdout3-writing-water-damage-partial#FACT_INVERSION#fact-fidelity@197e1ab77b37",
+      "negativeSpans": [
+        "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.",
+        "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets",
+        "20 200 euros au total pour la partielle"
+      ],
+      "originalTextSha": "sha256:df41a419c27161f6",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rr.a1",
+      "atomText": "un risque est nommé",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "residual-risk-surfacing",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+      "negativeSpans": [
+        "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "rr.a2",
+      "atomText": "CE risque subsiste après CETTE action",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "residual-risk-surfacing",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+      "negativeSpans": [
+        "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rr.a3",
+      "atomText": "CE risque est exact ET pertinent au regard du dossier",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "residual-risk-surfacing",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+      "negativeSpans": [
+        "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "rr.a4",
+      "atomText": "une précaution est proposée",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "residual-risk-surfacing",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+      "negativeSpans": [
+        "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "rr.a5",
+      "atomText": "CETTE précaution atténue CE risque",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "residual-risk-surfacing",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+      "negativeSpans": [
+        "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rr.a6",
+      "atomText": "CETTE précaution est proportionnée à CE risque",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-maintenance-contract-successful",
+      "criterionKey": "residual-risk-surfacing",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+      "negativeSpans": [
+        "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+      ],
+      "originalTextSha": "sha256:2b7c61fe6dc32997",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "rl.a1",
+      "atomText": "le lien réflexif demandé est explicitement énoncé",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-reflexion-mission-complet",
+      "criterionKey": "reflection-link",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#reflection-link@2",
+      "negativeSpans": [
+        "les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré",
+        "J’en tire une méthode de mission en six actions, que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes",
+        "que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes",
+        "ce que je ne peux pas présenter comme un acquis démontré",
+        "je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes"
+      ],
+      "originalTextSha": "sha256:8e57ef4a9f36a43d",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "rl.a2",
+      "atomText": "CE lien s'appuie sur CET élément de la réponse",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-reflexion-mission-complet",
+      "criterionKey": "reflection-link",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#reflection-link@2",
+      "negativeSpans": [
+        "les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré",
+        "J’en tire une méthode de mission en six actions, que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes",
+        "que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes",
+        "ce que je ne peux pas présenter comme un acquis démontré",
+        "je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes"
+      ],
+      "originalTextSha": "sha256:8e57ef4a9f36a43d",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "dp.a1",
+      "atomText": "une position est explicitement énoncée",
+      "authoredAnswerId": "holdout-v1/holdout-writing-vendor-renewal-erroneous",
+      "criterionKey": "decision-position",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0",
+      "negativeSpans": [
+        "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine",
+        "La remise de 18 % rend toute autre option irrationnelle",
+        "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur"
+      ],
+      "originalTextSha": "sha256:88dfa5a014e2e0da",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "dp.a2",
+      "atomText": "la réponse dit à l'acteur visé quoi choisir ou faire, sans inférence entre actions matériellement différentes",
+      "authoredAnswerId": "holdout-v1/holdout-writing-vendor-renewal-erroneous",
+      "criterionKey": "decision-position",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0",
+      "negativeSpans": [
+        "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine",
+        "La remise de 18 % rend toute autre option irrationnelle",
+        "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur"
+      ],
+      "originalTextSha": "sha256:88dfa5a014e2e0da",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "dp.a3",
+      "atomText": "la position s'applique à l'acteur, l'objet, la situation et l'horizon demandés",
+      "authoredAnswerId": "holdout-v1/holdout-writing-vendor-renewal-erroneous",
+      "criterionKey": "decision-position",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0",
+      "negativeSpans": [
+        "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine",
+        "La remise de 18 % rend toute autre option irrationnelle",
+        "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur"
+      ],
+      "originalTextSha": "sha256:88dfa5a014e2e0da",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z",
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ub.a1",
+      "atomText": "une incertitude est nommée",
+      "authoredAnswerId": "holdout-v1/holdout-writing-scanner-repair-partial",
+      "criterionKey": "uncertainty-bounds",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+      "negativeSpans": [],
+      "originalTextSha": "sha256:9e5c1bc1b706c56d",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ub.a2",
+      "atomText": "CETTE incertitude est pertinente",
+      "authoredAnswerId": "holdout-v1/holdout-writing-scanner-repair-partial",
+      "criterionKey": "uncertainty-bounds",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+      "negativeSpans": [],
+      "originalTextSha": "sha256:9e5c1bc1b706c56d",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z"
+        ]
+      },
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "ub.a3",
+      "atomText": "CETTE incertitude est correctement délimitée",
+      "authoredAnswerId": "holdout-v1/holdout-writing-scanner-repair-partial",
+      "criterionKey": "uncertainty-bounds",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+      "negativeSpans": [],
+      "originalTextSha": "sha256:9e5c1bc1b706c56d",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ub.a4",
+      "atomText": "CETTE incertitude n'empêche pas une décision PROPORTIONNÉE",
+      "authoredAnswerId": "holdout-v1/holdout-writing-scanner-repair-partial",
+      "criterionKey": "uncertainty-bounds",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+      "negativeSpans": [],
+      "originalTextSha": "sha256:9e5c1bc1b706c56d",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T16-42-09-070Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ml.a1",
+      "atomText": "un mécanisme ou une conclusion est énoncé",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+      "criterionKey": "mechanism-link",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+      "negativeSpans": [
+        "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement."
+      ],
+      "originalTextSha": "sha256:686ce8f8e14ccccd",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ml.a2",
+      "atomText": "CHAQUE fait est explicitement relié à CE mécanisme",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+      "criterionKey": "mechanism-link",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+      "negativeSpans": [
+        "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement."
+      ],
+      "originalTextSha": "sha256:686ce8f8e14ccccd",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a1",
+      "atomText": "CHAQUE affirmation utile est fidèle au contexte",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu#SENTENCE_DELETION#context-fidelity@1",
+      "negativeSpans": [
+        "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera",
+        "l’équipe de 12 personnes serait concernée",
+        "Le tri des demandes du support de niveau 1",
+        "selon ce que la mesure montrera"
+      ],
+      "originalTextSha": "sha256:bf3639418bad999f",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "atomText": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu#SENTENCE_DELETION#context-fidelity@1",
+      "negativeSpans": [
+        "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera",
+        "l’équipe de 12 personnes serait concernée",
+        "Le tri des demandes du support de niveau 1",
+        "selon ce que la mesure montrera"
+      ],
+      "originalTextSha": "sha256:bf3639418bad999f",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a3",
+      "atomText": "CETTE limite est correcte pour CETTE affirmation",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-ambigu#SENTENCE_DELETION#context-fidelity@1",
+      "negativeSpans": [
+        "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera",
+        "l’équipe de 12 personnes serait concernée",
+        "Le tri des demandes du support de niveau 1",
+        "selon ce que la mesure montrera"
+      ],
+      "originalTextSha": "sha256:bf3639418bad999f",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-08-31T21-12-58-892Z",
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "sf.a1",
+      "atomText": "CHAQUE fait nécessaire du dossier est restitué dans la réponse",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+      "criterionKey": "source-fidelity",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+      "negativeSpans": [
+        "les participants détournent moins le regard",
+        "la légende voisine maintient le repère visible pendant le placement",
+        "le second passage peut aussi bénéficier de l'entraînement",
+        "Sans essai sur un nouveau groupe"
+      ],
+      "originalTextSha": "sha256:686ce8f8e14ccccd",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "sf.a2",
+      "atomText": "IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear",
+      "criterionKey": "source-fidelity",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0",
+      "negativeSpans": [
+        "les participants détournent moins le regard",
+        "la légende voisine maintient le repère visible pendant le placement",
+        "le second passage peut aussi bénéficier de l'entraînement",
+        "Sans essai sur un nouveau groupe"
+      ],
+      "originalTextSha": "sha256:686ce8f8e14ccccd",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T14-13-17-639Z",
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S7_full_dossier"
+    },
+    {
+      "atomId": "ca.a1",
+      "atomText": "CHAQUE opération de la comparaison est exacte",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline",
+      "criterionKey": "comparative-arithmetic",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline#SENTENCE_DELETION#comparative-arithmetic@0",
+      "negativeSpans": [],
+      "originalTextSha": "sha256:0c6cba0b2e89cf1e",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T14-13-17-639Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ca.a2",
+      "atomText": "les unités sont cohérentes dans CHAQUE opération",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline",
+      "criterionKey": "comparative-arithmetic",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline#SENTENCE_DELETION#comparative-arithmetic@0",
+      "negativeSpans": [],
+      "originalTextSha": "sha256:0c6cba0b2e89cf1e",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T14-13-17-639Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ca.a3",
+      "atomText": "les périmètres comparés sont identiques",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline",
+      "criterionKey": "comparative-arithmetic",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-decision-memo-ambiguous-borderline#SENTENCE_DELETION#comparative-arithmetic@0",
+      "negativeSpans": [],
+      "originalTextSha": "sha256:0c6cba0b2e89cf1e",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T14-13-17-639Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "sf.a1",
+      "atomText": "CHAQUE fait nécessaire du dossier est restitué dans la réponse",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline",
+      "criterionKey": "source-fidelity",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#FACT_INVERSION#source-fidelity@880b448bd3c4",
+      "negativeSpans": [
+        "Les mauvais embranchements passent de 5/16 à 9/16 après l'ajout des flèches"
+      ],
+      "originalTextSha": "sha256:52be590f73743f74",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "sf.a2",
+      "atomText": "IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline",
+      "criterionKey": "source-fidelity",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#FACT_INVERSION#source-fidelity@880b448bd3c4",
+      "negativeSpans": [
+        "Les mauvais embranchements passent de 5/16 à 9/16 après l'ajout des flèches"
+      ],
+      "originalTextSha": "sha256:52be590f73743f74",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S7_full_dossier"
+    },
+    {
+      "atomId": "pe.a1",
+      "atomText": "une preuve vérifiable est produite",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-pratique-update-complet",
+      "criterionKey": "practice-evidence",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#practice-evidence@6",
+      "negativeSpans": [
+        "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés.",
+        "Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir."
+      ],
+      "originalTextSha": "sha256:8fa1c9ff5a777de3",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "pe.a2",
+      "atomText": "CETTE preuve démontre CETTE pratique",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-pratique-update-complet",
+      "criterionKey": "practice-evidence",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#practice-evidence@6",
+      "negativeSpans": [
+        "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés.",
+        "Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir."
+      ],
+      "originalTextSha": "sha256:8fa1c9ff5a777de3",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "pe.a3",
+      "atomText": "CETTE interprétation de CETTE preuve est correcte",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-pratique-update-complet",
+      "criterionKey": "practice-evidence",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#practice-evidence@6",
+      "negativeSpans": [
+        "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés.",
+        "Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir."
+      ],
+      "originalTextSha": "sha256:8fa1c9ff5a777de3",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a1",
+      "atomText": "CHAQUE affirmation utile est fidèle au contexte",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel#SENTENCE_DELETION#context-fidelity@1",
+      "negativeSpans": [
+        "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande."
+      ],
+      "originalTextSha": "sha256:d0abd57e0ac87a6a",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "atomText": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel#SENTENCE_DELETION#context-fidelity@1",
+      "negativeSpans": [
+        "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande."
+      ],
+      "originalTextSha": "sha256:d0abd57e0ac87a6a",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a3",
+      "atomText": "CETTE limite est correcte pour CETTE affirmation",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel",
+      "criterionKey": "context-fidelity",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-partiel#SENTENCE_DELETION#context-fidelity@1",
+      "negativeSpans": [
+        "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande."
+      ],
+      "originalTextSha": "sha256:d0abd57e0ac87a6a",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "ac.a1",
+      "atomText": "un choix est explicitement énoncé",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-oven-revision-ambiguous",
+      "criterionKey": "arbitration-choice",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-oven-revision-ambiguous#SENTENCE_DELETION#arbitration-choice@0",
+      "negativeSpans": [
+        "réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche",
+        "Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars"
+      ],
+      "originalTextSha": "sha256:2e01989f15b1912e",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ac.a2",
+      "atomText": "scope_match — l'action retenue s'applique à l'acteur, la cible, la situation et l'horizon demandés",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-oven-revision-ambiguous",
+      "criterionKey": "arbitration-choice",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-oven-revision-ambiguous#SENTENCE_DELETION#arbitration-choice@0",
+      "negativeSpans": [
+        "réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche",
+        "Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars"
+      ],
+      "originalTextSha": "sha256:2e01989f15b1912e",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ac.a3",
+      "atomText": "action_resolved — la réponse dit à l'acteur visé quoi choisir ou faire sans inférence entre actions matériellement différentes",
+      "authoredAnswerId": "holdout-v2/holdout2-writing-oven-revision-ambiguous",
+      "criterionKey": "arbitration-choice",
+      "inPrimaryEndpoint": true,
+      "mutantId": "holdout-v2/holdout2-writing-oven-revision-ambiguous#SENTENCE_DELETION#arbitration-choice@0",
+      "negativeSpans": [
+        "réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche",
+        "Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars"
+      ],
+      "originalTextSha": "sha256:2e01989f15b1912e",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "rl.a1",
+      "atomText": "le lien réflexif demandé est explicitement énoncé",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-reflexion-mission-partiel",
+      "criterionKey": "reflection-link",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-reflexion-mission-partiel#SENTENCE_DELETION#reflection-link@2",
+      "negativeSpans": [
+        "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre"
+      ],
+      "originalTextSha": "sha256:63ed621b4f6786f7",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "rl.a2",
+      "atomText": "CE lien s'appuie sur CET élément de la réponse",
+      "authoredAnswerId": "domain-archetypes-v1/domaine-reflexion-mission-partiel",
+      "criterionKey": "reflection-link",
+      "inPrimaryEndpoint": true,
+      "mutantId": "domain-archetypes-v1/domaine-reflexion-mission-partiel#SENTENCE_DELETION#reflection-link@2",
+      "negativeSpans": [
+        "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre"
+      ],
+      "originalTextSha": "sha256:63ed621b4f6786f7",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "sfu.a1",
+      "atomText": "CHAQUE fait mobilisé est attribuable au scénario",
+      "authoredAnswerId": "corpus-v1-3/benchmark-writing-successful",
+      "criterionKey": "source-fact-use",
+      "inPrimaryEndpoint": true,
+      "mutantId": "corpus-v1-3/benchmark-writing-successful#SENTENCE_DELETION#source-fact-use@1",
+      "negativeSpans": [
+        "le pilote étendu de quatre semaines avec formation"
+      ],
+      "originalTextSha": "sha256:63bf47daa6d69d49",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sfu.a2",
+      "atomText": "CHAQUE fait mobilisé est exact",
+      "authoredAnswerId": "corpus-v1-3/benchmark-writing-successful",
+      "criterionKey": "source-fact-use",
+      "inPrimaryEndpoint": true,
+      "mutantId": "corpus-v1-3/benchmark-writing-successful#SENTENCE_DELETION#source-fact-use@1",
+      "negativeSpans": [
+        "le pilote étendu de quatre semaines avec formation"
+      ],
+      "originalTextSha": "sha256:63bf47daa6d69d49",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sfu.a3",
+      "atomText": "CHAQUE fait mobilisé est pertinent",
+      "authoredAnswerId": "corpus-v1-3/benchmark-writing-successful",
+      "criterionKey": "source-fact-use",
+      "inPrimaryEndpoint": true,
+      "mutantId": "corpus-v1-3/benchmark-writing-successful#SENTENCE_DELETION#source-fact-use@1",
+      "negativeSpans": [
+        "le pilote étendu de quatre semaines avec formation"
+      ],
+      "originalTextSha": "sha256:63bf47daa6d69d49",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "esg.a1",
+      "atomText": "une séquence est énoncée",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise",
+      "criterionKey": "event-sequence-grounding",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#SENTENCE_DELETION#event-sequence-grounding@0",
+      "negativeSpans": [
+        "Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri."
+      ],
+      "originalTextSha": "sha256:44abe556c6512610",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "esg.a2",
+      "atomText": "CETTE séquence est ancrée sur des observations du dossier",
+      "authoredAnswerId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise",
+      "criterionKey": "event-sequence-grounding",
+      "inPrimaryEndpoint": false,
+      "mutantId": "writing-holdout-v1/writing-v1-reflective-note-complete-concise#SENTENCE_DELETION#event-sequence-grounding@0",
+      "negativeSpans": [
+        "Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri."
+      ],
+      "originalTextSha": "sha256:44abe556c6512610",
+      "adjudication": {
+        "negativeVerdictGold": null,
+        "positiveSpan": null,
+        "positiveVerdictGold": null,
+        "status": "PENDING"
+      },
+      "provenance": {
+        "observedInRuns": [
+          "2026-09-01T15-38-20-436Z"
+        ]
+      },
+      "stratum": "S3_span_dossier"
+    }
+  ],
+  "poolSha256": "sha256:c59a7ba5497bf74ddd34f92591c69e3876829d1481dce6edcac0e0706a6ba7ea",
+  "runScope": {
+    "excludedRuns": [
+      {
+        "reason": "hors base de revue",
+        "run": "2026-08-29T20-05-54-878Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-08-29T20-49-50-434Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-08-30T00-44-57-975Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-08-30T18-25-47-521Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-08-30T22-21-08-937Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-08-31T15-49-37-040Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-08-31T15-57-16-783Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-09-01T14-07-40-343Z"
+      },
+      {
+        "reason": "hors base de revue",
+        "run": "2026-09-01T15-33-32-849Z"
+      }
+    ],
+    "includedRuns": [
+      "2026-08-31T16-42-09-070Z",
+      "2026-08-31T21-12-58-892Z",
+      "2026-09-01T14-13-17-639Z",
+      "2026-09-01T15-38-20-436Z"
+    ],
+    "rationale": "Ces quatre runs produisent exactement les 18 échecs sur 16 grappes que la borne statistique suppose. Les autres précèdent la consigne 2.3.0 ou nomment un critère non atomisé."
+  },
+  "schemaVersion": 1,
+  "status": "PENDING_ADJUDICATION — aucun appel fournisseur autorisé avant adjudication complète.",
+  "verdictMapping": {
+    "DIRECT": "ACCEPT — seul verdict qui autorise le niveau TOP",
+    "PARTIAL": "REJECT — rejet sémantique",
+    "UNSUPPORTED": "REJECT — rejet sémantique",
+    "CONTRADICTED": "REJECT — rejet sémantique",
+    "AMBIGUOUS": "ABSTAIN — aucun crédit de discrimination primaire, rapporté en strate distincte"
+  },
+  "pairSuccess": "Succès de paire = positif DIRECT ET négatif apparié REJETÉ. Un AMBIGUOUS d'un côté ou de l'autre annule le crédit primaire et la paire est comptée dans la strate d'ambiguïté. Les deux membres sont soumis INDÉPENDAMMENT au vérificateur ; l'appariement n'existe qu'à l'analyse.",
+  "aggregation": "Macro-moyenne par réponse rédigée (authoredAnswerId), jamais par critère ni par atome. Les répétitions mesurent l'instabilité de l'API et ne sont pas des échantillons indépendants.",
+  "marginalRates": "Rapportés séparément et toujours ensemble : hard_negative_rejection, true_evidence_acceptance, taux d'ambiguïté. Aucun n'est fondu dans l'endpoint apparié.",
+  "contentHash": "sha256:3593b4e607523fccc3ea41827586703bd9d89cd9d07b051e13e8ca6f2de0d67d"
+}

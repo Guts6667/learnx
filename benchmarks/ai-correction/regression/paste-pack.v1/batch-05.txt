@@ -1,0 +1,121 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 41 · C-c2e812b133
+Consigne : Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.
+Dossier : Après un dégât des eaux au bâtiment A, le conseil compare deux stratégies : réparer complètement cette année pour 12 600 euros, franchise de 1 200 euros, ou réparer partiellement maintenant à 5 400 euros puis complètement dans 2 ans, estimation alors de 14 800 euros, même franchise à chaque sinistre. Le budget travaux voté est de 15 000 euros pour l’année. Une subvention de 3 000 euros de la collectivité est acquise si les travaux démarrent avant le 31 décembre.
+Question : CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est exacte · ff.a2 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+Je penche pour la réparation complète immédiate, sans la trancher. ⟦La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.⟧ Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule répon …
+
+### Carte 42 · C-636e218ca9
+Consigne : Recommande l’une des deux options et justifie ton choix avec les informations du scénario.
+Dossier : Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.
+Question : CHAQUE fait utilisé provient-il du scénario du dossier ?
+Écriture pour la machine : CHAQUE fait mobilisé est attribuable au scénario · sfu.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Je recommande le pilote étendu de quatre semaines avec formation.⟧
+
+### Carte 43 · C-643773bcd3
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève énonce-t-il clairement une position ?
+Écriture pour la machine : une position est explicitement énoncée · dp.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… lus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. ⟦Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.⟧
+
+### Carte 44 · C-6116a3b51a
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Ce risque subsiste-t-il après l’action proposée ?
+Écriture pour la machine : CE risque subsiste après CETTE action · rr.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.
+[s1] Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.
+[s2] La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.
+[s3] Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.
+
+### Carte 45 · C-ccc2405200
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Pour CHAQUE affirmation utile de ce passage, l’élève énonce-t-il une limite qui la borne ?
+Écriture pour la machine : pour CHAQUE affirmation, IL EXISTE une limite qui la borne · cf.a2 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.
+
+### Carte 46 · C-8ea663253d
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève énonce-t-il un mécanisme ou une conclusion ?
+Écriture pour la machine : un mécanisme ou une conclusion est énoncé · ml.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+…  passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée. ⟦Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.⟧ Sans essai sur un nouveau groupe, la généralisation reste inconnue.
+
+### Carte 47 · C-744ce508eb
+Consigne : Produisez une réflexion complète en restant très concis.
+Dossier : Contexte fiable et fictif : au premier tour d'un jeu de classement, j'ai annoncé les symboles après la distribution et 5 joueurs sur 9 ont recommencé. Au second, je les ai annoncés avant et 1 sur 9 a recommencé. Les pièces avaient aussi été prétriées au second tour ; aucun troisième tour n'a eu lieu.
+Question : Cette séquence s’appuie-t-elle sur des observations du dossier ?
+Écriture pour la machine : CETTE séquence est ancrée sur des observations du dossier · esg.a2 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri.⟧ Au prochain tour, j'annoncerai avant, sans prétri, et compterai les reprises sur 9 joueurs ; au-delà d'une reprise, je réviserai l'annonce.
+
+### Carte 48 · C-d0eceec16b
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Dossier : Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.
+Question : L’élève produit-il une preuve que l’on peut vérifier ?
+Écriture pour la machine : une preuve vérifiable est produite · pe.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… be sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir. ⟦Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.⟧
+
+### Carte 49 · C-1e68d9227a
+Consigne : Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.
+Dossier : Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.
+Question : AUCUNE affirmation importante de la réponse ne sort-elle du dossier ?
+Écriture pour la machine : IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier · sf.a2 · not_exists
+Portée : la copie entière
+Copie :
+[s0] Les mauvais embranchements passent de 9/16 à 5/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes.
+[s1] En montrant l'embranchement avant le déplacement, les flèches peuvent réduire les choix tardifs ; la charge non consignée empêche toutefois d'isoler complètement l'effet.
+[s2] Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.
+
+### Carte 50 · C-d00dec227b
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Ce lien s’appuie-t-il sur un élément concret de la réponse ?
+Écriture pour la machine : CE lien s'appuie sur CET élément de la réponse · rl.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur les huit étapes, la décision que je retiens est d’avoir refait l’étape 5 après avoir constaté que le périmètre incluait une population non concernée.
+[s1] La production associée est la note de cadrage corrigée, et ma seule preuve de progression datée porte sur cette étape et sur la revue d’amélioration : les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré.
+[s2] J’en tire une méthode de mission en six actions, que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes.
+
+Fin du lot 05 : 10 cartes. Réponds maintenant, 10 lignes.

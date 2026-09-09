@@ -1,0 +1,17 @@
+[
+  {
+    "criterionKey": "decision-position",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "evidence-selection",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary",
+    "verdict": "AGREED"
+  },
+  {
+    "criterionKey": "uncertainty-bounds",
+    "unitId": "holdout-v1/holdout-writing-shuttle-boundary",
+    "verdict": "AGREED"
+  }
+]

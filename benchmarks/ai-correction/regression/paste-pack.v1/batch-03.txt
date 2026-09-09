@@ -1,0 +1,123 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 21 · C-3b5f2fa159
+Consigne : Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.
+Dossier : Après un dégât des eaux au bâtiment A, le conseil compare deux stratégies : réparer complètement cette année pour 12 600 euros, franchise de 1 200 euros, ou réparer partiellement maintenant à 5 400 euros puis complètement dans 2 ans, estimation alors de 14 800 euros, même franchise à chaque sinistre. Le budget travaux voté est de 15 000 euros pour l’année. Une subvention de 3 000 euros de la collectivité est acquise si les travaux démarrent avant le 31 décembre.
+Question : CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est exacte · ff.a2 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.⟧
+
+### Carte 22 · C-7591e7e2ed
+Consigne : Recommande l’une des deux options et justifie ton choix avec les informations du scénario.
+Dossier : Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.
+Question : CHAQUE fait utilisé est-il exact, d’après le dossier ?
+Écriture pour la machine : CHAQUE fait mobilisé est exact · sfu.a2 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+Je recommande le pilote étendu de quatre semaines avec formation. ⟦Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.⟧
+
+### Carte 23 · C-28c8a6d628
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève dit-il clairement quelle option il retient ?
+Écriture pour la machine : un choix est explicitement énoncé · ac.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche.⟧ Ma seule condition de rep …
+
+### Carte 24 · C-02c2ddf742
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Pour CHAQUE affirmation utile de ce passage, l’élève énonce-t-il une limite qui la borne ?
+Écriture pour la machine : pour CHAQUE affirmation, IL EXISTE une limite qui la borne · cf.a2 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.
+[s1] Deux hypothèses restent ouvertes et conditionnent cet objectif.
+[s2] Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.
+
+### Carte 25 · C-6c9dac45b2
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Dossier : Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.
+Question : L’élève produit-il une preuve que l’on peut vérifier ?
+Écriture pour la machine : une preuve vérifiable est produite · pe.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés.⟧ Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.
+
+Risque : la coupure tombe sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode …
+
+### Carte 26 · C-753f693c0e
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Dossier : Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.
+Question : Ce risque est-il à la fois exact ET pertinent, d’après le dossier ?
+Écriture pour la machine : CE risque est exact ET pertinent au regard du dossier · rr.a3 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.⟧ Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le co …
+
+### Carte 27 · C-0dafed656a
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?
+Écriture pour la machine : CHAQUE affirmation utile est fidèle au contexte · cf.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.⟧
+
+### Carte 28 · C-3b1387939b
+Consigne : Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.
+Question : La position dit-elle à la personne visée quoi choisir ou quoi faire, sans qu’elle ait à deviner entre plusieurs actions différentes ?
+Écriture pour la machine : la réponse dit à l'acteur visé quoi choisir ou faire, sans inférence entre actions matériellement différentes · dp.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande de signer immédiatement pour un an.
+[s1] La remise de 18 % rend toute autre option irrationnelle.
+[s2] Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.
+
+### Carte 29 · C-72f67aea2c
+Contexte : aucun, la question se juge sur la copie seule.
+Question : CHAQUE fait cité est-il explicitement relié à ce mécanisme ou à cette conclusion ?
+Écriture pour la machine : CHAQUE fait est explicitement relié à CE mécanisme · ml.a2 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.
+[s1] Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.
+[s2] Sans essai sur un nouveau groupe, la généralisation reste inconnue.
+
+### Carte 30 · C-25ca3b32bc
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Ce lien s’appuie-t-il sur un élément concret de la réponse ?
+Écriture pour la machine : CE lien s'appuie sur CET élément de la réponse · rl.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre, et la production associée est la note de cadrage corrigée.
+[s1] Deux étapes seulement ont produit une preuve datée.
+
+Fin du lot 03 : 10 cartes. Réponds maintenant, 10 lignes.

@@ -1,0 +1,184 @@
+{
+  "batches": [
+    {
+      "cardIds": [
+        "C-ca1ef61e53",
+        "C-47402cc097",
+        "C-55f08a077c",
+        "C-23cb79db39",
+        "C-6f02478fc2",
+        "C-4d3ebe4339",
+        "C-d5dff02d07",
+        "C-b24221cac5",
+        "C-5a5b6cc636",
+        "C-2d0f0c9620"
+      ],
+      "file": "batch-01.txt",
+      "hash": "sha256:2fb339c4a2ae12b5ce2c82e373fb58effa0baefd99e49eed6cf9b97d89fa9479"
+    },
+    {
+      "cardIds": [
+        "C-de9cc56ac2",
+        "C-ef06893724",
+        "C-20ae278814",
+        "C-8272b59189",
+        "C-7989b70007",
+        "C-272f41aa34",
+        "C-6db59abd7e",
+        "C-41f5f7d177",
+        "C-92d4b25574",
+        "C-fad07ea455"
+      ],
+      "file": "batch-02.txt",
+      "hash": "sha256:d423703e3e3bd0a2e28c9cf1a4d42a9df91f66103e720420c21ca4ff14b48137"
+    },
+    {
+      "cardIds": [
+        "C-3b5f2fa159",
+        "C-7591e7e2ed",
+        "C-28c8a6d628",
+        "C-02c2ddf742",
+        "C-6c9dac45b2",
+        "C-753f693c0e",
+        "C-0dafed656a",
+        "C-3b1387939b",
+        "C-72f67aea2c",
+        "C-25ca3b32bc"
+      ],
+      "file": "batch-03.txt",
+      "hash": "sha256:c410f8f5e543fb04a9a19d8876648bcbb6908dd0e5c463c95753c9b0c85221a6"
+    },
+    {
+      "cardIds": [
+        "C-b41bdb6098",
+        "C-322d813ef5",
+        "C-e10e009b7f",
+        "C-c8c0bafb00",
+        "C-8ad0465605",
+        "C-cb002a52ae",
+        "C-703a9d2d5d",
+        "C-8aeb3c797d",
+        "C-699470f303",
+        "C-7309c167f8"
+      ],
+      "file": "batch-04.txt",
+      "hash": "sha256:d8738f218bb323beff6570bea8194ab83a7990dd9f54dfeb0bbc3ad98d47fcce"
+    },
+    {
+      "cardIds": [
+        "C-c2e812b133",
+        "C-636e218ca9",
+        "C-643773bcd3",
+        "C-6116a3b51a",
+        "C-ccc2405200",
+        "C-8ea663253d",
+        "C-744ce508eb",
+        "C-d0eceec16b",
+        "C-1e68d9227a",
+        "C-d00dec227b"
+      ],
+      "file": "batch-05.txt",
+      "hash": "sha256:a8e4aa8d7ecd9af7b7b0132b737981abcfa313329c0f356cc47980dff253c1a7"
+    },
+    {
+      "cardIds": [
+        "C-c1ee19ec29",
+        "C-3a2fdb767e",
+        "C-302b9df321",
+        "C-46c2f075a1",
+        "C-45432e4845",
+        "C-f043ae3ad1",
+        "C-3138b8a152",
+        "C-94ea93741f",
+        "C-5219f94743",
+        "C-eecdd08b93"
+      ],
+      "file": "batch-06.txt",
+      "hash": "sha256:3ea3353c341e5c2b3945b929942c7715495664a66d2a998a027b176308ee419f"
+    },
+    {
+      "cardIds": [
+        "C-a0ade8b88e",
+        "C-a84630a559",
+        "C-b1314b53e4",
+        "C-1d67f3a1ad",
+        "C-44babe8c67",
+        "C-c8d6f44b37",
+        "C-bda12db6d2",
+        "C-ef72c295bb",
+        "C-6b33c1e066",
+        "C-1b10dad05d"
+      ],
+      "file": "batch-07.txt",
+      "hash": "sha256:ec5699135a3e34f6e2aed44c2f0cf509f522b1392e787d9f02f01706be3bee38"
+    },
+    {
+      "cardIds": [
+        "C-bb87d23759",
+        "C-de2289c819",
+        "C-10d03a23e2",
+        "C-ff8dfc4c82",
+        "C-5f647249ab",
+        "C-00b4a1c0a0",
+        "C-7a57652d93",
+        "C-4b88718a20",
+        "C-986a43099d",
+        "C-03ff752bb0"
+      ],
+      "file": "batch-08.txt",
+      "hash": "sha256:4b8899cf9dcde6cb5fad0d37046cb6c8fcdba94f4b108404a6183d9b634495f5"
+    },
+    {
+      "cardIds": [
+        "C-e32060b658",
+        "C-888b279e11",
+        "C-1e1d5034dc",
+        "C-1efa1fc4b7",
+        "C-5d8f0447b1",
+        "C-c01d16d9cb",
+        "C-e1d1a198c6",
+        "C-27abbe4a11",
+        "C-1f0112ce2c",
+        "C-5773c296c7"
+      ],
+      "file": "batch-09.txt",
+      "hash": "sha256:3e53cf02350b691cfa5c4802940078550defe823475b914303241697229c2151"
+    },
+    {
+      "cardIds": [
+        "C-1cff16763a",
+        "C-b3c931fb18",
+        "C-6cacbee4ed",
+        "C-03c7a0d6cb",
+        "C-479e0a1393",
+        "C-411668afb4",
+        "C-73a8c98c78",
+        "C-bf4ec7f8bd",
+        "C-e707d9669d",
+        "C-070decd3a2"
+      ],
+      "file": "batch-10.txt",
+      "hash": "sha256:87832941c16df59c953f838acd6a0ac520e8783ef2de1bb4384fdef536de8d90"
+    },
+    {
+      "cardIds": [
+        "C-858f89a8ff",
+        "C-4258b8fca2",
+        "C-d6444cb6e3",
+        "C-aef2458e05",
+        "C-bb56e6bb60",
+        "C-b83afbc8ff"
+      ],
+      "file": "batch-11.txt",
+      "hash": "sha256:dde330e5e62ac9168ac63efa0b547808912259cac619af9927644e21b77896a4"
+    }
+  ],
+  "cardsPerBatch": 10,
+  "deckHash": "sha256:b3a021bfe81bd6c26690f6ebc79d754750d3db4e7821af51380a9853c28a9879",
+  "format": "C-identifiant | OUI/NON/INDÉCIS | phrases: <ids ou -> | autre: OUI/NON/- | raison: <texte>",
+  "promptHash": "sha256:01971972ac45783de73f0a4ec3a61539b41ae95688399b4c32ccb3af2b1e9b1a",
+  "purpose": "exploratory",
+  "questionsHash": "sha256:6b25f4e95aaaf6751b8215da638dc855d289965b493c8db694dfc482c1a480df",
+  "schemaVersion": 1,
+  "totalCards": 106
+}

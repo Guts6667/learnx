@@ -1,0 +1,63 @@
+{
+  "checkerCost": {
+    "corrections": 105,
+    "modelId": "mistralai/mistral-medium-3-5",
+    "outputTokenLimit": 400,
+    "pricedInThisPreflight": true,
+    "promptCharactersPerCall": 2659,
+    "source": {
+      "consultedAt": "2026-08-29",
+      "consultedBy": "Head of AI (voie F)",
+      "publishedRates": "entrée 1,50 USD / M jetons ; sortie 7,50 USD / M jetons",
+      "url": "https://openrouter.ai/mistralai/mistral-medium-3-5"
+    },
+    "worstCaseUsd": 1.0563525
+  },
+  "boundingConvention": "conservative-v1",
+  "boundingSources": {
+    "checker": {
+      "observations": 15,
+      "sourceDirectory": "benchmarks/ai-correction/regression/results/2026-08-30T00-11-39-046Z",
+      "statistic": "MEAN",
+      "usdPerCall": 0.0009245499999999999
+    },
+    "primary": null,
+    "safetyFactor": 1.5
+  },
+  "combinedWorstCaseUsd": 16.359016500000003,
+  "comparisonConservativeV1Usd": 16.359016500000003,
+  "primaryWorstCaseUsd": 15.302664000000004,
+  "singlePassLegacyDecision": "READY",
+  "dropped": [],
+  "fitsWithinCap": true,
+  "paraphraseWorstCaseUsd": 0,
+  "paraphrasesIncluded": false,
+  "passes": [
+    {
+      "cases": 42,
+      "cells": 42,
+      "label": "lignes de base des cas mutés",
+      "pendingCases": 42,
+      "pendingCells": 42,
+      "primaryWorstCaseUsd": 6.132570000000002,
+      "repetitionOffset": 1,
+      "repetitions": 1
+    },
+    {
+      "cases": 63,
+      "cells": 63,
+      "label": "mutants à direction",
+      "pendingCases": 63,
+      "pendingCells": 63,
+      "primaryWorstCaseUsd": 9.170094,
+      "repetitionOffset": 1,
+      "repetitions": 1
+    }
+  ],
+  "envelopeNote": "Plafond demandé 17 USD, sous le reste d'enveloppe 21.3122 USD.",
+  "priorActualSpendUsd": 0,
+  "profile": "direction",
+  "remainingCapUsd": 17,
+  "requestedCapUsd": 17,
+  "supplierCostCapUsd": 17
+}

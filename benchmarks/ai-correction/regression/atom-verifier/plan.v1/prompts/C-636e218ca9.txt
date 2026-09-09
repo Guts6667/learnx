@@ -1,0 +1,7 @@
+Consigne : Recommande l’une des deux options et justifie ton choix avec les informations du scénario.
+Dossier : Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.
+Question : CHAQUE fait utilisé provient-il du scénario du dossier ?
+Écriture pour la machine : CHAQUE fait mobilisé est attribuable au scénario · sfu.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Je recommande le pilote étendu de quatre semaines avec formation.⟧

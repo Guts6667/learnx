@@ -1,0 +1,3230 @@
+{
+  "atomTaxonomyHash": "sha256:e9a1b39e0651998cbb19427882edda6347aeda7228cdb06136eb967cc26134c5",
+  "cards": [
+    {
+      "atom": "CETTE limite est correcte pour CETTE affirmation",
+      "atomId": "cf.a3",
+      "candidateSpan": "Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré.",
+      "cardId": "C-60a597d95c",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 521,
+        "start": 413
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_limit",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.\n\nDeux hypothèses restent ouvertes et conditionnent cet objectif. Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré. Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement délimitées",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "la réponse dit à l'acteur visé quoi choisir ou faire, sans inférence entre actions matériellement différentes",
+      "atomId": "dp.a2",
+      "candidateSpan": "Je recommande de signer immédiatement pour un an.",
+      "cardId": "C-70571991de",
+      "criterionLabel": "Position décisionnelle",
+      "frame": "Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.",
+      "highlight": {
+        "end": 49,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "action_resolved",
+      "quantifier": "exists",
+      "response": "Je recommande de signer immédiatement pour un an. Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.",
+      "responseArity": "n",
+      "sourcePhrase": "peut guider l'action",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::decision-position",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "position retenue",
+          "roleId": "position",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "atomId": "cf.a2",
+      "candidateSpan": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.",
+      "cardId": "C-3d0c8162c9",
+      "criterionLabel": "Fidélité et limites",
+      "highlight": {
+        "end": 178,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "delimits",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.",
+      "responseArity": "n",
+      "sourcePhrase": "leurs limites sont … délimitées",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait mobilisé est exact",
+      "atomId": "sfu.a2",
+      "candidateSpan": "le pilote étendu de quatre semaines avec formation",
+      "cardId": "C-156d1ddc02",
+      "criterionLabel": "Utilisation exacte des faits",
+      "dossier": "Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.",
+      "frame": "Recommande l’une des deux options et justifie ton choix avec les informations du scénario.",
+      "highlight": {
+        "end": 64,
+        "start": 14
+      },
+      "logicalOperator": "none",
+      "predicate": "exact",
+      "quantifier": "forall",
+      "response": "Je recommande le pilote étendu de quatre semaines avec formation.",
+      "responseArity": 1,
+      "sourcePhrase": "exacts",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::source-fact-use",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait de scénario mobilisé — TOUS ceux mobilisés",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "atomId": "cf.a2",
+      "candidateSpan": "Je préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.",
+      "cardId": "C-3ee2504a32",
+      "criterionLabel": "Fidélité et limites",
+      "highlight": {
+        "end": 357,
+        "start": 198
+      },
+      "logicalOperator": "none",
+      "predicate": "delimits",
+      "quantifier": "forall_exists",
+      "response": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.\n\nJe préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.",
+      "responseArity": "n",
+      "sourcePhrase": "leurs limites sont … délimitées",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier",
+      "atomId": "sf.a2",
+      "candidateSpan": "Les mauvais embranchements passent de 9/16 à 5/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes.",
+      "cardId": "C-2e019beb6c",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.",
+      "frame": "Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.",
+      "highlight": {
+        "end": 127,
+        "start": 0
+      },
+      "logicalOperator": "not_exists",
+      "predicate": "not_exists_unattributable_material_claim",
+      "quantifier": "not_exists",
+      "response": "Les mauvais embranchements passent de 9/16 à 5/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes. En montrant l'embranchement avant le déplacement, les flèches peuvent réduire les choix tardifs ; la charge non consignée empêche toutefois d'isoler complètement l'effet. Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.",
+      "responseArity": "full_response",
+      "sourcePhrase": "[intitulé] sans ajout matériel",
+      "stratum": "S7_full_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "le lien réflexif demandé est explicitement énoncé",
+      "atomId": "rl.a1",
+      "candidateSpan": "les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré",
+      "cardId": "C-1b24bc4ee1",
+      "criterionLabel": "Lien réflexif explicite",
+      "frame": "Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.",
+      "highlight": {
+        "end": 418,
+        "start": 305
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Sur les huit étapes, la décision que je retiens est d’avoir refait l’étape 5 après avoir constaté que le périmètre incluait une population non concernée. La production associée est la note de cadrage corrigée, et ma seule preuve de progression datée porte sur cette étape et sur la revue d’amélioration : les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré. J’en tire une méthode de mission en six actions, que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes.",
+      "responseArity": 1,
+      "sourcePhrase": "Le lien réflexif demandé est explicite",
+      "stratum": "S2_span_frame",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "un mécanisme ou une conclusion est énoncé",
+      "atomId": "ml.a1",
+      "candidateSpan": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.",
+      "cardId": "C-42ed815fdf",
+      "criterionLabel": "Relier explicitement les faits au mécanisme ou à la conclusion expliquée.",
+      "highlight": {
+        "end": 367,
+        "start": 130
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée. Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": 1,
+      "sourcePhrase": "[intitulé] mécanisme ou conclusion",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::mechanism-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "mécanisme ou conclusion",
+          "roleId": "mechanism",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "fait mobilisé — TOUS",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "action_resolved — la réponse dit à l'acteur visé quoi choisir ou faire sans inférence entre actions matériellement différentes",
+      "atomId": "ac.a3",
+      "candidateSpan": "réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche",
+      "cardId": "C-279993a652",
+      "criterionLabel": "Choix d’arbitrage",
+      "frame": "Décide quand faire réviser le four F3 et délimite la portée de ta décision.",
+      "highlight": {
+        "end": 313,
+        "start": 151
+      },
+      "logicalOperator": "none",
+      "predicate": "action_resolved",
+      "quantifier": "exists",
+      "response": "Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche. Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars. Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+      "responseArity": "n",
+      "sourcePhrase": "directement actionnable",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::arbitration-choice",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait mobilisé est attribuable au scénario",
+      "atomId": "sfu.a1",
+      "candidateSpan": "Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.",
+      "cardId": "C-f3f5866773",
+      "criterionLabel": "Utilisation exacte des faits",
+      "dossier": "Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.",
+      "frame": "Recommande l’une des deux options et justifie ton choix avec les informations du scénario.",
+      "highlight": {
+        "end": 232,
+        "start": 66
+      },
+      "logicalOperator": "none",
+      "predicate": "attributable",
+      "quantifier": "forall",
+      "response": "Je recommande le pilote étendu de quatre semaines avec formation. Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.",
+      "responseArity": 1,
+      "sourcePhrase": "attribuables au scénario",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::source-fact-use",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait de scénario mobilisé — TOUS ceux mobilisés",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est exacte",
+      "atomId": "ff.a2",
+      "candidateSpan": "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.",
+      "cardId": "C-9253a91c71",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "dossier": "Après un dégât des eaux au bâtiment A, le conseil compare deux stratégies : réparer complètement cette année pour 12 600 euros, franchise de 1 200 euros, ou réparer partiellement maintenant à 5 400 euros puis complètement dans 2 ans, estimation alors de 14 800 euros, même franchise à chaque sinistre. Le budget travaux voté est de 15 000 euros pour l’année. Une subvention de 3 000 euros de la collectivité est acquise si les travaux démarrent avant le 31 décembre.",
+      "frame": "Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.",
+      "highlight": {
+        "end": 243,
+        "start": 67
+      },
+      "logicalOperator": "none",
+      "predicate": "exact",
+      "quantifier": "forall",
+      "response": "Je penche pour la réparation complète immédiate, sans la trancher. La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle. Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.",
+      "responseArity": 1,
+      "sourcePhrase": "exactes",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est exacte",
+      "atomId": "ff.a2",
+      "candidateSpan": "le contrat Préventel à 21 000 euros par an",
+      "cardId": "C-2685f6bceb",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "dossier": "Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 56,
+        "start": 14
+      },
+      "logicalOperator": "none",
+      "predicate": "exact",
+      "quantifier": "forall",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "exactes",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "atomId": "cf.a2",
+      "candidateSpan": "assuré par les 12 personnes de l’équipe",
+      "cardId": "C-4c5e6a163e",
+      "criterionLabel": "Fidélité et limites",
+      "highlight": {
+        "end": 97,
+        "start": 58
+      },
+      "logicalOperator": "none",
+      "predicate": "delimits",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.\n\nDeux hypothèses restent ouvertes et conditionnent cet objectif. Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+      "responseArity": "n",
+      "sourcePhrase": "leurs limites sont … délimitées",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE risque est exact ET pertinent au regard du dossier",
+      "atomId": "rr.a3",
+      "candidateSpan": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+      "cardId": "C-8fed2c249a",
+      "criterionLabel": "Bornage du risque restant",
+      "dossier": "Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 610,
+        "start": 432
+      },
+      "logicalOperator": "and",
+      "predicate": "accurate_and_relevant",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "pertinent … avec exactitude",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE risque subsiste après CETTE action",
+      "atomId": "rr.a2",
+      "candidateSpan": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "cardId": "C-0121c5a2ac",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 583,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "residual_to",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "Le risque résiduel",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE limite est correcte pour CETTE affirmation",
+      "atomId": "cf.a3",
+      "candidateSpan": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.",
+      "cardId": "C-d418dbed19",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 178,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_limit",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement délimitées",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier",
+      "atomId": "sf.a2",
+      "candidateSpan": "Les mauvais embranchements passent de 5/16 à 9/16 après l'ajout des flèches",
+      "cardId": "C-681647b1a6",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.",
+      "frame": "Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.",
+      "highlight": {
+        "end": 75,
+        "start": 0
+      },
+      "logicalOperator": "not_exists",
+      "predicate": "not_exists_unattributable_material_claim",
+      "quantifier": "not_exists",
+      "response": "Les mauvais embranchements passent de 5/16 à 9/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes. En montrant l'embranchement avant le déplacement, les flèches peuvent réduire les choix tardifs ; la charge non consignée empêche toutefois d'isoler complètement l'effet. Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.",
+      "responseArity": "full_response",
+      "sourcePhrase": "[intitulé] sans ajout matériel",
+      "stratum": "S7_full_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une position est explicitement énoncée",
+      "atomId": "dp.a1",
+      "candidateSpan": "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine",
+      "cardId": "C-f264f9bcb7",
+      "criterionLabel": "Position décisionnelle",
+      "highlight": {
+        "end": 397,
+        "start": 314
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.",
+      "responseArity": 1,
+      "sourcePhrase": "La position est explicite",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::decision-position",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "position retenue",
+          "roleId": "position",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait nécessaire du dossier est restitué dans la réponse",
+      "atomId": "sf.a1",
+      "candidateSpan": "Les mauvais embranchements passent de 9/16 à 5/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes.",
+      "cardId": "C-5d422fa967",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.",
+      "frame": "Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.",
+      "highlight": {
+        "end": 127,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "restituted",
+      "quantifier": "forall",
+      "response": "Les mauvais embranchements passent de 9/16 à 5/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes. En montrant l'embranchement avant le déplacement, les flèches peuvent réduire les choix tardifs ; la charge non consignée empêche toutefois d'isoler complètement l'effet. Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.",
+      "responseArity": "n",
+      "sourcePhrase": "[intitulé] Restituer … faits nécessaires",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est pertinente pour CE choix",
+      "atomId": "ff.a3",
+      "candidateSpan": "le contrat Préventel à 21 000 euros par an",
+      "cardId": "C-4d3c528a8d",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 56,
+        "start": 14
+      },
+      "logicalOperator": "none",
+      "predicate": "relevant",
+      "quantifier": "forall",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "pertinentes",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une preuve vérifiable est produite",
+      "atomId": "pe.a1",
+      "candidateSpan": "Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.",
+      "cardId": "C-eb4874be49",
+      "criterionLabel": "Preuve de pratique",
+      "dossier": "Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.",
+      "frame": "Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.",
+      "highlight": {
+        "end": 559,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "verifiable",
+      "quantifier": "exists",
+      "response": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés. Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.\n\nRisque : la coupure tombe sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir. Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.",
+      "responseArity": 1,
+      "sourcePhrase": "une preuve vérifiable",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::practice-evidence",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "pratique demandée",
+          "roleId": "practice",
+          "selection": "canonical",
+          "source": "task_frame"
+        },
+        {
+          "cardinality": "1",
+          "description": "preuve produite",
+          "roleId": "proof",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "interprétation de la preuve, énoncée dans la réponse",
+          "roleId": "interpretation",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est pertinente pour CE choix",
+      "atomId": "ff.a3",
+      "candidateSpan": "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.",
+      "cardId": "C-a3d6432f28",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "frame": "Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.",
+      "highlight": {
+        "end": 243,
+        "start": 67
+      },
+      "logicalOperator": "none",
+      "predicate": "relevant",
+      "quantifier": "forall",
+      "response": "Je penche pour la réparation complète immédiate, sans la trancher. La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle. Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.",
+      "responseArity": "n",
+      "sourcePhrase": "pertinentes",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une précaution est proposée",
+      "atomId": "rr.a4",
+      "candidateSpan": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "cardId": "C-ddeea15106",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 583,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "proposed",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "couvert par une précaution",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "scope_match — l'action retenue s'applique à l'acteur, la cible, la situation et l'horizon demandés",
+      "atomId": "ac.a2",
+      "candidateSpan": "Je programme la révision immédiate du four F3.",
+      "cardId": "C-cfff4ce89b",
+      "criterionLabel": "Choix d’arbitrage",
+      "frame": "Décide quand faire réviser le four F3 et délimite la portée de ta décision.",
+      "highlight": {
+        "end": 46,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "scope_match",
+      "quantifier": "exists",
+      "response": "Je programme la révision immédiate du four F3. Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche. Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars. Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+      "responseArity": "n",
+      "sourcePhrase": "appliqué au bon périmètre",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::arbitration-choice",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE limite est correcte pour CETTE affirmation",
+      "atomId": "cf.a3",
+      "candidateSpan": "assuré par les 12 personnes de l’équipe",
+      "cardId": "C-c2a90f7957",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 97,
+        "start": 58
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_limit",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.\n\nDeux hypothèses restent ouvertes et conditionnent cet objectif. Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement délimitées",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "un risque est nommé",
+      "atomId": "rr.a1",
+      "candidateSpan": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+      "cardId": "C-ead0308f4c",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 610,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "named",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "Le risque … est nommé",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier",
+      "atomId": "sf.a2",
+      "candidateSpan": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+      "cardId": "C-019e71b38d",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : lors d'un premier tri de 24 étoiles en carton, une légende placée à l'écart a été suivie de 10 erreurs de placement. Lors d'un second tri des mêmes 24 étoiles, la légende a été placée à côté du plateau et 4 erreurs ont été relevées. Le groupe, l'ordre des étoiles et les 20 minutes allouées sont restés identiques. L'observateur a noté moins de regards allant du plateau vers la table distante. Le même groupe a participé aux deux tris, donc un effet d'entraînement reste possible ; aucun nouveau groupe n'a été testé.",
+      "frame": "Expliquez la baisse observée en distinguant faits établis, mécanisme plausible et inconnues.",
+      "highlight": {
+        "end": 129,
+        "start": 0
+      },
+      "logicalOperator": "not_exists",
+      "predicate": "not_exists_unattributable_material_claim",
+      "quantifier": "not_exists",
+      "response": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée. Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": "full_response",
+      "sourcePhrase": "[intitulé] sans ajout matériel",
+      "stratum": "S7_full_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE risque est exact ET pertinent au regard du dossier",
+      "atomId": "rr.a3",
+      "candidateSpan": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "cardId": "C-c874133b88",
+      "criterionLabel": "Bornage du risque restant",
+      "dossier": "Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 583,
+        "start": 432
+      },
+      "logicalOperator": "and",
+      "predicate": "accurate_and_relevant",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "pertinent … avec exactitude",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE séquence est ancrée sur des observations du dossier",
+      "atomId": "esg.a2",
+      "candidateSpan": "Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri.",
+      "cardId": "C-95f3bb5b4c",
+      "criterionLabel": "Ancrer la réflexion dans une séquence et des observations présentes dans le dossier.",
+      "dossier": "Contexte fiable et fictif : au premier tour d'un jeu de classement, j'ai annoncé les symboles après la distribution et 5 joueurs sur 9 ont recommencé. Au second, je les ai annoncés avant et 1 sur 9 a recommencé. Les pièces avaient aussi été prétriées au second tour ; aucun troisième tour n'a eu lieu.",
+      "frame": "Produisez une réflexion complète en restant très concis.",
+      "highlight": {
+        "end": 124,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "grounded",
+      "quantifier": "exists",
+      "response": "Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri. Au prochain tour, j'annoncerai avant, sans prétri, et compterai les reprises sur 9 joueurs ; au-delà d'une reprise, je réviserai l'annonce.",
+      "responseArity": 1,
+      "sourcePhrase": "[intitulé] observations du dossier",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::event-sequence-grounding",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "séquence énoncée",
+          "roleId": "sequence",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "le lien réflexif demandé est explicitement énoncé",
+      "atomId": "rl.a1",
+      "candidateSpan": "J’en retire qu’il faut vérifier la population concernée avant d’écrire un objectif.",
+      "cardId": "C-7134ac21dc",
+      "criterionLabel": "Lien réflexif explicite",
+      "frame": "Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.",
+      "highlight": {
+        "end": 282,
+        "start": 199
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre, et la production associée est la note de cadrage corrigée. Deux étapes seulement ont produit une preuve datée.\n\nJ’en retire qu’il faut vérifier la population concernée avant d’écrire un objectif.",
+      "responseArity": 1,
+      "sourcePhrase": "Le lien réflexif demandé est explicite",
+      "stratum": "S2_span_frame",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE lien s'appuie sur CET élément de la réponse",
+      "atomId": "rl.a2",
+      "candidateSpan": "Mon erreur a été de valider un périmètre sans le confronter aux données d’usage, et la pratique que j’en retire est de vérifier la population concernée avant d’écrire un objectif.",
+      "cardId": "C-c93b3ebd16",
+      "criterionLabel": "Lien réflexif explicite",
+      "highlight": {
+        "end": 600,
+        "start": 421
+      },
+      "logicalOperator": "none",
+      "predicate": "grounded_in",
+      "quantifier": "exists",
+      "response": "Sur les huit étapes, la décision que je retiens est d’avoir refait l’étape 5 après avoir constaté que le périmètre incluait une population non concernée. La production associée est la note de cadrage corrigée, et ma seule preuve de progression datée porte sur cette étape et sur la revue d’amélioration : les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré.\n\nMon erreur a été de valider un périmètre sans le confronter aux données d’usage, et la pratique que j’en retire est de vérifier la population concernée avant d’écrire un objectif. J’en tire une méthode de mission en six actions, que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes.",
+      "responseArity": "n",
+      "sourcePhrase": "appuyé sur un élément concret de la réponse",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE limite est correcte pour CETTE affirmation",
+      "atomId": "cf.a3",
+      "candidateSpan": "Je préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.",
+      "cardId": "C-21c02adcfe",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 357,
+        "start": 198
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_limit",
+      "quantifier": "forall_exists",
+      "response": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.\n\nJe préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement délimitées",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE précaution atténue CE risque",
+      "atomId": "rr.a5",
+      "candidateSpan": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "cardId": "C-e784427fc6",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 583,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "mitigates",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "couvert par une précaution",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est exacte",
+      "atomId": "ff.a2",
+      "candidateSpan": "Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.",
+      "cardId": "C-5fe5a34a55",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "dossier": "Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 348,
+        "start": 74
+      },
+      "logicalOperator": "none",
+      "predicate": "exact",
+      "quantifier": "forall",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "exactes",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait est explicitement relié à CE mécanisme",
+      "atomId": "ml.a2",
+      "candidateSpan": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.",
+      "cardId": "C-e8b618d5d9",
+      "criterionLabel": "Relier explicitement les faits au mécanisme ou à la conclusion expliquée.",
+      "highlight": {
+        "end": 367,
+        "start": 130
+      },
+      "logicalOperator": "none",
+      "predicate": "links",
+      "quantifier": "forall",
+      "response": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée. Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": "n",
+      "sourcePhrase": "[intitulé] Relier explicitement les faits",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::mechanism-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "mécanisme ou conclusion",
+          "roleId": "mechanism",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "fait mobilisé — TOUS",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE affirmation utile est fidèle au contexte",
+      "atomId": "cf.a1",
+      "candidateSpan": "Je préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.",
+      "cardId": "C-79686de1b8",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 357,
+        "start": 198
+      },
+      "logicalOperator": "none",
+      "predicate": "faithful",
+      "quantifier": "forall",
+      "response": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.\n\nJe préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.",
+      "responseArity": 1,
+      "sourcePhrase": "Les affirmations utiles sont fidèles au contexte",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "atomId": "cf.a2",
+      "candidateSpan": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera",
+      "cardId": "C-b01a5c8919",
+      "criterionLabel": "Fidélité et limites",
+      "highlight": {
+        "end": 151,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "delimits",
+      "quantifier": "forall_exists",
+      "response": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.",
+      "responseArity": "n",
+      "sourcePhrase": "leurs limites sont … délimitées",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble soutient CE choix",
+      "atomId": "ff.a4",
+      "candidateSpan": "Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.",
+      "cardId": "C-fd5f7ab3a9",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "highlight": {
+        "end": 348,
+        "start": 74
+      },
+      "logicalOperator": "none",
+      "predicate": "supports",
+      "quantifier": "forall",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "soutiennent effectivement le choix retenu",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est pertinente pour CE choix",
+      "atomId": "ff.a3",
+      "candidateSpan": "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.",
+      "cardId": "C-031dc2f936",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "frame": "Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.",
+      "highlight": {
+        "end": 243,
+        "start": 67
+      },
+      "logicalOperator": "none",
+      "predicate": "relevant",
+      "quantifier": "forall",
+      "response": "Je penche pour la réparation complète immédiate, sans la trancher. La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle. Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.",
+      "responseArity": "n",
+      "sourcePhrase": "pertinentes",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE précaution est proportionnée à CE risque",
+      "atomId": "rr.a6",
+      "candidateSpan": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+      "cardId": "C-d2ad17205d",
+      "criterionLabel": "Bornage du risque restant",
+      "dossier": "Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 610,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "proportionate",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "précaution proportionnée",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE preuve démontre CETTE pratique",
+      "atomId": "pe.a2",
+      "candidateSpan": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés.",
+      "cardId": "C-ea1d4fb40a",
+      "criterionLabel": "Preuve de pratique",
+      "frame": "Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.",
+      "highlight": {
+        "end": 106,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "demonstrates",
+      "quantifier": "exists",
+      "response": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés. Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.\n\nRisque : la coupure tombe sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir.",
+      "responseArity": "n",
+      "sourcePhrase": "La pratique demandée est démontrée",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::practice-evidence",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "pratique demandée",
+          "roleId": "practice",
+          "selection": "canonical",
+          "source": "task_frame"
+        },
+        {
+          "cardinality": "1",
+          "description": "preuve produite",
+          "roleId": "proof",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "interprétation de la preuve, énoncée dans la réponse",
+          "roleId": "interpretation",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "un choix est explicitement énoncé",
+      "atomId": "ac.a1",
+      "candidateSpan": "Je programme la révision immédiate du four F3.",
+      "cardId": "C-e8d6ce0570",
+      "criterionLabel": "Choix d’arbitrage",
+      "highlight": {
+        "end": 46,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Je programme la révision immédiate du four F3. Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche. Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars. Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+      "responseArity": 1,
+      "sourcePhrase": "Le choix est explicite",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::arbitration-choice",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "la position s'applique à l'acteur, l'objet, la situation et l'horizon demandés",
+      "atomId": "dp.a3",
+      "candidateSpan": "Je recommande de signer immédiatement pour un an.",
+      "cardId": "C-9fa962f3a9",
+      "criterionLabel": "Position décisionnelle",
+      "frame": "Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.",
+      "highlight": {
+        "end": 49,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "scope_match",
+      "quantifier": "exists",
+      "response": "Je recommande de signer immédiatement pour un an. Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.",
+      "responseArity": "n",
+      "sourcePhrase": "dans le cadre demandé",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::decision-position",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "position retenue",
+          "roleId": "position",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE lien s'appuie sur CET élément de la réponse",
+      "atomId": "rl.a2",
+      "candidateSpan": "les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré",
+      "cardId": "C-b202f36539",
+      "criterionLabel": "Lien réflexif explicite",
+      "highlight": {
+        "end": 418,
+        "start": 305
+      },
+      "logicalOperator": "none",
+      "predicate": "grounded_in",
+      "quantifier": "exists",
+      "response": "Sur les huit étapes, la décision que je retiens est d’avoir refait l’étape 5 après avoir constaté que le périmètre incluait une population non concernée. La production associée est la note de cadrage corrigée, et ma seule preuve de progression datée porte sur cette étape et sur la revue d’amélioration : les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré. J’en tire une méthode de mission en six actions, que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes.",
+      "responseArity": "n",
+      "sourcePhrase": "appuyé sur un élément concret de la réponse",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait mobilisé est pertinent",
+      "atomId": "sfu.a3",
+      "candidateSpan": "le pilote étendu de quatre semaines avec formation",
+      "cardId": "C-940f310765",
+      "criterionLabel": "Utilisation exacte des faits",
+      "frame": "Recommande l’une des deux options et justifie ton choix avec les informations du scénario.",
+      "highlight": {
+        "end": 64,
+        "start": 14
+      },
+      "logicalOperator": "none",
+      "predicate": "relevant",
+      "quantifier": "forall",
+      "response": "Je recommande le pilote étendu de quatre semaines avec formation.",
+      "responseArity": 1,
+      "sourcePhrase": "pertinents",
+      "stratum": "S2_span_frame",
+      "witnessGroupId": "wg::source-fact-use",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait de scénario mobilisé — TOUS ceux mobilisés",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "atomId": "cf.a2",
+      "candidateSpan": "Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré.",
+      "cardId": "C-b837d88cb6",
+      "criterionLabel": "Fidélité et limites",
+      "highlight": {
+        "end": 521,
+        "start": 413
+      },
+      "logicalOperator": "none",
+      "predicate": "delimits",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.\n\nDeux hypothèses restent ouvertes et conditionnent cet objectif. Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré. Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+      "responseArity": "n",
+      "sourcePhrase": "leurs limites sont … délimitées",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE affirmation utile est fidèle au contexte",
+      "atomId": "cf.a1",
+      "candidateSpan": "Je ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.",
+      "cardId": "C-ca032c9799",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 294,
+        "start": 180
+      },
+      "logicalOperator": "none",
+      "predicate": "faithful",
+      "quantifier": "forall",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.\n\nJe ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.",
+      "responseArity": 1,
+      "sourcePhrase": "Les affirmations utiles sont fidèles au contexte",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "action_resolved — la réponse dit à l'acteur visé quoi choisir ou faire sans inférence entre actions matériellement différentes",
+      "atomId": "ac.a3",
+      "candidateSpan": "Je programme la révision immédiate du four F3.",
+      "cardId": "C-b0aae8b73f",
+      "criterionLabel": "Choix d’arbitrage",
+      "frame": "Décide quand faire réviser le four F3 et délimite la portée de ta décision.",
+      "highlight": {
+        "end": 46,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "action_resolved",
+      "quantifier": "exists",
+      "response": "Je programme la révision immédiate du four F3. Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche. Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars. Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+      "responseArity": "n",
+      "sourcePhrase": "directement actionnable",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::arbitration-choice",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait mobilisé est exact",
+      "atomId": "sfu.a2",
+      "candidateSpan": "Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.",
+      "cardId": "C-ff1ff5c6a5",
+      "criterionLabel": "Utilisation exacte des faits",
+      "dossier": "Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.",
+      "frame": "Recommande l’une des deux options et justifie ton choix avec les informations du scénario.",
+      "highlight": {
+        "end": 232,
+        "start": 66
+      },
+      "logicalOperator": "none",
+      "predicate": "exact",
+      "quantifier": "forall",
+      "response": "Je recommande le pilote étendu de quatre semaines avec formation. Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.",
+      "responseArity": 1,
+      "sourcePhrase": "exacts",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::source-fact-use",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait de scénario mobilisé — TOUS ceux mobilisés",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "un mécanisme ou une conclusion est énoncé",
+      "atomId": "ml.a1",
+      "candidateSpan": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+      "cardId": "C-15f79d0739",
+      "criterionLabel": "Relier explicitement les faits au mécanisme ou à la conclusion expliquée.",
+      "highlight": {
+        "end": 283,
+        "start": 130
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": 1,
+      "sourcePhrase": "[intitulé] mécanisme ou conclusion",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::mechanism-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "mécanisme ou conclusion",
+          "roleId": "mechanism",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "fait mobilisé — TOUS",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "un risque est nommé",
+      "atomId": "rr.a1",
+      "candidateSpan": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "cardId": "C-869b96f843",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 583,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "named",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "Le risque … est nommé",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE précaution est proportionnée à CE risque",
+      "atomId": "rr.a6",
+      "candidateSpan": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "cardId": "C-996ee022a3",
+      "criterionLabel": "Bornage du risque restant",
+      "dossier": "Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 583,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "proportionate",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "précaution proportionnée",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE affirmation utile est fidèle au contexte",
+      "atomId": "cf.a1",
+      "candidateSpan": "Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré.",
+      "cardId": "C-bd70496142",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 521,
+        "start": 413
+      },
+      "logicalOperator": "none",
+      "predicate": "faithful",
+      "quantifier": "forall",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.\n\nDeux hypothèses restent ouvertes et conditionnent cet objectif. Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré. Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+      "responseArity": 1,
+      "sourcePhrase": "Les affirmations utiles sont fidèles au contexte",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une séquence est énoncée",
+      "atomId": "esg.a1",
+      "candidateSpan": "Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri.",
+      "cardId": "C-f47762c5bb",
+      "criterionLabel": "Ancrer la réflexion dans une séquence et des observations présentes dans le dossier.",
+      "highlight": {
+        "end": 124,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri. Au prochain tour, j'annoncerai avant, sans prétri, et compterai les reprises sur 9 joueurs ; au-delà d'une reprise, je réviserai l'annonce.",
+      "responseArity": 1,
+      "sourcePhrase": "[intitulé] Ancrer … dans une séquence",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::event-sequence-grounding",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "séquence énoncée",
+          "roleId": "sequence",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE affirmation utile est fidèle au contexte",
+      "atomId": "cf.a1",
+      "candidateSpan": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera",
+      "cardId": "C-3efac4cd5a",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 151,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "faithful",
+      "quantifier": "forall",
+      "response": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.",
+      "responseArity": 1,
+      "sourcePhrase": "Les affirmations utiles sont fidèles au contexte",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait nécessaire du dossier est restitué dans la réponse",
+      "atomId": "sf.a1",
+      "candidateSpan": "Les mauvais embranchements passent de 5/16 à 9/16 après l'ajout des flèches",
+      "cardId": "C-3022fa8dd4",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : sur un parcours miniature, les mauvais embranchements passent de 9/16 à 5/16 après l'ajout de flèches statiques, avec le même tracé, la même durée et le même groupe. Les flèches rendent le prochain embranchement visible avant le déplacement. L'état de charge de la maquette n'a pas été consigné. Un mode lumineux ne peut être utilisé qu'après réception d'un rapport signé confirmant explicitement qu'il respecte le plafond non négociable de 6 W. Aucun rapport signé n'est disponible.",
+      "frame": "Expliquez la baisse et dites si le mode lumineux peut constituer un repli, sans supposer de fait absent.",
+      "highlight": {
+        "end": 75,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "restituted",
+      "quantifier": "forall",
+      "response": "Les mauvais embranchements passent de 5/16 à 9/16 après l'ajout des flèches, le tracé, le temps et le groupe restant les mêmes. En montrant l'embranchement avant le déplacement, les flèches peuvent réduire les choix tardifs ; la charge non consignée empêche toutefois d'isoler complètement l'effet. Si le mode lumineux respecte probablement 6 W lors du prochain essai, on pourra l'utiliser comme repli.",
+      "responseArity": "n",
+      "sourcePhrase": "[intitulé] Restituer … faits nécessaires",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE lien s'appuie sur CET élément de la réponse",
+      "atomId": "rl.a2",
+      "candidateSpan": "J’en retire qu’il faut vérifier la population concernée avant d’écrire un objectif.",
+      "cardId": "C-016b26c5bf",
+      "criterionLabel": "Lien réflexif explicite",
+      "highlight": {
+        "end": 282,
+        "start": 199
+      },
+      "logicalOperator": "none",
+      "predicate": "grounded_in",
+      "quantifier": "exists",
+      "response": "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre, et la production associée est la note de cadrage corrigée. Deux étapes seulement ont produit une preuve datée.\n\nJ’en retire qu’il faut vérifier la population concernée avant d’écrire un objectif.",
+      "responseArity": "n",
+      "sourcePhrase": "appuyé sur un élément concret de la réponse",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble soutient CE choix",
+      "atomId": "ff.a4",
+      "candidateSpan": "le contrat Préventel à 21 000 euros par an",
+      "cardId": "C-2fc0bf8326",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "highlight": {
+        "end": 56,
+        "start": 14
+      },
+      "logicalOperator": "none",
+      "predicate": "supports",
+      "quantifier": "forall",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "soutiennent effectivement le choix retenu",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est pertinente pour CE choix",
+      "atomId": "ff.a3",
+      "candidateSpan": "Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.",
+      "cardId": "C-7865430ef0",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "frame": "Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.",
+      "highlight": {
+        "end": 348,
+        "start": 74
+      },
+      "logicalOperator": "none",
+      "predicate": "relevant",
+      "quantifier": "forall",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "pertinentes",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble soutient CE choix",
+      "atomId": "ff.a4",
+      "candidateSpan": "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.",
+      "cardId": "C-a47581091e",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "highlight": {
+        "end": 243,
+        "start": 67
+      },
+      "logicalOperator": "none",
+      "predicate": "supports",
+      "quantifier": "forall",
+      "response": "Je penche pour la réparation complète immédiate, sans la trancher. La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle. Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.",
+      "responseArity": "n",
+      "sourcePhrase": "soutiennent effectivement le choix retenu",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble est exacte",
+      "atomId": "ff.a2",
+      "candidateSpan": "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.",
+      "cardId": "C-60bf5a462a",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "dossier": "Après un dégât des eaux au bâtiment A, le conseil compare deux stratégies : réparer complètement cette année pour 12 600 euros, franchise de 1 200 euros, ou réparer partiellement maintenant à 5 400 euros puis complètement dans 2 ans, estimation alors de 14 800 euros, même franchise à chaque sinistre. Le budget travaux voté est de 15 000 euros pour l’année. Une subvention de 3 000 euros de la collectivité est acquise si les travaux démarrent avant le 31 décembre.",
+      "frame": "Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.",
+      "highlight": {
+        "end": 243,
+        "start": 67
+      },
+      "logicalOperator": "none",
+      "predicate": "exact",
+      "quantifier": "forall",
+      "response": "Je penche pour la réparation complète immédiate, sans la trancher. La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle. Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.",
+      "responseArity": 1,
+      "sourcePhrase": "exactes",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "pour CHAQUE affirmation, IL EXISTE une limite qui la borne",
+      "atomId": "cf.a2",
+      "candidateSpan": "Je ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.",
+      "cardId": "C-5d7209b843",
+      "criterionLabel": "Fidélité et limites",
+      "highlight": {
+        "end": 294,
+        "start": 180
+      },
+      "logicalOperator": "none",
+      "predicate": "delimits",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.\n\nJe ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.",
+      "responseArity": "n",
+      "sourcePhrase": "leurs limites sont … délimitées",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "le lien réflexif demandé est explicitement énoncé",
+      "atomId": "rl.a1",
+      "candidateSpan": "Mon erreur a été de valider un périmètre sans le confronter aux données d’usage, et la pratique que j’en retire est de vérifier la population concernée avant d’écrire un objectif.",
+      "cardId": "C-3cbf6ce3bd",
+      "criterionLabel": "Lien réflexif explicite",
+      "frame": "Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.",
+      "highlight": {
+        "end": 600,
+        "start": 421
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Sur les huit étapes, la décision que je retiens est d’avoir refait l’étape 5 après avoir constaté que le périmètre incluait une population non concernée. La production associée est la note de cadrage corrigée, et ma seule preuve de progression datée porte sur cette étape et sur la revue d’amélioration : les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré.\n\nMon erreur a été de valider un périmètre sans le confronter aux données d’usage, et la pratique que j’en retire est de vérifier la population concernée avant d’écrire un objectif. J’en tire une méthode de mission en six actions, que je présente comme ma façon de travailler aujourd’hui et non comme une norme : elle vaut pour les missions comparables à celle-ci et devra être révisée quand j’aurai des preuves sur les étapes restantes.",
+      "responseArity": 1,
+      "sourcePhrase": "Le lien réflexif demandé est explicite",
+      "stratum": "S2_span_frame",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE risque subsiste après CETTE action",
+      "atomId": "rr.a2",
+      "candidateSpan": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+      "cardId": "C-e3f8bc2a01",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 610,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "residual_to",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "Le risque résiduel",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "la réponse dit à l'acteur visé quoi choisir ou faire, sans inférence entre actions matériellement différentes",
+      "atomId": "dp.a2",
+      "candidateSpan": "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine",
+      "cardId": "C-ef7cee7b7a",
+      "criterionLabel": "Position décisionnelle",
+      "frame": "Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.",
+      "highlight": {
+        "end": 397,
+        "start": 314
+      },
+      "logicalOperator": "none",
+      "predicate": "action_resolved",
+      "quantifier": "exists",
+      "response": "Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.",
+      "responseArity": "n",
+      "sourcePhrase": "peut guider l'action",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::decision-position",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "position retenue",
+          "roleId": "position",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une précaution est proposée",
+      "atomId": "rr.a4",
+      "candidateSpan": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+      "cardId": "C-4fce900f34",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 610,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "proposed",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": 1,
+      "sourcePhrase": "couvert par une précaution",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait mobilisé est attribuable au scénario",
+      "atomId": "sfu.a1",
+      "candidateSpan": "le pilote étendu de quatre semaines avec formation",
+      "cardId": "C-651176caec",
+      "criterionLabel": "Utilisation exacte des faits",
+      "dossier": "Une équipe support traite 120 demandes par semaine. Un pilote de deux semaines dans une équipe a fait passer le délai médian de résolution de 18 à 13 heures. Un incident est survenu parce que deux agents n’avaient pas été formés. La direction hésite entre un déploiement immédiat dans tout le service et un pilote étendu de quatre semaines incluant une formation.",
+      "frame": "Recommande l’une des deux options et justifie ton choix avec les informations du scénario.",
+      "highlight": {
+        "end": 64,
+        "start": 14
+      },
+      "logicalOperator": "none",
+      "predicate": "attributable",
+      "quantifier": "forall",
+      "response": "Je recommande le pilote étendu de quatre semaines avec formation.",
+      "responseArity": 1,
+      "sourcePhrase": "attribuables au scénario",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::source-fact-use",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait de scénario mobilisé — TOUS ceux mobilisés",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE limite est correcte pour CETTE affirmation",
+      "atomId": "cf.a3",
+      "candidateSpan": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera",
+      "cardId": "C-497e61e359",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 151,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_limit",
+      "quantifier": "forall_exists",
+      "response": "Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement délimitées",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "la position s'applique à l'acteur, l'objet, la situation et l'horizon demandés",
+      "atomId": "dp.a3",
+      "candidateSpan": "le mois supplémentaire sans engagement ne ferait que retarder une économie certaine",
+      "cardId": "C-52ad184a1b",
+      "criterionLabel": "Position décisionnelle",
+      "frame": "Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.",
+      "highlight": {
+        "end": 397,
+        "start": 314
+      },
+      "logicalOperator": "none",
+      "predicate": "scope_match",
+      "quantifier": "exists",
+      "response": "Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.",
+      "responseArity": "n",
+      "sourcePhrase": "dans le cadre demandé",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::decision-position",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "position retenue",
+          "roleId": "position",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "scope_match — l'action retenue s'applique à l'acteur, la cible, la situation et l'horizon demandés",
+      "atomId": "ac.a2",
+      "candidateSpan": "réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche",
+      "cardId": "C-ecd03ea521",
+      "criterionLabel": "Choix d’arbitrage",
+      "frame": "Décide quand faire réviser le four F3 et délimite la portée de ta décision.",
+      "highlight": {
+        "end": 313,
+        "start": 151
+      },
+      "logicalOperator": "none",
+      "predicate": "scope_match",
+      "quantifier": "exists",
+      "response": "Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche. Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars. Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+      "responseArity": "n",
+      "sourcePhrase": "appliqué au bon périmètre",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::arbitration-choice",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE affirmation utile est fidèle au contexte",
+      "atomId": "cf.a1",
+      "candidateSpan": "assuré par les 12 personnes de l’équipe",
+      "cardId": "C-c7f649c237",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 97,
+        "start": 58
+      },
+      "logicalOperator": "none",
+      "predicate": "faithful",
+      "quantifier": "forall",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.\n\nDeux hypothèses restent ouvertes et conditionnent cet objectif. Le sponsor n’ayant fixé aucune contrainte de qualité, le plafond de réaffectation proposé ci-dessus est une proposition à valider et non une exigence reçue.",
+      "responseArity": 1,
+      "sourcePhrase": "Les affirmations utiles sont fidèles au contexte",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "le lien réflexif demandé est explicitement énoncé",
+      "atomId": "rl.a1",
+      "candidateSpan": "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre",
+      "cardId": "C-2b09e329ab",
+      "criterionLabel": "Lien réflexif explicite",
+      "frame": "Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.",
+      "highlight": {
+        "end": 85,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre, et la production associée est la note de cadrage corrigée. Deux étapes seulement ont produit une preuve datée.",
+      "responseArity": 1,
+      "sourcePhrase": "Le lien réflexif demandé est explicite",
+      "stratum": "S2_span_frame",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait nécessaire du dossier est restitué dans la réponse",
+      "atomId": "sf.a1",
+      "candidateSpan": "les participants détournent moins le regard",
+      "cardId": "C-dacd6fd6fd",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : lors d'un premier tri de 24 étoiles en carton, une légende placée à l'écart a été suivie de 10 erreurs de placement. Lors d'un second tri des mêmes 24 étoiles, la légende a été placée à côté du plateau et 4 erreurs ont été relevées. Le groupe, l'ordre des étoiles et les 20 minutes allouées sont restés identiques. L'observateur a noté moins de regards allant du plateau vers la table distante. Le même groupe a participé aux deux tris, donc un effet d'entraînement reste possible ; aucun nouveau groupe n'a été testé.",
+      "frame": "Expliquez la baisse observée en distinguant faits établis, mécanisme plausible et inconnues.",
+      "highlight": {
+        "end": 55,
+        "start": 12
+      },
+      "logicalOperator": "none",
+      "predicate": "restituted",
+      "quantifier": "forall",
+      "response": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": "n",
+      "sourcePhrase": "[intitulé] Restituer … faits nécessaires",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "un choix est explicitement énoncé",
+      "atomId": "ac.a1",
+      "candidateSpan": "réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche",
+      "cardId": "C-ca7d3bb81a",
+      "criterionLabel": "Choix d’arbitrage",
+      "highlight": {
+        "end": 313,
+        "start": 151
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche. Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars. Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+      "responseArity": 1,
+      "sourcePhrase": "Le choix est explicite",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::arbitration-choice",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une preuve vérifiable est produite",
+      "atomId": "pe.a1",
+      "candidateSpan": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés.",
+      "cardId": "C-5d61e76e55",
+      "criterionLabel": "Preuve de pratique",
+      "dossier": "Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.",
+      "frame": "Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.",
+      "highlight": {
+        "end": 106,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "verifiable",
+      "quantifier": "exists",
+      "response": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés. Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.\n\nRisque : la coupure tombe sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir.",
+      "responseArity": 1,
+      "sourcePhrase": "une preuve vérifiable",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::practice-evidence",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "pratique demandée",
+          "roleId": "practice",
+          "selection": "canonical",
+          "source": "task_frame"
+        },
+        {
+          "cardinality": "1",
+          "description": "preuve produite",
+          "roleId": "proof",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "interprétation de la preuve, énoncée dans la réponse",
+          "roleId": "interpretation",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CE lien s'appuie sur CET élément de la réponse",
+      "atomId": "rl.a2",
+      "candidateSpan": "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre",
+      "cardId": "C-43f2751341",
+      "criterionLabel": "Lien réflexif explicite",
+      "highlight": {
+        "end": 85,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "grounded_in",
+      "quantifier": "exists",
+      "response": "La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre, et la production associée est la note de cadrage corrigée. Deux étapes seulement ont produit une preuve datée.",
+      "responseArity": "n",
+      "sourcePhrase": "appuyé sur un élément concret de la réponse",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::reflection-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "lien réflexif",
+          "roleId": "link",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "élément concret",
+          "roleId": "element",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une séquence est énoncée",
+      "atomId": "esg.a1",
+      "candidateSpan": "Les reprises passent de 5/9 quand j'annonce les symboles après la distribution à 1/9 quand je les annonce avant.",
+      "cardId": "C-456c825db6",
+      "criterionLabel": "Ancrer la réflexion dans une séquence et des observations présentes dans le dossier.",
+      "highlight": {
+        "end": 112,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Les reprises passent de 5/9 quand j'annonce les symboles après la distribution à 1/9 quand je les annonce avant. Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri. Au prochain tour, j'annoncerai avant, sans prétri, et compterai les reprises sur 9 joueurs ; au-delà d'une reprise, je réviserai l'annonce.",
+      "responseArity": 1,
+      "sourcePhrase": "[intitulé] Ancrer … dans une séquence",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::event-sequence-grounding",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "séquence énoncée",
+          "roleId": "sequence",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE interprétation de CETTE preuve est correcte",
+      "atomId": "pe.a3",
+      "candidateSpan": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés.",
+      "cardId": "C-f670b2471b",
+      "criterionLabel": "Preuve de pratique",
+      "dossier": "Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.",
+      "frame": "Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.",
+      "highlight": {
+        "end": 106,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_interpretation",
+      "quantifier": "exists",
+      "response": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés. Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.\n\nRisque : la coupure tombe sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement interprétée",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::practice-evidence",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "pratique demandée",
+          "roleId": "practice",
+          "selection": "canonical",
+          "source": "task_frame"
+        },
+        {
+          "cardinality": "1",
+          "description": "preuve produite",
+          "roleId": "proof",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "interprétation de la preuve, énoncée dans la réponse",
+          "roleId": "interpretation",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait mobilisé est pertinent",
+      "atomId": "sfu.a3",
+      "candidateSpan": "Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.",
+      "cardId": "C-f9b6da36df",
+      "criterionLabel": "Utilisation exacte des faits",
+      "frame": "Recommande l’une des deux options et justifie ton choix avec les informations du scénario.",
+      "highlight": {
+        "end": 232,
+        "start": 66
+      },
+      "logicalOperator": "none",
+      "predicate": "relevant",
+      "quantifier": "forall",
+      "response": "Je recommande le pilote étendu de quatre semaines avec formation. Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.",
+      "responseArity": 1,
+      "sourcePhrase": "pertinents",
+      "stratum": "S2_span_frame",
+      "witnessGroupId": "wg::source-fact-use",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait de scénario mobilisé — TOUS ceux mobilisés",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE donnée de l'ensemble soutient CE choix",
+      "atomId": "ff.a4",
+      "candidateSpan": "La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.",
+      "cardId": "C-609fd27321",
+      "criterionLabel": "Fidélité aux faits du dossier",
+      "highlight": {
+        "end": 243,
+        "start": 67
+      },
+      "logicalOperator": "none",
+      "predicate": "supports",
+      "quantifier": "forall",
+      "response": "Je penche pour la réparation complète immédiate, sans la trancher. La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle. Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.",
+      "responseArity": "n",
+      "sourcePhrase": "soutiennent effectivement le choix retenu",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::fact-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "choix retenu",
+          "roleId": "choice",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=2",
+          "description": "donnée mobilisée — ENSEMBLE PARTAGÉ existentiel",
+          "roleId": "datum",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "une position est explicitement énoncée",
+      "atomId": "dp.a1",
+      "candidateSpan": "Je recommande de signer immédiatement pour un an.",
+      "cardId": "C-7635db25d6",
+      "criterionLabel": "Position décisionnelle",
+      "highlight": {
+        "end": 49,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "stated",
+      "quantifier": "exists",
+      "response": "Je recommande de signer immédiatement pour un an. Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.",
+      "responseArity": 1,
+      "sourcePhrase": "La position est explicite",
+      "stratum": "S1_span_local",
+      "witnessGroupId": "wg::decision-position",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "position retenue",
+          "roleId": "position",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier",
+      "atomId": "sf.a2",
+      "candidateSpan": "les participants détournent moins le regard",
+      "cardId": "C-e4c1821822",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : lors d'un premier tri de 24 étoiles en carton, une légende placée à l'écart a été suivie de 10 erreurs de placement. Lors d'un second tri des mêmes 24 étoiles, la légende a été placée à côté du plateau et 4 erreurs ont été relevées. Le groupe, l'ordre des étoiles et les 20 minutes allouées sont restés identiques. L'observateur a noté moins de regards allant du plateau vers la table distante. Le même groupe a participé aux deux tris, donc un effet d'entraînement reste possible ; aucun nouveau groupe n'a été testé.",
+      "frame": "Expliquez la baisse observée en distinguant faits établis, mécanisme plausible et inconnues.",
+      "highlight": {
+        "end": 55,
+        "start": 12
+      },
+      "logicalOperator": "not_exists",
+      "predicate": "not_exists_unattributable_material_claim",
+      "quantifier": "not_exists",
+      "response": "Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": "full_response",
+      "sourcePhrase": "[intitulé] sans ajout matériel",
+      "stratum": "S7_full_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait est explicitement relié à CE mécanisme",
+      "atomId": "ml.a2",
+      "candidateSpan": "Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.",
+      "cardId": "C-747a02b017",
+      "criterionLabel": "Relier explicitement les faits au mécanisme ou à la conclusion expliquée.",
+      "highlight": {
+        "end": 283,
+        "start": 130
+      },
+      "logicalOperator": "none",
+      "predicate": "links",
+      "quantifier": "forall",
+      "response": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": "n",
+      "sourcePhrase": "[intitulé] Relier explicitement les faits",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::mechanism-link",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "mécanisme ou conclusion",
+          "roleId": "mechanism",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "fait mobilisé — TOUS",
+          "roleId": "fact",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE fait nécessaire du dossier est restitué dans la réponse",
+      "atomId": "sf.a1",
+      "candidateSpan": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée.",
+      "cardId": "C-2208126c12",
+      "criterionLabel": "Restituer fidèlement les faits fiables nécessaires à l'explication, sans ajout matériel.",
+      "dossier": "Contexte fiable et fictif : lors d'un premier tri de 24 étoiles en carton, une légende placée à l'écart a été suivie de 10 erreurs de placement. Lors d'un second tri des mêmes 24 étoiles, la légende a été placée à côté du plateau et 4 erreurs ont été relevées. Le groupe, l'ordre des étoiles et les 20 minutes allouées sont restés identiques. L'observateur a noté moins de regards allant du plateau vers la table distante. Le même groupe a participé aux deux tris, donc un effet d'entraînement reste possible ; aucun nouveau groupe n'a été testé.",
+      "frame": "Expliquez la baisse observée en distinguant faits établis, mécanisme plausible et inconnues.",
+      "highlight": {
+        "end": 129,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "restituted",
+      "quantifier": "forall",
+      "response": "Les erreurs passent de 10 sur 24 à 4 sur 24 quand la légende est rapprochée, avec le même groupe, le même ordre et la même durée. Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance. Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement. Sans essai sur un nouveau groupe, la généralisation reste inconnue.",
+      "responseArity": "n",
+      "sourcePhrase": "[intitulé] Restituer … faits nécessaires",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::source-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "fait nécessaire — ENSEMBLE CANONIQUE dérivé du dossier",
+          "roleId": "fact",
+          "selection": "canonical",
+          "source": "dossier"
+        },
+        {
+          "cardinality": ">=0",
+          "description": "affirmation matérielle de la réponse — TOUTES",
+          "roleId": "material_claim",
+          "selection": "exhaustive",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE limite est correcte pour CETTE affirmation",
+      "atomId": "cf.a3",
+      "candidateSpan": "Je ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.",
+      "cardId": "C-75106eeefd",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 294,
+        "start": 180
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_limit",
+      "quantifier": "forall_exists",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.\n\nJe ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement délimitées",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE interprétation de CETTE preuve est correcte",
+      "atomId": "pe.a3",
+      "candidateSpan": "Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.",
+      "cardId": "C-241f1ec679",
+      "criterionLabel": "Preuve de pratique",
+      "dossier": "Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.",
+      "frame": "Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.",
+      "highlight": {
+        "end": 559,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "correct_interpretation",
+      "quantifier": "exists",
+      "response": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés. Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.\n\nRisque : la coupure tombe sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir. Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.",
+      "responseArity": "n",
+      "sourcePhrase": "correctement interprétée",
+      "stratum": "S6_multi_dossier",
+      "witnessGroupId": "wg::practice-evidence",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "pratique demandée",
+          "roleId": "practice",
+          "selection": "canonical",
+          "source": "task_frame"
+        },
+        {
+          "cardinality": "1",
+          "description": "preuve produite",
+          "roleId": "proof",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "interprétation de la preuve, énoncée dans la réponse",
+          "roleId": "interpretation",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CHAQUE affirmation utile est fidèle au contexte",
+      "atomId": "cf.a1",
+      "candidateSpan": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.",
+      "cardId": "C-369f6c8899",
+      "criterionLabel": "Fidélité et limites",
+      "dossier": "Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.",
+      "frame": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+      "highlight": {
+        "end": 178,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "faithful",
+      "quantifier": "forall",
+      "response": "Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.",
+      "responseArity": 1,
+      "sourcePhrase": "Les affirmations utiles sont fidèles au contexte",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::context-fidelity",
+      "witnessRoles": [
+        {
+          "cardinality": ">=1",
+          "description": "affirmation utile — TOUTES celles de la réponse",
+          "roleId": "claim",
+          "selection": "exhaustive",
+          "source": "response"
+        },
+        {
+          "cardinality": ">=1",
+          "description": "limite énoncée — une par affirmation, réutilisable entre affirmations",
+          "roleId": "limit",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE séquence est ancrée sur des observations du dossier",
+      "atomId": "esg.a2",
+      "candidateSpan": "Les reprises passent de 5/9 quand j'annonce les symboles après la distribution à 1/9 quand je les annonce avant.",
+      "cardId": "C-b90267c8f8",
+      "criterionLabel": "Ancrer la réflexion dans une séquence et des observations présentes dans le dossier.",
+      "dossier": "Contexte fiable et fictif : au premier tour d'un jeu de classement, j'ai annoncé les symboles après la distribution et 5 joueurs sur 9 ont recommencé. Au second, je les ai annoncés avant et 1 sur 9 a recommencé. Les pièces avaient aussi été prétriées au second tour ; aucun troisième tour n'a eu lieu.",
+      "frame": "Produisez une réflexion complète en restant très concis.",
+      "highlight": {
+        "end": 112,
+        "start": 0
+      },
+      "logicalOperator": "none",
+      "predicate": "grounded",
+      "quantifier": "exists",
+      "response": "Les reprises passent de 5/9 quand j'annonce les symboles après la distribution à 1/9 quand je les annonce avant. Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri. Au prochain tour, j'annoncerai avant, sans prétri, et compterai les reprises sur 9 joueurs ; au-delà d'une reprise, je réviserai l'annonce.",
+      "responseArity": 1,
+      "sourcePhrase": "[intitulé] observations du dossier",
+      "stratum": "S3_span_dossier",
+      "witnessGroupId": "wg::event-sequence-grounding",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "séquence énoncée",
+          "roleId": "sequence",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE précaution atténue CE risque",
+      "atomId": "rr.a5",
+      "candidateSpan": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+      "cardId": "C-703db1669a",
+      "criterionLabel": "Bornage du risque restant",
+      "highlight": {
+        "end": 610,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "mitigates",
+      "quantifier": "exists",
+      "response": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4. Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+      "responseArity": "n",
+      "sourcePhrase": "couvert par une précaution",
+      "stratum": "S4_multi_local",
+      "witnessGroupId": "wg::residual-risk-surfacing",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "action retenue",
+          "roleId": "action",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "risque nommé",
+          "roleId": "risk",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "précaution proposée",
+          "roleId": "precaution",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    },
+    {
+      "atom": "CETTE preuve démontre CETTE pratique",
+      "atomId": "pe.a2",
+      "candidateSpan": "Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.",
+      "cardId": "C-9aa73d0058",
+      "criterionLabel": "Preuve de pratique",
+      "frame": "Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.",
+      "highlight": {
+        "end": 559,
+        "start": 432
+      },
+      "logicalOperator": "none",
+      "predicate": "demonstrates",
+      "quantifier": "exists",
+      "response": "Sprint Goal : rendre la recherche de cours utilisable sur mobile. Progrès : 2 des 5 tickets sont terminés. Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.\n\nRisque : la coupure tombe sur la fenêtre de test de la recherche connectée. Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté. Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir. Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.",
+      "responseArity": "n",
+      "sourcePhrase": "La pratique demandée est démontrée",
+      "stratum": "S5_multi_frame",
+      "witnessGroupId": "wg::practice-evidence",
+      "witnessRoles": [
+        {
+          "cardinality": "1",
+          "description": "pratique demandée",
+          "roleId": "practice",
+          "selection": "canonical",
+          "source": "task_frame"
+        },
+        {
+          "cardinality": "1",
+          "description": "preuve produite",
+          "roleId": "proof",
+          "selection": "existential",
+          "source": "response"
+        },
+        {
+          "cardinality": "1",
+          "description": "interprétation de la preuve, énoncée dans la réponse",
+          "roleId": "interpretation",
+          "selection": "existential",
+          "source": "response"
+        }
+      ]
+    }
+  ],
+  "contentHash": "sha256:f1f25fc9a107e7903069f4b01a0dd6096db5da97a2022848546fcf92c8b76945",
+  "manifestHash": "sha256:b3a021bfe81bd6c26690f6ebc79d754750d3db4e7821af51380a9853c28a9879",
+  "minimumGap": 8,
+  "mixingStepsAccepted": 143241,
+  "schemaVersion": 1,
+  "shuffleSeed": "v4.5-210/adjudication-deck/pass-1",
+  "status": "PASSE 1 AVEUGLE — la clé de correspondance est dans un fichier séparé, non destiné au relecteur."
+}

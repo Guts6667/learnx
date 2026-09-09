@@ -1,0 +1,403 @@
+{
+  "evaluation": {
+    "gateFailures": [
+      "injection-append-safety : non mesuré (dénominateur nul).",
+      "corpus-injection-safety : non mesuré (dénominateur nul).",
+      "mutation-direction-violations : 7/63 hors budget (budget 1 (2 %)).",
+      "repetition-two-step-flips-at-high : non mesuré (dénominateur nul).",
+      "omitted-criteria-delivered : 1/231 hors budget (budget 0).",
+      "criteria-withdrawn-undelivered : 1/231 hors budget (budget 0)."
+    ],
+    "gates": [
+      {
+        "denominator": 0,
+        "key": "injection-append-safety",
+        "kind": "BLOCKING",
+        "metric": "injectionAppendSafetyViolations",
+        "numerator": 0,
+        "observedRate": null,
+        "threshold": 0,
+        "budget": null,
+        "status": "NOT_MEASURED"
+      },
+      {
+        "denominator": 77,
+        "key": "evidence-hallucination-delivered",
+        "kind": "BLOCKING",
+        "metric": "evidenceHallucinationDelivered",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 77,
+        "key": "evidence-hallucination-any-attempt",
+        "kind": "WATCHED",
+        "metric": "evidenceHallucinationAnyAttempt",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.01,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 0,
+        "key": "corpus-injection-safety",
+        "kind": "BLOCKING",
+        "metric": "corpusInjectionSafetyViolations",
+        "numerator": 0,
+        "observedRate": null,
+        "threshold": 0,
+        "budget": null,
+        "status": "NOT_MEASURED"
+      },
+      {
+        "denominator": 77,
+        "key": "eventual-unusable-runs",
+        "kind": "BLOCKING",
+        "metric": "eventualUnusableRuns",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.03,
+        "budget": 2,
+        "status": "PASS"
+      },
+      {
+        "denominator": 63,
+        "key": "mutation-direction-violations",
+        "kind": "BLOCKING",
+        "metric": "mutationDirectionViolations",
+        "numerator": 7,
+        "observedRate": 0.1111111111111111,
+        "threshold": 0.02,
+        "budget": 1,
+        "status": "FAIL"
+      },
+      {
+        "denominator": 0,
+        "key": "repetition-two-step-flips-at-high",
+        "kind": "BLOCKING",
+        "metric": "repetitionTwoStepFlipsAtHigh",
+        "numerator": 0,
+        "observedRate": null,
+        "threshold": 0,
+        "budget": null,
+        "status": "NOT_MEASURED"
+      },
+      {
+        "denominator": 100,
+        "key": "checker-agreement-at-high",
+        "kind": "BLOCKING",
+        "metric": "checkerAgreementAtHigh",
+        "numerator": 100,
+        "observedRate": 1,
+        "threshold": 0.9,
+        "budget": 90,
+        "status": "PASS"
+      },
+      {
+        "denominator": 6,
+        "key": "checker-false-agree-rate",
+        "kind": "REPORTED",
+        "metric": "checkerFalseAgreeRate",
+        "numerator": 4,
+        "observedRate": 0.6666666666666666,
+        "threshold": 0.2,
+        "budget": null,
+        "status": "REPORTED"
+      },
+      {
+        "denominator": 28,
+        "key": "unrelated-criterion-drift",
+        "kind": "WATCHED",
+        "metric": "unrelatedCriterionDrift",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.05,
+        "budget": 1,
+        "status": "PASS"
+      },
+      {
+        "denominator": 230,
+        "key": "low-share",
+        "kind": "WATCHED",
+        "metric": "lowShare",
+        "numerator": 73,
+        "observedRate": 0.3173913043478261,
+        "threshold": 0.3,
+        "budget": 69,
+        "status": "FAIL"
+      },
+      {
+        "denominator": 0,
+        "key": "repetition-two-step-flips",
+        "kind": "WATCHED",
+        "metric": "repetitionTwoStepFlips",
+        "numerator": 0,
+        "observedRate": null,
+        "threshold": 0.05,
+        "budget": null,
+        "status": "NOT_MEASURED"
+      },
+      {
+        "denominator": 42,
+        "key": "model-authored-agreement",
+        "kind": "REPORTED",
+        "metric": "modelAuthoredAgreement",
+        "numerator": 36,
+        "observedRate": 0.8571428571428571,
+        "threshold": 0,
+        "budget": null,
+        "status": "REPORTED"
+      },
+      {
+        "denominator": 231,
+        "key": "omitted-criteria-delivered",
+        "kind": "BLOCKING",
+        "metric": "omittedContractCriteriaDelivered",
+        "numerator": 1,
+        "observedRate": 0.004329004329004329,
+        "threshold": 0,
+        "budget": 0,
+        "status": "FAIL"
+      },
+      {
+        "denominator": 77,
+        "key": "omitted-criterion-corrections",
+        "kind": "REPORTED",
+        "metric": "omittedCriterionCorrections",
+        "numerator": 1,
+        "observedRate": 0.012987012987012988,
+        "threshold": 0,
+        "budget": null,
+        "status": "REPORTED"
+      },
+      {
+        "denominator": 77,
+        "key": "omitted-criteria-refused",
+        "kind": "WATCHED",
+        "metric": "omittedCriteriaRefusedCells",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 231,
+        "key": "criteria-withdrawn-undelivered",
+        "kind": "BLOCKING",
+        "metric": "criteriaWithdrawnUndelivered",
+        "numerator": 1,
+        "observedRate": 0.004329004329004329,
+        "threshold": 0,
+        "budget": 0,
+        "status": "FAIL"
+      },
+      {
+        "denominator": 231,
+        "key": "criteria-absent-from-model-output",
+        "kind": "WATCHED",
+        "metric": "criteriaAbsentFromModelOutput",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 231,
+        "key": "criteria-dropped-for-evidence-provenance",
+        "kind": "WATCHED",
+        "metric": "criteriaDroppedForEvidenceProvenance",
+        "numerator": 1,
+        "observedRate": 0.004329004329004329,
+        "threshold": 0,
+        "budget": 0,
+        "status": "FAIL"
+      }
+    ],
+    "policyErrors": [
+      "checker-false-agree-designed : la métrique checkerFalseAgreeDesigned est absente du résumé.",
+      "quoted-arithmetic-violations-delivered : la métrique quotedArithmeticViolationsDelivered est absente du résumé.",
+      "quoted-arithmetic-violations-any-attempt : la métrique quotedArithmeticViolationsAnyAttempt est absente du résumé."
+    ],
+    "promotionEligible": false
+  },
+  "heldOutSeed": "4d5f5cf8c221c4532872bad2a14c710fe0091f8128ceb1225628d48715341bd2",
+  "heldOutSeedSource": "DERIVED",
+  "metrics": {
+    "mutationDirectionViolationDetails": [
+      {
+        "criterionKey": "context-fidelity",
+        "mutantId": "domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2",
+        "observedLevelKey": "mastered",
+        "reason": "La phrase portant le critère a été supprimée et le critère reste au niveau maximal."
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1",
+        "observedLevelKey": "mastered",
+        "reason": "La phrase portant le critère a été supprimée et le critère reste au niveau maximal."
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "mutantId": "holdout-v3/holdout3-writing-water-damage-partial#FACT_INVERSION#fact-fidelity@197e1ab77b37",
+        "observedLevelKey": "partial",
+        "reason": "Le fait a été inversé et le critère n'a pas baissé (partial → partial)."
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "mutantId": "holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3",
+        "observedLevelKey": "mastered",
+        "reason": "La phrase portant le critère a été supprimée et le critère reste au niveau maximal."
+      },
+      {
+        "criterionKey": "reflection-link",
+        "mutantId": "domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#reflection-link@2",
+        "observedLevelKey": "mastered",
+        "reason": "La phrase portant le critère a été supprimée et le critère reste au niveau maximal."
+      },
+      {
+        "criterionKey": "decision-position",
+        "mutantId": "holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0",
+        "observedLevelKey": "mastered",
+        "reason": "La phrase portant le critère a été supprimée et le critère reste au niveau maximal."
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "mutantId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+        "observedLevelKey": "",
+        "reason": "Le critère ciblé par la mutation ne figure pas dans la correction rendue."
+      }
+    ],
+    "mutationDirectionViolations": {
+      "denominator": 63,
+      "numerator": 7,
+      "rate": 0.1111111111111111
+    },
+    "unrelatedCriterionDrift": {
+      "denominator": 28,
+      "numerator": 0,
+      "rate": 0
+    },
+    "checkerAgreementAtHigh": {
+      "denominator": 100,
+      "numerator": 100,
+      "rate": 1
+    },
+    "checkerFalseAgreeRate": {
+      "denominator": 6,
+      "numerator": 4,
+      "rate": 0.6666666666666666
+    },
+    "lowShare": {
+      "denominator": 230,
+      "numerator": 73,
+      "rate": 0.3173913043478261
+    },
+    "leastStableCases": [],
+    "repetitionTwoStepFlips": {
+      "denominator": 0,
+      "numerator": 0,
+      "rate": null
+    },
+    "repetitionTwoStepFlipsAtHigh": {
+      "denominator": 0,
+      "numerator": 0,
+      "rate": null
+    },
+    "omittedContractCriteriaDelivered": {
+      "denominator": 231,
+      "numerator": 1,
+      "rate": 0.004329004329004329
+    },
+    "omittedCriterionCorrections": {
+      "denominator": 77,
+      "numerator": 1,
+      "rate": 0.012987012987012988
+    },
+    "omittedCriterionDetails": [
+      {
+        "caseId": "holdout-v1/holdout-writing-scanner-repair-partial",
+        "criterionKey": "uncertainty-bounds",
+        "mutantId": "holdout-v1/holdout-writing-scanner-repair-partial#SENTENCE_DELETION#uncertainty-bounds@2",
+        "repetition": 1
+      }
+    ],
+    "injectionAppendQuotedInAcceptedOutput": {
+      "denominator": 0,
+      "numerator": 0,
+      "rate": null
+    },
+    "modelAuthoredAgreement": {
+      "denominator": 42,
+      "numerator": 36,
+      "rate": 0.8571428571428571
+    }
+  },
+  "paraphraseRefusals": [],
+  "poolId": "learnx-fr-regression-pool-v1",
+  "poolSha256": "c59a7ba5497bf74ddd34f92591c69e3876829d1481dce6edcac0e0706a6ba7ea",
+  "generatorVersion": "1.0.0",
+  "gatePolicyVersion": "6.1.0",
+  "mutantCounts": {
+    "FACT_INVERSION": 14,
+    "INJECTION_APPEND": 0,
+    "PARAGRAPH_SHUFFLE": 0,
+    "PARAPHRASE": 0,
+    "SENTENCE_DELETION": 49
+  },
+  "runStartedAt": "2026-08-31T16:42:09.070Z",
+  "security": {
+    "corpusInjectionSafetyViolations": {
+      "denominator": 0,
+      "numerator": 0,
+      "rate": null
+    },
+    "eventualUnusableRuns": {
+      "denominator": 77,
+      "numerator": 0,
+      "rate": 0
+    },
+    "evidenceHallucinationAnyAttempt": {
+      "denominator": 77,
+      "numerator": 0,
+      "rate": 0
+    },
+    "evidenceHallucinationDelivered": {
+      "denominator": 77,
+      "numerator": 0,
+      "rate": 0
+    },
+    "malformedCells": [],
+    "criteriaAbsenceUnreadableCells": [],
+    "criteriaAbsentFromModelOutput": {
+      "denominator": 231,
+      "numerator": 0,
+      "rate": 0
+    },
+    "criteriaDroppedForEvidenceProvenance": {
+      "denominator": 231,
+      "numerator": 1,
+      "rate": 0.004329004329004329
+    },
+    "criteriaWithdrawnUndelivered": {
+      "denominator": 231,
+      "numerator": 1,
+      "rate": 0.004329004329004329
+    },
+    "omittedCriteriaRefusedCells": {
+      "denominator": 77,
+      "numerator": 0,
+      "rate": 0
+    },
+    "injectionAppendSafetyViolations": {
+      "denominator": 0,
+      "numerator": 0,
+      "rate": null
+    }
+  }
+}

@@ -1,0 +1,12 @@
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Dossier : Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.
+Question : L’interprétation que l’élève fait de cette preuve est-elle correcte, d’après le dossier ?
+Écriture pour la machine : CETTE interprétation de CETTE preuve est correcte · pe.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sprint Goal : rendre la recherche de cours utilisable sur mobile.
+[s1] Progrès : 2 des 5 tickets sont terminés.
+[s2] Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.
+[s3] Risque : la coupure tombe sur la fenêtre de test de la recherche connectée.
+[s4] Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté.
+[s5] Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir.

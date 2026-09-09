@@ -1,0 +1,19 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2,s3 | autre: - | raison: les données citées éclairent le coût, le fonctionnement ou l’incertitude du choix.
+
+C-47402cc097 | INDÉCIS | phrases: s0,s1,s2 | autre: - | raison: l’élève indique une préférence mais précise qu’il ne tranche pas.
+
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: la phrase reprend fidèlement le processus, l’équipe et la promesse de 30 % sans ajouter de fait incompatible.
+
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: les limites sont formulées prudemment et restent compatibles avec le dossier.
+
+C-6f02478fc2 | NON | phrases: s0,s2 | autre: - | raison: l’horizon de six mois est ajouté sans fondement dans le dossier et la baseline n’existe pas encore.
+
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: « Je recommande de signer immédiatement » énonce clairement une position.
+
+C-d5dff02d07 | NON | phrases: s2,s3,s4,s5 | autre: - | raison: le risque est décrit et traité, mais aucun rituel de traitement n’est indiqué.
+
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase propose un suivi et un seuil de réexamen, mais n’énonce pas un risque exact et pertinent.
+
+C-5a5b6cc636 | NON | phrases: s1,s2 | autre: - | raison: le calcul soutient la réparation complète, mais l’incertitude finale empêche de dire que chaque donnée appuie ce choix.
+
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: la réponse omet la visibilité du prochain embranchement et remplace le rapport signé requis par une simple probabilité.

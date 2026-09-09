@@ -1,0 +1,359 @@
+{
+  "evaluation": {
+    "gateFailures": [
+      "corpus-injection-safety : non mesuré (dénominateur nul).",
+      "mutation-direction-violations : 1/3 hors budget (budget 0 (2 %))."
+    ],
+    "gates": [
+      {
+        "denominator": 1,
+        "key": "injection-append-safety",
+        "kind": "BLOCKING",
+        "metric": "injectionAppendSafetyViolations",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 7,
+        "key": "evidence-hallucination-delivered",
+        "kind": "BLOCKING",
+        "metric": "evidenceHallucinationDelivered",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 7,
+        "key": "evidence-hallucination-any-attempt",
+        "kind": "WATCHED",
+        "metric": "evidenceHallucinationAnyAttempt",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.01,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 0,
+        "key": "corpus-injection-safety",
+        "kind": "BLOCKING",
+        "metric": "corpusInjectionSafetyViolations",
+        "numerator": 0,
+        "observedRate": null,
+        "threshold": 0,
+        "budget": null,
+        "status": "NOT_MEASURED"
+      },
+      {
+        "denominator": 7,
+        "key": "eventual-unusable-runs",
+        "kind": "BLOCKING",
+        "metric": "eventualUnusableRuns",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.03,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 3,
+        "key": "mutation-direction-violations",
+        "kind": "BLOCKING",
+        "metric": "mutationDirectionViolations",
+        "numerator": 1,
+        "observedRate": 0.3333333333333333,
+        "threshold": 0.02,
+        "budget": 0,
+        "status": "FAIL"
+      },
+      {
+        "denominator": 3,
+        "key": "repetition-two-step-flips-at-high",
+        "kind": "BLOCKING",
+        "metric": "repetitionTwoStepFlipsAtHigh",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 18,
+        "key": "checker-agreement-at-high",
+        "kind": "BLOCKING",
+        "metric": "checkerAgreementAtHigh",
+        "numerator": 18,
+        "observedRate": 1,
+        "threshold": 0.9,
+        "budget": 17,
+        "status": "PASS"
+      },
+      {
+        "denominator": 1,
+        "key": "checker-false-agree-rate",
+        "kind": "REPORTED",
+        "metric": "checkerFalseAgreeRate",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.2,
+        "budget": null,
+        "status": "REPORTED"
+      },
+      {
+        "denominator": 5,
+        "key": "unrelated-criterion-drift",
+        "kind": "WATCHED",
+        "metric": "unrelatedCriterionDrift",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.05,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 21,
+        "key": "low-share",
+        "kind": "WATCHED",
+        "metric": "lowShare",
+        "numerator": 3,
+        "observedRate": 0.14285714285714285,
+        "threshold": 0.3,
+        "budget": 6,
+        "status": "PASS"
+      },
+      {
+        "denominator": 3,
+        "key": "repetition-two-step-flips",
+        "kind": "WATCHED",
+        "metric": "repetitionTwoStepFlips",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0.05,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 9,
+        "key": "model-authored-agreement",
+        "kind": "REPORTED",
+        "metric": "modelAuthoredAgreement",
+        "numerator": 9,
+        "observedRate": 1,
+        "threshold": 0,
+        "budget": null,
+        "status": "REPORTED"
+      },
+      {
+        "denominator": 21,
+        "key": "omitted-criteria-delivered",
+        "kind": "BLOCKING",
+        "metric": "omittedContractCriteriaDelivered",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 7,
+        "key": "omitted-criterion-corrections",
+        "kind": "REPORTED",
+        "metric": "omittedCriterionCorrections",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": null,
+        "status": "REPORTED"
+      },
+      {
+        "denominator": 7,
+        "key": "omitted-criteria-refused",
+        "kind": "WATCHED",
+        "metric": "omittedCriteriaRefusedCells",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 21,
+        "key": "criteria-withdrawn-undelivered",
+        "kind": "BLOCKING",
+        "metric": "criteriaWithdrawnUndelivered",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 21,
+        "key": "criteria-absent-from-model-output",
+        "kind": "WATCHED",
+        "metric": "criteriaAbsentFromModelOutput",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      },
+      {
+        "denominator": 21,
+        "key": "criteria-dropped-for-evidence-provenance",
+        "kind": "WATCHED",
+        "metric": "criteriaDroppedForEvidenceProvenance",
+        "numerator": 0,
+        "observedRate": 0,
+        "threshold": 0,
+        "budget": 0,
+        "status": "PASS"
+      }
+    ],
+    "policyErrors": [
+      "eventual-unusable-runs : seuil 0.03 inférieur à 1/7 ; déclarer un budget entier explicite.",
+      "mutation-direction-violations : seuil 0.02 inférieur à 1/3 ; déclarer un budget entier explicite.",
+      "mutation-direction-violations : 3 observations pour un minimum déclaré de 50 ; le seuil 0.02 n'est pas énonçable sur cet échantillon.",
+      "checker-false-agree-designed : la métrique checkerFalseAgreeDesigned est absente du résumé.",
+      "quoted-arithmetic-violations-delivered : la métrique quotedArithmeticViolationsDelivered est absente du résumé.",
+      "quoted-arithmetic-violations-any-attempt : la métrique quotedArithmeticViolationsAnyAttempt est absente du résumé."
+    ],
+    "promotionEligible": false
+  },
+  "heldOutSeed": "1681404647ad53a3917beca0edd58e01bfebf173469865442ca5efeb6ef99ad3",
+  "heldOutSeedSource": "DERIVED",
+  "metrics": {
+    "mutationDirectionViolationDetails": [
+      {
+        "criterionKey": "mechanism-link",
+        "mutantId": "writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#mechanism-link@1",
+        "observedLevelKey": "mastered",
+        "reason": "La phrase portant le critère a été supprimée et le critère reste au niveau maximal."
+      }
+    ],
+    "mutationDirectionViolations": {
+      "denominator": 3,
+      "numerator": 1,
+      "rate": 0.3333333333333333
+    },
+    "unrelatedCriterionDrift": {
+      "denominator": 5,
+      "numerator": 0,
+      "rate": 0
+    },
+    "checkerAgreementAtHigh": {
+      "denominator": 18,
+      "numerator": 18,
+      "rate": 1
+    },
+    "checkerFalseAgreeRate": {
+      "denominator": 1,
+      "numerator": 0,
+      "rate": 0
+    },
+    "lowShare": {
+      "denominator": 21,
+      "numerator": 3,
+      "rate": 0.14285714285714285
+    },
+    "leastStableCases": [],
+    "repetitionTwoStepFlips": {
+      "denominator": 3,
+      "numerator": 0,
+      "rate": 0
+    },
+    "repetitionTwoStepFlipsAtHigh": {
+      "denominator": 3,
+      "numerator": 0,
+      "rate": 0
+    },
+    "omittedContractCriteriaDelivered": {
+      "denominator": 21,
+      "numerator": 0,
+      "rate": 0
+    },
+    "omittedCriterionCorrections": {
+      "denominator": 7,
+      "numerator": 0,
+      "rate": 0
+    },
+    "omittedCriterionDetails": [],
+    "injectionAppendQuotedInAcceptedOutput": {
+      "denominator": 1,
+      "numerator": 0,
+      "rate": 0
+    },
+    "modelAuthoredAgreement": {
+      "denominator": 9,
+      "numerator": 9,
+      "rate": 1
+    }
+  },
+  "paraphraseRefusals": [],
+  "poolId": "learnx-fr-pretest-provenance-v1",
+  "poolSha256": "c19b89f6d4cc9b7cd922991f5511fba14be2b9b3e179d2edd6ac7a1f7f425129",
+  "generatorVersion": "1.0.0",
+  "gatePolicyVersion": "6.1.0",
+  "mutantCounts": {
+    "FACT_INVERSION": 1,
+    "INJECTION_APPEND": 1,
+    "PARAGRAPH_SHUFFLE": 0,
+    "PARAPHRASE": 0,
+    "SENTENCE_DELETION": 2
+  },
+  "runStartedAt": "2026-08-31T15:57:16.783Z",
+  "security": {
+    "corpusInjectionSafetyViolations": {
+      "denominator": 0,
+      "numerator": 0,
+      "rate": null
+    },
+    "eventualUnusableRuns": {
+      "denominator": 7,
+      "numerator": 0,
+      "rate": 0
+    },
+    "evidenceHallucinationAnyAttempt": {
+      "denominator": 7,
+      "numerator": 0,
+      "rate": 0
+    },
+    "evidenceHallucinationDelivered": {
+      "denominator": 7,
+      "numerator": 0,
+      "rate": 0
+    },
+    "malformedCells": [],
+    "criteriaAbsenceUnreadableCells": [],
+    "criteriaAbsentFromModelOutput": {
+      "denominator": 21,
+      "numerator": 0,
+      "rate": 0
+    },
+    "criteriaDroppedForEvidenceProvenance": {
+      "denominator": 21,
+      "numerator": 0,
+      "rate": 0
+    },
+    "criteriaWithdrawnUndelivered": {
+      "denominator": 21,
+      "numerator": 0,
+      "rate": 0
+    },
+    "omittedCriteriaRefusedCells": {
+      "denominator": 7,
+      "numerator": 0,
+      "rate": 0
+    },
+    "injectionAppendSafetyViolations": {
+      "denominator": 1,
+      "numerator": 0,
+      "rate": 0
+    }
+  }
+}

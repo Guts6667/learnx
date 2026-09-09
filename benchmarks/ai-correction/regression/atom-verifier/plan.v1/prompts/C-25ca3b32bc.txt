@@ -1,0 +1,7 @@
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Ce lien s’appuie-t-il sur un élément concret de la réponse ?
+Écriture pour la machine : CE lien s'appuie sur CET élément de la réponse · rl.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] La décision que je retiens est d’avoir refait l’étape 5 après une erreur de périmètre, et la production associée est la note de cadrage corrigée.
+[s1] Deux étapes seulement ont produit une preuve datée.

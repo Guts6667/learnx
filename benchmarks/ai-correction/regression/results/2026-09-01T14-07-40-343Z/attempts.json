@@ -1,0 +1,6092 @@
+[
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4a3c70a3d77de171",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4a3c70a3d77de171",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c75d267ca5b88281",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c75d267ca5b88281",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4341e6bdb0381c2f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4341e6bdb0381c2f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1388ee2d2b088374",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1388ee2d2b088374",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0009843d9a164f27",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0009843d9a164f27",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-921920f2d54b8965",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 27,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-921920f2d54b8965",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-312fd5d1e8093f03",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-312fd5d1e8093f03",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-db636ed5c4e6bd98",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-db636ed5c4e6bd98",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-39282176c0cfa7bc",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 30,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-39282176c0cfa7bc",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-175d570b67a74304",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-175d570b67a74304",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-348bd8b29a37dd7a",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-348bd8b29a37dd7a",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c9b38906c133de83",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c9b38906c133de83",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7392acace3211572",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7392acace3211572",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-bdbbf32a7b1d85d7",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-bdbbf32a7b1d85d7",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7984ff9a14f53afb",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 151,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7984ff9a14f53afb",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-d9c22c49177342f0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-d9c22c49177342f0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0276e01d7fd6eaa0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 31,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-757b4bdfec70cea9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-757b4bdfec70cea9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-841864ad00462ee1",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-841864ad00462ee1",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2d4e6b8da9bcedea",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2d4e6b8da9bcedea",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-fd3d14cbeaca8159",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-fd3d14cbeaca8159",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 32,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-8eb2f2f7a0bed20d",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-8eb2f2f7a0bed20d",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-ce7b70c2565cd85c",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-ce7b70c2565cd85c",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-97e41020a9a85de4",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-97e41020a9a85de4",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c86d283e2d25075f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c86d283e2d25075f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-bdff502a8ce54bb0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-bdff502a8ce54bb0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-09ede4560bc756c6",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 34,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-09ede4560bc756c6",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-3ca55c908e2c5e89",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-3ca55c908e2c5e89",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-04f58fc67147ba8b",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 27,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-04f58fc67147ba8b",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-9084c5cf48260094",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-9084c5cf48260094",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-30202d6312db78f8",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-30202d6312db78f8",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-df8cbe8ec925be30",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-df8cbe8ec925be30",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 35,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-e20f52ec59ce7624",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-e20f52ec59ce7624",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-ec3bb3ac1e94f658",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-ec3bb3ac1e94f658",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c046183e0223d7b3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c046183e0223d7b3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c1beac0bdeaf6f03",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-c1beac0bdeaf6f03",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-42d401becb3a7ae9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-42d401becb3a7ae9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2c9ce09d589cf053",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2c9ce09d589cf053",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5f203b359d78db36",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5f203b359d78db36",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-fe3c7e5a63c4fd31",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 28,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-fe3c7e5a63c4fd31",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-ca063c88f8a33b34",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-ca063c88f8a33b34",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-a34adc7c2d21cca3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-a34adc7c2d21cca3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 27,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-00828460aa9f021d",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-00828460aa9f021d",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 27,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-02d861dc647df982",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 18,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-02d861dc647df982",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 37,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0c2b233864fbcce5",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0c2b233864fbcce5",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0d2835244f05f412",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0d2835244f05f412",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0f75b586b3203639",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-0f75b586b3203639",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-10828c690b164b22",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-10828c690b164b22",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1332fa1e567cbaa9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1332fa1e567cbaa9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-14fd0a5b29173566",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-14fd0a5b29173566",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 30,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-15ef41346a9312c3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 29,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-15ef41346a9312c3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 27,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1786dd77dc58c935",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 29,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1786dd77dc58c935",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 34,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1a69ec5c007a5cd0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 28,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1a69ec5c007a5cd0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1aea980128dd7345",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 27,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1aea980128dd7345",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1d9cdefaf831b723",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1d9cdefaf831b723",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1e68c16af8658643",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 30,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1e68c16af8658643",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1f6fada150d2d02f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-1f6fada150d2d02f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2341b22a590d22a1",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2341b22a590d22a1",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-259e6e200781effd",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-259e6e200781effd",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-25ea1aacb6991df3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-25ea1aacb6991df3",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2c277b3b792253bb",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-2c277b3b792253bb",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-30cb5155b1c40f69",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-30cb5155b1c40f69",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-3d0f39dd57bd9b2a",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-3d0f39dd57bd9b2a",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-3f5b5ee8af3cc716",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-3f5b5ee8af3cc716",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-413ea43f65301c28",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-413ea43f65301c28",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4192c5710c20109b",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4192c5710c20109b",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-41a8608c762b8415",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-41a8608c762b8415",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 32,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-424178be4d79f649",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-424178be4d79f649",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-45eab671a9750773",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-45eab671a9750773",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-45fc9d7bb196ef3c",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-45fc9d7bb196ef3c",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-46fd8d95dcd5ec73",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-46fd8d95dcd5ec73",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4991de6746a2f369",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4991de6746a2f369",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4a85e274f1c95ffa",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-4a85e274f1c95ffa",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5063ccafdee28b24",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5063ccafdee28b24",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-523a865c1302fd44",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-523a865c1302fd44",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-525d502ddd85622a",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-525d502ddd85622a",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 30,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-59aaa52f59857237",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-59aaa52f59857237",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5b5dcd427062e1b8",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5b5dcd427062e1b8",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 39,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5b778ebdbcaf7926",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5b778ebdbcaf7926",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5d45f35bc0a0d60f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-5d45f35bc0a0d60f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-60bb351c8a388e0f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-60bb351c8a388e0f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-60e357dc90f1836c",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 17,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-60e357dc90f1836c",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-60f2631763ffe154",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-60f2631763ffe154",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-617295b3a3482ae0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-617295b3a3482ae0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6524efa2f14bc5dd",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6524efa2f14bc5dd",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6953462a92368459",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6953462a92368459",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6bb212275d4ecca4",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6bb212275d4ecca4",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 17,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6ca89e650ced9e94",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6ca89e650ced9e94",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 23,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6f7b356059cb83cf",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 16,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-6f7b356059cb83cf",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-72b4a92200552932",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 30,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-72b4a92200552932",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7370a36df7b79294",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7370a36df7b79294",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-769292448c4a96c6",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 30,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-769292448c4a96c6",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7981b5b0cc526343",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 49,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7981b5b0cc526343",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7c8295d1d9369908",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7c8295d1d9369908",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7e040d6d0fdd1715",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7e040d6d0fdd1715",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 19,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7ed6625ce7218caa",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-7ed6625ce7218caa",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-86f1ee6edcc39757",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-86f1ee6edcc39757",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-8c79c1cc9dbf1f44",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 24,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-8c79c1cc9dbf1f44",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-8f9f0c33df8a9320",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 20,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-8f9f0c33df8a9320",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-91912ad9002f2107",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 27,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-91912ad9002f2107",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-94500039ba1b7adf",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 32,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-94500039ba1b7adf",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-9625b14f2cda6d74",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 32,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-9625b14f2cda6d74",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 25,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-9732065571e917a9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-9732065571e917a9",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 26,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-987523070618a3b0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 21,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-987523070618a3b0",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-997d1c80bcde414f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 28,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 2,
+    "candidateId": "gpt-5-6-terra-openrouter",
+    "caseId": "regression-997d1c80bcde414f",
+    "errorCode": "PROVIDER_HTTP_404",
+    "latencyMs": 22,
+    "modelId": "openai/gpt-5.6-terra",
+    "provider": "OpenAI",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
+      "totalOutputTokenLimit": 1500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "OpenAI"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "ERROR",
+    "workflowPass": "RETRY"
+  }
+]

@@ -1,0 +1,10 @@
+C-ca1ef61e53 | NON | phrases: s2 | autre: - | raison: la date de l'arrêt technique est un fait ajouté qui ne justifie pas le choix et n'est pas demandé.
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: tous les éléments chiffrés et calendaires servent à comparer les options et expliquer l'attente.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: la population, le processus et la baisse visée reprennent fidèlement les éléments du dossier.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: l'élève indique que le seuil dépendra des mesures, ce qui est correct puisque le dossier n'en contient aucune.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: les limites concernant l'absence de mesure initiale et de contrainte qualité sont exactes.
+C-4d3ebe4339 | OUI | phrases: - | autre: OUI | raison: la recommandation de signer immédiatement constitue une position claire.
+C-d5dff02d07 | NON | phrases: - | autre: - | raison: la copie énumère les éléments du statut mais ne précise à aucun moment le rituel demandé.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée formule une proposition d'action pour la suite, pas un risque ni une inconnue.
+C-5a5b6cc636 | OUI | phrases: s1,s2 | autre: - | raison: les montants et le délai invoqués justifient directement la comparaison des coûts et la position attentiste.
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: il manque le mécanisme d'action des flèches et la prise en compte de l'absence de rapport signé.

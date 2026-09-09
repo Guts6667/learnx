@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2 | autre: - | raison: le calcul des heures perdues et la visite semestrielle placée sur l'arrêt technique se rapportent tous deux au contrat Préventel retenu.
+C-47402cc097 | OUI | phrases: s0,s1 | autre: - | raison: tous les chiffres avancés portent sur la comparaison entre réparation complète et partielle, donc sur le choix énoncé, même si le net annoncé ne suit pas la soustraction.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: processus, effectif et taux de 30 % correspondent au dossier, et la phrase n'affirme aucune mesure de durée existante.
+C-23cb79db39 | NON | phrases: s0 | autre: - | raison: la limite est mal placée, le taux de 30 % et l'effectif de 12 personnes sont donnés par le dossier et non hypothétiques, tandis que l'absence de mesure n'est pas signalée.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: l'absence de baseline et l'absence de contrainte qualité imposée sont énoncées exactement comme le dossier les donne.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase marquée énonce explicitement une recommandation d'action, sans dépendre du reste.
+C-d5dff02d07 | NON | phrases: s3,s5 | autre: - | raison: les six rubriques sont présentes mais aucune phrase n'indique le rituel où traiter le risque, ce que la consigne demandait aussi.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée propose un suivi et une clause de réexamen, elle n'énonce aucun risque à évaluer.
+C-5a5b6cc636 | OUI | phrases: s0,s1 | autre: - | raison: les montants cités comparent bien 9 600 euros nets à 20 200 euros et vont dans le sens de la réparation complète immédiate.
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: le mécanisme (les flèches rendent l'embranchement visible avant le déplacement) n'est pas repris et l'exigence d'un rapport signé, absent, est remplacée par une supposition.

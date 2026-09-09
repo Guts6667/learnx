@@ -1,0 +1,12 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2 | raison: les chiffres de s1 comparent les coûts et fonderont le choix, et s2 (visite pendant l’arrêt du 14 octobre) est une conséquence directe du contrat Préventel retenu.
+C-47402cc097 | OUI | phrases: s1,s2 | raison: le calcul de subvention de s1 compare les deux stratégies en jeu et s2 justifie le caractère non tranché de la position, les deux servent le choix exprimé.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: la phrase reprend fidèlement le processus (tri support niveau 1), l’équipe de 12 personnes et le gain de 30 % annoncé, sans contredire le dossier.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: la seule affirmation (seuil de 30 % éventuellement revisable) est assortie d’une limite correcte : l’absence de mesure, conforme au dossier.
+C-5a5b6cc636 | OUI | phrases: s2,s3 | autre: - | raison: la limite d’absence de baseline (s2) et celle du plafond à valider faute de contrainte du sponsor (s3) sont toutes deux exactes d’après le dossier.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase marquée énonce explicitement une recommandation (« Je recommande de signer immédiatement pour un an »).
+C-d5dff02d07 | NON | phrases: s5 | autre: - | raison: l’update contient bien les six éléments, mais aucun rituel n’est indiqué pour traiter le risque alors que la consigne l’exigeait.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée est une proposition d’action, pas l’énoncé d’un risque exact tiré du dossier ; le risque réel (causes inconnues) est dans une autre phrase.
+C-9C-5a5b6cc636 correction : C-5a5b6cc636 déjà traité ci-dessus. C-5a5b6cc636 voir ligne 5. C-9e : C-2d0f0c9620 | NON | phrases: s1 | autre: - | raison: la condition du rapport signé, nécessaire pour statuer sur le repli lumineux, n’est pas reprise et s1 suppose au contraire un respect probable du plafond. C-5a5b6cc636 | OUI | phrases: s2,s3 | autre: - | raison: confirmé ci-dessus. C-5a5b6cc636 fin.
+
+C-5a5b6cc636 | OUI | phrases: s2,s3 | autre: - | raison: (doublon de la carte 5 déjà répondue).
+C-2d0f0c9620 | NON | phrases: s1 | autre: - | raison: la condition du rapport signé, nécessaire au repli, n’est pas restituée et s1 suppose un fait absent (respect probable de 6 W).

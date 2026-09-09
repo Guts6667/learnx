@@ -1,0 +1,131 @@
+[
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-0009843d9a164f27",
+    "evidenceMatches": [
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "Je prolongerais le test pendant un mois",
+        "resolvedQuote": "Je prolongerais le test pendant un mois"
+      },
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable.",
+        "resolvedQuote": "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable."
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite",
+        "resolvedQuote": "19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite"
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "seuls 22 questionnaires ont été remplis",
+        "resolvedQuote": "seuls 22 questionnaires ont été remplis"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis",
+        "resolvedQuote": "ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "Le problème du dernier train doit aussi être observé précisément",
+        "resolvedQuote": "Le problème du dernier train doit aussi être observé précisément"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service",
+        "resolvedQuote": "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service"
+      }
+    ],
+    "latencyMs": 1806,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout-writing-decision-note",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Je prolongerais le test pendant un mois",
+            "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La décision est explicite (prolonger un mois) et assortie d’une condition observable (persistance des retards de correspondance) qui déclenche une action précise. Elle guide directement l’action demandée.",
+          "levelKey": "mastered",
+          "criterionKey": "decision-position"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite",
+            "seuls 22 questionnaires ont été remplis"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Trois faits décisifs du dossier sont cités avec exactitude (19 usagers réguliers, 17 réponses favorables sur 22, taille de l’échantillon) et soutiennent effectivement la position de prolongation prudente. Aucun n’est déformé.",
+          "levelKey": "mastered",
+          "criterionKey": "evidence-selection"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis",
+            "Le problème du dernier train doit aussi être observé précisément",
+            "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les limites sont nommées et correctement délimitées : échantillon de réponses restreint, problème de correspondance du soir non encore mesuré, et portée de la conclusion explicitement bornée à la prolongation du test. Cela n’empêche pas une décision proportionnée.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-bounds"
+        }
+      ],
+      "overallConfidence": 0.95,
+      "overallFeedback": "Travail solide : la décision de prolonger le test un mois est nette et conditionnée de façon opérationnelle. Elle s’appuie sur les faits décisifs du dossier (usage répété, avis favorables, taille de l’échantillon) sans les déformer, et la portée de la conclusion est explicitement bornée : il s’agit de collecter davantage de données, notamment sur le problème du dernier train, avant toute pérennisation. Pour aller plus loin, tu pourrais préciser un indicateur de succès chiffré pour le mois supplémentaire (par exemple un seuil de taux de réponse ou de ponctualité) afin de rendre la décision finale encore plus tranchable.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276813-HlstZga5rmbZEdifkY99",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"decision-position\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Je prolongerais le test pendant un mois\",\"si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La décision est explicite (prolonger un mois) et assortie d’une condition observable (persistance des retards de correspondance) qui déclenche une action précise. Elle guide directement l’action demandée.\",\"levelKey\":\"mastered\"},\"evidence-selection\":{\"confidence\":0.95,\"evidenceQuotes\":[\"19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite\",\"seuls 22 questionnaires ont été remplis\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Trois faits décisifs du dossier sont cités avec exactitude (19 usagers réguliers, 17 réponses favorables sur 22, taille de l’échantillon) et soutiennent effectivement la position de prolongation prudente. Aucun n’est déformé.\",\"levelKey\":\"mastered\"},\"uncertainty-bounds\":{\"confidence\":0.95,\"evidenceQuotes\":[\"ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis\",\"Le problème du dernier train doit aussi être observé précisément\",\"Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les limites sont nommées et correctement délimitées : échantillon de réponses restreint, problème de correspondance du soir non encore mesuré, et portée de la conclusion explicitement bornée à la prolongation du test. Cela n’empêche pas une décision proportionnée.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Travail solide : la décision de prolonger le test un mois est nette et conditionnée de façon opérationnelle. Elle s’appuie sur les faits décisifs du dossier (usage répété, avis favorables, taille de l’échantillon) sans les déformer, et la portée de la conclusion est explicitement bornée : il s’agit de collecter davantage de données, notamment sur le problème du dernier train, avant toute pérennisation. Pour aller plus loin, tu pourrais préciser un indicateur de succès chiffré pour le mois supplémentaire (par exemple un seuil de taux de réponse ou de ponctualité) afin de rendre la décision finale encore plus tranchable.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.0284805,
+      "costSource": "ACTUAL",
+      "inputTokens": 2814,
+      "reasoningTokens": 59,
+      "visibleOutputTokens": 644
+    },
+    "workflowPass": "PRIMARY"
+  }
+]

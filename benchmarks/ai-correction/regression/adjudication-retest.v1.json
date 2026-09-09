@@ -1,0 +1,38 @@
+{
+  "deckHash": "sha256:b3a021bfe81bd6c26690f6ebc79d754750d3db4e7821af51380a9853c28a9879",
+  "excludedCardIds": [
+    "C-23cb79db39",
+    "C-2d0f0c9620",
+    "C-47402cc097",
+    "C-4d3ebe4339",
+    "C-55f08a077c",
+    "C-5a5b6cc636",
+    "C-6f02478fc2",
+    "C-b24221cac5",
+    "C-ca1ef61e53",
+    "C-d5dff02d07"
+  ],
+  "purpose": "test-retest",
+  "schemaVersion": 1,
+  "seed": "v4.5-210/retest/v1",
+  "slices": [
+    {
+      "cards": [
+        "C-272f41aa34",
+        "C-02c2ddf742",
+        "C-e10e009b7f",
+        "C-ccc2405200",
+        "C-d0eceec16b",
+        "C-3138b8a152",
+        "C-00b4a1c0a0",
+        "C-e32060b658",
+        "C-03c7a0d6cb",
+        "C-d6444cb6e3"
+      ],
+      "purpose": "test-retest",
+      "sliceId": "R-01"
+    }
+  ],
+  "status": "sealed",
+  "contentHash": "sha256:8f1d31a5596f4765d3fb3aaa1271a3efbb71036144088abba1072cea41e7f396"
+}

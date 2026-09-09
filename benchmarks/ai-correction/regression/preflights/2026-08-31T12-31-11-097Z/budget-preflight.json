@@ -1,0 +1,60 @@
+{
+  "checkerCost": {
+    "corrections": 668,
+    "modelId": "mistralai/mistral-medium-3-5",
+    "outputTokenLimit": 400,
+    "pricedInThisPreflight": true,
+    "promptCharactersPerCall": 2659,
+    "source": {
+      "consultedAt": "2026-08-29",
+      "consultedBy": "Head of AI (voie F)",
+      "publishedRates": "entrée 1,50 USD / M jetons ; sortie 7,50 USD / M jetons",
+      "url": "https://openrouter.ai/mistralai/mistral-medium-3-5"
+    },
+    "worstCaseUsd": 6.720414
+  },
+  "boundingConvention": "conservative-v1",
+  "boundingSources": {
+    "checker": null,
+    "primary": null,
+    "safetyFactor": 1.5
+  },
+  "combinedWorstCaseUsd": 76.76694000000006,
+  "comparisonConservativeV1Usd": 76.76694000000006,
+  "primaryWorstCaseUsd": 70.04652600000006,
+  "singlePassLegacyDecision": "CONTINGENCY_REQUIRED",
+  "dropped": [
+    "répétitions du sous-ensemble ramenées de 3 à 2 : la stabilité perd un point de mesure, la couverture n’en perd aucun"
+  ],
+  "fitsWithinCap": false,
+  "paraphraseWorstCaseUsd": 0,
+  "paraphrasesIncluded": false,
+  "passes": [
+    {
+      "cases": 144,
+      "cells": 432,
+      "label": "pool complet",
+      "pendingCases": 144,
+      "pendingCells": 432,
+      "primaryWorstCaseUsd": 45.30038400000005,
+      "repetitionOffset": 1,
+      "repetitions": 3
+    },
+    {
+      "cases": 236,
+      "cells": 236,
+      "label": "mutants",
+      "pendingCases": 236,
+      "pendingCells": 236,
+      "primaryWorstCaseUsd": 24.746142000000006,
+      "repetitionOffset": 1,
+      "repetitions": 1
+    }
+  ],
+  "envelopeNote": "Aucune enveloppe déclarée : seul le plafond du run s'applique.",
+  "priorActualSpendUsd": 0,
+  "profile": "full",
+  "remainingCapUsd": 17.13,
+  "requestedCapUsd": 17.13,
+  "supplierCostCapUsd": 17.13
+}

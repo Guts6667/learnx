@@ -1,0 +1,6 @@
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève nomme-t-il un risque ?
+Écriture pour la machine : un risque est nommé · rr.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.⟧

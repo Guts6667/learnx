@@ -1,0 +1,8 @@
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : Pour CHAQUE affirmation utile, la limite donnée est-elle correcte, d’après le dossier ?
+Écriture pour la machine : CETTE limite est correcte pour CETTE affirmation · cf.a3 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.
+[s1] Je ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.
