@@ -1,0 +1,9 @@
+Consigne : Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.
+Question : La position correspond-elle à ce que la consigne demandait : la bonne personne, le bon objet, la bonne situation, le bon horizon ?
+Écriture pour la machine : la position s'applique à l'acteur, l'objet, la situation et l'horizon demandés · dp.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande de signer immédiatement pour un an.
+[s1] Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur.
+[s2] La remise de 18 % rend toute autre option irrationnelle.
+[s3] Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.

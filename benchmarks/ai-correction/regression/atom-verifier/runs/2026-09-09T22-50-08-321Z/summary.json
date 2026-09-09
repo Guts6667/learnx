@@ -1,0 +1,1440 @@
+{
+  "complete": true,
+  "plan": {
+    "calls": 720,
+    "estimatedTotalUsd": 1.6485
+  },
+  "schemaVersion": 1,
+  "spentUsd": 2.59762,
+  "stopped": null,
+  "summaries": {
+    "mistral-medium-3-5": {
+      "absoluteAgainstPass1": {
+        "agreements": 21,
+        "compared": 60
+      },
+      "flips": 9,
+      "hardNegativeRejection": {
+        "abstained": 1,
+        "denominator": 30,
+        "rejected": 24
+      },
+      "pairs": {
+        "damaged": 2,
+        "original": 10,
+        "tie": 18,
+        "undecided": 0
+      },
+      "perPair": [
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "contradicted",
+          "outcome": "damaged",
+          "pairId": "023ad8a58eb3623c",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "0d41424e5b2e78d2",
+          "perRepetition": [
+            "original",
+            "original",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "11c34eb000e5ad70",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "contradicted",
+          "outcome": "damaged",
+          "pairId": "1b4765e3c4542304",
+          "perRepetition": [
+            "damaged",
+            "original",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "271d1c6130c5cc14",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "381042a84bfdeb6a",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "41e1cdefa03da5e4",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "50eacd8edb5dac8a",
+          "perRepetition": [
+            "tie",
+            "damaged",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "536c3545804e363b",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "651113e54b8be912",
+          "perRepetition": [
+            "tie",
+            "damaged",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "690759fa14fcc104",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "6eaba0b666564546",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "ambiguous",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "6f7a727eed826752",
+          "perRepetition": [
+            "damaged",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "7881f88cc87c82ec",
+          "perRepetition": [
+            "original",
+            "original",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "8c5568d09218d3f3",
+          "perRepetition": [
+            "tie",
+            "original",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "94926acad5ec4953",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "965653f474fef49a",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "a316678eff813bf0",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "ac147a22b6bbbcf6",
+          "perRepetition": [
+            "tie",
+            "damaged",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "acfdac8a5bb59f7e",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "b38b67062120166b",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "b511c99c9075af19",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "c6c4093c2176871b",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "d477c8fe7429db5f",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "d521d6003cc53151",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "dd2757218eda899a",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "df8fad9cb825a3ca",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "ed1a2e5a77bb7e0c",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "f01e7e88b3aed7cc",
+          "perRepetition": [
+            "original",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "fa6124c14eedb0a8",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        }
+      ],
+      "reading": "stop",
+      "trueEvidenceAcceptance": {
+        "abstained": 0,
+        "accepted": 11,
+        "denominator": 30
+      },
+      "unparsed": 0
+    },
+    "haiku-4-5": {
+      "absoluteAgainstPass1": {
+        "agreements": 26,
+        "compared": 60
+      },
+      "flips": 0,
+      "hardNegativeRejection": {
+        "abstained": 2,
+        "denominator": 30,
+        "rejected": 25
+      },
+      "pairs": {
+        "damaged": 3,
+        "original": 12,
+        "tie": 15,
+        "undecided": 0
+      },
+      "perPair": [
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "unsupported",
+          "outcome": "damaged",
+          "pairId": "023ad8a58eb3623c",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "0d41424e5b2e78d2",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "11c34eb000e5ad70",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "1b4765e3c4542304",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "271d1c6130c5cc14",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "381042a84bfdeb6a",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "41e1cdefa03da5e4",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "unsupported",
+          "outcome": "damaged",
+          "pairId": "50eacd8edb5dac8a",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "536c3545804e363b",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "651113e54b8be912",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "690759fa14fcc104",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "6eaba0b666564546",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "6f7a727eed826752",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "7881f88cc87c82ec",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "8c5568d09218d3f3",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "94926acad5ec4953",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "965653f474fef49a",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "a316678eff813bf0",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "ac147a22b6bbbcf6",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "acfdac8a5bb59f7e",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "b38b67062120166b",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "b511c99c9075af19",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "c6c4093c2176871b",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "d477c8fe7429db5f",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "d521d6003cc53151",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "dd2757218eda899a",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "df8fad9cb825a3ca",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "ambiguous",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "ed1a2e5a77bb7e0c",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "ambiguous",
+          "originalMajority": "contradicted",
+          "outcome": "damaged",
+          "pairId": "f01e7e88b3aed7cc",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "fa6124c14eedb0a8",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        }
+      ],
+      "reading": "stop",
+      "trueEvidenceAcceptance": {
+        "abstained": 0,
+        "accepted": 12,
+        "denominator": 30
+      },
+      "unparsed": 0
+    },
+    "kimi-k3": {
+      "absoluteAgainstPass1": {
+        "agreements": 13,
+        "compared": 18
+      },
+      "flips": 2,
+      "hardNegativeRejection": {
+        "abstained": 0,
+        "denominator": 8,
+        "rejected": 3
+      },
+      "pairs": {
+        "damaged": 0,
+        "original": 2,
+        "tie": 3,
+        "undecided": 25
+      },
+      "perPair": [
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "023ad8a58eb3623c",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "0d41424e5b2e78d2",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "11c34eb000e5ad70",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "1b4765e3c4542304",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "271d1c6130c5cc14",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "381042a84bfdeb6a",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "41e1cdefa03da5e4",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "50eacd8edb5dac8a",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "536c3545804e363b",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": "direct",
+          "outcome": "undecided",
+          "pairId": "651113e54b8be912",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "690759fa14fcc104",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "6eaba0b666564546",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": "direct",
+          "outcome": "undecided",
+          "pairId": "6f7a727eed826752",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "7881f88cc87c82ec",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "8c5568d09218d3f3",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "94926acad5ec4953",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "965653f474fef49a",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "a316678eff813bf0",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "ac147a22b6bbbcf6",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "acfdac8a5bb59f7e",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": "direct",
+          "outcome": "undecided",
+          "pairId": "b38b67062120166b",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": "direct",
+          "outcome": "undecided",
+          "pairId": "b511c99c9075af19",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "c6c4093c2176871b",
+          "perRepetition": [
+            "original",
+            "undecided",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "d477c8fe7429db5f",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": "direct",
+          "outcome": "undecided",
+          "pairId": "d521d6003cc53151",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "dd2757218eda899a",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "df8fad9cb825a3ca",
+          "perRepetition": [
+            "undecided",
+            "tie",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "ed1a2e5a77bb7e0c",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "f01e7e88b3aed7cc",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        },
+        {
+          "damagedMajority": null,
+          "originalMajority": null,
+          "outcome": "undecided",
+          "pairId": "fa6124c14eedb0a8",
+          "perRepetition": [
+            "undecided",
+            "undecided",
+            "undecided"
+          ]
+        }
+      ],
+      "reading": "stop",
+      "trueEvidenceAcceptance": {
+        "abstained": 0,
+        "accepted": 10,
+        "denominator": 10
+      },
+      "unparsed": 124
+    },
+    "sonnet-4-6": {
+      "absoluteAgainstPass1": {
+        "agreements": 29,
+        "compared": 60
+      },
+      "flips": 4,
+      "hardNegativeRejection": {
+        "abstained": 2,
+        "denominator": 30,
+        "rejected": 18
+      },
+      "pairs": {
+        "damaged": 7,
+        "original": 12,
+        "tie": 11,
+        "undecided": 0
+      },
+      "perPair": [
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "unsupported",
+          "outcome": "damaged",
+          "pairId": "023ad8a58eb3623c",
+          "perRepetition": [
+            "tie",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "0d41424e5b2e78d2",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "contradicted",
+          "outcome": "damaged",
+          "pairId": "11c34eb000e5ad70",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "contradicted",
+          "outcome": "damaged",
+          "pairId": "1b4765e3c4542304",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "ambiguous",
+          "outcome": "damaged",
+          "pairId": "271d1c6130c5cc14",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "381042a84bfdeb6a",
+          "perRepetition": [
+            "original",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "41e1cdefa03da5e4",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "contradicted",
+          "outcome": "damaged",
+          "pairId": "50eacd8edb5dac8a",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "partial",
+          "outcome": "original",
+          "pairId": "536c3545804e363b",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "651113e54b8be912",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "690759fa14fcc104",
+          "perRepetition": [
+            "original",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "6eaba0b666564546",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "ambiguous",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "6f7a727eed826752",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "7881f88cc87c82ec",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "8c5568d09218d3f3",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "contradicted",
+          "outcome": "damaged",
+          "pairId": "94926acad5ec4953",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "unsupported",
+          "outcome": "tie",
+          "pairId": "965653f474fef49a",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "ambiguous",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "a316678eff813bf0",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "ambiguous",
+          "outcome": "damaged",
+          "pairId": "ac147a22b6bbbcf6",
+          "perRepetition": [
+            "damaged",
+            "damaged",
+            "damaged"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "acfdac8a5bb59f7e",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "direct",
+          "originalMajority": "direct",
+          "outcome": "tie",
+          "pairId": "b38b67062120166b",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "b511c99c9075af19",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "c6c4093c2176871b",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "d477c8fe7429db5f",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "d521d6003cc53151",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "dd2757218eda899a",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "df8fad9cb825a3ca",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "unsupported",
+          "originalMajority": "direct",
+          "outcome": "original",
+          "pairId": "ed1a2e5a77bb7e0c",
+          "perRepetition": [
+            "original",
+            "original",
+            "original"
+          ]
+        },
+        {
+          "damagedMajority": "contradicted",
+          "originalMajority": "contradicted",
+          "outcome": "tie",
+          "pairId": "f01e7e88b3aed7cc",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        {
+          "damagedMajority": "partial",
+          "originalMajority": "partial",
+          "outcome": "tie",
+          "pairId": "fa6124c14eedb0a8",
+          "perRepetition": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        }
+      ],
+      "reading": "stop",
+      "trueEvidenceAcceptance": {
+        "abstained": 2,
+        "accepted": 16,
+        "denominator": 30
+      },
+      "unparsed": 0
+    }
+  }
+}

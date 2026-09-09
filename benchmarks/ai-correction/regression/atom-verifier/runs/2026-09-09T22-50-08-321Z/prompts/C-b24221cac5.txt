@@ -1,0 +1,7 @@
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Dossier : Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.
+Question : Ce risque est-il à la fois exact ET pertinent, d’après le dossier ?
+Écriture pour la machine : CE risque est exact ET pertinent au regard du dossier · rr.a3 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée. La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.⟧

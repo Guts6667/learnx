@@ -2099,3 +2099,33 @@ tarifs sont des lectures d'openrouter.ai du jour, remplacées par le coût
 réel renvoyé par l'API pendant le run.
 
 Dépense : 0,00 USD. La mesure attend le mot du propriétaire.
+
+### La mesure : trois modèles sur quatre à « stop », Kimi non mesuré, 2,60 USD
+
+10 septembre 2026 (0 h 50 Paris), sur le mot du propriétaire. Run
+`atom-verifier/runs/2026-09-09T22-50-08-321Z`, 720 appels, complet, coût
+réel renvoyé par l'API pour chaque appel : **2,5976 USD**. Lecture dans
+`reading.md` du même dossier.
+
+Paires gagnées sur 30 (seuil 27, arrêt sous 24) : Mistral medium 10, Haiku
+4.5 12, Sonnet 4.6 12 ; égalités 18 / 15 / 11 ; Sonnet classe l'abîmé
+au-dessus 7 fois. Rejet des abîmées 80 / 83 / 60 %, acceptation des
+originaux 37 / 40 / 53 % : aucun plancher atteint. **Lecture « stop » pour
+les trois.** Kimi K3 : 124 réponses sur 180 vides, budget de sortie mangé
+par le raisonnement interne, défaut du run (1,07 USD perdus) ; non mesuré.
+
+Sens : la question absolue sur une phrase seule donne le même verdict aux
+deux membres, miroir de la passe 1 humaine ; les modèles sont sévères là où
+l'humain était généreux, mais aucun ne tient la frontière d'« établit ».
+Signal secondaire, suggestif seulement : sur les 12 paires à phrase marquée
+(S1–S3) Sonnet gagne 8 des 9 tranchées, Haiku 7 sur 8, Mistral 6 sur 6 ; sur
+les 18 paires où il faut citer les phrases (S4–S6), égalités et défaites
+dominent. La question étroite marche quand la phrase est donnée, échoue
+quand il faut la trouver.
+
+Voie « verdict absolu aveugle par phrase » fermée, comme prévu par KR4.
+Non mesuré : la même question en comparaison, la strate S1–S3 seule avec
+plus de paires, Kimi sans raisonnement. Rien ne part sans le mot du
+propriétaire.
+
+Dépense cumulée V4.5-210 : 2,60 USD.

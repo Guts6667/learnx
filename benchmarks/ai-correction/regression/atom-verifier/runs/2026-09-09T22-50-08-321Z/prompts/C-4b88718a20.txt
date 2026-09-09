@@ -1,0 +1,8 @@
+Consigne : Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.
+Question : CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est pertinente pour CE choix · ff.a3 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je penche pour la réparation complète immédiate, sans la trancher.
+[s1] La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.
+[s2] Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.
