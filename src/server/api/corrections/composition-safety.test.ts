@@ -1,6 +1,7 @@
 import { createCorrectionsApp } from './app';
 import {
   buildHarness,
+  buildQuote,
   strictOutput,
   type Harness,
 } from '../../corrections/correction-orchestration.test-support';
@@ -172,6 +173,7 @@ it('can settle a previously produced result in a cold process with AI disabled',
     transport: strictOutput,
     replayLookup: {
       state: 'READY_TO_SETTLE',
+      settlementQuote: buildQuote(),
       reservationId: 'reservation-1',
       result: {
         correction,

@@ -353,6 +353,13 @@ describe('Prisma correction orchestration store', () => {
     async ({ expected, reservation }) => {
       const findFirst = vi.fn(async () => ({
         creditReservation: reservation,
+        pricingQuote: {
+          id: quote().quoteId,
+          userId: quote().userId,
+          requestFingerprint: quote().requestFingerprint,
+          estimatedCredits: 3n,
+          ceilingCredits: 6n,
+        },
         status: 'COMPLETED',
         structuredResult: {
           correction: { ...result('COMPLETED'), id: 'correction-1' },
@@ -373,6 +380,14 @@ describe('Prisma correction orchestration store', () => {
       });
 
       expect(replay).toMatchObject({ state: expected });
+      if (expected === 'READY_TO_SETTLE')
+        expect(replay).toMatchObject({
+          settlementQuote: {
+            quoteId: quote().quoteId,
+            estimatedCredits: 3n,
+            maximumReservedCredits: 6n,
+          },
+        });
     },
   );
 
@@ -499,3 +514,50 @@ describe('Prisma correction orchestration store', () => {
     );
   });
 });
+
+it.each(['missing', 'different-user', 'different-fingerprint'])(
+  'refuses settlement when original pricing is %s',
+  async (failure) => {
+    const ports = new PrismaCorrectionOrchestrationPorts({
+      aiCorrection: {
+        findFirst: vi.fn(async () => ({
+          creditReservation: {
+            id: 'reservation-1',
+            status: 'RESERVED',
+            settledAmount: null,
+          },
+          pricingQuote:
+            failure === 'missing'
+              ? null
+              : {
+                  id: quote().quoteId,
+                  userId:
+                    failure === 'different-user'
+                      ? 'other-user'
+                      : quote().userId,
+                  requestFingerprint:
+                    failure === 'different-fingerprint'
+                      ? 'wrong'
+                      : quote().requestFingerprint,
+                  estimatedCredits: 3n,
+                  ceilingCredits: 6n,
+                },
+          structuredResult: {
+            correction: result('COMPLETED'),
+            settlement: {
+              reservedCredits: '6',
+              settledCredits: '3',
+              releasedCredits: '3',
+            },
+          },
+        })),
+      },
+    } as never);
+    await expect(
+      ports.corrections.findByQuote({
+        userId: quote().userId,
+        requestFingerprint: quote().requestFingerprint,
+      }),
+    ).resolves.toEqual({ state: 'RECONCILIATION_REQUIRED' });
+  },
+);

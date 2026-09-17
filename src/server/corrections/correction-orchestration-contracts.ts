@@ -48,6 +48,15 @@ export interface AcceptedQuoteSnapshot {
   contract: unknown;
 }
 
+/** Immutable pricing facts needed to finish an existing correction, independent of current eligibility. */
+export type ReplayQuoteSnapshot = Pick<
+  AcceptedQuoteSnapshot,
+  | 'quoteId'
+  | 'requestFingerprint'
+  | 'estimatedCredits'
+  | 'maximumReservedCredits'
+>;
+
 export interface CreditSettlementPort {
   reserve(input: {
     amount: bigint;
@@ -104,6 +113,8 @@ export type PersistedCorrectionLookup =
   | { state: 'READY'; result: OrchestratedCorrectionResult }
   | {
       state: 'READY_TO_SETTLE';
+      /** Original quote attached to the persisted correction, never a newly requested price. */
+      settlementQuote: ReplayQuoteSnapshot;
       reservationId: string;
       result: OrchestratedCorrectionResult;
     }
@@ -194,6 +205,11 @@ export interface CorrectionHistoryEntry {
 }
 
 export interface AcceptedQuotePort {
+  /** Owner-scoped lookup that does not authorize new provider calls. */
+  loadReplayQuote?(input: {
+    quoteId: string;
+    userId: string;
+  }): Promise<ReplayQuoteSnapshot | null>;
   loadAcceptedQuote(input: {
     quoteId: string;
     userId: string;

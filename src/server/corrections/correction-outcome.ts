@@ -280,7 +280,10 @@ export function withStoredConfidence(
   const incomplete =
     (correction.unsureCriteria?.length ?? 0) > 0 || criteria.length === 0;
   const low =
-    incomplete || criteria.some((criterion) => criterion.confidence === 'LOW');
+    incomplete ||
+    correction.status !== 'COMPLETED' ||
+    correction.overallConfidence === 'LOW' ||
+    criteria.some((criterion) => criterion.confidence === 'LOW');
   return {
     ...correction,
     criteria,

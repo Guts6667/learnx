@@ -23,6 +23,8 @@ export function projectLearnerCorrection(result: OrchestratedCorrectionResult) {
   });
   const incomplete =
     source.status !== 'COMPLETED' ||
+    !source.overallConfidence ||
+    source.overallConfidence === 'LOW' ||
     source.unsureCriteria.length > 0 ||
     criteria.length === 0 ||
     criteria.some((criterion) => criterion.confidence === 'LOW');

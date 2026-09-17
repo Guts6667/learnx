@@ -1,6 +1,7 @@
 import { correctionContractSchema } from '../../lib/ai-correction-contracts';
 import {
   buildHarness,
+  buildQuote,
   contractRaw,
   strictOutput,
 } from './correction-orchestration.test-support';
@@ -167,6 +168,7 @@ describe('emergency dispatch stop', () => {
             ? { state, result: storedResult('HIGH') }
             : {
                 state,
+                settlementQuote: buildQuote(),
                 result: storedResult('HIGH'),
                 reservationId: 'reservation-1',
               },
@@ -265,4 +267,113 @@ it('executes the whole fake pipeline with zero provider network calls', async ()
   } finally {
     vi.unstubAllGlobals();
   }
+});
+
+it('withholds global claims for an inconsistent stored overall LOW even with confident criteria', () => {
+  const source = storedResult('HIGH');
+  source.correction.overallConfidence = 'LOW';
+  const direct = projectLearnerCorrection(source).correction;
+  expect(direct.indicativeScore).toBeNull();
+  expect(direct.overallFeedback).toBeNull();
+  const normalized = withStoredConfidence(source.correction, {
+    target: { activityType: 'writing' },
+  });
+  expect(normalized.overallConfidence).toBe('LOW');
+  expect(normalized.indicativeScore).toBeNull();
+  expect(
+    projectLearnerCorrection({ ...source, correction: normalized }).correction
+      .overallFeedback,
+  ).toBeNull();
+});
+
+it.each(['READY', 'READY_TO_SETTLE'] as const)(
+  'replays persisted %s despite expired quote and changed eligibility, without reading current content',
+  async (state) => {
+    const quote = buildQuote({
+      expiresAt: new Date('2020-01-01'),
+      modelId: 'old-model',
+      contract: {},
+    });
+    const harness = buildHarness({
+      canDispatch: async () => false,
+      transport: strictOutput,
+      quote,
+      replayQuote: quote,
+      replayLookup:
+        state === 'READY'
+          ? { state, result: storedResult('HIGH') }
+          : {
+              state,
+              settlementQuote: quote,
+              result: storedResult('HIGH'),
+              reservationId: 'reservation-1',
+            },
+    });
+    const result = await harness.service.runAcceptedQuote(run);
+    expect(result.replay).toBe(true);
+    expect(harness.quotes.loadAcceptedQuote).not.toHaveBeenCalled();
+    expect(harness.corrections.findByQuote).toHaveBeenCalledWith({
+      requestFingerprint: quote.requestFingerprint,
+      userId: run.userId,
+    });
+    expect(harness.transport.execute).not.toHaveBeenCalled();
+    expect(harness.credits.calls).toEqual(state === 'READY' ? [] : ['settle']);
+    expect(result.settlement).toEqual({
+      reservedCredits: '18',
+      settledCredits: '12',
+      releasedCredits: '6',
+    });
+  },
+);
+
+it('does not dispatch an expired unstarted quote after the replay-only lookup misses', async () => {
+  const quote = buildQuote({ expiresAt: new Date('2020-01-01') });
+  const harness = buildHarness({
+    transport: strictOutput,
+    quote,
+    replayQuote: quote,
+  });
+  await expect(harness.service.runAcceptedQuote(run)).rejects.toThrow(
+    'QUOTE_EXPIRED',
+  );
+  expect(harness.credits.calls).toEqual([]);
+  expect(harness.transport.execute).not.toHaveBeenCalled();
+});
+
+it('settles the original accepted amount when a later quote shares its request fingerprint', async () => {
+  const original = buildQuote({
+    quoteId: 'original-quote',
+    estimatedCredits: 7n,
+    maximumReservedCredits: 10n,
+  });
+  const later = buildQuote({
+    quoteId: run.quoteId,
+    estimatedCredits: 12n,
+    maximumReservedCredits: 18n,
+  });
+  const harness = buildHarness({
+    transport: strictOutput,
+    replayQuote: later,
+    replayLookup: {
+      state: 'READY_TO_SETTLE',
+      settlementQuote: original,
+      reservationId: 'original-reservation',
+      result: storedResult('HIGH'),
+    },
+  });
+  const result = await harness.service.runAcceptedQuote(run);
+  expect(harness.credits.settle).toHaveBeenCalledWith({
+    amount: 7n,
+    reservationId: 'original-reservation',
+    userId: run.userId,
+  });
+  expect(harness.quotes.markConsumed).toHaveBeenCalledWith({
+    quoteId: original.quoteId,
+  });
+  expect(result.settlement).toEqual({
+    reservedCredits: '10',
+    settledCredits: '7',
+    releasedCredits: '3',
+  });
+  expect(harness.transport.execute).not.toHaveBeenCalled();
 });

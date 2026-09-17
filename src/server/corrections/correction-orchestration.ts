@@ -9,6 +9,7 @@ import {
   type CorrectionTransportPort,
   type CreditSettlementPort,
   type OrchestratedCorrectionResult,
+  type ReplayQuoteSnapshot,
 } from './correction-orchestration-contracts.js';
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 
@@ -80,6 +81,13 @@ export class CorrectionOrchestrationService {
     quoteId: string;
     userId: string;
   }): Promise<OrchestratedCorrectionResult> {
+    // Completed work keeps its frozen accounting even after quote expiry,
+    // contract edits, or removal of the previously promoted model.
+    const replayQuote = await this.quotes.loadReplayQuote?.(input);
+    if (replayQuote) {
+      const replay = await this.replayIfAvailable(replayQuote, input.userId);
+      if (replay) return replay;
+    }
     const { now, quote } = await this.loadQuote(input);
     const contract = correctionContractSchema.parse(quote.contract);
     assertCompatibleQuote(quote, contract);
@@ -122,7 +130,7 @@ export class CorrectionOrchestrationService {
   }
 
   private async replayIfAvailable(
-    quote: AcceptedQuoteSnapshot,
+    quote: ReplayQuoteSnapshot,
     userId: string,
   ): Promise<OrchestratedCorrectionResult | null> {
     const replay = await this.corrections.findByQuote({
@@ -132,15 +140,21 @@ export class CorrectionOrchestrationService {
     if (!replay) return null;
     if (replay.state === 'READY') return replay.result;
     if (replay.state === 'READY_TO_SETTLE') {
+      const settlementQuote = replay.settlementQuote;
       const charged = await this.closeReservation(
         replay.result.correction,
-        quote,
+        settlementQuote,
         replay.reservationId,
         userId,
       );
-      await this.quotes.markConsumed({ quoteId: quote.quoteId });
+      await this.quotes.markConsumed({ quoteId: settlementQuote.quoteId });
       return {
-        ...this.result(replay.result.correction, quote, true, charged),
+        ...this.result(
+          replay.result.correction,
+          settlementQuote,
+          true,
+          charged,
+        ),
       };
     }
     throw new CorrectionOrchestrationError(
@@ -271,7 +285,7 @@ export class CorrectionOrchestrationService {
    */
   private async closeReservation(
     correction: OrchestratedCorrectionResult['correction'],
-    quote: AcceptedQuoteSnapshot,
+    quote: ReplayQuoteSnapshot,
     reservationId: string,
     userId: string,
   ): Promise<boolean> {
@@ -284,7 +298,7 @@ export class CorrectionOrchestrationService {
   }
 
   private async settleQuote(
-    quote: AcceptedQuoteSnapshot,
+    quote: ReplayQuoteSnapshot,
     reservationId: string,
     userId: string,
   ): Promise<void> {
@@ -297,7 +311,7 @@ export class CorrectionOrchestrationService {
 
   private result(
     correction: OrchestratedCorrectionResult['correction'],
-    quote: AcceptedQuoteSnapshot,
+    quote: ReplayQuoteSnapshot,
     replay: boolean,
     charged = true,
   ): OrchestratedCorrectionResult {

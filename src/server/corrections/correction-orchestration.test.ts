@@ -311,6 +311,7 @@ describe('correction orchestration (V4-009)', () => {
         reservationId: 'reservation-1',
         result: replay,
         state: 'READY_TO_SETTLE',
+        settlementQuote: buildQuote(),
       },
       transport: strictOutput,
     });
@@ -352,6 +353,7 @@ describe('correction orchestration (V4-009)', () => {
         reservationId: 'reservation-1',
         result: failed,
         state: 'READY_TO_SETTLE',
+        settlementQuote: buildQuote(),
       },
       transport: strictOutput,
     });

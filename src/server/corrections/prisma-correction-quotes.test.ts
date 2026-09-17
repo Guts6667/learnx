@@ -230,3 +230,29 @@ describe('PrismaCorrectionQuoteRepository', () => {
     expect(prisma.aiCorrection.findFirst).not.toHaveBeenCalled();
   });
 });
+
+it('loads only owner-scoped immutable pricing for replay without consulting expired eligibility or current content', async () => {
+  const { prisma, repository } = harness();
+  prisma.aiPricingQuote.findFirst.mockImplementation(
+    async (input: { where: { userId: string } }) =>
+      input.where.userId === 'user-1'
+        ? quote({ expiresAt: new Date('2020-01-01') })
+        : null,
+  );
+  await expect(
+    repository.quotes.loadReplayQuote({ quoteId: 'quote-1', userId: 'user-1' }),
+  ).resolves.toEqual({
+    quoteId: 'quote-1',
+    requestFingerprint: 'fingerprint',
+    estimatedCredits: 12n,
+    maximumReservedCredits: 20n,
+  });
+  await expect(
+    repository.quotes.loadReplayQuote({
+      quoteId: 'quote-1',
+      userId: 'different-user',
+    }),
+  ).resolves.toBeNull();
+  expect(prisma.exerciseSubmission.findFirst).not.toHaveBeenCalled();
+  expect(prisma.aiCorrection.findFirst).not.toHaveBeenCalled();
+});

@@ -190,7 +190,8 @@ export function AiCorrectionResult({
 
       {toCheck.length === 0 &&
       correction.unsureCriteria.length === 0 &&
-      correction.overallConfidence !== 'LOW' &&
+      (correction.overallConfidence === 'HIGH' ||
+        correction.overallConfidence === 'MEDIUM') &&
       correction.overallFeedback ? (
         <section className="correction-result__priority">
           <p className="page-eyebrow">{t('aiCorrection.priority')}</p>
@@ -204,7 +205,8 @@ export function AiCorrectionResult({
       <footer className="correction-result__footer">
         {toCheck.length === 0 &&
         correction.unsureCriteria.length === 0 &&
-        correction.overallConfidence !== 'LOW' &&
+        (correction.overallConfidence === 'HIGH' ||
+          correction.overallConfidence === 'MEDIUM') &&
         correction.indicativeScore !== null ? (
           <p className="correction-result__score">
             {t('aiCorrection.indicativeScore', {

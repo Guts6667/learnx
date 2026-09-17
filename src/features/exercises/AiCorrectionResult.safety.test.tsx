@@ -80,3 +80,31 @@ it.each([
     }
   },
 );
+
+it.each(['LOW', undefined] as const)(
+  'withholds global claims for overall confidence %s despite confident criteria',
+  (confidence) => {
+    const current = entry('mastered', 'HIGH');
+    // Legacy JSON can lack a field required by the current API type.
+    const result = {
+      ...current,
+      correction: { ...current.correction, overallConfidence: confidence },
+    } as unknown as CorrectionHistoryEntry;
+    render(
+      <I18nProvider>
+        <AiCorrectionResult
+          history={[result]}
+          selectedIndex={0}
+          reconsiderationArgument=""
+          onReconsiderationArgumentChange={() => {}}
+          onRequestReconsideration={() => {}}
+          onSelectCorrection={() => {}}
+        />
+      </I18nProvider>,
+    );
+    expect(
+      screen.queryByText('UNVERIFIED_GLOBAL_ADVICE'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/99/)).not.toBeInTheDocument();
+  },
+);
