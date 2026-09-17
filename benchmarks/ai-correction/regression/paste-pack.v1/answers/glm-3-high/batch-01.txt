@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2,s3,s4 | autre: - | raison: coûts des arrêts, écart, visite du contrat choisi et seuil de réexamen servent tous le choix Préventel ou l'inconnue exigée.
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: le chiffrage de la subvention appuie la réparation complète et l'incertitude sur son maintien conditionne ce même choix.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: processus, équipe de 12 personnes et cible de 30 % reprennent fidèlement les trois éléments du dossier.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: la limite d'un seuil éventuellement autre selon la mesure est correcte car le dossier dit qu'aucune mesure de durée n'a été réalisée.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: les limites posées (aucune mesure existante, aucune contrainte du sponsor) sont exactement ce que dit le dossier.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase énonce explicitement la position : recommander la signature immédiate pour un an.
+C-d5dff02d07 | NON | phrases: s3 | autre: - | raison: les six éléments de l'update sont là mais la consigne exige aussi d'indiquer le rituel pour traiter le risque, jamais mentionné.
+C-b24221cac5 | OUI | phrases: - | autre: NON | raison: le risque d'une baisse insuffisante des arrêts s'appuie sur les 5 arrêts réels du dossier et conditionne le contrat choisi.
+C-5a5b6cc636 | NON | phrases: s0,s2 | autre: - | raison: la donnée d'incertitude sur la subvention justifie de ne pas trancher, elle n'appuie pas le penchant pour la réparation complète.
+C-2d0f0c9620 | NON | phrases: s0 | autre: - | raison: le mécanisme explicatif du dossier (flèches rendant l'embranchement visible avant le déplacement) n'est repris nulle part.

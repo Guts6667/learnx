@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2 | autre: - | raison: le chiffrage des arrêts et la visite semestrielle se rapportent tous deux au contrat Préventel retenu.
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: le calcul de la subvention et l'incertitude sur son maintien portent tous deux sur la réparation complète immédiate.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: processus, effectif et taux repris du dossier sans ajout, la médiane n'étant qu'une précision de l'objectif.
+C-23cb79db39 | NON | phrases: s0 | autre: - | raison: le taux de 30 % et l'effectif de 12 sont donnés par le dossier mais présentés comme incertains, donc la limite est fausse.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: l'absence de baseline et le statut de proposition du plafond qualité sont exactement les limites que le dossier impose.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase marquée énonce une recommandation explicite et datée.
+C-d5dff02d07 | NON | phrases: s3,s5 | autre: - | raison: l'update est complet mais aucune phrase n'indique le rituel où traiter le risque.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée propose une action de suivi, elle n'énonce aucun risque.
+C-5a5b6cc636 | NON | phrases: s1,s2 | autre: - | raison: le chiffrage appuie la réparation complète mais s2 avance un élément qui peut inverser le calcul.
+C-2d0f0c9620 | NON | phrases: s1 | autre: - | raison: l'exigence d'un rapport signé, absent, est remplacée par une simple probabilité de respect des 6 W.

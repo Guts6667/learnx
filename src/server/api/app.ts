@@ -96,6 +96,12 @@ function createApiApp() {
   // Ordering is the hotfix, not the cure: the next public route added at the
   // bottom would break the same way and just as silently. V4.5-187 scopes those
   // middlewares to their own prefixes so the trap stops existing.
+  //
+  // Et ce n'était pas une régression : `catalogApp` a pris son garde-fou
+  // générique le 5 août 2026 (bb424544), `publicLeadsApp` a été monté en
+  // dessous le 10 août (a60ba17f). Le formulaire était donc derrière une
+  // session depuis sa mise en ligne — il n'a jamais répondu une seule fois en
+  // production.
   // First of all, and public: a probe must answer even when everything that
   // needs a session is failing, which is exactly when it is being read.
   app.route('/', healthApp);

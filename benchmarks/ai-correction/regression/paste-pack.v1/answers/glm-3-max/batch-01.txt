@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2,s3 | autre: - | raison: s1 chiffre la comparaison des deux contrats, s2 concerne la visite obligatoire du contrat choisi, s3 apporte l'inconnue exigée par la consigne.
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: les chiffres de s1 comparent les deux stratégies et s2 porte sur l'incertitude que la consigne demande d'indiquer.
+C-55f08a077c | NON | phrases: - | autre: NON | raison: la réduction vise la durée de « traitement » d'une demande alors que le dossier ne décrit que le tri.
+C-23cb79db39 | NON | phrases: s0 | autre: - | raison: le « serait concernée » traite en hypothèse l'équipe de 12 personnes, que le dossier énonce comme fait.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: l'absence de mesure de durée (s2) et l'absence de contrainte du sponsor (s3) sont les limites exactes que donne le dossier.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase énonce explicitement une position, recommander de signer immédiatement pour un an.
+C-d5dff02d07 | NON | phrases: s3 | autre: - | raison: le risque est posé mais aucune phrase n'indique le rituel où le traiter, exigé par la consigne.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée formule une règle de suivi avec un seuil sans appui dans le dossier, pas un risque exact.
+C-5a5b6cc636 | NON | phrases: s2 | autre: - | raison: le fait de s2 (une réponse peut inverser le calcul) suspend le choix au lieu de l'appuyer.
+C-2d0f0c9620 | NON | phrases: s0 | autre: - | raison: s0 reprend les chiffres et les constantes mais omet le fait explicatif du dossier, la visibilité de l'embranchement avant le déplacement.

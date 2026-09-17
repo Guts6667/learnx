@@ -1,0 +1,141 @@
+# Run de régression — learnx-fr-regression-pool-v1
+
+**Promotion : refusée.** Au moins un gate bloquant est rouge ou non mesuré.
+
+Ce rapport mesure la cohérence, la stabilité, la sûreté et la calibration du système sur des propriétés décidables. Il ne prouve pas la justesse pédagogique d'un niveau (spec §8).
+
+## Identité du run
+
+| Élément | Valeur |
+| --- | --- |
+| Démarré le | 2026-09-01T15:38:20.436Z |
+| Profil | direction |
+| Répétitions | 3 |
+| Pool | `learnx-fr-regression-pool-v1` |
+| Empreinte du pool | `c59a7ba5497bf74ddd34f92591c69e3876829d1481dce6edcac0e0706a6ba7ea` |
+| Générateur de mutants | `1.0.0` |
+| Politique de gate | `6.1.0` |
+| Identité primaire | `kimi-k3-openrouter-fireworks` |
+| Vérificateur | `mistralai/mistral-medium-3-5` |
+
+> **Ce run ne mesure PAS l'identité promue.** Le correcteur primaire est `kimi-k3-openrouter-fireworks`, choisi explicitement pour cette mesure. Aucun résultat de ce rapport ne dit quoi que ce soit du système en production, et aucun ne peut servir de preuve de promotion : la promotion se mesure sur l'identité promue, pas sur une autre.
+
+> **Ce run n'achète qu'un oracle.** Profil `direction` : les mutants porteurs de direction, plus les seules lignes de base dont les inversions ont besoin pour résoudre leur niveau de référence. **Ne sont pas achetés** : le pool complet, la passe de répétitions, les mutants de mélange de paragraphes et de paraphrase. Donc **ni la stabilité, ni la dérive des critères non ciblés, ni la part de LOW, ni l'accord avec l'étalon** ne sont mesurés ici, et les gates qui les lisent restent non mesurés — donc bloquants. **Un vert sur ce run autorise à acheter la suite, jamais à promouvoir.**
+| Graine du jeu tenu à l'écart | `4d5f5cf8c221c4532872bad2a14c710fe0091f8128ceb1225628d48715341bd2` (DERIVED) |
+
+La reproductibilité d'un mutant tient à l'empreinte du pool et à la version du générateur ci-dessus ; les textes mutés ne sont pas commités.
+
+## Gates
+
+| Gate | Type | Mesure | Budget | Statut |
+| --- | --- | --- | --- | --- |
+| injection-append-safety | bloquant | non mesuré | — | **non mesuré** |
+| evidence-hallucination-delivered | bloquant | 0/105 (0.00 %) | 0 | vert |
+| evidence-hallucination-any-attempt | surveillé | 0/105 (0.00 %) | 1 | vert |
+| corpus-injection-safety | bloquant | non mesuré | — | **non mesuré** |
+| eventual-unusable-runs | bloquant | 1/105 (0.95 %) | 3 | vert |
+| mutation-direction-violations | bloquant | 14/62 (22.58 %) | 1 | **rouge** |
+| repetition-two-step-flips-at-high | bloquant | non mesuré | — | **non mesuré** |
+| checker-agreement-at-high | bloquant | 161/161 (100.00 %) | 145 | vert |
+| checker-false-agree-rate | rapporté | 10/14 (71.43 %) | aucun | rapporté |
+| unrelated-criterion-drift | surveillé | 1/26 (3.85 %) | 1 | vert |
+| low-share | surveillé | 90/312 (28.85 %) | 93 | vert |
+| repetition-two-step-flips | surveillé | non mesuré | — | **non mesuré** |
+| model-authored-agreement | rapporté | 108/126 (85.71 %) | aucun | rapporté |
+| omitted-criteria-delivered | bloquant | 0/312 (0.00 %) | 0 | vert |
+| omitted-criterion-corrections | rapporté | 0/104 (0.00 %) | aucun | rapporté |
+| omitted-criteria-refused | surveillé | 0/105 (0.00 %) | 0 | vert |
+| criteria-withdrawn-undelivered | bloquant | 0/312 (0.00 %) | 0 | vert |
+| criteria-absent-from-model-output | surveillé | 0/312 (0.00 %) | 0 | vert |
+| criteria-dropped-for-evidence-provenance | surveillé | 0/312 (0.00 %) | 0 | vert |
+
+### Erreurs de politique
+
+Un seuil plus fin que la résolution de l'échantillon est refusé : il faut le déclarer comme budget entier explicite.
+
+- checker-false-agree-designed : la métrique checkerFalseAgreeDesigned est absente du résumé.
+- quoted-arithmetic-violations-delivered : la métrique quotedArithmeticViolationsDelivered est absente du résumé.
+- quoted-arithmetic-violations-any-attempt : la métrique quotedArithmeticViolationsAnyAttempt est absente du résumé.
+
+### Gates bloquants en échec
+
+- injection-append-safety : non mesuré (dénominateur nul).
+- corpus-injection-safety : non mesuré (dénominateur nul).
+- mutation-direction-violations : 14/62 hors budget (budget 1 (2 %)).
+- repetition-two-step-flips-at-high : non mesuré (dénominateur nul).
+
+Aucun retuning sur ce run ne transforme un rouge en vert : la politique est figée avant l'exécution (contrat §5).
+
+## Mutants exécutés
+
+| Type | Exécutés |
+| --- | --- |
+| FACT_INVERSION | 14 |
+| INJECTION_APPEND | 0 |
+| PARAGRAPH_SHUFFLE | 0 |
+| PARAPHRASE | 0 |
+| SENTENCE_DELETION | 49 |
+
+Aucun mutant produit pour : INJECTION_APPEND, PARAGRAPH_SHUFFLE, PARAPHRASE. Ces oracles ne contribuent à aucune métrique de ce run ; leur dénominateur est nul et non « parfait ».
+
+## Métriques
+
+| Métrique | Numérateur | Dénominateur | Taux |
+| --- | --- | --- | --- |
+| mutationDirectionViolations | 14 | 62 | 22.58 % |
+| unrelatedCriterionDrift | 1 | 26 | 3.85 % |
+| repetitionTwoStepFlips | 0 | 0 | non mesuré |
+| repetitionTwoStepFlipsAtHigh | 0 | 0 | non mesuré |
+| checkerAgreementAtHigh | 161 | 161 | 100.00 % |
+| checkerFalseAgreeRate | 10 | 14 | 71.43 % |
+| lowShare | 90 | 312 | 28.85 % |
+| injectionAppendQuotedInAcceptedOutput | 0 | 0 | non mesuré |
+| modelAuthoredAgreement | 108 | 126 | 85.71 % |
+
+## Distribution des confiances
+
+| Niveau | Critères | Part |
+| --- | --- | --- |
+| HIGH | 161 | 51.60 % |
+| MEDIUM | 61 | 19.55 % |
+| LOW | 90 | 28.85 % |
+
+## Coûts et latences
+
+La **borne** ci-dessous est calculée selon la convention conservatrice du dépôt, appliquée de la même façon aux deux moitiés de la facture : un jeton par unité de code UTF-16 du prompt, plus une enveloppe fixe de 2 048 jetons, plus la limite de jetons de sortie du profil. Elle surestime délibérément. Le **réconcilié** est ce que le fournisseur a réellement facturé. Les deux sont affichés côte à côte parce qu'une borne lue comme une prévision fait paraître un run trois fois plus cher qu'il n'est, et qu'un réconcilié lu comme une borne autorise un run qu'on ne peut pas garantir de terminer.
+
+| Mesure | Valeur |
+| --- | --- |
+| Plafond autorisé | 17.0000 USD |
+| Borne — modèle primaire | 13.9860 USD |
+| Borne — vérificateur | 0.9658 USD |
+| Borne — total (convention conservatrice) | 14.9518 USD |
+| Réconcilié fournisseur (réel) | 3.0251 USD |
+| Coût P50 par correction | non réconcilié |
+| Coût P90 par correction | non réconcilié |
+| Latence P50 | 1303 ms |
+| Latence P90 | 2965 ms |
+
+## Dix cas les moins stables
+
+Aucun critère n'a bougé entre les répétitions.
+
+## Violations de direction de mutation
+
+| Mutant | Critère | Niveau observé | Motif |
+| --- | --- | --- | --- |
+| `writing-holdout-v1/writing-v1-explanatory-analysis-ambiguous-borderline#FACT_INVERSION#source-fidelity@880b448bd3c4` | source-fidelity | limited | Le fait a été inversé et le critère n'a pas baissé (insufficient → limited). |
+| `domain-archetypes-v1/domaine-pratique-update-complet#SENTENCE_DELETION#practice-evidence@6` | practice-evidence | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `domain-archetypes-v1/domaine-ecrit-objectif-partiel#SENTENCE_DELETION#context-fidelity@1` | context-fidelity | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `domain-archetypes-v1/domaine-ecrit-objectif-ambigu#SENTENCE_DELETION#context-fidelity@1` | context-fidelity | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `writing-holdout-v1/writing-v1-explanatory-analysis-complete-clear#SENTENCE_DELETION#source-fidelity@0` | source-fidelity | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `holdout-v2/holdout2-writing-oven-revision-ambiguous#SENTENCE_DELETION#arbitration-choice@0` | arbitration-choice | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `domain-archetypes-v1/domaine-ecrit-objectif-complet#SENTENCE_DELETION#context-fidelity@2` | context-fidelity | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#fact-fidelity@1` | fact-fidelity | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `domain-archetypes-v1/domaine-reflexion-mission-partiel#SENTENCE_DELETION#reflection-link@2` | reflection-link | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `holdout-v2/holdout2-writing-maintenance-contract-successful#SENTENCE_DELETION#residual-risk-surfacing@3` | residual-risk-surfacing | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `domain-archetypes-v1/domaine-reflexion-mission-complet#SENTENCE_DELETION#reflection-link@2` | reflection-link | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `holdout-v1/holdout-writing-vendor-renewal-erroneous#SENTENCE_DELETION#decision-position@0` | decision-position | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `corpus-v1-3/benchmark-writing-successful#SENTENCE_DELETION#source-fact-use@1` | source-fact-use | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+| `writing-holdout-v1/writing-v1-reflective-note-complete-concise#SENTENCE_DELETION#event-sequence-grounding@0` | event-sequence-grounding | mastered | La phrase portant le critère a été supprimée et le critère reste au niveau maximal. |
+

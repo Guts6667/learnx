@@ -1,0 +1,10 @@
+C-ca1ef61e53 | NON | phrases: s0,s2 | autre: - | raison: s2 est un détail de calendrier sur la visite sans lien exprimé avec le choix entre les deux contrats.
+C-47402cc097 | OUI | phrases: s0,s1 | autre: - | raison: le coût net, la subvention et son incertitude portent tous sur le choix et sur ce qui reste incertain, comme la consigne le demande.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: processus, effectif de 12 et taux de 30 % reprennent le dossier sans fait ajouté ; la phrase est seule dans l'extrait.
+C-23cb79db39 | NON | phrases: s0 | autre: - | raison: le conditionnel « serait concernée » nuance l'effectif de 12 que le dossier donne pour acquis, seule la réserve sur le seuil est justifiée.
+C-6f02478fc2 | OUI | phrases: s0,s2,s3 | autre: - | raison: la baseline manquante (s2) et le plafond présenté comme simple proposition faute de contrainte du sponsor (s3) sont exactement les limites que le dossier impose à l'objectif de s0.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: « je recommande de signer immédiatement pour un an » énonce explicitement une position ; les autres phrases n'argumentent que par rapport à elle.
+C-d5dff02d07 | NON | phrases: s3,s5 | autre: - | raison: les six éléments de l'update sont présents mais aucune phrase n'indique le rituel où traiter le risque de s3.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase propose une action de suivi conditionnelle sans formuler de risque à confronter au dossier ; aucune autre phrase de l'extrait n'en formule.
+C-5a5b6cc636 | NON | phrases: s0,s2 | autre: - | raison: s2 avance une inconnue qui peut inverser le calcul et interdit d'écarter l'autre stratégie, elle nuance le choix au lieu de l'appuyer.
+C-2d0f0c9620 | NON | phrases: s0 | autre: - | raison: s0 reprend les chiffres et les conditions constantes mais pas le fait explicatif du dossier, les flèches rendant l'embranchement visible avant le déplacement.

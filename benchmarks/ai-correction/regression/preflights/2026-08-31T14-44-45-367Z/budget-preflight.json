@@ -1,0 +1,80 @@
+{
+  "checkerCost": {
+    "corrections": 37,
+    "modelId": "mistralai/mistral-medium-3-5",
+    "outputTokenLimit": 400,
+    "pricedInThisPreflight": true,
+    "promptCharactersPerCall": 2565,
+    "source": {
+      "consultedAt": "2026-08-29",
+      "consultedBy": "Head of AI (voie F)",
+      "publishedRates": "entrée 1,50 USD / M jetons ; sortie 7,50 USD / M jetons",
+      "url": "https://openrouter.ai/mistralai/mistral-medium-3-5"
+    },
+    "worstCaseUsd": 0.36702150000000006
+  },
+  "boundingConvention": "measured-p90-v2",
+  "boundingSources": {
+    "checker": {
+      "observations": 15,
+      "sourceDirectory": "benchmarks/ai-correction/regression/results/2026-08-30T00-11-39-046Z",
+      "statistic": "MEAN",
+      "usdPerCall": 0.0009245499999999999
+    },
+    "primary": {
+      "observations": 49,
+      "sourceDirectory": "benchmarks/ai-correction/regression/results/2026-08-29T20-49-50-434Z",
+      "statistic": "P90",
+      "usdPerCall": 0.02284
+    },
+    "safetyFactor": 1.5
+  },
+  "combinedWorstCaseUsd": 2.586552525,
+  "comparisonConservativeV1Usd": 4.7283195,
+  "primaryWorstCaseUsd": 4.361298,
+  "singlePassLegacyDecision": "READY",
+  "dropped": [
+    "répétitions du sous-ensemble ramenées de 3 à 2 : la stabilité perd un point de mesure, la couverture n’en perd aucun"
+  ],
+  "fitsWithinCap": true,
+  "paraphraseWorstCaseUsd": 0,
+  "paraphrasesIncluded": false,
+  "passes": [
+    {
+      "cases": 6,
+      "cells": 6,
+      "label": "pool complet × 1",
+      "pendingCases": 6,
+      "pendingCells": 6,
+      "primaryWorstCaseUsd": 0.708078,
+      "repetitionOffset": 1,
+      "repetitions": 1
+    },
+    {
+      "cases": 6,
+      "cells": 6,
+      "label": "répétitions du sous-ensemble",
+      "pendingCases": 6,
+      "pendingCells": 6,
+      "primaryWorstCaseUsd": 0.708078,
+      "repetitionOffset": 2,
+      "repetitions": 1
+    },
+    {
+      "cases": 25,
+      "cells": 25,
+      "label": "mutants du sous-ensemble",
+      "pendingCases": 25,
+      "pendingCells": 25,
+      "primaryWorstCaseUsd": 2.945142,
+      "repetitionOffset": 1,
+      "repetitions": 1
+    }
+  ],
+  "envelopeNote": "Aucune enveloppe déclarée : seul le plafond du run s'applique.",
+  "priorActualSpendUsd": 0,
+  "profile": "reduced",
+  "remainingCapUsd": 3,
+  "requestedCapUsd": 3,
+  "supplierCostCapUsd": 3
+}

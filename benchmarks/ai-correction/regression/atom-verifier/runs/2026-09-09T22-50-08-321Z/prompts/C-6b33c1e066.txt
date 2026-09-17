@@ -1,0 +1,9 @@
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Question : CHAQUE fait ou chiffre avancé a-t-il un rapport avec le choix que l’élève a fait, au regard de la consigne ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est pertinente pour CE choix · ff.a3 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.
+[s1] La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.
+[s2] L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.
+[s3] Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.

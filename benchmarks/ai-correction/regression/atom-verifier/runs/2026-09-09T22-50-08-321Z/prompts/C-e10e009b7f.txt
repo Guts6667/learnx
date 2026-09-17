@@ -1,0 +1,6 @@
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève dit-il clairement quelle option il retient ?
+Écriture pour la machine : un choix est explicitement énoncé · ac.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Je programme la révision immédiate du four F3.⟧ Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier …

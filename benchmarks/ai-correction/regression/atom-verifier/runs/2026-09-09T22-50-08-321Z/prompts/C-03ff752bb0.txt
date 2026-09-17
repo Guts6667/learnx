@@ -1,0 +1,6 @@
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Pour CHAQUE affirmation utile de ce passage, l’élève énonce-t-il une limite qui la borne ?
+Écriture pour la machine : pour CHAQUE affirmation, IL EXISTE une limite qui la borne · cf.a2 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.

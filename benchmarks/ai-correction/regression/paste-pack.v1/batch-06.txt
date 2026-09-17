@@ -1,0 +1,126 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 51 · C-c1ee19ec29
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève propose-t-il une précaution ?
+Écriture pour la machine : une précaution est proposée · rr.a4 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.⟧ Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le co …
+
+### Carte 52 · C-3a2fdb767e
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : Pour CHAQUE affirmation utile, la limite donnée est-elle correcte, d’après le dossier ?
+Écriture pour la machine : CETTE limite est correcte pour CETTE affirmation · cf.a3 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.
+[s1] Je ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.
+
+### Carte 53 · C-302b9df321
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?
+Écriture pour la machine : CHAQUE affirmation utile est fidèle au contexte · cf.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane entre l’arrivée d’une demande et son affectation, sur un horizon de six mois après mise en service, sans que la part de demandes réaffectées après coup dépasse son niveau d’avant l’expérimentation.⟧
+
+ …
+
+### Carte 54 · C-46c2f075a1
+Consigne : Décide quand faire réviser le four F3 et délimite la portée de ta décision.
+Question : L’option retenue correspond-elle à ce que la consigne demandait : la bonne personne, la bonne cible, la bonne situation, le bon horizon ?
+Écriture pour la machine : scope_match — l'action retenue s'applique à l'acteur, la cible, la situation et l'horizon demandés · ac.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche.
+[s1] Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars.
+[s2] Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.
+
+### Carte 55 · C-45432e4845
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Question : Cette preuve démontre-t-elle la pratique que la consigne demandait ?
+Écriture pour la machine : CETTE preuve démontre CETTE pratique · pe.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sprint Goal : rendre la recherche de cours utilisable sur mobile.
+[s1] Progrès : 2 des 5 tickets sont terminés.
+[s2] Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.
+
+### Carte 56 · C-f043ae3ad1
+Consigne : Expliquez la baisse observée en distinguant faits établis, mécanisme plausible et inconnues.
+Dossier : Contexte fiable et fictif : lors d'un premier tri de 24 étoiles en carton, une légende placée à l'écart a été suivie de 10 erreurs de placement. Lors d'un second tri des mêmes 24 étoiles, la légende a été placée à côté du plateau et 4 erreurs ont été relevées. Le groupe, l'ordre des étoiles et les 20 minutes allouées sont restés identiques. L'observateur a noté moins de regards allant du plateau vers la table distante. Le même groupe a participé aux deux tris, donc un effet d'entraînement reste possible ; aucun nouveau groupe n'a été testé.
+Question : AUCUNE affirmation importante de la réponse ne sort-elle du dossier ?
+Écriture pour la machine : IL N'EXISTE aucune affirmation matérielle de la réponse qui ne soit pas attribuable au dossier · sf.a2 · not_exists
+Portée : la copie entière
+Copie :
+[s0] Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.
+[s1] Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.
+[s2] Sans essai sur un nouveau groupe, la généralisation reste inconnue.
+
+### Carte 57 · C-3138b8a152
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Dossier : Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.
+Question : CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est exacte · ff.a2 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.⟧ La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées. Je p …
+
+### Carte 58 · C-94ea93741f
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Pour CHAQUE affirmation utile de ce passage, l’élève énonce-t-il une limite qui la borne ?
+Écriture pour la machine : pour CHAQUE affirmation, IL EXISTE une limite qui la borne · cf.a2 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.
+[s1] Je préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.
+
+### Carte 59 · C-5219f94743
+Consigne : Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.
+Question : La position correspond-elle à ce que la consigne demandait : la bonne personne, le bon objet, la bonne situation, le bon horizon ?
+Écriture pour la machine : la position s'applique à l'acteur, l'objet, la situation et l'horizon demandés · dp.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur.
+[s1] La remise de 18 % rend toute autre option irrationnelle.
+[s2] Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.
+
+### Carte 60 · C-eecdd08b93
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Pour CHAQUE affirmation utile de ce passage, l’élève énonce-t-il une limite qui la borne ?
+Écriture pour la machine : pour CHAQUE affirmation, IL EXISTE une limite qui la borne · cf.a2 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sur le tri des demandes entrantes du support de niveau 1, assuré par les 12 personnes de l’équipe, l’objectif est de réduire de 30 % la durée médiane de traitement d’une demande.
+[s1] Je ne dispose d’aucune mesure de durée à ce stade, donc la baseline reste à établir avant tout engagement chiffré.
+
+Fin du lot 06 : 10 cartes. Réponds maintenant, 10 lignes.

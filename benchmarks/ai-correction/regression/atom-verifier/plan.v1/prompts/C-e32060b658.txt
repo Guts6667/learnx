@@ -1,0 +1,9 @@
+Consigne : Décide quand faire réviser le four F3 et délimite la portée de ta décision.
+Question : La réponse dit-elle à la personne visée quoi choisir ou quoi faire, sans qu’elle ait à deviner entre plusieurs actions différentes ?
+Écriture pour la machine : action_resolved — la réponse dit à l'acteur visé quoi choisir ou faire sans inférence entre actions matériellement différentes · ac.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je programme la révision immédiate du four F3.
+[s1] Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche.
+[s2] Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars.
+[s3] Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.

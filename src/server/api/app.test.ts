@@ -36,8 +36,8 @@ describe('routes publiques à travers l’application assemblée (V4.5-186)', ()
   it('laisse la capture de contacts publics répondre sans session', async () => {
     // The landing funnel's only endpoint. A visitor has no account by
     // definition, so a 401 here is the funnel closed. It answered 401 in
-    // production because a wildcard `requireUser` from an app mounted earlier
-    // reached every route mounted after it.
+    // production from the day it shipped, because a wildcard `requireUser`
+    // from an app mounted earlier reached every route mounted after it.
     //
     // The assertion is "not 401", deliberately. What the endpoint answers
     // instead depends on configuration — 400 for a bad body where e-mail is

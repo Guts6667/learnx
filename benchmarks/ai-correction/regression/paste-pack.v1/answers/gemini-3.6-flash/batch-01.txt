@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1 | autre: - | raison: tous les faits et chiffres cités en s1 soutiennent directement le choix du contrat Préventel fait en s0.
+C-47402cc097 | NON | phrases: s0,s1 | autre: - | raison: l'élève n'a pas arrêté de choix clair en s0, les faits ne peuvent donc pas se rapporter à un choix fait.
+C-55f08a077c | OUI | phrases: - | autre: OUI | raison: l'affirmation reprend fidèlement les éléments du dossier sans inventer de fait absent.
+C-23cb79db39 | NON | phrases: s0 | autre: - | raison: s0 énonce des hypothèses et hésitations sans associer les limites exactes issues du dossier.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: les phrases s2 et s3 identifient correctement les limites associées aux affirmations à partir du dossier.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase énonce sans ambiguïté une recommandation claire.
+C-d5dff02d07 | INDÉCIS | phrases: s0,s1,s2,s3,s4 | autre: - | raison: la copie ne précise pas dans quel rituel traiter le risque, élément expressément réclamé par la consigne.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée propose une action de suivi et non l'énoncé d'un risque issu du dossier.
+C-5a5b6cc636 | NON | phrases: s0,s1 | autre: - | raison: l'élève indique en s0 qu'il ne tranche pas son choix, les chiffres ne peuvent donc appuyer une position arrêtée.
+C-2d0f0c9620 | NON | phrases: s0 | autre: - | raison: la copie omet le fait explicatif central du dossier indiquant que les flèches rendent le prochain embranchement visible avant le déplacement.

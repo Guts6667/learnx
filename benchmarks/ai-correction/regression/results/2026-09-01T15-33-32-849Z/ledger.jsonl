@@ -1,0 +1,2 @@
+{"attempt":1,"candidateId":"kimi-k3-openrouter-fireworks","caseId":"regression-0009843d9a164f27","costUsd":0.0284805,"costSource":"ACTUAL","errorCode":null,"latencyMs":1806,"modelId":"moonshotai/kimi-k3","providerRoute":"Fireworks","repetition":1,"role":"PRIMARY","status":"VALID"}
+{"call":1,"costSource":"ACTUAL","costUsd":0.0010956,"modelId":"mistralai/mistral-medium-3-5","role":"CHECKER","unitId":"holdout-v1/holdout-writing-shuttle-boundary"}

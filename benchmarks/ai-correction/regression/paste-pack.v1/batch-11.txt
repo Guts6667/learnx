@@ -1,0 +1,89 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 101 · C-858f89a8ff
+Consigne : Recommande l’une des deux options et justifie ton choix avec les informations du scénario.
+Question : CHAQUE fait utilisé sert-il à répondre à ce que la consigne demandait ?
+Écriture pour la machine : CHAQUE fait mobilisé est pertinent · sfu.a3 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+Je recommande le pilote étendu de quatre semaines avec formation. ⟦Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.⟧
+
+### Carte 102 · C-4258b8fca2
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève énonce-t-il un mécanisme ou une conclusion ?
+Écriture pour la machine : un mécanisme ou une conclusion est énoncé · ml.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… ec le même groupe, le même ordre et la même durée. ⟦Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.⟧ Sans essai sur un nouveau groupe, la généralisation …
+
+### Carte 103 · C-d6444cb6e3
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Dossier : Contexte fictif. Équipe remote de 6 personnes, sprint en cours. Le Sprint Goal est « rendre la recherche de cours utilisable sur mobile ». Trois éléments sont connus : 2 des 5 tickets du sprint sont terminés ; le fournisseur d’authentification a annoncé une coupure de 2 heures prévue jeudi ; l’équipe tient un daily et un refinement hebdomadaire.
+Question : L’interprétation que l’élève fait de cette preuve est-elle correcte, d’après le dossier ?
+Écriture pour la machine : CETTE interprétation de CETTE preuve est correcte · pe.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sprint Goal : rendre la recherche de cours utilisable sur mobile.
+[s1] Progrès : 2 des 5 tickets sont terminés.
+[s2] Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.
+[s3] Risque : la coupure tombe sur la fenêtre de test de la recherche connectée.
+[s4] Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté.
+[s5] Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir.
+[s6] Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.
+
+### Carte 104 · C-aef2458e05
+Consigne : Recommande l’engagement annuel ou le mois supplémentaire, en t’appuyant sur les données et leurs limites.
+Question : La position dit-elle à la personne visée quoi choisir ou quoi faire, sans qu’elle ait à deviner entre plusieurs actions différentes ?
+Écriture pour la machine : la réponse dit à l'acteur visé quoi choisir ou faire, sans inférence entre actions matériellement différentes · dp.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande de signer immédiatement pour un an.
+[s1] Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois, soit beaucoup plus que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur.
+[s2] La remise de 18 % rend toute autre option irrationnelle.
+[s3] Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.
+
+### Carte 105 · C-bb56e6bb60
+Contexte : aucun, la question se juge sur la copie seule.
+Question : Pour CHAQUE affirmation utile de ce passage, l’élève énonce-t-il une limite qui la borne ?
+Écriture pour la machine : pour CHAQUE affirmation, IL EXISTE une limite qui la borne · cf.a2 · forall_exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Le tri des demandes du support de niveau 1 pourrait viser une réduction de l’ordre de 30 %, ou peut-être un autre seuil selon ce que la mesure montrera ; l’équipe de 12 personnes serait concernée.
+[s1] Je préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.
+
+### Carte 106 · C-b83afbc8ff
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Dossier : Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.
+Question : CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est exacte · ff.a2 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+… 0 euros par an pour la ligne 4. ⟦Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.⟧ La première visite semestrielle a …
+
+Fin du lot 11 : 6 cartes. Réponds maintenant, 6 lignes.
