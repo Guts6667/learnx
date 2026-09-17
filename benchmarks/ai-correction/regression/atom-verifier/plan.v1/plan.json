@@ -1,0 +1,64 @@
+{
+  "calls": 720,
+  "candidates": [
+    {
+      "candidate": "mistral-medium-3-5",
+      "estimatedUsd": 0.408,
+      "modelId": "mistralai/mistral-medium-3-5",
+      "priceSource": "checker-pricing.v1.json (2026-08-29)"
+    },
+    {
+      "candidate": "haiku-4-5",
+      "estimatedUsd": 0.272,
+      "modelId": "anthropic/claude-haiku-4.5",
+      "priceSource": "estimate, openrouter.ai 2026-09-08; actual cost from usage.cost"
+    },
+    {
+      "candidate": "kimi-k3",
+      "estimatedUsd": 0.1524,
+      "modelId": "moonshotai/kimi-k3",
+      "priceSource": "estimate, openrouter.ai 2026-09-08; actual cost from usage.cost"
+    },
+    {
+      "candidate": "sonnet-4-6",
+      "estimatedUsd": 0.8161,
+      "modelId": "anthropic/claude-sonnet-4.6",
+      "priceSource": "estimate, openrouter.ai 2026-09-08; actual cost from usage.cost"
+    }
+  ],
+  "cards": 60,
+  "estimatedTotalUsd": 1.6485,
+  "hashes": {
+    "deckHash": "sha256:b3a021bfe81bd6c26690f6ebc79d754750d3db4e7821af51380a9853c28a9879",
+    "keyHash": "sha256:c27ed87a43f050a561bf482db729af786d65f0e2d67c025f8543003ba3b6b44e",
+    "pairsHash": "sha256:3af565ca64517ef95c2f53ab9ddd93166e946e67341b7eac95fe18e49fb43338",
+    "questionsHash": "sha256:6b25f4e95aaaf6751b8215da638dc855d289965b493c8db694dfc482c1a480df",
+    "systemPromptHash": "sha256:5046d00d25eb83b2e7d3a8706f8be83c3f3797bba18d2f0b1290482280e23d83"
+  },
+  "labelledPairs": 30,
+  "repetitions": 3,
+  "request": {
+    "maxTokens": 400,
+    "provider": {
+      "allow_fallbacks": false,
+      "data_collection": "deny",
+      "require_parameters": true
+    },
+    "responseFormat": "json_schema strict",
+    "temperature": 0,
+    "timeoutMs": 60000
+  },
+  "schemaVersion": 1,
+  "seed": "v4.5-210/atom-verifier/v1",
+  "thresholds": {
+    "labelledPairs": 30,
+    "pairwiseProceed": 27,
+    "pairwiseStop": 24,
+    "flipsProceed": 2,
+    "flipsStop": 5,
+    "hardNegativeRejection": 0.86,
+    "trueEvidenceAcceptance": 0.9,
+    "repetitions": 3,
+    "budgetCapUsd": 3
+  }
+}

@@ -2,6 +2,8 @@ import {
   allowsIndicativeScore,
   deriveCorrectionConfidence,
   deriveCriterionConfidence,
+  deriveDeliveredCriterionConfidences,
+  deriveHardConstraintMismatch,
   type CriterionConfidenceInput,
 } from './ai-correction-confidence';
 
@@ -21,6 +23,40 @@ function criterion(
 }
 
 describe('deriveCriterionConfidence', () => {
+  it('caps every sibling when the checker omitted one criterion', () => {
+    const criteria = [
+      criterion({ isMasteredLevel: true }),
+      criterion({ verifier: 'UNAVAILABLE' }),
+    ];
+    expect(
+      deriveDeliveredCriterionConfidences({
+        criteria,
+        familyScientificallyValidated: true,
+      }),
+    ).toEqual(['MEDIUM', 'MEDIUM']);
+  });
+
+  it('caps every criterion outside the validated family without lifting LOW', () => {
+    const criteria = [
+      criterion({ isMasteredLevel: true }),
+      criterion({ verifier: 'DISAGREED' }),
+    ];
+    expect(
+      deriveDeliveredCriterionConfidences({
+        criteria,
+        familyScientificallyValidated: false,
+      }),
+    ).toEqual(['MEDIUM', 'LOW']);
+  });
+
+  it.each([
+    ['Violation de la contrainte', false, true],
+    ['Forbidden operation', false, true],
+    ['Réponse claire', false, false],
+    ['Violation de la contrainte', true, false],
+  ])('shares the hard-constraint rule: %s', (feedback, floor, expected) => {
+    expect(deriveHardConstraintMismatch(feedback, floor)).toBe(expected);
+  });
   it.each([
     ['citation absente', { citation: 'ABSENT' as const }],
     ['citation ambiguë', { citation: 'AMBIGUOUS' as const }],

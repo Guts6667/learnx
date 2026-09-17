@@ -78,7 +78,7 @@ jobs:
 
           # Anything that can talk to a database, plus this file — a change to
           # the job itself must still exercise the job.
-          relevant='^(prisma/|src/server/|api/|scripts/|\.github/workflows/integration\.yml$)'
+          relevant='^(prisma/|prisma\.config\.ts$|src/server/|api/|scripts/|quality/protected-db-hosts\.json$|package\.json$|pnpm-lock\.yaml$|vercel\.json$|\.github/workflows/integration\.yml$)'
 
           decide() {
             echo "run=$1" >> "$GITHUB_OUTPUT"

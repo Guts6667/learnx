@@ -3,6 +3,7 @@ import { vi } from 'vitest';
 import {
   CorrectionOrchestrationService,
   type AcceptedQuoteSnapshot,
+  type ReplayQuoteSnapshot,
   type CorrectionTransportPort,
   type PersistedCorrectionLookup,
   type RuntimeCorrectionAttempt,
@@ -206,6 +207,10 @@ export function strictOutputWithLevels(input: {
 export interface Harness {
   service: CorrectionOrchestrationService;
   quotes: {
+    loadReplayQuote?: (input: {
+      quoteId: string;
+      userId: string;
+    }) => Promise<ReplayQuoteSnapshot | null>;
     loadAcceptedQuote: (
       input: unknown,
     ) => Promise<AcceptedQuoteSnapshot | null>;
@@ -238,11 +243,13 @@ export interface Harness {
 }
 
 export function buildHarness(options: {
+  canDispatch?: () => Promise<boolean>;
   beforeTransport?: () => void;
   checker?: {
     verify(input: unknown): Promise<unknown>;
   };
   quote?: AcceptedQuoteSnapshot;
+  replayQuote?: ReplayQuoteSnapshot;
   transport: () => unknown;
   replay?: unknown;
   replayLookup?: PersistedCorrectionLookup;
@@ -316,6 +323,9 @@ export function buildHarness(options: {
     }),
   };
   const quotes = {
+    ...(options.replayQuote
+      ? { loadReplayQuote: vi.fn(async () => options.replayQuote ?? null) }
+      : {}),
     loadAcceptedQuote: vi.fn(async () => options.quote ?? buildQuote()),
     markConsumed: vi.fn(async () => undefined),
   };
@@ -326,6 +336,7 @@ export function buildHarness(options: {
     transport,
     {
       apiKey: 'test-key',
+      ...(options.canDispatch ? { canDispatch: options.canDispatch } : {}),
       ...(options.checker
         ? {
             checker:

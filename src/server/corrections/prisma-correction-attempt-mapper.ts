@@ -12,7 +12,11 @@ export function toAttemptOutcomeData(
     costSource: attempt.actualCostUsd === undefined ? undefined : 'ACTUAL',
     costUsd: attempt.actualCostUsd,
     dispatchStatus:
-      attempt.providerRequestId === undefined ? 'ORPHANED' : 'CONFIRMED',
+      attempt.errorCode === 'DISPATCH_BLOCKED'
+        ? 'CALL_INTENT'
+        : attempt.providerRequestId === undefined
+          ? 'ORPHANED'
+          : 'CONFIRMED',
     errorCode: attempt.errorCode,
     generationId: attempt.providerRequestId,
     latencyMs: attempt.latencyMs,

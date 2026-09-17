@@ -252,6 +252,7 @@ describe('AiCorrectionPanel', () => {
       correction: {
         criteria: [
           {
+            confidence: 'MEDIUM',
             evidenceQuotes: ['Je relie le choix aux contraintes.'],
             evidenceStatus: 'FOUND',
             feedback: 'Le lien est documenté.',
@@ -263,6 +264,7 @@ describe('AiCorrectionPanel', () => {
           },
         ],
         id,
+        overallConfidence: 'MEDIUM',
         indicativeScore: null,
         overallFeedback: 'Poursuivez la justification.',
         status: 'COMPLETED',

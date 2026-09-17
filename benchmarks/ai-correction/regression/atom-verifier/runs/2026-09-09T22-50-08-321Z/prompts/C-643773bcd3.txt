@@ -1,0 +1,6 @@
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève énonce-t-il clairement une position ?
+Écriture pour la machine : une position est explicitement énoncée · dp.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… que les 61 de l’ancien outil, et l’absence d’incident garantit qu’il n’y aura pas de problème futur. La remise de 18 % rend toute autre option irrationnelle. ⟦Il n’existe donc plus d’incertitude utile à examiner : le mois supplémentaire sans engagement ne ferait que retarder une économie certaine et un niveau d’adoption déjà supérieur.⟧

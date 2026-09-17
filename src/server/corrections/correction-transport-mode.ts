@@ -2,6 +2,11 @@ import { AiProviderError } from '../ai/structured-provider.js';
 import { createRuntimeCorrectionTransport } from './correction-orchestration.js';
 import type { CorrectionTransportPort } from './correction-orchestration-contracts.js';
 import { createFakeCorrectionTransport } from './fake-correction-transport.js';
+import {
+  createRuntimeCorrectionChecker,
+  type CorrectionCheckerPort,
+  type RuntimeCheckerOptions,
+} from './correction-checker.js';
 
 export type CorrectionTransportMode = 'REAL' | 'FAKE';
 
@@ -37,6 +42,7 @@ export function resolveCorrectionTransportMode(
 export interface CorrectionTransportSelection {
   mode: CorrectionTransportMode;
   transport: CorrectionTransportPort;
+  createChecker(options: RuntimeCheckerOptions): CorrectionCheckerPort;
 }
 
 /**
@@ -54,6 +60,23 @@ export function selectCorrectionTransport(
   const mode = resolveCorrectionTransportMode(values);
   return {
     mode,
+    createChecker:
+      mode === 'FAKE'
+        ? () => ({
+            verify: async ({ questions }) => ({
+              costUsd: 0,
+              latencyMs: 0,
+              providerRoute: 'FAKE',
+              unavailableReason: null,
+              verdicts: Object.fromEntries(
+                questions.map(({ criterionKey }) => [
+                  criterionKey,
+                  'AGREED' as const,
+                ]),
+              ),
+            }),
+          })
+        : createRuntimeCorrectionChecker,
     transport:
       mode === 'FAKE'
         ? createFakeCorrectionTransport()

@@ -849,3 +849,43 @@ l'horizon. À se rappeler avant d'annoncer « il reste N avis ».
   Rayan = Rayan A` (grille du 2 septembre conservée, bonus sur Journey seul,
   #214 inchangée) ; V4.5-220 `Arbitrage Rayan = Rayan A` (formulation du
   +20 % figée). Les deux enregistrements relus.
+
+
+## 17 septembre 2026 — V4.5-210, reprise correction fiable
+
+- Autorisation : plan de reprise explicitement demandé par Rayan dans la tâche
+  Codex, incluant réconciliation du backlog/Airtable et description de PR #213.
+- Base `app8IaHD1sJtI83WT`, table `tblpSbdB7K4MioyJq`, record
+  `recrxcutJgVIE99EU`. Lecture, dry-run des huit champs ciblés, seconde lecture
+  inchangée avant write ; huit champs relus après write, égalité exacte vérifiée.
+- Titre prompt 2.3.0 remplacé par reprise correction fiable ; source canonique,
+  description, résumé, critères, branche et date de sync actualisés. Le journal
+  de blocage historique est intégralement conservé, avec ajout daté reprenant
+  septembre, les limites méthodologiques et les prérequis du pilote.
+- Statut `IN_PROGRESS`, owner `IA/Recherche` et reviewer
+  `Architecture/Produit (Head of AI)` préservés. Aucun DONE ajouté. Aucun autre
+  record modifié, aucune création/suppression, aucun changement de choix de
+  schéma ou d'autorisation de budget. Les sous-lots R1–R5 sont définis au backlog.
+- Le board dit explicitement : travail en validation locale, références Rayan
+  et 30 sources indépendantes nécessaires ; aucun appel payant/déploiement.
+- GitHub PR #213 : titre et description mis à jour à son SHA inchangé
+  `17b07a7367aacd8345c50ed6fe530cb886dc4a21`, périmètre 88 commits/341 fichiers,
+  CI rouge d'adjudication et portée réelle des résultats/spend précisées.
+  Aucun merge distant. Branche de reprise locale séparée.
+
+### 17 septembre 2026, 12:05 UTC — preuve d'implémentation et PR de reprise
+
+- Même record `recrxcutJgVIE99EU`, base `app8IaHD1sJtI83WT`, table
+  `tblpSbdB7K4MioyJq` ; autorisation inchangée du plan de reprise.
+- Lecture et dry-run, puis relecture identique avant mutation de quatre champs
+  seulement : Commit vide → `21b6ab4e4c1521abec6e3b3146b94b6ae438853d` ; PR vide
+  → `https://github.com/Guts6667/learnx/pull/222` ; QA vide → preuves locales
+  détaillées et limites de qualification ; date de sync
+  `2026-09-17T07:24:59.018Z` → `2026-09-17T12:05:19.672Z`.
+- Le SHA et la PR ont été vérifiés après le gate complet vert et le push chaîné.
+  QA rapporte 2 479 tests, 97 E2E/27 skips conditionnels, couverture critique
+  >90 %, les trois advisories moderate et les prérequis R4/R5. La CI est liée
+  à sa source dynamique dans la PR, jamais inventée à partir du résultat local.
+- Relecture : égalité exacte des quatre champs écrits ; statut `IN_PROGRESS`,
+  titre, branche et blocage historique inchangés. Aucun autre champ/record
+  écrit, aucun budget ni GO accordé. Owner et reviewer non modifiés.

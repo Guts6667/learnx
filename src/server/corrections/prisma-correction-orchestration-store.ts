@@ -180,6 +180,15 @@ export class PrismaCorrectionOrchestrationPorts {
           creditReservation: {
             select: { id: true, settledAmount: true, status: true },
           },
+          pricingQuote: {
+            select: {
+              id: true,
+              userId: true,
+              requestFingerprint: true,
+              estimatedCredits: true,
+              ceilingCredits: true,
+            },
+          },
         },
         where: {
           requestFingerprint: input.requestFingerprint,
@@ -212,12 +221,28 @@ export class PrismaCorrectionOrchestrationPorts {
         return { state: 'RECONCILIATION_REQUIRED' } as const;
       }
       const result: OrchestratedCorrectionResult = {
-        correction: withStoredConfidence(structured.correction),
+        correction: withStoredConfidence(
+          structured.correction,
+          correction.contractSnapshot,
+        ),
         settlement: structured.settlement,
         replay: true,
       };
       if (correction.creditReservation.status === 'RESERVED') {
+        const originalQuote = correction.pricingQuote;
+        if (
+          !originalQuote ||
+          originalQuote.userId !== input.userId ||
+          originalQuote.requestFingerprint !== input.requestFingerprint
+        )
+          return { state: 'RECONCILIATION_REQUIRED' } as const;
         return {
+          settlementQuote: {
+            quoteId: originalQuote.id,
+            requestFingerprint: originalQuote.requestFingerprint,
+            estimatedCredits: originalQuote.estimatedCredits,
+            maximumReservedCredits: originalQuote.ceilingCredits,
+          },
           reservationId: correction.creditReservation.id,
           result,
           state: 'READY_TO_SETTLE',

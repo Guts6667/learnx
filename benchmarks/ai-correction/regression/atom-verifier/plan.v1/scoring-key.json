@@ -1,0 +1,215 @@
+{
+  "pairs": [
+    {
+      "atomId": "cf.a3",
+      "damagedCardId": "C-b41bdb6098",
+      "originalCardId": "C-3a2fdb767e",
+      "pairId": "023ad8a58eb3623c",
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "ff.a3",
+      "damagedCardId": "C-6b33c1e066",
+      "originalCardId": "C-ca1ef61e53",
+      "pairId": "0d41424e5b2e78d2",
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a2",
+      "damagedCardId": "C-3138b8a152",
+      "originalCardId": "C-b83afbc8ff",
+      "pairId": "11c34eb000e5ad70",
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a3",
+      "damagedCardId": "C-23cb79db39",
+      "originalCardId": "C-10d03a23e2",
+      "pairId": "1b4765e3c4542304",
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "rl.a2",
+      "damagedCardId": "C-d00dec227b",
+      "originalCardId": "C-272f41aa34",
+      "pairId": "271d1c6130c5cc14",
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ac.a2",
+      "damagedCardId": "C-46c2f075a1",
+      "originalCardId": "C-20ae278814",
+      "pairId": "381042a84bfdeb6a",
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "cf.a1",
+      "damagedCardId": "C-302b9df321",
+      "originalCardId": "C-bb87d23759",
+      "pairId": "41e1cdefa03da5e4",
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "pe.a3",
+      "damagedCardId": "C-6db59abd7e",
+      "originalCardId": "C-d6444cb6e3",
+      "pairId": "50eacd8edb5dac8a",
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "damagedCardId": "C-03ff752bb0",
+      "originalCardId": "C-eecdd08b93",
+      "pairId": "536c3545804e363b",
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "dp.a3",
+      "damagedCardId": "C-5219f94743",
+      "originalCardId": "C-5773c296c7",
+      "pairId": "651113e54b8be912",
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "sfu.a1",
+      "damagedCardId": "C-636e218ca9",
+      "originalCardId": "C-5d8f0447b1",
+      "pairId": "690759fa14fcc104",
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sfu.a3",
+      "damagedCardId": "C-bda12db6d2",
+      "originalCardId": "C-858f89a8ff",
+      "pairId": "6eaba0b666564546",
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "ac.a3",
+      "damagedCardId": "C-1cff16763a",
+      "originalCardId": "C-e32060b658",
+      "pairId": "6f7a727eed826752",
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a3",
+      "damagedCardId": "C-47402cc097",
+      "originalCardId": "C-4b88718a20",
+      "pairId": "7881f88cc87c82ec",
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "pe.a2",
+      "damagedCardId": "C-d5dff02d07",
+      "originalCardId": "C-479e0a1393",
+      "pairId": "8c5568d09218d3f3",
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "cf.a2",
+      "damagedCardId": "C-ccc2405200",
+      "originalCardId": "C-94ea93741f",
+      "pairId": "94926acad5ec4953",
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rr.a1",
+      "damagedCardId": "C-888b279e11",
+      "originalCardId": "C-03c7a0d6cb",
+      "pairId": "965653f474fef49a",
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "dp.a1",
+      "damagedCardId": "C-643773bcd3",
+      "originalCardId": "C-4d3ebe4339",
+      "pairId": "a316678eff813bf0",
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "rr.a6",
+      "damagedCardId": "C-070decd3a2",
+      "originalCardId": "C-8aeb3c797d",
+      "pairId": "ac147a22b6bbbcf6",
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "rr.a3",
+      "damagedCardId": "C-b24221cac5",
+      "originalCardId": "C-753f693c0e",
+      "pairId": "acfdac8a5bb59f7e",
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "dp.a2",
+      "damagedCardId": "C-7a57652d93",
+      "originalCardId": "C-aef2458e05",
+      "pairId": "b38b67062120166b",
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "rl.a1",
+      "damagedCardId": "C-73a8c98c78",
+      "originalCardId": "C-7309c167f8",
+      "pairId": "b511c99c9075af19",
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "ac.a1",
+      "damagedCardId": "C-28c8a6d628",
+      "originalCardId": "C-e10e009b7f",
+      "pairId": "c6c4093c2176871b",
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ff.a4",
+      "damagedCardId": "C-27abbe4a11",
+      "originalCardId": "C-8272b59189",
+      "pairId": "d477c8fe7429db5f",
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a1",
+      "damagedCardId": "C-55f08a077c",
+      "originalCardId": "C-ef06893724",
+      "pairId": "d521d6003cc53151",
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a4",
+      "damagedCardId": "C-e707d9669d",
+      "originalCardId": "C-5a5b6cc636",
+      "pairId": "dd2757218eda899a",
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "sfu.a2",
+      "damagedCardId": "C-c8c0bafb00",
+      "originalCardId": "C-7591e7e2ed",
+      "pairId": "df8fad9cb825a3ca",
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "rl.a2",
+      "damagedCardId": "C-25ca3b32bc",
+      "originalCardId": "C-00b4a1c0a0",
+      "pairId": "ed1a2e5a77bb7e0c",
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ff.a2",
+      "damagedCardId": "C-de2289c819",
+      "originalCardId": "C-c2e812b133",
+      "pairId": "f01e7e88b3aed7cc",
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "damagedCardId": "C-02c2ddf742",
+      "originalCardId": "C-a0ade8b88e",
+      "pairId": "fa6124c14eedb0a8",
+      "stratum": "S4_multi_local"
+    }
+  ],
+  "schemaVersion": 1
+}

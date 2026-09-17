@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s3 | autre: - | raison: tous les chiffres et faits avancés servent à justifier le choix du contrat Préventel et l'inconnue associée.
+C-47402cc097 | OUI | phrases: s1 | autre: - | raison: les chiffres avancés appuient directement le choix de la réparation complète et l'analyse de l'incertitude.
+C-55f08a077c | OUI | phrases: - | autre: OUI | raison: l'affirmation reprend fidèlement les éléments du dossier concernant le support, l'effectif et l'objectif.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: l'affirmation intègre correctement les limites et incertitudes mentionnées dans le dossier.
+C-6f02478fc2 | OUI | phrases: s0,s1,s2,s3 | autre: - | raison: toutes les affirmations utiles reprennent fidèlement les faits et limites du dossier sans extrapolation.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase marquée exprime sans ambiguïté la recommandation et la position de l'élève.
+C-d5dff02d07 | NON | phrases: - | autre: - | raison: il manque la mention du rituel où traiter le risque, tel que demandé par la consigne.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase propose une action future et une condition de réexamen, ce qui ne constitue pas un risque exact et pertinent au regard du dossier.
+C-5a5b6cc636 | OUI | phrases: s1 | autre: - | raison: le chiffre et la subvention avancés soutiennent explicitement le choix et l'argumentation de l'élève.
+C-2d0f0c9620 | NON | phrases: s0 | autre: - | raison: la réponse omet le fait essentiel du dossier concernant l'absence de rapport signé validant le plafond de 6 W pour le mode lumineux.

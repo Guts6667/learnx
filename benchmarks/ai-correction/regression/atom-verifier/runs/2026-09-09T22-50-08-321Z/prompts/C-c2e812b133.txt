@@ -1,0 +1,7 @@
+Consigne : Choisis une des deux stratégies et indique ce qui reste incertain dans ton choix.
+Dossier : Après un dégât des eaux au bâtiment A, le conseil compare deux stratégies : réparer complètement cette année pour 12 600 euros, franchise de 1 200 euros, ou réparer partiellement maintenant à 5 400 euros puis complètement dans 2 ans, estimation alors de 14 800 euros, même franchise à chaque sinistre. Le budget travaux voté est de 15 000 euros pour l’année. Une subvention de 3 000 euros de la collectivité est acquise si les travaux démarrent avant le 31 décembre.
+Question : CHAQUE fait ou chiffre avancé est-il exact, d’après le dossier ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble est exacte · ff.a2 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+Je penche pour la réparation complète immédiate, sans la trancher. ⟦La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 9 600 euros nets, contre 20 200 euros au total pour la partielle.⟧ Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule …

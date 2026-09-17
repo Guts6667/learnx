@@ -30,7 +30,7 @@ import type {
   RegressionRate,
 } from './ai-correction-regression-metrics.js';
 
-export const REGRESSION_GATE_POLICY_VERSION = '6.1.0';
+export const REGRESSION_GATE_POLICY_VERSION = '7.0.0';
 
 /**
  * `BLOCKING` forbids promotion when red. `WATCHED` is reported and reviewed but
@@ -75,7 +75,7 @@ const regressionGateSchema = z
 const regressionGatePolicySchema = z
   .object({
     gates: z.array(regressionGateSchema).min(1),
-    policyVersion: z.literal(REGRESSION_GATE_POLICY_VERSION),
+    policyVersion: z.enum(['6.1.0', REGRESSION_GATE_POLICY_VERSION]),
     schemaVersion: z.literal(1),
     sourceOfAuthority: z.string().trim().min(1),
   })

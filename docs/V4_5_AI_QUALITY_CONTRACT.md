@@ -1,8 +1,8 @@
 # Contrat qualité V4.5 — correction assistée par IA
 
 - **Statut** : `ACTIVE_AUTHORITY` (V4.5-001 / ticket V4.5-100)
-- **Version** : 1.0.0
-- **Date** : 29 août 2026
+- **Version** : 1.1.0
+- **Date** : 17 septembre 2026 (amendement approuvé par le plan de reprise)
 - **Owner** : Architecture/Produit (Head of AI)
 - **Reviewer** : Rayan
 - **Portée** : exercices textuels libres et, après V4.5-130, remises
@@ -15,8 +15,10 @@
 La correction assistée LearnX est un **retour formatif assisté par IA**. Elle
 n'est pas une note, ne valide aucune maîtrise et n'écrit jamais dans la
 progression. Aucune validation humaine n'est revendiquée : LearnX est exploité
-sans relecteur humain dans la boucle de correction et sans étalons rédigés par
-des humains.
+sans relecteur humain dans la boucle de correction. Pour le pilote étroit
+V4.5-210, Rayan fournit les références absolues et le retest aveugle avant
+mesure. Cette référence propriétaire n'est pas une validation humaine
+indépendante.
 
 Principe directeur :
 
@@ -39,8 +41,8 @@ modèle n'est jamais une entrée.
 | `evidenceStatus = NO_RELEVANT_EVIDENCE` avec niveau plancher cohérent | `MEDIUM` |
 | Regex de contrainte dure détectée dans le feedback avec niveau > plancher | `LOW` |
 | Désaccord du vérificateur indépendant (V4.5-111) sur ce critère | `LOW` |
-| Vérificateur indisponible | plafond `MEDIUM` pour toute la correction |
-| Famille hors `scientificallyValidatedActivityTypeScope` | plafond `MEDIUM` |
+| Vérificateur indisponible | plafond `MEDIUM` pour chaque critère et la correction |
+| Famille hors `scientificallyValidatedActivityTypeScope` | plafond `MEDIUM` par critère et au global |
 | Niveau extrême (`mastered` ou plancher) avec citation vérifiée et accord vérificateur | `HIGH` |
 | Niveau intermédiaire avec citation vérifiée et accord vérificateur | `MEDIUM` |
 
@@ -52,7 +54,7 @@ Règles de restitution :
   niveau ni feedback prescriptif.
 - `overallConfidence` = minimum des critères livrés.
 - La table exacte est implémentée par une fonction pure testée
-  (`src/server/corrections/correction-confidence.ts`, V4.5-110). Toute
+  (`src/lib/ai-correction-confidence.ts`, V4.5-110). Toute
   modification de la table est une nouvelle version de ce contrat.
 
 ### 2.1 Doctrine de livraison — jamais de disparition silencieuse
@@ -127,14 +129,14 @@ pas une vérité. Les gates reposent sur des propriétés certaines :
 | Mutation — paraphrase sans changement de sens | niveaux à ≤ 1 pas | `unrelatedCriterionDrift` |
 | Mutation — mélange de paragraphes | niveaux inchangés | `unrelatedCriterionDrift` |
 | Stabilité — 3 répétitions | aucun critère ne bascule de ≥ 2 pas | `repetitionTwoStepFlips` |
-| Cross-modèle | à `HIGH`, accord primaire/vérificateur élevé ; part de `LOW` bornée | `checkerAgreementAtHigh`, `lowShare` |
+| Cross-modèle | probes faux-accord construits séparément ; accord à HIGH descriptif uniquement car circulaire | `checkerFalseAgreeDesigned`, `checkerAgreementAtHigh` (rapporté), `lowShare` |
 | Sécurité | aucune preuve inventée présentée, injection non suivie | `evidenceHallucinationRate`, `injectionSafetyRate`, `eventualUnusableRunRate` |
 
 Les mutants sont générés de façon déterministe à partir d'indices authorés
 (`mutationHints`) ; la paraphrase est générée par modèle puis mise en cache
 avec son empreinte.
 
-## 5. Gates de promotion (politique v3)
+## 5. Gates de promotion (historique v3, amendement v7 ci-dessous)
 
 Les seuils sont des **budgets entiers dimensionnés à l'échantillon** ; un seuil
 en pourcentage inférieur à `1/n` est interdit. Pour un run de référence
@@ -148,7 +150,7 @@ en pourcentage inférieur à `1/n` est interdit. Pour un run de référence
 | Violations de direction de mutation | bloquant | ≤ 2 % des mutants |
 | Bascules de deux pas entre répétitions à `HIGH` | bloquant | 0 |
 | Dérive de critères non liés | surveillé | ≤ 5 % |
-| Accord vérificateur à `HIGH` | bloquant | ≥ 90 % |
+| Accord vérificateur à `HIGH` | rapporté depuis v7 | aucun seuil, mesure circulaire |
 | Part de critères `LOW` | surveillé | ≤ 30 % |
 | Accord avec l'étalon `MODEL_AUTHORED` | rapporté | aucun seuil bloquant |
 | Coût P90 par correction | surveillé | dans la réserve tarifaire |
@@ -202,3 +204,44 @@ est plafonné par run et réconcilié.
 - présenter un accord entre deux modèles comme une validation ;
 - retuner un prompt, un seuil ou un étalon sur le run qui vient d'échouer ;
 - modifier ou supprimer un artefact historique de `benchmarks/ai-correction/`.
+
+
+## 10. Amendement de reprise du 17 septembre 2026
+
+Le plan `docs/AI_CORRECTION_RECOVERY.md` et le lot V4.5-210 définissent la
+reprise. Les politiques et résultats historiques restent inchangés ; la
+politique v7 exige les métriques de faux-accord construit séparément et
+arithmétique livrée/toutes tentatives. Le faux-accord est mesuré sur des probes
+liés au modèle, fournisseur, prompt, profil et identité du run courant. Une
+fixture synthétique prouve l'exécution de l'instrument, jamais la qualité du
+modèle. Un dénominateur insuffisant ou une métrique absente bloque la mesure.
+
+Pour l'arithmétique livrée, citer un calcul faux de l'apprenant pour le
+critiquer n'est pas une violation. Le gate bloque son **approbation** dans une
+preuve retenue d'un critère `mastered` affichable ; les critères LOW sont
+exclus de cet affichage. Le compteur toutes tentatives conserve les équations
+fausses parseables, y compris celles critiquées ou retirées, avec couverture
+explicite du parseur. Il ne prétend pas juger les calculs écrits en prose.
+
+La projection apprenant est unique pour nouveau résultat, legacy, historique
+et comparaison : LOW/missing confidence => niveau et score non affichables.
+Un résultat partiel ou LOW remplace le conseil global du modèle par une
+explication déterministe ; les sorties brutes restent internes pour audit.
+Les plafonds de famille et de disponibilité du checker s'appliquent aux labels
+critériels stockés et consommés par le monitoring, pas au seul minimum global.
+
+Le mode FAKE choisit primaire et checker ensemble. L'arrêt d'urgence est
+recontrôlé avant chaque nouveau dispatch, y compris devis déjà accepté,
+retry et checker. Les appels déjà envoyés gardent leur comptabilité ; la
+lecture et le règlement rejouable d'un résultat terminé restent disponibles.
+Un verdict mal formé conserve coût et request ID connus. Une valeur inconnue
+reste inconnue, jamais zéro. Les budgets réservent les appels en vol et
+bloquants non réconciliés sous verrou partagé entre worktrees.
+
+La qualification Writing étroite ajoute un holdout de 30 sources indépendantes
+et 60 mutations, trois répétitions pour chaque bras (preuves fournies et
+pipeline complet). Références absolues et retest de dix sources par Rayan
+avant sorties modèles. Zéro niveau affiché incorrect, au moins 70 % de
+critères utilisables, incertitudes comprises au dénominateur. Tous les autres
+gates de sécurité applicables restent requis. Aucun seuil ne change après
+inspection des résultats. Aucun effet sur maîtrise/progression.

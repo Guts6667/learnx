@@ -1,0 +1,1065 @@
+[
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-4a3c70a3d77de171",
+    "evidenceMatches": [
+      {
+        "criterionKey": "recommendation-clarity",
+        "matchType": "EXACT",
+        "requestedQuote": "Je recommande le pilote étendu de quatre semaines avec formation.",
+        "resolvedQuote": "Je recommande le pilote étendu de quatre semaines avec formation."
+      },
+      {
+        "criterionKey": "source-fact-use",
+        "matchType": "EXACT",
+        "requestedQuote": "Le premier test a réduit le délai médian de 18 à 13 heures",
+        "resolvedQuote": "Le premier test a réduit le délai médian de 18 à 13 heures"
+      },
+      {
+        "criterionKey": "source-fact-use",
+        "matchType": "EXACT",
+        "requestedQuote": "l’incident lié au manque de formation",
+        "resolvedQuote": "l’incident lié au manque de formation"
+      },
+      {
+        "criterionKey": "reasoning-coherence",
+        "matchType": "EXACT",
+        "requestedQuote": "Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.",
+        "resolvedQuote": "Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser."
+      }
+    ],
+    "latencyMs": 1097,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "benchmark-writing-contract",
+      "contractVersion": "1.1.0",
+      "criteria": [
+        {
+          "confidence": 0.98,
+          "evidenceQuotes": [
+            "Je recommande le pilote étendu de quatre semaines avec formation."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le choix est explicite, précis et répond directement à la consigne : l’apprenant recommande clairement le pilote étendu de quatre semaines avec formation.",
+          "levelKey": "mastered",
+          "criterionKey": "recommendation-clarity"
+        },
+        {
+          "confidence": 0.97,
+          "evidenceQuotes": [
+            "Le premier test a réduit le délai médian de 18 à 13 heures",
+            "l’incident lié au manque de formation"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les faits mobilisés sont exacts et attribuables au scénario : le délai médian est bien passé de 18 à 13 heures, et l’incident est correctement relié à l’absence de formation de deux agents.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fact-use"
+        },
+        {
+          "confidence": 0.96,
+          "evidenceQuotes": [
+            "Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le raisonnement relie clairement les faits au choix : le gain observé justifie l’intérêt de la méthode, tandis que l’incident justifie de sécuriser le déploiement par une formation avant généralisation.",
+          "levelKey": "mastered",
+          "criterionKey": "reasoning-coherence"
+        }
+      ],
+      "overallConfidence": 0.9715,
+      "overallFeedback": "La réponse est claire, exacte et bien justifiée. Le choix est explicite, les faits du scénario sont correctement repris, et le lien logique entre le gain observé, l’incident et la prudence recommandée est cohérent.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276840-zVmG71Ov8MMrZxHpHQs4",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"recommendation-clarity\":{\"confidence\":0.98,\"evidenceQuotes\":[\"Je recommande le pilote étendu de quatre semaines avec formation.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le choix est explicite, précis et répond directement à la consigne : l’apprenant recommande clairement le pilote étendu de quatre semaines avec formation.\",\"levelKey\":\"mastered\"},\"source-fact-use\":{\"confidence\":0.97,\"evidenceQuotes\":[\"Le premier test a réduit le délai médian de 18 à 13 heures\",\"l’incident lié au manque de formation\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les faits mobilisés sont exacts et attribuables au scénario : le délai médian est bien passé de 18 à 13 heures, et l’incident est correctement relié à l’absence de formation de deux agents.\",\"levelKey\":\"mastered\"},\"reasoning-coherence\":{\"confidence\":0.96,\"evidenceQuotes\":[\"Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le raisonnement relie clairement les faits au choix : le gain observé justifie l’intérêt de la méthode, tandis que l’incident justifie de sécuriser le déploiement par une formation avant généralisation.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"La réponse est claire, exacte et bien justifiée. Le choix est explicite, les faits du scénario sont correctement repris, et le lien logique entre le gain observé, l’incident et la prudence recommandée est cohérent.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.020709,
+      "costSource": "ACTUAL",
+      "inputTokens": 2528,
+      "reasoningTokens": 431,
+      "visibleOutputTokens": 444
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-c75d267ca5b88281",
+    "evidenceMatches": [
+      {
+        "criterionKey": "recommendation-clarity",
+        "matchType": "EXACT",
+        "requestedQuote": "Je penche un peu pour tester encore, sans être certain que ce soit le meilleur choix.",
+        "resolvedQuote": "Je penche un peu pour tester encore, sans être certain que ce soit le meilleur choix."
+      },
+      {
+        "criterionKey": "source-fact-use",
+        "matchType": "EXACT",
+        "requestedQuote": "Le passage de 18 à 13 heures",
+        "resolvedQuote": "Le passage de 18 à 13 heures"
+      },
+      {
+        "criterionKey": "source-fact-use",
+        "matchType": "EXACT",
+        "requestedQuote": "l’incident de formation",
+        "resolvedQuote": "l’incident de formation"
+      },
+      {
+        "criterionKey": "reasoning-coherence",
+        "matchType": "EXACT",
+        "requestedQuote": "Le passage de 18 à 13 heures pousse vers un déploiement, mais l’incident de formation pousse vers un autre pilote.",
+        "resolvedQuote": "Le passage de 18 à 13 heures pousse vers un déploiement, mais l’incident de formation pousse vers un autre pilote."
+      }
+    ],
+    "latencyMs": 3376,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "benchmark-writing-contract",
+      "contractVersion": "1.1.0",
+      "criteria": [
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "Je penche un peu pour tester encore, sans être certain que ce soit le meilleur choix."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Une orientation vers le pilote étendu est perceptible (« tester encore »), mais elle reste hésitante et équivoque (« un peu », « sans être certain »). Formule un choix net, par exemple : « Je recommande le pilote étendu de quatre semaines avec formation. »",
+          "levelKey": "partial",
+          "criterionKey": "recommendation-clarity"
+        },
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "Le passage de 18 à 13 heures",
+            "l’incident de formation"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les deux faits clés du scénario (délai médian passé de 18 à 13 heures ; incident lié à l’absence de formation) sont repris exactement, bien que l’incident soit évoqué sans précision sur les deux agents non formés.",
+          "levelKey": "mastered",
+          "criterionKey": "source-fact-use"
+        },
+        {
+          "confidence": 0.85,
+          "evidenceQuotes": [
+            "Le passage de 18 à 13 heures pousse vers un déploiement, mais l’incident de formation pousse vers un autre pilote."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le raisonnement oppose correctement les deux arguments, mais il n’explique pas pourquoi l’argument formation l’emporte sur le gain de délai : le lien entre les faits et l’orientation finale reste implicite. Explicite la balance, par exemple : le gain observé reste à confirmer et l’incident montre un risque que la formation du pilote étendu permet de réduire.",
+          "levelKey": "partial",
+          "criterionKey": "reasoning-coherence"
+        }
+      ],
+      "overallConfidence": 0.8875,
+      "overallFeedback": "Tu mobilises correctement les faits du scénario (18 → 13 heures, incident de formation), ce qui est solide. Pour progresser : 1) tranche clairement en faveur du pilote étendu au lieu de « pencher un peu » ; 2) explique pourquoi le risque révélé par l’incident justifie de prolonger le test avec formation malgré le gain de délai déjà observé.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276859-s5yXvCexKg76vojECTW7",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"recommendation-clarity\":{\"confidence\":0.9,\"evidenceQuotes\":[\"Je penche un peu pour tester encore, sans être certain que ce soit le meilleur choix.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Une orientation vers le pilote étendu est perceptible (« tester encore »), mais elle reste hésitante et équivoque (« un peu », « sans être certain »). Formule un choix net, par exemple : « Je recommande le pilote étendu de quatre semaines avec formation. »\",\"levelKey\":\"partial\"},\"source-fact-use\":{\"confidence\":0.9,\"evidenceQuotes\":[\"Le passage de 18 à 13 heures\",\"l’incident de formation\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les deux faits clés du scénario (délai médian passé de 18 à 13 heures ; incident lié à l’absence de formation) sont repris exactement, bien que l’incident soit évoqué sans précision sur les deux agents non formés.\",\"levelKey\":\"mastered\"},\"reasoning-coherence\":{\"confidence\":0.85,\"evidenceQuotes\":[\"Le passage de 18 à 13 heures pousse vers un déploiement, mais l’incident de formation pousse vers un autre pilote.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le raisonnement oppose correctement les deux arguments, mais il n’explique pas pourquoi l’argument formation l’emporte sur le gain de délai : le lien entre les faits et l’orientation finale reste implicite. Explicite la balance, par exemple : le gain observé reste à confirmer et l’incident montre un risque que la formation du pilote étendu permet de réduire.\",\"levelKey\":\"partial\"}},\"overallFeedback\":\"Tu mobilises correctement les faits du scénario (18 → 13 heures, incident de formation), ce qui est solide. Pour progresser : 1) tranche clairement en faveur du pilote étendu au lieu de « pencher un peu » ; 2) explique pourquoi le risque révélé par l’incident justifie de prolonger le test avec formation malgré le gain de délai déjà observé.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.03456,
+      "costSource": "ACTUAL",
+      "inputTokens": 2515,
+      "reasoningTokens": 511,
+      "visibleOutputTokens": 522
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-4341e6bdb0381c2f",
+    "evidenceMatches": [
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "Je penche pour le remplacement",
+        "resolvedQuote": "Je penche pour le remplacement"
+      },
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "Au final, je garde pourtant la réparation et le remplacement ouverts, sans définir quelle information ferait réellement basculer la décision de l’un vers l’autre.",
+        "resolvedQuote": "Au final, je garde pourtant la réparation et le remplacement ouverts, sans définir quelle information ferait réellement basculer la décision de l’un vers l’autre."
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "le matériel a déjà cinq ans et qu’il est tombé deux fois en panne cette année",
+        "resolvedQuote": "le matériel a déjà cinq ans et qu’il est tombé deux fois en panne cette année"
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "Le nouveau scanner coûte 2 700 euros, ce qui tient encore dans les 3 000 euros disponibles",
+        "resolvedQuote": "Le nouveau scanner coûte 2 700 euros, ce qui tient encore dans les 3 000 euros disponibles"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "je n’ai pas assez d’éléments pour savoir si les deux pannes viennent du même défaut ; cela rend le risque de récidive difficile à estimer.",
+        "resolvedQuote": "je n’ai pas assez d’éléments pour savoir si les deux pannes viennent du même défaut ; cela rend le risque de récidive difficile à estimer."
+      }
+    ],
+    "latencyMs": 889,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout-writing-decision-note",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Je penche pour le remplacement",
+            "Au final, je garde pourtant la réparation et le remplacement ouverts, sans définir quelle information ferait réellement basculer la décision de l’un vers l’autre."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Une orientation vers le remplacement est perceptible, mais la conclusion maintient explicitement les deux options ouvertes sans condition opérationnelle : la position reste équivoque.",
+          "levelKey": "partial",
+          "criterionKey": "decision-position"
+        },
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "le matériel a déjà cinq ans et qu’il est tombé deux fois en panne cette année",
+            "Le nouveau scanner coûte 2 700 euros, ce qui tient encore dans les 3 000 euros disponibles"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Plusieurs faits du dossier sont cités exactement (âge de cinq ans, deux pannes, coût de 2 700 euros, budget de 3 000 euros) et soutiennent l’orientation. En revanche, la garantie de trois ans du remplacement, élément décisif de l’arbitrage, n’est jamais mobilisée, ce qui laisse l’appui incomplet.",
+          "levelKey": "partial",
+          "criterionKey": "evidence-selection"
+        },
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "je n’ai pas assez d’éléments pour savoir si les deux pannes viennent du même défaut ; cela rend le risque de récidive difficile à estimer."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L’incertitude déterminante du scénario (cause commune ou non des deux pannes) est nommée et sa conséquence (risque de récidive difficile à estimer) est correctement délimitée, sans empêcher l’orientation exprimée.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-bounds"
+        }
+      ],
+      "overallConfidence": 0.9175,
+      "overallFeedback": "La production identifie correctement l’incertitude clé du dossier et cite plusieurs faits exacts, mais elle ne tranche pas : elle penche pour le remplacement puis maintient les deux options ouvertes sans condition de bascule. Pour progresser, il faudrait conclure nettement (par exemple : remplacement, sauf si le diagnostic montre une cause unique et réparable) et mobiliser la garantie de trois ans, argument décisif en faveur du remplacement face à une réparation garantie seulement six mois.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276877-SMIGFj08YCSkfwA3xtzH",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"decision-position\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Je penche pour le remplacement\",\"Au final, je garde pourtant la réparation et le remplacement ouverts, sans définir quelle information ferait réellement basculer la décision de l’un vers l’autre.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Une orientation vers le remplacement est perceptible, mais la conclusion maintient explicitement les deux options ouvertes sans condition opérationnelle : la position reste équivoque.\",\"levelKey\":\"partial\"},\"evidence-selection\":{\"confidence\":0.9,\"evidenceQuotes\":[\"le matériel a déjà cinq ans et qu’il est tombé deux fois en panne cette année\",\"Le nouveau scanner coûte 2 700 euros, ce qui tient encore dans les 3 000 euros disponibles\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Plusieurs faits du dossier sont cités exactement (âge de cinq ans, deux pannes, coût de 2 700 euros, budget de 3 000 euros) et soutiennent l’orientation. En revanche, la garantie de trois ans du remplacement, élément décisif de l’arbitrage, n’est jamais mobilisée, ce qui laisse l’appui incomplet.\",\"levelKey\":\"partial\"},\"uncertainty-bounds\":{\"confidence\":0.9,\"evidenceQuotes\":[\"je n’ai pas assez d’éléments pour savoir si les deux pannes viennent du même défaut ; cela rend le risque de récidive difficile à estimer.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L’incertitude déterminante du scénario (cause commune ou non des deux pannes) est nommée et sa conséquence (risque de récidive difficile à estimer) est correctement délimitée, sans empêcher l’orientation exprimée.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"La production identifie correctement l’incertitude clé du dossier et cite plusieurs faits exacts, mais elle ne tranche pas : elle penche pour le remplacement puis maintient les deux options ouvertes sans condition de bascule. Pour progresser, il faudrait conclure nettement (par exemple : remplacement, sauf si le diagnostic montre une cause unique et réparable) et mobiliser la garantie de trois ans, argument décisif en faveur du remplacement face à une réparation garantie seulement six mois.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.0387675,
+      "costSource": "ACTUAL",
+      "inputTokens": 2820,
+      "reasoningTokens": 573,
+      "visibleOutputTokens": 586
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-1388ee2d2b088374",
+    "evidenceMatches": [
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "Je recommande de signer immédiatement pour un an.",
+        "resolvedQuote": "Je recommande de signer immédiatement pour un an."
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois",
+        "resolvedQuote": "Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois"
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "TYPOGRAPHIC_EQUIVALENT",
+        "requestedQuote": "l'absence d'incident garantit qu'il n'y aura pas de problème futur",
+        "resolvedQuote": "l’absence d’incident garantit qu’il n’y aura pas de problème futur"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "TYPOGRAPHIC_EQUIVALENT",
+        "requestedQuote": "l'absence d'incident garantit qu'il n'y aura pas de problème futur",
+        "resolvedQuote": "l’absence d’incident garantit qu’il n’y aura pas de problème futur"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "TYPOGRAPHIC_EQUIVALENT",
+        "requestedQuote": "Il n'existe donc plus d'incertitude utile à examiner",
+        "resolvedQuote": "Il n’existe donc plus d’incertitude utile à examiner"
+      }
+    ],
+    "latencyMs": 2330,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout-writing-decision-note",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Je recommande de signer immédiatement pour un an."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La position est explicite et directement exploitable : l'engagement annuel est choisi sans ambiguïté. Ce critère ne juge que la netteté de la décision, qui est ici maîtrisée, indépendamment de la qualité des faits invoqués.",
+          "levelKey": "mastered",
+          "criterionKey": "decision-position"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois",
+            "l’absence d’incident garantit qu’il n’y aura pas de problème futur"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les preuves sont déformées : 80 bénévoles ont été invités, mais seuls 52 se sont connectés et 41 ont finalisé une réservation ; affirmer que 80 l'utilisent chaque mois contredit le dossier. Les chiffres décisifs (52 connexions, 41 finalisations, comparaison exacte avec les 61 de l'ancien outil) sont absents, et l'absence d'incident observé est transformée en garantie future.",
+          "levelKey": "insufficient",
+          "criterionKey": "evidence-selection"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "l’absence d’incident garantit qu’il n’y aura pas de problème futur",
+            "Il n’existe donc plus d’incertitude utile à examiner"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La réponse affirme bien plus que les données ne permettent : un pilote sans incident ne garantit pas l'absence de problèmes futurs, et nier toute incertitude revient à ignorer les limites déterminantes du scénario (taux de finalisation de 41/80, durée d'observation limitée, comparaison défavorable avec les 61 utilisateurs de l'ancien outil). Aucune limite n'est reconnue.",
+          "levelKey": "insufficient",
+          "criterionKey": "uncertainty-bounds"
+        }
+      ],
+      "overallConfidence": 0.95,
+      "overallFeedback": "Votre recommandation est claire et tranchée, ce qui est un point fort pour la position décisionnelle. En revanche, elle repose sur des faits déformés : 80 bénévoles ont été invités, mais seulement 52 se sont connectés et 41 ont finalisé une réservation, ce qui est inférieur aux 61 utilisateurs mensuels de l'ancien outil. Dire que le pilote « prouve » une adoption supérieure et que l'absence d'incident « garantit » l'avenir dépasse ce que les données permettent de conclure. Pour progresser : utilisez les chiffres exacts du dossier (52 connexions, 41 finalisations), comparez-les honnêtement aux 61 de l'ancien outil, et nommez au moins une limite concrète (par exemple la durée courte du test ou le taux de finalisation) avec la précaution qu'elle justifie, sans pour autant renoncer à décider.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276888-9E2GaBXiqWr83WWMzyh1",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"decision-position\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Je recommande de signer immédiatement pour un an.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La position est explicite et directement exploitable : l'engagement annuel est choisi sans ambiguïté. Ce critère ne juge que la netteté de la décision, qui est ici maîtrisée, indépendamment de la qualité des faits invoqués.\",\"levelKey\":\"mastered\"},\"evidence-selection\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Le pilote prouve que 80 bénévoles utilisent déjà le nouveau logiciel chaque mois\",\"l'absence d'incident garantit qu'il n'y aura pas de problème futur\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les preuves sont déformées : 80 bénévoles ont été invités, mais seuls 52 se sont connectés et 41 ont finalisé une réservation ; affirmer que 80 l'utilisent chaque mois contredit le dossier. Les chiffres décisifs (52 connexions, 41 finalisations, comparaison exacte avec les 61 de l'ancien outil) sont absents, et l'absence d'incident observé est transformée en garantie future.\",\"levelKey\":\"insufficient\"},\"uncertainty-bounds\":{\"confidence\":0.95,\"evidenceQuotes\":[\"l'absence d'incident garantit qu'il n'y aura pas de problème futur\",\"Il n'existe donc plus d'incertitude utile à examiner\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La réponse affirme bien plus que les données ne permettent : un pilote sans incident ne garantit pas l'absence de problèmes futurs, et nier toute incertitude revient à ignorer les limites déterminantes du scénario (taux de finalisation de 41/80, durée d'observation limitée, comparaison défavorable avec les 61 utilisateurs de l'ancien outil). Aucune limite n'est reconnue.\",\"levelKey\":\"insufficient\"}},\"overallFeedback\":\"Votre recommandation est claire et tranchée, ce qui est un point fort pour la position décisionnelle. En revanche, elle repose sur des faits déformés : 80 bénévoles ont été invités, mais seulement 52 se sont connectés et 41 ont finalisé une réservation, ce qui est inférieur aux 61 utilisateurs mensuels de l'ancien outil. Dire que le pilote « prouve » une adoption supérieure et que l'absence d'incident « garantit » l'avenir dépasse ce que les données permettent de conclure. Pour progresser : utilisez les chiffres exacts du dossier (52 connexions, 41 finalisations), comparez-les honnêtement aux 61 de l'ancien outil, et nommez au moins une limite concrète (par exemple la durée courte du test ou le taux de finalisation) avec la précaution qu'elle justifie, sans pour autant renoncer à décider.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.030366,
+      "costSource": "ACTUAL",
+      "inputTokens": 2803,
+      "reasoningTokens": 40,
+      "visibleOutputTokens": 749
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-0009843d9a164f27",
+    "evidenceMatches": [
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "Je prolongerais le test pendant un mois",
+        "resolvedQuote": "Je prolongerais le test pendant un mois"
+      },
+      {
+        "criterionKey": "decision-position",
+        "matchType": "EXACT",
+        "requestedQuote": "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable.",
+        "resolvedQuote": "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable."
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite",
+        "resolvedQuote": "19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite"
+      },
+      {
+        "criterionKey": "evidence-selection",
+        "matchType": "EXACT",
+        "requestedQuote": "Le problème du dernier train doit aussi être observé précisément.",
+        "resolvedQuote": "Le problème du dernier train doit aussi être observé précisément."
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis",
+        "resolvedQuote": "ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis"
+      },
+      {
+        "criterionKey": "uncertainty-bounds",
+        "matchType": "EXACT",
+        "requestedQuote": "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service",
+        "resolvedQuote": "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service"
+      }
+    ],
+    "latencyMs": 4051,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout-writing-decision-note",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Je prolongerais le test pendant un mois",
+            "si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La décision est explicite et directement exploitable : prolonger le test pendant un mois, avec une condition observable (persistance des retards de correspondance) pour la suite.",
+          "levelKey": "mastered",
+          "criterionKey": "decision-position"
+        },
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite",
+            "Le problème du dernier train doit aussi être observé précisément."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Deux faits décisifs du dossier sont cités avec exactitude (19 usagers réguliers, 17 réponses favorables sur 22) et le problème du dernier train est également pris en compte, sans déformation.",
+          "levelKey": "mastered",
+          "criterionKey": "evidence-selection"
+        },
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis",
+            "Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L’incertitude est nommée et correctement bornée : l’échantillon de 22 réponses ne permet pas de généraliser, et la portée de la conclusion est explicitement limitée à la poursuite du test.",
+          "levelKey": "mastered",
+          "criterionKey": "uncertainty-bounds"
+        }
+      ],
+      "overallConfidence": 0.9175,
+      "overallFeedback": "Excellente réponse : la décision de prolonger le test est claire et conditionnée de façon opérationnelle, les faits du dossier sont utilisés avec exactitude, et la portée de la conclusion est correctement délimitée (pas de généralisation à l’ensemble des salariés, pas de pérennisation). Pour aller plus loin, tu aurais pu préciser comment observer concrètement le problème du dernier train (par exemple en relevant les horaires d’arrivée chaque soir).",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276899-Tm2fm1Khzl3sWGXaPjxZ",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"decision-position\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Je prolongerais le test pendant un mois\",\"si les retards de correspondance persistent, l’itinéraire ou l’horaire devra être revu avant toute décision durable.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La décision est explicite et directement exploitable : prolonger le test pendant un mois, avec une condition observable (persistance des retards de correspondance) pour la suite.\",\"levelKey\":\"mastered\"},\"evidence-selection\":{\"confidence\":0.9,\"evidenceQuotes\":[\"19 personnes sont revenues au moins trois fois et 17 des 22 répondants souhaitent une poursuite\",\"Le problème du dernier train doit aussi être observé précisément.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Deux faits décisifs du dossier sont cités avec exactitude (19 usagers réguliers, 17 réponses favorables sur 22) et le problème du dernier train est également pris en compte, sans déformation.\",\"levelKey\":\"mastered\"},\"uncertainty-bounds\":{\"confidence\":0.9,\"evidenceQuotes\":[\"ils ne suffisent pas à conclure que la navette convient à l’ensemble des salariés : seuls 22 questionnaires ont été remplis\",\"Ma décision porte donc sur la collecte de données supplémentaires, pas sur la pérennisation du service\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L’incertitude est nommée et correctement bornée : l’échantillon de 22 réponses ne permet pas de généraliser, et la portée de la conclusion est explicitement limitée à la poursuite du test.\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Excellente réponse : la décision de prolonger le test est claire et conditionnée de façon opérationnelle, les faits du dossier sont utilisés avec exactitude, et la portée de la conclusion est correctement délimitée (pas de généralisation à l’ensemble des salariés, pas de pérennisation). Pour aller plus loin, tu aurais pu préciser comment observer concrètement le problème du dernier train (par exemple en relevant les horaires d’arrivée chaque soir).\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.02469285,
+      "costSource": "ACTUAL",
+      "inputTokens": 2814,
+      "reasoningTokens": 514,
+      "visibleOutputTokens": 527
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-921920f2d54b8965",
+    "evidenceMatches": [
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.",
+        "resolvedQuote": "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4."
+      },
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.",
+        "resolvedQuote": "La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre."
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure",
+        "resolvedQuote": "Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée",
+        "resolvedQuote": "l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée"
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "matchType": "EXACT",
+        "requestedQuote": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+        "resolvedQuote": "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées."
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "matchType": "EXACT",
+        "requestedQuote": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.",
+        "resolvedQuote": "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+      }
+    ],
+    "latencyMs": 890,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout2-writing-technical-arbitration",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.98,
+          "evidenceQuotes": [
+            "Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.",
+            "La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le choix est explicite (Préventel), appliqué au bon périmètre (ligne 4, 2026) et directement actionnable, avec une date de mise en œuvre précise (arrêt technique du 14 octobre).",
+          "levelKey": "mastered",
+          "criterionKey": "arbitration-choice"
+        },
+        {
+          "confidence": 0.97,
+          "evidenceQuotes": [
+            "Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure",
+            "l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les données sont exactes et vérifiées : 31 h × 900 € = 27 900 €, et 21 000 € − 15 500 € = 5 500 €. Plusieurs données chiffrées du dossier sont mobilisées à leur valeur exacte et soutiennent le choix.",
+          "levelKey": "mastered",
+          "criterionKey": "fact-fidelity"
+        },
+        {
+          "confidence": 0.97,
+          "evidenceQuotes": [
+            "L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.",
+            "Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le risque résiduel (cause des pannes inconnue, efficacité préventive non garantie) est nommé avec exactitude et couvert par une précaution proportionnée et mesurable : documentation des causes et condition de réexamen chiffrée (baisse d’au moins deux arrêts).",
+          "levelKey": "mastered",
+          "criterionKey": "residual-risk-surfacing"
+        }
+      ],
+      "overallConfidence": 0.9734999999999999,
+      "overallFeedback": "Excellente note : le choix de Préventel est explicite, daté et appliqué à la ligne 4 ; les calculs (27 900 € de pertes, écart de 5 500 €) sont exacts et appuient la recommandation ; l’inconnue majeure (cause des pannes) est clairement identifiée et assortie d’une précaution opérationnelle mesurable. Les trois critères sont maîtrisés.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276914-jDikCBZvwV2JyVv2jOCt",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"arbitration-choice\":{\"confidence\":0.98,\"evidenceQuotes\":[\"Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.\",\"La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le choix est explicite (Préventel), appliqué au bon périmètre (ligne 4, 2026) et directement actionnable, avec une date de mise en œuvre précise (arrêt technique du 14 octobre).\",\"levelKey\":\"mastered\"},\"fact-fidelity\":{\"confidence\":0.97,\"evidenceQuotes\":[\"Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure\",\"l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les données sont exactes et vérifiées : 31 h × 900 € = 27 900 €, et 21 000 € − 15 500 € = 5 500 €. Plusieurs données chiffrées du dossier sont mobilisées à leur valeur exacte et soutiennent le choix.\",\"levelKey\":\"mastered\"},\"residual-risk-surfacing\":{\"confidence\":0.97,\"evidenceQuotes\":[\"L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.\",\"Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le risque résiduel (cause des pannes inconnue, efficacité préventive non garantie) est nommé avec exactitude et couvert par une précaution proportionnée et mesurable : documentation des causes et condition de réexamen chiffrée (baisse d’au moins deux arrêts).\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Excellente note : le choix de Préventel est explicite, daté et appliqué à la ligne 4 ; les calculs (27 900 € de pertes, écart de 5 500 €) sont exacts et appuient la recommandation ; l’inconnue majeure (cause des pannes) est clairement identifiée et assortie d’une précaution opérationnelle mesurable. Les trois critères sont maîtrisés.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.0293535,
+      "costSource": "ACTUAL",
+      "inputTokens": 3058,
+      "reasoningTokens": 31,
+      "visibleOutputTokens": 662
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-312fd5d1e8093f03",
+    "evidenceMatches": [
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "Je reste partagé entre la revente limitée et le statu quo.",
+        "resolvedQuote": "Je reste partagé entre la revente limitée et le statu quo."
+      },
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "mais je ne tranche pas",
+        "resolvedQuote": "mais je ne tranche pas"
+      },
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "Sans cet ordre de grandeur, aucune des deux options ne peut être écartée proprement.",
+        "resolvedQuote": "Sans cet ordre de grandeur, aucune des deux options ne peut être écartée proprement."
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "protège les 23 000 euros liés aux commandes en cours",
+        "resolvedQuote": "protège les 23 000 euros liés aux commandes en cours"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "récupérant une partie des 18 000 euros possibles",
+        "resolvedQuote": "récupérant une partie des 18 000 euros possibles"
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "matchType": "EXACT",
+        "requestedQuote": "le dossier ne chiffre pas le rachat en urgence d’une pièce revendue si une panne survenait avant la nouvelle livraison",
+        "resolvedQuote": "le dossier ne chiffre pas le rachat en urgence d’une pièce revendue si une panne survenait avant la nouvelle livraison"
+      }
+    ],
+    "latencyMs": 1417,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout2-writing-technical-arbitration",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Je reste partagé entre la revente limitée et le statu quo.",
+            "mais je ne tranche pas",
+            "Sans cet ordre de grandeur, aucune des deux options ne peut être écartée proprement."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La production refuse explicitement de trancher alors que la consigne exige un choix avant vendredi. Aucune option n'est retenue et aucune condition de bascule mesurable et datée n'est proposée (par exemple : « si le coût de rachat d'urgence dépasse X, je choisis le statu quo, sinon la revente limitée »). La recommandation n'est donc pas exploitable.",
+          "levelKey": "insufficient",
+          "criterionKey": "arbitration-choice"
+        },
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "protège les 23 000 euros liés aux commandes en cours",
+            "récupérant une partie des 18 000 euros possibles"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Deux données chiffrées du dossier sont mobilisées à leur valeur exacte et dans le bon sens : 23 000 euros pour les pièces liées aux commandes en cours et 18 000 euros pour la revente des pièces sans commande. Nuance : « récupérer une partie des 18 000 euros » est légèrement imprécis, car la revente limitée rapporterait précisément les 18 000 euros, pas une partie. L'appui reste néanmoins fidèle sur les deux valeurs décisives.",
+          "levelKey": "mastered",
+          "criterionKey": "fact-fidelity"
+        },
+        {
+          "confidence": 0.85,
+          "evidenceQuotes": [
+            "le dossier ne chiffre pas le rachat en urgence d’une pièce revendue si une panne survenait avant la nouvelle livraison"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L'incertitude est nommée avec exactitude et reliée au dossier (coût de rachat en urgence d'une pièce revendue en cas de panne). En revanche, aucune précaution proportionnée n'en est tirée : pas de suivi, pas d'inspection, pas de clause de réversibilité, pas de condition de bascule chiffrée. Le risque sert à justifier l'absence de décision plutôt qu'à borner un choix.",
+          "levelKey": "partial",
+          "criterionKey": "residual-risk-surfacing"
+        }
+      ],
+      "overallConfidence": 0.9025,
+      "overallFeedback": "Points forts : les données chiffrées du dossier (23 000 € et 18 000 €) sont citées exactement, et l'incertitude sur le coût de rachat en urgence est pertinente et bien formulée. Point de progression principal : la consigne demandait un choix, et la production déclare explicitement ne pas trancher. Pour progresser, transforme l'incertitude identifiée en règle de décision : par exemple, retenir la revente limitée sous condition observable (obtenir avant vendredi un devis de rachat d'urgence inférieur à un seuil fixé), ou choisir le statu quo en nommant la précaution associée. Un risque bien identifié doit déboucher sur une conséquence opérationnelle, pas sur une suspension du choix.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276920-m8esDMZnxzJDPRJe3gJR",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"arbitration-choice\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Je reste partagé entre la revente limitée et le statu quo.\",\"mais je ne tranche pas\",\"Sans cet ordre de grandeur, aucune des deux options ne peut être écartée proprement.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La production refuse explicitement de trancher alors que la consigne exige un choix avant vendredi. Aucune option n'est retenue et aucune condition de bascule mesurable et datée n'est proposée (par exemple : « si le coût de rachat d'urgence dépasse X, je choisis le statu quo, sinon la revente limitée »). La recommandation n'est donc pas exploitable.\",\"levelKey\":\"insufficient\"},\"fact-fidelity\":{\"confidence\":0.9,\"evidenceQuotes\":[\"protège les 23 000 euros liés aux commandes en cours\",\"récupérant une partie des 18 000 euros possibles\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Deux données chiffrées du dossier sont mobilisées à leur valeur exacte et dans le bon sens : 23 000 euros pour les pièces liées aux commandes en cours et 18 000 euros pour la revente des pièces sans commande. Nuance : « récupérer une partie des 18 000 euros » est légèrement imprécis, car la revente limitée rapporterait précisément les 18 000 euros, pas une partie. L'appui reste néanmoins fidèle sur les deux valeurs décisives.\",\"levelKey\":\"mastered\"},\"residual-risk-surfacing\":{\"confidence\":0.85,\"evidenceQuotes\":[\"le dossier ne chiffre pas le rachat en urgence d’une pièce revendue si une panne survenait avant la nouvelle livraison\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L'incertitude est nommée avec exactitude et reliée au dossier (coût de rachat en urgence d'une pièce revendue en cas de panne). En revanche, aucune précaution proportionnée n'en est tirée : pas de suivi, pas d'inspection, pas de clause de réversibilité, pas de condition de bascule chiffrée. Le risque sert à justifier l'absence de décision plutôt qu'à borner un choix.\",\"levelKey\":\"partial\"}},\"overallFeedback\":\"Points forts : les données chiffrées du dossier (23 000 € et 18 000 €) sont citées exactement, et l'incertitude sur le coût de rachat en urgence est pertinente et bien formulée. Point de progression principal : la consigne demandait un choix, et la production déclare explicitement ne pas trancher. Pour progresser, transforme l'incertitude identifiée en règle de décision : par exemple, retenir la revente limitée sous condition observable (obtenir avant vendredi un devis de rachat d'urgence inférieur à un seuil fixé), ou choisir le statu quo en nommant la précaution associée. Un risque bien identifié doit déboucher sur une conséquence opérationnelle, pas sur une suspension du choix.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.032121,
+      "costSource": "ACTUAL",
+      "inputTokens": 2898,
+      "reasoningTokens": 67,
+      "visibleOutputTokens": 781
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-db636ed5c4e6bd98",
+    "evidenceMatches": [
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "La pompe B doit être remplacée en priorité.",
+        "resolvedQuote": "La pompe B doit être remplacée en priorité."
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Son coût énergétique annuel s’élève à 5 016 euros, soit 38 kW sur 1 200 heures à 0,11 euro le kWh, largement au-dessus des 4 004 euros de la pompe A",
+        "resolvedQuote": "Son coût énergétique annuel s’élève à 5 016 euros, soit 38 kW sur 1 200 heures à 0,11 euro le kWh, largement au-dessus des 4 004 euros de la pompe A"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "sa maintenance de 4 000 euros par an double presque celle de la pompe A, ramenée à 2 600 euros",
+        "resolvedQuote": "sa maintenance de 4 000 euros par an double presque celle de la pompe A, ramenée à 2 600 euros"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "ce relevé provient d’un capteur fiable et étalonné",
+        "resolvedQuote": "ce relevé provient d’un capteur fiable et étalonné"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "deux jours d’immobilisation suffisent",
+        "resolvedQuote": "deux jours d’immobilisation suffisent"
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "matchType": "EXACT",
+        "requestedQuote": "Aucune inconnue ne subsiste dans ce dossier : la priorité de remplacement est certaine et peut être annoncée telle quelle à la direction.",
+        "resolvedQuote": "Aucune inconnue ne subsiste dans ce dossier : la priorité de remplacement est certaine et peut être annoncée telle quelle à la direction."
+      }
+    ],
+    "latencyMs": 1612,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout2-writing-technical-arbitration",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "La pompe B doit être remplacée en priorité."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le choix est explicite, unique et directement actionnable : la pompe B est désignée comme priorité de remplacement, sans ambiguïté ni renvoi à un tiers. Le fait que ce choix repose sur des données inversées relève du critère de fidélité aux faits, pas de celui-ci.",
+          "levelKey": "mastered",
+          "criterionKey": "arbitration-choice"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Son coût énergétique annuel s’élève à 5 016 euros, soit 38 kW sur 1 200 heures à 0,11 euro le kWh, largement au-dessus des 4 004 euros de la pompe A",
+            "sa maintenance de 4 000 euros par an double presque celle de la pompe A, ramenée à 2 600 euros",
+            "ce relevé provient d’un capteur fiable et étalonné",
+            "deux jours d’immobilisation suffisent"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Les données décisives sont systématiquement inversées ou contredites : les 38 kW et 1 200 h appartiennent à la pompe A (soit 5 016 € pour A, et 52 kW × 700 h × 0,11 € = 4 004 € pour B), les coûts de maintenance sont intervertis (4 000 € pour A, 2 600 € pour B), le capteur de la mesure de 78 dB est décrit comme fiable alors que le dossier dit qu’il a été recalibré depuis, et l’immobilisation est de cinq jours, pas deux. Aucune donnée n’est mobilisée à sa valeur exacte.",
+          "levelKey": "insufficient",
+          "criterionKey": "fact-fidelity"
+        },
+        {
+          "confidence": 0.95,
+          "evidenceQuotes": [
+            "Aucune inconnue ne subsiste dans ce dossier : la priorité de remplacement est certaine et peut être annoncée telle quelle à la direction."
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "La production affirme une certitude totale et nie toute inconnue, alors que le dossier signale explicitement une mesure de bruit ancienne réalisée avec un capteur depuis recalibré — une fiabilité douteuse qui aurait dû être nommée comme risque résiduel. C’est exactement le cas d’une garantie affirmée que le dossier ne fournit pas.",
+          "levelKey": "insufficient",
+          "criterionKey": "residual-risk-surfacing"
+        }
+      ],
+      "overallConfidence": 0.9325,
+      "overallFeedback": "Votre note tranche clairement en faveur du remplacement de la pompe B, ce qui est un point fort sur le plan de la décision. En revanche, l’appui factuel est compromis : les caractéristiques des deux pompes sont inversées (c’est la pompe A qui consomme 38 kW sur 1 200 h, soit 5 016 €, et la pompe B 52 kW sur 700 h, soit 4 004 € ; la maintenance est de 4 000 € pour A et 2 600 € pour B), l’immobilisation est de cinq jours et non deux, et la mesure de 78 dB provient d’un capteur depuis recalibré, donc peu fiable — elle ne peut pas confirmer l’état de la pompe A. Enfin, affirmer qu’« aucune inconnue ne subsiste » masque précisément cette limite : la note aurait dû nommer la fiabilité douteuse du relevé de bruit comme risque résiduel et proposer une précaution (par exemple une nouvelle mesure avant décision). Reprenez les calculs en attribuant chaque donnée à la bonne pompe, puis formulez la limite principale de votre recommandation.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276929-cB1pKWrRG19eT3EKg73x",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"arbitration-choice\":{\"confidence\":0.9,\"evidenceQuotes\":[\"La pompe B doit être remplacée en priorité.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le choix est explicite, unique et directement actionnable : la pompe B est désignée comme priorité de remplacement, sans ambiguïté ni renvoi à un tiers. Le fait que ce choix repose sur des données inversées relève du critère de fidélité aux faits, pas de celui-ci.\",\"levelKey\":\"mastered\"},\"fact-fidelity\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Son coût énergétique annuel s’élève à 5 016 euros, soit 38 kW sur 1 200 heures à 0,11 euro le kWh, largement au-dessus des 4 004 euros de la pompe A\",\"sa maintenance de 4 000 euros par an double presque celle de la pompe A, ramenée à 2 600 euros\",\"ce relevé provient d’un capteur fiable et étalonné\",\"deux jours d’immobilisation suffisent\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Les données décisives sont systématiquement inversées ou contredites : les 38 kW et 1 200 h appartiennent à la pompe A (soit 5 016 € pour A, et 52 kW × 700 h × 0,11 € = 4 004 € pour B), les coûts de maintenance sont intervertis (4 000 € pour A, 2 600 € pour B), le capteur de la mesure de 78 dB est décrit comme fiable alors que le dossier dit qu’il a été recalibré depuis, et l’immobilisation est de cinq jours, pas deux. Aucune donnée n’est mobilisée à sa valeur exacte.\",\"levelKey\":\"insufficient\"},\"residual-risk-surfacing\":{\"confidence\":0.95,\"evidenceQuotes\":[\"Aucune inconnue ne subsiste dans ce dossier : la priorité de remplacement est certaine et peut être annoncée telle quelle à la direction.\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"La production affirme une certitude totale et nie toute inconnue, alors que le dossier signale explicitement une mesure de bruit ancienne réalisée avec un capteur depuis recalibré — une fiabilité douteuse qui aurait dû être nommée comme risque résiduel. C’est exactement le cas d’une garantie affirmée que le dossier ne fournit pas.\",\"levelKey\":\"insufficient\"}},\"overallFeedback\":\"Votre note tranche clairement en faveur du remplacement de la pompe B, ce qui est un point fort sur le plan de la décision. En revanche, l’appui factuel est compromis : les caractéristiques des deux pompes sont inversées (c’est la pompe A qui consomme 38 kW sur 1 200 h, soit 5 016 €, et la pompe B 52 kW sur 700 h, soit 4 004 € ; la maintenance est de 4 000 € pour A et 2 600 € pour B), l’immobilisation est de cinq jours et non deux, et la mesure de 78 dB provient d’un capteur depuis recalibré, donc peu fiable — elle ne peut pas confirmer l’état de la pompe A. Enfin, affirmer qu’« aucune inconnue ne subsiste » masque précisément cette limite : la note aurait dû nommer la fiabilité douteuse du relevé de bruit comme risque résiduel et proposer une précaution (par exemple une nouvelle mesure avant décision). Reprenez les calculs en attribuant chaque donnée à la bonne pompe, puis formulez la limite principale de votre recommandation.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.024168,
+      "costSource": "ACTUAL",
+      "inputTokens": 3051,
+      "reasoningTokens": 74,
+      "visibleOutputTokens": 927
+    },
+    "workflowPass": "PRIMARY"
+  },
+  {
+    "attempt": 1,
+    "candidateId": "kimi-k3-openrouter-fireworks",
+    "caseId": "regression-39282176c0cfa7bc",
+    "evidenceMatches": [
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "Je programme la révision immédiate du four F3.",
+        "resolvedQuote": "Je programme la révision immédiate du four F3."
+      },
+      {
+        "criterionKey": "arbitration-choice",
+        "matchType": "EXACT",
+        "requestedQuote": "si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars",
+        "resolvedQuote": "si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet",
+        "resolvedQuote": "Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "réviser à 5 200 euros lors de cet arrêt",
+        "resolvedQuote": "réviser à 5 200 euros lors de cet arrêt"
+      },
+      {
+        "criterionKey": "fact-fidelity",
+        "matchType": "EXACT",
+        "requestedQuote": "les 3 jours d’immobilisation de la révision immédiate",
+        "resolvedQuote": "les 3 jours d’immobilisation de la révision immédiate"
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "matchType": "EXACT",
+        "requestedQuote": "Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+        "resolvedQuote": "Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel."
+      },
+      {
+        "criterionKey": "residual-risk-surfacing",
+        "matchType": "EXACT",
+        "requestedQuote": "le dossier n’exclut aucune panne sèche",
+        "resolvedQuote": "le dossier n’exclut aucune panne sèche"
+      }
+    ],
+    "latencyMs": 812,
+    "modelId": "moonshotai/kimi-k3",
+    "modelSnapshot": "moonshotai/kimi-k3",
+    "output": {
+      "contractKey": "holdout2-writing-technical-arbitration",
+      "contractVersion": "1.0.0",
+      "criteria": [
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "Je programme la révision immédiate du four F3.",
+            "si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Le choix est explicite (révision immédiate), appliqué au bon périmètre (four F3) et assorti d’une condition de bascule mesurable et non dilatoire (engagement écrit sur les 3 jours d’immobilisation). La décision est directement actionnable.",
+          "levelKey": "mastered",
+          "criterionKey": "arbitration-choice"
+        },
+        {
+          "confidence": 0.85,
+          "evidenceQuotes": [
+            "Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet",
+            "réviser à 5 200 euros lors de cet arrêt",
+            "les 3 jours d’immobilisation de la révision immédiate"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "Plusieurs données du dossier sont reprises à leur valeur exacte (95 %, 82 %, 26 jours, 5 200 €, 3 jours, 9 mars) et soutiennent le choix. Seule nuance : l’affirmation « dériver encore six mois » n’est pas vérifiable dans le dossier (aucune date du jour n’est donnée), mais elle ne déforme pas une donnée chiffrée du dossier.",
+          "levelKey": "mastered",
+          "criterionKey": "fact-fidelity"
+        },
+        {
+          "confidence": 0.9,
+          "evidenceQuotes": [
+            "Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.",
+            "le dossier n’exclut aucune panne sèche"
+          ],
+          "evidenceStatus": "FOUND",
+          "feedback": "L’incertitude est nommée avec exactitude (absence d’historique de la dérive, possibilité de panne non exclue par le dossier) et couverte par une précaution proportionnée et opérationnelle (relevé hebdomadaire de capacité après révision).",
+          "levelKey": "mastered",
+          "criterionKey": "residual-risk-surfacing"
+        }
+      ],
+      "overallConfidence": 0.8825,
+      "overallFeedback": "Travail solide : la décision est tranchée (révision immédiate du F3), assortie d’une condition de repli mesurable, et appuyée sur des données exactes du dossier (95 % → 82 %, 26 jours de carnet, 5 200 €, 3 jours). Le risque résiduel est correctement identifié et couvert par un suivi hebdomadaire. Point de vigilance : l’horizon de « six mois » avant l’arrêt du 9 mars n’est pas établi par le dossier ; mieux vaudrait dater ou justifier cette estimation.",
+      "secondPass": {
+        "reasons": [],
+        "required": false
+      }
+    },
+    "provider": "MoonshotAI",
+    "providerRequestId": "gen-1788276951-apiVUxslwaFpHKVQpLid",
+    "providerRoute": "Fireworks",
+    "rawModelOutput": "{\"criteria\":{\"arbitration-choice\":{\"confidence\":0.9,\"evidenceQuotes\":[\"Je programme la révision immédiate du four F3.\",\"si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Le choix est explicite (révision immédiate), appliqué au bon périmètre (four F3) et assorti d’une condition de bascule mesurable et non dilatoire (engagement écrit sur les 3 jours d’immobilisation). La décision est directement actionnable.\",\"levelKey\":\"mastered\"},\"fact-fidelity\":{\"confidence\":0.85,\"evidenceQuotes\":[\"Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet\",\"réviser à 5 200 euros lors de cet arrêt\",\"les 3 jours d’immobilisation de la révision immédiate\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"Plusieurs données du dossier sont reprises à leur valeur exacte (95 %, 82 %, 26 jours, 5 200 €, 3 jours, 9 mars) et soutiennent le choix. Seule nuance : l’affirmation « dériver encore six mois » n’est pas vérifiable dans le dossier (aucune date du jour n’est donnée), mais elle ne déforme pas une donnée chiffrée du dossier.\",\"levelKey\":\"mastered\"},\"residual-risk-surfacing\":{\"confidence\":0.9,\"evidenceQuotes\":[\"Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.\",\"le dossier n’exclut aucune panne sèche\"],\"evidenceStatus\":\"FOUND\",\"feedback\":\"L’incertitude est nommée avec exactitude (absence d’historique de la dérive, possibilité de panne non exclue par le dossier) et couverte par une précaution proportionnée et opérationnelle (relevé hebdomadaire de capacité après révision).\",\"levelKey\":\"mastered\"}},\"overallFeedback\":\"Travail solide : la décision est tranchée (révision immédiate du F3), assortie d’une condition de repli mesurable, et appuyée sur des données exactes du dossier (95 % → 82 %, 26 jours de carnet, 5 200 €, 3 jours). Le risque résiduel est correctement identifié et couvert par un suivi hebdomadaire. Point de vigilance : l’horizon de « six mois » avant l’arrêt du 9 mars n’est pas établi par le dossier ; mieux vaudrait dater ou justifier cette estimation.\"}",
+    "repetition": 1,
+    "requestProfileSnapshot": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1000,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1500,
+      "routeProviders": [
+        "Fireworks"
+      ],
+      "temperature": 0,
+      "timeoutMs": 60000,
+      "version": "2.0.0"
+    },
+    "requestProtocolVersion": "3.0.1",
+    "status": "VALID",
+    "usage": {
+      "actualCostUsd": 0.0317205,
+      "costSource": "ACTUAL",
+      "inputTokens": 3024,
+      "reasoningTokens": 103,
+      "visibleOutputTokens": 702
+    },
+    "workflowPass": "PRIMARY"
+  }
+]

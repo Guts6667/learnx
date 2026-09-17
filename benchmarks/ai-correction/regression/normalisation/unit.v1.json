@@ -1,0 +1,74 @@
+{
+  "tableId": "unit-normalisation",
+  "version": "1.0.0",
+  "purpose": "Réduire les formes de surface d'une unité à un jeton canonique.",
+  "tokens": {
+    "euro": [
+      "€",
+      "eur",
+      "euro",
+      "euros",
+      "EUR"
+    ],
+    "heure": [
+      "h",
+      "hr",
+      "heure",
+      "heures"
+    ],
+    "jour": [
+      "j",
+      "jour",
+      "jours",
+      "journée",
+      "journées"
+    ],
+    "semaine": [
+      "semaine",
+      "semaines"
+    ],
+    "mois": [
+      "mois"
+    ],
+    "an": [
+      "an",
+      "ans",
+      "année",
+      "années",
+      "annuel",
+      "annuelle",
+      "par an"
+    ],
+    "pourcentage": [
+      "%",
+      "pour cent",
+      "pourcent",
+      "p. cent"
+    ],
+    "litre": [
+      "l",
+      "litre",
+      "litres"
+    ],
+    "comptage": [
+      "fois",
+      "occurrence",
+      "occurrences",
+      "cas",
+      "arrêt",
+      "arrêts",
+      "immobilisation",
+      "immobilisations",
+      "étape",
+      "étapes",
+      "dossier",
+      "dossiers",
+      "personne",
+      "personnes"
+    ],
+    "sans_unite": []
+  },
+  "composed": "Une unité composée « X par Y » produit le jeton « X_par_Y » à partir des deux jetons canoniques — p. ex. « euros par an » → euro_par_an.",
+  "ambiguous": "Une unité absente de la table est marquée NON NORMALISABLE ; la donnée est exclue du dénombrement et rapportée.",
+  "contentHash": "sha256:59c69aa6d43d0ceaf4541262f383678af95a3085e90ea8193fcb157f056344e4"
+}

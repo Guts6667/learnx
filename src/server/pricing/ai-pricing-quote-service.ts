@@ -111,7 +111,7 @@ export class AiPricingQuoteService {
     private readonly now: () => Date = () => new Date(),
     /**
      * The circuit breaker, absent where no evaluation is possible. Consulted
-     * here rather than at execution so a suspended correction never reserves
+     * here as well as at execution so a suspended correction never reserves
      * credits it will not spend: the learner is refused before paying, not
      * refunded after.
      */
@@ -128,8 +128,8 @@ export class AiPricingQuoteService {
   }): Promise<StoredPricingQuote> {
     assertIdempotencyKey(input.idempotencyKey);
     // Evaluated on the path it protects: every attempt to use the feature is
-    // also the moment to check whether it should still be offered. Corrections
-    // already quoted are left to run out.
+    // also the moment to check whether it should still be offered. The runtime
+    // checks again before any new dispatch, including an already issued quote.
     if (this.breaker && (await this.breaker.evaluate()).state === 'OPEN') {
       throw new AiPricingError('CORRECTION_SUSPENDED');
     }

@@ -1,7 +1,10 @@
 import type { PrismaClient } from '../../../generated/prisma/client.js';
 import { resolveExerciseCorrectionContract } from '../../lib/exercise-correction-contracts.js';
 import { resolveStageAssessmentCorrectionContract } from '../../lib/stage-assessment-correction-contracts.js';
-import type { AcceptedQuoteSnapshot } from './correction-orchestration-contracts.js';
+import type {
+  AcceptedQuoteSnapshot,
+  ReplayQuoteSnapshot,
+} from './correction-orchestration-contracts.js';
 import {
   withStoredConfidence,
   type StoredCorrection,
@@ -134,7 +137,10 @@ export class PrismaCorrectionQuoteRepository {
       contract: source.contractSnapshot,
       reconsideration: {
         argument: quote.reconsiderationArgument,
-        previousCorrection: withStoredConfidence(structured.correction),
+        previousCorrection: withStoredConfidence(
+          structured.correction,
+          source.contractSnapshot,
+        ),
         sourceCorrectionId: source.id,
       },
     };
@@ -196,6 +202,27 @@ export class PrismaCorrectionQuoteRepository {
   }
 
   public readonly quotes = {
+    loadReplayQuote: async (input: {
+      quoteId: string;
+      userId: string;
+    }): Promise<ReplayQuoteSnapshot | null> => {
+      const quote = await this.prisma.aiPricingQuote.findFirst({
+        select: {
+          id: true,
+          requestFingerprint: true,
+          estimatedCredits: true,
+          ceilingCredits: true,
+        },
+        where: { id: input.quoteId, userId: input.userId },
+      });
+      if (!quote) return null;
+      return {
+        quoteId: quote.id,
+        requestFingerprint: quote.requestFingerprint,
+        estimatedCredits: quote.estimatedCredits,
+        maximumReservedCredits: quote.ceilingCredits,
+      };
+    },
     loadAcceptedQuote: async (input: {
       quoteId: string;
       userId: string;

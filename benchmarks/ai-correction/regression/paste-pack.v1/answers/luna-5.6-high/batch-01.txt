@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2,s3,s4 | autre: - | raison: chaque donnée éclaire le choix, son coût, sa mise en œuvre ou l’incertitude restante.
+C-47402cc097 | OUI | phrases: s1,s2 | autre: - | raison: les montants et l’incertitude sur la subvention concernent directement le choix entre les stratégies.
+C-55f08a077c | OUI | phrases: - | autre: NON | raison: le processus, l’équipe et la cible de 30 % sont conformes au dossier.
+C-23cb79db39 | OUI | phrases: s0 | autre: - | raison: la cible est présentée comme provisoire et l’effectif correspond au dossier.
+C-6f02478fc2 | OUI | phrases: s0,s2,s3 | autre: - | raison: la baseline et la contrainte de qualité sont explicitement présentées comme restant à valider.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase énonce explicitement une recommandation.
+C-d5dff02d07 | NON | phrases: s0,s1,s2,s3,s4,s5 | autre: - | raison: l’update contient les éléments demandés mais n’indique pas le rituel où traiter le risque.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: le seuil de deux arrêts et la documentation des causes ne sont pas établis par le dossier.
+C-5a5b6cc636 | OUI | phrases: s1,s2 | autre: - | raison: la comparaison des coûts et l’incertitude sur la subvention appuient le choix nuancé.
+C-2d0f0c9620 | NON | phrases: s0,s1 | autre: - | raison: la réponse omet la visibilité du prochain embranchement et remplace le rapport signé par une simple probabilité.

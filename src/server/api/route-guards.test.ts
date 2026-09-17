@@ -21,6 +21,16 @@ import { reviewsApp } from './reviews/app';
 import { stageAssessmentsApp } from './stage-assessments/app';
 import { todayApp } from './today/app';
 
+// Exercise the real mounted routes and authentication, with no database I/O.
+// The quality gate may supply DATABASE_URL for Prisma generation; that must
+// not turn this unit test into an accidental integration/production read.
+vi.mock('../prisma', () => ({
+  prisma: {
+    $queryRaw: vi.fn(async () => [{ result: 1 }]),
+    creditPack: { findMany: vi.fn(async () => []) },
+  },
+}));
+
 /**
  * V4.5-187. The safety net for route authentication.
  *

@@ -9,6 +9,7 @@ import type {
 } from './correction-orchestration-contracts.js';
 
 function settledResult(correction: {
+  contractSnapshot?: unknown;
   creditReservation: { settledAmount: unknown; status: string } | null;
   structuredResult: unknown;
 }): OrchestratedCorrectionResult | null {
@@ -26,7 +27,10 @@ function settledResult(correction: {
     return null;
   }
   return {
-    correction: withStoredConfidence(structured.correction),
+    correction: withStoredConfidence(
+      structured.correction,
+      correction.contractSnapshot,
+    ),
     replay: true,
     settlement: structured.settlement,
   };

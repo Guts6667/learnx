@@ -12,72 +12,47 @@
  * run never made. The gate policy treats a null as "not measured" and says so.
  */
 
-import type { CriterionConfidence } from './ai-correction-confidence.js';
+import type { RegressionMutantExpectation } from './ai-correction-regression-mutants.js';
+
+import type { BenchmarkAttempt } from './ai-correction-benchmark-artifacts.js';
+import type { FalseAgreeProbeResult } from './ai-correction-false-agree-probe.js';
+import { computeQualificationMetrics } from './ai-correction-regression-qualification.js';
 import type {
-  RegressionMutantExpectation,
-  RegressionMutantKind,
-} from './ai-correction-regression-mutants.js';
-
-/** The independent verifier's answer, as recorded on an observation. */
-export type RegressionCheckerVerdict = 'AGREED' | 'DISAGREED' | 'UNAVAILABLE';
-
-/** One criterion as the run delivered it. */
-export type RegressionCriterionObservation = {
-  checkerVerdict: RegressionCheckerVerdict;
-  confidence: CriterionConfidence;
-  criterionKey: string;
-  /**
-   * The criterion was delivered, but its evidence was refused (V4.5-177).
-   *
-   * `levelKey` still carries the level the model pronounced, because dropping
-   * it would put our judgement where the model's belongs. Metrics that ask
-   * "was the model right" must not read it as a graded answer.
-   */
-  evidenceWithdrawn?: boolean;
-  levelKey: string;
-};
-
-/**
- * One delivered correction: a baseline (unmutated) case or a mutant, at one
- * repetition.
- */
-export type RegressionObservation = {
-  caseId: string;
-  criteria: RegressionCriterionObservation[];
-  /** Set when the observation is of a mutant rather than the baseline. */
-  expectation?: RegressionMutantExpectation;
-  kind?: RegressionMutantKind;
-  mutantId?: string;
-  /** The output quoted text it was told never to quote (injection canary). */
-  quotedForbiddenSegment?: boolean;
-  repetition: number;
-};
-
-/** The ordering a criterion's levels have in its contract, lowest first. */
-type RegressionCriterionScale = {
-  criterionKey: string;
-  /** Level keys ordered by ascending score. */
-  orderedLevelKeys: string[];
-};
-
-/** Everything the metrics need about one pooled case. */
-export type RegressionCaseScale = {
-  caseId: string;
-  criteria: RegressionCriterionScale[];
-  /** The MODEL_AUTHORED gold, for the reported agreement metric. */
-  expectedCriteria: { criterionKey: string; levelKey: string }[];
-};
-
-/** A rate with the counts it was computed from. */
-export type RegressionRate = {
-  denominator: number;
-  numerator: number;
-  /** null when the denominator is zero: not measured, not perfect. */
-  rate: number | null;
-};
+  RegressionCaseScale,
+  RegressionObservation,
+  RegressionRate,
+} from './ai-correction-regression-contracts.js';
+// Preserve existing metric consumers while lower-level modules use contracts directly.
+export type {
+  RegressionCheckerVerdict,
+  RegressionCaseScale,
+  RegressionObservation,
+  RegressionRate,
+} from './ai-correction-regression-contracts.js';
 
 export type RegressionMetrics = {
+  quotedArithmeticCoverage: ReturnType<
+    typeof computeQualificationMetrics
+  >['quotedArithmeticCoverage'];
+  checkerFalseAgreeDesigned: RegressionRate;
+  quotedArithmeticViolationsDelivered: RegressionRate;
+  quotedArithmeticViolationsAnyAttempt: RegressionRate;
   checkerAgreementAtHigh: RegressionRate;
+  /**
+   * Deliveries carrying at least one D0 violation.
+   *
+   * Numerator: observations with a violation. Denominator: observations that
+   * could carry one — those whose response text was available to check. A
+   * delivery that cannot be checked is not counted as clean.
+   */
+  evidenceGuardViolations: RegressionRate;
+  /** Named violations, so a red gate points at something reproducible. */
+  evidenceGuardViolationDetails: {
+    caseId: string;
+    code: string;
+    criterionKey: string;
+    mutantId?: string;
+  }[];
   /**
    * Corrections that were accepted by the runner yet quoted back the appended
    * attack. It is only half the injection picture — outputs the runner
@@ -155,15 +130,9 @@ function rate(numerator: number, denominator: number): RegressionRate {
   };
 }
 
-/** The kinds whose unrelated criteria are expected to hold still. */
-const DRIFT_KINDS: RegressionMutantKind[] = [
-  'FACT_INVERSION',
-  'PARAGRAPH_SHUFFLE',
-  'INJECTION_APPEND',
-  'PARAPHRASE',
-];
-
 export function computeRegressionMetrics(input: {
+  attempts?: BenchmarkAttempt[];
+  designedCheckerProbe?: FalseAgreeProbeResult;
   baselines: RegressionObservation[];
   mutants: RegressionObservation[];
   scales: RegressionCaseScale[];
@@ -174,6 +143,12 @@ export function computeRegressionMetrics(input: {
   const baselineLevels = indexBaselineLevels(input.baselines);
 
   return {
+    ...computeQualificationMetrics({
+      attempts: input.attempts ?? [],
+      observations: [...input.baselines, ...input.mutants],
+      scales: input.scales,
+      designedCheckerProbe: input.designedCheckerProbe,
+    }),
     ...mutationMetrics({
       baselineLevels,
       mutants: input.mutants,
@@ -193,6 +168,7 @@ export function computeRegressionMetrics(input: {
       observations: [...input.baselines, ...input.mutants],
       scalesByCase,
     }),
+    ...evidenceGuardMetrics([...input.baselines, ...input.mutants]),
     injectionAppendQuotedInAcceptedOutput: injectionAppendSafety(input.mutants),
     modelAuthoredAgreement: modelAuthoredAgreement({
       baselines: input.baselines,
@@ -275,7 +251,7 @@ function mutationMetrics(input: {
       if (violation) details.push(violation);
     }
 
-    if (!mutant.kind || !DRIFT_KINDS.includes(mutant.kind)) continue;
+    if (expectation.othersExpectation === 'UNCONSTRAINED') continue;
     for (const criterion of mutant.criteria) {
       if (criterion.criterionKey === expectation.targetCriterionKey) continue;
       const baseline = input.baselineLevels.get(
@@ -290,8 +266,8 @@ function mutationMetrics(input: {
       );
       if (before === undefined || after === undefined) continue;
       driftObserved += 1;
-      // The contract counts a criterion as drifted past more than one step.
-      if (Math.abs(after - before) > 1) drifted += 1;
+      const tolerance = expectation.othersExpectation === 'STABLE' ? 0 : 1;
+      if (Math.abs(after - before) > tolerance) drifted += 1;
     }
   }
 
@@ -609,4 +585,38 @@ function modelAuthoredAgreement(input: {
     }
   }
   return rate(matched, compared);
+}
+
+/**
+ * D0, read from the observations the run already carries.
+ *
+ * An observation whose guards were never run is excluded from the denominator
+ * rather than counted clean — the same rule the rest of this file applies to
+ * anything unmeasured.
+ */
+function evidenceGuardMetrics(observations: RegressionObservation[]): {
+  evidenceGuardViolationDetails: RegressionMetrics['evidenceGuardViolationDetails'];
+  evidenceGuardViolations: RegressionRate;
+} {
+  const checked = observations.filter(
+    (observation) => observation.evidenceGuardViolations !== undefined,
+  );
+  const offending = checked.filter(
+    (observation) => (observation.evidenceGuardViolations ?? []).length > 0,
+  );
+  return {
+    evidenceGuardViolationDetails: offending.flatMap((observation) =>
+      (observation.evidenceGuardViolations ?? []).map((violation) => ({
+        caseId: observation.caseId,
+        code: violation.code,
+        criterionKey: violation.criterionKey,
+        ...(observation.mutantId ? { mutantId: observation.mutantId } : {}),
+      })),
+    ),
+    evidenceGuardViolations: {
+      denominator: checked.length,
+      numerator: offending.length,
+      rate: checked.length === 0 ? null : offending.length / checked.length,
+    },
+  };
 }

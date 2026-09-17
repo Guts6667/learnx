@@ -6,7 +6,8 @@ import type { CheckerVerdict } from './correction-checker.js';
 import {
   allowsIndicativeScore,
   deriveCorrectionConfidence,
-  deriveCriterionConfidence,
+  deriveDeliveredCriterionConfidences,
+  deriveHardConstraintMismatch,
   type CorrectionConfidenceInput,
   type CriterionConfidence,
   type CriterionConfidenceInput,
@@ -16,9 +17,6 @@ import type { OrchestratedCorrectionResult } from './correction-orchestration-co
 import { PROMOTED_CORRECTION_IDENTITY } from './promoted-identity.js';
 
 type DeliveredCriterion = Protocol3CorrectionArtifactOutput['criteria'][number];
-
-const HARD_CONSTRAINT =
-  /\b(contrainte|interdit(?:e|es|s)?|violation|constraint|forbidden)\b/i;
 
 /** Widened from the `as const` tuple so any activity family can be tested. */
 const SCIENTIFICALLY_VALIDATED_FAMILIES: readonly string[] =
@@ -117,7 +115,8 @@ function confidenceSignalsFor(
     // The feedback names a hard-constraint violation while the level sits above
     // the floor: the model contradicting itself inside one criterion.
     hardConstraintMismatch:
-      HARD_CONSTRAINT.test(item.feedback) && position?.isFloorLevel === false,
+      position !== null &&
+      deriveHardConstraintMismatch(item.feedback, position.isFloorLevel),
     isFloorLevel: position?.isFloorLevel ?? false,
     isMasteredLevel: position?.isMasteredLevel ?? false,
     // The independent checker's answer for this criterion. A criterion it did
@@ -174,11 +173,12 @@ export function buildCorrectionOutcome(input: {
     : ('LOW' as const);
   const publishesScore =
     deliveredAll && allowsIndicativeScore(correctionSignals);
+  const confidences = deriveDeliveredCriterionConfidences(correctionSignals);
 
   return {
     id: '',
     status: deliveredAll ? 'COMPLETED' : 'COMPLETED_PARTIAL',
-    criteria: delivered.map(({ item, signals }) => {
+    criteria: delivered.map(({ item }, index) => {
       const criterion = input.contract.criteria.find(
         (candidate) => candidate.key === item.criterionKey,
       );
@@ -195,7 +195,7 @@ export function buildCorrectionOutcome(input: {
         evidenceStatus: item.evidenceStatus,
         evidenceQuotes: item.evidenceQuotes,
         feedback: item.feedback,
-        confidence: deriveCriterionConfidence(signals),
+        confidence: confidences[index] ?? 'LOW',
       };
     }),
     unsureCriteria: input.unsureCriteria,
@@ -261,13 +261,37 @@ export type StoredCorrection = Omit<
  */
 export function withStoredConfidence(
   correction: StoredCorrection,
+  contractSnapshot?: unknown,
 ): OrchestratedCorrectionResult['correction'] {
+  const activityType = (
+    contractSnapshot as { target?: { activityType?: string } } | null
+  )?.target?.activityType;
+  const capHigh =
+    !activityType ||
+    !SCIENTIFICALLY_VALIDATED_FAMILIES.includes(activityType) ||
+    correction.monitoringSignals?.includes('CHECKER_UNAVAILABLE');
+  const criteria = (correction.criteria ?? []).map((criterion) => ({
+    ...criterion,
+    confidence:
+      criterion.confidence === 'HIGH' && capHigh
+        ? ('MEDIUM' as const)
+        : (criterion.confidence ?? 'LOW'),
+  }));
+  const incomplete =
+    (correction.unsureCriteria?.length ?? 0) > 0 || criteria.length === 0;
+  const low =
+    incomplete ||
+    correction.status !== 'COMPLETED' ||
+    correction.overallConfidence === 'LOW' ||
+    criteria.some((criterion) => criterion.confidence === 'LOW');
   return {
     ...correction,
-    criteria: correction.criteria.map((criterion) => ({
-      ...criterion,
-      confidence: criterion.confidence ?? 'LOW',
-    })),
-    overallConfidence: correction.overallConfidence ?? 'LOW',
+    criteria,
+    indicativeScore: low ? null : correction.indicativeScore,
+    overallConfidence: low
+      ? 'LOW'
+      : criteria.some((criterion) => criterion.confidence === 'MEDIUM')
+        ? 'MEDIUM'
+        : 'HIGH',
   };
 }

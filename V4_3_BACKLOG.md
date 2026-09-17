@@ -19,7 +19,7 @@ V4.2 a rendu le système de design réel et l'a démontré sur la surface publiq
 V4.3 l'applique au produit, et traite la seconde dette structurelle identifiée
 pendant l'audit V4.1 : le coût d'ajout d'un programme.
 
-V4.3 se place avant V4.5 : polir l'expérience et assainir le pipeline de contenu
+Ordonnancement historique, suspendu par le parcage du 29 août : V4.3 se plaçait avant V4.5 pour polir l'expérience et assainir le pipeline de contenu
 avant d'ouvrir le cycle commercial et la nouvelle correction IA.
 
 ## Lot 100 — expérience apprenant

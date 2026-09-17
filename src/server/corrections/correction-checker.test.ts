@@ -81,6 +81,80 @@ describe('buildCheckerRequestBody', () => {
 });
 
 describe('createRuntimeCorrectionChecker — verdicts', () => {
+  it('rejects contradictory duplicate keys instead of letting the last one win', async () => {
+    const outcome = await checker(
+      verdictResponse([
+        { criterionKey: 'decision-position', supported: false },
+        { criterionKey: 'decision-position', supported: true },
+      ]),
+    ).verify({ questions });
+    expect(outcome.unavailableReason).toBe('DUPLICATE_CRITERION');
+    expect(Object.values(outcome.verdicts)).toEqual([
+      'UNAVAILABLE',
+      'UNAVAILABLE',
+    ]);
+    expect(outcome.costUsd).toBe(0.0042);
+  });
+
+  it.each([
+    [
+      'invalid JSON',
+      { choices: [{ message: { content: 'invalid' } }] },
+      'UNPARSEABLE',
+    ],
+    ['missing content', { choices: [{ message: {} }] }, 'UNPARSEABLE'],
+    ['missing choices', {}, 'UNPARSEABLE'],
+    [
+      'unknown criterion',
+      {
+        choices: [
+          {
+            message: {
+              content: JSON.stringify({
+                verdicts: [{ criterionKey: 'unknown', supported: true }],
+              }),
+            },
+          },
+        ],
+      },
+      'UNKNOWN_CRITERION',
+    ],
+    [
+      'route mismatch',
+      { provider: 'Other', choices: [{ message: { content: '{}' } }] },
+      'ROUTE_MISMATCH',
+    ],
+  ])('preserves accounting metadata on %s', async (_name, payload, reason) => {
+    const outcome = await checker(
+      respond({
+        id: 'provider-id',
+        provider: 'Mistral',
+        usage: { cost: 0.0042 },
+        ...(payload as object),
+      }),
+    ).verify({ questions });
+    expect(outcome).toMatchObject({
+      costUsd: 0.0042,
+      providerRequestId: 'provider-id',
+      latencyMs: 0,
+      unavailableReason: reason,
+    });
+  });
+
+  it('retains billed metadata on an HTTP error', async () => {
+    const outcome = await checker(
+      respond(
+        { id: 'failed-provider-id', usage: { cost: 0.005 } },
+        { ok: false },
+      ),
+    ).verify({ questions });
+    expect(outcome).toMatchObject({
+      costUsd: 0.005,
+      providerRequestId: 'failed-provider-id',
+      unavailableReason: 'HTTP_ERROR',
+    });
+  });
+
   it('traduit soutenu et non soutenu', async () => {
     const outcome = await checker(
       verdictResponse([

@@ -38,6 +38,25 @@ const ENVELOPE: SpendEnvelope = {
 };
 
 describe('run lock', () => {
+  it('allows exactly one concurrent acquirer and refuses unreadable lock state', async () => {
+    const directory = await scratch();
+    const results = await Promise.allSettled(
+      Array.from({ length: 8 }, () =>
+        acquireRunLock({ directory, resultsDirectory: '/results/concurrent' }),
+      ),
+    );
+    expect(
+      results.filter((r) => r.status === 'fulfilled' && r.value.acquired),
+    ).toHaveLength(1);
+    await releaseRunLock(directory);
+    await writeFile(path.join(directory, RUN_LOCK_FILE), '{broken');
+    await expect(
+      acquireRunLock({ directory, resultsDirectory: '/results/next' }),
+    ).rejects.toThrow();
+    expect(await readFile(path.join(directory, RUN_LOCK_FILE), 'utf8')).toBe(
+      '{broken',
+    );
+  });
   it('refuses a second run while the first is alive', async () => {
     const directory = await scratch();
     const first = await acquireRunLock({

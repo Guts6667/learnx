@@ -1,0 +1,6 @@
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève nomme-t-il un risque ?
+Écriture pour la machine : un risque est nommé · rr.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.⟧ Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le …

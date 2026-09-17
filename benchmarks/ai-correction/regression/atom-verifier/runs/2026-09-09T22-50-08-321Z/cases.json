@@ -1,0 +1,492 @@
+{
+  "cases": [
+    {
+      "atomId": "cf.a3",
+      "cardId": "C-3a2fdb767e",
+      "pairId": "023ad8a58eb3623c",
+      "promptHash": "sha256:ccce8c26fa1c7f98addc3b0b0105b8e1ece6d18fcd058002c7c5c3ae723a03d8",
+      "promptTokensEstimate": 978,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a3",
+      "cardId": "C-b41bdb6098",
+      "pairId": "023ad8a58eb3623c",
+      "promptHash": "sha256:4efd086fa09017fe1d085678e08e401de8d5b0756212540a0c233b7cbb8a6d9a",
+      "promptTokensEstimate": 940,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "ff.a3",
+      "cardId": "C-ca1ef61e53",
+      "pairId": "0d41424e5b2e78d2",
+      "promptHash": "sha256:feeff43f081045e23b4f4abc3302373063602ffed5e2c6b2c7c7ad13f7f2a75d",
+      "promptTokensEstimate": 994,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a3",
+      "cardId": "C-6b33c1e066",
+      "pairId": "0d41424e5b2e78d2",
+      "promptHash": "sha256:31f700a9e83377a147b33c07f7d7d07847f84b50e34a5bd5b868eef89bd4cbe7",
+      "promptTokensEstimate": 906,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a2",
+      "cardId": "C-b83afbc8ff",
+      "pairId": "11c34eb000e5ad70",
+      "promptHash": "sha256:6e2458338242f727a66daec3b2588048112715847714b640a618f4de4d8bb573",
+      "promptTokensEstimate": 986,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a2",
+      "cardId": "C-3138b8a152",
+      "pairId": "11c34eb000e5ad70",
+      "promptHash": "sha256:e3265e0e5419b4c1b1de50b2405f041b2a9c5bc92896381346699a7202ff3941",
+      "promptTokensEstimate": 986,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a3",
+      "cardId": "C-10d03a23e2",
+      "pairId": "1b4765e3c4542304",
+      "promptHash": "sha256:311c4f1d1a772fd07e29f6fb977e162f826bcdd7b505209629f67673996a8dfa",
+      "promptTokensEstimate": 997,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a3",
+      "cardId": "C-23cb79db39",
+      "pairId": "1b4765e3c4542304",
+      "promptHash": "sha256:a28efd7988395d53bbf273fcc318e70da0e0754c91023826fc5c5318b09e5dcf",
+      "promptTokensEstimate": 946,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "rl.a2",
+      "cardId": "C-272f41aa34",
+      "pairId": "271d1c6130c5cc14",
+      "promptHash": "sha256:afa897f93716cfd7d4ef2d7765d27d56f87587073cf12061c205d7e1cd84e66c",
+      "promptTokensEstimate": 980,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rl.a2",
+      "cardId": "C-d00dec227b",
+      "pairId": "271d1c6130c5cc14",
+      "promptHash": "sha256:1955ec9018d582ee896ef3b68b00690f02a208e09b7efbeb2fa8b199774ee812",
+      "promptTokensEstimate": 922,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ac.a2",
+      "cardId": "C-20ae278814",
+      "pairId": "381042a84bfdeb6a",
+      "promptHash": "sha256:0b84706a12b1ef7c36e9393668409ab1e1e72951cd5b74be910274fc9fcfbc87",
+      "promptTokensEstimate": 978,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ac.a2",
+      "cardId": "C-46c2f075a1",
+      "pairId": "381042a84bfdeb6a",
+      "promptHash": "sha256:ad83a85249ff6e11b66ee94b491387e53a3b4fecfd092c7d18e28618fe724c10",
+      "promptTokensEstimate": 962,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "cf.a1",
+      "cardId": "C-bb87d23759",
+      "pairId": "41e1cdefa03da5e4",
+      "promptHash": "sha256:24e6bf1eb149fa1698132b990c228f42dbf5bfe696bb3169cee1c01b7521bfb9",
+      "promptTokensEstimate": 979,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a1",
+      "cardId": "C-302b9df321",
+      "pairId": "41e1cdefa03da5e4",
+      "promptHash": "sha256:e280742b44ace6cabfd6523e38098aa23e1d944a9b02755b4e267e93e2ad1a04",
+      "promptTokensEstimate": 985,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "pe.a3",
+      "cardId": "C-d6444cb6e3",
+      "pairId": "50eacd8edb5dac8a",
+      "promptHash": "sha256:9a921e76878fd75bf051d8fa38b10e2a582ebcec09b91491c64ac3e92c74226c",
+      "promptTokensEstimate": 1062,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "pe.a3",
+      "cardId": "C-6db59abd7e",
+      "pairId": "50eacd8edb5dac8a",
+      "promptHash": "sha256:ca666f4a82adcc4b1971414c12dca3f1aa870180bf1b65503cecc08e8aa0c2c7",
+      "promptTokensEstimate": 1020,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "cardId": "C-eecdd08b93",
+      "pairId": "536c3545804e363b",
+      "promptHash": "sha256:0692671e76a32d0d5e725e56058b6e218af4d2e86569a8acb6c9fc201ac88c17",
+      "promptTokensEstimate": 816,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a2",
+      "cardId": "C-03ff752bb0",
+      "pairId": "536c3545804e363b",
+      "promptHash": "sha256:237cfcda89f44d2c7c541f34627a5e64034ef927e92593d56b58139cf9a6f25d",
+      "promptTokensEstimate": 779,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "dp.a3",
+      "cardId": "C-5773c296c7",
+      "pairId": "651113e54b8be912",
+      "promptHash": "sha256:548ca11c67df342417dea8af73b56d40b789bdabc6df8f86e57641e3e44eb199",
+      "promptTokensEstimate": 915,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "dp.a3",
+      "cardId": "C-5219f94743",
+      "pairId": "651113e54b8be912",
+      "promptHash": "sha256:3fac2cb05ef149e85eb2437b3fed32c9ccdc53f81a9a4d5a4f29c4621656067c",
+      "promptTokensEstimate": 898,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "sfu.a1",
+      "cardId": "C-5d8f0447b1",
+      "pairId": "690759fa14fcc104",
+      "promptHash": "sha256:75626127545714c728a0de408367eda0030ecc1343c957b23e66e253cca96666",
+      "promptTokensEstimate": 910,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sfu.a1",
+      "cardId": "C-636e218ca9",
+      "pairId": "690759fa14fcc104",
+      "promptHash": "sha256:af2a5ae0ee0915c7132b9841b1d6f8c6160d91faadb7170c7f3e2d8795da8439",
+      "promptTokensEstimate": 857,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sfu.a3",
+      "cardId": "C-858f89a8ff",
+      "pairId": "6eaba0b666564546",
+      "promptHash": "sha256:b90bdc0770eb041991626c9212e19b13a24e6b35ce0a78478535a64fb8d002d1",
+      "promptTokensEstimate": 793,
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "sfu.a3",
+      "cardId": "C-bda12db6d2",
+      "pairId": "6eaba0b666564546",
+      "promptHash": "sha256:b8c709d604c4e486fe5168706e3ee7f2972c192c6428feac38f8475ec6a7a7fd",
+      "promptTokensEstimate": 741,
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "ac.a3",
+      "cardId": "C-e32060b658",
+      "pairId": "6f7a727eed826752",
+      "promptHash": "sha256:9f2665f613400ede80c94661bb67bffec9dea9195bb34a8e0dd993edf3fd0849",
+      "promptTokensEstimate": 985,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ac.a3",
+      "cardId": "C-1cff16763a",
+      "pairId": "6f7a727eed826752",
+      "promptHash": "sha256:afcc1bfeaf60ac987e6be3a13dcd7176b4db8b703914657cfebe97cd0706e99d",
+      "promptTokensEstimate": 969,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a3",
+      "cardId": "C-4b88718a20",
+      "pairId": "7881f88cc87c82ec",
+      "promptHash": "sha256:18080eefae8daa92892643da9b6e8ca0ee2ffc20180f9fee99dbe1eb1c2e4de8",
+      "promptTokensEstimate": 892,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "ff.a3",
+      "cardId": "C-47402cc097",
+      "pairId": "7881f88cc87c82ec",
+      "promptHash": "sha256:b248cb3ca853ed4347287f34f969f25a935e653f76c91ac62f74f67cc392050b",
+      "promptTokensEstimate": 892,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "pe.a2",
+      "cardId": "C-479e0a1393",
+      "pairId": "8c5568d09218d3f3",
+      "promptHash": "sha256:6466a0eb7e8a5d39a005ea2de3b23f77579633cf199ccec2e00f8089e02c3cd2",
+      "promptTokensEstimate": 940,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "pe.a2",
+      "cardId": "C-d5dff02d07",
+      "pairId": "8c5568d09218d3f3",
+      "promptHash": "sha256:88a66a3fb7ac046c5bde2382d3e1835e907ac1e34eb57f291bb20431dc58f764",
+      "promptTokensEstimate": 898,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "cf.a2",
+      "cardId": "C-94ea93741f",
+      "pairId": "94926acad5ec4953",
+      "promptHash": "sha256:809b53a7e8012138c1ae88f36395627c32b864b5c25eeaf2a8e6502490111090",
+      "promptTokensEstimate": 836,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a2",
+      "cardId": "C-ccc2405200",
+      "pairId": "94926acad5ec4953",
+      "promptHash": "sha256:864b4cbf1265e4ff124ecc0bf49a797d44fd0afe198055d91184adb718569bc4",
+      "promptTokensEstimate": 785,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rr.a1",
+      "cardId": "C-03c7a0d6cb",
+      "pairId": "965653f474fef49a",
+      "promptHash": "sha256:879ab08562044c9accb1851e6c264dbd14cd35cf437f1a33f57313be4c616952",
+      "promptTokensEstimate": 793,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "rr.a1",
+      "cardId": "C-888b279e11",
+      "pairId": "965653f474fef49a",
+      "promptHash": "sha256:16a9370a9857a75ed061ca5f4c63d0c4ddbc58070f70146f263b5fbba8c81312",
+      "promptTokensEstimate": 795,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "dp.a1",
+      "cardId": "C-4d3ebe4339",
+      "pairId": "a316678eff813bf0",
+      "promptHash": "sha256:7c46fa2a148a3a7ebd54d49882def5d59f8cab1978904b518892fca28bbeffe0",
+      "promptTokensEstimate": 803,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "dp.a1",
+      "cardId": "C-643773bcd3",
+      "pairId": "a316678eff813bf0",
+      "promptHash": "sha256:f1c1df590b72c1d86da73b0ae7c9be8e2f34da08faaa38e66d8e73945ad2fe8c",
+      "promptTokensEstimate": 805,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "rr.a6",
+      "cardId": "C-8aeb3c797d",
+      "pairId": "ac147a22b6bbbcf6",
+      "promptHash": "sha256:e710f31fd1f139e690407f5ee082964e57dba5950a844458ae8ae76d0136158e",
+      "promptTokensEstimate": 1131,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "rr.a6",
+      "cardId": "C-070decd3a2",
+      "pairId": "ac147a22b6bbbcf6",
+      "promptHash": "sha256:a494779e788c5e87e105a94ae7a22daf9e23249da3365008154910794a51a5ba",
+      "promptTokensEstimate": 1074,
+      "stratum": "S6_multi_dossier"
+    },
+    {
+      "atomId": "rr.a3",
+      "cardId": "C-753f693c0e",
+      "pairId": "acfdac8a5bb59f7e",
+      "promptHash": "sha256:03c24e6c2e4e6c6574406b95e193883ed02d71e5bbb12757b57e06f2e5f9ee10",
+      "promptTokensEstimate": 990,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "rr.a3",
+      "cardId": "C-b24221cac5",
+      "pairId": "acfdac8a5bb59f7e",
+      "promptHash": "sha256:caff0b704eb132359b0e35d82a4dae0413e06523c82a6ced849179d79df143aa",
+      "promptTokensEstimate": 992,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "dp.a2",
+      "cardId": "C-aef2458e05",
+      "pairId": "b38b67062120166b",
+      "promptHash": "sha256:e43d00bb74bb5686258556e253b725e9aaba8274c0d341cc8e1c01b6468b3f16",
+      "promptTokensEstimate": 926,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "dp.a2",
+      "cardId": "C-7a57652d93",
+      "pairId": "b38b67062120166b",
+      "promptHash": "sha256:3caaeab03856d0802b8deb57d50c0365ac483f15fe17ff782c7d74247f586730",
+      "promptTokensEstimate": 909,
+      "stratum": "S5_multi_frame"
+    },
+    {
+      "atomId": "rl.a1",
+      "cardId": "C-7309c167f8",
+      "pairId": "b511c99c9075af19",
+      "promptHash": "sha256:dc1e80b56cdb82f125a808021bcf4ed184f87949fb2a97a9ff59256c8226f077",
+      "promptTokensEstimate": 880,
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "rl.a1",
+      "cardId": "C-73a8c98c78",
+      "pairId": "b511c99c9075af19",
+      "promptHash": "sha256:a75038e5fccae67efd207e15b09a5c91af10c10b630807356669d29c4ca042a4",
+      "promptTokensEstimate": 880,
+      "stratum": "S2_span_frame"
+    },
+    {
+      "atomId": "ac.a1",
+      "cardId": "C-e10e009b7f",
+      "pairId": "c6c4093c2176871b",
+      "promptHash": "sha256:e54b951ee703e9e8858cc9340a78057ebd0eb40c20a98796aadc09b98c6af4cf",
+      "promptTokensEstimate": 805,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ac.a1",
+      "cardId": "C-28c8a6d628",
+      "pairId": "c6c4093c2176871b",
+      "promptHash": "sha256:1d5c68a14e5e9a1a094cab0bf4e70b7153754a89b308a4f790369b00ffea70a2",
+      "promptTokensEstimate": 806,
+      "stratum": "S1_span_local"
+    },
+    {
+      "atomId": "ff.a4",
+      "cardId": "C-8272b59189",
+      "pairId": "d477c8fe7429db5f",
+      "promptHash": "sha256:b3df7016fb400b57135bc3a15449ec2bac5afc73666796fc556f7f3ed93d7e24",
+      "promptTokensEstimate": 955,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ff.a4",
+      "cardId": "C-27abbe4a11",
+      "pairId": "d477c8fe7429db5f",
+      "promptHash": "sha256:96fe3c56e8fdfbd55b4b5ab485f1aace17bc4828fda402e5df7b39f424345e80",
+      "promptTokensEstimate": 868,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a1",
+      "cardId": "C-ef06893724",
+      "pairId": "d521d6003cc53151",
+      "promptHash": "sha256:1c646d58907b73ab4339cd56a468a82749d99648206913573bfffcd4b91d16ae",
+      "promptTokensEstimate": 967,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a1",
+      "cardId": "C-55f08a077c",
+      "pairId": "d521d6003cc53151",
+      "promptHash": "sha256:ac4525413f65628da95933b820459512b16de5377352d9cbb8dbf2ba5782ef86",
+      "promptTokensEstimate": 931,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a4",
+      "cardId": "C-5a5b6cc636",
+      "pairId": "dd2757218eda899a",
+      "promptHash": "sha256:5b8e2443988d099930601997006766f7b0cd369cd1cf124a212f9949f4f536a1",
+      "promptTokensEstimate": 866,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ff.a4",
+      "cardId": "C-e707d9669d",
+      "pairId": "dd2757218eda899a",
+      "promptHash": "sha256:43fb01cdccc5b5446534295d707a6a5d6cdeaeaab3372dea100d939fba3157f7",
+      "promptTokensEstimate": 866,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "sfu.a2",
+      "cardId": "C-7591e7e2ed",
+      "pairId": "df8fad9cb825a3ca",
+      "promptHash": "sha256:8a9e3720a0e5da301b6d5194e15d215c6b8dbaeecad878112005749a9bff83fa",
+      "promptTokensEstimate": 903,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "sfu.a2",
+      "cardId": "C-c8c0bafb00",
+      "pairId": "df8fad9cb825a3ca",
+      "promptHash": "sha256:09b098740cee76c497a0cfaae2455eb80796273de81ec1cdcaafcbbeddf1eed9",
+      "promptTokensEstimate": 851,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "rl.a2",
+      "cardId": "C-00b4a1c0a0",
+      "pairId": "ed1a2e5a77bb7e0c",
+      "promptHash": "sha256:31dcd6ac7ab9e502503395a50137fcfc4329d96e075c45accf155237591f15f4",
+      "promptTokensEstimate": 799,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "rl.a2",
+      "cardId": "C-25ca3b32bc",
+      "pairId": "ed1a2e5a77bb7e0c",
+      "promptHash": "sha256:09a8f5b2fea69caa16b165e52838a5c401a4104cbb173cf7b22dd6daf775a196",
+      "promptTokensEstimate": 771,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "ff.a2",
+      "cardId": "C-c2e812b133",
+      "pairId": "f01e7e88b3aed7cc",
+      "promptHash": "sha256:83672861a71fc4dac649d20fb34a4dc2a6313daad455dfe0ecba0dedd507e9ac",
+      "promptTokensEstimate": 970,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "ff.a2",
+      "cardId": "C-de2289c819",
+      "pairId": "f01e7e88b3aed7cc",
+      "promptHash": "sha256:593ba1a71f98882afb563ca942c12df9c220c5ddf791442797824f64af5121e6",
+      "promptTokensEstimate": 970,
+      "stratum": "S3_span_dossier"
+    },
+    {
+      "atomId": "cf.a2",
+      "cardId": "C-a0ade8b88e",
+      "pairId": "fa6124c14eedb0a8",
+      "promptHash": "sha256:80d938d1aee46821ed6ba60c614c9488a134d7ab04f10a6584bcff8da0650e52",
+      "promptTokensEstimate": 940,
+      "stratum": "S4_multi_local"
+    },
+    {
+      "atomId": "cf.a2",
+      "cardId": "C-02c2ddf742",
+      "pairId": "fa6124c14eedb0a8",
+      "promptHash": "sha256:543e5134c24247eaf01bbc174fab7f12058e2acc2f4df53ae4076f2e24edfd40",
+      "promptTokensEstimate": 904,
+      "stratum": "S4_multi_local"
+    }
+  ],
+  "hashes": {
+    "deckHash": "sha256:b3a021bfe81bd6c26690f6ebc79d754750d3db4e7821af51380a9853c28a9879",
+    "keyHash": "sha256:c27ed87a43f050a561bf482db729af786d65f0e2d67c025f8543003ba3b6b44e",
+    "pairsHash": "sha256:3af565ca64517ef95c2f53ab9ddd93166e946e67341b7eac95fe18e49fb43338",
+    "questionsHash": "sha256:6b25f4e95aaaf6751b8215da638dc855d289965b493c8db694dfc482c1a480df",
+    "systemPromptHash": "sha256:5046d00d25eb83b2e7d3a8706f8be83c3f3797bba18d2f0b1290482280e23d83"
+  },
+  "schemaVersion": 1
+}

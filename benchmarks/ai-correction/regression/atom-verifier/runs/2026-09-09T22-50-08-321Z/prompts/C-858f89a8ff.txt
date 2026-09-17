@@ -1,0 +1,6 @@
+Consigne : Recommande l’une des deux options et justifie ton choix avec les informations du scénario.
+Question : CHAQUE fait utilisé sert-il à répondre à ce que la consigne demandait ?
+Écriture pour la machine : CHAQUE fait mobilisé est pertinent · sfu.a3 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+Je recommande le pilote étendu de quatre semaines avec formation. ⟦Le premier test a réduit le délai médian de 18 à 13 heures, mais l’incident lié au manque de formation montre qu’il faut sécuriser la méthode avant de la généraliser.⟧

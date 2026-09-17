@@ -68,6 +68,7 @@ function correctionPayload(id: string, overallFeedback: string) {
   return {
     criteria: [
       {
+        confidence: 'HIGH',
         evidenceQuotes: ['une comparaison entre une pratique de rappel'],
         evidenceStatus: 'FOUND',
         feedback:
@@ -81,6 +82,7 @@ function correctionPayload(id: string, overallFeedback: string) {
     ],
     id,
     indicativeScore: null,
+    overallConfidence: 'LOW',
     overallFeedback,
     secondPassRequired: false,
     status: 'COMPLETED_PARTIAL',
@@ -295,6 +297,10 @@ test.describe('correction assistée', () => {
       /Aucun score indicatif/,
     );
     await expect(result.locator('.correction-settlement')).toBeVisible();
+    // A partial result must not display the unverified global model advice.
+    await expect(result).not.toContainText(
+      'Clarifiez maintenant la justification du cadre choisi.',
+    );
 
     // Aucun test ne couvrait l'accessibilité des états de correction.
     await expectNoSeriousA11yViolations(page);

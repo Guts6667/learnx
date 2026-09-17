@@ -1,0 +1,6 @@
+Consigne : Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.
+Question : L’élève énonce-t-il clairement le lien réflexif que la consigne demandait ?
+Écriture pour la machine : le lien réflexif demandé est explicitement énoncé · rl.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… une population non concernée. ⟦La production associée est la note de cadrage corrigée, et ma seule preuve de progression datée porte sur cette étape et sur la revue d’amélioration : les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré.⟧ J’en tire une méthode de mission en …

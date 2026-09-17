@@ -95,18 +95,37 @@ export function deriveCriterionConfidence(
 export function deriveCorrectionConfidence(
   input: CorrectionConfidenceInput,
 ): CriterionConfidence {
+  return deriveDeliveredCriterionConfidences(input).reduce<CriterionConfidence>(
+    lower,
+    input.criteria.length === 0 ? 'LOW' : 'HIGH',
+  );
+}
+
+/** Apply correction-wide ceilings to the labels actually delivered. */
+export function deriveDeliveredCriterionConfidences(
+  input: CorrectionConfidenceInput,
+): CriterionConfidence[] {
   const ceiling: CriterionConfidence =
     input.familyScientificallyValidated &&
     !input.criteria.some((criterion) => criterion.verifier === 'UNAVAILABLE')
       ? 'HIGH'
       : 'MEDIUM';
 
-  if (input.criteria.length === 0) return 'LOW';
+  return input.criteria.map((criterion) =>
+    lower(deriveCriterionConfidence(criterion), ceiling),
+  );
+}
 
-  return input.criteria.reduce<CriterionConfidence>(
-    (weakest, criterion) =>
-      lower(weakest, lower(deriveCriterionConfidence(criterion), ceiling)),
-    ceiling,
+/** The same conservative lexical rule in runtime and evaluation. */
+export function deriveHardConstraintMismatch(
+  feedback: string,
+  isFloorLevel: boolean,
+): boolean {
+  return (
+    !isFloorLevel &&
+    /\b(contrainte|interdit(?:e|es|s)?|violation|constraint|forbidden)\b/i.test(
+      feedback,
+    )
   );
 }
 

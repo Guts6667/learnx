@@ -50,7 +50,7 @@ const POOL_PATH = path.resolve(
   'benchmarks/ai-correction/regression/regression-pool.v1.json',
 );
 const POLICY_PATH = path.resolve(
-  'benchmarks/ai-correction/regression/gate-policy.v6-1.json',
+  'benchmarks/ai-correction/regression/gate-policy.v7.json',
 );
 
 /** Two writing cases with authored hints of both kinds, plus an injection case. */
@@ -245,6 +245,12 @@ async function runSuite(input: {
     repetitions: configuration.repetitions,
   });
   const observations = await deriveRegressionObservations({
+    checkerIdentity: {
+      modelId: 'synthetic-checker',
+      routeProviders: ['synthetic'],
+      promptSha256: 'a'.repeat(64),
+      requestProfileSha256: 'b'.repeat(64),
+    },
     attempts,
     checker: input.checker,
     familyScientificallyValidated: true,
@@ -416,21 +422,17 @@ describe('regression suite executed offline through the real runner', () => {
     );
     expect(blocking?.kind).toBe('BLOCKING');
     expect(watched?.kind).toBe('WATCHED');
-    // Policy v6 declares three gates ahead of the measurements that feed them:
-    // the designed false-agreement probe, and the two arithmetic gates whose
-    // oracle is not yet wired into the summary. Declaring before buying is the
-    // point — and each says so as a policy error rather than passing quietly.
-    const declaredAhead = [
-      'checker-false-agree-designed : la métrique checkerFalseAgreeDesigned est absente du résumé.',
-      'quoted-arithmetic-violations-delivered : la métrique quotedArithmeticViolationsDelivered est absente du résumé.',
-      'quoted-arithmetic-violations-any-attempt : la métrique quotedArithmeticViolationsAnyAttempt est absente du résumé.',
-    ];
-    expect(evaluation.gates).toHaveLength(
-      loadPolicy().gates.length - declaredAhead.length,
-    );
-    for (const declared of declaredAhead) {
-      expect(evaluation.policyErrors).toContain(declared);
-    }
+    expect(evaluation.gates).toHaveLength(loadPolicy().gates.length);
+    expect(
+      evaluation.policyErrors.some((message) =>
+        message.includes('absente du résumé'),
+      ),
+    ).toBe(false);
+    expect(
+      evaluation.gates.find(
+        (gate) => gate.key === 'checker-false-agree-designed',
+      )?.status,
+    ).toBe('NOT_MEASURED');
   });
 
   it('fails the mutation gate when the model ignores the damage', async () => {
@@ -1035,6 +1037,12 @@ describe('omitted-criteria oracle', () => {
     // not the safety rates alone: a gate table built from half the inputs would
     // drop the other gates as policy errors and prove nothing about this one.
     const observations = await deriveRegressionObservations({
+      checkerIdentity: {
+        modelId: 'synthetic-checker',
+        routeProviders: ['synthetic'],
+        promptSha256: 'a'.repeat(64),
+        requestProfileSha256: 'b'.repeat(64),
+      },
       attempts: refused,
       checker: AGREEABLE_CHECKER,
       familyScientificallyValidated: true,

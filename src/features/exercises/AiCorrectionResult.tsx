@@ -76,10 +76,10 @@ export function AiCorrectionResult({
   // V4.5-113 : un critère en confiance basse ne porte aucun niveau, il ne peut
   // donc être ni « acquis » ni « à renforcer ». Il forme son propre groupe.
   const toCheck = delivered.filter(
-    (criterion) => criterion.confidence === 'LOW',
+    (criterion) => !criterion.confidence || criterion.confidence === 'LOW',
   );
   const levelled = delivered.filter(
-    (criterion) => criterion.confidence !== 'LOW',
+    (criterion) => criterion.confidence && criterion.confidence !== 'LOW',
   );
   const acquired = levelled.filter(
     (criterion) => criterion.levelKey === 'mastered',
@@ -188,16 +188,26 @@ export function AiCorrectionResult({
         </section>
       ) : null}
 
-      <section className="correction-result__priority">
-        <p className="page-eyebrow">{t('aiCorrection.priority')}</p>
-        <h5>{t('aiCorrection.nextAction')}</h5>
-        {correction.overallFeedback ? (
-          <p>{correction.overallFeedback}</p>
-        ) : null}
-      </section>
+      {toCheck.length === 0 &&
+      correction.unsureCriteria.length === 0 &&
+      (correction.overallConfidence === 'HIGH' ||
+        correction.overallConfidence === 'MEDIUM') &&
+      correction.overallFeedback ? (
+        <section className="correction-result__priority">
+          <p className="page-eyebrow">{t('aiCorrection.priority')}</p>
+          <h5>{t('aiCorrection.nextAction')}</h5>
+          {correction.overallFeedback ? (
+            <p>{correction.overallFeedback}</p>
+          ) : null}
+        </section>
+      ) : null}
 
       <footer className="correction-result__footer">
-        {correction.indicativeScore !== null ? (
+        {toCheck.length === 0 &&
+        correction.unsureCriteria.length === 0 &&
+        (correction.overallConfidence === 'HIGH' ||
+          correction.overallConfidence === 'MEDIUM') &&
+        correction.indicativeScore !== null ? (
           <p className="correction-result__score">
             {t('aiCorrection.indicativeScore', {
               score: correction.indicativeScore.toFixed(0),
@@ -293,9 +303,28 @@ function CorrectionComparison({
   const previousByKey = new Map(
     previous.correction.criteria.map((criterion) => [criterion.key, criterion]),
   );
+  const hasWithheldLevels = [
+    ...current.correction.criteria,
+    ...previous.correction.criteria,
+  ].some(
+    (criterion) =>
+      !criterion.confidence ||
+      criterion.confidence === 'LOW' ||
+      !criterion.levelLabel,
+  );
   const changes = current.correction.criteria.flatMap((criterion) => {
     const prior = previousByKey.get(criterion.key);
-    if (!prior || prior.levelKey === criterion.levelKey) return [];
+    if (
+      !prior ||
+      !prior.confidence ||
+      prior.confidence === 'LOW' ||
+      !criterion.confidence ||
+      criterion.confidence === 'LOW' ||
+      !prior.levelLabel ||
+      !criterion.levelLabel ||
+      prior.levelKey === criterion.levelKey
+    )
+      return [];
     return [
       {
         current: criterion.levelLabel,
@@ -323,9 +352,10 @@ function CorrectionComparison({
             </li>
           ))}
         </ul>
-      ) : (
+      ) : !hasWithheldLevels ? (
         <p>{t('aiCorrection.comparisonStable')}</p>
-      )}
+      ) : null}
+      {hasWithheldLevels ? <p>{t('aiCorrection.comparisonWithheld')}</p> : null}
     </div>
   );
 }

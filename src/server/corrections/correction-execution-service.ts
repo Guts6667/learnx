@@ -33,6 +33,7 @@ import {
   PROMOTED_CORRECTION_IDENTITY,
 } from './promoted-identity.js';
 import { buildRuntimeCorrectionMessages } from './runtime-correction-prompt.js';
+import { authorizeCorrectionAttempt } from './correction-dispatch.js';
 
 /**
  * Why a model call did not produce a usable generation, kept apart because the
@@ -161,6 +162,7 @@ export class CorrectionExecutionService {
     private readonly apiKey: string,
     /** Absent in an environment with no checker configured. */
     private readonly checker?: CorrectionCheckerPort,
+    private readonly canDispatch: () => Promise<boolean> = async () => true,
   ) {}
 
   public async execute(input: {
@@ -241,10 +243,11 @@ export class CorrectionExecutionService {
   }
 
   /**
-   * Never throws. A checker that fails takes the HIGH ceiling away and nothing
+   * A provider failure takes the HIGH ceiling away and nothing
    * else — the correction it was checking is already produced and stays valid
    * at MEDIUM. Letting a checker failure fail the correction would make the
-   * guard more dangerous than its absence.
+   * guard more dangerous than its absence. Persistence failures still escape
+   * to financial reconciliation.
    */
   private async verify(input: {
     attempts: RuntimeCorrectionAttempt[];
@@ -262,13 +265,17 @@ export class CorrectionExecutionService {
         questions.map((question) => [question.criterionKey, 'UNAVAILABLE']),
       );
     if (!this.checker || questions.length === 0) return unavailable();
+    if (!(await this.canDispatch())) return unavailable();
 
     // The checker's call is recorded like any other, under its own role. Its
     // spend was previously measured and dropped, so a correction's recorded
     // cost understated what was actually spent and V4.5-114 had no checker
     // figure to price a ceiling from.
     const sequence = input.attempts.length + 1;
-    await this.corrections.recordAttemptIntent({
+    const allowed = await authorizeCorrectionAttempt({
+      corrections: this.corrections,
+      canDispatch: this.canDispatch,
+      attempts: input.attempts,
       correctionId: input.correctionId,
       identity: {
         modelId: PROMOTED_CHECKER_IDENTITY.modelId,
@@ -278,6 +285,7 @@ export class CorrectionExecutionService {
       },
       sequence,
     });
+    if (!allowed) return unavailable();
 
     // A checker that throws is the same as one that answers UNAVAILABLE: the
     // attempt is still recorded, so the call is not invisible in the ledger.
@@ -293,6 +301,9 @@ export class CorrectionExecutionService {
       ...(outcome?.providerRoute == null
         ? {}
         : { providerRoute: outcome.providerRoute }),
+      ...(outcome?.providerRequestId == null
+        ? {}
+        : { providerRequestId: outcome.providerRequestId }),
       sequence,
       status:
         outcome && outcome.unavailableReason === null ? 'SUCCEEDED' : 'FAILED',
@@ -316,11 +327,16 @@ export class CorrectionExecutionService {
     attempts: RuntimeCorrectionAttempt[];
     usage: UsageTracker;
   }): Promise<CallOutcome> {
+    if (!(await this.canDispatch())) return { kind: 'CALL_FAILED' };
     const sequence = input.attempts.length + 1;
-    await this.corrections.recordAttemptIntent({
+    const allowed = await authorizeCorrectionAttempt({
+      corrections: this.corrections,
+      canDispatch: this.canDispatch,
+      attempts: input.attempts,
       correctionId: input.correctionId,
       sequence,
     });
+    if (!allowed) return { kind: 'CALL_FAILED' };
     let generation: Awaited<ReturnType<CorrectionTransportPort['execute']>>;
     try {
       generation = await this.transport.execute({

@@ -1,0 +1,10 @@
+C-ca1ef61e53 | OUI | phrases: s1,s2 | autre: - | raison: les coûts d'arrêt et l'écart de prix fondent le choix de Préventel, et la date de visite concerne bien le contrat retenu.
+C-47402cc097 | OUI | phrases: s0,s1 | autre: - | raison: la subvention et les coûts nets sont les seules données avancées et portent directement sur la réparation complète choisie.
+C-55f08a077c | NON | phrases: - | autre: NON | raison: la phrase parle de « durée de traitement d'une demande » alors que le dossier ne vise que le tri des demandes ; aucune autre phrase n'est fournie.
+C-23cb79db39 | NON | phrases: s0 | autre: - | raison: le seuil est correctement conditionné à la mesure, mais l'équipe de 12 personnes est mise au conditionnel alors que le dossier l'affirme.
+C-6f02478fc2 | OUI | phrases: s2,s3 | autre: - | raison: la baseline absente et le plafond de qualité présenté comme proposition correspondent exactement aux manques du dossier.
+C-4d3ebe4339 | OUI | phrases: - | autre: NON | raison: la phrase marquée recommande explicitement de signer ; les phrases suivantes argumentent sans énoncer la position.
+C-d5dff02d07 | NON | phrases: s3,s5 | autre: - | raison: les six éléments de l'update sont présents mais le rituel où traiter le risque n'est indiqué nulle part.
+C-b24221cac5 | NON | phrases: - | autre: NON | raison: la phrase marquée propose une action de suivi, elle n'énonce aucun risque ; les autres phrases n'en énoncent pas non plus.
+C-5a5b6cc636 | NON | phrases: s1,s2 | autre: - | raison: s1 appuie la réparation complète, mais s2 avance une donnée qui peut inverser le calcul et n'appuie donc pas le choix.
+C-2d0f0c9620 | NON | phrases: s0 | autre: - | raison: la baisse est reprise mais ni la visibilité de l'embranchement donnée par les flèches ni l'état de charge non consigné ne sont restitués.

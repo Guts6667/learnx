@@ -1,3 +1,4 @@
+import { type DesignedCheckerIdentity } from './ai-correction-regression-probe-evidence.js';
 /**
  * Execution of the regression suite through the existing benchmark runner
  * (V4.5-120, spec §4).
@@ -23,8 +24,9 @@ import { createHash } from 'node:crypto';
 import type { SupplierBudgetGuard } from './ai-benchmark-supplier-budget.js';
 
 import {
-  deriveCriterionConfidence,
-  type CriterionConfidence,
+  deriveDeliveredCriterionConfidences,
+  deriveHardConstraintMismatch,
+  type CriterionConfidenceInput,
 } from './ai-correction-confidence.js';
 import type { CorrectionBenchmarkCorpus } from './ai-correction-benchmark.js';
 import { calculateEvidenceObservations } from './ai-correction-benchmark-summary-observations.js';
@@ -36,54 +38,21 @@ import {
   type RegressionMutant,
   type RegressionMutantKind,
 } from './ai-correction-regression-mutants.js';
+import { checkEvidenceGuards } from './ai-correction-evidence-guards.js';
 import type {
+  RegressionCheckerPort,
   RegressionCheckerVerdict,
   RegressionCriterionObservation,
   RegressionObservation,
   RegressionCaseScale,
   RegressionRate,
-} from './ai-correction-regression-metrics.js';
+} from './ai-correction-regression-contracts.js';
+export type { RegressionCheckerPort } from './ai-correction-regression-contracts.js';
 import type {
   LoadedRegressionSource,
   RegressionPool,
   RegressionPoolCase,
 } from './ai-correction-regression-pool.js';
-
-/**
- * The independent verifier, as the suite needs it.
- *
- * Declared here rather than imported from the server checker so the suite has
- * no dependency on a module that dispatches paid calls: offline tests inject a
- * stub, and V4.5-121 injects the promoted checker.
- */
-export interface RegressionCheckerPort {
-  verify(input: {
-    /**
-     * Everything the closed question needs: the rubric wording as well as the
-     * level chosen. Sending only keys would force the adapter to re-derive the
-     * rubric, which is how a verifier ends up asked about a level description
-     * that is not the one the correction was graded against.
-     */
-    criteria: {
-      criterionKey: string;
-      criterionLabel: string;
-      levelDescription: string;
-      levelKey: string;
-      levelLabel: string;
-      quotes: string[];
-    }[];
-    unitId: string;
-  }): Promise<{
-    /**
-     * What the provider actually charged, when it says so. The checker spends
-     * real money and must therefore reconcile against the run's budget guard
-     * like any other call; `null` means the provider returned no cost, which
-     * the caller treats as a reason to stop rather than as zero.
-     */
-    costUsd: number | null;
-    verdicts: Record<string, RegressionCheckerVerdict>;
-  }>;
-}
 
 /** One thing to be corrected: a pool case as-is, or one of its mutants. */
 type RegressionRunUnit = {
@@ -297,17 +266,44 @@ function firstSentence(text: string): string {
  * stopped during dispatch lost all of them and recomputing meant paying twice.
  */
 export type RegressionVerdictRecord = {
+  /** Absent on historical records, which cannot establish current confidence. */
+  candidateId?: string;
+  repetition?: number;
+  correctionSha256?: string;
+  checker?: DesignedCheckerIdentity;
+  rubricSha256?: string;
   criterionKey: string;
   unitId: string;
   verdict: RegressionCheckerVerdict;
 };
 
-/** Key under which a verdict is stored and looked up. */
-export function verdictKey(input: {
-  criterionKey: string;
-  unitId: string;
-}): string {
-  return `${input.unitId}::${input.criterionKey}`;
+/** A verdict belongs to one candidate, repetition and exact validated output. */
+export function verdictKey(
+  input: Omit<RegressionVerdictRecord, 'verdict'>,
+): string {
+  if (
+    !input.candidateId ||
+    !Number.isInteger(input.repetition) ||
+    !input.correctionSha256 ||
+    !/^[a-f0-9]{64}$/.test(input.correctionSha256) ||
+    !input.checker ||
+    !input.rubricSha256 ||
+    !/^[a-f0-9]{64}$/.test(input.rubricSha256)
+  ) {
+    return `legacy::${input.unitId}::${input.criterionKey}`;
+  }
+  return JSON.stringify([
+    input.unitId,
+    input.criterionKey,
+    input.candidateId,
+    input.repetition,
+    input.correctionSha256,
+    input.checker.modelId,
+    input.checker.routeProviders,
+    input.checker.promptSha256,
+    input.checker.requestProfileSha256,
+    input.rubricSha256,
+  ]);
 }
 
 export async function deriveRegressionObservations(input: {
@@ -319,6 +315,8 @@ export async function deriveRegressionObservations(input: {
    */
   budget?: SupplierBudgetGuard;
   checker?: RegressionCheckerPort;
+  /** Null is reserved for historical offline evidence with no checker identity. */
+  checkerIdentity: DesignedCheckerIdentity | null;
   /** Families inside the promoted identity's validated scope. */
   familyScientificallyValidated: boolean;
   /**
@@ -343,6 +341,8 @@ export async function deriveRegressionObservations(input: {
    */
   persistedVerdicts?: Map<string, RegressionCheckerVerdict>;
 }): Promise<RegressionObservation[]> {
+  if (input.checker && !input.checkerIdentity)
+    throw new Error('REGRESSION_CHECKER_IDENTITY_REQUIRED');
   const observations: RegressionObservation[] = [];
   const scalesByCase = new Map(
     input.plan.scales.map((scale) => [scale.caseId, scale]),
@@ -363,26 +363,54 @@ export async function deriveRegressionObservations(input: {
 
     let verdicts: Record<string, RegressionCheckerVerdict> = {};
     const unitId = unit.mutantId ?? unit.poolCaseId;
-    const alreadyKnown = attempt.output.criteria.every((criterion) =>
+    const contract = input.plan.corpus.contracts.find(
+      (candidate) =>
+        candidate.contractKey === attempt.output?.contractKey &&
+        candidate.version === attempt.output.contractVersion,
+    );
+    if (!contract) throw new Error('REGRESSION_RUBRIC_BINDING_MISSING');
+
+    const binding = {
+      candidateId: attempt.candidateId,
+      repetition: attempt.repetition,
+      checker: input.checkerIdentity ?? undefined,
+      rubricSha256: createHash('sha256')
+        .update(JSON.stringify(contract))
+        .digest('hex'),
+      correctionSha256: createHash('sha256')
+        .update(JSON.stringify(attempt.output))
+        .digest('hex'),
+    };
+    const legacyUnbound = attempt.output.criteria.some((criterion) =>
       input.persistedVerdicts?.has(
         verdictKey({ criterionKey: criterion.criterionKey, unitId }),
       ),
     );
+    const alreadyKnown =
+      input.checkerIdentity !== null &&
+      attempt.output.criteria.every((criterion) =>
+        input.persistedVerdicts?.has(
+          verdictKey({
+            criterionKey: criterion.criterionKey,
+            unitId,
+            ...binding,
+          }),
+        ),
+      );
     if (alreadyKnown && input.persistedVerdicts) {
       verdicts = Object.fromEntries(
         attempt.output.criteria.map((criterion) => [
           criterion.criterionKey,
           input.persistedVerdicts?.get(
-            verdictKey({ criterionKey: criterion.criterionKey, unitId }),
+            verdictKey({
+              criterionKey: criterion.criterionKey,
+              unitId,
+              ...binding,
+            }),
           ) ?? 'UNAVAILABLE',
         ]),
       );
-    } else if (input.checker) {
-      const contract = input.plan.corpus.contracts.find(
-        (candidate) =>
-          candidate.contractKey === attempt.output?.contractKey &&
-          candidate.version === attempt.output.contractVersion,
-      );
+    } else if (input.checker && !legacyUnbound) {
       const outcome = await input.checker.verify({
         criteria: attempt.output.criteria.map((criterion) => {
           const rubric = contract?.criteria.find(
@@ -405,6 +433,7 @@ export async function deriveRegressionObservations(input: {
       verdicts = outcome.verdicts;
       await input.onVerdicts?.(
         Object.entries(outcome.verdicts).map(([criterionKey, verdict]) => ({
+          ...binding,
           criterionKey,
           unitId,
           verdict,
@@ -432,7 +461,7 @@ export async function deriveRegressionObservations(input: {
       }
     }
 
-    const criteria: RegressionCriterionObservation[] =
+    const confidenceInputs: CriterionConfidenceInput[] =
       attempt.output.criteria.map((criterion) => {
         const ordered =
           scale.criteria.find(
@@ -457,26 +486,54 @@ export async function deriveRegressionObservations(input: {
         const cited = (attempt.evidenceMatches ?? []).some(
           (match) => match.criterionKey === criterion.criterionKey,
         );
+        const isFloorLevel = ordered.at(0) === criterion.levelKey;
         return {
-          checkerVerdict: verdict,
-          confidence: deriveConfidence({
-            cited,
-            evidenceStatus,
-            levelKey: criterion.levelKey,
-            orderedLevelKeys: ordered,
-            verdict,
-          }),
-          criterionKey: criterion.criterionKey,
-          ...(rawEvidenceStatus === 'EVIDENCE_WITHDRAWN'
-            ? { evidenceWithdrawn: true }
-            : {}),
-          levelKey: criterion.levelKey,
+          citation: cited ? 'VERIFIED' : 'ABSENT',
+          evidenceStatus,
+          hardConstraintMismatch: deriveHardConstraintMismatch(
+            criterion.feedback,
+            isFloorLevel,
+          ),
+          isFloorLevel,
+          isMasteredLevel: ordered.at(-1) === criterion.levelKey,
+          verifier: verdict,
         };
       });
+    const confidences = deriveDeliveredCriterionConfidences({
+      criteria: confidenceInputs,
+      familyScientificallyValidated: input.familyScientificallyValidated,
+    });
+    const criteria: RegressionCriterionObservation[] =
+      attempt.output.criteria.map((criterion, index) => ({
+        checkerVerdict: verdicts[criterion.criterionKey] ?? 'UNAVAILABLE',
+        confidence: confidences[index] ?? 'LOW',
+        criterionKey: criterion.criterionKey,
+        evidenceQuotes: quotesByCriterion.get(criterion.criterionKey) ?? [],
+        ...('evidenceStatus' in criterion &&
+        criterion.evidenceStatus === 'EVIDENCE_WITHDRAWN'
+          ? { evidenceWithdrawn: true }
+          : {}),
+        levelKey: criterion.levelKey,
+      }));
+
+    // D0 runs before anything a verifier could say, on the text actually graded.
+    const evidenceGuardViolations = checkEvidenceGuards({
+      expectedCriterionKeys: scale.criteria.map((entry) => entry.criterionKey),
+      responseText: unit.responseText,
+      returnedCriteria: attempt.output.criteria.map((criterion) => ({
+        criterionKey: criterion.criterionKey,
+        evidenceQuotes: criterion.evidenceQuotes ?? [],
+        levelKey: criterion.levelKey,
+      })),
+      topLevelKeys: scale.criteria
+        .map((entry) => entry.orderedLevelKeys.at(-1))
+        .filter((levelKey): levelKey is string => typeof levelKey === 'string'),
+    });
 
     observations.push({
       caseId: unit.poolCaseId,
       criteria,
+      evidenceGuardViolations,
       ...(unit.expectation ? { expectation: unit.expectation } : {}),
       ...(unit.kind ? { kind: unit.kind } : {}),
       ...(unit.mutantId ? { mutantId: unit.mutantId } : {}),
@@ -493,26 +550,6 @@ export async function deriveRegressionObservations(input: {
   }
 
   return observations;
-}
-
-function deriveConfidence(input: {
-  cited: boolean;
-  evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
-  levelKey: string;
-  orderedLevelKeys: string[];
-  verdict: RegressionCheckerVerdict;
-}): CriterionConfidence {
-  return deriveCriterionConfidence({
-    citation: input.cited ? 'VERIFIED' : 'ABSENT',
-    evidenceStatus: input.evidenceStatus,
-    // Not decidable from a benchmark attempt: the hard-constraint signal is a
-    // server-side reading of the feedback, and inventing one here would put a
-    // guess into the confidence contract.
-    hardConstraintMismatch: false,
-    isFloorLevel: input.orderedLevelKeys.at(0) === input.levelKey,
-    isMasteredLevel: input.orderedLevelKeys.at(-1) === input.levelKey,
-    verifier: input.verdict,
-  });
 }
 
 function quotedForbiddenSegment(input: {

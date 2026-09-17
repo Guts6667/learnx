@@ -249,11 +249,9 @@ describe('withStoredConfidence', () => {
   });
 
   it('laisse intacte une correction déjà étiquetée', () => {
-    const resolved = withStoredConfidence({
-      ...failedCorrection(0.01),
-      criteria: [],
-      overallConfidence: 'MEDIUM',
-    });
+    const correction = build([foundCriterion({ levelKey: 'partial' })]);
+    const resolved = withStoredConfidence(correction, contract);
+    expect(resolved).toEqual(correction);
     expect(resolved.overallConfidence).toBe('MEDIUM');
   });
 });

@@ -1,4 +1,12 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { applyResearchPriceCeilings } from '../src/lib/ai-correction-research-guarded-fetch.ts';
+import {
+  withGuardedResearchRun,
+  readResearchProviderUsage,
+} from '../src/lib/ai-correction-research-run.ts';
+import { sharedResearchStateDirectory } from '../src/lib/ai-correction-atom-verifier-budget.ts';
+import { runDesignedCheckerProbe } from '../src/lib/ai-correction-regression-probe-cli.ts';
+import { designedCheckerIdentity } from '../src/lib/ai-correction-regression-probe-evidence.ts';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -6,17 +14,20 @@ import { runAiCorrectionBenchmarkCli } from '../src/lib/ai-correction-benchmark-
 import { loadBenchmarkInputs as loadInputsForRegression } from '../src/lib/ai-correction-benchmark-runner.ts';
 import { callCandidate } from '../src/lib/ai-correction-benchmark-runner.ts';
 import {
-  runCheckerMeasurement,
+  checkerPricingSchema,
   runRegressionAnalysis,
   runRegressionPool,
 } from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
 import {
-  parseCheckerPromptVariant,
   parseFalseAgreeProbe,
-  runFalseAgreeProbe,
+  parseCheckerPromptVariant,
 } from '../src/lib/ai-correction-false-agree-probe.ts';
-import { createRuntimeCorrectionChecker } from '../src/server/corrections/correction-checker.ts';
+import {
+  buildCheckerRequestBody,
+  createRuntimeCorrectionChecker,
+  DEFAULT_CHECKER_INSTRUCTIONS,
+} from '../src/server/corrections/correction-checker.ts';
 import {
   PROMOTED_CHECKER_IDENTITY,
   PROMOTED_CORRECTION_IDENTITY,
@@ -60,11 +71,13 @@ const REGRESSION_PINNED_IDENTITIES = {
 function buildRegressionChecker(
   apiKey: string,
   instructions?: readonly string[],
+  fetchImplementation?: typeof fetch,
 ): RegressionCheckerPort {
   const runtime = createRuntimeCorrectionChecker({
     apiKey,
     appUrl: process.env.LEARNX_APP_URL ?? 'https://learnx.local',
     ...(instructions ? { instructions } : {}),
+    ...(fetchImplementation ? { fetchImplementation } : {}),
   });
   return {
     async verify({ criteria }) {
@@ -90,7 +103,8 @@ async function runAiCorrectionRegressionCli(
   // Dispatching is opt-in twice over: the preflight refuses a plan that does
   // not fit its cap, and nothing contacts a provider without --execute. The
   // default of this command therefore cannot spend money by accident.
-  const execute = arguments_.includes('--execute');
+  const execute =
+    arguments_.includes('--execute') && !arguments_.includes('--dry-run');
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (execute && !apiKey) {
     throw new Error(
@@ -98,25 +112,71 @@ async function runAiCorrectionRegressionCli(
     );
   }
 
-  // Measuring the verifier's cost replays already-recorded corrections through
-  // it: the corrections were paid for once, so this buys only the verifier.
   if (arguments_.some((argument) => argument.startsWith('--measure-checker'))) {
-    if (!apiKey) {
-      throw new Error(
-        'REGRESSION_RUN_API_KEY_REQUIRED: la mesure du vérificateur demande OPENROUTER_API_KEY.',
-      );
-    }
-    const measurement = await runCheckerMeasurement({
-      arguments: arguments_,
-      checker: buildRegressionChecker(apiKey),
-      identities: REGRESSION_PINNED_IDENTITIES,
-      providerApiKey: apiKey,
-    });
-    console.log(
-      `Mesure du vérificateur : ${measurement.callsMade} appels, ${measurement.spentUsd.toFixed(6)} USD, ${measurement.resultsDirectory}`,
+    throw new Error(
+      'REGRESSION_MEASURE_CHECKER_RETIRED: use --false-agree-probe with explicit --execute and a shared envelope.',
     );
-    return;
   }
+  const pricing = checkerPricingSchema.parse(
+    JSON.parse(
+      await readFile(
+        path.resolve(
+          'benchmarks/ai-correction/regression/checker-pricing.v1.json',
+        ),
+        'utf8',
+      ),
+    ) as unknown,
+  );
+  const checkerModel = {
+    ...pricing,
+    maxOutputTokens:
+      PROMOTED_CHECKER_IDENTITY.requestProfile.totalOutputTokenLimit,
+  };
+  const frozenProbe = parseFalseAgreeProbe(
+    JSON.parse(
+      await readFile(
+        path.resolve(
+          'benchmarks/ai-correction/regression/false-agree-probe.v1.json',
+        ),
+        'utf8',
+      ),
+    ) as unknown,
+  );
+  const executableCheckerProfile = (instructions: readonly string[]) => ({
+    routeProviders: PROMOTED_CHECKER_IDENTITY.requestProfile.routeProviders,
+    endpoint: 'https://openrouter.ai/api/v1/chat/completions',
+    method: 'POST',
+    redirect: 'error',
+    timeoutMs: PROMOTED_CHECKER_IDENTITY.requestProfile.timeoutMs,
+    // Actual renderer, schema, temperature and provider policy; no claimed reasoning setting absent from the wire.
+    requests: frozenProbe.cases.map((entry) => ({
+      id: entry.id,
+      body: applyResearchPriceCeilings(
+        buildCheckerRequestBody(
+          [
+            {
+              criterionKey: entry.criterionKey,
+              criterionLabel: entry.criterionLabel,
+              levelDescription: entry.levelDescription,
+              levelLabel: entry.levelLabel,
+              quotes: entry.quotes,
+            },
+          ],
+          instructions,
+        ),
+        checkerModel,
+      ),
+    })),
+  });
+  const defaultProfile = executableCheckerProfile(DEFAULT_CHECKER_INSTRUCTIONS);
+  const identities = {
+    ...REGRESSION_PINNED_IDENTITIES,
+    checkerQualificationIdentity: designedCheckerIdentity({
+      modelId: pricing.modelId,
+      instructions: DEFAULT_CHECKER_INSTRUCTIONS,
+      requestProfile: defaultProfile,
+    }),
+  };
 
   // The designed false-agreement probe. Verifier only: no primary call, no
   // learner response graded. `--dry-run` prices it and validates the cases
@@ -124,19 +184,16 @@ async function runAiCorrectionRegressionCli(
   if (
     arguments_.some((argument) => argument.startsWith('--false-agree-probe'))
   ) {
-    const probePath = path.resolve(
-      'benchmarks/ai-correction/regression/false-agree-probe.v1.json',
-    );
-    const probe = parseFalseAgreeProbe(
-      JSON.parse(await readFile(probePath, 'utf8')) as unknown,
-    );
-    // Which instructions the verifier is measured under. Default A: the
-    // promoted runtime prompt, so the reference measurement is the system as
-    // it ships rather than a variant nobody runs.
-    const promptId =
+    const option = (name: string) =>
       arguments_
-        .find((argument) => argument.startsWith('--checker-prompt='))
-        ?.split('=')[1] ?? 'A';
+        .find((argument) => argument.startsWith(`--${name}=`))
+        ?.slice(name.length + 3);
+    const qualificationRunId = option('qualification-run-id');
+    if (!qualificationRunId)
+      throw new Error('DESIGNED_PROBE_QUALIFICATION_RUN_ID_REQUIRED');
+    const promptId = option('checker-prompt') ?? 'A';
+    if (!/^[A-Za-z0-9-]+$/.test(promptId))
+      throw new Error('DESIGNED_PROBE_PROMPT_ID_INVALID');
     const variant = parseCheckerPromptVariant(
       JSON.parse(
         await readFile(
@@ -147,76 +204,75 @@ async function runAiCorrectionRegressionCli(
         ),
       ) as unknown,
     );
-
-    if (!arguments_.includes('--execute')) {
-      // Priced under the recorded rate, never a guess: a candidate with no
-      // recorded rate cannot be bounded, and is refused rather than estimated.
-      const pricing = JSON.parse(
-        await readFile(
-          path.resolve(
-            'benchmarks/ai-correction/regression/checker-pricing.v1.json',
-          ),
-          'utf8',
-        ),
-      ) as { modelId: string };
-      console.log(
-        `Sonde faux accord, à sec — consigne ${variant.id} (${variant.label}) — ${probe.cases.length} cas, ${probe.cases.length} appels vérificateur, aucun appel primaire.`,
-      );
-      console.log(
-        `Vérificateur tarifé : ${pricing.modelId}. Coût mesuré par appel sur la run du 30 août : 0,0011075 USD, soit ${(probe.cases.length * 0.0011075).toFixed(4)} USD pour cette sonde.`,
-      );
-      console.log(
-        `Verdict attendu sur les ${probe.cases.length} : ${probe.expectedVerdict}. Chaque accord est un faux accord.`,
-      );
-      return;
-    }
-
-    if (!apiKey) {
-      throw new Error(
-        'REGRESSION_RUN_API_KEY_REQUIRED: la sonde demande OPENROUTER_API_KEY.',
-      );
-    }
-    const result = await runFalseAgreeProbe({
-      checker: buildRegressionChecker(apiKey, variant.instructions),
-      probe,
+    const executableProfile = executableCheckerProfile(variant.instructions);
+    const checker = designedCheckerIdentity({
+      modelId: pricing.modelId,
+      requestProfile: executableProfile,
+      instructions: variant.instructions,
     });
-    // A measurement that lives only in a terminal cannot be cited later. The
-    // first run of this probe had to be transcribed from stdout; this is so the
-    // next one is not.
-    const probeDirectory = path.resolve(
-      'benchmarks/ai-correction/regression/probes',
-      new Date().toISOString().replace(/[:.]/g, '-'),
+    const allowedRequests = new Set(
+      executableProfile.requests.map((entry) => JSON.stringify(entry.body)),
     );
-    await mkdir(probeDirectory, { recursive: true });
-    await writeFile(
-      path.join(probeDirectory, `probe-${variant.id}.json`),
-      `${JSON.stringify(
-        {
-          checkerModelId: PROMOTED_CHECKER_IDENTITY.modelId,
-          checkerPromptId: variant.id,
-          checkerPromptLabel: variant.label,
-          instructions: variant.instructions,
-          probeId: probe.probeId,
-          result,
-        },
-        null,
-        2,
-      )}\n`,
-      'utf8',
+    // Research-only price ceilings; production request bodies are untouched.
+    const pricedCheckerFetch: typeof fetch = async (resource, init) => {
+      const request = new Request(resource, init);
+      const body = applyResearchPriceCeilings(
+        JSON.parse(await request.text()) as unknown,
+        checkerModel,
+      );
+      const serialized = JSON.stringify(body);
+      if (
+        request.url !== executableProfile.endpoint ||
+        request.method !== 'POST' ||
+        !allowedRequests.has(serialized)
+      )
+        throw new Error('DESIGNED_PROBE_EXECUTABLE_PROFILE_MISMATCH');
+      return fetch(
+        new Request(request, { body: serialized, redirect: 'error' }),
+      );
+    };
+    const result = await runDesignedCheckerProbe({
+      arguments: arguments_,
+      binding: {
+        checker,
+        qualificationRunId,
+        measurementKind: 'LIVE',
+        simulatesValidatedFamily: arguments_.includes(
+          '--simulate-validated-family',
+        ),
+      },
+      instructions: variant.instructions,
+      executableProfile,
+      ...(apiKey
+        ? {
+            checker: buildRegressionChecker(
+              apiKey,
+              variant.instructions,
+              pricedCheckerFetch,
+            ),
+            apiKey,
+          }
+        : {}),
+      budgetDirectory: sharedResearchStateDirectory(),
+      probePath: path.resolve(
+        'benchmarks/ai-correction/regression/false-agree-probe.v1.json',
+      ),
+      outputDirectory: path.resolve(
+        'benchmarks/ai-correction/regression/probes',
+        new Date().toISOString().replace(/[:.]/g, '-'),
+      ),
+      pricing,
+      maxOutputTokens:
+        PROMOTED_CHECKER_IDENTITY.requestProfile.totalOutputTokenLimit,
+      readProviderUsage: () =>
+        apiKey
+          ? readResearchProviderUsage(apiKey, fetch)
+          : Promise.resolve(null),
+    });
+    console.log(
+      `Designed probe: reserved bound ${result.reservedBoundUsd.toFixed(6)} USD; ${result.evidencePath ?? 'dry run, no calls'}`,
     );
 
-    const { denominator, numerator, rate } = result.checkerFalseAgreeDesigned;
-    console.log(
-      `Sonde faux accord, consigne ${variant.id} — ${numerator}/${denominator} faux accords${rate === null ? '' : ` = ${(rate * 100).toFixed(2)} %`}, ${result.costUsd.toFixed(6)} USD — ${probeDirectory}.`,
-    );
-    for (const agreement of result.falseAgreements) {
-      console.log(`  accord sur ${agreement.id} — ${agreement.falseBecause}`);
-    }
-    if (result.unavailable.length > 0) {
-      console.log(
-        `  ${result.unavailable.length} cas sans verdict, exclus du dénominateur : ${result.unavailable.join(', ')}`,
-      );
-    }
     return;
   }
 
@@ -224,12 +280,15 @@ async function runAiCorrectionRegressionCli(
   // a paid run already bought. It is checked before the key is required so a
   // dead run stays analysable on a machine with no credentials.
   if (arguments_.some((argument) => argument.startsWith('--analyse'))) {
-    const { analysis, resultsDirectory } = await runRegressionAnalysis({
-      arguments: arguments_,
-    });
-    console.log(`Analyse hors ligne de ${resultsDirectory} — aucun appel.`);
+    const { analysis, resultsDirectory, poolBinding } =
+      await runRegressionAnalysis({
+        arguments: arguments_,
+      });
     console.log(
-      `${analysis.attempts.length} tentatives, ${analysis.cellsObserved} cellules, ${analysis.cellsUnusable} inexploitables, ${analysis.verdictCount} verdicts réutilisés, ${analysis.ledgerSpentUsd.toFixed(4)} USD au registre.`,
+      `Ré-analyse versionnée hors ligne de ${resultsDirectory} — lien pool ${poolBinding}, politique source ${analysis.sourceGatePolicyVersion ?? 'inconnue'}, politique appliquée ${analysis.gatePolicyVersion}, simulation famille validée ${analysis.simulatesValidatedFamily}, aucun appel.`,
+    );
+    console.log(
+      `${analysis.attempts.length} tentatives, ${analysis.cellsObserved} cellules, ${analysis.cellsUnusable} inexploitables, ${analysis.verdictCount} verdicts liés, ${analysis.legacyUnboundVerdictCount} verdicts historiques non liés (inutilisables), ${analysis.ledgerSpentUsd.toFixed(4)} USD au registre.`,
     );
     console.log(
       `Répétitions distinctes : ${analysis.distinctRepetitions.join(', ') || 'aucune'}.`,
@@ -265,18 +324,47 @@ async function runAiCorrectionRegressionCli(
     return;
   }
 
-  const outcome = await runRegressionPool({
-    arguments: arguments_,
-    ...(execute && apiKey
-      ? {
-          checker: buildRegressionChecker(apiKey),
-          executeCandidate: callCandidate,
-          providerApiKey: apiKey,
-        }
-      : {}),
-    configuration,
-    identities: REGRESSION_PINNED_IDENTITIES,
-  });
+  const executeRun = (
+    guard?: Parameters<
+      Parameters<typeof withGuardedResearchRun>[0]['execute']
+    >[0],
+  ) =>
+    runRegressionPool({
+      arguments: arguments_,
+      configuration,
+      identities,
+      ...(execute && apiKey && guard
+        ? {
+            checker: buildRegressionChecker(apiKey, undefined, guard.fetch),
+            executeCandidate: (input) =>
+              callCandidate({ ...input, fetchImplementation: guard.fetch }),
+            providerApiKey: apiKey,
+            beforeFinalization: guard.assertReconciled,
+          }
+        : {}),
+    });
+  const primary = configuration.candidates.find(
+    (candidate) => candidate.candidateId === identities.primaryCandidateId,
+  );
+  if (!primary) throw new Error('REGRESSION_PRIMARY_PRICE_MISSING');
+  const outcome =
+    execute && !arguments_.includes('--dry-run') && apiKey
+      ? await withGuardedResearchRun({
+          arguments: arguments_,
+          apiKey,
+          runId: `regression:${new Date().toISOString()}`,
+          models: [
+            checkerModel,
+            {
+              modelId: primary.modelId,
+              promptUsdPerToken: primary.promptUsdPerToken,
+              completionUsdPerToken: primary.completionUsdPerToken,
+              maxOutputTokens: primary.requestProfile.totalOutputTokenLimit,
+            },
+          ],
+          execute: executeRun,
+        })
+      : await executeRun();
 
   console.log(
     outcome.dryRun

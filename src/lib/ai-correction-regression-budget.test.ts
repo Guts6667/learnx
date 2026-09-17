@@ -211,6 +211,12 @@ describe('checker calls under the budget guard', () => {
   it('reconciles checker cost so the cap governs the whole run', async () => {
     const guard = new SupplierBudgetGuard(1);
     await deriveRegressionObservations({
+      checkerIdentity: {
+        modelId: 'synthetic-checker',
+        routeProviders: ['synthetic'],
+        promptSha256: 'a'.repeat(64),
+        requestProfileSha256: 'b'.repeat(64),
+      },
       attempts: [],
       budget: guard,
       checker: {

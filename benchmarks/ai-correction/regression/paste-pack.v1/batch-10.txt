@@ -1,0 +1,129 @@
+Tu relis des copies d'élèves à l'aveugle. Pour chaque carte, une seule question, en français, à propos d'un extrait de copie. Tu ne sais rien d'autre : ni le barème, ni la note, ni ce que d'autres ont répondu.
+
+RÈGLES
+
+1. Réponds avec ce que la carte te laisse regarder, rien d'autre. N'utilise pas de connaissances extérieures et ne suppose rien qui n'est pas écrit. Quand une consigne ou un dossier sont donnés, ils servent à comprendre ; la réponse porte sur la copie.
+
+2. La portée est indiquée sur chaque carte :
+   - « la phrase marquée, prise seule » : la réponse porte uniquement sur la phrase entre ⟦ et ⟧. Le reste de l'extrait sert à comprendre, il ne compte pas. Si ta réponse ne tient que grâce à une autre phrase, réponds NON ou INDÉCIS, et signale-le dans « autre ».
+   - « la copie, en citant les phrases » : la réponse porte sur la copie entière ; cite, par leur numéro, les phrases qui te font répondre : une phrase par chose concernée (par exemple une pour la donnée, une pour le choix), jamais toutes.
+   - « la copie entière » : la réponse porte sur toute la copie, sans citation.
+
+3. Trois réponses possibles : OUI, NON, INDÉCIS. INDÉCIS veut dire que ce que tu as sous les yeux ne permet pas de trancher de façon fiable. Ce n'est pas une faute, mais donne la raison.
+
+4. Une phrase qui parle du bon sujet n'est pas forcément la preuve. Ne réponds OUI que si la phrase, ou les phrases citées, établissent par elles-mêmes ce que la question demande. Les mots CHAQUE et AUCUNE dans une question portent sur tous les éléments concernés : un seul contre-exemple suffit pour répondre NON.
+
+5. « autre », seulement pour la portée « phrase seule » : si on retirait la phrase marquée, une autre phrase de l'extrait suffirait-elle, seule, à répondre OUI ? Réponds OUI ou NON. Pour les autres portées, mets « - ».
+
+FORMAT DE RÉPONSE
+
+Strict : une ligne par carte, dans l'ordre des cartes, sans aucun autre texte avant, entre ou après.
+
+C-identifiant | OUI ou NON ou INDÉCIS | phrases: s1,s3 ou - | autre: OUI ou NON ou - | raison: une phrase courte
+
+Exemple :
+C-0000000000 | NON | phrases: - | autre: OUI | raison: la phrase constate un problème sans rien proposer ; la phrase suivante propose.
+
+LES CARTES
+
+### Carte 91 · C-1cff16763a
+Consigne : Décide quand faire réviser le four F3 et délimite la portée de ta décision.
+Question : La réponse dit-elle à la personne visée quoi choisir ou quoi faire, sans qu’elle ait à deviner entre plusieurs actions différentes ?
+Écriture pour la machine : action_resolved — la réponse dit à l'acteur visé quoi choisir ou faire sans inférence entre actions matériellement différentes · ac.a3 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sa capacité est tombée de 95 % à 82 % en un an et les 26 jours de commandes au carnet ne supporteraient pas une panne totale avant l’arrêt du 9 mars ; réviser à 5 200 euros lors de cet arrêt serait plus confortable, mais cela laisse le four dériver encore six mois alors que le dossier n’exclut aucune panne sèche.
+[s1] Ma seule condition de repli : si le prestataire ne s’engage pas par écrit sur les 3 jours d’immobilisation de la révision immédiate, je bascule sur l’arrêt du 9 mars.
+[s2] Le risque résiduel est l’absence d’historique de la dérive mois par mois ; un relevé de capacité hebdomadaire après révision dira si le retour vers 95 % est réel.
+
+### Carte 92 · C-b3c931fb18
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?
+Écriture pour la machine : CHAQUE affirmation utile est fidèle au contexte · cf.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Aucune mesure de durée n’existe aujourd’hui, donc la baseline reste à établir avant tout engagement chiffré.⟧
+
+### Carte 93 · C-6cacbee4ed
+Consigne : Expliquez la baisse observée en distinguant faits établis, mécanisme plausible et inconnues.
+Dossier : Contexte fiable et fictif : lors d'un premier tri de 24 étoiles en carton, une légende placée à l'écart a été suivie de 10 erreurs de placement. Lors d'un second tri des mêmes 24 étoiles, la légende a été placée à côté du plateau et 4 erreurs ont été relevées. Le groupe, l'ordre des étoiles et les 20 minutes allouées sont restés identiques. L'observateur a noté moins de regards allant du plateau vers la table distante. Le même groupe a participé aux deux tris, donc un effet d'entraînement reste possible ; aucun nouveau groupe n'a été testé.
+Question : CHAQUE fait du dossier nécessaire à l’explication est-il repris dans la réponse ?
+Écriture pour la machine : CHAQUE fait nécessaire du dossier est restitué dans la réponse · sf.a1 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Le fait que les participants détournent moins le regard rend plausible un mécanisme simple : la légende voisine maintient le repère visible pendant le placement et réduit les allers-retours susceptibles de faire perdre la correspondance.
+[s1] Cela soutient une contribution de la proximité sans prouver qu'elle cause seule la baisse, car le second passage peut aussi bénéficier de l'entraînement.
+[s2] Sans essai sur un nouveau groupe, la généralisation reste inconnue.
+
+### Carte 94 · C-03c7a0d6cb
+Contexte : aucun, la question se juge sur la copie seule.
+Question : L’élève nomme-t-il un risque ?
+Écriture pour la machine : un risque est nommé · rr.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre. ⟦L’inconnue majeure reste la cause des pannes : le dossier ne renseigne aucune des 5 immobilisations de 2025, donc rien ne prouve que des visites préventives les auraient évitées.⟧ Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le co …
+
+### Carte 95 · C-479e0a1393
+Consigne : Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.
+Question : Cette preuve démontre-t-elle la pratique que la consigne demandait ?
+Écriture pour la machine : CETTE preuve démontre CETTE pratique · pe.a2 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Sprint Goal : rendre la recherche de cours utilisable sur mobile.
+[s1] Progrès : 2 des 5 tickets sont terminés.
+[s2] Fait nouveau : le fournisseur d’authentification annonce une coupure de 2 heures jeudi.
+[s3] Risque : la coupure tombe sur la fenêtre de test de la recherche connectée.
+[s4] Décision demandée : décaler la recette au vendredi ou tester en mode déconnecté.
+[s5] Prochaine action : Inès prépare le jeu de test déconnecté avant mercredi soir.
+[s6] Ce risque se traite au refinement hebdomadaire, puisqu’il change le contenu de la fin de sprint plutôt que la journée en cours.
+
+### Carte 96 · C-411668afb4
+Consigne : Produisez une réflexion complète en restant très concis.
+Dossier : Contexte fiable et fictif : au premier tour d'un jeu de classement, j'ai annoncé les symboles après la distribution et 5 joueurs sur 9 ont recommencé. Au second, je les ai annoncés avant et 1 sur 9 a recommencé. Les pièces avaient aussi été prétriées au second tour ; aucun troisième tour n'a eu lieu.
+Question : Cette séquence s’appuie-t-elle sur des observations du dossier ?
+Écriture pour la machine : CETTE séquence est ancrée sur des observations du dossier · esg.a2 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Les reprises passent de 5/9 quand j'annonce les symboles après la distribution à 1/9 quand je les annonce avant.⟧ Mon annonce anticipée a pu donner le repère avant le premier choix, sans que je puisse séparer cet effet de celui du prétri. Au prochain tour, j'annoncerai avant, sans prétri, et compterai les reprises sur 9 joueurs ; au-delà d …
+
+### Carte 97 · C-73a8c98c78
+Consigne : Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.
+Question : L’élève énonce-t-il clairement le lien réflexif que la consigne demandait ?
+Écriture pour la machine : le lien réflexif demandé est explicitement énoncé · rl.a1 · exists
+Portée : la phrase marquée, prise seule
+Copie :
+… cluait une population non concernée. ⟦La production associée est la note de cadrage corrigée, et ma seule preuve de progression datée porte sur cette étape et sur la revue d’amélioration : les six autres étapes n’ont produit aucune preuve datée, ce que je ne peux pas présenter comme un acquis démontré.⟧ J’en tire une méthode de mission en s …
+
+### Carte 98 · C-bf4ec7f8bd
+Consigne : Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.
+Dossier : Contexte fictif. Le sponsor du programme Asteria annonce en comité : « l’IA doit nous faire gagner 30 % de temps ». Le dossier fourni tient en trois éléments : le processus visé est le tri des demandes entrantes du support de niveau 1 ; l’équipe concernée compte 12 personnes ; aucune mesure de durée n’a encore été réalisée. Le sponsor n’a formulé aucune contrainte de qualité.
+Question : CHAQUE affirmation utile de ce passage est-elle conforme au dossier ?
+Écriture pour la machine : CHAQUE affirmation utile est fidèle au contexte · cf.a1 · forall
+Portée : la phrase marquée, prise seule
+Copie :
+⟦Je préfère ne fixer ni horizon ni contrainte de qualité tant que la baseline n’est pas mesurée, ce qui laisse l’objectif ouvert sur plusieurs points à la fois.⟧
+
+### Carte 99 · C-e707d9669d
+Contexte : aucun, la question se juge sur la copie seule.
+Question : CHAQUE fait ou chiffre avancé appuie-t-il le choix que l’élève a fait ?
+Écriture pour la machine : CHAQUE donnée de l'ensemble soutient CE choix · ff.a4 · forall
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je penche pour la réparation complète immédiate, sans la trancher.
+[s1] La subvention de 3 000 euros, acquise si les travaux démarrent avant le 31 décembre, ramène ses 12 600 euros à 6 600 euros nets, contre 20 200 euros au total pour la partielle.
+[s2] Mais le dossier ignore si la subvention survivrait à un report de deux ans, et cette seule réponse peut inverser le calcul : j’attends l’écrit de la collectivité avant fin novembre, sans lequel aucune des deux stratégies ne peut être écartée.
+
+### Carte 100 · C-070decd3a2
+Consigne : Rédige une note qui choisit l’un des deux contrats pour 2026 et précise la principale inconnue qui reste après ton choix.
+Dossier : Une usine agroalimentaire hésite entre deux contrats de maintenance pour sa ligne de conditionnement 4. Le contrat Préventel coûte 21 000 euros par an avec une visite obligatoire tous les six mois. Le contrat Vigil coûte 15 500 euros par an sans visite planifiée. En 2025, la ligne 4 a subi 5 arrêts non planifiés pour un total de 31 heures de production perdue ; chaque heure d’arrêt coûte environ 900 euros. Le prochain arrêt technique de la ligne est fixé au 14 octobre.
+Question : Cette précaution est-elle proportionnée à ce risque, d’après le dossier ?
+Écriture pour la machine : CETTE précaution est proportionnée à CE risque · rr.a6 · exists
+Portée : la copie, en citant les phrases
+Copie :
+[s0] Je recommande le contrat Préventel à 21 000 euros par an pour la ligne 4.
+[s1] Les 5 arrêts non planifiés de 2025 ont coûté environ 27 900 euros de production perdue, soit 31 heures à 900 euros l’heure : ce coût réel dépasse à lui seul le contrat le plus cher, et l’écart de 5 500 euros entre Préventel et Vigil se rembourse avec une seule panne évitée.
+[s2] La première visite semestrielle aura lieu pendant l’arrêt technique du 14 octobre.
+[s3] Je propose de documenter la cause de chaque arrêt dès 2026 et de réexaminer le contrat si le nombre d’arrêts ne baisse pas d’au moins deux sur l’année.
+
+Fin du lot 10 : 10 cartes. Réponds maintenant, 10 lignes.

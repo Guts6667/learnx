@@ -25,6 +25,7 @@ type CorrectionProviderResult = {
 };
 
 export type CorrectionProviderRequest = {
+  fetchImplementation?: typeof fetch;
   apiKey: string;
   jsonSchema: Record<string, unknown>;
   messages: CorrectionProviderMessage[];
@@ -298,6 +299,7 @@ type JsonResponse = {
 };
 
 async function executeJsonRequest(input: {
+  fetchImplementation?: typeof fetch;
   apiKey: string;
   bearerAuthorization?: boolean;
   body: Record<string, unknown>;
@@ -308,7 +310,7 @@ async function executeJsonRequest(input: {
   const startedAt = performance.now();
   let response: Response;
   try {
-    response = await fetch(input.url, {
+    response = await (input.fetchImplementation ?? fetch)(input.url, {
       body: JSON.stringify(input.body),
       headers: {
         ...(input.bearerAuthorization === false
@@ -424,6 +426,7 @@ const openRouterAdapter: CorrectionProviderAdapter = {
   async execute(request) {
     const result = await executeJsonRequest({
       apiKey: request.apiKey,
+      fetchImplementation: request.fetchImplementation,
       body: buildOpenRouterRequestBody(request),
       profile: request.profile,
       url: 'https://openrouter.ai/api/v1/chat/completions',
@@ -469,6 +472,7 @@ const openAiAdapter: CorrectionProviderAdapter = {
   async execute(request) {
     const result = await executeJsonRequest({
       apiKey: request.apiKey,
+      fetchImplementation: request.fetchImplementation,
       body: buildOpenAiResponsesRequestBody(request),
       profile: request.profile,
       url: 'https://api.openai.com/v1/responses',
@@ -522,6 +526,7 @@ const anthropicAdapter: CorrectionProviderAdapter = {
   async execute(request) {
     const result = await executeJsonRequest({
       apiKey: request.apiKey,
+      fetchImplementation: request.fetchImplementation,
       bearerAuthorization: false,
       body: buildAnthropicMessagesRequestBody(request),
       headers: {
