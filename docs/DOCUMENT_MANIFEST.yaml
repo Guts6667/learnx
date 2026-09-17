@@ -2,8 +2,8 @@ schema_version: 1
 manifest_version: '1.4.0'
 captured_on: '2026-09-17'
 baseline:
-  ref: origin/dev
-  sha: a02ecc3f307af36656fa5cb8a7b62954fdec73e9
+  ref: codex/ai-correction-recovery
+  sha: e874f943cb3d75469547571d0fbadff236f7eaa4
 scope: v4_1_v4_5_v5_migration_governance
 
 invariants:
@@ -28,6 +28,13 @@ status_definitions:
   superseded_reference: preserved reference replaced as current routing authority
 
 documents:
+  - path: docs/qa/AI_CORRECTION_RECOVERY_2026-09-17.md
+    scope: v4_5_210_recovery_local_verification
+    status: append_only_evidence
+    owner: QA / Release
+    reviewer: Architecture / Produit
+    supersession: add_new_evidence_file
+
   - path: docs/AI_CORRECTION_RECOVERY.md
     scope: v4_5_210_recovery_baseline_and_gates
     status: active_instruction
@@ -57,7 +64,7 @@ documents:
     supersession: update_in_place_with_authority_change_recorded
 
   - path: docs/HANDOFF.md
-    scope: v4_1_human_handoff
+    scope: current_delivery_handoff
     status: active_instruction
     owner: Architecture / Produit
     reviewer: QA / Release

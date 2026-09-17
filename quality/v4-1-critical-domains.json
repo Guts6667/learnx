@@ -202,7 +202,7 @@
     "correction-pricing-credits-reconciliation": [
       "^src/features/credits/credits\\.ts$",
       "^src/features/exercises/(?:AiCorrectionPanel|AiCorrectionResult|ai-correction)\\.tsx?$",
-      "^src/lib/(?:ai-correction-breaker|ai-correction-confidence|ai-correction-contracts|ai-correction-provider-adapters|ai-json-schema|exercise-correction-contracts|stage-assessment-correction-contracts)\\.ts$",
+      "^src/lib/(?:ai-correction-atom-verifier-budget|ai-correction-breaker|ai-correction-confidence|ai-correction-contracts|ai-correction-provider-adapters|ai-correction-research-guarded-fetch|ai-correction-research-run|ai-json-schema|exercise-correction-contracts|stage-assessment-correction-contracts)\\.ts$",
       "^src/server/(?:ai/(?:openrouter-configuration|openrouter-provider|persistent-correction|prisma-correction-repository|structured-provider)|corrections/.+|credits/.+|payments/.+|pricing/.+)\\.ts$",
       "^src/server/api/(?:ai-pricing|corrections|credits|exercises|payments)/.+\\.ts$",
       "^src/server/api/public-catalogue/.+\\.ts$"

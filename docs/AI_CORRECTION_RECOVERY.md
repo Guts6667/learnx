@@ -4,6 +4,9 @@ Autorité : plan de reprise explicitement approuvé par Rayan le 17 septembre.
 Cette autorité remplace le cadrage « nouvelle campagne de prompt 2.3.0 » de
 V4.5-210. Elle ne constitue ni une qualification, ni un GO de déploiement.
 
+Preuves logicielles et limites de recette :
+[`rapport QA du 17 septembre`](qa/AI_CORRECTION_RECOVERY_2026-09-17.md).
+
 ## État vérifiable
 
 | Surface | Révision immuable | Ce que la preuve établit |
