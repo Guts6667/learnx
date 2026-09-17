@@ -113,7 +113,13 @@ function fixtures() {
             buildRecoveryVerificationInput({ answer, extraction }),
           ),
           costUsd: 0.001 as number | null,
-          providerRequestIds: ['fixture-request'],
+          providerRequestIds: {
+            primary: `fixture-primary-${arm}-${answer.caseId}-${repetition}` as
+              string | null,
+            verifier:
+              `fixture-verifier-${arm}-${answer.caseId}-${repetition}` as
+                string | null,
+          },
         })),
       ),
     ),
@@ -281,6 +287,14 @@ describe('closed pilot qualification instrument', () => {
     ).toMatchObject({
       status: 'UNMEASURED',
       totalCriteria: 810,
+      verifierBeforePrimaryAgreement: {
+        observedCriteria: 807,
+        graded: 807,
+        abstentions: 0,
+        observedAbstentions: 0,
+        unmeasuredCriteria: 3,
+        totalCriteria: 810,
+      },
     });
   });
 
@@ -423,15 +437,143 @@ describe('recovery pack and lock import boundaries', () => {
     );
   });
 
-  it('keeps unidentified verifier calls unmeasured without inventing request IDs', () => {
+  it('keeps a verifier with only the primary request ID unmeasured without inventing identity', () => {
     const { pack, reference, lock, run } = fixtures();
-    run.observations[0].providerRequestIds = [];
+    run.observations[0].providerRequestIds.verifier = null;
     const report = evaluateRecoveryPilot(pack, reference, lock, run);
     expect(report.arms[0]).toMatchObject({
       status: 'UNMEASURED',
+      unidentifiedPrimaryCount: 0,
       unidentifiedVerificationCount: 1,
       structuralEvidenceChecksPassed: 810,
+      verifierBeforePrimaryAgreement: {
+        observedCriteria: 807,
+        graded: 807,
+        abstentions: 0,
+        observedAbstentions: 0,
+        unmeasuredCriteria: 3,
+      },
     });
     expect(report.arms[0]).not.toHaveProperty('extractionCompleteness');
+  });
+
+  it('keeps missing primary IDs unmeasured even when the verifier ID is present', () => {
+    const { pack, reference, lock, run } = fixtures();
+    run.observations[0].providerRequestIds.primary = null;
+    expect(
+      evaluateRecoveryPilot(pack, reference, lock, run).arms[0],
+    ).toMatchObject({
+      status: 'UNMEASURED',
+      unidentifiedPrimaryCount: 1,
+      unidentifiedVerificationCount: 0,
+      verifierBeforePrimaryAgreement: {
+        observedCriteria: 810,
+        graded: 810,
+        unmeasuredCriteria: 0,
+      },
+    });
+  });
+
+  it('requires no verifier ID when malformed extraction prevented the extracted-evidence call', () => {
+    const { pack, reference, lock, run } = fixtures();
+    const skipped = {
+      ...run.observations[270],
+      extraction: null,
+      verification: null,
+      verificationInputHash: null,
+      providerRequestIds: {
+        ...run.observations[270].providerRequestIds,
+        verifier: null as string | null,
+      },
+    };
+    const imported = {
+      ...run,
+      observations: run.observations.map((row, index) =>
+        index === 270 ? skipped : row,
+      ),
+    };
+    expect(
+      evaluateRecoveryPilot(pack, reference, lock, imported).arms[1],
+    ).toMatchObject({
+      status: 'PASS',
+      displayed: 807,
+      unidentifiedVerificationCount: 0,
+      verifierBeforePrimaryAgreement: {
+        observedCriteria: 807,
+        abstentions: 0,
+        unmeasuredCriteria: 3,
+      },
+    });
+    skipped.providerRequestIds.verifier = 'stray-verifier-id';
+    expect(() =>
+      evaluateRecoveryPilot(pack, reference, lock, imported),
+    ).toThrow('without a valid evidence request');
+  });
+
+  it('counts malformed output from an identified verifier call as an observed abstention', () => {
+    const { pack, reference, lock, run } = fixtures();
+    const imported = {
+      ...run,
+      observations: run.observations.map((row, index) =>
+        index === 0 ? { ...row, verification: null } : row,
+      ),
+    };
+    expect(
+      evaluateRecoveryPilot(pack, reference, lock, imported).arms[0]
+        .verifierBeforePrimaryAgreement,
+    ).toMatchObject({
+      observedCriteria: 810,
+      graded: 807,
+      abstentions: 3,
+      observedAbstentions: 3,
+      unmeasuredCriteria: 0,
+    });
+  });
+
+  it.each(['primary', 'verifier'] as const)(
+    'rejects blank %s IDs and detects padded duplicates after normalization',
+    (role) => {
+      const { pack, reference, lock, run } = fixtures();
+      const original = run.observations[0].providerRequestIds[role];
+      run.observations[0].providerRequestIds[role] = ' \t\n ';
+      expect(() => evaluateRecoveryPilot(pack, reference, lock, run)).toThrow();
+      run.observations[0].providerRequestIds[role] = ` ${original} `;
+      run.observations[1].providerRequestIds[role] = original;
+      expect(() => evaluateRecoveryPilot(pack, reference, lock, run)).toThrow(
+        'Reused provider request ID',
+      );
+    },
+  );
+
+  it.each(['primary', 'verifier'] as const)(
+    'rejects reused %s request IDs across repetitions and arms',
+    (role) => {
+      for (const duplicateIndex of [1, 270]) {
+        const { pack, reference, lock, run } = fixtures();
+        run.observations[duplicateIndex].providerRequestIds[role] =
+          run.observations[0].providerRequestIds[role];
+        expect(() => evaluateRecoveryPilot(pack, reference, lock, run)).toThrow(
+          'Reused provider request ID',
+        );
+      }
+    },
+  );
+
+  it('rejects a primary ID relabelled as a verifier ID and legacy untagged lists', () => {
+    const { pack, reference, lock, run } = fixtures();
+    run.observations[0].providerRequestIds.verifier =
+      run.observations[0].providerRequestIds.primary;
+    expect(() => evaluateRecoveryPilot(pack, reference, lock, run)).toThrow(
+      'Reused provider request ID',
+    );
+    expect(() =>
+      evaluateRecoveryPilot(pack, reference, lock, {
+        ...run,
+        observations: run.observations.map((row) => ({
+          ...row,
+          providerRequestIds: ['legacy-untagged-id'],
+        })),
+      }),
+    ).toThrow();
   });
 });

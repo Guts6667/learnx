@@ -201,7 +201,7 @@ export interface RecoveryObservation {
   verification: unknown;
   verificationInputHash: string | null;
   costUsd: number | null;
-  providerRequestIds: string[];
+  providerRequestIds: { primary: string | null; verifier: string | null };
 }
 
 /** Dry planning validates real reviewed inputs; it never calls a provider. */

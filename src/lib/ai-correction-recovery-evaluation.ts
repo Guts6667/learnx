@@ -162,7 +162,12 @@ const recoveryObservationSchema = z
       .regex(/^[a-f0-9]{64}$/u)
       .nullable(),
     costUsd: z.number().nonnegative().nullable(),
-    providerRequestIds: z.array(z.string().min(1)),
+    providerRequestIds: z
+      .object({
+        primary: z.string().trim().min(1).nullable(),
+        verifier: z.string().trim().min(1).nullable(),
+      })
+      .strict(),
   })
   .strict();
 
@@ -248,6 +253,9 @@ export function evaluateRecoveryPilot(
     );
   }
   const keys = new Set<string>();
+  // Every measured cell performs a fresh primary and, when applicable, verifier call.
+  // Reusing an ID cannot establish another arm or repetition, even for identical input.
+  const providerRequestIds = new Set<string>();
   const cases = new Map(pack.cases.map((answer) => [answer.caseId, answer]));
   const arms = (['SUPPLIED_EVIDENCE', 'EXTRACTED_EVIDENCE'] as const).map(
     (arm) => {
@@ -257,11 +265,13 @@ export function evaluateRecoveryPilot(
       let structuralEvidenceChecksPassed = 0;
       let referenceEvidenceComplete = 0;
       let referenceEvidenceAssessable = 0;
+      let verifierObservedCriteria = 0;
       let verifierGraded = 0;
       let verifierIncorrect = 0;
       let verifierUncertainGraded = 0;
       let knownCostUsd = 0;
       let unknownCostCount = 0;
+      let unidentifiedPrimaryCount = 0;
       let unidentifiedVerificationCount = 0;
       const levels = new Map<string, (string | null)[]>();
       const groups = new Map<
@@ -313,6 +323,21 @@ export function evaluateRecoveryPilot(
           throw new Error(
             'A verifier output without a valid evidence request is not measurable.',
           );
+        if (
+          expectedHash === null &&
+          observation.providerRequestIds.verifier !== null
+        )
+          throw new Error(
+            'A verifier request ID without a valid evidence request is not measurable.',
+          );
+        for (const requestId of Object.values(observation.providerRequestIds)) {
+          if (requestId === null) continue;
+          if (providerRequestIds.has(requestId))
+            throw new Error(
+              'Reused provider request ID cannot establish distinct measured calls.',
+            );
+          providerRequestIds.add(requestId);
+        }
         const delivered = deliverRecoveryCorrection({
           answer,
           extraction,
@@ -321,9 +346,13 @@ export function evaluateRecoveryPilot(
         const gold = required(
           reference.labels.find((row) => row.caseId === answer.caseId),
         );
-        for (const verified of recoveryVerifiedLevels(
-          observation.verification,
-        )) {
+        const verifierObserved =
+          observation.verificationInputHash !== null &&
+          observation.providerRequestIds.verifier !== null;
+        if (verifierObserved) verifierObservedCriteria += 3;
+        for (const verified of verifierObserved
+          ? recoveryVerifiedLevels(observation.verification)
+          : []) {
           if (verified.level === null) continue;
           verifierGraded += 1;
           const expected = required(
@@ -406,9 +435,11 @@ export function evaluateRecoveryPilot(
           }
         }
         groups.set(answer.sourceAnswerId, group);
+        if (observation.providerRequestIds.primary === null)
+          unidentifiedPrimaryCount += 1;
         if (
           observation.verificationInputHash !== null &&
-          observation.providerRequestIds.length === 0
+          observation.providerRequestIds.verifier === null
         )
           unidentifiedVerificationCount += 1;
         if (observation.costUsd === null) unknownCostCount += 1;
@@ -420,7 +451,10 @@ export function evaluateRecoveryPilot(
       return {
         arm,
         status:
-          !complete || unknownCostCount || unidentifiedVerificationCount
+          !complete ||
+          unknownCostCount ||
+          unidentifiedPrimaryCount ||
+          unidentifiedVerificationCount
             ? 'UNMEASURED'
             : incorrect === 0 &&
                 uncertainDisplayed === 0 &&
@@ -450,19 +484,23 @@ export function evaluateRecoveryPilot(
         referenceEvidenceScope:
           'Recall of all owner-selected sentence-role bindings; equivalent unselected evidence may be valid and requires review. Empty reference role sets are unmeasured.',
         verifierBeforePrimaryAgreement: {
+          observedCriteria: verifierObservedCriteria,
           graded: verifierGraded,
           incorrect: verifierIncorrect,
           uncertainGraded: verifierUncertainGraded,
-          abstentions: total - verifierGraded,
+          abstentions: verifierObservedCriteria - verifierGraded,
+          observedAbstentions: verifierObservedCriteria - verifierGraded,
+          unmeasuredCriteria: total - verifierObservedCriteria,
           totalCriteria: total,
           scope:
-            'Standalone requirement-derived levels, not learner delivery. Supplied-evidence and extracted-evidence arms remain separate.',
+            'Standalone requirement-derived levels from dispatched calls with retained verifier IDs, not learner delivery. Unrun or unidentified verifier calls are unmeasured, not abstentions. Supplied-evidence and extracted-evidence arms remain separate.',
         },
         unstableCriteria: [...levels.values()].filter(
           (values) => new Set(values).size > 1,
         ).length,
         knownCostUsd,
         unknownCostCount,
+        unidentifiedPrimaryCount,
         unidentifiedVerificationCount,
         sourceGroups: [...groups.values()],
       };

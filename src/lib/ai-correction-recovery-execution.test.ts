@@ -210,6 +210,14 @@ it('executes smoke before 540 cells, retains exact request provenance and blinds
   expect(fake.requests).toHaveLength(1082);
   expect(measured.run.observations).toHaveLength(540);
   expect(
+    measured.run.observations.map((row) => row.providerRequestIds),
+  ).toEqual(
+    Array.from({ length: 540 }, (_, index) => ({
+      primary: `fixture-request-${index * 2 + 3}`,
+      verifier: `fixture-request-${index * 2 + 4}`,
+    })),
+  );
+  expect(
     measured.run.observations.filter((row) => row.arm === 'SUPPLIED_EVIDENCE'),
   ).toHaveLength(270);
   const calls = events.filter((event) => event.kind === 'CALL_INTENT');
@@ -307,11 +315,16 @@ it.each(['SUPPLIED_EVIDENCE', 'EXTRACTED_EVIDENCE'] as const)(
       expect(row?.verificationInputHash).toMatch(/^[a-f0-9]{64}$/u);
       expect(row?.verification).not.toBeNull();
       expect(row?.costUsd).toBe(0.002);
+      expect(row?.providerRequestIds).toEqual({
+        primary: 'fixture-request-3',
+        verifier: 'fixture-request-4',
+      });
     } else
       expect(row).toMatchObject({
         verification: null,
         verificationInputHash: null,
         costUsd: 0.001,
+        providerRequestIds: { primary: 'fixture-request-5', verifier: null },
       });
     expect(() =>
       evaluateRecoveryPilot(
@@ -321,6 +334,79 @@ it.each(['SUPPLIED_EVIDENCE', 'EXTRACTED_EVIDENCE'] as const)(
         result.run,
       ),
     ).not.toThrow();
+  },
+);
+
+it('retains the verifier request identity when its billed output is malformed', async () => {
+  const { input, plan } = fixture();
+  const fake = provider((envelope, index) => {
+    if (index === 4)
+      envelope.choices = [
+        { finish_reason: 'stop', message: { content: 'broken' } },
+      ];
+  });
+  const abort = new AbortController();
+  const result = await executeRecoveryMeasurement({
+    plan,
+    apiKey: 'unit-only',
+    fetcher: fake.fetcher,
+    assertReconciled: () => {},
+    signal: abort.signal,
+    persist: (event) => {
+      if (event.kind === 'OBSERVATION') abort.abort();
+    },
+  });
+  expect(fake.requests).toHaveLength(4);
+  expect(result.run.observations).toHaveLength(1);
+  expect(result.run.observations[0]).toMatchObject({
+    verification: null,
+    verificationInputHash: expect.stringMatching(/^[a-f0-9]{64}$/u),
+    costUsd: 0.002,
+    providerRequestIds: {
+      primary: 'fixture-request-3',
+      verifier: 'fixture-request-4',
+    },
+  });
+  expect(() =>
+    evaluateRecoveryPilot(input.pack, input.reference, input.lock, result.run),
+  ).not.toThrow();
+});
+
+it.each([
+  { repeatedCall: 2, priorCall: 1, observations: 0 },
+  { repeatedCall: 3, priorCall: 1, observations: 0 },
+  { repeatedCall: 4, priorCall: 3, observations: 0 },
+  { repeatedCall: 5, priorCall: 3, observations: 1 },
+])(
+  'stops reused request ID on call $repeatedCall, retaining its raw bill',
+  async ({ repeatedCall, priorCall, observations }) => {
+    const { plan } = fixture();
+    const fake = provider((envelope, index) => {
+      if (index === repeatedCall) envelope.id = `fixture-request-${priorCall}`;
+    });
+    const events: RecoveryExecutionEvent[] = [];
+    const result = await executeRecoveryMeasurement({
+      plan,
+      apiKey: 'unit-only',
+      fetcher: fake.fetcher,
+      assertReconciled: () => {},
+      persist: (event) => events.push(event),
+    });
+    expect(result.stopped).toBe('RECOVERY_PROVIDER_REQUEST_ID_REUSED');
+    expect(fake.requests).toHaveLength(repeatedCall);
+    expect(result.run.observations).toHaveLength(observations);
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        kind: 'CALL_RESULT',
+        sequence: repeatedCall,
+        costUsd: 0.001,
+        providerRequestId: `fixture-request-${priorCall}`,
+      }),
+    );
+    expect(
+      result.responseAccounting.SMOKE.knownCostUsd +
+        result.responseAccounting.MEASUREMENT.knownCostUsd,
+    ).toBeCloseTo(repeatedCall * 0.001);
   },
 );
 

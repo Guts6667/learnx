@@ -123,9 +123,14 @@ du propriétaire ni une preuve automatisée de l'ordre réel de lecture.
 
 Le schéma `recoveryRunSchema` décrit les sorties importées : deux bras,
 90 cas × 3 répétitions par bras, identité des deux modèles, empreinte du prompt,
-coût connu ou `null`, request IDs et empreinte de la requête aveugle exacte.
-Un vérificateur sans request ID conservé laisse son bras `UNMEASURED`, même
-si son coût est connu ; aucune identité de requête n’est inventée. Le taux
+coût connu ou `null`, request IDs nommés `primary` et `verifier`, et empreinte
+de la requête aveugle exacte. Un ID absent reste `null`. Un primaire ou un
+vérificateur appelé sans son propre request ID conservé laisse son bras
+`UNMEASURED`, même si son coût est connu ; aucune identité de requête n’est
+inventée. Le runner effectue un nouvel appel primaire pour chaque bras et
+répétition ; tout ID réutilisé entre rôles ou cellules est rejeté. Les anciennes
+listes d’IDs sans rôle sont rejetées à l’import et doivent être réconciliées
+avec les événements d’appel conservés, jamais complétées par déduction. Le taux
 `structuralEvidenceCheckRate` mesure les contrôles structurels de livraison,
 pas le rappel sémantique de toutes les preuves de référence.
 Ne jamais remplir ce fichier avec des sorties inventées. Le chemin payant de
@@ -157,6 +162,11 @@ ce protocole ne les modifie implicitement.
 
 Le rapport donne également les niveaux dérivés du vérificateur **avant**
 comparaison avec le grade primaire, avec leurs propres erreurs et abstentions.
+Seuls les appels effectués avec un ID vérificateur conservé alimentent ces
+comptages ; les appels non effectués ou sans provenance sont `unmeasuredCriteria`,
+jamais des abstentions observées. Une sortie invalide d’un appel identifié
+compte au contraire dans `observedAbstentions`. Un ID primaire manquant ne
+masque pas la mesure distincte d’un vérificateur identifié.
 Le bras sur preuves fournies mesure ainsi la vérification elle-même, sans
 qu'un désaccord du primaire puisse masquer ses erreurs derrière une abstention
 d'affichage. La décision de livraison reste séparée.

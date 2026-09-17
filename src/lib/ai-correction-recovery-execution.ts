@@ -106,6 +106,7 @@ export async function executeRecoveryMeasurement(input: {
     throw new Error('RECOVERY_RESUME_REQUIRES_REVIEW');
   let sequence = 0;
   let stopped: string | null = null;
+  const providerRequestIdsSeen = new Set<string>();
   const responseAccounting = {
     SMOKE: {
       knownCostUsd: 0,
@@ -186,6 +187,9 @@ export async function executeRecoveryMeasurement(input: {
       throw new Error('RECOVERY_UNKNOWN_COST_RECONCILIATION_REQUIRED');
     if (!providerRequestId)
       throw new Error('RECOVERY_PROVIDER_REQUEST_ID_MISSING');
+    if (providerRequestIdsSeen.has(providerRequestId))
+      throw new Error('RECOVERY_PROVIDER_REQUEST_ID_REUSED');
+    providerRequestIdsSeen.add(providerRequestId);
     if (!response.ok) throw new Error(`RECOVERY_HTTP_${response.status}`);
     const envelope = envelopeSchema.safeParse(rawEnvelope);
     const pin = plan.protocol.profiles[role];
@@ -234,7 +238,10 @@ export async function executeRecoveryMeasurement(input: {
     let verification: unknown = null;
     let verificationInputHash: string | null = null;
     let costUsd = primary.costUsd;
-    const providerRequestIds = [primary.providerRequestId];
+    const providerRequestIds: RecoveryObservation['providerRequestIds'] = {
+      primary: primary.providerRequestId,
+      verifier: null,
+    };
     const parsed = recoveryExtractionSchema.safeParse(extraction);
     if (phase === 'SMOKE' && !parsed.success)
       throw new Error('RECOVERY_SMOKE_EXTRACTION_SCHEMA_INVALID');
@@ -261,7 +268,7 @@ export async function executeRecoveryMeasurement(input: {
       });
       verification = checked.payload;
       costUsd += checked.costUsd;
-      providerRequestIds.push(checked.providerRequestId);
+      providerRequestIds.verifier = checked.providerRequestId;
       if (
         phase === 'SMOKE' &&
         !recoveryVerificationSchema.safeParse(verification).success
