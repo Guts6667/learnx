@@ -19,7 +19,14 @@
  *   machines.
  */
 
-import { readdir, readFile, unlink, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  rmdir,
+  readdir,
+  readFile,
+  unlink,
+  writeFile,
+} from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
 
@@ -77,36 +84,42 @@ export async function acquireRunLock(input: {
   resultsDirectory: string;
 }): Promise<LockAcquisition> {
   const lockPath = path.join(input.directory, RUN_LOCK_FILE);
-  const alive = input.processIsAlive ?? processIsAlive;
-  let stale: RunLock | null = null;
-
+  const guardPath = `${lockPath}.guard`;
+  // Serialize inspection and stale takeover. A read followed by an ordinary
+  // write let two concurrent callers both claim the lock (V4.5 recovery).
   try {
-    const existing = runLockSchema.parse(
-      JSON.parse(await readFile(lockPath, 'utf8')) as unknown,
-    );
-    if (alive(existing.pid)) {
-      return { acquired: false, heldBy: existing };
-    }
-    stale = existing;
-  } catch (error) {
-    if (
-      (error as { code?: string }).code !== 'ENOENT' &&
-      error instanceof z.ZodError
-    ) {
-      // An unreadable lock is treated as stale rather than as a reason to
-      // refuse for ever, but the caller is told it was there.
-      stale = null;
-    }
+    await mkdir(guardPath);
+  } catch {
+    throw new RegressionEnvelopeError('REGRESSION_RUN_LOCK_CONTENDED');
   }
-
-  const lock: RunLock = {
-    pid: input.pid ?? process.pid,
-    resultsDirectory: input.resultsDirectory,
-    schemaVersion: 1,
-    startedAt: (input.now?.() ?? new Date()).toISOString(),
-  };
-  await writeFile(lockPath, `${JSON.stringify(lock, null, 2)}\n`, 'utf8');
-  return { acquired: true, tookOverStaleLock: stale };
+  try {
+    const alive = input.processIsAlive ?? processIsAlive;
+    let stale: RunLock | null = null;
+    try {
+      const existing = runLockSchema.parse(
+        JSON.parse(await readFile(lockPath, 'utf8')) as unknown,
+      );
+      if (alive(existing.pid)) return { acquired: false, heldBy: existing };
+      stale = existing;
+      await unlink(lockPath);
+    } catch (error) {
+      // Corrupt/unreadable locks fail closed; they may describe a live run.
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    }
+    const lock: RunLock = {
+      pid: input.pid ?? process.pid,
+      resultsDirectory: input.resultsDirectory,
+      schemaVersion: 1,
+      startedAt: (input.now?.() ?? new Date()).toISOString(),
+    };
+    await writeFile(lockPath, `${JSON.stringify(lock, null, 2)}\n`, {
+      encoding: 'utf8',
+      flag: 'wx',
+    });
+    return { acquired: true, tookOverStaleLock: stale };
+  } finally {
+    await rmdir(guardPath);
+  }
 }
 
 /** Releases the lock, ignoring an already-removed file. */
