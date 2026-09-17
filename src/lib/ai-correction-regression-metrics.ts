@@ -20,12 +20,16 @@ import type {
 
 /** The independent verifier's answer, as recorded on an observation. */
 import type { EvidenceGuardViolation } from './ai-correction-evidence-guards.js';
+import type { BenchmarkAttempt } from './ai-correction-benchmark-artifacts.js';
+import type { FalseAgreeProbeResult } from './ai-correction-false-agree-probe.js';
+import { computeQualificationMetrics } from './ai-correction-regression-qualification.js';
 
 export type RegressionCheckerVerdict = 'AGREED' | 'DISAGREED' | 'UNAVAILABLE';
 
 /** One criterion as the run delivered it. */
 export type RegressionCriterionObservation = {
   checkerVerdict: RegressionCheckerVerdict;
+  evidenceQuotes?: string[];
   confidence: CriterionConfidence;
   criterionKey: string;
   /**
@@ -88,6 +92,12 @@ export type RegressionRate = {
 };
 
 export type RegressionMetrics = {
+  quotedArithmeticCoverage: ReturnType<
+    typeof computeQualificationMetrics
+  >['quotedArithmeticCoverage'];
+  checkerFalseAgreeDesigned: RegressionRate;
+  quotedArithmeticViolationsDelivered: RegressionRate;
+  quotedArithmeticViolationsAnyAttempt: RegressionRate;
   checkerAgreementAtHigh: RegressionRate;
   /**
    * Deliveries carrying at least one D0 violation.
@@ -181,15 +191,9 @@ function rate(numerator: number, denominator: number): RegressionRate {
   };
 }
 
-/** The kinds whose unrelated criteria are expected to hold still. */
-const DRIFT_KINDS: RegressionMutantKind[] = [
-  'FACT_INVERSION',
-  'PARAGRAPH_SHUFFLE',
-  'INJECTION_APPEND',
-  'PARAPHRASE',
-];
-
 export function computeRegressionMetrics(input: {
+  attempts?: BenchmarkAttempt[];
+  designedCheckerProbe?: FalseAgreeProbeResult;
   baselines: RegressionObservation[];
   mutants: RegressionObservation[];
   scales: RegressionCaseScale[];
@@ -200,6 +204,12 @@ export function computeRegressionMetrics(input: {
   const baselineLevels = indexBaselineLevels(input.baselines);
 
   return {
+    ...computeQualificationMetrics({
+      attempts: input.attempts ?? [],
+      observations: [...input.baselines, ...input.mutants],
+      scales: input.scales,
+      designedCheckerProbe: input.designedCheckerProbe,
+    }),
     ...mutationMetrics({
       baselineLevels,
       mutants: input.mutants,
@@ -302,7 +312,7 @@ function mutationMetrics(input: {
       if (violation) details.push(violation);
     }
 
-    if (!mutant.kind || !DRIFT_KINDS.includes(mutant.kind)) continue;
+    if (expectation.othersExpectation === 'UNCONSTRAINED') continue;
     for (const criterion of mutant.criteria) {
       if (criterion.criterionKey === expectation.targetCriterionKey) continue;
       const baseline = input.baselineLevels.get(
@@ -317,8 +327,8 @@ function mutationMetrics(input: {
       );
       if (before === undefined || after === undefined) continue;
       driftObserved += 1;
-      // The contract counts a criterion as drifted past more than one step.
-      if (Math.abs(after - before) > 1) drifted += 1;
+      const tolerance = expectation.othersExpectation === 'STABLE' ? 0 : 1;
+      if (Math.abs(after - before) > tolerance) drifted += 1;
     }
   }
 

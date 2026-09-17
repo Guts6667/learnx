@@ -23,8 +23,9 @@ import { createHash } from 'node:crypto';
 import type { SupplierBudgetGuard } from './ai-benchmark-supplier-budget.js';
 
 import {
-  deriveCriterionConfidence,
-  type CriterionConfidence,
+  deriveDeliveredCriterionConfidences,
+  deriveHardConstraintMismatch,
+  type CriterionConfidenceInput,
 } from './ai-correction-confidence.js';
 import type { CorrectionBenchmarkCorpus } from './ai-correction-benchmark.js';
 import { calculateEvidenceObservations } from './ai-correction-benchmark-summary-observations.js';
@@ -298,17 +299,34 @@ function firstSentence(text: string): string {
  * stopped during dispatch lost all of them and recomputing meant paying twice.
  */
 export type RegressionVerdictRecord = {
+  /** Absent on historical records, which cannot establish current confidence. */
+  candidateId?: string;
+  repetition?: number;
+  correctionSha256?: string;
   criterionKey: string;
   unitId: string;
   verdict: RegressionCheckerVerdict;
 };
 
-/** Key under which a verdict is stored and looked up. */
-export function verdictKey(input: {
-  criterionKey: string;
-  unitId: string;
-}): string {
-  return `${input.unitId}::${input.criterionKey}`;
+/** A verdict belongs to one candidate, repetition and exact validated output. */
+export function verdictKey(
+  input: Omit<RegressionVerdictRecord, 'verdict'>,
+): string {
+  if (
+    !input.candidateId ||
+    !Number.isInteger(input.repetition) ||
+    !input.correctionSha256 ||
+    !/^[a-f0-9]{64}$/.test(input.correctionSha256)
+  ) {
+    return `legacy::${input.unitId}::${input.criterionKey}`;
+  }
+  return JSON.stringify([
+    input.unitId,
+    input.criterionKey,
+    input.candidateId,
+    input.repetition,
+    input.correctionSha256,
+  ]);
 }
 
 export async function deriveRegressionObservations(input: {
@@ -364,9 +382,25 @@ export async function deriveRegressionObservations(input: {
 
     let verdicts: Record<string, RegressionCheckerVerdict> = {};
     const unitId = unit.mutantId ?? unit.poolCaseId;
-    const alreadyKnown = attempt.output.criteria.every((criterion) =>
+    const binding = {
+      candidateId: attempt.candidateId,
+      repetition: attempt.repetition,
+      correctionSha256: createHash('sha256')
+        .update(JSON.stringify(attempt.output))
+        .digest('hex'),
+    };
+    const legacyUnbound = attempt.output.criteria.some((criterion) =>
       input.persistedVerdicts?.has(
         verdictKey({ criterionKey: criterion.criterionKey, unitId }),
+      ),
+    );
+    const alreadyKnown = attempt.output.criteria.every((criterion) =>
+      input.persistedVerdicts?.has(
+        verdictKey({
+          criterionKey: criterion.criterionKey,
+          unitId,
+          ...binding,
+        }),
       ),
     );
     if (alreadyKnown && input.persistedVerdicts) {
@@ -374,11 +408,15 @@ export async function deriveRegressionObservations(input: {
         attempt.output.criteria.map((criterion) => [
           criterion.criterionKey,
           input.persistedVerdicts?.get(
-            verdictKey({ criterionKey: criterion.criterionKey, unitId }),
+            verdictKey({
+              criterionKey: criterion.criterionKey,
+              unitId,
+              ...binding,
+            }),
           ) ?? 'UNAVAILABLE',
         ]),
       );
-    } else if (input.checker) {
+    } else if (input.checker && !legacyUnbound) {
       const contract = input.plan.corpus.contracts.find(
         (candidate) =>
           candidate.contractKey === attempt.output?.contractKey &&
@@ -406,6 +444,7 @@ export async function deriveRegressionObservations(input: {
       verdicts = outcome.verdicts;
       await input.onVerdicts?.(
         Object.entries(outcome.verdicts).map(([criterionKey, verdict]) => ({
+          ...binding,
           criterionKey,
           unitId,
           verdict,
@@ -433,7 +472,7 @@ export async function deriveRegressionObservations(input: {
       }
     }
 
-    const criteria: RegressionCriterionObservation[] =
+    const confidenceInputs: CriterionConfidenceInput[] =
       attempt.output.criteria.map((criterion) => {
         const ordered =
           scale.criteria.find(
@@ -458,22 +497,35 @@ export async function deriveRegressionObservations(input: {
         const cited = (attempt.evidenceMatches ?? []).some(
           (match) => match.criterionKey === criterion.criterionKey,
         );
+        const isFloorLevel = ordered.at(0) === criterion.levelKey;
         return {
-          checkerVerdict: verdict,
-          confidence: deriveConfidence({
-            cited,
-            evidenceStatus,
-            levelKey: criterion.levelKey,
-            orderedLevelKeys: ordered,
-            verdict,
-          }),
-          criterionKey: criterion.criterionKey,
-          ...(rawEvidenceStatus === 'EVIDENCE_WITHDRAWN'
-            ? { evidenceWithdrawn: true }
-            : {}),
-          levelKey: criterion.levelKey,
+          citation: cited ? 'VERIFIED' : 'ABSENT',
+          evidenceStatus,
+          hardConstraintMismatch: deriveHardConstraintMismatch(
+            criterion.feedback,
+            isFloorLevel,
+          ),
+          isFloorLevel,
+          isMasteredLevel: ordered.at(-1) === criterion.levelKey,
+          verifier: verdict,
         };
       });
+    const confidences = deriveDeliveredCriterionConfidences({
+      criteria: confidenceInputs,
+      familyScientificallyValidated: input.familyScientificallyValidated,
+    });
+    const criteria: RegressionCriterionObservation[] =
+      attempt.output.criteria.map((criterion, index) => ({
+        checkerVerdict: verdicts[criterion.criterionKey] ?? 'UNAVAILABLE',
+        confidence: confidences[index] ?? 'LOW',
+        criterionKey: criterion.criterionKey,
+        evidenceQuotes: quotesByCriterion.get(criterion.criterionKey) ?? [],
+        ...('evidenceStatus' in criterion &&
+        criterion.evidenceStatus === 'EVIDENCE_WITHDRAWN'
+          ? { evidenceWithdrawn: true }
+          : {}),
+        levelKey: criterion.levelKey,
+      }));
 
     // D0 runs before anything a verifier could say, on the text actually graded.
     const evidenceGuardViolations = checkEvidenceGuards({
@@ -509,26 +561,6 @@ export async function deriveRegressionObservations(input: {
   }
 
   return observations;
-}
-
-function deriveConfidence(input: {
-  cited: boolean;
-  evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE';
-  levelKey: string;
-  orderedLevelKeys: string[];
-  verdict: RegressionCheckerVerdict;
-}): CriterionConfidence {
-  return deriveCriterionConfidence({
-    citation: input.cited ? 'VERIFIED' : 'ABSENT',
-    evidenceStatus: input.evidenceStatus,
-    // Not decidable from a benchmark attempt: the hard-constraint signal is a
-    // server-side reading of the feedback, and inventing one here would put a
-    // guess into the confidence contract.
-    hardConstraintMismatch: false,
-    isFloorLevel: input.orderedLevelKeys.at(0) === input.levelKey,
-    isMasteredLevel: input.orderedLevelKeys.at(-1) === input.levelKey,
-    verifier: input.verdict,
-  });
 }
 
 function quotedForbiddenSegment(input: {

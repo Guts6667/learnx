@@ -1,3 +1,7 @@
+import {
+  readDesignedProbeEvidence,
+  type DesignedProbeBinding,
+} from './ai-correction-regression-probe-evidence.js';
 /**
  * Offline analysis of a results directory (V4.5-125).
  *
@@ -37,6 +41,8 @@ import {
 } from './ai-correction-regression-run.js';
 
 export type OfflineAnalysis = {
+  gatePolicyVersion: string;
+  simulatesValidatedFamily: boolean;
   attempts: BenchmarkAttempt[];
   /** Cells whose final attempt never produced a usable correction. */
   cellsUnusable: number;
@@ -54,12 +60,14 @@ export type OfflineAnalysis = {
   /** Attempts carrying no reconciled provider cost. */
   unreconciledAttempts: string[];
   verdictCount: number;
+  legacyUnboundVerdictCount: number;
 };
 
 /** Reads every artefact an offline analysis needs from a results directory. */
 export async function readRunArtifacts(resultsDirectory: string): Promise<{
   attempts: BenchmarkAttempt[];
   verdicts: Map<string, RegressionCheckerVerdict>;
+  legacyUnboundVerdictCount: number;
 }> {
   const attempts = JSON.parse(
     await readFile(path.join(resultsDirectory, 'attempts.json'), 'utf8'),
@@ -75,16 +83,16 @@ export async function readRunArtifacts(resultsDirectory: string): Promise<{
       ),
     ) as RegressionVerdictRecord[];
     for (const record of records) {
-      verdicts.set(
-        verdictKey({
-          criterionKey: record.criterionKey,
-          unitId: record.unitId,
-        }),
-        record.verdict,
-      );
+      verdicts.set(verdictKey(record), record.verdict);
     }
   }
-  return { attempts, verdicts };
+  return {
+    attempts,
+    verdicts,
+    legacyUnboundVerdictCount: [...verdicts.keys()].filter((key) =>
+      key.startsWith('legacy::'),
+    ).length,
+  };
 }
 
 /**
@@ -133,22 +141,62 @@ export function percentileOf(
  */
 export async function analyseRunOffline(input: {
   gatePolicyPath: string;
+  designedProbePath?: string;
   plan: RegressionRunPlan;
   resultsDirectory: string;
 }): Promise<OfflineAnalysis> {
-  const { attempts, verdicts } = await readRunArtifacts(input.resultsDirectory);
+  const { attempts, verdicts, legacyUnboundVerdictCount } =
+    await readRunArtifacts(input.resultsDirectory);
+  const files = await readdir(input.resultsDirectory);
+  const summary = files.includes('summary.json')
+    ? (JSON.parse(
+        await readFile(
+          path.join(input.resultsDirectory, 'summary.json'),
+          'utf8',
+        ),
+      ) as {
+        qualification?: DesignedProbeBinding;
+        simulatesValidatedFamily?: boolean;
+      })
+    : {};
+  const simulatesValidatedFamily = summary.simulatesValidatedFamily === true;
+  let designedCheckerProbe;
+  if (files.includes('designed-checker-probe.json')) {
+    if (
+      !summary.qualification ||
+      summary.qualification.simulatesValidatedFamily !==
+        simulatesValidatedFamily
+    )
+      throw new Error('DESIGNED_PROBE_BINDING_MISSING');
+    designedCheckerProbe = (
+      await readDesignedProbeEvidence({
+        evidencePath: path.join(
+          input.resultsDirectory,
+          'designed-checker-probe.json',
+        ),
+        probePath:
+          input.designedProbePath ??
+          path.resolve(
+            'benchmarks/ai-correction/regression/false-agree-probe.v1.json',
+          ),
+        binding: summary.qualification,
+      })
+    ).result;
+  }
   const policy = parseRegressionGatePolicy(
     JSON.parse(await readFile(input.gatePolicyPath, 'utf8')) as unknown,
   );
 
   const observations = await deriveRegressionObservations({
     attempts,
-    familyScientificallyValidated: true,
+    familyScientificallyValidated: simulatesValidatedFamily,
     persistedVerdicts: verdicts,
     plan: input.plan,
   });
   const { baselines, mutants } = partitionObservations(observations);
   const metrics = computeRegressionMetrics({
+    attempts,
+    designedCheckerProbe,
     baselines,
     mutants,
     scales: input.plan.scales,
@@ -172,6 +220,8 @@ export async function analyseRunOffline(input: {
   };
 
   return {
+    gatePolicyVersion: policy.policyVersion,
+    simulatesValidatedFamily,
     attempts,
     cellsObserved: cells.length,
     cellsUnusable: unusable.length,
@@ -193,6 +243,7 @@ export async function analyseRunOffline(input: {
     unreconciledAttempts: attempts
       .filter((attempt) => attempt.usage?.costSource !== 'ACTUAL')
       .map((attempt) => attempt.caseId),
-    verdictCount: verdicts.size,
+    verdictCount: verdicts.size - legacyUnboundVerdictCount,
+    legacyUnboundVerdictCount,
   };
 }

@@ -83,6 +83,11 @@ export function renderRegressionReport(input: {
   );
   lines.push('');
 
+  lines.push(
+    `Arithmetic parser coverage: delivered ${input.metrics.quotedArithmeticCoverage.delivered.quotesInScope}/${input.metrics.quotedArithmeticCoverage.delivered.quotesTotal} quoted spans; all attempts ${input.metrics.quotedArithmeticCoverage.anyAttempt.quotesInScope}/${input.metrics.quotedArithmeticCoverage.anyAttempt.quotesTotal}; unreadable raw attempts ${input.metrics.quotedArithmeticCoverage.unreadableRawAttempts}.`,
+  );
+  lines.push('');
+
   lines.push('## Identité du run');
   lines.push('');
   lines.push('| Élément | Valeur |');
@@ -296,6 +301,15 @@ function metricRows(metrics: RegressionMetrics): [string, RegressionRate][] {
     ['repetitionTwoStepFlipsAtHigh', metrics.repetitionTwoStepFlipsAtHigh],
     ['checkerAgreementAtHigh', metrics.checkerAgreementAtHigh],
     ['checkerFalseAgreeRate', metrics.checkerFalseAgreeRate],
+    ['checkerFalseAgreeDesigned', metrics.checkerFalseAgreeDesigned],
+    [
+      'quotedArithmeticViolationsDelivered',
+      metrics.quotedArithmeticViolationsDelivered,
+    ],
+    [
+      'quotedArithmeticViolationsAnyAttempt',
+      metrics.quotedArithmeticViolationsAnyAttempt,
+    ],
     ['lowShare', metrics.lowShare],
     [
       'injectionAppendQuotedInAcceptedOutput',

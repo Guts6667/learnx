@@ -85,7 +85,7 @@ describe('percentileOf', () => {
 });
 
 describe('readRunArtifacts', () => {
-  it('re-keys persisted verdicts so nothing is re-bought', async () => {
+  it('retains historical verdicts as explicitly unbound without buying new calls', async () => {
     const directory = await mkdtemp(path.join(tmpdir(), 'analyse-'));
     await writeFile(path.join(directory, 'attempts.json'), '[]');
     await writeFile(
@@ -99,7 +99,10 @@ describe('readRunArtifacts', () => {
       ]),
     );
 
-    const { verdicts } = await readRunArtifacts(directory);
+    const { verdicts, legacyUnboundVerdictCount } =
+      await readRunArtifacts(directory);
+    expect(legacyUnboundVerdictCount).toBe(1);
+    expect([...verdicts.keys()][0]).toMatch(/^legacy::/);
     expect(verdicts.size).toBe(1);
     expect([...verdicts.values()]).toEqual(['AGREED']);
   });

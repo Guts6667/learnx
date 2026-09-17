@@ -1,4 +1,7 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { sharedResearchStateDirectory } from '../src/lib/ai-correction-atom-verifier-budget.ts';
+import { runDesignedCheckerProbe } from '../src/lib/ai-correction-regression-probe-cli.ts';
+import { designedCheckerIdentity } from '../src/lib/ai-correction-regression-probe-evidence.ts';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -11,12 +14,11 @@ import {
   runRegressionPool,
 } from '../src/lib/ai-correction-regression-run-cli.ts';
 import type { RegressionCheckerPort } from '../src/lib/ai-correction-regression-run.ts';
+import { parseCheckerPromptVariant } from '../src/lib/ai-correction-false-agree-probe.ts';
 import {
-  parseCheckerPromptVariant,
-  parseFalseAgreeProbe,
-  runFalseAgreeProbe,
-} from '../src/lib/ai-correction-false-agree-probe.ts';
-import { createRuntimeCorrectionChecker } from '../src/server/corrections/correction-checker.ts';
+  createRuntimeCorrectionChecker,
+  DEFAULT_CHECKER_INSTRUCTIONS,
+} from '../src/server/corrections/correction-checker.ts';
 import {
   PROMOTED_CHECKER_IDENTITY,
   PROMOTED_CORRECTION_IDENTITY,
@@ -36,6 +38,11 @@ import {
  */
 const REGRESSION_PINNED_IDENTITIES = {
   checkerModelId: PROMOTED_CHECKER_IDENTITY.modelId,
+  checkerQualificationIdentity: designedCheckerIdentity({
+    modelId: PROMOTED_CHECKER_IDENTITY.modelId,
+    requestProfile: PROMOTED_CHECKER_IDENTITY.requestProfile,
+    instructions: DEFAULT_CHECKER_INSTRUCTIONS,
+  }),
   maxRetries: PROMOTED_CORRECTION_IDENTITY.maxRetries,
   primaryCandidateId: PROMOTED_CORRECTION_IDENTITY.candidateId,
   primaryModelId: PROMOTED_CORRECTION_IDENTITY.modelId,
@@ -124,19 +131,16 @@ async function runAiCorrectionRegressionCli(
   if (
     arguments_.some((argument) => argument.startsWith('--false-agree-probe'))
   ) {
-    const probePath = path.resolve(
-      'benchmarks/ai-correction/regression/false-agree-probe.v1.json',
-    );
-    const probe = parseFalseAgreeProbe(
-      JSON.parse(await readFile(probePath, 'utf8')) as unknown,
-    );
-    // Which instructions the verifier is measured under. Default A: the
-    // promoted runtime prompt, so the reference measurement is the system as
-    // it ships rather than a variant nobody runs.
-    const promptId =
+    const option = (name: string) =>
       arguments_
-        .find((argument) => argument.startsWith('--checker-prompt='))
-        ?.split('=')[1] ?? 'A';
+        .find((argument) => argument.startsWith(`--${name}=`))
+        ?.slice(name.length + 3);
+    const qualificationRunId = option('qualification-run-id');
+    if (!qualificationRunId)
+      throw new Error('DESIGNED_PROBE_QUALIFICATION_RUN_ID_REQUIRED');
+    const promptId = option('checker-prompt') ?? 'A';
+    if (!/^[A-Za-z0-9-]+$/.test(promptId))
+      throw new Error('DESIGNED_PROBE_PROMPT_ID_INVALID');
     const variant = parseCheckerPromptVariant(
       JSON.parse(
         await readFile(
@@ -147,76 +151,74 @@ async function runAiCorrectionRegressionCli(
         ),
       ) as unknown,
     );
-
-    if (!arguments_.includes('--execute')) {
-      // Priced under the recorded rate, never a guess: a candidate with no
-      // recorded rate cannot be bounded, and is refused rather than estimated.
-      const pricing = JSON.parse(
+    const checker = designedCheckerIdentity({
+      modelId: PROMOTED_CHECKER_IDENTITY.modelId,
+      requestProfile: PROMOTED_CHECKER_IDENTITY.requestProfile,
+      instructions: variant.instructions,
+    });
+    const result = await runDesignedCheckerProbe({
+      arguments: arguments_,
+      binding: {
+        checker,
+        qualificationRunId,
+        measurementKind: 'LIVE',
+        simulatesValidatedFamily: arguments_.includes(
+          '--simulate-validated-family',
+        ),
+      },
+      instructions: variant.instructions,
+      ...(apiKey
+        ? {
+            checker: buildRegressionChecker(apiKey, variant.instructions),
+            apiKey,
+          }
+        : {}),
+      budgetDirectory: sharedResearchStateDirectory(),
+      probePath: path.resolve(
+        'benchmarks/ai-correction/regression/false-agree-probe.v1.json',
+      ),
+      outputDirectory: path.resolve(
+        'benchmarks/ai-correction/regression/probes',
+        new Date().toISOString().replace(/[:.]/g, '-'),
+      ),
+      pricing: JSON.parse(
         await readFile(
           path.resolve(
             'benchmarks/ai-correction/regression/checker-pricing.v1.json',
           ),
           'utf8',
         ),
-      ) as { modelId: string };
-      console.log(
-        `Sonde faux accord, à sec — consigne ${variant.id} (${variant.label}) — ${probe.cases.length} cas, ${probe.cases.length} appels vérificateur, aucun appel primaire.`,
-      );
-      console.log(
-        `Vérificateur tarifé : ${pricing.modelId}. Coût mesuré par appel sur la run du 30 août : 0,0011075 USD, soit ${(probe.cases.length * 0.0011075).toFixed(4)} USD pour cette sonde.`,
-      );
-      console.log(
-        `Verdict attendu sur les ${probe.cases.length} : ${probe.expectedVerdict}. Chaque accord est un faux accord.`,
-      );
-      return;
-    }
-
-    if (!apiKey) {
-      throw new Error(
-        'REGRESSION_RUN_API_KEY_REQUIRED: la sonde demande OPENROUTER_API_KEY.',
-      );
-    }
-    const result = await runFalseAgreeProbe({
-      checker: buildRegressionChecker(apiKey, variant.instructions),
-      probe,
+      ) as {
+        modelId: string;
+        promptUsdPerToken: number;
+        completionUsdPerToken: number;
+      },
+      maxOutputTokens:
+        PROMOTED_CHECKER_IDENTITY.requestProfile.totalOutputTokenLimit,
+      readProviderUsage: async () => {
+        if (!apiKey) return null;
+        try {
+          const response = await fetch('https://openrouter.ai/api/v1/credits', {
+            headers: { Authorization: `Bearer ${apiKey}` },
+            signal: AbortSignal.timeout(15_000),
+          });
+          if (!response.ok) return null;
+          const body = (await response.json()) as {
+            data?: { total_usage?: unknown };
+          };
+          const value = body.data?.total_usage;
+          return typeof value === 'number' && Number.isFinite(value)
+            ? value
+            : null;
+        } catch {
+          return null;
+        }
+      },
     });
-    // A measurement that lives only in a terminal cannot be cited later. The
-    // first run of this probe had to be transcribed from stdout; this is so the
-    // next one is not.
-    const probeDirectory = path.resolve(
-      'benchmarks/ai-correction/regression/probes',
-      new Date().toISOString().replace(/[:.]/g, '-'),
-    );
-    await mkdir(probeDirectory, { recursive: true });
-    await writeFile(
-      path.join(probeDirectory, `probe-${variant.id}.json`),
-      `${JSON.stringify(
-        {
-          checkerModelId: PROMOTED_CHECKER_IDENTITY.modelId,
-          checkerPromptId: variant.id,
-          checkerPromptLabel: variant.label,
-          instructions: variant.instructions,
-          probeId: probe.probeId,
-          result,
-        },
-        null,
-        2,
-      )}\n`,
-      'utf8',
+    console.log(
+      `Designed probe: reserved bound ${result.reservedBoundUsd.toFixed(6)} USD; ${result.evidencePath ?? 'dry run, no calls'}`,
     );
 
-    const { denominator, numerator, rate } = result.checkerFalseAgreeDesigned;
-    console.log(
-      `Sonde faux accord, consigne ${variant.id} — ${numerator}/${denominator} faux accords${rate === null ? '' : ` = ${(rate * 100).toFixed(2)} %`}, ${result.costUsd.toFixed(6)} USD — ${probeDirectory}.`,
-    );
-    for (const agreement of result.falseAgreements) {
-      console.log(`  accord sur ${agreement.id} — ${agreement.falseBecause}`);
-    }
-    if (result.unavailable.length > 0) {
-      console.log(
-        `  ${result.unavailable.length} cas sans verdict, exclus du dénominateur : ${result.unavailable.join(', ')}`,
-      );
-    }
     return;
   }
 
@@ -227,9 +229,11 @@ async function runAiCorrectionRegressionCli(
     const { analysis, resultsDirectory } = await runRegressionAnalysis({
       arguments: arguments_,
     });
-    console.log(`Analyse hors ligne de ${resultsDirectory} — aucun appel.`);
     console.log(
-      `${analysis.attempts.length} tentatives, ${analysis.cellsObserved} cellules, ${analysis.cellsUnusable} inexploitables, ${analysis.verdictCount} verdicts réutilisés, ${analysis.ledgerSpentUsd.toFixed(4)} USD au registre.`,
+      `Analyse hors ligne de ${resultsDirectory} — politique ${analysis.gatePolicyVersion}, simulation famille validée ${analysis.simulatesValidatedFamily}, aucun appel.`,
+    );
+    console.log(
+      `${analysis.attempts.length} tentatives, ${analysis.cellsObserved} cellules, ${analysis.cellsUnusable} inexploitables, ${analysis.verdictCount} verdicts liés, ${analysis.legacyUnboundVerdictCount} verdicts historiques non liés (inutilisables), ${analysis.ledgerSpentUsd.toFixed(4)} USD au registre.`,
     );
     console.log(
       `Répétitions distinctes : ${analysis.distinctRepetitions.join(', ') || 'aucune'}.`,

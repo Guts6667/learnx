@@ -1,3 +1,8 @@
+import {
+  readDesignedProbeEvidence,
+  type DesignedCheckerIdentity,
+  type DesignedProbeBinding,
+} from './ai-correction-regression-probe-evidence.js';
 /**
  * `--run-pool` — the regression suite's execution entry point (V4.5-120 step 4,
  * spec §4 and §7).
@@ -124,6 +129,7 @@ import {
 /** The promoted identities a regression run is allowed to measure. */
 export type RegressionPinnedIdentities = {
   checkerModelId: string;
+  checkerQualificationIdentity?: DesignedCheckerIdentity;
   /**
    * The promoted identity's retry policy, which is part of the identity rather
    * than of the benchmark configuration. A run that retries where the promoted
@@ -629,6 +635,8 @@ function assertConfigurationWasChosen(input: {
 export async function runRegressionPool(input: {
   arguments: string[];
   checker?: RegressionCheckerPort;
+  /** Explicit synthetic evidence is permitted only through the injected test API. */
+  measurementKind?: 'LIVE' | 'SYNTHETIC';
   /** Absent means a dry run: plan and preflight, no provider call. */
   executeCandidate?: CandidateExecutor;
   configuration: CorrectionBenchmarkConfiguration;
@@ -654,6 +662,39 @@ export async function runRegressionPool(input: {
   });
   const directory = input.regressionDirectory ?? regressionDirectory;
   const runStartedAt = (input.now?.() ?? new Date()).toISOString();
+  const simulatesValidatedFamily = input.arguments.includes(
+    '--simulate-validated-family',
+  );
+  const probeEvidencePath = readCliOption(
+    input.arguments,
+    'designed-checker-probe',
+  );
+  const qualificationRunId = readCliOption(
+    input.arguments,
+    'qualification-run-id',
+  );
+  let probeBinding: DesignedProbeBinding | undefined;
+  if (probeEvidencePath) {
+    if (!qualificationRunId || !input.identities.checkerQualificationIdentity) {
+      throw new RegressionRunError(
+        'DESIGNED_PROBE_RUN_AND_CHECKER_IDENTITY_REQUIRED',
+      );
+    }
+    probeBinding = {
+      checker: input.identities.checkerQualificationIdentity,
+      qualificationRunId,
+      measurementKind: input.measurementKind ?? 'LIVE',
+      simulatesValidatedFamily,
+    };
+  }
+  const designedProbe =
+    probeEvidencePath && probeBinding
+      ? await readDesignedProbeEvidence({
+          evidencePath: path.resolve(probeEvidencePath),
+          probePath: path.join(directory, 'false-agree-probe.v1.json'),
+          binding: probeBinding,
+        })
+      : undefined;
 
   // The envelope is measured against the provider, not a local counter: a
   // counter inside one process cannot see a second process, which is exactly
@@ -773,7 +814,7 @@ export async function runRegressionPool(input: {
 
   const policy = parseRegressionGatePolicy(
     JSON.parse(
-      await readFile(path.join(directory, 'gate-policy.v6-1.json'), 'utf8'),
+      await readFile(path.join(directory, 'gate-policy.v7.json'), 'utf8'),
     ) as unknown,
   );
 
@@ -1122,40 +1163,26 @@ export async function runRegressionPool(input: {
   // Verdicts already bought, so a resumed analysis reuses them rather than
   // paying the checker a second time.
   const verdicts = new Map<string, RegressionCheckerVerdict>();
+  const verdictRecords = new Map<string, RegressionVerdictRecord>();
   if (resumeDirectory) {
     for (const record of await readPersistedVerdicts(
       path.resolve(resumeDirectory),
     )) {
-      verdicts.set(
-        verdictKey({
-          criterionKey: record.criterionKey,
-          unitId: record.unitId,
-        }),
-        record.verdict,
-      );
+      const key = verdictKey(record);
+      verdicts.set(key, record.verdict);
+      verdictRecords.set(key, record);
     }
   }
   const persistVerdicts = async (
     records: RegressionVerdictRecord[],
   ): Promise<void> => {
     for (const record of records) {
-      verdicts.set(
-        verdictKey({
-          criterionKey: record.criterionKey,
-          unitId: record.unitId,
-        }),
-        record.verdict,
-      );
+      const key = verdictKey(record);
+      verdicts.set(key, record.verdict);
+      verdictRecords.set(key, record);
     }
     await writeRunArtifact({
-      content: `${JSON.stringify(
-        [...verdicts.entries()].map(([key, verdict]) => {
-          const [unitId, criterionKey] = key.split('::');
-          return { criterionKey, unitId, verdict };
-        }),
-        null,
-        2,
-      )}\n`,
+      content: `${JSON.stringify([...verdictRecords.values()], null, 2)}\n`,
       directory: resultsDirectory,
       fileName: 'checker-verdicts.json',
     });
@@ -1278,7 +1305,7 @@ export async function runRegressionPool(input: {
     attempts,
     budget: guard,
     ...(input.checker ? { checker: input.checker } : {}),
-    familyScientificallyValidated: true,
+    familyScientificallyValidated: simulatesValidatedFamily,
     onCheckerCost: (entry) =>
       checkerCalls.push({
         call: checkerCalls.length + 1,
@@ -1293,10 +1320,15 @@ export async function runRegressionPool(input: {
   });
   const { baselines, mutants } = partitionObservations(observations);
   const metrics = computeRegressionMetrics({
+    attempts,
+    designedCheckerProbe: designedProbe?.result,
     baselines,
     mutants,
     scales: plan.scales,
   });
+  const legacyUnboundVerdictCount = [...verdicts.keys()].filter((key) =>
+    key.startsWith('legacy::'),
+  ).length;
   const security = computeRunSecurityRates({ attempts, observations, plan });
   const evaluation = evaluateRegressionGates({
     metrics: { ...metrics, ...security },
@@ -1308,44 +1340,52 @@ export async function runRegressionPool(input: {
     poolSha256,
   });
 
-  const report = renderRegressionReport({
-    confidence: summarizeConfidence(observations),
-    costs: {
-      actualCostUsd: guard.actualSpentUsd,
-      checkerBoundUsd: checkerPricing ? checkerCostFor(passes) : null,
-      costCapUsd: supplierCostCapUsd,
-      dropped: budgeted.dropped,
-      primaryBoundUsd: passes.reduce(
-        (total, pass) => total + pricePass(pass),
-        0,
-      ),
-      // The preflight's own worst-case envelope: primary calls, their
-      // retries and the bounded guard passes. Reported as the estimate the
-      // run was authorised against, next to what it actually spent.
-      estimatedCostUsd: budgeted.pricedUsd,
-      p50CostUsdPerCorrection: null,
-      p50LatencyMs: percentile(attempts, 0.5),
-      p90CostUsdPerCorrection: null,
-      p90LatencyMs: percentile(attempts, 0.9),
-    },
-    evaluation,
-    identity: {
-      checkerIdentity: input.identities.checkerModelId,
-      gatePolicyVersion: policy.policyVersion,
-      generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
-      heldOutSeed,
-      heldOutSeedSource: 'DERIVED',
-      poolId: pool.poolId,
-      poolSha256,
-      primaryIdentity: input.identities.primaryCandidateId,
-      profile,
-      repetitions: input.configuration.repetitions,
-      runStartedAt,
-    },
-    metrics,
-    mutantCounts: countMutantsByKind(plan, executedCaseIds),
-  });
+  const report =
+    `Measurement kind: ${input.measurementKind ?? 'LIVE'}. Validated-family simulation: ${simulatesValidatedFamily}. Legacy unbound verdicts: ${legacyUnboundVerdictCount} (unavailable). A synthetic result or a simulated confidence ceiling does not qualify runtime delivery.\n\n` +
+    renderRegressionReport({
+      confidence: summarizeConfidence(observations),
+      costs: {
+        actualCostUsd: guard.actualSpentUsd,
+        checkerBoundUsd: checkerPricing ? checkerCostFor(passes) : null,
+        costCapUsd: supplierCostCapUsd,
+        dropped: budgeted.dropped,
+        primaryBoundUsd: passes.reduce(
+          (total, pass) => total + pricePass(pass),
+          0,
+        ),
+        // The preflight's own worst-case envelope: primary calls, their
+        // retries and the bounded guard passes. Reported as the estimate the
+        // run was authorised against, next to what it actually spent.
+        estimatedCostUsd: budgeted.pricedUsd,
+        p50CostUsdPerCorrection: null,
+        p50LatencyMs: percentile(attempts, 0.5),
+        p90CostUsdPerCorrection: null,
+        p90LatencyMs: percentile(attempts, 0.9),
+      },
+      evaluation,
+      identity: {
+        checkerIdentity: input.identities.checkerModelId,
+        gatePolicyVersion: policy.policyVersion,
+        generatorVersion: REGRESSION_MUTANT_GENERATOR_VERSION,
+        heldOutSeed,
+        heldOutSeedSource: 'DERIVED',
+        poolId: pool.poolId,
+        poolSha256,
+        primaryIdentity: input.identities.primaryCandidateId,
+        profile,
+        repetitions: input.configuration.repetitions,
+        runStartedAt,
+      },
+      metrics,
+      mutantCounts: countMutantsByKind(plan, executedCaseIds),
+    });
 
+  if (designedProbe)
+    await writeRunArtifact({
+      content: `${JSON.stringify(designedProbe.evidence, null, 2)}\n`,
+      directory: resultsDirectory,
+      fileName: 'designed-checker-probe.json',
+    });
   await writeRunArtifact({
     content: `${JSON.stringify(attempts, null, 2)}\n`,
     directory: resultsDirectory,
@@ -1355,6 +1395,10 @@ export async function runRegressionPool(input: {
     content: `${JSON.stringify(
       {
         evaluation,
+        qualification: probeBinding ?? null,
+        simulatesValidatedFamily,
+        legacyUnboundVerdictCount,
+        measurementKind: input.measurementKind ?? 'LIVE',
         heldOutSeed,
         heldOutSeedSource: 'DERIVED',
         metrics,
@@ -2206,7 +2250,8 @@ export async function runRegressionAnalysis(input: {
   });
 
   const analysis = await analyseRunOffline({
-    gatePolicyPath: path.join(directory, 'gate-policy.v6-1.json'),
+    gatePolicyPath: path.join(directory, 'gate-policy.v7.json'),
+    designedProbePath: path.join(directory, 'false-agree-probe.v1.json'),
     plan: planRegressionRun({
       paraphrases: cache.paraphrases,
       pool,

@@ -57,8 +57,8 @@ const IDENTITIES = {
 async function scratchRegressionDirectory(): Promise<string> {
   const directory = await mkdtemp(path.join(tmpdir(), 'regression-run-'));
   await copyFile(
-    path.join(REGRESSION_SOURCE, 'gate-policy.v6-1.json'),
-    path.join(directory, 'gate-policy.v6-1.json'),
+    path.join(REGRESSION_SOURCE, 'gate-policy.v7.json'),
+    path.join(directory, 'gate-policy.v7.json'),
   );
   return directory;
 }
@@ -934,7 +934,7 @@ describe('mutation coverage matches what the policy declares', () => {
 
     const policy = JSON.parse(
       await readFile(
-        path.join(REGRESSION_SOURCE, 'gate-policy.v6-1.json'),
+        path.join(REGRESSION_SOURCE, 'gate-policy.v7.json'),
         'utf8',
       ),
     ) as { gates: { key: string; minimumDenominator?: number }[] };
