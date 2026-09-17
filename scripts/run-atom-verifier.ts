@@ -15,11 +15,13 @@
  *   pnpm exec tsx scripts/run-atom-verifier.ts                  # dry run
  *   pnpm exec tsx scripts/run-atom-verifier.ts --run --confirm=mesure
  *   options: --reps=3 --models=a,b --cap-usd=3 --concurrency=3
+ *   required for paid calls: --envelope-decision=<owner-id> --envelope-usd=<cap>
+ * Shared state: Git common directory / learnx-paid-research. Pending or unknown
+ * costs and stale locks require explicit reconciliation; no automatic reset.
  */
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import {
   appendFileSync,
-  existsSync,
   mkdirSync,
   readFileSync,
   writeFileSync,
@@ -28,39 +30,41 @@ import path from 'node:path';
 
 import {
   assertBlind,
-  binomialUpperTail,
   estimateCostUsd,
   estimateTokens,
-  parseVerifierAnswer,
   renderVerifierCard,
-  seededShuffle,
   selectLabelledPairs,
   summariseModel,
   THRESHOLDS,
-  VERIFIER_JSON_SCHEMA,
   VERIFIER_SYSTEM_PROMPT,
-  type CardObservation,
   type KeyEntry,
   type ModelSummary,
   type PairRecord,
   type Pass2Decision,
-  type PriceUsdPerToken,
   type VerifierCard,
 } from '../src/lib/ai-correction-atom-verifier.js';
+
+import {
+  acquireAtomRunLock,
+  openAtomBudget,
+  sharedResearchStateDirectory,
+} from '../src/lib/ai-correction-atom-verifier-budget.js';
+import { executeAtomMeasurement } from '../src/lib/ai-correction-atom-verifier-execution.js';
+import {
+  ATOM_REQUEST_PROFILE,
+  callAtomModel,
+  readAtomProviderUsage,
+  type AtomCandidate,
+} from '../src/lib/ai-correction-atom-verifier-transport.js';
 
 const REG = 'benchmarks/ai-correction/regression';
 const OUT_ROOT = path.resolve(REG, 'atom-verifier');
 const SEED = 'v4.5-210/atom-verifier/v1';
 const COMPLETION_TOKENS_ESTIMATE = 120;
-const MAX_OUTPUT_TOKENS = 400;
-const TIMEOUT_MS = 60_000;
+const MAX_OUTPUT_TOKENS = ATOM_REQUEST_PROFILE.maxOutputTokens;
+const TIMEOUT_MS = ATOM_REQUEST_PROFILE.timeoutMs;
 
-type Candidate = {
-  id: string;
-  modelId: string;
-  price: PriceUsdPerToken;
-  priceSource: string;
-};
+type Candidate = AtomCandidate;
 
 /**
  * Prices per token. Mistral's comes from the sealed pricing file; the others
@@ -79,6 +83,7 @@ function candidates(): Candidate[] {
   return [
     {
       id: 'mistral-medium-3-5',
+      route: { slug: 'mistral/eu', provider: 'Mistral' },
       modelId: mistral.modelId,
       price: {
         completion: mistral.completionUsdPerToken,
@@ -88,6 +93,7 @@ function candidates(): Candidate[] {
     },
     {
       id: 'haiku-4-5',
+      route: { slug: 'anthropic', provider: 'Anthropic' },
       modelId: 'anthropic/claude-haiku-4.5',
       price: { completion: 0.000005, prompt: 0.000001 },
       priceSource:
@@ -95,6 +101,8 @@ function candidates(): Candidate[] {
     },
     {
       id: 'kimi-k3',
+      // No verified non-reasoning route: requires a separately approved profile.
+      route: null,
       modelId: 'moonshotai/kimi-k3',
       price: { completion: 0.0000025, prompt: 0.0000006 },
       priceSource:
@@ -102,6 +110,7 @@ function candidates(): Candidate[] {
     },
     {
       id: 'sonnet-4-6',
+      route: { slug: 'anthropic', provider: 'Anthropic' },
       modelId: 'anthropic/claude-sonnet-4.6',
       price: { completion: 0.000015, prompt: 0.000003 },
       priceSource:
@@ -114,6 +123,8 @@ type Args = {
   capUsd: number;
   concurrency: number;
   confirm: string | null;
+  envelopeDecision: string | null;
+  envelopeUsd: number | null;
   models: string[] | null;
   reps: number;
   run: boolean;
@@ -124,6 +135,8 @@ function parseArgs(argv: string[]): Args {
     capUsd: THRESHOLDS.budgetCapUsd,
     concurrency: 3,
     confirm: null,
+    envelopeDecision: null,
+    envelopeUsd: null,
     models: null,
     reps: THRESHOLDS.repetitions,
     run: false,
@@ -131,6 +144,10 @@ function parseArgs(argv: string[]): Args {
   for (const a of argv) {
     if (a === '--run') args.run = true;
     else if (a.startsWith('--confirm=')) args.confirm = a.slice(10);
+    else if (a.startsWith('--envelope-decision='))
+      args.envelopeDecision = a.slice(20);
+    else if (a.startsWith('--envelope-usd='))
+      args.envelopeUsd = Number(a.slice(15));
     else if (a.startsWith('--reps=')) args.reps = Number(a.slice(7));
     else if (a.startsWith('--cap-usd=')) args.capUsd = Number(a.slice(10));
     else if (a.startsWith('--concurrency='))
@@ -144,6 +161,19 @@ function parseArgs(argv: string[]): Args {
   if (!(args.capUsd > 0) || args.capUsd > THRESHOLDS.budgetCapUsd) {
     throw new Error('ATOM_VERIFIER_CAP_ABOVE_PREREGISTRATION');
   }
+  if (
+    !Number.isInteger(args.concurrency) ||
+    args.concurrency < 1 ||
+    args.concurrency > 8
+  )
+    throw new Error('ATOM_CONCURRENCY_OUT_OF_RANGE');
+  if (
+    args.run &&
+    (!args.envelopeDecision?.trim() ||
+      !Number.isFinite(args.envelopeUsd) ||
+      !(typeof args.envelopeUsd === 'number' && args.envelopeUsd > 0))
+  )
+    throw new Error('ATOM_EXPLICIT_ENVELOPE_REQUIRED');
   return args;
 }
 
@@ -240,7 +270,9 @@ function writePlan(
   cands: Candidate[],
   reps: number,
 ) {
-  mkdirSync(path.join(dir, 'prompts'), { recursive: true });
+  mkdirSync(path.dirname(dir), { recursive: true });
+  mkdirSync(dir); // exclusive: never overwrite a historical plan or run
+  mkdirSync(path.join(dir, 'prompts'));
   const promptTokens = built.cases.map((c) => c.promptTokensEstimate);
   const estimates = cands.map((c) => ({
     candidate: c.id,
@@ -253,11 +285,14 @@ function writePlan(
       }).toFixed(4),
     ),
     modelId: c.modelId,
+    route: c.route,
     priceSource: c.priceSource,
   }));
   const total = estimates.reduce((a, e) => a + e.estimatedUsd, 0);
   const plan = {
     calls: built.cases.length * cands.length * reps,
+    smokeCalls: cands.filter((c) => c.route !== null).length,
+    profileVersion: ATOM_REQUEST_PROFILE.version,
     candidates: estimates,
     cards: built.cases.length,
     estimatedTotalUsd: Number(total.toFixed(4)),
@@ -265,6 +300,7 @@ function writePlan(
     labelledPairs: built.labelled.length,
     repetitions: reps,
     request: {
+      reasoning: ATOM_REQUEST_PROFILE.reasoning,
       maxTokens: MAX_OUTPUT_TOKENS,
       provider: {
         allow_fallbacks: false,
@@ -319,279 +355,96 @@ function writePlan(
   return plan;
 }
 
-type LedgerLine = {
-  attempt: number;
-  candidateId: string;
-  cardId: string;
-  costSource: 'ACTUAL' | 'ESTIMATED';
-  costUsd: number;
-  errorCode: string | null;
-  latencyMs: number;
-  modelId: string;
-  providerRoute: string | null;
-  repetition: number;
-  status: 'VALID' | 'UNPARSED' | 'ERROR';
-};
-
-async function callModel(input: {
-  apiKey: string;
-  candidate: Candidate;
-  userMessage: string;
-}): Promise<{
-  content: string | null;
-  costUsd: number | null;
-  errorCode: string | null;
-  latencyMs: number;
-  promptTokens: number;
-  providerRoute: string | null;
-  completionTokens: number;
-}> {
-  const started = performance.now();
-  const body = {
-    max_tokens: MAX_OUTPUT_TOKENS,
-    messages: [
-      { content: VERIFIER_SYSTEM_PROMPT, role: 'system' },
-      { content: input.userMessage, role: 'user' },
-    ],
-    model: input.candidate.modelId,
-    provider: {
-      allow_fallbacks: false,
-      data_collection: 'deny',
-      require_parameters: true,
-    },
-    response_format: {
-      json_schema: {
-        name: 'learnx_atom_verdict',
-        schema: VERIFIER_JSON_SCHEMA,
-        strict: true,
-      },
-      type: 'json_schema',
-    },
-    temperature: 0,
-    usage: { include: true },
-  };
-  let response: Response;
-  try {
-    response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      body: JSON.stringify(body),
-      headers: {
-        Authorization: `Bearer ${input.apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://learn-x.app',
-        'X-Title': 'LearnX atom verifier V4.5-210',
-      },
-      method: 'POST',
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    });
-  } catch (error) {
-    const name = error instanceof Error ? error.name : 'Error';
-    return {
-      completionTokens: 0,
-      content: null,
-      costUsd: null,
-      errorCode:
-        name === 'TimeoutError' || name === 'AbortError'
-          ? 'PROVIDER_TIMEOUT'
-          : 'PROVIDER_NETWORK_ERROR',
-      latencyMs: Math.round(performance.now() - started),
-      promptTokens: 0,
-      providerRoute: null,
-    };
-  }
-  const latencyMs = Math.round(performance.now() - started);
-  const text = await response.text();
-  if (!response.ok) {
-    return {
-      completionTokens: 0,
-      content: null,
-      costUsd: null,
-      errorCode: `HTTP_${response.status}`,
-      latencyMs,
-      promptTokens: 0,
-      providerRoute: null,
-    };
-  }
-  let payload: {
-    choices?: { finish_reason?: string; message?: { content?: string } }[];
-    provider?: string;
-    usage?: {
-      completion_tokens?: number;
-      cost?: number;
-      prompt_tokens?: number;
-    };
-  };
-  try {
-    payload = JSON.parse(text) as typeof payload;
-  } catch {
-    return {
-      completionTokens: 0,
-      content: null,
-      costUsd: null,
-      errorCode: 'ENVELOPE_INVALID',
-      latencyMs,
-      promptTokens: 0,
-      providerRoute: null,
-    };
-  }
-  const choice = payload.choices?.[0];
-  return {
-    completionTokens: payload.usage?.completion_tokens ?? 0,
-    content: choice?.message?.content ?? null,
-    costUsd:
-      typeof payload.usage?.cost === 'number' ? payload.usage.cost : null,
-    errorCode:
-      choice?.finish_reason === 'length' ? 'MODEL_OUTPUT_TRUNCATED' : null,
-    latencyMs,
-    promptTokens: payload.usage?.prompt_tokens ?? 0,
-    providerRoute: payload.provider ?? null,
-  };
-}
-
 async function runMeasurement(
   args: Args,
   built: ReturnType<typeof buildCases>,
   cands: Candidate[],
 ) {
   const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey || apiKey.trim() === '') {
-    console.error(
-      'OPENROUTER_API_KEY absent : exporter cette seule variable, sans sourcer .env.',
+  if (!apiKey?.trim())
+    throw new Error(
+      'OPENROUTER_API_KEY absent; export it alone, never source .env',
     );
-    process.exit(2);
-  }
-  const stamp = new Date().toISOString().replace(/[:.]/gu, '-');
-  const dir = path.join(OUT_ROOT, 'runs', stamp);
-  if (existsSync(dir)) throw new Error('ATOM_VERIFIER_RUN_DIR_EXISTS');
-  const plan = writePlan(dir, built, cands, args.reps);
-  const ledgerPath = path.join(dir, 'ledger.jsonl');
-  const responsesPath = path.join(dir, 'responses.jsonl');
-  const caseById = new Map(built.cases.map((c) => [c.cardId, c]));
-
-  // Work list: every (candidate, repetition) gets its own seeded order, so
-  // neither position nor neighbour is shared across repetitions.
-  const work: { candidate: Candidate; cardId: string; repetition: number }[] =
-    [];
-  for (const candidate of cands) {
-    for (let r = 1; r <= args.reps; r += 1) {
-      const order = seededShuffle(
-        built.cases.map((c) => c.cardId),
-        createHash('sha256')
-          .update(`${SEED}/${candidate.id}/rep-${r}`)
-          .digest('hex'),
-      );
-      for (const cardId of order)
-        work.push({ candidate, cardId, repetition: r });
-    }
-  }
-
-  let spentUsd = 0;
-  let stopped: string | null = null;
-  const observations = new Map<string, CardObservation[]>();
-  let cursor = 0;
-  const worker = async () => {
-    while (cursor < work.length && stopped === null) {
-      const item = work[cursor];
-      cursor += 1;
-      if (!item) return;
-      const c = caseById.get(item.cardId);
-      if (!c) throw new Error(`ATOM_VERIFIER_CASE_MISSING ${item.cardId}`);
-      const projected =
-        c.promptTokensEstimate * item.candidate.price.prompt +
-        COMPLETION_TOKENS_ESTIMATE * item.candidate.price.completion;
-      if (spentUsd + projected > args.capUsd) {
-        stopped = `BUDGET_CAP ${args.capUsd} USD reached at ${spentUsd.toFixed(4)} USD`;
-        return;
-      }
-      const result = await callModel({
-        apiKey,
-        candidate: item.candidate,
-        userMessage: c.userMessage,
-      });
-      const estimated =
-        result.promptTokens * item.candidate.price.prompt +
-        result.completionTokens * item.candidate.price.completion;
-      const costUsd =
-        result.costUsd ?? (result.errorCode ? 0 : estimated || projected);
-      spentUsd += costUsd;
-      const parsed = result.content
-        ? parseVerifierAnswer(result.content)
-        : null;
-      const line: LedgerLine = {
-        attempt: 1,
-        candidateId: item.candidate.id,
-        cardId: item.cardId,
-        costSource: result.costUsd === null ? 'ESTIMATED' : 'ACTUAL',
-        costUsd,
-        errorCode: result.errorCode,
-        latencyMs: result.latencyMs,
-        modelId: item.candidate.modelId,
-        providerRoute: result.providerRoute,
-        repetition: item.repetition,
-        status: result.errorCode ? 'ERROR' : parsed ? 'VALID' : 'UNPARSED',
-      };
-      appendFileSync(ledgerPath, JSON.stringify(line) + '\n');
-      appendFileSync(
-        responsesPath,
-        JSON.stringify({
-          candidateId: item.candidate.id,
-          cardId: item.cardId,
-          content: result.content,
-          parsed,
-          promptHash: c.promptHash,
-          repetition: item.repetition,
-        }) + '\n',
-      );
-      const list = observations.get(item.candidate.id) ?? [];
-      list.push({
-        cardId: item.cardId,
-        repetition: item.repetition,
-        verdict: parsed?.verdict ?? null,
-      });
-      observations.set(item.candidate.id, list);
-      process.stdout.write(
-        `${item.candidate.id} r${item.repetition} ${item.cardId} ${line.status} ${parsed?.verdict ?? '-'} ${spentUsd.toFixed(4)} USD\n`,
-      );
-    }
-  };
-  await Promise.all(
-    Array.from({ length: Math.max(1, args.concurrency) }, worker),
-  );
-
-  const summaries: Record<string, ModelSummary> = {};
-  for (const candidate of cands) {
-    summaries[candidate.id] = summariseModel({
-      observations: observations.get(candidate.id) ?? [],
-      pairs: built.labelled,
-      pass1: built.pass1Map,
-      repetitions: args.reps,
+  if (!args.envelopeDecision || args.envelopeUsd === null)
+    throw new Error('ATOM_EXPLICIT_ENVELOPE_REQUIRED');
+  const shared = sharedResearchStateDirectory();
+  const release = acquireAtomRunLock(shared);
+  try {
+    const usage = await readAtomProviderUsage(apiKey);
+    if (usage === null) throw new Error('ATOM_PROVIDER_USAGE_UNMEASURABLE');
+    const stamp =
+      new Date().toISOString().replace(/[:.]/gu, '-') + '-' + randomUUID();
+    const dir = path.join(OUT_ROOT, 'runs', stamp);
+    const budget = openAtomBudget({
+      directory: shared,
+      decisionId: args.envelopeDecision,
+      envelopeUsd: args.envelopeUsd,
+      keyHash: sha(apiKey),
+      providerUsageUsd: usage,
+      runCapUsd: args.capUsd,
+      runId: stamp,
     });
+    const plan = writePlan(dir, built, cands, args.reps);
+    const run = await executeAtomMeasurement({
+      budget,
+      candidates: cands,
+      cases: built.cases,
+      concurrency: args.concurrency,
+      repetitions: args.reps,
+      readUsage: () => readAtomProviderUsage(apiKey),
+      call: (candidate, userMessage) =>
+        callAtomModel({ apiKey, candidate, userMessage }),
+      persist: (attempt) =>
+        appendFileSync(
+          path.join(dir, 'attempts.jsonl'),
+          JSON.stringify(attempt) + '\n',
+        ),
+    });
+    const summaries: Record<string, ModelSummary> = {};
+    for (const candidate of cands)
+      summaries[candidate.id] = summariseModel({
+        observations: run.observations.get(candidate.id) ?? [],
+        invalidReasons: run.invalidReasons.get(candidate.id),
+        pairs: built.labelled,
+        pass1: built.pass1Map,
+        repetitions: args.reps,
+      });
+    const summary = {
+      schemaVersion: 2,
+      complete:
+        run.stopped === null &&
+        Object.values(summaries).every((s) => s.validity.status === 'MEASURED'),
+      plan,
+      knownSpentUsd: run.totals.runKnownUsd,
+      spentUsd: run.totals.runUnknownCalls ? null : run.totals.runKnownUsd,
+      unknownCalls: run.totals.runUnknownCalls,
+      stopped: run.stopped,
+      summaries,
+    };
+    writeFileSync(
+      path.join(dir, 'summary.json'),
+      JSON.stringify(summary, null, 2) + '\n',
+      { flag: 'wx' },
+    );
+    writeFileSync(
+      path.join(dir, 'report.md'),
+      renderReport(summary, cands, args.reps),
+      { flag: 'wx' },
+    );
+    console.log(
+      `${summary.complete ? 'COMPLETE' : 'INCOMPLETE / UNMEASURED'} — known ${summary.knownSpentUsd.toFixed(4)} USD, unknown calls ${summary.unknownCalls} — ${dir}`,
+    );
+  } finally {
+    release();
   }
-  const complete = stopped === null && cursor >= work.length;
-  const summary = {
-    complete,
-    plan: { calls: plan.calls, estimatedTotalUsd: plan.estimatedTotalUsd },
-    schemaVersion: 1,
-    spentUsd: Number(spentUsd.toFixed(6)),
-    stopped,
-    summaries,
-  };
-  writeFileSync(
-    path.join(dir, 'summary.json'),
-    JSON.stringify(summary, null, 2) + '\n',
-  );
-  writeFileSync(
-    path.join(dir, 'report.md'),
-    renderReport(summary, cands, args.reps),
-  );
-  console.log(
-    `\n${complete ? 'run complet' : 'RUN INCOMPLET — ' + stopped} — ${spentUsd.toFixed(4)} USD — ${dir}`,
-  );
 }
 
 function renderReport(
   summary: {
     complete: boolean;
-    spentUsd: number;
+    spentUsd: number | null;
+    knownSpentUsd: number;
+    unknownCalls: number;
     stopped: string | null;
     summaries: Record<string, ModelSummary>;
   },
@@ -602,8 +455,8 @@ function renderReport(
     `# Vérificateur atomique — ${summary.complete ? 'mesure' : 'MESURE INCOMPLÈTE'}`,
     '',
     summary.complete
-      ? `Run complet. Dépense : ${summary.spentUsd.toFixed(4)} USD.`
-      : `Run arrêté : ${summary.stopped}. Dépense : ${summary.spentUsd.toFixed(4)} USD. Aucun résultat ci-dessous ne vaut verdict.`,
+      ? `Run complet. Dépense : ${summary.knownSpentUsd.toFixed(4)} USD.`
+      : `Run incomplet : ${summary.stopped ?? 'qualification technique incomplète'}. Coût connu : ${summary.knownSpentUsd.toFixed(4)} USD. Coûts inconnus : ${summary.unknownCalls}. Lire la validité de chaque candidat.`,
     '',
     `Seuils déclarés avant le premier appel : ≥ ${THRESHOLDS.pairwiseProceed}/${THRESHOLDS.labelledPairs} paires gagnées (majorité de ${reps}), ≤ ${THRESHOLDS.flipsProceed} paires instables, rejet des abîmées ≥ ${THRESHOLDS.hardNegativeRejection * 100} %, acceptation des originaux ≥ ${THRESHOLDS.trueEvidenceAcceptance * 100} % ; arrêt sous ${THRESHOLDS.pairwiseStop} paires ou au-delà de ${THRESHOLDS.flipsStop} instables.`,
     '',
@@ -613,13 +466,17 @@ function renderReport(
   for (const c of cands) {
     const s = summary.summaries[c.id];
     if (!s) continue;
-    const p = binomialUpperTail(
-      s.pairs.original + s.pairs.damaged,
-      s.pairs.original,
-    );
     lines.push(
-      `| ${c.modelId} | **${s.pairs.original}** / ${THRESHOLDS.labelledPairs} (p = ${p.toExponential(1)} sur ${s.pairs.original + s.pairs.damaged} tranchées) | ${s.pairs.damaged} | ${s.pairs.tie} | ${s.pairs.undecided} | ${s.flips} | ${s.hardNegativeRejection.rejected} / ${s.hardNegativeRejection.denominator} (${s.hardNegativeRejection.abstained} abst.) | ${s.trueEvidenceAcceptance.accepted} / ${s.trueEvidenceAcceptance.denominator} (${s.trueEvidenceAcceptance.abstained} abst.) | ${s.absoluteAgainstPass1 ? `${s.absoluteAgainstPass1.agreements} / ${s.absoluteAgainstPass1.compared}` : '—'} | ${s.unparsed} | ${summary.complete ? s.reading : '—'} |`,
+      `| ${c.modelId} | **${s.pairs.original}** / ${THRESHOLDS.labelledPairs} (${s.clusterUncertainty.clusters} réponses sources) | ${s.pairs.damaged} | ${s.pairs.tie} | ${s.pairs.undecided} | ${s.flips} | ${s.hardNegativeRejection.rejected} / ${s.hardNegativeRejection.denominator} (${s.hardNegativeRejection.abstained} abst.) | ${s.trueEvidenceAcceptance.accepted} / ${s.trueEvidenceAcceptance.denominator} (${s.trueEvidenceAcceptance.abstained} abst.) | ${s.absoluteAgainstPass1 ? `${s.absoluteAgainstPass1.agreements} / ${s.absoluteAgainstPass1.compared}` : '—'} | ${s.unparsed} | ${s.reading} |`,
     );
+  }
+  for (const c of cands) {
+    const s = summary.summaries[c.id];
+    if (s)
+      lines.push(
+        '',
+        `${c.id}: ${s.validity.status}; ${s.validity.reasons.join(', ')}. Moyenne par source ${s.clusterUncertainty.clusterWeightedWinRate}; intervalle bootstrap 95 % ${JSON.stringify(s.clusterUncertainty.bootstrap95)}. ${s.clusterUncertainty.limitation}`,
+      );
   }
   lines.push(
     '',
@@ -634,10 +491,16 @@ async function main() {
   const all = candidates();
   const wanted = args.models;
   const cands = wanted ? all.filter((c) => wanted.includes(c.id)) : all;
+  if (wanted?.some((id) => !all.some((c) => c.id === id)))
+    throw new Error('ATOM_UNKNOWN_CANDIDATE');
   if (cands.length === 0) throw new Error('ATOM_VERIFIER_NO_CANDIDATE');
   const built = buildCases();
   if (!args.run) {
-    const dir = path.join(OUT_ROOT, 'plan.v1');
+    const dir = path.join(
+      OUT_ROOT,
+      'plans',
+      new Date().toISOString().replace(/[:.]/gu, '-') + '-' + randomUUID(),
+    );
     const plan = writePlan(dir, built, cands, args.reps);
     console.log(`plan écrit : ${dir}`);
     console.log(

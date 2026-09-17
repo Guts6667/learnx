@@ -147,6 +147,7 @@ function synthetic(
     const pairId = `p${i}`;
     pairsOut.push({
       atomId: 'x.a1',
+      clusterId: `source-${i}`,
       damagedCardId: `d${i}`,
       originalCardId: `o${i}`,
       pairId,
@@ -256,5 +257,80 @@ describe('arithmetic', () => {
     const a = seededShuffle([1, 2, 3, 4, 5, 6], 'deadbeef');
     expect(seededShuffle([1, 2, 3, 4, 5, 6], 'deadbeef')).toEqual(a);
     expect([...a].sort()).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+});
+
+describe('validity and correlated source answers', () => {
+  it('marks empty, incomplete, duplicate and malformed candidates UNMEASURED, never stop', () => {
+    const data = synthetic(
+      Array(30).fill({
+        original: ['direct', 'direct', 'direct'],
+        damaged: ['unsupported', 'unsupported', 'unsupported'],
+      }),
+    );
+    for (const observations of [
+      [],
+      data.observations.slice(1),
+      [...data.observations, data.observations[0]],
+      data.observations.map((o, i) => (i === 0 ? { ...o, verdict: null } : o)),
+    ]) {
+      const summary = summariseModel({
+        pairs: data.pairs,
+        observations,
+        repetitions: 3,
+      });
+      expect(summary.reading).toBe('UNMEASURED');
+      expect(summary.validity.status).toBe('UNMEASURED');
+    }
+    expect(summariseModel({ ...data, repetitions: 1 }).reading).toBe(
+      'UNMEASURED',
+    );
+    expect(
+      summariseModel({
+        ...data,
+        repetitions: 3,
+        invalidReasons: ['PROFILE_UNVERIFIED'],
+      }).reading,
+    ).toBe('UNMEASURED');
+  });
+  it('does not manufacture independence by adding atom pairs from one source', () => {
+    const data = synthetic(
+      Array(30).fill({
+        original: ['direct', 'direct', 'direct'],
+        damaged: ['unsupported', 'unsupported', 'unsupported'],
+      }),
+    );
+    data.pairs.forEach((p) => {
+      p.clusterId = 'same-answer';
+    });
+    const s = summariseModel({ ...data, repetitions: 3 });
+    expect(s.clusterUncertainty.clusters).toBe(1);
+    expect(s.clusterUncertainty.bootstrap95).toBeNull();
+    expect(s.clusterUncertainty.clusterWeightedWinRate).toBe(1);
+  });
+  it('uses the sealed key source identifiers and keeps cluster uncertainty reproducible', () => {
+    expect(new Set(labelled.map((p) => p.clusterId)).size).toBeLessThan(
+      labelled.length,
+    );
+    const a = summariseModel({
+      observations: [],
+      pairs: labelled,
+      repetitions: 3,
+    });
+    const b = summariseModel({
+      observations: [],
+      pairs: labelled,
+      repetitions: 3,
+    });
+    expect(a.clusterUncertainty).toEqual(b.clusterUncertainty);
+    expect(a).not.toHaveProperty('pValue');
+  });
+  it('refuses malformed answer fields instead of coercing them to a valid verdict', () => {
+    for (const raw of [
+      '{"verdict":"direct"}',
+      '{"verdict":"direct","sentences":[1],"reason":"x"}',
+      '{"verdict":"direct","sentences":[],"reason":"x","extra":true}',
+    ])
+      expect(parseVerifierAnswer(raw)).toBeNull();
   });
 });

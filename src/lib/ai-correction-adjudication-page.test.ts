@@ -9,13 +9,41 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 const PAGE = path.resolve(
   'benchmarks/ai-correction/regression/adjudication-pass1.html',
 );
 
+let pageCleanup: (() => void) | undefined;
+afterEach(() => {
+  pageCleanup?.();
+  pageCleanup = undefined;
+  localStorage.clear();
+  window.location.hash = '';
+  document.body.innerHTML = '';
+});
+
 function boot(hash = ''): void {
+  pageCleanup?.();
+  const listeners: { type: string; listener: EventListener }[] = [];
+  const timers: number[] = [];
+  const add = (type: string, listener: EventListener) => {
+    listeners.push({ type, listener });
+    window.addEventListener(type, listener);
+  };
+  const schedule = (handler: TimerHandler, delay?: number) => {
+    const id = window.setTimeout(handler, delay);
+    timers.push(id);
+    return id;
+  };
+  pageCleanup = () => {
+    for (const { type, listener } of listeners)
+      window.removeEventListener(type, listener);
+    for (const id of timers) window.clearTimeout(id);
+    delete (window as Window & { __adjudicationKeydown?: EventListener })
+      .__adjudicationKeydown;
+  };
   const html = readFileSync(PAGE, 'utf8');
   window.location.hash = hash;
   document.body.innerHTML = html
@@ -32,7 +60,12 @@ function boot(hash = ''): void {
     document.body.appendChild(el);
   }
   const logic = html.slice(html.lastIndexOf('<script>') + '<script>'.length);
-  new Function(logic.replace(/<\/script>[\s\S]*$/u, ''))();
+  new Function(
+    'addEventListener',
+    'removeEventListener',
+    'setTimeout',
+    logic.replace(/<\/script>[\s\S]*$/u, ''),
+  )(add, window.removeEventListener.bind(window), schedule);
 }
 const press = (key: string): void => {
   document.body.dispatchEvent(
@@ -210,7 +243,7 @@ describe('the blind adjudication page, real deck', () => {
     expect(
       payload.decisions.every((d) => typeof d.orderIndex === 'number'),
     ).toBe(true);
-  });
+  }, 30_000); // Traverses all 106 cards; includes real SHA-256 export under coverage.
 
   it('suspends the pass above the pre-declared abstention cap', () => {
     document.getElementById('who')?.click();
@@ -230,7 +263,7 @@ describe('the blind adjudication page, real deck', () => {
     expect(document.getElementById('app')?.textContent ?? '').toContain(
       'passe suspendue',
     );
-  });
+  }, 30_000); // Traverses the whole sealed deck; no assertion or card is skipped.
 });
 
 describe('the warm-up before the real deck', () => {
