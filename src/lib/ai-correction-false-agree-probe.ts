@@ -20,7 +20,7 @@
 
 import { z } from 'zod';
 
-import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
+import type { RegressionCheckerPort } from './ai-correction-regression-contracts.js';
 
 const probeCaseSchema = z
   .object({

@@ -40,53 +40,19 @@ import {
 } from './ai-correction-regression-mutants.js';
 import { checkEvidenceGuards } from './ai-correction-evidence-guards.js';
 import type {
+  RegressionCheckerPort,
   RegressionCheckerVerdict,
   RegressionCriterionObservation,
   RegressionObservation,
   RegressionCaseScale,
   RegressionRate,
-} from './ai-correction-regression-metrics.js';
+} from './ai-correction-regression-contracts.js';
+export type { RegressionCheckerPort } from './ai-correction-regression-contracts.js';
 import type {
   LoadedRegressionSource,
   RegressionPool,
   RegressionPoolCase,
 } from './ai-correction-regression-pool.js';
-
-/**
- * The independent verifier, as the suite needs it.
- *
- * Declared here rather than imported from the server checker so the suite has
- * no dependency on a module that dispatches paid calls: offline tests inject a
- * stub, and V4.5-121 injects the promoted checker.
- */
-export interface RegressionCheckerPort {
-  verify(input: {
-    /**
-     * Everything the closed question needs: the rubric wording as well as the
-     * level chosen. Sending only keys would force the adapter to re-derive the
-     * rubric, which is how a verifier ends up asked about a level description
-     * that is not the one the correction was graded against.
-     */
-    criteria: {
-      criterionKey: string;
-      criterionLabel: string;
-      levelDescription: string;
-      levelKey: string;
-      levelLabel: string;
-      quotes: string[];
-    }[];
-    unitId: string;
-  }): Promise<{
-    /**
-     * What the provider actually charged, when it says so. The checker spends
-     * real money and must therefore reconcile against the run's budget guard
-     * like any other call; `null` means the provider returned no cost, which
-     * the caller treats as a reason to stop rather than as zero.
-     */
-    costUsd: number | null;
-    verdicts: Record<string, RegressionCheckerVerdict>;
-  }>;
-}
 
 /** One thing to be corrected: a pool case as-is, or one of its mutants. */
 type RegressionRunUnit = {

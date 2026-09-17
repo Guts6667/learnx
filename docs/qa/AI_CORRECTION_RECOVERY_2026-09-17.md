@@ -105,3 +105,11 @@ des recherches, corrections runtime, instruments et protocole Writing. Revenir
 artefacts historiques. Une promotion future suit le runbook de restauration et
 son SHA de rollback ; ce lot n'a aucune migration à inverser. Prochaine autorité :
 QA/Release pour les checks/recette, puis Rayan pour références, budget et pilote.
+
+## Complément de contrôle des dépendances
+
+L'audit production du 17 septembre rapporte zéro vulnérabilité high/critical
+et trois advisories moderate sur la version Hono déjà présente dans le lockfile :
+`GHSA-gqvv-2mrq-wpjv`, `GHSA-g6gw-c38x-mqfc` et `GHSA-crvj-82cr-hjcx`.
+Le gate existant `--audit-level=high` passe ; cela ne signifie pas absence
+d'advisories. Aucun changement de dépendance n'est inclus dans cette reprise.

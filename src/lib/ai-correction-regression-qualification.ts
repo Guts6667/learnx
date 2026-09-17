@@ -6,7 +6,7 @@ import type {
   RegressionCaseScale,
   RegressionObservation,
   RegressionRate,
-} from './ai-correction-regression-metrics.js';
+} from './ai-correction-regression-contracts.js';
 
 function arithmeticRate(quotes: string[]): RegressionRate {
   let denominator = 0;

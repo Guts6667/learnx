@@ -15,7 +15,7 @@ import {
   type DesignedProbeBinding,
   type DesignedProbeEvidence,
 } from './ai-correction-regression-probe-evidence.js';
-import type { RegressionCheckerPort } from './ai-correction-regression-run.js';
+import type { RegressionCheckerPort } from './ai-correction-regression-contracts.js';
 
 export async function runDesignedCheckerProbe(input: {
   arguments: string[];
