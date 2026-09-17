@@ -13,6 +13,7 @@ import {
 import {
   buildRecoveryVerificationInput,
   deliverRecoveryCorrection,
+  recoveryVerifiedLevels,
 } from './ai-correction-recovery-pipeline';
 
 function required<T>(value: T | undefined): T {
@@ -252,9 +253,13 @@ export function evaluateRecoveryPilot(
     (arm) => {
       let displayed = 0;
       let incorrect = 0;
+      let uncertainDisplayed = 0;
       let structuralEvidenceChecksPassed = 0;
       let referenceEvidenceComplete = 0;
       let referenceEvidenceAssessable = 0;
+      let verifierGraded = 0;
+      let verifierIncorrect = 0;
+      let verifierUncertainGraded = 0;
       let knownCostUsd = 0;
       let unknownCostCount = 0;
       let unidentifiedVerificationCount = 0;
@@ -265,6 +270,7 @@ export function evaluateRecoveryPilot(
           sourceAnswerId: string;
           displayed: number;
           incorrect: number;
+          uncertainDisplayed: number;
           total: number;
         }
       >();
@@ -280,12 +286,32 @@ export function evaluateRecoveryPilot(
           reference,
           observation,
         );
-        const expectedHash = extraction
-          ? recoveryHash(buildRecoveryVerificationInput({ answer, extraction }))
+        const referenceRow = required(
+          reference.labels.find((row) => row.caseId === answer.caseId),
+        );
+        const verificationEvidence =
+          observation.arm === 'SUPPLIED_EVIDENCE'
+            ? {
+                criteria: referenceRow.criteria.map(
+                  ({ criterionKey, roles }) => ({ criterionKey, roles }),
+                ),
+              }
+            : extraction;
+        const expectedHash = verificationEvidence
+          ? recoveryHash(
+              buildRecoveryVerificationInput({
+                answer,
+                extraction: verificationEvidence,
+              }),
+            )
           : null;
         if (observation.verificationInputHash !== expectedHash)
           throw new Error(
             'Verifier response is not bound to the expected blinded evidence request.',
+          );
+        if (expectedHash === null && observation.verification !== null)
+          throw new Error(
+            'A verifier output without a valid evidence request is not measurable.',
           );
         const delivered = deliverRecoveryCorrection({
           answer,
@@ -295,10 +321,27 @@ export function evaluateRecoveryPilot(
         const gold = required(
           reference.labels.find((row) => row.caseId === answer.caseId),
         );
+        for (const verified of recoveryVerifiedLevels(
+          observation.verification,
+        )) {
+          if (verified.level === null) continue;
+          verifierGraded += 1;
+          const expected = required(
+            gold.criteria.find(
+              (row) => row.criterionKey === verified.criterionKey,
+            ),
+          );
+          if (
+            uncertain.has(`${answer.sourceAnswerId}:${verified.criterionKey}`)
+          )
+            verifierUncertainGraded += 1;
+          else if (verified.level !== expected.level) verifierIncorrect += 1;
+        }
         const group = groups.get(answer.sourceAnswerId) ?? {
           sourceAnswerId: answer.sourceAnswerId,
           displayed: 0,
           incorrect: 0,
+          uncertainDisplayed: 0,
           total: 0,
         };
         for (const criterion of delivered) {
@@ -352,9 +395,11 @@ export function evaluateRecoveryPilot(
             if (
               uncertain.has(
                 `${answer.sourceAnswerId}:${criterion.criterionKey}`,
-              ) ||
-              expected.level !== criterion.level
+              )
             ) {
+              uncertainDisplayed += 1;
+              group.uncertainDisplayed += 1;
+            } else if (expected.level !== criterion.level) {
               incorrect += 1;
               group.incorrect += 1;
             }
@@ -371,13 +416,15 @@ export function evaluateRecoveryPilot(
       }
       const total = 90 * 3 * 3;
       const complete = rows.length === 90 * 3;
-      const usable = displayed - incorrect;
+      const usable = displayed - incorrect - uncertainDisplayed;
       return {
         arm,
         status:
           !complete || unknownCostCount || unidentifiedVerificationCount
             ? 'UNMEASURED'
-            : incorrect === 0 && usable / total >= 0.7
+            : incorrect === 0 &&
+                uncertainDisplayed === 0 &&
+                usable / total >= 0.7
               ? 'PASS'
               : 'BLOCKED',
         observations: rows.length,
@@ -385,9 +432,12 @@ export function evaluateRecoveryPilot(
         totalCriteria: total,
         displayed,
         incorrect,
+        uncertainDisplayed,
         usable,
         coverage: usable / total,
         abstentions: total - displayed,
+        observedAbstentions: rows.length * 3 - displayed,
+        unmeasuredCriteria: total - rows.length * 3,
         // Structural delivery checks only, not recall of all evidence in the reference.
         structuralEvidenceChecksPassed,
         structuralEvidenceCheckRate: structuralEvidenceChecksPassed / total,
@@ -399,6 +449,15 @@ export function evaluateRecoveryPilot(
             : referenceEvidenceComplete / referenceEvidenceAssessable,
         referenceEvidenceScope:
           'Recall of all owner-selected sentence-role bindings; equivalent unselected evidence may be valid and requires review. Empty reference role sets are unmeasured.',
+        verifierBeforePrimaryAgreement: {
+          graded: verifierGraded,
+          incorrect: verifierIncorrect,
+          uncertainGraded: verifierUncertainGraded,
+          abstentions: total - verifierGraded,
+          totalCriteria: total,
+          scope:
+            'Standalone requirement-derived levels, not learner delivery. Supplied-evidence and extracted-evidence arms remain separate.',
+        },
         unstableCriteria: [...levels.values()].filter(
           (values) => new Set(values).size > 1,
         ).length,

@@ -2,7 +2,7 @@
 
 ## Autorité et état
 
-- Version : 1.1.0
+- Version : 1.2.0
 - Statut : **ouvert — GO V4.1-504 rendu le 29 août 2026 (`63c436d9`)**
 - Owner de séquence : Produit
 - Reviewer d'activation : Propriétaire

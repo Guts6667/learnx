@@ -22,7 +22,12 @@ export interface RecoveryDeliveredCriterion {
 /** No proposed level, model rationale, pair label, or mutation metadata. */
 export function buildRecoveryVerificationInput(input: {
   answer: RecoveryCase;
-  extraction: RecoveryExtraction;
+  extraction: {
+    criteria: Pick<
+      RecoveryExtraction['criteria'][number],
+      'criterionKey' | 'roles'
+    >[];
+  };
 }) {
   return {
     rubricVersion: RECOVERY_RUBRIC.version,
@@ -81,6 +86,30 @@ function hasCompleteRoles(
   );
 }
 
+/** Standalone verifier measurement, before comparison with a primary grade. */
+export function recoveryVerifiedLevels(verification: unknown): {
+  criterionKey: RecoveryCriterionKey;
+  level: RecoveryLevel | null;
+}[] {
+  const parsed = recoveryVerificationSchema.safeParse(verification);
+  return RECOVERY_RUBRIC.criteria.map(({ key }) => {
+    const check = parsed.success
+      ? parsed.data.criteria.find((row) => row.criterionKey === key)
+      : undefined;
+    if (!check?.completeEvidence || check.requirements.includes('UNCERTAIN'))
+      return { criterionKey: key, level: null };
+    const count = check.requirements.filter(
+      (value) => value === 'SATISFIED',
+    ).length;
+    return {
+      criterionKey: key,
+      level: check.requirements.includes('CONTRADICTED')
+        ? 'insufficient'
+        : (['insufficient', 'limited', 'partial', 'mastered'] as const)[count],
+    };
+  });
+}
+
 /** The engine checks bounds/provenance; the verifier's semantics remain fallible. */
 export function deliverRecoveryCorrection(input: {
   answer: RecoveryCase;
@@ -94,6 +123,7 @@ export function deliverRecoveryCorrection(input: {
     !verified.success ||
     !hasUniqueCriteria(extracted.data.criteria) ||
     !hasUniqueCriteria(verified.data.criteria);
+  const verifiedLevels = recoveryVerifiedLevels(input.verification);
   return RECOVERY_RUBRIC.criteria.map(({ key }) => {
     const withheld = (
       reason: RecoveryDeliveredCriterion['reason'],
@@ -106,17 +136,10 @@ export function deliverRecoveryCorrection(input: {
       return withheld('INVALID_OUTPUT');
     if (!hasCompleteRoles(input.answer, extracted.data, key))
       return withheld('EXTRACTION_INCOMPLETE');
-    const check = verified.data.criteria.find(
-      (criterion) => criterion.criterionKey === key,
-    );
-    if (!check?.completeEvidence || check.requirements.includes('UNCERTAIN'))
-      return withheld('UNCERTAIN');
-    const count = check.requirements.filter(
-      (value) => value === 'SATISFIED',
-    ).length;
-    const computed: RecoveryLevel = check.requirements.includes('CONTRADICTED')
-      ? 'insufficient'
-      : (['insufficient', 'limited', 'partial', 'mastered'] as const)[count];
+    const computed = verifiedLevels.find(
+      (row) => row.criterionKey === key,
+    )?.level;
+    if (computed == null) return withheld('UNCERTAIN');
     const proposed = extracted.data.criteria.find(
       (criterion) => criterion.criterionKey === key,
     )?.proposedLevel;

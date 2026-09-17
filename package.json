@@ -60,7 +60,8 @@
     "trial:grant-cycle": "tsx scripts/trial-allocation-cycle.ts",
     "typecheck": "tsc -b",
     "vercel:migrate": "tsx scripts/vercel-migrate.ts",
-    "ai:recovery": "tsx scripts/ai-correction-recovery.ts"
+    "ai:recovery": "tsx scripts/ai-correction-recovery.ts",
+    "ai:recovery:measure": "tsx scripts/run-ai-correction-recovery.ts"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {

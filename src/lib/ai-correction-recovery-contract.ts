@@ -122,7 +122,13 @@ export const recoveryExtractionSchema = z
         .strict(),
     ),
   })
-  .strict();
+  .strict()
+  .refine(
+    (result) =>
+      result.criteria.length === 3 &&
+      new Set(result.criteria.map((row) => row.criterionKey)).size === 3,
+    'Exactly the three distinct rubric criteria are required',
+  );
 
 export const recoveryVerificationSchema = z
   .object({
@@ -145,7 +151,13 @@ export const recoveryVerificationSchema = z
         .strict(),
     ),
   })
-  .strict();
+  .strict()
+  .refine(
+    (result) =>
+      result.criteria.length === 3 &&
+      new Set(result.criteria.map((row) => row.criterionKey)).size === 3,
+    'Exactly the three distinct rubric criteria are required',
+  );
 
 const referenceRow = z
   .object({

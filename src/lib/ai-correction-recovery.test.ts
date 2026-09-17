@@ -209,6 +209,31 @@ describe('recovery evidence isolation', () => {
 });
 
 describe('closed pilot qualification instrument', () => {
+  it('measures the supplied-evidence verifier despite an invalid primary extraction, while withholding learner grades', () => {
+    const { pack, reference, lock, run } = fixtures();
+    const imported: unknown = {
+      ...run,
+      observations: run.observations.map((row, index) =>
+        index === 0 ? { ...row, extraction: null } : row,
+      ),
+    };
+    const report = evaluateRecoveryPilot(pack, reference, lock, imported);
+    expect(report.arms[0].displayed).toBe(807);
+    expect(report.arms[0].verifierBeforePrimaryAgreement.graded).toBe(810);
+    expect(report.arms[0].verifierBeforePrimaryAgreement.incorrect).toBe(0);
+  });
+  it('reports standalone verifier errors even when grade disagreement prevents display', () => {
+    const { pack, reference, lock, run } = fixtures();
+    run.observations[0].verification.criteria[0].requirements = [
+      'NOT_SATISFIED',
+      'NOT_SATISFIED',
+      'NOT_SATISFIED',
+    ];
+    const report = evaluateRecoveryPilot(pack, reference, lock, run);
+    expect(report.arms[0].incorrect).toBe(0);
+    expect(report.arms[0].verifierBeforePrimaryAgreement.incorrect).toBe(1);
+    expect(report.arms[0].referenceEvidenceCompleteness).toBe(1);
+  });
   it('lets a deliberately correct synthetic instrument fixture pass the numerical gates without authorizing release', () => {
     const { pack, reference, lock, run } = fixtures();
     const report = evaluateRecoveryPilot(pack, reference, lock, run);
@@ -236,7 +261,8 @@ describe('closed pilot qualification instrument', () => {
     expect(report.arms[0]).toMatchObject({
       status: 'BLOCKED',
       totalCriteria: 810,
-      incorrect: 9,
+      incorrect: 0,
+      uncertainDisplayed: 9,
     });
   });
 

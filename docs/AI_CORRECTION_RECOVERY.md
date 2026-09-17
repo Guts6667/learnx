@@ -126,3 +126,13 @@ jamais assimilée à une qualification réelle du runtime. L'analyse
 `--analyse=<répertoire>` réutilise les preuves figées sans appel. Une preuve
 checker historique non liée à l'identité, au prompt, à la répétition et à la
 sortie exacte reste UNAVAILABLE : aucun accord n'est transféré entre réponses.
+
+
+Portée de protection financière : runner atomique, probe de faux-accord,
+`--run-pool` V7 (primaire/retries/checker) et nouveau runner Writing partagent
+le garde durable. L'ancien `--measure-checker` est retiré au profit du probe.
+L'exécution générique de comparaison multi-modèles hors `--run-pool` reste
+historique et ne bénéficie pas de cette nouvelle garantie : elle n'est pas
+l'entrée de la reprise. Un ledger nouveau ne certifie pas la réconciliation
+rétroactive de l'ancienne enveloppe ; conserver le blocage de 0,62 USD et
+obtenir une décision de budget explicite avant toute nouvelle campagne.

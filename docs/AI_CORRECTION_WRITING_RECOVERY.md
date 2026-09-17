@@ -154,3 +154,57 @@ conserve provenance et intention des mutations hors du matériel de revue aveugl
 Baseline d'ingénierie : primaire `anthropic/claude-sonnet-4.6`, vérificateur
 `mistralai/mistral-medium-3-5`, identités épinglées existantes. Aucun résultat de
 ce protocole ne les modifie implicitement.
+
+Le rapport donne également les niveaux dérivés du vérificateur **avant**
+comparaison avec le grade primaire, avec leurs propres erreurs et abstentions.
+Le bras sur preuves fournies mesure ainsi la vérification elle-même, sans
+qu'un désaccord du primaire puisse masquer ses erreurs derrière une abstention
+d'affichage. La décision de livraison reste séparée.
+
+
+## Runner du protocole (aucun appel sans `--execute`)
+
+`pnpm ai:recovery:measure` prépare par défaut un manifeste hors ligne à partir
+du pack revu, de la référence, du verrou réel, d'un rapport de sécurité joint
+et de plafonds de prix sourcés. Les drapeaux prennent la forme `--nom=valeur` :
+
+```bash
+pnpm ai:recovery:measure --pack=/chemin/pack.json --reference=/chemin/reference.json --lock=/chemin/reference.lock.json --safety-report=/chemin/rapport-securite.json --price-caps=/chemin/plafonds-prix.json --out=/chemin/nouveau-preflight
+```
+
+Le JSON de plafonds contient `primary` et `verifier`, chacun avec
+`promptUsdPerToken`, `completionUsdPerToken`, `source` et `recordedAt` UTC.
+Ce sont des plafonds explicites appliqués au transport, jamais des prix actuels
+inventés. Le manifeste conserve les modèles, routes, profils effectivement
+émis, schémas et empreintes de prompts. Le nouveau profil est expérimental et
+ne change pas l'identité du runtime de production.
+
+Une mesure autorisée ajoute `--execute`, `--decision-id`, `--envelope-usd` et
+`--run-cap-usd`, avec un nouveau répertoire de sortie. Exporter uniquement la
+clé fournisseur nécessaire, sans sourcer une `.env`. Le verrou/enveloppe est
+commun aux worktrees et aux nouveaux probes. Chaque appel réserve son coût
+maximal avant envoi et conserve coût/request ID même si la sortie est invalide.
+Deux appels de smoke vérifient d'abord transport/profil/schéma ; puis au plus
+1 080 appels produisent 540 observations (90 cas × 3 répétitions × 2 bras).
+Le smoke est facturé séparément des observations mesurées ; il reste inclus
+dans le coût de campagne et ses plafonds.
+
+Un coût inconnu, une réponse incompatible, une interruption ou un dépassement
+arrête la mesure ; le journal de dépense et les résultats partiels restent
+conservés. Aucun retry ni resume implicite. Le répertoire est créé exclusivement,
+les événements et observations sont append-only et chaque checkpoint est
+nouveau. Un processus tué peut laisser un verrou à réconcilier manuellement.
+
+Le runner importe le rapport de sécurité avec `UNREVIEWED_APPLICABILITY` :
+il ne confond jamais un fichier joint avec des gates passés. La preuve sur
+l'ancien checker n'établit pas la qualité du nouveau prompt de vérification.
+Le pilote exige encore la revue des gates applicables à cette identité exacte,
+la recette cible et le GO propriétaire. Ni `run.json` ni le runner ne publient
+une rubrique, ne changent une identité ou n'écrivent dans la progression.
+
+
+Un niveau affiché sur un critère incertain bloque le pilote, mais le rapport
+le compte séparément d'une erreur contre un label déterminé. Les cases non
+mesurées sont séparées des abstentions observées, tout en restant dans le
+dénominateur de couverture. Ces distinctions évitent de transformer une
+ambiguïté de référence ou une interruption en erreur sémantique inventée.
