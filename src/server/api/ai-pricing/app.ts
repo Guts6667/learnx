@@ -12,6 +12,7 @@ import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import { PrismaCorrectionBreaker } from '../../corrections/correction-breaker.js';
+import { ownerAlert } from '../../corrections/owner-alert.js';
 
 const AI_PRICING_QUOTE_PATH = '/api/ai-correction/quotes';
 
@@ -154,7 +155,7 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
       service = new AiPricingQuoteService(
         repository,
         options.now,
-        options.breaker ?? new PrismaCorrectionBreaker(prisma),
+        options.breaker ?? new PrismaCorrectionBreaker(prisma, ownerAlert()),
       );
     }
     const quote = await service.quote({

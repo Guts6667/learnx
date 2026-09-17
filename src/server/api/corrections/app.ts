@@ -13,7 +13,6 @@ import {
   CorrectionOrchestrationError,
   CorrectionOrchestrationService,
   type CorrectionHistoryEntry,
-  type CorrectionTransportPort,
   type CreditSettlementPort,
   type OrchestratedCorrectionResult,
 } from '../../corrections/correction-orchestration.js';
@@ -30,12 +29,12 @@ import {
   selectCorrectionTransport,
   type CorrectionTransportSelection,
 } from '../../corrections/correction-transport-mode.js';
-import { createRuntimeCorrectionChecker } from '../../corrections/correction-checker.js';
 import {
   evaluateCorrectionReleasePreflight,
   type CorrectionReleasePreflight,
 } from '../../corrections/release-preflight.js';
 import { PrismaCreditLedger } from '../../credits/prisma-credit-ledger.js';
+import { projectLearnerCorrection } from '../../corrections/learner-correction.js';
 import { ownerAlert } from '../../corrections/owner-alert.js';
 import {
   PrismaCorrectionBreaker,
@@ -55,21 +54,7 @@ const runCorrectionRequestSchema = z
 function serializeLearnerCorrectionResult(
   result: OrchestratedCorrectionResult,
 ) {
-  const correction = {
-    criteria: result.correction.criteria,
-    id: result.correction.id,
-    indicativeScore: result.correction.indicativeScore,
-    overallConfidence: result.correction.overallConfidence,
-    overallFeedback: result.correction.overallFeedback,
-    status: result.correction.status,
-    unsureCriteria: result.correction.unsureCriteria,
-    unsureCriterionDetails: result.correction.unsureCriterionDetails,
-  };
-  return {
-    correction,
-    replay: result.replay,
-    settlement: result.settlement,
-  };
+  return projectLearnerCorrection(result);
 }
 
 function serializeLearnerCorrectionHistoryEntry(entry: CorrectionHistoryEntry) {
@@ -117,6 +102,7 @@ export function isPromotedCorrectionConfiguration(
 ): boolean {
   const assignment = configuration.assignments.CORRECTION_PRIMARY;
   const secondPassAssignment = configuration.assignments.CORRECTION_SECOND_PASS;
+  const checker = configuration.assignments.CORRECTION_CHECKER;
   return Boolean(
     configuration.enabled &&
     !configuration.killSwitch &&
@@ -124,25 +110,22 @@ export function isPromotedCorrectionConfiguration(
     assignment?.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
     assignment.provider === PROMOTED_CORRECTION_IDENTITY.provider &&
     secondPassAssignment?.modelId === PROMOTED_CORRECTION_IDENTITY.modelId &&
-    secondPassAssignment.provider === PROMOTED_CORRECTION_IDENTITY.provider,
+    secondPassAssignment.provider === PROMOTED_CORRECTION_IDENTITY.provider &&
+    (!checker ||
+      (checker.modelId === PROMOTED_CHECKER_IDENTITY.modelId &&
+        checker.provider === PROMOTED_CHECKER_IDENTITY.provider)),
   );
 }
 
 async function createDefaultOrchestration(
-  transport: CorrectionTransportPort,
+  selection: CorrectionTransportSelection,
 ): Promise<Pick<CorrectionOrchestrationService, 'runAcceptedQuote'> | null> {
   const configuration = readOpenRouterConfiguration({
     deploymentEnvironment: deploymentEnvironment(),
   });
-  if (
-    !isPromotedCorrectionConfiguration(configuration) ||
-    !configuration.apiKey
-  ) {
-    return null;
-  }
-
   const { prisma } = await import('../../prisma.js');
   const ports = new PrismaCorrectionOrchestrationPorts(prisma);
+  const breaker = new PrismaCorrectionBreaker(prisma, ownerAlert());
   const ledger = new PrismaCreditLedger(prisma);
   const credits: CreditSettlementPort = {
     async reserve(input) {
@@ -165,14 +148,27 @@ async function createDefaultOrchestration(
     ports.quotes,
     credits,
     ports.corrections,
-    transport,
+    selection.transport,
     {
-      apiKey: configuration.apiKey,
+      apiKey: configuration.apiKey ?? '',
+      canDispatch: async () => {
+        try {
+          const current = readOpenRouterConfiguration({
+            deploymentEnvironment: deploymentEnvironment(),
+          });
+          return (
+            isPromotedCorrectionConfiguration(current) &&
+            (await breaker.evaluate()).state === 'CLOSED'
+          );
+        } catch {
+          return false;
+        }
+      },
       // Absent when the environment has no checker assigned: verdicts stay
       // UNAVAILABLE and corrections cap at MEDIUM rather than failing.
       ...(configuration.assignments.CORRECTION_CHECKER
         ? {
-            checker: createRuntimeCorrectionChecker({
+            checker: selection.createChecker({
               apiKey: configuration.apiKey,
               appUrl: configuration.appUrl,
             }),
@@ -445,7 +441,7 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
     if (!orchestration) {
       defaultOrchestrationPromise ??=
         options.resolveDefaultOrchestration?.() ??
-        createDefaultOrchestration(transportSelection().transport);
+        createDefaultOrchestration(transportSelection());
       orchestration = (await defaultOrchestrationPromise) ?? undefined;
     }
     if (!orchestration) {
@@ -480,6 +476,10 @@ export function createCorrectionsApp(options: CorrectionsAppOptions = {}) {
             status: 409,
           },
           FINANCIAL_RECONCILIATION_REQUIRED: {
+            code: 'AI_CORRECTION_UNAVAILABLE',
+            status: 503,
+          },
+          CORRECTION_SUSPENDED: {
             code: 'AI_CORRECTION_UNAVAILABLE',
             status: 503,
           },

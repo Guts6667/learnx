@@ -45,6 +45,8 @@ export const frenchCorrectionMessages = {
   'aiCorrection.comparisonTitle': 'Évolution depuis la correction précédente',
   'aiCorrection.comparisonChange': '{previous} → {current}',
   'aiCorrection.comparisonStable': 'Aucun niveau critériel n’a changé.',
+  'aiCorrection.comparisonWithheld':
+    'Les niveaux à vérifier ne sont pas comparés.',
   'aiCorrection.quoteError': 'Le devis n’a pas pu être préparé.',
   'aiCorrection.quoteSummary':
     'Estimation : {estimated} crédits · plafond réservé : {maximum} crédits.',
@@ -217,6 +219,8 @@ export const englishCorrectionMessages = {
   'aiCorrection.comparisonTitle': 'Change since the previous correction',
   'aiCorrection.comparisonChange': '{previous} → {current}',
   'aiCorrection.comparisonStable': 'No criterion level has changed.',
+  'aiCorrection.comparisonWithheld':
+    'Levels awaiting verification are not compared.',
   'aiCorrection.quoteError': 'The quote could not be prepared.',
   'aiCorrection.quoteSummary':
     'Estimate: {estimated} credits · reserved ceiling: {maximum} credits.',

@@ -63,6 +63,7 @@ export class CorrectionOrchestrationService {
       apiKey: string;
       /** Absent where no checker is configured; verdicts stay UNAVAILABLE. */
       checker?: CorrectionCheckerPort;
+      canDispatch?: () => Promise<boolean>;
       now?: () => Date;
     },
   ) {
@@ -71,6 +72,7 @@ export class CorrectionOrchestrationService {
       transport,
       options.apiKey,
       options.checker,
+      options.canDispatch,
     );
   }
 
@@ -83,6 +85,9 @@ export class CorrectionOrchestrationService {
     assertCompatibleQuote(quote, contract);
     const replay = await this.replayIfAvailable(quote, input.userId);
     if (replay) return replay;
+    if (this.options.canDispatch && !(await this.options.canDispatch())) {
+      throw new CorrectionOrchestrationError('CORRECTION_SUSPENDED');
+    }
     const reservationId = await this.reserveQuote(quote, input.userId, now);
     const correctionId = await this.beginCorrection(
       quote,

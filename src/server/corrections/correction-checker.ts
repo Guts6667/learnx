@@ -26,6 +26,7 @@ type CheckerUnavailableReason =
   | 'ROUTE_MISMATCH'
   | 'TIMEOUT'
   | 'UNKNOWN_CRITERION'
+  | 'DUPLICATE_CRITERION'
   | 'UNPARSEABLE'
   | 'UNCONFIGURED';
 
@@ -42,6 +43,7 @@ interface CheckerOutcome {
   costUsd: number | null;
   latencyMs: number | null;
   providerRoute: string | null;
+  providerRequestId?: string;
   unavailableReason: CheckerUnavailableReason | null;
   verdicts: Record<string, CheckerVerdict>;
 }
@@ -240,47 +242,57 @@ export function createRuntimeCorrectionChecker(
       }
 
       const latencyMs = now() - startedAt;
-      if (!response.ok) return allUnavailable(questions, 'HTTP_ERROR');
-
       let envelope: unknown;
       try {
         envelope = await response.json();
       } catch {
-        return allUnavailable(questions, 'UNPARSEABLE');
+        return allUnavailable(
+          questions,
+          response.ok ? 'UNPARSEABLE' : 'HTTP_ERROR',
+          { latencyMs },
+        );
       }
+
+      // Accounting facts survive a malformed or rejected verdict. A billed
+      // answer does not become a cost of zero or an unidentified call because
+      // its pedagogical payload cannot be used.
+      const metadata = checkerResponseMetadata(envelope, latencyMs);
+      const unavailable = (reason: CheckerUnavailableReason) =>
+        allUnavailable(questions, reason, metadata);
+      if (!response.ok) return unavailable('HTTP_ERROR');
 
       const parsedEnvelope = envelopeSchema.safeParse(envelope);
       if (!parsedEnvelope.success) {
-        return allUnavailable(questions, 'UNPARSEABLE');
+        return unavailable('UNPARSEABLE');
       }
 
       // The response reports the provider that served it. It does not report
       // which endpoint variant did, so this confirms the provider and not the
       // EU pin: that rests on `only` in the request. Confirming what we can is
       // still worth more than confirming nothing.
-      const providerRoute = parsedEnvelope.data.provider ?? null;
+      const providerRoute = metadata.providerRoute;
       if (
         providerRoute !== null &&
         providerRoute !== PROMOTED_CHECKER_IDENTITY.provider
       ) {
-        return allUnavailable(questions, 'ROUTE_MISMATCH', { providerRoute });
+        return unavailable('ROUTE_MISMATCH');
       }
 
       const content = parsedEnvelope.data.choices[0]?.message?.content;
       if (typeof content !== 'string') {
-        return allUnavailable(questions, 'UNPARSEABLE', { providerRoute });
+        return unavailable('UNPARSEABLE');
       }
 
       let payload: unknown;
       try {
         payload = JSON.parse(content);
       } catch {
-        return allUnavailable(questions, 'UNPARSEABLE', { providerRoute });
+        return unavailable('UNPARSEABLE');
       }
 
       const parsed = verdictSchema.safeParse(payload);
       if (!parsed.success) {
-        return allUnavailable(questions, 'UNPARSEABLE', { providerRoute });
+        return unavailable('UNPARSEABLE');
       }
 
       const asked = new Set(questions.map((question) => question.criterionKey));
@@ -290,10 +302,11 @@ export function createRuntimeCorrectionChecker(
         // A verdict about a criterion we never asked about means the checker
         // and the correction are not talking about the same thing. Nothing in
         // that response can be trusted, including the parts that look right.
-        return allUnavailable(questions, 'UNKNOWN_CRITERION', {
-          providerRoute,
-        });
+        return unavailable('UNKNOWN_CRITERION');
       }
+      const keys = parsed.data.verdicts.map((verdict) => verdict.criterionKey);
+      if (new Set(keys).size !== keys.length)
+        return unavailable('DUPLICATE_CRITERION');
 
       const answered = new Map(
         parsed.data.verdicts.map((verdict) => [
@@ -303,9 +316,7 @@ export function createRuntimeCorrectionChecker(
       );
 
       return {
-        costUsd: parsedEnvelope.data.usage?.cost ?? null,
-        latencyMs,
-        providerRoute,
+        ...metadata,
         unavailableReason: null,
         // A criterion the checker skipped is unchecked, not agreed.
         verdicts: Object.fromEntries(
@@ -323,6 +334,27 @@ const envelopeSchema = z.object({
   choices: z
     .array(z.object({ message: z.object({ content: z.unknown() }).loose() }))
     .min(1),
-  provider: z.string().optional(),
-  usage: z.object({ cost: z.number().optional() }).loose().optional(),
 });
+
+function checkerResponseMetadata(envelope: unknown, latencyMs: number) {
+  const data = z
+    .object({
+      id: z.string().min(1).optional().catch(undefined),
+      provider: z.string().optional().catch(undefined),
+      usage: z
+        .object({
+          cost: z.number().finite().nonnegative().optional().catch(undefined),
+        })
+        .optional()
+        .catch(undefined),
+    })
+    .safeParse(envelope);
+  return {
+    costUsd: data.success ? (data.data.usage?.cost ?? null) : null,
+    latencyMs,
+    providerRoute: data.success ? (data.data.provider ?? null) : null,
+    ...(data.success && data.data.id
+      ? { providerRequestId: data.data.id }
+      : {}),
+  };
+}

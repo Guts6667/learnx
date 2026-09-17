@@ -223,6 +223,7 @@ describe('corrections api (V4-009/V4-010)', () => {
   it('returns 503 when no orchestration is configured', async () => {
     const unconfigured = createCorrectionsApp({
       authentication: authenticatedMiddleware('user-1'),
+      resolveDefaultOrchestration: async () => null,
     });
     const response = await unconfigured.request('/api/ai-corrections', {
       body: JSON.stringify({ quoteId: '5f0b1d2e-1c3d-4e5f-9a8b-7c6d5e4f3b2a' }),

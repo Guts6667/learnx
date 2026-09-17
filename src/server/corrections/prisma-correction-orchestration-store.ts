@@ -212,7 +212,10 @@ export class PrismaCorrectionOrchestrationPorts {
         return { state: 'RECONCILIATION_REQUIRED' } as const;
       }
       const result: OrchestratedCorrectionResult = {
-        correction: withStoredConfidence(structured.correction),
+        correction: withStoredConfidence(
+          structured.correction,
+          correction.contractSnapshot,
+        ),
         settlement: structured.settlement,
         replay: true,
       };

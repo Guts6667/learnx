@@ -22,6 +22,7 @@ const agreed = {
   costUsd: 0.004,
   latencyMs: 900,
   providerRoute: 'Mistral',
+  providerRequestId: 'checker-generation-1',
   unavailableReason: null,
   verdicts: {
     'decision-position': 'AGREED',
@@ -61,6 +62,7 @@ describe('coût du vérificateur enregistré (défaut de V4.5-111)', () => {
       actualCostUsd: 0.004,
       latencyMs: 900,
       providerRoute: 'Mistral',
+      providerRequestId: 'checker-generation-1',
       status: 'SUCCEEDED',
     });
   });

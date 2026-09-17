@@ -238,6 +238,7 @@ export interface Harness {
 }
 
 export function buildHarness(options: {
+  canDispatch?: () => Promise<boolean>;
   beforeTransport?: () => void;
   checker?: {
     verify(input: unknown): Promise<unknown>;
@@ -326,6 +327,7 @@ export function buildHarness(options: {
     transport,
     {
       apiKey: 'test-key',
+      ...(options.canDispatch ? { canDispatch: options.canDispatch } : {}),
       ...(options.checker
         ? {
             checker:

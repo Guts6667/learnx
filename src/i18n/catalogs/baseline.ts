@@ -43,11 +43,15 @@
  * donc le surplus au-dessus de la parité n'est plus une ligne de carte, et un
  * palier est mis en avant (arbitrage de Rayan).
  * 1169 clés, inchangé.
+ *
+ * 17 septembre 2026 (AI recovery) — `aiCorrection.comparisonWithheld`
+ * explique pourquoi des niveaux à vérifier ne sont pas comparés, sans
+ * affirmer à tort qu'ils sont inchangés. 1169 → 1170 clés.
  */
 export const messageCatalogBaseline = {
-  keyCount: 1169,
+  keyCount: 1170,
   sha256: {
-    en: '5a3fd8d65c27c062d91db8c30d1f9f704d25b150b7d4651fa078cf9fc61edd7f',
-    fr: '4ed34281723aa76b5acb546047cc76cd768f01076d5a371911b41dc4ee7caf1f',
+    en: 'bf8bcc2a58aa4e303a555f521e7d2136a719901d84410c74bd2860e065454e95',
+    fr: '6d842f420ff32569eefa28a7913aa3321132411779c9091387e79a76bb240bd9',
   },
 } as const;

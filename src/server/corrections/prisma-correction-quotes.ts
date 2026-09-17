@@ -134,7 +134,10 @@ export class PrismaCorrectionQuoteRepository {
       contract: source.contractSnapshot,
       reconsideration: {
         argument: quote.reconsiderationArgument,
-        previousCorrection: withStoredConfidence(structured.correction),
+        previousCorrection: withStoredConfidence(
+          structured.correction,
+          source.contractSnapshot,
+        ),
         sourceCorrectionId: source.id,
       },
     };

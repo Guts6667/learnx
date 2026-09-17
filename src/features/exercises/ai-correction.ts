@@ -24,11 +24,11 @@ interface CorrectionCriterionResult {
   confidence: CorrectionConfidence;
   evidenceQuotes: string[];
   evidenceStatus: 'FOUND' | 'NO_RELEVANT_EVIDENCE' | 'EVIDENCE_WITHDRAWN';
-  feedback: string;
+  feedback: string | null;
   key: string;
   label: string;
-  levelKey: string;
-  levelLabel: string;
+  levelKey: string | null;
+  levelLabel: string | null;
   weight: number;
 }
 
