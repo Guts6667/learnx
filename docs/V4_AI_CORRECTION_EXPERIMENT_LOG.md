@@ -2209,3 +2209,31 @@ faisait pas. Trois centimes pour dé-risquer trois dollars.
 
 **Dépense du jour : 4,4056 USD** — GPT-5.6 1,0845, sonde Kimi 0,0296, Kimi 3,2915,
 et 0,00 pour le run GPT-5.6 avorté. Enveloppe `owner-210-budget-2026-08-31`.
+
+
+## 17 septembre 2026 — reprise sans nouvelle dépense fournisseur
+
+Le plan propriétaire privilégie une correction fiable, une seule rubrique
+Writing et des labels absolus de Rayan. L'audit distingue les sources au lieu
+d'assimiler integration, recherche et production. Révisions et owners dans
+`docs/AI_CORRECTION_RECOVERY.md` ; protocole proposé dans
+`docs/AI_CORRECTION_WRITING_RECOVERY.md`.
+
+Les lectures générales du 1er septembre restent historiques. Les paires
+atomiques de septembre mélangent preuve fournie et extraction ; elles sont
+regroupées en 11 réponses sources. Ni l'échec relatif du protocole ni sa
+stabilité ne constituent une preuve absolue de suffisance. Le nouveau holdout
+ne reprend aucun de ces cas comme preuve fraîche. Références et retest sont
+verrouillés avant mesure ; aucune observation modèle nouvelle n'est produite
+par les tests synthétiques de l'instrument.
+
+La politique v7 ajoute les métriques absentes, remplace l'accord HIGH circulaire
+par un probe de discrimination séparé, précise l'arithmétique approuvée versus
+citée pour critique et conserve l'historique de v6.1. Les répétitions du cache
+checker sont liées à leur sortie exacte. La projection LOW et les frontières
+de dépenses sont corrigées avant toute campagne.
+
+Le run historique de 720 appels coûte 2,59762031 USD, pas le cumul V4.5-210.
+L'écart de 0,62 USD entre récits de composants demeure ouvert. Dépense nouvelle
+pour cette reprise d'implémentation : 0 USD ; aucun modèle promu, aucun pilote
+ouvert, aucune base de production modifiée.

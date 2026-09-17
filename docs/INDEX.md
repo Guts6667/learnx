@@ -14,7 +14,8 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Ticket V3.5 design et landing | `BACKLOG_V3_5.md` puis les fichiers cités par le ticket | Le ticket V3.5 actif après clôture V3 |
 | Ticket V4 IA et économie | `BACKLOG_V4.md` puis l'ADR ou la spec citée | L'amendement d'exécution du 24 août prime sur les tickets expérimentaux historiques |
 | Orientation V6 support et conformité | `V6_CANDIDATES.md` | Candidats uniquement, aucune autorité d'implémentation |
-| Reprise rapide V4.1 | `docs/HANDOFF.md` | Point d'entrée humain actuel ; code, preuves QA et ticket actif priment en cas d'écart |
+| Reprise correction IA (17 septembre) | `docs/AI_CORRECTION_RECOVERY.md`, puis `docs/AI_CORRECTION_WRITING_RECOVERY.md` | Plan de reprise approuvé ; implémentation, qualification et production séparées |
+| Reprise rapide LearnX | `docs/HANDOFF.md` | Point d'entrée humain actuel ; code, preuves QA et ticket actif priment en cas d'écart |
 | Architecture générale | `docs/ARCHITECTURE.md` | Frontières React/API/Neon/OpenRouter et dépendances de domaines ; code et schéma priment |
 | Carte du domaine et vocabulaire | `docs/DOMAIN_MODEL.md` | Autorités, objets métier et séparation remise/feedback/maîtrise |
 | Conventions d'ingénierie | `docs/ENGINEERING_CONVENTIONS.md` | Frontières, anti-monolithes, React/shadcn, Git et Definition of Done |
@@ -50,7 +51,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Séparation du runner de benchmark V4.1 | `docs/V4_1_404_BENCHMARK_RUNNER_SPLIT.md` | Frontières library/CLI, invariants de parité et dette scientifique P2 explicitement conservée |
 | Handoff et fermeture de dette V4.1 | `docs/qa/V4_1_503_HANDOFF.md` | Preuve du découpage du noyau d'agrégation, goldens et consolidation documentaire |
 | Candidat de release V4.1 | `docs/qa/V4_1_504_RELEASE_CANDIDATE.md` | SHA et preview candidats, preuves automatiques, recette propriétaire et règle de GO/rollback |
-| Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md`, puis `docs/V4_5_AI_QUALITY_CONTRACT.md` | Ouvert depuis le GO V4.1-504 (29 août 2026) ; tickets `V4.5-1xx`, contrat qualité, évaluations textuelles, calibration, essai et paiement ; release après V4.2/V4.3 |
+| Correction assistée et commerce V4.5 | `V4_5_BACKLOG.md`, puis `docs/V4_5_AI_QUALITY_CONTRACT.md` | Ouvert depuis le GO V4.1-504 (29 août 2026) ; tickets `V4.5-1xx`, contrat qualité, évaluations textuelles, calibration, essai et paiement ; V4.3 parquée ; reprise correction prioritaire selon la décision du 17 septembre |
 | Encaissement et paiement | `docs/ADR_004_PAYMENT_HOSTED_CHECKOUT.md`, puis `ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md` §6.3 et §7.3 | ADR acceptée, amendée sur place au passage à Stripe (V4.5-184) ; ADR_003 prime sur les états et les frontières de données |
 | Exploration V5 | `V5_CANDIDATES.md` | Conception guidée et analytics restent des candidats sans ticket activable |
 | Release V3.5 | `V3_5_RELEASE_REPORT.md`, `V3_5_QA_MATRIX.md` | GO technique obtenu ; la preuve de clôture reste celle du rapport réellement promu |

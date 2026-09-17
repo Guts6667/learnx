@@ -22,7 +22,7 @@ import { segmentSentences } from './ai-correction-regression-text.js';
 /** Bumped whenever segmentation changes; frozen artefacts carry it. */
 export const ADJUDICATION_SEGMENTER_VERSION = 'fr/segmentSentences@1';
 
-export type AdjudicationSentence = {
+type AdjudicationSentence = {
   end: number;
   id: string;
   sha: string;
@@ -35,7 +35,7 @@ export type AdjudicationSegmentation = {
   sentences: AdjudicationSentence[];
 };
 
-export type VerifierInputKind = 'ENVELOPE' | 'FULL_RESPONSE' | 'TUPLE';
+type VerifierInputKind = 'ENVELOPE' | 'FULL_RESPONSE' | 'TUPLE';
 
 export type VerifierInput = {
   kind: VerifierInputKind;

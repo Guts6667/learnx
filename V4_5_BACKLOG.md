@@ -14,12 +14,16 @@
 - Cadrage : rapport et plan Head of AI du 29 août 2026, validés par le
   Propriétaire ; contrat qualité `docs/V4_5_AI_QUALITY_CONTRACT.md` ; addendum
   `ADR_003` du 29 août 2026.
-- Ordonnancement produit (décision du Propriétaire, 29 août 2026) : V4.2
-  (design) puis V4.3 (pipeline programmes) sont séquencées avant V4.5. Les
-  tickets V4.5 peuvent être préparés et exécutés en parallèle lorsqu'ils ne
-  touchent pas les surfaces de V4.2/V4.3 ; leur release reste après.
+- Ordonnancement courant : V4.3 est **parquée** depuis le 29 août, au profit
+  de V4.5 (`V4_3_BACKLOG.md`). La reprise de correction du 17 septembre est
+  prioritaire ; sa release dépend de ses propres gates et du GO propriétaire.
+- Reprise active : `docs/AI_CORRECTION_RECOVERY.md` sépare production,
+  intégration, recherche, qualification et propriétaires. Le lot V4.5-210
+  ci-dessous remplace la campagne de prompt désormais close scientifiquement.
 
-> **Écart connu, traité par V4.5-110 et V4.5-111.** Les deux manques que
+> **Constat historique du 29 août, non état courant de `dev`.**
+> Les défauts ci-dessous ont motivé V4.5-110 et V4.5-111. Voir la reprise
+> datée pour les écarts restants entre production, code et qualification. Les deux manques que
 > V4.5-001 et V4.5-002 décrivent sont toujours littéralement présents dans le
 > code livré : `detectsHardConstraintMismatch()` dans
 > `src/server/corrections/correction-outcome.ts` ajoute seulement un signal de
@@ -69,7 +73,7 @@ leur autorisation propre, consignée dans Airtable (`Arbitrage Rayan`).
 
 ### Décisions de cadrage du 29 août 2026
 
-1. Aucun humain dans la boucle de correction et aucun étalon rédigé par un
+1. **Cadrage historique amendé le 17 septembre pour V4.5-210** : aucun humain dans la boucle de correction et aucun étalon rédigé par un
    humain : la qualité est mesurée par des oracles machine (mutation,
    stabilité, cross-modèle, sécurité), des signaux apprenants et un
    coupe-circuit automatique. Aucune validation humaine n'est revendiquée.
@@ -700,3 +704,27 @@ données pilote ; packs et prix réels seulement sur GO V4.5-012.
 - essai, packs, paiement et remboursements sont réconciliables ;
 - support, monitoring, rollback et conformité sont opérationnels ;
 - rapport public et rapport technique sont datés et reproductibles.
+
+
+## V4.5-210 — reprise de correction fiable (17 septembre 2026)
+
+Définition canonique remplaçant le titre Airtable « prompt 2.3.0 ». Owner
+IA/Recherche, revue Architecture/Produit ; référence et décision Rayan.
+Source : `docs/AI_CORRECTION_RECOVERY.md` et
+`docs/AI_CORRECTION_WRITING_RECOVERY.md`. Statut : **IN_PROGRESS**, pilote
+**BLOQUÉ**. Le résultat 7/63 de trois versions n'est pas une qualification.
+
+| Sous-lot | Owner | Reviewer | Critère de sortie |
+| --- | --- | --- | --- |
+| V4.5-210-R1 | Architecture/Produit | QA/Release | Baseline datée, responsabilités, SHA et preuves ; suivi Airtable/PR réconcilié |
+| V4.5-210-R2 | Backend/Data | QA/Release | FAKE hermétique, projection LOW/legacy/history commune, comptabilité indépendante du parsing, alertes et arrêt avant dispatch testés |
+| V4.5-210-R3 | IA/Recherche | Backend/Data | Toutes les métriques produites, gate de discrimination indépendant, stabilité exacte, budget partagé, smoke et UNMEASURED ; fixture synthétique verte et défauts injectés rouges |
+| V4.5-210-R4 | IA/Recherche | Rayan | Une rubrique Writing versionnée et approuvée ; 30 sources indépendantes + 60 mutations ; labels absolus verrouillés, retest aveugle de dix sources, deux bras mesurés trois fois |
+| V4.5-210-R5 | QA/Release | Rayan | Zéro niveau affiché incorrect, ≥70 % utilisables, sécurité et recette de déploiement vertes, GO propriétaire |
+
+Une référence propriétaire remplace ici l'interdiction historique des étalons
+humains, sans prétendre à une validation humaine indépendante ni introduire un
+humain dans la boucle de correction en production. Les cas incertains restent
+au dénominateur. Un échec produit un diagnostic rubrique / extraction /
+vérification / agrégation, pas une campagne automatique. Aucune modification
+d'identité de production ni de maîtrise/progression par ce lot.

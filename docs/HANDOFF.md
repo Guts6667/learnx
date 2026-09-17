@@ -1,9 +1,10 @@
-# Handoff LearnX V4.1
+# Handoff LearnX — état de reprise au 17 septembre 2026
 
 ## Reprise en moins de 15 minutes
 
 1. Lire `AGENTS.md`, puis `docs/INDEX.md`.
-2. Lire `V4_1_BACKLOG.md` : le seul ticket restant est V4.1-504.
+2. Pour la correction IA, lire `docs/AI_CORRECTION_RECOVERY.md` puis le
+   lot V4.5-210 de `V4_5_BACKLOG.md`. V4.1 est clôturée ; V4.3 est parquée.
 3. Lire `docs/ARCHITECTURE.md` et `docs/DOMAIN_MODEL.md` avant de modifier un
    contrat ou une frontière de domaine.
 4. Lire `docs/ENGINEERING_CONVENTIONS.md` avant tout code, puis
@@ -12,7 +13,13 @@
    `docs/AI_CORRECTION_RESEARCH_DIGEST.md` : les preuves historiques sont
    conservées, mais ne constituent jamais une autorisation d'exécution.
 
-## État au 28 août 2026
+## État courant
+
+La baseline, les propriétaires, les SHA, les blocages et les prochaines preuves
+sont maintenus dans `docs/AI_CORRECTION_RECOVERY.md`. Les flags réellement
+déployés restent à vérifier ; aucun vert local ne vaut ouverture du pilote.
+
+## Instantané historique au 28 août 2026 — ne pas utiliser comme état courant
 
 - Baseline V4 en production :
   `a02ecc3f307af36656fa5cb8a7b62954fdec73e9`.
@@ -58,7 +65,8 @@ pnpm test:e2e:production
 
 ## Dette résiduelle et risques nommés
 
-Aucune dette P0/P1 connue n'est ouverte. Les éléments suivants sont des gates
+Cette appréciation était celle du handoff V4.1 : elle ne couvre pas les défauts
+de correction IA relevés en septembre. Les éléments suivants étaient des gates
 de release P2, pas des validations déjà acquises :
 
 | Élément | Owner | Impact si omis | Dépendance | Revue |

@@ -1,6 +1,6 @@
 schema_version: 1
-manifest_version: '1.3.0'
-captured_on: '2026-08-29'
+manifest_version: '1.4.0'
+captured_on: '2026-09-17'
 baseline:
   ref: origin/dev
   sha: a02ecc3f307af36656fa5cb8a7b62954fdec73e9
@@ -28,6 +28,20 @@ status_definitions:
   superseded_reference: preserved reference replaced as current routing authority
 
 documents:
+  - path: docs/AI_CORRECTION_RECOVERY.md
+    scope: v4_5_210_recovery_baseline_and_gates
+    status: active_instruction
+    owner: Architecture / Produit
+    reviewer: QA / Release
+    supersession: owner_approved_plan_2026_09_17
+
+  - path: docs/AI_CORRECTION_WRITING_RECOVERY.md
+    scope: v4_5_210_experimental_writing_rubric
+    status: exploratory
+    owner: IA / Recherche
+    reviewer: Rayan
+    supersession: version_before_locked_holdout
+
   - path: AGENTS.md
     scope: repository_agent_rules
     status: active_instruction

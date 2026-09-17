@@ -59,7 +59,8 @@
     "test:watch": "vitest",
     "trial:grant-cycle": "tsx scripts/trial-allocation-cycle.ts",
     "typecheck": "tsc -b",
-    "vercel:migrate": "tsx scripts/vercel-migrate.ts"
+    "vercel:migrate": "tsx scripts/vercel-migrate.ts",
+    "ai:recovery": "tsx scripts/ai-correction-recovery.ts"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {

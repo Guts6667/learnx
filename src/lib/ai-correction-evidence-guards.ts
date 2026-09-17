@@ -11,12 +11,8 @@
  * 18 observed failures.
  */
 
-export const EVIDENCE_GUARD_CODES = [
-  'CRITERION_ABSENT_FROM_OUTPUT',
-  'TOP_LEVEL_WITHOUT_RESOLVED_EVIDENCE',
-] as const;
-
-export type EvidenceGuardCode = (typeof EVIDENCE_GUARD_CODES)[number];
+type EvidenceGuardCode =
+  'CRITERION_ABSENT_FROM_OUTPUT' | 'TOP_LEVEL_WITHOUT_RESOLVED_EVIDENCE';
 
 export type EvidenceGuardViolation = {
   code: EvidenceGuardCode;
