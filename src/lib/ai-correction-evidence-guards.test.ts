@@ -277,6 +277,12 @@ describe('D0 as an end-to-end gate', () => {
 
   it('carries the violations out of deriveRegressionObservations', async () => {
     const observations = await deriveRegressionObservations({
+      checkerIdentity: {
+        modelId: 'synthetic-checker',
+        routeProviders: ['synthetic'],
+        promptSha256: 'a'.repeat(64),
+        requestProfileSha256: 'b'.repeat(64),
+      },
       attempts: [archived as never],
       familyScientificallyValidated: true,
       plan,
@@ -293,6 +299,12 @@ describe('D0 as an end-to-end gate', () => {
 
   it('surfaces them as a rate with a real denominator', async () => {
     const observations = await deriveRegressionObservations({
+      checkerIdentity: {
+        modelId: 'synthetic-checker',
+        routeProviders: ['synthetic'],
+        promptSha256: 'a'.repeat(64),
+        requestProfileSha256: 'b'.repeat(64),
+      },
       attempts: [archived as never],
       familyScientificallyValidated: true,
       plan,

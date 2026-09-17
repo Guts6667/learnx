@@ -45,6 +45,7 @@ function buildPrompt(input: {
 }
 
 export async function callCandidate(input: {
+  fetchImplementation?: typeof fetch;
   apiKey: string;
   benchmarkCase: CorrectionBenchmarkCorpus['cases'][number];
   candidate: CorrectionBenchmarkConfiguration['candidates'][number];
@@ -73,6 +74,7 @@ export async function callCandidate(input: {
     input.candidate.requestProfile.adapter,
   );
   return adapter.execute({
+    fetchImplementation: input.fetchImplementation,
     apiKey: input.apiKey,
     jsonSchema: sanitizeStructuredOutputJsonSchema(
       buildProtocol3TransportJsonSchema(contract),

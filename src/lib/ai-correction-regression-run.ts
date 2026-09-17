@@ -1,3 +1,4 @@
+import { type DesignedCheckerIdentity } from './ai-correction-regression-probe-evidence.js';
 /**
  * Execution of the regression suite through the existing benchmark runner
  * (V4.5-120, spec §4).
@@ -303,6 +304,8 @@ export type RegressionVerdictRecord = {
   candidateId?: string;
   repetition?: number;
   correctionSha256?: string;
+  checker?: DesignedCheckerIdentity;
+  rubricSha256?: string;
   criterionKey: string;
   unitId: string;
   verdict: RegressionCheckerVerdict;
@@ -316,7 +319,10 @@ export function verdictKey(
     !input.candidateId ||
     !Number.isInteger(input.repetition) ||
     !input.correctionSha256 ||
-    !/^[a-f0-9]{64}$/.test(input.correctionSha256)
+    !/^[a-f0-9]{64}$/.test(input.correctionSha256) ||
+    !input.checker ||
+    !input.rubricSha256 ||
+    !/^[a-f0-9]{64}$/.test(input.rubricSha256)
   ) {
     return `legacy::${input.unitId}::${input.criterionKey}`;
   }
@@ -326,6 +332,11 @@ export function verdictKey(
     input.candidateId,
     input.repetition,
     input.correctionSha256,
+    input.checker.modelId,
+    input.checker.routeProviders,
+    input.checker.promptSha256,
+    input.checker.requestProfileSha256,
+    input.rubricSha256,
   ]);
 }
 
@@ -338,6 +349,8 @@ export async function deriveRegressionObservations(input: {
    */
   budget?: SupplierBudgetGuard;
   checker?: RegressionCheckerPort;
+  /** Null is reserved for historical offline evidence with no checker identity. */
+  checkerIdentity: DesignedCheckerIdentity | null;
   /** Families inside the promoted identity's validated scope. */
   familyScientificallyValidated: boolean;
   /**
@@ -362,6 +375,8 @@ export async function deriveRegressionObservations(input: {
    */
   persistedVerdicts?: Map<string, RegressionCheckerVerdict>;
 }): Promise<RegressionObservation[]> {
+  if (input.checker && !input.checkerIdentity)
+    throw new Error('REGRESSION_CHECKER_IDENTITY_REQUIRED');
   const observations: RegressionObservation[] = [];
   const scalesByCase = new Map(
     input.plan.scales.map((scale) => [scale.caseId, scale]),
@@ -382,9 +397,20 @@ export async function deriveRegressionObservations(input: {
 
     let verdicts: Record<string, RegressionCheckerVerdict> = {};
     const unitId = unit.mutantId ?? unit.poolCaseId;
+    const contract = input.plan.corpus.contracts.find(
+      (candidate) =>
+        candidate.contractKey === attempt.output?.contractKey &&
+        candidate.version === attempt.output.contractVersion,
+    );
+    if (!contract) throw new Error('REGRESSION_RUBRIC_BINDING_MISSING');
+
     const binding = {
       candidateId: attempt.candidateId,
       repetition: attempt.repetition,
+      checker: input.checkerIdentity ?? undefined,
+      rubricSha256: createHash('sha256')
+        .update(JSON.stringify(contract))
+        .digest('hex'),
       correctionSha256: createHash('sha256')
         .update(JSON.stringify(attempt.output))
         .digest('hex'),
@@ -394,15 +420,17 @@ export async function deriveRegressionObservations(input: {
         verdictKey({ criterionKey: criterion.criterionKey, unitId }),
       ),
     );
-    const alreadyKnown = attempt.output.criteria.every((criterion) =>
-      input.persistedVerdicts?.has(
-        verdictKey({
-          criterionKey: criterion.criterionKey,
-          unitId,
-          ...binding,
-        }),
-      ),
-    );
+    const alreadyKnown =
+      input.checkerIdentity !== null &&
+      attempt.output.criteria.every((criterion) =>
+        input.persistedVerdicts?.has(
+          verdictKey({
+            criterionKey: criterion.criterionKey,
+            unitId,
+            ...binding,
+          }),
+        ),
+      );
     if (alreadyKnown && input.persistedVerdicts) {
       verdicts = Object.fromEntries(
         attempt.output.criteria.map((criterion) => [
@@ -417,11 +445,6 @@ export async function deriveRegressionObservations(input: {
         ]),
       );
     } else if (input.checker && !legacyUnbound) {
-      const contract = input.plan.corpus.contracts.find(
-        (candidate) =>
-          candidate.contractKey === attempt.output?.contractKey &&
-          candidate.version === attempt.output.contractVersion,
-      );
       const outcome = await input.checker.verify({
         criteria: attempt.output.criteria.map((criterion) => {
           const rubric = contract?.criteria.find(

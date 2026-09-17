@@ -1,3 +1,4 @@
+import { applyResearchPriceCeilings } from './ai-correction-research-guarded-fetch.js';
 /** Checker-only qualification probe, using the shared durable spending envelope. */
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -20,6 +21,10 @@ export async function runDesignedCheckerProbe(input: {
   arguments: string[];
   binding: DesignedProbeBinding;
   instructions: readonly string[];
+  executableProfile?: {
+    routeProviders: readonly string[];
+    requests: { id: string; body: unknown }[];
+  } & Record<string, unknown>;
   checker?: RegressionCheckerPort;
   apiKey?: string;
   /** Shared git-common-dir envelope directory; required for execution. */
@@ -48,12 +53,37 @@ export async function runDesignedCheckerProbe(input: {
   ) {
     throw new Error('DESIGNED_PROBE_CONFIGURATION_MISMATCH');
   }
+  if (input.binding.measurementKind === 'LIVE' && !input.executableProfile)
+    throw new Error('DESIGNED_PROBE_EXECUTABLE_PROFILE_REQUIRED');
+  const requestBodies = new Map<string, string>();
+  if (input.executableProfile) {
+    if (
+      qualificationSha256(JSON.stringify(input.executableProfile)) !==
+      input.binding.checker.requestProfileSha256
+    )
+      throw new Error('DESIGNED_PROBE_EXECUTABLE_PROFILE_MISMATCH');
+    for (const request of input.executableProfile.requests) {
+      if (requestBodies.has(request.id))
+        throw new Error('DESIGNED_PROBE_EXECUTABLE_PROFILE_MISMATCH');
+      const body = applyResearchPriceCeilings(request.body, {
+        ...input.pricing,
+        maxOutputTokens: input.maxOutputTokens,
+      });
+      if (JSON.stringify(body) !== JSON.stringify(request.body))
+        throw new Error('DESIGNED_PROBE_EXECUTABLE_PROFILE_MISMATCH');
+      requestBodies.set(request.id, JSON.stringify(body));
+    }
+    if (
+      requestBodies.size !== probe.cases.length ||
+      probe.cases.some((entry) => !requestBodies.has(entry.id))
+    )
+      throw new Error('DESIGNED_PROBE_EXECUTABLE_PROFILE_MISMATCH');
+  }
   const reservations = probe.cases.map((entry) =>
     atomCallReservationUsd({
-      prompt: JSON.stringify({
-        instructions: input.instructions,
-        criteria: [entry],
-      }),
+      prompt:
+        requestBodies.get(entry.id) ??
+        JSON.stringify({ instructions: input.instructions, criteria: [entry] }),
       ...input.pricing,
       maxOutputTokens: input.maxOutputTokens,
     }),
@@ -71,7 +101,14 @@ export async function runDesignedCheckerProbe(input: {
       ?.slice(name.length + 3);
   const cap = Number(arg('supplier-cost-cap-usd'));
   const envelope = Number(arg('envelope-usd'));
-  const decisionId = arg('decision-id');
+  const legacyDecision = arg('decision-id');
+  const decisionId = arg('envelope-decision') ?? legacyDecision;
+  if (
+    legacyDecision &&
+    arg('envelope-decision') &&
+    legacyDecision !== decisionId
+  )
+    throw new Error('DESIGNED_PROBE_DECISION_CONFLICT');
   if (
     !input.apiKey ||
     !input.checker ||
@@ -93,13 +130,14 @@ export async function runDesignedCheckerProbe(input: {
       directory: input.budgetDirectory,
       decisionId,
       envelopeUsd: envelope,
-      keyHash: createHash('sha256').update(input.apiKey).digest('hex'),
+      keyHash: `sha256:${createHash('sha256').update(input.apiKey).digest('hex')}`,
       providerUsageUsd: usage,
       runCapUsd: cap,
       runId: `designed-probe:${input.binding.qualificationRunId}`,
     });
     const evidence: DesignedProbeEvidence = {
       schemaVersion: 1,
+      executableProfile: input.executableProfile ?? null,
       ...input.binding,
       createdAt: (input.now?.() ?? new Date()).toISOString(),
       probeId: probe.probeId,
@@ -146,11 +184,14 @@ export async function runDesignedCheckerProbe(input: {
       evidence.outcomes.push({
         id: entry.id,
         costUsd: outcome.costUsd,
+        reservedUsd: reservation,
         verdict: outcome.verdicts[entry.criterionKey] ?? 'UNAVAILABLE',
       });
       await writeFile(evidencePath, `${JSON.stringify(evidence, null, 2)}\n`);
       if (outcome.costUsd === null)
         throw new Error('DESIGNED_PROBE_UNRECONCILED_COST');
+      if (outcome.costUsd > reservation)
+        throw new Error('DESIGNED_PROBE_RESERVATION_EXCEEDED');
     }
     validateDesignedProbeEvidence({
       source: evidence,

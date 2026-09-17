@@ -245,6 +245,12 @@ async function runSuite(input: {
     repetitions: configuration.repetitions,
   });
   const observations = await deriveRegressionObservations({
+    checkerIdentity: {
+      modelId: 'synthetic-checker',
+      routeProviders: ['synthetic'],
+      promptSha256: 'a'.repeat(64),
+      requestProfileSha256: 'b'.repeat(64),
+    },
     attempts,
     checker: input.checker,
     familyScientificallyValidated: true,
@@ -1031,6 +1037,12 @@ describe('omitted-criteria oracle', () => {
     // not the safety rates alone: a gate table built from half the inputs would
     // drop the other gates as policy errors and prove nothing about this one.
     const observations = await deriveRegressionObservations({
+      checkerIdentity: {
+        modelId: 'synthetic-checker',
+        routeProviders: ['synthetic'],
+        promptSha256: 'a'.repeat(64),
+        requestProfileSha256: 'b'.repeat(64),
+      },
       attempts: refused,
       checker: AGREEABLE_CHECKER,
       familyScientificallyValidated: true,

@@ -1,6 +1,7 @@
 import {
   readDesignedProbeEvidence,
   type DesignedProbeBinding,
+  type DesignedCheckerIdentity,
 } from './ai-correction-regression-probe-evidence.js';
 /**
  * Offline analysis of a results directory (V4.5-125).
@@ -41,6 +42,8 @@ import {
 } from './ai-correction-regression-run.js';
 
 export type OfflineAnalysis = {
+  sourceGatePolicyVersion: string | null;
+  interpretation: 'VERSIONED_REANALYSIS';
   gatePolicyVersion: string;
   simulatesValidatedFamily: boolean;
   attempts: BenchmarkAttempt[];
@@ -156,7 +159,9 @@ export async function analyseRunOffline(input: {
         ),
       ) as {
         qualification?: DesignedProbeBinding;
+        checkerIdentity?: DesignedCheckerIdentity;
         simulatesValidatedFamily?: boolean;
+        gatePolicyVersion?: string;
       })
     : {};
   const simulatesValidatedFamily = summary.simulatesValidatedFamily === true;
@@ -189,6 +194,7 @@ export async function analyseRunOffline(input: {
 
   const observations = await deriveRegressionObservations({
     attempts,
+    checkerIdentity: summary.checkerIdentity ?? null,
     familyScientificallyValidated: simulatesValidatedFamily,
     persistedVerdicts: verdicts,
     plan: input.plan,
@@ -220,6 +226,8 @@ export async function analyseRunOffline(input: {
   };
 
   return {
+    sourceGatePolicyVersion: summary.gatePolicyVersion ?? null,
+    interpretation: 'VERSIONED_REANALYSIS',
     gatePolicyVersion: policy.policyVersion,
     simulatesValidatedFamily,
     attempts,

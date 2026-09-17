@@ -124,6 +124,13 @@ describe('bound designed-checker evidence', () => {
         probePath: path.join(source, 'false-agree-probe.v1.json'),
         binding: { ...binding, ...overrides },
       });
+    expect(
+      JSON.parse(
+        await readFile(path.join(directory, 'budget/envelope.json'), 'utf8'),
+      ),
+    ).toMatchObject({
+      keyHash: `sha256:${qualificationSha256('synthetic-no-network')}`,
+    });
     expect((await read()).result.checkerFalseAgreeDesigned).toEqual({
       numerator: 0,
       denominator: 20,
@@ -170,6 +177,27 @@ describe('bound designed-checker evidence', () => {
     );
     expect(verify).toHaveBeenCalledTimes(1);
     await expect(probe(directory)).rejects.toThrow('RECONCILIATION_REQUIRED');
+  });
+  it('rejects an overrun on the final call and rejects its recorded evidence on import', async () => {
+    const directory = await temporaryDirectory();
+    let calls = 0;
+    await expect(
+      probe(directory, {
+        verify: async ({ criteria }) => ({
+          costUsd: ++calls === 20 ? 2 : 0.000001,
+          verdicts: { [required(criteria[0]).criterionKey]: 'DISAGREED' },
+        }),
+      }),
+    ).rejects.toThrow('RESERVATION_EXCEEDED');
+    expect(calls).toBe(20);
+    await expect(
+      readDesignedProbeEvidence({
+        evidencePath: path.join(directory, 'probe/designed-checker-probe.json'),
+        probePath: path.join(source, 'false-agree-probe.v1.json'),
+        binding,
+      }),
+    ).rejects.toThrow('RESERVATION_EXCEEDED');
+    await expect(probe(directory)).rejects.toThrow('ATOM_RESERVATION_EXCEEDED');
   });
   it('does not call either the provider or usage reader in dry-run mode', async () => {
     const directory = await temporaryDirectory();
@@ -586,6 +614,7 @@ it('passes the entire v7 policy through public run and offline analysis with gen
     ),
   );
   const capped = await deriveRegressionObservations({
+    checkerIdentity,
     attempts: [baselineAttempt],
     checker: confidenceChecker,
     familyScientificallyValidated: false,
@@ -598,6 +627,7 @@ it('passes the entire v7 policy through public run and offline analysis with gen
   required(required(contradictory.output).criteria[0]).feedback =
     'Une violation de contrainte est présente.';
   const contradicted = await deriveRegressionObservations({
+    checkerIdentity,
     attempts: [contradictory],
     checker: confidenceChecker,
     familyScientificallyValidated: true,
@@ -606,6 +636,7 @@ it('passes the entire v7 policy through public run and offline analysis with gen
   expect(contradicted[0]?.criteria[0]?.confidence).toBe('LOW');
   const records: RegressionVerdictRecord[] = [];
   await deriveRegressionObservations({
+    checkerIdentity,
     attempts: [baselineAttempt],
     checker: confidenceChecker,
     familyScientificallyValidated: true,
@@ -619,6 +650,7 @@ it('passes the entire v7 policy through public run and offline analysis with gen
   );
   const replay = (attempt: BenchmarkAttempt) =>
     deriveRegressionObservations({
+      checkerIdentity,
       attempts: [attempt],
       persistedVerdicts,
       familyScientificallyValidated: true,
@@ -647,6 +679,40 @@ it('passes the entire v7 policy through public run and offline analysis with gen
       ),
     ).toBe(true);
   }
+  for (const changedIdentity of [
+    { ...checkerIdentity, modelId: 'different-checker' },
+    { ...checkerIdentity, promptSha256: 'c'.repeat(64) },
+    { ...checkerIdentity, requestProfileSha256: 'd'.repeat(64) },
+    { ...checkerIdentity, routeProviders: ['another-route'] },
+  ]) {
+    const changed = await deriveRegressionObservations({
+      attempts: [baselineAttempt],
+      persistedVerdicts,
+      checkerIdentity: changedIdentity,
+      familyScientificallyValidated: true,
+      plan,
+    });
+    expect(
+      changed[0]?.criteria.every(
+        (criterion) => criterion.checkerVerdict === 'UNAVAILABLE',
+      ),
+    ).toBe(true);
+  }
+  const changedPlan = structuredClone(plan);
+  required(required(changedPlan.corpus.contracts[0]).criteria[0]).label +=
+    ' edited';
+  const changedRubric = await deriveRegressionObservations({
+    attempts: [baselineAttempt],
+    persistedVerdicts,
+    checkerIdentity,
+    familyScientificallyValidated: true,
+    plan: changedPlan,
+  });
+  expect(
+    changedRubric[0]?.criteria.every(
+      (criterion) => criterion.checkerVerdict === 'UNAVAILABLE',
+    ),
+  ).toBe(true);
   const legacyVerdicts = new Map(
     records.map((record) => [
       verdictKey({ criterionKey: record.criterionKey, unitId: record.unitId }),
@@ -655,6 +721,7 @@ it('passes the entire v7 policy through public run and offline analysis with gen
   );
   const legacyChecker = { verify: vi.fn(confidenceChecker.verify) };
   const legacy = await deriveRegressionObservations({
+    checkerIdentity,
     attempts: [baselineAttempt],
     persistedVerdicts: legacyVerdicts,
     checker: legacyChecker,
@@ -704,6 +771,22 @@ it('passes the entire v7 policy through public run and offline analysis with gen
     failed.gates.find((gate) => gate.key === 'checker-false-agree-designed')
       ?.status,
   ).toBe('FAIL');
+  const summaryPath = path.join(outcome.resultsDirectory, 'summary.json');
+  const summary = JSON.parse(await readFile(summaryPath, 'utf8')) as Record<
+    string,
+    unknown
+  >;
+  await writeFile(
+    summaryPath,
+    JSON.stringify({ ...summary, poolSha256: 'f'.repeat(64) }),
+  );
+  await expect(analyse()).rejects.toThrow('POOL_MISMATCH');
+  await writeFile(
+    summaryPath,
+    JSON.stringify({ ...summary, poolSha256: undefined }),
+  );
+  await expect(analyse()).rejects.toThrow('FULL_POOL_BINDING_REQUIRED');
+  await writeFile(summaryPath, JSON.stringify(summary));
   // Inject each blocking defect into already measured rates. The policy must keep every promised veto.
   const policy = parseRegressionGatePolicy(
     JSON.parse(

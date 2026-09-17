@@ -9,7 +9,7 @@ import {
 } from './ai-correction-false-agree-probe.js';
 
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
-export const designedCheckerIdentitySchema = z
+const designedCheckerIdentitySchema = z
   .object({
     modelId: z.string().min(1),
     routeProviders: z.array(z.string().min(1)).min(1),
@@ -44,6 +44,7 @@ const outcomeSchema = z
     id: z.string().min(1),
     verdict: z.enum(['AGREED', 'DISAGREED', 'UNAVAILABLE']),
     costUsd: z.number().finite().nonnegative().nullable(),
+    reservedUsd: z.number().finite().positive(),
   })
   .strict();
 const evidenceSchema = z
@@ -54,6 +55,7 @@ const evidenceSchema = z
     qualificationRunId: z.string().min(1),
     createdAt: z.string().datetime(),
     checker: designedCheckerIdentitySchema,
+    executableProfile: z.record(z.string(), z.unknown()).nullable(),
     probeId: z.string().min(1),
     probeSha256: sha256,
     outcomes: z.array(outcomeSchema),
@@ -85,6 +87,13 @@ export function validateDesignedProbeEvidence(input: {
   ) {
     throw new Error('DESIGNED_PROBE_IDENTITY_MISMATCH');
   }
+  if (
+    evidence.measurementKind === 'LIVE' &&
+    (!evidence.executableProfile ||
+      qualificationSha256(JSON.stringify(evidence.executableProfile)) !==
+        evidence.checker.requestProfileSha256)
+  )
+    throw new Error('DESIGNED_PROBE_EXECUTABLE_PROFILE_MISMATCH');
   const ids = new Set(evidence.outcomes.map((outcome) => outcome.id));
   if (
     ids.size !== evidence.outcomes.length ||
@@ -93,6 +102,13 @@ export function validateDesignedProbeEvidence(input: {
   ) {
     throw new Error('DESIGNED_PROBE_CASE_COVERAGE_MISMATCH');
   }
+  if (
+    evidence.outcomes.some(
+      (outcome) =>
+        outcome.costUsd !== null && outcome.costUsd > outcome.reservedUsd,
+    )
+  )
+    throw new Error('DESIGNED_PROBE_RESERVATION_EXCEEDED');
   if (evidence.outcomes.some((outcome) => outcome.costUsd === null)) {
     throw new Error('DESIGNED_PROBE_UNRECONCILED_COST');
   }

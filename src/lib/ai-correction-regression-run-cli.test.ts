@@ -43,6 +43,12 @@ const POOL_PATH = path.join(REGRESSION_SOURCE, 'regression-pool.v1.json');
 
 const IDENTITIES = {
   checkerModelId: 'mistralai/mistral-medium-3-5',
+  checkerQualificationIdentity: {
+    modelId: 'synthetic-checker',
+    routeProviders: ['synthetic'],
+    promptSha256: 'a'.repeat(64),
+    requestProfileSha256: 'b'.repeat(64),
+  },
   // The promoted identity's own policy: no retry.
   maxRetries: 0,
   primaryCandidateId: 'claude-sonnet-4-6-openrouter-anthropic',
@@ -178,6 +184,7 @@ describe('--run-pool', () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
       configuration: configuration(),
       identities: IDENTITIES,
@@ -199,6 +206,7 @@ describe('--run-pool', () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
       configuration: configuration(),
       identities: IDENTITIES,
@@ -234,6 +242,7 @@ describe('--run-pool', () => {
     );
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
       configuration: configuration(),
       identities: IDENTITIES,
@@ -265,6 +274,7 @@ describe('--run-pool', () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
       configuration: configuration(),
       identities: IDENTITIES,
@@ -286,6 +296,7 @@ describe('--run-pool', () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: EXECUTING_ARGUMENTS,
       checker: CHECKER,
       configuration: configuration(),
@@ -329,6 +340,7 @@ describe('--run-pool', () => {
     // First run: reduced profile, interrupted by a cap that stops it partway.
     // Whatever it bought is on disk, because attempts persist as they arrive.
     const first = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -358,6 +370,7 @@ describe('--run-pool', () => {
     // must dispatch nothing and still carry the earlier attempts forward.
     dispatches = 0;
     const second = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -411,6 +424,7 @@ describe('--run-pool', () => {
     // to spend twice the envelope. The lock is what stops a pasted command.
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: EXECUTING_ARGUMENTS,
         checker: CHECKER,
         configuration: configuration(),
@@ -444,6 +458,7 @@ describe('--run-pool', () => {
     };
 
     const first = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: EXECUTING_ARGUMENTS,
       checker: countingChecker,
       configuration: configuration(),
@@ -468,6 +483,7 @@ describe('--run-pool', () => {
     // memory, so an interrupted run lost every checker oracle and recomputing
     // meant paying the verifier a second time.
     await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [...EXECUTING_ARGUMENTS, `--resume=${first.resultsDirectory}`],
       checker: countingChecker,
       configuration: configuration(),
@@ -486,6 +502,7 @@ describe('--run-pool', () => {
 
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: [`--run-pool=${POOL_PATH}`, '--dry-run'],
         configuration: configuration(),
         identities: IDENTITIES,
@@ -499,6 +516,7 @@ describe('--run-pool', () => {
 
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
         configuration: configuration(),
         identities: { ...IDENTITIES, primaryModelId: 'anthropic/claude-3.0' },
@@ -511,6 +529,7 @@ describe('--run-pool', () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: EXECUTING_ARGUMENTS,
       checker: CHECKER,
       configuration: configuration(),
@@ -576,6 +595,7 @@ describe('--run-pool', () => {
     const directory = await scratchRegressionDirectory();
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: EXECUTING_ARGUMENTS,
       checker: CHECKER,
       configuration: configuration(),
@@ -605,129 +625,69 @@ describe('--run-pool', () => {
   });
 });
 
-describe('--measure-checker', () => {
-  it('buys only the verifier, replaying corrections already paid for', async () => {
-    const directory = await scratchRegressionDirectory();
-
-    // A completed run supplies the corrections; measuring the verifier must not
-    // dispatch a single new primary call.
-    const source = await runRegressionPool({
-      arguments: EXECUTING_ARGUMENTS,
-      checker: CHECKER,
-      configuration: configuration(),
-      executeCandidate: fakeExecutor(),
-      identities: IDENTITIES,
-      now: () => new Date('2026-08-30T02:00:00.000Z'),
-      providerApiKey: 'offline-test-key',
-      regressionDirectory: directory,
-    });
-
-    let checkerCalls = 0;
-    const measurement = await runCheckerMeasurement({
-      arguments: [
-        `--run-pool=${POOL_PATH}`,
-        CHOSEN_CONFIGURATION,
-        `--measure-checker=${source.resultsDirectory}`,
-        '--limit=5',
-        '--supplier-cost-cap-usd=1',
-      ],
-      checker: {
-        verify: async ({ criteria }) => {
-          checkerCalls += 1;
-          return {
-            costUsd: 0.001,
-            verdicts: Object.fromEntries(
-              criteria.map((criterion) => [
-                criterion.criterionKey,
-                'AGREED' as const,
-              ]),
-            ),
-          };
-        },
-      },
-      identities: IDENTITIES,
-      now: () => new Date('2026-08-30T02:30:00.000Z'),
-      regressionDirectory: directory,
-    });
-
-    expect(checkerCalls).toBeGreaterThan(0);
-    expect(measurement.callsMade).toBe(checkerCalls);
-    expect(measurement.spentUsd).toBeCloseTo(checkerCalls * 0.001, 6);
-
-    // The real property: no primary call was bought. A counter would have been
-    // vacuous — nothing in this path can increment one — so the evidence is
-    // that the measurement wrote no attempts of its own, and the corrections it
-    // replayed are still exactly the ones the source run paid for.
-    const produced = await readdir(measurement.resultsDirectory);
-    expect(produced).not.toContain('attempts.json');
-    expect(produced.sort()).toEqual([
-      'checker-cost-measurement.json',
-      'checker-verdicts.json',
-      'ledger.jsonl',
-    ]);
-  });
-
-  it('writes a ledger so envelope accounting can see what it spent', async () => {
-    const directory = await scratchRegressionDirectory();
-    const source = await runRegressionPool({
-      arguments: EXECUTING_ARGUMENTS,
-      checker: CHECKER,
-      configuration: configuration(),
-      executeCandidate: fakeExecutor(),
-      identities: IDENTITIES,
-      now: () => new Date('2026-08-30T03:00:00.000Z'),
-      providerApiKey: 'offline-test-key',
-      regressionDirectory: directory,
-    });
-
-    const measurement = await runCheckerMeasurement({
-      arguments: [
-        `--run-pool=${POOL_PATH}`,
-        CHOSEN_CONFIGURATION,
-        `--measure-checker=${source.resultsDirectory}`,
-        '--limit=3',
-        '--supplier-cost-cap-usd=1',
-      ],
-      checker: CHECKER,
-      identities: IDENTITIES,
-      now: () => new Date('2026-08-30T03:30:00.000Z'),
-      regressionDirectory: directory,
-    });
-
-    // Without a ledger the spend lives only in a bespoke artefact nothing else
-    // reads, and the envelope guard cannot see money it actually spent.
-    const ledger = await readFile(
-      path.join(measurement.resultsDirectory, 'ledger.jsonl'),
-      'utf8',
-    );
-    const line = JSON.parse(ledger.trim()) as {
-      costSource: string;
-      costUsd: number;
-    };
-    expect(line.costSource).toBe('ACTUAL');
-    expect(line.costUsd).toBeCloseTo(measurement.spentUsd, 6);
-  });
-
-  it('refuses a source directory with no usable correction', async () => {
-    const directory = await scratchRegressionDirectory();
-    const empty = path.join(directory, 'results', '2026-08-30T04-00-00-000Z');
-    await mkdir(empty, { recursive: true });
-    await writeFile(path.join(empty, 'attempts.json'), '[]', 'utf8');
-
+describe('paid finalization guard', () => {
+  it('refuses real execution without a guarded transport before any provider call', async () => {
+    let calls = 0;
     await expect(
-      runCheckerMeasurement({
-        arguments: [
-          `--run-pool=${POOL_PATH}`,
-          CHOSEN_CONFIGURATION,
-          `--measure-checker=${empty}`,
-          '--supplier-cost-cap-usd=1',
-        ],
-        checker: CHECKER,
+      runRegressionPool({
+        arguments: [...EXECUTING_ARGUMENTS, '--execute'],
+        configuration: configuration(),
         identities: IDENTITIES,
-        regressionDirectory: directory,
+        executeCandidate: async (...arguments_) => {
+          calls += 1;
+          return fakeExecutor()(...arguments_);
+        },
+        regressionDirectory: await scratchRegressionDirectory(),
       }),
-    ).rejects.toThrow(/NO_ATTEMPTS/);
+    ).rejects.toThrow('GUARDED_PAID_TRANSPORT_REQUIRED');
+    expect(calls).toBe(0);
   });
+  it('does not publish a successful summary when the final transport reconciliation fails', async () => {
+    const directory = await scratchRegressionDirectory();
+    await expect(
+      runRegressionPool({
+        arguments: EXECUTING_ARGUMENTS,
+        measurementKind: 'SYNTHETIC',
+        configuration: configuration(),
+        identities: IDENTITIES,
+        checker: CHECKER,
+        executeCandidate: fakeExecutor(),
+        providerApiKey: 'offline-test-key',
+        regressionDirectory: directory,
+        beforeFinalization: () => {
+          throw new Error('RESEARCH_RESERVATION_EXCEEDED');
+        },
+      }),
+    ).rejects.toThrow('RESERVATION_EXCEEDED');
+    const runs = await readdir(path.join(directory, 'results'));
+    const files = await readdir(
+      path.join(directory, 'results', runs[0] ?? 'missing'),
+    );
+    expect(files).not.toContain('summary.json');
+    expect(files).not.toContain('report.md');
+  });
+});
+
+describe('--measure-checker retired', () => {
+  it.each([{ arguments: [] }, { arguments: ['--execute'] }])(
+    'refuses legacy spending with arguments %j',
+    async ({ arguments: arguments_ }) => {
+      let calls = 0;
+      await expect(
+        runCheckerMeasurement({
+          arguments: arguments_,
+          identities: IDENTITIES,
+          checker: {
+            verify: async () => {
+              calls += 1;
+              return { costUsd: 0, verdicts: {} };
+            },
+          },
+        }),
+      ).rejects.toThrow('MEASURE_CHECKER_RETIRED');
+      expect(calls).toBe(0);
+    },
+  );
 });
 
 describe('one convention, one verdict', () => {
@@ -760,6 +720,7 @@ describe('one convention, one verdict', () => {
     // measured one: two preflights, two verdicts, and a run that could not
     // start. Rayan hit it twice on 30 August, at 02:35 and 02:38.
     await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -791,6 +752,7 @@ describe('one convention, one verdict', () => {
 
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: [
           `--run-pool=${POOL_PATH}`,
           CHOSEN_CONFIGURATION,
@@ -836,6 +798,7 @@ describe('the repetition pass dispatches at its offset', () => {
     };
 
     const first = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -873,6 +836,7 @@ describe('the repetition pass dispatches at its offset', () => {
 
     dispatchedRepetitions.length = 0;
     const resumed = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -919,6 +883,7 @@ describe('mutation coverage matches what the policy declares', () => {
     // the selection, so the two cannot drift apart in silence.
     const directory = await scratchRegressionDirectory();
     const planned = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -985,6 +950,7 @@ describe('the ledger carries both models (V4.5-127)', () => {
     // the 14 USD envelope could see it.
     const directory = await scratchRegressionDirectory();
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: EXECUTING_ARGUMENTS,
       checker: CHECKER,
       configuration: configuration(),
@@ -1029,6 +995,7 @@ describe('overlapping passes carry a resumed attempt once', () => {
     // envelope would then have refused a later run over.
     const directory = await scratchRegressionDirectory();
     const first = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1045,6 +1012,7 @@ describe('overlapping passes carry a resumed attempt once', () => {
     });
 
     const resumed = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1091,6 +1059,7 @@ describe('a resume is priced against what the cap has left', () => {
       path.join(directory, 'checker-pricing.v1.json'),
     );
     const first = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1146,6 +1115,7 @@ describe('a resume is priced against what the cap has left', () => {
     // Smoke's bound is 0.0699 USD: under the cap of 0.10, over the 0.05 left.
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: [
           `--run-pool=${POOL_PATH}`,
           CHOSEN_CONFIGURATION,
@@ -1171,6 +1141,7 @@ describe('a resume is priced against what the cap has left', () => {
       await measuredDirectoryWithPriorSpend(0.05);
 
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1203,6 +1174,7 @@ describe('a resume is priced against what the cap has left', () => {
   it('leaves a fresh run judged against the whole cap', async () => {
     const directory = await scratchRegressionDirectory();
     const outcome = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1269,6 +1241,7 @@ describe('repetition offset (V4.5-127)', () => {
     const seen: number[] = [];
 
     await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1314,6 +1287,7 @@ describe('--analyse (V4.5-127)', () => {
     const inner = fakeExecutor();
 
     const run = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1389,6 +1363,7 @@ describe('results-directory resolution (V4.5-127)', () => {
     let dispatches = 0;
 
     const first = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1411,6 +1386,7 @@ describe('results-directory resolution (V4.5-127)', () => {
     expect(dispatchesAfterFirst).toBeGreaterThan(0);
 
     const resumed = await runRegressionPool({
+      measurementKind: 'SYNTHETIC',
       arguments: [
         `--run-pool=${POOL_PATH}`,
         CHOSEN_CONFIGURATION,
@@ -1444,6 +1420,7 @@ describe('results-directory resolution (V4.5-127)', () => {
 
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: [
           `--run-pool=${POOL_PATH}`,
           CHOSEN_CONFIGURATION,
@@ -1475,6 +1452,7 @@ describe('explicit configuration before spending', () => {
 
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         // SAMPLE_ARGUMENTS deliberately names no configuration.
         arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke'],
         checker: CHECKER,
@@ -1492,6 +1470,7 @@ describe('explicit configuration before spending', () => {
     let message = '';
     try {
       await runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke'],
         checker: CHECKER,
         configuration: configuration(),
@@ -1520,6 +1499,7 @@ describe('explicit configuration before spending', () => {
       const directory = await scratchRegressionDirectory();
       await expect(
         runRegressionPool({
+          measurementKind: 'SYNTHETIC',
           arguments: [...SAMPLE_ARGUMENTS, '--profile=smoke', flag],
           checker: CHECKER,
           configuration: configuration(),
@@ -1539,6 +1519,7 @@ describe('explicit configuration before spending', () => {
 
     await expect(
       runRegressionPool({
+        measurementKind: 'SYNTHETIC',
         arguments: [...SAMPLE_ARGUMENTS, '--dry-run'],
         configuration: configuration(),
         identities: IDENTITIES,
