@@ -29,6 +29,12 @@ L'ancien handoff V4.1 est accessible dans l'historique Git au SHA de base ;
 ses compteurs de tests et son affirmation d'absence de P0/P1 ne décrivent pas
 l'audit de septembre.
 
+La reprise est proposée dans [PR #222](https://github.com/Guts6667/learnx/pull/222).
+Le SHA d'implémentation `21b6ab4e4c1521abec6e3b3146b94b6ae438853d` passe le
+gate local complet (2 479 tests). Voir
+[`la preuve QA`](qa/AI_CORRECTION_RECOVERY_2026-09-17.md) ; les résultats CI
+font autorité dans la PR et ne constituent pas une qualification scientifique.
+
 ## Prochaine preuve, pas prochaine campagne
 
 - R1–R3 : runtime, comptabilité, qualification et gouvernance réparés puis

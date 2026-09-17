@@ -113,3 +113,26 @@ et trois advisories moderate sur la version Hono déjà présente dans le lockfi
 `GHSA-gqvv-2mrq-wpjv`, `GHSA-g6gw-c38x-mqfc` et `GHSA-crvj-82cr-hjcx`.
 Le gate existant `--audit-level=high` passe ; cela ne signifie pas absence
 d'advisories. Aucun changement de dépendance n'est inclus dans cette reprise.
+
+## Gate complet et proposition de livraison
+
+Le SHA `21b6ab4e4c1521abec6e3b3146b94b6ae438853d` a passé
+`pnpm quality:v4.1:final`, immédiatement suivi du push dans la même chaîne
+`&&`. Résultat : **2 479 tests / 307 fichiers**, couverture globale des lignes
+91 %. Domaines critiques : auth 90,18 %, correction/crédits 91,74 %,
+progression 92,31 %, admin 91,17 %. Format, lint, types/imports (zéro cycle),
+code/CSS mort, build et budgets bundle passent ; audit high/critical vert.
+Les variables DATABASE_URL et DIRECT_URL pointaient toutes deux explicitement
+vers localhost ; seule la génération Prisma a été lancée, aucune migration.
+
+Deux blocages de cette chaîne ont été corrigés avant tout push : un cycle de
+types des nouveaux modules de qualification, supprimé par extraction des
+contrats partagés ; puis un test d'authentification des routes qui dépendait
+de l'absence de DATABASE_URL, isolé par un double mémoire à la frontière DB.
+Les assertions d'authentification, les baselines et les seuils restent intacts.
+
+[PR #222 draft](https://github.com/Guts6667/learnx/pull/222) porte la proposition
+de livraison. Les résultats CI et le head courant se lisent dans la PR ; aucun
+vert distant n'est déduit des contrôles locaux. Les changements postérieurs
+présentant ce résultat sont documentaires. Le périmètre UI testé par les 97 E2E
+reste inchangé depuis `3ed809be` ; les suivis concernent recherche, tests et docs.

@@ -16,6 +16,7 @@ Preuves logicielles et limites de recette :
 | Intégration `dev` | `7a120bed3ec0b4b966f9566e5174c509d51cea23` | Implémentation V4.5, distincte d'une qualification ou d'une mise en production |
 | Recherche préservée, PR #213 | `17b07a7367aacd8345c50ed6fe530cb886dc4a21` | Expériences et instrumentation de septembre non promues |
 | Base locale consolidée de reprise | `e874f943cb3d75469547571d0fbadff236f7eaa4` | Merge sans conflit des deux dernières lignes, dans `codex/ai-correction-recovery` |
+| Implémentation de reprise en revue | `21b6ab4e4c1521abec6e3b3146b94b6ae438853d` | Gate local complet vert ; [PR #222 draft](https://github.com/Guts6667/learnx/pull/222), aucune qualification ni promotion |
 
 Les révisions de `main`, `dev` et de recherche ont été relues sur le remote.
 Une branche locale consolidée n'est pas une livraison. Les artefacts historiques
